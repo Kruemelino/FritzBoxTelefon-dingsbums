@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FritzBoxDial", "FritzBoxDial\2013\FritzBoxDial.vbproj", "{748001E6-CF34-48DE-81BD-5C13B2D560C1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Funktionen", "Funktionen\Funktionen.vbproj", "{CCF5AE9E-C12E-4467-9334-504CD7902B78}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PopupNotifier", "PopupNotifier\PopupNotifier.vbproj", "{D8D8FAB5-B82D-4363-82B4-E6C295074075}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "StoppUhr", "StoppUhr\StoppUhr.vbproj", "{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{748001E6-CF34-48DE-81BD-5C13B2D560C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748001E6-CF34-48DE-81BD-5C13B2D560C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748001E6-CF34-48DE-81BD-5C13B2D560C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748001E6-CF34-48DE-81BD-5C13B2D560C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF5AE9E-C12E-4467-9334-504CD7902B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF5AE9E-C12E-4467-9334-504CD7902B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF5AE9E-C12E-4467-9334-504CD7902B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF5AE9E-C12E-4467-9334-504CD7902B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

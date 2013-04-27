@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabJournal">
+        <group id="TabJournal" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+          <button id="ButtonJ1" imageMso="AutoDial" onAction="OnActionWählen" size="large" label="Wählen" screentip="Fritz!Box Wählclient für Outlook" getEnabled="ButtonEnableW"/>
+           <menu id="mnu01" size="large" imageMso="CheckNames" label="Rückwärtssuche" screentip="Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche." getEnabled="ButtonEnableW">
+             <button id="btnJ01" label="11880" onAction="OnActionRWS11880" screentip="Rückwärtssuche mit &#34;www.11880.com&#34;"/>
+             <button id="btnJ02" label="GoYellow" onAction="OnActionRWSGoYellow" screentip="Rückwärtssuche mit &#34;www.goyellow.de&#34;"/>
+             <button id="btnJ03" label="dasTelefonbuch" onAction="OnActionRWSDasTelefonbuch" screentip="Rückwärtssuche mit &#34;www.dastelefonbuch.de/&#34;"/>
+             <button id="btnJ04" label="tel.search.ch" onAction="OnActionRWSTelSearch" screentip="Rückwärtssuche mit &#34;tel.search.ch&#34;"/>
+             <button id="btnJ05" label="Alle" onAction="OnActionRWSAlle" screentip="Rückwärtssuche mit allen Anbietern."/>
+           </menu>
+          <button id="ButtonJ2" imageMso="RecordsSaveAsOutlookContact" onAction="OnActionKontakterstellen" size="large" getEnabled="ButtonEnable" getScreentip="SetScreenTipJournal" getLabel="SetLabelJournal"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

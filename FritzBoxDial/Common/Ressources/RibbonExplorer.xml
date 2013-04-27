@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabContacts">
+        <group id="TabContact" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+          <splitButton id="spb1_C" size="large">
+            <!--oberste Schaltfläche des SplitButton-->
+            <button id="Button_C1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_C1">
+              <button id="Button_C2" label="Direktwahl" onAction="OnActionDirektwahl"/>
+            </menu>
+          </splitButton>
+          <separator id="Seperator_C1"/>
+          <dynamicMenu id="dynMwwdh_C" label=" Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMAnrListe_C" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMVIPListe_C" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <separator id="Seperator_C2" getVisible="GetVisibleAnrMonFKT"/>
+          <splitButton id="spb2_C" size="normal" getVisible="GetVisibleAnrMonFKT">
+            <!--oberste Schaltfläche des SplitButton-->
+            <toggleButton id="btnSplit_C" label="Anrufmonitor" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_C2">
+              <button id="AnrMonBtn_C2" label="Neustarten" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit"/>
+            </menu>
+          </splitButton>
+          <button id="AnrMonBtn_C1" label="Anzeigen" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT"/>
+          <button id="AnrMonBtn_C4" label="Journalimport" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT"/>
+          <dialogBoxLauncher>
+            <button id="Einstellungen_C" screentip="Fritz!Box Telefon-Dingsbums Einstellungen" supertip="Öffnet den Fritz!Box Telefon-Dingsbums Einstellungsdialog" onAction="OnActionEinstellungen" />
+          </dialogBoxLauncher>
+        </group>
+      </tab>
+      <tab idMso="TabMail">
+        <group id="TabMail" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+          <splitButton id="spb1_M" size="large">
+            <!--oberste Schaltfläche des SplitButton-->
+            <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_M1">
+              <button id="Button_M2" label="Direktwahl" onAction="OnActionDirektwahl"/>
+            </menu>
+          </splitButton>
+          <separator id="Seperator_M1"/>
+          <dynamicMenu id="dynMwwdh_M" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMAnrListe_M" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMVIPListe_M" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <separator id="Seperator_M2" getVisible="GetVisibleAnrMonFKT"/>
+          <splitButton id="spb2_M" getVisible="GetVisibleAnrMonFKT">
+            <!--oberste Schaltfläche des SplitButton-->
+            <toggleButton id="btnSplit_M" label="Anrufmonitor" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_M2">
+              <button id="AnrMonBtn_M2" label="Neustarten" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit"/>
+            </menu>
+          </splitButton>
+          <button id="AnrMonBtn_M1" label="Anzeigen" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT"/>
+          <button id="AnrMonBtn_M4" label="Journalimport" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI"/>
+          <dialogBoxLauncher>
+            <button id="Einstellungen_M" screentip="Fritz!Box Telefon-Dingsbums Einstellungen" supertip="Öffnet den Fritz!Box Telefon-Dingsbums Einstellungsdialog" onAction="OnActionEinstellungen" />
+          </dialogBoxLauncher>
+        </group>
+      </tab>
+      <tab idMso="TabJournals">
+        <group id="TabJournal" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+          <splitButton id="spb1_J" size="large">
+            <!--oberste Schaltfläche des SplitButton-->
+            <button id="Button_J1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_J1">
+              <button id="Button_J2" label="Direktwahl" onAction="OnActionDirektwahl"/>
+            </menu>
+          </splitButton>
+          <separator id="Seperator_J1"/>
+          <dynamicMenu id="dynMwwdh_J" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMAnrListe_J" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMVIPListe_J" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <separator id="Seperator_J2" getVisible="GetVisibleAnrMonFKT"/>
+          <splitButton id="spb2_J" getVisible="GetVisibleAnrMonFKT">
+            <!--oberste Schaltfläche des SplitButton-->
+            <toggleButton id="btnSplit_J" label="Anrufmonitor" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_J2">
+              <button id="AnrMonBtn_J2" label="Neustarten" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit"/>
+            </menu>
+          </splitButton>
+          <button id="AnrMonBtn_J1" label="Anzeigen" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT"/>
+          <button id="AnrMonBtn_J4" label="Journalimport" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI"/>
+          <dialogBoxLauncher>
+            <button id="Einstellungen_J" screentip="Fritz!Box Telefon-Dingsbums Einstellungen" supertip="Öffnet den Fritz!Box Telefon-Dingsbums Einstellungsdialog" onAction="OnActionEinstellungen" />
+          </dialogBoxLauncher>
+        </group>
+      </tab>
+      <tab idMso="TabCalendar">
+        <group id="TabCalendar" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+          <splitButton id="spb1_K" size="large">
+            <!--oberste Schaltfläche des SplitButton-->
+            <button id="Button_K1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_K1">
+              <button id="Button_K2" label="Direktwahl" onAction="OnActionDirektwahl"/>
+            </menu>
+          </splitButton>
+          <separator id="Seperator_K1"/>
+          <dynamicMenu id="dynMwwdh_K" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMAnrListe_K" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMVIPListe_K" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <separator id="Seperator_K2" getVisible="GetVisibleAnrMonFKT"/>
+          <splitButton id="spb2_K" getVisible="GetVisibleAnrMonFKT">
+            <!--oberste Schaltfläche des SplitButton-->
+            <toggleButton id="btnSplit_K" label="Anrufmonitor" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage"/>
+            <!--Menü mit Schaltflächen des SplitButton-->
+            <menu id="mnu_K2">
+              <button id="AnrMonBtn_K2" label="Neustarten" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit"/>
+            </menu>
+          </splitButton>
+          <button id="AnrMonBtn_K1" label="Anzeigen" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT"/>
+          <button id="AnrMonBtn_K4" label="Journalimport" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI"/>
+          <dialogBoxLauncher>
+            <button id="Einstellungen_K" screentip="Fritz!Box Telefon-Dingsbums Einstellungen" supertip="Öffnet den Fritz!Box Telefon-Dingsbums Einstellungsdialog" onAction="OnActionEinstellungen" />
+          </dialogBoxLauncher>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+  <contextMenus>
+    <contextMenu idMso="ContextMenuContactItem">
+      <menuSeparator id="a"/>
+      <button id="b" label="Anrufen (Fritz!Box Telefon-Dingsbums)" imageMso="AutoDial" onAction="ContextCall"/>
+      <toggleButton id="c" label="VIP" onAction="OnActionKontextVIP" getPressed="GetPressedKontextVIP" imageMso="Pushpin"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuJournalItem">
+      <menuSeparator id="e"/>
+      <button id="f" label="Anrufen (Fritz!Box Telefon-Dingsbums)" imageMso="AutoDial" onAction="ContextCall"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuMailItem">
+      <menuSeparator id="g"/>
+      <button id="h" label="Anrufen (Fritz!Box Telefon-Dingsbums)" imageMso="AutoDial" onAction="ContextCall"/>
+    </contextMenu>
+  </contextMenus>
+</customUI>
+

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabReadMessage">
+        <group id="TabReadMessage" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+          <button id="ButtonM1" imageMso="AutoDial" onAction="OnActionWählen" size="large" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

@@ -1,0 +1,339 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    This section defines project-level properties.
+
+    AssemblyName
+      Name of the output assembly.
+    Configuration
+      Specifies a default value for debug.
+    OutputType
+      Must be "Library" for VSTO.
+    Platform
+      Specifies what CPU the output of this project can run on.
+    NoStandardLibraries
+      Set to "false" for VSTO.
+    RootNamespace
+      In C#, this specifies the namespace given to new files. In VB, all objects are
+      wrapped in this namespace at runtime.
+  -->
+  <PropertyGroup>
+    <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F52ED22F-E221-4295-85C3-E69CD4A95BD5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FritzBoxDial</RootNamespace>
+    <AssemblyName>FritzBoxDial</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <StartupObject>
+    </StartupObject>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
+    <!--
+      VSTO_TrustAssembliesLocation
+        If "true", VSTO gives the project output full trust in user-level policy when the project is built.
+      VSTO_HostDocumentName
+        Not used in add-ins.
+    -->
+    <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <PublishUrl>publish\</PublishUrl>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!--
+      Properties needed to register add-ins.
+
+      AddinRegistryHive
+        Root registry hive for the add-in.
+      AddinRegistryKey
+        Registry key where this add-in is registered.
+    -->
+    <AddinRegistryHive>CurrentUser</AddinRegistryHive>
+    <AddinRegistryKey>Software\Microsoft\Office\Outlook\Addins</AddinRegistryKey>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Debug" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>OVer=11</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Release" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>OVer=11</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugType>None</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <!--
+    This section enables pre- and post-build steps. However, in VSTO use
+    MSBuild tasks instead of these properties.       
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!--
+    This section specifies references for the project.
+  -->
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.Office.Tools.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Office, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <!-- Visual Basic supports importing namespaces (equivalent to "using" statements in C#). -->
+  <ItemGroup>
+    <Import Include="FritzBoxDial" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.VisualStudio.Tools.Applications.Runtime" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="Office = Microsoft.Office.Core" />
+    <Import Include="Outlook = Microsoft.Office.Interop.Outlook" />
+  </ItemGroup>
+  <!--
+    This section defines the user source files that are part of the project.
+     
+    A "Compile" element specifies a source file to compile.
+    An "EmbeddedResource" element specifies an .resx file for embedded resources.
+    A "None" element specifies a file that is not to be passed to the compiler (for instance, 
+    a text file or XML file).
+    The "AppDesigner" element specifies the directory where the application properties files
+    can be found.
+  -->
+  <ItemGroup>
+    <AppDesigner Include="My Project\" />
+    <Compile Include="..\Common\AnrufMonitor.vb" />
+    <Compile Include="..\Common\Contacts.vb" />
+    <Compile Include="..\Common\formAnrMon.designer.vb">
+      <DependentUpon>formAnrMon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formAnrMon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\formCfg.designer.vb">
+      <DependentUpon>formCfg.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formCfg.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\formIndizierung.designer.vb">
+      <DependentUpon>formIndizierung.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formIndizierung.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\formJournalimport.designer.vb">
+      <DependentUpon>formJournalimport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formJournalimport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\formRWSuche.designer.vb">
+      <DependentUpon>formRWSuche.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formRWSuche.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\FormStoppUhr.designer.vb">
+      <DependentUpon>FormStoppUhr.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\FormStoppUhr.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\formWählbox.designer.vb">
+      <DependentUpon>formWählbox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formWählbox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\GUI.vb" />
+    <Compile Include="..\Common\OutlookInterface.vb" />
+    <Compile Include="..\Common\JournalXML.vb" />
+    <Compile Include="..\Common\FritzBox.vb" />
+    <Compile Include="..\Common\formInit.designer.vb">
+      <DependentUpon>formInit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formInit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\SaveNativeMethods.vb" />
+    <Compile Include="ThisAddIn.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\Common\Wählclient.vb" />
+    <None Include="..\..\FritzBoxDial.pfx" />
+    <None Include="ThisAddIn.Designer.xml">
+      <DependentUpon>ThisAddIn.vb</DependentUpon>
+    </None>
+    <Compile Include="ThisAddIn.Designer.vb">
+      <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="..\Common\formAnrMon.resx">
+      <DependentUpon>formAnrMon.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formCfg.resx">
+      <DependentUpon>formCfg.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formIndizierung.resx">
+      <DependentUpon>formIndizierung.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formJournalimport.resx">
+      <DependentUpon>formJournalimport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formRWSuche.resx">
+      <DependentUpon>formRWSuche.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\FormStoppUhr.resx">
+      <DependentUpon>FormStoppUhr.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formWählbox.resx">
+      <DependentUpon>formWählbox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formInit.resx">
+      <DependentUpon>formInit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Funktionen\FunktionenO3.vbproj">
+      <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
+      <Name>FunktionenO3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PopupNotifier\PopupNotifierO3.vbproj">
+      <Project>{D8D8FAB5-B82D-4363-82B4-E6C295074075}</Project>
+      <Name>PopupNotifierO3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\StoppUhr\StoppUhrO3.vbproj">
+      <Project>{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}</Project>
+      <Name>StoppUhrO3</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\Ressources\Bild2.gif" />
+    <None Include="..\Common\Ressources\Bild4.gif" />
+    <None Include="..\Common\Ressources\Bild5.gif" />
+  </ItemGroup>
+  <!-- Include the build rules for a Visual Basic project. -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- Include additional build rules for an Office application add-in. -->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\OfficeTools\Microsoft.VisualStudio.Tools.Office.Office2003.targets" />
+  <!-- This section defines VSTO properties that describe the host-changeable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
+        <ProjectProperties HostName="Outlook" HostPackage="{D53BAEDE-5B63-42BE-8267-3DED11EDC582}" OfficeVersion="11.0" VstxVersion="3.0" ApplicationType="Outlook" Language="vb" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\11.0\Outlook\InstallRoot\Path#outlook.exe" />
+        <Host Name="Outlook" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.vb" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.vb" />
+        </Host>
+        <ProjectClient>
+          <VSTO_CompatibleProducts ErrorProduct="Für dieses Projekt ist Microsoft Office Outlook 2003 erforderlich, die Anwendung ist aber nicht installiert." ErrorPIA="Dieses Projekt verweist auf die primäre Interopassembly für Microsoft Office Outlook 2003, aber diese primäre Interopassembly ist nicht installiert.">
+            <Product Code="{XXXXXXXX-6000-11D3-8CFE-0150048383C9}" Feature="OUTLOOKFiles" PIAFeature="Outlook_PIA" />
+          </VSTO_CompatibleProducts>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

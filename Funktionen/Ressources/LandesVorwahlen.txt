@@ -1,0 +1,235 @@
+1;USA/Kanada
+7;Russland/GUS
+20;Ägypten
+27;Südafrika
+30;Griechenland
+31;Niederlande
+32;Belgien
+33;Frankreich
+34;Spanien
+36;Ungarn
+39;Italien
+40;Rumänien
+41;Schweiz
+43;Österreich
+44;Großbritannien und Nordirland
+45;Dänemark
+46;Schweden
+47;Norwegen
+48;Polen
+49;Deutschland
+51;Peru
+52;Mexiko
+53;Kuba
+54;Argentinien
+55;Brasilien
+56;Chile
+57;Kolumbien
+58;Venezuela
+60;Malaysia
+61;Australien
+62;Indonesien
+63;Philippinen
+64;Neuseeland
+65;Singapur
+66;Thailand
+81;Japan
+82;Korea (Republik)
+84;Vietnam
+86;China (Volksrepublik)
+90;Türkei
+90;Zypern (Nordzypern)
+91;Indien
+92;Pakistan
+93;Afghanistan
+94;Sri Lanka
+95;Myanmar (Birma)
+98;Iran
+212;Marokko
+213;Algerien
+216;Tunesien
+218;Libyen
+220;Gambia
+221;Senegal
+222;Mauretanien
+223;Mali
+224;Guinea
+225;Cote d'Ivoire (Elfenbeinküste)
+225;Elfenbeinküste (Cote d'Ivoire)
+226;Burkina Faso (Obervolta)
+227;Niger
+228;Togo
+229;Benin
+230;Mauritius
+231;Liberia
+232;Sierra Leone
+233;Ghana
+234;Nigeria
+235;Tschad
+236;Zentralafrikanische Republik
+237;Kamerun
+238;Kap Verde
+239;Sao Tome und Principe
+240;Äquatorial-Guinea
+241;Gabun
+242;Kongo
+243;Zaire
+244;Angola
+245;Guinea-Bissau
+247;Ascension
+248;Seyschellen
+249;Sudan
+250;Ruanda
+251;Äthiopien
+252;Somalia
+253;Dschibuti
+254;Kenia
+255;Tansania
+256;Uganda
+257;Burundi
+258;Mosambik
+260;Sambia
+261;Madagaskar
+262;Reunion
+263;Simbabwe
+263;Zimbabwe
+264;Namibia
+265;Malawi
+266;Lesotho
+267;Botsuana (Botswana)
+268;Swasiland
+269;Komoren
+269;Mayotte
+290;Saint Helena
+291;Eritrea
+297;Aruba
+298;Färöer
+299;Grönland
+350;Gibraltar
+351;Portugal
+352;Luxemburg
+353;Irland
+354;Island
+355;Albanien
+356;Malta
+357;Zypern
+358;Finnland
+359;Bulgarien
+370;Litauen
+371;Lettland
+372;Estland
+373;Moldau Republik
+374;Armenien
+375;Belarus (Weißrußland)
+375;Weißrußland (Belarus)
+376;Andorra
+377;Monaco
+378;San Marino
+380;Ukraine
+381;Jugoslawien
+385;Kroatien
+386;Slowenien
+387;Bosnien-Herzegowina
+389;Mazedonien
+396;Vatikanstadt
+420;Tschechien
+421;Slowakei
+500;Falklandinseln
+501;Belize
+502;Guatemala
+503;El Salvador
+504;Honduras
+505;Nicaragua
+506;Costa Rica
+507;Panama
+508;Saint Pierre und Miquelon
+509;Hait
+590;Guadeloupe
+591;Bolivien
+592;Guyana
+593;Ecuador
+594;Französisch-Guayana
+595;Paraguay
+596;Martinique
+597;Suriname
+598;Uruguay
+599;Niederländische Antillen
+670;Marianen
+671;Guam
+673;Brunei Darussalam
+674;Nauru
+675;Papua-Neuguinea
+676;Tonga
+677;Salomonen
+678;Vanuatu
+679;Fidschi
+680;Palau
+682;Cook-Inseln
+684;Amerikanisch-Samoa
+685;Samoa
+686;Kiribati
+687;Neukaledonien
+688;Tuvalu
+689;Französisch-Polynesien
+691;Mikronesien
+692;Marshallinseln
+850;Korea (Demokratische Republik)
+852;Hongkong
+853;Macao
+855;Kambodscha
+856;Laos
+871;Atlantischer Ozean (Ost)
+872;Pazifischer Ozean
+873;Indischer Ozean
+874;Atlantischer Ozean (West)
+880;Bangladesch
+886;Taiwan
+960;Malediven
+961;Libanon
+962;Jordanien
+963;Syrien
+964;Irak
+965;Kuwait
+966;Saudi-Arabien
+967;Jemen (Arabische Republik)
+968;Oman
+971;Vereinigte Arabische Emirate
+972;Israel
+973;Bahrain
+974;Katar
+975;Bhutan
+976;Mongolei
+977;Nepal
+992;Tadschikistan
+993;Turkmenistan
+994;Aserbaidschan
+995;Georgien
+996;Kirgisistan
+998;Usbekistan
+1242;Bahamas
+1246;Barbados
+1264;Anguilla
+1268;Antigua und Barbuda
+1284;Britische Jungferninseln
+1340;Amerikanische Jungferninseln
+1345;Caymaninseln
+1345;Kaimaninseln
+1441;Bermuda
+1473;Grenada
+1649;Turks- und Caicos-Inseln
+1664;Montserrat
+1758;Saint Lucia
+1767;Dominica
+1784;Saint Vincent und die Grenadinen
+1787;Puerto Rico
+1809;Dominikanische Republik
+1868;Trinidad und Tobago
+1869;Saint Kitts and Nevis
+1876;Jamaika
+6722;Kokosinseln (Australien)
+6723;Norfolkinseln (Australien)
+6724;Weihnachtsinsel (Australien)
+67210;Davis (Antarktis)
+67211;Mawson (Antarktis)
+67212;Casey (Antarktis)
+67213;Macquarrie Island (Antarktis)

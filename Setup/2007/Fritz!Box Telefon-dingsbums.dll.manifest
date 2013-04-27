@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1">
+  <asmv1:assemblyIdentity name="Fritz!Box Telefon-dingsbums.dll" version="1.0.0.0" publicKeyToken="64363d798a0ec384" language="neutral" processorArchitecture="msil" type="win32" />
+  <description xmlns="urn:schemas-microsoft-com:asm.v1">Fritz!Box Telefon-dingsbums</description>
+  <application />
+  <entryPoint>
+    <co.v1:customHostSpecified />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC-Manifestoptionen
+          Wenn Sie die Zugangsebene für das Windows-Benutzerkonto ändern möchten, ersetzen Sie den 
+          requestedExecutionLevel-Knoten durch eines der folgenden Elemente.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         Löschen Sie den requestedExecutionLevel-Knoten, wenn Sie 
+         zum Gewährleisten der Abwärtskompatibilität die Datei- und Registrierungsvirtualisierung verwenden möchten.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools.Common" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools.Outlook" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools.v4.0.Framework" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.VisualStudio.Tools.Applications.Runtime" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Fritz!Box Telefon-dingsbums.dll" size="362496">
+      <assemblyIdentity name="Fritz!Box Telefon-dingsbums" version="3.3.4.0" publicKeyToken="ADB093069681759D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>31pBYS050AkrVjzEUp+RMuFYV3k=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Funktionen.dll" size="404480">
+      <assemblyIdentity name="Funktionen" version="3.3.0.0" publicKeyToken="ADB093069681759D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>5FXvEsPAEx3Sld+6hNk1qQD1JNw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" size="32664">
+      <assemblyIdentity name="Microsoft.Office.Tools.Common.v4.0.Utilities" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>CtnCtseaMyfROIGe0ENdGO6arHg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll" size="49048">
+      <assemblyIdentity name="Microsoft.Office.Tools.Outlook.v4.0.Utilities" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>Z2LMwub6uJYcSN1VkUMhJr/zdU8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PopupNotifier.dll" size="32256">
+      <assemblyIdentity name="PopupNotifier" version="3.3.4.0" publicKeyToken="ADB093069681759D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>B5a+x74W+EgSMCSabmRw4hQgeGQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Stoppuhr.dll" size="24576">
+      <assemblyIdentity name="Stoppuhr" version="3.3.4.0" publicKeyToken="ADB093069681759D" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>fUIn3bS/FblR8sVOgGn12QTLYDk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <vstav3:addIn xmlns:vstav3="urn:schemas-microsoft-com:vsta.v3">
+    <vstav3:entryPointsCollection>
+      <vstav3:entryPoints>
+        <vstav3:entryPoint class="FritzBoxDial.ThisAddIn">
+          <assemblyIdentity name="Fritz!Box Telefon-dingsbums" version="3.3.4.0" publicKeyToken="ADB093069681759D" language="neutral" processorArchitecture="msil" />
+        </vstav3:entryPoint>
+      </vstav3:entryPoints>
+    </vstav3:entryPointsCollection>
+    <vstav3:update enabled="true">
+      <vstav3:expiration maximumAge="7" unit="days" />
+    </vstav3:update>
+    <vstav3:application>
+      <vstov4:customizations xmlns:vstov4="urn:schemas-microsoft-com:vsto.v4">
+        <vstov4:customization>
+          <vstov4:appAddIn application="Outlook" loadBehavior="3" keyName="Fritz!Box Telefon-dingsbums">
+            <vstov4:friendlyName>Fritz!Box Telefon-dingsbums</vstov4:friendlyName>
+            <vstov4:description>Fritz!Box Telefon-dingsbums</vstov4:description>
+          </vstov4:appAddIn>
+        </vstov4:customization>
+      </vstov4:customizations>
+    </vstav3:application>
+  </vstav3:addIn>
+<publisherIdentity name="CN=Fritz!Box Telefon-dingsbums" issuerKeyHash="8a1dd4265fa9e6906b8af167d903ff1f4d72fe6b" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>FSQuTkr+wpnZghHa6jSGdeZnLBY=</DigestValue></Reference></SignedInfo><SignatureValue>dqT/xNptZlCwtU5yNPWiGi3OH8rrS9VX6T0uuCz+zQqPDVEQG8sho4LLtLdTRzs9PYGenn0wEDVR5wWn3gE4S3IXZaVg7q/XXhqjKurYJ9qH2dEXpI/eUEusGq8FgmT53XkMAvIS9mGco1Ru0dPExMOjxhpvwcxQJgTSDISkbv8=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>wW1NojYy32nL6y7u4a2adLzbPgipJElOf2umSOl6uOY5T/L32bnCI/TdGippLEV8/xvuj8amCJ5WMm8zCJVR0/0OnW/+XkXQfvSJk4HGH3nRKzTWwHgv9oi1bf0WdGqteyizcfGYTGGD41YJjEDKzQVUaQzAl9LmGkhKtTw6d6U=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="162c67e6758634eada1182d999c2fe4a4e2e2415" Description="" Url=""><as:assemblyIdentity name="Fritz!Box Telefon-dingsbums.dll" version="1.0.0.0" publicKeyToken="64363d798a0ec384" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=Fritz!Box Telefon-dingsbums</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>bHS+83defhkaLTEY4VL9PWMUVEY=</DigestValue></Reference></SignedInfo><SignatureValue>LOlONxbu61uGGZAR3KpX7EFxCLRwUR63KdSfMxgnCDK8l9OSl3JjsPtzLWidhZlBX/ugK8kDkdzg5Ls8v8sru3c8Q8RLIA51AA1KhQr0NZIsNykuU1Mrlhg0uXcXnmalnGt837PIlDHnpcvGrj7uvmYTgstFt0j37/cn/hx6nHg=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>wW1NojYy32nL6y7u4a2adLzbPgipJElOf2umSOl6uOY5T/L32bnCI/TdGippLEV8/xvuj8amCJ5WMm8zCJVR0/0OnW/+XkXQfvSJk4HGH3nRKzTWwHgv9oi1bf0WdGqteyizcfGYTGGD41YJjEDKzQVUaQzAl9LmGkhKtTw6d6U=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIClDCCAf2gAwIBAgIQpuTJ6YrTI51FqgDZYVPucTANBgkqhkiG9w0BAQUFADBBMT8wPQYDVQQDHjYARgByAGkAdAB6ACEAQgBvAHgAIABUAGUAbABlAGYAbwBuAC0AZABpAG4AZwBzAGIAdQBtAHMwHhcNMTIxMjMxMjMwMDAwWhcNMTgxMjMxMjMwMDAwWjBBMT8wPQYDVQQDHjYARgByAGkAdAB6ACEAQgBvAHgAIABUAGUAbABlAGYAbwBuAC0AZABpAG4AZwBzAGIAdQBtAHMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMFtTaI2Mt9py+su7uGtmnS82z4IqSRJTn9rpkjperjmOU/y99m5wiP03RoqaSxFfP8b7o/GpgieVjJvMwiVUdP9Dp1v/l5F0H70iZOBxh950Ss01sB4L/aItW39FnRqrXsos3HxmExhg+NWCYxAys0FVGkMwJfS5hpISrU8OnelAgMBAAGjgYwwgYkwEwYDVR0lBAwwCgYIKwYBBQUHAwMwcgYDVR0BBGswaYAQskyw0MDRHHh7CXyu3uHRu6FDMEExPzA9BgNVBAMeNgBGAHIAaQB0AHoAIQBCAG8AeAAgAFQAZQBsAGUAZgBvAG4ALQBkAGkAbgBnAHMAYgB1AG0Ac4IQpuTJ6YrTI51FqgDZYVPucTANBgkqhkiG9w0BAQUFAAOBgQB07y4eLUIVZeNfXr6r4LOyMaxBpFt7EXGNlCKTfaUVCCSsgaIaSgTNczT9nLurl5e69npWGLt+854khexJ8jSgiFFCBUnSUfw2qOGpP4heDS7ii98TlFm6KSDcvGr0b1dNeBj/LON6OQFTVWu6EzqS+TCQNvRuH6aEAJp6OwY+Iw==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
