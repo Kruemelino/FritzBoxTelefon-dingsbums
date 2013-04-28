@@ -590,6 +590,7 @@ Public Class Helfer
                 Return True
             End With
         Catch ex As Exception
+            FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "KillTimer")
             Return False
         End Try
     End Function

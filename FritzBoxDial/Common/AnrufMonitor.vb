@@ -178,11 +178,7 @@ Public Class AnrufMonitor
             Dim FbIP As String = ini.Read(InIPfad, "Optionen", "TBFBAdr", "192.168.178.1")
             If Not hf.Ping(FbIP) Then
                 hf.LogFile("Standby Timer  1. Ping nicht erfolgreich")
-                TimerReStartStandBy = New System.Timers.Timer
-                With TimerReStartStandBy
-                    .Interval = 2000
-                    .Start()
-                End With
+                TimerReStartStandBy = hf.SetTimer(2000)
                 StandbyCounter = 2
             Else
                 hf.LogFile("Standby 1. Ping erfolgreich")
@@ -209,11 +205,7 @@ Public Class AnrufMonitor
 
         If StandbyCounter >= 14 Then
             If StandbyCounter = 14 Then hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
-            With TimerReStartStandBy
-                .Stop()
-                .Close()
-                .Dispose()
-            End With
+            hf.KillTimer(TimerReStartStandBy)
         Else
             hf.LogFile("Standby Timer " & StandbyCounter & ". nicht Ping erfolgreich")
             StandbyCounter += 1

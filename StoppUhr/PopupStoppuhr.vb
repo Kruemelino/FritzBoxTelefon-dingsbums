@@ -258,6 +258,7 @@ Public Class Stoppuhr
     End Sub
 
     Sub StoppuhrStart()
+
         With TimerZeit
             .Interval = 250
             .Start()

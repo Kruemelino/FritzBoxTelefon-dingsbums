@@ -588,7 +588,7 @@ Public Class formCfg
         ElseIf sender Is Me.LinkForum Then
             System.Diagnostics.Process.Start("http://www.ip-phone-forum.de/showthread.php?t=237086")
         ElseIf sender Is Me.LinkHomepage Then
-            System.Diagnostics.Process.Start("http://sourceforge.net/projects/fbdb/")
+            System.Diagnostics.Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
         End If
 
     End Sub

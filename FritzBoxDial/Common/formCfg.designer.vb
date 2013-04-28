@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -72,8 +72,9 @@ Partial Class formCfg
         Me.BZwischenablage = New System.Windows.Forms.Button()
         Me.BStart2 = New System.Windows.Forms.Button()
         Me.Püber = New System.Windows.Forms.TabPage()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Label17 = New System.Windows.Forms.Label()
         Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.LinkEmail = New System.Windows.Forms.LinkLabel()
         Me.LinkForum = New System.Windows.Forms.LinkLabel()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -181,6 +182,7 @@ Partial Class formCfg
         Me.Frame3.SuspendLayout()
         Me.FrameErforderlich.SuspendLayout()
         Me.Püber.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -707,8 +709,7 @@ Partial Class formCfg
         '
         'Püber
         '
-        Me.Püber.Controls.Add(Me.LinkHomepage)
-        Me.Püber.Controls.Add(Me.Label3)
+        Me.Püber.Controls.Add(Me.GroupBox4)
         Me.Püber.Controls.Add(Me.LinkEmail)
         Me.Püber.Controls.Add(Me.LinkForum)
         Me.Püber.Controls.Add(Me.Label16)
@@ -722,29 +723,40 @@ Partial Class formCfg
         Me.Püber.Text = "Info"
         Me.Püber.UseVisualStyleBackColor = True
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.Label17)
+        Me.GroupBox4.Controls.Add(Me.LinkHomepage)
+        Me.GroupBox4.Location = New System.Drawing.Point(314, 14)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(239, 75)
+        Me.GroupBox4.TabIndex = 7
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "OpenSource - SourceCode"
+        '
+        'Label17
+        '
+        Me.Label17.Location = New System.Drawing.Point(7, 20)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(180, 52)
+        Me.Label17.TabIndex = 0
+        Me.Label17.Text = "Der SourceCode zu diesem Addin steht jedem frei zur Verfügung." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Voraussetzung: " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & _
+    "Microsoft Visual Studio Professional"
+        '
         'LinkHomepage
         '
         Me.LinkHomepage.AutoSize = True
-        Me.LinkHomepage.Location = New System.Drawing.Point(99, 39)
+        Me.LinkHomepage.Location = New System.Drawing.Point(193, 57)
         Me.LinkHomepage.Name = "LinkHomepage"
-        Me.LinkHomepage.Size = New System.Drawing.Size(68, 13)
+        Me.LinkHomepage.Size = New System.Drawing.Size(40, 13)
         Me.LinkHomepage.TabIndex = 5
         Me.LinkHomepage.TabStop = True
-        Me.LinkHomepage.Text = "SourceForge"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(14, 39)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(62, 13)
-        Me.Label3.TabIndex = 6
-        Me.Label3.Text = "Homepage:"
+        Me.LinkHomepage.Text = "GitHub"
         '
         'LinkEmail
         '
         Me.LinkEmail.AutoSize = True
-        Me.LinkEmail.Location = New System.Drawing.Point(99, 55)
+        Me.LinkEmail.Location = New System.Drawing.Point(167, 55)
         Me.LinkEmail.Name = "LinkEmail"
         Me.LinkEmail.Size = New System.Drawing.Size(141, 13)
         Me.LinkEmail.TabIndex = 1
@@ -754,7 +766,7 @@ Partial Class formCfg
         'LinkForum
         '
         Me.LinkForum.AutoSize = True
-        Me.LinkForum.Location = New System.Drawing.Point(99, 71)
+        Me.LinkForum.Location = New System.Drawing.Point(189, 71)
         Me.LinkForum.Name = "LinkForum"
         Me.LinkForum.Size = New System.Drawing.Size(119, 13)
         Me.LinkForum.TabIndex = 2
@@ -764,16 +776,16 @@ Partial Class formCfg
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(37, 71)
+        Me.Label16.Location = New System.Drawing.Point(3, 71)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(39, 13)
+        Me.Label16.Size = New System.Drawing.Size(150, 13)
         Me.Label16.TabIndex = 2
-        Me.Label16.Text = "Forum:"
+        Me.Label16.Text = "Forum und aktuelle Versionen:"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(29, 55)
+        Me.Label10.Location = New System.Drawing.Point(3, 55)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(47, 13)
         Me.Label10.TabIndex = 2
@@ -784,7 +796,7 @@ Partial Class formCfg
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.Location = New System.Drawing.Point(14, 14)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(522, 16)
+        Me.Label7.Size = New System.Drawing.Size(294, 16)
         Me.Label7.TabIndex = 1
         Me.Label7.Text = "Fritz!Box Telefon-Dingsbums "
         '
@@ -946,9 +958,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle7.Format = "T"
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 60
         Me.Eingehend.Name = "Eingehend"
@@ -959,9 +971,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle8.Format = "T"
+        DataGridViewCellStyle8.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 60
         Me.Ausgehend.Name = "Ausgehend"
@@ -972,9 +984,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle9.Format = "T"
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 60
         Me.Gesamt.Name = "Gesamt"
@@ -1830,6 +1842,8 @@ Partial Class formCfg
         Me.FrameErforderlich.PerformLayout()
         Me.Püber.ResumeLayout(False)
         Me.Püber.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
         Me.PTelefone.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -1981,7 +1995,6 @@ Partial Class formCfg
     Friend WithEvents CBSymbVIP As System.Windows.Forms.CheckBox
     Friend WithEvents CBSymbJournalimport As System.Windows.Forms.CheckBox
     Friend WithEvents LinkHomepage As System.Windows.Forms.LinkLabel
-    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents LinkForum As System.Windows.Forms.LinkLabel
     Friend WithEvents PDebug As System.Windows.Forms.TabPage
     Friend WithEvents BStart2 As System.Windows.Forms.Button
@@ -2014,6 +2027,8 @@ Partial Class formCfg
     Friend WithEvents RadioButtonErstelle As System.Windows.Forms.RadioButton
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents CBForceFBAddr As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label17 As System.Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class
