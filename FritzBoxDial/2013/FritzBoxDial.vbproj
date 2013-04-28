@@ -276,6 +276,12 @@
     <Compile Include="..\Common\OutlookInterface.vb" />
     <Compile Include="..\Common\JournalXML.vb" />
     <Compile Include="..\Common\FritzBox.vb" />
+    <Compile Include="..\Common\formInit.designer.vb">
+      <DependentUpon>formInit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formInit.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -314,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formWählbox.resx">
       <DependentUpon>formWählbox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formInit.resx">
+      <DependentUpon>formInit.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

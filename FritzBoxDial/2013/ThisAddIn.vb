@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.Office.Core
 Imports Microsoft.Win32
+
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
 #If OVer < 14 Then
@@ -37,23 +38,26 @@ Public Class ThisAddIn
 
     Public WithEvents ContactSaved As Outlook.ContactItem
     Public WithEvents oInsps As Outlook.Inspectors
-    Private ini As New Ini ' IniReader/Writer initialisieren
+    Public Shared ini As InI ' IniReader/Writer initialisieren
     Public Shared fBox As FritzBox  'Deklarieren der Klasse
     Public Shared AnrMon As AnrufMonitor
     Public Shared RWSSuche As formRWSuche
-    Public Shared Indizierung As formIndizierung
-    Public Shared HttpTrans As HTTPTransfer
     Public Shared Journalimport As formJournalimport
     Public Shared WClient As Wählclient
     Public Shared Crypt As New Rijndael
-    Public Shared HelferFunktionen As Helfer
+    Public Shared hf As Helfer
     Public Shared KontaktFunktionen As Contacts
 
+    Public Shared Dateipfad As String
+#If OVer < 14 Then
     Private FritzCmdBar As Office.CommandBar
-    Private FbAddr As String
-    Private Dateipfad As String
+#End If
 
-    Public Const Version As String = "3.3.3"
+    Private FbAddr As String
+
+    Private Initialisierung As formInit
+
+    Public Const Version As String = "3.4.1"
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
@@ -63,13 +67,7 @@ Public Class ThisAddIn
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
-        Dateipfad = GetSetting("FritzBox", "Optionen", "TBini", "-1")
-        If Not IO.File.Exists(Dateipfad) Then Dateipfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.ini"
-        HelferFunktionen = New Helfer(Dateipfad, ini, Crypt)
-        HttpTrans = New HTTPTransfer(ini, HelferFunktionen)
-        KontaktFunktionen = New Contacts(Dateipfad, ini, HelferFunktionen)
-        RWSSuche = New formRWSuche(Dateipfad, ini, HttpTrans, HelferFunktionen, KontaktFunktionen)
-        GUI = New GraphicalUserInterface(HelferFunktionen, ini, HttpTrans, Crypt, Dateipfad, WClient, RWSSuche, AnrMon, KontaktFunktionen, fBox, OlI)
+        Initialisierung = New formInit
         Return GUI
     End Function
 #End If
@@ -80,9 +78,9 @@ Public Class ThisAddIn
                 AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
                 AnrMon.AnrMonQuit()
-                HelferFunktionen.LogFile("Anrufmonitor für StandBy beendet")
+                hf.LogFile("Anrufmonitor für StandBy beendet")
             Case Else
-                HelferFunktionen.LogFile("Empfangener Powermode: " & e.Mode)
+                hf.LogFile("Empfangener Powermode: " & e.Mode)
         End Select
     End Sub
 
@@ -90,103 +88,42 @@ Public Class ThisAddIn
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
         Dim i As Integer = 2
+
         oApp = CType(Application, Outlook.Application)
 
-        Dim Fehler As Boolean = False
         If Not oApp.ActiveExplorer Is Nothing Then
 #If OVer = 11 Then
-            Dateipfad = GetSetting("FritzBox", "Optionen", "TBini", "-1")
-            Crypt = New Rijndael
-            If Not IO.File.Exists(Dateipfad) Then Dateipfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.ini"
-            HelferFunktionen = New Funktionen.Helfer(Dateipfad, ini, Crypt)
-            HttpTrans = New HTTPTransfer(ini, HelferFunktionen)
-            KontaktFunktionen = New Contacts(Dateipfad, ini, HelferFunktionen)
-            RWSSuche = New formRWSuche(Dateipfad, ini, HttpTrans, HelferFunktionen, KontaktFunktionen)
-            GUI = New GraphicalUserInterface(oApp, HelferFunktionen, ini, HttpTrans, Crypt, Dateipfad, WClient, RWSSuche, AnrMon, KontaktFunktionen, fbox)
+            Initialisierung = New formInit
 #End If
-            OlI = New OutlookInterface(KontaktFunktionen, HelferFunktionen, Dateipfad)
-#If OVer = 12 Then
-            GUI.SetOAWOF(WClient, AnrMon, fBox, OlI)
-#End If
+
 #If OVer < 14 Then
             GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
                                      ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
                                      ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
 #End If
-            ' Überprüfung der Einstellungen
-            If ini.Read(Dateipfad, "Optionen", "TBLandesVW", "-1") = "-1" Or _
-                ini.Read(Dateipfad, "Telefone", "CLBTelNr", "-1") = "-1" Or _
-                ini.Read(Dateipfad, "Optionen", "TBVorwahl", "-1") = "-1" Then
-                HelferFunktionen.LogFile("Erster Start!")
-                ' Erster Start
-                ' Prüfe ob Fritz!Box vorhanden
-                FbAddr = HelferFunktionen.Ping("fritz.box") 'Wenn die FB-IP zurückgegeben wird, dann Fritz!Box vorhanden
-                If FbAddr = "-1" Then ' Keine Fritz!Box gefunden -> Check auf Phoner
-                    HelferFunktionen.FBDB_MsgBox("Es wurde keine ""Fritz!Box"" gefunden!", MsgBoxStyle.Exclamation, "ThisAddin.Startup")
-                    HelferFunktionen.LogFile("Es wurde keine ""Fritz!Box"" gefunden!")
-                Else
-                    HelferFunktionen.LogFile("Erster Start: Fritz!Box gefunden (" & FbAddr & ")!")
-                    ini.Write(Dateipfad, "Optionen", "TBFBAdr", FbAddr)
-                End If
-                Dim formConfig As New formCfg(Dateipfad, GUI, ini, HelferFunktionen, HttpTrans, Crypt, AnrMon, fBox, OlI)
-                formConfig.ShowDialog()
-            Else
-                ' Ping zur Fritz!Box durchführen
-                FbAddr = HelferFunktionen.Ping(ini.Read(Dateipfad, "Optionen", "TBFBAdr", "fritz.box"))
-            End If
-
             If Not CBool(ini.Read(Dateipfad, "Optionen", "CBIndexAus", "False")) Then oInsps = Application.Inspectors
-
-            UseAnrMon = CBool(ini.Read(Dateipfad, "Optionen", "CBUseAnrMon", "True"))
-            ' Diagnosefenster öffnen
-
-            Try
-                AnrMon = New AnrufMonitor(Dateipfad, RWSSuche, UseAnrMon, ini, HelferFunktionen, KontaktFunktionen, GUI, HttpTrans, oli)
-            Catch ex As Exception
-                HelferFunktionen.FBDB_MsgBox("Fehler bei der Initialisierung des Anrufmonitors." & vbCrLf & ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup")
-            End Try
-
-            Try
-                WClient = New Wählclient(Dateipfad, HttpTrans, ini, HelferFunktionen, KontaktFunktionen, GUI, OlI)
-            Catch ex As Exception
-                HelferFunktionen.FBDB_MsgBox("Fehler bei der Initialisierung des Wählclient." & vbCrLf & ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup")
-            End Try
-
-            If Not FbAddr = "-1" Then
-                Try
-                    fBox = New FritzBox(Dateipfad, ini, HttpTrans, HelferFunktionen, Crypt, True) ' instanzieren der Klasse
-                Catch ex As Exception
-                    HelferFunktionen.FBDB_MsgBox("Fehler bei der Initialisierung des Fritz!Box-Modules." & vbCrLf & ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup")
-                End Try
-
-                Try
-                    If CBool(ini.Read(Dateipfad, "Optionen", "CBJImport", CStr(False))) And UseAnrMon Then
-                        Dim formjournalimort As New formJournalimport(Dateipfad, HttpTrans, AnrMon, False, ini, HelferFunktionen)
-                    End If
-                Catch ex As Exception
-                    HelferFunktionen.FBDB_MsgBox("Fehler bei der Initialisierung des Journalimports." & vbCrLf & ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup")
-                End Try
-            End If
-            GUI.SetOAWOF(WClient, AnrMon, fBox, OlI)
-            If CBool(ini.Read(Dateipfad, "Optionen", "CBAutoUpdate", "False")) Then HelferFunktionen.UpdateCheck(HttpTrans, True, Version)
         Else
-            HelferFunktionen.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
+            hf.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
-
     End Sub
+
+
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
         If Not CBool(ini.Read(Dateipfad, "Optionen", "CBIndexAus", "False")) Then
-            KontaktFunktionen.IndiziereKontakt(ContactSaved)
+            KontaktFunktionen.IndiziereKontakt(ContactSaved, True)
         End If
     End Sub
 
+
     Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
         AnrMon.AnrMonQuit()
-        With HelferFunktionen
+        With hf
             .NAR(oApp)
+#If OVer < 14 Then
             .NAR(FritzCmdBar)
+#End If
         End With
     End Sub
 
@@ -295,4 +232,5 @@ Public Class ThisAddIn
     End Sub
 #End If
 #End Region
+
 End Class
