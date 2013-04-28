@@ -786,16 +786,7 @@ Imports Office = Microsoft.Office.Core
 
     Friend Sub SetAnrMonButton(ByVal EinAus As Boolean)
         bool_banrmon = EinAus
-        bAnrMonTimer = New Timers.Timer
-        With bAnrMonTimer
-            .Interval = 200
-            .Enabled = True
-            .Start()
-        End With
-    End Sub
-
-    Private Sub bAnrMonTimer_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles bAnrMonTimer.Disposed
-        bAnrMonTimer.Close()
+        bAnrMonTimer = HelferFunktionen.SetTimer(200)
     End Sub
 
     Private Sub bAnrMonTimer_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles bAnrMonTimer.Elapsed
@@ -809,8 +800,7 @@ Imports Office = Microsoft.Office.Core
                     btnAnrMon.State = Office.MsoButtonState.msoButtonUp
                     btnAnrMon.TooltipText = "Startet den Anrufmonitor"
             End Select
-            bAnrMonTimer.Stop()
-            bAnrMonTimer.Dispose()
+            HelferFunktionen.KillTimer(bAnrMonTimer)
             btnAnrMon = Nothing
         End If
     End Sub
