@@ -59,6 +59,7 @@ Partial Class formCfg
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TBAmt = New System.Windows.Forms.TextBox()
         Me.FrameErforderlich = New System.Windows.Forms.GroupBox()
+        Me.CBForceFBAddr = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TBLandesVW = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -73,9 +74,6 @@ Partial Class formCfg
         Me.Püber = New System.Windows.Forms.TabPage()
         Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.CBAutoUpdate = New System.Windows.Forms.CheckBox()
-        Me.ButtonUpdateCheck = New System.Windows.Forms.Button()
         Me.LinkEmail = New System.Windows.Forms.LinkLabel()
         Me.LinkForum = New System.Windows.Forms.LinkLabel()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -177,14 +175,12 @@ Partial Class formCfg
         Me.CBTelefonDatei = New System.Windows.Forms.CheckBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.TBDiagnose = New System.Windows.Forms.TextBox()
-        Me.CBForceFBAddr = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
         Me.Frame3.SuspendLayout()
         Me.FrameErforderlich.SuspendLayout()
         Me.Püber.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -597,6 +593,19 @@ Partial Class formCfg
         Me.FrameErforderlich.TabStop = False
         Me.FrameErforderlich.Text = "Erforderliche Angaben"
         '
+        'CBForceFBAddr
+        '
+        Me.CBForceFBAddr.AutoSize = True
+        Me.CBForceFBAddr.Location = New System.Drawing.Point(116, 22)
+        Me.CBForceFBAddr.Name = "CBForceFBAddr"
+        Me.CBForceFBAddr.Size = New System.Drawing.Size(107, 17)
+        Me.CBForceFBAddr.TabIndex = 14
+        Me.CBForceFBAddr.Text = "Fritz!Box Adresse"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" & _
+        "ng zur eingegebenen Addresse aufgebaut." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das ist z.B. bei einigen dyndns-Anbiete" & _
+        "rn nötig, da diese Pings blockieren.")
+        Me.CBForceFBAddr.UseVisualStyleBackColor = True
+        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -700,7 +709,6 @@ Partial Class formCfg
         '
         Me.Püber.Controls.Add(Me.LinkHomepage)
         Me.Püber.Controls.Add(Me.Label3)
-        Me.Püber.Controls.Add(Me.GroupBox4)
         Me.Püber.Controls.Add(Me.LinkEmail)
         Me.Püber.Controls.Add(Me.LinkForum)
         Me.Püber.Controls.Add(Me.Label16)
@@ -732,36 +740,6 @@ Partial Class formCfg
         Me.Label3.Size = New System.Drawing.Size(62, 13)
         Me.Label3.TabIndex = 6
         Me.Label3.Text = "Homepage:"
-        '
-        'GroupBox4
-        '
-        Me.GroupBox4.Controls.Add(Me.CBAutoUpdate)
-        Me.GroupBox4.Controls.Add(Me.ButtonUpdateCheck)
-        Me.GroupBox4.Location = New System.Drawing.Point(260, 39)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(293, 50)
-        Me.GroupBox4.TabIndex = 4
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Auf neue Version prüfen"
-        '
-        'CBAutoUpdate
-        '
-        Me.CBAutoUpdate.AutoSize = True
-        Me.CBAutoUpdate.Location = New System.Drawing.Point(8, 19)
-        Me.CBAutoUpdate.Name = "CBAutoUpdate"
-        Me.CBAutoUpdate.Size = New System.Drawing.Size(130, 17)
-        Me.CBAutoUpdate.TabIndex = 3
-        Me.CBAutoUpdate.Text = "Bei jedem Start prüfen"
-        Me.CBAutoUpdate.UseVisualStyleBackColor = True
-        '
-        'ButtonUpdateCheck
-        '
-        Me.ButtonUpdateCheck.Location = New System.Drawing.Point(144, 14)
-        Me.ButtonUpdateCheck.Name = "ButtonUpdateCheck"
-        Me.ButtonUpdateCheck.Size = New System.Drawing.Size(143, 25)
-        Me.ButtonUpdateCheck.TabIndex = 4
-        Me.ButtonUpdateCheck.Text = "Auf neue Version prüfen"
-        Me.ButtonUpdateCheck.UseVisualStyleBackColor = True
         '
         'LinkEmail
         '
@@ -1824,19 +1802,6 @@ Partial Class formCfg
         Me.TBDiagnose.Size = New System.Drawing.Size(369, 220)
         Me.TBDiagnose.TabIndex = 1
         '
-        'CBForceFBAddr
-        '
-        Me.CBForceFBAddr.AutoSize = True
-        Me.CBForceFBAddr.Location = New System.Drawing.Point(116, 22)
-        Me.CBForceFBAddr.Name = "CBForceFBAddr"
-        Me.CBForceFBAddr.Size = New System.Drawing.Size(107, 17)
-        Me.CBForceFBAddr.TabIndex = 14
-        Me.CBForceFBAddr.Text = "Fritz!Box Adresse"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" & _
-        "ng zur eingegebenen Addresse aufgebaut." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das ist z.B. bei einigen dyndns-Anbiete" & _
-        "rn nötig, da diese Pings blockieren.")
-        Me.CBForceFBAddr.UseVisualStyleBackColor = True
-        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -1865,8 +1830,6 @@ Partial Class formCfg
         Me.FrameErforderlich.PerformLayout()
         Me.Püber.ResumeLayout(False)
         Me.Püber.PerformLayout()
-        Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.PTelefone.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -1906,9 +1869,6 @@ Partial Class formCfg
     Friend WithEvents ButtonOK As System.Windows.Forms.Button
     Friend WithEvents ToolTipFBDBConfig As System.Windows.Forms.ToolTip
     Friend WithEvents Püber As System.Windows.Forms.TabPage
-    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
-    Friend WithEvents CBAutoUpdate As System.Windows.Forms.CheckBox
-    Friend WithEvents ButtonUpdateCheck As System.Windows.Forms.Button
     Friend WithEvents LinkEmail As System.Windows.Forms.LinkLabel
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label

@@ -1,5 +1,4 @@
 ﻿Public Class formInit
-
     ' Klassen
     Private C_ini As InI
 
@@ -12,8 +11,6 @@
     Private C_Kontakt As Contacts
     Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
-
-
 
     'Strings
     Private DateiPfad As String
@@ -254,17 +251,6 @@
     End Sub
 
     Private Sub BSchließen_Click(sender As Object, e As EventArgs) Handles BSchließen.Click
-
-        'C_ini = Nothing
-        'C_Helfer = Nothing
-        'C_Crypt = Nothing
-        'C_GUI = Nothing
-        'C_OlI = Nothing
-        'C_AnrMon = Nothing
-        'C_FBox = Nothing
-        'C_Kontakt = Nothing
-        'C_RWS = Nothing
-        'C_WählClient = Nothing
 
         Me.Dispose()
         Me.Close()

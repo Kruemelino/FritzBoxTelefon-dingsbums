@@ -82,7 +82,6 @@ Public Class formCfg
             Me.TBPasswort.Text = "1234"
         End If
         Me.TBVorwahl.Text = C_ini.Read(Dateipfad, "Optionen", "TBVorwahl", "")
-        Me.CBAutoUpdate.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBAutoUpdate", "False"))
         CLBtelnrAusfüllen()
         Me.TBEnblDauer.Text = CStr(CInt(C_ini.Read(Dateipfad, "Optionen", "TBEnblDauer", "10")))
         Me.CBAnrMonAuto.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBAnrMonAuto", "False"))
@@ -602,10 +601,6 @@ Public Class formCfg
 
     Private Sub BZwischenablage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BZwischenablage.Click
         My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
-    End Sub
-
-    Private Sub ButtonUpdateCheck_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdateCheck.Click
-        C_Helfer.UpdateCheck(False, ThisAddIn.Version)
     End Sub
 #End Region
 

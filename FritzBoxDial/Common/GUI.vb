@@ -1,6 +1,5 @@
 ﻿Imports System.Collections
 Imports Office = Microsoft.Office.Core
-'Imports System.Threading
 
 <Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"

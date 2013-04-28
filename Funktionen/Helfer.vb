@@ -3,15 +3,16 @@ Imports System.Text
 
 Public Class Helfer
 
-    Private ini As InI
-    Private Crypt As Rijndael
+    Private C_ini As InI
+    Private C_Crypt As Rijndael
+
     Private DateiPfad As String
     Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
     Public Sub New(ByVal iniPfad As String, ByVal iniKlasse As InI, ByVal CryptKlasse As Rijndael)
         DateiPfad = iniPfad
-        ini = iniKlasse
-        Crypt = CryptKlasse
+        C_ini = iniKlasse
+        C_Crypt = CryptKlasse
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -70,7 +71,6 @@ Public Class Helfer
                 IPAdresse = .Address.ToString
                 Ping = True
             Else
-                'IPAdresse = "-1"
                 Ping = False
             End If
         End With
@@ -80,17 +80,15 @@ Public Class Helfer
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
         Dim LogDatei As String = Dateipfade(DateiPfad, "LogDatei")
-        If ini.Read(DateiPfad, "Optionen", "CBLogFile", "False") = "True" Then
-            If My.Computer.FileSystem.FileExists(LogDatei) Then
-                If My.Computer.FileSystem.GetFileInfo(LogDatei).Length > 1048576 Then
-                    My.Computer.FileSystem.DeleteFile(LogDatei)
+        If C_ini.Read(DateiPfad, "Optionen", "CBLogFile", "False") = "True" Then
+            With My.Computer.FileSystem
+                If .FileExists(LogDatei) Then
+                    If .GetFileInfo(LogDatei).Length > 1048576 Then .DeleteFile(LogDatei)
                 End If
-            End If
-            Try
-                My.Computer.FileSystem.WriteAllText(LogDatei, Date.Now & " - " & Meldung & vbNewLine, True)
-            Catch ex As Exception
-
-            End Try
+                Try
+                    .WriteAllText(LogDatei, Date.Now & " - " & Meldung & vbNewLine, True)
+                Catch : End Try
+            End With
         End If
         Return True
     End Function
@@ -103,20 +101,6 @@ Public Class Helfer
                 Return System.Text.Encoding.Default
         End Select
     End Function
-
-    'Function BubbleSort(ByVal a() As Integer) As Integer()
-    '    Dim tmp As Integer
-    '    For i = 0 To a.Length - 1
-    '        For j = 0 To a.Length - 1
-    '            If a(i) < a(j) Then
-    '                tmp = a(i)
-    '                a(i) = a(j)
-    '                a(j) = tmp
-    '            End If
-    '        Next
-    '    Next
-    '    Return a
-    'End Function
 
     Public Function FBDB_MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
@@ -149,45 +133,24 @@ Public Class Helfer
         Dim tempZugang As String
         Dim i As Long
 
-
-        tempPasswort = ini.Read(Dateipfad, "Optionen", "TBPasswort", "")
+        tempPasswort = C_ini.Read(Dateipfad, "Optionen", "TBPasswort", "")
         If Not Len(tempPasswort) = 0 Then
             tempZugang = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
             If Not tempZugang = "-1" Then
-                tempPasswort = Crypt.DecryptString128Bit(tempPasswort, tempZugang) 'entschlüsseln
+                tempPasswort = C_Crypt.DecryptString128Bit(tempPasswort, tempZugang) 'entschlüsseln
                 tempZugang = ""
                 For i = 0 To 2
                     tempZugang = tempZugang & Hex(Rnd() * 255)
                 Next
-                tempZugang = Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+                tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
                 SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
-                ini.Write(Dateipfad, "Optionen", "TBPasswort", Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
+                C_ini.Write(Dateipfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
             Else 'Für den Fall es exsistiert ein Passwort aber kein Entschlüsselungsschlüssel
-                ini.Write(Dateipfad, "Optionen", "TBPasswort", vbNullString)
-
+                C_ini.Write(Dateipfad, "Optionen", "TBPasswort", vbNullString)
                 FBDB_MsgBox("Das Passwort der Fritz!Box kann nicht entschlüsselt werden. Es muss neu eingegeben werden.", MsgBoxStyle.Information, "KeyÄnderung")
             End If
         End If
     End Sub ' (KeyÄnderung)
-
-    Public Function UpdateCheck(ByVal auto As Boolean, ByVal FBDBDieseVersion As String) As Boolean
-        Dim FBDBVersionhttp As String = httpRead("http://www.gert-michael.de/FritzBoxDingsBums/vc.html", System.Text.Encoding.UTF8)
-        FBDBDieseVersion = Split(FBDBDieseVersion, " ", , CompareMethod.Text)(0)
-        Dim FBDBVersion() As String
-        Dim pos(1) As Integer
-        pos(0) = InStr(FBDBVersionhttp, "<c>", CompareMethod.Text) + 3
-        pos(1) = InStr(pos(0), FBDBVersionhttp, "</c>", CompareMethod.Text)
-        FBDBVersion = Split(Mid(FBDBVersionhttp, pos(0), pos(1) - pos(0)), ";", , CompareMethod.Text)
-        If FBDBVersion(0) > FBDBDieseVersion Then
-            If FBDB_MsgBox("Neue Version vorhanden! Version: " & FBDBVersion(0) & " vom " & FBDBVersion(1) & vbCrLf & "Soll die Projektseite auf SourceForge geöffnet werden?", MsgBoxStyle.YesNo, "Update") = vbYes Then
-                System.Diagnostics.Process.Start("http://sourceforge.net/projects/fbdb/")
-            End If
-            UpdateCheck = True
-        Else
-            If Not auto Then FBDB_MsgBox("Herzlichen Glückwunsch!" & vbNewLine & "Sie verwenden die aktuellste Version des Fritz!Box Telefon-Dingsbums (Version: " & FBDBDieseVersion & ").", MsgBoxStyle.Information, "Update")
-            UpdateCheck = False
-        End If
-    End Function
 
     Public Function GetInformationSystemFritzBox() As String
 
@@ -222,10 +185,11 @@ Public Class Helfer
         Dim tempRufNr As String = String.Empty ' Hilfsstring für RufNr
         Dim tempDurchwahl As String = String.Empty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
-        Dim Maske As String = ini.Read(DateiPfad, "Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
-        Dim Gruppieren As Boolean = CBool(ini.Read(DateiPfad, "Optionen", "CBTelNrGruppieren", "True"))
-        Dim intl As Boolean = CBool(ini.Read(DateiPfad, "Optionen", "CBintl", "False"))
-        Dim eigeneLV As String = ini.Read(DateiPfad, "Optionen", "TBLandesVW", "0049")
+
+        Dim Maske As String = C_ini.Read(DateiPfad, "Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
+        Dim Gruppieren As Boolean = CBool(C_ini.Read(DateiPfad, "Optionen", "CBTelNrGruppieren", "True"))
+        Dim intl As Boolean = CBool(C_ini.Read(DateiPfad, "Optionen", "CBintl", "False"))
+        Dim eigeneLV As String = C_ini.Read(DateiPfad, "Optionen", "TBLandesVW", "0049")
 
 
         LandesVW = TelTeile(0)
@@ -550,7 +514,6 @@ Public Class Helfer
 
                 With HttpWebRequest.Create(uri)
                     .Method = WebRequestMethods.Http.Get
-                    .Timeout = 2500
                     .CachePolicy = noCache
                     With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
                         httpRead = .ReadToEnd()
@@ -617,6 +580,7 @@ Public Class Helfer
             Return Nothing
         End Try
     End Function
+
     Public Function KillTimer(ByVal Timer As System.Timers.Timer) As Boolean
         Try
             With Timer

@@ -162,7 +162,7 @@ Beispiele:
   <data name="RichTextBox1.Text" xml:space="preserve">
     <value>Haftungshinweis:
 
-    * Wir übernehmen keine Haftung für Schäden, die durch das Programm entstanden sind.
+    * Ich übernehme keine Haftung für Schäden, die durch das Programm entstanden sind.
     * Für fehlerhafte oder falsche Angaben, die Rückwärtssuche oder die Call-by-Call Funktion liefert,
        wird keine Haftung übernommen.
     * Es besteht kein Anspruch auf Schadenersatz für hohe Telefonrechnungen auf Grund von Call-by-Call-
