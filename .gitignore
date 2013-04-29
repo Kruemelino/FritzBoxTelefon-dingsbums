@@ -39,6 +39,7 @@ local.properties
 # User-specific files
 *.suo
 *.user
+*.pfx
 *.sln.docstates
 
 # Build results
