@@ -137,6 +137,15 @@ die anderen keine Kontakte enthalten.
  importiert werden. Dazu werden alle Telefonate, die zwischen dem Beenden 
 und Start von Outlook stattgefunden haben, in das Journal importiert. </value>
   </data>
+  <data name="Label3.ToolTip" xml:space="preserve">
+    <value>Ab Fritz!OS 5.50:
+
+Anmeldung mit FRITZ!Box-Benutzernamen und Kennwort :
+Geben Sie den Benutzername ein, der für die Anmeldung an der Fritz!Box erforderlich ist.
+
+Anmeldung mit dem FRITZ!Box-Kennwort:
+Lassen Sie das Feld leer!</value>
+  </data>
   <data name="Label24.ToolTip" xml:space="preserve">
     <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
 %L für die Landesvorwahl,

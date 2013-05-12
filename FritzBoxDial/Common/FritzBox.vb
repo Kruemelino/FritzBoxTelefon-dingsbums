@@ -65,7 +65,7 @@ Public Class FritzBox
     End Sub
 
 #Region "Login & Logout"
-    Public Function FBLogin(ByRef Fw550 As Boolean, Optional InpupPasswort As String = "-1") As String
+    Public Function FBLogin(ByRef Fw550 As Boolean, Optional InpupBenutzer As String = "", Optional InpupPasswort As String = "-1") As String
         Dim login_xml As String
         Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         login_xml = hf.httpRead("http://" & FBAddr & "/login_sid.lua?sid=" & SID, FBEncoding)
@@ -73,6 +73,7 @@ Public Class FritzBox
 
             If Not InpupPasswort = "-1" Then
                 ini.Write(DateiPfad, "Optionen", "TBPasswort", Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script"))
+                ini.Write(DateiPfad, "Optionen", "TBBenutzer", InpupBenutzer)
                 SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
                 hf.KeyÄnderung(DateiPfad)
             End If
@@ -80,8 +81,8 @@ Public Class FritzBox
             Dim Challenge As String
             Dim BlockTime As String
             Dim Link As String
-
-            Dim FBPasswort As String = ini.Read(DateiPfad, "Optionen", "TBPasswort", "")
+            Dim FBBenutzer As String = ini.Read(DateiPfad, "Optionen", "TBBenutzer", vbNullString)
+            Dim FBPasswort As String = ini.Read(DateiPfad, "Optionen", "TBPasswort", vbNullString)
             Dim Zugang As String = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
 
             'Dim Phone As String
@@ -122,23 +123,27 @@ Public Class FritzBox
                     Challenge = .Item("SessionInfo").Item("Challenge").InnerText()
                     Try
                         BlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
-                        Link = "http://" & FBAddr & "/login_sid.lua"
+                        If Not BlockTime = "0" Then
+                            hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & BlockTime & "Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
+                            Return DefaultSID
+                        End If
+                        Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
                         Fw550 = True
-                    Catch ex As Exception
+                    Catch
                         Fw550 = False
                         Link = "http://" & FBAddr & "/login.lua"
                         If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
                             hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das Wählen wird nicht funktionieren.")
                             Return .Item("SessionInfo").Item("SID").InnerText()
                         End If
-
                     End Try
                     With Crypt
                         Response = String.Concat(Challenge, "-", .getMd5Hash(String.Concat(Challenge, "-", .DecryptString128Bit(FBPasswort, Zugang)), Encoding.Unicode))
                     End With
-                    formdata = "response=" & Response
-                    Rückgabe = hf.httpWrite(Link, formdata)
                     If Fw550 Then
+                        Link += Response
+                        Rückgabe = hf.httpRead(Link, Encoding.UTF8)
+
                         .LoadXml(Rückgabe)
                         SID = .Item("SessionInfo").Item("SID").InnerText()
                         If SID = DefaultSID Then
@@ -150,10 +155,13 @@ Public Class FritzBox
                             'BoxAdmin = .DocumentElement("Rights").Item("BoxAdmin").InnerText
                         End If
                     Else
-                        If InStr(login_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+                        formdata = "response=" & Response
+                        Rückgabe = hf.httpWrite(Link, formdata)
+                        If InStr(Rückgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                             SID = hf.StringEntnehmen(Rückgabe, "?sid=", """>")
                         End If
                     End If
+
                 ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
                     hf.LogFile("Eine gültige SessionID ist bereits vorhanden: " & SID)
                 End If
@@ -205,6 +213,7 @@ Public Class FritzBox
         Dim myurl As String
         Dim FBOX_ADR As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "192.168.178.1") ' IP der FritzBox
         Dim tempstring As String
+        Dim tempstring_code As String
         If Rausschreiben Then setline("Fritz!Box Adresse: " & FBOX_ADR)
 
         Dim SID As String = FBLogin(FW550)
@@ -225,7 +234,15 @@ Public Class FritzBox
             If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                 tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                 tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
-                tempstring = hf.StringEntnehmen(tempstring, "<code>", "</code>")
+
+                tempstring_code = hf.StringEntnehmen(tempstring, "<code>", "</code>")
+                If Not tempstring_code = "-1" Then
+                    tempstring = tempstring_code
+                Else
+                    'DANKE AVM! STÄNDIG MÜSST IHR DEN QUELLCODE DER FRITZ!BOX ÄNDERN.
+                    'Der entscheidende Code in der Box steht jetzt nicht mehr im <code> sondern im <pre> -_-
+                    tempstring = hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
+                End If
 
                 If Not tempstring = "-1" Then
                     FritzBoxDaten_FWabove5_50(tempstring)

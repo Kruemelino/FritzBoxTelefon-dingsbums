@@ -23,6 +23,8 @@ Partial Class formInit
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PanelUserEingabe = New System.Windows.Forms.Panel()
+        Me.BSchließen = New System.Windows.Forms.Button()
+        Me.BFertigstellen = New System.Windows.Forms.Button()
         Me.LTelListe = New System.Windows.Forms.Label()
         Me.CLBTelNr = New System.Windows.Forms.CheckedListBox()
         Me.BtELeINLESEN = New System.Windows.Forms.Button()
@@ -38,14 +40,16 @@ Partial Class formInit
         Me.TBFBPW = New System.Windows.Forms.TextBox()
         Me.LFBAdr = New System.Windows.Forms.Label()
         Me.TBFritzBoxAdr = New System.Windows.Forms.TextBox()
-        Me.BFertigstellen = New System.Windows.Forms.Button()
-        Me.BSchließen = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TBFBUSER = New System.Windows.Forms.TextBox()
         Me.PanelUserEingabe.SuspendLayout()
         Me.SuspendLayout()
         '
         'PanelUserEingabe
         '
         Me.PanelUserEingabe.BackColor = System.Drawing.SystemColors.Control
+        Me.PanelUserEingabe.Controls.Add(Me.Label1)
+        Me.PanelUserEingabe.Controls.Add(Me.TBFBUSER)
         Me.PanelUserEingabe.Controls.Add(Me.BSchließen)
         Me.PanelUserEingabe.Controls.Add(Me.BFertigstellen)
         Me.PanelUserEingabe.Controls.Add(Me.LTelListe)
@@ -66,13 +70,33 @@ Partial Class formInit
         Me.PanelUserEingabe.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelUserEingabe.Location = New System.Drawing.Point(0, 0)
         Me.PanelUserEingabe.Name = "PanelUserEingabe"
-        Me.PanelUserEingabe.Size = New System.Drawing.Size(366, 363)
+        Me.PanelUserEingabe.Size = New System.Drawing.Size(366, 395)
         Me.PanelUserEingabe.TabIndex = 0
+        '
+        'BSchließen
+        '
+        Me.BSchließen.Enabled = False
+        Me.BSchließen.Location = New System.Drawing.Point(279, 305)
+        Me.BSchließen.Name = "BSchließen"
+        Me.BSchließen.Size = New System.Drawing.Size(75, 20)
+        Me.BSchließen.TabIndex = 34
+        Me.BSchließen.Text = "Schließen"
+        Me.BSchließen.UseVisualStyleBackColor = True
+        '
+        'BFertigstellen
+        '
+        Me.BFertigstellen.Enabled = False
+        Me.BFertigstellen.Location = New System.Drawing.Point(279, 279)
+        Me.BFertigstellen.Name = "BFertigstellen"
+        Me.BFertigstellen.Size = New System.Drawing.Size(75, 20)
+        Me.BFertigstellen.TabIndex = 33
+        Me.BFertigstellen.Text = "Fertigstellen"
+        Me.BFertigstellen.UseVisualStyleBackColor = True
         '
         'LTelListe
         '
         Me.LTelListe.Enabled = False
-        Me.LTelListe.Location = New System.Drawing.Point(122, 190)
+        Me.LTelListe.Location = New System.Drawing.Point(122, 216)
         Me.LTelListe.Name = "LTelListe"
         Me.LTelListe.Size = New System.Drawing.Size(151, 86)
         Me.LTelListe.TabIndex = 32
@@ -84,7 +108,7 @@ Partial Class formInit
         Me.CLBTelNr.Enabled = False
         Me.CLBTelNr.FormattingEnabled = True
         Me.CLBTelNr.HorizontalScrollbar = True
-        Me.CLBTelNr.Location = New System.Drawing.Point(16, 190)
+        Me.CLBTelNr.Location = New System.Drawing.Point(16, 216)
         Me.CLBTelNr.Name = "CLBTelNr"
         Me.CLBTelNr.Size = New System.Drawing.Size(100, 109)
         Me.CLBTelNr.TabIndex = 31
@@ -92,7 +116,7 @@ Partial Class formInit
         'BtELeINLESEN
         '
         Me.BtELeINLESEN.Enabled = False
-        Me.BtELeINLESEN.Location = New System.Drawing.Point(16, 164)
+        Me.BtELeINLESEN.Location = New System.Drawing.Point(16, 190)
         Me.BtELeINLESEN.Name = "BtELeINLESEN"
         Me.BtELeINLESEN.Size = New System.Drawing.Size(343, 20)
         Me.BtELeINLESEN.TabIndex = 30
@@ -105,16 +129,16 @@ Partial Class formInit
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LMessage.Location = New System.Drawing.Point(12, 305)
+        Me.LMessage.Location = New System.Drawing.Point(12, 328)
         Me.LMessage.Name = "LMessage"
-        Me.LMessage.Size = New System.Drawing.Size(347, 49)
+        Me.LMessage.Size = New System.Drawing.Size(347, 58)
         Me.LMessage.TabIndex = 29
         Me.LMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'BFBPW
         '
         Me.BFBPW.Enabled = False
-        Me.BFBPW.Location = New System.Drawing.Point(284, 86)
+        Me.BFBPW.Location = New System.Drawing.Point(284, 112)
         Me.BFBPW.Name = "BFBPW"
         Me.BFBPW.Size = New System.Drawing.Size(75, 20)
         Me.BFBPW.TabIndex = 28
@@ -146,7 +170,7 @@ Partial Class formInit
         '
         Me.LLandesvorwahl.AutoSize = True
         Me.LLandesvorwahl.Enabled = False
-        Me.LLandesvorwahl.Location = New System.Drawing.Point(123, 141)
+        Me.LLandesvorwahl.Location = New System.Drawing.Point(123, 167)
         Me.LLandesvorwahl.Name = "LLandesvorwahl"
         Me.LLandesvorwahl.Size = New System.Drawing.Size(79, 13)
         Me.LLandesvorwahl.TabIndex = 25
@@ -155,7 +179,7 @@ Partial Class formInit
         'TBLandesvorwahl
         '
         Me.TBLandesvorwahl.Enabled = False
-        Me.TBLandesvorwahl.Location = New System.Drawing.Point(16, 138)
+        Me.TBLandesvorwahl.Location = New System.Drawing.Point(16, 164)
         Me.TBLandesvorwahl.Name = "TBLandesvorwahl"
         Me.TBLandesvorwahl.Size = New System.Drawing.Size(100, 20)
         Me.TBLandesvorwahl.TabIndex = 22
@@ -164,7 +188,7 @@ Partial Class formInit
         '
         Me.LVorwahl.AutoSize = True
         Me.LVorwahl.Enabled = False
-        Me.LVorwahl.Location = New System.Drawing.Point(123, 115)
+        Me.LVorwahl.Location = New System.Drawing.Point(123, 141)
         Me.LVorwahl.Name = "LVorwahl"
         Me.LVorwahl.Size = New System.Drawing.Size(81, 13)
         Me.LVorwahl.TabIndex = 24
@@ -173,7 +197,7 @@ Partial Class formInit
         'TBVorwahl
         '
         Me.TBVorwahl.Enabled = False
-        Me.TBVorwahl.Location = New System.Drawing.Point(16, 112)
+        Me.TBVorwahl.Location = New System.Drawing.Point(16, 138)
         Me.TBVorwahl.Name = "TBVorwahl"
         Me.TBVorwahl.Size = New System.Drawing.Size(100, 20)
         Me.TBVorwahl.TabIndex = 21
@@ -182,7 +206,7 @@ Partial Class formInit
         '
         Me.LFBPW.AutoSize = True
         Me.LFBPW.Enabled = False
-        Me.LFBPW.Location = New System.Drawing.Point(123, 90)
+        Me.LFBPW.Location = New System.Drawing.Point(123, 116)
         Me.LFBPW.Name = "LFBPW"
         Me.LFBPW.Size = New System.Drawing.Size(93, 13)
         Me.LFBPW.TabIndex = 23
@@ -191,7 +215,7 @@ Partial Class formInit
         'TBFBPW
         '
         Me.TBFBPW.Enabled = False
-        Me.TBFBPW.Location = New System.Drawing.Point(16, 87)
+        Me.TBFBPW.Location = New System.Drawing.Point(16, 113)
         Me.TBFBPW.Name = "TBFBPW"
         Me.TBFBPW.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TBFBPW.Size = New System.Drawing.Size(100, 20)
@@ -215,31 +239,29 @@ Partial Class formInit
         Me.TBFritzBoxAdr.TabIndex = 18
         Me.TBFritzBoxAdr.Text = "fritz.box"
         '
-        'BFertigstellen
+        'Label1
         '
-        Me.BFertigstellen.Enabled = False
-        Me.BFertigstellen.Location = New System.Drawing.Point(279, 253)
-        Me.BFertigstellen.Name = "BFertigstellen"
-        Me.BFertigstellen.Size = New System.Drawing.Size(75, 20)
-        Me.BFertigstellen.TabIndex = 33
-        Me.BFertigstellen.Text = "Fertigstellen"
-        Me.BFertigstellen.UseVisualStyleBackColor = True
+        Me.Label1.AutoSize = True
+        Me.Label1.Enabled = False
+        Me.Label1.Location = New System.Drawing.Point(123, 90)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(118, 13)
+        Me.Label1.TabIndex = 36
+        Me.Label1.Text = "Fritz!Box Benutzername"
         '
-        'BSchließen
+        'TBFBUSER
         '
-        Me.BSchließen.Enabled = False
-        Me.BSchließen.Location = New System.Drawing.Point(279, 279)
-        Me.BSchließen.Name = "BSchließen"
-        Me.BSchließen.Size = New System.Drawing.Size(75, 20)
-        Me.BSchließen.TabIndex = 34
-        Me.BSchließen.Text = "Schließen"
-        Me.BSchließen.UseVisualStyleBackColor = True
+        Me.TBFBUSER.Enabled = False
+        Me.TBFBUSER.Location = New System.Drawing.Point(16, 87)
+        Me.TBFBUSER.Name = "TBFBUSER"
+        Me.TBFBUSER.Size = New System.Drawing.Size(100, 20)
+        Me.TBFBUSER.TabIndex = 35
         '
         'formInit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(366, 363)
+        Me.ClientSize = New System.Drawing.Size(366, 395)
         Me.Controls.Add(Me.PanelUserEingabe)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "formInit"
@@ -269,4 +291,6 @@ Partial Class formInit
     Friend WithEvents LTelListe As System.Windows.Forms.Label
     Friend WithEvents BFertigstellen As System.Windows.Forms.Button
     Friend WithEvents BSchließen As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents TBFBUSER As System.Windows.Forms.TextBox
 End Class

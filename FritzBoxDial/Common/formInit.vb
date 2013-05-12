@@ -90,7 +90,6 @@
 
         TMPStr(0) = C_ini.Read(DateiPfad, "Optionen", "TBLandesVW", "-1")
         TMPStr(1) = C_ini.Read(DateiPfad, "Optionen", "TBVorwahl", "-1")
-        TMPStr(2) = C_ini.Read(DateiPfad, "Telefone", "CLBTelNr", "-1")
         TMPStr(3) = C_ini.Read(DateiPfad, "Optionen", "TBPasswort", "-1")
         TMPStr(4) = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
 
@@ -127,7 +126,7 @@
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
         C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, Nothing)
-
+        C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBFBPW.Text)
         C_ini.Write(DateiPfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyÄnderung(DateiPfad)
@@ -268,4 +267,5 @@
     'End Function
 
 #End Region
+
 End Class

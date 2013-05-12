@@ -536,7 +536,7 @@ Public Class Helfer
 
                 With CType(HttpWebRequest.Create(uri), HttpWebRequest)
                     .Method = WebRequestMethods.Http.Post
-                    .Timeout = 5000
+                    '.Timeout = 5000
                     .ContentLength = data.Length
                     .ContentType = "application/x-www-form-urlencoded"
                     .Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"

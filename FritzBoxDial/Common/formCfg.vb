@@ -77,6 +77,7 @@ Public Class formCfg
         Me.TBAmt.Text = C_ini.Read(Dateipfad, "Optionen", "TBAmt", "")
         Me.TBFBAdr.Text = C_ini.Read(Dateipfad, "Optionen", "TBFBAdr", "fritz.box")
         Me.CBForceFBAddr.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBForceFBAddr", "False") = "True", True, False))
+        Me.TBBenutzer.Text = C_ini.Read(Dateipfad, "Optionen", "TBBenutzer", vbNullString)
         Passwort = C_ini.Read(Dateipfad, "Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
             Me.TBPasswort.Text = "1234"
@@ -271,6 +272,7 @@ Public Class formCfg
         C_ini.Write(Dateipfad, "Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked))
         C_ini.Write(Dateipfad, "Optionen", "TBAnrMonX", Me.TBAnrMonX.Text)
         C_ini.Write(Dateipfad, "Optionen", "TBAnrMonY", Me.TBAnrMonY.Text)
+        C_ini.Write(Dateipfad, "Optionen", "TBBenutzer", Me.TBBenutzer.Text)
         If Not Me.TBPasswort.Text = "1234" Then
             C_ini.Write(Dateipfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"))
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
@@ -410,11 +412,8 @@ Public Class formCfg
         ' Einstellungen für das Wählmakro zurücksetzen
         Me.TBLandesVW.Text = "0049"
         Me.TBAmt.Text = ""
-        'Me.TBFBAdr.Text = "fritz.box"
-        'Me.TBPasswort.Text = ""
-        'Me.TBVorwahl.Text = ""
         Me.CBCheckMobil.Checked = True
-        'Me.CBAutoUpdate.Checked = False
+
         ' Einstellungen für den Anrufmonitor zurücksetzen
         Me.TBEnblDauer.Text = "10"
         Me.TBAnrMonX.Text = "0"
@@ -823,19 +822,21 @@ Public Class formCfg
         Dim PfadTMPfile As String
         Dim tmpFileName As String
         Dim tmpFilePath As String
+        Dim FBBenutzer As String
         Dim FBPasswort As String
 
         FBox = Nothing
         FBox = New FritzBox(Dateipfad, C_ini, C_Helfer, C_Crypt, False, Me)
 
         Do While SID = FBox.DefaultSID
-            FBPasswort = InputBox("Geben Sie das Passwort zur Fritz!Box ein:")
+            FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
+            FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
                 If C_Helfer.FBDB_MsgBox("Haben Sie das Passwort vergessen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
                     Exit Sub
                 End If
             End If
-            SID = FBox.FBLogin(NeueFW, FBPasswort)
+            SID = FBox.FBLogin(NeueFW, FBBenutzer, FBPasswort)
         Loop
 
         If NeueFW Then
@@ -1222,7 +1223,6 @@ Public Class formCfg
         Me.ButtonIndizierungStart.Enabled = True
     End Sub
 #End Region
-
 End Class
 
 Public NotInheritable Class iTa

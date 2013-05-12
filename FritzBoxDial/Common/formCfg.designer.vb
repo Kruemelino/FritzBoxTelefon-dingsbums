@@ -59,6 +59,8 @@ Partial Class formCfg
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TBAmt = New System.Windows.Forms.TextBox()
         Me.FrameErforderlich = New System.Windows.Forms.GroupBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TBBenutzer = New System.Windows.Forms.TextBox()
         Me.CBForceFBAddr = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TBLandesVW = New System.Windows.Forms.TextBox()
@@ -379,9 +381,9 @@ Partial Class formCfg
         Me.GroupBox5.Controls.Add(Me.TBTelNrMaske)
         Me.GroupBox5.Controls.Add(Me.CBintl)
         Me.GroupBox5.Controls.Add(Me.CBTelNrGruppieren)
-        Me.GroupBox5.Location = New System.Drawing.Point(7, 195)
+        Me.GroupBox5.Location = New System.Drawing.Point(7, 205)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(246, 89)
+        Me.GroupBox5.Size = New System.Drawing.Size(246, 82)
         Me.GroupBox5.TabIndex = 17
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Telefonnummernformatierung"
@@ -442,9 +444,9 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.Controls.Add(Me.TBStoppUhr)
         Me.GroupBoxStoppUhr.Controls.Add(Me.CBStoppUhrAusblenden)
         Me.GroupBoxStoppUhr.Controls.Add(Me.CBStoppUhrEinblenden)
-        Me.GroupBoxStoppUhr.Location = New System.Drawing.Point(259, 212)
+        Me.GroupBoxStoppUhr.Location = New System.Drawing.Point(259, 205)
         Me.GroupBoxStoppUhr.Name = "GroupBoxStoppUhr"
-        Me.GroupBoxStoppUhr.Size = New System.Drawing.Size(292, 72)
+        Me.GroupBoxStoppUhr.Size = New System.Drawing.Size(292, 82)
         Me.GroupBoxStoppUhr.TabIndex = 19
         Me.GroupBoxStoppUhr.TabStop = False
         Me.GroupBoxStoppUhr.Text = "Stoppuhr"
@@ -496,9 +498,9 @@ Partial Class formCfg
         Me.Frame3.Controls.Add(Me.CBCallByCall)
         Me.Frame3.Controls.Add(Me.Label6)
         Me.Frame3.Controls.Add(Me.TBAmt)
-        Me.Frame3.Location = New System.Drawing.Point(259, 66)
+        Me.Frame3.Location = New System.Drawing.Point(259, 50)
         Me.Frame3.Name = "Frame3"
-        Me.Frame3.Size = New System.Drawing.Size(292, 140)
+        Me.Frame3.Size = New System.Drawing.Size(292, 151)
         Me.Frame3.TabIndex = 18
         Me.Frame3.TabStop = False
         Me.Frame3.Text = "Einstellungen für die Wählhilfe"
@@ -580,6 +582,8 @@ Partial Class formCfg
         '
         'FrameErforderlich
         '
+        Me.FrameErforderlich.Controls.Add(Me.Label3)
+        Me.FrameErforderlich.Controls.Add(Me.TBBenutzer)
         Me.FrameErforderlich.Controls.Add(Me.CBForceFBAddr)
         Me.FrameErforderlich.Controls.Add(Me.Label5)
         Me.FrameErforderlich.Controls.Add(Me.TBLandesVW)
@@ -588,12 +592,29 @@ Partial Class formCfg
         Me.FrameErforderlich.Controls.Add(Me.lblTBPasswort)
         Me.FrameErforderlich.Controls.Add(Me.TBPasswort)
         Me.FrameErforderlich.Controls.Add(Me.TBFBAdr)
-        Me.FrameErforderlich.Location = New System.Drawing.Point(7, 66)
+        Me.FrameErforderlich.Location = New System.Drawing.Point(7, 50)
         Me.FrameErforderlich.Name = "FrameErforderlich"
-        Me.FrameErforderlich.Size = New System.Drawing.Size(246, 123)
+        Me.FrameErforderlich.Size = New System.Drawing.Size(246, 151)
         Me.FrameErforderlich.TabIndex = 16
         Me.FrameErforderlich.TabStop = False
         Me.FrameErforderlich.Text = "Erforderliche Angaben"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(113, 49)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(118, 13)
+        Me.Label3.TabIndex = 16
+        Me.Label3.Text = "Fritz!Box Benutzername"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label3, resources.GetString("Label3.ToolTip"))
+        '
+        'TBBenutzer
+        '
+        Me.TBBenutzer.Location = New System.Drawing.Point(6, 46)
+        Me.TBBenutzer.Name = "TBBenutzer"
+        Me.TBBenutzer.Size = New System.Drawing.Size(100, 20)
+        Me.TBBenutzer.TabIndex = 15
         '
         'CBForceFBAddr
         '
@@ -611,7 +632,7 @@ Partial Class formCfg
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(113, 100)
+        Me.Label5.Location = New System.Drawing.Point(113, 126)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(79, 13)
         Me.Label5.TabIndex = 13
@@ -619,7 +640,7 @@ Partial Class formCfg
         '
         'TBLandesVW
         '
-        Me.TBLandesVW.Location = New System.Drawing.Point(6, 97)
+        Me.TBLandesVW.Location = New System.Drawing.Point(6, 123)
         Me.TBLandesVW.Name = "TBLandesVW"
         Me.TBLandesVW.Size = New System.Drawing.Size(100, 20)
         Me.TBLandesVW.TabIndex = 3
@@ -627,7 +648,7 @@ Partial Class formCfg
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(113, 74)
+        Me.Label4.Location = New System.Drawing.Point(113, 100)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(81, 13)
         Me.Label4.TabIndex = 11
@@ -635,7 +656,7 @@ Partial Class formCfg
         '
         'TBVorwahl
         '
-        Me.TBVorwahl.Location = New System.Drawing.Point(6, 71)
+        Me.TBVorwahl.Location = New System.Drawing.Point(6, 97)
         Me.TBVorwahl.Name = "TBVorwahl"
         Me.TBVorwahl.Size = New System.Drawing.Size(100, 20)
         Me.TBVorwahl.TabIndex = 2
@@ -643,7 +664,7 @@ Partial Class formCfg
         'lblTBPasswort
         '
         Me.lblTBPasswort.AutoSize = True
-        Me.lblTBPasswort.Location = New System.Drawing.Point(113, 49)
+        Me.lblTBPasswort.Location = New System.Drawing.Point(113, 75)
         Me.lblTBPasswort.Name = "lblTBPasswort"
         Me.lblTBPasswort.Size = New System.Drawing.Size(93, 13)
         Me.lblTBPasswort.TabIndex = 3
@@ -651,7 +672,7 @@ Partial Class formCfg
         '
         'TBPasswort
         '
-        Me.TBPasswort.Location = New System.Drawing.Point(6, 46)
+        Me.TBPasswort.Location = New System.Drawing.Point(6, 72)
         Me.TBPasswort.Name = "TBPasswort"
         Me.TBPasswort.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TBPasswort.Size = New System.Drawing.Size(100, 20)
@@ -670,7 +691,7 @@ Partial Class formCfg
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.Location = New System.Drawing.Point(3, 12)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(548, 49)
+        Me.Label13.Size = New System.Drawing.Size(548, 35)
         Me.Label13.TabIndex = 23
         Me.Label13.Text = "Grundeinstellungen"
         Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -889,20 +910,23 @@ Partial Class formCfg
         Me.TelList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.TelList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnStandardTelefon, Me.Nr, Me.dialCode, Me.Telefonname, Me.Typ, Me.InNr, Me.OutNr, Me.Eingehend, Me.Ausgehend, Me.Gesamt})
-        Me.TelList.Location = New System.Drawing.Point(6, 19)
+        Me.TelList.Location = New System.Drawing.Point(1, 19)
         Me.TelList.Name = "TelList"
+        Me.TelList.ReadOnly = True
         Me.TelList.RowHeadersVisible = False
         Me.TelList.RowTemplate.Height = 18
         Me.TelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.TelList.Size = New System.Drawing.Size(530, 150)
+        Me.TelList.Size = New System.Drawing.Size(542, 150)
         Me.TelList.TabIndex = 1
         '
         'ColumnStandardTelefon
         '
         Me.ColumnStandardTelefon.HeaderText = "*"
+        Me.ColumnStandardTelefon.MinimumWidth = 25
         Me.ColumnStandardTelefon.Name = "ColumnStandardTelefon"
+        Me.ColumnStandardTelefon.ReadOnly = True
         Me.ColumnStandardTelefon.ToolTipText = "Standardtelefon"
-        Me.ColumnStandardTelefon.Width = 54
+        Me.ColumnStandardTelefon.Width = 25
         '
         'Nr
         '
@@ -910,6 +934,7 @@ Partial Class formCfg
         Me.Nr.HeaderText = "Nr."
         Me.Nr.MinimumWidth = 25
         Me.Nr.Name = "Nr"
+        Me.Nr.ReadOnly = True
         Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Nr.Width = 25
@@ -917,43 +942,52 @@ Partial Class formCfg
         'dialCode
         '
         Me.dialCode.HeaderText = "ID"
-        Me.dialCode.MinimumWidth = 30
+        Me.dialCode.MinimumWidth = 25
         Me.dialCode.Name = "dialCode"
+        Me.dialCode.ReadOnly = True
         Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
-        Me.dialCode.Width = 54
+        Me.dialCode.Width = 30
         '
         'Telefonname
         '
         Me.Telefonname.HeaderText = "Telefonname"
+        Me.Telefonname.MinimumWidth = 75
         Me.Telefonname.Name = "Telefonname"
+        Me.Telefonname.ReadOnly = True
         Me.Telefonname.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Telefonname.Width = 54
+        Me.Telefonname.Width = 76
         '
         'Typ
         '
         Me.Typ.HeaderText = "Typ"
+        Me.Typ.MinimumWidth = 50
         Me.Typ.Name = "Typ"
+        Me.Typ.ReadOnly = True
         Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Typ.Width = 54
+        Me.Typ.Width = 50
         '
         'InNr
         '
         Me.InNr.HeaderText = "Eingehende Nummer"
+        Me.InNr.MinimumWidth = 70
         Me.InNr.Name = "InNr"
+        Me.InNr.ReadOnly = True
         Me.InNr.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.InNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.InNr.Width = 54
+        Me.InNr.Width = 70
         '
         'OutNr
         '
         Me.OutNr.HeaderText = "Ausgehende Nummer"
+        Me.OutNr.MinimumWidth = 70
         Me.OutNr.Name = "OutNr"
+        Me.OutNr.ReadOnly = True
         Me.OutNr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.OutNr.Width = 54
+        Me.OutNr.Width = 70
         '
         'Eingehend
         '
@@ -962,11 +996,12 @@ Partial Class formCfg
         DataGridViewCellStyle7.NullValue = Nothing
         Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
         Me.Eingehend.HeaderText = "Eingehend"
-        Me.Eingehend.MinimumWidth = 60
+        Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
+        Me.Eingehend.ReadOnly = True
         Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Eingehend.Width = 60
+        Me.Eingehend.Width = 65
         '
         'Ausgehend
         '
@@ -975,11 +1010,12 @@ Partial Class formCfg
         DataGridViewCellStyle8.NullValue = Nothing
         Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
         Me.Ausgehend.HeaderText = "Ausgehend"
-        Me.Ausgehend.MinimumWidth = 60
+        Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
+        Me.Ausgehend.ReadOnly = True
         Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Ausgehend.Width = 60
+        Me.Ausgehend.Width = 65
         '
         'Gesamt
         '
@@ -988,11 +1024,12 @@ Partial Class formCfg
         DataGridViewCellStyle9.NullValue = Nothing
         Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
         Me.Gesamt.HeaderText = "Gesamt"
-        Me.Gesamt.MinimumWidth = 60
+        Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
+        Me.Gesamt.ReadOnly = True
         Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Gesamt.Width = 60
+        Me.Gesamt.Width = 65
         '
         'PWartung
         '
@@ -1203,7 +1240,7 @@ Partial Class formCfg
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.Label1.Location = New System.Drawing.Point(3, 12)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(551, 49)
+        Me.Label1.Size = New System.Drawing.Size(551, 35)
         Me.Label1.TabIndex = 33
         Me.Label1.Text = "Einstellungen für die Kontaktsuche"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1490,7 +1527,7 @@ Partial Class formCfg
         Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label22.Location = New System.Drawing.Point(3, 12)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(548, 49)
+        Me.Label22.Size = New System.Drawing.Size(548, 35)
         Me.Label22.TabIndex = 29
         Me.Label22.Text = "Einstellungen für den Anrufmonitor"
         Me.Label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1725,7 +1762,7 @@ Partial Class formCfg
         Me.LabelSymb.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelSymb.Location = New System.Drawing.Point(3, 12)
         Me.LabelSymb.Name = "LabelSymb"
-        Me.LabelSymb.Size = New System.Drawing.Size(548, 49)
+        Me.LabelSymb.Size = New System.Drawing.Size(548, 35)
         Me.LabelSymb.TabIndex = 24
         Me.LabelSymb.Text = "Einstellung für die Symbolleiste"
         Me.LabelSymb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1798,7 +1835,7 @@ Partial Class formCfg
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.Location = New System.Drawing.Point(3, 12)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(548, 49)
+        Me.Label8.Size = New System.Drawing.Size(548, 35)
         Me.Label8.TabIndex = 24
         Me.Label8.Text = "Einlesen der eingerichteten Telefone"
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -2008,16 +2045,6 @@ Partial Class formCfg
     Friend WithEvents BTelefonDatei As System.Windows.Forms.Button
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents CBDialPort As System.Windows.Forms.CheckBox
-    Friend WithEvents ColumnStandardTelefon As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents Nr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents dialCode As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Telefonname As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Typ As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents InNr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents OutNr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Eingehend As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Ausgehend As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Gesamt As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LabelAnzahl As System.Windows.Forms.Label
     Friend WithEvents ButtonIndizierungAbbrechen As System.Windows.Forms.Button
     Friend WithEvents ButtonIndizierungStart As System.Windows.Forms.Button
@@ -2029,6 +2056,18 @@ Partial Class formCfg
     Friend WithEvents CBForceFBAddr As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
+    Friend WithEvents ColumnStandardTelefon As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents Nr As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents dialCode As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Telefonname As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Typ As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents InNr As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents OutNr As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Eingehend As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Ausgehend As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Gesamt As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents TBBenutzer As System.Windows.Forms.TextBox
 #If OVer < 14 Then
 #End If
 End Class
