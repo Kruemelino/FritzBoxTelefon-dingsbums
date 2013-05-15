@@ -144,7 +144,7 @@ Public Class formJournalimport
         'Dim myurl As String = "D:\Makro\Arbeitsverzeichnis\quelldateien\Maik\FRITZ!Box_Anrufliste.csv"
         'CSVAnrliste = hf.httpRead(myurl, System.Text.Encoding.UTF8)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 Then
+        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is vbNullString Then
 
             CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.
