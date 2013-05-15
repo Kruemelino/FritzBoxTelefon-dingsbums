@@ -7,6 +7,7 @@ Public Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
     Private WithEvents TimerReStartStandBy As System.Timers.Timer
+
     Private ReceiveThread As Thread
     Private AnrMonList As New Collections.ArrayList
     Private Shared Stream As Sockets.NetworkStream
@@ -56,31 +57,30 @@ Public Class AnrufMonitor
 #End Region
 
 #Region "Anrufmonitor Grundlagen"
-    Function StarteTCPReader(ByVal IPAddresse As String, ByVal IPPort As Integer) As Boolean
-        System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(200))
 
-        Dim Client As New Sockets.TcpClient
-        Dim result As IAsyncResult
-        Dim ReceiveThread As Thread
-
-        With Client
-            result = .BeginConnect(IPAddresse, IPPort, New AsyncCallback(AddressOf .EndConnect), Client)
-
-            If result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(50), True) Then
-                Stream = .GetStream()
-                ReceiveThread = New Thread(AddressOf AnrMonAktion)
-                With ReceiveThread
-                    .IsBackground = True
-                    .Start()
-                    AnrMonAktiv = .IsAlive
-                    Return AnrMonAktiv
-                End With
-            Else
-                hf.LogFile("TCP Verbindung nicht aufgebaut.")
-                Return False
-            End If
-        End With
-
+    Function StarteTCPReader(ByVal IPAdresse As String, ByVal IPPort As Integer) As Boolean
+        System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
+        Dim IPAdress As IPAddress
+        If LCase(IPAdresse) = LCase("fritz.box") Then
+            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(IPAdresse)
+            IPAdress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
+        Else
+            IPAdress = IPAddress.Parse(IPAdresse)
+        End If
+        Dim Client As New Sockets.TcpClient()
+        Dim remoteEP As New IPEndPoint(IPAdress, IPPort)
+        Try
+            Client.Connect(remoteEP)
+            Stream = Client.GetStream()
+            Dim ReceiveThread As New Thread(AddressOf AnrMonAktion)
+            ReceiveThread.IsBackground = True
+            ReceiveThread.Start()
+            AnrMonAktiv = ReceiveThread.IsAlive
+            Return AnrMonAktiv
+        Catch Err As Exception
+            hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
+            Return False
+        End Try
     End Function
 
     Private Sub AnrMonAktion()
