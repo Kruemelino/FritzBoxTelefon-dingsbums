@@ -1223,6 +1223,7 @@ Public Class formCfg
         Me.ButtonIndizierungStart.Enabled = True
     End Sub
 #End Region
+
 End Class
 
 Public NotInheritable Class iTa

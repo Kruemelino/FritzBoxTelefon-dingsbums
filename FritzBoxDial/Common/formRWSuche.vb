@@ -315,7 +315,7 @@ Public Class formRWSuche
             myurl = "http://www.dastelefonbuch.de/"
             formdata = "sp=0&aktion=23&kw=" & tempTelNr & "&ort=&cifav=0&s=a10000&stype=s&la=de&taoid=&cmd=search&ort_ok=0&vert_ok=0"
 
-            Text = hf.httpWrite(myurl, formdata)
+            Text = hf.httpWrite(myurl, formdata, System.Text.Encoding.Default)
             If Not Text = "" Then
                 html = Replace(Text, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 pos1 = InStr(1, html, SW1, CompareMethod.Text)

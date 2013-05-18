@@ -528,7 +528,7 @@ Public Class Helfer
         Return httpRead
     End Function
 
-    Public Function httpWrite(ByVal Link As String, Optional ByVal data As String = vbNullString) As String
+    Public Function httpWrite(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
         httpWrite = vbNullString
         Dim uri As New Uri(Link)
         Try
@@ -548,7 +548,7 @@ Public Class Helfer
                         .Close()
                     End With
 
-                    With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), System.Text.Encoding.Default)
+                    With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), Encoding)
                         httpWrite = .ReadToEnd()
                         System.Threading.Thread.Sleep(100)
                         .Close()

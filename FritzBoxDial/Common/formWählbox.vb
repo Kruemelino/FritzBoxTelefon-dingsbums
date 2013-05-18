@@ -277,7 +277,7 @@ Public Class formWählbox
                 If Vorwahl = Mid(code, 1, Len(Vorwahl)) And Not Vorwahl = "" Then
                     ' Wenn die Vorwahl nicht der eigenen Vorwahl entspricht, ändere die URL
                     myurl = "http://www.billiger-telefonieren.de/festnetz/schnellrechner/"
-                    cbcHTML = hf.httpWrite(myurl, "rechnen=true&p_zielvorwahl=58&p_typ%5B%5D=1&p_takt=-1")
+                    cbcHTML = hf.httpWrite(myurl, "rechnen=true&p_zielvorwahl=58&p_typ%5B%5D=1&p_takt=-1", System.Text.Encoding.Default)
                 Else
                     myurl = String.Concat("http://www.billiger-telefonieren.de/tarife/nummer.php3?num=", code)
                     cbcHTML = hf.httpRead(myurl, System.Text.Encoding.Default)
@@ -440,10 +440,10 @@ Public Class formWählbox
         ' http://fritz.box/fon_num/dial_foncalls.lua?sid=acb500f28d268517&
 
 
-        FBOX_ADR = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "192.168.178.1")
+        FBOX_ADR = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         formdata = "getpage=../html/de/menus/menu2.html&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/Dial=" & DialCode & "&sid=" & SID
 
-        Response = hf.httpWrite("http://" & FBOX_ADR & "/cgi-bin/webcm", formdata)
+        Response = hf.httpWrite("http://" & FBOX_ADR & "/cgi-bin/webcm", formdata, System.Text.Encoding.Default)
 
         ' Antwort auswerten
         If Len(Response) > 0 Then

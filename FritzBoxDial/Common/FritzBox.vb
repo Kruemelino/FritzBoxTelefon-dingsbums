@@ -8,7 +8,7 @@ Public Class FritzBox
     Private Crypt As Rijndael
     Private hf As Helfer
     Private DateiPfad As String
-    Private FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
+    Private FBEncoding As System.Text.Encoding = Encoding.UTF8
     Private SID As String = DefaultSID ' Startwert: UNgültige SID
     Private TelefonThread As Thread
     Private formConfig As formCfg
@@ -142,7 +142,7 @@ Public Class FritzBox
                     End With
                     If Fw550 Then
                         Link += Response
-                        Rückgabe = hf.httpRead(Link, Encoding.UTF8)
+                        Rückgabe = hf.httpRead(Link, FBEncoding)
 
                         .LoadXml(Rückgabe)
                         SID = .Item("SessionInfo").Item("SID").InnerText()
@@ -156,7 +156,7 @@ Public Class FritzBox
                         End If
                     Else
                         formdata = "response=" & Response
-                        Rückgabe = hf.httpWrite(Link, formdata)
+                        Rückgabe = hf.httpWrite(Link, formdata, FBEncoding)
                         If InStr(Rückgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                             SID = hf.StringEntnehmen(Rückgabe, "?sid=", """>")
                         End If
@@ -245,10 +245,10 @@ Public Class FritzBox
                 End If
 
                 If Not tempstring = "-1" Then
-                    FritzBoxDaten_FWabove5_50(tempstring)
+                    FritzBoxDaten(tempstring)
                     FBLogout(SID)
                 Else
-                    FritzBoxDaten_FWbelow5_50(FBOX_ADR, SID)
+                    FritzBoxDatenAlteFW(FBOX_ADR, SID)
                 End If
             Else
                 hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Anmeldung fehlerhaft.", MsgBoxStyle.Critical, "FritzBoxDaten #1")
@@ -258,7 +258,7 @@ Public Class FritzBox
         End If
     End Sub
 
-    Private Sub FritzBoxDaten_FWbelow5_50(ByVal FBOX_ADR As String, ByVal SID As String)
+    Private Sub FritzBoxDatenAlteFW(ByVal FBOX_ADR As String, ByVal SID As String)
         If Rausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet.")
 
         Dim Vorwahl As String = ini.Read(DateiPfad, "Optionen", "TBVorwahl", "")  ' In den Einstellungen eingegebene Vorwahl
@@ -766,7 +766,7 @@ Public Class FritzBox
 
     End Sub ' (FritzBoxDaten für ältere Firmware)
 
-    Private Sub FritzBoxDaten_FWabove5_50(ByVal Code As String)
+    Private Sub FritzBoxDaten(ByVal Code As String)
         If Rausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet.")
 
         Dim Vorwahl As String = ini.Read(DateiPfad, "Optionen", "TBVorwahl", "")                 ' In den Einstellungen eingegebene Vorwahl
@@ -804,404 +804,405 @@ Public Class FritzBox
         Dim EingerichteteFax = vbNullString
 
         If Not Rausschreiben Then ini.Write(DateiPfad, "Telefone", vbNullString, "")
-
-        For Each SIPi In Split(hf.StringEntnehmen(Code, "['sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly)'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
-            If hf.StringEntnehmen(SIPi, "['activated'] = '", "'") = "1" Then
-                TelNr = hf.OrtsVorwahlEntfernen(hf.StringEntnehmen(SIPi, "['displayname'] = '", "'"), Vorwahl)
-                Node = UCase(hf.StringEntnehmen(SIPi, "['_node'] = '", "'"))
-                SIPID = hf.StringEntnehmen(SIPi, "['ID'] = '", "'")
-                SIP(CInt(SIPID)) = TelNr
-                If Rausschreiben Then
-                    setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
-                Else
-                    ini.Write(DateiPfad, "Telefone", Node, TelNr)
-                End If
-
-            End If
-        Next
-        SIP = (From x In SIP Where Not x Like "" Select x).ToArray
-        If Rausschreiben Then
-            setline("Letzte SIP: " & SIPID)
-        Else
-            ini.Write(DateiPfad, "Telefone", "SIPID", SIPID)
-        End If
-        For i = 0 To 9
-            TelNr = hf.StringEntnehmen(Code, "['telcfg:settings/MSN/MSN" & i & "'] = '", "'")
-            If Not TelNr = "-1" Then
-                If Not Len(TelNr) = 0 Then
-                    TelNr = hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                    MSN(i) = TelNr
+        'SIP Nummern
+        With hf
+            For Each SIPi In Split(.StringEntnehmen(Code, "['sip:settings/sip/list(" & .StringEntnehmen(Code, "['sip:settings/sip/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
+                If .StringEntnehmen(SIPi, "['activated'] = '", "'") = "1" Then
+                    TelNr = .OrtsVorwahlEntfernen(.StringEntnehmen(SIPi, "['displayname'] = '", "'"), Vorwahl)
+                    Node = UCase(.StringEntnehmen(SIPi, "['_node'] = '", "'"))
+                    SIPID = .StringEntnehmen(SIPi, "['ID'] = '", "'")
+                    SIP(CInt(SIPID)) = TelNr
                     If Rausschreiben Then
-                        setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                        setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
                     Else
-                        ini.Write(DateiPfad, "Telefone", "MSN" & CStr(i), TelNr)
+                        ini.Write(DateiPfad, "Telefone", Node, TelNr)
                     End If
                 End If
+            Next
+
+            SIP = (From x In SIP Where Not x Like "" Select x).ToArray
+            If Rausschreiben Then
+                setline("Letzte SIP: " & SIPID)
+            Else
+                ini.Write(DateiPfad, "Telefone", "SIPID", SIPID)
             End If
-        Next
-
-        For i = 0 To 2
-            If Not hf.StringEntnehmen(Code, "['telcfg:settings/MSN/Port" & i & "/Name'] = '", "'") = "-1" Then
-                For j = 0 To 9
-                    TelNr = hf.StringEntnehmen(Code, "['telcfg:settings/MSN/Port" & i & "/MSN" & j & "'] = '", "'")
-                    If Not TelNr = "-1" Then
-                        If Not Len(TelNr) = 0 Then
-                            If Strings.Left(TelNr, 3) = "SIP" Then
-                                TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
-                            Else
-                                TelNr = hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                            End If
-
-                            If Not hf.IsOneOf(TelNr, MSN) Then
-                                For k = 0 To 9
-                                    If MSN(k) = "" Then
-                                        MSN(k) = TelNr
-                                        If Rausschreiben Then
-                                            setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
-                                        Else
-                                            ini.Write(DateiPfad, "Telefone", "MSN" & CStr(k), TelNr)
-                                        End If
-                                        Exit For
-                                    End If
-                                Next
-                            End If
-                            MSNPort(i, j) = TelNr
+            For i = 0 To 9
+                TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/MSN" & i & "'] = '", "'")
+                If Not TelNr = "-1" Then
+                    If Not Len(TelNr) = 0 Then
+                        TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                        MSN(i) = TelNr
+                        If Rausschreiben Then
+                            setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                        Else
+                            ini.Write(DateiPfad, "Telefone", "MSN" & CStr(i), TelNr)
                         End If
                     End If
-                Next
-            End If
-        Next
-        'Dim res = From x In tmp Select x Distinct 'Doppelte entfernen
-        MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
-        MSN = (From x In MSN Where Not x Like "" Select x).ToArray
-
-        For i = 0 To 9
-            TelNr = hf.StringEntnehmen(Code, "['tam:settings/MSN" & i & "'] = '", "'")
-            If Not TelNr = "-1" Then
-                If Not Len(TelNr) = 0 Then
-                    If Strings.Left(TelNr, 3) = "SIP" Then
-                        TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
-                    Else
-                        TelNr = hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                    End If
-
-                    If Rausschreiben Then
-                        setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
-                    Else
-                        ini.Write(DateiPfad, "Telefone", "TAM" & CStr(i), TelNr)
-                    End If
-
-                    TAM(i) = TelNr
                 End If
-            End If
-        Next
-        'TAM = (From x In TAM Where Not x Like "" Select x).ToArray
+            Next
 
-        For i = 0 To 9
-            TelNr = hf.StringEntnehmen(Code, "['telcfg:settings/FaxMSN" & i & "'] = '", "'")
-            If Not TelNr = "-1" Then
-                If Not Len(TelNr) = 0 Then
-                    If Strings.Left(TelNr, 3) = "SIP" Then
-                        TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
-                    Else
-                        TelNr = hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                    End If
+            For i = 0 To 2
+                If Not .StringEntnehmen(Code, "['telcfg:settings/MSN/Port" & i & "/Name'] = '", "'") = "-1" Then
+                    For j = 0 To 9
+                        TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/Port" & i & "/MSN" & j & "'] = '", "'")
+                        If Not TelNr = "-1" Then
+                            If Not Len(TelNr) = 0 Then
+                                If Strings.Left(TelNr, 3) = "SIP" Then
+                                    TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
+                                Else
+                                    TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                End If
 
-                    If Rausschreiben Then
-                        setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
-                    Else
-                        ini.Write(DateiPfad, "Telefone", "FAX" & CStr(i), TelNr)
-                    End If
-
-                    FAX(i) = TelNr
+                                If Not .IsOneOf(TelNr, MSN) Then
+                                    For k = 0 To 9
+                                        If MSN(k) = "" Then
+                                            MSN(k) = TelNr
+                                            If Rausschreiben Then
+                                                setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
+                                            Else
+                                                ini.Write(DateiPfad, "Telefone", "MSN" & CStr(k), TelNr)
+                                            End If
+                                            Exit For
+                                        End If
+                                    Next
+                                End If
+                                MSNPort(i, j) = TelNr
+                            End If
+                        End If
+                    Next
                 End If
-            End If
-        Next
-        FAX = (From x In FAX Where Not x Like "" Select x).ToArray
+            Next
+            'Dim res = From x In tmp Select x Distinct 'Doppelte entfernen
+            MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
+            MSN = (From x In MSN Where Not x Like "" Select x).ToArray
 
-        POTS = hf.StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
-        If Not POTS = "-1" Then
-            If Strings.Left(POTS, 3) = "SIP" Then
-                POTS = SIP(CInt(Strings.Right(POTS, 1)))
-            Else
-                POTS = hf.OrtsVorwahlEntfernen(POTS, Vorwahl)
-            End If
+            For i = 0 To 9
+                TelNr = .StringEntnehmen(Code, "['tam:settings/MSN" & i & "'] = '", "'")
+                If Not TelNr = "-1" Then
+                    If Not Len(TelNr) = 0 Then
+                        If Strings.Left(TelNr, 3) = "SIP" Then
+                            TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
+                        Else
+                            TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                        End If
 
-            If Rausschreiben Then
-                setline("Plain old telephone service (POTS) gefunden: " & POTS)
-            Else
-                ini.Write(DateiPfad, "Telefone", "POTS", POTS)
-            End If
+                        If Rausschreiben Then
+                            setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
+                        Else
+                            ini.Write(DateiPfad, "Telefone", "TAM" & CStr(i), TelNr)
+                        End If
 
-        End If
-
-
-        Mobil = hf.StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
-        If Not Mobil = "-1" Then
-            If Strings.Left(Mobil, 3) = "SIP" Then
-                Mobil = SIP(CInt(Strings.Right(Mobil, 1)))
-            Else
-                Mobil = hf.OrtsVorwahlEntfernen(Mobil, Vorwahl)
-            End If
-
-            If Rausschreiben Then
-                setline("Mobilnummer (Mobil) gefunden: " & Mobil)
-            Else
-                ini.Write(DateiPfad, "Telefone", "Mobil", Mobil)
-            End If
-
-        End If
-
-        allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
-
-        TelAnzahl = 0
-        pos(0) = 1
-
-        'FON
-        For Each Telefon In Split(hf.StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls)'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
-            TelName = hf.StringEntnehmen(Telefon, "['Name'] = '", "'")
-            If Not (TelName = "-1" Or TelName = vbNullString) Then
-                TelNr = vbNullString
-                Port = Right(hf.StringEntnehmen(Telefon, "['_node'] = '", "'"), 1)
-
-                Dim tmparray(9) As String
-                For i = 0 To 9
-                    tmpTelNr = MSNPort(CInt(Port), i)
-                    If Not tmpTelNr = "" Then
-                        tmparray(i) = MSNPort(CInt(Port), i)
-                    Else
-                        Exit For
+                        TAM(i) = TelNr
                     End If
-                Next
-                tmparray = (From x In tmparray Where Not x Like "" Select x).ToArray
-                If tmparray.Length = 0 Then
-                    ReDim tmparray(9)
+                End If
+            Next
+            'TAM = (From x In TAM Where Not x Like "" Select x).ToArray
+
+            For i = 0 To 9
+                TelNr = .StringEntnehmen(Code, "['telcfg:settings/FaxMSN" & i & "'] = '", "'")
+                If Not TelNr = "-1" Then
+                    If Not Len(TelNr) = 0 Then
+                        If Strings.Left(TelNr, 3) = "SIP" Then
+                            TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
+                        Else
+                            TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                        End If
+
+                        If Rausschreiben Then
+                            setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
+                        Else
+                            ini.Write(DateiPfad, "Telefone", "FAX" & CStr(i), TelNr)
+                        End If
+
+                        FAX(i) = TelNr
+                    End If
+                End If
+            Next
+            FAX = (From x In FAX Where Not x Like "" Select x).ToArray
+
+            POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
+            If Not POTS = "-1" Then
+                If Strings.Left(POTS, 3) = "SIP" Then
+                    POTS = SIP(CInt(Strings.Right(POTS, 1)))
+                Else
+                    POTS = .OrtsVorwahlEntfernen(POTS, Vorwahl)
+                End If
+
+                If Rausschreiben Then
+                    setline("Plain old telephone service (POTS) gefunden: " & POTS)
+                Else
+                    ini.Write(DateiPfad, "Telefone", "POTS", POTS)
+                End If
+
+            End If
+
+
+            Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
+            If Not Mobil = "-1" Then
+                If Strings.Left(Mobil, 3) = "SIP" Then
+                    Mobil = SIP(CInt(Strings.Right(Mobil, 1)))
+                Else
+                    Mobil = .OrtsVorwahlEntfernen(Mobil, Vorwahl)
+                End If
+
+                If Rausschreiben Then
+                    setline("Mobilnummer (Mobil) gefunden: " & Mobil)
+                Else
+                    ini.Write(DateiPfad, "Telefone", "Mobil", Mobil)
+                End If
+
+            End If
+
+            allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
+
+            TelAnzahl = 0
+            pos(0) = 1
+
+            'FON
+            For Each Telefon In Split(.StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(" & .StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
+                TelName = .StringEntnehmen(Telefon, "['Name'] = '", "'")
+                If Not (TelName = "-1" Or TelName = vbNullString) Then
+                    TelNr = vbNullString
+                    Port = Right(.StringEntnehmen(Telefon, "['_node'] = '", "'"), 1)
+
+                    Dim tmparray(9) As String
                     For i = 0 To 9
-                        tmpTelNr = MSN(i)
+                        tmpTelNr = MSNPort(CInt(Port), i)
                         If Not tmpTelNr = "" Then
-                            tmparray(i) = MSN(i)
+                            tmparray(i) = MSNPort(CInt(Port), i)
                         Else
                             Exit For
                         End If
                     Next
-                End If
-                outgoing = tmparray(0)
-                TelNr = String.Join("_", tmparray)
-                DialPort = CStr(CInt(Port) + 1)
-                AnzahlFON123 += 1
-
-
-                If Rausschreiben Then
-                    setline("Analogtelefon gefunden: FON" & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
-                Else
-                    ini.Write(DateiPfad, "Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
-                End If
-
-                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-                If hf.StringEntnehmen(Telefon, "['Fax'] = '", "'") = "1" Then
-                    EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
-                    If Rausschreiben Then setline("Analogtelefon FON" & DialPort & " ist ein FAX.")
-                End If
-
-            End If
-        Next
-
-        ' DECT
-
-        tmpstrTelefone = hf.StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)'] = {", "}" & Chr(10) & "  },")
-
-        For Each DectTelefon In Split(tmpstrTelefone, "] = {", , CompareMethod.Text)
-
-            DialPort = hf.StringEntnehmen(DectTelefon, "['Intern'] = '", "'")
-            If Not (DialPort = "-1" Or DialPort = vbNullString) Then
-                TelNr = vbNullString
-                DialPort = "6" & Strings.Right(DialPort, 1)
-
-                TelName = hf.StringEntnehmen(DectTelefon, "['Name'] = '", "'")
-
-                Node = hf.StringEntnehmen(DectTelefon, "['_node'] = '", "'")
-
-                If hf.StringEntnehmen(Code, "['telcfg:settings/Foncontrol/" & Node & "/RingOnAllMSNs'] = '", "',") = "1" Then
-                    TelNr = allin
-                Else
-                    tmpstrUser = Split(hf.StringEntnehmen(Code, "['telcfg:settings/Foncontrol/" & Node & "/MSN/list(Number)'] = {", "}" & Chr(10) & "  },"), "['Number'] = '", , CompareMethod.Text)
-
-                    tmpstrUser(0) = vbNullString
-                    For l As Integer = 1 To tmpstrUser.Length - 1
-                        tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
-                    Next
-                    ' Etwas unschöner Code
-                    Dim res2 = From x In tmpstrUser Where Not x Like "" Select x ' Leere entfernen
-                    For Each Nr In res2
-                        TelNr = TelNr & "_" & hf.OrtsVorwahlEntfernen(Nr, Vorwahl)
-                    Next
-                    TelNr = Mid(TelNr, 2) 'Strings.Left(TelNr, Len(TelNr) - 1)
-                End If
-                ' Etwas unschöner Code
-                outgoing = Split(TelNr, "_", , CompareMethod.Text)(0)
-                AnzahlDECT += 1
-                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-                If Rausschreiben Then
-                    setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
-                Else
-                    ini.Write(DateiPfad, "Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
-                End If
-
-            End If
-        Next
-
-
-        'IP-Telefone
-        tmpstrUser = Split(hf.StringEntnehmen(Code, "['telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
-        For Each Telefon In tmpstrUser
-            If hf.StringEntnehmen(Telefon, "['enabled'] = '", "'") = "1" Then
-                TelName = hf.StringEntnehmen(Telefon, "['Name'] = '", "'")
-                TelNr = vbNullString
-                Port = hf.StringEntnehmen(Telefon, "['_node'] = '", "'")
-                For j = 0 To 9
-                    tmpTelNr = hf.StringEntnehmen(Code, "['telcfg:settings/" & Port & "/Number" & j & "'] = '", "'")
-                    If Not tmpTelNr = "-1" Then
-                        If Not Len(tmpTelNr) = 0 Then
-                            If Strings.Left(tmpTelNr, 3) = "SIP" Then
-                                tmpTelNr = SIP(CInt(Strings.Right(tmpTelNr, 1)))
+                    tmparray = (From x In tmparray Where Not x Like "" Select x).ToArray
+                    If tmparray.Length = 0 Then
+                        ReDim tmparray(9)
+                        For i = 0 To 9
+                            tmpTelNr = MSN(i)
+                            If Not tmpTelNr = "" Then
+                                tmparray(i) = MSN(i)
                             Else
-                                tmpTelNr = hf.OrtsVorwahlEntfernen(tmpTelNr, Vorwahl)
+                                Exit For
                             End If
-                            TelNr = tmpTelNr & "_" & TelNr
-                        End If
+                        Next
                     End If
-                Next
-                If Not TelNr = vbNullString Then
-                    TelNr = Strings.Left(TelNr, Len(TelNr) - 1)
+                    outgoing = tmparray(0)
+                    TelNr = String.Join("_", tmparray)
+                    DialPort = CStr(CInt(Port) + 1)
+                    AnzahlFON123 += 1
+
+
+                    If Rausschreiben Then
+                        setline("Analogtelefon gefunden: FON" & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
+                    Else
+                        ini.Write(DateiPfad, "Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
+                    End If
+
+                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+                    If .StringEntnehmen(Telefon, "['Fax'] = '", "'") = "1" Then
+                        EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
+                        If Rausschreiben Then setline("Analogtelefon FON" & DialPort & " ist ein FAX.")
+                    End If
+
                 End If
+            Next
 
-                DialPort = "2" & Strings.Right(Port, 1)
-                AnzahlLANWLAN += 1
-                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+            ' DECT
 
-                If Rausschreiben Then
-                    setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                Else
-                    ini.Write(DateiPfad, "Telefone", DialPort, ";" & TelNr & ";" & TelName)
+            tmpstrTelefone = .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(" & .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },")
+
+            For Each DectTelefon In Split(tmpstrTelefone, "] = {", , CompareMethod.Text)
+
+                DialPort = .StringEntnehmen(DectTelefon, "['Intern'] = '", "'")
+                If Not (DialPort = "-1" Or DialPort = vbNullString) Then
+                    TelNr = vbNullString
+                    DialPort = "6" & Strings.Right(DialPort, 1)
+
+                    TelName = .StringEntnehmen(DectTelefon, "['Name'] = '", "'")
+
+                    Node = .StringEntnehmen(DectTelefon, "['_node'] = '", "'")
+
+                    If .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/" & Node & "/RingOnAllMSNs'] = '", "',") = "1" Then
+                        TelNr = allin
+                    Else
+                        tmpstrUser = Split(.StringEntnehmen(Code, "['telcfg:settings/Foncontrol/" & Node & "/MSN/list(Number)'] = {", "}" & Chr(10) & "  },"), "['Number'] = '", , CompareMethod.Text)
+
+                        tmpstrUser(0) = vbNullString
+                        For l As Integer = 1 To tmpstrUser.Length - 1
+                            tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
+                        Next
+                        ' Etwas unschöner Code
+                        Dim res2 = From x In tmpstrUser Where Not x Like "" Select x ' Leere entfernen
+                        For Each Nr In res2
+                            TelNr = TelNr & "_" & .OrtsVorwahlEntfernen(Nr, Vorwahl)
+                        Next
+                        TelNr = Mid(TelNr, 2) 'Strings.Left(TelNr, Len(TelNr) - 1)
+                    End If
+                    ' Etwas unschöner Code
+                    outgoing = Split(TelNr, "_", , CompareMethod.Text)(0)
+                    AnzahlDECT += 1
+                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+
+                    If Rausschreiben Then
+                        setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
+                    Else
+                        ini.Write(DateiPfad, "Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
+                    End If
+
                 End If
+            Next
 
-            End If
-        Next
 
-        Dim S0Typ As String
-        ' S0-Port
-        For i = 1 To 8
-            TelName = hf.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Name" & i & "'] = '", "'")
-            If Not TelName = "-1" Then
-                If Not TelName = vbNullString Then
-                    TelNr = hf.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Number" & i & "'] = '", "'")
-                    If Not TelNr = "-1" Then
-                        DialPort = "5" & i
-
-                        If Rausschreiben Then
-                            setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                        Else
-                            ini.Write(DateiPfad, "Telefone", DialPort, TelNr & ";" & TelNr & ";" & TelName)
+            'IP-Telefone
+            tmpstrUser = Split(.StringEntnehmen(Code, "['telcfg:settings/VoipExtension/list(" & .StringEntnehmen(Code, "['telcfg:settings/VoipExtension/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
+            For Each Telefon In tmpstrUser
+                If .StringEntnehmen(Telefon, "['enabled'] = '", "'") = "1" Then
+                    TelName = .StringEntnehmen(Telefon, "['Name'] = '", "'")
+                    TelNr = vbNullString
+                    Port = .StringEntnehmen(Telefon, "['_node'] = '", "'")
+                    For j = 0 To 9
+                        tmpTelNr = .StringEntnehmen(Code, "['telcfg:settings/" & Port & "/Number" & j & "'] = '", "'")
+                        If Not tmpTelNr = "-1" Then
+                            If Not Len(tmpTelNr) = 0 Then
+                                If Strings.Left(tmpTelNr, 3) = "SIP" Then
+                                    tmpTelNr = SIP(CInt(Strings.Right(tmpTelNr, 1)))
+                                Else
+                                    tmpTelNr = .OrtsVorwahlEntfernen(tmpTelNr, Vorwahl)
+                                End If
+                                TelNr = tmpTelNr & "_" & TelNr
+                            End If
                         End If
+                    Next
+                    If Not TelNr = vbNullString Then
+                        TelNr = Strings.Left(TelNr, Len(TelNr) - 1)
+                    End If
 
-                        S0Typ = hf.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'")
+                    DialPort = "2" & Strings.Right(Port, 1)
+                    AnzahlLANWLAN += 1
+                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+
+                    If Rausschreiben Then
+                        setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                    Else
+                        ini.Write(DateiPfad, "Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                    End If
+
+                End If
+            Next
+
+            Dim S0Typ As String
+            ' S0-Port
+            For i = 1 To 8
+                TelName = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Name" & i & "'] = '", "'")
+                If Not TelName = "-1" Then
+                    If Not TelName = vbNullString Then
+                        TelNr = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Number" & i & "'] = '", "'")
                         If Not TelNr = "-1" Then
-                            Select Case S0Typ
-                                Case "Fax"
-                                    EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
-                                    If Rausschreiben Then setline("S0-telefon " & DialPort & " ist ein FAX.")
-                                    'Case "Isdn"
-                                    'Case "Fon"
-                                    'Case Else
-                            End Select
+                            DialPort = "5" & i
+
+                            If Rausschreiben Then
+                                setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                            Else
+                                ini.Write(DateiPfad, "Telefone", DialPort, TelNr & ";" & TelNr & ";" & TelName)
+                            End If
+
+                            S0Typ = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'")
+                            If Not TelNr = "-1" Then
+                                Select Case S0Typ
+                                    Case "Fax"
+                                        EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
+                                        If Rausschreiben Then setline("S0-telefon " & DialPort & " ist ein FAX.")
+                                        'Case "Isdn"
+                                        'Case "Fon"
+                                        'Case Else
+                                End Select
+
+                            End If
+                            AnzahlISDN += 1
+                            EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
                         End If
-                        AnzahlISDN += 1
-                        EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
                     End If
                 End If
-            End If
-        Next
-        If Not AnzahlISDN = 0 Then
-            DialPort = "50"
-            EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-            If Rausschreiben Then
-                setline("S0-Basis hinzugefügt.")
-            Else
-                ini.Write(DateiPfad, "Telefone", DialPort, ";;ISDN-Basis")
-            End If
-
-        End If
-
-        ' TAM
-        tmpstrUser = Split(hf.StringEntnehmen(Code, "['tam:settings/TAM/list(Active,Name,Display,MSNBitmap)'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
-        For Each Anrufbeantworter In tmpstrUser
-            If hf.StringEntnehmen(Anrufbeantworter, "['Active'] = '", "'") = "1" Then
-                TelName = hf.StringEntnehmen(Anrufbeantworter, "['Name'] = '", "'")
-                Port = hf.StringEntnehmen(Anrufbeantworter, "['_node'] = '", "'")
-                TelNr = TAM(CInt(Strings.Right(Port, 1)))
-                AnzahlTAM += 1
-                DialPort = "60" & Strings.Right(Port, 1)
+            Next
+            If Not AnzahlISDN = 0 Then
+                DialPort = "50"
                 EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
                 If Rausschreiben Then
-                    setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                    setline("S0-Basis hinzugefügt.")
                 Else
-                    ini.Write(DateiPfad, "Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                    ini.Write(DateiPfad, "Telefone", DialPort, ";;ISDN-Basis")
                 End If
 
             End If
-        Next
+
+            ' TAM
+            tmpstrUser = Split(.StringEntnehmen(Code, "['tam:settings/TAM/list(" & .StringEntnehmen(Code, "['tam:settings/TAM/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
+            For Each Anrufbeantworter In tmpstrUser
+                If .StringEntnehmen(Anrufbeantworter, "['Active'] = '", "'") = "1" Then
+                    TelName = .StringEntnehmen(Anrufbeantworter, "['Name'] = '", "'")
+                    Port = .StringEntnehmen(Anrufbeantworter, "['_node'] = '", "'")
+                    TelNr = TAM(CInt(Strings.Right(Port, 1)))
+                    AnzahlTAM += 1
+                    DialPort = "60" & Strings.Right(Port, 1)
+                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+
+                    If Rausschreiben Then
+                        setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                    Else
+                        ini.Write(DateiPfad, "Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                    End If
+
+                End If
+            Next
 
 
-        ' integrierter Faxempfang
+            ' integrierter Faxempfang
 
-        DialPort = hf.StringEntnehmen(Code, "['telcfg:settings/FaxMailActive'] = '", "'")
-        If DialPort = "1" Then
-            TelNr = ""
-            DialPort = "5"
-            AnzahlFAX += 1
-            EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+            DialPort = .StringEntnehmen(Code, "['telcfg:settings/FaxMailActive'] = '", "'")
+            If DialPort = "1" Then
+                TelNr = ""
+                DialPort = "5"
+                AnzahlFAX += 1
+                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
-            EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
+                EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
 
-            If Rausschreiben Then
-                setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
-            Else
-                ini.Write(DateiPfad, "Telefone", DialPort, ";" & TelNr & ";" & "Faxempfang")
+                If Rausschreiben Then
+                    setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
+                Else
+                    ini.Write(DateiPfad, "Telefone", DialPort, ";" & TelNr & ";" & "Faxempfang")
+                End If
+
             End If
 
-        End If
+            If Not EingerichteteFax Is Nothing Then
+                EingerichteteFax = Strings.Left(EingerichteteFax, Strings.Len(EingerichteteFax) - 1)
+                If Not Rausschreiben Then ini.Write(DateiPfad, "Telefone", "EingerichteteFax", EingerichteteFax)
+            End If
 
-        If Not EingerichteteFax Is Nothing Then
-            EingerichteteFax = Strings.Left(EingerichteteFax, Strings.Len(EingerichteteFax) - 1)
-            If Not Rausschreiben Then ini.Write(DateiPfad, "Telefone", "EingerichteteFax", EingerichteteFax)
-        End If
+            Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
+            If Len(Landesvorwahl) > 2 Then
+                ini.Write(DateiPfad, "Optionen", "TBLandesVW", "0" & Landesvorwahl)
+            End If
 
-        Landesvorwahl = hf.StringEntnehmen(Code, "['country'] = '", "'")
-        If Len(Landesvorwahl) > 2 Then
-            ini.Write(DateiPfad, "Optionen", "TBLandesVW", "0" & Landesvorwahl)
-        End If
+            EingerichteteTelefone = Strings.Left(EingerichteteTelefone, Strings.Len(EingerichteteTelefone) - 1)
+            TelAnzahl = AnzahlDECT + AnzahlFAX + AnzahlFON123 + AnzahlISDN + AnzahlLANWLAN + AnzahlTAM
+            If Rausschreiben Then
+                setline("Anzahl FON: " & AnzahlFON123)
+                setline("Anzahl DECT: " & AnzahlDECT)
+                setline("Anzahl ISDN: " & AnzahlISDN)
+                setline("Anzahl LANWLAN: " & AnzahlLANWLAN)
+                setline("Anzahl TAM: " & AnzahlTAM)
+                setline("Anzahl FAX: " & AnzahlFAX)
+                setline("Gesamtanzahl: " & TelAnzahl)
+            Else
+                ini.Write(DateiPfad, "Telefone", "EingerichteteTelefone", EingerichteteTelefone)
+                ini.Write(DateiPfad, "Telefone", "Anzahl", CStr(TelAnzahl))
 
-        EingerichteteTelefone = Strings.Left(EingerichteteTelefone, Strings.Len(EingerichteteTelefone) - 1)
-        TelAnzahl = AnzahlDECT + AnzahlFAX + AnzahlFON123 + AnzahlISDN + AnzahlLANWLAN + AnzahlTAM
-        If Rausschreiben Then
-            setline("Anzahl FON: " & AnzahlFON123)
-            setline("Anzahl DECT: " & AnzahlDECT)
-            setline("Anzahl ISDN: " & AnzahlISDN)
-            setline("Anzahl LANWLAN: " & AnzahlLANWLAN)
-            setline("Anzahl TAM: " & AnzahlTAM)
-            setline("Anzahl FAX: " & AnzahlFAX)
-            setline("Gesamtanzahl: " & TelAnzahl)
-        Else
-            ini.Write(DateiPfad, "Telefone", "EingerichteteTelefone", EingerichteteTelefone)
-            ini.Write(DateiPfad, "Telefone", "Anzahl", CStr(TelAnzahl))
-
-        End If
-
+            End If
+        End With
 
 
     End Sub

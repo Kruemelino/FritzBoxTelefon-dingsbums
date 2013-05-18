@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -74,9 +74,7 @@ Partial Class formCfg
         Me.BZwischenablage = New System.Windows.Forms.Button()
         Me.BStart2 = New System.Windows.Forms.Button()
         Me.Püber = New System.Windows.Forms.TabPage()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.Label17 = New System.Windows.Forms.Label()
-        Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
         Me.LinkEmail = New System.Windows.Forms.LinkLabel()
         Me.LinkForum = New System.Windows.Forms.LinkLabel()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -178,13 +176,13 @@ Partial Class formCfg
         Me.CBTelefonDatei = New System.Windows.Forms.CheckBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.TBDiagnose = New System.Windows.Forms.TextBox()
+        Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
         Me.Frame3.SuspendLayout()
         Me.FrameErforderlich.SuspendLayout()
         Me.Püber.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -211,7 +209,7 @@ Partial Class formCfg
         Me.ButtonZuruecksetzen.Location = New System.Drawing.Point(333, 331)
         Me.ButtonZuruecksetzen.Name = "ButtonZuruecksetzen"
         Me.ButtonZuruecksetzen.Size = New System.Drawing.Size(100, 23)
-        Me.ButtonZuruecksetzen.TabIndex = 3
+        Me.ButtonZuruecksetzen.TabIndex = 4
         Me.ButtonZuruecksetzen.Text = "Zurücksetzen"
         Me.ButtonZuruecksetzen.UseVisualStyleBackColor = True
         '
@@ -221,7 +219,7 @@ Partial Class formCfg
         Me.ButtonAbbruch.Location = New System.Drawing.Point(227, 331)
         Me.ButtonAbbruch.Name = "ButtonAbbruch"
         Me.ButtonAbbruch.Size = New System.Drawing.Size(100, 23)
-        Me.ButtonAbbruch.TabIndex = 2
+        Me.ButtonAbbruch.TabIndex = 3
         Me.ButtonAbbruch.Text = "Abbruch"
         Me.ButtonAbbruch.UseVisualStyleBackColor = True
         '
@@ -230,7 +228,7 @@ Partial Class formCfg
         Me.ButtonÜbernehmen.Location = New System.Drawing.Point(121, 331)
         Me.ButtonÜbernehmen.Name = "ButtonÜbernehmen"
         Me.ButtonÜbernehmen.Size = New System.Drawing.Size(100, 23)
-        Me.ButtonÜbernehmen.TabIndex = 1
+        Me.ButtonÜbernehmen.TabIndex = 2
         Me.ButtonÜbernehmen.Text = "Übernehmen"
         Me.ButtonÜbernehmen.UseVisualStyleBackColor = True
         '
@@ -240,7 +238,7 @@ Partial Class formCfg
         Me.ButtonOK.Location = New System.Drawing.Point(15, 331)
         Me.ButtonOK.Name = "ButtonOK"
         Me.ButtonOK.Size = New System.Drawing.Size(100, 23)
-        Me.ButtonOK.TabIndex = 0
+        Me.ButtonOK.TabIndex = 1
         Me.ButtonOK.Text = "OK"
         Me.ButtonOK.UseVisualStyleBackColor = True
         '
@@ -269,7 +267,7 @@ Partial Class formCfg
         Me.CBKErstellen.Location = New System.Drawing.Point(248, 19)
         Me.CBKErstellen.Name = "CBKErstellen"
         Me.CBKErstellen.Size = New System.Drawing.Size(217, 17)
-        Me.CBKErstellen.TabIndex = 5
+        Me.CBKErstellen.TabIndex = 2
         Me.CBKErstellen.Text = "Kontakt bei erfolgreicher Suche erstellen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " & _
         "erstellt.")
@@ -282,7 +280,7 @@ Partial Class formCfg
         Me.CBRWSIndex.Location = New System.Drawing.Point(6, 44)
         Me.CBRWSIndex.Name = "CBRWSIndex"
         Me.CBRWSIndex.Size = New System.Drawing.Size(245, 17)
-        Me.CBRWSIndex.TabIndex = 6
+        Me.CBRWSIndex.TabIndex = 3
         Me.CBRWSIndex.Text = "Speichere Ergebnisse der Rückwärtssuche ab"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBRWSIndex, resources.GetString("CBRWSIndex.ToolTip"))
         Me.CBRWSIndex.UseVisualStyleBackColor = True
@@ -293,7 +291,7 @@ Partial Class formCfg
         Me.CBKHO.Location = New System.Drawing.Point(6, 19)
         Me.CBKHO.Name = "CBKHO"
         Me.CBKHO.Size = New System.Drawing.Size(227, 17)
-        Me.CBKHO.TabIndex = 0
+        Me.CBKHO.TabIndex = 5
         Me.CBKHO.Text = "Nur den Hauptkontaktordner durchsuchen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBKHO, resources.GetString("CBKHO.ToolTip"))
         Me.CBKHO.UseVisualStyleBackColor = True
@@ -305,7 +303,7 @@ Partial Class formCfg
         Me.CBIndexAus.Location = New System.Drawing.Point(248, 19)
         Me.CBIndexAus.Name = "CBIndexAus"
         Me.CBIndexAus.Size = New System.Drawing.Size(142, 17)
-        Me.CBIndexAus.TabIndex = 2
+        Me.CBIndexAus.TabIndex = 6
         Me.CBIndexAus.Text = """Indizierung"" auschalten"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können sie die Indizierung auch aussch" & _
         "alten.")
@@ -394,7 +392,7 @@ Partial Class formCfg
         Me.CBIgnoTelNrFormat.Location = New System.Drawing.Point(6, 62)
         Me.CBIgnoTelNrFormat.Name = "CBIgnoTelNrFormat"
         Me.CBIgnoTelNrFormat.Size = New System.Drawing.Size(195, 17)
-        Me.CBIgnoTelNrFormat.TabIndex = 7
+        Me.CBIgnoTelNrFormat.TabIndex = 15
         Me.CBIgnoTelNrFormat.Text = "Ignoriere Formatierung der Kontakte"
         Me.CBIgnoTelNrFormat.UseVisualStyleBackColor = True
         '
@@ -413,7 +411,7 @@ Partial Class formCfg
         Me.TBTelNrMaske.Location = New System.Drawing.Point(138, 14)
         Me.TBTelNrMaske.Name = "TBTelNrMaske"
         Me.TBTelNrMaske.Size = New System.Drawing.Size(99, 20)
-        Me.TBTelNrMaske.TabIndex = 5
+        Me.TBTelNrMaske.TabIndex = 13
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBTelNrMaske, resources.GetString("TBTelNrMaske.ToolTip"))
         '
         'CBintl
@@ -422,7 +420,7 @@ Partial Class formCfg
         Me.CBintl.Location = New System.Drawing.Point(6, 39)
         Me.CBintl.Name = "CBintl"
         Me.CBintl.Size = New System.Drawing.Size(205, 17)
-        Me.CBintl.TabIndex = 6
+        Me.CBintl.TabIndex = 14
         Me.CBintl.Text = "Internatlionale Vorwahl immer anfügen"
         Me.CBintl.UseVisualStyleBackColor = True
         '
@@ -432,7 +430,7 @@ Partial Class formCfg
         Me.CBTelNrGruppieren.Location = New System.Drawing.Point(6, 16)
         Me.CBTelNrGruppieren.Name = "CBTelNrGruppieren"
         Me.CBTelNrGruppieren.Size = New System.Drawing.Size(78, 17)
-        Me.CBTelNrGruppieren.TabIndex = 4
+        Me.CBTelNrGruppieren.TabIndex = 12
         Me.CBTelNrGruppieren.Text = "Gruppieren"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Beispiel:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "oh" & _
         "ne Gruppierung: +49 (123) 4567890 " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "mit Gruppierung: +49 (1 23) 4 56 78 90 ")
@@ -465,7 +463,7 @@ Partial Class formCfg
         Me.TBStoppUhr.Location = New System.Drawing.Point(134, 40)
         Me.TBStoppUhr.Name = "TBStoppUhr"
         Me.TBStoppUhr.Size = New System.Drawing.Size(30, 20)
-        Me.TBStoppUhr.TabIndex = 15
+        Me.TBStoppUhr.TabIndex = 18
         '
         'CBStoppUhrAusblenden
         '
@@ -473,7 +471,7 @@ Partial Class formCfg
         Me.CBStoppUhrAusblenden.Location = New System.Drawing.Point(6, 42)
         Me.CBStoppUhrAusblenden.Name = "CBStoppUhrAusblenden"
         Me.CBStoppUhrAusblenden.Size = New System.Drawing.Size(132, 17)
-        Me.CBStoppUhrAusblenden.TabIndex = 14
+        Me.CBStoppUhrAusblenden.TabIndex = 17
         Me.CBStoppUhrAusblenden.Text = "Blende Stoppuhr nach"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrAusblenden, "Blendet die Stoppuhr nach Beendiging eines Telefonats aus." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.CBStoppUhrAusblenden.UseVisualStyleBackColor = True
@@ -484,7 +482,7 @@ Partial Class formCfg
         Me.CBStoppUhrEinblenden.Location = New System.Drawing.Point(6, 19)
         Me.CBStoppUhrEinblenden.Name = "CBStoppUhrEinblenden"
         Me.CBStoppUhrEinblenden.Size = New System.Drawing.Size(122, 17)
-        Me.CBStoppUhrEinblenden.TabIndex = 13
+        Me.CBStoppUhrEinblenden.TabIndex = 16
         Me.CBStoppUhrEinblenden.Text = "Blende Stoppuhr ein"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrEinblenden, "Blendet eine Stoppuhr beim Zustandekommen einer Verbindung ein." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.CBStoppUhrEinblenden.UseVisualStyleBackColor = True
@@ -511,7 +509,7 @@ Partial Class formCfg
         Me.CBDialPort.Location = New System.Drawing.Point(6, 73)
         Me.CBDialPort.Name = "CBDialPort"
         Me.CBDialPort.Size = New System.Drawing.Size(108, 17)
-        Me.CBDialPort.TabIndex = 24
+        Me.CBDialPort.TabIndex = 8
         Me.CBDialPort.Text = "Dialport anzeigen"
         Me.CBDialPort.UseVisualStyleBackColor = True
         '
@@ -521,7 +519,7 @@ Partial Class formCfg
         Me.CBCheckMobil.Location = New System.Drawing.Point(6, 119)
         Me.CBCheckMobil.Name = "CBCheckMobil"
         Me.CBCheckMobil.Size = New System.Drawing.Size(233, 17)
-        Me.CBCheckMobil.TabIndex = 12
+        Me.CBCheckMobil.TabIndex = 11
         Me.CBCheckMobil.Text = "Nachfrage beim Wählen von Mobilnummern"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wähl" & _
         "en eine zusätzliche Benutzereingabe erforderlich.")
@@ -533,7 +531,7 @@ Partial Class formCfg
         Me.CBVoIPBuster.Location = New System.Drawing.Point(6, 22)
         Me.CBVoIPBuster.Name = "CBVoIPBuster"
         Me.CBVoIPBuster.Size = New System.Drawing.Size(178, 17)
-        Me.CBVoIPBuster.TabIndex = 8
+        Me.CBVoIPBuster.TabIndex = 6
         Me.CBVoIPBuster.Text = "Landesvorwahl immer mitwählen"
         Me.CBVoIPBuster.UseVisualStyleBackColor = True
         '
@@ -543,7 +541,7 @@ Partial Class formCfg
         Me.CBCbCunterbinden.Location = New System.Drawing.Point(6, 96)
         Me.CBCbCunterbinden.Name = "CBCbCunterbinden"
         Me.CBCbCunterbinden.Size = New System.Drawing.Size(136, 17)
-        Me.CBCbCunterbinden.TabIndex = 10
+        Me.CBCbCunterbinden.TabIndex = 9
         Me.CBCbCunterbinden.Text = "Call-by-Call unterbinden"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "k" & _
         "einen Festnetzanschluss haben und nur über Ihren Internetanbieter telefonieren.")
@@ -555,7 +553,7 @@ Partial Class formCfg
         Me.CBCallByCall.Location = New System.Drawing.Point(162, 96)
         Me.CBCallByCall.Name = "CBCallByCall"
         Me.CBCallByCall.Size = New System.Drawing.Size(124, 17)
-        Me.CBCallByCall.TabIndex = 11
+        Me.CBCallByCall.TabIndex = 10
         Me.CBCallByCall.Text = "Jedesmal Call-by-Call"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo" & _
         "nieren. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Te" & _
@@ -577,7 +575,7 @@ Partial Class formCfg
         Me.TBAmt.Location = New System.Drawing.Point(6, 46)
         Me.TBAmt.Name = "TBAmt"
         Me.TBAmt.Size = New System.Drawing.Size(30, 20)
-        Me.TBAmt.TabIndex = 9
+        Me.TBAmt.TabIndex = 7
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBAmt, "Geben Sie hier eine 0 ein falls eine Amtsholung benötigt wird.")
         '
         'FrameErforderlich
@@ -614,7 +612,7 @@ Partial Class formCfg
         Me.TBBenutzer.Location = New System.Drawing.Point(6, 46)
         Me.TBBenutzer.Name = "TBBenutzer"
         Me.TBBenutzer.Size = New System.Drawing.Size(100, 20)
-        Me.TBBenutzer.TabIndex = 15
+        Me.TBBenutzer.TabIndex = 2
         '
         'CBForceFBAddr
         '
@@ -622,7 +620,7 @@ Partial Class formCfg
         Me.CBForceFBAddr.Location = New System.Drawing.Point(116, 22)
         Me.CBForceFBAddr.Name = "CBForceFBAddr"
         Me.CBForceFBAddr.Size = New System.Drawing.Size(107, 17)
-        Me.CBForceFBAddr.TabIndex = 14
+        Me.CBForceFBAddr.TabIndex = 1
         Me.CBForceFBAddr.Text = "Fritz!Box Adresse"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" & _
         "ng zur eingegebenen Addresse aufgebaut." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das ist z.B. bei einigen dyndns-Anbiete" & _
@@ -643,7 +641,7 @@ Partial Class formCfg
         Me.TBLandesVW.Location = New System.Drawing.Point(6, 123)
         Me.TBLandesVW.Name = "TBLandesVW"
         Me.TBLandesVW.Size = New System.Drawing.Size(100, 20)
-        Me.TBLandesVW.TabIndex = 3
+        Me.TBLandesVW.TabIndex = 5
         '
         'Label4
         '
@@ -659,7 +657,7 @@ Partial Class formCfg
         Me.TBVorwahl.Location = New System.Drawing.Point(6, 97)
         Me.TBVorwahl.Name = "TBVorwahl"
         Me.TBVorwahl.Size = New System.Drawing.Size(100, 20)
-        Me.TBVorwahl.TabIndex = 2
+        Me.TBVorwahl.TabIndex = 4
         '
         'lblTBPasswort
         '
@@ -676,7 +674,7 @@ Partial Class formCfg
         Me.TBPasswort.Name = "TBPasswort"
         Me.TBPasswort.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TBPasswort.Size = New System.Drawing.Size(100, 20)
-        Me.TBPasswort.TabIndex = 1
+        Me.TBPasswort.TabIndex = 3
         Me.TBPasswort.UseSystemPasswordChar = True
         '
         'TBFBAdr
@@ -701,7 +699,7 @@ Partial Class formCfg
         Me.BProbleme.Location = New System.Drawing.Point(381, 128)
         Me.BProbleme.Name = "BProbleme"
         Me.BProbleme.Size = New System.Drawing.Size(170, 26)
-        Me.BProbleme.TabIndex = 25
+        Me.BProbleme.TabIndex = 3
         Me.BProbleme.Text = "Probleme?"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" & _
         "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" & _
@@ -713,7 +711,7 @@ Partial Class formCfg
         Me.BZwischenablage.Location = New System.Drawing.Point(381, 96)
         Me.BZwischenablage.Name = "BZwischenablage"
         Me.BZwischenablage.Size = New System.Drawing.Size(170, 26)
-        Me.BZwischenablage.TabIndex = 26
+        Me.BZwischenablage.TabIndex = 2
         Me.BZwischenablage.Text = "Kopieren"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BZwischenablage, "Kopiert den Statustext in die Zwischenablage")
         Me.BZwischenablage.UseVisualStyleBackColor = True
@@ -723,14 +721,15 @@ Partial Class formCfg
         Me.BStart2.Location = New System.Drawing.Point(381, 64)
         Me.BStart2.Name = "BStart2"
         Me.BStart2.Size = New System.Drawing.Size(170, 26)
-        Me.BStart2.TabIndex = 27
+        Me.BStart2.TabIndex = 1
         Me.BStart2.Text = "Start"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BStart2, "Kopiert den Statustext in die Zwischenablage")
         Me.BStart2.UseVisualStyleBackColor = True
         '
         'Püber
         '
-        Me.Püber.Controls.Add(Me.GroupBox4)
+        Me.Püber.Controls.Add(Me.LinkHomepage)
+        Me.Püber.Controls.Add(Me.Label17)
         Me.Püber.Controls.Add(Me.LinkEmail)
         Me.Püber.Controls.Add(Me.LinkForum)
         Me.Püber.Controls.Add(Me.Label16)
@@ -744,40 +743,19 @@ Partial Class formCfg
         Me.Püber.Text = "Info"
         Me.Püber.UseVisualStyleBackColor = True
         '
-        'GroupBox4
-        '
-        Me.GroupBox4.Controls.Add(Me.Label17)
-        Me.GroupBox4.Controls.Add(Me.LinkHomepage)
-        Me.GroupBox4.Location = New System.Drawing.Point(314, 14)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(239, 75)
-        Me.GroupBox4.TabIndex = 7
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "OpenSource - SourceCode"
-        '
         'Label17
         '
-        Me.Label17.Location = New System.Drawing.Point(7, 20)
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(3, 66)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(180, 52)
+        Me.Label17.Size = New System.Drawing.Size(319, 13)
         Me.Label17.TabIndex = 0
-        Me.Label17.Text = "Der SourceCode zu diesem Addin steht jedem frei zur Verfügung." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Voraussetzung: " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & _
-    "Microsoft Visual Studio Professional"
-        '
-        'LinkHomepage
-        '
-        Me.LinkHomepage.AutoSize = True
-        Me.LinkHomepage.Location = New System.Drawing.Point(193, 57)
-        Me.LinkHomepage.Name = "LinkHomepage"
-        Me.LinkHomepage.Size = New System.Drawing.Size(40, 13)
-        Me.LinkHomepage.TabIndex = 5
-        Me.LinkHomepage.TabStop = True
-        Me.LinkHomepage.Text = "GitHub"
+        Me.Label17.Text = "Der SourceCode zu diesem AddIn steht auf GitHub zur Verfügung."
         '
         'LinkEmail
         '
         Me.LinkEmail.AutoSize = True
-        Me.LinkEmail.Location = New System.Drawing.Point(167, 55)
+        Me.LinkEmail.Location = New System.Drawing.Point(241, 34)
         Me.LinkEmail.Name = "LinkEmail"
         Me.LinkEmail.Size = New System.Drawing.Size(141, 13)
         Me.LinkEmail.TabIndex = 1
@@ -787,7 +765,7 @@ Partial Class formCfg
         'LinkForum
         '
         Me.LinkForum.AutoSize = True
-        Me.LinkForum.Location = New System.Drawing.Point(189, 71)
+        Me.LinkForum.Location = New System.Drawing.Point(263, 50)
         Me.LinkForum.Name = "LinkForum"
         Me.LinkForum.Size = New System.Drawing.Size(119, 13)
         Me.LinkForum.TabIndex = 2
@@ -797,7 +775,7 @@ Partial Class formCfg
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(3, 71)
+        Me.Label16.Location = New System.Drawing.Point(3, 50)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(150, 13)
         Me.Label16.TabIndex = 2
@@ -806,7 +784,7 @@ Partial Class formCfg
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(3, 55)
+        Me.Label10.Location = New System.Drawing.Point(3, 34)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(47, 13)
         Me.Label10.TabIndex = 2
@@ -911,6 +889,7 @@ Partial Class formCfg
         Me.TelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.TelList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnStandardTelefon, Me.Nr, Me.dialCode, Me.Telefonname, Me.Typ, Me.InNr, Me.OutNr, Me.Eingehend, Me.Ausgehend, Me.Gesamt})
         Me.TelList.Location = New System.Drawing.Point(1, 19)
+        Me.TelList.MultiSelect = False
         Me.TelList.Name = "TelList"
         Me.TelList.ReadOnly = True
         Me.TelList.RowHeadersVisible = False
@@ -992,9 +971,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle7.Format = "T"
-        DataGridViewCellStyle7.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1006,9 +985,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle8.Format = "T"
-        DataGridViewCellStyle8.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1020,9 +999,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle9.Format = "T"
-        DataGridViewCellStyle9.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1260,7 +1239,7 @@ Partial Class formCfg
         Me.GroupBox2.Location = New System.Drawing.Point(3, 159)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(548, 128)
-        Me.GroupBox2.TabIndex = 8
+        Me.GroupBox2.TabIndex = 10
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Kontaktsuche in Outlook (Indizierung)"
         '
@@ -1279,7 +1258,7 @@ Partial Class formCfg
         Me.RadioButtonEntfernen.Location = New System.Drawing.Point(248, 61)
         Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
         Me.RadioButtonEntfernen.Size = New System.Drawing.Size(70, 17)
-        Me.RadioButtonEntfernen.TabIndex = 16
+        Me.RadioButtonEntfernen.TabIndex = 8
         Me.RadioButtonEntfernen.TabStop = True
         Me.RadioButtonEntfernen.Text = "entfernen"
         Me.RadioButtonEntfernen.UseVisualStyleBackColor = True
@@ -1291,7 +1270,7 @@ Partial Class formCfg
         Me.RadioButtonErstelle.Location = New System.Drawing.Point(149, 61)
         Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
         Me.RadioButtonErstelle.Size = New System.Drawing.Size(64, 17)
-        Me.RadioButtonErstelle.TabIndex = 15
+        Me.RadioButtonErstelle.TabIndex = 7
         Me.RadioButtonErstelle.TabStop = True
         Me.RadioButtonErstelle.Text = "erstellen"
         Me.RadioButtonErstelle.UseVisualStyleBackColor = True
@@ -1322,7 +1301,7 @@ Partial Class formCfg
         Me.ButtonIndizierungAbbrechen.Location = New System.Drawing.Point(437, 80)
         Me.ButtonIndizierungAbbrechen.Name = "ButtonIndizierungAbbrechen"
         Me.ButtonIndizierungAbbrechen.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonIndizierungAbbrechen.TabIndex = 11
+        Me.ButtonIndizierungAbbrechen.TabIndex = 10
         Me.ButtonIndizierungAbbrechen.Text = "Abbrechen"
         Me.ButtonIndizierungAbbrechen.UseVisualStyleBackColor = True
         '
@@ -1331,7 +1310,7 @@ Partial Class formCfg
         Me.ButtonIndizierungStart.Location = New System.Drawing.Point(327, 80)
         Me.ButtonIndizierungStart.Name = "ButtonIndizierungStart"
         Me.ButtonIndizierungStart.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonIndizierungStart.TabIndex = 12
+        Me.ButtonIndizierungStart.TabIndex = 9
         Me.ButtonIndizierungStart.Text = "Start"
         Me.ButtonIndizierungStart.UseVisualStyleBackColor = True
         '
@@ -1361,7 +1340,7 @@ Partial Class formCfg
         Me.ButtonIndexDateiöffnen.Location = New System.Drawing.Point(437, 42)
         Me.ButtonIndexDateiöffnen.Name = "ButtonIndexDateiöffnen"
         Me.ButtonIndexDateiöffnen.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonIndexDateiöffnen.TabIndex = 7
+        Me.ButtonIndexDateiöffnen.TabIndex = 4
         Me.ButtonIndexDateiöffnen.Text = "Index-Datei öffnen"
         Me.ButtonIndexDateiöffnen.UseVisualStyleBackColor = True
         '
@@ -1371,7 +1350,7 @@ Partial Class formCfg
         Me.ComboBoxRWS.Location = New System.Drawing.Point(121, 17)
         Me.ComboBoxRWS.Name = "ComboBoxRWS"
         Me.ComboBoxRWS.Size = New System.Drawing.Size(121, 21)
-        Me.ComboBoxRWS.TabIndex = 4
+        Me.ComboBoxRWS.TabIndex = 1
         '
         'CBRückwärtssuche
         '
@@ -1379,7 +1358,7 @@ Partial Class formCfg
         Me.CBRückwärtssuche.Location = New System.Drawing.Point(6, 19)
         Me.CBRückwärtssuche.Name = "CBRückwärtssuche"
         Me.CBRückwärtssuche.Size = New System.Drawing.Size(109, 17)
-        Me.CBRückwärtssuche.TabIndex = 3
+        Me.CBRückwärtssuche.TabIndex = 0
         Me.CBRückwärtssuche.Text = "Rückwärtssuche:"
         Me.CBRückwärtssuche.UseVisualStyleBackColor = True
         '
@@ -1425,7 +1404,7 @@ Partial Class formCfg
         Me.CBAnrMonContactImage.Location = New System.Drawing.Point(4, 88)
         Me.CBAnrMonContactImage.Name = "CBAnrMonContactImage"
         Me.CBAnrMonContactImage.Size = New System.Drawing.Size(253, 17)
-        Me.CBAnrMonContactImage.TabIndex = 9
+        Me.CBAnrMonContactImage.TabIndex = 910
         Me.CBAnrMonContactImage.Text = "Zeige Kontaktbild im Anrufmonitor an (falls vorh.)"
         Me.CBAnrMonContactImage.UseVisualStyleBackColor = True
         '
@@ -1462,7 +1441,7 @@ Partial Class formCfg
         Me.ButtonTesten.Location = New System.Drawing.Point(160, 168)
         Me.ButtonTesten.Name = "ButtonTesten"
         Me.ButtonTesten.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonTesten.TabIndex = 13
+        Me.ButtonTesten.TabIndex = 14
         Me.ButtonTesten.Text = "Anrufmonitor anzeigen"
         Me.ButtonTesten.UseVisualStyleBackColor = True
         '
@@ -1472,7 +1451,7 @@ Partial Class formCfg
         Me.TBAnrMonY.Location = New System.Drawing.Point(4, 190)
         Me.TBAnrMonY.Name = "TBAnrMonY"
         Me.TBAnrMonY.Size = New System.Drawing.Size(30, 20)
-        Me.TBAnrMonY.TabIndex = 12
+        Me.TBAnrMonY.TabIndex = 13
         '
         'Label11
         '
@@ -1498,7 +1477,7 @@ Partial Class formCfg
         Me.TBAnrMonX.Location = New System.Drawing.Point(4, 166)
         Me.TBAnrMonX.Name = "TBAnrMonX"
         Me.TBAnrMonX.Size = New System.Drawing.Size(30, 20)
-        Me.TBAnrMonX.TabIndex = 11
+        Me.TBAnrMonX.TabIndex = 12
         '
         'Label12
         '
@@ -1518,7 +1497,7 @@ Partial Class formCfg
         Me.TBAnrMonMoveGeschwindigkeit.Minimum = 1
         Me.TBAnrMonMoveGeschwindigkeit.Name = "TBAnrMonMoveGeschwindigkeit"
         Me.TBAnrMonMoveGeschwindigkeit.Size = New System.Drawing.Size(123, 45)
-        Me.TBAnrMonMoveGeschwindigkeit.TabIndex = 10
+        Me.TBAnrMonMoveGeschwindigkeit.TabIndex = 11
         Me.TBAnrMonMoveGeschwindigkeit.TickStyle = System.Windows.Forms.TickStyle.TopLeft
         Me.TBAnrMonMoveGeschwindigkeit.Value = 5
         '
@@ -1683,7 +1662,7 @@ Partial Class formCfg
         Me.CBSymbJournalimport.Location = New System.Drawing.Point(6, 180)
         Me.CBSymbJournalimport.Name = "CBSymbJournalimport"
         Me.CBSymbJournalimport.Size = New System.Drawing.Size(88, 17)
-        Me.CBSymbJournalimport.TabIndex = 7
+        Me.CBSymbJournalimport.TabIndex = 8
         Me.CBSymbJournalimport.Text = "Journalimport"
         Me.CBSymbJournalimport.UseVisualStyleBackColor = True
         '
@@ -1693,7 +1672,7 @@ Partial Class formCfg
         Me.CBSymbVIP.Location = New System.Drawing.Point(6, 157)
         Me.CBSymbVIP.Name = "CBSymbVIP"
         Me.CBSymbVIP.Size = New System.Drawing.Size(43, 17)
-        Me.CBSymbVIP.TabIndex = 6
+        Me.CBSymbVIP.TabIndex = 7
         Me.CBSymbVIP.Text = "VIP"
         Me.CBSymbVIP.UseVisualStyleBackColor = True
         '
@@ -1703,7 +1682,7 @@ Partial Class formCfg
         Me.CBSymbRWSuche.Location = New System.Drawing.Point(6, 134)
         Me.CBSymbRWSuche.Name = "CBSymbRWSuche"
         Me.CBSymbRWSuche.Size = New System.Drawing.Size(106, 17)
-        Me.CBSymbRWSuche.TabIndex = 5
+        Me.CBSymbRWSuche.TabIndex = 6
         Me.CBSymbRWSuche.Text = "Rückwärtssuche"
         Me.CBSymbRWSuche.UseVisualStyleBackColor = True
         '
@@ -1713,7 +1692,7 @@ Partial Class formCfg
         Me.CBSymbDirekt.Location = New System.Drawing.Point(6, 111)
         Me.CBSymbDirekt.Name = "CBSymbDirekt"
         Me.CBSymbDirekt.Size = New System.Drawing.Size(76, 17)
-        Me.CBSymbDirekt.TabIndex = 4
+        Me.CBSymbDirekt.TabIndex = 5
         Me.CBSymbDirekt.Text = "Direktwahl"
         Me.CBSymbDirekt.UseVisualStyleBackColor = True
         '
@@ -1723,7 +1702,7 @@ Partial Class formCfg
         Me.CBSymbAnrMonNeuStart.Location = New System.Drawing.Point(6, 42)
         Me.CBSymbAnrMonNeuStart.Name = "CBSymbAnrMonNeuStart"
         Me.CBSymbAnrMonNeuStart.Size = New System.Drawing.Size(138, 17)
-        Me.CBSymbAnrMonNeuStart.TabIndex = 3
+        Me.CBSymbAnrMonNeuStart.TabIndex = 2
         Me.CBSymbAnrMonNeuStart.Text = "Anrufmonitor neustarten"
         Me.CBSymbAnrMonNeuStart.UseVisualStyleBackColor = True
         '
@@ -1733,7 +1712,7 @@ Partial Class formCfg
         Me.CBSymbWwdh.Location = New System.Drawing.Point(6, 65)
         Me.CBSymbWwdh.Name = "CBSymbWwdh"
         Me.CBSymbWwdh.Size = New System.Drawing.Size(118, 17)
-        Me.CBSymbWwdh.TabIndex = 2
+        Me.CBSymbWwdh.TabIndex = 3
         Me.CBSymbWwdh.Text = "Wahlwiederhohung"
         Me.CBSymbWwdh.UseVisualStyleBackColor = True
         '
@@ -1753,7 +1732,7 @@ Partial Class formCfg
         Me.CBSymbAnrListe.Location = New System.Drawing.Point(6, 88)
         Me.CBSymbAnrListe.Name = "CBSymbAnrListe"
         Me.CBSymbAnrListe.Size = New System.Drawing.Size(72, 17)
-        Me.CBSymbAnrListe.TabIndex = 0
+        Me.CBSymbAnrListe.TabIndex = 4
         Me.CBSymbAnrListe.Text = "Anrufliste "
         Me.CBSymbAnrListe.UseVisualStyleBackColor = True
         '
@@ -1800,23 +1779,23 @@ Partial Class formCfg
         Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(6, 0)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(162, 13)
+        Me.Label9.Size = New System.Drawing.Size(164, 13)
         Me.Label9.TabIndex = 26
-        Me.Label9.Text = "Wählen sie die Telefondatei aus:"
+        Me.Label9.Text = "Wählen Sie die Telefondatei aus:"
         '
         'TBTelefonDatei
         '
         Me.TBTelefonDatei.Location = New System.Drawing.Point(6, 19)
         Me.TBTelefonDatei.Name = "TBTelefonDatei"
         Me.TBTelefonDatei.Size = New System.Drawing.Size(170, 20)
-        Me.TBTelefonDatei.TabIndex = 0
+        Me.TBTelefonDatei.TabIndex = 5
         '
         'BTelefonDatei
         '
         Me.BTelefonDatei.Location = New System.Drawing.Point(6, 45)
         Me.BTelefonDatei.Name = "BTelefonDatei"
         Me.BTelefonDatei.Size = New System.Drawing.Size(170, 26)
-        Me.BTelefonDatei.TabIndex = 25
+        Me.BTelefonDatei.TabIndex = 6
         Me.BTelefonDatei.Text = "Laden"
         Me.BTelefonDatei.UseVisualStyleBackColor = True
         '
@@ -1826,7 +1805,7 @@ Partial Class formCfg
         Me.CBTelefonDatei.Location = New System.Drawing.Point(381, 160)
         Me.CBTelefonDatei.Name = "CBTelefonDatei"
         Me.CBTelefonDatei.Size = New System.Drawing.Size(157, 17)
-        Me.CBTelefonDatei.TabIndex = 28
+        Me.CBTelefonDatei.TabIndex = 4
         Me.CBTelefonDatei.Text = "Andere Telefondatei testen."
         Me.CBTelefonDatei.UseVisualStyleBackColor = True
         '
@@ -1850,6 +1829,17 @@ Partial Class formCfg
         Me.TBDiagnose.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TBDiagnose.Size = New System.Drawing.Size(369, 220)
         Me.TBDiagnose.TabIndex = 1
+        Me.TBDiagnose.TabStop = False
+        '
+        'LinkHomepage
+        '
+        Me.LinkHomepage.AutoSize = True
+        Me.LinkHomepage.Location = New System.Drawing.Point(342, 66)
+        Me.LinkHomepage.Name = "LinkHomepage"
+        Me.LinkHomepage.Size = New System.Drawing.Size(40, 13)
+        Me.LinkHomepage.TabIndex = 5
+        Me.LinkHomepage.TabStop = True
+        Me.LinkHomepage.Text = "GitHub"
         '
         'formCfg
         '
@@ -1879,8 +1869,6 @@ Partial Class formCfg
         Me.FrameErforderlich.PerformLayout()
         Me.Püber.ResumeLayout(False)
         Me.Püber.PerformLayout()
-        Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.PTelefone.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -2031,7 +2019,6 @@ Partial Class formCfg
     Friend WithEvents CBSymbAnrListe As System.Windows.Forms.CheckBox
     Friend WithEvents CBSymbVIP As System.Windows.Forms.CheckBox
     Friend WithEvents CBSymbJournalimport As System.Windows.Forms.CheckBox
-    Friend WithEvents LinkHomepage As System.Windows.Forms.LinkLabel
     Friend WithEvents LinkForum As System.Windows.Forms.LinkLabel
     Friend WithEvents PDebug As System.Windows.Forms.TabPage
     Friend WithEvents BStart2 As System.Windows.Forms.Button
@@ -2054,7 +2041,6 @@ Partial Class formCfg
     Friend WithEvents RadioButtonErstelle As System.Windows.Forms.RadioButton
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents CBForceFBAddr As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents ColumnStandardTelefon As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents Nr As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -2068,6 +2054,7 @@ Partial Class formCfg
     Friend WithEvents Gesamt As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TBBenutzer As System.Windows.Forms.TextBox
+    Friend WithEvents LinkHomepage As System.Windows.Forms.LinkLabel
 #If OVer < 14 Then
 #End If
 End Class
