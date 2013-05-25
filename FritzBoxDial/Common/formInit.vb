@@ -140,7 +140,7 @@
             Me.TBVorwahl.Enabled = True
             Me.TBLandesvorwahl.Enabled = True
         Else
-            Me.LMessage.Text = "Das Passwort ist offensichtlich falsch!"
+            Me.LMessage.Text = "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
         End If
     End Sub
 

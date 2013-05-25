@@ -65,7 +65,7 @@ Public Class FritzBox
     End Sub
 
 #Region "Login & Logout"
-    Public Function FBLogin(ByRef Fw550 As Boolean, Optional InpupBenutzer As String = "", Optional InpupPasswort As String = "-1") As String
+    Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim login_xml As String
         Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         login_xml = hf.httpRead("http://" & FBAddr & "/login_sid.lua?sid=" & SID, FBEncoding)
@@ -85,40 +85,37 @@ Public Class FritzBox
             Dim FBPasswort As String = ini.Read(DateiPfad, "Optionen", "TBPasswort", vbNullString)
             Dim Zugang As String = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
 
-            'Dim Phone As String
-            'Dim Dial As String
-            'Dim HomeAuto As String
-            'Dim BoxAdmin As String
-
             Dim Response As String
             Dim formdata As String
             Dim Rückgabe As String
 
-            Dim xml As New XmlDocument()
+            Dim LoginXML As New XmlDocument()
 
-            '  <?xml version="1.0" encoding="utf-8" ?> 
-            '- <SessionInfo>
-            '   <SID>cffcc7491477500a</SID> 
-            '   <Challenge>d08cb7d6</Challenge> 
-            '   <BlockTime>0</BlockTime> 
-            '-  <Rights>
-            '    <Phone>2</Phone> 
-            '    <Dial>2</Dial> 
-            '    <HomeAuto>2</HomeAuto> 
-            '    <BoxAdmin>2</BoxAdmin> 
+            '<SessionInfo>
+            '   <SID>ff88e4d39354992f</SID>
+            '   <Challenge>ab7190d6</Challenge>
+            '   <BlockTime>128</BlockTime>
+            '   <Rights>
+            '       <Name>BoxAdmin</Name>
+            '       <Access>2</Access>
+            '       <Name>Phone</Name>
+            '       </Access>2</Access>
+            '       <Name>NAS></Name>
+            '       <Access>2</Access>
             '   </Rights>
-            '  </SessionInfo>
+            '</SessionInfo> 
 
             '<?xml version="1.0" encoding="utf-8"?>
             '<SessionInfo>
-            ' <iswriteaccess>0</iswriteaccess>
-            ' <SID>0000000000000000</SID>
-            ' <Challenge>dbef619d</Challenge>
+            '   <iswriteaccess>0</iswriteaccess>
+            '   <SID>0000000000000000</SID>
+            '   <Challenge>dbef619d</Challenge>
             '</SessionInfo>
 
 
-            With xml
+            With LoginXML
                 .LoadXml(login_xml)
+
                 If .Item("SessionInfo").Item("SID").InnerText() = DefaultSID Then
                     Challenge = .Item("SessionInfo").Item("Challenge").InnerText()
                     Try
@@ -143,17 +140,19 @@ Public Class FritzBox
                     If Fw550 Then
                         Link += Response
                         Rückgabe = hf.httpRead(Link, FBEncoding)
-
                         .LoadXml(Rückgabe)
                         SID = .Item("SessionInfo").Item("SID").InnerText()
-                        If SID = DefaultSID Then
-                            hf.LogFile("Das Passwort zur Fritz!Box ist offensichtlich falsch." & SID)
-                            'Else
-                            'Phone = .DocumentElement("Rights").Item("Phone").InnerText
-                            'Dial = .DocumentElement("Rights").Item("Dial").InnerText
-                            'HomeAuto = .DocumentElement("Rights").Item("HomeAuto").InnerText
-                            'BoxAdmin = .DocumentElement("Rights").Item("BoxAdmin").InnerText
+                        If Not SID = DefaultSID Then
+                            If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+                                hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer & SID)
+                                FBLogout(SID)
+                                SID = DefaultSID
+                            End If
+                            ini.Write(DateiPfad, "Optionen", FBBenutzer, CStr(IIf(SID = DefaultSID, 0, 2)))
+                        Else
+                            hf.LogFile("Die Anmeldedaten sind falsch." & SID)
                         End If
+
                     Else
                         formdata = "response=" & Response
                         Rückgabe = hf.httpWrite(Link, formdata, FBEncoding)
@@ -166,7 +165,7 @@ Public Class FritzBox
                     hf.LogFile("Eine gültige SessionID ist bereits vorhanden: " & SID)
                 End If
             End With
-            xml = Nothing
+            LoginXML = Nothing
         End If
         Return SID
     End Function
@@ -211,36 +210,36 @@ Public Class FritzBox
     Sub FritzBoxDaten()
         Dim FW550 As Boolean = True
         Dim myurl As String
-        Dim FBOX_ADR As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "192.168.178.1") ' IP der FritzBox
+        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "192.168.178.1") ' IP der FritzBox
         Dim tempstring As String
         Dim tempstring_code As String
-        If Rausschreiben Then setline("Fritz!Box Adresse: " & FBOX_ADR)
+
+        If Rausschreiben Then setline("Fritz!Box Adresse: " & FBAddr)
 
         Dim SID As String = FBLogin(FW550)
         If Not SID = DefaultSID Then
-            myurl = "http://" & FBOX_ADR & "/fon_num/fon_num_list.lua?sid=" & SID
+            myurl = "http://" & FBAddr & "/fon_num/fon_num_list.lua?sid=" & SID
             If Rausschreiben Then
                 setline("Fritz!Box SessionID: " & SID)
                 setline("Fritz!Box Firmware  5.50: " & FW550.ToString)
             End If
 
             If Rausschreiben Then
-                If formConfig.CBTelefonDatei.Checked Then
-                    myurl = formConfig.TBTelefonDatei.Text
-                End If
+                If formConfig.CBTelefonDatei.Checked Then myurl = formConfig.TBTelefonDatei.Text
                 setline("Fritz!Box Telefon Quelldatei: " & myurl)
             End If
+
             tempstring = hf.httpRead(myurl, FBEncoding)
+
             If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                 tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                 tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
 
                 tempstring_code = hf.StringEntnehmen(tempstring, "<code>", "</code>")
+
                 If Not tempstring_code = "-1" Then
                     tempstring = tempstring_code
                 Else
-                    'DANKE AVM! STÄNDIG MÜSST IHR DEN QUELLCODE DER FRITZ!BOX ÄNDERN.
-                    'Der entscheidende Code in der Box steht jetzt nicht mehr im <code> sondern im <pre> -_-
                     tempstring = hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
                 End If
 
@@ -248,13 +247,14 @@ Public Class FritzBox
                     FritzBoxDaten(tempstring)
                     FBLogout(SID)
                 Else
-                    FritzBoxDatenAlteFW(FBOX_ADR, SID)
+                    FritzBoxDatenAlteFW(FBAddr, SID)
                 End If
+
             Else
-                hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Anmeldung fehlerhaft.", MsgBoxStyle.Critical, "FritzBoxDaten #1")
+                hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #1")
             End If
         Else
-            hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Anmeldung fehlerhaft.", MsgBoxStyle.Critical, "FritzBoxDaten #2")
+            hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #2")
         End If
     End Sub
 
@@ -1200,7 +1200,6 @@ Public Class FritzBox
             Else
                 ini.Write(DateiPfad, "Telefone", "EingerichteteTelefone", EingerichteteTelefone)
                 ini.Write(DateiPfad, "Telefone", "Anzahl", CStr(TelAnzahl))
-
             End If
         End With
 

@@ -53,26 +53,26 @@ Public Class formJournalimport
 
 #Region " Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles DownloadAnrListe.DoWork
-        Dim FBoxAdd As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         Dim Link(1) As String
         Dim fw550 As Boolean
         Dim ReturnString As String
 
         SID = ThisAddIn.fBox.FBLogin(fw550)
         If Not SID = ThisAddIn.fBox.DefaultSID Then
-            Link(0) = "http://" & FBoxAdd & "/fon_num/foncalls_list.lua?sid=" & SID
-            Link(1) = "http://" & FBoxAdd & "/fon_num/foncalls_list.lua?sid=" & SID & "&csv="
+            Link(0) = "http://" & FBAddr & "/fon_num/foncalls_list.lua?sid=" & SID
+            Link(1) = "http://" & FBAddr & "/fon_num/foncalls_list.lua?sid=" & SID & "&csv="
 
             ReturnString = hf.httpRead(Link(0), System.Text.Encoding.GetEncoding(ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "utf-8")))
             If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
-                Link(0) = "http://" & FBoxAdd & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
+                Link(0) = "http://" & FBAddr & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
                 hf.httpRead(Link(0), System.Text.Encoding.GetEncoding(ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "utf-8")))
-                Link(1) = "http://" & FBoxAdd & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
+                Link(1) = "http://" & FBAddr & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
             End If
-
             e.Result = hf.httpRead(Link(1), System.Text.Encoding.GetEncoding(ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "utf-8")))
         Else
-            hf.LogFile("Das Passwort zur Fritz!Box ist offensichtlich falsch. (DownloadAnrListe_DoWork)")
+            hf.FBDB_MsgBox("Der Login in die Fritz!Box ist fehlgeschlagen" & vbCrLf & vbCrLf & "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "DownloadAnrListe_DoWork")
+            hf.LogFile("Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich. (DownloadAnrListe_DoWork)")
         End If
     End Sub
 

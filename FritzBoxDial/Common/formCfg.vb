@@ -78,6 +78,10 @@ Public Class formCfg
         Me.TBFBAdr.Text = C_ini.Read(Dateipfad, "Optionen", "TBFBAdr", "fritz.box")
         Me.CBForceFBAddr.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBForceFBAddr", "False") = "True", True, False))
         Me.TBBenutzer.Text = C_ini.Read(Dateipfad, "Optionen", "TBBenutzer", vbNullString)
+        If C_ini.Read(Dateipfad, "Optionen", Me.TBBenutzer.Text, "2") = "0" Then
+            Me.TBBenutzer.BackColor = Color.Red
+            Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
+        End If
         Passwort = C_ini.Read(Dateipfad, "Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
             Me.TBPasswort.Text = "1234"
