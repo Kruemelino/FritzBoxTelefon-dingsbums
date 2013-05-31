@@ -130,7 +130,7 @@ Public Class FritzBox
                         Fw550 = False
                         Link = "http://" & FBAddr & "/login.lua"
                         If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
-                            hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das Wählen wird nicht funktionieren.")
+                            hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
                             Return .Item("SessionInfo").Item("SID").InnerText()
                         End If
                     End Try
@@ -144,7 +144,7 @@ Public Class FritzBox
                         SID = .Item("SessionInfo").Item("SID").InnerText()
                         If Not SID = DefaultSID Then
                             If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
-                                hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer & SID)
+                                hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer)
                                 FBLogout(SID)
                                 SID = DefaultSID
                             End If

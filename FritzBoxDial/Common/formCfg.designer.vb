@@ -768,7 +768,7 @@ Partial Class formCfg
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(319, 13)
         Me.Label17.TabIndex = 0
-        Me.Label17.Text = "Der SourceCode zu diesem AddIn steht auf GitHub zur Verfügung."
+        Me.Label17.Text = "Der SourceCode zu diesem AddIn steht auf GitHub zur Verfügung:"
         '
         'LinkEmail
         '
