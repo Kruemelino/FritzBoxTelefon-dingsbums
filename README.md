@@ -71,12 +71,11 @@ Windows 7 Professional x64
 Die Rechtevergabe (setCaspol.exe) wurde von Markus Debus www.citro-computer.de 2010 neu erstellt. Vielen Dank!
 1.6	Kontaktmöglichkeiten:
 Trotz sorgfältiger Überprüfung können Fehler nicht ausgeschlossen werden.
-Sofern jemand noch Fehler findet, bitte eine detaillierte Fehlerbeschreibung erstellen und diese mitteilen  (am besten im  BugTracker: http://sourceforge.net/tracker/?group_id=275234&atid=1169388). Ansonsten kann es passieren, dass der Fehler ewig im Programm verbleibt, da er niemand anderem aufgefallen sein kann.
+Sofern jemand noch Fehler findet, bitte eine detaillierte Fehlerbeschreibung erstellen und diese mitteilen. Ansonsten kann es passieren, dass der Fehler ewig im Programm verbleibt, da er niemand anderem aufgefallen sein kann.
 
-1.	SourceForge Projektseite:  	http://sourceforge.net/projects/fbdb/
-2.	SourceForge Forum (Anmeldung erforderlich): https://sourceforge.net/apps/phpbb/fbdb/
-3.	IPPF (Anmeldung erforderlich): http://www.ip-phone-forum.de/showthread.php?t=237086 
-4.	E-Mail:  kruemelino@gert-michael.de
+1.	IPPF (Anmeldung erforderlich): http://www.ip-phone-forum.de/showthread.php?t=237086 
+2.	E-Mail:  kruemelino@gert-michael.de
+
 1.7	Updateinformationen
 Bevor eine neue Version aufgespielt werden kann, muss die alte vorher entfernt werden. Dazu muss über die Systemsteuerung das Addin zuerst deinstalliert werden. Erst danach kann eine neue Version aufgespielt werden.
 1.8	Lizenzinformationen
