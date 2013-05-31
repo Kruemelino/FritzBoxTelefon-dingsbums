@@ -15,8 +15,8 @@ Alle weiteren Komponenten (.NET Framework, PIA, VSTOR), die das Addin benötigen
 - Microsoft Outlook 2013
 - Microsoft .NET Framework 4.0 Client Profile: http://www.microsoft.com/de-de/download/details.aspx?id=24872 
 - Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTOR 2010)
-VSTOR X86: http://go.microsoft.com/fwlink/?LinkId=158917
-VSTOR X64: http://go.microsoft.com/fwlink/?LinkId=158918
+-   VSTOR X86: http://go.microsoft.com/fwlink/?LinkId=158917
+-   VSTOR X64: http://go.microsoft.com/fwlink/?LinkId=158918
 - Microsoft Office 2013: Primary Interop Assemblies Redistributable (PIA): http://olappivottableextend.codeplex.com/wikipage?title=Office%202013%20Primary%20Interop%20Assemblies 
 
 Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
