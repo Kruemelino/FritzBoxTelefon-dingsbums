@@ -4,9 +4,11 @@ FritzBoxTelefon-dingsbums
 Fritz!Box Telefon-dingsbums
 
 1.1  Voraussetzungen für alle Versionen
-  	Fritz!Box
-Der interne Anrufmonitor der Fritz!Box muss eingeschaltet sein  (Telefoncode zum Einschalten: #96*5*).
-  	Für ein korrektes Wählen ist es wichtig, dass der Haken „Wählhilfe verwenden“ in der Fritz!Box gesetzt wurde (Telefonbuch/Wählhilfe).
+
+- Fritz!Box
+- Der interne Anrufmonitor der Fritz!Box muss eingeschaltet sein  (Telefoncode zum Einschalten: #96*5*).
+- Für ein korrektes Wählen ist es wichtig, dass der Haken „Wählhilfe verwenden“ in der Fritz!Box gesetzt wurde (Telefonbuch/Wählhilfe).
+- Bei Ameldung mi Username und Benutzername an der Fritz!Box, muss der entsprechende Fritz!User BoxAdmin sein.
 
 
 Alle weiteren Komponenten (.NET Framework, PIA, VSTOR), die das Addin benötigen, hängen von der jeweiligen Office Version ab. Die Installation lädt die Komponenten NICHT automatisch runter. Installieren Sie die Komponenten per Hand vor der Installation des Addins.
