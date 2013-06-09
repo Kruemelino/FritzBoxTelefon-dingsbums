@@ -57,7 +57,7 @@ Public Class ThisAddIn
 
     Private Initialisierung As formInit
 
-    Public Const Version As String = "3.4.1"
+    Public Const Version As String = "3.4.3"
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
@@ -75,6 +75,7 @@ Public Class ThisAddIn
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
         Select Case e.Mode
             Case PowerModes.Resume
+                hf.LogFile("Aufwachen aus StandBy: " & e.Mode)
                 AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
                 AnrMon.AnrMonQuit()
