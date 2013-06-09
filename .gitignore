@@ -40,6 +40,7 @@ local.properties
 *.suo
 *.user
 *.pfx
+*FritzBoxDial.pfx
 *.sln.docstates
 
 # Build results
@@ -60,7 +61,6 @@ local.properties
 *.tli
 *.tlh
 *.tmp
-*.pfx
 *.vspscc
 .builds
 *.dotCover
