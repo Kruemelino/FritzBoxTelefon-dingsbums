@@ -40,7 +40,7 @@ local.properties
 *.suo
 *.user
 *.pfx
-*FritzBoxDial.pfx
+FritzBoxDial.pfx
 *.sln.docstates
 
 # Build results
