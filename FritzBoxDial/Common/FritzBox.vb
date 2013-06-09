@@ -1223,7 +1223,6 @@ Public Class FritzBox
     Private Sub setline(ByVal Zeile As String)
         If Rausschreiben Then formConfig.AddLine(Zeile)
     End Sub
-
 #End Region
 
 End Class

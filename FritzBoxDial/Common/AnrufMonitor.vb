@@ -228,24 +228,19 @@ Public Class AnrufMonitor
 
     Public Function TelefonName(ByVal MSN As String) As String
 
-        Dim TelAnzahl As String
         Dim tempTelName() As String
-        Dim res() As String
-        res = Split(ini.Read(InIPfad, "Telefone", "EingerichteteTelefone", "1;2;3;51;52;53;54;55;56;57;58;50;60;61;62;63;64;65;66;67;68;69;20;21;22;23;24;25;26;27;28;29"), ";", , CompareMethod.Text)
-        Dim Nebenstellen = From x In res Where Not x Like "60#" Select x ' TAM entfernen
-        TelAnzahl = ini.Read(InIPfad, "Telefone", "Anzahl", "-1")
+        Dim Nebenstellen() As String
+        Nebenstellen = (From x In Split(ini.Read(InIPfad, "Telefone", "EingerichteteTelefone", "1;2;3;51;52;53;54;55;56;57;58;50;60;61;62;63;64;65;66;67;68;69;20;21;22;23;24;25;26;27;28;29"), ";", , CompareMethod.Text) Where Not x Like "60#" Select x).ToArray ' TAM entfernen
         TelefonName = vbNullString
-        If Not TelAnzahl = "-1" Then
-            For Each Nebenstelle In Nebenstellen
-                tempTelName = Split(ini.Read(InIPfad, "Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
-                If Not tempTelName(0) = "-1" Or tempTelName(0) = "" Then
-                    If hf.IsOneOf(MSN, Split(tempTelName(1), "_", , CompareMethod.Text)) Then
-                        TelefonName += tempTelName(2) & ", "
-                    End If
+        For Each Nebenstelle In Nebenstellen
+            tempTelName = Split(ini.Read(InIPfad, "Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
+            If Not tempTelName(0) = "-1" Or tempTelName(0) = "" Then
+                If hf.IsOneOf(MSN, Split(tempTelName(1), "_", , CompareMethod.Text)) Then
+                    TelefonName += tempTelName(2) & ", "
                 End If
-            Next
-            If Not TelefonName = vbNullString Then TelefonName = Left(TelefonName, Len(TelefonName) - 2)
-        End If
+            End If
+        Next
+        If Not TelefonName = vbNullString Then TelefonName = Left(TelefonName, Len(TelefonName) - 2)
     End Function
 
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
