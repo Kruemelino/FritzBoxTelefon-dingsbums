@@ -75,6 +75,7 @@ Public Class ThisAddIn
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
         Select Case e.Mode
             Case PowerModes.Resume
+                hf.LogFile("Aufwachen aus StandBy: " & e.Mode)
                 AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
                 AnrMon.AnrMonQuit()
