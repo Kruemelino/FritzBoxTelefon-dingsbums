@@ -48,9 +48,12 @@ Public Class OutlookInterface
                     .Start = Start
                     .Companies = Companies
                     .Categories = Categories
+
+#If Not OVer = 15 Then
                     If (Not (KontaktID = vbNullString Or StoreID = vbNullString)) And Not Left(KontaktID, 2) = "-1" Then
                         .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
                     End If
+#End If
                     .Save()
                     .Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
                 End With

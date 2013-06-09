@@ -152,6 +152,7 @@
                         pos1 = InStr(1, .Body, "BEGIN:VCARD", CompareMethod.Text)
                         pos2 = InStr(1, .Body, "END:VCARD", CompareMethod.Text) + 9
                         ' Wenn vCard vorhanden ist, dann Kontakt erstellen
+#If Not OVer = 15 Then
                         If pos1 = 0 Or pos2 = 9 Then
                             Dim olLink As Outlook.Link = Nothing
                             Dim olContact As Outlook.ContactItem
@@ -169,8 +170,7 @@
                             Next
                             hf.NAR(olLink) : olLink = Nothing
                         End If
-
-
+#End If
                         Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
                         If Not pos1 = 0 And Not pos2 = 0 Then
                             vCard = Mid(.Body, pos1, pos2 - pos1)

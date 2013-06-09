@@ -78,6 +78,7 @@ Public Class Wählclient
                     HelferFunktionen.NAR(aktKontakt)
                     aktKontakt = Nothing
                 ElseIf TypeOf olAuswahl.Item(1) Is Outlook.AppointmentItem Then
+#If Not OVer = 15 Then
                     Dim oAppItem As Outlook.AppointmentItem = CType(olAuswahl.Item(1), Outlook.AppointmentItem)
                     Dim oAppLink As Outlook.Link
                     Dim oAppThing As Object
@@ -90,11 +91,13 @@ Public Class Wählclient
                     Next 'oAppLink
                     HelferFunktionen.NAR(oAppItem)
                     oAppItem = Nothing
+#End If
                 ElseIf TypeOf olAuswahl.Item(1) Is Outlook.JournalItem Then
                     ' Es wurde ein Journaleintrag gewählt!
                     Dim aktJournal As Outlook.JournalItem = CType(olAuswahl.Item(1), Outlook.JournalItem)
                     If InStr(aktJournal.Body, "unbekannt") = 0 _
                         And Not InStr(aktJournal.Categories, "FritzBox Anrufmonitor") = 0 Then
+#If Not OVer = 15 Then
                         If Not aktJournal.Links.Count = 0 Then
                             Dim oAppLink As Outlook.Link
                             Dim oAppThing As Object
@@ -107,6 +110,7 @@ Public Class Wählclient
                                 HelferFunktionen.NAR(oAppThing)
                             Next 'oAppLink
                         Else
+#End If
                             pos1 = InStr(1, aktJournal.Body, "BEGIN:VCARD", CompareMethod.Text)
                             pos2 = InStr(1, aktJournal.Body, "END:VCARD", CompareMethod.Text)
                             Dim vName As String
@@ -120,8 +124,10 @@ Public Class Wählclient
                             End If
 
                             Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), False, vName)
-
+#If Not OVer = 15 Then
                         End If
+#End If
+
                     End If
                 Else
                     HelferFunktionen.FBDB_MsgBox("Es muss entweder ein Kontakt, eine E-Mail-Adresse oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
@@ -392,7 +398,7 @@ Public Class Wählclient
                 ' TelNr aus dem .Body entnehmen
                 TelNr = Mid(olJournal.Body, 11, InStr(1, olJournal.Body, vbNewLine) - 11)
                 If Not TelNr = "unbekannt" Then
-
+#If Not OVer = 15 Then
                     If Not olJournal.Links.Count = 0 Then 'KontaktID des darangehangenen Kontaktes ermitteln
                         Dim olLink As Outlook.Link = Nothing
                         Dim olContact As Outlook.ContactItem
@@ -406,19 +412,22 @@ Public Class Wählclient
                         Next
                         HelferFunktionen.NAR(olLink) : olLink = Nothing
                     Else ' Wenn in dem Journal kein Link hinterlegt ist, suche nach einer vCard im Body des Journaleintrags.
-                        Dim vName As String
-                        pos1 = InStr(1, olJournal.Body, "BEGIN:VCARD", CompareMethod.Text)
-                        pos2 = InStr(1, olJournal.Body, "END:VCARD", CompareMethod.Text)
-                        If Not pos1 = 0 And Not pos2 = 0 Then
-                            pos2 = pos2 + 9
-                            vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
-                            name = Replace(ReadFromVCard(vCard, "N", ""), ";", "", , , CompareMethod.Text)
-                            vName = "-1" & name & ";" & vCard
-                        Else
-                            vName = "-1;"
-                        End If
-                        If Not TelNr Is String.Empty And Not vName Is String.Empty Then Wählbox(Nothing, TelNr, False, vName)
+#End If
+                    Dim vName As String
+                    pos1 = InStr(1, olJournal.Body, "BEGIN:VCARD", CompareMethod.Text)
+                    pos2 = InStr(1, olJournal.Body, "END:VCARD", CompareMethod.Text)
+                    If Not pos1 = 0 And Not pos2 = 0 Then
+                        pos2 = pos2 + 9
+                        vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
+                        name = Replace(ReadFromVCard(vCard, "N", ""), ";", "", , , CompareMethod.Text)
+                        vName = "-1" & name & ";" & vCard
+                    Else
+                        vName = "-1;"
                     End If
+                    If Not TelNr Is String.Empty And Not vName Is String.Empty Then Wählbox(Nothing, TelNr, False, vName)
+#If Not OVer = 15 Then
+                    End If
+#End If
                 End If
             End If
         ElseIf TypeOf olAuswahl.CurrentItem Is Outlook.MailItem Then ' ist aktuelles Fenster ein Mail?

@@ -194,6 +194,7 @@ Imports Office = Microsoft.Office.Core
         If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
             Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
             If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
+#If Not OVer = 15 Then
                 Dim olLink As Outlook.Link = Nothing
                 For Each olLink In olJournal.Links
                     Try
@@ -204,6 +205,7 @@ Imports Office = Microsoft.Office.Core
                     End Try
                 Next
                 HelferFunktionen.NAR(olLink) : olLink = Nothing
+#End If
             Else
                 Return "Kontakt erstellen"
             End If
@@ -216,6 +218,7 @@ Imports Office = Microsoft.Office.Core
         If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
             Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
             If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
+#If Not OVer = 15 Then
                 Dim olLink As Outlook.Link = Nothing
                 For Each olLink In olJournal.Links
                     Try
@@ -226,6 +229,7 @@ Imports Office = Microsoft.Office.Core
                     End Try
                 Next
                 HelferFunktionen.NAR(olLink) : olLink = Nothing
+#End If
             Else
                 Return "Erstellt einen Kontakt aus diesem Journaleintrag"
             End If
