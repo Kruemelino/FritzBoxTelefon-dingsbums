@@ -39,8 +39,6 @@ local.properties
 # User-specific files
 *.suo
 *.user
-*.pfx
-FritzBoxDial.pfx
 *.sln.docstates
 
 # Build results
@@ -104,6 +102,7 @@ publish
 sql
 TestResults
 *.Cache
+*.pfx
 ClientBin
 stylecop.*
 ~$*
