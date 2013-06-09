@@ -159,7 +159,6 @@ Public Class AnrufMonitor
                     AnrMonError = False
                 Else
                     hf.LogFile("AnrMonStart: AnrMonAnAus: Es ist ein TCP/IP Fehler aufgetreten.")
-                    'hf.FBDB_MsgBox("Es konnte keine Verbindung zum Call-Monitor der Fritz!Box (" & IPAddresse & ") aufbauen. Ist dieser eingeschaltet? Das Einschalten erfolgt über den Telefoncode ""#96*5*"".", MsgBoxStyle.Information, "AnrMonStart")
                     AnrMonAktiv = False
                     AnrMonError = True
                 End If

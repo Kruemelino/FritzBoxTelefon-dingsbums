@@ -64,7 +64,6 @@ Public Class ThisAddIn
     Public Shared GUI As GraphicalUserInterface
     Public Shared OlI As OutlookInterface
 
-
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
         Initialisierung = New formInit
@@ -75,6 +74,7 @@ Public Class ThisAddIn
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
         Select Case e.Mode
             Case PowerModes.Resume
+                hf.LogFile("Aufwachen aus StandBy: " & e.Mode)
                 AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
                 AnrMon.AnrMonQuit()
@@ -108,14 +108,11 @@ Public Class ThisAddIn
         End If
     End Sub
 
-
-
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
         If Not CBool(ini.Read(Dateipfad, "Optionen", "CBIndexAus", "False")) Then
             KontaktFunktionen.IndiziereKontakt(ContactSaved, True)
         End If
     End Sub
-
 
     Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
         AnrMon.AnrMonQuit()
