@@ -37,6 +37,6 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.3.1.0")> 
-<Assembly: AssemblyFileVersion("3.3.1.0")> 
+<Assembly: AssemblyVersion("3.4.3.1")> 
+<Assembly: AssemblyFileVersion("3.4.3.1")> 
 <Assembly: NeutralResourcesLanguageAttribute("de-DE")> 
