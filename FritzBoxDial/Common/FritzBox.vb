@@ -157,7 +157,12 @@ Public Class FritzBox
                         formdata = "response=" & Response
                         Rückgabe = hf.httpWrite(Link, formdata, FBEncoding)
                         If InStr(Rückgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
-                            SID = hf.StringEntnehmen(Rückgabe, "?sid=", """>")
+                            '<input type="hidden" name="sid" value="740a9dcc39295635">
+                            SID = hf.StringEntnehmen(Rückgabe, "<input type=""hidden"" name=""sid"" value=""", """>")
+                            If Not Len(SID) = Len(DefaultSID) Then
+                                'url += "&sid=740a9dcc39295635";
+                                SID = hf.StringEntnehmen(Rückgabe, "sid=", """;")
+                            End If
                         End If
                     End If
 
