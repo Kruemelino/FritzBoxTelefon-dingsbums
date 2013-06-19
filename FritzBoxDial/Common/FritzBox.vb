@@ -87,7 +87,7 @@ Public Class FritzBox
 
             Dim Response As String
             Dim formdata As String
-            Dim Rückgabe As String
+            Dim Rueckgabe As String
 
             Dim LoginXML As New XmlDocument()
 
@@ -137,10 +137,12 @@ Public Class FritzBox
                     With Crypt
                         Response = String.Concat(Challenge, "-", .getMd5Hash(String.Concat(Challenge, "-", .DecryptString128Bit(FBPasswort, Zugang)), Encoding.Unicode))
                     End With
+
                     If Fw550 Then
+
                         Link += Response
-                        Rückgabe = hf.httpRead(Link, FBEncoding)
-                        .LoadXml(Rückgabe)
+                        Rueckgabe = hf.httpRead(Link, FBEncoding)
+                        .LoadXml(Rueckgabe)
                         SID = .Item("SessionInfo").Item("SID").InnerText()
                         If Not SID = DefaultSID Then
                             If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
@@ -154,16 +156,24 @@ Public Class FritzBox
                         End If
 
                     Else
+                        hf.LogFile("Altes Loginverfahren notwendig.")
                         formdata = "response=" & Response
-                        Rückgabe = hf.httpWrite(Link, formdata, FBEncoding)
-                        If InStr(Rückgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+                        Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
+                        If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+                            Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
                             '<input type="hidden" name="sid" value="740a9dcc39295635">
-                            SID = hf.StringEntnehmen(Rückgabe, "<input type=""hidden"" name=""sid"" value=""", """>")
+                            SID = hf.StringEntnehmen(Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text), "<input type='hidden' name='sid' value='", "'>")
                             If Not Len(SID) = Len(DefaultSID) Then
                                 'url += "&sid=740a9dcc39295635";
-                                SID = hf.StringEntnehmen(Rückgabe, "sid=", """;")
+                                SID = hf.StringEntnehmen(Rueckgabe, "sid=", "';")
+                                hf.LogFile("SID erhalten.")
+                            Else
+                                hf.LogFile(Rueckgabe)
                             End If
+                        Else
+                            hf.LogFile("FBLogin(alt): falsches Passwort.")
                         End If
+
                     End If
 
                 ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
