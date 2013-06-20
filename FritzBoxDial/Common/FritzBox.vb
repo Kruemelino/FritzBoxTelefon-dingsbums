@@ -273,6 +273,7 @@ Public Class FritzBox
                     If Not tempstring = "-1" Then
                         FritzBoxDaten(tempstring)
                         FBLogout(SID)
+                    Else
                         hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
                     End If
                 Else
