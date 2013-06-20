@@ -163,7 +163,7 @@ Public Class FritzBox
                             Dim tmp1 As String
                             Dim tmp2 As String
                             Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
-                            MsgBox(Rueckgabe)
+
                             '<input type="hidden" name="sid" value="740a9dcc39295635">
                             '7590: <area shape="rect" coords="30,0,135,80" href="/home/home.lua?sid=0000000000000000">
                             '7590: <area shape='rect' coords='30,0,135,80' href='/home/home.lua?sid=0000000000000000'>
@@ -173,11 +173,7 @@ Public Class FritzBox
                             If SID = DefaultSID Then
                                 MsgBox("DefaultSID: " & SID)
                             Else
-                                If Len(SID) = Len(DefaultSID) Then
-                                    MsgBox(SID)
-                                Else
-                                    MsgBox("SID nicht gefunden")
-                                End If
+                                If Not Len(SID) = Len(DefaultSID) Then MsgBox("SID nicht gefunden")
                             End If
                             'SID = hf.StringEntnehmen(Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text), "<input type='hidden' name='sid' value='", "'>")
                             'If Not Len(SID) = Len(DefaultSID) Then
@@ -266,18 +262,19 @@ Public Class FritzBox
             If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                 tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                 tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
+                If InStr(tempstring, "Luacgi not readable") = 0 Then
+                    tempstring_code = hf.StringEntnehmen(tempstring, "<code>", "</code>")
 
-                tempstring_code = hf.StringEntnehmen(tempstring, "<code>", "</code>")
-
-                If Not tempstring_code = "-1" Then
-                    tempstring = tempstring_code
-                Else
-                    tempstring = hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
-                End If
-
-                If Not tempstring = "-1" Then
-                    FritzBoxDaten(tempstring)
-                    FBLogout(SID)
+                    If Not tempstring_code = "-1" Then
+                        tempstring = tempstring_code
+                    Else
+                        tempstring = hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
+                    End If
+                    If Not tempstring = "-1" Then
+                        FritzBoxDaten(tempstring)
+                        FBLogout(SID)
+                        hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
+                    End If
                 Else
                     FritzBoxDatenAlteFW(FBAddr, SID)
                 End If
@@ -291,7 +288,7 @@ Public Class FritzBox
     End Sub
 
     Private Sub FritzBoxDatenAlteFW(ByVal FBOX_ADR As String, ByVal SID As String)
-        If Rausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet.")
+        If Rausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet. (alt)")
 
         Dim Vorwahl As String = ini.Read(DateiPfad, "Optionen", "TBVorwahl", "")  ' In den Einstellungen eingegebene Vorwahl
         Dim TelName As String                 ' Gefundener Telefonname
@@ -799,7 +796,7 @@ Public Class FritzBox
     End Sub ' (FritzBoxDaten für ältere Firmware)
 
     Private Sub FritzBoxDaten(ByVal Code As String)
-        If Rausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet.")
+        If Rausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet (Neu).")
 
         Dim Vorwahl As String = ini.Read(DateiPfad, "Optionen", "TBVorwahl", "")                 ' In den Einstellungen eingegebene Vorwahl
         Dim Landesvorwahl As String
