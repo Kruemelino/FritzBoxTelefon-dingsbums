@@ -160,16 +160,33 @@ Public Class FritzBox
                         formdata = "response=" & Response
                         Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
                         If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+                            Dim tmp1 As String
+                            Dim tmp2 As String
                             Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
+                            MsgBox(Rueckgabe)
                             '<input type="hidden" name="sid" value="740a9dcc39295635">
-                            SID = hf.StringEntnehmen(Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text), "<input type='hidden' name='sid' value='", "'>")
-                            If Not Len(SID) = Len(DefaultSID) Then
-                                'url += "&sid=740a9dcc39295635";
-                                SID = hf.StringEntnehmen(Rueckgabe, "sid=", "';")
-                                hf.LogFile("SID erhalten.")
+                            '7590: <area shape="rect" coords="30,0,135,80" href="/home/home.lua?sid=0000000000000000">
+                            '7590: <area shape='rect' coords='30,0,135,80' href='/home/home.lua?sid=0000000000000000'>
+                            tmp1 = "href='/home/home.lua?sid="
+                            tmp2 = "'>"
+                            SID = hf.StringEntnehmen(Rueckgabe, tmp1, tmp2)
+                            If SID = DefaultSID Then
+                                MsgBox("DefaultSID: " & SID)
                             Else
-                                hf.LogFile(Rueckgabe)
+                                If Len(SID) = Len(DefaultSID) Then
+                                    MsgBox(SID)
+                                Else
+                                    MsgBox("SID nicht gefunden")
+                                End If
                             End If
+                            'SID = hf.StringEntnehmen(Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text), "<input type='hidden' name='sid' value='", "'>")
+                            'If Not Len(SID) = Len(DefaultSID) Then
+                            '    'url += "&sid=740a9dcc39295635";
+                            '    SID = hf.StringEntnehmen(Rueckgabe, "sid=", "';")
+                            '    hf.LogFile("SID erhalten.")
+                            'Else
+                            '    hf.LogFile(Rueckgabe)
+                            'End If
                         Else
                             hf.LogFile("FBLogin(alt): falsches Passwort.")
                         End If
