@@ -171,7 +171,7 @@ Public Class FritzBox
                             tmp2 = "'>"
                             SID = hf.StringEntnehmen(Rueckgabe, tmp1, tmp2)
                             If SID = DefaultSID Then
-                                MsgBox("DefaultSID: " & SID)
+                                'MsgBox("DefaultSID: " & SID)
                             Else
                                 If Not Len(SID) = Len(DefaultSID) Then MsgBox("SID nicht gefunden")
                             End If
@@ -778,6 +778,7 @@ Public Class FritzBox
                 setline("S0-Basis hinzugefügt.")
             Else
                 ini.Write(DateiPfad, "Telefone", "50", ";;ISDN-Basis")
+                EingerichteteTelefone = String.Concat(EingerichteteTelefone, "50", ";")
             End If
 
         End If
