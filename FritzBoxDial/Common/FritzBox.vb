@@ -158,35 +158,36 @@ Public Class FritzBox
                     Else
                         hf.LogFile("Altes Loginverfahren notwendig.")
                         formdata = "response=" & Response
-                        Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
-                        If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
-                            Dim tmp1 As String
-                            Dim tmp2 As String
-                            Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
 
-                            '<input type="hidden" name="sid" value="740a9dcc39295635">
-                            '7590: <area shape="rect" coords="30,0,135,80" href="/home/home.lua?sid=0000000000000000">
+                        Rueckgabe = Replace(hf.httpWrite(Link, formdata, FBEncoding), Chr(34), "'", , , CompareMethod.Text)
+
+                        If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+
+                            Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value='", ";", , CompareMethod.Text)
+                            Dim sTmp2 As String = "'>"
+                            Dim tmpSID As String
+                            'Dim stmp2() As String = Split("'>;'>;'>", ";", , CompareMethod.Text)
+
+                            '<input type='hidden' name='sid' value='740a9dcc39295635'>
                             '7590: <area shape='rect' coords='30,0,135,80' href='/home/home.lua?sid=0000000000000000'>
-                            tmp1 = "href='/home/home.lua?sid="
-                            tmp2 = "'>"
-                            SID = hf.StringEntnehmen(Rueckgabe, tmp1, tmp2)
+
+                            For Each sTmp As String In sTmp1
+                                tmpSID = hf.StringEntnehmen(Rueckgabe, sTmp, sTmp2)
+                                If Not SID = "-1" Then ' SID in Rückgabe nicht enthalten
+                                    If Len(SID) = Len(DefaultSID) Then
+                                        SID = tmpSID
+                                        Exit For
+                                    End If
+                                End If
+                            Next
+
                             If SID = DefaultSID Then
-                                'MsgBox("DefaultSID: " & SID)
-                            Else
-                                If Not Len(SID) = Len(DefaultSID) Then MsgBox("SID nicht gefunden")
+                                hf.LogFile("Es konnte keine gültige SessionID gefunden werden.")
                             End If
-                            'SID = hf.StringEntnehmen(Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text), "<input type='hidden' name='sid' value='", "'>")
-                            'If Not Len(SID) = Len(DefaultSID) Then
-                            '    'url += "&sid=740a9dcc39295635";
-                            '    SID = hf.StringEntnehmen(Rueckgabe, "sid=", "';")
-                            '    hf.LogFile("SID erhalten.")
-                            'Else
-                            '    hf.LogFile(Rueckgabe)
-                            'End If
+
                         Else
                             hf.LogFile("FBLogin(alt): falsches Passwort.")
                         End If
-
                     End If
 
                 ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
