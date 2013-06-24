@@ -7,19 +7,22 @@ Public Class Wählclient
     Private KontaktFunktionen As Contacts
     Private GUI As GraphicalUserInterface
     Private OlI As OutlookInterface
+    Private FBox As FritzBox
 
     Public Sub New(ByVal iniPfad As String, _
                    ByVal iniKlasse As InI, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfaceKlasse As GraphicalUserInterface, _
-                   ByVal OutlInter As OutlookInterface)
+                   ByVal OutlInter As OutlookInterface, _
+                   ByVal cFBox As FritzBox)
         Dateipfad = iniPfad
         HelferFunktionen = HelferKlasse
         KontaktFunktionen = KontaktKlasse
         GUI = InterfaceKlasse
         ini = iniKlasse
         OlI = OutlInter
+        FBox = cFBox
     End Sub
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -154,7 +157,7 @@ Public Class Wählclient
         Dim LandesVW As String  ' eigene Landesvorwahl
         Dim row(2) As String
 
-        frmWählbox = New formWählbox(Dateipfad, Direktwahl, ini, HelferFunktionen, GUI)
+        frmWählbox = New formWählbox(Dateipfad, Direktwahl, ini, HelferFunktionen, GUI, FBox)
 
         LandesVW = ini.Read(Dateipfad, "Optionen", "TBLandesVW", "0049")
         If oContact Is Nothing Then

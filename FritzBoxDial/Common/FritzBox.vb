@@ -163,18 +163,16 @@ Public Class FritzBox
 
                         If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
 
-                            Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value='", ";", , CompareMethod.Text)
-                            Dim sTmp2 As String = "'>"
+                            Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value=';?sid=", ";", , CompareMethod.Text)
                             Dim tmpSID As String
-                            'Dim stmp2() As String = Split("'>;'>;'>", ";", , CompareMethod.Text)
+                            Dim stmp2() As String = Split("'>;'>;'>;&", ";", , CompareMethod.Text)
 
                             '<input type='hidden' name='sid' value='740a9dcc39295635'>
                             '7590: <area shape='rect' coords='30,0,135,80' href='/home/home.lua?sid=0000000000000000'>
-
-                            For Each sTmp As String In sTmp1
-                                tmpSID = hf.StringEntnehmen(Rueckgabe, sTmp, sTmp2)
+                            For i As Integer = LBound(sTmp1) To UBound(sTmp1)
+                                tmpSID = hf.StringEntnehmen(Rueckgabe, sTmp1(i), stmp2(i))
                                 If Not SID = "-1" Then ' SID in Rückgabe nicht enthalten
-                                    If Len(SID) = Len(DefaultSID) Then
+                                    If Len(tmpSID) = Len(DefaultSID) Then
                                         SID = tmpSID
                                         Exit For
                                     End If
@@ -1250,6 +1248,55 @@ Public Class FritzBox
         AlleNummern = Strings.Left(AlleNummern, Len(AlleNummern) - 1)
     End Function
 #End Region
+
+#Region "Wählen"
+    Friend Function sendDialRequestToBox(ByVal DialCode As String, ByVal DialPort As String) As String
+        ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
+        ' Parameter:  dialCode (string):    zu wählende Nummer
+        '             fonanschluss (long):  Welcher Anschluss wird verwendet?
+        ' Rückgabewert (String):            Antworttext (Status)
+
+        Dim formdata As String             ' an die FritzBox zu sendende Daten
+        Dim Response As String             ' Antwort der FritzBox
+        Dim FBAddr As String             ' Adresse der FritzBox
+        Dim Link As String
+        sendDialRequestToBox = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
+        If Not SID = DefaultSID And Len(SID) = Len(DefaultSID) Then
+            'http://fritz.box/fon_num/dial_foncalls.lua?sid=acb500f28d268517&
+            'http://fritz.box/fon_num/dial_foncalls.lua?sid=439h562e101ac049&dial=**610&xhr=1&t1358234452509=nocache%20HTTP/1.1
+
+            FBAddr = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+            'Link = "http://" & FBAddr & "/fon_num/dial_foncalls.lua?sid=" & SID
+            'formdata = "&dial=**" & DialPort & "&xhr=1&t" & DialCode & "=nocache%20HTTP/1.1"
+
+
+            Link = "http://" & FBAddr & "/cgi-bin/webcm"
+            formdata = "getpage=../html/de/menus/menu2.html&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/Dial=" & DialCode & "&sid=" & SID
+
+            Response = hf.httpWrite(Link, formdata, System.Text.Encoding.Default)
+
+            ' Antwort auswerten
+            If Len(Response) > 0 Then
+                ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
+                ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
+                If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
+                    Return "Fehler!" & vbCrLf & "Login inkorrekt?"
+                Else
+                    If DialCode = "ATH" Then
+                        Return "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
+                    Else
+                        Return "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
+                    End If
+                End If
+
+            End If ' Fertig
+        Else
+            hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & SID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
+        End If
+
+    End Function
+#End Region
+
 
 #Region "SetLine in Config"
     Private Sub setline(ByVal Zeile As String)

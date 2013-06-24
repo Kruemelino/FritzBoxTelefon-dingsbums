@@ -9,6 +9,8 @@ Public Class formWählbox
 
     Private ini As Ini
     Private hf As Helfer
+    Private FBox As FritzBox
+
     Private Client As New Sockets.TcpClient()
     Private GUI As GraphicalUserInterface
     Private WithEvents TimerSchließen As System.Timers.Timer
@@ -23,7 +25,7 @@ Public Class formWählbox
     Private AnAus As Boolean ' Wird für Delegaten DlgAnAus benötigt
     Private Element As Control ' Wird für Delegaten DlgAnAus benötigt
     Private WählboxBereit As Boolean = False ' Erst wenn True, kann gewählt werden
-    Private SID As String = "-1"
+    Private SID As String = ThisAddIn.fBox.DefaultSID
     Private bDirektwahl As Boolean
     Private LandesVorwahl As String
     Private Nebenstellen As String()
@@ -39,7 +41,8 @@ Public Class formWählbox
                    ByVal Direktwahl As Boolean, _
                    ByVal iniKlasse As InI, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal InterfacesKlasse As GraphicalUserInterface)
+                   ByVal InterfacesKlasse As GraphicalUserInterface, _
+                   ByVal FritzBoxKlasse As FritzBox)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -47,6 +50,8 @@ Public Class formWählbox
         DateiPfad = FilePath ' hier wird der Dateipfad in die Klasse übergeben.
         ini = iniKlasse
         hf = HelferKlasse
+        FBox = FritzBoxKlasse
+
         GUI = InterfacesKlasse
         bDirektwahl = Direktwahl
 
@@ -148,7 +153,7 @@ Public Class formWählbox
         ' Abbruch-Button wieder verstecken
         cancelCallButton.Visible = False
         ' Abbruch ausführen
-        Me.LabelStatus.Text = sendRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex))
+        Me.LabelStatus.Text = FBox.sendDialRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex))
         ' Bemerkung: Anstatt ATH kann auch einfach ein Leerzeichen oder ein Buchstabe, oder #
         ' gesendet werden (nur keine Nummer), was alles zu einem Verbindungsabbruch führt.
         ' ATH entspricht lediglich dem AT-Kommando das früher über Port1011 des telefond für
@@ -402,7 +407,7 @@ Public Class formWählbox
         Code = Code & "#"
         ' Jetzt Code an Box bzw. Phoner senden
         hf.LogFile("Sende Nummer: " & Code & " an Dialport: " & Telefonanschluss)
-        StatusText = sendRequestToBox(Code, Telefonanschluss)
+        StatusText = FBox.sendDialRequestToBox(Code, Telefonanschluss)
 
         dialNumber = StatusText
         SetStatusText()
@@ -426,43 +431,7 @@ Public Class formWählbox
         End If
     End Sub
 
-    Private Function sendRequestToBox(ByVal DialCode As String, ByVal DialPort As String) As String
-        ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
-        ' Parameter:  dialCode (string):    zu wählende Nummer
-        '             fonanschluss (long):  Welcher Anschluss wird verwendet?
-        ' Rückgabewert (String):            Antworttext (Status)
 
-        Dim formdata As String             ' an die FritzBox zu sendende Daten
-        Dim Response As String             ' Antwort der FritzBox
-        Dim FBOX_ADR As String             ' Adresse der FritzBox
-        Dim ResponseInfo As String = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
-
-        ' http://fritz.box/fon_num/dial_foncalls.lua?sid=acb500f28d268517&
-
-
-        FBOX_ADR = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
-        formdata = "getpage=../html/de/menus/menu2.html&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/Dial=" & DialCode & "&sid=" & SID
-
-        Response = hf.httpWrite("http://" & FBOX_ADR & "/cgi-bin/webcm", formdata, System.Text.Encoding.Default)
-
-        ' Antwort auswerten
-        If Len(Response) > 0 Then
-            ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
-            ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
-            If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
-                ResponseInfo = "Fehler!" & vbCrLf & "Evtl. Passwort falsch?"
-            Else
-                If DialCode = "ATH" Then
-                    ResponseInfo = "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
-                Else
-                    ResponseInfo = "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
-                End If
-            End If
-        End If
-        ' Fertig
-
-        sendRequestToBox = ResponseInfo
-    End Function
 
 #End Region
 
@@ -541,7 +510,7 @@ Public Class formWählbox
         Element = Me.ComboBoxFon
         AnAus = False
         SetEnabled()
-        SID = ThisAddIn.fBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben
+        SID = FBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
         If SID = ThisAddIn.fBox.DefaultSID Then
             StatusText = "Login fehlgeschlagen"
             hf.LogFile("BWLogin: Login fehlgeschlagen")
