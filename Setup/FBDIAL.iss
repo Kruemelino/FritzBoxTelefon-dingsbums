@@ -1,7 +1,7 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.4.3"
+#define MyAppVersion "3.4.3.5"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "http://sourceforge.net/projects/fbdb/"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder Rückwärtssuche."
@@ -133,6 +133,16 @@ begin
   ITD_DownloadAfter(wpReady);  
 end;
 
+function OutlookVersion (Get:Integer): boolean;
+  begin
+    if StrToInt(Version) = Get then
+    begin
+      Result := true
+      exit
+    end
+    else result:= false;
+end;
+ 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
 ResultCode : Integer;
@@ -154,8 +164,14 @@ begin
 
   if  inst_VSTO2010_Redistributable then
   begin
-    ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '/q /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+    if OutlookVersion(2007) then
+    begin
+      msgbox('Installieren Sie vor der Installation bitte das VSTO2010: ' + ExpandConstant('{tmp}\vstor_redist.exe'), mbInformation, MB_OK);
+      ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+    end
+    
   end
+
   if  inst_o2003pia then
   begin
     ShellExec('open', ExpandConstant('{tmp}\O2003PIA.EXE'), '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
@@ -234,16 +250,6 @@ function GetOutlookVersion(): String;
     result:= Version;
     // Prüfen welche Version vorliegt
   end;
-end;
-
-function OutlookVersion (Get:Integer): boolean;
-  begin
-    if StrToInt(Version) = Get then
-    begin
-      Result := true
-      exit
-    end
-    else result:= false;
 end;
 
 function Outlookx64: boolean;
@@ -443,11 +449,10 @@ function InitializeSetup(): Boolean;
 
     if (tmpInt = 2003) then
     begin
-
       Result := RegKeyExists(HKLM, 'SOFTWARE\Classes\Installer\Features\9040941900063D11C8EF10054038389C');
       if not Result then
       begin
-        ResultPIA := MsgBox('{#MyAppName} benötigt Primary Interop Assemblies (PIA) für Microsoft Office ' + version + '.'#13#10' '#13#10'Soll Primary Interop Assemblies (PIA) für Microsoft Office ' + version + ' jetzt heruntergeladen werden?', mbConfirmation, MB_YESNO) = idYes;
+        ResultPIA := MsgBox('{#MyAppName} benötigt Primary Interop Assemblies (PIA) für Microsoft Office 2003.'#13#10' '#13#10'Soll Primary Interop Assemblies (PIA) für Microsoft Office 2003 jetzt heruntergeladen werden?', mbConfirmation, MB_YESNO) = idYes;
         if ResultPIA then
         begin
           ITD_AddFileSize(o2003pia_url, ExpandConstant('{tmp}\O2003PIA.EXE'),4329472);
