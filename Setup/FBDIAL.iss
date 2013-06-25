@@ -91,7 +91,7 @@ Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {ap
 Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\Funktionen.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(Funktionen.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
 ;Office 2007
-Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: OutlookVersion(2007) 
+Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: (not OutlookVersion(2003))
 
 [UninstallRun]
 ;Office 2003
@@ -99,7 +99,7 @@ Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: ru
 Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app} Flags: runhidden; Check: OutlookVersion(2003) 
 ;Office 2007
-Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: OutlookVersion(2007)
+Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003))
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
