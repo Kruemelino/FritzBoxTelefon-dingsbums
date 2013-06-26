@@ -241,10 +241,10 @@ function GetOutlookVersion(): String;
     n:= Pos('.',Version)-1;
     Versionsnr := StrToInt(Copy(Version,0,n));
     CASE Versionsnr OF
-    11: Version := '2003';
-    12: Version := '2007';
-    14: Version := '2010';
-    15: Version := '2013';
+      11: Version := '2003';
+      12: Version := '2007';
+      14: Version := '2010';
+      15: Version := '2013';
     END; // CASE
 
     result:= Version;
@@ -253,9 +253,15 @@ function GetOutlookVersion(): String;
 end;
 
 function Outlookx64: boolean;
-  var x86: String;
+  var x86, RegOutlook: String;
   begin
-    if RegQueryStringValue(HKLM,'SOFTWARE\Microsoft\Office\14.0\Outlook','Bitness', x86) then
+
+    CASE StrToInt(GetOutlookVersion) OF
+      2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
+      2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
+    END; // CASE
+
+    if RegQueryStringValue(HKLM,RegOutlook,'Bitness', x86) then
     begin
       if x86 = 'x64' then
       begin    
