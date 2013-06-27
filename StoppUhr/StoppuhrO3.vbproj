@@ -17,7 +17,7 @@
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
     <DelaySign>false</DelaySign>
@@ -109,7 +109,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\FritzBoxDial.pfx" />
+    <None Include="..\..\FritzBoxDial.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,7 +32,7 @@
     <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <!--
       VSTO_TrustAssembliesLocation
         If "true", VSTO gives the project output full trust in user-level policy when the project is built.
@@ -239,7 +239,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="..\Common\Wählclient.vb" />
-    <None Include="..\..\FritzBoxDial.pfx" />
+    <None Include="..\..\..\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
     </None>
