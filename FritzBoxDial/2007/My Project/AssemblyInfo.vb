@@ -24,7 +24,7 @@ Imports System.Security
 <Assembly: ComVisible(False)> 
 
 'Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-<Assembly: Guid("6850337a-6786-4664-a2aa-17da834fd50e")> 
+<Assembly: Guid("411894A1-05D5-4F89-B336-4A4175D5E537")> 
 
 ' Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 '
@@ -37,6 +37,6 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.3.4.0")> 
-<Assembly: AssemblyFileVersion("3.3.4.0")> 
+<Assembly: AssemblyVersion("3.3.4.6")> 
+<Assembly: AssemblyFileVersion("3.3.4.6")> 
 <Assembly: NeutralResourcesLanguageAttribute("de-DE")> 
