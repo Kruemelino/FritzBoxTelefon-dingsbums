@@ -40,7 +40,7 @@
     </ManifestKeyFile>
     <ManifestCertificateThumbprint>12452E7D1CCA183074025696EC1767396ACE2AE3</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -288,7 +288,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="..\Common\Wählclient.vb" />
-    <None Include="..\..\FritzBoxDial.pfx" />
+    <None Include="..\..\..\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
     </None>
