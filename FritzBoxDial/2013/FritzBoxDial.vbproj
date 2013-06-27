@@ -34,9 +34,9 @@
     <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>18BF30988149AFA6AAA02050BAAF00FBA6C0895A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>09F455E2CBEE72E2C7FB95D8422F6430BB3F8AB0</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -292,7 +292,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="..\Common\Wählclient.vb" />
-    <None Include="..\..\FritzBoxDial.pfx" />
+    <None Include="..\..\..\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
     </None>
