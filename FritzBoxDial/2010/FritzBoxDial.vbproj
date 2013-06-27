@@ -38,7 +38,7 @@
     <SignManifests>true</SignManifests>
     <ManifestKeyFile>
     </ManifestKeyFile>
-    <ManifestCertificateThumbprint>4F2CCB71CC4A2C0ED548A4D60542E7EE3049B6F8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>12452E7D1CCA183074025696EC1767396ACE2AE3</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
@@ -122,7 +122,8 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <NoWarn>42353,42354,42355</NoWarn>
@@ -153,7 +154,8 @@
     <DebugType>None</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <NoWarn>42353,42354,42355</NoWarn>
