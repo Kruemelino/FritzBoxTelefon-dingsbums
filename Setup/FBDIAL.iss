@@ -1,13 +1,13 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.4.3.5"
+#define MyAppVersion "3.4.3.6"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "http://sourceforge.net/projects/fbdb/"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder Rückwärtssuche."
 
 [Setup]
-AppId={{7BEF5A7A-282A-4915-8557-5816183FB56C}}
+AppId={{411894A1-05D5-4F89-B336-4A4175D5E537}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
@@ -18,7 +18,7 @@ DefaultDirName={code:DefDirRoot}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputBaseFilename=FBDB
-Compression=lzma
+Compression=lzma2
 SolidCompression=yes
 PrivilegesRequired=none
 
@@ -83,23 +83,22 @@ Source: "Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll"; DestDir: "{a
 
 [Run]
 ;Office 2003
-
-Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\FritzBoxDial.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial mit FullTrust"""; WorkingDir: {app}; Flags: runhidden ; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\PopupNotifier.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(PopupNotifier.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\StoppUhr.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(StoppUhr.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\Funktionen.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(Funktionen.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
+Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Start..."
+Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\FritzBoxDial.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial mit FullTrust"""; WorkingDir: {app}; Flags: runhidden ; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: FritzBoxDial.dll..."
+Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\PopupNotifier.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(PopupNotifier.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopupNotifier.dll..."
+Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\StoppUhr.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(StoppUhr.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: StoppUhr.dll..."
+Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\Funktionen.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(Funktionen.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
+Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Ende!"
 ;Office 2007
-Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: (not OutlookVersion(2003))
+Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: (not OutlookVersion(2003)); StatusMsg: "Installiere Fritz!Box Telefon-Dingsbums.vsto..."
 
 [UninstallRun]
 ;Office 2003
-Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003)
-Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app} Flags: runhidden; Check: OutlookVersion(2003) 
+Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Start..."
+Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Entferne Berechtigung..."
+Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app} Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Ende!" 
 ;Office 2007
-Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003))
+Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003)); StatusMsg: "Denstalliere Fritz!Box Telefon-Dingsbums.vsto..."
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
@@ -109,23 +108,20 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 [Code]
 var Versionspfad:String;
 var Version:String;
+
 var inst_dotnetfx40client:boolean;
 var inst_dotnetfx35:boolean;
+var inst_dotnetfx35SP1:boolean;
 var inst_VSTO2005SE_Redistributable:boolean;
 var inst_VSTO2010_Redistributable:boolean;
 var inst_o2003pia:boolean;
 
 const	dotnetfx40client_url = 'http://download.microsoft.com/download/7/B/6/7B629E05-399A-4A92-B5BC-484C74B5124B/dotNetFx40_Client_setup.exe';
 const dotnetfx35_url = 'http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe';
-//const dotnetfx35sp1_url = 'http://download.microsoft.com/download/0/6/1/061f001c-8752-4600-a198-53214c69b51f/dotnetfx35setup.exe';
-
+const dotnetfx35sp1_url = 'http://download.microsoft.com/download/0/6/1/061f001c-8752-4600-a198-53214c69b51f/dotnetfx35setup.exe';
 const VSTO2005SE_Redistributable_url = 'http://download.microsoft.com/download/1/6/b/16ba60f5-d478-4d22-a695-203003494477/vstor.exe';
 const VSTO2010_Redistributable_url = 'http://go.microsoft.com/fwlink/?LinkId=158918';
-
 const o2003pia_url = 'http://download.microsoft.com/download/8/3/a/83a40b5a-5050-4940-bcc4-7943e1e59590/O2003PIA.EXE';
-//const o2007pia_url = 'http://download.microsoft.com/download/e/1/d/e1df4622-5f6c-4fb9-845b-38d009cc1188/PrimaryInteropAssembly.exe';
-//const o2010pia_url = 'http://download.microsoft.com/download/C/1/D/C1D6DBBB-700D-4669-98CF-820AC3AE8E55/PIARedist.exe';
-
 
 procedure InitializeWizard();
 begin
@@ -140,7 +136,7 @@ function OutlookVersion (Get:Integer): boolean;
       Result := true
       exit
     end
-    else result:= false;
+    else Result:= false;
 end;
  
 function PrepareToInstall(var NeedsRestart: Boolean): String;
@@ -148,13 +144,17 @@ var
 ResultCode : Integer;
 begin
   if inst_dotnetfx40client then
-  begin
+	begin
     ShellExec('open', ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe'), '/q /passive /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
   end
 
   if  inst_dotnetfx35 then
   begin
     ShellExec('open', ExpandConstant('{tmp}\dotNetFx35setup.exe'), '/qb /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+  end
+	if  inst_dotnetfx35 then
+  begin
+    ShellExec('open', ExpandConstant('{tmp}\dotNetFx35setupSP1.exe'), '/qb /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
   end
 
   if  inst_VSTO2005SE_Redistributable then
@@ -164,17 +164,13 @@ begin
 
   if  inst_VSTO2010_Redistributable then
   begin
-    if OutlookVersion(2007) then
-    begin
-      msgbox('Installieren Sie vor der Installation bitte das VSTO2010: ' + ExpandConstant('{tmp}\vstor_redist.exe'), mbInformation, MB_OK);
-      ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
-    end
-    
+    ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '/q /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
   end
 
   if  inst_o2003pia then
   begin
-    ShellExec('open', ExpandConstant('{tmp}\O2003PIA.EXE'), '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
+    MsgBox('Die Primary Interop Assemblies (PIA) für Microsoft Office 2003 können nicht automatisch installiert werden. Bitte Installieren Sie diese nach der Installation von Hand.', mbInformation, MB_OK);
+		ShellExec('open', ExpandConstant('{tmp}\O2003PIA.EXE'), '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
   end
 end;
 
@@ -360,23 +356,17 @@ end;
 
 function InitializeSetup(): Boolean;
   var
-    strNET, strNET2:String;
-    mapped  : String;
+    strNET, strNET2, strERR:String;
     tmpInt:Integer;
     VSTORFeature:Cardinal;
-    //ErrorCode: Integer;
-    ResultDNET : Boolean;
-    ResultVSTO : Boolean;
-    ResultPIA : Boolean;
   begin
     Version:= GetOutlookVersion;
     tmpInt:= StrToInt(Version);
     Result := true;
+
     CASE tmpInt OF
       2003: 
       begin 
-        strNET := 'v3.5';
-        strNET2 := '.NET Framework 3.5';
         if CaspolPath('') = 'false' then
         begin
           Result := false
@@ -396,9 +386,8 @@ function InitializeSetup(): Boolean;
       end; 
       2007, 2010, 2013: 
       begin 
-        strNET := 'v4\Client';
-        strNET2 := '.NET Framework 4.0 Client Profile';
-        // Prüfe auf VSTO 4.0
+
+        // Prüfe auf VSTO 2010
         if Outlookx64 then 
         begin 
           if RegQueryDWordValue(HKLM,'SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
@@ -427,71 +416,110 @@ function InitializeSetup(): Boolean;
             Result := false
           end 
         end
-             
+     
+        
         if not Result then 
         begin
           Result:=false;
           if (tmpInt = 2003) then
-          begin
-            ResultVSTO := MsgBox('{#MyAppName} benötigt Microsoft Visual Studio 2005 Tools for Office Second Edition Runtime (VSTO 2005 SE).'#13#10' '#13#10'Soll Microsoft Visual Studio 2005 Tools for Office Second Edition Runtime (VSTO 2005 SE) jetzt heruntergeladen werden?', mbConfirmation, MB_YESNO) = idYes;
-            if not(ResultVSTO = false) then
             begin
-                ITD_AddFileSize(VSTO2005SE_Redistributable_url, ExpandConstant('{tmp}\vstor.exe'),1333432);
-                result := true
-                inst_VSTO2005SE_Redistributable := true;
+              inst_VSTO2005SE_Redistributable := true;
             end
           else
-            ResultVSTO := MsgBox('{#MyAppName} benötigt Microsoft Visual Studio 2010-Tools für Office (VSTO 2010).'#13#10' '#13#10'Soll Microsoft Visual Studio 2010-Tools für Office (VSTO 2010) jetzt heruntergeladen werden?', mbConfirmation, MB_YESNO) = idYes;
-            if not(ResultVSTO = false) then
             begin
-                ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
-                result := true
-                inst_VSTO2010_Redistributable := true;
+              inst_VSTO2010_Redistributable := true;
             end
-          end
         end 
       end;  
     END;
 
-    if (tmpInt = 2003) then
+    if tmpInt = 2003 then
     begin
+		  strNET := 'v3.5';
+      strNET2 := '.NET Framework 3.5';
+			if not IsDotNetDetected(strNet, 0) then
+			begin 
+        inst_dotnetfx35 := true;
+				inst_dotnetfx35SP1 := true;					
+			end	
+			else if not IsDotNetDetected(strNet, 1) then
+			begin
+				inst_dotnetfx35SP1 := true;
+			end
+			//PIA
       Result := RegKeyExists(HKLM, 'SOFTWARE\Classes\Installer\Features\9040941900063D11C8EF10054038389C');
       if not Result then
       begin
-        ResultPIA := MsgBox('{#MyAppName} benötigt Primary Interop Assemblies (PIA) für Microsoft Office 2003.'#13#10' '#13#10'Soll Primary Interop Assemblies (PIA) für Microsoft Office 2003 jetzt heruntergeladen werden?', mbConfirmation, MB_YESNO) = idYes;
-        if ResultPIA then
-        begin
-          ITD_AddFileSize(o2003pia_url, ExpandConstant('{tmp}\O2003PIA.EXE'),4329472);
-          result := true
-          inst_o2003pia := true
-        end
+        inst_o2003pia := true;
       end;
-    end       
-    
-    if not IsDotNetDetected(strNet, 0) then 
+    end
+		else
+		begin
+			strNET := 'v4\Client';
+      strNET2 := '.NET Framework 4.0 Client Profile';
+			if not IsDotNetDetected(strNet, 0) then
+			begin
+			  inst_dotnetfx40client := true;
+			end 
+		end			 
+
+    if Not Result then
     begin
-      ResultDNET := MsgBox('{#MyAppName} benötigt Microsoft ' + strNET2 + ' .'#13#10' '#13#10'Soll Microsoft ' + strNET2 + ' jetzt heruntergeladen werden?', mbConfirmation, MB_YESNO) = idYes;
-      if not ResultDNET then
+      strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
+      if inst_dotnetfx35 or inst_dotnetfx40client then
+      begin
+        strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10''
+      end
+			if inst_dotnetfx35SP1 then
+      begin
+        strERR := strERR+ 'Microsoft .NET Framework 3.5 Service Pack 1'#13#10''
+      end
+      if inst_VSTO2005SE_Redistributable then
+      begin
+        strERR := strERR + 'Microsoft Visual Studio 2005 Tools for Office Second Edition Runtime (VSTO 2005 SE)'#13#10''
+      end
+      if inst_VSTO2010_Redistributable then
+      begin
+        strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10''
+      end
+      if inst_o2003pia then
+      begin
+        strERR := strERR + 'Primary Interop Assemblies (PIA) für Microsoft Office 2003'#13#10''
+      end
+      strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
+
+
+      if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
         begin
-          Result:=false;
-        end
-      else
+        if inst_dotnetfx35 or inst_dotnetfx40client then
         begin
-          //Result:=false;
           if strNET = 'v3.5' then
             begin
-              //ShellExec('open', dotnetfx35_url, '','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
-              ITD_AddFileSize(dotnetfx35_url, ExpandConstant('{tmp}\dotNetFx35setup.exe'),2869264);
-              result := true
-              inst_dotnetfx35 := true
+            ITD_AddFileSize(dotnetfx35_url, ExpandConstant('{tmp}\dotNetFx35setup.exe'),2869264);
             end 
           else if strNET = 'v4\Client' then 
             begin
-              ITD_AddFileSize(dotnetfx40client_url, ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe'),43000680);
-              result := true
-              inst_dotnetfx40client := true
-            end
+            ITD_AddFileSize(dotnetfx40client_url, ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe'),43000680);
+          end
         end
+        if inst_dotnetfx35SP1 then
+				begin
+					ITD_AddFileSize(dotnetfx35sp1_url, ExpandConstant('{tmp}\dotNetFx35setupSP1.exe'),2961408)
+				end
+        if inst_VSTO2005SE_Redistributable then
+        begin
+          ITD_AddFileSize(VSTO2005SE_Redistributable_url, ExpandConstant('{tmp}\vstor.exe'),1333432);
+        end
+        if inst_VSTO2010_Redistributable then
+        begin
+          ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
+        end
+        if inst_o2003pia then
+        begin
+          ITD_AddFileSize(o2003pia_url, ExpandConstant('{tmp}\O2003PIA.EXE'),4329472);
+        end
+        Result := true
+      end
     end
 end;
 
