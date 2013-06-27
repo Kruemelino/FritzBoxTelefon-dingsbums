@@ -40,6 +40,7 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+*.pfx
 
 # Build results
 [Dd]ebug/
@@ -102,7 +103,6 @@ publish
 sql
 TestResults
 *.Cache
-*.pfx
 ClientBin
 stylecop.*
 ~$*
