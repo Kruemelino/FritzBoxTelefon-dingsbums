@@ -19,6 +19,7 @@
 
     Public Sub New()
         Dim UseAnrMon As Boolean
+
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
@@ -56,6 +57,7 @@
             C_WählClient = New Wählclient(DateiPfad, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox)
 
             UseAnrMon = CBool(C_ini.Read(DateiPfad, "Optionen", "CBUseAnrMon", "True"))
+
             C_AnrMon = New AnrufMonitor(DateiPfad, C_RWS, UseAnrMon, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI)
 
             C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
