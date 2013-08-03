@@ -1276,20 +1276,20 @@ Public Class FritzBox
             Response = hf.httpWrite(Link, formdata, System.Text.Encoding.Default)
 
             ' Antwort auswerten
-            If Len(Response) > 0 Then
-                ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
-                ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
-                If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
-                    Return "Fehler!" & vbCrLf & "Login inkorrekt?"
+            'If Len(Response) > 0 Then
+            ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
+            ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
+            If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
+                Return "Fehler!" & vbCrLf & "Login inkorrekt?"
+            Else
+                If DialCode = "ATH" Then
+                    Return "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
                 Else
-                    If DialCode = "ATH" Then
-                        Return "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
-                    Else
-                        Return "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
-                    End If
+                    Return "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
                 End If
+            End If
 
-            End If ' Fertig
+            'End If ' Fertig
         Else
             hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & SID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
         End If
