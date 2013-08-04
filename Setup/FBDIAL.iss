@@ -77,9 +77,10 @@ Source: "2013\Fritz!Box Telefon-Dingsbums.vsto"; DestDir: "{app}"; Flags: ignore
 Source: "2013\Funktionen.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
 Source: "2013\PopupNotifier.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
 Source: "2013\Stoppuhr.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
-;not Office 2003
+;Office 2007 & 2010 & 2013
 Source: "Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: (not OutlookVersion(2003))
 Source: "Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: (not OutlookVersion(2003))
+
 
 [Run]
 ;Office 2003
@@ -89,7 +90,7 @@ Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {ap
 Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\StoppUhr.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(StoppUhr.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: StoppUhr.dll..."
 Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file {app}\Funktionen.dll -noname -noversion  FullTrust -n ""FritzBoxDial"" -description ""FritzBoxDial(Funktionen.dll) mit FullTrust"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Ende!"
-;Office 2007
+;Office 2007 & 2010 & 2013
 Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: (not OutlookVersion(2003)); StatusMsg: "Installiere Fritz!Box Telefon-Dingsbums.vsto..."
 
 [UninstallRun]
@@ -97,8 +98,8 @@ Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Di
 Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Start..."
 Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Entferne Berechtigung..."
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app} Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Ende!" 
-;Office 2007
-Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003)); StatusMsg: "Denstalliere Fritz!Box Telefon-Dingsbums.vsto..."
+;Office 2007 & 2010 & 2013
+Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003)); StatusMsg: "Deinstalliere Fritz!Box Telefon-Dingsbums.vsto..."
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
@@ -224,7 +225,7 @@ begin
         success := success and (release >= 378389);
     end;
 
-    result := success and (install = 1) and (serviceCount >= service);
+    Result := success and (install = 1) and (serviceCount >= service);
 end;
 
 function GetOutlookVersion(): String;
@@ -243,7 +244,7 @@ function GetOutlookVersion(): String;
       15: Version := '2013';
     END; // CASE
 
-    result:= Version;
+    Result:= Version;
     // Prüfen welche Version vorliegt
   end;
 end;
@@ -296,7 +297,7 @@ begin
       else
       begin
         MsgBox('Der Registryeintrag InstallRoot wurde nicht gefunden.', mbError, MB_OK);
-        result := 'false'
+        Result := 'false'
       end
     end
     else
@@ -330,13 +331,13 @@ begin
         else
         begin
           MsgBox('Die Datei VSTOInstaller.exe wurde nicht gefunden.', mbError, MB_OK);
-          result := 'false' 
+          Result := 'false' 
         end 
       end
     else
 			begin
         MsgBox('Der Registryeintrag InstallerPath wurde nicht gefunden.', mbError, MB_OK);
-        result := 'false'
+        Result := 'false'
     end
 		
 end;
