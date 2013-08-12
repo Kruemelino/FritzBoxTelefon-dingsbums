@@ -153,12 +153,13 @@ Public Class formWählbox
         ' Abbruch-Button wieder verstecken
         cancelCallButton.Visible = False
         ' Abbruch ausführen
-        Me.LabelStatus.Text = FBox.sendDialRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex))
+        Me.LabelStatus.Text = FBox.sendDialRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
         ' Bemerkung: Anstatt ATH kann auch einfach ein Leerzeichen oder ein Buchstabe, oder #
         ' gesendet werden (nur keine Nummer), was alles zu einem Verbindungsabbruch führt.
         ' ATH entspricht lediglich dem AT-Kommando das früher über Port1011 des telefond für
         ' das Auflegen benutzt wurde, daher hab ich es hier verwendet, auch wenn es gar nicht
         ' ausgewertet wird.
+        ' Kruemelino 130812: ATH wird nicht mehr verwendet.
         TimerSchließen.Stop()
         ListTel.ClearSelection() ' Ein erneutes Wählen ermöglichen
     End Sub
@@ -407,7 +408,7 @@ Public Class formWählbox
         Code = Code & "#"
         ' Jetzt Code an Box bzw. Phoner senden
         hf.LogFile("Sende Nummer: " & Code & " an Dialport: " & Telefonanschluss)
-        StatusText = FBox.sendDialRequestToBox(Code, Telefonanschluss)
+        StatusText = FBox.sendDialRequestToBox(Code, Telefonanschluss, False)
 
         dialNumber = StatusText
         SetStatusText()

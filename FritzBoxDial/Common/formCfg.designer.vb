@@ -909,7 +909,6 @@ Partial Class formCfg
         Me.TelList.Location = New System.Drawing.Point(1, 19)
         Me.TelList.MultiSelect = False
         Me.TelList.Name = "TelList"
-        Me.TelList.ReadOnly = True
         Me.TelList.RowHeadersVisible = False
         Me.TelList.RowTemplate.Height = 18
         Me.TelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -921,7 +920,6 @@ Partial Class formCfg
         Me.ColumnStandardTelefon.HeaderText = "*"
         Me.ColumnStandardTelefon.MinimumWidth = 25
         Me.ColumnStandardTelefon.Name = "ColumnStandardTelefon"
-        Me.ColumnStandardTelefon.ReadOnly = True
         Me.ColumnStandardTelefon.ToolTipText = "Standardtelefon"
         Me.ColumnStandardTelefon.Width = 25
         '
@@ -931,7 +929,6 @@ Partial Class formCfg
         Me.Nr.HeaderText = "Nr."
         Me.Nr.MinimumWidth = 25
         Me.Nr.Name = "Nr"
-        Me.Nr.ReadOnly = True
         Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Nr.Width = 25
@@ -941,7 +938,6 @@ Partial Class formCfg
         Me.dialCode.HeaderText = "ID"
         Me.dialCode.MinimumWidth = 25
         Me.dialCode.Name = "dialCode"
-        Me.dialCode.ReadOnly = True
         Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
@@ -952,7 +948,6 @@ Partial Class formCfg
         Me.Telefonname.HeaderText = "Telefonname"
         Me.Telefonname.MinimumWidth = 75
         Me.Telefonname.Name = "Telefonname"
-        Me.Telefonname.ReadOnly = True
         Me.Telefonname.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Telefonname.Width = 76
@@ -962,7 +957,6 @@ Partial Class formCfg
         Me.Typ.HeaderText = "Typ"
         Me.Typ.MinimumWidth = 50
         Me.Typ.Name = "Typ"
-        Me.Typ.ReadOnly = True
         Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Typ.Width = 50
         '
@@ -971,7 +965,6 @@ Partial Class formCfg
         Me.InNr.HeaderText = "Eingehende Nummer"
         Me.InNr.MinimumWidth = 70
         Me.InNr.Name = "InNr"
-        Me.InNr.ReadOnly = True
         Me.InNr.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.InNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.InNr.Width = 70
@@ -981,7 +974,6 @@ Partial Class formCfg
         Me.OutNr.HeaderText = "Ausgehende Nummer"
         Me.OutNr.MinimumWidth = 70
         Me.OutNr.Name = "OutNr"
-        Me.OutNr.ReadOnly = True
         Me.OutNr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.OutNr.Width = 70
@@ -995,7 +987,6 @@ Partial Class formCfg
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
-        Me.Eingehend.ReadOnly = True
         Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Eingehend.Width = 65
@@ -1009,7 +1000,6 @@ Partial Class formCfg
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
-        Me.Ausgehend.ReadOnly = True
         Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Ausgehend.Width = 65
@@ -1023,7 +1013,6 @@ Partial Class formCfg
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
-        Me.Gesamt.ReadOnly = True
         Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Gesamt.Width = 65

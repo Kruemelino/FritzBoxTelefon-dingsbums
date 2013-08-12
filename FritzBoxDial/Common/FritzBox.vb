@@ -317,7 +317,7 @@ Public Class FritzBox
         Dim myurl As String
         'MSNs emitteln
 
-        myurl = "http://" & FBOX_ADR & "/cgi-bin/webcm?getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices&sid=" & SID
+        myurl = "http://" & FBOX_ADR & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/menus/menu2.htmlvar:lang=de&var:menu=fon&var:pagename=fondevices"
         If Rausschreiben Then
             If formConfig.CBTelefonDatei.Checked Then
                 myurl = formConfig.TBTelefonDatei.Text
@@ -1250,7 +1250,7 @@ Public Class FritzBox
 #End Region
 
 #Region "Wählen"
-    Friend Function sendDialRequestToBox(ByVal DialCode As String, ByVal DialPort As String) As String
+    Friend Function sendDialRequestToBox(ByVal DialCode As String, ByVal DialPort As String, Hangup As Boolean) As String
         ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
         ' Parameter:  dialCode (string):    zu wählende Nummer
         '             fonanschluss (long):  Welcher Anschluss wird verwendet?
@@ -1260,6 +1260,8 @@ Public Class FritzBox
         Dim Response As String             ' Antwort der FritzBox
         Dim FBAddr As String             ' Adresse der FritzBox
         Dim Link As String
+        Dim DialCommand As String = CStr(IIf(Hangup, "Hangup", "Dial=" & DialCode))
+
         sendDialRequestToBox = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
         If Not SID = DefaultSID And Len(SID) = Len(DefaultSID) Then
             'http://fritz.box/fon_num/dial_foncalls.lua?sid=acb500f28d268517&
@@ -1269,27 +1271,32 @@ Public Class FritzBox
             'Link = "http://" & FBAddr & "/fon_num/dial_foncalls.lua?sid=" & SID
             'formdata = "&dial=**" & DialPort & "&xhr=1&t" & DialCode & "=nocache%20HTTP/1.1"
 
-
+            'Beginn Änderungen Pikachu 06.08.13
             Link = "http://" & FBAddr & "/cgi-bin/webcm"
-            formdata = "getpage=../html/de/menus/menu2.html&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/Dial=" & DialCode & "&sid=" & SID
+            formdata = "sid=" & SID & "&getpage=../html/de/menus/menu2.html"
+            Response = hf.httpWrite(Link, formdata, System.Text.Encoding.Default)
+            If Response = vbNullString Then
+                formdata = "sid=" & SID & "&getpage=../html/en/menus/menu2.html"
+            End If
+            formdata = formdata & "&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & DialCommand
+            'Ende Änderungen Pikachu 06.08.13
 
             Response = hf.httpWrite(Link, formdata, System.Text.Encoding.Default)
 
             ' Antwort auswerten
-            'If Len(Response) > 0 Then
-            ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
-            ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
-            If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
-                Return "Fehler!" & vbCrLf & "Login inkorrekt?"
-            Else
-                If DialCode = "ATH" Then
-                    Return "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
+            If Len(Response) > 0 Then
+                ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
+                ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
+                If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
+                    Return "Fehler!" & vbCrLf & "Login inkorrekt?"
                 Else
-                    Return "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
+                    If Hangup Then
+                        Return "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
+                    Else
+                        Return "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
+                    End If
                 End If
-            End If
-
-            'End If ' Fertig
+            End If ' Fertig
         Else
             hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & SID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
         End If
@@ -1297,7 +1304,34 @@ Public Class FritzBox
     End Function
 #End Region
 
+#Region "Journalimort"
 
+    Public Function DownloadAnrListe() As String
+        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+        Dim Link(1) As String
+        'Dim fw550 As Boolean
+        Dim ReturnString As String = vbNullString
+
+        SID = FBLogin(True)
+        If Not SID = DefaultSID Then
+            Link(0) = "http://" & FBAddr & "/fon_num/foncalls_list.lua?sid=" & SID
+            Link(1) = "http://" & FBAddr & "/fon_num/foncalls_list.lua?sid=" & SID & "&csv="
+
+            ReturnString = hf.httpRead(Link(0), System.Text.Encoding.GetEncoding(ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "utf-8")))
+            If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
+                Link(0) = "http://" & FBAddr & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
+                hf.httpRead(Link(0), System.Text.Encoding.GetEncoding(ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "utf-8")))
+                Link(1) = "http://" & FBAddr & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
+            End If
+            ReturnString = hf.httpRead(Link(1), System.Text.Encoding.GetEncoding(ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "utf-8")))
+        Else
+            hf.FBDB_MsgBox("Der Login in die Fritz!Box ist fehlgeschlagen" & vbCrLf & vbCrLf & "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "DownloadAnrListe_DoWork")
+            hf.LogFile("Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich. (DownloadAnrListe_DoWork)")
+        End If
+        Return ReturnString
+    End Function
+
+#End Region
 #Region "SetLine in Config"
     Private Sub setline(ByVal Zeile As String)
         If Rausschreiben Then formConfig.AddLine(Zeile)
