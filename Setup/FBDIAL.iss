@@ -1,15 +1,15 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.4.3.7"
+#define MyAppVersion "3.4.3.8"
 #define MyAppPublisher "Kruemelino"
-#define MyAppURL "http://sourceforge.net/projects/fbdb/"
+#define MyAppURL "http://www.ip-phone-forum.de/showthread.php?t=237086"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder Rückwärtssuche."
 #define MyGUID "F52ED22F-E221-4295-85C3-E69CD4A95BD5"
 #define MyAppNameKurz "FritzBoxDial"
 
 [Setup]
-AppId={#myGUID}
+AppId={{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
@@ -22,48 +22,28 @@ DisableProgramGroupPage=yes
 OutputBaseFilename=FBDB
 Compression=lzma2
 SolidCompression=yes
-PrivilegesRequired=none
 
 [Languages]
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Registry]
 ;Office 2003
-Root: HKLM; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: dword; ValueName: "CommandLineSafe"; ValueData: "1"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Description"; ValueData: "{#MyAppDescription}"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName"; ValueData: "{#MyAppName}"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: dword; ValueName: "LoadBehavior"; ValueData: "3"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest"; ValueData: "{app}\{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
 
-Root: HKLM; Subkey: "Software\Classes\{#MyAppNameKurz}\CLSID"; Flags: uninsdeletekey; ValueType: string; ValueData: {code:Test}; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}"; Flags: uninsdeletekey; ValueType: string; ValueData: {#MyAppDescription}; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueData: "%CommonProgramFiles%\Microsoft Shared\VSTO\8.0\AddinLoader.dll"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestLocation"; ValueData: "{app}\"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestName"; ValueData: "{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ThreadingModel"; ValueData: "Both"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\ProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\Programmable"; Flags: uninsdeletekey; ValueType: string; ValueData: ""; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{{F52ED22F-E221-4295-85C3-E69CD4A95BD5}}\VersionIndependentProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
+Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: dword; ValueName: "CommandLineSafe"; ValueData: "1"; Check: OutlookVersion(2003)
+Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Description"; ValueData: "{#MyAppDescription}"; Check: OutlookVersion(2003)
+Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName"; ValueData: "{#MyAppName}"; Check: OutlookVersion(2003)
+Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: dword; ValueName: "LoadBehavior"; ValueData: "3"; Check: OutlookVersion(2003)
+Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest"; ValueData: "{app}\{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
 
-;Root: HKCU; Subkey: "Software\Classes\{#MyAppNameKurz}\CLSID"; Flags: uninsdeletekey; ValueType: string; ValueData: {{#myGUID}}; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}"; Flags: uninsdeletekey; ValueType: string; ValueData: {#MyAppDescription}; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueData: "%CommonProgramFiles%\Microsoft Shared\VSTO\8.0\AddinLoader.dll"; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestLocation"; ValueData: "{app}\"; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestName"; ValueData: "{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ThreadingModel"; ValueData: "Both"; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\ProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\Programmable"; Flags: uninsdeletekey; ValueType: string; ValueData: ""; Check: OutlookVersion(2003)
-;Root: HKCU; Subkey: "Software\Classes\CLSID\{{#myGUID}}\VersionIndependentProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
-
-;Root: HKCR; Subkey: "{#MyAppNameKurz}\CLSID"; Flags: uninsdeletekey; ValueType: string; ValueData: {{#myGUID}}; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}"; Flags: uninsdeletekey; ValueType: string; ValueData: {#MyAppDescription}; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueData: "%CommonProgramFiles%\Microsoft Shared\VSTO\8.0\AddinLoader.dll"; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestLocation"; ValueData: "{app}\"; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestName"; ValueData: "{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ThreadingModel"; ValueData: "Both"; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\ProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\Programmable"; Flags: uninsdeletekey; ValueType: string; ValueData: ""; Check: OutlookVersion(2003)
-;Root: HKCR; Subkey: "CLSID\{{#myGUID}}\VersionIndependentProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\{#MyAppNameKurz}\CLSID"; Flags: uninsdeletekey; ValueType: string; ValueData: {code:CorrectGUID}; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}"; Flags: uninsdeletekey; ValueType: string; ValueData: {#MyAppDescription}; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cf}\Microsoft Shared\VSTO\8.0\AddinLoader.dll"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestLocation"; ValueData: "{app}\"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestName"; ValueData: "{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ThreadingModel"; ValueData: "Both"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\ProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\Programmable"; Flags: uninsdeletekey; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\VersionIndependentProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
 
 ;Office 2007
 Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FBDB.FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Description"; ValueData: "{#MyAppDescription}"; Check: OutlookVersion(2007)
@@ -124,11 +104,6 @@ Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {win}\Microsoft.
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\StoppUhr.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (StoppUhr.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: StoppUhr.dll..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\Funktionen.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (Funktionen.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
 
-  ;Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1.1. -zone MyComputer FullTrust -n {#MyAppNameKurz}"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
-  ;Filename: {code:CaspolPath}; Parameters: "-machine -addgroup {#MyAppNameKurz} -zone MyComputer FullTrust -n {{#myGUID}}"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
-  ;Filename: {code:CaspolPath}; Parameters: "-machine -addgroup {{#myGUID}} -url ""{app}\*"" FullTrust  -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
-
-
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Ende!"
 
 ;Filename: {app}\setcaspol.exe; Parameters: "install;{code:CaspolPath};{app};500"; WorkingDir: {app}; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "SetCaspol : Install"
@@ -185,9 +160,9 @@ function OutlookVersion (Get:Integer): boolean;
     else Result:= false;
 end;
 
-function test: String;
+function CorrectGUID(dummy: String): String;
 begin
-  Result := '{' + {#myGUID} +  '}'
+  Result := '{' + '{#myGUID}' +  '}'
 end; 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
