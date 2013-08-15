@@ -317,7 +317,7 @@ Public Class FritzBox
         Dim myurl As String
         'MSNs emitteln
 
-        myurl = "http://" & FBOX_ADR & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/menus/menu2.htmlvar:lang=de&var:menu=fon&var:pagename=fondevices"
+        myurl = "http://" & FBOX_ADR & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         If Rausschreiben Then
             If formConfig.CBTelefonDatei.Checked Then
                 myurl = formConfig.TBTelefonDatei.Text

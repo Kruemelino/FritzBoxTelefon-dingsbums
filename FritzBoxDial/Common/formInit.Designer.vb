@@ -23,6 +23,8 @@ Partial Class formInit
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PanelUserEingabe = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TBFBUSER = New System.Windows.Forms.TextBox()
         Me.BSchließen = New System.Windows.Forms.Button()
         Me.BFertigstellen = New System.Windows.Forms.Button()
         Me.LTelListe = New System.Windows.Forms.Label()
@@ -40,8 +42,6 @@ Partial Class formInit
         Me.TBFBPW = New System.Windows.Forms.TextBox()
         Me.LFBAdr = New System.Windows.Forms.Label()
         Me.TBFritzBoxAdr = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.TBFBUSER = New System.Windows.Forms.TextBox()
         Me.PanelUserEingabe.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -73,8 +73,27 @@ Partial Class formInit
         Me.PanelUserEingabe.Size = New System.Drawing.Size(366, 395)
         Me.PanelUserEingabe.TabIndex = 0
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Enabled = False
+        Me.Label1.Location = New System.Drawing.Point(123, 90)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(118, 13)
+        Me.Label1.TabIndex = 36
+        Me.Label1.Text = "Fritz!Box Benutzername"
+        '
+        'TBFBUSER
+        '
+        Me.TBFBUSER.Enabled = False
+        Me.TBFBUSER.Location = New System.Drawing.Point(16, 87)
+        Me.TBFBUSER.Name = "TBFBUSER"
+        Me.TBFBUSER.Size = New System.Drawing.Size(100, 20)
+        Me.TBFBUSER.TabIndex = 35
+        '
         'BSchließen
         '
+        Me.BSchließen.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.BSchließen.Enabled = False
         Me.BSchließen.Location = New System.Drawing.Point(279, 305)
         Me.BSchließen.Name = "BSchließen"
@@ -239,28 +258,13 @@ Partial Class formInit
         Me.TBFritzBoxAdr.TabIndex = 18
         Me.TBFritzBoxAdr.Text = "fritz.box"
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Enabled = False
-        Me.Label1.Location = New System.Drawing.Point(123, 90)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(118, 13)
-        Me.Label1.TabIndex = 36
-        Me.Label1.Text = "Fritz!Box Benutzername"
-        '
-        'TBFBUSER
-        '
-        Me.TBFBUSER.Enabled = False
-        Me.TBFBUSER.Location = New System.Drawing.Point(16, 87)
-        Me.TBFBUSER.Name = "TBFBUSER"
-        Me.TBFBUSER.Size = New System.Drawing.Size(100, 20)
-        Me.TBFBUSER.TabIndex = 35
-        '
         'formInit
         '
+        Me.AcceptButton = Me.BFertigstellen
+        Me.AccessibleRole = System.Windows.Forms.AccessibleRole.None
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.BSchließen
         Me.ClientSize = New System.Drawing.Size(366, 395)
         Me.Controls.Add(Me.PanelUserEingabe)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow

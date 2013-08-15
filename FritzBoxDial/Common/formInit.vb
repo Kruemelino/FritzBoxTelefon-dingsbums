@@ -98,7 +98,7 @@
         If C_Helfer.IsOneOf("-1", TMPStr) Then
             Rückgabe = False
             Me.ShowDialog()
-            Rückgabe = PrüfeAddin()
+            Rückgabe = True 'PrüfeAddin()
         Else
             Rückgabe = True
         End If
@@ -269,5 +269,4 @@
     'End Function
 
 #End Region
-
 End Class

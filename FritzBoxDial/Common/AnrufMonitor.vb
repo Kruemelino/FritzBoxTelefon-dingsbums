@@ -82,11 +82,11 @@ Public Class AnrufMonitor
             Return False
         End Try
     End Function
-    Sub StarteTCPReaderThread()
-        Dim Port As Integer = 1012
-        Dim IPAddresse As String = ini.Read(InIPfad, "Optionen", "TBFBAdr", "fritz.box")
-        StarteTCPReader(IPAddresse, Port)
-    End Sub
+    'Sub StarteTCPReaderThread()
+    '    Dim Port As Integer = 1012
+    '    Dim IPAddresse As String = ini.Read(InIPfad, "Optionen", "TBFBAdr", "fritz.box")
+    '    StarteTCPReader(IPAddresse, Port)
+    'End Sub
 
     Private Sub AnrMonAktion()
         ' schaut in der FritzBox im Port 1012 nach und startet entsprechende Unterprogramme
@@ -146,7 +146,7 @@ Public Class AnrufMonitor
     End Function '(AnrMonAnAus)
 
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
-        Dim StartThread As Thread
+        'Dim StartThread As Thread
 
         ' wird beim Start von Outlook ausgeführt und startet den Anrufmonitor
         If (ini.Read(InIPfad, "Optionen", "CBAnrMonAuto", "False") = "True" Or Manuell) And UseAnrMon Then
@@ -154,9 +154,9 @@ Public Class AnrufMonitor
             Dim IPAddresse As String = ini.Read(InIPfad, "Optionen", "TBFBAdr", "fritz.box")
             If hf.Ping(IPAddresse) Or CBool(ini.Read(InIPfad, "Optionen", "CBForceFBAddr", "False")) Then
                 Dim Erfolgreich As Boolean
-                'Erfolgreich = StarteTCPReader(IPAddresse, Port)
-                StartThread = New Thread(AddressOf StarteTCPReaderThread)
-                StartThread.Start()
+                Erfolgreich = StarteTCPReader(IPAddresse, Port)
+                'StartThread = New Thread(AddressOf StarteTCPReaderThread)
+                'StartThread.Start()
 
                 If Erfolgreich Then
 #If OVer < 14 Then
@@ -169,7 +169,7 @@ Public Class AnrufMonitor
                     AnrMonAktiv = Erfolgreich
                     AnrMonError = False
                 Else
-                    hf.LogFile("AnrMonStart: AnrMonAnAus: Es ist ein TCP/IP Fehler aufgetreten.")
+                    hf.LogFile("AnrMonStart: Es ist ein TCP/IP Fehler aufgetreten.")
                     AnrMonAktiv = False
                     AnrMonError = True
                 End If
