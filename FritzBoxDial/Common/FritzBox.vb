@@ -1268,35 +1268,20 @@ Public Class FritzBox
             'http://fritz.box/fon_num/dial_foncalls.lua?sid=439h562e101ac049&dial=**610&xhr=1&t1358234452509=nocache%20HTTP/1.1
 
             FBAddr = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
-            'Link = "http://" & FBAddr & "/fon_num/dial_foncalls.lua?sid=" & SID
-            'formdata = "&dial=**" & DialPort & "&xhr=1&t" & DialCode & "=nocache%20HTTP/1.1"
 
-            'Beginn Änderungen Pikachu 06.08.13
             Link = "http://" & FBAddr & "/cgi-bin/webcm"
-            formdata = "sid=" & SID & "&getpage=../html/de/menus/menu2.html"
-            Response = hf.httpWrite(Link, formdata, System.Text.Encoding.Default)
-            If Response = vbNullString Then
-                formdata = "sid=" & SID & "&getpage=../html/en/menus/menu2.html"
-            End If
-            formdata = formdata & "&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & DialCommand
-            'Ende Änderungen Pikachu 06.08.13
+            formdata = "sid=" & SID & "&getpage=../html/de/menus/menu2.html&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & DialCommand
+            Response = hf.httpWrite(Link, formdata, FBEncoding)
 
-            Response = hf.httpWrite(Link, formdata, System.Text.Encoding.Default)
-
-            ' Antwort auswerten
-            If Len(Response) > 0 Then
-                ' Wenn der String "FRITZ!Box Anmeldung" im Reponse enthalten ist, ist etwas schief gelaufen.
-                ' Dann kommt die Fritz Box-Anmeldeseite, wo sich der Benutzer anmelden muss
-                If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
-                    Return "Fehler!" & vbCrLf & "Login inkorrekt?"
+            If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
+                Return "Fehler!" & vbCrLf & "Login inkorrekt?"
+            Else
+                If Hangup Then
+                    sendDialRequestToBox = "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
                 Else
-                    If Hangup Then
-                        Return "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
-                    Else
-                        Return "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
-                    End If
+                    sendDialRequestToBox = "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
                 End If
-            End If ' Fertig
+            End If
         Else
             hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & SID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
         End If
