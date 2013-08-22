@@ -24,7 +24,7 @@ Partial Class formInit
     Private Sub InitializeComponent()
         Me.PanelUserEingabe = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.TBFBUSER = New System.Windows.Forms.TextBox()
+        Me.TBFBUser = New System.Windows.Forms.TextBox()
         Me.BSchließen = New System.Windows.Forms.Button()
         Me.BFertigstellen = New System.Windows.Forms.Button()
         Me.LTelListe = New System.Windows.Forms.Label()
@@ -49,7 +49,7 @@ Partial Class formInit
         '
         Me.PanelUserEingabe.BackColor = System.Drawing.SystemColors.Control
         Me.PanelUserEingabe.Controls.Add(Me.Label1)
-        Me.PanelUserEingabe.Controls.Add(Me.TBFBUSER)
+        Me.PanelUserEingabe.Controls.Add(Me.TBFBUser)
         Me.PanelUserEingabe.Controls.Add(Me.BSchließen)
         Me.PanelUserEingabe.Controls.Add(Me.BFertigstellen)
         Me.PanelUserEingabe.Controls.Add(Me.LTelListe)
@@ -83,13 +83,13 @@ Partial Class formInit
         Me.Label1.TabIndex = 36
         Me.Label1.Text = "Fritz!Box Benutzername"
         '
-        'TBFBUSER
+        'TBFBUser
         '
-        Me.TBFBUSER.Enabled = False
-        Me.TBFBUSER.Location = New System.Drawing.Point(16, 87)
-        Me.TBFBUSER.Name = "TBFBUSER"
-        Me.TBFBUSER.Size = New System.Drawing.Size(100, 20)
-        Me.TBFBUSER.TabIndex = 35
+        Me.TBFBUser.Enabled = False
+        Me.TBFBUser.Location = New System.Drawing.Point(16, 87)
+        Me.TBFBUser.Name = "TBFBUser"
+        Me.TBFBUser.Size = New System.Drawing.Size(100, 20)
+        Me.TBFBUser.TabIndex = 35
         '
         'BSchließen
         '
@@ -268,6 +268,9 @@ Partial Class formInit
         Me.ClientSize = New System.Drawing.Size(366, 395)
         Me.Controls.Add(Me.PanelUserEingabe)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(382, 429)
+        Me.MinimumSize = New System.Drawing.Size(382, 429)
         Me.Name = "formInit"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
@@ -296,5 +299,5 @@ Partial Class formInit
     Friend WithEvents BFertigstellen As System.Windows.Forms.Button
     Friend WithEvents BSchließen As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents TBFBUSER As System.Windows.Forms.TextBox
+    Friend WithEvents TBFBUser As System.Windows.Forms.TextBox
 End Class

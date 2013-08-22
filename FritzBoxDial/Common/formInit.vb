@@ -128,7 +128,7 @@
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
         C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, Nothing)
-        C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBFBPW.Text)
+        C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBFBUser.Text)
         C_ini.Write(DateiPfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyÄnderung(DateiPfad)

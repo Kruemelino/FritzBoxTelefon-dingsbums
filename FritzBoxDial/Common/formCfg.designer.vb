@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -408,7 +408,6 @@ Partial Class formCfg
         '
         'TBTelNrMaske
         '
-        Me.TBTelNrMaske.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBTelNrMaske.Location = New System.Drawing.Point(138, 14)
         Me.TBTelNrMaske.Name = "TBTelNrMaske"
         Me.TBTelNrMaske.Size = New System.Drawing.Size(99, 20)
@@ -461,7 +460,6 @@ Partial Class formCfg
         '
         'TBStoppUhr
         '
-        Me.TBStoppUhr.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBStoppUhr.Location = New System.Drawing.Point(134, 40)
         Me.TBStoppUhr.Name = "TBStoppUhr"
         Me.TBStoppUhr.Size = New System.Drawing.Size(30, 20)
@@ -574,7 +572,6 @@ Partial Class formCfg
         '
         'TBAmt
         '
-        Me.TBAmt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBAmt.Location = New System.Drawing.Point(6, 46)
         Me.TBAmt.Name = "TBAmt"
         Me.TBAmt.Size = New System.Drawing.Size(30, 20)
@@ -612,7 +609,6 @@ Partial Class formCfg
         '
         'TBBenutzer
         '
-        Me.TBBenutzer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBBenutzer.Location = New System.Drawing.Point(6, 46)
         Me.TBBenutzer.Name = "TBBenutzer"
         Me.TBBenutzer.Size = New System.Drawing.Size(100, 20)
@@ -642,7 +638,6 @@ Partial Class formCfg
         '
         'TBLandesVW
         '
-        Me.TBLandesVW.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBLandesVW.Location = New System.Drawing.Point(6, 123)
         Me.TBLandesVW.Name = "TBLandesVW"
         Me.TBLandesVW.Size = New System.Drawing.Size(100, 20)
@@ -659,7 +654,6 @@ Partial Class formCfg
         '
         'TBVorwahl
         '
-        Me.TBVorwahl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBVorwahl.Location = New System.Drawing.Point(6, 97)
         Me.TBVorwahl.Name = "TBVorwahl"
         Me.TBVorwahl.Size = New System.Drawing.Size(100, 20)
@@ -676,7 +670,6 @@ Partial Class formCfg
         '
         'TBPasswort
         '
-        Me.TBPasswort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBPasswort.Location = New System.Drawing.Point(6, 72)
         Me.TBPasswort.Name = "TBPasswort"
         Me.TBPasswort.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
@@ -686,7 +679,6 @@ Partial Class formCfg
         '
         'TBFBAdr
         '
-        Me.TBFBAdr.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBFBAdr.Location = New System.Drawing.Point(6, 20)
         Me.TBFBAdr.Name = "TBFBAdr"
         Me.TBFBAdr.Size = New System.Drawing.Size(100, 20)
@@ -981,9 +973,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -994,9 +986,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1007,9 +999,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1456,7 +1448,6 @@ Partial Class formCfg
         'TBAnrMonY
         '
         Me.TBAnrMonY.AcceptsReturn = True
-        Me.TBAnrMonY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBAnrMonY.Location = New System.Drawing.Point(4, 190)
         Me.TBAnrMonY.Name = "TBAnrMonY"
         Me.TBAnrMonY.Size = New System.Drawing.Size(30, 20)
@@ -1483,7 +1474,6 @@ Partial Class formCfg
         'TBAnrMonX
         '
         Me.TBAnrMonX.AcceptsReturn = True
-        Me.TBAnrMonX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBAnrMonX.Location = New System.Drawing.Point(4, 166)
         Me.TBAnrMonX.Name = "TBAnrMonX"
         Me.TBAnrMonX.Size = New System.Drawing.Size(30, 20)
