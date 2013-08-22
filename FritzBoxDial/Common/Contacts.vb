@@ -61,10 +61,19 @@
                     ' In Outlook 2003 funktioniert die Verkettung mit OR nicht.
 #If OVer = 11 Then
                     For Each UserProperty In UserProperties
-                        sFilter = String.Concat("@SQL=""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", UserProperty, "/0x0000001f"" = '", TelNr, "'")
-                        gefunden = CType(Personen.Find(sFilter), Outlook.ContactItem)
+                        sFilter = "[" & UserProperty & "] = """ & TelNr & """"
+                        Try
+                            gefunden = CType(Personen.Find(sFilter), Outlook.ContactItem)
+                        Catch ex As Exception
+                        End Try
                         If Not gefunden Is Nothing Then Exit For
                     Next
+
+                    'For Each UserProperty In UserProperties
+                    '    sFilter = String.Concat("@SQL=""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", UserProperty, "/0x0000001f"" = '", TelNr, "'")
+                    '    gefunden = CType(Personen.Find(sFilter), Outlook.ContactItem)
+                    '    If Not gefunden Is Nothing Then Exit For
+                    'Next
 #Else
                     Dim JoinFilter(UserProperties.Length - 1) As String
                     For i = 0 To UserProperties.Length - 1
