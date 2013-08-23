@@ -13,6 +13,7 @@ Public Class FritzBox
     Private TelefonThread As Thread
     Private formConfig As formCfg
     Private Rausschreiben As Boolean = False
+    Private FBAddr As String
 
 
 
@@ -38,11 +39,12 @@ Public Class FritzBox
             setline("Konfigurationsmenü erhalten")
         End If
 
+        FBAddr = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
 
         EncodeingFritzBox = ini.Read(DateiPfad, "Optionen", "EncodeingFritzBox", "-1")
         If EncodeingFritzBox = "-1" Then
             Dim Rückgabe As String
-            Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+
             Rückgabe = hf.httpRead("http://" & FBAddr, FBEncoding)
             FBEncoding = hf.GetEncoding(hf.StringEntnehmen(Rückgabe, "charset=", """>"))
             ini.Write(DateiPfad, "Optionen", "EncodeingFritzBox", FBEncoding.HeaderName)
@@ -67,7 +69,7 @@ Public Class FritzBox
 #Region "Login & Logout"
     Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim login_xml As String
-        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+        'Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         login_xml = hf.httpRead("http://" & FBAddr & "/login_sid.lua?sid=" & SID, FBEncoding)
         If InStr(login_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(login_xml) = 0 Then
 
@@ -200,7 +202,7 @@ Public Class FritzBox
     Public Function FBLogout(ByRef SID As String) As Boolean
         ' Die Komplementärfunktion zu FBLogin. Beendet die Session, indem ein Logout durchgeführt wird.
 
-        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+        'Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         Dim Link As String = "http://" & FBAddr & "/login_sid.lua?sid=" & SID
 
         Dim Rückgabe As String = hf.httpRead(Link, FBEncoding)
@@ -237,7 +239,7 @@ Public Class FritzBox
     Sub FritzBoxDaten()
         Dim FW550 As Boolean = True
         Dim myurl As String
-        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "192.168.178.1") ' IP der FritzBox
+        'Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "192.168.178.1") ' IP der FritzBox
         Dim tempstring As String
         Dim tempstring_code As String
 
@@ -477,7 +479,7 @@ Public Class FritzBox
                             TelNr = Replace(TelNr, Chr(13), "", , , CompareMethod.Text)
                             If Right(TelNr, 1) = "," Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
                             If Right(TelNr, 1) = "#" Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
-                            If Left(TelNr, 3) = "SIP" Then TelNr = SIP(CInt(Right(TelNr, 1))) 'ini.Read(DateiPfad, "Telefone", TelNr, "")
+                            If Left(TelNr, 3) = "SIP" Then TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                             If Not Trim(TelName) = "" And Not Trim(TelNr) = "" Then
                                 Select Case i
                                     Case 0 ' FON 1-3
@@ -495,7 +497,7 @@ Public Class FritzBox
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                         outgoing = Mid(Telefon, pos(2), pos(3) - pos(2))
                                         If Strings.Right(outgoing, 1) = "#" Then outgoing = Strings.Left(outgoing, Len(outgoing) - 1) ' Für die Firmware *85
-                                        If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Right(outgoing, 1)))
+                                        If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Mid(outgoing, 4, 1)))
                                         EingerichteteTelefone = String.Concat(EingerichteteTelefone, CStr(ID), ";")
 
                                         If Rausschreiben Then
@@ -525,7 +527,7 @@ Public Class FritzBox
                                             pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                             outgoing = Mid(Telefon, pos(2), pos(3) - pos(2))
                                             If Strings.Right(outgoing, 1) = "#" Then outgoing = Strings.Left(outgoing, Len(outgoing) - 1) ' Für die Firmware *85
-                                            If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Right(outgoing, 1)))
+                                            If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Mid(outgoing, 4, 1)))
                                             DialPort = "5" & ID
                                             EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
@@ -587,7 +589,7 @@ Public Class FritzBox
                                             pos(2) = InStr(pos(1), Telefon, "outgoing: isUnpersonalizedMini ? '' : '", CompareMethod.Text) + Len("outgoing: isUnpersonalizedMini ? '' : '")
                                             pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                             outgoing = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                            If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Right(outgoing, 1)))
+                                            If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Mid(outgoing, 4, 1)))
                                             DialPort = "6" & ID
                                             EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
@@ -878,7 +880,7 @@ Public Class FritzBox
                         If Not TelNr = "-1" Then
                             If Not Len(TelNr) = 0 Then
                                 If Strings.Left(TelNr, 3) = "SIP" Then
-                                    TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
+                                    TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                                 Else
                                     TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                                 End If
@@ -911,8 +913,8 @@ Public Class FritzBox
                 If Not TelNr = "-1" Then
                     If Not Len(TelNr) = 0 Then
                         If Strings.Left(TelNr, 3) = "SIP" Then
-                            TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
-                        Else
+                            TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
+                        ElseIf Strings.Left(TelNr, 3) = "SIP" Then
                             TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         End If
 
@@ -933,7 +935,7 @@ Public Class FritzBox
                 If Not TelNr = "-1" Then
                     If Not Len(TelNr) = 0 Then
                         If Strings.Left(TelNr, 3) = "SIP" Then
-                            TelNr = SIP(CInt(Strings.Right(TelNr, 1)))
+                            TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                         Else
                             TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         End If
@@ -953,7 +955,7 @@ Public Class FritzBox
             POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
             If Not POTS = "-1" Then
                 If Strings.Left(POTS, 3) = "SIP" Then
-                    POTS = SIP(CInt(Strings.Right(POTS, 1)))
+                    POTS = SIP(CInt(Mid(POTS, 4, 1)))
                 Else
                     POTS = .OrtsVorwahlEntfernen(POTS, Vorwahl)
                 End If
@@ -970,7 +972,7 @@ Public Class FritzBox
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
             If Not Mobil = "-1" Then
                 If Strings.Left(Mobil, 3) = "SIP" Then
-                    Mobil = SIP(CInt(Strings.Right(Mobil, 1)))
+                    Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
                 Else
                     Mobil = .OrtsVorwahlEntfernen(Mobil, Vorwahl)
                 End If
@@ -1095,7 +1097,7 @@ Public Class FritzBox
                         If Not tmpTelNr = "-1" Then
                             If Not Len(tmpTelNr) = 0 Then
                                 If Strings.Left(tmpTelNr, 3) = "SIP" Then
-                                    tmpTelNr = SIP(CInt(Strings.Right(tmpTelNr, 1)))
+                                    tmpTelNr = SIP(CInt(Mid(tmpTelNr, 4, 1)))
                                 Else
                                     tmpTelNr = .OrtsVorwahlEntfernen(tmpTelNr, Vorwahl)
                                 End If
@@ -1250,49 +1252,43 @@ Public Class FritzBox
 #End Region
 
 #Region "Wählen"
-    Friend Function sendDialRequestToBox(ByVal DialCode As String, ByVal DialPort As String, Hangup As Boolean) As String
+    Friend Function SendDialRequestToBox(ByVal DialCode As String, ByVal DialPort As String, HangUp As Boolean) As String
         ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
         ' Parameter:  dialCode (string):    zu wählende Nummer
         '             fonanschluss (long):  Welcher Anschluss wird verwendet?
+        '             HangUp (bool):        Soll Verbindung abgebrochen werden
         ' Rückgabewert (String):            Antworttext (Status)
-
+        '
         Dim formdata As String             ' an die FritzBox zu sendende Daten
         Dim Response As String             ' Antwort der FritzBox
-        Dim FBAddr As String             ' Adresse der FritzBox
         Dim Link As String
-        Dim DialCommand As String = CStr(IIf(Hangup, "Hangup", "Dial=" & DialCode))
-
-        sendDialRequestToBox = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
+        '
+        SendDialRequestToBox = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
         If Not SID = DefaultSID And Len(SID) = Len(DefaultSID) Then
-            'http://fritz.box/fon_num/dial_foncalls.lua?sid=acb500f28d268517&
-            'http://fritz.box/fon_num/dial_foncalls.lua?sid=439h562e101ac049&dial=**610&xhr=1&t1358234452509=nocache%20HTTP/1.1
-
-            FBAddr = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
-
             Link = "http://" & FBAddr & "/cgi-bin/webcm"
-            formdata = "sid=" & SID & "&getpage=../html/de/menus/menu2.html&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & DialCommand
+            formdata = "sid=" & SID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
             Response = hf.httpWrite(Link, formdata, FBEncoding)
 
-            If Not InStr(Response, "FRITZ!Box Anmeldung") = 0 Then
-                Return "Fehler!" & vbCrLf & "Login inkorrekt?"
-            Else
-                If Hangup Then
-                    sendDialRequestToBox = "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
+            If Response = vbNullString Then
+                If HangUp Then
+                    SendDialRequestToBox = "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
                 Else
-                    sendDialRequestToBox = "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
+                    SendDialRequestToBox = "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
                 End If
+            Else
+                SendDialRequestToBox = "Fehler!"
+                hf.LogFile("SendDialRequestToBox: Response: " & Response)
             End If
         Else
             hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & SID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
         End If
-
     End Function
 #End Region
 
 #Region "Journalimort"
 
     Public Function DownloadAnrListe() As String
-        Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+        'Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
         Dim Link(1) As String
         'Dim fw550 As Boolean
         Dim ReturnString As String = vbNullString
