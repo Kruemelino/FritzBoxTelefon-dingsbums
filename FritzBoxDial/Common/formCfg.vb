@@ -139,7 +139,6 @@ Public Class formCfg
         Statistik()
         With C_Helfer
             Me.ButtonIndexDateiöffnen.Enabled = My.Computer.FileSystem.FileExists(.Dateipfade(Dateipfad, "KontaktIndex"))
-            Me.ButtonLog.Enabled = My.Computer.FileSystem.FileExists(.Dateipfade(Dateipfad, "LogDatei"))
             Me.ButtonListen.Enabled = My.Computer.FileSystem.FileExists(.Dateipfade(Dateipfad, "Listen"))
         End With
 
@@ -166,6 +165,7 @@ Public Class formCfg
         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
+        FillLogTB()
     End Sub
 
     Private Sub Statistik()
@@ -575,7 +575,7 @@ Public Class formCfg
         System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "KontaktIndex"))
     End Sub
 
-    Private Sub ButtonLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLog.Click
+    Private Sub ButtonLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "LogDatei"))
     End Sub
 
@@ -759,6 +759,9 @@ Public Class formCfg
     Private Sub TBTelNrMaske_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles TBTelNrMaske.Leave
         PrüfeMaske()
     End Sub
+    Private Sub CBLogFile_CheckedChanged(sender As Object, e As EventArgs) Handles CBLogFile.CheckedChanged
+        Me.GBLogging.Enabled = Me.CBLogFile.Checked
+    End Sub
 #End Region
 
     Function PrüfeMaske() As Boolean
@@ -846,7 +849,7 @@ Public Class formCfg
         If NeueFW Then
             URL = "http://" & FBOX_ADR & "/fon_num/fon_num_list.lua?sid=" & SID
         Else
-            URL = "http://" & FBOX_ADR & "/cgi-bin/webcm?getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices&sid=" & SID
+            URL = "http://" & FBOX_ADR & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
         MailText = C_Helfer.httpRead(URL, FBEncoding)
 
@@ -1137,6 +1140,30 @@ Public Class formCfg
     End Sub
 #End Region
 
+#Region "Logging"
+    Sub FillLogTB()
+        Dim LogDatei As String = C_Helfer.Dateipfade(Dateipfad, "LogDatei")
+
+        If C_ini.Read(Dateipfad, "Optionen", "CBLogFile", "False") = "True" Then
+
+            If My.Computer.FileSystem.FileExists(LogDatei) Then
+                Me.TBLogging.Text = My.Computer.FileSystem.OpenTextFileReader(LogDatei).ReadToEnd
+            End If
+        End If
+    End Sub
+
+    Private Sub FBDB_MP_TabIndexChanged(sender As Object, e As EventArgs) Handles FBDB_MP.SelectedIndexChanged
+        If Me.FBDB_MP.SelectedTab.Name = "PLogging" Then
+            With Me.TBLogging
+                .Focus()
+                .SelectionStart = .TextLength
+                .ScrollToCaret()
+            End With
+            'Windows.Forms.SendKeys.Send("^({END})")
+        End If
+    End Sub
+#End Region
+
 #Region "Delegate"
     Private Sub SetProgressbar()
         With Me.ProgressBarIndex
@@ -1159,6 +1186,7 @@ Public Class formCfg
         Me.ProgressBarIndex.Maximum = Anzahl
     End Sub
 #End Region
+
 #Region "Backroundworker"
     Private Sub BWIndexer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWIndexer.DoWork
 
@@ -1216,6 +1244,7 @@ Public Class formCfg
         End If
     End Sub
 #End Region
+
 #Region "Button"
     Private Sub ButtonStart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonIndizierungStart.Click
         StarteIndizierung()
@@ -1227,6 +1256,7 @@ Public Class formCfg
         Me.ButtonIndizierungStart.Enabled = True
     End Sub
 #End Region
+
 
 End Class
 

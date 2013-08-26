@@ -101,10 +101,7 @@ Partial Class formCfg
         Me.Ausgehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Gesamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PWartung = New System.Windows.Forms.TabPage()
-        Me.FrameOptional = New System.Windows.Forms.GroupBox()
-        Me.Label27 = New System.Windows.Forms.Label()
-        Me.ButtonLog = New System.Windows.Forms.Button()
-        Me.CBLogFile = New System.Windows.Forms.CheckBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.CDWJournal = New System.Windows.Forms.GroupBox()
         Me.BINIImport = New System.Windows.Forms.Button()
         Me.ButtonINI = New System.Windows.Forms.Button()
@@ -169,6 +166,11 @@ Partial Class formCfg
         Me.CBSymbAnrMon = New System.Windows.Forms.CheckBox()
         Me.CBSymbAnrListe = New System.Windows.Forms.CheckBox()
         Me.LabelSymb = New System.Windows.Forms.Label()
+        Me.PLogging = New System.Windows.Forms.TabPage()
+        Me.GBLogging = New System.Windows.Forms.GroupBox()
+        Me.TBLogging = New System.Windows.Forms.TextBox()
+        Me.CBLogFile = New System.Windows.Forms.CheckBox()
+        Me.Label23 = New System.Windows.Forms.Label()
         Me.PDebug = New System.Windows.Forms.TabPage()
         Me.PTelefonDatei = New System.Windows.Forms.Panel()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -187,7 +189,6 @@ Partial Class formCfg
         Me.GroupBox1.SuspendLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PWartung.SuspendLayout()
-        Me.FrameOptional.SuspendLayout()
         Me.CDWJournal.SuspendLayout()
         Me.PIndex.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -200,6 +201,8 @@ Partial Class formCfg
         Me.FBDB_MP.SuspendLayout()
         Me.PSymbolleiste.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.PLogging.SuspendLayout()
+        Me.GBLogging.SuspendLayout()
         Me.PDebug.SuspendLayout()
         Me.PTelefonDatei.SuspendLayout()
         Me.SuspendLayout()
@@ -366,7 +369,7 @@ Partial Class formCfg
         Me.PGrundeinstellungen.Controls.Add(Me.Label13)
         Me.PGrundeinstellungen.Location = New System.Drawing.Point(4, 22)
         Me.PGrundeinstellungen.Name = "PGrundeinstellungen"
-        Me.PGrundeinstellungen.Size = New System.Drawing.Size(557, 290)
+        Me.PGrundeinstellungen.Size = New System.Drawing.Size(588, 294)
         Me.PGrundeinstellungen.TabIndex = 7
         Me.PGrundeinstellungen.Text = "Grundeinstellungen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.PGrundeinstellungen, "Bevor eine Handynummer gewählt wird")
@@ -687,9 +690,9 @@ Partial Class formCfg
         'Label13
         '
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(3, 12)
+        Me.Label13.Location = New System.Drawing.Point(0, 12)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(548, 35)
+        Me.Label13.Size = New System.Drawing.Size(588, 35)
         Me.Label13.TabIndex = 23
         Me.Label13.Text = "Grundeinstellungen"
         Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -738,7 +741,7 @@ Partial Class formCfg
         Me.Püber.Controls.Add(Me.RichTextBox1)
         Me.Püber.Location = New System.Drawing.Point(4, 22)
         Me.Püber.Name = "Püber"
-        Me.Püber.Size = New System.Drawing.Size(557, 290)
+        Me.Püber.Size = New System.Drawing.Size(588, 294)
         Me.Püber.TabIndex = 4
         Me.Püber.Text = "Info"
         Me.Püber.UseVisualStyleBackColor = True
@@ -823,7 +826,7 @@ Partial Class formCfg
         Me.PTelefone.Location = New System.Drawing.Point(4, 22)
         Me.PTelefone.Name = "PTelefone"
         Me.PTelefone.Padding = New System.Windows.Forms.Padding(3)
-        Me.PTelefone.Size = New System.Drawing.Size(557, 290)
+        Me.PTelefone.Size = New System.Drawing.Size(588, 294)
         Me.PTelefone.TabIndex = 5
         Me.PTelefone.Text = "Telefone"
         Me.PTelefone.UseVisualStyleBackColor = True
@@ -904,7 +907,7 @@ Partial Class formCfg
         Me.TelList.RowHeadersVisible = False
         Me.TelList.RowTemplate.Height = 18
         Me.TelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.TelList.Size = New System.Drawing.Size(542, 150)
+        Me.TelList.Size = New System.Drawing.Size(581, 150)
         Me.TelList.TabIndex = 1
         '
         'ColumnStandardTelefon
@@ -1011,55 +1014,24 @@ Partial Class formCfg
         '
         'PWartung
         '
-        Me.PWartung.Controls.Add(Me.FrameOptional)
+        Me.PWartung.Controls.Add(Me.Label25)
         Me.PWartung.Controls.Add(Me.CDWJournal)
         Me.PWartung.Location = New System.Drawing.Point(4, 22)
         Me.PWartung.Name = "PWartung"
-        Me.PWartung.Size = New System.Drawing.Size(557, 290)
+        Me.PWartung.Size = New System.Drawing.Size(588, 294)
         Me.PWartung.TabIndex = 2
         Me.PWartung.Text = "Wartung  "
         Me.PWartung.UseVisualStyleBackColor = True
         '
-        'FrameOptional
+        'Label25
         '
-        Me.FrameOptional.Controls.Add(Me.Label27)
-        Me.FrameOptional.Controls.Add(Me.ButtonLog)
-        Me.FrameOptional.Controls.Add(Me.CBLogFile)
-        Me.FrameOptional.Location = New System.Drawing.Point(4, 218)
-        Me.FrameOptional.Name = "FrameOptional"
-        Me.FrameOptional.Size = New System.Drawing.Size(550, 63)
-        Me.FrameOptional.TabIndex = 31
-        Me.FrameOptional.TabStop = False
-        Me.FrameOptional.Text = "Log-Datei"
-        '
-        'Label27
-        '
-        Me.Label27.Location = New System.Drawing.Point(7, 13)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(234, 47)
-        Me.Label27.TabIndex = 34
-        Me.Label27.Text = "In der Log-Datei  werden Ereignisse des Addins protokolliert. Sie wird bei der Fe" & _
-    "hlerauswertung benötigt."
-        '
-        'ButtonLog
-        '
-        Me.ButtonLog.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonLog.Location = New System.Drawing.Point(439, 13)
-        Me.ButtonLog.Name = "ButtonLog"
-        Me.ButtonLog.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonLog.TabIndex = 14
-        Me.ButtonLog.Text = "Logfile öffnen"
-        Me.ButtonLog.UseVisualStyleBackColor = True
-        '
-        'CBLogFile
-        '
-        Me.CBLogFile.AutoSize = True
-        Me.CBLogFile.Location = New System.Drawing.Point(257, 15)
-        Me.CBLogFile.Name = "CBLogFile"
-        Me.CBLogFile.Size = New System.Drawing.Size(104, 17)
-        Me.CBLogFile.TabIndex = 12
-        Me.CBLogFile.Text = "Logfile erzeugen"
-        Me.CBLogFile.UseVisualStyleBackColor = True
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.Location = New System.Drawing.Point(0, 12)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(588, 35)
+        Me.Label25.TabIndex = 25
+        Me.Label25.Text = "Wartung"
+        Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'CDWJournal
         '
@@ -1076,7 +1048,7 @@ Partial Class formCfg
         Me.CDWJournal.Controls.Add(Me.CBWOptionen)
         Me.CDWJournal.Controls.Add(Me.CBWKomplett)
         Me.CDWJournal.Controls.Add(Me.Label19)
-        Me.CDWJournal.Location = New System.Drawing.Point(4, 4)
+        Me.CDWJournal.Location = New System.Drawing.Point(3, 77)
         Me.CDWJournal.Name = "CDWJournal"
         Me.CDWJournal.Size = New System.Drawing.Size(550, 214)
         Me.CDWJournal.TabIndex = 0
@@ -1208,7 +1180,7 @@ Partial Class formCfg
         Me.PIndex.Location = New System.Drawing.Point(4, 22)
         Me.PIndex.Name = "PIndex"
         Me.PIndex.Padding = New System.Windows.Forms.Padding(3)
-        Me.PIndex.Size = New System.Drawing.Size(557, 290)
+        Me.PIndex.Size = New System.Drawing.Size(588, 294)
         Me.PIndex.TabIndex = 6
         Me.PIndex.Text = "Kontaktsuche"
         Me.PIndex.UseVisualStyleBackColor = True
@@ -1216,9 +1188,9 @@ Partial Class formCfg
         'Label1
         '
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
-        Me.Label1.Location = New System.Drawing.Point(3, 12)
+        Me.Label1.Location = New System.Drawing.Point(0, 12)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(551, 35)
+        Me.Label1.Size = New System.Drawing.Size(588, 35)
         Me.Label1.TabIndex = 33
         Me.Label1.Text = "Einstellungen für die Kontaktsuche"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1370,7 +1342,7 @@ Partial Class formCfg
         Me.PAnrufmonitor.Location = New System.Drawing.Point(4, 22)
         Me.PAnrufmonitor.Name = "PAnrufmonitor"
         Me.PAnrufmonitor.Padding = New System.Windows.Forms.Padding(3)
-        Me.PAnrufmonitor.Size = New System.Drawing.Size(557, 290)
+        Me.PAnrufmonitor.Size = New System.Drawing.Size(588, 294)
         Me.PAnrufmonitor.TabIndex = 0
         Me.PAnrufmonitor.Text = "Anrufmonitor"
         Me.PAnrufmonitor.UseVisualStyleBackColor = True
@@ -1504,9 +1476,9 @@ Partial Class formCfg
         'Label22
         '
         Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(3, 12)
+        Me.Label22.Location = New System.Drawing.Point(0, 12)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(548, 35)
+        Me.Label22.Size = New System.Drawing.Size(588, 35)
         Me.Label22.TabIndex = 29
         Me.Label22.Text = "Einstellungen für den Anrufmonitor"
         Me.Label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1620,13 +1592,14 @@ Partial Class formCfg
         Me.FBDB_MP.Controls.Add(Me.PSymbolleiste)
         Me.FBDB_MP.Controls.Add(Me.PWartung)
         Me.FBDB_MP.Controls.Add(Me.PTelefone)
+        Me.FBDB_MP.Controls.Add(Me.PLogging)
         Me.FBDB_MP.Controls.Add(Me.PDebug)
         Me.FBDB_MP.Controls.Add(Me.Püber)
-        Me.FBDB_MP.Location = New System.Drawing.Point(15, 9)
-        Me.FBDB_MP.Multiline = True
+        Me.FBDB_MP.Dock = System.Windows.Forms.DockStyle.Top
+        Me.FBDB_MP.Location = New System.Drawing.Point(0, 0)
         Me.FBDB_MP.Name = "FBDB_MP"
         Me.FBDB_MP.SelectedIndex = 0
-        Me.FBDB_MP.Size = New System.Drawing.Size(565, 316)
+        Me.FBDB_MP.Size = New System.Drawing.Size(596, 320)
         Me.FBDB_MP.TabIndex = 1
         '
         'PSymbolleiste
@@ -1635,7 +1608,7 @@ Partial Class formCfg
         Me.PSymbolleiste.Controls.Add(Me.LabelSymb)
         Me.PSymbolleiste.Location = New System.Drawing.Point(4, 22)
         Me.PSymbolleiste.Name = "PSymbolleiste"
-        Me.PSymbolleiste.Size = New System.Drawing.Size(557, 290)
+        Me.PSymbolleiste.Size = New System.Drawing.Size(588, 294)
         Me.PSymbolleiste.TabIndex = 9
         Me.PSymbolleiste.Text = "Symbolleiste"
         Me.PSymbolleiste.UseVisualStyleBackColor = True
@@ -1740,12 +1713,63 @@ Partial Class formCfg
         'LabelSymb
         '
         Me.LabelSymb.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelSymb.Location = New System.Drawing.Point(3, 12)
+        Me.LabelSymb.Location = New System.Drawing.Point(0, 12)
         Me.LabelSymb.Name = "LabelSymb"
-        Me.LabelSymb.Size = New System.Drawing.Size(548, 35)
+        Me.LabelSymb.Size = New System.Drawing.Size(588, 35)
         Me.LabelSymb.TabIndex = 24
         Me.LabelSymb.Text = "Einstellung für die Symbolleiste"
         Me.LabelSymb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'PLogging
+        '
+        Me.PLogging.Controls.Add(Me.GBLogging)
+        Me.PLogging.Controls.Add(Me.CBLogFile)
+        Me.PLogging.Controls.Add(Me.Label23)
+        Me.PLogging.Location = New System.Drawing.Point(4, 22)
+        Me.PLogging.Name = "PLogging"
+        Me.PLogging.Padding = New System.Windows.Forms.Padding(3)
+        Me.PLogging.Size = New System.Drawing.Size(588, 294)
+        Me.PLogging.TabIndex = 11
+        Me.PLogging.Text = "Logging"
+        Me.PLogging.UseVisualStyleBackColor = True
+        '
+        'GBLogging
+        '
+        Me.GBLogging.Controls.Add(Me.TBLogging)
+        Me.GBLogging.Location = New System.Drawing.Point(4, 73)
+        Me.GBLogging.Name = "GBLogging"
+        Me.GBLogging.Size = New System.Drawing.Size(578, 215)
+        Me.GBLogging.TabIndex = 26
+        Me.GBLogging.TabStop = False
+        '
+        'TBLogging
+        '
+        Me.TBLogging.Location = New System.Drawing.Point(7, 19)
+        Me.TBLogging.Multiline = True
+        Me.TBLogging.Name = "TBLogging"
+        Me.TBLogging.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TBLogging.Size = New System.Drawing.Size(565, 160)
+        Me.TBLogging.TabIndex = 25
+        '
+        'CBLogFile
+        '
+        Me.CBLogFile.AutoSize = True
+        Me.CBLogFile.Location = New System.Drawing.Point(6, 50)
+        Me.CBLogFile.Name = "CBLogFile"
+        Me.CBLogFile.Size = New System.Drawing.Size(113, 17)
+        Me.CBLogFile.TabIndex = 12
+        Me.CBLogFile.Text = "Logging aktivieren"
+        Me.CBLogFile.UseVisualStyleBackColor = True
+        '
+        'Label23
+        '
+        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.Location = New System.Drawing.Point(0, 12)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(588, 35)
+        Me.Label23.TabIndex = 24
+        Me.Label23.Text = "Logging"
+        Me.Label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'PDebug
         '
@@ -1759,7 +1783,7 @@ Partial Class formCfg
         Me.PDebug.Location = New System.Drawing.Point(4, 22)
         Me.PDebug.Name = "PDebug"
         Me.PDebug.Padding = New System.Windows.Forms.Padding(3)
-        Me.PDebug.Size = New System.Drawing.Size(557, 290)
+        Me.PDebug.Size = New System.Drawing.Size(588, 294)
         Me.PDebug.TabIndex = 10
         Me.PDebug.Text = "Debug"
         Me.PDebug.UseVisualStyleBackColor = True
@@ -1865,8 +1889,6 @@ Partial Class formCfg
         Me.GroupBox1.PerformLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PWartung.ResumeLayout(False)
-        Me.FrameOptional.ResumeLayout(False)
-        Me.FrameOptional.PerformLayout()
         Me.CDWJournal.ResumeLayout(False)
         Me.CDWJournal.PerformLayout()
         Me.PIndex.ResumeLayout(False)
@@ -1886,6 +1908,10 @@ Partial Class formCfg
         Me.PSymbolleiste.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.PLogging.ResumeLayout(False)
+        Me.PLogging.PerformLayout()
+        Me.GBLogging.ResumeLayout(False)
+        Me.GBLogging.PerformLayout()
         Me.PDebug.ResumeLayout(False)
         Me.PDebug.PerformLayout()
         Me.PTelefonDatei.ResumeLayout(False)
@@ -1913,10 +1939,6 @@ Partial Class formCfg
     Friend WithEvents TBReset As System.Windows.Forms.Label
     Friend WithEvents TelList As System.Windows.Forms.DataGridView
     Friend WithEvents PWartung As System.Windows.Forms.TabPage
-    Friend WithEvents FrameOptional As System.Windows.Forms.GroupBox
-    Friend WithEvents Label27 As System.Windows.Forms.Label
-    Friend WithEvents ButtonLog As System.Windows.Forms.Button
-    Friend WithEvents CBLogFile As System.Windows.Forms.CheckBox
     Friend WithEvents CDWJournal As System.Windows.Forms.GroupBox
     Friend WithEvents BINIImport As System.Windows.Forms.Button
     Friend WithEvents ButtonListen As System.Windows.Forms.Button
@@ -2046,6 +2068,12 @@ Partial Class formCfg
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TBBenutzer As System.Windows.Forms.TextBox
     Friend WithEvents LinkHomepage As System.Windows.Forms.LinkLabel
+    Friend WithEvents Label25 As System.Windows.Forms.Label
+    Friend WithEvents PLogging As System.Windows.Forms.TabPage
+    Friend WithEvents CBLogFile As System.Windows.Forms.CheckBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents TBLogging As System.Windows.Forms.TextBox
+    Friend WithEvents GBLogging As System.Windows.Forms.GroupBox
 #If OVer < 14 Then
 #End If
 End Class

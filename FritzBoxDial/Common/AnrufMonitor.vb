@@ -318,11 +318,11 @@ Public Class AnrufMonitor
 #If OVer >= 14 Then
             GUI.InvalidateControlAnrMon()
 #End If
-            hf.LogFile("AnrMonStart: Anrufmonitor gestartet")
+            'hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Anrufmonitor gestartet")
             AnrMonAktiv = CBool(e.Result)
             AnrMonError = False
         Else
-            hf.LogFile("AnrMonStart: Es ist ein TCP/IP Fehler aufgetreten.")
+            hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.")
             AnrMonAktiv = False
             AnrMonError = True
         End If
