@@ -1270,13 +1270,9 @@ Public Class FritzBox
             Response = hf.httpWrite(Link, formdata, FBEncoding)
 
             If Response = vbNullString Then
-                If HangUp Then
-                    SendDialRequestToBox = "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!"
-                Else
-                    SendDialRequestToBox = "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"
-                End If
+                SendDialRequestToBox = CStr(IIf(HangUp, "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!", "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"))
             Else
-                SendDialRequestToBox = "Fehler!"
+                SendDialRequestToBox = "Fehler!" & vbCrLf & "Logfile beachten!"
                 hf.LogFile("SendDialRequestToBox: Response: " & Response)
             End If
         Else
@@ -1313,6 +1309,7 @@ Public Class FritzBox
     End Function
 
 #End Region
+
 #Region "SetLine in Config"
     Private Sub setline(ByVal Zeile As String)
         If Rausschreiben Then formConfig.AddLine(Zeile)
