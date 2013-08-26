@@ -8,6 +8,7 @@ Public Class formCfg
     Private C_Crypt As Rijndael
     Private C_Helfer As Helfer
     Private C_Kontakte As Contacts
+    Private C_Phoner As Phoner
     Private GUI As GraphicalUserInterface
     Private OlI As OutlookInterface
     Private AnrMon As AnrufMonitor
@@ -37,7 +38,8 @@ Public Class formCfg
                    ByVal AnrufMon As AnrufMonitor, _
                    ByVal fritzboxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
-                   ByVal kontaktklasse As Contacts)
+                   ByVal kontaktklasse As Contacts, _
+                   ByVal Phonerklasse As Phoner)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -52,6 +54,7 @@ Public Class formCfg
         AnrMon = AnrufMon
         FBox = fritzboxKlasse
         C_Kontakte = kontaktklasse
+        C_Phoner = Phonerklasse
     End Sub
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -166,6 +169,36 @@ Public Class formCfg
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
         FillLogTB()
+
+        'Phoner
+        Dim PhonerVerfügbar As Boolean = CBool(C_ini.Read(Dateipfad, "Phoner", "PhonerVerfügbar", "False"))
+        Dim TelName() As String
+        Dim PhonerPasswort As String
+        Me.PanelPhoner.Enabled = PhonerVerfügbar
+        If PhonerVerfügbar Then
+            Me.CBPhoner.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Phoner", "CBPhoner", "False") = "True", True, False))
+        Else
+            Me.CBPhoner.Checked = False
+        End If
+        Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfügbar, "", " nicht")), , , CompareMethod.Text)
+        Me.CBPhonerKeineFB.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
+        If Not Me.CBPhonerKeineFB.Checked Then
+            For i = 20 To 29
+                TelName = Split(C_ini.Read(Dateipfad, "Telefone", CStr(i), "-1;"), ";", , CompareMethod.Text)
+                If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
+                    Me.ComboBoxPhonerSIP.Items.Add(TelName(2))
+                End If
+            Next
+            Me.ComboBoxPhonerSIP.SelectedIndex = CInt(C_ini.Read(Dateipfad, "Phoner", "ComboBoxPhonerSIP", "0"))
+        Else
+            Me.ComboBoxPhonerSIP.SelectedIndex = 0
+            Me.ComboBoxPhonerSIP.Enabled = False
+        End If
+        Me.CBPhonerAnrMon.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Phoner", "CBPhonerAnrMon", "False") = "True", True, False))
+        PhonerPasswort = C_ini.Read(Dateipfad, "Phoner", "PhonerPasswort", "")
+        If Not Len(PhonerPasswort) = 0 Then
+            Me.PhonerPasswort.Text = "1234"
+        End If
     End Sub
 
     Private Sub Statistik()
@@ -250,21 +283,38 @@ Public Class formCfg
     Private Function Speichern() As Boolean
         Speichern = True
 
+        'Dim checkstring As String = vbNullString
+        'Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
+        'If checkitemcoll.Count = 0 Then
+        '    For i = 0 To Me.CLBTelNr.Items.Count - 1
+        '        Me.CLBTelNr.SetItemChecked(i, True)
+        '    Next
+        '    checkitemcoll = Me.CLBTelNr.CheckedItems
+        'End If
+        'For Each el As String In checkitemcoll
+        '    If Not el = "Alle Telefonnummern" And Not C_Helfer.IsOneOf(el, Split(checkstring, ";", , CompareMethod.Text)) Then
+        '        checkstring += el & ";"
+        '    End If
+        'Next
+        'If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
         Dim checkstring As String = vbNullString
-        Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
-        If checkitemcoll.Count = 0 Then
-            For i = 0 To Me.CLBTelNr.Items.Count - 1
-                Me.CLBTelNr.SetItemChecked(i, True)
-            Next
-            checkitemcoll = Me.CLBTelNr.CheckedItems
-        End If
-        For Each el As String In checkitemcoll
-            If Not el = "Alle Telefonnummern" And Not C_Helfer.IsOneOf(el, Split(checkstring, ";", , CompareMethod.Text)) Then
-                checkstring += el & ";"
+        If Not Me.CBPhonerKeineFB.Checked Then
+            Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
+            If checkitemcoll.Count = 0 Then
+                For i = 0 To Me.CLBTelNr.Items.Count - 1
+                    Me.CLBTelNr.SetItemChecked(i, True)
+                Next
+                checkitemcoll = Me.CLBTelNr.CheckedItems
             End If
-        Next
-        If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
-
+            For Each el As String In checkitemcoll
+                If Not el = "Alle Telefonnummern" And Not C_Helfer.IsOneOf(el, Split(checkstring, ";", , CompareMethod.Text)) Then
+                    checkstring += el & ";"
+                End If
+            Next
+            If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
+        Else
+            checkstring = "Phoner"
+        End If
         C_ini.Write(Dateipfad, "Telefone", "CLBTelNr", checkstring)
         'C_ini.Write(Dateipfad, "Optionen", "CBAutoUpdate", CStr(Me.CBAutoUpdate.Checked))
         ' Sichert die Einstellungen und schließt das Fenster
@@ -351,6 +401,40 @@ Public Class formCfg
             End If
         Next
         C_ini.Write(Dateipfad, "Telefone", "CBStandardTelefon", CStr(-1))
+        ' Phoner
+        Dim TelName() As String
+        Dim PhonerTelNameIndex As String = "0"
+
+        C_ini.Write(Dateipfad, "Phoner", "CBPhoner", CStr(Me.CBPhoner.Checked))
+
+        For i = 20 To 29
+            TelName = Split(C_ini.Read(Dateipfad, "Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
+            If Not TelName(0) = "-1" And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
+                If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
+                    PhonerTelNameIndex = CStr(i)
+                    Exit For
+                End If
+            End If
+        Next
+        C_ini.Write(Dateipfad, "Phoner", "PhonerTelNameIndex", PhonerTelNameIndex)
+        C_ini.Write(Dateipfad, "Phoner", "ComboBoxPhonerSIP", CStr(Me.ComboBoxPhonerSIP.SelectedIndex))
+        C_ini.Write(Dateipfad, "Phoner", "CBPhonerAnrMon", CStr(Me.CBPhonerAnrMon.Checked))
+        C_ini.Write(Dateipfad, "Phoner", "CBPhonerKeineFB", CStr(Me.CBPhonerKeineFB.Checked))
+        'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
+        If Me.PhonerPasswort.Text = "" And Me.CBPhoner.Checked Then
+            If C_Helfer.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
+                Speichern = False
+            End If
+        End If
+        If Me.CBPhoner.Checked Then
+            If Not Me.PhonerPasswort.Text = "" Then
+                If Not Me.PhonerPasswort.Text = "1234" Then
+                    C_ini.Write(Dateipfad, "Phoner", "PhonerPasswort", C_Crypt.EncryptString128Bit(Me.PhonerPasswort.Text, "Fritz!Box Script"))
+                    SaveSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "Fritz!Box Script")
+                    C_Helfer.KeyÄnderung(Dateipfad)
+                End If
+            End If
+        End If
     End Function
 #Region "Helfer"
     Private Function GetTimeInterval(ByVal nSeks As Int32) As String
@@ -583,7 +667,7 @@ Public Class formCfg
         System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "Listen"))
     End Sub
 
-    Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked, LinkForum.LinkClicked, LinkEmail.LinkClicked
+    Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked, LinkForum.LinkClicked, LinkEmail.LinkClicked, LinkLogFile.LinkClicked
 
         If sender Is Me.LinkEmail Then
             Me.Close()
@@ -592,6 +676,8 @@ Public Class formCfg
             System.Diagnostics.Process.Start("http://www.ip-phone-forum.de/showthread.php?t=237086")
         ElseIf sender Is Me.LinkHomepage Then
             System.Diagnostics.Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
+        ElseIf sender Is Me.LinkLogFile Then
+            System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "LogDatei"))
         End If
 
     End Sub
@@ -1145,11 +1231,11 @@ Public Class formCfg
         Dim LogDatei As String = C_Helfer.Dateipfade(Dateipfad, "LogDatei")
 
         If C_ini.Read(Dateipfad, "Optionen", "CBLogFile", "False") = "True" Then
-
             If My.Computer.FileSystem.FileExists(LogDatei) Then
                 Me.TBLogging.Text = My.Computer.FileSystem.OpenTextFileReader(LogDatei).ReadToEnd
             End If
         End If
+        Me.LinkLogFile.Text = LogDatei
     End Sub
 
     Private Sub FBDB_MP_TabIndexChanged(sender As Object, e As EventArgs) Handles FBDB_MP.SelectedIndexChanged
@@ -1159,9 +1245,19 @@ Public Class formCfg
                 .SelectionStart = .TextLength
                 .ScrollToCaret()
             End With
-            'Windows.Forms.SendKeys.Send("^({END})")
         End If
     End Sub
+
+    Private Sub BLogging_Click(sender As Object, e As EventArgs) Handles BLogging.Click
+        With Me.TBLogging
+            If .SelectedText = vbNullString Then
+                My.Computer.Clipboard.SetText(.Text)
+            Else
+                My.Computer.Clipboard.SetText(.SelectedText)
+            End If
+        End With
+    End Sub
+
 #End Region
 
 #Region "Delegate"
@@ -1257,7 +1353,47 @@ Public Class formCfg
     End Sub
 #End Region
 
+#Region "Phoner"
+    'Phoner
+    Private Sub CBKeineFB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBPhonerKeineFB.CheckedChanged
+        If Me.CBPhonerKeineFB.Checked Then Me.CBJImport.Checked = False
+        Me.CBJImport.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.ButtonTelefonliste.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.TBFBAdr.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.CBForceFBAddr.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.TBPasswort.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.lblTBPasswort.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.CBPhonerAnrMon.Checked = Me.CBPhonerKeineFB.Checked
+        Me.CBPhonerAnrMon.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.ComboBoxPhonerSIP.Enabled = Not Me.CBPhonerKeineFB.Checked
+        Me.CBPhoner.Enabled = Not Me.CBPhonerKeineFB.Checked
+        If Me.CBPhonerKeineFB.Checked Then
+            Me.CBPhoner.Checked = True
+            Me.ComboBoxPhonerSIP.SelectedIndex = 0
+            Me.CLBTelNr.SetItemChecked(0, True)
+            For i = 0 To TelList.Rows.Count - 1
+                TelList.Rows(i).Cells(0).Value = False
+            Next
+        End If
+        Me.CLBTelNr.Enabled = Not Me.CBPhonerKeineFB.Checked
+    End Sub
+    Private Sub LinkPhoner_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkPhoner.LinkClicked
+        System.Diagnostics.Process.Start("http://www.phoner.de/")
+    End Sub
 
+    Private Sub ButtonPhoner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonPhoner.Click
+        Dim PhonerVerfügbar As Boolean = C_Phoner.PhonerReady()
+        Me.LabelPhoner.Text = "Phoner kann " & CStr(IIf(PhonerVerfügbar, "", "nicht ")) & "verwendet werden!"
+        Me.PanelPhoner.Enabled = PhonerVerfügbar
+        If Not PhonerVerfügbar Then Me.CBPhoner.Checked = False
+        C_ini.Write(Dateipfad, "Phoner", "PhonerVerfügbar", CStr(PhonerVerfügbar))
+    End Sub
+
+    Private Sub CBPhoner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBPhoner.CheckedChanged
+        Me.PhonerPasswort.Enabled = Me.CBPhoner.Checked
+        Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
+    End Sub
+#End Region
 End Class
 
 Public NotInheritable Class iTa

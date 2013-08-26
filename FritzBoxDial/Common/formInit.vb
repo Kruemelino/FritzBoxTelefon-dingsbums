@@ -11,6 +11,7 @@
     Private C_Kontakt As Contacts
     Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
+    Private C_Phoner As Phoner
 
     'Strings
     Private DateiPfad As String
@@ -47,12 +48,15 @@
         ' Klasse für die OutlookInterface generieren
         C_OlI = New OutlookInterface(C_Kontakt, C_Helfer, DateiPfad)
 
+        ' Klasse für das PhonerInterface generieren
+        C_Phoner = New Phoner
+
 
         If PrüfeAddin() Then
 
             C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False)
 
-            C_GUI = New GraphicalUserInterface(C_Helfer, C_ini, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI)
+            C_GUI = New GraphicalUserInterface(C_Helfer, C_ini, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
             C_WählClient = New Wählclient(DateiPfad, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox)
 
@@ -61,7 +65,6 @@
             C_AnrMon = New AnrufMonitor(DateiPfad, C_RWS, UseAnrMon, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.GetFBAddr)
 
             C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
-
 
             ThisAddIn.Dateipfad = DateiPfad
             ThisAddIn.ini = C_ini
@@ -74,7 +77,9 @@
             ThisAddIn.WClient = C_WählClient
             ThisAddIn.AnrMon = C_AnrMon
             ThisAddIn.GUI = C_GUI
+            ThisAddIn.Phoner = C_Phoner
             ThisAddIn.UseAnrMon = UseAnrMon
+
 
             If CBool(C_ini.Read(DateiPfad, "Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_ini.Read(DateiPfad, "Optionen", "CBForceFBAddr", "False")) Then
                 Dim formjournalimort As New formJournalimport(DateiPfad, C_AnrMon, C_Helfer, C_ini, False)

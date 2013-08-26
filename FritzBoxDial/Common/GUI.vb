@@ -73,7 +73,7 @@ Imports Office = Microsoft.Office.Core
     Private OlI As OutlookInterface
     Private KontaktFunktionen As Contacts
     Private fbox As FritzBox
-
+    Private PhonerFunktionen As Phoner
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -88,7 +88,8 @@ Imports Office = Microsoft.Office.Core
                    ByVal AnMonitor As AnrufMonitor, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal FritzBoxKlasse As FritzBox, _
-                   ByVal OutlInter As OutlookInterface)
+                   ByVal OutlInter As OutlookInterface, _
+                   ByVal Phonerklasse As Phoner)
 
         HelferFunktionen = HelferKlasse
         ini = iniKlasse
@@ -100,6 +101,7 @@ Imports Office = Microsoft.Office.Core
         KontaktFunktionen = KontaktKlasse
         fbox = FritzBoxKlasse
         OlI = OutlInter
+        PhonerFunktionen = Phonerklasse
     End Sub
 
     Friend Sub SetOAWOF(ByVal Wclient As Wählclient, ByVal AnMonitor As AnrufMonitor, ByVal FritzBoxKlasse As FritzBox, OutlInter As OutlookInterface)
@@ -1016,7 +1018,7 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Friend Sub ÖffneEinstellungen()
-        Dim formConfig As New formCfg(Dateipfad, Me, ini, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen)
+        Dim formConfig As New formCfg(Dateipfad, Me, ini, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
         formConfig.ShowDialog()
         Dateipfad = GetSetting("FritzBox", "Optionen", "TBini", "-1")
     End Sub

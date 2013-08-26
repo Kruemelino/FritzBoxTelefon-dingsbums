@@ -15,26 +15,21 @@ Public Class Phoner
         'Die Prüfung auf vorhandene CAPI kann entfallen
         'da kein Fehler auftritt wenn diese nicht vorhanden ist außer
         'das das Programm nicht wählt. 
-        Try
-            Try
-                Dim strClassID As String = "-"
 
-                Dim RegKey As RegistryKey
-                RegKey = Registry.ClassesRoot.OpenSubKey("Phoner.CPhoner\CLSID", False)
-                strClassID = CType(RegKey.GetValue("", "-"), String)
-                If Not strClassID = "-" Then
-                    RegKey = Registry.ClassesRoot.OpenSubKey("CLSID\" & strClassID & "\LocalServer32", False)
-                    If RegKey Is Nothing Then
-                        RegKey = Registry.ClassesRoot.OpenSubKey("Wow6432Node\CLSID\" & strClassID & "\LocalServer32", False)
-                    End If
-                    If Not CType(RegKey.GetValue("", "-"), String) = "-" Then CheckIsPhonerInstalled = True
+        Try
+            Dim strClassID As String = "-"
+            Dim RegKey As RegistryKey
+            RegKey = Registry.ClassesRoot.OpenSubKey("Phoner.CPhoner\CLSID", False)
+            strClassID = CType(RegKey.GetValue("", "-"), String)
+            If Not strClassID = "-" Then
+                RegKey = Registry.ClassesRoot.OpenSubKey("CLSID\" & strClassID & "\LocalServer32", False)
+                If RegKey Is Nothing Then
+                    RegKey = Registry.ClassesRoot.OpenSubKey("Wow6432Node\CLSID\" & strClassID & "\LocalServer32", False)
                 End If
-                RegKey.Close()
-            Catch ex As Exception
-            Finally
-            End Try
-        Catch ex As Exception
-        End Try
+                If Not CType(RegKey.GetValue("", "-"), String) = "-" Then CheckIsPhonerInstalled = True
+            End If
+            RegKey.Close()
+        Catch : End Try
     End Function
     Private Function CheckIsPhonerRunning() As Boolean
         CheckIsPhonerRunning = False
