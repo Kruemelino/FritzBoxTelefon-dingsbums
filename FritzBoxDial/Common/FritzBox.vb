@@ -1316,4 +1316,8 @@ Public Class FritzBox
     End Sub
 #End Region
 
+    Friend Function GetFBAddr() As String
+        Return FBAddr
+    End Function
+
 End Class

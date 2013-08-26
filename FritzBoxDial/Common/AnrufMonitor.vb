@@ -6,6 +6,7 @@ Imports System.ComponentModel
 Public Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
+    Private WithEvents BWStartTCPReader As BackgroundWorker
     Private WithEvents TimerReStartStandBy As System.Timers.Timer
 
     Private ReceiveThread As Thread
@@ -28,9 +29,20 @@ Public Class AnrufMonitor
     Private TelAnzahl As Integer
     Private UseAnrMon As Boolean
     Private Eingeblendet As Integer = 0
+    Private FBAddresse As String
 
-    Public Sub New(ByVal FilePfad As String, ByVal RWS As formRWSuche, ByVal NutzeAnrMon As Boolean, ByVal iniKlasse As InI, ByVal HelferKlasse As Helfer, _
-           ByVal KontaktKlasse As Contacts, ByVal InterfacesKlasse As GraphicalUserInterface, ByVal OutlInter As OutlookInterface)
+    Private Const DefAnrMonPort As Integer = 1012
+
+    Public Sub New(ByVal FilePfad As String, _
+                   ByVal RWS As formRWSuche, _
+                   ByVal NutzeAnrMon As Boolean, _
+                   ByVal iniKlasse As InI, _
+                   ByVal HelferKlasse As Helfer, _
+                   ByVal KontaktKlasse As Contacts, _
+                   ByVal InterfacesKlasse As GraphicalUserInterface, _
+                   ByVal OutlInter As OutlookInterface, _
+                   ByVal FBAdr As String)
+
         hf = HelferKlasse
         KontaktFunktionen = KontaktKlasse
         GUI = InterfacesKlasse
@@ -40,6 +52,9 @@ Public Class AnrufMonitor
         UseAnrMon = NutzeAnrMon
         OlI = OutlInter
         JExml = New JournalXML(hf, InIPfad)
+        FBAddresse = FBAdr
+
+        ' STARTE Anrmon
         AnrMonStart(False)
     End Sub
 
@@ -57,37 +72,6 @@ Public Class AnrufMonitor
 #End Region
 
 #Region "Anrufmonitor Grundlagen"
-
-    Function StarteTCPReader(ByVal IPAdresse As String, ByVal IPPort As Integer) As Boolean
-        System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
-        Dim IPAdress As IPAddress
-        If LCase(IPAdresse) = LCase("fritz.box") Then
-            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(IPAdresse)
-            IPAdress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
-        Else
-            IPAdress = IPAddress.Parse(IPAdresse)
-        End If
-        Dim Client As New Sockets.TcpClient()
-        Dim remoteEP As New IPEndPoint(IPAdress, IPPort)
-        Try
-            Client.Connect(remoteEP)
-            Stream = Client.GetStream()
-            Dim ReceiveThread As New Thread(AddressOf AnrMonAktion)
-            ReceiveThread.IsBackground = True
-            ReceiveThread.Start()
-            AnrMonAktiv = ReceiveThread.IsAlive
-            Return AnrMonAktiv
-        Catch Err As Exception
-            hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
-            Return False
-        End Try
-    End Function
-    'Sub StarteTCPReaderThread()
-    '    Dim Port As Integer = 1012
-    '    Dim IPAddresse As String = ini.Read(InIPfad, "Optionen", "TBFBAdr", "fritz.box")
-    '    StarteTCPReader(IPAddresse, Port)
-    'End Sub
-
     Private Sub AnrMonAktion()
         ' schaut in der FritzBox im Port 1012 nach und startet entsprechende Unterprogramme
         Dim r As New StreamReader(Stream)
@@ -123,7 +107,6 @@ Public Class AnrufMonitor
     Friend Function AnrMonAnAus() As Boolean 'ByRef oExp As Outlook.Explorer)
         ' wird durch das Symbol 'Anrufmonitor' in der 'FritzBox'-Symbolleiste ausgeführt
         ' schaltet den Anrufmonitor an bzw. aus
-        Dim Erfolgreich As Boolean = False
 
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
@@ -148,32 +131,15 @@ Public Class AnrufMonitor
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
         'Dim StartThread As Thread
 
-        ' wird beim Start von Outlook ausgeführt und startet den Anrufmonitor
         If (ini.Read(InIPfad, "Optionen", "CBAnrMonAuto", "False") = "True" Or Manuell) And UseAnrMon Then
-            Dim Port As Integer = 1012
-            Dim IPAddresse As String = ini.Read(InIPfad, "Optionen", "TBFBAdr", "fritz.box")
-            If hf.Ping(IPAddresse) Or CBool(ini.Read(InIPfad, "Optionen", "CBForceFBAddr", "False")) Then
-                Dim Erfolgreich As Boolean
-                Erfolgreich = StarteTCPReader(IPAddresse, Port)
-                'StartThread = New Thread(AddressOf StarteTCPReaderThread)
-                'StartThread.Start()
 
-                If Erfolgreich Then
-#If OVer < 14 Then
-                GUI.SetAnrMonButton(True)
-#End If
-#If OVer >= 14 Then
-                    GUI.InvalidateControlAnrMon()
-#End If
-                    hf.LogFile("AnrMonStart: Anrufmonitor gestartet")
-                    AnrMonAktiv = Erfolgreich
-                    AnrMonError = False
-                Else
-                    hf.LogFile("AnrMonStart: Es ist ein TCP/IP Fehler aufgetreten.")
-                    AnrMonAktiv = False
-                    AnrMonError = True
-                End If
-                Return Erfolgreich
+            If hf.Ping(FBAddresse) Or CBool(ini.Read(InIPfad, "Optionen", "CBForceFBAddr", "False")) Then
+
+                BWStartTCPReader = New BackgroundWorker
+                With BWStartTCPReader
+                    .WorkerReportsProgress = True
+                    .RunWorkerAsync()
+                End With
             Else
                 AnrMonAktiv = False
                 AnrMonError = True
@@ -316,6 +282,51 @@ Public Class AnrufMonitor
             ini.Write(InIPfad, "Optionen", "CBStoppUhrY", CStr(frmStUhr.Position.Y))
             frmStUhr = Nothing
         End With
+    End Sub
+
+    Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
+        System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
+        Dim IPAddress As IPAddress
+        If LCase(FBAddresse) = "fritz.box" Then
+            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(FBAddresse)
+            IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
+        Else
+            IPAddress = IPAddress.Parse(FBAddresse)
+        End If
+        Dim Client As New Sockets.TcpClient()
+        Dim remoteEP As New IPEndPoint(IPAddress, DefAnrMonPort)
+        Try
+            Client.Connect(remoteEP)
+            Stream = Client.GetStream()
+            Dim ReceiveThread As New Thread(AddressOf AnrMonAktion)
+            ReceiveThread.IsBackground = True
+            ReceiveThread.Start()
+            AnrMonAktiv = ReceiveThread.IsAlive
+            e.Result = AnrMonAktiv
+        Catch Err As Exception
+            hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
+            e.Result = False
+        End Try
+    End Sub
+
+    Private Sub BWStartTCPReader_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStartTCPReader.RunWorkerCompleted
+
+        If CBool(e.Result) Then
+#If OVer < 14 Then
+            GUI.SetAnrMonButton(True)
+#End If
+#If OVer >= 14 Then
+            GUI.InvalidateControlAnrMon()
+#End If
+            hf.LogFile("AnrMonStart: Anrufmonitor gestartet")
+            AnrMonAktiv = CBool(e.Result)
+            AnrMonError = False
+        Else
+            hf.LogFile("AnrMonStart: Es ist ein TCP/IP Fehler aufgetreten.")
+            AnrMonAktiv = False
+            AnrMonError = True
+        End If
+        BWStartTCPReader.Dispose()
     End Sub
 #End Region
 
@@ -805,5 +816,4 @@ Public Class AnrufMonitor
     End Sub '(AnrMonDISCONNECT)
 #End Region
 
-    
 End Class
