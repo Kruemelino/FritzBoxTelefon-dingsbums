@@ -30,7 +30,7 @@ Public Class FritzBox
         DateiPfad = IniPath
         ini = iniKlasse
         hf = HelferKlasse
-        hf.KeyÄnderung(DateiPfad)
+        hf.KeyChange(DateiPfad)
         Crypt = CryptKlasse
 
         If Not frmconfig Is Nothing Then
@@ -77,7 +77,7 @@ Public Class FritzBox
                 ini.Write(DateiPfad, "Optionen", "TBPasswort", Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script"))
                 ini.Write(DateiPfad, "Optionen", "TBBenutzer", InpupBenutzer)
                 SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-                hf.KeyÄnderung(DateiPfad)
+                hf.KeyChange(DateiPfad)
             End If
 
             Dim Challenge As String
@@ -219,7 +219,7 @@ Public Class FritzBox
         End With
         xml = Nothing
         Rückgabe = hf.httpRead(Link, FBEncoding)
-        hf.KeyÄnderung(DateiPfad)
+        hf.KeyChange(DateiPfad)
         If Not InStr(Rückgabe, "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.", CompareMethod.Text) = 0 Or _
             Not InStr(Rückgabe, "Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.", CompareMethod.Text) = 0 Then
             hf.LogFile("Logout erfolgreich")

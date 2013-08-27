@@ -29,6 +29,11 @@ Public Class formWählbox
     Private bDirektwahl As Boolean
     Private LandesVorwahl As String
     Private Nebenstellen As String()
+    ' Phoner
+    Private C_Phoner As Phoner
+    Dim PhonerCall As Boolean = False
+    Dim UsePhonerOhneFritzBox As Boolean = False
+    Dim PhonerFon As Integer = -1
 
     Structure Argument
         Dim TelNr As String
@@ -42,7 +47,8 @@ Public Class formWählbox
                    ByVal iniKlasse As InI, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
-                   ByVal FritzBoxKlasse As FritzBox)
+                   ByVal FritzBoxKlasse As FritzBox, _
+                   ByVal PhonerKlasse As Phoner)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -55,6 +61,8 @@ Public Class formWählbox
         GUI = InterfacesKlasse
         bDirektwahl = Direktwahl
 
+        C_Phoner = PhonerKlasse
+
         Me.FrameDirektWahl.Visible = bDirektwahl
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
@@ -62,7 +70,7 @@ Public Class formWählbox
     End Sub
 
     Private Sub formWählbox_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.FormClosing
-        ThisAddIn.fBox.FBLogout(SID)
+        If Not UsePhonerOhneFritzBox Then ThisAddIn.fBox.FBLogout(SID)
         Me.Dispose(True)
     End Sub
 
@@ -121,6 +129,21 @@ Public Class formWählbox
             WählboxBereit = True
         End If
 
+        ' Phoner
+        If ini.Read(DateiPfad, "Phoner", "CBPhoner", "False") = "True" Then
+            If C_Phoner.PhonerReady() Then
+                Dim SIP_Nr As Integer = CInt(ini.Read(DateiPfad, "Phoner", "PhonerTelNameIndex", "0"))
+                'TelName = Split(ini.Read(DateiPfad, "Telefone", CStr(SIP_Nr), "-1;;"), ";", , CompareMethod.Text)
+                'Me.ComboBoxFon.Items.Add(IIf(Not SIP_Nr = 0, TelName(2) & " via Phoner", "Phoner"))
+                Me.ComboBoxFon.Items.Add("Phoner")
+                PhonerFon = Me.ComboBoxFon.Items.Count - 1
+                If SIP_Nr = StandardTelefon Then
+                    StandardTelefon = PhonerFon
+                End If
+            End If
+        End If
+        ' End Phoner 
+
         Me.ComboBoxFon.SelectedIndex = selIndex
         Me.checkCBC.Enabled = CBool(IIf(ini.Read(DateiPfad, "Optionen", "CBCbCunterbinden", "False") = "False", True, False))
         Me.checkNetz.Checked = CBool(IIf(ini.Read(DateiPfad, "Optionen", "Festnetz", "False") = "True", True, False))
@@ -153,7 +176,7 @@ Public Class formWählbox
         ' Abbruch-Button wieder verstecken
         cancelCallButton.Visible = False
         ' Abbruch ausführen
-        Me.LabelStatus.Text = FBox.sendDialRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+        If Not PhonerCall Then Me.LabelStatus.Text = FBox.SendDialRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
         ' Bemerkung: Anstatt ATH kann auch einfach ein Leerzeichen oder ein Buchstabe, oder #
         ' gesendet werden (nur keine Nummer), was alles zu einem Verbindungsabbruch führt.
         ' ATH entspricht lediglich dem AT-Kommando das früher über Port1011 des telefond für
@@ -312,7 +335,11 @@ Public Class formWählbox
                 .TelNr = CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)
                 .clir = Me.checkCLIR.Checked
                 .festnetz = Me.checkNetz.Checked
-                .fonanschluss = Nebenstellen(Me.ComboBoxFon.SelectedIndex)
+                If Me.ComboBoxFon.Text = "Phoner" Then
+                    .fonanschluss = "-2"
+                Else
+                    .fonanschluss = Nebenstellen(Me.ComboBoxFon.SelectedIndex)
+                End If
             End With
 
             CallNr.Start(ID)
@@ -402,13 +429,21 @@ Public Class formWählbox
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
         Code = Amt & Code
-        If CLIR Then Code = "*31#" & Code
-        If Festnetz Then Code = "*11#" & Code
-        ' Sagt der FB dass die Nummer jetzt zuende ist
-        Code = Code & "#"
+
+        If Not UsePhonerOhneFritzBox Then
+            If CLIR Then Code = "*31#" & Code
+            If Festnetz Then Code = "*11#" & Code
+            ' Sagt der FB dass die Nummer jetzt zuende ist
+            Code = Code & "#"
+        End If
         ' Jetzt Code an Box bzw. Phoner senden
-        hf.LogFile("Sende Nummer: " & Code & " an Dialport: " & Telefonanschluss)
-        StatusText = FBox.sendDialRequestToBox(Code, Telefonanschluss, False)
+        If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then
+            hf.LogFile("Folgende Nummer wird zum Wählen an Phoner gesendet: " & Code)
+            StatusText = C_Phoner.UsePhoner(Code)
+        Else
+            hf.LogFile("Folgende Nummer wird zum Wählen an die Box gesendet: " & Code & " über Anschluss: " & Telefonanschluss)
+            StatusText = FBox.SendDialRequestToBox(Code, Telefonanschluss, False)
+        End If
 
         dialNumber = StatusText
         SetStatusText()
@@ -548,13 +583,18 @@ Public Class formWählbox
 
 #Region "Änderungen"
     Private Sub ComboBoxFon_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) ' Handles ComboBoxFon.SelectedIndexChanged
-        Me.checkCLIR.Enabled = True
-        Me.checkNetz.Enabled = True
-        If SID = "-1" Then
-            WählboxBereit = False
-            Me.LabelStatus.Text = "Bitte warten..."
-            Me.ListTel.Enabled = False
-            BWLogin.RunWorkerAsync(True)
+        If Me.ComboBoxFon.SelectedIndex = PhonerFon Then
+            Me.checkCLIR.Enabled = False
+            Me.checkNetz.Enabled = False
+        Else
+            Me.checkCLIR.Enabled = True
+            Me.checkNetz.Enabled = True
+            If SID = "-1" Then
+                WählboxBereit = False
+                Me.LabelStatus.Text = "Bitte warten..."
+                Me.ListTel.Enabled = False
+                BWLogin.RunWorkerAsync(True)
+            End If
         End If
     End Sub
 #End Region

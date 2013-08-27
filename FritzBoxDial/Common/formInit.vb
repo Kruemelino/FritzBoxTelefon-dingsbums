@@ -49,8 +49,7 @@
         C_OlI = New OutlookInterface(C_Kontakt, C_Helfer, DateiPfad)
 
         ' Klasse für das PhonerInterface generieren
-        C_Phoner = New Phoner
-
+        C_Phoner = New Phoner(DateiPfad, C_Helfer, C_ini, C_Crypt)
 
         If PrüfeAddin() Then
 
@@ -58,7 +57,7 @@
 
             C_GUI = New GraphicalUserInterface(C_Helfer, C_ini, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
-            C_WählClient = New Wählclient(DateiPfad, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox)
+            C_WählClient = New Wählclient(DateiPfad, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
             UseAnrMon = CBool(C_ini.Read(DateiPfad, "Optionen", "CBUseAnrMon", "True"))
 
@@ -136,7 +135,7 @@
         C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBFBUser.Text)
         C_ini.Write(DateiPfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-        C_Helfer.KeyÄnderung(DateiPfad)
+        C_Helfer.KeyChange(DateiPfad)
         SID = C_FBox.FBLogin(fw550)
         If Not SID = C_FBox.DefaultSID Then
             Me.TBFBPW.Enabled = False

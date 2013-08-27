@@ -316,7 +316,6 @@ Public Class formCfg
             checkstring = "Phoner"
         End If
         C_ini.Write(Dateipfad, "Telefone", "CLBTelNr", checkstring)
-        'C_ini.Write(Dateipfad, "Optionen", "CBAutoUpdate", CStr(Me.CBAutoUpdate.Checked))
         ' Sichert die Einstellungen und schlieﬂt das Fenster
         If (CInt(Me.TBEnblDauer.Text) < 4) Then Me.TBEnblDauer.Text = "4"
         SaveSetting("FritzBox", "Optionen", "TBini", Dateipfad)
@@ -330,7 +329,7 @@ Public Class formCfg
         If Not Me.TBPasswort.Text = "1234" Then
             C_ini.Write(Dateipfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"))
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-            C_Helfer.Keyƒnderung(Dateipfad)
+            C_Helfer.KeyChange(Dateipfad)
         End If
         C_ini.Write(Dateipfad, "Optionen", "TBVorwahl", Me.TBVorwahl.Text)
         C_ini.Write(Dateipfad, "Optionen", "CBLogFile", CStr(Me.CBLogFile.Checked))
@@ -431,7 +430,7 @@ Public Class formCfg
                 If Not Me.PhonerPasswort.Text = "1234" Then
                     C_ini.Write(Dateipfad, "Phoner", "PhonerPasswort", C_Crypt.EncryptString128Bit(Me.PhonerPasswort.Text, "Fritz!Box Script"))
                     SaveSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "Fritz!Box Script")
-                    C_Helfer.Keyƒnderung(Dateipfad)
+                    C_Helfer.KeyChange(Dateipfad)
                 End If
             End If
         End If

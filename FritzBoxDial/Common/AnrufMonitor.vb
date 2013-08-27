@@ -29,9 +29,12 @@ Public Class AnrufMonitor
     Private TelAnzahl As Integer
     Private UseAnrMon As Boolean
     Private Eingeblendet As Integer = 0
-    Private FBAddresse As String
+    Private IPAddresse As String = "fritz.box"
+    Private FBAnrMonPort As Integer = 1012
 
-    Private Const DefAnrMonPort As Integer = 1012
+#Region "Phoner"
+    Private AnrMonPhoner As Boolean = False
+#End Region
 
     Public Sub New(ByVal FilePfad As String, _
                    ByVal RWS As formRWSuche, _
@@ -52,8 +55,7 @@ Public Class AnrufMonitor
         UseAnrMon = NutzeAnrMon
         OlI = OutlInter
         JExml = New JournalXML(hf, InIPfad)
-        FBAddresse = FBAdr
-
+        IPAddresse = FBAdr
         ' STARTE Anrmon
         AnrMonStart(False)
     End Sub
@@ -81,21 +83,28 @@ Public Class AnrufMonitor
         Do
             If Stream.DataAvailable And AnrMonAktiv Then
                 FBStatus = r.ReadLine
-                hf.LogFile("AnrMonAktion: " & FBStatus)
-                aktZeile = Split(FBStatus, ";", , CompareMethod.Text)
-                If Not aktZeile.Length = 1 Then
-                    'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
-                    Select Case CStr(aktZeile.GetValue(1))
-                        Case "RING"
-                            AnrMonRING(aktZeile, True, CBStoppUhrEinblenden)
-                        Case "CALL"
-                            AnrMonCALL(aktZeile, CBStoppUhrEinblenden)
-                        Case "CONNECT"
-                            AnrMonCONNECT(aktZeile, CBStoppUhrEinblenden)
-                        Case "DISCONNECT"
-                            AnrMonDISCONNECT(aktZeile, CBStoppUhrEinblenden)
-                    End Select
-                End If
+                Select Case FBStatus
+                    Case "Welcome to Phoner"
+                        AnrMonPhoner = True
+                    Case "Sorry, too many clients"
+                        hf.LogFile("AnrMonAktion, Phoner: ""Sorry, too many clients""")
+                    Case Else
+                        hf.LogFile("AnrMonAktion: " & FBStatus)
+                        aktZeile = Split(FBStatus, ";", , CompareMethod.Text)
+                        If Not aktZeile.Length = 1 Then
+                            'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
+                            Select Case CStr(aktZeile.GetValue(1))
+                                Case "RING"
+                                    AnrMonRING(aktZeile, True, CBStoppUhrEinblenden)
+                                Case "CALL"
+                                    AnrMonCALL(aktZeile, CBStoppUhrEinblenden)
+                                Case "CONNECT"
+                                    AnrMonCONNECT(aktZeile, CBStoppUhrEinblenden)
+                                Case "DISCONNECT"
+                                    AnrMonDISCONNECT(aktZeile, CBStoppUhrEinblenden)
+                            End Select
+                        End If
+                End Select
             End If
             Thread.Sleep(50)
             Windows.Forms.Application.DoEvents()
@@ -129,12 +138,14 @@ Public Class AnrufMonitor
     End Function '(AnrMonAnAus)
 
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
-        'Dim StartThread As Thread
-
         If (ini.Read(InIPfad, "Optionen", "CBAnrMonAuto", "False") = "True" Or Manuell) And UseAnrMon Then
 
-            If hf.Ping(FBAddresse) Or CBool(ini.Read(InIPfad, "Optionen", "CBForceFBAddr", "False")) Then
+            If CBool(ini.Read(InIPfad, "Phoner", "CBPhonerAnrMon", "False")) Then
+                FBAnrMonPort = 2012
+                IPAddresse = "127.0.0.1"
+            End If
 
+            If hf.Ping(IPAddresse) Or CBool(ini.Read(InIPfad, "Optionen", "CBForceFBAddr", "False")) Then
                 BWStartTCPReader = New BackgroundWorker
                 With BWStartTCPReader
                     .WorkerReportsProgress = True
@@ -202,21 +213,26 @@ Public Class AnrufMonitor
         If Erfolgreich Then Erfolgreich = AnrMonStart(False)
     End Sub
 
-    Public Function TelefonName(ByVal MSN As String) As String
+    Friend Function TelefonName(ByVal MSN As String) As String
 
         Dim tempTelName() As String
         Dim Nebenstellen() As String
         Nebenstellen = (From x In Split(ini.Read(InIPfad, "Telefone", "EingerichteteTelefone", "1;2;3;51;52;53;54;55;56;57;58;50;60;61;62;63;64;65;66;67;68;69;20;21;22;23;24;25;26;27;28;29"), ";", , CompareMethod.Text) Where Not x Like "60#" Select x).ToArray ' TAM entfernen
         TelefonName = vbNullString
-        For Each Nebenstelle In Nebenstellen
-            tempTelName = Split(ini.Read(InIPfad, "Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
-            If Not tempTelName(0) = "-1" Or tempTelName(0) = "" Then
-                If hf.IsOneOf(MSN, Split(tempTelName(1), "_", , CompareMethod.Text)) Then
-                    TelefonName += tempTelName(2) & ", "
+        If Not AnrMonPhoner Then
+            For Each Nebenstelle In Nebenstellen
+                tempTelName = Split(ini.Read(InIPfad, "Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
+                If Not tempTelName(0) = "-1" Or tempTelName(0) = "" Then
+                    If hf.IsOneOf(MSN, Split(tempTelName(1), "_", , CompareMethod.Text)) Then
+                        TelefonName += tempTelName(2) & ", "
+                    End If
                 End If
-            End If
-        Next
+            Next
+        Else
+            TelefonName = "Phoner, " ' ,  werden danach entfernt.
+        End If
         If Not TelefonName = vbNullString Then TelefonName = Left(TelefonName, Len(TelefonName) - 2)
+
     End Function
 
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
@@ -287,14 +303,14 @@ Public Class AnrufMonitor
     Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
         System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
         Dim IPAddress As IPAddress
-        If LCase(FBAddresse) = "fritz.box" Then
-            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(FBAddresse)
+        If LCase(IPAddresse) = "fritz.box" Then
+            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(IPAddresse)
             IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
         Else
-            IPAddress = IPAddress.Parse(FBAddresse)
+            IPAddress = IPAddress.Parse(IPAddresse)
         End If
         Dim Client As New Sockets.TcpClient()
-        Dim remoteEP As New IPEndPoint(IPAddress, DefAnrMonPort)
+        Dim remoteEP As New IPEndPoint(IPAddress, FBAnrMonPort)
         Try
             Client.Connect(remoteEP)
             Stream = Client.GetStream()
@@ -345,11 +361,11 @@ Public Class AnrufMonitor
         Dim Vorwahl As String = ini.Read(InIPfad, "Optionen", "TBVorwahl", "")
         Dim checkstring As String = ini.Read(InIPfad, "Telefone", "CLBTelNr", "-1") ' Enthällt alle MSN, auf die reakiert werden soll
         Dim MSN As String = CStr(FBStatus.GetValue(4))
-        If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Then
+        If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             'Dimensionierung in die Abfrage geschoben, um eine unnötige Dimensionierung zu verhindern.
-            'Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
-            'Dim olfolder As Outlook.MAPIFolder
+
             Dim TelNr As String            ' ermittelte TelNr
+
             Dim Anrufer As String = vbNullString           ' ermittelter Anrufer
             Dim vCard As String = vbNullString           ' vCard des Anrufers
             Dim KontaktID As String = "-1;"           ' ID der Kontaktdaten des Anrufers
@@ -359,15 +375,27 @@ Public Class AnrufMonitor
             'Dim GefundenerKontakt As Outlook.ContactItem
             Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
             Dim LandesVW As String = ini.Read(InIPfad, "Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
-
             Dim IndexDatei As String = hf.Dateipfade(InIPfad, "KontaktIndex")
             Dim Listen As String = hf.Dateipfade(InIPfad, "Listen")
-
+            'Phoner
+            Dim PhonerTelNr() As String
             ' Anruf nur anzeigen, wenn die MSN oder VoIP-Nr stimmt
 
             ID = CInt(FBStatus.GetValue(2))
             TelNr = CStr(FBStatus.GetValue(3))
-
+            'Phoner
+            If AnrMonPhoner Then
+                Dim pos As Integer = InStr(TelNr, "@", CompareMethod.Text)
+                If Not pos = 0 Then
+                    TelNr = Left(TelNr, pos - 1)
+                Else
+                    PhonerTelNr = hf.TelNrTeile(TelNr)
+                    If Not PhonerTelNr(1) = "" Then TelNr = PhonerTelNr(1) & Mid(TelNr, InStr(TelNr, ")", CompareMethod.Text) + 2)
+                    If Not PhonerTelNr(0) = "" Then TelNr = PhonerTelNr(0) & Mid(TelNr, 2)
+                End If
+                TelNr = hf.nurZiffern(TelNr, LandesVW)
+            End If
+            ' Ende Phoner
             If Len(TelNr) = 0 Then TelNr = "unbekannt"
             MSN = CStr(FBStatus.GetValue(4))
             Dim letzterAnrufer() As String = {CStr(FBStatus.GetValue(0)), Anrufer, TelNr, MSN, StoreID, KontaktID}
@@ -496,7 +524,7 @@ Public Class AnrufMonitor
             End Select
         End If
         ' Anruf nur bearbeiten, wenn die MSN oder VoIP-Nr stimmt
-        If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Then
+        If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             Dim LandesVW As String = ini.Read(InIPfad, "Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
             Dim TelNr As String            ' ermittelte TelNr
             Dim Anrufer As String            ' ermittelter Anrufer
@@ -619,7 +647,7 @@ Public Class AnrufMonitor
             ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
             ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
             If Not MSN = Nothing Then
-                If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, ini.Read(InIPfad, "Optionen", "TBVorwahl", "")), Split(checkstring, ";", , CompareMethod.Text)) Then
+                If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, ini.Read(InIPfad, "Optionen", "TBVorwahl", "")), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
                     With JExml
                         If .JEWertAuslesen(ID, "NSN") = vbNullString Then
@@ -686,7 +714,7 @@ Public Class AnrufMonitor
             JExml.JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
             Dim JMSN As String = hf.OrtsVorwahlEntfernen(MSN, Vorwahl)
             If Not MSN = Nothing Then
-                If hf.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Then
+                If hf.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
                     'Ist eingespeicherte MSN in der MSN aus FBStatus vorhanden
                     ' Telefonnamen ermitteln
@@ -807,6 +835,16 @@ Public Class AnrufMonitor
                 End If
             Else
                 hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
+                'If Not UsePhonerOhneFritzBox Then
+                '    If ini.Read(InIPfad, "Optionen", "CBJournal", "False") = "True" And HelferFunktionen.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Then
+                '        ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
+                '        Dim ZeitAnruf As Date = CDate(FBStatus(0))
+                '        ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + Dauer + 70))
+                '        If ZeitAnruf < SchließZeit Then ini.Write(InIPfad, "Journal", "SchließZeit", CStr(ZeitAnruf))
+                '        HelferFunktionen.LogFile("AnrMonDISCONNECT: Journalimport wird gestartet")
+                '        Dim formjournalimort As New formJournalimport(InIPfad, httpTrans, Me, False, ini, HelferFunktionen)
+                '    End If
+                'End If
             End If
         End If
 

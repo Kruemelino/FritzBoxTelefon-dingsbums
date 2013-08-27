@@ -126,31 +126,48 @@ Public Class Helfer
         Return Left(iniPfad, InStrRev(iniPfad, "\", , CompareMethod.Text)) & Datei
     End Function
 
-    Public Sub KeyÄnderung(ByVal Dateipfad As String)
+    Public Sub KeyChange(ByVal Dateipfad As String)
         ' Diese Funktion ändert den Zugang zu den verschlüsselten Passwort.
-
+        Dim Passwort(1) As String
+        Dim Zugang(1) As String
+        Dim Knoten(1) As String
         Dim tempPasswort As String
         Dim tempZugang As String
         Dim i As Long
-
-        tempPasswort = C_ini.Read(Dateipfad, "Optionen", "TBPasswort", "")
-        If Not Len(tempPasswort) = 0 Then
-            tempZugang = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
-            If Not tempZugang = "-1" Then
-                tempPasswort = C_Crypt.DecryptString128Bit(tempPasswort, tempZugang) 'entschlüsseln
-                tempZugang = ""
-                For i = 0 To 2
-                    tempZugang = tempZugang & Hex(Rnd() * 255)
-                Next
-                tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-                SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
-                C_ini.Write(Dateipfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
-            Else 'Für den Fall es exsistiert ein Passwort aber kein Entschlüsselungsschlüssel
-                C_ini.Write(Dateipfad, "Optionen", "TBPasswort", vbNullString)
-                FBDB_MsgBox("Das Passwort der Fritz!Box kann nicht entschlüsselt werden. Es muss neu eingegeben werden.", MsgBoxStyle.Information, "KeyÄnderung")
+        Dim j As Integer
+        ' Passwort für Fritz!Box
+        Passwort(0) = "TBPasswort"
+        Passwort(1) = "PhonerPasswort"
+        Zugang(0) = "Zugang"
+        Zugang(1) = "ZugangPasswortPhoner"
+        Knoten(0) = "Optionen"
+        Knoten(1) = "Phoner"
+        For j = 0 To 1
+            tempPasswort = C_ini.Read(Dateipfad, Knoten(j), CStr(Passwort(j)), "")
+            If Not Len(tempPasswort) = 0 Then
+                tempZugang = GetSetting("FritzBox", "Optionen", CStr(Zugang(j)), "-1")
+                If Not tempZugang = "-1" Then
+                    tempPasswort = C_Crypt.DecryptString128Bit(tempPasswort, tempZugang) 'entschlüsseln
+                    tempZugang = ""
+                    For i = 0 To 2
+                        tempZugang = tempZugang & Hex(Rnd() * 255)
+                    Next
+                    tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+                    SaveSetting("Fritzbox", "Optionen", CStr(Zugang(j)), tempZugang)
+                    C_ini.Write(Dateipfad, Knoten(j), CStr(Passwort(j)), C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
+                Else 'Für den Fall es exsistiert ein Passwort aber kein Entschlüsselungsschlüssel
+                    Select Case j
+                        Case 0
+                            tempZugang = "Fritz!Box"
+                        Case 1
+                            tempZugang = "Phoner"
+                    End Select
+                    C_ini.Write(Dateipfad, Knoten(j), CStr(Passwort(j)), vbNullString)
+                    FBDB_MsgBox("Das Passwort der " & tempZugang & " kann nicht entschlüsselt werden. Es muss neu eingegeben werden.", MsgBoxStyle.Information, "KeyChange")
+                End If
             End If
-        End If
-    End Sub ' (KeyÄnderung)
+        Next
+    End Sub ' (Keyänderung) 
 
     Public Function GetInformationSystemFritzBox() As String
 
