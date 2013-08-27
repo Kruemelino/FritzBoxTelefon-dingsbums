@@ -1239,6 +1239,7 @@ Public Class formCfg
     End Sub
 
     Private Sub FBDB_MP_TabIndexChanged(sender As Object, e As EventArgs) Handles FBDB_MP.SelectedIndexChanged
+        Me.Update()
         If Me.FBDB_MP.SelectedTab.Name = "PLogging" Then
             With Me.TBLogging
                 .Focus()
@@ -1394,6 +1395,7 @@ Public Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
+
 End Class
 
 Public NotInheritable Class iTa

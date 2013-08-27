@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -167,6 +167,7 @@ Partial Class formCfg
         Me.CBSymbAnrListe = New System.Windows.Forms.CheckBox()
         Me.LabelSymb = New System.Windows.Forms.Label()
         Me.PPhoner = New System.Windows.Forms.TabPage()
+        Me.Label26 = New System.Windows.Forms.Label()
         Me.ButtonPhoner = New System.Windows.Forms.Button()
         Me.PanelPhoner = New System.Windows.Forms.Panel()
         Me.PhonerPasswort = New System.Windows.Forms.MaskedTextBox()
@@ -192,6 +193,13 @@ Partial Class formCfg
         Me.CBTelefonDatei = New System.Windows.Forms.CheckBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.TBDiagnose = New System.Windows.Forms.TextBox()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -215,10 +223,13 @@ Partial Class formCfg
         Me.PSymbolleiste.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.PPhoner.SuspendLayout()
+        Me.PanelPhoner.SuspendLayout()
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
         Me.PDebug.SuspendLayout()
         Me.PTelefonDatei.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
         Me.SuspendLayout()
         '
         'ButtonZuruecksetzen
@@ -989,9 +1000,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle7.Format = "T"
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1002,9 +1013,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle8.Format = "T"
+        DataGridViewCellStyle8.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1015,9 +1026,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle9.Format = "T"
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1736,16 +1747,12 @@ Partial Class formCfg
         '
         'PPhoner
         '
-        Me.PPhoner.Controls.Add(Me.ButtonPhoner)
-        Me.PPhoner.Controls.Add(Me.PanelPhoner)
-        Me.PPhoner.Controls.Add(Me.PhonerPasswort)
-        Me.PPhoner.Controls.Add(Me.LPassworPhoner)
-        Me.PPhoner.Controls.Add(Me.LabelPhoner)
+        Me.PPhoner.Controls.Add(Me.GroupBox4)
+        Me.PPhoner.Controls.Add(Me.Label31)
+        Me.PPhoner.Controls.Add(Me.Label30)
+        Me.PPhoner.Controls.Add(Me.Label27)
+        Me.PPhoner.Controls.Add(Me.Label26)
         Me.PPhoner.Controls.Add(Me.LinkPhoner)
-        Me.PPhoner.Controls.Add(Me.CBPhoner)
-        Me.PPhoner.Controls.Add(Me.ComboBoxPhonerSIP)
-        Me.PPhoner.Controls.Add(Me.CBPhonerAnrMon)
-        Me.PPhoner.Controls.Add(Me.CBPhonerKeineFB)
         Me.PPhoner.Location = New System.Drawing.Point(4, 22)
         Me.PPhoner.Name = "PPhoner"
         Me.PPhoner.Size = New System.Drawing.Size(588, 294)
@@ -1753,25 +1760,41 @@ Partial Class formCfg
         Me.PPhoner.Text = "Phoner"
         Me.PPhoner.UseVisualStyleBackColor = True
         '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(4, 96)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(250, 13)
+        Me.Label26.TabIndex = 10
+        Me.Label26.Text = "Phoner kann über folgenden Link bezogen werden:"
+        '
         'ButtonPhoner
         '
-        Me.ButtonPhoner.Location = New System.Drawing.Point(374, 226)
+        Me.ButtonPhoner.Location = New System.Drawing.Point(6, 32)
         Me.ButtonPhoner.Name = "ButtonPhoner"
-        Me.ButtonPhoner.Size = New System.Drawing.Size(75, 23)
+        Me.ButtonPhoner.Size = New System.Drawing.Size(99, 110)
         Me.ButtonPhoner.TabIndex = 9
-        Me.ButtonPhoner.Text = "ButtonPhoner"
+        Me.ButtonPhoner.Text = "Teste die Verfügbarkeit von Phoner"
         Me.ButtonPhoner.UseVisualStyleBackColor = True
         '
         'PanelPhoner
         '
-        Me.PanelPhoner.Location = New System.Drawing.Point(318, 47)
+        Me.PanelPhoner.Controls.Add(Me.GroupBox7)
+        Me.PanelPhoner.Controls.Add(Me.Label33)
+        Me.PanelPhoner.Controls.Add(Me.CBPhoner)
+        Me.PanelPhoner.Controls.Add(Me.ComboBoxPhonerSIP)
+        Me.PanelPhoner.Controls.Add(Me.CBPhonerKeineFB)
+        Me.PanelPhoner.Controls.Add(Me.PhonerPasswort)
+        Me.PanelPhoner.Controls.Add(Me.LPassworPhoner)
+        Me.PanelPhoner.Location = New System.Drawing.Point(111, 35)
         Me.PanelPhoner.Name = "PanelPhoner"
-        Me.PanelPhoner.Size = New System.Drawing.Size(200, 138)
+        Me.PanelPhoner.Size = New System.Drawing.Size(456, 107)
         Me.PanelPhoner.TabIndex = 8
         '
         'PhonerPasswort
         '
-        Me.PhonerPasswort.Location = New System.Drawing.Point(183, 226)
+        Me.PhonerPasswort.Location = New System.Drawing.Point(7, 41)
         Me.PhonerPasswort.Name = "PhonerPasswort"
         Me.PhonerPasswort.Size = New System.Drawing.Size(100, 20)
         Me.PhonerPasswort.TabIndex = 7
@@ -1780,67 +1803,67 @@ Partial Class formCfg
         'LPassworPhoner
         '
         Me.LPassworPhoner.AutoSize = True
-        Me.LPassworPhoner.Location = New System.Drawing.Point(67, 226)
+        Me.LPassworPhoner.Location = New System.Drawing.Point(113, 44)
         Me.LPassworPhoner.Name = "LPassworPhoner"
         Me.LPassworPhoner.Size = New System.Drawing.Size(87, 13)
         Me.LPassworPhoner.TabIndex = 6
-        Me.LPassworPhoner.Text = "LPassworPhoner"
+        Me.LPassworPhoner.Text = "Phoner Passwort"
         '
         'LabelPhoner
         '
         Me.LabelPhoner.AutoSize = True
-        Me.LabelPhoner.Location = New System.Drawing.Point(64, 209)
+        Me.LabelPhoner.Location = New System.Drawing.Point(111, 19)
         Me.LabelPhoner.Name = "LabelPhoner"
-        Me.LabelPhoner.Size = New System.Drawing.Size(67, 13)
+        Me.LabelPhoner.Size = New System.Drawing.Size(107, 13)
         Me.LabelPhoner.TabIndex = 5
-        Me.LabelPhoner.Text = "LabelPhoner"
+        Me.LabelPhoner.Text = "Phoner Einstellungen"
         '
         'LinkPhoner
         '
         Me.LinkPhoner.AutoSize = True
-        Me.LinkPhoner.Location = New System.Drawing.Point(64, 192)
+        Me.LinkPhoner.Location = New System.Drawing.Point(260, 96)
         Me.LinkPhoner.Name = "LinkPhoner"
-        Me.LinkPhoner.Size = New System.Drawing.Size(61, 13)
+        Me.LinkPhoner.Size = New System.Drawing.Size(41, 13)
         Me.LinkPhoner.TabIndex = 4
         Me.LinkPhoner.TabStop = True
-        Me.LinkPhoner.Text = "LinkPhoner"
+        Me.LinkPhoner.Text = "Phoner"
         '
         'CBPhoner
         '
         Me.CBPhoner.AutoSize = True
-        Me.CBPhoner.Location = New System.Drawing.Point(64, 168)
+        Me.CBPhoner.Location = New System.Drawing.Point(3, 24)
         Me.CBPhoner.Name = "CBPhoner"
-        Me.CBPhoner.Size = New System.Drawing.Size(74, 17)
+        Me.CBPhoner.Size = New System.Drawing.Size(168, 17)
         Me.CBPhoner.TabIndex = 3
-        Me.CBPhoner.Text = "CBPhoner"
+        Me.CBPhoner.Text = "Softphone Phoner verwenden"
         Me.CBPhoner.UseVisualStyleBackColor = True
         '
         'ComboBoxPhonerSIP
         '
         Me.ComboBoxPhonerSIP.FormattingEnabled = True
-        Me.ComboBoxPhonerSIP.Location = New System.Drawing.Point(64, 140)
+        Me.ComboBoxPhonerSIP.Location = New System.Drawing.Point(7, 70)
         Me.ComboBoxPhonerSIP.Name = "ComboBoxPhonerSIP"
-        Me.ComboBoxPhonerSIP.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBoxPhonerSIP.Size = New System.Drawing.Size(100, 21)
         Me.ComboBoxPhonerSIP.TabIndex = 2
         '
         'CBPhonerAnrMon
         '
         Me.CBPhonerAnrMon.AutoSize = True
-        Me.CBPhonerAnrMon.Location = New System.Drawing.Point(64, 117)
+        Me.CBPhonerAnrMon.Location = New System.Drawing.Point(9, 69)
         Me.CBPhonerAnrMon.Name = "CBPhonerAnrMon"
-        Me.CBPhonerAnrMon.Size = New System.Drawing.Size(111, 17)
+        Me.CBPhonerAnrMon.Size = New System.Drawing.Size(178, 17)
         Me.CBPhonerAnrMon.TabIndex = 1
-        Me.CBPhonerAnrMon.Text = "CBPhonerAnrMon"
+        Me.CBPhonerAnrMon.Text = "Phoner Anrufmonitor verwenden"
         Me.CBPhonerAnrMon.UseVisualStyleBackColor = True
         '
         'CBPhonerKeineFB
         '
         Me.CBPhonerKeineFB.AutoSize = True
-        Me.CBPhonerKeineFB.Location = New System.Drawing.Point(64, 93)
+        Me.CBPhonerKeineFB.Location = New System.Drawing.Point(3, 3)
         Me.CBPhonerKeineFB.Name = "CBPhonerKeineFB"
-        Me.CBPhonerKeineFB.Size = New System.Drawing.Size(114, 17)
+        Me.CBPhonerKeineFB.Size = New System.Drawing.Size(156, 17)
         Me.CBPhonerKeineFB.TabIndex = 0
-        Me.CBPhonerKeineFB.Text = "CBPhonerKeineFB"
+        Me.CBPhonerKeineFB.Text = "Verwendung ohne Fritz!Box"
         Me.CBPhonerKeineFB.UseVisualStyleBackColor = True
         '
         'PLogging
@@ -2001,10 +2024,79 @@ Partial Class formCfg
         Me.TBDiagnose.TabIndex = 1
         Me.TBDiagnose.TabStop = False
         '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(239, 112)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(346, 13)
+        Me.Label27.TabIndex = 11
+        Me.Label27.Text = "Phoner Copyright (C) 2011 Heiko Sommerfeldt. Alle Rechte vorbehalten."
+        '
+        'Label29
+        '
+        Me.Label29.Location = New System.Drawing.Point(6, 16)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(199, 51)
+        Me.Label29.TabIndex = 12
+        Me.Label29.Text = "Bei der Verwerndung des Phoner Anrufmonitors wird der Anrufmonitor der Fritz!Box " & _
+    "nicht mehr überwacht!"
+        '
+        'Label30
+        '
+        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label30.Location = New System.Drawing.Point(0, 12)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(588, 35)
+        Me.Label30.TabIndex = 25
+        Me.Label30.Text = "Einstellungen für Phoner"
+        Me.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label31
+        '
+        Me.Label31.Location = New System.Drawing.Point(4, 51)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(576, 45)
+        Me.Label31.TabIndex = 26
+        Me.Label31.Text = resources.GetString("Label31.Text")
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.LabelPhoner)
+        Me.GroupBox4.Controls.Add(Me.PanelPhoner)
+        Me.GroupBox4.Controls.Add(Me.ButtonPhoner)
+        Me.GroupBox4.Location = New System.Drawing.Point(7, 123)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(573, 153)
+        Me.GroupBox4.TabIndex = 27
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Phoner Einstellungen"
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(113, 73)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(63, 13)
+        Me.Label33.TabIndex = 13
+        Me.Label33.Text = "SIP-Telefon"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label33, "Geben Sie hier das SIP-Telefon, an welches mit Phoner verknüpft ist.")
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.CBPhonerAnrMon)
+        Me.GroupBox7.Controls.Add(Me.Label29)
+        Me.GroupBox7.Location = New System.Drawing.Point(211, 3)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(242, 91)
+        Me.GroupBox7.TabIndex = 14
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Phoner Anrufmonitor"
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.ButtonAbbruch
         Me.ClientSize = New System.Drawing.Size(596, 367)
@@ -2014,56 +2106,62 @@ Partial Class formCfg
         Me.Controls.Add(Me.ButtonÜbernehmen)
         Me.Controls.Add(Me.ButtonOK)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "formCfg"
         Me.Text = "Einstellungen für das Fritz!Box Telefon-Dingsbums"
-        Me.PGrundeinstellungen.ResumeLayout(false)
-        Me.GroupBox5.ResumeLayout(false)
-        Me.GroupBox5.PerformLayout
-        Me.GroupBoxStoppUhr.ResumeLayout(false)
-        Me.GroupBoxStoppUhr.PerformLayout
-        Me.Frame3.ResumeLayout(false)
-        Me.Frame3.PerformLayout
-        Me.FrameErforderlich.ResumeLayout(false)
-        Me.FrameErforderlich.PerformLayout
-        Me.PInfo.ResumeLayout(false)
-        Me.PInfo.PerformLayout
-        Me.PTelefone.ResumeLayout(false)
-        Me.GroupBox1.ResumeLayout(false)
-        Me.GroupBox1.PerformLayout
-        CType(Me.TelList,System.ComponentModel.ISupportInitialize).EndInit
-        Me.PWartung.ResumeLayout(false)
-        Me.CDWJournal.ResumeLayout(false)
-        Me.CDWJournal.PerformLayout
-        Me.PIndex.ResumeLayout(false)
-        Me.GroupBox2.ResumeLayout(false)
-        Me.GroupBox2.PerformLayout
-        Me.Frame2.ResumeLayout(false)
-        Me.Frame2.PerformLayout
-        Me.PAnrufmonitor.ResumeLayout(false)
-        Me.GroupBox6.ResumeLayout(false)
-        Me.GroupBox6.PerformLayout
-        CType(Me.TBAnrMonMoveGeschwindigkeit,System.ComponentModel.ISupportInitialize).EndInit
-        Me.Frame1.ResumeLayout(false)
-        Me.Frame1.PerformLayout
-        Me.PanelAnrMon.ResumeLayout(false)
-        Me.PanelAnrMon.PerformLayout
-        Me.FBDB_MP.ResumeLayout(false)
-        Me.PSymbolleiste.ResumeLayout(false)
-        Me.GroupBox3.ResumeLayout(false)
-        Me.GroupBox3.PerformLayout
-        Me.PPhoner.ResumeLayout(false)
-        Me.PPhoner.PerformLayout
-        Me.PLogging.ResumeLayout(false)
-        Me.PLogging.PerformLayout
-        Me.GBLogging.ResumeLayout(false)
-        Me.GBLogging.PerformLayout
-        Me.PDebug.ResumeLayout(false)
-        Me.PDebug.PerformLayout
-        Me.PTelefonDatei.ResumeLayout(false)
-        Me.PTelefonDatei.PerformLayout
-        Me.ResumeLayout(false)
+        Me.PGrundeinstellungen.ResumeLayout(False)
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        Me.GroupBoxStoppUhr.ResumeLayout(False)
+        Me.GroupBoxStoppUhr.PerformLayout()
+        Me.Frame3.ResumeLayout(False)
+        Me.Frame3.PerformLayout()
+        Me.FrameErforderlich.ResumeLayout(False)
+        Me.FrameErforderlich.PerformLayout()
+        Me.PInfo.ResumeLayout(False)
+        Me.PInfo.PerformLayout()
+        Me.PTelefone.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        CType(Me.TelList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PWartung.ResumeLayout(False)
+        Me.CDWJournal.ResumeLayout(False)
+        Me.CDWJournal.PerformLayout()
+        Me.PIndex.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.Frame2.ResumeLayout(False)
+        Me.Frame2.PerformLayout()
+        Me.PAnrufmonitor.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Frame1.ResumeLayout(False)
+        Me.Frame1.PerformLayout()
+        Me.PanelAnrMon.ResumeLayout(False)
+        Me.PanelAnrMon.PerformLayout()
+        Me.FBDB_MP.ResumeLayout(False)
+        Me.PSymbolleiste.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.PPhoner.ResumeLayout(False)
+        Me.PPhoner.PerformLayout()
+        Me.PanelPhoner.ResumeLayout(False)
+        Me.PanelPhoner.PerformLayout()
+        Me.PLogging.ResumeLayout(False)
+        Me.PLogging.PerformLayout()
+        Me.GBLogging.ResumeLayout(False)
+        Me.GBLogging.PerformLayout()
+        Me.PDebug.ResumeLayout(False)
+        Me.PDebug.PerformLayout()
+        Me.PTelefonDatei.ResumeLayout(False)
+        Me.PTelefonDatei.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
+        Me.ResumeLayout(False)
 
 End Sub
     Friend WithEvents ButtonZuruecksetzen As System.Windows.Forms.Button
@@ -2234,6 +2332,14 @@ End Sub
     Friend WithEvents TBPasswort As System.Windows.Forms.MaskedTextBox
     Friend WithEvents PanelPhoner As System.Windows.Forms.Panel
     Friend WithEvents ButtonPhoner As System.Windows.Forms.Button
+    Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents Label30 As System.Windows.Forms.Label
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label33 As System.Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class

@@ -254,4 +254,7 @@ Wenn Sie die Optionen bereinigen oder die Komplettbereinigung durchführen, funk
 * Beim bereinigen der Telefone müssen sie neu eingelesen werden.
 Geben Sie an, welche Kategorien bereinigt werden sollen:</value>
   </data>
+  <data name="Label31.Text" xml:space="preserve">
+    <value>Die Software ermöglicht Gesprächsverbindungen in das Festnetz , zu Mobiltelefonen und zu VoIP -Gegenstellen.Phoner kann als Softphone an analogen Teilnehmeranschlüssen,an digitalen ISDN Teilnehmeranschlussleitungen, und als IP-Softphone auf stationären und mobilen Computersystemen benutzt werden. </value>
+  </data>
 </root>
