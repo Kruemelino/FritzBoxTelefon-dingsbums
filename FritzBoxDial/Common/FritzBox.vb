@@ -289,26 +289,19 @@ Public Class FritzBox
                         Fw550 = False
                     End Try
 
-                    'If Not Fw550 Then
-                    '    Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
-                    '    Rueckgabe = hf.httpRead(Link, FBEncoding)
-                    'Else
-                    '    Link = "http://" & FBAddr & "/cgi-bin/webcm"
-                    '    formdata = "getpage=../html/login_sid.xml&login:command/response=" + Response
-                    '    Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
-                    'End If
-
-
                     .LoadXml(Rueckgabe)
 
                     SID = .Item("SessionInfo").Item("SID").InnerText()
+
                     If Not SID = DefaultSID Then
-                        If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
-                            hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer)
-                            FBLogout(SID)
-                            SID = DefaultSID
+                        If Fw550 Then
+                            If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+                                hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer)
+                                FBLogout(SID)
+                                SID = DefaultSID
+                            End If
+                            ini.Write(DateiPfad, "Optionen", FBBenutzer, CStr(IIf(SID = DefaultSID, 0, 2)))
                         End If
-                        ini.Write(DateiPfad, "Optionen", FBBenutzer, CStr(IIf(SID = DefaultSID, 0, 2)))
                     Else
                         hf.LogFile("Die Anmeldedaten sind falsch." & SID)
                     End If
