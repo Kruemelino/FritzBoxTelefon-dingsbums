@@ -73,7 +73,7 @@ Imports Office = Microsoft.Office.Core
     Private OlI As OutlookInterface
     Private KontaktFunktionen As Contacts
     Private fbox As FritzBox
-    Private PhonerFunktionen As Phoner
+    Private PhonerFunktionen As PhonerInterface
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -89,7 +89,7 @@ Imports Office = Microsoft.Office.Core
                    ByVal KontaktKlasse As Contacts, _
                    ByVal FritzBoxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
-                   ByVal Phonerklasse As Phoner)
+                   ByVal Phonerklasse As PhonerInterface)
 
         HelferFunktionen = HelferKlasse
         ini = iniKlasse

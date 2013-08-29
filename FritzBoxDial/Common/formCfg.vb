@@ -8,7 +8,7 @@ Public Class formCfg
     Private C_Crypt As Rijndael
     Private C_Helfer As Helfer
     Private C_Kontakte As Contacts
-    Private C_Phoner As Phoner
+    Private C_Phoner As PhonerInterface
     Private GUI As GraphicalUserInterface
     Private OlI As OutlookInterface
     Private AnrMon As AnrufMonitor
@@ -39,7 +39,7 @@ Public Class formCfg
                    ByVal fritzboxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal kontaktklasse As Contacts, _
-                   ByVal Phonerklasse As Phoner)
+                   ByVal Phonerklasse As PhonerInterface)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()

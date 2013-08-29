@@ -23,12 +23,13 @@ Public Class AnrufMonitor
     Private JExml As JournalXML
 
     Private StandbyCounter As Integer
-    Public AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
-    Public AnrMonError As Boolean
+    Friend AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
+    Friend AnrMonError As Boolean
     Private InIPfad As String
     Private TelAnzahl As Integer
     Private UseAnrMon As Boolean
     Private Eingeblendet As Integer = 0
+
     Private IPAddresse As String = "fritz.box"
     Private FBAnrMonPort As Integer = 1012
 
@@ -44,6 +45,7 @@ Public Class AnrufMonitor
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
+                   ByVal JXML As JournalXML, _
                    ByVal FBAdr As String)
 
         hf = HelferKlasse
@@ -54,7 +56,7 @@ Public Class AnrufMonitor
         InIPfad = FilePfad ' InIPfad wird übergeben
         UseAnrMon = NutzeAnrMon
         OlI = OutlInter
-        JExml = New JournalXML(hf, InIPfad)
+        JExml = JXML
         IPAddresse = FBAdr
         ' STARTE Anrmon
         AnrMonStart(False)

@@ -69,7 +69,7 @@ Public Class FritzBox
 #Region "Login & Logout"
     Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim login_xml As String
-        'Dim FBAddr As String = ini.Read(DateiPfad, "Optionen", "TBFBAdr", "fritz.box")
+
         login_xml = hf.httpRead("http://" & FBAddr & "/login_sid.lua?sid=" & SID, FBEncoding)
         If InStr(login_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(login_xml) = 0 Then
 
@@ -129,19 +129,19 @@ Public Class FritzBox
                         Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
                         Fw550 = True
                     Catch
-                        Fw550 = False
                         Link = "http://" & FBAddr & "/login.lua"
                         If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
                             hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
                             Return .Item("SessionInfo").Item("SID").InnerText()
                         End If
+                        Fw550 = False
                     End Try
+
                     With Crypt
                         Response = String.Concat(Challenge, "-", .getMd5Hash(String.Concat(Challenge, "-", .DecryptString128Bit(FBPasswort, Zugang)), Encoding.Unicode))
                     End With
 
                     If Fw550 Then
-
                         Link += Response
                         Rueckgabe = hf.httpRead(Link, FBEncoding)
                         .LoadXml(Rueckgabe)
@@ -164,9 +164,8 @@ Public Class FritzBox
                         Rueckgabe = Replace(hf.httpWrite(Link, formdata, FBEncoding), Chr(34), "'", , , CompareMethod.Text)
 
                         If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
-
-                            Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value=';?sid=", ";", , CompareMethod.Text)
                             Dim tmpSID As String
+                            Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value=';?sid=", ";", , CompareMethod.Text)
                             Dim stmp2() As String = Split("'>;'>;'>;&", ";", , CompareMethod.Text)
 
                             '<input type='hidden' name='sid' value='740a9dcc39295635'>

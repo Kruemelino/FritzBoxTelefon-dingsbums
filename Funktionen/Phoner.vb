@@ -1,12 +1,14 @@
 ﻿Imports Microsoft.Win32
 Imports System.Net.Sockets
 Imports System.IO
-Public Class Phoner
-    Private Dateipfad As String
-
+Public Class PhonerInterface
     Private ini As InI
     Private hf As Helfer
     Private Crypt As Rijndael
+
+    Private Dateipfad As String
+    Private PhonerAddresse As String = "127.0.0.1"
+    Private PhonerAnrMonPort As Integer = 2012
 
     Public Sub New(ByVal iniPfad As String, _
                    ByVal HelferKlasse As Helfer, _
@@ -18,10 +20,12 @@ Public Class Phoner
         Dateipfad = iniPfad
         hf = HelferKlasse
     End Sub
+
     Public Function PhonerReady() As Boolean
         PhonerReady = False
         Return CheckIsPhonerInstalled() And CheckIsPhonerRunning()
     End Function
+
     Private Function CheckIsPhonerInstalled() As Boolean
         CheckIsPhonerInstalled = False
         ' Funktion von Klaus Raykowski (info@sbv-computer.de) übernommen und an 64bit-Systeme angepasst
@@ -46,34 +50,32 @@ Public Class Phoner
             RegKey.Close()
         Catch : End Try
     End Function
+
     Private Function CheckIsPhonerRunning() As Boolean
         CheckIsPhonerRunning = False
         'Püft ob Phoner läuft.
 
-        'System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
         Dim Client As New TcpClient()
-        Dim remoteEP As New Net.IPEndPoint(Net.IPAddress.Parse("127.0.0.1"), 2012)
+        Dim RemoteEP As New Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
         Try
-            Client.Connect(remoteEP)
+            Client.Connect(RemoteEP)
             CheckIsPhonerRunning = True
             Client.Close()
-        Catch Err As Exception
+        Catch
             CheckIsPhonerRunning = False
         End Try
-        remoteEP = Nothing
+        RemoteEP = Nothing
         Client = Nothing
     End Function
 
-    Public Function UsePhoner(ByVal dialCode As String) As String
-        Dim tcpClient As New TcpClient()
-
+    Public Function DialPhoner(ByVal dialCode As String) As String
         If PhonerReady() Then
-
             Dim PhonerPasswort As String = ini.Read(Dateipfad, "Phoner", "PhonerPasswort", "-1")
             Dim ZugangPasswortPhoner As String = GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")
             If Not PhonerPasswort = "-1" Or Not ZugangPasswortPhoner = "-1" Then
                 Dim Stream As NetworkStream
-                Dim remoteEP As New System.Net.IPEndPoint(Net.IPAddress.Parse("127.0.0.1"), 2012)
+                Dim remoteEP As New System.Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
+                Dim tcpClient As New TcpClient()
 
                 tcpClient.Connect(remoteEP)
                 Stream = tcpClient.GetStream()
@@ -92,31 +94,32 @@ Public Class Phoner
                                 System.Threading.Thread.Sleep(100)
                                 If Stream.DataAvailable Then
                                     .WriteLine("CONNECT " & dialCode)
-                                    UsePhoner = "Nr. " & dialCode & " an Phoner übergeben"
+                                    DialPhoner = "Nr. " & dialCode & " an Phoner übergeben"
                                 Else
-                                    UsePhoner = "Fehler!" & vbCrLf & "Das Phoner-Passwort ist falsch!"
+                                    DialPhoner = "Fehler!" & vbCrLf & "Das Phoner-Passwort ist falsch!"
                                 End If
                             Else
-                                UsePhoner = "Fehler!" & vbCrLf & "Die Phoner-Verson ist zu alt!"
+                                DialPhoner = "Fehler!" & vbCrLf & "Die Phoner-Verson ist zu alt!"
                             End If
                         End With
                     Else
-                        UsePhoner = "Fehler!" & vbCrLf & "TCP Fehler (Stream.CanWrite = False)!"
+                        DialPhoner = "Fehler!" & vbCrLf & "TCP Fehler (Stream.CanWrite = False)!"
                     End If
                     StreamWriter = Nothing
                     StreamReader = Nothing
                 Else
-                    UsePhoner = "Fehler!" & vbCrLf & "TCP!"
+                    DialPhoner = "Fehler!" & vbCrLf & "TCP!"
                 End If
                 System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
                 tcpClient.Close()
+                tcpClient = Nothing
                 Stream = Nothing
                 hf.KeyChange(Dateipfad)
             Else
-                UsePhoner = "Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
+                DialPhoner = "Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
             End If
         Else
-            UsePhoner = "Fehler!" & vbCrLf & "Phoner nicht verfügbar!"
+            DialPhoner = "Fehler!" & vbCrLf & "Phoner nicht verfügbar!"
         End If
     End Function
 

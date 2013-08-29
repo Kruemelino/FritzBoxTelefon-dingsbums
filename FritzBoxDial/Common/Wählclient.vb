@@ -9,7 +9,7 @@ Public Class Wählclient
     Private OlI As OutlookInterface
     Private FBox As FritzBox
 
-    Private PhonerFunktionen As Phoner
+    Private PhonerFunktionen As PhonerInterface
 
     Public Sub New(ByVal iniPfad As String, _
                    ByVal iniKlasse As InI, _
@@ -18,7 +18,7 @@ Public Class Wählclient
                    ByVal InterfaceKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal cFBox As FritzBox, _
-                   ByVal PhonerKlasse As Phoner)
+                   ByVal PhonerKlasse As PhonerInterface)
 
         Dateipfad = iniPfad
         hf = HelferKlasse

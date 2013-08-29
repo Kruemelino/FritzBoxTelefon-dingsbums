@@ -25,15 +25,15 @@ Public Class formWählbox
     Private AnAus As Boolean ' Wird für Delegaten DlgAnAus benötigt
     Private Element As Control ' Wird für Delegaten DlgAnAus benötigt
     Private WählboxBereit As Boolean = False ' Erst wenn True, kann gewählt werden
-    Private SID As String = ThisAddIn.fBox.DefaultSID
+    Private SID As String
     Private bDirektwahl As Boolean
     Private LandesVorwahl As String
     Private Nebenstellen As String()
     ' Phoner
-    Private C_Phoner As Phoner
-    Dim PhonerCall As Boolean = False
-    Dim UsePhonerOhneFritzBox As Boolean = False
-    Dim PhonerFon As Integer = -1
+    Private C_Phoner As PhonerInterface
+    Private PhonerCall As Boolean = False
+    Private UsePhonerOhneFritzBox As Boolean = False
+    Private PhonerFon As Integer = -1
 
     Structure Argument
         Dim TelNr As String
@@ -48,7 +48,7 @@ Public Class formWählbox
                    ByVal HelferKlasse As Helfer, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
-                   ByVal PhonerKlasse As Phoner)
+                   ByVal PhonerKlasse As PhonerInterface)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -63,6 +63,7 @@ Public Class formWählbox
 
         C_Phoner = PhonerKlasse
 
+        SID = FBox.DefaultSID
         Me.FrameDirektWahl.Visible = bDirektwahl
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
@@ -119,7 +120,7 @@ Public Class formWählbox
 
 
         If Not selIndex = StandardTelefon And Not StandardTelefon = -1 Then selIndex = StandardTelefon
-        BWLogin.RunWorkerAsync(True)
+        BWLogin.RunWorkerAsync()
         'Falls Telefone geändert haben
         If selIndex >= Me.ComboBoxFon.Items.Count Then
             selIndex = Me.ComboBoxFon.Items.Count - 1
@@ -439,7 +440,7 @@ Public Class formWählbox
         ' Jetzt Code an Box bzw. Phoner senden
         If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then
             hf.LogFile("Folgende Nummer wird zum Wählen an Phoner gesendet: " & Code)
-            StatusText = C_Phoner.UsePhoner(Code)
+            StatusText = C_Phoner.DialPhoner(Code)
         Else
             hf.LogFile("Folgende Nummer wird zum Wählen an die Box gesendet: " & Code & " über Anschluss: " & Telefonanschluss)
             StatusText = FBox.SendDialRequestToBox(Code, Telefonanschluss, False)
@@ -466,8 +467,6 @@ Public Class formWählbox
             Element.Enabled = AnAus
         End If
     End Sub
-
-
 
 #End Region
 
@@ -542,34 +541,22 @@ Public Class formWählbox
 
 #Region "Login"
     Private Sub BWLogin_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWLogin.DoWork
-        Dim PasswortErforderlich As Boolean = CBool(e.Argument)
         Element = Me.ComboBoxFon
         AnAus = False
         SetEnabled()
         SID = FBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
-        If SID = ThisAddIn.fBox.DefaultSID Then
+        If Not SID = FBox.DefaultSID Then
+            StatusText = "Der Wählclient ist bereit."
+            WählboxBereit = True
+            Element = Me.ListTel
+            AnAus = True
+            SetEnabled()
+        Else
             StatusText = "Login fehlgeschlagen"
             hf.LogFile("BWLogin: Login fehlgeschlagen")
             Element = Me.ListTel
             Enabled = False
             SetEnabled()
-        Else
-            If PasswortErforderlich Then
-                StatusText = "Der Wählclient ist bereit."
-                WählboxBereit = True
-                Element = Me.ListTel
-                AnAus = True
-                SetEnabled()
-            Else
-                StatusText = "Ein Fritz!Box Passwort ist erforderlich!"
-                hf.LogFile("BWLogin: Ein Fritz!Box Passwort ist erforderlich!")
-                Element = Me.ListTel
-                Enabled = False
-                SetEnabled()
-                Element = Me.ButtonWeiter
-                Enabled = False
-                SetEnabled()
-            End If
         End If
         SetStatusText()
     End Sub
@@ -582,18 +569,18 @@ Public Class formWählbox
 #End Region
 
 #Region "Änderungen"
-    Private Sub ComboBoxFon_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) ' Handles ComboBoxFon.SelectedIndexChanged
+    Private Sub ComboBoxFon_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxFon.SelectedIndexChanged
         If Me.ComboBoxFon.SelectedIndex = PhonerFon Then
             Me.checkCLIR.Enabled = False
             Me.checkNetz.Enabled = False
         Else
             Me.checkCLIR.Enabled = True
             Me.checkNetz.Enabled = True
-            If SID = "-1" Then
+            If SID = "-1" Or SID = FBox.DefaultSID Then
                 WählboxBereit = False
                 Me.LabelStatus.Text = "Bitte warten..."
                 Me.ListTel.Enabled = False
-                BWLogin.RunWorkerAsync(True)
+                BWLogin.RunWorkerAsync()
             End If
         End If
     End Sub

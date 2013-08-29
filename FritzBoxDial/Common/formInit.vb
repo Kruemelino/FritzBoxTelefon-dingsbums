@@ -11,7 +11,8 @@
     Private C_Kontakt As Contacts
     Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
-    Private C_Phoner As Phoner
+    Private C_Phoner As PhonerInterface
+    Private C_JournalXML As JournalXML
 
     'Strings
     Private DateiPfad As String
@@ -49,9 +50,13 @@
         C_OlI = New OutlookInterface(C_Kontakt, C_Helfer, DateiPfad)
 
         ' Klasse für das PhonerInterface generieren
-        C_Phoner = New Phoner(DateiPfad, C_Helfer, C_ini, C_Crypt)
+        C_Phoner = New PhonerInterface(DateiPfad, C_Helfer, C_ini, C_Crypt)
+
+        ' Klasse für das Journal-XML generieren
+        C_JournalXML = New JournalXML(DateiPfad, C_Helfer)
 
         If PrüfeAddin() Then
+            UseAnrMon = CBool(C_ini.Read(DateiPfad, "Optionen", "CBUseAnrMon", "True"))
 
             C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False)
 
@@ -59,9 +64,7 @@
 
             C_WählClient = New Wählclient(DateiPfad, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
-            UseAnrMon = CBool(C_ini.Read(DateiPfad, "Optionen", "CBUseAnrMon", "True"))
-
-            C_AnrMon = New AnrufMonitor(DateiPfad, C_RWS, UseAnrMon, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.GetFBAddr)
+            C_AnrMon = New AnrufMonitor(DateiPfad, C_RWS, UseAnrMon, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_JournalXML, C_FBox.GetFBAddr)
 
             C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
 

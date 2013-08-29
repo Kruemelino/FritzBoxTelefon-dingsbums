@@ -3,10 +3,9 @@
 Public Class JournalXML
     Private Helfer As Helfer
     Private InIPfad As String
+    Private PFAD As String
 
-    Dim PFAD As String
-
-    Public Sub New(ByVal Helferklasse As Helfer, ByVal FilePfad As String)
+    Public Sub New(ByVal FilePfad As String, ByVal Helferklasse As Helfer)
         Helfer = Helferklasse
         InIPfad = FilePfad
         PFAD = Helfer.Dateipfade(InIPfad, "JournalXML")

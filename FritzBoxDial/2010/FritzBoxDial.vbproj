@@ -268,15 +268,19 @@
     <Compile Include="..\Common\formWählbox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="..\Common\FritzBox.vb">
+      <Link>FritzBox.vb</Link>
+    </Compile>
     <Compile Include="..\Common\GUI.vb" />
     <Compile Include="..\Common\OutlookInterface.vb" />
-    <Compile Include="..\Common\JournalXML.vb" />
-    <Compile Include="..\Common\FritzBox.vb" />
     <Compile Include="..\Common\formInit.Designer.vb">
       <DependentUpon>formInit.vb</DependentUpon>
     </Compile>
     <Compile Include="..\Common\formInit.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\Wählclient.vb">
+      <Link>Wählclient.vb</Link>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -287,7 +291,6 @@
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\Common\Wählclient.vb" />
     <None Include="..\..\..\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>

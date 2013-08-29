@@ -47,7 +47,7 @@ Public Class ThisAddIn
     Public Shared Crypt As New Rijndael
     Public Shared hf As Helfer
     Public Shared KontaktFunktionen As Contacts
-    Public Shared Phoner As Phoner
+    Public Shared Phoner As PhonerInterface
 
     Public Shared Dateipfad As String
 #If OVer < 14 Then
