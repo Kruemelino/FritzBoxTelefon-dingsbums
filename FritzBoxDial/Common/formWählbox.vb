@@ -577,10 +577,10 @@ Public Class formWählbox
             Me.checkCLIR.Enabled = True
             Me.checkNetz.Enabled = True
             If SID = "-1" Or SID = FBox.DefaultSID Then
+                If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
                 WählboxBereit = False
                 Me.LabelStatus.Text = "Bitte warten..."
                 Me.ListTel.Enabled = False
-                BWLogin.RunWorkerAsync()
             End If
         End If
     End Sub

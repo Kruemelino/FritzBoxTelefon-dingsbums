@@ -529,8 +529,10 @@ Public Class Helfer
         Try
             If uri.Scheme = uri.UriSchemeHttp Or uri.Scheme = uri.UriSchemeFile Then
 
-                With HttpWebRequest.Create(uri)
+                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
                     .Method = WebRequestMethods.Http.Get
+                    .Proxy = Nothing
+                    .KeepAlive = False
                     .CachePolicy = noCache
                     With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
                         httpRead = .ReadToEnd()
@@ -553,7 +555,8 @@ Public Class Helfer
 
                 With CType(HttpWebRequest.Create(uri), HttpWebRequest)
                     .Method = WebRequestMethods.Http.Post
-                    '.Timeout = 5000
+                    .Proxy = Nothing
+                    .KeepAlive = False
                     .ContentLength = data.Length
                     .ContentType = "application/x-www-form-urlencoded"
                     .Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
@@ -572,9 +575,8 @@ Public Class Helfer
                     End With
                 End With
             End If
-
         Catch
-            LogFile("Es is ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
+            LogFile("Es is ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
         End Try
 
     End Function

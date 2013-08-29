@@ -69,7 +69,8 @@ Public Class FritzBox
 #Region "Login & Logout"
     Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim login_xml As String
-
+        Dim LoginSW As New Stopwatch
+        LoginSW.Start()
         login_xml = hf.httpRead("http://" & FBAddr & "/login_sid.lua?sid=" & SID, FBEncoding)
         If InStr(login_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(login_xml) = 0 Then
 
@@ -129,11 +130,11 @@ Public Class FritzBox
                         Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
                         Fw550 = True
                     Catch
-                        Link = "http://" & FBAddr & "/login.lua"
                         If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
                             hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
                             Return .Item("SessionInfo").Item("SID").InnerText()
                         End If
+                        Link = "http://" & FBAddr & "/login.lua"
                         Fw550 = False
                     End Try
 
@@ -142,6 +143,7 @@ Public Class FritzBox
                     End With
 
                     If Fw550 Then
+
                         Link += Response
                         Rueckgabe = hf.httpRead(Link, FBEncoding)
                         .LoadXml(Rueckgabe)
@@ -158,10 +160,14 @@ Public Class FritzBox
                         End If
 
                     Else
+
                         hf.LogFile("Altes Loginverfahren notwendig.")
                         formdata = "response=" & Response
 
-                        Rueckgabe = Replace(hf.httpWrite(Link, formdata, FBEncoding), Chr(34), "'", , , CompareMethod.Text)
+                        Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
+
+                        'Rueckgabe = hf.httpRead(Link & "?" & formdata, FBEncoding)
+                        Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
 
                         If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                             Dim tmpSID As String
@@ -195,6 +201,8 @@ Public Class FritzBox
             End With
             LoginXML = Nothing
         End If
+        LoginSW.Stop()
+        hf.LogFile("Zeit für Login: " & LoginSW.ElapsedMilliseconds.ToString() & " ms")
         Return SID
     End Function
 
