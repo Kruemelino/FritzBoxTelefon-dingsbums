@@ -67,6 +67,147 @@ Public Class FritzBox
     End Sub
 
 #Region "Login & Logout"
+    'Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
+    '    Dim login_xml As String
+    '    Dim LoginSW As New Stopwatch
+    '    LoginSW.Start()
+    '    login_xml = hf.httpRead("http://" & FBAddr & "/login_sid.lua?sid=" & SID, FBEncoding)
+    '    If InStr(login_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(login_xml) = 0 Then
+
+    '        If Not InpupPasswort = "-1" Then
+    '            ini.Write(DateiPfad, "Optionen", "TBPasswort", Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script"))
+    '            ini.Write(DateiPfad, "Optionen", "TBBenutzer", InpupBenutzer)
+    '            SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
+    '            hf.KeyChange(DateiPfad)
+    '        End If
+
+    '        Dim Challenge As String
+    '        Dim BlockTime As String
+    '        Dim Link As String
+    '        Dim FBBenutzer As String = ini.Read(DateiPfad, "Optionen", "TBBenutzer", vbNullString)
+    '        Dim FBPasswort As String = ini.Read(DateiPfad, "Optionen", "TBPasswort", vbNullString)
+    '        Dim Zugang As String = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
+
+    '        Dim Response As String
+    '        Dim formdata As String
+    '        Dim Rueckgabe As String
+
+    '        Dim LoginXML As New XmlDocument()
+
+    '        '<SessionInfo>
+    '        '   <SID>ff88e4d39354992f</SID>
+    '        '   <Challenge>ab7190d6</Challenge>
+    '        '   <BlockTime>128</BlockTime>
+    '        '   <Rights>
+    '        '       <Name>BoxAdmin</Name>
+    '        '       <Access>2</Access>
+    '        '       <Name>Phone</Name>
+    '        '       </Access>2</Access>
+    '        '       <Name>NAS></Name>
+    '        '       <Access>2</Access>
+    '        '   </Rights>
+    '        '</SessionInfo> 
+
+    '        '<?xml version="1.0" encoding="utf-8"?>
+    '        '<SessionInfo>
+    '        '   <iswriteaccess>0</iswriteaccess>
+    '        '   <SID>0000000000000000</SID>
+    '        '   <Challenge>dbef619d</Challenge>
+    '        '</SessionInfo>
+
+
+    '        With LoginXML
+    '            .LoadXml(login_xml)
+
+    '            If .Item("SessionInfo").Item("SID").InnerText() = DefaultSID Then
+    '                Challenge = .Item("SessionInfo").Item("Challenge").InnerText()
+    '                Try
+    '                    BlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
+    '                    If Not BlockTime = "0" Then
+    '                        hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & BlockTime & "Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
+    '                        Return DefaultSID
+    '                    End If
+    '                    Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
+    '                    Fw550 = True
+    '                Catch
+    '                    If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
+    '                        hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
+    '                        Return .Item("SessionInfo").Item("SID").InnerText()
+    '                    End If
+    '                    Link = "http://" & FBAddr & "/login.lua"
+    '                    Fw550 = False
+    '                    'sMode = "POST "
+    '                    Link = "http://" & FBAddr & "/cgi-bin/webcm"
+    '                    formdata = "getpage=../html/login_sid.xml&login:command/response=" + Response
+    '                    'Rueckgabe = hf.httpRead(Link & "?" & formdata, FBEncoding)
+    '                End Try
+
+    '                With Crypt
+    '                    Response = String.Concat(Challenge, "-", .getMd5Hash(String.Concat(Challenge, "-", .DecryptString128Bit(FBPasswort, Zugang)), Encoding.Unicode))
+    '                End With
+
+    '                If Fw550 Then
+
+    '                    Link += Response
+    '                    Rueckgabe = hf.httpRead(Link, FBEncoding)
+    '                    .LoadXml(Rueckgabe)
+    '                    SID = .Item("SessionInfo").Item("SID").InnerText()
+    '                    If Not SID = DefaultSID Then
+    '                        If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+    '                            hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer)
+    '                            FBLogout(SID)
+    '                            SID = DefaultSID
+    '                        End If
+    '                        ini.Write(DateiPfad, "Optionen", FBBenutzer, CStr(IIf(SID = DefaultSID, 0, 2)))
+    '                    Else
+    '                        hf.LogFile("Die Anmeldedaten sind falsch." & SID)
+    '                    End If
+
+    '                Else
+    '                    hf.LogFile("Altes Loginverfahren notwendig.")
+    '                    formdata = "response=" & Response
+
+    '                    Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
+
+
+    '                    Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
+
+    '                    If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+    '                        Dim tmpSID As String
+    '                        Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value=';?sid=", ";", , CompareMethod.Text)
+    '                        Dim stmp2() As String = Split("'>;'>;'>;&", ";", , CompareMethod.Text)
+
+    '                        '<input type='hidden' name='sid' value='740a9dcc39295635'>
+    '                        '7590: <area shape='rect' coords='30,0,135,80' href='/home/home.lua?sid=0000000000000000'>
+    '                        For i As Integer = LBound(sTmp1) To UBound(sTmp1)
+    '                            tmpSID = hf.StringEntnehmen(Rueckgabe, sTmp1(i), stmp2(i))
+    '                            If Not SID = "-1" Then ' SID in Rückgabe nicht enthalten
+    '                                If Len(tmpSID) = Len(DefaultSID) Then
+    '                                    SID = tmpSID
+    '                                    Exit For
+    '                                End If
+    '                            End If
+    '                        Next
+
+    '                        If SID = DefaultSID Then
+    '                            hf.LogFile("Es konnte keine gültige SessionID gefunden werden.")
+    '                        End If
+
+    '                    Else
+    '                        hf.LogFile("FBLogin(alt): falsches Passwort.")
+    '                    End If
+    '                End If
+
+    '            ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
+    '                hf.LogFile("Eine gültige SessionID ist bereits vorhanden: " & SID)
+    '            End If
+    '        End With
+    '        LoginXML = Nothing
+    '    End If
+    '    LoginSW.Stop()
+    '    hf.LogFile("Zeit für Login: " & LoginSW.ElapsedMilliseconds.ToString() & " ms")
+    '    Return SID
+    'End Function
     Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim login_xml As String
         Dim LoginSW As New Stopwatch
@@ -121,78 +262,55 @@ Public Class FritzBox
 
                 If .Item("SessionInfo").Item("SID").InnerText() = DefaultSID Then
                     Challenge = .Item("SessionInfo").Item("Challenge").InnerText()
+                    With Crypt
+                        Response = String.Concat(Challenge, "-", .getMd5Hash(String.Concat(Challenge, "-", .DecryptString128Bit(FBPasswort, Zugang)), Encoding.Unicode))
+                    End With
                     Try
                         BlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
                         If Not BlockTime = "0" Then
                             hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & BlockTime & "Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
                             Return DefaultSID
                         End If
-                        Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
+
+                        Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response=" & Response
+                        Rueckgabe = hf.httpRead(Link, FBEncoding)
+
                         Fw550 = True
                     Catch
                         If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
                             hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
                             Return .Item("SessionInfo").Item("SID").InnerText()
                         End If
-                        Link = "http://" & FBAddr & "/login.lua"
+
+                        Link = "http://" & FBAddr & "/cgi-bin/webcm"
+                        formdata = "getpage=../html/login_sid.xml&login:command/response=" + Response
+                        Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
+
                         Fw550 = False
                     End Try
 
-                    With Crypt
-                        Response = String.Concat(Challenge, "-", .getMd5Hash(String.Concat(Challenge, "-", .DecryptString128Bit(FBPasswort, Zugang)), Encoding.Unicode))
-                    End With
+                    'If Not Fw550 Then
+                    '    Link = "http://" & FBAddr & "/login_sid.lua?username=" & FBBenutzer & "&response="
+                    '    Rueckgabe = hf.httpRead(Link, FBEncoding)
+                    'Else
+                    '    Link = "http://" & FBAddr & "/cgi-bin/webcm"
+                    '    formdata = "getpage=../html/login_sid.xml&login:command/response=" + Response
+                    '    Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
+                    'End If
 
-                    If Fw550 Then
 
-                        Link += Response
-                        Rueckgabe = hf.httpRead(Link, FBEncoding)
-                        .LoadXml(Rueckgabe)
-                        SID = .Item("SessionInfo").Item("SID").InnerText()
-                        If Not SID = DefaultSID Then
-                            If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
-                                hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer)
-                                FBLogout(SID)
-                                SID = DefaultSID
-                            End If
-                            ini.Write(DateiPfad, "Optionen", FBBenutzer, CStr(IIf(SID = DefaultSID, 0, 2)))
-                        Else
-                            hf.LogFile("Die Anmeldedaten sind falsch." & SID)
+                    .LoadXml(Rueckgabe)
+
+                    SID = .Item("SessionInfo").Item("SID").InnerText()
+                    If Not SID = DefaultSID Then
+                        If Not hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+                            hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer)
+                            FBLogout(SID)
+                            SID = DefaultSID
                         End If
-
+                        ini.Write(DateiPfad, "Optionen", FBBenutzer, CStr(IIf(SID = DefaultSID, 0, 2)))
                     Else
-
-                        hf.LogFile("Altes Loginverfahren notwendig.")
-                        formdata = "response=" & Response
-
-                        Rueckgabe = hf.httpWrite(Link, formdata, FBEncoding)
-
-                        'Rueckgabe = hf.httpRead(Link & "?" & formdata, FBEncoding)
-                        Rueckgabe = Replace(Rueckgabe, Chr(34), "'", , , CompareMethod.Text)
-
-                        If InStr(Rueckgabe, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
-                            Dim tmpSID As String
-                            Dim sTmp1() As String = Split("?sid=;href='/home/home.lua?sid=;<input type='hidden' name='sid' value=';?sid=", ";", , CompareMethod.Text)
-                            Dim stmp2() As String = Split("'>;'>;'>;&", ";", , CompareMethod.Text)
-
-                            '<input type='hidden' name='sid' value='740a9dcc39295635'>
-                            '7590: <area shape='rect' coords='30,0,135,80' href='/home/home.lua?sid=0000000000000000'>
-                            For i As Integer = LBound(sTmp1) To UBound(sTmp1)
-                                tmpSID = hf.StringEntnehmen(Rueckgabe, sTmp1(i), stmp2(i))
-                                If Not SID = "-1" Then ' SID in Rückgabe nicht enthalten
-                                    If Len(tmpSID) = Len(DefaultSID) Then
-                                        SID = tmpSID
-                                        Exit For
-                                    End If
-                                End If
-                            Next
-
-                            If SID = DefaultSID Then
-                                hf.LogFile("Es konnte keine gültige SessionID gefunden werden.")
-                            End If
-
-                        Else
-                            hf.LogFile("FBLogin(alt): falsches Passwort.")
-                        End If
+                        hf.LogFile("Die Anmeldedaten sind falsch." & SID)
                     End If
 
                 ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
@@ -205,7 +323,6 @@ Public Class FritzBox
         hf.LogFile("Zeit für Login: " & LoginSW.ElapsedMilliseconds.ToString() & " ms")
         Return SID
     End Function
-
     Public Function FBLogout(ByRef SID As String) As Boolean
         ' Die Komplementärfunktion zu FBLogin. Beendet die Session, indem ein Logout durchgeführt wird.
 
