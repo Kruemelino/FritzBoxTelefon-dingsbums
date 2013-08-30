@@ -140,7 +140,7 @@
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyChange(DateiPfad)
         SID = C_FBox.FBLogin(fw550)
-        If Not SID = C_FBox.DefaultSID Then
+        If Not SID = C_FBox.sDefaultSID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False

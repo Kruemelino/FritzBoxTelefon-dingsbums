@@ -905,7 +905,7 @@ Public Class formCfg
 
     Private Sub NewMail()
         Dim NeueFW As Boolean
-        Dim SID As String = FBox.DefaultSID
+        Dim SID As String = FBox.sDefaultSID
         Dim URL As String
         Dim FBOX_ADR As String = C_ini.Read(Dateipfad, "Optionen", "TBFBAdr", "fritz.box")
 
@@ -920,7 +920,7 @@ Public Class formCfg
         FBox = Nothing
         FBox = New FritzBox(Dateipfad, C_ini, C_Helfer, C_Crypt, False, Me)
 
-        Do While SID = FBox.DefaultSID
+        Do While SID = FBox.sDefaultSID
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
