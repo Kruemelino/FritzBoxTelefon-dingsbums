@@ -32,7 +32,7 @@
         Write = WritePrivateProfileString(DieSektion, DerEintrag, Value, DateiName)
     End Function
 
-    Overloads Function Read(ByVal DateiName As String, ByVal DieSektion As String, ByVal DerEintrag As String, Optional ByVal Def As String = "False") As String
+    Overloads Function Read(ByVal DateiName As String, ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Def As String) As String
         Dim temp As String = Strings.Space(2048)
         Dim X As Int32
         X = GetPrivateProfileString(DieSektion, DerEintrag, Def, temp, Len(temp), DateiName) ' Make API Call

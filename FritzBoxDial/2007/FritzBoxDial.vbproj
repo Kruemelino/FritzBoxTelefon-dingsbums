@@ -241,12 +241,6 @@
     <Compile Include="..\Common\formCfg.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\Common\formIndizierung.designer.vb">
-      <DependentUpon>formIndizierung.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\formIndizierung.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="..\Common\formJournalimport.designer.vb">
       <DependentUpon>formJournalimport.vb</DependentUpon>
     </Compile>
@@ -273,7 +267,6 @@
     </Compile>
     <Compile Include="..\Common\GUI.vb" />
     <Compile Include="..\Common\OutlookInterface.vb" />
-    <Compile Include="..\Common\JournalXML.vb" />
     <Compile Include="..\Common\FritzBox.vb" />
     <Compile Include="..\Common\formInit.Designer.vb">
       <DependentUpon>formInit.vb</DependentUpon>
@@ -304,9 +297,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formCfg.resx">
       <DependentUpon>formCfg.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\formIndizierung.resx">
-      <DependentUpon>formIndizierung.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formJournalimport.resx">
       <DependentUpon>formJournalimport.vb</DependentUpon>

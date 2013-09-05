@@ -737,7 +737,7 @@ Imports Office = Microsoft.Office.Core
         ' 26.04.11 14.44
         Dim btnPopup As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe"), Office.CommandBarPopup)
         Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
-        Dim ini As New Ini
+        Dim ini As New InI(ListPath)
 
         Dim j, i As Integer
         Dim Einträge(9) As String

@@ -401,6 +401,7 @@ Public Class formRWSuche
                 i = i + 1
                 tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
             Else
+                RWStelsearch = False
                 hf.LogFile("FBError (RWStelsearch): " & Err.Number & " - " & Err.Description & " - " & myurl)
                 Exit Do
             End If

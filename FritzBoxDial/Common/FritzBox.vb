@@ -224,7 +224,7 @@ Public Class FritzBox
         Else
             c_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description & " - " & sLink)
         End If
-
+        Return False
     End Function
 #End Region
 
