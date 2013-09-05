@@ -4,6 +4,7 @@ Public Class formRWSuche
     Private KontaktFunktionen As Contacts
     Private ini As InI
     Private DateiPfad As String
+    Private HTMLFehler As ErrObject
 
     Public Enum Suchmaschine
         RWSGoYellow = 0
@@ -183,23 +184,31 @@ Public Class formRWSuche
             Do
                 ' Webseite für Rückwärtssuche aufrufen und herunterladen
                 myurl = "http://www.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tempTelNr
-                html11880 = hf.httpRead(myurl, System.Text.Encoding.Default)
+                html11880 = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                If HTMLFehler Is Nothing Then
 
-                html11880 = Replace(html11880, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
 
-                On Error GoTo 0
-                ' Link zum Herunterladen der vCard suchen
-                pos1 = InStr(1, html11880, SWVisitenkarte1, CompareMethod.Text) + Len(SWVisitenkarte1)
-                If Not pos1 = Len(SWVisitenkarte1) Then 'wenn der Startpunkt gefunden werden konnte
-                    pos2 = InStr(pos1, html11880, SWVisitenkarte2, CompareMethod.Text) 'Starten ab Startpunkt, suchen des Endpunkts
-                    ' vCard herunterladen
-                    myurl = "http://www.11880.com" & Mid(html11880, pos1, pos2 - pos1)
-                    vCard = hf.httpRead(myurl, System.Text.Encoding.Default)
+                    html11880 = Replace(html11880, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
+
+                    On Error GoTo 0
+                    ' Link zum Herunterladen der vCard suchen
+                    pos1 = InStr(1, html11880, SWVisitenkarte1, CompareMethod.Text) + Len(SWVisitenkarte1)
+                    If Not pos1 = Len(SWVisitenkarte1) Then 'wenn der Startpunkt gefunden werden konnte
+                        pos2 = InStr(pos1, html11880, SWVisitenkarte2, CompareMethod.Text) 'Starten ab Startpunkt, suchen des Endpunkts
+                        ' vCard herunterladen
+                        myurl = "http://www.11880.com" & Mid(html11880, pos1, pos2 - pos1)
+                        vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                        If Not HTMLFehler Is Nothing Then
+                            hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
+                        End If
+                    End If
+                    ' Rückgabewert ermitteln
+                    RWS11880 = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+                    i = i + 1
+                    tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 1) & 0
+                Else
+                    hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                 End If
-                ' Rückgabewert ermitteln
-                RWS11880 = Strings.Left(vCard, 11) = "BEGIN:VCARD"
-                i = i + 1
-                tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 1) & 0
             Loop Until RWS11880 Or i = 3
 
         End If
@@ -243,31 +252,36 @@ Public Class formRWSuche
             Do
                 ' Webseite für Rückwärtssuche aufrufen und herunterladen
                 myurl = "http://www.goyellow.de/inverssuche/?TEL=" & tempTelNr
-                htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default)
-                htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
-                pos = InStr(1, htmlGoYellow, "<a href=/upgrade?q=", CompareMethod.Text)
-                If Not pos = 0 Then
-                    pos1 = InStr(pos, htmlGoYellow, " title", CompareMethod.Text)
-                    myurl = "http://www.goyellow.de/upgrade?TEL=" & tempTelNr & "&q=" & Mid(htmlGoYellow, pos + 19, pos1 - pos - 19)
-                    htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default)
+                htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                If HTMLFehler Is Nothing Then
                     htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
-                End If
-
-                ' Link zum Herunterladen der vCard suchen
-                pos = InStr(1, htmlGoYellow, SWVisitenkarte1, CompareMethod.Text)
-                If Not pos = 0 Then
-                    pos1 = InStr(pos, htmlGoYellow, SWVisitenkarte2) + Len(SWVisitenkarte2)
-                    pos2 = InStr(pos1, htmlGoYellow, ">", CompareMethod.Text)
-                    If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
-                        ' vCard herunterladen
-                        myurl = "http://www.goyellow.de" & Mid(htmlGoYellow, pos1, pos2 - pos1)
-                        vCard = hf.httpRead(myurl, System.Text.Encoding.Default)
+                    pos = InStr(1, htmlGoYellow, "<a href=/upgrade?q=", CompareMethod.Text)
+                    If Not pos = 0 Then
+                        pos1 = InStr(pos, htmlGoYellow, " title", CompareMethod.Text)
+                        myurl = "http://www.goyellow.de/upgrade?TEL=" & tempTelNr & "&q=" & Mid(htmlGoYellow, pos + 19, pos1 - pos - 19)
+                        htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                        htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
                     End If
+
+                    ' Link zum Herunterladen der vCard suchen
+                    pos = InStr(1, htmlGoYellow, SWVisitenkarte1, CompareMethod.Text)
+                    If Not pos = 0 Then
+                        pos1 = InStr(pos, htmlGoYellow, SWVisitenkarte2) + Len(SWVisitenkarte2)
+                        pos2 = InStr(pos1, htmlGoYellow, ">", CompareMethod.Text)
+                        If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
+                            ' vCard herunterladen
+                            myurl = "http://www.goyellow.de" & Mid(htmlGoYellow, pos1, pos2 - pos1)
+                            vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                        End If
+                    End If
+                    ' Rückgabewert ermitteln
+                    RWSGoYellow = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+                    i = i + 1
+                    tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
+                Else
+                    hf.LogFile("FBError (RWSGoYellow): " & Err.Number & " - " & Err.Description & " - " & myurl)
+                    Exit Do
                 End If
-                ' Rückgabewert ermitteln
-                RWSGoYellow = Strings.Left(vCard, 11) = "BEGIN:VCARD"
-                i = i + 1
-                tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
             Loop Until RWSGoYellow Or i = 3
         End If
         ' Bemerkungen und Webseiten aus vCard entfernen, da sie Werbung enthalten
@@ -326,10 +340,12 @@ Public Class formRWSuche
 
                     'myurl = Replace(myurl, "dastelefonbuch.de", "dastelefonbuch.de/", , , vbTextCompare)
                     myurl = Replace(myurl, "&amp;", "&", , , vbTextCompare)
-                    vCard = hf.httpRead(myurl, System.Text.Encoding.Default)
+                    vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
                 End If
             End If
-
+            If Not HTMLFehler Is Nothing Then
+                hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
+            End If
             RWSDasTelefonbuch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
             i = i + 1
             tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
@@ -365,25 +381,30 @@ Public Class formRWSuche
         Do
             ' Webseite für Rückwärtssuche aufrufen und herunterladen
             myurl = "http://tel.search.ch/result.html?name=&misc=&strasse=&ort=&kanton=&tel=" & tempTelNr
-            htmltelsearch = hf.httpRead(myurl, System.Text.Encoding.Default)
+            htmltelsearch = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+            If HTMLFehler Is Nothing Then
+                htmltelsearch = Replace(htmltelsearch, Chr(34), "", , , vbTextCompare) '" enfernen
 
-            htmltelsearch = Replace(htmltelsearch, Chr(34), "", , , vbTextCompare) '" enfernen
-
-            ' Link zum Herunterladen der vCard suchen
-            pos1 = InStr(1, htmltelsearch, SWVisitenkarte1, vbTextCompare)
-            If Not pos1 = 0 Then
-                pos2 = InStr(pos1, htmltelsearch, SWVisitenkarte2, vbTextCompare)
-                If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
-                    ' vCard herunterladen
-                    myurl = "http://tel.search.ch/" & Mid(htmltelsearch, pos1 + 9, pos2 - pos1 - 10)
-                    myurl = Replace(myurl, "html", "vcf")
-                    vCard = hf.httpRead(myurl, System.Text.Encoding.Default)
+                ' Link zum Herunterladen der vCard suchen
+                pos1 = InStr(1, htmltelsearch, SWVisitenkarte1, vbTextCompare)
+                If Not pos1 = 0 Then
+                    pos2 = InStr(pos1, htmltelsearch, SWVisitenkarte2, vbTextCompare)
+                    If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
+                        ' vCard herunterladen
+                        myurl = "http://tel.search.ch/" & Mid(htmltelsearch, pos1 + 9, pos2 - pos1 - 10)
+                        myurl = Replace(myurl, "html", "vcf")
+                        vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                    End If
                 End If
+                ' Rückgabewert ermitteln
+                RWStelsearch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+                i = i + 1
+                tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
+            Else
+                hf.LogFile("FBError (RWStelsearch): " & Err.Number & " - " & Err.Description & " - " & myurl)
+                Exit Do
             End If
-            ' Rückgabewert ermitteln
-            RWStelsearch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
-            i = i + 1
-            tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
+
         Loop Until RWStelsearch Or i = 3
         ' Besonderheit bei 'telsearch': Vor- und Nachname sind in vCard separat angegeben
         ' wenn kein Vorname vorhanden ist, dann "muss" es sich um eine Firma handeln

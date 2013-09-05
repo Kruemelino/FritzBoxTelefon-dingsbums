@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -182,9 +182,9 @@ Partial Class formCfg
         Me.ButtonPhoner = New System.Windows.Forms.Button()
         Me.Label31 = New System.Windows.Forms.Label()
         Me.Label30 = New System.Windows.Forms.Label()
+        Me.LinkPhoner = New System.Windows.Forms.LinkLabel()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
-        Me.LinkPhoner = New System.Windows.Forms.LinkLabel()
         Me.PLogging = New System.Windows.Forms.TabPage()
         Me.GBLogging = New System.Windows.Forms.GroupBox()
         Me.BLogging = New System.Windows.Forms.Button()
@@ -1010,9 +1010,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle7.Format = "T"
-        DataGridViewCellStyle7.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1023,9 +1023,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle8.Format = "T"
-        DataGridViewCellStyle8.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1036,9 +1036,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle9.Format = "T"
-        DataGridViewCellStyle9.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1397,9 +1397,9 @@ Partial Class formCfg
         Me.GroupBox6.Controls.Add(Me.TBAnrMonX)
         Me.GroupBox6.Controls.Add(Me.Label12)
         Me.GroupBox6.Controls.Add(Me.TBAnrMonMoveGeschwindigkeit)
-        Me.GroupBox6.Location = New System.Drawing.Point(297, 64)
+        Me.GroupBox6.Location = New System.Drawing.Point(286, 64)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(283, 220)
+        Me.GroupBox6.Size = New System.Drawing.Size(294, 220)
         Me.GroupBox6.TabIndex = 15
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Aussehen anpassen"
@@ -1523,7 +1523,7 @@ Partial Class formCfg
         Me.Frame1.Controls.Add(Me.CBUseAnrMon)
         Me.Frame1.Location = New System.Drawing.Point(3, 64)
         Me.Frame1.Name = "Frame1"
-        Me.Frame1.Size = New System.Drawing.Size(288, 220)
+        Me.Frame1.Size = New System.Drawing.Size(277, 220)
         Me.Frame1.TabIndex = 14
         Me.Frame1.TabStop = False
         Me.Frame1.Text = "Einstellungen für den Anrufmonitor"
@@ -1540,7 +1540,7 @@ Partial Class formCfg
         Me.PanelAnrMon.Controls.Add(Me.Label15)
         Me.PanelAnrMon.Location = New System.Drawing.Point(3, 36)
         Me.PanelAnrMon.Name = "PanelAnrMon"
-        Me.PanelAnrMon.Size = New System.Drawing.Size(279, 178)
+        Me.PanelAnrMon.Size = New System.Drawing.Size(267, 178)
         Me.PanelAnrMon.TabIndex = 35
         '
         'CBAnrMonAuto
@@ -1577,7 +1577,7 @@ Partial Class formCfg
         '
         Me.Label2.Location = New System.Drawing.Point(159, 78)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(117, 52)
+        Me.Label2.Size = New System.Drawing.Size(105, 52)
         Me.Label2.TabIndex = 33
         Me.Label2.Text = "Stellen Sie die zu überwachenden Telefonnummern ein."
         '
@@ -1907,6 +1907,16 @@ Partial Class formCfg
         Me.Label30.Text = "Einstellungen für Phoner"
         Me.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'LinkPhoner
+        '
+        Me.LinkPhoner.AutoSize = True
+        Me.LinkPhoner.Location = New System.Drawing.Point(282, 106)
+        Me.LinkPhoner.Name = "LinkPhoner"
+        Me.LinkPhoner.Size = New System.Drawing.Size(41, 13)
+        Me.LinkPhoner.TabIndex = 4
+        Me.LinkPhoner.TabStop = True
+        Me.LinkPhoner.Text = "Phoner"
+        '
         'Label27
         '
         Me.Label27.AutoSize = True
@@ -1924,16 +1934,6 @@ Partial Class formCfg
         Me.Label26.Size = New System.Drawing.Size(250, 13)
         Me.Label26.TabIndex = 10
         Me.Label26.Text = "Phoner kann über folgenden Link bezogen werden:"
-        '
-        'LinkPhoner
-        '
-        Me.LinkPhoner.AutoSize = True
-        Me.LinkPhoner.Location = New System.Drawing.Point(282, 106)
-        Me.LinkPhoner.Name = "LinkPhoner"
-        Me.LinkPhoner.Size = New System.Drawing.Size(41, 13)
-        Me.LinkPhoner.TabIndex = 4
-        Me.LinkPhoner.TabStop = True
-        Me.LinkPhoner.Text = "Phoner"
         '
         'PLogging
         '
@@ -2031,15 +2031,15 @@ Partial Class formCfg
         Me.PTelefonDatei.Controls.Add(Me.TBTelefonDatei)
         Me.PTelefonDatei.Controls.Add(Me.BTelefonDatei)
         Me.PTelefonDatei.Enabled = False
-        Me.PTelefonDatei.Location = New System.Drawing.Point(401, 183)
+        Me.PTelefonDatei.Location = New System.Drawing.Point(401, 186)
         Me.PTelefonDatei.Name = "PTelefonDatei"
-        Me.PTelefonDatei.Size = New System.Drawing.Size(179, 101)
+        Me.PTelefonDatei.Size = New System.Drawing.Size(179, 98)
         Me.PTelefonDatei.TabIndex = 29
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(6, 0)
+        Me.Label9.Location = New System.Drawing.Point(3, 9)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(164, 13)
         Me.Label9.TabIndex = 26
@@ -2047,14 +2047,14 @@ Partial Class formCfg
         '
         'TBTelefonDatei
         '
-        Me.TBTelefonDatei.Location = New System.Drawing.Point(3, 16)
+        Me.TBTelefonDatei.Location = New System.Drawing.Point(3, 43)
         Me.TBTelefonDatei.Name = "TBTelefonDatei"
         Me.TBTelefonDatei.Size = New System.Drawing.Size(170, 20)
         Me.TBTelefonDatei.TabIndex = 5
         '
         'BTelefonDatei
         '
-        Me.BTelefonDatei.Location = New System.Drawing.Point(3, 42)
+        Me.BTelefonDatei.Location = New System.Drawing.Point(3, 69)
         Me.BTelefonDatei.Name = "BTelefonDatei"
         Me.BTelefonDatei.Size = New System.Drawing.Size(170, 26)
         Me.BTelefonDatei.TabIndex = 6

@@ -280,6 +280,7 @@ Public Class formWählbox
             Dim cbcHTML As String
             Dim myurl As String
             Dim CheckMobil As Boolean = True
+            Dim HTMLFehler As ErrObject = Nothing
             ' initiiert den Anruf, wenn eine Nummer ausgewählt wurde
             If Not Me.checkCBC.Checked Then
                 Me.cancelCallButton.Visible = True
@@ -310,7 +311,10 @@ Public Class formWählbox
                     cbcHTML = hf.httpWrite(myurl, "rechnen=true&p_zielvorwahl=58&p_typ%5B%5D=1&p_takt=-1", System.Text.Encoding.Default)
                 Else
                     myurl = String.Concat("http://www.billiger-telefonieren.de/tarife/nummer.php3?num=", code)
-                    cbcHTML = hf.httpRead(myurl, System.Text.Encoding.Default)
+                    cbcHTML = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                    If Not HTMLFehler Is Nothing Then
+                        hf.LogFile("FBError (formWählbox.ListTel_SelectionChanged): " & Err.Number & " - " & Err.Description & " - " & myurl)
+                    End If
                 End If : Vorwahl = Nothing
                 Me.LLBiligertelefonieren.Text = myurl
                 CbCBilligerTelefonieren(code, cbcHTML)

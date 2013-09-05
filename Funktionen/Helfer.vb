@@ -170,8 +170,11 @@ Public Class Helfer
     End Sub ' (Keyänderung) 
 
     Public Function GetInformationSystemFritzBox() As String
+        Dim sLink As String
 
-        Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpRead("http://fritz.box/cgi-bin/system_status", System.Text.Encoding.UTF8), "<body>", "</body>"), "-", , CompareMethod.Text)
+        sLink = "http://fritz.box/cgi-bin/system_status"
+
+        Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpRead(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
 
         Return String.Concat("Ergänze bitte folgende Angaben:", vbNewLine, vbNewLine, _
                       "Dein Name:", vbNewLine, _
@@ -522,26 +525,40 @@ Public Class Helfer
 #End Region
 
 #Region " HTTPTransfer"
-
-    Public Function httpRead(ByVal Link As String, ByVal Encoding As System.Text.Encoding) As String
+    ', ByRef Fehler As ErrObject
+    Public Function httpRead(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As ErrObject) As String
+        FBError = Nothing
         Dim uri As New Uri(Link)
         httpRead = vbNullString
         Try
-            If uri.Scheme = uri.UriSchemeHttp Or uri.Scheme = uri.UriSchemeFile Then
-
-                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
-                    .Method = WebRequestMethods.Http.Get
-                    .Proxy = Nothing
-                    .KeepAlive = False
-                    .CachePolicy = noCache
-                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-                        httpRead = .ReadToEnd()
-                        .Close()
-                        .Dispose()
+            Select Case uri.Scheme
+                Case uri.UriSchemeHttp
+                    With CType(HttpWebRequest.Create(uri), HttpWebRequest)
+                        .Method = WebRequestMethods.Http.Get
+                        .Proxy = Nothing
+                        .KeepAlive = False
+                        .CachePolicy = noCache
+                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                            httpRead = .ReadToEnd()
+                            .Close()
+                            .Dispose()
+                        End With
                     End With
-                End With
-            End If
-        Catch e As Exception
+                Case uri.UriSchemeFile
+                    With CType(FileWebRequest.Create(uri), FileWebRequest)
+                        .Method = WebRequestMethods.Http.Get
+                        .Proxy = Nothing
+                        .CachePolicy = noCache
+                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                            httpRead = .ReadToEnd()
+                            .Close()
+                            .Dispose()
+                        End With
+                    End With
+            End Select
+
+        Catch
+            FBError = Err()
             LogFile("Es is ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
         End Try
         Return httpRead

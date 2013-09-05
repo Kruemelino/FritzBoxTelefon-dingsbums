@@ -32,7 +32,7 @@
         If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.ini"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_ini = New InI
+        C_ini = New InI(DateiPfad)
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael
@@ -117,7 +117,7 @@
         Dim tmpstr As String = Me.TBFritzBoxAdr.Text
         If C_Helfer.Ping(tmpstr) Then
             Me.TBFritzBoxAdr.Text = tmpstr
-            If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
+            If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
                 C_ini.Write(DateiPfad, "Optionen", "TBFBAdr", tmpstr)
                 Me.TBFBPW.Enabled = True
                 Me.LFBPW.Enabled = True
@@ -180,7 +180,7 @@
     End Sub
 
     Sub CLBtelnrAusfüllen()
-        Dim iniTelefonEinträge() As String = C_ini.ReadSection(DateiPfad, "Telefone")
+        Dim iniTelefonEinträge() As String = C_ini.ReadSection("Telefone")
         Dim TelNrString As String = "Alle Telefonnummern"
         Dim TelEintrag() As String
         Dim CheckString(1) As String

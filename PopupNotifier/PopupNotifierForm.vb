@@ -46,84 +46,6 @@ Public Class PopupNotifierForm
     Public Event LinkClick()
     Public Event CloseClick()
 
-    'Public Enum WindowStyles As Long
-
-    '    WS_OVERLAPPED = 0
-    '    WS_POPUP = 2147483648
-    '    WS_CHILD = 1073741824
-    '    WS_MINIMIZE = 536870912
-    '    WS_VISIBLE = 268435456
-    '    WS_DISABLED = 134217728
-    '    WS_CLIPSIBLINGS = 67108864
-    '    WS_CLIPCHILDREN = 33554432
-    '    WS_MAXIMIZE = 16777216
-    '    WS_BORDER = 8388608
-    '    WS_DLGFRAME = 4194304
-    '    WS_VSCROLL = 2097152
-    '    WS_HSCROLL = 1048576
-    '    WS_SYSMENU = 524288
-    '    WS_THICKFRAME = 262144
-    '    WS_GROUP = 131072
-    '    WS_TABSTOP = 65536
-
-    '    WS_MINIMIZEBOX = 131072
-    '    WS_MAXIMIZEBOX = 65536
-
-    '    WS_CAPTION = WS_BORDER Or WS_DLGFRAME
-    '    WS_TILED = WS_OVERLAPPED
-    '    WS_ICONIC = WS_MINIMIZE
-    '    WS_SIZEBOX = WS_THICKFRAME
-    '    WS_TILEDWINDOW = WS_OVERLAPPEDWINDOW
-
-    '    WS_OVERLAPPEDWINDOW = WS_OVERLAPPED Or WS_CAPTION Or WS_SYSMENU Or _
-    '              WS_THICKFRAME Or WS_MINIMIZEBOX Or WS_MAXIMIZEBOX
-    '    WS_POPUPWINDOW = WS_POPUP Or WS_BORDER Or WS_SYSMENU
-    '    WS_CHILDWINDOW = WS_CHILD
-
-    '    WS_EX_DLGMODALFRAME = 1
-    '    WS_EX_NOPARENTNOTIFY = 4
-    '    WS_EX_TOPMOST = 8
-    '    WS_EX_ACCEPTFILES = 16
-    '    WS_EX_TRANSPARENT = 32
-
-    '    '#If (WINVER >= 400) Then
-    '    WS_EX_MDICHILD = 64
-    '    WS_EX_TOOLWINDOW = 128
-    '    WS_EX_WINDOWEDGE = 256
-    '    WS_EX_CLIENTEDGE = 512
-    '    WS_EX_CONTEXTHELP = 1024
-
-    '    WS_EX_RIGHT = 4096
-    '    WS_EX_LEFT = 0
-    '    WS_EX_RTLREADING = 8192
-    '    WS_EX_LTRREADING = 0
-    '    WS_EX_LEFTSCROLLBAR = 16384
-    '    WS_EX_RIGHTSCROLLBAR = 0
-
-    '    WS_EX_CONTROLPARENT = 65536
-    '    WS_EX_STATICEDGE = 131072
-    '    WS_EX_APPWINDOW = 262144
-
-    '    WS_EX_OVERLAPPEDWINDOW = WS_EX_WINDOWEDGE Or WS_EX_CLIENTEDGE
-    '    WS_EX_PALETTEWINDOW = WS_EX_WINDOWEDGE Or WS_EX_TOOLWINDOW Or WS_EX_TOPMOST
-    '    '#End If
-
-    '    '#If (WIN32WINNT >= 500) Then
-    '    WS_EX_LAYERED = 524288
-    '    '#End If
-
-    '    '#If (WINVER >= 500) Then
-    '    WS_EX_NOINHERITLAYOUT = 1048576 ' Disable inheritence of mirroring by children
-    '    WS_EX_LAYOUTRTL = 4194304 ' Right to left mirroring
-    '    '#End If
-
-    '    '#If (WIN32WINNT >= 500) Then
-    '    WS_EX_COMPOSITED = 33554432
-    '    WS_EX_NOACTIVATE = 67108864
-    '    '#End If
-
-    'End Enum
-
 #Region "Properties"
     Protected Overrides ReadOnly Property ShowWithoutActivation() As Boolean
         Get
@@ -294,6 +216,7 @@ Public Class PopupNotifierForm
         Dim Länge As Integer
 
         Dim rcBody As New Rectangle(0, 0, Me.Width, Me.Height)
+
         Dim rcHeader As New Rectangle(0, 0, Me.Width, Parent.HeaderHeight)
         Dim rcForm As New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)
         Dim brBody As New LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical)
@@ -302,7 +225,10 @@ Public Class PopupNotifierForm
         Dim drawFormatRight As New StringFormat()
         drawFormatRight.Alignment = StringAlignment.Far
         Dim brHeader As New LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical)
+        Dim RectZeit As RectangleF
+        Dim RectTelName As RectangleF
         With e.Graphics
+            .Clip = New Region(rcBody)
             .FillRectangle(brBody, rcBody)
             .FillRectangle(brHeader, rcHeader)
             .DrawRectangle(New Pen(Parent.BorderColor), rcForm)
@@ -321,6 +247,7 @@ Public Class PopupNotifierForm
                 End If
                 .FillPolygon(New SolidBrush(ForeColor), New Point() {New Point(RectOptions.Left + 4, RectOptions.Top + 6), New Point(RectOptions.Left + 12, RectOptions.Top + 6), New Point(RectOptions.Left + 8, RectOptions.Top + 4 + 6)})
             End If
+            '.Clip = New Region(rcClip)
             iHeightOfTitle = .MeasureString("A", Parent.TitleFont).Height
             iHeightOfAnrName = .MeasureString("A", Parent.ContentFont).Height
             iHeightOfTelNr = .MeasureString("A", Parent.TelNrFont).Height
@@ -348,24 +275,18 @@ Public Class PopupNotifierForm
                     If iTelNameLänge + iUhrzeitLänge > Länge Then
                         sUhrzeit = CDate(Parent.Uhrzeit).ToString("dd.MM.yy HH:mm:ss")
                         iUhrzeitLänge = .MeasureString(sUhrzeit, Parent.TitleFont).Width
-                        ' Ab jetzt TelefonNamen verkleinern
-                        If iTelNameLänge + iUhrzeitLänge > Länge Then
-                            Dim sTest As String() = Split(sTelName, ", ", , CompareMethod.Text)
-                            sTelName = vbNullString
-                            For i = 0 To UBound(sTest) - 1
-                                sTelName = sTelName & sTest(i) & ", "
-                                If i = sTest.Length / 2 Then
-                                    sTelName = sTelName & vbNewLine
-                                End If
-                            Next
-                            sTelName = sTelName & sTest(UBound(sTest))
-                        End If
                     End If
                 End If
             End If
+            RectZeit = New RectangleF(iTitleOrigin + Parent.TextPadding.Left, Parent.TextPadding.Top + Parent.HeaderHeight, .MeasureString(sUhrzeit, Parent.TitleFont).Width, iHeightOfTitle)
+            RectTelName = New RectangleF(RectZeit.Right, RectZeit.Top, RectClose.Left - RectZeit.Right, iHeightOfTitle)
 
-            .DrawString(sUhrzeit, Parent.TitleFont, New SolidBrush(Parent.TitleColor), iTitleOrigin + Parent.TextPadding.Left, Parent.TextPadding.Top + Parent.HeaderHeight)
-            .DrawString(sTelName, Parent.TitleFont, New SolidBrush(Parent.TitleColor), Parent.Size.Width - Parent.TextPadding.Right - 21, Parent.TextPadding.Top + Parent.HeaderHeight, drawFormatRight)
+            .DrawString(sUhrzeit, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectZeit)
+            If iTelNameLänge > RectTelName.Width Then
+                RectTelName.Y = Parent.HeaderHeight
+                RectTelName.Size = New Size(RectTelName.Width, RectTelName.Height * 2 - 3)
+            End If
+            .DrawString(sTelName, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectTelName, drawFormatRight)
             .DrawString(Parent.TelNr, Parent.TelNrFont, New SolidBrush(Parent.TitleColor), RectTelNr, drawFormatCenter)
             .DrawString(Parent.Firma, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectFirma, drawFormatCenter)
 
@@ -381,7 +302,6 @@ Public Class PopupNotifierForm
                 tempfont = New Font("Microsoft Sans Serif", iFontSize, FontStyle.Regular)
             End If
 
-
             If bMouseOnLink Then
                 Me.Cursor = Cursors.Hand
                 .DrawString(Parent.AnrName, tempfont, New SolidBrush(Parent.LinkHoverColor), RectAnrName, drawFormatCenter)
@@ -389,8 +309,6 @@ Public Class PopupNotifierForm
                 Me.Cursor = Cursors.Default
                 .DrawString(Parent.AnrName, tempfont, New SolidBrush(Parent.ContentColor), RectAnrName, drawFormatCenter)
             End If
-
-
         End With
     End Sub
 

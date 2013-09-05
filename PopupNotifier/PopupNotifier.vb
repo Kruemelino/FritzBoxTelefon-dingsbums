@@ -424,8 +424,6 @@ Public Class PopupNotifier
             .Show()
             SetWindowPos(fPopup.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
             SetWindowPos(fPopup.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
-            'dummybool = PopupNotifierSecurity.ShowWindow(.Handle, ShowWindowCommands.ShowNoActivate)
-            'dummybool = PopupNotifierSecurity.SetWindowPos(.Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SetWindowPosFlags.DoNotActivate + SetWindowPosFlags.IgnoreMove + SetWindowPosFlags.IgnoreResize + SetWindowPosFlags.DoNotReposition)
 
         End With
 
@@ -506,10 +504,6 @@ Public Class PopupNotifier
                         If .Opacity = 0 Then
                             tmAnimation.Stop()
                             .TopMost = False
-                            'ShowWindow(.Handle, SW_SHOWNOACTIVATE)
-                            'SetWindowPos(.Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE + SWP_NOSIZE + SWP_NOACTIVATE + DS_SETFOREGROUND)
-                            'dummybool = PopupNotifierSecurity.ShowWindow(.Handle, ShowWindowCommands.ShowNoActivate)
-                            'dummybool = PopupNotifierSecurity.SetWindowPos(.Handle, HWND_NOTOPMOST, 0, 0, 0, 0, SetWindowPosFlags.DoNotActivate + SetWindowPosFlags.IgnoreMove + SetWindowPosFlags.IgnoreResize + SetWindowPosFlags.DoNotReposition)
                             .Close()
                             bAppearing = True
                             RaiseEvent Closed()
@@ -549,19 +543,3 @@ Public Class PopupNotifier
         MyBase.Finalize()
     End Sub
 End Class
-
-'Public NotInheritable Class PopupNotifierSecurity
-
-'    Public Shared ReadOnly Property ShowWindow(ByVal hwnd As IntPtr, ByVal nCmdShow As ShowWindowCommands) As Boolean
-'        Get
-'            Return SafeNativeMethods.ShowWindow(hwnd, nCmdShow)
-'        End Get
-'    End Property
-
-'    Public Shared ReadOnly Property SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As IntPtr, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As Boolean
-'        Get
-'            Return SafeNativeMethods.SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, uFlags)
-'        End Get
-'    End Property
-
-'End Class

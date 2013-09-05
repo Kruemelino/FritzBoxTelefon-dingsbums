@@ -38,8 +38,8 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.4.4.1")> 
-<Assembly: AssemblyFileVersion("3.4.4.1")> 
+<Assembly: AssemblyVersion("3.4.4.4")> 
+<Assembly: AssemblyFileVersion("3.4.4.4")> 
 
 Friend Module DesignTimeConstants
     Public Const RibbonTypeSerializer As String = "Microsoft.VisualStudio.Tools.Office.Ribbon.Serialization.RibbonTypeCodeDomSerializer, Microsoft.VisualStudio.Tools.Office.Designer, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"

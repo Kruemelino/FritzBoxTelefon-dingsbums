@@ -65,8 +65,7 @@ Public Class formCfg
     End Sub
 
     Private Sub Ausfüllen()
-
-        'Dim IP As String
+        C_ini.inireload()      'Dim IP As String
         Dim Passwort As String
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then
@@ -76,56 +75,56 @@ Public Class formCfg
         ' Beim Einblenden die Werte aus der Registry einlesen
         Me.Label7.Text += ThisAddIn.Version
         ' Einstellungen für das Wählmakro laden
-        Me.TBLandesVW.Text = C_ini.Read(Dateipfad, "Optionen", "TBLandesVW", "0049")
-        Me.TBAmt.Text = C_ini.Read(Dateipfad, "Optionen", "TBAmt", "")
-        Me.TBFBAdr.Text = C_ini.Read(Dateipfad, "Optionen", "TBFBAdr", "fritz.box")
-        Me.CBForceFBAddr.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBForceFBAddr", "False") = "True", True, False))
-        Me.TBBenutzer.Text = C_ini.Read(Dateipfad, "Optionen", "TBBenutzer", vbNullString)
-        If C_ini.Read(Dateipfad, "Optionen", Me.TBBenutzer.Text, "2") = "0" Then
+        Me.TBLandesVW.Text = C_ini.Read("Optionen", "TBLandesVW", "0049")
+        Me.TBAmt.Text = C_ini.Read("Optionen", "TBAmt", "")
+        Me.TBFBAdr.Text = C_ini.Read("Optionen", "TBFBAdr", "fritz.box")
+        Me.CBForceFBAddr.Checked = CBool(IIf(C_ini.Read("Optionen", "CBForceFBAddr", "False") = "True", True, False))
+        Me.TBBenutzer.Text = C_ini.Read("Optionen", "TBBenutzer", vbNullString)
+        If C_ini.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
             Me.TBBenutzer.BackColor = Color.Red
             Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
         End If
-        Passwort = C_ini.Read(Dateipfad, "Optionen", "TBPasswort", "")
+        Passwort = C_ini.Read("Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
             Me.TBPasswort.Text = "1234"
         End If
-        Me.TBVorwahl.Text = C_ini.Read(Dateipfad, "Optionen", "TBVorwahl", "")
+        Me.TBVorwahl.Text = C_ini.Read("Optionen", "TBVorwahl", "")
         CLBtelnrAusfüllen()
-        Me.TBEnblDauer.Text = CStr(CInt(C_ini.Read(Dateipfad, "Optionen", "TBEnblDauer", "10")))
-        Me.CBAnrMonAuto.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBAnrMonAuto", "False"))
-        Me.TBAnrMonX.Text = C_ini.Read(Dateipfad, "Optionen", "TBAnrMonX", "0")
-        Me.TBAnrMonY.Text = C_ini.Read(Dateipfad, "Optionen", "TBAnrMonY", "0")
-        Me.CBAnrMonMove.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBAnrMonMove", "True") = "True", True, False))
-        Me.CBAnrMonTransp.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBAnrMonTransp", "True") = "True", True, False))
-        Me.TBAnrMonMoveGeschwindigkeit.Value = CInt((100 - CDbl(C_ini.Read(Dateipfad, "Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))) / 10)
-        Me.CBAnrMonContactImage.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBAnrMonContactImage", "True") = "True", True, False))
-        Me.CBIndexAus.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBIndexAus", "False"))
-        Me.CBShowMSN.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBShowMSN", "False"))
+        Me.TBEnblDauer.Text = CStr(CInt(C_ini.Read("Optionen", "TBEnblDauer", "10")))
+        Me.CBAnrMonAuto.Checked = CBool(C_ini.Read("Optionen", "CBAnrMonAuto", "False"))
+        Me.TBAnrMonX.Text = C_ini.Read("Optionen", "TBAnrMonX", "0")
+        Me.TBAnrMonY.Text = C_ini.Read("Optionen", "TBAnrMonY", "0")
+        Me.CBAnrMonMove.Checked = CBool(IIf(C_ini.Read("Optionen", "CBAnrMonMove", "True") = "True", True, False))
+        Me.CBAnrMonTransp.Checked = CBool(IIf(C_ini.Read("Optionen", "CBAnrMonTransp", "True") = "True", True, False))
+        Me.TBAnrMonMoveGeschwindigkeit.Value = CInt((100 - CDbl(C_ini.Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))) / 10)
+        Me.CBAnrMonContactImage.Checked = CBool(IIf(C_ini.Read("Optionen", "CBAnrMonContactImage", "True") = "True", True, False))
+        Me.CBIndexAus.Checked = CBool(C_ini.Read("Optionen", "CBIndexAus", "False"))
+        Me.CBShowMSN.Checked = CBool(C_ini.Read("Optionen", "CBShowMSN", "False"))
         ' optionale allgemeine Einstellungen laden
-        Me.CBAutoClose.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBAutoClose", "True") = "True", True, False))
-        Me.CBVoIPBuster.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBVoIPBuster", "False") = "True", True, False))
+        Me.CBAutoClose.Checked = CBool(IIf(C_ini.Read("Optionen", "CBAutoClose", "True") = "True", True, False))
+        Me.CBVoIPBuster.Checked = CBool(IIf(C_ini.Read("Optionen", "CBVoIPBuster", "False") = "True", True, False))
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
-        Me.CBCbCunterbinden.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBCbCunterbinden", "False") = "True", True, False))
-        Me.CBCallByCall.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBCallByCall", "False") = "True", True, False))
-        Me.CBDialPort.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBDialPort", "False") = "True", True, False))
-        Me.CBRückwärtssuche.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBRückwärtssuche", "False") = "True", True, False))
-        Me.CBKErstellen.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBKErstellen", "False") = "True", True, False))
-        Me.CBLogFile.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBLogFile", "False") = "True", True, False))
+        Me.CBCbCunterbinden.Checked = CBool(IIf(C_ini.Read("Optionen", "CBCbCunterbinden", "False") = "True", True, False))
+        Me.CBCallByCall.Checked = CBool(IIf(C_ini.Read("Optionen", "CBCallByCall", "False") = "True", True, False))
+        Me.CBDialPort.Checked = CBool(IIf(C_ini.Read("Optionen", "CBDialPort", "False") = "True", True, False))
+        Me.CBRückwärtssuche.Checked = CBool(IIf(C_ini.Read("Optionen", "CBRückwärtssuche", "False") = "True", True, False))
+        Me.CBKErstellen.Checked = CBool(IIf(C_ini.Read("Optionen", "CBKErstellen", "False") = "True", True, False))
+        Me.CBLogFile.Checked = CBool(IIf(C_ini.Read("Optionen", "CBLogFile", "False") = "True", True, False))
 #If OVer < 14 Then
         ' Einstellungen für die Symbolleiste laden
-        Me.CBSymbWwdh.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbWwdh", "True") = "True", True, False))
-        Me.CBSymbAnrMon.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbAnrMon", "True") = "True", True, False))
-        Me.CBSymbAnrMonNeuStart.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbAnrMonNeuStart", "False") = "True", True, False))
-        Me.CBSymbAnrListe.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbAnrListe", "True") = "True", True, False))
-        Me.CBSymbDirekt.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbDirekt", "True") = "True", True, False))
-        Me.CBSymbRWSuche.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbRWSuche", "True") = "True", True, False))
-        Me.CBSymbVIP.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbVIP", "False") = "True", True, False))
-        Me.CBSymbJournalimport.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBSymbJournalimport", "False") = "True", True, False))
+        Me.CBSymbWwdh.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbWwdh", "True") = "True", True, False))
+        Me.CBSymbAnrMon.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbAnrMon", "True") = "True", True, False))
+        Me.CBSymbAnrMonNeuStart.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbAnrMonNeuStart", "False") = "True", True, False))
+        Me.CBSymbAnrListe.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbAnrListe", "True") = "True", True, False))
+        Me.CBSymbDirekt.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbDirekt", "True") = "True", True, False))
+        Me.CBSymbRWSuche.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbRWSuche", "True") = "True", True, False))
+        Me.CBSymbVIP.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbVIP", "False") = "True", True, False))
+        Me.CBSymbJournalimport.Checked = CBool(IIf(C_ini.Read("Optionen", "CBSymbJournalimport", "False") = "True", True, False))
 #End If
-        Me.CBJImport.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBJImport", "False") = "True", True, False))
+        Me.CBJImport.Checked = CBool(IIf(C_ini.Read("Optionen", "CBJImport", "False") = "True", True, False))
         ' Einstellungen für die Rückwärtssuche laden
-        Me.CBKHO.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBKHO", "True") = "True", True, False))
-        Me.CBRWSIndex.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBRWSIndex", "True") = "True", True, False))
+        Me.CBKHO.Checked = CBool(IIf(C_ini.Read("Optionen", "CBKHO", "True") = "True", True, False))
+        Me.CBRWSIndex.Checked = CBool(IIf(C_ini.Read("Optionen", "CBRWSIndex", "True") = "True", True, False))
         With Me.ComboBoxRWS.Items
             .Add("GoYellow.de")
             .Add("11880.com")
@@ -134,10 +133,10 @@ Public Class formCfg
             .Add("Alle")
         End With
 
-        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(CInt(C_ini.Read(Dateipfad, "Optionen", "CBoxRWSuche", "0")))
+        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(CInt(C_ini.Read("Optionen", "CBoxRWSuche", "0")))
         If Not Me.CBRückwärtssuche.Checked Then Me.ComboBoxRWS.Enabled = False
         ' Einstellungen für das Journal laden
-        Me.CBJournal.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Optionen", "CBJournal", "False") = "True", True, False))
+        Me.CBJournal.Checked = CBool(IIf(C_ini.Read("Optionen", "CBJournal", "False") = "True", True, False))
 
         Statistik()
         With C_Helfer
@@ -145,25 +144,25 @@ Public Class formCfg
             Me.ButtonListen.Enabled = My.Computer.FileSystem.FileExists(.Dateipfade(Dateipfad, "Listen"))
         End With
 
-        Me.CBUseAnrMon.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBUseAnrMon", "True"))
+        Me.CBUseAnrMon.Checked = CBool(C_ini.Read("Optionen", "CBUseAnrMon", "True"))
         Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
         Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
-        Me.CBCheckMobil.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBCheckMobil", "True"))
+        Me.CBCheckMobil.Checked = CBool(C_ini.Read("Optionen", "CBCheckMobil", "True"))
 
         'StoppUhr
-        Me.CBStoppUhrEinblenden.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBStoppUhrEinblenden", "False"))
-        Me.CBStoppUhrAusblenden.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBStoppUhrAusblenden", "False"))
-        Me.TBStoppUhr.Text = C_ini.Read(Dateipfad, "Optionen", "TBStoppUhr", "10")
+        Me.CBStoppUhrEinblenden.Checked = CBool(C_ini.Read("Optionen", "CBStoppUhrEinblenden", "False"))
+        Me.CBStoppUhrAusblenden.Checked = CBool(C_ini.Read("Optionen", "CBStoppUhrAusblenden", "False"))
+        Me.TBStoppUhr.Text = C_ini.Read("Optionen", "TBStoppUhr", "10")
 
         Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
         If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
         Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
 
         'Telefonnummernformat
-        Me.TBTelNrMaske.Text = C_ini.Read(Dateipfad, "Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
-        Me.CBTelNrGruppieren.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBTelNrGruppieren", "True"))
-        Me.CBintl.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBintl", "False"))
-        Me.CBIgnoTelNrFormat.Checked = CBool(C_ini.Read(Dateipfad, "Optionen", "CBIgnoTelNrFormat", "False"))
+        Me.TBTelNrMaske.Text = C_ini.Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
+        Me.CBTelNrGruppieren.Checked = CBool(C_ini.Read("Optionen", "CBTelNrGruppieren", "True"))
+        Me.CBintl.Checked = CBool(C_ini.Read("Optionen", "CBintl", "False"))
+        Me.CBIgnoTelNrFormat.Checked = CBool(C_ini.Read("Optionen", "CBIgnoTelNrFormat", "False"))
 #If OVer < 14 Then
         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
@@ -171,31 +170,31 @@ Public Class formCfg
         FillLogTB()
 
         'Phoner
-        Dim PhonerVerfügbar As Boolean = CBool(C_ini.Read(Dateipfad, "Phoner", "PhonerVerfügbar", "False"))
+        Dim PhonerVerfügbar As Boolean = CBool(C_ini.Read("Phoner", "PhonerVerfügbar", "False"))
         Dim TelName() As String
         Dim PhonerPasswort As String
         Me.PanelPhoner.Enabled = PhonerVerfügbar
         If PhonerVerfügbar Then
-            Me.CBPhoner.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Phoner", "CBPhoner", "False") = "True", True, False))
+            Me.CBPhoner.Checked = CBool(IIf(C_ini.Read("Phoner", "CBPhoner", "False") = "True", True, False))
         Else
             Me.CBPhoner.Checked = False
         End If
         Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfügbar, "", " nicht")), , , CompareMethod.Text)
-        Me.CBPhonerKeineFB.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
+        Me.CBPhonerKeineFB.Checked = CBool(IIf(C_ini.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
         If Not Me.CBPhonerKeineFB.Checked Then
             For i = 20 To 29
-                TelName = Split(C_ini.Read(Dateipfad, "Telefone", CStr(i), "-1;"), ";", , CompareMethod.Text)
+                TelName = Split(C_ini.Read("Telefone", CStr(i), "-1;"), ";", , CompareMethod.Text)
                 If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
                     Me.ComboBoxPhonerSIP.Items.Add(TelName(2))
                 End If
             Next
-            Me.ComboBoxPhonerSIP.SelectedIndex = CInt(C_ini.Read(Dateipfad, "Phoner", "ComboBoxPhonerSIP", "0"))
+            Me.ComboBoxPhonerSIP.SelectedIndex = CInt(C_ini.Read("Phoner", "ComboBoxPhonerSIP", "0"))
         Else
             Me.ComboBoxPhonerSIP.SelectedIndex = 0
             Me.ComboBoxPhonerSIP.Enabled = False
         End If
-        Me.CBPhonerAnrMon.Checked = CBool(IIf(C_ini.Read(Dateipfad, "Phoner", "CBPhonerAnrMon", "False") = "True", True, False))
-        PhonerPasswort = C_ini.Read(Dateipfad, "Phoner", "PhonerPasswort", "")
+        Me.CBPhonerAnrMon.Checked = CBool(IIf(C_ini.Read("Phoner", "CBPhonerAnrMon", "False") = "True", True, False))
+        PhonerPasswort = C_ini.Read("Phoner", "PhonerPasswort", "")
         If Not Len(PhonerPasswort) = 0 Then
             Me.PhonerPasswort.Text = "1234"
         End If
@@ -212,14 +211,14 @@ Public Class formCfg
                 .Rows.RemoveAt(0)
             Next
         End With
-        Dim StandardTelefon As String = C_ini.Read(Dateipfad, "Telefone", "CBStandardTelefon", "-1")
-        Nebenstellen = Split(C_ini.Read(Dateipfad, "Telefone", "EingerichteteTelefone", "1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29,5,600,601,602,603,604"), ";", , CompareMethod.Text)
-        TelAnzahl = C_ini.Read(Dateipfad, "Telefone", "Anzahl", "-1")
+        Dim StandardTelefon As String = C_ini.Read("Telefone", "CBStandardTelefon", "-1")
+        Nebenstellen = Split(C_ini.Read("Telefone", "EingerichteteTelefone", "1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29,5,600,601,602,603,604"), ";", , CompareMethod.Text)
+        TelAnzahl = C_ini.Read("Telefone", "Anzahl", "-1")
         If Not TelAnzahl = "-1" Then
             With Me.TelList
                 j = 0
                 For Each Nebenstelle In Nebenstellen
-                    TelName = Split(C_ini.Read(Dateipfad, "Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
+                    TelName = Split(C_ini.Read("Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
                     If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
                         j += 1
                         row(1) = CStr(j) ' Zählvariable
@@ -228,9 +227,9 @@ Public Class formCfg
                         row(4) = Telefontyp(CInt(Nebenstelle))
                         row(5) = Replace(TelName(1), "_", ", ", , , CompareMethod.Text) ' Eingehnd
                         row(6) = Replace(TelName(0), "_", ", ", , , CompareMethod.Text) ' Ausgehnd
-                        row(7) = GetTimeInterval(CInt(C_ini.Read(Dateipfad, "Statistik", TelName(0) & "ein", "0")))
-                        row(8) = GetTimeInterval(CInt(C_ini.Read(Dateipfad, "Statistik", TelName(0) & "aus", "0")))
-                        row(9) = GetTimeInterval(CInt(C_ini.Read(Dateipfad, "Statistik", TelName(0) & "ein", "0")) + CInt(C_ini.Read(Dateipfad, "Statistik", TelName(0) & "aus", "0")))
+                        row(7) = GetTimeInterval(CInt(C_ini.Read("Statistik", TelName(0) & "ein", "0")))
+                        row(8) = GetTimeInterval(CInt(C_ini.Read("Statistik", TelName(0) & "aus", "0")))
+                        row(9) = GetTimeInterval(CInt(C_ini.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_ini.Read("Statistik", TelName(0) & "aus", "0")))
                         .Rows.Add(row)
                         If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
                     End If
@@ -242,22 +241,22 @@ Public Class formCfg
                 row(3) = Nothing
                 row(4) = Nothing
                 row(5) = "Summe:"
-                row(6) = GetTimeInterval(CInt(C_ini.Read(Dateipfad, "Statistik", "eingehend", "0")))
-                row(7) = GetTimeInterval(CInt(C_ini.Read(Dateipfad, "Statistik", "ausgehend", "0")))
-                row(8) = GetTimeInterval(CInt(C_ini.Read(Dateipfad, "Statistik", "eingehend", "0")) + CInt(C_ini.Read(Dateipfad, "Statistik", "ausgehend", "0")))
+                row(6) = GetTimeInterval(CInt(C_ini.Read("Statistik", "eingehend", "0")))
+                row(7) = GetTimeInterval(CInt(C_ini.Read("Statistik", "ausgehend", "0")))
+                row(8) = GetTimeInterval(CInt(C_ini.Read("Statistik", "eingehend", "0")) + CInt(C_ini.Read("Statistik", "ausgehend", "0")))
                 .Rows.Add(row)
             End With
         End If
 
-        If C_ini.Read(Dateipfad, "Statistik", "ResetZeit", "-1") = "-1" Then
+        If C_ini.Read("Statistik", "ResetZeit", "-1") = "-1" Then
             C_ini.Write(Dateipfad, "Statistik", "ResetZeit", CStr(System.DateTime.Now))
         End If
-        Me.TBAnderes.Text = C_ini.Read(Dateipfad, "Statistik", "Verpasst", "0") & " verpasste Telefonate" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_ini.Read(Dateipfad, "Statistik", "Nichterfolgreich", "0") & " nicht erfolgreiche Telefonate" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_ini.Read(Dateipfad, "Statistik", "Kontakt", "0") & " erstellte Kontakte" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_ini.Read(Dateipfad, "Statistik", "Journal", "0") & " erstellte Journaleinträge" & vbCrLf
-        Me.TBReset.Text = "Letzter Reset: " & C_ini.Read(Dateipfad, "Statistik", "ResetZeit", "Noch nicht festgelegt")
-        Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_ini.Read(Dateipfad, "Journal", "SchließZeit", "Noch nicht festgelegt")
+        Me.TBAnderes.Text = C_ini.Read("Statistik", "Verpasst", "0") & " verpasste Telefonate" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_ini.Read("Statistik", "Nichterfolgreich", "0") & " nicht erfolgreiche Telefonate" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_ini.Read("Statistik", "Kontakt", "0") & " erstellte Kontakte" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_ini.Read("Statistik", "Journal", "0") & " erstellte Journaleinträge" & vbCrLf
+        Me.TBReset.Text = "Letzter Reset: " & C_ini.Read("Statistik", "ResetZeit", "Noch nicht festgelegt")
+        Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_ini.Read("Journal", "SchließZeit", "Noch nicht festgelegt")
 
     End Sub
 
@@ -283,20 +282,6 @@ Public Class formCfg
     Private Function Speichern() As Boolean
         Speichern = True
 
-        'Dim checkstring As String = vbNullString
-        'Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
-        'If checkitemcoll.Count = 0 Then
-        '    For i = 0 To Me.CLBTelNr.Items.Count - 1
-        '        Me.CLBTelNr.SetItemChecked(i, True)
-        '    Next
-        '    checkitemcoll = Me.CLBTelNr.CheckedItems
-        'End If
-        'For Each el As String In checkitemcoll
-        '    If Not el = "Alle Telefonnummern" And Not C_Helfer.IsOneOf(el, Split(checkstring, ";", , CompareMethod.Text)) Then
-        '        checkstring += el & ";"
-        '    End If
-        'Next
-        'If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
         Dim checkstring As String = vbNullString
         If Not Me.CBPhonerKeineFB.Checked Then
             Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
@@ -455,7 +440,7 @@ Public Class formCfg
     End Function
 
     Sub CLBtelnrAusfüllen()
-        Dim iniTelefonEinträge() As String = C_ini.ReadSection(Dateipfad, "Telefone")
+        Dim iniTelefonEinträge() As String = C_ini.ReadSection("Telefone")
         Dim TelNrString As String = "Alle Telefonnummern"
         Dim TelEintrag() As String
         Dim CheckString(1) As String
@@ -871,7 +856,7 @@ Public Class formCfg
         Nebenstellen = Split("1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29", ",", , CompareMethod.Text) 'AB nicht durchsuchen 600,601,602,603,604
 
         For Each NebenstellenNr In Nebenstellen
-            Telname = Split(C_ini.Read(Dateipfad, "Telefone", CStr(NebenstellenNr), "-1;;"), ";", , CompareMethod.Text)
+            Telname = Split(C_ini.Read("Telefone", CStr(NebenstellenNr), "-1;;"), ";", , CompareMethod.Text)
             If Not Nebenstelle = vbNullString Then
                 If Telname(2) = Nebenstelle Then NSN = CInt(NebenstellenNr)
             Else
@@ -936,7 +921,7 @@ Public Class formCfg
         Else
             URL = "http://" & FBOX_ADR & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
-        MailText = C_Helfer.httpRead(URL, FBEncoding)
+        MailText = C_Helfer.httpRead(URL, FBEncoding, Nothing)
 
         With My.Computer.FileSystem
             PfadTMPfile = .GetTempFileName()
