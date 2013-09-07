@@ -215,7 +215,6 @@
     </Compile>
     <Compile Include="..\Common\GUI.vb" />
     <Compile Include="..\Common\OutlookInterface.vb" />
-    <Compile Include="..\Common\JournalXML.vb" />
     <Compile Include="..\Common\FritzBox.vb" />
     <Compile Include="..\Common\formInit.designer.vb">
       <DependentUpon>formInit.vb</DependentUpon>
