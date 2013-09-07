@@ -25,9 +25,7 @@
             If Not IO.Directory.Exists(PfadName) Then
                 IO.Directory.CreateDirectory(PfadName) ' Directory erstellen
             End If
-        Catch
-            'LogFile("Es ist ein Fehler beim Erstellen des Ordners """ & PfadName & """ aufgetreten.")
-        End Try
+        Catch : End Try
 
         Write = WritePrivateProfileString(DieSektion, DerEintrag, Value, DateiName)
     End Function
@@ -43,7 +41,7 @@
         End If
     End Function
 
-    Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, Optional ByVal Def As String = "False") As String
+    Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Def As String) As String
         Dim sSection As String()
         Dim tmpEintrag As String()
 
@@ -83,6 +81,15 @@
 
     Function WriteSection(ByVal DieSektion As String, ByVal DerEintrag As String) As Long
         WriteSection = WritePrivateProfileSection(DieSektion, DerEintrag, sDateiName)
+    End Function
+
+    Public Function WriteIniSection(ByVal sSection As String, ByVal sValues() As String) As Boolean
+        Dim s As String = ""
+        For Each a As String In sValues
+            If Not a = vbNullString Then s &= a & ControlChars.NullChar
+        Next
+        s &= ControlChars.NullChar
+        Return WritePrivateProfileSection(sSection, s, sDateiName) = 0
     End Function
 
     Sub INIreload()
