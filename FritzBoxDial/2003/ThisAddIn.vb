@@ -47,7 +47,6 @@ Public Class ThisAddIn
     Public Shared Crypt As New Rijndael
     Public Shared hf As Helfer
     Public Shared KontaktFunktionen As Contacts
-    Public Shared Phoner As PhonerInterface
 
     Public Shared Dateipfad As String
 #If OVer < 14 Then
@@ -58,7 +57,7 @@ Public Class ThisAddIn
 
     Private Initialisierung As formInit
 
-    Public Const Version As String = "3.4.4.4"
+    Public Const Version As String = "3.4.4"
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
