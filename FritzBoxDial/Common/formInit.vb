@@ -1,7 +1,7 @@
 ﻿Public Class formInit
     ' Klassen
     Private C_ini As InI
-
+    Private C_XML As MyXML
     Private C_Helfer As Helfer
     Private C_Crypt As Rijndael
     Private C_GUI As GraphicalUserInterface
@@ -36,12 +36,14 @@
         ' Klasse zum IO-der INI-Struktiur erstellen
         C_ini = New InI(DateiPfad)
 
+        ' Klasse zum IO-der INI-Struktiur erstellen
+        C_XML = New MyXML(DateiPfad)
+
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
         C_Helfer = New Helfer(DateiPfad, C_ini, C_Crypt)
-
 
         ' Klasse für die Kontakte generieren
         C_Kontakt = New Contacts(DateiPfad, C_ini, C_Helfer)

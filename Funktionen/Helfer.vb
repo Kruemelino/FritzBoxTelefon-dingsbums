@@ -14,11 +14,6 @@ Public Class Helfer
         C_ini = iniKlasse
         C_Crypt = CryptKlasse
 
-        Dim fbxml As New MyXML(sDateiPfad)
-        fbxml.Read("Optionen", "Test1", "-1")
-        fbxml.Write("Optionen", "SchreibTest", "abc")
-        fbxml.Write("Telefone", "SchreibTest", "abc")
-        fbxml.Write("Phoner", "SchreibTest", "abc")
     End Sub
 
     Protected Overrides Sub Finalize()
