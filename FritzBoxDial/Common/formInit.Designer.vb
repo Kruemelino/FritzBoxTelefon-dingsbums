@@ -23,7 +23,7 @@ Partial Class formInit
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PanelUserEingabe = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.LabelFBUser = New System.Windows.Forms.Label()
         Me.TBFBUser = New System.Windows.Forms.TextBox()
         Me.BSchließen = New System.Windows.Forms.Button()
         Me.BFertigstellen = New System.Windows.Forms.Button()
@@ -48,7 +48,7 @@ Partial Class formInit
         'PanelUserEingabe
         '
         Me.PanelUserEingabe.BackColor = System.Drawing.SystemColors.Control
-        Me.PanelUserEingabe.Controls.Add(Me.Label1)
+        Me.PanelUserEingabe.Controls.Add(Me.LabelFBUser)
         Me.PanelUserEingabe.Controls.Add(Me.TBFBUser)
         Me.PanelUserEingabe.Controls.Add(Me.BSchließen)
         Me.PanelUserEingabe.Controls.Add(Me.BFertigstellen)
@@ -73,15 +73,15 @@ Partial Class formInit
         Me.PanelUserEingabe.Size = New System.Drawing.Size(366, 395)
         Me.PanelUserEingabe.TabIndex = 0
         '
-        'Label1
+        'LabelFBUser
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Enabled = False
-        Me.Label1.Location = New System.Drawing.Point(123, 90)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(118, 13)
-        Me.Label1.TabIndex = 36
-        Me.Label1.Text = "Fritz!Box Benutzername"
+        Me.LabelFBUser.AutoSize = True
+        Me.LabelFBUser.Enabled = False
+        Me.LabelFBUser.Location = New System.Drawing.Point(123, 90)
+        Me.LabelFBUser.Name = "LabelFBUser"
+        Me.LabelFBUser.Size = New System.Drawing.Size(118, 13)
+        Me.LabelFBUser.TabIndex = 36
+        Me.LabelFBUser.Text = "Fritz!Box Benutzername"
         '
         'TBFBUser
         '
@@ -298,6 +298,6 @@ Partial Class formInit
     Friend WithEvents LTelListe As System.Windows.Forms.Label
     Friend WithEvents BFertigstellen As System.Windows.Forms.Button
     Friend WithEvents BSchließen As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents LabelFBUser As System.Windows.Forms.Label
     Friend WithEvents TBFBUser As System.Windows.Forms.TextBox
 End Class

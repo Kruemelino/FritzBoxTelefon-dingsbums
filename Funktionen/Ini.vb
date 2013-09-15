@@ -17,17 +17,16 @@
         INIreload()
     End Sub
 
-
     Function Write(ByVal DateiName As String, ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String) As Integer
-
+        Write = vbNull
         Dim PfadName As String = IO.Path.GetDirectoryName(DateiName)
-        Try
-            If Not IO.Directory.Exists(PfadName) Then
+        If IO.Directory.Exists(PfadName) Then
+            Write = WritePrivateProfileString(DieSektion, DerEintrag, Value, DateiName)
+        Else
+            Try
                 IO.Directory.CreateDirectory(PfadName) ' Directory erstellen
-            End If
-        Catch : End Try
-
-        Write = WritePrivateProfileString(DieSektion, DerEintrag, Value, DateiName)
+            Catch : End Try
+        End If
     End Function
 
     Overloads Function Read(ByVal DateiName As String, ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Def As String) As String

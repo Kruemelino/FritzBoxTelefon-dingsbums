@@ -6,13 +6,19 @@ Public Class Helfer
     Private C_ini As InI
     Private C_Crypt As Rijndael
 
-    Private DateiPfad As String
+    Private sDateiPfad As String
     Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
     Public Sub New(ByVal iniPfad As String, ByVal iniKlasse As InI, ByVal CryptKlasse As Rijndael)
-        DateiPfad = iniPfad
+        sDateiPfad = iniPfad
         C_ini = iniKlasse
         C_Crypt = CryptKlasse
+
+        Dim fbxml As New MyXML(sDateiPfad)
+        fbxml.Read("Optionen", "Test1", "-1")
+        fbxml.Write("Optionen", "SchreibTest", "abc")
+        fbxml.Write("Telefone", "SchreibTest", "abc")
+        fbxml.Write("Phoner", "SchreibTest", "abc")
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -79,8 +85,8 @@ Public Class Helfer
     End Function
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
-        Dim LogDatei As String = Dateipfade(DateiPfad, "LogDatei")
-        If C_ini.Read(DateiPfad, "Optionen", "CBLogFile", "False") = "True" Then
+        Dim LogDatei As String = Dateipfade(sDateiPfad, "LogDatei")
+        If C_ini.Read(sDateiPfad, "Optionen", "CBLogFile", "False") = "True" Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
                     If .GetFileInfo(LogDatei).Length > 1048576 Then .DeleteFile(LogDatei)
@@ -122,6 +128,8 @@ Public Class Helfer
                 Datei = "AnrListe.csv"
             Case "JournalXML"
                 Datei = "Journal.xml"
+            Case "FritzOutlookXML"
+                Datei = "FritzOutlook.xml"
         End Select
         Return Left(iniPfad, InStrRev(iniPfad, "\", , CompareMethod.Text)) & Datei
     End Function
@@ -206,10 +214,10 @@ Public Class Helfer
         Dim tempDurchwahl As String = String.Empty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
 
-        Dim Maske As String = C_ini.Read(DateiPfad, "Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
-        Dim Gruppieren As Boolean = CBool(C_ini.Read(DateiPfad, "Optionen", "CBTelNrGruppieren", "True"))
-        Dim intl As Boolean = CBool(C_ini.Read(DateiPfad, "Optionen", "CBintl", "False"))
-        Dim eigeneLV As String = C_ini.Read(DateiPfad, "Optionen", "TBLandesVW", "0049")
+        Dim Maske As String = C_ini.Read(sDateiPfad, "Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
+        Dim Gruppieren As Boolean = CBool(C_ini.Read(sDateiPfad, "Optionen", "CBTelNrGruppieren", "True"))
+        Dim intl As Boolean = CBool(C_ini.Read(sDateiPfad, "Optionen", "CBintl", "False"))
+        Dim eigeneLV As String = C_ini.Read(sDateiPfad, "Optionen", "TBLandesVW", "0049")
 
 
         LandesVW = TelTeile(0)

@@ -103,14 +103,14 @@ Public Class ThisAddIn
                                      ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
                                      ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
 #End If
-            If Not CBool(ini.Read(Dateipfad, "Optionen", "CBIndexAus", "False")) Then oInsps = Application.Inspectors
+            If Not CBool(ini.Read("Optionen", "CBIndexAus", "False")) Then oInsps = Application.Inspectors
         Else
             hf.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not CBool(ini.Read(Dateipfad, "Optionen", "CBIndexAus", "False")) Then
+        If Not CBool(ini.Read("Optionen", "CBIndexAus", "False")) Then
             KontaktFunktionen.IndiziereKontakt(ContactSaved, True)
         End If
     End Sub
@@ -134,7 +134,7 @@ Public Class ThisAddIn
         GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRwsGoYellow, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If ini.Read(Dateipfad, "Optionen", "CBKHO", "True") = "True" Then
+            If ini.Read("Optionen", "CBKHO", "True") = "True" Then
                 Dim Ordner As Outlook.MAPIFolder
                 Dim StandardOrdner As Outlook.MAPIFolder
                 Dim olNamespace As Outlook.NameSpace

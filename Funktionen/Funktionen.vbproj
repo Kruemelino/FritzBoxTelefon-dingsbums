@@ -66,6 +66,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events.vb" />
     <Compile Include="Helfer.vb" />
     <Compile Include="Ini.vb" />
     <Compile Include="JournalXML.vb" />
@@ -87,6 +88,7 @@
     <Compile Include="Phoner.vb" />
     <Compile Include="Rijndael.vb" />
     <Compile Include="VCard.vb" />
+    <Compile Include="MyXML.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

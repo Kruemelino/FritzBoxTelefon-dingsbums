@@ -2,43 +2,42 @@ Imports System.Text
 Imports System.Xml
 Imports System.Threading
 Imports System.ComponentModel
-
 Public Class FritzBox
-
+    Friend sDefaultSID As String = "0000000000000000"
     Private c_ini As InI
     Private c_Crypt As Rijndael
     Private c_hf As Helfer
+    Private form_Config As formCfg
 
     Private FBFehler As ErrObject
-    Private threadTelefon As Thread
     Private FBEncoding As System.Text.Encoding = Encoding.UTF8
-    Private tb As New System.Windows.Forms.TextBox
-    Private EventProvider As IEventProvider
-
-    Friend sDefaultSID As String = "0000000000000000"
-    Friend bRausschreiben As Boolean = False
-
     Private sSID As String = sDefaultSID ' Startwert: UNgültige SID
+    Private threadTelefon As Thread
     Private sDateiPfad As String
+    Private bRausschreiben As Boolean = False
     Private sFBAddr As String
-
 
     Public Sub New(ByVal IniPath As String, _
                    ByVal iniKlasse As InI, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As Rijndael, _
-                   ByRef TelEinlesen As Boolean, ByVal ep As IEventProvider) 
+                   ByRef TelEinlesen As Boolean, _
+                   Optional ByVal frmconfig As formCfg = Nothing)
 
         Dim EncodeingFritzBox As String
 
+        ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
         sDateiPfad = IniPath
         c_ini = iniKlasse
         c_hf = HelferKlasse
         c_hf.KeyChange(sDateiPfad)
         c_Crypt = CryptKlasse
 
-        EventProvider = ep
-        AddHandler tb.TextChanged, AddressOf ep.GenericHandler
+        If Not frmconfig Is Nothing Then
+            form_Config = frmconfig
+            bRausschreiben = True
+            setline("Konfigurationsmenü erhalten")
+        End If
 
         sFBAddr = c_ini.Read(sDateiPfad, "Optionen", "TBFBAdr", "fritz.box")
 
@@ -72,36 +71,12 @@ Public Class FritzBox
     End Sub
 
 #Region "Login & Logout"
-    Public Function FBLogin(ByRef LuaLogin As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
+    Public Function FBLogin(ByRef Fw550 As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim sLink As String
         Dim slogin_xml As String
 
-        ' Mögliche Login-XML:
-
-        ' Alter Login von Firmware xxx.04.76 bis Firmware xxx.05.28
-        ' <?xml version="1.0" encoding="utf-8"?>
-        ' <SessionInfo>
-        '    <iswriteaccess>0</iswriteaccess>
-        '    <SID>0000000000000000</SID>
-        '    <Challenge>dbef619d</Challenge>
-        ' </SessionInfo>
-
-        ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
-        ' <?xml version="1.0" encoding="utf-8"?>
-        ' <SessionInfo>
-        '    <SID>0000000000000000</SID>
-        '    <Challenge>11def856</Challenge>
-        '    <BlockTime>0</BlockTime>
-        '    <Rights></Rights>
-        ' </SessionInfo>
-
         sLink = "http://" & sFBAddr & "/login_sid.lua?sid=" & sSID
         slogin_xml = c_hf.httpRead(sLink, FBEncoding, FBFehler)
-
-        If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
-            sLink = "http://" & sFBAddr & "/cgi-bin/webcm?getpage=../html/login_sid.xml&sid=" & sSID
-            slogin_xml = c_hf.httpRead(sLink, FBEncoding, FBFehler)
-        End If
 
         If FBFehler Is Nothing Then
             If InStr(slogin_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(slogin_xml) = 0 Then
@@ -123,25 +98,44 @@ Public Class FritzBox
                 Dim sZugang As String = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
                 Dim XMLDocLogin As New XmlDocument()
 
+                '<SessionInfo>
+                '   <SID>ff88e4d39354992f</SID>
+                '   <Challenge>ab7190d6</Challenge>
+                '   <BlockTime>128</BlockTime>
+                '   <Rights>
+                '       <Name>BoxAdmin</Name>
+                '       <Access>2</Access>
+                '       <Name>Phone</Name>
+                '       </Access>2</Access>
+                '       <Name>NAS></Name>
+                '       <Access>2</Access>
+                '   </Rights>
+                '</SessionInfo> 
+
+                '<?xml version="1.0" encoding="utf-8"?>
+                '<SessionInfo>
+                '   <iswriteaccess>0</iswriteaccess>
+                '   <SID>0000000000000000</SID>
+                '   <Challenge>dbef619d</Challenge>
+                '</SessionInfo>
+
+
                 With XMLDocLogin
                     .LoadXml(slogin_xml)
 
                     If .Item("SessionInfo").Item("SID").InnerText() = sDefaultSID Then
                         sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
-
                         With c_Crypt
                             sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode))
                         End With
-                        If bRausschreiben Then setline("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
-
                         If .InnerXml.Contains("Rights") Then
-                            ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
+                            'If .Item("SessionInfo").InnerXml.Contains("Rights") Then
                             sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
                             If sBlockTime = "0" Then
                                 sLink = "http://" & sFBAddr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
                                 sResponse = c_hf.httpRead(sLink, FBEncoding, FBFehler)
                                 If FBFehler Is Nothing Then
-                                    LuaLogin = True
+                                    Fw550 = True
                                 Else
                                     c_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
                                 End If
@@ -151,7 +145,6 @@ Public Class FritzBox
                                 Return sDefaultSID
                             End If
                         Else
-                            ' Alter Login von Firmware xxx.04.76 bis Firmware xxx.05.28
                             If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
                                 c_hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
                                 Return .Item("SessionInfo").Item("SID").InnerText()
@@ -161,29 +154,15 @@ Public Class FritzBox
                             sFormData = "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
                             sResponse = c_hf.httpWrite(sLink, sFormData, FBEncoding)
 
-                            LuaLogin = False
+                            Fw550 = False
                         End If
 
                         .LoadXml(sResponse)
 
-                        '<SessionInfo>
-                        '   <SID>ff88e4d39354992f</SID>
-                        '   <Challenge>ab7190d6</Challenge>
-                        '   <BlockTime>128</BlockTime>
-                        '   <Rights>
-                        '       <Name>BoxAdmin</Name>
-                        '       <Access>2</Access>
-                        '       <Name>Phone</Name>
-                        '       </Access>2</Access>
-                        '       <Name>NAS></Name>
-                        '       <Access>2</Access>
-                        '   </Rights>
-                        '</SessionInfo>
-
                         sSID = .Item("SessionInfo").Item("SID").InnerText()
 
                         If Not sSID = sDefaultSID Then
-                            If LuaLogin Then
+                            If Fw550 Then
                                 If Not c_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
                                     c_hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & sFBBenutzer)
                                     FBLogout(sSID)
@@ -250,7 +229,7 @@ Public Class FritzBox
 #End Region
 
 #Region "Telefonnummern, Telefonnamen"
-    Friend Sub FritzBoxDaten()
+    Friend Overloads Sub FritzBoxDaten()
         Dim FW550 As Boolean = True
         Dim sLink As String
         Dim tempstring As String
@@ -263,9 +242,14 @@ Public Class FritzBox
             sLink = "http://" & sFBAddr & "/fon_num/fon_num_list.lua?sid=" & sSID
             If bRausschreiben Then
                 setline("Fritz!Box SessionID: " & sSID)
-                setline("Fritz!Box SessionID: " & sSID)
                 setline("Fritz!Box Firmware  5.50: " & FW550.ToString)
             End If
+
+            If bRausschreiben Then
+                If form_Config.CBTelefonDatei.Checked Then sLink = form_Config.TBTelefonDatei.Text
+                setline("Fritz!Box Telefon Quelldatei: " & sLink)
+            End If
+
             tempstring = c_hf.httpRead(sLink, FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
@@ -331,7 +315,13 @@ Public Class FritzBox
         'MSNs emitteln
 
         sLink = "http://" & sFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+        If bRausschreiben Then
+            If form_Config.CBTelefonDatei.Checked Then
+                sLink = form_Config.TBTelefonDatei.Text
+            End If
+        End If
         If bRausschreiben Then setline("Fritz!Box Telefon Quelldatei: " & sLink)
+
         tempstring = c_hf.httpRead(sLink, FBEncoding, FBFehler)
         If FBFehler Is Nothing Then
 
@@ -355,11 +345,13 @@ Public Class FritzBox
                         TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         MSN(i) = TelNr
                         j = i
+
                         If bRausschreiben Then
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
                             c_ini.Write(sDateiPfad, "Telefone", "MSN" & CStr(i), TelNr)
                         End If
+
                     End If
                 End If
             Next
@@ -382,6 +374,7 @@ Public Class FritzBox
                         Else
                             c_ini.Write(sDateiPfad, "Telefone", "SIP" & CStr(i), TelNr)
                         End If
+
                     End If
                 End If
             Next
@@ -911,6 +904,7 @@ Public Class FritzBox
                     Next
                 End If
             Next
+            'Dim res = From x In tmp Select x Distinct 'Doppelte entfernen
             MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
             MSN = (From x In MSN Where Not x Like "" Select x).ToArray
 
@@ -1039,7 +1033,7 @@ Public Class FritzBox
                     EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
                     If .StringEntnehmen(Telefon, "['Fax'] = '", "'") = "1" Then
                         EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
-                        setline("Analogtelefon FON" & DialPort & " ist ein FAX.")
+                        If bRausschreiben Then setline("Analogtelefon FON" & DialPort & " ist ein FAX.")
                     End If
 
                 End If
@@ -1149,7 +1143,7 @@ Public Class FritzBox
                                 Select Case S0Typ
                                     Case "Fax"
                                         EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
-                                        setline("S0-telefon " & DialPort & " ist ein FAX.")
+                                        If bRausschreiben Then setline("S0-telefon " & DialPort & " ist ein FAX.")
                                         'Case "Isdn"
                                         'Case "Fon"
                                         'Case Else
@@ -1318,12 +1312,14 @@ Public Class FritzBox
 
 #End Region
 
+#Region "SetLine in Config"
+    Private Sub setline(ByVal Zeile As String)
+        If bRausschreiben Then form_Config.AddLine(Zeile)
+    End Sub
+#End Region
+
     Friend Function GetFBAddr() As String
         Return sFBAddr
     End Function
-
-    Private Sub setline(ByVal Zeile As String)
-        tb.Text = Zeile
-    End Sub
 
 End Class

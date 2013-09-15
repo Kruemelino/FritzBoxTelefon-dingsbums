@@ -39,7 +39,7 @@ Public Class JournalXML
                 .Load(PFAD)
             Catch ex As Exception
                 'File Exist?
-                xml.LoadXml("<Journal/>")
+                .LoadXml("<Journal/>")
             End Try
 
             xmlKD = .CreateElement("ID" & ID)
@@ -121,33 +121,33 @@ Public Class JournalXML
         Dim xml As New Xml.XmlDocument()
 
         With xml
-            Try
-                .Load(PFAD)
-                For i = 0 To .DocumentElement.ChildNodes.Count - 1
-                    If .DocumentElement.ChildNodes(i).Name = "ID" & ID Then
-                        For j = 0 To .DocumentElement.ChildNodes(i).ChildNodes.Count - 1
-                            Select Case xml.DocumentElement.ChildNodes(i).ChildNodes(j).Name
-                                Case "Typ"
-                                    Typ = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                                Case "NSN"
-                                    NSN = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                                Case "MSN"
-                                    MSN = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                                Case "Zeit"
-                                    Zeit = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                                Case "TelNr"
-                                    TelNr = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                                Case "KontaktID"
-                                    KontaktID = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                                Case "StoreID"
-                                    StoreID = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
-                            End Select
-                        Next
-                    End If
-                Next
-            Catch ex As Exception
-                Helfer.LogFile("XML-Datei nicht gefunden")
-            End Try
+            'Try
+            .Load(PFAD)
+            For i = 0 To .DocumentElement.ChildNodes.Count - 1
+                If .DocumentElement.ChildNodes(i).Name = "ID" & ID Then
+                    For j = 0 To .DocumentElement.ChildNodes(i).ChildNodes.Count - 1
+                        Select Case xml.DocumentElement.ChildNodes(i).ChildNodes(j).Name
+                            Case "Typ"
+                                Typ = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                            Case "NSN"
+                                NSN = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                            Case "MSN"
+                                MSN = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                            Case "Zeit"
+                                Zeit = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                            Case "TelNr"
+                                TelNr = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                            Case "KontaktID"
+                                KontaktID = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                            Case "StoreID"
+                                StoreID = .DocumentElement.ChildNodes(i).ChildNodes(j).InnerText
+                        End Select
+                    Next
+                End If
+            Next
+            'Catch ex As Exception
+            '    Helfer.LogFile("XML-Datei nicht gefunden")
+            'End Try
 
         End With
         xml = Nothing

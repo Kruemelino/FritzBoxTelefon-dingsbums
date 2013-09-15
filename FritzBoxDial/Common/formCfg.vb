@@ -2,6 +2,7 @@ Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.ComponentModel
 Imports System.Threading
+Imports System.Windows.Forms
 
 Public Class formCfg
     Private C_ini As InI
@@ -12,10 +13,11 @@ Public Class formCfg
     Private GUI As GraphicalUserInterface
     Private OlI As OutlookInterface
     Private AnrMon As AnrufMonitor
-    Private FBox As FritzBox
+    Private C_FBox As FritzBox
 
     Private WithEvents BWTelefone As BackgroundWorker
     Private WithEvents BWIndexer As BackgroundWorker
+    Private WithEvents emc As New EventMulticaster
 
     Private Dateipfad As String
     Private tmpCheckString As String
@@ -52,7 +54,7 @@ Public Class formCfg
         GUI = InterfacesKlasse
         OlI = OutlInter
         AnrMon = AnrufMon
-        FBox = fritzboxKlasse
+        C_FBox = fritzboxKlasse
         C_Kontakte = kontaktklasse
         C_Phoner = Phonerklasse
     End Sub
@@ -60,12 +62,12 @@ Public Class formCfg
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(iTa.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
         Me.ButtonTesten.Enabled = Not AnrMon Is Nothing
-        Me.ButtonTelefonliste.Enabled = Not FBox Is Nothing
+        Me.ButtonTelefonliste.Enabled = Not C_FBox Is Nothing
         Ausfüllen()
     End Sub
 
     Private Sub Ausfüllen()
-        C_ini.inireload()      'Dim IP As String
+        C_ini.INIreload()      'Dim IP As String
         Dim Passwort As String
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then
@@ -890,7 +892,7 @@ Public Class formCfg
 
     Private Sub NewMail()
         Dim NeueFW As Boolean
-        Dim SID As String = FBox.sDefaultSID
+        Dim SID As String = C_FBox.sDefaultSID
         Dim URL As String
         Dim FBOX_ADR As String = C_ini.Read(Dateipfad, "Optionen", "TBFBAdr", "fritz.box")
 
@@ -902,10 +904,10 @@ Public Class formCfg
         Dim FBBenutzer As String
         Dim FBPasswort As String
 
-        FBox = Nothing
-        FBox = New FritzBox(Dateipfad, C_ini, C_Helfer, C_Crypt, False, Me)
+        C_FBox = Nothing
+        C_FBox = New FritzBox(Dateipfad, C_ini, C_Helfer, C_Crypt, False, emc)
 
-        Do While SID = FBox.sDefaultSID
+        Do While SID = C_FBox.sDefaultSID
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
@@ -913,7 +915,7 @@ Public Class formCfg
                     Exit Sub
                 End If
             End If
-            SID = FBox.FBLogin(NeueFW, FBBenutzer, FBPasswort)
+            SID = C_FBox.FBLogin(NeueFW, FBBenutzer, FBPasswort)
         Loop
 
         If NeueFW Then
@@ -936,7 +938,8 @@ Public Class formCfg
 
     Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWTelefone.DoWork
         AddLine("Einlesen der Telefone gestartet.")
-        FBox.FritzBoxDaten()
+        C_FBox.bRausschreiben = True
+        C_FBox.FritzBoxDaten()
     End Sub
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
@@ -982,6 +985,12 @@ Public Class formCfg
         End If
     End Function
 
+    Private Sub TextChangedHandler(ByVal sender As Object, ByVal e As EventArgs) Handles emc.GenericEvent
+        StatusWert = DirectCast(sender, Control).Text
+        AddLine(StatusWert)
+        'MsgBox("got event from: " & DirectCast(sender, Control).Name & ". New text = " & DirectCast(sender, Control).Text)
+    End Sub
+
     Private Sub setline()
         With Me.TBDiagnose
             .Text += StatusWert & vbCrLf
@@ -1003,8 +1012,8 @@ Public Class formCfg
                 Me.CBTelefonDatei.Checked = False
             End If
         End If
-        FBox = Nothing
-        FBox = New FritzBox(Dateipfad, C_ini, C_Helfer, C_Crypt, False, Me)
+        C_FBox = Nothing
+        C_FBox = New FritzBox(Dateipfad, C_ini, C_Helfer, C_Crypt, False, emc)
         AddLine("Fritz!Box Klasse mit Verweis auf dieses Formular erstellt.")
         tmpCheckString = C_ini.Read(Dateipfad, "Telefone", "CLBTelNr", "-1")
         Try

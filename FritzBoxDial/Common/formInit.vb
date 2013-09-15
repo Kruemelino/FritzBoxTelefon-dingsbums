@@ -14,6 +14,8 @@
     Private C_Phoner As PhonerInterface
     Private C_JournalXML As JournalXML
 
+    Private WithEvents emc As New EventMulticaster
+
     'Strings
     Private DateiPfad As String
     Private SID As String
@@ -40,6 +42,7 @@
         ' Klasse für Helferfunktionen erstellen
         C_Helfer = New Helfer(DateiPfad, C_ini, C_Crypt)
 
+
         ' Klasse für die Kontakte generieren
         C_Kontakt = New Contacts(DateiPfad, C_ini, C_Helfer)
 
@@ -58,7 +61,7 @@
         If PrüfeAddin() Then
             UseAnrMon = CBool(C_ini.Read(DateiPfad, "Optionen", "CBUseAnrMon", "True"))
 
-            C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False)
+            C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, emc)
 
             C_GUI = New GraphicalUserInterface(C_Helfer, C_ini, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
@@ -107,6 +110,7 @@
             Me.ShowDialog()
             Rückgabe = True 'PrüfeAddin()
         Else
+            'Me.ShowDialog()
             Rückgabe = True
         End If
         Return Rückgabe
@@ -120,6 +124,8 @@
             If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
                 C_ini.Write(DateiPfad, "Optionen", "TBFBAdr", tmpstr)
                 Me.TBFBPW.Enabled = True
+                Me.TBFBUser.Enabled = True
+                Me.LabelFBUser.Enabled = True
                 Me.LFBPW.Enabled = True
                 Me.TBFritzBoxAdr.Enabled = False
                 Me.BFBAdr.Enabled = False
@@ -134,7 +140,7 @@
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
-        C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, Nothing)
+        C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, emc)
         C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBFBUser.Text)
         C_ini.Write(DateiPfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
@@ -144,6 +150,8 @@
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False
+            Me.TBFBUser.Enabled = False
+            Me.LabelFBUser.Enabled = False
             Me.LVorwahl.Enabled = True
             Me.LLandesvorwahl.Enabled = True
             Me.TBVorwahl.Enabled = True
@@ -167,6 +175,7 @@
 
         C_ini.Write(DateiPfad, "Optionen", "TBVorwahl", Me.TBVorwahl.Text)
         C_ini.Write(DateiPfad, "Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text)
+        C_FBox.bRausschreiben = False
         C_FBox.FritzBoxDaten()
 
         Me.CLBTelNr.Enabled = True
