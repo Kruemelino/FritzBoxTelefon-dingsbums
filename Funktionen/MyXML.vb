@@ -3,15 +3,16 @@
 Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
-    Public Sub New(ByVal sDateiPfad As String)
-
+    Public Sub New(ByVal DateiPfad As String)
+        sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()
-        If My.Computer.FileSystem.FileExists(sDateiPfad) Then
-            XMLDoc.Load(sDateiPfad)
-        Else
-            XMLDoc.LoadXml("<FritzOutlookXML/>")
-        End If
-
+        With My.Computer.FileSystem
+            If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension = "xml" Then
+                XMLDoc.Load(sDateiPfad)
+            Else
+                XMLDoc.LoadXml("<FritzOutlookXML/>")
+            End If
+        End With
 
     End Sub
 
