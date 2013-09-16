@@ -938,7 +938,7 @@ Public Class formCfg
 
     Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWTelefone.DoWork
         AddLine("Einlesen der Telefone gestartet.")
-        C_FBox.bRausschreiben = True
+        C_FBox.bRausschreiben = False
         C_FBox.FritzBoxDaten()
     End Sub
 
