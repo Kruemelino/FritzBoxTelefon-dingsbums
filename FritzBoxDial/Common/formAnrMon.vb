@@ -1,10 +1,9 @@
 Imports System.Timers
 Imports System.IO.Path
 Public Class formAnrMon
-    Private DateiPfad As String
     Private TelefonName As String
     Private aID As Integer
-    Private ini As Ini
+    Private C_XML As MyXML
     Private HelferFunktionen As Helfer
     Private TelNr As String              ' TelNr des Anrufers
     Private KontaktID As String              ' KontaktID des Anrufers
@@ -16,17 +15,20 @@ Public Class formAnrMon
     Private WithEvents TimerAktualisieren As Timer
 
 
-    Public Sub New(ByVal sDateiPfad As String, ByVal iAnrufID As Integer, ByVal Aktualisieren As Boolean, _
-                   ByVal iniKlasse As InI, ByVal HelferKlasse As Helfer, ByVal AnrufMon As AnrufMonitor, OutlInter As OutlookInterface)
+    Public Sub New(ByVal iAnrufID As Integer, _
+                   ByVal Aktualisieren As Boolean, _
+                   ByVal XMLKlasse As MyXML, _
+                   ByVal HelferKlasse As Helfer, _
+                   ByVal AnrufMon As AnrufMonitor, _
+                   ByVal OutlInter As OutlookInterface)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         HelferFunktionen = HelferKlasse
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         'If ThisAddIn.Debug Then ThisAddIn.Diagnose.AddLine("formAnrMon aufgerufen")
-        DateiPfad = sDateiPfad
         aID = iAnrufID
-        ini = iniKlasse
+        C_XML = XMLKlasse
         OlI = OutlInter
         AnrMon = AnrufMon
         AnrMonausfüllen()
@@ -43,13 +45,13 @@ Public Class formAnrMon
         OlI.InspectorVerschieben(True)
 
         With PopupNotifier
-            .ShowDelay = CInt(ini.Read(DateiPfad, "Optionen", "TBEnblDauer", "10")) * 1000
-            .AutoAusblenden = CBool(ini.Read(DateiPfad, "Optionen", "CBAutoClose", "True"))
-            Dim FormVerschiebung As New Drawing.Size(CInt(ini.Read(DateiPfad, "Optionen", "TBAnrMonX", "0")), CInt(ini.Read(DateiPfad, "Optionen", "TBAnrMonY", "0")))
+            .ShowDelay = CInt(C_XML.Read("Optionen", "TBEnblDauer", "10")) * 1000
+            .AutoAusblenden = CBool(C_XML.Read("Optionen", "CBAutoClose", "True"))
+            Dim FormVerschiebung As New Drawing.Size(CInt(C_XML.Read("Optionen", "TBAnrMonX", "0")), CInt(C_XML.Read("Optionen", "TBAnrMonY", "0")))
             .PositionsKorrektur = FormVerschiebung
-            .EffektMove = CBool(ini.Read(DateiPfad, "Optionen", "CBAnrMonMove", "True"))
-            .EffektTransparenz = CBool(ini.Read(DateiPfad, "Optionen", "CBAnrMonTransp", "True"))
-            .EffektMoveGeschwindigkeit = CInt(ini.Read(DateiPfad, "Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))
+            .EffektMove = CBool(C_XML.Read("Optionen", "CBAnrMonMove", "True"))
+            .EffektTransparenz = CBool(C_XML.Read("Optionen", "CBAnrMonTransp", "True"))
+            .EffektMoveGeschwindigkeit = CInt(C_XML.Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))
             .Popup()
         End With
         OlI.InspectorVerschieben(False)
@@ -58,7 +60,7 @@ Public Class formAnrMon
     Sub AnrMonausfüllen()
         ' Diese Funktion nimmt Daten aus der Registry und öffnet 'formAnMon'.
         Dim AnrName As String              ' Name des Anrufers
-        Dim letzterAnrufer() As String = Split(ini.Read(HelferFunktionen.Dateipfade(DateiPfad, "Listen"), "letzterAnrufer", "letzterAnrufer " & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer " & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
 
         AnrName = letzterAnrufer(1)
         TelNr = letzterAnrufer(2)
@@ -77,14 +79,14 @@ Public Class formAnrMon
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = letzterAnrufer(0)
             ' Telefonnamen eintragen
-            .TelName = TelefonName & CStr(IIf(CBool(ini.Read(DateiPfad, "Optionen", "CBShowMSN", "False")), " (" & MSN & ")", vbNullString))
+            .TelName = TelefonName & CStr(IIf(CBool(C_XML.Read("Optionen", "CBShowMSN", "False")), " (" & MSN & ")", vbNullString))
 
             If Not Strings.Left(KontaktID, 2) = "-1" Then
                 If Not TimerAktualisieren Is Nothing Then HelferFunktionen.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
                     OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
-                    If CBool(ini.Read(DateiPfad, "Optionen", "CBAnrMonContactImage", "True")) Then
+                    If CBool(C_XML.Read("Optionen", "CBAnrMonContactImage", "True")) Then
                         Dim BildPfad = OlI.KontaktBild(KontaktID, StoreID)
                         If Not BildPfad Is vbNullString Then
                             PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)

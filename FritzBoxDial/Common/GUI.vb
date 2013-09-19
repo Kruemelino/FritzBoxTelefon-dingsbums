@@ -64,7 +64,7 @@ Imports Office = Microsoft.Office.Core
 #End Region
 
     Private HelferFunktionen As Helfer
-    Private ini As InI
+    Private C_XML As MyXML
     Private Crypt As Rijndael
     Private Dateipfad As String
     Private Callclient As Wählclient
@@ -80,7 +80,7 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Friend Sub New(ByVal HelferKlasse As Helfer, _
-                   ByVal iniKlasse As InI, _
+                   ByVal XMLKlasse As MyXML, _
                    ByVal CryptKlasse As Rijndael, _
                    ByVal iniPfad As String, _
                    ByVal Wclient As Wählclient, _
@@ -92,7 +92,7 @@ Imports Office = Microsoft.Office.Core
                    ByVal Phonerklasse As PhonerInterface)
 
         HelferFunktionen = HelferKlasse
-        ini = iniKlasse
+        C_XML = XMLKlasse
         Crypt = CryptKlasse
         Dateipfad = iniPfad
         Callclient = Wclient
@@ -247,17 +247,14 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Public Function DynMenüfüllen(ByVal control As Office.IRibbonControl) As String
-        Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
         Dim IniParam As String
         Dim index As Integer
-
-
         Dim AnrName As String
         Dim j, i As Integer
         Dim Einträge(9) As String
         Dim Eintrag As String()
-        Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
+        Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
@@ -267,9 +264,9 @@ Imports Office = Microsoft.Office.Core
             Case Else
                 IniParam = vbNullString
         End Select
-        index = CInt(ini.Read(ListPath, IniParam, "Index", "0"))
+        index = CInt(C_XML.Read(IniParam, "Index", "0"))
         For i = 0 To 9
-            Einträge(i) = ini.Read(ListPath, IniParam, IniParam & "Eintrag " & i, "")
+            Einträge(i) = C_XML.Read(IniParam, IniParam & "Eintrag " & i, "")
         Next
         i = 1
         For j = index + 9 To index Step -1
@@ -301,20 +298,16 @@ Imports Office = Microsoft.Office.Core
     End Function
 
     Public Function DynMenüfüllenVIP(ByVal control As Office.IRibbonControl) As String
-        Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
 
-        Dim Anzahl As Integer = CInt(ini.Read(ListPath, "VIPListe", "Anzahl", "0"))
-
-
+        Dim Anzahl As Integer = CInt(C_XML.Read("VIPListe", "Anzahl", "0"))
         Dim AnrName As String
         Dim j, i As Integer
         Dim Einträge(Anzahl) As String
         Dim Eintrag As String()
         Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
-
         For i = 0 To Anzahl - 1
-            Einträge(i) = ini.Read(ListPath, "VIPListe", "VIPListeEintrag " & i, "")
+            Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag " & i, "")
         Next
         i = 1
         For j = 0 To Anzahl - 1
@@ -403,10 +396,10 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Public Function GetVisibleAnrMonFKT(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBUseAnrMon", "True") = "True", True, False))
+        Return CBool(IIf(C_XML.Read("Optionen", "CBUseAnrMon", "True") = "True", True, False))
     End Function
     Public Function GetEnabledJI(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBJournal", "False") = "True", True, False))
+        Return CBool(IIf(C_XML.Read("Optionen", "CBJournal", "False") = "True", True, False))
     End Function
     ' Ab Hier Rückrufe von Buttons
     Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
@@ -479,7 +472,7 @@ Imports Office = Microsoft.Office.Core
             If IsVIP(aktKontakt) Then
                 GetScreenTipVIP = "Entferne diesen Kontakt von der VIP-Liste."
             Else
-                If CLng(ini.Read(Dateipfad, "VIPListe", "Anzahl", "0")) >= 10 Then
+                If CLng(C_XML.Read("VIPListe", "Anzahl", "0")) >= 10 Then
                     GetScreenTipVIP = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
                 Else
                     GetScreenTipVIP = "Füge diesen Kontakt der VIP-Liste hinzu."
@@ -500,7 +493,7 @@ Imports Office = Microsoft.Office.Core
         Dim ListenPfad As String = HelferFunktionen.Dateipfade(Dateipfad, "Listen")
         Dim i As Integer = 0
         Do
-            Eintrag = Split(ini.Read(ListenPfad, "VIPListe", "VIPListeEintrag " & i, ";"), ";", , CompareMethod.Text)
+            Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag " & i, ";"), ";", , CompareMethod.Text)
             If Eintrag.Length > 2 Then IsVIP = (Eintrag(5) = KontaktID And Eintrag(4) = StoreID)
             i += 1
 #If OVer < 14 Then
@@ -512,14 +505,13 @@ Imports Office = Microsoft.Office.Core
     End Function
 
     Friend Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
-        Dim ListenPfad As String = HelferFunktionen.Dateipfade(Dateipfad, "Listen")
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
-        Dim Anzahl As Long = CLng(ini.Read(ListenPfad, "VIPListe", "Anzahl", "0"))
+        Dim Anzahl As Long = CLng(C_XML.Read("VIPListe", "Anzahl", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
         Dim StrArr() As String = {Anrufer, vbNullString, vbNullString, CStr(Anzahl), StoreID, KontaktID}
-        ini.Write(ListenPfad, "VIPListe", "VIPListeEintrag " & Anzahl, Join(StrArr, ";"))
-        ini.Write(ListenPfad, "VIPListe", "Anzahl", CStr(Anzahl + 1))
+        C_XML.Write("VIPListe", "VIPListeEintrag " & Anzahl, Join(StrArr, ";"))
+        C_XML.Write("VIPListe", "Anzahl", CStr(Anzahl + 1))
 #If OVer < 14 Then
         FillPopupItemsVIP()
 #End If
@@ -534,9 +526,8 @@ Imports Office = Microsoft.Office.Core
         Dim Einträge(9) As String
         Dim alle As Boolean = False
         Dim myArray As New ArrayList
-        Dim ListenPfad As String = HelferFunktionen.Dateipfade(Dateipfad, "Listen")
         Do
-            tempEintrag = ini.Read(ListenPfad, "VIPListe", "VIPListeEintrag " & i, "")
+            tempEintrag = C_XML.Read("VIPListe", "VIPListeEintrag " & i, "")
             If tempEintrag = "" Then
                 alle = True
             Else
@@ -547,16 +538,16 @@ Imports Office = Microsoft.Office.Core
         Loop Until alle
 
         i = 1
-        ini.Write(ListenPfad, "VIPListe", vbNullString, vbNullString)
+        C_XML.Write("VIPListe", vbNullString, vbNullString)
         For i = 1 To myArray.Count
             Eintrag = Split(CStr(myArray(i - 1)), ";", , CompareMethod.Text)
             If Not (Eintrag(5) = EntryID And Eintrag(4) = StoreID) Then
                 Eintrag(2) = CStr(j)
-                ini.Write(ListenPfad, "VIPListe", "VIPListeEintrag " & j, Join(Eintrag, ";"))
+                C_XML.Write("VIPListe", "VIPListeEintrag " & j, Join(Eintrag, ";"))
                 j += 1
             End If
         Next
-        ini.Write(ListenPfad, "VIPListe", "Anzahl", CStr(j))
+        C_XML.Write("VIPListe", "Anzahl", CStr(j))
 #If OVer < 14 Then
         FillPopupItemsVIP()
 #End If
@@ -1018,18 +1009,18 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Friend Sub ÖffneEinstellungen()
-        Dim formConfig As New formCfg(Dateipfad, Me, ini, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
+        Dim formConfig As New formCfg(Me, C_XML, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
         formConfig.ShowDialog()
-        Dateipfad = GetSetting("FritzBox", "Optionen", "TBini", "-1")
+        Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
     End Sub
 
     Friend Sub ÖffneJournalImport()
-        Dim formjournalimort As New formJournalimport(Dateipfad, AnrMon, HelferFunktionen, ini, True)
+        Dim formjournalimort As New formJournalimport(AnrMon, HelferFunktionen, C_XML, True)
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Dim ID As Integer = CInt(ini.Read(HelferFunktionen.Dateipfade(Dateipfad, "Listen"), "letzterAnrufer", "Letzter", CStr(0)))
-        Dim forman As New formAnrMon(Dateipfad, ID, False, ini, HelferFunktionen, AnrMon, OlI)
+        Dim ID As Integer = CInt(C_XML.Read("letzterAnrufer", "Letzter", CStr(0)))
+        Dim forman As New formAnrMon(ID, False, C_XML, HelferFunktionen, AnrMon, OlI)
     End Sub
 
     Friend Sub AnrMonNeustarten()

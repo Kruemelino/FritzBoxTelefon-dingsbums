@@ -3,15 +3,15 @@ Imports System.Text
 
 Public Class Helfer
 
-    Private C_ini As InI
+    Private C_XML As MyXML
     Private C_Crypt As Rijndael
 
     Private sDateiPfad As String
     Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-    Public Sub New(ByVal iniPfad As String, ByVal iniKlasse As InI, ByVal CryptKlasse As Rijndael)
+    Public Sub New(ByVal iniPfad As String, ByVal XMLKlasse As MyXML, ByVal CryptKlasse As Rijndael)
         sDateiPfad = iniPfad
-        C_ini = iniKlasse
+        C_XML = XMLKlasse
         C_Crypt = CryptKlasse
 
     End Sub
@@ -48,7 +48,6 @@ Public Class Helfer
         If Not o Is Nothing Then
             Try
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(o)
-                'Debug.Print("ReleaseComObject of " & o.ToString & " successful.")
             Catch ex As Exception
                 FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "NAR")
             Finally
@@ -81,7 +80,7 @@ Public Class Helfer
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
         Dim LogDatei As String = Dateipfade(sDateiPfad, "LogDatei")
-        If C_ini.Read(sDateiPfad, "Optionen", "CBLogFile", "False") = "True" Then
+        If C_XML.Read("Optionen", "CBLogFile", "False") = "True" Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
                     If .GetFileInfo(LogDatei).Length > 1048576 Then .DeleteFile(LogDatei)
@@ -129,7 +128,7 @@ Public Class Helfer
         Return Left(iniPfad, InStrRev(iniPfad, "\", , CompareMethod.Text)) & Datei
     End Function
 
-    Public Sub KeyChange(ByVal Dateipfad As String)
+    Public Sub KeyChange()
         ' Diese Funktion ändert den Zugang zu den verschlüsselten Passwort.
         Dim Passwort(1) As String
         Dim Zugang(1) As String
@@ -146,7 +145,7 @@ Public Class Helfer
         Knoten(0) = "Optionen"
         Knoten(1) = "Phoner"
         For j = 0 To 1
-            tempPasswort = C_ini.Read(Dateipfad, Knoten(j), CStr(Passwort(j)), "")
+            tempPasswort = C_XML.Read(Knoten(j), CStr(Passwort(j)), "")
             If Not Len(tempPasswort) = 0 Then
                 tempZugang = GetSetting("FritzBox", "Optionen", CStr(Zugang(j)), "-1")
                 If Not tempZugang = "-1" Then
@@ -157,7 +156,7 @@ Public Class Helfer
                     Next
                     tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
                     SaveSetting("Fritzbox", "Optionen", CStr(Zugang(j)), tempZugang)
-                    C_ini.Write(Dateipfad, Knoten(j), CStr(Passwort(j)), C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
+                    C_XML.Write(Knoten(j), CStr(Passwort(j)), C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
                 Else 'Für den Fall es exsistiert ein Passwort aber kein Entschlüsselungsschlüssel
                     Select Case j
                         Case 0
@@ -165,7 +164,7 @@ Public Class Helfer
                         Case 1
                             tempZugang = "Phoner"
                     End Select
-                    C_ini.Write(Dateipfad, Knoten(j), CStr(Passwort(j)), vbNullString)
+                    C_XML.Write(Knoten(j), CStr(Passwort(j)), vbNullString)
                     FBDB_MsgBox("Das Passwort der " & tempZugang & " kann nicht entschlüsselt werden. Es muss neu eingegeben werden.", MsgBoxStyle.Information, "KeyChange")
                 End If
             End If
@@ -209,10 +208,10 @@ Public Class Helfer
         Dim tempDurchwahl As String = String.Empty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
 
-        Dim Maske As String = C_ini.Read(sDateiPfad, "Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
-        Dim Gruppieren As Boolean = CBool(C_ini.Read(sDateiPfad, "Optionen", "CBTelNrGruppieren", "True"))
-        Dim intl As Boolean = CBool(C_ini.Read(sDateiPfad, "Optionen", "CBintl", "False"))
-        Dim eigeneLV As String = C_ini.Read(sDateiPfad, "Optionen", "TBLandesVW", "0049")
+        Dim Maske As String = C_XML.Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
+        Dim Gruppieren As Boolean = CBool(C_XML.Read("Optionen", "CBTelNrGruppieren", "True"))
+        Dim intl As Boolean = CBool(C_XML.Read("Optionen", "CBintl", "False"))
+        Dim eigeneLV As String = C_XML.Read("Optionen", "TBLandesVW", "0049")
 
 
         LandesVW = TelTeile(0)

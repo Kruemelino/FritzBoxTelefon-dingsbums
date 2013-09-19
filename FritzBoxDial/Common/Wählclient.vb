@@ -1,7 +1,6 @@
 ﻿Imports System.Drawing
 Public Class Wählclient
-    Private Dateipfad As String
-    Private ini As InI
+    Private C_XML As MyXML
     Private frmWählbox As formWählbox
     Private hf As Helfer
     Private KontaktFunktionen As Contacts
@@ -11,20 +10,17 @@ Public Class Wählclient
 
     Private PhonerFunktionen As PhonerInterface
 
-    Public Sub New(ByVal iniPfad As String, _
-                   ByVal iniKlasse As InI, _
+    Public Sub New(ByVal XMlKlasse As MyXML, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfaceKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal cFBox As FritzBox, _
                    ByVal PhonerKlasse As PhonerInterface)
-
-        Dateipfad = iniPfad
         hf = HelferKlasse
         KontaktFunktionen = KontaktKlasse
         GUI = InterfaceKlasse
-        ini = iniKlasse
+        C_XML = XMlKlasse
         OlI = OutlInter
         FBox = cFBox
         PhonerFunktionen = PhonerKlasse
@@ -56,7 +52,7 @@ Public Class Wählclient
                     Dim Absender As String
 
                     Absender = aktMail.SenderEmailAddress
-                    If ini.Read(Dateipfad, "Optionen", "CBKHO", "True") = "TRUE" Then
+                    If C_XML.Read("Optionen", "CBKHO", "True") = "TRUE" Then
                         olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
                         res = KontaktFunktionen.FindeKontakt("", Absender, "", olfolder, Nothing)
                     Else
@@ -161,9 +157,9 @@ Public Class Wählclient
         Dim LandesVW As String  ' eigene Landesvorwahl
         Dim row(2) As String
 
-        frmWählbox = New formWählbox(Dateipfad, Direktwahl, ini, hf, GUI, FBox, PhonerFunktionen)
+        frmWählbox = New formWählbox(Direktwahl, C_XML, hf, GUI, FBox, PhonerFunktionen)
 
-        LandesVW = ini.Read(Dateipfad, "Optionen", "TBLandesVW", "0049")
+        LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
         If oContact Is Nothing Then
             frmWählbox.Tag = "-1"
         Else
@@ -177,7 +173,7 @@ Public Class Wählclient
                 ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
                 If Not Left(hf.nurZiffern(TelNr, LandesVW), 1) = "0" And Not Left(hf.nurZiffern(TelNr, LandesVW), 2) = "11" Then _
-                    TelNr = ini.Read(Dateipfad, "Optionen", "TBVorwahl", "") & TelNr
+                    TelNr = C_XML.Read("Optionen", "TBVorwahl", "") & TelNr
 
                 If vName = String.Empty Then
                     frmWählbox.Text = "Anruf: " & TelNr
@@ -243,7 +239,7 @@ Public Class Wählclient
                     'Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                     '(Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
                     If Not Left(hf.nurZiffern(alleTelNr(i), LandesVW), 1) = "0" And Not Left(hf.nurZiffern(alleTelNr(i), LandesVW), 2) = "11" Then _
-                        alleTelNr(i) = ini.Read(Dateipfad, "Optionen", "TBVorwahl", "") & alleTelNr(i)
+                        alleTelNr(i) = C_XML.Read("Optionen", "TBVorwahl", "") & alleTelNr(i)
                     If hf.nurZiffern(alleTelNr(i), LandesVW) = hf.nurZiffern(TelNr, LandesVW) Then
                         row(1) = alleNrTypen(i) & " *"
                     Else
@@ -280,15 +276,14 @@ Public Class Wählclient
         Dim Telefonat As String() = Split(index, ";", , CompareMethod.Text)
         Select Case Telefonat(0)
             Case "Wwdh"
-                Eintrag = Split(ini.Read(hf.Dateipfade(Dateipfad, "Listen"), "Wwdh", "WwdhEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
+                Eintrag = Split(C_XML.Read("Wwdh", "WwdhEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case "AnrListe"
-                Eintrag = Split(ini.Read(hf.Dateipfade(Dateipfad, "Listen"), "AnrListe", "AnrListeEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
+                Eintrag = Split(C_XML.Read("AnrListe", "AnrListeEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case "VIPListe"
-                Eintrag = Split(ini.Read(hf.Dateipfade(Dateipfad, "Listen"), "VIPListe", "VIPListeEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
+                Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case Else
                 Exit Sub
         End Select
-
 
         If Not Left(Eintrag(5), 2) = "-1" And Not Left(Eintrag(4), 2) = "-1" Then
             Try
@@ -317,7 +312,7 @@ Public Class Wählclient
         Dim alleTelNr As String      ' alle Telefonnummern in der vCard
         Dim LandesVW As String      ' eigene Landesvorwahl
 
-        LandesVW = ini.Read(Dateipfad, "Optionen", "TBLandesVW", "0049")
+        LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
 
         If Left(KontaktDaten(0), 2) = "-1" Then
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
@@ -364,7 +359,7 @@ Public Class Wählclient
 
     Public Sub Rueckruf(ByVal ID As Integer) 'wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
         Dim oNS As Outlook.NameSpace = ThisAddIn.oApp.GetNamespace("MAPI")
-        Dim letzterAnrufer() As String = Split(ini.Read(hf.Dateipfade(Dateipfad, "Listen"), "letzterAnrufer", "letzterAnrufer " & ID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer " & ID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
         Dim KontaktID As String = letzterAnrufer(5)
         Dim StoreID As String = letzterAnrufer(4)
         Dim oContact As Outlook.ContactItem
@@ -442,7 +437,7 @@ Public Class Wählclient
             olNamespace = ThisAddIn.oApp.GetNamespace("MAPI")
             Dim olMail As Outlook.MailItem = CType(olAuswahl.CurrentItem, Outlook.MailItem)
             Absender = olMail.SenderEmailAddress
-            If ini.Read(Dateipfad, "Optionen", "CBKHO", "True") = "True" Then
+            If C_XML.Read("Optionen", "CBKHO", "True") = "True" Then
                 olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
                 res = KontaktFunktionen.FindeKontakt("", Absender, "", olfolder, Nothing)
             Else

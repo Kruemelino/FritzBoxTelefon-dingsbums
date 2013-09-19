@@ -1,6 +1,6 @@
 ﻿Public Class formInit
     ' Klassen
-    Private C_ini As InI
+    'Private C_ini As InI
     Private C_XML As MyXML
     Private C_Helfer As Helfer
     Private C_Crypt As Rijndael
@@ -30,11 +30,11 @@
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         ' Pfad zur Einstellungsdatei ermitteln
-        DateiPfad = GetSetting("FritzBox", "Optionen", "TBini", "-1")
-        If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.ini"
+        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
+        If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_ini = New InI(DateiPfad)
+        'C_ini = New InI(DateiPfad)
 
         ' Klasse zum IO-der INI-Struktiur erstellen
         C_XML = New MyXML(DateiPfad)
@@ -43,38 +43,38 @@
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
-        C_Helfer = New Helfer(DateiPfad, C_ini, C_Crypt)
+        C_Helfer = New Helfer(DateiPfad, C_XML, C_Crypt)
 
         ' Klasse für die Kontakte generieren
-        C_Kontakt = New Contacts(DateiPfad, C_ini, C_Helfer)
+        C_Kontakt = New Contacts(C_XML, C_Helfer)
 
         ' Klasse für die Rückwärtssuche generieren
-        C_RWS = New formRWSuche(DateiPfad, C_ini, C_Helfer, C_Kontakt)
+        C_RWS = New formRWSuche(DateiPfad, C_Helfer, C_Kontakt)
 
         ' Klasse für die OutlookInterface generieren
         C_OlI = New OutlookInterface(C_Kontakt, C_Helfer, DateiPfad)
 
         ' Klasse für das PhonerInterface generieren
-        C_Phoner = New PhonerInterface(DateiPfad, C_Helfer, C_ini, C_Crypt)
+        C_Phoner = New PhonerInterface(DateiPfad, C_Helfer, C_XML, C_Crypt)
 
         ' Klasse für das Journal-XML generieren
         C_JournalXML = New JournalXML(DateiPfad, C_Helfer)
 
         If PrüfeAddin() Then
-            UseAnrMon = CBool(C_ini.Read(DateiPfad, "Optionen", "CBUseAnrMon", "True"))
+            UseAnrMon = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
 
-            C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, emc)
+            C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
 
-            C_GUI = New GraphicalUserInterface(C_Helfer, C_ini, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
+            C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
-            C_WählClient = New Wählclient(DateiPfad, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
+            C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
-            C_AnrMon = New AnrufMonitor(DateiPfad, C_RWS, UseAnrMon, C_ini, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_JournalXML, C_FBox.GetFBAddr)
+            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_JournalXML, C_FBox.GetFBAddr)
 
             C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
 
             ThisAddIn.Dateipfad = DateiPfad
-            ThisAddIn.ini = C_ini
+            ThisAddIn.XML = C_XML
             ThisAddIn.Crypt = C_Crypt
             ThisAddIn.hf = C_Helfer
             ThisAddIn.KontaktFunktionen = C_Kontakt
@@ -88,8 +88,8 @@
             ThisAddIn.UseAnrMon = UseAnrMon
 
 
-            If CBool(C_ini.Read(DateiPfad, "Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_ini.Read(DateiPfad, "Optionen", "CBForceFBAddr", "False")) Then
-                Dim formjournalimort As New formJournalimport(DateiPfad, C_AnrMon, C_Helfer, C_ini, False)
+            If CBool(C_XML.Read("Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
+                Dim formjournalimort As New formJournalimport(C_AnrMon, C_Helfer, C_XML, False)
             End If
         End If
     End Sub
@@ -102,9 +102,9 @@
         Dim Rückgabe As Boolean = False
         Dim TMPStr(4) As String
 
-        TMPStr(0) = C_ini.Read(DateiPfad, "Optionen", "TBLandesVW", "-1")
-        TMPStr(1) = C_ini.Read(DateiPfad, "Optionen", "TBVorwahl", "-1")
-        TMPStr(3) = C_ini.Read(DateiPfad, "Optionen", "TBPasswort", "-1")
+        TMPStr(0) = C_XML.Read("Optionen", "TBLandesVW", "-1")
+        TMPStr(1) = C_XML.Read("Optionen", "TBVorwahl", "-1")
+        TMPStr(3) = C_XML.Read("Optionen", "TBPasswort", "-1")
         TMPStr(4) = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
 
         If C_Helfer.IsOneOf("-1", TMPStr) Then
@@ -124,7 +124,7 @@
         If C_Helfer.Ping(tmpstr) Then
             Me.TBFritzBoxAdr.Text = tmpstr
             If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
-                C_ini.Write(DateiPfad, "Optionen", "TBFBAdr", tmpstr)
+                C_XML.Write("Optionen", "TBFBAdr", tmpstr)
                 Me.TBFBPW.Enabled = True
                 Me.TBFBUser.Enabled = True
                 Me.LabelFBUser.Enabled = True
@@ -142,11 +142,11 @@
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
-        C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, emc)
-        C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBFBUser.Text)
-        C_ini.Write(DateiPfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+        C_XML.Write("Optionen", "TBBenutzer", Me.TBFBUser.Text)
+        C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-        C_Helfer.KeyChange(DateiPfad)
+        C_Helfer.KeyChange()
         SID = C_FBox.FBLogin(fw550)
         If Not SID = C_FBox.sDefaultSID Then
             Me.TBFBPW.Enabled = False
@@ -175,8 +175,8 @@
         Me.BtELeINLESEN.Text = "Bitte warten..."
         Me.BtELeINLESEN.Enabled = False
 
-        C_ini.Write(DateiPfad, "Optionen", "TBVorwahl", Me.TBVorwahl.Text)
-        C_ini.Write(DateiPfad, "Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text)
+        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text)
+        C_XML.Write("Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text)
         C_FBox.bRausschreiben = False
         C_FBox.FritzBoxDaten()
 
@@ -191,29 +191,15 @@
     End Sub
 
     Sub CLBtelnrAusfüllen()
-        Dim iniTelefonEinträge() As String = C_ini.ReadSection("Telefone")
-        Dim TelNrString As String = "Alle Telefonnummern"
-        Dim TelEintrag() As String
-        Dim CheckString(1) As String
-        For Each Eintrag In iniTelefonEinträge
-            TelEintrag = Split(Eintrag, "=", 2, CompareMethod.Text)
-            If Not TelEintrag.Length = 1 Then
-                Select Case True
-                    Case TelEintrag(0).Contains("SIP") And Not TelEintrag(0).Contains("SIPID") _
-                        Or TelEintrag(0).Contains("MSN") _
-                        Or TelEintrag(0).Contains("POTS")
-                        TelNrString += ";" & C_Helfer.OrtsVorwahlEntfernen(TelEintrag(1), Me.TBVorwahl.Text)
-                    Case TelEintrag(0).Contains("CLBTelNr")
-                        CheckString = Split(TelEintrag(1), ";", , CompareMethod.Text)
-                End Select
-            End If
-        Next
+        Dim TelNrString As String = "Alle Telefonnummern;" & C_XML.ReadTelNr("Telefone")
+        Dim CheckString() As String = Split(C_XML.Read("Telefone", "CLBTelNr", ";"), ";", , CompareMethod.Text)
+
         Dim res = From x In Split(TelNrString, ";", , CompareMethod.Text) Select x Distinct 'Doppelte entfernen
-        Dim res2 = From x In res Where Not x Like "" Select x ' Leere entfernen
+        res = (From x In res Where Not x Like "" Select x).ToArray ' Leere entfernen
         Me.CLBTelNr.Items.Clear()
         Dim alle As Boolean = True
 
-        For Each TelNr In res2
+        For Each TelNr In res
             Me.CLBTelNr.Items.Add(TelNr)
             If IsNumeric(TelNr) Then
                 If C_Helfer.IsOneOf(TelNr, CheckString) Then
@@ -264,7 +250,7 @@
         Next
         If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
 
-        C_ini.Write(DateiPfad, "Telefone", "CLBTelNr", checkstring)
+        C_XML.Write("Telefone", "CLBTelNr", checkstring)
         Me.LMessage.Text = "Fertig"
         Me.BSchließen.Enabled = True
     End Sub

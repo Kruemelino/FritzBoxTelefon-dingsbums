@@ -1,14 +1,12 @@
 ﻿Public Class Contacts
-    Private ini As InI
+    Private C_XML As MyXML
     Private hf As Helfer
-    Private DateiPfad As String
     ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
 
-    Public Sub New(ByVal IniPath As String, ByVal iniKlasse As InI, ByVal HelferKlasse As Helfer)
+    Public Sub New(ByVal XMLKlasse As MyXML, ByVal HelferKlasse As Helfer)
 
         ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
-        ini = iniKlasse
-        DateiPfad = IniPath
+        C_XML = XMLKlasse
         hf = HelferKlasse
     End Sub
 
@@ -17,7 +15,7 @@
                                  ByVal LandesVW As String, _
                                  ByVal Ordner As Outlook.MAPIFolder, _
                                  ByVal NamensRaum As Outlook.NameSpace) _
-                             As Outlook.ContactItem
+                                 As Outlook.ContactItem
 
         ' sucht in der Kontaktdatenbank nach der TelNr/Email
         ' Parameter:  TelNr (String):           Telefonnummer des zu Suchenden
@@ -56,7 +54,7 @@
                 sFilter = String.Concat("[Email1Address] = """, Absender, """ OR [Email2Address] = """, Absender, """ OR [Email3Address] = """, Absender, """")
                 gefunden = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
             Else
-                If CBool(ini.Read(DateiPfad, "Optionen", "CBIndex", "True")) Then
+                If CBool(C_XML.Read("Optionen", "CBIndex", "True")) Then
                     Dim Personen As Outlook.Items = Ordner.Items
                     ' In Outlook 2003 funktioniert die Verkettung mit OR nicht.
 #If OVer = 11 Then
@@ -121,7 +119,7 @@
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
-                If Not CBool(ini.Read(DateiPfad, "Optionen", "CBIndexAus", "False")) Then
+                If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
                     IndiziereKontakt(Kontakt, True)
                 End If
                 .Save()
@@ -186,8 +184,8 @@
                             End If
 
                         End If
-                        ini.Write(DateiPfad, "Journal", "JournalID", .EntryID)
-                        ini.Write(DateiPfad, "Journal", "JournalStoreID", CType(.Parent, Outlook.MAPIFolder).StoreID)
+                        C_XML.Write("Journal", "JournalID", .EntryID)
+                        C_XML.Write("Journal", "JournalStoreID", CType(.Parent, Outlook.MAPIFolder).StoreID)
                         With Kontakt
                             If Not hf.nurZiffern(.BusinessTelephoneNumber, "0049") = hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
                                 .Business2TelephoneNumber = hf.formatTelNr(TelNr)
@@ -233,8 +231,8 @@
     End Function
 
     Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
-        If Not CBool(ini.Read(DateiPfad, "Optionen", "CBIndexAus", "False")) Then
-            Dim LandesVW As String = ini.Read(DateiPfad, "Optionen", "TBLandesVW", "0049")
+        If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
+            Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")
             Dim alleTE(16) As String  ' alle TelNr/Email eines Kontakts
             Dim speichern As Boolean = False
             Dim tempTelNr As String
@@ -279,7 +277,7 @@
 
     Friend Sub DeIndizierungKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
         Dim UserEigenschaft As Outlook.UserProperty
-        If Not CBool(ini.Read(DateiPfad, "Optionen", "CBIndexAus", "False")) Then
+        If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
             With Kontakt.UserProperties
                 For Each UserProperty In UserProperties
                     Try

@@ -2,7 +2,7 @@
 Imports System.Net.Sockets
 Imports System.IO
 Public Class PhonerInterface
-    Private ini As InI
+    Private C_XML As MyXML
     Private hf As Helfer
     Private Crypt As Rijndael
 
@@ -12,11 +12,11 @@ Public Class PhonerInterface
 
     Public Sub New(ByVal iniPfad As String, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal iniKlasse As InI, _
+                   ByVal XMLKlasse As MyXML, _
                    ByVal cryptKlasse As Rijndael)
 
         Crypt = cryptKlasse
-        ini = iniKlasse
+        C_XML = XMLKlasse
         Dateipfad = iniPfad
         hf = HelferKlasse
     End Sub
@@ -70,7 +70,7 @@ Public Class PhonerInterface
 
     Public Function DialPhoner(ByVal dialCode As String) As String
         If PhonerReady() Then
-            Dim PhonerPasswort As String = ini.Read(Dateipfad, "Phoner", "PhonerPasswort", "-1")
+            Dim PhonerPasswort As String = C_XML.Read("Phoner", "PhonerPasswort", "-1")
             Dim ZugangPasswortPhoner As String = GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")
             If Not PhonerPasswort = "-1" Or Not ZugangPasswortPhoner = "-1" Then
                 Dim Stream As NetworkStream
@@ -114,7 +114,7 @@ Public Class PhonerInterface
                 tcpClient.Close()
                 tcpClient = Nothing
                 Stream = Nothing
-                hf.KeyChange(Dateipfad)
+                hf.KeyChange()
             Else
                 DialPhoner = "Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
             End If

@@ -2,7 +2,6 @@ Imports System.Windows.Forms
 Public Class formRWSuche
     Private hf As Helfer
     Private KontaktFunktionen As Contacts
-    Private ini As InI
     Private DateiPfad As String
     Private HTMLFehler As ErrObject
 
@@ -14,13 +13,11 @@ Public Class formRWSuche
         RWSAlle = 4
     End Enum
     Public Sub New(ByVal inipfad As String, _
-                   ByVal iniKlasse As InI, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts)
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         DateiPfad = inipfad
-        ini = iniKlasse
         hf = HelferKlasse
         KontaktFunktionen = KontaktKlasse
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.

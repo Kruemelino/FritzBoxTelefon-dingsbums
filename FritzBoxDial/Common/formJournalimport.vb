@@ -5,8 +5,7 @@ Public Class formJournalimport
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
     Private Delegate Sub DelgSetProgressbar()
     Private Delegate Sub DelgSetButtonHerunterladen()
-    Private ini As InI
-    Private DateiPfad As String
+    Private C_XML As MyXML
     Private CSVArg As Argument
     Private AnrMon As AnrufMonitor
     Private hf As Helfer
@@ -21,17 +20,15 @@ Public Class formJournalimport
         Dim EndZeit As Date
     End Structure
 
-    Public Sub New(ByVal FilePath As String, _
-                   ByVal AnrMonKlasse As AnrufMonitor, _
+    Public Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal iniKlasse As InI, _
+                   ByVal XMLKlasse As MyXML, _
                    ByVal FormShow As Boolean)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        DateiPfad = FilePath
-        ini = iniKlasse
+        C_XML = XMLKlasse
         hf = HelferKlasse
         AnrMon = AnrMonKlasse
 
@@ -46,7 +43,7 @@ Public Class formJournalimport
     End Sub
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim StartZeit As Date
-        StartZeit = CDate(ini.Read(DateiPfad, "Journal", "SchließZeit", CStr(System.DateTime.Now)))
+        StartZeit = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
         Me.StartDatum.Value = StartZeit
         Me.StartZeit.Value = StartZeit
         Me.EndDatum.Value = System.DateTime.Now
@@ -69,9 +66,8 @@ Public Class formJournalimport
             Me.ButtonHerunterladen.Enabled = True
         End If
 
-
         With Übergabe
-            .StartZeit = CDate(ini.Read(DateiPfad, "Journal", "SchließZeit", CStr(System.DateTime.Now)))
+            .StartZeit = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
             .EndZeit = System.DateTime.Now
         End With
         If Not anzeigen Then
@@ -112,8 +108,8 @@ Public Class formJournalimport
             Startzeit = .StartZeit
             Endzeit = .EndZeit
         End With
-        Dim Vorwahl As String = ini.Read(DateiPfad, "Optionen", "TBVorwahl", "")
-        Dim checkstring As String = ini.Read(DateiPfad, "Telefone", "CLBTelNr", "-1") ' Enthällt alle MSN, auf die reakiert werden soll
+        Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
+        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1") ' Enthällt alle MSN, auf die reakiert werden soll
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
         Dim Anzahl As Integer = -1 ' Anzahl der zu importierenden Telefonate
@@ -172,7 +168,7 @@ Public Class formJournalimport
 
                         Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
                         ' Bei analogen Anschlüssen steht "Festnetz" in MSN
-                        If MSN = "Festnetz" Then MSN = ini.Read(DateiPfad, "Telefone", "POTS", "-1")
+                        If MSN = "Festnetz" Then MSN = C_XML.Read("Telefone", "POTS", "-1")
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
@@ -182,7 +178,7 @@ Public Class formJournalimport
                             NSN = -1
 
                             For Each NebenstellenNr In Nebenstellen
-                                TelName = Split(ini.Read(DateiPfad, "Telefone", CStr(NebenstellenNr), "-1;;"), ";", , CompareMethod.Text)
+                                TelName = Split(C_XML.Read("Telefone", CStr(NebenstellenNr), "-1;;"), ";", , CompareMethod.Text)
                                 If Not Nebenstelle = vbNullString Then
                                     If TelName(2) = Nebenstelle Then NSN = CInt(NebenstellenNr)
                                 Else
@@ -218,7 +214,7 @@ Public Class formJournalimport
                     Next
                 End If
                 ' Registry zurückschreiben
-                ini.Write(DateiPfad, "Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)))
+                C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)))
                 hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
                 hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")

@@ -130,7 +130,7 @@ Partial Class formCfg
         Me.Frame2 = New System.Windows.Forms.GroupBox()
         Me.ButtonIndexDateiöffnen = New System.Windows.Forms.Button()
         Me.ComboBoxRWS = New System.Windows.Forms.ComboBox()
-        Me.CBRückwärtssuche = New System.Windows.Forms.CheckBox()
+        Me.CBRueckwaertssuche = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.CBAnrMonContactImage = New System.Windows.Forms.CheckBox()
@@ -1332,7 +1332,7 @@ Partial Class formCfg
         Me.Frame2.Controls.Add(Me.CBRWSIndex)
         Me.Frame2.Controls.Add(Me.ComboBoxRWS)
         Me.Frame2.Controls.Add(Me.CBKErstellen)
-        Me.Frame2.Controls.Add(Me.CBRückwärtssuche)
+        Me.Frame2.Controls.Add(Me.CBRueckwaertssuche)
         Me.Frame2.Location = New System.Drawing.Point(3, 64)
         Me.Frame2.Name = "Frame2"
         Me.Frame2.Size = New System.Drawing.Size(579, 89)
@@ -1358,15 +1358,15 @@ Partial Class formCfg
         Me.ComboBoxRWS.Size = New System.Drawing.Size(121, 21)
         Me.ComboBoxRWS.TabIndex = 1
         '
-        'CBRückwärtssuche
+        'CBRueckwaertssuche
         '
-        Me.CBRückwärtssuche.AutoSize = True
-        Me.CBRückwärtssuche.Location = New System.Drawing.Point(6, 19)
-        Me.CBRückwärtssuche.Name = "CBRückwärtssuche"
-        Me.CBRückwärtssuche.Size = New System.Drawing.Size(109, 17)
-        Me.CBRückwärtssuche.TabIndex = 0
-        Me.CBRückwärtssuche.Text = "Rückwärtssuche:"
-        Me.CBRückwärtssuche.UseVisualStyleBackColor = True
+        Me.CBRueckwaertssuche.AutoSize = True
+        Me.CBRueckwaertssuche.Location = New System.Drawing.Point(6, 19)
+        Me.CBRueckwaertssuche.Name = "CBRueckwaertssuche"
+        Me.CBRueckwaertssuche.Size = New System.Drawing.Size(109, 17)
+        Me.CBRueckwaertssuche.TabIndex = 0
+        Me.CBRueckwaertssuche.Text = "Rückwärtssuche:"
+        Me.CBRueckwaertssuche.UseVisualStyleBackColor = True
         '
         'PAnrufmonitor
         '
@@ -2163,7 +2163,7 @@ Partial Class formCfg
         Me.PTelefonDatei.PerformLayout()
         Me.ResumeLayout(False)
 
-End Sub
+    End Sub
     Friend WithEvents ButtonZuruecksetzen As System.Windows.Forms.Button
     Friend WithEvents ButtonAbbruch As System.Windows.Forms.Button
     Friend WithEvents ButtonÜbernehmen As System.Windows.Forms.Button
@@ -2208,7 +2208,7 @@ End Sub
     Friend WithEvents CBRWSIndex As System.Windows.Forms.CheckBox
     Friend WithEvents ComboBoxRWS As System.Windows.Forms.ComboBox
     Friend WithEvents CBKErstellen As System.Windows.Forms.CheckBox
-    Friend WithEvents CBRückwärtssuche As System.Windows.Forms.CheckBox
+    Friend WithEvents CBRueckwaertssuche As System.Windows.Forms.CheckBox
     Friend WithEvents PAnrufmonitor As System.Windows.Forms.TabPage
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents CBAnrMonContactImage As System.Windows.Forms.CheckBox

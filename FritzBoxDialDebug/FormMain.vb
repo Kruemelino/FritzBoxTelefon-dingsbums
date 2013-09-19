@@ -1,7 +1,7 @@
 ﻿Imports System.Text
 
 Public Class FormMain
-    Private C_ini As InI
+    Private C_XML As MyXML
     Private C_Helfer As Helfer
     Private C_Crypt As Rijndael
     Private C_FBox As FritzBox
@@ -17,32 +17,32 @@ Public Class FormMain
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-        DateiPfad = GetSetting("FritzBox", "Optionen", "TBini", "-1")
-        If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.ini"
+        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
+        If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_ini = New InI(DateiPfad)
+        C_XML = New MyXML(DateiPfad)
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
-        C_Helfer = New Helfer(DateiPfad, C_ini, C_Crypt)
+        C_Helfer = New Helfer(DateiPfad, C_XML, C_Crypt)
 
-        C_FBox = New FritzBox(DateiPfad, C_ini, C_Helfer, C_Crypt, False, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         'MsgBox("Hello World")
 
         Dim Passwort As String
 
-        Me.TBLandesVW.Text = C_ini.Read("Optionen", "TBLandesVW", "0049")
+        Me.TBLandesVW.Text = C_XML.Read("Optionen", "TBLandesVW", "0049")
         'Me.TBFBAdr.Text = C_ini.Read("Optionen", "TBFBAdr", "fritz.box")
-        Me.TBBenutzer.Text = C_ini.Read("Optionen", "TBBenutzer", vbNullString)
-        Passwort = C_ini.Read("Optionen", "TBPasswort", "")
+        Me.TBBenutzer.Text = C_XML.Read("Optionen", "TBBenutzer", vbNullString)
+        Passwort = C_XML.Read("Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
             Me.TBPasswort.Text = "1234"
         End If
-        Me.TBVorwahl.Text = C_ini.Read("Optionen", "TBVorwahl", "")
+        Me.TBVorwahl.Text = C_XML.Read("Optionen", "TBVorwahl", "")
     End Sub
 
     Public Function AddLine(ByVal Zeile As String) As Boolean
@@ -70,14 +70,14 @@ Public Class FormMain
     End Sub
 
     Private Sub BStart_Click(sender As Object, e As EventArgs) Handles BStart.Click
-        C_ini.Write(DateiPfad, "Optionen", "TBLandesVW", Me.TBLandesVW.Text)
-        C_ini.Write(DateiPfad, "Optionen", "TBBenutzer", Me.TBBenutzer.Text)
+        C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text)
+        C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text)
         If Not Me.TBPasswort.Text = "1234" Then
-            C_ini.Write(DateiPfad, "Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"))
+            C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"))
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-            C_Helfer.KeyChange(DateiPfad)
+            C_Helfer.KeyChange()
         End If
-        C_ini.Write(DateiPfad, "Optionen", "TBVorwahl", Me.TBVorwahl.Text)
+        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text)
 
         C_FBox.bRausschreiben = True
         C_FBox.FritzBoxDaten()
