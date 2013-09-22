@@ -236,7 +236,7 @@ Public Class AnrufMonitor
 
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)
-        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer " & ID, CStr(System.DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & ID, CStr(System.DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
         AnrMonList.Add(New formAnrMon(CInt(ID), True, C_XML, hf, Me, OlI))
         Dim a As Integer
         Do
@@ -398,7 +398,7 @@ Public Class AnrufMonitor
             MSN = CStr(FBStatus.GetValue(4))
             Dim letzterAnrufer() As String = {CStr(FBStatus.GetValue(0)), Anrufer, TelNr, MSN, StoreID, KontaktID}
             ' Der letzterAnrufer enthält in dieser Reihenfolge Uhrzeit, Anrufername, Telefonnummer, MSN, StoreID, KontaktID
-            C_XML.Write("letzterAnrufer", "letzterAnrufer " & ID, Join(letzterAnrufer, ";"))
+            C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"))
             ' Daten für Anzeige im Anrurfmonitor speichern
             C_XML.Write("letzterAnrufer", "Letzter", CStr(ID))
             If AnrMonAnzeigen Then
@@ -465,14 +465,14 @@ Public Class AnrufMonitor
                 letzterAnrufer(2) = TelNr
                 letzterAnrufer(5) = KontaktID
                 letzterAnrufer(4) = StoreID
-                C_XML.Write("letzterAnrufer", "letzterAnrufer " & ID, Join(letzterAnrufer, ";"))
+                C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"))
 
                 ' Daten im Menü für Rückruf speichern
                 index = CLng(C_XML.Read("AnrListe", "Index", "0"))
 
                 If Not Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Str((index + 9) Mod 10), ";"), ";", 5, CompareMethod.Text)(1) = TelNr Then
                     Dim StrArr() As String = {Anrufer, TelNr, FBStatus(0), CStr((index + 1) Mod 10), StoreID, KontaktID}
-                    C_XML.Write("AnrListe", "AnrListeEintrag " & index, Join(StrArr, ";"))
+                    C_XML.Write("AnrListe", "AnrListeEintrag" & index, Join(StrArr, ";"))
                     C_XML.Write("AnrListe", "Index", CStr((index + 1) Mod 10))
 #If OVer < 14 Then
                     If C_XML.Read( "Optionen", "CBSymbAnrListe", "False") = "True" Then GUI.FillPopupItems("AnrListe")

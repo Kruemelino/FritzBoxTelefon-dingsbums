@@ -8,7 +8,7 @@ Public Class JournalXML
     Public Sub New(ByVal FilePfad As String, ByVal Helferklasse As Helfer)
         Helfer = Helferklasse
         InIPfad = FilePfad
-        PFAD = Helfer.Dateipfade(InIPfad, "JournalXML")
+        PFAD = Helfer.Dateipfade("JournalXML")
 
         With My.Computer.FileSystem
             If .FileExists(PFAD) Then .DeleteFile(PFAD)

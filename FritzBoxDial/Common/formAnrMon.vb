@@ -60,7 +60,7 @@ Public Class formAnrMon
     Sub AnrMonausfüllen()
         ' Diese Funktion nimmt Daten aus der Registry und öffnet 'formAnMon'.
         Dim AnrName As String              ' Name des Anrufers
-        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer " & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
 
         AnrName = letzterAnrufer(1)
         TelNr = letzterAnrufer(2)

@@ -307,7 +307,7 @@ Imports Office = Microsoft.Office.Core
         Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         For i = 0 To Anzahl - 1
-            Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag " & i, "")
+            Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
         Next
         i = 1
         For j = 0 To Anzahl - 1
@@ -490,10 +490,9 @@ Imports Office = Microsoft.Office.Core
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
         Dim Eintrag() As String
-        Dim ListenPfad As String = HelferFunktionen.Dateipfade(Dateipfad, "Listen")
         Dim i As Integer = 0
         Do
-            Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag " & i, ";"), ";", , CompareMethod.Text)
+            Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag" & i, ";"), ";", , CompareMethod.Text)
             If Eintrag.Length > 2 Then IsVIP = (Eintrag(5) = KontaktID And Eintrag(4) = StoreID)
             i += 1
 #If OVer < 14 Then
@@ -510,7 +509,7 @@ Imports Office = Microsoft.Office.Core
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
         Dim StrArr() As String = {Anrufer, vbNullString, vbNullString, CStr(Anzahl), StoreID, KontaktID}
-        C_XML.Write("VIPListe", "VIPListeEintrag " & Anzahl, Join(StrArr, ";"))
+        C_XML.Write("VIPListe", "VIPListeEintrag" & Anzahl, Join(StrArr, ";"))
         C_XML.Write("VIPListe", "Anzahl", CStr(Anzahl + 1))
 #If OVer < 14 Then
         FillPopupItemsVIP()
@@ -527,7 +526,7 @@ Imports Office = Microsoft.Office.Core
         Dim alle As Boolean = False
         Dim myArray As New ArrayList
         Do
-            tempEintrag = C_XML.Read("VIPListe", "VIPListeEintrag " & i, "")
+            tempEintrag = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
             If tempEintrag = "" Then
                 alle = True
             Else
@@ -543,7 +542,7 @@ Imports Office = Microsoft.Office.Core
             Eintrag = Split(CStr(myArray(i - 1)), ";", , CompareMethod.Text)
             If Not (Eintrag(5) = EntryID And Eintrag(4) = StoreID) Then
                 Eintrag(2) = CStr(j)
-                C_XML.Write("VIPListe", "VIPListeEintrag " & j, Join(Eintrag, ";"))
+                C_XML.Write("VIPListe", "VIPListeEintrag" & j, Join(Eintrag, ";"))
                 j += 1
             End If
         Next
@@ -735,7 +734,7 @@ Imports Office = Microsoft.Office.Core
         Dim Eintrag As String()
 
         For i = 0 To 9
-            Einträge(i) = ini.Read(ListPath, "VIPListe", "VIPListeEintrag " & i, "")
+            Einträge(i) = ini.Read(ListPath, "VIPListe", "VIPListeEintrag" & i, "")
         Next
         i = 1
         For j = 0 To 9

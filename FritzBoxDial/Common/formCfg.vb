@@ -165,7 +165,7 @@ Public Class formCfg
         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
-        'FillLogTB()
+        FillLogTB()
 
         'Phoner
         Dim PhonerVerfuegbar As Boolean = CBool(C_XML.Read("Phoner", "PhonerVerfügbar", "False"))
@@ -245,9 +245,7 @@ Public Class formCfg
             End With
         End If
 
-        If C_XML.Read("Statistik", "ResetZeit", "-1") = "-1" Then
-            C_XML.Write("Statistik", "ResetZeit", CStr(System.DateTime.Now))
-        End If
+        If C_XML.Read("Statistik", "ResetZeit", "-1") = "-1" Then C_XML.Write("Statistik", "ResetZeit", CStr(System.DateTime.Now))
         Me.TBAnderes.Text = C_XML.Read("Statistik", "Verpasst", "0") & " verpasste Telefonate" & vbCrLf
         Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.Read("Statistik", "Nichterfolgreich", "0") & " nicht erfolgreiche Telefonate" & vbCrLf
         Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.Read("Statistik", "Kontakt", "0") & " erstellte Kontakte" & vbCrLf
@@ -429,7 +427,7 @@ Public Class formCfg
 
     Private Function AcceptOnlyNumeric(ByVal sTxt As String) As String
         If sTxt = String.Empty Then Return String.Empty
-        If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then ''''''''''''''''' prüfen, ob die Funktion auch richtig auf Nummern überprüft!!
+        If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then
             Return Mid(sTxt, 1, Len(sTxt) - 1)
         End If
         Return sTxt
@@ -588,45 +586,13 @@ Public Class formCfg
         Speichern()
     End Sub
 
-    'Private Sub BINIImport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BINIImport.Click
-    '    'Dim DateiPfad As String = String.Empty
-    '    Dim fDialg As New System.Windows.Forms.OpenFileDialog
-    '    fDialg.Filter = "ini-Dateien (*.ini)| *.ini"
-    '    fDialg.Multiselect = False
-    '    fDialg.Title = "Fritz!Box Ini-Datei auswählen"
-    '    fDialg.FilterIndex = 1
-    '    fDialg.RestoreDirectory = True
-    '    If fDialg.ShowDialog = Windows.Forms.DialogResult.OK Then
-    '        Dateipfad = fDialg.FileName
-    '        If Not Len(Dateipfad) = 0 Then
-    '            If Not C_XML.Read(Dateipfad, "Optionen", "TBVorwahl", "-1") = "-1" Or _
-    '                    C_XML.Read(Dateipfad, "Optionen", "TBFBAdr", "-1") = "-1" Then
-    '                SaveSetting("FritzBox", "Optionen", "TBini", Dateipfad)
-    '                Ausfüllen()
-    '                C_Helfer.FBDB_MsgBox("Nach dem Import der Einstellungsdatei wird ein Neustart von Outlook empfohlen.", MsgBoxStyle.Information, "BINIImport")
-    '            Else
-    '                C_Helfer.FBDB_MsgBox("Ungültige Einstellungsdatei! Der Import wird sicherheitshalber abgebrochen.", MsgBoxStyle.Critical, "BINIImport")
-    '            End If
-    '        End If
-    '    End If
-    '    fDialg = Nothing
-    'End Sub
+    Private Sub ButtonXML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonXML.Click
+        System.Diagnostics.Process.Start(C_XML.GetXMLDateiPfad)
+    End Sub
 
-    'Private Sub ButtonINI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonINI.Click
-    '    System.Diagnostics.Process.Start(Dateipfad)
-    'End Sub
-
-    'Private Sub ButtonIndexDateiöffnen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonIndexDateiöffnen.Click
-    '    System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "KontaktIndex"))
-    'End Sub
-
-    'Private Sub ButtonLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    '    System.Diagnostics.Process.Start(C_Helfer.Dateipfade("LogDatei"))
-    'End Sub
-
-    'Private Sub ButtonListen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonListen.Click
-    '    System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "Listen"))
-    'End Sub
+    Private Sub ButtonLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        System.Diagnostics.Process.Start(C_Helfer.Dateipfade("LogDatei"))
+    End Sub
 
     Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked, LinkForum.LinkClicked, LinkEmail.LinkClicked, LinkLogFile.LinkClicked
 
@@ -638,7 +604,7 @@ Public Class formCfg
         ElseIf sender Is Me.LinkHomepage Then
             System.Diagnostics.Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
         ElseIf sender Is Me.LinkLogFile Then
-            'System.Diagnostics.Process.Start(C_Helfer.Dateipfade(Dateipfad, "LogDatei"))
+            System.Diagnostics.Process.Start(C_Helfer.Dateipfade("LogDatei"))
         End If
 
     End Sub
@@ -806,6 +772,7 @@ Public Class formCfg
     Private Sub TBTelNrMaske_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles TBTelNrMaske.Leave
         PrüfeMaske()
     End Sub
+
     Private Sub CBLogFile_CheckedChanged(sender As Object, e As EventArgs) Handles CBLogFile.CheckedChanged
         Me.GBLogging.Enabled = Me.CBLogFile.Checked
     End Sub
@@ -1195,16 +1162,16 @@ Public Class formCfg
 #End Region
 
 #Region "Logging"
-    'Sub FillLogTB()
-    '    'Dim LogDatei As String = C_Helfer.Dateipfade(Dateipfad, "LogDatei")
+    Sub FillLogTB()
+        Dim LogDatei As String = C_Helfer.Dateipfade("LogDatei")
 
-    '    If C_XML.Read("Optionen", "CBLogFile", "False") = "True" Then
-    '        If My.Computer.FileSystem.FileExists(LogDatei) Then
-    '            Me.TBLogging.Text = My.Computer.FileSystem.OpenTextFileReader(LogDatei).ReadToEnd
-    '        End If
-    '    End If
-    '    Me.LinkLogFile.Text = LogDatei
-    'End Sub
+        If C_XML.Read("Optionen", "CBLogFile", "False") = "True" Then
+            If My.Computer.FileSystem.FileExists(LogDatei) Then
+                Me.TBLogging.Text = My.Computer.FileSystem.OpenTextFileReader(LogDatei).ReadToEnd
+            End If
+        End If
+        Me.LinkLogFile.Text = LogDatei
+    End Sub
 
     Private Sub FBDB_MP_TabIndexChanged(sender As Object, e As EventArgs) Handles FBDB_MP.SelectedIndexChanged
         Me.Update()

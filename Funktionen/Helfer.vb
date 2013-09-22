@@ -79,7 +79,7 @@ Public Class Helfer
     End Function
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
-        Dim LogDatei As String = Dateipfade(sDateiPfad, "LogDatei")
+        Dim LogDatei As String = Dateipfade("LogDatei")
         If C_XML.Read("Optionen", "CBLogFile", "False") = "True" Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
@@ -110,14 +110,12 @@ Public Class Helfer
         Return MsgBox(Meldung, Style, "Fritz!Box Telefon-Dingsbums")
     End Function
 
-    Public Function Dateipfade(ByVal iniPfad As String, ByVal Datei As String) As String
+    Public Function Dateipfade(ByVal Datei As String) As String
+        Dim XMLDateiPfad As String = C_XML.GetXMLDateiPfad
+
         Select Case Datei
-            Case "KontaktIndex"
-                Datei = "KontaktIndex.ini"
             Case "LogDatei"
                 Datei = "FBDB.log"
-            Case "Listen"
-                Datei = "Listen.ini"
             Case "AnrListe"
                 Datei = "AnrListe.csv"
             Case "JournalXML"
@@ -125,7 +123,8 @@ Public Class Helfer
             Case "FritzOutlookXML"
                 Datei = "FritzOutlook.xml"
         End Select
-        Return Left(iniPfad, InStrRev(iniPfad, "\", , CompareMethod.Text)) & Datei
+
+        Return Left(XMLDateiPfad, InStrRev(XMLDateiPfad, "\", , CompareMethod.Text)) & Datei
     End Function
 
     Public Sub KeyChange()

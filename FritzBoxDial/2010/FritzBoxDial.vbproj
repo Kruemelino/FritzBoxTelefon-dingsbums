@@ -356,7 +356,9 @@
     <EmbeddedResource Include="..\Common\Ressources\Bild5.gif" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml" />
+    <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml" />
     <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml" />
     <EmbeddedResource Include="..\Common\Ressources\RibbonMailRead.xml">

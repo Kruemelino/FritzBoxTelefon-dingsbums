@@ -52,7 +52,7 @@ Public Class formWählbox
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie C_XMLtialisierungen nach dem C_XMLtializeComponent()-Aufruf hinzu.
-        C_XML = C_XML
+        C_XML = XMLKlasse
         hf = HelferKlasse
         FBox = FritzBoxKlasse
 

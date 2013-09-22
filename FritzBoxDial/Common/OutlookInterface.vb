@@ -178,7 +178,7 @@ Public Class OutlookInterface
                     .Attachments.Add(tmpFile)
                     .Attachments.Add(Dateipfad)
                     Try
-                        .Attachments.Add(hf.Dateipfade(Dateipfad, "LogDatei"))
+                        .Attachments.Add(hf.Dateipfade("LogDatei"))
                     Catch ex As Exception
                         .Body = vbNewLine & "Log wird nicht geschrieben."
                     End Try

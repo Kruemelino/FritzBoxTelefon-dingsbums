@@ -29,7 +29,6 @@ Partial Class formCfg
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
         Me.ButtonOK = New System.Windows.Forms.Button()
         Me.ToolTipFBDBConfig = New System.Windows.Forms.ToolTip(Me.components)
-        Me.ButtonListen = New System.Windows.Forms.Button()
         Me.CBKErstellen = New System.Windows.Forms.CheckBox()
         Me.CBRWSIndex = New System.Windows.Forms.CheckBox()
         Me.CBKHO = New System.Windows.Forms.CheckBox()
@@ -104,8 +103,7 @@ Partial Class formCfg
         Me.PWartung = New System.Windows.Forms.TabPage()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.CDWJournal = New System.Windows.Forms.GroupBox()
-        Me.BINIImport = New System.Windows.Forms.Button()
-        Me.ButtonINI = New System.Windows.Forms.Button()
+        Me.ButtonXML = New System.Windows.Forms.Button()
         Me.ButtonBereinigung = New System.Windows.Forms.Button()
         Me.CBWletzterAnrufer = New System.Windows.Forms.CheckBox()
         Me.CBWStatistik = New System.Windows.Forms.CheckBox()
@@ -277,16 +275,6 @@ Partial Class formCfg
         Me.ToolTipFBDBConfig.ReshowDelay = 100
         Me.ToolTipFBDBConfig.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         Me.ToolTipFBDBConfig.ToolTipTitle = "Erläuterung:"
-        '
-        'ButtonListen
-        '
-        Me.ButtonListen.Location = New System.Drawing.Point(466, 111)
-        Me.ButtonListen.Name = "ButtonListen"
-        Me.ButtonListen.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonListen.TabIndex = 10
-        Me.ButtonListen.Text = "Anruflistendatei öffnen"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonListen, "In dieser Datei werden die Rückruf- und die Wahlwiederholungsliste gespeichert")
-        Me.ButtonListen.UseVisualStyleBackColor = True
         '
         'CBKErstellen
         '
@@ -1069,9 +1057,7 @@ Partial Class formCfg
         '
         'CDWJournal
         '
-        Me.CDWJournal.Controls.Add(Me.BINIImport)
-        Me.CDWJournal.Controls.Add(Me.ButtonListen)
-        Me.CDWJournal.Controls.Add(Me.ButtonINI)
+        Me.CDWJournal.Controls.Add(Me.ButtonXML)
         Me.CDWJournal.Controls.Add(Me.ButtonBereinigung)
         Me.CDWJournal.Controls.Add(Me.CBWletzterAnrufer)
         Me.CDWJournal.Controls.Add(Me.CBWStatistik)
@@ -1089,23 +1075,14 @@ Partial Class formCfg
         Me.CDWJournal.TabStop = False
         Me.CDWJournal.Text = "Wartung"
         '
-        'BINIImport
+        'ButtonXML
         '
-        Me.BINIImport.Location = New System.Drawing.Point(466, 155)
-        Me.BINIImport.Name = "BINIImport"
-        Me.BINIImport.Size = New System.Drawing.Size(105, 42)
-        Me.BINIImport.TabIndex = 11
-        Me.BINIImport.Text = "Einstellungen importieren"
-        Me.BINIImport.UseVisualStyleBackColor = True
-        '
-        'ButtonINI
-        '
-        Me.ButtonINI.Location = New System.Drawing.Point(466, 65)
-        Me.ButtonINI.Name = "ButtonINI"
-        Me.ButtonINI.Size = New System.Drawing.Size(105, 42)
-        Me.ButtonINI.TabIndex = 9
-        Me.ButtonINI.Text = "ini-Datei öffnen"
-        Me.ButtonINI.UseVisualStyleBackColor = True
+        Me.ButtonXML.Location = New System.Drawing.Point(466, 65)
+        Me.ButtonXML.Name = "ButtonXML"
+        Me.ButtonXML.Size = New System.Drawing.Size(105, 42)
+        Me.ButtonXML.TabIndex = 9
+        Me.ButtonXML.Text = "Einstellungssdatei öffnen"
+        Me.ButtonXML.UseVisualStyleBackColor = True
         '
         'ButtonBereinigung
         '
@@ -1974,10 +1951,10 @@ Partial Class formCfg
         Me.LinkLogFile.Location = New System.Drawing.Point(6, 191)
         Me.LinkLogFile.MaximumSize = New System.Drawing.Size(350, 0)
         Me.LinkLogFile.Name = "LinkLogFile"
-        Me.LinkLogFile.Size = New System.Drawing.Size(75, 13)
+        Me.LinkLogFile.Size = New System.Drawing.Size(78, 13)
         Me.LinkLogFile.TabIndex = 26
         Me.LinkLogFile.TabStop = True
-        Me.LinkLogFile.Text = "Link zur Logile"
+        Me.LinkLogFile.Text = "Link zur Logfile"
         '
         'TBLogging
         '
@@ -2185,9 +2162,7 @@ Partial Class formCfg
     Friend WithEvents TelList As System.Windows.Forms.DataGridView
     Friend WithEvents PWartung As System.Windows.Forms.TabPage
     Friend WithEvents CDWJournal As System.Windows.Forms.GroupBox
-    Friend WithEvents BINIImport As System.Windows.Forms.Button
-    Friend WithEvents ButtonListen As System.Windows.Forms.Button
-    Friend WithEvents ButtonINI As System.Windows.Forms.Button
+    Friend WithEvents ButtonXML As System.Windows.Forms.Button
     Friend WithEvents ButtonBereinigung As System.Windows.Forms.Button
     Friend WithEvents CBWletzterAnrufer As System.Windows.Forms.CheckBox
     Friend WithEvents CBWStatistik As System.Windows.Forms.CheckBox

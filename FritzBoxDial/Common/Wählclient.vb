@@ -278,9 +278,9 @@ Public Class Wählclient
             Case "Wwdh"
                 Eintrag = Split(C_XML.Read("Wwdh", "WwdhEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case "AnrListe"
-                Eintrag = Split(C_XML.Read("AnrListe", "AnrListeEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
+                Eintrag = Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case "VIPListe"
-                Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
+                Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case Else
                 Exit Sub
         End Select
@@ -359,7 +359,7 @@ Public Class Wählclient
 
     Public Sub Rueckruf(ByVal ID As Integer) 'wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
         Dim oNS As Outlook.NameSpace = ThisAddIn.oApp.GetNamespace("MAPI")
-        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer " & ID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & ID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
         Dim KontaktID As String = letzterAnrufer(5)
         Dim StoreID As String = letzterAnrufer(4)
         Dim oContact As Outlook.ContactItem

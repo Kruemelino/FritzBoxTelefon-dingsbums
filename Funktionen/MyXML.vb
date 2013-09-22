@@ -3,6 +3,7 @@
 Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
+
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()
@@ -71,6 +72,10 @@ Public Class MyXML
             End If
         End With
     End Sub
+
+    Function GetXMLDateiPfad() As String
+        Return sDateiPfad
+    End Function
 
     Protected Overrides Sub Finalize()
         XMLDoc.Save(sDateiPfad)
