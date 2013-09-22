@@ -34,9 +34,6 @@
         If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        'C_ini = New InI(DateiPfad)
-
-        ' Klasse zum IO-der INI-Struktiur erstellen
         C_XML = New MyXML(DateiPfad)
 
         ' Klasse für Verschlüsselung erstellen
@@ -49,13 +46,13 @@
         C_Kontakt = New Contacts(C_XML, C_Helfer)
 
         ' Klasse für die Rückwärtssuche generieren
-        C_RWS = New formRWSuche(DateiPfad, C_Helfer, C_Kontakt)
+        C_RWS = New formRWSuche(C_Helfer, C_Kontakt)
 
         ' Klasse für die OutlookInterface generieren
         C_OlI = New OutlookInterface(C_Kontakt, C_Helfer, DateiPfad)
 
         ' Klasse für das PhonerInterface generieren
-        C_Phoner = New PhonerInterface(DateiPfad, C_Helfer, C_XML, C_Crypt)
+        C_Phoner = New PhonerInterface(C_Helfer, C_XML, C_Crypt)
 
         ' Klasse für das Journal-XML generieren
         C_JournalXML = New JournalXML(DateiPfad, C_Helfer)

@@ -875,7 +875,7 @@ Public Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        OlI.NeuEmail(PfadTMPfile, C_Helfer.GetInformationSystemFritzBox)
+        OlI.NeuEmail(PfadTMPfile, C_XML.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox)
     End Sub
 
     Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWTelefone.DoWork

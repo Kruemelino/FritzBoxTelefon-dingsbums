@@ -38,7 +38,6 @@ Public Class ThisAddIn
 
     Public WithEvents ContactSaved As Outlook.ContactItem
     Public WithEvents oInsps As Outlook.Inspectors
-    'Public Shared ini As InI ' Reader/Writer initialisieren
     Public Shared XML As MyXML ' Reader/Writer initialisieren
     Public Shared fBox As FritzBox  'Deklarieren der Klasse
     Public Shared AnrMon As AnrufMonitor
@@ -49,6 +48,8 @@ Public Class ThisAddIn
     Public Shared hf As Helfer
     Public Shared KontaktFunktionen As Contacts
     Public Shared Phoner As PhonerInterface
+    Public Shared GUI As GraphicalUserInterface
+    Public Shared OlI As OutlookInterface
 
     Public Shared Dateipfad As String
 #If OVer < 14 Then
@@ -63,8 +64,7 @@ Public Class ThisAddIn
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
-    Public Shared GUI As GraphicalUserInterface
-    Public Shared OlI As OutlookInterface
+
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility

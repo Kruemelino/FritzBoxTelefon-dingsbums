@@ -6,18 +6,15 @@ Public Class PhonerInterface
     Private hf As Helfer
     Private Crypt As Rijndael
 
-    Private Dateipfad As String
     Private PhonerAddresse As String = "127.0.0.1"
     Private PhonerAnrMonPort As Integer = 2012
 
-    Public Sub New(ByVal iniPfad As String, _
-                   ByVal HelferKlasse As Helfer, _
+    Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal XMLKlasse As MyXML, _
                    ByVal cryptKlasse As Rijndael)
 
         Crypt = cryptKlasse
         C_XML = XMLKlasse
-        Dateipfad = iniPfad
         hf = HelferKlasse
     End Sub
 

@@ -5,12 +5,10 @@ Public Class OutlookInterface
     Private KontaktFunktionen As Contacts
     Private OInsp As Outlook.Inspector
     Private hf As Helfer
-    Private Dateipfad As String
 
     Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal inipfad As String)
         hf = Helferklasse
         KontaktFunktionen = KontaktKlasse
-        Dateipfad = inipfad
     End Sub
 
     Function GetOutlook() As Outlook.Application
@@ -164,7 +162,7 @@ Public Class OutlookInterface
         oApp = Nothing
     End Function
 
-    Friend Function NeuEmail(ByRef tmpFile As String, ByRef BodyString As String) As Boolean
+    Friend Function NeuEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
         Dim oApp As Outlook.Application = GetOutlook()
         If Not oApp Is Nothing Then
@@ -176,7 +174,7 @@ Public Class OutlookInterface
             If Not olMail Is Nothing Then
                 With olMail
                     .Attachments.Add(tmpFile)
-                    .Attachments.Add(Dateipfad)
+                    .Attachments.Add(XMLFile)
                     Try
                         .Attachments.Add(hf.Dateipfade("LogDatei"))
                     Catch ex As Exception
