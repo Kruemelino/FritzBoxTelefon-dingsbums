@@ -410,7 +410,7 @@ Public Class formWählbox
 
             If Not hf.nurZiffern(C_XML.Read("Wwdh", "TelNr" & Str((index + 9) Mod 10), ""), LandesVW) = hf.nurZiffern(Number, LandesVW) Then
                 Dim StrArr() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
-                C_XML.Write("Wwdh", "WwdhEintrag " & index, Join(StrArr, ";"))
+                C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"))
                 C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10))
 #If OVer < 14 Then
                 If C_XML.Read( "Optionen", "CBSymbWwdh", "False") = "True" Then GUI.FillPopupItems("Wwdh")

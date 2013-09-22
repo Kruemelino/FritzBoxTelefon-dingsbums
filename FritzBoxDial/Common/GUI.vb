@@ -682,8 +682,7 @@ Imports Office = Microsoft.Office.Core
     Friend Sub FillPopupItems(ByRef btnPopup As String)
         ' btnPopuo erlaubt: AnrListe, Wwdh
         Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlPopup, , btnPopup, , False), Office.CommandBarPopup)
-        Dim ListenPfad As String = HelferFunktionen.Dateipfade(Dateipfad, "Listen")
-        Dim index As Integer = CInt(ini.Read(ListenPfad, btnPopup, "Index", "0"))
+        Dim index As Integer = CInt(C_XML.Read(btnPopup, "Index", "0"))
 
 
         Dim AnrName, TelNr As String
@@ -692,7 +691,7 @@ Imports Office = Microsoft.Office.Core
         Dim Eintrag As String()
 
         For i = 0 To 9
-            Einträge(i) = ini.Read(ListenPfad, btnPopup, btnPopup & "Eintrag " & i, "")
+            Einträge(i) = C_XML.Read(btnPopup, btnPopup & "Eintrag" & i, "")
         Next
 
         i = 1
@@ -726,15 +725,15 @@ Imports Office = Microsoft.Office.Core
     Friend Sub FillPopupItemsVIP()
         ' 26.04.11 14.44
         Dim btnPopup As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe"), Office.CommandBarPopup)
-        Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
-        Dim ini As New InI(ListPath)
+        'Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
+        'Dim ini As New InI(ListPath)
 
         Dim j, i As Integer
         Dim Einträge(9) As String
         Dim Eintrag As String()
 
         For i = 0 To 9
-            Einträge(i) = ini.Read(ListPath, "VIPListe", "VIPListeEintrag" & i, "")
+            Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
         Next
         i = 1
         For j = 0 To 9
@@ -767,14 +766,14 @@ Imports Office = Microsoft.Office.Core
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
         Try
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbDirekt", "True") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbAnrMon", "True") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbAnrMon", "True") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbAnrListe", "True") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbWwdh", "True") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbJournalimport", "False") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbAnrMonNeuStart", "False") = "True", True, False))
-            FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbVIP", "False") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbDirekt", "True") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrMon", "True") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrMon", "True") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrListe", "True") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbWwdh", "True") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbJournalimport", "False") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrMonNeuStart", "False") = "True", True, False))
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbVIP", "False") = "True", True, False))
         Catch ex As Exception
 
         End Try
@@ -838,23 +837,23 @@ Imports Office = Microsoft.Office.Core
 
         FillPopupItems("Wwdh")
         ' Direktwahl
-        ePopWwdh.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbWwdh", "True"))
+        ePopWwdh.Visible = CBool(C_XML.Read("Optionen", "CBSymbWwdh", "True"))
         eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, "Direktwahl", i, 326, "IconandCaption", "Direktwahl", "Direktwahl")
         i += 1
 
-        eBtnDirektwahl.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbDirekt", "False"))
+        eBtnDirektwahl.Visible = CBool(C_XML.Read("Optionen", "CBSymbDirekt", "False"))
         ' Symbol Anrufmonitor & Anzeigen
         eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor", i, 815, "IconandCaption", "Anrufmonitor", "Anrufmonitor starten oder stoppen") '815
 
         eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, "Anzeigen", i + 1, 682, "IconandCaption", "Anzeigen", "Letzte Anrufe anzeigen")
         i += 2
 
-        eBtnAnrMonitor.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbAnrMon", "True"))
+        eBtnAnrMonitor.Visible = CBool(C_XML.Read("Optionen", "CBSymbAnrMon", "True"))
         eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
 
         eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor neustarten", i, 37, "IconandCaption", "AnrMonNeuStart", "")
         eBtnAnrMonNeuStart.TooltipText = "Startet den Anrufmonitor neu."
-        eBtnAnrMonNeuStart.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbAnrMonNeuStart", "False"))
+        eBtnAnrMonNeuStart.Visible = CBool(C_XML.Read("Optionen", "CBSymbAnrMonNeuStart", "False"))
 
         i += 1
 
@@ -869,7 +868,7 @@ Imports Office = Microsoft.Office.Core
             HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
         FillPopupItems("AnrListe")
-        ePopAnr.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbAnrListe", "True"))
+        ePopAnr.Visible = CBool(C_XML.Read("Optionen", "CBSymbAnrListe", "True"))
         i += 1
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, "VIP", i, "VIPListe", "VIP anrufen")
@@ -884,10 +883,10 @@ Imports Office = Microsoft.Office.Core
         End Try
         FillPopupItemsVIP()
         i += 1
-        ePopVIP.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbVIP", "True"))
+        ePopVIP.Visible = CBool(C_XML.Read("Optionen", "CBSymbVIP", "True"))
 
         eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
-        eBtnJournalimport.Visible = CBool(ini.Read(Dateipfad, "Optionen", "CBSymbJournalimport", "False"))
+        eBtnJournalimport.Visible = CBool(C_XML.Read("Optionen", "CBSymbJournalimport", "False"))
         i += 1
         eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, "Einstellungen", i, 548, "IconandCaption", "Einstellungen", "Fritz!Box Einstellungen")
         i += 1
@@ -916,7 +915,7 @@ Imports Office = Microsoft.Office.Core
         Dim cmbErstellen As Boolean = True
         Dim i As Integer = 1
 
-        If CBool(ini.Read(Dateipfad, "Optionen", "CBSymbRWSuche")) = True Then
+        If CBool(C_XML.Read("Optionen", "CBSymbRWSuche", "True")) = True Then
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.JournalItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
@@ -968,7 +967,7 @@ Imports Office = Microsoft.Office.Core
                     If IsVIP(olKontact) Then
                         .State = Office.MsoButtonState.msoButtonDown
                     Else
-                        If CLng(ini.Read(HelferFunktionen.Dateipfade(Dateipfad, "Listen"), "VIPListe", "Anzahl", "0")) >= 10 Then
+                        If CLng(C_XML.Read("VIPListe", "Anzahl", "0")) >= 10 Then
                             .TooltipText = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
                             .Enabled = False
                         Else
@@ -976,7 +975,7 @@ Imports Office = Microsoft.Office.Core
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
-                    .Visible = CBool(IIf(ini.Read(Dateipfad, "Optionen", "CBSymbVIP", "False") = "True", True, False))
+                    .Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbVIP", "False") = "True", True, False))
                 End With
             End If
             ' Journaleinträge

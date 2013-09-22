@@ -276,7 +276,7 @@ Public Class Wählclient
         Dim Telefonat As String() = Split(index, ";", , CompareMethod.Text)
         Select Case Telefonat(0)
             Case "Wwdh"
-                Eintrag = Split(C_XML.Read("Wwdh", "WwdhEintrag " & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
+                Eintrag = Split(C_XML.Read("Wwdh", "WwdhEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case "AnrListe"
                 Eintrag = Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
             Case "VIPListe"
