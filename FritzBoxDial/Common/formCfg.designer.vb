@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -998,9 +998,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle10.Format = "T"
+        DataGridViewCellStyle10.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle10
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1011,9 +1011,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle11.Format = "T"
+        DataGridViewCellStyle11.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle11
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1024,9 +1024,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle12.Format = "T"
+        DataGridViewCellStyle12.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle12
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1938,7 +1938,7 @@ Partial Class formCfg
         '
         'BLogging
         '
-        Me.BLogging.Location = New System.Drawing.Point(388, 186)
+        Me.BLogging.Location = New System.Drawing.Point(388, 184)
         Me.BLogging.Name = "BLogging"
         Me.BLogging.Size = New System.Drawing.Size(184, 23)
         Me.BLogging.TabIndex = 27
@@ -1947,11 +1947,10 @@ Partial Class formCfg
         '
         'LinkLogFile
         '
-        Me.LinkLogFile.AutoSize = True
-        Me.LinkLogFile.Location = New System.Drawing.Point(6, 191)
-        Me.LinkLogFile.MaximumSize = New System.Drawing.Size(350, 0)
+        Me.LinkLogFile.Location = New System.Drawing.Point(6, 169)
+        Me.LinkLogFile.MaximumSize = New System.Drawing.Size(565, 15)
         Me.LinkLogFile.Name = "LinkLogFile"
-        Me.LinkLogFile.Size = New System.Drawing.Size(78, 13)
+        Me.LinkLogFile.Size = New System.Drawing.Size(565, 15)
         Me.LinkLogFile.TabIndex = 26
         Me.LinkLogFile.TabStop = True
         Me.LinkLogFile.Text = "Link zur Logfile"
@@ -1962,7 +1961,7 @@ Partial Class formCfg
         Me.TBLogging.Multiline = True
         Me.TBLogging.Name = "TBLogging"
         Me.TBLogging.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBLogging.Size = New System.Drawing.Size(565, 160)
+        Me.TBLogging.Size = New System.Drawing.Size(565, 147)
         Me.TBLogging.TabIndex = 25
         '
         'CBLogFile

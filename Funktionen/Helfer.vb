@@ -57,23 +57,35 @@ Public Class Helfer
     End Sub
 
     Public Function Ping(ByRef IPAdresse As String) As Boolean
+        Ping = False
+
         Dim PingSender As New NetworkInformation.Ping()
         Dim Options As New NetworkInformation.PingOptions()
-        Options.DontFragment = True
+        Dim PingReply As NetworkInformation.PingReply = Nothing
 
         Dim data As String = ""
         Dim buffer As Byte() = Encoding.ASCII.GetBytes(data)
         Dim timeout As Integer = 120
 
-        Dim reply As NetworkInformation.PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
-        With reply
-            If .Status = NetworkInformation.IPStatus.Success Then
-                IPAdresse = .Address.ToString
-                Ping = True
-            Else
-                Ping = False
-            End If
-        End With
+        Options.DontFragment = True
+        Try
+            PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
+        Catch ex As Exception
+            LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich")
+            Ping = False
+        End Try
+
+        If Not PingReply Is Nothing Then
+            With PingReply
+                If .Status = NetworkInformation.IPStatus.Success Then
+                    IPAdresse = .Address.ToString
+                    Ping = True
+                Else
+                    Ping = False
+                End If
+            End With
+        End If
+        PingSender.Dispose()
         Options = Nothing
         PingSender = Nothing
     End Function

@@ -1,12 +1,16 @@
 ﻿Imports System.Xml
+Imports System.Timers
 
 Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
 
+    Private WithEvents tSpeichern As Timer
+
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()
+
         With My.Computer.FileSystem
             If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension.ToString = ".xml" Then
                 XMLDoc.Load(sDateiPfad)
@@ -14,15 +18,26 @@ Public Class MyXML
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><FritzOutlookXML/>")
             End If
         End With
+        tSpeichern = New Timer
+        With tSpeichern
+            .Interval = 30 * 60 * 1000  ' 30 Minuten
+            .Start()
+        End With
     End Sub
 
-    Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Def As String) As String
+    Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         With XMLDoc
-            If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
-            If Not .SelectSingleNode("//" & DieSektion & "//" & DerEintrag) Is Nothing Then
-                Read = .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText()
-            Else
-                Read = Def
+            Read = sDefault
+            If Not DerEintrag = vbNullString Then
+                If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
+                Try
+                    If Not .SelectSingleNode("//" & DieSektion & "//" & DerEintrag) Is Nothing Then
+                        Read = .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText()
+                    Else
+                        Read = sDefault
+                    End If
+                Catch
+                End Try
             End If
         End With
     End Function
@@ -80,7 +95,13 @@ Public Class MyXML
     Protected Overrides Sub Finalize()
         XMLDoc.Save(sDateiPfad)
         XMLDoc = Nothing
-
+        tSpeichern.Stop()
+        tSpeichern.Dispose()
+        tSpeichern = Nothing
         MyBase.Finalize()
+    End Sub
+
+    Private Sub tSpeichern_Elapsed(sender As Object, e As ElapsedEventArgs) Handles tSpeichern.Elapsed
+        XMLDoc.Save(sDateiPfad)
     End Sub
 End Class

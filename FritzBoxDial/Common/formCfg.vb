@@ -137,10 +137,6 @@ Public Class formCfg
         Me.CBJournal.Checked = CBool(IIf(C_XML.Read("Optionen", "CBJournal", "False") = "True", True, False))
 
         Statistik()
-        'With C_Helfer
-        '    Me.ButtonIndexDateiöffnen.Enabled = My.Computer.FileSystem.FileExists(.Dateipfade(Dateipfad, "KontaktIndex"))
-        '    Me.ButtonListen.Enabled = My.Computer.FileSystem.FileExists(.Dateipfade(Dateipfad, "Listen"))
-        'End With
 
         Me.CBUseAnrMon.Checked = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
         Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
@@ -186,7 +182,10 @@ Public Class formCfg
                     Me.ComboBoxPhonerSIP.Items.Add(TelName(2))
                 End If
             Next
-            Me.ComboBoxPhonerSIP.SelectedIndex = CInt(C_XML.Read("Phoner", "ComboBoxPhonerSIP", "0"))
+            If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then
+                Me.ComboBoxPhonerSIP.SelectedIndex = CInt(C_XML.Read("Phoner", "ComboBoxPhonerSIP", "0"))
+            End If
+
         Else
             Me.ComboBoxPhonerSIP.SelectedIndex = 0
             Me.ComboBoxPhonerSIP.Enabled = False

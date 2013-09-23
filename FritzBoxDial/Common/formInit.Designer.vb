@@ -42,12 +42,14 @@ Partial Class formInit
         Me.TBFBPW = New System.Windows.Forms.TextBox()
         Me.LFBAdr = New System.Windows.Forms.Label()
         Me.TBFritzBoxAdr = New System.Windows.Forms.TextBox()
+        Me.CBForceFBAddr = New System.Windows.Forms.CheckBox()
         Me.PanelUserEingabe.SuspendLayout()
         Me.SuspendLayout()
         '
         'PanelUserEingabe
         '
         Me.PanelUserEingabe.BackColor = System.Drawing.SystemColors.Control
+        Me.PanelUserEingabe.Controls.Add(Me.CBForceFBAddr)
         Me.PanelUserEingabe.Controls.Add(Me.LabelFBUser)
         Me.PanelUserEingabe.Controls.Add(Me.TBFBUser)
         Me.PanelUserEingabe.Controls.Add(Me.BSchließen)
@@ -202,6 +204,7 @@ Partial Class formInit
         Me.TBLandesvorwahl.Name = "TBLandesvorwahl"
         Me.TBLandesvorwahl.Size = New System.Drawing.Size(100, 20)
         Me.TBLandesvorwahl.TabIndex = 22
+        Me.TBLandesvorwahl.Text = "0049"
         '
         'LVorwahl
         '
@@ -258,6 +261,17 @@ Partial Class formInit
         Me.TBFritzBoxAdr.TabIndex = 18
         Me.TBFritzBoxAdr.Text = "fritz.box"
         '
+        'CBForceFBAddr
+        '
+        Me.CBForceFBAddr.AutoSize = True
+        Me.CBForceFBAddr.Enabled = False
+        Me.CBForceFBAddr.Location = New System.Drawing.Point(225, 63)
+        Me.CBForceFBAddr.Name = "CBForceFBAddr"
+        Me.CBForceFBAddr.Size = New System.Drawing.Size(53, 17)
+        Me.CBForceFBAddr.TabIndex = 37
+        Me.CBForceFBAddr.Text = "Force"
+        Me.CBForceFBAddr.UseVisualStyleBackColor = True
+        '
         'formInit
         '
         Me.AcceptButton = Me.BFertigstellen
@@ -300,4 +314,5 @@ Partial Class formInit
     Friend WithEvents BSchließen As System.Windows.Forms.Button
     Friend WithEvents LabelFBUser As System.Windows.Forms.Label
     Friend WithEvents TBFBUser As System.Windows.Forms.TextBox
+    Friend WithEvents CBForceFBAddr As System.Windows.Forms.CheckBox
 End Class

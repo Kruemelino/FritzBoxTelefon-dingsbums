@@ -60,7 +60,8 @@
         If PrüfeAddin() Then
             UseAnrMon = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
 
-            C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+            ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
+            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
 
             C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
@@ -83,7 +84,6 @@
             ThisAddIn.GUI = C_GUI
             ThisAddIn.Phoner = C_Phoner
             ThisAddIn.UseAnrMon = UseAnrMon
-
 
             If CBool(C_XML.Read("Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
                 Dim formjournalimort As New formJournalimport(C_AnrMon, C_Helfer, C_XML, False)
@@ -118,10 +118,11 @@
 
     Private Sub BFBAdr_Click(sender As Object, e As EventArgs) Handles BFBAdr.Click
         Dim tmpstr As String = Me.TBFritzBoxAdr.Text
-        If C_Helfer.Ping(tmpstr) Then
+        If C_Helfer.Ping(tmpstr) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = tmpstr
             If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
                 C_XML.Write("Optionen", "TBFBAdr", tmpstr)
+                C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked))
                 Me.TBFBPW.Enabled = True
                 Me.TBFBUser.Enabled = True
                 Me.LabelFBUser.Enabled = True
@@ -129,10 +130,15 @@
                 Me.TBFritzBoxAdr.Enabled = False
                 Me.BFBAdr.Enabled = False
                 Me.LFBAdr.Enabled = False
+                Me.CBForceFBAddr.Enabled = False
+                Me.LMessage.Text = "Eine Fritz!Box unter der IP " & tmpstr & " gefunden."
             Else
                 Me.LMessage.Text = "Keine Fritz!Box unter der angegebenen IP gefunden."
             End If
         Else
+            Me.CBForceFBAddr.Enabled = True
+            Me.TBFritzBoxAdr.Text = "192.168.178.1"
+            tmpstr = Me.TBFritzBoxAdr.Text
             Me.LMessage.Text = "Keine Gegenstelle unter der angegebenen IP gefunden."
         End If
     End Sub
@@ -155,6 +161,7 @@
             Me.LLandesvorwahl.Enabled = True
             Me.TBVorwahl.Enabled = True
             Me.TBLandesvorwahl.Enabled = True
+            Me.LMessage.Text = "Das Anmelden an der Fritz!Box war erfolgreich."
         Else
             Me.LMessage.Text = "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
         End If
