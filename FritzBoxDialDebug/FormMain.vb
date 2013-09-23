@@ -70,14 +70,14 @@ Public Class FormMain
     End Sub
 
     Private Sub BStart_Click(sender As Object, e As EventArgs) Handles BStart.Click
-        C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text)
-        C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text)
+        C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text, False)
+        C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text, False)
         If Not Me.TBPasswort.Text = "1234" Then
-            C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"))
+            C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"), False)
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
             C_Helfer.KeyChange()
         End If
-        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text)
+        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, True)
 
         C_FBox.bRausschreiben = True
         C_FBox.FritzBoxDaten()

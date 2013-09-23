@@ -348,19 +348,18 @@ Public Class formWählbox
             CallNr.Start(ID)
 
             ' Einstellungen (Welcher Anschluss, CLIR, Festnetz...) speichern
-            C_XML.Write("Optionen", "Festnetz", CStr(checkNetz.Checked))
-            C_XML.Write("Optionen", "CLIR", CStr(checkCLIR.Checked))
-            If StandardTelefon = -1 Then
-                C_XML.Write("Optionen", "Anschluss", CStr(ComboBoxFon.SelectedIndex))
-            Else
-                C_XML.Write("Optionen", "Anschluss", CStr(StandardTelefon))
-            End If
 
+            If StandardTelefon = -1 Then
+                C_XML.Write("Optionen", "Anschluss", CStr(ComboBoxFon.SelectedIndex), False)
+            Else
+                C_XML.Write("Optionen", "Anschluss", CStr(StandardTelefon), False)
+            End If
+            C_XML.Write("Optionen", "Festnetz", CStr(checkNetz.Checked), False)
+            C_XML.Write("Optionen", "CLIR", CStr(checkCLIR.Checked), True)
             ' Timer zum automatischen Schließen des Fensters starten
             If CBool(C_XML.Read("Optionen", "CBAutoClose", CStr(True))) Then
                 TimerSchließen = hf.SetTimer(CDbl(C_XML.Read("Optionen", "TBEnblDauer", CStr(10))) * 1000)
             End If
-
             cancelCallButton.Enabled = True
         End If
     End Sub
@@ -410,8 +409,8 @@ Public Class formWählbox
 
             If Not hf.nurZiffern(C_XML.Read("Wwdh", "TelNr" & Str((index + 9) Mod 10), ""), LandesVW) = hf.nurZiffern(Number, LandesVW) Then
                 Dim StrArr() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
-                C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"))
-                C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10))
+                C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"), False)
+                C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10), True)
 #If OVer < 14 Then
                 If C_XML.Read( "Optionen", "CBSymbWwdh", "False") = "True" Then GUI.FillPopupItems("Wwdh")
 #End If

@@ -167,7 +167,7 @@ Public Class Helfer
                     Next
                     tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
                     SaveSetting("Fritzbox", "Optionen", CStr(Zugang(j)), tempZugang)
-                    C_XML.Write(Knoten(j), CStr(Passwort(j)), C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)) 'verschlüsseln
+                    C_XML.Write(Knoten(j), CStr(Passwort(j)), C_Crypt.EncryptString128Bit(tempPasswort, tempZugang), True) 'verschlüsseln
                 Else 'Für den Fall es exsistiert ein Passwort aber kein Entschlüsselungsschlüssel
                     Select Case j
                         Case 0
@@ -175,7 +175,7 @@ Public Class Helfer
                         Case 1
                             tempZugang = "Phoner"
                     End Select
-                    C_XML.Write(Knoten(j), CStr(Passwort(j)), vbNullString)
+                    C_XML.Write(Knoten(j), CStr(Passwort(j)), vbNullString, True)
                     FBDB_MsgBox("Das Passwort der " & tempZugang & " kann nicht entschlüsselt werden. Es muss neu eingegeben werden.", MsgBoxStyle.Information, "KeyChange")
                 End If
             End If

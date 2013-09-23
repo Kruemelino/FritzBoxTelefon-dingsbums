@@ -214,7 +214,7 @@ Public Class formJournalimport
                     Next
                 End If
                 ' Registry zurückschreiben
-                C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)))
+                C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
                 hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
                 hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")

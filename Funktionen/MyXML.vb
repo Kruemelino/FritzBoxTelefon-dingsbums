@@ -7,10 +7,10 @@ Public Class MyXML
 
     Private WithEvents tSpeichern As Timer
 
+
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()
-
         With My.Computer.FileSystem
             If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension.ToString = ".xml" Then
                 XMLDoc.Load(sDateiPfad)
@@ -24,8 +24,7 @@ Public Class MyXML
             .Start()
         End With
     End Sub
-
-    Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
+    Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         With XMLDoc
             Read = sDefault
             If Not DerEintrag = vbNullString Then
@@ -42,7 +41,8 @@ Public Class MyXML
         End With
     End Function
 
-    Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String) As Boolean
+
+    Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
 
         With XMLDoc
             If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
@@ -58,7 +58,7 @@ Public Class MyXML
                 .DocumentElement.Item(DieSektion).AppendChild(xmlEintrag)
                 .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText() = Value
             End If
-            .Save(sDateiPfad)
+            If SpeichereDatei Then .Save(sDateiPfad)
         End With
         Return True
     End Function
@@ -95,9 +95,12 @@ Public Class MyXML
     Protected Overrides Sub Finalize()
         XMLDoc.Save(sDateiPfad)
         XMLDoc = Nothing
-        tSpeichern.Stop()
-        tSpeichern.Dispose()
-        tSpeichern = Nothing
+        If Not tSpeichern Is Nothing Then
+            tSpeichern.Stop()
+            tSpeichern.Dispose()
+            tSpeichern = Nothing
+        End If
+
         MyBase.Finalize()
     End Sub
 

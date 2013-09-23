@@ -45,7 +45,7 @@ Public Class FritzBox
             Rückgabe = C_hf.httpRead("http://" & sFBAddr, FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
-                C_XML.Write("Optionen", "EncodeingFritzBox", FBEncoding.HeaderName)
+                C_XML.Write("Optionen", "EncodeingFritzBox", FBEncoding.HeaderName, True)
             Else
                 C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & "http://" & sFBAddr)
             End If
@@ -61,7 +61,6 @@ Public Class FritzBox
                 .Start()
             End With
         End If
-
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -104,8 +103,8 @@ Public Class FritzBox
             If InStr(slogin_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(slogin_xml) = 0 Then
 
                 If Not InpupPasswort = "-1" Then
-                    C_XML.Write("Optionen", "TBPasswort", c_Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script"))
-                    C_XML.Write("Optionen", "TBBenutzer", InpupBenutzer)
+                    C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script"), False)
+                    C_XML.Write("Optionen", "TBBenutzer", InpupBenutzer, True)
                     SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
                     C_hf.KeyChange()
                 End If
@@ -186,7 +185,7 @@ Public Class FritzBox
                                     FBLogout(sSID)
                                     sSID = sDefaultSID
                                 End If
-                                C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = sDefaultSID, 0, 2)))
+                                C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = sDefaultSID, 0, 2)), True)
                             End If
                         Else
                             c_hf.LogFile("Die Anmeldedaten sind falsch." & sSID)
@@ -336,7 +335,7 @@ Public Class FritzBox
                 c_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone. Anmeldung fehlerhaft o.A.!", MsgBoxStyle.Critical, "FritzBoxDaten_FWbelow5_50")
                 Exit Sub
             End If
-            C_XML.Write("Telefone", vbNullString, "")
+            If Not bRausschreiben Then C_XML.Delete("Telefone")
             tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln
 
             FBLogout(sSID)
@@ -355,7 +354,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "MSN" & CStr(i), TelNr)
+                            C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
                         End If
                     End If
                 End If
@@ -377,7 +376,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "SIP" & CStr(i), TelNr)
+                            C_XML.Write("Telefone", "SIP" & CStr(i), TelNr, False)
                         End If
                     End If
                 End If
@@ -388,7 +387,7 @@ Public Class FritzBox
             If bRausschreiben Then
                 setline("Letzte SIP: " & SIPID)
             Else
-                C_XML.Write("Telefone", "SIPID", SIPID)
+                C_XML.Write("Telefone", "SIPID", SIPID, False)
             End If
 
             'TAM Nr ermitteln
@@ -404,7 +403,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "TAM" & CStr(i), TelNr)
+                            C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
                         End If
 
                         j = i
@@ -423,7 +422,7 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
                 Else
-                    C_XML.Write("Telefone", "POTS", POTS)
+                    C_XML.Write("Telefone", "POTS", POTS, False)
                 End If
 
             End If
@@ -439,7 +438,7 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
                 Else
-                    C_XML.Write("Telefone", "Mobil", Mobil)
+                    C_XML.Write("Telefone", "Mobil", Mobil, False)
                 End If
 
             End If
@@ -504,7 +503,7 @@ Public Class FritzBox
                                             If bRausschreiben Then
                                                 setline("Analogtelefon gefunden: FON" & CStr(ID) & ", " & outgoing & ", " & TelNr & ", " & TelName)
                                             Else
-                                                C_XML.Write("Telefone", CStr(ID), outgoing & ";" & TelNr & ";" & TelName)
+                                                C_XML.Write("Telefone", CStr(ID), outgoing & ";" & TelNr & ";" & TelName, False)
                                             End If
 
                                             Anzahl += 1
@@ -535,7 +534,7 @@ Public Class FritzBox
                                                 If bRausschreiben Then
                                                     setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                                                 Else
-                                                    C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
+                                                    C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
                                                 End If
 
                                             End If
@@ -551,7 +550,7 @@ Public Class FritzBox
                                             If bRausschreiben Then
                                                 setline("DECT Fritz!Fon 7150 gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                                             Else
-                                                C_XML.Write("Telefone", DialPort, TelNr & ";" & TelName)
+                                                C_XML.Write("Telefone", DialPort, TelNr & ";" & TelName, False)
                                             End If
 
                                         Case 3 ' DECT
@@ -597,7 +596,7 @@ Public Class FritzBox
                                                 If bRausschreiben Then
                                                     setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
                                                 Else
-                                                    C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
+                                                    C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
                                                 End If
 
                                             End If
@@ -613,7 +612,7 @@ Public Class FritzBox
                                                 If bRausschreiben Then
                                                     setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                                                 Else
-                                                    C_XML.Write("Telefone", DialPort, TelNr & ";" & TelName)
+                                                    C_XML.Write("Telefone", DialPort, TelNr & ";" & TelName, False)
                                                 End If
                                             Else
                                                 Dim LANTelefone() As String = Split(Telefon, "in_nums = [];", , CompareMethod.Text)
@@ -674,7 +673,7 @@ Public Class FritzBox
                                                                     If bRausschreiben Then
                                                                         setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                                                                     Else
-                                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                                                                     End If
 
                                                                 End If
@@ -686,7 +685,7 @@ Public Class FritzBox
                                                                     If bRausschreiben Then
                                                                         setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                                                                     Else
-                                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                                                                     End If
 
                                                                 End If
@@ -722,7 +721,7 @@ Public Class FritzBox
                                                     If bRausschreiben Then
                                                         setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                                                     Else
-                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                                                     End If
 
                                                     Anzahl += 1
@@ -761,7 +760,7 @@ Public Class FritzBox
                                                     If bRausschreiben Then
                                                         setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & TelName)
                                                     Else
-                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                                                     End If
 
                                                     Anzahl += 1
@@ -779,7 +778,7 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("S0-Basis hinzugefügt.")
                 Else
-                    C_XML.Write("Telefone", "50", ";;ISDN-Basis")
+                    C_XML.Write("Telefone", "50", ";;ISDN-Basis", False)
                     EingerichteteTelefone = String.Concat(EingerichteteTelefone, "50", ";")
                 End If
 
@@ -792,8 +791,8 @@ Public Class FritzBox
                 setline("Anzahl ISDN: " & AnzahlISDN)
                 setline("Gesamtanzahl: " & Anzahl + AnzahlISDN)
             Else
-                C_XML.Write("Telefone", "EingerichteteTelefone", EingerichteteTelefone)
-                C_XML.Write("Telefone", "Anzahl", CStr(Anzahl + AnzahlISDN))
+                C_XML.Write("Telefone", "EingerichteteTelefone", EingerichteteTelefone, False)
+                C_XML.Write("Telefone", "Anzahl", CStr(Anzahl + AnzahlISDN), True)
             End If
 
         Else
@@ -851,7 +850,7 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
                     Else
-                        C_XML.Write("Telefone", Node, TelNr)
+                        C_XML.Write("Telefone", Node, TelNr, False)
                     End If
                 End If
             Next
@@ -860,7 +859,7 @@ Public Class FritzBox
             If bRausschreiben Then
                 setline("Letzte SIP: " & SIPID)
             Else
-                C_XML.Write("Telefone", "SIPID", SIPID)
+                C_XML.Write("Telefone", "SIPID", SIPID, False)
             End If
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/MSN" & i & "'] = '", "'")
@@ -871,7 +870,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "MSN" & CStr(i), TelNr)
+                            C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
                         End If
                     End If
                 End If
@@ -896,7 +895,7 @@ Public Class FritzBox
                                             If bRausschreiben Then
                                                 setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
                                             Else
-                                                C_XML.Write("Telefone", "MSN" & CStr(k), TelNr)
+                                                C_XML.Write("Telefone", "MSN" & CStr(k), TelNr, False)
                                             End If
                                             Exit For
                                         End If
@@ -924,7 +923,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "TAM" & CStr(i), TelNr)
+                            C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
                         End If
 
                         TAM(i) = TelNr
@@ -946,7 +945,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "FAX" & CStr(i), TelNr)
+                            C_XML.Write("Telefone", "FAX" & CStr(i), TelNr, False)
                         End If
 
                         FAX(i) = TelNr
@@ -966,7 +965,7 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("Plain old telephone service (POTS) gefunden: " & POTS)
                 Else
-                    C_XML.Write("Telefone", "POTS", POTS)
+                    C_XML.Write("Telefone", "POTS", POTS, False)
                 End If
 
             End If
@@ -983,7 +982,7 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("Mobilnummer (Mobil) gefunden: " & Mobil)
                 Else
-                    C_XML.Write("Telefone", "Mobil", Mobil)
+                    C_XML.Write("Telefone", "Mobil", Mobil, False)
                 End If
 
             End If
@@ -1030,7 +1029,7 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("Analogtelefon gefunden: FON" & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
                     Else
-                        C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
+                        C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
                     End If
 
                     EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
@@ -1081,7 +1080,7 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
                     Else
-                        C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName)
+                        C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
                     End If
 
                 End If
@@ -1119,7 +1118,7 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                     Else
-                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                     End If
 
                 End If
@@ -1138,7 +1137,7 @@ Public Class FritzBox
                             If bRausschreiben Then
                                 setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                             Else
-                                C_XML.Write("Telefone", DialPort, TelNr & ";" & TelNr & ";" & TelName)
+                                C_XML.Write("Telefone", DialPort, TelNr & ";" & TelNr & ";" & TelName, False)
                             End If
 
                             S0Typ = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'")
@@ -1167,7 +1166,7 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("S0-Basis hinzugefügt.")
                 Else
-                    C_XML.Write("Telefone", DialPort, ";;ISDN-Basis")
+                    C_XML.Write("Telefone", DialPort, ";;ISDN-Basis", False)
                 End If
 
             End If
@@ -1186,7 +1185,7 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                     Else
-                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName)
+                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                     End If
 
                 End If
@@ -1207,19 +1206,19 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
                 Else
-                    C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & "Faxempfang")
+                    C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & "Faxempfang", False)
                 End If
 
             End If
 
             If Not EingerichteteFax Is Nothing Then
                 EingerichteteFax = Strings.Left(EingerichteteFax, Strings.Len(EingerichteteFax) - 1)
-                If Not bRausschreiben Then C_XML.Write("Telefone", "EingerichteteFax", EingerichteteFax)
+                If Not bRausschreiben Then C_XML.Write("Telefone", "EingerichteteFax", EingerichteteFax, False)
             End If
 
             Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
             If Len(Landesvorwahl) > 2 Then
-                C_XML.Write("Optionen", "TBLandesVW", "0" & Landesvorwahl)
+                C_XML.Write("Optionen", "TBLandesVW", "0" & Landesvorwahl, False)
             End If
 
             EingerichteteTelefone = Strings.Left(EingerichteteTelefone, Strings.Len(EingerichteteTelefone) - 1)
@@ -1233,8 +1232,8 @@ Public Class FritzBox
                 setline("Anzahl FAX: " & AnzahlFAX)
                 setline("Gesamtanzahl: " & TelAnzahl)
             Else
-                C_XML.Write("Telefone", "EingerichteteTelefone", EingerichteteTelefone)
-                C_XML.Write("Telefone", "Anzahl", CStr(TelAnzahl))
+                C_XML.Write("Telefone", "EingerichteteTelefone", EingerichteteTelefone, False)
+                C_XML.Write("Telefone", "Anzahl", CStr(TelAnzahl), True)
             End If
         End With
 

@@ -509,8 +509,8 @@ Imports Office = Microsoft.Office.Core
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
         Dim StrArr() As String = {Anrufer, vbNullString, vbNullString, CStr(Anzahl), StoreID, KontaktID}
-        C_XML.Write("VIPListe", "VIPListeEintrag" & Anzahl, Join(StrArr, ";"))
-        C_XML.Write("VIPListe", "Anzahl", CStr(Anzahl + 1))
+        C_XML.Write("VIPListe", "VIPListeEintrag" & Anzahl, Join(StrArr, ";"), False)
+        C_XML.Write("VIPListe", "Anzahl", CStr(Anzahl + 1), True)
 #If OVer < 14 Then
         FillPopupItemsVIP()
 #End If
@@ -537,16 +537,16 @@ Imports Office = Microsoft.Office.Core
         Loop Until alle
 
         i = 1
-        C_XML.Write("VIPListe", vbNullString, vbNullString)
+        C_XML.Write("VIPListe", vbNullString, vbNullString, False)
         For i = 1 To myArray.Count
             Eintrag = Split(CStr(myArray(i - 1)), ";", , CompareMethod.Text)
             If Not (Eintrag(5) = EntryID And Eintrag(4) = StoreID) Then
                 Eintrag(2) = CStr(j)
-                C_XML.Write("VIPListe", "VIPListeEintrag" & j, Join(Eintrag, ";"))
+                C_XML.Write("VIPListe", "VIPListeEintrag" & j, Join(Eintrag, ";"), False)
                 j += 1
             End If
         Next
-        C_XML.Write("VIPListe", "Anzahl", CStr(j))
+        C_XML.Write("VIPListe", "Anzahl", CStr(j), True)
 #If OVer < 14 Then
         FillPopupItemsVIP()
 #End If

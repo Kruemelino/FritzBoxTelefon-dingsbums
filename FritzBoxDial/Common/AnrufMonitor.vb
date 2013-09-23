@@ -293,8 +293,8 @@ Public Class AnrufMonitor
                 Thread.Sleep(20)
                 Windows.Forms.Application.DoEvents()
             Loop
-            C_XML.Write("Optionen", "CBStoppUhrX", CStr(frmStUhr.Position.X))
-            C_XML.Write("Optionen", "CBStoppUhrY", CStr(frmStUhr.Position.Y))
+            C_XML.Write("Optionen", "CBStoppUhrX", CStr(frmStUhr.Position.X), False)
+            C_XML.Write("Optionen", "CBStoppUhrY", CStr(frmStUhr.Position.Y), True)
             frmStUhr = Nothing
         End With
     End Sub
@@ -398,9 +398,9 @@ Public Class AnrufMonitor
             MSN = CStr(FBStatus.GetValue(4))
             Dim letzterAnrufer() As String = {CStr(FBStatus.GetValue(0)), Anrufer, TelNr, MSN, StoreID, KontaktID}
             ' Der letzterAnrufer enthält in dieser Reihenfolge Uhrzeit, Anrufername, Telefonnummer, MSN, StoreID, KontaktID
-            C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"))
+            C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), False)
             ' Daten für Anzeige im Anrurfmonitor speichern
-            C_XML.Write("letzterAnrufer", "Letzter", CStr(ID))
+            C_XML.Write("letzterAnrufer", "Letzter", CStr(ID), False)
             If AnrMonAnzeigen Then
                 If Not OlI.VollBildAnwendungAktiv Then
                     BWAnrMonEinblenden = New BackgroundWorker
@@ -454,7 +454,7 @@ Public Class AnrufMonitor
                             Anrufer = Trim(Anrufer)
                             vCard = Replace(vCard, Chr(13), "=0D", , , CompareMethod.Text)
                             vCard = Replace(vCard, Chr(10), "=0A", , , CompareMethod.Text)
-                            If RWSIndex Then C_XML.Write("CBRWSIndex", hf.nurZiffern(TelNr, LandesVW), vCard)
+                            If RWSIndex Then C_XML.Write("CBRWSIndex", hf.nurZiffern(TelNr, LandesVW), vCard, False)
                             KontaktID = "-1" & Anrufer & ";" & vCard
                         End If
                     End If
@@ -465,15 +465,15 @@ Public Class AnrufMonitor
                 letzterAnrufer(2) = TelNr
                 letzterAnrufer(5) = KontaktID
                 letzterAnrufer(4) = StoreID
-                C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"))
+                C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), True)
 
                 ' Daten im Menü für Rückruf speichern
                 index = CLng(C_XML.Read("AnrListe", "Index", "0"))
 
                 If Not Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Str((index + 9) Mod 10), ";"), ";", 5, CompareMethod.Text)(1) = TelNr Then
                     Dim StrArr() As String = {Anrufer, TelNr, FBStatus(0), CStr((index + 1) Mod 10), StoreID, KontaktID}
-                    C_XML.Write("AnrListe", "AnrListeEintrag" & index, Join(StrArr, ";"))
-                    C_XML.Write("AnrListe", "Index", CStr((index + 1) Mod 10))
+                    C_XML.Write("AnrListe", "AnrListeEintrag" & index, Join(StrArr, ";"), False)
+                    C_XML.Write("AnrListe", "Index", CStr((index + 1) Mod 10), True)
 #If OVer < 14 Then
                     If C_XML.Read( "Optionen", "CBSymbAnrListe", "False") = "True" Then GUI.FillPopupItems("AnrListe")
 #End If
@@ -590,13 +590,11 @@ Public Class AnrufMonitor
                             Anrufer = Trim(Anrufer)
                             vCard = Replace(vCard, Chr(13), "=0D", , , CompareMethod.Text)
                             vCard = Replace(vCard, Chr(10), "=0A", , , CompareMethod.Text)
-                            If RWSIndex Then
-                                C_XML.Write("CBRWSIndex", hf.nurZiffern(TelNr, LandesVW), vCard)
-                            End If
+                            If RWSIndex Then C_XML.Write("CBRWSIndex", hf.nurZiffern(TelNr, LandesVW), vCard, False)
                             KontaktID = "-1" & Anrufer & ";" & vCard
                         End If
-                    End If
-                    TelNr = hf.formatTelNr(TelNr)
+                End If
+                TelNr = hf.formatTelNr(TelNr)
                 End If
             End If
             ' Daten im Menü für Wahlwiederholung speichern
@@ -604,8 +602,8 @@ Public Class AnrufMonitor
             ' Debug.Print(C_XML.Read( "Wwdh", "WwdhEintrag" & Str((index + 9) Mod 10), ";"))
             If Not hf.nurZiffern(Split(C_XML.Read("Wwdh", "WwdhEintrag" & Str((index + 9) Mod 10), ";"), ";", 5, CompareMethod.Text)(1), LandesVW) = hf.nurZiffern(TelNr, LandesVW) Then
                 Dim StrArr() As String = {Anrufer, TelNr, FBStatus(0), CStr((index + 1) Mod 10), StoreID, KontaktID}
-                C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"))
-                C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10))
+                C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"), False)
+                C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10), True)
 #If OVer < 14 Then
                 If C_XML.Read( "Optionen", "CBSymbWwdh", "False") = "True" Then GUI.FillPopupItems("Wwdh")
 #End If
@@ -737,11 +735,11 @@ Public Class AnrufMonitor
                         If Left(Typ, 3) = "Ein" Then
                             Typ = "Verpasster Anruf von"
                             TempStat = CInt(C_XML.Read("Statistik", "Verpasst", "0"))
-                            C_XML.Write("Statistik", "Verpasst", CStr(TempStat + 1))
+                            C_XML.Write("Statistik", "Verpasst", CStr(TempStat + 1), False)
                         Else
                             Typ = "Nicht erfolgreicher Anruf zu"
                             TempStat = CInt(C_XML.Read("Statistik", "Nichterfolgreich", "0"))
-                            C_XML.Write("Statistik", "Nichterfolgreich", CStr(TempStat + 1))
+                            C_XML.Write("Statistik", "Nichterfolgreich", CStr(TempStat + 1), False)
                         End If
                     Else
                         Body = "Tel.-Nr.: " & TelNr & vbCrLf & "Status: angenommen" & vbCrLf & vbCrLf
@@ -749,14 +747,14 @@ Public Class AnrufMonitor
                     If Dauer > 0 Then
                         If Mid(Typ, 1, 3) = "Ein" Then
                             TempStat = CInt(C_XML.Read("Statistik", "eingehend", "0"))
-                            C_XML.Write("Statistik", "eingehend", CStr(TempStat + Dauer))
+                            C_XML.Write("Statistik", "eingehend", CStr(TempStat + Dauer), False)
                             TempStat = CInt(C_XML.Read("Statistik", JMSN & "ein", "0"))
-                            C_XML.Write("Statistik", JMSN & "ein", CStr(TempStat + Dauer))
+                            C_XML.Write("Statistik", JMSN & "ein", CStr(TempStat + Dauer), False)
                         Else
                             TempStat = CInt(C_XML.Read("Statistik", "ausgehend", "0"))
-                            C_XML.Write("Statistik", "ausgehend", CStr(TempStat + Dauer))
+                            C_XML.Write("Statistik", "ausgehend", CStr(TempStat + Dauer), False)
                             TempStat = CInt(C_XML.Read("Statistik", JMSN & "aus", "0"))
-                            C_XML.Write("Statistik", JMSN & "aus", CStr(TempStat + Dauer))
+                            C_XML.Write("Statistik", JMSN & "aus", CStr(TempStat + Dauer), False)
                         End If
                     End If
 
@@ -820,10 +818,10 @@ Public Class AnrufMonitor
                     'JEintrag.Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
 
                     TempStat = CInt(C_XML.Read("Statistik", "Journal", "0"))
-                    C_XML.Write("Statistik", "Journal", CStr(TempStat + 1))
+                    C_XML.Write("Statistik", "Journal", CStr(TempStat + 1), True)
 
                     If CDate(Zeit) > SchließZeit Or SchließZeit = System.DateTime.Now Then
-                        C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)))
+                        C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
                     End If
                     ' AnrMonReStart()
                     JExml.JEentfernen(ID)

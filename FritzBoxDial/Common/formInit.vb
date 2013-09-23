@@ -121,8 +121,8 @@
         If C_Helfer.Ping(tmpstr) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = tmpstr
             If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
-                C_XML.Write("Optionen", "TBFBAdr", tmpstr)
-                C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked))
+                C_XML.Write("Optionen", "TBFBAdr", tmpstr, False)
+                C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), True)
                 Me.TBFBPW.Enabled = True
                 Me.TBFBUser.Enabled = True
                 Me.LabelFBUser.Enabled = True
@@ -146,8 +146,8 @@
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
         C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
-        C_XML.Write("Optionen", "TBBenutzer", Me.TBFBUser.Text)
-        C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"))
+        C_XML.Write("Optionen", "TBBenutzer", Me.TBFBUser.Text, False)
+        C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"), True)
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyChange()
         SID = C_FBox.FBLogin(fw550)
@@ -179,8 +179,8 @@
         Me.BtELeINLESEN.Text = "Bitte warten..."
         Me.BtELeINLESEN.Enabled = False
 
-        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text)
-        C_XML.Write("Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text)
+        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, False)
+        C_XML.Write("Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text, True)
         C_FBox.bRausschreiben = False
         C_FBox.FritzBoxDaten()
 
@@ -254,7 +254,7 @@
         Next
         If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
 
-        C_XML.Write("Telefone", "CLBTelNr", checkstring)
+        C_XML.Write("Telefone", "CLBTelNr", checkstring, True)
         Me.LMessage.Text = "Fertig"
         Me.BSchließen.Enabled = True
     End Sub
