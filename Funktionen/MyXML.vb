@@ -5,6 +5,8 @@ Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
 
+    Private Const Speicherintervall As Double = 30 'in Minuten
+
     Private WithEvents tSpeichern As Timer
 
 
@@ -20,7 +22,7 @@ Public Class MyXML
         End With
         tSpeichern = New Timer
         With tSpeichern
-            .Interval = 30 * 60 * 1000  ' 30 Minuten
+            .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds  ' 30 Minuten
             .Start()
         End With
     End Sub
@@ -58,7 +60,7 @@ Public Class MyXML
                 .DocumentElement.Item(DieSektion).AppendChild(xmlEintrag)
                 .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText() = Value
             End If
-            If SpeichereDatei Then .Save(sDateiPfad)
+            If SpeichereDatei Then SpeichereXMLDatei()
         End With
         Return True
     End Function
@@ -103,8 +105,11 @@ Public Class MyXML
 
         MyBase.Finalize()
     End Sub
+    Private Sub SpeichereXMLDatei()
+        XMLDoc.Save(sDateiPfad)
+    End Sub
 
     Private Sub tSpeichern_Elapsed(sender As Object, e As ElapsedEventArgs) Handles tSpeichern.Elapsed
-        XMLDoc.Save(sDateiPfad)
+        SpeichereXMLDatei()
     End Sub
 End Class

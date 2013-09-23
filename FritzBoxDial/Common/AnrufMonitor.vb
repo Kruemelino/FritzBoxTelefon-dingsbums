@@ -815,7 +815,6 @@ Public Class AnrufMonitor
                     OlI.ErstelleJournalItem(Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & tmpTelName, _
                                     CInt(Dauer / 60), Body, CDate(Zeit), Firma, TelName & "; FritzBox Anrufmonitor; Telefonanrufe", KontaktID, StoreID)
 
-                    'JEintrag.Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
 
                     TempStat = CInt(C_XML.Read("Statistik", "Journal", "0"))
                     C_XML.Write("Statistik", "Journal", CStr(TempStat + 1), True)
@@ -823,7 +822,6 @@ Public Class AnrufMonitor
                     If CDate(Zeit) > SchließZeit Or SchließZeit = System.DateTime.Now Then
                         C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
                     End If
-                    ' AnrMonReStart()
                     JExml.JEentfernen(ID)
                 End If
             Else
