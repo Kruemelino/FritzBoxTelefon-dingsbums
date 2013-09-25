@@ -881,7 +881,12 @@ Public Class formCfg
         AddLine("Einlesen der Telefone gestartet.")
         C_FBox.bRausschreiben = CBool(e.Argument)
         e.Result = Not CBool(e.Argument)
-        C_FBox.FritzBoxDaten()
+        If Me.TBTelefonDatei.Text = vbNullString Then
+            C_FBox.FritzBoxDaten()
+        Else
+            C_FBox.FritzBoxDatenDebug(Me.TBTelefonDatei.Text)
+        End If
+
     End Sub
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted

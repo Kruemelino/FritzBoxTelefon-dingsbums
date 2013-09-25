@@ -246,6 +246,33 @@ Public Class FritzBox
 #End Region
 
 #Region "Telefonnummern, Telefonnamen"
+    Friend Sub FritzBoxDatenDebug(ByVal sLink As String)
+        Dim tempstring As String
+        Dim tempstring_code As String
+
+        tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
+        tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
+        tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
+
+        If InStr(tempstring, "Luacgi not readable") = 0 Then
+            tempstring_code = C_hf.StringEntnehmen(tempstring, "<code>", "</code>")
+
+            If Not tempstring_code = "-1" Then
+                tempstring = tempstring_code
+            Else
+                tempstring = C_hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
+            End If
+            If Not tempstring = "-1" Then
+                FritzBoxDatenN(tempstring)
+                FBLogout(sSID)
+            Else
+                C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
+            End If
+        Else
+            FritzBoxDatenA()
+        End If
+    End Sub
+
     Friend Sub FritzBoxDaten()
         Dim FW550 As Boolean = True
         Dim sLink As String
@@ -262,37 +289,37 @@ Public Class FritzBox
                 setline("Fritz!Box SessionID: " & sSID)
                 setline("Fritz!Box Firmware  5.50: " & FW550.ToString)
             End If
-            tempstring = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+            tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                     tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                     tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
                     If InStr(tempstring, "Luacgi not readable") = 0 Then
-                        tempstring_code = c_hf.StringEntnehmen(tempstring, "<code>", "</code>")
+                        tempstring_code = C_hf.StringEntnehmen(tempstring, "<code>", "</code>")
 
                         If Not tempstring_code = "-1" Then
                             tempstring = tempstring_code
                         Else
-                            tempstring = c_hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
+                            tempstring = C_hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
                         End If
                         If Not tempstring = "-1" Then
                             FritzBoxDatenN(tempstring)
                             FBLogout(sSID)
                         Else
-                            c_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
+                            C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
                         End If
                     Else
                         FritzBoxDatenA()
                     End If
 
                 Else
-                    c_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #1")
+                    C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #1")
                 End If
             Else
-                c_hf.LogFile("FBError (FritzBoxDaten): " & Err.Number & " - " & Err.Description & " - " & sLink)
+                C_hf.LogFile("FBError (FritzBoxDaten): " & Err.Number & " - " & Err.Description & " - " & sLink)
             End If
         Else
-            c_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #2")
+            C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #2")
         End If
     End Sub
 
@@ -1009,17 +1036,8 @@ Public Class FritzBox
                         End If
                     Next
                     tmparray = (From x In tmparray Where Not x Like "" Select x).ToArray
-                    If tmparray.Length = 0 Then
-                        ReDim tmparray(9)
-                        For i = 0 To 9
-                            tmpTelNr = MSN(i)
-                            If Not tmpTelNr = "" Then
-                                tmparray(i) = MSN(i)
-                            Else
-                                Exit For
-                            End If
-                        Next
-                    End If
+                    If tmparray.Length = 0 Then tmparray = MSN
+
                     outgoing = tmparray(0)
                     TelNr = String.Join("_", tmparray)
                     DialPort = CStr(CInt(Port) + 1)
@@ -1066,8 +1084,7 @@ Public Class FritzBox
                             tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
                         Next
                         ' Etwas unschöner Code
-                        Dim res2 = From x In tmpstrUser Where Not x Like "" Select x ' Leere entfernen
-                        For Each Nr In res2
+                        For Each Nr In (From x In tmpstrUser Where Not x Like "" Select x).ToArray ' Leere entfernen
                             TelNr = TelNr & "_" & .OrtsVorwahlEntfernen(Nr, Vorwahl)
                         Next
                         TelNr = Mid(TelNr, 2) 'Strings.Left(TelNr, Len(TelNr) - 1)
