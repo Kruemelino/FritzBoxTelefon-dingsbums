@@ -470,7 +470,7 @@ Public Class AnrufMonitor
                 ' Daten im Menü für Rückruf speichern
                 index = CLng(C_XML.Read("AnrListe", "Index", "0"))
 
-                If Not Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Str((index + 9) Mod 10), ";"), ";", 5, CompareMethod.Text)(1) = TelNr Then
+                If Not Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Trim(Str((index + 9) Mod 10)), ";"), ";", 5, CompareMethod.Text)(1) = TelNr Then
                     Dim StrArr() As String = {Anrufer, TelNr, FBStatus(0), CStr((index + 1) Mod 10), StoreID, KontaktID}
                     C_XML.Write("AnrListe", "AnrListeEintrag" & index, Join(StrArr, ";"), False)
                     C_XML.Write("AnrListe", "Index", CStr((index + 1) Mod 10), True)
@@ -600,7 +600,7 @@ Public Class AnrufMonitor
             ' Daten im Menü für Wahlwiederholung speichern
             index = CLng(C_XML.Read("Wwdh", "Index", "0"))
             ' Debug.Print(C_XML.Read( "Wwdh", "WwdhEintrag" & Str((index + 9) Mod 10), ";"))
-            If Not hf.nurZiffern(Split(C_XML.Read("Wwdh", "WwdhEintrag" & Str((index + 9) Mod 10), ";"), ";", 5, CompareMethod.Text)(1), LandesVW) = hf.nurZiffern(TelNr, LandesVW) Then
+            If Not hf.nurZiffern(Split(C_XML.Read("Wwdh", "WwdhEintrag" & Trim(Str((index + 9) Mod 10)), ";"), ";", 5, CompareMethod.Text)(1), LandesVW) = hf.nurZiffern(TelNr, LandesVW) Then
                 Dim StrArr() As String = {Anrufer, TelNr, FBStatus(0), CStr((index + 1) Mod 10), StoreID, KontaktID}
                 C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"), False)
                 C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10), True)

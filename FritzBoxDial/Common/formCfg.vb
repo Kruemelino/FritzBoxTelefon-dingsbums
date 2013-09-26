@@ -195,6 +195,12 @@ Public Class formCfg
         If Not Len(PhonerPasswort) = 0 Then
             Me.PhonerPasswort.Text = "1234"
         End If
+
+        Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
+        Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
+        Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
+        Me.PanelPhoner.Enabled = PhonerInstalliert
+        C_XML.Write("Phoner", "PhonerVerfügbar", CStr(PhonerInstalliert), True)
     End Sub
 
     Private Sub Statistik()
@@ -532,38 +538,6 @@ Public Class formCfg
         End With
 
     End Sub
-
-    'Private Sub ButtonBereinigung_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBereinigung.Click
-    '    ' Wartung ini-Datei bereinigen
-    '    Dim SchließZeit As String
-
-    '    If C_Helfer.FBDB_MsgBox("Sind Sie sicher, das Sie die ausgewählten Bereiche aus der Einstellungsdatei löschen wollen?", MsgBoxStyle.YesNo, "ButtonBereinigung") = MsgBoxResult.Yes Then
-    '        If Me.CBWJournal.Checked Then C_XML.Write("Journal", vbNullString, "")
-    '        If Me.CBWOptionen.Checked Then
-    '            SchließZeit = C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now))
-    '            C_XML.Write("Optionen", vbNullString, "")
-    '            C_XML.Write("Optionen", "SchließZeit", SchließZeit)
-    '        End If
-    '        If Me.CBWWwdh.Checked Then C_XML.Write("Wwdh", vbNullString, "")
-    '        If Me.CBWRR.Checked Then C_XML.Write("AnrListe", vbNullString, "")
-    '        If Me.CBWTelefone.Checked Then
-    '            C_XML.Write("Telefone", vbNullString, "")
-    '            C_Helfer.FBDB_MsgBox("Die Telefondaten wurden aus der ini-Datei gelöscht. Bitte lesen Sie diese wieder ein", MsgBoxStyle.Information, "ButtonBereinigung")
-    '        End If
-
-    '        If Me.CBWStatistik.Checked Then C_XML.Write("Statistik", vbNullString, "")
-    '        If Me.CBWletzterAnrufer.Checked Then C_XML.Write("letzterAnrufer", vbNullString, "")
-    '    End If
-
-    'End Sub
-
-    'Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
-    '    If C_Helfer.FBDB_MsgBox("Sind Sie sicher, dass Sie die Statistik unwiederruflich löschen wollen?", MsgBoxStyle.YesNo, "ButtonReset") = MsgBoxResult.Yes Then
-    '        C_XML.Write("Statistik", vbNullString, "")
-    '        C_XML.Write("Statistik", "ResetZeit", CStr(System.DateTime.Now))
-    '        Statistik()
-    '    End If
-    'End Sub
 
     Private Sub ButtonOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOK.Click
         Dim formschließen As Boolean = Speichern()
@@ -1317,16 +1291,17 @@ Public Class formCfg
         End If
         Me.CLBTelNr.Enabled = Not Me.CBPhonerKeineFB.Checked
     End Sub
+
     Private Sub LinkPhoner_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkPhoner.LinkClicked
         System.Diagnostics.Process.Start("http://www.phoner.de/")
     End Sub
 
     Private Sub ButtonPhoner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonPhoner.Click
-        Dim PhonerVerfügbar As Boolean = C_Phoner.PhonerReady()
-        Me.LabelPhoner.Text = "Phoner kann " & CStr(IIf(PhonerVerfügbar, "", "nicht ")) & "verwendet werden!"
-        Me.PanelPhoner.Enabled = PhonerVerfügbar
-        If Not PhonerVerfügbar Then Me.CBPhoner.Checked = False
-        C_XML.Write("Phoner", "PhonerVerfügbar", CStr(PhonerVerfügbar), True)
+        Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
+        Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
+        Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
+        Me.PanelPhoner.Enabled = PhonerInstalliert
+        C_XML.Write("Phoner", "PhonerVerfügbar", CStr(PhonerInstalliert), True)
     End Sub
 
     Private Sub CBPhoner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBPhoner.CheckedChanged
@@ -1334,7 +1309,6 @@ Public Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
-
 End Class
 
 Public NotInheritable Class iTa

@@ -3,8 +3,8 @@ Imports System.Net.Sockets
 Imports System.IO
 Public Class PhonerInterface
     Private C_XML As MyXML
-    Private hf As Helfer
-    Private Crypt As Rijndael
+    Private C_hf As Helfer
+    Private C_Crypt As Rijndael
 
     Private PhonerAddresse As String = "127.0.0.1"
     Private PhonerAnrMonPort As Integer = 2012
@@ -13,56 +13,13 @@ Public Class PhonerInterface
                    ByVal XMLKlasse As MyXML, _
                    ByVal cryptKlasse As Rijndael)
 
-        Crypt = cryptKlasse
+        C_Crypt = cryptKlasse
         C_XML = XMLKlasse
-        hf = HelferKlasse
+        C_hf = HelferKlasse
     End Sub
 
     Public Function PhonerReady() As Boolean
-        PhonerReady = False
-        Return CheckIsPhonerInstalled() And CheckIsPhonerRunning()
-    End Function
-
-    Private Function CheckIsPhonerInstalled() As Boolean
-        CheckIsPhonerInstalled = False
-        ' Funktion von Klaus Raykowski (info@sbv-computer.de) übernommen und an 64bit-Systeme angepasst
-
-        'Püft ob Phoner installiert ist.
-        'Die Prüfung auf vorhandene CAPI kann entfallen
-        'da kein Fehler auftritt wenn diese nicht vorhanden ist außer
-        'das das Programm nicht wählt. 
-
-        Try
-            Dim strClassID As String = "-"
-            Dim RegKey As RegistryKey
-            RegKey = Registry.ClassesRoot.OpenSubKey("Phoner.CPhoner\CLSID", False)
-            strClassID = CType(RegKey.GetValue("", "-"), String)
-            If Not strClassID = "-" Then
-                RegKey = Registry.ClassesRoot.OpenSubKey("CLSID\" & strClassID & "\LocalServer32", False)
-                If RegKey Is Nothing Then
-                    RegKey = Registry.ClassesRoot.OpenSubKey("Wow6432Node\CLSID\" & strClassID & "\LocalServer32", False)
-                End If
-                If Not CType(RegKey.GetValue("", "-"), String) = "-" Then CheckIsPhonerInstalled = True
-            End If
-            RegKey.Close()
-        Catch : End Try
-    End Function
-
-    Private Function CheckIsPhonerRunning() As Boolean
-        CheckIsPhonerRunning = False
-        'Püft ob Phoner läuft.
-
-        Dim Client As New TcpClient()
-        Dim RemoteEP As New Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
-        Try
-            Client.Connect(RemoteEP)
-            CheckIsPhonerRunning = True
-            Client.Close()
-        Catch
-            CheckIsPhonerRunning = False
-        End Try
-        RemoteEP = Nothing
-        Client = Nothing
+        Return Not Diagnostics.Process.GetProcessesByName("phoner").Length = 0
     End Function
 
     Public Function DialPhoner(ByVal dialCode As String) As String
@@ -86,7 +43,7 @@ Public Class PhonerInterface
                             .AutoFlush = True
                             If StreamReader.ReadLine() = "Welcome to Phoner" Then
                                 Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len("Challenge=") + 1)
-                                Dim Response As String = UCase(Crypt.getMd5Hash(Challenge & Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII))
+                                Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII))
                                 .WriteLine("Response=" & Response)
                                 System.Threading.Thread.Sleep(100)
                                 If Stream.DataAvailable Then
@@ -111,7 +68,7 @@ Public Class PhonerInterface
                 tcpClient.Close()
                 tcpClient = Nothing
                 Stream = Nothing
-                hf.KeyChange()
+                C_hf.KeyChange()
             Else
                 DialPhoner = "Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
             End If

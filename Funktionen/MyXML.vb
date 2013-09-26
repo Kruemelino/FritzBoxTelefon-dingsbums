@@ -47,18 +47,20 @@ Public Class MyXML
     Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
 
         With XMLDoc
+
             If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
             If Not .SelectSingleNode("//" & DieSektion & "//" & DerEintrag) Is Nothing Then
                 .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText() = Value
             Else
                 Dim xmlEintrag As XmlElement
                 Dim xmlText As XmlText
-                If .SelectSingleNode("//" & DieSektion) Is Nothing Then .DocumentElement.AppendChild(.CreateElement(DieSektion))
+                If .FirstChild(DieSektion) Is Nothing Then '.SelectSingleNode("//" & DieSektion) Is Nothing Then
+                    .DocumentElement.AppendChild(.CreateElement(DieSektion))
+                End If
                 xmlEintrag = .CreateElement(DerEintrag)
                 xmlText = .CreateTextNode(Value)
                 xmlEintrag.AppendChild(xmlText)
                 .DocumentElement.Item(DieSektion).AppendChild(xmlEintrag)
-                .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText() = Value
             End If
             If SpeichereDatei Then SpeichereXMLDatei()
         End With

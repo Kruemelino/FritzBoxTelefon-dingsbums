@@ -266,7 +266,7 @@ Imports Office = Microsoft.Office.Core
         End Select
         index = CInt(C_XML.Read(IniParam, "Index", "0"))
         For i = 0 To 9
-            Einträge(i) = C_XML.Read(IniParam, IniParam & "Eintrag " & i, "")
+            Einträge(i) = C_XML.Read(IniParam, IniParam & "Eintrag" & i, "")
         Next
         i = 1
         For j = index + 9 To index Step -1

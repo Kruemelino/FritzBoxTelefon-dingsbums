@@ -8,7 +8,7 @@ Public Class Wählclient
     Private OlI As OutlookInterface
     Private FBox As FritzBox
 
-    Private PhonerFunktionen As PhonerInterface
+    Private C_Phoner As PhonerInterface
 
     Public Sub New(ByVal XMlKlasse As MyXML, _
                    ByVal HelferKlasse As Helfer, _
@@ -23,7 +23,7 @@ Public Class Wählclient
         C_XML = XMlKlasse
         OlI = OutlInter
         FBox = cFBox
-        PhonerFunktionen = PhonerKlasse
+        C_Phoner = PhonerKlasse
 
     End Sub
     Protected Overrides Sub Finalize()
@@ -157,7 +157,7 @@ Public Class Wählclient
         Dim LandesVW As String  ' eigene Landesvorwahl
         Dim row(2) As String
 
-        frmWählbox = New formWählbox(Direktwahl, C_XML, hf, GUI, FBox, PhonerFunktionen)
+        frmWählbox = New formWählbox(Direktwahl, C_XML, hf, GUI, FBox, C_Phoner)
 
         LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
         If oContact Is Nothing Then

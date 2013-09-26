@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -167,6 +167,7 @@ Partial Class formCfg
         Me.LabelSymb = New System.Windows.Forms.Label()
         Me.PPhoner = New System.Windows.Forms.TabPage()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.PanelPhonerAktiv = New System.Windows.Forms.Panel()
         Me.LabelPhoner = New System.Windows.Forms.Label()
         Me.PanelPhoner = New System.Windows.Forms.Panel()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
@@ -1000,9 +1001,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1013,9 +1014,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1026,9 +1027,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1752,6 +1753,7 @@ Partial Class formCfg
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.PanelPhonerAktiv)
         Me.GroupBox4.Controls.Add(Me.LabelPhoner)
         Me.GroupBox4.Controls.Add(Me.PanelPhoner)
         Me.GroupBox4.Controls.Add(Me.ButtonPhoner)
@@ -1762,14 +1764,21 @@ Partial Class formCfg
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Phoner Einstellungen"
         '
+        'PanelPhonerAktiv
+        '
+        Me.PanelPhonerAktiv.Location = New System.Drawing.Point(114, 19)
+        Me.PanelPhonerAktiv.Name = "PanelPhonerAktiv"
+        Me.PanelPhonerAktiv.Size = New System.Drawing.Size(13, 13)
+        Me.PanelPhonerAktiv.TabIndex = 10
+        '
         'LabelPhoner
         '
         Me.LabelPhoner.AutoSize = True
-        Me.LabelPhoner.Location = New System.Drawing.Point(111, 19)
+        Me.LabelPhoner.Location = New System.Drawing.Point(133, 19)
         Me.LabelPhoner.Name = "LabelPhoner"
-        Me.LabelPhoner.Size = New System.Drawing.Size(107, 13)
+        Me.LabelPhoner.Size = New System.Drawing.Size(83, 13)
         Me.LabelPhoner.TabIndex = 5
-        Me.LabelPhoner.Text = "Phoner Einstellungen"
+        Me.LabelPhoner.Text = "Phoner ist aktiv."
         '
         'PanelPhoner
         '
@@ -2317,6 +2326,7 @@ Partial Class formCfg
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
     Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents PanelPhonerAktiv As System.Windows.Forms.Panel
 #If OVer < 14 Then
 #End If
 End Class

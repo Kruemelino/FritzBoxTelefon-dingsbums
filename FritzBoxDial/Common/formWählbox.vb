@@ -102,7 +102,7 @@ Public Class formWählbox
         Dim StandardTelefon As Integer = CInt(C_XML.Read("Telefone", "CBStandardTelefon", "-1"))
         Dim tmpStr As String
         Dim ZeigeDialPort As Boolean = CBool(C_XML.Read("Optionen", "CBDialPort", "False"))
-
+        'Dim TelName() As String
 
         LandesVorwahl = C_XML.Read("Optionen", "TBLandesVW", "0049")
         SortiereNebenstellen()
@@ -132,8 +132,6 @@ Public Class formWählbox
         If C_XML.Read("Phoner", "CBPhoner", "False") = "True" Then
             If C_Phoner.PhonerReady() Then
                 Dim SIP_Nr As Integer = CInt(C_XML.Read("Phoner", "PhonerTelNameIndex", "0"))
-                'TelName = Split(C_XML.Read( "Telefone", CStr(SIP_Nr), "-1;;"), ";", , CompareMethod.Text)
-                'Me.ComboBoxFon.Items.Add(IIf(Not SIP_Nr = 0, TelName(2) & " via Phoner", "Phoner"))
                 Me.ComboBoxFon.Items.Add("Phoner")
                 PhonerFon = Me.ComboBoxFon.Items.Count - 1
                 If SIP_Nr = StandardTelefon Then
@@ -407,7 +405,7 @@ Public Class formWählbox
                 StoreID = "-1"
             End If
 
-            If Not hf.nurZiffern(C_XML.Read("Wwdh", "TelNr" & Str((index + 9) Mod 10), ""), LandesVW) = hf.nurZiffern(Number, LandesVW) Then
+            If Not hf.nurZiffern(C_XML.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), ""), LandesVW) = hf.nurZiffern(Number, LandesVW) Then
                 Dim StrArr() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
                 C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(StrArr, ";"), False)
                 C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10), True)
