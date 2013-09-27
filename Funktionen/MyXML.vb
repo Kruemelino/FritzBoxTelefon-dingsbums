@@ -9,7 +9,6 @@ Public Class MyXML
 
     Private WithEvents tSpeichern As Timer
 
-
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()
@@ -26,14 +25,15 @@ Public Class MyXML
             .Start()
         End With
     End Sub
-    Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
+
+    Public Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         With XMLDoc
             Read = sDefault
             If Not DerEintrag = vbNullString Then
                 If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
                 Try
-                    If Not .SelectSingleNode("//" & DieSektion & "//" & DerEintrag) Is Nothing Then
-                        Read = .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText()
+                    If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion, DerEintrag}, "/")) Is Nothing Then
+                        Read = .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")).Item(DerEintrag).InnerText()
                     Else
                         Read = sDefault
                     End If
@@ -43,18 +43,18 @@ Public Class MyXML
         End With
     End Function
 
-
     Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
 
         With XMLDoc
 
             If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
-            If Not .SelectSingleNode("//" & DieSektion & "//" & DerEintrag) Is Nothing Then
+            If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion, DerEintrag}, "/")) Is Nothing Then
                 .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText() = Value
             Else
                 Dim xmlEintrag As XmlElement
                 Dim xmlText As XmlText
-                If .FirstChild(DieSektion) Is Nothing Then '.SelectSingleNode("//" & DieSektion) Is Nothing Then
+
+                If .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")) Is Nothing Then
                     .DocumentElement.AppendChild(.CreateElement(DieSektion))
                 End If
                 xmlEintrag = .CreateElement(DerEintrag)
@@ -72,8 +72,9 @@ Public Class MyXML
         Dim stmp As String = vbNullString
         ReadTelNr = ";"
         With XMLDoc
-            If Not .SelectSingleNode("//" & DieSektion) Is Nothing Then
-                tmpnodelist = .SelectNodes("//" & DieSektion & "//*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
+            If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")) Is Nothing Then
+                tmpnodelist = .SelectNodes(Join({.DocumentElement.Name, DieSektion, "*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]"}, "/"))
+                'tmpnodelist = .SelectNodes("//" & DieSektion & "//*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
                 If Not tmpnodelist.Count = 0 Then
                     For Each temxmlnode As XmlNode In tmpnodelist
                         stmp += temxmlnode.InnerText & ";"
@@ -86,8 +87,8 @@ Public Class MyXML
 
     Sub Delete(ByVal DieSektion As String)
         With XMLDoc
-            If Not .SelectSingleNode("//" & DieSektion) Is Nothing Then
-                .SelectSingleNode("//" & DieSektion).RemoveAll()
+            If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")) Is Nothing Then
+                .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")).RemoveAll()
             End If
         End With
     End Sub
@@ -107,7 +108,8 @@ Public Class MyXML
 
         MyBase.Finalize()
     End Sub
-    Private Sub SpeichereXMLDatei()
+
+    Sub SpeichereXMLDatei()
         XMLDoc.Save(sDateiPfad)
     End Sub
 

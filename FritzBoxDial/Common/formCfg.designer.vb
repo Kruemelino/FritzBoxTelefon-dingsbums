@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonÜbernehmen = New System.Windows.Forms.Button()
@@ -175,7 +175,6 @@ Partial Class formCfg
         Me.Label29 = New System.Windows.Forms.Label()
         Me.CBPhoner = New System.Windows.Forms.CheckBox()
         Me.ComboBoxPhonerSIP = New System.Windows.Forms.ComboBox()
-        Me.CBPhonerKeineFB = New System.Windows.Forms.CheckBox()
         Me.PhonerPasswort = New System.Windows.Forms.MaskedTextBox()
         Me.LPassworPhoner = New System.Windows.Forms.Label()
         Me.ButtonPhoner = New System.Windows.Forms.Button()
@@ -745,7 +744,7 @@ Partial Class formCfg
         'Label33
         '
         Me.Label33.AutoSize = True
-        Me.Label33.Location = New System.Drawing.Point(113, 79)
+        Me.Label33.Location = New System.Drawing.Point(113, 73)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(63, 13)
         Me.Label33.TabIndex = 13
@@ -1001,9 +1000,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1014,9 +1013,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1027,9 +1026,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1786,7 +1785,6 @@ Partial Class formCfg
         Me.PanelPhoner.Controls.Add(Me.Label33)
         Me.PanelPhoner.Controls.Add(Me.CBPhoner)
         Me.PanelPhoner.Controls.Add(Me.ComboBoxPhonerSIP)
-        Me.PanelPhoner.Controls.Add(Me.CBPhonerKeineFB)
         Me.PanelPhoner.Controls.Add(Me.PhonerPasswort)
         Me.PanelPhoner.Controls.Add(Me.LPassworPhoner)
         Me.PanelPhoner.Location = New System.Drawing.Point(111, 35)
@@ -1827,7 +1825,7 @@ Partial Class formCfg
         'CBPhoner
         '
         Me.CBPhoner.AutoSize = True
-        Me.CBPhoner.Location = New System.Drawing.Point(3, 24)
+        Me.CBPhoner.Location = New System.Drawing.Point(7, 18)
         Me.CBPhoner.Name = "CBPhoner"
         Me.CBPhoner.Size = New System.Drawing.Size(168, 17)
         Me.CBPhoner.TabIndex = 3
@@ -1837,24 +1835,14 @@ Partial Class formCfg
         'ComboBoxPhonerSIP
         '
         Me.ComboBoxPhonerSIP.FormattingEnabled = True
-        Me.ComboBoxPhonerSIP.Location = New System.Drawing.Point(7, 76)
+        Me.ComboBoxPhonerSIP.Location = New System.Drawing.Point(7, 70)
         Me.ComboBoxPhonerSIP.Name = "ComboBoxPhonerSIP"
         Me.ComboBoxPhonerSIP.Size = New System.Drawing.Size(100, 21)
         Me.ComboBoxPhonerSIP.TabIndex = 2
         '
-        'CBPhonerKeineFB
-        '
-        Me.CBPhonerKeineFB.AutoSize = True
-        Me.CBPhonerKeineFB.Location = New System.Drawing.Point(3, 3)
-        Me.CBPhonerKeineFB.Name = "CBPhonerKeineFB"
-        Me.CBPhonerKeineFB.Size = New System.Drawing.Size(156, 17)
-        Me.CBPhonerKeineFB.TabIndex = 0
-        Me.CBPhonerKeineFB.Text = "Verwendung ohne Fritz!Box"
-        Me.CBPhonerKeineFB.UseVisualStyleBackColor = True
-        '
         'PhonerPasswort
         '
-        Me.PhonerPasswort.Location = New System.Drawing.Point(7, 47)
+        Me.PhonerPasswort.Location = New System.Drawing.Point(7, 41)
         Me.PhonerPasswort.Name = "PhonerPasswort"
         Me.PhonerPasswort.Size = New System.Drawing.Size(100, 20)
         Me.PhonerPasswort.TabIndex = 7
@@ -1863,7 +1851,7 @@ Partial Class formCfg
         'LPassworPhoner
         '
         Me.LPassworPhoner.AutoSize = True
-        Me.LPassworPhoner.Location = New System.Drawing.Point(113, 50)
+        Me.LPassworPhoner.Location = New System.Drawing.Point(113, 44)
         Me.LPassworPhoner.Name = "LPassworPhoner"
         Me.LPassworPhoner.Size = New System.Drawing.Size(87, 13)
         Me.LPassworPhoner.TabIndex = 6
@@ -2307,7 +2295,6 @@ Partial Class formCfg
     Friend WithEvents LinkLogFile As System.Windows.Forms.LinkLabel
     Friend WithEvents BLogging As System.Windows.Forms.Button
     Friend WithEvents PPhoner As System.Windows.Forms.TabPage
-    Friend WithEvents CBPhonerKeineFB As System.Windows.Forms.CheckBox
     Friend WithEvents CBPhonerAnrMon As System.Windows.Forms.CheckBox
     Friend WithEvents CBPhoner As System.Windows.Forms.CheckBox
     Friend WithEvents ComboBoxPhonerSIP As System.Windows.Forms.ComboBox

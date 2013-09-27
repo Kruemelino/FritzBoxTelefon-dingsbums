@@ -416,6 +416,7 @@ Public Class formWählbox
         End If
 
         Amt = C_XML.Read("Optionen", "TBAmt", "")
+        Amt = CStr(IIf(Amt = "-1", "", Amt))
         LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
         Code = hf.nurZiffern(Number, LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
         'LogFile("Rufnummer " & Code & " wurde ausgewählt")
