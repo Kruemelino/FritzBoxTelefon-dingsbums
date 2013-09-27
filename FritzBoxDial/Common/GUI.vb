@@ -121,10 +121,10 @@ Imports Office = Microsoft.Office.Core
         KontaktErstellen()
     End Sub
 
-    Public Sub OnActionRWSGoYellow(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        RWSGoYellow(Insp)
-    End Sub
+    'Public Sub OnActionRWSGoYellow(ByVal control As Office.IRibbonControl)
+    '    Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+    '    RWSGoYellow(Insp)
+    'End Sub
 
     Public Sub OnActionRWS11880(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
@@ -906,7 +906,7 @@ Imports Office = Microsoft.Office.Core
 #End If
 #If OVer = 11 Then
     Sub InspectorSybolleisteErzeugen(ByVal Inspector As Outlook.Inspector, _
-                                     ByRef iPopRWS As Office.CommandBarPopup, ByRef iBtnWwh As Office.CommandBarButton, ByRef iBtnRwsGoYellow As Office.CommandBarButton, _
+                                     ByRef iPopRWS As Office.CommandBarPopup, ByRef iBtnWwh As Office.CommandBarButton, _
                                      ByRef iBtnRws11880 As Office.CommandBarButton, ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, ByRef iBtnRWStelSearch As Office.CommandBarButton, _
                                      ByRef iBtnRWSAlle As Office.CommandBarButton, ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton)
 
@@ -944,15 +944,17 @@ Imports Office = Microsoft.Office.Core
 
                 AddPopupsToExplorer(cmb, iPopRWS, "Rückwärtssuche", i, "RWS", "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.")
                 i += 1
-                iBtnRwsGoYellow = AddPopupItems(iPopRWS, 1)
+                'iBtnRwsGoYellow = AddPopupItems(iPopRWS, 1)
                 iBtnRws11880 = AddPopupItems(iPopRWS, 2)
                 iBtnRWSDasTelefonbuch = AddPopupItems(iPopRWS, 3)
                 iBtnRWStelSearch = AddPopupItems(iPopRWS, 4)
                 iBtnRWSAlle = AddPopupItems(iPopRWS, 5)
+                'Dim rwsNamen() As String = {"GoYellow", "11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
+                'Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.goyellow.de'", "Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
 
-                Dim rwsNamen() As String = {"GoYellow", "11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
-                Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.goyellow.de'", "Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
-                For i = 0 To 4
+                Dim rwsNamen() As String = {"11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
+                Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
+                For i = 0 To 3
                     With iPopRWS.Controls.Item(i + 1)
                         .Caption = rwsNamen(i)
                         .TooltipText = rwsToolTipp(i)
@@ -1050,9 +1052,9 @@ Imports Office = Microsoft.Office.Core
         KontaktFunktionen.KontaktErstellen()
     End Sub
 
-    Friend Sub RWSGoYellow(ByVal insp As Outlook.Inspector)
-        RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWSGoYellow, insp)
-    End Sub
+    'Friend Sub RWSGoYellow(ByVal insp As Outlook.Inspector)
+    '    RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWSGoYellow, insp)
+    'End Sub
 
     Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
         RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWS11880, insp)

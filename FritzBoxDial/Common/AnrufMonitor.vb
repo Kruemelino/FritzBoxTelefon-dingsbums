@@ -424,15 +424,15 @@ Public Class AnrufMonitor
                         If RWSIndex Then vCard = C_XML.Read("CBRWSIndex", TelNr, "")
                         If vCard = vbNullString Then
                             Select Case C_XML.Read("Optionen", "CBoxRWSuche", "0")
+                                'Case "0"
+                                '    rws = frmRWS.RWSGoYellow(TelNr, vCard)
                                 Case "0"
-                                    rws = frmRWS.RWSGoYellow(TelNr, vCard)
-                                Case "1"
                                     rws = frmRWS.RWS11880(TelNr, vCard)
-                                Case "2"
+                                Case "1"
                                     rws = frmRWS.RWSDasTelefonbuch(TelNr, vCard)
-                                Case "3"
+                                Case "2"
                                     rws = frmRWS.RWStelsearch(TelNr, vCard)
-                                Case "4"
+                                Case "3"
                                     rws = frmRWS.RWSAlle(TelNr, vCard)
                             End Select
                             'Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. Dies geschieht nur, wenn es gewünscht ist.
@@ -559,15 +559,15 @@ Public Class AnrufMonitor
                         If RWSIndex Then vCard = C_XML.Read("CBRWSIndex", TelNr, "")
                         If vCard = vbNullString Then
                             Select Case C_XML.Read("Optionen", "CBoxRWSuche", "0")
+                                'Case "0"
+                                '    rws = frmRWS.RWSGoYellow(TelNr, vCard)
                                 Case "0"
-                                    rws = frmRWS.RWSGoYellow(TelNr, vCard)
-                                Case "1"
                                     rws = frmRWS.RWS11880(TelNr, vCard)
-                                Case "2"
+                                Case "1"
                                     rws = frmRWS.RWSDasTelefonbuch(TelNr, vCard)
-                                Case "3"
+                                Case "2"
                                     rws = frmRWS.RWStelsearch(TelNr, vCard)
-                                Case "4"
+                                Case "3"
                                     rws = frmRWS.RWSAlle(TelNr, vCard)
                             End Select
                             'Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. Dies geschieht nur, wenn es gewünscht ist.

@@ -5,7 +5,7 @@ Public Class formRWSuche
     Private HTMLFehler As ErrObject
 
     Public Enum Suchmaschine
-        RWSGoYellow = 0
+        'RWSGoYellow = 0
         RWS11880 = 1
         RWSDasTelefonbuch = 2
         RWStelSearch = 3
@@ -88,8 +88,8 @@ Public Class formRWSuche
                     ' je nach 'Suchmaschine' Suche durchführen
                     If Not TelNr = "" Then
                         Select Case RWSAnbieter
-                            Case Suchmaschine.RWSGoYellow
-                                rws = RWSGoYellow(TelNr, vCard)
+                            'Case Suchmaschine.RWSGoYellow
+                            '    rws = RWSGoYellow(TelNr, vCard)
                             Case Suchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
                             Case Suchmaschine.RWSDasTelefonbuch
@@ -124,8 +124,8 @@ Public Class formRWSuche
                         TelNr = Mid(.Body, 11, InStr(1, .Body, vbNewLine) - 11)
                         ' je nach 'Suchmaschine' Suche durchführen
                         Select Case RWSAnbieter
-                            Case Suchmaschine.RWSGoYellow
-                                rws = RWSGoYellow(TelNr, vCard)
+                            'Case Suchmaschine.RWSGoYellow
+                            '    rws = RWSGoYellow(TelNr, vCard)
                             Case Suchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
                             Case Suchmaschine.RWSDasTelefonbuch
@@ -217,83 +217,84 @@ Public Class formRWSuche
         End If
     End Function
 
-    Function RWSGoYellow(ByRef TelNr As String, ByRef vCard As String) As Boolean
-        ' führt die Rückwärtssuche über 'www.goyellow.de' durch
-        ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
-        '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
-        ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
+    'Function RWSGoYellow(ByRef TelNr As String, ByRef vCard As String) As Boolean
+    '    ' führt die Rückwärtssuche über 'www.goyellow.de' durch
+    '    ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
+    '    '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
+    '    ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
 
-        RWSGoYellow = False
+    '    RWSGoYellow = False
 
-        Dim myurl As String             ' URL von 11880
-        Dim temp As String             ' Hilfsstring
-        Dim tempTelNr As String ' Hilfsstring für TelNr
-        Dim htmlGoYellow As String             ' Inhalt der Webseite
-        Dim pos, pos1, pos2 As Integer               ' Positionen in 'html11880'
-        Dim i As Long               ' Zählvariable
+    '    Dim myurl As String             ' URL von 11880
+    '    Dim temp As String             ' Hilfsstring
+    '    Dim tempTelNr As String ' Hilfsstring für TelNr
+    '    Dim htmlGoYellow As String             ' Inhalt der Webseite
+    '    Dim pos, pos1, pos2 As Integer               ' Positionen in 'html11880'
+    '    Dim i As Long               ' Zählvariable
 
-        'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-        Const SWVisitenkarte1 As String = "<a title=Eine Visitenkarte"
-        Const SWVisitenkarte2 As String = "href="
-        ' Vorwahl erkennen
-        ' TelNr sichern, da sie unter Umständen verändert wird
-        tempTelNr = hf.nurZiffern(TelNr, "0049")
-        ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
-        ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
-        ' Schleife wird maximall drei mal durchlaufen
-        i = 0
-        If Not Strings.Left(tempTelNr, 2) = "11" Then
-            Do
-                ' Webseite für Rückwärtssuche aufrufen und herunterladen
-                myurl = "http://www.goyellow.de/inverssuche/?TEL=" & tempTelNr
-                htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-                If HTMLFehler Is Nothing Then
-                    htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
-                    pos = InStr(1, htmlGoYellow, "<a href=/upgrade?q=", CompareMethod.Text)
-                    If Not pos = 0 Then
-                        pos1 = InStr(pos, htmlGoYellow, " title", CompareMethod.Text)
-                        myurl = "http://www.goyellow.de/upgrade?TEL=" & tempTelNr & "&q=" & Mid(htmlGoYellow, pos + 19, pos1 - pos - 19)
-                        htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-                        htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
-                    End If
+    '    'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
+    '    Const SWVisitenkarte1 As String = "<a title=Eine Visitenkarte"
+    '    Const SWVisitenkarte2 As String = "href="
+    '    ' Vorwahl erkennen
+    '    ' TelNr sichern, da sie unter Umständen verändert wird
+    '    tempTelNr = hf.nurZiffern(TelNr, "0049")
+    '    ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
+    '    ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
+    '    ' Schleife wird maximall drei mal durchlaufen
+    '    i = 0
+    '    If Not Strings.Left(tempTelNr, 2) = "11" Then
+    '        Do
+    '            ' Webseite für Rückwärtssuche aufrufen und herunterladen
+    '            'myurl = "http://www.goyellow.de/inverssuche/?TEL=" & tempTelNr
+    '            myurl = "http://www.goyellow.de/suche/" & tempTelNr & "/-/seite-1?locs=true"
+    '            htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+    '            If HTMLFehler Is Nothing Then
+    '                htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
+    '                pos = InStr(1, htmlGoYellow, "<a href=/upgrade?q=", CompareMethod.Text)
+    '                If Not pos = 0 Then
+    '                    pos1 = InStr(pos, htmlGoYellow, " title", CompareMethod.Text)
+    '                    myurl = "http://www.goyellow.de/upgrade?TEL=" & tempTelNr & "&q=" & Mid(htmlGoYellow, pos + 19, pos1 - pos - 19)
+    '                    htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+    '                    htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
+    '                End If
 
-                    ' Link zum Herunterladen der vCard suchen
-                    pos = InStr(1, htmlGoYellow, SWVisitenkarte1, CompareMethod.Text)
-                    If Not pos = 0 Then
-                        pos1 = InStr(pos, htmlGoYellow, SWVisitenkarte2) + Len(SWVisitenkarte2)
-                        pos2 = InStr(pos1, htmlGoYellow, ">", CompareMethod.Text)
-                        If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
-                            ' vCard herunterladen
-                            myurl = "http://www.goyellow.de" & Mid(htmlGoYellow, pos1, pos2 - pos1)
-                            vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-                        End If
-                    End If
-                    ' Rückgabewert ermitteln
-                    RWSGoYellow = Strings.Left(vCard, 11) = "BEGIN:VCARD"
-                    i = i + 1
-                    tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
-                Else
-                    hf.LogFile("FBError (RWSGoYellow): " & Err.Number & " - " & Err.Description & " - " & myurl)
-                    Exit Do
-                End If
-            Loop Until RWSGoYellow Or i = 3
-        End If
-        ' Bemerkungen und Webseiten aus vCard entfernen, da sie Werbung enthalten
-        If RWSGoYellow Then
-            pos1 = InStr(1, vCard, "URL", CompareMethod.Text)
-            If Not pos1 = 0 Then
-                pos2 = InStr(pos1, vCard, Chr(10), CompareMethod.Text)
-                If Not pos2 = 0 Then temp = Mid(vCard, pos1, pos2 - pos1 + 1) Else temp = ""
-                If Not InStr(1, vCard, "www.goyellow.de", CompareMethod.Text) = 0 Then vCard = Replace(vCard, temp, "", , , CompareMethod.Text)
-            End If
-            pos1 = InStr(1, vCard, "NOTE", CompareMethod.Text)
-            If Not pos1 = 0 Then
-                pos2 = InStr(pos1, vCard, Chr(10), CompareMethod.Text)
-                If Not pos2 = 0 Then temp = Mid(vCard, pos1, pos2 - pos1 + 1) Else temp = ""
-                If Not InStr(1, vCard, "www.goyellow.de", CompareMethod.Text) = 0 Then vCard = Replace(vCard, temp, "", , , CompareMethod.Text)
-            End If
-        End If
-    End Function
+    '                ' Link zum Herunterladen der vCard suchen
+    '                pos = InStr(1, htmlGoYellow, SWVisitenkarte1, CompareMethod.Text)
+    '                If Not pos = 0 Then
+    '                    pos1 = InStr(pos, htmlGoYellow, SWVisitenkarte2) + Len(SWVisitenkarte2)
+    '                    pos2 = InStr(pos1, htmlGoYellow, ">", CompareMethod.Text)
+    '                    If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
+    '                        ' vCard herunterladen
+    '                        myurl = "http://www.goyellow.de" & Mid(htmlGoYellow, pos1, pos2 - pos1)
+    '                        vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+    '                    End If
+    '                End If
+    '                ' Rückgabewert ermitteln
+    '                RWSGoYellow = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+    '                i = i + 1
+    '                tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
+    '            Else
+    '                hf.LogFile("FBError (RWSGoYellow): " & Err.Number & " - " & Err.Description & " - " & myurl)
+    '                Exit Do
+    '            End If
+    '        Loop Until RWSGoYellow Or i = 3
+    '    End If
+    '    ' Bemerkungen und Webseiten aus vCard entfernen, da sie Werbung enthalten
+    '    If RWSGoYellow Then
+    '        pos1 = InStr(1, vCard, "URL", CompareMethod.Text)
+    '        If Not pos1 = 0 Then
+    '            pos2 = InStr(pos1, vCard, Chr(10), CompareMethod.Text)
+    '            If Not pos2 = 0 Then temp = Mid(vCard, pos1, pos2 - pos1 + 1) Else temp = ""
+    '            If Not InStr(1, vCard, "www.goyellow.de", CompareMethod.Text) = 0 Then vCard = Replace(vCard, temp, "", , , CompareMethod.Text)
+    '        End If
+    '        pos1 = InStr(1, vCard, "NOTE", CompareMethod.Text)
+    '        If Not pos1 = 0 Then
+    '            pos2 = InStr(pos1, vCard, Chr(10), CompareMethod.Text)
+    '            If Not pos2 = 0 Then temp = Mid(vCard, pos1, pos2 - pos1 + 1) Else temp = ""
+    '            If Not InStr(1, vCard, "www.goyellow.de", CompareMethod.Text) = 0 Then vCard = Replace(vCard, temp, "", , , CompareMethod.Text)
+    '        End If
+    '    End If
+    'End Function
 
     Function RWSDasTelefonbuch(ByRef TelNr As String, ByRef vCard As String) As Boolean
         ' führt die Rückwärtssuche über 'www.dastelefonbuch.de' durch
@@ -303,15 +304,16 @@ Public Class formRWSuche
         Dim myurl As String             ' URL von 11880
         Dim formdata As String
         Dim tempTelNr As String             ' Hilfsstring für TelNr
-        Dim html As String             ' Inhalt der Webseite
+        'Dim html As String             ' Inhalt der Webseite
 
         Dim pos1, pos2 As Integer               ' Positionen in 'html11880'
         Dim i As Integer
         Dim Text As String
 
         'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-        Const SW1 As String = "<a title='Kontakt als V-Card herunterladen' href='"
-        Const SW2 As String = "'"
+        Const SW1 As String = "<a  href='http://www1.dastelefonbuch.de/VCard?encurl="
+        Const SW2 As String = "&amp;logourl"
+
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
         vCard = ""
         tempTelNr = hf.nurZiffern(TelNr, "0049")
@@ -320,20 +322,18 @@ Public Class formRWSuche
         ' Schleife wird maximall drei mal durchlaufen
         i = 0
         Do
-            myurl = "http://www.dastelefonbuch.de/"
-            formdata = "sp=0&aktion=23&kw=" & tempTelNr & "&ort=&cifav=0&s=a10000&stype=s&la=de&taoid=&cmd=search&ort_ok=0&vert_ok=0"
-
+            myurl = "http://www1.dastelefonbuch.de/"
+            'formdata = "sp=0&aktion=23&kw=" & tempTelNr & "&ort=&cifav=0&s=a10000&stype=s&la=de&taoid=&cmd=search&ort_ok=0&vert_ok=0"
+            formdata = "cmd=detail&kw=" & tempTelNr
             Text = hf.httpWrite(myurl, formdata, System.Text.Encoding.Default)
+
             If Not Text = "" Then
-                html = Replace(Text, Chr(34), "'", , , CompareMethod.Text) '" enfernen
-                pos1 = InStr(1, html, SW1, CompareMethod.Text)
+                Text = Replace(Text, Chr(34), "'", , , CompareMethod.Text) '" enfernen
+                pos1 = InStr(1, Text, SW1, CompareMethod.Text)
                 If Not pos1 = 0 Then
                     pos1 = pos1 + Len(SW1)
-                    pos2 = InStr(pos1, html, SW2, vbTextCompare)
-                    myurl = Mid(html, pos1, pos2 - pos1)
-
-                    'myurl = Replace(myurl, "dastelefonbuch.de", "dastelefonbuch.de/", , , vbTextCompare)
-                    myurl = Replace(myurl, "&amp;", "&", , , vbTextCompare)
+                    pos2 = InStr(pos1, Text, SW2, vbTextCompare)
+                    myurl = "http://www1.dastelefonbuch.de/VCard?encurl=" & Mid(Text, pos1, pos2 - pos1)
                     vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
                 End If
             End If
@@ -415,8 +415,8 @@ Public Class formRWSuche
     Function RWSAlle(ByRef TelNr As String, ByRef vCard As String) As Boolean
         RWSAlle = RWS11880(TelNr, vCard)
         If RWSAlle Then Exit Function
-        RWSAlle = RWSGoYellow(TelNr, vCard)
-        If RWSAlle Then Exit Function
+        'RWSAlle = RWSGoYellow(TelNr, vCard)
+        'If RWSAlle Then Exit Function
         RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
         If RWSAlle Then Exit Function
         RWSAlle = RWStelsearch(TelNr, vCard)

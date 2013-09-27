@@ -25,7 +25,7 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Public WithEvents iPopRWS As Office.CommandBarPopup
     Public WithEvents iBtnWwh As Office.CommandBarButton
-    Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
+    'Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
     Public WithEvents iBtnRws11880 As Office.CommandBarButton
     Public WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Public WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -132,7 +132,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRwsGoYellow, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If XML.Read("Optionen", "CBKHO", "True") = "True" Then
@@ -195,9 +195,9 @@ Public Class ThisAddIn
         GUI.KontaktErstellen()
     End Sub
 
-    Private Sub iBtnRwsGoYellow_Click1(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnRwsGoYellow.Click
-        GUI.RWSGoYellow(oApp.ActiveInspector)
-    End Sub
+    'Private Sub iBtnRwsGoYellow_Click1(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnRwsGoYellow.Click
+    '    GUI.RWSGoYellow(oApp.ActiveInspector)
+    'End Sub
 
     Private Sub iBtnRws11880_Click1(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnRws11880.Click
         GUI.RWS11880(oApp.ActiveInspector)

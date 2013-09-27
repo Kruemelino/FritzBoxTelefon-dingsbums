@@ -125,7 +125,7 @@ Public Class formCfg
         Me.CBKHO.Checked = CBool(IIf(C_XML.Read("Optionen", "CBKHO", "True") = "True", True, False))
         Me.CBRWSIndex.Checked = CBool(IIf(C_XML.Read("Optionen", "CBRWSIndex", "True") = "True", True, False))
         With Me.ComboBoxRWS.Items
-            .Add("GoYellow.de")
+            '.Add("GoYellow.de")
             .Add("11880.com")
             .Add("DasTelefonbuch.de")
             .Add("tel.search.ch")
