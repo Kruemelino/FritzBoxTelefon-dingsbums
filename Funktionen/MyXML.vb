@@ -6,7 +6,7 @@ Public Class MyXML
     Private sDateiPfad As String
 
     Private Const Speicherintervall As Double = 30 'in Minuten
-
+    Private Const RootName As String = "FritzOutlookXML"
     Private WithEvents tSpeichern As Timer
 
     Public Sub New(ByVal DateiPfad As String)
@@ -16,7 +16,7 @@ Public Class MyXML
             If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension.ToString = ".xml" Then
                 XMLDoc.Load(sDateiPfad)
             Else
-                XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><FritzOutlookXML/>")
+                XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
             End If
         End With
         tSpeichern = New Timer
@@ -47,6 +47,7 @@ Public Class MyXML
 
     End Function
 #End Region
+
 #Region "Write"
     Public Overloads Function Write(ByVal ZielDaten As String(), ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
         Dim StrArr As New ArrayList
@@ -89,11 +90,13 @@ Public Class MyXML
         Dim tmpNodeList As XmlNodeList
         Dim StrArr As New ArrayList
         Dim stmp As String = vbNullString
+        Dim xPath As String
+
         ReadAllTelNr = ";"
 
         With XMLDoc
             StrArr.Add(DieSektion)
-            Dim xPath As String = CreateXPath(StrArr)
+            xPath = CreateXPath(StrArr)
             If Not .SelectSingleNode(xPath) Is Nothing Then
                 StrArr.Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
                 xPath = CreateXPath(StrArr)
@@ -108,9 +111,10 @@ Public Class MyXML
             End If
         End With
     End Function
-    Function CreateXPath(ByVal Pfad As ArrayList) As String
-        Pfad.Insert(0, XMLDoc.DocumentElement.Name)
-        Return "/" & Join(Pfad.ToArray(), "/")
+
+    Function CreateXPath(ByVal xPathElements As ArrayList) As String
+        If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
+        CreateXPath = "/" & Join(xPathElements.ToArray(), "/")
     End Function
 
     Sub Delete(ByVal DieSektion As String)
