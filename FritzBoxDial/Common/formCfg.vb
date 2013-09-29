@@ -441,7 +441,7 @@ Public Class formCfg
 
 
     Sub CLBtelnrAusfüllen()
-        Dim TelNrString As String = "Alle Telefonnummern;" & C_XML.ReadTelNr("Telefone")
+        Dim TelNrString As String = "Alle Telefonnummern;" & C_XML.ReadAllTelNr("Telefone")
         Dim CheckString() As String = Split(C_XML.Read("Telefone", "CLBTelNr", ";"), ";", , CompareMethod.Text)
 
         Dim res = From x In Split(TelNrString, ";", , CompareMethod.Text) Select x Distinct 'Doppelte entfernen

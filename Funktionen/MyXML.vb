@@ -25,72 +25,104 @@ Public Class MyXML
             .Start()
         End With
     End Sub
-
-    Public Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
-        With XMLDoc
-            Read = sDefault
-            If Not DerEintrag = vbNullString Then
-                If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
-                Try
-                    If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion, DerEintrag}, "/")) Is Nothing Then
-                        Read = .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")).Item(DerEintrag).InnerText()
-                    Else
-                        Read = sDefault
-                    End If
-                Catch
-                End Try
-            End If
-        End With
+#Region "Read"
+    Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
+        Return Read(New String() {DieSektion, DerEintrag}, sDefault)
     End Function
+    Public Overloads Function Read(ByVal ZielDaten As String(), ByVal sDefault As String) As String
+        Read = sDefault
+        Dim StrArr As New ArrayList
+        For Each sNodeName As String In ZielDaten
+            If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
+            StrArr.Add(sNodeName)
+        Next
 
-    Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+        Dim xPath As String = CreateXPath(StrArr)
+        StrArr = Nothing
+        If Not XMLDoc.SelectSingleNode(xPath) Is Nothing Then
+            Read = XMLDoc.SelectSingleNode(xPath).InnerText
+        Else
+            Read = sDefault
+        End If
 
+    End Function
+#End Region
+#Region "Write"
+    Public Overloads Function Write(ByVal ZielDaten As String(), ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+        Dim StrArr As New ArrayList
+        Dim sTmpXPath As String = vbNullString
+        Dim xPath As String
+        For Each sNodeName As String In ZielDaten
+            If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
+            StrArr.Add(sNodeName)
+        Next
+        xPath = CreateXPath(StrArr)
         With XMLDoc
-
-            If IsNumeric(Left(DerEintrag, 1)) Then DerEintrag = "ID" & DerEintrag
-            If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion, DerEintrag}, "/")) Is Nothing Then
-                .SelectSingleNode("//" & DieSektion).Item(DerEintrag).InnerText() = Value
+            If Not .SelectSingleNode(xPath) Is Nothing Then
+                .SelectSingleNode(xPath).InnerText() = Value
             Else
-                Dim xmlEintrag As XmlElement
-                Dim xmlText As XmlText
-
-                If .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")) Is Nothing Then
-                    .DocumentElement.AppendChild(.CreateElement(DieSektion))
-                End If
-                xmlEintrag = .CreateElement(DerEintrag)
-                xmlText = .CreateTextNode(Value)
-                xmlEintrag.AppendChild(xmlText)
-                .DocumentElement.Item(DieSektion).AppendChild(xmlEintrag)
+                StrArr.RemoveRange(0, StrArr.Count)
+                For Each sNodeName As String In ZielDaten
+                    If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
+                    StrArr.Add(sNodeName)
+                    xPath = CreateXPath(StrArr)
+                    If .SelectSingleNode(xPath) Is Nothing Then
+                        .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
+                    Else
+                        sTmpXPath = xPath
+                    End If
+                Next
+                Write(ZielDaten, Value, SpeichereDatei)
             End If
             If SpeichereDatei Then SpeichereXMLDatei()
         End With
+        StrArr = Nothing
         Return True
     End Function
 
-    Function ReadTelNr(ByVal DieSektion As String) As String
-        Dim tmpnodelist As XmlNodeList
+    Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+        Return Write(New String() {DieSektion, DerEintrag}, Value, SpeichereDatei)
+    End Function
+#End Region
+
+    Function ReadAllTelNr(ByVal DieSektion As String) As String
+        Dim tmpNodeList As XmlNodeList
+        Dim StrArr As New ArrayList
         Dim stmp As String = vbNullString
-        ReadTelNr = ";"
+        ReadAllTelNr = ";"
+
         With XMLDoc
-            If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")) Is Nothing Then
-                tmpnodelist = .SelectNodes(Join({.DocumentElement.Name, DieSektion, "*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]"}, "/"))
-                'tmpnodelist = .SelectNodes("//" & DieSektion & "//*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
-                If Not tmpnodelist.Count = 0 Then
-                    For Each temxmlnode As XmlNode In tmpnodelist
-                        stmp += temxmlnode.InnerText & ";"
+            StrArr.Add(DieSektion)
+            Dim xPath As String = CreateXPath(StrArr)
+            If Not .SelectSingleNode(xPath) Is Nothing Then
+                StrArr.Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
+                xPath = CreateXPath(StrArr)
+                tmpNodeList = .SelectNodes(xPath)
+
+                If Not tmpNodeList.Count = 0 Then
+                    For Each tmpXmlNode As XmlNode In tmpNodeList
+                        If Not tmpXmlNode.InnerText = vbNullString Then stmp += tmpXmlNode.InnerText & ";"
                     Next
-                    ReadTelNr = Left(stmp, Len(stmp) - 1)
+                    ReadAllTelNr = Left(stmp, Len(stmp) - 1)
                 End If
             End If
         End With
     End Function
+    Function CreateXPath(ByVal Pfad As ArrayList) As String
+        Pfad.Insert(0, XMLDoc.DocumentElement.Name)
+        Return "/" & Join(Pfad.ToArray(), "/")
+    End Function
 
     Sub Delete(ByVal DieSektion As String)
+        Dim StrArr As New ArrayList
+        StrArr.Add(DieSektion)
+        Dim xPath As String = CreateXPath(StrArr)
         With XMLDoc
-            If Not .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")) Is Nothing Then
-                .SelectSingleNode(Join({.DocumentElement.Name, DieSektion}, "/")).RemoveAll()
+            If Not .SelectSingleNode(xPath) Is Nothing Then
+                .SelectSingleNode(xPath).RemoveAll()
             End If
         End With
+        StrArr = Nothing
     End Sub
 
     Function GetXMLDateiPfad() As String

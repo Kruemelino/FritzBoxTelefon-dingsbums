@@ -593,8 +593,8 @@ Public Class AnrufMonitor
                             If RWSIndex Then C_XML.Write("CBRWSIndex", hf.nurZiffern(TelNr, LandesVW), vCard, False)
                             KontaktID = "-1" & Anrufer & ";" & vCard
                         End If
-                End If
-                TelNr = hf.formatTelNr(TelNr)
+                    End If
+                    TelNr = hf.formatTelNr(TelNr)
                 End If
             End If
             ' Daten im Menü für Wahlwiederholung speichern

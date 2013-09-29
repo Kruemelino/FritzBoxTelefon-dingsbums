@@ -118,6 +118,7 @@ Public Class ThisAddIn
 
     Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
         AnrMon.AnrMonQuit()
+        XML.SpeichereXMLDatei()
         With hf
             .NAR(oApp)
 #If OVer < 14 Then

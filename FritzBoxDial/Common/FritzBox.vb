@@ -982,7 +982,7 @@ Public Class FritzBox
             FAX = (From x In FAX Where Not x Like "" Select x).ToArray
 
             POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
-            If Not POTS = "-1" Then
+            If Not POTS = "-1" And Not POTS = vbNullString Then
                 If Strings.Left(POTS, 3) = "SIP" Then
                     POTS = SIP(CInt(Mid(POTS, 4, 1)))
                 Else
@@ -999,7 +999,7 @@ Public Class FritzBox
 
 
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
-            If Not Mobil = "-1" Then
+            If Not Mobil = "-1" And Not Mobil = vbNullString Then
                 If Strings.Left(Mobil, 3) = "SIP" Then
                     Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
                 Else
@@ -1011,7 +1011,6 @@ Public Class FritzBox
                 Else
                     C_XML.Write("Telefone", "Mobil", Mobil, False)
                 End If
-
             End If
 
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
