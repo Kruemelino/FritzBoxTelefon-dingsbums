@@ -5,7 +5,7 @@ Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
 
-    Private Const Speicherintervall As Double = 30 'in Minuten
+    Private Const Speicherintervall As Double = 15 'in Minuten
     Private Const RootName As String = "FritzOutlookXML"
     Private WithEvents tSpeichern As Timer
 
@@ -25,6 +25,19 @@ Public Class MyXML
             .Start()
         End With
     End Sub
+
+    Protected Overrides Sub Finalize()
+        XMLDoc.Save(sDateiPfad)
+        XMLDoc = Nothing
+        If Not tSpeichern Is Nothing Then
+            tSpeichern.Stop()
+            tSpeichern.Dispose()
+            tSpeichern = Nothing
+        End If
+
+        MyBase.Finalize()
+    End Sub
+
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         Return Read(New String() {DieSektion, DerEintrag}, sDefault)
@@ -49,6 +62,10 @@ Public Class MyXML
 #End Region
 
 #Region "Write"
+    Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+        Return Write(New String() {DieSektion, DerEintrag}, Value, SpeichereDatei)
+    End Function
+
     Public Overloads Function Write(ByVal ZielDaten As String(), ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
         Dim StrArr As New ArrayList
         Dim sTmpXPath As String = vbNullString
@@ -69,9 +86,8 @@ Public Class MyXML
                     xPath = CreateXPath(StrArr)
                     If .SelectSingleNode(xPath) Is Nothing Then
                         .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
-                    Else
-                        sTmpXPath = xPath
                     End If
+                    sTmpXPath = xPath
                 Next
                 Write(ZielDaten, Value, SpeichereDatei)
             End If
@@ -80,16 +96,22 @@ Public Class MyXML
         StrArr = Nothing
         Return True
     End Function
-
-    Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
-        Return Write(New String() {DieSektion, DerEintrag}, Value, SpeichereDatei)
-    End Function
 #End Region
 
+#Region "Speichern"
+    Sub SpeichereXMLDatei()
+        XMLDoc.Save(sDateiPfad)
+    End Sub
+
+    Private Sub tSpeichern_Elapsed(sender As Object, e As ElapsedEventArgs) Handles tSpeichern.Elapsed
+        SpeichereXMLDatei()
+    End Sub
+#End Region
+
+#Region "Stuff"
     Function ReadAllTelNr(ByVal DieSektion As String) As String
         Dim tmpNodeList As XmlNodeList
         Dim StrArr As New ArrayList
-        Dim stmp As String = vbNullString
         Dim xPath As String
 
         ReadAllTelNr = ";"
@@ -104,9 +126,9 @@ Public Class MyXML
 
                 If Not tmpNodeList.Count = 0 Then
                     For Each tmpXmlNode As XmlNode In tmpNodeList
-                        If Not tmpXmlNode.InnerText = vbNullString Then stmp += tmpXmlNode.InnerText & ";"
+                        If Not tmpXmlNode.InnerText = vbNullString Then ReadAllTelNr += tmpXmlNode.InnerText & ";"
                     Next
-                    ReadAllTelNr = Left(stmp, Len(stmp) - 1)
+                    ReadAllTelNr = Left(ReadAllTelNr, Len(ReadAllTelNr) - 1)
                 End If
             End If
         End With
@@ -132,24 +154,6 @@ Public Class MyXML
     Function GetXMLDateiPfad() As String
         Return sDateiPfad
     End Function
+#End Region
 
-    Protected Overrides Sub Finalize()
-        XMLDoc.Save(sDateiPfad)
-        XMLDoc = Nothing
-        If Not tSpeichern Is Nothing Then
-            tSpeichern.Stop()
-            tSpeichern.Dispose()
-            tSpeichern = Nothing
-        End If
-
-        MyBase.Finalize()
-    End Sub
-
-    Sub SpeichereXMLDatei()
-        XMLDoc.Save(sDateiPfad)
-    End Sub
-
-    Private Sub tSpeichern_Elapsed(sender As Object, e As ElapsedEventArgs) Handles tSpeichern.Elapsed
-        SpeichereXMLDatei()
-    End Sub
 End Class
