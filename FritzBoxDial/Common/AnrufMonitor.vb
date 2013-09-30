@@ -2,6 +2,7 @@
 Imports System.Net
 Imports System.IO
 Imports System.ComponentModel
+Imports System.Collections
 
 Public Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
@@ -20,7 +21,6 @@ Public Class AnrufMonitor
     Private hf As Helfer
     Private frmRWS As formRWSuche
     Private frmStopp As formStoppUhr
-    Private JExml As JournalXML
 
     Private StandbyCounter As Integer
     Friend AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
@@ -43,7 +43,6 @@ Public Class AnrufMonitor
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
-                   ByVal JXML As JournalXML, _
                    ByVal FBAdr As String)
 
         hf = HelferKlasse
@@ -53,7 +52,6 @@ Public Class AnrufMonitor
         frmRWS = RWS
         UseAnrMon = NutzeAnrMon
         OlI = OutlInter
-        JExml = JXML
         IPAddresse = FBAdr
         ' STARTE Anrmon
         AnrMonStart(False)
@@ -492,7 +490,7 @@ Public Class AnrufMonitor
             End If
             ' Daten für den Journaleintrag sichern
             If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or StoppUhrAnzeigen Then
-                JExml.NeuerJI(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
+                NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
             End If
         End If
 
@@ -622,8 +620,8 @@ Public Class AnrufMonitor
             End If
             ' Daten für den Journaleintrag sichern
             If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or StoppUhrAnzeigen Then
-                JExml.NeuerJI(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
-                JExml.ZuJEhinzufügen(ID, "NSN", CStr(FBStatus.GetValue(3)))
+                NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
+                ZuJEhinzufügen(ID, "NSN", CStr(FBStatus.GetValue(3)))
             End If
         End If
     End Sub '(AnrMonCALL)
@@ -634,7 +632,7 @@ Public Class AnrufMonitor
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
             Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1")
             Dim ID As Integer = CInt(FBStatus.GetValue(2))
-            Dim MSN As String = JExml.JEWertAuslesen(ID, "MSN")
+            Dim MSN As String = JEWertAuslesen(ID, "MSN")
             ' FBStatus(0): Uhrzeit
             ' FBStatus(1): CONNECT, wird nicht verwendet
             ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
@@ -642,14 +640,13 @@ Public Class AnrufMonitor
             If Not MSN = Nothing Then
                 If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
-                    With JExml
-                        If .JEWertAuslesen(ID, "NSN") = vbNullString Then
-                            .ZuJEhinzufügen(ID, "NSN", CStr(FBStatus.GetValue(3)))
-                        Else
-                            .JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
-                        End If
-                        .ZuJEhinzufügen(ID, "Zeit", CStr(FBStatus.GetValue(0)))
-                    End With
+
+                    If JEWertAuslesen(ID, "NSN") = vbNullString Then
+                        ZuJEhinzufügen(ID, "NSN", CStr(FBStatus.GetValue(3)))
+                    Else
+                        JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
+                    End If
+                    ZuJEhinzufügen(ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
                     If StoppUhrAnzeigen Then
                         BWStoppuhrEinblenden = New BackgroundWorker
@@ -704,7 +701,7 @@ Public Class AnrufMonitor
         Dim SchließZeit As Date = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
 
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
-            JExml.JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
+            JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
             Dim JMSN As String = hf.OrtsVorwahlEntfernen(MSN, Vorwahl)
             If Not MSN = Nothing Then
                 If hf.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
@@ -822,7 +819,7 @@ Public Class AnrufMonitor
                     If CDate(Zeit) > SchließZeit Or SchließZeit = System.DateTime.Now Then
                         C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
                     End If
-                    JExml.JEentfernen(ID)
+                    JEentfernen(ID)
                 End If
             Else
                 hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
@@ -843,6 +840,140 @@ Public Class AnrufMonitor
             STUhrDaten(ID).Abbruch = True
         End If
     End Sub '(AnrMonDISCONNECT)
+#End Region
+
+#Region "Journaleinträge"
+    Sub NeuerJournalEintrag(ByVal ID As Integer, _
+                            ByVal Typ As String, _
+                            ByVal Zeit As String, _
+                            ByVal MSN As String, _
+                            ByVal TelNr As String, _
+                            ByVal KontaktID As String, _
+                            ByVal StoreID As String)
+
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("Journal")
+            .Add("ID" & ID)
+            .Add("Typ")
+            C_XML.Write(StrArr, Typ, False)
+
+            .RemoveAt(.Count - 1)
+            .Add("Zeit")
+            C_XML.Write(StrArr, Zeit, False)
+
+            .RemoveAt(.Count - 1)
+            .Add("MSN")
+            C_XML.Write(StrArr, MSN, False)
+
+            .RemoveAt(.Count - 1)
+            .Add("TelNr")
+            C_XML.Write(StrArr, TelNr, False)
+
+            .RemoveAt(.Count - 1)
+            .Add("KontaktID")
+            C_XML.Write(StrArr, KontaktID, False)
+
+            .RemoveAt(.Count - 1)
+            .Add("StoreID")
+            C_XML.Write(StrArr, StoreID, True)
+
+        End With
+        StrArr = Nothing
+    End Sub
+
+    Sub ZuJEhinzufügen(ByVal ID As Integer, _
+                       ByVal Name As String, _
+                       ByVal Value As String)
+
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("Journal")
+            .Add("ID" & ID)
+            .Add(Name)
+            C_XML.Write(StrArr, Value, False)
+        End With
+        StrArr = Nothing
+    End Sub
+
+    Sub JIauslesen(ByVal ID As Integer, _
+               ByRef NSN As String, _
+               ByRef Zeit As String, _
+               ByRef Typ As String, _
+               ByRef MSN As String, _
+               ByRef TelNr As String, _
+               ByRef StoreID As String, _
+               ByRef KontaktID As String)
+
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("Journal")
+            .Add("ID" & ID)
+            .Add("Typ")
+            Typ = C_XML.Read(StrArr, "-1")
+
+            .RemoveAt(.Count - 1)
+            .Add("Zeit")
+            Zeit = C_XML.Read(StrArr, "-1")
+
+            .RemoveAt(.Count - 1)
+            .Add("MSN")
+            MSN = C_XML.Read(StrArr, "-1")
+
+            .RemoveAt(.Count - 1)
+            .Add("NSN")
+            NSN = C_XML.Read(StrArr, "-1")
+
+            .RemoveAt(.Count - 1)
+            .Add("TelNr")
+            TelNr = C_XML.Read(StrArr, "-1")
+
+            .RemoveAt(.Count - 1)
+            .Add("KontaktID")
+            KontaktID = C_XML.Read(StrArr, "-1")
+
+            .RemoveAt(.Count - 1)
+            .Add("StoreID")
+            StoreID = C_XML.Read(StrArr, "-1")
+        End With
+
+        StrArr = Nothing
+    End Sub
+
+    Sub JIÄndern(ByVal ID As Integer, _
+                   ByVal Name As String, _
+                   ByVal Value As String)
+
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("Journal")
+            .Add("ID" & ID)
+            .Add(Name)
+            C_XML.Write(StrArr, Value, False)
+        End With
+        StrArr = Nothing
+    End Sub
+
+    Function JEWertAuslesen(ByVal ID As Integer, ByVal Name As String) As String
+
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("Journal")
+            .Add("ID" & ID)
+            .Add(Name)
+            Return C_XML.Read(StrArr, "-1")
+        End With
+        StrArr = Nothing
+    End Function
+
+    Sub JEentfernen(ID As Integer)
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("Journal")
+            .Add("ID" & ID)
+            C_XML.Delete(StrArr)
+        End With
+    End Sub
 #End Region
 
 End Class

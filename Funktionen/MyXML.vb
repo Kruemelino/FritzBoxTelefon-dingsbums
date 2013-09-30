@@ -19,6 +19,7 @@ Public Class MyXML
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
             End If
         End With
+        RemoveJournalNodes()
         tSpeichern = New Timer
         With tSpeichern
             .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds  ' 30 Minuten
@@ -40,22 +41,21 @@ Public Class MyXML
 
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
-        Return Read(New String() {DieSektion, DerEintrag}, sDefault)
-    End Function
-    Public Overloads Function Read(ByVal ZielDaten As String(), ByVal sDefault As String) As String
-        Read = sDefault
         Dim StrArr As New ArrayList
-        For Each sNodeName As String In ZielDaten
-            If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-            StrArr.Add(sNodeName)
-        Next
+        With StrArr
+            .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
+            .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
+        End With
+        Return Read(StrArr, sDefault)
+    End Function
+
+    Public Overloads Function Read(ByVal StrArr As ArrayList, ByVal sDefault As String) As String
+        Read = sDefault
 
         Dim xPath As String = CreateXPath(StrArr)
         StrArr = Nothing
         If Not XMLDoc.SelectSingleNode(xPath) Is Nothing Then
             Read = XMLDoc.SelectSingleNode(xPath).InnerText
-        Else
-            Read = sDefault
         End If
 
     End Function
@@ -63,23 +63,24 @@ Public Class MyXML
 
 #Region "Write"
     Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
-        Return Write(New String() {DieSektion, DerEintrag}, Value, SpeichereDatei)
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
+            .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
+        End With
+        Return Write(StrArr, Value, SpeichereDatei)
     End Function
 
-    Public Overloads Function Write(ByVal ZielDaten As String(), ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+    Public Overloads Function Write(ByVal ZielDaten As ArrayList, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
         Dim StrArr As New ArrayList
         Dim sTmpXPath As String = vbNullString
         Dim xPath As String
-        For Each sNodeName As String In ZielDaten
-            If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-            StrArr.Add(sNodeName)
-        Next
-        xPath = CreateXPath(StrArr)
+
+        xPath = CreateXPath(ZielDaten)
         With XMLDoc
             If Not .SelectSingleNode(xPath) Is Nothing Then
                 .SelectSingleNode(xPath).InnerText() = Value
             Else
-                StrArr.RemoveRange(0, StrArr.Count)
                 For Each sNodeName As String In ZielDaten
                     If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
                     StrArr.Add(sNodeName)
@@ -96,6 +97,28 @@ Public Class MyXML
         StrArr = Nothing
         Return True
     End Function
+#End Region
+
+#Region "Löschen"
+
+    Public Overloads Function Delete(ByVal DieSektion As String) As Boolean
+        Dim StrArr As New ArrayList
+        StrArr.Add(DieSektion)
+        Return Delete(StrArr)
+    End Function
+
+    Public Overloads Function Delete(ByVal alStrArr As ArrayList) As Boolean
+
+        Dim xPath As String = CreateXPath(alStrArr)
+        With XMLDoc
+            If Not .SelectSingleNode(xPath) Is Nothing Then
+                .SelectSingleNode(xPath).RemoveAll()
+            End If
+        End With
+        alStrArr = Nothing
+        Return True
+    End Function
+
 #End Region
 
 #Region "Speichern"
@@ -134,22 +157,32 @@ Public Class MyXML
         End With
     End Function
 
+    Private Sub RemoveJournalNodes()
+        Dim tmpNodeSchließZeit As XmlNode
+        Dim tmpJournalRootNode As XmlNode
+        Dim StrArr As New ArrayList
+        Dim xPath As String
+
+        With XMLDoc
+            StrArr.Add("Journal")
+            StrArr.Add("SchließZeit")
+            xPath = CreateXPath(StrArr)
+            tmpNodeSchließZeit = .SelectSingleNode(xPath)
+            StrArr.Remove("SchließZeit")
+            xPath = CreateXPath(StrArr)
+            tmpJournalRootNode = .SelectSingleNode(xPath)
+            tmpJournalRootNode.RemoveAll()
+
+            If Not tmpNodeSchließZeit Is Nothing Then
+                tmpJournalRootNode.AppendChild(tmpNodeSchließZeit)
+            End If
+        End With
+    End Sub
+
     Function CreateXPath(ByVal xPathElements As ArrayList) As String
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
         CreateXPath = "/" & Join(xPathElements.ToArray(), "/")
     End Function
-
-    Sub Delete(ByVal DieSektion As String)
-        Dim StrArr As New ArrayList
-        StrArr.Add(DieSektion)
-        Dim xPath As String = CreateXPath(StrArr)
-        With XMLDoc
-            If Not .SelectSingleNode(xPath) Is Nothing Then
-                .SelectSingleNode(xPath).RemoveAll()
-            End If
-        End With
-        StrArr = Nothing
-    End Sub
 
     Function GetXMLDateiPfad() As String
         Return sDateiPfad

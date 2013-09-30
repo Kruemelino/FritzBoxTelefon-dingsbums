@@ -12,7 +12,6 @@
     Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
     Private C_Phoner As PhonerInterface
-    Private C_JournalXML As JournalXML
 
     Private WithEvents emc As New EventMulticaster
 
@@ -54,9 +53,6 @@
         ' Klasse für das PhonerInterface generieren
         C_Phoner = New PhonerInterface(C_Helfer, C_XML, C_Crypt)
 
-        ' Klasse für das Journal-XML generieren
-        C_JournalXML = New JournalXML(DateiPfad, C_Helfer)
-
         If PrüfeAddin() Then
             UseAnrMon = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
 
@@ -67,7 +63,7 @@
 
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
-            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_JournalXML, C_FBox.GetFBAddr)
+            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.GetFBAddr)
 
             C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
 
