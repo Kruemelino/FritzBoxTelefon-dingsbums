@@ -621,7 +621,7 @@ Public Class AnrufMonitor
             ' Daten für den Journaleintrag sichern
             If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or StoppUhrAnzeigen Then
                 NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
-                ZuJEhinzufügen(ID, "NSN", CStr(FBStatus.GetValue(3)))
+                JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
             End If
         End If
     End Sub '(AnrMonCALL)
@@ -640,13 +640,8 @@ Public Class AnrufMonitor
             If Not MSN = Nothing Then
                 If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
-
-                    If JEWertAuslesen(ID, "NSN") = vbNullString Then
-                        ZuJEhinzufügen(ID, "NSN", CStr(FBStatus.GetValue(3)))
-                    Else
-                        JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
-                    End If
-                    ZuJEhinzufügen(ID, "Zeit", CStr(FBStatus.GetValue(0)))
+                    JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
+                    JIÄndern(ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
                     If StoppUhrAnzeigen Then
                         BWStoppuhrEinblenden = New BackgroundWorker
@@ -878,20 +873,6 @@ Public Class AnrufMonitor
             .Add("StoreID")
             C_XML.Write(StrArr, StoreID, True)
 
-        End With
-        StrArr = Nothing
-    End Sub
-
-    Sub ZuJEhinzufügen(ByVal ID As Integer, _
-                       ByVal Name As String, _
-                       ByVal Value As String)
-
-        Dim StrArr As New ArrayList
-        With StrArr
-            .Add("Journal")
-            .Add("ID" & ID)
-            .Add(Name)
-            C_XML.Write(StrArr, Value, False)
         End With
         StrArr = Nothing
     End Sub

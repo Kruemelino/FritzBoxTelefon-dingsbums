@@ -22,7 +22,7 @@ Public Class MyXML
         RemoveJournalNodes()
         tSpeichern = New Timer
         With tSpeichern
-            .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds  ' 30 Minuten
+            .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
             .Start()
         End With
     End Sub
