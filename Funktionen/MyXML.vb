@@ -19,7 +19,7 @@ Public Class MyXML
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
             End If
         End With
-        RemoveJournalNodes()
+        RemoveNodes()
         tSpeichern = New Timer
         With tSpeichern
             .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
@@ -157,25 +157,32 @@ Public Class MyXML
         End With
     End Function
 
-    Private Sub RemoveJournalNodes()
-        Dim tmpNodeSchließZeit As XmlNode
-        Dim tmpJournalRootNode As XmlNode
+    Private Sub RemoveNodes()
+        Dim tmpNode As XmlNode
         Dim StrArr As New ArrayList
         Dim xPath As String
 
         With XMLDoc
+            ' Diverse Knoten des Journals löschen
             StrArr.Add("Journal")
             StrArr.Add("SchließZeit")
             xPath = CreateXPath(StrArr)
-            tmpNodeSchließZeit = .SelectSingleNode(xPath)
+            tmpNode = .SelectSingleNode(xPath)
             StrArr.Remove("SchließZeit")
             xPath = CreateXPath(StrArr)
-            tmpJournalRootNode = .SelectSingleNode(xPath)
-            tmpJournalRootNode.RemoveAll()
-
-            If Not tmpNodeSchließZeit Is Nothing Then
-                tmpJournalRootNode.AppendChild(tmpNodeSchließZeit)
+            .SelectSingleNode(xPath).RemoveAll()
+            If Not tmpNode Is Nothing Then
+                .SelectSingleNode(xPath).AppendChild(tmpNode)
             End If
+            ' Alle Knoten LetzterAnrufer löschen
+            StrArr.RemoveRange(0, StrArr.Count)
+            StrArr.Add("LetzterAnrufer")
+            xPath = CreateXPath(StrArr)
+            tmpNode = .SelectSingleNode(xPath)
+            If Not tmpNode Is Nothing Then
+                .DocumentElement.RemoveChild(.SelectSingleNode(xPath))
+            End If
+            StrArr = Nothing
         End With
     End Sub
 
