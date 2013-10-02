@@ -122,25 +122,53 @@ Public Class MyXML
 #End Region
 
 #Region "Knoten"
-    Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList) As XmlNode
+    Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As String, ByVal Attribute As String) As XmlNode
         CreateXMLNode = Nothing
         If SubNodeName.Count = SubNodeValue.Count Then
 
             Dim tmpXMLNode As XmlNode
-            Dim XMLChildNode As XmlNode
+            Dim tmpXMLChildNode As XmlNode
+            Dim tmpXMLAttribute As XmlAttribute
             tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, vbNullString)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
-                    XMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
-                    XMLChildNode.InnerText = SubNodeValue.Item(i).ToString
-                    .AppendChild(XMLChildNode)
+                    tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
+                    tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
+                    .AppendChild(tmpXMLChildNode)
                 Next
             End With
+            tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
+            tmpXMLAttribute.Value = Attribute
+            tmpXMLNode.Attributes.Append(tmpXMLAttribute)
             CreateXMLNode = tmpXMLNode
+
+            tmpXMLAttribute = Nothing
             tmpXMLNode = Nothing
-            XMLChildNode = Nothing
+            tmpXMLChildNode = Nothing
         End If
     End Function
+
+    Sub ReadXMLNode(ByVal StrArr As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal Attribute As String)
+
+        If SubNodeName.Count = SubNodeValue.Count Then
+            Dim xPath As String
+            Dim tmpNode As XmlNode
+            With XMLDoc
+                StrArr.Add("[@ID=""" & Attribute & """]")
+                xPath = CreateXPath(StrArr)
+                tmpNode = .SelectSingleNode(xPath)
+                If Not tmpNode Is Nothing Then
+                    With tmpNode
+                        For Each XmlChildNode As XmlNode In tmpNode.ChildNodes
+                            SubNodeName.IndexOf(XmlChildNode.Name)
+                            SubNodeValue.Item(SubNodeName.IndexOf(XmlChildNode.Name)) = XmlChildNode.InnerText
+                        Next
+                    End With
+                End If
+            End With
+            tmpNode = Nothing
+        End If
+    End Sub
 
     Sub AppendNode(ByVal Knoten As XmlNode, ByVal StrArr As ArrayList)
         Dim DestxPath As String
@@ -161,7 +189,6 @@ Public Class MyXML
         End With
     End Sub
 #End Region
-
 
 #Region "Speichern"
     Sub SpeichereXMLDatei()
@@ -230,7 +257,7 @@ Public Class MyXML
 
     Function CreateXPath(ByVal xPathElements As ArrayList) As String
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-        CreateXPath = "/" & Join(xPathElements.ToArray(), "/")
+        CreateXPath = Replace("/" & Join(xPathElements.ToArray(), "/"), "/[@", "[@", , , CompareMethod.Text)
     End Function
 
     Function GetXMLDateiPfad() As String

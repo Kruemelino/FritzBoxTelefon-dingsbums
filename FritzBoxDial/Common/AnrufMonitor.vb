@@ -623,7 +623,7 @@ Public Class AnrufMonitor
             ' Daten für den Journaleintrag sichern
             If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or StoppUhrAnzeigen Then
                 NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
-                JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
+                JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
             End If
         End If
     End Sub '(AnrMonCALL)
@@ -634,7 +634,7 @@ Public Class AnrufMonitor
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
             Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1")
             Dim ID As Integer = CInt(FBStatus.GetValue(2))
-            Dim MSN As String = JEWertAuslesen(ID, "MSN")
+            Dim MSN As String = JEReadorWrite(True, ID, "MSN", "")
             ' FBStatus(0): Uhrzeit
             ' FBStatus(1): CONNECT, wird nicht verwendet
             ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
@@ -642,8 +642,8 @@ Public Class AnrufMonitor
             If Not MSN = Nothing Then
                 If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
-                    JIÄndern(ID, "NSN", CStr(FBStatus.GetValue(3)))
-                    JIÄndern(ID, "Zeit", CStr(FBStatus.GetValue(0)))
+                    JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
+                    JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
                     If StoppUhrAnzeigen Then
                         BWStoppuhrEinblenden = New BackgroundWorker
@@ -848,28 +848,33 @@ Public Class AnrufMonitor
                             ByVal KontaktID As String, _
                             ByVal StoreID As String)
 
+        Dim LANodeNames As New ArrayList
+        Dim LANodeValues As New ArrayList
         Dim StrArr As New ArrayList
-        With StrArr
-            .Add("Journal")
-            .Add("ID" & ID)
-            .Add("Typ")
-            C_XML.Write(StrArr, Typ, False)
 
-            .Item(.Count - 1) = "Zeit"
-            C_XML.Write(StrArr, Zeit, False)
+        LANodeNames.Add("Typ")
+        LANodeValues.Add(Typ)
 
-            .Item(.Count - 1) = "MSN"
-            C_XML.Write(StrArr, MSN, False)
+        LANodeNames.Add("Zeit")
+        LANodeValues.Add(Zeit)
 
-            .Item(.Count - 1) = "TelNr"
-            C_XML.Write(StrArr, TelNr, False)
+        LANodeNames.Add("MSN")
+        LANodeValues.Add(MSN)
 
-            .Item(.Count - 1) = "KontaktID"
-            C_XML.Write(StrArr, KontaktID, False)
+        LANodeNames.Add("TelNr")
+        LANodeValues.Add(TelNr)
 
-            .Item(.Count - 1) = "StoreID"
-            C_XML.Write(StrArr, StoreID, True)
+        LANodeNames.Add("KontaktID")
+        LANodeValues.Add(KontaktID)
 
+        LANodeNames.Add("StoreID")
+        LANodeValues.Add(StoreID)
+
+
+        StrArr.Add("Journal")
+
+        With C_XML
+            .AppendNode(.CreateXMLNode("ID", LANodeNames, LANodeValues, "ID", CStr(ID)), StrArr)
         End With
         StrArr = Nothing
     End Sub
@@ -883,63 +888,69 @@ Public Class AnrufMonitor
                ByRef StoreID As String, _
                ByRef KontaktID As String)
 
+        Dim LANodeNames As New ArrayList
+        Dim LANodeValues As New ArrayList
         Dim StrArr As New ArrayList
+
+        ' Uhrzeit
+        LANodeNames.Add("Zeit")
+        LANodeValues.Add("-1")
+
+        ' Typ
+        LANodeNames.Add("Typ")
+        LANodeValues.Add("-1")
+
+        ' TelNr
+        LANodeNames.Add("TelNr")
+        LANodeValues.Add("-1")
+
+        ' MSN
+        LANodeNames.Add("MSN")
+        LANodeValues.Add("-1")
+
+        ' NSN
+        LANodeNames.Add("NSN")
+        LANodeValues.Add("-1")
+
+        ' StoreID
+        LANodeNames.Add("StoreID")
+        LANodeValues.Add("-1")
+
+        ' KontaktID
+        LANodeNames.Add("KontaktID")
+        LANodeValues.Add("-1")
+
         With StrArr
             .Add("Journal")
-            .Add("ID" & ID)
-            .Add("Typ")
-            Typ = C_XML.Read(StrArr, "-1")
-
-            .RemoveAt(.Count - 1)
-            .Add("Zeit")
-            Zeit = C_XML.Read(StrArr, "-1")
-
-            .RemoveAt(.Count - 1)
-            .Add("MSN")
-            MSN = C_XML.Read(StrArr, "-1")
-
-            .RemoveAt(.Count - 1)
-            .Add("NSN")
-            NSN = C_XML.Read(StrArr, "-1")
-
-            .RemoveAt(.Count - 1)
-            .Add("TelNr")
-            TelNr = C_XML.Read(StrArr, "-1")
-
-            .RemoveAt(.Count - 1)
-            .Add("KontaktID")
-            KontaktID = C_XML.Read(StrArr, "-1")
-
-            .RemoveAt(.Count - 1)
-            .Add("StoreID")
-            StoreID = C_XML.Read(StrArr, "-1")
+            .Add("ID")
         End With
+        C_XML.ReadXMLNode(StrArr, LANodeNames, LANodeValues, CStr(ID))
+
+        Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+        Typ = CStr(LANodeValues.Item(LANodeNames.IndexOf("Typ")))
+        TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
+        MSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("MSN")))
+        NSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
+        StoreID = CStr(LANodeValues.Item(LANodeNames.IndexOf("StoreID")))
+        KontaktID = CStr(LANodeValues.Item(LANodeNames.IndexOf("KontaktID")))
 
         StrArr = Nothing
+        LANodeNames = Nothing
+        LANodeValues = Nothing
     End Sub
 
-    Sub JIÄndern(ByVal ID As Integer, _
-                   ByVal Name As String, _
-                   ByVal Value As String)
+    Function JEReadorWrite(ByVal JERead As Boolean, ByVal ID As Integer, ByVal Name As String, ByVal Value As String) As String
 
         Dim StrArr As New ArrayList
         With StrArr
             .Add("Journal")
-            .Add("ID" & ID)
+            .Add("ID[@ID=""" & ID & """]")
             .Add(Name)
-            C_XML.Write(StrArr, Value, False)
-        End With
-        StrArr = Nothing
-    End Sub
-
-    Function JEWertAuslesen(ByVal ID As Integer, ByVal Name As String) As String
-
-        Dim StrArr As New ArrayList
-        With StrArr
-            .Add("Journal")
-            .Add("ID" & ID)
-            .Add(Name)
-            Return C_XML.Read(StrArr, "-1")
+            If JERead Then
+                JEReadorWrite = C_XML.Read(StrArr, "-1")
+            Else
+                JEReadorWrite = CStr(C_XML.Write(StrArr, Value, False))
+            End If
         End With
         StrArr = Nothing
     End Function
@@ -948,7 +959,7 @@ Public Class AnrufMonitor
         Dim StrArr As New ArrayList
         With StrArr
             .Add("Journal")
-            .Add("ID" & ID)
+            .Add("ID[@ID=""" & ID & """]")
             C_XML.Delete(StrArr)
         End With
     End Sub
@@ -966,8 +977,6 @@ Public Class AnrufMonitor
         Dim LANodeNames As New ArrayList
         Dim LANodeValues As New ArrayList
         Dim StrArr As New ArrayList
-
-
 
         ' Uhrzeit
         LANodeNames.Add("Zeit")
@@ -1005,48 +1014,8 @@ Public Class AnrufMonitor
         With C_XML
             .Write(StrArr, ID, False)
             StrArr.Remove("Letzter")
-            .AppendNode(.CreateXMLNode("ID" & ID, LANodeNames, LANodeValues), StrArr)
+            .AppendNode(.CreateXMLNode("ID", LANodeNames, LANodeValues, "ID", ID), StrArr)
         End With
-
-
-        'With StrArr
-        '    .Add("LetzterAnrufer")
-        '    .Add("Letzter")
-        '    C_XML.Write(StrArr, ID, False)
-
-        '    '.Item(.Count - 1) = "ID" & ID 'BaseNodeName
-
-        '    '.Add("Zeit")
-        '    'C_XML.Write(StrArr, LA(0), False)
-
-        '    '.Item(.Count - 1) = "Anrufer"
-        '    'If Not LA(1) Is vbNullString Then
-        '    '    C_XML.Write(StrArr, LA(1), False)
-        '    'Else
-        '    '    C_XML.Delete(StrArr)
-        '    'End If
-
-        '    '.Item(.Count - 1) = "TelNr"
-        '    'C_XML.Write(StrArr, LA(2), False)
-
-        '    '.Item(.Count - 1) = "MSN"
-        '    'C_XML.Write(StrArr, LA(3), False)
-
-        '    '.Item(.Count - 1) = "StoreID"
-        '    'If Not LA(4) Is vbNullString Then
-        '    '    C_XML.Write(StrArr, LA(4), False)
-        '    'Else
-        '    '    C_XML.Delete(StrArr)
-        '    'End If
-
-        '    '.Item(.Count - 1) = "KontaktID"
-        '    'If Not LA(5) Is vbNullString Then
-        '    '    C_XML.Write(StrArr, LA(5), True)
-        '    'Else
-        '    '    C_XML.Delete(StrArr)
-        '    'End If
-        'End With
-        'StrArr = Nothing
     End Sub
 #End Region
 End Class
