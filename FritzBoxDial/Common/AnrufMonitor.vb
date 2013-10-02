@@ -234,7 +234,7 @@ Public Class AnrufMonitor
 
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)
-        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & ID, CStr(System.DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        'Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & ID, CStr(System.DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
         AnrMonList.Add(New formAnrMon(CInt(ID), True, C_XML, hf, Me, OlI))
         Dim a As Integer
         Do
@@ -365,13 +365,13 @@ Public Class AnrufMonitor
             Dim TelNr As String            ' ermittelte TelNr
             Dim Anrufer As String = vbNullString           ' ermittelter Anrufer
             Dim vCard As String = vbNullString           ' vCard des Anrufers
-            Dim KontaktID As String = "-1;"           ' ID der Kontaktdaten des Anrufers
-            Dim StoreID As String = "-1"           ' ID des Ordners, in dem sich der Kontakt befindet
+            Dim KontaktID As String = vbNullString             ' ID der Kontaktdaten des Anrufers
+            Dim StoreID As String = vbNullString           ' ID des Ordners, in dem sich der Kontakt befindet
             Dim ID As Integer            ' ID des Telefonats
             Dim index As Long              ' Zählvariable
             Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
             Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
-            Dim letzterAnrufer(5) As String
+            Dim LetzterAnrufer(5) As String
 
             ID = CInt(FBStatus.GetValue(2))
             TelNr = CStr(FBStatus.GetValue(3))
@@ -392,17 +392,17 @@ Public Class AnrufMonitor
             ' Ende Phoner
 
             If Len(TelNr) = 0 Then TelNr = "unbekannt"
-            'Dim letzterAnrufer() As String = {CStr(FBStatus.GetValue(0)), Anrufer, TelNr, MSN, StoreID, KontaktID}
-            letzterAnrufer(0) = CStr(FBStatus.GetValue(0))
-            letzterAnrufer(1) = Anrufer
-            letzterAnrufer(2) = TelNr
-            letzterAnrufer(3) = MSN
-            letzterAnrufer(4) = StoreID
-            letzterAnrufer(5) = KontaktID
+            LetzterAnrufer(0) = CStr(FBStatus.GetValue(0)) 'Zeit
+            LetzterAnrufer(1) = Anrufer
+            LetzterAnrufer(2) = TelNr
+            LetzterAnrufer(3) = MSN
+            'LetzterAnrufer(4) = StoreID
+            'LetzterAnrufer(5) = KontaktID
+            SpeichereLetzerAnrufer(CStr(ID), LetzterAnrufer)
             ' Daten für Anzeige im Anrurfmonitor speichern
             ' Der letzterAnrufer enthält in dieser Reihenfolge Uhrzeit, Anrufername, Telefonnummer, MSN, StoreID, KontaktID
-            C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), False)
-            C_XML.Write("letzterAnrufer", "Letzter", CStr(ID), False)
+            'C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), False)
+            'C_XML.Write("letzterAnrufer", "Letzter", CStr(ID), False)
             If AnrMonAnzeigen Then
                 If Not OlI.VollBildAnwendungAktiv Then
                     BWAnrMonEinblenden = New BackgroundWorker
@@ -461,12 +461,12 @@ Public Class AnrufMonitor
                     TelNr = hf.formatTelNr(TelNr)
                 End If
 
-                letzterAnrufer(1) = Anrufer
-                letzterAnrufer(2) = TelNr
-                letzterAnrufer(4) = StoreID
-                letzterAnrufer(5) = KontaktID
-                C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), True)
-
+                LetzterAnrufer(1) = Anrufer
+                LetzterAnrufer(2) = TelNr
+                LetzterAnrufer(4) = StoreID
+                LetzterAnrufer(5) = KontaktID
+                'C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), True)
+                SpeichereLetzerAnrufer(CStr(ID), LetzterAnrufer)
                 ' Daten im Menü für Rückruf speichern
                 index = CLng(C_XML.Read("AnrListe", "Index", "0"))
 
@@ -855,24 +855,19 @@ Public Class AnrufMonitor
             .Add("Typ")
             C_XML.Write(StrArr, Typ, False)
 
-            .RemoveAt(.Count - 1)
-            .Add("Zeit")
+            .Item(.Count - 1) = "Zeit"
             C_XML.Write(StrArr, Zeit, False)
 
-            .RemoveAt(.Count - 1)
-            .Add("MSN")
+            .Item(.Count - 1) = "MSN"
             C_XML.Write(StrArr, MSN, False)
 
-            .RemoveAt(.Count - 1)
-            .Add("TelNr")
+            .Item(.Count - 1) = "TelNr"
             C_XML.Write(StrArr, TelNr, False)
 
-            .RemoveAt(.Count - 1)
-            .Add("KontaktID")
+            .Item(.Count - 1) = "KontaktID"
             C_XML.Write(StrArr, KontaktID, False)
 
-            .RemoveAt(.Count - 1)
-            .Add("StoreID")
+            .Item(.Count - 1) = "StoreID"
             C_XML.Write(StrArr, StoreID, True)
 
         End With
@@ -959,4 +954,52 @@ Public Class AnrufMonitor
     End Sub
 #End Region
 
+#Region "LetzterAnrufer"
+    Sub SpeichereLetzerAnrufer(ByVal ID As String, ByVal LA As String())
+        'LA(0) = Zeit
+        'LA(1) = Anrufer
+        'LA(2) = TelNr
+        'LA(3) = MSN
+        'LA(4) = StoreID
+        'LA(5) = KontaktID
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("LetzterAnrufer")
+            .Add("Letzter")
+            C_XML.Write(StrArr, ID, False)
+
+            .Item(.Count - 1) = "ID" & ID
+            .Add("Zeit")
+            C_XML.Write(StrArr, LA(0), False)
+
+            .Item(.Count - 1) = "Anrufer"
+            If Not LA(1) Is vbNullString Then
+                C_XML.Write(StrArr, LA(1), False)
+            Else
+                C_XML.Delete(StrArr)
+            End If
+
+            .Item(.Count - 1) = "TelNr"
+            C_XML.Write(StrArr, LA(2), False)
+
+            .Item(.Count - 1) = "MSN"
+            C_XML.Write(StrArr, LA(3), False)
+
+            .Item(.Count - 1) = "StoreID"
+            If Not LA(4) Is vbNullString Then
+                C_XML.Write(StrArr, LA(4), False)
+            Else
+                C_XML.Delete(StrArr)
+            End If
+
+            .Item(.Count - 1) = "KontaktID"
+            If Not LA(5) Is vbNullString Then
+                C_XML.Write(StrArr, LA(5), True)
+            Else
+                C_XML.Delete(StrArr)
+            End If
+        End With
+        StrArr = Nothing
+    End Sub
+#End Region
 End Class

@@ -1,5 +1,7 @@
 Imports System.Timers
 Imports System.IO.Path
+Imports System.Collections
+
 Public Class formAnrMon
     Private TelefonName As String
     Private aID As Integer
@@ -60,13 +62,38 @@ Public Class formAnrMon
     Sub AnrMonausfüllen()
         ' Diese Funktion nimmt Daten aus der Registry und öffnet 'formAnMon'.
         Dim AnrName As String              ' Name des Anrufers
-        Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        Dim Uhrzeit As String
+        'Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
+        'LA(0) = Zeit
+        'LA(1) = Anrufer
+        'LA(2) = TelNr
+        'LA(3) = MSN
+        'LA(4) = StoreID
+        'LA(5) = KontaktID
 
-        AnrName = letzterAnrufer(1)
-        TelNr = letzterAnrufer(2)
-        MSN = letzterAnrufer(3)
-        StoreID = letzterAnrufer(4)
-        KontaktID = letzterAnrufer(5)
+        Dim StrArr As New ArrayList
+        With StrArr
+            .Add("LetzterAnrufer")
+            .Add("ID" & aID)
+            .Add("Zeit")
+            Uhrzeit = C_XML.Read(StrArr, CStr(DateTime.Now))
+
+            .Item(.Count - 1) = "Anrufer"
+            AnrName = C_XML.Read(StrArr, "")
+
+            .Item(.Count - 1) = "TelNr"
+            TelNr = C_XML.Read(StrArr, "unbekannt")
+
+            .Item(.Count - 1) = "MSN"
+            MSN = C_XML.Read(StrArr, "")
+
+            .Item(.Count - 1) = "StoreID"
+            StoreID = C_XML.Read(StrArr, "-1")
+
+            .Item(.Count - 1) = "KontaktID"
+            KontaktID = C_XML.Read(StrArr, "-1")
+        End With
+
         TelefonName = AnrMon.TelefonName(MSN)
         With PopupNotifier
             If TelNr = "unbekannt" Then
@@ -77,7 +104,7 @@ Public Class formAnrMon
                 End With
             End If
             ' Uhrzeit des Telefonates eintragen
-            .Uhrzeit = letzterAnrufer(0)
+            .Uhrzeit = Uhrzeit
             ' Telefonnamen eintragen
             .TelName = TelefonName & CStr(IIf(CBool(C_XML.Read("Optionen", "CBShowMSN", "False")), " (" & MSN & ")", vbNullString))
 
@@ -122,7 +149,7 @@ Public Class formAnrMon
     End Sub
 
     Private Sub PopupNotifier_Close() Handles PopupNotifier.Close
-        PopupNotifier.hide()
+        PopupNotifier.Hide()
     End Sub
 
     Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click

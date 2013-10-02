@@ -1019,7 +1019,7 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Dim ID As Integer = CInt(C_XML.Read("letzterAnrufer", "Letzter", CStr(0)))
+        Dim ID As Integer = CInt(C_XML.Read("LetzterAnrufer", "Letzter", CStr(0)))
         Dim forman As New formAnrMon(ID, False, C_XML, HelferFunktionen, AnrMon, OlI)
     End Sub
 

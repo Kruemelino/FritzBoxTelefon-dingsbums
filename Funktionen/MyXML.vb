@@ -112,7 +112,7 @@ Public Class MyXML
         Dim xPath As String = CreateXPath(alStrArr)
         With XMLDoc
             If Not .SelectSingleNode(xPath) Is Nothing Then
-                .SelectSingleNode(xPath).RemoveAll()
+                .SelectSingleNode(xPath).ParentNode.RemoveChild(.SelectSingleNode(xPath))
             End If
         End With
         alStrArr = Nothing
