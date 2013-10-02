@@ -39,8 +39,7 @@ Public Class Helfer
     End Function
 
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
-        Dim C = From Strng In B Where Strng = A
-        Return CBool(IIf(C.Count = 0, False, True))
+        Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
 #End Region
 

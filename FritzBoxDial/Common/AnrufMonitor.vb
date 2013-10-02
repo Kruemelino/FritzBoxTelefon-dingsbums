@@ -356,31 +356,29 @@ Public Class AnrufMonitor
         ' FBStatus(5): ???
 
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
-        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1") ' Enthällt alle MSN, auf die reakiert werden soll
+        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", ";") ' Enthällt alle MSN, auf die reagiert werden soll
+
         Dim MSN As String = CStr(FBStatus.GetValue(4))
+        ' Anruf nur anzeigen, wenn die MSN stimmt
         If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-            'Dimensionierung in die Abfrage geschoben, um eine unnötige Dimensionierung zu verhindern.
 
             Dim TelNr As String            ' ermittelte TelNr
-
             Dim Anrufer As String = vbNullString           ' ermittelter Anrufer
             Dim vCard As String = vbNullString           ' vCard des Anrufers
             Dim KontaktID As String = "-1;"           ' ID der Kontaktdaten des Anrufers
             Dim StoreID As String = "-1"           ' ID des Ordners, in dem sich der Kontakt befindet
             Dim ID As Integer            ' ID des Telefonats
             Dim index As Long              ' Zählvariable
-            'Dim GefundenerKontakt As Outlook.ContactItem
             Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
             Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
-
-            'Phoner
-            Dim PhonerTelNr() As String
-            ' Anruf nur anzeigen, wenn die MSN oder VoIP-Nr stimmt
+            Dim letzterAnrufer(5) As String
 
             ID = CInt(FBStatus.GetValue(2))
             TelNr = CStr(FBStatus.GetValue(3))
-            'Phoner
+            'MSN = CStr(FBStatus.GetValue(4))  'Ist doch schon belegt
+            ' Phoner
             If AnrMonPhoner Then
+                Dim PhonerTelNr() As String
                 Dim pos As Integer = InStr(TelNr, "@", CompareMethod.Text)
                 If Not pos = 0 Then
                     TelNr = Left(TelNr, pos - 1)
@@ -392,12 +390,18 @@ Public Class AnrufMonitor
                 TelNr = hf.nurZiffern(TelNr, LandesVW)
             End If
             ' Ende Phoner
+
             If Len(TelNr) = 0 Then TelNr = "unbekannt"
-            MSN = CStr(FBStatus.GetValue(4))
-            Dim letzterAnrufer() As String = {CStr(FBStatus.GetValue(0)), Anrufer, TelNr, MSN, StoreID, KontaktID}
+            'Dim letzterAnrufer() As String = {CStr(FBStatus.GetValue(0)), Anrufer, TelNr, MSN, StoreID, KontaktID}
+            letzterAnrufer(0) = CStr(FBStatus.GetValue(0))
+            letzterAnrufer(1) = Anrufer
+            letzterAnrufer(2) = TelNr
+            letzterAnrufer(3) = MSN
+            letzterAnrufer(4) = StoreID
+            letzterAnrufer(5) = KontaktID
+            ' Daten für Anzeige im Anrurfmonitor speichern
             ' Der letzterAnrufer enthält in dieser Reihenfolge Uhrzeit, Anrufername, Telefonnummer, MSN, StoreID, KontaktID
             C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), False)
-            ' Daten für Anzeige im Anrurfmonitor speichern
             C_XML.Write("letzterAnrufer", "Letzter", CStr(ID), False)
             If AnrMonAnzeigen Then
                 If Not OlI.VollBildAnwendungAktiv Then
@@ -422,8 +426,6 @@ Public Class AnrufMonitor
                         If RWSIndex Then vCard = C_XML.Read("CBRWSIndex", TelNr, "")
                         If vCard = vbNullString Then
                             Select Case C_XML.Read("Optionen", "CBoxRWSuche", "0")
-                                'Case "0"
-                                '    rws = frmRWS.RWSGoYellow(TelNr, vCard)
                                 Case "0"
                                     rws = frmRWS.RWS11880(TelNr, vCard)
                                 Case "1"
@@ -461,8 +463,8 @@ Public Class AnrufMonitor
 
                 letzterAnrufer(1) = Anrufer
                 letzterAnrufer(2) = TelNr
-                letzterAnrufer(5) = KontaktID
                 letzterAnrufer(4) = StoreID
+                letzterAnrufer(5) = KontaktID
                 C_XML.Write("letzterAnrufer", "letzterAnrufer" & ID, Join(letzterAnrufer, ";"), True)
 
                 ' Daten im Menü für Rückruf speichern
