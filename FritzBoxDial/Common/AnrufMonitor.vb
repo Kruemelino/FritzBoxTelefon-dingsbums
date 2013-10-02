@@ -962,44 +962,91 @@ Public Class AnrufMonitor
         'LA(3) = MSN
         'LA(4) = StoreID
         'LA(5) = KontaktID
+
+        Dim LANodeNames As New ArrayList
+        Dim LANodeValues As New ArrayList
         Dim StrArr As New ArrayList
-        With StrArr
-            .Add("LetzterAnrufer")
-            .Add("Letzter")
-            C_XML.Write(StrArr, ID, False)
 
-            .Item(.Count - 1) = "ID" & ID
-            .Add("Zeit")
-            C_XML.Write(StrArr, LA(0), False)
 
-            .Item(.Count - 1) = "Anrufer"
-            If Not LA(1) Is vbNullString Then
-                C_XML.Write(StrArr, LA(1), False)
-            Else
-                C_XML.Delete(StrArr)
-            End If
 
-            .Item(.Count - 1) = "TelNr"
-            C_XML.Write(StrArr, LA(2), False)
+        ' Uhrzeit
+        LANodeNames.Add("Zeit")
+        LANodeValues.Add(LA(0))
 
-            .Item(.Count - 1) = "MSN"
-            C_XML.Write(StrArr, LA(3), False)
+        ' Anrufername
+        If Not LA(1) Is vbNullString Then
+            LANodeNames.Add("Anrufer")
+            LANodeValues.Add(LA(1))
+        End If
 
-            .Item(.Count - 1) = "StoreID"
-            If Not LA(4) Is vbNullString Then
-                C_XML.Write(StrArr, LA(4), False)
-            Else
-                C_XML.Delete(StrArr)
-            End If
+        ' TelNr
+        LANodeNames.Add("TelNr")
+        LANodeValues.Add(LA(2))
 
-            .Item(.Count - 1) = "KontaktID"
-            If Not LA(5) Is vbNullString Then
-                C_XML.Write(StrArr, LA(5), True)
-            Else
-                C_XML.Delete(StrArr)
-            End If
+        ' MSN
+        LANodeNames.Add("MSN")
+        LANodeValues.Add(LA(3))
+
+        ' StoreID
+        If Not LA(4) Is vbNullString Then
+            LANodeNames.Add("StoreID")
+            LANodeValues.Add(LA(4))
+        End If
+
+        ' KontaktID
+        If Not LA(4) Is vbNullString Then
+            LANodeNames.Add("KontaktID")
+            LANodeValues.Add(LA(5))
+        End If
+
+        StrArr.Add("LetzterAnrufer")
+        StrArr.Add("Letzter")
+
+        With C_XML
+            .Write(StrArr, ID, False)
+            StrArr.Remove("Letzter")
+            .AppendNode(.CreateXMLNode("ID" & ID, LANodeNames, LANodeValues), StrArr)
         End With
-        StrArr = Nothing
+
+
+        'With StrArr
+        '    .Add("LetzterAnrufer")
+        '    .Add("Letzter")
+        '    C_XML.Write(StrArr, ID, False)
+
+        '    '.Item(.Count - 1) = "ID" & ID 'BaseNodeName
+
+        '    '.Add("Zeit")
+        '    'C_XML.Write(StrArr, LA(0), False)
+
+        '    '.Item(.Count - 1) = "Anrufer"
+        '    'If Not LA(1) Is vbNullString Then
+        '    '    C_XML.Write(StrArr, LA(1), False)
+        '    'Else
+        '    '    C_XML.Delete(StrArr)
+        '    'End If
+
+        '    '.Item(.Count - 1) = "TelNr"
+        '    'C_XML.Write(StrArr, LA(2), False)
+
+        '    '.Item(.Count - 1) = "MSN"
+        '    'C_XML.Write(StrArr, LA(3), False)
+
+        '    '.Item(.Count - 1) = "StoreID"
+        '    'If Not LA(4) Is vbNullString Then
+        '    '    C_XML.Write(StrArr, LA(4), False)
+        '    'Else
+        '    '    C_XML.Delete(StrArr)
+        '    'End If
+
+        '    '.Item(.Count - 1) = "KontaktID"
+        '    'If Not LA(5) Is vbNullString Then
+        '    '    C_XML.Write(StrArr, LA(5), True)
+        '    'Else
+        '    '    C_XML.Delete(StrArr)
+        '    'End If
+        'End With
+        'StrArr = Nothing
     End Sub
 #End Region
 End Class

@@ -19,7 +19,7 @@ Public Class MyXML
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
             End If
         End With
-        RemoveNodes()
+        CleanUpXML()
         tSpeichern = New Timer
         With tSpeichern
             .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
@@ -121,6 +121,48 @@ Public Class MyXML
 
 #End Region
 
+#Region "Knoten"
+    Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList) As XmlNode
+        CreateXMLNode = Nothing
+        If SubNodeName.Count = SubNodeValue.Count Then
+
+            Dim tmpXMLNode As XmlNode
+            Dim XMLChildNode As XmlNode
+            tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, vbNullString)
+            With tmpXMLNode
+                For i As Integer = 0 To SubNodeName.Count - 1
+                    XMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
+                    XMLChildNode.InnerText = SubNodeValue.Item(i).ToString
+                    .AppendChild(XMLChildNode)
+                Next
+            End With
+            CreateXMLNode = tmpXMLNode
+            tmpXMLNode = Nothing
+            XMLChildNode = Nothing
+        End If
+    End Function
+
+    Sub AppendNode(ByVal Knoten As XmlNode, ByVal StrArr As ArrayList)
+        Dim DestxPath As String
+        Dim tmpxPath As String
+        Dim tmpXMLNode As XmlNode
+        DestxPath = CreateXPath(StrArr)
+        StrArr.Add(Knoten.Name)
+        tmpxPath = CreateXPath(StrArr)
+
+        With XMLDoc
+            tmpXMLNode = .SelectSingleNode(DestxPath)
+            If Not tmpXMLNode Is Nothing Then
+                If Not tmpXMLNode.Item(Knoten.Name) Is Nothing Then
+                    tmpXMLNode.RemoveChild(tmpXMLNode.Item(Knoten.Name))
+                End If
+                tmpXMLNode.AppendChild(Knoten)
+            End If
+        End With
+    End Sub
+#End Region
+
+
 #Region "Speichern"
     Sub SpeichereXMLDatei()
         XMLDoc.Save(sDateiPfad)
@@ -157,7 +199,7 @@ Public Class MyXML
         End With
     End Function
 
-    Private Sub RemoveNodes()
+    Private Sub CleanUpXML()
         Dim tmpNode As XmlNode
         Dim StrArr As New ArrayList
         Dim xPath As String
