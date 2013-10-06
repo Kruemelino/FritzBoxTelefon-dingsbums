@@ -544,7 +544,7 @@ Public Class formCfg
         Dim formschlieﬂen As Boolean = Speichern()
         ThisAddIn.UseAnrMon = Me.CBUseAnrMon.Checked
 #If OVer >= 14 Then
-        GUI.InvalidateControlAnrMon()
+        GUI.RefreshRibbon()
 #End If
         If formschlieﬂen Then
             Dispose(True)

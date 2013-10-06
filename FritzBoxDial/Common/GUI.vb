@@ -1,5 +1,4 @@
-﻿Imports System.Collections
-Imports Office = Microsoft.Office.Core
+﻿Imports Office = Microsoft.Office.Core
 
 <Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
@@ -111,7 +110,7 @@ Imports Office = Microsoft.Office.Core
         fbox = FritzBoxKlasse
     End Sub
 
-#Region "Office 2007 & Office 2010" ' Ribbon Inspektorfenster
+#Region "Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
 #If Not OVer = 11 Then
     Public Sub OnActionWählen(ByVal control As Office.IRibbonControl)
         WählenInspector()
@@ -120,11 +119,6 @@ Imports Office = Microsoft.Office.Core
     Public Sub OnActionKontakterstellen(ByVal control As Office.IRibbonControl)
         KontaktErstellen()
     End Sub
-
-    'Public Sub OnActionRWSGoYellow(ByVal control As Office.IRibbonControl)
-    '    Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-    '    RWSGoYellow(Insp)
-    'End Sub
 
     Public Sub OnActionRWS11880(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
@@ -241,99 +235,115 @@ Imports Office = Microsoft.Office.Core
 #End Region 'Ribbon Inspector
 
 #Region "Office 2010/2013"
-#If over >= 14 Then
+#If oVer >= 14 Then
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon
     End Sub
 
     Public Function DynMenüfüllen(ByVal control As Office.IRibbonControl) As String
-        Dim IniParam As String
+
+        Dim XMLListBaseNode As String = "VIPListe"
         Dim index As Integer
-        Dim AnrName As String
-        Dim j, i As Integer
-        Dim Einträge(9) As String
-        Dim Eintrag As String()
+        Dim i As Integer
+
+        Dim Anrufer As String
+        Dim TelNr As String
+        Dim Zeit As String
+
+        Dim LANodeNames As New ArrayList
+        Dim LANodeValues As New ArrayList
+        Dim xPathTeile As New ArrayList
 
         Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                IniParam = "Wwdh"
+                XMLListBaseNode = "CallList"
             Case "dynMAnrListe"
-                IniParam = "AnrListe"
-            Case Else
-                IniParam = vbNullString
+                XMLListBaseNode = "RingList"
+            Case "dynMVIPListe"
+                XMLListBaseNode = "VIPListe"
         End Select
-        index = CInt(C_XML.Read(IniParam, "Index", "0"))
-        For i = 0 To 9
-            Einträge(i) = C_XML.Read(IniParam, IniParam & "Eintrag" & i, "")
-        Next
+
+        index = CInt(C_XML.Read(XMLListBaseNode, "Index", "0"))
+
+        LANodeNames.Add("Anrufer")
+        LANodeNames.Add("TelNr")
+        LANodeNames.Add("Zeit")
+        LANodeValues.Add("-1")
+        LANodeValues.Add("-1")
+        LANodeValues.Add("-1")
+        With xPathTeile
+            .Add(XMLListBaseNode)
+            .Add("Eintrag")
+        End With
         i = 1
-        For j = index + 9 To index Step -1
-            Eintrag = Split(Einträge(j Mod 10), ";", 5, CompareMethod.Text)
-            ' Eintrag(0) Anrufername 
-            ' Eintrag(1) TelNr 
-            ' Eintrag(2) Zeit
-            ' Eintrag(3) Nummer in der Liste
-            ' Eintrag(4) StoreID, 
-            ' Eintrag(5) KontaktID
+        If Not XMLListBaseNode = "VIPListe" Then
+            For ID = index + 9 To index Step -1
 
-            If Not Eintrag.Length = 1 Then
-                If Not Eintrag(1) = "" Or IniParam = "VIPListe" Then
-                    AnrName = Replace(Eintrag(0), "&", "&#38;&#38;", , , CompareMethod.Text)
+                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
 
-                    MyStringBuilder.Append("<button id=""button_" & CStr(j Mod 10) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(IIf(AnrName = "", Eintrag(1), AnrName)) & """")
-                    MyStringBuilder.Append(" onAction=""OnActionAnrListen""")
-                    MyStringBuilder.Append(" tag=""" & IniParam & ";" & CStr(j Mod 10) & """")
-                    MyStringBuilder.Append(" supertip=""Zeit: " & Eintrag(2) & "&#13;Telefonnummer: " & Eintrag(1) & """")
+                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
+                TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
+                Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+
+                If Not TelNr = "-1" Then
+                    MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
+                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = "-1", TelNr, Anrufer)) & """")
+                    MyStringBuilder.Append(" onAction=""OnActionListen""")
+                    MyStringBuilder.Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
+                    MyStringBuilder.Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
                     MyStringBuilder.Append("/>" & vbCrLf)
                     i += 1
+
+                    xPathTeile.RemoveAt(xPathTeile.Count - 1)
+                    LANodeValues.Item(0) = ("-1")
+                    LANodeValues.Item(1) = ("-1")
+                    LANodeValues.Item(2) = ("-1")
                 End If
-            End If
-        Next
+            Next
+        Else
+            For ID = 0 To index - 1
+                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+
+                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
+                If Not Anrufer = "-1" Then
+
+                    MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod index) & """")
+                    MyStringBuilder.Append(" label=""" & CStr(Anrufer) & """")
+                    MyStringBuilder.Append(" onAction=""OnActionListen""")
+                    MyStringBuilder.Append(" tag=""VIPListe;" & CStr(ID) & """")
+                    MyStringBuilder.Append("/>" & vbCrLf)
+
+                    xPathTeile.RemoveAt(xPathTeile.Count - 1)
+                    LANodeValues.Item(0) = ("-1")
+                End If
+            Next
+        End If
+
         MyStringBuilder.Append("</menu>")
 
-        Return MyStringBuilder.ToString
+        DynMenüfüllen = MyStringBuilder.ToString
+        LANodeNames = Nothing
+        LANodeValues = Nothing
+        xPathTeile = Nothing
     End Function
 
-    Public Function DynMenüfüllenVIP(ByVal control As Office.IRibbonControl) As String
+    Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
+        Dim XMLListBaseNode As String = "VIPListe"
+        Dim xPathTeile As New ArrayList
 
-        Dim Anzahl As Integer = CInt(C_XML.Read("VIPListe", "Anzahl", "0"))
-        Dim AnrName As String
-        Dim j, i As Integer
-        Dim Einträge(Anzahl) As String
-        Dim Eintrag As String()
-        Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
-        For i = 0 To Anzahl - 1
-            Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
-        Next
-        i = 1
-        For j = 0 To Anzahl - 1
-            Eintrag = Split(Einträge(j), ";", 5, CompareMethod.Text)
-            ' Eintrag(0) Anrufername 
-            ' Eintrag(1) vbNullString
-            ' Eintrag(2) Nummer in der Liste
-            ' Eintrag(3) StoreID, 
-            ' Eintrag(2) KontaktID
+        Select Case Mid(control.Id, 1, Len(control.Id) - 2)
+            Case "dynMwwdh"
+                XMLListBaseNode = "CallList"
+            Case "dynMAnrListe"
+                XMLListBaseNode = "RingList"
+            Case "dynMVIPListe"
+                XMLListBaseNode = "VIPListe"
+        End Select
 
-            If Not Eintrag.Length = 1 Then
-
-                AnrName = Replace(Eintrag(0), "&", "&#38;&#38;", , , CompareMethod.Text)
-
-                MyStringBuilder.Append("<button id=""button_" & CStr(j Mod Anzahl) & """")
-                MyStringBuilder.Append(" label=""" & CStr(AnrName) & """")
-                MyStringBuilder.Append(" onAction=""OnActionAnrListen""")
-                MyStringBuilder.Append(" tag=""VIPListe;" & CStr(j) & """")
-                MyStringBuilder.Append("/>" & vbCrLf)
-
-                i += 1
-            End If
-        Next
-        MyStringBuilder.Append("</menu>")
-
-        Return MyStringBuilder.ToString
+        Return CBool(IIf(Not C_XML.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -360,7 +370,6 @@ Imports Office = Microsoft.Office.Core
         Return ThisAddIn.UseAnrMon
     End Function
 
-
     Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
         Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
         GetPressedKontextVIP = IsVIP(oKontact)
@@ -381,7 +390,7 @@ Imports Office = Microsoft.Office.Core
 
     End Sub
 
-    Public Sub InvalidateControlAnrMon()
+    Public Sub RefreshRibbon()
         If RibbonObjekt Is Nothing Then
             Dim i As Integer
             Do While RibbonObjekt Is Nothing And i < 100
@@ -406,7 +415,7 @@ Imports Office = Microsoft.Office.Core
         ÖffneDirektwahl()
     End Sub
 
-    Public Sub OnActionAnrListen(ByVal control As Office.IRibbonControl)
+    Public Sub OnActionListen(ByVal control As Office.IRibbonControl)
         KlickListen(control.Tag)
     End Sub
 
@@ -489,67 +498,114 @@ Imports Office = Microsoft.Office.Core
 
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
-        Dim Eintrag() As String
-        Dim i As Integer = 0
-        Do
-            Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag" & i, ";"), ";", , CompareMethod.Text)
-            If Eintrag.Length > 2 Then IsVIP = (Eintrag(5) = KontaktID And Eintrag(4) = StoreID)
-            i += 1
-#If OVer < 14 Then
-        Loop Until i = 10 Or IsVIP
-#Else
-        Loop Until Eintrag.Length = 2 Or IsVIP
-#End If
+        Dim xPathTeile As New ArrayList
 
+        xPathTeile.Add("VIPListe")
+        xPathTeile.Add("Eintrag")
+        xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
+        IsVIP = Not C_XML.Read(xPathTeile, "-1") = "-1"
+        xPathTeile = Nothing
     End Function
 
     Friend Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
-        Dim Anzahl As Long = CLng(C_XML.Read("VIPListe", "Anzahl", "0"))
+        Dim Index As Integer = CInt(C_XML.Read("VIPListe", "Index", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
-        Dim StrArr() As String = {Anrufer, vbNullString, vbNullString, CStr(Anzahl), StoreID, KontaktID}
-        C_XML.Write("VIPListe", "VIPListeEintrag" & Anzahl, Join(StrArr, ";"), False)
-        C_XML.Write("VIPListe", "Anzahl", CStr(Anzahl + 1), True)
+
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim xPathTeile As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
+
+        xPathTeile.Add("VIPListe")
+        xPathTeile.Add("ID[@ID=""" & index & """]")
+
+        If Not Anrufer Is vbNullString Then
+            NodeNames.Add("Anrufer")
+            NodeValues.Add(Anrufer)
+        End If
+
+        If Not StoreID Is vbNullString Then
+            NodeNames.Add("StoreID")
+            NodeValues.Add(StoreID)
+        End If
+
+        If Not KontaktID Is vbNullString Then
+            NodeNames.Add("KontaktID")
+            NodeValues.Add(KontaktID)
+        End If
+
+        AttributeNames.Add("ID")
+        AttributeValues.Add(CStr(Index))
+
+        With C_XML
+            xPathTeile.RemoveRange(0, xPathTeile.Count)
+            xPathTeile.Add("VIPListe")
+            xPathTeile.Add("Index")
+            .Write(xPathTeile, CStr(Index + 1), False)
+            xPathTeile.Remove("Index")
+            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
+            .SpeichereXMLDatei()
+        End With
+        NodeNames = Nothing
+        NodeValues = Nothing
+        xPathTeile = Nothing
+        AttributeNames = Nothing
+        AttributeValues = Nothing
 #If OVer < 14 Then
-        FillPopupItemsVIP()
+        FillPopupItems()
+#Else
+        RefreshRibbon()
 #End If
         Return True
     End Function
 
-    Friend Function RemoveVIP(ByVal EntryID As String, ByVal StoreID As String) As Boolean
-        Dim i As Integer = 0
-        Dim j As Integer = 0
-        Dim Eintrag() As String
-        Dim tempEintrag As String
-        Dim Einträge(9) As String
-        Dim alle As Boolean = False
-        Dim myArray As New ArrayList
-        Do
-            tempEintrag = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
-            If tempEintrag = "" Then
-                alle = True
-            Else
-                myArray.Add(tempEintrag)
-            End If
-            i += 1
-            Windows.Forms.Application.DoEvents()
-        Loop Until alle
+    Friend Function RemoveVIP(ByVal KontaktID As String, ByVal StoreID As String) As Boolean
 
-        i = 1
-        C_XML.Write("VIPListe", vbNullString, vbNullString, False)
-        For i = 1 To myArray.Count
-            Eintrag = Split(CStr(myArray(i - 1)), ";", , CompareMethod.Text)
-            If Not (Eintrag(5) = EntryID And Eintrag(4) = StoreID) Then
-                Eintrag(2) = CStr(j)
-                C_XML.Write("VIPListe", "VIPListeEintrag" & j, Join(Eintrag, ";"), False)
-                j += 1
+        Dim xPathTeile As New ArrayList
+        Dim Index As Integer
+        Dim Anzahl As Integer
+        Dim i As Integer
+
+        With xPathTeile
+            ' Anzahl Speichern
+            .Add("VIPListe")
+            .Add("Index")
+            Anzahl = CInt(C_XML.Read(xPathTeile, "0"))
+            ' Index Speichern
+            .Item(.Count - 1) = "Eintrag"
+            .Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
+            .Add("Index")
+            Index = CInt(C_XML.Read(xPathTeile, "0"))
+            ' Knoten löschen
+            .Remove("Index")
+            C_XML.Delete(xPathTeile)
+            ' schleife durch jeden anderen Knoten und <Index> und Attribut ändern
+            For i = Index + 1 To Anzahl - 1
+                .Item(.Count - 1) = "[@ID=""" & i & """]"
+                C_XML.WriteAttribute(xPathTeile, "ID", CStr(i - 1))
+            Next
+            'neue Anzahl (index) schreiben oder löschen
+            .Remove(.Item(.Count - 1))
+            .Remove("Eintrag")
+            If C_XML.SubNoteCount(xPathTeile) = 1 Then
+                .Add("Index")
+                C_XML.Delete(xPathTeile)
+            Else
+                C_XML.Write("VIPListe", "Index", CStr(Anzahl - 1), True)
             End If
-        Next
-        C_XML.Write("VIPListe", "Anzahl", CStr(j), True)
+
+        End With
+
 #If OVer < 14 Then
-        FillPopupItemsVIP()
+        FillPopupItems()
+#Else
+        RefreshRibbon()
 #End If
+        xPathTeile = Nothing
+        C_XML.SpeichereXMLDatei()
         Return True
     End Function
 #End Region
@@ -679,89 +735,122 @@ Imports Office = Microsoft.Office.Core
         End Try
     End Function
 
-    Friend Sub FillPopupItems(ByRef btnPopup As String)
-        ' btnPopuo erlaubt: AnrListe, Wwdh
+    Friend Sub FillPopupItems(ByRef XMLListBaseNode As String)
+        ' XMLListBaseNode erlaubt: CallList, RingList
+
+
         Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlPopup, , btnPopup, , False), Office.CommandBarPopup)
-        Dim index As Integer = CInt(C_XML.Read(btnPopup, "Index", "0"))
+        Dim index As Integer
+        Dim Anrufer As String
+        Dim TelNr As String
+        Dim Zeit As String
 
+        Dim LANodeNames As New ArrayList
+        Dim LANodeValues As New ArrayList
+        Dim xPathTeile As New ArrayList
+        Dim i As Integer
 
-        Dim AnrName, TelNr As String
-        Dim j, i As Integer
-        Dim Einträge(9) As String
-        Dim Eintrag As String()
+        index = CInt(C_XML.Read(XMLListBaseNode, "Index", "0"))
 
-        For i = 0 To 9
-            Einträge(i) = C_XML.Read(btnPopup, btnPopup & "Eintrag" & i, "")
-        Next
-
+        LANodeNames.Add("Anrufer")
+        LANodeNames.Add("TelNr")
+        LANodeNames.Add("Zeit")
+        LANodeValues.Add("-1")
+        LANodeValues.Add("-1")
+        LANodeValues.Add("-1")
+        With xPathTeile
+            .Add(XMLListBaseNode)
+            .Add("Eintrag")
+        End With
         i = 1
-        For j = index + 9 To index Step -1
-            Eintrag = Split(Einträge(j Mod 10), ";", 5, CompareMethod.Text)
-            ' Eintrag(0) Anrufername 
-            ' Eintrag(1) TelNr 
-            ' Eintrag(2) Zeit
-            ' Eintrag(3) Nummer in der Liste
-            ' Eintrag(4) StoreID, 
-            ' Eintrag(5) KontaktID
+        If Not XMLListBaseNode = "VIPListe" Then
+            For ID = index + 9 To index Step -1
 
-            If Not Eintrag.Length = 1 Then
-                If Not Eintrag(1) = "" Then
+                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+
+                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
+                TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
+                Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+
+                If Not TelNr = "-1" Then
                     With cPopUp.Controls.Item(i)
-                        AnrName = Replace(Eintrag(0), "&", "&&", , , CompareMethod.Text)
-                        TelNr = Eintrag(1)
-                        If AnrName = "" Then .Caption = TelNr Else .Caption = AnrName
-                        .TooltipText = "Zeit: " & Eintrag(2) & Environment.NewLine & "Telefonnummer: " & TelNr
-                        .Parameter = CStr(j Mod 10)
+                        If Anrufer = "" Then .Caption = TelNr Else .Caption = Anrufer
+                        .TooltipText = "Zeit: " & Zeit & Environment.NewLine & "Telefonnummer: " & TelNr
+                        .Parameter = CStr(ID Mod 10)
                         .Visible = True
-                        .Tag = btnPopup & ";" & CStr(j Mod 10)
+                        .Tag = XMLListBaseNode & ";" & CStr(ID Mod 10)
                         i += 1
                     End With
+
+                    xPathTeile.RemoveAt(xPathTeile.Count - 1)
+                    LANodeValues.Item(0) = ("-1")
+                    LANodeValues.Item(1) = ("-1")
+                    LANodeValues.Item(2) = ("-1")
                 End If
-            End If
-        Next
+            Next
+        Else
+            For ID = 0 To index - 1
 
-    End Sub
+                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-    Friend Sub FillPopupItemsVIP()
-        ' 26.04.11 14.44
-        Dim btnPopup As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe"), Office.CommandBarPopup)
-        'Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
-        'Dim ini As New InI(ListPath)
-
-        Dim j, i As Integer
-        Dim Einträge(9) As String
-        Dim Eintrag As String()
-
-        For i = 0 To 9
-            Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
-        Next
-        i = 1
-        For j = 0 To 9
-            Eintrag = Split(Einträge(j), ";", 5, CompareMethod.Text)
-            ' Eintrag(0) Anrufername 
-            ' Eintrag(1) vbNullString 
-            ' Eintrag(2) Nummer in der Liste
-            ' Eintrag(3) StoreID, 
-            ' Eintrag(4) KontaktID
-
-            If Not Eintrag.Length = 1 Then
-                If Not Eintrag(0) = "" Then
-                    With btnPopup.Controls.Item(i)
-                        .Caption = Replace(Eintrag(0), "&", "&&", , , CompareMethod.Text)
-                        .Parameter = CStr(j Mod 10)
+                If Not TelNr = "-1" Then
+                    With cPopUp.Controls.Item(i)
+                        .Caption = Anrufer
+                        .Parameter = CStr(ID Mod 10)
                         .Visible = True
-                        .Tag = "VIPListe;" & CStr(j)
+                        .Tag = "VIPListe;" & CStr(ID)
                         i += 1
                     End With
+                Else
+                    If Not cPopUp.Controls.Item(i) Is Nothing Then
+                        cPopUp.Controls.Item(i).Visible = False
+                    End If
                 End If
-            Else
-                If Not btnPopup.Controls.Item(i) Is Nothing Then
-                    btnPopup.Controls.Item(i).Visible = False
-                End If
-
-            End If
-        Next
+            Next
+        End If
     End Sub
+
+    'Friend Sub FillPopupItemsVIP()
+    '    ' 26.04.11 14.44
+    '    Dim btnPopup As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe"), Office.CommandBarPopup)
+    '    'Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
+    '    'Dim ini As New InI(ListPath)
+
+    '    Dim j, i As Integer
+    '    Dim Einträge(9) As String
+    '    Dim Eintrag As String()
+
+    '    For i = 0 To 9
+    '        Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
+    '    Next
+    '    i = 1
+    '    For j = 0 To 9
+    '        Eintrag = Split(Einträge(j), ";", 5, CompareMethod.Text)
+    '        ' Eintrag(0) Anrufername 
+    '        ' Eintrag(1) vbNullString 
+    '        ' Eintrag(2) Nummer in der Liste
+    '        ' Eintrag(3) StoreID, 
+    '        ' Eintrag(4) KontaktID
+
+    '        If Not Eintrag.Length = 1 Then
+    '            If Not Eintrag(0) = "" Then
+    '                With btnPopup.Controls.Item(i)
+    '                    .Caption = Replace(Eintrag(0), "&", "&&", , , CompareMethod.Text)
+    '                    .Parameter = CStr(j Mod 10)
+    '                    .Visible = True
+    '                    .Tag = "VIPListe;" & CStr(j)
+    '                    i += 1
+    '                End With
+    '            End If
+    '        Else
+    '            If Not btnPopup.Controls.Item(i) Is Nothing Then
+    '                btnPopup.Controls.Item(i).Visible = False
+    '            End If
+
+    '        End If
+    '    Next
+    'End Sub
 
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
@@ -800,11 +889,6 @@ Imports Office = Microsoft.Office.Core
         End If
     End Sub
 
-#End If
-#End Region
-
-#Region "Symbolleiste erzeugen"
-#If OVer < 14 Then
     Sub SymbolleisteErzeugen(ByRef ePopWwdh As Office.CommandBarPopup, ByRef ePopAnr As Office.CommandBarPopup, ByRef ePopVIP As Office.CommandBarPopup, _
                              ByRef eBtnWaehlen As Office.CommandBarButton, ByRef eBtnDirektwahl As Office.CommandBarButton, ByRef eBtnAnrMonitor As Office.CommandBarButton, _
                              ByRef eBtnAnzeigen As Office.CommandBarButton, ByRef eBtnAnrMonNeuStart As Office.CommandBarButton, ByRef eBtnJournalimport As Office.CommandBarButton, ByRef eBtnEinstellungen As Office.CommandBarButton, _
@@ -881,7 +965,7 @@ Imports Office = Microsoft.Office.Core
         Catch ex As Exception
             HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
-        FillPopupItemsVIP()
+        FillPopupItems()
         i += 1
         ePopVIP.Visible = CBool(C_XML.Read("Optionen", "CBSymbVIP", "True"))
 
@@ -1028,7 +1112,7 @@ Imports Office = Microsoft.Office.Core
     End Sub
 
     Friend Sub KlickListen(ByVal controlTag As String)
-        Callclient.OnActionAnrListen(controlTag)
+        Callclient.OnActionListen(controlTag)
     End Sub
 
     Friend Sub WählenExplorer()

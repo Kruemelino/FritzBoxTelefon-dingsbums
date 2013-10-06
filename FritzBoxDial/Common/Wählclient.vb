@@ -1,13 +1,13 @@
 ﻿Imports System.Drawing
+
 Public Class Wählclient
     Private C_XML As MyXML
-    Private frmWählbox As formWählbox
-    Private hf As Helfer
-    Private KontaktFunktionen As Contacts
-    Private GUI As GraphicalUserInterface
-    Private OlI As OutlookInterface
-    Private FBox As FritzBox
-
+    Private frm_Wählbox As formWählbox
+    Private C_hf As Helfer
+    Private C_Kontakt As Contacts
+    Private C_GUI As GraphicalUserInterface
+    Private C_OlI As OutlookInterface
+    Private C_FBox As FritzBox
     Private C_Phoner As PhonerInterface
 
     Public Sub New(ByVal XMlKlasse As MyXML, _
@@ -17,12 +17,12 @@ Public Class Wählclient
                    ByVal OutlInter As OutlookInterface, _
                    ByVal cFBox As FritzBox, _
                    ByVal PhonerKlasse As PhonerInterface)
-        hf = HelferKlasse
-        KontaktFunktionen = KontaktKlasse
-        GUI = InterfaceKlasse
+        C_hf = HelferKlasse
+        C_Kontakt = KontaktKlasse
+        C_GUI = InterfaceKlasse
         C_XML = XMlKlasse
-        OlI = OutlInter
-        FBox = cFBox
+        C_OlI = OutlInter
+        C_FBox = cFBox
         C_Phoner = PhonerKlasse
 
     End Sub
@@ -54,9 +54,9 @@ Public Class Wählclient
                     Absender = aktMail.SenderEmailAddress
                     If C_XML.Read("Optionen", "CBKHO", "True") = "TRUE" Then
                         olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                        res = KontaktFunktionen.FindeKontakt("", Absender, "", olfolder, Nothing)
+                        res = C_Kontakt.FindeKontakt("", Absender, "", olfolder, Nothing)
                     Else
-                        res = KontaktFunktionen.FindeKontakt("", Absender, "", Nothing, olNamespace)
+                        res = C_Kontakt.FindeKontakt("", Absender, "", Nothing, olNamespace)
                     End If
                     ' Nun den zur Email-Adresse gehörigen Kontakt suchen
                     i = 0
@@ -64,10 +64,10 @@ Public Class Wählclient
                         If Not res Is Nothing Then
                             Wählbox(res, "", False)
                         Else
-                            hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählboxStart")
+                            C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählboxStart")
                         End If
                     End If
-                    With hf
+                    With C_hf
                         .NAR(olNamespace)
                         .NAR(aktMail)
                     End With
@@ -78,7 +78,7 @@ Public Class Wählclient
                     ' Nun direkt den Wähldialog für den Kontakt anzeigen.
                     aktKontakt = CType(olAuswahl.Item(1), Outlook.ContactItem)
                     Wählbox(aktKontakt, String.Empty, False)
-                    hf.NAR(aktKontakt)
+                    C_hf.NAR(aktKontakt)
                     aktKontakt = Nothing
                 ElseIf TypeOf olAuswahl.Item(1) Is Outlook.AppointmentItem Then
 #If Not OVer = 15 Then
@@ -92,7 +92,7 @@ Public Class Wählclient
                             Exit For
                         End If
                     Next 'oAppLink
-                    hf.NAR(oAppItem)
+                    C_hf.NAR(oAppItem)
                     oAppItem = Nothing
 #End If
                 ElseIf TypeOf olAuswahl.Item(1) Is Outlook.JournalItem Then
@@ -110,7 +110,7 @@ Public Class Wählclient
                                     Wählbox(CType(oAppThing, Outlook.ContactItem), Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), False)
                                     Exit For
                                 End If
-                                hf.NAR(oAppThing)
+                                C_hf.NAR(oAppThing)
                             Next 'oAppLink
                         Else
 #End If
@@ -133,15 +133,15 @@ Public Class Wählclient
 
                     End If
                 Else
-                    hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine E-Mail-Adresse oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+                    C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine E-Mail-Adresse oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
                 End If
             Else
-                hf.FBDB_MsgBox("Es muss genau ein Element ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+                C_hf.FBDB_MsgBox("Es muss genau ein Element ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
             End If
             olAuswahl = Nothing
             Exit Sub
         Catch
-            hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine Email oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+            C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine Email oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
         End Try
     End Sub ' (WählboxStart)
 
@@ -157,13 +157,13 @@ Public Class Wählclient
         Dim LandesVW As String  ' eigene Landesvorwahl
         Dim row(2) As String
 
-        frmWählbox = New formWählbox(Direktwahl, C_XML, hf, GUI, FBox, C_Phoner)
+        frm_Wählbox = New formWählbox(Direktwahl, C_XML, C_hf, C_GUI, C_FBox, C_Phoner)
 
         LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
         If oContact Is Nothing Then
-            frmWählbox.Tag = "-1"
+            frm_Wählbox.Tag = "-1"
         Else
-            frmWählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
+            frm_Wählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
         End If
 
         iTelNr = 1 'Index Zeile im DataGrid des Formulars
@@ -172,32 +172,32 @@ Public Class Wählclient
             If Not Direktwahl Then
                 ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
-                If Not Left(hf.nurZiffern(TelNr, LandesVW), 1) = "0" And Not Left(hf.nurZiffern(TelNr, LandesVW), 2) = "11" Then _
+                If Not Left(C_hf.nurZiffern(TelNr, LandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr, LandesVW), 2) = "11" Then _
                     TelNr = C_XML.Read("Optionen", "TBVorwahl", "") & TelNr
 
                 If vName = String.Empty Then
-                    frmWählbox.Text = "Anruf: " & TelNr
+                    frm_Wählbox.Text = "Anruf: " & TelNr
                 Else
                     Dim st As Integer = InStr(vName, ";", CompareMethod.Text)
                     If st = 0 Then
-                        frmWählbox.Text = "Anruf: " & vName
+                        frm_Wählbox.Text = "Anruf: " & vName
                     Else
-                        frmWählbox.Text = "Anruf: " & Mid(vName, 3, st - 3)
+                        frm_Wählbox.Text = "Anruf: " & Mid(vName, 3, st - 3)
                     End If
                 End If
                 ' Liste füllen
                 row(0) = CStr(iTelNr) 'Index Zeile im DataGrid
                 row(2) = TelNr
-                frmWählbox.ListTel.Rows.Add(row)
+                frm_Wählbox.ListTel.Rows.Add(row)
             Else
-                frmWählbox.Text = "Anruf: Direktwahl"
-                frmWählbox.ContactImage.Visible = False
+                frm_Wählbox.Text = "Anruf: Direktwahl"
+                frm_Wählbox.ContactImage.Visible = False
             End If
         Else
             ' Welche Telefonnummerntypen sollen angezeigt werden?
             With oContact
                 ' Fenstertitel setzen
-                frmWählbox.Text = Replace("Anruf: " & .FullName & " (" & .CompanyName & ")", " ()", "", , , CompareMethod.Text)
+                frm_Wählbox.Text = Replace("Anruf: " & .FullName & " (" & .CompanyName & ")", " ()", "", , , CompareMethod.Text)
                 ' Die einzelnen Telefonnummern in ein Array packen
                 ' Die deutsche Bezeichnung der Nummerntypen
                 ' für Anzeigezwecke auch in ein Array packen.
@@ -215,10 +215,10 @@ Public Class Wählclient
                 alleTelNr(12) = .PagerNumber : alleNrTypen(12) = "Pager"
                 alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = "Haupttelefon"
                 alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = "Funkruf"
-                ImgPath = OlI.KontaktBild(.EntryID, CType(.Parent, Outlook.MAPIFolder).StoreID)
+                ImgPath = C_OlI.KontaktBild(.EntryID, CType(.Parent, Outlook.MAPIFolder).StoreID)
                 If Not ImgPath = vbNullString Then
                     Dim orgIm As Image = Image.FromFile(ImgPath)
-                    With frmWählbox.ContactImage
+                    With frm_Wählbox.ContactImage
                         Dim Bildgröße As New Size(.Width, CInt((.Width * orgIm.Size.Height) / orgIm.Size.Width))
                         Dim showim As Image = New Bitmap(Bildgröße.Width, Bildgröße.Height)
                         Dim g As Graphics = Graphics.FromImage(showim)
@@ -228,7 +228,7 @@ Public Class Wählclient
                         .Image = showim
                     End With
                 Else
-                    frmWählbox.ContactImage.Visible = False
+                    frm_Wählbox.ContactImage.Visible = False
                 End If
             End With
             ' Liste füllen
@@ -238,20 +238,20 @@ Public Class Wählclient
                     row(0) = CStr(iTelNr) 'Index wird eins hochgezählt
                     'Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                     '(Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
-                    If Not Left(hf.nurZiffern(alleTelNr(i), LandesVW), 1) = "0" And Not Left(hf.nurZiffern(alleTelNr(i), LandesVW), 2) = "11" Then _
+                    If Not Left(C_hf.nurZiffern(alleTelNr(i), LandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(alleTelNr(i), LandesVW), 2) = "11" Then _
                         alleTelNr(i) = C_XML.Read("Optionen", "TBVorwahl", "") & alleTelNr(i)
-                    If hf.nurZiffern(alleTelNr(i), LandesVW) = hf.nurZiffern(TelNr, LandesVW) Then
+                    If C_hf.nurZiffern(alleTelNr(i), LandesVW) = C_hf.nurZiffern(TelNr, LandesVW) Then
                         row(1) = alleNrTypen(i) & " *"
                     Else
                         row(1) = alleNrTypen(i)
                     End If
                     row(2) = alleTelNr(i)
                     iTelNr += 1
-                    frmWählbox.ListTel.Rows.Add(row)
+                    frm_Wählbox.ListTel.Rows.Add(row)
                 End If
             Next
         End If
-        With frmWählbox
+        With frm_Wählbox
             If Not .ListTel.RowCount = 0 Or Direktwahl Then
                 .Show()
                 .BringToFront()
@@ -262,52 +262,76 @@ Public Class Wählclient
                     .Focus()
                 End If
             Else
-                hf.FBDB_MsgBox("Der Kontakt hat keine Telefonnummern", MsgBoxStyle.Exclamation, "Wählbox")
+                C_hf.FBDB_MsgBox("Der Kontakt hat keine Telefonnummern", MsgBoxStyle.Exclamation, "Wählbox")
             End If
         End With
         ' Wähldialog anzeigen
 
     End Sub '(Wählbox)
 
-    Sub OnActionAnrListen(ByVal index As String)
+    Sub OnActionListen(ByVal index As String)
         Dim oNS As Outlook.NameSpace = ThisAddIn.oApp.GetNamespace("MAPI")
         Dim oContact As Outlook.ContactItem
-        Dim Eintrag As String()
-        Dim Telefonat As String() = Split(index, ";", , CompareMethod.Text)
-        Select Case Telefonat(0)
-            Case "Wwdh"
-                Eintrag = Split(C_XML.Read("Wwdh", "WwdhEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
-            Case "AnrListe"
-                Eintrag = Split(C_XML.Read("AnrListe", "AnrListeEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
-            Case "VIPListe"
-                Eintrag = Split(C_XML.Read("VIPListe", "VIPListeEintrag" & Telefonat(1), "-1;"), ";", 6, CompareMethod.Text)
-            Case Else
-                Exit Sub
-        End Select
+        Dim Telefonat As String() = Split(index, ";", , CompareMethod.Text) ' ####List;ID
+        ' KontaktID, StoreID, TelNr ermitteln
+        Dim KontaktID As String
+        Dim StoreID As String
+        Dim TelNr As String
+        Dim Anrufer As String
+        Dim ListNodeNames As New ArrayList
+        Dim ListNodeValues As New ArrayList
+        Dim xPathTeile As New ArrayList
 
-        If Not Left(Eintrag(5), 2) = "-1" And Not Left(Eintrag(4), 2) = "-1" Then
+        ' TelNr
+        ListNodeNames.Add("TelNr")
+        ListNodeValues.Add("-1")
+
+        ' Anrufer
+        ListNodeNames.Add("Anrufer")
+        ListNodeValues.Add("-1")
+
+        ' StoreID
+        ListNodeNames.Add("StoreID")
+        ListNodeValues.Add("-1")
+
+        ' KontaktID
+        ListNodeNames.Add("KontaktID")
+        ListNodeValues.Add("-1;")
+
+        With xPathTeile
+            .Add(Telefonat(0))
+            .Add("Eintrag")
+        End With
+        C_XML.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, Telefonat(1))
+
+        Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
+        TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
+        KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
+        StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
+
+        If Not KontaktID = "-1" And Not StoreID = "-1" Then
             Try
-                oContact = CType(oNS.GetItemFromID(Eintrag(5), Eintrag(4)), Outlook.ContactItem) ' wird durch den Symbolbereich 'Rückruf' in der 'FritzBox'-Symbolleiste ausgeführt
+                oContact = CType(oNS.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem) ' wird durch den Symbolbereich 'Rückruf' in der 'FritzBox'-Symbolleiste ausgeführt
             Catch ex As Exception
                 Select Case Telefonat(0)
                     Case "VIPListe"
-                        If hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionAnrListen") = MsgBoxResult.Yes Then
-                            GUI.RemoveVIP(Eintrag(4), Eintrag(3))
+                        If C_hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionAnrListen") = MsgBoxResult.Yes Then
+                            C_GUI.RemoveVIP(KontaktID, StoreID)
                         End If
                     Case Else
-                        hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionAnrListen")
+                        C_hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionAnrListen")
                 End Select
                 Exit Sub
             End Try
         Else
             oContact = Nothing
         End If
-        Wählbox(oContact, Eintrag(1), False, Eintrag(0)) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
+        Wählbox(oContact, TelNr, False, Anrufer) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
     End Sub
 
     Public Sub ZeigeKontakt(ByVal KontaktDaten() As String)
         Dim Vorwahl As String      ' eigene Ortsvorwahl
-        Dim Kontakt As Outlook.ContactItem ' Objekt des Kontakteintrags
+        Dim Kontakt As Outlook.ContactItem = Nothing ' Objekt des Kontakteintrags
         Dim vCard As String      ' vCard
         Dim alleTelNr As String      ' alle Telefonnummern in der vCard
         Dim LandesVW As String      ' eigene Landesvorwahl
@@ -316,13 +340,11 @@ Public Class Wählclient
 
         If Left(KontaktDaten(0), 2) = "-1" Then
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
-            Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            C_Kontakt.GetEmptyContact(Kontakt)
             vCard = Split(KontaktDaten(0), ";", 2, CompareMethod.Text)(1)
-            vCard = Replace(vCard, "=0D", Chr(13), , , CompareMethod.Text)
-            vCard = Replace(vCard, "=0A", Chr(10), , , CompareMethod.Text)
             With Kontakt
                 If Not vCard = "-1" And Not vCard = "" Then
-                    KontaktFunktionen.vCard2Contact(vCard, Kontakt)
+                    C_Kontakt.vCard2Contact(vCard, Kontakt)
                     .Body = .Body & vbNewLine & "Kontaktdaten (vCard):" & vbNewLine & vCard
                 End If
                 Vorwahl = Left(KontaktDaten(2), 3)
@@ -334,12 +356,12 @@ Public Class Wählclient
                     Else
                         ' falls TelNr bei der Rückwärtssuche geändert wurde, diese Nummer als Zweitnummer eintragen
                         alleTelNr = ReadFromVCard(vCard, "TEL", "")
-                        If Not hf.nurZiffern(.BusinessTelephoneNumber, LandesVW) = hf.nurZiffern(KontaktDaten(2), LandesVW) And Not .BusinessTelephoneNumber = "" Then
-                            .Business2TelephoneNumber = hf.formatTelNr(.BusinessTelephoneNumber)
-                            .BusinessTelephoneNumber = hf.formatTelNr(KontaktDaten(2))
-                        ElseIf Not hf.nurZiffern(.HomeTelephoneNumber, LandesVW) = hf.nurZiffern(KontaktDaten(2), LandesVW) And Not .HomeTelephoneNumber = "" Then
-                            .Home2TelephoneNumber = hf.formatTelNr(.HomeTelephoneNumber)
-                            .HomeTelephoneNumber = hf.formatTelNr(KontaktDaten(2))
+                        If Not C_hf.nurZiffern(.BusinessTelephoneNumber, LandesVW) = C_hf.nurZiffern(KontaktDaten(2), LandesVW) And Not .BusinessTelephoneNumber = "" Then
+                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                            .BusinessTelephoneNumber = C_hf.formatTelNr(KontaktDaten(2))
+                        ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, LandesVW) = C_hf.nurZiffern(KontaktDaten(2), LandesVW) And Not .HomeTelephoneNumber = "" Then
+                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                            .HomeTelephoneNumber = C_hf.formatTelNr(KontaktDaten(2))
                         End If
                     End If
                 End If
@@ -352,7 +374,7 @@ Public Class Wählclient
             Try
                 CType(CType(ThisAddIn.oApp.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktDaten(0), KontaktDaten(1)), Outlook.ContactItem).Display()
             Catch ex As Exception
-                hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
+                C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
             End Try
         End If
     End Sub ' (ZeigeKontakt)
@@ -392,7 +414,7 @@ Public Class Wählclient
         If TypeOf olAuswahl.CurrentItem Is Outlook.ContactItem Then ' ist aktuelles Fenster ein Kontakt?
             Dim olContact As Outlook.ContactItem = CType(olAuswahl.CurrentItem, Outlook.ContactItem)
             Wählbox(olContact, "", False)
-            hf.NAR(olContact) : olContact = Nothing
+            C_hf.NAR(olContact) : olContact = Nothing
         ElseIf TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then ' ist aktuelles Fenster ein Journal?
             Dim olJournal As Outlook.JournalItem = CType(olAuswahl.CurrentItem, Outlook.JournalItem)
             If Not InStr(olJournal.Categories, "FritzBox Anrufmonitor") = 0 Then
@@ -408,11 +430,11 @@ Public Class Wählclient
                             If TypeOf olLink.Item Is Outlook.ContactItem Then
                                 olContact = CType(olLink.Item, Outlook.ContactItem)
                                 Wählbox(olContact, "", False)
-                                hf.NAR(olContact) : olContact = Nothing
+                                C_hf.NAR(olContact) : olContact = Nothing
                                 Exit Sub
                             End If
                         Next
-                        hf.NAR(olLink) : olLink = Nothing
+                        C_hf.NAR(olLink) : olLink = Nothing
                     Else ' Wenn in dem Journal kein Link hinterlegt ist, suche nach einer vCard im Body des Journaleintrags.
 #End If
                         Dim vName As String
@@ -439,16 +461,16 @@ Public Class Wählclient
             Absender = olMail.SenderEmailAddress
             If C_XML.Read("Optionen", "CBKHO", "True") = "True" Then
                 olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                res = KontaktFunktionen.FindeKontakt("", Absender, "", olfolder, Nothing)
+                res = C_Kontakt.FindeKontakt("", Absender, "", olfolder, Nothing)
             Else
-                res = KontaktFunktionen.FindeKontakt("", Absender, "", Nothing, olNamespace)
+                res = C_Kontakt.FindeKontakt("", Absender, "", Nothing, olNamespace)
             End If
             ' Nun den zur Email-Adresse gehörigen Kontakt suchen
             If Not Absender = "" Then
                 If Not res Is Nothing Then
                     Wählbox(res, "", False)
                 Else
-                    hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
+                    C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
                 End If
             End If
         End If

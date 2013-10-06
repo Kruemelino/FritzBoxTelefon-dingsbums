@@ -1,6 +1,5 @@
 Imports System.Timers
 Imports System.IO.Path
-Imports System.Collections
 
 Public Class formAnrMon
     Private TelefonName As String
@@ -71,27 +70,27 @@ Public Class formAnrMon
         'LA(4) = StoreID
         'LA(5) = KontaktID
 
-        Dim StrArr As New ArrayList
-        With StrArr
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
             .Add("LetzterAnrufer")
             .Add("ID" & aID)
             .Add("Zeit")
-            Uhrzeit = C_XML.Read(StrArr, CStr(DateTime.Now))
+            Uhrzeit = C_XML.Read(xPathTeile, CStr(DateTime.Now))
 
             .Item(.Count - 1) = "Anrufer"
-            AnrName = C_XML.Read(StrArr, "")
+            AnrName = C_XML.Read(xPathTeile, "")
 
             .Item(.Count - 1) = "TelNr"
-            TelNr = C_XML.Read(StrArr, "unbekannt")
+            TelNr = C_XML.Read(xPathTeile, "unbekannt")
 
             .Item(.Count - 1) = "MSN"
-            MSN = C_XML.Read(StrArr, "")
+            MSN = C_XML.Read(xPathTeile, "")
 
             .Item(.Count - 1) = "StoreID"
-            StoreID = C_XML.Read(StrArr, "-1")
+            StoreID = C_XML.Read(xPathTeile, "-1")
 
             .Item(.Count - 1) = "KontaktID"
-            KontaktID = C_XML.Read(StrArr, "-1")
+            KontaktID = C_XML.Read(xPathTeile, "-1")
         End With
 
         TelefonName = AnrMon.TelefonName(MSN)

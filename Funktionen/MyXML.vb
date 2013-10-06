@@ -41,88 +41,167 @@ Public Class MyXML
 
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
-        Dim StrArr As New ArrayList
-        With StrArr
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
             .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
             .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
         End With
-        Return Read(StrArr, sDefault)
+        Return Read(xPathTeile, sDefault)
     End Function
 
-    Public Overloads Function Read(ByVal StrArr As ArrayList, ByVal sDefault As String) As String
-        Read = sDefault
+    Public Overloads Function Read(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
+        Read = vbNullString
+        Dim tmpXMLNodeList As XmlNodeList
+        Dim xPath As String = CreateXPath(xPathTeile)
 
-        Dim xPath As String = CreateXPath(StrArr)
-        StrArr = Nothing
-        If Not XMLDoc.SelectSingleNode(xPath) Is Nothing Then
-            Read = XMLDoc.SelectSingleNode(xPath).InnerText
+        tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
+        If Not tmpXMLNodeList.Count = 0 Then
+            If tmpXMLNodeList.Count = 1 Then
+                Read = tmpXMLNodeList.Item(0).InnerText
+            Else
+                For Each tmpXMLNode As XmlNode In tmpXMLNodeList
+                    Read += tmpXMLNode.InnerText & ";"
+                Next
+                Read = Left(Read, Len(Read) - 1)
+            End If
+        Else
+            Read = sDefault
         End If
-
+        xPathTeile = Nothing
     End Function
 #End Region
 
 #Region "Write"
     Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
-        Dim StrArr As New ArrayList
-        With StrArr
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
             .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
             .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
         End With
-        Return Write(StrArr, Value, SpeichereDatei)
+        Return Write(xPathTeile, Value, SpeichereDatei)
     End Function
 
-    Public Overloads Function Write(ByVal ZielDaten As ArrayList, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
-        Dim StrArr As New ArrayList
+    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+        Return Write(ZielKnoten, Value, vbNullString, vbNullString, SpeichereDatei)
+        'Dim xPathTeile As New ArrayList
+        'Dim sTmpXPath As String = vbNullString
+        'Dim xPath As String
+
+        'xPath = CreateXPath(ZielKnoten)
+        'With XMLDoc
+        '    If Not .SelectSingleNode(xPath) Is Nothing Then
+        '        .SelectSingleNode(xPath).InnerText() = Value
+        '    Else
+        '        For Each sNodeName As String In ZielKnoten
+        '            If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
+        '            xPathTeile.Add(sNodeName)
+        '            xPath = CreateXPath(xPathTeile)
+        '            If .SelectSingleNode(xPath) Is Nothing Then
+        '                .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
+        '            End If
+        '            sTmpXPath = xPath
+        '        Next
+        '        Write(ZielKnoten, Value, SpeichereDatei)
+        '    End If
+        '    If SpeichereDatei Then SpeichereXMLDatei()
+        'End With
+        'xPathTeile = Nothing
+        'Return True
+    End Function
+
+    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String, ByVal SpeichereDatei As Boolean) As Boolean
+        Dim xPathTeile As New ArrayList
         Dim sTmpXPath As String = vbNullString
         Dim xPath As String
-
-        xPath = CreateXPath(ZielDaten)
+        Dim tmpXMLNode As XmlNode
+        Dim tmpXMLAttribute As XmlAttribute
+        xPath = CreateXPath(ZielKnoten)
         With XMLDoc
-            If Not .SelectSingleNode(xPath) Is Nothing Then
-                .SelectSingleNode(xPath).InnerText() = Value
+            tmpXMLNode = .SelectSingleNode(xPath)
+            If Not tmpXMLNode Is Nothing Then
+                If Not AttributeName = vbNullString Then
+                    If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
+                        tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = vbNullString, "[@" & AttributeName & "=""" & AttributeValue & """]", vbNullString)))
+                    End If
+                    If tmpXMLNode Is Nothing Then
+                        tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
+                    End If
+                    tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
+                    tmpXMLAttribute.Value = AttributeValue
+                    tmpXMLNode.Attributes.Append(tmpXMLAttribute)
+                End If
+                tmpXMLNode.InnerText() = Value
             Else
-                For Each sNodeName As String In ZielDaten
+                For Each sNodeName As String In ZielKnoten
                     If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-                    StrArr.Add(sNodeName)
-                    xPath = CreateXPath(StrArr)
+                    xPathTeile.Add(sNodeName)
+                    xPath = CreateXPath(xPathTeile)
                     If .SelectSingleNode(xPath) Is Nothing Then
                         .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
                     End If
                     sTmpXPath = xPath
                 Next
-                Write(ZielDaten, Value, SpeichereDatei)
+                Write(ZielKnoten, Value, AttributeName, AttributeValue, SpeichereDatei)
             End If
             If SpeichereDatei Then SpeichereXMLDatei()
         End With
-        StrArr = Nothing
+        xPathTeile = Nothing
+        tmpXMLAttribute = Nothing
+        tmpXMLNode = Nothing
         Return True
+    End Function
+
+    Public Overloads Function WriteAttribute(ByVal ZielKnoten As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
+        WriteAttribute = False
+        Dim xPath As String
+        xPath = CreateXPath(ZielKnoten)
+        WriteAttribute(XMLDoc.SelectSingleNode(xPath), AttributeName, AttributeValue)
+    End Function
+
+    Public Overloads Function WriteAttribute(ByRef tmpXMLNode As XmlNode, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
+        WriteAttribute = False
+
+        Dim tmpXMLAttribute As XmlAttribute
+        With XMLDoc
+            If Not tmpXMLNode Is Nothing Then
+                tmpXMLAttribute = tmpXMLNode.Attributes.ItemOf(AttributeName)
+                If Not tmpXMLAttribute Is Nothing Then
+                    WriteAttribute = True
+                    tmpXMLAttribute.Value = AttributeValue
+                End If
+            End If
+        End With
     End Function
 #End Region
 
 #Region "Löschen"
 
     Public Overloads Function Delete(ByVal DieSektion As String) As Boolean
-        Dim StrArr As New ArrayList
-        StrArr.Add(DieSektion)
-        Return Delete(StrArr)
+        Dim xPathTeile As New ArrayList
+        xPathTeile.Add(DieSektion)
+        Return Delete(xPathTeile)
     End Function
 
-    Public Overloads Function Delete(ByVal alStrArr As ArrayList) As Boolean
-
-        Dim xPath As String = CreateXPath(alStrArr)
+    Public Overloads Function Delete(ByVal alxPathTeile As ArrayList) As Boolean
+        Dim tmpXMLNode As XmlNode
+        Dim xPath As String = CreateXPath(alxPathTeile)
         With XMLDoc
             If Not .SelectSingleNode(xPath) Is Nothing Then
-                .SelectSingleNode(xPath).ParentNode.RemoveChild(.SelectSingleNode(xPath))
+                tmpXMLNode = .SelectSingleNode(xPath).ParentNode
+                tmpXMLNode.RemoveChild(.SelectSingleNode(xPath))
+                If tmpXMLNode.ChildNodes.Count = 0 Then
+                    tmpXMLNode.ParentNode.RemoveChild(tmpXMLNode)
+                End If
             End If
         End With
-        alStrArr = Nothing
+        alxPathTeile = Nothing
         Return True
     End Function
 
 #End Region
 
 #Region "Knoten"
-    Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As String, ByVal Attribute As String) As XmlNode
+    Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As ArrayList, ByVal AttributeValue As ArrayList) As XmlNode
         CreateXMLNode = Nothing
         If SubNodeName.Count = SubNodeValue.Count Then
 
@@ -132,14 +211,21 @@ Public Class MyXML
             tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, vbNullString)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
-                    tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
-                    tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
-                    .AppendChild(tmpXMLChildNode)
+                    If Not SubNodeValue.Item(i).ToString = "-1" Then
+                        tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
+                        tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
+                        .AppendChild(tmpXMLChildNode)
+                    End If
                 Next
             End With
-            tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
-            tmpXMLAttribute.Value = Attribute
-            tmpXMLNode.Attributes.Append(tmpXMLAttribute)
+            For i As Integer = 0 To AttributeName.Count - 1
+                If Not AttributeValue.Item(i) Is Nothing Then
+                    tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName.Item(i).ToString)
+                    tmpXMLAttribute.Value = AttributeValue.Item(i).ToString
+                    tmpXMLNode.Attributes.Append(tmpXMLAttribute)
+                End If
+            Next
+
             CreateXMLNode = tmpXMLNode
 
             tmpXMLAttribute = Nothing
@@ -148,46 +234,82 @@ Public Class MyXML
         End If
     End Function
 
-    Sub ReadXMLNode(ByVal StrArr As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal Attribute As String)
+    Sub ReadXMLNode(ByVal alxPathTeile As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal AttributeValue As String)
 
         If SubNodeName.Count = SubNodeValue.Count Then
             Dim xPath As String
-            Dim tmpNode As XmlNode
+            Dim tmpXMLNode As XmlNode
             With XMLDoc
-                StrArr.Add("[@ID=""" & Attribute & """]")
-                xPath = CreateXPath(StrArr)
-                tmpNode = .SelectSingleNode(xPath)
-                If Not tmpNode Is Nothing Then
-                    With tmpNode
-                        For Each XmlChildNode As XmlNode In tmpNode.ChildNodes
-                            SubNodeName.IndexOf(XmlChildNode.Name)
-                            SubNodeValue.Item(SubNodeName.IndexOf(XmlChildNode.Name)) = XmlChildNode.InnerText
+                If Not AttributeValue = vbNullString Then
+                    alxPathTeile.Add("[@ID=""" & AttributeValue & """]")
+                End If
+                xPath = CreateXPath(alxPathTeile)
+                tmpXMLNode = .SelectSingleNode(xPath)
+                If Not tmpXMLNode Is Nothing Then
+                    With tmpXMLNode
+                        For Each XmlChildNode As XmlNode In tmpXMLNode.ChildNodes
+                            If Not SubNodeName.IndexOf(XmlChildNode.Name) = -1 Then
+                                SubNodeValue.Item(SubNodeName.IndexOf(XmlChildNode.Name)) = XmlChildNode.InnerText
+                            End If
+
                         Next
                     End With
                 End If
             End With
-            tmpNode = Nothing
+            tmpXMLNode = Nothing
         End If
     End Sub
 
-    Sub AppendNode(ByVal Knoten As XmlNode, ByVal StrArr As ArrayList)
+    Sub AppendNode(ByVal alxPathTeile As ArrayList, ByVal Knoten As XmlNode)
+        Dim xPathTeileEC As Long = alxPathTeile.Count
         Dim DestxPath As String
-        Dim tmpxPath As String
+        Dim tmpxPath As String = vbNullString
         Dim tmpXMLNode As XmlNode
-        DestxPath = CreateXPath(StrArr)
-        StrArr.Add(Knoten.Name)
-        tmpxPath = CreateXPath(StrArr)
-
+        DestxPath = CreateXPath(alxPathTeile)
         With XMLDoc
             tmpXMLNode = .SelectSingleNode(DestxPath)
-            If Not tmpXMLNode Is Nothing Then
-                If Not tmpXMLNode.Item(Knoten.Name) Is Nothing Then
-                    tmpXMLNode.RemoveChild(tmpXMLNode.Item(Knoten.Name))
+            If tmpXMLNode Is Nothing Then
+                Write(alxPathTeile, "", False)
+                tmpXMLNode = .SelectSingleNode(DestxPath)
+            End If
+            'Attribute
+            alxPathTeile.Add(Knoten.Name)
+            With Knoten
+                If Not .Attributes.Count = 0 Then
+                    For i = 0 To .Attributes.Count - 1
+                        ' String "tmpxPath" wird hier missbraucht, damit keine unnötige Variable deklariert werden muss.
+                        tmpxPath += "[@" & .Attributes.Item(i).Name & "=""" & .Attributes.Item(i).Value & """]"
+                    Next
+                    alxPathTeile.Add(Replace(tmpxPath, "][@", " and @", , , CompareMethod.Text))
                 End If
-                tmpXMLNode.AppendChild(Knoten)
+            End With
+            tmpxPath = CreateXPath(alxPathTeile)
+
+            If Not .SelectSingleNode(tmpxPath) Is Nothing Then
+                tmpXMLNode.RemoveChild(.SelectSingleNode(tmpxPath))
+            End If
+            tmpXMLNode.AppendChild(Knoten)
+        End With
+        Do Until alxPathTeile.Count = xPathTeileEC
+            alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
+        Loop
+
+    End Sub
+
+    Function SubNoteCount(ByVal alxPathTeile As ArrayList) As Integer
+        SubNoteCount = 0
+        Dim tmpxPath As String
+        Dim tmpXMLNode As XmlNode
+        tmpxPath = CreateXPath(alxPathTeile)
+        With XMLDoc
+            tmpXMLNode = .SelectSingleNode(tmpxPath)
+            If Not tmpXMLNode Is Nothing Then
+                SubNoteCount = tmpXMLNode.ChildNodes.Count
             End If
         End With
-    End Sub
+        tmpXMLNode = Nothing
+    End Function
+
 #End Region
 
 #Region "Speichern"
@@ -203,17 +325,17 @@ Public Class MyXML
 #Region "Stuff"
     Function ReadAllTelNr(ByVal DieSektion As String) As String
         Dim tmpNodeList As XmlNodeList
-        Dim StrArr As New ArrayList
+        Dim xPathTeile As New ArrayList
         Dim xPath As String
 
         ReadAllTelNr = ";"
 
         With XMLDoc
-            StrArr.Add(DieSektion)
-            xPath = CreateXPath(StrArr)
+            xPathTeile.Add(DieSektion)
+            xPath = CreateXPath(xPathTeile)
             If Not .SelectSingleNode(xPath) Is Nothing Then
-                StrArr.Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
-                xPath = CreateXPath(StrArr)
+                xPathTeile.Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or (starts-with(name(.), ""SIP"") and not (starts-with(name(.), ""SIPID"")))]")
+                xPath = CreateXPath(xPathTeile)
                 tmpNodeList = .SelectNodes(xPath)
 
                 If Not tmpNodeList.Count = 0 Then
@@ -228,36 +350,36 @@ Public Class MyXML
 
     Private Sub CleanUpXML()
         Dim tmpNode As XmlNode
-        Dim StrArr As New ArrayList
+        Dim xPathTeile As New ArrayList
         Dim xPath As String
 
         With XMLDoc
             ' Diverse Knoten des Journals löschen
-            StrArr.Add("Journal")
-            StrArr.Add("SchließZeit")
-            xPath = CreateXPath(StrArr)
+            xPathTeile.Add("Journal")
+            xPathTeile.Add("SchließZeit")
+            xPath = CreateXPath(xPathTeile)
             tmpNode = .SelectSingleNode(xPath)
-            StrArr.Remove("SchließZeit")
-            xPath = CreateXPath(StrArr)
+            xPathTeile.Remove("SchließZeit")
+            xPath = CreateXPath(xPathTeile)
             .SelectSingleNode(xPath).RemoveAll()
             If Not tmpNode Is Nothing Then
                 .SelectSingleNode(xPath).AppendChild(tmpNode)
             End If
             ' Alle Knoten LetzterAnrufer löschen
-            StrArr.RemoveRange(0, StrArr.Count)
-            StrArr.Add("LetzterAnrufer")
-            xPath = CreateXPath(StrArr)
+            xPathTeile.RemoveRange(0, xPathTeile.Count)
+            xPathTeile.Add("LetzterAnrufer")
+            xPath = CreateXPath(xPathTeile)
             tmpNode = .SelectSingleNode(xPath)
             If Not tmpNode Is Nothing Then
                 .DocumentElement.RemoveChild(.SelectSingleNode(xPath))
             End If
-            StrArr = Nothing
+            xPathTeile = Nothing
         End With
     End Sub
 
     Function CreateXPath(ByVal xPathElements As ArrayList) As String
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-        CreateXPath = Replace("/" & Join(xPathElements.ToArray(), "/"), "/[@", "[@", , , CompareMethod.Text)
+        CreateXPath = Replace("/" & Join(xPathElements.ToArray(), "/"), "/[", "[", , , CompareMethod.Text)
     End Function
 
     Function GetXMLDateiPfad() As String

@@ -21,8 +21,6 @@ Public Module VCard
         Parameter = UCase(Parameter)
         ' Störende Sonderzeichen entfernen
         vCard = Replace(vCard, Chr(9), " ", , , CompareMethod.Text)
-        vCard = Replace(vCard, "=0D", "", , , CompareMethod.Text)
-        vCard = Replace(vCard, "=0A", Chr(10), , , CompareMethod.Text)
         pos1 = 1
         ReadFromVCard = ""
         ' Zeilenweises Abarbeiten der vCard
@@ -67,8 +65,6 @@ Public Module VCard
         Loop Until pos1 = 0 Or Prop = "END"
         If Not Len(ReadFromVCard) = 0 Then ReadFromVCard = Mid(ReadFromVCard, 2)
         ' Zeilenbrüche decodieren (Achtung: nicht konform zu vCard-Regelwerk!!)
-        ReadFromVCard = Replace(ReadFromVCard, "=0D", Chr(13), , , CompareMethod.Text)
-        ReadFromVCard = Replace(ReadFromVCard, "=0A", Chr(10), , , CompareMethod.Text)
     End Function
 
     Function ReadFNfromVCard(ByVal vCard As String) As String

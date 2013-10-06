@@ -864,10 +864,17 @@ Public Class FritzBox
         Dim Port As String
         Dim EingerichteteTelefone As String = vbNullString
         Dim EingerichteteFax = vbNullString
-
+        Dim xPathTeile As New ArrayList
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
+        xPathTeile.Add("Telefone")
+        xPathTeile.Add("Nummern")
         If Not bRausschreiben Then C_XML.Delete("Telefone")
         'SIP Nummern
-        With c_hf
+        With C_hf
+            xPathTeile.Add("SIP")
             For Each SIPi In Split(.StringEntnehmen(Code, "['sip:settings/sip/list(" & .StringEntnehmen(Code, "['sip:settings/sip/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
                 If .StringEntnehmen(SIPi, "['activated'] = '", "'") = "1" Then
                     TelNr = .OrtsVorwahlEntfernen(.StringEntnehmen(SIPi, "['displayname'] = '", "'"), Vorwahl)
@@ -877,6 +884,8 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
                     Else
+                        C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
+                        ' RAUS:
                         C_XML.Write("Telefone", Node, TelNr, False)
                     End If
                 End If
@@ -888,6 +897,8 @@ Public Class FritzBox
             Else
                 C_XML.Write("Telefone", "SIPID", SIPID, False)
             End If
+
+            xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/MSN" & i & "'] = '", "'")
                 If Not TelNr = "-1" Then
@@ -897,6 +908,8 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            ' RAUS:
                             C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
                         End If
                     End If
@@ -922,6 +935,8 @@ Public Class FritzBox
                                             If bRausschreiben Then
                                                 setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
                                             Else
+                                                C_XML.Write(xPathTeile, TelNr, "ID", CStr(k), False)
+                                                ' RAUS:
                                                 C_XML.Write("Telefone", "MSN" & CStr(k), TelNr, False)
                                             End If
                                             Exit For
@@ -937,6 +952,7 @@ Public Class FritzBox
             MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
             MSN = (From x In MSN Where Not x Like "" Select x).ToArray
 
+            xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "TAM"
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['tam:settings/MSN" & i & "'] = '", "'")
                 If Not TelNr = "-1" Then
@@ -950,6 +966,8 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         Else
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            ' RAUS:
                             C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
                         End If
 
@@ -959,6 +977,7 @@ Public Class FritzBox
             Next
             'TAM = (From x In TAM Where Not x Like "" Select x).ToArray
 
+            xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['telcfg:settings/FaxMSN" & i & "'] = '", "'")
                 If Not TelNr = "-1" Then
@@ -972,6 +991,8 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
                         Else
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            ' RAUS:
                             C_XML.Write("Telefone", "FAX" & CStr(i), TelNr, False)
                         End If
 
@@ -997,7 +1018,6 @@ Public Class FritzBox
 
             End If
 
-
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
             If Not Mobil = "-1" And Not Mobil = vbNullString Then
                 If Strings.Left(Mobil, 3) = "SIP" Then
@@ -1017,7 +1037,8 @@ Public Class FritzBox
 
             TelAnzahl = 0
             pos(0) = 1
-
+            xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
+            xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "FON"
             'FON
             For Each Telefon In Split(.StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(" & .StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
                 TelName = .StringEntnehmen(Telefon, "['Name'] = '", "'")
@@ -1046,6 +1067,18 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("Analogtelefon gefunden: FON" & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
                     Else
+                        NodeNames.Add("TelName")
+                        NodeValues.Add(TelName)
+                        NodeNames.Add("TelNr")
+                        NodeValues.Add(TelNr)
+                        NodeNames.Add("outgoing")
+                        NodeValues.Add(outgoing)
+                        AttributeNames.Add("Dialport")
+                        AttributeValues.Add(DialPort)
+                        AttributeNames.Add("Fax")
+                        AttributeValues.Add(.StringEntnehmen(Telefon, "['Fax'] = '", "'"))
+                        C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+
                         C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
                     End If
 
@@ -1059,7 +1092,7 @@ Public Class FritzBox
             Next
 
             ' DECT
-
+            xPathTeile.Item(xPathTeile.IndexOf("FON")) = "DECT"
             tmpstrTelefone = .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(" & .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },")
 
             For Each DectTelefon In Split(tmpstrTelefone, "] = {", , CompareMethod.Text)
@@ -1096,13 +1129,21 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
                     Else
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        NodeValues.Item(NodeNames.IndexOf("outgoing")) = outgoing
+
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                        C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                        ' RAUS
                         C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
                     End If
 
                 End If
             Next
 
-
+            xPathTeile.Item(xPathTeile.IndexOf("DECT")) = "VOIP"
             'IP-Telefone
             tmpstrUser = Split(.StringEntnehmen(Code, "['telcfg:settings/VoipExtension/list(" & .StringEntnehmen(Code, "['telcfg:settings/VoipExtension/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
             For Each Telefon In tmpstrUser
@@ -1134,12 +1175,20 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                     Else
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        NodeValues.Item(NodeNames.IndexOf("outgoing")) = "-1"
+
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                        C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                        ' RAUS
                         C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                     End If
 
                 End If
             Next
-
+            xPathTeile.Item(xPathTeile.IndexOf("VOIP")) = "S0"
             Dim S0Typ As String
             ' S0-Port
             For i = 1 To 8
@@ -1153,6 +1202,14 @@ Public Class FritzBox
                             If bRausschreiben Then
                                 setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                             Else
+                                NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                                NodeValues.Item(NodeNames.IndexOf("outgoing")) = TelNr
+
+                                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = IIf(.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'") = "Fax", 1, 0)
+                                C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                ' RAUS
                                 C_XML.Write("Telefone", DialPort, TelNr & ";" & TelNr & ";" & TelName, False)
                             End If
 
@@ -1166,11 +1223,9 @@ Public Class FritzBox
                                         'Case "Fon"
                                         'Case Else
                                 End Select
-
                             End If
                             AnzahlISDN += 1
                             EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
                         End If
                     End If
                 End If
@@ -1182,11 +1237,19 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("S0-Basis hinzugefügt.")
                 Else
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = vbNullString
+                    NodeValues.Item(NodeNames.IndexOf("outgoing")) = vbNullString
+                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                    ' RAUS
                     C_XML.Write("Telefone", DialPort, ";;ISDN-Basis", False)
                 End If
 
             End If
 
+            xPathTeile.Item(xPathTeile.IndexOf("S0")) = "TAM"
             ' TAM
             tmpstrUser = Split(.StringEntnehmen(Code, "['tam:settings/TAM/list(" & .StringEntnehmen(Code, "['tam:settings/TAM/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
             For Each Anrufbeantworter In tmpstrUser
@@ -1201,6 +1264,13 @@ Public Class FritzBox
                     If bRausschreiben Then
                         setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                     Else
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        NodeValues.Item(NodeNames.IndexOf("outgoing")) = "-1"
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                        C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                        ' RAUS
                         C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
                     End If
 
@@ -1209,10 +1279,10 @@ Public Class FritzBox
 
 
             ' integrierter Faxempfang
-
+            xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             DialPort = .StringEntnehmen(Code, "['telcfg:settings/FaxMailActive'] = '", "'")
-            If DialPort = "1" Then
-                TelNr = ""
+            If Not DialPort = "0" Then
+                TelNr = "-1"
                 DialPort = "5"
                 AnzahlFAX += 1
                 EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
@@ -1222,6 +1292,13 @@ Public Class FritzBox
                 If bRausschreiben Then
                     setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
                 Else
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                    NodeValues.Item(NodeNames.IndexOf("outgoing")) = "-1"
+                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
+                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                    ' RAUS
                     C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & "Faxempfang", False)
                 End If
 

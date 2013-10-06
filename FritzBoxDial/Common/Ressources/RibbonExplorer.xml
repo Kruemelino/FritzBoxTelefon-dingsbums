@@ -13,9 +13,9 @@
             </menu>
           </splitButton>
           <separator id="Seperator_C1"/>
-          <dynamicMenu id="dynMwwdh_C" label=" Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMAnrListe_C" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMVIPListe_C" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMwwdh_C" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMAnrListe_C" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMVIPListe_C" label="VIP-Liste" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
           <separator id="Seperator_C2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_C" size="normal" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
@@ -43,9 +43,9 @@
             </menu>
           </splitButton>
           <separator id="Seperator_M1"/>
-          <dynamicMenu id="dynMwwdh_M" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMAnrListe_M" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMVIPListe_M" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMwwdh_M" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMAnrListe_M" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMVIPListe_M" label="VIP-Liste" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
           <separator id="Seperator_M2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_M" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
@@ -73,9 +73,9 @@
             </menu>
           </splitButton>
           <separator id="Seperator_J1"/>
-          <dynamicMenu id="dynMwwdh_J" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMAnrListe_J" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMVIPListe_J" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMwwdh_J" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMAnrListe_J" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMVIPListe_J" label="VIP-Liste" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
           <separator id="Seperator_J2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_J" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
@@ -103,9 +103,9 @@
             </menu>
           </splitButton>
           <separator id="Seperator_K1"/>
-          <dynamicMenu id="dynMwwdh_K" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMAnrListe_K" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true"/>
-          <dynamicMenu id="dynMVIPListe_K" label="VIP-Liste" getContent="DynMenüfüllenVIP" invalidateContentOnDrop="true"/>
+          <dynamicMenu id="dynMwwdh_K" label="Wahlwiederholung" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMAnrListe_K" label="Rückruf" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
+          <dynamicMenu id="dynMVIPListe_K" label="VIP-Liste" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled"/>
           <separator id="Seperator_K2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_K" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->

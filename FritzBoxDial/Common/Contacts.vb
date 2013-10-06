@@ -1,13 +1,13 @@
 ﻿Public Class Contacts
     Private C_XML As MyXML
-    Private hf As Helfer
+    Private C_hf As Helfer
     ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
 
     Public Sub New(ByVal XMLKlasse As MyXML, ByVal HelferKlasse As Helfer)
 
         ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
         C_XML = XMLKlasse
-        hf = HelferKlasse
+        C_hf = HelferKlasse
     End Sub
 
     Friend Function FindeKontakt(ByRef TelNr As String, _
@@ -112,10 +112,10 @@
             vCard2Contact(vCard, Kontakt)
 
             With Kontakt
-                If Not hf.nurZiffern(.BusinessTelephoneNumber, "0049") = hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
-                    .Business2TelephoneNumber = hf.formatTelNr(TelNr)
-                ElseIf Not hf.nurZiffern(.HomeTelephoneNumber, "0049") = hf.nurZiffern(TelNr, "0049") And Not .HomeTelephoneNumber = "" Then
-                    .Home2TelephoneNumber = hf.formatTelNr(TelNr)
+                If Not C_hf.nurZiffern(.BusinessTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
+                    .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .HomeTelephoneNumber = "" Then
+                    .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
@@ -125,14 +125,14 @@
                 .Save()
                 KontaktID = .EntryID
                 StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
-                hf.LogFile("Kontakt " & Kontakt.FullName & " wurde erstellt")
+                C_hf.LogFile("Kontakt " & Kontakt.FullName & " wurde erstellt")
             End With
 
         End If
         Kontakt = Nothing
     End Sub
 
-    Sub KontaktErstellen()
+    Friend Sub KontaktErstellen()
         Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Kontakt oder Journal)
         Dim pos1 As Integer
         Dim pos2 As Integer
@@ -148,7 +148,7 @@
                 With Journal
                     If Not InStr(1, Journal.Categories, "FritzBox Anrufmonitor", CompareMethod.Text) = 0 Then
                         ' Telefonnummer aus dem .Body herausfiltern
-                        TelNr = hf.StringEntnehmen(.Body, "Tel.-Nr.: ", "Status: ")
+                        TelNr = C_hf.StringEntnehmen(.Body, "Tel.-Nr.: ", "Status: ")
                         ' vCard aus dem .Body herausfiltern
                         pos1 = InStr(1, .Body, "BEGIN:VCARD", CompareMethod.Text)
                         pos2 = InStr(1, .Body, "END:VCARD", CompareMethod.Text) + 9
@@ -162,14 +162,14 @@
                                     If TypeOf olLink.Item Is Outlook.ContactItem Then
                                         olContact = CType(olLink.Item, Outlook.ContactItem)
                                         olContact.Display()
-                                        hf.NAR(olContact) : olContact = Nothing
+                                        C_hf.NAR(olContact) : olContact = Nothing
                                         Exit Sub
                                     End If
                                 Catch
-                                    hf.LogFile("KontaktErstellen: Kontakt nicht gefunden")
+                                    C_hf.LogFile("KontaktErstellen: Kontakt nicht gefunden")
                                 End Try
                             Next
-                            hf.NAR(olLink) : olLink = Nothing
+                            C_hf.NAR(olLink) : olLink = Nothing
                         End If
 #End If
                         Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
@@ -177,7 +177,7 @@
                             vCard = Mid(.Body, pos1, pos2 - pos1)
                             vCard2Contact(vCard, Kontakt)
                         Else
-                            If hf.Mobilnummer(hf.nurZiffern(TelNr, "0049")) Then
+                            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, "0049")) Then
                                 Kontakt.MobileTelephoneNumber = TelNr
                             Else
                                 Kontakt.BusinessTelephoneNumber = TelNr
@@ -187,13 +187,13 @@
                         C_XML.Write("Journal", "JournalID", .EntryID, False)
                         C_XML.Write("Journal", "JournalStoreID", CType(.Parent, Outlook.MAPIFolder).StoreID, True)
                         With Kontakt
-                            If Not hf.nurZiffern(.BusinessTelephoneNumber, "0049") = hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
-                                .Business2TelephoneNumber = hf.formatTelNr(TelNr)
-                            ElseIf Not hf.nurZiffern(.HomeTelephoneNumber, "0049") = hf.nurZiffern(TelNr, "0049") And Not .HomeTelephoneNumber = "" Then
-                                .Home2TelephoneNumber = hf.formatTelNr(TelNr)
+                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
+                                .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .HomeTelephoneNumber = "" Then
+                                .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                             End If
                             .Categories = "Fritz!Box" 'Alle Kontakte, die erstellt werdn, haben die Kategorie "Fritz!Box". Damit sind sie einfach zu erkennen
-                            hf.LogFile("Kontakt " & Kontakt.FullName & " wurde aus einem Journaleintrag erzeugt.")
+                            C_hf.LogFile("Kontakt " & Kontakt.FullName & " wurde aus einem Journaleintrag erzeugt.")
                             .Display()
                         End With
                     End If
@@ -202,6 +202,10 @@
             End If
         End If
     End Sub ' (KontaktErstellen)
+
+    Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
+        Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+    End Sub
 
     Private Function NrFormat(ByVal gefKontakt As Outlook.ContactItem, ByVal TelNr As String, ByVal LandesVW As String) As String
         Dim alleTE(16) As String
@@ -225,7 +229,7 @@
             alleTE(16) = .OtherFaxNumber
         End With
         For Each Telefonnummer In alleTE
-            If TelNr = hf.nurZiffern(Telefonnummer, LandesVW) Then Return Telefonnummer
+            If TelNr = C_hf.nurZiffern(Telefonnummer, LandesVW) Then Return Telefonnummer
         Next
         Return TelNr
     End Function
@@ -261,7 +265,7 @@
                         If .UserProperties.Find(UserProperties(i)) Is Nothing Then
                             .UserProperties.Add(UserProperties(i), Outlook.OlUserPropertyType.olText, False)
                         End If
-                        tempTelNr = hf.nurZiffern(alleTE(i), LandesVW)
+                        tempTelNr = C_hf.nurZiffern(alleTE(i), LandesVW)
                         If Not CStr(.UserProperties.Find(UserProperties(i)).Value) = tempTelNr Then
                             .UserProperties.Find(UserProperties(i)).Value = tempTelNr
                         End If
@@ -269,7 +273,7 @@
                         .UserProperties.Find(UserProperties(i)).Delete()
                     End If
                 Next
-                If WriteLog Then hf.LogFile("Kontakt: " & .FullNameAndCompany & " wurde automatisch indiziert.")
+                If WriteLog Then C_hf.LogFile("Kontakt: " & .FullNameAndCompany & " wurde automatisch indiziert.")
                 .Save()
             End With
         End If
@@ -298,7 +302,7 @@
 #If Not OVer = 11 Then
             With Ordner.UserDefinedProperties
                 For i = 1 To .Count
-                    If hf.IsOneOf(.Item(1).Name, UserProperties) Then .Remove(1)
+                    If C_hf.IsOneOf(.Item(1).Name, UserProperties) Then .Remove(1)
                 Next
             End With
 #End If
@@ -404,14 +408,14 @@
                 If .BusinessFaxNumber = "" Then
                     pos = InStr(1, BFax, "#", CompareMethod.Text)
                     If Not pos = 0 Then BFax = Left(BFax, pos - 1)
-                    .BusinessFaxNumber = hf.formatTelNr(BFax)
+                    .BusinessFaxNumber = C_hf.formatTelNr(BFax)
                 End If
                 BTel = ReadFromVCard(vCard, "TEL", "WORK,VOICE")
             End If
             If .BusinessTelephoneNumber = "" Then
                 pos = InStr(1, BTel, "#", CompareMethod.Text)
                 If Not pos = 0 Then BTel = Left(BTel, pos - 1)
-                .BusinessTelephoneNumber = hf.formatTelNr(BTel)
+                .BusinessTelephoneNumber = C_hf.formatTelNr(BTel)
             End If
             HFax = ReadFromVCard(vCard, "TEL", "HOME,FAX")
             If HFax = "" Then
@@ -420,47 +424,47 @@
                 If .HomeFaxNumber = "" Then
                     pos = InStr(1, HFax, "#", CompareMethod.Text)
                     If Not pos = 0 Then HFax = Left(HFax, pos - 1)
-                    .HomeFaxNumber = hf.formatTelNr(HFax)
+                    .HomeFaxNumber = C_hf.formatTelNr(HFax)
                 End If
                 HTel = ReadFromVCard(vCard, "TEL", "HOME,VOICE")
             End If
             If .HomeTelephoneNumber = "" Then
                 pos = InStr(1, HTel, "#", CompareMethod.Text)
                 If Not pos = 0 Then HTel = Left(HTel, pos - 1)
-                .HomeTelephoneNumber = hf.formatTelNr(HTel)
+                .HomeTelephoneNumber = C_hf.formatTelNr(HTel)
             End If
             Mobile = ReadFromVCard(vCard, "TEL", "CELL")
             If .MobileTelephoneNumber = "" Then
                 pos = InStr(1, Mobile, "#", CompareMethod.Text)
                 If Not pos = 0 Then Mobile = Left(Mobile, pos - 1)
-                .MobileTelephoneNumber = hf.formatTelNr(Mobile)
+                .MobileTelephoneNumber = C_hf.formatTelNr(Mobile)
             End If
             Pager = ReadFromVCard(vCard, "TEL", "PAGER")
             If .PagerNumber = "" Then
                 pos = InStr(1, Pager, "#", CompareMethod.Text)
                 If Not pos = 0 Then Pager = Left(Pager, pos - 1)
-                .PagerNumber = hf.formatTelNr(Pager)
+                .PagerNumber = C_hf.formatTelNr(Pager)
             End If
             Car = ReadFromVCard(vCard, "TEL", "CAR")
             If .CarTelephoneNumber = "" Then
                 pos = InStr(1, Car, "#", CompareMethod.Text)
                 If Not pos = 0 Then Car = Left(Car, pos - 1)
-                .CarTelephoneNumber = hf.formatTelNr(Car)
+                .CarTelephoneNumber = C_hf.formatTelNr(Car)
             End If
             ISDN = ReadFromVCard(vCard, "TEL", "ISDN")
             If .ISDNNumber = "" Then
                 pos = InStr(1, ISDN, "#", CompareMethod.Text)
                 If Not pos = 0 Then ISDN = Left(ISDN, pos - 1)
-                .ISDNNumber = hf.formatTelNr(ISDN)
+                .ISDNNumber = C_hf.formatTelNr(ISDN)
             End If
             If BFax = "" And BTel = "" And HFax = "" And HTel = "" And Mobile = "" And Pager = "" And Car = "" And ISDN = "" Then
                 tmp1 = ReadFromVCard(vCard, "TEL", "")
                 pos = InStr(1, tmp1, "#", CompareMethod.Text)
                 If Not pos = 0 Then tmp1 = Left(tmp1, pos - 1)
                 If Company = "" Then
-                    If .HomeTelephoneNumber = "" Then .HomeTelephoneNumber = hf.formatTelNr(tmp1)
+                    If .HomeTelephoneNumber = "" Then .HomeTelephoneNumber = C_hf.formatTelNr(tmp1)
                 Else
-                    If .BusinessTelephoneNumber = "" Then .BusinessTelephoneNumber = hf.formatTelNr(tmp1)
+                    If .BusinessTelephoneNumber = "" Then .BusinessTelephoneNumber = C_hf.formatTelNr(tmp1)
                 End If
             End If
             'insert Birthday
@@ -635,9 +639,9 @@
                     'LogFile("vCard2Contact: " & Err.Number)
                     If Err.Number = 287 Then
                         'LogFile("Fehler-Beschreibung: " & Err.Description & vbNewLine & "Nutzer hat den Zugriff auf den Kontakt nicht gewährt")
-                        hf.FBDB_MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.FBDB_MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
                     Else
-                        hf.FBDB_MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.FBDB_MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
                     End If
                 End Try
             End If
@@ -652,9 +656,9 @@
                     'LogFile("vCard2Contact: " & Err.Number)
                     If Err.Number = 287 Then
                         'LogFile("Fehler-Beschreibung: " & Err.Description & vbNewLine & "Nutzer hat den Zugriff auf den Kontakt nicht gewährt")
-                        hf.FBDB_MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.FBDB_MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
                     Else
-                        hf.FBDB_MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.FBDB_MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
                     End If
                 End Try
             End If
