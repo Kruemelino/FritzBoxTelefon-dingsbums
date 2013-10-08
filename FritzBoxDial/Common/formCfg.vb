@@ -204,48 +204,64 @@ Public Class formCfg
     End Sub
 
     Private Sub Statistik()
+
+        ' BMI TELEFONE
         Dim row(Me.TelList.ColumnCount) As String
         Dim Nebenstellen() As String
+
         Dim j As Integer
-        Dim TelName() As String
+        'Dim TelName() As String
         Dim TelAnzahl As String
         With Me.TelList
             For j = 0 To .RowCount - 1
                 .Rows.RemoveAt(0)
             Next
         End With
+
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("TelName")
+        End With
+        Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
+        xPathTeile = Nothing
+
+
         Dim StandardTelefon As String = C_XML.Read("Telefone", "CBStandardTelefon", "-1")
-        Nebenstellen = Split(C_XML.Read("Telefone", "EingerichteteTelefone", "1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29,5,600,601,602,603,604"), ";", , CompareMethod.Text)
+        ' Nebenstellen = Split(C_XML.Read("Telefone", "EingerichteteTelefone", "1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29,5,600,601,602,603,604"), ";", , CompareMethod.Text)
         TelAnzahl = C_XML.Read("Telefone", "Anzahl", "-1")
         If Not TelAnzahl = "-1" Then
             With Me.TelList
                 j = 0
                 For Each Nebenstelle In Nebenstellen
-                    TelName = Split(C_XML.Read("Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
-                    If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
-                        j += 1
-                        row(1) = CStr(j) ' Zählvariable
-                        row(2) = Nebenstelle
-                        row(3) = TelName(2) ' TelName
-                        row(4) = Telefontyp(CInt(Nebenstelle))
-                        row(5) = Replace(TelName(1), "_", ", ", , , CompareMethod.Text) ' Eingehnd
-                        row(6) = Replace(TelName(0), "_", ", ", , , CompareMethod.Text) ' Ausgehnd
-                        row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")))
-                        row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
-                        row(9) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
-                        .Rows.Add(row)
-                        If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
-                    End If
+                    'TelName = Split(C_XML.Read("Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
+                    'If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
+                    j += 1
+                    row(1) = CStr(j) ' Zählvariable
+                    'row(2) = Nebenstelle
+                    row(3) = Nebenstelle ' TelName
+                    'row(4) = Telefontyp(CInt(Nebenstelle))
+                    'row(5) = Replace(TelName(1), ";", ", ", , , CompareMethod.Text) ' Eingehnd
+                    'row(6) = Replace(TelName(0), ";", ", ", , , CompareMethod.Text) ' Ausgehnd
+                    'row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")))
+                    'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
+                    'row(9) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
+                    .Rows.Add(row)
+                    If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
+                    'End If
                 Next
 
-                row(1) = Nothing
-                row(2) = Nothing
-                row(3) = Nothing
-                row(4) = Nothing
-                row(5) = "Summe:"
-                row(6) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")))
-                row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", "ausgehend", "0")))
-                row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")) + CInt(C_XML.Read("Statistik", "ausgehend", "0")))
+                'row(1) = Nothing
+                'row(2) = Nothing
+                'row(3) = Nothing
+                'row(4) = Nothing
+                'row(5) = "Summe:"
+                'row(6) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")))
+                'row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", "ausgehend", "0")))
+                'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")) + CInt(C_XML.Read("Statistik", "ausgehend", "0")))
                 .Rows.Add(row)
             End With
         End If
@@ -767,29 +783,37 @@ Public Class formCfg
         Return True
     End Function
 
-    Function NSN(ByVal Nebenstelle As String, ByVal MSN As String) As Integer
-        NSN = -1
-        Dim Nebenstellen As String()
-        Dim Telname As String()
-        Nebenstellen = Split("1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29", ",", , CompareMethod.Text) 'AB nicht durchsuchen 600,601,602,603,604
+    'Function NSN(ByVal Nebenstelle As String, ByVal MSN As String) As Integer
+    '    NSN = -1
+    '    Dim xPathTeile As New ArrayList
+    '    With xPathTeile
+    '        .Add("Telefone")
+    '        .Add("Telefone")
+    '        .Add("*")
+    '        .Add("Telefon")
+    '        If Nebenstelle = "Fax (intern/PC)" Then
+    '            NSN = 5
+    '        Else
+    '            Select Case Nebenstelle
+    '                Case vbNullString
+    '                    .Add("[not(@Dialport > 599) and TelNr = """ & MSN & """ or TelNr = """ & C_Helfer.OrtsVorwahlEntfernen(MSN, Me.TBVorwahl.Text) & """]")
+    '                Case Else
+    '                    .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
+    '            End Select
+    '        End If
+    '        .Add("@Dialport")
+    '        NSN = CInt(C_XML.Read(xPathTeile, "-1"))
+    '    End With
 
-        For Each NebenstellenNr In Nebenstellen
-            Telname = Split(C_XML.Read("Telefone", CStr(NebenstellenNr), "-1;;"), ";", , CompareMethod.Text)
-            If Not Nebenstelle = vbNullString Then
-                If Telname(2) = Nebenstelle Then NSN = CInt(NebenstellenNr)
-            Else
-                If Telname(1) = MSN Then NSN = CInt(NebenstellenNr)
-            End If
-            If Not NSN = -1 Then
-                Select Case NSN
-                    Case 0 To 3
-                        NSN -= 1
-                    Case 60 To 69 'DECT
-                        NSN -= 50
-                End Select
-            End If
-        Next
-    End Function
+    '    If Not NSN = -1 Then
+    '        Select Case NSN
+    '            Case 0 To 3
+    '                NSN -= 1
+    '            Case 60 To 69 'DECT
+    '                NSN -= 50
+    '        End Select
+    '    End If
+    'End Function
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()

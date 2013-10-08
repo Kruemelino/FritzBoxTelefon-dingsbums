@@ -17,6 +17,8 @@ Public Class MyXML
                 XMLDoc.Load(sDateiPfad)
             Else
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
+                .CreateDirectory(.GetParentPath(sDateiPfad))
+                .WriteAllText(sDateiPfad, XMLDoc.InnerXml, True)
             End If
         End With
         CleanUpXML()
@@ -361,8 +363,8 @@ Public Class MyXML
             tmpNode = .SelectSingleNode(xPath)
             xPathTeile.Remove("SchließZeit")
             xPath = CreateXPath(xPathTeile)
-            .SelectSingleNode(xPath).RemoveAll()
             If Not tmpNode Is Nothing Then
+                .SelectSingleNode(xPath).RemoveAll()
                 .SelectSingleNode(xPath).AppendChild(tmpNode)
             End If
             ' Alle Knoten LetzterAnrufer löschen

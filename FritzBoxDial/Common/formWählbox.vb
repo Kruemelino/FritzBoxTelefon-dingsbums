@@ -26,6 +26,7 @@ Public Class formWählbox
     Private WählboxBereit As Boolean = False ' Erst wenn True, kann gewählt werden
     Private SID As String
     Private bDirektwahl As Boolean
+    Private bDialing As Boolean = False
     Private LandesVorwahl As String
     Private Nebenstellen As String()
     ' Phoner
@@ -50,7 +51,7 @@ Public Class formWählbox
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
-        ' Fügen Sie C_XMLtialisierungen nach dem C_XMLtializeComponent()-Aufruf hinzu.
+        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         C_XML = XMLKlasse
         C_hf = HelferKlasse
         C_FBox = FritzBoxKlasse
@@ -65,11 +66,6 @@ Public Class formWählbox
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
         Me.KeyPreview = Not bDirektwahl
-    End Sub
-
-    Private Sub formWählbox_FormClosing(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.FormClosing
-        If Not UsePhonerOhneFritzBox Then ThisAddIn.fBox.FBLogout(SID)
-        Me.Dispose(True)
     End Sub
 
     Private Sub formWählbox_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -101,7 +97,7 @@ Public Class formWählbox
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1)]") ' Keine Anrufbeantworter, kein Fax
             .Add("TelName")
         End With
-        Nebenstellen = Split(C_XML.Read(xPathTeile, "-1"), ";", , CompareMethod.Text)
+        Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
         xPathTeile = Nothing
 
         For Each Nebenstelle In Nebenstellen
@@ -163,13 +159,10 @@ Public Class formWählbox
         ' Abbruch-Button wieder verstecken
         cancelCallButton.Visible = False
         ' Abbruch ausführen
-        If Not PhonerCall Then Me.LabelStatus.Text = C_FBox.SendDialRequestToBox("ATH", Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
-        ' Bemerkung: Anstatt ATH kann auch einfach ein Leerzeichen oder ein Buchstabe, oder #
-        ' gesendet werden (nur keine Nummer), was alles zu einem Verbindungsabbruch führt.
-        ' ATH entspricht lediglich dem AT-Kommando das früher über Port1011 des telefond für
-        ' das Auflegen benutzt wurde, daher hab ich es hier verwendet, auch wenn es gar nicht
-        ' ausgewertet wird.
-        ' Kruemelino 130812: ATH wird nicht mehr verwendet.
+        If bDialing Then
+            If Not PhonerCall Then Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(vbNullString, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+        End If
+        bDialing = False
         TimerSchließen.Stop()
         ListTel.ClearSelection() ' Ein erneutes Wählen ermöglichen
     End Sub
@@ -214,10 +207,12 @@ Public Class formWählbox
         Me.LabelCheckTest.Text = "Diese Telefonnumer wird gewählt: " & TelNr
     End Sub
 
-    Sub Form_Close() Handles CloseButton.Click
+    Private Sub CloseButton_Click() Handles CloseButton.Click
+        Me.Hide()
         If Not TimerSchließen Is Nothing Then C_hf.KillTimer(TimerSchließen)
+        If Not UsePhonerOhneFritzBox Then ThisAddIn.fBox.FBLogout(SID)
         Me.Close()
-        Me.Dispose()
+        Me.Dispose(True)
     End Sub
 #End Region
 
@@ -249,6 +244,29 @@ Public Class formWählbox
             Me.Close()
         End If
     End Sub
+
+    Function GetDialport(ByVal Nebenstelle As String) As String
+        GetDialport = "-1"
+        Dim tempint As Double
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
+            .Add("@Dialport")
+            tempint = CDbl(C_XML.Read(xPathTeile, "-1"))
+        End With
+
+        If Not tempint = -1 Then
+            Select Case tempint
+                Case 1 To 4
+                    tempint -= 1
+            End Select
+        End If
+        Return CStr(tempint)
+    End Function
 #End Region
 
 #Region "Timer"
@@ -267,7 +285,7 @@ Public Class formWählbox
             Dim myurl As String
             Dim CheckMobil As Boolean = True
             Dim HTMLFehler As ErrObject = Nothing
-            ' C_XMLtiiert den Anruf, wenn eine Nummer ausgewählt wurde
+
             If Not Me.checkCBC.Checked Then
                 Me.cancelCallButton.Visible = True
                 Me.cancelCallButton.Focus()
@@ -316,9 +334,12 @@ Public Class formWählbox
 #End Region
 
 #Region "Wählen"
+
+
     Private Sub Start()
         If Not ListTel.SelectedRows.Count = 0 Then
             Dim ID As Argument
+            bDialing = True
             CallNr = New System.Threading.Thread(AddressOf dialNumber)
             With ID
                 .TelNr = CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)
@@ -327,7 +348,7 @@ Public Class formWählbox
                 If Me.ComboBoxFon.Text = "Phoner" Then
                     .fonanschluss = "-2"
                 Else
-                    .fonanschluss = Nebenstellen(Me.ComboBoxFon.SelectedIndex)
+                    .fonanschluss = GetDialport(Nebenstellen(Me.ComboBoxFon.SelectedIndex))
                 End If
             End With
 
@@ -568,5 +589,4 @@ Public Class formWählbox
         End If
     End Sub
 #End Region
-
 End Class

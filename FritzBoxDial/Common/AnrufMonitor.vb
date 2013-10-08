@@ -672,7 +672,7 @@ Public Class AnrufMonitor
         Dim TempStat As Integer
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
 
-        Dim NSN As String = vbNullString
+        Dim NSN As Double = -1
         Dim Zeit As String = vbNullString
         Dim Typ As String = vbNullString
         Dim MSN As String = vbNullString
@@ -684,31 +684,12 @@ Public Class AnrufMonitor
         Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1")
         Dim SchließZeit As Date = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
 
+        Dim xPathTeile As New ArrayList
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
             JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
             Dim JMSN As String = C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl)
             If Not MSN = Nothing Then
                 If C_hf.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-
-                    'Ist eingespeicherte MSN in der MSN aus FBStatus vorhanden
-                    ' Telefonnamen ermitteln
-                    If NSN Is Nothing Then NSN = "-1"
-                    Select Case CInt(NSN)
-                        Case 0 To 2 ' FON1-3
-                            TelName = Split(C_XML.Read("Telefone", CStr(CInt(NSN) + 1), ";"), ";", , CompareMethod.Text)(2)
-                            'TelName = Mid(TelName, InStr(1, TelName, ";", CompareMethod.Text) + 1)
-                        Case 20 To 29 ' LAN/WLAN 
-                            TelName = Split(C_XML.Read("Telefone", NSN, ";"), ";", , CompareMethod.Text)(2)
-                            'TelName = Mid(TelName, InStr(1, TelName, ";", CompareMethod.Text) + 1)
-                        Case 5
-                            TelName = "PC-Fax"
-                        Case 10 To 19 ' DECT
-                            TelName = Split(C_XML.Read("Telefone", CStr(CInt(NSN) + 50), ";"), ";", , CompareMethod.Text)(2)
-                            'TelName = Mid(TelName, InStr(1, TelName, ";", CompareMethod.Text) + 1)
-                        Case Else  ' S0-Bus
-                            TelName = TelefonName(JMSN)
-                    End Select
-
                     ' Journaleintrag schreiben
 
                     If Dauer = 0 Then
@@ -784,6 +765,22 @@ Public Class AnrufMonitor
                         End If
 
                     End If
+
+                    Select Case NSN
+                        Case 0 To 2 ' FON1-3
+                            NSN += 1
+                        Case 10 To 19 ' DECT
+                            NSN += 50
+                    End Select
+
+                    With xPathTeile
+                        .Add("Telefone")
+                        .Add("Telefone")
+                        .Add("*")
+                        .Add("Telefon[@Dialport = """ & NSN & """]")
+                        .Add("Telname")
+                    End With
+                    TelName = C_XML.Read(xPathTeile, "")
 
                     ' Prüfe ob TelName angehängt werden soll
                     If Not Split(checkstring, ";", , CompareMethod.Text).Length = 1 Or CInt(C_XML.Read("Telefone", "Anzahl", "1")) > 1 Then
@@ -881,7 +878,7 @@ Public Class AnrufMonitor
     End Sub
 
     Sub JIauslesen(ByVal ID As Integer, _
-               ByRef NSN As String, _
+               ByRef NSN As Double, _
                ByRef Zeit As String, _
                ByRef Typ As String, _
                ByRef MSN As String, _
@@ -911,7 +908,7 @@ Public Class AnrufMonitor
 
         ' NSN
         LANodeNames.Add("NSN")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(-1)
 
         ' StoreID
         LANodeNames.Add("StoreID")
@@ -931,7 +928,7 @@ Public Class AnrufMonitor
         Typ = CStr(LANodeValues.Item(LANodeNames.IndexOf("Typ")))
         TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
         MSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("MSN")))
-        NSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
+        NSN = CDbl(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
         StoreID = CStr(LANodeValues.Item(LANodeNames.IndexOf("StoreID")))
         KontaktID = CStr(LANodeValues.Item(LANodeNames.IndexOf("KontaktID")))
 

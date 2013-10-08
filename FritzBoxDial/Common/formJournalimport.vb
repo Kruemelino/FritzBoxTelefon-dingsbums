@@ -93,15 +93,14 @@ Public Class formJournalimport
         Dim Nebenstelle As String  ' verwendete Nebenstelle
         Dim MSN As String  ' verwendete MSN
         Dim NSN As Integer  ' verwendete Nebenstellennummer
-        Dim TelName() As String  ' Name des Telefons
         Dim Dauer As String  ' Dauer des Telefonats
         Dim vFBStatus As String()  ' generierter Status-String
         Dim Startzeit As Date    ' Letzter Journalimports
         Dim Endzeit As Date    ' Ende des Journalimports
         Dim i, j, a, b As Integer    ' Zählvariable
-        Dim Nebenstellen As String()
         Dim Übergabewerte As Argument = CType(e.Argument, Argument)
         Dim AnrListe As String()
+        Dim xPathTeile As New ArrayList
 
         DownloadAnrListe.Dispose()
         With Übergabewerte
@@ -113,14 +112,7 @@ Public Class formJournalimport
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
         Dim Anzahl As Integer = -1 ' Anzahl der zu importierenden Telefonate
-
-
-        Nebenstellen = Split("1,2,3,5,51,52,53,54,55,56,57,58,50,600,601,602,603,604,60,61,62,63,64,65,66,67,68,69", ",", , CompareMethod.Text) ',20,21,22,23,24,25,26,27,28,29
         ThisAddIn.fBox.FBLogout(SID)
-
-
-        'Dim myurl As String = "D:\Makro\Arbeitsverzeichnis\quelldateien\Maik\FRITZ!Box_Anrufliste.csv"
-        'CSVAnrliste = hf.httpRead(myurl, System.Text.Encoding.UTF8)
 
         If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is vbNullString Then
 
@@ -176,19 +168,33 @@ Public Class formJournalimport
                             b += 1
                             i = 0
                             NSN = -1
-
-                            For Each NebenstellenNr In Nebenstellen
-                                TelName = Split(C_XML.Read("Telefone", CStr(NebenstellenNr), "-1;;"), ";", , CompareMethod.Text)
-                                If Not Nebenstelle = vbNullString Then
-                                    If TelName(2) = Nebenstelle Then NSN = CInt(NebenstellenNr)
+                            With xPathTeile
+                                .Add("Telefone")
+                                .Add("Telefone")
+                                .Add("*")
+                                .Add("Telefon")
+                                If Nebenstelle = "Fax (intern/PC)" Then
+                                    NSN = 5
                                 Else
-                                    If TelName(1) = MSN Then NSN = CInt(NebenstellenNr)
+                                    Select Case Nebenstelle
+                                        Case vbNullString
+                                            .Add("[TelNr = """ & MSN & """ or TelNr = """ & hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+                                        Case Else
+                                            .Add("[TelName = """ & Nebenstelle & """]")
+                                    End Select
                                 End If
-                                If Not NSN = -1 Then
-                                    If NSN < 4 Then NSN -= 1
-                                    Exit For
-                                End If
-                            Next
+                                .Add("@Dialport")
+                                NSN = CInt(C_XML.Read(xPathTeile, "-1"))
+                            End With
+                            If Not NSN = -1 Then
+                                'If NSN < 4 Then NSN -= 1
+                                Select Case NSN
+                                    Case 1 To 3
+                                        NSN -= 1
+                                    Case 60 To 69 'DECT
+                                        NSN -= 50
+                                End Select
+                            End If
 
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen

@@ -35,6 +35,12 @@ Partial Class formWählbox
         Me.cancelCallButton = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.listCbCAnbieter = New System.Windows.Forms.DataGridView()
+        Me.Nummer = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CentProMin = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Vorwahl = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Takt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Tarif = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Bemerkung = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Gespraechsart = New System.Windows.Forms.Label()
@@ -45,12 +51,6 @@ Partial Class formWählbox
         Me.TelNrBox = New System.Windows.Forms.TextBox()
         Me.Titel = New System.Windows.Forms.Label()
         Me.ContactImage = New System.Windows.Forms.PictureBox()
-        Me.Nummer = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.CentProMin = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Vorwahl = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Takt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Tarif = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Bemerkung = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.ListTel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.Frame1.SuspendLayout()
@@ -231,6 +231,44 @@ Partial Class formWählbox
         Me.listCbCAnbieter.Size = New System.Drawing.Size(535, 110)
         Me.listCbCAnbieter.TabIndex = 11
         '
+        'Nummer
+        '
+        Me.Nummer.HeaderText = "Nr."
+        Me.Nummer.Name = "Nummer"
+        Me.Nummer.Width = 30
+        '
+        'CentProMin
+        '
+        Me.CentProMin.HeaderText = "ct./min"
+        Me.CentProMin.Name = "CentProMin"
+        Me.CentProMin.ReadOnly = True
+        '
+        'Vorwahl
+        '
+        Me.Vorwahl.HeaderText = "Vorwahl"
+        Me.Vorwahl.Name = "Vorwahl"
+        Me.Vorwahl.ReadOnly = True
+        Me.Vorwahl.Width = 50
+        '
+        'Takt
+        '
+        Me.Takt.HeaderText = "Takt"
+        Me.Takt.Name = "Takt"
+        Me.Takt.ReadOnly = True
+        Me.Takt.Width = 40
+        '
+        'Tarif
+        '
+        Me.Tarif.HeaderText = "Tarif"
+        Me.Tarif.Name = "Tarif"
+        '
+        'Bemerkung
+        '
+        Me.Bemerkung.HeaderText = "Bemerkung"
+        Me.Bemerkung.Name = "Bemerkung"
+        Me.Bemerkung.ReadOnly = True
+        Me.Bemerkung.Width = 195
+        '
         'Label2
         '
         Me.Label2.Location = New System.Drawing.Point(8, 413)
@@ -247,8 +285,8 @@ Partial Class formWählbox
         Me.Label3.Size = New System.Drawing.Size(539, 39)
         Me.Label3.TabIndex = 14
         Me.Label3.Text = "Es wird keinerlei Haftung für die angezeigten Preise übernommen. Eine Richtigkeit" & _
-            " der angezeigten Daten kann nicht gewährleistet werden. Die Benutzung erfolgt au" & _
-            "f eigene Gefahr!"
+    " der angezeigten Daten kann nicht gewährleistet werden. Die Benutzung erfolgt au" & _
+    "f eigene Gefahr!"
         '
         'Gespraechsart
         '
@@ -322,7 +360,7 @@ Partial Class formWählbox
         Me.Titel.Size = New System.Drawing.Size(472, 13)
         Me.Titel.TabIndex = 0
         Me.Titel.Text = "Geben Sie die zu wählende Telefonnummer ein. Beim Klick auf ""Weiter"" wird der Anr" & _
-            "uf aufgebaut."
+    "uf aufgebaut."
         '
         'ContactImage
         '
@@ -333,49 +371,10 @@ Partial Class formWählbox
         Me.ContactImage.TabIndex = 17
         Me.ContactImage.TabStop = False
         '
-        'Nummer
-        '
-        Me.Nummer.HeaderText = "Nr."
-        Me.Nummer.Name = "Nummer"
-        Me.Nummer.Width = 30
-        '
-        'CentProMin
-        '
-        Me.CentProMin.HeaderText = "ct./min"
-        Me.CentProMin.Name = "CentProMin"
-        Me.CentProMin.ReadOnly = True
-        '
-        'Vorwahl
-        '
-        Me.Vorwahl.HeaderText = "Vorwahl"
-        Me.Vorwahl.Name = "Vorwahl"
-        Me.Vorwahl.ReadOnly = True
-        Me.Vorwahl.Width = 50
-        '
-        'Takt
-        '
-        Me.Takt.HeaderText = "Takt"
-        Me.Takt.Name = "Takt"
-        Me.Takt.ReadOnly = True
-        Me.Takt.Width = 40
-        '
-        'Tarif
-        '
-        Me.Tarif.HeaderText = "Tarif"
-        Me.Tarif.Name = "Tarif"
-        '
-        'Bemerkung
-        '
-        Me.Bemerkung.HeaderText = "Bemerkung"
-        Me.Bemerkung.Name = "Bemerkung"
-        Me.Bemerkung.ReadOnly = True
-        Me.Bemerkung.Width = 195
-        '
         'formWählbox
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.CloseButton
         Me.ClientSize = New System.Drawing.Size(559, 658)
         Me.Controls.Add(Me.FrameDirektWahl)
         Me.Controls.Add(Me.ContactImage)
