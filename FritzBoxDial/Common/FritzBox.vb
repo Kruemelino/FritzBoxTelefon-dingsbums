@@ -342,32 +342,36 @@ Public Class FritzBox
         Dim SIP(20) As String
         Dim TAM(10) As String
         Dim MSN(10) As String
-        Dim EingerichteteTelefone As String = vbNullString
         Dim DialPort As String
         Dim POTS As String
         Dim Mobil As String
         Dim AllIn As String
-        Dim outgoing As String
         Dim tempstring As String
-        'Alten Einstellungen löschen
+
         Dim sLink As String
-        'MSNs emitteln
+
+        Dim xPathTeile As New ArrayList
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
+        xPathTeile.Add("Telefone")
+        xPathTeile.Add("Nummern")
 
         sLink = "http://" & sFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         If bRausschreiben Then setline("Fritz!Box Telefon Quelldatei: " & sLink)
         tempstring = c_hf.httpRead(sLink, FBEncoding, FBFehler)
         If FBFehler Is Nothing Then
-
             If Not InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
-                c_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone. Anmeldung fehlerhaft o.A.!", MsgBoxStyle.Critical, "FritzBoxDaten_FWbelow5_50")
+                C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone. Anmeldung fehlerhaft o.A.!", MsgBoxStyle.Critical, "FritzBoxDaten_FWbelow5_50")
                 Exit Sub
             End If
             If Not bRausschreiben Then C_XML.Delete("Telefone")
+
             tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln
 
             FBLogout(sSID)
-            If bRausschreiben Then setline("Fritz!Box Logout. SID " & sSID & " ungültig")
-
+            xPathTeile.Add("MSN")
             pos(0) = 1
             For i = 0 To 9
                 pos(0) = InStr(pos(0), tempstring, "nrs.msn.push('", CompareMethod.Text) + 14
@@ -381,13 +385,14 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
                     End If
                 End If
             Next
             ReDim Preserve MSN(j)
             'Internetnummern ermitteln
+            xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "SIP"
             j = 0
             For i = 0 To 19
                 pos(0) = InStr(pos(0), tempstring, "nrs.sip.push('", CompareMethod.Text) + 14
@@ -403,7 +408,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "SIP" & CStr(i), TelNr, False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
                         End If
                     End If
                 End If
@@ -411,13 +416,8 @@ Public Class FritzBox
             ReDim Preserve SIP(j)
             j = 0
 
-            If bRausschreiben Then
-                setline("Letzte SIP: " & SIPID)
-            Else
-                C_XML.Write("Telefone", "SIPID", SIPID, False)
-            End If
-
             'TAM Nr ermitteln
+            xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "TAM"
             For i = 0 To 9
                 pos(0) = InStr(pos(0), tempstring, "nrs.tam.push('", CompareMethod.Text) + 14
                 If Not pos(0) = 14 Then
@@ -430,7 +430,7 @@ Public Class FritzBox
                         If bRausschreiben Then
                             setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         Else
-                            C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
 
                         j = i
@@ -439,6 +439,7 @@ Public Class FritzBox
             Next
             ReDim Preserve TAM(j)
             'Festnetznummer ermitteln
+
             pos(0) = InStr(1, tempstring, "telcfg:settings/MSN/POTS", CompareMethod.Text)
             pos(1) = InStr(pos(0), tempstring, "value='", CompareMethod.Text) + 7
             pos(2) = InStr(pos(1), tempstring, "' id", CompareMethod.Text)
@@ -470,360 +471,390 @@ Public Class FritzBox
 
             End If
 
-            Dim FAX(0) As String
-            AllIn = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
+            AllIn = AlleNummern(MSN, SIP, TAM,  POTS, Mobil)
 
             'Telefone ermitteln
             pos(0) = 1
-            If CBool(C_XML.Read("Optionen", "CBAuslesen", "True")) Then
-                For i = 0 To UBound(PortName)
-                    pos(0) = InStr(pos(0), tempstring, PortName(i), CompareMethod.Text)
-                    pos(1) = InStr(pos(0), tempstring, EndPortName(i), CompareMethod.Text) + Len(EndPortName(i))
-                    If pos(1) = Len(EndPortName(i)) Then
-                        ' Die JavaFunktion "readVoipExt" für die IPTelefone endet ab der Firmware *80 auf "return Result;". (früher auf "return list;")
-                        pos(1) = InStr(pos(0), tempstring, "return list;", CompareMethod.Text) + Len("return list;")
-                    End If
-                    Section = Mid(tempstring, pos(0), pos(1) - pos(0))
-                    TelefonString = Split(Section, "});", , CompareMethod.Text)
+            xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
+            xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FON"
 
-                    For Each Telefon In TelefonString
-                        If InStr(Telefon, "return list") = 0 And InStr(Telefon, "Isdn-Default") = 0 Then
-                            pos(0) = InStr(Telefon, "name: ", CompareMethod.Text) + Len("name: ")
-                            pos(1) = InStr(pos(0), Telefon, ",", CompareMethod.Text)
-                            If Not pos(0) = 6 Or Not pos(1) = 0 Then
+
+            For i = 0 To UBound(PortName)
+                pos(0) = InStr(pos(0), tempstring, PortName(i), CompareMethod.Text)
+                pos(1) = InStr(pos(0), tempstring, EndPortName(i), CompareMethod.Text) + Len(EndPortName(i))
+                If pos(1) = Len(EndPortName(i)) Then
+                    ' Die JavaFunktion "readVoipExt" für die IPTelefone endet ab der Firmware *80 auf "return Result;". (früher auf "return list;")
+                    pos(1) = InStr(pos(0), tempstring, "return list;", CompareMethod.Text) + Len("return list;")
+                End If
+                Section = Mid(tempstring, pos(0), pos(1) - pos(0))
+                TelefonString = Split(Section, "});", , CompareMethod.Text)
+
+                For Each Telefon In TelefonString
+                    If InStr(Telefon, "return list") = 0 And InStr(Telefon, "Isdn-Default") = 0 Then
+                        pos(0) = InStr(Telefon, "name: ", CompareMethod.Text) + Len("name: ")
+                        pos(1) = InStr(pos(0), Telefon, ",", CompareMethod.Text)
+                        If Not pos(0) = 6 Or Not pos(1) = 0 Then
+                            TelName = Mid(Telefon, pos(0), pos(1) - pos(0))
+                            If TelName = "fonName" Then
+                                pos(0) = InStr(Telefon, "fonName = '", CompareMethod.Text) + Len("fonName = '")
+                                pos(1) = InStr(pos(0), Telefon, "'", CompareMethod.Text)
                                 TelName = Mid(Telefon, pos(0), pos(1) - pos(0))
-                                If TelName = "fonName" Then
-                                    pos(0) = InStr(Telefon, "fonName = '", CompareMethod.Text) + Len("fonName = '")
-                                    pos(1) = InStr(pos(0), Telefon, "'", CompareMethod.Text)
-                                    TelName = Mid(Telefon, pos(0), pos(1) - pos(0))
-                                Else
-                                    TelName = Replace(TelName, "'", "", , , CompareMethod.Text)
-                                End If
-                                pos(2) = InStr(pos(1), Telefon, "number: ", CompareMethod.Text) + Len("number: ")
-                                pos(3) = InStr(pos(2), Telefon, Chr(10), CompareMethod.Text)
-                                TelNr = Replace(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))), "'", "", , , CompareMethod.Text)
-                                TelNr = Replace(TelNr, Chr(10), "", , , CompareMethod.Text)
-                                TelNr = Replace(TelNr, Chr(13), "", , , CompareMethod.Text)
-                                If Right(TelNr, 1) = "," Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
-                                If Right(TelNr, 1) = "#" Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
-                                If Left(TelNr, 3) = "SIP" Then TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
-                                If Not Trim(TelName) = "" And Not Trim(TelNr) = "" Then
-                                    Select Case i
-                                        Case 0 ' FON 1-3
+                            Else
+                                TelName = Replace(TelName, "'", "", , , CompareMethod.Text)
+                            End If
+                            pos(2) = InStr(pos(1), Telefon, "number: ", CompareMethod.Text) + Len("number: ")
+                            pos(3) = InStr(pos(2), Telefon, Chr(10), CompareMethod.Text)
+                            TelNr = Replace(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))), "'", "", , , CompareMethod.Text)
+                            TelNr = Replace(TelNr, Chr(10), "", , , CompareMethod.Text)
+                            TelNr = Replace(TelNr, Chr(13), "", , , CompareMethod.Text)
+                            If Right(TelNr, 1) = "," Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
+                            If Right(TelNr, 1) = "#" Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
+                            If Left(TelNr, 3) = "SIP" Then TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
+                            If Not Trim(TelName) = "" And Not Trim(TelNr) = "" Then
+                                Select Case i
+                                    Case 0 ' FON 1-3
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "FON"
+                                        pos(2) = InStr(pos(1), Telefon, "allin: ('", CompareMethod.Text) + Len("allin: ('")
+                                        pos(3) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
+                                        If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1'=='1" Then
+                                            TelNr = AllIn
+                                        Else
+                                            TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                        End If
+                                        pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
+                                        pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
+                                        DialPort = CStr(CInt(Mid(Telefon, pos(4), pos(5) - pos(4))) + 1)
+                                        pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
+                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                        If bRausschreiben Then
+                                            setline("Analogtelefon gefunden: FON" & CStr(DialPort) & ", " & TelNr & ", " & TelName)
+                                        Else
+                                            NodeNames.Add("TelName")
+                                            NodeValues.Add(TelName)
+                                            NodeNames.Add("TelNr")
+                                            NodeValues.Add(TelNr)
+                                            AttributeNames.Add("Fax")
+                                            AttributeValues.Add(vbNullString)
+                                            AttributeNames.Add("Dialport")
+                                            AttributeValues.Add(DialPort)
+                                            C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                        End If
+
+                                        Anzahl += 1
+                                    Case 1 ' S0-Port
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "S0"
+                                        pos(2) = InStr(Telefon, "partyNo = '", CompareMethod.Text) + Len("partyNo = '")
+                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                        If Not pos(2) = pos(3) Then
+                                            AnzahlISDN += 1
+                                            pos(4) = InStr(pos(1), Telefon, "allin: ('", CompareMethod.Text) + Len("allin: ('")
+                                            pos(5) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
+                                            If Mid(Telefon, pos(4), pos(5) - pos(4)) = "true" Then
+                                                TelNr = AllIn
+                                            Else
+                                                TelNr = Trim(Mid(Telefon, pos(2), pos(3) - pos(2)))
+                                                TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                            End If
+                                            pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
+                                            pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
+                                            ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
+                                            pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
+                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                            DialPort = "5" & ID
+
+                                            If bRausschreiben Then
+                                                setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                            Else
+                                                NodeNames.Add("TelName")
+                                                NodeValues.Add(TelName)
+                                                NodeNames.Add("TelNr")
+                                                NodeValues.Add(TelNr)
+                                                AttributeNames.Add("Dialport")
+                                                AttributeValues.Add(DialPort)
+                                                C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                            End If
+
+                                        End If
+                                    Case 2 ' DECT Fritz!Fon 7150
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "FritzFon"
+                                        Anzahl += 1
+                                        pos(2) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
+                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                        ID = CInt(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))))
+                                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                        DialPort = "6" & ID
+                                        TelName = "Fritz!Fon 7150"
+                                        If bRausschreiben Then
+                                            setline("DECT Fritz!Fon 7150 gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                        Else
+                                            NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                            NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+
+                                            AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                                            C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                        End If
+
+                                    Case 3 ' DECT
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "DECT"
+                                        Dim isUnpersonalizedMini() As String
+                                        Dim tempTelNr As String
+                                        pos(2) = InStr(Telefon, "isUnpersonalizedMini = '", CompareMethod.Text) + Len("isUnpersonalizedMini = '")
+                                        pos(3) = InStr(pos(2), Telefon, "';", CompareMethod.Text)
+                                        isUnpersonalizedMini = Split(Mid(Telefon, pos(2), pos(3) - pos(2)), "' == '", , CompareMethod.Text)
+                                        If Not isUnpersonalizedMini(0) = isUnpersonalizedMini(1) Then
+                                            Anzahl += 1
+                                            pos(2) = InStr(Telefon, "intern: isUnpersonalizedMini ? '' : '**", CompareMethod.Text) + Len("intern: isUnpersonalizedMini ? '' : '**") + 2
+                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                            DialPort = Trim(Mid(Telefon, pos(2), pos(3) - pos(2)))
                                             pos(2) = InStr(pos(1), Telefon, "allin: ('", CompareMethod.Text) + Len("allin: ('")
                                             pos(3) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
                                             If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1'=='1" Then
                                                 TelNr = AllIn
                                             Else
-                                                TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                                pos(2) = InStr(Telefon, "num = '", CompareMethod.Text) + Len("num = '")
+                                                TelNr = vbNullString
+                                                If Not pos(2) = 7 Then
+                                                    Do
+                                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                                        tempTelNr = Mid(Telefon, pos(2), pos(3) - pos(2))
+                                                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                                        TelNr += CStr(IIf(Right(TelNr, 1) = "#", vbNullString, tempTelNr & ";"))
+                                                        pos(2) = InStr(pos(3), Telefon, "num = '", CompareMethod.Text) + Len("num = '")
+                                                    Loop Until pos(2) = 7
+                                                    TelNr = Left(TelNr, Len(TelNr) - 1)
+                                                Else
+                                                    pos(2) = InStr(TelNr, ":", CompareMethod.Text) + 2
+                                                    TelNr = Trim(Mid(TelNr, pos(2)))
+                                                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                                                End If
                                             End If
+                                            pos(2) = InStr(pos(1), Telefon, "outgoing: isUnpersonalizedMini ? '' : '", CompareMethod.Text) + Len("outgoing: isUnpersonalizedMini ? '' : '")
+                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+
+                                            If bRausschreiben Then
+                                                setline("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                            Else
+                                                NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                                NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+
+                                                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                                                C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                            End If
+
+                                        End If
+                                    Case 4 ' IP-Telefone
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "VOIP"
+                                        If Not Trim(TelName) = "TelCfg[Index].Name" Then
                                             pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
                                             pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
-                                            ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4))) + 1
-                                            pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
-                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                            outgoing = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                            If Strings.Right(outgoing, 1) = "#" Then outgoing = Strings.Left(outgoing, Len(outgoing) - 1) ' Für die Firmware *85
-                                            If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Mid(outgoing, 4, 1)))
-                                            EingerichteteTelefone = String.Concat(EingerichteteTelefone, CStr(ID), ";")
-
-                                            If bRausschreiben Then
-                                                setline("Analogtelefon gefunden: FON" & CStr(ID) & ", " & outgoing & ", " & TelNr & ", " & TelName)
-                                            Else
-                                                C_XML.Write("Telefone", CStr(ID), outgoing & ";" & TelNr & ";" & TelName, False)
-                                            End If
-
+                                            ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
                                             Anzahl += 1
-                                        Case 1 ' S0-Port
-                                            pos(2) = InStr(Telefon, "partyNo = '", CompareMethod.Text) + Len("partyNo = '")
-                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                            If Not pos(2) = pos(3) Then
-                                                AnzahlISDN += 1
-                                                pos(4) = InStr(pos(1), Telefon, "allin: ('", CompareMethod.Text) + Len("allin: ('")
-                                                pos(5) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
-                                                If Mid(Telefon, pos(4), pos(5) - pos(4)) = "true" Then
-                                                    TelNr = AllIn
-                                                Else
-                                                    TelNr = Trim(Mid(Telefon, pos(2), pos(3) - pos(2)))
-                                                    TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                                                End If
-                                                pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
-                                                pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
-                                                ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
-                                                pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
-                                                pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                                outgoing = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                                If Strings.Right(outgoing, 1) = "#" Then outgoing = Strings.Left(outgoing, Len(outgoing) - 1) ' Für die Firmware *85
-                                                If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Mid(outgoing, 4, 1)))
-                                                DialPort = "5" & ID
-                                                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-                                                If bRausschreiben Then
-                                                    setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                                                Else
-                                                    C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
-                                                End If
-
-                                            End If
-                                        Case 2 ' DECT Fritz!Fon 7150
-                                            Anzahl += 1
-                                            pos(2) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
-                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                            ID = CInt(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))))
-                                            TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                                            DialPort = "6" & ID
-                                            EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
+                                            DialPort = "2" & ID
                                             If bRausschreiben Then
-                                                setline("DECT Fritz!Fon 7150 gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                                setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                                             Else
-                                                C_XML.Write("Telefone", DialPort, TelNr & ";" & TelName, False)
-                                            End If
+                                                NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                                NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
-                                        Case 3 ' DECT
-                                            Dim isUnpersonalizedMini() As String
-                                            Dim tempTelNr As String
-                                            pos(2) = InStr(Telefon, "isUnpersonalizedMini = '", CompareMethod.Text) + Len("isUnpersonalizedMini = '")
-                                            pos(3) = InStr(pos(2), Telefon, "';", CompareMethod.Text)
-                                            isUnpersonalizedMini = Split(Mid(Telefon, pos(2), pos(3) - pos(2)), "' == '", , CompareMethod.Text)
-                                            If Not isUnpersonalizedMini(0) = isUnpersonalizedMini(1) Then
-                                                Anzahl += 1
-                                                pos(2) = InStr(Telefon, "intern: isUnpersonalizedMini ? '' : '**", CompareMethod.Text) + Len("intern: isUnpersonalizedMini ? '' : '**") + 2
-                                                pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                                ID = CInt(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))))
-                                                pos(2) = InStr(pos(1), Telefon, "allin: ('", CompareMethod.Text) + Len("allin: ('")
-                                                pos(3) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
-                                                If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1'=='1" Then
-                                                    TelNr = AllIn
-                                                Else
-                                                    pos(2) = InStr(Telefon, "num = '", CompareMethod.Text) + Len("num = '")
+                                                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                                                C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                            End If
+                                        Else
+                                            Dim LANTelefone() As String = Split(Telefon, "in_nums = [];", , CompareMethod.Text)
+                                            Dim InNums As String = vbNullString
+                                            Dim NetInfo As String
+                                            Dim NetInfoPush As String = vbNullString
+                                            pos(0) = InStr(LANTelefone(LANTelefone.Length - 1), "NetInfo.push(parseInt('", CompareMethod.Text)
+                                            If Not pos(0) = 0 Then
+                                                NetInfo = Mid(LANTelefone(LANTelefone.Length - 1), pos(0))
+                                                pos(0) = 1
+                                                Do
+                                                    pos(1) = InStr(pos(0), NetInfo, "', 10));", CompareMethod.Text) + Len("', 10));")
+                                                    NetInfoPush = Mid(NetInfo, pos(0) + Len("NetInfo.push(parseInt('"), 3) & CStr(IIf(Not NetInfoPush = vbNullString, ";" & NetInfoPush, vbNullString))
+                                                    pos(0) = InStr(pos(1), NetInfo, "NetInfo.push(parseInt('", CompareMethod.Text)
+                                                Loop Until pos(0) = 0
+                                            End If
+                                            For Each LANTelefon In LANTelefone
+                                                If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '", vbTextCompare) = 0 Then
+                                                    Dim tempTelNr As String
+                                                    pos(2) = InStr(LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
                                                     TelNr = vbNullString
                                                     If Not pos(2) = 7 Then
+                                                        InNums = vbNullString
                                                         Do
-                                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                                            tempTelNr = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                                            TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                                                            TelNr += CStr(IIf(Right(TelNr, 1) = "#", vbNullString, tempTelNr & ";"))
-                                                            pos(2) = InStr(pos(3), Telefon, "num = '", CompareMethod.Text) + Len("num = '")
+                                                            pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
+                                                            tempTelNr = Mid(LANTelefon, pos(2), pos(3) - pos(2))
+                                                            TelNr = C_hf.OrtsVorwahlEntfernen(tempTelNr, Vorwahl)
+                                                            InNums += CStr(IIf(Strings.Right(TelNr, 1) = "#", vbNullString, TelNr & ";"))
+                                                            pos(2) = InStr(pos(3), LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
                                                         Loop Until pos(2) = 7
-                                                        TelNr = Left(TelNr, Len(TelNr) - 1)
-                                                    Else
-                                                        pos(2) = InStr(TelNr, ":", CompareMethod.Text) + 2
-                                                        TelNr = Trim(Mid(TelNr, pos(2)))
-                                                        TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                                                    End If
-                                                End If
-                                                pos(2) = InStr(pos(1), Telefon, "outgoing: isUnpersonalizedMini ? '' : '", CompareMethod.Text) + Len("outgoing: isUnpersonalizedMini ? '' : '")
-                                                pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                                outgoing = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                                If Left(outgoing, 3) = "SIP" Then outgoing = SIP(CInt(Mid(outgoing, 4, 1)))
-                                                DialPort = "6" & ID
-                                                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-                                                If bRausschreiben Then
-                                                    setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
-                                                Else
-                                                    C_XML.Write("Telefone", DialPort, outgoing & ";" & TelNr & ";" & TelName, False)
-                                                End If
-
-                                            End If
-                                        Case 4 ' IP-Telefone
-                                            If Not Trim(TelName) = "TelCfg[Index].Name" Then
-                                                pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
-                                                pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
-                                                ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
-                                                Anzahl += 1
-                                                DialPort = "2" & ID
-                                                EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-                                                If bRausschreiben Then
-                                                    setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                                Else
-                                                    C_XML.Write("Telefone", DialPort, TelNr & ";" & TelName, False)
-                                                End If
-                                            Else
-                                                Dim LANTelefone() As String = Split(Telefon, "in_nums = [];", , CompareMethod.Text)
-                                                Dim InNums As String = vbNullString
-                                                Dim NetInfo As String
-                                                Dim NetInfoPush As String = vbNullString
-                                                pos(0) = InStr(LANTelefone(LANTelefone.Length - 1), "NetInfo.push(parseInt('", CompareMethod.Text)
-                                                If Not pos(0) = 0 Then
-                                                    NetInfo = Mid(LANTelefone(LANTelefone.Length - 1), pos(0))
-                                                    pos(0) = 1
-                                                    Do
-                                                        pos(1) = InStr(pos(0), NetInfo, "', 10));", CompareMethod.Text) + Len("', 10));")
-                                                        NetInfoPush = Mid(NetInfo, pos(0) + Len("NetInfo.push(parseInt('"), 3) & CStr(IIf(Not NetInfoPush = vbNullString, ";" & NetInfoPush, vbNullString))
-                                                        pos(0) = InStr(pos(1), NetInfo, "NetInfo.push(parseInt('", CompareMethod.Text)
-                                                    Loop Until pos(0) = 0
-                                                End If
-                                                For Each LANTelefon In LANTelefone
-                                                    If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '", vbTextCompare) = 0 Then
-                                                        Dim tempTelNr As String
-                                                        pos(2) = InStr(LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
-                                                        TelNr = vbNullString
-                                                        If Not pos(2) = 7 Then
-                                                            InNums = vbNullString
-                                                            Do
-                                                                pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
-                                                                tempTelNr = Mid(LANTelefon, pos(2), pos(3) - pos(2))
-                                                                TelNr = c_hf.OrtsVorwahlEntfernen(tempTelNr, Vorwahl)
-                                                                InNums += CStr(IIf(Strings.Right(TelNr, 1) = "#", vbNullString, TelNr & ";"))
-                                                                pos(2) = InStr(pos(3), LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
-                                                            Loop Until pos(2) = 7
-                                                            InNums = Left(InNums, Len(InNums) - 1)
-                                                        End If
-
-                                                        pos(0) = InStr(LANTelefon, "Name : '", CompareMethod.Text) + Len("Name : '")
-                                                        pos(1) = InStr(pos(0), LANTelefon, "'", CompareMethod.Text)
-                                                        TelName = Mid(LANTelefon, pos(0), pos(1) - pos(0))
-                                                        If Not TelName = vbNullString Then
-                                                            pos(2) = InStr(pos(1), Telefon, "AllIn: ('", CompareMethod.Text) + Len("AllIn: ('")
-                                                            pos(3) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
-                                                            If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1' == '1" Then
-                                                                TelNr = AllIn
-                                                            Else
-                                                                If Not InStr(LANTelefon, "InNums : in_nums", CompareMethod.Text) = 0 Then
-                                                                    TelNr = InNums
-                                                                Else
-                                                                    pos(2) = InStr(pos(1), LANTelefon, "Number0 : '", CompareMethod.Text) + Len("Number0 : '")
-                                                                    pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
-                                                                    TelNr = c_hf.OrtsVorwahlEntfernen(Mid(LANTelefon, pos(2), pos(3) - pos(2)), Vorwahl)
-                                                                End If
-                                                            End If
-                                                            pos(4) = InStr(LANTelefon, "g_txtIpPhone + ' 62", CompareMethod.Text) + Len("g_txtIpPhone + ' 62")
-                                                            ID = CInt(Mid(LANTelefon, pos(4), 1))
-                                                            If NetInfoPush = vbNullString Then
-                                                                If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '1',", CompareMethod.Text) = 0 Then
-                                                                    DialPort = "2" & ID
-                                                                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-                                                                    Anzahl += 1
-                                                                    If bRausschreiben Then
-                                                                        setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                                                    Else
-                                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
-                                                                    End If
-
-                                                                End If
-                                                            Else
-                                                                If c_hf.IsOneOf("62" & ID, Split(NetInfoPush, ";", , CompareMethod.Text)) Then
-                                                                    DialPort = "2" & ID
-                                                                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-                                                                    Anzahl += 1
-                                                                    If bRausschreiben Then
-                                                                        setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                                                    Else
-                                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
-                                                                    End If
-
-                                                                End If
-                                                            End If
-                                                        End If
-                                                    End If
-                                                Next
-                                            End If
-                                        Case 5 ' Anrufbeantworter
-                                            Dim tamMsnBits As Integer
-                                            TelNr = vbNullString
-                                            pos(2) = InStr(Telefon, "tamDisplay = '", CompareMethod.Text) + Len("tamDisplay = '")
-                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                            If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1" Then
-                                                pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
-                                                pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
-                                                ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
-                                                pos(4) = InStr(Telefon, "var tamMsnBits = parseInt('", CompareMethod.Text) + Len("var tamMsnBits = parseInt('")
-                                                pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
-                                                tamMsnBits = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
-                                                For j = 0 To TAM.Length - 1
-                                                    If Not TAM(j) Is Nothing Then
-                                                        If (tamMsnBits And (1 << j)) > 0 Then ' Aus AVM Quellcode Funktion isBitSet übernommen 
-                                                            TelNr += TAM(j) & ";"
-                                                        End If
-                                                    End If
-                                                Next
-                                                If Not TelNr = vbNullString Then
-                                                    TelNr = Left(TelNr, Len(TelNr) - 1)
-                                                    DialPort = "60" & ID
-                                                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-                                                    If bRausschreiben Then
-                                                        setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                                                    Else
-                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
+                                                        InNums = Left(InNums, Len(InNums) - 1)
                                                     End If
 
-                                                    Anzahl += 1
-                                                End If
-                                            End If
-                                        Case 6 ' integrierter Faxempfang
-                                            Dim FAXMSN(9) As String
-                                            TelNr = vbNullString
-                                            pos(2) = InStr(Telefon, "var isActive = '", CompareMethod.Text) + Len("var isActive = '")
-                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                            If Not pos(2) = pos(3) Then
-                                                If CInt(Mid(Telefon, pos(2), pos(3) - pos(2))) > 0 Then
-                                                    TelName = "Faxempfang"
-                                                    If InStr(Telefon, "allin: true", CompareMethod.Text) = 0 Then
-                                                        pos(2) = InStr(Telefon, "var faxMsn = '", CompareMethod.Text) + Len("var faxMsn = '")
-                                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                                        If Not pos(2) = Len("var faxMsn = '") Then
-                                                            TelNr = Mid(Telefon, pos(2), pos(3) - pos(2))
+                                                    pos(0) = InStr(LANTelefon, "Name : '", CompareMethod.Text) + Len("Name : '")
+                                                    pos(1) = InStr(pos(0), LANTelefon, "'", CompareMethod.Text)
+                                                    TelName = Mid(LANTelefon, pos(0), pos(1) - pos(0))
+                                                    If Not TelName = vbNullString Then
+                                                        pos(2) = InStr(pos(1), Telefon, "AllIn: ('", CompareMethod.Text) + Len("AllIn: ('")
+                                                        pos(3) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
+                                                        If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1' == '1" Then
+                                                            TelNr = AllIn
                                                         Else
-                                                            pos(3) = 1
-                                                            For j = 0 To 9
-                                                                pos(2) = InStr(pos(3), Telefon, "msn = '", CompareMethod.Text) + Len("msn = '")
-                                                                pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                                                FAXMSN(j) = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                                            Next
-                                                            pos(2) = InStr(Telefon, "number: faxMsns[", CompareMethod.Text) + Len("number: faxMsns[")
-                                                            pos(3) = InStr(pos(2), Telefon, "]", CompareMethod.Text)
-                                                            TelNr = FAXMSN(CInt(Mid(Telefon, pos(2), pos(3) - pos(2))))
+                                                            If Not InStr(LANTelefon, "InNums : in_nums", CompareMethod.Text) = 0 Then
+                                                                TelNr = InNums
+                                                            Else
+                                                                pos(2) = InStr(pos(1), LANTelefon, "Number0 : '", CompareMethod.Text) + Len("Number0 : '")
+                                                                pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
+                                                                TelNr = C_hf.OrtsVorwahlEntfernen(Mid(LANTelefon, pos(2), pos(3) - pos(2)), Vorwahl)
+                                                            End If
                                                         End If
-                                                    Else
-                                                        TelNr = AllIn
-                                                    End If
-                                                    DialPort = "5"
-                                                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
+                                                        pos(4) = InStr(LANTelefon, "g_txtIpPhone + ' 62", CompareMethod.Text) + Len("g_txtIpPhone + ' 62")
+                                                        ID = CInt(Mid(LANTelefon, pos(4), 1))
+                                                        If NetInfoPush = vbNullString Then
+                                                            If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '1',", CompareMethod.Text) = 0 Then
+                                                                DialPort = "2" & ID
+                                                                Anzahl += 1
+                                                                If bRausschreiben Then
+                                                                    setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                                                Else
+                                                                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                                                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
-                                                    If bRausschreiben Then
-                                                        setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & TelName)
-                                                    Else
-                                                        C_XML.Write("Telefone", DialPort, ";" & TelNr & ";" & TelName, False)
-                                                    End If
+                                                                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                                                                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                                                End If
 
-                                                    Anzahl += 1
+                                                            End If
+                                                        Else
+                                                            If C_hf.IsOneOf("62" & ID, Split(NetInfoPush, ";", , CompareMethod.Text)) Then
+                                                                DialPort = "2" & ID
+                                                                Anzahl += 1
+                                                                If bRausschreiben Then
+                                                                    setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                                                Else
+                                                                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                                                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+
+                                                                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                                                                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                                                End If
+
+                                                            End If
+                                                        End If
+                                                    End If
                                                 End If
+                                            Next
+                                        End If
+                                    Case 5 ' Anrufbeantworter
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "TAM"
+                                        Dim tamMsnBits As Integer
+                                        TelNr = vbNullString
+                                        pos(2) = InStr(Telefon, "tamDisplay = '", CompareMethod.Text) + Len("tamDisplay = '")
+                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                        If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1" Then
+                                            pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
+                                            pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
+                                            ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
+                                            pos(4) = InStr(Telefon, "var tamMsnBits = parseInt('", CompareMethod.Text) + Len("var tamMsnBits = parseInt('")
+                                            pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
+                                            tamMsnBits = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
+                                            For j = 0 To TAM.Length - 1
+                                                If Not TAM(j) Is Nothing Then
+                                                    If (tamMsnBits And (1 << j)) > 0 Then ' Aus AVM Quellcode Funktion isBitSet übernommen 
+                                                        TelNr += TAM(j) & ";"
+                                                    End If
+                                                End If
+                                            Next
+                                            If Not TelNr = vbNullString Then
+                                                TelNr = Left(TelNr, Len(TelNr) - 1)
+                                                DialPort = "60" & ID
+
+
+                                                If bRausschreiben Then
+                                                    setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                                Else
+                                                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+
+                                                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                                                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                                End If
+
+                                                Anzahl += 1
                                             End If
-                                    End Select
-                                End If
+                                        End If
+                                    Case 6 ' integrierter Faxempfang
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "FAX"
+                                        Dim FAXMSN(9) As String
+                                        TelNr = vbNullString
+                                        pos(2) = InStr(Telefon, "var isActive = '", CompareMethod.Text) + Len("var isActive = '")
+                                        pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                        If Not pos(2) = pos(3) Then
+                                            If CInt(Mid(Telefon, pos(2), pos(3) - pos(2))) > 0 Then
+                                                TelName = "Faxempfang"
+                                                If InStr(Telefon, "allin: true", CompareMethod.Text) = 0 Then
+                                                    pos(2) = InStr(Telefon, "var faxMsn = '", CompareMethod.Text) + Len("var faxMsn = '")
+                                                    pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                                    If Not pos(2) = Len("var faxMsn = '") Then
+                                                        TelNr = Mid(Telefon, pos(2), pos(3) - pos(2))
+                                                    Else
+                                                        pos(3) = 1
+                                                        For j = 0 To 9
+                                                            pos(2) = InStr(pos(3), Telefon, "msn = '", CompareMethod.Text) + Len("msn = '")
+                                                            pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
+                                                            FAXMSN(j) = Mid(Telefon, pos(2), pos(3) - pos(2))
+                                                        Next
+                                                        pos(2) = InStr(Telefon, "number: faxMsns[", CompareMethod.Text) + Len("number: faxMsns[")
+                                                        pos(3) = InStr(pos(2), Telefon, "]", CompareMethod.Text)
+                                                        TelNr = FAXMSN(CInt(Mid(Telefon, pos(2), pos(3) - pos(2))))
+                                                    End If
+                                                Else
+                                                    TelNr = AllIn
+                                                End If
+                                                DialPort = "5"
+
+                                                If bRausschreiben Then
+                                                    setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & TelName)
+                                                Else
+                                                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
+                                                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                                                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
+                                                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                                                End If
+
+                                                Anzahl += 1
+                                            End If
+                                        End If
+                                End Select
                             End If
                         End If
-                    Next
+                    End If
                 Next
-            End If
+            Next
+
 
             If Not AnzahlISDN = 0 Then
+                DialPort = "50"
                 If bRausschreiben Then
                     setline("S0-Basis hinzugefügt.")
                 Else
-                    C_XML.Write("Telefone", "50", ";;ISDN-Basis", False)
-                    EingerichteteTelefone = String.Concat(EingerichteteTelefone, "50", ";")
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = vbNullString
+                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                    C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                 End If
 
             End If
-
-            EingerichteteTelefone = Strings.Left(EingerichteteTelefone, Strings.Len(EingerichteteTelefone) - 1)
-
-            If bRausschreiben Then
-                setline("Anzahl Telefone: " & Anzahl)
-                setline("Anzahl ISDN: " & AnzahlISDN)
-                setline("Gesamtanzahl: " & Anzahl + AnzahlISDN)
-            Else
-                C_XML.Write("Telefone", "EingerichteteTelefone", EingerichteteTelefone, False)
-                C_XML.Write("Telefone", "Anzahl", CStr(Anzahl + AnzahlISDN), True)
-            End If
-
         Else
-            c_hf.LogFile("FBError (FritzBoxDatenA): " & Err.Number & " - " & Err.Description & " - " & sLink)
+            C_hf.LogFile("FBError (FritzBoxDatenA): " & Err.Number & " - " & Err.Description & " - " & sLink)
         End If
 
     End Sub ' (FritzBoxDaten für ältere Firmware)
@@ -840,7 +871,7 @@ Public Class FritzBox
         Dim i As Integer                   ' Laufvariable
         Dim j As Integer
         Dim k As Integer
-        Dim TelAnzahl As Integer                   ' Anzahl der gefundenen Telefone
+        'Dim TelAnzahl As Integer                   ' Anzahl der gefundenen Telefone
         Dim SIP(20) As String
         Dim TAM(10) As String
         Dim MSNPort(2, 9) As String
@@ -849,21 +880,14 @@ Public Class FritzBox
         Dim Mobil As String
         Dim POTS As String
         Dim allin As String
-        Dim AnzahlFON123 As Integer = 0
-        Dim AnzahlISDN As Integer = 0
-        Dim AnzahlDECT As Integer = 0
-        Dim AnzahlLANWLAN As Integer = 0
-        Dim AnzahlTAM As Integer = 0
-        Dim AnzahlFAX As Integer = 0
-        Dim DialPort As String
-        Dim outgoing As String
+        Dim DialPort As String = "0"
+
         Dim tmpstrTelefone As String
         Dim tmpstrUser() As String
         Dim Node As String
         Dim tmpTelNr As String
         Dim Port As String
-        'Dim EingerichteteTelefone As String = vbNullString
-        'Dim EingerichteteFax = vbNullString
+
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
         Dim NodeValues As New ArrayList
@@ -871,6 +895,7 @@ Public Class FritzBox
         Dim AttributeValues As New ArrayList
         xPathTeile.Add("Telefone")
         xPathTeile.Add("Nummern")
+
         If Not bRausschreiben Then C_XML.Delete("Telefone")
         'SIP Nummern
         With C_hf
@@ -885,8 +910,6 @@ Public Class FritzBox
                         setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
                     Else
                         C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
-                        '' RAUS:
-                        'C_XML.Write("Telefone", Node, TelNr, False)
                     End If
                 End If
             Next
@@ -894,8 +917,6 @@ Public Class FritzBox
             SIP = (From x In SIP Where Not x Like "" Select x).ToArray
             If bRausschreiben Then
                 setline("Letzte SIP: " & SIPID)
-                'Else
-                '    C_XML.Write("Telefone", "SIPID", SIPID, False)
             End If
 
             xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
@@ -909,8 +930,6 @@ Public Class FritzBox
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
-                            '' RAUS:
-                            'C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
                         End If
                     End If
                 End If
@@ -936,8 +955,6 @@ Public Class FritzBox
                                                 setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
                                             Else
                                                 C_XML.Write(xPathTeile, TelNr, "ID", CStr(k), False)
-                                                '' RAUS:
-                                                'C_XML.Write("Telefone", "MSN" & CStr(k), TelNr, False)
                                             End If
                                             Exit For
                                         End If
@@ -967,15 +984,12 @@ Public Class FritzBox
                             setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         Else
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
-                            '' RAUS:
-                            'C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
                         End If
 
                         TAM(i) = TelNr
                     End If
                 End If
             Next
-            'TAM = (From x In TAM Where Not x Like "" Select x).ToArray
 
             xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             For i = 0 To 9
@@ -992,8 +1006,6 @@ Public Class FritzBox
                             setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
                         Else
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
-                            '' RAUS:
-                            'C_XML.Write("Telefone", "FAX" & CStr(i), TelNr, False)
                         End If
 
                         FAX(i) = TelNr
@@ -1035,7 +1047,6 @@ Public Class FritzBox
 
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
-            TelAnzahl = 0
             pos(0) = 1
             xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
             xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "FON"
@@ -1058,31 +1069,24 @@ Public Class FritzBox
                     tmparray = (From x In tmparray Where Not x Like "" Select x).ToArray
                     If tmparray.Length = 0 Then tmparray = MSN
 
-                    outgoing = tmparray(0)
                     TelNr = String.Join(";", tmparray)
                     DialPort = CStr(CInt(Port) + 1)
-                    AnzahlFON123 += 1
 
 
                     If bRausschreiben Then
-                        setline("Analogtelefon gefunden: FON" & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
+                        setline("Analogtelefon gefunden: FON" & DialPort & ", " & TelNr & ", " & TelName)
                     Else
                         NodeNames.Add("TelName")
                         NodeValues.Add(TelName)
                         NodeNames.Add("TelNr")
                         NodeValues.Add(TelNr)
-                        NodeNames.Add("outgoing")
-                        NodeValues.Add(outgoing)
                         AttributeNames.Add("Dialport")
                         AttributeValues.Add(DialPort)
                         AttributeNames.Add("Fax")
                         AttributeValues.Add(.StringEntnehmen(Telefon, "['Fax'] = '", "'"))
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
-
-                    'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
                     If .StringEntnehmen(Telefon, "['Fax'] = '", "'") = "1" Then
-                        'EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
                         setline("Analogtelefon FON" & DialPort & " ist ein FAX.")
                     End If
 
@@ -1099,9 +1103,7 @@ Public Class FritzBox
                 If Not (DialPort = "-1" Or DialPort = vbNullString) Then
                     TelNr = vbNullString
                     DialPort = "6" & Strings.Right(DialPort, 1)
-
                     TelName = .StringEntnehmen(DectTelefon, "['Name'] = '", "'")
-
                     Node = .StringEntnehmen(DectTelefon, "['_node'] = '", "'")
 
                     If .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/" & Node & "/RingOnAllMSNs'] = '", "',") = "1" Then
@@ -1113,23 +1115,17 @@ Public Class FritzBox
                         For l As Integer = 1 To tmpstrUser.Length - 1
                             tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
                         Next
-                        ' Etwas unschöner Code
                         For Each Nr In (From x In tmpstrUser Where Not x Like "" Select x).ToArray ' Leere entfernen
                             TelNr = TelNr & ";" & .OrtsVorwahlEntfernen(Nr, Vorwahl)
                         Next
-                        TelNr = Mid(TelNr, 2) 'Strings.Left(TelNr, Len(TelNr) - 1)
+                        TelNr = Mid(TelNr, 2)
                     End If
-                    ' Etwas unschöner Code
-                    outgoing = Split(TelNr, ";", , CompareMethod.Text)(0)
-                    AnzahlDECT += 1
-                    'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
                     If bRausschreiben Then
-                        setline("DECT-Telefon gefunden: " & DialPort & ", " & outgoing & ", " & TelNr & ", " & TelName)
+                        setline("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                     Else
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        NodeValues.Item(NodeNames.IndexOf("outgoing")) = outgoing
 
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                         AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
@@ -1165,15 +1161,12 @@ Public Class FritzBox
                     End If
 
                     DialPort = "2" & Strings.Right(Port, 1)
-                    AnzahlLANWLAN += 1
-                    'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
                     If bRausschreiben Then
                         setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                     Else
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        NodeValues.Item(NodeNames.IndexOf("outgoing")) = "-1"
 
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                         AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
@@ -1198,7 +1191,6 @@ Public Class FritzBox
                             Else
                                 NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                                NodeValues.Item(NodeNames.IndexOf("outgoing")) = TelNr
 
                                 AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                                 AttributeValues.Item(AttributeNames.IndexOf("Fax")) = IIf(.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'") = "Fax", 1, 0)
@@ -1209,29 +1201,24 @@ Public Class FritzBox
                             If Not TelNr = "-1" Then
                                 Select Case S0Typ
                                     Case "Fax"
-                                        'EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
                                         setline("S0-telefon " & DialPort & " ist ein FAX.")
                                         'Case "Isdn"
                                         'Case "Fon"
                                         'Case Else
                                 End Select
                             End If
-                            AnzahlISDN += 1
-                            'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
                         End If
                     End If
                 End If
             Next
-            If Not AnzahlISDN = 0 Then
+            If CDbl(DialPort) > 50 And CDbl(DialPort) < 60 Then
                 DialPort = "50"
-                'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
                 If bRausschreiben Then
                     setline("S0-Basis hinzugefügt.")
                 Else
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = vbNullString
-                    NodeValues.Item(NodeNames.IndexOf("outgoing")) = vbNullString
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                     AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
                     C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
@@ -1247,16 +1234,13 @@ Public Class FritzBox
                     TelName = .StringEntnehmen(Anrufbeantworter, "['Name'] = '", "'")
                     Port = .StringEntnehmen(Anrufbeantworter, "['_node'] = '", "'")
                     TelNr = .OrtsVorwahlEntfernen(TAM(CInt(Strings.Right(Port, 1))), Vorwahl)
-                    AnzahlTAM += 1
                     DialPort = "60" & Strings.Right(Port, 1)
-                    'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
 
                     If bRausschreiben Then
                         setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                     Else
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        NodeValues.Item(NodeNames.IndexOf("outgoing")) = "-1"
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                         AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
@@ -1272,17 +1256,12 @@ Public Class FritzBox
             If Not DialPort = "0" Then
                 TelNr = "-1"
                 DialPort = "5"
-                AnzahlFAX += 1
-                'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")
-
-                'EingerichteteFax = String.Concat(EingerichteteFax, DialPort, ";")
 
                 If bRausschreiben Then
                     setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
                 Else
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                    NodeValues.Item(NodeNames.IndexOf("outgoing")) = "-1"
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                     AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
                     C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
@@ -1290,42 +1269,33 @@ Public Class FritzBox
 
             End If
 
-            'If Not EingerichteteFax Is Nothing Then
-            '    EingerichteteFax = Strings.Left(EingerichteteFax, Strings.Len(EingerichteteFax) - 1)
-            '    If Not bRausschreiben Then C_XML.Write("Telefone", "EingerichteteFax", EingerichteteFax, False)
-            'End If
-
             Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
             If Len(Landesvorwahl) > 2 Then
                 C_XML.Write("Optionen", "TBLandesVW", "0" & Landesvorwahl, False)
             End If
-
-            'EingerichteteTelefone = Strings.Left(EingerichteteTelefone, Strings.Len(EingerichteteTelefone) - 1)
-            'TelAnzahl = AnzahlDECT + AnzahlFAX + AnzahlFON123 + AnzahlISDN + AnzahlLANWLAN + AnzahlTAM
-            If bRausschreiben Then
-                setline("Anzahl FON: " & AnzahlFON123)
-                setline("Anzahl DECT: " & AnzahlDECT)
-                setline("Anzahl ISDN: " & AnzahlISDN)
-                setline("Anzahl LANWLAN: " & AnzahlLANWLAN)
-                setline("Anzahl TAM: " & AnzahlTAM)
-                setline("Anzahl FAX: " & AnzahlFAX)
-                setline("Gesamtanzahl: " & TelAnzahl)
-            Else
-                'C_XML.Write("Telefone", "EingerichteteTelefone", EingerichteteTelefone, False)
-                'C_XML.Write("Telefone", "Anzahl", CStr(TelAnzahl), True)
-            End If
         End With
-
 
     End Sub
 
-    Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
+    Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = vbNullString
         Dim max(MSN.Length + SIP.Length + TAM.Length + FAX.Length) As String
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & Strings.Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
-        Dim res = From x In tmp Select x Distinct 'Doppelte entfernen
-        Dim res2 = From x In res Where Not x Like "" Select x ' Leere entfernen
-        For Each Nr In res2
+        tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
+        tmp = (From x In tmp Where Not x Like "" Select x).ToArray ' Leere entfernen
+        For Each Nr In tmp
+            AlleNummern = Nr & ";" & AlleNummern
+        Next
+        AlleNummern = Strings.Left(AlleNummern, Len(AlleNummern) - 1)
+    End Function
+
+    Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal POTS As String, ByVal Mobil As String) As String
+        AlleNummern = vbNullString
+        Dim max(MSN.Length + SIP.Length + TAM.Length) As String
+        Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
+        tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
+        tmp = (From x In tmp Where Not x Like "" Select x).ToArray ' Leere entfernen
+        For Each Nr In tmp
             AlleNummern = Nr & ";" & AlleNummern
         Next
         AlleNummern = Strings.Left(AlleNummern, Len(AlleNummern) - 1)

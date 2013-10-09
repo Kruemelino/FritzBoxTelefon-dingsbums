@@ -229,10 +229,10 @@ Public Class formCfg
         xPathTeile = Nothing
 
 
-        Dim StandardTelefon As String = C_XML.Read("Telefone", "CBStandardTelefon", "-1")
+        'Dim StandardTelefon As String = C_XML.Read("Telefone", "CBStandardTelefon", "-1")
         ' Nebenstellen = Split(C_XML.Read("Telefone", "EingerichteteTelefone", "1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29,5,600,601,602,603,604"), ";", , CompareMethod.Text)
         TelAnzahl = C_XML.Read("Telefone", "Anzahl", "-1")
-        If Not TelAnzahl = "-1" Then
+        If Not Nebenstellen(0) = "-1" Then
             With Me.TelList
                 j = 0
                 For Each Nebenstelle In Nebenstellen
@@ -249,7 +249,7 @@ Public Class formCfg
                     'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
                     'row(9) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
                     .Rows.Add(row)
-                    If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
+                    'If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
                     'End If
                 Next
 
