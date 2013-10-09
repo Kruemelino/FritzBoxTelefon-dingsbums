@@ -8,7 +8,7 @@ Public Class formJournalimport
     Private C_XML As MyXML
     Private CSVArg As Argument
     Private AnrMon As AnrufMonitor
-    Private hf As Helfer
+    Private C_hf As Helfer
     Private Abbruch As Boolean
     Private anzeigen As Boolean
     Private CSVAnrliste As String
@@ -29,7 +29,7 @@ Public Class formJournalimport
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         C_XML = XMLKlasse
-        hf = HelferKlasse
+        C_hf = HelferKlasse
         AnrMon = AnrMonKlasse
 
         Abbruch = False
@@ -108,7 +108,6 @@ Public Class formJournalimport
             Endzeit = .EndZeit
         End With
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
-        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1") ' Enthällt alle MSN, auf die reakiert werden soll
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
         Dim Anzahl As Integer = -1 ' Anzahl der zu importierenden Telefonate
@@ -164,11 +163,20 @@ Public Class formJournalimport
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-                        If hf.IsOneOf(hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Then
+                        With xPathTeile
+                            .Add("Telefone")
+                            .Add("Nummern")
+                            .Add("*")
+                            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+                            .Add("@Checked")
+                        End With
+
+                        If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Then
                             b += 1
                             i = 0
                             NSN = -1
                             With xPathTeile
+                                .Clear()
                                 .Add("Telefone")
                                 .Add("Telefone")
                                 .Add("*")
@@ -178,7 +186,7 @@ Public Class formJournalimport
                                 Else
                                     Select Case Nebenstelle
                                         Case vbNullString
-                                            .Add("[TelNr = """ & MSN & """ or TelNr = """ & hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+                                            .Add("[TelNr = """ & MSN & """ or TelNr = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
                                         Case Else
                                             .Add("[TelName = """ & Nebenstelle & """]")
                                     End Select
@@ -221,9 +229,9 @@ Public Class formJournalimport
                 End If
                 ' Registry zurückschreiben
                 C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
-                hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
+                C_hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
-                hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")
+                C_hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")
             End If
             If anzeigen Then BGAnrListeAuswerten.ReportProgress(100)
             BGAnrListeAuswerten.Dispose()

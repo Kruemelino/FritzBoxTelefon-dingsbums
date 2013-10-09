@@ -191,25 +191,31 @@
     End Sub
 
     Sub CLBtelnrAusfüllen()
-        Dim TelNrString As String = "Alle Telefonnummern;" & C_XML.ReadAllTelNr("Telefone")
-        Dim CheckString() As String = Split(C_XML.Read("Telefone", "CLBTelNr", ";"), ";", , CompareMethod.Text)
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
-        Dim res = From x In Split(TelNrString, ";", , CompareMethod.Text) Select x Distinct 'Doppelte entfernen
-        res = (From x In res Where Not x Like "" Select x).ToArray ' Leere entfernen
-        Me.CLBTelNr.Items.Clear()
-        Dim alle As Boolean = True
 
-        For Each TelNr In res
-            Me.CLBTelNr.Items.Add(TelNr)
-            If IsNumeric(TelNr) Then
-                If C_Helfer.IsOneOf(TelNr, CheckString) Then
-                    Me.CLBTelNr.SetItemChecked(Me.CLBTelNr.Items.Count - 1, True)
-                Else
-                    alle = False
-                End If
-            End If
-        Next
-        Me.CLBTelNr.SetItemChecked(0, alle)
+            Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
+            TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
+            TelNrString = (From x In TelNrString Where Not x Like "" Select x).ToArray ' Leere entfernen
+            Me.CLBTelNr.Items.Clear()
+
+
+            For Each TelNr In TelNrString
+                Me.CLBTelNr.Items.Add(TelNr)
+            Next
+            'etwas unschön
+            .Add("")
+            'For i = 1 To Me.CLBTelNr.Items.Count - 1
+            '    .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
+            '    .Item(.Count - 1) = "@Checked"
+            '    Me.CLBTelNr.SetItemChecked(i, C_Helfer.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
+            'Next
+        End With
+        Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
     End Sub
 
     Private Sub CLBTelNr_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLBTelNr.SelectedIndexChanged
@@ -235,22 +241,36 @@
     End Sub
 
     Private Sub BFertigstellen_Click(sender As Object, e As EventArgs) Handles BFertigstellen.Click
-        Dim checkstring As String = vbNullString
-        Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
-        If checkitemcoll.Count = 0 Then
+        Dim CheckTelNr As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
+        If CheckTelNr.Count = 0 Then
             For i = 0 To Me.CLBTelNr.Items.Count - 1
                 Me.CLBTelNr.SetItemChecked(i, True)
             Next
-            checkitemcoll = Me.CLBTelNr.CheckedItems
+            CheckTelNr = Me.CLBTelNr.CheckedItems
         End If
-        For Each el As String In checkitemcoll
-            If Not el = "Alle Telefonnummern" And Not C_Helfer.IsOneOf(el, Split(checkstring, ";", , CompareMethod.Text)) Then
-                checkstring += el & ";"
-            End If
-        Next
-        If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
 
-        C_XML.Write("Telefone", "CLBTelNr", checkstring, True)
+        Dim xPathTeile As New ArrayList
+        Dim tmpTeile As String = vbNullString
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*")
+
+            For i = 1 To Me.CLBTelNr.Items.Count - 1
+                tmpTeile += ". = " & """" & Me.CLBTelNr.Items(i).ToString & """" & " or "
+            Next
+            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+            .Add("[" & tmpTeile & "]")
+            C_XML.WriteAttribute(xPathTeile, "Checked", "0")
+            tmpTeile = vbNullString
+            For i = 0 To CheckTelNr.Count - 1
+                tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
+            Next
+            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+            .Item(.Count - 1) = "[" & tmpTeile & "]"
+            C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+        End With
+
         Me.LMessage.Text = "Fertig"
         Me.BSchließen.Enabled = True
     End Sub

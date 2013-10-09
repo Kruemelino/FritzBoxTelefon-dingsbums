@@ -356,11 +356,19 @@ Public Class AnrufMonitor
         ' FBStatus(5): ???
 
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
-        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", ";") ' Enthällt alle MSN, auf die reagiert werden soll
-
         Dim MSN As String = CStr(FBStatus.GetValue(4))
         ' Anruf nur anzeigen, wenn die MSN stimmt
-        If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*")
+            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+            .Add("@Checked")
+        End With
+
+        If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
+            'If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
             Dim TelNr As String            ' ermittelte TelNr
             Dim Anrufer As String = vbNullString           ' ermittelter Anrufer
@@ -417,10 +425,12 @@ Public Class AnrufMonitor
                 Else
                     ' Anrufer per Rückwärtssuche ermitteln
                     If C_XML.Read("Optionen", "CBRueckwaertssuche", "False") = "True" Then
-                        Dim xPathTeile As New ArrayList
                         If RWSIndex Then
-                            xPathTeile.Add("CBRWSIndex")
-                            xPathTeile.Add("Eintrag[@ID=""" & TelNr & """]")
+                            With xPathTeile
+                                .Clear()
+                                .Add("CBRWSIndex")
+                                .Add("Eintrag[@ID=""" & TelNr & """]")
+                            End With
                             vCard = C_XML.Read(xPathTeile, Nothing)
                         End If
                         If vCard = Nothing Then
@@ -500,10 +510,10 @@ Public Class AnrufMonitor
         ' FBStatus(5): die gewählte Rufnummer
 
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
-        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1")
         Dim MSN As String = CStr(FBStatus.GetValue(4))
         ' Problem DECT/IP-Telefone: keine MSN im über Anrufmonitor eingegangen. Aus Datei ermitteln.
         If MSN = vbNullString Then
+
             Select Case CInt(FBStatus.GetValue(3))
                 Case 10 To 19 'DECT
                     MSN = Split(C_XML.Read("Telefone", CStr(CInt(FBStatus.GetValue(3)) + 50), ";"), ";", , CompareMethod.Text)(0)
@@ -512,7 +522,16 @@ Public Class AnrufMonitor
             End Select
         End If
         ' Anruf nur bearbeiten, wenn die MSN oder VoIP-Nr stimmt
-        If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*")
+            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+            .Add("@Checked")
+        End With
+
+        If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
             Dim TelNr As String            ' ermittelte TelNr
             Dim Anrufer As String = "-1"            ' ermittelter Anrufer
@@ -545,11 +564,13 @@ Public Class AnrufMonitor
                 Else
                     ' Anrufer per Rückwärtssuche ermitteln
                     If C_XML.Read("Optionen", "CBRueckwaertssuche", "False") = "True" Then
-                        Dim xPathTeile As New ArrayList
                         RWSIndex = CBool(C_XML.Read("Optionen", "CBRWSIndex", "True"))
                         If RWSIndex Then
-                            xPathTeile.Add("CBRWSIndex")
-                            xPathTeile.Add("Eintrag[@ID=""" & TelNr & """]")
+                            With xPathTeile
+                                .Clear()
+                                .Add("CBRWSIndex")
+                                .Add("Eintrag[@ID=""" & TelNr & """]")
+                            End With
                             vCard = C_XML.Read(xPathTeile, Nothing)
                         End If
                         If vCard = Nothing Then
@@ -619,7 +640,6 @@ Public Class AnrufMonitor
         ' wertet eine Zustande gekommene Verbindung aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
-            Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1")
             Dim ID As Integer = CInt(FBStatus.GetValue(2))
             Dim MSN As String = JEReadorWrite(True, ID, "MSN", "")
             ' FBStatus(0): Uhrzeit
@@ -627,7 +647,16 @@ Public Class AnrufMonitor
             ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
             ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
             If Not MSN = Nothing Then
-                If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
+                Dim xPathTeile As New ArrayList
+                With xPathTeile
+                    .Add("Telefone")
+                    .Add("Nummern")
+                    .Add("*")
+                    .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")) & """]")
+                    .Add("@Checked")
+                End With
+
+                If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
                     JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
                     JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
@@ -681,7 +710,6 @@ Public Class AnrufMonitor
         Dim KontaktID As String = vbNullString
 
         Dim FritzFolderExists As Boolean = False
-        Dim checkstring As String = C_XML.Read("Telefone", "CLBTelNr", "-1")
         Dim SchließZeit As Date = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
 
         Dim xPathTeile As New ArrayList
@@ -689,7 +717,15 @@ Public Class AnrufMonitor
             JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
             Dim JMSN As String = C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl)
             If Not MSN = Nothing Then
-                If C_hf.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
+                With xPathTeile
+                    .Add("Telefone")
+                    .Add("Nummern")
+                    .Add("*")
+                    .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")) & """]")
+                    .Add("@Checked")
+                End With
+
+                If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Journaleintrag schreiben
 
                     If Dauer = 0 Then
@@ -774,6 +810,7 @@ Public Class AnrufMonitor
                     End Select
 
                     With xPathTeile
+                        .Clear()
                         .Add("Telefone")
                         .Add("Telefone")
                         .Add("*")
@@ -783,7 +820,7 @@ Public Class AnrufMonitor
                     TelName = C_XML.Read(xPathTeile, "")
 
                     ' Prüfe ob TelName angehängt werden soll
-                    If Not Split(checkstring, ";", , CompareMethod.Text).Length = 1 Or CInt(C_XML.Read("Telefone", "Anzahl", "1")) > 1 Then
+                    If CInt(C_XML.Read("Telefone", "Anzahl", "1")) > 1 Then
                         tmpTelName = CStr(IIf(Len(TelName) = 0, "", " (" & TelName & ")"))
                     End If
 

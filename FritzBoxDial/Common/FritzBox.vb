@@ -885,8 +885,8 @@ Public Class FritzBox
                         setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
                     Else
                         C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
-                        ' RAUS:
-                        C_XML.Write("Telefone", Node, TelNr, False)
+                        '' RAUS:
+                        'C_XML.Write("Telefone", Node, TelNr, False)
                     End If
                 End If
             Next
@@ -894,8 +894,8 @@ Public Class FritzBox
             SIP = (From x In SIP Where Not x Like "" Select x).ToArray
             If bRausschreiben Then
                 setline("Letzte SIP: " & SIPID)
-            Else
-                C_XML.Write("Telefone", "SIPID", SIPID, False)
+                'Else
+                '    C_XML.Write("Telefone", "SIPID", SIPID, False)
             End If
 
             xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
@@ -909,8 +909,8 @@ Public Class FritzBox
                             setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         Else
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
-                            ' RAUS:
-                            C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
+                            '' RAUS:
+                            'C_XML.Write("Telefone", "MSN" & CStr(i), TelNr, False)
                         End If
                     End If
                 End If
@@ -936,8 +936,8 @@ Public Class FritzBox
                                                 setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
                                             Else
                                                 C_XML.Write(xPathTeile, TelNr, "ID", CStr(k), False)
-                                                ' RAUS:
-                                                C_XML.Write("Telefone", "MSN" & CStr(k), TelNr, False)
+                                                '' RAUS:
+                                                'C_XML.Write("Telefone", "MSN" & CStr(k), TelNr, False)
                                             End If
                                             Exit For
                                         End If
@@ -959,7 +959,7 @@ Public Class FritzBox
                     If Not Len(TelNr) = 0 Then
                         If Strings.Left(TelNr, 3) = "SIP" Then
                             TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
-                        ElseIf Strings.Left(TelNr, 3) = "SIP" Then
+                        Else
                             TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         End If
 
@@ -967,8 +967,8 @@ Public Class FritzBox
                             setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         Else
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
-                            ' RAUS:
-                            C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
+                            '' RAUS:
+                            'C_XML.Write("Telefone", "TAM" & CStr(i), TelNr, False)
                         End If
 
                         TAM(i) = TelNr
@@ -992,8 +992,8 @@ Public Class FritzBox
                             setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
                         Else
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
-                            ' RAUS:
-                            C_XML.Write("Telefone", "FAX" & CStr(i), TelNr, False)
+                            '' RAUS:
+                            'C_XML.Write("Telefone", "FAX" & CStr(i), TelNr, False)
                         End If
 
                         FAX(i) = TelNr
@@ -1246,7 +1246,7 @@ Public Class FritzBox
                 If .StringEntnehmen(Anrufbeantworter, "['Active'] = '", "'") = "1" Then
                     TelName = .StringEntnehmen(Anrufbeantworter, "['Name'] = '", "'")
                     Port = .StringEntnehmen(Anrufbeantworter, "['_node'] = '", "'")
-                    TelNr = TAM(CInt(Strings.Right(Port, 1)))
+                    TelNr = .OrtsVorwahlEntfernen(TAM(CInt(Strings.Right(Port, 1))), Vorwahl)
                     AnzahlTAM += 1
                     DialPort = "60" & Strings.Right(Port, 1)
                     'EingerichteteTelefone = String.Concat(EingerichteteTelefone, DialPort, ";")

@@ -125,7 +125,6 @@ Public Class formCfg
         Me.CBKHO.Checked = CBool(IIf(C_XML.Read("Optionen", "CBKHO", "True") = "True", True, False))
         Me.CBRWSIndex.Checked = CBool(IIf(C_XML.Read("Optionen", "CBRWSIndex", "True") = "True", True, False))
         With Me.ComboBoxRWS.Items
-            '.Add("GoYellow.de")
             .Add("11880.com")
             .Add("DasTelefonbuch.de")
             .Add("tel.search.ch")
@@ -298,25 +297,37 @@ Public Class formCfg
     Private Function Speichern() As Boolean
         Speichern = True
 
-        Dim checkstring As String = vbNullString
         'If Not Me.CBPhonerKeineFB.Checked Then
-        Dim checkitemcoll As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
-        If checkitemcoll.Count = 0 Then
+        Dim CheckTelNr As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
+        If CheckTelNr.Count = 0 Then
             For i = 0 To Me.CLBTelNr.Items.Count - 1
                 Me.CLBTelNr.SetItemChecked(i, True)
             Next
-            checkitemcoll = Me.CLBTelNr.CheckedItems
+            CheckTelNr = Me.CLBTelNr.CheckedItems
         End If
-        For Each el As String In checkitemcoll
-            If Not el = "Alle Telefonnummern" And Not C_Helfer.IsOneOf(el, Split(checkstring, ";", , CompareMethod.Text)) Then
-                checkstring += el & ";"
-            End If
-        Next
-        If Strings.Right(checkstring, 1) = ";" Then checkstring = Strings.Left(checkstring, Len(checkstring) - 1)
-        'Else
-        '    checkstring = "Phoner"
-        'End If
-        C_XML.Write("Telefone", "CLBTelNr", checkstring, False)
+
+        Dim xPathTeile As New ArrayList
+        Dim tmpTeile As String = vbNullString
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*")
+
+            For i = 1 To Me.CLBTelNr.Items.Count - 1
+                tmpTeile += ". = " & """" & Me.CLBTelNr.Items(i).ToString & """" & " or "
+            Next
+            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+            .Add("[" & tmpTeile & "]")
+            C_XML.WriteAttribute(xPathTeile, "Checked", "0")
+            tmpTeile = vbNullString
+            For i = 0 To CheckTelNr.Count - 1
+                tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
+            Next
+            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+            .Item(.Count - 1) = "[" & tmpTeile & "]"
+            C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+        End With
+
         ' Sichert die Einstellungen und schlieﬂt das Fenster
         If (CInt(Me.TBEnblDauer.Text) < 4) Then Me.TBEnblDauer.Text = "4"
         C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text, False)
@@ -457,25 +468,32 @@ Public Class formCfg
 
 
     Sub CLBtelnrAusf¸llen()
-        Dim TelNrString As String = "Alle Telefonnummern;" & C_XML.ReadAllTelNr("Telefone")
-        Dim CheckString() As String = Split(C_XML.Read("Telefone", "CLBTelNr", ";"), ";", , CompareMethod.Text)
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
-        Dim res = From x In Split(TelNrString, ";", , CompareMethod.Text) Select x Distinct 'Doppelte entfernen
-        res = (From x In res Where Not x Like "" Select x).ToArray ' Leere entfernen
-        Me.CLBTelNr.Items.Clear()
-        Dim alle As Boolean = True
 
-        For Each TelNr In res
-            Me.CLBTelNr.Items.Add(TelNr)
-            If IsNumeric(TelNr) Then
-                If C_Helfer.IsOneOf(TelNr, CheckString) Then
-                    Me.CLBTelNr.SetItemChecked(Me.CLBTelNr.Items.Count - 1, True)
-                Else
-                    alle = False
-                End If
-            End If
-        Next
-        Me.CLBTelNr.SetItemChecked(0, alle)
+            Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
+
+            TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
+            TelNrString = (From x In TelNrString Where Not x Like "" Select x).ToArray ' Leere entfernen
+            Me.CLBTelNr.Items.Clear()
+
+
+            For Each TelNr In TelNrString
+                Me.CLBTelNr.Items.Add(TelNr)
+            Next
+            'etwas unschˆn
+            .Add("")
+            For i = 1 To Me.CLBTelNr.Items.Count - 1
+                .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
+                .Item(.Count - 1) = "@Checked"
+                Me.CLBTelNr.SetItemChecked(i, C_Helfer.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
+            Next
+        End With
+        Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
     End Sub
 #End Region
 
@@ -543,7 +561,6 @@ Public Class formCfg
 
     Private Sub ButtonTelefonliste_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTelefonliste.Click
 
-        tmpCheckString = C_XML.Read("Telefone", "CLBTelNr", "-1")
         Me.ButtonTelefonliste.Enabled = False
         Me.ButtonTelefonliste.Text = "Bitte warten..."
         Windows.Forms.Application.DoEvents()
@@ -889,7 +906,6 @@ Public Class formCfg
     End Sub
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
-        C_XML.Write("Telefone", "CLBTelNr", tmpCheckString, True)
         AddLine("BackgroundWorker ist fertig.")
         CLBtelnrAusf¸llen()
         SetStatistik()
@@ -961,7 +977,6 @@ Public Class formCfg
         C_FBox = Nothing
         C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
         AddLine("Fritz!Box Klasse mit Verweis auf dieses Formular erstellt.")
-        tmpCheckString = C_XML.Read("Telefone", "CLBTelNr", "-1")
 
         BWTelefone = New BackgroundWorker
         AddLine("BackgroundWorker erstellt.")
