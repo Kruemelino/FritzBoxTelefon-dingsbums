@@ -90,16 +90,6 @@ Partial Class formCfg
         Me.TBSchließZeit = New System.Windows.Forms.Label()
         Me.TBReset = New System.Windows.Forms.Label()
         Me.TelList = New System.Windows.Forms.DataGridView()
-        Me.ColumnStandardTelefon = New System.Windows.Forms.DataGridViewCheckBoxColumn()
-        Me.Nr = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dialCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Telefonname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Typ = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.InNr = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.OutNr = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Eingehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Ausgehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Gesamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PWartung = New System.Windows.Forms.TabPage()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.CDWJournal = New System.Windows.Forms.GroupBox()
@@ -198,6 +188,15 @@ Partial Class formCfg
         Me.CBTelefonDatei = New System.Windows.Forms.CheckBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.TBDiagnose = New System.Windows.Forms.TextBox()
+        Me.ColumnStandardTelefon = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.Nr = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.dialCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Typ = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Telefonname = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.OutNr = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Eingehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Ausgehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Gesamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -863,7 +862,7 @@ Partial Class formCfg
         Me.GroupBox1.Controls.Add(Me.TelList)
         Me.GroupBox1.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(544, 284)
+        Me.GroupBox1.Size = New System.Drawing.Size(582, 284)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Telefone und Statistik"
@@ -919,122 +918,19 @@ Partial Class formCfg
         '
         Me.TelList.AllowUserToAddRows = False
         Me.TelList.AllowUserToDeleteRows = False
-        Me.TelList.AllowUserToResizeColumns = False
         Me.TelList.AllowUserToResizeRows = False
         Me.TelList.BackgroundColor = System.Drawing.SystemColors.Window
         Me.TelList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.TelList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnStandardTelefon, Me.Nr, Me.dialCode, Me.Telefonname, Me.Typ, Me.InNr, Me.OutNr, Me.Eingehend, Me.Ausgehend, Me.Gesamt})
+        Me.TelList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnStandardTelefon, Me.Nr, Me.dialCode, Me.Typ, Me.Telefonname, Me.OutNr, Me.Eingehend, Me.Ausgehend, Me.Gesamt})
         Me.TelList.Location = New System.Drawing.Point(1, 19)
         Me.TelList.MultiSelect = False
         Me.TelList.Name = "TelList"
         Me.TelList.RowHeadersVisible = False
         Me.TelList.RowTemplate.Height = 18
         Me.TelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.TelList.Size = New System.Drawing.Size(581, 150)
+        Me.TelList.Size = New System.Drawing.Size(575, 150)
         Me.TelList.TabIndex = 1
-        '
-        'ColumnStandardTelefon
-        '
-        Me.ColumnStandardTelefon.HeaderText = "*"
-        Me.ColumnStandardTelefon.MinimumWidth = 25
-        Me.ColumnStandardTelefon.Name = "ColumnStandardTelefon"
-        Me.ColumnStandardTelefon.ToolTipText = "Standardtelefon"
-        Me.ColumnStandardTelefon.Width = 25
-        '
-        'Nr
-        '
-        Me.Nr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Nr.HeaderText = "Nr."
-        Me.Nr.MinimumWidth = 25
-        Me.Nr.Name = "Nr"
-        Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Nr.Width = 25
-        '
-        'dialCode
-        '
-        Me.dialCode.HeaderText = "ID"
-        Me.dialCode.MinimumWidth = 25
-        Me.dialCode.Name = "dialCode"
-        Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
-        Me.dialCode.Width = 30
-        '
-        'Telefonname
-        '
-        Me.Telefonname.HeaderText = "Telefonname"
-        Me.Telefonname.MinimumWidth = 75
-        Me.Telefonname.Name = "Telefonname"
-        Me.Telefonname.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Telefonname.Width = 76
-        '
-        'Typ
-        '
-        Me.Typ.HeaderText = "Typ"
-        Me.Typ.MinimumWidth = 50
-        Me.Typ.Name = "Typ"
-        Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Typ.Width = 50
-        '
-        'InNr
-        '
-        Me.InNr.HeaderText = "Eingehende Nummer"
-        Me.InNr.MinimumWidth = 70
-        Me.InNr.Name = "InNr"
-        Me.InNr.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.InNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.InNr.Width = 70
-        '
-        'OutNr
-        '
-        Me.OutNr.HeaderText = "Ausgehende Nummer"
-        Me.OutNr.MinimumWidth = 70
-        Me.OutNr.Name = "OutNr"
-        Me.OutNr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.OutNr.Width = 70
-        '
-        'Eingehend
-        '
-        Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
-        Me.Eingehend.HeaderText = "Eingehend"
-        Me.Eingehend.MinimumWidth = 65
-        Me.Eingehend.Name = "Eingehend"
-        Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Eingehend.Width = 65
-        '
-        'Ausgehend
-        '
-        Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
-        Me.Ausgehend.HeaderText = "Ausgehend"
-        Me.Ausgehend.MinimumWidth = 65
-        Me.Ausgehend.Name = "Ausgehend"
-        Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Ausgehend.Width = 65
-        '
-        'Gesamt
-        '
-        Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Gesamt.HeaderText = "Gesamt"
-        Me.Gesamt.MinimumWidth = 65
-        Me.Gesamt.Name = "Gesamt"
-        Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Gesamt.Width = 65
         '
         'PWartung
         '
@@ -2069,6 +1965,98 @@ Partial Class formCfg
         Me.TBDiagnose.TabIndex = 1
         Me.TBDiagnose.TabStop = False
         '
+        'ColumnStandardTelefon
+        '
+        Me.ColumnStandardTelefon.HeaderText = "*"
+        Me.ColumnStandardTelefon.MinimumWidth = 25
+        Me.ColumnStandardTelefon.Name = "ColumnStandardTelefon"
+        Me.ColumnStandardTelefon.ToolTipText = "Standardtelefon"
+        Me.ColumnStandardTelefon.Width = 25
+        '
+        'Nr
+        '
+        Me.Nr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Nr.HeaderText = "Nr."
+        Me.Nr.MinimumWidth = 25
+        Me.Nr.Name = "Nr"
+        Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Nr.Width = 25
+        '
+        'dialCode
+        '
+        Me.dialCode.HeaderText = "ID"
+        Me.dialCode.MinimumWidth = 25
+        Me.dialCode.Name = "dialCode"
+        Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
+        Me.dialCode.Width = 30
+        '
+        'Typ
+        '
+        Me.Typ.HeaderText = "Typ"
+        Me.Typ.MinimumWidth = 50
+        Me.Typ.Name = "Typ"
+        Me.Typ.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Typ.Width = 50
+        '
+        'Telefonname
+        '
+        Me.Telefonname.HeaderText = "Telefonname"
+        Me.Telefonname.MinimumWidth = 75
+        Me.Telefonname.Name = "Telefonname"
+        Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Telefonname.Width = 120
+        '
+        'OutNr
+        '
+        Me.OutNr.HeaderText = "Telefonnummer"
+        Me.OutNr.MinimumWidth = 100
+        Me.OutNr.Name = "OutNr"
+        Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.OutNr.Width = 120
+        '
+        'Eingehend
+        '
+        Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        Me.Eingehend.HeaderText = "Eingehend"
+        Me.Eingehend.MinimumWidth = 65
+        Me.Eingehend.Name = "Eingehend"
+        Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Eingehend.Width = 65
+        '
+        'Ausgehend
+        '
+        Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Ausgehend.HeaderText = "Ausgehend"
+        Me.Ausgehend.MinimumWidth = 65
+        Me.Ausgehend.Name = "Ausgehend"
+        Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Ausgehend.Width = 65
+        '
+        'Gesamt
+        '
+        Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Gesamt.HeaderText = "Gesamt"
+        Me.Gesamt.MinimumWidth = 65
+        Me.Gesamt.Name = "Gesamt"
+        Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Gesamt.Width = 65
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2273,16 +2261,6 @@ Partial Class formCfg
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents CBForceFBAddr As System.Windows.Forms.CheckBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents ColumnStandardTelefon As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents Nr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents dialCode As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Telefonname As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Typ As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents InNr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents OutNr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Eingehend As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Ausgehend As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Gesamt As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TBBenutzer As System.Windows.Forms.TextBox
     Friend WithEvents LinkHomepage As System.Windows.Forms.LinkLabel
@@ -2314,6 +2292,15 @@ Partial Class formCfg
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
     Friend WithEvents Label33 As System.Windows.Forms.Label
     Friend WithEvents PanelPhonerAktiv As System.Windows.Forms.Panel
+    Friend WithEvents ColumnStandardTelefon As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents Nr As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents dialCode As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Typ As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Telefonname As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents OutNr As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Eingehend As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Ausgehend As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Gesamt As System.Windows.Forms.DataGridViewTextBoxColumn
 #If OVer < 14 Then
 #End If
 End Class

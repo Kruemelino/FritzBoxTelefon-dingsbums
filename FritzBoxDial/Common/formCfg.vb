@@ -203,19 +203,9 @@ Public Class formCfg
     End Sub
 
     Private Sub Statistik()
-
-        ' BMI TELEFONE
-        Dim row(Me.TelList.ColumnCount) As String
+        Dim row As New ArrayList
         Dim Nebenstellen() As String
-
         Dim j As Integer
-        'Dim TelName() As String
-        Dim TelAnzahl As String
-        With Me.TelList
-            For j = 0 To .RowCount - 1
-                .Rows.RemoveAt(0)
-            Next
-        End With
 
         Dim xPathTeile As New ArrayList
         With xPathTeile
@@ -226,42 +216,54 @@ Public Class formCfg
             .Add("TelName")
         End With
         Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
-        xPathTeile = Nothing
 
 
-        'Dim StandardTelefon As String = C_XML.Read("Telefone", "CBStandardTelefon", "-1")
-        ' Nebenstellen = Split(C_XML.Read("Telefone", "EingerichteteTelefone", "1,2,3,5,51,52,53,54,55,56,57,58,50,60,61,62,63,64,65,66,67,68,69,20,21,22,23,24,25,26,27,28,29,5,600,601,602,603,604"), ";", , CompareMethod.Text)
-        TelAnzahl = C_XML.Read("Telefone", "Anzahl", "-1")
+
         If Not Nebenstellen(0) = "-1" Then
             With Me.TelList
                 j = 0
-                For Each Nebenstelle In Nebenstellen
-                    'TelName = Split(C_XML.Read("Telefone", Nebenstelle, "-1;"), ";", , CompareMethod.Text)
-                    'If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
+                For Each Nebenstelle As String In Nebenstellen
                     j += 1
-                    row(1) = CStr(j) ' Zählvariable
-                    'row(2) = Nebenstelle
-                    row(3) = Nebenstelle ' TelName
-                    'row(4) = Telefontyp(CInt(Nebenstelle))
-                    'row(5) = Replace(TelName(1), ";", ", ", , , CompareMethod.Text) ' Eingehnd
-                    'row(6) = Replace(TelName(0), ";", ", ", , , CompareMethod.Text) ' Ausgehnd
-                    'row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")))
-                    'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
-                    'row(9) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
-                    .Rows.Add(row)
-                    'If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
-                    'End If
+                    xPathTeile.Clear()
+                    row.Clear()
+                    With xPathTeile
+                        .Add("Telefone")
+                        .Add("Telefone")
+                        .Add("*")
+                        .Add("Telefon")
+                        .Add("[TelName = """ & Nebenstelle & """]")
+                        .Add("@Dialport")
+
+
+                        row.Add(False)
+                        row.Add(CStr(j)) ' Zählvariable
+                        row.Add(C_XML.Read(xPathTeile, "-1;")) 'Nebenstelle
+                        .RemoveAt(.Count - 1)
+                        row.Add(C_XML.ReadElementName(xPathTeile, "-1;")) 'Telefontyp
+                        row.Add(Nebenstelle) ' TelName
+                        .Add("TelNr")
+                        row.Add(Replace(C_XML.Read(xPathTeile, ""), ";", ", ", , , CompareMethod.Text)) 'TelNr
+                        'row(5) = Replace(TelName(1), ";", ", ", , , CompareMethod.Text) ' Eingehnd
+                        'row(6) = Replace(TelName(0), ";", ", ", , , CompareMethod.Text) ' Ausgehnd
+                        'row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")))
+                        'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
+                        'row(9) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
+
+                        'If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
+                        'End If
+                    End With
+                    .Rows.Add(row.ToArray)
                 Next
 
-                'row(1) = Nothing
-                'row(2) = Nothing
-                'row(3) = Nothing
-                'row(4) = Nothing
-                'row(5) = "Summe:"
-                'row(6) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")))
-                'row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", "ausgehend", "0")))
-                'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")) + CInt(C_XML.Read("Statistik", "ausgehend", "0")))
-                .Rows.Add(row)
+                ''row(1) = Nothing
+                ''row(2) = Nothing
+                ''row(3) = Nothing
+                ''row(4) = Nothing
+                ''row(5) = "Summe:"
+                ''row(6) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")))
+                ''row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", "ausgehend", "0")))
+                ''row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")) + CInt(C_XML.Read("Statistik", "ausgehend", "0")))
+                '.Rows.Add(row.ToArray)
             End With
         End If
 
@@ -272,27 +274,28 @@ Public Class formCfg
         Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.Read("Statistik", "Journal", "0") & " erstellte Journaleinträge" & vbCrLf
         Me.TBReset.Text = "Letzter Reset: " & C_XML.Read("Statistik", "ResetZeit", "Noch nicht festgelegt")
         Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_XML.Read("Journal", "SchließZeit", "Noch nicht festgelegt")
-
+        xPathTeile = Nothing
+        row = Nothing
     End Sub
 
-    Private Function Telefontyp(ByVal Nebenstelle As Integer) As String
-        Select Case Nebenstelle
-            Case 1 To 3
-                Return "FON" & Nebenstelle
-            Case 5
-                Return "Fax"
-            Case 50 To 59
-                Return "S0"
-            Case 60 To 65
-                Return "DECT"
-            Case 20 To 29
-                Return "IP"
-            Case 600 To 604
-                Return "AB"
-            Case Else
-                Return "?"
-        End Select
-    End Function
+    'Private Function Telefontyp(ByVal Nebenstelle As Integer) As String
+    '    Select Case Nebenstelle
+    '        Case 1 To 3
+    '            Return "FON" & Nebenstelle
+    '        Case 5
+    '            Return "Fax"
+    '        Case 50 To 59
+    '            Return "S0"
+    '        Case 60 To 65
+    '            Return "DECT"
+    '        Case 20 To 29
+    '            Return "IP"
+    '        Case 600 To 604
+    '            Return "AB"
+    '        Case Else
+    '            Return "?"
+    '    End Select
+    'End Function
 
     Private Function Speichern() As Boolean
         Speichern = True
@@ -862,7 +865,7 @@ Public Class formCfg
         Dim FBPasswort As String
 
         C_FBox = Nothing
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
 
         Do While SID = C_FBox.sDefaultSID
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
@@ -975,7 +978,7 @@ Public Class formCfg
             End If
         End If
         C_FBox = Nothing
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
         AddLine("Fritz!Box Klasse mit Verweis auf dieses Formular erstellt.")
 
         BWTelefone = New BackgroundWorker

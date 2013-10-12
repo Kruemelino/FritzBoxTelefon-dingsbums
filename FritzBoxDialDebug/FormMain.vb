@@ -29,7 +29,7 @@ Public Class FormMain
         ' Klasse für Helferfunktionen erstellen
         C_Helfer = New Helfer(DateiPfad, C_XML, C_Crypt)
 
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         'MsgBox("Hello World")
 

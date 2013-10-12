@@ -25,7 +25,7 @@ Public Class FritzBox
     Public Sub New(ByVal xmlKlasse As MyXML, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As Rijndael, _
-                   ByRef TelEinlesen As Boolean, ByVal ep As IEventProvider)
+                   ByVal ep As IEventProvider)
 
         Dim EncodeingFritzBox As String
 
@@ -51,15 +51,6 @@ Public Class FritzBox
             End If
         Else
             FBEncoding = C_hf.GetEncoding(EncodeingFritzBox)
-        End If
-        If C_XML.Read("Telefone", "Anzahl", "-1") = "-1" And TelEinlesen Then
-            C_hf.LogFile("Telefone, Anzahl nicht vorhanden. Starte Einleseroutine in STA-Thread.")
-            threadTelefon = New Thread(AddressOf FritzBoxDaten)
-            With threadTelefon
-                .SetApartmentState(ApartmentState.STA)
-                .IsBackground = True
-                .Start()
-            End With
         End If
     End Sub
 

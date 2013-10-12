@@ -71,6 +71,20 @@ Public Class MyXML
         End If
         xPathTeile = Nothing
     End Function
+
+    Function ReadElementName(ByVal ZielKnoten As ArrayList, ByVal sDefault As String) As String
+        ReadElementName = vbNullString
+        Dim xPath As String
+        Dim tmpXMLNode As XmlNode
+        xPath = CreateXPath(ZielKnoten)
+        With XMLDoc
+            tmpXMLNode = .SelectSingleNode(xPath)
+            If Not tmpXMLNode Is Nothing Then
+                ReadElementName = tmpXMLNode.ParentNode.Name
+            End If
+        End With
+        tmpXMLNode = Nothing
+    End Function
 #End Region
 
 #Region "Write"

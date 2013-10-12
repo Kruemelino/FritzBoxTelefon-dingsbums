@@ -57,7 +57,7 @@
             UseAnrMon = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
-            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
 
             C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
@@ -141,7 +141,7 @@
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, False, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
         C_XML.Write("Optionen", "TBBenutzer", Me.TBFBUser.Text, False)
         C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"), True)
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")

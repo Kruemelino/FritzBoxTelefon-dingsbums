@@ -819,15 +819,14 @@ Public Class AnrufMonitor
                     End With
                     TelName = C_XML.Read(xPathTeile, "")
 
-                    ' Prüfe ob TelName angehängt werden soll
-                    If CInt(C_XML.Read("Telefone", "Anzahl", "1")) > 1 Then
-                        tmpTelName = CStr(IIf(Len(TelName) = 0, "", " (" & TelName & ")"))
-                    End If
-
-                    'Dim JEintrag As Outlook.JournalItem =
-                    C_OlI.ErstelleJournalItem(Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & tmpTelName, _
-                                    CInt(Dauer / 60), Body, CDate(Zeit), Firma, TelName & "; FritzBox Anrufmonitor; Telefonanrufe", KontaktID, StoreID)
-
+                    C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, vbNullString, " (" & TelName & ")")),
+                                              Duration:=CInt(Dauer / 60), _
+                                              Body:=Body, _
+                                              Start:=CDate(Zeit), _
+                                              Companies:=Firma, _
+                                              Categories:=TelName & "; FritzBox Anrufmonitor; Telefonanrufe", _
+                                              KontaktID:=KontaktID,
+                                              StoreID:=StoreID)
 
                     TempStat = CInt(C_XML.Read("Statistik", "Journal", "0"))
                     C_XML.Write("Statistik", "Journal", CStr(TempStat + 1), True)
