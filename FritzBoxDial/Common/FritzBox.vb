@@ -471,7 +471,7 @@ Public Class FritzBox
 
             End If
 
-            AllIn = AlleNummern(MSN, SIP, TAM,  POTS, Mobil)
+            AllIn = AlleNummern(MSN, SIP, TAM, POTS, Mobil)
 
             'Telefone ermitteln
             pos(0) = 1
