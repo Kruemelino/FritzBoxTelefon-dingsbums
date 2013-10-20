@@ -644,4 +644,21 @@ Public Class Helfer
     End Function
 #End Region
 
+    Public Function GetTimeInterval(ByVal nSeks As Double) As String
+        'http://www.vbarchiv.net/faq/date_sectotime.php
+        Dim h As Double, m As Double
+        h = nSeks / 3600
+        nSeks = nSeks Mod 3600
+        m = nSeks / 60
+        nSeks = nSeks Mod 60
+        Return Format(h, "00") & ":" & Format(m, "00") & ":" & Format(nSeks, "00")
+    End Function
+
+    Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
+        If sTxt = String.Empty Then Return String.Empty
+        If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then
+            Return Mid(sTxt, 1, Len(sTxt) - 1)
+        End If
+        Return sTxt
+    End Function
 End Class

@@ -164,6 +164,7 @@ Public Class formJournalimport
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
                         With xPathTeile
+                            .Clear()
                             .Add("Telefone")
                             .Add("Nummern")
                             .Add("*")
@@ -175,25 +176,28 @@ Public Class formJournalimport
                             b += 1
                             i = 0
                             NSN = -1
-                            With xPathTeile
-                                .Clear()
-                                .Add("Telefone")
-                                .Add("Telefone")
-                                .Add("*")
-                                .Add("Telefon")
+                            If Not AnrTyp = "2" Then
+                                'Wird im Fall 2 nicht benötigt: Verpasster Anruf.
+
                                 If Nebenstelle = "Fax (intern/PC)" Then
                                     NSN = 5
                                 Else
-                                    Select Case Nebenstelle
-                                        Case vbNullString
-                                            .Add("[TelNr = """ & MSN & """ or TelNr = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
-                                        Case Else
-                                            .Add("[TelName = """ & Nebenstelle & """]")
-                                    End Select
+                                    With xPathTeile
+                                        .Clear()
+                                        .Add("Telefone")
+                                        .Add("Telefone")
+                                        .Add("*")
+                                        .Add("Telefon") 'Select Case Nebenstelle
+                                        '    Case vbNullString
+                                        '        .Add("[TelNr = """ & MSN & """ or TelNr = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+                                        '    Case Else
+                                        .Add("[TelName = """ & Nebenstelle & """]")
+                                        'End Select
+                                        .Add("@Dialport")
+                                        NSN = CInt(C_XML.Read(xPathTeile, "-1"))
+                                    End With
                                 End If
-                                .Add("@Dialport")
-                                NSN = CInt(C_XML.Read(xPathTeile, "-1"))
-                            End With
+                            End If
                             If Not NSN = -1 Then
                                 'If NSN < 4 Then NSN -= 1
                                 Select Case NSN

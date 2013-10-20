@@ -84,8 +84,7 @@ Public Class formWählbox
         Dim selIndex As Integer = CInt(C_XML.Read("Optionen", "Anschluss", "0"))
         Dim tmpStr As String
         Dim ZeigeDialPort As Boolean = CBool(C_XML.Read("Optionen", "CBDialPort", "False"))
-        'Dim TelName() As String
-
+        Dim DialPort As String
         LandesVorwahl = C_XML.Read("Optionen", "TBLandesVW", "0049")
 
         Dim xPathTeile As New ArrayList
@@ -96,17 +95,18 @@ Public Class formWählbox
             .Add("Telefon")
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1)]") ' Keine Anrufbeantworter, kein Fax
             .Add("TelName")
+
+            Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
+
+            For Each Nebenstelle In Nebenstellen
+                .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
+                .Item(.Count - 1) = "@Dialport"
+                DialPort = C_XML.Read(xPathTeile, "-1")
+                tmpStr = Nebenstelle & CStr(IIf(ZeigeDialPort, " (" & DialPort & ")", vbNullString))
+                Me.ComboBoxFon.Items.Add(tmpStr)
+            Next
         End With
-        Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
         xPathTeile = Nothing
-
-        For Each Nebenstelle In Nebenstellen
-            tmpStr = Nebenstelle '& CStr(IIf(ZeigeDialPort, " (" & Nebenstelle & ")", vbNullString))
-            With Me.ComboBoxFon
-                .Items.Add(tmpStr)
-            End With
-        Next
-
         BWLogin.RunWorkerAsync()
         'Falls Telefone geändert haben
         If selIndex >= Me.ComboBoxFon.Items.Count Then
@@ -137,7 +137,6 @@ Public Class formWählbox
         Else
             Me.Height = 283    ' Zuerst schalten wir auf klein, damit die CallbyCall-
         End If
-
 
         ListTel.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         ListTel.ClearSelection()

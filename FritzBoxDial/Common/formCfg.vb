@@ -88,7 +88,6 @@ Public Class formCfg
             Me.TBPasswort.Text = "1234"
         End If
         Me.TBVorwahl.Text = C_XML.Read("Optionen", "TBVorwahl", "")
-        CLBtelnrAusfüllen()
         Me.TBEnblDauer.Text = CStr(CInt(C_XML.Read("Optionen", "TBEnblDauer", "10")))
         Me.CBAnrMonAuto.Checked = CBool(C_XML.Read("Optionen", "CBAnrMonAuto", "False"))
         Me.TBAnrMonX.Text = C_XML.Read("Optionen", "TBAnrMonX", "0")
@@ -136,8 +135,6 @@ Public Class formCfg
         ' Einstellungen für das Journal laden
         Me.CBJournal.Checked = CBool(IIf(C_XML.Read("Optionen", "CBJournal", "False") = "True", True, False))
 
-        Statistik()
-
         Me.CBUseAnrMon.Checked = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
         Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
         Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
@@ -161,7 +158,6 @@ Public Class formCfg
         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
-        FillLogTB()
 
         'Phoner
         Dim PhonerVerfuegbar As Boolean = CBool(C_XML.Read("Phoner", "PhonerVerfügbar", "False"))
@@ -200,13 +196,17 @@ Public Class formCfg
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
         C_XML.Write("Phoner", "PhonerVerfügbar", CStr(PhonerInstalliert), True)
+
+        FillLogTB()
+        FillTelListe()
+        CLBTelNrAusfüllen()
     End Sub
 
-    Private Sub Statistik()
-        Dim row As New ArrayList
+    Private Sub FillTelListe()
+        Dim Zeile As New ArrayList
         Dim Nebenstellen() As String
         Dim j As Integer
-
+        Dim tmpein(3) As Double
         Dim xPathTeile As New ArrayList
         With xPathTeile
             .Add("Telefone")
@@ -217,15 +217,13 @@ Public Class formCfg
         End With
         Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
 
-
-
         If Not Nebenstellen(0) = "-1" Then
             With Me.TelList
                 j = 0
                 For Each Nebenstelle As String In Nebenstellen
                     j += 1
                     xPathTeile.Clear()
-                    row.Clear()
+
                     With xPathTeile
                         .Add("Telefone")
                         .Add("Telefone")
@@ -234,36 +232,39 @@ Public Class formCfg
                         .Add("[TelName = """ & Nebenstelle & """]")
                         .Add("@Dialport")
 
-
-                        row.Add(False)
-                        row.Add(CStr(j)) ' Zählvariable
-                        row.Add(C_XML.Read(xPathTeile, "-1;")) 'Nebenstelle
+                        Zeile.Add(False)
+                        Zeile.Add(CStr(j)) ' Zählvariable
+                        Zeile.Add(C_XML.Read(xPathTeile, "-1;")) 'Nebenstelle
                         .RemoveAt(.Count - 1)
-                        row.Add(C_XML.ReadElementName(xPathTeile, "-1;")) 'Telefontyp
-                        row.Add(Nebenstelle) ' TelName
+                        Zeile.Add(C_XML.ReadElementName(xPathTeile, "-1;")) 'Telefontyp
+                        Zeile.Add(Nebenstelle) ' TelName
                         .Add("TelNr")
-                        row.Add(Replace(C_XML.Read(xPathTeile, ""), ";", ", ", , , CompareMethod.Text)) 'TelNr
-                        'row(5) = Replace(TelName(1), ";", ", ", , , CompareMethod.Text) ' Eingehnd
-                        'row(6) = Replace(TelName(0), ";", ", ", , , CompareMethod.Text) ' Ausgehnd
-                        'row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")))
-                        'row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
-                        'row(9) = GetTimeInterval(CInt(C_XML.Read("Statistik", TelName(0) & "ein", "0")) + CInt(C_XML.Read("Statistik", TelName(0) & "aus", "0")))
-
-                        'If Not StandardTelefon = "-1" And StandardTelefon = row(2) Then .Rows(.RowCount - 1).Cells(0).Value = True
-                        'End If
+                        Zeile.Add(Replace(C_XML.Read(xPathTeile, ""), ";", ", ", , , CompareMethod.Text)) 'TelNr
+                        .Item(.Count - 1) = "Eingehend"
+                        Zeile.Add(C_XML.Read(xPathTeile, "0")) 'Eingehnd
+                        tmpein(0) += CDbl(Zeile.Item(Zeile.Count - 1))
+                        .Item(.Count - 1) = "Ausgehend"
+                        Zeile.Add(C_XML.Read(xPathTeile, "0")) 'Ausgehnd
+                        tmpein(1) += CDbl(Zeile.Item(Zeile.Count - 1))
+                        Zeile.Add(CStr(CDbl(Zeile.Item(Zeile.Count - 2)) + CDbl(Zeile.Item(Zeile.Count - 1)))) 'Gesamt
+                        tmpein(2) += CDbl(Zeile.Item(Zeile.Count - 1))
+                        For i = Zeile.Count - 3 To Zeile.Count - 1
+                            Zeile.Item(i) = C_Helfer.GetTimeInterval(CInt(Zeile.Item(i)))
+                        Next
                     End With
-                    .Rows.Add(row.ToArray)
+                    .Rows.Add(Zeile.ToArray)
+                    Zeile.Clear()
                 Next
-
-                ''row(1) = Nothing
-                ''row(2) = Nothing
-                ''row(3) = Nothing
-                ''row(4) = Nothing
-                ''row(5) = "Summe:"
-                ''row(6) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")))
-                ''row(7) = GetTimeInterval(CInt(C_XML.Read("Statistik", "ausgehend", "0")))
-                ''row(8) = GetTimeInterval(CInt(C_XML.Read("Statistik", "eingehend", "0")) + CInt(C_XML.Read("Statistik", "ausgehend", "0")))
-                '.Rows.Add(row.ToArray)
+                Zeile.Add(False)
+                Zeile.Add(vbNullString)
+                Zeile.Add(vbNullString)
+                Zeile.Add(vbNullString)
+                Zeile.Add(vbNullString)
+                Zeile.Add("Gesamt:")
+                Zeile.Add(C_Helfer.GetTimeInterval(tmpein(0)))
+                Zeile.Add(C_Helfer.GetTimeInterval(tmpein(1)))
+                Zeile.Add(C_Helfer.GetTimeInterval(tmpein(2)))
+                .Rows.Add(Zeile.ToArray)
             End With
         End If
 
@@ -275,27 +276,8 @@ Public Class formCfg
         Me.TBReset.Text = "Letzter Reset: " & C_XML.Read("Statistik", "ResetZeit", "Noch nicht festgelegt")
         Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_XML.Read("Journal", "SchließZeit", "Noch nicht festgelegt")
         xPathTeile = Nothing
-        row = Nothing
+        Zeile = Nothing
     End Sub
-
-    'Private Function Telefontyp(ByVal Nebenstelle As Integer) As String
-    '    Select Case Nebenstelle
-    '        Case 1 To 3
-    '            Return "FON" & Nebenstelle
-    '        Case 5
-    '            Return "Fax"
-    '        Case 50 To 59
-    '            Return "S0"
-    '        Case 60 To 65
-    '            Return "DECT"
-    '        Case 20 To 29
-    '            Return "IP"
-    '        Case 600 To 604
-    '            Return "AB"
-    '        Case Else
-    '            Return "?"
-    '    End Select
-    'End Function
 
     Private Function Speichern() As Boolean
         Speichern = True
@@ -451,39 +433,19 @@ Public Class formCfg
         C_XML.SpeichereXMLDatei()
     End Function
 #Region "Helfer"
-    Private Function GetTimeInterval(ByVal nSeks As Int32) As String
-        'http://www.vbarchiv.net/faq/date_sectotime.php
-        Dim h As Int32, m As Int32
-        h = nSeks \ 3600
-        nSeks = nSeks Mod 3600
-        m = nSeks \ 60
-        nSeks = nSeks Mod 60
-        Return Format(h, "00") & ":" & Format(m, "00") & ":" & Format(nSeks, "00")
-    End Function
-
-    Private Function AcceptOnlyNumeric(ByVal sTxt As String) As String
-        If sTxt = String.Empty Then Return String.Empty
-        If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then
-            Return Mid(sTxt, 1, Len(sTxt) - 1)
-        End If
-        Return sTxt
-    End Function
-
-
-    Sub CLBtelnrAusfüllen()
+    Sub CLBTelNrAusfüllen()
         Dim xPathTeile As New ArrayList
+        Dim TelNrString() As String
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
-
-            Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
+            TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
 
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
             TelNrString = (From x In TelNrString Where Not x Like "" Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
-
 
             For Each TelNr In TelNrString
                 Me.CLBTelNr.Items.Add(TelNr)
@@ -631,161 +593,156 @@ Public Class formCfg
 #End Region
 
 #Region "Änderungen"
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CBTelefonDatei.CheckedChanged
-        Me.PTelefonDatei.Enabled = Me.CBTelefonDatei.Checked
-        If Not Me.CBTelefonDatei.Checked Then
-            Me.TBTelefonDatei.Text = vbNullString
-        End If
-    End Sub
-
-    Private Sub CBRueckwaertssuche_Change(ByVal sender As Object, ByVal e As EventArgs) Handles CBRueckwaertssuche.CheckedChanged
-        ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
-        Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
-        Me.CBKErstellen.Checked = Me.CBRueckwaertssuche.Checked
-        Me.CBKErstellen.Enabled = Me.CBRueckwaertssuche.Checked
-        Me.CBRWSIndex.Enabled = Me.CBRueckwaertssuche.Checked
-        Me.CBRWSIndex.Checked = Me.CBRueckwaertssuche.Checked
-    End Sub
-
-    Private Sub CBCbCunterbinden_Change(ByVal sender As Object, ByVal e As EventArgs)
-        Me.CBCallByCall.Enabled = Not Me.CBCbCunterbinden.Checked
-        If Me.CBCbCunterbinden.Checked Then Me.CBCallByCall.Checked = False
-    End Sub
-
-    Private Sub TBLandesVW_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles TBLandesVW.Leave
-        If Me.TBLandesVW.Text = "0049" Then
-            Me.CBRueckwaertssuche.Enabled = True
-
-            Me.CBKErstellen.Enabled = True
-            Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
-        Else
-            Me.CBRueckwaertssuche.Checked = False
-            Me.CBRueckwaertssuche.Enabled = False
-
-            Me.CBKErstellen.Enabled = False
-            Me.CBKErstellen.Checked = False
-            Me.ComboBoxRWS.Enabled = False
-        End If
-    End Sub
-
-    Private Sub TBVorwahl_Change(ByVal sender As Object, ByVal e As EventArgs) Handles TBVorwahl.TextChanged
-        AcceptOnlyNumeric(TBVorwahl.Text)
-    End Sub
-
-    Private Sub TBEnblDauer_Change(ByVal sender As Object, ByVal e As EventArgs) Handles TBEnblDauer.TextChanged
-        AcceptOnlyNumeric(TBEnblDauer.Text)
-    End Sub
-
-    Private Sub TBAnrMonX_Change(ByVal sender As Object, ByVal e As EventArgs) Handles TBAnrMonX.TextChanged
-        AcceptOnlyNumeric(TBAnrMonX.Text)
-    End Sub
-
-    Private Sub TBAnrMonY_Change(ByVal sender As Object, ByVal e As EventArgs) Handles TBAnrMonY.TextChanged
-        AcceptOnlyNumeric(TBAnrMonY.Text)
-    End Sub
-
-    Private Sub CBAutoClose_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBAutoClose.CheckedChanged
-        Me.TBEnblDauer.Enabled = Me.CBAutoClose.Checked
-        Me.Label15.Enabled = Me.CBAutoClose.Checked
-    End Sub
-
-    Private Sub CBWKomplett_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBWKomplett.CheckedChanged
-        Me.CBWJournal.Checked = Me.CBWKomplett.Checked
-        Me.CBWOptionen.Checked = Me.CBWKomplett.Checked
-        Me.CBWWwdh.Checked = Me.CBWKomplett.Checked
-        Me.CBWRR.Checked = Me.CBWKomplett.Checked
-        Me.CBWStatistik.Checked = Me.CBWKomplett.Checked
-        Me.CBWletzterAnrufer.Checked = Me.CBWKomplett.Checked
-        Me.CBWTelefone.Checked = Me.CBWKomplett.Checked
-    End Sub
-
-    Private Sub CBJournal_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBJournal.CheckedChanged
-
-        If Not Me.CBJournal.Checked Then Me.CBJImport.Checked = False
-        Me.CBJImport.Enabled = Me.CBJournal.Checked
-#If OVer < 14 Then
-            If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
-            Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
-#End If
-    End Sub
-
-    Private Sub CBIndexAus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBIndexAus.CheckedChanged
-        Me.ButtonIndizierungStart.Enabled = Not Me.CBIndexAus.Checked
-    End Sub
-
-    Private Sub CLBTelNr_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLBTelNr.SelectedIndexChanged
-        Dim alle As Boolean = True
-        With Me.CLBTelNr
-            Select Case .SelectedIndex
-                Case 0
-                    For i = 1 To .Items.Count - 1
-                        .SetItemChecked(i, .GetItemChecked(0))
-                    Next
-                Case 1 To .Items.Count - 1
-                    For i = 1 To .Items.Count - 1
-                        If .GetItemChecked(i) = False Then
-                            alle = False
-                            Exit For
+    Private Sub ValueChanged(sender As Object, e As EventArgs) Handles CBTelefonDatei.CheckedChanged, _
+                                                                        CBRueckwaertssuche.CheckedChanged, _
+                                                                        CBCbCunterbinden.CheckedChanged, _
+                                                                        CBAutoClose.CheckedChanged, _
+                                                                        CBWKomplett.CheckedChanged, _
+                                                                        CBJournal.CheckedChanged, _
+                                                                        CBIndexAus.CheckedChanged, _
+                                                                        CBUseAnrMon.CheckedChanged, _
+                                                                        CBStoppUhrEinblenden.CheckedChanged, _
+                                                                        CBStoppUhrAusblenden.CheckedChanged, _
+                                                                        CBLogFile.CheckedChanged, _
+                                                                        TBLandesVW.Leave, _
+                                                                        TBVorwahl.TextChanged, _
+                                                                        TBEnblDauer.TextChanged, _
+                                                                        TBAnrMonX.TextChanged, _
+                                                                        TBAnrMonY.TextChanged, _
+                                                                        TBLandesVW.TextChanged, _
+                                                                        TBTelNrMaske.Leave, _
+                                                                        CLBTelNr.SelectedIndexChanged
+        Select Case sender.GetType().Name
+            Case "CheckBox"
+                Select Case CType(sender, CheckBox).Name
+                    Case "CBTelefonDatei"
+                        Me.PTelefonDatei.Enabled = Me.CBTelefonDatei.Checked
+                        If Not Me.CBTelefonDatei.Checked Then
+                            Me.TBTelefonDatei.Text = vbNullString
                         End If
-                    Next
-                    .SetItemChecked(0, alle)
-            End Select
-        End With
-    End Sub
+                    Case "CBRueckwaertssuche"
+                        ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
+                        Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
+                        Me.CBKErstellen.Checked = Me.CBRueckwaertssuche.Checked
+                        Me.CBKErstellen.Enabled = Me.CBRueckwaertssuche.Checked
+                        Me.CBRWSIndex.Enabled = Me.CBRueckwaertssuche.Checked
+                        Me.CBRWSIndex.Checked = Me.CBRueckwaertssuche.Checked
+                    Case "CBCbCunterbinden"
+                        Me.CBCallByCall.Enabled = Not Me.CBCbCunterbinden.Checked
+                        If Me.CBCbCunterbinden.Checked Then Me.CBCallByCall.Checked = False
+                    Case "CBAutoClose"
+                        Me.TBEnblDauer.Enabled = Me.CBAutoClose.Checked
+                        Me.LEnblDauer.Enabled = Me.CBAutoClose.Checked
+                    Case "CBWKomplett"
+                        Me.CBWJournal.Checked = Me.CBWKomplett.Checked
+                        Me.CBWOptionen.Checked = Me.CBWKomplett.Checked
+                        Me.CBWWwdh.Checked = Me.CBWKomplett.Checked
+                        Me.CBWRR.Checked = Me.CBWKomplett.Checked
+                        Me.CBWStatistik.Checked = Me.CBWKomplett.Checked
+                        Me.CBWletzterAnrufer.Checked = Me.CBWKomplett.Checked
+                        Me.CBWTelefone.Checked = Me.CBWKomplett.Checked
+                    Case "CBJournal"
+                        If Not Me.CBJournal.Checked Then Me.CBJImport.Checked = False
+                        Me.CBJImport.Enabled = Me.CBJournal.Checked
+#If OVer < 14 Then
+                If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
+                Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
+#End If
+                    Case "CBIndexAus"
+                        Me.ButtonIndizierungStart.Enabled = Not Me.CBIndexAus.Checked
+                    Case "CBUseAnrMon"
+                        Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
+                        Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
+                        Me.GroupBoxStoppUhr.Enabled = Me.CBUseAnrMon.Checked
 
-    Private Sub CBUseAnrMon_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBUseAnrMon.CheckedChanged
-        Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
-        Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
-        Me.GroupBoxStoppUhr.Enabled = Me.CBUseAnrMon.Checked
+                        If Not Me.CBUseAnrMon.Checked Then
+                            Me.CBStoppUhrEinblenden.Checked = False
+                            Me.CBStoppUhrAusblenden.Checked = False
+                        End If
+                    Case "CBStoppUhrEinblenden"
+                        Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
+                        If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
+                        Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
+                        Me.LabelStoppUhr.Enabled = Me.CBStoppUhrEinblenden.Checked
+                    Case "CBStoppUhrAusblenden"
+                        Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
+                    Case "CBLogFile"
+                        Me.GBLogging.Enabled = Me.CBLogFile.Checked
+                End Select
+            Case "TextBox"
+                Select Case CType(sender, TextBox).Name
+                    Case "TBLandesVW"
+                        If Me.TBLandesVW.Text = "0049" Then
+                            Me.CBRueckwaertssuche.Enabled = True
 
-        If Not Me.CBUseAnrMon.Checked Then
-            Me.CBStoppUhrEinblenden.Checked = False
-            Me.CBStoppUhrAusblenden.Checked = False
-        End If
+                            Me.CBKErstellen.Enabled = True
+                            Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
+                        Else
+                            Me.CBRueckwaertssuche.Checked = False
+                            Me.CBRueckwaertssuche.Enabled = False
 
+                            Me.CBKErstellen.Enabled = False
+                            Me.CBKErstellen.Checked = False
+                            Me.ComboBoxRWS.Enabled = False
+                        End If
+                    Case "TBVorwahl"
+                        C_Helfer.AcceptOnlyNumeric(Me.TBVorwahl.Text)
+                    Case "TBEnblDauer"
+                        C_Helfer.AcceptOnlyNumeric(Me.TBEnblDauer.Text)
+                    Case "TBAnrMonX"
+                        C_Helfer.AcceptOnlyNumeric(Me.TBAnrMonX.Text)
+                    Case "TBAnrMonY"
+                        C_Helfer.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
+                    Case "TBLandesVW"
+                        Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
+                    Case "TBTelNrMaske"
+                        PrüfeMaske()
+                End Select
+            Case "CheckedListBox"
+                Select Case CType(sender, CheckedListBox).Name
+                    Case "CLBTelNr"
+                        Dim alle As Boolean = True
+                        With Me.CLBTelNr
+                            Select Case .SelectedIndex
+                                Case 0
+                                    For i = 1 To .Items.Count - 1
+                                        .SetItemChecked(i, .GetItemChecked(0))
+                                    Next
+                                Case 1 To .Items.Count - 1
+                                    For i = 1 To .Items.Count - 1
+                                        If .GetItemChecked(i) = False Then
+                                            alle = False
+                                            Exit For
+                                        End If
+                                    Next
+                                    .SetItemChecked(0, alle)
+                            End Select
+                        End With
+                End Select
+        End Select
     End Sub
 
     Private Sub TelList_CellMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles TelList.CellMouseUp
-        If TypeOf TelList.CurrentCell Is Windows.Forms.DataGridViewCheckBoxCell Then
-            TelList.EndEdit()
-            If Not TelList.CurrentCell.Value Is Nothing Then
-                Dim cellVal As Boolean = DirectCast(TelList.CurrentCell.Value, Boolean)
+        ' Sichersellen, dass nur ein Haken gesetzt ist.
+        If TypeOf Me.TelList.CurrentCell Is Windows.Forms.DataGridViewCheckBoxCell Then
+            Me.TelList.EndEdit()
+            If Not Me.TelList.CurrentCell.Value Is Nothing Then
+                Dim cellVal As Boolean = DirectCast(Me.TelList.CurrentCell.Value, Boolean)
                 If cellVal Then
-                    If Not TelList.CurrentCell Is TelList.Rows(TelList.Rows.Count - 1).Cells(0) Then
+                    If Not Me.TelList.CurrentCell Is Me.TelList.Rows(Me.TelList.Rows.Count - 1).Cells(0) Then
                         For i = 0 To TelList.Rows.Count - 1
-                            TelList.Rows(i).Cells(0).Value = False
+                            Me.TelList.Rows(i).Cells(0).Value = False
                         Next
-                        If Not TelList.Rows(TelList.CurrentCell.RowIndex).Cells(3).Value Is "AB" Then TelList.CurrentCell.Value = cellVal
+                        If Not (Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "TAM" Or _
+                             Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "FAX") Then Me.TelList.CurrentCell.Value = cellVal
                     Else
-                        TelList.CurrentCell.Value = False
+                        Me.TelList.CurrentCell.Value = False
                     End If
                 End If
             End If
         End If
     End Sub
 
-    Private Sub TBLandesVW_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TBLandesVW.TextChanged
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
-    End Sub
-
-    Private Sub CBStoppUhrEinblenden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBStoppUhrEinblenden.CheckedChanged
-        Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
-        If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
-        Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
-        Me.LabelStoppUhr.Enabled = Me.CBStoppUhrEinblenden.Checked
-    End Sub
-
-    Private Sub CBStoppUhrAusblenden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBStoppUhrAusblenden.CheckedChanged
-        Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
-    End Sub
-
-    Private Sub TBTelNrMaske_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles TBTelNrMaske.Leave
-        PrüfeMaske()
-    End Sub
-
-    Private Sub CBLogFile_CheckedChanged(sender As Object, e As EventArgs) Handles CBLogFile.CheckedChanged
-        Me.GBLogging.Enabled = Me.CBLogFile.Checked
-    End Sub
 #End Region
 
     Function PrüfeMaske() As Boolean
@@ -802,38 +759,6 @@ Public Class formCfg
         End If
         Return True
     End Function
-
-    'Function NSN(ByVal Nebenstelle As String, ByVal MSN As String) As Integer
-    '    NSN = -1
-    '    Dim xPathTeile As New ArrayList
-    '    With xPathTeile
-    '        .Add("Telefone")
-    '        .Add("Telefone")
-    '        .Add("*")
-    '        .Add("Telefon")
-    '        If Nebenstelle = "Fax (intern/PC)" Then
-    '            NSN = 5
-    '        Else
-    '            Select Case Nebenstelle
-    '                Case vbNullString
-    '                    .Add("[not(@Dialport > 599) and TelNr = """ & MSN & """ or TelNr = """ & C_Helfer.OrtsVorwahlEntfernen(MSN, Me.TBVorwahl.Text) & """]")
-    '                Case Else
-    '                    .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
-    '            End Select
-    '        End If
-    '        .Add("@Dialport")
-    '        NSN = CInt(C_XML.Read(xPathTeile, "-1"))
-    '    End With
-
-    '    If Not NSN = -1 Then
-    '        Select Case NSN
-    '            Case 0 To 3
-    '                NSN -= 1
-    '            Case 60 To 69 'DECT
-    '                NSN -= 50
-    '        End Select
-    '    End If
-    'End Function
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -910,9 +835,9 @@ Public Class formCfg
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
         AddLine("BackgroundWorker ist fertig.")
-        CLBtelnrAusfüllen()
-        SetStatistik()
-        Statistik()
+        CLBTelNrAusfüllen()
+        SetTelNrListe()
+        FillTelListe()
         DelBTelefonliste()
         If CBool(e.Result) Then C_Helfer.FBDB_MsgBox("Das erneute Einlesen der Telefone ist abgeschlossen.", MsgBoxStyle.Information, "ButtonTelefonliste")
 
@@ -941,13 +866,13 @@ Public Class formCfg
         End If
     End Function
 
-    Public Function SetStatistik() As Boolean
-        SetStatistik = False
+    Public Function SetTelNrListe() As Boolean
+        SetTelNrListe = False
         If Me.InvokeRequired Then
-            Dim D As New DelgSetLine(AddressOf CLBtelnrAusfüllen)
+            Dim D As New DelgSetLine(AddressOf CLBTelNrAusfüllen)
             Invoke(D)
         Else
-            CLBtelnrAusfüllen()
+            CLBTelNrAusfüllen()
         End If
     End Function
 

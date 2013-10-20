@@ -73,7 +73,7 @@ Public Class MyXML
     End Function
 
     Function ReadElementName(ByVal ZielKnoten As ArrayList, ByVal sDefault As String) As String
-        ReadElementName = vbNullString
+        ReadElementName = sDefault
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
         xPath = CreateXPath(ZielKnoten)

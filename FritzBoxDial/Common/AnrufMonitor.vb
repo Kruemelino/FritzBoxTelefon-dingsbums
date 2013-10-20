@@ -726,37 +726,8 @@ Public Class AnrufMonitor
                 End With
 
                 If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-                    ' Journaleintrag schreiben
 
-                    If Dauer = 0 Then
-                        Body = "Tel.-Nr.: " & TelNr & vbCrLf & "Status: nicht angenommen" & vbCrLf & vbCrLf
-                        If Left(Typ, 3) = "Ein" Then
-                            Typ = "Verpasster Anruf von"
-                            TempStat = CInt(C_XML.Read("Statistik", "Verpasst", "0"))
-                            C_XML.Write("Statistik", "Verpasst", CStr(TempStat + 1), False)
-                        Else
-                            Typ = "Nicht erfolgreicher Anruf zu"
-                            TempStat = CInt(C_XML.Read("Statistik", "Nichterfolgreich", "0"))
-                            C_XML.Write("Statistik", "Nichterfolgreich", CStr(TempStat + 1), False)
-                        End If
-                    Else
-                        Body = "Tel.-Nr.: " & TelNr & vbCrLf & "Status: angenommen" & vbCrLf & vbCrLf
-                    End If
-                    If Dauer > 0 Then
-                        If Mid(Typ, 1, 3) = "Ein" Then
-                            TempStat = CInt(C_XML.Read("Statistik", "eingehend", "0"))
-                            C_XML.Write("Statistik", "eingehend", CStr(TempStat + Dauer), False)
-                            TempStat = CInt(C_XML.Read("Statistik", JMSN & "ein", "0"))
-                            C_XML.Write("Statistik", JMSN & "ein", CStr(TempStat + Dauer), False)
-                        Else
-                            TempStat = CInt(C_XML.Read("Statistik", "ausgehend", "0"))
-                            C_XML.Write("Statistik", "ausgehend", CStr(TempStat + Dauer), False)
-                            TempStat = CInt(C_XML.Read("Statistik", JMSN & "aus", "0"))
-                            C_XML.Write("Statistik", JMSN & "aus", CStr(TempStat + Dauer), False)
-                        End If
-                    End If
-
-                    If Dauer > 0 And Dauer <= 30 Then Dauer = 31
+                    Body = "Tel.-Nr.: " & TelNr & vbCrLf & "Status: " & CStr(IIf(Dauer = 0, "nicht ", vbNullString)) & "angenommen" & vbCrLf & vbCrLf
 
                     If Left(KontaktID, 2) = "-1" Then
                         ' kein Kontakt vorhanden
@@ -815,18 +786,50 @@ Public Class AnrufMonitor
                         .Add("Telefone")
                         .Add("*")
                         .Add("Telefon[@Dialport = """ & NSN & """]")
-                        .Add("Telname")
+                        .Add("TelName")
                     End With
                     TelName = C_XML.Read(xPathTeile, "")
-
+                    ' Journaleintrag schreiben
                     C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, vbNullString, " (" & TelName & ")")),
-                                              Duration:=CInt(Dauer / 60), _
+                                              Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
                                               Body:=Body, _
                                               Start:=CDate(Zeit), _
                                               Companies:=Firma, _
                                               Categories:=TelName & "; FritzBox Anrufmonitor; Telefonanrufe", _
                                               KontaktID:=KontaktID,
                                               StoreID:=StoreID)
+
+                    If Dauer = 0 Then
+                        If Left(Typ, 3) = "Ein" Then
+                            Typ = "Verpasster Anruf von"
+                            TempStat = CInt(C_XML.Read("Statistik", "Verpasst", "0"))
+                            C_XML.Write("Statistik", "Verpasst", CStr(TempStat + 1), False)
+                        Else
+                            Typ = "Nicht erfolgreicher Anruf zu"
+                            TempStat = CInt(C_XML.Read("Statistik", "Nichterfolgreich", "0"))
+                            C_XML.Write("Statistik", "Nichterfolgreich", CStr(TempStat + 1), False)
+                        End If
+                    End If
+                    If Dauer > 0 Then
+                        With xPathTeile
+                            .Item(.Count - 1) = IIf(Mid(Typ, 1, 3) = "Ein", "Eingehend", "Ausgehend")
+                        End With
+                        With C_XML
+                            .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer), False)
+                        End With
+
+                        'If Mid(Typ, 1, 3) = "Ein" Then
+                        '    TempStat = CInt(C_XML.Read("Statistik", "eingehend", "0"))
+                        '    C_XML.Write("Statistik", "eingehend", CStr(TempStat + Dauer), False)
+                        '    TempStat = CInt(C_XML.Read("Statistik", JMSN & "ein", "0"))
+                        '    C_XML.Write("Statistik", JMSN & "ein", CStr(TempStat + Dauer), False)
+                        'Else
+                        '    TempStat = CInt(C_XML.Read("Statistik", "ausgehend", "0"))
+                        '    C_XML.Write("Statistik", "ausgehend", CStr(TempStat + Dauer), False)
+                        '    TempStat = CInt(C_XML.Read("Statistik", JMSN & "aus", "0"))
+                        '    C_XML.Write("Statistik", JMSN & "aus", CStr(TempStat + Dauer), False)
+                        'End If
+                    End If
 
                     TempStat = CInt(C_XML.Read("Statistik", "Journal", "0"))
                     C_XML.Write("Statistik", "Journal", CStr(TempStat + 1), True)

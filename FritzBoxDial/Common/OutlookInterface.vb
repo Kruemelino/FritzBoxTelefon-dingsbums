@@ -21,7 +21,7 @@ Public Class OutlookInterface
     End Function
 
     Friend Function ErstelleJournalItem(ByVal Subject As String, _
-                                   ByVal Duration As Integer, _
+                                   ByVal Duration As Double, _
                                    ByVal Body As String, _
                                    ByVal Start As Date, _
                                    ByVal Companies As String, _
@@ -41,7 +41,7 @@ Public Class OutlookInterface
             If Not olJournal Is Nothing Then
                 With olJournal
                     .Subject = Subject
-                    .Duration = Duration
+                    .Duration = CInt(Duration)
                     .Body = Body
                     .Start = Start
                     .Companies = Companies
