@@ -219,6 +219,7 @@ Public Class formCfg
 
         If Not Nebenstellen(0) = "-1" Then
             With Me.TelList
+                .Rows.Clear()
                 j = 0
                 For Each Nebenstelle As String In Nebenstellen
                     j += 1
