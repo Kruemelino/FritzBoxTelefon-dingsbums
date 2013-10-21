@@ -555,7 +555,7 @@
         AttributeNames = Nothing
         AttributeValues = Nothing
 #If OVer < 14 Then
-        FillPopupItems()
+        FillPopupItems("VIPListe")
 #Else
         RefreshRibbon()
 #End If
@@ -600,7 +600,7 @@
         End With
 
 #If OVer < 14 Then
-        FillPopupItems()
+        FillPopupItems("VIPListe")
 #Else
         RefreshRibbon()
 #End If
@@ -739,7 +739,7 @@
         ' XMLListBaseNode erlaubt: CallList, RingList
 
 
-        Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandbar.FindControl(Office.MsoControlType.msoControlPopup, , btnPopup, , False), Office.CommandBarPopup)
+        Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , XMLListBaseNode, , False), Office.CommandBarPopup)
         Dim index As Integer
         Dim Anrufer As String
         Dim TelNr As String
@@ -794,7 +794,7 @@
                 C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not TelNr = "-1" Then
+                If Not Anrufer = "-1" Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
@@ -965,7 +965,7 @@
         Catch ex As Exception
             HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
-        FillPopupItems()
+        FillPopupItems("VIPListe")
         i += 1
         ePopVIP.Visible = CBool(C_XML.Read("Optionen", "CBSymbVIP", "True"))
 

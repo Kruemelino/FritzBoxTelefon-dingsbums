@@ -119,7 +119,7 @@ Public Class AnrufMonitor
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
             If AnrMonQuit() Then
 #If OVer < 14 Then
-                GUI.SetAnrMonButton(False)
+                C_GUI.SetAnrMonButton(False)
 #End If
             End If
             Return False
@@ -127,7 +127,7 @@ Public Class AnrufMonitor
             ' Timer starten, TCP/IP-Verbindung öffnen
             If AnrMonStart(True) Then
 #If OVer < 14 Then
-                GUI.SetAnrMonButton(True)
+                C_GUI.SetAnrMonButton(True)
 #End If
             End If
             Return True
@@ -326,9 +326,8 @@ Public Class AnrufMonitor
 
         If CBool(e.Result) Then
 #If OVer < 14 Then
-            GUI.SetAnrMonButton(True)
-#End If
-#If OVer >= 14 Then
+            C_GUI.SetAnrMonButton(True)
+#Else
             C_GUI.RefreshRibbon()
 #End If
             'hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Anrufmonitor gestartet")
@@ -476,7 +475,7 @@ Public Class AnrufMonitor
                 SpeichereLetzerAnrufer(CStr(ID), LetzterAnrufer)
                 UpdateList("RingList", Anrufer, TelNr, FBStatus(0), StoreID, KontaktID)
 #If OVer < 14 Then
-                If C_XML.Read("Optionen", "CBSymbAnrListe", "False") = "True" Then GUI.FillPopupItems("AnrListe")
+                If C_XML.Read("Optionen", "CBSymbAnrListe", "False") = "True" Then C_GUI.FillPopupItems("AnrListe")
 #End If
             End If
             'StoppUhr
@@ -613,7 +612,7 @@ Public Class AnrufMonitor
             ' Daten im Menü für Wahlwiederholung speichern
             UpdateList("CallList", Anrufer, TelNr, FBStatus(0), StoreID, KontaktID)
 #If OVer < 14 Then
-            If C_XML.Read( "Optionen", "CBSymbWwdh", "False") = "True" Then GUI.FillPopupItems("Wwdh")
+            If C_XML.Read("Optionen", "CBSymbWwdh", "False") = "True" Then C_GUI.FillPopupItems("Wwdh")
 #End If
 
             ' AnrMonReStart()
@@ -790,15 +789,14 @@ Public Class AnrufMonitor
                     End With
                     TelName = C_XML.Read(xPathTeile, "")
                     ' Journaleintrag schreiben
-                    C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, vbNullString, " (" & TelName & ")")),
+                    C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, vbNullString, " (" & TelName & ")")), _
                                               Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
                                               Body:=Body, _
                                               Start:=CDate(Zeit), _
                                               Companies:=Firma, _
                                               Categories:=TelName & "; FritzBox Anrufmonitor; Telefonanrufe", _
-                                              KontaktID:=KontaktID,
+                                              KontaktID:=KontaktID, _
                                               StoreID:=StoreID)
-
                     If Dauer = 0 Then
                         If Left(Typ, 3) = "Ein" Then
                             Typ = "Verpasster Anruf von"
@@ -1133,7 +1131,10 @@ Public Class AnrufMonitor
         NodeValues = Nothing
         AttributeNames = Nothing
         AttributeValues = Nothing
+#If OVer > 11 Then
         C_GUI.RefreshRibbon()
+#End If
+
     End Sub
 #End Region
 

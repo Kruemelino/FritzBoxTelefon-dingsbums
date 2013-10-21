@@ -69,7 +69,6 @@
   <ItemGroup>
     <Compile Include="Events.vb" />
     <Compile Include="Helfer.vb" />
-    <Compile Include="JournalXML.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

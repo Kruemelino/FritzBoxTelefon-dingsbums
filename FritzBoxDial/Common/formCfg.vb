@@ -291,29 +291,31 @@ Public Class formCfg
             Next
             CheckTelNr = Me.CLBTelNr.CheckedItems
         End If
+        If Me.CLBTelNr.Items.Count > 1 Then
 
-        Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = vbNullString
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Nummern")
-            .Add("*")
 
-            For i = 1 To Me.CLBTelNr.Items.Count - 1
-                tmpTeile += ". = " & """" & Me.CLBTelNr.Items(i).ToString & """" & " or "
-            Next
-            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
-            .Add("[" & tmpTeile & "]")
-            C_XML.WriteAttribute(xPathTeile, "Checked", "0")
-            tmpTeile = vbNullString
-            For i = 0 To CheckTelNr.Count - 1
-                tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
-            Next
-            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
-            .Item(.Count - 1) = "[" & tmpTeile & "]"
-            C_XML.WriteAttribute(xPathTeile, "Checked", "1")
-        End With
+            Dim xPathTeile As New ArrayList
+            Dim tmpTeile As String = vbNullString
+            With xPathTeile
+                .Add("Telefone")
+                .Add("Nummern")
+                .Add("*")
 
+                For i = 1 To Me.CLBTelNr.Items.Count - 1
+                    tmpTeile += ". = " & """" & Me.CLBTelNr.Items(i).ToString & """" & " or "
+                Next
+                tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+                .Add("[" & tmpTeile & "]")
+                C_XML.WriteAttribute(xPathTeile, "Checked", "0")
+                tmpTeile = vbNullString
+                For i = 0 To CheckTelNr.Count - 1
+                    tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
+                Next
+                tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+                .Item(.Count - 1) = "[" & tmpTeile & "]"
+                C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+            End With
+        End If
         ' Sichert die Einstellungen und schlieﬂt das Fenster
         If (CInt(Me.TBEnblDauer.Text) < 4) Then Me.TBEnblDauer.Text = "4"
         C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text, False)

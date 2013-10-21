@@ -25,7 +25,7 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Public WithEvents iPopRWS As Office.CommandBarPopup
     Public WithEvents iBtnWwh As Office.CommandBarButton
-    Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
+    'Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
     Public WithEvents iBtnRws11880 As Office.CommandBarButton
     Public WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Public WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -38,7 +38,6 @@ Public Class ThisAddIn
 
     Public WithEvents ContactSaved As Outlook.ContactItem
     Public WithEvents oInsps As Outlook.Inspectors
-    'Public Shared ini As InI ' Reader/Writer initialisieren
     Public Shared XML As MyXML ' Reader/Writer initialisieren
     Public Shared fBox As FritzBox  'Deklarieren der Klasse
     Public Shared AnrMon As AnrufMonitor
@@ -49,6 +48,8 @@ Public Class ThisAddIn
     Public Shared hf As Helfer
     Public Shared KontaktFunktionen As Contacts
     Public Shared Phoner As PhonerInterface
+    Public Shared GUI As GraphicalUserInterface
+    Public Shared OlI As OutlookInterface
 
     Public Shared Dateipfad As String
 #If OVer < 14 Then
@@ -59,12 +60,11 @@ Public Class ThisAddIn
 
     Private Initialisierung As formInit
 
-    Public Const Version As String = "3.5.1"
+    Public Const Version As String = "3.5.2"
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
-    Public Shared GUI As GraphicalUserInterface
-    Public Shared OlI As OutlookInterface
+
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -118,6 +118,7 @@ Public Class ThisAddIn
 
     Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
         AnrMon.AnrMonQuit()
+        XML.SpeichereXMLDatei()
         With hf
             .NAR(oApp)
 #If OVer < 14 Then
@@ -132,7 +133,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRwsGoYellow, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If XML.Read("Optionen", "CBKHO", "True") = "True" Then
@@ -195,9 +196,9 @@ Public Class ThisAddIn
         GUI.KontaktErstellen()
     End Sub
 
-    Private Sub iBtnRwsGoYellow_Click1(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnRwsGoYellow.Click
-        GUI.RWSGoYellow(oApp.ActiveInspector)
-    End Sub
+    'Private Sub iBtnRwsGoYellow_Click1(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnRwsGoYellow.Click
+    '    GUI.RWSGoYellow(oApp.ActiveInspector)
+    'End Sub
 
     Private Sub iBtnRws11880_Click1(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnRws11880.Click
         GUI.RWS11880(oApp.ActiveInspector)

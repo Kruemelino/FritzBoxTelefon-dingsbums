@@ -236,10 +236,10 @@ Public Class MyXML
             Dim xPath As String
             Dim tmpXMLNode As XmlNode
             With XMLDoc
-                If Not AttributeValue = vbNullString Then
-                    alxPathTeile.Add("[@ID=""" & AttributeValue & """]")
-                End If
+                ' BUG: 
+                If Not AttributeValue = vbNullString Then alxPathTeile.Add("[@ID=""" & AttributeValue & """]")
                 xPath = CreateXPath(alxPathTeile)
+                If Not AttributeValue = vbNullString Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
                 tmpXMLNode = .SelectSingleNode(xPath)
                 If Not tmpXMLNode Is Nothing Then
                     With tmpXMLNode

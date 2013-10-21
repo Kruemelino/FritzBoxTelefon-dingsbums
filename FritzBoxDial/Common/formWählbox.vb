@@ -414,7 +414,7 @@ Public Class formWählbox
                 C_XML.Write("Wwdh", "WwdhEintrag" & index, Join(xPathTeile, ";"), False)
                 C_XML.Write("Wwdh", "Index", CStr((index + 1) Mod 10), True)
 #If OVer < 14 Then
-                If C_XML.Read( "Optionen", "CBSymbWwdh", "False") = "True" Then GUI.FillPopupItems("Wwdh")
+                If C_XML.Read("Optionen", "CBSymbWwdh", "False") = "True" Then C_GUI.FillPopupItems("Wwdh")
 #End If
             End If
         End If
