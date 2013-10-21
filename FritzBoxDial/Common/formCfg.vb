@@ -226,15 +226,16 @@ Public Class formCfg
                     xPathTeile.Clear()
 
                     With xPathTeile
-                        .Add("Telefone")
+
+                        ' Zählvariable.Add("Telefone")
                         .Add("Telefone")
                         .Add("*")
                         .Add("Telefon")
                         .Add("[TelName = """ & Nebenstelle & """]")
-                        .Add("@Dialport")
-
-                        Zeile.Add(False)
-                        Zeile.Add(CStr(j)) ' Zählvariable
+                        .Add("@Standard")
+                        Zeile.Add(CBool(C_XML.Read(xPathTeile, "False")))
+                        Zeile.Add(CStr(j))
+                        .Item(.Count - 1) = "@Dialport"
                         Zeile.Add(C_XML.Read(xPathTeile, "-1;")) 'Nebenstelle
                         .RemoveAt(.Count - 1)
                         Zeile.Add(C_XML.ReadElementName(xPathTeile, "-1;")) 'Telefontyp
@@ -392,13 +393,13 @@ Public Class formCfg
 #If OVer < 14 Then
         GUI.SetVisibleButtons()
 #End If
-        For i = 0 To TelList.Rows.Count - 1
-            If CBool(TelList.Rows(i).Cells(0).Value) Then
-                C_XML.Write("Telefone", "CBStandardTelefon", CStr(TelList.Rows(i).Cells(2).Value), False)
-                Exit Function
-            End If
-        Next
-        C_XML.Write("Telefone", "CBStandardTelefon", CStr(-1), False)
+        '' '' ''For i = 0 To TelList.Rows.Count - 1
+        '' '' ''    If CBool(TelList.Rows(i).Cells(0).Value) Then
+        '' '' ''        C_XML.Write("Telefone", "CBStandardTelefon", CStr(TelList.Rows(i).Cells(2).Value), False)
+        '' '' ''        Exit Function
+        '' '' ''    End If
+        '' '' ''Next
+        '' '' ''C_XML.Write("Telefone", "CBStandardTelefon", CStr(-1), False)
         ' Phoner
         Dim TelName() As String
         Dim PhonerTelNameIndex As String = "0"
