@@ -226,12 +226,10 @@ Public Class formCfg
                     xPathTeile.Clear()
 
                     With xPathTeile
-
-                        ' Z‰hlvariable.Add("Telefone")
+                        .Add("Telefone")
                         .Add("Telefone")
                         .Add("*")
-                        .Add("Telefon")
-                        .Add("[TelName = """ & Nebenstelle & """]")
+                        .Add("Telefon[TelName = """ & Nebenstelle & """]")
                         .Add("@Standard")
                         Zeile.Add(CBool(C_XML.Read(xPathTeile, "False")))
                         Zeile.Add(CStr(j))
@@ -283,8 +281,8 @@ Public Class formCfg
 
     Private Function Speichern() As Boolean
         Speichern = True
-
-        'If Not Me.CBPhonerKeineFB.Checked Then
+        Dim xPathTeile As New ArrayList
+        Dim tmpTeile As String = vbNullString
         Dim CheckTelNr As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
         If CheckTelNr.Count = 0 Then
             For i = 0 To Me.CLBTelNr.Items.Count - 1
@@ -293,15 +291,10 @@ Public Class formCfg
             CheckTelNr = Me.CLBTelNr.CheckedItems
         End If
         If Me.CLBTelNr.Items.Count > 1 Then
-
-
-            Dim xPathTeile As New ArrayList
-            Dim tmpTeile As String = vbNullString
             With xPathTeile
                 .Add("Telefone")
                 .Add("Nummern")
                 .Add("*")
-
                 For i = 1 To Me.CLBTelNr.Items.Count - 1
                     tmpTeile += ". = " & """" & Me.CLBTelNr.Items(i).ToString & """" & " or "
                 Next
@@ -317,6 +310,7 @@ Public Class formCfg
                 C_XML.WriteAttribute(xPathTeile, "Checked", "1")
             End With
         End If
+
         ' Sichert die Einstellungen und schlieﬂt das Fenster
         If (CInt(Me.TBEnblDauer.Text) < 4) Then Me.TBEnblDauer.Text = "4"
         C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text, False)
@@ -393,13 +387,18 @@ Public Class formCfg
 #If OVer < 14 Then
         GUI.SetVisibleButtons()
 #End If
-        '' '' ''For i = 0 To TelList.Rows.Count - 1
-        '' '' ''    If CBool(TelList.Rows(i).Cells(0).Value) Then
-        '' '' ''        C_XML.Write("Telefone", "CBStandardTelefon", CStr(TelList.Rows(i).Cells(2).Value), False)
-        '' '' ''        Exit Function
-        '' '' ''    End If
-        '' '' ''Next
-        '' '' ''C_XML.Write("Telefone", "CBStandardTelefon", CStr(-1), False)
+        With xPathTeile
+            .Clear()
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add(vbNullString)
+            For i = 0 To TelList.Rows.Count - 2
+                .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
+                C_XML.WriteAttribute(xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
+            Next
+        End With
         ' Phoner
         Dim TelName() As String
         Dim PhonerTelNameIndex As String = "0"

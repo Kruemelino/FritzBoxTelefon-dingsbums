@@ -104,18 +104,15 @@ Public Class formWählbox
                 DialPort = C_XML.Read(xPathTeile, "-1")
                 tmpStr = Nebenstelle & CStr(IIf(ZeigeDialPort, " (" & DialPort & ")", vbNullString))
                 Me.ComboBoxFon.Items.Add(tmpStr)
+                .Item(.Count - 1) = "@Standard"
+                If CBool(C_XML.Read(xPathTeile, "False")) Then selIndex = Me.ComboBoxFon.Items.Count - 1
             Next
         End With
         xPathTeile = Nothing
+        Me.ComboBoxFon.SelectedIndex = selIndex
+
         BWLogin.RunWorkerAsync()
         'Falls Telefone geändert haben
-        If selIndex >= Me.ComboBoxFon.Items.Count Then
-            selIndex = Me.ComboBoxFon.Items.Count - 1
-            Me.ComboBoxFon.ForeColor = Drawing.Color.Red
-            Me.ListTel.Enabled = True
-            Me.ComboBoxFon.Enabled = True
-            WählboxBereit = True
-        End If
 
         ' Phoner
         If C_XML.Read("Phoner", "CBPhoner", "False") = "True" Then
@@ -126,8 +123,10 @@ Public Class formWählbox
             End If
         End If
         ' End Phoner 
+        Me.ListTel.Enabled = True
+        Me.ComboBoxFon.Enabled = True
+        WählboxBereit = True
 
-        Me.ComboBoxFon.SelectedIndex = selIndex
         Me.checkCBC.Enabled = CBool(IIf(C_XML.Read("Optionen", "CBCbCunterbinden", "False") = "False", True, False))
         Me.checkNetz.Checked = CBool(IIf(C_XML.Read("Optionen", "Festnetz", "False") = "True", True, False))
         Me.checkCLIR.Checked = CBool(IIf(C_XML.Read("Optionen", "CLIR", "False") = "True", True, False))
