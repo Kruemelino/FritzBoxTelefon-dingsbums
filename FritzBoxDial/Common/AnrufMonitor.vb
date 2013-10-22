@@ -748,12 +748,7 @@ Public Class AnrufMonitor
 
                     With xPathTeile
                         .Clear()
-<<<<<<< HEAD
-                        .Add("Telefone/Telefone/*/Telefon[@Dialport = """ & NSN & """]")
-                        .Add("TelName")
-=======
                         .Add("Telefone/Telefone/*/Telefon[@Dialport = """ & NSN & """]/TelName")
->>>>>>> 370a7b9c280ee5fb2d9b759c55f4950db9e1cb94
                     End With
                     TelName = C_XML.Read(xPathTeile, "")
                     ' Journaleintrag schreiben
