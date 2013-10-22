@@ -89,10 +89,7 @@ Public Class formWählbox
 
         Dim xPathTeile As New ArrayList
         With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
+            .Add("Telefone/Telefone/*/Telefon")
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1)]") ' Keine Anrufbeantworter, kein Fax
             .Add("TelName")
 
@@ -111,8 +108,7 @@ Public Class formWählbox
         xPathTeile = Nothing
         Me.ComboBoxFon.SelectedIndex = selIndex
 
-        BWLogin.RunWorkerAsync()
-        'Falls Telefone geändert haben
+        If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
 
         ' Phoner
         If C_XML.Read("Phoner", "CBPhoner", "False") = "True" Then
@@ -245,25 +241,18 @@ Public Class formWählbox
 
     Function GetDialport(ByVal Nebenstelle As String) As String
         GetDialport = "-1"
-        Dim tempint As Double
+        Dim tmpint As Double
         Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
-            .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
-            .Add("@Dialport")
-            tempint = CDbl(C_XML.Read(xPathTeile, "-1"))
-        End With
+        xPathTeile.Add("Telefone/Telefone/*/Telefon/[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]/@Dialport")
+        tmpint = CDbl(C_XML.Read(xPathTeile, "-1"))
 
-        If Not tempint = -1 Then
-            Select Case tempint
+        If Not tmpint = -1 Then
+            Select Case tmpint
                 Case 1 To 4
-                    tempint -= 1
+                    tmpint -= 1
             End Select
         End If
-        Return CStr(tempint)
+        Return CStr(tmpint)
     End Function
 #End Region
 
