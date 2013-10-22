@@ -216,14 +216,7 @@ Public Class AnrufMonitor
         If Not MSN = vbNullString Then
             If Not AnrMonPhoner Then
                 Dim xPathTeile As New ArrayList
-                With xPathTeile
-                    .Add("Telefone")
-                    .Add("Telefone")
-                    .Add("*")
-                    .Add("Telefon")
-                    .Add("[TelNr = """ & MSN & """ and not(@Dialport > 599)]") ' Keine Anrufbeantworter
-                    .Add("TelName")
-                End With
+                xPathTeile.Add("Telefone/Telefone/*/Telefon/[TelNr = """ & MSN & """ and not(@Dialport > 599)]/TelName")
                 TelefonName = Replace(C_XML.Read(xPathTeile, ""), ";", ", ")
                 xPathTeile = Nothing
             Else
@@ -358,13 +351,7 @@ Public Class AnrufMonitor
         Dim MSN As String = CStr(FBStatus.GetValue(4))
         ' Anruf nur anzeigen, wenn die MSN stimmt
         Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Nummern")
-            .Add("*")
-            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
-            .Add("@Checked")
-        End With
+        xPathTeile.Add("Telefone/Nummern/*/[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]/@Checked")
 
         If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             'If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
@@ -427,8 +414,7 @@ Public Class AnrufMonitor
                         If RWSIndex Then
                             With xPathTeile
                                 .Clear()
-                                .Add("CBRWSIndex")
-                                .Add("Eintrag[@ID=""" & TelNr & """]")
+                                .Add("CBRWSIndex/Eintrag[@ID=""" & TelNr & """]")
                             End With
                             vCard = C_XML.Read(xPathTeile, Nothing)
                         End If
@@ -522,13 +508,7 @@ Public Class AnrufMonitor
         End If
         ' Anruf nur bearbeiten, wenn die MSN oder VoIP-Nr stimmt
         Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Nummern")
-            .Add("*")
-            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
-            .Add("@Checked")
-        End With
+        xPathTeile.Add("Telefone/Nummern/*/[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]/@Checked")
 
         If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
@@ -567,8 +547,7 @@ Public Class AnrufMonitor
                         If RWSIndex Then
                             With xPathTeile
                                 .Clear()
-                                .Add("CBRWSIndex")
-                                .Add("Eintrag[@ID=""" & TelNr & """]")
+                                .Add("CBRWSIndex/Eintrag[@ID=""" & TelNr & """]")
                             End With
                             vCard = C_XML.Read(xPathTeile, Nothing)
                         End If
@@ -647,13 +626,7 @@ Public Class AnrufMonitor
             ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
             If Not MSN = Nothing Then
                 Dim xPathTeile As New ArrayList
-                With xPathTeile
-                    .Add("Telefone")
-                    .Add("Nummern")
-                    .Add("*")
-                    .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")) & """]")
-                    .Add("@Checked")
-                End With
+                xPathTeile.Add("Telefone/Nummern/*/[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")) & """]/@Checked")
 
                 If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
@@ -716,13 +689,7 @@ Public Class AnrufMonitor
             JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
             Dim JMSN As String = C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl)
             If Not MSN = Nothing Then
-                With xPathTeile
-                    .Add("Telefone")
-                    .Add("Nummern")
-                    .Add("*")
-                    .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")) & """]")
-                    .Add("@Checked")
-                End With
+                xPathTeile.Add("Telefone/Nummern/*/[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.Read("Optionen", "TBVorwahl", "")) & """]/@Checked")
 
                 If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
@@ -781,11 +748,7 @@ Public Class AnrufMonitor
 
                     With xPathTeile
                         .Clear()
-                        .Add("Telefone")
-                        .Add("Telefone")
-                        .Add("*")
-                        .Add("Telefon[@Dialport = """ & NSN & """]")
-                        .Add("TelName")
+                        .Add("Telefone/Telefone/*/Telefon[@Dialport = """ & NSN & """]/TelName")
                     End With
                     TelName = C_XML.Read(xPathTeile, "")
                     ' Journaleintrag schreiben
