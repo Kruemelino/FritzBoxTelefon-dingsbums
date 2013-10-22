@@ -178,25 +178,30 @@ Public Class formJournalimport
                             NSN = -1
                             If Not AnrTyp = "2" Then
                                 'Wird im Fall 2 nicht benötigt: Verpasster Anruf.
-
-                                If Nebenstelle = "Fax (intern/PC)" Then
-                                    NSN = 5
-                                Else
-                                    With xPathTeile
-                                        .Clear()
-                                        .Add("Telefone")
-                                        .Add("Telefone")
-                                        .Add("*")
-                                        .Add("Telefon") 'Select Case Nebenstelle
-                                        '    Case vbNullString
-                                        '        .Add("[TelNr = """ & MSN & """ or TelNr = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
-                                        '    Case Else
-                                        .Add("[TelName = """ & Nebenstelle & """]")
-                                        'End Select
-                                        .Add("@Dialport")
-                                        NSN = CInt(C_XML.Read(xPathTeile, "-1"))
-                                    End With
-                                End If
+                                Select Case Nebenstelle
+                                    Case "Durchwahl"
+                                        NSN = 3
+                                    Case "ISDN Gerät"
+                                        NSN = 4
+                                    Case "ISDN Gerät"
+                                        NSN = 5
+                                    Case "Data S0"
+                                        NSN = 36
+                                    Case "Data PC"
+                                        NSN = 37
+                                    Case Else
+                                        With xPathTeile
+                                            .Clear()
+                                            .Add("Telefone")
+                                            .Add("Telefone")
+                                            .Add("*")
+                                            .Add("Telefon") 'Select Case Nebenstelle
+                                            .Add("[TelName = """ & Nebenstelle & """]")
+                                            'End Select
+                                            .Add("@Dialport")
+                                            NSN = CInt(C_XML.Read(xPathTeile, "-1"))
+                                        End With
+                                End Select
                             End If
                             If Not NSN = -1 Then
                                 'If NSN < 4 Then NSN -= 1

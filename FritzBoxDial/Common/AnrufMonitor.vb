@@ -745,7 +745,28 @@ Public Class AnrufMonitor
                         Case 10 To 19 ' DECT
                             NSN += 50
                     End Select
-
+                    Select Case NSN
+                        Case 3
+                            TelName = "Durchwahl"
+                        Case 4
+                            TelName = "ISDN Gerät"
+                        Case 5
+                            TelName = "Fax (intern/PC)"
+                        Case 36
+                            TelName = "Data S0"
+                        Case 37
+                            TelName = "Data PC"
+                        Case Else
+                            With xPathTeile
+                                .Clear()
+                                .Add("Telefone")
+                                .Add("Telefone")
+                                .Add("*")
+                                .Add("Telefon[@Dialport = """ & NSN & """]")
+                                .Add("TelName")
+                            End With
+                            TelName = C_XML.Read(xPathTeile, "")
+                    End Select
                     With xPathTeile
                         .Clear()
                         .Add("Telefone/Telefone/*/Telefon[@Dialport = """ & NSN & """]/TelName")
@@ -778,18 +799,6 @@ Public Class AnrufMonitor
                         With C_XML
                             .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer), False)
                         End With
-
-                        'If Mid(Typ, 1, 3) = "Ein" Then
-                        '    TempStat = CInt(C_XML.Read("Statistik", "eingehend", "0"))
-                        '    C_XML.Write("Statistik", "eingehend", CStr(TempStat + Dauer), False)
-                        '    TempStat = CInt(C_XML.Read("Statistik", JMSN & "ein", "0"))
-                        '    C_XML.Write("Statistik", JMSN & "ein", CStr(TempStat + Dauer), False)
-                        'Else
-                        '    TempStat = CInt(C_XML.Read("Statistik", "ausgehend", "0"))
-                        '    C_XML.Write("Statistik", "ausgehend", CStr(TempStat + Dauer), False)
-                        '    TempStat = CInt(C_XML.Read("Statistik", JMSN & "aus", "0"))
-                        '    C_XML.Write("Statistik", JMSN & "aus", CStr(TempStat + Dauer), False)
-                        'End If
                     End If
 
                     TempStat = CInt(C_XML.Read("Statistik", "Journal", "0"))
