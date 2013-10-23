@@ -1137,7 +1137,7 @@ Public Class AnrufMonitor
         NodeValues = Nothing
         AttributeNames = Nothing
         AttributeValues = Nothing
-#If OVer > 11 Then
+#If OVer > 12 Then
         C_GUI.RefreshRibbon()
 #End If
 
