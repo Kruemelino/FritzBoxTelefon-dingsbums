@@ -884,10 +884,24 @@ Public Class FritzBox
         Dim NodeValues As New ArrayList
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
-        xPathTeile.Add("Telefone")
-        xPathTeile.Add("Nummern")
 
-        If Not bRausschreiben Then C_XML.Delete("Telefone")
+
+        If Not bRausschreiben Then
+            With xPathTeile
+                .Add("Telefone")
+                .Add("Telefone")
+                .Add("*")
+                .Add("Telefon")
+            End With
+            C_XML.Delete("Telefone")
+        End If
+
+        With xPathTeile
+            .Clear()
+            .Add("Telefone")
+            .Add("Nummern")
+        End With
+
         'SIP Nummern
         With C_hf
             xPathTeile.Add("SIP")

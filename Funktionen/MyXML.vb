@@ -318,6 +318,23 @@ Public Class MyXML
     End Sub
 #End Region
 
+#Region "Kopieren"
+    Sub CopyNode(ZielKnoten As ArrayList)
+        Dim xPath As String
+        Dim tmpXMLNode As XmlNode
+        Dim tmpClonedXMLNode As XmlNode
+        xPath = CreateXPath(ZielKnoten)
+        With XMLDoc
+            tmpXMLNode = .SelectSingleNode(xPath)
+            If Not tmpXMLNode Is Nothing Then
+                tmpClonedXMLNode = tmpXMLNode.Clone()
+                .AppendChild(tmpClonedXMLNode)
+            End If
+        End With
+        tmpXMLNode = Nothing
+    End Sub
+#End Region
+
 #Region "Stuff"
     Private Sub CleanUpXML()
         Dim tmpNode As XmlNode

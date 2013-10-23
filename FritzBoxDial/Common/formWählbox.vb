@@ -89,7 +89,10 @@ Public Class formWählbox
 
         Dim xPathTeile As New ArrayList
         With xPathTeile
-            .Add("Telefone/Telefone/*/Telefon")
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1)]") ' Keine Anrufbeantworter, kein Fax
             .Add("TelName")
 
@@ -230,9 +233,9 @@ Public Class formWählbox
         Return Replace(Trim(Strings.Join(tempArray, "")), " ,", ",", , , CompareMethod.Text)
     End Function
 
-    Sub AutoSchließen()
+    Sub AutoClose()
         If Me.InvokeRequired Then
-            Dim D As New SchließeForm(AddressOf AutoSchließen)
+            Dim D As New SchließeForm(AddressOf AutoClose)
             Me.Invoke(D)
         Else
             Me.Close()
@@ -243,8 +246,15 @@ Public Class formWählbox
         GetDialport = "-1"
         Dim tmpint As Double
         Dim xPathTeile As New ArrayList
-        xPathTeile.Add("Telefone/Telefone/*/Telefon/[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]/@Dialport")
-        tmpint = CDbl(C_XML.Read(xPathTeile, "-1"))
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
+            .Add("@Dialport")
+            tmpint = CDbl(C_XML.Read(xPathTeile, "-1"))
+        End With
 
         If Not tmpint = -1 Then
             Select Case tmpint
@@ -259,7 +269,7 @@ Public Class formWählbox
 #Region "Timer"
     Private Sub TimerSchließen_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerSchließen.Elapsed
         C_hf.KillTimer(TimerSchließen)
-        AutoSchließen()
+        AutoClose()
     End Sub
 #End Region
 

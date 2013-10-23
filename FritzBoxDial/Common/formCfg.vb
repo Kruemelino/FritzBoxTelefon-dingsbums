@@ -208,7 +208,14 @@ Public Class formCfg
         Dim j As Integer
         Dim tmpein(3) As Double
         Dim xPathTeile As New ArrayList
-        xPathTeile.Add("Telefone/Telefone/*/Telefon/TelName")
+
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("TelName")
+        End With
         Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
 
         If Not Nebenstellen(0) = "-1" Then
@@ -220,7 +227,11 @@ Public Class formCfg
                     xPathTeile.Clear()
 
                     With xPathTeile
-                        .Add("Telefone/Telefone/*/Telefon[TelName = """ & Nebenstelle & """]")
+                        .Add("Telefone")
+                        .Add("Telefone")
+                        .Add("*")
+                        .Add("Telefon")
+                        .Add("[TelName = """ & Nebenstelle & """]")
                         .Add("@Standard")
                         Zeile.Add(CBool(C_XML.Read(xPathTeile, "False")))
                         Zeile.Add(CStr(j))
@@ -284,7 +295,9 @@ Public Class formCfg
         End If
         If Me.CLBTelNr.Items.Count > 1 Then
             With xPathTeile
-                .Add("Telefone/Nummern/*")
+                .Add("Telefone")
+                .Add("Nummern")
+                .Add("*")
                 For i = 1 To Me.CLBTelNr.Items.Count - 1
                     tmpTeile += ". = " & """" & Me.CLBTelNr.Items(i).ToString & """" & " or "
                 Next
@@ -379,7 +392,10 @@ Public Class formCfg
 #End If
         With xPathTeile
             .Clear()
-            .Add("Telefone/Telefone/*/Telefon")
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
             .Add(vbNullString)
             For i = 0 To TelList.Rows.Count - 2
                 .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
@@ -427,7 +443,8 @@ Public Class formCfg
         Dim xPathTeile As New ArrayList
         Dim TelNrString() As String
         With xPathTeile
-            .Add("Telefone/Nummern")
+            .Add("Telefone")
+            .Add("Nummern")
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
             TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
