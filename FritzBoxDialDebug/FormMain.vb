@@ -29,9 +29,8 @@ Public Class FormMain
         ' Klasse für Helferfunktionen erstellen
         C_Helfer = New Helfer(DateiPfad, C_XML, C_Crypt)
 
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        'MsgBox("Hello World")
 
         Dim Passwort As String
 
@@ -79,7 +78,7 @@ Public Class FormMain
         End If
         C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, True)
 
-        C_FBox.bRausschreiben = True
+        C_FBox.bSpeichereDaten = False
         C_FBox.FritzBoxDaten()
 
     End Sub

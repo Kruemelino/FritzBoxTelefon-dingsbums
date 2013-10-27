@@ -29,7 +29,7 @@ Partial Class formInit
         Me.BFertigstellen = New System.Windows.Forms.Button()
         Me.LTelListe = New System.Windows.Forms.Label()
         Me.CLBTelNr = New System.Windows.Forms.CheckedListBox()
-        Me.BtELeINLESEN = New System.Windows.Forms.Button()
+        Me.BTelEinlesen = New System.Windows.Forms.Button()
         Me.LMessage = New System.Windows.Forms.Label()
         Me.BFBPW = New System.Windows.Forms.Button()
         Me.BFBAdr = New System.Windows.Forms.Button()
@@ -56,7 +56,7 @@ Partial Class formInit
         Me.PanelUserEingabe.Controls.Add(Me.BFertigstellen)
         Me.PanelUserEingabe.Controls.Add(Me.LTelListe)
         Me.PanelUserEingabe.Controls.Add(Me.CLBTelNr)
-        Me.PanelUserEingabe.Controls.Add(Me.BtELeINLESEN)
+        Me.PanelUserEingabe.Controls.Add(Me.BTelEinlesen)
         Me.PanelUserEingabe.Controls.Add(Me.LMessage)
         Me.PanelUserEingabe.Controls.Add(Me.BFBPW)
         Me.PanelUserEingabe.Controls.Add(Me.BFBAdr)
@@ -136,13 +136,13 @@ Partial Class formInit
         '
         'BtELeINLESEN
         '
-        Me.BtELeINLESEN.Enabled = False
-        Me.BtELeINLESEN.Location = New System.Drawing.Point(16, 190)
-        Me.BtELeINLESEN.Name = "BtELeINLESEN"
-        Me.BtELeINLESEN.Size = New System.Drawing.Size(343, 20)
-        Me.BtELeINLESEN.TabIndex = 30
-        Me.BtELeINLESEN.Text = "Telefone einlesen"
-        Me.BtELeINLESEN.UseVisualStyleBackColor = True
+        Me.BTelEinlesen.Enabled = False
+        Me.BTelEinlesen.Location = New System.Drawing.Point(16, 190)
+        Me.BTelEinlesen.Name = "BtELeINLESEN"
+        Me.BTelEinlesen.Size = New System.Drawing.Size(343, 20)
+        Me.BTelEinlesen.TabIndex = 30
+        Me.BTelEinlesen.Text = "Telefone einlesen"
+        Me.BTelEinlesen.UseVisualStyleBackColor = True
         '
         'LMessage
         '
@@ -307,7 +307,7 @@ Partial Class formInit
     Friend WithEvents BFBAdr As System.Windows.Forms.Button
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents LMessage As System.Windows.Forms.Label
-    Friend WithEvents BtELeINLESEN As System.Windows.Forms.Button
+    Friend WithEvents BTelEinlesen As System.Windows.Forms.Button
     Friend WithEvents CLBTelNr As System.Windows.Forms.CheckedListBox
     Friend WithEvents LTelListe As System.Windows.Forms.Label
     Friend WithEvents BFertigstellen As System.Windows.Forms.Button

@@ -803,7 +803,12 @@ Public Class AnrufMonitor
                     End Select
                     With xPathTeile
                         .Clear()
-                        .Add("Telefone/Telefone/*/Telefon[@Dialport = """ & NSN & """]/TelName")
+                        .Add("Telefone")
+                        .Add("Telefone")
+                        .Add("*")
+                        .Add("Telefon")
+                        .Add("[@Dialport = """ & NSN & """]")
+                        .Add("TelName")
                     End With
                     TelName = C_XML.Read(xPathTeile, "")
                     ' Journaleintrag schreiben

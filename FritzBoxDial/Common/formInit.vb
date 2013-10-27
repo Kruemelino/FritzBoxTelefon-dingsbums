@@ -13,8 +13,7 @@
     Private C_WählClient As Wählclient
     Private C_Phoner As PhonerInterface
 
-    Private WithEvents emc As New EventMulticaster
-
+    'Private WithEvents emc As New EventMulticaster
     'Strings
     Private DateiPfad As String
     Private SID As String
@@ -57,13 +56,13 @@
             UseAnrMon = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
-            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
+            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
 
             C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
 
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
-            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.GetFBAddr)
+            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.SFBAddr)
 
             C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
 
@@ -141,13 +140,13 @@
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt, emc)
+        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
         C_XML.Write("Optionen", "TBBenutzer", Me.TBFBUser.Text, False)
         C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"), True)
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyChange()
         SID = C_FBox.FBLogin(fw550)
-        If Not SID = C_FBox.sDefaultSID Then
+        If Not SID = C_FBox.SDefaultSID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False
@@ -167,17 +166,17 @@
         Me.BFBPW.Enabled = Not Me.TBFBPW.Text.Length = 0
     End Sub
 
-    Private Sub BtELeINLESEN_Click(sender As Object, e As EventArgs) Handles BtELeINLESEN.Click
+    Private Sub BtELeINLESEN_Click(sender As Object, e As EventArgs) Handles BTelEinlesen.Click
         Me.LVorwahl.Enabled = False
         Me.LLandesvorwahl.Enabled = False
         Me.TBVorwahl.Enabled = False
         Me.TBLandesvorwahl.Enabled = False
-        Me.BtELeINLESEN.Text = "Bitte warten..."
-        Me.BtELeINLESEN.Enabled = False
+        Me.BTelEinlesen.Text = "Bitte warten..."
+        Me.BTelEinlesen.Enabled = False
 
         C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, False)
         C_XML.Write("Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text, True)
-        C_FBox.bRausschreiben = False
+        C_FBox.bSpeichereDaten = True
         C_FBox.FritzBoxDaten()
 
         Me.CLBTelNr.Enabled = True
@@ -187,7 +186,7 @@
     End Sub
 
     Private Sub TextBox_TextChanged(sender As Object, e As EventArgs) Handles TBVorwahl.TextChanged, TBLandesvorwahl.TextChanged
-        Me.BtELeINLESEN.Enabled = (Not Me.TBVorwahl.Text.Length = 0) And (Not Me.TBLandesvorwahl.Text.Length = 0)
+        Me.BTelEinlesen.Enabled = (Not Me.TBVorwahl.Text.Length = 0) And (Not Me.TBLandesvorwahl.Text.Length = 0)
     End Sub
 
     Sub CLBtelnrAusfüllen()

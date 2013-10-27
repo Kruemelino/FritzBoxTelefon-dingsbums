@@ -12,20 +12,43 @@ Public Class FritzBox
     Private FBFehler As ErrObject
     Private threadTelefon As Thread
     Private FBEncoding As System.Text.Encoding = Encoding.UTF8
+
     Private tb As New System.Windows.Forms.TextBox
     Private EventProvider As IEventProvider
 
-    Friend sDefaultSID As String = "0000000000000000"
-    Friend bRausschreiben As Boolean = False
+    Private sValDefaultSID As String = "0000000000000000"
+    Private bValSpeichereDaten As Boolean = True
+    Private sValFBAddr As String
 
-    Private sSID As String = sDefaultSID ' Startwert: UNgültige SID
-    Private sFBAddr As String
+    Private sSID As String = SDefaultSID ' Startwert: UNgültige SID
 
+#Region "Properties"
+    Friend Property SFBAddr() As String
+        Get
+            Return sValFBAddr
+        End Get
+        Set(ByVal value As String)
+            sValFBAddr = value
+        End Set
+    End Property
+    Friend ReadOnly Property SDefaultSID() As String
+        Get
+            Return sValDefaultSID
+        End Get
+    End Property
+    Friend Property bSpeichereDaten() As Boolean
+        Get
+            Return bValSpeichereDaten
+        End Get
+        Set(ByVal value As Boolean)
+            bValSpeichereDaten = value
+        End Set
+    End Property
+#End Region
 
     Public Sub New(ByVal xmlKlasse As MyXML, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal CryptKlasse As Rijndael, _
-                   ByVal ep As IEventProvider)
+                   ByVal CryptKlasse As Rijndael)
 
         Dim EncodeingFritzBox As String
 
@@ -33,16 +56,12 @@ Public Class FritzBox
         C_hf = HelferKlasse
         C_hf.KeyChange()
         C_Crypt = CryptKlasse
-
-        EventProvider = ep
-        AddHandler tb.TextChanged, AddressOf ep.GenericHandler
-
-        sFBAddr = C_XML.Read("Optionen", "TBFBAdr", "fritz.box")
+        SFBAddr = C_XML.Read("Optionen", "TBFBAdr", "fritz.box")
 
         EncodeingFritzBox = C_XML.Read("Optionen", "EncodeingFritzBox", "-1")
         If EncodeingFritzBox = "-1" Then
             Dim Rückgabe As String
-            Rückgabe = C_hf.httpRead("http://" & sFBAddr, FBEncoding, FBFehler)
+            Rückgabe = C_hf.httpRead("http://" & SFBAddr, FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
                 C_XML.Write("Optionen", "EncodeingFritzBox", FBEncoding.HeaderName, True)
@@ -82,12 +101,12 @@ Public Class FritzBox
         '    <Rights></Rights>
         ' </SessionInfo>
 
-        sLink = "http://" & sFBAddr & "/login_sid.lua?sid=" & sSID
-        slogin_xml = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+        sLink = "http://" & SFBAddr & "/login_sid.lua?sid=" & sSID
+        slogin_xml = C_hf.httpRead(sLink, FBEncoding, FBFehler)
 
         If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
-            sLink = "http://" & sFBAddr & "/cgi-bin/webcm?getpage=../html/login_sid.xml&sid=" & sSID
-            slogin_xml = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+            sLink = "http://" & SFBAddr & "/cgi-bin/webcm?getpage=../html/login_sid.xml&sid=" & sSID
+            slogin_xml = C_hf.httpRead(sLink, FBEncoding, FBFehler)
         End If
 
         If FBFehler Is Nothing Then
@@ -113,40 +132,40 @@ Public Class FritzBox
                 With XMLDocLogin
                     .LoadXml(slogin_xml)
 
-                    If .Item("SessionInfo").Item("SID").InnerText() = sDefaultSID Then
+                    If .Item("SessionInfo").Item("SID").InnerText() = SDefaultSID Then
                         sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
 
-                        With c_Crypt
+                        With C_Crypt
                             sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode))
                         End With
-                        If bRausschreiben Then setline("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
+                        If bSpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 
                         If .InnerXml.Contains("Rights") Then
                             ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
                             sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
                             If sBlockTime = "0" Then
-                                sLink = "http://" & sFBAddr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
-                                sResponse = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+                                sLink = "http://" & SFBAddr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
+                                sResponse = C_hf.httpRead(sLink, FBEncoding, FBFehler)
                                 If FBFehler Is Nothing Then
                                     LuaLogin = True
                                 Else
-                                    c_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
+                                    C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
                                 End If
                             Else
-                                c_hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & sBlockTime & "Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
-                                c_hf.LogFile("Der anzumendende Nutzer verfügt über keine ausreichende Berechtigung.")
-                                Return sDefaultSID
+                                C_hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & sBlockTime & "Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
+                                C_hf.LogFile("Der anzumendende Nutzer verfügt über keine ausreichende Berechtigung.")
+                                Return SDefaultSID
                             End If
                         Else
                             ' Alter Login von Firmware xxx.04.76 bis Firmware xxx.05.28
                             If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
-                                c_hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
+                                C_hf.LogFile("Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.")
                                 Return .Item("SessionInfo").Item("SID").InnerText()
                             End If
 
-                            sLink = "http://" & sFBAddr & "/cgi-bin/webcm"
+                            sLink = "http://" & SFBAddr & "/cgi-bin/webcm"
                             sFormData = "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
-                            sResponse = c_hf.httpWrite(sLink, sFormData, FBEncoding)
+                            sResponse = C_hf.httpWrite(sLink, sFormData, FBEncoding)
 
                             LuaLogin = False
                         End If
@@ -169,27 +188,27 @@ Public Class FritzBox
 
                         sSID = .Item("SessionInfo").Item("SID").InnerText()
 
-                        If Not sSID = sDefaultSID Then
+                        If Not sSID = SDefaultSID Then
                             If LuaLogin Then
-                                If Not c_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
-                                    c_hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & sFBBenutzer)
+                                If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+                                    C_hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & sFBBenutzer)
                                     FBLogout(sSID)
-                                    sSID = sDefaultSID
+                                    sSID = SDefaultSID
                                 End If
-                                C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = sDefaultSID, 0, 2)), True)
+                                C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = SDefaultSID, 0, 2)), True)
                             End If
                         Else
-                            c_hf.LogFile("Die Anmeldedaten sind falsch." & sSID)
+                            C_hf.LogFile("Die Anmeldedaten sind falsch." & sSID)
                         End If
 
                     ElseIf .Item("SessionInfo").Item("SID").InnerText() = sSID Then
-                        c_hf.LogFile("Eine gültige SessionID ist bereits vorhanden: " & sSID)
+                        C_hf.LogFile("Eine gültige SessionID ist bereits vorhanden: " & sSID)
                     End If
                 End With
                 XMLDocLogin = Nothing
             End If
         Else
-            c_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
+            C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
         End If
         Return sSID
     End Function
@@ -201,36 +220,36 @@ Public Class FritzBox
         Dim Response As String
         Dim xml As New XmlDocument()
 
-        sLink = "http://" & sFBAddr & "/login_sid.lua?sid=" & sSID
-        Response = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+        sLink = "http://" & SFBAddr & "/login_sid.lua?sid=" & sSID
+        Response = C_hf.httpRead(sLink, FBEncoding, FBFehler)
         If FBFehler Is Nothing Then
             With xml
                 .LoadXml(Response)
                 If .InnerXml.Contains("Rights") Then
-                    sLink = "http://" & sFBAddr & "/home/home.lua?sid=" & sSID & "&logout=1"
+                    sLink = "http://" & SFBAddr & "/home/home.lua?sid=" & sSID & "&logout=1"
                 Else
-                    sLink = "http://" & sFBAddr & "/logout.lua?sid=" & sSID
+                    sLink = "http://" & SFBAddr & "/logout.lua?sid=" & sSID
                 End If
             End With
             xml = Nothing
-            Response = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+            Response = C_hf.httpRead(sLink, FBEncoding, FBFehler)
             C_hf.KeyChange()
             If FBFehler Is Nothing Then
                 If Not InStr(Response, "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.", CompareMethod.Text) = 0 Or _
                     Not InStr(Response, "Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.", CompareMethod.Text) = 0 Then
-                    c_hf.LogFile("Logout erfolgreich")
-                    sSID = sDefaultSID
+                    ' C_hf.LogFile("Logout erfolgreich")
+                    sSID = SDefaultSID
                     Return True
                 Else
-                    c_hf.LogFile("Logout eventuell NICHT erfolgreich!")
-                    sSID = sDefaultSID
+                    C_hf.LogFile("Logout eventuell NICHT erfolgreich!")
+                    sSID = SDefaultSID
                     Return False
                 End If
             Else
-                c_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description & " - " & sLink)
+                C_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description & " - " & sLink)
             End If
         Else
-            c_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description & " - " & sLink)
+            C_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description & " - " & sLink)
         End If
         Return False
     End Function
@@ -270,21 +289,20 @@ Public Class FritzBox
         Dim tempstring As String
         Dim tempstring_code As String
 
-        If bRausschreiben Then setline("Fritz!Box Adresse: " & sFBAddr)
+        If bSpeichereDaten Then PushStatus("Fritz!Box Adresse: " & SFBAddr)
 
         FBLogin(FW550)
-        If Not sSID = sDefaultSID Then
-            sLink = "http://" & sFBAddr & "/fon_num/fon_num_list.lua?sid=" & sSID
-            If bRausschreiben Then
-                setline("Fritz!Box SessionID: " & sSID)
-                setline("Fritz!Box SessionID: " & sSID)
-                setline("Fritz!Box Firmware  5.50: " & FW550.ToString)
-            End If
+        If Not sSID = SDefaultSID Then
+            sLink = "http://" & SFBAddr & "/fon_num/fon_num_list.lua?sid=" & sSID
+
+            PushStatus("Fritz!Box SessionID: " & sSID)
+            PushStatus("Fritz!Box Firmware  5.50: " & FW550.ToString)
             tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                     tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                     tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
+
                     If InStr(tempstring, "Luacgi not readable") = 0 Then
                         tempstring_code = C_hf.StringEntnehmen(tempstring, "<code>", "</code>")
 
@@ -302,7 +320,6 @@ Public Class FritzBox
                     Else
                         FritzBoxDatenA()
                     End If
-
                 Else
                     C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #1")
                 End If
@@ -312,10 +329,11 @@ Public Class FritzBox
         Else
             C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "FritzBoxDaten #2")
         End If
+
     End Sub
 
     Private Sub FritzBoxDatenA()
-        If bRausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet. (alt)")
+        PushStatus("ALte Ausleseroutine für Fritz!Box Telefone gestartet.")
 
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")  ' In den Einstellungen eingegebene Vorwahl
         Dim TelName As String                 ' Gefundener Telefonname
@@ -350,14 +368,14 @@ Public Class FritzBox
         xPathTeile.Add("Nummern")
 
         sLink = "http://" & sFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
-        If bRausschreiben Then setline("Fritz!Box Telefon Quelldatei: " & sLink)
-        tempstring = c_hf.httpRead(sLink, FBEncoding, FBFehler)
+        If bSpeichereDaten Then PushStatus("Fritz!Box Telefon Quelldatei: " & sLink)
+        tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
         If FBFehler Is Nothing Then
             If Not InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                 C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone. Anmeldung fehlerhaft o.A.!", MsgBoxStyle.Critical, "FritzBoxDaten_FWbelow5_50")
                 Exit Sub
             End If
-            If Not bRausschreiben Then C_XML.Delete("Telefone")
+            If bSpeichereDaten Then C_XML.Delete("Telefone")
 
             tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln
 
@@ -370,12 +388,11 @@ Public Class FritzBox
                     pos(1) = InStr(pos(0), tempstring, "'", CompareMethod.Text)
                     TelNr = Mid(tempstring, pos(0), pos(1) - pos(0))
                     If Not TelNr = "" Then
-                        TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         MSN(i) = TelNr
                         j = i
-                        If bRausschreiben Then
-                            setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
-                        Else
+                        PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                        If bSpeichereDaten Then
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
                     End If
@@ -391,14 +408,12 @@ Public Class FritzBox
                     pos(1) = InStr(pos(0), tempstring, "'", CompareMethod.Text)
                     TelNr = Mid(tempstring, pos(0), pos(1) - pos(0))
                     If Not TelNr = "" Then
-                        TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         SIP(i) = TelNr
-
                         SIPID = CStr(i)
                         j = i
-                        If bRausschreiben Then
-                            setline("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
-                        Else
+                        PushStatus("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
+                        If bSpeichereDaten Then
                             C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
                         End If
                     End If
@@ -415,15 +430,12 @@ Public Class FritzBox
                     pos(1) = InStr(pos(0), tempstring, "'", CompareMethod.Text)
                     TelNr = Mid(tempstring, pos(0), pos(1) - pos(0))
                     If Not TelNr = "" Then
-                        TelNr = c_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         TAM(i) = TelNr
-
-                        If bRausschreiben Then
-                            setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
-                        Else
+                        PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
+                        If bSpeichereDaten Then
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
-
                         j = i
                     End If
                 End If
@@ -435,17 +447,13 @@ Public Class FritzBox
             pos(1) = InStr(pos(0), tempstring, "value='", CompareMethod.Text) + 7
             pos(2) = InStr(pos(1), tempstring, "' id", CompareMethod.Text)
             POTS = Mid(tempstring, pos(1), pos(2) - pos(1))
-            POTS = c_hf.OrtsVorwahlEntfernen(POTS, Vorwahl)
+            POTS = C_hf.OrtsVorwahlEntfernen(POTS, Vorwahl)
             If Not POTS = vbNullString Then
-
-                If bRausschreiben Then
-                    setline("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
-                Else
+                PushStatus("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
+                If bSpeichereDaten Then
                     C_XML.Write("Telefone", "POTS", POTS, False)
                 End If
-
             End If
-
 
             'Mobilnummer ermitteln
             pos(0) = InStr(1, tempstring, "function readFonNumbers() {", CompareMethod.Text)
@@ -453,10 +461,8 @@ Public Class FritzBox
             pos(2) = InStr(pos(1), tempstring, "';", CompareMethod.Text)
             Mobil = CStr(IIf(pos(1) = Len("nrs.mobil = '"), vbNullString, Mid(tempstring, pos(1), pos(2) - pos(1))))
             If Not Mobil = vbNullString Then
-
-                If bRausschreiben Then
-                    setline("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
-                Else
+                PushStatus("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
+                If bSpeichereDaten Then
                     C_XML.Write("Telefone", "Mobil", Mobil, False)
                 End If
 
@@ -517,9 +523,8 @@ Public Class FritzBox
                                         DialPort = CStr(CInt(Mid(Telefon, pos(4), pos(5) - pos(4))) + 1)
                                         pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-                                        If bRausschreiben Then
-                                            setline("Analogtelefon gefunden: FON" & CStr(DialPort) & ", " & TelNr & ", " & TelName)
-                                        Else
+                                        PushStatus("Analogtelefon gefunden: FON" & CStr(DialPort) & ", " & TelNr & ", " & TelName)
+                                        If bSpeichereDaten Then
                                             NodeNames.Add("TelName")
                                             NodeValues.Add(TelName)
                                             NodeNames.Add("TelNr")
@@ -552,10 +557,8 @@ Public Class FritzBox
                                             pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
                                             pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                             DialPort = "5" & ID
-
-                                            If bRausschreiben Then
-                                                setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                                            Else
+                                            PushStatus("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                            If bSpeichereDaten Then
                                                 NodeNames.Add("TelName")
                                                 NodeValues.Add(TelName)
                                                 NodeNames.Add("TelNr")
@@ -575,9 +578,8 @@ Public Class FritzBox
                                         TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
                                         DialPort = "6" & ID
                                         TelName = "Fritz!Fon 7150"
-                                        If bRausschreiben Then
-                                            setline("DECT Fritz!Fon 7150 gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                                        Else
+                                        PushStatus("DECT Fritz!Fon 7150 gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                        If bSpeichereDaten Then
                                             NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                             NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -622,10 +624,8 @@ Public Class FritzBox
                                             End If
                                             pos(2) = InStr(pos(1), Telefon, "outgoing: isUnpersonalizedMini ? '' : '", CompareMethod.Text) + Len("outgoing: isUnpersonalizedMini ? '' : '")
                                             pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
-
-                                            If bRausschreiben Then
-                                                setline("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                            Else
+                                            PushStatus("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                            If bSpeichereDaten Then
                                                 NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -643,9 +643,8 @@ Public Class FritzBox
                                             ID = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
                                             Anzahl += 1
                                             DialPort = "2" & ID
-                                            If bRausschreiben Then
-                                                setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                            Else
+                                            PushStatus("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                            If bSpeichereDaten Then
                                                 NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -708,9 +707,8 @@ Public Class FritzBox
                                                             If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '1',", CompareMethod.Text) = 0 Then
                                                                 DialPort = "2" & ID
                                                                 Anzahl += 1
-                                                                If bRausschreiben Then
-                                                                    setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                                                Else
+                                                                PushStatus("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                                                If bSpeichereDaten Then
                                                                     NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -724,9 +722,8 @@ Public Class FritzBox
                                                             If C_hf.IsOneOf("62" & ID, Split(NetInfoPush, ";", , CompareMethod.Text)) Then
                                                                 DialPort = "2" & ID
                                                                 Anzahl += 1
-                                                                If bRausschreiben Then
-                                                                    setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                                                                Else
+                                                                PushStatus("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                                                                If bSpeichereDaten Then
                                                                     NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -765,10 +762,8 @@ Public Class FritzBox
                                                 TelNr = Left(TelNr, Len(TelNr) - 1)
                                                 DialPort = "60" & ID
 
-
-                                                If bRausschreiben Then
-                                                    setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                                                Else
+                                                PushStatus("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                                                If bSpeichereDaten Then
                                                     NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -810,9 +805,8 @@ Public Class FritzBox
                                                 End If
                                                 DialPort = "5"
 
-                                                If bRausschreiben Then
-                                                    setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & TelName)
-                                                Else
+                                                PushStatus("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & TelName)
+                                                If bSpeichereDaten Then
                                                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
                                                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
@@ -833,9 +827,8 @@ Public Class FritzBox
 
             If Not AnzahlISDN = 0 Then
                 DialPort = "50"
-                If bRausschreiben Then
-                    setline("S0-Basis hinzugefügt.")
-                Else
+                PushStatus("S0-Basis hinzugefügt.")
+                If bSpeichereDaten Then
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = vbNullString
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
@@ -851,7 +844,7 @@ Public Class FritzBox
     End Sub ' (FritzBoxDaten für ältere Firmware)
 
     Private Sub FritzBoxDatenN(ByVal Code As String)
-        If bRausschreiben Then setline("Fritz!Box Telefone Auslesen gestartet (Neu).")
+        PushStatus("Neue Ausleseroutine für Fritz!Box Telefone gestartet.")
 
         Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")                 ' In den Einstellungen eingegebene Vorwahl
         Dim Landesvorwahl As String
@@ -862,7 +855,6 @@ Public Class FritzBox
         Dim i As Integer                   ' Laufvariable
         Dim j As Integer
         Dim k As Integer
-        'Dim TelAnzahl As Integer                   ' Anzahl der gefundenen Telefone
         Dim SIP(20) As String
         Dim TAM(10) As String
         Dim MSNPort(2, 9) As String
@@ -873,7 +865,7 @@ Public Class FritzBox
         Dim allin As String
         Dim DialPort As String = "0"
 
-        Dim tmpstrTelefone As String
+        Dim tmpTelefone As String
         Dim tmpstrUser() As String
         Dim Node As String
         Dim tmpTelNr As String
@@ -885,14 +877,13 @@ Public Class FritzBox
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
+        Dim OldTelDialPort As New ArrayList
+        Dim OldEingehend As New ArrayList
+        Dim OldAusgehend As New ArrayList
+        Dim OldTelName As New ArrayList
+        Dim OldTelNr As New ArrayList
 
-        If Not bRausschreiben Then
-            With xPathTeile
-                .Add("Telefone")
-                .Add("Telefone")
-                .Add("*")
-                .Add("Telefon")
-            End With
+        If bSpeichereDaten Then
             C_XML.Delete("Telefone")
         End If
 
@@ -911,18 +902,15 @@ Public Class FritzBox
                     Node = UCase(.StringEntnehmen(SIPi, "['_node'] = '", "'"))
                     SIPID = .StringEntnehmen(SIPi, "['ID'] = '", "'")
                     SIP(CInt(SIPID)) = TelNr
-                    If bRausschreiben Then
-                        setline("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
-                    Else
+                    PushStatus("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
+                    If bSpeichereDaten Then
                         C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
                     End If
                 End If
             Next
 
             SIP = (From x In SIP Where Not x Like "" Select x).ToArray
-            If bRausschreiben Then
-                setline("Letzte SIP: " & SIPID)
-            End If
+            PushStatus("Letzte SIP: " & SIPID)
 
             xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
             For i = 0 To 9
@@ -931,9 +919,8 @@ Public Class FritzBox
                     If Not Len(TelNr) = 0 Then
                         TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         MSN(i) = TelNr
-                        If bRausschreiben Then
-                            setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
-                        Else
+                        PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                        If bSpeichereDaten Then
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
                     End If
@@ -956,9 +943,8 @@ Public Class FritzBox
                                     For k = 0 To 9
                                         If MSN(k) = "" Then
                                             MSN(k) = TelNr
-                                            If bRausschreiben Then
-                                                setline("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
-                                            Else
+                                            PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
+                                            If bSpeichereDaten Then
                                                 C_XML.Write(xPathTeile, TelNr, "ID", CStr(k), False)
                                             End If
                                             Exit For
@@ -984,10 +970,8 @@ Public Class FritzBox
                         Else
                             TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         End If
-
-                        If bRausschreiben Then
-                            setline("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
-                        Else
+                        PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
+                        If bSpeichereDaten Then
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
 
@@ -1006,10 +990,8 @@ Public Class FritzBox
                         Else
                             TelNr = .OrtsVorwahlEntfernen(TelNr, Vorwahl)
                         End If
-
-                        If bRausschreiben Then
-                            setline("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
-                        Else
+                        PushStatus("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
+                        If bSpeichereDaten Then
                             C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
                         End If
 
@@ -1026,10 +1008,8 @@ Public Class FritzBox
                 Else
                     POTS = .OrtsVorwahlEntfernen(POTS, Vorwahl)
                 End If
-
-                If bRausschreiben Then
-                    setline("Plain old telephone service (POTS) gefunden: " & POTS)
-                Else
+                PushStatus("Plain old telephone service (POTS) gefunden: " & POTS)
+                If bSpeichereDaten Then
                     C_XML.Write("Telefone", "POTS", POTS, False)
                 End If
 
@@ -1042,10 +1022,8 @@ Public Class FritzBox
                 Else
                     Mobil = .OrtsVorwahlEntfernen(Mobil, Vorwahl)
                 End If
-
-                If bRausschreiben Then
-                    setline("Mobilnummer (Mobil) gefunden: " & Mobil)
-                Else
+                PushStatus("Mobilnummer (Mobil) gefunden: " & Mobil)
+                If bSpeichereDaten Then
                     C_XML.Write("Telefone", "Mobil", Mobil, False)
                 End If
             End If
@@ -1077,10 +1055,8 @@ Public Class FritzBox
                     TelNr = String.Join(";", tmparray)
                     DialPort = CStr(CInt(Port) + 1)
 
-
-                    If bRausschreiben Then
-                        setline("Analogtelefon gefunden: FON" & DialPort & ", " & TelNr & ", " & TelName)
-                    Else
+                    PushStatus("Analogtelefon gefunden: FON" & DialPort & ", " & TelNr & ", " & TelName)
+                    If bSpeichereDaten Then
                         NodeNames.Add("TelName")
                         NodeValues.Add(TelName)
                         NodeNames.Add("TelNr")
@@ -1092,7 +1068,7 @@ Public Class FritzBox
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
                     If .StringEntnehmen(Telefon, "['Fax'] = '", "'") = "1" Then
-                        setline("Analogtelefon FON" & DialPort & " ist ein FAX.")
+                        PushStatus("Analogtelefon FON" & DialPort & " ist ein FAX.")
                     End If
 
                 End If
@@ -1100,9 +1076,9 @@ Public Class FritzBox
 
             ' DECT
             xPathTeile.Item(xPathTeile.IndexOf("FON")) = "DECT"
-            tmpstrTelefone = .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(" & .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },")
+            tmpTelefone = .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(" & .StringEntnehmen(Code, "['telcfg:settings/Foncontrol/User/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },")
 
-            For Each DectTelefon In Split(tmpstrTelefone, "] = {", , CompareMethod.Text)
+            For Each DectTelefon In Split(tmpTelefone, "] = {", , CompareMethod.Text)
 
                 DialPort = .StringEntnehmen(DectTelefon, "['Intern'] = '", "'")
                 If Not (DialPort = "-1" Or DialPort = vbNullString) Then
@@ -1125,10 +1101,8 @@ Public Class FritzBox
                         Next
                         TelNr = Mid(TelNr, 2)
                     End If
-
-                    If bRausschreiben Then
-                        setline("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                    Else
+                    PushStatus("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                    If bSpeichereDaten Then
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -1166,10 +1140,8 @@ Public Class FritzBox
                     End If
 
                     DialPort = "2" & Strings.Right(Port, 1)
-
-                    If bRausschreiben Then
-                        setline("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
-                    Else
+                    PushStatus("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
+                    If bSpeichereDaten Then
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -1190,10 +1162,8 @@ Public Class FritzBox
                         TelNr = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Number" & i & "'] = '", "'")
                         If Not TelNr = "-1" Then
                             DialPort = "5" & i
-
-                            If bRausschreiben Then
-                                setline("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                            Else
+                            PushStatus("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                            If bSpeichereDaten Then
                                 NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
@@ -1206,7 +1176,7 @@ Public Class FritzBox
                             If Not TelNr = "-1" Then
                                 Select Case S0Typ
                                     Case "Fax"
-                                        setline("S0-telefon " & DialPort & " ist ein FAX.")
+                                        PushStatus("S0-telefon " & DialPort & " ist ein FAX.")
                                         'Case "Isdn"
                                         'Case "Fon"
                                         'Case Else
@@ -1218,10 +1188,8 @@ Public Class FritzBox
             Next
             If CDbl(DialPort) > 50 And CDbl(DialPort) < 60 Then
                 DialPort = "50"
-
-                If bRausschreiben Then
-                    setline("S0-Basis hinzugefügt.")
-                Else
+                PushStatus("S0-Basis hinzugefügt.")
+                If bSpeichereDaten Then
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = vbNullString
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
@@ -1240,10 +1208,8 @@ Public Class FritzBox
                     Port = .StringEntnehmen(Anrufbeantworter, "['_node'] = '", "'")
                     TelNr = .OrtsVorwahlEntfernen(TAM(CInt(Strings.Right(Port, 1))), Vorwahl)
                     DialPort = "60" & Strings.Right(Port, 1)
-
-                    If bRausschreiben Then
-                        setline("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
-                    Else
+                    PushStatus("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
+                    If bSpeichereDaten Then
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
@@ -1261,10 +1227,8 @@ Public Class FritzBox
             If Not DialPort = "0" Then
                 TelNr = "-1"
                 DialPort = "5"
-
-                If bRausschreiben Then
-                    setline("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
-                Else
+                PushStatus("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
+                If bSpeichereDaten Then
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
@@ -1320,19 +1284,19 @@ Public Class FritzBox
         Dim Link As String
         '
         SendDialRequestToBox = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
-        If Not sSID = sDefaultSID And Len(sSID) = Len(sDefaultSID) Then
-            Link = "http://" & sFBAddr & "/cgi-bin/webcm"
+        If Not sSID = SDefaultSID And Len(sSID) = Len(SDefaultSID) Then
+            Link = "http://" & SFBAddr & "/cgi-bin/webcm"
             formdata = "sid=" & sSID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
-            Response = c_hf.httpWrite(Link, formdata, FBEncoding)
+            Response = C_hf.httpWrite(Link, formdata, FBEncoding)
 
             If Response = vbNullString Then
                 SendDialRequestToBox = CStr(IIf(HangUp, "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!", "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"))
             Else
                 SendDialRequestToBox = "Fehler!" & vbCrLf & "Logfile beachten!"
-                c_hf.LogFile("SendDialRequestToBox: Response: " & Response)
+                C_hf.LogFile("SendDialRequestToBox: Response: " & Response)
             End If
         Else
-            c_hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & sSID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
+            C_hf.FBDB_MsgBox("Fehler bei dem Login. SessionID: " & sSID & "!", MsgBoxStyle.Critical, "sendDialRequestToBox")
         End If
     End Function
 #End Region
@@ -1344,36 +1308,37 @@ Public Class FritzBox
         Dim ReturnString As String = vbNullString
 
         sSID = FBLogin(True)
-        If Not sSID = sDefaultSID Then
-            sLink(0) = "http://" & sFBAddr & "/fon_num/foncalls_list.lua?sid=" & sSID
-            sLink(1) = "http://" & sFBAddr & "/fon_num/foncalls_list.lua?sid=" & sSID & "&csv="
+        If Not sSID = SDefaultSID Then
+            sLink(0) = "http://" & SFBAddr & "/fon_num/foncalls_list.lua?sid=" & sSID
+            sLink(1) = "http://" & SFBAddr & "/fon_num/foncalls_list.lua?sid=" & sSID & "&csv="
 
-            ReturnString = c_hf.httpRead(sLink(0), FBEncoding, FBFehler)
+            ReturnString = C_hf.httpRead(sLink(0), FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
-                    sLink(0) = "http://" & sFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
-                    c_hf.httpRead(sLink(0), FBEncoding, FBFehler)
-                    sLink(1) = "http://" & sFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
+                    sLink(0) = "http://" & SFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
+                    C_hf.httpRead(sLink(0), FBEncoding, FBFehler)
+                    sLink(1) = "http://" & SFBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
                 End If
-                ReturnString = c_hf.httpRead(sLink(1), FBEncoding, FBFehler)
+                ReturnString = C_hf.httpRead(sLink(1), FBEncoding, FBFehler)
             Else
-                c_hf.LogFile("FBError (DownloadAnrListe): " & Err.Number & " - " & Err.Description & " - " & sLink(0))
+                C_hf.LogFile("FBError (DownloadAnrListe): " & Err.Number & " - " & Err.Description & " - " & sLink(0))
             End If
         Else
-            c_hf.FBDB_MsgBox("Der Login in die Fritz!Box ist fehlgeschlagen" & vbCrLf & vbCrLf & "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "DownloadAnrListe_DoWork")
-            c_hf.LogFile("Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich. (DownloadAnrListe_DoWork)")
+            C_hf.FBDB_MsgBox("Der Login in die Fritz!Box ist fehlgeschlagen" & vbCrLf & vbCrLf & "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.", MsgBoxStyle.Critical, "DownloadAnrListe_DoWork")
+            C_hf.LogFile("Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich. (DownloadAnrListe_DoWork)")
         End If
         Return ReturnString
     End Function
 
 #End Region
 
-    Friend Function GetFBAddr() As String
-        Return sFBAddr
-    End Function
+    Private Sub PushStatus(ByVal Status As String)
+        tb.Text = Status
+    End Sub
 
-    Private Sub setline(ByVal Zeile As String)
-        tb.Text = Zeile
+    Friend Sub GetEventProvider(ByVal ep As IEventProvider)
+        EventProvider = ep
+        AddHandler tb.TextChanged, AddressOf ep.GenericHandler
     End Sub
 
 End Class

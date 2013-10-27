@@ -183,7 +183,7 @@ Public Class formJournalimport
                                         NSN = 3
                                     Case "ISDN Gerät"
                                         NSN = 4
-                                    Case "ISDN Gerät"
+                                    Case "Fax (intern/PC)"
                                         NSN = 5
                                     Case "Data S0"
                                         NSN = 36

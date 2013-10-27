@@ -61,7 +61,7 @@ Public Class formWählbox
 
         C_Phoner = PhonerKlasse
 
-        SID = C_FBox.sDefaultSID
+        SID = C_FBox.SDefaultSID
         Me.FrameDirektWahl.Visible = bDirektwahl
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
@@ -546,7 +546,7 @@ Public Class formWählbox
         AnAus = False
         SetEnabled()
         SID = C_FBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
-        If Not SID = C_FBox.sDefaultSID Then
+        If Not SID = C_FBox.SDefaultSID Then
             StatusText = "Der Wählclient ist bereit."
             WählboxBereit = True
             Element = Me.ListTel
@@ -577,7 +577,7 @@ Public Class formWählbox
         Else
             Me.checkCLIR.Enabled = True
             Me.checkNetz.Enabled = True
-            If SID = "-1" Or SID = C_FBox.sDefaultSID Then
+            If SID = "-1" Or SID = C_FBox.SDefaultSID Then
                 If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
                 WählboxBereit = False
                 Me.LabelStatus.Text = "Bitte warten..."
