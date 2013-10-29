@@ -78,7 +78,7 @@ Public Class FritzBox
     End Sub
 
 #Region "Login & Logout"
-    Public Function FBLogin(ByRef LuaLogin As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
+    Public Function FBLogIn(ByRef LuaLogin As Boolean, Optional ByVal InpupBenutzer As String = vbNullString, Optional ByVal InpupPasswort As String = "-1") As String
         Dim sLink As String
         Dim slogin_xml As String
 
@@ -192,7 +192,7 @@ Public Class FritzBox
                             If LuaLogin Then
                                 If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
                                     C_hf.LogFile("Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & sFBBenutzer)
-                                    FBLogout(sSID)
+                                    FBLogOut(sSID)
                                     sSID = SDefaultSID
                                 End If
                                 C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = SDefaultSID, 0, 2)), True)
@@ -213,11 +213,12 @@ Public Class FritzBox
         Return sSID
     End Function
 
-    Public Function FBLogout(ByRef sSID As String) As Boolean
+    Public Function FBLogOut(ByRef sSID As String) As Boolean
         ' Die Komplementärfunktion zu FBLogin. Beendet die Session, indem ein Logout durchgeführt wird.
 
         Dim sLink As String
         Dim Response As String
+        Dim tmpstr As String
         Dim xml As New XmlDocument()
 
         sLink = "http://" & SFBAddr & "/login_sid.lua?sid=" & sSID
@@ -241,7 +242,13 @@ Public Class FritzBox
                     sSID = SDefaultSID
                     Return True
                 Else
-                    C_hf.LogFile("Logout eventuell NICHT erfolgreich!")
+                    Response = Replace(C_hf.StringEntnehmen(Response, "<pre>", "</pre>"), Chr(34), "'", , , CompareMethod.Text)
+                    If Not Response = "-1" Then
+                        tmpstr = C_hf.StringEntnehmen(Response, "['logout'] = '", "'")
+                        If Not tmpstr = "1" Then
+                            C_hf.LogFile("Logout eventuell NICHT erfolgreich!")
+                        End If
+                    End If
                     sSID = SDefaultSID
                     Return False
                 End If

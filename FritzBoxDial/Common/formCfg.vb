@@ -479,19 +479,20 @@ Public Class formCfg
 
 #Region "Button Link"
     Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonZuruecksetzen.Click, _
- _
                                                                                    ButtonOK.Click, _
                                                                                    ButtonAbbruch.Click, _
                                                                                    ButtonUebernehmen.Click, _
                                                                                    ButtonXML.Click, _
                                                                                    BAnrMonTest.Click, _
- _
- _
- _
- _
- _
                                                                                    BIndizierungStart.Click, _
-                                                                                   BIndizierungAbbrechen.Click
+                                                                                   BIndizierungAbbrechen.Click, _
+                                                                                   ButtonIndexDateiöffnen.Click, _
+                                                                                   BZwischenablage.Click, _
+                                                                                   BTelefonliste.Click, _
+                                                                                   BTelefonDatei.Click, _
+                                                                                   BStartDebug.Click, _
+                                                                                   BResetStat.Click, _
+                                                                                   BProbleme.Click
         Select Case CType(sender, Windows.Forms.Button).Name
             Case "ButtonZuruecksetzen"
                 ' Startwerte zurücksetzen

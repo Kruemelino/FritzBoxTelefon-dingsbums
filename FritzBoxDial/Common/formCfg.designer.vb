@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -71,6 +71,9 @@ Partial Class formCfg
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.BAnrMonTest = New System.Windows.Forms.Button()
+        Me.BStartDebug = New System.Windows.Forms.Button()
+        Me.BZwischenablage = New System.Windows.Forms.Button()
+        Me.BProbleme = New System.Windows.Forms.Button()
         Me.PInfo = New System.Windows.Forms.TabPage()
         Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -174,21 +177,18 @@ Partial Class formCfg
         Me.TBLogging = New System.Windows.Forms.TextBox()
         Me.CBLogFile = New System.Windows.Forms.CheckBox()
         Me.Label23 = New System.Windows.Forms.Label()
-        Me.ButtonXML = New System.Windows.Forms.Button()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.PDebug = New System.Windows.Forms.TabPage()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.PTelefonDatei = New System.Windows.Forms.Panel()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.TBTelefonDatei = New System.Windows.Forms.TextBox()
         Me.BTelefonDatei = New System.Windows.Forms.Button()
         Me.CBTelefonDatei = New System.Windows.Forms.CheckBox()
-        Me.BStartDebug = New System.Windows.Forms.Button()
-        Me.BZwischenablage = New System.Windows.Forms.Button()
-        Me.BProbleme = New System.Windows.Forms.Button()
         Me.TBDiagnose = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.ButtonXML = New System.Windows.Forms.Button()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -215,11 +215,11 @@ Partial Class formCfg
         Me.GroupBox7.SuspendLayout()
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
+        Me.PDebug.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.PTelefonDatei.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.PDebug.SuspendLayout()
-        Me.PTelefonDatei.SuspendLayout()
         Me.SuspendLayout()
         '
         'ButtonZuruecksetzen
@@ -729,6 +729,38 @@ Partial Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.BAnrMonTest, "Zeigt den Anrufmonitor testweise an.")
         Me.BAnrMonTest.UseVisualStyleBackColor = True
         '
+        'BStartDebug
+        '
+        Me.BStartDebug.Location = New System.Drawing.Point(388, 35)
+        Me.BStartDebug.Name = "BStartDebug"
+        Me.BStartDebug.Size = New System.Drawing.Size(179, 28)
+        Me.BStartDebug.TabIndex = 30
+        Me.BStartDebug.Text = "Start"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BStartDebug, "Kopiert den Statustext in die Zwischenablage")
+        Me.BStartDebug.UseVisualStyleBackColor = True
+        '
+        'BZwischenablage
+        '
+        Me.BZwischenablage.Location = New System.Drawing.Point(388, 69)
+        Me.BZwischenablage.Name = "BZwischenablage"
+        Me.BZwischenablage.Size = New System.Drawing.Size(179, 28)
+        Me.BZwischenablage.TabIndex = 32
+        Me.BZwischenablage.Text = "Kopieren"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BZwischenablage, "Kopiert den Statustext in die Zwischenablage")
+        Me.BZwischenablage.UseVisualStyleBackColor = True
+        '
+        'BProbleme
+        '
+        Me.BProbleme.Location = New System.Drawing.Point(388, 103)
+        Me.BProbleme.Name = "BProbleme"
+        Me.BProbleme.Size = New System.Drawing.Size(179, 28)
+        Me.BProbleme.TabIndex = 33
+        Me.BProbleme.Text = "Probleme?"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" & _
+        "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" & _
+        "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.BProbleme.UseVisualStyleBackColor = True
+        '
         'PInfo
         '
         Me.PInfo.Controls.Add(Me.LinkHomepage)
@@ -981,9 +1013,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -995,9 +1027,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1009,9 +1041,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1826,62 +1858,17 @@ Partial Class formCfg
         Me.Label23.Text = "Logging"
         Me.Label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'ButtonXML
+        'PDebug
         '
-        Me.ButtonXML.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonXML.Location = New System.Drawing.Point(463, 3)
-        Me.ButtonXML.Name = "ButtonXML"
-        Me.ButtonXML.Size = New System.Drawing.Size(112, 28)
-        Me.ButtonXML.TabIndex = 27
-        Me.ButtonXML.Text = "Einstellungssdatei"
-        Me.ButtonXML.UseVisualStyleBackColor = True
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.ColumnCount = 5
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonOK, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonXML, 4, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonUebernehmen, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonAbbruch, 2, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonZuruecksetzen, 3, 0)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 329)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(578, 34)
-        Me.TableLayoutPanel1.TabIndex = 28
-        '
-        'TableLayoutPanel2
-        '
-        Me.TableLayoutPanel2.ColumnCount = 1
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel1, 0, 1)
-        Me.TableLayoutPanel2.Controls.Add(Me.FBDB_MP, 0, 0)
-        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 2
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
-        Me.TableLayoutPanel2.TabIndex = 29
-        '
-        'Label8
-        '
-        Me.Label8.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(3, 3)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(564, 35)
-        Me.Label8.TabIndex = 24
-        Me.Label8.Text = "Einlesen der eingerichteten Telefone"
-        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.PDebug.Controls.Add(Me.GroupBox2)
+        Me.PDebug.Controls.Add(Me.Label8)
+        Me.PDebug.Location = New System.Drawing.Point(4, 22)
+        Me.PDebug.Name = "PDebug"
+        Me.PDebug.Padding = New System.Windows.Forms.Padding(3)
+        Me.PDebug.Size = New System.Drawing.Size(570, 294)
+        Me.PDebug.TabIndex = 10
+        Me.PDebug.Text = "Debug"
+        Me.PDebug.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
@@ -1896,18 +1883,6 @@ Partial Class formCfg
         Me.GroupBox2.Size = New System.Drawing.Size(570, 253)
         Me.GroupBox2.TabIndex = 30
         Me.GroupBox2.TabStop = False
-        '
-        'PDebug
-        '
-        Me.PDebug.Controls.Add(Me.GroupBox2)
-        Me.PDebug.Controls.Add(Me.Label8)
-        Me.PDebug.Location = New System.Drawing.Point(4, 22)
-        Me.PDebug.Name = "PDebug"
-        Me.PDebug.Padding = New System.Windows.Forms.Padding(3)
-        Me.PDebug.Size = New System.Drawing.Size(570, 294)
-        Me.PDebug.TabIndex = 10
-        Me.PDebug.Text = "Debug"
-        Me.PDebug.UseVisualStyleBackColor = True
         '
         'PTelefonDatei
         '
@@ -1958,38 +1933,6 @@ Partial Class formCfg
         Me.CBTelefonDatei.Text = "Andere Telefondatei testen."
         Me.CBTelefonDatei.UseVisualStyleBackColor = True
         '
-        'BStartDebug
-        '
-        Me.BStartDebug.Location = New System.Drawing.Point(388, 35)
-        Me.BStartDebug.Name = "BStartDebug"
-        Me.BStartDebug.Size = New System.Drawing.Size(179, 28)
-        Me.BStartDebug.TabIndex = 30
-        Me.BStartDebug.Text = "Start"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BStartDebug, "Kopiert den Statustext in die Zwischenablage")
-        Me.BStartDebug.UseVisualStyleBackColor = True
-        '
-        'BZwischenablage
-        '
-        Me.BZwischenablage.Location = New System.Drawing.Point(388, 69)
-        Me.BZwischenablage.Name = "BZwischenablage"
-        Me.BZwischenablage.Size = New System.Drawing.Size(179, 28)
-        Me.BZwischenablage.TabIndex = 32
-        Me.BZwischenablage.Text = "Kopieren"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BZwischenablage, "Kopiert den Statustext in die Zwischenablage")
-        Me.BZwischenablage.UseVisualStyleBackColor = True
-        '
-        'BProbleme
-        '
-        Me.BProbleme.Location = New System.Drawing.Point(388, 103)
-        Me.BProbleme.Name = "BProbleme"
-        Me.BProbleme.Size = New System.Drawing.Size(179, 28)
-        Me.BProbleme.TabIndex = 33
-        Me.BProbleme.Text = "Probleme?"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" & _
-        "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" & _
-        "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
-        Me.BProbleme.UseVisualStyleBackColor = True
-        '
         'TBDiagnose
         '
         Me.TBDiagnose.BackColor = System.Drawing.SystemColors.Window
@@ -2001,6 +1944,63 @@ Partial Class formCfg
         Me.TBDiagnose.Size = New System.Drawing.Size(376, 220)
         Me.TBDiagnose.TabIndex = 31
         Me.TBDiagnose.TabStop = False
+        '
+        'Label8
+        '
+        Me.Label8.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(3, 3)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(564, 35)
+        Me.Label8.TabIndex = 24
+        Me.Label8.Text = "Einlesen der eingerichteten Telefone"
+        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'ButtonXML
+        '
+        Me.ButtonXML.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ButtonXML.Location = New System.Drawing.Point(463, 3)
+        Me.ButtonXML.Name = "ButtonXML"
+        Me.ButtonXML.Size = New System.Drawing.Size(112, 28)
+        Me.ButtonXML.TabIndex = 27
+        Me.ButtonXML.Text = "Einstellungssdatei"
+        Me.ButtonXML.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 5
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonOK, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonXML, 4, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonUebernehmen, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonAbbruch, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonZuruecksetzen, 3, 0)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 329)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 1
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(578, 34)
+        Me.TableLayoutPanel1.TabIndex = 28
+        '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.ColumnCount = 1
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel1, 0, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.FBDB_MP, 0, 0)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 2
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
+        Me.TableLayoutPanel2.TabIndex = 29
         '
         'formCfg
         '
@@ -2059,13 +2059,13 @@ Partial Class formCfg
         Me.PLogging.PerformLayout()
         Me.GBLogging.ResumeLayout(False)
         Me.GBLogging.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel2.ResumeLayout(False)
+        Me.PDebug.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        Me.PDebug.ResumeLayout(False)
         Me.PTelefonDatei.ResumeLayout(False)
         Me.PTelefonDatei.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
