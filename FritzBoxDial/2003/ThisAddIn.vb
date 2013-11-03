@@ -25,7 +25,6 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Public WithEvents iPopRWS As Office.CommandBarPopup
     Public WithEvents iBtnWwh As Office.CommandBarButton
-    'Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
     Public WithEvents iBtnRws11880 As Office.CommandBarButton
     Public WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Public WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -60,7 +59,7 @@ Public Class ThisAddIn
 
     Private Initialisierung As formInit
 
-    Public Const Version As String = "3.5.2"
+    Public Const Version As String = "3.6"
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler

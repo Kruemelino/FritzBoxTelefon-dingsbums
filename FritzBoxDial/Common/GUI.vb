@@ -811,47 +811,6 @@
         End If
     End Sub
 
-    'Friend Sub FillPopupItemsVIP()
-    '    ' 26.04.11 14.44
-    '    Dim btnPopup As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe"), Office.CommandBarPopup)
-    '    'Dim ListPath As String = HelferFunktionen.Dateipfade(GetSetting("FritzBox", "Optionen", "TBini", "-1"), "Listen")
-    '    'Dim ini As New InI(ListPath)
-
-    '    Dim j, i As Integer
-    '    Dim Einträge(9) As String
-    '    Dim Eintrag As String()
-
-    '    For i = 0 To 9
-    '        Einträge(i) = C_XML.Read("VIPListe", "VIPListeEintrag" & i, "")
-    '    Next
-    '    i = 1
-    '    For j = 0 To 9
-    '        Eintrag = Split(Einträge(j), ";", 5, CompareMethod.Text)
-    '        ' Eintrag(0) Anrufername 
-    '        ' Eintrag(1) vbNullString 
-    '        ' Eintrag(2) Nummer in der Liste
-    '        ' Eintrag(3) StoreID, 
-    '        ' Eintrag(4) KontaktID
-
-    '        If Not Eintrag.Length = 1 Then
-    '            If Not Eintrag(0) = "" Then
-    '                With btnPopup.Controls.Item(i)
-    '                    .Caption = Replace(Eintrag(0), "&", "&&", , , CompareMethod.Text)
-    '                    .Parameter = CStr(j Mod 10)
-    '                    .Visible = True
-    '                    .Tag = "VIPListe;" & CStr(j)
-    '                    i += 1
-    '                End With
-    '            End If
-    '        Else
-    '            If Not btnPopup.Controls.Item(i) Is Nothing Then
-    '                btnPopup.Controls.Item(i).Visible = False
-    '            End If
-
-    '        End If
-    '    Next
-    'End Sub
-
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
         Try
