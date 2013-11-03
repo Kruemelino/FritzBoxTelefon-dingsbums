@@ -73,7 +73,7 @@ Public Class formAnrMon
         Dim xPathTeile As New ArrayList
         With xPathTeile
             .Add("LetzterAnrufer")
-            .Add("ID" & aID)
+            .Add("Eintrag[@ID = """ & aID & """]")
             .Add("Zeit")
             Uhrzeit = C_XML.Read(xPathTeile, CStr(DateTime.Now))
 

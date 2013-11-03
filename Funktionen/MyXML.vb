@@ -379,13 +379,13 @@ Public Class MyXML
                 .SelectSingleNode(xPath).AppendChild(tmpNode)
             End If
             ' Alle Knoten LetzterAnrufer löschen
-            xPathTeile.Clear()
-            xPathTeile.Add("LetzterAnrufer")
-            xPath = CreateXPath(xPathTeile)
-            tmpNode = .SelectSingleNode(xPath)
-            If Not tmpNode Is Nothing Then
-                .DocumentElement.RemoveChild(.SelectSingleNode(xPath))
-            End If
+            'xPathTeile.Clear()
+            'xPathTeile.Add("LetzterAnrufer")
+            'xPath = CreateXPath(xPathTeile)
+            'tmpNode = .SelectSingleNode(xPath)
+            'If Not tmpNode Is Nothing Then
+            '    .DocumentElement.RemoveChild(.SelectSingleNode(xPath))
+            'End If
             xPathTeile = Nothing
         End With
     End Sub
