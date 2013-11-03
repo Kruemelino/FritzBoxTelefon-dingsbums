@@ -97,48 +97,6 @@ Public Class MyXML
         Return Write(ZielKnoten, Value, vbNullString, vbNullString, SpeichereDatei)
     End Function
 
-    'Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String, ByVal SpeichereDatei As Boolean) As Boolean
-    '    Dim xPathTeile As New ArrayList
-    '    Dim sTmpXPath As String = vbNullString
-    '    Dim xPath As String
-    '    Dim tmpXMLNode As XmlNode
-    '    Dim tmpXMLAttribute As XmlAttribute
-    '    xPath = CreateXPath(ZielKnoten)
-    '    With XMLDoc
-    '        tmpXMLNode = .SelectSingleNode(xPath)
-    '        If Not tmpXMLNode Is Nothing Then
-    '            If Not AttributeName = vbNullString Then
-    '                If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
-    '                    tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = vbNullString, "[@" & AttributeName & "=""" & AttributeValue & """]", vbNullString)))
-    '                End If
-    '                If tmpXMLNode Is Nothing Then
-    '                    tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
-    '                End If
-    '                tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
-    '                tmpXMLAttribute.Value = AttributeValue
-    '                tmpXMLNode.Attributes.Append(tmpXMLAttribute)
-    '            End If
-    '            tmpXMLNode.InnerText() = Value
-    '        Else
-    '            For Each sNodeName As String In ZielKnoten
-    '                If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-    '                xPathTeile.Add(sNodeName)
-    '                xPath = CreateXPath(xPathTeile)
-    '                If .SelectSingleNode(xPath) Is Nothing Then
-    '                    .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
-    '                End If
-    '                sTmpXPath = xPath
-    '            Next
-    '            Write(ZielKnoten, Value, AttributeName, AttributeValue, SpeichereDatei)
-    '        End If
-    '        If SpeichereDatei Then SpeichereXMLDatei()
-    '    End With
-    '    xPathTeile = Nothing
-    '    tmpXMLAttribute = Nothing
-    '    tmpXMLNode = Nothing
-    '    Return True
-    'End Function
-
     Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String, ByVal SpeichereDatei As Boolean) As Boolean
         Dim xPathTeile As New ArrayList
         Dim sTmpXPath As String = vbNullString
