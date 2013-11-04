@@ -1029,7 +1029,8 @@ Public Class formCfg
                         aktKontakt = CType(item, Outlook.ContactItem)
 
                         'With aktKontakt
-                        KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
+                        'KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
+                        KontaktName = " (" & aktKontakt.FullName & ")"
                         C_Kontakte.IndiziereKontakt(aktKontakt, False)
                         BWIndexer.ReportProgress(1)
                         If BWIndexer.CancellationPending Then Exit For
@@ -1079,7 +1080,8 @@ Public Class formCfg
                         aktKontakt = CType(item, Outlook.ContactItem)
 
                         'With aktKontakt
-                        KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
+                        'KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
+                        KontaktName = " (" & aktKontakt.FullName & ")"
                         C_Kontakte.DeIndizierungKontakt(aktKontakt, False)
                         BWIndexer.ReportProgress(-1)
                         If BWIndexer.CancellationPending Then Exit For

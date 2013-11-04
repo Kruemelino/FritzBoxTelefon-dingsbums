@@ -60,7 +60,7 @@ Public Class ThisAddIn
 
     Private Initialisierung As formInit
 
-    Public Const Version As String = "3.6"
+    Public Const Version As String = "3.6.1"
 
     Public Shared UseAnrMon As Boolean
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler

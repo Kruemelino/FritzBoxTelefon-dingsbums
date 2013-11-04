@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -1013,9 +1013,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1027,9 +1027,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1041,9 +1041,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1109,7 +1109,7 @@ Partial Class formCfg
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(6, 63)
+        Me.Label21.Location = New System.Drawing.Point(3, 63)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(124, 13)
         Me.Label21.TabIndex = 18
@@ -1152,9 +1152,9 @@ Partial Class formCfg
         'LabelAnzahl
         '
         Me.LabelAnzahl.BackColor = System.Drawing.Color.Transparent
-        Me.LabelAnzahl.Location = New System.Drawing.Point(5, 95)
+        Me.LabelAnzahl.Location = New System.Drawing.Point(3, 95)
         Me.LabelAnzahl.Name = "LabelAnzahl"
-        Me.LabelAnzahl.Size = New System.Drawing.Size(227, 13)
+        Me.LabelAnzahl.Size = New System.Drawing.Size(564, 13)
         Me.LabelAnzahl.TabIndex = 13
         Me.LabelAnzahl.Text = "Status: "
         '
@@ -1179,9 +1179,9 @@ Partial Class formCfg
         '
         'ProgressBarIndex
         '
-        Me.ProgressBarIndex.Location = New System.Drawing.Point(9, 111)
+        Me.ProgressBarIndex.Location = New System.Drawing.Point(6, 111)
         Me.ProgressBarIndex.Name = "ProgressBarIndex"
-        Me.ProgressBarIndex.Size = New System.Drawing.Size(322, 28)
+        Me.ProgressBarIndex.Size = New System.Drawing.Size(325, 28)
         Me.ProgressBarIndex.TabIndex = 10
         '
         'GrpoupBoxRWS
