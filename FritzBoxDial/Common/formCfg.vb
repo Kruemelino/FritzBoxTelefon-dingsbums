@@ -356,7 +356,10 @@ Public Class formCfg
         C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text, False)
         C_XML.Write("Optionen", "TBAmt", CStr(IIf(Me.TBAmt.Text = "", "-1", Me.TBAmt.Text)), False)
         C_XML.Write("Optionen", "TBFBAdr", Me.TBFBAdr.Text, False)
+        ' So ist es schön:
         C_FBox.SFBAddr = Me.TBFBAdr.Text
+        ' So nicht:
+        ThisAddIn.AnrMon.SFBAddr = Me.TBFBAdr.Text
         C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), False)
         C_XML.Write("Optionen", "TBAnrMonX", Me.TBAnrMonX.Text, False)
         C_XML.Write("Optionen", "TBAnrMonY", Me.TBAnrMonY.Text, False)

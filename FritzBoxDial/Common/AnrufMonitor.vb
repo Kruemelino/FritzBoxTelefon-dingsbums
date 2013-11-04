@@ -30,9 +30,19 @@ Public Class AnrufMonitor
     Private UseAnrMon As Boolean
     Private Eingeblendet As Integer = 0
 
-    Private IPAddresse As String = "fritz.box"
+    Private sIPAddresse As String = "fritz.box"
     Private FBAnrMonPort As Integer = 1012
 
+#Region "Properties"
+    Friend Property SFBAddr() As String
+        Get
+            Return sIPAddresse
+        End Get
+        Set(ByVal Value As String)
+            sIPAddresse = Value
+        End Set
+    End Property
+#End Region
 #Region "Phoner"
     Private AnrMonPhoner As Boolean = False
 #End Region
@@ -53,7 +63,7 @@ Public Class AnrufMonitor
         frm_RWS = RWS
         UseAnrMon = NutzeAnrMon
         C_OlI = OutlInter
-        IPAddresse = FBAdr
+        SFBAddr = FBAdr
         ' STARTE Anrmon
         AnrMonStart(False)
     End Sub
@@ -140,10 +150,10 @@ Public Class AnrufMonitor
 
             If CBool(C_XML.Read("Phoner", "CBPhonerAnrMon", "False")) Then
                 FBAnrMonPort = 2012
-                IPAddresse = "127.0.0.1"
+                SFBAddr = "127.0.0.1"
             End If
 
-            If C_hf.Ping(IPAddresse) Or CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
+            If C_hf.Ping(SFBAddr) Or CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
                 BWStartTCPReader = New BackgroundWorker
                 With BWStartTCPReader
                     .WorkerReportsProgress = True
@@ -300,11 +310,11 @@ Public Class AnrufMonitor
     Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
         System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
         Dim IPAddress As IPAddress
-        If LCase(IPAddresse) = "fritz.box" Then
-            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(IPAddresse)
+        If LCase(SFBAddr) = "fritz.box" Then
+            Dim IPHostInfo As IPHostEntry = Dns.GetHostEntry(SFBAddr)
             IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
         Else
-            IPAddress = IPAddress.Parse(IPAddresse)
+            IPAddress = IPAddress.Parse(SFBAddr)
         End If
         Dim Client As New Sockets.TcpClient()
         Dim remoteEP As New IPEndPoint(IPAddress, FBAnrMonPort)
