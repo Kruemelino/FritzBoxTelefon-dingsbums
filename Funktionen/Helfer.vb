@@ -181,19 +181,25 @@ Public Class Helfer
         Next
     End Sub ' (Keyänderung) 
 
-    Public Function GetInformationSystemFritzBox() As String
+    Public Function GetInformationSystemFritzBox(ByVal fbadr As String) As String
         Dim sLink As String
+        'Dim fbox As String = "fritz.box"
+        Dim FBTyp As String = "unbekannt"
+        Dim FBFW As String = "unbekannt"
 
-        sLink = "http://fritz.box/cgi-bin/system_status"
-
+        'If Ping(fbox) Then
+        sLink = "http://" & fbadr & "/cgi-bin/system_status"
         Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpRead(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
+        FBTyp = FritzBoxInformation(0)
+        FBFW = Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
 
+        'End If
         Return String.Concat("Ergänze bitte folgende Angaben:", vbNewLine, vbNewLine, _
                       "Dein Name:", vbNewLine, _
                       "Problembeschreibung:", vbNewLine, _
                       "Datum & Uhrzeit: ", System.DateTime.Now, vbNewLine, _
-                      "Fritz!Box-Typ: ", FritzBoxInformation(0), vbNewLine, _
-                      "Firmware: ", Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text), vbNewLine)
+                      "Fritz!Box-Typ: ", FBTyp, vbNewLine, _
+                      "Firmware: ", FBFW, vbNewLine)
 
     End Function
 
