@@ -127,12 +127,8 @@
         C_XML = XMLKlasse
         Crypt = CryptKlasse
         Dateipfad = iniPfad
-        'P_WählKlient = Wclient
         RWSSuche = Inverssuche
-        'P_AnrufMonitor = AnMonitor
         KontaktFunktionen = KontaktKlasse
-        'P_FritzBox = FritzBoxKlasse
-        'P_OlInterface = OutlInter
         PhonerFunktionen = Phonerklasse
     End Sub
 
@@ -764,7 +760,6 @@
     Friend Sub FillPopupItems(ByRef XMLListBaseNode As String)
         ' XMLListBaseNode erlaubt: CallList, RingList
 
-
         Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , XMLListBaseNode, , False), Office.CommandBarPopup)
         Dim index As Integer
         Dim Anrufer As String
@@ -1073,7 +1068,7 @@
 #End Region 'für Office 2003 und 2007
 
 #Region "Explorer Button Click"
-    Friend Sub ÖffneDirektwahl()
+    Friend Sub WähleDirektwahl()
         P_WählKlient.Wählbox(Nothing, "", True)
     End Sub
 
