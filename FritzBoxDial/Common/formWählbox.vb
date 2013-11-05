@@ -180,7 +180,7 @@ Public Class formWählbox
 
         If KontaktDaten(0) = "-1" Then KontaktDaten(1) = "-1"
 
-        ThisAddIn.WClient.ZeigeKontakt(KontaktDaten)
+        ThisAddIn.P_WClient.ZeigeKontakt(KontaktDaten)
         Me.CloseButton.Focus()
     End Sub
 
@@ -207,7 +207,7 @@ Public Class formWählbox
     Private Sub CloseButton_Click() Handles CloseButton.Click
         Me.Hide()
         If Not TimerSchließen Is Nothing Then C_hf.KillTimer(TimerSchließen)
-        If Not UsePhonerOhneFritzBox Then ThisAddIn.fBox.FBLogout(SID)
+        If Not UsePhonerOhneFritzBox Then ThisAddIn.P_FritzBox.FBLogOut(SID)
         Me.Close()
         Me.Dispose(True)
     End Sub
@@ -395,7 +395,7 @@ Public Class formWählbox
         Dim StoreID As String
 
         nameStart = InStr(Me.Text, "ruf: ") + 5
-        If Not nameStart = 5 And Not Number = "ATH" And ThisAddIn.AnrMon.AnrMonAktiv Then
+        If Not nameStart = 5 And Not Number = "ATH" And ThisAddIn.P_AnrMon.AnrMonAktiv Then
             ' Symbolleisteneintrag für Wahlwiederholung vornehmen
             ' nur wenn Timer aus ist sonst macht das 'AnrMonCALL'
             index = CInt(C_XML.Read("Wwdh", "Index", "0"))

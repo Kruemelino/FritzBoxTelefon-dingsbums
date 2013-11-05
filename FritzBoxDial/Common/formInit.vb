@@ -58,27 +58,33 @@
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
 
-            C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
+            'C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
+            C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_RWS, C_Kontakt, C_Phoner)
 
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
             C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.SFBAddr)
 
-            C_GUI.SetOAWOF(C_WählClient, C_AnrMon, C_FBox, C_OlI)
+            With C_GUI
+                .P_AnrufMonitor = C_AnrMon
+                .P_OlInterface = C_OlI
+                .P_WählKlient = C_WählClient
+                .P_FritzBox = C_FBox
+            End With
 
-            ThisAddIn.Dateipfad = DateiPfad
-            ThisAddIn.XML = C_XML
-            ThisAddIn.Crypt = C_Crypt
-            ThisAddIn.hf = C_Helfer
-            ThisAddIn.KontaktFunktionen = C_Kontakt
-            ThisAddIn.RWSSuche = C_RWS
-            ThisAddIn.OlI = C_OlI
-            ThisAddIn.fBox = C_FBox
-            ThisAddIn.WClient = C_WählClient
-            ThisAddIn.AnrMon = C_AnrMon
-            ThisAddIn.GUI = C_GUI
-            ThisAddIn.Phoner = C_Phoner
-            ThisAddIn.UseAnrMon = UseAnrMon
+            ThisAddIn.P_Dateipfad = DateiPfad
+            ThisAddIn.P_XML = C_XML
+            ThisAddIn.P_Crypt = C_Crypt
+            ThisAddIn.P_hf = C_Helfer
+            ThisAddIn.P_KontaktFunktionen = C_Kontakt
+            ThisAddIn.P_RWSSuche = C_RWS
+            ThisAddIn.P_OlI = C_OlI
+            ThisAddIn.P_FritzBox = C_FBox
+            ThisAddIn.P_WClient = C_WählClient
+            ThisAddIn.P_AnrMon = C_AnrMon
+            ThisAddIn.P_GUI = C_GUI
+            ThisAddIn.P_Phoner = C_Phoner
+            ThisAddIn.P_UseAnrMon = UseAnrMon
 
             If CBool(C_XML.Read("Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
                 Dim formjournalimort As New formJournalimport(C_AnrMon, C_Helfer, C_XML, False)
@@ -196,23 +202,14 @@
             .Add("Nummern")
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
-
             Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
             TelNrString = (From x In TelNrString Where Not x Like "" Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
 
-
             For Each TelNr In TelNrString
                 Me.CLBTelNr.Items.Add(TelNr)
             Next
-            'etwas unschön
-            .Add("")
-            'For i = 1 To Me.CLBTelNr.Items.Count - 1
-            '    .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
-            '    .Item(.Count - 1) = "@Checked"
-            '    Me.CLBTelNr.SetItemChecked(i, C_Helfer.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
-            'Next
         End With
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
     End Sub

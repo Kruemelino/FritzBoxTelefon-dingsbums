@@ -10,11 +10,29 @@
         C_hf = HelferKlasse
     End Sub
 
-    Friend Function FindeKontakt(ByRef TelNr As String, _
+    Friend Overloads Function FindeKontakt(ByRef TelNr As String, _
+                              ByVal Absender As String, _
+                              ByVal LandesVW As String, _
+                              ByVal NamensRaum As Outlook.NameSpace) _
+                              As Outlook.ContactItem
+        Dim gefunden As Outlook.ContactItem = Nothing ' was gefunden?
+
+        '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
+        'If Not NamensRaum Is Nothing Then
+        Dim j As Integer = 1
+        Do While (j <= NamensRaum.Folders.Count) And (gefunden Is Nothing)
+            gefunden = FindeKontakt(TelNr, Absender, LandesVW, NamensRaum.Folders.Item(j))
+            j = j + 1
+            Windows.Forms.Application.DoEvents()
+        Loop
+        Return gefunden
+        'End If
+    End Function
+
+    Friend Overloads Function FindeKontakt(ByRef TelNr As String, _
                                  ByVal Absender As String, _
                                  ByVal LandesVW As String, _
-                                 ByVal Ordner As Outlook.MAPIFolder, _
-                                 ByVal NamensRaum As Outlook.NameSpace) _
+                                 ByVal Ordner As Outlook.MAPIFolder) _
                                  As Outlook.ContactItem
 
         ' sucht in der Kontaktdatenbank nach der TelNr/Email
@@ -36,18 +54,6 @@
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
         Dim alleTE(14) As String  ' alle TelNr/Email eines Kontakts
         Dim sFilter As String = vbNullString
-
-        ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        If Not NamensRaum Is Nothing Then
-            Dim j As Integer = 1
-            Do While (j <= NamensRaum.Folders.Count) And (gefunden Is Nothing)
-                gefunden = FindeKontakt(TelNr, Absender, LandesVW, NamensRaum.Folders.Item(j), Nothing)
-                j = j + 1
-                Windows.Forms.Application.DoEvents()
-            Loop
-            aktKontakt = Nothing
-            Return gefunden
-        End If
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
             If Not Absender = vbNullString Then
@@ -81,7 +87,7 @@
         ' Unterordner werden rekursiv durchsucht
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count) And (gefunden Is Nothing)
-            gefunden = FindeKontakt(TelNr, Absender, LandesVW, Ordner.Folders.Item(iOrdner), Nothing)
+            gefunden = FindeKontakt(TelNr, Absender, LandesVW, Ordner.Folders.Item(iOrdner))
             iOrdner = iOrdner + 1
             Windows.Forms.Application.DoEvents()
         Loop
@@ -93,7 +99,7 @@
         Dim FritzFolderExists As Boolean = False
         Dim Kontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         If Not vCard = "" Then
-            Dim olContactsFolder As Outlook.MAPIFolder = ThisAddIn.oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+            Dim olContactsFolder As Outlook.MAPIFolder = ThisAddIn.P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
             Dim olFolder As Outlook.MAPIFolder = olContactsFolder.Folders.GetFirst
 
             For Each olFolder In olContactsFolder.Folders
@@ -104,7 +110,7 @@
             Next 'olFolder
             If Not FritzFolderExists Then olFolder = olContactsFolder.Folders.Add("Fritz!Box")
             olContactsFolder = Nothing
-            Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
             Kontakt = CType(Kontakt.Move(olFolder), Outlook.ContactItem)
 
             olFolder = Nothing
@@ -141,7 +147,7 @@
         Dim Kontakt As Outlook.ContactItem ' Objekt des Kontakteintrags
         Dim TelNr As String
 
-        olAuswahl = ThisAddIn.oApp.ActiveInspector
+        olAuswahl = ThisAddIn.P_oApp.ActiveInspector
         If Not olAuswahl Is Nothing Then
             If TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then
                 Journal = CType(olAuswahl.CurrentItem, Outlook.JournalItem)
@@ -172,7 +178,7 @@
                             C_hf.NAR(olLink) : olLink = Nothing
                         End If
 #End If
-                        Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+                        Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
                         If Not pos1 = 0 And Not pos2 = 0 Then
                             vCard = Mid(.Body, pos1, pos2 - pos1)
                             vCard2Contact(vCard, Kontakt)
@@ -204,7 +210,7 @@
     End Sub ' (KontaktErstellen)
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
-        Kontakt = CType(ThisAddIn.oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+        Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
     End Sub
 
     Private Function NrFormat(ByVal gefKontakt As Outlook.ContactItem, ByVal TelNr As String, ByVal LandesVW As String) As String

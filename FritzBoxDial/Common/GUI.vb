@@ -74,40 +74,79 @@
     Private fbox As FritzBox
     Private PhonerFunktionen As PhonerInterface
 
+#Region "Properies"
+    Friend Property P_WählKlient() As Wählclient
+        Get
+            Return Callclient
+        End Get
+        Set(ByVal value As Wählclient)
+            Callclient = value
+        End Set
+    End Property
+
+    Friend Property P_AnrufMonitor() As AnrufMonitor
+        Get
+            Return AnrMon
+        End Get
+        Set(ByVal value As AnrufMonitor)
+            AnrMon = value
+        End Set
+    End Property
+
+    Public Property P_OlInterface() As OutlookInterface
+        Get
+            Return OlI
+        End Get
+        Set(ByVal value As OutlookInterface)
+            OlI = value
+        End Set
+    End Property
+
+    Public Property P_FritzBox() As FritzBox
+        Get
+            Return fbox
+        End Get
+        Set(ByVal value As FritzBox)
+            fbox = value
+        End Set
+    End Property
+#End Region
+
+
+
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
 
+    'Friend Sub New(ByVal HelferKlasse As Helfer, _
+    '               ByVal XMLKlasse As MyXML, _
+    '               ByVal CryptKlasse As Rijndael, _
+    '               ByVal iniPfad As String, _
+    '               ByVal Wclient As Wählclient, _
+    '               ByVal Inverssuche As formRWSuche, _
+    '               ByVal AnMonitor As AnrufMonitor, _
+    '               ByVal KontaktKlasse As Contacts, _
+    '               ByVal FritzBoxKlasse As FritzBox, _
+    '               ByVal OutlInter As OutlookInterface, _
+    '               ByVal Phonerklasse As PhonerInterface)
     Friend Sub New(ByVal HelferKlasse As Helfer, _
-                   ByVal XMLKlasse As MyXML, _
-                   ByVal CryptKlasse As Rijndael, _
-                   ByVal iniPfad As String, _
-                   ByVal Wclient As Wählclient, _
-                   ByVal Inverssuche As formRWSuche, _
-                   ByVal AnMonitor As AnrufMonitor, _
-                   ByVal KontaktKlasse As Contacts, _
-                   ByVal FritzBoxKlasse As FritzBox, _
-                   ByVal OutlInter As OutlookInterface, _
-                   ByVal Phonerklasse As PhonerInterface)
-
+               ByVal XMLKlasse As MyXML, _
+               ByVal CryptKlasse As Rijndael, _
+               ByVal iniPfad As String, _
+               ByVal Inverssuche As formRWSuche, _
+               ByVal KontaktKlasse As Contacts, _
+               ByVal Phonerklasse As PhonerInterface)
         HelferFunktionen = HelferKlasse
         C_XML = XMLKlasse
         Crypt = CryptKlasse
         Dateipfad = iniPfad
-        Callclient = Wclient
+        'P_WählKlient = Wclient
         RWSSuche = Inverssuche
-        AnrMon = AnMonitor
+        'P_AnrufMonitor = AnMonitor
         KontaktFunktionen = KontaktKlasse
-        fbox = FritzBoxKlasse
-        OlI = OutlInter
+        'P_FritzBox = FritzBoxKlasse
+        'P_OlInterface = OutlInter
         PhonerFunktionen = Phonerklasse
-    End Sub
-
-    Friend Sub SetOAWOF(ByVal Wclient As Wählclient, ByVal AnMonitor As AnrufMonitor, ByVal FritzBoxKlasse As FritzBox, OutlInter As OutlookInterface)
-        Callclient = Wclient
-        AnrMon = AnMonitor
-        OlI = OutlInter
-        fbox = FritzBoxKlasse
     End Sub
 
 #Region "Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -347,8 +386,8 @@
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
-        If Not ThisAddIn.AnrMon Is Nothing Then
-            Return ThisAddIn.AnrMon.AnrMonAktiv
+        If Not ThisAddIn.P_AnrMon Is Nothing Then
+            Return ThisAddIn.P_AnrMon.AnrMonAktiv
         End If
         Return False
     End Function
@@ -367,7 +406,7 @@
     End Function
 
     Public Function UseAnrMon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return ThisAddIn.UseAnrMon
+        Return ThisAddIn.P_UseAnrMon
     End Function
 
     Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -520,7 +559,7 @@
         Dim AttributeValues As New ArrayList
 
         xPathTeile.Add("VIPListe")
-        xPathTeile.Add("ID[@ID=""" & index & """]")
+        xPathTeile.Add("ID[@ID=""" & Index & """]")
 
         If Not Anrufer Is vbNullString Then
             NodeNames.Add("Anrufer")
@@ -1048,7 +1087,7 @@
 
 #Region "Explorer Button Click"
     Friend Sub ÖffneDirektwahl()
-        Callclient.Wählbox(Nothing, "", True)
+        P_WählKlient.Wählbox(Nothing, "", True)
     End Sub
 
     Friend Sub ÖffneEinstellungen()
@@ -1071,15 +1110,15 @@
     End Sub
 
     Friend Sub KlickListen(ByVal controlTag As String)
-        Callclient.OnActionListen(controlTag)
+        P_WählKlient.OnActionListen(controlTag)
     End Sub
 
     Friend Sub WählenExplorer()
-        Dim olApp As Outlook.Application = ThisAddIn.oApp
+        Dim olApp As Outlook.Application = ThisAddIn.P_oApp
         If Not olApp Is Nothing Then
             Dim ActiveExplorer As Outlook.Explorer = olApp.ActiveExplorer
             Dim oSel As Outlook.Selection = ActiveExplorer.Selection
-            Callclient.WählboxStart(oSel)
+            P_WählKlient.WählboxStart(oSel)
             HelferFunktionen.NAR(oSel) : HelferFunktionen.NAR(ActiveExplorer)
             oSel = Nothing : ActiveExplorer = Nothing
         End If
@@ -1088,7 +1127,7 @@
 
 #Region "Inspector Button Click"
     Friend Sub WählenInspector()
-        Callclient.WählenAusInspector()
+        P_WählKlient.WählenAusInspector()
     End Sub
 
     Friend Sub KontaktErstellen()

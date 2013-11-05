@@ -2,23 +2,21 @@
 Imports System.IO.Path
 Imports System.Runtime.InteropServices
 Public Class OutlookInterface
-    Private KontaktFunktionen As Contacts
+    Private C_KontaktFunktionen As Contacts
+    Private C_hf As Helfer
     Private OInsp As Outlook.Inspector
-    Private hf As Helfer
+
+
+    Friend ReadOnly Property GetOutlook() As Outlook.Application
+        Get
+            Return ThisAddIn.P_oApp
+        End Get
+    End Property
 
     Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal inipfad As String)
-        hf = Helferklasse
-        KontaktFunktionen = KontaktKlasse
+        C_hf = Helferklasse
+        C_KontaktFunktionen = KontaktKlasse
     End Sub
-
-    Function GetOutlook() As Outlook.Application
-        Try
-            GetOutlook = ThisAddIn.oApp
-        Catch ex As Exception
-            hf.FBDB_MsgBox("Fehler bei Erhalten von Outlook", MsgBoxStyle.Critical, "GetOutlook")
-            GetOutlook = Nothing
-        End Try
-    End Function
 
     Friend Function ErstelleJournalItem(ByVal Subject As String, _
                                    ByVal Duration As Double, _
@@ -36,7 +34,7 @@ Public Class OutlookInterface
             Try
                 olJournal = CType(oApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
             Catch ex As Exception
-                hf.LogFile("ErstelleJournalItem: " & ex.Message)
+                C_hf.LogFile("ErstelleJournalItem: " & ex.Message)
             End Try
             If Not olJournal Is Nothing Then
                 With olJournal
@@ -58,7 +56,7 @@ Public Class OutlookInterface
                 olJournal = Nothing
             End If
         Else
-            hf.LogFile("Journaleintrag konnte nicht erstellt werden.")
+            C_hf.LogFile("Journaleintrag konnte nicht erstellt werden.")
         End If
         oApp = Nothing
     End Function
@@ -76,7 +74,7 @@ Public Class OutlookInterface
             Try
                 Kontakt = CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
             Catch ex As Exception
-                hf.LogFile("KontaktInformation: " & ex.Message)
+                C_hf.LogFile("KontaktInformation: " & ex.Message)
             End Try
             If Not Kontakt Is Nothing Then
                 With Kontakt
@@ -90,9 +88,9 @@ Public Class OutlookInterface
                 Kontakt = Nothing
             End If
         Else
-            hf.LogFile("Kontaktinformationen konnten nicht ermittelt werden.")
+            C_hf.LogFile("Kontaktinformationen konnten nicht ermittelt werden.")
         End If
-        hf.NAR(Kontakt)
+        C_hf.NAR(Kontakt)
         oApp = Nothing
     End Sub
 
@@ -104,7 +102,7 @@ Public Class OutlookInterface
             Try
                 Kontakt = CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
             Catch ex As Exception
-                hf.LogFile("KontaktBild: " & ex.Message)
+                C_hf.LogFile("KontaktBild: " & ex.Message)
             End Try
             If Not Kontakt Is Nothing Then
                 With Kontakt
@@ -121,9 +119,9 @@ Public Class OutlookInterface
                 Kontakt = Nothing
             End If
         Else
-            hf.LogFile("Kontaktbild konnte nicht geladen werden.")
+            C_hf.LogFile("Kontaktbild konnte nicht geladen werden.")
         End If
-        hf.NAR(Kontakt)
+        C_hf.NAR(Kontakt)
         oApp = Nothing
     End Function
 
@@ -137,13 +135,11 @@ Public Class OutlookInterface
         If Not oApp Is Nothing Then
             Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
             Dim Ergebnis As Outlook.ContactItem          ' Auswertung für Findekontakt
-            Dim olfolder As Outlook.MAPIFolder
             StarteKontaktSuche = False
             If alleOrdner Then
-                olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                Ergebnis = KontaktFunktionen.FindeKontakt(TelNr, Absender, LandesVW, olfolder, Nothing)
+                Ergebnis = C_KontaktFunktionen.FindeKontakt(TelNr, Absender, LandesVW, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
             Else
-                Ergebnis = KontaktFunktionen.FindeKontakt(TelNr, Absender, LandesVW, Nothing, olNamespace)
+                Ergebnis = C_KontaktFunktionen.FindeKontakt(TelNr, Absender, LandesVW, olNamespace)
             End If
             If Not Ergebnis Is Nothing Then
                 StarteKontaktSuche = True
@@ -153,10 +149,9 @@ Public Class OutlookInterface
                 End With
             End If
             Ergebnis = Nothing
-            olfolder = Nothing
             olNamespace = Nothing
         Else
-            hf.LogFile("Kontaktsuche konnte nicht gestartet werden.")
+            C_hf.LogFile("Kontaktsuche konnte nicht gestartet werden.")
             StarteKontaktSuche = False
         End If
         oApp = Nothing
@@ -169,14 +164,14 @@ Public Class OutlookInterface
             Try
                 olMail = CType(oApp.CreateItem(Outlook.OlItemType.olMailItem), Outlook.MailItem)
             Catch ex As Exception
-                hf.LogFile("ErstelleJournalItem: " & ex.Message)
+                C_hf.LogFile("ErstelleJournalItem: " & ex.Message)
             End Try
             If Not olMail Is Nothing Then
                 With olMail
                     .Attachments.Add(tmpFile)
                     .Attachments.Add(XMLFile)
                     Try
-                        .Attachments.Add(hf.Dateipfade("LogDatei"))
+                        .Attachments.Add(C_hf.Dateipfade("LogDatei"))
                     Catch ex As Exception
                         .Body = vbNewLine & "Log wird nicht geschrieben."
                     End Try
@@ -193,7 +188,7 @@ Public Class OutlookInterface
                 olMail = Nothing
             End If
         Else
-            hf.LogFile("E-Mail konnte nicht erstellt werden.")
+            C_hf.LogFile("E-Mail konnte nicht erstellt werden.")
         End If
         oApp = Nothing
         Return True
@@ -221,7 +216,7 @@ Public Class OutlookInterface
                 End Try
             End If
         Else
-            hf.LogFile("Inspectorfenster konnte nicht verschoben werden.")
+            C_hf.LogFile("Inspectorfenster konnte nicht verschoben werden.")
         End If
         oApp = Nothing
     End Sub
@@ -255,7 +250,7 @@ Public Class OutlookInterface
                 screenBounds = Windows.Forms.Screen.FromHandle(CType(hWnd, IntPtr)).Bounds
                 If (AppBounds.bottom - AppBounds.top = screenBounds.Height) And (AppBounds.right - AppBounds.left = screenBounds.Width) Then
                     VollBildAnwendungAktiv = True
-                    hf.LogFile("Eine aktive Vollbildanwendung wurde detektiert.")
+                    C_hf.LogFile("Eine aktive Vollbildanwendung wurde detektiert.")
                 End If
             End If
         End If

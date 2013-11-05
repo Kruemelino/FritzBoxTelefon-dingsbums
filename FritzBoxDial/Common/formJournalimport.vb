@@ -52,7 +52,7 @@ Public Class formJournalimport
 
 #Region " Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles DownloadAnrListe.DoWork
-        e.Result = ThisAddIn.fBox.DownloadAnrListe
+        e.Result = ThisAddIn.P_FritzBox.DownloadAnrListe
     End Sub
 
 
@@ -111,7 +111,7 @@ Public Class formJournalimport
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
         Dim Anzahl As Integer = -1 ' Anzahl der zu importierenden Telefonate
-        ThisAddIn.fBox.FBLogout(SID)
+        ThisAddIn.P_FritzBox.FBLogOut(SID)
 
         If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is vbNullString Then
 

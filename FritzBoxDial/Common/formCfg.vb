@@ -359,7 +359,7 @@ Public Class formCfg
         ' So ist es schön:
         C_FBox.SFBAddr = Me.TBFBAdr.Text
         ' So nicht:
-        ThisAddIn.AnrMon.SFBAddr = Me.TBFBAdr.Text
+        ThisAddIn.P_AnrMon.SFBAddr = Me.TBFBAdr.Text
         C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), False)
         C_XML.Write("Optionen", "TBAnrMonX", Me.TBAnrMonX.Text, False)
         C_XML.Write("Optionen", "TBAnrMonY", Me.TBAnrMonY.Text, False)
@@ -571,7 +571,7 @@ Public Class formCfg
                 End With
             Case "ButtonOK"
                 Dim formschließen As Boolean = Speichern()
-                ThisAddIn.UseAnrMon = Me.CBUseAnrMon.Checked
+                ThisAddIn.P_UseAnrMon = Me.CBUseAnrMon.Checked
 #If OVer >= 14 Then
                 GUI.RefreshRibbon()
 #End If

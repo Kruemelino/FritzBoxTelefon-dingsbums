@@ -152,7 +152,7 @@ Public Class formAnrMon
     End Sub
 
     Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click
-        ThisAddIn.WClient.Rueckruf(aID)
+        ThisAddIn.P_WClient.Rueckruf(aID)
     End Sub
 
     Private Sub ToolStripMenuItemKopieren_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemKopieren.Click
@@ -173,7 +173,7 @@ Public Class formAnrMon
         Kontaktdaten(0) = KontaktID
         Kontaktdaten(1) = StoreID
         Kontaktdaten(2) = TelNr
-        ThisAddIn.WClient.ZeigeKontakt(Kontaktdaten)
+        ThisAddIn.P_WClient.ZeigeKontakt(Kontaktdaten)
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
