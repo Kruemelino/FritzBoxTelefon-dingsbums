@@ -112,23 +112,10 @@
     End Property
 #End Region
 
-
-
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
 
-    'Friend Sub New(ByVal HelferKlasse As Helfer, _
-    '               ByVal XMLKlasse As MyXML, _
-    '               ByVal CryptKlasse As Rijndael, _
-    '               ByVal iniPfad As String, _
-    '               ByVal Wclient As Wählclient, _
-    '               ByVal Inverssuche As formRWSuche, _
-    '               ByVal AnMonitor As AnrufMonitor, _
-    '               ByVal KontaktKlasse As Contacts, _
-    '               ByVal FritzBoxKlasse As FritzBox, _
-    '               ByVal OutlInter As OutlookInterface, _
-    '               ByVal Phonerklasse As PhonerInterface)
     Friend Sub New(ByVal HelferKlasse As Helfer, _
                ByVal XMLKlasse As MyXML, _
                ByVal CryptKlasse As Rijndael, _
