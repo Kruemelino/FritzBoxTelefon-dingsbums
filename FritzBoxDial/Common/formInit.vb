@@ -58,7 +58,6 @@
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
 
-            'C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_WählClient, C_RWS, C_AnrMon, C_Kontakt, C_FBox, C_OlI, C_Phoner)
             C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_RWS, C_Kontakt, C_Phoner)
 
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
@@ -74,16 +73,12 @@
 
             ThisAddIn.P_Dateipfad = DateiPfad
             ThisAddIn.P_XML = C_XML
-            ThisAddIn.P_Crypt = C_Crypt
             ThisAddIn.P_hf = C_Helfer
             ThisAddIn.P_KontaktFunktionen = C_Kontakt
-            ThisAddIn.P_RWSSuche = C_RWS
-            ThisAddIn.P_OlI = C_OlI
             ThisAddIn.P_FritzBox = C_FBox
             ThisAddIn.P_WClient = C_WählClient
             ThisAddIn.P_AnrMon = C_AnrMon
             ThisAddIn.P_GUI = C_GUI
-            ThisAddIn.P_Phoner = C_Phoner
             ThisAddIn.P_UseAnrMon = UseAnrMon
 
             If CBool(C_XML.Read("Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then

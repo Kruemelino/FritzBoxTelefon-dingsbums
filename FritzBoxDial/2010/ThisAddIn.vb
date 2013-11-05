@@ -25,7 +25,6 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Public WithEvents iPopRWS As Office.CommandBarPopup
     Public WithEvents iBtnWwh As Office.CommandBarButton
-    'Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
     Public WithEvents iBtnRws11880 As Office.CommandBarButton
     Public WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Public WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -41,18 +40,12 @@ Public Class ThisAddIn
     Private Shared XML As MyXML ' Reader/Writer initialisieren
     Private Shared fBox As FritzBox  'Deklarieren der Klasse
     Private Shared AnrMon As AnrufMonitor
-    Private Shared RWSSuche As formRWSuche
-    Private Shared Journalimport As formJournalimport
     Private Shared WClient As Wählclient
-    Private Shared Crypt As Rijndael
     Private Shared hf As Helfer
     Private Shared KontaktFunktionen As Contacts
-    Private Shared Phoner As PhonerInterface
     Private Shared GUI As GraphicalUserInterface
-    Private Shared OlI As OutlookInterface
 
     Private Shared UseAnrMon As Boolean
-
     Private Shared Dateipfad As String
 #Region "Properties"
 
@@ -74,24 +67,6 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_RWSSuche() As formRWSuche
-        Get
-            Return RWSSuche
-        End Get
-        Set(ByVal value As formRWSuche)
-            RWSSuche = value
-        End Set
-    End Property
-
-    Friend Shared Property P_Journalimport() As formJournalimport
-        Get
-            Return Journalimport
-        End Get
-        Set(ByVal value As formJournalimport)
-            Journalimport = value
-        End Set
-    End Property
-
     Friend Shared Property P_hf() As Helfer
         Get
             Return hf
@@ -101,30 +76,12 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_Crypt() As Rijndael
-        Get
-            Return Crypt
-        End Get
-        Set(ByVal value As Rijndael)
-            Crypt = value
-        End Set
-    End Property
-
     Friend Shared Property P_KontaktFunktionen() As Contacts
         Get
             Return KontaktFunktionen
         End Get
         Set(ByVal value As Contacts)
             KontaktFunktionen = value
-        End Set
-    End Property
-
-    Friend Shared Property P_Phoner() As PhonerInterface
-        Get
-            Return Phoner
-        End Get
-        Set(ByVal value As PhonerInterface)
-            Phoner = value
         End Set
     End Property
 
@@ -164,15 +121,6 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_OlI() As OutlookInterface
-        Get
-            Return OlI
-        End Get
-        Set(ByVal value As OutlookInterface)
-            OlI = value
-        End Set
-    End Property
-
     Friend Shared Property P_Dateipfad() As String
         Get
             Return Dateipfad
@@ -193,17 +141,14 @@ Public Class ThisAddIn
 
 
 #End Region
+
 #If OVer < 14 Then
     Private FritzCmdBar As Office.CommandBar
 #End If
 
     Private Initialisierung As formInit
-
     Public Const Version As String = "3.6.1"
-
-
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
-
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -329,6 +274,7 @@ Public Class ThisAddIn
 
 #End If
 #End Region
+
 #Region " Office 2003 Inspectorfenster"
 #If OVer = 11 Then
     Private Sub iBtnKontakterstellen_Click(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnKontakterstellen.Click
