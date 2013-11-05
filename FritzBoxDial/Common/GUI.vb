@@ -4,7 +4,7 @@
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
-    Private RibbonObjekt As Office.IRibbonUI
+    'Private RibbonObjekt As Office.IRibbonUI
     Public Function GetCustomUI(ByVal ribbonID As String) As String Implements Office.IRibbonExtensibility.GetCustomUI
         Dim File As String
         Select Case ribbonID
@@ -28,7 +28,6 @@
 #End If
         Return File
     End Function
-
     Private Shared Function GetResourceText(ByVal resourceName As String) As String
         Dim asm As Reflection.Assembly = Reflection.Assembly.GetExecutingAssembly()
         Dim resourceNames() As String = asm.GetManifestResourceNames()
@@ -483,7 +482,8 @@
                 AddVIP(aktKontakt)
             End If
         End If
-        RibbonObjekt.Invalidate()
+        ' Fehler unter Office 2007
+        ' RibbonObjekt.Invalidate()
     End Sub
 
     Public Function GetPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -1115,10 +1115,6 @@
     Friend Sub KontaktErstellen()
         KontaktFunktionen.KontaktErstellen()
     End Sub
-
-    'Friend Sub RWSGoYellow(ByVal insp As Outlook.Inspector)
-    '    RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWSGoYellow, insp)
-    'End Sub
 
     Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
         RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWS11880, insp)
