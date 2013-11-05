@@ -4,7 +4,7 @@
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
-    'Private RibbonObjekt As Office.IRibbonUI
+    Private RibbonObjekt As Office.IRibbonUI
     Public Function GetCustomUI(ByVal ribbonID As String) As String Implements Office.IRibbonExtensibility.GetCustomUI
         Dim File As String
         Select Case ribbonID
@@ -433,7 +433,7 @@
     End Function
     ' Ab Hier Rückrufe von Buttons
     Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
-        ÖffneDirektwahl()
+        WähleDirektwahl()
     End Sub
 
     Public Sub OnActionListen(ByVal control As Office.IRibbonControl)
