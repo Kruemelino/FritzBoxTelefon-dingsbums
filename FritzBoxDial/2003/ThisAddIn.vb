@@ -25,6 +25,7 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Public WithEvents iPopRWS As Office.CommandBarPopup
     Public WithEvents iBtnWwh As Office.CommandBarButton
+    'Public WithEvents iBtnRwsGoYellow As Office.CommandBarButton
     Public WithEvents iBtnRws11880 As Office.CommandBarButton
     Public WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Public WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -33,37 +34,172 @@ Public Class ThisAddIn
     Public WithEvents iBtnVIP As Office.CommandBarButton
 #End If
 #End Region
-    Public Shared oApp As Outlook.Application
+    Private Shared oApp As Outlook.Application
 
-    Public WithEvents ContactSaved As Outlook.ContactItem
-    Public WithEvents oInsps As Outlook.Inspectors
-    Public Shared XML As MyXML ' Reader/Writer initialisieren
-    Public Shared fBox As FritzBox  'Deklarieren der Klasse
-    Public Shared AnrMon As AnrufMonitor
-    Public Shared RWSSuche As formRWSuche
-    Public Shared Journalimport As formJournalimport
-    Public Shared WClient As Wählclient
-    Public Shared Crypt As New Rijndael
-    Public Shared hf As Helfer
-    Public Shared KontaktFunktionen As Contacts
-    Public Shared Phoner As PhonerInterface
-    Public Shared GUI As GraphicalUserInterface
-    Public Shared OlI As OutlookInterface
+    Friend WithEvents ContactSaved As Outlook.ContactItem
+    Friend WithEvents oInsps As Outlook.Inspectors
+    Private Shared XML As MyXML ' Reader/Writer initialisieren
+    Private Shared fBox As FritzBox  'Deklarieren der Klasse
+    Private Shared AnrMon As AnrufMonitor
+    Private Shared RWSSuche As formRWSuche
+    Private Shared Journalimport As formJournalimport
+    Private Shared WClient As Wählclient
+    Private Shared Crypt As Rijndael
+    Private Shared hf As Helfer
+    Private Shared KontaktFunktionen As Contacts
+    Private Shared Phoner As PhonerInterface
+    Private Shared GUI As GraphicalUserInterface
+    Private Shared OlI As OutlookInterface
 
-    Public Shared Dateipfad As String
+    Private Shared UseAnrMon As Boolean
+
+    Private Shared Dateipfad As String
+#Region "Properties"
+
+    Friend Shared Property P_oApp() As Outlook.Application
+        Get
+            Return oApp
+        End Get
+        Set(ByVal value As Outlook.Application)
+            oApp = value
+        End Set
+    End Property
+
+    Friend Shared Property P_XML() As MyXML
+        Get
+            Return XML
+        End Get
+        Set(ByVal value As MyXML)
+            XML = value
+        End Set
+    End Property
+
+    Friend Shared Property P_RWSSuche() As formRWSuche
+        Get
+            Return RWSSuche
+        End Get
+        Set(ByVal value As formRWSuche)
+            RWSSuche = value
+        End Set
+    End Property
+
+    Friend Shared Property P_Journalimport() As formJournalimport
+        Get
+            Return Journalimport
+        End Get
+        Set(ByVal value As formJournalimport)
+            Journalimport = value
+        End Set
+    End Property
+
+    Friend Shared Property P_hf() As Helfer
+        Get
+            Return hf
+        End Get
+        Set(ByVal value As Helfer)
+            hf = value
+        End Set
+    End Property
+
+    Friend Shared Property P_Crypt() As Rijndael
+        Get
+            Return Crypt
+        End Get
+        Set(ByVal value As Rijndael)
+            Crypt = value
+        End Set
+    End Property
+
+    Friend Shared Property P_KontaktFunktionen() As Contacts
+        Get
+            Return KontaktFunktionen
+        End Get
+        Set(ByVal value As Contacts)
+            KontaktFunktionen = value
+        End Set
+    End Property
+
+    Friend Shared Property P_Phoner() As PhonerInterface
+        Get
+            Return Phoner
+        End Get
+        Set(ByVal value As PhonerInterface)
+            Phoner = value
+        End Set
+    End Property
+
+    Friend Shared Property P_GUI() As GraphicalUserInterface
+        Get
+            Return GUI
+        End Get
+        Set(ByVal value As GraphicalUserInterface)
+            GUI = value
+        End Set
+    End Property
+
+    Friend Shared Property P_WClient() As Wählclient
+        Get
+            Return WClient
+        End Get
+        Set(ByVal value As Wählclient)
+            WClient = value
+        End Set
+    End Property
+
+    Friend Shared Property P_FritzBox() As FritzBox
+        Get
+            Return fBox
+        End Get
+        Set(ByVal value As FritzBox)
+            fBox = value
+        End Set
+    End Property
+
+    Friend Shared Property P_AnrMon() As AnrufMonitor
+        Get
+            Return AnrMon
+        End Get
+        Set(ByVal value As AnrufMonitor)
+            AnrMon = value
+        End Set
+    End Property
+
+    Friend Shared Property P_OlI() As OutlookInterface
+        Get
+            Return OlI
+        End Get
+        Set(ByVal value As OutlookInterface)
+            OlI = value
+        End Set
+    End Property
+
+    Friend Shared Property P_Dateipfad() As String
+        Get
+            Return Dateipfad
+        End Get
+        Set(ByVal value As String)
+            Dateipfad = value
+        End Set
+    End Property
+
+    Friend Shared Property P_UseAnrMon() As Boolean
+        Get
+            Return UseAnrMon
+        End Get
+        Set(ByVal value As Boolean)
+            UseAnrMon = value
+        End Set
+    End Property
+
+
+#End Region
 #If OVer < 14 Then
     Private FritzCmdBar As Office.CommandBar
 #End If
 
-    Private FbAddr As String
-
     Private Initialisierung As formInit
-
-    Public Const Version As String = "3.6"
-
-    Public Shared UseAnrMon As Boolean
+    Public Const Version As String = "3.6.1"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
-
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
