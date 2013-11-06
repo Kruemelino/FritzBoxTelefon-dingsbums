@@ -4,7 +4,7 @@ Imports System.ComponentModel
 Imports System.Threading
 Imports System.Windows.Forms
 
-Public Class formCfg
+Friend Class formCfg
     Private C_XML As MyXML
     Private C_Crypt As Rijndael
     Private C_Helfer As Helfer
@@ -357,7 +357,7 @@ Public Class formCfg
         C_XML.Write("Optionen", "TBAmt", CStr(IIf(Me.TBAmt.Text = "", "-1", Me.TBAmt.Text)), False)
         C_XML.Write("Optionen", "TBFBAdr", Me.TBFBAdr.Text, False)
         ' So ist es schön:
-        C_FBox.SFBAddr = Me.TBFBAdr.Text
+        C_FBox.P_FBAddr = Me.TBFBAdr.Text
         ' So nicht:
         ThisAddIn.P_AnrMon.SFBAddr = Me.TBFBAdr.Text
         C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), False)
@@ -558,7 +558,7 @@ Public Class formCfg
                 Me.CBIgnoTelNrFormat.Checked = False
             Case "BTelefonliste"
                 Dim xPathTeile As New ArrayList
-                C_FBox.GetEventProvider(emc)
+                C_FBox.SetEventProvider(emc)
                 Me.BTelefonliste.Enabled = False
                 Me.BTelefonliste.Text = "Bitte warten..."
                 Windows.Forms.Application.DoEvents()
@@ -611,7 +611,7 @@ Public Class formCfg
                         Me.CBTelefonDatei.Checked = False
                     End If
                 End If
-                C_FBox.GetEventProvider(emc)
+                C_FBox.SetEventProvider(emc)
                 AddLine("Fritz!Box Klasse mit Verweis auf dieses Formular erstellt.")
 
                 BWTelefone = New BackgroundWorker
@@ -849,7 +849,7 @@ Public Class formCfg
 
     Private Sub NewMail()
         Dim NeueFW As Boolean
-        Dim SID As String = C_FBox.SDefaultSID
+        Dim SID As String = C_FBox.P_DefaultSID
         Dim URL As String
         Dim FBOX_ADR As String = C_XML.Read("Optionen", "TBFBAdr", "fritz.box")
 
@@ -863,8 +863,8 @@ Public Class formCfg
 
         'C_FBox = Nothing
         'C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
-        C_FBox.GetEventProvider(emc)
-        Do While SID = C_FBox.SDefaultSID
+        C_FBox.SetEventProvider(emc)
+        Do While SID = C_FBox.P_DefaultSID
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
@@ -872,7 +872,7 @@ Public Class formCfg
                     Exit Sub
                 End If
             End If
-            SID = C_FBox.FBLogin(NeueFW, FBBenutzer, FBPasswort)
+            SID = C_FBox.FBLogIn(NeueFW, FBBenutzer, FBPasswort)
         Loop
 
         If NeueFW Then
@@ -1236,7 +1236,7 @@ Public Class formCfg
 
     Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWTelefone.DoWork
         AddLine("Einlesen der Telefone gestartet.")
-        C_FBox.bSpeichereDaten = CBool(e.Argument)
+        C_FBox.P_SpeichereDaten = CBool(e.Argument)
         e.Result = CBool(e.Argument)
         If Me.TBTelefonDatei.Text = vbNullString Then
             C_FBox.FritzBoxDaten()

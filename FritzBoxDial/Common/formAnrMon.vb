@@ -1,7 +1,7 @@
 Imports System.Timers
 Imports System.IO.Path
 
-Public Class formAnrMon
+Friend Class formAnrMon
     Private TelefonName As String
     Private aID As Integer
     Private C_XML As MyXML

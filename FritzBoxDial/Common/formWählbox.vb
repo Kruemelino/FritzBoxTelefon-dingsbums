@@ -3,7 +3,7 @@ Imports System.Net
 Imports System.IO
 Imports System.Text
 
-Public Class formWählbox
+Friend Class formWählbox
     Private WithEvents BWLogin As New System.ComponentModel.BackgroundWorker
 
     Private C_XML As MyXML
@@ -61,7 +61,7 @@ Public Class formWählbox
 
         C_Phoner = PhonerKlasse
 
-        SID = C_FBox.SDefaultSID
+        SID = C_FBox.P_DefaultSID
         Me.FrameDirektWahl.Visible = bDirektwahl
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
@@ -545,8 +545,8 @@ Public Class formWählbox
         Element = Me.ComboBoxFon
         AnAus = False
         SetEnabled()
-        SID = C_FBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
-        If Not SID = C_FBox.SDefaultSID Then
+        SID = C_FBox.FBLogIn(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
+        If Not SID = C_FBox.P_DefaultSID Then
             StatusText = "Der Wählclient ist bereit."
             WählboxBereit = True
             Element = Me.ListTel
@@ -577,7 +577,7 @@ Public Class formWählbox
         Else
             Me.checkCLIR.Enabled = True
             Me.checkNetz.Enabled = True
-            If SID = "-1" Or SID = C_FBox.SDefaultSID Then
+            If SID = "-1" Or SID = C_FBox.P_DefaultSID Then
                 If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
                 WählboxBereit = False
                 Me.LabelStatus.Text = "Bitte warten..."

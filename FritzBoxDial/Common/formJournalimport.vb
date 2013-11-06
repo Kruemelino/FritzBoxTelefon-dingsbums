@@ -1,6 +1,6 @@
 ﻿Imports System.Threading
 
-Public Class formJournalimport
+Friend Class formJournalimport
     Private WithEvents DownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
     Private Delegate Sub DelgSetProgressbar()

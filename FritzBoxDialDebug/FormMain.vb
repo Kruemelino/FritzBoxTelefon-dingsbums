@@ -77,21 +77,21 @@ Public Class FormMain
             C_Helfer.KeyChange()
         End If
         C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, True)
-
-        C_FBox.bSpeichereDaten = False
-        C_FBox.FritzBoxDaten()
-
+        With C_FBox
+            .SetEventProvider(emc)
+            .P_SpeichereDaten = False
+            .FritzBoxDaten()
+        End With
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub BHerunterladen_Click(sender As Object, e As EventArgs) Handles BHerunterladen.Click
         Dim FW550 As Boolean
         Dim sSID As String
         Dim sLink As String
         Dim tempstring As String
 
-        'sSID = C_FBox.sDefaultSID
-        sSID = C_FBox.FBLogin(FW550)
-        If Not sSID = C_FBox.sDefaultSID Then
+        sSID = C_FBox.FBLogIn(FW550)
+        If Not sSID = C_FBox.P_DefaultSID Then
             If FW550 Then
                 sLink = "http://fritz.box/fon_num/fon_num_list.lua?sid=" & sSID
             Else

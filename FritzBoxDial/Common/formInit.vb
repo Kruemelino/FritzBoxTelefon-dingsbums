@@ -1,4 +1,4 @@
-﻿Public Class formInit
+﻿Friend Class formInit
     ' Klassen
     'Private C_ini As InI
     Private C_XML As MyXML
@@ -62,7 +62,7 @@
 
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
 
-            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.SFBAddr)
+            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.P_FBAddr)
 
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
@@ -146,8 +146,8 @@
         C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"), True)
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyChange()
-        SID = C_FBox.FBLogin(fw550)
-        If Not SID = C_FBox.SDefaultSID Then
+        SID = C_FBox.FBLogIn(fw550)
+        If Not SID = C_FBox.P_DefaultSID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False
@@ -177,7 +177,7 @@
 
         C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, False)
         C_XML.Write("Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text, True)
-        C_FBox.bSpeichereDaten = True
+        C_FBox.P_SpeichereDaten = True
         C_FBox.FritzBoxDaten()
 
         Me.CLBTelNr.Enabled = True

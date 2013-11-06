@@ -33,8 +33,8 @@ Partial Class FormMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.TBTelefonie = New System.Windows.Forms.RichTextBox()
+        Me.BHerunterladen = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -131,15 +131,6 @@ Partial Class FormMain
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Telefeniegeräte"
         '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(253, 216)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(97, 23)
-        Me.Button1.TabIndex = 12
-        Me.Button1.Text = "Herunterladen"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'TBTelefonie
         '
         Me.TBTelefonie.Location = New System.Drawing.Point(6, 19)
@@ -148,12 +139,21 @@ Partial Class FormMain
         Me.TBTelefonie.TabIndex = 13
         Me.TBTelefonie.Text = ""
         '
+        'BHerunterladen
+        '
+        Me.BHerunterladen.Location = New System.Drawing.Point(253, 216)
+        Me.BHerunterladen.Name = "BHerunterladen"
+        Me.BHerunterladen.Size = New System.Drawing.Size(97, 23)
+        Me.BHerunterladen.TabIndex = 12
+        Me.BHerunterladen.Text = "Herunterladen"
+        Me.BHerunterladen.UseVisualStyleBackColor = True
+        '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(545, 252)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.BHerunterladen)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
@@ -185,7 +185,7 @@ Partial Class FormMain
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TBPasswort As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents BHerunterladen As System.Windows.Forms.Button
     Friend WithEvents TBTelefonie As System.Windows.Forms.RichTextBox
 
 End Class

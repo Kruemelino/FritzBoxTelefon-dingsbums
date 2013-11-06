@@ -3,7 +3,7 @@ Imports System.Net
 Imports System.IO
 Imports System.ComponentModel
 
-Public Class AnrufMonitor
+Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
     Private WithEvents BWStartTCPReader As BackgroundWorker
