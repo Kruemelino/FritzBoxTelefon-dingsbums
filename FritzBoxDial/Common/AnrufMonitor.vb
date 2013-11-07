@@ -243,7 +243,11 @@ Friend Class AnrufMonitor
         IPHostInfo = Nothing
 
         tmpTCPclient = Nothing
-        C_GUI.RefreshRibbon()
+#If OVer < 14 Then
+        C_GUI.SetAnrMonButton(True)
+#Else
+            C_GUI.RefreshRibbon()
+#End If
     End Sub
 
     Function AnrMonQuit() As Boolean
@@ -409,7 +413,6 @@ Friend Class AnrufMonitor
             AnrMonError = True
             e.Result = False
         End If
-        C_GUI.RefreshRibbon()
     End Sub
 
     Private Sub BWStartTCPReader_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStartTCPReader.RunWorkerCompleted
