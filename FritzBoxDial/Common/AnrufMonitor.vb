@@ -246,7 +246,7 @@ Friend Class AnrufMonitor
 #If OVer < 14 Then
         C_GUI.SetAnrMonButton(True)
 #Else
-            C_GUI.RefreshRibbon()
+        C_GUI.RefreshRibbon()
 #End If
     End Sub
 
@@ -400,7 +400,7 @@ Friend Class AnrufMonitor
                 ' Timer AnrufmonitorCheck starten
                 TimerCheckAnrMon = New System.Timers.Timer
                 With TimerCheckAnrMon
-                    .Interval = TimeSpan.FromMinutes(0.5).TotalMilliseconds
+                    .Interval = TimeSpan.FromMinutes(1).TotalMilliseconds
                     .Start()
                 End With
 
