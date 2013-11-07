@@ -45,6 +45,11 @@ Public Class FritzBox
         End Set
     End Property
 
+    Friend ReadOnly Property P_DefaultFBAddr() As String
+        Get
+            Return "fritz.box"
+        End Get
+    End Property
 #End Region
 
     Public Sub New(ByVal xmlKlasse As MyXML, _
@@ -57,7 +62,7 @@ Public Class FritzBox
         C_hf = HelferKlasse
         C_hf.KeyChange()
         C_Crypt = CryptKlasse
-        P_FBAddr = C_XML.Read("Optionen", "TBFBAdr", "fritz.box")
+        P_FBAddr = C_XML.Read("Optionen", "TBFBAdr", P_DefaultFBAddr)
 
         EncodeingFritzBox = C_XML.Read("Optionen", "EncodeingFritzBox", "-1")
         If EncodeingFritzBox = "-1" Then

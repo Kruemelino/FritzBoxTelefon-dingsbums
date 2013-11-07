@@ -7,13 +7,13 @@ Public Class Helfer
     Private C_Crypt As Rijndael
 
     Private sDateiPfad As String
+
     Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
     Public Sub New(ByVal iniPfad As String, ByVal XMLKlasse As MyXML, ByVal CryptKlasse As Rijndael)
         sDateiPfad = iniPfad
         C_XML = XMLKlasse
         C_Crypt = CryptKlasse
-
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -183,23 +183,22 @@ Public Class Helfer
 
     Public Function GetInformationSystemFritzBox(ByVal fbadr As String) As String
         Dim sLink As String
-        'Dim fbox As String = "fritz.box"
         Dim FBTyp As String = "unbekannt"
         Dim FBFW As String = "unbekannt"
 
-        'If Ping(fbox) Then
+        If LCase(fbadr) = "fritz.box" Then Ping(fbadr)
+
         sLink = "http://" & fbadr & "/cgi-bin/system_status"
         Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpRead(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
         FBTyp = FritzBoxInformation(0)
         FBFW = Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
 
-        'End If
         Return String.Concat("Ergänze bitte folgende Angaben:", vbNewLine, vbNewLine, _
-                      "Dein Name:", vbNewLine, _
-                      "Problembeschreibung:", vbNewLine, _
-                      "Datum & Uhrzeit: ", System.DateTime.Now, vbNewLine, _
-                      "Fritz!Box-Typ: ", FBTyp, vbNewLine, _
-                      "Firmware: ", FBFW, vbNewLine)
+                             "Dein Name:", vbNewLine, _
+                             "Problembeschreibung:", vbNewLine, _
+                             "Datum & Uhrzeit: ", System.DateTime.Now, vbNewLine, _
+                             "Fritz!Box-Typ: ", FBTyp, vbNewLine, _
+                             "Firmware: ", FBFW, vbNewLine)
 
     End Function
 

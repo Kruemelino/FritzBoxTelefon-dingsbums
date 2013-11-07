@@ -83,7 +83,7 @@ Friend Class formCfg
         Me.TBLandesVW.Text = C_XML.Read("Optionen", "TBLandesVW", "0049")
         Me.TBAmt.Text = C_XML.Read("Optionen", "TBAmt", "")
         Me.TBAmt.Text = CStr(IIf(Me.TBAmt.Text = "-1", "", Me.TBAmt.Text))
-        Me.TBFBAdr.Text = C_XML.Read("Optionen", "TBFBAdr", "fritz.box")
+        Me.TBFBAdr.Text = C_XML.Read("Optionen", "TBFBAdr", ThisAddIn.P_FritzBox.P_DefaultFBAddr)
         Me.CBForceFBAddr.Checked = CBool(IIf(C_XML.Read("Optionen", "CBForceFBAddr", "False") = "True", True, False))
         Me.TBBenutzer.Text = C_XML.Read("Optionen", "TBBenutzer", vbNullString)
         If C_XML.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
@@ -359,7 +359,7 @@ Friend Class formCfg
         ' So ist es schön:
         C_FBox.P_FBAddr = Me.TBFBAdr.Text
         ' So nicht:
-        ThisAddIn.P_AnrMon.SFBAddr = Me.TBFBAdr.Text
+        ThisAddIn.P_AnrMon.P_FBAddr = Me.TBFBAdr.Text
         C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), False)
         C_XML.Write("Optionen", "TBAnrMonX", Me.TBAnrMonX.Text, False)
         C_XML.Write("Optionen", "TBAnrMonY", Me.TBAnrMonY.Text, False)
@@ -851,7 +851,7 @@ Friend Class formCfg
         Dim NeueFW As Boolean
         Dim SID As String = C_FBox.P_DefaultSID
         Dim URL As String
-        Dim FBOX_ADR As String = C_XML.Read("Optionen", "TBFBAdr", "fritz.box")
+        Dim FBOX_ADR As String = C_XML.Read("Optionen", "TBFBAdr", ThisAddIn.P_FritzBox.P_DefaultFBAddr)
 
         Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
         Dim MailText As String

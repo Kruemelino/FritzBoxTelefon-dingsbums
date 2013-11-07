@@ -136,6 +136,7 @@ Public Class ThisAddIn
             UseAnrMon = value
         End Set
     End Property
+
 #End Region
 
 #If OVer < 14 Then

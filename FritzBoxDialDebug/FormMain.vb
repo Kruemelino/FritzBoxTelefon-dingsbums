@@ -35,7 +35,6 @@ Public Class FormMain
         Dim Passwort As String
 
         Me.TBLandesVW.Text = C_XML.Read("Optionen", "TBLandesVW", "0049")
-        'Me.TBFBAdr.Text = C_ini.Read("Optionen", "TBFBAdr", "fritz.box")
         Me.TBBenutzer.Text = C_XML.Read("Optionen", "TBBenutzer", vbNullString)
         Passwort = C_XML.Read("Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
