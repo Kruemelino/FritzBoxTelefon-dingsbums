@@ -1,16 +1,22 @@
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 
-<System.ComponentModel.DefaultPropertyAttribute("Content"), _
-System.ComponentModel.DesignTimeVisible(False)> _
+<System.ComponentModel.DefaultPropertyAttribute("Content"), System.ComponentModel.DesignTimeVisible(False)> _
 Public Class PopupStoppuhrForm
     Inherits System.Windows.Forms.Form
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ' Copyright ©1996-2011 VBnet/Randy Birch, All Rights Reserved.
+    ' Some pages may also contain other copyrights by the author.
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ' Distribution: You can freely use this code in your own
+    '               applications, but you may not reproduce 
+    '               or publish this code on any web site,
+    '               online service, or distribute as source 
+    '               on any media without express permission.
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
     Private Declare Function ReleaseCapture Lib "user32" () As Integer
-    Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" ( _
-        ByVal hwnd As Integer, _
-        ByVal wMsg As Integer, _
-        ByVal wParam As Integer, _
-        ByRef lParam As Object) As Integer
+    Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, ByRef lParam As Object) As Integer
 
     Private Const HTCAPTION As Short = 2
     Private Const WM_NCLBUTTONDOWN As Short = &HA1S
@@ -21,7 +27,6 @@ Public Class PopupStoppuhrForm
     Private iHeightOfTitle As Integer
     Private iHeightOfZeit As Integer
     Private iHeightOfTelNr As Integer
-    Public Event LinkClick()
     Public Event CloseClickStoppUhr()
 
     Sub New(ByVal Parent As Stoppuhr)
@@ -29,19 +34,6 @@ Public Class PopupStoppuhrForm
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.ResizeRedraw, True)
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-    End Sub
-
-    Private Sub InitializeComponent()
-        Me.SuspendLayout()
-        '
-        'PopupStoppuhrForm
-        '
-        Me.ClientSize = New System.Drawing.Size(300, 66)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "PopupStoppuhrForm"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.ResumeLayout(False)
-
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -135,16 +127,33 @@ Public Class PopupStoppuhrForm
         End If
     End Sub
 
-    Private Sub PopupNotifierForm_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+    Private Sub PopupStopUhrPaint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         Dim rcBody As New Rectangle(0, 0, Me.Width, Me.Height)
         Dim rcHeader As New Rectangle(0, 0, Me.Width, Parent.HeaderHeight)
         Dim rcForm As New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)
         Dim brBody As New LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical)
         Dim drawFormatCenter As New StringFormat()
-        drawFormatCenter.Alignment = StringAlignment.Center
         Dim drawFormatRight As New StringFormat()
-        drawFormatRight.Alignment = StringAlignment.Far
         Dim brHeader As New LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical)
+
+        Dim RectZeit As Rectangle
+        Dim RectRichtung As Rectangle
+        Dim RectAnruf As Rectangle
+        Dim RectMSN As Rectangle
+        Dim RectStart As Rectangle
+        Dim RectEnde As Rectangle
+        Dim RectValueStart As Rectangle
+        Dim RectValueEnde As Rectangle
+        Dim RectValueMSN As Rectangle
+        Dim rect As Rectangle
+
+        Dim ErsterEinzug As Integer = 5
+        Dim ZweiterEinzug As Integer = 64
+
+        drawFormatCenter.Alignment = StringAlignment.Center
+        drawFormatRight.Alignment = StringAlignment.Far
+
+
         With e.Graphics
             .FillRectangle(brBody, rcBody)
             .FillRectangle(brHeader, rcHeader)
@@ -155,30 +164,123 @@ Public Class PopupStoppuhrForm
             End If
             .DrawLine(New Pen(Parent.ContentColor, 2), RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4)
             .DrawLine(New Pen(Parent.ContentColor, 2), RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4)
-            Dim rect As New Rectangle
+            rect = New Rectangle
             With rect
                 .X = 64
                 .Y = Parent.HeaderHeight + 5
                 .Width = RectClose.X - .X
                 .Height = e.Graphics.MeasureString("A", Parent.TitleFont).Height
             End With
-            .DrawString(Parent.Richtung, Parent.TitleFont, New SolidBrush(Parent.ContentColor), 5, Parent.HeaderHeight + 5)
-            .DrawString(Parent.Anruf, Parent.TitleFont, New SolidBrush(Parent.ContentColor), rect)
 
-            .DrawString("MSN: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), 5, 2 * Parent.HeaderHeight + 10)
-            .DrawString(Parent.MSN, Parent.TitleFont, New SolidBrush(Parent.ContentColor), 64, 2 * Parent.HeaderHeight + 10)
+            ' <Rechteck Richtung>
+            RectRichtung = New Rectangle()
+            With RectRichtung
+                .X = ErsterEinzug
+                .Y = Parent.HeaderHeight + ErsterEinzug
+                .Width = ZweiterEinzug - 2 * ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectRichtung)
+            .DrawString(Parent.Richtung, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectRichtung)
+            ' </Rechteck Richtung>
 
-            .DrawString("Start:", Parent.TitleFont, New SolidBrush(Parent.ContentColor), 5, 3 * Parent.HeaderHeight + 15)
-            .DrawString(Parent.StartZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), 64, 3 * Parent.HeaderHeight + 15)
+            ' <Rechteck MSN>
+            RectMSN = New Rectangle()
+            With RectMSN
+                .X = ErsterEinzug
+                .Y = 2 * (Parent.HeaderHeight + ErsterEinzug)
+                .Width = ZweiterEinzug - 2 * ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectMSN)
+            .DrawString("MSN: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectMSN)
+            ' </Rechteck MSN>
 
-            .DrawString("Ende: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), 5, Me.Height - Parent.HeaderHeight - 10)
-            .DrawString(Parent.EndeZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), 64, Me.Height - Parent.HeaderHeight - 10)
+            ' <Rechteck Start>
+            RectStart = New Rectangle()
+            With RectStart
+                .X = ErsterEinzug
+                .Y = 3 * (Parent.HeaderHeight + ErsterEinzug)
+                .Width = ZweiterEinzug - 2 * ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectStart)
+            .DrawString("Start: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectStart)
+            ' </Rechteck Start>
 
-            .DrawString(Parent.Zeit, Parent.ContentFont, New SolidBrush(Parent.ContentColor), Parent.Size.Width / 2, 2 * (Parent.Size.Height - Parent.ContentFont.Size) / 3, drawFormatCenter)
+            ' <Rechteck Ende>
+            RectEnde = New Rectangle()
+            With RectEnde
+                .X = ErsterEinzug
+                .Width = ZweiterEinzug - 2 * ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+                .Y = Parent.Size.Height - .Height - ErsterEinzug
+            End With
+            ' .DrawRectangle(New Pen(Brushes.Black), RectEnde)
+            .DrawString("Ende: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectEnde)
+            ' </Rechteck Ende>
+
+            ' <Rechteck Value Anruf>
+            RectAnruf = New Rectangle()
+            With RectAnruf
+                .X = ZweiterEinzug
+                .Y = 1 * (Parent.HeaderHeight + ErsterEinzug)
+                .Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Anruf, Parent.TitleFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectAnruf)
+            .DrawString(Parent.Anruf, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectAnruf)
+            ' </Rechteck Value Anruf>
+
+            ' <Rechteck Value MSN>
+            RectValueMSN = New Rectangle()
+            With RectValueMSN
+                .X = ZweiterEinzug
+                .Y = 2 * (Parent.HeaderHeight + ErsterEinzug)
+                .Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectValueMSN)
+            .DrawString(Parent.MSN, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueMSN)
+            ' </Rechteck Value MSN>
+
+            ' <Rechteck Value Start>
+            RectValueStart = New Rectangle()
+            With RectValueStart
+                .X = ZweiterEinzug
+                .Y = 3 * (Parent.HeaderHeight + ErsterEinzug)
+                .Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectValueStart)
+            .DrawString(Parent.StartZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueStart)
+            ' </Rechteck Value Start>
+
+            ' <Rechteck Value Ende>
+            RectValueEnde = New Rectangle()
+            With RectValueEnde
+                .X = ZweiterEinzug
+                .Width = Parent.Size.Width - ZweiterEinzug - 1 * ErsterEinzug
+                .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
+                .Y = Parent.Size.Height - .Height - ErsterEinzug
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectValueEnde)
+            .DrawString(Parent.EndeZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueEnde)
+            ' </Rechteck Value Ende>
+
+            RectZeit = New Rectangle()
+            With RectZeit
+                .X = 0
+                .Y = 2 * (Parent.Size.Height - Parent.ContentFont.Size) / 3
+                .Width = Parent.Size.Width
+                .Height = e.Graphics.MeasureString(Parent.Zeit, Parent.ContentFont).Height
+            End With
+            '.DrawRectangle(New Pen(Brushes.Black), RectZeit)
+            .DrawString(Parent.Zeit, Parent.ContentFont, New SolidBrush(Parent.ContentColor), RectZeit, drawFormatCenter)
 
         End With
     End Sub
-#End Region
 
+#End Region
 
 End Class

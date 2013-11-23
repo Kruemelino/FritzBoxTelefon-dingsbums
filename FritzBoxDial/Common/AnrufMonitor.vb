@@ -741,6 +741,7 @@ Friend Class AnrufMonitor
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
             Dim ID As Integer = CInt(FBStatus.GetValue(2))
             Dim MSN As String = JEReadorWrite(True, ID, "MSN", "")
+            Dim Zeit As String
             ' FBStatus(0): Uhrzeit
             ' FBStatus(1): CONNECT, wird nicht verwendet
             ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
@@ -766,9 +767,12 @@ Friend Class AnrufMonitor
                             .WorkerSupportsCancellation = True
                             .RunWorkerAsync(ID)
                         End With
+                        With System.DateTime.Now
+                            Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
+                        End With
                         With STUhrDaten(ID)
                             .MSN = MSN
-                            .StartZeit = CStr(System.DateTime.Now)
+                            .StartZeit = Zeit
                             .Abbruch = False
                         End With
                     End If

@@ -267,7 +267,11 @@ Public Class Stoppuhr
     End Sub
 
     Sub StoppuhrStopp()
-        EndeZeit = CStr(System.DateTime.Now)
+        Dim Zeit As String
+        With System.DateTime.Now
+            Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
+        End With
+        EndeZeit = Zeit
         fStopUhr.Invalidate()
         TimerZeit.Stop()
         Stoppwatch.Stop()

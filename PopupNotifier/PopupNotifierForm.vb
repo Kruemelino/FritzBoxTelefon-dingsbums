@@ -1,8 +1,7 @@
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 
-<System.ComponentModel.DefaultPropertyAttribute("Content"), _
-System.ComponentModel.DesignTimeVisible(False)> _
+<System.ComponentModel.DefaultPropertyAttribute("Content"), System.ComponentModel.DesignTimeVisible(False)> _
 Public Class PopupNotifierForm
     Inherits System.Windows.Forms.Form
 
@@ -169,7 +168,7 @@ Public Class PopupNotifierForm
 
 #Region "Events"
 
-    Private Sub Form1_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
+    Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
         If Parent.CloseButton Then
             If RectClose.Contains(e.X, e.Y) Then
                 bMouseOnClose = True
@@ -192,7 +191,7 @@ Public Class PopupNotifierForm
         Invalidate()
     End Sub
 
-    Private Sub Form1_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
+    Private Sub Me_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
         If RectClose.Contains(e.X, e.Y) Then
             RaiseEvent CloseClick()
         End If
@@ -207,7 +206,7 @@ Public Class PopupNotifierForm
         End If
     End Sub
 
-    Private Sub Form1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+    Private Sub Me_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         Dim iTelNameLänge As Integer
         Dim iUhrzeitLänge As Integer
         Dim iAnrNameLänge As Integer
@@ -247,7 +246,6 @@ Public Class PopupNotifierForm
                 End If
                 .FillPolygon(New SolidBrush(ForeColor), New Point() {New Point(RectOptions.Left + 4, RectOptions.Top + 6), New Point(RectOptions.Left + 12, RectOptions.Top + 6), New Point(RectOptions.Left + 8, RectOptions.Top + 4 + 6)})
             End If
-            '.Clip = New Region(rcClip)
             iHeightOfTitle = .MeasureString("A", Parent.TitleFont).Height
             iHeightOfAnrName = .MeasureString("A", Parent.ContentFont).Height
             iHeightOfTelNr = .MeasureString("A", Parent.TelNrFont).Height

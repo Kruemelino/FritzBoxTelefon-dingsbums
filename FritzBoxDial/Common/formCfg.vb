@@ -495,7 +495,9 @@ Friend Class formCfg
                                                                                    BTelefonDatei.Click, _
                                                                                    BStartDebug.Click, _
                                                                                    BResetStat.Click, _
-                                                                                   BProbleme.Click
+                                                                                   BProbleme.Click, _
+                                                                                   BStoppUhrAnzeigen.Click
+
         Select Case CType(sender, Windows.Forms.Button).Name
             Case "ButtonZuruecksetzen"
                 ' Startwerte zurücksetzen
@@ -664,6 +666,43 @@ Friend Class formCfg
                 BWIndexer.CancelAsync()
                 Me.BIndizierungAbbrechen.Enabled = False
                 Me.BIndizierungStart.Enabled = True
+            Case "BStoppUhrAnzeigen"
+                Speichern()
+                Dim Zeit As String
+                Dim WarteZeit As Integer
+                Dim Beendet As Boolean = False
+                Dim StartPosition As System.Drawing.Point
+                Dim x As Integer = 0
+                Dim y As Integer = 0
+                If CBool(C_XML.Read("Optionen", "CBStoppUhrAusblenden", "False")) Then
+                    WarteZeit = CInt(Me.TBStoppUhr.Text)
+                Else
+                    WarteZeit = -1
+                End If
+
+                StartPosition = New System.Drawing.Point(CInt(C_XML.Read("Optionen", "CBStoppUhrX", "10")), CInt(C_XML.Read("Optionen", "CBStoppUhrY", "10")))
+                For Each Bildschirm In Windows.Forms.Screen.AllScreens
+                    x += Bildschirm.Bounds.Size.Width
+                    y += Bildschirm.Bounds.Size.Height
+                Next
+                With StartPosition
+                    If .X > x Or .Y > y Then
+                        .X = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100) / 2)
+                        .Y = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 50) / 2)
+                    End If
+                End With
+                With System.DateTime.Now
+                    Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
+                End With
+
+                Dim frmStUhr As New formStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
+                Do Until frmStUhr.StUhrClosed
+                    Thread.Sleep(20)
+                    Windows.Forms.Application.DoEvents()
+                Loop
+                C_XML.Write("Optionen", "CBStoppUhrX", CStr(frmStUhr.Position.X), False)
+                C_XML.Write("Optionen", "CBStoppUhrY", CStr(frmStUhr.Position.Y), True)
+                frmStUhr = Nothing
         End Select
     End Sub
 
