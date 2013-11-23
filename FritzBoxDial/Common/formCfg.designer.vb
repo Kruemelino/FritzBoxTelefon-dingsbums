@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -763,14 +763,14 @@ Partial Class formCfg
         '
         'PInfo
         '
-        Me.PInfo.Controls.Add(Me.LinkHomepage)
         Me.PInfo.Controls.Add(Me.Label17)
-        Me.PInfo.Controls.Add(Me.LinkEmail)
-        Me.PInfo.Controls.Add(Me.LinkForum)
         Me.PInfo.Controls.Add(Me.Label16)
         Me.PInfo.Controls.Add(Me.Label10)
         Me.PInfo.Controls.Add(Me.Label7)
         Me.PInfo.Controls.Add(Me.RichTextBox1)
+        Me.PInfo.Controls.Add(Me.LinkHomepage)
+        Me.PInfo.Controls.Add(Me.LinkEmail)
+        Me.PInfo.Controls.Add(Me.LinkForum)
         Me.PInfo.Location = New System.Drawing.Point(4, 22)
         Me.PInfo.Name = "PInfo"
         Me.PInfo.Size = New System.Drawing.Size(570, 294)
@@ -780,13 +780,13 @@ Partial Class formCfg
         '
         'LinkHomepage
         '
-        Me.LinkHomepage.AutoSize = True
-        Me.LinkHomepage.Location = New System.Drawing.Point(342, 66)
+        Me.LinkHomepage.Location = New System.Drawing.Point(240, 66)
         Me.LinkHomepage.Name = "LinkHomepage"
-        Me.LinkHomepage.Size = New System.Drawing.Size(40, 13)
+        Me.LinkHomepage.Size = New System.Drawing.Size(150, 13)
         Me.LinkHomepage.TabIndex = 5
         Me.LinkHomepage.TabStop = True
         Me.LinkHomepage.Text = "GitHub"
+        Me.LinkHomepage.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label17
         '
@@ -799,23 +799,23 @@ Partial Class formCfg
         '
         'LinkEmail
         '
-        Me.LinkEmail.AutoSize = True
-        Me.LinkEmail.Location = New System.Drawing.Point(241, 34)
+        Me.LinkEmail.Location = New System.Drawing.Point(240, 34)
         Me.LinkEmail.Name = "LinkEmail"
-        Me.LinkEmail.Size = New System.Drawing.Size(141, 13)
+        Me.LinkEmail.Size = New System.Drawing.Size(150, 13)
         Me.LinkEmail.TabIndex = 1
         Me.LinkEmail.TabStop = True
         Me.LinkEmail.Text = "kruemelino@gert-michael.de"
+        Me.LinkEmail.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'LinkForum
         '
-        Me.LinkForum.AutoSize = True
-        Me.LinkForum.Location = New System.Drawing.Point(263, 50)
+        Me.LinkForum.Location = New System.Drawing.Point(240, 50)
         Me.LinkForum.Name = "LinkForum"
-        Me.LinkForum.Size = New System.Drawing.Size(119, 13)
+        Me.LinkForum.Size = New System.Drawing.Size(150, 13)
         Me.LinkForum.TabIndex = 2
         Me.LinkForum.TabStop = True
         Me.LinkForum.Text = "www.ip-phone-forum.de"
+        Me.LinkForum.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label16
         '
@@ -838,7 +838,7 @@ Partial Class formCfg
         'Label7
         '
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(14, 14)
+        Me.Label7.Location = New System.Drawing.Point(5, 9)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(294, 16)
         Me.Label7.TabIndex = 1
@@ -1013,9 +1013,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle13.Format = "T"
+        DataGridViewCellStyle13.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle13
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1027,9 +1027,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle14.Format = "T"
+        DataGridViewCellStyle14.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle14
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1041,9 +1041,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle15.Format = "T"
+        DataGridViewCellStyle15.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle15
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"

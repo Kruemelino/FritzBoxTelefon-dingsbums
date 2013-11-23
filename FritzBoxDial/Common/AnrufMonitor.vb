@@ -175,22 +175,30 @@ Friend Class AnrufMonitor
     End Function '(AnrMonStart)
 
     Function AnrMonStartNachStandby() As Boolean
+        Dim formjournalimort As formJournalimport
+
         AnrMonStartNachStandby = False
+
         If C_XML.Read("Optionen", "CBAnrMonAuto", "False") = "True" And UseAnrMon Then
-            Dim FbIP As String = C_XML.Read("Optionen", "TBFBAdr", "192.168.178.1")
-            If Not C_hf.Ping(FbIP) Then
-                C_hf.LogFile("Standby Timer  1. Ping nicht erfolgreich")
+
+            If Not C_hf.Ping(sIPAddresse) Then
+                C_hf.LogFile("Standby Timer 1. Ping nicht erfolgreich")
+
                 TimerReStartStandBy = C_hf.SetTimer(2000)
                 StandbyCounter = 2
+
             Else
+
                 C_hf.LogFile("Standby 1. Ping erfolgreich")
                 AnrMonStart(False)
-                If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
-                    Dim formjournalimort As New formJournalimport(Me, C_hf, C_XML, False)
-                End If
+
+                If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then formjournalimort = New formJournalimport(Me, C_hf, C_XML, False)
+
             End If
             Return True
         End If
+
+
     End Function
 
     Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStartStandBy.Elapsed
