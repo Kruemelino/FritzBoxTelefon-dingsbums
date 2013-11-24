@@ -176,24 +176,28 @@ Friend Class AnrufMonitor
 
     Function AnrMonStartNachStandby() As Boolean
         Dim formjournalimort As formJournalimport
+        Dim FritzBoxErreichbar As Boolean
 
         AnrMonStartNachStandby = False
-
         If C_XML.Read("Optionen", "CBAnrMonAuto", "False") = "True" And UseAnrMon Then
+            If CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
+                ' Erfahrung: Fritz!Box ist noch nicht erreichbar wenn Outlook aus Standby erwacht ist.
+                FritzBoxErreichbar = False
+            Else
+                FritzBoxErreichbar = C_hf.Ping(sIPAddresse)
+            End If
 
-            If Not C_hf.Ping(sIPAddresse) Then
-                C_hf.LogFile("Standby Timer 1. Ping nicht erfolgreich")
 
-                TimerReStartStandBy = C_hf.SetTimer(2000)
+            If Not FritzBoxErreichbar Then
+                TimerReStartStandBy = C_hf.SetTimer(3000)
                 StandbyCounter = 2
 
+                C_hf.LogFile("Standby Timer 1. Ping nicht erfolgreich")
             Else
-
                 C_hf.LogFile("Standby 1. Ping erfolgreich")
                 AnrMonStart(False)
 
                 If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then formjournalimort = New formJournalimport(Me, C_hf, C_XML, False)
-
             End If
             Return True
         End If

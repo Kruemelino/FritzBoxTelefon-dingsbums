@@ -45,6 +45,7 @@ Partial Class formCfg
         Me.CBintl = New System.Windows.Forms.CheckBox()
         Me.CBTelNrGruppieren = New System.Windows.Forms.CheckBox()
         Me.GroupBoxStoppUhr = New System.Windows.Forms.GroupBox()
+        Me.BStoppUhrAnzeigen = New System.Windows.Forms.Button()
         Me.LabelStoppUhr = New System.Windows.Forms.Label()
         Me.TBStoppUhr = New System.Windows.Forms.TextBox()
         Me.CBStoppUhrAusblenden = New System.Windows.Forms.CheckBox()
@@ -75,14 +76,14 @@ Partial Class formCfg
         Me.BZwischenablage = New System.Windows.Forms.Button()
         Me.BProbleme = New System.Windows.Forms.Button()
         Me.PInfo = New System.Windows.Forms.TabPage()
-        Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
         Me.Label17 = New System.Windows.Forms.Label()
-        Me.LinkEmail = New System.Windows.Forms.LinkLabel()
-        Me.LinkForum = New System.Windows.Forms.LinkLabel()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
+        Me.LinkEmail = New System.Windows.Forms.LinkLabel()
+        Me.LinkForum = New System.Windows.Forms.LinkLabel()
         Me.PTelefone = New System.Windows.Forms.TabPage()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.LTelStatus = New System.Windows.Forms.Label()
@@ -189,7 +190,6 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.BStoppUhrAnzeigen = New System.Windows.Forms.Button()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -465,6 +465,15 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.TabStop = False
         Me.GroupBoxStoppUhr.Text = "Stoppuhr"
         '
+        'BStoppUhrAnzeigen
+        '
+        Me.BStoppUhrAnzeigen.Location = New System.Drawing.Point(164, 65)
+        Me.BStoppUhrAnzeigen.Name = "BStoppUhrAnzeigen"
+        Me.BStoppUhrAnzeigen.Size = New System.Drawing.Size(112, 28)
+        Me.BStoppUhrAnzeigen.TabIndex = 19
+        Me.BStoppUhrAnzeigen.Text = "Anzeigen"
+        Me.BStoppUhrAnzeigen.UseVisualStyleBackColor = True
+        '
         'LabelStoppUhr
         '
         Me.LabelStoppUhr.AutoSize = True
@@ -506,11 +515,11 @@ Partial Class formCfg
         'Frame3
         '
         Me.Frame3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Frame3.Controls.Add(Me.CBCallByCall)
         Me.Frame3.Controls.Add(Me.CBDialPort)
         Me.Frame3.Controls.Add(Me.CBCheckMobil)
         Me.Frame3.Controls.Add(Me.CBVoIPBuster)
         Me.Frame3.Controls.Add(Me.CBCbCunterbinden)
-        Me.Frame3.Controls.Add(Me.CBCallByCall)
         Me.Frame3.Controls.Add(Me.Label6)
         Me.Frame3.Controls.Add(Me.TBAmt)
         Me.Frame3.Location = New System.Drawing.Point(288, 38)
@@ -780,16 +789,6 @@ Partial Class formCfg
         Me.PInfo.Text = "Info..."
         Me.PInfo.UseVisualStyleBackColor = True
         '
-        'LinkHomepage
-        '
-        Me.LinkHomepage.Location = New System.Drawing.Point(240, 66)
-        Me.LinkHomepage.Name = "LinkHomepage"
-        Me.LinkHomepage.Size = New System.Drawing.Size(150, 13)
-        Me.LinkHomepage.TabIndex = 5
-        Me.LinkHomepage.TabStop = True
-        Me.LinkHomepage.Text = "GitHub"
-        Me.LinkHomepage.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
         'Label17
         '
         Me.Label17.AutoSize = True
@@ -798,26 +797,6 @@ Partial Class formCfg
         Me.Label17.Size = New System.Drawing.Size(319, 13)
         Me.Label17.TabIndex = 0
         Me.Label17.Text = "Der SourceCode zu diesem AddIn steht auf GitHub zur Verfügung:"
-        '
-        'LinkEmail
-        '
-        Me.LinkEmail.Location = New System.Drawing.Point(240, 34)
-        Me.LinkEmail.Name = "LinkEmail"
-        Me.LinkEmail.Size = New System.Drawing.Size(150, 13)
-        Me.LinkEmail.TabIndex = 1
-        Me.LinkEmail.TabStop = True
-        Me.LinkEmail.Text = "kruemelino@gert-michael.de"
-        Me.LinkEmail.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'LinkForum
-        '
-        Me.LinkForum.Location = New System.Drawing.Point(240, 50)
-        Me.LinkForum.Name = "LinkForum"
-        Me.LinkForum.Size = New System.Drawing.Size(150, 13)
-        Me.LinkForum.TabIndex = 2
-        Me.LinkForum.TabStop = True
-        Me.LinkForum.Text = "www.ip-phone-forum.de"
-        Me.LinkForum.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label16
         '
@@ -854,6 +833,36 @@ Partial Class formCfg
         Me.RichTextBox1.Size = New System.Drawing.Size(562, 189)
         Me.RichTextBox1.TabIndex = 0
         Me.RichTextBox1.Text = resources.GetString("RichTextBox1.Text")
+        '
+        'LinkHomepage
+        '
+        Me.LinkHomepage.Location = New System.Drawing.Point(240, 66)
+        Me.LinkHomepage.Name = "LinkHomepage"
+        Me.LinkHomepage.Size = New System.Drawing.Size(150, 13)
+        Me.LinkHomepage.TabIndex = 5
+        Me.LinkHomepage.TabStop = True
+        Me.LinkHomepage.Text = "GitHub"
+        Me.LinkHomepage.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'LinkEmail
+        '
+        Me.LinkEmail.Location = New System.Drawing.Point(240, 34)
+        Me.LinkEmail.Name = "LinkEmail"
+        Me.LinkEmail.Size = New System.Drawing.Size(150, 13)
+        Me.LinkEmail.TabIndex = 1
+        Me.LinkEmail.TabStop = True
+        Me.LinkEmail.Text = "kruemelino@gert-michael.de"
+        Me.LinkEmail.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'LinkForum
+        '
+        Me.LinkForum.Location = New System.Drawing.Point(240, 50)
+        Me.LinkForum.Name = "LinkForum"
+        Me.LinkForum.Size = New System.Drawing.Size(150, 13)
+        Me.LinkForum.TabIndex = 2
+        Me.LinkForum.TabStop = True
+        Me.LinkForum.Text = "www.ip-phone-forum.de"
+        Me.LinkForum.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'PTelefone
         '
@@ -2003,15 +2012,6 @@ Partial Class formCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
-        '
-        'BStoppUhrAnzeigen
-        '
-        Me.BStoppUhrAnzeigen.Location = New System.Drawing.Point(164, 65)
-        Me.BStoppUhrAnzeigen.Name = "BStoppUhrAnzeigen"
-        Me.BStoppUhrAnzeigen.Size = New System.Drawing.Size(112, 28)
-        Me.BStoppUhrAnzeigen.TabIndex = 19
-        Me.BStoppUhrAnzeigen.Text = "Anzeigen"
-        Me.BStoppUhrAnzeigen.UseVisualStyleBackColor = True
         '
         'formCfg
         '
