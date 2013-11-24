@@ -136,6 +136,7 @@ Public Class ThisAddIn
             UseAnrMon = value
         End Set
     End Property
+
 #End Region
 
 #If OVer < 14 Then
@@ -143,7 +144,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.1"
+    Public Const Version As String = "3.6.3"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -156,13 +157,13 @@ Public Class ThisAddIn
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
         Select Case e.Mode
             Case PowerModes.Resume
-                hf.LogFile("Aufwachen aus StandBy: " & e.Mode)
+                hf.LogFile("StandBy: PowerModes." & PowerModes.Resume.ToString)
                 AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
                 AnrMon.AnrMonQuit()
-                hf.LogFile("Anrufmonitor für StandBy beendet")
+                hf.LogFile("StandBy: PowerModes." & PowerModes.Suspend.ToString)
             Case Else
-                hf.LogFile("Empfangener Powermode: " & e.Mode)
+                hf.LogFile("PowerMode: " & e.Mode)
         End Select
     End Sub
 
