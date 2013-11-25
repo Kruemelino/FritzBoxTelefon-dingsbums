@@ -41,6 +41,7 @@ Public Class Helfer
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
         Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
+
 #End Region
 
     Public Sub NAR(ByVal o As Object)

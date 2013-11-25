@@ -105,42 +105,45 @@ Public Class MyXML
         Dim tmpXMLNodeList As XmlNodeList
         Dim tmpXMLAttribute As XmlAttribute
         xPath = CreateXPath(ZielKnoten)
-        With XMLDoc
-            tmpXMLNodeList = .SelectNodes(xPath)
-
-            If Not tmpXMLNodeList.Count = 0 Then
-                For Each tmpXMLNode In tmpXMLNodeList
-                    If Not AttributeName = vbNullString Then
-                        If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
-                            tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = vbNullString, "[@" & AttributeName & "=""" & AttributeValue & """]", vbNullString)))
+        If CheckXPath(xPath) Then
+            With XMLDoc
+                tmpXMLNodeList = .SelectNodes(xPath)
+                If Not tmpXMLNodeList.Count = 0 Then
+                    For Each tmpXMLNode In tmpXMLNodeList
+                        If Not AttributeName = vbNullString Then
+                            If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
+                                tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = vbNullString, "[@" & AttributeName & "=""" & AttributeValue & """]", vbNullString)))
+                            End If
+                            If tmpXMLNode Is Nothing Then
+                                tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
+                            End If
+                            tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
+                            tmpXMLAttribute.Value = AttributeValue
+                            tmpXMLNode.Attributes.Append(tmpXMLAttribute)
                         End If
-                        If tmpXMLNode Is Nothing Then
-                            tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
+                        tmpXMLNode.InnerText() = Value
+                    Next
+                Else
+                    For Each sNodeName As String In ZielKnoten
+                        If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
+                        xPathTeile.Add(sNodeName)
+                        xPath = CreateXPath(xPathTeile)
+                        If .SelectSingleNode(xPath) Is Nothing Then
+                            .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
                         End If
-                        tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
-                        tmpXMLAttribute.Value = AttributeValue
-                        tmpXMLNode.Attributes.Append(tmpXMLAttribute)
-                    End If
-                    tmpXMLNode.InnerText() = Value
-                Next
-            Else
-                For Each sNodeName As String In ZielKnoten
-                    If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-                    xPathTeile.Add(sNodeName)
-                    xPath = CreateXPath(xPathTeile)
-                    If .SelectSingleNode(xPath) Is Nothing Then
-                        .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
-                    End If
-                    sTmpXPath = xPath
-                Next
-                Write(ZielKnoten, Value, AttributeName, AttributeValue, SpeichereDatei)
-            End If
-            If SpeichereDatei Then SpeichereXMLDatei()
-        End With
+                        sTmpXPath = xPath
+                    Next
+                    Write(ZielKnoten, Value, AttributeName, AttributeValue, SpeichereDatei)
+                End If
+                If SpeichereDatei Then SpeichereXMLDatei()
+            End With
+            Write = True
+        Else
+            Write = False
+        End If
         xPathTeile = Nothing
         tmpXMLAttribute = Nothing
         tmpXMLNode = Nothing
-        Return True
     End Function
 
     Public Overloads Function WriteAttribute(ByVal ZielKnoten As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
@@ -356,6 +359,12 @@ Public Class MyXML
 
     Function GetXMLDateiPfad() As String
         Return sDateiPfad
+    End Function
+    Private Function CheckXPath(ByVal xPath As String) As Boolean
+        CheckXPath = True
+
+        If Not InStr(xPath, "/*", CompareMethod.Text) = 0 Then Return False
+        If Right(xPath, 1) = "/" Then Return False
     End Function
 #End Region
 
