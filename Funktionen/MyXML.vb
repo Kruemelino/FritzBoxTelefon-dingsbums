@@ -5,9 +5,14 @@ Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
 
+    Private WithEvents tSpeichern As Timer
+
     Private Const Speicherintervall As Double = 15 'in Minuten
     Private Const RootName As String = "FritzOutlookXML"
-    Private WithEvents tSpeichern As Timer
+    Private Const xPathSeperatorSlash As String = "/"
+    Private Const xPathWildCard As String = "*"
+    Private Const xPathBracketOpen As String = "["
+    Private Const xPathBracketClose As String = "]"
 
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
@@ -105,7 +110,7 @@ Public Class MyXML
         Dim tmpXMLNodeList As XmlNodeList
         Dim tmpXMLAttribute As XmlAttribute
         xPath = CreateXPath(ZielKnoten)
-        If CheckXPath(xPath) Then
+        If CheckXPathWrite(xPath) Then
             With XMLDoc
                 tmpXMLNodeList = .SelectNodes(xPath)
                 If Not tmpXMLNodeList.Count = 0 Then
@@ -353,18 +358,19 @@ Public Class MyXML
 
     Function CreateXPath(ByVal xPathElements As ArrayList) As String
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-        CreateXPath = Replace("/" & Join(xPathElements.ToArray(), "/"), "/[", "[", , , CompareMethod.Text)
-        CreateXPath = Replace(CreateXPath, "][", " and ", , , CompareMethod.Text)
+        CreateXPath = Replace(xPathSeperatorSlash & Join(xPathElements.ToArray(), xPathSeperatorSlash), xPathSeperatorSlash & xPathBracketOpen, xPathBracketOpen, , , CompareMethod.Text)
+        CreateXPath = Replace(CreateXPath, xPathBracketClose & xPathBracketOpen, " and ", , , CompareMethod.Text)
     End Function
 
     Function GetXMLDateiPfad() As String
         Return sDateiPfad
     End Function
-    Private Function CheckXPath(ByVal xPath As String) As Boolean
-        CheckXPath = True
 
-        If Not InStr(xPath, "/*", CompareMethod.Text) = 0 Then Return False
-        If Right(xPath, 1) = "/" Then Return False
+    Private Function CheckXPathWrite(ByVal xPath As String) As Boolean
+        CheckXPathWrite = True
+
+        If Not InStr(xPath, xPathSeperatorSlash & xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
+        If Right(xPath, 1) = xPathSeperatorSlash Then Return False
     End Function
 #End Region
 
