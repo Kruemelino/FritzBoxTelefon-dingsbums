@@ -86,10 +86,13 @@ Friend Class formCfg
         Me.TBFBAdr.Text = C_XML.Read("Optionen", "TBFBAdr", ThisAddIn.P_FritzBox.P_DefaultFBAddr)
         Me.CBForceFBAddr.Checked = CBool(IIf(C_XML.Read("Optionen", "CBForceFBAddr", "False") = "True", True, False))
         Me.TBBenutzer.Text = C_XML.Read("Optionen", "TBBenutzer", vbNullString)
-        If C_XML.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
-            Me.TBBenutzer.BackColor = Color.Red
-            Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
+        If Not Me.TBBenutzer.Text = vbNullString Then
+            If C_XML.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
+                Me.TBBenutzer.BackColor = Color.Red
+                Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
+            End If
         End If
+
         Passwort = C_XML.Read("Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
             Me.TBPasswort.Text = "1234"
@@ -363,7 +366,17 @@ Friend Class formCfg
         C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), False)
         C_XML.Write("Optionen", "TBAnrMonX", Me.TBAnrMonX.Text, False)
         C_XML.Write("Optionen", "TBAnrMonY", Me.TBAnrMonY.Text, False)
-        C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text, False)
+
+        If Me.TBBenutzer.Text = vbNullString Then
+            With xPathTeile
+                .Clear()
+                .Add("Optionen")
+                .Add("TBBenutzer")
+            End With
+            C_XML.Delete(xPathTeile)
+        Else
+            C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text, False)
+        End If
         If Not Me.TBPasswort.Text = "1234" Then
             C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"), False)
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")

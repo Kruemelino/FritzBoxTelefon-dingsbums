@@ -57,18 +57,20 @@ Public Class MyXML
     End Function
 
     Public Overloads Function Read(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
-        Read = vbNullString
+        Read = sDefault
+
         Dim tmpXMLNodeList As XmlNodeList
         Dim xPath As String = CreateXPath(xPathTeile)
 
-        tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
-        If Not tmpXMLNodeList.Count = 0 Then
-            For Each tmpXMLNode As XmlNode In tmpXMLNodeList
-                Read += tmpXMLNode.InnerText & ";"
-            Next
-            Read = Left(Read, Len(Read) - 1)
-        Else
-            Read = sDefault
+        If CheckXPathRead(xPath) Then
+            tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
+            If Not tmpXMLNodeList.Count = 0 Then
+                Read = vbNullString
+                For Each tmpXMLNode As XmlNode In tmpXMLNodeList
+                    Read += tmpXMLNode.InnerText & ";"
+                Next
+                Read = Left(Read, Len(Read) - 1)
+            End If
         End If
         xPathTeile = Nothing
     End Function
@@ -370,6 +372,12 @@ Public Class MyXML
         CheckXPathWrite = True
 
         If Not InStr(xPath, xPathSeperatorSlash & xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
+        If Right(xPath, 1) = xPathSeperatorSlash Then Return False
+    End Function
+    Private Function CheckXPathRead(ByVal xPath As String) As Boolean
+        CheckXPathRead = True
+
+        'If Not InStr(xPath, xPathSeperatorSlash & xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
         If Right(xPath, 1) = xPathSeperatorSlash Then Return False
     End Function
 #End Region
