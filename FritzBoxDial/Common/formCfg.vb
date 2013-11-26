@@ -743,7 +743,7 @@ Friend Class formCfg
                                                                         CBRueckwaertssuche.CheckedChanged, _
                                                                         CBCbCunterbinden.CheckedChanged, _
                                                                         CBAutoClose.CheckedChanged, _
- _
+                                                                        CBTelefonDatei.CheckedChanged, _
                                                                         CBJournal.CheckedChanged, _
                                                                         CBIndexAus.CheckedChanged, _
                                                                         CBUseAnrMon.CheckedChanged, _
@@ -1334,16 +1334,18 @@ Friend Class formCfg
             'CLBTelNrAusfüllen setzen
             .Clear()
             Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
-            Dim tmpTeile As String = vbNullString
-            .Add("Telefone")
-            .Add("Nummern")
-            .Add("*")
-            For i = 0 To CheckTelNr.Count - 1
-                tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
-            Next
-            tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
-            .Add("[" & tmpTeile & "]")
-            C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+            If Not CheckTelNr.Count = 0 Then
+                Dim tmpTeile As String = vbNullString
+                .Add("Telefone")
+                .Add("Nummern")
+                .Add("*")
+                For i = 0 To CheckTelNr.Count - 1
+                    tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
+                Next
+                tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
+                .Add("[" & tmpTeile & "]")
+                C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+            End If
         End With
 
         CLBTelNrAusfüllen()
@@ -1398,7 +1400,6 @@ Friend Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
-
 End Class
 
 Public NotInheritable Class iTa

@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -51,11 +51,11 @@ Partial Class formCfg
         Me.CBStoppUhrAusblenden = New System.Windows.Forms.CheckBox()
         Me.CBStoppUhrEinblenden = New System.Windows.Forms.CheckBox()
         Me.Frame3 = New System.Windows.Forms.GroupBox()
+        Me.CBCallByCall = New System.Windows.Forms.CheckBox()
         Me.CBDialPort = New System.Windows.Forms.CheckBox()
         Me.CBCheckMobil = New System.Windows.Forms.CheckBox()
         Me.CBVoIPBuster = New System.Windows.Forms.CheckBox()
         Me.CBCbCunterbinden = New System.Windows.Forms.CheckBox()
-        Me.CBCallByCall = New System.Windows.Forms.CheckBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TBAmt = New System.Windows.Forms.TextBox()
         Me.FrameErforderlich = New System.Windows.Forms.GroupBox()
@@ -529,6 +529,19 @@ Partial Class formCfg
         Me.Frame3.TabStop = False
         Me.Frame3.Text = "Einstellungen für die Wählhilfe"
         '
+        'CBCallByCall
+        '
+        Me.CBCallByCall.AutoSize = True
+        Me.CBCallByCall.Location = New System.Drawing.Point(148, 100)
+        Me.CBCallByCall.Name = "CBCallByCall"
+        Me.CBCallByCall.Size = New System.Drawing.Size(124, 17)
+        Me.CBCallByCall.TabIndex = 10
+        Me.CBCallByCall.Text = "Jedesmal Call-by-Call"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo" & _
+        "nieren. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Te" & _
+        "lefonieren.de verwendet.")
+        Me.CBCallByCall.UseVisualStyleBackColor = True
+        '
         'CBDialPort
         '
         Me.CBDialPort.AutoSize = True
@@ -572,19 +585,6 @@ Partial Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "k" & _
         "einen Festnetzanschluss haben und nur über Ihren Internetanbieter telefonieren.")
         Me.CBCbCunterbinden.UseVisualStyleBackColor = True
-        '
-        'CBCallByCall
-        '
-        Me.CBCallByCall.AutoSize = True
-        Me.CBCallByCall.Location = New System.Drawing.Point(148, 100)
-        Me.CBCallByCall.Name = "CBCallByCall"
-        Me.CBCallByCall.Size = New System.Drawing.Size(124, 17)
-        Me.CBCallByCall.TabIndex = 10
-        Me.CBCallByCall.Text = "Jedesmal Call-by-Call"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo" & _
-        "nieren. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Te" & _
-        "lefonieren.de verwendet.")
-        Me.CBCallByCall.UseVisualStyleBackColor = True
         '
         'Label6
         '
@@ -1024,9 +1024,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1038,9 +1038,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1052,9 +1052,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1910,7 +1910,7 @@ Partial Class formCfg
         '
         Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(4, 14)
+        Me.Label9.Location = New System.Drawing.Point(3, 7)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(164, 13)
         Me.Label9.TabIndex = 26
