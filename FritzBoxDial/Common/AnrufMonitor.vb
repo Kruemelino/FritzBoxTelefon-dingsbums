@@ -340,6 +340,7 @@ Friend Class AnrufMonitor
         Dim StartPosition As System.Drawing.Point
         Dim x As Integer = 0
         Dim y As Integer = 0
+
         If CBool(C_XML.Read("Optionen", "CBStoppUhrAusblenden", "False")) Then
             WarteZeit = CInt(C_XML.Read("Optionen", "TBStoppUhr", "0"))
         Else
@@ -360,6 +361,7 @@ Friend Class AnrufMonitor
 
         With STUhrDaten(ID)
             Dim frmStUhr As New formStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
+            C_hf.LogFile("Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
             BWStoppuhrEinblenden.WorkerSupportsCancellation = True
             Do Until frmStUhr.StUhrClosed
                 If Not Beendet And .Abbruch Then
@@ -766,11 +768,6 @@ Friend Class AnrufMonitor
                     JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
                     If StoppUhrAnzeigen Then
-                        BWStoppuhrEinblenden = New BackgroundWorker
-                        With BWStoppuhrEinblenden
-                            .WorkerSupportsCancellation = True
-                            .RunWorkerAsync(ID)
-                        End With
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
@@ -779,6 +776,13 @@ Friend Class AnrufMonitor
                             .StartZeit = Zeit
                             .Abbruch = False
                         End With
+
+                        BWStoppuhrEinblenden = New BackgroundWorker
+                        With BWStoppuhrEinblenden
+                            .WorkerSupportsCancellation = True
+                            .RunWorkerAsync(ID)
+                        End With
+
                     End If
                 Else
                     C_hf.LogFile("Ein unvollständiges Telefonat wurde registriert.")

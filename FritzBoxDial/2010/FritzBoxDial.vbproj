@@ -38,7 +38,7 @@
     <SignManifests>true</SignManifests>
     <ManifestKeyFile>
     </ManifestKeyFile>
-    <ManifestCertificateThumbprint>277374D6BECB26ADDC7CFD445696711E6B3CADA8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8FF169FE28327B28728435817C3C3B8AB0C0C180</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
@@ -118,7 +118,7 @@
     <DefineConstants>OVer=14</DefineConstants>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>

@@ -377,8 +377,38 @@ Public Class FritzBox
         Dim NodeValues As New ArrayList
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
-        xPathTeile.Add("Telefone")
-        xPathTeile.Add("Nummern")
+
+        'xPathTeile.Add("Telefone")
+        'xPathTeile.Add("Nummern")
+        'NodeNames.Add("TelName")
+        'NodeNames.Add("TelNr")
+        'AttributeNames.Add("Fax")
+        'AttributeNames.Add("Dialport")
+        With xPathTeile
+            .Clear()
+            .Add("Telefone")
+            .Add("Nummern")
+        End With
+        With NodeNames
+            .Clear()
+            .Add("TelName")
+            .Add("TelNr")
+        End With
+        With AttributeNames
+            .Clear()
+            .Add("Fax")
+            .Add("Dialport")
+        End With
+        With NodeValues
+            .Clear()
+            .Add(vbNullString)
+            .Add(vbNullString)
+        End With
+        With AttributeValues
+            .Clear()
+            .Add(vbNullString)
+            .Add(vbNullString)
+        End With
 
         sLink = "http://" & P_FBAddr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         If P_SpeichereDaten Then PushStatus("Fritz!Box Telefon Quelldatei: " & sLink)
@@ -392,7 +422,7 @@ Public Class FritzBox
 
             tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln
 
-            FBLogout(sSID)
+            FBLogOut(sSID)
             xPathTeile.Add("MSN")
             pos(0) = 1
             For i = 0 To 9
@@ -538,10 +568,12 @@ Public Class FritzBox
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                         PushStatus("Analogtelefon gefunden: FON" & CStr(DialPort) & ", " & TelNr & ", " & TelName)
                                         If P_SpeichereDaten Then
-                                            NodeNames.Add("TelName")
-                                            NodeValues.Add(TelName)
-                                            NodeNames.Add("TelNr")
-                                            NodeValues.Add(TelNr)
+                                            NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                            NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                                            'NodeNames.Add("TelName")
+                                            'NodeValues.Add(TelName)
+                                            'NodeNames.Add("TelNr")
+                                            'NodeValues.Add(TelNr)
                                             AttributeNames.Add("Fax")
                                             AttributeValues.Add(vbNullString)
                                             AttributeNames.Add("Dialport")
@@ -572,12 +604,16 @@ Public Class FritzBox
                                             DialPort = "5" & ID
                                             PushStatus("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                                             If P_SpeichereDaten Then
-                                                NodeNames.Add("TelName")
-                                                NodeValues.Add(TelName)
-                                                NodeNames.Add("TelNr")
-                                                NodeValues.Add(TelNr)
-                                                AttributeNames.Add("Dialport")
-                                                AttributeValues.Add(DialPort)
+                                                NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                                NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                                                'NodeNames.Add("TelName")
+                                                'NodeValues.Add(TelName)
+                                                'NodeNames.Add("TelNr")
+                                                'NodeValues.Add(TelNr)
+                                                'AttributeNames.Add("Dialport")
+                                                'AttributeValues.Add(DialPort)
+                                                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
                                                 C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                             End If
 
@@ -896,16 +932,38 @@ Public Class FritzBox
         Dim OldTelName As New ArrayList
         Dim OldTelNr As New ArrayList
 
-        If P_SpeichereDaten Then
-            C_XML.Delete("Telefone")
-        End If
+        'NodeNames.Add("TelName")
+        'NodeNames.Add("TelNr")
+        'AttributeNames.Add("Fax")
+        'AttributeNames.Add("Dialport")
+
+        If P_SpeichereDaten Then C_XML.Delete("Telefone")
 
         With xPathTeile
             .Clear()
             .Add("Telefone")
             .Add("Nummern")
         End With
-
+        With NodeNames
+            .Clear()
+            .Add("TelName")
+            .Add("TelNr")
+        End With
+        With AttributeNames
+            .Clear()
+            .Add("Fax")
+            .Add("Dialport")
+        End With
+        With NodeValues
+            .Clear()
+            .Add(vbNullString)
+            .Add(vbNullString)
+        End With
+        With AttributeValues
+            .Clear()
+            .Add(vbNullString)
+            .Add(vbNullString)
+        End With
         'SIP Nummern
         With C_hf
             xPathTeile.Add("SIP")
@@ -1070,14 +1128,19 @@ Public Class FritzBox
 
                     PushStatus("Analogtelefon gefunden: FON" & DialPort & ", " & TelNr & ", " & TelName)
                     If P_SpeichereDaten Then
-                        NodeNames.Add("TelName")
-                        NodeValues.Add(TelName)
-                        NodeNames.Add("TelNr")
-                        NodeValues.Add(TelNr)
-                        AttributeNames.Add("Dialport")
-                        AttributeValues.Add(DialPort)
-                        AttributeNames.Add("Fax")
-                        AttributeValues.Add(.StringEntnehmen(Telefon, "['Fax'] = '", "'"))
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = .StringEntnehmen(Telefon, "['Fax'] = '", "'")
+                        'NodeNames.Add("TelName")
+                        'NodeValues.Add(TelName)
+                        'NodeNames.Add("TelNr")
+                        'NodeValues.Add(TelNr)
+                        'AttributeNames.Add("Dialport")
+                        'AttributeValues.Add(DialPort)
+                        'AttributeNames.Add("Fax")
+                        'AttributeValues.Add(.StringEntnehmen(Telefon, "['Fax'] = '", "'"))
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
                     If .StringEntnehmen(Telefon, "['Fax'] = '", "'") = "1" Then
@@ -1116,24 +1179,24 @@ Public Class FritzBox
                     End If
                     PushStatus("DECT-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                     If P_SpeichereDaten Then
-                        If NodeValues.Count = 0 Then
-                            NodeNames.Add("TelName")
-                            NodeValues.Add(TelName)
-                            NodeNames.Add("TelNr")
-                            NodeValues.Add(TelNr)
-                        Else
-                            NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                            NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        End If
-                        If AttributeValues.Count = 0 Then
-                            AttributeNames.Add("Dialport")
-                            AttributeValues.Add(DialPort)
-                            AttributeNames.Add("Fax")
-                            AttributeValues.Add(vbNullString)
-                        Else
-                            AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-                        End If
+                        'If NodeValues.Count = 0 Then
+                        '    NodeNames.Add("TelName")
+                        '    NodeValues.Add(TelName)
+                        '    NodeNames.Add("TelNr")
+                        '    NodeValues.Add(TelNr)
+                        'Else
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        'End If
+                        'If AttributeValues.Count = 0 Then
+                        '    AttributeNames.Add("Dialport")
+                        '    AttributeValues.Add(DialPort)
+                        '    AttributeNames.Add("Fax")
+                        '    AttributeValues.Add(vbNullString)
+                        'Else
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                        'End If
 
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
@@ -1169,30 +1232,24 @@ Public Class FritzBox
                     DialPort = "2" & Strings.Right(Port, 1)
                     PushStatus("IP-Telefon gefunden: " & DialPort & ", " & TelNr & ", " & TelName)
                     If P_SpeichereDaten Then
-                        'NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                        'NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-
-                        'AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        'AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-
-                        If NodeValues.Count = 0 Then
-                            NodeNames.Add("TelName")
-                            NodeValues.Add(TelName)
-                            NodeNames.Add("TelNr")
-                            NodeValues.Add(TelNr)
-                        Else
-                            NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                            NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        End If
-                        If AttributeValues.Count = 0 Then
-                            AttributeNames.Add("Dialport")
-                            AttributeValues.Add(DialPort)
-                            AttributeNames.Add("Fax")
-                            AttributeValues.Add(vbNullString)
-                        Else
-                            AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-                        End If
+                        'If NodeValues.Count = 0 Then
+                        '    NodeNames.Add("TelName")
+                        '    NodeValues.Add(TelName)
+                        '    NodeNames.Add("TelNr")
+                        '    NodeValues.Add(TelNr)
+                        'Else
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        'End If
+                        'If AttributeValues.Count = 0 Then
+                        '    AttributeNames.Add("Dialport")
+                        '    AttributeValues.Add(DialPort)
+                        '    AttributeNames.Add("Fax")
+                        '    AttributeValues.Add(vbNullString)
+                        'Else
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                        'End If
 
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
@@ -1211,31 +1268,24 @@ Public Class FritzBox
                             DialPort = "5" & i
                             PushStatus("S0-Telefon gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                             If P_SpeichereDaten Then
-                                'NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                                'NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-
-                                'AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                'AttributeValues.Item(AttributeNames.IndexOf("Fax")) = IIf(.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'") = "Fax", 1, 0)
-
-
-                                If NodeValues.Count = 0 Then
-                                    NodeNames.Add("TelName")
-                                    NodeValues.Add(TelName)
-                                    NodeNames.Add("TelNr")
-                                    NodeValues.Add(TelNr)
-                                Else
-                                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                                End If
-                                If AttributeValues.Count = 0 Then
-                                    AttributeNames.Add("Dialport")
-                                    AttributeValues.Add(DialPort)
-                                    AttributeNames.Add("Fax")
-                                    AttributeValues.Add(vbNullString)
-                                Else
-                                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = IIf(.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'") = "Fax", 1, 0)
-                                End If
+                                'If NodeValues.Count = 0 Then
+                                '    NodeNames.Add("TelName")
+                                '    NodeValues.Add(TelName)
+                                '    NodeNames.Add("TelNr")
+                                '    NodeValues.Add(TelNr)
+                                'Else
+                                NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                                NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                                'End If
+                                'If AttributeValues.Count = 0 Then
+                                '    AttributeNames.Add("Dialport")
+                                '    AttributeValues.Add(DialPort)
+                                '    AttributeNames.Add("Fax")
+                                '    AttributeValues.Add(vbNullString)
+                                'Else
+                                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = IIf(.StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Type" & i & "'] = '", "'") = "Fax", 1, 0)
+                                'End If
 
                                 C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                             End If
@@ -1258,28 +1308,24 @@ Public Class FritzBox
                 DialPort = "50"
                 PushStatus("S0-Basis hinzugefügt.")
                 If P_SpeichereDaten Then
-                    'NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
-                    'NodeValues.Item(NodeNames.IndexOf("TelNr")) = vbNullString
-                    'AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                    'AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-                    If NodeValues.Count = 0 Then
-                        NodeNames.Add("TelName")
-                        NodeValues.Add("ISDN-Basis")
-                        NodeNames.Add("TelNr")
-                        NodeValues.Add("50")
-                    Else
-                        NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
-                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
-                    End If
-                    If AttributeValues.Count = 0 Then
-                        AttributeNames.Add("Dialport")
-                        AttributeValues.Add(DialPort)
-                        AttributeNames.Add("Fax")
-                        AttributeValues.Add(vbNullString)
-                    Else
-                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-                    End If
+                    'If NodeValues.Count = 0 Then
+                    '    NodeNames.Add("TelName")
+                    '    NodeValues.Add("ISDN-Basis")
+                    '    NodeNames.Add("TelNr")
+                    '    NodeValues.Add("50")
+                    'Else
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
+                    'End If
+                    'If AttributeValues.Count = 0 Then
+                    '    AttributeNames.Add("Dialport")
+                    '    AttributeValues.Add(DialPort)
+                    '    AttributeNames.Add("Fax")
+                    '    AttributeValues.Add(vbNullString)
+                    'Else
+                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                    'End If
                     C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                 End If
 
@@ -1296,29 +1342,24 @@ Public Class FritzBox
                     DialPort = "60" & Strings.Right(Port, 1)
                     PushStatus("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                     If P_SpeichereDaten Then
-                        'NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                        'NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        'AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        'AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-
-                        If NodeValues.Count = 0 Then
-                            NodeNames.Add("TelName")
-                            NodeValues.Add(TelName)
-                            NodeNames.Add("TelNr")
-                            NodeValues.Add(TelNr)
-                        Else
-                            NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                            NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                        End If
-                        If AttributeValues.Count = 0 Then
-                            AttributeNames.Add("Dialport")
-                            AttributeValues.Add(DialPort)
-                            AttributeNames.Add("Fax")
-                            AttributeValues.Add(vbNullString)
-                        Else
-                            AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
-                        End If
+                        'If NodeValues.Count = 0 Then
+                        '    NodeNames.Add("TelName")
+                        '    NodeValues.Add(TelName)
+                        '    NodeNames.Add("TelNr")
+                        '    NodeValues.Add(TelNr)
+                        'Else
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        'End If
+                        'If AttributeValues.Count = 0 Then
+                        '    AttributeNames.Add("Dialport")
+                        '    AttributeValues.Add(DialPort)
+                        '    AttributeNames.Add("Fax")
+                        '    AttributeValues.Add(vbNullString)
+                        'Else
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = vbNullString
+                        'End If
 
                         C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
@@ -1335,29 +1376,25 @@ Public Class FritzBox
                 DialPort = "5"
                 PushStatus("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
                 If P_SpeichereDaten Then
-                    'NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
-                    'NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                    'AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                    'AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
 
-                    If NodeValues.Count = 0 Then
-                        NodeNames.Add("TelName")
-                        NodeValues.Add("Faxempfang")
-                        NodeNames.Add("TelNr")
-                        NodeValues.Add(TelNr)
-                    Else
-                        NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
-                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                    End If
-                    If AttributeValues.Count = 0 Then
-                        AttributeNames.Add("Dialport")
-                        AttributeValues.Add(DialPort)
-                        AttributeNames.Add("Fax")
-                        AttributeValues.Add("1")
-                    Else
-                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
-                    End If
+                    'If NodeValues.Count = 0 Then
+                    '    NodeNames.Add("TelName")
+                    '    NodeValues.Add("Faxempfang")
+                    '    NodeNames.Add("TelNr")
+                    '    NodeValues.Add(TelNr)
+                    'Else
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "Faxempfang"
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                    'End If
+                    'If AttributeValues.Count = 0 Then
+                    '    AttributeNames.Add("Dialport")
+                    '    AttributeValues.Add(DialPort)
+                    '    AttributeNames.Add("Fax")
+                    '    AttributeValues.Add("1")
+                    'Else
+                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
+                    'End If
 
                     C_XML.AppendNode(xPathTeile, C_XML.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                 End If
