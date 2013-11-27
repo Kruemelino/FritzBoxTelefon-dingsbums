@@ -1073,8 +1073,8 @@
     End Sub
 
     Friend Sub ÖffneEinstellungen()
-        Dim formConfig As New formCfg(Me, C_XML, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
-        formConfig.ShowDialog()
+        'Dim formConfig As New formCfg(Me, C_XML, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
+        ThisAddIn.P_Config.ShowDialog()
         Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
     End Sub
 

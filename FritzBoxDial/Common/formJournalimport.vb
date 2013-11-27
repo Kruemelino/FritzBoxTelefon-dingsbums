@@ -216,21 +216,21 @@ Friend Class formJournalimport
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonRING(vFBStatus, False, False)
+                                    AnrMon.AnrMonRING(vFBStatus, False)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonCONNECT(vFBStatus, False)
+                                    AnrMon.AnrMonCONNECT(vFBStatus)
                                 Case 2 ' eingehender Anruf: nicht angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonRING(vFBStatus, False, False)
+                                    AnrMon.AnrMonRING(vFBStatus, False)
                                 Case 3, 4 ' ausgehender Anruf
                                     vFBStatus = Split(AnrZeit & ";CALL;25;0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonCALL(vFBStatus, False)
+                                    AnrMon.AnrMonCALL(vFBStatus)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonCONNECT(vFBStatus, False)
+                                    AnrMon.AnrMonCONNECT(vFBStatus)
                             End Select
                             If Abbruch Then Exit For
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;25;" & Dauer & ";", ";", , CompareMethod.Text)
-                            AnrMon.AnrMonDISCONNECT(vFBStatus, False)
+                            AnrMon.AnrMonDISCONNECT(vFBStatus)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ Anzahl)
                         a += 1

@@ -12,6 +12,7 @@
     Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
     Private C_Phoner As PhonerInterface
+    Private C_Config As formCfg
 
     'Private WithEvents emc As New EventMulticaster
     'Strings
@@ -57,12 +58,19 @@
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
+            ThisAddIn.P_FritzBox = C_FBox
 
             C_GUI = New GraphicalUserInterface(C_Helfer, C_XML, C_Crypt, DateiPfad, C_RWS, C_Kontakt, C_Phoner)
 
+
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
+            ThisAddIn.P_WClient = C_WählClient
 
             C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.P_FBAddr)
+            ThisAddIn.P_AnrMon = C_AnrMon
+
+            C_Config = New formCfg(C_GUI, C_XML, C_Helfer, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_Kontakt, C_Phoner)
+            ThisAddIn.P_Config = C_Config
 
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
@@ -70,15 +78,12 @@
                 .P_WählKlient = C_WählClient
                 .P_FritzBox = C_FBox
             End With
+            ThisAddIn.P_GUI = C_GUI
 
             ThisAddIn.P_Dateipfad = DateiPfad
             ThisAddIn.P_XML = C_XML
             ThisAddIn.P_hf = C_Helfer
             ThisAddIn.P_KontaktFunktionen = C_Kontakt
-            ThisAddIn.P_FritzBox = C_FBox
-            ThisAddIn.P_WClient = C_WählClient
-            ThisAddIn.P_AnrMon = C_AnrMon
-            ThisAddIn.P_GUI = C_GUI
             ThisAddIn.P_UseAnrMon = UseAnrMon
 
             If CBool(C_XML.Read("Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then

@@ -43,6 +43,7 @@ Public Class ThisAddIn
     Private Shared hf As Helfer
     Private Shared KontaktFunktionen As Contacts
     Private Shared GUI As GraphicalUserInterface
+    Private Shared Cfg As formCfg
     Private Shared UseAnrMon As Boolean
     Private Shared Dateipfad As String
 
@@ -137,6 +138,14 @@ Public Class ThisAddIn
         End Set
     End Property
 
+    Friend Shared Property P_Config() As formCfg
+        Get
+            Return Cfg
+        End Get
+        Set(ByVal value As formCfg)
+            Cfg = value
+        End Set
+    End Property
 #End Region
 
 #If OVer < 14 Then
@@ -168,8 +177,8 @@ Public Class ThisAddIn
     End Sub
 
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
-        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
+        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
         Dim i As Integer = 2
 
         oApp = CType(Application, Outlook.Application)

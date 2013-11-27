@@ -25,11 +25,23 @@ Friend Class formCfg
     Private Anzahl As Integer = 0
     Private Dauer As TimeSpan
     Private Startzeit As Date
-
+    Private _StoppUhrAnzeigen As Boolean
     Private Delegate Sub DelgButtonTelEinl()
     Private Delegate Sub DelgSetLine()
     Private Delegate Sub DelgStatistik()
     Private Delegate Sub DelgSetProgressbar()
+
+#Region "Properties"
+    Friend Property P_StoppUhrAnzeigen() As Boolean
+        Get
+            Return _StoppUhrAnzeigen
+        End Get
+        Private Set(ByVal Value As Boolean)
+            _StoppUhrAnzeigen = Value
+        End Set
+    End Property
+
+#End Region
 
     Public Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal XMLKlasse As MyXML, _
@@ -152,6 +164,7 @@ Friend Class formCfg
 
         'StoppUhr
         Me.CBStoppUhrEinblenden.Checked = CBool(C_XML.Read("Optionen", "CBStoppUhrEinblenden", "False"))
+        Me.P_StoppUhrAnzeigen = Me.CBStoppUhrEinblenden.Checked
         Me.CBStoppUhrAusblenden.Checked = CBool(C_XML.Read("Optionen", "CBStoppUhrAusblenden", "False"))
         Me.TBStoppUhr.Text = C_XML.Read("Optionen", "TBStoppUhr", "10")
 

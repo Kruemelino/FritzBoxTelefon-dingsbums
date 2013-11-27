@@ -21,6 +21,7 @@ Friend Class AnrufMonitor
     Private C_Kontakt As Contacts
     Private C_XML As MyXML
     Private C_hf As Helfer
+    Private frm_Config As formCfg
     Private frm_RWS As formRWSuche
     Private frm_StoppUhr As formStoppUhr
 
@@ -71,8 +72,8 @@ Friend Class AnrufMonitor
         UseAnrMon = NutzeAnrMon
         C_OlI = OutlInter
         P_FBAddr = FBAdr
-
         AnrMonStart(False)
+
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -110,13 +111,13 @@ Friend Class AnrufMonitor
                             'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
                             Select Case CStr(aktZeile.GetValue(1))
                                 Case "RING"
-                                    AnrMonRING(aktZeile, True, CBStoppUhrEinblenden)
+                                    AnrMonRING(aktZeile, True)
                                 Case "CALL"
-                                    AnrMonCALL(aktZeile, CBStoppUhrEinblenden)
+                                    AnrMonCALL(aktZeile)
                                 Case "CONNECT"
-                                    AnrMonCONNECT(aktZeile, CBStoppUhrEinblenden)
+                                    AnrMonCONNECT(aktZeile)
                                 Case "DISCONNECT"
-                                    AnrMonDISCONNECT(aktZeile, CBStoppUhrEinblenden)
+                                    AnrMonDISCONNECT(aktZeile)
                             End Select
                         End If
                 End Select
@@ -449,7 +450,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Anrufmonitor Ereignisse"
-    Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal AnrMonAnzeigen As Boolean, ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal AnrMonAnzeigen As Boolean)
         ' wertet einen eingehenden Anruf aus
         ' Parameter: FBStatus (String ()):   Status-String der FritzBox
         '            anzeigen (Boolean):  nur bei 'true' wird 'AnrMonEinblenden' ausgeführt
@@ -585,7 +586,7 @@ Friend Class AnrufMonitor
 #End If
             End If
             'StoppUhr
-            If StoppUhrAnzeigen Then
+            If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf von:"
                     If Anrufer = "" Then
@@ -596,14 +597,14 @@ Friend Class AnrufMonitor
                 End With
             End If
             ' Daten für den Journaleintrag sichern
-            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or StoppUhrAnzeigen Then
+            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
                 NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
             End If
         End If
 
     End Sub '(AnrMonRING)
 
-    Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonCALL(ByVal FBStatus As String())
         ' wertet einen ausgehenden Anruf aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
 
@@ -723,7 +724,7 @@ Friend Class AnrufMonitor
 
             ' AnrMonReStart()
             'StoppUhr
-            If StoppUhrAnzeigen Then
+            If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf zu:"
                     If Anrufer = "" Then
@@ -734,14 +735,14 @@ Friend Class AnrufMonitor
                 End With
             End If
             ' Daten für den Journaleintrag sichern
-            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or StoppUhrAnzeigen Then
+            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
                 NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
                 JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
             End If
         End If
     End Sub '(AnrMonCALL)
 
-    Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonCONNECT(ByVal FBStatus As String())
         ' wertet eine Zustande gekommene Verbindung aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
         If C_XML.Read("Optionen", "CBJournal", "False") = "True" Then
@@ -767,7 +768,7 @@ Friend Class AnrufMonitor
                     JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
                     JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
-                    If StoppUhrAnzeigen Then
+                    If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
@@ -791,7 +792,7 @@ Friend Class AnrufMonitor
         End If
     End Sub '(AnrMonCONNECT)
 
-    Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String())
         ' legt den Journaleintrag (und/oder Kontakt) an
         ' Parameter: FBStatus (String):     Status-String der FritzBox
 
@@ -975,7 +976,7 @@ Friend Class AnrufMonitor
             End If
         End If
 
-        If StoppUhrAnzeigen Then
+        If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
             STUhrDaten(ID).Abbruch = True
         End If
     End Sub '(AnrMonDISCONNECT)
