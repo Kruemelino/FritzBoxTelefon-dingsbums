@@ -68,12 +68,17 @@ Friend Class formCfg
         C_Phoner = Phonerklasse
     End Sub
 
+    Private Sub formCfg_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        MsgBox("Closed")
+    End Sub
+
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(iTa.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
         Me.BAnrMonTest.Enabled = Not AnrMon Is Nothing
         Me.BTelefonliste.Enabled = Not C_FBox Is Nothing
         Ausfüllen()
     End Sub
+
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -426,6 +431,8 @@ Friend Class formCfg
         C_XML.Write("Optionen", "CBCheckMobil", CStr(Me.CBCheckMobil.Checked), False)
         ' StoppUhr
         C_XML.Write("Optionen", "CBStoppUhrEinblenden", CStr(Me.CBStoppUhrEinblenden.Checked), False)
+        P_StoppUhrAnzeigen = Me.CBStoppUhrEinblenden.Checked
+
         C_XML.Write("Optionen", "CBStoppUhrAusblenden", CStr(Me.CBStoppUhrAusblenden.Checked), False)
         If Not Me.TBStoppUhr.Text = vbNullString Then
             If CInt(Me.TBStoppUhr.Text) < 0 Then
@@ -604,11 +611,13 @@ Friend Class formCfg
                 GUI.RefreshRibbon()
 #End If
                 If formschließen Then
-                    Dispose(True)
+                    Me.Hide()
+                    'Dispose(True)
                 End If
             Case "ButtonAbbruch"
                 ' Schließt das Fenster
-                Dispose(True)
+                Me.Hide()
+                'Dispose(True)
             Case "ButtonUebernehmen"
                 Speichern()
             Case "ButtonXML"

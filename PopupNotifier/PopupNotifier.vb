@@ -31,8 +31,6 @@ Public Class PopupNotifier
     Private dMaxOpacity As Double
     Private dummybool As Boolean
 
-
-
 #Region "Properties"
 
     Private clHeader As Color = SystemColors.ControlDark
@@ -422,8 +420,8 @@ Public Class PopupNotifier
             .Location = New Point(Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - szPosition.Width, IIf(bEffektMove, Screen.PrimaryScreen.WorkingArea.Bottom - 1, Screen.PrimaryScreen.WorkingArea.Bottom - 10 - szPosition.Height - fPopup.Height))
             .Text = AnrName & IIf(TelNr = "", "", " (" & TelNr & ")")
             .Show()
-            SetWindowPos(fPopup.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
-            SetWindowPos(fPopup.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
+            SetWindowPos(.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
+            SetWindowPos(.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
 
         End With
 
