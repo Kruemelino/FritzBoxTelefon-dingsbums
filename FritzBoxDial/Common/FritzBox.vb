@@ -1404,6 +1404,7 @@ Public Class FritzBox
             Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
             If Len(Landesvorwahl) > 2 Then
                 C_XML.Write("Optionen", "TBLandesVW", "0" & Landesvorwahl, False)
+                C_XML.P_TBLandesVW = Landesvorwahl
             End If
         End With
 

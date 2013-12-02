@@ -483,7 +483,7 @@ Friend Class AnrufMonitor
             Dim StoreID As String = vbNullString           ' ID des Ordners, in dem sich der Kontakt befindet
             Dim ID As Integer            ' ID des Telefonats
             Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
-            Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
+            Dim LandesVW As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
             Dim LetzterAnrufer(5) As String
             Dim RWSIndex As Boolean
 
@@ -586,7 +586,7 @@ Friend Class AnrufMonitor
 #End If
             End If
             'StoppUhr
-            If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
+            If C_XML.P_CBStoppUhrEinblenden Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf von:"
                     If Anrufer = "" Then
@@ -597,7 +597,7 @@ Friend Class AnrufMonitor
                 End With
             End If
             ' Daten für den Journaleintrag sichern
-            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
+            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or C_XML.P_CBStoppUhrEinblenden Then
                 NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
             End If
         End If
@@ -638,7 +638,7 @@ Friend Class AnrufMonitor
         End With
 
         If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-            Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
+            Dim LandesVW As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")           ' eigene Landesvorwahl
             Dim TelNr As String            ' ermittelte TelNr
             Dim Anrufer As String = "-1"            ' ermittelter Anrufer
             Dim vCard As String = ""          ' vCard des Anrufers
@@ -724,7 +724,7 @@ Friend Class AnrufMonitor
 
             ' AnrMonReStart()
             'StoppUhr
-            If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
+            If C_XML.P_CBStoppUhrEinblenden Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf zu:"
                     If Anrufer = "" Then
@@ -735,7 +735,7 @@ Friend Class AnrufMonitor
                 End With
             End If
             ' Daten für den Journaleintrag sichern
-            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
+            If C_XML.Read("Optionen", "CBJournal", "False") = "True" Or C_XML.P_CBStoppUhrEinblenden Then
                 NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
                 JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
             End If
@@ -768,7 +768,7 @@ Friend Class AnrufMonitor
                     JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
                     JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
-                    If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
+                    If C_XML.P_CBStoppUhrEinblenden Then
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
@@ -976,7 +976,7 @@ Friend Class AnrufMonitor
             End If
         End If
 
-        If ThisAddIn.P_Config.P_StoppUhrAnzeigen Then
+        If C_XML.P_CBStoppUhrEinblenden Then
             STUhrDaten(ID).Abbruch = True
         End If
     End Sub '(AnrMonDISCONNECT)

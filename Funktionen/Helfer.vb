@@ -227,7 +227,7 @@ Public Class Helfer
         Dim Maske As String = C_XML.Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
         Dim Gruppieren As Boolean = CBool(C_XML.Read("Optionen", "CBTelNrGruppieren", "True"))
         Dim intl As Boolean = CBool(C_XML.Read("Optionen", "CBintl", "False"))
-        Dim eigeneLV As String = C_XML.Read("Optionen", "TBLandesVW", "0049")
+        Dim eigeneLV As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
 
 
         LandesVW = TelTeile(0)

@@ -34,8 +34,8 @@ Public Class FormMain
 
         Dim Passwort As String
 
-        Me.TBLandesVW.Text = C_XML.Read("Optionen", "TBLandesVW", "0049")
-        Me.TBBenutzer.Text = C_XML.Read("Optionen", "TBBenutzer", vbNullString)
+        Me.TBLandesVW.Text = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
+        Me.TBBenutzer.Text = C_XML.P_TBBenutzer 'Read("Optionen", "TBBenutzer", vbNullString)
         Passwort = C_XML.Read("Optionen", "TBPasswort", "")
         If Not Len(Passwort) = 0 Then
             Me.TBPasswort.Text = "1234"
@@ -69,9 +69,12 @@ Public Class FormMain
 
     Private Sub BStart_Click(sender As Object, e As EventArgs) Handles BStart.Click
         C_XML.Write("Optionen", "TBLandesVW", Me.TBLandesVW.Text, False)
+        C_XML.P_TBLandesVW = Me.TBLandesVW.Text
         C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text, False)
+        C_XML.P_TBBenutzer = Me.TBBenutzer.Text
         If Not Me.TBPasswort.Text = "1234" Then
             C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script"), False)
+            C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
             C_Helfer.KeyChange()
         End If

@@ -159,7 +159,7 @@ Public Class Wählclient
 
         frm_Wählbox = New formWählbox(Direktwahl, C_XML, C_hf, C_GUI, C_FBox, C_Phoner)
 
-        LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
+        LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
         If oContact Is Nothing Then
             frm_Wählbox.Tag = "-1"
         Else
@@ -336,7 +336,7 @@ Public Class Wählclient
         Dim alleTelNr As String      ' alle Telefonnummern in der vCard
         Dim LandesVW As String      ' eigene Landesvorwahl
 
-        LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
+        LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
 
         If Left(KontaktDaten(0), 2) = "-1" Then
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen

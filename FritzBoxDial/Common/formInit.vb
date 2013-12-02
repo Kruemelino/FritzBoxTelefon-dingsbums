@@ -100,9 +100,9 @@
         Dim Rückgabe As Boolean = False
         Dim TMPStr(4) As String
 
-        TMPStr(0) = C_XML.Read("Optionen", "TBLandesVW", "-1")
-        TMPStr(1) = C_XML.Read("Optionen", "TBVorwahl", "-1")
-        TMPStr(3) = C_XML.Read("Optionen", "TBPasswort", "-1")
+        TMPStr(0) = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "-1")
+        TMPStr(1) = C_XML.P_TBVorwahl 'Read("Optionen", "TBVorwahl", "-1")
+        TMPStr(3) = C_XML.P_TBPasswort 'Read("Optionen", "TBPasswort", "-1")
         TMPStr(4) = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
 
         If C_Helfer.IsOneOf("-1", TMPStr) Then

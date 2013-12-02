@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -79,7 +79,7 @@ Partial Class formCfg
         Me.Label17 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.LVersion = New System.Windows.Forms.Label()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.LinkHomepage = New System.Windows.Forms.LinkLabel()
         Me.LinkEmail = New System.Windows.Forms.LinkLabel()
@@ -163,7 +163,7 @@ Partial Class formCfg
         Me.Label29 = New System.Windows.Forms.Label()
         Me.CBPhoner = New System.Windows.Forms.CheckBox()
         Me.ComboBoxPhonerSIP = New System.Windows.Forms.ComboBox()
-        Me.PhonerPasswort = New System.Windows.Forms.MaskedTextBox()
+        Me.TBPhonerPasswort = New System.Windows.Forms.MaskedTextBox()
         Me.LPassworPhoner = New System.Windows.Forms.Label()
         Me.ButtonPhoner = New System.Windows.Forms.Button()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -777,7 +777,7 @@ Partial Class formCfg
         Me.PInfo.Controls.Add(Me.Label17)
         Me.PInfo.Controls.Add(Me.Label16)
         Me.PInfo.Controls.Add(Me.Label10)
-        Me.PInfo.Controls.Add(Me.Label7)
+        Me.PInfo.Controls.Add(Me.LVersion)
         Me.PInfo.Controls.Add(Me.RichTextBox1)
         Me.PInfo.Controls.Add(Me.LinkHomepage)
         Me.PInfo.Controls.Add(Me.LinkEmail)
@@ -816,14 +816,14 @@ Partial Class formCfg
         Me.Label10.TabIndex = 2
         Me.Label10.Text = "Kontakt:"
         '
-        'Label7
+        'LVersion
         '
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(5, 9)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(294, 16)
-        Me.Label7.TabIndex = 1
-        Me.Label7.Text = "Fritz!Box Telefon-Dingsbums "
+        Me.LVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LVersion.Location = New System.Drawing.Point(5, 9)
+        Me.LVersion.Name = "LVersion"
+        Me.LVersion.Size = New System.Drawing.Size(294, 16)
+        Me.LVersion.TabIndex = 1
+        Me.LVersion.Text = "Fritz!Box Telefon-Dingsbums "
         '
         'RichTextBox1
         '
@@ -1024,9 +1024,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1038,9 +1038,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1052,9 +1052,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1667,7 +1667,7 @@ Partial Class formCfg
         Me.PanelPhoner.Controls.Add(Me.Label33)
         Me.PanelPhoner.Controls.Add(Me.CBPhoner)
         Me.PanelPhoner.Controls.Add(Me.ComboBoxPhonerSIP)
-        Me.PanelPhoner.Controls.Add(Me.PhonerPasswort)
+        Me.PanelPhoner.Controls.Add(Me.TBPhonerPasswort)
         Me.PanelPhoner.Controls.Add(Me.LPassworPhoner)
         Me.PanelPhoner.Location = New System.Drawing.Point(111, 35)
         Me.PanelPhoner.Name = "PanelPhoner"
@@ -1722,13 +1722,13 @@ Partial Class formCfg
         Me.ComboBoxPhonerSIP.Size = New System.Drawing.Size(100, 21)
         Me.ComboBoxPhonerSIP.TabIndex = 2
         '
-        'PhonerPasswort
+        'TBPhonerPasswort
         '
-        Me.PhonerPasswort.Location = New System.Drawing.Point(7, 41)
-        Me.PhonerPasswort.Name = "PhonerPasswort"
-        Me.PhonerPasswort.Size = New System.Drawing.Size(100, 20)
-        Me.PhonerPasswort.TabIndex = 7
-        Me.PhonerPasswort.UseSystemPasswordChar = True
+        Me.TBPhonerPasswort.Location = New System.Drawing.Point(7, 41)
+        Me.TBPhonerPasswort.Name = "TBPhonerPasswort"
+        Me.TBPhonerPasswort.Size = New System.Drawing.Size(100, 20)
+        Me.TBPhonerPasswort.TabIndex = 7
+        Me.TBPhonerPasswort.UseSystemPasswordChar = True
         '
         'LPassworPhoner
         '
@@ -2089,7 +2089,7 @@ Partial Class formCfg
     Friend WithEvents LinkEmail As System.Windows.Forms.LinkLabel
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents LVersion As System.Windows.Forms.Label
     Friend WithEvents RichTextBox1 As System.Windows.Forms.RichTextBox
     Friend WithEvents PTelefone As System.Windows.Forms.TabPage
     Friend WithEvents PIndex As System.Windows.Forms.TabPage
@@ -2199,7 +2199,7 @@ Partial Class formCfg
     Friend WithEvents LinkPhoner As System.Windows.Forms.LinkLabel
     Friend WithEvents LabelPhoner As System.Windows.Forms.Label
     Friend WithEvents LPassworPhoner As System.Windows.Forms.Label
-    Friend WithEvents PhonerPasswort As System.Windows.Forms.MaskedTextBox
+    Friend WithEvents TBPhonerPasswort As System.Windows.Forms.MaskedTextBox
     Friend WithEvents TBPasswort As System.Windows.Forms.MaskedTextBox
     Friend WithEvents PanelPhoner As System.Windows.Forms.Panel
     Friend WithEvents ButtonPhoner As System.Windows.Forms.Button

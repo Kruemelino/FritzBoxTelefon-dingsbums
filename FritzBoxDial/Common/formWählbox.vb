@@ -85,7 +85,7 @@ Friend Class formWählbox
         Dim tmpStr As String
         Dim ZeigeDialPort As Boolean = CBool(C_XML.Read("Optionen", "CBDialPort", "False"))
         Dim DialPort As String
-        LandesVorwahl = C_XML.Read("Optionen", "TBLandesVW", "0049")
+        LandesVorwahl = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
 
         Dim xPathTeile As New ArrayList
         With xPathTeile
@@ -301,7 +301,7 @@ Friend Class formWählbox
                     Start()
                 End If
             Else
-                LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
+                LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
                 code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString), LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
                 Me.LabelStatus.Text = "Bitte warten..."
                 ' Ermitteln der URL für ein Orts- oder  Ferngespräch
@@ -388,7 +388,7 @@ Friend Class formWählbox
 
         Dim Code As String  ' zu wählende Nummer
         Dim Amt As String  ' Amtsvorwahl
-        Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049") ' eigene Landesvorwahl
+        Dim LandesVW As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049") ' eigene Landesvorwahl
         Dim nameStart As Integer ' Position des Namens im Fenstertitel
         Dim index As Integer ' Zählvariable
         Dim KontaktID As String
@@ -419,7 +419,7 @@ Friend Class formWählbox
 
         Amt = C_XML.Read("Optionen", "TBAmt", "")
         Amt = CStr(IIf(Amt = "-1", "", Amt))
-        LandesVW = C_XML.Read("Optionen", "TBLandesVW", "0049")
+        LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
         Code = C_hf.nurZiffern(Number, LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
         'LogFile("Rufnummer " & Code & " wurde ausgewählt")
         If C_XML.Read("Optionen", "CBVoIPBuster", "False") = "True" Then

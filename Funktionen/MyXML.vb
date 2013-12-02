@@ -7,12 +7,652 @@ Public Class MyXML
 
     Private WithEvents tSpeichern As Timer
 
+#Region "Konstanten"
     Private Const Speicherintervall As Double = 15 'in Minuten
     Private Const RootName As String = "FritzOutlookXML"
     Private Const xPathSeperatorSlash As String = "/"
     Private Const xPathWildCard As String = "*"
     Private Const xPathBracketOpen As String = "["
     Private Const xPathBracketClose As String = "]"
+#End Region
+#Region "PrivateData"
+
+    Private _CBForceFBAddr As Boolean
+    Private _CBAnrMonContactImage As Boolean
+    Private _CBIndexAus As Boolean
+    Private _CBShowMSN As Boolean
+    Private _CBAnrMonMove As Boolean
+    Private _CBAnrMonTransp As Boolean
+    Private _CBAnrMonAuto As Boolean
+    Private _CBAutoClose As Boolean
+    Private _CBVoIPBuster As Boolean
+    Private _CBCbCunterbinden As Boolean
+    Private _CBCallByCall As Boolean
+    Private _CBDialPort As Boolean
+    Private _CBRueckwaertssuche As Boolean
+    Private _CBKErstellen As Boolean
+    Private _CBLogFile As Boolean
+#If OVer < 14 Then
+    Private _CBSymbWwdh As Boolean
+    Private _CBSymbAnrMon As Boolean
+    Private _CBSymbAnrMonNeuStart As Boolean
+    Private _CBSymbAnrListe As Boolean
+    Private _CBSymbDirekt As Boolean
+    Private _CBSymbRWSuche As Boolean
+    Private _CBSymbVIP As Boolean
+    Private _CBSymbJournalimport As Boolean
+#End If
+    Private _CBJImport As Boolean
+    Private _CBKHO As Boolean
+    Private _CBRWSIndex As Boolean
+    Private _ComboBoxRWS As Integer
+    Private _TBLandesVW As String
+    Private _TBAmt As String
+    Private _TBFBAdr As String
+    Private _TBBenutzer As String
+    Private _TBPasswort As String
+    Private _TBVorwahl As String
+    Private _TBEnblDauer As String
+    Private _TBAnrMonX As String
+    Private _TBAnrMonY As String
+
+    Private _TBAnrMonMoveGeschwindigkeit As Integer
+    Private _CBoxRWSuche As Integer
+
+    Private _CBJournal As Boolean
+    Private _CBUseAnrMon As Boolean
+    Private _CBCheckMobil As Boolean
+    'StoppUhr
+    Private _CBStoppUhrEinblenden As Boolean
+    Private _CBStoppUhrAusblenden As Boolean
+    Private _TBStoppUhr As String
+    ' Telefonnummernformatierung
+    Private _TBTelNrMaske As String
+    Private _CBTelNrGruppieren As Boolean
+    Private _CBintl As Boolean
+    Private _CBIgnoTelNrFormat As Boolean
+    ' Phoner
+    Private _CBPhoner As Boolean
+    Private _PhonerVerfügbar As Boolean
+    Private _CBPhonerAnrMon As Boolean
+    Private _ComboBoxPhonerSIP As Integer
+    Private _TBPhonerPasswort As String
+    Private _PhonerTelNameIndex As String
+#End Region
+
+#Region "Properties"
+
+    Public Property P_TBLandesVW() As String
+        Get
+            Return _TBLandesVW
+        End Get
+        Set(ByVal value As String)
+            _TBLandesVW = value
+        End Set
+    End Property
+    Public Property P_TBAmt() As String
+        Get
+            Return _TBAmt
+        End Get
+        Set(ByVal value As String)
+            _TBAmt = value
+        End Set
+    End Property
+    Public Property P_TBFBAdr() As String
+        Get
+            Return _TBFBAdr
+        End Get
+        Set(ByVal value As String)
+            _TBFBAdr = value
+        End Set
+    End Property
+    Public Property P_CBForceFBAddr() As Boolean
+        Get
+            Return _CBForceFBAddr
+        End Get
+        Set(ByVal value As Boolean)
+            _CBForceFBAddr = value
+        End Set
+    End Property
+    Public Property P_TBBenutzer() As String
+        Get
+            Return _TBBenutzer
+        End Get
+        Set(ByVal value As String)
+            _TBBenutzer = value
+        End Set
+    End Property
+    Public Property P_TBPasswort() As String
+        Get
+            Return _TBPasswort
+        End Get
+        Set(ByVal value As String)
+            _TBPasswort = value
+        End Set
+    End Property
+
+    Public Property P_TBVorwahl() As String
+        Get
+            Return _TBVorwahl
+        End Get
+        Set(ByVal value As String)
+            _TBVorwahl = value
+        End Set
+    End Property
+    Public Property P_TBEnblDauer() As String
+        Get
+            Return _TBEnblDauer
+        End Get
+        Set(ByVal value As String)
+            _TBEnblDauer = value
+        End Set
+    End Property
+    Public Property P_CBAnrMonAuto() As Boolean
+        Get
+            Return _CBAnrMonAuto
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrMonAuto = value
+        End Set
+    End Property
+    Public Property P_TBAnrMonX() As String
+        Get
+            Return _TBAnrMonX
+        End Get
+        Set(ByVal value As String)
+            _TBAnrMonX = value
+        End Set
+    End Property
+    Public Property P_TBAnrMonY() As String
+        Get
+            Return _TBAnrMonY
+        End Get
+        Set(ByVal value As String)
+            _TBAnrMonY = value
+        End Set
+    End Property
+    Public Property P_CBAnrMonMove() As boolean
+        Get
+            Return _CBAnrMonMove
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrMonMove = value
+        End Set
+    End Property
+    Public Property P_CBAnrMonTransp() As Boolean
+        Get
+            Return _CBAnrMonTransp
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrMonTransp = value
+        End Set
+    End Property
+    Public Property P_TBAnrMonMoveGeschwindigkeit() As Integer
+        Get
+            Return _TBAnrMonMoveGeschwindigkeit
+        End Get
+        Set(ByVal value As Integer)
+            _TBAnrMonMoveGeschwindigkeit = value
+        End Set
+    End Property
+    Public Property P_CBAnrMonContactImage() As Boolean
+        Get
+            Return _CBAnrMonContactImage
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrMonContactImage = value
+        End Set
+    End Property
+    Public Property P_CBIndexAus() As Boolean
+        Get
+            Return _CBIndexAus
+        End Get
+        Set(ByVal value As Boolean)
+            _CBIndexAus = value
+        End Set
+    End Property
+    Public Property P_CBShowMSN() As Boolean
+        Get
+            Return _CBShowMSN
+        End Get
+        Set(ByVal value As Boolean)
+            _CBShowMSN = value
+        End Set
+    End Property
+
+    Public Property P_CBAutoClose() As Boolean
+        Get
+            Return _CBAutoClose
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAutoClose = value
+        End Set
+    End Property
+    Public Property P_CBVoIPBuster() As Boolean
+        Get
+            Return _CBVoIPBuster
+        End Get
+        Set(ByVal value As Boolean)
+            _CBVoIPBuster = value
+        End Set
+    End Property
+    Public Property P_CBCbCunterbinden() As Boolean
+        Get
+            Return _CBCbCunterbinden
+        End Get
+        Set(ByVal value As Boolean)
+            _CBCbCunterbinden = value
+        End Set
+    End Property
+    Public Property P_CBCallByCall() As Boolean
+        Get
+            Return _CBCallByCall
+        End Get
+        Set(ByVal value As Boolean)
+            _CBCallByCall = value
+        End Set
+    End Property
+    Public Property P_CBDialPort() As Boolean
+        Get
+            Return _CBDialPort
+        End Get
+        Set(ByVal value As Boolean)
+            _CBDialPort = value
+        End Set
+    End Property
+    Public Property P_CBRueckwaertssuche() As Boolean
+        Get
+            Return _CBRueckwaertssuche
+        End Get
+        Set(ByVal value As Boolean)
+            _CBRueckwaertssuche = value
+        End Set
+    End Property
+    Public Property P_CBKErstellen() As Boolean
+        Get
+            Return _CBKErstellen
+        End Get
+        Set(ByVal value As Boolean)
+            _CBKErstellen = value
+        End Set
+    End Property
+    Public Property P_CBLogFile() As Boolean
+        Get
+            Return _CBLogFile
+        End Get
+        Set(ByVal value As Boolean)
+            _CBLogFile = value
+        End Set
+    End Property
+#If OVer < 14 Then
+    Public Property P_CBSymbWwdh() As Boolean
+        Get
+            Return _CBSymbWwdh
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbWwdh = value
+        End Set
+    End Property
+    Public Property P_CBSymbAnrMon() As Boolean
+        Get
+            Return _CBLogFile
+        End Get
+        Set(ByVal value As Boolean)
+            _CBLogFile = value
+        End Set
+    End Property
+    Public Property P_CBSymbAnrMonNeuStart() As Boolean
+        Get
+            Return _CBSymbAnrMonNeuStart
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbAnrMonNeuStart = value
+        End Set
+    End Property
+    Public Property P_CBSymbAnrListe() As Boolean
+        Get
+            Return _CBSymbAnrListe
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbAnrListe = value
+        End Set
+    End Property
+    Public Property P_CBSymbDirekt() As Boolean
+        Get
+            Return _CBSymbDirekt
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbDirekt = value
+        End Set
+    End Property
+    Public Property P_CBSymbRWSuche() As Boolean
+        Get
+            Return _CBSymbRWSuche
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbRWSuche = value
+        End Set
+    End Property
+    Public Property P_CBSymbVIP() As Boolean
+        Get
+            Return _CBSymbVIP
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbVIP = value
+        End Set
+    End Property
+    Public Property P_CBSymbJournalimport() As Boolean
+        Get
+            Return _CBSymbJournalimport
+        End Get
+        Set(ByVal value As Boolean)
+            _CBSymbJournalimport = value
+        End Set
+    End Property
+#End If
+    Public Property P_CBJImport() As Boolean
+        Get
+            Return _CBJImport
+        End Get
+        Set(ByVal value As Boolean)
+            _CBJImport = value
+        End Set
+    End Property
+    Public Property P_CBKHO() As Boolean
+        Get
+            Return _CBKHO
+        End Get
+        Set(ByVal value As Boolean)
+            _CBKHO = value
+        End Set
+    End Property
+    Public Property P_CBRWSIndex() As Boolean
+        Get
+            Return _CBRWSIndex
+        End Get
+        Set(ByVal value As Boolean)
+            _CBRWSIndex = value
+        End Set
+    End Property
+    Public Property P_ComboBoxRWS() As Integer
+        Get
+            Return _ComboBoxRWs
+        End Get
+        Set(ByVal value As Integer)
+            _ComboBoxRWs = value
+        End Set
+    End Property
+
+    Public Property P_CBoxRWSuche() As Integer
+        Get
+            Return _CBoxRWSuche
+        End Get
+        Set(ByVal value As Integer)
+            _CBoxRWSuche = value
+        End Set
+    End Property
+
+    Public Property P_CBJournal() As Boolean
+        Get
+            Return _CBJournal
+        End Get
+        Set(ByVal value As Boolean)
+            _CBJournal = value
+        End Set
+    End Property
+    Public Property P_CBUseAnrMon() As Boolean
+        Get
+            Return _CBUseAnrMon
+        End Get
+        Set(ByVal value As Boolean)
+            _CBUseAnrMon = value
+        End Set
+    End Property
+    Public Property P_CBCheckMobil() As Boolean
+        Get
+            Return _CBCheckMobil
+        End Get
+        Set(ByVal value As Boolean)
+            _CBCheckMobil = value
+        End Set
+    End Property
+    'StoppUhr
+    Public Property P_CBStoppUhrEinblenden() As Boolean
+        Get
+            Return _CBStoppUhrEinblenden
+        End Get
+        Set(ByVal Value As Boolean)
+            _CBStoppUhrEinblenden = Value
+        End Set
+    End Property
+    Public Property P_CBStoppUhrAusblenden() As Boolean
+        Get
+            Return _CBStoppUhrAusblenden
+        End Get
+        Set(ByVal Value As Boolean)
+            _CBStoppUhrAusblenden = Value
+        End Set
+    End Property
+    Public Property P_TBStoppUhr() As String
+        Get
+            Return _TBStoppUhr
+        End Get
+        Set(ByVal value As String)
+            _TBStoppUhr = value
+        End Set
+    End Property
+    ' Telefonnummernformatierung
+    Public Property P_TBTelNrMaske() As String
+        Get
+            Return _TBTelNrMaske
+        End Get
+        Set(ByVal value As String)
+            _TBTelNrMaske = value
+        End Set
+    End Property
+    Public Property P_CBTelNrGruppieren() As Boolean
+        Get
+            Return _CBTelNrGruppieren
+        End Get
+        Set(ByVal value As Boolean)
+            _CBTelNrGruppieren = value
+        End Set
+    End Property
+    Public Property P_CBintl() As Boolean
+        Get
+            Return _CBintl
+        End Get
+        Set(ByVal value As Boolean)
+            _CBintl = value
+        End Set
+    End Property
+    Public Property P_CBIgnoTelNrFormat() As Boolean
+        Get
+            Return _CBIgnoTelNrFormat
+        End Get
+        Set(ByVal value As Boolean)
+            _CBIgnoTelNrFormat = value
+        End Set
+    End Property
+    'Phoner
+    Public Property P_CBPhoner As Boolean
+        Get
+            Return _CBPhoner
+        End Get
+        Set(ByVal value As Boolean)
+            _CBPhoner = value
+        End Set
+    End Property
+    Public Property P_PhonerVerfügbar As Boolean
+        Get
+            Return _PhonerVerfügbar
+        End Get
+        Set(ByVal value As Boolean)
+            _PhonerVerfügbar = value
+        End Set
+    End Property
+    Public Property P_CBPhonerAnrMon As Boolean
+        Get
+            Return _CBPhonerAnrMon
+        End Get
+        Set(ByVal value As Boolean)
+            _CBPhonerAnrMon = value
+        End Set
+    End Property
+    Public Property P_ComboBoxPhonerSIP() As Integer
+        Get
+            Return _ComboBoxPhonerSIP
+        End Get
+        Set(ByVal value As Integer)
+            _ComboBoxPhonerSIP = value
+        End Set
+    End Property
+    Public Property P_TBPhonerPasswort() As String
+        Get
+            Return _TBPhonerPasswort
+        End Get
+        Set(ByVal value As String)
+            _TBPhonerPasswort = value
+        End Set
+    End Property
+    Public Property P_PhonerTelNameIndex() As String
+        Get
+            Return _PhonerTelNameIndex
+        End Get
+        Set(ByVal value As String)
+            _PhonerTelNameIndex = value
+        End Set
+    End Property
+
+#End Region
+    Private Sub LoadOptionData()
+
+        Me.P_TBLandesVW = Read("Optionen", "TBLandesVW", "0049")
+        Me.P_TBAmt = Read("Optionen", "TBAmt", "-1")
+        Me.P_TBFBAdr = Read("Optionen", "TBFBAdr", "fritz.box")  'DEFAULT auf anderes Default-property ändern
+        Me.P_CBForceFBAddr = CBool(Read("Optionen", "CBForceFBAddr", "False"))
+        Me.P_TBBenutzer = Read("Optionen", "TBBenutzer", vbNullString)
+        Me.P_TBPasswort = Read("Optionen", "TBPasswort", "")
+
+        Me.P_TBVorwahl = Read("Optionen", "TBVorwahl", "")
+        Me.P_TBEnblDauer = Read("Optionen", "TBEnblDauer", "10")
+        Me.P_CBAnrMonAuto = CBool(Read("Optionen", "CBAnrMonAuto", "False"))
+        Me.P_TBAnrMonX = Read("Optionen", "TBAnrMonX", "0")
+        Me.P_TBAnrMonY = Read("Optionen", "TBAnrMonY", "0")
+        Me.P_CBAnrMonMove = CBool(Read("Optionen", "CBAnrMonMove", "True"))
+        Me.P_CBAnrMonTransp = CBool(Read("Optionen", "CBAnrMonTransp", "True"))
+        Me.P_TBAnrMonMoveGeschwindigkeit = CInt((100 - CDbl(Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))) / 10)
+        Me.P_CBAnrMonContactImage = CBool(Read("Optionen", "CBAnrMonContactImage", "True"))
+        Me.P_CBIndexAus = CBool(Read("Optionen", "CBIndexAus", "False"))
+        Me.P_CBShowMSN = CBool(Read("Optionen", "CBShowMSN", "False"))
+
+        Me.P_CBAutoClose = CBool(Read("Optionen", "CBAutoClose", "True"))
+        Me.P_CBVoIPBuster = CBool(Read("Optionen", "CBVoIPBuster", "False"))
+        Me.P_CBCbCunterbinden = CBool(Read("Optionen", "CBCbCunterbinden", "False"))
+        Me.P_CBCallByCall = CBool(Read("Optionen", "CBCallByCall", "False"))
+        Me.P_CBDialPort = CBool(Read("Optionen", "CBDialPort", "False"))
+        Me.P_CBRueckwaertssuche = CBool(Read("Optionen", "CBRueckwaertssuche", "False"))
+        Me.P_CBKErstellen = CBool(Read("Optionen", "CBKErstellen", "False"))
+        Me.P_CBLogFile = CBool(Read("Optionen", "CBLogFile", "False"))
+        ' Einstellungen für die Symbolleiste laden
+#If OVer < 14 Then
+        Me.P_CBSymbWwdh = CBool(Read("Optionen", "CBSymbWwdh", "True"))
+        Me.P_CBSymbAnrMon = CBool(Read("Optionen", "CBSymbAnrMon", "True"))
+        Me.P_CBSymbAnrMonNeuStart = CBool(Read("Optionen", "CBSymbAnrMonNeuStart", "False"))
+        Me.P_CBSymbAnrListe = CBool(Read("Optionen", "CBSymbAnrListe", "True"))
+        Me.P_CBSymbDirekt = CBool(Read("Optionen", "CBSymbDirekt", "True"))
+        Me.P_CBSymbRWSuche = CBool(Read("Optionen", "CBSymbRWSuche", "True"))
+        Me.P_CBSymbVIP = CBool(Read("Optionen", "CBSymbVIP", "False"))
+        Me.P_CBSymbJournalimport = CBool(Read("Optionen", "CBSymbJournalimport", "False"))
+#End If
+        Me.P_CBJImport = CBool(Read("Optionen", "CBJImport", "False"))
+        ' Einstellungen füer die Rückwärtssuche laden
+        Me.P_CBKHO = CBool(Read("Optionen", "CBKHO", "True"))
+        Me.P_CBRWSIndex = CBool(Read("Optionen", "CBRWSIndex", "True"))
+        Me.P_CBoxRWSuche = CInt(Read("Optionen", "CBoxRWSuche", "0"))
+        Me.P_ComboBoxRWS = CInt(Read("Optionen", "ComboBoxRWS", "0"))
+        Me.P_CBJournal = CBool(Read("Optionen", "CBJournal", "False") = "True")
+        Me.P_CBUseAnrMon = CBool(Read("Optionen", "CBUseAnrMon", "True"))
+        Me.P_CBCheckMobil = CBool(Read("Optionen", "CBCheckMobil", "True"))
+        'StoppUhr
+        Me.P_CBStoppUhrEinblenden = CBool(Read("Optionen", "CBStoppUhrEinblenden", "False"))
+        Me.P_CBStoppUhrAusblenden = CBool(Read("Optionen", "CBStoppUhrAusblenden", "False"))
+        Me.P_TBStoppUhr = Read("Optionen", "TBStoppUhr", "10")
+
+        Me.P_TBTelNrMaske = Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
+        Me.P_CBTelNrGruppieren = CBool(Read("Optionen", "CBTelNrGruppieren", "True"))
+        Me.P_CBintl = CBool(Read("Optionen", "CBintl", "False"))
+        Me.P_CBIgnoTelNrFormat = CBool(Read("Optionen", "CBIgnoTelNrFormat", "False"))
+        ' Phoner
+        Me.P_CBPhoner = CBool(Read("Phoner", "CBPhoner", "False"))
+        Me.P_PhonerVerfügbar = CBool(Read("Phoner", "PhonerVerfügbar", "False"))
+        Me.P_ComboBoxPhonerSIP = CInt(Read("Phoner", "ComboBoxPhonerSIP", "0"))
+        Me.P_CBPhonerAnrMon = CBool(Read("Phoner", "CBPhonerAnrMon", "False"))
+        Me.P_TBPhonerPasswort = Read("Phoner", "TBPhonerPasswort", "")
+        Me._PhonerTelNameIndex = Read("Phoner", "PhonerTelNameIndex", "")
+    End Sub
+    Public Sub SaveOptionData()
+        Write("Optionen", "TBLandesVW", Me.P_TBLandesVW, False)
+        Write("Optionen", "TBAmt", Me.P_TBAmt, False)
+        Write("Optionen", "TBFBAdr", Me.P_TBFBAdr, False)
+        Write("Optionen", "CBForceFBAddr", CStr(Me.P_CBForceFBAddr), False)
+        Write("Optionen", "TBBenutzer", Me.P_TBBenutzer, False)
+        Write("Optionen", "TBPasswort", Me.P_TBPasswort, False)
+        Write("Optionen", "TBVorwahl", Me.P_TBVorwahl, False)
+        Write("Optionen", "TBEnblDauer", Me.P_TBEnblDauer, False)
+        Write("Optionen", "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto), False)
+        Write("Optionen", "TBAnrMonX", Me.P_TBAnrMonX, False)
+        Write("Optionen", "TBAnrMonY", Me.P_TBAnrMonY, False)
+        Write("Optionen", "CBAnrMonMove", CStr(Me.P_CBAnrMonMove), False)
+        Write("Optionen", "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp), False)
+        Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr((10 - Me.P_TBAnrMonMoveGeschwindigkeit) * 10), False)
+        Write("Optionen", "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage), False)
+        Write("Optionen", "CBIndexAus", CStr(Me.P_CBIndexAus), False)
+        Write("Optionen", "CBShowMSN", CStr(Me.P_CBShowMSN), False)
+        Write("Optionen", "CBAutoClose", CStr(Me.P_CBAutoClose), False)
+        Write("Optionen", "CBVoIPBuster", CStr(Me.P_CBVoIPBuster), False)
+        Write("Optionen", "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster), False)
+        Write("Optionen", "CBCallByCall", CStr(Me.P_CBCallByCall), False)
+        Write("Optionen", "CBDialPort", CStr(Me.P_CBDialPort), False)
+        Write("Optionen", "CBRueckwaertssuche", CStr(Me.P_CBRueckwaertssuche), False)
+        Write("Optionen", "CBKErstellen", CStr(Me.P_CBKErstellen), False)
+        Write("Optionen", "CBLogFile", CStr(Me.P_CBLogFile), False)
+        ' Einstellungen für die Symbolleiste laden
+#If OVer < 14 Then
+        Write("Optionen", "CBSymbWwdh", CStr(Me.P_CBSymbWwdh), False)
+        Write("Optionen", "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon), False)
+        Write("Optionen", "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart), False)
+        Write("Optionen", "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe), False)
+        Write("Optionen", "CBSymbDirekt", CStr(Me.P_CBSymbDirekt), False)
+        Write("Optionen", "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche), False)
+        Write("Optionen", "CBSymbVIP", CStr(Me.P_CBSymbVIP), False)
+        Write("Optionen", "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport), False)
+#End If
+        Write("Optionen", "CBJImport", CStr(Me.P_CBJImport), False)
+        ' Einstellungen füer die Rückwärtssuche laden
+        Write("Optionen", "CBKHO", CStr(Me.P_CBKHO), False)
+        Write("Optionen", "CBRWSIndex", CStr(Me.P_CBRWSIndex), False)
+        Write("Optionen", "CBoxRWSuche", CStr(Me.P_CBoxRWSuche), False)
+        Write("Optionen", "CBJournal", CStr(Me.P_CBJournal), False)
+        Write("Optionen", "CBUseAnrMon", CStr(Me.P_CBUseAnrMon), False)
+        Write("Optionen", "CBCheckMobil", CStr(Me.P_CBCheckMobil), False)
+        'StoppUhr
+        Write("Optionen", "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden), False)
+        Write("Optionen", "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden), False)
+        Write("Optionen", "", Me.P_TBStoppUhr, False)
+        Write("Optionen", "TBTelNrMaske", Me.P_TBTelNrMaske, False)
+        Write("Optionen", "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren), False)
+        Write("Optionen", "CBintl", CStr(Me.P_CBintl), False)
+        Write("Optionen", "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat), False)
+        ' Phoner
+        Write("Optionen", "CBPhoner", CStr(Me.P_CBPhoner), False)
+        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar), False)
+        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP), False)
+        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon), False)
+        Write("Optionen", "TBPhonerPasswort", Me.P_TBPhonerPasswort, False)
+        Write("Optionen", "PhonerTelNameIndex", Me.P_PhonerTelNameIndex, False)
+        SpeichereXMLDatei()
+    End Sub
 
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
@@ -32,9 +672,14 @@ Public Class MyXML
             .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
             .Start()
         End With
+        LoadOptionData()
+
     End Sub
 
+
+
     Protected Overrides Sub Finalize()
+        SaveOptionData()
         XMLDoc.Save(sDateiPfad)
         XMLDoc = Nothing
         If Not tSpeichern Is Nothing Then
@@ -45,7 +690,6 @@ Public Class MyXML
 
         MyBase.Finalize()
     End Sub
-
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         Dim xPathTeile As New ArrayList
@@ -383,3 +1027,4 @@ Public Class MyXML
 #End Region
 
 End Class
+

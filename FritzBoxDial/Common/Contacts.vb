@@ -242,7 +242,7 @@
 
     Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
         If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
-            Dim LandesVW As String = C_XML.Read("Optionen", "TBLandesVW", "0049")
+            Dim LandesVW As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
             Dim alleTE(16) As String  ' alle TelNr/Email eines Kontakts
             Dim speichern As Boolean = False
             Dim tempTelNr As String
