@@ -155,7 +155,7 @@ Friend Class AnrufMonitor
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
         If (C_XML.P_CBAnrMonAuto Or Manuell) And UseAnrMon Then
 
-            If CBool(C_XML.Read("Phoner", "CBPhonerAnrMon", "False")) Then
+            If C_XML.P_CBPhonerAnrMon Then
                 FBAnrMonPort = 2012
                 P_FBAddr = "127.0.0.1"
             End If
@@ -311,7 +311,6 @@ Friend Class AnrufMonitor
 
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)
-        'Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & ID, CStr(System.DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
         AnrMonList.Add(New formAnrMon(CInt(ID), True, C_XML, C_hf, Me, C_OlI))
         Dim a As Integer
         Do
@@ -370,8 +369,8 @@ Friend Class AnrufMonitor
                 Thread.Sleep(20)
                 Windows.Forms.Application.DoEvents()
             Loop
-            C_XML.Write("Optionen", "CBStoppUhrX", CStr(frmStUhr.Position.X), False)
-            C_XML.Write("Optionen", "CBStoppUhrY", CStr(frmStUhr.Position.Y), True)
+            C_XML.P_CBStoppUhrX = frmStUhr.Position.X
+            C_XML.P_CBStoppUhrY = frmStUhr.Position.Y
             frmStUhr = Nothing
         End With
     End Sub
@@ -805,7 +804,6 @@ Friend Class AnrufMonitor
         ' die zum Anruf gehörende MSN oder VoIP-Nr
         Dim TelName As String
         Dim tmpTelName As String = vbNullString
-        Dim TempStat As Integer
 
         Dim NSN As Double = -1
         Dim Zeit As String = vbNullString
@@ -816,7 +814,7 @@ Friend Class AnrufMonitor
         Dim KontaktID As String = vbNullString
 
         Dim FritzFolderExists As Boolean = False
-        Dim SchließZeit As Date = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
+        Dim SchließZeit As Date = C_XML.P_StatOLClosedZeit
 
         Dim xPathTeile As New ArrayList
 
@@ -930,12 +928,10 @@ Friend Class AnrufMonitor
                     If Dauer = 0 Then
                         If Left(Typ, 3) = "Ein" Then
                             Typ = "Verpasster Anruf von"
-                            TempStat = CInt(C_XML.Read("Statistik", "Verpasst", "0"))
-                            C_XML.Write("Statistik", "Verpasst", CStr(TempStat + 1), False)
+                            C_XML.P_StatVerpasst += 1
                         Else
                             Typ = "Nicht erfolgreicher Anruf zu"
-                            TempStat = CInt(C_XML.Read("Statistik", "Nichterfolgreich", "0"))
-                            C_XML.Write("Statistik", "Nichterfolgreich", CStr(TempStat + 1), False)
+                            C_XML.P_StatNichtErfolgreich += 1
                         End If
                     End If
                     If Dauer > 0 Then
@@ -946,13 +942,9 @@ Friend Class AnrufMonitor
                             .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer), False)
                         End With
                     End If
+                    C_XML.P_StatJournal += 1
 
-                    TempStat = CInt(C_XML.Read("Statistik", "Journal", "0"))
-                    C_XML.Write("Statistik", "Journal", CStr(TempStat + 1), True)
-
-                    If CDate(Zeit) > SchließZeit Or SchließZeit = System.DateTime.Now Then
-                        C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
-                    End If
+                    If CDate(Zeit) > SchließZeit Or SchließZeit = System.DateTime.Now Then C_XML.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
                     JEentfernen(ID)
                 End If
             Else

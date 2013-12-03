@@ -80,11 +80,31 @@ Public Class MyXML
     Private _CBPhonerAnrMon As Boolean
     Private _ComboBoxPhonerSIP As Integer
     Private _TBPhonerPasswort As String
-    Private _PhonerTelNameIndex As String
+    Private _PhonerTelNameIndex As Integer
+    ' Statistik
+    Private _StatResetZeit As Date
+    Private _StatVerpasst As Integer
+    Private _StatNichtErfolgreich As Integer
+    Private _StatKontakt As Integer
+    Private _StatJournal As Integer
+    Private _StatOLClosedZeit As Date
+    ' Wählbox
+    Private _TelAnschluss As Integer
+    Private _TelFestnetz As Boolean
+    Private _TelCLIR As Boolean
+    'FritzBox
+    Private _EncodeingFritzBox As String
+    ' Indizierung
+    Private _LLetzteIndizierung As Date
 #End Region
 
 #Region "Properties"
-
+    ''' <summary>
+    ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>Landesvorwahl</returns>
+    ''' <remarks></remarks>
     Public Property P_TBLandesVW() As String
         Get
             Return _TBLandesVW
@@ -93,44 +113,18 @@ Public Class MyXML
             _TBLandesVW = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>Zahl für die Amtsholung</returns>
+    ''' <remarks></remarks>
     Public Property P_TBAmt() As String
         Get
             Return _TBAmt
         End Get
         Set(ByVal value As String)
             _TBAmt = value
-        End Set
-    End Property
-    Public Property P_TBFBAdr() As String
-        Get
-            Return _TBFBAdr
-        End Get
-        Set(ByVal value As String)
-            _TBFBAdr = value
-        End Set
-    End Property
-    Public Property P_CBForceFBAddr() As Boolean
-        Get
-            Return _CBForceFBAddr
-        End Get
-        Set(ByVal value As Boolean)
-            _CBForceFBAddr = value
-        End Set
-    End Property
-    Public Property P_TBBenutzer() As String
-        Get
-            Return _TBBenutzer
-        End Get
-        Set(ByVal value As String)
-            _TBBenutzer = value
-        End Set
-    End Property
-    Public Property P_TBPasswort() As String
-        Get
-            Return _TBPasswort
-        End Get
-        Set(ByVal value As String)
-            _TBPasswort = value
         End Set
     End Property
 
@@ -361,6 +355,12 @@ Public Class MyXML
             _CBJImport = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an ob nur der Hauptkontaktordner durchsucht werden muss oder alle möglichen eingebundenen Kontaktordner
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns>True, wenn nur der Hauptkontaktordner durchsucht werden muss</returns>
+    ''' <remarks></remarks>
     Public Property P_CBKHO() As Boolean
         Get
             Return _CBKHO
@@ -552,12 +552,166 @@ Public Class MyXML
             _TBPhonerPasswort = value
         End Set
     End Property
-    Public Property P_PhonerTelNameIndex() As String
+    Public Property P_PhonerTelNameIndex() As Integer
         Get
             Return _PhonerTelNameIndex
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Integer)
             _PhonerTelNameIndex = value
+        End Set
+    End Property
+    ' Statistik
+    Public Property P_StatResetZeit As Date
+        Get
+            Return _StatResetZeit
+        End Get
+        Set(ByVal value As Date)
+            _StatResetZeit = value
+        End Set
+    End Property
+    Public Property P_StatVerpasst As Integer
+        Get
+            Return _StatVerpasst
+        End Get
+        Set(ByVal value As Integer)
+            _StatVerpasst = value
+        End Set
+    End Property
+    Public Property P_StatNichtErfolgreich As Integer
+        Get
+            Return _StatNichtErfolgreich
+        End Get
+        Set(ByVal value As Integer)
+            _StatNichtErfolgreich = value
+        End Set
+    End Property
+    Public Property P_StatJournal() As Integer
+        Get
+            Return _StatJournal
+        End Get
+        Set(ByVal value As Integer)
+            _StatJournal = value
+        End Set
+    End Property
+    Public Property P_StatKontakt() As Integer
+        Get
+            Return _StatKontakt
+        End Get
+        Set(ByVal value As Integer)
+            _StatKontakt = value
+        End Set
+    End Property
+    Public Property P_StatOLClosedZeit() As Date
+        Get
+            Return _StatOLClosedZeit
+        End Get
+        Set(ByVal value As Date)
+            _StatOLClosedZeit = value
+        End Set
+    End Property
+    ' Wählbox
+    Public Property P_TelAnschluss() As Integer
+        Get
+            Return _TelAnschluss
+        End Get
+        Set(ByVal value As Integer)
+            _TelAnschluss = value
+        End Set
+    End Property
+    Public Property P_TelFestnetz() As Boolean
+        Get
+            Return _TelFestnetz
+        End Get
+        Set(ByVal value As Boolean)
+            _TelFestnetz = value
+        End Set
+    End Property
+    Public Property P_TelCLIR() As Boolean
+        Get
+            Return _TelCLIR
+        End Get
+        Set(ByVal value As Boolean)
+            _TelCLIR = value
+        End Set
+    End Property
+    ' FritzBox
+    ''' <summary>
+    ''' Gibt die ermittelte Zeichencodierung der Fritzbox wieder. Der Wert wird automatisch ermittelt. 
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_EncodeingFritzBox() As String
+        Get
+            Return _EncodeingFritzBox
+        End Get
+        Set(ByVal value As String)
+            _EncodeingFritzBox = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' Gibt die eingegebene Fritz!Box IP-Adresse an. Dies ist eine Angabe, die der Nutzer in den Einstellungen ändern kann.
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_TBFBAdr() As String
+        Get
+            Return _TBFBAdr
+        End Get
+        Set(ByVal value As String)
+            _TBFBAdr = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' Gibt an, ob eine Verbindung zur Fritz!Box trotz fehlgeschlagenen Pings aufgebaut werden soll.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_CBForceFBAddr() As Boolean
+        Get
+            Return _CBForceFBAddr
+        End Get
+        Set(ByVal value As Boolean)
+            _CBForceFBAddr = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' Gibt den einegegebenen Benutzernamen für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_TBBenutzer() As String
+        Get
+            Return _TBBenutzer
+        End Get
+        Set(ByVal value As String)
+            _TBBenutzer = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' Gibt das eingegebene Passwort für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>Das verschlüsselte Passwort</returns>
+    ''' <remarks></remarks>
+    Public Property P_TBPasswort() As String
+        Get
+            Return _TBPasswort
+        End Get
+        Set(ByVal value As String)
+            _TBPasswort = value
+        End Set
+    End Property
+    ' Indizierung
+    Public Property P_LLetzteIndizierung() As Date
+        Get
+            Return _LLetzteIndizierung
+        End Get
+        Set(ByVal value As Date)
+            _LLetzteIndizierung = value
         End Set
     End Property
 
@@ -578,7 +732,7 @@ Public Class MyXML
         Me.P_TBAnrMonY = CInt(Read("Optionen", "TBAnrMonY", "0"))
         Me.P_CBAnrMonMove = CBool(Read("Optionen", "CBAnrMonMove", "True"))
         Me.P_CBAnrMonTransp = CBool(Read("Optionen", "CBAnrMonTransp", "True"))
-        Me.P_TBAnrMonMoveGeschwindigkeit = CInt((100 - CDbl(Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))) / 10)
+        Me.P_TBAnrMonMoveGeschwindigkeit = CInt(Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "5"))
         Me.P_CBAnrMonContactImage = CBool(Read("Optionen", "CBAnrMonContactImage", "True"))
         Me.P_CBIndexAus = CBool(Read("Optionen", "CBIndexAus", "False"))
         Me.P_CBShowMSN = CBool(Read("Optionen", "CBShowMSN", "False"))
@@ -628,9 +782,23 @@ Public Class MyXML
         Me.P_ComboBoxPhonerSIP = CInt(Read("Phoner", "ComboBoxPhonerSIP", "0"))
         Me.P_CBPhonerAnrMon = CBool(Read("Phoner", "CBPhonerAnrMon", "False"))
         Me.P_TBPhonerPasswort = Read("Phoner", "TBPhonerPasswort", "")
-        Me._PhonerTelNameIndex = Read("Phoner", "PhonerTelNameIndex", "")
+        Me._PhonerTelNameIndex = CInt(Read("Phoner", "PhonerTelNameIndex", "0"))
+        ' Statistik
+        Me.P_StatResetZeit = CDate(Read("Statistik", "ResetZeit", CStr(System.DateTime.Now)))
+        Me.P_StatVerpasst = CInt(Read("Statistik", "Verpasst", "0"))
+        Me.P_StatNichtErfolgreich = CInt(Read("Statistik", "Nichterfolgreich", "0"))
+        Me.P_StatKontakt = CInt(Read("Statistik", "Kontakt", "0"))
+        Me.P_StatJournal = CInt(Read("Statistik", "Journal", "0"))
+        Me.P_StatOLClosedZeit = CDate(Read("Journal", "SchließZeit", "Noch nicht festgelegt"))
+        'Wählbox
+        Me.P_TelAnschluss = CInt(Read("Optionen", "Anschluss", "0"))
+        Me.P_TelFestnetz = CBool(Read("Optionen", "Festnetz", "False"))
+        Me.P_TelCLIR = CBool(Read("Optionen", "CLIR", "False"))
+        Me.P_EncodeingFritzBox = Read("Optionen", "EncodeingFritzBox", "-1")
+        ' Indizierung
+        Me.P_LLetzteIndizierung = CDate(Read("Optionen", "LLetzteIndizierung", CStr(System.DateTime.Now)))
     End Sub
-    Public Sub SaveOptionData()
+    Private Sub SaveOptionData()
         Write("Optionen", "TBLandesVW", Me.P_TBLandesVW, False)
         Write("Optionen", "TBAmt", Me.P_TBAmt, False)
         Write("Optionen", "TBFBAdr", Me.P_TBFBAdr, False)
@@ -644,7 +812,7 @@ Public Class MyXML
         Write("Optionen", "TBAnrMonY", CStr(Me.P_TBAnrMonY), False)
         Write("Optionen", "CBAnrMonMove", CStr(Me.P_CBAnrMonMove), False)
         Write("Optionen", "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp), False)
-        Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr((10 - Me.P_TBAnrMonMoveGeschwindigkeit) * 10), False)
+        Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit), False)
         Write("Optionen", "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage), False)
         Write("Optionen", "CBIndexAus", CStr(Me.P_CBIndexAus), False)
         Write("Optionen", "CBShowMSN", CStr(Me.P_CBShowMSN), False)
@@ -692,10 +860,24 @@ Public Class MyXML
         Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP), False)
         Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon), False)
         Write("Optionen", "TBPhonerPasswort", Me.P_TBPhonerPasswort, False)
-        Write("Optionen", "PhonerTelNameIndex", Me.P_PhonerTelNameIndex, False)
-        SpeichereXMLDatei()
+        Write("Optionen", "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex), False)
+        ' Statistik
+        Write("Optionen", "CBPhoner", CStr(Me.P_StatResetZeit), False)
+        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_StatVerpasst), False)
+        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_StatNichtErfolgreich), False)
+        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_StatKontakt), False)
+        Write("Optionen", "TBPhonerPasswort", CStr(Me.P_StatJournal), False)
+        Write("Optionen", "SchließZeit", CStr(Me.P_StatOLClosedZeit), False)
+        ' Wählbox
+        Write("Optionen", "Anschluss", CStr(Me.P_TelAnschluss), False)
+        Write("Optionen", "Festnetz", CStr(Me.P_TelFestnetz), False)
+        Write("Optionen", "CLIR", CStr(Me.P_TelCLIR), False)
+        'FritzBox
+        Write("Optionen", "EncodeingFritzBox", Me.P_EncodeingFritzBox, False)
+        'indizierung
+        Write("Optionen", "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung), False)
+        XMLDoc.Save(sDateiPfad)
     End Sub
-
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()
@@ -717,8 +899,6 @@ Public Class MyXML
         LoadOptionData()
 
     End Sub
-
-
 
     Protected Overrides Sub Finalize()
         SaveOptionData()
@@ -1006,11 +1186,11 @@ Public Class MyXML
 
 #Region "Speichern"
     Sub SpeichereXMLDatei()
-        XMLDoc.Save(sDateiPfad)
+        SaveOptionData()
     End Sub
 
     Private Sub tSpeichern_Elapsed(sender As Object, e As ElapsedEventArgs) Handles tSpeichern.Elapsed
-        SpeichereXMLDatei()
+        SaveOptionData()
     End Sub
 #End Region
 

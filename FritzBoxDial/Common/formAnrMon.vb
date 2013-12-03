@@ -52,7 +52,7 @@ Friend Class formAnrMon
             .PositionsKorrektur = FormVerschiebung
             .EffektMove = C_XML.P_CBAnrMonMove
             .EffektTransparenz = C_XML.P_CBAnrMonTransp
-            .EffektMoveGeschwindigkeit = C_XML.P_TBAnrMonMoveGeschwindigkeit
+            .EffektMoveGeschwindigkeit = C_XML.P_TBAnrMonMoveGeschwindigkeit * 10
             .Popup()
         End With
         OlI.InspectorVerschieben(False)

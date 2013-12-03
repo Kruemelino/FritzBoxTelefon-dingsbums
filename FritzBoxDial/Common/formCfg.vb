@@ -61,6 +61,8 @@ Friend Class formCfg
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(iTa.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
         Me.BAnrMonTest.Enabled = Not AnrMon Is Nothing
         Me.BTelefonliste.Enabled = Not C_FBox Is Nothing
+        Me.FBDB_MP.SelectedIndex = 0
+        'Me.StartPosition = FormStartPosition.CenterParent
         Ausfüllen()
     End Sub
 
@@ -74,9 +76,7 @@ Friend Class formCfg
     Private Sub Ausfüllen()
         Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_XML.GetXMLDateiPfad)
 #If OVer >= 14 Then
-        If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then
-            Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
-        End If
+        If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
         ' Beim Einblenden die Werte aus der Registry einlesen
         ' Einstellungen für das Wählmakro laden
@@ -199,7 +199,6 @@ Friend Class formCfg
         Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
-        C_XML.Write("Phoner", "PhonerVerfügbar", CStr(PhonerInstalliert), True)
         C_XML.P_PhonerVerfügbar = PhonerInstalliert
         ' Tooltipp
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
@@ -278,13 +277,12 @@ Friend Class formCfg
             End With
         End If
 
-        If C_XML.Read("Statistik", "ResetZeit", "-1") = "-1" Then C_XML.Write("Statistik", "ResetZeit", CStr(System.DateTime.Now), True)
-        Me.TBAnderes.Text = C_XML.Read("Statistik", "Verpasst", "0") & " verpasste Telefonate" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.Read("Statistik", "Nichterfolgreich", "0") & " nicht erfolgreiche Telefonate" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.Read("Statistik", "Kontakt", "0") & " erstellte Kontakte" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.Read("Statistik", "Journal", "0") & " erstellte Journaleinträge" & vbCrLf
-        Me.TBReset.Text = "Letzter Reset: " & C_XML.Read("Statistik", "ResetZeit", "Noch nicht festgelegt")
-        Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_XML.Read("Journal", "SchließZeit", "Noch nicht festgelegt")
+        Me.TBAnderes.Text = C_XML.P_StatVerpasst & " verpasste Telefonate" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.P_StatNichtErfolgreich & " nicht erfolgreiche Telefonate" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.P_StatKontakt & " erstellte Kontakte" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.P_StatJournal & " erstellte Journaleinträge" & vbCrLf
+        Me.TBReset.Text = "Letzter Reset: " & C_XML.P_StatResetZeit
+        Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_XML.P_StatOLClosedZeit
         xPathTeile = Nothing
         Zeile = Nothing
     End Sub
@@ -372,7 +370,7 @@ Friend Class formCfg
                 End With
                 C_XML.Delete(xPathTeile)
             Else
-                C_XML.Write("Optionen", "TBBenutzer", Me.TBBenutzer.Text, False)
+                .P_TBBenutzer = Me.TBBenutzer.Text
             End If
             If Not Me.TBPasswort.Text = "1234" Then
                 .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
@@ -460,19 +458,18 @@ Friend Class formCfg
             End With
             ' Phoner
             Dim TelName() As String
-            Dim PhonerTelNameIndex As String = "0"
+            Dim PhonerTelNameIndex As Integer = 0
 
             For i = 20 To 29
                 TelName = Split(C_XML.Read("Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
                 If Not TelName(0) = "-1" And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
                     If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
-                        PhonerTelNameIndex = CStr(i)
+                        PhonerTelNameIndex = i
                         Exit For
                     End If
                 End If
             Next
             .P_PhonerTelNameIndex = PhonerTelNameIndex
-            'C_XML.Write("Phoner", "CBPhonerKeineFB", CStr(Me.CBPhonerKeineFB.Checked), True)
             'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
             If Me.TBPhonerPasswort.Text = "" And Me.CBPhoner.Checked Then
                 If C_Helfer.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
@@ -489,7 +486,7 @@ Friend Class formCfg
                     End If
                 End If
             End If
-            .SaveOptionData()
+            .SpeichereXMLDatei()
         End With
     End Function
 
@@ -716,7 +713,7 @@ Friend Class formCfg
                     Windows.Forms.Application.DoEvents()
                 Loop
                 C_XML.P_CBStoppUhrX = frmStUhr.Position.X
-                C_XML.P_CBStoppUhry = frmStUhr.Position.Y
+                C_XML.P_CBStoppUhrY = frmStUhr.Position.Y
                 frmStUhr = Nothing
         End Select
     End Sub
@@ -1281,7 +1278,7 @@ Friend Class formCfg
         BWIndexer.Dispose()
         Dauer = Date.Now - Startzeit
         If Me.RadioButtonErstelle.Checked And Not Me.RadioButtonEntfernen.Checked Then
-            C_XML.Write("Optionen", "LLetzteIndizierung", CStr(Date.Now), True)
+            C_XML.P_LLetzteIndizierung = Date.Now
             C_Helfer.LogFile("Indizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
         ElseIf Me.RadioButtonEntfernen.Checked And Not Me.RadioButtonErstelle.Checked Then
             C_Helfer.LogFile("Deindizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
@@ -1394,7 +1391,7 @@ Friend Class formCfg
         Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
-        C_XML.Write("Phoner", "PhonerVerfügbar", CStr(PhonerInstalliert), True)
+        C_XML.P_PhonerVerfügbar = PhonerInstalliert
     End Sub
 
     Private Sub CBPhoner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBPhoner.CheckedChanged

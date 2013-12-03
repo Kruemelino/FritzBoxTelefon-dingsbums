@@ -43,7 +43,7 @@ Friend Class formJournalimport
     End Sub
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim StartZeit As Date
-        StartZeit = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
+        StartZeit = C_XML.P_StatOLClosedZeit
         Me.StartDatum.Value = StartZeit
         Me.StartZeit.Value = StartZeit
         Me.EndDatum.Value = System.DateTime.Now
@@ -67,7 +67,7 @@ Friend Class formJournalimport
         End If
 
         With Übergabe
-            .StartZeit = CDate(C_XML.Read("Journal", "SchließZeit", CStr(System.DateTime.Now)))
+            .StartZeit = C_XML.P_StatOLClosedZeit
             .EndZeit = System.DateTime.Now
         End With
         If Not anzeigen Then
@@ -236,7 +236,7 @@ Friend Class formJournalimport
                     Next
                 End If
                 ' Registry zurückschreiben
-                C_XML.Write("Journal", "SchließZeit", CStr(System.DateTime.Now.AddMinutes(1)), True)
+                C_XML.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
                 C_hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
                 C_hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")

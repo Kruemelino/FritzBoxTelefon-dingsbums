@@ -19,7 +19,6 @@ Friend Class formWählbox
     Delegate Sub DlgStatusText()
     Delegate Sub DlgAnAus()
 
-    'Private DateiPfad As String
     Private StatusText As String ' Wird für Delegaten DlgStatusText benötigt
     Private AnAus As Boolean ' Wird für Delegaten DlgAnAus benötigt
     Private Element As Control ' Wird für Delegaten DlgAnAus benötigt
@@ -27,7 +26,6 @@ Friend Class formWählbox
     Private SID As String
     Private bDirektwahl As Boolean
     Private bDialing As Boolean = False
-    Private LandesVorwahl As String
     Private Nebenstellen As String()
     ' Phoner
     Private C_Phoner As PhonerInterface
@@ -81,11 +79,8 @@ Friend Class formWählbox
     Private Sub formWählbox_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Startwerte eintragen
 
-        Dim selIndex As Integer = CInt(C_XML.Read("Optionen", "Anschluss", "0"))
         Dim tmpStr As String
-        Dim ZeigeDialPort As Boolean = CBool(C_XML.Read("Optionen", "CBDialPort", "False"))
         Dim DialPort As String
-        LandesVorwahl = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
 
         Dim xPathTeile As New ArrayList
         With xPathTeile
@@ -102,21 +97,21 @@ Friend Class formWählbox
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
                 DialPort = C_XML.Read(xPathTeile, "-1")
-                tmpStr = Nebenstelle & CStr(IIf(ZeigeDialPort, " (" & DialPort & ")", vbNullString))
+                tmpStr = Nebenstelle & CStr(IIf(C_XML.P_CBDialPort, " (" & DialPort & ")", vbNullString))
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
-                If CBool(C_XML.Read(xPathTeile, "False")) Then selIndex = Me.ComboBoxFon.Items.Count - 1
+                If CBool(C_XML.Read(xPathTeile, "False")) Then C_XML.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
             Next
         End With
         xPathTeile = Nothing
-        Me.ComboBoxFon.SelectedIndex = selIndex
+        Me.ComboBoxFon.SelectedIndex = C_XML.P_TelAnschluss
 
         If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
 
         ' Phoner
-        If C_XML.Read("Phoner", "CBPhoner", "False") = "True" Then
+        If C_XML.P_CBPhoner Then
             If C_Phoner.PhonerReady() Then
-                Dim SIP_Nr As Integer = CInt(C_XML.Read("Phoner", "PhonerTelNameIndex", "0"))
+                Dim SIP_Nr As Integer = C_XML.P_PhonerTelNameIndex
                 Me.ComboBoxFon.Items.Add("Phoner")
                 PhonerFon = Me.ComboBoxFon.Items.Count - 1
             End If
@@ -126,10 +121,10 @@ Friend Class formWählbox
         Me.ComboBoxFon.Enabled = True
         WählboxBereit = True
 
-        Me.checkCBC.Enabled = CBool(IIf(C_XML.Read("Optionen", "CBCbCunterbinden", "False") = "False", True, False))
-        Me.checkNetz.Checked = CBool(IIf(C_XML.Read("Optionen", "Festnetz", "False") = "True", True, False))
-        Me.checkCLIR.Checked = CBool(IIf(C_XML.Read("Optionen", "CLIR", "False") = "True", True, False))
-        Me.checkCBC.Checked = CBool(IIf(C_XML.Read("Optionen", "CBCallByCall", "False") = "True", True, False))
+        Me.checkCBC.Enabled = C_XML.P_CBCbCunterbinden
+        Me.checkNetz.Checked = C_XML.P_TelFestnetz
+        Me.checkCLIR.Checked = C_XML.P_TelCLIR
+        Me.checkCBC.Checked = C_XML.P_CBCallByCall
         If checkCBC.Checked Then
             Me.Height = 515
         Else
@@ -187,7 +182,7 @@ Friend Class formWählbox
     Private Sub ButtonWeiter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonWeiter.Click
         Dim row(2) As String
         row(0) = "1" 'Index Zeile im DataGrid
-        row(2) = C_hf.nurZiffern(Me.TelNrBox.Text, LandesVorwahl)
+        row(2) = C_hf.nurZiffern(Me.TelNrBox.Text, C_XML.P_TBLandesVW)
         With Me
             .Text = "Anruf: " & row(2)
             .Tag = "-1"
@@ -199,7 +194,7 @@ Friend Class formWählbox
     End Sub
 
     Private Sub TelNrBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TelNrBox.TextChanged
-        Dim TelNr As String = C_hf.nurZiffern(Me.TelNrBox.Text, LandesVorwahl)
+        Dim TelNr As String = C_hf.nurZiffern(Me.TelNrBox.Text, C_XML.P_TBLandesVW)
         Me.ButtonWeiter.Enabled = Len(TelNr) > 0
         Me.LabelCheckTest.Text = "Diese Telefonnumer wird gewählt: " & TelNr
     End Sub
@@ -289,7 +284,7 @@ Friend Class formWählbox
                 Me.ComboBoxFon.Enabled = False
                 Me.ListTel.Enabled = False
                 ' Prüfung ob es sich bei der gewählten nummer um eine Mobilnummer handelt.
-                If CBool(C_XML.Read("Optionen", "CBCheckMobil", "True")) Then
+                If C_XML.P_CBCheckMobil Then
                     If Not ListTel.SelectedRows.Count = 0 Then
                         If C_hf.Mobilnummer(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)) Then
                             CheckMobil = CBool(IIf(C_hf.FBDB_MsgBox("Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?", MsgBoxStyle.YesNo, "formWählbox.Start") = vbYes, True, False))
@@ -305,7 +300,7 @@ Friend Class formWählbox
                 code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString), LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
                 Me.LabelStatus.Text = "Bitte warten..."
                 ' Ermitteln der URL für ein Orts- oder  Ferngespräch
-                Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "") 'Vorwahl ermitteln
+                Dim Vorwahl As String = C_XML.P_TBVorwahl 'Vorwahl ermitteln
                 If Vorwahl = Mid(code, 1, Len(Vorwahl)) And Not Vorwahl = "" Then
                     ' Wenn die Vorwahl nicht der eigenen Vorwahl entspricht, ändere die URL
                     myurl = "http://www.billiger-telefonieren.de/festnetz/schnellrechner/"
@@ -352,14 +347,11 @@ Friend Class formWählbox
             CallNr.Start(ID)
 
             ' Einstellungen (Welcher Anschluss, CLIR, Festnetz...) speichern
-
-            C_XML.Write("Optionen", "Anschluss", CStr(ComboBoxFon.SelectedIndex), False)
-            C_XML.Write("Optionen", "Festnetz", CStr(checkNetz.Checked), False)
-            C_XML.Write("Optionen", "CLIR", CStr(checkCLIR.Checked), True)
+            C_XML.P_TelAnschluss = ComboBoxFon.SelectedIndex
+            C_XML.P_TelFestnetz = checkNetz.Checked
+            C_XML.P_TelCLIR = checkCLIR.Checked
             ' Timer zum automatischen Schließen des Fensters starten
-            If CBool(C_XML.Read("Optionen", "CBAutoClose", CStr(True))) Then
-                TimerSchließen = C_hf.SetTimer(CDbl(C_XML.Read("Optionen", "TBEnblDauer", CStr(10))) * 1000)
-            End If
+            If C_XML.P_CBAutoClose Then TimerSchließen = C_hf.SetTimer(C_XML.P_TBEnblDauer * 1000)
             cancelCallButton.Enabled = True
         End If
     End Sub
@@ -416,13 +408,11 @@ Friend Class formWählbox
 #End If
             End If
         End If
-
-        Amt = C_XML.Read("Optionen", "TBAmt", "")
-        Amt = CStr(IIf(Amt = "-1", "", Amt))
+        Amt = C_XML.P_TBAmt
         LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
         Code = C_hf.nurZiffern(Number, LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
         'LogFile("Rufnummer " & Code & " wurde ausgewählt")
-        If C_XML.Read("Optionen", "CBVoIPBuster", "False") = "True" Then
+        If C_XML.P_CBVoIPBuster Then
             ' Änderung von "HardyX9" zur Nutzung des Scriptes mit VoIPBuster
             ' Dadurch wird die Länderkennung 0049 immer mitgewählt
             If Not Mid(Code, 1, 2) = "00" Then Code = Replace(Code, "0", LandesVW, 1, 1)

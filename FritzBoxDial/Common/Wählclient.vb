@@ -53,7 +53,7 @@ Public Class Wählclient
                 Dim Absender As String
 
                 Absender = aktMail.SenderEmailAddress
-                If C_XML.Read("Optionen", "CBKHO", "True") = "TRUE" Then
+                If C_XML.P_CBKHO Then
                     res = C_Kontakt.FindeKontakt("", Absender, "", olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
                 Else
                     res = C_Kontakt.FindeKontakt("", Absender, "", olNamespace)
@@ -173,7 +173,7 @@ Public Class Wählclient
                 ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
                 If Not Left(C_hf.nurZiffern(TelNr, LandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr, LandesVW), 2) = "11" Then _
-                    TelNr = C_XML.Read("Optionen", "TBVorwahl", "") & TelNr
+                    TelNr = C_XML.P_TBVorwahl & TelNr
 
                 If vName = String.Empty Then
                     frm_Wählbox.Text = "Anruf: " & TelNr
@@ -239,7 +239,7 @@ Public Class Wählclient
                     'Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                     '(Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
                     If Not Left(C_hf.nurZiffern(alleTelNr(i), LandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(alleTelNr(i), LandesVW), 2) = "11" Then _
-                        alleTelNr(i) = C_XML.Read("Optionen", "TBVorwahl", "") & alleTelNr(i)
+                        alleTelNr(i) = C_XML.P_TBVorwahl & alleTelNr(i)
                     If C_hf.nurZiffern(alleTelNr(i), LandesVW) = C_hf.nurZiffern(TelNr, LandesVW) Then
                         row(1) = alleNrTypen(i) & " *"
                     Else
@@ -458,7 +458,7 @@ Public Class Wählclient
             olNamespace = ThisAddIn.P_oApp.GetNamespace("MAPI")
             Dim olMail As Outlook.MailItem = CType(olAuswahl.CurrentItem, Outlook.MailItem)
             Absender = olMail.SenderEmailAddress
-            If C_XML.Read("Optionen", "CBKHO", "True") = "True" Then
+            If C_XML.P_CBKHO Then
                 res = C_Kontakt.FindeKontakt("", Absender, "", olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
             Else
                 res = C_Kontakt.FindeKontakt("", Absender, "", olNamespace)

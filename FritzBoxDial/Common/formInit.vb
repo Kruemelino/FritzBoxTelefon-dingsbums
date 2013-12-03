@@ -54,7 +54,7 @@
         C_Phoner = New PhonerInterface(C_Helfer, C_XML, C_Crypt)
 
         If PrüfeAddin() Then
-            UseAnrMon = CBool(C_XML.Read("Optionen", "CBUseAnrMon", "True"))
+            UseAnrMon = C_XML.P_CBUseAnrMon
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
@@ -86,7 +86,7 @@
             ThisAddIn.P_KontaktFunktionen = C_Kontakt
             ThisAddIn.P_UseAnrMon = UseAnrMon
 
-            If CBool(C_XML.Read("Optionen", "CBJImport", CStr(False))) And UseAnrMon And CBool(C_XML.Read("Optionen", "CBForceFBAddr", "False")) Then
+            If C_XML.P_CBJImport And UseAnrMon And C_XML.P_CBForceFBAddr Then
                 Dim formjournalimort As New formJournalimport(C_AnrMon, C_Helfer, C_XML, False)
             End If
         End If
@@ -122,8 +122,8 @@
         If C_Helfer.Ping(tmpstr) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = tmpstr
             If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
-                C_XML.Write("Optionen", "TBFBAdr", tmpstr, False)
-                C_XML.Write("Optionen", "CBForceFBAddr", CStr(Me.CBForceFBAddr.Checked), True)
+                C_XML.P_TBFBAdr = tmpstr
+                C_XML.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
                 Me.TBFBUser.Enabled = True
                 Me.LabelFBUser.Enabled = True

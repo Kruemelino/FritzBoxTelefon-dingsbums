@@ -56,26 +56,25 @@ Public Class FritzBox
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As Rijndael)
 
-        Dim EncodeingFritzBox As String
 
         C_XML = xmlKlasse
         C_hf = HelferKlasse
         C_hf.KeyChange()
         C_Crypt = CryptKlasse
-        P_FBAddr = C_XML.Read("Optionen", "TBFBAdr", P_DefaultFBAddr)
+        P_FBAddr = C_XML.P_TBFBAdr
 
-        EncodeingFritzBox = C_XML.Read("Optionen", "EncodeingFritzBox", "-1")
-        If EncodeingFritzBox = "-1" Then
+        If C_XML.P_EncodeingFritzBox = "-1" Then
             Dim Rückgabe As String
             Rückgabe = C_hf.httpRead("http://" & P_FBAddr, FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
-                C_XML.Write("Optionen", "EncodeingFritzBox", FBEncoding.HeaderName, True)
+                C_XML.P_EncodeingFritzBox = FBEncoding.HeaderName
+                C_XML.SpeichereXMLDatei()
             Else
                 C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & "http://" & P_FBAddr)
             End If
         Else
-            FBEncoding = C_hf.GetEncoding(EncodeingFritzBox)
+            FBEncoding = C_hf.GetEncoding(C_XML.P_EncodeingFritzBox)
         End If
     End Sub
 
@@ -119,16 +118,16 @@ Public Class FritzBox
             If InStr(slogin_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(slogin_xml) = 0 Then
 
                 If Not InpupPasswort = "-1" Then
-                    C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script"), False)
-                    C_XML.Write("Optionen", "TBBenutzer", InpupBenutzer, True)
+                    C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script")
+                    C_XML.P_TBBenutzer = InpupBenutzer
                     SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
                     C_hf.KeyChange()
                 End If
 
                 Dim sBlockTime As String
                 Dim sChallenge As String
-                Dim sFBBenutzer As String = C_XML.Read("Optionen", "TBBenutzer", vbNullString)
-                Dim sFBPasswort As String = C_XML.Read("Optionen", "TBPasswort", vbNullString)
+                Dim sFBBenutzer As String = C_XML.P_TBBenutzer
+                Dim sFBPasswort As String = C_XML.P_TBPasswort
                 Dim sFormData As String
                 Dim sResponse As String
                 Dim sSIDResponse As String
@@ -348,7 +347,7 @@ Public Class FritzBox
     Private Sub FritzBoxDatenA()
         PushStatus("ALte Ausleseroutine für Fritz!Box Telefone gestartet.")
 
-        Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")  ' In den Einstellungen eingegebene Vorwahl
+        Dim Vorwahl As String = C_XML.P_TBVorwahl  ' In den Einstellungen eingegebene Vorwahl
         Dim TelName As String                 ' Gefundener Telefonname
         Dim TelNr As String                 ' Dazugehörige Telefonnummer
         Dim SIPID As String = "-1"
@@ -895,7 +894,7 @@ Public Class FritzBox
     Private Sub FritzBoxDatenN(ByVal Code As String)
         PushStatus("Neue Ausleseroutine für Fritz!Box Telefone gestartet.")
 
-        Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")                 ' In den Einstellungen eingegebene Vorwahl
+        Dim Vorwahl As String = C_XML.P_TBVorwahl                 ' In den Einstellungen eingegebene Vorwahl
         Dim Landesvorwahl As String
         Dim TelName As String                 ' Gefundener Telefonname
         Dim TelNr As String                 ' Dazugehörige Telefonnummer

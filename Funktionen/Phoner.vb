@@ -24,7 +24,7 @@ Public Class PhonerInterface
 
     Public Function DialPhoner(ByVal dialCode As String) As String
         If PhonerReady() Then
-            Dim PhonerPasswort As String = C_XML.Read("Phoner", "PhonerPasswort", "-1")
+            Dim PhonerPasswort As String = C_XML.P_TBPhonerPasswort
             Dim ZugangPasswortPhoner As String = GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")
             If Not PhonerPasswort = "-1" Or Not ZugangPasswortPhoner = "-1" Then
                 Dim Stream As NetworkStream
