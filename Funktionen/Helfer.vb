@@ -92,7 +92,7 @@ Public Class Helfer
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
         Dim LogDatei As String = Dateipfade("LogDatei")
-        If C_XML.Read("Optionen", "CBLogFile", "False") = "True" Then
+        If C_XML.P_CBLogFile Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
                     If .GetFileInfo(LogDatei).Length > 1048576 Then .DeleteFile(LogDatei)
@@ -223,12 +223,7 @@ Public Class Helfer
         Dim tempRufNr As String = String.Empty ' Hilfsstring für RufNr
         Dim tempDurchwahl As String = String.Empty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
-
-        Dim Maske As String = C_XML.Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
-        Dim Gruppieren As Boolean = CBool(C_XML.Read("Optionen", "CBTelNrGruppieren", "True"))
-        Dim intl As Boolean = CBool(C_XML.Read("Optionen", "CBintl", "False"))
-        Dim eigeneLV As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
-
+        Dim Maske As String = C_XML.P_TBTelNrMaske
 
         LandesVW = TelTeile(0)
         OrtsVW = TelTeile(1)
@@ -275,8 +270,8 @@ Public Class Helfer
             CutOut = Mid(Maske, pos1, pos2 - pos1)
             Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", vbNullString)), , 1, CompareMethod.Text)
         End If
-        If LandesVW = vbNullString Then LandesVW = eigeneLV
-        If intl Or Not LandesVW = eigeneLV Then
+        If LandesVW = vbNullString Then LandesVW = C_XML.P_TBLandesVW
+        If C_XML.P_CBintl Or Not LandesVW = C_XML.P_TBLandesVW Then
             If Not OrtsVW = vbNullString Then
                 If Left(OrtsVW, 1) = "0" Then OrtsVW = Mid(OrtsVW, 2)
                 OrtsVW = CStr(IIf(LandesVW = "0039", "0", vbNullString)) & OrtsVW
@@ -293,14 +288,14 @@ Public Class Helfer
         ' NANP
         If LandesVW = "+1" Then
             Maske = "%L (%O) %N-%D"
-            Gruppieren = False
+            C_XML.P_CBTelNrGruppieren = False
             If tempDurchwahl = vbNullString Then
                 tempDurchwahl = Mid(RufNr, 4)
                 RufNr = Left(RufNr, 3)
             End If
         End If
 
-        If Gruppieren Then
+        If C_XML.P_CBTelNrGruppieren Then
             tempOrtsVW = GruppiereNummer(OrtsVW)
             tempRufNr = GruppiereNummer(RufNr)
             tempDurchwahl = GruppiereNummer(tempDurchwahl)

@@ -46,13 +46,13 @@ Friend Class formAnrMon
         OlI.InspectorVerschieben(True)
 
         With PopupNotifier
-            .ShowDelay = CInt(C_XML.Read("Optionen", "TBEnblDauer", "10")) * 1000
-            .AutoAusblenden = CBool(C_XML.Read("Optionen", "CBAutoClose", "True"))
-            Dim FormVerschiebung As New Drawing.Size(CInt(C_XML.Read("Optionen", "TBAnrMonX", "0")), CInt(C_XML.Read("Optionen", "TBAnrMonY", "0")))
+            .ShowDelay = C_XML.P_TBEnblDauer * 1000
+            .AutoAusblenden = C_XML.P_CBAutoClose
+            Dim FormVerschiebung As New Drawing.Size(C_XML.P_TBAnrMonX, C_XML.P_TBAnrMonY)
             .PositionsKorrektur = FormVerschiebung
-            .EffektMove = CBool(C_XML.Read("Optionen", "CBAnrMonMove", "True"))
-            .EffektTransparenz = CBool(C_XML.Read("Optionen", "CBAnrMonTransp", "True"))
-            .EffektMoveGeschwindigkeit = CInt(C_XML.Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))
+            .EffektMove = C_XML.P_CBAnrMonMove
+            .EffektTransparenz = C_XML.P_CBAnrMonTransp
+            .EffektMoveGeschwindigkeit = C_XML.P_TBAnrMonMoveGeschwindigkeit
             .Popup()
         End With
         OlI.InspectorVerschieben(False)
@@ -105,14 +105,14 @@ Friend Class formAnrMon
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = Uhrzeit
             ' Telefonnamen eintragen
-            .TelName = TelefonName & CStr(IIf(CBool(C_XML.Read("Optionen", "CBShowMSN", "False")), " (" & MSN & ")", vbNullString))
+            .TelName = TelefonName & CStr(IIf(C_XML.P_CBShowMSN, " (" & MSN & ")", vbNullString))
 
             If Not Strings.Left(KontaktID, 2) = "-1" Then
                 If Not TimerAktualisieren Is Nothing Then HelferFunktionen.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
                     OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
-                    If CBool(C_XML.Read("Optionen", "CBAnrMonContactImage", "True")) Then
+                    If C_XML.P_CBAnrMonContactImage Then
                         Dim BildPfad = OlI.KontaktBild(KontaktID, StoreID)
                         If Not BildPfad Is vbNullString Then
                             PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)

@@ -96,10 +96,10 @@ Friend Class formCfg
 
         If Not Len(C_XML.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
         Me.TBVorwahl.Text = C_XML.P_TBVorwahl
-        Me.TBEnblDauer.Text = C_XML.P_TBEnblDauer
+        Me.TBEnblDauer.Text = CStr(C_XML.P_TBEnblDauer)
         Me.CBAnrMonAuto.Checked = C_XML.P_CBAnrMonAuto
-        Me.TBAnrMonX.Text = C_XML.P_TBAnrMonX
-        Me.TBAnrMonY.Text = C_XML.P_TBAnrMonY
+        Me.TBAnrMonX.Text = CStr(C_XML.P_TBAnrMonX)
+        Me.TBAnrMonY.Text = CStr(C_XML.P_TBAnrMonY)
         Me.CBAnrMonMove.Checked = C_XML.P_CBAnrMonMove
         Me.CBAnrMonTransp.Checked = C_XML.P_CBAnrMonTransp
         Me.TBAnrMonMoveGeschwindigkeit.Value = C_XML.P_TBAnrMonMoveGeschwindigkeit
@@ -151,7 +151,7 @@ Friend Class formCfg
         'StoppUhr
         Me.CBStoppUhrEinblenden.Checked = C_XML.P_CBStoppUhrEinblenden
         Me.CBStoppUhrAusblenden.Checked = C_XML.P_CBStoppUhrAusblenden
-        Me.TBStoppUhr.Text = C_XML.P_TBStoppUhr
+        Me.TBStoppUhr.Text = CStr(C_XML.P_TBStoppUhr)
 
         Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
         If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
@@ -393,10 +393,10 @@ Friend Class formCfg
             .P_TBFBAdr = Me.TBFBAdr.Text
             .P_TBVorwahl = Me.TBVorwahl.Text
 
-            .P_TBAnrMonX = Me.TBAnrMonX.Text
-            .P_TBAnrMonY = Me.TBAnrMonY.Text
+            .P_TBAnrMonX = CInt(Me.TBAnrMonX.Text)
+            .P_TBAnrMonY = CInt(Me.TBAnrMonY.Text)
             .P_CBLogFile = Me.CBLogFile.Checked
-            .P_TBEnblDauer = Me.TBEnblDauer.Text
+            .P_TBEnblDauer = CInt(Me.TBEnblDauer.Text)
             .P_CBAnrMonAuto = Me.CBAnrMonAuto.Checked
             .P_CBAutoClose = Me.CBAutoClose.Checked
             .P_CBAnrMonMove = Me.CBAnrMonMove.Checked
@@ -420,7 +420,7 @@ Friend Class formCfg
             .P_CBCheckMobil = Me.CBCheckMobil.Checked
             .P_CBStoppUhrEinblenden = Me.CBStoppUhrEinblenden.Checked
             .P_CBStoppUhrAusblenden = Me.CBStoppUhrAusblenden.Checked
-            .P_TBStoppUhr = Me.TBStoppUhr.Text
+            .P_TBStoppUhr = CInt(Me.TBStoppUhr.Text)
 #If OVer < 14 Then
             .P_CBSymbWwdh = Me.CBSymbWwdh.Checked
             .P_CBSymbAnrMonNeuStart = Me.CBSymbAnrMonNeuStart.Checked
@@ -689,13 +689,13 @@ Friend Class formCfg
                 Dim StartPosition As System.Drawing.Point
                 Dim x As Integer = 0
                 Dim y As Integer = 0
-                If CBool(C_XML.Read("Optionen", "CBStoppUhrAusblenden", "False")) Then
+                If C_XML.P_CBStoppUhrAusblenden Then
                     WarteZeit = CInt(Me.TBStoppUhr.Text)
                 Else
                     WarteZeit = -1
                 End If
 
-                StartPosition = New System.Drawing.Point(CInt(C_XML.Read("Optionen", "CBStoppUhrX", "10")), CInt(C_XML.Read("Optionen", "CBStoppUhrY", "10")))
+                StartPosition = New System.Drawing.Point(C_XML.P_CBStoppUhrX, C_XML.P_CBStoppUhrY)
                 For Each Bildschirm In Windows.Forms.Screen.AllScreens
                     x += Bildschirm.Bounds.Size.Width
                     y += Bildschirm.Bounds.Size.Height
@@ -715,8 +715,8 @@ Friend Class formCfg
                     Thread.Sleep(20)
                     Windows.Forms.Application.DoEvents()
                 Loop
-                C_XML.Write("Optionen", "CBStoppUhrX", CStr(frmStUhr.Position.X), False)
-                C_XML.Write("Optionen", "CBStoppUhrY", CStr(frmStUhr.Position.Y), True)
+                C_XML.P_CBStoppUhrX = frmStUhr.Position.X
+                C_XML.P_CBStoppUhry = frmStUhr.Position.Y
                 frmStUhr = Nothing
         End Select
     End Sub
@@ -905,7 +905,7 @@ Friend Class formCfg
         Dim NeueFW As Boolean
         Dim SID As String = C_FBox.P_DefaultSID
         Dim URL As String
-        Dim FBOX_ADR As String = C_XML.Read("Optionen", "TBFBAdr", ThisAddIn.P_FritzBox.P_DefaultFBAddr)
+        Dim FBOX_ADR As String = C_XML.P_TBFBAdr
 
         Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
         Dim MailText As String
@@ -1162,7 +1162,7 @@ Friend Class formCfg
     Sub FillLogTB()
         Dim LogDatei As String = C_Helfer.Dateipfade("LogDatei")
 
-        If C_XML.Read("Optionen", "CBLogFile", "False") = "True" Then
+        If C_XML.P_CBLogFile Then
             If My.Computer.FileSystem.FileExists(LogDatei) Then
                 Me.TBLogging.Text = My.Computer.FileSystem.OpenTextFileReader(LogDatei).ReadToEnd
             End If

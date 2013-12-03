@@ -60,7 +60,7 @@
                 sFilter = String.Concat("[Email1Address] = """, Absender, """ OR [Email2Address] = """, Absender, """ OR [Email3Address] = """, Absender, """")
                 gefunden = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
             Else
-                If CBool(C_XML.Read("Optionen", "CBIndex", "True")) Then
+                If C_XML.P_CBIndex Then
                     Dim Personen As Outlook.Items = Ordner.Items
                     ' In Outlook 2003 funktioniert die Verkettung mit OR nicht.
 #If OVer = 11 Then
@@ -125,9 +125,7 @@
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
-                If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
-                    IndiziereKontakt(Kontakt, True)
-                End If
+                If Not C_XML.P_CBIndexAus Then IndiziereKontakt(Kontakt, True)
                 .Save()
                 KontaktID = .EntryID
                 StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
@@ -241,8 +239,8 @@
     End Function
 
     Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
-        If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
-            Dim LandesVW As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
+        If Not C_XML.P_CBIndexAus Then
+            Dim LandesVW As String = C_XML.P_TBLandesVW
             Dim alleTE(16) As String  ' alle TelNr/Email eines Kontakts
             Dim speichern As Boolean = False
             Dim tempTelNr As String
@@ -287,7 +285,7 @@
 
     Friend Sub DeIndizierungKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
         Dim UserEigenschaft As Outlook.UserProperty
-        If Not CBool(C_XML.Read("Optionen", "CBIndexAus", "False")) Then
+        If Not C_XML.P_CBIndexAus Then
             With Kontakt.UserProperties
                 For Each UserProperty In UserProperties
                     Try

@@ -426,10 +426,10 @@
     End Sub
 
     Public Function GetVisibleAnrMonFKT(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return CBool(IIf(C_XML.Read("Optionen", "CBUseAnrMon", "True") = "True", True, False))
+        Return C_XML.P_CBUseAnrMon
     End Function
     Public Function GetEnabledJI(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return CBool(IIf(C_XML.Read("Optionen", "CBJournal", "False") = "True", True, False))
+        Return C_XML.P_CBJournal
     End Function
     ' Ab Hier Rückrufe von Buttons
     Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
@@ -835,17 +835,15 @@
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbDirekt", "True") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrMon", "True") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrMon", "True") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrListe", "True") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbWwdh", "True") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbJournalimport", "False") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbAnrMonNeuStart", "False") = "True", True, False))
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbVIP", "False") = "True", True, False))
-        Catch ex As Exception
-
-        End Try
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_XML.P_CBSymbDirekt
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_XML.P_CBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_XML.P_CBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = C_XML.P_CBSymbAnrListe
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = C_XML.P_CBSymbWwdh
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_XML.P_CBSymbJournalimport
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_XML.P_CBSymbAnrMonNeuStart
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = C_XML.P_CBSymbVIP
+        Catch : End Try
     End Sub
 
     Friend Sub SetAnrMonButton(ByVal EinAus As Boolean)
@@ -901,23 +899,23 @@
 
         FillPopupItems("Wwdh")
         ' Direktwahl
-        ePopWwdh.Visible = CBool(C_XML.Read("Optionen", "CBSymbWwdh", "True"))
+        ePopWwdh.Visible = C_XML.P_CBSymbWwdh
         eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, "Direktwahl", i, 326, "IconandCaption", "Direktwahl", "Direktwahl")
         i += 1
 
-        eBtnDirektwahl.Visible = CBool(C_XML.Read("Optionen", "CBSymbDirekt", "False"))
+        eBtnDirektwahl.Visible = C_XML.P_CBSymbDirekt
         ' Symbol Anrufmonitor & Anzeigen
         eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor", i, 815, "IconandCaption", "Anrufmonitor", "Anrufmonitor starten oder stoppen") '815
 
         eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, "Anzeigen", i + 1, 682, "IconandCaption", "Anzeigen", "Letzte Anrufe anzeigen")
         i += 2
 
-        eBtnAnrMonitor.Visible = CBool(C_XML.Read("Optionen", "CBSymbAnrMon", "True"))
+        eBtnAnrMonitor.Visible = C_XML.P_CBSymbAnrMon
         eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
 
         eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor neustarten", i, 37, "IconandCaption", "AnrMonNeuStart", "")
         eBtnAnrMonNeuStart.TooltipText = "Startet den Anrufmonitor neu."
-        eBtnAnrMonNeuStart.Visible = CBool(C_XML.Read("Optionen", "CBSymbAnrMonNeuStart", "False"))
+        eBtnAnrMonNeuStart.Visible = C_XML.P_CBSymbAnrMonNeuStart
 
         i += 1
 
@@ -932,7 +930,7 @@
             HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
         FillPopupItems("AnrListe")
-        ePopAnr.Visible = CBool(C_XML.Read("Optionen", "CBSymbAnrListe", "True"))
+        ePopAnr.Visible = C_XML.P_CBSymbAnrListe
         i += 1
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, "VIP", i, "VIPListe", "VIP anrufen")
@@ -947,10 +945,10 @@
         End Try
         FillPopupItems("VIPListe")
         i += 1
-        ePopVIP.Visible = CBool(C_XML.Read("Optionen", "CBSymbVIP", "True"))
+        ePopVIP.Visible = C_XML.P_CBSymbVIP
 
         eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
-        eBtnJournalimport.Visible = CBool(C_XML.Read("Optionen", "CBSymbJournalimport", "False"))
+        eBtnJournalimport.Visible = CBSymbJournalimport
         i += 1
         eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, "Einstellungen", i, 548, "IconandCaption", "Einstellungen", "Fritz!Box Einstellungen")
         i += 1
@@ -979,7 +977,7 @@
         Dim cmbErstellen As Boolean = True
         Dim i As Integer = 1
 
-        If CBool(C_XML.Read("Optionen", "CBSymbRWSuche", "True")) = True Then
+        If C_XML.P_CBSymbRWSuche Then
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.JournalItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
@@ -1041,7 +1039,7 @@
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
-                    .Visible = CBool(IIf(C_XML.Read("Optionen", "CBSymbVIP", "False") = "True", True, False))
+                    .Visible = C_XML.P_CBSymbVIP
                 End With
             End If
             ' Journaleinträge

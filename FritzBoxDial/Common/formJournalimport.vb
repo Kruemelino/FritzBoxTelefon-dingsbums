@@ -107,7 +107,6 @@ Friend Class formJournalimport
             Startzeit = .StartZeit
             Endzeit = .EndZeit
         End With
-        Dim Vorwahl As String = C_XML.Read("Optionen", "TBVorwahl", "")
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
         Dim Anzahl As Integer = -1 ' Anzahl der zu importierenden Telefonate
@@ -168,7 +167,7 @@ Friend Class formJournalimport
                             .Add("Telefone")
                             .Add("Nummern")
                             .Add("*")
-                            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl) & """]")
+                            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.P_TBVorwahl) & """]")
                             .Add("@Checked")
                         End With
 

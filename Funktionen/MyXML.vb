@@ -46,15 +46,16 @@ Public Class MyXML
     Private _CBKHO As Boolean
     Private _CBRWSIndex As Boolean
     Private _ComboBoxRWS As Integer
+    Private _CBIndex As Boolean
     Private _TBLandesVW As String
     Private _TBAmt As String
     Private _TBFBAdr As String
     Private _TBBenutzer As String
     Private _TBPasswort As String
     Private _TBVorwahl As String
-    Private _TBEnblDauer As String
-    Private _TBAnrMonX As String
-    Private _TBAnrMonY As String
+    Private _TBEnblDauer As Integer
+    Private _TBAnrMonX As Integer
+    Private _TBAnrMonY As Integer
 
     Private _TBAnrMonMoveGeschwindigkeit As Integer
     Private _CBoxRWSuche As Integer
@@ -65,7 +66,9 @@ Public Class MyXML
     'StoppUhr
     Private _CBStoppUhrEinblenden As Boolean
     Private _CBStoppUhrAusblenden As Boolean
-    Private _TBStoppUhr As String
+    Private _TBStoppUhr As Integer
+    Private _CBStoppUhrX As Integer
+    Private _CBStoppUhrY As Integer
     ' Telefonnummernformatierung
     Private _TBTelNrMaske As String
     Private _CBTelNrGruppieren As Boolean
@@ -139,11 +142,11 @@ Public Class MyXML
             _TBVorwahl = value
         End Set
     End Property
-    Public Property P_TBEnblDauer() As String
+    Public Property P_TBEnblDauer() As Integer
         Get
             Return _TBEnblDauer
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Integer)
             _TBEnblDauer = value
         End Set
     End Property
@@ -155,19 +158,19 @@ Public Class MyXML
             _CBAnrMonAuto = value
         End Set
     End Property
-    Public Property P_TBAnrMonX() As String
+    Public Property P_TBAnrMonX() As Integer
         Get
             Return _TBAnrMonX
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Integer)
             _TBAnrMonX = value
         End Set
     End Property
-    Public Property P_TBAnrMonY() As String
+    Public Property P_TBAnrMonY() As Integer
         Get
             Return _TBAnrMonY
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Integer)
             _TBAnrMonY = value
         End Set
     End Property
@@ -382,7 +385,6 @@ Public Class MyXML
             _ComboBoxRWs = value
         End Set
     End Property
-
     Public Property P_CBoxRWSuche() As Integer
         Get
             Return _CBoxRWSuche
@@ -391,7 +393,26 @@ Public Class MyXML
             _CBoxRWSuche = value
         End Set
     End Property
-
+    ''' <summary>
+    ''' Gibt an, ob die Indizierung durchgeführt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns>True/False</returns>
+    ''' <remarks></remarks>
+    Public Property P_CBIndex() As Boolean
+        Get
+            Return _CBIndex
+        End Get
+        Set(ByVal value As Boolean)
+            _CBIndex = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' Gibt an, ob Journaleinträge erstellt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns>True/False</returns>
+    ''' <remarks></remarks>
     Public Property P_CBJournal() As Boolean
         Get
             Return _CBJournal
@@ -433,12 +454,28 @@ Public Class MyXML
             _CBStoppUhrAusblenden = Value
         End Set
     End Property
-    Public Property P_TBStoppUhr() As String
+    Public Property P_TBStoppUhr() As Integer
         Get
             Return _TBStoppUhr
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Integer)
             _TBStoppUhr = value
+        End Set
+    End Property
+    Public Property P_CBStoppUhrX() As Integer
+        Get
+            Return _CBStoppUhrX
+        End Get
+        Set(ByVal value As Integer)
+            _CBStoppUhrX = value
+        End Set
+    End Property
+    Public Property P_CBStoppUhrY() As Integer
+        Get
+            Return _CBStoppUhrY
+        End Get
+        Set(ByVal value As Integer)
+            _CBStoppUhrY = value
         End Set
     End Property
     ' Telefonnummernformatierung
@@ -535,10 +572,10 @@ Public Class MyXML
         Me.P_TBPasswort = Read("Optionen", "TBPasswort", "")
 
         Me.P_TBVorwahl = Read("Optionen", "TBVorwahl", "")
-        Me.P_TBEnblDauer = Read("Optionen", "TBEnblDauer", "10")
+        Me.P_TBEnblDauer = CInt(Read("Optionen", "TBEnblDauer", "10"))
         Me.P_CBAnrMonAuto = CBool(Read("Optionen", "CBAnrMonAuto", "False"))
-        Me.P_TBAnrMonX = Read("Optionen", "TBAnrMonX", "0")
-        Me.P_TBAnrMonY = Read("Optionen", "TBAnrMonY", "0")
+        Me.P_TBAnrMonX = CInt(Read("Optionen", "TBAnrMonX", "0"))
+        Me.P_TBAnrMonY = CInt(Read("Optionen", "TBAnrMonY", "0"))
         Me.P_CBAnrMonMove = CBool(Read("Optionen", "CBAnrMonMove", "True"))
         Me.P_CBAnrMonTransp = CBool(Read("Optionen", "CBAnrMonTransp", "True"))
         Me.P_TBAnrMonMoveGeschwindigkeit = CInt((100 - CDbl(Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "50"))) / 10)
@@ -571,14 +608,16 @@ Public Class MyXML
         Me.P_CBRWSIndex = CBool(Read("Optionen", "CBRWSIndex", "True"))
         Me.P_CBoxRWSuche = CInt(Read("Optionen", "CBoxRWSuche", "0"))
         Me.P_ComboBoxRWS = CInt(Read("Optionen", "ComboBoxRWS", "0"))
+        Me.P_CBIndex = CBool(Read("Optionen", "CBIndex", "True"))
         Me.P_CBJournal = CBool(Read("Optionen", "CBJournal", "False") = "True")
         Me.P_CBUseAnrMon = CBool(Read("Optionen", "CBUseAnrMon", "True"))
         Me.P_CBCheckMobil = CBool(Read("Optionen", "CBCheckMobil", "True"))
         'StoppUhr
         Me.P_CBStoppUhrEinblenden = CBool(Read("Optionen", "CBStoppUhrEinblenden", "False"))
         Me.P_CBStoppUhrAusblenden = CBool(Read("Optionen", "CBStoppUhrAusblenden", "False"))
-        Me.P_TBStoppUhr = Read("Optionen", "TBStoppUhr", "10")
-
+        Me.P_TBStoppUhr = CInt(Read("Optionen", "TBStoppUhr", "10"))
+        Me.P_CBStoppUhrX = CInt(Read("Optionen", "CBStoppUhrX", "10"))
+        Me.P_CBStoppUhrY = CInt(Read("Optionen", "CBStoppUhrY", "10"))
         Me.P_TBTelNrMaske = Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
         Me.P_CBTelNrGruppieren = CBool(Read("Optionen", "CBTelNrGruppieren", "True"))
         Me.P_CBintl = CBool(Read("Optionen", "CBintl", "False"))
@@ -599,10 +638,10 @@ Public Class MyXML
         Write("Optionen", "TBBenutzer", Me.P_TBBenutzer, False)
         Write("Optionen", "TBPasswort", Me.P_TBPasswort, False)
         Write("Optionen", "TBVorwahl", Me.P_TBVorwahl, False)
-        Write("Optionen", "TBEnblDauer", Me.P_TBEnblDauer, False)
+        Write("Optionen", "TBEnblDauer", CStr(Me.P_TBEnblDauer), False)
         Write("Optionen", "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto), False)
-        Write("Optionen", "TBAnrMonX", Me.P_TBAnrMonX, False)
-        Write("Optionen", "TBAnrMonY", Me.P_TBAnrMonY, False)
+        Write("Optionen", "TBAnrMonX", CStr(Me.P_TBAnrMonX), False)
+        Write("Optionen", "TBAnrMonY", CStr(Me.P_TBAnrMonY), False)
         Write("Optionen", "CBAnrMonMove", CStr(Me.P_CBAnrMonMove), False)
         Write("Optionen", "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp), False)
         Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr((10 - Me.P_TBAnrMonMoveGeschwindigkeit) * 10), False)
@@ -633,17 +672,20 @@ Public Class MyXML
         Write("Optionen", "CBKHO", CStr(Me.P_CBKHO), False)
         Write("Optionen", "CBRWSIndex", CStr(Me.P_CBRWSIndex), False)
         Write("Optionen", "CBoxRWSuche", CStr(Me.P_CBoxRWSuche), False)
+        Write("Optionen", "CBIndex", CStr(Me.P_CBIndex), False)
         Write("Optionen", "CBJournal", CStr(Me.P_CBJournal), False)
         Write("Optionen", "CBUseAnrMon", CStr(Me.P_CBUseAnrMon), False)
         Write("Optionen", "CBCheckMobil", CStr(Me.P_CBCheckMobil), False)
         'StoppUhr
         Write("Optionen", "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden), False)
         Write("Optionen", "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden), False)
-        Write("Optionen", "", Me.P_TBStoppUhr, False)
+        Write("Optionen", "", CStr(Me.P_TBStoppUhr), False)
         Write("Optionen", "TBTelNrMaske", Me.P_TBTelNrMaske, False)
         Write("Optionen", "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren), False)
         Write("Optionen", "CBintl", CStr(Me.P_CBintl), False)
         Write("Optionen", "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat), False)
+        Write("Optionen", "CBStoppUhrX", CStr(Me.P_CBStoppUhrX), False)
+        Write("Optionen", "CBStoppUhrY", CStr(Me.P_CBStoppUhrY), False)
         ' Phoner
         Write("Optionen", "CBPhoner", CStr(Me.P_CBPhoner), False)
         Write("Optionen", "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar), False)
