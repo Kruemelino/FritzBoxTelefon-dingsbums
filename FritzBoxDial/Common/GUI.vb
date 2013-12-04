@@ -566,7 +566,7 @@
             xPathTeile.RemoveRange(0, xPathTeile.Count)
             xPathTeile.Add("VIPListe")
             xPathTeile.Add("Index")
-            .Write(xPathTeile, CStr(Index + 1), False)
+            .Write(xPathTeile, CStr(Index + 1))
             xPathTeile.Remove("Index")
             .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
             .SpeichereXMLDatei()
@@ -616,7 +616,7 @@
                 .Add("Index")
                 C_XML.Delete(xPathTeile)
             Else
-                C_XML.Write("VIPListe", "Index", CStr(Anzahl - 1), True)
+                C_XML.Write("VIPListe", "Index", CStr(Anzahl - 1))
             End If
 
         End With

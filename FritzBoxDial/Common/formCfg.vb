@@ -5,31 +5,44 @@ Imports System.Threading
 Imports System.Windows.Forms
 
 Friend Class formCfg
+#Region "Eigene Klassen"
     Private C_XML As MyXML
     Private C_Crypt As Rijndael
     Private C_Helfer As Helfer
     Private C_Kontakte As Contacts
     Private C_Phoner As PhonerInterface
-    Private GUI As GraphicalUserInterface
-    Private OlI As OutlookInterface
-    Private AnrMon As AnrufMonitor
+    Private C_GUI As GraphicalUserInterface
+    Private C_OlI As OutlookInterface
+    Private C_AnrMon As AnrufMonitor
     Private C_FBox As FritzBox
+#End Region
 
+#Region "BackgroundWorker"
     Private WithEvents BWTelefone As BackgroundWorker
     Private WithEvents BWIndexer As BackgroundWorker
-    Private WithEvents emc As New EventMulticaster
+#End Region
 
+#Region "Delegaten"
+    Private Delegate Sub DelgButtonTelEinl()
+    Private Delegate Sub DelgSetLine()
+    Private Delegate Sub DelgSetFillTelListe()
+    Private Delegate Sub DelgStatistik()
+    Private Delegate Sub DelgSetProgressbar()
+#End Region
+
+#Region "EventMulticaster"
+    Private WithEvents emc As New EventMulticaster
+#End Region
+
+#Region "Eigene Variablen"
     Private tmpCheckString As String
     Private StatusWert As String
     Private KontaktName As String
     Private Anzahl As Integer = 0
-    Private Dauer As TimeSpan
     Private Startzeit As Date
     Private _StoppUhrAnzeigen As Boolean
-    Private Delegate Sub DelgButtonTelEinl()
-    Private Delegate Sub DelgSetLine()
-    Private Delegate Sub DelgStatistik()
-    Private Delegate Sub DelgSetProgressbar()
+    Private Dauer As TimeSpan
+#End Region
 
     Public Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal XMLKlasse As MyXML, _
@@ -48,9 +61,9 @@ Friend Class formCfg
         C_Helfer = HelferKlasse
         C_XML = XMLKlasse
         C_Crypt = CryptKlasse
-        GUI = InterfacesKlasse
-        OlI = OutlInter
-        AnrMon = AnrufMon
+        C_GUI = InterfacesKlasse
+        C_OlI = OutlInter
+        C_AnrMon = AnrufMon
         C_FBox = fritzboxKlasse
         C_Kontakte = kontaktklasse
         C_Phoner = Phonerklasse
@@ -59,13 +72,12 @@ Friend Class formCfg
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(iTa.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
-        Me.BAnrMonTest.Enabled = Not AnrMon Is Nothing
+        Me.BAnrMonTest.Enabled = Not C_AnrMon Is Nothing
         Me.BTelefonliste.Enabled = Not C_FBox Is Nothing
         Me.FBDB_MP.SelectedIndex = 0
         'Me.StartPosition = FormStartPosition.CenterParent
         Ausfüllen()
     End Sub
-
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
@@ -207,7 +219,10 @@ Friend Class formCfg
         FillTelListe()
         CLBTelNrAusfüllen()
     End Sub
-
+    ''' <summary>
+    ''' Füllt die Telefonliste in den Einstellungen aus.
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub FillTelListe()
         Dim Zeile As New ArrayList
         Dim Nebenstellen() As String
@@ -287,7 +302,7 @@ Friend Class formCfg
         Zeile = Nothing
     End Sub
 
-    Sub CLBTelNrAusfüllen()
+    Private Sub CLBTelNrAusfüllen()
         Dim xPathTeile As New ArrayList
         Dim TelNrString() As String
         With xPathTeile
@@ -585,7 +600,7 @@ Friend Class formCfg
                 Dim formschließen As Boolean = Speichern()
                 ThisAddIn.P_UseAnrMon = Me.CBUseAnrMon.Checked
 #If OVer >= 14 Then
-                GUI.RefreshRibbon()
+                C_GUI.RefreshRibbon()
 #End If
                 If formschließen Then
                     Me.Hide()
@@ -602,7 +617,7 @@ Friend Class formCfg
             Case "BAnrMonTest"
                 Speichern()
                 Dim ID As Integer = CInt(C_XML.Read("letzterAnrufer", "Letzter", CStr(0)))
-                Dim forman As New formAnrMon(ID, False, C_XML, C_Helfer, AnrMon, OlI)
+                Dim forman As New formAnrMon(ID, False, C_XML, C_Helfer, C_AnrMon, C_OlI)
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
@@ -659,16 +674,16 @@ Friend Class formCfg
                 With xPathTeile
                     .Add("Statistik")
                     .Add("ResetZeit")
-                    C_XML.Write(xPathTeile, CStr(System.DateTime.Now), False)
+                    C_XML.Write(xPathTeile, CStr(System.DateTime.Now))
                     .Clear()
                     .Add("Telefone")
                     .Add("Telefone")
                     .Add("*")
                     .Add("Telefon")
                     .Add("Eingehend")
-                    C_XML.Write(xPathTeile, "0", False)
+                    C_XML.Write(xPathTeile, "0")
                     .Item(.Count - 1) = "Ausgehend"
-                    C_XML.Write(xPathTeile, "0", False)
+                    C_XML.Write(xPathTeile, "0")
                 End With
                 FillTelListe()
                 xPathTeile = Nothing
@@ -941,7 +956,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        OlI.NeuEmail(PfadTMPfile, C_XML.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(FBOX_ADR))
+        C_OlI.NeuEmail(PfadTMPfile, C_XML.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(FBOX_ADR))
     End Sub
 
     Public Function SetTelNrListe() As Boolean
@@ -951,6 +966,16 @@ Friend Class formCfg
             Invoke(D)
         Else
             CLBTelNrAusfüllen()
+        End If
+    End Function
+
+    Public Function SetFillTelListe() As Boolean
+        SetFillTelListe = False
+        If Me.InvokeRequired Then
+            Dim D As New DelgSetFillTelListe(AddressOf FillTelListe)
+            Invoke(D)
+        Else
+            FillTelListe()
         End If
     End Function
 
@@ -1006,7 +1031,7 @@ Friend Class formCfg
         Dim olfolder As Outlook.MAPIFolder
         Dim LandesVW As String = Me.TBLandesVW.Text
         Anzahl = 0
-        olNamespace = OlI.GetOutlook.GetNamespace("MAPI")
+        olNamespace = C_OlI.GetOutlook.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
             olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
@@ -1226,7 +1251,7 @@ Friend Class formCfg
 
 #End Region
 
-#Region "Backroundworker"
+#Region "BackGroundWorker - hHandle"
     Private Sub BWIndexer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWIndexer.DoWork
 
         ErmittleKontaktanzahl()
@@ -1239,7 +1264,7 @@ Friend Class formCfg
         Dim olfolder As Outlook.MAPIFolder
         Dim LandesVW As String = Me.TBLandesVW.Text
 
-        olNamespace = OlI.GetOutlook.GetNamespace("MAPI")
+        olNamespace = C_OlI.GetOutlook.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
             olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
@@ -1322,10 +1347,10 @@ Friend Class formCfg
                         Dim Dauer As Date
                         .Item(.Count - 1) = "Eingehend"
                         Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-                        C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second), False)
+                        C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
                         .Item(.Count - 1) = "Ausgehend"
                         Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-                        C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second), True)
+                        C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
                     End If
                 End If
             Next
@@ -1347,9 +1372,8 @@ Friend Class formCfg
             End If
         End With
 
-        CLBTelNrAusfüllen()
         SetTelNrListe()
-        FillTelListe()
+        SetFillTelListe()
         DelBTelefonliste()
         BWTelefone = Nothing
         AddLine("BackgroundWorker wurde eliminiert.")

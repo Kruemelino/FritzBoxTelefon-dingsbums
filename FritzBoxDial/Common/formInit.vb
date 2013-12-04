@@ -147,8 +147,8 @@
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
         C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
-        C_XML.Write("Optionen", "TBBenutzer", Me.TBFBUser.Text, False)
-        C_XML.Write("Optionen", "TBPasswort", C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script"), True)
+        C_XML.P_TBBenutzer = Me.TBFBUser.Text
+        C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script")
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyChange()
         SID = C_FBox.FBLogIn(fw550)
@@ -180,8 +180,8 @@
         Me.BTelEinlesen.Text = "Bitte warten..."
         Me.BTelEinlesen.Enabled = False
 
-        C_XML.Write("Optionen", "TBVorwahl", Me.TBVorwahl.Text, False)
-        C_XML.Write("Optionen", "TBLandesvorwahl", Me.TBLandesvorwahl.Text, True)
+        C_XML.P_TBVorwahl = Me.TBVorwahl.Text
+        C_XML.P_TBLandesVW = Me.TBLandesvorwahl.Text
         C_FBox.P_SpeichereDaten = True
         C_FBox.FritzBoxDaten()
 

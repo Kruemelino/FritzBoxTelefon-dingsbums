@@ -4,11 +4,10 @@ Imports System.Timers
 Public Class MyXML
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
-
     Private WithEvents tSpeichern As Timer
 
 #Region "Konstanten"
-    Private Const Speicherintervall As Double = 15 'in Minuten
+    Private Const Speicherintervall As Double = 5 'in Minuten
     Private Const RootName As String = "FritzOutlookXML"
     Private Const xPathSeperatorSlash As String = "/"
     Private Const xPathWildCard As String = "*"
@@ -97,7 +96,6 @@ Public Class MyXML
     ' Indizierung
     Private _LLetzteIndizierung As Date
 #End Region
-
 #Region "Properties"
     ''' <summary>
     ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
@@ -168,7 +166,7 @@ Public Class MyXML
             _TBAnrMonY = value
         End Set
     End Property
-    Public Property P_CBAnrMonMove() As boolean
+    Public Property P_CBAnrMonMove() As Boolean
         Get
             Return _CBAnrMonMove
         End Get
@@ -379,10 +377,10 @@ Public Class MyXML
     End Property
     Public Property P_ComboBoxRWS() As Integer
         Get
-            Return _ComboBoxRWs
+            Return _ComboBoxRWS
         End Get
         Set(ByVal value As Integer)
-            _ComboBoxRWs = value
+            _ComboBoxRWS = value
         End Set
     End Property
     Public Property P_CBoxRWSuche() As Integer
@@ -716,6 +714,27 @@ Public Class MyXML
     End Property
 
 #End Region
+
+    Public Sub New(ByVal DateiPfad As String)
+        sDateiPfad = DateiPfad
+        XMLDoc = New XmlDocument()
+        With My.Computer.FileSystem
+            If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension.ToString = ".xml" Then
+                XMLDoc.Load(sDateiPfad)
+            Else
+                XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
+                .CreateDirectory(.GetParentPath(sDateiPfad))
+                .WriteAllText(sDateiPfad, XMLDoc.InnerXml, True)
+            End If
+        End With
+        CleanUpXML()
+        tSpeichern = New Timer
+        With tSpeichern
+            .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
+            .Start()
+        End With
+        LoadOptionData()
+    End Sub
     Private Sub LoadOptionData()
 
         Me.P_TBLandesVW = Read("Optionen", "TBLandesVW", "0049")
@@ -723,7 +742,7 @@ Public Class MyXML
         Me.P_TBFBAdr = Read("Optionen", "TBFBAdr", "fritz.box")  'DEFAULT auf anderes Default-property ändern
         Me.P_CBForceFBAddr = CBool(Read("Optionen", "CBForceFBAddr", "False"))
         Me.P_TBBenutzer = Read("Optionen", "TBBenutzer", vbNullString)
-        Me.P_TBPasswort = Read("Optionen", "TBPasswort", "")
+        Me.P_TBPasswort = Read("Optionen", "TBPasswort", vbNullString)
 
         Me.P_TBVorwahl = Read("Optionen", "TBVorwahl", "")
         Me.P_TBEnblDauer = CInt(Read("Optionen", "TBEnblDauer", "10"))
@@ -781,7 +800,7 @@ Public Class MyXML
         Me.P_PhonerVerfügbar = CBool(Read("Phoner", "PhonerVerfügbar", "False"))
         Me.P_ComboBoxPhonerSIP = CInt(Read("Phoner", "ComboBoxPhonerSIP", "0"))
         Me.P_CBPhonerAnrMon = CBool(Read("Phoner", "CBPhonerAnrMon", "False"))
-        Me.P_TBPhonerPasswort = Read("Phoner", "TBPhonerPasswort", "")
+        Me.P_TBPhonerPasswort = Read("Phoner", "TBPhonerPasswort", vbNullString)
         Me._PhonerTelNameIndex = CInt(Read("Phoner", "PhonerTelNameIndex", "0"))
         ' Statistik
         Me.P_StatResetZeit = CDate(Read("Statistik", "ResetZeit", CStr(System.DateTime.Now)))
@@ -799,107 +818,85 @@ Public Class MyXML
         Me.P_LLetzteIndizierung = CDate(Read("Optionen", "LLetzteIndizierung", CStr(System.DateTime.Now)))
     End Sub
     Private Sub SaveOptionData()
-        Write("Optionen", "TBLandesVW", Me.P_TBLandesVW, False)
-        Write("Optionen", "TBAmt", Me.P_TBAmt, False)
-        Write("Optionen", "TBFBAdr", Me.P_TBFBAdr, False)
-        Write("Optionen", "CBForceFBAddr", CStr(Me.P_CBForceFBAddr), False)
-        Write("Optionen", "TBBenutzer", Me.P_TBBenutzer, False)
-        Write("Optionen", "TBPasswort", Me.P_TBPasswort, False)
-        Write("Optionen", "TBVorwahl", Me.P_TBVorwahl, False)
-        Write("Optionen", "TBEnblDauer", CStr(Me.P_TBEnblDauer), False)
-        Write("Optionen", "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto), False)
-        Write("Optionen", "TBAnrMonX", CStr(Me.P_TBAnrMonX), False)
-        Write("Optionen", "TBAnrMonY", CStr(Me.P_TBAnrMonY), False)
-        Write("Optionen", "CBAnrMonMove", CStr(Me.P_CBAnrMonMove), False)
-        Write("Optionen", "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp), False)
-        Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit), False)
-        Write("Optionen", "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage), False)
-        Write("Optionen", "CBIndexAus", CStr(Me.P_CBIndexAus), False)
-        Write("Optionen", "CBShowMSN", CStr(Me.P_CBShowMSN), False)
-        Write("Optionen", "CBAutoClose", CStr(Me.P_CBAutoClose), False)
-        Write("Optionen", "CBVoIPBuster", CStr(Me.P_CBVoIPBuster), False)
-        Write("Optionen", "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster), False)
-        Write("Optionen", "CBCallByCall", CStr(Me.P_CBCallByCall), False)
-        Write("Optionen", "CBDialPort", CStr(Me.P_CBDialPort), False)
-        Write("Optionen", "CBRueckwaertssuche", CStr(Me.P_CBRueckwaertssuche), False)
-        Write("Optionen", "CBKErstellen", CStr(Me.P_CBKErstellen), False)
-        Write("Optionen", "CBLogFile", CStr(Me.P_CBLogFile), False)
+        Write("Optionen", "TBLandesVW", Me.P_TBLandesVW)
+        Write("Optionen", "TBAmt", Me.P_TBAmt)
+        Write("Optionen", "TBFBAdr", Me.P_TBFBAdr)
+        Write("Optionen", "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
+        Write("Optionen", "TBBenutzer", Me.P_TBBenutzer)
+        Write("Optionen", "TBPasswort", Me.P_TBPasswort)
+        Write("Optionen", "TBVorwahl", Me.P_TBVorwahl)
+        Write("Optionen", "TBEnblDauer", CStr(Me.P_TBEnblDauer))
+        Write("Optionen", "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
+        Write("Optionen", "TBAnrMonX", CStr(Me.P_TBAnrMonX))
+        Write("Optionen", "TBAnrMonY", CStr(Me.P_TBAnrMonY))
+        Write("Optionen", "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
+        Write("Optionen", "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
+        Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
+        Write("Optionen", "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
+        Write("Optionen", "CBIndexAus", CStr(Me.P_CBIndexAus))
+        Write("Optionen", "CBShowMSN", CStr(Me.P_CBShowMSN))
+        Write("Optionen", "CBAutoClose", CStr(Me.P_CBAutoClose))
+        Write("Optionen", "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
+        Write("Optionen", "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
+        Write("Optionen", "CBCallByCall", CStr(Me.P_CBCallByCall))
+        Write("Optionen", "CBDialPort", CStr(Me.P_CBDialPort))
+        Write("Optionen", "CBRueckwaertssuche", CStr(Me.P_CBRueckwaertssuche))
+        Write("Optionen", "CBKErstellen", CStr(Me.P_CBKErstellen))
+        Write("Optionen", "CBLogFile", CStr(Me.P_CBLogFile))
         ' Einstellungen für die Symbolleiste laden
 #If OVer < 14 Then
-        Write("Optionen", "CBSymbWwdh", CStr(Me.P_CBSymbWwdh), False)
-        Write("Optionen", "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon), False)
-        Write("Optionen", "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart), False)
-        Write("Optionen", "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe), False)
-        Write("Optionen", "CBSymbDirekt", CStr(Me.P_CBSymbDirekt), False)
-        Write("Optionen", "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche), False)
-        Write("Optionen", "CBSymbVIP", CStr(Me.P_CBSymbVIP), False)
-        Write("Optionen", "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport), False)
+        Write("Optionen", "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
+        Write("Optionen", "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
+        Write("Optionen", "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
+        Write("Optionen", "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe))
+        Write("Optionen", "CBSymbDirekt", CStr(Me.P_CBSymbDirekt))
+        Write("Optionen", "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
+        Write("Optionen", "CBSymbVIP", CStr(Me.P_CBSymbVIP))
+        Write("Optionen", "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
 #End If
-        Write("Optionen", "CBJImport", CStr(Me.P_CBJImport), False)
+        Write("Optionen", "CBJImport", CStr(Me.P_CBJImport))
         ' Einstellungen füer die Rückwärtssuche laden
-        Write("Optionen", "CBKHO", CStr(Me.P_CBKHO), False)
-        Write("Optionen", "CBRWSIndex", CStr(Me.P_CBRWSIndex), False)
-        Write("Optionen", "CBoxRWSuche", CStr(Me.P_CBoxRWSuche), False)
-        Write("Optionen", "CBIndex", CStr(Me.P_CBIndex), False)
-        Write("Optionen", "CBJournal", CStr(Me.P_CBJournal), False)
-        Write("Optionen", "CBUseAnrMon", CStr(Me.P_CBUseAnrMon), False)
-        Write("Optionen", "CBCheckMobil", CStr(Me.P_CBCheckMobil), False)
+        Write("Optionen", "CBKHO", CStr(Me.P_CBKHO))
+        Write("Optionen", "CBRWSIndex", CStr(Me.P_CBRWSIndex))
+        Write("Optionen", "CBoxRWSuche", CStr(Me.P_CBoxRWSuche))
+        Write("Optionen", "CBIndex", CStr(Me.P_CBIndex))
+        Write("Optionen", "CBJournal", CStr(Me.P_CBJournal))
+        Write("Optionen", "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
+        Write("Optionen", "CBCheckMobil", CStr(Me.P_CBCheckMobil))
         'StoppUhr
-        Write("Optionen", "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden), False)
-        Write("Optionen", "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden), False)
-        Write("Optionen", "", CStr(Me.P_TBStoppUhr), False)
-        Write("Optionen", "TBTelNrMaske", Me.P_TBTelNrMaske, False)
-        Write("Optionen", "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren), False)
-        Write("Optionen", "CBintl", CStr(Me.P_CBintl), False)
-        Write("Optionen", "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat), False)
-        Write("Optionen", "CBStoppUhrX", CStr(Me.P_CBStoppUhrX), False)
-        Write("Optionen", "CBStoppUhrY", CStr(Me.P_CBStoppUhrY), False)
+        Write("Optionen", "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden))
+        Write("Optionen", "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden))
+        Write("Optionen", "", CStr(Me.P_TBStoppUhr))
+        Write("Optionen", "TBTelNrMaske", Me.P_TBTelNrMaske)
+        Write("Optionen", "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren))
+        Write("Optionen", "CBintl", CStr(Me.P_CBintl))
+        Write("Optionen", "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat))
+        Write("Optionen", "CBStoppUhrX", CStr(Me.P_CBStoppUhrX))
+        Write("Optionen", "CBStoppUhrY", CStr(Me.P_CBStoppUhrY))
         ' Phoner
-        Write("Optionen", "CBPhoner", CStr(Me.P_CBPhoner), False)
-        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar), False)
-        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP), False)
-        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon), False)
-        Write("Optionen", "TBPhonerPasswort", Me.P_TBPhonerPasswort, False)
-        Write("Optionen", "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex), False)
+        Write("Optionen", "CBPhoner", CStr(Me.P_CBPhoner))
+        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar))
+        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP))
+        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon))
+        Write("Optionen", "TBPhonerPasswort", Me.P_TBPhonerPasswort)
+        Write("Optionen", "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
         ' Statistik
-        Write("Optionen", "CBPhoner", CStr(Me.P_StatResetZeit), False)
-        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_StatVerpasst), False)
-        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_StatNichtErfolgreich), False)
-        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_StatKontakt), False)
-        Write("Optionen", "TBPhonerPasswort", CStr(Me.P_StatJournal), False)
-        Write("Optionen", "SchließZeit", CStr(Me.P_StatOLClosedZeit), False)
+        Write("Optionen", "CBPhoner", CStr(Me.P_StatResetZeit))
+        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_StatVerpasst))
+        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_StatNichtErfolgreich))
+        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_StatKontakt))
+        Write("Optionen", "TBPhonerPasswort", CStr(Me.P_StatJournal))
+        Write("Optionen", "SchließZeit", CStr(Me.P_StatOLClosedZeit))
         ' Wählbox
-        Write("Optionen", "Anschluss", CStr(Me.P_TelAnschluss), False)
-        Write("Optionen", "Festnetz", CStr(Me.P_TelFestnetz), False)
-        Write("Optionen", "CLIR", CStr(Me.P_TelCLIR), False)
+        Write("Optionen", "Anschluss", CStr(Me.P_TelAnschluss))
+        Write("Optionen", "Festnetz", CStr(Me.P_TelFestnetz))
+        Write("Optionen", "CLIR", CStr(Me.P_TelCLIR))
         'FritzBox
-        Write("Optionen", "EncodeingFritzBox", Me.P_EncodeingFritzBox, False)
+        Write("Optionen", "EncodeingFritzBox", Me.P_EncodeingFritzBox)
         'indizierung
-        Write("Optionen", "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung), False)
+        Write("Optionen", "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         XMLDoc.Save(sDateiPfad)
     End Sub
-    Public Sub New(ByVal DateiPfad As String)
-        sDateiPfad = DateiPfad
-        XMLDoc = New XmlDocument()
-        With My.Computer.FileSystem
-            If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension.ToString = ".xml" Then
-                XMLDoc.Load(sDateiPfad)
-            Else
-                XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
-                .CreateDirectory(.GetParentPath(sDateiPfad))
-                .WriteAllText(sDateiPfad, XMLDoc.InnerXml, True)
-            End If
-        End With
-        CleanUpXML()
-        tSpeichern = New Timer
-        With tSpeichern
-            .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
-            .Start()
-        End With
-        LoadOptionData()
-
-    End Sub
-
     Protected Overrides Sub Finalize()
         SaveOptionData()
         XMLDoc.Save(sDateiPfad)
@@ -955,22 +952,21 @@ Public Class MyXML
         tmpXMLNode = Nothing
     End Function
 #End Region
-
 #Region "Write"
-    Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
+    Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String) As Boolean
         Dim xPathTeile As New ArrayList
         With xPathTeile
             .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
             .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
         End With
-        Return Write(xPathTeile, Value, SpeichereDatei)
+        Return Write(xPathTeile, Value)
     End Function
 
-    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal SpeichereDatei As Boolean) As Boolean
-        Return Write(ZielKnoten, Value, vbNullString, vbNullString, SpeichereDatei)
+    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String) As Boolean
+        Return Write(ZielKnoten, Value, vbNullString, vbNullString)
     End Function
 
-    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String, ByVal SpeichereDatei As Boolean) As Boolean
+    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
         Dim xPathTeile As New ArrayList
         Dim sTmpXPath As String = vbNullString
         Dim xPath As String
@@ -1006,9 +1002,8 @@ Public Class MyXML
                         End If
                         sTmpXPath = xPath
                     Next
-                    Write(ZielKnoten, Value, AttributeName, AttributeValue, SpeichereDatei)
+                    Write(ZielKnoten, Value, AttributeName, AttributeValue)
                 End If
-                If SpeichereDatei Then SpeichereXMLDatei()
             End With
             Write = True
         Else
@@ -1045,7 +1040,6 @@ Public Class MyXML
         End With
     End Function
 #End Region
-
 #Region "Löschen"
 
     Public Overloads Function Delete(ByVal DieSektion As String) As Boolean
@@ -1071,7 +1065,6 @@ Public Class MyXML
     End Function
 
 #End Region
-
 #Region "Knoten"
     Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As ArrayList, ByVal AttributeValue As ArrayList) As XmlNode
         CreateXMLNode = Nothing
@@ -1141,7 +1134,7 @@ Public Class MyXML
         With XMLDoc
             tmpXMLNode = .SelectSingleNode(DestxPath)
             If tmpXMLNode Is Nothing Then
-                Write(alxPathTeile, "", False)
+                Write(alxPathTeile, "")
                 tmpXMLNode = .SelectSingleNode(DestxPath)
             End If
             'Attribute
@@ -1183,7 +1176,6 @@ Public Class MyXML
     End Function
 
 #End Region
-
 #Region "Speichern"
     Sub SpeichereXMLDatei()
         SaveOptionData()
@@ -1193,7 +1185,6 @@ Public Class MyXML
         SaveOptionData()
     End Sub
 #End Region
-
 #Region "Stuff"
     Private Sub CleanUpXML()
         Dim tmpNode As XmlNode

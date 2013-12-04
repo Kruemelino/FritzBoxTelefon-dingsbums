@@ -188,8 +188,8 @@
                             End If
 
                         End If
-                        C_XML.Write("Journal", "JournalID", .EntryID, False)
-                        C_XML.Write("Journal", "JournalStoreID", CType(.Parent, Outlook.MAPIFolder).StoreID, True)
+                        C_XML.Write("Journal", "JournalID", .EntryID)
+                        C_XML.Write("Journal", "JournalStoreID", CType(.Parent, Outlook.MAPIFolder).StoreID)
                         With Kontakt
                             If Not C_hf.nurZiffern(.BusinessTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
                                 .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)

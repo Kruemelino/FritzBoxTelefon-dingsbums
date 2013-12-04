@@ -200,7 +200,7 @@ Public Class FritzBox
                                     FBLogOut(sSID)
                                     sSID = P_DefaultSID
                                 End If
-                                C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = P_DefaultSID, 0, 2)), True)
+                                C_XML.Write("Optionen", sFBBenutzer, CStr(IIf(sSID = P_DefaultSID, 0, 2)))
                             End If
                         Else
                             C_hf.LogFile("Die Anmeldedaten sind falsch." & sSID)
@@ -435,7 +435,7 @@ Public Class FritzBox
                         j = i
                         PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
-                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
                     End If
                 End If
@@ -456,7 +456,7 @@ Public Class FritzBox
                         j = i
                         PushStatus("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
-                            C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", SIPID)
                         End If
                     End If
                 End If
@@ -476,7 +476,7 @@ Public Class FritzBox
                         TAM(i) = TelNr
                         PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
-                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
                         j = i
                     End If
@@ -493,7 +493,7 @@ Public Class FritzBox
             If Not POTS = vbNullString Then
                 PushStatus("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
                 If P_SpeichereDaten Then
-                    C_XML.Write("Telefone", "POTS", POTS, False)
+                    C_XML.Write("Telefone", "POTS", POTS)
                 End If
             End If
 
@@ -505,7 +505,7 @@ Public Class FritzBox
             If Not Mobil = vbNullString Then
                 PushStatus("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
                 If P_SpeichereDaten Then
-                    C_XML.Write("Telefone", "Mobil", Mobil, False)
+                    C_XML.Write("Telefone", "Mobil", Mobil)
                 End If
 
             End If
@@ -974,7 +974,7 @@ Public Class FritzBox
                     SIP(CInt(SIPID)) = TelNr
                     PushStatus("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
                     If P_SpeichereDaten Then
-                        C_XML.Write(xPathTeile, TelNr, "ID", SIPID, False)
+                        C_XML.Write(xPathTeile, TelNr, "ID", SIPID)
                     End If
                 End If
             Next
@@ -991,7 +991,7 @@ Public Class FritzBox
                         MSN(i) = TelNr
                         PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
-                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
                     End If
                 End If
@@ -1015,7 +1015,7 @@ Public Class FritzBox
                                             MSN(k) = TelNr
                                             PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
                                             If P_SpeichereDaten Then
-                                                C_XML.Write(xPathTeile, TelNr, "ID", CStr(k), False)
+                                                C_XML.Write(xPathTeile, TelNr, "ID", CStr(k))
                                             End If
                                             Exit For
                                         End If
@@ -1042,7 +1042,7 @@ Public Class FritzBox
                         End If
                         PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
-                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
 
                         TAM(i) = TelNr
@@ -1062,7 +1062,7 @@ Public Class FritzBox
                         End If
                         PushStatus("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
-                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i), False)
+                            C_XML.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
 
                         FAX(i) = TelNr
@@ -1080,7 +1080,7 @@ Public Class FritzBox
                 End If
                 PushStatus("Plain old telephone service (POTS) gefunden: " & POTS)
                 If P_SpeichereDaten Then
-                    C_XML.Write("Telefone", "POTS", POTS, False)
+                    C_XML.Write("Telefone", "POTS", POTS)
                 End If
 
             End If
@@ -1094,7 +1094,7 @@ Public Class FritzBox
                 End If
                 PushStatus("Mobilnummer (Mobil) gefunden: " & Mobil)
                 If P_SpeichereDaten Then
-                    C_XML.Write("Telefone", "Mobil", Mobil, False)
+                    C_XML.Write("Telefone", "Mobil", Mobil)
                 End If
             End If
 
@@ -1401,10 +1401,7 @@ Public Class FritzBox
             End If
 
             Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
-            If Len(Landesvorwahl) > 2 Then
-                C_XML.Write("Optionen", "TBLandesVW", "0" & Landesvorwahl, False)
-                C_XML.P_TBLandesVW = Landesvorwahl
-            End If
+            If Len(Landesvorwahl) > 2 Then C_XML.P_TBLandesVW = Landesvorwahl
         End With
 
     End Sub

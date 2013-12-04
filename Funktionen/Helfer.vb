@@ -141,45 +141,34 @@ Public Class Helfer
 
     Public Sub KeyChange()
         ' Diese Funktion ändert den Zugang zu den verschlüsselten Passwort.
-        Dim Passwort(1) As String
-        Dim Zugang(1) As String
-        Dim Knoten(1) As String
         Dim tempPasswort As String
         Dim tempZugang As String
         Dim i As Long
         Dim j As Integer
-        ' Passwort für Fritz!Box
-        Passwort(0) = "TBPasswort"
-        Passwort(1) = "PhonerPasswort"
-        Zugang(0) = "Zugang"
-        Zugang(1) = "ZugangPasswortPhoner"
-        Knoten(0) = "Optionen"
-        Knoten(1) = "Phoner"
-        For j = 0 To 1
-            tempPasswort = C_XML.Read(Knoten(j), CStr(Passwort(j)), "")
-            If Not Len(tempPasswort) = 0 Then
-                tempZugang = GetSetting("FritzBox", "Optionen", CStr(Zugang(j)), "-1")
-                If Not tempZugang = "-1" Then
-                    tempPasswort = C_Crypt.DecryptString128Bit(tempPasswort, tempZugang) 'entschlüsseln
-                    tempZugang = ""
-                    For i = 0 To 2
-                        tempZugang = tempZugang & Hex(Rnd() * 255)
-                    Next
-                    tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-                    SaveSetting("Fritzbox", "Optionen", CStr(Zugang(j)), tempZugang)
-                    C_XML.Write(Knoten(j), CStr(Passwort(j)), C_Crypt.EncryptString128Bit(tempPasswort, tempZugang), True) 'verschlüsseln
-                Else 'Für den Fall es exsistiert ein Passwort aber kein Entschlüsselungsschlüssel
-                    Select Case j
-                        Case 0
-                            tempZugang = "Fritz!Box"
-                        Case 1
-                            tempZugang = "Phoner"
-                    End Select
-                    C_XML.Write(Knoten(j), CStr(Passwort(j)), vbNullString, True)
-                    FBDB_MsgBox("Das Passwort der " & tempZugang & " kann nicht entschlüsselt werden. Es muss neu eingegeben werden.", MsgBoxStyle.Information, "KeyChange")
-                End If
-            End If
+
+        'NeU
+        tempZugang = ""
+        tempPasswort = C_Crypt.DecryptString128Bit(C_XML.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1"))
+        For i = 0 To 2
+            tempZugang = tempZugang & Hex(Rnd() * 255)
         Next
+        tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+        SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
+        C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)
+
+        If Not C_XML.P_TBPhonerPasswort = vbNullString Then
+            tempZugang = ""
+            tempPasswort = C_Crypt.DecryptString128Bit(C_XML.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1"))
+            For i = 0 To 2
+                tempZugang = tempZugang & Hex(Rnd() * 255)
+            Next
+            tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+            SaveSetting("Fritzbox", "Optionen", "ZugangPasswortPhoner", tempZugang)
+            C_XML.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)
+        End If
+
+        C_XML.SpeichereXMLDatei()
+
     End Sub ' (Keyänderung) 
 
     Public Function GetInformationSystemFritzBox(ByVal fbadr As String) As String
@@ -204,6 +193,12 @@ Public Class Helfer
     End Function
 
 #Region " Telefonnummern formatieren"
+    ''' <summary>
+    ''' Formatiert die Telefonnummern nach gängigen Regelm
+    ''' </summary>
+    ''' <param name="TelNr">Die zu formatierende Telefonnummer</param>
+    ''' <returns>Die formatierte Telefonnummer</returns>
+    ''' <remarks></remarks>
     Function formatTelNr(ByVal TelNr As String) As String
         ' formatiert die Telefonnummer in der Form "(0# ##) # ## ## ##" bzw. "+## (# ##) # ## ## ##"
         ' Parameter:  TelNr (String):     zu formatierende Telefonnummer

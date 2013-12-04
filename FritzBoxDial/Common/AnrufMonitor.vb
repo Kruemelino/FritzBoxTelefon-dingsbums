@@ -563,7 +563,7 @@ Friend Class AnrufMonitor
                             Anrufer = Trim(Anrufer)
                             If RWSIndex Then
                                 xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
-                                C_XML.Write(xPathTeile, vCard, "ID", TelNr, True)
+                                C_XML.Write(xPathTeile, vCard, "ID", TelNr)
                             End If
                             KontaktID = "-1" & Anrufer & ";" & vCard
                         End If
@@ -702,7 +702,7 @@ Friend Class AnrufMonitor
                             Anrufer = Trim(Anrufer)
                             If RWSIndex Then
                                 xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
-                                C_XML.Write(xPathTeile, vCard, "ID", TelNr, True)
+                                C_XML.Write(xPathTeile, vCard, "ID", TelNr)
                             End If
                             KontaktID = "-1" & Anrufer & ";" & vCard
                         End If
@@ -939,7 +939,7 @@ Friend Class AnrufMonitor
                             .Item(.Count - 1) = IIf(Mid(Typ, 1, 3) = "Ein", "Eingehend", "Ausgehend")
                         End With
                         With C_XML
-                            .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer), False)
+                            .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer))
                         End With
                     End If
                     C_XML.P_StatJournal += 1
@@ -1094,7 +1094,7 @@ Friend Class AnrufMonitor
             If JERead Then
                 JEReadorWrite = C_XML.Read(xPathTeile, "-1")
             Else
-                JEReadorWrite = CStr(C_XML.Write(xPathTeile, Value, False))
+                JEReadorWrite = CStr(C_XML.Write(xPathTeile, Value))
             End If
         End With
         xPathTeile = Nothing
@@ -1162,7 +1162,7 @@ Friend Class AnrufMonitor
         xPathTeile.Add("Letzter")
 
         With C_XML
-            .Write(xPathTeile, ID, False)
+            .Write(xPathTeile, ID)
             xPathTeile.Remove("Letzter")
             .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", LANodeNames, LANodeValues, AttributeNames, AttributeValues))
         End With
@@ -1231,7 +1231,7 @@ Friend Class AnrufMonitor
                 xPathTeile.RemoveRange(0, xPathTeile.Count)
                 xPathTeile.Add(ListName)
                 xPathTeile.Add("Index")
-                .Write(xPathTeile, CStr((index + 1) Mod 10), False)
+                .Write(xPathTeile, CStr((index + 1) Mod 10))
                 xPathTeile.Remove("Index")
                 .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
             End With
