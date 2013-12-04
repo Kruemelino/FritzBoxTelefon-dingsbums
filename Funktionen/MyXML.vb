@@ -279,7 +279,6 @@ Public Class MyXML
             _CBLogFile = value
         End Set
     End Property
-#If OVer < 14 Then
     Public Property P_CBSymbWwdh() As Boolean
         Get
             Return _CBSymbWwdh
@@ -344,7 +343,6 @@ Public Class MyXML
             _CBSymbJournalimport = value
         End Set
     End Property
-#End If
     Public Property P_CBJImport() As Boolean
         Get
             Return _CBJImport
@@ -765,7 +763,6 @@ Public Class MyXML
         Me.P_CBKErstellen = CBool(Read("Optionen", "CBKErstellen", "False"))
         Me.P_CBLogFile = CBool(Read("Optionen", "CBLogFile", "False"))
         ' Einstellungen für die Symbolleiste laden
-#If OVer < 14 Then
         Me.P_CBSymbWwdh = CBool(Read("Optionen", "CBSymbWwdh", "True"))
         Me.P_CBSymbAnrMon = CBool(Read("Optionen", "CBSymbAnrMon", "True"))
         Me.P_CBSymbAnrMonNeuStart = CBool(Read("Optionen", "CBSymbAnrMonNeuStart", "False"))
@@ -774,7 +771,6 @@ Public Class MyXML
         Me.P_CBSymbRWSuche = CBool(Read("Optionen", "CBSymbRWSuche", "True"))
         Me.P_CBSymbVIP = CBool(Read("Optionen", "CBSymbVIP", "False"))
         Me.P_CBSymbJournalimport = CBool(Read("Optionen", "CBSymbJournalimport", "False"))
-#End If
         Me.P_CBJImport = CBool(Read("Optionen", "CBJImport", "False"))
         ' Einstellungen füer die Rückwärtssuche laden
         Me.P_CBKHO = CBool(Read("Optionen", "CBKHO", "True"))
@@ -844,7 +840,6 @@ Public Class MyXML
         Write("Optionen", "CBKErstellen", CStr(Me.P_CBKErstellen))
         Write("Optionen", "CBLogFile", CStr(Me.P_CBLogFile))
         ' Einstellungen für die Symbolleiste laden
-#If OVer < 14 Then
         Write("Optionen", "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
         Write("Optionen", "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
         Write("Optionen", "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
@@ -853,7 +848,6 @@ Public Class MyXML
         Write("Optionen", "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
         Write("Optionen", "CBSymbVIP", CStr(Me.P_CBSymbVIP))
         Write("Optionen", "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
-#End If
         Write("Optionen", "CBJImport", CStr(Me.P_CBJImport))
         ' Einstellungen füer die Rückwärtssuche laden
         Write("Optionen", "CBKHO", CStr(Me.P_CBKHO))
