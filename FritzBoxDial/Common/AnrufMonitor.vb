@@ -110,13 +110,13 @@ Friend Class AnrufMonitor
                             'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
                             Select Case CStr(aktZeile.GetValue(1))
                                 Case "RING"
-                                    AnrMonRING(aktZeile, True)
+                                    AnrMonRING(aktZeile, True, True)
                                 Case "CALL"
-                                    AnrMonCALL(aktZeile)
+                                    AnrMonCALL(aktZeile, True)
                                 Case "CONNECT"
-                                    AnrMonCONNECT(aktZeile)
+                                    AnrMonCONNECT(aktZeile, True)
                                 Case "DISCONNECT"
-                                    AnrMonDISCONNECT(aktZeile)
+                                    AnrMonDISCONNECT(aktZeile, True)
                             End Select
                         End If
                 End Select
@@ -447,7 +447,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Anrufmonitor Ereignisse"
-    Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal AnrMonAnzeigen As Boolean)
+    Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal AnrMonAnzeigen As Boolean, ByVal StoppUhrAnzeigen As Boolean)
         ' wertet einen eingehenden Anruf aus
         ' Parameter: FBStatus (String ()):   Status-String der FritzBox
         '            anzeigen (Boolean):  nur bei 'true' wird 'AnrMonEinblenden' ausgeführt
@@ -582,7 +582,7 @@ Friend Class AnrufMonitor
 #End If
             End If
             'StoppUhr
-            If C_XML.P_CBStoppUhrEinblenden Then
+            If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf von:"
                     If Anrufer = "" Then
@@ -600,7 +600,7 @@ Friend Class AnrufMonitor
 
     End Sub '(AnrMonRING)
 
-    Friend Sub AnrMonCALL(ByVal FBStatus As String())
+    Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
         ' wertet einen ausgehenden Anruf aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
 
@@ -716,9 +716,8 @@ Friend Class AnrufMonitor
             If C_XML.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
 
-            ' AnrMonReStart()
             'StoppUhr
-            If C_XML.P_CBStoppUhrEinblenden Then
+            If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf zu:"
                     If Anrufer = "" Then
@@ -736,7 +735,7 @@ Friend Class AnrufMonitor
         End If
     End Sub '(AnrMonCALL)
 
-    Friend Sub AnrMonCONNECT(ByVal FBStatus As String())
+    Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
         ' wertet eine Zustande gekommene Verbindung aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
         If C_XML.P_CBJournal Then
@@ -762,7 +761,7 @@ Friend Class AnrufMonitor
                     JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
                     JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
                     'StoppUhr
-                    If C_XML.P_CBStoppUhrEinblenden Then
+                    If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
@@ -786,7 +785,7 @@ Friend Class AnrufMonitor
         End If
     End Sub '(AnrMonCONNECT)
 
-    Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String())
+    Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
         ' legt den Journaleintrag (und/oder Kontakt) an
         ' Parameter: FBStatus (String):     Status-String der FritzBox
 
@@ -962,7 +961,7 @@ Friend Class AnrufMonitor
             End If
         End If
 
-        If C_XML.P_CBStoppUhrEinblenden Then
+        If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
             STUhrDaten(ID).Abbruch = True
         End If
     End Sub '(AnrMonDISCONNECT)

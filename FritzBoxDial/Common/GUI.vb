@@ -317,7 +317,7 @@
                     MyStringBuilder.Append("/>" & vbCrLf)
                     i += 1
 
-                    xPathTeile.RemoveAt(xPathTeile.Count - 1)
+                    'xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     LANodeValues.Item(0) = ("-1")
                     LANodeValues.Item(1) = ("-1")
                     LANodeValues.Item(2) = ("-1")
@@ -336,7 +336,7 @@
                     MyStringBuilder.Append(" tag=""VIPListe;" & CStr(ID) & """")
                     MyStringBuilder.Append("/>" & vbCrLf)
 
-                    xPathTeile.RemoveAt(xPathTeile.Count - 1)
+                    'xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     LANodeValues.Item(0) = ("-1")
                 End If
             Next

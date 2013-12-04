@@ -138,33 +138,29 @@ Public Class Helfer
 
         Return Left(XMLDateiPfad, InStrRev(XMLDateiPfad, "\", , CompareMethod.Text)) & Datei
     End Function
-
+    ''' <summary>
+    ''' Diese Routine ändert den Zugang zu den verschlüsselten Passwort.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub KeyChange()
-        ' Diese Funktion ändert den Zugang zu den verschlüsselten Passwort.
-        Dim tempPasswort As String
         Dim tempZugang As String
         Dim i As Long
-        Dim j As Integer
 
-        'NeU
         tempZugang = ""
-        tempPasswort = C_Crypt.DecryptString128Bit(C_XML.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1"))
         For i = 0 To 2
             tempZugang = tempZugang & Hex(Rnd() * 255)
         Next
         tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+        C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_XML.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1")), tempZugang)
         SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
-        C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)
-
         If Not C_XML.P_TBPhonerPasswort = vbNullString Then
             tempZugang = ""
-            tempPasswort = C_Crypt.DecryptString128Bit(C_XML.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1"))
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+            C_XML.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_XML.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")), tempZugang)
             SaveSetting("Fritzbox", "Optionen", "ZugangPasswortPhoner", tempZugang)
-            C_XML.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(tempPasswort, tempZugang)
         End If
 
         C_XML.SpeichereXMLDatei()

@@ -1342,15 +1342,17 @@ Friend Class formCfg
                 tmpTelefon = C_XML.Read(xPathTeile, "-1")
                 If Not tmpTelefon = "-1" Then
                     .Item(.Count - 1) = "TelNr"
-                    If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
-                        C_XML.Read(xPathTeile, "-1") = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
-                        Dim Dauer As Date
-                        .Item(.Count - 1) = "Eingehend"
-                        Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-                        C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
-                        .Item(.Count - 1) = "Ausgehend"
-                        Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-                        C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                    If (TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing) Then
+                        If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
+                            C_XML.Read(xPathTeile, "-1") = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
+                            Dim Dauer As Date
+                            .Item(.Count - 1) = "Eingehend"
+                            Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
+                            C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                            .Item(.Count - 1) = "Ausgehend"
+                            Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
+                            C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                        End If
                     End If
                 End If
             Next
