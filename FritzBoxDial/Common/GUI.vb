@@ -948,7 +948,7 @@
         ePopVIP.Visible = C_XML.P_CBSymbVIP
 
         eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
-        eBtnJournalimport.Visible = CBSymbJournalimport
+        eBtnJournalimport.Visible = C_XML.P_CBSymbJournalimport
         i += 1
         eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, "Einstellungen", i, 548, "IconandCaption", "Einstellungen", "Fritz!Box Einstellungen")
         i += 1

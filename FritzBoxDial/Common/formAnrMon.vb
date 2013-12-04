@@ -62,7 +62,6 @@ Friend Class formAnrMon
         ' Diese Funktion nimmt Daten aus der Registry und öffnet 'formAnMon'.
         Dim AnrName As String              ' Name des Anrufers
         Dim Uhrzeit As String
-        'Dim letzterAnrufer() As String = Split(C_XML.Read("letzterAnrufer", "letzterAnrufer" & aID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
         'LA(0) = Zeit
         'LA(1) = Anrufer
         'LA(2) = TelNr

@@ -803,19 +803,19 @@ Public Class MyXML
         Me.P_TBPhonerPasswort = Read("Phoner", "TBPhonerPasswort", vbNullString)
         Me._PhonerTelNameIndex = CInt(Read("Phoner", "PhonerTelNameIndex", "0"))
         ' Statistik
-        Me.P_StatResetZeit = CDate(Read("Statistik", "ResetZeit", CStr(System.DateTime.Now)))
+        Me.P_StatResetZeit = CDate(Read("Statistik", "ResetZeit", System.DateTime.Now.ToString))
         Me.P_StatVerpasst = CInt(Read("Statistik", "Verpasst", "0"))
         Me.P_StatNichtErfolgreich = CInt(Read("Statistik", "Nichterfolgreich", "0"))
         Me.P_StatKontakt = CInt(Read("Statistik", "Kontakt", "0"))
         Me.P_StatJournal = CInt(Read("Statistik", "Journal", "0"))
-        Me.P_StatOLClosedZeit = CDate(Read("Journal", "SchließZeit", "Noch nicht festgelegt"))
+        Me.P_StatOLClosedZeit = CDate(Read("Journal", "SchließZeit", System.DateTime.Now.ToString))
         'Wählbox
         Me.P_TelAnschluss = CInt(Read("Optionen", "Anschluss", "0"))
         Me.P_TelFestnetz = CBool(Read("Optionen", "Festnetz", "False"))
         Me.P_TelCLIR = CBool(Read("Optionen", "CLIR", "False"))
         Me.P_EncodeingFritzBox = Read("Optionen", "EncodeingFritzBox", "-1")
         ' Indizierung
-        Me.P_LLetzteIndizierung = CDate(Read("Optionen", "LLetzteIndizierung", CStr(System.DateTime.Now)))
+        Me.P_LLetzteIndizierung = CDate(Read("Optionen", "LLetzteIndizierung", System.DateTime.Now.ToString))
     End Sub
     Private Sub SaveOptionData()
         Write("Optionen", "TBLandesVW", Me.P_TBLandesVW)

@@ -43,6 +43,7 @@ Public Class ThisAddIn
     Private Shared hf As Helfer
     Private Shared KontaktFunktionen As Contacts
     Private Shared GUI As GraphicalUserInterface
+    Private Shared Cfg As formCfg
     Private Shared UseAnrMon As Boolean
     Private Shared Dateipfad As String
 
@@ -137,6 +138,14 @@ Public Class ThisAddIn
         End Set
     End Property
 
+    Friend Shared Property P_Config() As formCfg
+        Get
+            Return Cfg
+        End Get
+        Set(ByVal value As formCfg)
+            Cfg = value
+        End Set
+    End Property
 #End Region
 
 #If OVer < 14 Then
@@ -144,7 +153,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.3"
+    Public Const Version As String = "3.6.10"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -168,8 +177,8 @@ Public Class ThisAddIn
     End Sub
 
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
-        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
+        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
         Dim i As Integer = 2
 
         oApp = CType(Application, Outlook.Application)
@@ -185,16 +194,14 @@ Public Class ThisAddIn
                                      ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
                                      ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
 #End If
-            If Not CBool(XML.Read("Optionen", "CBIndexAus", "False")) Then oInsps = Application.Inspectors
+            If Not XML.P_CBIndexAus Then oInsps = Application.Inspectors
         Else
             hf.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not CBool(XML.Read("Optionen", "CBIndexAus", "False")) Then
-            KontaktFunktionen.IndiziereKontakt(ContactSaved, True)
-        End If
+        If Not XML.P_CBIndexAus Then KontaktFunktionen.IndiziereKontakt(ContactSaved, True)
     End Sub
 
     Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
@@ -217,7 +224,7 @@ Public Class ThisAddIn
         GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If XML.Read("Optionen", "CBKHO", "True") = "True" Then
+            If XML.P_CBKHO Then
                 Dim Ordner As Outlook.MAPIFolder
                 Dim StandardOrdner As Outlook.MAPIFolder
                 Dim olNamespace As Outlook.NameSpace

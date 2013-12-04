@@ -457,7 +457,7 @@ Friend Class formCfg
 
             ' Telefone
 #If OVer < 14 Then
-        GUI.SetVisibleButtons()
+            C_GUI.SetVisibleButtons()
 #End If
             With xPathTeile
                 .Clear()
