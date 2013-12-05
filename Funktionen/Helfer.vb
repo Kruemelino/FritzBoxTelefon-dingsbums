@@ -146,13 +146,16 @@ Public Class Helfer
         Dim tempZugang As String
         Dim i As Long
 
-        tempZugang = ""
-        For i = 0 To 2
-            tempZugang = tempZugang & Hex(Rnd() * 255)
-        Next
-        tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-        C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_XML.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1")), tempZugang)
-        SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
+        If Not C_XML.P_TBPasswort Is vbNullString Then
+            tempZugang = ""
+            For i = 0 To 2
+                tempZugang = tempZugang & Hex(Rnd() * 255)
+            Next
+            tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
+            C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_XML.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1")), tempZugang)
+            SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
+        End If
+
         If Not C_XML.P_TBPhonerPasswort = vbNullString Then
             tempZugang = ""
             For i = 0 To 2

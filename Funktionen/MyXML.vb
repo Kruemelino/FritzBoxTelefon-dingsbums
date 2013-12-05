@@ -891,6 +891,7 @@ Public Class MyXML
         Write("Optionen", "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         XMLDoc.Save(sDateiPfad)
     End Sub
+
     Protected Overrides Sub Finalize()
         SaveOptionData()
         XMLDoc.Save(sDateiPfad)
