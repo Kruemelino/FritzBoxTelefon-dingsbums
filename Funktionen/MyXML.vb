@@ -736,7 +736,7 @@ Public Class MyXML
     Private Sub LoadOptionData()
 
         Me.P_TBLandesVW = Read("Optionen", "TBLandesVW", "0049")
-        Me.P_TBAmt = Read("Optionen", "TBAmt", "-1")
+        Me.P_TBAmt = Read("Optionen", "TBAmt", "")
         Me.P_TBFBAdr = Read("Optionen", "TBFBAdr", "fritz.box")  'DEFAULT auf anderes Default-property ändern
         Me.P_CBForceFBAddr = CBool(Read("Optionen", "CBForceFBAddr", "False"))
         Me.P_TBBenutzer = Read("Optionen", "TBBenutzer", vbNullString)

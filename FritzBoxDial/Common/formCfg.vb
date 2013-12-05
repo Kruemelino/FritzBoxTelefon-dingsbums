@@ -68,6 +68,12 @@ Friend Class formCfg
         C_Kontakte = kontaktklasse
         C_Phoner = Phonerklasse
         Me.LVersion.Text += ThisAddIn.Version
+        With Me.ComboBoxRWS.Items
+            .Add("11880.com")
+            .Add("DasTelefonbuch.de")
+            .Add("tel.search.ch")
+            .Add("Alle")
+        End With
     End Sub
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -142,13 +148,6 @@ Friend Class formCfg
         ' Einstellungen füer die Rückwärtssuche laden
         Me.CBKHO.Checked = C_XML.P_CBKHO
         Me.CBRWSIndex.Checked = C_XML.P_CBRWSIndex
-
-        With Me.ComboBoxRWS.Items
-            .Add("11880.com")
-            .Add("DasTelefonbuch.de")
-            .Add("tel.search.ch")
-            .Add("Alle")
-        End With
 
         Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(C_XML.P_CBoxRWSuche)
         If Not Me.CBRueckwaertssuche.Checked Then Me.ComboBoxRWS.Enabled = False
@@ -514,7 +513,6 @@ Friend Class formCfg
                                                                                    BAnrMonTest.Click, _
                                                                                    BIndizierungStart.Click, _
                                                                                    BIndizierungAbbrechen.Click, _
-                                                                                   ButtonIndexDateiöffnen.Click, _
                                                                                    BZwischenablage.Click, _
                                                                                    BTelefonliste.Click, _
                                                                                    BTelefonDatei.Click, _
@@ -826,7 +824,6 @@ Friend Class formCfg
                     Case "TBLandesVW"
                         If Me.TBLandesVW.Text = "0049" Then
                             Me.CBRueckwaertssuche.Enabled = True
-
                             Me.CBKErstellen.Enabled = True
                             Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
                         Else

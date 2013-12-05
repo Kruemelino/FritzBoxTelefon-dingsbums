@@ -171,7 +171,7 @@ Friend Class formWählbox
         Dim KontaktID As String = "-1"
         Dim StoreID As String = "-1"
         Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
-        TelNr = ListTel.Rows(0).Cells(2).Value.ToString '''''''''''' überprüfen, welcher Wert hier übernommen wird zur TelNr.-Erkennung!!
+        TelNr = ListTel.Rows(0).Cells(2).Value.ToString
 
         If KontaktDaten(0) = "-1" Then KontaktDaten(1) = "-1"
 
@@ -327,7 +327,6 @@ Friend Class formWählbox
 
 #Region "Wählen"
 
-
     Private Sub Start()
         If Not ListTel.SelectedRows.Count = 0 Then
             Dim ID As Argument
@@ -379,7 +378,6 @@ Friend Class formWählbox
 
 
         Dim Code As String  ' zu wählende Nummer
-        Dim Amt As String  ' Amtsvorwahl
         Dim LandesVW As String = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049") ' eigene Landesvorwahl
         Dim nameStart As Integer ' Position des Namens im Fenstertitel
         Dim index As Integer ' Zählvariable
@@ -408,8 +406,8 @@ Friend Class formWählbox
 #End If
             End If
         End If
-        Amt = C_XML.P_TBAmt
-        LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
+
+        LandesVW = C_XML.P_TBLandesVW
         Code = C_hf.nurZiffern(Number, LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
         'LogFile("Rufnummer " & Code & " wurde ausgewählt")
         If C_XML.P_CBVoIPBuster Then
@@ -420,7 +418,7 @@ Friend Class formWählbox
         End If
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
-        Code = Amt & Code
+        Code = C_XML.P_TBAmt & Code
 
         If Not UsePhonerOhneFritzBox Then
             If CLIR Then Code = "*31#" & Code

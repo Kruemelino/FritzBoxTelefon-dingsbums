@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -114,8 +114,7 @@ Partial Class formCfg
         Me.BIndizierungAbbrechen = New System.Windows.Forms.Button()
         Me.BIndizierungStart = New System.Windows.Forms.Button()
         Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
-        Me.GrpoupBoxRWS = New System.Windows.Forms.GroupBox()
-        Me.ButtonIndexDateiöffnen = New System.Windows.Forms.Button()
+        Me.GroupBoxRWS = New System.Windows.Forms.GroupBox()
         Me.ComboBoxRWS = New System.Windows.Forms.ComboBox()
         Me.CBRueckwaertssuche = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
@@ -201,7 +200,7 @@ Partial Class formCfg
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PIndex.SuspendLayout()
         Me.GroupBoxIndex.SuspendLayout()
-        Me.GrpoupBoxRWS.SuspendLayout()
+        Me.GroupBoxRWS.SuspendLayout()
         Me.PAnrufmonitor.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1024,9 +1023,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1038,9 +1037,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1052,9 +1051,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1078,7 +1077,7 @@ Partial Class formCfg
         '
         Me.PIndex.Controls.Add(Me.Label1)
         Me.PIndex.Controls.Add(Me.GroupBoxIndex)
-        Me.PIndex.Controls.Add(Me.GrpoupBoxRWS)
+        Me.PIndex.Controls.Add(Me.GroupBoxRWS)
         Me.PIndex.Location = New System.Drawing.Point(4, 22)
         Me.PIndex.Name = "PIndex"
         Me.PIndex.Padding = New System.Windows.Forms.Padding(3)
@@ -1195,28 +1194,18 @@ Partial Class formCfg
         Me.ProgressBarIndex.Size = New System.Drawing.Size(325, 28)
         Me.ProgressBarIndex.TabIndex = 10
         '
-        'GrpoupBoxRWS
+        'GroupBoxRWS
         '
-        Me.GrpoupBoxRWS.Controls.Add(Me.ButtonIndexDateiöffnen)
-        Me.GrpoupBoxRWS.Controls.Add(Me.CBRWSIndex)
-        Me.GrpoupBoxRWS.Controls.Add(Me.ComboBoxRWS)
-        Me.GrpoupBoxRWS.Controls.Add(Me.CBKErstellen)
-        Me.GrpoupBoxRWS.Controls.Add(Me.CBRueckwaertssuche)
-        Me.GrpoupBoxRWS.Location = New System.Drawing.Point(0, 205)
-        Me.GrpoupBoxRWS.Name = "GrpoupBoxRWS"
-        Me.GrpoupBoxRWS.Size = New System.Drawing.Size(571, 89)
-        Me.GrpoupBoxRWS.TabIndex = 9
-        Me.GrpoupBoxRWS.TabStop = False
-        Me.GrpoupBoxRWS.Text = "Rückwärtssuche"
-        '
-        'ButtonIndexDateiöffnen
-        '
-        Me.ButtonIndexDateiöffnen.Location = New System.Drawing.Point(455, 55)
-        Me.ButtonIndexDateiöffnen.Name = "ButtonIndexDateiöffnen"
-        Me.ButtonIndexDateiöffnen.Size = New System.Drawing.Size(112, 28)
-        Me.ButtonIndexDateiöffnen.TabIndex = 4
-        Me.ButtonIndexDateiöffnen.Text = "Index-Datei öffnen"
-        Me.ButtonIndexDateiöffnen.UseVisualStyleBackColor = True
+        Me.GroupBoxRWS.Controls.Add(Me.CBRWSIndex)
+        Me.GroupBoxRWS.Controls.Add(Me.ComboBoxRWS)
+        Me.GroupBoxRWS.Controls.Add(Me.CBKErstellen)
+        Me.GroupBoxRWS.Controls.Add(Me.CBRueckwaertssuche)
+        Me.GroupBoxRWS.Location = New System.Drawing.Point(0, 205)
+        Me.GroupBoxRWS.Name = "GroupBoxRWS"
+        Me.GroupBoxRWS.Size = New System.Drawing.Size(571, 89)
+        Me.GroupBoxRWS.TabIndex = 9
+        Me.GroupBoxRWS.TabStop = False
+        Me.GroupBoxRWS.Text = "Rückwärtssuche"
         '
         'ComboBoxRWS
         '
@@ -2044,8 +2033,8 @@ Partial Class formCfg
         Me.PIndex.ResumeLayout(False)
         Me.GroupBoxIndex.ResumeLayout(False)
         Me.GroupBoxIndex.PerformLayout()
-        Me.GrpoupBoxRWS.ResumeLayout(False)
-        Me.GrpoupBoxRWS.PerformLayout()
+        Me.GroupBoxRWS.ResumeLayout(False)
+        Me.GroupBoxRWS.PerformLayout()
         Me.PAnrufmonitor.ResumeLayout(False)
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
@@ -2097,8 +2086,7 @@ Partial Class formCfg
     Friend WithEvents GroupBoxIndex As System.Windows.Forms.GroupBox
     Friend WithEvents CBIndexAus As System.Windows.Forms.CheckBox
     Friend WithEvents CBKHO As System.Windows.Forms.CheckBox
-    Friend WithEvents GrpoupBoxRWS As System.Windows.Forms.GroupBox
-    Friend WithEvents ButtonIndexDateiöffnen As System.Windows.Forms.Button
+    Friend WithEvents GroupBoxRWS As System.Windows.Forms.GroupBox
     Friend WithEvents CBRWSIndex As System.Windows.Forms.CheckBox
     Friend WithEvents ComboBoxRWS As System.Windows.Forms.ComboBox
     Friend WithEvents CBKErstellen As System.Windows.Forms.CheckBox

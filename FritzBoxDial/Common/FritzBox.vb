@@ -1307,7 +1307,13 @@ Public Class FritzBox
             End If
 
             Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
-            If Len(Landesvorwahl) > 2 Then C_XML.P_TBLandesVW = Landesvorwahl
+            If Len(Landesvorwahl) > 2 Then
+                If Len(Landesvorwahl) = 3 And Left(Landesvorwahl, 1) = "0" Then
+                    Landesvorwahl = "0" & Landesvorwahl
+                End If
+                C_XML.P_TBLandesVW = Landesvorwahl
+            End If
+
         End With
 
     End Sub
