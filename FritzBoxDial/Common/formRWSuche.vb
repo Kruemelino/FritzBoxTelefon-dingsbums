@@ -177,7 +177,7 @@ Public Class formRWSuche
 
             Do
                 ' Webseite für Rückwärtssuche aufrufen und herunterladen
-                myurl = "http://www.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tempTelNr
+                myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tempTelNr
                 html11880 = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
                 If HTMLFehler Is Nothing Then
 
@@ -190,7 +190,7 @@ Public Class formRWSuche
                     If Not pos1 = Len(SWVisitenkarte1) Then 'wenn der Startpunkt gefunden werden konnte
                         pos2 = InStr(pos1, html11880, SWVisitenkarte2, CompareMethod.Text) 'Starten ab Startpunkt, suchen des Endpunkts
                         ' vCard herunterladen
-                        myurl = "http://www.11880.com" & Mid(html11880, pos1, pos2 - pos1)
+                        myurl = "http://classic.11880.com" & Mid(html11880, pos1, pos2 - pos1)
                         vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
                         If Not HTMLFehler Is Nothing Then
                             hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
