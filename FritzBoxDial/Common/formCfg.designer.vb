@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -189,6 +189,7 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -452,6 +453,7 @@ Partial Class formCfg
         'GroupBoxStoppUhr
         '
         Me.GroupBoxStoppUhr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBoxStoppUhr.Controls.Add(Me.Label7)
         Me.GroupBoxStoppUhr.Controls.Add(Me.BStoppUhrAnzeigen)
         Me.GroupBoxStoppUhr.Controls.Add(Me.LabelStoppUhr)
         Me.GroupBoxStoppUhr.Controls.Add(Me.TBStoppUhr)
@@ -462,11 +464,11 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.Size = New System.Drawing.Size(282, 99)
         Me.GroupBoxStoppUhr.TabIndex = 19
         Me.GroupBoxStoppUhr.TabStop = False
-        Me.GroupBoxStoppUhr.Text = "Stoppuhr"
+        Me.GroupBoxStoppUhr.Text = "Stoppuhr*"
         '
         'BStoppUhrAnzeigen
         '
-        Me.BStoppUhrAnzeigen.Location = New System.Drawing.Point(164, 65)
+        Me.BStoppUhrAnzeigen.Location = New System.Drawing.Point(167, 65)
         Me.BStoppUhrAnzeigen.Name = "BStoppUhrAnzeigen"
         Me.BStoppUhrAnzeigen.Size = New System.Drawing.Size(112, 28)
         Me.BStoppUhrAnzeigen.TabIndex = 19
@@ -1023,9 +1025,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1037,9 +1039,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1051,9 +1053,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -2002,6 +2004,14 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
+        'Label7
+        '
+        Me.Label7.Location = New System.Drawing.Point(6, 65)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(158, 31)
+        Me.Label7.TabIndex = 20
+        Me.Label7.Text = "Anrufmonitor und" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Journalfunktion einschalten"
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2234,6 +2244,7 @@ Partial Class formCfg
     Friend WithEvents TBDiagnose As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents BStoppUhrAnzeigen As System.Windows.Forms.Button
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class

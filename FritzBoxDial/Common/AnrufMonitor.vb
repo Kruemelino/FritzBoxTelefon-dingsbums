@@ -29,7 +29,6 @@ Friend Class AnrufMonitor
     Friend AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
     Friend AnrMonError As Boolean
     Private TelAnzahl As Integer
-    Private UseAnrMon As Boolean
     Private Eingeblendet As Integer = 0
 
     Private sIPAddresse As String = "fritz.box"
@@ -56,7 +55,6 @@ Friend Class AnrufMonitor
 #End Region
 
     Public Sub New(ByVal RWS As formRWSuche, _
-                   ByVal NutzeAnrMon As Boolean, _
                    ByVal iniKlasse As MyXML, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
@@ -69,7 +67,6 @@ Friend Class AnrufMonitor
         C_GUI = InterfacesKlasse
         C_XML = iniKlasse
         frm_RWS = RWS
-        UseAnrMon = NutzeAnrMon
         C_OlI = OutlInter
         P_FBAddr = FBAdr
         AnrMonStart(False)
@@ -153,7 +150,7 @@ Friend Class AnrufMonitor
     End Function '(AnrMonAnAus)
 
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
-        If (C_XML.P_CBAnrMonAuto Or Manuell) And UseAnrMon Then
+        If (C_XML.P_CBAnrMonAuto Or Manuell) And C_XML.P_CBUseAnrMon Then
 
             If C_XML.P_CBPhonerAnrMon Then
                 FBAnrMonPort = 2012
@@ -179,7 +176,7 @@ Friend Class AnrufMonitor
         Dim FritzBoxErreichbar As Boolean
 
         AnrMonStartNachStandby = False
-        If C_XML.P_CBAnrMonAuto And UseAnrMon Then
+        If C_XML.P_CBAnrMonAuto And C_XML.P_CBUseAnrMon Then
             If C_XML.P_CBForceFBAddr Then
                 ' Erfahrung: Fritz!Box ist noch nicht erreichbar wenn Outlook aus Standby erwacht ist.
                 FritzBoxErreichbar = False
@@ -447,6 +444,13 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Anrufmonitor Ereignisse"
+    ''' <summary>
+    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für RING
+    ''' </summary>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für RING</param>
+    ''' <param name="AnrMonAnzeigen">Boolean: Soll Anrufmonitor angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <remarks></remarks>
     Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal AnrMonAnzeigen As Boolean, ByVal StoppUhrAnzeigen As Boolean)
         ' wertet einen eingehenden Anruf aus
         ' Parameter: FBStatus (String ()):   Status-String der FritzBox
@@ -459,7 +463,8 @@ Friend Class AnrufMonitor
         ' FBStatus(5): ???
 
 
-        Dim MSN As String = CStr(FBStatus.GetValue(4))
+        Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_XML.P_TBVorwahl)
+
         ' Anruf nur anzeigen, wenn die MSN stimmt
         Dim xPathTeile As New ArrayList
         With xPathTeile
@@ -600,6 +605,12 @@ Friend Class AnrufMonitor
 
     End Sub '(AnrMonRING)
 
+    ''' <summary>
+    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CALL
+    ''' </summary>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CALL</param>
+    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <remarks></remarks>
     Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
         ' wertet einen ausgehenden Anruf aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
@@ -611,37 +622,59 @@ Friend Class AnrufMonitor
         ' FBStatus(4): Ausgehende eigene Telefonnummer, MSN
         ' FBStatus(5): die gewählte Rufnummer
 
-        Dim MSN As String = CStr(FBStatus.GetValue(4))
-        ' Problem DECT/IP-Telefone: keine MSN im über Anrufmonitor eingegangen. Aus Datei ermitteln.
-        If MSN = vbNullString Then
+        Dim ID As Integer = CInt(FBStatus.GetValue(2))  ' ID des Telefonats
+        Dim NSN As Integer = CInt(FBStatus.GetValue(3)) ' Nebenstellennummer des Telefonates
+        Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_XML.P_TBVorwahl)  ' Ausgehende eigene Telefonnummer, MSN
+        Dim LandesVW As String = C_XML.P_TBLandesVW     ' eigene Landesvorwahl
+        Dim TelNr As String                             ' ermittelte TelNr
+        Dim Anrufer As String = "-1"                    ' ermittelter Anrufer
+        Dim vCard As String = ""                        ' vCard des Anrufers
+        Dim KontaktID As String = "-1;"                 ' ID der Kontaktdaten des Anrufers
+        Dim StoreID As String = "-1"                    ' ID des Ordners, in dem sich der Kontakt befindet
 
-            Select Case CInt(FBStatus.GetValue(3))
-                Case 10 To 19 'DECT
-                    MSN = Split(C_XML.Read("Telefone", CStr(CInt(FBStatus.GetValue(3)) + 50), ";"), ";", , CompareMethod.Text)(0)
-                Case 20 To 29 'IP-Telefone (beobachtet bei Wahlregel HandyNr nur per Festnetz, daher erste MSN)
-                    MSN = C_XML.Read("Telefone", "MSN0", "")
+        Dim rws As Boolean                              ' 'true' wenn die Rückwärtssuche erfolgreich war
+        Dim RWSIndex As Boolean
+        Dim xPathTeile As New ArrayList
+
+        ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
+        If MSN = vbNullString Then
+            Select Case NSN
+                Case 0 To 2 ' FON1-3
+                    NSN += 1
+                Case 10 To 19 ' DECT
+                    NSN += 50
+            End Select
+            Select Case NSN
+                Case 3, 4, 5, 36, 37
+                    ' Diese komischen Dinger werden ignoriert:
+                    ' 3=Durchwahl
+                    ' 4=ISDN Gerät
+                    ' 5=Fax (intern/PC)
+                    ' 36=Data S0
+                    ' 37=Data PC
+                    MSN = "-1"
+                Case Else
+                    With xPathTeile
+                        .Add("Telefone")
+                        .Add("Telefone")
+                        .Add("*")
+                        .Add("Telefon[@Dialport = """ & NSN & """]")
+                        .Add("TelNr")
+                    End With
+                    MSN = C_XML.Read(xPathTeile, "")
             End Select
         End If
-        ' Anruf nur bearbeiten, wenn die MSN oder VoIP-Nr stimmt
-        Dim xPathTeile As New ArrayList
+
         With xPathTeile
+            .Clear()
             .Add("Telefone")
             .Add("Nummern")
             .Add("*")
-            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.P_TBVorwahl) & """]")
+            .Add("[. = """ & Replace(MSN, ";", """ or . = """, , , CompareMethod.Text) & """]")
             .Add("@Checked")
         End With
 
         If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-            Dim LandesVW As String = C_XML.P_TBLandesVW     ' eigene Landesvorwahl
-            Dim TelNr As String                             ' ermittelte TelNr
-            Dim Anrufer As String = "-1"                    ' ermittelter Anrufer
-            Dim vCard As String = ""                        ' vCard des Anrufers
-            Dim KontaktID As String = "-1;"                 ' ID der Kontaktdaten des Anrufers
-            Dim StoreID As String = "-1"                    ' ID des Ordners, in dem sich der Kontakt befindet
-            Dim ID As Integer = CInt(FBStatus.GetValue(2))  ' ID des Telefonats
-            Dim rws As Boolean                              ' 'true' wenn die Rückwärtssuche erfolgreich war
-            Dim RWSIndex As Boolean
 
             TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)), LandesVW)
             If TelNr = "" Then TelNr = "unbekannt"
@@ -715,7 +748,6 @@ Friend Class AnrufMonitor
 #If OVer < 14 Then
             If C_XML.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
-
             'StoppUhr
             If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
                 With STUhrDaten(ID)
@@ -735,33 +767,81 @@ Friend Class AnrufMonitor
         End If
     End Sub '(AnrMonCALL)
 
+    ''' <summary>
+    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT
+    ''' </summary>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT</param>
+    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <remarks></remarks>
     Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
         ' wertet eine Zustande gekommene Verbindung aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
-        If C_XML.P_CBJournal Then
-            Dim ID As Integer = CInt(FBStatus.GetValue(2))
-            Dim MSN As String = JEReadorWrite(True, ID, "MSN", "")
-            Dim Zeit As String
-            ' FBStatus(0): Uhrzeit
-            ' FBStatus(1): CONNECT, wird nicht verwendet
-            ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-            ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
-            If Not MSN = Nothing Then
-                Dim xPathTeile As New ArrayList
+
+        ' FBStatus(0): Uhrzeit
+        ' FBStatus(1): CONNECT, wird nicht verwendet
+        ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
+        ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
+
+
+        Dim xPathTeile As New ArrayList
+        Dim MSN As String = "-1"
+        Dim NSN As Integer
+        Dim ID As Integer
+        Dim Zeit As String
+
+        If (C_XML.P_CBJournal) Or (C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
+            ID = CInt(FBStatus.GetValue(2))
+            NSN = CInt(FBStatus.GetValue(3))
+
+            MSN = JEReadorWrite(True, ID, "MSN", "")
+            If MSN = "-1" Then
+                ' Wenn Journal nicht erstellt wird, muss MSN anderweitig ermittelt werden.
+                Select Case NSN
+                    Case 0 To 2 ' FON1-3
+                        NSN += 1
+                    Case 10 To 19 ' DECT
+                        NSN += 50
+                End Select
+                Select Case NSN
+                    Case 3, 4, 5, 36, 37
+                        ' Diese komischen Dinger werden ignoriert:
+                        ' 3=Durchwahl
+                        ' 4=ISDN Gerät
+                        ' 5=Fax (intern/PC)
+                        ' 36=Data S0
+                        ' 37=Data PC
+                        MSN = "-1"
+                    Case Else
+                        With xPathTeile
+                            .Add("Telefone")
+                            .Add("Telefone")
+                            .Add("*")
+                            .Add("Telefon[@Dialport = """ & NSN & """]")
+                            .Add("TelNr")
+                        End With
+                        MSN = C_XML.Read(xPathTeile, "")
+                End Select
+            End If
+            If MSN = "-1" Then
+                C_hf.LogFile("Ein unvollständiges Telefonat wurde registriert.")
+            Else
                 With xPathTeile
+                    .Clear()
                     .Add("Telefone")
                     .Add("Nummern")
                     .Add("*")
-                    .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.P_TBVorwahl) & """]")
+                    .Add("[. = """ & Replace(MSN, ";", """ or . = """, , , CompareMethod.Text) & """]")
                     .Add("@Checked")
                 End With
 
                 If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-                    ' Daten für den Journaleintrag sichern (Beginn des Telefonats)
-                    JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
-                    JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
-                    'StoppUhr
+                    If C_XML.P_CBJournal Then
+                        JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
+                        JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
+                    End If
+                    ' StoppUhr einblenden
                     If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
+                        C_hf.LogFile("SoppUhr wird eingeblendet.")
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
@@ -770,21 +850,23 @@ Friend Class AnrufMonitor
                             .StartZeit = Zeit
                             .Abbruch = False
                         End With
-
                         BWStoppuhrEinblenden = New BackgroundWorker
                         With BWStoppuhrEinblenden
                             .WorkerSupportsCancellation = True
                             .RunWorkerAsync(ID)
                         End With
-
                     End If
-                Else
-                    C_hf.LogFile("Ein unvollständiges Telefonat wurde registriert.")
                 End If
             End If
         End If
     End Sub '(AnrMonCONNECT)
 
+    ''' <summary>
+    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT
+    ''' </summary>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT</param>
+    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <remarks></remarks>
     Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
         ' legt den Journaleintrag (und/oder Kontakt) an
         ' Parameter: FBStatus (String):     Status-String der FritzBox
@@ -874,7 +956,6 @@ Friend Class AnrufMonitor
                                     & vbCrLf & Firma & vbCrLf & BusinessAddress & vbCrLf
                             End If
                         End If
-
                     End If
 
                     Select Case NSN
@@ -905,16 +986,16 @@ Friend Class AnrufMonitor
                             End With
                             TelName = C_XML.Read(xPathTeile, "")
                     End Select
-                    With xPathTeile
-                        .Clear()
-                        .Add("Telefone")
-                        .Add("Telefone")
-                        .Add("*")
-                        .Add("Telefon")
-                        .Add("[@Dialport = """ & NSN & """]")
-                        .Add("TelName")
-                    End With
-                    TelName = C_XML.Read(xPathTeile, "")
+                    'With xPathTeile
+                    '    .Clear()
+                    '    .Add("Telefone")
+                    '    .Add("Telefone")
+                    '    .Add("*")
+                    '    .Add("Telefon")
+                    '    .Add("[@Dialport = """ & NSN & """]")
+                    '    .Add("TelName")
+                    'End With
+                    'TelName = C_XML.Read(xPathTeile, "")
                     ' Journaleintrag schreiben
                     C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, vbNullString, " (" & TelName & ")")), _
                                               Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
@@ -948,16 +1029,21 @@ Friend Class AnrufMonitor
                 End If
             Else
                 C_hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
-                'If Not UsePhonerOhneFritzBox Then
-                '    If C_XML.Read( "Optionen", "CBJournal", "False") = "True" And HelferFunktionen.IsOneOf(JMSN, Split(checkstring, ";", , CompareMethod.Text)) Then
-                '        ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
-                '        Dim ZeitAnruf As Date = CDate(FBStatus(0))
-                '        ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + Dauer + 70))
-                '        If ZeitAnruf < SchließZeit Then C_XML.Write( "Journal", "SchließZeit", CStr(ZeitAnruf))
-                '        HelferFunktionen.LogFile("AnrMonDISCONNECT: Journalimport wird gestartet")
-                '        Dim formjournalimort As New formJournalimport( httpTrans, Me, False, C_XML, HelferFunktionen)
-                '    End If
-                'End If
+                With xPathTeile
+                    .Add("Telefone")
+                    .Add("Nummern")
+                    .Add("*")
+                    .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(JMSN, C_XML.P_TBVorwahl) & """]")
+                    .Add("@Checked")
+                End With
+                If C_XML.P_CBJournal And C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Then
+                    ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
+                    Dim ZeitAnruf As Date = CDate(FBStatus(0))
+                    ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + Dauer + 70))
+                    If ZeitAnruf < SchließZeit Then C_XML.P_StatOLClosedZeit = ZeitAnruf
+                    C_hf.LogFile("AnrMonDISCONNECT: Journalimport wird gestartet")
+                    Dim formjournalimort As New formJournalimport(Me, C_hf, C_XML, False)
+                End If
             End If
         End If
 

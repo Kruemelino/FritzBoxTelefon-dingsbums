@@ -44,7 +44,6 @@ Public Class ThisAddIn
     Private Shared KontaktFunktionen As Contacts
     Private Shared GUI As GraphicalUserInterface
     Private Shared Cfg As formCfg
-    Private Shared UseAnrMon As Boolean
     Private Shared Dateipfad As String
 
 #Region "Properties"
@@ -126,15 +125,6 @@ Public Class ThisAddIn
         End Get
         Set(ByVal value As String)
             Dateipfad = value
-        End Set
-    End Property
-
-    Friend Shared Property P_UseAnrMon() As Boolean
-        Get
-            Return UseAnrMon
-        End Get
-        Set(ByVal value As Boolean)
-            UseAnrMon = value
         End Set
     End Property
 

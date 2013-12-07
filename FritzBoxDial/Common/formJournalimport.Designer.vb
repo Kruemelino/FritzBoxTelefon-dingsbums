@@ -135,7 +135,7 @@ Partial Class formJournalimport
         Me.Label2.Size = New System.Drawing.Size(369, 31)
         Me.Label2.TabIndex = 8
         Me.Label2.Text = "Die Anrufliste wurde bereits von der Fritz!Box heruntergeladen und wird nun ausge" & _
-            "wertet.  Bitte Warten Sie bis der Vorgang abgeschlossen ist."
+    "wertet.  Bitte Warten Sie bis der Vorgang abgeschlossen ist."
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label3
@@ -151,7 +151,7 @@ Partial Class formJournalimport
         '
         Me.lblBG1Percent.Location = New System.Drawing.Point(210, 47)
         Me.lblBG1Percent.Name = "lblBG1Percent"
-        Me.lblBG1Percent.Size = New System.Drawing.Size(74, 13)
+        Me.lblBG1Percent.Size = New System.Drawing.Size(167, 13)
         Me.lblBG1Percent.TabIndex = 7
         Me.lblBG1Percent.Text = "-"
         '

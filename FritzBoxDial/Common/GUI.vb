@@ -388,7 +388,7 @@
     End Function
 
     Public Function UseAnrMon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return ThisAddIn.P_UseAnrMon
+        Return C_XML.P_CBUseAnrMon
     End Function
 
     Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -529,7 +529,7 @@
         xPathTeile = Nothing
     End Function
 
-    Friend Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
+    Friend Overloads Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
         Dim Index As Integer = CInt(C_XML.Read("VIPListe", "Index", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
@@ -582,6 +582,17 @@
         RefreshRibbon()
 #End If
         Return True
+    End Function
+
+    Friend Overloads Function AddVIP(ByVal KontaktID As String, ByVal StoreID As String) As Boolean
+        Dim oKontact As Outlook.ContactItem
+        oKontact = Nothing
+
+        Try
+            oKontact = CType(CType(ThisAddIn.P_oApp.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+        Catch : End Try
+
+        AddVIP(oKontact)
     End Function
 
     Friend Function RemoveVIP(ByVal KontaktID As String, ByVal StoreID As String) As Boolean

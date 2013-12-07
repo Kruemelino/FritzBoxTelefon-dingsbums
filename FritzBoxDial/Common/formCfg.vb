@@ -596,7 +596,7 @@ Friend Class formCfg
                 End With
             Case "ButtonOK"
                 Dim formschließen As Boolean = Speichern()
-                ThisAddIn.P_UseAnrMon = Me.CBUseAnrMon.Checked
+                C_XML.P_CBUseAnrMon = Me.CBUseAnrMon.Checked
 #If OVer >= 14 Then
                 C_GUI.RefreshRibbon()
 #End If
@@ -794,6 +794,10 @@ Friend Class formCfg
                     Case "CBJournal"
                         If Not Me.CBJournal.Checked Then Me.CBJImport.Checked = False
                         Me.CBJImport.Enabled = Me.CBJournal.Checked
+                        'Me.GroupBoxStoppUhr.Enabled = Me.CBJournal.Checked
+                        'If Not Me.CBJournal.Checked Then
+                        '    Me.CBStoppUhrEinblenden.Checked = False
+                        'End If
 #If OVer < 14 Then
                 If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
                 Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked

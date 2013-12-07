@@ -51,6 +51,7 @@ Partial Class formWählbox
         Me.TelNrBox = New System.Windows.Forms.TextBox()
         Me.Titel = New System.Windows.Forms.Label()
         Me.ContactImage = New System.Windows.Forms.PictureBox()
+        Me.BVIP = New System.Windows.Forms.CheckBox()
         CType(Me.ListTel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.Frame1.SuspendLayout()
@@ -338,7 +339,7 @@ Partial Class formWählbox
         Me.ButtonWeiter.Enabled = False
         Me.ButtonWeiter.Location = New System.Drawing.Point(456, 100)
         Me.ButtonWeiter.Name = "ButtonWeiter"
-        Me.ButtonWeiter.Size = New System.Drawing.Size(75, 54)
+        Me.ButtonWeiter.Size = New System.Drawing.Size(81, 54)
         Me.ButtonWeiter.TabIndex = 2
         Me.ButtonWeiter.Text = "Weiter"
         Me.ButtonWeiter.UseVisualStyleBackColor = True
@@ -371,11 +372,24 @@ Partial Class formWählbox
         Me.ContactImage.TabIndex = 17
         Me.ContactImage.TabStop = False
         '
+        'BVIP
+        '
+        Me.BVIP.Appearance = System.Windows.Forms.Appearance.Button
+        Me.BVIP.Enabled = False
+        Me.BVIP.Location = New System.Drawing.Point(472, 170)
+        Me.BVIP.Name = "BVIP"
+        Me.BVIP.Size = New System.Drawing.Size(75, 23)
+        Me.BVIP.TabIndex = 20
+        Me.BVIP.Text = "VIP"
+        Me.BVIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.BVIP.UseVisualStyleBackColor = True
+        '
         'formWählbox
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(559, 658)
+        Me.Controls.Add(Me.BVIP)
         Me.Controls.Add(Me.FrameDirektWahl)
         Me.Controls.Add(Me.ContactImage)
         Me.Controls.Add(Me.LLBiligertelefonieren)
@@ -446,4 +460,5 @@ Partial Class formWählbox
     Friend WithEvents Takt As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Tarif As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Bemerkung As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents BVIP As System.Windows.Forms.CheckBox
 End Class

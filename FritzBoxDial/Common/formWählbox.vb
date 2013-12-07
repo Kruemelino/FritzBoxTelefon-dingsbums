@@ -10,6 +10,7 @@ Friend Class formWählbox
     Private C_hf As Helfer
     Private C_FBox As FritzBox
     Private C_GUI As GraphicalUserInterface
+    Private C_Phoner As PhonerInterface
 
     Private Client As New Sockets.TcpClient()
     Private WithEvents TimerSchließen As System.Timers.Timer
@@ -25,10 +26,9 @@ Friend Class formWählbox
     Private WählboxBereit As Boolean = False ' Erst wenn True, kann gewählt werden
     Private SID As String
     Private bDirektwahl As Boolean
-    Private bDialing As Boolean = False
+    Private _Dialing As Boolean = False
     Private Nebenstellen As String()
     ' Phoner
-    Private C_Phoner As PhonerInterface
     Private PhonerCall As Boolean = False
     Private UsePhonerOhneFritzBox As Boolean = False
     Private PhonerFon As Integer = -1
@@ -39,6 +39,17 @@ Friend Class formWählbox
         Dim festnetz As Boolean
         Dim fonanschluss As String
     End Structure
+
+#Region "Properties"
+    Public Property P_Dialing() As Boolean
+        Get
+            Return _Dialing
+        End Get
+        Set(ByVal value As Boolean)
+            _Dialing = value
+        End Set
+    End Property
+#End Region
 
     Public Sub New(ByVal Direktwahl As Boolean, _
                    ByVal XMLKlasse As MyXML, _
@@ -81,7 +92,7 @@ Friend Class formWählbox
 
         Dim tmpStr As String
         Dim DialPort As String
-
+        Dim SIP_Nr As Integer
         Dim xPathTeile As New ArrayList
         With xPathTeile
             .Add("Telefone")
@@ -111,7 +122,7 @@ Friend Class formWählbox
         ' Phoner
         If C_XML.P_CBPhoner Then
             If C_Phoner.PhonerReady() Then
-                Dim SIP_Nr As Integer = C_XML.P_PhonerTelNameIndex
+                SIP_Nr = C_XML.P_PhonerTelNameIndex
                 Me.ComboBoxFon.Items.Add("Phoner")
                 PhonerFon = Me.ComboBoxFon.Items.Count - 1
             End If
@@ -121,7 +132,7 @@ Friend Class formWählbox
         Me.ComboBoxFon.Enabled = True
         WählboxBereit = True
 
-        Me.checkCBC.Enabled = C_XML.P_CBCbCunterbinden
+        Me.checkCBC.Enabled = Not C_XML.P_CBCbCunterbinden
         Me.checkNetz.Checked = C_XML.P_TelFestnetz
         Me.checkCLIR.Checked = C_XML.P_TelCLIR
         Me.checkCBC.Checked = C_XML.P_CBCallByCall
@@ -142,6 +153,7 @@ Friend Class formWählbox
         ' sonst beim Laden der Form dieses Event schon auslösen würden!
         AddHandler ListTel.SelectionChanged, AddressOf ListTel_SelectionChanged
         AddHandler ComboBoxFon.SelectedIndexChanged, AddressOf ComboBoxFon_SelectedIndexChanged
+        AddHandler BVIP.CheckedChanged, AddressOf BVIP_CheckedChanged
     End Sub
 
 #Region "Button"
@@ -151,10 +163,10 @@ Friend Class formWählbox
         ' Abbruch-Button wieder verstecken
         cancelCallButton.Visible = False
         ' Abbruch ausführen
-        If bDialing Then
-            If Not PhonerCall Then Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(vbNullString, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+        If P_Dialing And Not PhonerCall Then
+            Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(vbNullString, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
         End If
-        bDialing = False
+        P_Dialing = False
         TimerSchließen.Stop()
         ListTel.ClearSelection() ' Ein erneutes Wählen ermöglichen
     End Sub
@@ -167,12 +179,7 @@ Friend Class formWählbox
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
 
-        Dim TelNr As String      ' Telefonnummer
-        Dim KontaktID As String = "-1"
-        Dim StoreID As String = "-1"
         Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
-        TelNr = ListTel.Rows(0).Cells(2).Value.ToString
-
         If KontaktDaten(0) = "-1" Then KontaktDaten(1) = "-1"
 
         ThisAddIn.P_WClient.ZeigeKontakt(KontaktDaten)
@@ -330,7 +337,7 @@ Friend Class formWählbox
     Private Sub Start()
         If Not ListTel.SelectedRows.Count = 0 Then
             Dim ID As Argument
-            bDialing = True
+            P_Dialing = True
             CallNr = New System.Threading.Thread(AddressOf dialNumber)
             With ID
                 .TelNr = CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)
@@ -574,4 +581,15 @@ Friend Class formWählbox
         End If
     End Sub
 #End Region
+
+    Private Sub BVIP_CheckedChanged(sender As Object, e As EventArgs)
+        Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
+        If Not KontaktDaten(0) = "-1" Then
+            If Not BVIP.Checked Then
+                C_GUI.RemoveVIP(KontaktDaten(0), KontaktDaten(1))
+            Else
+                C_GUI.AddVIP(KontaktDaten(0), KontaktDaten(1))
+            End If
+        End If
+    End Sub
 End Class

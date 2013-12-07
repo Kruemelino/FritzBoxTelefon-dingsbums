@@ -14,6 +14,7 @@ Friend Class formJournalimport
     Private CSVAnrliste As String
     Private StatusWert As Integer
     Private SID As String
+    Private EntryCount As Integer = -1 ' Anzahl der zu importierenden Telefonate
 
     Structure Argument
         Dim StartZeit As Date
@@ -109,7 +110,7 @@ Friend Class formJournalimport
         End With
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
-        Dim Anzahl As Integer = -1 ' Anzahl der zu importierenden Telefonate
+
         ThisAddIn.P_FritzBox.FBLogOut(SID)
 
         If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is vbNullString Then
@@ -138,8 +139,8 @@ Friend Class formJournalimport
                     Windows.Forms.Application.DoEvents()
                 Loop Until CDate(AnrZeit) < Startzeit Or j = AnrListe.Length - 1
                 If j = AnrListe.Length - 1 Then EndZeile = AnrListe.Length - 1
-                Anzahl = EndZeile - StartZeile + 1
-                If Anzahl > 0 Then
+                EntryCount = EndZeile - StartZeile + 1
+                If EntryCount > 0 Then
 
                     b = 0 ' Anzahl der tatsächlich importierten Telefonate
                     a = 1
@@ -231,7 +232,7 @@ Friend Class formJournalimport
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;25;" & Dauer & ";", ";", , CompareMethod.Text)
                             AnrMon.AnrMonDISCONNECT(vFBStatus, False)
                         End If
-                        If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ Anzahl)
+                        If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1
                     Next
                 End If
@@ -256,8 +257,8 @@ Friend Class formJournalimport
 
     Private Sub SetProgressbar()
         Me.ProgressBar1.Value = StatusWert
-        Me.lblBG1Percent.Text = StatusWert & " %"
-        Me.Text = StatusWert & " %  - Journalimport"
+        Me.lblBG1Percent.Text = StatusWert & " % (" & StatusWert * EntryCount \ 100 & "/" & EntryCount & ")"
+        Me.Text = "Journalimport - " & Me.lblBG1Percent.Text
         If StatusWert = 100 Then Me.ButtonStart.Enabled = True
     End Sub
 

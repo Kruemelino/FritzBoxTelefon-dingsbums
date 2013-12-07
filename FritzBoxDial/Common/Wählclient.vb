@@ -41,8 +41,6 @@ Public Class Wählclient
         Dim name As String
         Dim res As Outlook.ContactItem
 
-        'Try
-        'olNamespace = ThisAddIn.oApp.GetNamespace("MAPI")
         olNamespace = C_OlI.GetOutlook.GetNamespace("MAPI")
         ' Ist überhaupt etwas ausgewählt?
         If (olAuswahl.Count = 1) Then
@@ -250,6 +248,9 @@ Public Class Wählclient
                     frm_Wählbox.ListTel.Rows.Add(row)
                 End If
             Next
+            'VIP
+            frm_Wählbox.BVIP.Enabled = True
+            frm_Wählbox.BVIP.Checked = C_GUI.IsVIP(oContact)
         End If
         With frm_Wählbox
             If Not .ListTel.RowCount = 0 Or Direktwahl Then

@@ -1,6 +1,5 @@
 ﻿Friend Class formInit
     ' Klassen
-    'Private C_ini As InI
     Private C_XML As MyXML
     Private C_Helfer As Helfer
     Private C_Crypt As Rijndael
@@ -13,15 +12,13 @@
     Private C_WählClient As Wählclient
     Private C_Phoner As PhonerInterface
     Private C_Config As formCfg
-
-    'Private WithEvents emc As New EventMulticaster
+    Private F_JournalImport As formJournalimport
     'Strings
     Private DateiPfad As String
     Private SID As String
 
 
     Public Sub New()
-        Dim UseAnrMon As Boolean
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -54,7 +51,6 @@
         C_Phoner = New PhonerInterface(C_Helfer, C_XML, C_Crypt)
 
         If PrüfeAddin() Then
-            UseAnrMon = C_XML.P_CBUseAnrMon
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
@@ -66,7 +62,7 @@
             C_WählClient = New Wählclient(C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
             ThisAddIn.P_WClient = C_WählClient
 
-            C_AnrMon = New AnrufMonitor(C_RWS, UseAnrMon, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.P_FBAddr)
+            C_AnrMon = New AnrufMonitor(C_RWS, C_XML, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox.P_FBAddr)
             ThisAddIn.P_AnrMon = C_AnrMon
 
             C_Config = New formCfg(C_GUI, C_XML, C_Helfer, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_Kontakt, C_Phoner)
@@ -78,17 +74,14 @@
                 .P_WählKlient = C_WählClient
                 .P_FritzBox = C_FBox
             End With
-            ThisAddIn.P_GUI = C_GUI
 
+            ThisAddIn.P_GUI = C_GUI
             ThisAddIn.P_Dateipfad = DateiPfad
             ThisAddIn.P_XML = C_XML
             ThisAddIn.P_hf = C_Helfer
             ThisAddIn.P_KontaktFunktionen = C_Kontakt
-            ThisAddIn.P_UseAnrMon = UseAnrMon
 
-            If C_XML.P_CBJImport And UseAnrMon And C_XML.P_CBForceFBAddr Then
-                Dim formjournalimort As New formJournalimport(C_AnrMon, C_Helfer, C_XML, False)
-            End If
+            If C_XML.P_CBJImport And C_XML.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_Helfer, C_XML, False)
         End If
     End Sub
 
@@ -104,7 +97,6 @@
             Me.ShowDialog()
             Rückgabe = True 'PrüfeAddin()
         Else
-            'Me.ShowDialog()
             Rückgabe = True
         End If
         Return Rückgabe
