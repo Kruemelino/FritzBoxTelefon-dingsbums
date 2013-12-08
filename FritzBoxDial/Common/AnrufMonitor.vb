@@ -281,7 +281,7 @@ Friend Class AnrufMonitor
 
     Friend Sub AnrMonReStart()
         AnrMonQuit()
-        AnrMonStart(False)
+        AnrMonStart(True)
     End Sub
 
     Friend Function TelefonName(ByVal MSN As String) As String

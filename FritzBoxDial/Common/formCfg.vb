@@ -794,10 +794,6 @@ Friend Class formCfg
                     Case "CBJournal"
                         If Not Me.CBJournal.Checked Then Me.CBJImport.Checked = False
                         Me.CBJImport.Enabled = Me.CBJournal.Checked
-                        'Me.GroupBoxStoppUhr.Enabled = Me.CBJournal.Checked
-                        'If Not Me.CBJournal.Checked Then
-                        '    Me.CBStoppUhrEinblenden.Checked = False
-                        'End If
 #If OVer < 14 Then
                 If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
                 Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
