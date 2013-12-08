@@ -1,7 +1,7 @@
 ﻿Imports System.Text
 
 Public Class FormMain
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_Helfer As Helfer
     Private C_Crypt As Rijndael
     Private C_FBox As FritzBox
@@ -21,7 +21,7 @@ Public Class FormMain
         If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_XML = New MyXML(DateiPfad)
+        C_XML = New DataProvider(DateiPfad)
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael

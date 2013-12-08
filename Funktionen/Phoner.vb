@@ -2,7 +2,7 @@
 Imports System.Net.Sockets
 Imports System.IO
 Public Class PhonerInterface
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_hf As Helfer
     Private C_Crypt As Rijndael
 
@@ -10,7 +10,7 @@ Public Class PhonerInterface
     Private PhonerAnrMonPort As Integer = 2012
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
-                   ByVal XMLKlasse As MyXML, _
+                   ByVal XMLKlasse As DataProvider, _
                    ByVal cryptKlasse As Rijndael)
 
         C_Crypt = cryptKlasse

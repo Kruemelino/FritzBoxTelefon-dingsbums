@@ -62,7 +62,7 @@
 #End Region
 
     Private HelferFunktionen As Helfer
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private Crypt As Rijndael
     Private Dateipfad As String
     Private Callclient As Wählclient
@@ -116,7 +116,7 @@
     End Sub
 
     Friend Sub New(ByVal HelferKlasse As Helfer, _
-               ByVal XMLKlasse As MyXML, _
+               ByVal XMLKlasse As DataProvider, _
                ByVal CryptKlasse As Rijndael, _
                ByVal iniPfad As String, _
                ByVal Inverssuche As formRWSuche, _

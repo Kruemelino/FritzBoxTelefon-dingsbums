@@ -3,14 +3,14 @@ Imports System.Text
 
 Public Class Helfer
 
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_Crypt As Rijndael
 
     Private sDateiPfad As String
 
     Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-    Public Sub New(ByVal iniPfad As String, ByVal XMLKlasse As MyXML, ByVal CryptKlasse As Rijndael)
+    Public Sub New(ByVal iniPfad As String, ByVal XMLKlasse As DataProvider, ByVal CryptKlasse As Rijndael)
         sDateiPfad = iniPfad
         C_XML = XMLKlasse
         C_Crypt = CryptKlasse

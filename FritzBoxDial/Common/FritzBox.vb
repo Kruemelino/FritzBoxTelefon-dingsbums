@@ -5,7 +5,7 @@ Imports System.ComponentModel
 
 Public Class FritzBox
 
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_Crypt As Rijndael
     Private C_hf As Helfer
 
@@ -16,7 +16,6 @@ Public Class FritzBox
     Private tb As New System.Windows.Forms.TextBox
     Private EventProvider As IEventProvider
 
-    Friend Const sValDefaultSID As String = "0000000000000000"
     Private bValSpeichereDaten As Boolean = True
     Private sValFBAddr As String
 
@@ -33,7 +32,7 @@ Public Class FritzBox
     End Property
     Friend ReadOnly Property P_DefaultSID() As String
         Get
-            Return sValDefaultSID
+            Return "0000000000000000"
         End Get
     End Property
     Friend Property P_SpeichereDaten() As Boolean
@@ -44,15 +43,15 @@ Public Class FritzBox
             bValSpeichereDaten = value
         End Set
     End Property
-
     Friend ReadOnly Property P_DefaultFBAddr() As String
         Get
             Return "fritz.box"
         End Get
     End Property
+
 #End Region
 
-    Public Sub New(ByVal xmlKlasse As MyXML, _
+    Public Sub New(ByVal xmlKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As Rijndael)
 

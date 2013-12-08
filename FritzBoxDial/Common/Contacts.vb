@@ -1,9 +1,9 @@
 ﻿Public Class Contacts
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_hf As Helfer
     ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
 
-    Public Sub New(ByVal XMLKlasse As MyXML, ByVal HelferKlasse As Helfer)
+    Public Sub New(ByVal XMLKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
         ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
         C_XML = XMLKlasse
@@ -188,8 +188,6 @@
                             End If
 
                         End If
-                        C_XML.Write("Journal", "JournalID", .EntryID)
-                        C_XML.Write("Journal", "JournalStoreID", CType(.Parent, Outlook.MAPIFolder).StoreID)
                         With Kontakt
                             If Not C_hf.nurZiffern(.BusinessTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = "" Then
                                 .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)

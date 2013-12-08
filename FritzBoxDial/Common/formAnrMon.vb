@@ -4,7 +4,7 @@ Imports System.IO.Path
 Friend Class formAnrMon
     Private TelefonName As String
     Private aID As Integer
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private HelferFunktionen As Helfer
     Private TelNr As String              ' TelNr des Anrufers
     Private KontaktID As String              ' KontaktID des Anrufers
@@ -18,7 +18,7 @@ Friend Class formAnrMon
 
     Public Sub New(ByVal iAnrufID As Integer, _
                    ByVal Aktualisieren As Boolean, _
-                   ByVal XMLKlasse As MyXML, _
+                   ByVal XMLKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal AnrufMon As AnrufMonitor, _
                    ByVal OutlInter As OutlookInterface)

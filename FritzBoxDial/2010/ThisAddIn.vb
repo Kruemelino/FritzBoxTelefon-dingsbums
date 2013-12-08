@@ -36,7 +36,7 @@ Public Class ThisAddIn
     Private Shared oApp As Outlook.Application
     Private WithEvents ContactSaved As Outlook.ContactItem
     Private WithEvents oInsps As Outlook.Inspectors
-    Private Shared XML As MyXML ' Reader/Writer initialisieren
+    Private Shared XML As DataProvider ' Reader/Writer initialisieren
     Private Shared fBox As FritzBox  'Deklarieren der Klasse
     Private Shared AnrMon As AnrufMonitor
     Private Shared WClient As Wählclient
@@ -56,11 +56,11 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_XML() As MyXML
+    Friend Shared Property P_XML() As DataProvider
         Get
             Return XML
         End Get
-        Set(ByVal value As MyXML)
+        Set(ByVal value As DataProvider)
             XML = value
         End Set
     End Property
@@ -143,7 +143,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.11"
+    Public Const Version As String = "3.6.12"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then

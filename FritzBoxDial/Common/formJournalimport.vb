@@ -5,7 +5,7 @@ Friend Class formJournalimport
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
     Private Delegate Sub DelgSetProgressbar()
     Private Delegate Sub DelgSetButtonHerunterladen()
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private CSVArg As Argument
     Private AnrMon As AnrufMonitor
     Private C_hf As Helfer
@@ -23,7 +23,7 @@ Friend Class formJournalimport
 
     Public Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal XMLKlasse As MyXML, _
+                   ByVal XMLKlasse As DataProvider, _
                    ByVal FormShow As Boolean)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.

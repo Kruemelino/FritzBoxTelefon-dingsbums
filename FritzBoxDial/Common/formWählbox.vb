@@ -6,7 +6,7 @@ Imports System.Text
 Friend Class formWählbox
     Private WithEvents BWLogin As New System.ComponentModel.BackgroundWorker
 
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_hf As Helfer
     Private C_FBox As FritzBox
     Private C_GUI As GraphicalUserInterface
@@ -52,7 +52,7 @@ Friend Class formWählbox
 #End Region
 
     Public Sub New(ByVal Direktwahl As Boolean, _
-                   ByVal XMLKlasse As MyXML, _
+                   ByVal XMLKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
@@ -279,7 +279,6 @@ Friend Class formWählbox
     Private Sub ListTel_SelectionChanged(ByVal sender As System.Object, ByVal e As EventArgs)
         If WählboxBereit Then
             Dim code As String
-            Dim LandesVW As String
             Dim cbcHTML As String
             Dim myurl As String
             Dim CheckMobil As Boolean = True
@@ -300,25 +299,23 @@ Friend Class formWählbox
                 End If
                 If CheckMobil Then
                     Me.LabelStatus.Text = "Bitte warten" & vbNewLine & "Ihr Anruf wird vorbereitet"
-                    Start()
+                    StarteDialVorgang()
                 End If
             Else
-                LandesVW = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
-                code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString), LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
+                code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString), C_XML.P_TBLandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
                 Me.LabelStatus.Text = "Bitte warten..."
                 ' Ermitteln der URL für ein Orts- oder  Ferngespräch
-                Dim Vorwahl As String = C_XML.P_TBVorwahl 'Vorwahl ermitteln
-                If Vorwahl = Mid(code, 1, Len(Vorwahl)) And Not Vorwahl = "" Then
+                If C_XML.P_TBVorwahl = Mid(code, 1, Len(C_XML.P_TBVorwahl)) And Not C_XML.P_TBVorwahl = "" Then
                     ' Wenn die Vorwahl nicht der eigenen Vorwahl entspricht, ändere die URL
                     myurl = "http://www.billiger-telefonieren.de/festnetz/schnellrechner/"
-                    cbcHTML = C_hf.httpWrite(myurl, "rechnen=true&p_zielvorwahl=58&p_typ%5B%5D=1&p_takt=-1", System.Text.Encoding.Default)
+                    code = "rechnen=true&p_zielvorwahl=58&p_typ%5B%5D=1&p_takt=-1"
                 Else
-                    myurl = String.Concat("http://www.billiger-telefonieren.de/tarife/nummer.php3?num=", code)
-                    cbcHTML = C_hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-                    If Not HTMLFehler Is Nothing Then
-                        C_hf.LogFile("FBError (formWählbox.ListTel_SelectionChanged): " & Err.Number & " - " & Err.Description & " - " & myurl)
-                    End If
-                End If : Vorwahl = Nothing
+                    myurl = "http://www.billiger-telefonieren.de/vorwahlrechner/"
+                    code = "num=" & code & "&berechnen=berechnen"
+                End If
+
+                cbcHTML = C_hf.httpWrite(myurl, code, System.Text.Encoding.Default)
+                If Not HTMLFehler Is Nothing Then C_hf.LogFile("FBError (formWählbox.ListTel_SelectionChanged): " & Err.Number & " - " & Err.Description & " - " & myurl)
                 Me.LLBiligertelefonieren.Text = myurl
                 CbCBilligerTelefonieren(code, cbcHTML)
                 Me.Height = 515
@@ -328,13 +325,13 @@ Friend Class formWählbox
     End Sub
 
     Private Sub listCbCAnbieter_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-        Start()
+        StarteDialVorgang()
     End Sub
 #End Region
 
 #Region "Wählen"
 
-    Private Sub Start()
+    Private Sub StarteDialVorgang()
         If Not ListTel.SelectedRows.Count = 0 Then
             Dim ID As Argument
             P_Dialing = True
@@ -519,7 +516,7 @@ Friend Class formWählbox
                 .Item(1, .Rows.Count - 1).Value = "EOL"
                 .Item(5, .Rows.Count - 1).Value = "Keine Vorwahl gefunden."
             End With
-            C_hf.LogFile("Eine Call-by-Call Vorwahlen erhalten für " & TelNr)
+            C_hf.LogFile("Keine Call-by-Call Vorwahlen erhalten für " & TelNr)
         End If
         listCbCAnbieter.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         listCbCAnbieter.ClearSelection()

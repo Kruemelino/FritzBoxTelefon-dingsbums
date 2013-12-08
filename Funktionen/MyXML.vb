@@ -1,7 +1,7 @@
 ﻿Imports System.Xml
 Imports System.Timers
 
-Public Class MyXML
+Public Class DataProvider
     Private XMLDoc As XmlDocument
     Private sDateiPfad As String
     Private WithEvents tSpeichern As Timer

@@ -19,11 +19,11 @@ Friend Class AnrufMonitor
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
     Private C_Kontakt As Contacts
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_hf As Helfer
-    Private frm_Config As formCfg
-    Private frm_RWS As formRWSuche
-    Private frm_StoppUhr As formStoppUhr
+    Private F_Config As formCfg
+    Private F_RWS As formRWSuche
+    Private F_StoppUhr As formStoppUhr
 
     Private StandbyCounter As Integer
     Friend AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
@@ -55,7 +55,7 @@ Friend Class AnrufMonitor
 #End Region
 
     Public Sub New(ByVal RWS As formRWSuche, _
-                   ByVal iniKlasse As MyXML, _
+                   ByVal iniKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
@@ -66,7 +66,7 @@ Friend Class AnrufMonitor
         C_Kontakt = KontaktKlasse
         C_GUI = InterfacesKlasse
         C_XML = iniKlasse
-        frm_RWS = RWS
+        F_RWS = RWS
         C_OlI = OutlInter
         P_FBAddr = FBAdr
         AnrMonStart(False)
@@ -125,18 +125,19 @@ Friend Class AnrufMonitor
         r = Nothing
     End Sub '(AnrMonAktion)
 
-    Friend Function AnrMonAnAus() As Boolean 'ByRef oExp As Outlook.Explorer)
-        ' wird durch das Symbol 'Anrufmonitor' in der 'FritzBox'-Symbolleiste ausgeführt
-        ' schaltet den Anrufmonitor an bzw. aus
-
+    ''' <summary>
+    ''' Wird durch das Symbol 'Anrufmonitor' in der 'FritzBox'-Symbolleiste ausgeführt
+    ''' </summary>
+    ''' <returns>Boolean: Ob Anrufmonitor eingeschaltet ist.</returns>
+    ''' <remarks></remarks>
+    Friend Function AnrMonAnAus() As Boolean
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
-            If AnrMonQuit() Then
+            AnrMonQuit()
 #If OVer < 14 Then
                 C_GUI.SetAnrMonButton(False)
 #End If
-            End If
-            Return False
+            AnrMonAnAus = False
         Else
             ' Timer starten, TCP/IP-Verbindung öffnen
             If AnrMonStart(True) Then
@@ -144,9 +145,8 @@ Friend Class AnrufMonitor
                 C_GUI.SetAnrMonButton(True)
 #End If
             End If
-            Return True
+            AnrMonAnAus = True
         End If
-
     End Function '(AnrMonAnAus)
 
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
@@ -258,7 +258,7 @@ Friend Class AnrufMonitor
 #End If
     End Sub
 
-    Function AnrMonQuit() As Boolean
+    Friend Sub AnrMonQuit()
         ' wird beim Beenden von Outlook ausgeführt und beendet den Anrufmonitor
         AnrMonAktiv = False
 
@@ -277,12 +277,11 @@ Friend Class AnrufMonitor
         AnrMonStream = Nothing
         AnrMonTCPClient = Nothing
         C_hf.LogFile("AnrMonQuit: Anrufmonitor beendet")
-        Return True
-    End Function '(AnrMonQuit)
+    End Sub '(AnrMonQuit)
 
     Friend Sub AnrMonReStart()
-        Dim Erfolgreich As Boolean = AnrMonQuit()
-        If Erfolgreich Then Erfolgreich = AnrMonStart(False)
+        AnrMonQuit()
+        AnrMonStart(False)
     End Sub
 
     Friend Function TelefonName(ByVal MSN As String) As String
@@ -543,13 +542,13 @@ Friend Class AnrufMonitor
                         If vCard = Nothing Then
                             Select Case C_XML.P_CBoxRWSuche
                                 Case 0
-                                    rws = frm_RWS.RWS11880(TelNr, vCard)
+                                    rws = F_RWS.RWS11880(TelNr, vCard)
                                 Case 1
-                                    rws = frm_RWS.RWSDasTelefonbuch(TelNr, vCard)
+                                    rws = F_RWS.RWSDasTelefonbuch(TelNr, vCard)
                                 Case 2
-                                    rws = frm_RWS.RWStelsearch(TelNr, vCard)
+                                    rws = F_RWS.RWStelsearch(TelNr, vCard)
                                 Case 3
-                                    rws = frm_RWS.RWSAlle(TelNr, vCard)
+                                    rws = F_RWS.RWSAlle(TelNr, vCard)
                             End Select
                             'Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. Dies geschieht nur, wenn es gewünscht ist.
                             If rws And C_XML.P_CBKErstellen Then
@@ -709,13 +708,13 @@ Friend Class AnrufMonitor
                         If vCard = Nothing Then
                             Select Case C_XML.P_CBoxRWSuche
                                 Case 0
-                                    rws = frm_RWS.RWS11880(TelNr, vCard)
+                                    rws = F_RWS.RWS11880(TelNr, vCard)
                                 Case 1
-                                    rws = frm_RWS.RWSDasTelefonbuch(TelNr, vCard)
+                                    rws = F_RWS.RWSDasTelefonbuch(TelNr, vCard)
                                 Case 2
-                                    rws = frm_RWS.RWStelsearch(TelNr, vCard)
+                                    rws = F_RWS.RWStelsearch(TelNr, vCard)
                                 Case 3
-                                    rws = frm_RWS.RWSAlle(TelNr, vCard)
+                                    rws = F_RWS.RWSAlle(TelNr, vCard)
                             End Select
                             'Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. Dies geschieht nur, wenn es gewünscht ist.
                             If rws And C_XML.P_CBKErstellen Then
@@ -822,6 +821,7 @@ Friend Class AnrufMonitor
                         MSN = C_XML.Read(xPathTeile, "")
                 End Select
             End If
+
             If MSN = "-1" Then
                 C_hf.LogFile("Ein unvollständiges Telefonat wurde registriert.")
             Else
@@ -841,7 +841,7 @@ Friend Class AnrufMonitor
                     End If
                     ' StoppUhr einblenden
                     If C_XML.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
-                        C_hf.LogFile("SoppUhr wird eingeblendet.")
+                        C_hf.LogFile("StoppUhr wird eingeblendet.")
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With

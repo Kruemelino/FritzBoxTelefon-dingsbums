@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 
 Public Class Wählclient
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private frm_Wählbox As formWählbox
     Private C_hf As Helfer
     Private C_Kontakt As Contacts
@@ -10,7 +10,7 @@ Public Class Wählclient
     Private C_FBox As FritzBox
     Private C_Phoner As PhonerInterface
 
-    Public Sub New(ByVal XMlKlasse As MyXML, _
+    Public Sub New(ByVal XMlKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfaceKlasse As GraphicalUserInterface, _

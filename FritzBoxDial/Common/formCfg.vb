@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 
 Friend Class formCfg
 #Region "Eigene Klassen"
-    Private C_XML As MyXML
+    Private C_XML As DataProvider
     Private C_Crypt As Rijndael
     Private C_Helfer As Helfer
     Private C_Kontakte As Contacts
@@ -45,7 +45,7 @@ Friend Class formCfg
 #End Region
 
     Public Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
-                   ByVal XMLKlasse As MyXML, _
+                   ByVal XMLKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As Rijndael, _
                    ByVal AnrufMon As AnrufMonitor, _
