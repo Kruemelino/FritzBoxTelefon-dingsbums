@@ -769,7 +769,7 @@
     End Function
 
     Friend Sub FillPopupItems(ByRef XMLListBaseNode As String)
-        ' XMLListBaseNode erlaubt: CallList, RingList
+        ' XMLListBaseNode erlaubt: CallList, RingList, VIPListe
 
         Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , XMLListBaseNode, , False), Office.CommandBarPopup)
         Dim index As Integer
@@ -815,18 +815,20 @@
                     End With
 
                     xPathTeile.RemoveAt(xPathTeile.Count - 1)
-                    LANodeValues.Item(0) = ("-1")
-                    LANodeValues.Item(1) = ("-1")
-                    LANodeValues.Item(2) = ("-1")
+                    With LANodeValues
+                        .Item(0) = ("-1")
+                        .Item(1) = ("-1")
+                        .Item(2) = ("-1")
+                    End With
                 End If
             Next
         Else
-            For ID = 0 To index - 1
+            For ID = 0 To 9
 
-                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not Anrufer = "-1" Then
+                If Not Anrufer = "-1" And Not Anrufer = "" Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
@@ -834,6 +836,12 @@
                         .Tag = "VIPListe;" & CStr(ID)
                         i += 1
                     End With
+                    With LANodeValues
+                        .Item(0) = ("-1")
+                        .Item(1) = ("-1")
+                        .Item(2) = ("-1")
+                    End With
+
                 Else
                     If Not cPopUp.Controls.Item(i) Is Nothing Then
                         cPopUp.Controls.Item(i).Visible = False
@@ -841,6 +849,7 @@
                 End If
             Next
         End If
+        cPopUp.Enabled = CommandBarPopupEnabled(cPopUp)
     End Sub
 
     Friend Sub SetVisibleButtons()
@@ -911,6 +920,7 @@
         FillPopupItems("Wwdh")
         ' Direktwahl
         ePopWwdh.Visible = C_XML.P_CBSymbWwdh
+        ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
         eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, "Direktwahl", i, 326, "IconandCaption", "Direktwahl", "Direktwahl")
         i += 1
 
@@ -942,6 +952,7 @@
         End Try
         FillPopupItems("AnrListe")
         ePopAnr.Visible = C_XML.P_CBSymbAnrListe
+        ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, "VIP", i, "VIPListe", "VIP anrufen")
@@ -957,6 +968,7 @@
         FillPopupItems("VIPListe")
         i += 1
         ePopVIP.Visible = C_XML.P_CBSymbVIP
+        ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
 
         eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
         eBtnJournalimport.Visible = C_XML.P_CBSymbJournalimport
@@ -976,6 +988,23 @@
         eBtnEinstellungen.TooltipText = "Öffnet die Fritz!Box Telefon-dingsbums Einstellungen."
 
     End Sub
+
+    Private Function CommandBarPopupEnabled(ByVal control As Office.CommandBarPopup) As Boolean
+        Dim XMLListBaseNode As String = "VIPListe"
+        Dim xPathTeile As New ArrayList
+
+        Select Case control.Tag
+            Case "Wwdh"
+                XMLListBaseNode = "CallList"
+            Case "AnrListe"
+                XMLListBaseNode = "RingList"
+            Case "VIPListe"
+                XMLListBaseNode = "VIPListe"
+        End Select
+
+        Return CBool(IIf(Not C_XML.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
+    End Function
+
 #End If
 #If OVer = 11 Then
     Sub InspectorSybolleisteErzeugen(ByVal Inspector As Outlook.Inspector, _
