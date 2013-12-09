@@ -99,8 +99,7 @@ Friend Class formCfg
         ' Beim Einblenden die Werte aus der Registry einlesen
         ' Einstellungen für das Wählmakro laden
         Me.TBLandesVW.Text = C_XML.P_TBLandesVW
-        Me.TBAmt.Text = C_XML.P_TBAmt
-        Me.TBAmt.Text = CStr(IIf(Me.TBAmt.Text = "-1", "", Me.TBAmt.Text))
+        Me.TBAmt.Text = CStr(IIf(C_XML.P_TBAmt = "-1", "", C_XML.P_TBAmt))
         Me.TBFBAdr.Text = C_XML.P_TBFBAdr
 
         Me.CBForceFBAddr.Checked = C_XML.P_CBForceFBAddr

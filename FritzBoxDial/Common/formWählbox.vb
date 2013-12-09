@@ -422,7 +422,7 @@ Friend Class formWählbox
         End If
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
-        Code = C_XML.P_TBAmt & Code
+        Code = CStr(IIf(C_XML.P_TBAmt = "-1", "", C_XML.P_TBAmt)) & Code
 
         If Not UsePhonerOhneFritzBox Then
             If CLIR Then Code = "*31#" & Code
