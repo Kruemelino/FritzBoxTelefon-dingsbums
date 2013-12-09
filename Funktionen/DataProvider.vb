@@ -96,7 +96,7 @@ Public Class DataProvider
     ' Indizierung
     Private _LLetzteIndizierung As Date
 #End Region
-#Region "Properties"
+#Region "Value Properties"
     ''' <summary>
     ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
     ''' </summary>
@@ -712,6 +712,422 @@ Public Class DataProvider
     End Property
 
 #End Region
+#Region "Global Default alue Properties"
+    ''' <summary>
+    ''' Default Fehlerwert
+    ''' </summary>
+    ''' <value>-1</value>
+    ''' <returns>String</returns>
+    Public ReadOnly Property P_Def_ErrorMinusOne() As String
+        Get
+            Return "-1"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_StringEmpty() As String
+        Get
+            Return String.Empty
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_StringUnknown() As String
+        Get
+            Return "unbekannt"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_FritzBoxAdress() As String
+        Get
+            Return "fritz.box"
+        End Get
+    End Property
+
+    Friend ReadOnly Property P_Def_SessionID() As String
+        Get
+            Return "0000000000000000"
+        End Get
+    End Property
+#End Region
+#Region "Default Value Properties"
+
+    Private ReadOnly Property P_Def_TBLandesVW() As String
+        Get
+            Return "0049"
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBAmt() As String
+        Get
+            Return P_Def_ErrorMinusOne
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBVorwahl() As String
+        Get
+            Return P_Def_StringEmpty
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBEnblDauer() As Integer
+        Get
+            Return 10
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBAnrMonAuto() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBAnrMonX() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBAnrMonY() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBAnrMonMove() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBAnrMonTransp() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBAnrMonMoveGeschwindigkeit() As Integer
+        Get
+            Return 5
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBAnrMonContactImage() As Boolean
+        Get
+            Return _CBAnrMonContactImage
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBIndexAus() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBShowMSN() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Private ReadOnly Property P_Def_CBAutoClose() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBVoIPBuster() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBCbCunterbinden() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBCallByCall() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBDialPort() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBRueckwaertssuche() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBKErstellen() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBLogFile() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    'Einstellung für die Symbolleiste
+    Private ReadOnly Property P_Def_CBSymbWwdh() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbAnrMon() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbAnrMonNeuStart() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbAnrListe() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbDirekt() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbRWSuche() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbVIP() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBSymbJournalimport() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Private ReadOnly Property P_Def_CBJImport() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Private ReadOnly Property P_Def_CBKHO() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBRWSIndex() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_ComboBoxRWS() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBoxRWSuche() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBIndex() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBJournal() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBUseAnrMon() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBCheckMobil() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    'StoppUhr
+    Private ReadOnly Property P_Def_CBStoppUhrEinblenden() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBStoppUhrAusblenden() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBStoppUhr() As Integer
+        Get
+            Return 10
+        End Get
+
+    End Property
+    Private ReadOnly Property P_Def_CBStoppUhrX() As Integer
+        Get
+            Return 10
+        End Get
+
+    End Property
+    Private ReadOnly Property P_Def_CBStoppUhrY() As Integer
+        Get
+            Return 10
+        End Get
+
+    End Property
+    ' Telefonnummernformatierung
+    Private ReadOnly Property P_Def_TBTelNrMaske() As String
+        Get
+            Return "%L (%O) %N - %D"
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBTelNrGruppieren() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBintl() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBIgnoTelNrFormat() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    'Phoner
+    Private ReadOnly Property P_Def_CBPhoner As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_PhonerVerfügbar As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBPhonerAnrMon As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_ComboBoxPhonerSIP() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBPhonerPasswort() As String
+        Get
+            Return P_Def_StringEmpty
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_PhonerTelNameIndex() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    ' Statistik
+    Private ReadOnly Property P_Def_StatResetZeit As Date
+        Get
+            Return System.DateTime.Now
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_StatVerpasst As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_StatNichtErfolgreich As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_StatJournal() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_StatKontakt() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_StatOLClosedZeit() As Date
+        Get
+            Return System.DateTime.Now
+        End Get
+    End Property
+    ' Wählbox
+    Private ReadOnly Property P_Def_TelAnschluss() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TelFestnetz() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TelCLIR() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    ' FritzBox
+    Private ReadOnly Property P_Def_EncodeingFritzBox() As String
+        Get
+            Return P_Def_ErrorMinusOne
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBFBAdr() As String
+        Get
+            Return P_Def_FritzBoxAdress
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_CBForceFBAddr() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBBenutzer() As String
+        Get
+            Return P_Def_StringEmpty
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_TBPasswort() As String
+        Get
+            Return P_Def_StringEmpty
+        End Get
+    End Property
+    ' Indizierung
+    Private ReadOnly Property P_Def_LLetzteIndizierung() As Date
+        Get
+            Return System.DateTime.Now
+        End Get
+    End Property
+
+#End Region
+#Region "Organisation Properties"
+    Private ReadOnly Property P_Def_Options() As String
+        Get
+            Return "Optionen"
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_Statistics() As String
+        Get
+            Return "Statistik"
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_Journal() As String
+        Get
+            Return "Journal"
+        End Get
+    End Property
+    Private ReadOnly Property P_Def_Phoner() As String
+        Get
+            Return "Phoner"
+        End Get
+    End Property
+#End Region
 
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
@@ -733,162 +1149,164 @@ Public Class DataProvider
         End With
         LoadOptionData()
     End Sub
+
     Private Sub LoadOptionData()
 
-        Me.P_TBLandesVW = Read("Optionen", "TBLandesVW", "0049")
-        Me.P_TBAmt = Read("Optionen", "TBAmt", "")
-        Me.P_TBFBAdr = Read("Optionen", "TBFBAdr", "fritz.box")  'DEFAULT auf anderes Default-property ändern
-        Me.P_CBForceFBAddr = CBool(Read("Optionen", "CBForceFBAddr", "False"))
-        Me.P_TBBenutzer = Read("Optionen", "TBBenutzer", vbNullString)
-        Me.P_TBPasswort = Read("Optionen", "TBPasswort", vbNullString)
+        Me.P_TBLandesVW = Read(P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
+        Me.P_TBAmt = Read(P_Def_Options, "TBAmt", P_Def_TBAmt)
+        Me.P_TBFBAdr = Read(P_Def_Options, "TBFBAdr", P_Def_TBFBAdr)
+        Me.P_CBForceFBAddr = CBool(Read(P_Def_Options, "CBForceFBAddr", CStr(P_Def_CBForceFBAddr)))
+        Me.P_TBBenutzer = Read(P_Def_Options, "TBBenutzer", P_Def_TBBenutzer)
+        Me.P_TBPasswort = Read(P_Def_Options, "TBPasswort", P_Def_TBPasswort)
 
-        Me.P_TBVorwahl = Read("Optionen", "TBVorwahl", "")
-        Me.P_TBEnblDauer = CInt(Read("Optionen", "TBEnblDauer", "10"))
-        Me.P_CBAnrMonAuto = CBool(Read("Optionen", "CBAnrMonAuto", "False"))
-        Me.P_TBAnrMonX = CInt(Read("Optionen", "TBAnrMonX", "0"))
-        Me.P_TBAnrMonY = CInt(Read("Optionen", "TBAnrMonY", "0"))
-        Me.P_CBAnrMonMove = CBool(Read("Optionen", "CBAnrMonMove", "True"))
-        Me.P_CBAnrMonTransp = CBool(Read("Optionen", "CBAnrMonTransp", "True"))
-        Me.P_TBAnrMonMoveGeschwindigkeit = CInt(Read("Optionen", "TBAnrMonMoveGeschwindigkeit", "5"))
-        Me.P_CBAnrMonContactImage = CBool(Read("Optionen", "CBAnrMonContactImage", "True"))
-        Me.P_CBIndexAus = CBool(Read("Optionen", "CBIndexAus", "False"))
-        Me.P_CBShowMSN = CBool(Read("Optionen", "CBShowMSN", "False"))
+        Me.P_TBVorwahl = Read(P_Def_Options, "TBVorwahl", P_Def_TBVorwahl)
+        Me.P_TBEnblDauer = CInt(Read(P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
+        Me.P_CBAnrMonAuto = CBool(Read(P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
+        Me.P_TBAnrMonX = CInt(Read(P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
+        Me.P_TBAnrMonY = CInt(Read(P_Def_Options, "TBAnrMonY", CStr(P_Def_TBAnrMonY)))
+        Me.P_CBAnrMonMove = CBool(Read(P_Def_Options, "CBAnrMonMove", CStr(P_Def_CBAnrMonMove)))
+        Me.P_CBAnrMonTransp = CBool(Read(P_Def_Options, "CBAnrMonTransp", CStr(P_Def_CBAnrMonTransp)))
+        Me.P_TBAnrMonMoveGeschwindigkeit = CInt(Read(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(P_Def_TBAnrMonMoveGeschwindigkeit)))
+        Me.P_CBAnrMonContactImage = CBool(Read(P_Def_Options, "CBAnrMonContactImage", CStr(P_Def_CBAnrMonContactImage)))
+        Me.P_CBIndexAus = CBool(Read(P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
+        Me.P_CBShowMSN = CBool(Read(P_Def_Options, "CBShowMSN", CStr(P_Def_CBShowMSN)))
 
-        Me.P_CBAutoClose = CBool(Read("Optionen", "CBAutoClose", "True"))
-        Me.P_CBVoIPBuster = CBool(Read("Optionen", "CBVoIPBuster", "False"))
-        Me.P_CBCbCunterbinden = CBool(Read("Optionen", "CBCbCunterbinden", "False"))
-        Me.P_CBCallByCall = CBool(Read("Optionen", "CBCallByCall", "False"))
-        Me.P_CBDialPort = CBool(Read("Optionen", "CBDialPort", "False"))
-        Me.P_CBRueckwaertssuche = CBool(Read("Optionen", "CBRueckwaertssuche", "False"))
-        Me.P_CBKErstellen = CBool(Read("Optionen", "CBKErstellen", "False"))
-        Me.P_CBLogFile = CBool(Read("Optionen", "CBLogFile", "False"))
+        Me.P_CBAutoClose = CBool(Read(P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
+        Me.P_CBVoIPBuster = CBool(Read(P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
+        Me.P_CBCbCunterbinden = CBool(Read(P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
+        Me.P_CBCallByCall = CBool(Read(P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
+        Me.P_CBDialPort = CBool(Read(P_Def_Options, "CBDialPort", CStr(P_Def_CBDialPort)))
+        Me.P_CBRueckwaertssuche = CBool(Read(P_Def_Options, "CBRueckwaertssuche", CStr(P_Def_CBRueckwaertssuche)))
+        Me.P_CBKErstellen = CBool(Read(P_Def_Options, "CBKErstellen", CStr(P_Def_CBKErstellen)))
+        Me.P_CBLogFile = CBool(Read(P_Def_Options, "CBLogFile", CStr(P_Def_CBLogFile)))
         ' Einstellungen für die Symbolleiste laden
-        Me.P_CBSymbWwdh = CBool(Read("Optionen", "CBSymbWwdh", "True"))
-        Me.P_CBSymbAnrMon = CBool(Read("Optionen", "CBSymbAnrMon", "True"))
-        Me.P_CBSymbAnrMonNeuStart = CBool(Read("Optionen", "CBSymbAnrMonNeuStart", "False"))
-        Me.P_CBSymbAnrListe = CBool(Read("Optionen", "CBSymbAnrListe", "True"))
-        Me.P_CBSymbDirekt = CBool(Read("Optionen", "CBSymbDirekt", "True"))
-        Me.P_CBSymbRWSuche = CBool(Read("Optionen", "CBSymbRWSuche", "True"))
-        Me.P_CBSymbVIP = CBool(Read("Optionen", "CBSymbVIP", "False"))
-        Me.P_CBSymbJournalimport = CBool(Read("Optionen", "CBSymbJournalimport", "False"))
-        Me.P_CBJImport = CBool(Read("Optionen", "CBJImport", "False"))
+        Me.P_CBSymbWwdh = CBool(Read(P_Def_Options, "CBSymbWwdh", CStr(P_Def_CBSymbWwdh)))
+        Me.P_CBSymbAnrMon = CBool(Read(P_Def_Options, "CBSymbAnrMon", CStr(P_Def_CBSymbAnrMon)))
+        Me.P_CBSymbAnrMonNeuStart = CBool(Read(P_Def_Options, "CBSymbAnrMonNeuStart", CStr(P_Def_CBSymbAnrMonNeuStart)))
+        Me.P_CBSymbAnrListe = CBool(Read(P_Def_Options, "CBSymbAnrListe", CStr(P_Def_CBSymbAnrListe)))
+        Me.P_CBSymbDirekt = CBool(Read(P_Def_Options, "CBSymbDirekt", CStr(P_Def_CBSymbDirekt)))
+        Me.P_CBSymbRWSuche = CBool(Read(P_Def_Options, "CBSymbRWSuche", CStr(P_Def_CBSymbRWSuche)))
+        Me.P_CBSymbVIP = CBool(Read(P_Def_Options, "CBSymbVIP", CStr(P_Def_CBSymbVIP)))
+        Me.P_CBSymbJournalimport = CBool(Read(P_Def_Options, "CBSymbJournalimport", CStr(P_Def_CBSymbJournalimport)))
+        Me.P_CBJImport = CBool(Read(P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
         ' Einstellungen füer die Rückwärtssuche laden
-        Me.P_CBKHO = CBool(Read("Optionen", "CBKHO", "True"))
-        Me.P_CBRWSIndex = CBool(Read("Optionen", "CBRWSIndex", "True"))
-        Me.P_CBoxRWSuche = CInt(Read("Optionen", "CBoxRWSuche", "0"))
-        Me.P_ComboBoxRWS = CInt(Read("Optionen", "ComboBoxRWS", "0"))
-        Me.P_CBIndex = CBool(Read("Optionen", "CBIndex", "True"))
-        Me.P_CBJournal = CBool(Read("Optionen", "CBJournal", "False") = "True")
-        Me.P_CBUseAnrMon = CBool(Read("Optionen", "CBUseAnrMon", "True"))
-        Me.P_CBCheckMobil = CBool(Read("Optionen", "CBCheckMobil", "True"))
-        'StoppUhr
-        Me.P_CBStoppUhrEinblenden = CBool(Read("Optionen", "CBStoppUhrEinblenden", "False"))
-        Me.P_CBStoppUhrAusblenden = CBool(Read("Optionen", "CBStoppUhrAusblenden", "False"))
-        Me.P_TBStoppUhr = CInt(Read("Optionen", "TBStoppUhr", "10"))
-        Me.P_CBStoppUhrX = CInt(Read("Optionen", "CBStoppUhrX", "10"))
-        Me.P_CBStoppUhrY = CInt(Read("Optionen", "CBStoppUhrY", "10"))
-        Me.P_TBTelNrMaske = Read("Optionen", "TBTelNrMaske", "%L (%O) %N - %D")
-        Me.P_CBTelNrGruppieren = CBool(Read("Optionen", "CBTelNrGruppieren", "True"))
-        Me.P_CBintl = CBool(Read("Optionen", "CBintl", "False"))
-        Me.P_CBIgnoTelNrFormat = CBool(Read("Optionen", "CBIgnoTelNrFormat", "False"))
+        Me.P_CBKHO = CBool(Read(P_Def_Options, "CBKHO", CStr(P_Def_CBKHO)))
+        Me.P_CBRWSIndex = CBool(Read(P_Def_Options, "CBRWSIndex", CStr(P_Def_CBRWSIndex)))
+        Me.P_CBoxRWSuche = CInt(Read(P_Def_Options, "CBoxRWSuche", CStr(P_Def_CBoxRWSuche)))
+        Me.P_ComboBoxRWS = CInt(Read(P_Def_Options, "ComboBoxRWS", CStr(P_Def_ComboBoxRWS)))
+        Me.P_CBIndex = CBool(Read(P_Def_Options, "CBIndex", CStr(P_Def_CBIndex)))
+        Me.P_CBJournal = CBool(Read(P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
+        Me.P_CBUseAnrMon = CBool(Read(P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
+        Me.P_CBCheckMobil = CBool(Read(P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
+        ' StoppUhr
+        Me.P_CBStoppUhrEinblenden = CBool(Read(P_Def_Options, "CBStoppUhrEinblenden", CStr(P_Def_CBStoppUhrEinblenden)))
+        Me.P_CBStoppUhrAusblenden = CBool(Read(P_Def_Options, "CBStoppUhrAusblenden", CStr(P_Def_CBStoppUhrAusblenden)))
+        Me.P_TBStoppUhr = CInt(Read(P_Def_Options, "TBStoppUhr", CStr(P_Def_TBStoppUhr)))
+        Me.P_CBStoppUhrX = CInt(Read(P_Def_Options, "CBStoppUhrX", CStr(P_Def_CBStoppUhrX)))
+        Me.P_CBStoppUhrY = CInt(Read(P_Def_Options, "CBStoppUhrY", CStr(P_Def_CBStoppUhrY)))
+        ' Telefonnummernformatierung
+        Me.P_TBTelNrMaske = Read(P_Def_Options, "TBTelNrMaske", P_TBTelNrMaske)
+        Me.P_CBTelNrGruppieren = CBool(Read(P_Def_Options, "CBTelNrGruppieren", CStr(P_Def_CBTelNrGruppieren)))
+        Me.P_CBintl = CBool(Read(P_Def_Options, "CBintl", CStr(P_Def_CBintl)))
+        Me.P_CBIgnoTelNrFormat = CBool(Read(P_Def_Options, "CBIgnoTelNrFormat", CStr(P_Def_CBIgnoTelNrFormat)))
         ' Phoner
-        Me.P_CBPhoner = CBool(Read("Phoner", "CBPhoner", "False"))
-        Me.P_PhonerVerfügbar = CBool(Read("Phoner", "PhonerVerfügbar", "False"))
-        Me.P_ComboBoxPhonerSIP = CInt(Read("Phoner", "ComboBoxPhonerSIP", "0"))
-        Me.P_CBPhonerAnrMon = CBool(Read("Phoner", "CBPhonerAnrMon", "False"))
-        Me.P_TBPhonerPasswort = Read("Phoner", "TBPhonerPasswort", vbNullString)
-        Me._PhonerTelNameIndex = CInt(Read("Phoner", "PhonerTelNameIndex", "0"))
+        Me.P_CBPhoner = CBool(Read(P_Def_Phoner, "CBPhoner", CStr(P_Def_CBPhoner)))
+        Me.P_PhonerVerfügbar = CBool(Read(P_Def_Phoner, "PhonerVerfügbar", CStr(P_Def_PhonerVerfügbar)))
+        Me.P_ComboBoxPhonerSIP = CInt(Read(P_Def_Phoner, "ComboBoxPhonerSIP", CStr(P_Def_ComboBoxPhonerSIP)))
+        Me.P_CBPhonerAnrMon = CBool(Read(P_Def_Phoner, "CBPhonerAnrMon", CStr(P_Def_CBPhonerAnrMon)))
+        Me.P_TBPhonerPasswort = Read(P_Def_Phoner, "TBPhonerPasswort", P_Def_TBPhonerPasswort)
+        Me.P_PhonerTelNameIndex = CInt(Read(P_Def_Phoner, "PhonerTelNameIndex", CStr(P_Def_PhonerTelNameIndex)))
         ' Statistik
-        Me.P_StatResetZeit = CDate(Read("Statistik", "ResetZeit", System.DateTime.Now.ToString))
-        Me.P_StatVerpasst = CInt(Read("Statistik", "Verpasst", "0"))
-        Me.P_StatNichtErfolgreich = CInt(Read("Statistik", "Nichterfolgreich", "0"))
-        Me.P_StatKontakt = CInt(Read("Statistik", "Kontakt", "0"))
-        Me.P_StatJournal = CInt(Read("Statistik", "Journal", "0"))
-        Me.P_StatOLClosedZeit = CDate(Read("Journal", "SchließZeit", System.DateTime.Now.ToString))
-        'Wählbox
-        Me.P_TelAnschluss = CInt(Read("Optionen", "Anschluss", "0"))
-        Me.P_TelFestnetz = CBool(Read("Optionen", "Festnetz", "False"))
-        Me.P_TelCLIR = CBool(Read("Optionen", "CLIR", "False"))
-        Me.P_EncodeingFritzBox = Read("Optionen", "EncodeingFritzBox", "-1")
+        Me.P_StatResetZeit = CDate(Read(P_Def_Statistics, "ResetZeit", CStr(P_Def_StatResetZeit)))
+        Me.P_StatVerpasst = CInt(Read(P_Def_Statistics, "Verpasst", CStr(P_Def_StatVerpasst)))
+        Me.P_StatNichtErfolgreich = CInt(Read(P_Def_Statistics, "Nichterfolgreich", CStr(P_Def_StatNichtErfolgreich)))
+        Me.P_StatKontakt = CInt(Read(P_Def_Statistics, "Kontakt", CStr(P_Def_StatKontakt)))
+        Me.P_StatJournal = CInt(Read(P_Def_Statistics, "Journal", CStr(P_Def_StatJournal)))
+        Me.P_StatOLClosedZeit = CDate(Read(P_Def_Journal, "SchließZeit", CStr(P_Def_StatOLClosedZeit)))
+        ' Wählbox
+        Me.P_TelAnschluss = CInt(Read(P_Def_Options, "Anschluss", CStr(P_Def_TelAnschluss)))
+        Me.P_TelFestnetz = CBool(Read(P_Def_Options, "Festnetz", CStr(P_TelFestnetz)))
+        Me.P_TelCLIR = CBool(Read(P_Def_Options, "CLIR", CStr(P_Def_TelCLIR)))
+        Me.P_EncodeingFritzBox = Read(P_Def_Options, "EncodeingFritzBox", P_Def_EncodeingFritzBox)
         ' Indizierung
-        Me.P_LLetzteIndizierung = CDate(Read("Optionen", "LLetzteIndizierung", System.DateTime.Now.ToString))
+        Me.P_LLetzteIndizierung = CDate(Read(P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
     End Sub
     Private Sub SaveOptionData()
-        Write("Optionen", "TBLandesVW", Me.P_TBLandesVW)
-        Write("Optionen", "TBAmt", Me.P_TBAmt)
-        Write("Optionen", "TBFBAdr", Me.P_TBFBAdr)
-        Write("Optionen", "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
-        Write("Optionen", "TBBenutzer", Me.P_TBBenutzer)
-        Write("Optionen", "TBPasswort", Me.P_TBPasswort)
-        Write("Optionen", "TBVorwahl", Me.P_TBVorwahl)
-        Write("Optionen", "TBEnblDauer", CStr(Me.P_TBEnblDauer))
-        Write("Optionen", "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
-        Write("Optionen", "TBAnrMonX", CStr(Me.P_TBAnrMonX))
-        Write("Optionen", "TBAnrMonY", CStr(Me.P_TBAnrMonY))
-        Write("Optionen", "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
-        Write("Optionen", "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
-        Write("Optionen", "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
-        Write("Optionen", "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
-        Write("Optionen", "CBIndexAus", CStr(Me.P_CBIndexAus))
-        Write("Optionen", "CBShowMSN", CStr(Me.P_CBShowMSN))
-        Write("Optionen", "CBAutoClose", CStr(Me.P_CBAutoClose))
-        Write("Optionen", "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
-        Write("Optionen", "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
-        Write("Optionen", "CBCallByCall", CStr(Me.P_CBCallByCall))
-        Write("Optionen", "CBDialPort", CStr(Me.P_CBDialPort))
-        Write("Optionen", "CBRueckwaertssuche", CStr(Me.P_CBRueckwaertssuche))
-        Write("Optionen", "CBKErstellen", CStr(Me.P_CBKErstellen))
-        Write("Optionen", "CBLogFile", CStr(Me.P_CBLogFile))
+        Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
+        Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
+        Write(P_Def_Options, "TBFBAdr", Me.P_TBFBAdr)
+        Write(P_Def_Options, "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
+        Write(P_Def_Options, "TBBenutzer", Me.P_TBBenutzer)
+        Write(P_Def_Options, "TBPasswort", Me.P_TBPasswort)
+        Write(P_Def_Options, "TBVorwahl", Me.P_TBVorwahl)
+        Write(P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
+        Write(P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
+        Write(P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))
+        Write(P_Def_Options, "TBAnrMonY", CStr(Me.P_TBAnrMonY))
+        Write(P_Def_Options, "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
+        Write(P_Def_Options, "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
+        Write(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
+        Write(P_Def_Options, "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
+        Write(P_Def_Options, "CBIndexAus", CStr(Me.P_CBIndexAus))
+        Write(P_Def_Options, "CBShowMSN", CStr(Me.P_CBShowMSN))
+        Write(P_Def_Options, "CBAutoClose", CStr(Me.P_CBAutoClose))
+        Write(P_Def_Options, "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
+        Write(P_Def_Options, "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
+        Write(P_Def_Options, "CBCallByCall", CStr(Me.P_CBCallByCall))
+        Write(P_Def_Options, "CBDialPort", CStr(Me.P_CBDialPort))
+        Write(P_Def_Options, "CBRueckwaertssuche", CStr(Me.P_CBRueckwaertssuche))
+        Write(P_Def_Options, "CBKErstellen", CStr(Me.P_CBKErstellen))
+        Write(P_Def_Options, "CBLogFile", CStr(Me.P_CBLogFile))
         ' Einstellungen für die Symbolleiste laden
-        Write("Optionen", "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
-        Write("Optionen", "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
-        Write("Optionen", "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
-        Write("Optionen", "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe))
-        Write("Optionen", "CBSymbDirekt", CStr(Me.P_CBSymbDirekt))
-        Write("Optionen", "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
-        Write("Optionen", "CBSymbVIP", CStr(Me.P_CBSymbVIP))
-        Write("Optionen", "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
-        Write("Optionen", "CBJImport", CStr(Me.P_CBJImport))
+        Write(P_Def_Options, "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
+        Write(P_Def_Options, "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
+        Write(P_Def_Options, "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
+        Write(P_Def_Options, "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe))
+        Write(P_Def_Options, "CBSymbDirekt", CStr(Me.P_CBSymbDirekt))
+        Write(P_Def_Options, "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
+        Write(P_Def_Options, "CBSymbVIP", CStr(Me.P_CBSymbVIP))
+        Write(P_Def_Options, "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
+        Write(P_Def_Options, "CBJImport", CStr(Me.P_CBJImport))
         ' Einstellungen füer die Rückwärtssuche laden
-        Write("Optionen", "CBKHO", CStr(Me.P_CBKHO))
-        Write("Optionen", "CBRWSIndex", CStr(Me.P_CBRWSIndex))
-        Write("Optionen", "CBoxRWSuche", CStr(Me.P_CBoxRWSuche))
-        Write("Optionen", "CBIndex", CStr(Me.P_CBIndex))
-        Write("Optionen", "CBJournal", CStr(Me.P_CBJournal))
-        Write("Optionen", "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
-        Write("Optionen", "CBCheckMobil", CStr(Me.P_CBCheckMobil))
+        Write(P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
+        Write(P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
+        Write(P_Def_Options, "CBoxRWSuche", CStr(Me.P_CBoxRWSuche))
+        Write(P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
+        Write(P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
+        Write(P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
+        Write(P_Def_Options, "CBCheckMobil", CStr(Me.P_CBCheckMobil))
         'StoppUhr
-        Write("Optionen", "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden))
-        Write("Optionen", "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden))
-        Write("Optionen", "", CStr(Me.P_TBStoppUhr))
-        Write("Optionen", "TBTelNrMaske", Me.P_TBTelNrMaske)
-        Write("Optionen", "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren))
-        Write("Optionen", "CBintl", CStr(Me.P_CBintl))
-        Write("Optionen", "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat))
-        Write("Optionen", "CBStoppUhrX", CStr(Me.P_CBStoppUhrX))
-        Write("Optionen", "CBStoppUhrY", CStr(Me.P_CBStoppUhrY))
+        Write(P_Def_Options, "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden))
+        Write(P_Def_Options, "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden))
+        Write(P_Def_Options, "TBStoppUhr", CStr(Me.P_TBStoppUhr))
+        Write(P_Def_Options, "TBTelNrMaske", Me.P_TBTelNrMaske)
+        Write(P_Def_Options, "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren))
+        Write(P_Def_Options, "CBintl", CStr(Me.P_CBintl))
+        Write(P_Def_Options, "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat))
+        Write(P_Def_Options, "CBStoppUhrX", CStr(Me.P_CBStoppUhrX))
+        Write(P_Def_Options, "CBStoppUhrY", CStr(Me.P_CBStoppUhrY))
         ' Phoner
-        Write("Optionen", "CBPhoner", CStr(Me.P_CBPhoner))
-        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar))
-        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP))
-        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon))
-        Write("Optionen", "TBPhonerPasswort", Me.P_TBPhonerPasswort)
-        Write("Optionen", "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
+        Write(P_Def_Phoner, "CBPhoner", CStr(Me.P_CBPhoner))
+        Write(P_Def_Phoner, "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar))
+        Write(P_Def_Phoner, "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP))
+        Write(P_Def_Phoner, "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon))
+        Write(P_Def_Phoner, "TBPhonerPasswort", Me.P_TBPhonerPasswort)
+        Write(P_Def_Phoner, "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
         ' Statistik
-        Write("Optionen", "CBPhoner", CStr(Me.P_StatResetZeit))
-        Write("Optionen", "PhonerVerfügbar", CStr(Me.P_StatVerpasst))
-        Write("Optionen", "ComboBoxPhonerSIP", CStr(Me.P_StatNichtErfolgreich))
-        Write("Optionen", "CBPhonerAnrMon", CStr(Me.P_StatKontakt))
-        Write("Optionen", "TBPhonerPasswort", CStr(Me.P_StatJournal))
-        Write("Optionen", "SchließZeit", CStr(Me.P_StatOLClosedZeit))
+        Write(P_Def_Statistics, "CBPhoner", CStr(Me.P_StatResetZeit))
+        Write(P_Def_Statistics, "PhonerVerfügbar", CStr(Me.P_StatVerpasst))
+        Write(P_Def_Statistics, "ComboBoxPhonerSIP", CStr(Me.P_StatNichtErfolgreich))
+        Write(P_Def_Statistics, "CBPhonerAnrMon", CStr(Me.P_StatKontakt))
+        Write(P_Def_Statistics, "TBPhonerPasswort", CStr(Me.P_StatJournal))
+        Write(P_Def_Journal, "SchließZeit", CStr(Me.P_StatOLClosedZeit))
         ' Wählbox
-        Write("Optionen", "Anschluss", CStr(Me.P_TelAnschluss))
-        Write("Optionen", "Festnetz", CStr(Me.P_TelFestnetz))
-        Write("Optionen", "CLIR", CStr(Me.P_TelCLIR))
+        Write(P_Def_Options, "Anschluss", CStr(Me.P_TelAnschluss))
+        Write(P_Def_Options, "Festnetz", CStr(Me.P_TelFestnetz))
+        Write(P_Def_Options, "CLIR", CStr(Me.P_TelCLIR))
         'FritzBox
-        Write("Optionen", "EncodeingFritzBox", Me.P_EncodeingFritzBox)
+        Write(P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
         'indizierung
-        Write("Optionen", "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
+        Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         XMLDoc.Save(sDateiPfad)
     End Sub
 
@@ -904,6 +1322,8 @@ Public Class DataProvider
 
         MyBase.Finalize()
     End Sub
+
+    'XML kram
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         Dim xPathTeile As New ArrayList
@@ -1071,7 +1491,7 @@ Public Class DataProvider
             tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, vbNullString)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
-                    If Not SubNodeValue.Item(i).ToString = "-1" Then
+                    If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne Then
                         tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
                         tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
                         .AppendChild(tmpXMLChildNode)
@@ -1180,6 +1600,7 @@ Public Class DataProvider
         SaveOptionData()
     End Sub
 #End Region
+
 #Region "Stuff"
     Private Sub CleanUpXML()
         Dim tmpNode As XmlNode
@@ -1188,7 +1609,7 @@ Public Class DataProvider
 
         With XMLDoc
             ' Diverse Knoten des Journals löschen
-            xPathTeile.Add("Journal")
+            xPathTeile.Add(P_Def_Journal)
             xPathTeile.Add("SchließZeit")
             xPath = CreateXPath(xPathTeile)
             tmpNode = .SelectSingleNode(xPath)
@@ -1233,6 +1654,5 @@ Public Class DataProvider
         If Right(xPath, 1) = xPathSeperatorSlash Then Return False
     End Function
 #End Region
-
 End Class
 

@@ -2,8 +2,9 @@
 Imports System.IO.Path
 Imports System.Runtime.InteropServices
 Public Class OutlookInterface
-    Private C_KontaktFunktionen As Contacts
+    Private C_KF As Contacts
     Private C_hf As Helfer
+    Private C_DP As DataProvider
     Private OInsp As Outlook.Inspector
 
 
@@ -13,9 +14,10 @@ Public Class OutlookInterface
         End Get
     End Property
 
-    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal inipfad As String)
+    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal inipfad As String)
         C_hf = Helferklasse
-        C_KontaktFunktionen = KontaktKlasse
+        C_KF = KontaktKlasse
+        C_DP = DataProviderKlasse
     End Sub
 
     Friend Function ErstelleJournalItem(ByVal Subject As String, _
@@ -46,7 +48,7 @@ Public Class OutlookInterface
                     .Categories = Categories
 
 #If Not OVer = 15 Then
-                    If (Not (KontaktID = vbNullString Or StoreID = vbNullString)) And Not Left(KontaktID, 2) = "-1" Then
+                    If (Not (KontaktID = vbNullString Or StoreID = vbNullString)) And Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                         .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
                     End If
 #End If
@@ -137,9 +139,9 @@ Public Class OutlookInterface
             Dim Ergebnis As Outlook.ContactItem          ' Auswertung für Findekontakt
             StarteKontaktSuche = False
             If alleOrdner Then
-                Ergebnis = C_KontaktFunktionen.FindeKontakt(TelNr, Absender, LandesVW, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
+                Ergebnis = C_KF.FindeKontakt(TelNr, Absender, LandesVW, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
             Else
-                Ergebnis = C_KontaktFunktionen.FindeKontakt(TelNr, Absender, LandesVW, olNamespace)
+                Ergebnis = C_KF.FindeKontakt(TelNr, Absender, LandesVW, olNamespace)
             End If
             If Not Ergebnis Is Nothing Then
                 StarteKontaktSuche = True

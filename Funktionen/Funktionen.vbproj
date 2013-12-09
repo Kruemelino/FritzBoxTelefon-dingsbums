@@ -88,7 +88,7 @@
     <Compile Include="Phoner.vb" />
     <Compile Include="Rijndael.vb" />
     <Compile Include="VCard.vb" />
-    <Compile Include="MyXML.vb" />
+    <Compile Include="DataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

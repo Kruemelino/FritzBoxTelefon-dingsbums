@@ -5,7 +5,7 @@ Friend Class formJournalimport
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
     Private Delegate Sub DelgSetProgressbar()
     Private Delegate Sub DelgSetButtonHerunterladen()
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private CSVArg As Argument
     Private AnrMon As AnrufMonitor
     Private C_hf As Helfer
@@ -23,13 +23,13 @@ Friend Class formJournalimport
 
     Public Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal XMLKlasse As DataProvider, _
+                   ByVal DataProviderKlasse As DataProvider, _
                    ByVal FormShow As Boolean)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        C_XML = XMLKlasse
+        C_DP = DataProviderKlasse
         C_hf = HelferKlasse
         AnrMon = AnrMonKlasse
 
@@ -44,7 +44,7 @@ Friend Class formJournalimport
     End Sub
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim StartZeit As Date
-        StartZeit = C_XML.P_StatOLClosedZeit
+        StartZeit = C_DP.P_StatOLClosedZeit
         Me.StartDatum.Value = StartZeit
         Me.StartZeit.Value = StartZeit
         Me.EndDatum.Value = System.DateTime.Now
@@ -68,7 +68,7 @@ Friend Class formJournalimport
         End If
 
         With Übergabe
-            .StartZeit = C_XML.P_StatOLClosedZeit
+            .StartZeit = C_DP.P_StatOLClosedZeit
             .EndZeit = System.DateTime.Now
         End With
         If Not anzeigen Then
@@ -159,7 +159,7 @@ Friend Class formJournalimport
 
                         Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
                         ' Bei analogen Anschlüssen steht "Festnetz" in MSN
-                        If MSN = "Festnetz" Then MSN = C_XML.Read("Telefone", "POTS", "-1")
+                        If MSN = "Festnetz" Then MSN = C_DP.Read("Telefone", "POTS", "-1")
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
@@ -168,11 +168,11 @@ Friend Class formJournalimport
                             .Add("Telefone")
                             .Add("Nummern")
                             .Add("*")
-                            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_XML.P_TBVorwahl) & """]")
+                            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_DP.P_TBVorwahl) & """]")
                             .Add("@Checked")
                         End With
 
-                        If C_hf.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Then
+                        If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Then
                             b += 1
                             i = 0
                             NSN = -1
@@ -199,7 +199,7 @@ Friend Class formJournalimport
                                             .Add("[TelName = """ & Nebenstelle & """]")
                                             'End Select
                                             .Add("@Dialport")
-                                            NSN = CInt(C_XML.Read(xPathTeile, "-1"))
+                                            NSN = CInt(C_DP.Read(xPathTeile, "-1"))
                                         End With
                                 End Select
                             End If
@@ -237,7 +237,7 @@ Friend Class formJournalimport
                     Next
                 End If
                 ' Registry zurückschreiben
-                C_XML.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
+                C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
                 C_hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
                 C_hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")

@@ -3,16 +3,16 @@ Imports System.Text
 
 Public Class Helfer
 
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private C_Crypt As Rijndael
 
     Private sDateiPfad As String
 
     Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-    Public Sub New(ByVal iniPfad As String, ByVal XMLKlasse As DataProvider, ByVal CryptKlasse As Rijndael)
-        sDateiPfad = iniPfad
-        C_XML = XMLKlasse
+    Public Sub New(ByVal ArbeitsPfad As String, ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As Rijndael)
+        sDateiPfad = ArbeitsPfad
+        C_DP = DataProviderKlasse
         C_Crypt = CryptKlasse
     End Sub
 
@@ -63,7 +63,7 @@ Public Class Helfer
         Dim Options As New NetworkInformation.PingOptions()
         Dim PingReply As NetworkInformation.PingReply = Nothing
 
-        Dim data As String = ""
+        Dim data As String = C_DP.P_Def_StringEmpty
         Dim buffer As Byte() = Encoding.ASCII.GetBytes(data)
         Dim timeout As Integer = 120
 
@@ -92,7 +92,7 @@ Public Class Helfer
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
         Dim LogDatei As String = Dateipfade("LogDatei")
-        If C_XML.P_CBLogFile Then
+        If C_DP.P_CBLogFile Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
                     If .GetFileInfo(LogDatei).Length > 1048576 Then .DeleteFile(LogDatei)
@@ -123,7 +123,7 @@ Public Class Helfer
     End Function
 
     Public Function Dateipfade(ByVal Datei As String) As String
-        Dim XMLDateiPfad As String = C_XML.GetXMLDateiPfad
+        Dim XMLDateiPfad As String = C_DP.GetXMLDateiPfad
 
         Select Case Datei
             Case "LogDatei"
@@ -146,38 +146,38 @@ Public Class Helfer
         Dim tempZugang As String
         Dim i As Long
 
-        If Not C_XML.P_TBPasswort Is vbNullString Then
-            tempZugang = ""
+        If Not C_DP.P_TBPasswort Is vbNullString Then
+            tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-            C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_XML.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1")), tempZugang)
+            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1")), tempZugang)
             SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
         End If
 
-        If Not C_XML.P_TBPhonerPasswort = vbNullString Then
-            tempZugang = ""
+        If Not C_DP.P_TBPhonerPasswort = vbNullString Then
+            tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-            C_XML.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_XML.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")), tempZugang)
+            C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")), tempZugang)
             SaveSetting("Fritzbox", "Optionen", "ZugangPasswortPhoner", tempZugang)
         End If
 
-        C_XML.SpeichereXMLDatei()
+        C_DP.SpeichereXMLDatei()
 
     End Sub ' (Keyänderung) 
 
-    Public Function GetInformationSystemFritzBox(ByVal fbadr As String) As String
+    Public Function GetInformationSystemFritzBox(ByVal FBAdr As String) As String
         Dim sLink As String
-        Dim FBTyp As String = "unbekannt"
-        Dim FBFW As String = "unbekannt"
+        Dim FBTyp As String = C_DP.P_Def_StringUnknown
+        Dim FBFW As String = C_DP.P_Def_StringUnknown
 
-        If LCase(fbadr) = "fritz.box" Then Ping(fbadr)
+        If LCase(FBAdr) = C_DP.P_Def_FritzBoxAdress Then Ping(FBAdr)
 
-        sLink = "http://" & fbadr & "/cgi-bin/system_status"
+        sLink = "http://" & FBAdr & "/cgi-bin/system_status"
         Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpRead(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
         FBTyp = FritzBoxInformation(0)
         FBFW = Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
@@ -217,7 +217,7 @@ Public Class Helfer
         Dim tempRufNr As String = String.Empty ' Hilfsstring für RufNr
         Dim tempDurchwahl As String = String.Empty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
-        Dim Maske As String = C_XML.P_TBTelNrMaske
+        Dim Maske As String = C_DP.P_TBTelNrMaske
 
         LandesVW = TelTeile(0)
         OrtsVW = TelTeile(1)
@@ -237,7 +237,7 @@ Public Class Helfer
         ' LandesVW und RufNr aus TelNr separieren
 
         posDurchwahl = InStr(1, RufNr, Durchwahl, CompareMethod.Text)
-        If posDurchwahl = 1 And Not Durchwahl = "" Then
+        If posDurchwahl = 1 And Not Durchwahl = C_DP.P_Def_StringEmpty Then
             tempDurchwahl = Mid(RufNr, Len(Durchwahl) + 1)
             RufNr = Durchwahl
         Else
@@ -245,7 +245,7 @@ Public Class Helfer
         End If
         If LandesVW = "0" Then
             OrtsVW = "0" & OrtsVW
-            LandesVW = ""
+            LandesVW = C_DP.P_Def_StringEmpty
         End If
         ' Maske Prüfen
         If InStr(Maske, "%D", CompareMethod.Text) = 0 Then Maske = Replace(Maske, "%N", "%N%D")
@@ -264,8 +264,8 @@ Public Class Helfer
             CutOut = Mid(Maske, pos1, pos2 - pos1)
             Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", vbNullString)), , 1, CompareMethod.Text)
         End If
-        If LandesVW = vbNullString Then LandesVW = C_XML.P_TBLandesVW
-        If C_XML.P_CBintl Or Not LandesVW = C_XML.P_TBLandesVW Then
+        If LandesVW = vbNullString Then LandesVW = C_DP.P_TBLandesVW
+        If C_DP.P_CBintl Or Not LandesVW = C_DP.P_TBLandesVW Then
             If Not OrtsVW = vbNullString Then
                 If Left(OrtsVW, 1) = "0" Then OrtsVW = Mid(OrtsVW, 2)
                 OrtsVW = CStr(IIf(LandesVW = "0039", "0", vbNullString)) & OrtsVW
@@ -282,14 +282,14 @@ Public Class Helfer
         ' NANP
         If LandesVW = "+1" Then
             Maske = "%L (%O) %N-%D"
-            C_XML.P_CBTelNrGruppieren = False
+            C_DP.P_CBTelNrGruppieren = False
             If tempDurchwahl = vbNullString Then
                 tempDurchwahl = Mid(RufNr, 4)
                 RufNr = Left(RufNr, 3)
             End If
         End If
 
-        If C_XML.P_CBTelNrGruppieren Then
+        If C_DP.P_CBTelNrGruppieren Then
             tempOrtsVW = GruppiereNummer(OrtsVW)
             tempRufNr = GruppiereNummer(RufNr)
             tempDurchwahl = GruppiereNummer(tempDurchwahl)
@@ -303,7 +303,7 @@ Public Class Helfer
         Maske = Replace(Maske, "%L", Trim(LandesVW))
         Maske = Replace(Maske, "%O", Trim(tempOrtsVW))
         Maske = Replace(Maske, "%N", tempRufNr)
-        If Not Trim(tempDurchwahl) = "" Then
+        If Not Trim(tempDurchwahl) = C_DP.P_Def_StringEmpty Then
             Maske = Replace(Maske, "%D", Trim(tempDurchwahl))
         Else
             posDurchwahl = InStr(Maske, tempRufNr, CompareMethod.Text) + Len(tempRufNr) - 1
@@ -347,7 +347,7 @@ Public Class Helfer
         Dim Durchwahl As String
         Dim ErsteZiffer As String
 
-        If Not TelNr = "" Then
+        If Not TelNr = C_DP.P_Def_StringEmpty Then
             TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
             TelNr = Replace(TelNr, "++", "00", , , CompareMethod.Text)
             TelNr = Replace(TelNr, "+ ", "+", , , CompareMethod.Text)
@@ -366,7 +366,7 @@ Public Class Helfer
                     TelNr = Mid(TelNr, Len(LandesVW) + 1)
                 End If
             Else
-                LandesVW = ""
+                LandesVW = C_DP.P_Def_StringEmpty
             End If
             LandesVW = Replace(LandesVW, " ", "", , , CompareMethod.Text) 'Leerzeichen entfernen'
 
@@ -415,13 +415,13 @@ Public Class Helfer
             If Not pos1 = 0 Then
                 Durchwahl = Left(TelNr, pos1 - 1)
             Else
-                Durchwahl = ""
+                Durchwahl = C_DP.P_Def_StringEmpty
             End If
             Durchwahl = Replace(Durchwahl, " ", "", , , CompareMethod.Text) 'Leerzeichen entfernen'
         Else
-            LandesVW = ""
-            OrtsVW = ""
-            Durchwahl = ""
+            LandesVW = C_DP.P_Def_StringEmpty
+            OrtsVW = C_DP.P_Def_StringEmpty
+            Durchwahl = C_DP.P_Def_StringEmpty
         End If
         TelNrTeile = New String() {LandesVW, OrtsVW, Durchwahl}
 
@@ -478,7 +478,7 @@ Public Class Helfer
         ' Dim Vorwahl As String
         'Dim pos As Integer
 
-        nurZiffern = ""
+        nurZiffern = C_DP.P_Def_StringEmpty
         TelNr = UCase(TelNr)
         'Vorwahl = TelNrTeile(TelNr)(1)
         'pos = InStr(1, Vorwahl, ";", vbTextCompare) + 1

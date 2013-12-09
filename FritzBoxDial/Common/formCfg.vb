@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 
 Friend Class formCfg
 #Region "Eigene Klassen"
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private C_Crypt As Rijndael
     Private C_Helfer As Helfer
     Private C_Kontakte As Contacts
@@ -59,7 +59,7 @@ Friend Class formCfg
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         C_Helfer = HelferKlasse
-        C_XML = XMLKlasse
+        C_DP = XMLKlasse
         C_Crypt = CryptKlasse
         C_GUI = InterfacesKlasse
         C_OlI = OutlInter
@@ -92,124 +92,124 @@ Friend Class formCfg
 #Region "Ausfüllen"
 
     Private Sub Ausfüllen()
-        Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_XML.GetXMLDateiPfad)
+        Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.GetXMLDateiPfad)
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
         ' Beim Einblenden die Werte aus der Registry einlesen
         ' Einstellungen für das Wählmakro laden
-        Me.TBLandesVW.Text = C_XML.P_TBLandesVW
-        Me.TBAmt.Text = CStr(IIf(C_XML.P_TBAmt = "-1", "", C_XML.P_TBAmt))
-        Me.TBFBAdr.Text = C_XML.P_TBFBAdr
+        Me.TBLandesVW.Text = C_DP.P_TBLandesVW
+        Me.TBAmt.Text = CStr(IIf(C_DP.P_TBAmt = "-1", "", C_DP.P_TBAmt))
+        Me.TBFBAdr.Text = C_DP.P_TBFBAdr
 
-        Me.CBForceFBAddr.Checked = C_XML.P_CBForceFBAddr
-        Me.TBBenutzer.Text = C_XML.P_TBBenutzer
+        Me.CBForceFBAddr.Checked = C_DP.P_CBForceFBAddr
+        Me.TBBenutzer.Text = C_DP.P_TBBenutzer
         If Not Me.TBBenutzer.Text = vbNullString Then
-            If C_XML.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
+            If C_DP.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
                 Me.TBBenutzer.BackColor = Color.Red
                 Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
             End If
         End If
 
-        If Not Len(C_XML.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
-        Me.TBVorwahl.Text = C_XML.P_TBVorwahl
-        Me.TBEnblDauer.Text = CStr(C_XML.P_TBEnblDauer)
-        Me.CBAnrMonAuto.Checked = C_XML.P_CBAnrMonAuto
-        Me.TBAnrMonX.Text = CStr(C_XML.P_TBAnrMonX)
-        Me.TBAnrMonY.Text = CStr(C_XML.P_TBAnrMonY)
-        Me.CBAnrMonMove.Checked = C_XML.P_CBAnrMonMove
-        Me.CBAnrMonTransp.Checked = C_XML.P_CBAnrMonTransp
-        Me.TBAnrMonMoveGeschwindigkeit.Value = C_XML.P_TBAnrMonMoveGeschwindigkeit
-        Me.CBAnrMonContactImage.Checked = C_XML.P_CBAnrMonContactImage
-        Me.CBIndexAus.Checked = C_XML.P_CBIndexAus
-        Me.CBShowMSN.Checked = C_XML.P_CBShowMSN
+        If Not Len(C_DP.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
+        Me.TBVorwahl.Text = C_DP.P_TBVorwahl
+        Me.TBEnblDauer.Text = CStr(C_DP.P_TBEnblDauer)
+        Me.CBAnrMonAuto.Checked = C_DP.P_CBAnrMonAuto
+        Me.TBAnrMonX.Text = CStr(C_DP.P_TBAnrMonX)
+        Me.TBAnrMonY.Text = CStr(C_DP.P_TBAnrMonY)
+        Me.CBAnrMonMove.Checked = C_DP.P_CBAnrMonMove
+        Me.CBAnrMonTransp.Checked = C_DP.P_CBAnrMonTransp
+        Me.TBAnrMonMoveGeschwindigkeit.Value = C_DP.P_TBAnrMonMoveGeschwindigkeit
+        Me.CBAnrMonContactImage.Checked = C_DP.P_CBAnrMonContactImage
+        Me.CBIndexAus.Checked = C_DP.P_CBIndexAus
+        Me.CBShowMSN.Checked = C_DP.P_CBShowMSN
         ' optionale allgemeine Einstellungen laden
-        Me.CBAutoClose.Checked = C_XML.P_CBAutoClose
-        Me.CBVoIPBuster.Checked = C_XML.P_CBVoIPBuster
-        Me.CBCbCunterbinden.Checked = C_XML.P_CBCbCunterbinden
-        Me.CBCallByCall.Checked = C_XML.P_CBCallByCall
-        Me.CBDialPort.Checked = C_XML.P_CBDialPort
-        Me.CBRueckwaertssuche.Checked = C_XML.P_CBRueckwaertssuche
-        Me.CBKErstellen.Checked = C_XML.P_CBKErstellen
-        Me.CBLogFile.Checked = C_XML.P_CBLogFile
+        Me.CBAutoClose.Checked = C_DP.P_CBAutoClose
+        Me.CBVoIPBuster.Checked = C_DP.P_CBVoIPBuster
+        Me.CBCbCunterbinden.Checked = C_DP.P_CBCbCunterbinden
+        Me.CBCallByCall.Checked = C_DP.P_CBCallByCall
+        Me.CBDialPort.Checked = C_DP.P_CBDialPort
+        Me.CBRueckwaertssuche.Checked = C_DP.P_CBRueckwaertssuche
+        Me.CBKErstellen.Checked = C_DP.P_CBKErstellen
+        Me.CBLogFile.Checked = C_DP.P_CBLogFile
 #If OVer < 14 Then
         ' Einstellungen für die Symbolleiste laden
-        Me.CBSymbWwdh.Checked = C_XML.P_CBSymbWwdh
-        Me.CBSymbAnrMon.Checked = C_XML.P_CBSymbAnrMon
-        Me.CBSymbAnrMonNeuStart.Checked = C_XML.P_CBSymbAnrMonNeuStart
-        Me.CBSymbAnrListe.Checked = C_XML.P_CBSymbAnrListe
-        Me.CBSymbDirekt.Checked = C_XML.P_CBSymbDirekt
-        Me.CBSymbRWSuche.Checked = C_XML.P_CBSymbRWSuche
-        Me.CBSymbVIP.Checked = C_XML.P_CBSymbVIP '
-        Me.CBSymbJournalimport.Checked = C_XML.P_CBSymbJournalimport
+        Me.CBSymbWwdh.Checked = C_DP.P_CBSymbWwdh
+        Me.CBSymbAnrMon.Checked = C_DP.P_CBSymbAnrMon
+        Me.CBSymbAnrMonNeuStart.Checked = C_DP.P_CBSymbAnrMonNeuStart
+        Me.CBSymbAnrListe.Checked = C_DP.P_CBSymbAnrListe
+        Me.CBSymbDirekt.Checked = C_DP.P_CBSymbDirekt
+        Me.CBSymbRWSuche.Checked = C_DP.P_CBSymbRWSuche
+        Me.CBSymbVIP.Checked = C_DP.P_CBSymbVIP '
+        Me.CBSymbJournalimport.Checked = C_DP.P_CBSymbJournalimport
 #End If
-        Me.CBJImport.Checked = C_XML.P_CBJImport
+        Me.CBJImport.Checked = C_DP.P_CBJImport
         ' Einstellungen füer die Rückwärtssuche laden
-        Me.CBKHO.Checked = C_XML.P_CBKHO
-        Me.CBRWSIndex.Checked = C_XML.P_CBRWSIndex
+        Me.CBKHO.Checked = C_DP.P_CBKHO
+        Me.CBRWSIndex.Checked = C_DP.P_CBRWSIndex
 
-        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(C_XML.P_CBoxRWSuche)
+        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(C_DP.P_CBoxRWSuche)
         If Not Me.CBRueckwaertssuche.Checked Then Me.ComboBoxRWS.Enabled = False
         ' Einstellungen für das Journal laden
 
-        Me.CBJournal.Checked = C_XML.P_CBJournal
-        Me.CBUseAnrMon.Checked = C_XML.P_CBUseAnrMon
-        Me.CBCheckMobil.Checked = C_XML.P_CBCheckMobil
+        Me.CBJournal.Checked = C_DP.P_CBJournal
+        Me.CBUseAnrMon.Checked = C_DP.P_CBUseAnrMon
+        Me.CBCheckMobil.Checked = C_DP.P_CBCheckMobil
 
         Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
         Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
         'StoppUhr
-        Me.CBStoppUhrEinblenden.Checked = C_XML.P_CBStoppUhrEinblenden
-        Me.CBStoppUhrAusblenden.Checked = C_XML.P_CBStoppUhrAusblenden
-        Me.TBStoppUhr.Text = CStr(C_XML.P_TBStoppUhr)
+        Me.CBStoppUhrEinblenden.Checked = C_DP.P_CBStoppUhrEinblenden
+        Me.CBStoppUhrAusblenden.Checked = C_DP.P_CBStoppUhrAusblenden
+        Me.TBStoppUhr.Text = CStr(C_DP.P_TBStoppUhr)
 
         Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
         If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
         Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
 
         'Telefonnummernformat
-        Me.TBTelNrMaske.Text = C_XML.P_TBTelNrMaske
-        Me.CBTelNrGruppieren.Checked = C_XML.P_CBTelNrGruppieren
-        Me.CBintl.Checked = C_XML.P_CBintl
-        Me.CBIgnoTelNrFormat.Checked = C_XML.P_CBIgnoTelNrFormat
+        Me.TBTelNrMaske.Text = C_DP.P_TBTelNrMaske
+        Me.CBTelNrGruppieren.Checked = C_DP.P_CBTelNrGruppieren
+        Me.CBintl.Checked = C_DP.P_CBintl
+        Me.CBIgnoTelNrFormat.Checked = C_DP.P_CBIgnoTelNrFormat
 
 #If OVer < 14 Then
         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
         'Phoner
-        Dim PhonerVerfuegbar As Boolean = C_XML.P_PhonerVerfügbar
+        Dim PhonerVerfuegbar As Boolean = C_DP.P_PhonerVerfügbar
         Dim TelName() As String
         Me.PanelPhoner.Enabled = PhonerVerfuegbar
         If PhonerVerfuegbar Then
-            Me.CBPhoner.Checked = C_XML.P_CBPhoner
+            Me.CBPhoner.Checked = C_DP.P_CBPhoner
         Else
             Me.CBPhoner.Checked = False
         End If
         Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfuegbar, "", " nicht")), , , CompareMethod.Text)
-        'Me.CBPhonerKeineFB.Checked = CBool(IIf(C_XML.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
+        'Me.CBPhonerKeineFB.Checked = CBool(IIf(C_DP.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
         'If Not Me.CBPhonerKeineFB.Checked Then
         For i = 20 To 29
-            TelName = Split(C_XML.Read("Telefone", CStr(i), "-1;"), ";", , CompareMethod.Text)
-            If Not TelName(0) = "-1" And Not TelName.Length = 2 Then
+            TelName = Split(C_DP.Read("Telefone", CStr(i), "-1;"), ";", , CompareMethod.Text)
+            If Not TelName(0) = C_DP.P_Def_ErrorMinusOne And Not TelName.Length = 2 Then
                 Me.ComboBoxPhonerSIP.Items.Add(TelName(2))
             End If
         Next
         If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then
-            Me.ComboBoxPhonerSIP.SelectedIndex = C_XML.P_ComboBoxPhonerSIP
+            Me.ComboBoxPhonerSIP.SelectedIndex = C_DP.P_ComboBoxPhonerSIP
         End If
         'Else
         'Me.ComboBoxPhonerSIP.SelectedIndex = 0
         'Me.ComboBoxPhonerSIP.Enabled = False
         'End If
-        Me.CBPhonerAnrMon.Checked = C_XML.P_CBPhonerAnrMon
-        If Not Len(C_XML.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
+        Me.CBPhonerAnrMon.Checked = C_DP.P_CBPhonerAnrMon
+        If Not Len(C_DP.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
 
         Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
         Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
-        C_XML.P_PhonerVerfügbar = PhonerInstalliert
+        C_DP.P_PhonerVerfügbar = PhonerInstalliert
         ' Tooltipp
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
 
@@ -235,9 +235,9 @@ Friend Class formCfg
             .Add("Telefon")
             .Add("TelName")
         End With
-        Nebenstellen = Split(C_XML.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
+        Nebenstellen = Split(C_DP.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
 
-        If Not Nebenstellen(0) = "-1" Then
+        If Not Nebenstellen(0) = C_DP.P_Def_ErrorMinusOne Then
             With Me.TelList
                 .Rows.Clear()
                 j = 0
@@ -252,20 +252,20 @@ Friend Class formCfg
                         .Add("Telefon")
                         .Add("[TelName = """ & Nebenstelle & """]")
                         .Add("@Standard")
-                        Zeile.Add(CBool(C_XML.Read(xPathTeile, "False")))
+                        Zeile.Add(CBool(C_DP.Read(xPathTeile, "False")))
                         Zeile.Add(CStr(j))
                         .Item(.Count - 1) = "@Dialport"
-                        Zeile.Add(C_XML.Read(xPathTeile, "-1;")) 'Nebenstelle
+                        Zeile.Add(C_DP.Read(xPathTeile, "-1;")) 'Nebenstelle
                         .RemoveAt(.Count - 1)
-                        Zeile.Add(C_XML.ReadElementName(xPathTeile, "-1;")) 'Telefontyp
+                        Zeile.Add(C_DP.ReadElementName(xPathTeile, "-1;")) 'Telefontyp
                         Zeile.Add(Nebenstelle) ' TelName
                         .Add("TelNr")
-                        Zeile.Add(Replace(C_XML.Read(xPathTeile, "-"), ";", ", ", , , CompareMethod.Text)) 'TelNr
+                        Zeile.Add(Replace(C_DP.Read(xPathTeile, "-"), ";", ", ", , , CompareMethod.Text)) 'TelNr
                         .Item(.Count - 1) = "Eingehend"
-                        Zeile.Add(C_XML.Read(xPathTeile, "0")) 'Eingehnd
+                        Zeile.Add(C_DP.Read(xPathTeile, "0")) 'Eingehnd
                         tmpein(0) += CDbl(Zeile.Item(Zeile.Count - 1))
                         .Item(.Count - 1) = "Ausgehend"
-                        Zeile.Add(C_XML.Read(xPathTeile, "0")) 'Ausgehnd
+                        Zeile.Add(C_DP.Read(xPathTeile, "0")) 'Ausgehnd
                         tmpein(1) += CDbl(Zeile.Item(Zeile.Count - 1))
                         Zeile.Add(CStr(CDbl(Zeile.Item(Zeile.Count - 2)) + CDbl(Zeile.Item(Zeile.Count - 1)))) 'Gesamt
                         tmpein(2) += CDbl(Zeile.Item(Zeile.Count - 1))
@@ -290,12 +290,12 @@ Friend Class formCfg
             End With
         End If
 
-        Me.TBAnderes.Text = C_XML.P_StatVerpasst & " verpasste Telefonate" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.P_StatNichtErfolgreich & " nicht erfolgreiche Telefonate" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.P_StatKontakt & " erstellte Kontakte" & vbCrLf
-        Me.TBAnderes.Text = Me.TBAnderes.Text & C_XML.P_StatJournal & " erstellte Journaleinträge" & vbCrLf
-        Me.TBReset.Text = "Letzter Reset: " & C_XML.P_StatResetZeit
-        Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_XML.P_StatOLClosedZeit
+        Me.TBAnderes.Text = C_DP.P_StatVerpasst & " verpasste Telefonate" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_DP.P_StatNichtErfolgreich & " nicht erfolgreiche Telefonate" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_DP.P_StatKontakt & " erstellte Kontakte" & vbCrLf
+        Me.TBAnderes.Text = Me.TBAnderes.Text & C_DP.P_StatJournal & " erstellte Journaleinträge" & vbCrLf
+        Me.TBReset.Text = "Letzter Reset: " & C_DP.P_StatResetZeit
+        Me.TBSchließZeit.Text = "Letzter Journaleintrag: " & C_DP.P_StatOLClosedZeit
         xPathTeile = Nothing
         Zeile = Nothing
     End Sub
@@ -308,10 +308,10 @@ Friend Class formCfg
             .Add("Nummern")
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
-            TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(xPathTeile, ""), ";", , CompareMethod.Text)
+            TelNrString = Split("Alle Telefonnummern;" & C_DP.Read(xPathTeile, ""), ";", , CompareMethod.Text)
 
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like "" Select x).ToArray ' Leere entfernen
+            TelNrString = (From x In TelNrString Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString
@@ -322,7 +322,7 @@ Friend Class formCfg
             For i = 1 To Me.CLBTelNr.Items.Count - 1
                 .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
                 .Item(.Count - 1) = "@Checked"
-                Me.CLBTelNr.SetItemChecked(i, C_Helfer.IsOneOf("1", Split(C_XML.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
+                Me.CLBTelNr.SetItemChecked(i, C_Helfer.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
             Next
         End With
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
@@ -351,29 +351,22 @@ Friend Class formCfg
                 Next
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Add("[" & tmpTeile & "]")
-                C_XML.WriteAttribute(xPathTeile, "Checked", "0")
+                C_DP.WriteAttribute(xPathTeile, "Checked", "0")
                 tmpTeile = vbNullString
                 For i = 0 To CheckTelNr.Count - 1
                     tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
                 Next
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Item(.Count - 1) = "[" & tmpTeile & "]"
-                C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+                C_DP.WriteAttribute(xPathTeile, "Checked", "1")
             End With
         End If
 
         ' Sichert die Einstellungen und schließt das Fenster
         If (CInt(Me.TBEnblDauer.Text) < 4) Then Me.TBEnblDauer.Text = "4"
-        With C_XML
+        With C_DP
 
-
-
-            ' So ist es schön:
-            C_FBox.P_FBAddr = Me.TBFBAdr.Text
-            ' So nicht:
-            ThisAddIn.P_AnrMon.P_FBAddr = Me.TBFBAdr.Text
             .P_CBForceFBAddr = Me.CBForceFBAddr.Checked
-
 
             If Me.TBBenutzer.Text = vbNullString Then
                 With xPathTeile
@@ -381,7 +374,7 @@ Friend Class formCfg
                     .Add("Optionen")
                     .Add("TBBenutzer")
                 End With
-                C_XML.Delete(xPathTeile)
+                C_DP.Delete(xPathTeile)
             Else
                 .P_TBBenutzer = Me.TBBenutzer.Text
             End If
@@ -400,7 +393,7 @@ Friend Class formCfg
             End If
 
             .P_TBLandesVW = Me.TBLandesVW.Text
-            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = "", "-1", Me.TBAmt.Text))
+            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = C_DP.P_Def_StringEmpty, "-1", Me.TBAmt.Text))
             .P_TBFBAdr = Me.TBFBAdr.Text
             .P_TBVorwahl = Me.TBVorwahl.Text
 
@@ -466,7 +459,7 @@ Friend Class formCfg
                 .Add(vbNullString)
                 For i = 0 To TelList.Rows.Count - 2
                     .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
-                    C_XML.WriteAttribute(xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
+                    C_DP.WriteAttribute(xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
                 Next
             End With
             ' Phoner
@@ -474,8 +467,8 @@ Friend Class formCfg
             Dim PhonerTelNameIndex As Integer = 0
 
             For i = 20 To 29
-                TelName = Split(C_XML.Read("Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
-                If Not TelName(0) = "-1" And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
+                TelName = Split(C_DP.Read("Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
+                If Not TelName(0) = C_DP.P_Def_ErrorMinusOne And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
                     If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
                         PhonerTelNameIndex = i
                         Exit For
@@ -484,14 +477,14 @@ Friend Class formCfg
             Next
             .P_PhonerTelNameIndex = PhonerTelNameIndex
             'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
-            If Me.TBPhonerPasswort.Text = "" And Me.CBPhoner.Checked Then
+            If Me.TBPhonerPasswort.Text = C_DP.P_Def_StringEmpty And Me.CBPhoner.Checked Then
                 If C_Helfer.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
                     Speichern = False
                 End If
             End If
 
             If Me.CBPhoner.Checked Then
-                If Not Me.TBPhonerPasswort.Text = "" Then
+                If Not Me.TBPhonerPasswort.Text = C_DP.P_Def_StringEmpty Then
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
                         .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, "Fritz!Box Script")
                         SaveSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "Fritz!Box Script")
@@ -525,7 +518,7 @@ Friend Class formCfg
                 ' Startwerte zurücksetzen
                 ' Einstellungen für das Wählmakro zurücksetzen
                 Me.TBLandesVW.Text = "0049"
-                Me.TBAmt.Text = ""
+                Me.TBAmt.Text = C_DP.P_Def_StringEmpty
                 Me.CBCheckMobil.Checked = True
 
                 ' Einstellungen für den Anrufmonitor zurücksetzen
@@ -595,7 +588,7 @@ Friend Class formCfg
                 End With
             Case "ButtonOK"
                 Dim formschließen As Boolean = Speichern()
-                C_XML.P_CBUseAnrMon = Me.CBUseAnrMon.Checked
+                C_DP.P_CBUseAnrMon = Me.CBUseAnrMon.Checked
 #If OVer >= 14 Then
                 C_GUI.RefreshRibbon()
 #End If
@@ -610,11 +603,11 @@ Friend Class formCfg
             Case "ButtonUebernehmen"
                 Speichern()
             Case "ButtonXML"
-                System.Diagnostics.Process.Start(C_XML.GetXMLDateiPfad)
+                System.Diagnostics.Process.Start(C_DP.GetXMLDateiPfad)
             Case "BAnrMonTest"
                 Speichern()
-                Dim ID As Integer = CInt(C_XML.Read("letzterAnrufer", "Letzter", CStr(0)))
-                Dim forman As New formAnrMon(ID, False, C_XML, C_Helfer, C_AnrMon, C_OlI)
+                Dim ID As Integer = CInt(C_DP.Read("letzterAnrufer", "Letzter", CStr(0)))
+                Dim forman As New formAnrMon(ID, False, C_DP, C_Helfer, C_AnrMon, C_OlI)
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
@@ -667,20 +660,20 @@ Friend Class formCfg
                 fDialg = Nothing
             Case "BResetStat"
                 Dim xPathTeile As New ArrayList
-                C_XML.Delete("Statistik")
+                C_DP.Delete("Statistik")
                 With xPathTeile
                     .Add("Statistik")
                     .Add("ResetZeit")
-                    C_XML.Write(xPathTeile, CStr(System.DateTime.Now))
+                    C_DP.Write(xPathTeile, CStr(System.DateTime.Now))
                     .Clear()
                     .Add("Telefone")
                     .Add("Telefone")
                     .Add("*")
                     .Add("Telefon")
                     .Add("Eingehend")
-                    C_XML.Write(xPathTeile, "0")
+                    C_DP.Write(xPathTeile, "0")
                     .Item(.Count - 1) = "Ausgehend"
-                    C_XML.Write(xPathTeile, "0")
+                    C_DP.Write(xPathTeile, "0")
                 End With
                 FillTelListe()
                 xPathTeile = Nothing
@@ -698,13 +691,13 @@ Friend Class formCfg
                 Dim StartPosition As System.Drawing.Point
                 Dim x As Integer = 0
                 Dim y As Integer = 0
-                If C_XML.P_CBStoppUhrAusblenden Then
+                If C_DP.P_CBStoppUhrAusblenden Then
                     WarteZeit = CInt(Me.TBStoppUhr.Text)
                 Else
                     WarteZeit = -1
                 End If
 
-                StartPosition = New System.Drawing.Point(C_XML.P_CBStoppUhrX, C_XML.P_CBStoppUhrY)
+                StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
                 For Each Bildschirm In Windows.Forms.Screen.AllScreens
                     x += Bildschirm.Bounds.Size.Width
                     y += Bildschirm.Bounds.Size.Height
@@ -724,8 +717,8 @@ Friend Class formCfg
                     Thread.Sleep(20)
                     Windows.Forms.Application.DoEvents()
                 Loop
-                C_XML.P_CBStoppUhrX = frmStUhr.Position.X
-                C_XML.P_CBStoppUhrY = frmStUhr.Position.Y
+                C_DP.P_CBStoppUhrX = frmStUhr.Position.X
+                C_DP.P_CBStoppUhrY = frmStUhr.Position.Y
                 frmStUhr = Nothing
         End Select
     End Sub
@@ -911,9 +904,9 @@ Friend Class formCfg
 
     Private Sub NewMail()
         Dim NeueFW As Boolean
-        Dim SID As String = C_FBox.P_DefaultSID
+        Dim SID As String = C_DP.P_Def_FritzBoxAdress
         Dim URL As String
-        Dim FBOX_ADR As String = C_XML.P_TBFBAdr
+        Dim FBOX_ADR As String = C_DP.P_TBFBAdr
 
         Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
         Dim MailText As String
@@ -924,9 +917,9 @@ Friend Class formCfg
         Dim FBPasswort As String
 
         'C_FBox = Nothing
-        'C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
+        'C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         C_FBox.SetEventProvider(emc)
-        Do While SID = C_FBox.P_DefaultSID
+        Do While SID = C_DP.P_Def_FritzBoxAdress
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
@@ -952,7 +945,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeuEmail(PfadTMPfile, C_XML.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(FBOX_ADR))
+        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(FBOX_ADR))
     End Sub
 
     Public Function SetTelNrListe() As Boolean
@@ -1180,7 +1173,7 @@ Friend Class formCfg
     Sub FillLogTB()
         Dim LogDatei As String = C_Helfer.Dateipfade("LogDatei")
 
-        If C_XML.P_CBLogFile Then
+        If C_DP.P_CBLogFile Then
             If My.Computer.FileSystem.FileExists(LogDatei) Then
                 Me.TBLogging.Text = My.Computer.FileSystem.OpenTextFileReader(LogDatei).ReadToEnd
             End If
@@ -1299,7 +1292,7 @@ Friend Class formCfg
         BWIndexer.Dispose()
         Dauer = Date.Now - Startzeit
         If Me.RadioButtonErstelle.Checked And Not Me.RadioButtonEntfernen.Checked Then
-            C_XML.P_LLetzteIndizierung = Date.Now
+            C_DP.P_LLetzteIndizierung = Date.Now
             C_Helfer.LogFile("Indizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
         ElseIf Me.RadioButtonEntfernen.Checked And Not Me.RadioButtonErstelle.Checked Then
             C_Helfer.LogFile("Deindizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
@@ -1335,19 +1328,19 @@ Friend Class formCfg
                 .Item(.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
                 .Item(.Count - 1) = "TelName"
                 ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
-                tmpTelefon = C_XML.Read(xPathTeile, "-1")
-                If Not tmpTelefon = "-1" Then
+                tmpTelefon = C_DP.Read(xPathTeile, "-1")
+                If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne Then
                     .Item(.Count - 1) = "TelNr"
                     If (TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing) Then
                         If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
-                            C_XML.Read(xPathTeile, "-1") = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
+                            C_DP.Read(xPathTeile, "-1") = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
                             Dim Dauer As Date
                             .Item(.Count - 1) = "Eingehend"
                             Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-                            C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
                             .Item(.Count - 1) = "Ausgehend"
                             Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-                            C_XML.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
                         End If
                     End If
                 End If
@@ -1366,7 +1359,7 @@ Friend Class formCfg
                 Next
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Add("[" & tmpTeile & "]")
-                C_XML.WriteAttribute(xPathTeile, "Checked", "1")
+                C_DP.WriteAttribute(xPathTeile, "Checked", "1")
             End If
         End With
 
@@ -1413,7 +1406,7 @@ Friend Class formCfg
         Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
-        C_XML.P_PhonerVerfügbar = PhonerInstalliert
+        C_DP.P_PhonerVerfügbar = PhonerInstalliert
     End Sub
 
     Private Sub CBPhoner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CBPhoner.CheckedChanged

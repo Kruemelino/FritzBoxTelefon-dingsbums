@@ -4,7 +4,7 @@ Imports System.IO.Path
 Friend Class formAnrMon
     Private TelefonName As String
     Private aID As Integer
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private HelferFunktionen As Helfer
     Private TelNr As String              ' TelNr des Anrufers
     Private KontaktID As String              ' KontaktID des Anrufers
@@ -18,7 +18,7 @@ Friend Class formAnrMon
 
     Public Sub New(ByVal iAnrufID As Integer, _
                    ByVal Aktualisieren As Boolean, _
-                   ByVal XMLKlasse As DataProvider, _
+                   ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal AnrufMon As AnrufMonitor, _
                    ByVal OutlInter As OutlookInterface)
@@ -29,7 +29,7 @@ Friend Class formAnrMon
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         'If ThisAddIn.Debug Then ThisAddIn.Diagnose.AddLine("formAnrMon aufgerufen")
         aID = iAnrufID
-        C_XML = XMLKlasse
+        C_DP = DataProviderKlasse
         OlI = OutlInter
         AnrMon = AnrufMon
         AnrMonausfüllen()
@@ -46,13 +46,13 @@ Friend Class formAnrMon
         OlI.InspectorVerschieben(True)
 
         With PopupNotifier
-            .ShowDelay = C_XML.P_TBEnblDauer * 1000
-            .AutoAusblenden = C_XML.P_CBAutoClose
-            Dim FormVerschiebung As New Drawing.Size(C_XML.P_TBAnrMonX, C_XML.P_TBAnrMonY)
+            .ShowDelay = C_DP.P_TBEnblDauer * 1000
+            .AutoAusblenden = C_DP.P_CBAutoClose
+            Dim FormVerschiebung As New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
             .PositionsKorrektur = FormVerschiebung
-            .EffektMove = C_XML.P_CBAnrMonMove
-            .EffektTransparenz = C_XML.P_CBAnrMonTransp
-            .EffektMoveGeschwindigkeit = C_XML.P_TBAnrMonMoveGeschwindigkeit * 10
+            .EffektMove = C_DP.P_CBAnrMonMove
+            .EffektTransparenz = C_DP.P_CBAnrMonTransp
+            .EffektMoveGeschwindigkeit = 10 * (10 - C_DP.P_TBAnrMonMoveGeschwindigkeit)
             .Popup()
         End With
         OlI.InspectorVerschieben(False)
@@ -74,27 +74,27 @@ Friend Class formAnrMon
             .Add("LetzterAnrufer")
             .Add("Eintrag[@ID = """ & aID & """]")
             .Add("Zeit")
-            Uhrzeit = C_XML.Read(xPathTeile, CStr(DateTime.Now))
+            Uhrzeit = C_DP.Read(xPathTeile, CStr(DateTime.Now))
 
             .Item(.Count - 1) = "Anrufer"
-            AnrName = C_XML.Read(xPathTeile, "")
+            AnrName = C_DP.Read(xPathTeile, "")
 
             .Item(.Count - 1) = "TelNr"
-            TelNr = C_XML.Read(xPathTeile, "unbekannt")
+            TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
 
             .Item(.Count - 1) = "MSN"
-            MSN = C_XML.Read(xPathTeile, "")
+            MSN = C_DP.Read(xPathTeile, "")
 
             .Item(.Count - 1) = "StoreID"
-            StoreID = C_XML.Read(xPathTeile, "-1")
+            StoreID = C_DP.Read(xPathTeile, "-1")
 
             .Item(.Count - 1) = "KontaktID"
-            KontaktID = C_XML.Read(xPathTeile, "-1")
+            KontaktID = C_DP.Read(xPathTeile, "-1")
         End With
 
         TelefonName = AnrMon.TelefonName(MSN)
         With PopupNotifier
-            If TelNr = "unbekannt" Then
+            If TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
                     .Items("ToolStripMenuItemRückruf").Enabled = False ' kein Rückruf im Fall 1
                     .Items("ToolStripMenuItemKopieren").Enabled = False ' in dem Fall sinnlos
@@ -104,14 +104,14 @@ Friend Class formAnrMon
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = Uhrzeit
             ' Telefonnamen eintragen
-            .TelName = TelefonName & CStr(IIf(C_XML.P_CBShowMSN, " (" & MSN & ")", vbNullString))
+            .TelName = TelefonName & CStr(IIf(C_DP.P_CBShowMSN, " (" & MSN & ")", vbNullString))
 
-            If Not Strings.Left(KontaktID, 2) = "-1" Then
+            If Not Strings.Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                 If Not TimerAktualisieren Is Nothing Then HelferFunktionen.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
                     OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
-                    If C_XML.P_CBAnrMonContactImage Then
+                    If C_DP.P_CBAnrMonContactImage Then
                         Dim BildPfad = OlI.KontaktBild(KontaktID, StoreID)
                         If Not BildPfad Is vbNullString Then
                             PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)
@@ -122,9 +122,9 @@ Friend Class formAnrMon
                     End If
                 Catch ex As Exception
                     HelferFunktionen.LogFile("formAnrMon: Fehler beim Öffnen des Kontaktes " & AnrName & " (" & ex.Message & ")")
-                    .Firma = ""
-                    If AnrName = "" Then
-                        .TelNr = ""
+                    .Firma = C_DP.P_Def_StringEmpty
+                    If AnrName = C_DP.P_Def_StringEmpty Then
+                        .TelNr = C_DP.P_Def_StringEmpty
                         .AnrName = TelNr
                     Else
                         .TelNr = TelNr
@@ -134,9 +134,9 @@ Friend Class formAnrMon
 
                 .TelNr = TelNr
             Else
-                .Firma = ""
-                If AnrName = "" Then
-                    .TelNr = ""
+                .Firma = C_DP.P_Def_StringEmpty
+                If AnrName = C_DP.P_Def_StringEmpty Then
+                    .TelNr = C_DP.P_Def_StringEmpty
                     .AnrName = TelNr
                 Else
                     .TelNr = TelNr

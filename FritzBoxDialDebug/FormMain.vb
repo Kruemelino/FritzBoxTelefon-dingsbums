@@ -1,7 +1,7 @@
 ﻿Imports System.Text
 
 Public Class FormMain
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private C_Helfer As Helfer
     Private C_Crypt As Rijndael
     Private C_FBox As FritzBox
@@ -21,21 +21,21 @@ Public Class FormMain
         If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_XML = New DataProvider(DateiPfad)
+        C_DP = New DataProvider(DateiPfad)
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
-        C_Helfer = New Helfer(DateiPfad, C_XML, C_Crypt)
+        C_Helfer = New Helfer(DateiPfad, C_DP, C_Crypt)
 
-        C_FBox = New FritzBox(C_XML, C_Helfer, C_Crypt)
+        C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-        Me.TBLandesVW.Text = C_XML.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
-        Me.TBBenutzer.Text = C_XML.P_TBBenutzer 'Read("Optionen", "TBBenutzer", vbNullString)
-        If Not Len(C_XML.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
-        Me.TBVorwahl.Text = C_XML.P_TBVorwahl
+        Me.TBLandesVW.Text = C_DP.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
+        Me.TBBenutzer.Text = C_DP.P_TBBenutzer 'Read("Optionen", "TBBenutzer", vbNullString)
+        If Not Len(C_DP.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
+        Me.TBVorwahl.Text = C_DP.P_TBVorwahl
     End Sub
 
     Public Function AddLine(ByVal Zeile As String) As Boolean
@@ -63,11 +63,11 @@ Public Class FormMain
     End Sub
 
     Private Sub BStart_Click(sender As Object, e As EventArgs) Handles BStart.Click
-        C_XML.P_TBLandesVW = Me.TBLandesVW.Text
-        C_XML.P_TBBenutzer = Me.TBBenutzer.Text
-        C_XML.P_TBVorwahl = Me.TBVorwahl.Text
+        C_DP.P_TBLandesVW = Me.TBLandesVW.Text
+        C_DP.P_TBBenutzer = Me.TBBenutzer.Text
+        C_DP.P_TBVorwahl = Me.TBVorwahl.Text
         If Not Me.TBPasswort.Text = "1234" Then
-            C_XML.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
+            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
             SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
             C_Helfer.KeyChange()
         End If
@@ -85,7 +85,7 @@ Public Class FormMain
         Dim tempstring As String
 
         sSID = C_FBox.FBLogIn(FW550)
-        If Not sSID = C_FBox.P_DefaultSID Then
+        If Not sSID = C_DP.P_Def_FritzBoxAdress Then
             If FW550 Then
                 sLink = "http://fritz.box/fon_num/fon_num_list.lua?sid=" & sSID
             Else

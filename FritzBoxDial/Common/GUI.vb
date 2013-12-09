@@ -62,7 +62,7 @@
 #End Region
 
     Private HelferFunktionen As Helfer
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private Crypt As Rijndael
     Private Dateipfad As String
     Private Callclient As Wählclient
@@ -116,14 +116,14 @@
     End Sub
 
     Friend Sub New(ByVal HelferKlasse As Helfer, _
-               ByVal XMLKlasse As DataProvider, _
+               ByVal DataProviderKlasse As DataProvider, _
                ByVal CryptKlasse As Rijndael, _
                ByVal iniPfad As String, _
                ByVal Inverssuche As formRWSuche, _
                ByVal KontaktKlasse As Contacts, _
                ByVal Phonerklasse As PhonerInterface)
         HelferFunktionen = HelferKlasse
-        C_XML = XMLKlasse
+        C_DP = DataProviderKlasse
         Crypt = CryptKlasse
         Dateipfad = iniPfad
         RWSSuche = Inverssuche
@@ -286,7 +286,7 @@
                 XMLListBaseNode = "VIPListe"
         End Select
 
-        index = CInt(C_XML.Read(XMLListBaseNode, "Index", "0"))
+        index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
 
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
@@ -302,13 +302,13 @@
         If Not XMLListBaseNode = "VIPListe" Then
             For ID = index + 9 To index Step -1
 
-                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = "-1" Then
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne Then
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
                     MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = "-1", TelNr, Anrufer)) & """")
                     MyStringBuilder.Append(" onAction=""OnActionListen""")
@@ -325,10 +325,10 @@
             Next
         Else
             For ID = 0 To index - 1
-                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-                If Not Anrufer = "-1" Then
+                If Not Anrufer = C_DP.P_Def_ErrorMinusOne Then
 
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod index) & """")
                     MyStringBuilder.Append(" label=""" & CStr(Anrufer) & """")
@@ -364,7 +364,7 @@
                 XMLListBaseNode = "VIPListe"
         End Select
 
-        Return CBool(IIf(Not C_XML.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -388,7 +388,7 @@
     End Function
 
     Public Function UseAnrMon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return C_XML.P_CBUseAnrMon
+        Return C_DP.P_CBUseAnrMon
     End Function
 
     Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -426,10 +426,10 @@
     End Sub
 
     Public Function GetVisibleAnrMonFKT(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return C_XML.P_CBUseAnrMon
+        Return C_DP.P_CBUseAnrMon
     End Function
     Public Function GetEnabledJI(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return C_XML.P_CBJournal
+        Return C_DP.P_CBJournal
     End Function
     ' Ab Hier Rückrufe von Buttons
     Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
@@ -503,7 +503,7 @@
             If IsVIP(aktKontakt) Then
                 GetScreenTipVIP = "Entferne diesen Kontakt von der VIP-Liste."
             Else
-                If CLng(C_XML.Read("VIPListe", "Anzahl", "0")) >= 10 Then
+                If CLng(C_DP.Read("VIPListe", "Anzahl", "0")) >= 10 Then
                     GetScreenTipVIP = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
                 Else
                     GetScreenTipVIP = "Füge diesen Kontakt der VIP-Liste hinzu."
@@ -525,13 +525,13 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
-        IsVIP = Not C_XML.Read(xPathTeile, "-1") = "-1"
+        IsVIP = Not C_DP.Read(xPathTeile, "-1") = "-1"
         xPathTeile = Nothing
     End Function
 
     Friend Overloads Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
-        Dim Index As Integer = CInt(C_XML.Read("VIPListe", "Index", "0"))
+        Dim Index As Integer = CInt(C_DP.Read("VIPListe", "Index", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
 
@@ -562,7 +562,7 @@
         AttributeNames.Add("ID")
         AttributeValues.Add(CStr(Index))
 
-        With C_XML
+        With C_DP
             xPathTeile.RemoveRange(0, xPathTeile.Count)
             xPathTeile.Add("VIPListe")
             xPathTeile.Add("Index")
@@ -592,7 +592,7 @@
             oKontact = CType(CType(ThisAddIn.P_oApp.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Catch : End Try
 
-        AddVIP(oKontact)
+        Return AddVIP(oKontact)
     End Function
 
     Friend Function RemoveVIP(ByVal KontaktID As String, ByVal StoreID As String) As Boolean
@@ -606,28 +606,28 @@
             ' Anzahl Speichern
             .Add("VIPListe")
             .Add("Index")
-            Anzahl = CInt(C_XML.Read(xPathTeile, "0"))
+            Anzahl = CInt(C_DP.Read(xPathTeile, "0"))
             ' Index Speichern
             .Item(.Count - 1) = "Eintrag"
             .Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
             .Add("Index")
-            Index = CInt(C_XML.Read(xPathTeile, "0"))
+            Index = CInt(C_DP.Read(xPathTeile, "0"))
             ' Knoten löschen
             .Remove("Index")
-            C_XML.Delete(xPathTeile)
+            C_DP.Delete(xPathTeile)
             ' schleife durch jeden anderen Knoten und <Index> und Attribut ändern
             For i = Index + 1 To Anzahl - 1
                 .Item(.Count - 1) = "[@ID=""" & i & """]"
-                C_XML.WriteAttribute(xPathTeile, "ID", CStr(i - 1))
+                C_DP.WriteAttribute(xPathTeile, "ID", CStr(i - 1))
             Next
             'neue Anzahl (index) schreiben oder löschen
             .Remove(.Item(.Count - 1))
             .Remove("Eintrag")
-            If C_XML.SubNoteCount(xPathTeile) = 1 Then
+            If C_DP.SubNoteCount(xPathTeile) = 1 Then
                 .Add("Index")
-                C_XML.Delete(xPathTeile)
+                C_DP.Delete(xPathTeile)
             Else
-                C_XML.Write("VIPListe", "Index", CStr(Anzahl - 1))
+                C_DP.Write("VIPListe", "Index", CStr(Anzahl - 1))
             End If
 
         End With
@@ -638,7 +638,7 @@
         RefreshRibbon()
 #End If
         xPathTeile = Nothing
-        C_XML.SpeichereXMLDatei()
+        C_DP.SpeichereXMLDatei()
         Return True
     End Function
 #End Region
@@ -782,7 +782,7 @@
         Dim xPathTeile As New ArrayList
         Dim i As Integer
 
-        index = CInt(C_XML.Read(XMLListBaseNode, "Index", "0"))
+        index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
 
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
@@ -798,15 +798,15 @@
         If Not XMLListBaseNode = "VIPListe" Then
             For ID = index + 9 To index Step -1
 
-                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = "-1" Then
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne Then
                     With cPopUp.Controls.Item(i)
-                        If Anrufer = "" Then .Caption = TelNr Else .Caption = Anrufer
+                        If Anrufer = C_DP.P_Def_StringEmpty Then .Caption = TelNr Else .Caption = Anrufer
                         .TooltipText = "Zeit: " & Zeit & Environment.NewLine & "Telefonnummer: " & TelNr
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
@@ -825,10 +825,10 @@
         Else
             For ID = 0 To 9
 
-                C_XML.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not Anrufer = "-1" And Not Anrufer = "" Then
+                If Not Anrufer = C_DP.P_Def_ErrorMinusOne And Not Anrufer = C_DP.P_Def_StringEmpty Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
@@ -855,14 +855,14 @@
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_XML.P_CBSymbDirekt
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_XML.P_CBSymbAnrMon
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_XML.P_CBSymbAnrMon
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = C_XML.P_CBSymbAnrListe
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = C_XML.P_CBSymbWwdh
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_XML.P_CBSymbJournalimport
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_XML.P_CBSymbAnrMonNeuStart
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = C_XML.P_CBSymbVIP
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_DP.P_CBSymbDirekt
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_DP.P_CBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_DP.P_CBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = C_DP.P_CBSymbAnrListe
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = C_DP.P_CBSymbWwdh
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_DP.P_CBSymbJournalimport
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_DP.P_CBSymbAnrMonNeuStart
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = C_DP.P_CBSymbVIP
         Catch : End Try
     End Sub
 
@@ -919,24 +919,24 @@
 
         FillPopupItems("Wwdh")
         ' Direktwahl
-        ePopWwdh.Visible = C_XML.P_CBSymbWwdh
+        ePopWwdh.Visible = C_DP.P_CBSymbWwdh
         ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
         eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, "Direktwahl", i, 326, "IconandCaption", "Direktwahl", "Direktwahl")
         i += 1
 
-        eBtnDirektwahl.Visible = C_XML.P_CBSymbDirekt
+        eBtnDirektwahl.Visible = C_DP.P_CBSymbDirekt
         ' Symbol Anrufmonitor & Anzeigen
         eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor", i, 815, "IconandCaption", "Anrufmonitor", "Anrufmonitor starten oder stoppen") '815
 
         eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, "Anzeigen", i + 1, 682, "IconandCaption", "Anzeigen", "Letzte Anrufe anzeigen")
         i += 2
 
-        eBtnAnrMonitor.Visible = C_XML.P_CBSymbAnrMon
+        eBtnAnrMonitor.Visible = C_DP.P_CBSymbAnrMon
         eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
 
         eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor neustarten", i, 37, "IconandCaption", "AnrMonNeuStart", "")
         eBtnAnrMonNeuStart.TooltipText = "Startet den Anrufmonitor neu."
-        eBtnAnrMonNeuStart.Visible = C_XML.P_CBSymbAnrMonNeuStart
+        eBtnAnrMonNeuStart.Visible = C_DP.P_CBSymbAnrMonNeuStart
 
         i += 1
 
@@ -951,7 +951,7 @@
             HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
         FillPopupItems("AnrListe")
-        ePopAnr.Visible = C_XML.P_CBSymbAnrListe
+        ePopAnr.Visible = C_DP.P_CBSymbAnrListe
         ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
@@ -967,11 +967,11 @@
         End Try
         FillPopupItems("VIPListe")
         i += 1
-        ePopVIP.Visible = C_XML.P_CBSymbVIP
+        ePopVIP.Visible = C_DP.P_CBSymbVIP
         ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
 
         eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
-        eBtnJournalimport.Visible = C_XML.P_CBSymbJournalimport
+        eBtnJournalimport.Visible = C_DP.P_CBSymbJournalimport
         i += 1
         eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, "Einstellungen", i, 548, "IconandCaption", "Einstellungen", "Fritz!Box Einstellungen")
         i += 1
@@ -1002,7 +1002,7 @@
                 XMLListBaseNode = "VIPListe"
         End Select
 
-        Return CBool(IIf(Not C_XML.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
     End Function
 
 #End If
@@ -1017,7 +1017,7 @@
         Dim cmbErstellen As Boolean = True
         Dim i As Integer = 1
 
-        If C_XML.P_CBSymbRWSuche Then
+        If C_DP.P_CBSymbRWSuche Then
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.JournalItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
@@ -1071,7 +1071,7 @@
                     If IsVIP(olKontact) Then
                         .State = Office.MsoButtonState.msoButtonDown
                     Else
-                        If CLng(C_XML.Read("VIPListe", "Anzahl", "0")) >= 10 Then
+                        If CLng(C_DP.Read("VIPListe", "Anzahl", "0")) >= 10 Then
                             .TooltipText = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
                             .Enabled = False
                         Else
@@ -1079,7 +1079,7 @@
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
-                    .Visible = C_XML.P_CBSymbVIP
+                    .Visible = C_DP.P_CBSymbVIP
                 End With
             End If
             ' Journaleinträge
@@ -1107,22 +1107,22 @@
 
 #Region "Explorer Button Click"
     Friend Sub WähleDirektwahl()
-        P_WählKlient.Wählbox(Nothing, "", True)
+        P_WählKlient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, True, C_DP.P_Def_StringEmpty)
     End Sub
 
     Friend Sub ÖffneEinstellungen()
-        'Dim formConfig As New formCfg(Me, C_XML, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
+        'Dim formConfig As New formCfg(Me, C_DP, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
         ThisAddIn.P_Config.ShowDialog()
         Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
     End Sub
 
     Friend Sub ÖffneJournalImport()
-        Dim formjournalimort As New formJournalimport(AnrMon, HelferFunktionen, C_XML, True)
+        Dim formjournalimort As New formJournalimport(AnrMon, HelferFunktionen, C_DP, True)
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Dim ID As Integer = CInt(C_XML.Read("LetzterAnrufer", "Letzter", CStr(0)))
-        Dim forman As New formAnrMon(ID, False, C_XML, HelferFunktionen, AnrMon, OlI)
+        Dim ID As Integer = CInt(C_DP.Read("LetzterAnrufer", "Letzter", CStr(0)))
+        Dim forman As New formAnrMon(ID, False, C_DP, HelferFunktionen, AnrMon, OlI)
     End Sub
 
     Friend Sub AnrMonNeustarten()

@@ -2,7 +2,7 @@
 Imports System.Net.Sockets
 Imports System.IO
 Public Class PhonerInterface
-    Private C_XML As DataProvider
+    Private C_DP As DataProvider
     Private C_hf As Helfer
     Private C_Crypt As Rijndael
 
@@ -10,11 +10,11 @@ Public Class PhonerInterface
     Private PhonerAnrMonPort As Integer = 2012
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
-                   ByVal XMLKlasse As DataProvider, _
-                   ByVal cryptKlasse As Rijndael)
+                   ByVal DataProviderKlasse As DataProvider, _
+                   ByVal CryptKlasse As Rijndael)
 
-        C_Crypt = cryptKlasse
-        C_XML = XMLKlasse
+        C_Crypt = CryptKlasse
+        C_DP = DataProviderKlasse
         C_hf = HelferKlasse
     End Sub
 
@@ -24,9 +24,9 @@ Public Class PhonerInterface
 
     Public Function DialPhoner(ByVal dialCode As String) As String
         If PhonerReady() Then
-            Dim PhonerPasswort As String = C_XML.P_TBPhonerPasswort
+            Dim PhonerPasswort As String = C_DP.P_TBPhonerPasswort
             Dim ZugangPasswortPhoner As String = GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")
-            If Not PhonerPasswort = "-1" Or Not ZugangPasswortPhoner = "-1" Then
+            If Not PhonerPasswort = C_DP.P_Def_ErrorMinusOne Or Not ZugangPasswortPhoner = C_DP.P_Def_ErrorMinusOne Then
                 Dim Stream As NetworkStream
                 Dim remoteEP As New System.Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
                 Dim tcpClient As New TcpClient()
