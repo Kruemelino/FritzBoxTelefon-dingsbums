@@ -276,8 +276,8 @@ Friend Class AnrufMonitor
     End Sub
 
     Friend Function TelefonName(ByVal MSN As String) As String
-        TelefonName = vbNullString
-        If Not MSN = vbNullString Then
+        TelefonName = C_DP.P_Def_StringEmpty
+        If Not MSN = C_DP.P_Def_StringEmpty Then
             If Not AnrMonPhoner Then
                 Dim xPathTeile As New ArrayList
                 With xPathTeile
@@ -469,10 +469,10 @@ Friend Class AnrufMonitor
             'If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
             Dim TelNr As String            ' ermittelte TelNr
-            Dim Anrufer As String = vbNullString           ' ermittelter Anrufer
-            Dim vCard As String = vbNullString           ' vCard des Anrufers
-            Dim KontaktID As String = vbNullString             ' ID der Kontaktdaten des Anrufers
-            Dim StoreID As String = vbNullString           ' ID des Ordners, in dem sich der Kontakt befindet
+            Dim Anrufer As String = C_DP.P_Def_StringEmpty           ' ermittelter Anrufer
+            Dim vCard As String = C_DP.P_Def_StringEmpty           ' vCard des Anrufers
+            Dim KontaktID As String = C_DP.P_Def_StringEmpty             ' ID der Kontaktdaten des Anrufers
+            Dim StoreID As String = C_DP.P_Def_StringEmpty           ' ID des Ordners, in dem sich der Kontakt befindet
             Dim ID As Integer            ' ID des Telefonats
             Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
             Dim LetzterAnrufer(5) As String
@@ -512,8 +512,8 @@ Friend Class AnrufMonitor
 
             ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
             If Not TelNr = C_DP.P_Def_StringUnknown Then
-                Dim FullName As String = vbNullString
-                Dim CompanyName As String = vbNullString
+                Dim FullName As String = C_DP.P_Def_StringEmpty
+                Dim CompanyName As String = C_DP.P_Def_StringEmpty
                 ' Anrufer in den Outlook-Kontakten suchen
                 If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Then
                     C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
@@ -617,7 +617,7 @@ Friend Class AnrufMonitor
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)  ' Ausgehende eigene Telefonnummer, MSN
         Dim LandesVW As String = C_DP.P_TBLandesVW     ' eigene Landesvorwahl
         Dim TelNr As String                             ' ermittelte TelNr
-        Dim Anrufer As String = vbNullString            ' ermittelter Anrufer
+        Dim Anrufer As String = C_DP.P_Def_StringEmpty            ' ermittelter Anrufer
         Dim vCard As String = C_DP.P_Def_StringEmpty                        ' vCard des Anrufers
         Dim KontaktID As String = "-1;"                 ' ID der Kontaktdaten des Anrufers
         Dim StoreID As String = C_DP.P_Def_ErrorMinusOne                    ' ID des Ordners, in dem sich der Kontakt befindet
@@ -627,7 +627,7 @@ Friend Class AnrufMonitor
         Dim xPathTeile As New ArrayList
 
         ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
-        If MSN = vbNullString Then
+        If MSN = C_DP.P_Def_StringEmpty Then
             Select Case NSN
                 Case 0 To 2 ' FON1-3
                     NSN += 1
@@ -677,8 +677,8 @@ Friend Class AnrufMonitor
             ' Daten zurücksetzen
             'Anrufer = TelNr
             If Not TelNr = C_DP.P_Def_StringUnknown Then
-                Dim FullName As String = vbNullString
-                Dim CompanyName As String = vbNullString
+                Dim FullName As String = C_DP.P_Def_StringEmpty
+                Dim CompanyName As String = C_DP.P_Def_StringEmpty
                 ' Anrufer in den Outlook-Kontakten suchen
                 If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", LandesVW) Then
                     C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
@@ -774,11 +774,11 @@ Friend Class AnrufMonitor
 
 
         Dim xPathTeile As New ArrayList
-        Dim MSN As String = "-1"
+        Dim MSN As String = C_DP.P_Def_ErrorMinusOne
         Dim NSN As Integer
         Dim ID As Integer
         Dim Zeit As String
-
+        Dim TelName As String = C_DP.P_Def_StringEmpty
         If (C_DP.P_CBJournal) Or (C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
             ID = CInt(FBStatus.GetValue(2))
             NSN = CInt(FBStatus.GetValue(3))
@@ -808,8 +808,10 @@ Friend Class AnrufMonitor
                             .Add("*")
                             .Add("Telefon[@Dialport = """ & NSN & """]")
                             .Add("TelNr")
+                            MSN = C_DP.Read(xPathTeile, "")
+                            .Item(.Count - 1) = "TelName"
+                            TelName = C_DP.Read(xPathTeile, "")
                         End With
-                        MSN = C_DP.Read(xPathTeile, "")
                 End Select
             End If
 
@@ -837,7 +839,7 @@ Friend Class AnrufMonitor
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
                         With STUhrDaten(ID)
-                            .MSN = MSN
+                            .MSN = CStr(IIf(TelName = C_DP.P_Def_StringEmpty, MSN, TelName) )
                             .StartZeit = Zeit
                             .Abbruch = False
                         End With
@@ -875,15 +877,15 @@ Friend Class AnrufMonitor
         Dim vCard As String              ' vCard des Telefonpartners
         ' die zum Anruf gehörende MSN oder VoIP-Nr
         Dim TelName As String
-        Dim tmpTelName As String = vbNullString
+        Dim tmpTelName As String = C_DP.P_Def_StringEmpty
 
         Dim NSN As Double = -1
-        Dim Zeit As String = vbNullString
-        Dim Typ As String = vbNullString
-        Dim MSN As String = vbNullString
-        Dim TelNr As String = vbNullString
-        Dim StoreID As String = vbNullString
-        Dim KontaktID As String = vbNullString
+        Dim Zeit As String = C_DP.P_Def_StringEmpty
+        Dim Typ As String = C_DP.P_Def_StringEmpty
+        Dim MSN As String = C_DP.P_Def_StringEmpty
+        Dim TelNr As String = C_DP.P_Def_StringEmpty
+        Dim StoreID As String = C_DP.P_Def_StringEmpty
+        Dim KontaktID As String = C_DP.P_Def_StringEmpty
 
         Dim FritzFolderExists As Boolean = False
         Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
@@ -904,7 +906,7 @@ Friend Class AnrufMonitor
 
                 If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
-                    Body = "Tel.-Nr.: " & TelNr & vbCrLf & "Status: " & CStr(IIf(Dauer = 0, "nicht ", vbNullString)) & "angenommen" & vbCrLf & vbCrLf
+                    Body = "Tel.-Nr.: " & TelNr & vbCrLf & "Status: " & CStr(IIf(Dauer = 0, "nicht ", C_DP.P_Def_StringEmpty)) & "angenommen" & vbCrLf & vbCrLf
 
                     If Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                         ' kein Kontakt vorhanden
@@ -919,10 +921,10 @@ Friend Class AnrufMonitor
                         If Not vCard = C_DP.P_Def_StringEmpty Then Body = Body & "Kontaktdaten (vCard):" & vbCrLf & vCard & vbCrLf
                     Else
                         ' Kontakt in den 'Links' eintragen
-                        Dim FullName As String = vbNullString
-                        Dim CompanyName As String = vbNullString
-                        Dim HomeAddress As String = vbNullString
-                        Dim BusinessAddress As String = vbNullString
+                        Dim FullName As String = C_DP.P_Def_StringEmpty
+                        Dim CompanyName As String = C_DP.P_Def_StringEmpty
+                        Dim HomeAddress As String = C_DP.P_Def_StringEmpty
+                        Dim BusinessAddress As String = C_DP.P_Def_StringEmpty
 
                         C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName, BusinessAddress:=BusinessAddress, HomeAddress:=HomeAddress)
 
@@ -988,7 +990,7 @@ Friend Class AnrufMonitor
                     'End With
                     'TelName = C_DP.Read(xPathTeile, "")
                     ' Journaleintrag schreiben
-                    C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, vbNullString, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, vbNullString, " (" & TelName & ")")), _
+                    C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, C_DP.P_Def_StringEmpty, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & TelName & ")")), _
                                               Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
                                               Body:=Body, _
                                               Start:=CDate(Zeit), _
@@ -1059,32 +1061,32 @@ Friend Class AnrufMonitor
         Dim LAAttributeValues As New ArrayList
         Dim xPathTeile As New ArrayList
 
-        If Not Typ Is vbNullString Then
+        If Not Typ Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("Typ")
             LANodeValues.Add(Typ)
         End If
 
-        If Not Typ Is vbNullString Then
+        If Not Typ Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("Zeit")
             LANodeValues.Add(Zeit)
         End If
 
-        If Not MSN Is vbNullString Then
+        If Not MSN Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("MSN")
             LANodeValues.Add(MSN)
         End If
 
-        If Not TelNr Is vbNullString Then
+        If Not TelNr Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("TelNr")
             LANodeValues.Add(TelNr)
         End If
 
-        If Not KontaktID Is vbNullString Then
+        If Not KontaktID Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("KontaktID")
             LANodeValues.Add(KontaktID)
         End If
 
-        If Not StoreID Is vbNullString Then
+        If Not StoreID Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("StoreID")
             LANodeValues.Add(StoreID)
         End If
@@ -1206,7 +1208,7 @@ Friend Class AnrufMonitor
         LANodeValues.Add(LA(0))
 
         ' Anrufername
-        If Not LA(1) Is vbNullString Then
+        If Not LA(1) Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("Anrufer")
             LANodeValues.Add(LA(1))
         End If
@@ -1220,13 +1222,13 @@ Friend Class AnrufMonitor
         LANodeValues.Add(LA(3))
 
         ' StoreID
-        If Not LA(4) Is vbNullString Then
+        If Not LA(4) Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("StoreID")
             LANodeValues.Add(LA(4))
         End If
 
         ' KontaktID
-        If Not LA(4) Is vbNullString Then
+        If Not LA(4) Is C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("KontaktID")
             LANodeValues.Add(LA(5))
         End If
@@ -1272,17 +1274,17 @@ Friend Class AnrufMonitor
         xPathTeile.Add("TelNr")
         If Not C_DP.Read(xPathTeile, "0") = TelNr Then
 
-            If Not Anrufer Is vbNullString Then
+            If Not Anrufer Is C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(Anrufer)
             End If
 
-            If Not TelNr Is vbNullString Then
+            If Not TelNr Is C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("TelNr")
                 NodeValues.Add(TelNr)
             End If
 
-            If Not Zeit Is vbNullString Then
+            If Not Zeit Is C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("Zeit")
                 NodeValues.Add(Zeit)
             End If
@@ -1290,12 +1292,12 @@ Friend Class AnrufMonitor
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod 10))
 
-            If Not StoreID Is vbNullString Then
+            If Not StoreID Is C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(StoreID)
             End If
 
-            If Not KontaktID Is vbNullString Then
+            If Not KontaktID Is C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(KontaktID)
             End If

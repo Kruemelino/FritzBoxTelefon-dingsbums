@@ -78,7 +78,11 @@ Public Class Helfer
         If Not PingReply Is Nothing Then
             With PingReply
                 If .Status = NetworkInformation.IPStatus.Success Then
-                    IPAdresse = .Address.ToString
+                    If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
+                        IPAdresse = C_DP.P_Def_FritzBoxAdress
+                    Else
+                        IPAdresse = .Address.ToString
+                    End If
                     Ping = True
                 Else
                     Ping = False
@@ -146,7 +150,7 @@ Public Class Helfer
         Dim tempZugang As String
         Dim i As Long
 
-        If Not C_DP.P_TBPasswort Is vbNullString Then
+        If Not C_DP.P_TBPasswort Is C_DP.P_Def_StringEmpty Then
             tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 255)
@@ -156,7 +160,7 @@ Public Class Helfer
             SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
         End If
 
-        If Not C_DP.P_TBPhonerPasswort = vbNullString Then
+        If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
             tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 255)

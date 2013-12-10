@@ -92,7 +92,7 @@
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = vbNullString Or C_DP.P_TBVorwahl = vbNullString Or GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne Then
+        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne Then
             Rückgabe = False
             Me.ShowDialog()
             Rückgabe = True 'PrüfeAddin()
@@ -138,7 +138,7 @@
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
         C_Helfer.KeyChange()
         SID = C_FBox.FBLogIn(fw550)
-        If Not SID = C_DP.P_Def_FritzBoxAdress Then
+        If Not SID = C_DP.P_Def_SessionID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False
@@ -232,7 +232,7 @@
         End If
 
         Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = vbNullString
+        Dim tmpTeile As String = C_DP.P_Def_StringEmpty
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
@@ -244,7 +244,7 @@
             tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
             .Add("[" & tmpTeile & "]")
             C_DP.WriteAttribute(xPathTeile, "Checked", "0")
-            tmpTeile = vbNullString
+            tmpTeile = C_DP.P_Def_StringEmpty
             For i = 0 To CheckTelNr.Count - 1
                 tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
             Next

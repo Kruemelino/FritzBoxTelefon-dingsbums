@@ -19,10 +19,10 @@
             Case "Microsoft.Outlook.Contact"
                 File = GetResourceText("FritzBoxDial.RibbonKontakt.xml")
             Case Else
-                File = vbNullString
+                File = C_DP.P_Def_StringEmpty
         End Select
 #If OVer = 12 Then
-        If Not File = vbNullString Then
+        If Not File = C_DP.P_Def_StringEmpty Then
             File = Replace(File, "http://schemas.microsoft.com/office/2009/07/customui", "http://schemas.microsoft.com/office/2006/01/customui", , 1, CompareMethod.Text)
         End If
 #End If
@@ -496,7 +496,7 @@
     End Function
 
     Public Function GetScreenTipVIP(ByVal control As Microsoft.Office.Core.IRibbonControl) As String
-        GetScreenTipVIP = vbNullString
+        GetScreenTipVIP = C_DP.P_Def_StringEmpty
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
             Dim aktKontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
@@ -544,17 +544,17 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("ID[@ID=""" & Index & """]")
 
-        If Not Anrufer Is vbNullString Then
+        If Not Anrufer Is C_DP.P_Def_StringEmpty Then
             NodeNames.Add("Anrufer")
             NodeValues.Add(Anrufer)
         End If
 
-        If Not StoreID Is vbNullString Then
+        If Not StoreID Is C_DP.P_Def_StringEmpty Then
             NodeNames.Add("StoreID")
             NodeValues.Add(StoreID)
         End If
 
-        If Not KontaktID Is vbNullString Then
+        If Not KontaktID Is C_DP.P_Def_StringEmpty Then
             NodeNames.Add("KontaktID")
             NodeValues.Add(KontaktID)
         End If

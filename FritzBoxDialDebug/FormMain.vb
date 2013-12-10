@@ -85,7 +85,7 @@ Public Class FormMain
         Dim tempstring As String
 
         sSID = C_FBox.FBLogIn(FW550)
-        If Not sSID = C_DP.P_Def_FritzBoxAdress Then
+        If Not sSID = C_DP.P_Def_SessionID Then
             If FW550 Then
                 sLink = "http://fritz.box/fon_num/fon_num_list.lua?sid=" & sSID
             Else

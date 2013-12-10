@@ -113,7 +113,7 @@ Friend Class formJournalimport
 
         ThisAddIn.P_FritzBox.FBLogOut(SID)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is vbNullString Then
+        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is C_DP.P_Def_StringEmpty Then
 
             CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.
@@ -126,7 +126,7 @@ Friend Class formJournalimport
                 Loop Until AnrListe.GetValue(j).ToString = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer" Or j = AnrListe.Length
                 ' Ermittle die Position des Ersten und Letzten zu importierenden Telefonats
                 StartZeile = j + 1
-                If CStr(AnrListe.GetValue(j + 1)) = vbNullString Then
+                If CStr(AnrListe.GetValue(j + 1)) = C_DP.P_Def_StringEmpty Then
                     j += 1
                     StartZeile = j + 1
                 End If

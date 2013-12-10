@@ -104,7 +104,7 @@ Friend Class formAnrMon
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = Uhrzeit
             ' Telefonnamen eintragen
-            .TelName = TelefonName & CStr(IIf(C_DP.P_CBShowMSN, " (" & MSN & ")", vbNullString))
+            .TelName = TelefonName & CStr(IIf(C_DP.P_CBShowMSN, " (" & MSN & ")", C_DP.P_Def_StringEmpty))
 
             If Not Strings.Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                 If Not TimerAktualisieren Is Nothing Then HelferFunktionen.KillTimer(TimerAktualisieren)
@@ -113,7 +113,7 @@ Friend Class formAnrMon
                     OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
                     If C_DP.P_CBAnrMonContactImage Then
                         Dim BildPfad = OlI.KontaktBild(KontaktID, StoreID)
-                        If Not BildPfad Is vbNullString Then
+                        If Not BildPfad Is C_DP.P_Def_StringEmpty Then
                             PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)
                             ' Seitenverhältnisse anpassen
                             Dim Bildgröße As New Drawing.Size(PopupNotifier.ImageSize.Width, CInt((PopupNotifier.ImageSize.Width * PopupNotifier.Image.Size.Height) / PopupNotifier.Image.Size.Width))

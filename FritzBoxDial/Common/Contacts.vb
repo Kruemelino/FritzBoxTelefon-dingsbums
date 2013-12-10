@@ -53,10 +53,10 @@
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
         Dim alleTE(14) As String  ' alle TelNr/Email eines Kontakts
-        Dim sFilter As String = vbNullString
+        Dim sFilter As String = C_DP.P_Def_StringEmpty
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
-            If Not Absender = vbNullString Then
+            If Not Absender = C_DP.P_Def_StringEmpty Then
                 sFilter = String.Concat("[Email1Address] = """, Absender, """ OR [Email2Address] = """, Absender, """ OR [Email3Address] = """, Absender, """")
                 gefunden = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
             Else
@@ -263,7 +263,7 @@
                 alleTE(16) = .OtherFaxNumber
 
                 For i = LBound(alleTE) To UBound(alleTE)
-                    If Not alleTE(i) = vbNullString Then ' Fall: Telefonnummer vorhanden
+                    If Not alleTE(i) = C_DP.P_Def_StringEmpty Then ' Fall: Telefonnummer vorhanden
                         If .UserProperties.Find(UserProperties(i)) Is Nothing Then
                             .UserProperties.Add(UserProperties(i), Outlook.OlUserPropertyType.olText, False)
                         End If

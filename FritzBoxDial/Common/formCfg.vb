@@ -104,7 +104,7 @@ Friend Class formCfg
 
         Me.CBForceFBAddr.Checked = C_DP.P_CBForceFBAddr
         Me.TBBenutzer.Text = C_DP.P_TBBenutzer
-        If Not Me.TBBenutzer.Text = vbNullString Then
+        If Not Me.TBBenutzer.Text = C_DP.P_Def_StringEmpty Then
             If C_DP.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
                 Me.TBBenutzer.BackColor = Color.Red
                 Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
@@ -277,10 +277,10 @@ Friend Class formCfg
                     Zeile.Clear()
                 Next
                 Zeile.Add(False)
-                Zeile.Add(vbNullString)
-                Zeile.Add(vbNullString)
-                Zeile.Add(vbNullString)
-                Zeile.Add(vbNullString)
+                Zeile.Add(C_DP.P_Def_StringEmpty)
+                Zeile.Add(C_DP.P_Def_StringEmpty)
+                Zeile.Add(C_DP.P_Def_StringEmpty)
+                Zeile.Add(C_DP.P_Def_StringEmpty)
                 Zeile.Add("Gesamt:")
                 For i = 0 To 2
                     Zeile.Add(C_Helfer.GetTimeInterval(tmpein(i)))
@@ -333,7 +333,7 @@ Friend Class formCfg
     Private Function Speichern() As Boolean
         Speichern = True
         Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = vbNullString
+        Dim tmpTeile As String = C_DP.P_Def_StringEmpty
         Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
         If CheckTelNr.Count = 0 Then
             For i = 0 To Me.CLBTelNr.Items.Count - 1
@@ -352,7 +352,7 @@ Friend Class formCfg
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Add("[" & tmpTeile & "]")
                 C_DP.WriteAttribute(xPathTeile, "Checked", "0")
-                tmpTeile = vbNullString
+                tmpTeile = C_DP.P_Def_StringEmpty
                 For i = 0 To CheckTelNr.Count - 1
                     tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
                 Next
@@ -368,7 +368,7 @@ Friend Class formCfg
 
             .P_CBForceFBAddr = Me.CBForceFBAddr.Checked
 
-            If Me.TBBenutzer.Text = vbNullString Then
+            If Me.TBBenutzer.Text = C_DP.P_Def_StringEmpty Then
                 With xPathTeile
                     .Clear()
                     .Add("Optionen")
@@ -384,7 +384,7 @@ Friend Class formCfg
                 C_Helfer.KeyChange()
             End If
             ' StoppUhr
-            If Not Me.TBStoppUhr.Text = vbNullString Then
+            If Not Me.TBStoppUhr.Text = C_DP.P_Def_StringEmpty Then
                 If CInt(Me.TBStoppUhr.Text) < 0 Then
                     Me.TBStoppUhr.Text = "10"
                 End If
@@ -456,7 +456,7 @@ Friend Class formCfg
                 .Add("Telefone")
                 .Add("*")
                 .Add("Telefon")
-                .Add(vbNullString)
+                .Add(C_DP.P_Def_StringEmpty)
                 For i = 0 To TelList.Rows.Count - 2
                     .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
                     C_DP.WriteAttribute(xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
@@ -618,7 +618,7 @@ Friend Class formCfg
                     Me.Close()
                 End If
             Case "BStartDebug"
-                Me.TBDiagnose.Text = vbNullString
+                Me.TBDiagnose.Text = C_DP.P_Def_StringEmpty
                 AddLine("Start")
                 If Me.CBTelefonDatei.Checked Then
                     If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
@@ -768,7 +768,7 @@ Friend Class formCfg
                     Case "CBTelefonDatei"
                         Me.PTelefonDatei.Enabled = Me.CBTelefonDatei.Checked
                         If Not Me.CBTelefonDatei.Checked Then
-                            Me.TBTelefonDatei.Text = vbNullString
+                            Me.TBTelefonDatei.Text = C_DP.P_Def_StringEmpty
                         End If
                     Case "CBRueckwaertssuche"
                         ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
@@ -904,7 +904,7 @@ Friend Class formCfg
 
     Private Sub NewMail()
         Dim NeueFW As Boolean
-        Dim SID As String = C_DP.P_Def_FritzBoxAdress
+        Dim SID As String = C_DP.P_Def_SessionID
         Dim URL As String
         Dim FBOX_ADR As String = C_DP.P_TBFBAdr
 
@@ -919,7 +919,7 @@ Friend Class formCfg
         'C_FBox = Nothing
         'C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         C_FBox.SetEventProvider(emc)
-        Do While SID = C_DP.P_Def_FritzBoxAdress
+        Do While SID = C_DP.P_Def_SessionID
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
@@ -1194,7 +1194,7 @@ Friend Class formCfg
 
     Private Sub BLogging_Click(sender As Object, e As EventArgs) Handles BLogging.Click
         With Me.TBLogging
-            If .SelectedText = vbNullString Then
+            If .SelectedText = C_DP.P_Def_StringEmpty Then
                 My.Computer.Clipboard.SetText(.Text)
             Else
                 My.Computer.Clipboard.SetText(.SelectedText)
@@ -1303,7 +1303,7 @@ Friend Class formCfg
         AddLine("Einlesen der Telefone gestartet.")
         C_FBox.P_SpeichereDaten = CBool(e.Argument)
         e.Result = CBool(e.Argument)
-        If Me.TBTelefonDatei.Text = vbNullString Then
+        If Me.TBTelefonDatei.Text = C_DP.P_Def_StringEmpty Then
             C_FBox.FritzBoxDaten()
         Else
             C_FBox.FritzBoxDatenDebug(Me.TBTelefonDatei.Text)
@@ -1350,7 +1350,7 @@ Friend Class formCfg
             .Clear()
             Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
             If Not CheckTelNr.Count = 0 Then
-                Dim tmpTeile As String = vbNullString
+                Dim tmpTeile As String = C_DP.P_Def_StringEmpty
                 .Add("Telefone")
                 .Add("Nummern")
                 .Add("*")

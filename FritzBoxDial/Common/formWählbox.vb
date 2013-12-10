@@ -70,7 +70,7 @@ Friend Class formWählbox
 
         C_Phoner = PhonerKlasse
 
-        SID = C_DP.P_Def_FritzBoxAdress
+        SID = C_DP.P_Def_SessionID
         Me.FrameDirektWahl.Visible = bDirektwahl
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
@@ -108,7 +108,7 @@ Friend Class formWählbox
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
                 DialPort = C_DP.Read(xPathTeile, "-1")
-                tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", vbNullString))
+                tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", C_DP.P_Def_StringEmpty))
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
                 If CBool(C_DP.Read(xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
@@ -164,7 +164,7 @@ Friend Class formWählbox
         cancelCallButton.Visible = False
         ' Abbruch ausführen
         If P_Dialing And Not PhonerCall Then
-            Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(vbNullString, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+            Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
         End If
         P_Dialing = False
         TimerSchließen.Stop()
@@ -230,7 +230,7 @@ Friend Class formWählbox
             Else
                 tempArray(i) = Trim(Strings.Left(tempArray(i), InStr(tempArray(i), "<", CompareMethod.Text) - 1))
             End If
-            If Not tempArray(i) = vbNullString Then tempArray(i) = tempArray(i) & " "
+            If Not tempArray(i) = C_DP.P_Def_StringEmpty Then tempArray(i) = tempArray(i) & " "
         Next
         Return Replace(Trim(Strings.Join(tempArray, "")), " ,", ",", , , CompareMethod.Text)
     End Function
@@ -504,7 +504,7 @@ Friend Class formWählbox
                         row(1) = Replace(HTMLTagsEntfernen(Daten(1)), "&euro;", ChrW(&H20AC), , , CompareMethod.Text) ' Ct/min
                         row(2) = HTMLTagsEntfernen(Daten(2)) ' Zugang
                         row(3) = HTMLTagsEntfernen(Daten(3)) ' Takt
-                        row(4) = Replace(HTMLTagsEntfernen(Daten(4)), "Call-by-Call", vbNullString, , , CompareMethod.Text) ' Tarif
+                        row(4) = Replace(HTMLTagsEntfernen(Daten(4)), "Call-by-Call", C_DP.P_Def_StringEmpty, , , CompareMethod.Text) ' Tarif
                         row(5) = HTMLTagsEntfernen(Daten(5)) ' Bemerkung
                         .Rows.Add(row)
                     End If
@@ -538,7 +538,7 @@ Friend Class formWählbox
         AnAus = False
         SetEnabled()
         SID = C_FBox.FBLogIn(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
-        If Not SID = C_DP.P_Def_FritzBoxAdress Then
+        If Not SID = C_DP.P_Def_SessionID Then
             StatusText = "Der Wählclient ist bereit."
             WählboxBereit = True
             Element = Me.ListTel
@@ -569,7 +569,7 @@ Friend Class formWählbox
         Else
             Me.checkCLIR.Enabled = True
             Me.checkNetz.Enabled = True
-            If SID = C_DP.P_Def_ErrorMinusOne Or SID = C_DP.P_Def_FritzBoxAdress Then
+            If SID = C_DP.P_Def_ErrorMinusOne Or SID = C_DP.P_Def_SessionID Then
                 If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
                 WählboxBereit = False
                 Me.LabelStatus.Text = "Bitte warten..."

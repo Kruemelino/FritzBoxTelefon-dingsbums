@@ -151,7 +151,7 @@ Public Class Wählclient
         Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern
         Dim alleNrTypen(14) As String ' die Bezeichnungen der Telefonnummern
         Dim i, iTelNr As Integer    ' Zählvariablen
-        Dim ImgPath As String = vbNullString   ' Position innerhalb eines Strings
+        Dim ImgPath As String = C_DP.P_Def_StringEmpty   ' Position innerhalb eines Strings
         Dim LandesVW As String  ' eigene Landesvorwahl
         Dim row(2) As String
 
@@ -214,7 +214,7 @@ Public Class Wählclient
                 alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = "Haupttelefon"
                 alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = "Funkruf"
                 ImgPath = C_OlI.KontaktBild(.EntryID, CType(.Parent, Outlook.MAPIFolder).StoreID)
-                If Not ImgPath = vbNullString Then
+                If Not ImgPath = C_DP.P_Def_StringEmpty Then
                     Dim orgIm As Image = Image.FromFile(ImgPath)
                     With frm_Wählbox.ContactImage
                         Dim Bildgröße As New Size(.Width, CInt((.Width * orgIm.Size.Height) / orgIm.Size.Width))

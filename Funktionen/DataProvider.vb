@@ -742,7 +742,7 @@ Public Class DataProvider
         End Get
     End Property
 
-    Friend ReadOnly Property P_Def_SessionID() As String
+    Public ReadOnly Property P_Def_SessionID() As String
         Get
             Return "0000000000000000"
         End Get

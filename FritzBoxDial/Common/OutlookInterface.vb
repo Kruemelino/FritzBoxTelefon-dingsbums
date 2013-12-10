@@ -48,7 +48,7 @@ Public Class OutlookInterface
                     .Categories = Categories
 
 #If Not OVer = 15 Then
-                    If (Not (KontaktID = vbNullString Or StoreID = vbNullString)) And Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+                    If (Not (KontaktID = C_DP.P_Def_StringEmpty Or StoreID = C_DP.P_Def_StringEmpty)) And Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                         .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
                     End If
 #End If
@@ -98,7 +98,7 @@ Public Class OutlookInterface
 
     Friend Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
         Dim Kontakt As Outlook.ContactItem = Nothing
-        KontaktBild = vbNullString
+        KontaktBild = C_DP.P_Def_StringEmpty
         Dim oApp As Outlook.Application = GetOutlook()
         If Not oApp Is Nothing Then
             Try
@@ -226,8 +226,8 @@ Public Class OutlookInterface
     'Aktive Fenster ermitteln & Handle des Aktiven Fenster ermitteln
     Private Function ActiveFensterIsOutlook() As Boolean
         'Fenster Name des Fensters mit Fokus ermitteln: OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow)
-        'Fenster Name des Outlook Fenster ermitteln: OutlookSecurity.GetWindowText(OutlookSecurity.FindWindow("rctrl_renwnd32", vbNullString))
-        Return OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = OutlookSecurity.GetWindowText(OutlookSecurity.FindWindow("rctrl_renwnd32", vbNullString))
+        'Fenster Name des Outlook Fenster ermitteln: OutlookSecurity.GetWindowText(OutlookSecurity.FindWindow("rctrl_renwnd32", C_DP.P_Def_StringEmpty))
+        Return OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = OutlookSecurity.GetWindowText(OutlookSecurity.FindWindow("rctrl_renwnd32", C_DP.P_Def_StringEmpty))
     End Function
 
     Function VollBildAnwendungAktiv() As Boolean
