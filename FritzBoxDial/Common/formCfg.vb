@@ -906,7 +906,7 @@ Friend Class formCfg
         Dim NeueFW As Boolean
         Dim SID As String = C_DP.P_Def_SessionID
         Dim URL As String
-        Dim FBOX_ADR As String = C_DP.P_TBFBAdr
+
 
         Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
         Dim MailText As String
@@ -931,9 +931,9 @@ Friend Class formCfg
         Loop
 
         If NeueFW Then
-            URL = "http://" & FBOX_ADR & "/fon_num/fon_num_list.lua?sid=" & SID
+            URL = "http://" & C_Helfer.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & SID
         Else
-            URL = "http://" & FBOX_ADR & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
+            URL = "http://" & C_Helfer.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
         MailText = C_Helfer.httpRead(URL, FBEncoding, Nothing)
 
@@ -945,7 +945,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(FBOX_ADR))
+        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
     End Sub
 
     Public Function SetTelNrListe() As Boolean

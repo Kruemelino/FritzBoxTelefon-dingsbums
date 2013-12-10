@@ -101,17 +101,21 @@ Public Class Helfer
     ''' <returns>Korrekte IP-Adresse</returns>
     Public Function ValidIP(ByVal InputIP As String) As String
         Dim _IPAddress As IPAddress = Nothing
-        IPAddress.TryParse(InputIP, _IPAddress)
-
-        Select Case _IPAddress.AddressFamily
-            Case Sockets.AddressFamily.InterNetworkV6
-                ValidIP = "[" & _IPAddress.ToString & "]"
-            Case Sockets.AddressFamily.InterNetwork
-                ValidIP = _IPAddress.ToString
-            Case Else
-                LogFile("Die IP """ & InputIP & """ kann nicht zugeordnet werden.")
-                ValidIP = InputIP
-        End Select
+        If IPAddress.TryParse(InputIP, _IPAddress) Then
+            Select Case _IPAddress.AddressFamily
+                Case Sockets.AddressFamily.InterNetworkV6
+                    ValidIP = "[" & _IPAddress.ToString & "]"
+                Case Sockets.AddressFamily.InterNetwork
+                    ValidIP = _IPAddress.ToString
+                Case Else
+                    LogFile("Die IP """ & InputIP & """ kann nicht zugeordnet werden.")
+                    ValidIP = InputIP
+            End Select
+        Else
+            ' Keine gültige IP-Adresse
+            LogFile("Die IP """ & InputIP & """ kann nicht zugeordnet werden.")
+            ValidIP = IPAddress.None.ToString
+        End If
     End Function
 
 
