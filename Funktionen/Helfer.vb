@@ -78,10 +78,9 @@ Public Class Helfer
         If Not PingReply Is Nothing Then
             With PingReply
                 If .Status = NetworkInformation.IPStatus.Success Then
+                    IPAdresse = .Address.ToString
                     If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
-                        IPAdresse = C_DP.P_Def_FritzBoxAdress
-                    Else
-                        IPAdresse = .Address.ToString
+                        IPAdresse = "[" & IPAdresse & "]" 'C_DP.P_Def_FritzBoxAdress
                     End If
                     Ping = True
                 Else
