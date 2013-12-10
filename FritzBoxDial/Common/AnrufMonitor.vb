@@ -50,8 +50,7 @@ Friend Class AnrufMonitor
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
-                   ByVal OutlInter As OutlookInterface, _
-                   ByVal FBAdr As String)
+                   ByVal OutlInter As OutlookInterface)
 
         C_DP = DataProvoderKlasse
         C_hf = HelferKlasse

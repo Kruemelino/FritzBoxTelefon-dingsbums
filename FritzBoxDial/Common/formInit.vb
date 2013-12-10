@@ -1,7 +1,7 @@
 ﻿Friend Class formInit
     ' Klassen
     Private C_DP As DataProvider
-    Private C_Helfer As Helfer
+    Private C_HF As Helfer
     Private C_Crypt As Rijndael
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
@@ -36,36 +36,36 @@
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
-        C_Helfer = New Helfer(DateiPfad, C_DP, C_Crypt)
+        C_HF = New Helfer(DateiPfad, C_DP, C_Crypt)
 
         ' Klasse für die Kontakte generieren
-        C_Kontakt = New Contacts(C_DP, C_Helfer)
+        C_Kontakt = New Contacts(C_DP, C_HF)
 
         ' Klasse für die Rückwärtssuche generieren
-        C_RWS = New formRWSuche(C_Helfer, C_Kontakt, C_DP)
+        C_RWS = New formRWSuche(C_HF, C_Kontakt, C_DP)
 
         ' Klasse für die OutlookInterface generieren
-        C_OlI = New OutlookInterface(C_Kontakt, C_Helfer, C_DP, DateiPfad)
+        C_OlI = New OutlookInterface(C_Kontakt, C_HF, C_DP, DateiPfad)
 
         ' Klasse für das PhonerInterface generieren
-        C_Phoner = New PhonerInterface(C_Helfer, C_DP, C_Crypt)
+        C_Phoner = New PhonerInterface(C_HF, C_DP, C_Crypt)
 
         If PrüfeAddin() Then
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
-            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
+            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_Helfer, C_DP, C_Crypt, DateiPfad, C_RWS, C_Kontakt, C_Phoner)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, DateiPfad, C_RWS, C_Kontakt, C_Phoner)
 
 
-            C_WählClient = New Wählclient(C_DP, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
+            C_WählClient = New Wählclient(C_DP, C_HF, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
             ThisAddIn.P_WClient = C_WählClient
 
-            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_Helfer, C_Kontakt, C_GUI, C_OlI, C_DP.P_TBFBAdr)
+            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_Kontakt, C_GUI, C_OlI)
             ThisAddIn.P_AnrMon = C_AnrMon
 
-            C_Config = New formCfg(C_GUI, C_DP, C_Helfer, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_Kontakt, C_Phoner)
+            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_Kontakt, C_Phoner)
             ThisAddIn.P_Config = C_Config
 
             With C_GUI
@@ -78,10 +78,10 @@
             ThisAddIn.P_GUI = C_GUI
             ThisAddIn.P_Dateipfad = DateiPfad
             ThisAddIn.P_XML = C_DP
-            ThisAddIn.P_hf = C_Helfer
+            ThisAddIn.P_hf = C_HF
             ThisAddIn.P_KontaktFunktionen = C_Kontakt
 
-            If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_Helfer, C_DP, False)
+            If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
         End If
     End Sub
 
@@ -104,11 +104,11 @@
     End Function
 
     Private Sub BFBAdr_Click(sender As Object, e As EventArgs) Handles BFBAdr.Click
-        Dim tmpstr As String = Me.TBFritzBoxAdr.Text
-        If C_Helfer.Ping(tmpstr) Or Me.CBForceFBAddr.Checked Then
-            Me.TBFritzBoxAdr.Text = tmpstr
-            If Not InStr(C_Helfer.httpRead("http://" & tmpstr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
-                C_DP.P_TBFBAdr = tmpstr
+        Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
+        If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
+            Me.TBFritzBoxAdr.Text = FBIPAdresse
+            If Not InStr(C_HF.httpRead("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
+                C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
                 Me.TBFBUser.Enabled = True
@@ -118,25 +118,25 @@
                 Me.BFBAdr.Enabled = False
                 Me.LFBAdr.Enabled = False
                 Me.CBForceFBAddr.Enabled = False
-                Me.LMessage.Text = "Eine Fritz!Box unter der IP " & tmpstr & " gefunden."
+                Me.LMessage.Text = "Eine Fritz!Box unter der IP " & FBIPAdresse & " gefunden."
             Else
                 Me.LMessage.Text = "Keine Fritz!Box unter der angegebenen IP gefunden."
             End If
         Else
             Me.CBForceFBAddr.Enabled = True
             Me.TBFritzBoxAdr.Text = "192.168.178.1"
-            tmpstr = Me.TBFritzBoxAdr.Text
+            FBIPAdresse = Me.TBFritzBoxAdr.Text
             Me.LMessage.Text = "Keine Gegenstelle unter der angegebenen IP gefunden."
         End If
     End Sub
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
-        C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
+        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script")
         SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-        C_Helfer.KeyChange()
+        C_HF.KeyChange()
         SID = C_FBox.FBLogIn(fw550)
         If Not SID = C_DP.P_Def_SessionID Then
             Me.TBFBPW.Enabled = False

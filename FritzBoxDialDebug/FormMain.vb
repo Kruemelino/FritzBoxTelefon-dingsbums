@@ -31,11 +31,12 @@ Public Class FormMain
 
         C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-
-        Me.TBLandesVW.Text = C_DP.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049")
-        Me.TBBenutzer.Text = C_DP.P_TBBenutzer 'Read("Optionen", "TBBenutzer", vbNullString)
-        If Not Len(C_DP.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
-        Me.TBVorwahl.Text = C_DP.P_TBVorwahl
+        With C_DP
+            Me.TBLandesVW.Text = .P_TBLandesVW
+            Me.TBBenutzer.Text = .P_TBBenutzer
+            If Not Len(.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
+            Me.TBVorwahl.Text = .P_TBVorwahl
+        End With
     End Sub
 
     Public Function AddLine(ByVal Zeile As String) As Boolean

@@ -1343,7 +1343,7 @@ Public Class DataProvider
         If CheckXPathRead(xPath) Then
             tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
             If Not tmpXMLNodeList.Count = 0 Then
-                Read = vbNullString
+                Read = P_Def_StringEmpty
                 For Each tmpXMLNode As XmlNode In tmpXMLNodeList
                     Read += tmpXMLNode.InnerText & ";"
                 Next
@@ -1378,12 +1378,12 @@ Public Class DataProvider
     End Function
 
     Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String) As Boolean
-        Return Write(ZielKnoten, Value, vbNullString, vbNullString)
+        Return Write(ZielKnoten, Value, P_Def_StringEmpty, P_Def_StringEmpty)
     End Function
 
     Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
         Dim xPathTeile As New ArrayList
-        Dim sTmpXPath As String = vbNullString
+        Dim sTmpXPath As String = P_Def_StringEmpty
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
         Dim tmpXMLNodeList As XmlNodeList
@@ -1394,9 +1394,9 @@ Public Class DataProvider
                 tmpXMLNodeList = .SelectNodes(xPath)
                 If Not tmpXMLNodeList.Count = 0 Then
                     For Each tmpXMLNode In tmpXMLNodeList
-                        If Not AttributeName = vbNullString Then
+                        If Not AttributeName = P_Def_StringEmpty Then
                             If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
-                                tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = vbNullString, "[@" & AttributeName & "=""" & AttributeValue & """]", vbNullString)))
+                                tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = P_Def_StringEmpty, "[@" & AttributeName & "=""" & AttributeValue & """]", P_Def_StringEmpty)))
                             End If
                             If tmpXMLNode Is Nothing Then
                                 tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
@@ -1488,11 +1488,11 @@ Public Class DataProvider
             Dim tmpXMLNode As XmlNode
             Dim tmpXMLChildNode As XmlNode
             Dim tmpXMLAttribute As XmlAttribute
-            tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, vbNullString)
+            tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, P_Def_StringEmpty)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
                     If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne Then
-                        tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, vbNullString)
+                        tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, P_Def_StringEmpty)
                         tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
                         .AppendChild(tmpXMLChildNode)
                     End If
@@ -1521,9 +1521,9 @@ Public Class DataProvider
             Dim tmpXMLNode As XmlNode
             With XMLDoc
                 ' BUG: 
-                If Not AttributeValue = vbNullString Then alxPathTeile.Add("[@ID=""" & AttributeValue & """]")
+                If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.Add("[@ID=""" & AttributeValue & """]")
                 xPath = CreateXPath(alxPathTeile)
-                If Not AttributeValue = vbNullString Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
+                If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
                 tmpXMLNode = .SelectSingleNode(xPath)
                 If Not tmpXMLNode Is Nothing Then
                     With tmpXMLNode
@@ -1543,7 +1543,7 @@ Public Class DataProvider
     Sub AppendNode(ByVal alxPathTeile As ArrayList, ByVal Knoten As XmlNode)
         Dim xPathTeileEC As Long = alxPathTeile.Count
         Dim DestxPath As String
-        Dim tmpxPath As String = vbNullString
+        Dim tmpxPath As String = P_Def_StringEmpty
         Dim tmpXMLNode As XmlNode
         DestxPath = CreateXPath(alxPathTeile)
         With XMLDoc

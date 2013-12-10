@@ -71,7 +71,7 @@ Public Class Helfer
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
         Catch ex As Exception
-            LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich")
+            LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich: " & ex.Message)
             Ping = False
         End Try
 
@@ -79,9 +79,6 @@ Public Class Helfer
             With PingReply
                 If .Status = NetworkInformation.IPStatus.Success Then
                     IPAdresse = .Address.ToString
-                    If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
-                        IPAdresse = "[" & IPAdresse & "]" 'C_DP.P_Def_FritzBoxAdress
-                    End If
                     Ping = True
                 Else
                     Ping = False
@@ -92,6 +89,31 @@ Public Class Helfer
         Options = Nothing
         PingSender = Nothing
     End Function
+
+    ''' <summary>
+    ''' Wandelt die eingegebene IP-Adresse in eine für dieses Addin gültige IPAdresse.
+    ''' IPv4 und IPv6 müssen differenziert behandelt werden.
+    ''' Für Anrufmonitor ist es egal ob IPv4 oder IPv6 da der RemoteEndPoint ein IPAddress-Objekt verwendet.
+    ''' Die HTML/URL müssen gesondert beachtet werden. Dafün muss die IPv6 in eckige Klammern gesetzt werden.
+    ''' </summary>
+    ''' <param name="InputIP">IP-Adresse</param>
+    ''' <param name="ValidIpv6URL">Gibt an, ob die IPv6 Adresse in ein URL-Konformen String gewandelt werden soll.</param>
+    ''' <returns>Korrekte IP-Adresse</returns>
+    Public Function ValidIP(ByVal InputIP As String) As String
+        Dim _IPAddress As IPAddress = Nothing
+        IPAddress.TryParse(InputIP, _IPAddress)
+
+        Select Case _IPAddress.AddressFamily
+            Case Sockets.AddressFamily.InterNetworkV6
+                ValidIP = "[" & _IPAddress.ToString & "]"
+            Case Sockets.AddressFamily.InterNetwork
+                ValidIP = _IPAddress.ToString
+            Case Else
+                LogFile("Die IP """ & InputIP & """ kann nicht zugeordnet werden.")
+                ValidIP = InputIP
+        End Select
+    End Function
+
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
         Dim LogDatei As String = Dateipfade("LogDatei")
@@ -227,7 +249,7 @@ Public Class Helfer
         Durchwahl = TelTeile(2)
 
         TelNr = nurZiffern(TelNr, LandesVW)
-        If Not OrtsVW = vbNullString Then
+        If Not OrtsVW = C_DP.P_Def_StringEmpty Then
             posOrtsVW = InStr(TelNr, OrtsVW, CompareMethod.Text)
             RufNr = Mid(TelNr, posOrtsVW + Len(OrtsVW))
             If Not LandesVW = "0039" Then RufNr = CStr(IIf(Left(RufNr, 1) = "0", Mid(RufNr, 2), RufNr))
@@ -244,7 +266,7 @@ Public Class Helfer
             tempDurchwahl = Mid(RufNr, Len(Durchwahl) + 1)
             RufNr = Durchwahl
         Else
-            Durchwahl = vbNullString
+            Durchwahl = C_DP.P_Def_StringEmpty
         End If
         If LandesVW = "0" Then
             OrtsVW = "0" & OrtsVW
@@ -254,10 +276,10 @@ Public Class Helfer
         If InStr(Maske, "%D", CompareMethod.Text) = 0 Then Maske = Replace(Maske, "%N", "%N%D")
         If Not InStr(Maske, "%N%D", CompareMethod.Text) = 0 Then
             RufNr = RufNr & tempDurchwahl
-            tempDurchwahl = vbNullString
+            tempDurchwahl = C_DP.P_Def_StringEmpty
         End If
 
-        If OrtsVW = vbNullString Then
+        If OrtsVW = C_DP.P_Def_StringEmpty Then
             ' Keine Ortsvorwahl: Alles zwischen %L und %N entfernen
             Dim pos1 As Integer
             Dim pos2 As Integer
@@ -265,28 +287,28 @@ Public Class Helfer
             pos1 = InStr(Maske, "%L", CompareMethod.Text) + 2
             pos2 = InStr(Maske, "%N", CompareMethod.Text)
             CutOut = Mid(Maske, pos1, pos2 - pos1)
-            Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", vbNullString)), , 1, CompareMethod.Text)
+            Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", C_DP.P_Def_StringEmpty)), , 1, CompareMethod.Text)
         End If
-        If LandesVW = vbNullString Then LandesVW = C_DP.P_TBLandesVW
+        If LandesVW = C_DP.P_Def_StringEmpty Then LandesVW = C_DP.P_TBLandesVW
         If C_DP.P_CBintl Or Not LandesVW = C_DP.P_TBLandesVW Then
-            If Not OrtsVW = vbNullString Then
+            If Not OrtsVW = C_DP.P_Def_StringEmpty Then
                 If Left(OrtsVW, 1) = "0" Then OrtsVW = Mid(OrtsVW, 2)
-                OrtsVW = CStr(IIf(LandesVW = "0039", "0", vbNullString)) & OrtsVW
+                OrtsVW = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & OrtsVW
             Else
                 If Left(RufNr, 1) = "0" Then RufNr = Mid(RufNr, 2)
-                RufNr = CStr(IIf(LandesVW = "0039", "0", vbNullString)) & RufNr
+                RufNr = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & RufNr
             End If
             If Left(LandesVW, 2) = "00" Then LandesVW = Replace(LandesVW, "00", "+", 1, 1, CompareMethod.Text)
         Else
             OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
-            LandesVW = vbNullString
+            LandesVW = C_DP.P_Def_StringEmpty
         End If
 
         ' NANP
         If LandesVW = "+1" Then
             Maske = "%L (%O) %N-%D"
             C_DP.P_CBTelNrGruppieren = False
-            If tempDurchwahl = vbNullString Then
+            If tempDurchwahl = C_DP.P_Def_StringEmpty Then
                 tempDurchwahl = Mid(RufNr, 4)
                 RufNr = Left(RufNr, 3)
             End If
@@ -320,7 +342,7 @@ Public Class Helfer
     Function GruppiereNummer(ByVal Nr As String) As String
         Dim imax As Integer
         imax = CInt(Math.Round(Len(Nr) / 2 + 0.1))
-        GruppiereNummer = vbNullString
+        GruppiereNummer = C_DP.P_Def_StringEmpty
         For i = 1 To imax
             GruppiereNummer = Right(Nr, 2) & " " & GruppiereNummer
             If Not Len(Nr) = 1 Then Nr = Left(Nr, Len(Nr) - 2)
@@ -345,7 +367,7 @@ Public Class Helfer
         Dim pos1 As Integer   ' Positionen innerhalb der TelNr
         Dim pos2 As Integer   ' Positionen innerhalb der TelNr
         Dim c As String ' einzelnes Zeichen des TelNr-Strings
-        Dim OrtsVW As String = vbNullString
+        Dim OrtsVW As String = C_DP.P_Def_StringEmpty
         Dim LandesVW As String
         Dim Durchwahl As String
         Dim ErsteZiffer As String
@@ -364,7 +386,7 @@ Public Class Helfer
             If Left(TelNr, 2) = "00" Then
                 'Landesvorwahl vorhanden
                 LandesVW = VorwahlausDatei(TelNr, My.Resources.LandesVorwahlen)
-                If Not LandesVW = vbNullString Then
+                If Not LandesVW = C_DP.P_Def_StringEmpty Then
                     LandesVW = "00" & LandesVW
                     TelNr = Mid(TelNr, Len(LandesVW) + 1)
                 End If
@@ -376,7 +398,7 @@ Public Class Helfer
             pos1 = InStr(1, TelNr, "(", CompareMethod.Text) + 1
             pos2 = InStr(1, TelNr, ")", CompareMethod.Text)
             If pos1 = 1 Or pos2 = 0 Then
-                If LandesVW = "0049" Or LandesVW = vbNullString Then
+                If LandesVW = "0049" Or LandesVW = C_DP.P_Def_StringEmpty Then
                     ' Ortsvorwahl nicht in Klammern
                     If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
                     OrtsVW = VorwahlausDatei(TelNr, My.Resources.Vorwahlen)
@@ -431,7 +453,7 @@ Public Class Helfer
     End Function
 
     Function VorwahlausDatei(ByVal TelNr As String, ByVal Liste As String) As String
-        VorwahlausDatei = vbNullString
+        VorwahlausDatei = C_DP.P_Def_StringEmpty
         Dim Suchmuster As String
         Dim Vorwahlen() As String = Split(Liste, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 1
@@ -443,12 +465,12 @@ Public Class Helfer
             Dim Trefferliste = From s In Vorwahlen Where s.ToLower Like Suchmuster.ToLower Select s
             VorwahlausDatei = Split(Trefferliste(0), ";", , CompareMethod.Text)(0)
             Windows.Forms.Application.DoEvents()
-        Loop Until Not VorwahlausDatei = vbNullString Or i = 5
+        Loop Until Not VorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
     End Function
 
     Function AuslandsVorwahlausDatei(ByVal TelNr As String, ByVal LandesVW As String) As String
         TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
-        AuslandsVorwahlausDatei = vbNullString
+        AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
         Dim Suchmuster As String
         Dim Vorwahlen() As String = Split(My.Resources.VorwahlenAusland, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 1
@@ -464,7 +486,7 @@ Public Class Helfer
             Windows.Forms.Application.DoEvents()
             tmpvorwahl = Split(Trefferliste(0), ";", , CompareMethod.Text)
             If Not tmpvorwahl.Length = 1 Then AuslandsVorwahlausDatei = tmpvorwahl(1)
-        Loop Until Not AuslandsVorwahlausDatei = vbNullString Or i = 5
+        Loop Until Not AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
     End Function
 
     Public Function nurZiffern(ByVal TelNr As String, ByVal LandesVW As String) As String
@@ -527,7 +549,7 @@ Public Class Helfer
     Function Mobilnummer(ByVal TelNr As String) As Boolean
         Dim TempTelNr As String() = TelNrTeile(TelNr)
         Dim Vorwahl As String = Left(TempTelNr(1), 2)
-        If TempTelNr(0) = "0049" Or TempTelNr(0) = vbNullString Then
+        If TempTelNr(0) = "0049" Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
             If Vorwahl = "15" Or Vorwahl = "16" Or Vorwahl = "17" Then Return True
         End If
         Return False
@@ -539,7 +561,7 @@ Public Class Helfer
     Public Function httpRead(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As ErrObject) As String
         FBError = Nothing
         Dim uri As New Uri(Link)
-        httpRead = vbNullString
+        httpRead = C_DP.P_Def_StringEmpty
         Try
             Select Case uri.Scheme
                 Case uri.UriSchemeHttp
@@ -575,7 +597,7 @@ Public Class Helfer
     End Function
 
     Public Function httpWrite(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
-        httpWrite = vbNullString
+        httpWrite = C_DP.P_Def_StringEmpty
         Dim uri As New Uri(Link)
         Try
             If (uri.Scheme = uri.UriSchemeHttp) Then

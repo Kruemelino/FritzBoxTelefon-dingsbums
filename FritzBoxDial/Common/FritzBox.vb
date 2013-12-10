@@ -45,13 +45,13 @@ Public Class FritzBox
 
         If C_DP.P_EncodeingFritzBox = C_DP.P_Def_ErrorMinusOne Then
             Dim Rückgabe As String
-            Rückgabe = C_hf.httpRead("http://" & C_DP.P_TBFBAdr, FBEncoding, FBFehler)
+            Rückgabe = C_hf.httpRead("http://" & C_hf.ValidIP(C_DP.P_TBFBAdr), FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
                 C_DP.P_EncodeingFritzBox = FBEncoding.HeaderName
                 C_DP.SpeichereXMLDatei()
             Else
-                C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & "http://" & C_DP.P_TBFBAdr)
+                C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr))
             End If
         Else
             FBEncoding = C_hf.GetEncoding(C_DP.P_EncodeingFritzBox)
@@ -86,11 +86,11 @@ Public Class FritzBox
         '    <Rights></Rights>
         ' </SessionInfo>
 
-        sLink = "http://" & C_DP.P_TBFBAdr & "/login_sid.lua?sid=" & sSID
+        sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?sid=" & sSID
         slogin_xml = C_hf.httpRead(sLink, FBEncoding, FBFehler)
 
         If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
-            sLink = "http://" & C_DP.P_TBFBAdr & "/cgi-bin/webcm?getpage=../html/login_sid.xml&sid=" & sSID
+            sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?getpage=../html/login_sid.xml&sid=" & sSID
             slogin_xml = C_hf.httpRead(sLink, FBEncoding, FBFehler)
         End If
 
@@ -129,7 +129,7 @@ Public Class FritzBox
                             ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
                             sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
                             If sBlockTime = "0" Then
-                                sLink = "http://" & C_DP.P_TBFBAdr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
+                                sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
                                 sResponse = C_hf.httpRead(sLink, FBEncoding, FBFehler)
                                 If FBFehler Is Nothing Then
                                     LuaLogin = True
@@ -148,7 +148,7 @@ Public Class FritzBox
                                 Return .Item("SessionInfo").Item("SID").InnerText()
                             End If
 
-                            sLink = "http://" & C_DP.P_TBFBAdr & "/cgi-bin/webcm"
+                            sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm"
                             sFormData = "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
                             sResponse = C_hf.httpWrite(sLink, sFormData, FBEncoding)
 
@@ -206,15 +206,15 @@ Public Class FritzBox
         Dim tmpstr As String
         Dim xml As New XmlDocument()
 
-        sLink = "http://" & C_DP.P_TBFBAdr & "/login_sid.lua?sid=" & sSID
+        sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?sid=" & sSID
         Response = C_hf.httpRead(sLink, FBEncoding, FBFehler)
         If FBFehler Is Nothing Then
             With xml
                 .LoadXml(Response)
                 If .InnerXml.Contains("Rights") Then
-                    sLink = "http://" & C_DP.P_TBFBAdr & "/home/home.lua?sid=" & sSID & "&logout=1"
+                    sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/home/home.lua?sid=" & sSID & "&logout=1"
                 Else
-                    sLink = "http://" & C_DP.P_TBFBAdr & "/logout.lua?sid=" & sSID
+                    sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/logout.lua?sid=" & sSID
                 End If
             End With
             xml = Nothing
@@ -285,7 +285,7 @@ Public Class FritzBox
 
         FBLogin(FW550)
         If Not sSID = C_DP.P_Def_SessionID Then
-            sLink = "http://" & C_DP.P_TBFBAdr & "/fon_num/fon_num_list.lua?sid=" & sSID
+            sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & sSID
 
             PushStatus("Fritz!Box SessionID: " & sSID)
             PushStatus("Fritz!Box Firmware  5.50: " & FW550.ToString)
@@ -389,7 +389,7 @@ Public Class FritzBox
             .Add(C_DP.P_Def_StringEmpty)
         End With
 
-        sLink = "http://" & C_DP.P_TBFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+        sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         If P_SpeichereDaten Then PushStatus("Fritz!Box Telefon Quelldatei: " & sLink)
         tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
         If FBFehler Is Nothing Then
@@ -1337,7 +1337,7 @@ Public Class FritzBox
         '
         SendDialRequestToBox = "Fehler!" & vbCrLf & "Entwickler kontaktieren."            ' Antwortstring
         If Not sSID = C_DP.P_Def_SessionID And Len(sSID) = Len(C_DP.P_Def_SessionID) Then
-            Link = "http://" & C_DP.P_TBFBAdr & "/cgi-bin/webcm"
+            Link = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm"
             formdata = "sid=" & sSID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
             Response = C_hf.httpWrite(Link, formdata, FBEncoding)
 
@@ -1361,15 +1361,15 @@ Public Class FritzBox
 
         sSID = FBLogin(True)
         If Not sSID = C_DP.P_Def_SessionID Then
-            sLink(0) = "http://" & C_DP.P_TBFBAdr & "/fon_num/foncalls_list.lua?sid=" & sSID
-            sLink(1) = "http://" & C_DP.P_TBFBAdr & "/fon_num/foncalls_list.lua?sid=" & sSID & "&csv="
+            sLink(0) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/foncalls_list.lua?sid=" & sSID
+            sLink(1) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/foncalls_list.lua?sid=" & sSID & "&csv="
 
             ReturnString = C_hf.httpRead(sLink(0), FBEncoding, FBFehler)
             If FBFehler Is Nothing Then
                 If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
-                    sLink(0) = "http://" & C_DP.P_TBFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
+                    sLink(0) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
                     C_hf.httpRead(sLink(0), FBEncoding, FBFehler)
-                    sLink(1) = "http://" & C_DP.P_TBFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
+                    sLink(1) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
                 End If
                 ReturnString = C_hf.httpRead(sLink(1), FBEncoding, FBFehler)
             Else
