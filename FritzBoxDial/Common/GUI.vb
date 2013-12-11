@@ -544,17 +544,17 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("ID[@ID=""" & Index & """]")
 
-        If Not Anrufer Is C_DP.P_Def_StringEmpty Then
+        If Not Anrufer = C_DP.P_Def_StringEmpty Then
             NodeNames.Add("Anrufer")
             NodeValues.Add(Anrufer)
         End If
 
-        If Not StoreID Is C_DP.P_Def_StringEmpty Then
+        If Not StoreID = C_DP.P_Def_StringEmpty Then
             NodeNames.Add("StoreID")
             NodeValues.Add(StoreID)
         End If
 
-        If Not KontaktID Is C_DP.P_Def_StringEmpty Then
+        If Not KontaktID = C_DP.P_Def_StringEmpty Then
             NodeNames.Add("KontaktID")
             NodeValues.Add(KontaktID)
         End If

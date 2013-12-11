@@ -113,7 +113,7 @@ Friend Class formAnrMon
                     OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
                     If C_DP.P_CBAnrMonContactImage Then
                         Dim BildPfad = OlI.KontaktBild(KontaktID, StoreID)
-                        If Not BildPfad Is C_DP.P_Def_StringEmpty Then
+                        If Not BildPfad = C_DP.P_Def_StringEmpty Then
                             PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)
                             ' Seitenverhältnisse anpassen
                             Dim Bildgröße As New Drawing.Size(PopupNotifier.ImageSize.Width, CInt((PopupNotifier.ImageSize.Width * PopupNotifier.Image.Size.Height) / PopupNotifier.Image.Size.Width))

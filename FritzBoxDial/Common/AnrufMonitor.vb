@@ -14,7 +14,6 @@ Friend Class AnrufMonitor
     Private ReceiveThread As Thread
     Private AnrMonList As New Collections.ArrayList
     Private Shared AnrMonStream As Sockets.NetworkStream 'Shared, da ansonsten AnrMonAktiv Fehler liefert
-    Private AnrMonTCPClient As Sockets.TcpClient
     Private STUhrDaten(5) As StructStoppUhr
 
     Private C_GUI As GraphicalUserInterface
@@ -121,6 +120,7 @@ Friend Class AnrufMonitor
     ''' </summary>
     ''' <returns>Boolean: Ob Anrufmonitor eingeschaltet ist.</returns>
     ''' <remarks></remarks>
+    ''' 
     Friend Function AnrMonAnAus() As Boolean
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
@@ -216,10 +216,12 @@ Friend Class AnrufMonitor
 
     Private Sub TimerCheckAnrMon_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerCheckAnrMon.Elapsed
         ' Es kann sein, dass die Verbindung zur FB abreißt. Z. B. wenn die VPN unterbrochen ist. 
+
         Dim IPAddress As IPAddress
-        Dim tmpTCPclient As Sockets.TcpClient
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
+
+        Dim CheckAnrMonTCPSocket As Socket
 
         If LCase(C_DP.P_TBFBAdr) = C_DP.P_Def_FritzBoxAdress Then
             IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
@@ -227,21 +229,23 @@ Friend Class AnrufMonitor
         Else
             IPAddress = IPAddress.Parse(C_DP.P_TBFBAdr)
         End If
-        RemoteEP = New IPEndPoint(IPAddress, FBAnrMonPort)
 
-        tmpTCPclient = New Sockets.TcpClient()
+        RemoteEP = New IPEndPoint(IPAddress, P_DefaultFBAnrMonPort)
+
+        CheckAnrMonTCPSocket = New Sockets.Socket(IPAddress.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
+
         Try
-            tmpTCPclient.Connect(RemoteEP)
-        Catch
+            CheckAnrMonTCPSocket.Connect(RemoteEP)
+        Catch Err As Exception
             C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
             AnrMonQuit()
             AnrMonError = True
         End Try
-        tmpTCPclient.Close()
+
+        CheckAnrMonTCPSocket.Close()
         RemoteEP = Nothing
         IPHostInfo = Nothing
 
-        tmpTCPclient = Nothing
 #If OVer < 14 Then
         C_GUI.SetAnrMonButton(True)
 #Else
@@ -261,12 +265,8 @@ Friend Class AnrufMonitor
             .Close()
             .Dispose()
         End With
-        With AnrMonTCPClient
-            .Close()
-        End With
         TimerCheckAnrMon = Nothing
         AnrMonStream = Nothing
-        AnrMonTCPClient = Nothing
         C_hf.LogFile("AnrMonQuit: Anrufmonitor beendet")
     End Sub '(AnrMonQuit)
 
@@ -369,10 +369,7 @@ Friend Class AnrufMonitor
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
 
-        Dim tcpSocket As Socket
-        Dim tcpreader As StreamReader
-        Dim networkStream As NetworkStream
-
+        Dim AnrMonTCPSocket As Socket
 
         If LCase(C_DP.P_TBFBAdr) = C_DP.P_Def_FritzBoxAdress Then
             IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
@@ -380,30 +377,21 @@ Friend Class AnrufMonitor
         Else
             IPAddress = IPAddress.Parse(C_DP.P_TBFBAdr)
         End If
-        If IPAddress.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
 
-        End If
+        RemoteEP = New IPEndPoint(IPAddress, P_DefaultFBAnrMonPort)
 
-        RemoteEP = New IPEndPoint(IPAddress, 1012)
+        AnrMonTCPSocket = New Sockets.Socket(IPAddress.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
 
-        tcpSocket = New Sockets.Socket(IPAddress.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
-
-        AnrMonTCPClient = New Sockets.TcpClient()
         Try
-            tcpSocket.Connect(RemoteEP)
-            'AnrMonTCPClient.Connect(RemoteEP)
+            AnrMonTCPSocket.Connect(RemoteEP)
         Catch Err As Exception
             C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
             AnrMonError = True
             e.Result = False
         End Try
-        networkStream = New NetworkStream(tcpSocket)
-        tcpreader = New StreamReader(networkStream)
-        AnrMonStream = networkStream
-        'If AnrMonTCPClient.Connected Then
-        If tcpSocket.Connected Then
-            'AnrMonStream = AnrMonTCPClient.GetStream()
 
+        If AnrMonTCPSocket.Connected Then
+            AnrMonStream = New NetworkStream(AnrMonTCPSocket)
             If AnrMonStream.CanRead Then
                 ReceiveThread = New Thread(AddressOf AnrMonAktion)
                 With ReceiveThread
@@ -1076,32 +1064,32 @@ Friend Class AnrufMonitor
         Dim LAAttributeValues As New ArrayList
         Dim xPathTeile As New ArrayList
 
-        If Not Typ Is C_DP.P_Def_StringEmpty Then
+        If Not Typ = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("Typ")
             LANodeValues.Add(Typ)
         End If
 
-        If Not Typ Is C_DP.P_Def_StringEmpty Then
+        If Not Typ = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("Zeit")
             LANodeValues.Add(Zeit)
         End If
 
-        If Not MSN Is C_DP.P_Def_StringEmpty Then
+        If Not MSN = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("MSN")
             LANodeValues.Add(MSN)
         End If
 
-        If Not TelNr Is C_DP.P_Def_StringEmpty Then
+        If Not TelNr = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("TelNr")
             LANodeValues.Add(TelNr)
         End If
 
-        If Not KontaktID Is C_DP.P_Def_StringEmpty Then
+        If Not KontaktID = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("KontaktID")
             LANodeValues.Add(KontaktID)
         End If
 
-        If Not StoreID Is C_DP.P_Def_StringEmpty Then
+        If Not StoreID = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("StoreID")
             LANodeValues.Add(StoreID)
         End If
@@ -1223,7 +1211,7 @@ Friend Class AnrufMonitor
         LANodeValues.Add(LA(0))
 
         ' Anrufername
-        If Not LA(1) Is C_DP.P_Def_StringEmpty Then
+        If Not LA(1) = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("Anrufer")
             LANodeValues.Add(LA(1))
         End If
@@ -1237,13 +1225,13 @@ Friend Class AnrufMonitor
         LANodeValues.Add(LA(3))
 
         ' StoreID
-        If Not LA(4) Is C_DP.P_Def_StringEmpty Then
+        If Not LA(4) = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("StoreID")
             LANodeValues.Add(LA(4))
         End If
 
         ' KontaktID
-        If Not LA(4) Is C_DP.P_Def_StringEmpty Then
+        If Not LA(4) = C_DP.P_Def_StringEmpty Then
             LANodeNames.Add("KontaktID")
             LANodeValues.Add(LA(5))
         End If
@@ -1289,17 +1277,17 @@ Friend Class AnrufMonitor
         xPathTeile.Add("TelNr")
         If Not C_DP.Read(xPathTeile, "0") = TelNr Then
 
-            If Not Anrufer Is C_DP.P_Def_StringEmpty Then
+            If Not Anrufer = C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(Anrufer)
             End If
 
-            If Not TelNr Is C_DP.P_Def_StringEmpty Then
+            If Not TelNr = C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("TelNr")
                 NodeValues.Add(TelNr)
             End If
 
-            If Not Zeit Is C_DP.P_Def_StringEmpty Then
+            If Not Zeit = C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("Zeit")
                 NodeValues.Add(Zeit)
             End If
@@ -1307,12 +1295,12 @@ Friend Class AnrufMonitor
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod 10))
 
-            If Not StoreID Is C_DP.P_Def_StringEmpty Then
+            If Not StoreID = C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(StoreID)
             End If
 
-            If Not KontaktID Is C_DP.P_Def_StringEmpty Then
+            If Not KontaktID = C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(KontaktID)
             End If

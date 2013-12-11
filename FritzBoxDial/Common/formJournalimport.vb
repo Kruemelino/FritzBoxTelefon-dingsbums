@@ -113,7 +113,7 @@ Friend Class formJournalimport
 
         ThisAddIn.P_FritzBox.FBLogOut(SID)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste Is C_DP.P_Def_StringEmpty Then
+        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = C_DP.P_Def_StringEmpty Then
 
             CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.

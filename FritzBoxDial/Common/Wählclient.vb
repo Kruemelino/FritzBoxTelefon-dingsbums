@@ -379,19 +379,39 @@ Public Class Wählclient
             End Try
         End If
     End Sub ' (ZeigeKontakt)
-
-    Public Sub Rueckruf(ByVal ID As Integer) 'wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
-        Dim oNS As Outlook.NameSpace = ThisAddIn.P_oApp.GetNamespace("MAPI")
-        Dim letzterAnrufer() As String = Split(C_DP.Read("letzterAnrufer", "letzterAnrufer" & ID, CStr(DateTime.Now) & ";;unbekannt;;-1;-1;"), ";", 6, CompareMethod.Text)
-        Dim KontaktID As String = letzterAnrufer(5)
-        Dim StoreID As String = letzterAnrufer(4)
+    ''' <summary>
+    ''' Wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
+    ''' </summary>
+    ''' <param name="ID">Die ID des letzten Anrufers.</param>
+    ''' <remarks>131211 erfolgreich</remarks>
+    Public Sub Rueckruf(ByVal ID As Integer)
+        Dim StoreID As String
+        Dim KontaktID As String
+        Dim TelNr As String
+        Dim oNS As Outlook.NameSpace = C_OlI.GetOutlook.GetNamespace("MAPI")
         Dim oContact As Outlook.ContactItem
+
+        Dim xPathTeile As New ArrayList
+        With xPathTeile
+            .Add("LetzterAnrufer")
+            .Add("Eintrag[@ID = """ & ID & """]")
+
+            .Add("TelNr")
+            TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
+
+            .Item(.Count - 1) = "StoreID"
+            StoreID = C_DP.Read(xPathTeile, "-1")
+
+            .Item(.Count - 1) = "KontaktID"
+            KontaktID = C_DP.Read(xPathTeile, "-1")
+        End With
+
         If Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne And Not Left(StoreID, 3) = "-1;" Then
             oContact = CType(oNS.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Else
             oContact = Nothing
         End If
-        Wählbox(oContact, letzterAnrufer(2), False, C_DP.P_Def_StringEmpty)
+        Wählbox(oContact, TelNr, False, C_DP.P_Def_StringEmpty)
     End Sub
 
     Public Sub WählenAusInspector()
@@ -399,8 +419,6 @@ Public Class Wählclient
 
         Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Kontakt oder Journal)
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
-        'Dim KontaktID As String = String.Empty   ' KontaktID wird für Wählbox benötigt
-        'Dim StoreID As String = String.Empty
         Dim vCard As String
         Dim name As String
         Dim pos1 As Integer

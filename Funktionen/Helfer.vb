@@ -178,7 +178,7 @@ Public Class Helfer
         Dim tempZugang As String
         Dim i As Long
 
-        If Not C_DP.P_TBPasswort Is C_DP.P_Def_StringEmpty Then
+        If Not C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Then
             tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 255)
@@ -577,6 +577,8 @@ Public Class Helfer
                         .Proxy = Nothing
                         .KeepAlive = False
                         .CachePolicy = noCache
+                        .UserAgent = C_DP.P_Def_UserAgent
+                        .ProtocolVersion = System.Net.HttpVersion.Version10
                         With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
                             httpRead = .ReadToEnd()
                             .Close()
@@ -598,7 +600,7 @@ Public Class Helfer
 
         Catch
             FBError = Err()
-            LogFile("Es is ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
+            LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
         End Try
         Return httpRead
     End Function
@@ -616,7 +618,7 @@ Public Class Helfer
                     .ContentLength = data.Length
                     .ContentType = "application/x-www-form-urlencoded"
                     .Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-                    .UserAgent = "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
+                    .UserAgent = C_DP.P_Def_UserAgent
 
                     With New IO.StreamWriter(.GetRequestStream)
                         .Write(data)
@@ -632,7 +634,7 @@ Public Class Helfer
                 End With
             End If
         Catch
-            LogFile("Es is ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
+            LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
         End Try
 
     End Function
