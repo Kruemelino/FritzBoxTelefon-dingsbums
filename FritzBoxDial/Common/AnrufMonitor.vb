@@ -2,6 +2,7 @@
 Imports System.Net
 Imports System.IO
 Imports System.ComponentModel
+Imports System.Net.Sockets
 
 Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
@@ -368,25 +369,40 @@ Friend Class AnrufMonitor
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
 
+        Dim tcpSocket As Socket
+        Dim tcpreader As StreamReader
+        Dim networkStream As NetworkStream
+
+
         If LCase(C_DP.P_TBFBAdr) = C_DP.P_Def_FritzBoxAdress Then
             IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
             IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
         Else
             IPAddress = IPAddress.Parse(C_DP.P_TBFBAdr)
         End If
-        RemoteEP = New IPEndPoint(IPAddress, FBAnrMonPort)
+        If IPAddress.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
+
+        End If
+
+        RemoteEP = New IPEndPoint(IPAddress, 1012)
+
+        tcpSocket = New Sockets.Socket(IPAddress.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
 
         AnrMonTCPClient = New Sockets.TcpClient()
         Try
-            AnrMonTCPClient.Connect(RemoteEP)
+            tcpSocket.Connect(RemoteEP)
+            'AnrMonTCPClient.Connect(RemoteEP)
         Catch Err As Exception
             C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
             AnrMonError = True
             e.Result = False
         End Try
-
-        If AnrMonTCPClient.Connected Then
-            AnrMonStream = AnrMonTCPClient.GetStream()
+        networkStream = New NetworkStream(tcpSocket)
+        tcpreader = New StreamReader(networkStream)
+        AnrMonStream = networkStream
+        'If AnrMonTCPClient.Connected Then
+        If tcpSocket.Connected Then
+            'AnrMonStream = AnrMonTCPClient.GetStream()
 
             If AnrMonStream.CanRead Then
                 ReceiveThread = New Thread(AddressOf AnrMonAktion)
@@ -838,7 +854,7 @@ Friend Class AnrufMonitor
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                         End With
                         With STUhrDaten(ID)
-                            .MSN = CStr(IIf(TelName = C_DP.P_Def_StringEmpty, MSN, TelName) )
+                            .MSN = CStr(IIf(TelName = C_DP.P_Def_StringEmpty, MSN, TelName))
                             .StartZeit = Zeit
                             .Abbruch = False
                         End With
