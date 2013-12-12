@@ -7,7 +7,7 @@ Public Class FormMain
     Private C_FBox As FritzBox
 
     Private WithEvents emc As New EventMulticaster
-    Private FBFehler As ErrObject
+    Private FBFehler As Boolean
     Private FBEncoding As System.Text.Encoding = Encoding.UTF8
     Private Delegate Sub DelgSetLine()
 
@@ -93,7 +93,7 @@ Public Class FormMain
                 sLink = "http://fritz.box/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
             End If
 
-            tempstring = C_Helfer.httpRead(sLink, FBEncoding, FBFehler)
+            tempstring = C_Helfer.httpGET(sLink, FBEncoding, FBFehler)
             Me.TBTelefonie.Text = tempstring
         End If
     End Sub

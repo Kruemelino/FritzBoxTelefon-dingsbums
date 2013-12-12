@@ -107,7 +107,7 @@
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpRead("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
+            If Not InStr(C_HF.httpGET("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
                 C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True

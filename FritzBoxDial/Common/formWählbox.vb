@@ -314,7 +314,7 @@ Friend Class formWählbox
                     code = "num=" & code & "&berechnen=berechnen"
                 End If
 
-                cbcHTML = C_hf.httpWrite(myurl, code, System.Text.Encoding.Default)
+                cbcHTML = C_hf.httpPOST(myurl, code, System.Text.Encoding.Default)
                 If Not HTMLFehler Is Nothing Then C_hf.LogFile("FBError (formWählbox.ListTel_SelectionChanged): " & Err.Number & " - " & Err.Description & " - " & myurl)
                 Me.LLBiligertelefonieren.Text = myurl
                 CbCBilligerTelefonieren(code, cbcHTML)

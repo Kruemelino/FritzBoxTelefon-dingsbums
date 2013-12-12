@@ -935,7 +935,7 @@ Friend Class formCfg
         Else
             URL = "http://" & C_Helfer.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
-        MailText = C_Helfer.httpRead(URL, FBEncoding, Nothing)
+        MailText = C_Helfer.httpGET(URL, FBEncoding, Nothing)
 
         With My.Computer.FileSystem
             PfadTMPfile = .GetTempFileName()

@@ -9,7 +9,7 @@ Public Class FritzBox
     Private C_Crypt As Rijndael
     Private C_hf As Helfer
 
-    Private FBFehler As ErrObject
+    Private FBFehler As Boolean
     Private threadTelefon As Thread
     Private FBEncoding As System.Text.Encoding = Encoding.UTF8
 
@@ -45,8 +45,8 @@ Public Class FritzBox
 
         If C_DP.P_EncodeingFritzBox = C_DP.P_Def_ErrorMinusOne Then
             Dim Rückgabe As String
-            Rückgabe = C_hf.httpRead("http://" & C_hf.ValidIP(C_DP.P_TBFBAdr), FBEncoding, FBFehler)
-            If FBFehler Is Nothing Then
+            Rückgabe = C_hf.httpGET("http://" & C_hf.ValidIP(C_DP.P_TBFBAdr), FBEncoding, FBFehler)
+            If Not FBFehler Then
                 FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
                 C_DP.P_EncodeingFritzBox = FBEncoding.HeaderName
                 C_DP.SpeichereXMLDatei()
@@ -87,14 +87,14 @@ Public Class FritzBox
         ' </SessionInfo>
 
         sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?sid=" & sSID
-        slogin_xml = C_hf.httpRead(sLink, FBEncoding, FBFehler)
+        slogin_xml = C_hf.httpGET(sLink, FBEncoding, FBFehler)
 
         If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
             sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?getpage=../html/login_sid.xml&sid=" & sSID
-            slogin_xml = C_hf.httpRead(sLink, FBEncoding, FBFehler)
+            slogin_xml = C_hf.httpGET(sLink, FBEncoding, FBFehler)
         End If
 
-        If FBFehler Is Nothing Then
+        If Not FBFehler Then
             If InStr(slogin_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(slogin_xml) = 0 Then
 
                 If Not InpupPasswort = C_DP.P_Def_ErrorMinusOne Then
@@ -130,8 +130,8 @@ Public Class FritzBox
                             sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
                             If sBlockTime = "0" Then
                                 sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
-                                sResponse = C_hf.httpRead(sLink, FBEncoding, FBFehler)
-                                If FBFehler Is Nothing Then
+                                sResponse = C_hf.httpGET(sLink, FBEncoding, FBFehler)
+                                If Not FBFehler Then
                                     LuaLogin = True
                                 Else
                                     C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
@@ -150,7 +150,7 @@ Public Class FritzBox
 
                             sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm"
                             sFormData = "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
-                            sResponse = C_hf.httpWrite(sLink, sFormData, FBEncoding)
+                            sResponse = C_hf.httpPOST(sLink, sFormData, FBEncoding)
 
                             LuaLogin = False
                         End If
@@ -207,8 +207,8 @@ Public Class FritzBox
         Dim xml As New XmlDocument()
 
         sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?sid=" & sSID
-        Response = C_hf.httpRead(sLink, FBEncoding, FBFehler)
-        If FBFehler Is Nothing Then
+        Response = C_hf.httpGET(sLink, FBEncoding, FBFehler)
+        If Not FBFehler Then
             With xml
                 .LoadXml(Response)
                 If .InnerXml.Contains("Rights") Then
@@ -218,9 +218,9 @@ Public Class FritzBox
                 End If
             End With
             xml = Nothing
-            Response = C_hf.httpRead(sLink, FBEncoding, FBFehler)
+            Response = C_hf.httpGET(sLink, FBEncoding, FBFehler)
             C_hf.KeyChange()
-            If FBFehler Is Nothing Then
+            If Not FBFehler Then
                 If Not InStr(Response, "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.", CompareMethod.Text) = 0 Or _
                     Not InStr(Response, "Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.", CompareMethod.Text) = 0 Then
                     ' C_hf.LogFile("Logout erfolgreich")
@@ -252,7 +252,7 @@ Public Class FritzBox
         Dim tempstring As String
         Dim tempstring_code As String
 
-        tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
+        tempstring = C_hf.httpGET(sLink, FBEncoding, FBFehler)
         tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
         tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
 
@@ -289,8 +289,8 @@ Public Class FritzBox
 
             PushStatus("Fritz!Box SessionID: " & sSID)
             PushStatus("Fritz!Box Firmware  5.50: " & FW550.ToString)
-            tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
-            If FBFehler Is Nothing Then
+            tempstring = C_hf.httpGET(sLink, FBEncoding, FBFehler)
+            If Not FBFehler Then
                 If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                     tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                     tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
@@ -391,8 +391,8 @@ Public Class FritzBox
 
         sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         If P_SpeichereDaten Then PushStatus("Fritz!Box Telefon Quelldatei: " & sLink)
-        tempstring = C_hf.httpRead(sLink, FBEncoding, FBFehler)
-        If FBFehler Is Nothing Then
+        tempstring = C_hf.httpGET(sLink, FBEncoding, FBFehler)
+        If Not FBFehler Then
             If Not InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                 C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone. Anmeldung fehlerhaft o.A.!", MsgBoxStyle.Critical, "FritzBoxDaten_FWbelow5_50")
                 Exit Sub
@@ -1339,7 +1339,7 @@ Public Class FritzBox
         If Not sSID = C_DP.P_Def_SessionID And Len(sSID) = Len(C_DP.P_Def_SessionID) Then
             Link = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm"
             formdata = "sid=" & sSID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
-            Response = C_hf.httpWrite(Link, formdata, FBEncoding)
+            Response = C_hf.httpPOST(Link, formdata, FBEncoding)
 
             If Response = C_DP.P_Def_StringEmpty Then
                 SendDialRequestToBox = CStr(IIf(HangUp, "Verbindungsaufbau" & vbCrLf & "wurde abgebrochen!", "Wähle " & DialCode & vbCrLf & "Jetzt abheben!"))
@@ -1364,14 +1364,14 @@ Public Class FritzBox
             sLink(0) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/foncalls_list.lua?sid=" & sSID
             sLink(1) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/foncalls_list.lua?sid=" & sSID & "&csv="
 
-            ReturnString = C_hf.httpRead(sLink(0), FBEncoding, FBFehler)
-            If FBFehler Is Nothing Then
+            ReturnString = C_hf.httpGET(sLink(0), FBEncoding, FBFehler)
+            If Not FBFehler Then
                 If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
                     sLink(0) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
-                    C_hf.httpRead(sLink(0), FBEncoding, FBFehler)
+                    C_hf.httpGET(sLink(0), FBEncoding, FBFehler)
                     sLink(1) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
                 End If
-                ReturnString = C_hf.httpRead(sLink(1), FBEncoding, FBFehler)
+                ReturnString = C_hf.httpGET(sLink(1), FBEncoding, FBFehler)
             Else
                 C_hf.LogFile("FBError (DownloadAnrListe): " & Err.Number & " - " & Err.Description & " - " & sLink(0))
             End If

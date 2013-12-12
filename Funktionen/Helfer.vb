@@ -8,8 +8,6 @@ Public Class Helfer
 
     Private sDateiPfad As String
 
-    Private noCache As New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-
     Public Sub New(ByVal ArbeitsPfad As String, ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As Rijndael)
         sDateiPfad = ArbeitsPfad
         C_DP = DataProviderKlasse
@@ -121,7 +119,6 @@ Public Class Helfer
         End If
     End Function
 
-
     Public Function LogFile(ByVal Meldung As String) As Boolean
         Dim LogDatei As String = Dateipfade("LogDatei")
         If C_DP.P_CBLogFile Then
@@ -210,7 +207,7 @@ Public Class Helfer
         If LCase(FBAdr) = C_DP.P_Def_FritzBoxAdress Then Ping(FBAdr)
 
         sLink = "http://" & FBAdr & "/cgi-bin/system_status"
-        Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpRead(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
+        Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
         FBTyp = FritzBoxInformation(0)
         FBFW = Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
 
@@ -565,80 +562,141 @@ Public Class Helfer
 
 #Region " HTTPTransfer"
     ', ByRef Fehler As ErrObject
-    Public Function httpRead(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As ErrObject) As String
-        FBError = Nothing
+    'Public Function httpRead(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As ErrObject) As String
+    '    FBError = Nothing
+    '    Dim uri As New Uri(Link)
+    '    httpRead = C_DP.P_Def_StringEmpty
+    '    Try
+    '        Select Case uri.Scheme
+    '            Case uri.UriSchemeHttp
+    '                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
+    '                    .Method = WebRequestMethods.Http.Get
+    '                    .Proxy = Nothing
+    '                    .KeepAlive = False
+    '                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+    '                    'UserAgent = C_DP.P_Def_UserAgent
+    '                    '.ProtocolVersion = System.Net.HttpVersion.Version10
+    '                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+    '                        httpRead = .ReadToEnd()
+    '                        .Close()
+    '                        .Dispose()
+    '                    End With
+    '                End With
+    '            Case uri.UriSchemeFile
+    '                With CType(FileWebRequest.Create(uri), FileWebRequest)
+    '                    .Method = WebRequestMethods.Http.Get
+    '                    .Proxy = Nothing
+    '                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+    '                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+    '                        httpRead = .ReadToEnd()
+    '                        .Close()
+    '                        .Dispose()
+    '                    End With
+    '                End With
+    '        End Select
+
+    '    Catch
+    '        FBError = Err()
+    '        LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
+    '    End Try
+    '    Return httpRead
+    'End Function
+
+    'Public Function httpWrite(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
+    '    httpWrite = C_DP.P_Def_StringEmpty
+    '    Dim uri As New Uri(Link)
+    '    Try
+    '        If (uri.Scheme = uri.UriSchemeHttp) Then
+
+    '            With CType(HttpWebRequest.Create(uri), HttpWebRequest)
+    '                .Method = WebRequestMethods.Http.Post
+    '                .Proxy = Nothing
+    '                .KeepAlive = False
+    '                .ContentLength = data.Length
+    '                .ContentType = "application/x-www-form-urlencoded"
+    '                .Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    '                .UserAgent = C_DP.P_Def_UserAgent
+
+    '                With New IO.StreamWriter(.GetRequestStream)
+    '                    .Write(data)
+    '                    System.Threading.Thread.Sleep(100)
+    '                    .Close()
+    '                End With
+
+    '                With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), Encoding)
+    '                    httpWrite = .ReadToEnd()
+    '                    System.Threading.Thread.Sleep(100)
+    '                    .Close()
+    '                End With
+    '            End With
+    '        End If
+    '    Catch
+    '        LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
+    '    End Try
+
+    'End Function
+
+#End Region
+
+
+#Region "HTTP-GET / POST"
+    Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
+        Dim webClient As New WebClient
         Dim uri As New Uri(Link)
-        httpRead = C_DP.P_Def_StringEmpty
-        Try
-            Select Case uri.Scheme
-                Case uri.UriSchemeHttp
-                    With CType(HttpWebRequest.Create(uri), HttpWebRequest)
-                        .Method = WebRequestMethods.Http.Get
-                        .Proxy = Nothing
-                        .KeepAlive = False
-                        .CachePolicy = noCache
-                        .UserAgent = C_DP.P_Def_UserAgent
-                        .ProtocolVersion = System.Net.HttpVersion.Version10
-                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-                            httpRead = .ReadToEnd()
-                            .Close()
-                            .Dispose()
-                        End With
-                    End With
-                Case uri.UriSchemeFile
-                    With CType(FileWebRequest.Create(uri), FileWebRequest)
-                        .Method = WebRequestMethods.Http.Get
-                        .Proxy = Nothing
-                        .CachePolicy = noCache
-                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-                            httpRead = .ReadToEnd()
-                            .Close()
-                            .Dispose()
-                        End With
-                    End With
-            End Select
 
-        Catch
-            FBError = Err()
-            LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
-        End Try
-        Return httpRead
-    End Function
+        httpGET = C_DP.P_Def_StringEmpty
+        With webClient
+            .Encoding = Encoding
+            .Proxy = Nothing
+            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-    Public Function httpWrite(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
-        httpWrite = C_DP.P_Def_StringEmpty
-        Dim uri As New Uri(Link)
-        Try
-            If (uri.Scheme = uri.UriSchemeHttp) Then
-
-                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
-                    .Method = WebRequestMethods.Http.Post
-                    .Proxy = Nothing
-                    .KeepAlive = False
-                    .ContentLength = data.Length
-                    .ContentType = "application/x-www-form-urlencoded"
-                    .Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-                    .UserAgent = C_DP.P_Def_UserAgent
-
-                    With New IO.StreamWriter(.GetRequestStream)
-                        .Write(data)
-                        System.Threading.Thread.Sleep(100)
-                        .Close()
-                    End With
-
-                    With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), Encoding)
-                        httpWrite = .ReadToEnd()
-                        System.Threading.Thread.Sleep(100)
-                        .Close()
-                    End With
-                End With
+            If uri.Scheme = uri.UriSchemeHttp Then
+                .Headers.Add(HttpRequestHeader.KeepAlive, "False")
             End If
-        Catch
-            LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
-        End Try
 
+            Try
+                httpGET = .DownloadString(uri)
+            Catch exANE As ArgumentNullException
+                FBError = True
+                LogFile("httpGET: " & exANE.Message)
+            Catch exWE As WebException
+                FBError = True
+                LogFile("httpGET: " & exWE.Message & " - Link: " & Link)
+            End Try
+
+        End With
     End Function
 
+    Public Function httpPOST(ByVal Link As String, ByVal UploadData As String, ByVal Encoding As System.Text.Encoding) As String
+        Dim webClient As New WebClient
+        Dim uri As New Uri(Link)
+
+        httpPOST = C_DP.P_Def_StringEmpty
+
+        If uri.Scheme = uri.UriSchemeHttp Then
+            With webClient
+                .Encoding = Encoding
+                .Proxy = Nothing
+                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+
+                With .Headers
+                    .Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded")
+                    .Add(HttpRequestHeader.ContentLength, UploadData.Length.ToString)
+                    .Add(HttpRequestHeader.UserAgent, C_DP.P_Def_UserAgent)
+                    .Add(HttpRequestHeader.KeepAlive, "False")
+                    .Add(HttpRequestHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+                End With
+
+                Try
+                    httpPOST = .UploadString(uri, UploadData)
+                Catch exANE As ArgumentNullException
+                    LogFile("httpPOST: " & exANE.Message)
+                Catch exWE As WebException
+                    LogFile("httpPOST: " & exWE.Message & " - Link: " & Link)
+                End Try
+            End With
+        End If
+    End Function
 #End Region
 
 #Region " Timer"

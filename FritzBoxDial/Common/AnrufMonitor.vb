@@ -119,8 +119,6 @@ Friend Class AnrufMonitor
     ''' Wird durch das Symbol 'Anrufmonitor' in der 'FritzBox'-Symbolleiste ausgeführt
     ''' </summary>
     ''' <returns>Boolean: Ob Anrufmonitor eingeschaltet ist.</returns>
-    ''' <remarks></remarks>
-    ''' 
     Friend Function AnrMonAnAus() As Boolean
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)

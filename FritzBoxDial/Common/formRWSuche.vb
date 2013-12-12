@@ -3,7 +3,7 @@ Public Class formRWSuche
     Private C_hf As Helfer
     Private C_KF As Contacts
     Private C_DP As DataProvider
-    Private HTMLFehler As ErrObject
+    Private HTMLFehler As Boolean
 
     Public Enum Suchmaschine
         'RWSGoYellow = 0
@@ -181,8 +181,8 @@ Public Class formRWSuche
             Do
                 ' Webseite für Rückwärtssuche aufrufen und herunterladen
                 myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tempTelNr
-                html11880 = C_hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-                If HTMLFehler Is Nothing Then
+                html11880 = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+                If Not HTMLFehler Then
 
 
                     html11880 = Replace(html11880, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
@@ -194,8 +194,8 @@ Public Class formRWSuche
                         pos2 = InStr(pos1, html11880, SWVisitenkarte2, CompareMethod.Text) 'Starten ab Startpunkt, suchen des Endpunkts
                         ' vCard herunterladen
                         myurl = "http://classic.11880.com" & Mid(html11880, pos1, pos2 - pos1)
-                        vCard = C_hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-                        If Not HTMLFehler Is Nothing Then
+                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+                        If Not HTMLFehler Then
                             C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                         End If
                     End If
@@ -251,7 +251,7 @@ Public Class formRWSuche
     '            'myurl = "http://www.goyellow.de/inverssuche/?TEL=" & tempTelNr
     '            myurl = "http://www.goyellow.de/suche/" & tempTelNr & "/-/seite-1?locs=true"
     '            htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-    '            If HTMLFehler Is Nothing Then
+    '            If Not FBFehle Then
     '                htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
     '                pos = InStr(1, htmlGoYellow, "<a href=/upgrade?q=", CompareMethod.Text)
     '                If Not pos = 0 Then
@@ -328,7 +328,7 @@ Public Class formRWSuche
             myurl = "http://www1.dastelefonbuch.de/"
             'formdata = "sp=0&aktion=23&kw=" & tempTelNr & "&ort=&cifav=0&s=a10000&stype=s&la=de&taoid=&cmd=search&ort_ok=0&vert_ok=0"
             formdata = "cmd=detail&kw=" & tempTelNr
-            Text = C_hf.httpWrite(myurl, formdata, System.Text.Encoding.Default)
+            Text = C_hf.httpPOST(myurl, formdata, System.Text.Encoding.Default)
 
             If Not Text = C_DP.P_Def_StringEmpty Then
                 Text = Replace(Text, Chr(34), "'", , , CompareMethod.Text) '" enfernen
@@ -337,10 +337,10 @@ Public Class formRWSuche
                     pos1 = pos1 + Len(SW1)
                     pos2 = InStr(pos1, Text, SW2, vbTextCompare)
                     myurl = "http://www1.dastelefonbuch.de/VCard?encurl=" & Mid(Text, pos1, pos2 - pos1)
-                    vCard = C_hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                    vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
                 End If
             End If
-            If Not HTMLFehler Is Nothing Then
+            If Not HTMLFehler Then
                 C_hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
             End If
             RWSDasTelefonbuch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
@@ -378,8 +378,8 @@ Public Class formRWSuche
         Do
             ' Webseite für Rückwärtssuche aufrufen und herunterladen
             myurl = "http://tel.search.ch/result.html?name=&misc=&strasse=&ort=&kanton=&tel=" & tempTelNr
-            htmltelsearch = C_hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-            If HTMLFehler Is Nothing Then
+            htmltelsearch = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+            If Not HTMLFehler Then
                 htmltelsearch = Replace(htmltelsearch, Chr(34), "", , , vbTextCompare) '" enfernen
 
                 ' Link zum Herunterladen der vCard suchen
@@ -390,7 +390,7 @@ Public Class formRWSuche
                         ' vCard herunterladen
                         myurl = "http://tel.search.ch/" & Mid(htmltelsearch, pos1 + 9, pos2 - pos1 - 10)
                         myurl = Replace(myurl, "html", "vcf")
-                        vCard = C_hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
+                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
                     End If
                 End If
                 ' Rückgabewert ermitteln
