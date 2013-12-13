@@ -60,8 +60,8 @@ Public Class Helfer
         Dim PingSender As New NetworkInformation.Ping()
         Dim Options As New NetworkInformation.PingOptions()
         Dim PingReply As NetworkInformation.PingReply = Nothing
-
         Dim data As String = C_DP.P_Def_StringEmpty
+
         Dim buffer As Byte() = Encoding.ASCII.GetBytes(data)
         Dim timeout As Integer = 120
 
@@ -69,7 +69,7 @@ Public Class Helfer
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
         Catch ex As Exception
-            LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich: " & ex.Message)
+            LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich: " & ex.InnerException.Message)
             Ping = False
         End Try
 

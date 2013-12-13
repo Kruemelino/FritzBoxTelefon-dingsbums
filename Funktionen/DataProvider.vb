@@ -1656,7 +1656,7 @@ Public Class DataProvider
     Private Function CheckXPathRead(ByVal xPath As String) As Boolean
         CheckXPathRead = True
 
-        'If Not InStr(xPath, xPathSeperatorSlash & xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
+        If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
         If Right(xPath, 1) = xPathSeperatorSlash Then Return False
     End Function
 #End Region
