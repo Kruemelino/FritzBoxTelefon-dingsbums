@@ -566,23 +566,26 @@ Public Class Helfer
     '    FBError = Nothing
     '    Dim uri As New Uri(Link)
     '    httpRead = C_DP.P_Def_StringEmpty
+
     '    Try
+
     '        Select Case uri.Scheme
     '            Case uri.UriSchemeHttp
+
     '                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
     '                    .Method = WebRequestMethods.Http.Get
     '                    .Proxy = Nothing
     '                    .KeepAlive = False
     '                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-    '                    'UserAgent = C_DP.P_Def_UserAgent
-    '                    '.ProtocolVersion = System.Net.HttpVersion.Version10
     '                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
     '                        httpRead = .ReadToEnd()
     '                        .Close()
     '                        .Dispose()
     '                    End With
     '                End With
+
     '            Case uri.UriSchemeFile
+
     '                With CType(FileWebRequest.Create(uri), FileWebRequest)
     '                    .Method = WebRequestMethods.Http.Get
     '                    .Proxy = Nothing
@@ -593,12 +596,17 @@ Public Class Helfer
     '                        .Dispose()
     '                    End With
     '                End With
+
     '        End Select
+
+
+
 
     '    Catch
     '        FBError = Err()
     '        LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
     '    End Try
+    '    uri = Nothing
     '    Return httpRead
     'End Function
 
@@ -640,9 +648,18 @@ Public Class Helfer
 
 
 #Region "HTTP-GET / POST"
+    ''' <summary>
+    ''' Läd einen Inhalt über einen HTTP-GET von einem Server herunter 
+    ''' </summary>
+    ''' <param name="Link">Link zum Inhalt</param>
+    ''' <param name="Encoding">Zeichencodierung</param>
+    ''' <param name="FBError">Rückgabewert. Ist Wahr, wenn Ein Fehler aufgetreten ist.</param>
+    ''' <returns>String: Inhalt</returns>
+    ''' <remarks></remarks>
     Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
         Dim webClient As New WebClient
         Dim uri As New Uri(Link)
+        Dim PfadTMPfile As String
 
         httpGET = C_DP.P_Def_StringEmpty
         With webClient
@@ -650,12 +667,20 @@ Public Class Helfer
             .Proxy = Nothing
             .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-            If uri.Scheme = uri.UriSchemeHttp Then
-                .Headers.Add(HttpRequestHeader.KeepAlive, "False")
-            End If
-
             Try
-                httpGET = .DownloadString(uri)
+                If uri.Scheme = uri.UriSchemeHttp Then
+                    .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+                End If
+                If C_DP.P_Debug_SaveToFile Then
+                    PfadTMPfile = My.Computer.FileSystem.GetTempFileName()
+                    .DownloadFile(uri, PfadTMPfile)
+                    LogFile("SaveToFile: " & Link & " gespeichert: " & PfadTMPfile)
+                    httpGET = My.Computer.FileSystem.ReadAllText(PfadTMPfile)
+                    My.Computer.FileSystem.DeleteFile(PfadTMPfile)
+                    LogFile("SaveToFile: " & PfadTMPfile & " gelöscht.")
+                Else
+                    httpGET = .DownloadString(uri)
+                End If
             Catch exANE As ArgumentNullException
                 FBError = True
                 LogFile("httpGET: " & exANE.Message)
@@ -665,6 +690,8 @@ Public Class Helfer
             End Try
 
         End With
+
+
     End Function
 
     Public Function httpPOST(ByVal Link As String, ByVal UploadData As String, ByVal Encoding As System.Text.Encoding) As String

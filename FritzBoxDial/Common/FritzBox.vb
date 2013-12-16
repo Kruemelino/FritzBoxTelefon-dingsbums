@@ -41,7 +41,7 @@ Public Class FritzBox
         C_hf.KeyChange()
         C_Crypt = CryptKlasse
 
-        sSID = C_DP.P_Def_SessionID  ' Startwert: UNgültige SID
+        sSID = C_DP.P_Def_SessionID  ' Startwert: Ungültige SID
 
         If C_DP.P_EncodeingFritzBox = C_DP.P_Def_ErrorMinusOne Then
             Dim Rückgabe As String
@@ -283,7 +283,7 @@ Public Class FritzBox
 
         If P_SpeichereDaten Then PushStatus("Fritz!Box Adresse: " & C_DP.P_TBFBAdr)
 
-        FBLogin(FW550)
+        FBLogIn(FW550)
         If Not sSID = C_DP.P_Def_SessionID Then
             sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & sSID
 
@@ -1358,18 +1358,21 @@ Public Class FritzBox
     Public Function DownloadAnrListe() As String
         Dim sLink(1) As String
         Dim ReturnString As String = C_DP.P_Def_StringEmpty
+        Dim LinkBase As String
 
-        sSID = FBLogin(True)
+        sSID = FBLogIn(True)
         If Not sSID = C_DP.P_Def_SessionID Then
+
             sLink(0) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/foncalls_list.lua?sid=" & sSID
-            sLink(1) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/foncalls_list.lua?sid=" & sSID & "&csv="
+            sLink(1) = sLink(0) & "&csv="
 
             ReturnString = C_hf.httpGET(sLink(0), FBEncoding, FBFehler)
             If Not FBFehler Then
                 If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
-                    sLink(0) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
+                    LinkBase = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/"
+                    sLink(0) = LinkBase & "menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
                     C_hf.httpGET(sLink(0), FBEncoding, FBFehler)
-                    sLink(1) = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/FRITZ!Box_Anrufliste.csv"
+                    sLink(1) = LinkBase & "FRITZ!Box_Anrufliste.csv"
                 End If
                 ReturnString = C_hf.httpGET(sLink(1), FBEncoding, FBFehler)
             Else

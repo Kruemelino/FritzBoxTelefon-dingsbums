@@ -1135,6 +1135,14 @@ Public Class DataProvider
     End Property
 #End Region
 
+#Region "Debug Properties"
+    Public ReadOnly Property P_Debug_SaveToFile() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+#End Region
+
     Public Sub New(ByVal DateiPfad As String)
         sDateiPfad = DateiPfad
         XMLDoc = New XmlDocument()

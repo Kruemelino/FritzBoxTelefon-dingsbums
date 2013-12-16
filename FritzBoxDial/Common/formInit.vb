@@ -37,6 +37,7 @@
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(DateiPfad, C_DP, C_Crypt)
+        C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
         C_Kontakt = New Contacts(C_DP, C_HF)
