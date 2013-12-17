@@ -712,7 +712,7 @@ Public Class DataProvider
     End Property
 
 #End Region
-#Region "Global Default alue Properties"
+#Region "Global Default Value Properties"
     ''' <summary>
     ''' Default Fehlerwert
     ''' </summary>
@@ -753,6 +753,17 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public ReadOnly Property P_Def_ReStartIntervall() As Integer
+        Get
+            Return 3000
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_TryMaxRestart() As Integer
+        Get
+            Return 15
+        End Get
+    End Property
 #End Region
 #Region "Default Value Properties"
 

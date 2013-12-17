@@ -8,7 +8,7 @@ Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
     Private WithEvents BWStartTCPReader As BackgroundWorker
-    Private WithEvents TimerReStartStandBy As System.Timers.Timer
+    Private WithEvents TimerReStart As System.Timers.Timer
     Private WithEvents TimerCheckAnrMon As System.Timers.Timer
 
     Private ReceiveThread As Thread
@@ -161,55 +161,44 @@ Friend Class AnrufMonitor
     End Function '(AnrMonStart)
 
     Function AnrMonStartNachStandby() As Boolean
-        Dim formjournalimort As formJournalimport
-        Dim FritzBoxErreichbar As Boolean
-
+        AnrMonAktiv = False
+#If OVer < 14 Then
+        C_GUI.SetAnrMonButton(AnrMonAktiv)
+#Else
+        C_GUI.RefreshRibbon()
+#End If
         AnrMonStartNachStandby = False
+
         If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
-            If C_DP.P_CBForceFBAddr Then
-                ' Erfahrung: Fritz!Box ist noch nicht erreichbar wenn Outlook aus Standby erwacht ist.
-                FritzBoxErreichbar = False
-            Else
-                FritzBoxErreichbar = C_hf.Ping(C_DP.P_TBFBAdr)
-            End If
-
-
-            If Not FritzBoxErreichbar Then
-                TimerReStartStandBy = C_hf.SetTimer(3000)
-                StandbyCounter = 2
-
-                C_hf.LogFile("Standby Timer 1. Ping nicht erfolgreich")
-            Else
-                C_hf.LogFile("Standby 1. Ping erfolgreich")
-                AnrMonStart(False)
-
-                If C_DP.P_CBJournal Then formjournalimort = New formJournalimport(Me, C_hf, C_DP, False)
-            End If
-            Return True
+            StandbyCounter = 1
+            TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
         End If
 
 
     End Function
 
-    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStartStandBy.Elapsed
-        If C_hf.Ping(C_DP.P_TBFBAdr) Then
-            C_hf.LogFile("Standby Timer " & StandbyCounter & ". Ping erfolgreich")
-            StandbyCounter = 15
-            AnrMonStart(False)
-            If C_DP.P_CBJournal Then
-                Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
+
+        If StandbyCounter < C_DP.P_Def_TryMaxRestart Then
+            If C_DP.P_CBForceFBAddr Then
+                C_hf.KillTimer(TimerReStart)
+                AnrMonStart(False)
+                C_hf.LogFile("Anrufmonitor nach Standby neugestartet (Forced).")
+            Else
+                If C_hf.Ping(C_DP.P_TBFBAdr) Then
+                    C_hf.KillTimer(TimerReStart)
+                    AnrMonStart(False)
+                    C_hf.LogFile("Anrufmonitor nach Standby neugestartet (Ping).")
+                Else
+                    C_hf.LogFile("Anrufmonitor konnte nach Standby noch nicht neugestartet werden.")
+                    StandbyCounter += 1
+                End If
+                'If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
             End If
-            C_hf.LogFile("Anrufmonitor nach StandBy neugestartet")
-        End If
-
-        If StandbyCounter >= 14 Then
-            If StandbyCounter = 14 Then C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
-            C_hf.KillTimer(TimerReStartStandBy)
         Else
-            C_hf.LogFile("Standby Timer " & StandbyCounter & ". nicht Ping erfolgreich")
-            StandbyCounter += 1
+            C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
+            C_hf.KillTimer(TimerReStart)
         End If
-
     End Sub
 
     Private Sub TimerCheckAnrMon_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerCheckAnrMon.Elapsed

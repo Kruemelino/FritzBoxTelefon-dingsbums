@@ -143,7 +143,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.20"
+    Public Const Version As String = "3.6.21"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -154,15 +154,12 @@ Public Class ThisAddIn
 #End If
 
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
+        hf.LogFile("PowerMode: " & e.Mode.ToString & " ( " & e.Mode & ")")
         Select Case e.Mode
             Case PowerModes.Resume
-                hf.LogFile("StandBy: PowerModes." & PowerModes.Resume.ToString)
                 AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
                 AnrMon.AnrMonQuit()
-                hf.LogFile("StandBy: PowerModes." & PowerModes.Suspend.ToString)
-            Case Else
-                hf.LogFile("PowerMode: " & e.Mode)
         End Select
     End Sub
 
