@@ -57,6 +57,7 @@ Public Class Helfer
     Public Function Ping(ByRef IPAdresse As String) As Boolean
         Ping = False
 
+        Dim IPHostInfo As IPHostEntry
         Dim PingSender As New NetworkInformation.Ping()
         Dim Options As New NetworkInformation.PingOptions()
         Dim PingReply As NetworkInformation.PingReply = Nothing
@@ -76,9 +77,24 @@ Public Class Helfer
         If Not PingReply Is Nothing Then
             With PingReply
                 If .Status = NetworkInformation.IPStatus.Success Then
-                    IPAdresse = .Address.ToString
+                    If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
+                        'Zugehörige IPv4 ermitteln
+                        IPHostInfo = Dns.GetHostEntry(.Address)
+                        For Each IPAddress As IPAddress In IPHostInfo.AddressList
+                            If IPAddress.AddressFamily = Sockets.AddressFamily.InterNetwork Then
+                                IPAdresse = IPAddress.ToString
+                                ' Prüfen ob es eine generel gültige lokale IPv6 Adresse gibt: fd00::2665:11ff:fed8:6086
+                                ' und wie die zu ermitteln ist
+                                LogFile("IPv6: " & .Address.ToString & ", IPv4: " & IPAdresse)
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        IPAdresse = .Address.ToString
+                    End If
                     Ping = True
                 Else
+                    LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich: " & .Status)
                     Ping = False
                 End If
             End With
@@ -98,24 +114,26 @@ Public Class Helfer
     ''' <param name="ValidIpv6URL">Gibt an, ob die IPv6 Adresse in ein URL-Konformen String gewandelt werden soll.</param>
     ''' <returns>Korrekte IP-Adresse</returns>
     Public Function ValidIP(ByVal InputIP As String) As String
-        Dim _IPAddress As IPAddress = Nothing
+        ValidIP = C_DP.P_Def_FritzBoxAdress
+        Dim IPAddresse As IPAddress = Nothing
         Dim IPHostInfo As IPHostEntry
-        If IPAddress.TryParse(InputIP, _IPAddress) Then
-            Select Case _IPAddress.AddressFamily
+        If IPAddress.TryParse(InputIP, IPAddresse) Then
+            Select Case IPAddresse.AddressFamily
                 Case Sockets.AddressFamily.InterNetworkV6
-                    ValidIP = "[" & _IPAddress.ToString & "]"
+                    ValidIP = "[" & IPAddresse.ToString & "]"
                 Case Sockets.AddressFamily.InterNetwork
-                    ValidIP = _IPAddress.ToString
+                    ValidIP = IPAddresse.ToString
                 Case Else
                     LogFile("Die IP """ & InputIP & """ kann nicht zugeordnet werden.")
                     ValidIP = InputIP
             End Select
         Else
             IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
-            _IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
-            ' Keine gültige IP-Adresse
-
-            ValidIP = ValidIP(_IPAddress.ToString)
+            For Each IPAddresse In IPHostInfo.AddressList
+                If IPAddresse.AddressFamily = Sockets.AddressFamily.InterNetwork Then
+                    ValidIP = IPAddresse.ToString
+                End If
+            Next
         End If
     End Function
 
@@ -561,170 +579,164 @@ Public Class Helfer
 #End Region
 
 #Region " HTTPTransfer"
-    ', ByRef Fehler As ErrObject
-    'Public Function httpRead(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As ErrObject) As String
-    '    FBError = Nothing
-    '    Dim uri As New Uri(Link)
-    '    httpRead = C_DP.P_Def_StringEmpty
 
-    '    Try
+    Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
+        FBError = Nothing
+        Dim uri As New Uri(Link)
+        httpGET = C_DP.P_Def_StringEmpty
+        Try
+            Select Case uri.Scheme
+                Case uri.UriSchemeHttp
 
-    '        Select Case uri.Scheme
-    '            Case uri.UriSchemeHttp
+                    With CType(HttpWebRequest.Create(uri), HttpWebRequest)
+                        .Method = WebRequestMethods.Http.Get
+                        .Proxy = Nothing
+                        .KeepAlive = False
+                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                            httpGET = .ReadToEnd()
+                            .Close()
+                            .Dispose()
+                        End With
+                    End With
 
-    '                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
-    '                    .Method = WebRequestMethods.Http.Get
-    '                    .Proxy = Nothing
-    '                    .KeepAlive = False
-    '                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-    '                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-    '                        httpRead = .ReadToEnd()
-    '                        .Close()
-    '                        .Dispose()
-    '                    End With
-    '                End With
+                Case uri.UriSchemeFile
 
-    '            Case uri.UriSchemeFile
+                    With CType(FileWebRequest.Create(uri), FileWebRequest)
+                        .Method = WebRequestMethods.Http.Get
+                        .Proxy = Nothing
+                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                            httpGET = .ReadToEnd()
+                            .Close()
+                            .Dispose()
+                        End With
+                    End With
 
-    '                With CType(FileWebRequest.Create(uri), FileWebRequest)
-    '                    .Method = WebRequestMethods.Http.Get
-    '                    .Proxy = Nothing
-    '                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-    '                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-    '                        httpRead = .ReadToEnd()
-    '                        .Close()
-    '                        .Dispose()
-    '                    End With
-    '                End With
+            End Select
+        Catch
+            FBError = True
+            LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
+        End Try
+        uri = Nothing
+        Return httpGET
+    End Function
 
-    '        End Select
+    Public Function httpPOST(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
+        httpPOST = C_DP.P_Def_StringEmpty
+        Dim uri As New Uri(Link)
+        Try
+            If (uri.Scheme = uri.UriSchemeHttp) Then
+
+                With CType(HttpWebRequest.Create(uri), HttpWebRequest)
+                    .Method = WebRequestMethods.Http.Post
+                    .Proxy = Nothing
+                    .KeepAlive = False
+                    .ContentLength = data.Length
+                    .ContentType = C_DP.P_Def_Header_ContentType
+                    .Accept = C_DP.P_Def_Header_Accept
+                    .UserAgent = C_DP.P_Def_Header_UserAgent
+
+                    With New IO.StreamWriter(.GetRequestStream)
+                        .Write(data)
+                        System.Threading.Thread.Sleep(100)
+                        .Close()
+                    End With
+
+                    With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), Encoding)
+                        httpPOST = .ReadToEnd()
+                        System.Threading.Thread.Sleep(100)
+                        .Close()
+                    End With
+                End With
+            End If
+        Catch
+            LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
+        End Try
+
+    End Function
+
+#End Region
 
 
+    '#Region "HTTP-GET / POST"
+    '    ''' <summary>
+    '    ''' Läd einen Inhalt über einen HTTP-GET von einem Server herunter 
+    '    ''' </summary>
+    '    ''' <param name="Link">Link zum Inhalt</param>
+    '    ''' <param name="Encoding">Zeichencodierung</param>
+    '    ''' <param name="FBError">Rückgabewert. Ist Wahr, wenn Ein Fehler aufgetreten ist.</param>
+    '    ''' <returns>String: Inhalt</returns>
+    '    ''' <remarks></remarks>
+    '    Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
+    '        Dim webClient As New WebClient
+    '        Dim uri As New Uri(Link)
+    '        Dim PfadTMPfile As String
+
+    '        httpGET = C_DP.P_Def_StringEmpty
+    '        With webClient
+    '            .Encoding = Encoding
+    '            .Proxy = Nothing
+    '            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+
+    '            Try
+    '                If uri.Scheme = uri.UriSchemeHttp Then
+    '                    .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+    '                End If
+    '                If C_DP.P_Debug_SaveToFile Then
+    '                    PfadTMPfile = My.Computer.FileSystem.GetTempFileName()
+    '                    .DownloadFile(uri, PfadTMPfile)
+    '                    LogFile("SaveToFile: " & Link & " gespeichert: " & PfadTMPfile)
+    '                    httpGET = My.Computer.FileSystem.ReadAllText(PfadTMPfile)
+    '                    My.Computer.FileSystem.DeleteFile(PfadTMPfile)
+    '                    LogFile("SaveToFile: " & PfadTMPfile & " gelöscht.")
+    '                Else
+    '                    httpGET = .DownloadString(uri)
+    '                End If
+    '            Catch exANE As ArgumentNullException
+    '                FBError = True
+    '                LogFile("httpGET: " & exANE.Message)
+    '            Catch exWE As WebException
+    '                FBError = True
+    '                LogFile("httpGET: " & exWE.Message & " - Link: " & Link)
+    '            End Try
+
+    '        End With
 
 
-    '    Catch
-    '        FBError = Err()
-    '        LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Read aufgetreten: " & Err.Description)
-    '    End Try
-    '    uri = Nothing
-    '    Return httpRead
-    'End Function
+    '    End Function
 
-    'Public Function httpWrite(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
-    '    httpWrite = C_DP.P_Def_StringEmpty
-    '    Dim uri As New Uri(Link)
-    '    Try
-    '        If (uri.Scheme = uri.UriSchemeHttp) Then
+    '    Public Function httpPOST(ByVal Link As String, ByVal UploadData As String, ByVal Encoding As System.Text.Encoding) As String
+    '        Dim webClient As New WebClient
+    '        Dim uri As New Uri(Link)
 
-    '            With CType(HttpWebRequest.Create(uri), HttpWebRequest)
-    '                .Method = WebRequestMethods.Http.Post
+    '        httpPOST = C_DP.P_Def_StringEmpty
+
+    '        If uri.Scheme = uri.UriSchemeHttp Then
+    '            With webClient
+    '                .Encoding = Encoding
     '                .Proxy = Nothing
-    '                .KeepAlive = False
-    '                .ContentLength = data.Length
-    '                .ContentType = "application/x-www-form-urlencoded"
-    '                .Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-    '                .UserAgent = C_DP.P_Def_UserAgent
+    '                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-    '                With New IO.StreamWriter(.GetRequestStream)
-    '                    .Write(data)
-    '                    System.Threading.Thread.Sleep(100)
-    '                    .Close()
+    '                With .Headers
+    '                    .Add(HttpRequestHeader.ContentType, C_DP.P_Def_Header_ContentType)
+    '                    .Add(HttpRequestHeader.ContentLength, UploadData.Length.ToString)
+    '                    .Add(HttpRequestHeader.UserAgent, C_DP.P_Def_UserAgent)
+    '                    .Add(HttpRequestHeader.KeepAlive, "False")
+    '                    .Add(HttpRequestHeader.Accept, C_DP.P_Def_Header_Accept)
     '                End With
 
-    '                With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), Encoding)
-    '                    httpWrite = .ReadToEnd()
-    '                    System.Threading.Thread.Sleep(100)
-    '                    .Close()
-    '                End With
+    '                Try
+    '                    httpPOST = .UploadString(uri, UploadData)
+    '                Catch exANE As ArgumentNullException
+    '                    LogFile("httpPOST: " & exANE.Message)
+    '                Catch exWE As WebException
+    '                    LogFile("httpPOST: " & exWE.Message & " - Link: " & Link)
+    '                End Try
     '            End With
     '        End If
-    '    Catch
-    '        LogFile("Es ist ein Fehler in der Funktion HTTPTransfer.Write aufgetreten: " & Err.Description)
-    '    End Try
-
-    'End Function
-
-#End Region
-
-
-#Region "HTTP-GET / POST"
-    ''' <summary>
-    ''' Läd einen Inhalt über einen HTTP-GET von einem Server herunter 
-    ''' </summary>
-    ''' <param name="Link">Link zum Inhalt</param>
-    ''' <param name="Encoding">Zeichencodierung</param>
-    ''' <param name="FBError">Rückgabewert. Ist Wahr, wenn Ein Fehler aufgetreten ist.</param>
-    ''' <returns>String: Inhalt</returns>
-    ''' <remarks></remarks>
-    Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
-        Dim webClient As New WebClient
-        Dim uri As New Uri(Link)
-        Dim PfadTMPfile As String
-
-        httpGET = C_DP.P_Def_StringEmpty
-        With webClient
-            .Encoding = Encoding
-            .Proxy = Nothing
-            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-
-            Try
-                If uri.Scheme = uri.UriSchemeHttp Then
-                    .Headers.Add(HttpRequestHeader.KeepAlive, "False")
-                End If
-                If C_DP.P_Debug_SaveToFile Then
-                    PfadTMPfile = My.Computer.FileSystem.GetTempFileName()
-                    .DownloadFile(uri, PfadTMPfile)
-                    LogFile("SaveToFile: " & Link & " gespeichert: " & PfadTMPfile)
-                    httpGET = My.Computer.FileSystem.ReadAllText(PfadTMPfile)
-                    My.Computer.FileSystem.DeleteFile(PfadTMPfile)
-                    LogFile("SaveToFile: " & PfadTMPfile & " gelöscht.")
-                Else
-                    httpGET = .DownloadString(uri)
-                End If
-            Catch exANE As ArgumentNullException
-                FBError = True
-                LogFile("httpGET: " & exANE.Message)
-            Catch exWE As WebException
-                FBError = True
-                LogFile("httpGET: " & exWE.Message & " - Link: " & Link)
-            End Try
-
-        End With
-
-
-    End Function
-
-    Public Function httpPOST(ByVal Link As String, ByVal UploadData As String, ByVal Encoding As System.Text.Encoding) As String
-        Dim webClient As New WebClient
-        Dim uri As New Uri(Link)
-
-        httpPOST = C_DP.P_Def_StringEmpty
-
-        If uri.Scheme = uri.UriSchemeHttp Then
-            With webClient
-                .Encoding = Encoding
-                .Proxy = Nothing
-                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-
-                With .Headers
-                    .Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded")
-                    .Add(HttpRequestHeader.ContentLength, UploadData.Length.ToString)
-                    .Add(HttpRequestHeader.UserAgent, C_DP.P_Def_UserAgent)
-                    .Add(HttpRequestHeader.KeepAlive, "False")
-                    .Add(HttpRequestHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-                End With
-
-                Try
-                    httpPOST = .UploadString(uri, UploadData)
-                Catch exANE As ArgumentNullException
-                    LogFile("httpPOST: " & exANE.Message)
-                Catch exWE As WebException
-                    LogFile("httpPOST: " & exWE.Message & " - Link: " & Link)
-                End Try
-            End With
-        End If
-    End Function
-#End Region
+    '    End Function
+    '#End Region
 
 #Region " Timer"
     Public Function SetTimer(ByRef Interval As Double) As System.Timers.Timer
