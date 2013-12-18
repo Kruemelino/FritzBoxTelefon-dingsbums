@@ -125,6 +125,8 @@ Friend Class AnrufMonitor
             AnrMonQuit()
 #If OVer < 14 Then
                 C_GUI.SetAnrMonButton(False)
+#Else
+            C_GUI.RefreshRibbon()
 #End If
             AnrMonAnAus = False
         Else
@@ -132,9 +134,13 @@ Friend Class AnrufMonitor
             If AnrMonStart(True) Then
 #If OVer < 14 Then
                 C_GUI.SetAnrMonButton(True)
+#Else
+                C_GUI.RefreshRibbon()
 #End If
+                AnrMonAnAus = True
+            Else
+                AnrMonAnAus = False
             End If
-            AnrMonAnAus = True
         End If
     End Function '(AnrMonAnAus)
 
@@ -162,6 +168,7 @@ Friend Class AnrufMonitor
 
     Function AnrMonStartNachStandby() As Boolean
         AnrMonAktiv = False
+        AnrMonError = True
 #If OVer < 14 Then
         C_GUI.SetAnrMonButton(AnrMonAktiv)
 #Else
@@ -169,35 +176,29 @@ Friend Class AnrufMonitor
 #End If
         AnrMonStartNachStandby = False
 
-        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And Not TimerReStart.Enabled Then
             StandbyCounter = 1
             TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
         End If
-
-
     End Function
 
     Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
 
         If StandbyCounter < C_DP.P_Def_TryMaxRestart Then
-            If C_DP.P_CBForceFBAddr Then
-                C_hf.KillTimer(TimerReStart)
+            If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Then
                 AnrMonStart(False)
-                C_hf.LogFile("Anrufmonitor nach Standby neugestartet (Forced).")
+                AnrMonError = False
+                C_hf.KillTimer(TimerReStart)
+                C_hf.LogFile("Anrufmonitor wiederaufgebaut.")
+
+                If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
             Else
-                If C_hf.Ping(C_DP.P_TBFBAdr) Then
-                    C_hf.KillTimer(TimerReStart)
-                    AnrMonStart(False)
-                    C_hf.LogFile("Anrufmonitor nach Standby neugestartet (Ping).")
-                Else
-                    C_hf.LogFile("Anrufmonitor konnte nach Standby noch nicht neugestartet werden.")
-                    StandbyCounter += 1
-                End If
-                'If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+                C_hf.LogFile("Anrufmonitor konnte nach Standby noch nicht neugestartet werden.")
+                StandbyCounter += 1
             End If
         Else
-            C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
-            C_hf.KillTimer(TimerReStart)
+        C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
+        C_hf.KillTimer(TimerReStart)
         End If
     End Sub
 
@@ -227,6 +228,10 @@ Friend Class AnrufMonitor
             C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
             AnrMonQuit()
             AnrMonError = True
+            If Not TimerReStart.Enabled Then
+                StandbyCounter = 1
+                TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
+            End If
         End Try
 
         CheckAnrMonTCPSocket.Close()
@@ -243,6 +248,11 @@ Friend Class AnrufMonitor
     Friend Sub AnrMonQuit()
         ' wird beim Beenden von Outlook ausgeführt und beendet den Anrufmonitor
         AnrMonAktiv = False
+#If OVer < 14 Then
+        C_GUI.SetAnrMonButton(false)
+#Else
+        C_GUI.RefreshRibbon()
+#End If
 
         With TimerCheckAnrMon
             .Stop()
@@ -351,57 +361,56 @@ Friend Class AnrufMonitor
 
     Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
         System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
-        Dim IPAddress As IPAddress
+        Dim IPAddresse As IPAddress = IPAddress.Loopback
         Dim ReceiveThread As Thread
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
 
         Dim AnrMonTCPSocket As Socket
 
-        If LCase(C_DP.P_TBFBAdr) = C_DP.P_Def_FritzBoxAdress Then
-            IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
-            IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
-        Else
-            IPAddress = IPAddress.Parse(C_DP.P_TBFBAdr)
+
+        If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
+            ' Versuche über Default-IP zur Fritz!Box zu gelangen
+            IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
+            IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
         End If
 
-        RemoteEP = New IPEndPoint(IPAddress, P_DefaultFBAnrMonPort)
+        RemoteEP = New IPEndPoint(IPAddresse, P_DefaultFBAnrMonPort)
+        AnrMonTCPSocket = New Sockets.Socket(IPAddresse.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
 
-        AnrMonTCPSocket = New Sockets.Socket(IPAddress.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
+            Try
+                AnrMonTCPSocket.Connect(RemoteEP)
+            Catch Err As Exception
+                C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
+                AnrMonError = True
+                e.Result = False
+            End Try
 
-        Try
-            AnrMonTCPSocket.Connect(RemoteEP)
-        Catch Err As Exception
-            C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
-            AnrMonError = True
-            e.Result = False
-        End Try
+            If AnrMonTCPSocket.Connected Then
+                AnrMonStream = New NetworkStream(AnrMonTCPSocket)
+                If AnrMonStream.CanRead Then
+                    ReceiveThread = New Thread(AddressOf AnrMonAktion)
+                    With ReceiveThread
+                        .IsBackground = True
+                        .Start()
+                        AnrMonAktiv = .IsAlive
+                    End With
+                    ' Timer AnrufmonitorCheck starten
+                    TimerCheckAnrMon = New System.Timers.Timer
+                    With TimerCheckAnrMon
+                        .Interval = TimeSpan.FromMinutes(1).TotalMilliseconds
+                        .Start()
+                    End With
 
-        If AnrMonTCPSocket.Connected Then
-            AnrMonStream = New NetworkStream(AnrMonTCPSocket)
-            If AnrMonStream.CanRead Then
-                ReceiveThread = New Thread(AddressOf AnrMonAktion)
-                With ReceiveThread
-                    .IsBackground = True
-                    .Start()
-                    AnrMonAktiv = .IsAlive
-                End With
-                ' Timer AnrufmonitorCheck starten
-                TimerCheckAnrMon = New System.Timers.Timer
-                With TimerCheckAnrMon
-                    .Interval = TimeSpan.FromMinutes(1).TotalMilliseconds
-                    .Start()
-                End With
-
-                e.Result = AnrMonAktiv
+                    e.Result = AnrMonAktiv
+                Else
+                    AnrMonError = True
+                    e.Result = False
+                End If
             Else
                 AnrMonError = True
                 e.Result = False
             End If
-        Else
-            AnrMonError = True
-            e.Result = False
-        End If
     End Sub
 
     Private Sub BWStartTCPReader_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStartTCPReader.RunWorkerCompleted

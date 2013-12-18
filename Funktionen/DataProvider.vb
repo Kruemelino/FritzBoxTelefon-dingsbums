@@ -742,14 +742,32 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public ReadOnly Property P_Def_StringNull() As String
+        Get
+            Return "0"
+        End Get
+    End Property
+
     Public ReadOnly Property P_Def_SessionID() As String
         Get
             Return "0000000000000000"
         End Get
     End Property
-    Public ReadOnly Property P_Def_UserAgent() As String
+    Public ReadOnly Property P_Def_Header_UserAgent() As String
         Get
             Return "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Header_ContentType() As String
+        Get
+            Return "application/x-www-form-urlencoded"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Header_Accept() As String
+        Get
+            Return "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         End Get
     End Property
 
@@ -1149,7 +1167,7 @@ Public Class DataProvider
 #Region "Debug Properties"
     Public ReadOnly Property P_Debug_SaveToFile() As Boolean
         Get
-            Return True
+            Return False
         End Get
     End Property
 #End Region
@@ -1230,7 +1248,7 @@ Public Class DataProvider
         Me.P_CBStoppUhrX = CInt(Read(P_Def_Options, "CBStoppUhrX", CStr(P_Def_CBStoppUhrX)))
         Me.P_CBStoppUhrY = CInt(Read(P_Def_Options, "CBStoppUhrY", CStr(P_Def_CBStoppUhrY)))
         ' Telefonnummernformatierung
-        Me.P_TBTelNrMaske = Read(P_Def_Options, "TBTelNrMaske", P_TBTelNrMaske)
+        Me.P_TBTelNrMaske = Read(P_Def_Options, "TBTelNrMaske", P_Def_TBTelNrMaske)
         Me.P_CBTelNrGruppieren = CBool(Read(P_Def_Options, "CBTelNrGruppieren", CStr(P_Def_CBTelNrGruppieren)))
         Me.P_CBintl = CBool(Read(P_Def_Options, "CBintl", CStr(P_Def_CBintl)))
         Me.P_CBIgnoTelNrFormat = CBool(Read(P_Def_Options, "CBIgnoTelNrFormat", CStr(P_Def_CBIgnoTelNrFormat)))

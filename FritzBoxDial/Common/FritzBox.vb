@@ -549,12 +549,8 @@ Public Class FritzBox
                                         If P_SpeichereDaten Then
                                             NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                             NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                                            'NodeNames.Add("TelName")
-                                            'NodeValues.Add(TelName)
-                                            'NodeNames.Add("TelNr")
-                                            'NodeValues.Add(TelNr)
                                             AttributeNames.Add("Fax")
-                                            AttributeValues.Add(C_DP.P_Def_StringEmpty)
+                                            AttributeValues.Add(C_DP.P_Def_StringNull)
                                             AttributeNames.Add("Dialport")
                                             AttributeValues.Add(DialPort)
                                             C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
@@ -585,14 +581,8 @@ Public Class FritzBox
                                             If P_SpeichereDaten Then
                                                 NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
-                                                'NodeNames.Add("TelName")
-                                                'NodeValues.Add(TelName)
-                                                'NodeNames.Add("TelNr")
-                                                'NodeValues.Add(TelNr)
-                                                'AttributeNames.Add("Dialport")
-                                                'AttributeValues.Add(DialPort)
                                                 AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                                 C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                             End If
 
@@ -612,7 +602,7 @@ Public Class FritzBox
                                             NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
                                             AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                             C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                         End If
 
@@ -658,7 +648,7 @@ Public Class FritzBox
                                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
                                                 AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                                 C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                             End If
 
@@ -677,7 +667,7 @@ Public Class FritzBox
                                                 NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
                                                 AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                                 C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                             End If
                                         Else
@@ -741,7 +731,7 @@ Public Class FritzBox
                                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
                                                                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                                                     C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                                                 End If
 
@@ -756,7 +746,7 @@ Public Class FritzBox
                                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
                                                                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                                                     C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                                                 End If
 
@@ -796,7 +786,7 @@ Public Class FritzBox
                                                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
 
                                                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                                                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                                                     C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                                                 End If
 
@@ -1153,7 +1143,7 @@ Public Class FritzBox
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
 
                         C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
@@ -1192,7 +1182,7 @@ Public Class FritzBox
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
 
                         C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
@@ -1240,7 +1230,7 @@ Public Class FritzBox
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                     C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                 End If
 
@@ -1260,7 +1250,7 @@ Public Class FritzBox
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringEmpty
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                         C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
 
