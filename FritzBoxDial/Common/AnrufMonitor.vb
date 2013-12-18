@@ -31,16 +31,6 @@ Friend Class AnrufMonitor
     Private TelAnzahl As Integer
     Private Eingeblendet As Integer = 0
 
-    Private FBAnrMonPort As Integer = P_DefaultFBAnrMonPort
-
-#Region "Properties"
-
-    Private ReadOnly Property P_DefaultFBAnrMonPort() As Integer
-        Get
-            Return 1012
-        End Get
-    End Property
-#End Region
 #Region "Phoner"
     Private AnrMonPhoner As Boolean = False
 #End Region
@@ -147,12 +137,7 @@ Friend Class AnrufMonitor
     Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
         If (C_DP.P_CBAnrMonAuto Or Manuell) And C_DP.P_CBUseAnrMon Then
 
-            If C_DP.P_CBPhonerAnrMon Then
-                FBAnrMonPort = 2012
-                C_DP.P_TBFBAdr = "127.0.0.1"
-            End If
-
-            If C_hf.Ping(C_DP.P_TBFBAdr) Or CBool(C_DP.P_CBForceFBAddr) Then
+            If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Or C_DP.P_CBPhonerAnrMon Then
                 BWStartTCPReader = New BackgroundWorker
                 With BWStartTCPReader
                     .WorkerReportsProgress = True
@@ -188,7 +173,7 @@ Friend Class AnrufMonitor
             If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Then
                 AnrMonStart(False)
                 AnrMonError = False
-                C_hf.KillTimer(TimerReStart)
+                TimerReStart = C_hf.KillTimer(TimerReStart)
                 C_hf.LogFile("Anrufmonitor wiederaufgebaut.")
 
                 If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
@@ -197,30 +182,29 @@ Friend Class AnrufMonitor
                 StandbyCounter += 1
             End If
         Else
-        C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
-        C_hf.KillTimer(TimerReStart)
+            C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
+            TimerReStart = C_hf.KillTimer(TimerReStart)
         End If
     End Sub
 
     Private Sub TimerCheckAnrMon_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerCheckAnrMon.Elapsed
         ' Es kann sein, dass die Verbindung zur FB abreißt. Z. B. wenn die VPN unterbrochen ist. 
 
-        Dim IPAddress As IPAddress
+        Dim IPAddresse As IPAddress = IPAddress.Loopback
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
-
+        Dim FBAnrMonPort As Integer
         Dim CheckAnrMonTCPSocket As Socket
 
-        If LCase(C_DP.P_TBFBAdr) = C_DP.P_Def_FritzBoxAdress Then
-            IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
-            IPAddress = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
-        Else
-            IPAddress = IPAddress.Parse(C_DP.P_TBFBAdr)
+        FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
+        If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
+            ' Versuche über Default-IP zur Fritz!Box zu gelangen
+            IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
+            IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString) ' Kann auch IPv6 sein
         End If
 
-        RemoteEP = New IPEndPoint(IPAddress, P_DefaultFBAnrMonPort)
-
-        CheckAnrMonTCPSocket = New Sockets.Socket(IPAddress.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
+        RemoteEP = New IPEndPoint(IPAddresse, C_DP.P_DefaultFBAnrMonPort)
+        CheckAnrMonTCPSocket = New Sockets.Socket(IPAddresse.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
 
         Try
             CheckAnrMonTCPSocket.Connect(RemoteEP)
@@ -365,52 +349,52 @@ Friend Class AnrufMonitor
         Dim ReceiveThread As Thread
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
-
+        Dim FBAnrMonPort As Integer
         Dim AnrMonTCPSocket As Socket
 
-
-        If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
-            ' Versuche über Default-IP zur Fritz!Box zu gelangen
-            IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
-            IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString)
+        If C_DP.P_CBPhonerAnrMon Then
+            FBAnrMonPort = C_DP.P_DefaultPhonerAnrMonPort
+            'IPAddresse = IPAddress.Loopback ' 127.0.0.1 ' Wert bei "Dim" schon gesetzt
+        Else
+            FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
+            If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
+                ' Versuche über Default-IP zur Fritz!Box zu gelangen
+                IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
+                IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString) ' Kann auch IPv6 sein
+            End If
         End If
 
-        RemoteEP = New IPEndPoint(IPAddresse, P_DefaultFBAnrMonPort)
+        RemoteEP = New IPEndPoint(IPAddresse, FBAnrMonPort)
         AnrMonTCPSocket = New Sockets.Socket(IPAddresse.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
 
-            Try
-                AnrMonTCPSocket.Connect(RemoteEP)
-            Catch Err As Exception
-                C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
-                AnrMonError = True
-                e.Result = False
-            End Try
+        Try
+            AnrMonTCPSocket.Connect(RemoteEP)
+        Catch Err As Exception
+            C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
+            AnrMonError = True
+            e.Result = False
+        End Try
 
-            If AnrMonTCPSocket.Connected Then
-                AnrMonStream = New NetworkStream(AnrMonTCPSocket)
-                If AnrMonStream.CanRead Then
-                    ReceiveThread = New Thread(AddressOf AnrMonAktion)
-                    With ReceiveThread
-                        .IsBackground = True
-                        .Start()
-                        AnrMonAktiv = .IsAlive
-                    End With
-                    ' Timer AnrufmonitorCheck starten
-                    TimerCheckAnrMon = New System.Timers.Timer
-                    With TimerCheckAnrMon
-                        .Interval = TimeSpan.FromMinutes(1).TotalMilliseconds
-                        .Start()
-                    End With
-
-                    e.Result = AnrMonAktiv
-                Else
-                    AnrMonError = True
-                    e.Result = False
-                End If
+        If AnrMonTCPSocket.Connected Then
+            AnrMonStream = New NetworkStream(AnrMonTCPSocket)
+            If AnrMonStream.CanRead Then
+                ReceiveThread = New Thread(AddressOf AnrMonAktion)
+                With ReceiveThread
+                    .IsBackground = True
+                    .Start()
+                    AnrMonAktiv = .IsAlive
+                End With
+                ' Timer AnrufmonitorCheck starten
+                If Not C_DP.P_CBPhonerAnrMon Then TimerCheckAnrMon = C_hf.SetTimer(TimeSpan.FromMinutes(C_DP.P_Def_CheckAnrMonIntervall).TotalMilliseconds)
+                e.Result = AnrMonAktiv
             Else
                 AnrMonError = True
                 e.Result = False
             End If
+        Else
+            AnrMonError = True
+            e.Result = False
+        End If
     End Sub
 
     Private Sub BWStartTCPReader_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStartTCPReader.RunWorkerCompleted
@@ -421,7 +405,7 @@ Friend Class AnrufMonitor
 #Else
             C_GUI.RefreshRibbon()
 #End If
-            AnrMonAktiv = CBool(e.Result)
+            AnrMonAktiv = True
             AnrMonError = False
         Else
             C_hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.")

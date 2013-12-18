@@ -80,9 +80,9 @@ Public Class Helfer
                     If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
                         'Zugehörige IPv4 ermitteln
                         IPHostInfo = Dns.GetHostEntry(.Address)
-                        For Each IPAddress As IPAddress In IPHostInfo.AddressList
-                            If IPAddress.AddressFamily = Sockets.AddressFamily.InterNetwork Then
-                                IPAdresse = IPAddress.ToString
+                        For Each _IPAddress As IPAddress In IPHostInfo.AddressList
+                            If _IPAddress.AddressFamily = Sockets.AddressFamily.InterNetwork Then
+                                IPAdresse = _IPAddress.ToString
                                 ' Prüfen ob es eine generel gültige lokale IPv6 Adresse gibt: fd00::2665:11ff:fed8:6086
                                 ' und wie die zu ermitteln ist
                                 LogFile("IPv6: " & .Address.ToString & ", IPv4: " & IPAdresse)
@@ -185,6 +185,7 @@ Public Class Helfer
 
         Return Left(XMLDateiPfad, InStrRev(XMLDateiPfad, "\", , CompareMethod.Text)) & Datei
     End Function
+
     ''' <summary>
     ''' Diese Routine ändert den Zugang zu den verschlüsselten Passwort.
     ''' </summary>
@@ -221,11 +222,12 @@ Public Class Helfer
         Dim sLink As String
         Dim FBTyp As String = C_DP.P_Def_StringUnknown
         Dim FBFW As String = C_DP.P_Def_StringUnknown
+        Dim FritzBoxInformation() As String
 
         If LCase(FBAdr) = C_DP.P_Def_FritzBoxAdress Then Ping(FBAdr)
 
         sLink = "http://" & FBAdr & "/cgi-bin/system_status"
-        Dim FritzBoxInformation() As String = Split(StringEntnehmen(httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
+        FritzBoxInformation = Split(StringEntnehmen(httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
         FBTyp = FritzBoxInformation(0)
         FBFW = Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
 
@@ -740,33 +742,24 @@ Public Class Helfer
 
 #Region " Timer"
     Public Function SetTimer(ByRef Interval As Double) As System.Timers.Timer
-        Try
-            'Debug.Print("Entering System Timers") 'dann werden die Knöpfe sowieso immer eingeblendet.
-            Dim aTimer As New System.Timers.Timer
-            With aTimer
-                .Interval = Interval
-                .AutoReset = True
-                .Enabled = True
-            End With
-            Return aTimer
-        Catch ex As Exception
-            FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "SetTimer")
-            Return Nothing
-        End Try
+        Dim aTimer As New System.Timers.Timer
+
+        With aTimer
+            .Interval = Interval
+            .AutoReset = True
+            .Enabled = True
+        End With
+        Return aTimer
+
     End Function
 
-    Public Function KillTimer(ByVal Timer As System.Timers.Timer) As Boolean
-        Try
-            With Timer
-                .AutoReset = False
-                .Enabled = False
-                .Dispose()
-                Return True
-            End With
-        Catch ex As Exception
-            FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "KillTimer")
-            Return False
-        End Try
+    Public Function KillTimer(ByVal Timer As System.Timers.Timer) As System.Timers.Timer
+        With Timer
+            .AutoReset = False
+            .Enabled = False
+            .Dispose()
+            Return Nothing
+        End With
     End Function
 #End Region
 

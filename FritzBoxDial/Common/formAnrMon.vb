@@ -5,7 +5,7 @@ Friend Class formAnrMon
     Private TelefonName As String
     Private aID As Integer
     Private C_DP As DataProvider
-    Private HelferFunktionen As Helfer
+    Private C_hf As Helfer
     Private TelNr As String              ' TelNr des Anrufers
     Private KontaktID As String              ' KontaktID des Anrufers
     Private StoreID As String
@@ -25,7 +25,7 @@ Friend Class formAnrMon
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
-        HelferFunktionen = HelferKlasse
+        C_hf = HelferKlasse
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         'If ThisAddIn.Debug Then ThisAddIn.Diagnose.AddLine("formAnrMon aufgerufen")
         aID = iAnrufID
@@ -38,9 +38,9 @@ Friend Class formAnrMon
 
         Dim OInsp As Outlook.Inspector = Nothing
         If Aktualisieren Then
-            TimerAktualisieren = HelferFunktionen.SetTimer(100)
+            TimerAktualisieren = C_hf.SetTimer(100)
             If TimerAktualisieren Is Nothing Then
-                HelferFunktionen.LogFile("formAnrMon.New: TimerNeuStart nicht gestartet")
+                C_hf.LogFile("formAnrMon.New: TimerNeuStart nicht gestartet")
             End If
         End If
         OlI.InspectorVerschieben(True)
@@ -107,7 +107,7 @@ Friend Class formAnrMon
             .TelName = TelefonName & CStr(IIf(C_DP.P_CBShowMSN, " (" & MSN & ")", C_DP.P_Def_StringEmpty))
 
             If Not Strings.Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
-                If Not TimerAktualisieren Is Nothing Then HelferFunktionen.KillTimer(TimerAktualisieren)
+                If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
                     OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
@@ -121,7 +121,7 @@ Friend Class formAnrMon
                         End If
                     End If
                 Catch ex As Exception
-                    HelferFunktionen.LogFile("formAnrMon: Fehler beim Öffnen des Kontaktes " & AnrName & " (" & ex.Message & ")")
+                    C_hf.LogFile("formAnrMon: Fehler beim Öffnen des Kontaktes " & AnrName & " (" & ex.Message & ")")
                     .Firma = C_DP.P_Def_StringEmpty
                     If AnrName = C_DP.P_Def_StringEmpty Then
                         .TelNr = C_DP.P_Def_StringEmpty
@@ -162,7 +162,7 @@ Friend Class formAnrMon
 
     Private Sub PopupNotifier_Closed() Handles PopupNotifier.Closed
         AnrmonClosed = True
-        If Not TimerAktualisieren Is Nothing Then HelferFunktionen.KillTimer(TimerAktualisieren)
+        If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopupNotifier.LinkClick
@@ -178,7 +178,7 @@ Friend Class formAnrMon
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
         Dim VergleichString As String = PopupNotifier.AnrName
         AnrMonausfüllen()
-        If Not VergleichString = PopupNotifier.AnrName Then HelferFunktionen.KillTimer(TimerAktualisieren)
+        If Not VergleichString = PopupNotifier.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
     Protected Overrides Sub Finalize()

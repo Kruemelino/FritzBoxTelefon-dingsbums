@@ -208,7 +208,7 @@ Friend Class formWählbox
 
     Private Sub CloseButton_Click() Handles CloseButton.Click
         Me.Hide()
-        If Not TimerSchließen Is Nothing Then C_hf.KillTimer(TimerSchließen)
+        If Not TimerSchließen Is Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
         If Not UsePhonerOhneFritzBox Then ThisAddIn.P_FritzBox.FBLogOut(SID)
         Me.Close()
         Me.Dispose(True)
@@ -270,7 +270,7 @@ Friend Class formWählbox
 
 #Region "Timer"
     Private Sub TimerSchließen_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerSchließen.Elapsed
-        C_hf.KillTimer(TimerSchließen)
+        TimerSchließen = C_hf.KillTimer(TimerSchließen)
         AutoClose()
     End Sub
 #End Region

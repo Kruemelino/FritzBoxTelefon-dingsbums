@@ -742,6 +742,18 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
+        Get
+            Return 1012
+        End Get
+    End Property
+
+    Public ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer
+        Get
+            Return 2012
+        End Get
+    End Property
+
     Public ReadOnly Property P_Def_StringNull() As String
         Get
             Return "0"
@@ -753,6 +765,7 @@ Public Class DataProvider
             Return "0000000000000000"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_Header_UserAgent() As String
         Get
             Return "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
@@ -780,6 +793,17 @@ Public Class DataProvider
     Public ReadOnly Property P_Def_TryMaxRestart() As Integer
         Get
             Return 15
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
+    ''' </summary>
+    ''' <value>Integer</value>
+    ''' <returns>Intervall in MINUTEN</returns>
+    Public ReadOnly Property P_Def_CheckAnrMonIntervall() As Integer
+        Get
+            Return 1
         End Get
     End Property
 #End Region

@@ -7,7 +7,7 @@
     Private C_OlI As OutlookInterface
     Private C_AnrMon As AnrufMonitor
     Private C_FBox As FritzBox
-    Private C_Kontakt As Contacts
+    Private C_KF As Contacts
     Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
     Private C_Phoner As PhonerInterface
@@ -40,13 +40,13 @@
         C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
-        C_Kontakt = New Contacts(C_DP, C_HF)
+        C_KF = New Contacts(C_DP, C_HF)
 
         ' Klasse für die Rückwärtssuche generieren
-        C_RWS = New formRWSuche(C_HF, C_Kontakt, C_DP)
+        C_RWS = New formRWSuche(C_HF, C_KF, C_DP)
 
         ' Klasse für die OutlookInterface generieren
-        C_OlI = New OutlookInterface(C_Kontakt, C_HF, C_DP, DateiPfad)
+        C_OlI = New OutlookInterface(C_KF, C_HF, C_DP, DateiPfad)
 
         ' Klasse für das PhonerInterface generieren
         C_Phoner = New PhonerInterface(C_HF, C_DP, C_Crypt)
@@ -57,16 +57,15 @@
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, DateiPfad, C_RWS, C_Kontakt, C_Phoner)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, DateiPfad, C_RWS, C_KF, C_Phoner)
 
-
-            C_WählClient = New Wählclient(C_DP, C_HF, C_Kontakt, C_GUI, C_OlI, C_FBox, C_Phoner)
+            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner)
             ThisAddIn.P_WClient = C_WählClient
 
-            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_Kontakt, C_GUI, C_OlI)
+            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI)
             ThisAddIn.P_AnrMon = C_AnrMon
 
-            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_Kontakt, C_Phoner)
+            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner)
             ThisAddIn.P_Config = C_Config
 
             With C_GUI
@@ -80,7 +79,7 @@
             ThisAddIn.P_Dateipfad = DateiPfad
             ThisAddIn.P_XML = C_DP
             ThisAddIn.P_hf = C_HF
-            ThisAddIn.P_KontaktFunktionen = C_Kontakt
+            ThisAddIn.P_KontaktFunktionen = C_KF
 
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
         End If
