@@ -28,7 +28,7 @@ Public Class DataProvider
     Private _CBCbCunterbinden As Boolean
     Private _CBCallByCall As Boolean
     Private _CBDialPort As Boolean
-    Private _CBRueckwaertssuche As Boolean
+
     Private _CBKErstellen As Boolean
     Private _CBLogFile As Boolean
 #If OVer < 14 Then
@@ -42,6 +42,7 @@ Public Class DataProvider
     Private _CBSymbJournalimport As Boolean
 #End If
     Private _CBJImport As Boolean
+    Private _CBRWS As Boolean
     Private _CBKHO As Boolean
     Private _CBRWSIndex As Boolean
     Private _ComboBoxRWS As Integer
@@ -57,7 +58,6 @@ Public Class DataProvider
     Private _TBAnrMonY As Integer
 
     Private _TBAnrMonMoveGeschwindigkeit As Integer
-    Private _CBoxRWSuche As Integer
 
     Private _CBJournal As Boolean
     Private _CBUseAnrMon As Boolean
@@ -255,22 +255,6 @@ Public Class DataProvider
             _CBDialPort = value
         End Set
     End Property
-    Public Property P_CBRueckwaertssuche() As Boolean
-        Get
-            Return _CBRueckwaertssuche
-        End Get
-        Set(ByVal value As Boolean)
-            _CBRueckwaertssuche = value
-        End Set
-    End Property
-    Public Property P_CBKErstellen() As Boolean
-        Get
-            Return _CBKErstellen
-        End Get
-        Set(ByVal value As Boolean)
-            _CBKErstellen = value
-        End Set
-    End Property
     Public Property P_CBLogFile() As Boolean
         Get
             Return _CBLogFile
@@ -303,6 +287,7 @@ Public Class DataProvider
             _CBSymbAnrMonNeuStart = value
         End Set
     End Property
+    'Pffice 2003 und Office 2007
     Public Property P_CBSymbAnrListe() As Boolean
         Get
             Return _CBSymbAnrListe
@@ -365,6 +350,22 @@ Public Class DataProvider
             _CBKHO = value
         End Set
     End Property
+    Public Property P_CBRWS() As Boolean
+        Get
+            Return _CBRWS
+        End Get
+        Set(ByVal value As Boolean)
+            _CBRWS = value
+        End Set
+    End Property
+    Public Property P_CBKErstellen() As Boolean
+        Get
+            Return _CBKErstellen
+        End Get
+        Set(ByVal value As Boolean)
+            _CBKErstellen = value
+        End Set
+    End Property
     Public Property P_CBRWSIndex() As Boolean
         Get
             Return _CBRWSIndex
@@ -379,14 +380,6 @@ Public Class DataProvider
         End Get
         Set(ByVal value As Integer)
             _ComboBoxRWS = value
-        End Set
-    End Property
-    Public Property P_CBoxRWSuche() As Integer
-        Get
-            Return _CBoxRWSuche
-        End Get
-        Set(ByVal value As Integer)
-            _CBoxRWSuche = value
         End Set
     End Property
     ''' <summary>
@@ -900,11 +893,6 @@ Public Class DataProvider
             Return False
         End Get
     End Property
-    Private ReadOnly Property P_Def_CBRueckwaertssuche() As Boolean
-        Get
-            Return False
-        End Get
-    End Property
     Private ReadOnly Property P_Def_CBKErstellen() As Boolean
         Get
             Return False
@@ -962,7 +950,11 @@ Public Class DataProvider
             Return False
         End Get
     End Property
-
+    Private ReadOnly Property P_Def_CBRWS() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
     Private ReadOnly Property P_Def_CBKHO() As Boolean
         Get
             Return True
@@ -974,11 +966,6 @@ Public Class DataProvider
         End Get
     End Property
     Private ReadOnly Property P_Def_ComboBoxRWS() As Integer
-        Get
-            Return 0
-        End Get
-    End Property
-    Private ReadOnly Property P_Def_CBoxRWSuche() As Integer
         Get
             Return 0
         End Get
@@ -1237,13 +1224,14 @@ Public Class DataProvider
         Me.P_CBAnrMonContactImage = CBool(Read(P_Def_Options, "CBAnrMonContactImage", CStr(P_Def_CBAnrMonContactImage)))
         Me.P_CBIndexAus = CBool(Read(P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
         Me.P_CBShowMSN = CBool(Read(P_Def_Options, "CBShowMSN", CStr(P_Def_CBShowMSN)))
-
+        Me.P_CBJournal = CBool(Read(P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
+        Me.P_CBUseAnrMon = CBool(Read(P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
+        Me.P_CBCheckMobil = CBool(Read(P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
         Me.P_CBAutoClose = CBool(Read(P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
         Me.P_CBVoIPBuster = CBool(Read(P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
         Me.P_CBCbCunterbinden = CBool(Read(P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
         Me.P_CBCallByCall = CBool(Read(P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
         Me.P_CBDialPort = CBool(Read(P_Def_Options, "CBDialPort", CStr(P_Def_CBDialPort)))
-        Me.P_CBRueckwaertssuche = CBool(Read(P_Def_Options, "CBRueckwaertssuche", CStr(P_Def_CBRueckwaertssuche)))
         Me.P_CBKErstellen = CBool(Read(P_Def_Options, "CBKErstellen", CStr(P_Def_CBKErstellen)))
         Me.P_CBLogFile = CBool(Read(P_Def_Options, "CBLogFile", CStr(P_Def_CBLogFile)))
         ' Einstellungen für die Symbolleiste laden
@@ -1258,13 +1246,10 @@ Public Class DataProvider
         Me.P_CBJImport = CBool(Read(P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
         ' Einstellungen füer die Rückwärtssuche laden
         Me.P_CBKHO = CBool(Read(P_Def_Options, "CBKHO", CStr(P_Def_CBKHO)))
+        Me.P_CBRWS = CBool(Read(P_Def_Options, "CBRWS", CStr(P_Def_CBRWS)))
         Me.P_CBRWSIndex = CBool(Read(P_Def_Options, "CBRWSIndex", CStr(P_Def_CBRWSIndex)))
-        Me.P_CBoxRWSuche = CInt(Read(P_Def_Options, "CBoxRWSuche", CStr(P_Def_CBoxRWSuche)))
         Me.P_ComboBoxRWS = CInt(Read(P_Def_Options, "ComboBoxRWS", CStr(P_Def_ComboBoxRWS)))
         Me.P_CBIndex = CBool(Read(P_Def_Options, "CBIndex", CStr(P_Def_CBIndex)))
-        Me.P_CBJournal = CBool(Read(P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
-        Me.P_CBUseAnrMon = CBool(Read(P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
-        Me.P_CBCheckMobil = CBool(Read(P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
         ' StoppUhr
         Me.P_CBStoppUhrEinblenden = CBool(Read(P_Def_Options, "CBStoppUhrEinblenden", CStr(P_Def_CBStoppUhrEinblenden)))
         Me.P_CBStoppUhrAusblenden = CBool(Read(P_Def_Options, "CBStoppUhrAusblenden", CStr(P_Def_CBStoppUhrAusblenden)))
@@ -1321,7 +1306,6 @@ Public Class DataProvider
         Write(P_Def_Options, "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
         Write(P_Def_Options, "CBCallByCall", CStr(Me.P_CBCallByCall))
         Write(P_Def_Options, "CBDialPort", CStr(Me.P_CBDialPort))
-        Write(P_Def_Options, "CBRueckwaertssuche", CStr(Me.P_CBRueckwaertssuche))
         Write(P_Def_Options, "CBKErstellen", CStr(Me.P_CBKErstellen))
         Write(P_Def_Options, "CBLogFile", CStr(Me.P_CBLogFile))
         ' Einstellungen für die Symbolleiste laden
@@ -1336,8 +1320,9 @@ Public Class DataProvider
         Write(P_Def_Options, "CBJImport", CStr(Me.P_CBJImport))
         ' Einstellungen füer die Rückwärtssuche laden
         Write(P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
+        Write(P_Def_Options, "CBRWS", CStr(Me.P_CBRWS))
         Write(P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
-        Write(P_Def_Options, "CBoxRWSuche", CStr(Me.P_CBoxRWSuche))
+        Write(P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
         Write(P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
         Write(P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
         Write(P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
@@ -1390,7 +1375,7 @@ Public Class DataProvider
         MyBase.Finalize()
     End Sub
 
-    'XML kram
+    'XML Kram
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         Dim xPathTeile As New ArrayList

@@ -1,8 +1,8 @@
-﻿Imports System.Threading
-Imports System.Net
+﻿Imports System.Net
 Imports System.IO
 Imports System.ComponentModel
 Imports System.Net.Sockets
+Imports System.Threading
 
 Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
@@ -98,7 +98,7 @@ Friend Class AnrufMonitor
                         End If
                 End Select
             End If
-            Thread.Sleep(50)
+            C_hf.ThreadSleep(50)
             Windows.Forms.Application.DoEvents()
         Loop Until Not AnrMonAktiv
         r.Close()
@@ -290,7 +290,7 @@ Friend Class AnrufMonitor
                         i = 0
                         a = AnrMonList.Count - 1
                     Else
-                        Thread.Sleep(2)
+                        C_hf.ThreadSleep(2)
                         Windows.Forms.Application.DoEvents()
                     End If
                 End If
@@ -334,7 +334,7 @@ Friend Class AnrufMonitor
                     frmStUhr.Stopp()
                     Beendet = True
                 End If
-                Thread.Sleep(20)
+                C_hf.ThreadSleep(20)
                 Windows.Forms.Application.DoEvents()
             Loop
             C_DP.P_CBStoppUhrX = frmStUhr.Position.X
@@ -344,7 +344,7 @@ Friend Class AnrufMonitor
     End Sub
 
     Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
-        System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
+        C_hf.ThreadSleep(500)
         Dim IPAddresse As IPAddress = IPAddress.Loopback
         Dim ReceiveThread As Thread
         Dim RemoteEP As IPEndPoint
@@ -434,8 +434,15 @@ Friend Class AnrufMonitor
         ' FBStatus(3): Eingehende Telefonnummer, TelNr
         ' FBStatus(4): Angerufene eigene Telefonnummer, MSN
         ' FBStatus(5): ???
-
-
+        Dim TelNr As String            ' ermittelte TelNr
+        Dim Anrufer As String = C_DP.P_Def_StringEmpty           ' ermittelter Anrufer
+        Dim vCard As String = C_DP.P_Def_StringEmpty           ' vCard des Anrufers
+        Dim KontaktID As String = C_DP.P_Def_StringEmpty             ' ID der Kontaktdaten des Anrufers
+        Dim StoreID As String = C_DP.P_Def_StringEmpty           ' ID des Ordners, in dem sich der Kontakt befindet
+        Dim ID As Integer            ' ID des Telefonats
+        Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
+        Dim LetzterAnrufer(5) As String
+        Dim RWSIndex As Boolean
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
@@ -450,16 +457,6 @@ Friend Class AnrufMonitor
 
         If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             'If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
-
-            Dim TelNr As String            ' ermittelte TelNr
-            Dim Anrufer As String = C_DP.P_Def_StringEmpty           ' ermittelter Anrufer
-            Dim vCard As String = C_DP.P_Def_StringEmpty           ' vCard des Anrufers
-            Dim KontaktID As String = C_DP.P_Def_StringEmpty             ' ID der Kontaktdaten des Anrufers
-            Dim StoreID As String = C_DP.P_Def_StringEmpty           ' ID des Ordners, in dem sich der Kontakt befindet
-            Dim ID As Integer            ' ID des Telefonats
-            Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
-            Dim LetzterAnrufer(5) As String
-            Dim RWSIndex As Boolean
 
             ID = CInt(FBStatus.GetValue(2))
             TelNr = CStr(FBStatus.GetValue(3))
@@ -504,7 +501,7 @@ Friend Class AnrufMonitor
                     If C_DP.P_CBIgnoTelNrFormat Then TelNr = C_hf.formatTelNr(TelNr)
                 Else
                     ' Anrufer per Rückwärtssuche ermitteln
-                    If C_DP.P_CBRueckwaertssuche Then
+                    If C_DP.P_CBRWS Then
                         If RWSIndex Then
                             With xPathTeile
                                 .Clear()
@@ -514,7 +511,7 @@ Friend Class AnrufMonitor
                             vCard = C_DP.Read(xPathTeile, Nothing)
                         End If
                         If vCard = Nothing Then
-                            Select Case C_DP.P_CBoxRWSuche
+                            Select Case C_DP.P_ComboBoxRWS
                                 Case 0
                                     rws = F_RWS.RWS11880(TelNr, vCard)
                                 Case 1
@@ -529,12 +526,13 @@ Friend Class AnrufMonitor
                                 C_KF.ErstelleKontakt(KontaktID, StoreID, vCard, TelNr)
                                 C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
                                 Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
+                                rws = False
                             End If
                         Else
                             rws = True
                         End If
 
-                        If rws And KontaktID = "-1;" Then
+                        If rws Then
                             Anrufer = ReadFNfromVCard(vCard)
                             Anrufer = Replace(Anrufer, Chr(13), "", , , CompareMethod.Text)
                             If InStr(1, Anrufer, "Firma", CompareMethod.Text) = 1 Then Anrufer = Right(Anrufer, Len(Anrufer) - 5)
@@ -598,7 +596,6 @@ Friend Class AnrufMonitor
         Dim ID As Integer = CInt(FBStatus.GetValue(2))  ' ID des Telefonats
         Dim NSN As Integer = CInt(FBStatus.GetValue(3)) ' Nebenstellennummer des Telefonates
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)  ' Ausgehende eigene Telefonnummer, MSN
-        Dim LandesVW As String = C_DP.P_TBLandesVW     ' eigene Landesvorwahl
         Dim TelNr As String                             ' ermittelte TelNr
         Dim Anrufer As String = C_DP.P_Def_StringEmpty            ' ermittelter Anrufer
         Dim vCard As String = C_DP.P_Def_StringEmpty                        ' vCard des Anrufers
@@ -649,7 +646,7 @@ Friend Class AnrufMonitor
 
         If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
-            TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)), LandesVW)
+            TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)), C_DP.P_TBLandesVW)
             If TelNr = C_DP.P_Def_StringEmpty Then TelNr = C_DP.P_Def_StringUnknown
             ' CbC-Vorwahl entfernen
             If Left(TelNr, 4) = "0100" Then TelNr = Right(TelNr, Len(TelNr) - 6)
@@ -663,13 +660,13 @@ Friend Class AnrufMonitor
                 Dim FullName As String = C_DP.P_Def_StringEmpty
                 Dim CompanyName As String = C_DP.P_Def_StringEmpty
                 ' Anrufer in den Outlook-Kontakten suchen
-                If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", LandesVW) Then
+                If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Then
                     C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
                     Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
                     If C_DP.P_CBIgnoTelNrFormat Then TelNr = C_hf.formatTelNr(TelNr)
                 Else
                     ' Anrufer per Rückwärtssuche ermitteln
-                    If C_DP.P_CBRueckwaertssuche Then
+                    If C_DP.P_CBRWS Then
                         RWSIndex = C_DP.P_CBRWSIndex
                         If RWSIndex Then
                             With xPathTeile
@@ -680,7 +677,7 @@ Friend Class AnrufMonitor
                             vCard = C_DP.Read(xPathTeile, Nothing)
                         End If
                         If vCard = Nothing Then
-                            Select Case C_DP.P_CBoxRWSuche
+                            Select Case C_DP.P_ComboBoxRWS
                                 Case 0
                                     rws = F_RWS.RWS11880(TelNr, vCard)
                                 Case 1

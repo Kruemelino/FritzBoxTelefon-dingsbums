@@ -45,7 +45,7 @@ Public Class PhonerInterface
                                 Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len("Challenge=") + 1)
                                 Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII))
                                 .WriteLine("Response=" & Response)
-                                System.Threading.Thread.Sleep(100)
+                                C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then
                                     .WriteLine("CONNECT " & dialCode)
                                     DialPhoner = "Nr. " & dialCode & " an Phoner übergeben"
@@ -64,7 +64,7 @@ Public Class PhonerInterface
                 Else
                     DialPhoner = "Fehler!" & vbCrLf & "TCP!"
                 End If
-                System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(500))
+                C_hf.ThreadSleep(500)
                 tcpClient.Close()
                 tcpClient = Nothing
                 Stream = Nothing

@@ -49,7 +49,12 @@ Public Class OutlookInterface
 
 #If Not OVer = 15 Then
                     If (Not (KontaktID = C_DP.P_Def_StringEmpty Or StoreID = C_DP.P_Def_StringEmpty)) And Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
-                        .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
+                        Try
+                            .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
+                        Catch ex As Exception
+                            C_hf.LogFile("Fehler (ErstelleJournalItem): Kann Link zu Kontakt nicht erstellen: " & ex.Message)
+                        End Try
+
                     End If
 #End If
                     .Save()

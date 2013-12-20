@@ -8,7 +8,7 @@ Friend Class formCfg
 #Region "Eigene Klassen"
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
-    Private C_Helfer As Helfer
+    Private C_hf As Helfer
     Private C_Kontakte As Contacts
     Private C_Phoner As PhonerInterface
     Private C_GUI As GraphicalUserInterface
@@ -58,7 +58,7 @@ Friend Class formCfg
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-        C_Helfer = HelferKlasse
+        C_hf = HelferKlasse
         C_DP = XMLKlasse
         C_Crypt = CryptKlasse
         C_GUI = InterfacesKlasse
@@ -129,7 +129,7 @@ Friend Class formCfg
         Me.CBCbCunterbinden.Checked = C_DP.P_CBCbCunterbinden
         Me.CBCallByCall.Checked = C_DP.P_CBCallByCall
         Me.CBDialPort.Checked = C_DP.P_CBDialPort
-        Me.CBRueckwaertssuche.Checked = C_DP.P_CBRueckwaertssuche
+        Me.CBRWS.Checked = C_DP.P_CBRWS
         Me.CBKErstellen.Checked = C_DP.P_CBKErstellen
         Me.CBLogFile.Checked = C_DP.P_CBLogFile
 #If OVer < 14 Then
@@ -148,8 +148,8 @@ Friend Class formCfg
         Me.CBKHO.Checked = C_DP.P_CBKHO
         Me.CBRWSIndex.Checked = C_DP.P_CBRWSIndex
 
-        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(C_DP.P_CBoxRWSuche)
-        If Not Me.CBRueckwaertssuche.Checked Then Me.ComboBoxRWS.Enabled = False
+        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(C_DP.P_ComboBoxRWS)
+        If Not Me.CBRWS.Checked Then Me.ComboBoxRWS.Enabled = False
         ' Einstellungen für das Journal laden
 
         Me.CBJournal.Checked = C_DP.P_CBJournal
@@ -270,7 +270,7 @@ Friend Class formCfg
                         Zeile.Add(CStr(CDbl(Zeile.Item(Zeile.Count - 2)) + CDbl(Zeile.Item(Zeile.Count - 1)))) 'Gesamt
                         tmpein(2) += CDbl(Zeile.Item(Zeile.Count - 1))
                         For i = Zeile.Count - 3 To Zeile.Count - 1
-                            Zeile.Item(i) = C_Helfer.GetTimeInterval(CInt(Zeile.Item(i)))
+                            Zeile.Item(i) = C_hf.GetTimeInterval(CInt(Zeile.Item(i)))
                         Next
                     End With
                     .Rows.Add(Zeile.ToArray)
@@ -283,7 +283,7 @@ Friend Class formCfg
                 Zeile.Add(C_DP.P_Def_StringEmpty)
                 Zeile.Add("Gesamt:")
                 For i = 0 To 2
-                    Zeile.Add(C_Helfer.GetTimeInterval(tmpein(i)))
+                    Zeile.Add(C_hf.GetTimeInterval(tmpein(i)))
                 Next
 
                 .Rows.Add(Zeile.ToArray)
@@ -322,7 +322,7 @@ Friend Class formCfg
             For i = 1 To Me.CLBTelNr.Items.Count - 1
                 .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
                 .Item(.Count - 1) = "@Checked"
-                Me.CLBTelNr.SetItemChecked(i, C_Helfer.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
+                Me.CLBTelNr.SetItemChecked(i, C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
             Next
         End With
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
@@ -381,7 +381,7 @@ Friend Class formCfg
             If Not Me.TBPasswort.Text = "1234" Then
                 .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
                 SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
-                C_Helfer.KeyChange()
+                C_hf.KeyChange()
             End If
             ' StoppUhr
             If Not Me.TBStoppUhr.Text = C_DP.P_Def_StringEmpty Then
@@ -413,7 +413,7 @@ Friend Class formCfg
             .P_CBDialPort = Me.CBDialPort.Checked
             .P_CBCbCunterbinden = Me.CBCbCunterbinden.Checked
             .P_CBCallByCall = Me.CBCallByCall.Checked
-            .P_CBRueckwaertssuche = Me.CBRueckwaertssuche.Checked
+            .P_CBRWS = Me.CBRWS.Checked
             .P_CBKErstellen = Me.CBKErstellen.Checked
             .P_ComboBoxRWS = Me.ComboBoxRWS.SelectedIndex
             .P_CBKHO = Me.CBKHO.Checked
@@ -478,7 +478,7 @@ Friend Class formCfg
             .P_PhonerTelNameIndex = PhonerTelNameIndex
             'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
             If Me.TBPhonerPasswort.Text = C_DP.P_Def_StringEmpty And Me.CBPhoner.Checked Then
-                If C_Helfer.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
+                If C_hf.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
                     Speichern = False
                 End If
             End If
@@ -488,7 +488,7 @@ Friend Class formCfg
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
                         .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, "Fritz!Box Script")
                         SaveSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "Fritz!Box Script")
-                        C_Helfer.KeyChange()
+                        C_hf.KeyChange()
                     End If
                 End If
             End If
@@ -539,7 +539,6 @@ Friend Class formCfg
                 Me.CBDialPort.Checked = False
                 Me.CBCallByCall.Checked = False
                 Me.CBCbCunterbinden.Checked = False
-                Me.CBRueckwaertssuche.Checked = False
                 Me.CBKErstellen.Checked = False
                 Me.CBLogFile.Checked = False
                 Me.CBForceFBAddr.Checked = False
@@ -554,6 +553,7 @@ Friend Class formCfg
                 Me.CBSymbJournalimport.Checked = False
 #End If
                 ' Einstellungen für die Rückwärtssuche zurücksetzen
+                Me.CBRWS.Checked = False
                 Me.ComboBoxRWS.Enabled = False
                 Me.ComboBoxRWS.SelectedIndex = 0
                 Me.CBRWSIndex.Checked = True
@@ -607,13 +607,13 @@ Friend Class formCfg
             Case "BAnrMonTest"
                 Speichern()
                 Dim ID As Integer = CInt(C_DP.Read("letzterAnrufer", "Letzter", CStr(0)))
-                Dim forman As New formAnrMon(ID, False, C_DP, C_Helfer, C_AnrMon, C_OlI)
+                Dim forman As New formAnrMon(ID, False, C_DP, C_hf, C_AnrMon, C_OlI)
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
                 Dim T As New Thread(AddressOf NewMail)
                 T.Start()
-                If C_Helfer.FBDB_MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
+                If C_hf.FBDB_MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
                                                 "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.Information, "") = MsgBoxResult.Ok Then
                     Me.Close()
                 End If
@@ -622,7 +622,7 @@ Friend Class formCfg
                 AddLine("Start")
                 If Me.CBTelefonDatei.Checked Then
                     If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
-                        If C_Helfer.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Testen einer fehlerhaften oder falschen Datei kann sehr unerfreulich enden.", _
+                        If C_hf.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Testen einer fehlerhaften oder falschen Datei kann sehr unerfreulich enden.", _
                                                         MsgBoxStyle.YesNo, "Telefondatei testen") = vbYes Then
                             Me.TBTelefonDatei.Enabled = False
                         End If
@@ -714,7 +714,7 @@ Friend Class formCfg
 
                 Dim frmStUhr As New formStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
                 Do Until frmStUhr.StUhrClosed
-                    Thread.Sleep(20)
+                    C_hf.ThreadSleep(20)
                     Windows.Forms.Application.DoEvents()
                 Loop
                 C_DP.P_CBStoppUhrX = frmStUhr.Position.X
@@ -736,7 +736,7 @@ Friend Class formCfg
             Case "LinkHomepage"
                 System.Diagnostics.Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
             Case "LinkLogFile"
-                System.Diagnostics.Process.Start(C_Helfer.Dateipfade("LogDatei"))
+                System.Diagnostics.Process.Start(C_hf.Dateipfade("LogDatei"))
         End Select
     End Sub
 
@@ -744,7 +744,7 @@ Friend Class formCfg
 
 #Region "Änderungen"
     Private Sub ValueChanged(sender As Object, e As EventArgs) Handles _
-                                                                        CBRueckwaertssuche.CheckedChanged, _
+                                                                        CBRWS.CheckedChanged, _
                                                                         CBCbCunterbinden.CheckedChanged, _
                                                                         CBAutoClose.CheckedChanged, _
                                                                         CBTelefonDatei.CheckedChanged, _
@@ -770,13 +770,13 @@ Friend Class formCfg
                         If Not Me.CBTelefonDatei.Checked Then
                             Me.TBTelefonDatei.Text = C_DP.P_Def_StringEmpty
                         End If
-                    Case "CBRueckwaertssuche"
+                    Case "CBRWS"
                         ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
-                        Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
-                        Me.CBKErstellen.Checked = Me.CBRueckwaertssuche.Checked
-                        Me.CBKErstellen.Enabled = Me.CBRueckwaertssuche.Checked
-                        Me.CBRWSIndex.Enabled = Me.CBRueckwaertssuche.Checked
-                        Me.CBRWSIndex.Checked = Me.CBRueckwaertssuche.Checked
+                        Me.ComboBoxRWS.Enabled = Me.CBRWS.Checked
+                        Me.CBKErstellen.Checked = Me.CBRWS.Checked
+                        Me.CBKErstellen.Enabled = Me.CBRWS.Checked
+                        Me.CBRWSIndex.Enabled = Me.CBRWS.Checked
+                        Me.CBRWSIndex.Checked = Me.CBRWS.Checked
                     Case "CBCbCunterbinden"
                         Me.CBCallByCall.Enabled = Not Me.CBCbCunterbinden.Checked
                         If Me.CBCbCunterbinden.Checked Then Me.CBCallByCall.Checked = False
@@ -815,25 +815,25 @@ Friend Class formCfg
                 Select Case CType(sender, TextBox).Name
                     Case "TBLandesVW"
                         If Me.TBLandesVW.Text = "0049" Then
-                            Me.CBRueckwaertssuche.Enabled = True
+                            Me.CBRWS.Enabled = True
                             Me.CBKErstellen.Enabled = True
-                            Me.ComboBoxRWS.Enabled = Me.CBRueckwaertssuche.Checked
+                            Me.ComboBoxRWS.Enabled = Me.CBRWS.Checked
                         Else
-                            Me.CBRueckwaertssuche.Checked = False
-                            Me.CBRueckwaertssuche.Enabled = False
+                            Me.CBRWS.Checked = False
+                            Me.CBRWS.Enabled = False
 
                             Me.CBKErstellen.Enabled = False
                             Me.CBKErstellen.Checked = False
                             Me.ComboBoxRWS.Enabled = False
                         End If
                     Case "TBVorwahl"
-                        C_Helfer.AcceptOnlyNumeric(Me.TBVorwahl.Text)
+                        C_hf.AcceptOnlyNumeric(Me.TBVorwahl.Text)
                     Case "TBEnblDauer"
-                        C_Helfer.AcceptOnlyNumeric(Me.TBEnblDauer.Text)
+                        C_hf.AcceptOnlyNumeric(Me.TBEnblDauer.Text)
                     Case "TBAnrMonX"
-                        C_Helfer.AcceptOnlyNumeric(Me.TBAnrMonX.Text)
+                        C_hf.AcceptOnlyNumeric(Me.TBAnrMonX.Text)
                     Case "TBAnrMonY"
-                        C_Helfer.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
+                        C_hf.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
                     Case "TBLandesVW"
                         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
                     Case "TBTelNrMaske"
@@ -893,8 +893,8 @@ Friend Class formCfg
         pos(0) = CStr(InStr(Me.TBTelNrMaske.Text, "%L", CompareMethod.Text))
         pos(1) = CStr(InStr(Me.TBTelNrMaske.Text, "%O", CompareMethod.Text))
         pos(2) = CStr(InStr(Me.TBTelNrMaske.Text, "%N", CompareMethod.Text))
-        If C_Helfer.IsOneOf("0", pos) Then
-            C_Helfer.FBDB_MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & _
+        If C_hf.IsOneOf("0", pos) Then
+            C_hf.FBDB_MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & _
                         "Prüfen Sie, ob folgende Zeichen in der Maske Enthalten sind: ""%L"", ""%V"" und ""%N"" (""%D"" kann wegelassen werden)!" & vbNewLine & _
                         "Beispiel: ""%L (%O) %N - %D""", MsgBoxStyle.Information, "Einstellungen")
             Return False
@@ -923,7 +923,7 @@ Friend Class formCfg
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
-                If C_Helfer.FBDB_MsgBox("Haben Sie das Passwort vergessen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
+                If C_hf.FBDB_MsgBox("Haben Sie das Passwort vergessen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
                     Exit Sub
                 End If
             End If
@@ -931,11 +931,11 @@ Friend Class formCfg
         Loop
 
         If NeueFW Then
-            URL = "http://" & C_Helfer.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & SID
+            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & SID
         Else
-            URL = "http://" & C_Helfer.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
+            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
-        MailText = C_Helfer.httpGET(URL, FBEncoding, Nothing)
+        MailText = C_hf.httpGET(URL, FBEncoding, Nothing)
 
         With My.Computer.FileSystem
             PfadTMPfile = .GetTempFileName()
@@ -945,7 +945,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_Helfer.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
+        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_hf.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
     End Sub
 
     Public Function SetTelNrListe() As Boolean
@@ -1102,7 +1102,7 @@ Friend Class formCfg
                     Else
                         BWIndexer.ReportProgress(1)
                     End If
-                    C_Helfer.NAR(item)
+                    C_hf.NAR(item)
                     Windows.Forms.Application.DoEvents()
                 Next 'Item
                 'Elemente = Nothing
@@ -1153,7 +1153,7 @@ Friend Class formCfg
                     Else
                         BWIndexer.ReportProgress(-1)
                     End If
-                    C_Helfer.NAR(item)
+                    C_hf.NAR(item)
                     Windows.Forms.Application.DoEvents()
                 Next 'Item
                 C_Kontakte.DeIndizierungOrdner(Ordner)
@@ -1171,7 +1171,7 @@ Friend Class formCfg
 
 #Region "Logging"
     Sub FillLogTB()
-        Dim LogDatei As String = C_Helfer.Dateipfade("LogDatei")
+        Dim LogDatei As String = C_hf.Dateipfade("LogDatei")
 
         If C_DP.P_CBLogFile Then
             If My.Computer.FileSystem.FileExists(LogDatei) Then
@@ -1293,9 +1293,9 @@ Friend Class formCfg
         Dauer = Date.Now - Startzeit
         If Me.RadioButtonErstelle.Checked And Not Me.RadioButtonEntfernen.Checked Then
             C_DP.P_LLetzteIndizierung = Date.Now
-            C_Helfer.LogFile("Indizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
+            C_hf.LogFile("Indizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
         ElseIf Me.RadioButtonEntfernen.Checked And Not Me.RadioButtonErstelle.Checked Then
-            C_Helfer.LogFile("Deindizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
+            C_hf.LogFile("Deindizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
         End If
     End Sub
 

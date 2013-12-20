@@ -45,6 +45,7 @@ Partial Class formCfg
         Me.CBintl = New System.Windows.Forms.CheckBox()
         Me.CBTelNrGruppieren = New System.Windows.Forms.CheckBox()
         Me.GroupBoxStoppUhr = New System.Windows.Forms.GroupBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.BStoppUhrAnzeigen = New System.Windows.Forms.Button()
         Me.LabelStoppUhr = New System.Windows.Forms.Label()
         Me.TBStoppUhr = New System.Windows.Forms.TextBox()
@@ -116,7 +117,7 @@ Partial Class formCfg
         Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
         Me.GroupBoxRWS = New System.Windows.Forms.GroupBox()
         Me.ComboBoxRWS = New System.Windows.Forms.ComboBox()
-        Me.CBRueckwaertssuche = New System.Windows.Forms.CheckBox()
+        Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.CBAnrMonContactImage = New System.Windows.Forms.CheckBox()
@@ -189,7 +190,6 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -465,6 +465,14 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.TabIndex = 19
         Me.GroupBoxStoppUhr.TabStop = False
         Me.GroupBoxStoppUhr.Text = "Stoppuhr*"
+        '
+        'Label7
+        '
+        Me.Label7.Location = New System.Drawing.Point(6, 65)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(158, 31)
+        Me.Label7.TabIndex = 20
+        Me.Label7.Text = "Anrufmonitor und" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Journalfunktion einschalten"
         '
         'BStoppUhrAnzeigen
         '
@@ -1201,7 +1209,7 @@ Partial Class formCfg
         Me.GroupBoxRWS.Controls.Add(Me.CBRWSIndex)
         Me.GroupBoxRWS.Controls.Add(Me.ComboBoxRWS)
         Me.GroupBoxRWS.Controls.Add(Me.CBKErstellen)
-        Me.GroupBoxRWS.Controls.Add(Me.CBRueckwaertssuche)
+        Me.GroupBoxRWS.Controls.Add(Me.CBRWS)
         Me.GroupBoxRWS.Location = New System.Drawing.Point(0, 205)
         Me.GroupBoxRWS.Name = "GroupBoxRWS"
         Me.GroupBoxRWS.Size = New System.Drawing.Size(571, 89)
@@ -1218,15 +1226,15 @@ Partial Class formCfg
         Me.ComboBoxRWS.Size = New System.Drawing.Size(121, 21)
         Me.ComboBoxRWS.TabIndex = 1
         '
-        'CBRueckwaertssuche
+        'CBRWS
         '
-        Me.CBRueckwaertssuche.AutoSize = True
-        Me.CBRueckwaertssuche.Location = New System.Drawing.Point(6, 19)
-        Me.CBRueckwaertssuche.Name = "CBRueckwaertssuche"
-        Me.CBRueckwaertssuche.Size = New System.Drawing.Size(109, 17)
-        Me.CBRueckwaertssuche.TabIndex = 0
-        Me.CBRueckwaertssuche.Text = "Rückwärtssuche:"
-        Me.CBRueckwaertssuche.UseVisualStyleBackColor = True
+        Me.CBRWS.AutoSize = True
+        Me.CBRWS.Location = New System.Drawing.Point(6, 19)
+        Me.CBRWS.Name = "CBRWS"
+        Me.CBRWS.Size = New System.Drawing.Size(109, 17)
+        Me.CBRWS.TabIndex = 0
+        Me.CBRWS.Text = "Rückwärtssuche:"
+        Me.CBRWS.UseVisualStyleBackColor = True
         '
         'PAnrufmonitor
         '
@@ -2004,14 +2012,6 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'Label7
-        '
-        Me.Label7.Location = New System.Drawing.Point(6, 65)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(158, 31)
-        Me.Label7.TabIndex = 20
-        Me.Label7.Text = "Anrufmonitor und" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Journalfunktion einschalten"
-        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2100,7 +2100,7 @@ Partial Class formCfg
     Friend WithEvents CBRWSIndex As System.Windows.Forms.CheckBox
     Friend WithEvents ComboBoxRWS As System.Windows.Forms.ComboBox
     Friend WithEvents CBKErstellen As System.Windows.Forms.CheckBox
-    Friend WithEvents CBRueckwaertssuche As System.Windows.Forms.CheckBox
+    Friend WithEvents CBRWS As System.Windows.Forms.CheckBox
     Friend WithEvents PAnrufmonitor As System.Windows.Forms.TabPage
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
     Friend WithEvents CBAnrMonContactImage As System.Windows.Forms.CheckBox

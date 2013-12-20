@@ -159,50 +159,40 @@ Public Class formRWSuche
 
         RWS11880 = False
 
-        Dim myurl As String             ' URL von 11880
-        Dim temp As String             ' Hilfsstring
-        Dim tempTelNr As String             ' Hilfsstring für TelNr
-        Dim alleTelNr() As String             ' alle TelNr der gefundenen vCard
-        Dim html11880 As String             ' Inhalt der Webseite
-        Dim pos1, pos2, pos3 As Integer               ' Positionen in 'html11880'
-        Dim i As Integer               ' Zählvariable
+        Dim myurl As String         ' URL von 11880
+        Dim EintragsID As String    ' Hilfsstring
+        Dim tmpTelNr As String      ' Hilfsstring für TelNr
+        Dim htmlRWS As String       ' Inhalt der Webseite
+        Dim i As Integer            ' Zählvariable
 
         'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-        Const SWVisitenkarte1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
-        Const SWVisitenkarte2 As String = "'"
+        Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
+        Const SW2 As String = "'"
         ' TelNr sichern, da sie unter Umständen verändert wird
-        tempTelNr = C_hf.nurZiffern(TelNr, "0049")
+        tmpTelNr = C_hf.nurZiffern(TelNr, "0049")
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen
         i = 0
-        If Not Strings.Left(tempTelNr, 2) = "11" Then
+        If Not Strings.Left(tmpTelNr, 2) = "11" Then
 
             Do
                 ' Webseite für Rückwärtssuche aufrufen und herunterladen
-                myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tempTelNr
-                html11880 = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+                myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tmpTelNr
+                htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
                 If Not HTMLFehler Then
-
-
-                    html11880 = Replace(html11880, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
-
-                    On Error GoTo 0
+                    htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
                     ' Link zum Herunterladen der vCard suchen
-                    pos1 = InStr(1, html11880, SWVisitenkarte1, CompareMethod.Text) + Len(SWVisitenkarte1)
-                    If Not pos1 = Len(SWVisitenkarte1) Then 'wenn der Startpunkt gefunden werden konnte
-                        pos2 = InStr(pos1, html11880, SWVisitenkarte2, CompareMethod.Text) 'Starten ab Startpunkt, suchen des Endpunkts
-                        ' vCard herunterladen
-                        myurl = "http://classic.11880.com" & Mid(html11880, pos1, pos2 - pos1)
-                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
-                        If Not HTMLFehler Then
-                            C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
-                        End If
+                    EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
+                    If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
+                        myurl = "http://classic.11880.com" & EintragsID
+                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
+                        If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                     End If
                     ' Rückgabewert ermitteln
                     RWS11880 = Strings.Left(vCard, 11) = "BEGIN:VCARD"
                     i = i + 1
-                    tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 1) & 0
+                    tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 1) & 0
                 Else
                     C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                 End If
@@ -304,48 +294,45 @@ Public Class formRWSuche
         ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
         '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
         ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
-        Dim myurl As String             ' URL von 11880
-        Dim formdata As String
-        Dim tempTelNr As String             ' Hilfsstring für TelNr
-        'Dim html As String             ' Inhalt der Webseite
 
-        Dim pos1, pos2 As Integer               ' Positionen in 'html11880'
-        Dim i As Integer
-        Dim Text As String
+        Dim myurl As String         ' URL von 11880
+        Dim EintragsID As String    ' Hilfsstring
+        Dim tmpTelNr As String      ' Hilfsstring für TelNr
+        Dim htmlRWS As String       ' Inhalt der Webseite
+        Dim i As Integer            ' Zählvariable
 
         'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-        Const SW1 As String = "<a  href='http://www1.dastelefonbuch.de/VCard?encurl="
-        Const SW2 As String = "&amp;logourl"
+        Const SW1 As String = "VCard?encurl="
+        Const SW2 As String = "&"
+        'Const SW3 As String = "'"
 
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
         vCard = C_DP.P_Def_StringEmpty
-        tempTelNr = C_hf.nurZiffern(TelNr, "0049")
+        tmpTelNr = C_hf.nurZiffern(TelNr, "0049")
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen
         i = 0
-        Do
-            myurl = "http://www1.dastelefonbuch.de/"
-            'formdata = "sp=0&aktion=23&kw=" & tempTelNr & "&ort=&cifav=0&s=a10000&stype=s&la=de&taoid=&cmd=search&ort_ok=0&vert_ok=0"
-            formdata = "cmd=detail&kw=" & tempTelNr
-            Text = C_hf.httpPOST(myurl, formdata, System.Text.Encoding.Default)
 
-            If Not Text = C_DP.P_Def_StringEmpty Then
-                Text = Replace(Text, Chr(34), "'", , , CompareMethod.Text) '" enfernen
-                pos1 = InStr(1, Text, SW1, CompareMethod.Text)
-                If Not pos1 = 0 Then
-                    pos1 = pos1 + Len(SW1)
-                    pos2 = InStr(pos1, Text, SW2, vbTextCompare)
-                    myurl = "http://www1.dastelefonbuch.de/VCard?encurl=" & Mid(Text, pos1, pos2 - pos1)
-                    vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+        myurl = "http://www.dastelefonbuch.de/"
+        Do
+
+            'htmlRWS = C_hf.httpPOST(myurl, "cmd=detail&kw=" & tmpTelNr, System.Text.Encoding.Default)
+            htmlRWS = C_hf.httpGET(myurl & "?cmd=detail&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
+
+            If Not htmlRWS = C_DP.P_Def_StringEmpty Then
+                htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
+                ' Link zum Herunterladen der vCard suchen
+                EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
+                    'myurl = C_hf.StringEntnehmen(htmlRWS, SW3, Sw1, True)
+                    vCard = C_hf.httpGET("http://www1.dastelefonbuch.de/" & SW1 & EintragsID, System.Text.Encoding.Default, HTMLFehler)
                 End If
             End If
-            If Not HTMLFehler Then
-                C_hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
-            End If
+            If HTMLFehler Then C_hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
             RWSDasTelefonbuch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
             i = i + 1
-            tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
+            tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
         Loop Until RWSDasTelefonbuch Or i = 3
 
     End Function
@@ -357,46 +344,42 @@ Public Class formRWSuche
         '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
         ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
 
-        Dim myurl As String             ' URL von telsearch
-        'Dim temp As String             ' Hilfsstring
-        Dim tempTelNr As String             ' Hilfsstring für TelNr
-        Dim htmltelsearch As String             ' Inhalt der Webseite
-        Dim pos1, pos2 As Integer               ' Positionen in 'htmltelsearch'
-        Dim i As Long               ' Zählvariable
+        Dim myurl As String         ' URL von 11880
+        Dim EintragsID As String    ' Hilfsstring
+        Dim tmpTelNr As String      ' Hilfsstring für TelNr
+        Dim htmlRWS As String       ' Inhalt der Webseite
+        Dim i As Integer            ' Zählvariable
 
         'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-        Const SWVisitenkarte1 As String = "<a href=/vCard/"
-        Const SWVisitenkarte2 As String = "title"
+        Const SW1 As String = "<a href='/vCard/"
+        Const SW2 As String = "'"
 
         ' Vorwahl erkennen
         ' TelNr sichern, da sie unter Umständen verändert wird
-        tempTelNr = C_hf.nurZiffern(TelNr, "0041")
+        tmpTelNr = C_hf.nurZiffern(TelNr, "0041")
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen
         i = 0
         Do
             ' Webseite für Rückwärtssuche aufrufen und herunterladen
-            myurl = "http://tel.search.ch/result.html?name=&misc=&strasse=&ort=&kanton=&tel=" & tempTelNr
-            htmltelsearch = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+            myurl = "http://tel.search.ch/result.html?name=&misc=&strasse=&ort=&kanton=&tel=" & tmpTelNr
+            htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
             If Not HTMLFehler Then
-                htmltelsearch = Replace(htmltelsearch, Chr(34), "", , , vbTextCompare) '" enfernen
+                htmlRWS = Replace(htmlRWS, Chr(34), "'", , , vbTextCompare) '" enfernen
 
                 ' Link zum Herunterladen der vCard suchen
-                pos1 = InStr(1, htmltelsearch, SWVisitenkarte1, vbTextCompare)
-                If Not pos1 = 0 Then
-                    pos2 = InStr(pos1, htmltelsearch, SWVisitenkarte2, vbTextCompare)
-                    If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
-                        ' vCard herunterladen
-                        myurl = "http://tel.search.ch/" & Mid(htmltelsearch, pos1 + 9, pos2 - pos1 - 10)
-                        myurl = Replace(myurl, "html", "vcf")
-                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
-                    End If
+                EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
+                    ' vCard herunterladen
+                    myurl = Replace("http://tel.search.ch/vcard/" & EintragsID, "html", "vcf")
+                    vCard = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
                 End If
+
                 ' Rückgabewert ermitteln
                 RWStelsearch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
                 i = i + 1
-                tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
+                tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
             Else
                 RWStelsearch = False
                 C_hf.LogFile("FBError (RWStelsearch): " & Err.Number & " - " & Err.Description & " - " & myurl)
@@ -418,8 +401,6 @@ Public Class formRWSuche
     Function RWSAlle(ByRef TelNr As String, ByRef vCard As String) As Boolean
         RWSAlle = RWS11880(TelNr, vCard)
         If RWSAlle Then Exit Function
-        'RWSAlle = RWSGoYellow(TelNr, vCard)
-        'If RWSAlle Then Exit Function
         RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
         If RWSAlle Then Exit Function
         RWSAlle = RWStelsearch(TelNr, vCard)

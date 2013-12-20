@@ -415,7 +415,7 @@
         If RibbonObjekt Is Nothing Then
             Dim i As Integer
             Do While RibbonObjekt Is Nothing And i < 100
-                ' Thread.Sleep(50)
+
                 i += 1
                 Windows.Forms.Application.DoEvents()
             Loop

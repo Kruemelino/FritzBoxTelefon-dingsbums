@@ -43,9 +43,9 @@ Partial Class formRWSuche
         '
         'DirektTel
         '
-        Me.DirektTel.Location = New System.Drawing.Point(12, 127)
+        Me.DirektTel.Location = New System.Drawing.Point(15, 127)
         Me.DirektTel.Name = "DirektTel"
-        Me.DirektTel.Size = New System.Drawing.Size(302, 20)
+        Me.DirektTel.Size = New System.Drawing.Size(299, 20)
         Me.DirektTel.TabIndex = 1
         '
         'LabelDirekteingabe
@@ -115,9 +115,9 @@ Partial Class formRWSuche
         '
         'ButtonSuchen
         '
-        Me.ButtonSuchen.Location = New System.Drawing.Point(320, 128)
+        Me.ButtonSuchen.Location = New System.Drawing.Point(320, 126)
         Me.ButtonSuchen.Name = "ButtonSuchen"
-        Me.ButtonSuchen.Size = New System.Drawing.Size(79, 19)
+        Me.ButtonSuchen.Size = New System.Drawing.Size(79, 22)
         Me.ButtonSuchen.TabIndex = 7
         Me.ButtonSuchen.Text = "Suchen"
         Me.ButtonSuchen.UseVisualStyleBackColor = True
@@ -135,7 +135,7 @@ Partial Class formRWSuche
         Me.Controls.Add(Me.LabelDirekteingabe)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "formRWSuche"
-        Me.Text = "fromRWSuche"
+        Me.Text = "Rückwärtssuche"
         CType(Me.ListTel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
