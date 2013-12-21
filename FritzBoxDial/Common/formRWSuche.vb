@@ -169,7 +169,7 @@ Public Class formRWSuche
         Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
         Const SW2 As String = "'"
         ' TelNr sichern, da sie unter Umständen verändert wird
-        tmpTelNr = C_hf.nurZiffern(TelNr, "0049")
+        tmpTelNr = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen
@@ -308,7 +308,7 @@ Public Class formRWSuche
 
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
         vCard = C_DP.P_Def_StringEmpty
-        tmpTelNr = C_hf.nurZiffern(TelNr, "0049")
+        tmpTelNr = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen

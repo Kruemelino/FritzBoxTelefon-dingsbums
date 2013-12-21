@@ -120,6 +120,7 @@ Friend Class formCfg
         Me.CBAnrMonMove.Checked = C_DP.P_CBAnrMonMove
         Me.CBAnrMonTransp.Checked = C_DP.P_CBAnrMonTransp
         Me.TBAnrMonMoveGeschwindigkeit.Value = C_DP.P_TBAnrMonMoveGeschwindigkeit
+        Me.CBAnrMonZeigeKontakt.Checked = C_DP.P_CBAnrMonZeigeKontakt
         Me.CBAnrMonContactImage.Checked = C_DP.P_CBAnrMonContactImage
         Me.CBIndexAus.Checked = C_DP.P_CBIndexAus
         Me.CBShowMSN.Checked = C_DP.P_CBShowMSN
@@ -407,6 +408,7 @@ Friend Class formCfg
             .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
             .P_CBAnrMonContactImage = Me.CBAnrMonContactImage.Checked
             .P_TBAnrMonMoveGeschwindigkeit = Me.TBAnrMonMoveGeschwindigkeit.Value
+            .P_CBAnrMonZeigeKontakt = Me.CBAnrMonZeigeKontakt.Checked
             .P_CBIndexAus = Me.CBIndexAus.Checked
             .P_CBShowMSN = Me.CBShowMSN.Checked
             .P_CBVoIPBuster = Me.CBVoIPBuster.Checked
@@ -517,62 +519,64 @@ Friend Class formCfg
             Case "ButtonZuruecksetzen"
                 ' Startwerte zurücksetzen
                 ' Einstellungen für das Wählmakro zurücksetzen
-                Me.TBLandesVW.Text = "0049"
-                Me.TBAmt.Text = C_DP.P_Def_StringEmpty
-                Me.CBCheckMobil.Checked = True
+                With C_DP
+                    Me.TBLandesVW.Text = .P_Def_TBLandesVW
+                    Me.TBAmt.Text = .P_Def_StringEmpty
+                    Me.CBCheckMobil.Checked = .P_Def_CBCheckMobil
 
-                ' Einstellungen für den Anrufmonitor zurücksetzen
-                Me.TBEnblDauer.Text = "10"
-                Me.TBAnrMonX.Text = "0"
-                Me.TBAnrMonY.Text = "0"
-                Me.CBAnrMonAuto.Checked = False
-                Me.CBAutoClose.Checked = True
-                Me.CBAnrMonMove.Checked = True
-                Me.CBAnrMonTransp.Checked = True
-                Me.CBAnrMonContactImage.Checked = True
-                Me.CBShowMSN.Checked = False
-                Me.TBAnrMonMoveGeschwindigkeit.Value = 5
-                Me.CBIndexAus.Checked = False
-                Me.CBIndexAus.Enabled = False
-                ' optionale allgemeine Einstellungen zuruecksetzen
-                Me.CBVoIPBuster.Checked = False
-                Me.CBDialPort.Checked = False
-                Me.CBCallByCall.Checked = False
-                Me.CBCbCunterbinden.Checked = False
-                Me.CBKErstellen.Checked = False
-                Me.CBLogFile.Checked = False
-                Me.CBForceFBAddr.Checked = False
+                    ' Einstellungen für den Anrufmonitor zurücksetzen
+                    Me.TBEnblDauer.Text = CStr(.P_Def_TBEnblDauer)
+                    Me.TBAnrMonX.Text = CStr(.P_Def_TBAnrMonX)
+                    Me.TBAnrMonY.Text = CStr(.P_Def_TBAnrMonY)
+                    Me.CBAnrMonAuto.Checked = .P_Def_CBAnrMonAuto
+                    Me.CBAutoClose.Checked = .P_Def_CBAutoClose
+                    Me.CBAnrMonMove.Checked = .P_Def_CBAnrMonMove
+                    Me.CBAnrMonTransp.Checked = .P_Def_CBAnrMonTransp
+                    Me.CBAnrMonContactImage.Checked = .P_Def_CBAnrMonContactImage
+                    Me.CBShowMSN.Checked = .P_Def_CBShowMSN
+                    Me.TBAnrMonMoveGeschwindigkeit.Value = .P_Def_TBAnrMonMoveGeschwindigkeit
+                    Me.CBAnrMonZeigeKontakt.Checked = .P_Def_CBAnrMonZeigeKontakt
+                    Me.CBIndexAus.Checked = .P_Def_CBIndexAus
+                    ' optionale allgemeine Einstellungen zuruecksetzen
+                    Me.CBVoIPBuster.Checked = .P_Def_CBVoIPBuster
+                    Me.CBDialPort.Checked = .P_Def_CBDialPort
+                    Me.CBCallByCall.Checked = .P_Def_CBCallByCall
+                    Me.CBCbCunterbinden.Checked = .P_Def_CBCbCunterbinden
+                    Me.CBKErstellen.Checked = .P_Def_CBKErstellen
+                    Me.CBLogFile.Checked = .P_Def_CBLogFile
+                    Me.CBForceFBAddr.Checked = .P_Def_CBForceFBAddr
 #If OVer < 14 Then
-                ' Einstellungen für die Symbolleiste zurücksetzen
-                Me.CBSymbAnrMonNeuStart.Checked = False
-                Me.CBSymbWwdh.Checked = True
-                Me.CBSymbAnrMon.Checked = True
-                Me.CBSymbAnrListe.Checked = True
-                Me.CBSymbDirekt.Checked = True
-                Me.CBSymbRWSuche.Checked = False
-                Me.CBSymbJournalimport.Checked = False
+                    ' Einstellungen für die Symbolleiste zurücksetzen
+                    Me.CBSymbAnrMonNeuStart.Checked = .P_Def_CBSymbAnrMonNeuStart
+                    Me.CBSymbWwdh.Checked = .P_Def_CBSymbWwdh
+                    Me.CBSymbAnrMon.Checked = .P_Def_CBSymbAnrMon
+                    Me.CBSymbAnrListe.Checked = .P_Def_CBSymbAnrListe
+                    Me.CBSymbDirekt.Checked = .P_Def_CBSymbDirekt
+                    Me.CBSymbRWSuche.Checked = .P_Def_CBSymbRWSuche
+                    Me.CBSymbJournalimport.Checked = .P_Def_CBSymbJournalimport
 #End If
-                ' Einstellungen für die Rückwärtssuche zurücksetzen
-                Me.CBRWS.Checked = False
-                Me.ComboBoxRWS.Enabled = False
-                Me.ComboBoxRWS.SelectedIndex = 0
-                Me.CBRWSIndex.Checked = True
-                ' Einstellungen für das Journal zurücksetzen
-                Me.CBKHO.Checked = True
-                Me.CBJournal.Checked = False
-                Me.CBJImport.Checked = False
-                Me.CBLogFile.Checked = True
+                    ' Einstellungen für die Rückwärtssuche zurücksetzen
+                    Me.CBRWS.Checked = .P_Def_CBRWS
+                    Me.ComboBoxRWS.Enabled = .P_Def_CBRWS
+                    Me.ComboBoxRWS.SelectedIndex = .P_Def_ComboBoxRWS
+                    Me.CBRWSIndex.Checked = .P_Def_CBRWSIndex
+                    ' Einstellungen für das Journal zurücksetzen
+                    Me.CBKHO.Checked = .P_Def_CBKHO
+                    Me.CBJournal.Checked = .P_Def_CBJournal
+                    Me.CBJImport.Checked = .P_Def_CBJImport
+                    Me.CBLogFile.Checked = .P_Def_CBLogFile
 
-                'StoppUhr
-                Me.CBStoppUhrEinblenden.Checked = False
-                Me.CBStoppUhrAusblenden.Checked = False
-                Me.TBStoppUhr.Text = "10"
+                    'StoppUhr
+                    Me.CBStoppUhrEinblenden.Checked = .P_Def_CBStoppUhrEinblenden
+                    Me.CBStoppUhrAusblenden.Checked = .P_Def_CBStoppUhrAusblenden
+                    Me.TBStoppUhr.Text = CStr(.P_Def_TBStoppUhr)
 
-                'Telefonnummernformat
-                Me.TBTelNrMaske.Text = "%L (%O) %N - %D"
-                Me.CBTelNrGruppieren.Checked = True
-                Me.CBintl.Checked = False
-                Me.CBIgnoTelNrFormat.Checked = False
+                    'Telefonnummernformat
+                    Me.TBTelNrMaske.Text = .P_Def_TBTelNrMaske
+                    Me.CBTelNrGruppieren.Checked = .P_Def_CBTelNrGruppieren
+                    Me.CBintl.Checked = .P_Def_CBintl
+                    Me.CBIgnoTelNrFormat.Checked = .P_Def_CBIgnoTelNrFormat
+                End With
             Case "BTelefonliste"
                 Dim xPathTeile As New ArrayList
                 C_FBox.SetEventProvider(emc)
@@ -596,6 +600,7 @@ Friend Class formCfg
                     Me.Hide()
                     'Dispose(True)
                 End If
+
             Case "ButtonAbbruch"
                 ' Schließt das Fenster
                 Me.Hide()
@@ -607,7 +612,7 @@ Friend Class formCfg
             Case "BAnrMonTest"
                 Speichern()
                 Dim ID As Integer = CInt(C_DP.Read("letzterAnrufer", "Letzter", CStr(0)))
-                Dim forman As New formAnrMon(ID, False, C_DP, C_hf, C_AnrMon, C_OlI)
+                Dim forman As New formAnrMon(ID, False, C_DP, C_hf, C_AnrMon, C_OlI, C_Kontakte)
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
@@ -814,7 +819,7 @@ Friend Class formCfg
             Case "TextBox"
                 Select Case CType(sender, TextBox).Name
                     Case "TBLandesVW"
-                        If Me.TBLandesVW.Text = "0049" Then
+                        If Me.TBLandesVW.Text = C_DP.P_TBLandesVW Then
                             Me.CBRWS.Enabled = True
                             Me.CBKErstellen.Enabled = True
                             Me.ComboBoxRWS.Enabled = Me.CBRWS.Checked
@@ -1020,7 +1025,7 @@ Friend Class formCfg
         Dim olfolder As Outlook.MAPIFolder
         Dim LandesVW As String = Me.TBLandesVW.Text
         Anzahl = 0
-        olNamespace = C_OlI.GetOutlook.GetNamespace("MAPI")
+        olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
             olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
@@ -1253,7 +1258,7 @@ Friend Class formCfg
         Dim olfolder As Outlook.MAPIFolder
         Dim LandesVW As String = Me.TBLandesVW.Text
 
-        olNamespace = C_OlI.GetOutlook.GetNamespace("MAPI")
+        olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
             olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)

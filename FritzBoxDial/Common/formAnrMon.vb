@@ -2,18 +2,24 @@ Imports System.Timers
 Imports System.IO.Path
 
 Friend Class formAnrMon
-    Private TelefonName As String
-    Private aID As Integer
     Private C_DP As DataProvider
     Private C_hf As Helfer
+    Private C_AnrMon As AnrufMonitor
+    Private C_OLI As OutlookInterface
+    Private C_KF As Contacts
+
+    Private WithEvents TimerAktualisieren As Timer
+
+    Private aID As Integer
+
+    Private TelefonName As String
     Private TelNr As String              ' TelNr des Anrufers
     Private KontaktID As String              ' KontaktID des Anrufers
     Private StoreID As String
     Private MSN As String
-    Private AnrMon As AnrufMonitor
+
     Public AnrmonClosed As Boolean
-    Private OlI As OutlookInterface
-    Private WithEvents TimerAktualisieren As Timer
+
 
 
     Public Sub New(ByVal iAnrufID As Integer, _
@@ -21,20 +27,20 @@ Friend Class formAnrMon
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal AnrufMon As AnrufMonitor, _
-                   ByVal OutlInter As OutlookInterface)
+                   ByVal OutlInter As OutlookInterface, _
+                   ByVal KontaktFunktionen As Contacts)
 
-        ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         C_hf = HelferKlasse
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        'If ThisAddIn.Debug Then ThisAddIn.Diagnose.AddLine("formAnrMon aufgerufen")
-        aID = iAnrufID
         C_DP = DataProviderKlasse
-        OlI = OutlInter
-        AnrMon = AnrufMon
+        C_OLI = OutlInter
+        C_AnrMon = AnrufMon
+        C_KF = KontaktFunktionen
+
+        aID = iAnrufID
+
         AnrMonausfüllen()
         AnrmonClosed = False
-
 
         Dim OInsp As Outlook.Inspector = Nothing
         If Aktualisieren Then
@@ -43,7 +49,7 @@ Friend Class formAnrMon
                 C_hf.LogFile("formAnrMon.New: TimerNeuStart nicht gestartet")
             End If
         End If
-        OlI.InspectorVerschieben(True)
+        C_OLI.InspectorVerschieben(True)
 
         With PopupNotifier
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
@@ -55,7 +61,7 @@ Friend Class formAnrMon
             .EffektMoveGeschwindigkeit = 10 * (10 - C_DP.P_TBAnrMonMoveGeschwindigkeit)
             .Popup()
         End With
-        OlI.InspectorVerschieben(False)
+        C_OLI.InspectorVerschieben(False)
     End Sub
 
     Sub AnrMonausfüllen()
@@ -92,7 +98,7 @@ Friend Class formAnrMon
             KontaktID = C_DP.Read(xPathTeile, "-1")
         End With
 
-        TelefonName = AnrMon.TelefonName(MSN)
+        TelefonName = C_AnrMon.TelefonName(MSN)
         With PopupNotifier
             If TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
@@ -110,9 +116,9 @@ Friend Class formAnrMon
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
-                    OlI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
+                    C_OLI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
                     If C_DP.P_CBAnrMonContactImage Then
-                        Dim BildPfad = OlI.KontaktBild(KontaktID, StoreID)
+                        Dim BildPfad = C_OLI.KontaktBild(KontaktID, StoreID)
                         If Not BildPfad = C_DP.P_Def_StringEmpty Then
                             PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)
                             ' Seitenverhältnisse anpassen
@@ -168,11 +174,7 @@ Friend Class formAnrMon
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopupNotifier.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        Dim Kontaktdaten(2) As String
-        Kontaktdaten(0) = KontaktID
-        Kontaktdaten(1) = StoreID
-        Kontaktdaten(2) = TelNr
-        ThisAddIn.P_WClient.ZeigeKontakt(Kontaktdaten)
+        C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, C_DP.P_Def_StringEmpty)
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed

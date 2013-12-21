@@ -423,7 +423,7 @@ Public Class Helfer
             pos1 = InStr(1, TelNr, "(", CompareMethod.Text) + 1
             pos2 = InStr(1, TelNr, ")", CompareMethod.Text)
             If pos1 = 1 Or pos2 = 0 Then
-                If LandesVW = "0049" Or LandesVW = C_DP.P_Def_StringEmpty Then
+                If LandesVW = C_DP.P_TBLandesVW Or LandesVW = C_DP.P_Def_StringEmpty Then
                     ' Ortsvorwahl nicht in Klammern
                     If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
                     OrtsVW = VorwahlausDatei(TelNr, My.Resources.Vorwahlen)
@@ -574,7 +574,7 @@ Public Class Helfer
     Function Mobilnummer(ByVal TelNr As String) As Boolean
         Dim TempTelNr As String() = TelNrTeile(TelNr)
         Dim Vorwahl As String = Left(TempTelNr(1), 2)
-        If TempTelNr(0) = "0049" Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
+        If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
             If Vorwahl = "15" Or Vorwahl = "16" Or Vorwahl = "17" Then Return True
         End If
         Return False

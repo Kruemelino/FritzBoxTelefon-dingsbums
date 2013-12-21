@@ -61,52 +61,52 @@
 #End If
 #End Region
 
-    Private HelferFunktionen As Helfer
+    Private C_HF As Helfer
     Private C_DP As DataProvider
-    Private Crypt As Rijndael
+    Private C_Crypt As Rijndael
     Private Dateipfad As String
-    Private Callclient As Wählclient
-    Private RWSSuche As formRWSuche
-    Private AnrMon As AnrufMonitor
-    Private OlI As OutlookInterface
-    Private KontaktFunktionen As Contacts
-    Private fbox As FritzBox
-    Private PhonerFunktionen As PhonerInterface
+    Private C_WClient As Wählclient
+    Private F_RWS As formRWSuche
+    Private C_AnrMon As AnrufMonitor
+    Private C_OLI As OutlookInterface
+    Private C_KF As Contacts
+    Private C_FBox As FritzBox
+    Private C_Phoner As PhonerInterface
 
 #Region "Properies"
     Friend Property P_WählKlient() As Wählclient
         Get
-            Return Callclient
+            Return C_WClient
         End Get
         Set(ByVal value As Wählclient)
-            Callclient = value
+            C_WClient = value
         End Set
     End Property
 
     Friend Property P_AnrufMonitor() As AnrufMonitor
         Get
-            Return AnrMon
+            Return C_AnrMon
         End Get
         Set(ByVal value As AnrufMonitor)
-            AnrMon = value
+            C_AnrMon = value
         End Set
     End Property
 
     Public Property P_OlInterface() As OutlookInterface
         Get
-            Return OlI
+            Return C_OLI
         End Get
         Set(ByVal value As OutlookInterface)
-            OlI = value
+            C_OLI = value
         End Set
     End Property
 
     Public Property P_FritzBox() As FritzBox
         Get
-            Return fbox
+            Return C_FBox
         End Get
         Set(ByVal value As FritzBox)
-            fbox = value
+            C_FBox = value
         End Set
     End Property
 #End Region
@@ -122,13 +122,13 @@
                ByVal Inverssuche As formRWSuche, _
                ByVal KontaktKlasse As Contacts, _
                ByVal Phonerklasse As PhonerInterface)
-        HelferFunktionen = HelferKlasse
+        C_HF = HelferKlasse
         C_DP = DataProviderKlasse
-        Crypt = CryptKlasse
+        C_Crypt = CryptKlasse
         Dateipfad = iniPfad
-        RWSSuche = Inverssuche
-        KontaktFunktionen = KontaktKlasse
-        PhonerFunktionen = Phonerklasse
+        F_RWS = Inverssuche
+        C_KF = KontaktKlasse
+        C_Phoner = Phonerklasse
     End Sub
 
 #Region "Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -168,7 +168,7 @@
         Dim anzeigen As Boolean
         ActiveExplorer = oapp.ActiveExplorer
         anzeigen = Not ActiveExplorer Is Nothing
-        With HelferFunktionen
+        With C_HF
             .NAR(ActiveExplorer)
             .NAR(oapp)
         End With
@@ -221,7 +221,7 @@
                         Return "Kontakt erstellen"
                     End Try
                 Next
-                HelferFunktionen.NAR(olLink) : olLink = Nothing
+                C_HF.NAR(olLink) : olLink = Nothing
 #End If
             Else
                 Return "Kontakt erstellen"
@@ -245,7 +245,7 @@
                         Return "Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag."
                     End Try
                 Next
-                HelferFunktionen.NAR(olLink) : olLink = Nothing
+                C_HF.NAR(olLink) : olLink = Nothing
 #End If
             Else
                 Return "Erstellt einen Kontakt aus diesem Journaleintrag"
@@ -376,11 +376,11 @@
 
     Public Function GetImage(ByVal control As Office.IRibbonControl) As String
         GetImage = "PersonaStatusBusy"
-        If Not AnrMon Is Nothing Then
-            If AnrMon.AnrMonAktiv Then
+        If Not C_AnrMon Is Nothing Then
+            If C_AnrMon.AnrMonAktiv Then
                 GetImage = "PersonaStatusOnline"
             Else
-                If Not AnrMon.AnrMonError Then
+                If Not C_AnrMon.AnrMonError Then
                     GetImage = "PersonaStatusOffline"
                 End If
             End If
@@ -394,7 +394,7 @@
     Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
         Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
         GetPressedKontextVIP = IsVIP(oKontact)
-        HelferFunktionen.NAR(oKontact)
+        C_HF.NAR(oKontact)
         oKontact = Nothing
     End Function
 
@@ -406,7 +406,7 @@
         Else
             AddVIP(oKontakt)
         End If
-        HelferFunktionen.NAR(oKontakt)
+        C_HF.NAR(oKontakt)
         oKontakt = Nothing
 
     End Sub
@@ -461,7 +461,7 @@
     End Sub
 
     Public Sub OnActionAnrMonAnAus(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        bolAnrMonAktiv = AnrMon.AnrMonAnAus()
+        bolAnrMonAktiv = C_AnrMon.AnrMonAnAus()
         RibbonObjekt.InvalidateControl(control.Id)
     End Sub
 
@@ -1117,16 +1117,16 @@
     End Sub
 
     Friend Sub ÖffneJournalImport()
-        Dim formjournalimort As New formJournalimport(AnrMon, HelferFunktionen, C_DP, True)
+        Dim formjournalimort As New formJournalimport(C_AnrMon, C_HF, C_DP, True)
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
         Dim ID As Integer = CInt(C_DP.Read("LetzterAnrufer", "Letzter", CStr(0)))
-        Dim forman As New formAnrMon(ID, False, C_DP, HelferFunktionen, AnrMon, OlI)
+        Dim forman As New formAnrMon(ID, False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
     End Sub
 
     Friend Sub AnrMonNeustarten()
-        AnrMon.AnrMonReStart()
+        C_AnrMon.AnrMonReStart()
     End Sub
 
     Friend Sub KlickListen(ByVal controlTag As String)
@@ -1139,7 +1139,7 @@
             Dim ActiveExplorer As Outlook.Explorer = olApp.ActiveExplorer
             Dim oSel As Outlook.Selection = ActiveExplorer.Selection
             P_WählKlient.WählboxStart(oSel)
-            HelferFunktionen.NAR(oSel) : HelferFunktionen.NAR(ActiveExplorer)
+            C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
             oSel = Nothing : ActiveExplorer = Nothing
         End If
     End Sub
@@ -1151,23 +1151,23 @@
     End Sub
 
     Friend Sub KontaktErstellen()
-        KontaktFunktionen.KontaktErstellen()
+        C_KF.KontaktErstellen()
     End Sub
 
     Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
-        RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWS11880, insp)
+        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWS11880, insp)
     End Sub
 
     Friend Sub RWSDasTelefonbuch(ByVal insp As Outlook.Inspector)
-        RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWSDasTelefonbuch, insp)
+        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSDasTelefonbuch, insp)
     End Sub
 
     Friend Sub RWSTelSearch(ByVal insp As Outlook.Inspector)
-        RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWStelSearch, insp)
+        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWStelSearch, insp)
     End Sub
 
     Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
-        RWSSuche.Rückwärtssuche(formRWSuche.Suchmaschine.RWSAlle, insp)
+        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSAlle, insp)
     End Sub
 #End Region
 

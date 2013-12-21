@@ -279,7 +279,7 @@ Friend Class AnrufMonitor
 
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)
-        AnrMonList.Add(New formAnrMon(CInt(ID), True, C_DP, C_hf, Me, C_OlI))
+        AnrMonList.Add(New formAnrMon(CInt(ID), True, C_DP, C_hf, Me, C_OlI, C_KF))
         Dim a As Integer
         Do
             a = AnrMonList.Count - 1
@@ -444,6 +444,8 @@ Friend Class AnrufMonitor
         Dim LetzterAnrufer(5) As String
         Dim RWSIndex As Boolean
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
+        Dim FullName As String = C_DP.P_Def_StringEmpty
+        Dim CompanyName As String = C_DP.P_Def_StringEmpty
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
         Dim xPathTeile As New ArrayList
@@ -492,8 +494,6 @@ Friend Class AnrufMonitor
 
             ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
             If Not TelNr = C_DP.P_Def_StringUnknown Then
-                Dim FullName As String = C_DP.P_Def_StringEmpty
-                Dim CompanyName As String = C_DP.P_Def_StringEmpty
                 ' Anrufer in den Outlook-Kontakten suchen
                 If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Then
                     C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
@@ -571,6 +571,10 @@ Friend Class AnrufMonitor
             ' Daten für den Journaleintrag sichern
             If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
                 NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
+            End If
+            ' Kontakt öffnen
+            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, "Telefonat vom " & CStr(FBStatus.GetValue(0)) & C_DP.P_Def_NeueZeile & C_OlI.BenutzerInitialien & ":" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile)
             End If
         End If
 
@@ -733,6 +737,10 @@ Friend Class AnrufMonitor
             If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
                 NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
                 JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
+            End If
+            ' Kontakt öffnen
+            If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, "Telefonat vom " & CStr(FBStatus.GetValue(0)) & C_DP.P_Def_NeueZeile & C_OlI.BenutzerInitialien & ":" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile)
             End If
         End If
     End Sub '(AnrMonCALL)

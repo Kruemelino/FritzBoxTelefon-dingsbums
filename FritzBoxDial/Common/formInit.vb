@@ -82,6 +82,7 @@
             ThisAddIn.P_KontaktFunktionen = C_KF
 
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
+            C_HF.LogFile(C_OlI.BenutzerInitialien)
         End If
     End Sub
 

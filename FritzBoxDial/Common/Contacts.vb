@@ -1,7 +1,17 @@
 ﻿Public Class Contacts
     Private C_DP As DataProvider
     Private C_hf As Helfer
+    Private _C_OLI As OutlookInterface
     ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
+
+    Public Property C_OLI() As OutlookInterface
+        Get
+            Return _C_OLI
+        End Get
+        Set(ByVal value As OutlookInterface)
+            _C_OLI = value
+        End Set
+    End Property
 
     Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
@@ -15,18 +25,17 @@
                               ByVal LandesVW As String, _
                               ByVal NamensRaum As Outlook.NameSpace) _
                               As Outlook.ContactItem
-        Dim gefunden As Outlook.ContactItem = Nothing ' was gefunden?
+
+        Dim KontaktGefunden As Outlook.ContactItem = Nothing
 
         '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        'If Not NamensRaum Is Nothing Then
         Dim j As Integer = 1
-        Do While (j <= NamensRaum.Folders.Count) And (gefunden Is Nothing)
-            gefunden = FindeKontakt(TelNr, Absender, LandesVW, NamensRaum.Folders.Item(j))
+        Do While (j <= NamensRaum.Folders.Count) And (KontaktGefunden Is Nothing)
+            KontaktGefunden = FindeKontakt(TelNr, Absender, LandesVW, NamensRaum.Folders.Item(j))
             j = j + 1
             Windows.Forms.Application.DoEvents()
         Loop
-        Return gefunden
-        'End If
+        Return KontaktGefunden
     End Function
 
     Friend Overloads Function FindeKontakt(ByRef TelNr As String, _
@@ -43,10 +52,6 @@
         '             Ordner (Object):          der zu durchsuchende Kontaktordner (für die rekursive Suche)
         '             NamensRaum:               Der Namespace, falls übergeordnet durchsucht werden soll.
         ' Rückgabewert (Outlook.ContactItem):   Der gefundene Kontakt
-
-        ' !!!!!!!!!!!!!!!!!!!! ACHTUNG WICHTIG !!!!!!!!!!!!!!!!!!!!
-        ' Es muss entweder Ordner ODER Namensraum verwendet werden.
-        ' fehlt beides, kann die Funktion nichts zurückbringen !!!!
 
         Dim gefunden As Outlook.ContactItem = Nothing ' was gefunden?
 
@@ -99,7 +104,7 @@
         Dim FritzFolderExists As Boolean = False
         Dim Kontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         If Not vCard = C_DP.P_Def_StringEmpty Then
-            Dim olContactsFolder As Outlook.MAPIFolder = ThisAddIn.P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+            Dim olContactsFolder As Outlook.MAPIFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
             Dim olFolder As Outlook.MAPIFolder = olContactsFolder.Folders.GetFirst
 
             For Each olFolder In olContactsFolder.Folders
@@ -110,7 +115,7 @@
             Next 'olFolder
             If Not FritzFolderExists Then olFolder = olContactsFolder.Folders.Add("Fritz!Box")
             olContactsFolder = Nothing
-            Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
             Kontakt = CType(Kontakt.Move(olFolder), Outlook.ContactItem)
 
             olFolder = Nothing
@@ -118,9 +123,9 @@
             vCard2Contact(vCard, Kontakt)
 
             With Kontakt
-                If Not C_hf.nurZiffern(.BusinessTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
                     .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
                     .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
@@ -145,7 +150,7 @@
         Dim Kontakt As Outlook.ContactItem ' Objekt des Kontakteintrags
         Dim TelNr As String
 
-        olAuswahl = ThisAddIn.P_oApp.ActiveInspector
+        olAuswahl = C_OLI.OutlookApplication.ActiveInspector
         If Not olAuswahl Is Nothing Then
             If TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then
                 Journal = CType(olAuswahl.CurrentItem, Outlook.JournalItem)
@@ -176,12 +181,12 @@
                             C_hf.NAR(olLink) : olLink = Nothing
                         End If
 #End If
-                        Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+                        Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
                         If Not pos1 = 0 And Not pos2 = 0 Then
                             vCard = Mid(.Body, pos1, pos2 - pos1)
                             vCard2Contact(vCard, Kontakt)
                         Else
-                            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, "0049")) Then
+                            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
                                 Kontakt.MobileTelephoneNumber = TelNr
                             Else
                                 Kontakt.BusinessTelephoneNumber = TelNr
@@ -189,9 +194,9 @@
 
                         End If
                         With Kontakt
-                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
                                 .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, "0049") = C_hf.nurZiffern(TelNr, "0049") And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
                                 .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                             End If
                             .Categories = "Fritz!Box" 'Alle Kontakte, die erstellt werdn, haben die Kategorie "Fritz!Box". Damit sind sie einfach zu erkennen
@@ -204,6 +209,68 @@
             End If
         End If
     End Sub ' (KontaktErstellen)
+    ''' <summary>
+    ''' Zeigt einen Kontakt an. Ist der Kontakt nicht vorhanden wird er aus einer vCard oder ein leerer Kontakt erstellt
+    ''' </summary>
+    ''' <param name="KontaktID">Eindeutige Identifizierung des Kontaktes. Enthält die vCard, wenn kein Outlookkontakt.</param>
+    ''' <param name="StoreID">Eindeutige Identifizierung des Speicherordners des Kontaktes. Enthält die -1, wenn kein Outlookkontakt.</param>
+    ''' <param name="TelNr">telefonnummer des Kontaktes</param>
+    ''' <param name="Notiz">Notiz, die dem Kontakt hinzugefügt wird.</param>
+    ''' <remarks></remarks>
+    Public Sub ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String, ByVal Notiz As String)
+
+        Dim Kontakt As Outlook.ContactItem = Nothing
+
+        Dim vCard As String
+        Dim alleTelNr As String
+        ' alle Telefonnummern in der vCard
+        If Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+            ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
+            GetEmptyContact(Kontakt)
+            vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
+            With Kontakt
+                If Not vCard = C_DP.P_Def_ErrorMinusOne And Not vCard = C_DP.P_Def_StringEmpty Then
+                    vCard2Contact(vCard, Kontakt)
+                    .Body = .Body & vbNewLine & "Kontaktdaten (vCard):" & vbNewLine & vCard
+                End If
+                If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
+                    .MobileTelephoneNumber = TelNr
+                Else
+                    If vCard = C_DP.P_Def_ErrorMinusOne Or vCard = C_DP.P_Def_StringEmpty Then
+                        .BusinessTelephoneNumber = TelNr
+                    Else
+                        ' falls TelNr bei der Rückwärtssuche geändert wurde, diese Nummer als Zweitnummer eintragen
+                        alleTelNr = ReadFromVCard(vCard, "TEL", "")
+                        If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                            .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
+                        ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                            .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
+                        End If
+                    End If
+                End If
+
+                .Categories = "Fritz!Box"
+            End With
+        Else
+            ' Kontakteintrag anzeigen
+            Try
+                Kontakt = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+            Catch ex As Exception
+                C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
+            End Try
+        End If
+
+        If Not Kontakt Is Nothing Then
+            With Kontakt
+                If Not Notiz = C_DP.P_Def_StringEmpty Then
+                    .Body = Notiz & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & .Body
+                End If
+                .Display()
+            End With
+        End If
+    End Sub
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
         Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)

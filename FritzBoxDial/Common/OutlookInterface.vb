@@ -8,7 +8,7 @@ Public Class OutlookInterface
     Private OInsp As Outlook.Inspector
 
 
-    Friend ReadOnly Property GetOutlook() As Outlook.Application
+    Friend ReadOnly Property OutlookApplication() As Outlook.Application
         Get
             Return ThisAddIn.P_oApp
         End Get
@@ -18,6 +18,8 @@ Public Class OutlookInterface
         C_hf = Helferklasse
         C_KF = KontaktKlasse
         C_DP = DataProviderKlasse
+
+        C_KF.C_OLI = Me
     End Sub
 
     Friend Function ErstelleJournalItem(ByVal Subject As String, _
@@ -31,7 +33,7 @@ Public Class OutlookInterface
 
         ErstelleJournalItem = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
-        Dim oApp As Outlook.Application = GetOutlook()
+        Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             Try
                 olJournal = CType(oApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
@@ -76,7 +78,7 @@ Public Class OutlookInterface
                                   Optional ByRef BusinessAddress As String = vbNullString)
 
         Dim Kontakt As Outlook.ContactItem = Nothing
-        Dim oApp As Outlook.Application = GetOutlook()
+        Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             Try
                 Kontakt = CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
@@ -104,7 +106,7 @@ Public Class OutlookInterface
     Friend Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
         Dim Kontakt As Outlook.ContactItem = Nothing
         KontaktBild = C_DP.P_Def_StringEmpty
-        Dim oApp As Outlook.Application = GetOutlook()
+        Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             Try
                 Kontakt = CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
@@ -138,7 +140,7 @@ Public Class OutlookInterface
                                   ByRef TelNr As String, _
                                   ByVal Absender As String, _
                                   ByVal LandesVW As String) As Boolean
-        Dim oApp As Outlook.Application = GetOutlook()
+        Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
             Dim Ergebnis As Outlook.ContactItem          ' Auswertung für Findekontakt
@@ -166,7 +168,7 @@ Public Class OutlookInterface
 
     Friend Function NeuEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
-        Dim oApp As Outlook.Application = GetOutlook()
+        Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             Try
                 olMail = CType(oApp.CreateItem(Outlook.OlItemType.olMailItem), Outlook.MailItem)
@@ -201,10 +203,37 @@ Public Class OutlookInterface
         Return True
     End Function
 
+    Friend Function BenutzerInitialien() As String
+        Dim Regkey As Microsoft.Win32.RegistryKey = Nothing
+        Dim UserInitials As String
+        Dim UserName As String
+        Try
+            '64 Bit prüfen!
+#If OVer = 11 Then
+            Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\11.0\Common\UserInfo")
+#Else
+            Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\Common\UserInfo")
+#End If
+        Catch ex As Exception
+            C_hf.LogFile("Fehler beim Zugriff auf die Registry (BenutzerInitialien): " & ex.Message)
+        End Try
+
+        If Not Regkey Is Nothing Then
+            UserInitials = Regkey.GetValue("UserInitials", "Initialien").ToString
+            UserName = Regkey.GetValue("UserName", "Name").ToString
+            Regkey.Close()
+        Else
+            UserInitials = "Initialien"
+            UserName = "Name"
+        End If
+        BenutzerInitialien = UserName
+    End Function
+
+
 #Region "Fenster"
     Friend Sub InspectorVerschieben(ByVal r As Boolean)
         ActiveFensterIsOutlook()
-        Dim oApp As Outlook.Application = GetOutlook()
+        Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             If r Then
                 If ActiveFensterIsOutlook() And oApp.ActiveWindow Is oApp.ActiveInspector Then

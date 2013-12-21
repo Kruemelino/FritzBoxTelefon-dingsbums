@@ -11,7 +11,7 @@ Friend Class formWählbox
     Private C_FBox As FritzBox
     Private C_GUI As GraphicalUserInterface
     Private C_Phoner As PhonerInterface
-
+    Private C_KF As Contacts
     Private Client As New Sockets.TcpClient()
     Private WithEvents TimerSchließen As System.Timers.Timer
     Private CallNr As System.Threading.Thread
@@ -56,7 +56,8 @@ Friend Class formWählbox
                    ByVal HelferKlasse As Helfer, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
-                   ByVal PhonerKlasse As PhonerInterface)
+                   ByVal PhonerKlasse As PhonerInterface, _
+                   ByVal KontaktFunktionen As Contacts)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -64,7 +65,7 @@ Friend Class formWählbox
         C_DP = XMLKlasse
         C_hf = HelferKlasse
         C_FBox = FritzBoxKlasse
-
+        C_KF = KontaktFunktionen
         C_GUI = InterfacesKlasse
         bDirektwahl = Direktwahl
 
@@ -180,9 +181,9 @@ Friend Class formWählbox
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
 
         Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
-        If KontaktDaten(0) = C_DP.P_Def_ErrorMinusOne Then KontaktDaten(1) = "-1"
+        If KontaktDaten(0) = C_DP.P_Def_ErrorMinusOne Then KontaktDaten(1) = C_DP.P_Def_ErrorMinusOne
 
-        ThisAddIn.P_WClient.ZeigeKontakt(KontaktDaten)
+        C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2), C_DP.P_Def_StringEmpty)
         Me.CloseButton.Focus()
     End Sub
 
@@ -382,7 +383,6 @@ Friend Class formWählbox
 
 
         Dim Code As String  ' zu wählende Nummer
-        Dim LandesVW As String = C_DP.P_TBLandesVW 'Read("Optionen", "TBLandesVW", "0049") ' eigene Landesvorwahl
         Dim nameStart As Integer ' Position des Namens im Fenstertitel
         Dim index As Integer ' Zählvariable
         Dim KontaktID As String
@@ -401,7 +401,7 @@ Friend Class formWählbox
                 StoreID = "-1"
             End If
 
-            If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), ""), LandesVW) = C_hf.nurZiffern(Number, LandesVW) Then
+            If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), ""), C_DP.P_TBLandesVW) = C_hf.nurZiffern(Number, C_DP.P_TBLandesVW) Then
                 Dim xPathTeile() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
                 C_DP.Write("Wwdh", "WwdhEintrag" & index, Join(xPathTeile, ";"))
                 C_DP.Write("Wwdh", "Index", CStr((index + 1) Mod 10))
@@ -411,13 +411,12 @@ Friend Class formWählbox
             End If
         End If
 
-        LandesVW = C_DP.P_TBLandesVW
-        Code = C_hf.nurZiffern(Number, LandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
+        Code = C_hf.nurZiffern(Number, C_DP.P_TBLandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
         'LogFile("Rufnummer " & Code & " wurde ausgewählt")
         If C_DP.P_CBVoIPBuster Then
             ' Änderung von "HardyX9" zur Nutzung des Scriptes mit VoIPBuster
             ' Dadurch wird die Länderkennung 0049 immer mitgewählt
-            If Not Mid(Code, 1, 2) = "00" Then Code = Replace(Code, "0", LandesVW, 1, 1)
+            If Not Mid(Code, 1, 2) = "00" Then Code = Replace(Code, "0", C_DP.P_TBLandesVW, 1, 1)
             C_hf.LogFile("VoIPBuster umgewandelte Rufnummer lautet: " & Code)
         End If
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code

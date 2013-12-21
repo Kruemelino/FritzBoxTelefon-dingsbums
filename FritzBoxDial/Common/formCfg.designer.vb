@@ -190,6 +190,7 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -1390,6 +1391,7 @@ Partial Class formCfg
         '
         'PanelAnrMon
         '
+        Me.PanelAnrMon.Controls.Add(Me.CBAnrMonZeigeKontakt)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonAuto)
         Me.PanelAnrMon.Controls.Add(Me.CBJImport)
         Me.PanelAnrMon.Controls.Add(Me.CBJournal)
@@ -1400,7 +1402,7 @@ Partial Class formCfg
         Me.PanelAnrMon.Controls.Add(Me.LEnblDauer)
         Me.PanelAnrMon.Location = New System.Drawing.Point(0, 36)
         Me.PanelAnrMon.Name = "PanelAnrMon"
-        Me.PanelAnrMon.Size = New System.Drawing.Size(282, 178)
+        Me.PanelAnrMon.Size = New System.Drawing.Size(282, 214)
         Me.PanelAnrMon.TabIndex = 35
         '
         'CBAnrMonAuto
@@ -2012,6 +2014,16 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
+        'CBAnrMonZeigeKontakt
+        '
+        Me.CBAnrMonZeigeKontakt.AutoSize = True
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(7, 179)
+        Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
+        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
+        Me.CBAnrMonZeigeKontakt.TabIndex = 34
+        Me.CBAnrMonZeigeKontakt.Text = "Kontakt bei Anruf öffnen"
+        Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = True
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2245,6 +2257,7 @@ Partial Class formCfg
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents BStoppUhrAnzeigen As System.Windows.Forms.Button
     Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents CBAnrMonZeigeKontakt As System.Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class
