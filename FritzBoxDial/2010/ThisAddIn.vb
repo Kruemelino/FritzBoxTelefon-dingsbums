@@ -143,7 +143,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.22"
+    Public Const Version As String = "3.6.23"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -191,7 +191,7 @@ Public Class ThisAddIn
         If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True)
     End Sub
 
-    Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
+    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonQuit()
         C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
@@ -202,7 +202,6 @@ Public Class ThisAddIn
 #End If
         End With
     End Sub
-
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
@@ -330,5 +329,6 @@ Public Class ThisAddIn
     End Sub
 #End If
 #End Region
+
 
 End Class
