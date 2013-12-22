@@ -205,27 +205,26 @@ Public Class OutlookInterface
 
     Friend Function BenutzerInitialien() As String
         Dim Regkey As Microsoft.Win32.RegistryKey = Nothing
-        Dim UserInitials As String
+        'Dim UserInitials As String
         Dim UserName As String
         UserName = "Name"
-        UserInitials = "Initialien"
+        'UserInitials = "Initialien"
         Try
             '64 Bit prüfen!
 #If OVer = 11 Then
             Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\11.0\Common\UserInfo")
             UserName = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserName"), Byte()))
-            UserInitials = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserInitials"), Byte()))
-            UserName = Mid(UserName, 2)
+            'UserInitials = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserInitials"), Byte()))
 #Else
             Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\Common\UserInfo")
             UserName = Regkey.GetValue("UserName", "Name").ToString
-            UserInitials = Regkey.GetValue("UserInitials", "Initialien").ToString
+            'UserInitials = Regkey.GetValue("UserInitials", "Initialien").ToString
 #End If
         Catch ex As Exception
             C_hf.LogFile("Fehler beim Zugriff auf die Registry (BenutzerInitialien): " & ex.Message)
         End Try
         If Not Regkey Is Nothing Then Regkey.Close()
-        BenutzerInitialien = UserName & "(" & UserInitials & ")"
+        BenutzerInitialien = UserName
     End Function
 
 
