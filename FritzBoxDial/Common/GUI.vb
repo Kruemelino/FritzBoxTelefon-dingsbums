@@ -653,11 +653,11 @@
             Dim oExp As Outlook.Explorer
             Dim olMBars As Office.CommandBars
             Dim olMBar As Office.CommandBar = Nothing
-            oExp = OlI.GetOutlook.ActiveExplorer
+            oExp = C_OLI.OutlookApplication.ActiveExplorer
             olMBars = oExp.CommandBars
             For Each olMBar In olMBars
                 If olMBar.Name = MenuName Then
-                    With HelferFunktionen
+                    With C_HF
                         .NAR(olMBar)
                         .NAR(olMBars)
                         .NAR(oExp)
@@ -680,7 +680,7 @@
             FritzBoxDialCommandbar = olMBar
             AddCmdBar = olMBar
 
-            With HelferFunktionen
+            With C_HF
                 .NAR(olMBars) : .NAR(oExp)
             End With
 
@@ -689,7 +689,7 @@
             oExp = Nothing
 
         Catch ex As Exception
-            HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddCmdBar")
+            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddCmdBar")
         End Try
 
     End Function
@@ -727,7 +727,7 @@
             cBtn = CType(cbBtn, Office.CommandBarButton)
             Return cBtn
         Catch ex As Exception
-            HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddButtonsToCmb")
+            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddButtonsToCmb")
         End Try
     End Function
 
@@ -748,7 +748,7 @@
                 End With
             End If
         Catch ex As Exception
-            HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddPopupsToExplorer")
+            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddPopupsToExplorer")
         End Try
 
     End Sub
@@ -868,7 +868,7 @@
 
     Friend Sub SetAnrMonButton(ByVal EinAus As Boolean)
         bool_banrmon = EinAus
-        bAnrMonTimer = HelferFunktionen.SetTimer(200)
+        bAnrMonTimer = C_HF.SetTimer(200)
     End Sub
 
     Private Sub bAnrMonTimer_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles bAnrMonTimer.Elapsed
@@ -882,7 +882,7 @@
                     btnAnrMon.State = Office.MsoButtonState.msoButtonUp
                     btnAnrMon.TooltipText = "Startet den Anrufmonitor"
             End Select
-            HelferFunktionen.KillTimer(bAnrMonTimer)
+            C_HF.KillTimer(bAnrMonTimer)
             btnAnrMon = Nothing
         End If
     End Sub
@@ -914,7 +914,7 @@
             ePopWwdh7 = AddPopupItems(ePopWwdh, 7) : ePopWwdh8 = AddPopupItems(ePopWwdh, 8)
             ePopWwdh9 = AddPopupItems(ePopWwdh, 9) : ePopWwdh10 = AddPopupItems(ePopWwdh, 10)
         Catch ex As Exception
-            HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
+            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
         End Try
 
         FillPopupItems("Wwdh")
@@ -948,7 +948,7 @@
             ePopAnr7 = AddPopupItems(ePopAnr, 7) : ePopAnr8 = AddPopupItems(ePopAnr, 8)
             ePopAnr9 = AddPopupItems(ePopAnr, 9) : ePopAnr10 = AddPopupItems(ePopAnr, 10)
         Catch ex As Exception
-            HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
+            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
         FillPopupItems("AnrListe")
         ePopAnr.Visible = C_DP.P_CBSymbAnrListe
@@ -963,7 +963,7 @@
             ePopVIP7 = AddPopupItems(ePopVIP, 7) : ePopVIP8 = AddPopupItems(ePopVIP, 8)
             ePopVIP9 = AddPopupItems(ePopVIP, 9) : ePopVIP10 = AddPopupItems(ePopVIP, 10)
         Catch ex As Exception
-            HelferFunktionen.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
+            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
         FillPopupItems("VIPListe")
         i += 1
@@ -1092,7 +1092,7 @@
                         If TypeOf olLink.Item Is Outlook.ContactItem Then iBtnKontakterstellen.Caption = "Kontakt anzeigen"
                         Exit For
                     Next
-                    HelferFunktionen.NAR(olLink) : olLink = Nothing
+                    C_HF.NAR(olLink) : olLink = Nothing
                     iPopRWS.Enabled = True
                     iBtnWwh.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: unbekannt", CompareMethod.Text))
                     iBtnKontakterstellen.Enabled = True
@@ -1111,7 +1111,6 @@
     End Sub
 
     Friend Sub ÖffneEinstellungen()
-        'Dim formConfig As New formCfg(Me, C_DP, HelferFunktionen, Crypt, AnrMon, fbox, OlI, KontaktFunktionen, PhonerFunktionen)
         ThisAddIn.P_Config.ShowDialog()
         Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
     End Sub

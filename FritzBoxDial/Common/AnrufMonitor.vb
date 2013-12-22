@@ -232,22 +232,25 @@ Friend Class AnrufMonitor
     Friend Sub AnrMonQuit()
         ' wird beim Beenden von Outlook ausgeführt und beendet den Anrufmonitor
         AnrMonAktiv = False
+        If Not TimerCheckAnrMon Is Nothing Then
+            With TimerCheckAnrMon
+                .Stop()
+                .Dispose()
+            End With
+        End If
+        TimerCheckAnrMon = Nothing
+        If Not AnrMonStream Is Nothing Then
+            With AnrMonStream
+                .Close()
+                .Dispose()
+            End With
+        End If
+        AnrMonStream = Nothing
 #If OVer < 14 Then
-        C_GUI.SetAnrMonButton(false)
+        C_GUI.SetAnrMonButton(False)
 #Else
         C_GUI.RefreshRibbon()
 #End If
-
-        With TimerCheckAnrMon
-            .Stop()
-            .Dispose()
-        End With
-        With AnrMonStream
-            .Close()
-            .Dispose()
-        End With
-        TimerCheckAnrMon = Nothing
-        AnrMonStream = Nothing
         C_hf.LogFile("AnrMonQuit: Anrufmonitor beendet")
     End Sub '(AnrMonQuit)
 
