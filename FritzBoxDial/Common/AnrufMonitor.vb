@@ -237,15 +237,17 @@ Friend Class AnrufMonitor
                 .Stop()
                 .Dispose()
             End With
+            TimerCheckAnrMon = Nothing
         End If
-        TimerCheckAnrMon = Nothing
+
         If Not AnrMonStream Is Nothing Then
             With AnrMonStream
                 .Close()
                 .Dispose()
             End With
+            AnrMonStream = Nothing
         End If
-        AnrMonStream = Nothing
+
 #If OVer < 14 Then
         C_GUI.SetAnrMonButton(False)
 #Else
