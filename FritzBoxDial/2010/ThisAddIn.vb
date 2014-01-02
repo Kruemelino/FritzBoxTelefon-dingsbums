@@ -143,7 +143,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.23"
+    Public Const Version As String = "3.6.25"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -176,7 +176,7 @@ Public Class ThisAddIn
 #End If
 
 #If OVer < 14 Then
-            GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
+            C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
                                      ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
                                      ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
@@ -208,7 +208,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO Then
@@ -235,7 +235,7 @@ Public Class ThisAddIn
                                                                                                                          eBtnJournalimport.Click, _
                                                                                                                          eBtnAnrMonNeuStart.Click
 
-        With (GUI)
+        With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Caption
                 Case "Direktwahl"
                     .WähleDirektwahl()
@@ -244,7 +244,7 @@ Public Class ThisAddIn
                 Case "Einstellungen"
                     .ÖffneEinstellungen()
                 Case "Anrufmonitor"
-                    AnrMon.AnrMonAnAus()
+                    C_AnrMon.AnrMonAnAus()
                 Case "Anzeigen"
                     .ÖffneAnrMonAnzeigen()
                 Case "Journalimport"
@@ -285,7 +285,7 @@ Public Class ThisAddIn
                                                                                                           ePopVIP8.Click, _
                                                                                                           ePopVIP9.Click, _
                                                                                                           ePopVIP10.Click
-        GUI.KlickListen(control.Tag)
+        C_GUI.KlickListen(control.Tag)
     End Sub
 #End Region
 #End If
@@ -301,7 +301,7 @@ Public Class ThisAddIn
                                                                                                                          iBtnWwh.Click, _
                                                                                                                          iBtnVIP.Click
 
-        With (GUI)
+        With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Caption
                 Case "Kontakt erstellen"
                     .KontaktErstellen()
@@ -314,7 +314,7 @@ Public Class ThisAddIn
                 Case "Alle"
                     .RWSAlle(oApp.ActiveInspector)
                 Case "Wählen"
-                    WClient.WählenAusInspector()
+                    C_WClient.WählenAusInspector()
                 Case "VIP"
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
