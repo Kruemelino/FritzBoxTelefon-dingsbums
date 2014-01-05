@@ -21,7 +21,7 @@ Public Class Helfer
 
 #Region " String Behandlung"
 
-    Public Function StringEntnehmen(Text As String, StringDavor As String, StringDanach As String, Optional Reverse As Boolean = False) As String
+    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, Optional ByVal Reverse As Boolean = False) As String
         Dim pos(1) As Integer
         If Not Reverse Then
             pos(0) = InStr(1, Text, StringDavor, CompareMethod.Text) + Len(StringDavor)
@@ -37,6 +37,22 @@ Public Class Helfer
         End If
     End Function
 
+    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef Position As Integer) As String
+        Dim pos(1) As Integer
+        'If Not Reverse Then
+        pos(0) = InStr(Position, Text, StringDavor, CompareMethod.Text) + Len(StringDavor)
+        pos(1) = InStr(pos(0), Text, StringDanach, CompareMethod.Text)
+        'Else
+        '    pos(1) = InStrRev(Text, StringDanach, , CompareMethod.Text)
+        '    pos(0) = InStrRev(Text, StringDavor, pos(1), CompareMethod.Text) + Len(StringDavor)
+        'End If
+        If Not pos(0) = Len(StringDavor) Then
+            StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
+            Position = pos(1)
+        Else
+            StringEntnehmen = C_DP.P_Def_ErrorMinusOne
+        End If
+    End Function
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
         Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
@@ -579,6 +595,10 @@ Public Class Helfer
         End If
         Return False
     End Function
+
+    Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean
+        Return nurZiffern(TelNr1, C_DP.P_TBLandesVW) = nurZiffern(TelNr2, C_DP.P_TBLandesVW)
+    End Function
 #End Region
 
 #Region " HTTPTransfer"
@@ -587,26 +607,36 @@ Public Class Helfer
         httpGET = C_DP.P_Def_StringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
 
-        If UniformResourceIdentifier.Scheme = Uri.UriSchemeHttp Then
-            With CType(HttpWebRequest.Create(UniformResourceIdentifier), HttpWebRequest)
-                .Method = WebRequestMethods.Http.Get
-                .Proxy = Nothing
-                .KeepAlive = False
-                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-                Try
-                    With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-                        httpGET = .ReadToEnd()
-                        .Close()
-                        .Dispose()
-                    End With
-                Catch ex As Exception
-                    LogFile("Fehler in httpGET: " & ex.Message & ", URL: " & Link)
-                End Try
-            End With
-        Else
-            LogFile("Uri.Scheme: " & UniformResourceIdentifier.Scheme)
-            FBError = True
-        End If
+        Select Case UniformResourceIdentifier.Scheme
+            Case Uri.UriSchemeHttp
+                With CType(HttpWebRequest.Create(UniformResourceIdentifier), HttpWebRequest)
+                    .Method = WebRequestMethods.Http.Get
+                    .Proxy = Nothing
+                    .KeepAlive = False
+                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                    Try
+                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                            httpGET = .ReadToEnd()
+                            .Close()
+                            .Dispose()
+                        End With
+                    Catch ex As Exception
+                        LogFile("Fehler in httpGET: " & ex.Message & ", URL: " & Link)
+                    End Try
+                End With
+            Case Uri.UriSchemeFile
+                With My.Computer.FileSystem
+                    If .FileExists(Link) Then
+                        httpGET = .ReadAllText(Link, Encoding)
+                    Else
+                        LogFile("Datei kann nicht gefunden werden: " & Link)
+                        FBError = True
+                    End If
+                End With
+            Case Else
+                LogFile("Uri.Scheme: " & UniformResourceIdentifier.Scheme)
+                FBError = True
+        End Select
 
     End Function
 
@@ -642,10 +672,7 @@ Public Class Helfer
                 End Try
             End With
         End If
-
-
     End Function
-
 #End Region
 
 #Region " Timer"

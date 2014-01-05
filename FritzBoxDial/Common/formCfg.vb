@@ -627,7 +627,7 @@ Friend Class formCfg
                 AddLine("Start")
                 If Me.CBTelefonDatei.Checked Then
                     If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
-                        If C_hf.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Testen einer fehlerhaften oder falschen Datei kann sehr unerfreulich enden.", _
+                        If C_hf.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Einlesen einer fehlerhaften oder falschen Datei wird sehr unerfreulich enden.", _
                                                         MsgBoxStyle.YesNo, "Telefondatei testen") = vbYes Then
                             Me.TBTelefonDatei.Enabled = False
                         End If
@@ -1336,7 +1336,7 @@ Friend Class formCfg
                 tmpTelefon = C_DP.Read(xPathTeile, "-1")
                 If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne Then
                     .Item(.Count - 1) = "TelNr"
-                    If (TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing) Then
+                    If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
                         If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
                             C_DP.Read(xPathTeile, "-1") = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
                             Dim Dauer As Date

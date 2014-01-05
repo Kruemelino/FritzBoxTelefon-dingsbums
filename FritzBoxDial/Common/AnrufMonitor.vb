@@ -161,7 +161,7 @@ Friend Class AnrufMonitor
 #End If
         AnrMonStartNachStandby = False
 
-        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And Not TimerReStart.Enabled Then
+        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And TimerReStart Is Nothing Then
             StandbyCounter = 1
             TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
         End If
@@ -1265,7 +1265,7 @@ Friend Class AnrufMonitor
         xPathTeile.Add(ListName)
         xPathTeile.Add("Eintrag[@ID=""" & index & """]")
         xPathTeile.Add("TelNr")
-        If Not C_DP.Read(xPathTeile, "0") = TelNr Then
+        If Not C_hf.TelNrVergleich(C_DP.Read(xPathTeile, "0"), TelNr) Then
 
             If Not Anrufer = C_DP.P_Def_StringEmpty Then
                 NodeNames.Add("Anrufer")

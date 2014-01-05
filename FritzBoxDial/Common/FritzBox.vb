@@ -268,7 +268,8 @@ Public Class FritzBox
                 FritzBoxDatenN(tempstring)
                 FBLogOut(sSID)
             Else
-                C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
+                FritzBoxDatenA(sLink)
+                'C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
             End If
         Else
             FritzBoxDatenA()
@@ -324,7 +325,7 @@ Public Class FritzBox
 
     End Sub
 
-    Private Sub FritzBoxDatenA()
+    Private Sub FritzBoxDatenA(Optional ByVal Link As String = "-1")
         PushStatus("ALte Ausleseroutine für Fritz!Box Telefone gestartet.")
 
         Dim Vorwahl As String = C_DP.P_TBVorwahl  ' In den Einstellungen eingegebene Vorwahl
@@ -332,6 +333,7 @@ Public Class FritzBox
         Dim TelNr As String                 ' Dazugehörige Telefonnummer
         Dim SIPID As String = "-1"
         Dim pos(6) As Integer                   ' Positionsmarker
+        Dim posSTR As Integer = 1
         Dim Anzahl As Integer = 0
         Dim AnzahlISDN As Integer = 0
         Dim ID As Integer
@@ -357,12 +359,6 @@ Public Class FritzBox
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        'xPathTeile.Add("Telefone")
-        'xPathTeile.Add("Nummern")
-        'NodeNames.Add("TelName")
-        'NodeNames.Add("TelNr")
-        'AttributeNames.Add("Fax")
-        'AttributeNames.Add("Dialport")
         With xPathTeile
             .Clear()
             .Add("Telefone")
@@ -389,7 +385,12 @@ Public Class FritzBox
             .Add(C_DP.P_Def_StringEmpty)
         End With
 
-        sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+        If Link = C_DP.P_Def_ErrorMinusOne Then
+            sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+        Else
+            sLink = Link
+        End If
+
         If P_SpeichereDaten Then PushStatus("Fritz!Box Telefon Quelldatei: " & sLink)
         tempstring = C_hf.httpGET(sLink, FBEncoding, FBFehler)
         If Not FBFehler Then
@@ -405,89 +406,64 @@ Public Class FritzBox
             xPathTeile.Add("MSN")
             pos(0) = 1
             For i = 0 To 9
-                pos(0) = InStr(pos(0), tempstring, "nrs.msn.push('", CompareMethod.Text) + 14
-                If Not pos(0) = 14 Then
-                    pos(1) = InStr(pos(0), tempstring, "'", CompareMethod.Text)
-                    TelNr = Mid(tempstring, pos(0), pos(1) - pos(0))
-                    If Not TelNr = C_DP.P_Def_StringEmpty Then
-                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                        MSN(i) = TelNr
-                        j = i
-                        PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
-                        If P_SpeichereDaten Then
-                            C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
-                        End If
-                    End If
+                TelNr = C_hf.StringEntnehmen(tempstring, "nrs.msn.push('", "'", posSTR)
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne And Not TelNr = C_DP.P_Def_StringEmpty Then
+                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                    MSN(i) = TelNr
+                    j = i
+                    PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                    If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
                 End If
             Next
             ReDim Preserve MSN(j)
+            posSTR = 1
+
             'Internetnummern ermitteln
             xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "SIP"
             j = 0
             For i = 0 To 19
-                pos(0) = InStr(pos(0), tempstring, "nrs.sip.push('", CompareMethod.Text) + 14
-                If Not pos(0) = 14 Then
-                    pos(1) = InStr(pos(0), tempstring, "'", CompareMethod.Text)
-                    TelNr = Mid(tempstring, pos(0), pos(1) - pos(0))
-                    If Not TelNr = C_DP.P_Def_StringEmpty Then
-                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                        SIP(i) = TelNr
-                        SIPID = CStr(i)
-                        j = i
-                        PushStatus("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
-                        If P_SpeichereDaten Then
-                            C_DP.Write(xPathTeile, TelNr, "ID", SIPID)
-                        End If
-                    End If
+                TelNr = C_hf.StringEntnehmen(tempstring, "nrs.sip.push('", "'", posSTR)
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne And Not TelNr = C_DP.P_Def_StringEmpty Then
+                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                    SIP(i) = TelNr
+                    SIPID = CStr(i)
+                    j = i
+                    PushStatus("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
+                    If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", SIPID)
                 End If
             Next
             ReDim Preserve SIP(j)
             j = 0
+            posSTR = 1
 
             'TAM Nr ermitteln
-            xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "TAM"
+            xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "TAM"
             For i = 0 To 9
-                pos(0) = InStr(pos(0), tempstring, "nrs.tam.push('", CompareMethod.Text) + 14
-                If Not pos(0) = 14 Then
-                    pos(1) = InStr(pos(0), tempstring, "'", CompareMethod.Text)
-                    TelNr = Mid(tempstring, pos(0), pos(1) - pos(0))
-                    If Not TelNr = C_DP.P_Def_StringEmpty Then
-                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
-                        TAM(i) = TelNr
-                        PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
-                        If P_SpeichereDaten Then
-                            C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
-                        End If
-                        j = i
-                    End If
+                TelNr = C_hf.StringEntnehmen(tempstring, "nrs.tam.push('", "'", posSTR)
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne And Not TelNr = C_DP.P_Def_StringEmpty Then
+                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr, Vorwahl)
+                    TAM(i) = TelNr
+                    PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
+                    If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
+                    j = i
                 End If
             Next
             ReDim Preserve TAM(j)
-            'Festnetznummer ermitteln
 
-            pos(0) = InStr(1, tempstring, "telcfg:settings/MSN/POTS", CompareMethod.Text)
-            pos(1) = InStr(pos(0), tempstring, "value='", CompareMethod.Text) + 7
-            pos(2) = InStr(pos(1), tempstring, "' id", CompareMethod.Text)
-            POTS = Mid(tempstring, pos(1), pos(2) - pos(1))
-            POTS = C_hf.OrtsVorwahlEntfernen(POTS, Vorwahl)
-            If Not POTS = C_DP.P_Def_StringEmpty Then
+            POTS = C_hf.StringEntnehmen(tempstring, "telcfg:settings/MSN/POTS' value='", "'")
+            If Not POTS = C_DP.P_Def_ErrorMinusOne And Not POTS = C_DP.P_Def_StringEmpty Then
+                POTS = C_hf.OrtsVorwahlEntfernen(POTS, Vorwahl)
                 PushStatus("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
-                If P_SpeichereDaten Then
-                    C_DP.Write("Telefone", "POTS", POTS)
-                End If
+                If P_SpeichereDaten Then C_DP.Write("Telefone", "POTS", POTS)
             End If
 
             'Mobilnummer ermitteln
-            pos(0) = InStr(1, tempstring, "function readFonNumbers() {", CompareMethod.Text)
-            pos(1) = InStr(pos(0), tempstring, "nrs.mobil = '", CompareMethod.Text) + Len("nrs.mobil = '")
-            pos(2) = InStr(pos(1), tempstring, "';", CompareMethod.Text)
-            Mobil = CStr(IIf(pos(1) = Len("nrs.mobil = '"), C_DP.P_Def_StringEmpty, Mid(tempstring, pos(1), pos(2) - pos(1))))
-            If Not Mobil = C_DP.P_Def_StringEmpty Then
-                PushStatus("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
-                If P_SpeichereDaten Then
-                    C_DP.Write("Telefone", "Mobil", Mobil)
-                End If
 
+            Mobil = C_hf.StringEntnehmen(tempstring, "nrs.mobil = '", "'")
+            If Not Mobil = C_DP.P_Def_ErrorMinusOne And Not Mobil = C_DP.P_Def_StringEmpty Then
+                Mobil = C_hf.OrtsVorwahlEntfernen(Mobil, Vorwahl)
+                PushStatus("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
+                If P_SpeichereDaten Then C_DP.Write("Telefone", "Mobil", Mobil)
             End If
 
             AllIn = AlleNummern(MSN, SIP, TAM, POTS, Mobil)
@@ -1306,6 +1282,7 @@ Public Class FritzBox
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
         tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
         tmp = (From x In tmp Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+        tmp = (From x In tmp Where Not x Like C_DP.P_Def_ErrorMinusOne Select x).ToArray ' -1 entfernen
         For Each Nr In tmp
             AlleNummern = Nr & ";" & AlleNummern
         Next
@@ -1382,8 +1359,10 @@ Public Class FritzBox
     End Sub
 
     Friend Sub SetEventProvider(ByVal ep As IEventProvider)
-        EventProvider = ep
-        AddHandler tb.TextChanged, AddressOf ep.GenericHandler
+        If EventProvider Is Nothing Then
+            EventProvider = ep
+            AddHandler tb.TextChanged, AddressOf ep.GenericHandler
+        End If
     End Sub
 
 End Class

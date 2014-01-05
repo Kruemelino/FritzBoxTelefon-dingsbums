@@ -133,6 +133,7 @@ Partial Class formCfg
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Frame1 = New System.Windows.Forms.GroupBox()
         Me.PanelAnrMon = New System.Windows.Forms.Panel()
+        Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonAuto = New System.Windows.Forms.CheckBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
         Me.CBAutoClose = New System.Windows.Forms.CheckBox()
@@ -190,7 +191,6 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -465,7 +465,7 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.Size = New System.Drawing.Size(282, 99)
         Me.GroupBoxStoppUhr.TabIndex = 19
         Me.GroupBoxStoppUhr.TabStop = False
-        Me.GroupBoxStoppUhr.Text = "Stoppuhr*"
+        Me.GroupBoxStoppUhr.Text = "Stoppuhr"
         '
         'Label7
         '
@@ -1405,6 +1405,16 @@ Partial Class formCfg
         Me.PanelAnrMon.Size = New System.Drawing.Size(282, 214)
         Me.PanelAnrMon.TabIndex = 35
         '
+        'CBAnrMonZeigeKontakt
+        '
+        Me.CBAnrMonZeigeKontakt.AutoSize = True
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(7, 179)
+        Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
+        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
+        Me.CBAnrMonZeigeKontakt.TabIndex = 34
+        Me.CBAnrMonZeigeKontakt.Text = "Kontakt bei Anruf öffnen"
+        Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = True
+        '
         'CBAnrMonAuto
         '
         Me.CBAnrMonAuto.AutoSize = True
@@ -1940,9 +1950,9 @@ Partial Class formCfg
         Me.CBTelefonDatei.AutoSize = True
         Me.CBTelefonDatei.Location = New System.Drawing.Point(385, 137)
         Me.CBTelefonDatei.Name = "CBTelefonDatei"
-        Me.CBTelefonDatei.Size = New System.Drawing.Size(157, 17)
+        Me.CBTelefonDatei.Size = New System.Drawing.Size(127, 17)
         Me.CBTelefonDatei.TabIndex = 34
-        Me.CBTelefonDatei.Text = "Andere Telefondatei testen."
+        Me.CBTelefonDatei.Text = "Telefondatei einlesen"
         Me.CBTelefonDatei.UseVisualStyleBackColor = True
         '
         'TBDiagnose
@@ -2013,16 +2023,6 @@ Partial Class formCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
-        '
-        'CBAnrMonZeigeKontakt
-        '
-        Me.CBAnrMonZeigeKontakt.AutoSize = True
-        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(7, 179)
-        Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
-        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
-        Me.CBAnrMonZeigeKontakt.TabIndex = 34
-        Me.CBAnrMonZeigeKontakt.Text = "Kontakt bei Anruf öffnen"
-        Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = True
         '
         'formCfg
         '
