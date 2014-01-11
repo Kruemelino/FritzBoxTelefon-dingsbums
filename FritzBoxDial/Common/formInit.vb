@@ -76,7 +76,6 @@
             End With
 
             ThisAddIn.P_GUI = C_GUI
-            ThisAddIn.P_Dateipfad = DateiPfad
             ThisAddIn.P_XML = C_DP
             ThisAddIn.P_hf = C_HF
             ThisAddIn.P_KontaktFunktionen = C_KF

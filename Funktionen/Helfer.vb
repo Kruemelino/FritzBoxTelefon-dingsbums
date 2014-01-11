@@ -622,6 +622,7 @@ Public Class Helfer
                         End With
                     Catch ex As Exception
                         LogFile("Fehler in httpGET: " & ex.Message & ", URL: " & Link)
+                        FBError = True
                     End Try
                 End With
             Case Uri.UriSchemeFile

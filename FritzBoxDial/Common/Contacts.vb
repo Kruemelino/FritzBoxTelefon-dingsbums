@@ -273,7 +273,7 @@
     End Sub
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
-        Kontakt = CType(ThisAddIn.P_oApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+        Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
     End Sub
 
     Private Function NrFormat(ByVal gefKontakt As Outlook.ContactItem, ByVal TelNr As String, ByVal LandesVW As String) As String

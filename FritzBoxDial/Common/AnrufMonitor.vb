@@ -26,13 +26,46 @@ Friend Class AnrufMonitor
     Private F_StoppUhr As formStoppUhr
 
     Private StandbyCounter As Integer
-    Friend AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
-    Friend AnrMonError As Boolean
-    Private TelAnzahl As Integer
-    Private Eingeblendet As Integer = 0
 
-#Region "Phoner"
-    Private AnrMonPhoner As Boolean = False
+    Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
+    Private _AnrMonError As Boolean
+    Private _AnrMonPhoner As Boolean = False
+
+#Region "Properties"
+    Friend Property AnrMonAktiv() As Boolean
+        Get
+            Return _AnrMonAktiv
+        End Get
+        Set(ByVal value As Boolean)
+            _AnrMonAktiv = value
+        End Set
+    End Property
+    Friend Property AnrMonError() As Boolean
+        Get
+            Return _AnrMonError
+        End Get
+        Set(ByVal value As Boolean)
+            _AnrMonError = value
+        End Set
+    End Property
+    Public Property AnrMonPhoner() As Boolean
+        Get
+            Return _AnrMonPhoner
+        End Get
+        Set(ByVal value As Boolean)
+            _AnrMonPhoner = value
+        End Set
+    End Property
+#End Region
+
+#Region "Strukturen"
+    Structure StructStoppUhr
+        Dim Anruf As String
+        Dim Abbruch As Boolean
+        Dim StartZeit As String
+        Dim Richtung As String
+        Dim MSN As String
+    End Structure
 #End Region
 
     Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
@@ -49,239 +82,14 @@ Friend Class AnrufMonitor
         F_RWS = RWS
         C_OlI = OutlInter
 
-        AnrMonStart(False)
-
+        AnrMonStartStopp()
     End Sub
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
-#Region "Strukturen"
-    Structure StructStoppUhr
-        Dim Anruf As String
-        Dim Abbruch As Boolean
-        Dim StartZeit As String
-        Dim Richtung As String
-        Dim MSN As String
-    End Structure
-#End Region
 
-#Region "Anrufmonitor Grundlagen"
-    Private Sub AnrMonAktion()
-        ' schaut in der FritzBox im Port 1012 nach und startet entsprechende Unterprogramme
-        Dim r As New StreamReader(AnrMonStream)
-        Dim FBStatus As String  ' Status-String der FritzBox
-        Dim aktZeile() As String  ' aktuelle Zeile im Status-String
-        Do
-            If AnrMonStream.DataAvailable And AnrMonAktiv Then
-                FBStatus = r.ReadLine
-                Select Case FBStatus
-                    Case "Welcome to Phoner"
-                        AnrMonPhoner = True
-                    Case "Sorry, too many clients"
-                        C_hf.LogFile("AnrMonAktion, Phoner: ""Sorry, too many clients""")
-                    Case Else
-                        C_hf.LogFile("AnrMonAktion: " & FBStatus)
-                        aktZeile = Split(FBStatus, ";", , CompareMethod.Text)
-                        If Not aktZeile.Length = 1 Then
-                            'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
-                            Select Case CStr(aktZeile.GetValue(1))
-                                Case "RING"
-                                    AnrMonRING(aktZeile, True, True)
-                                Case "CALL"
-                                    AnrMonCALL(aktZeile, True)
-                                Case "CONNECT"
-                                    AnrMonCONNECT(aktZeile, True)
-                                Case "DISCONNECT"
-                                    AnrMonDISCONNECT(aktZeile, True)
-                            End Select
-                        End If
-                End Select
-            End If
-            C_hf.ThreadSleep(50)
-            Windows.Forms.Application.DoEvents()
-        Loop Until Not AnrMonAktiv
-        r.Close()
-        r = Nothing
-    End Sub '(AnrMonAktion)
-
-    ''' <summary>
-    ''' Wird durch das Symbol 'Anrufmonitor' in der 'FritzBox'-Symbolleiste ausgeführt
-    ''' </summary>
-    ''' <returns>Boolean: Ob Anrufmonitor eingeschaltet ist.</returns>
-    Friend Function AnrMonAnAus() As Boolean
-        If AnrMonAktiv Then
-            ' Timer stoppen, TCP/IP-Verbindung(schließen)
-            AnrMonQuit()
-#If OVer < 14 Then
-                C_GUI.SetAnrMonButton(False)
-#Else
-            C_GUI.RefreshRibbon()
-#End If
-            AnrMonAnAus = False
-        Else
-            ' Timer starten, TCP/IP-Verbindung öffnen
-            If AnrMonStart(True) Then
-#If OVer < 14 Then
-                C_GUI.SetAnrMonButton(True)
-#Else
-                C_GUI.RefreshRibbon()
-#End If
-                AnrMonAnAus = True
-            Else
-                AnrMonAnAus = False
-            End If
-        End If
-    End Function '(AnrMonAnAus)
-
-    Function AnrMonStart(ByVal Manuell As Boolean) As Boolean
-        If (C_DP.P_CBAnrMonAuto Or Manuell) And C_DP.P_CBUseAnrMon Then
-
-            If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Or C_DP.P_CBPhonerAnrMon Then
-                BWStartTCPReader = New BackgroundWorker
-                With BWStartTCPReader
-                    .WorkerReportsProgress = True
-                    .RunWorkerAsync()
-                End With
-            Else
-                AnrMonAktiv = False
-                AnrMonError = True
-            End If
-        End If
-        Return True
-    End Function '(AnrMonStart)
-
-    Function AnrMonStartNachStandby() As Boolean
-        AnrMonAktiv = False
-        AnrMonError = True
-#If OVer < 14 Then
-        C_GUI.SetAnrMonButton(AnrMonAktiv)
-#Else
-        C_GUI.RefreshRibbon()
-#End If
-        AnrMonStartNachStandby = False
-
-        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And TimerReStart Is Nothing Then
-            StandbyCounter = 1
-            TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
-        End If
-    End Function
-
-    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
-
-        If StandbyCounter < C_DP.P_Def_TryMaxRestart Then
-            If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Then
-                AnrMonStart(False)
-                AnrMonError = False
-                TimerReStart = C_hf.KillTimer(TimerReStart)
-                C_hf.LogFile("Anrufmonitor wiederaufgebaut.")
-
-                If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
-            Else
-                C_hf.LogFile("Anrufmonitor konnte nach Standby noch nicht neugestartet werden.")
-                StandbyCounter += 1
-            End If
-        Else
-            C_hf.LogFile("TimerReStartStandBy: Reaktivierung des Anrufmonitors nicht erfolgreich.")
-            TimerReStart = C_hf.KillTimer(TimerReStart)
-        End If
-    End Sub
-
-    Private Sub TimerCheckAnrMon_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerCheckAnrMon.Elapsed
-        ' Es kann sein, dass die Verbindung zur FB abreißt. Z. B. wenn die VPN unterbrochen ist. 
-
-        Dim IPAddresse As IPAddress = IPAddress.Loopback
-        Dim RemoteEP As IPEndPoint
-        Dim IPHostInfo As IPHostEntry
-        Dim FBAnrMonPort As Integer
-        Dim CheckAnrMonTCPSocket As Socket
-
-        FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
-        If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
-            ' Versuche über Default-IP zur Fritz!Box zu gelangen
-            IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
-            IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString) ' Kann auch IPv6 sein
-        End If
-
-        RemoteEP = New IPEndPoint(IPAddresse, C_DP.P_DefaultFBAnrMonPort)
-        CheckAnrMonTCPSocket = New Sockets.Socket(IPAddresse.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
-
-        Try
-            CheckAnrMonTCPSocket.Connect(RemoteEP)
-        Catch Err As Exception
-            C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
-            AnrMonQuit()
-            AnrMonError = True
-            If Not TimerReStart.Enabled Then
-                StandbyCounter = 1
-                TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
-            End If
-        End Try
-
-        CheckAnrMonTCPSocket.Close()
-        RemoteEP = Nothing
-        IPHostInfo = Nothing
-
-#If OVer < 14 Then
-        C_GUI.SetAnrMonButton(True)
-#Else
-        C_GUI.RefreshRibbon()
-#End If
-    End Sub
-
-    Friend Sub AnrMonQuit()
-        ' wird beim Beenden von Outlook ausgeführt und beendet den Anrufmonitor
-        AnrMonAktiv = False
-        If Not TimerCheckAnrMon Is Nothing Then
-            With TimerCheckAnrMon
-                .Stop()
-                .Dispose()
-            End With
-            TimerCheckAnrMon = Nothing
-        End If
-
-        If Not AnrMonStream Is Nothing Then
-            With AnrMonStream
-                .Close()
-                .Dispose()
-            End With
-            AnrMonStream = Nothing
-        End If
-
-#If OVer < 14 Then
-        C_GUI.SetAnrMonButton(False)
-#Else
-        C_GUI.RefreshRibbon()
-#End If
-        C_hf.LogFile("AnrMonQuit: Anrufmonitor beendet")
-    End Sub '(AnrMonQuit)
-
-    Friend Sub AnrMonReStart()
-        AnrMonQuit()
-        AnrMonStart(True)
-    End Sub
-
-    Friend Function TelefonName(ByVal MSN As String) As String
-        TelefonName = C_DP.P_Def_StringEmpty
-        If Not MSN = C_DP.P_Def_StringEmpty Then
-            If Not AnrMonPhoner Then
-                Dim xPathTeile As New ArrayList
-                With xPathTeile
-                    .Add("Telefone")
-                    .Add("Telefone")
-                    .Add("*")
-                    .Add("Telefon")
-                    .Add("[TelNr = """ & MSN & """ and not(@Dialport > 599)]") ' Keine Anrufbeantworter
-                    .Add("TelName")
-                End With
-                TelefonName = Replace(C_DP.Read(xPathTeile, ""), ";", ", ")
-                xPathTeile = Nothing
-            Else
-                TelefonName = "Phoner" ' ,  werden danach entfernt.
-            End If
-        End If
-    End Function
-
+#Region "BackgroundWorker"
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)
         AnrMonList.Add(New formAnrMon(CInt(ID), True, C_DP, C_hf, Me, C_OlI, C_KF))
@@ -412,6 +220,11 @@ Friend Class AnrufMonitor
 #End If
             AnrMonAktiv = True
             AnrMonError = False
+
+            If Not TimerReStart Is Nothing Then
+                TimerReStart = C_hf.KillTimer(TimerReStart)
+                C_hf.LogFile("Anrufmonitor nach StandBy wiederaufgebaut.")
+            End If
         Else
             C_hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.")
             AnrMonAktiv = False
@@ -421,7 +234,204 @@ Friend Class AnrufMonitor
     End Sub
 #End Region
 
-#Region "Anrufmonitor Ereignisse"
+#Region "Timer"
+    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
+        AnrMonAktiv = False
+        If StandbyCounter < C_DP.P_Def_TryMaxRestart Then
+            If C_DP.P_CBForceFBAddr Then
+                C_hf.httpGET(C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), AnrMonError)
+            Else
+                AnrMonError = C_hf.Ping(C_DP.P_TBFBAdr)
+            End If
+
+            If AnrMonError Then
+                C_hf.LogFile("Fritz!Box nach StandBy noch nicht verfügbar.")
+                StandbyCounter += 1
+            Else
+                C_hf.LogFile("Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...")
+                AnrMonStartStopp()
+                If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+            End If
+        Else
+            C_hf.LogFile("Reaktivierung des Anrufmonitors nicht erfolgreich.")
+            TimerReStart = C_hf.KillTimer(TimerReStart)
+        End If
+    End Sub
+
+    Private Sub TimerCheckAnrMon_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerCheckAnrMon.Elapsed
+        ' Es kann sein, dass die Verbindung zur FB abreißt. Z. B. wenn die VPN unterbrochen ist. 
+
+        Dim IPAddresse As IPAddress = IPAddress.Loopback
+        Dim RemoteEP As IPEndPoint
+        Dim IPHostInfo As IPHostEntry
+        Dim FBAnrMonPort As Integer
+        Dim CheckAnrMonTCPSocket As Socket
+
+        FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
+        If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
+            ' Versuche über Default-IP zur Fritz!Box zu gelangen
+            IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
+            IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString) ' Kann auch IPv6 sein
+        End If
+
+        RemoteEP = New IPEndPoint(IPAddresse, C_DP.P_DefaultFBAnrMonPort)
+        CheckAnrMonTCPSocket = New Sockets.Socket(IPAddresse.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
+
+        Try
+            CheckAnrMonTCPSocket.Connect(RemoteEP)
+        Catch Err As Exception
+            C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
+            AnrMonStartStopp()
+            AnrMonError = True
+            If Not TimerReStart.Enabled Then
+                StandbyCounter = 1
+                TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
+            End If
+        End Try
+
+        CheckAnrMonTCPSocket.Close()
+        RemoteEP = Nothing
+        IPHostInfo = Nothing
+
+#If OVer < 14 Then
+        C_GUI.SetAnrMonButton(True)
+#Else
+        C_GUI.RefreshRibbon()
+#End If
+    End Sub
+#End Region
+
+#Region "Anrufmonitor Grundlagen"
+
+    Friend Sub AnrMonStartStopp()
+        If AnrMonAktiv Then
+            ' Timer stoppen, TCP/IP-Verbindung(schließen)
+            AnrMonAktiv = False
+            If Not TimerCheckAnrMon Is Nothing Then
+                With TimerCheckAnrMon
+                    .Stop()
+                    .Dispose()
+                End With
+                TimerCheckAnrMon = Nothing
+            End If
+
+            If Not AnrMonStream Is Nothing Then
+                With AnrMonStream
+                    .Close()
+                    .Dispose()
+                End With
+                AnrMonStream = Nothing
+            End If
+
+#If OVer < 14 Then
+            C_GUI.SetAnrMonButton(false)
+#Else
+            C_GUI.RefreshRibbon()
+#End If
+        Else
+            ' TCP/IP-Verbindung öffnen
+            If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+
+                If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Or C_DP.P_CBPhonerAnrMon Then
+                    BWStartTCPReader = New BackgroundWorker
+                    With BWStartTCPReader
+                        .WorkerReportsProgress = True
+                        .RunWorkerAsync()
+                    End With
+                Else
+                    AnrMonAktiv = False
+                    AnrMonError = True
+                End If
+            End If
+        End If
+    End Sub
+
+    Function AnrMonStartNachStandby() As Boolean
+        AnrMonAktiv = False
+        AnrMonError = True
+#If OVer < 14 Then
+        C_GUI.SetAnrMonButton(AnrMonAktiv)
+#Else
+        C_GUI.RefreshRibbon()
+#End If
+        AnrMonStartNachStandby = False
+
+        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And TimerReStart Is Nothing Then
+            StandbyCounter = 1
+            TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
+        End If
+    End Function
+
+    Friend Sub AnrMonReStart()
+        AnrMonStartStopp()
+        AnrMonStartStopp()
+    End Sub
+
+    Friend Function TelefonName(ByVal MSN As String) As String
+        TelefonName = C_DP.P_Def_StringEmpty
+        If Not MSN = C_DP.P_Def_StringEmpty Then
+            If Not AnrMonPhoner Then
+                Dim xPathTeile As New ArrayList
+                With xPathTeile
+                    .Add("Telefone")
+                    .Add("Telefone")
+                    .Add("*")
+                    .Add("Telefon")
+                    .Add("[TelNr = """ & MSN & """ and not(@Dialport > 599)]") ' Keine Anrufbeantworter
+                    .Add("TelName")
+                End With
+                TelefonName = Replace(C_DP.Read(xPathTeile, ""), ";", ", ")
+                xPathTeile = Nothing
+            Else
+                TelefonName = "Phoner" ' ,  werden danach entfernt.
+            End If
+        End If
+    End Function
+#End Region
+
+#Region "Anrufmonitor"
+    ''' <summary>
+    ''' Hauptfunktion des Anrufmonitors. Ruft, je nach eingehenden String, die jeweilige Funktion auf.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub AnrMonAktion()
+        ' schaut in der FritzBox im Port 1012 nach und startet entsprechende Unterprogramme
+        Dim r As New StreamReader(AnrMonStream)
+        Dim FBStatus As String  ' Status-String der FritzBox
+        Dim aktZeile() As String  ' aktuelle Zeile im Status-String
+        Do
+            If AnrMonStream.DataAvailable And AnrMonAktiv Then
+                FBStatus = r.ReadLine
+                Select Case FBStatus
+                    Case "Welcome to Phoner"
+                        AnrMonPhoner = True
+                    Case "Sorry, too many clients"
+                        C_hf.LogFile("AnrMonAktion, Phoner: ""Sorry, too many clients""")
+                    Case Else
+                        C_hf.LogFile("AnrMonAktion: " & FBStatus)
+                        aktZeile = Split(FBStatus, ";", , CompareMethod.Text)
+                        If Not aktZeile.Length = 1 Then
+                            'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
+                            Select Case CStr(aktZeile.GetValue(1))
+                                Case "RING"
+                                    AnrMonRING(aktZeile, True, True)
+                                Case "CALL"
+                                    AnrMonCALL(aktZeile, True)
+                                Case "CONNECT"
+                                    AnrMonCONNECT(aktZeile, True)
+                                Case "DISCONNECT"
+                                    AnrMonDISCONNECT(aktZeile, True)
+                            End Select
+                        End If
+                End Select
+            End If
+            C_hf.ThreadSleep(50)
+            Windows.Forms.Application.DoEvents()
+        Loop Until Not AnrMonAktiv
+        r.Close()
+        r = Nothing
+    End Sub
+
     ''' <summary>
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für RING
     ''' </summary>

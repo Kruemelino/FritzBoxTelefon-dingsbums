@@ -56,9 +56,6 @@
 #End Region
 
 #Region "Ribbon Grundlagen für Outlook 2010 & 2013"
-#If OVer >= 14 Then
-    Friend bolAnrMonAktiv As Boolean
-#End If
 #End Region
 
     Private C_HF As Helfer
@@ -380,9 +377,7 @@
             If C_AnrMon.AnrMonAktiv Then
                 GetImage = "PersonaStatusOnline"
             Else
-                If Not C_AnrMon.AnrMonError Then
-                    GetImage = "PersonaStatusOffline"
-                End If
+                If Not C_AnrMon.AnrMonError Then GetImage = "PersonaStatusOffline"
             End If
         End If
     End Function
@@ -428,10 +423,11 @@
     Public Function GetVisibleAnrMonFKT(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         Return C_DP.P_CBUseAnrMon
     End Function
+
     Public Function GetEnabledJI(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         Return C_DP.P_CBJournal
     End Function
-    ' Ab Hier Rückrufe von Buttons
+
     Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
         WähleDirektwahl()
     End Sub
@@ -461,8 +457,7 @@
     End Sub
 
     Public Sub OnActionAnrMonAnAus(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        bolAnrMonAktiv = C_AnrMon.AnrMonAnAus()
-        RibbonObjekt.InvalidateControl(control.Id)
+        C_AnrMon.AnrMonStartStopp()
     End Sub
 
     Public Sub ContextCall(ByVal control As Office.IRibbonControl)
@@ -589,7 +584,7 @@
         oKontact = Nothing
 
         Try
-            oKontact = CType(CType(ThisAddIn.P_oApp.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+            oKontact = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Catch : End Try
 
         Return AddVIP(oKontact)
@@ -1133,9 +1128,8 @@
     End Sub
 
     Friend Sub WählenExplorer()
-        Dim olApp As Outlook.Application = ThisAddIn.P_oApp
-        If Not olApp Is Nothing Then
-            Dim ActiveExplorer As Outlook.Explorer = olApp.ActiveExplorer
+        If Not C_OLI.OutlookApplication Is Nothing Then
+            Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
             Dim oSel As Outlook.Selection = ActiveExplorer.Selection
             P_WählKlient.WählboxStart(oSel)
             C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
