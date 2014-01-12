@@ -241,7 +241,7 @@ Friend Class AnrufMonitor
             If C_DP.P_CBForceFBAddr Then
                 C_hf.httpGET(C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), AnrMonError)
             Else
-                AnrMonError = C_hf.Ping(C_DP.P_TBFBAdr)
+                AnrMonError = Not C_hf.Ping(C_DP.P_TBFBAdr)
             End If
 
             If AnrMonError Then

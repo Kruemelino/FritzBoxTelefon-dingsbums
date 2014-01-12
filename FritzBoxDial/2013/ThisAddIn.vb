@@ -36,15 +36,15 @@ Public Class ThisAddIn
     Private Shared oApp As Outlook.Application
     Private WithEvents ContactSaved As Outlook.ContactItem
     Private WithEvents oInsps As Outlook.Inspectors
-    Private Shared XML As MyXML ' Reader/Writer initialisieren
-    Private Shared fBox As FritzBox  'Deklarieren der Klasse
-    Private Shared AnrMon As AnrufMonitor
-    Private Shared WClient As Wählclient
-    Private Shared hf As Helfer
-    Private Shared KontaktFunktionen As Contacts
-    Private Shared GUI As GraphicalUserInterface
-    Private Shared UseAnrMon As Boolean
-    Private Shared Dateipfad As String
+
+    Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
+    Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
+    Private Shared C_AnrMon As AnrufMonitor
+    Private Shared C_WClient As Wählclient
+    Private Shared C_HF As Helfer
+    Private Shared C_KF As Contacts
+    Private Shared C_GUI As GraphicalUserInterface
+    Private Shared F_Cfg As formCfg
 
 #Region "Properties"
     Friend Shared Property P_oApp() As Outlook.Application
@@ -56,87 +56,77 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_XML() As MyXML
+    Friend Shared Property P_XML() As DataProvider
         Get
-            Return XML
+            Return C_DP
         End Get
-        Set(ByVal value As MyXML)
-            XML = value
+        Set(ByVal value As DataProvider)
+            C_DP = value
         End Set
     End Property
 
     Friend Shared Property P_hf() As Helfer
         Get
-            Return hf
+            Return C_HF
         End Get
         Set(ByVal value As Helfer)
-            hf = value
+            C_HF = value
         End Set
     End Property
 
     Friend Shared Property P_KontaktFunktionen() As Contacts
         Get
-            Return KontaktFunktionen
+            Return C_KF
         End Get
         Set(ByVal value As Contacts)
-            KontaktFunktionen = value
+            C_KF = value
         End Set
     End Property
 
     Friend Shared Property P_GUI() As GraphicalUserInterface
         Get
-            Return GUI
+            Return C_GUI
         End Get
         Set(ByVal value As GraphicalUserInterface)
-            GUI = value
+            C_GUI = value
         End Set
     End Property
 
     Friend Shared Property P_WClient() As Wählclient
         Get
-            Return WClient
+            Return C_WClient
         End Get
         Set(ByVal value As Wählclient)
-            WClient = value
+            C_WClient = value
         End Set
     End Property
 
     Friend Shared Property P_FritzBox() As FritzBox
         Get
-            Return fBox
+            Return C_Fbox
         End Get
         Set(ByVal value As FritzBox)
-            fBox = value
+            C_Fbox = value
         End Set
     End Property
 
     Friend Shared Property P_AnrMon() As AnrufMonitor
         Get
-            Return AnrMon
+            Return C_AnrMon
         End Get
         Set(ByVal value As AnrufMonitor)
-            AnrMon = value
+            C_AnrMon = value
         End Set
     End Property
 
-    Friend Shared Property P_Dateipfad() As String
+    Friend Shared Property P_Config() As formCfg
         Get
-            Return Dateipfad
+            Return F_Cfg
         End Get
-        Set(ByVal value As String)
-            Dateipfad = value
+        Set(ByVal value As formCfg)
+            F_Cfg = value
         End Set
     End Property
-
-    Friend Shared Property P_UseAnrMon() As Boolean
-        Get
-            Return UseAnrMon
-        End Get
-        Set(ByVal value As Boolean)
-            UseAnrMon = value
-        End Set
-    End Property
-
 #End Region
 
 #If OVer < 14 Then
@@ -144,64 +134,60 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.3"
+    Public Const Version As String = "3.6.27"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
         Initialisierung = New formInit
-        Return GUI
+        Return C_GUI
     End Function
 #End If
 
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
+        C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
             Case PowerModes.Resume
-                hf.LogFile("StandBy: PowerModes." & PowerModes.Resume.ToString)
-                AnrMon.AnrMonStartNachStandby()
+                C_AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
-                AnrMon.AnrMonQuit()
-                hf.LogFile("StandBy: PowerModes." & PowerModes.Suspend.ToString)
-            Case Else
-                hf.LogFile("PowerMode: " & e.Mode)
+                C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
 
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
-        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
+        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
         Dim i As Integer = 2
 
-        oApp = CType(Application, Outlook.Application)
+        P_oApp = CType(Application, Outlook.Application)
 
-        If Not oApp.ActiveExplorer Is Nothing Then
+        If Not P_oApp.ActiveExplorer Is Nothing Then
 #If OVer = 11 Then
             Initialisierung = New formInit
 #End If
 
 #If OVer < 14 Then
-            GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
+            C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
                                      ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
                                      ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
 #End If
-            If Not CBool(XML.Read("Optionen", "CBIndexAus", "False")) Then oInsps = Application.Inspectors
+            If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
         Else
-            hf.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
+            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not CBool(XML.Read("Optionen", "CBIndexAus", "False")) Then
-            KontaktFunktionen.IndiziereKontakt(ContactSaved, True)
-        End If
+        If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True)
     End Sub
 
-    Private Sub ThisAddIn_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
-        AnrMon.AnrMonQuit()
-        XML.SpeichereXMLDatei()
-        With hf
-            .NAR(oApp)
+    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+        C_AnrMon.AnrMonStartStopp()
+        C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
+        C_DP.SpeichereXMLDatei()
+        With C_HF
+            .NAR(P_oApp)
 #If OVer < 14 Then
             .NAR(FritzCmdBar)
 #End If
@@ -214,15 +200,15 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If XML.Read("Optionen", "CBKHO", "True") = "True" Then
+            If C_DP.P_CBKHO Then
                 Dim Ordner As Outlook.MAPIFolder
                 Dim StandardOrdner As Outlook.MAPIFolder
                 Dim olNamespace As Outlook.NameSpace
                 Ordner = CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder)
-                olNamespace = oApp.GetNamespace("MAPI")
+                olNamespace = P_oApp.GetNamespace("MAPI")
                 StandardOrdner = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
                 If Not StandardOrdner.StoreID = Ordner.StoreID Then Exit Sub
             End If
@@ -241,7 +227,7 @@ Public Class ThisAddIn
                                                                                                                          eBtnJournalimport.Click, _
                                                                                                                          eBtnAnrMonNeuStart.Click
 
-        With (GUI)
+        With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Caption
                 Case "Direktwahl"
                     .WähleDirektwahl()
@@ -250,7 +236,7 @@ Public Class ThisAddIn
                 Case "Einstellungen"
                     .ÖffneEinstellungen()
                 Case "Anrufmonitor"
-                    AnrMon.AnrMonAnAus()
+                    C_AnrMon.AnrMonStartStopp()
                 Case "Anzeigen"
                     .ÖffneAnrMonAnzeigen()
                 Case "Journalimport"
@@ -291,7 +277,7 @@ Public Class ThisAddIn
                                                                                                           ePopVIP8.Click, _
                                                                                                           ePopVIP9.Click, _
                                                                                                           ePopVIP10.Click
-        GUI.KlickListen(control.Tag)
+        C_GUI.KlickListen(control.Tag)
     End Sub
 #End Region
 #End If
@@ -307,7 +293,7 @@ Public Class ThisAddIn
                                                                                                                          iBtnWwh.Click, _
                                                                                                                          iBtnVIP.Click
 
-        With (GUI)
+        With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Caption
                 Case "Kontakt erstellen"
                     .KontaktErstellen()
@@ -320,7 +306,7 @@ Public Class ThisAddIn
                 Case "Alle"
                     .RWSAlle(oApp.ActiveInspector)
                 Case "Wählen"
-                    WClient.WählenAusInspector()
+                    C_WClient.WählenAusInspector()
                 Case "VIP"
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
