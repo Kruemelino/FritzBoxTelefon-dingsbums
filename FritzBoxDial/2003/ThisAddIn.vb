@@ -44,7 +44,6 @@ Public Class ThisAddIn
     Private Shared C_KF As Contacts
     Private Shared C_GUI As GraphicalUserInterface
     Private Shared F_Cfg As formCfg
-    Private Shared Dateipfad As String
 
 #Region "Properties"
     Friend Shared Property P_oApp() As Outlook.Application
@@ -119,15 +118,6 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_Dateipfad() As String
-        Get
-            Return Dateipfad
-        End Get
-        Set(ByVal value As String)
-            Dateipfad = value
-        End Set
-    End Property
-
     Friend Shared Property P_Config() As formCfg
         Get
             Return F_Cfg
@@ -143,7 +133,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.24"
+    Public Const Version As String = "3.6.27"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -154,12 +144,12 @@ Public Class ThisAddIn
 #End If
 
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
-        C_HF.LogFile("PowerMode: " & e.Mode.ToString & " ( " & e.Mode & ")")
+        C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
             Case PowerModes.Resume
                 C_AnrMon.AnrMonStartNachStandby()
             Case PowerModes.Suspend
-                C_AnrMon.AnrMonQuit()
+                C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
 
@@ -192,7 +182,7 @@ Public Class ThisAddIn
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
-        C_AnrMon.AnrMonQuit()
+        C_AnrMon.AnrMonStartStopp()
         C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
@@ -202,6 +192,7 @@ Public Class ThisAddIn
 #End If
         End With
     End Sub
+
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
@@ -244,7 +235,7 @@ Public Class ThisAddIn
                 Case "Einstellungen"
                     .ÖffneEinstellungen()
                 Case "Anrufmonitor"
-                    C_AnrMon.AnrMonAnAus()
+                    C_AnrMon.AnrMonStartStopp()
                 Case "Anzeigen"
                     .ÖffneAnrMonAnzeigen()
                 Case "Journalimport"
