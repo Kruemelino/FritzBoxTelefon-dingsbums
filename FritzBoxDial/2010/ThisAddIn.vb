@@ -36,6 +36,7 @@ Public Class ThisAddIn
     Private Shared oApp As Outlook.Application
     Private WithEvents ContactSaved As Outlook.ContactItem
     Private WithEvents oInsps As Outlook.Inspectors
+
     Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
     Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
     Private Shared C_AnrMon As AnrufMonitor
@@ -235,7 +236,7 @@ Public Class ThisAddIn
                 Case "Einstellungen"
                     .ÖffneEinstellungen()
                 Case "Anrufmonitor"
-                    C_AnrMon.AnrMonAnAus()
+                    C_AnrMon.AnrMonStartStopp()
                 Case "Anzeigen"
                     .ÖffneAnrMonAnzeigen()
                 Case "Journalimport"
@@ -320,6 +321,5 @@ Public Class ThisAddIn
     End Sub
 #End If
 #End Region
-
 
 End Class
