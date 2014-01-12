@@ -214,9 +214,9 @@ Public Class PopupStoppuhrForm
                 .X = ErsterEinzug
                 .Width = ZweiterEinzug - 2 * ErsterEinzug
                 .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
-                .Y = Parent.Size.Height - .Height - ErsterEinzug
+                .Y = Parent.Size.Height - .Height ' - ErsterEinzug
             End With
-            ' .DrawRectangle(New Pen(Brushes.Black), RectEnde)
+            '.DrawRectangle(New Pen(Brushes.Black), RectEnde)
             .DrawString("Ende: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectEnde)
             ' </Rechteck Ende>
 
@@ -225,7 +225,8 @@ Public Class PopupStoppuhrForm
             With RectAnruf
                 .X = ZweiterEinzug
                 .Y = 1 * (Parent.HeaderHeight + ErsterEinzug)
-                .Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug
+                .Width = RectClose.X - ZweiterEinzug - ErsterEinzug
+                '.Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug - RectClose.X
                 .Height = e.Graphics.MeasureString(Parent.Anruf, Parent.TitleFont).Height
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectAnruf)
@@ -262,7 +263,7 @@ Public Class PopupStoppuhrForm
                 .X = ZweiterEinzug
                 .Width = Parent.Size.Width - ZweiterEinzug - 1 * ErsterEinzug
                 .Height = e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height
-                .Y = Parent.Size.Height - .Height - ErsterEinzug
+                .Y = Parent.Size.Height - .Height '- ErsterEinzug
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectValueEnde)
             .DrawString(Parent.EndeZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueEnde)
@@ -271,11 +272,11 @@ Public Class PopupStoppuhrForm
             RectZeit = New Rectangle()
             With RectZeit
                 .X = 0
-                .Y = 2 * (Parent.Size.Height - Parent.ContentFont.Size) / 3
+                .Y = 2 * (Parent.Size.Height - Parent.ContentFont.Size) / 3 + 2
                 .Width = Parent.Size.Width
                 .Height = e.Graphics.MeasureString(Parent.Zeit, Parent.ContentFont).Height
             End With
-            '.DrawRectangle(New Pen(Brushes.Black), RectZeit)
+            ' .DrawRectangle(New Pen(Brushes.Black), RectZeit)
             .DrawString(Parent.Zeit, Parent.ContentFont, New SolidBrush(Parent.ContentColor), RectZeit, drawFormatCenter)
 
         End With

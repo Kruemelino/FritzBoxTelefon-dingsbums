@@ -37,11 +37,11 @@ Partial Class formStoppUhr
         '
         'Stoppuhr
         '
+        Me.Stoppuhr.Size = New System.Drawing.Size(250, 100)
         Me.Stoppuhr.Anruf = Nothing
         Me.Stoppuhr.ButtonHoverColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.Stoppuhr.ContentFont = New System.Drawing.Font("Tahoma", 20.0!)
         Me.Stoppuhr.StartPosition = New System.Drawing.Point(10, 10)
-        Me.Stoppuhr.Size = New System.Drawing.Size(200, 100)
         Me.Stoppuhr.TextPadding = New System.Windows.Forms.Padding(0)
         Me.Stoppuhr.TitleFont = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Stoppuhr.Zeit = Nothing

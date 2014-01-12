@@ -231,7 +231,7 @@ Public Class Stoppuhr
 
         End Set
     End Property
-    Private szSize As Size = New Size(200, 100)
+    Private szSize As Size = New Size(250, 100)
     <Category("Appearance")> _
     Property Size() As Size
         Get
