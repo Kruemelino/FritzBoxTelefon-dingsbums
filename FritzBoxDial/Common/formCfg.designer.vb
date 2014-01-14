@@ -120,6 +120,8 @@ Partial Class formCfg
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.CBoxAnrMonMoveDirection = New System.Windows.Forms.ComboBox()
+        Me.CBoxAnrMonStartPosition = New System.Windows.Forms.ComboBox()
         Me.CBAnrMonContactImage = New System.Windows.Forms.CheckBox()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.Label32 = New System.Windows.Forms.Label()
@@ -191,6 +193,7 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label19 = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -742,7 +745,7 @@ Partial Class formCfg
         '
         'BAnrMonTest
         '
-        Me.BAnrMonTest.Location = New System.Drawing.Point(164, 186)
+        Me.BAnrMonTest.Location = New System.Drawing.Point(166, 225)
         Me.BAnrMonTest.Name = "BAnrMonTest"
         Me.BAnrMonTest.Size = New System.Drawing.Size(112, 28)
         Me.BAnrMonTest.TabIndex = 14
@@ -1252,6 +1255,9 @@ Partial Class formCfg
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.Label19)
+        Me.GroupBox6.Controls.Add(Me.CBoxAnrMonMoveDirection)
+        Me.GroupBox6.Controls.Add(Me.CBoxAnrMonStartPosition)
         Me.GroupBox6.Controls.Add(Me.CBAnrMonContactImage)
         Me.GroupBox6.Controls.Add(Me.CBShowMSN)
         Me.GroupBox6.Controls.Add(Me.Label18)
@@ -1272,6 +1278,25 @@ Partial Class formCfg
         Me.GroupBox6.TabIndex = 15
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Aussehen anpassen"
+        '
+        'CBoxAnrMonMoveDirection
+        '
+        Me.CBoxAnrMonMoveDirection.FormattingEnabled = True
+        Me.CBoxAnrMonMoveDirection.Items.AddRange(New Object() {"Oben/Unten", "Links/Rechts"})
+        Me.CBoxAnrMonMoveDirection.Location = New System.Drawing.Point(133, 165)
+        Me.CBoxAnrMonMoveDirection.Name = "CBoxAnrMonMoveDirection"
+        Me.CBoxAnrMonMoveDirection.Size = New System.Drawing.Size(121, 21)
+        Me.CBoxAnrMonMoveDirection.TabIndex = 911
+        '
+        'CBoxAnrMonStartPosition
+        '
+        Me.CBoxAnrMonStartPosition.FormattingEnabled = True
+        Me.CBoxAnrMonStartPosition.Items.AddRange(New Object() {"Unten Rechts", "Unten Links", "Oben Links", "Oben Rechts"})
+        Me.CBoxAnrMonStartPosition.Location = New System.Drawing.Point(6, 165)
+        Me.CBoxAnrMonStartPosition.MaxDropDownItems = 4
+        Me.CBoxAnrMonStartPosition.Name = "CBoxAnrMonStartPosition"
+        Me.CBoxAnrMonStartPosition.Size = New System.Drawing.Size(121, 21)
+        Me.CBoxAnrMonStartPosition.TabIndex = 911
         '
         'CBAnrMonContactImage
         '
@@ -1314,7 +1339,7 @@ Partial Class formCfg
         'TBAnrMonY
         '
         Me.TBAnrMonY.AcceptsReturn = True
-        Me.TBAnrMonY.Location = New System.Drawing.Point(4, 190)
+        Me.TBAnrMonY.Location = New System.Drawing.Point(6, 229)
         Me.TBAnrMonY.Name = "TBAnrMonY"
         Me.TBAnrMonY.Size = New System.Drawing.Size(30, 20)
         Me.TBAnrMonY.TabIndex = 13
@@ -1322,7 +1347,7 @@ Partial Class formCfg
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(40, 193)
+        Me.Label11.Location = New System.Drawing.Point(42, 232)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(84, 13)
         Me.Label11.TabIndex = 13
@@ -1331,7 +1356,7 @@ Partial Class formCfg
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(3, 148)
+        Me.Label14.Location = New System.Drawing.Point(3, 189)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(181, 13)
         Me.Label14.TabIndex = 23
@@ -1340,7 +1365,7 @@ Partial Class formCfg
         'TBAnrMonX
         '
         Me.TBAnrMonX.AcceptsReturn = True
-        Me.TBAnrMonX.Location = New System.Drawing.Point(4, 166)
+        Me.TBAnrMonX.Location = New System.Drawing.Point(6, 205)
         Me.TBAnrMonX.Name = "TBAnrMonX"
         Me.TBAnrMonX.Size = New System.Drawing.Size(30, 20)
         Me.TBAnrMonX.TabIndex = 12
@@ -1348,7 +1373,7 @@ Partial Class formCfg
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(40, 169)
+        Me.Label12.Location = New System.Drawing.Point(42, 208)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(95, 13)
         Me.Label12.TabIndex = 11
@@ -2024,6 +2049,15 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(3, 148)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(47, 13)
+        Me.Label19.TabIndex = 912
+        Me.Label19.Text = "Position:"
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2258,6 +2292,9 @@ Partial Class formCfg
     Friend WithEvents BStoppUhrAnzeigen As System.Windows.Forms.Button
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents CBAnrMonZeigeKontakt As System.Windows.Forms.CheckBox
+    Friend WithEvents CBoxAnrMonMoveDirection As System.Windows.Forms.ComboBox
+    Friend WithEvents CBoxAnrMonStartPosition As System.Windows.Forms.ComboBox
+    Friend WithEvents Label19 As System.Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class

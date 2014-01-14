@@ -53,10 +53,12 @@ Public Class DataProvider
     Private _TBBenutzer As String
     Private _TBPasswort As String
     Private _TBVorwahl As String
+    'Anrufmonitor
     Private _TBEnblDauer As Integer
     Private _TBAnrMonX As Integer
     Private _TBAnrMonY As Integer
-
+    Private _CBoxAnrMonStartPosition As Integer
+    Private _CBoxAnrMonMoveDirection As Integer
     Private _TBAnrMonMoveGeschwindigkeit As Integer
     Private _CBAnrMonZeigeKontakt As Boolean
     Private _CBJournal As Boolean
@@ -134,6 +136,7 @@ Public Class DataProvider
             _TBVorwahl = value
         End Set
     End Property
+    ' Anrufmonitor
     Public Property P_TBEnblDauer() As Integer
         Get
             Return _TBEnblDauer
@@ -180,6 +183,22 @@ Public Class DataProvider
         End Get
         Set(ByVal value As Boolean)
             _CBAnrMonTransp = value
+        End Set
+    End Property
+    Public Property P_CBoxAnrMonStartPosition() As Integer
+        Get
+            Return _CBoxAnrMonStartPosition
+        End Get
+        Set(ByVal value As Integer)
+            _CBoxAnrMonStartPosition = value
+        End Set
+    End Property
+    Public Property P_CBoxAnrMonMoveDirection() As Integer
+        Get
+            Return _CBoxAnrMonMoveDirection
+        End Get
+        Set(ByVal value As Integer)
+            _CBoxAnrMonMoveDirection = value
         End Set
     End Property
     Public Property P_TBAnrMonMoveGeschwindigkeit() As Integer
@@ -867,6 +886,16 @@ Public Class DataProvider
             Return 5
         End Get
     End Property
+    Public ReadOnly Property P_Def_CBoxAnrMonStartPosition() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_CBoxAnrMonMoveDirection() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
 
     Public ReadOnly Property P_Def_CBAnrMonZeigeKontakt() As Boolean
         Get
@@ -1242,6 +1271,8 @@ Public Class DataProvider
         Me.P_CBAnrMonMove = CBool(Read(P_Def_Options, "CBAnrMonMove", CStr(P_Def_CBAnrMonMove)))
         Me.P_CBAnrMonTransp = CBool(Read(P_Def_Options, "CBAnrMonTransp", CStr(P_Def_CBAnrMonTransp)))
         Me.P_TBAnrMonMoveGeschwindigkeit = CInt(Read(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(P_Def_TBAnrMonMoveGeschwindigkeit)))
+        Me.P_CBoxAnrMonStartPosition = CInt(Read(P_Def_Options, "CBoxAnrMonStartPosition", CStr(P_Def_CBoxAnrMonStartPosition)))
+        Me.P_CBoxAnrMonMoveDirection = CInt(Read(P_Def_Options, "CBoxAnrMonMoveDirection", CStr(P_Def_CBoxAnrMonMoveDirection)))
         Me.P_CBAnrMonZeigeKontakt = CBool(Read(P_Def_Options, "CBAnrMonZeigeKontakt", CStr(P_Def_CBAnrMonZeigeKontakt)))
         Me.P_CBAnrMonContactImage = CBool(Read(P_Def_Options, "CBAnrMonContactImage", CStr(P_Def_CBAnrMonContactImage)))
         Me.P_CBIndexAus = CBool(Read(P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
@@ -1320,6 +1351,8 @@ Public Class DataProvider
         Write(P_Def_Options, "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
         Write(P_Def_Options, "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
         Write(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
+        Write(P_Def_Options, "CBoxAnrMonStartPosition", CStr(Me.P_CBoxAnrMonStartPosition))
+        Write(P_Def_Options, "CBoxAnrMonMoveDirection", CStr(Me.P_CBoxAnrMonMoveDirection))
         Write(P_Def_Options, "CBAnrMonZeigeKontakt", CStr(Me.P_CBAnrMonZeigeKontakt))
         Write(P_Def_Options, "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
         Write(P_Def_Options, "CBIndexAus", CStr(Me.P_CBIndexAus))

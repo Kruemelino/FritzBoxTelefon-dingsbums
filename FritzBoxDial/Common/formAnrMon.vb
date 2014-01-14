@@ -54,11 +54,17 @@ Friend Class formAnrMon
         With PopupNotifier
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
             .AutoAusblenden = C_DP.P_CBAutoClose
-            Dim FormVerschiebung As New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
-            .PositionsKorrektur = FormVerschiebung
+            .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
             .EffektMove = C_DP.P_CBAnrMonMove
             .EffektTransparenz = C_DP.P_CBAnrMonTransp
-            .EffektMoveGeschwindigkeit = 10 * (10 - C_DP.P_TBAnrMonMoveGeschwindigkeit)
+
+            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopupNotifier.eStartPosition) 'FritzBoxDial.PopupNotifier.eStartPosition.BottomRight
+            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopupNotifier.eMoveDirection) 'FritzBoxDial.PopupNotifier.eMoveDirection.X
+
+            .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
+            ' If .MoveDirecktion = FritzBoxDial.PopupNotifier.eMoveDirection.X Then .EffektMoveGeschwindigkeit \= 4
+
+            ' Hier Startposition aus Einstellungen übergeben. Jetzt Dummy
             .Popup()
         End With
         C_OLI.InspectorVerschieben(False)

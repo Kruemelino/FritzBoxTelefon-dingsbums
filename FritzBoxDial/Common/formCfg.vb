@@ -120,6 +120,8 @@ Friend Class formCfg
         Me.CBAnrMonMove.Checked = C_DP.P_CBAnrMonMove
         Me.CBAnrMonTransp.Checked = C_DP.P_CBAnrMonTransp
         Me.TBAnrMonMoveGeschwindigkeit.Value = C_DP.P_TBAnrMonMoveGeschwindigkeit
+        Me.CBoxAnrMonStartPosition.SelectedIndex = C_DP.P_CBoxAnrMonStartPosition
+        Me.CBoxAnrMonMoveDirection.SelectedIndex = C_DP.P_CBoxAnrMonMoveDirection
         Me.CBAnrMonZeigeKontakt.Checked = C_DP.P_CBAnrMonZeigeKontakt
         Me.CBAnrMonContactImage.Checked = C_DP.P_CBAnrMonContactImage
         Me.CBIndexAus.Checked = C_DP.P_CBIndexAus
@@ -408,6 +410,8 @@ Friend Class formCfg
             .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
             .P_CBAnrMonContactImage = Me.CBAnrMonContactImage.Checked
             .P_TBAnrMonMoveGeschwindigkeit = Me.TBAnrMonMoveGeschwindigkeit.Value
+            .P_CBoxAnrMonMoveDirection = Me.CBoxAnrMonMoveDirection.SelectedIndex
+            .P_CBoxAnrMonStartPosition = Me.CBoxAnrMonStartPosition.SelectedIndex
             .P_CBAnrMonZeigeKontakt = Me.CBAnrMonZeigeKontakt.Checked
             .P_CBIndexAus = Me.CBIndexAus.Checked
             .P_CBShowMSN = Me.CBShowMSN.Checked
@@ -535,6 +539,8 @@ Friend Class formCfg
                     Me.CBAnrMonContactImage.Checked = .P_Def_CBAnrMonContactImage
                     Me.CBShowMSN.Checked = .P_Def_CBShowMSN
                     Me.TBAnrMonMoveGeschwindigkeit.Value = .P_Def_TBAnrMonMoveGeschwindigkeit
+                    Me.CBoxAnrMonMoveDirection.SelectedIndex = .P_Def_CBoxAnrMonMoveDirection
+                    Me.CBoxAnrMonStartPosition.SelectedIndex = .P_Def_CBoxAnrMonStartPosition
                     Me.CBAnrMonZeigeKontakt.Checked = .P_Def_CBAnrMonZeigeKontakt
                     Me.CBIndexAus.Checked = .P_Def_CBIndexAus
                     ' optionale allgemeine Einstellungen zuruecksetzen

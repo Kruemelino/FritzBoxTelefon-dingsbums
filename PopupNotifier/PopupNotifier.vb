@@ -31,6 +31,17 @@ Public Class PopupNotifier
     Private dMaxOpacity As Double
     Private dummybool As Boolean
 
+    Enum eStartPosition
+        BottomRight
+        BottomLeft
+        TopLeft
+        TopRight
+    End Enum
+
+    Enum eMoveDirection
+        Y
+        X
+    End Enum
 #Region "Properties"
 
     Private clHeader As Color = SystemColors.ControlDark
@@ -390,9 +401,9 @@ Public Class PopupNotifier
             bEffektMove = value
         End Set
     End Property
-    Private iEffektMoveGeschwindigkeit As Integer = 50
+    Private iEffektMoveGeschwindigkeit As Integer = 5
     <Category("Appearance"), _
-    DefaultValue(50)> _
+    DefaultValue(5)> _
     Property EffektMoveGeschwindigkeit() As Integer
         Get
             Return iEffektMoveGeschwindigkeit
@@ -401,6 +412,29 @@ Public Class PopupNotifier
             iEffektMoveGeschwindigkeit = value
         End Set
     End Property
+
+    Private pStartpunkt As eStartPosition
+    <Category("Appearance")> _
+    Property Startpunkt() As eStartPosition
+        Get
+            Return pStartpunkt
+        End Get
+        Set(ByVal value As eStartPosition)
+            pStartpunkt = value
+        End Set
+    End Property
+
+    Private _MoveDirecktion As eMoveDirection
+    <Category("Appearance")> _
+    Property MoveDirecktion() As eMoveDirection
+        Get
+            Return _MoveDirecktion
+        End Get
+        Set(ByVal value As eMoveDirection)
+            _MoveDirecktion = value
+        End Set
+    End Property
+
 #End Region
 
     Sub New()
@@ -412,12 +446,50 @@ Public Class PopupNotifier
     End Sub
 
     Sub Popup()
+        Dim X As Integer
+        Dim Y As Integer
         tmWait.Interval = 200
         With fPopup
             .TopMost = True
             .Size = Size
             .Opacity = IIf(bEffektTransparenz, 0, 1)
-            .Location = New Point(Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - szPosition.Width, IIf(bEffektMove, Screen.PrimaryScreen.WorkingArea.Bottom - 1, Screen.PrimaryScreen.WorkingArea.Bottom - 10 - szPosition.Height - fPopup.Height))
+
+            Select Case Startpunkt
+                Case eStartPosition.BottomLeft
+                    X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
+                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - PositionsKorrektur.Height - fPopup.Height
+                Case eStartPosition.TopLeft
+                    X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
+                    Y = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
+                Case eStartPosition.BottomRight
+                    X = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - PositionsKorrektur.Width
+                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - PositionsKorrektur.Height - fPopup.Height
+                Case eStartPosition.TopRight
+                    X = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - PositionsKorrektur.Width
+                    Y = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
+            End Select
+
+            If bEffektMove Then
+                Select Case MoveDirecktion
+                    Case eMoveDirection.X
+                        Select Case Startpunkt
+                            Case eStartPosition.BottomLeft, eStartPosition.TopLeft
+                                X = Screen.PrimaryScreen.WorkingArea.Left - fPopup.Size.Width + 2
+                            Case eStartPosition.BottomRight, eStartPosition.TopRight
+                                X = Screen.PrimaryScreen.WorkingArea.Right + 2
+                        End Select
+                    Case eMoveDirection.Y
+                        Select Case Startpunkt
+                            Case eStartPosition.TopLeft, eStartPosition.TopRight
+                                Y = Screen.PrimaryScreen.WorkingArea.Top - fPopup.Height + 1
+                            Case eStartPosition.BottomRight, eStartPosition.BottomLeft
+                                Y = Screen.PrimaryScreen.WorkingArea.Bottom - 1
+                        End Select
+                End Select
+
+            End If
+
+            .Location = New Point(X, Y)
             .Text = AnrName & IIf(TelNr = "", "", " (" & TelNr & ")")
             .Show()
             SetWindowPos(.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
@@ -445,46 +517,112 @@ Public Class PopupNotifier
     End Sub
 
     Private Function GetOpacityBasedOnPosition() As Double
-        Dim iCentPourcent As Integer = fPopup.Height
-        Dim iCurrentlyShown As Integer = Screen.PrimaryScreen.WorkingArea.Height - fPopup.Top
-        Dim dPourcentOpacity As Double = iCentPourcent / 100 * iCurrentlyShown
-        Return (dPourcentOpacity / 100) ' - 0.05
+
+        Dim iCentPurcent As Integer
+        Dim iCurrentlyShown As Integer
+        Dim dPourcentOpacity As Double
+
+        Select Case MoveDirecktion
+            Case eMoveDirection.X
+                iCentPurcent = fPopup.Width
+                Select Case Startpunkt
+                    Case eStartPosition.BottomLeft, eStartPosition.TopLeft
+                        iCurrentlyShown = fPopup.Right
+                    Case eStartPosition.BottomRight, eStartPosition.TopRight
+                        iCurrentlyShown = Screen.PrimaryScreen.WorkingArea.Width - fPopup.Left
+                End Select
+                dPourcentOpacity = iCurrentlyShown * 100 / iCentPurcent
+            Case eMoveDirection.Y
+                iCentPurcent = fPopup.Height
+                Select Case Startpunkt
+                    Case eStartPosition.BottomLeft, eStartPosition.BottomRight
+                        iCurrentlyShown = Screen.PrimaryScreen.WorkingArea.Height - fPopup.Top
+                    Case eStartPosition.TopLeft, eStartPosition.TopRight
+                        iCurrentlyShown = fPopup.Bottom
+                End Select
+                dPourcentOpacity = iCentPurcent / 100 * iCurrentlyShown
+        End Select
+
+        Return dPourcentOpacity / 100
     End Function
 
     Private Sub tmAnimation_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmAnimation.Tick
+        Dim StoppAnimation As Boolean = False
         With fPopup
             .Invalidate()
             If bEffektMove Then
-                If bAppearing Then
-                    .Top -= 4
-                    .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
-                    If .Top + .Height < Screen.PrimaryScreen.WorkingArea.Bottom - 10 - szPosition.Height Then
+                If bAppearing Then 'Einblenden
+                    Select Case MoveDirecktion
+                        Case eMoveDirection.X
+                            Select Case Startpunkt
+                                Case eStartPosition.BottomLeft, eStartPosition.TopLeft
+                                    .Left += 2
+                                    StoppAnimation = .Left = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
+                                Case eStartPosition.BottomRight, eStartPosition.TopRight
+                                    .Left -= 2
+                                    StoppAnimation = .Left = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - PositionsKorrektur.Width
+                            End Select
+                        Case eMoveDirection.Y
+                            Select Case Startpunkt
+                                Case eStartPosition.BottomLeft, eStartPosition.BottomRight
+                                    .Top -= 1
+                                    StoppAnimation = .Top + .Height = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - PositionsKorrektur.Height
+                                Case eStartPosition.TopLeft, eStartPosition.TopRight
+                                    .Top += 1
+                                    StoppAnimation = .Top = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
+                            End Select
+                    End Select
+
+                    If StoppAnimation Then
                         tmAnimation.Stop()
                         bAppearing = False
                         iMaxPosition = .Top
                         dMaxOpacity = .Opacity
                         If bAutoAusblenden Then tmWait.Start()
                     End If
-                Else
+
+                    .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
+
+                Else 'Ausblenden
                     If bMouseIsOn Then
                         .Top = iMaxPosition
                         .Opacity = dMaxOpacity
                         tmAnimation.Stop()
                         tmWait.Start()
                     Else
-                        .Top += 3
-                        .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
-                        If .Top > Screen.PrimaryScreen.WorkingArea.Bottom Then
+                        Select Case MoveDirecktion
+                            Case eMoveDirection.X
+                                Select Case Startpunkt
+                                    Case eStartPosition.BottomLeft, eStartPosition.TopLeft
+                                        .Left -= 2
+                                        StoppAnimation = .Right < Screen.PrimaryScreen.WorkingArea.Left
+                                    Case eStartPosition.BottomRight, eStartPosition.TopRight
+                                        .Left += 2
+                                        StoppAnimation = .Left > Screen.PrimaryScreen.WorkingArea.Right
+                                End Select
+                            Case eMoveDirection.Y
+                                Select Case Startpunkt
+                                    Case eStartPosition.BottomLeft, eStartPosition.BottomRight
+                                        .Top += 1
+                                        StoppAnimation = .Top > Screen.PrimaryScreen.WorkingArea.Bottom - PositionsKorrektur.Width
+                                    Case eStartPosition.TopLeft, eStartPosition.TopRight
+                                        .Top -= 1
+                                        StoppAnimation = .Bottom < Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Width
+                                End Select
+                        End Select
+
+                        If StoppAnimation Then
                             tmAnimation.Stop()
                             .TopMost = False
                             .Close()
                             bAppearing = True
                             RaiseEvent Closed()
                         End If
+
+                        .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
                     End If
                 End If
             Else
-                .Top = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - szPosition.Height - .Height
                 If bAppearing Then
                     .Opacity += IIf(bEffektTransparenz, 0.05, 1)
                     If .Opacity = 1 Then
