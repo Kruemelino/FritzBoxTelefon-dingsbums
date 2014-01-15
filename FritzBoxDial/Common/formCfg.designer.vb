@@ -120,6 +120,7 @@ Partial Class formCfg
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.Label19 = New System.Windows.Forms.Label()
         Me.CBoxAnrMonMoveDirection = New System.Windows.Forms.ComboBox()
         Me.CBoxAnrMonStartPosition = New System.Windows.Forms.ComboBox()
         Me.CBAnrMonContactImage = New System.Windows.Forms.CheckBox()
@@ -193,7 +194,7 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Label19 = New System.Windows.Forms.Label()
+        Me.LAnrMonMoveDirection = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -1255,6 +1256,7 @@ Partial Class formCfg
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.LAnrMonMoveDirection)
         Me.GroupBox6.Controls.Add(Me.Label19)
         Me.GroupBox6.Controls.Add(Me.CBoxAnrMonMoveDirection)
         Me.GroupBox6.Controls.Add(Me.CBoxAnrMonStartPosition)
@@ -1278,6 +1280,15 @@ Partial Class formCfg
         Me.GroupBox6.TabIndex = 15
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Aussehen anpassen"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(3, 148)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(47, 13)
+        Me.Label19.TabIndex = 912
+        Me.Label19.Text = "Position:"
         '
         'CBoxAnrMonMoveDirection
         '
@@ -1320,7 +1331,7 @@ Partial Class formCfg
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(207, 136)
+        Me.Label32.Location = New System.Drawing.Point(207, 130)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(49, 13)
         Me.Label32.TabIndex = 27
@@ -1330,7 +1341,7 @@ Partial Class formCfg
         'Label28
         '
         Me.Label28.AutoSize = True
-        Me.Label28.Location = New System.Drawing.Point(135, 136)
+        Me.Label28.Location = New System.Drawing.Point(135, 130)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(55, 13)
         Me.Label28.TabIndex = 27
@@ -1383,7 +1394,7 @@ Partial Class formCfg
         '
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.TBAnrMonMoveGeschwindigkeit.LargeChange = 2
-        Me.TBAnrMonMoveGeschwindigkeit.Location = New System.Drawing.Point(133, 104)
+        Me.TBAnrMonMoveGeschwindigkeit.Location = New System.Drawing.Point(131, 99)
         Me.TBAnrMonMoveGeschwindigkeit.Maximum = 9
         Me.TBAnrMonMoveGeschwindigkeit.Minimum = 1
         Me.TBAnrMonMoveGeschwindigkeit.Name = "TBAnrMonMoveGeschwindigkeit"
@@ -2049,14 +2060,14 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'Label19
+        'LAnrMonMoveDirection
         '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(3, 148)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(47, 13)
-        Me.Label19.TabIndex = 912
-        Me.Label19.Text = "Position:"
+        Me.LAnrMonMoveDirection.AutoSize = True
+        Me.LAnrMonMoveDirection.Location = New System.Drawing.Point(133, 147)
+        Me.LAnrMonMoveDirection.Name = "LAnrMonMoveDirection"
+        Me.LAnrMonMoveDirection.Size = New System.Drawing.Size(84, 13)
+        Me.LAnrMonMoveDirection.TabIndex = 913
+        Me.LAnrMonMoveDirection.Text = "Einblenden von:"
         '
         'formCfg
         '
@@ -2295,6 +2306,7 @@ Partial Class formCfg
     Friend WithEvents CBoxAnrMonMoveDirection As System.Windows.Forms.ComboBox
     Friend WithEvents CBoxAnrMonStartPosition As System.Windows.Forms.ComboBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents LAnrMonMoveDirection As System.Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class

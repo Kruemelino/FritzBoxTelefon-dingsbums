@@ -622,7 +622,7 @@ Friend Class formCfg
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
-                Dim T As New Thread(AddressOf NewMail)
+                Dim T As New Thread(AddressOf NeueMail)
                 T.Start()
                 If C_hf.FBDB_MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
                                                 "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.Information, "") = MsgBoxResult.Ok Then
@@ -762,6 +762,7 @@ Friend Class formCfg
                                                                         CBJournal.CheckedChanged, _
                                                                         CBIndexAus.CheckedChanged, _
                                                                         CBUseAnrMon.CheckedChanged, _
+                                                                        CBAnrMonMove.CheckedChanged, _
                                                                         CBStoppUhrEinblenden.CheckedChanged, _
                                                                         CBStoppUhrAusblenden.CheckedChanged, _
                                                                         CBLogFile.CheckedChanged, _
@@ -821,6 +822,9 @@ Friend Class formCfg
                         Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
                     Case "CBLogFile"
                         Me.GBLogging.Enabled = Me.CBLogFile.Checked
+                    Case "CBAnrMonMove"
+                        Me.CBoxAnrMonMoveDirection.Enabled = Me.CBAnrMonMove.Checked
+                        Me.LAnrMonMoveDirection.Enabled = Me.CBAnrMonMove.Checked
                 End Select
             Case "TextBox"
                 Select Case CType(sender, TextBox).Name
@@ -913,9 +917,9 @@ Friend Class formCfg
         Return True
     End Function
 
-    Private Sub NewMail()
+    Private Sub NeueMail()
         Dim NeueFW As Boolean
-        Dim SID As String = C_DP.P_Def_SessionID
+        Dim sSID As String = C_DP.P_Def_SessionID
         Dim URL As String
 
 
@@ -927,10 +931,9 @@ Friend Class formCfg
         Dim FBBenutzer As String
         Dim FBPasswort As String
 
-        'C_FBox = Nothing
-        'C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         C_FBox.SetEventProvider(emc)
-        Do While SID = C_DP.P_Def_SessionID
+
+        Do While sSID = C_DP.P_Def_SessionID
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
@@ -938,14 +941,15 @@ Friend Class formCfg
                     Exit Sub
                 End If
             End If
-            SID = C_FBox.FBLogIn(NeueFW, FBBenutzer, FBPasswort)
+            sSID = C_FBox.FBLogIn(NeueFW, FBBenutzer, FBPasswort)
         Loop
 
         If NeueFW Then
-            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & SID
+            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & sSID
         Else
-            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & SID & "&getpage=&var:lang=de&var:menu=fon&var:pagename=fondevices"
+            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
+
         MailText = C_hf.httpGET(URL, FBEncoding, Nothing)
 
         With My.Computer.FileSystem
