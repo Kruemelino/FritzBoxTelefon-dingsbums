@@ -29,7 +29,7 @@ Public Class PopupStoppuhrForm
     Private iHeightOfTelNr As Integer
     Public Event CloseClickStoppUhr()
 
-    Sub New(ByVal Parent As Stoppuhr)
+    Sub New(ByVal Parent As PopUpStoppUhr)
         pnParent = Parent
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.ResizeRedraw, True)
@@ -47,12 +47,12 @@ Public Class PopupStoppuhrForm
             Return True
         End Get
     End Property
-    Private pnParent As Stoppuhr
-    Shadows Property Parent() As Stoppuhr
+    Private pnParent As PopUpStoppUhr
+    Shadows Property Parent() As PopUpStoppUhr
         Get
             Return pnParent
         End Get
-        Set(ByVal value As Stoppuhr)
+        Set(ByVal value As PopUpStoppUhr)
             pnParent = value
         End Set
     End Property

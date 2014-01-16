@@ -8,14 +8,14 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums Stoppuhr")> 
+<Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums Anrufmonitor")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")> 
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")> 
 <Assembly: AssemblyCopyright("")> 
 <Assembly: AssemblyTrademark("")> 
 
-<Assembly: ComVisible(True)> 
+<Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("411894A1-05D5-4F89-B336-4A4175D5E537")> 
@@ -31,5 +31,7 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.4.3.7")> 
-<Assembly: AssemblyFileVersion("3.4.3.7")> 
+
+<Assembly: AssemblyVersion("3.6.30.0")> 
+<Assembly: AssemblyFileVersion("3.6.30.0")> 
+

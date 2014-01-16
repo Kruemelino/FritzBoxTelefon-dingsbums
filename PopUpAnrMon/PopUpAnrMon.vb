@@ -1,12 +1,12 @@
 Imports System.ComponentModel
 <DefaultEvent("LinkClick")> _
-Public Class PopupNotifier
+Public Class PopUpAnrMon
     Inherits Component
 
     Event LinkClick()
     Event Close()
     Event Closed()
-    Private WithEvents fPopup As New PopupNotifierForm(Me)
+    Private WithEvents fPopup As New PopUpAnrMonForm(Me)
     Private WithEvents tmAnimation As New Timer
     Private WithEvents tmWait As New Timer
 

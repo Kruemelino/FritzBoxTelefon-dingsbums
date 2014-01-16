@@ -6,7 +6,7 @@
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
-        With Stoppuhr
+        With PopUpStoppUhr
             .Anruf = Anrufer
             .StartZeit = sz
             .WarteZeit = WarteZeit
@@ -21,15 +21,15 @@
     End Sub
 
     Public Sub Stopp()
-        Stoppuhr.StoppuhrStopp()
+        PopUpStoppUhr.StoppuhrStopp()
     End Sub
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
 
-    Private Sub Stoppuhr_Close() Handles Stoppuhr.Close
-        Position = Stoppuhr.StartPosition
+    Private Sub Stoppuhr_Close() Handles PopUpStoppUhr.Close
+        Position = PopUpStoppUhr.StartPosition
         StUhrClosed = True
         Me.Finalize()
     End Sub

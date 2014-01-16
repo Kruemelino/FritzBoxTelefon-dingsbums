@@ -58,8 +58,8 @@ Friend Class formAnrMon
             .EffektMove = C_DP.P_CBAnrMonMove
             .EffektTransparenz = C_DP.P_CBAnrMonTransp
 
-            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopupNotifier.eStartPosition) 'FritzBoxDial.PopupNotifier.eStartPosition.BottomRight
-            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopupNotifier.eMoveDirection) 'FritzBoxDial.PopupNotifier.eMoveDirection.X
+            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopupNotifier.eStartPosition.BottomRight
+            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopupNotifier.eMoveDirection.X
 
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             ' If .MoveDirecktion = FritzBoxDial.PopupNotifier.eMoveDirection.X Then .EffektMoveGeschwindigkeit \= 4

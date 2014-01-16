@@ -10,7 +10,7 @@
     <StartupObject>
     </StartupObject>
     <RootNamespace>FritzBoxDial</RootNamespace>
-    <AssemblyName>PopupNotifier</AssemblyName>
+    <AssemblyName>PopupAnrMon</AssemblyName>
     <MyType>Windows</MyType>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -84,10 +84,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="PopupNotifier.vb">
+    <Compile Include="PopUpAnrMon.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PopupNotifierForm.vb">
+    <Compile Include="PopUpAnrMonForm.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -98,9 +98,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PopupNotifierForm.resx">
+    <EmbeddedResource Include="PopUpAnrMonForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>PopupNotifierForm.vb</DependentUpon>
+      <DependentUpon>PopUpAnrMonForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

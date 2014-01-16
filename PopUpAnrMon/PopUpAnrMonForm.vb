@@ -2,7 +2,7 @@ Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 
 <System.ComponentModel.DefaultPropertyAttribute("Content"), System.ComponentModel.DesignTimeVisible(False)> _
-Public Class PopupNotifierForm
+Public Class PopUpAnrMonForm
     Inherits System.Windows.Forms.Form
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -15,7 +15,7 @@ Public Class PopupNotifierForm
     '               online service, or distribute as source 
     '               on any media without express permission.
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Sub New(ByVal Parent As PopupNotifier)
+    Sub New(ByVal Parent As PopUpAnrMon)
         pnParent = Parent
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.ResizeRedraw, True)
@@ -51,12 +51,12 @@ Public Class PopupNotifierForm
             Return True
         End Get
     End Property
-    Private pnParent As PopupNotifier
-    Shadows Property Parent() As PopupNotifier
+    Private pnParent As PopUpAnrMon
+    Shadows Property Parent() As PopUpAnrMon
         Get
             Return pnParent
         End Get
-        Set(ByVal value As PopupNotifier)
+        Set(ByVal value As PopUpAnrMon)
             pnParent = value
         End Set
     End Property

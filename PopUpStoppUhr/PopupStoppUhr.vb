@@ -1,7 +1,7 @@
 Imports System.ComponentModel
 Imports System.Timers
 
-Public Class Stoppuhr
+Public Class PopUpStoppUhr
     Inherits Component
     Private WithEvents fStopUhr As New PopupStoppuhrForm(Me)
     Private WithEvents TimerZeit As New Timer

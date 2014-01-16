@@ -10,7 +10,7 @@
     <StartupObject>
     </StartupObject>
     <RootNamespace>FritzBoxDial</RootNamespace>
-    <AssemblyName>Stoppuhr</AssemblyName>
+    <AssemblyName>PopUpStoppuhr</AssemblyName>
     <MyType>Windows</MyType>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
