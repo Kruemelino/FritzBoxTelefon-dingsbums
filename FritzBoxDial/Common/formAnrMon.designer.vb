@@ -61,23 +61,28 @@ Partial Class formAnrMon
         '
         'PopUpAnrMon
         '
-        Me.PopUpAnrMon.AnrName = Nothing
-        Me.PopUpAnrMon.ContentFont = New System.Drawing.Font("Tahoma", 8.0!)
-        Me.PopUpAnrMon.Firma = Nothing
+        Me.PopUpAnrMon.AnrName = "Anrufername"
+        Me.PopUpAnrMon.AutoAusblenden = False
+        Me.PopUpAnrMon.BorderColor = System.Drawing.SystemColors.WindowText
+        Me.PopUpAnrMon.ButtonHoverColor = System.Drawing.Color.Orange
+        Me.PopUpAnrMon.ContentFont = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PopUpAnrMon.Firma = "Firmenname"
+        Me.PopUpAnrMon.HeaderColor = System.Drawing.SystemColors.ControlDarkDark
         Me.PopUpAnrMon.Image = Nothing
-        Me.PopUpAnrMon.ImagePosition = New System.Drawing.Point(12, 21)
-        Me.PopUpAnrMon.ImageSize = New System.Drawing.Size(32, 32)
-        Me.PopUpAnrMon.MoveDirecktion = FritzBoxDial.PopUpAnrMon.eMoveDirection.Y
-        Me.PopUpAnrMon.OptionsMenu = Nothing
+        Me.PopUpAnrMon.ImagePosition = New System.Drawing.Point(12, 32)
+        Me.PopUpAnrMon.ImageSize = New System.Drawing.Size(48, 48)
+        Me.PopUpAnrMon.LinkHoverColor = System.Drawing.SystemColors.Highlight
+        Me.PopUpAnrMon.OptionsButton = True
+        Me.PopUpAnrMon.OptionsMenu = Me.ContextMenuStrip1
         Me.PopUpAnrMon.PositionsKorrektur = New System.Drawing.Size(0, 0)
         Me.PopUpAnrMon.Size = New System.Drawing.Size(400, 100)
-        Me.PopUpAnrMon.Startpunkt = FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
-        Me.PopUpAnrMon.TelName = Nothing
-        Me.PopUpAnrMon.TelNr = Nothing
-        Me.PopUpAnrMon.TelNrFont = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.PopUpAnrMon.TextPadding = New System.Windows.Forms.Padding(0)
-        Me.PopUpAnrMon.TitleFont = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.PopUpAnrMon.Uhrzeit = Nothing
+        Me.PopUpAnrMon.TelName = "Telefonname"
+        Me.PopUpAnrMon.TelNr = "01156 +49 (0815) 0123456789"
+        Me.PopUpAnrMon.TelNrFont = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PopUpAnrMon.TextPadding = New System.Windows.Forms.Padding(5)
+        Me.PopUpAnrMon.TitleColor = System.Drawing.SystemColors.ControlText
+        Me.PopUpAnrMon.TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PopUpAnrMon.Uhrzeit = "07.09.09 12:00:00"
         '
         'formAnrMon
         '
@@ -90,11 +95,10 @@ Partial Class formAnrMon
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents PopupNotifier As PopUpAnrMon
+    Friend WithEvents PopUpAnrMon As FritzBoxDial.PopUpAnrMon
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ToolStripMenuItemRückruf As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItemKopieren As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItemKontaktöffnen As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents PopUpAnrMon As FritzBoxDial.PopUpAnrMon
 
 End Class

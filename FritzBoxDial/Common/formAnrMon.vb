@@ -51,20 +51,17 @@ Friend Class formAnrMon
         End If
         C_OLI.InspectorVerschieben(True)
 
-        With PopupNotifier
+        With PopUpAnrMon
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
             .AutoAusblenden = C_DP.P_CBAutoClose
             .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
             .EffektMove = C_DP.P_CBAnrMonMove
             .EffektTransparenz = C_DP.P_CBAnrMonTransp
 
-            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopupNotifier.eStartPosition.BottomRight
-            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopupNotifier.eMoveDirection.X
+            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
+            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
 
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
-            ' If .MoveDirecktion = FritzBoxDial.PopupNotifier.eMoveDirection.X Then .EffektMoveGeschwindigkeit \= 4
-
-            ' Hier Startposition aus Einstellungen übergeben. Jetzt Dummy
             .Popup()
         End With
         C_OLI.InspectorVerschieben(False)
@@ -105,7 +102,7 @@ Friend Class formAnrMon
         End With
 
         TelefonName = C_AnrMon.TelefonName(MSN)
-        With PopupNotifier
+        With PopUpAnrMon
             If TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
                     .Items("ToolStripMenuItemRückruf").Enabled = False ' kein Rückruf im Fall 1
@@ -122,14 +119,14 @@ Friend Class formAnrMon
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
-                    C_OLI.KontaktInformation(KontaktID, StoreID, PopupNotifier.AnrName, PopupNotifier.Firma)
+                    C_OLI.KontaktInformation(KontaktID, StoreID, PopUpAnrMon.AnrName, PopUpAnrMon.Firma)
                     If C_DP.P_CBAnrMonContactImage Then
                         Dim BildPfad = C_OLI.KontaktBild(KontaktID, StoreID)
                         If Not BildPfad = C_DP.P_Def_StringEmpty Then
-                            PopupNotifier.Image = Drawing.Image.FromFile(BildPfad)
+                            PopUpAnrMon.Image = Drawing.Image.FromFile(BildPfad)
                             ' Seitenverhältnisse anpassen
-                            Dim Bildgröße As New Drawing.Size(PopupNotifier.ImageSize.Width, CInt((PopupNotifier.ImageSize.Width * PopupNotifier.Image.Size.Height) / PopupNotifier.Image.Size.Width))
-                            PopupNotifier.ImageSize = Bildgröße
+                            Dim Bildgröße As New Drawing.Size(PopUpAnrMon.ImageSize.Width, CInt((PopUpAnrMon.ImageSize.Width * PopUpAnrMon.Image.Size.Height) / PopUpAnrMon.Image.Size.Width))
+                            PopUpAnrMon.ImageSize = Bildgröße
                         End If
                     End If
                 Catch ex As Exception
@@ -158,8 +155,8 @@ Friend Class formAnrMon
         End With
     End Sub
 
-    Private Sub PopupNotifier_Close() Handles PopupNotifier.Close
-        PopupNotifier.Hide()
+    Private Sub PopupNotifier_Close() Handles PopUpAnrMon.Close
+        PopUpAnrMon.Hide()
     End Sub
 
     Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click
@@ -167,26 +164,26 @@ Friend Class formAnrMon
     End Sub
 
     Private Sub ToolStripMenuItemKopieren_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemKopieren.Click
-        With PopupNotifier
+        With PopUpAnrMon
             My.Computer.Clipboard.SetText(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
         End With
     End Sub
 
-    Private Sub PopupNotifier_Closed() Handles PopupNotifier.Closed
+    Private Sub PopupNotifier_Closed() Handles PopUpAnrMon.Closed
         AnrmonClosed = True
         If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
-    Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopupNotifier.LinkClick
+    Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
         C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, C_DP.P_Def_StringEmpty)
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
-        Dim VergleichString As String = PopupNotifier.AnrName
+        Dim VergleichString As String = PopUpAnrMon.AnrName
         AnrMonausfüllen()
-        If Not VergleichString = PopupNotifier.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
+        If Not VergleichString = PopUpAnrMon.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
     Protected Overrides Sub Finalize()
