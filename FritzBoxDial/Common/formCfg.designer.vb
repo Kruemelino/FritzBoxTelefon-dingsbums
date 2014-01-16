@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -120,6 +120,7 @@ Partial Class formCfg
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.LAnrMonMoveDirection = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.CBoxAnrMonMoveDirection = New System.Windows.Forms.ComboBox()
         Me.CBoxAnrMonStartPosition = New System.Windows.Forms.ComboBox()
@@ -194,7 +195,6 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.LAnrMonMoveDirection = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -1038,9 +1038,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1052,9 +1052,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1066,9 +1066,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1280,6 +1280,15 @@ Partial Class formCfg
         Me.GroupBox6.TabIndex = 15
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Aussehen anpassen"
+        '
+        'LAnrMonMoveDirection
+        '
+        Me.LAnrMonMoveDirection.AutoSize = True
+        Me.LAnrMonMoveDirection.Location = New System.Drawing.Point(133, 147)
+        Me.LAnrMonMoveDirection.Name = "LAnrMonMoveDirection"
+        Me.LAnrMonMoveDirection.Size = New System.Drawing.Size(84, 13)
+        Me.LAnrMonMoveDirection.TabIndex = 913
+        Me.LAnrMonMoveDirection.Text = "Einblenden von:"
         '
         'Label19
         '
@@ -2059,15 +2068,6 @@ Partial Class formCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
-        '
-        'LAnrMonMoveDirection
-        '
-        Me.LAnrMonMoveDirection.AutoSize = True
-        Me.LAnrMonMoveDirection.Location = New System.Drawing.Point(133, 147)
-        Me.LAnrMonMoveDirection.Name = "LAnrMonMoveDirection"
-        Me.LAnrMonMoveDirection.Size = New System.Drawing.Size(84, 13)
-        Me.LAnrMonMoveDirection.TabIndex = 913
-        Me.LAnrMonMoveDirection.Text = "Einblenden von:"
         '
         'formCfg
         '

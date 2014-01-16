@@ -140,7 +140,7 @@ und Start von Outlook stattgefunden haben, in das Journal importiert. </value>
   <data name="Label24.ToolTip" xml:space="preserve">
     <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
 %L für die Landesvorwahl,
-%V für die Ortsvorwahl und 
+%O für die Ortsvorwahl und 
 %N für die Anschlussnummer.
 Optional kann %D für die Durchwahl angegeben werden.
 Beispiele:
@@ -151,7 +151,7 @@ Beispiele:
   <data name="TBTelNrMaske.ToolTip" xml:space="preserve">
     <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
 %L für die Landesvorwahl,
-%V für die Ortsvorwahl und 
+%O für die Ortsvorwahl und 
 %N für die Anschlussnummer.
 Optional kann %D für die Durchwahl angegeben werden.
 Beispiele:
@@ -188,6 +188,33 @@ Datenschutzhinweis:
          2. Bei der Suche nach Call-By-Call Anbietern wird die zu wählende Nummer an Billiger-Telefonieren.de
              übermittelt. Bitte die Hinweise von Billiger-Telefonieren.de beachten!</value>
   </data>
+  <metadata name="ColumnStandardTelefon.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Nr.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dialCode.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Typ.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Telefonname.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="OutNr.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Eingehend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Ausgehend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Gesamt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="ColumnStandardTelefon.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
