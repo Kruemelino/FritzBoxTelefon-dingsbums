@@ -1189,19 +1189,19 @@ Public Class FritzBox
                     End If
                 End If
             Next
-            If CDbl(DialPort) > 50 And CDbl(DialPort) < 60 Then
-                DialPort = "50"
-                PushStatus("S0-Basis hinzugefügt.")
-                If P_SpeichereDaten Then
-                    NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
-                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
-                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
-                    C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+            If Not DialPort = C_DP.P_Def_StringEmpty Then
+                If CDbl(DialPort) > 50 And CDbl(DialPort) < 60 Then
+                    DialPort = "50"
+                    PushStatus("S0-Basis hinzugefügt.")
+                    If P_SpeichereDaten Then
+                        NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
+                        AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                        AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
+                        C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                    End If
                 End If
-
             End If
-
             xPathTeile.Item(xPathTeile.IndexOf("S0")) = "TAM"
             ' TAM
             tmpstrUser = Split(.StringEntnehmen(Code, "['tam:settings/TAM/list(" & .StringEntnehmen(Code, "['tam:settings/TAM/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
