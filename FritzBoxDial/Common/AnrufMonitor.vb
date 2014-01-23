@@ -1273,7 +1273,7 @@ Friend Class AnrufMonitor
         index = CInt(C_DP.Read(ListName, "Index", "0"))
 
         xPathTeile.Add(ListName)
-        xPathTeile.Add("Eintrag[@ID=""" & index & """]")
+        xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
         If Not C_hf.TelNrVergleich(C_DP.Read(xPathTeile, "0"), TelNr) Then
 
@@ -1309,13 +1309,19 @@ Friend Class AnrufMonitor
             AttributeValues.Add(CStr(index))
 
             With C_DP
-                xPathTeile.RemoveRange(0, xPathTeile.Count)
+                xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
                 xPathTeile.Add(ListName)
                 xPathTeile.Add("Index")
                 .Write(xPathTeile, CStr((index + 1) Mod 10))
                 xPathTeile.Remove("Index")
                 .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
             End With
+        Else
+            ' Zeit anpassen
+            If Not Zeit = C_DP.P_Def_StringEmpty Then
+                xPathTeile.Item(xPathTeile.Count - 1) = "Zeit"
+                C_DP.Write(xPathTeile, Zeit)
+            End If
         End If
         xPathTeile = Nothing
         NodeNames = Nothing
