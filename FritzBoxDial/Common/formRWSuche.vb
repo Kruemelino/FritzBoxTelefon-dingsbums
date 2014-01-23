@@ -179,14 +179,14 @@ Public Class formRWSuche
             Do
                 ' Webseite für Rückwärtssuche aufrufen und herunterladen
                 myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tmpTelNr
-                htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
+                htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
                 If Not HTMLFehler Then
                     htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
                     ' Link zum Herunterladen der vCard suchen
                     EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
                     If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
                         myurl = "http://classic.11880.com" & EintragsID
-                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
+                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
                         If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                     End If
                     ' Rückgabewert ermitteln
