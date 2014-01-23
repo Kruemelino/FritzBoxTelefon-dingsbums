@@ -269,7 +269,6 @@ Public Class FritzBox
                 FBLogOut(sSID)
             Else
                 FritzBoxDatenA(sLink)
-                'C_hf.FBDB_MsgBox("Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.", MsgBoxStyle.Critical, "FritzBoxDaten #3")
             End If
         Else
             FritzBoxDatenA()
