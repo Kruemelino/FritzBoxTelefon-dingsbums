@@ -32,7 +32,7 @@ Partial Class formStoppUhr
         'PopUpStoppUhr
         '
         Me.PopUpStoppUhr.Anruf = Nothing
-        Me.PopUpStoppUhr.ContentFont = New System.Drawing.Font("Tahoma", 8.0!)
+        Me.PopUpStoppUhr.ContentFont = New System.Drawing.Font("Tahoma", 18.0!)
         Me.PopUpStoppUhr.EndeZeit = Nothing
         Me.PopUpStoppUhr.MSN = Nothing
         Me.PopUpStoppUhr.Richtung = Nothing
