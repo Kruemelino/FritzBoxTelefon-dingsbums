@@ -65,12 +65,12 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 [Files]
 ;Office 2003
-#ifexist "2003\FritzBoxDial.dll" AND "2003\FritzBoxDial.dll.manifest" AND "2003\Funktionen.dll" AND "2003\PopupAnrMon.dll" AND "2003\PopUpStoppuhr.dll"
+#ifexist "2003\FritzBoxDial.dll" AND "2003\FritzBoxDial.dll.manifest" AND "2003\Funktionen.dll" AND "2003\PopUpAnrMon.dll" AND "2003\PopUpStoppUhr.dll"
   Source: "2003\FritzBoxDial.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
   Source: "2003\FritzBoxDial.dll.manifest"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
   Source: "2003\Funktionen.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
-  Source: "2003\PopupAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
-  Source: "2003\PopUpStoppuhr.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
+  Source: "2003\PopUpAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
+  Source: "2003\PopUpStoppUhr.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
 #endif
 #ifexist "2003\setcaspol.exe"
   Source: "2003\setcaspol.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
@@ -79,16 +79,16 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 #ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopupAnrMon.pdb" AND "2003\PopUpStoppuhr.pdb"
   Source: "2003\FritzBoxDial.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
   Source: "2003\Funktionen.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
-  Source: "2003\PopupAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
-  Source: "2003\PopUpStoppuhr.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
+  Source: "2003\PopUpAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
+  Source: "2003\PopUpStoppUhr.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
 #endif
 ;Office 2007
-#ifexist "2007\Fritz!Box Telefon-Dingsbums.dll" AND "2007\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2007\Fritz!Box Telefon-Dingsbums.vsto" AND "2007\Funktionen.dll" AND "2007\PopupAnrMon.dll" AND "2007\PopUpStoppuhr.dll"
+#ifexist "2007\Fritz!Box Telefon-Dingsbums.dll" AND "2007\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2007\Fritz!Box Telefon-Dingsbums.vsto" AND "2007\Funktionen.dll" AND "2007\PopUpAnrMon.dll" AND "2007\PopUpStoppuhr.dll"
   Source: "2007\Fritz!Box Telefon-Dingsbums.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
   Source: "2007\Fritz!Box Telefon-Dingsbums.dll.manifest"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
   Source: "2007\Fritz!Box Telefon-Dingsbums.vsto"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
   Source: "2007\Funktionen.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
-  Source: "2007\PopupAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
+  Source: "2007\PopUpAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
   Source: "2007\PopUpStoppuhr.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
 #endif
 ;Office 2007 - Debuginformationen
@@ -99,12 +99,12 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
   Source: "2007\PopUpStoppuhr.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
 #endif
 ;Office 2010
-#ifexist "2010\Fritz!Box Telefon-Dingsbums.dll" AND "2010\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2010\Fritz!Box Telefon-Dingsbums.vsto" AND "2010\Funktionen.dll" AND "2010\PopupAnrMon.dll" AND "2010\PopUpStoppuhr.dll"
+#ifexist "2010\Fritz!Box Telefon-Dingsbums.dll" AND "2010\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2010\Fritz!Box Telefon-Dingsbums.vsto" AND "2010\Funktionen.dll" AND "2010\PopUpAnrMon.dll" AND "2010\PopUpStoppuhr.dll"
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll.manifest"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
   Source: "2010\Fritz!Box Telefon-Dingsbums.vsto"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
   Source: "2010\Funktionen.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
-  Source: "2010\PopupAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
+  Source: "2010\PopUpAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
   Source: "2010\PopUpStoppuhr.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
 #endif
 ;Office 2010 - Debuginformationen
@@ -140,13 +140,13 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 ;Office 2003
 Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Start..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\FritzBoxDial.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden ; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: FritzBoxDial.dll..."
-  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopupAnrMon.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopupAnrMon.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopupAnrMon.dll..."
-  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopUpStoppuhr.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpStoppuhr.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopUpStoppuhr.dll..."
+  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopUpAnrMon.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpAnrMon.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopUpAnrMon.dll..."
+  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopUpStoppUhr.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpStoppUhr.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopUpStoppUhr.dll..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\Funktionen.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (Funktionen.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
-#ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopupNotifier.pdb" AND "2003\Stoppuhr.pdb"
+#ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopUpAnrMon.pdb" AND "2003\PopUpStoppUhr.pdb"
 	Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\FritzBoxDial.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (FritzBoxDial.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: FritzBoxDial.pdb..."
-  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopupAnrMon.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopupAnrMon.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopupAnrMon.pdb..."
-  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopUpStoppuhr.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpStoppuhr.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopUpStoppuhr.pdb..."
+  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopUpAnrMon.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpAnrMon.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopUpAnrMon.pdb..."
+  Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopUpStoppUhr.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpStoppUhr.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopUpStoppUhr.pdb..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\Funktionen.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (Funktionen.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.pdb..."
 #endif
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Ende!"

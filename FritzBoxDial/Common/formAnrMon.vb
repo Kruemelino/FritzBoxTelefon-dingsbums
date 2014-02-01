@@ -155,7 +155,7 @@ Friend Class formAnrMon
         End With
     End Sub
 
-    Private Sub PopupNotifier_Close() Handles PopUpAnrMon.Close
+    Private Sub PopUpAnrMon_Close() Handles PopUpAnrMon.Close
         PopUpAnrMon.Hide()
     End Sub
 
@@ -169,7 +169,7 @@ Friend Class formAnrMon
         End With
     End Sub
 
-    Private Sub PopupNotifier_Closed() Handles PopUpAnrMon.Closed
+    Private Sub PopUpAnrMon_Closed() Handles PopUpAnrMon.Closed
         AnrmonClosed = True
         If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub

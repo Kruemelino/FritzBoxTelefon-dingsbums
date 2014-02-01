@@ -104,14 +104,14 @@ Public Class PopupStoppuhrForm
 
 #Region "Events"
 
-    Private Sub PopupNotifierForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+    Private Sub PopupStoppuhrForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
         If Not RectClose.Contains(e.X, e.Y) Then
             ReleaseCapture()
             SendMessage(Me.Handle.ToInt32, WM_NCLBUTTONDOWN, HTCAPTION, 0)
         End If
     End Sub
 
-    Private Sub PopupNotifierForm_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
+    Private Sub PopupStoppuhrForm_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
         If RectClose.Contains(e.X, e.Y) Then
             bMouseOnClose = True
         Else
@@ -120,7 +120,7 @@ Public Class PopupStoppuhrForm
         Invalidate()
     End Sub
 
-    Private Sub PopupNotifierForm_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
+    Private Sub PopupStoppuhrForm_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
         If RectClose.Contains(e.X, e.Y) Then
             Me.Close()
             RaiseEvent CloseClickStoppUhr()

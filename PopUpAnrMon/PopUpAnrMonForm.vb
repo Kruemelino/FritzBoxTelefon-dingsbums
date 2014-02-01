@@ -26,11 +26,11 @@ Public Class PopUpAnrMonForm
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'PopupNotifierForm
+        'PopUpAnrMonForm
         '
         Me.ClientSize = New System.Drawing.Size(392, 66)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "PopupNotifierForm"
+        Me.Name = "PopUpAnrMonForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.ResumeLayout(True)
     End Sub
