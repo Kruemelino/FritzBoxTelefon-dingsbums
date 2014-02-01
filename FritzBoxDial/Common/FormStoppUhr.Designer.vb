@@ -2,7 +2,7 @@
 Partial Class formStoppUhr
     Inherits System.Windows.Forms.Form
 #If OVer = 11 Then
-    Friend WithEvents Stoppuhr As FritzBoxDial.Stoppuhr
+    Friend WithEvents Stoppuhr As FritzBoxDial.PopUpStoppUhr
 #Else
 #End If
 

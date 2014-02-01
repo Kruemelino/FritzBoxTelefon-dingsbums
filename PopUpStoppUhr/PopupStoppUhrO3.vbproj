@@ -8,7 +8,7 @@
     <ProjectGuid>{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>FritzBoxDial</RootNamespace>
-    <AssemblyName>StoppUhr</AssemblyName>
+    <AssemblyName>PopUpStoppUhr</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>

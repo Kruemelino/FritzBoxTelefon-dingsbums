@@ -288,13 +288,13 @@
       <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
       <Name>FunktionenO3</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PopupNotifier\PopupNotifierO3.vbproj">
+    <ProjectReference Include="..\..\PopUpAnrMon\PopUpAnrufMonitorO3.vbproj">
       <Project>{D8D8FAB5-B82D-4363-82B4-E6C295074075}</Project>
-      <Name>PopupNotifierO3</Name>
+      <Name>PopUpAnrufMonitorO3</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\StoppUhr\StoppUhrO3.vbproj">
+    <ProjectReference Include="..\..\PopUpStoppUhr\PopUpStoppUhrO3.vbproj">
       <Project>{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}</Project>
-      <Name>StoppUhrO3</Name>
+      <Name>PopUpStoppUhrO3</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
