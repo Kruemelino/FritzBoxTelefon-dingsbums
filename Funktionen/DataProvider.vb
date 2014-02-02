@@ -1226,7 +1226,7 @@ Public Class DataProvider
 #End Region
 
 #Region "Debug Properties"
-    Public ReadOnly Property P_Debug_SaveToFile() As Boolean
+    Public ReadOnly Property P_Debug_Use_WebClient() As Boolean
         Get
             Return False
         End Get

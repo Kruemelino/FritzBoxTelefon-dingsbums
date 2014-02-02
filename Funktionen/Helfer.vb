@@ -606,25 +606,43 @@ Public Class Helfer
     Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
         httpGET = C_DP.P_Def_StringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
-
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp
-                With CType(HttpWebRequest.Create(UniformResourceIdentifier), HttpWebRequest)
-                    .Method = WebRequestMethods.Http.Get
-                    .Proxy = Nothing
-                    .KeepAlive = False
-                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-                    Try
-                        With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
-                            httpGET = .ReadToEnd()
-                            .Close()
-                            .Dispose()
-                        End With
-                    Catch ex As Exception
-                        LogFile("Fehler in httpGET: " & ex.Message & ", URL: " & Link)
-                        FBError = True
-                    End Try
-                End With
+                If C_DP.P_Debug_Use_WebClient Then
+                    Dim webClient As New WebClient
+                    With webClient
+                        .Encoding = Encoding
+                        .Proxy = Nothing
+                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                        .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+                        Try
+                            httpGET = .DownloadString(UniformResourceIdentifier)
+                        Catch exANE As ArgumentNullException
+                            FBError = True
+                            LogFile("httpGET: " & exANE.Message)
+                        Catch exWE As WebException
+                            FBError = True
+                            LogFile("httpGET: " & exWE.Message & " - Link: " & Link)
+                        End Try
+                    End With
+                Else
+                    With CType(HttpWebRequest.Create(UniformResourceIdentifier), HttpWebRequest)
+                        .Method = WebRequestMethods.Http.Get
+                        .Proxy = Nothing
+                        .KeepAlive = False
+                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                        Try
+                            With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                                httpGET = .ReadToEnd()
+                                .Close()
+                                .Dispose()
+                            End With
+                        Catch ex As Exception
+                            LogFile("Fehler in httpGET: " & ex.Message & ", URL: " & Link)
+                            FBError = True
+                        End Try
+                    End With
+                End If
             Case Uri.UriSchemeFile
                 With My.Computer.FileSystem
                     If .FileExists(Link) Then
@@ -641,37 +659,59 @@ Public Class Helfer
 
     End Function
 
-    Public Function httpPOST(ByVal Link As String, ByVal data As String, ByVal Encoding As System.Text.Encoding) As String
+    Public Function httpPOST(ByVal Link As String, ByVal Daten As String, ByVal ZeichenCodierung As System.Text.Encoding) As String
         httpPOST = C_DP.P_Def_StringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
-
         If UniformResourceIdentifier.Scheme = Uri.UriSchemeHttp Then
+            If C_DP.P_Debug_Use_WebClient Then
+                Dim webClient As New WebClient
+                With webClient
+                    .Encoding = ZeichenCodierung
+                    .Proxy = Nothing
+                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-            With CType(HttpWebRequest.Create(UniformResourceIdentifier), HttpWebRequest)
-                .Method = WebRequestMethods.Http.Post
-                .Proxy = Nothing
-                .KeepAlive = True
-                .ContentLength = data.Length
-                .ContentType = C_DP.P_Def_Header_ContentType
-                .Accept = C_DP.P_Def_Header_Accept
-                .UserAgent = C_DP.P_Def_Header_UserAgent
-                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-                Try
-                    With New IO.StreamWriter(.GetRequestStream)
-                        .Write(data)
-                        ThreadSleep(100)
-                        .Close()
+                    With .Headers
+                        .Add(HttpRequestHeader.ContentLength, Daten.Length.ToString)
+                        .Add(HttpRequestHeader.UserAgent, C_DP.P_Def_Header_UserAgent)
+                        .Add(HttpRequestHeader.KeepAlive, "True")
+                        .Add(HttpRequestHeader.Accept, C_DP.P_Def_Header_Accept)
                     End With
 
-                    With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), Encoding)
-                        httpPOST = .ReadToEnd()
-                        'ThreadSleep(1000)
-                        .Close()
-                    End With
-                Catch ex As Exception
-                    LogFile("Fehler in httpPOST: " & ex.Message & ", URL: " & Link & ", PostData: " & data)
-                End Try
-            End With
+                    Try
+                        httpPOST = .UploadString(UniformResourceIdentifier, Daten)
+                    Catch exANE As ArgumentNullException
+                        LogFile("httpPOST: " & exANE.Message)
+                    Catch exWE As WebException
+                        LogFile("httpPOST: " & exWE.Message & " - Link: " & Link)
+                    End Try
+                End With
+            Else
+                With CType(HttpWebRequest.Create(UniformResourceIdentifier), HttpWebRequest)
+                    .Method = WebRequestMethods.Http.Post
+                    .Proxy = Nothing
+                    .KeepAlive = True
+                    .ContentLength = Daten.Length
+                    .ContentType = C_DP.P_Def_Header_ContentType
+                    .Accept = C_DP.P_Def_Header_Accept
+                    .UserAgent = C_DP.P_Def_Header_UserAgent
+                    .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                    Try
+                        With New IO.StreamWriter(.GetRequestStream)
+                            .Write(Daten)
+                            ThreadSleep(100)
+                            .Close()
+                        End With
+
+                        With New IO.StreamReader(CType(.GetResponse, HttpWebResponse).GetResponseStream(), ZeichenCodierung)
+                            httpPOST = .ReadToEnd()
+                            'ThreadSleep(1000)
+                            .Close()
+                        End With
+                    Catch ex As Exception
+                        LogFile("Fehler in httpPOST: " & ex.Message & ", URL: " & Link & ", PostData: " & Daten)
+                    End Try
+                End With
+            End If
         End If
     End Function
 #End Region
