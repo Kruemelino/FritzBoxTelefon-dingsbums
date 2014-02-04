@@ -921,8 +921,6 @@ Friend Class formCfg
         Dim NeueFW As Boolean
         Dim sSID As String = C_DP.P_Def_SessionID
         Dim URL As String
-
-
         Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
         Dim MailText As String
         Dim PfadTMPfile As String
@@ -937,7 +935,7 @@ Friend Class formCfg
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
-                If C_hf.FBDB_MsgBox("Haben Sie das Passwort vergessen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
+                If C_hf.FBDB_MsgBox("Abbrechen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
                     Exit Sub
                 End If
             End If
@@ -960,7 +958,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_hf.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
+        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_FBox.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
     End Sub
 
     Public Function SetTelNrListe() As Boolean
