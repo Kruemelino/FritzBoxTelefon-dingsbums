@@ -235,28 +235,6 @@ Public Class Helfer
 
     End Sub ' (Keyänderung) 
 
-    Public Function GetInformationSystemFritzBox(ByVal FBAdr As String) As String
-        Dim sLink As String
-        Dim FBTyp As String = C_DP.P_Def_StringUnknown
-        Dim FBFW As String = C_DP.P_Def_StringUnknown
-        Dim FritzBoxInformation() As String
-
-        If LCase(FBAdr) = C_DP.P_Def_FritzBoxAdress Then Ping(FBAdr)
-
-        sLink = "http://" & FBAdr & "/cgi-bin/system_status"
-        FritzBoxInformation = Split(StringEntnehmen(httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
-        FBTyp = FritzBoxInformation(0)
-        FBFW = Replace(Trim(GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
-
-        Return String.Concat("Ergänze bitte folgende Angaben:", vbNewLine, vbNewLine, _
-                             "Dein Name:", vbNewLine, _
-                             "Problembeschreibung:", vbNewLine, _
-                             "Datum & Uhrzeit: ", System.DateTime.Now, vbNewLine, _
-                             "Fritz!Box-Typ: ", FBTyp, vbNewLine, _
-                             "Firmware: ", FBFW, vbNewLine)
-
-    End Function
-
 #Region " Telefonnummern formatieren"
     ''' <summary>
     ''' Formatiert die Telefonnummern nach gängigen Regelm
@@ -602,7 +580,6 @@ Public Class Helfer
 #End Region
 
 #Region " HTTPTransfer"
-
     Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
         httpGET = C_DP.P_Def_StringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
@@ -619,10 +596,10 @@ Public Class Helfer
                             httpGET = .DownloadString(UniformResourceIdentifier)
                         Catch exANE As ArgumentNullException
                             FBError = True
-                            LogFile("httpGET: " & exANE.Message)
+                            LogFile("httpGET_WebClient: " & exANE.Message)
                         Catch exWE As WebException
                             FBError = True
-                            LogFile("httpGET: " & exWE.Message & " - Link: " & Link)
+                            LogFile("httpGET_WebClient: " & exWE.Message & " - Link: " & Link)
                         End Try
                     End With
                 Else
@@ -637,9 +614,12 @@ Public Class Helfer
                                 .Close()
                                 .Dispose()
                             End With
-                        Catch ex As Exception
-                            LogFile("Fehler in httpGET: " & ex.Message & ", URL: " & Link)
+                        Catch exANE As ArgumentNullException
                             FBError = True
+                            LogFile("httpGET_Stream: " & exANE.Message)
+                        Catch exWE As WebException
+                            FBError = True
+                            LogFile("httpGET_Stream: " & exWE.Message & " - Link: " & Link)
                         End Try
                     End With
                 End If
@@ -680,9 +660,9 @@ Public Class Helfer
                     Try
                         httpPOST = .UploadString(UniformResourceIdentifier, Daten)
                     Catch exANE As ArgumentNullException
-                        LogFile("httpPOST: " & exANE.Message)
+                        LogFile("httpPOST_WebClient: " & exANE.Message)
                     Catch exWE As WebException
-                        LogFile("httpPOST: " & exWE.Message & " - Link: " & Link)
+                        LogFile("httpPOST_WebClient: " & exWE.Message & " - Link: " & Link)
                     End Try
                 End With
             Else
@@ -707,8 +687,10 @@ Public Class Helfer
                             'ThreadSleep(1000)
                             .Close()
                         End With
-                    Catch ex As Exception
-                        LogFile("Fehler in httpPOST: " & ex.Message & ", URL: " & Link & ", PostData: " & Daten)
+                    Catch exANE As ArgumentNullException
+                        LogFile("httpPOST_Stream: " & exANE.Message)
+                    Catch exWE As WebException
+                        LogFile("httpPOST_Stream: " & exWE.Message & " - Link: " & Link)
                     End Try
                 End With
             End If

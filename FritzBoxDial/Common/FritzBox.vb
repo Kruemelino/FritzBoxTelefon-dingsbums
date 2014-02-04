@@ -1343,6 +1343,29 @@ Public Class FritzBox
 
 #End Region
 
+#Region "Information"
+    Public Function GetInformationSystemFritzBox(ByVal FBAdr As String) As String
+        Dim sLink As String
+        Dim FBTyp As String = C_DP.P_Def_StringUnknown
+        Dim FBFW As String = C_DP.P_Def_StringUnknown
+        Dim FritzBoxInformation() As String
+
+        If LCase(FBAdr) = C_DP.P_Def_FritzBoxAdress Then C_hf.Ping(FBAdr)
+
+        sLink = "http://" & FBAdr & "/cgi-bin/system_status"
+        FritzBoxInformation = Split(C_hf.StringEntnehmen(C_hf.httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
+        FBTyp = FritzBoxInformation(0)
+        FBFW = Replace(Trim(C_hf.GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
+
+        Return String.Concat("Ergänze bitte folgende Angaben:", vbNewLine, vbNewLine, _
+                             "Dein Name:", vbNewLine, _
+                             "Problembeschreibung:", vbNewLine, _
+                             "Datum & Uhrzeit: ", System.DateTime.Now, vbNewLine, _
+                             "Fritz!Box-Typ: ", FBTyp, vbNewLine, _
+                             "Firmware: ", FBFW, vbNewLine)
+
+    End Function
+#End Region
     Private Sub PushStatus(ByVal Status As String)
         tb.Text = Status
     End Sub
