@@ -751,7 +751,13 @@ Friend Class AnrufMonitor
             ' Daten für den Journaleintrag sichern
             If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
                 NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
-                JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
+                With xPathTeile
+                    .Clear()
+                    .Add("Journal")
+                    .Add("Eintrag[@ID=""" & ID & """]")
+                    .Add("NSN")
+                    C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
+                End With
             End If
             ' Kontakt öffnen
             If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
@@ -782,11 +788,17 @@ Friend Class AnrufMonitor
         Dim ID As Integer
         Dim Zeit As String
         Dim TelName As String = C_DP.P_Def_StringEmpty
-        If (C_DP.P_CBJournal) Or (C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
+        If C_DP.P_CBJournal Or (C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
             ID = CInt(FBStatus.GetValue(2))
             NSN = CInt(FBStatus.GetValue(3))
+            With xPathTeile
+                .Clear()
+                .Add("Journal")
+                .Add("Eintrag[@ID=""" & ID & """]")
+                .Add("MSN")
+                MSN = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+            End With
 
-            MSN = JEReadorWrite(True, ID, "MSN", "")
             If MSN = C_DP.P_Def_ErrorMinusOne Then
                 ' Wenn Journal nicht erstellt wird, muss MSN anderweitig ermittelt werden.
                 Select Case NSN
@@ -806,6 +818,7 @@ Friend Class AnrufMonitor
                         MSN = "-1"
                     Case Else
                         With xPathTeile
+                            .Clear()
                             .Add("Telefone")
                             .Add("Telefone")
                             .Add("*")
@@ -832,8 +845,15 @@ Friend Class AnrufMonitor
 
                 If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     If C_DP.P_CBJournal Then
-                        JEReadorWrite(False, ID, "NSN", CStr(FBStatus.GetValue(3)))
-                        JEReadorWrite(False, ID, "Zeit", CStr(FBStatus.GetValue(0)))
+                        With xPathTeile
+                            .Clear()
+                            .Add("Journal")
+                            .Add("Eintrag[@ID=""" & ID & """]")
+                            .Add("Zeit")
+                            C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(0)))
+                            .Item(.IndexOf("Zeit")) = "NSN"
+                            C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
+                        End With
                     End If
                     ' StoppUhr einblenden
                     If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
@@ -1165,21 +1185,6 @@ Friend Class AnrufMonitor
         LANodeValues = Nothing
     End Sub
 
-    Function JEReadorWrite(ByVal JERead As Boolean, ByVal ID As Integer, ByVal Name As String, ByVal Value As String) As String
-
-        Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("Journal")
-            .Add("Eintrag[@ID=""" & ID & """]")
-            .Add(Name)
-            If JERead Then
-                JEReadorWrite = C_DP.Read(xPathTeile, "-1")
-            Else
-                JEReadorWrite = CStr(C_DP.Write(xPathTeile, Value))
-            End If
-        End With
-        xPathTeile = Nothing
-    End Function
 
     Sub JEentfernen(ID As Integer)
         Dim xPathTeile As New ArrayList
