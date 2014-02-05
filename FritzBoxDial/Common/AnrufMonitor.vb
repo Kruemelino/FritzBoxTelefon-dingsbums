@@ -1140,31 +1140,31 @@ Friend Class AnrufMonitor
 
         ' Uhrzeit
         LANodeNames.Add("Zeit")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne
 
         ' Typ
         LANodeNames.Add("Typ")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' TelNr
         LANodeNames.Add("TelNr")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' MSN
         LANodeNames.Add("MSN")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' NSN
         LANodeNames.Add("NSN")
-        LANodeValues.Add(-1)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' StoreID
         LANodeNames.Add("StoreID")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' KontaktID
         LANodeNames.Add("KontaktID")
-        LANodeValues.Add("-1;")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
 
         With xPathTeile
             .Add("Journal")
@@ -1184,7 +1184,6 @@ Friend Class AnrufMonitor
         LANodeNames = Nothing
         LANodeValues = Nothing
     End Sub
-
 
     Sub JEentfernen(ID As Integer)
         Dim xPathTeile As New ArrayList
