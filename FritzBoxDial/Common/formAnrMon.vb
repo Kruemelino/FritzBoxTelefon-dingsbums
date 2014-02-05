@@ -177,7 +177,7 @@ Friend Class formAnrMon
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, C_DP.P_Def_StringEmpty)
+        C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed

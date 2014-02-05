@@ -183,7 +183,7 @@ Friend Class formWählbox
         Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
         If KontaktDaten(0) = C_DP.P_Def_ErrorMinusOne Then KontaktDaten(1) = C_DP.P_Def_ErrorMinusOne
 
-        C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2), C_DP.P_Def_StringEmpty)
+        C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2))
         Me.CloseButton.Focus()
     End Sub
 

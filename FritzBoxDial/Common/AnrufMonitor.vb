@@ -599,7 +599,7 @@ Friend Class AnrufMonitor
             End If
             ' Kontakt öffnen
             If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, "Telefonat vom " & CStr(FBStatus.GetValue(0)) & C_DP.P_Def_NeueZeile & C_OlI.BenutzerInitialien & ":" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile)
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
             End If
         End If
 
@@ -771,7 +771,7 @@ Friend Class AnrufMonitor
             End If
             ' Kontakt öffnen
             If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, "Telefonat vom " & CStr(FBStatus.GetValue(0)) & C_DP.P_Def_NeueZeile & C_OlI.BenutzerInitialien & ":")
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
             End If
         End If
     End Sub '(AnrMonCALL)

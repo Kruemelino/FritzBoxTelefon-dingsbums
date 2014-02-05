@@ -217,7 +217,7 @@
     ''' <param name="TelNr">telefonnummer des Kontaktes</param>
     ''' <param name="Notiz">Notiz, die dem Kontakt hinzugefügt wird.</param>
     ''' <remarks></remarks>
-    Public Sub ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String, ByVal Notiz As String)
+    Public Sub ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String)
 
         Dim Kontakt As Outlook.ContactItem = Nothing
 
@@ -261,16 +261,25 @@
                 C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
             End Try
         End If
+        If Not Kontakt Is Nothing Then Kontakt.Display()
+    End Sub
+
+    Public Sub NotizInBody(ByRef Insp As Outlook.Inspector)
+        Dim Kontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
+        Dim Notiz As String
+        Dim BodyControl As Object = Nothing
+        Dim PropertyName As String = "Subject"
 
         If Not Kontakt Is Nothing Then
             With Kontakt
-                If Not Notiz = C_DP.P_Def_StringEmpty Then
-                    .Body = Notiz & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & .Body
-                End If
-                .Display()
+                With System.DateTime.Now
+                    Notiz = "[" & String.Format("{0:00}.{1:00}.{2:00} - {3:00}:{4:00}", .Day, .Month, .Year, .Hour, .Minute) & " " & C_OLI.BenutzerInitialien & "]: "
+                End With
+                If Not Notiz = C_DP.P_Def_StringEmpty Then .Body = Notiz & C_DP.P_Def_NeueZeile & .Body
             End With
         End If
     End Sub
+
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
         Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
@@ -746,4 +755,7 @@
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
+
+
+
 End Class

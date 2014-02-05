@@ -158,6 +158,14 @@
         RWSAlle(Insp)
     End Sub
 
+    Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
+        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
+            C_KF.NotizInBody(Insp)
+        End If
+
+    End Sub
+
     Public Function GroupVisible(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
 #If OVer = 14 Then
         Dim ActiveExplorer As Outlook.Explorer
