@@ -26,7 +26,7 @@
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         ' Pfad zur Einstellungsdatei ermitteln
-        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", C_DP.P_Def_ErrorMinusOne)
+        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
         If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen

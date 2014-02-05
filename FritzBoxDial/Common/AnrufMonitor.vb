@@ -1013,16 +1013,7 @@ Friend Class AnrufMonitor
                             End With
                             TelName = C_DP.Read(xPathTeile, "")
                     End Select
-                    'With xPathTeile
-                    '    .Clear()
-                    '    .Add("Telefone")
-                    '    .Add("Telefone")
-                    '    .Add("*")
-                    '    .Add("Telefon")
-                    '    .Add("[@Dialport = """ & NSN & """]")
-                    '    .Add("TelName")
-                    'End With
-                    'TelName = C_DP.Read(xPathTeile, "")
+
                     ' Journaleintrag schreiben
                     C_OlI.ErstelleJournalEintrag(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, C_DP.P_Def_StringEmpty, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & TelName & ")")), _
                                               Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
@@ -1074,9 +1065,8 @@ Friend Class AnrufMonitor
             End If
         End If
 
-        If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
-            STUhrDaten(ID).Abbruch = True
-        End If
+        If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
+
     End Sub '(AnrMonDISCONNECT)
 #End Region
 
