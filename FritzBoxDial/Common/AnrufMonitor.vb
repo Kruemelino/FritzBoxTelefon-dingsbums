@@ -66,6 +66,16 @@ Friend Class AnrufMonitor
         Dim Richtung As String
         Dim MSN As String
     End Structure
+
+    'Structure Journaleintrag
+    '    Dim ID As String
+    '    Dim Typ As String
+    '    Dim Zeit As String
+    '    Dim MSN As String
+    '    Dim TelNr As String
+    '    Dim KontaktID As String
+    '    Dim StoreID As String
+    'End Structure
 #End Region
 
     Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
@@ -613,12 +623,12 @@ Friend Class AnrufMonitor
         ' FBStatus(5): die gewählte Rufnummer
 
         Dim ID As Integer = CInt(FBStatus.GetValue(2))  ' ID des Telefonats
-        Dim NSN As Integer = CInt(FBStatus.GetValue(3)) ' Nebenstellennummer des Telefonates
+        Dim NSN As Long = CLng(FBStatus.GetValue(3)) ' Nebenstellennummer des Telefonates
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)  ' Ausgehende eigene Telefonnummer, MSN
         Dim TelNr As String                             ' ermittelte TelNr
         Dim Anrufer As String = C_DP.P_Def_StringEmpty            ' ermittelter Anrufer
         Dim vCard As String = C_DP.P_Def_StringEmpty                        ' vCard des Anrufers
-        Dim KontaktID As String = "-1;"                 ' ID der Kontaktdaten des Anrufers
+        Dim KontaktID As String = C_DP.P_Def_ErrorMinusOne & ";"                 ' ID der Kontaktdaten des Anrufers
         Dim StoreID As String = C_DP.P_Def_ErrorMinusOne                    ' ID des Ordners, in dem sich der Kontakt befindet
 
         Dim rws As Boolean                              ' 'true' wenn die Rückwärtssuche erfolgreich war
@@ -641,7 +651,7 @@ Friend Class AnrufMonitor
                     ' 5=Fax (intern/PC)
                     ' 36=Data S0
                     ' 37=Data PC
-                    MSN = "-1"
+                    MSN = C_DP.P_Def_ErrorMinusOne
                 Case Else
                     With xPathTeile
                         .Add("Telefone")
@@ -715,7 +725,7 @@ Friend Class AnrufMonitor
                         Else
                             rws = True
                         End If
-                        If rws And KontaktID = "-1;" Then
+                        If rws And KontaktID = C_DP.P_Def_ErrorMinusOne & ";" Then
                             Anrufer = ReadFNfromVCard(vCard)
                             Anrufer = Replace(Anrufer, Chr(13), "", , , CompareMethod.Text)
                             If InStr(1, Anrufer, "Firma", CompareMethod.Text) = 1 Then
@@ -761,7 +771,7 @@ Friend Class AnrufMonitor
             End If
             ' Kontakt öffnen
             If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, "Telefonat vom " & CStr(FBStatus.GetValue(0)) & C_DP.P_Def_NeueZeile & C_OlI.BenutzerInitialien & ":" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile)
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, "Telefonat vom " & CStr(FBStatus.GetValue(0)) & C_DP.P_Def_NeueZeile & C_OlI.BenutzerInitialien & ":")
             End If
         End If
     End Sub '(AnrMonCALL)
@@ -780,11 +790,12 @@ Friend Class AnrufMonitor
         ' FBStatus(1): CONNECT, wird nicht verwendet
         ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
         ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
+        ' FBStatus(3): 
 
 
         Dim xPathTeile As New ArrayList
         Dim MSN As String = C_DP.P_Def_ErrorMinusOne
-        Dim NSN As Integer
+        Dim NSN As Long
         Dim ID As Integer
         Dim Zeit As String
         Dim TelName As String = C_DP.P_Def_StringEmpty
@@ -815,7 +826,7 @@ Friend Class AnrufMonitor
                         ' 5=Fax (intern/PC)
                         ' 36=Data S0
                         ' 37=Data PC
-                        MSN = "-1"
+                        MSN = C_DP.P_Def_ErrorMinusOne
                     Case Else
                         With xPathTeile
                             .Clear()
@@ -852,7 +863,7 @@ Friend Class AnrufMonitor
                             .Add("Zeit")
                             C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(0)))
                             .Item(.IndexOf("Zeit")) = "NSN"
-                            C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
+7:                          C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
                         End With
                     End If
                     ' StoppUhr einblenden
@@ -902,7 +913,7 @@ Friend Class AnrufMonitor
         Dim TelName As String
         Dim tmpTelName As String = C_DP.P_Def_StringEmpty
 
-        Dim NSN As Double = -1
+        Dim NSN As Long = -1
         Dim Zeit As String = C_DP.P_Def_StringEmpty
         Dim Typ As String = C_DP.P_Def_StringEmpty
         Dim MSN As String = C_DP.P_Def_StringEmpty
@@ -1013,7 +1024,7 @@ Friend Class AnrufMonitor
                     'End With
                     'TelName = C_DP.Read(xPathTeile, "")
                     ' Journaleintrag schreiben
-                    C_OlI.ErstelleJournalItem(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, C_DP.P_Def_StringEmpty, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & TelName & ")")), _
+                    C_OlI.ErstelleJournalEintrag(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, C_DP.P_Def_StringEmpty, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & TelName & ")")), _
                                               Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
                                               Body:=Body, _
                                               Start:=CDate(Zeit), _
@@ -1126,7 +1137,7 @@ Friend Class AnrufMonitor
     End Sub
 
     Sub JIauslesen(ByVal ID As Integer, _
-               ByRef NSN As Double, _
+               ByRef NSN As Long, _
                ByRef Zeit As String, _
                ByRef Typ As String, _
                ByRef MSN As String, _
@@ -1140,7 +1151,7 @@ Friend Class AnrufMonitor
 
         ' Uhrzeit
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' Typ
         LANodeNames.Add("Typ")
@@ -1156,7 +1167,7 @@ Friend Class AnrufMonitor
 
         ' NSN
         LANodeNames.Add("NSN")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(-1)
 
         ' StoreID
         LANodeNames.Add("StoreID")
@@ -1176,7 +1187,7 @@ Friend Class AnrufMonitor
         Typ = CStr(LANodeValues.Item(LANodeNames.IndexOf("Typ")))
         TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
         MSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("MSN")))
-        NSN = CDbl(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
+        NSN = CLng(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
         StoreID = CStr(LANodeValues.Item(LANodeNames.IndexOf("StoreID")))
         KontaktID = CStr(LANodeValues.Item(LANodeNames.IndexOf("KontaktID")))
 

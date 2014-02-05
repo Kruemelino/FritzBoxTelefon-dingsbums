@@ -288,9 +288,9 @@
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add("-1")
-        LANodeValues.Add("-1")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -307,7 +307,7 @@
 
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne Then
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = "-1", TelNr, Anrufer)) & """")
+                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer)) & """")
                     MyStringBuilder.Append(" onAction=""OnActionListen""")
                     MyStringBuilder.Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
                     MyStringBuilder.Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
@@ -315,9 +315,9 @@
                     i += 1
 
                     'xPathTeile.RemoveAt(xPathTeile.Count - 1)
-                    LANodeValues.Item(0) = ("-1")
-                    LANodeValues.Item(1) = ("-1")
-                    LANodeValues.Item(2) = ("-1")
+                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne)
+                    LANodeValues.Item(1) = (C_DP.P_Def_ErrorMinusOne)
+                    LANodeValues.Item(2) = (C_DP.P_Def_ErrorMinusOne)
                 End If
             Next
         Else
@@ -334,7 +334,7 @@
                     MyStringBuilder.Append("/>" & vbCrLf)
 
                     'xPathTeile.RemoveAt(xPathTeile.Count - 1)
-                    LANodeValues.Item(0) = ("-1")
+                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne)
                 End If
             Next
         End If
@@ -361,7 +361,7 @@
                 XMLListBaseNode = "VIPListe"
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -520,7 +520,7 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
-        IsVIP = Not C_DP.Read(xPathTeile, "-1") = "-1"
+        IsVIP = Not C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne
         xPathTeile = Nothing
     End Function
 
@@ -782,9 +782,9 @@
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add("-1")
-        LANodeValues.Add("-1")
-        LANodeValues.Add("-1")
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -811,9 +811,9 @@
 
                     xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     With LANodeValues
-                        .Item(0) = ("-1")
-                        .Item(1) = ("-1")
-                        .Item(2) = ("-1")
+                        .Item(0) = (C_DP.P_Def_ErrorMinusOne)
+                        .Item(1) = (C_DP.P_Def_ErrorMinusOne)
+                        .Item(2) = (C_DP.P_Def_ErrorMinusOne)
                     End With
                 End If
             Next
@@ -832,9 +832,9 @@
                         i += 1
                     End With
                     With LANodeValues
-                        .Item(0) = ("-1")
-                        .Item(1) = ("-1")
-                        .Item(2) = ("-1")
+                        .Item(0) = (C_DP.P_Def_ErrorMinusOne)
+                        .Item(1) = (C_DP.P_Def_ErrorMinusOne)
+                        .Item(2) = (C_DP.P_Def_ErrorMinusOne)
                     End With
 
                 Else
@@ -997,7 +997,7 @@
                 XMLListBaseNode = "VIPListe"
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", "-1") = "-1", True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
     End Function
 
 #End If
@@ -1107,7 +1107,7 @@
 
     Friend Sub ÖffneEinstellungen()
         ThisAddIn.P_Config.ShowDialog()
-        Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
+        Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", C_DP.P_Def_ErrorMinusOne)
     End Sub
 
     Friend Sub ÖffneJournalImport()

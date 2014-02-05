@@ -157,7 +157,7 @@ Public Class Wählclient
         frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF)
 
         If oContact Is Nothing Then
-            frm_Wählbox.Tag = "-1"
+            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne
         Else
             frm_Wählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
         End If
@@ -283,19 +283,19 @@ Public Class Wählclient
 
         ' TelNr
         ListNodeNames.Add("TelNr")
-        ListNodeValues.Add("-1")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' Anrufer
         ListNodeNames.Add("Anrufer")
-        ListNodeValues.Add("-1")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' StoreID
         ListNodeNames.Add("StoreID")
-        ListNodeValues.Add("-1")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
         ' KontaktID
         ListNodeNames.Add("KontaktID")
-        ListNodeValues.Add("-1;")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
 
         With xPathTeile
             .Add(Telefonat(0))
@@ -350,13 +350,13 @@ Public Class Wählclient
             TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
 
             .Item(.Count - 1) = "StoreID"
-            StoreID = C_DP.Read(xPathTeile, "-1")
+            StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
 
             .Item(.Count - 1) = "KontaktID"
-            KontaktID = C_DP.Read(xPathTeile, "-1")
+            KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
         End With
 
-        If Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne And Not Left(StoreID, 3) = "-1;" Then
+        If Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne And Not Left(StoreID, 3) = C_DP.P_Def_ErrorMinusOne & ";" Then
             oContact = CType(oNS.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Else
             oContact = Nothing
@@ -414,7 +414,7 @@ Public Class Wählclient
                             name = Replace(ReadFromVCard(vCard, "N", ""), ";", "", , , CompareMethod.Text)
                             vName = C_DP.P_Def_ErrorMinusOne & name & ";" & vCard
                         Else
-                            vName = "-1;"
+                            vName = C_DP.P_Def_ErrorMinusOne & ";"
                         End If
                         If Not TelNr Is String.Empty And Not vName Is String.Empty Then Wählbox(Nothing, TelNr, False, vName)
 #If Not OVer = 15 Then

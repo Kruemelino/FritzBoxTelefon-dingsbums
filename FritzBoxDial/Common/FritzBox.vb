@@ -111,7 +111,7 @@ Public Class FritzBox
                 Dim sFormData As String
                 Dim sResponse As String
                 Dim sSIDResponse As String
-                Dim sZugang As String = GetSetting("FritzBox", "Optionen", "Zugang", "-1")
+                Dim sZugang As String = GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne)
                 Dim XMLDocLogin As New XmlDocument()
 
                 With XMLDocLogin
@@ -330,7 +330,7 @@ Public Class FritzBox
         Dim Vorwahl As String = C_DP.P_TBVorwahl  ' In den Einstellungen eingegebene Vorwahl
         Dim TelName As String                 ' Gefundener Telefonname
         Dim TelNr As String                 ' Dazugehörige Telefonnummer
-        Dim SIPID As String = "-1"
+        Dim SIPID As String = C_DP.P_Def_ErrorMinusOne
         Dim pos(6) As Integer                   ' Positionsmarker
         Dim posSTR As Integer = 1
         Dim Anzahl As Integer = 0
@@ -833,7 +833,7 @@ Public Class FritzBox
         Dim Landesvorwahl As String
         Dim TelName As String                 ' Gefundener Telefonname
         Dim TelNr As String                 ' Dazugehörige Telefonnummer
-        Dim SIPID As String = "-1"
+        Dim SIPID As String = C_DP.P_Def_ErrorMinusOne
         Dim pos(1) As Integer
         Dim i As Integer                   ' Laufvariable
         Dim j As Integer
@@ -1227,7 +1227,7 @@ Public Class FritzBox
             xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             DialPort = .StringEntnehmen(Code, "['telcfg:settings/FaxMailActive'] = '", "'")
             If Not DialPort = "0" Then
-                TelNr = "-1"
+                TelNr = C_DP.P_Def_ErrorMinusOne
                 DialPort = "5"
                 PushStatus("Die integrierte Faxfunktion ist eingeschaltet: " & DialPort & ", " & TelNr & "," & "Faxempfang")
                 If P_SpeichereDaten Then

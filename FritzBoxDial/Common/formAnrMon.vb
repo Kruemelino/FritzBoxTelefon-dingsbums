@@ -95,10 +95,10 @@ Friend Class formAnrMon
             MSN = C_DP.Read(xPathTeile, "")
 
             .Item(.Count - 1) = "StoreID"
-            StoreID = C_DP.Read(xPathTeile, "-1")
+            StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
 
             .Item(.Count - 1) = "KontaktID"
-            KontaktID = C_DP.Read(xPathTeile, "-1")
+            KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
         End With
 
         TelefonName = C_AnrMon.TelefonName(MSN)

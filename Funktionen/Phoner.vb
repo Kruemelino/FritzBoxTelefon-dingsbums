@@ -25,7 +25,7 @@ Public Class PhonerInterface
     Public Function DialPhoner(ByVal dialCode As String) As String
         If PhonerReady() Then
             Dim PhonerPasswort As String = C_DP.P_TBPhonerPasswort
-            Dim ZugangPasswortPhoner As String = GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")
+            Dim ZugangPasswortPhoner As String = GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne)
             If Not PhonerPasswort = C_DP.P_Def_ErrorMinusOne Or Not ZugangPasswortPhoner = C_DP.P_Def_ErrorMinusOne Then
                 Dim Stream As NetworkStream
                 Dim remoteEP As New System.Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)

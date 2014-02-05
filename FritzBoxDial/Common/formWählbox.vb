@@ -103,12 +103,12 @@ Friend Class formWählbox
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1)]") ' Keine Anrufbeantworter, kein Fax
             .Add("TelName")
 
-            Nebenstellen = Split(C_DP.Read(xPathTeile, "-1;"), ";", , CompareMethod.Text)
+            Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne & ";"), ";", , CompareMethod.Text)
 
             For Each Nebenstelle In Nebenstellen
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
-                DialPort = C_DP.Read(xPathTeile, "-1")
+                DialPort = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
                 tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", C_DP.P_Def_StringEmpty))
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
@@ -193,7 +193,7 @@ Friend Class formWählbox
         row(2) = C_hf.nurZiffern(Me.TelNrBox.Text, C_DP.P_TBLandesVW)
         With Me
             .Text = "Anruf: " & row(2)
-            .Tag = "-1"
+            .Tag = C_DP.P_Def_ErrorMinusOne
             With .ListTel.Rows
                 .Add(row)
                 .Item(.Count - 1).Selected = True
@@ -246,7 +246,7 @@ Friend Class formWählbox
     End Sub
 
     Function GetDialport(ByVal Nebenstelle As String) As String
-        GetDialport = "-1"
+        GetDialport = C_DP.P_Def_ErrorMinusOne
         Dim tmpint As Double
         Dim xPathTeile As New ArrayList
         With xPathTeile
@@ -256,7 +256,7 @@ Friend Class formWählbox
             .Add("Telefon")
             .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
             .Add("@Dialport")
-            tmpint = CDbl(C_DP.Read(xPathTeile, "-1"))
+            tmpint = CDbl(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne))
         End With
 
         If Not tmpint = -1 Then
@@ -397,8 +397,8 @@ Friend Class formWählbox
                 KontaktID = Mid(CStr(Me.Tag), 1, InStr(1, CStr(Me.Tag), ";", CompareMethod.Text) - 1)
                 StoreID = Mid(CStr(Me.Tag), InStr(1, CStr(Me.Tag), ";", CompareMethod.Text) + 1)
             Else
-                KontaktID = "-1"
-                StoreID = "-1"
+                KontaktID = C_DP.P_Def_ErrorMinusOne
+                StoreID = C_DP.P_Def_ErrorMinusOne
             End If
 
             If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), ""), C_DP.P_TBLandesVW) = C_hf.nurZiffern(Number, C_DP.P_TBLandesVW) Then
@@ -421,7 +421,7 @@ Friend Class formWählbox
         End If
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
-        Code = CStr(IIf(C_DP.P_TBAmt = "-1", "", C_DP.P_TBAmt)) & Code
+        Code = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne, "", C_DP.P_TBAmt)) & Code
 
         If Not UsePhonerOhneFritzBox Then
             If CLIR Then Code = "*31#" & Code

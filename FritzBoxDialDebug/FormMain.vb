@@ -17,7 +17,7 @@ Public Class FormMain
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
+        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", C_DP.P_Def_ErrorMinusOne)
         If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen

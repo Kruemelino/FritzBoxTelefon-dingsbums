@@ -217,7 +217,7 @@ Public Class Helfer
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", "-1")), tempZugang)
+            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne)), tempZugang)
             SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
         End If
 
@@ -227,7 +227,7 @@ Public Class Helfer
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-            C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "-1")), tempZugang)
+            C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne)), tempZugang)
             SaveSetting("Fritzbox", "Optionen", "ZugangPasswortPhoner", tempZugang)
         End If
 

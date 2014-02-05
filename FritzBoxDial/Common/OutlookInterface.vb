@@ -22,7 +22,7 @@ Public Class OutlookInterface
         C_KF.C_OLI = Me
     End Sub
 
-    Friend Function ErstelleJournalItem(ByVal Subject As String, _
+    Friend Function ErstelleJournalEintrag(ByVal Subject As String, _
                                    ByVal Duration As Double, _
                                    ByVal Body As String, _
                                    ByVal Start As Date, _
@@ -31,7 +31,7 @@ Public Class OutlookInterface
                                    Optional ByVal KontaktID As String = vbNullString, _
                                    Optional ByVal StoreID As String = vbNullString) As Boolean 'As Outlook.JournalItem
 
-        ErstelleJournalItem = Nothing
+        ErstelleJournalEintrag = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
@@ -54,9 +54,8 @@ Public Class OutlookInterface
                         Try
                             .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
                         Catch ex As Exception
-                            C_hf.LogFile("Fehler (ErstelleJournalItem): Kann Link zu Kontakt nicht erstellen: " & ex.Message)
+                            C_hf.LogFile("Fehler (ErstelleJournalEintrag): Kann eingebetteten Link zum Kontakt nicht erstellen: " & ex.Message)
                         End Try
-
                     End If
 #End If
                     .Save()
@@ -226,7 +225,6 @@ Public Class OutlookInterface
         If Not Regkey Is Nothing Then Regkey.Close()
         BenutzerInitialien = UserName
     End Function
-
 
 #Region "Fenster"
     Friend Sub InspectorVerschieben(ByVal r As Boolean)
