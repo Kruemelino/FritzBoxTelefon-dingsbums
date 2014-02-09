@@ -4,8 +4,7 @@ Imports System.Collections.Generic
 Public Class ApiWindow
     Public hWnd As IntPtr
 End Class
-<Runtime.InteropServices.ComVisible(True)>
-Public Class GraphicalUserInterface
+<Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
@@ -60,10 +59,7 @@ Public Class GraphicalUserInterface
 
 #End Region
 
-#Region "Ribbon Grundlagen für Outlook 2010 & 2013"
-#End Region
 
-    'Private Declare Function EnumChildWindows Lib "user32" (ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
 
     Private C_HF As Helfer
     Private C_DP As DataProvider
@@ -259,6 +255,12 @@ Public Class GraphicalUserInterface
         End If
         Return "Erstellt einen Kontakt aus diesem Journaleintrag"
     End Function
+
+
+    Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
+        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+        AddNote(Insp)
+    End Sub
 #End Region 'Ribbon Inspector
 
 #Region "Office 2010/2013"
@@ -681,7 +683,7 @@ Public Class GraphicalUserInterface
                 .Visible = visible
                 .Position = Office.MsoBarPosition.msoBarTop
             End With
-            FritzBoxDialCommandbar = olMBar
+            FritzBoxDialCommandBar = olMBar
             AddCmdBar = olMBar
 
             With C_HF
@@ -1013,8 +1015,10 @@ Public Class GraphicalUserInterface
 #If OVer = 11 Then
     Sub InspectorSybolleisteErzeugen(ByVal Inspector As Outlook.Inspector, _
                                      ByRef iPopRWS As Office.CommandBarPopup, ByRef iBtnWwh As Office.CommandBarButton, _
-                                     ByRef iBtnRws11880 As Office.CommandBarButton, ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, ByRef iBtnRWStelSearch As Office.CommandBarButton, _
-                                     ByRef iBtnRWSAlle As Office.CommandBarButton, ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton)
+                                     ByRef iBtnRws11880 As Office.CommandBarButton, ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, _
+                                     ByRef iBtnRWStelSearch As Office.CommandBarButton, ByRef iBtnRWSAlle As Office.CommandBarButton, _
+                                     ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton, _
+                                     ByRef iBtnNotiz As Office.CommandBarButton)
 
         Dim cmbs As Office.CommandBars = Inspector.CommandBars
         Dim cmb As Office.CommandBar = Nothing
@@ -1085,6 +1089,7 @@ Public Class GraphicalUserInterface
                     End If
                     .Visible = C_DP.P_CBSymbVIP
                 End With
+                iBtnNotiz = AddButtonsToCmb(cmb, "Notiz", i, 2056, "IconandCaption", "Notiz", "Einen Notizeintrag hinzufügen")
             End If
             ' Journaleinträge
             If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
@@ -1171,10 +1176,11 @@ Public Class GraphicalUserInterface
     Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
         F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSAlle, insp)
     End Sub
+#End Region
 
-    Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        Dim ReturnValue As Long
+#Region "KontaktNotiz"
+    Public Sub AddNote(ByVal Insp As Outlook.Inspector)
+
         Dim olKontakt As Outlook.ContactItem
         Dim Notiz As String = vbNullString
         Dim Handle As IntPtr = IntPtr.Zero
@@ -1211,46 +1217,62 @@ Public Class GraphicalUserInterface
                 If Not Handle = IntPtr.Zero Then
                     Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
                     If Not Handle = IntPtr.Zero Then
+#If OVer = 14 Then
                         Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
-                        If Not Handle = IntPtr.Zero Then
-                            Handle = GetChildWindows(Handle).Item(0).hWnd
                             If Not Handle = IntPtr.Zero Then
-                                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndA", vbNullString)
-                                If Not Handle = IntPtr.Zero Then
-                                    Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
-                                Else
-                                    Handle = IntPtr.Zero
-                                End If
+
+#End If
+                        Handle = GetChildWindows(Handle).Item(0).hWnd
+                        If Not Handle = IntPtr.Zero Then
+                            Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndA", vbNullString)
+
+                            If Not Handle = IntPtr.Zero Then
+#If OVer = 14 Then
+                                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
+#Else
+                                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "RichEdit20W", vbNullString)
+#End If
+
                             Else
                                 Handle = IntPtr.Zero
                             End If
                         Else
                             Handle = IntPtr.Zero
                         End If
+#If OVer = 14 Then
+                        Else
+                            Handle = IntPtr.Zero
+                        End If
+#End If
+
                     Else
                         Handle = IntPtr.Zero
                     End If
                 End If
 
                 If Not Handle = IntPtr.Zero Then
-                    ' Focus setzen
-
+                    Dim ReturnValue As Long
+#If OVer = 14 Then
                     Dim WO As Microsoft.Office.Interop.Word.Document
                     WO = CType(Insp.WordEditor, Microsoft.Office.Interop.Word.Document)
                     WO.Range(0, 0).Text = Notiz & vbNewLine
 
                     WO.Range(Notiz.Length, Notiz.Length).Select()
-                    ' Fokus setzen WICHTIG!
-                    ReturnValue = OutlookSecurity.SetFocus(Handle)
+
                     'WO schließen
                     WO = Nothing
+#Else
+                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETTEXT, IntPtr.Zero, Notiz & vbNewLine))
+                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETSEL, -1, Notiz.Length))
+#End If
+                    ' Fokus setzen WICHTIG!
+                    ReturnValue = OutlookSecurity.SetFocus(Handle)
                 End If
             End If
         End If
     End Sub
-#End Region
 
-#Region "KontaktNotiz"
+
     ''' <summary>
     ''' Get all child windows for the specific windows handle (hwnd).
     ''' </summary>

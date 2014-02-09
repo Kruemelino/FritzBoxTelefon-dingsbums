@@ -7,7 +7,6 @@ Public Class OutlookInterface
     Private C_DP As DataProvider
     Private OInsp As Outlook.Inspector
 
-
     Friend ReadOnly Property OutlookApplication() As Outlook.Application
         Get
             Return ThisAddIn.P_oApp
@@ -211,9 +210,10 @@ Public Class OutlookInterface
         Try
             '64 Bit prüfen!
 #If OVer = 11 Then
-            Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\11.0\Common\UserInfo")
-            UserName = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserName"), Byte()))
-            UserInitials = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserInitials"), Byte()))
+            'Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\11.0\Common\UserInfo")
+            'UserName = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserName"), Byte()))
+            'UserInitials = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserInitials"), Byte()))
+            UserInitials = "Name"
 #Else
             Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\Common\UserInfo")
             UserName = Regkey.GetValue("UserName", "Name").ToString

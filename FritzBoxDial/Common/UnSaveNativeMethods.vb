@@ -54,6 +54,14 @@ Friend NotInheritable Class UnsafeNativeMethods
     <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
     Friend Shared Function SetFocus(ByVal hwnd As IntPtr) As Long
     End Function
+
+    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    End Function
 End Class
 
 Public NotInheritable Class OutlookSecurity
@@ -100,6 +108,16 @@ Public NotInheritable Class OutlookSecurity
     Public Shared ReadOnly Property IsThemeActive() As Boolean
         Get
             Return UnsafeNativeMethods.IsThemeActive()
+        End Get
+    End Property
+    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+        Get
+            Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
+        End Get
+    End Property
+    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+        Get
+            Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get
     End Property
 End Class
