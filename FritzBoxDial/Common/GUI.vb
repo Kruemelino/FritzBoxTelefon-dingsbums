@@ -1217,9 +1217,9 @@ End Class
                 If Not Handle = IntPtr.Zero Then
                     Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
                     If Not Handle = IntPtr.Zero Then
-#If OVer = 14 Then
+#If OVer > 11 Then
                         Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
-                            If Not Handle = IntPtr.Zero Then
+                        If Not Handle = IntPtr.Zero Then
 
 #End If
                         Handle = GetChildWindows(Handle).Item(0).hWnd
@@ -1227,19 +1227,19 @@ End Class
                             Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndA", vbNullString)
 
                             If Not Handle = IntPtr.Zero Then
-#If OVer = 14 Then
-                                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
+#If OVer > 11 Then
+                                    Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
 #Else
-                                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "RichEdit20W", vbNullString)
+                                    Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "RichEdit20W", vbNullString)
 #End If
 
+                                Else
+                                    Handle = IntPtr.Zero
+                                End If
                             Else
                                 Handle = IntPtr.Zero
                             End If
-                        Else
-                            Handle = IntPtr.Zero
-                        End If
-#If OVer = 14 Then
+#If OVer > 11 Then
                         Else
                             Handle = IntPtr.Zero
                         End If
@@ -1252,7 +1252,7 @@ End Class
 
                 If Not Handle = IntPtr.Zero Then
                     Dim ReturnValue As Long
-#If OVer = 14 Then
+#If OVer > 11 Then
                     Dim WO As Microsoft.Office.Interop.Word.Document
                     WO = CType(Insp.WordEditor, Microsoft.Office.Interop.Word.Document)
                     WO.Range(0, 0).Text = Notiz & vbNewLine
