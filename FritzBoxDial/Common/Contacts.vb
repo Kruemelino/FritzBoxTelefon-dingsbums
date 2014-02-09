@@ -12,6 +12,12 @@
             _C_OLI = value
         End Set
     End Property
+    Enum AnrMonDirection
+        NoDirection = -1
+        AnrMonRing = 0
+        AnrMonCall = 1
+    End Enum
+
 
     Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
@@ -209,6 +215,7 @@
             End If
         End If
     End Sub ' (KontaktErstellen)
+
     ''' <summary>
     ''' Zeigt einen Kontakt an. Ist der Kontakt nicht vorhanden wird er aus einer vCard oder ein leerer Kontakt erstellt
     ''' </summary>
@@ -216,21 +223,23 @@
     ''' <param name="StoreID">Eindeutige Identifizierung des Speicherordners des Kontaktes. Enthält die -1, wenn kein Outlookkontakt.</param>
     ''' <param name="TelNr">telefonnummer des Kontaktes</param>
     ''' <param name="Notiz">Notiz, die dem Kontakt hinzugefügt wird.</param>
+    ''' <param name="AnrufRichtung">0 Eingehend, 1 Ausgehend</param>
     ''' <remarks></remarks>
-    Public Sub ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String)
+    Public Sub ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String, ByVal AutoOpenAnrMon As AnrMonDirection, ByVal AnrMonZeit As String)
 
-        Dim Kontakt As Outlook.ContactItem = Nothing
+        Dim olKontakt As Outlook.ContactItem = Nothing
 
         Dim vCard As String
         Dim alleTelNr As String
         ' alle Telefonnummern in der vCard
         If Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
-            GetEmptyContact(Kontakt)
+            GetEmptyContact(olKontakt)
             vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
-            With Kontakt
+            With olKontakt
+
                 If Not vCard = C_DP.P_Def_ErrorMinusOne And Not vCard = C_DP.P_Def_StringEmpty Then
-                    vCard2Contact(vCard, Kontakt)
+                    vCard2Contact(vCard, olKontakt)
                     .Body = .Body & vbNewLine & "Kontaktdaten (vCard):" & vbNewLine & vCard
                 End If
                 If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
@@ -250,36 +259,45 @@
                         End If
                     End If
                 End If
-
                 .Categories = "Fritz!Box"
             End With
         Else
             ' Kontakteintrag anzeigen
             Try
-                Kontakt = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+                olKontakt = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
             Catch ex As Exception
                 C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
             End Try
         End If
-        If Not Kontakt Is Nothing Then Kontakt.Display()
-    End Sub
-
-    Public Sub NotizInBody(ByRef Insp As Outlook.Inspector)
-        Dim Kontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
-        Dim Notiz As String
-        Dim BodyControl As Object = Nothing
-        Dim PropertyName As String = "Subject"
-
-        If Not Kontakt Is Nothing Then
-            With Kontakt
-                With System.DateTime.Now
-                    Notiz = "[" & String.Format("{0:00}.{1:00}.{2:00} - {3:00}:{4:00}", .Day, .Month, .Year, .Hour, .Minute) & " " & C_OLI.BenutzerInitialien & "]: "
-                End With
-                If Not Notiz = C_DP.P_Def_StringEmpty Then .Body = Notiz & C_DP.P_Def_NeueZeile & .Body
-            End With
+        If Not olKontakt Is Nothing Then
+            If Not AutoOpenAnrMon = AnrMonDirection.NoDirection Then ErstelleUserPropertyAnrMon(olKontakt, AutoOpenAnrMon, AnrMonZeit)
+            olKontakt.Display()
         End If
     End Sub
 
+    Public Sub ErstelleUserPropertyAnrMon(ByVal olKontakt As Outlook.ContactItem, ByVal AutoOpenAnrMon As AnrMonDirection, ByVal AnrMonZeit As String)
+        Dim ContactUserProperty As Outlook.UserProperty
+        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
+        If ContactUserProperty Is Nothing Then
+            ContactUserProperty = olKontakt.UserProperties.Add(C_DP.P_Def_AnrMonDirection_UserProperty_Name, Outlook.OlUserPropertyType.olText)
+        End If
+        ContactUserProperty.Value = IIf(AutoOpenAnrMon = AnrMonDirection.AnrMonCall, C_DP.P_Def_AnrMonDirection_Call, C_DP.P_Def_AnrMonDirection_Ring)
+
+        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
+        If ContactUserProperty Is Nothing Then
+            ContactUserProperty = olKontakt.UserProperties.Add(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit, Outlook.OlUserPropertyType.olText)
+        End If
+        ContactUserProperty.Value = AnrMonZeit
+    End Sub
+
+    Public Sub LöscheUserPropertyAnrMon(olKontakt As Outlook.ContactItem)
+        Dim ContactUserProperty As Outlook.UserProperty
+        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
+        If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
+
+        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
+        If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
+    End Sub
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
         Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
@@ -755,7 +773,4 @@
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
-
-
-
 End Class

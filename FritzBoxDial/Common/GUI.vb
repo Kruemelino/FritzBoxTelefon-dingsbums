@@ -1,6 +1,11 @@
 ﻿Imports Office = Microsoft.Office.Core
+Imports System.Collections.Generic
 
-<Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
+Public Class ApiWindow
+    Public hWnd As IntPtr
+End Class
+<Runtime.InteropServices.ComVisible(True)>
+Public Class GraphicalUserInterface
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
@@ -58,6 +63,8 @@
 #Region "Ribbon Grundlagen für Outlook 2010 & 2013"
 #End Region
 
+    'Private Declare Function EnumChildWindows Lib "user32" (ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
+
     Private C_HF As Helfer
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
@@ -69,6 +76,8 @@
     Private C_KF As Contacts
     Private C_FBox As FritzBox
     Private C_Phoner As PhonerInterface
+
+    Private _listChildren As New List(Of ApiWindow)
 
 #Region "Properies"
     Friend Property P_WählKlient() As Wählclient
@@ -156,14 +165,6 @@
     Public Sub OnActionRWSAlle(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         RWSAlle(Insp)
-    End Sub
-
-    Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
-            C_KF.NotizInBody(Insp)
-        End If
-
     End Sub
 
     Public Function GroupVisible(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
@@ -1170,7 +1171,123 @@
     Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
         F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSAlle, insp)
     End Sub
+
+    Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
+        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+        Dim ReturnValue As Long
+        Dim olKontakt As Outlook.ContactItem
+        Dim Notiz As String = vbNullString
+        Dim Handle As IntPtr = IntPtr.Zero
+        Dim DirectionString As String = C_DP.P_Def_AnrMonDirection_Default
+        Dim AnrMonZeit As Date = System.DateTime.Now
+        Dim ContactUserProperty As Outlook.UserProperty
+
+        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
+            olKontakt = CType(Insp.CurrentItem, Outlook.ContactItem)
+            If Not olKontakt Is Nothing Then
+                With olKontakt
+                    ' Prüfe ob éine Anrufrichtung in einer UserProperty hinterlegt wurde
+                    ContactUserProperty = .UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
+                    If Not ContactUserProperty Is Nothing Then
+                        DirectionString = CStr(ContactUserProperty.Value)
+                        ' Lösche UserProperty
+                        C_KF.LöscheUserPropertyAnrMon(olKontakt)
+                    End If
+
+                    ContactUserProperty = .UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
+                    If Not ContactUserProperty Is Nothing Then
+                        AnrMonZeit = CDate(ContactUserProperty.Value)
+                        ' Lösche UserProperty
+                        C_KF.LöscheUserPropertyAnrMon(olKontakt)
+                    End If
+                    With AnrMonZeit
+                        Notiz = DirectionString & " " & String.Format("{0:00}.{1:00}.{2:00} - {3:00}:{4:00}", .Day, .Month, .Year, .Hour, .Minute) & " " & C_OLI.BenutzerInitialien & ": "
+                    End With
+                End With
+            End If
+            If Not Notiz Is vbNullString Then
+                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "rctrl_renwnd32", Insp.Caption)
+                ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
+                If Not Handle = IntPtr.Zero Then
+                    Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
+                    If Not Handle = IntPtr.Zero Then
+                        Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
+                        If Not Handle = IntPtr.Zero Then
+                            Handle = GetChildWindows(Handle).Item(0).hWnd
+                            If Not Handle = IntPtr.Zero Then
+                                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndA", vbNullString)
+                                If Not Handle = IntPtr.Zero Then
+                                    Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
+                                Else
+                                    Handle = IntPtr.Zero
+                                End If
+                            Else
+                                Handle = IntPtr.Zero
+                            End If
+                        Else
+                            Handle = IntPtr.Zero
+                        End If
+                    Else
+                        Handle = IntPtr.Zero
+                    End If
+                End If
+
+                If Not Handle = IntPtr.Zero Then
+                    ' Focus setzen
+
+                    Dim WO As Microsoft.Office.Interop.Word.Document
+                    WO = CType(Insp.WordEditor, Microsoft.Office.Interop.Word.Document)
+                    WO.Range(0, 0).Text = Notiz & vbNewLine
+
+                    WO.Range(Notiz.Length, Notiz.Length).Select()
+                    ' Fokus setzen WICHTIG!
+                    ReturnValue = OutlookSecurity.SetFocus(Handle)
+                    'WO schließen
+                    WO = Nothing
+                End If
+            End If
+        End If
+    End Sub
 #End Region
 
+#Region "KontaktNotiz"
+    ''' <summary>
+    ''' Get all child windows for the specific windows handle (hwnd).
+    ''' </summary>
+    ''' <returns>List of child windows for parent window</returns>
+    Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
+        ' Clear the window list.
+        _listChildren = New List(Of ApiWindow)
+        ' Start the enumeration process.
+        UnsafeNativeMethods.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, &H0)
+        ' Return the children list when the process is completed.
+        Return _listChildren
+    End Function
+    ' ''' <summary>
+    ' ''' Callback function that does the work of enumerating child windows.
+    ' ''' </summary>
+    ' ''' <param name="hwnd">Discovered Window handle</param>
+    ' ''' <returns>1=keep going, 0=stop</returns>
+    Private Function EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32) As IntPtr
 
+        Dim window As ApiWindow = GetWindowIdentification(hwnd)
+
+        ' Attempt to match the child class, if one was specified, otherwise
+        ' enumerate all the child windows.
+        'If _childClass.Length = 0 OrElse window.ClassName.ToLower() = _childClass.ToLower() Then
+        _listChildren.Add(window)
+        'End If
+
+        Return CType(1, IntPtr)
+
+    End Function
+    ''' <summary>
+    ''' Build the ApiWindow object to hold information about the Window object.
+    ''' </summary>
+    Private Function GetWindowIdentification(ByVal hwnd As IntPtr) As ApiWindow
+        Dim window As New ApiWindow()
+        window.hWnd = CType(hwnd, IntPtr)
+        Return window
+    End Function
+#End Region
 End Class

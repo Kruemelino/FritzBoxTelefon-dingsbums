@@ -67,7 +67,7 @@ Friend Class AnrufMonitor
         Dim MSN As String
     End Structure
 
-    'Structure Journaleintrag
+    'Structure Anruf
     '    Dim ID As String
     '    Dim Typ As String
     '    Dim Zeit As String
@@ -599,7 +599,7 @@ Friend Class AnrufMonitor
             End If
             ' Kontakt öffnen
             If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, Contacts.AnrMonDirection.AnrMonRing, FBStatus(0)) '0 ... RING
             End If
         End If
 
@@ -771,7 +771,7 @@ Friend Class AnrufMonitor
             End If
             ' Kontakt öffnen
             If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
+                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, Contacts.AnrMonDirection.AnrMonCall, FBStatus(0)) '1 ... Call
             End If
         End If
     End Sub '(AnrMonCALL)

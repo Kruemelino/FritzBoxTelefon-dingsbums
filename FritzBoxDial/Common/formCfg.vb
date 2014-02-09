@@ -77,7 +77,7 @@ Friend Class formCfg
     End Sub
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(iTa.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
+        Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(OutlookSecurity.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
         Me.BAnrMonTest.Enabled = Not C_AnrMon Is Nothing
         Me.BTelefonliste.Enabled = Not C_FBox Is Nothing
         Me.FBDB_MP.SelectedIndex = 0
@@ -1427,22 +1427,6 @@ Friend Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
-End Class
-
-Public NotInheritable Class iTa
-    ' Callers do not require Unmanaged permission       
-    Public Shared ReadOnly Property IsThemeActive() As Boolean
-        Get
-            ' No need to demand a permission in place of               
-            ' UnmanagedCode as GetTickCount is considered               
-            ' a safe method               
-            Return SafeNativeMethods.IsThemeActive()
-        End Get
-    End Property
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
 End Class
 
 

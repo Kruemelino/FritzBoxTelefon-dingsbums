@@ -822,7 +822,31 @@ Public Class DataProvider
             Return 15
         End Get
     End Property
-
+    Public ReadOnly Property P_Def_AnrMonDirection_Call() As String
+        Get
+            Return "[->]"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_AnrMonDirection_Ring() As String
+        Get
+            Return "[<-]"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_AnrMonDirection_Default() As String
+        Get
+            Return "[<>]"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
+        Get
+            Return "FBDB-AnrMonDirection"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
+        Get
+            Return "FBDB-AnrMonZeit"
+        End Get
+    End Property
     ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
     ''' </summary>

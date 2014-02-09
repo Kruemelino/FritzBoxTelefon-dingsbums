@@ -375,12 +375,12 @@ Public Class Wählclient
         Dim pos2 As Integer
         Dim Absender As String
         Dim olNamespace As Outlook.NameSpace
-
+        Dim olContact As Outlook.ContactItem
 
         olAuswahl = ThisAddIn.P_oApp.ActiveInspector
 
         If TypeOf olAuswahl.CurrentItem Is Outlook.ContactItem Then ' ist aktuelles Fenster ein Kontakt?
-            Dim olContact As Outlook.ContactItem = CType(olAuswahl.CurrentItem, Outlook.ContactItem)
+            olContact = CType(olAuswahl.CurrentItem, Outlook.ContactItem)
             Wählbox(olContact, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
             C_hf.NAR(olContact) : olContact = Nothing
         ElseIf TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then ' ist aktuelles Fenster ein Journal?
@@ -393,7 +393,6 @@ Public Class Wählclient
 #If Not OVer = 15 Then
                     If Not olJournal.Links.Count = 0 Then 'KontaktID des darangehangenen Kontaktes ermitteln
                         Dim olLink As Outlook.Link = Nothing
-                        Dim olContact As Outlook.ContactItem
                         For Each olLink In olJournal.Links
                             If TypeOf olLink.Item Is Outlook.ContactItem Then
                                 olContact = CType(olLink.Item, Outlook.ContactItem)

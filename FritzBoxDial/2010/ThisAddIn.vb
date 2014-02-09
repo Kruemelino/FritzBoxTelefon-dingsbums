@@ -134,7 +134,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.34"
+    Public Const Version As String = "3.6.40"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -176,6 +176,10 @@ Public Class ThisAddIn
         Else
             C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
+    End Sub
+
+    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
+        C_KF.LöscheUserPropertyAnrMon(ContactSaved)
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write

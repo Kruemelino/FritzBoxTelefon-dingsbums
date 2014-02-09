@@ -712,12 +712,14 @@ Public Class Helfer
     End Function
 
     Public Function KillTimer(ByVal Timer As System.Timers.Timer) As System.Timers.Timer
-        With Timer
-            .AutoReset = False
-            .Enabled = False
-            .Dispose()
-            Return Nothing
-        End With
+        If Not Timer Is Nothing Then
+            With Timer
+                .AutoReset = False
+                .Enabled = False
+                .Dispose()
+            End With
+        End If
+        Return Nothing
     End Function
 #End Region
 

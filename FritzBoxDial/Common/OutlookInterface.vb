@@ -228,7 +228,6 @@ Public Class OutlookInterface
 
 #Region "Fenster"
     Friend Sub InspectorVerschieben(ByVal r As Boolean)
-        ActiveFensterIsOutlook()
         Dim oApp As Outlook.Application = OutlookApplication()
         If Not oApp Is Nothing Then
             If r Then
@@ -243,9 +242,7 @@ Public Class OutlookInterface
                             OInsp = Nothing
                         End If
                     End If
-                Catch ex As Exception
-
-                End Try
+                Catch : End Try
             End If
         Else
             C_hf.LogFile("Inspectorfenster konnte nicht verschoben werden.")
@@ -256,8 +253,8 @@ Public Class OutlookInterface
     'Aktive Fenster ermitteln & Handle des Aktiven Fenster ermitteln
     Private Function ActiveFensterIsOutlook() As Boolean
         'Fenster Name des Fensters mit Fokus ermitteln: OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow)
-        'Fenster Name des Outlook Fenster ermitteln: OutlookSecurity.GetWindowText(OutlookSecurity.FindWindow("rctrl_renwnd32", C_DP.P_Def_StringEmpty))
-        Return OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = OutlookSecurity.GetWindowText(OutlookSecurity.FindWindow("rctrl_renwnd32", C_DP.P_Def_StringEmpty))
+        'Fenster Name des Outlook Fenster ermitteln: OutlookSecurity.FindWindowEX(IntPtr.Zero, IntPtr.Zero, "rctrl_renwnd32", C_DP.P_Def_StringEmpty)
+        Return OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = OutlookSecurity.GetWindowText(OutlookSecurity.FindWindowEX(IntPtr.Zero, IntPtr.Zero, "rctrl_renwnd32", C_DP.P_Def_StringEmpty))
     End Function
 
     Function VollBildAnwendungAktiv() As Boolean
@@ -293,43 +290,4 @@ Public Class OutlookInterface
         MyBase.Finalize()
     End Sub
 End Class
-
-Public NotInheritable Class OutlookSecurity
-
-    Public Shared ReadOnly Property GetForegroundWindow() As IntPtr
-        Get
-            Return SafeNativeMethods.GetForegroundWindow()
-        End Get
-    End Property
-    Public Shared ReadOnly Property GetWindowText(ByVal hwnd As IntPtr) As String
-        Get
-            Dim lpString As String = Space(255)
-            Dim l As IntPtr = SafeNativeMethods.GetWindowText(hwnd, lpString, Len(lpString))
-            Return Left(lpString, CInt(l))
-        End Get
-    End Property
-    Public Shared ReadOnly Property FindWindow(ByVal lpClassName As String, ByVal lpWindowName As String) As IntPtr
-        Get
-            Return SafeNativeMethods.FindWindow(lpClassName, lpWindowName)
-        End Get
-    End Property
-    Public Shared ReadOnly Property GetShellWindow() As IntPtr
-        Get
-            Return SafeNativeMethods.GetShellWindow()
-        End Get
-    End Property
-    Public Shared ReadOnly Property GetDesktopWindow() As IntPtr
-        Get
-            Return SafeNativeMethods.GetDesktopWindow()
-        End Get
-    End Property
-    Public Shared ReadOnly Property GetWindowRect(ByVal hwnd As IntPtr) As RECT
-        Get
-            Dim lpRect As RECT
-            SafeNativeMethods.GetWindowRect(hwnd, lpRect)
-            Return lpRect
-        End Get
-    End Property
-End Class
-
 
