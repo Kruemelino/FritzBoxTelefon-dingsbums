@@ -376,10 +376,10 @@ End Class
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
-        If Not ThisAddIn.P_AnrMon Is Nothing Then
-            Return ThisAddIn.P_AnrMon.AnrMonAktiv
+        GetPressed = False
+        If Not C_AnrMon Is Nothing Then
+            GetPressed = C_AnrMon.AnrMonAktiv
         End If
-        Return False
     End Function
 
     Public Function GetImage(ByVal control As Office.IRibbonControl) As String
