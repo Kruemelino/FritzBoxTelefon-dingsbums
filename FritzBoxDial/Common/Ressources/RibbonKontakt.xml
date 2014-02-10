@@ -13,7 +13,7 @@
             <button id="btnC05" label="Alle" onAction="OnActionRWSAlle" screentip="Rückwärtssuche mit allen Anbietern."/>
           </menu>
           <toggleButton id="InspVIP" label="VIP" onAction="OnActionInspVIP" getPressed="GetPressedVIP" imageMso="Pushpin" size="large" getScreentip="GetScreenTipVIP"/>
-          <button id="ButtonC2" imageMso="ShowNotesPage" onAction="OnActionNote" size="large" label="Notiz" screentip="Ein Notitzeintrag hinzufügen"/>
+          <button id="ButtonC2" imageMso="ShowNotesPage" onAction="OnActionNote" size="large" label="Notiz" screentip="Einen Notizeintrag hinzufügen"/>
         </group>
       </tab>
     </tabs>
