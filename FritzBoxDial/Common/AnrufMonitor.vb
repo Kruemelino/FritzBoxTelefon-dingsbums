@@ -222,24 +222,22 @@ Friend Class AnrufMonitor
 
     Private Sub BWStartTCPReader_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStartTCPReader.RunWorkerCompleted
 
-        If CBool(e.Result) Then
-            AnrMonAktiv = True
-            AnrMonError = False
+        AnrMonAktiv = CBool(e.Result)
+        AnrMonError = Not AnrMonAktiv
+#If OVer < 14 Then
+        C_GUI.SetAnrMonButton(AnrMonAktiv)
+#Else
+        C_GUI.RefreshRibbon()
+#End If
+        If AnrMonAktiv Then
             If Not TimerReStart Is Nothing Then
                 TimerReStart = C_hf.KillTimer(TimerReStart)
                 C_hf.LogFile("Anrufmonitor nach StandBy wiederaufgebaut.")
             End If
         Else
             C_hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.")
-            AnrMonAktiv = False
-            AnrMonError = True
         End If
         BWStartTCPReader.Dispose()
-#If OVer < 14 Then
-            C_GUI.SetAnrMonButton(True)
-#Else
-        C_GUI.RefreshRibbon()
-#End If
     End Sub
 #End Region
 
