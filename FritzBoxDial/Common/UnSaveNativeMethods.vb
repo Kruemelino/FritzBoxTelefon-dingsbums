@@ -16,52 +16,58 @@ Friend NotInheritable Class UnsafeNativeMethods
 
     ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
     ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="GetForegroundWindow", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function GetForegroundWindow() As IntPtr
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="GetWindowText", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function GetWindowText(ByVal hwnd As IntPtr, ByVal lpString As String, ByVal cch As Integer) As IntPtr
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="GetWindowRect", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function GetWindowRect(ByVal hWnd As IntPtr, ByRef lpRect As RECT) As Boolean
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
-    Friend Shared Function FindWindowEx(ByVal parentHandle As IntPtr, _
-                      ByVal childAfter As IntPtr, _
-                      ByVal lclassName As String, _
-                      ByVal windowTitle As String) As IntPtr
+    <DllImport("user32.dll", EntryPoint:="FindWindowEx", SetLastError:=True, CharSet:=CharSet.Unicode)> _
+    Friend Shared Function FindWindowEx(ByVal parentHandle As IntPtr, ByVal childAfter As IntPtr, ByVal lclassName As String, ByVal windowTitle As String) As IntPtr
     End Function
 
-    <DllImport("UxTheme.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("UxTheme.dll", EntryPoint:="IsThemeActive", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function IsThemeActive() As Boolean
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="GetShellWindow", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function GetShellWindow() As IntPtr
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="GetDesktopWindow", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function GetDesktopWindow() As IntPtr
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+    <DllImport("user32.dll", EntryPoint:="SetFocus", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function SetFocus(ByVal hwnd As IntPtr) As Long
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
-    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+    <DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)> _
+    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
     End Function
 
-    <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
-    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
+    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
     End Function
+
+    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
+    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, <MarshalAs(UnmanagedType.LPWStr)> ByVal lParam As System.Text.StringBuilder) As Integer
+    End Function
+
+    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
+    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    End Function
+
 End Class
 
 Public NotInheritable Class OutlookSecurity
@@ -110,12 +116,12 @@ Public NotInheritable Class OutlookSecurity
             Return UnsafeNativeMethods.IsThemeActive()
         End Get
     End Property
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
         Get
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get
     End Property
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As UInteger, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
         Get
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get

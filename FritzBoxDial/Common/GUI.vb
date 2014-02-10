@@ -1262,9 +1262,8 @@ End Class
                     'WO schließen
                     WO = Nothing
 #Else
-                    olKontakt.Body += "Test " & Notiz & vbNewLine
-                    ' EM_SETSEL ifrom, ito - 0-based character index. Use 0/-1 to select all text. Use -1/-1 to remove selection. Use -2/-2 to move the text cursor to the end.
-                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETSEL, 0, 0))
+                    olKontakt.Body += Notiz & vbNewLine
+                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETSEL, 5, 3))
 #End If
                     ' Fokus setzen WICHTIG!
                     ReturnValue = OutlookSecurity.SetFocus(Handle)
