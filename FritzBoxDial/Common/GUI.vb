@@ -1262,8 +1262,9 @@ End Class
                     'WO schließen
                     WO = Nothing
 #Else
-                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETTEXT, IntPtr.Zero, Notiz & vbNewLine))
-                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETSEL, -1, Notiz.Length))
+                    olKontakt.Body += "Test " & Notiz & vbNewLine
+                    ' EM_SETSEL ifrom, ito - 0-based character index. Use 0/-1 to select all text. Use -1/-1 to remove selection. Use -2/-2 to move the text cursor to the end.
+                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETSEL, 0, 0))
 #End If
                     ' Fokus setzen WICHTIG!
                     ReturnValue = OutlookSecurity.SetFocus(Handle)
@@ -1271,7 +1272,6 @@ End Class
             End If
         End If
     End Sub
-
 
     ''' <summary>
     ''' Get all child windows for the specific windows handle (hwnd).
