@@ -1263,7 +1263,8 @@ End Class
                     WO = Nothing
 #Else
                     olKontakt.Body += Notiz & vbNewLine
-                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_SETSEL, 5, 3))
+
+                    ReturnValue = CLng(OutlookSecurity.SendMessage(Handle, DataProvider.EM_exSETSEL, 5, 3))
 #End If
                     ' Fokus setzen WICHTIG!
                     ReturnValue = OutlookSecurity.SetFocus(Handle)
