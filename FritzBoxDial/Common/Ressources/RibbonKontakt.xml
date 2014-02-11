@@ -7,13 +7,11 @@
           <button id="ButtonC1" imageMso="AutoDial" onAction="OnActionWählen" size="large" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
           <menu id="mnuC01" size="large" imageMso="CheckNames" label="Rückwärtssuche" screentip="Suchen Sie zusätzliche Informationen zu diesem Kontakt mit der Rückwärtssuche.">
             <button id="btnC01" label="11880" onAction="OnActionRWS11880" screentip="Rückwärtssuche mit &#34;www.11880.com&#34;"/>
-            <!--<button id="btnC02" label="GoYellow" onAction="OnActionRWSGoYellow" screentip="Rückwärtssuche mit &#34;www.goyellow.de&#34;"/>-->
             <button id="btnC03" label="dasTelefonbuch" onAction="OnActionRWSDasTelefonbuch" screentip="Rückwärtssuche mit &#34;www.dastelefonbuch.de/&#34;"/>
             <button id="btnC04" label="tel.search.ch" onAction="OnActionRWSTelSearch" screentip="Rückwärtssuche mit &#34;tel.search.ch&#34;"/>
             <button id="btnC05" label="Alle" onAction="OnActionRWSAlle" screentip="Rückwärtssuche mit allen Anbietern."/>
           </menu>
           <toggleButton id="InspVIP" label="VIP" onAction="OnActionInspVIP" getPressed="GetPressedVIP" imageMso="Pushpin" size="large" getScreentip="GetScreenTipVIP"/>
-          <button id="ButtonC2" imageMso="ShowNotesPage" onAction="OnActionNote" size="large" label="Notiz" screentip="Einen Notizeintrag hinzufügen"/>
         </group>
       </tab>
     </tabs>
