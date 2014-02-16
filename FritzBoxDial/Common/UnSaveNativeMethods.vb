@@ -56,13 +56,13 @@ Friend NotInheritable Class UnsafeNativeMethods
     Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
-    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
+    'Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
+    'End Function
 
-    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
-    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, <MarshalAs(UnmanagedType.LPWStr)> ByVal lParam As System.Text.StringBuilder) As Integer
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
+    'Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, <MarshalAs(UnmanagedType.LPWStr)> ByVal lParam As System.Text.StringBuilder) As Integer
+    'End Function
 
     <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
     Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
@@ -116,12 +116,12 @@ Public NotInheritable Class OutlookSecurity
             Return UnsafeNativeMethods.IsThemeActive()
         End Get
     End Property
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+    Public Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
         Get
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get
     End Property
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    Public Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
         Get
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get

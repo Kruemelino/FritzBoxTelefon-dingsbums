@@ -38,7 +38,7 @@
     <SignManifests>true</SignManifests>
     <ManifestKeyFile>
     </ManifestKeyFile>
-    <ManifestCertificateThumbprint>8FF169FE28327B28728435817C3C3B8AB0C0C180</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>277374D6BECB26ADDC7CFD445696711E6B3CADA8</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
@@ -222,6 +222,7 @@
     <Import Include="System.Xml.Linq" />
     <Import Include="Office = Microsoft.Office.Core" />
     <Import Include="Outlook = Microsoft.Office.Interop.Outlook" />
+    <Import Include="Word = Microsoft.Office.Interop.Word" />
   </ItemGroup>
   <!--
     This section defines the user source files that are part of the project.

@@ -969,6 +969,58 @@ Public Class DataProvider
             Return "FBDB-AnrMonZeit"
         End Get
     End Property
+
+    Public ReadOnly Property P_Def_Note_Table() As String
+        Get
+            Return "FBDB_Note_Table"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_HeaderRow() As String
+        Get
+            Return "FBDB_Note_Table_HeaderRow"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow() As String
+        Get
+            Return "BDB_Note_Table_CallRow"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_NoteRow() As String
+        Get
+            Return "FBDB_Note_Table_NoteRow"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow_Direction() As String
+        Get
+            Return "FBDB_Note_Table_CallRow_Direction"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow_Initialen() As String
+        Get
+            Return "FBDB_Note_Table_CallRow_Initialen"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow_Anrufer() As String
+        Get
+            Return "FBDB_Note_Table_CallRow_Anrufer"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow_Begin() As String
+        Get
+            Return "FBDB_Note_Table_CallRow_Begin"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow_Ende() As String
+        Get
+            Return "FBDB_Note_Table_CallRow_Ende"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_Note_Table_CallRow_Dauer() As String
+        Get
+            Return "FBDB_Note_Table_CallRow_Dauer"
+        End Get
+    End Property
+
     ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
     ''' </summary>

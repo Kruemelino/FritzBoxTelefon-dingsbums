@@ -1,7 +1,23 @@
-﻿Public Class Contacts
+﻿Imports System.Collections.Generic
+
+Public Class ApiWindow
+    Private _hWnd As IntPtr
+    Public Property HWnd() As IntPtr
+        Get
+            Return _hWnd
+        End Get
+        Set(ByVal value As IntPtr)
+            _hWnd = value
+        End Set
+    End Property
+End Class
+
+Public Class Contacts
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private _C_OLI As OutlookInterface
+    Private _listChildren As New List(Of ApiWindow)
+
     ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
 
     Public Property C_OLI() As OutlookInterface
@@ -12,12 +28,13 @@
             _C_OLI = value
         End Set
     End Property
-    Enum AnrMonDirection
-        NoDirection = -1
-        AnrMonRing = 0
-        AnrMonCall = 1
-    End Enum
 
+    Enum AnrMonEvent
+        AnrMonRING = 0
+        AnrMonCALL = 2
+        AnrMonCONNECT = 3
+        AnrMonDISCONNECT = 4
+    End Enum
 
     Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
@@ -225,21 +242,20 @@
     ''' <param name="Notiz">Notiz, die dem Kontakt hinzugefügt wird.</param>
     ''' <param name="AnrufRichtung">0 Eingehend, 1 Ausgehend</param>
     ''' <remarks></remarks>
-    Public Sub ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String, ByVal AutoOpenAnrMon As AnrMonDirection, ByVal AnrMonZeit As String)
+    Public Function ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String, ByVal Anzeigen As Boolean) As Outlook.ContactItem
 
-        Dim olKontakt As Outlook.ContactItem = Nothing
-
-        Dim vCard As String
-        Dim alleTelNr As String
+        ZeigeKontakt = Nothing
         ' alle Telefonnummern in der vCard
         If Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+            Dim vCard As String
+            Dim alleTelNr As String
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
-            GetEmptyContact(olKontakt)
+            GetEmptyContact(ZeigeKontakt)
             vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
-            With olKontakt
+            With ZeigeKontakt
 
                 If Not vCard = C_DP.P_Def_ErrorMinusOne And Not vCard = C_DP.P_Def_StringEmpty Then
-                    vCard2Contact(vCard, olKontakt)
+                    vCard2Contact(vCard, ZeigeKontakt)
                     .Body = .Body & vbNewLine & "Kontaktdaten (vCard):" & vbNewLine & vCard
                 End If
                 If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
@@ -264,40 +280,24 @@
         Else
             ' Kontakteintrag anzeigen
             Try
-                olKontakt = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+                ZeigeKontakt = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
             Catch ex As Exception
                 C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
             End Try
         End If
-        If Not olKontakt Is Nothing Then
-            If Not AutoOpenAnrMon = AnrMonDirection.NoDirection Then ErstelleUserPropertyAnrMon(olKontakt, AutoOpenAnrMon, AnrMonZeit)
-            olKontakt.Display()
+        If Not ZeigeKontakt Is Nothing And Anzeigen Then
+            ZeigeKontakt.Display()
         End If
-    End Sub
+    End Function
 
-    Public Sub ErstelleUserPropertyAnrMon(ByVal olKontakt As Outlook.ContactItem, ByVal AutoOpenAnrMon As AnrMonDirection, ByVal AnrMonZeit As String)
-        Dim ContactUserProperty As Outlook.UserProperty
-        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
-        If ContactUserProperty Is Nothing Then
-            ContactUserProperty = olKontakt.UserProperties.Add(C_DP.P_Def_AnrMonDirection_UserProperty_Name, Outlook.OlUserPropertyType.olText)
-        End If
-        ContactUserProperty.Value = IIf(AutoOpenAnrMon = AnrMonDirection.AnrMonCall, C_DP.P_Def_AnrMonDirection_Call, C_DP.P_Def_AnrMonDirection_Ring)
+    'Public Sub DeleteUserPropertyAnrMon(olKontakt As Outlook.ContactItem)
+    '    Dim ContactUserProperty As Outlook.UserProperty
+    '    ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
+    '    If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
 
-        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
-        If ContactUserProperty Is Nothing Then
-            ContactUserProperty = olKontakt.UserProperties.Add(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit, Outlook.OlUserPropertyType.olText)
-        End If
-        ContactUserProperty.Value = AnrMonZeit
-    End Sub
-
-    Public Sub LöscheUserPropertyAnrMon(olKontakt As Outlook.ContactItem)
-        Dim ContactUserProperty As Outlook.UserProperty
-        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
-        If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
-
-        ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
-        If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
-    End Sub
+    '    ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
+    '    If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
+    'End Sub
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
         Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
@@ -769,6 +769,246 @@
         End With
 
     End Sub
+
+#Region "KontaktNotiz"
+    Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
+
+        Dim Insp As Outlook.Inspector = olKontakt.GetInspector
+        Dim Handle As IntPtr = IntPtr.Zero
+
+
+        Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "rctrl_renwnd32", Insp.Caption)
+        ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
+        If Not Handle = IntPtr.Zero Then
+            Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
+            If Not Handle = IntPtr.Zero Then
+                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
+                If Not Handle = IntPtr.Zero Then
+                    Handle = GetChildWindows(Handle).Item(0).HWnd
+                    If Not Handle = IntPtr.Zero Then
+                        Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndA", vbNullString)
+                        If Not Handle = IntPtr.Zero Then
+                            Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
+                        Else
+                            Handle = IntPtr.Zero
+                        End If
+                    Else
+                        Handle = IntPtr.Zero
+                    End If
+                Else
+                    Handle = IntPtr.Zero
+                End If
+            Else
+                Handle = IntPtr.Zero
+            End If
+        End If
+
+        If Not Handle = IntPtr.Zero Then
+            Dim ReturnValue As Long
+            Dim oDoc As Word.Document = CType(Insp.WordEditor, Word.Document)
+            Dim oTable As Word.Table = Nothing
+            Dim HeaderRow As Word.Row = Nothing
+            Dim CallRow As Word.Row = Nothing
+            Dim NoteRow As Word.Row = Nothing
+            Dim startLocation As Object
+            CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, True)
+            With CallRow
+                .Cells(1).Range.Text = C_DP.P_Def_AnrMonDirection_Default
+                .Cells(2).Range.Text = C_OLI.BenutzerInitialien
+            End With
+            If Not NoteRow Is Nothing Then
+                startLocation = NoteRow.Range.Start
+                oDoc.Range(startLocation, startLocation).Select()
+            End If
+            oDoc = Nothing
+            ' Fokus setzen WICHTIG!
+            ReturnValue = OutlookSecurity.SetFocus(Handle)
+            ' Aufräumen
+            With C_hf
+                .NAR(oDoc)
+                .NAR(oTable)
+                .NAR(HeaderRow)
+                .NAR(CallRow)
+                .NAR(NoteRow)
+            End With
+        End If
+        'End If
+    End Sub
+
+    Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row, ByVal NeueZeile As Boolean)
+
+        Dim nRow As Integer = 1
+        Dim nCol As Integer = 6
+
+        Dim oTableLineStyle As Word.WdLineStyle = Word.WdLineStyle.wdLineStyleSingle
+        Dim oTableLineWidth_1 As Word.WdLineWidth = Word.WdLineWidth.wdLineWidth025pt
+        Dim oTableLineWidth_2 As Word.WdLineWidth = Word.WdLineWidth.wdLineWidth150pt
+        Dim oTableLineColor As Word.WdColor = Word.WdColor.wdColorBlack
+
+        Dim Sel4BM As Object
+
+        With oDoc.Bookmarks
+            For i = 1 To .Count
+                If .Item(i).Name = C_DP.P_Def_Note_Table Then
+                    oTable = .Item(i).Range.Tables(1)
+                    Exit For
+                End If
+            Next
+        End With
+        If oTable Is Nothing Then
+            oTable = oDoc.Tables.Add(oDoc.Range(0, 0), nRow, nCol)
+            Sel4BM = oTable
+            oDoc.Bookmarks.Add(C_DP.P_Def_Note_Table, Sel4BM)
+            With oTable
+                With .Borders
+                    .OutsideLineStyle = oTableLineStyle
+                    .OutsideLineWidth = oTableLineWidth_1
+                    .OutsideColor = oTableLineColor
+                    .InsideLineStyle = oTableLineStyle
+                    .InsideLineWidth = oTableLineWidth_1
+                    .InsideColor = oTableLineColor
+                End With
+                HeaderRow = .Rows(1)
+                With HeaderRow
+                    .Cells(1).Width = 30
+                    .Cells(2).Width = 40
+                    .Cells(3).Width = 140
+                    .Cells(4).Width = 140
+                    .Cells(5).Width = 140
+                    .Cells(6).Width = 140
+                End With
+
+                CallRow = .Rows.Add()
+                NoteRow = .Rows.Add()
+            End With
+
+            With HeaderRow
+                .Range.Font.Bold = vbTrue
+                .Cells(1).Range.Text = "Typ"
+                .Cells(2).Range.Text = "Initialen"
+                .Cells(3).Range.Text = "Telefonnummer"
+                .Cells(4).Range.Text = "Begin"
+                .Cells(5).Range.Text = "Ende"
+                .Cells(6).Range.Text = "Dauer"
+                .Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter
+
+                For Each cCell As Word.Cell In .Cells
+                    cCell.Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter
+                Next
+            End With
+
+        Else
+            HeaderRow = oTable.Rows(1)
+            If NeueZeile Then
+                CallRow = oTable.Rows.Add(oTable.Rows.Item(2))
+                NoteRow = oTable.Rows.Add(oTable.Rows.Item(3))
+            Else
+                CallRow = oTable.Rows(HeaderRow.Index + 1)
+                NoteRow = oTable.Rows(HeaderRow.Index + 2)
+            End If
+        End If
+
+        With CallRow
+            For i = 3 To nCol
+                .Cells(i).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight
+            Next
+        End With
+        With NoteRow
+            .Cells.Merge()
+            .Cells(1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft
+            With .Borders(Word.WdBorderType.wdBorderBottom)
+                .LineStyle = oTableLineStyle
+                .LineWidth = oTableLineWidth_2
+                .Color = oTableLineColor
+            End With
+
+            With .Range()
+                .ParagraphFormat.SpaceBefore = 6
+                .ParagraphFormat.SpaceAfter = 6
+            End With
+        End With
+    End Sub
+
+    Friend Sub FillNote(ByVal AnrMonTyp As AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal CloseInspector As Boolean)
+
+        Dim oInsp As Outlook.Inspector = olContact.GetInspector
+        Dim oPage As Outlook.Pages
+        Dim oDoc As Word.Document = CType(oInsp.WordEditor, Word.Document)
+        Dim oTable As Word.Table = Nothing
+
+        Dim HeaderRow As Word.Row = Nothing
+        Dim CallRow As Word.Row = Nothing
+        Dim NoteRow As Word.Row = Nothing
+
+        CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf(AnrMonTyp = AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrMonEvent.AnrMonCALL, True, False)))
+        If Not CallRow Is Nothing Then
+            With CallRow
+                Select Case AnrMonTyp
+                    Case AnrMonEvent.AnrMonRING, AnrMonEvent.AnrMonCALL
+                        .Cells(1).Range.Text = CStr(IIf(AnrMonTyp = AnrMonEvent.AnrMonRING, C_DP.P_Def_AnrMonDirection_Ring, C_DP.P_Def_AnrMonDirection_Call))
+                        .Cells(2).Range.Text = C_OLI.BenutzerInitialien
+                        .Cells(3).Range.Text = TelNr
+                        .Cells(4).Range.Text = TelZeit
+                        .Cells(5).Range.Text = C_DP.P_Def_StringEmpty
+                        .Cells(6).Range.Text = C_DP.P_Def_StringEmpty
+                    Case AnrMonEvent.AnrMonCONNECT
+                        .Cells(4).Range.Text = TelZeit
+                    Case AnrMonEvent.AnrMonDISCONNECT
+                        .Cells(5).Range.Text = CDate(TelZeit).AddSeconds(Duration).ToString()
+                        .Cells(6).Range.Text = C_hf.GetTimeInterval(Duration)
+                End Select
+            End With
+        End If
+        olContact.Save()
+
+        If CloseInspector Then
+            oPage = CType(oInsp.ModifiedFormPages, Outlook.Pages)
+            oPage.Add("General")
+            oInsp.HideFormPage("General")
+            olContact.Close(Outlook.OlInspectorClose.olSave) ' Prüfen, was passiert wenn kontakt geöffnet wird.
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Get all child windows for the specific windows handle (hwnd).
+    ''' </summary>
+    ''' <returns>List of child windows for parent window</returns>
+    Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
+        ' Clear the window list.
+        _listChildren = New List(Of ApiWindow)
+        ' Start the enumeration process.
+        UnsafeNativeMethods.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, &H0)
+        ' Return the children list when the process is completed.
+        Return _listChildren
+    End Function
+    ' ''' <summary>
+    ' ''' Callback function that does the work of enumerating child windows.
+    ' ''' </summary>
+    ' ''' <param name="hwnd">Discovered Window handle</param>
+    ' ''' <returns>1=keep going, 0=stop</returns>
+    Private Function EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32) As IntPtr
+
+        Dim window As ApiWindow = GetWindowIdentification(hwnd)
+
+        ' Attempt to match the child class, if one was specified, otherwise
+        ' enumerate all the child windows.
+        'If _childClass.Length = 0 OrElse window.ClassName.ToLower() = _childClass.ToLower() Then
+        _listChildren.Add(window)
+        'End If
+
+        Return CType(1, IntPtr)
+
+    End Function
+    ''' <summary>
+    ''' Build the ApiWindow object to hold information about the Window object.
+    ''' </summary>
+    Private Function GetWindowIdentification(ByVal hwnd As IntPtr) As ApiWindow
+        Dim window As New ApiWindow()
+        window.HWnd = CType(hwnd, IntPtr)
+        Return window
+    End Function
+#End Region
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()

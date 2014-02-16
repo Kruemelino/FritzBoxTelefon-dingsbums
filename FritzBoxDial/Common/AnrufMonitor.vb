@@ -595,9 +595,10 @@ Friend Class AnrufMonitor
                 NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
             End If
             ' Kontakt öffnen
-            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, Contacts.AnrMonDirection.AnrMonRing, FBStatus(0)) '0 ... RING
-            End If
+            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+
+            'Notizeintag
+            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonRING, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
         End If
 
     End Sub '(AnrMonRING)
@@ -767,9 +768,9 @@ Friend Class AnrufMonitor
                 End With
             End If
             ' Kontakt öffnen
-            If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, Contacts.AnrMonDirection.AnrMonCall, FBStatus(0)) '1 ... Call
-            End If
+            If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+            'Notizeintag
+            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonCALL, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
         End If
     End Sub '(AnrMonCALL)
 
@@ -860,7 +861,7 @@ Friend Class AnrufMonitor
                             .Add("Zeit")
                             C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(0)))
                             .Item(.IndexOf("Zeit")) = "NSN"
-7:                          C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
+                            C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
                         End With
                     End If
                     ' StoppUhr einblenden
@@ -883,6 +884,8 @@ Friend Class AnrufMonitor
                 End If
             End If
         End If
+        'Notizeintag
+
     End Sub '(AnrMonCONNECT)
 
     ''' <summary>
@@ -1063,7 +1066,8 @@ Friend Class AnrufMonitor
         End If
 
         If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
-
+        'Notizeintag
+        C_KF.FillNote(Contacts.AnrMonEvent.AnrMonDISCONNECT, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, Dauer, True)
     End Sub '(AnrMonDISCONNECT)
 #End Region
 

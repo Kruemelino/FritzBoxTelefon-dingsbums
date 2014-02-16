@@ -179,7 +179,7 @@ Public Class ThisAddIn
     End Sub
 
     Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
-        C_KF.LöscheUserPropertyAnrMon(ContactSaved)
+        'C_KF.DeleteUserPropertyAnrMon(ContactSaved)
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
