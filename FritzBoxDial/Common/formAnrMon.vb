@@ -20,8 +20,6 @@ Friend Class formAnrMon
 
     Public AnrmonClosed As Boolean
 
-
-
     Public Sub New(ByVal iAnrufID As Integer, _
                    ByVal Aktualisieren As Boolean, _
                    ByVal DataProviderKlasse As DataProvider, _

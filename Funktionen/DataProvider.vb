@@ -215,10 +215,12 @@ Public Class DataProvider
     Private _TelAnschluss As Integer
     Private _TelFestnetz As Boolean
     Private _TelCLIR As Boolean
-    'FritzBox
+    ' FritzBox
     Private _EncodeingFritzBox As String
     ' Indizierung
     Private _LLetzteIndizierung As Date
+    ' Notiz
+    Private _CBNote As Boolean
 #End Region
 #Region "Value Properties"
     ''' <summary>
@@ -249,7 +251,12 @@ Public Class DataProvider
             _TBAmt = value
         End Set
     End Property
-
+    ''' <summary>
+    ''' Eigenschaft für die hinterlege Ortsvorwahl
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>Ortsvorwahl</returns>
+    ''' <remarks></remarks>
     Public Property P_TBVorwahl() As String
         Get
             Return _TBVorwahl
@@ -259,6 +266,12 @@ Public Class DataProvider
         End Set
     End Property
     ' Anrufmonitor
+    ''' <summary>
+    ''' Gibt an, wie lange der Anrufmonitor angezeigt werden soll, bevor er automatisch ausgeblendet wird
+    ''' </summary>
+    ''' <value>Integer</value>
+    ''' <returns>Intervall</returns>
+    ''' <remarks></remarks>
     Public Property P_TBEnblDauer() As Integer
         Get
             Return _TBEnblDauer
@@ -267,6 +280,12 @@ Public Class DataProvider
             _TBEnblDauer = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an, ob der Anrufmonitor automatisch gestartét werden soll.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns>Autostart</returns>
+    ''' <remarks></remarks>
     Public Property P_CBAnrMonAuto() As Boolean
         Get
             Return _CBAnrMonAuto
@@ -275,6 +294,12 @@ Public Class DataProvider
             _CBAnrMonAuto = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an, um wieviele Punkte der Anrufmonitor in X-Richtung verschoben werden soll.
+    ''' </summary>
+    ''' <value>Integer</value>
+    ''' <returns>Positionskorrektur X</returns>
+    ''' <remarks></remarks>
     Public Property P_TBAnrMonX() As Integer
         Get
             Return _TBAnrMonX
@@ -283,6 +308,12 @@ Public Class DataProvider
             _TBAnrMonX = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an, um wieviele Punkte der Anrufmonitor in Y-Richtung verschoben werden soll.
+    ''' </summary>
+    ''' <value>Integer</value>
+    ''' <returns>Positionskorrektur Y</returns>
+    ''' <remarks></remarks>
     Public Property P_TBAnrMonY() As Integer
         Get
             Return _TBAnrMonY
@@ -291,6 +322,12 @@ Public Class DataProvider
             _TBAnrMonY = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an ob der Anrufmonitor in den Bildschirm hereingescrollt werden soll.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns>Anrufmonitorbewegung</returns>
+    ''' <remarks></remarks>
     Public Property P_CBAnrMonMove() As Boolean
         Get
             Return _CBAnrMonMove
@@ -299,6 +336,12 @@ Public Class DataProvider
             _CBAnrMonMove = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt an, ob der Anrufmonitor eingeblendet werden soll.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property P_CBAnrMonTransp() As Boolean
         Get
             Return _CBAnrMonTransp
@@ -307,6 +350,12 @@ Public Class DataProvider
             _CBAnrMonTransp = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt die Endposition des Anrufmonitors an.
+    ''' </summary>
+    ''' <value>Integer</value>
+    ''' <returns>Wert für die Position</returns>
+    ''' <remarks>FritzBoxDial.PopUpAnrMon.eStartPosition</remarks>
     Public Property P_CBoxAnrMonStartPosition() As Integer
         Get
             Return _CBoxAnrMonStartPosition
@@ -315,6 +364,12 @@ Public Class DataProvider
             _CBoxAnrMonStartPosition = value
         End Set
     End Property
+    ''' <summary>
+    ''' Gibt die Bewegungsrichtung des Anrufmonitors an.
+    ''' </summary>
+    ''' <value>Integer</value>
+    ''' <returns>Wert für Richtung, abhängig von der Endosition.</returns>
+    ''' <remarks>FritzBoxDial.PopUpAnrMon.eMoveDirection</remarks>
     Public Property P_CBoxAnrMonMoveDirection() As Integer
         Get
             Return _CBoxAnrMonMoveDirection
@@ -853,7 +908,15 @@ Public Class DataProvider
             _LLetzteIndizierung = value
         End Set
     End Property
-
+    ' Note
+    Public Property P_CBNote() As Boolean
+        Get
+            Return _CBNote
+        End Get
+        Set(ByVal value As Boolean)
+            _CBNote = value
+        End Set
+    End Property
 #End Region
 #Region "Global Default Value Properties"
     ''' <summary>
@@ -1396,6 +1459,12 @@ Public Class DataProvider
     Public ReadOnly Property P_Def_LLetzteIndizierung() As Date
         Get
             Return System.DateTime.Now
+        End Get
+    End Property
+    ' Note
+    Public ReadOnly Property P_Def_CBNote() As Boolean
+        Get
+            Return False
         End Get
     End Property
 
