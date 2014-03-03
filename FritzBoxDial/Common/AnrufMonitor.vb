@@ -3,6 +3,135 @@ Imports System.IO
 Imports System.ComponentModel
 Imports System.Net.Sockets
 Imports System.Threading
+Imports System.Collections.Generic
+
+Friend Class C_Journaleintrag
+    Friend Enum JournalTyp
+        Eingehend = 1
+        Ausgehend = 0
+    End Enum
+
+    Private _ID As Integer
+    Private _Typ As JournalTyp
+    Private _Zeit As Date
+    Private _MSN As String
+    Private _TelNr As String
+    Private _KontaktID As String
+    Private _StoreID As String
+    Private _Dauer As Integer
+    Private _NSN As Long
+    Private _Subject As String
+    Private _Body As String
+    Private _Companies As String
+    Private _Categories As String
+
+#Region "Properties"
+    Public Property ID() As Integer
+        Get
+            Return _ID
+        End Get
+        Set(ByVal value As Integer)
+            _ID = value
+        End Set
+    End Property
+    Public Property Typ() As JournalTyp
+        Get
+            Return _Typ
+        End Get
+        Set(ByVal value As JournalTyp)
+            _Typ = value
+        End Set
+    End Property
+    Public Property Zeit() As Date
+        Get
+            Return _Zeit
+        End Get
+        Set(ByVal value As Date)
+            _Zeit = value
+        End Set
+    End Property
+    Public Property MSN() As String
+        Get
+            Return _MSN
+        End Get
+        Set(ByVal value As String)
+            _MSN = value
+        End Set
+    End Property
+    Public Property TelNr() As String
+        Get
+            Return _TelNr
+        End Get
+        Set(ByVal value As String)
+            _TelNr = value
+        End Set
+    End Property
+    Public Property KontaktID() As String
+        Get
+            Return _KontaktID
+        End Get
+        Set(ByVal value As String)
+            _KontaktID = value
+        End Set
+    End Property
+    Public Property StoreID() As String
+        Get
+            Return _StoreID
+        End Get
+        Set(ByVal value As String)
+            _StoreID = value
+        End Set
+    End Property
+    Public Property Dauer() As Integer
+        Get
+            Return _Dauer
+        End Get
+        Set(ByVal value As Integer)
+            _Dauer = value
+        End Set
+    End Property
+    Public Property NSN() As Long
+        Get
+            Return _NSN
+        End Get
+        Set(ByVal value As Long)
+            _NSN = value
+        End Set
+    End Property
+    Public Property Subject() As String
+        Get
+            Return _Subject
+        End Get
+        Set(ByVal value As String)
+            _Subject = value
+        End Set
+    End Property
+    Public Property Body() As String
+        Get
+            Return _Body
+        End Get
+        Set(ByVal value As String)
+            _Body = value
+        End Set
+    End Property
+    Public Property Categories() As String
+        Get
+            Return _Categories
+        End Get
+        Set(ByVal value As String)
+            _Categories = value
+        End Set
+    End Property
+    Public Property Companies() As String
+        Get
+            Return _Companies
+        End Get
+        Set(ByVal value As String)
+            _Companies = value
+        End Set
+    End Property
+#End Region
+End Class
 
 Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
@@ -30,6 +159,8 @@ Friend Class AnrufMonitor
     Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
     Private _AnrMonError As Boolean
     Private _AnrMonPhoner As Boolean = False
+
+    Private _ListJournalEinträge As New List(Of C_Journaleintrag)
 
 #Region "Properties"
     Friend Property AnrMonAktiv() As Boolean
@@ -66,16 +197,6 @@ Friend Class AnrufMonitor
         Dim Richtung As String
         Dim MSN As String
     End Structure
-
-    'Structure Anruf
-    '    Dim ID As String
-    '    Dim Typ As String
-    '    Dim Zeit As String
-    '    Dim MSN As String
-    '    Dim TelNr As String
-    '    Dim KontaktID As String
-    '    Dim StoreID As String
-    'End Structure
 #End Region
 
     Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
@@ -468,6 +589,7 @@ Friend Class AnrufMonitor
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
         Dim FullName As String = C_DP.P_Def_StringEmpty
         Dim CompanyName As String = C_DP.P_Def_StringEmpty
+        Dim JournalItem As C_Journaleintrag
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
         Dim xPathTeile As New ArrayList
@@ -592,16 +714,24 @@ Friend Class AnrufMonitor
             End If
             ' Daten für den Journaleintrag sichern
             If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
-                NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
+                JournalItem = New C_Journaleintrag
+                With JournalItem
+                    .ID = ID
+                    .Typ = C_Journaleintrag.JournalTyp.Eingehend
+                    .Zeit = CDate(FBStatus.GetValue(0))
+                    .MSN = MSN
+                    .TelNr = TelNr
+                    .KontaktID = KontaktID
+                    .StoreID = StoreID
+                End With
+                _ListJournalEinträge.Add(JournalItem)
+                'NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
             End If
             ' Kontakt öffnen
-            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
-            End If
-            If C_DP.P_CBNote Then
-                'Notizeintag
-                C_KF.FillNote(Contacts.AnrMonEvent.AnrMonRING, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
-            End If
+            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+
+            'Notizeintag
+            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonRING, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
         End If
 
     End Sub '(AnrMonRING)
@@ -636,6 +766,7 @@ Friend Class AnrufMonitor
         Dim RWSIndex As Boolean
         Dim xPathTeile As New ArrayList
 
+        Dim JournalItem As C_Journaleintrag
         ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
         If MSN = C_DP.P_Def_StringEmpty Then
             Select Case NSN
@@ -761,22 +892,32 @@ Friend Class AnrufMonitor
             End If
             ' Daten für den Journaleintrag sichern
             If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
-                NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
-                With xPathTeile
-                    .Clear()
-                    .Add("Journal")
-                    .Add("Eintrag[@ID=""" & ID & """]")
-                    .Add("NSN")
-                    C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
+                JournalItem = New C_Journaleintrag
+                With JournalItem
+                    .ID = ID
+                    .Typ = C_Journaleintrag.JournalTyp.Ausgehend
+                    .Zeit = CDate(FBStatus.GetValue(0))
+                    .MSN = MSN
+                    .TelNr = TelNr
+                    .KontaktID = KontaktID
+                    .StoreID = StoreID
+                    .NSN = CLng(FBStatus.GetValue(3))
                 End With
+                _ListJournalEinträge.Add(JournalItem)
+
+                'NeuerJournalEintrag(ID, "Ausgehender Anruf zu", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
+                'With xPathTeile
+                '    .Clear()
+                '    .Add("Journal")
+                '    .Add("Eintrag[@ID=""" & ID & """]")
+                '    .Add("NSN")
+                '    C_DP.Write(xPathTeile, CStr())
+                'End With
             End If
             ' Kontakt öffnen
-            If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
-                C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
-            End If
-            If C_DP.P_CBNote Then ' Notizeintag
-                C_KF.FillNote(Contacts.AnrMonEvent.AnrMonCALL, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
-            End If
+            If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+            'Notizeintag
+            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonCALL, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
         End If
     End Sub '(AnrMonCALL)
 
@@ -796,13 +937,15 @@ Friend Class AnrufMonitor
         ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
         ' FBStatus(3): 
 
-
         Dim xPathTeile As New ArrayList
         Dim MSN As String = C_DP.P_Def_ErrorMinusOne
         Dim NSN As Long
         Dim ID As Integer
         Dim Zeit As String
         Dim TelName As String = C_DP.P_Def_StringEmpty
+
+        Dim JournalItem As C_Journaleintrag
+
         If C_DP.P_CBJournal Or (C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
             ID = CInt(FBStatus.GetValue(2))
             NSN = CInt(FBStatus.GetValue(3))
@@ -860,15 +1003,22 @@ Friend Class AnrufMonitor
 
                 If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     If C_DP.P_CBJournal Then
-                        With xPathTeile
-                            .Clear()
-                            .Add("Journal")
-                            .Add("Eintrag[@ID=""" & ID & """]")
-                            .Add("Zeit")
-                            C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(0)))
-                            .Item(.IndexOf("Zeit")) = "NSN"
-                            C_DP.Write(xPathTeile, CStr(FBStatus.GetValue(3)))
-                        End With
+                        JournalItem = _ListJournalEinträge.Find(Function(JE) JE.ID = ID)
+                        If Not JournalItem Is Nothing Then
+                            With JournalItem
+                                .Zeit = CDate(FBStatus.GetValue(0))
+                                .NSN = CLng(FBStatus.GetValue(3))
+                            End With
+                        End If
+                        'With xPathTeile
+                        '    .Clear()
+                        '    .Add("Journal")
+                        '    .Add("Eintrag[@ID=""" & ID & """]")
+                        '    .Add("Zeit")
+                        '    C_DP.Write(xPathTeile, CStr())
+                        '    .Item(.IndexOf("Zeit")) = "NSN"
+                        '    C_DP.Write(xPathTeile, CStr())
+                        'End With
                     End If
                     ' StoppUhr einblenden
                     If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
@@ -920,8 +1070,8 @@ Friend Class AnrufMonitor
         Dim tmpTelName As String = C_DP.P_Def_StringEmpty
 
         Dim NSN As Long = -1
-        Dim Zeit As String = C_DP.P_Def_StringEmpty
-        Dim Typ As String = C_DP.P_Def_StringEmpty
+        Dim Zeit As Date
+        Dim Typ As C_Journaleintrag.JournalTyp
         Dim MSN As String = C_DP.P_Def_StringEmpty
         Dim TelNr As String = C_DP.P_Def_StringEmpty
         Dim StoreID As String = C_DP.P_Def_StringEmpty
@@ -932,8 +1082,24 @@ Friend Class AnrufMonitor
 
         Dim xPathTeile As New ArrayList
 
+        Dim JournalItem As C_Journaleintrag
+
         If C_DP.P_CBJournal Then
-            JIauslesen(ID, NSN, Zeit, Typ, MSN, TelNr, StoreID, KontaktID)
+
+            JournalItem = _ListJournalEinträge.Find(Function(JE) JE.ID = ID)
+            If Not JournalItem Is Nothing Then
+                With JournalItem
+                    ID = .ID
+                    NSN = .NSN
+                    Zeit = .Zeit
+                    Typ = .Typ
+                    MSN = .MSN
+                    TelNr = .TelNr
+                    KontaktID = .KontaktID
+                    StoreID = .StoreID
+                End With
+            End If
+
             Dim JMSN As String = C_hf.OrtsVorwahlEntfernen(MSN, C_DP.P_TBVorwahl)
             If Not MSN = Nothing Then
                 With xPathTeile
@@ -1019,28 +1185,34 @@ Friend Class AnrufMonitor
                             End With
                             TelName = C_DP.Read(xPathTeile, "")
                     End Select
-
+                    With JournalItem
+                        .Body = Body
+                        .Categories = TelName & "; FritzBox Anrufmonitor; Telefonanrufe"
+                        .Companies = Firma
+                        .Subject = Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, C_DP.P_Def_StringEmpty, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & TelName & ")"))
+                    End With
                     ' Journaleintrag schreiben
-                    C_OlI.ErstelleJournalEintrag(Subject:=Typ & " " & AnrName & CStr(IIf(AnrName = TelNr, C_DP.P_Def_StringEmpty, " (" & TelNr & ")")) & CStr(IIf(Split(TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & TelName & ")")), _
-                                              Duration:=CInt(IIf(Dauer > 0 And Dauer <= 30, 31, Dauer)) / 60, _
-                                              Body:=Body, _
-                                              Start:=CDate(Zeit), _
-                                              Companies:=Firma, _
-                                              Categories:=TelName & "; FritzBox Anrufmonitor; Telefonanrufe", _
-                                              KontaktID:=KontaktID, _
-                                              StoreID:=StoreID)
+                    C_OlI.ErstelleJournalEintrag(JournalItem)
+
                     If Dauer = 0 Then
-                        If Left(Typ, 3) = "Ein" Then
-                            Typ = "Verpasster Anruf von"
-                            C_DP.P_StatVerpasst += 1
-                        Else
-                            Typ = "Nicht erfolgreicher Anruf zu"
-                            C_DP.P_StatNichtErfolgreich += 1
-                        End If
+                        Select Case Typ
+                            Case C_Journaleintrag.JournalTyp.Eingehend
+                                C_DP.P_StatVerpasst += 1
+                            Case C_Journaleintrag.JournalTyp.Ausgehend
+                                C_DP.P_StatNichtErfolgreich += 1
+                        End Select
+                        'If Left(Typ, 3) = "Ein" Then
+                        '    Typ = "Verpasster Anruf von"
+
+                        'Else
+                        '    Typ = "Nicht erfolgreicher Anruf zu"
+
+                        'End If
                     End If
                     If Dauer > 0 Then
                         With xPathTeile
-                            .Item(.Count - 1) = IIf(Mid(Typ, 1, 3) = "Ein", "Eingehend", "Ausgehend")
+                            '.Item(.Count - 1) = IIf(Mid(Typ, 1, 3) = "Ein", "Eingehend", "Ausgehend")
+                            .Item(.Count - 1) = C_Journaleintrag.JournalTyp.Ausgehend.ToString
                         End With
                         With C_DP
                             .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer))
@@ -1049,7 +1221,8 @@ Friend Class AnrufMonitor
                     C_DP.P_StatJournal += 1
 
                     If CDate(Zeit) > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
-                    JEentfernen(ID)
+                    _ListJournalEinträge.Remove(JournalItem)
+                    'JEentfernen(ID)
                 End If
             Else
                 C_hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
@@ -1070,140 +1243,138 @@ Friend Class AnrufMonitor
                 End If
             End If
         End If
-        If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
-        If C_DP.P_CBNote Then
-            'Notizeintag
-            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonDISCONNECT, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, Dauer, True)
-        End If
 
+        If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
+        'Notizeintag
+        C_KF.FillNote(Contacts.AnrMonEvent.AnrMonDISCONNECT, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, Dauer, True)
     End Sub '(AnrMonDISCONNECT)
 #End Region
 
-#Region "Journaleinträge"
-    Sub NeuerJournalEintrag(ByVal ID As Integer, _
-                            ByVal Typ As String, _
-                            ByVal Zeit As String, _
-                            ByVal MSN As String, _
-                            ByVal TelNr As String, _
-                            ByVal KontaktID As String, _
-                            ByVal StoreID As String)
+    '#Region "Journaleinträge"
+    '    Sub NeuerJournalEintrag(ByVal ID As Integer, _
+    '                            ByVal Typ As String, _
+    '                            ByVal Zeit As String, _
+    '                            ByVal MSN As String, _
+    '                            ByVal TelNr As String, _
+    '                            ByVal KontaktID As String, _
+    '                            ByVal StoreID As String)
 
-        Dim LANodeNames As New ArrayList
-        Dim LANodeValues As New ArrayList
-        Dim LAAttributeNames As New ArrayList
-        Dim LAAttributeValues As New ArrayList
-        Dim xPathTeile As New ArrayList
+    '        Dim LANodeNames As New ArrayList
+    '        Dim LANodeValues As New ArrayList
+    '        Dim LAAttributeNames As New ArrayList
+    '        Dim LAAttributeValues As New ArrayList
+    '        Dim xPathTeile As New ArrayList
 
-        If Not Typ = C_DP.P_Def_StringEmpty Then
-            LANodeNames.Add("Typ")
-            LANodeValues.Add(Typ)
-        End If
+    '        If Not Typ = C_DP.P_Def_StringEmpty Then
+    '            LANodeNames.Add("Typ")
+    '            LANodeValues.Add(Typ)
+    '        End If
 
-        If Not Typ = C_DP.P_Def_StringEmpty Then
-            LANodeNames.Add("Zeit")
-            LANodeValues.Add(Zeit)
-        End If
+    '        If Not Typ = C_DP.P_Def_StringEmpty Then
+    '            LANodeNames.Add("Zeit")
+    '            LANodeValues.Add(Zeit)
+    '        End If
 
-        If Not MSN = C_DP.P_Def_StringEmpty Then
-            LANodeNames.Add("MSN")
-            LANodeValues.Add(MSN)
-        End If
+    '        If Not MSN = C_DP.P_Def_StringEmpty Then
+    '            LANodeNames.Add("MSN")
+    '            LANodeValues.Add(MSN)
+    '        End If
 
-        If Not TelNr = C_DP.P_Def_StringEmpty Then
-            LANodeNames.Add("TelNr")
-            LANodeValues.Add(TelNr)
-        End If
+    '        If Not TelNr = C_DP.P_Def_StringEmpty Then
+    '            LANodeNames.Add("TelNr")
+    '            LANodeValues.Add(TelNr)
+    '        End If
 
-        If Not KontaktID = C_DP.P_Def_StringEmpty Then
-            LANodeNames.Add("KontaktID")
-            LANodeValues.Add(KontaktID)
-        End If
+    '        If Not KontaktID = C_DP.P_Def_StringEmpty Then
+    '            LANodeNames.Add("KontaktID")
+    '            LANodeValues.Add(KontaktID)
+    '        End If
 
-        If Not StoreID = C_DP.P_Def_StringEmpty Then
-            LANodeNames.Add("StoreID")
-            LANodeValues.Add(StoreID)
-        End If
+    '        If Not StoreID = C_DP.P_Def_StringEmpty Then
+    '            LANodeNames.Add("StoreID")
+    '            LANodeValues.Add(StoreID)
+    '        End If
 
 
-        LAAttributeNames.Add("ID")
-        LAAttributeValues.Add(CStr(ID))
-        xPathTeile.Add("Journal")
+    '        LAAttributeNames.Add("ID")
+    '        LAAttributeValues.Add(CStr(ID))
+    '        xPathTeile.Add("Journal")
 
-        With C_DP
-            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", LANodeNames, LANodeValues, LAAttributeNames, LAAttributeValues))
-        End With
-        xPathTeile = Nothing
-    End Sub
+    '        With C_DP
+    '            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", LANodeNames, LANodeValues, LAAttributeNames, LAAttributeValues))
+    '        End With
+    '        xPathTeile = Nothing
+    '    End Sub
 
-    Sub JIauslesen(ByVal ID As Integer, _
-               ByRef NSN As Long, _
-               ByRef Zeit As String, _
-               ByRef Typ As String, _
-               ByRef MSN As String, _
-               ByRef TelNr As String, _
-               ByRef StoreID As String, _
-               ByRef KontaktID As String)
+    '    Sub JIauslesen(ByVal ID As Integer, _
+    '               ByRef NSN As Long, _
+    '               ByRef Zeit As String, _
+    '               ByRef Typ As String, _
+    '               ByRef MSN As String, _
+    '               ByRef TelNr As String, _
+    '               ByRef StoreID As String, _
+    '               ByRef KontaktID As String)
 
-        Dim LANodeNames As New ArrayList
-        Dim LANodeValues As New ArrayList
-        Dim xPathTeile As New ArrayList
+    '        Dim LANodeNames As New ArrayList
+    '        Dim LANodeValues As New ArrayList
+    '        Dim xPathTeile As New ArrayList
 
-        ' Uhrzeit
-        LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+    '        ' Uhrzeit
+    '        LANodeNames.Add("Zeit")
+    '        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
-        ' Typ
-        LANodeNames.Add("Typ")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+    '        ' Typ
+    '        LANodeNames.Add("Typ")
+    '        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
-        ' TelNr
-        LANodeNames.Add("TelNr")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+    '        ' TelNr
+    '        LANodeNames.Add("TelNr")
+    '        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
-        ' MSN
-        LANodeNames.Add("MSN")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+    '        ' MSN
+    '        LANodeNames.Add("MSN")
+    '        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
-        ' NSN
-        LANodeNames.Add("NSN")
-        LANodeValues.Add(-1)
+    '        ' NSN
+    '        LANodeNames.Add("NSN")
+    '        LANodeValues.Add(-1)
 
-        ' StoreID
-        LANodeNames.Add("StoreID")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+    '        ' StoreID
+    '        LANodeNames.Add("StoreID")
+    '        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
-        ' KontaktID
-        LANodeNames.Add("KontaktID")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
+    '        ' KontaktID
+    '        LANodeNames.Add("KontaktID")
+    '        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
 
-        With xPathTeile
-            .Add("Journal")
-            .Add("Eintrag")
-        End With
-        C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID))
+    '        With xPathTeile
+    '            .Add("Journal")
+    '            .Add("Eintrag")
+    '        End With
+    '        C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID))
 
-        Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
-        Typ = CStr(LANodeValues.Item(LANodeNames.IndexOf("Typ")))
-        TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
-        MSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("MSN")))
-        NSN = CLng(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
-        StoreID = CStr(LANodeValues.Item(LANodeNames.IndexOf("StoreID")))
-        KontaktID = CStr(LANodeValues.Item(LANodeNames.IndexOf("KontaktID")))
+    '        Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+    '        Typ = CStr(LANodeValues.Item(LANodeNames.IndexOf("Typ")))
+    '        TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
+    '        MSN = CStr(LANodeValues.Item(LANodeNames.IndexOf("MSN")))
+    '        NSN = CLng(LANodeValues.Item(LANodeNames.IndexOf("NSN")))
+    '        StoreID = CStr(LANodeValues.Item(LANodeNames.IndexOf("StoreID")))
+    '        KontaktID = CStr(LANodeValues.Item(LANodeNames.IndexOf("KontaktID")))
 
-        xPathTeile = Nothing
-        LANodeNames = Nothing
-        LANodeValues = Nothing
-    End Sub
+    '        xPathTeile = Nothing
+    '        LANodeNames = Nothing
+    '        LANodeValues = Nothing
+    '    End Sub
 
-    Sub JEentfernen(ID As Integer)
-        Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("Journal")
-            .Add("Eintrag[@ID=""" & ID & """]")
-            C_DP.Delete(xPathTeile)
-        End With
-    End Sub
-#End Region
+    '    Sub JEentfernen(ID As Integer)
+    '        Dim xPathTeile As New ArrayList
+    '        With xPathTeile
+    '            .Add("Journal")
+    '            .Add("Eintrag[@ID=""" & ID & """]")
+    '            C_DP.Delete(xPathTeile)
+    '        End With
+    '    End Sub
+    '#End Region
 
 #Region "LetzterAnrufer"
     Sub SpeichereLetzerAnrufer(ByVal ID As String, ByVal LA As String())

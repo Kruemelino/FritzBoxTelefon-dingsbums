@@ -996,9 +996,7 @@ Public Class Contacts
         'If _childClass.Length = 0 OrElse window.ClassName.ToLower() = _childClass.ToLower() Then
         _listChildren.Add(window)
         'End If
-
         Return CType(1, IntPtr)
-
     End Function
     ''' <summary>
     ''' Build the ApiWindow object to hold information about the Window object.

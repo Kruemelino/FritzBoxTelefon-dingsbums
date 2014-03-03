@@ -21,15 +21,15 @@ Public Class OutlookInterface
         C_KF.C_OLI = Me
     End Sub
 
-    Friend Function ErstelleJournalEintrag(ByVal Subject As String, _
-                                   ByVal Duration As Double, _
-                                   ByVal Body As String, _
-                                   ByVal Start As Date, _
-                                   ByVal Companies As String, _
-                                   ByVal Categories As String, _
-                                   Optional ByVal KontaktID As String = vbNullString, _
-                                   Optional ByVal StoreID As String = vbNullString) As Boolean 'As Outlook.JournalItem
-
+    'Friend Function ErstelleJournalEintrag(ByVal Subject As String, _
+    '                               ByVal Duration As Double, _
+    '                               ByVal Body As String, _
+    '                               ByVal Start As Date, _
+    '                               ByVal Companies As String, _
+    '                               ByVal Categories As String, _
+    '                               Optional ByVal KontaktID As String = vbNullString, _
+    '                               Optional ByVal StoreID As String = vbNullString) As Boolean 'As Outlook.JournalItem
+    Friend Function ErstelleJournalEintrag(JournalEintrag As C_Journaleintrag) As Boolean
         ErstelleJournalEintrag = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication()
@@ -41,17 +41,17 @@ Public Class OutlookInterface
             End Try
             If Not olJournal Is Nothing Then
                 With olJournal
-                    .Subject = Subject
-                    .Duration = CInt(Duration)
-                    .Body = Body
-                    .Start = Start
-                    .Companies = Companies
-                    .Categories = Categories
+                    .Subject = JournalEintrag.Subject
+                    .Duration = JournalEintrag.Dauer
+                    .Body = JournalEintrag.Body
+                    .Start = JournalEintrag.Zeit
+                    .Companies = JournalEintrag.Companies
+                    .Categories = JournalEintrag.Categories
 
 #If Not OVer = 15 Then
-                    If (Not (KontaktID = C_DP.P_Def_StringEmpty Or StoreID = C_DP.P_Def_StringEmpty)) And Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+                    If (Not (JournalEintrag.KontaktID = C_DP.P_Def_StringEmpty Or JournalEintrag.StoreID = C_DP.P_Def_StringEmpty)) And Not Left(JournalEintrag.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                         Try
-                            .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem))
+                            .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(JournalEintrag.KontaktID, JournalEintrag.StoreID), Outlook.ContactItem))
                         Catch ex As Exception
                             C_hf.LogFile("Fehler (ErstelleJournalEintrag): Kann eingebetteten Link zum Kontakt nicht erstellen: " & ex.Message)
                         End Try
