@@ -5,134 +5,6 @@ Imports System.Net.Sockets
 Imports System.Threading
 Imports System.Collections.Generic
 
-Friend Class C_Journaleintrag
-    Friend Enum JournalTyp
-        Eingehend = 1
-        Ausgehend = 0
-    End Enum
-
-    Private _ID As Integer
-    Private _Typ As JournalTyp
-    Private _Zeit As Date
-    Private _MSN As String
-    Private _TelNr As String
-    Private _KontaktID As String
-    Private _StoreID As String
-    Private _Dauer As Integer
-    Private _NSN As Long
-    Private _Subject As String
-    Private _Body As String
-    Private _Companies As String
-    Private _Categories As String
-
-#Region "Properties"
-    Public Property ID() As Integer
-        Get
-            Return _ID
-        End Get
-        Set(ByVal value As Integer)
-            _ID = value
-        End Set
-    End Property
-    Public Property Typ() As JournalTyp
-        Get
-            Return _Typ
-        End Get
-        Set(ByVal value As JournalTyp)
-            _Typ = value
-        End Set
-    End Property
-    Public Property Zeit() As Date
-        Get
-            Return _Zeit
-        End Get
-        Set(ByVal value As Date)
-            _Zeit = value
-        End Set
-    End Property
-    Public Property MSN() As String
-        Get
-            Return _MSN
-        End Get
-        Set(ByVal value As String)
-            _MSN = value
-        End Set
-    End Property
-    Public Property TelNr() As String
-        Get
-            Return _TelNr
-        End Get
-        Set(ByVal value As String)
-            _TelNr = value
-        End Set
-    End Property
-    Public Property KontaktID() As String
-        Get
-            Return _KontaktID
-        End Get
-        Set(ByVal value As String)
-            _KontaktID = value
-        End Set
-    End Property
-    Public Property StoreID() As String
-        Get
-            Return _StoreID
-        End Get
-        Set(ByVal value As String)
-            _StoreID = value
-        End Set
-    End Property
-    Public Property Dauer() As Integer
-        Get
-            Return _Dauer
-        End Get
-        Set(ByVal value As Integer)
-            _Dauer = value
-        End Set
-    End Property
-    Public Property NSN() As Long
-        Get
-            Return _NSN
-        End Get
-        Set(ByVal value As Long)
-            _NSN = value
-        End Set
-    End Property
-    Public Property Subject() As String
-        Get
-            Return _Subject
-        End Get
-        Set(ByVal value As String)
-            _Subject = value
-        End Set
-    End Property
-    Public Property Body() As String
-        Get
-            Return _Body
-        End Get
-        Set(ByVal value As String)
-            _Body = value
-        End Set
-    End Property
-    Public Property Categories() As String
-        Get
-            Return _Categories
-        End Get
-        Set(ByVal value As String)
-            _Categories = value
-        End Set
-    End Property
-    Public Property Companies() As String
-        Get
-            Return _Companies
-        End Get
-        Set(ByVal value As String)
-            _Companies = value
-        End Set
-    End Property
-#End Region
-End Class
-
 Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
@@ -141,8 +13,8 @@ Friend Class AnrufMonitor
     Private WithEvents TimerCheckAnrMon As System.Timers.Timer
 
     Private ReceiveThread As Thread
-    Private AnrMonList As New Collections.ArrayList
-    Private Shared AnrMonStream As Sockets.NetworkStream 'Shared, da ansonsten AnrMonAktiv Fehler liefert
+    Private AnrMonList As New ArrayList
+    Private Shared AnrMonStream As NetworkStream
     Private STUhrDaten(5) As StructStoppUhr
 
     Private C_GUI As GraphicalUserInterface

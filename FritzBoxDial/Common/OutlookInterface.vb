@@ -1,34 +1,146 @@
 ﻿Imports Office = Microsoft.Office.Core
 Imports System.IO.Path
 Imports System.Runtime.InteropServices
+
+Friend Class C_Journaleintrag
+    Friend Enum JournalTyp
+        Eingehend = 1
+        Ausgehend = 0
+    End Enum
+
+    Private _ID As Integer
+    Private _Typ As JournalTyp
+    Private _Zeit As Date
+    Private _MSN As String
+    Private _TelNr As String
+    Private _KontaktID As String
+    Private _StoreID As String
+    Private _Dauer As Integer
+    Private _NSN As Long
+    Private _Subject As String
+    Private _Body As String
+    Private _Companies As String
+    Private _Categories As String
+
+#Region "Properties"
+    Public Property ID() As Integer
+        Get
+            Return _ID
+        End Get
+        Set(ByVal value As Integer)
+            _ID = value
+        End Set
+    End Property
+    Public Property Typ() As JournalTyp
+        Get
+            Return _Typ
+        End Get
+        Set(ByVal value As JournalTyp)
+            _Typ = value
+        End Set
+    End Property
+    Public Property Zeit() As Date
+        Get
+            Return _Zeit
+        End Get
+        Set(ByVal value As Date)
+            _Zeit = value
+        End Set
+    End Property
+    Public Property MSN() As String
+        Get
+            Return _MSN
+        End Get
+        Set(ByVal value As String)
+            _MSN = value
+        End Set
+    End Property
+    Public Property TelNr() As String
+        Get
+            Return _TelNr
+        End Get
+        Set(ByVal value As String)
+            _TelNr = value
+        End Set
+    End Property
+    Public Property KontaktID() As String
+        Get
+            Return _KontaktID
+        End Get
+        Set(ByVal value As String)
+            _KontaktID = value
+        End Set
+    End Property
+    Public Property StoreID() As String
+        Get
+            Return _StoreID
+        End Get
+        Set(ByVal value As String)
+            _StoreID = value
+        End Set
+    End Property
+    Public Property Dauer() As Integer
+        Get
+            Return _Dauer
+        End Get
+        Set(ByVal value As Integer)
+            _Dauer = value
+        End Set
+    End Property
+    Public Property NSN() As Long
+        Get
+            Return _NSN
+        End Get
+        Set(ByVal value As Long)
+            _NSN = value
+        End Set
+    End Property
+    Public Property Subject() As String
+        Get
+            Return _Subject
+        End Get
+        Set(ByVal value As String)
+            _Subject = value
+        End Set
+    End Property
+    Public Property Body() As String
+        Get
+            Return _Body
+        End Get
+        Set(ByVal value As String)
+            _Body = value
+        End Set
+    End Property
+    Public Property Categories() As String
+        Get
+            Return _Categories
+        End Get
+        Set(ByVal value As String)
+            _Categories = value
+        End Set
+    End Property
+    Public Property Companies() As String
+        Get
+            Return _Companies
+        End Get
+        Set(ByVal value As String)
+            _Companies = value
+        End Set
+    End Property
+#End Region
+End Class
+
 Public Class OutlookInterface
     Private C_KF As Contacts
     Private C_hf As Helfer
     Private C_DP As DataProvider
     Private OInsp As Outlook.Inspector
-
     Friend ReadOnly Property OutlookApplication() As Outlook.Application
         Get
             Return ThisAddIn.P_oApp
         End Get
     End Property
 
-    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal inipfad As String)
-        C_hf = Helferklasse
-        C_KF = KontaktKlasse
-        C_DP = DataProviderKlasse
-
-        C_KF.C_OLI = Me
-    End Sub
-
-    'Friend Function ErstelleJournalEintrag(ByVal Subject As String, _
-    '                               ByVal Duration As Double, _
-    '                               ByVal Body As String, _
-    '                               ByVal Start As Date, _
-    '                               ByVal Companies As String, _
-    '                               ByVal Categories As String, _
-    '                               Optional ByVal KontaktID As String = vbNullString, _
-    '                               Optional ByVal StoreID As String = vbNullString) As Boolean 'As Outlook.JournalItem
     Friend Function ErstelleJournalEintrag(JournalEintrag As C_Journaleintrag) As Boolean
         ErstelleJournalEintrag = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
@@ -67,6 +179,14 @@ Public Class OutlookInterface
         End If
         oApp = Nothing
     End Function
+
+    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal inipfad As String)
+        C_hf = Helferklasse
+        C_KF = KontaktKlasse
+        C_DP = DataProviderKlasse
+
+        C_KF.C_OLI = Me
+    End Sub
 
     Friend Sub KontaktInformation(ByRef KontaktID As String, _
                                   ByRef StoreID As String, _
