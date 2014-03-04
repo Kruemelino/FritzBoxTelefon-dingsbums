@@ -603,7 +603,7 @@ Friend Class AnrufMonitor
             If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
 
             'Notizeintag
-            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonRING, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
+            'C_KF.FillNote(Contacts.AnrMonEvent.AnrMonRING, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
         End If
 
     End Sub '(AnrMonRING)
@@ -780,7 +780,7 @@ Friend Class AnrufMonitor
             ' Kontakt öffnen
             If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
             'Notizeintag
-            C_KF.FillNote(Contacts.AnrMonEvent.AnrMonCALL, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
+            'C_KF.FillNote(Contacts.AnrMonEvent.AnrMonCALL, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
         End If
     End Sub '(AnrMonCALL)
 
@@ -952,7 +952,7 @@ Friend Class AnrufMonitor
                     TelNr = .TelNr
                     KontaktID = .KontaktID
                     StoreID = .StoreID
-                    .Dauer = CInt(IIf(Dauer <= 30, 31, Dauer / 60))
+                    .Dauer = CInt(IIf(Dauer <= 30, 31, Dauer)) \ 60
                 End With
             End If
 
@@ -1103,7 +1103,7 @@ Friend Class AnrufMonitor
 
         If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
         'Notizeintag
-        C_KF.FillNote(Contacts.AnrMonEvent.AnrMonDISCONNECT, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, Dauer, True)
+        'C_KF.FillNote(Contacts.AnrMonEvent.AnrMonDISCONNECT, C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False), CStr(FBStatus.GetValue(0)), TelNr, Dauer, True)
     End Sub '(AnrMonDISCONNECT)
 #End Region
 
