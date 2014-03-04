@@ -29,13 +29,6 @@ Public Class Contacts
         End Set
     End Property
 
-    Enum AnrMonEvent
-        AnrMonRING = 0
-        AnrMonCALL = 2
-        AnrMonCONNECT = 3
-        AnrMonDISCONNECT = 4
-    End Enum
-
     Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
         ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
@@ -289,15 +282,6 @@ Public Class Contacts
             ZeigeKontakt.Display()
         End If
     End Function
-
-    'Public Sub DeleteUserPropertyAnrMon(olKontakt As Outlook.ContactItem)
-    '    Dim ContactUserProperty As Outlook.UserProperty
-    '    ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Name)
-    '    If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
-
-    '    ContactUserProperty = olKontakt.UserProperties.Find(C_DP.P_Def_AnrMonDirection_UserProperty_Zeit)
-    '    If Not ContactUserProperty Is Nothing Then ContactUserProperty.Delete()
-    'End Sub
 
     Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
         Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
@@ -929,7 +913,7 @@ Public Class Contacts
         End With
     End Sub
 
-    Friend Sub FillNote(ByVal AnrMonTyp As AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal CloseInspector As Boolean)
+    Friend Sub FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal CloseInspector As Boolean)
 
         Dim oInsp As Outlook.Inspector = olContact.GetInspector
         Dim oPage As Outlook.Pages
@@ -940,20 +924,20 @@ Public Class Contacts
         Dim CallRow As Word.Row = Nothing
         Dim NoteRow As Word.Row = Nothing
 
-        CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf(AnrMonTyp = AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrMonEvent.AnrMonCALL, True, False)))
+        CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL, True, False)))
         If Not CallRow Is Nothing Then
             With CallRow
                 Select Case AnrMonTyp
-                    Case AnrMonEvent.AnrMonRING, AnrMonEvent.AnrMonCALL
-                        .Cells(1).Range.Text = CStr(IIf(AnrMonTyp = AnrMonEvent.AnrMonRING, C_DP.P_Def_AnrMonDirection_Ring, C_DP.P_Def_AnrMonDirection_Call))
+                    Case AnrufMonitor.AnrMonEvent.AnrMonRING, AnrufMonitor.AnrMonEvent.AnrMonCALL
+                        .Cells(1).Range.Text = CStr(IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING, C_DP.P_Def_AnrMonDirection_Ring, C_DP.P_Def_AnrMonDirection_Call))
                         .Cells(2).Range.Text = C_OLI.BenutzerInitialien
                         .Cells(3).Range.Text = TelNr
                         .Cells(4).Range.Text = TelZeit
                         .Cells(5).Range.Text = C_DP.P_Def_StringEmpty
                         .Cells(6).Range.Text = C_DP.P_Def_StringEmpty
-                    Case AnrMonEvent.AnrMonCONNECT
+                    Case AnrufMonitor.AnrMonEvent.AnrMonCONNECT
                         .Cells(4).Range.Text = TelZeit
-                    Case AnrMonEvent.AnrMonDISCONNECT
+                    Case AnrufMonitor.AnrMonEvent.AnrMonDISCONNECT
                         .Cells(5).Range.Text = CDate(TelZeit).AddSeconds(Duration).ToString()
                         .Cells(6).Range.Text = C_hf.GetTimeInterval(Duration)
                 End Select

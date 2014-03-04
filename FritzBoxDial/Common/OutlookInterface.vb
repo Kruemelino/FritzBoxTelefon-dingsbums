@@ -21,9 +21,10 @@ Friend Class C_Journaleintrag
     Private _Body As String
     Private _Companies As String
     Private _Categories As String
+    Private _olContact As Outlook.ContactItem
 
 #Region "Properties"
-    Public Property ID() As Integer
+    Friend Property ID() As Integer
         Get
             Return _ID
         End Get
@@ -31,7 +32,7 @@ Friend Class C_Journaleintrag
             _ID = value
         End Set
     End Property
-    Public Property Typ() As JournalTyp
+    Friend Property Typ() As JournalTyp
         Get
             Return _Typ
         End Get
@@ -39,7 +40,7 @@ Friend Class C_Journaleintrag
             _Typ = value
         End Set
     End Property
-    Public Property Zeit() As Date
+    Friend Property Zeit() As Date
         Get
             Return _Zeit
         End Get
@@ -47,7 +48,7 @@ Friend Class C_Journaleintrag
             _Zeit = value
         End Set
     End Property
-    Public Property MSN() As String
+    Friend Property MSN() As String
         Get
             Return _MSN
         End Get
@@ -55,7 +56,7 @@ Friend Class C_Journaleintrag
             _MSN = value
         End Set
     End Property
-    Public Property TelNr() As String
+    Friend Property TelNr() As String
         Get
             Return _TelNr
         End Get
@@ -63,7 +64,7 @@ Friend Class C_Journaleintrag
             _TelNr = value
         End Set
     End Property
-    Public Property KontaktID() As String
+    Friend Property KontaktID() As String
         Get
             Return _KontaktID
         End Get
@@ -71,7 +72,7 @@ Friend Class C_Journaleintrag
             _KontaktID = value
         End Set
     End Property
-    Public Property StoreID() As String
+    Friend Property StoreID() As String
         Get
             Return _StoreID
         End Get
@@ -79,7 +80,7 @@ Friend Class C_Journaleintrag
             _StoreID = value
         End Set
     End Property
-    Public Property Dauer() As Integer
+    Friend Property Dauer() As Integer
         Get
             Return _Dauer
         End Get
@@ -87,7 +88,7 @@ Friend Class C_Journaleintrag
             _Dauer = value
         End Set
     End Property
-    Public Property NSN() As Long
+    Friend Property NSN() As Long
         Get
             Return _NSN
         End Get
@@ -95,7 +96,7 @@ Friend Class C_Journaleintrag
             _NSN = value
         End Set
     End Property
-    Public Property Subject() As String
+    Friend Property Subject() As String
         Get
             Return _Subject
         End Get
@@ -103,7 +104,7 @@ Friend Class C_Journaleintrag
             _Subject = value
         End Set
     End Property
-    Public Property Body() As String
+    Friend Property Body() As String
         Get
             Return _Body
         End Get
@@ -111,7 +112,7 @@ Friend Class C_Journaleintrag
             _Body = value
         End Set
     End Property
-    Public Property Categories() As String
+    Friend Property Categories() As String
         Get
             Return _Categories
         End Get
@@ -119,12 +120,20 @@ Friend Class C_Journaleintrag
             _Categories = value
         End Set
     End Property
-    Public Property Companies() As String
+    Friend Property Companies() As String
         Get
             Return _Companies
         End Get
         Set(ByVal value As String)
             _Companies = value
+        End Set
+    End Property
+    Friend Property olContact() As Outlook.ContactItem
+        Get
+            Return _olContact
+        End Get
+        Set(ByVal value As Outlook.ContactItem)
+            _olContact = value
         End Set
     End Property
 #End Region
