@@ -2,7 +2,7 @@
 Imports System.IO.Path
 Imports System.Runtime.InteropServices
 
-Friend Class C_Journaleintrag
+Friend Class C_Telefonat
     Friend Enum JournalTyp
         Eingehend = 1
         Ausgehend = 0
@@ -150,7 +150,7 @@ Public Class OutlookInterface
         End Get
     End Property
 
-    Friend Function ErstelleJournalEintrag(JournalEintrag As C_Journaleintrag) As Boolean
+    Friend Function ErstelleJournalEintrag(Telefonat As C_Telefonat) As Boolean
         ErstelleJournalEintrag = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication()
@@ -162,17 +162,17 @@ Public Class OutlookInterface
             End Try
             If Not olJournal Is Nothing Then
                 With olJournal
-                    .Subject = JournalEintrag.Subject
-                    .Duration = JournalEintrag.Dauer
-                    .Body = JournalEintrag.Body
-                    .Start = JournalEintrag.Zeit
-                    .Companies = JournalEintrag.Companies
-                    .Categories = JournalEintrag.Categories
+                    .Subject = Telefonat.Subject
+                    .Duration = Telefonat.Dauer
+                    .Body = Telefonat.Body
+                    .Start = Telefonat.Zeit
+                    .Companies = Telefonat.Companies
+                    .Categories = Telefonat.Categories
 
 #If Not OVer = 15 Then
-                    If (Not (JournalEintrag.KontaktID = C_DP.P_Def_StringEmpty Or JournalEintrag.StoreID = C_DP.P_Def_StringEmpty)) And Not Left(JournalEintrag.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+                    If (Not (Telefonat.KontaktID = C_DP.P_Def_StringEmpty Or Telefonat.StoreID = C_DP.P_Def_StringEmpty)) And Not Left(Telefonat.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
                         Try
-                            .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(JournalEintrag.KontaktID, JournalEintrag.StoreID), Outlook.ContactItem))
+                            .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(Telefonat.KontaktID, Telefonat.StoreID), Outlook.ContactItem))
                         Catch ex As Exception
                             C_hf.LogFile("Fehler (ErstelleJournalEintrag): Kann eingebetteten Link zum Kontakt nicht erstellen: " & ex.Message)
                         End Try

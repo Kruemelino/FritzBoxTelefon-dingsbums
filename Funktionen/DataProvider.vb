@@ -1602,6 +1602,8 @@ Public Class DataProvider
         Me.P_EncodeingFritzBox = Read(P_Def_Options, "EncodeingFritzBox", P_Def_EncodeingFritzBox)
         ' Indizierung
         Me.P_LLetzteIndizierung = CDate(Read(P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
+        ' Notiz
+        Me.P_CBNote = CBool(Read(P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
     End Sub
     Private Sub SaveOptionData()
         Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)

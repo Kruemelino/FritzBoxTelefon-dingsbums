@@ -32,7 +32,7 @@ Friend Class AnrufMonitor
     Private _AnrMonError As Boolean
     Private _AnrMonPhoner As Boolean = False
 
-    Private JournalEintragsListe As New List(Of C_Journaleintrag)
+    Private TelefonatsListe As New List(Of C_Telefonat)
 
 #Region "Properties"
     Friend Property AnrMonAktiv() As Boolean
@@ -468,7 +468,7 @@ Friend Class AnrufMonitor
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
         Dim FullName As String = C_DP.P_Def_StringEmpty
         Dim CompanyName As String = C_DP.P_Def_StringEmpty
-        Dim JournalItem As C_Journaleintrag
+        Dim Telefonat As C_Telefonat
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
         Dim xPathTeile As New ArrayList
@@ -593,10 +593,10 @@ Friend Class AnrufMonitor
             End If
             ' Daten für den Journaleintrag sichern
             'If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
-            JournalItem = New C_Journaleintrag
-            With JournalItem
+            Telefonat = New C_Telefonat
+            With Telefonat
                 .ID = ID
-                .Typ = C_Journaleintrag.JournalTyp.Eingehend
+                .Typ = C_Telefonat.JournalTyp.Eingehend
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
                 .TelNr = TelNr
@@ -604,16 +604,21 @@ Friend Class AnrufMonitor
                 .StoreID = StoreID
                 .olContact = C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False)
             End With
-            JournalEintragsListe.Add(JournalItem)
+            TelefonatsListe.Add(Telefonat)
             'NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
             'End If
             ' Kontakt öffnen
-            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
+                C_KF.AddNote(C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True))
+            End If
 
             'Notizeintag
-            With JournalItem
-                C_KF.FillNote(AnrMonEvent.AnrMonRING, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
-            End With
+            If C_DP.P_CBNote Then
+                With Telefonat
+                    C_KF.FillNote(AnrMonEvent.AnrMonRING, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
+                End With
+            End If
+
         End If
 
     End Sub '(AnrMonRING)
@@ -648,7 +653,7 @@ Friend Class AnrufMonitor
         Dim RWSIndex As Boolean
         Dim xPathTeile As New ArrayList
 
-        Dim JournalItem As C_Journaleintrag
+        Dim Telefonat As C_Telefonat
         ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
         If MSN = C_DP.P_Def_StringEmpty Then
             Select Case NSN
@@ -772,12 +777,11 @@ Friend Class AnrufMonitor
                     End If
                 End With
             End If
-            ' Daten für den Journaleintrag sichern
-            'If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
-            JournalItem = New C_Journaleintrag
-            With JournalItem
+            ' Journal
+            Telefonat = New C_Telefonat
+            With Telefonat
                 .ID = ID
-                .Typ = C_Journaleintrag.JournalTyp.Ausgehend
+                .Typ = C_Telefonat.JournalTyp.Ausgehend
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
                 .TelNr = TelNr
@@ -786,14 +790,18 @@ Friend Class AnrufMonitor
                 .NSN = CLng(FBStatus.GetValue(3))
                 .olContact = C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False)
             End With
-            JournalEintragsListe.Add(JournalItem)
-            'End If
+            TelefonatsListe.Add(Telefonat)
             ' Kontakt öffnen
-            If StoppUhrAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+            If C_DP.P_CBAnrMonZeigeKontakt Then
+                C_KF.AddNote(C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True))
+            End If
             'Notizeintag
-            With JournalItem
-                C_KF.FillNote(AnrMonEvent.AnrMonCALL, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), False)
-            End With
+            If C_DP.P_CBNote Then
+                With Telefonat
+                    C_KF.FillNote(AnrMonEvent.AnrMonCALL, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
+                End With
+            End If
+
         End If
     End Sub '(AnrMonCALL)
 
@@ -820,11 +828,12 @@ Friend Class AnrufMonitor
         Dim Zeit As String
         Dim TelName As String = C_DP.P_Def_StringEmpty
 
-        Dim JournalItem As C_Journaleintrag
-
-        JournalItem = JournalEintragsListe.Find(Function(JE) JE.ID = ID)
-        If Not JournalItem Is Nothing Then
-            With JournalItem
+        Dim Telefonat As C_Telefonat
+        ID = CInt(FBStatus.GetValue(2))
+        NSN = CInt(FBStatus.GetValue(3))
+        Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = ID)
+        If Not Telefonat Is Nothing Then
+            With Telefonat
                 MSN = .MSN
                 .NSN = NSN
                 .Zeit = CDate(FBStatus.GetValue(0))
@@ -832,9 +841,6 @@ Friend Class AnrufMonitor
         End If
 
         If C_DP.P_CBJournal Or (C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
-            ID = CInt(FBStatus.GetValue(2))
-            NSN = CInt(FBStatus.GetValue(3))
-
             If MSN = C_DP.P_Def_ErrorMinusOne Then
                 ' Wenn Journal nicht erstellt wird, muss MSN anderweitig ermittelt werden.
                 Select Case NSN
@@ -901,10 +907,11 @@ Friend Class AnrufMonitor
             End If
         End If
         'Notizeintag
-        With JournalItem
-            C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, True)
-        End With
-
+        If C_DP.P_CBNote Then
+            With Telefonat
+                C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, False)
+            End With
+        End If
     End Sub '(AnrMonCONNECT)
 
     ''' <summary>
@@ -935,7 +942,7 @@ Friend Class AnrufMonitor
 
         Dim NSN As Long = -1
         Dim Zeit As Date
-        Dim Typ As C_Journaleintrag.JournalTyp
+        Dim Typ As C_Telefonat.JournalTyp
         Dim MSN As String = C_DP.P_Def_StringEmpty
         Dim TelNr As String = C_DP.P_Def_StringEmpty
         Dim StoreID As String = C_DP.P_Def_StringEmpty
@@ -946,13 +953,11 @@ Friend Class AnrufMonitor
 
         Dim xPathTeile As New ArrayList
 
-        Dim JournalItem As C_Journaleintrag
+        Dim Telefonat As C_Telefonat
 
-
-
-        JournalItem = JournalEintragsListe.Find(Function(JE) JE.ID = ID)
-        If Not JournalItem Is Nothing Then
-            With JournalItem
+        Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = ID)
+        If Not Telefonat Is Nothing Then
+            With Telefonat
                 ID = .ID
                 NSN = .NSN
                 Zeit = .Zeit
@@ -1051,14 +1056,14 @@ Friend Class AnrufMonitor
                             TelName = C_DP.Read(xPathTeile, "")
                     End Select
                     Select Case Typ
-                        Case C_Journaleintrag.JournalTyp.Eingehend
+                        Case C_Telefonat.JournalTyp.Eingehend
                             If Dauer = 0 Then
                                 C_DP.P_StatVerpasst += 1
                                 TypString = "Verpasster Anruf von"
                             Else
                                 TypString = "Eingehender Anruf von"
                             End If
-                        Case C_Journaleintrag.JournalTyp.Ausgehend
+                        Case C_Telefonat.JournalTyp.Ausgehend
                             If Dauer = 0 Then
                                 C_DP.P_StatNichtErfolgreich += 1
                                 TypString = "Nicht erfolgreicher Anruf zu"
@@ -1066,10 +1071,8 @@ Friend Class AnrufMonitor
                                 TypString = "Ausgehender Anruf zu"
                             End If
                     End Select
-
-
-
-                    With JournalItem
+                    ' für Journal
+                    With Telefonat
                         .Body = Body
                         .Categories = TelName & "; FritzBox Anrufmonitor; Telefonanrufe"
                         .Companies = Firma
@@ -1077,13 +1080,13 @@ Friend Class AnrufMonitor
                     End With
                     ' Journaleintrag schreiben
 
-                    C_OlI.ErstelleJournalEintrag(JournalItem)
+                    C_OlI.ErstelleJournalEintrag(Telefonat)
                 End If
 
                 'Statistik
                 If Dauer > 0 Then
                     With xPathTeile
-                        .Item(.Count - 1) = C_Journaleintrag.JournalTyp.Ausgehend.ToString
+                        .Item(.Count - 1) = C_Telefonat.JournalTyp.Ausgehend.ToString
                     End With
                     With C_DP
                         .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Dauer))
@@ -1116,10 +1119,12 @@ Friend Class AnrufMonitor
 
         If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
         'Notizeintag
-        With JournalItem
-            C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, True)
-        End With
-        JournalEintragsListe.Remove(JournalItem)
+        If C_DP.P_CBNote Then
+            With Telefonat
+                C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, Dauer, False)
+            End With
+        End If
+        TelefonatsListe.Remove(Telefonat)
     End Sub '(AnrMonDISCONNECT)
 #End Region
 

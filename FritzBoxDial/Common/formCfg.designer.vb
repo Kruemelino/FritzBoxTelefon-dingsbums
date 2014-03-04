@@ -45,7 +45,6 @@ Partial Class formCfg
         Me.CBintl = New System.Windows.Forms.CheckBox()
         Me.CBTelNrGruppieren = New System.Windows.Forms.CheckBox()
         Me.GroupBoxStoppUhr = New System.Windows.Forms.GroupBox()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.BStoppUhrAnzeigen = New System.Windows.Forms.Button()
         Me.LabelStoppUhr = New System.Windows.Forms.Label()
         Me.TBStoppUhr = New System.Windows.Forms.TextBox()
@@ -137,6 +136,7 @@ Partial Class formCfg
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Frame1 = New System.Windows.Forms.GroupBox()
         Me.PanelAnrMon = New System.Windows.Forms.Panel()
+        Me.CBNote = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonAuto = New System.Windows.Forms.CheckBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
@@ -458,7 +458,6 @@ Partial Class formCfg
         'GroupBoxStoppUhr
         '
         Me.GroupBoxStoppUhr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBoxStoppUhr.Controls.Add(Me.Label7)
         Me.GroupBoxStoppUhr.Controls.Add(Me.BStoppUhrAnzeigen)
         Me.GroupBoxStoppUhr.Controls.Add(Me.LabelStoppUhr)
         Me.GroupBoxStoppUhr.Controls.Add(Me.TBStoppUhr)
@@ -470,14 +469,6 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.TabIndex = 19
         Me.GroupBoxStoppUhr.TabStop = False
         Me.GroupBoxStoppUhr.Text = "Stoppuhr"
-        '
-        'Label7
-        '
-        Me.Label7.Location = New System.Drawing.Point(6, 65)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(158, 31)
-        Me.Label7.TabIndex = 20
-        Me.Label7.Text = "Anrufmonitor und" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Journalfunktion einschalten!"
         '
         'BStoppUhrAnzeigen
         '
@@ -1436,6 +1427,7 @@ Partial Class formCfg
         '
         'PanelAnrMon
         '
+        Me.PanelAnrMon.Controls.Add(Me.CBNote)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonZeigeKontakt)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonAuto)
         Me.PanelAnrMon.Controls.Add(Me.CBJImport)
@@ -1447,8 +1439,18 @@ Partial Class formCfg
         Me.PanelAnrMon.Controls.Add(Me.LEnblDauer)
         Me.PanelAnrMon.Location = New System.Drawing.Point(0, 36)
         Me.PanelAnrMon.Name = "PanelAnrMon"
-        Me.PanelAnrMon.Size = New System.Drawing.Size(282, 214)
+        Me.PanelAnrMon.Size = New System.Drawing.Size(282, 220)
         Me.PanelAnrMon.TabIndex = 35
+        '
+        'CBNote
+        '
+        Me.CBNote.AutoSize = True
+        Me.CBNote.Location = New System.Drawing.Point(7, 202)
+        Me.CBNote.Name = "CBNote"
+        Me.CBNote.Size = New System.Drawing.Size(184, 17)
+        Me.CBNote.TabIndex = 34
+        Me.CBNote.Text = "Notizeintrag automatisch erstellen"
+        Me.CBNote.UseVisualStyleBackColor = True
         '
         'CBAnrMonZeigeKontakt
         '
@@ -2301,12 +2303,12 @@ Partial Class formCfg
     Friend WithEvents TBDiagnose As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents BStoppUhrAnzeigen As System.Windows.Forms.Button
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents CBAnrMonZeigeKontakt As System.Windows.Forms.CheckBox
     Friend WithEvents CBoxAnrMonMoveDirection As System.Windows.Forms.ComboBox
     Friend WithEvents CBoxAnrMonStartPosition As System.Windows.Forms.ComboBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents LAnrMonMoveDirection As System.Windows.Forms.Label
+    Friend WithEvents CBNote As System.Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class

@@ -757,44 +757,21 @@ Public Class Contacts
 #Region "KontaktNotiz"
     Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
 
-        Dim Insp As Outlook.Inspector = olKontakt.GetInspector
-        Dim Handle As IntPtr = IntPtr.Zero
+        Dim oInsp As Outlook.Inspector = olKontakt.GetInspector
+        Dim Handle As IntPtr = GetBodyHandle(oInsp)
+
+        Dim ReturnValue As Long
+        Dim oDoc As Word.Document = CType(oInsp.WordEditor, Word.Document)
+        Dim oTable As Word.Table = Nothing
+        Dim HeaderRow As Word.Row = Nothing
+        Dim CallRow As Word.Row = Nothing
+        Dim NoteRow As Word.Row = Nothing
+        Dim startLocation As Object
 
 
-        Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "rctrl_renwnd32", Insp.Caption)
-        ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
-        If Not Handle = IntPtr.Zero Then
-            Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
-            If Not Handle = IntPtr.Zero Then
-                Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndW", vbNullString)
-                If Not Handle = IntPtr.Zero Then
-                    Handle = GetChildWindows(Handle).Item(0).HWnd
-                    If Not Handle = IntPtr.Zero Then
-                        Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "AfxWndA", vbNullString)
-                        If Not Handle = IntPtr.Zero Then
-                            Handle = OutlookSecurity.FindWindowEX(Handle, IntPtr.Zero, "_WwB", vbNullString)
-                        Else
-                            Handle = IntPtr.Zero
-                        End If
-                    Else
-                        Handle = IntPtr.Zero
-                    End If
-                Else
-                    Handle = IntPtr.Zero
-                End If
-            Else
-                Handle = IntPtr.Zero
-            End If
-        End If
 
         If Not Handle = IntPtr.Zero Then
-            Dim ReturnValue As Long
-            Dim oDoc As Word.Document = CType(Insp.WordEditor, Word.Document)
-            Dim oTable As Word.Table = Nothing
-            Dim HeaderRow As Word.Row = Nothing
-            Dim CallRow As Word.Row = Nothing
-            Dim NoteRow As Word.Row = Nothing
-            Dim startLocation As Object
+
             CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, True)
             With CallRow
                 .Cells(1).Range.Text = C_DP.P_Def_AnrMonDirection_Default
@@ -805,6 +782,7 @@ Public Class Contacts
                 oDoc.Range(startLocation, startLocation).Select()
             End If
             oDoc = Nothing
+
             ' Fokus setzen WICHTIG!
             ReturnValue = OutlookSecurity.SetFocus(Handle)
             ' Aufräumen
@@ -818,6 +796,36 @@ Public Class Contacts
         End If
         'End If
     End Sub
+
+    Private Function GetBodyHandle(ByVal oinsp As Outlook.Inspector) As IntPtr
+
+        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "rctrl_renwnd32", oinsp.Caption)
+        ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
+        If Not GetBodyHandle = IntPtr.Zero Then
+            GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
+            If Not GetBodyHandle = IntPtr.Zero Then
+                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
+                If Not GetBodyHandle = IntPtr.Zero Then
+                    GetBodyHandle = GetChildWindows(GetBodyHandle).Item(0).HWnd
+                    If Not GetBodyHandle = IntPtr.Zero Then
+                        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndA", vbNullString)
+                        If Not GetBodyHandle = IntPtr.Zero Then
+                            GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "_WwB", vbNullString)
+                        Else
+                            GetBodyHandle = IntPtr.Zero
+                        End If
+                    Else
+                        GetBodyHandle = IntPtr.Zero
+                    End If
+                Else
+                    GetBodyHandle = IntPtr.Zero
+                End If
+            Else
+                GetBodyHandle = IntPtr.Zero
+            End If
+        End If
+
+    End Function
 
     Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row, ByVal NeueZeile As Boolean)
 
@@ -913,7 +921,8 @@ Public Class Contacts
         End With
     End Sub
 
-    Friend Sub FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal CloseInspector As Boolean)
+    Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal ContactShown As Boolean) As Long
+        FillNote = vbNull
 
         Dim oInsp As Outlook.Inspector = olContact.GetInspector
         Dim oPage As Outlook.Pages
@@ -924,7 +933,7 @@ Public Class Contacts
         Dim CallRow As Word.Row = Nothing
         Dim NoteRow As Word.Row = Nothing
 
-        CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL, True, False)))
+        CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf((AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL) And Not ContactShown, True, False)))
         If Not CallRow Is Nothing Then
             With CallRow
                 Select Case AnrMonTyp
@@ -937,22 +946,22 @@ Public Class Contacts
                         .Cells(6).Range.Text = C_DP.P_Def_StringEmpty
                     Case AnrufMonitor.AnrMonEvent.AnrMonCONNECT
                         .Cells(4).Range.Text = TelZeit
+                        FillNote = OutlookSecurity.SetFocus(GetBodyHandle(oInsp))
                     Case AnrufMonitor.AnrMonEvent.AnrMonDISCONNECT
                         .Cells(5).Range.Text = CDate(TelZeit).AddSeconds(Duration).ToString()
                         .Cells(6).Range.Text = C_hf.GetTimeInterval(Duration)
+                        FillNote = OutlookSecurity.SetFocus(GetBodyHandle(oInsp))
                 End Select
             End With
         End If
-        olContact.Save()
 
-        If CloseInspector Then
+        If Not ContactShown Then
             oPage = CType(oInsp.ModifiedFormPages, Outlook.Pages)
             oPage.Add("General")
             oInsp.HideFormPage("General")
-            olContact.Close(Outlook.OlInspectorClose.olSave) ' Prüfen, was passiert wenn kontakt geöffnet wird.
+            olContact.Save()
         End If
-
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Get all child windows for the specific windows handle (hwnd).

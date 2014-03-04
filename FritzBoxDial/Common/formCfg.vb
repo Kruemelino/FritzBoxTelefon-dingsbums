@@ -215,6 +215,8 @@ Friend Class formCfg
         C_DP.P_PhonerVerfügbar = PhonerInstalliert
         ' Tooltipp
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
+        ' Notiz
+        Me.CBNote.Checked = C_DP.P_CBNote
 
         FillLogTB()
         FillTelListe()
@@ -450,7 +452,8 @@ Friend Class formCfg
 
             .P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
             .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
-
+            ' Notiz
+            .P_CBNote = Me.CBNote.Checked
 
             ' Telefone
 #If OVer < 14 Then
@@ -582,6 +585,8 @@ Friend Class formCfg
                     Me.CBTelNrGruppieren.Checked = .P_Def_CBTelNrGruppieren
                     Me.CBintl.Checked = .P_Def_CBintl
                     Me.CBIgnoTelNrFormat.Checked = .P_Def_CBIgnoTelNrFormat
+                    'Notiz
+                    Me.CBNote.Checked = C_DP.P_Def_CBNote
                 End With
             Case "BTelefonliste"
                 Dim xPathTeile As New ArrayList
