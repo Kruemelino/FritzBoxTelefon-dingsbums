@@ -798,32 +798,44 @@ Public Class Contacts
     End Sub
 
     Private Function GetBodyHandle(ByVal oinsp As Outlook.Inspector) As IntPtr
+        GetBodyHandle = IntPtr.Zero
+        Dim HandleNames() As String = Split("rctrl_renwnd32;AfxWndW;AfxWndW;" & C_DP.P_Def_ErrorMinusOne & ";AfxWndA;_WwB", ";", , CompareMethod.Text)
 
-        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "rctrl_renwnd32", oinsp.Caption)
-        ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
-        If Not GetBodyHandle = IntPtr.Zero Then
-            GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
-            If Not GetBodyHandle = IntPtr.Zero Then
-                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
-                If Not GetBodyHandle = IntPtr.Zero Then
-                    GetBodyHandle = GetChildWindows(GetBodyHandle).Item(0).HWnd
-                    If Not GetBodyHandle = IntPtr.Zero Then
-                        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndA", vbNullString)
-                        If Not GetBodyHandle = IntPtr.Zero Then
-                            GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "_WwB", vbNullString)
-                        Else
-                            GetBodyHandle = IntPtr.Zero
-                        End If
-                    Else
-                        GetBodyHandle = IntPtr.Zero
-                    End If
-                Else
-                    GetBodyHandle = IntPtr.Zero
-                End If
+        For Each HandleName As String In HandleNames
+            If HandleName = C_DP.P_Def_ErrorMinusOne Then
+                GetBodyHandle = GetChildWindows(GetBodyHandle).Item(0).HWnd
             Else
-                GetBodyHandle = IntPtr.Zero
+                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, HandleName, oinsp.Caption)
             End If
-        End If
+            If GetBodyHandle = IntPtr.Zero Then Exit For
+        Next
+
+
+
+        ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
+        'If Not GetBodyHandle = IntPtr.Zero Then
+        '    GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
+        '    If Not GetBodyHandle = IntPtr.Zero Then
+        '        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
+        '        If Not GetBodyHandle = IntPtr.Zero Then
+
+        '            If Not GetBodyHandle = IntPtr.Zero Then
+        '                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndA", vbNullString)
+        '                If Not GetBodyHandle = IntPtr.Zero Then
+        '                    GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "_WwB", vbNullString)
+        '                Else
+        '                    GetBodyHandle = IntPtr.Zero
+        '                End If
+        '            Else
+        '                GetBodyHandle = IntPtr.Zero
+        '            End If
+        '        Else
+        '            GetBodyHandle = IntPtr.Zero
+        '        End If
+        '    Else
+        '        GetBodyHandle = IntPtr.Zero
+        '    End If
+        'End If
 
     End Function
 
@@ -963,34 +975,21 @@ Public Class Contacts
         End If
     End Function
 
-    ''' <summary>
-    ''' Get all child windows for the specific windows handle (hwnd).
-    ''' </summary>
-    ''' <returns>List of child windows for parent window</returns>
     Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
-        ' Clear the window list.
+        ' Clear the window list
+        Dim ReturnValue As IntPtr
         _listChildren = New List(Of ApiWindow)
         ' Start the enumeration process.
-        UnsafeNativeMethods.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, &H0)
+        ReturnValue = OutlookSecurity.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, &H0)
         ' Return the children list when the process is completed.
         Return _listChildren
     End Function
-    ' ''' <summary>
-    ' ''' Callback function that does the work of enumerating child windows.
-    ' ''' </summary>
-    ' ''' <param name="hwnd">Discovered Window handle</param>
-    ' ''' <returns>1=keep going, 0=stop</returns>
-    Private Function EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32) As IntPtr
 
-        Dim window As ApiWindow = GetWindowIdentification(hwnd)
-
+    Private Sub EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32)
         ' Attempt to match the child class, if one was specified, otherwise
         ' enumerate all the child windows.
-        'If _childClass.Length = 0 OrElse window.ClassName.ToLower() = _childClass.ToLower() Then
-        _listChildren.Add(window)
-        'End If
-        Return CType(1, IntPtr)
-    End Function
+        _listChildren.Add(GetWindowIdentification(hwnd))
+    End Sub
     ''' <summary>
     ''' Build the ApiWindow object to hold information about the Window object.
     ''' </summary>

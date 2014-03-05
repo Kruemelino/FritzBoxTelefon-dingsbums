@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Phoner.vb" />
     <Compile Include="Rijndael.vb" />
+    <Compile Include="UnSaveNativeMethods.vb" />
     <Compile Include="VCard.vb" />
   </ItemGroup>
   <ItemGroup>

@@ -8,12 +8,7 @@ Public Structure RECT
     Dim bottom As Long
 End Structure
 
-<SuppressUnmanagedCodeSecurityAttribute()> _
-Friend NotInheritable Class UnsafeNativeMethods
-    Friend Delegate Function EnumCallBackDelegate(ByVal hwnd As IntPtr, ByVal lParam As Integer) As IntPtr
-    Private Sub New()
-    End Sub
-
+<SuppressUnmanagedCodeSecurityAttribute()> Friend NotInheritable Class UnsafeNativeMethods
     ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
     ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
     <DllImport("user32.dll", EntryPoint:="GetForegroundWindow", SetLastError:=True, CharSet:=CharSet.Unicode)> _
@@ -25,7 +20,7 @@ Friend NotInheritable Class UnsafeNativeMethods
     End Function
 
     <DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
+    Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As OutlookSecurity.EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
     End Function
 
     <DllImport("user32.dll", EntryPoint:="GetWindowRect", SetLastError:=True, CharSet:=CharSet.Unicode)> _
@@ -56,6 +51,10 @@ Friend NotInheritable Class UnsafeNativeMethods
     Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
     End Function
 
+    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
+    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    End Function
+
     '<DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
     'Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
     'End Function
@@ -64,14 +63,10 @@ Friend NotInheritable Class UnsafeNativeMethods
     'Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As Integer, <MarshalAs(UnmanagedType.LPWStr)> ByVal lParam As System.Text.StringBuilder) As Integer
     'End Function
 
-    <DllImport("user32.dll", EntryPoint:="SendMessage", CharSet:=CharSet.Unicode)> _
-    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
-    End Function
-
 End Class
 
 Public NotInheritable Class OutlookSecurity
-
+    Public Delegate Sub EnumCallBackDelegate(ByVal hwnd As IntPtr, ByVal lParam As Integer)
     Public Shared ReadOnly Property GetForegroundWindow() As IntPtr
         Get
             Return UnsafeNativeMethods.GetForegroundWindow()
@@ -124,6 +119,11 @@ Public NotInheritable Class OutlookSecurity
     Public Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
         Get
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
+        End Get
+    End Property
+    Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
+        Get
+            Return UnsafeNativeMethods.EnumChildWindows(hWndParent, lpEnumFunc, lParam)
         End Get
     End Property
 End Class
