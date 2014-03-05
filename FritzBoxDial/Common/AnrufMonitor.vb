@@ -421,7 +421,7 @@ Friend Class AnrufMonitor
                             'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
                             Select Case CStr(aktZeile.GetValue(1))
                                 Case "RING"
-                                    AnrMonRING(aktZeile, True, True)
+                                    AnrMonRING(aktZeile, True)
                                 Case "CALL"
                                     AnrMonCALL(aktZeile, True)
                                 Case "CONNECT"
@@ -446,7 +446,7 @@ Friend Class AnrufMonitor
     ''' <param name="AnrMonAnzeigen">Boolean: Soll Anrufmonitor angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
-    Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal AnrMonAnzeigen As Boolean, ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet einen eingehenden Anruf aus
         ' Parameter: FBStatus (String ()):   Status-String der FritzBox
         '            anzeigen (Boolean):  nur bei 'true' wird 'AnrMonEinblenden' ausgeführt
@@ -457,17 +457,20 @@ Friend Class AnrufMonitor
         ' FBStatus(4): Angerufene eigene Telefonnummer, MSN
         ' FBStatus(5): ???
         Dim TelNr As String            ' ermittelte TelNr
-        Dim Anrufer As String = C_DP.P_Def_StringEmpty           ' ermittelter Anrufer
-        Dim vCard As String = C_DP.P_Def_StringEmpty           ' vCard des Anrufers
-        Dim KontaktID As String = C_DP.P_Def_StringEmpty             ' ID der Kontaktdaten des Anrufers
-        Dim StoreID As String = C_DP.P_Def_StringEmpty           ' ID des Ordners, in dem sich der Kontakt befindet
+
         Dim ID As Integer            ' ID des Telefonats
         Dim rws As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
         Dim LetzterAnrufer(5) As String
         Dim RWSIndex As Boolean
-        Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
+
+        Dim Anrufer As String = C_DP.P_Def_StringEmpty           ' ermittelter Anrufer
+        Dim vCard As String = C_DP.P_Def_StringEmpty           ' vCard des Anrufers
+        Dim KontaktID As String = C_DP.P_Def_StringEmpty             ' ID der Kontaktdaten des Anrufers
+        Dim StoreID As String = C_DP.P_Def_StringEmpty           ' ID des Ordners, in dem sich der Kontakt befindet
         Dim FullName As String = C_DP.P_Def_StringEmpty
         Dim CompanyName As String = C_DP.P_Def_StringEmpty
+        Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
+
         Dim Telefonat As C_Telefonat
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
@@ -485,7 +488,6 @@ Friend Class AnrufMonitor
 
             ID = CInt(FBStatus.GetValue(2))
             TelNr = CStr(FBStatus.GetValue(3))
-            'MSN = CStr(FBStatus.GetValue(4))  'Ist doch schon belegt
             ' Phoner
             If AnrMonPhoner Then
                 Dim PhonerTelNr() As String
@@ -508,11 +510,9 @@ Friend Class AnrufMonitor
             LetzterAnrufer(3) = MSN
             SpeichereLetzerAnrufer(CStr(ID), LetzterAnrufer)
             ' Daten für Anzeige im Anrurfmonitor speichern
-            If AnrMonAnzeigen Then
-                If Not C_OlI.VollBildAnwendungAktiv Then
-                    BWAnrMonEinblenden = New BackgroundWorker
-                    BWAnrMonEinblenden.RunWorkerAsync(ID)
-                End If
+            If ShowForms And Not C_OlI.VollBildAnwendungAktiv Then
+                BWAnrMonEinblenden = New BackgroundWorker
+                BWAnrMonEinblenden.RunWorkerAsync(ID)
             End If
 
             ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
@@ -581,7 +581,7 @@ Friend Class AnrufMonitor
 #End If
             End If
             'StoppUhr
-            If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
+            If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf von:"
                     If Anrufer = C_DP.P_Def_StringEmpty Then
@@ -591,8 +591,8 @@ Friend Class AnrufMonitor
                     End If
                 End With
             End If
-            ' Daten für den Journaleintrag sichern
-            'If C_DP.P_CBJournal Or C_DP.P_CBStoppUhrEinblenden Then
+
+            ' Telefonatdaten intern sichern
             Telefonat = New C_Telefonat
             With Telefonat
                 .ID = ID
@@ -605,10 +605,9 @@ Friend Class AnrufMonitor
                 .olContact = C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False)
             End With
             TelefonatsListe.Add(Telefonat)
-            'NeuerJournalEintrag(ID, "Eingehender Anruf von", CStr(FBStatus.GetValue(0)), MSN, TelNr, KontaktID, StoreID)
-            'End If
+
             ' Kontakt öffnen
-            If AnrMonAnzeigen And C_DP.P_CBAnrMonZeigeKontakt Then
+            If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                 C_KF.AddNote(C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True))
             End If
 
@@ -618,9 +617,7 @@ Friend Class AnrufMonitor
                     C_KF.FillNote(AnrMonEvent.AnrMonRING, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
                 End With
             End If
-
         End If
-
     End Sub '(AnrMonRING)
 
     ''' <summary>
@@ -629,7 +626,7 @@ Friend Class AnrufMonitor
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CALL</param>
     ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
-    Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet einen ausgehenden Anruf aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
 
@@ -767,7 +764,7 @@ Friend Class AnrufMonitor
             If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
             'StoppUhr
-            If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
+            If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                 With STUhrDaten(ID)
                     .Richtung = "Anruf zu:"
                     If Anrufer = C_DP.P_Def_StringEmpty Then
@@ -792,7 +789,7 @@ Friend Class AnrufMonitor
             End With
             TelefonatsListe.Add(Telefonat)
             ' Kontakt öffnen
-            If C_DP.P_CBAnrMonZeigeKontakt Then
+            If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                 C_KF.AddNote(C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True))
             End If
             'Notizeintag
@@ -811,7 +808,7 @@ Friend Class AnrufMonitor
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT</param>
     ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
-    Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet eine Zustande gekommene Verbindung aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
 
@@ -840,7 +837,7 @@ Friend Class AnrufMonitor
             End With
         End If
 
-        If C_DP.P_CBJournal Or (C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen) Then
+        If C_DP.P_CBJournal Or (C_DP.P_CBStoppUhrEinblenden And ShowForms) Then
             If MSN = C_DP.P_Def_ErrorMinusOne Then
                 ' Wenn Journal nicht erstellt wird, muss MSN anderweitig ermittelt werden.
                 Select Case NSN
@@ -887,7 +884,7 @@ Friend Class AnrufMonitor
 
                 If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
                     ' StoppUhr einblenden
-                    If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then
+                    If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                         C_hf.LogFile("StoppUhr wird eingeblendet.")
                         With System.DateTime.Now
                             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
@@ -920,7 +917,7 @@ Friend Class AnrufMonitor
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT</param>
     ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
-    Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal StoppUhrAnzeigen As Boolean)
+    Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' legt den Journaleintrag (und/oder Kontakt) an
         ' Parameter: FBStatus (String):     Status-String der FritzBox
 
@@ -948,11 +945,8 @@ Friend Class AnrufMonitor
         Dim StoreID As String = C_DP.P_Def_StringEmpty
         Dim KontaktID As String = C_DP.P_Def_StringEmpty
 
-        Dim FritzFolderExists As Boolean = False
         Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
-
         Dim xPathTeile As New ArrayList
-
         Dim Telefonat As C_Telefonat
 
         Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = ID)
@@ -1026,6 +1020,7 @@ Friend Class AnrufMonitor
                         End If
                     End If
                 End If
+
                 If C_DP.P_CBJournal Then
                     Select Case NSN
                         Case 0 To 2 ' FON1-3
@@ -1055,6 +1050,7 @@ Friend Class AnrufMonitor
                             End With
                             TelName = C_DP.Read(xPathTeile, "")
                     End Select
+
                     Select Case Typ
                         Case C_Telefonat.JournalTyp.Eingehend
                             If Dauer = 0 Then
@@ -1116,8 +1112,7 @@ Friend Class AnrufMonitor
             End If
         End If
 
-
-        If C_DP.P_CBStoppUhrEinblenden And StoppUhrAnzeigen Then STUhrDaten(ID).Abbruch = True
+        If C_DP.P_CBStoppUhrEinblenden And ShowForms Then STUhrDaten(ID).Abbruch = True
         'Notizeintag
         If C_DP.P_CBNote Then
             With Telefonat
