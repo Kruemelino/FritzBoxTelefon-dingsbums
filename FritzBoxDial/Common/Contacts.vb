@@ -797,46 +797,21 @@ Public Class Contacts
         'End If
     End Sub
 
-    Private Function GetBodyHandle(ByVal oinsp As Outlook.Inspector) As IntPtr
-        GetBodyHandle = IntPtr.Zero
-        Dim HandleNames() As String = Split("rctrl_renwnd32;AfxWndW;AfxWndW;" & C_DP.P_Def_ErrorMinusOne & ";AfxWndA;_WwB", ";", , CompareMethod.Text)
+    Private Function GetBodyHandle(ByVal oInsp As Outlook.Inspector) As IntPtr
+        Dim HandleNames() As String = Split("AfxWndW;AfxWndW;" & C_DP.P_Def_ErrorMinusOne & ";AfxWndA;_WwB", ";", , CompareMethod.Text)
+
+        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "rctrl_renwnd32", oInsp.Caption)
 
         For Each HandleName As String In HandleNames
             If HandleName = C_DP.P_Def_ErrorMinusOne Then
                 GetBodyHandle = GetChildWindows(GetBodyHandle).Item(0).HWnd
             Else
-                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, HandleName, oinsp.Caption)
+                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, HandleName, vbNullString)
             End If
-            If GetBodyHandle = IntPtr.Zero Then Exit For
+            If GetBodyHandle = IntPtr.Zero Then
+                Exit For
+            End If
         Next
-
-
-
-        ' von hinten durch die Brust ins Auge oder das Handle des Notitzfeldes ermitteln:
-        'If Not GetBodyHandle = IntPtr.Zero Then
-        '    GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
-        '    If Not GetBodyHandle = IntPtr.Zero Then
-        '        GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndW", vbNullString)
-        '        If Not GetBodyHandle = IntPtr.Zero Then
-
-        '            If Not GetBodyHandle = IntPtr.Zero Then
-        '                GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "AfxWndA", vbNullString)
-        '                If Not GetBodyHandle = IntPtr.Zero Then
-        '                    GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "_WwB", vbNullString)
-        '                Else
-        '                    GetBodyHandle = IntPtr.Zero
-        '                End If
-        '            Else
-        '                GetBodyHandle = IntPtr.Zero
-        '            End If
-        '        Else
-        '            GetBodyHandle = IntPtr.Zero
-        '        End If
-        '    Else
-        '        GetBodyHandle = IntPtr.Zero
-        '    End If
-        'End If
-
     End Function
 
     Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row, ByVal NeueZeile As Boolean)
