@@ -51,17 +51,25 @@
 #End If
 #End Region
 
+#Region "Eigene Klassen"
     Private C_HF As Helfer
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
-    Private Dateipfad As String
     Private C_WClient As Wählclient
-    Private F_RWS As formRWSuche
     Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
     Private C_FBox As FritzBox
     Private C_Phoner As PhonerInterface
+#End Region
+
+#Region "Eigene Formulare"
+    Private F_RWS As formRWSuche
+#End Region
+
+#Region "Globale Variablen"
+    Private Dateipfad As String
+#End Region
 
 #Region "Properies"
     Friend Property P_WählKlient() As Wählclient

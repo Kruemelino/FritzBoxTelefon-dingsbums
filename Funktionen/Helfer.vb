@@ -727,8 +727,6 @@ Public Class Helfer
     Sub ThreadSleep(ByRef Dauer As Integer)
         Thread.Sleep(Dauer)
     End Sub
-
-
 #End Region
 
     Public Function GetTimeInterval(ByVal nSeks As Double) As String
@@ -747,5 +745,22 @@ Public Class Helfer
             Return Mid(sTxt, 1, Len(sTxt) - 1)
         End If
         Return sTxt
+    End Function
+
+    Public Function TelefonName(ByVal MSN As String) As String
+        TelefonName = C_DP.P_Def_StringEmpty
+        If Not MSN = C_DP.P_Def_StringEmpty Then
+            Dim xPathTeile As New ArrayList
+            With xPathTeile
+                .Add("Telefone")
+                .Add("Telefone")
+                .Add("*")
+                .Add("Telefon")
+                .Add("[TelNr = """ & MSN & """ and not(@Dialport > 599)]") ' Keine Anrufbeantworter
+                .Add("TelName")
+            End With
+            TelefonName = Replace(C_DP.Read(xPathTeile, ""), ";", ", ")
+            xPathTeile = Nothing
+        End If
     End Function
 End Class

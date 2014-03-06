@@ -4,7 +4,6 @@ Imports System.IO.Path
 Friend Class formAnrMon
     Private C_DP As DataProvider
     Private C_hf As Helfer
-    Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
 
@@ -32,7 +31,6 @@ Friend Class formAnrMon
         C_hf = HelferKlasse
         C_DP = DataProviderKlasse
         C_OLI = OutlInter
-        C_AnrMon = AnrufMon
         C_KF = KontaktFunktionen
 
         aID = iAnrufID
@@ -99,7 +97,7 @@ Friend Class formAnrMon
             KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
         End With
 
-        TelefonName = C_AnrMon.TelefonName(MSN)
+        TelefonName = C_hf.TelefonName(MSN)
         With PopUpAnrMon
             If TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu

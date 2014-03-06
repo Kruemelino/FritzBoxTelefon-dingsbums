@@ -8,6 +8,7 @@ Friend Class C_Telefonat
         Ausgehend = 0
     End Enum
 
+#Region "Eigene Private Variablen"
     Private _ID As Integer
     Private _Typ As JournalTyp
     Private _Zeit As Date
@@ -22,6 +23,7 @@ Friend Class C_Telefonat
     Private _Companies As String
     Private _Categories As String
     Private _olContact As Outlook.ContactItem
+#End Region
 
 #Region "Properties"
     Friend Property ID() As Integer
@@ -140,15 +142,24 @@ Friend Class C_Telefonat
 End Class
 
 Public Class OutlookInterface
+
+#Region "Eigene Klassen"
     Private C_KF As Contacts
     Private C_hf As Helfer
     Private C_DP As DataProvider
+#End Region
+
+#Region "Globale Variablen"
     Private OInsp As Outlook.Inspector
+#End Region
+
+#Region "Properties"
     Friend ReadOnly Property OutlookApplication() As Outlook.Application
         Get
             Return ThisAddIn.P_oApp
         End Get
     End Property
+#End Region
 
     Friend Function ErstelleJournalEintrag(Telefonat As C_Telefonat) As Boolean
         ErstelleJournalEintrag = Nothing
@@ -191,8 +202,8 @@ Public Class OutlookInterface
 
     Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal inipfad As String)
         C_hf = Helferklasse
-        C_KF = KontaktKlasse
         C_DP = DataProviderKlasse
+        C_KF = KontaktKlasse
 
         C_KF.C_OLI = Me
     End Sub

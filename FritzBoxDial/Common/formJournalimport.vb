@@ -1,25 +1,38 @@
 ﻿Imports System.Threading
 
 Friend Class formJournalimport
+#Region "BackgroundWorker"
     Private WithEvents DownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
+#End Region
+
+#Region "Delegate"
     Private Delegate Sub DelgSetProgressbar()
     Private Delegate Sub DelgSetButtonHerunterladen()
-    Private C_DP As DataProvider
-    Private CSVArg As Argument
-    Private AnrMon As AnrufMonitor
+#End Region
+
+#Region "Eigene Klassen"
+    Private C_AnrMon As AnrufMonitor
     Private C_hf As Helfer
+    Private C_DP As DataProvider
+#End Region
+
+#Region "Structure"
+    Private Structure ImportZeitraum
+        Dim StartZeit As Date
+        Dim EndZeit As Date
+    End Structure
+#End Region
+
+#Region "Eigene Variablen"
+    Private CSVArg As ImportZeitraum
     Private Abbruch As Boolean
     Private anzeigen As Boolean
     Private CSVAnrliste As String
     Private StatusWert As Integer
     Private SID As String
     Private EntryCount As Integer = -1 ' Anzahl der zu importierenden Telefonate
-
-    Structure Argument
-        Dim StartZeit As Date
-        Dim EndZeit As Date
-    End Structure
+#End Region
 
     Public Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
@@ -31,7 +44,7 @@ Friend Class formJournalimport
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         C_DP = DataProviderKlasse
         C_hf = HelferKlasse
-        AnrMon = AnrMonKlasse
+        C_AnrMon = AnrMonKlasse
 
         Abbruch = False
         anzeigen = FormShow
@@ -42,6 +55,7 @@ Friend Class formJournalimport
             .RunWorkerAsync()
         End With
     End Sub
+
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim StartZeit As Date
         StartZeit = C_DP.P_StatOLClosedZeit
@@ -56,9 +70,8 @@ Friend Class formJournalimport
         e.Result = ThisAddIn.P_FritzBox.DownloadAnrListe
     End Sub
 
-
     Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles DownloadAnrListe.RunWorkerCompleted
-        Dim Übergabe As Argument
+        Dim Übergabe As ImportZeitraum
         CSVAnrliste = CStr(e.Result)
         If Me.InvokeRequired Then
             Dim D As New DelgSetButtonHerunterladen(AddressOf ButtonEnable)
@@ -99,7 +112,7 @@ Friend Class formJournalimport
         Dim Startzeit As Date    ' Letzter Journalimports
         Dim Endzeit As Date    ' Ende des Journalimports
         Dim i, j, a, b As Integer    ' Zählvariable
-        Dim Übergabewerte As Argument = CType(e.Argument, Argument)
+        Dim Übergabewerte As ImportZeitraum = CType(e.Argument, ImportZeitraum)
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
 
@@ -216,21 +229,21 @@ Friend Class formJournalimport
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonRING(vFBStatus, False)
+                                    C_AnrMon.AnrMonRING(vFBStatus, False)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonCONNECT(vFBStatus, False)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, False)
                                 Case 2 ' eingehender Anruf: nicht angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonRING(vFBStatus, False)
+                                    C_AnrMon.AnrMonRING(vFBStatus, False)
                                 Case 3, 4 ' ausgehender Anruf
                                     vFBStatus = Split(AnrZeit & ";CALL;25;0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonCALL(vFBStatus, False)
+                                    C_AnrMon.AnrMonCALL(vFBStatus, False)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    AnrMon.AnrMonCONNECT(vFBStatus, False)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, False)
                             End Select
                             If Abbruch Then Exit For
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;25;" & Dauer & ";", ";", , CompareMethod.Text)
-                            AnrMon.AnrMonDISCONNECT(vFBStatus, False)
+                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, False)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1
@@ -272,7 +285,7 @@ Friend Class formJournalimport
         Me.Hide()
     End Sub
     Private Sub ButtonStart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonStart.Click
-        Dim Übergabe As Argument
+        Dim Übergabe As ImportZeitraum
         Abbruch = False
         Me.ButtonStart.Enabled = False
         Do While DownloadAnrListe.IsBusy

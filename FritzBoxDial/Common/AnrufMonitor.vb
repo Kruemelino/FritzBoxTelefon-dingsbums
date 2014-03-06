@@ -6,33 +6,43 @@ Imports System.Threading
 Imports System.Collections.Generic
 
 Friend Class AnrufMonitor
+#Region "BackgroundWorker"
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
     Private WithEvents BWStartTCPReader As BackgroundWorker
+#End Region
+
+#Region "Timer"
+
     Private WithEvents TimerReStart As System.Timers.Timer
     Private WithEvents TimerCheckAnrMon As System.Timers.Timer
+#End Region
 
-    Private ReceiveThread As Thread
-    Private AnrMonList As New ArrayList
-    Private Shared AnrMonStream As NetworkStream
-    Private STUhrDaten(5) As StructStoppUhr
-
+#Region "Eigene Klassen"
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
     Private C_KF As Contacts
     Private C_DP As DataProvider
     Private C_hf As Helfer
+#End Region
+
+#Region "Eigene Formulare"
     Private F_Config As formCfg
     Private F_RWS As formRWSuche
     Private F_StoppUhr As formStoppUhr
+#End Region
 
-    Private StandbyCounter As Integer
+#Region "Tread"
+    Private ReceiveThread As Thread
+#End Region
 
-    Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
-    Private _AnrMonError As Boolean
-    Private _AnrMonPhoner As Boolean = False
+#Region "ArrayList"
+    Private AnrMonList As New ArrayList
+#End Region
 
-    Private TelefonatsListe As New List(Of C_Telefonat)
+#Region "NetworkStream"
+    Private Shared AnrMonStream As NetworkStream
+#End Region
 
 #Region "Properties"
     Friend Property AnrMonAktiv() As Boolean
@@ -76,6 +86,16 @@ Friend Class AnrufMonitor
         AnrMonCONNECT = 3
         AnrMonDISCONNECT = 4
     End Enum
+#End Region
+
+#Region "Globale Variablen"
+    Private STUhrDaten(5) As StructStoppUhr
+    Private TelefonatsListe As New List(Of C_Telefonat)
+
+    Private StandbyCounter As Integer
+    Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
+    Private _AnrMonError As Boolean
+    Private _AnrMonPhoner As Boolean = False
 #End Region
 
     Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
@@ -374,26 +394,6 @@ Friend Class AnrufMonitor
         AnrMonStartStopp()
     End Sub
 
-    Friend Function TelefonName(ByVal MSN As String) As String
-        TelefonName = C_DP.P_Def_StringEmpty
-        If Not MSN = C_DP.P_Def_StringEmpty Then
-            If Not AnrMonPhoner Then
-                Dim xPathTeile As New ArrayList
-                With xPathTeile
-                    .Add("Telefone")
-                    .Add("Telefone")
-                    .Add("*")
-                    .Add("Telefon")
-                    .Add("[TelNr = """ & MSN & """ and not(@Dialport > 599)]") ' Keine Anrufbeantworter
-                    .Add("TelName")
-                End With
-                TelefonName = Replace(C_DP.Read(xPathTeile, ""), ";", ", ")
-                xPathTeile = Nothing
-            Else
-                TelefonName = "Phoner" ' ,  werden danach entfernt.
-            End If
-        End If
-    End Function
 #End Region
 
 #Region "Anrufmonitor"
@@ -472,9 +472,8 @@ Friend Class AnrufMonitor
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
 
         Dim Telefonat As C_Telefonat
-
-        ' Anruf nur anzeigen, wenn die MSN stimmt
         Dim xPathTeile As New ArrayList
+
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
@@ -482,7 +481,7 @@ Friend Class AnrufMonitor
             .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN, C_DP.P_TBVorwahl) & """]")
             .Add("@Checked")
         End With
-
+        ' Anruf nur anzeigen, wenn die MSN stimmt
         If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
             'If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN, Vorwahl), Split(checkstring, ";", , CompareMethod.Text)) Or AnrMonPhoner Then
 
@@ -649,8 +648,8 @@ Friend Class AnrufMonitor
         Dim rws As Boolean                              ' 'true' wenn die Rückwärtssuche erfolgreich war
         Dim RWSIndex As Boolean
         Dim xPathTeile As New ArrayList
-
         Dim Telefonat As C_Telefonat
+
         ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
         If MSN = C_DP.P_Def_StringEmpty Then
             Select Case NSN
@@ -818,14 +817,15 @@ Friend Class AnrufMonitor
         ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
         ' FBStatus(3): 
 
-        Dim xPathTeile As New ArrayList
         Dim MSN As String = C_DP.P_Def_ErrorMinusOne
         Dim NSN As Long
         Dim ID As Integer
-        Dim Zeit As String
+        'Dim Zeit As String
         Dim TelName As String = C_DP.P_Def_StringEmpty
 
         Dim Telefonat As C_Telefonat
+        Dim xPathTeile As New ArrayList
+
         ID = CInt(FBStatus.GetValue(2))
         NSN = CInt(FBStatus.GetValue(3))
         Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = ID)
@@ -886,12 +886,9 @@ Friend Class AnrufMonitor
                     ' StoppUhr einblenden
                     If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                         C_hf.LogFile("StoppUhr wird eingeblendet.")
-                        With System.DateTime.Now
-                            Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
-                        End With
                         With STUhrDaten(ID)
                             .MSN = CStr(IIf(TelName = C_DP.P_Def_StringEmpty, MSN, TelName))
-                            .StartZeit = Zeit
+                            .StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
                             .Abbruch = False
                         End With
                         BWStoppuhrEinblenden = New BackgroundWorker
@@ -933,21 +930,22 @@ Friend Class AnrufMonitor
         Dim Body As String              ' Text des Journaleintrags
         Dim vCard As String              ' vCard des Telefonpartners
         Dim TypString As String = C_DP.P_Def_StringEmpty
-        ' die zum Anruf gehörende MSN oder VoIP-Nr
+
         Dim TelName As String
         Dim tmpTelName As String = C_DP.P_Def_StringEmpty
 
         Dim NSN As Long = -1
         Dim Zeit As Date
-        Dim Typ As C_Telefonat.JournalTyp
+
         Dim MSN As String = C_DP.P_Def_StringEmpty
         Dim TelNr As String = C_DP.P_Def_StringEmpty
         Dim StoreID As String = C_DP.P_Def_StringEmpty
         Dim KontaktID As String = C_DP.P_Def_StringEmpty
-
         Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
+
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
+        Dim Typ As C_Telefonat.JournalTyp
 
         Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = ID)
         If Not Telefonat Is Nothing Then
