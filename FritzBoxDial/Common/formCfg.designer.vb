@@ -195,6 +195,7 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -282,7 +283,7 @@ Partial Class formCfg
         '
         Me.CBKErstellen.AutoSize = True
         Me.CBKErstellen.Enabled = False
-        Me.CBKErstellen.Location = New System.Drawing.Point(248, 19)
+        Me.CBKErstellen.Location = New System.Drawing.Point(6, 42)
         Me.CBKErstellen.Name = "CBKErstellen"
         Me.CBKErstellen.Size = New System.Drawing.Size(217, 17)
         Me.CBKErstellen.TabIndex = 2
@@ -295,7 +296,7 @@ Partial Class formCfg
         '
         Me.CBRWSIndex.AutoSize = True
         Me.CBRWSIndex.Enabled = False
-        Me.CBRWSIndex.Location = New System.Drawing.Point(6, 44)
+        Me.CBRWSIndex.Location = New System.Drawing.Point(6, 65)
         Me.CBRWSIndex.Name = "CBRWSIndex"
         Me.CBRWSIndex.Size = New System.Drawing.Size(245, 17)
         Me.CBRWSIndex.TabIndex = 3
@@ -1202,6 +1203,7 @@ Partial Class formCfg
         '
         'GroupBoxRWS
         '
+        Me.GroupBoxRWS.Controls.Add(Me.TVOutlookContact)
         Me.GroupBoxRWS.Controls.Add(Me.CBRWSIndex)
         Me.GroupBoxRWS.Controls.Add(Me.ComboBoxRWS)
         Me.GroupBoxRWS.Controls.Add(Me.CBKErstellen)
@@ -2071,6 +2073,13 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
+        'TVOutlookContact
+        '
+        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 17)
+        Me.TVOutlookContact.Name = "TVOutlookContact"
+        Me.TVOutlookContact.Size = New System.Drawing.Size(310, 72)
+        Me.TVOutlookContact.TabIndex = 4
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2309,6 +2318,7 @@ Partial Class formCfg
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents LAnrMonMoveDirection As System.Windows.Forms.Label
     Friend WithEvents CBNote As System.Windows.Forms.CheckBox
+    Friend WithEvents TVOutlookContact As System.Windows.Forms.TreeView
 #If OVer < 14 Then
 #End If
 End Class

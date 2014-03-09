@@ -1,8 +1,4 @@
-﻿Imports Office = Microsoft.Office.Core
-Imports System.IO.Path
-Imports System.Runtime.InteropServices
-
-Friend Class C_Telefonat
+﻿Friend Class C_Telefonat
     Friend Enum JournalTyp
         Eingehend = 1
         Ausgehend = 0
@@ -208,102 +204,6 @@ Public Class OutlookInterface
         C_KF.C_OLI = Me
     End Sub
 
-    Friend Sub KontaktInformation(ByRef KontaktID As String, _
-                                  ByRef StoreID As String, _
-                                  Optional ByRef FullName As String = vbNullString, _
-                                  Optional ByRef CompanyName As String = vbNullString, _
-                                  Optional ByRef HomeAddress As String = vbNullString, _
-                                  Optional ByRef BusinessAddress As String = vbNullString)
-
-        Dim Kontakt As Outlook.ContactItem = Nothing
-        Dim oApp As Outlook.Application = OutlookApplication()
-        If Not oApp Is Nothing Then
-            Try
-                Kontakt = CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
-            Catch ex As Exception
-                C_hf.LogFile("KontaktInformation: " & ex.Message)
-            End Try
-            If Not Kontakt Is Nothing Then
-                With Kontakt
-                    KontaktID = .EntryID
-                    StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
-                    FullName = .FullName
-                    CompanyName = .CompanyName
-                    HomeAddress = .HomeAddress
-                    BusinessAddress = .BusinessAddress
-                End With
-                Kontakt = Nothing
-            End If
-        Else
-            C_hf.LogFile("Kontaktinformationen konnten nicht ermittelt werden.")
-        End If
-        C_hf.NAR(Kontakt)
-        oApp = Nothing
-    End Sub
-
-    Friend Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
-        Dim Kontakt As Outlook.ContactItem = Nothing
-        KontaktBild = C_DP.P_Def_StringEmpty
-        Dim oApp As Outlook.Application = OutlookApplication()
-        If Not oApp Is Nothing Then
-            Try
-                Kontakt = CType(oApp.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
-            Catch ex As Exception
-                C_hf.LogFile("KontaktBild: " & ex.Message)
-            End Try
-            If Not Kontakt Is Nothing Then
-                With Kontakt
-                    KontaktID = .EntryID
-                    StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
-                    With .Attachments
-                        If Not .Item("ContactPicture.jpg") Is Nothing Then
-                            KontaktBild = GetTempPath() & GetRandomFileName()
-                            KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
-                            .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
-                        End If
-                    End With
-                End With
-                Kontakt = Nothing
-            End If
-        Else
-            C_hf.LogFile("Kontaktbild konnte nicht geladen werden.")
-        End If
-        C_hf.NAR(Kontakt)
-        oApp = Nothing
-    End Function
-
-    Friend Function StarteKontaktSuche(ByRef KontaktID As String, _
-                                  ByRef StoreID As String, _
-                                  ByVal alleOrdner As Boolean, _
-                                  ByRef TelNr As String, _
-                                  ByVal Absender As String, _
-                                  ByVal LandesVW As String) As Boolean
-        Dim oApp As Outlook.Application = OutlookApplication()
-        If Not oApp Is Nothing Then
-            Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
-            Dim Ergebnis As Outlook.ContactItem          ' Auswertung für Findekontakt
-            StarteKontaktSuche = False
-            If alleOrdner Then
-                Ergebnis = C_KF.FindeKontakt(TelNr, Absender, LandesVW, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
-            Else
-                Ergebnis = C_KF.FindeKontakt(TelNr, Absender, LandesVW, olNamespace)
-            End If
-            If Not Ergebnis Is Nothing Then
-                StarteKontaktSuche = True
-                With Ergebnis
-                    KontaktID = .EntryID
-                    StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
-                End With
-            End If
-            Ergebnis = Nothing
-            olNamespace = Nothing
-        Else
-            C_hf.LogFile("Kontaktsuche konnte nicht gestartet werden.")
-            StarteKontaktSuche = False
-        End If
-        oApp = Nothing
-    End Function
-
     Friend Function NeuEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication()
@@ -425,6 +325,48 @@ Public Class OutlookInterface
         End If
     End Function
 #End Region
+
+#Region "TreeView"
+    Friend Overloads Function KontaktOrdner() As Boolean
+        Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
+
+        Return KontaktOrdner(olNamespace)
+    End Function
+    Friend Overloads Function KontaktOrdner(ByVal NamensRaum As Outlook.NameSpace) As Boolean
+
+
+        '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
+        Dim j As Integer = 1
+        Do While (j <= NamensRaum.Folders.Count)
+            KontaktOrdner(NamensRaum.Folders.Item(j))
+            j = j + 1
+            Windows.Forms.Application.DoEvents()
+        Loop
+        Return True
+    End Function
+    Friend Overloads Function KontaktOrdner(ByVal Ordner As Outlook.MAPIFolder) As Boolean
+        Dim iOrdner As Long
+        Dim SubFolder As Outlook.MAPIFolder
+        'If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        iOrdner = 1
+        Do While (iOrdner <= Ordner.Folders.Count)
+            SubFolder = Ordner.Folders.Item(iOrdner)
+            If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+                ' Treeview etc
+
+                MsgBox(Ordner.Name & vbNewLine & SubFolder.Name)
+            End If
+            KontaktOrdner(SubFolder)
+            iOrdner = iOrdner + 1
+
+            Windows.Forms.Application.DoEvents()
+        Loop
+
+
+        Return True
+    End Function
+#End Region
+
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()

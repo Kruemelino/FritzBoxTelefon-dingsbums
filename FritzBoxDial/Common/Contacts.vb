@@ -18,7 +18,7 @@ Public Class Contacts
     Private _C_OLI As OutlookInterface
     Private _listChildren As New List(Of ApiWindow)
 
-    ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
+    Private ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
 
     Public Property C_OLI() As OutlookInterface
         Get
@@ -36,7 +36,35 @@ Public Class Contacts
         C_hf = HelferKlasse
     End Sub
 
-    Friend Overloads Function FindeKontakt(ByRef TelNr As String, _
+    Friend Function KontaktSuche(ByRef KontaktID As String, _
+                ByRef StoreID As String, _
+                ByVal alleOrdner As Boolean, _
+                ByRef TelNr As String, _
+                ByVal Absender As String, _
+                ByVal LandesVW As String) As Outlook.ContactItem
+        KontaktSuche = Nothing
+        Dim oApp As Outlook.Application = C_OLI.OutlookApplication()
+        If Not oApp Is Nothing Then
+            Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
+            If alleOrdner Then
+                KontaktSuche = FindeKontakt(TelNr, Absender, LandesVW, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
+            Else
+                KontaktSuche = FindeKontakt(TelNr, Absender, LandesVW, olNamespace)
+            End If
+            If Not KontaktSuche Is Nothing Then
+                With KontaktSuche
+                    KontaktID = .EntryID
+                    StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
+                End With
+            End If
+            olNamespace = Nothing
+        Else
+            C_hf.LogFile("Kontaktsuche konnte nicht gestartet werden.")
+        End If
+        oApp = Nothing
+    End Function
+
+    Private Overloads Function FindeKontakt(ByRef TelNr As String, _
                               ByVal Absender As String, _
                               ByVal LandesVW As String, _
                               ByVal NamensRaum As Outlook.NameSpace) _
@@ -54,7 +82,7 @@ Public Class Contacts
         Return KontaktGefunden
     End Function
 
-    Friend Overloads Function FindeKontakt(ByRef TelNr As String, _
+    Private Overloads Function FindeKontakt(ByRef TelNr As String, _
                                  ByVal Absender As String, _
                                  ByVal LandesVW As String, _
                                  ByVal Ordner As Outlook.MAPIFolder) _
@@ -116,9 +144,10 @@ Public Class Contacts
         aktKontakt = Nothing
     End Function '(FindeKontakt)
 
-    Friend Sub ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String)
+    Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
         Dim FritzFolderExists As Boolean = False
         Dim Kontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
+
         If Not vCard = C_DP.P_Def_StringEmpty Then
             Dim olContactsFolder As Outlook.MAPIFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
             Dim olFolder As Outlook.MAPIFolder = olContactsFolder.Folders.GetFirst
@@ -147,23 +176,36 @@ Public Class Contacts
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
                 If Not C_DP.P_CBIndexAus Then IndiziereKontakt(Kontakt, True)
-                .Save()
-                KontaktID = .EntryID
-                StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
+                If Speichern Then
+                    .Save()
+                    KontaktID = .EntryID
+                    StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
+                End If
                 C_hf.LogFile("Kontakt " & Kontakt.FullName & " wurde erstellt")
             End With
-
         End If
+        ErstelleKontakt = Kontakt
         Kontakt = Nothing
-    End Sub
+    End Function
 
+    Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
+        ErstelleKontakt = Nothing
+        Dim vCard As String
+        vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
+        If Not vCard = C_DP.P_Def_StringEmpty Then
+            Return ErstelleKontakt(KontaktID, StoreID, vCard, TelNr, Speichern)
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
+    ''' </summary>
+    ''' <remarks></remarks>
     Friend Sub KontaktErstellen()
-        Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Kontakt oder Journal)
-        Dim pos1 As Integer
-        Dim pos2 As Integer
+        Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Journal)
         Dim vCard As String
         Dim Journal As Outlook.JournalItem
-        Dim Kontakt As Outlook.ContactItem ' Objekt des Kontakteintrags
+        Dim Kontakt As Outlook.ContactItem = Nothing ' Objekt des Kontakteintrags
         Dim TelNr As String
 
         olAuswahl = C_OLI.OutlookApplication.ActiveInspector
@@ -171,56 +213,55 @@ Public Class Contacts
             If TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then
                 Journal = CType(olAuswahl.CurrentItem, Outlook.JournalItem)
                 With Journal
-                    If Not InStr(1, Journal.Categories, "FritzBox Anrufmonitor", CompareMethod.Text) = 0 Then
+                    If Not InStr(1, .Categories, "FritzBox Anrufmonitor", CompareMethod.Text) = 0 Then
                         ' Telefonnummer aus dem .Body herausfiltern
                         TelNr = C_hf.StringEntnehmen(.Body, "Tel.-Nr.: ", "Status: ")
                         ' vCard aus dem .Body herausfiltern
-                        pos1 = InStr(1, .Body, "BEGIN:VCARD", CompareMethod.Text)
-                        pos2 = InStr(1, .Body, "END:VCARD", CompareMethod.Text) + 9
-                        ' Wenn vCard vorhanden ist, dann Kontakt erstellen
+                        vCard = C_hf.StringEntnehmen(.Body, "BEGIN:VCARD", "END:VCARD")
+                        ' Wenn keine vCard vorhanden ist, dann Kontakt anzeigen
+                        If vCard = C_DP.P_Def_ErrorMinusOne Then
 #If Not OVer = 15 Then
-                        If pos1 = 0 Or pos2 = 9 Then
                             Dim olLink As Outlook.Link = Nothing
-                            Dim olContact As Outlook.ContactItem
                             For Each olLink In .Links
                                 Try
                                     If TypeOf olLink.Item Is Outlook.ContactItem Then
-                                        olContact = CType(olLink.Item, Outlook.ContactItem)
-                                        olContact.Display()
-                                        C_hf.NAR(olContact) : olContact = Nothing
-                                        Exit Sub
+                                        Kontakt = CType(olLink.Item, Outlook.ContactItem)
+                                        Kontakt.Display()
+                                        C_hf.NAR(Kontakt)
+                                        Kontakt = Nothing
+                                        Exit For
                                     End If
                                 Catch
                                     C_hf.LogFile("KontaktErstellen: Kontakt nicht gefunden")
                                 End Try
                             Next
                             C_hf.NAR(olLink) : olLink = Nothing
-                        End If
+#Else
+                            'Todo
 #End If
-                        Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-                        If Not pos1 = 0 And Not pos2 = 0 Then
-                            vCard = Mid(.Body, pos1, pos2 - pos1)
-                            vCard2Contact(vCard, Kontakt)
                         Else
+
+                            Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+                            vCard = "BEGIN:VCARD" & vCard & "END:VCARD"
+                            vCard2Contact(vCard, Kontakt)
                             If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
                                 Kontakt.MobileTelephoneNumber = TelNr
                             Else
                                 Kontakt.BusinessTelephoneNumber = TelNr
                             End If
 
+                            With Kontakt
+                                If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                                    .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                                ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                                    .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                                End If
+                                .Categories = "Fritz!Box" 'Alle Kontakte, die erstellt werdn, haben die Kategorie "Fritz!Box". Damit sind sie einfach zu erkennen
+                                C_hf.LogFile("Kontakt " & Kontakt.FullName & " wurde aus einem Journaleintrag erzeugt.")
+                                .Display()
+                            End With
                         End If
-                        With Kontakt
-                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                                .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                                .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                            End If
-                            .Categories = "Fritz!Box" 'Alle Kontakte, die erstellt werdn, haben die Kategorie "Fritz!Box". Damit sind sie einfach zu erkennen
-                            C_hf.LogFile("Kontakt " & Kontakt.FullName & " wurde aus einem Journaleintrag erzeugt.")
-                            .Display()
-                        End With
                     End If
-
                 End With
             End If
         End If
@@ -235,7 +276,7 @@ Public Class Contacts
     ''' <param name="Notiz">Notiz, die dem Kontakt hinzugefügt wird.</param>
     ''' <param name="AnrufRichtung">0 Eingehend, 1 Ausgehend</param>
     ''' <remarks></remarks>
-    Public Function ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String, ByVal Anzeigen As Boolean) As Outlook.ContactItem
+    Public Function ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String) As Outlook.ContactItem
 
         ZeigeKontakt = Nothing
         ' alle Telefonnummern in der vCard
@@ -243,7 +284,7 @@ Public Class Contacts
             Dim vCard As String
             Dim alleTelNr As String
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
-            GetEmptyContact(ZeigeKontakt)
+            ZeigeKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
             vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
             With ZeigeKontakt
 
@@ -273,47 +314,76 @@ Public Class Contacts
         Else
             ' Kontakteintrag anzeigen
             Try
-                ZeigeKontakt = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+                ZeigeKontakt = GetOutlookKontakt(KontaktID, StoreID)
             Catch ex As Exception
                 C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
             End Try
         End If
-        If Not ZeigeKontakt Is Nothing And Anzeigen Then
-            ZeigeKontakt.Display()
-        End If
+        If Not ZeigeKontakt Is Nothing Then ZeigeKontakt.Display()
     End Function
 
-    Friend Sub GetEmptyContact(ByRef Kontakt As Outlook.ContactItem)
-        Kontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+    Friend Overloads Sub KontaktInformation(ByRef olContact As Outlook.ContactItem, _
+                              Optional ByRef FullName As String = vbNullString, _
+                              Optional ByRef CompanyName As String = vbNullString, _
+                              Optional ByRef HomeAddress As String = vbNullString, _
+                              Optional ByRef BusinessAddress As String = vbNullString)
+
+        If Not olContact Is Nothing Then
+            With olContact
+                FullName = .FullName
+                CompanyName = .CompanyName
+                HomeAddress = .HomeAddress
+                BusinessAddress = .BusinessAddress
+            End With
+        End If
+
     End Sub
 
-    Private Function NrFormat(ByVal gefKontakt As Outlook.ContactItem, ByVal TelNr As String, ByVal LandesVW As String) As String
-        Dim alleTE(16) As String
-        With gefKontakt
-            alleTE(0) = .AssistantTelephoneNumber
-            alleTE(1) = .BusinessTelephoneNumber
-            alleTE(2) = .Business2TelephoneNumber
-            alleTE(3) = .CallbackTelephoneNumber
-            alleTE(4) = .CarTelephoneNumber
-            alleTE(5) = .CompanyMainTelephoneNumber
-            alleTE(6) = .HomeTelephoneNumber
-            alleTE(7) = .Home2TelephoneNumber
-            alleTE(8) = .ISDNNumber
-            alleTE(9) = .MobileTelephoneNumber
-            alleTE(10) = .OtherTelephoneNumber
-            alleTE(11) = .PagerNumber
-            alleTE(12) = .PrimaryTelephoneNumber
-            alleTE(13) = .RadioTelephoneNumber
-            alleTE(14) = .BusinessFaxNumber
-            alleTE(15) = .HomeFaxNumber
-            alleTE(16) = .OtherFaxNumber
-        End With
-        For Each Telefonnummer In alleTE
-            If TelNr = C_hf.nurZiffern(Telefonnummer, LandesVW) Then Return Telefonnummer
-        Next
-        Return TelNr
+    Friend Overloads Sub KontaktInformation(ByRef KontaktID As String, _
+                              ByRef StoreID As String, _
+                              Optional ByRef FullName As String = vbNullString, _
+                              Optional ByRef CompanyName As String = vbNullString, _
+                              Optional ByRef HomeAddress As String = vbNullString, _
+                              Optional ByRef BusinessAddress As String = vbNullString)
+
+        Dim Kontakt As Outlook.ContactItem = GetOutlookKontakt(KontaktID, StoreID)
+        If Not Kontakt Is Nothing Then
+            KontaktInformation(Kontakt, FullName:=FullName, CompanyName:=CompanyName, HomeAddress:=HomeAddress, BusinessAddress:=BusinessAddress)
+            Kontakt = Nothing
+        End If
+        C_hf.NAR(Kontakt)
+    End Sub
+
+    Friend Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
+        Dim Kontakt As Outlook.ContactItem = GetOutlookKontakt(KontaktID, StoreID)
+        KontaktBild = C_DP.P_Def_StringEmpty
+        If Not Kontakt Is Nothing Then
+            With Kontakt
+                KontaktID = .EntryID
+                StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
+                With .Attachments
+                    If Not .Item("ContactPicture.jpg") Is Nothing Then
+                        KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
+                        KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
+                        .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
+                    End If
+                End With
+            End With
+            Kontakt = Nothing
+        End If
+        C_hf.NAR(Kontakt)
     End Function
 
+    Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As Outlook.ContactItem
+        GetOutlookKontakt = Nothing
+        Try
+            GetOutlookKontakt = CType(C_OLI.OutlookApplication.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+        Catch ex As Exception
+            C_hf.LogFile("OutlookKontakt: " & ex.Message)
+        End Try
+    End Function
+
+#Region "Kontaktindizierung"
     Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
         If Not C_DP.P_CBIndexAus Then
             Dim LandesVW As String = C_DP.P_TBLandesVW
@@ -388,6 +458,34 @@ Public Class Contacts
 #End If
         Catch : End Try
     End Sub
+#End Region
+
+    Private Function NrFormat(ByVal gefKontakt As Outlook.ContactItem, ByVal TelNr As String, ByVal LandesVW As String) As String
+        Dim alleTE(16) As String
+        With gefKontakt
+            alleTE(0) = .AssistantTelephoneNumber
+            alleTE(1) = .BusinessTelephoneNumber
+            alleTE(2) = .Business2TelephoneNumber
+            alleTE(3) = .CallbackTelephoneNumber
+            alleTE(4) = .CarTelephoneNumber
+            alleTE(5) = .CompanyMainTelephoneNumber
+            alleTE(6) = .HomeTelephoneNumber
+            alleTE(7) = .Home2TelephoneNumber
+            alleTE(8) = .ISDNNumber
+            alleTE(9) = .MobileTelephoneNumber
+            alleTE(10) = .OtherTelephoneNumber
+            alleTE(11) = .PagerNumber
+            alleTE(12) = .PrimaryTelephoneNumber
+            alleTE(13) = .RadioTelephoneNumber
+            alleTE(14) = .BusinessFaxNumber
+            alleTE(15) = .HomeFaxNumber
+            alleTE(16) = .OtherFaxNumber
+        End With
+        For Each Telefonnummer In alleTE
+            If TelNr = C_hf.nurZiffern(Telefonnummer, LandesVW) Then Return Telefonnummer
+        Next
+        Return TelNr
+    End Function
 
     Sub vCard2Contact(ByVal vCard As String, ByRef Contact As Outlook.ContactItem)
         ' überträgt den Inhalt einer vCard in einen Kontakt
@@ -757,21 +855,22 @@ Public Class Contacts
 #Region "KontaktNotiz"
     Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
 
-        Dim oInsp As Outlook.Inspector = olKontakt.GetInspector
-        Dim Handle As IntPtr = GetBodyHandle(oInsp)
+        Dim oInsp As Outlook.Inspector
+        Dim Handle As IntPtr
 
         Dim ReturnValue As Long
-        Dim oDoc As Word.Document = CType(oInsp.WordEditor, Word.Document)
+        Dim oDoc As Word.Document
         Dim oTable As Word.Table = Nothing
         Dim HeaderRow As Word.Row = Nothing
         Dim CallRow As Word.Row = Nothing
         Dim NoteRow As Word.Row = Nothing
         Dim startLocation As Object
 
-
+        oInsp = olKontakt.GetInspector
+        Handle = GetBodyHandle(oInsp)
 
         If Not Handle = IntPtr.Zero Then
-
+            oDoc = CType(oInsp.WordEditor, Word.Document)
             CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, True)
             With CallRow
                 .Cells(1).Range.Text = C_DP.P_Def_AnrMonDirection_Default

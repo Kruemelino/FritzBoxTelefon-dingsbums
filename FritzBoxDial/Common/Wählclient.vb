@@ -34,12 +34,10 @@ Public Class Wählclient
         ' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt
         Dim olNamespace As Outlook.NameSpace
         Dim aktKontakt As Outlook.ContactItem       ' aktuell ausgewählter Kontakt
-        Dim i As Long              ' Zählvariable
         Dim pos1 As Integer
         Dim pos2 As Integer
         Dim vCard As String
         Dim name As String
-        Dim res As Outlook.ContactItem
 
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
         ' Ist überhaupt etwas ausgewählt?
@@ -48,27 +46,26 @@ Public Class Wählclient
                 ' Es wurde eine Mail ausgewählt
                 ' Den zur Email-Adresse gehörigen Kontakt suchen
                 Dim aktMail As Outlook.MailItem = CType(olAuswahl.Item(1), Outlook.MailItem)
-                Dim Absender As String
 
-                Absender = aktMail.SenderEmailAddress
-                If C_DP.P_CBKHO Then
-                    res = C_KF.FindeKontakt("", Absender, "", olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
-                Else
-                    res = C_KF.FindeKontakt("", Absender, "", olNamespace)
-                End If
-
-                i = 0
-                If Not Absender = C_DP.P_Def_StringEmpty Then
-                    If Not res Is Nothing Then
-                        Wählbox(res, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
+                If Not aktMail.SenderEmailAddress = C_DP.P_Def_StringEmpty Then
+                    aktKontakt = C_KF.KontaktSuche(KontaktID:=C_DP.P_Def_StringEmpty, _
+                                                   StoreID:=C_DP.P_Def_StringEmpty, _
+                                                   alleOrdner:=C_DP.P_CBKHO, _
+                                                   TelNr:=C_DP.P_Def_StringEmpty, _
+                                                   Absender:=aktMail.SenderEmailAddress, _
+                                                   LandesVW:=C_DP.P_TBLandesVW)
+                    If Not aktKontakt Is Nothing Then
+                        Wählbox(aktKontakt, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
                     Else
-                        C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Information, "WählboxStart")
+                        C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & aktMail.SenderEmailAddress & " vorhanden!", MsgBoxStyle.Information, "WählboxStart")
                     End If
+                    C_hf.NAR(aktKontakt)
                 End If
                 With C_hf
                     .NAR(olNamespace)
                     .NAR(aktMail)
                 End With
+                aktKontakt = Nothing
                 olNamespace = Nothing
                 aktMail = Nothing
             ElseIf TypeOf olAuswahl.Item(1) Is Outlook.ContactItem Then
@@ -138,9 +135,6 @@ Public Class Wählclient
         End If
         olAuswahl = Nothing
         Exit Sub
-        'Catch
-        '    C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine Email oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
-        'End Try
     End Sub ' (WählboxStart)
 
     Sub Wählbox(ByVal oContact As Outlook.ContactItem, ByVal TelNr As String, ByVal Direktwahl As Boolean, ByVal vName As String)
@@ -211,7 +205,7 @@ Public Class Wählclient
                 alleTelNr(12) = .PagerNumber : alleNrTypen(12) = "Pager"
                 alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = "Haupttelefon"
                 alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = "Funkruf"
-                ImgPath = C_OlI.KontaktBild(.EntryID, CType(.Parent, Outlook.MAPIFolder).StoreID)
+                ImgPath = C_KF.KontaktBild(.EntryID, CType(.Parent, Outlook.MAPIFolder).StoreID)
                 If Not ImgPath = C_DP.P_Def_StringEmpty Then
                     Dim orgIm As Image = Image.FromFile(ImgPath)
                     With frm_Wählbox.ContactImage
@@ -422,19 +416,15 @@ Public Class Wählclient
                 End If
             End If
         ElseIf TypeOf olAuswahl.CurrentItem Is Outlook.MailItem Then ' ist aktuelles Fenster ein Mail?
-            Dim res As Outlook.ContactItem
+            Dim oContact As Outlook.ContactItem
             olNamespace = ThisAddIn.P_oApp.GetNamespace("MAPI")
             Dim olMail As Outlook.MailItem = CType(olAuswahl.CurrentItem, Outlook.MailItem)
             Absender = olMail.SenderEmailAddress
-            If C_DP.P_CBKHO Then
-                res = C_KF.FindeKontakt(C_DP.P_Def_StringEmpty, Absender, C_DP.P_Def_StringEmpty, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
-            Else
-                res = C_KF.FindeKontakt(C_DP.P_Def_StringEmpty, Absender, C_DP.P_Def_StringEmpty, olNamespace)
-            End If
             ' Nun den zur Email-Adresse gehörigen Kontakt suchen
             If Not Absender = C_DP.P_Def_StringEmpty Then
-                If Not res Is Nothing Then
-                    Wählbox(res, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
+                oContact = C_KF.KontaktSuche(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_CBKHO, C_DP.P_Def_StringEmpty, Absender, C_DP.P_Def_StringEmpty)
+                If Not oContact Is Nothing Then
+                    Wählbox(oContact, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
                 Else
                     C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
                 End If

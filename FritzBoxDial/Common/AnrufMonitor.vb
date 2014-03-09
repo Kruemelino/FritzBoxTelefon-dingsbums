@@ -514,11 +514,13 @@ Friend Class AnrufMonitor
                 BWAnrMonEinblenden.RunWorkerAsync(ID)
             End If
 
+            Telefonat = New C_Telefonat
+
             ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
             If Not TelNr = C_DP.P_Def_StringUnknown Then
                 ' Anrufer in den Outlook-Kontakten suchen
-                If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Then
-                    C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
+                If C_KF.KontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Is Nothing Then
+                    C_KF.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
                     Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
                     If C_DP.P_CBIgnoTelNrFormat Then TelNr = C_hf.formatTelNr(TelNr)
                 Else
@@ -543,10 +545,11 @@ Friend Class AnrufMonitor
                                 Case 3
                                     rws = F_RWS.RWSAlle(TelNr, vCard)
                             End Select
-                            'Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. Dies geschieht nur, wenn es gewünscht ist.
+                            ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                            ' Dies geschieht nur, wenn es gewünscht ist.
                             If rws And C_DP.P_CBKErstellen Then
-                                C_KF.ErstelleKontakt(KontaktID, StoreID, vCard, TelNr)
-                                C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
+                                Telefonat.olContact = C_KF.ErstelleKontakt(KontaktID, StoreID, vCard, TelNr, True)
+                                C_KF.KontaktInformation(Telefonat.olContact, FullName:=FullName, CompanyName:=CompanyName)
                                 Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
                                 rws = False
                             End If
@@ -599,23 +602,33 @@ Friend Class AnrufMonitor
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
                 .TelNr = TelNr
+
+                If (Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne) And .olContact Is Nothing Then
+                    .olContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
+                End If
+
+                ' Kontakt anzeigen
+                If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
+                    If C_DP.P_CBNote Then
+                        If .olContact Is Nothing Then
+                            .olContact = C_KF.ErstelleKontakt(KontaktID, StoreID, TelNr, False)
+                        End If
+                        C_KF.AddNote(.olContact)
+                    End If
+
+                    .olContact.Display()
+                End If
                 .KontaktID = KontaktID
                 .StoreID = StoreID
-                .olContact = C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False)
+
+                'Notizeintag
+                If C_DP.P_CBNote Then
+                    If Not .olContact Is Nothing Then
+                        C_KF.FillNote(AnrMonEvent.AnrMonRING, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
+                    End If
+                End If
             End With
             TelefonatsListe.Add(Telefonat)
-
-            ' Kontakt öffnen
-            If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
-                C_KF.AddNote(C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True))
-            End If
-
-            'Notizeintag
-            If C_DP.P_CBNote Then
-                With Telefonat
-                    C_KF.FillNote(AnrMonEvent.AnrMonRING, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
-                End With
-            End If
         End If
     End Sub '(AnrMonRING)
 
@@ -700,12 +713,14 @@ Friend Class AnrufMonitor
             If Right(TelNr, 1) = "#" Then TelNr = Left(TelNr, Len(TelNr) - 1)
             ' Daten zurücksetzen
             'Anrufer = TelNr
+            Telefonat = New C_Telefonat
             If Not TelNr = C_DP.P_Def_StringUnknown Then
                 Dim FullName As String = C_DP.P_Def_StringEmpty
                 Dim CompanyName As String = C_DP.P_Def_StringEmpty
                 ' Anrufer in den Outlook-Kontakten suchen
-                If C_OlI.StarteKontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Then
-                    C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
+                Telefonat.olContact = C_KF.KontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW)
+                If Telefonat.olContact Is Nothing Then
+                    C_KF.KontaktInformation(Telefonat.olContact, FullName:=FullName, CompanyName:=CompanyName)
                     Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
                     If C_DP.P_CBIgnoTelNrFormat Then TelNr = C_hf.formatTelNr(TelNr)
                 Else
@@ -733,8 +748,8 @@ Friend Class AnrufMonitor
                             End Select
                             'Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. Dies geschieht nur, wenn es gewünscht ist.
                             If rws And C_DP.P_CBKErstellen Then
-                                C_KF.ErstelleKontakt(KontaktID, StoreID, vCard, TelNr)
-                                C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName)
+                                Telefonat.olContact = C_KF.ErstelleKontakt(KontaktID, StoreID, vCard, TelNr, True)
+                                C_KF.KontaktInformation(Telefonat.olContact, FullName:=FullName, CompanyName:=CompanyName)
                                 Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
                             End If
                         Else
@@ -774,30 +789,35 @@ Friend Class AnrufMonitor
                 End With
             End If
             ' Journal
-            Telefonat = New C_Telefonat
+
             With Telefonat
                 .ID = ID
                 .Typ = C_Telefonat.JournalTyp.Ausgehend
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
                 .TelNr = TelNr
+                .NSN = CLng(FBStatus.GetValue(3))
+
+                ' Kontakt öffnen
+                If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
+                    If C_DP.P_CBNote Then
+                        If .olContact Is Nothing Then
+                            .olContact = C_KF.ErstelleKontakt(KontaktID, StoreID, TelNr, False)
+                        End If
+                        C_KF.AddNote(.olContact)
+                    End If
+                    .olContact.Display()
+                End If
                 .KontaktID = KontaktID
                 .StoreID = StoreID
-                .NSN = CLng(FBStatus.GetValue(3))
-                .olContact = C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, False)
+                'Notizeintag
+                If C_DP.P_CBNote Then
+                    If Not .olContact Is Nothing Then
+                        C_KF.FillNote(AnrMonEvent.AnrMonCALL, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
+                    End If
+                End If
             End With
             TelefonatsListe.Add(Telefonat)
-            ' Kontakt öffnen
-            If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
-                C_KF.AddNote(C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True))
-            End If
-            'Notizeintag
-            If C_DP.P_CBNote Then
-                With Telefonat
-                    C_KF.FillNote(AnrMonEvent.AnrMonCALL, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
-                End With
-            End If
-
         End If
     End Sub '(AnrMonCALL)
 
@@ -903,7 +923,9 @@ Friend Class AnrufMonitor
         'Notizeintag
         If C_DP.P_CBNote Then
             With Telefonat
-                C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, False)
+                If Not .olContact Is Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, C_DP.P_CBAnrMonZeigeKontakt)
+                End If
             End With
         End If
     End Sub '(AnrMonCONNECT)
@@ -994,7 +1016,7 @@ Friend Class AnrufMonitor
                     Dim HomeAddress As String = C_DP.P_Def_StringEmpty
                     Dim BusinessAddress As String = C_DP.P_Def_StringEmpty
 
-                    C_OlI.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName, BusinessAddress:=BusinessAddress, HomeAddress:=HomeAddress)
+                    C_KF.KontaktInformation(KontaktID, StoreID, FullName:=FullName, CompanyName:=CompanyName, BusinessAddress:=BusinessAddress, HomeAddress:=HomeAddress)
 
                     If FullName = C_DP.P_Def_StringEmpty Then
                         If CompanyName = C_DP.P_Def_StringEmpty Then
@@ -1114,10 +1136,16 @@ Friend Class AnrufMonitor
         'Notizeintag
         If C_DP.P_CBNote Then
             With Telefonat
-                C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, Dauer, False)
+                If Not .olContact Is Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, Dauer, C_DP.P_CBAnrMonZeigeKontakt)
+                End If
             End With
         End If
+        C_hf.NAR(Telefonat.olContact)
+        Telefonat.olContact = Nothing
         TelefonatsListe.Remove(Telefonat)
+
+
     End Sub '(AnrMonDISCONNECT)
 #End Region
 

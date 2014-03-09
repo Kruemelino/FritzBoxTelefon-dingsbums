@@ -115,9 +115,9 @@ Friend Class formAnrMon
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
-                    C_OLI.KontaktInformation(KontaktID, StoreID, PopUpAnrMon.AnrName, PopUpAnrMon.Firma)
+                    C_KF.KontaktInformation(KontaktID, StoreID, PopUpAnrMon.AnrName, PopUpAnrMon.Firma)
                     If C_DP.P_CBAnrMonContactImage Then
-                        Dim BildPfad = C_OLI.KontaktBild(KontaktID, StoreID)
+                        Dim BildPfad = C_KF.KontaktBild(KontaktID, StoreID)
                         If Not BildPfad = C_DP.P_Def_StringEmpty Then
                             PopUpAnrMon.Image = Drawing.Image.FromFile(BildPfad)
                             ' Seitenverhältnisse anpassen
@@ -173,7 +173,7 @@ Friend Class formAnrMon
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr, True)
+        C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
