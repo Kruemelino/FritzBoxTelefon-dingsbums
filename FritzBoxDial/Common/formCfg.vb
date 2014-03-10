@@ -217,7 +217,9 @@ Friend Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
         ' Notiz
         Me.CBNote.Checked = C_DP.P_CBNote
-        'C_OlI.KontaktOrdner()
+        If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
+        C_OlI.KontaktOrdner(Me.TVOutlookContact)
+        Me.TVOutlookContact.ExpandAll()
         FillLogTB()
         FillTelListe()
         CLBTelNrAusfüllen()
