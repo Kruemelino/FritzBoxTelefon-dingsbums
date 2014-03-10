@@ -277,12 +277,12 @@ Public Class Contacts
 
         ZeigeKontakt = Nothing
         ' alle Telefonnummern in der vCard
-        If Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+        If StoreID = C_DP.P_Def_ErrorMinusOne Then
             Dim vCard As String
             Dim alleTelNr As String
             ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
             ZeigeKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-            vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
+            vCard = KontaktID
             With ZeigeKontakt
 
                 If Not vCard = C_DP.P_Def_ErrorMinusOne And Not vCard = C_DP.P_Def_StringEmpty Then
@@ -370,7 +370,13 @@ Public Class Contacts
         End If
         C_hf.NAR(Kontakt)
     End Function
-
+    ''' <summary>
+    ''' Ermittelt aus der KontaktID und der StoreID den zugehörigen Kontakt.
+    ''' </summary>
+    ''' <param name="KontaktID">EntryID des Kontaktes</param>
+    ''' <param name="StoreID">StoreID des beinhaltenden Ordners</param>
+    ''' <returns>Erfolg: Kontakt, Misserfolg: Nothing</returns>
+    ''' <remarks></remarks>
     Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As Outlook.ContactItem
         GetOutlookKontakt = Nothing
         Try

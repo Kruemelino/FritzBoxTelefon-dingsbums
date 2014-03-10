@@ -358,7 +358,6 @@
         Dim XMLListBaseNode As String = "VIPListe"
         Dim xPathTeile As New ArrayList
 
-
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
                 XMLListBaseNode = "CallList"

@@ -179,10 +179,13 @@ Friend Class formWählbox
     Private Sub ButtonZeigeKontakt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonZeigeKontakt.Click
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
+        Dim KontaktDaten() As String
 
-        Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
-        If KontaktDaten(0) = C_DP.P_Def_ErrorMinusOne Then KontaktDaten(1) = C_DP.P_Def_ErrorMinusOne
-
+        If Me.Tag.ToString = C_DP.P_Def_ErrorMinusOne Then
+            'Kein Outlook-Kontakt
+            Me.Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
+        End If
+        KontaktDaten = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(2).Value.ToString, ";", , CompareMethod.Text)
         C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2))
         Me.CloseButton.Focus()
     End Sub

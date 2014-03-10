@@ -1366,6 +1366,7 @@ Public Class FritzBox
 
     End Function
 #End Region
+
     Private Sub PushStatus(ByVal Status As String)
         tb.Text = Status
     End Sub

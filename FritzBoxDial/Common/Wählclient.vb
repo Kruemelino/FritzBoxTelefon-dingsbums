@@ -151,7 +151,7 @@ Public Class Wählclient
         frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF)
 
         If oContact Is Nothing Then
-            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne
+            frm_Wählbox.Tag = vName ' C_DP.P_Def_ErrorMinusOne
         Else
             frm_Wählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
         End If
@@ -303,9 +303,8 @@ Public Class Wählclient
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
         If Not StoreID = C_DP.P_Def_ErrorMinusOne Then
             'If Not KontaktID = C_DP.P_Def_ErrorMinusOne And Not StoreID = C_DP.P_Def_ErrorMinusOne Then
-            Try
-                oContact = CType(oNS.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem) ' wird durch den Symbolbereich 'Rückruf' in der 'FritzBox'-Symbolleiste ausgeführt
-            Catch ex As Exception
+            oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
+            If oContact Is Nothing Then
                 Select Case Telefonat(0)
                     Case "VIPListe"
                         If C_hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionAnrListen") = MsgBoxResult.Yes Then
@@ -314,8 +313,7 @@ Public Class Wählclient
                     Case Else
                         C_hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionAnrListen")
                 End Select
-                Exit Sub
-            End Try
+            End If
         Else
             oContact = Nothing
         End If
@@ -391,7 +389,7 @@ Public Class Wählclient
                             If TypeOf olLink.Item Is Outlook.ContactItem Then
                                 olContact = CType(olLink.Item, Outlook.ContactItem)
                                 Wählbox(olContact, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
-                                C_hf.NAR(olContact) : olContact = Nothing
+                                C_hf.NAR(olContact) ' : olContact = Nothing
                                 Exit Sub
                             End If
                         Next

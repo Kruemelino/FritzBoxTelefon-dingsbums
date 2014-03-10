@@ -550,8 +550,6 @@ Friend Class AnrufMonitor
                                     With Telefonat
                                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
                                         .vCard = C_DP.P_Def_StringEmpty
-                                        .KontaktID = .KontaktID
-                                        .StoreID = .StoreID
                                         C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=CompanyName)
                                     End With
                                     .Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
@@ -736,8 +734,6 @@ Friend Class AnrufMonitor
                                     With Telefonat
                                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
                                         .vCard = C_DP.P_Def_StringEmpty
-                                        .KontaktID = .KontaktID
-                                        .StoreID = .StoreID
                                         C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=.Companies)
                                     End With
                                     .Anrufer = Replace(FullName & " (" & .Companies & ")", " ()", "")
