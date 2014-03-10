@@ -37,7 +37,7 @@ Partial Class formAnrMon
         '
         'ToolStripMenuItemKontaktöffnen
         '
-        Me.ToolStripMenuItemKontaktöffnen.Image = Global.FritzBoxDial.My.Resources.Resources.Bild4
+        Me.ToolStripMenuItemKontaktöffnen.Image = Global.FritzBoxDial.My.Resources.Bild4
         Me.ToolStripMenuItemKontaktöffnen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.ToolStripMenuItemKontaktöffnen.Name = "ToolStripMenuItemKontaktöffnen"
         Me.ToolStripMenuItemKontaktöffnen.Size = New System.Drawing.Size(221, 22)
@@ -45,7 +45,7 @@ Partial Class formAnrMon
         '
         'ToolStripMenuItemRückruf
         '
-        Me.ToolStripMenuItemRückruf.Image = Global.FritzBoxDial.My.Resources.Resources.Bild2
+        Me.ToolStripMenuItemRückruf.Image = Global.FritzBoxDial.My.Resources.Bild2
         Me.ToolStripMenuItemRückruf.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.ToolStripMenuItemRückruf.Name = "ToolStripMenuItemRückruf"
         Me.ToolStripMenuItemRückruf.Size = New System.Drawing.Size(221, 22)
@@ -53,7 +53,7 @@ Partial Class formAnrMon
         '
         'ToolStripMenuItemKopieren
         '
-        Me.ToolStripMenuItemKopieren.Image = Global.FritzBoxDial.My.Resources.Resources.Bild5
+        Me.ToolStripMenuItemKopieren.Image = Global.FritzBoxDial.My.Resources.Bild5
         Me.ToolStripMenuItemKopieren.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.ToolStripMenuItemKopieren.Name = "ToolStripMenuItemKopieren"
         Me.ToolStripMenuItemKopieren.Size = New System.Drawing.Size(221, 22)

@@ -150,7 +150,6 @@ Public Class DataProvider
     Private _CBCbCunterbinden As Boolean
     Private _CBCallByCall As Boolean
     Private _CBDialPort As Boolean
-
     Private _CBKErstellen As Boolean
     Private _CBLogFile As Boolean
 #If OVer < 14 Then
@@ -168,6 +167,8 @@ Public Class DataProvider
     Private _CBKHO As Boolean
     Private _CBRWSIndex As Boolean
     Private _ComboBoxRWS As Integer
+    Private _TVKontaktOrdnerEntryID As String
+    Private _TVKontaktOrdnerStoreID As String
     Private _CBIndex As Boolean
     Private _TBLandesVW As String
     Private _TBAmt As String
@@ -587,6 +588,22 @@ Public Class DataProvider
             _ComboBoxRWS = value
         End Set
     End Property
+    Public Property P_TVKontaktOrdnerEntryID() As String
+        Get
+            Return _TVKontaktOrdnerEntryID
+        End Get
+        Set(ByVal value As String)
+            _TVKontaktOrdnerEntryID = value
+        End Set
+    End Property
+    Public Property P_TVKontaktOrdnerStoreID() As String
+        Get
+            Return _TVKontaktOrdnerStoreID
+        End Get
+        Set(ByVal value As String)
+            _TVKontaktOrdnerStoreID = value
+        End Set
+    End Property
     ''' <summary>
     ''' Gibt an, ob die Indizierung durchgeführt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
@@ -930,6 +947,12 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public ReadOnly Property P_Def_ErrorMinusTwo() As String
+        Get
+            Return "-2"
+        End Get
+    End Property
+
     Public ReadOnly Property P_Def_StringEmpty() As String
         Get
             Return String.Empty
@@ -969,6 +992,12 @@ Public Class DataProvider
     Public ReadOnly Property P_Def_StringNull() As String
         Get
             Return "0"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_StringErrorMinusOne() As String
+        Get
+            Return CStr(P_Def_ErrorMinusOne)
         End Get
     End Property
 
@@ -1038,51 +1067,51 @@ Public Class DataProvider
             Return "FBDB_Note_Table"
         End Get
     End Property
-    Public ReadOnly Property P_Def_Note_Table_HeaderRow() As String
-        Get
-            Return "FBDB_Note_Table_HeaderRow"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow() As String
-        Get
-            Return "BDB_Note_Table_CallRow"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_NoteRow() As String
-        Get
-            Return "FBDB_Note_Table_NoteRow"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow_Direction() As String
-        Get
-            Return "FBDB_Note_Table_CallRow_Direction"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow_Initialen() As String
-        Get
-            Return "FBDB_Note_Table_CallRow_Initialen"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow_Anrufer() As String
-        Get
-            Return "FBDB_Note_Table_CallRow_Anrufer"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow_Begin() As String
-        Get
-            Return "FBDB_Note_Table_CallRow_Begin"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow_Ende() As String
-        Get
-            Return "FBDB_Note_Table_CallRow_Ende"
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_Note_Table_CallRow_Dauer() As String
-        Get
-            Return "FBDB_Note_Table_CallRow_Dauer"
-        End Get
-    End Property
+    'Public ReadOnly Property P_Def_Note_Table_HeaderRow() As String
+    '    Get
+    '        Return "FBDB_Note_Table_HeaderRow"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow() As String
+    '    Get
+    '        Return "BDB_Note_Table_CallRow"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_NoteRow() As String
+    '    Get
+    '        Return "FBDB_Note_Table_NoteRow"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow_Direction() As String
+    '    Get
+    '        Return "FBDB_Note_Table_CallRow_Direction"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow_Initialen() As String
+    '    Get
+    '        Return "FBDB_Note_Table_CallRow_Initialen"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow_Anrufer() As String
+    '    Get
+    '        Return "FBDB_Note_Table_CallRow_Anrufer"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow_Begin() As String
+    '    Get
+    '        Return "FBDB_Note_Table_CallRow_Begin"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow_Ende() As String
+    '    Get
+    '        Return "FBDB_Note_Table_CallRow_Ende"
+    '    End Get
+    'End Property
+    'Public ReadOnly Property P_Def_Note_Table_CallRow_Dauer() As String
+    '    Get
+    '        Return "FBDB_Note_Table_CallRow_Dauer"
+    '    End Get
+    'End Property
 
     ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
@@ -1264,6 +1293,16 @@ Public Class DataProvider
     Public ReadOnly Property P_Def_CBRWS() As Boolean
         Get
             Return False
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_TVKontaktOrdnerEntryID() As String
+        Get
+            Return P_Def_StringErrorMinusOne
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_TVKontaktOrdnerStoreID() As String
+        Get
+            Return P_Def_StringErrorMinusOne
         End Get
     End Property
     Public ReadOnly Property P_Def_CBKHO() As Boolean
@@ -1561,6 +1600,8 @@ Public Class DataProvider
         Me.P_CBSymbAnrListe = CBool(Read(P_Def_Options, "CBSymbAnrListe", CStr(P_Def_CBSymbAnrListe)))
         Me.P_CBSymbDirekt = CBool(Read(P_Def_Options, "CBSymbDirekt", CStr(P_Def_CBSymbDirekt)))
         Me.P_CBSymbRWSuche = CBool(Read(P_Def_Options, "CBSymbRWSuche", CStr(P_Def_CBSymbRWSuche)))
+        Me.P_TVKontaktOrdnerEntryID = Read(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(P_Def_TVKontaktOrdnerEntryID))
+        Me.P_TVKontaktOrdnerStoreID = Read(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(P_Def_TVKontaktOrdnerStoreID))
         Me.P_CBSymbVIP = CBool(Read(P_Def_Options, "CBSymbVIP", CStr(P_Def_CBSymbVIP)))
         Me.P_CBSymbJournalimport = CBool(Read(P_Def_Options, "CBSymbJournalimport", CStr(P_Def_CBSymbJournalimport)))
         Me.P_CBJImport = CBool(Read(P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
@@ -1647,7 +1688,9 @@ Public Class DataProvider
         Write(P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
         Write(P_Def_Options, "CBRWS", CStr(Me.P_CBRWS))
         Write(P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
-        Write(P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
+        Write(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(Me.P_TVKontaktOrdnerEntryID))
+        Write(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(Me.P_TVKontaktOrdnerStoreID))
+        Write(P_Def_Options, "", CStr(Me.P_ComboBoxRWS))
         Write(P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
         Write(P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
         Write(P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))

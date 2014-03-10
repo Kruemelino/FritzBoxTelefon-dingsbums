@@ -19,6 +19,9 @@
     Private _Companies As String
     Private _Categories As String
     Private _olContact As Outlook.ContactItem
+    Private _vCard As String
+    Private _Anrufer As String
+    Private _TelName As String
 #End Region
 
 #Region "Properties"
@@ -132,6 +135,30 @@
         End Get
         Set(ByVal value As Outlook.ContactItem)
             _olContact = value
+        End Set
+    End Property
+    Friend Property vCard() As String
+        Get
+            Return _vCard
+        End Get
+        Set(ByVal value As String)
+            _vCard = value
+        End Set
+    End Property
+    Friend Property Anrufer() As String
+        Get
+            Return _Anrufer
+        End Get
+        Set(ByVal value As String)
+            _Anrufer = value
+        End Set
+    End Property
+    Friend Property TelName() As String
+        Get
+            Return _TelName
+        End Get
+        Set(ByVal value As String)
+            _TelName = value
         End Set
     End Property
 #End Region
@@ -327,48 +354,46 @@ Public Class OutlookInterface
 #End Region
 
 #Region "TreeView"
-    Friend Overloads Function KontaktOrdner(ByVal TreeView As Windows.Forms.TreeView) As Boolean
+    Friend Overloads Sub KontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
-        Dim ImageList1 As Windows.Forms.ImageList
-        ImageList1 = New Windows.Forms.ImageList
-        ImageList1.Images.Add("Kontakt", My.Resources.Bild4)
-        TreeView.ImageList = ImageList1
-        Return KontaktOrdner(olNamespace, TreeView)
-    End Function
-    Friend Overloads Function KontaktOrdner(ByVal NamensRaum As Outlook.NameSpace, ByVal TreeView As Windows.Forms.TreeView) As Boolean
-
+        Dim TVImageList As Windows.Forms.ImageList
+        TVImageList = New Windows.Forms.ImageList
+        TVImageList.Images.Add("Kontakt", My.Resources.Bild4_1)
+        TVImageList.Images.Add("KontaktSel", My.Resources.Bild4_2)
+        TreeView.ImageList = TVImageList
+        TreeView.SelectedImageKey = "KontaktSel"
+        KontaktOrdnerInTreeView(olNamespace, TreeView)
+    End Sub
+    Private Overloads Sub KontaktOrdnerInTreeView(ByVal NamensRaum As Outlook.NameSpace, ByVal TreeView As Windows.Forms.TreeView)
         TreeView.Nodes.Add("Kontaktordner")
         '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         Dim j As Integer = 1
         Do While (j <= NamensRaum.Folders.Count)
-            KontaktOrdner(NamensRaum.Folders.Item(j), TreeView, TreeView.Nodes(0))
+            KontaktOrdnerInTreeView(NamensRaum.Folders.Item(j), TreeView, TreeView.Nodes(0))
             j = j + 1
             Windows.Forms.Application.DoEvents()
         Loop
-        Return True
-    End Function
-    Friend Overloads Function KontaktOrdner(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode) As Boolean
+    End Sub
+    Private Overloads Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
         Dim iOrdner As Integer
         Dim SubFolder As Outlook.MAPIFolder
-        Dim ChildNode As Windows.Forms.TreeNode
+        Dim ChildNode As System.Windows.Forms.TreeNode
 
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count)
             SubFolder = Ordner.Folders.Item(iOrdner)
             ChildNode = BaseNode
             If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
-                ' Treeview etc
-                ChildNode = BaseNode.Nodes.Add(SubFolder.Name, SubFolder.Name, "Kontakt")
+                ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
+                ChildNode.Tag = SubFolder.EntryID & ";" & SubFolder.StoreID
             End If
-            KontaktOrdner(SubFolder, TreeView, ChildNode)
+            KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
             iOrdner = iOrdner + 1
             Windows.Forms.Application.DoEvents()
         Loop
-        Return True
-    End Function
+
+    End Sub
 #End Region
-
-
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub

@@ -38,7 +38,7 @@
     <SignManifests>true</SignManifests>
     <ManifestKeyFile>
     </ManifestKeyFile>
-    <ManifestCertificateThumbprint>277374D6BECB26ADDC7CFD445696711E6B3CADA8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8FF169FE28327B28728435817C3C3B8AB0C0C180</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
@@ -356,25 +356,33 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Common\Ressources\Bild2.gif" />
-    <EmbeddedResource Include="..\Common\Ressources\Bild4.gif" />
-    <EmbeddedResource Include="..\Common\Ressources\Bild5.gif" />
+    <EmbeddedResource Include="..\Common\Ressources\Bild2.gif"/>
+    <EmbeddedResource Include="..\Common\Ressources\Bild4.gif"/>
+	<EmbeddedResource Include="..\Common\Ressources\Bild4-1.gif"/>
+	<EmbeddedResource Include="..\Common\Ressources\Bild4-2.gif"/>
+    <EmbeddedResource Include="..\Common\Ressources\Bild5.gif"/>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml">
       <SubType>Designer</SubType>
+      <Link>Ressources\RibbonExplorer.xml</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml" />
+    <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml">
+      <Link>Ressources\RibbonJournal.xml</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml">
       <SubType>Designer</SubType>
+      <Link>Ressources\RibbonKontakt.xml</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressources\RibbonMailRead.xml">
       <SubType>Designer</SubType>
+      <Link>Ressources\RibbonMailRead.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a Visual Basic project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

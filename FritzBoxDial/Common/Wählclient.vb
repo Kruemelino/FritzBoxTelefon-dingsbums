@@ -289,7 +289,7 @@ Public Class Wählclient
 
         ' KontaktID
         ListNodeNames.Add("KontaktID")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")  ' kann vCard enthalten
 
         With xPathTeile
             .Add(Telefonat(0))
@@ -301,8 +301,8 @@ Public Class Wählclient
         TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
         KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
-
-        If Not KontaktID = C_DP.P_Def_ErrorMinusOne And Not StoreID = C_DP.P_Def_ErrorMinusOne Then
+        If Not StoreID = C_DP.P_Def_ErrorMinusOne Then
+            'If Not KontaktID = C_DP.P_Def_ErrorMinusOne And Not StoreID = C_DP.P_Def_ErrorMinusOne Then
             Try
                 oContact = CType(oNS.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem) ' wird durch den Symbolbereich 'Rückruf' in der 'FritzBox'-Symbolleiste ausgeführt
             Catch ex As Exception

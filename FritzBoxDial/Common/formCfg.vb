@@ -217,9 +217,15 @@ Friend Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
         ' Notiz
         Me.CBNote.Checked = C_DP.P_CBNote
+
         If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
-        C_OlI.KontaktOrdner(Me.TVOutlookContact)
+        C_OlI.KontaktOrdnerInTreeView(Me.TVOutlookContact)
         Me.TVOutlookContact.ExpandAll()
+        Dim tmpNode() As TreeNode = Me.TVOutlookContact.Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
+        If Not tmpNode.Length = 0 Then
+            Me.TVOutlookContact.SelectedNode = tmpNode(0)
+        End If
+
         FillLogTB()
         FillTelListe()
         CLBTelNrAusfüllen()
@@ -503,6 +509,9 @@ Friend Class formCfg
                     End If
                 End If
             End If
+
+            .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
+            .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)
             .SpeichereXMLDatei()
         End With
     End Function

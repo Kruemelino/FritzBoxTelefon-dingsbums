@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -115,6 +115,7 @@ Partial Class formCfg
         Me.BIndizierungStart = New System.Windows.Forms.Button()
         Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
         Me.GroupBoxRWS = New System.Windows.Forms.GroupBox()
+        Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.ComboBoxRWS = New System.Windows.Forms.ComboBox()
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
@@ -195,7 +196,6 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -1030,9 +1030,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle7.Format = "T"
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1044,9 +1044,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle8.Format = "T"
+        DataGridViewCellStyle8.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1058,9 +1058,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle9.Format = "T"
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1214,6 +1214,14 @@ Partial Class formCfg
         Me.GroupBoxRWS.TabIndex = 9
         Me.GroupBoxRWS.TabStop = False
         Me.GroupBoxRWS.Text = "Rückwärtssuche"
+        '
+        'TVOutlookContact
+        '
+        Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 17)
+        Me.TVOutlookContact.Name = "TVOutlookContact"
+        Me.TVOutlookContact.Size = New System.Drawing.Size(307, 66)
+        Me.TVOutlookContact.TabIndex = 4
         '
         'ComboBoxRWS
         '
@@ -2072,13 +2080,6 @@ Partial Class formCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
-        '
-        'TVOutlookContact
-        '
-        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 17)
-        Me.TVOutlookContact.Name = "TVOutlookContact"
-        Me.TVOutlookContact.Size = New System.Drawing.Size(310, 72)
-        Me.TVOutlookContact.TabIndex = 4
         '
         'formCfg
         '
