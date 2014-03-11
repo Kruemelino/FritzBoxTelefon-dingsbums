@@ -137,7 +137,7 @@ Public Class Wählclient
         Exit Sub
     End Sub ' (WählboxStart)
 
-    Sub Wählbox(ByVal oContact As Outlook.ContactItem, ByVal TelNr As String, ByVal Direktwahl As Boolean, ByVal vName As String)
+    Friend Sub Wählbox(ByVal oContact As Outlook.ContactItem, ByVal TelNr As String, ByVal Direktwahl As Boolean, ByVal vName As String)
         ' macht alle Eintragungen in 'formWählbox'
         ' aus FritzBoxDial übernommen und überarbeitet
         ' Parameter:  oContact (ContactItem): Kontaktdaten des Anzurufenden
@@ -326,34 +326,10 @@ Public Class Wählclient
     ''' </summary>
     ''' <param name="ID">Die ID des letzten Anrufers.</param>
     ''' <remarks>131211 erfolgreich</remarks>
-    Public Sub Rueckruf(ByVal ID As Integer)
-        Dim StoreID As String
-        Dim KontaktID As String
-        Dim TelNr As String
-        Dim oNS As Outlook.NameSpace = C_OlI.OutlookApplication.GetNamespace("MAPI")
-        Dim oContact As Outlook.ContactItem
-
-        Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("LetzterAnrufer")
-            .Add("Eintrag[@ID = """ & ID & """]")
-
-            .Add("TelNr")
-            TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
-
-            .Item(.Count - 1) = "StoreID"
-            StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
-            .Item(.Count - 1) = "KontaktID"
-            KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+    Friend Sub Rueckruf(ByVal Telefonat As C_Telefonat)
+        With Telefonat
+            Wählbox(.olContact, .TelNr, False, C_DP.P_Def_StringEmpty)
         End With
-
-        If Not Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne And Not Left(StoreID, 3) = C_DP.P_Def_ErrorMinusOne & ";" Then
-            oContact = CType(oNS.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
-        Else
-            oContact = Nothing
-        End If
-        Wählbox(oContact, TelNr, False, C_DP.P_Def_StringEmpty)
     End Sub
 
     Public Sub WählenAusInspector()

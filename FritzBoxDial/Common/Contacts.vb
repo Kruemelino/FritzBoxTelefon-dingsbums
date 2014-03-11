@@ -351,13 +351,10 @@ Public Class Contacts
         C_hf.NAR(Kontakt)
     End Sub
 
-    Friend Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
-        Dim Kontakt As Outlook.ContactItem = GetOutlookKontakt(KontaktID, StoreID)
+    Friend Overloads Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
         KontaktBild = C_DP.P_Def_StringEmpty
-        If Not Kontakt Is Nothing Then
-            With Kontakt
-                KontaktID = .EntryID
-                StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
+        If Not olContact Is Nothing Then
+            With olContact
                 With .Attachments
                     If Not .Item("ContactPicture.jpg") Is Nothing Then
                         KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
@@ -366,9 +363,13 @@ Public Class Contacts
                     End If
                 End With
             End With
-            Kontakt = Nothing
         End If
-        C_hf.NAR(Kontakt)
+        C_hf.NAR(olContact)
+    End Function
+
+    Friend Overloads Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
+        Dim Kontakt As Outlook.ContactItem = GetOutlookKontakt(KontaktID, StoreID)
+        KontaktBild = KontaktBild(Kontakt)
     End Function
     ''' <summary>
     ''' Ermittelt aus der KontaktID und der StoreID den zugehörigen Kontakt.

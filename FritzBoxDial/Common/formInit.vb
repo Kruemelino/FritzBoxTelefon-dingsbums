@@ -71,7 +71,7 @@
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
                 .P_OlInterface = C_OlI
-                .P_WählKlient = C_WählClient
+                .P_CallClient = C_WählClient
                 .P_FritzBox = C_FBox
             End With
 

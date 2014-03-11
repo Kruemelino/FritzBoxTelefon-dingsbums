@@ -72,7 +72,7 @@
 #End Region
 
 #Region "Properies"
-    Friend Property P_WählKlient() As Wählclient
+    Friend Property P_CallClient() As Wählclient
         Get
             Return C_WClient
         End Get
@@ -1111,7 +1111,7 @@
 
 #Region "Explorer Button Click"
     Friend Sub WähleDirektwahl()
-        P_WählKlient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, True, C_DP.P_Def_StringEmpty)
+        P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, True, C_DP.P_Def_StringEmpty)
     End Sub
 
     Friend Sub ÖffneEinstellungen()
@@ -1124,8 +1124,39 @@
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Dim ID As Integer = CInt(C_DP.Read("LetzterAnrufer", "Letzter", CStr(0)))
-        Dim forman As New formAnrMon(ID, False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
+        Dim Telefonat As New C_Telefonat
+        Dim xPathTeile As New ArrayList
+
+        Telefonat.ID = CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
+        With xPathTeile
+            .Add("LetzterAnrufer")
+            .Add("Eintrag[@ID = """ & Telefonat.ID & """]")
+            .Add("Zeit")
+            Telefonat.Zeit = CDate(C_DP.Read(xPathTeile, CStr(DateTime.Now)))
+
+            .Item(.Count - 1) = "Anrufer"
+            Telefonat.Anrufer = C_DP.Read(xPathTeile, "")
+
+            .Item(.Count - 1) = "TelNr"
+            Telefonat.TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
+
+            .Item(.Count - 1) = "MSN"
+            Telefonat.MSN = C_DP.Read(xPathTeile, "")
+
+            .Item(.Count - 1) = "StoreID"
+            Telefonat.StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+
+            .Item(.Count - 1) = "KontaktID"
+            Telefonat.KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+        End With
+        With Telefonat
+            .TelName = C_HF.TelefonName(.MSN)
+            If Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
+                .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+            End If
+        End With
+
+        Dim forman As New formAnrMon(Telefonat, False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
     End Sub
 
     Friend Sub AnrMonNeustarten()
@@ -1133,14 +1164,14 @@
     End Sub
 
     Friend Sub KlickListen(ByVal controlTag As String)
-        P_WählKlient.OnActionListen(controlTag)
+        P_CallClient.OnActionListen(controlTag)
     End Sub
 
     Friend Sub WählenExplorer()
         If Not C_OLI.OutlookApplication Is Nothing Then
             Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
             Dim oSel As Outlook.Selection = ActiveExplorer.Selection
-            P_WählKlient.WählboxStart(oSel)
+            P_CallClient.WählboxStart(oSel)
             C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
             oSel = Nothing : ActiveExplorer = Nothing
         End If
@@ -1149,7 +1180,7 @@
 
 #Region "Inspector Button Click"
     Friend Sub WählenInspector()
-        P_WählKlient.WählenAusInspector()
+        P_CallClient.WählenAusInspector()
     End Sub
 
     Friend Sub KontaktErstellen()

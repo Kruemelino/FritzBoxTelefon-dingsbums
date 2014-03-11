@@ -6,20 +6,12 @@ Friend Class formAnrMon
     Private C_hf As Helfer
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
+    Private C_Telefonat As C_Telefonat
 
     Private WithEvents TimerAktualisieren As Timer
-
-    Private aID As Integer
-
-    Private TelefonName As String
-    Private TelNr As String              ' TelNr des Anrufers
-    Private KontaktID As String              ' KontaktID des Anrufers
-    Private StoreID As String
-    Private MSN As String
-
     Public AnrmonClosed As Boolean
 
-    Public Sub New(ByVal iAnrufID As Integer, _
+    Public Sub New(ByVal TelefonatKlasse As C_Telefonat, _
                    ByVal Aktualisieren As Boolean, _
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
@@ -32,14 +24,15 @@ Friend Class formAnrMon
         C_DP = DataProviderKlasse
         C_OLI = OutlInter
         C_KF = KontaktFunktionen
-
-        aID = iAnrufID
+        C_Telefonat = TelefonatKlasse
+        'aID = iAnrufID
 
         AnrMonausfüllen()
         AnrmonClosed = False
 
         Dim OInsp As Outlook.Inspector = Nothing
-        If Aktualisieren Then
+        If Aktualisieren Then ' hä?
+
             TimerAktualisieren = C_hf.SetTimer(100)
             If TimerAktualisieren Is Nothing Then
                 C_hf.LogFile("formAnrMon.New: TimerNeuStart nicht gestartet")
@@ -64,42 +57,9 @@ Friend Class formAnrMon
     End Sub
 
     Sub AnrMonausfüllen()
-        ' Diese Funktion nimmt Daten aus der Registry und öffnet 'formAnMon'.
-        Dim AnrName As String              ' Name des Anrufers
-        Dim Uhrzeit As String
-        'LA(0) = Zeit
-        'LA(1) = Anrufer
-        'LA(2) = TelNr
-        'LA(3) = MSN
-        'LA(4) = StoreID
-        'LA(5) = KontaktID
 
-        Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add("LetzterAnrufer")
-            .Add("Eintrag[@ID = """ & aID & """]")
-            .Add("Zeit")
-            Uhrzeit = C_DP.Read(xPathTeile, CStr(DateTime.Now))
-
-            .Item(.Count - 1) = "Anrufer"
-            AnrName = C_DP.Read(xPathTeile, "")
-
-            .Item(.Count - 1) = "TelNr"
-            TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
-
-            .Item(.Count - 1) = "MSN"
-            MSN = C_DP.Read(xPathTeile, "")
-
-            .Item(.Count - 1) = "StoreID"
-            StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
-            .Item(.Count - 1) = "KontaktID"
-            KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-        End With
-
-        TelefonName = C_hf.TelefonName(MSN)
         With PopUpAnrMon
-            If TelNr = C_DP.P_Def_StringUnknown Then
+            If C_Telefonat.TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
                     .Items("ToolStripMenuItemRückruf").Enabled = False ' kein Rückruf im Fall 1
                     .Items("ToolStripMenuItemKopieren").Enabled = False ' in dem Fall sinnlos
@@ -107,17 +67,16 @@ Friend Class formAnrMon
                 End With
             End If
             ' Uhrzeit des Telefonates eintragen
-            .Uhrzeit = Uhrzeit
+            .Uhrzeit = C_Telefonat.Zeit.ToString
             ' Telefonnamen eintragen
-            .TelName = TelefonName & CStr(IIf(C_DP.P_CBShowMSN, " (" & MSN & ")", C_DP.P_Def_StringEmpty))
-
-            If Not Strings.Left(KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+            .TelName = C_Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & C_Telefonat.MSN & ")", C_DP.P_Def_StringEmpty))
+            If Not C_Telefonat.olContact Is Nothing Then
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
                 Try
-                    C_KF.KontaktInformation(KontaktID, StoreID, PopUpAnrMon.AnrName, PopUpAnrMon.Firma)
+                    C_KF.KontaktInformation(C_Telefonat.olContact, .AnrName, .Firma)
                     If C_DP.P_CBAnrMonContactImage Then
-                        Dim BildPfad = C_KF.KontaktBild(KontaktID, StoreID)
+                        Dim BildPfad = C_KF.KontaktBild(C_Telefonat.olContact)
                         If Not BildPfad = C_DP.P_Def_StringEmpty Then
                             PopUpAnrMon.Image = Drawing.Image.FromFile(BildPfad)
                             ' Seitenverhältnisse anpassen
@@ -126,26 +85,25 @@ Friend Class formAnrMon
                         End If
                     End If
                 Catch ex As Exception
-                    C_hf.LogFile("formAnrMon: Fehler beim Öffnen des Kontaktes " & AnrName & " (" & ex.Message & ")")
+                    C_hf.LogFile("formAnrMon: Fehler beim Öffnen des Kontaktes " & C_Telefonat.Anrufer & " (" & ex.Message & ")")
                     .Firma = C_DP.P_Def_StringEmpty
-                    If AnrName = C_DP.P_Def_StringEmpty Then
+                    If C_Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
                         .TelNr = C_DP.P_Def_StringEmpty
-                        .AnrName = TelNr
+                        .AnrName = C_Telefonat.TelNr
                     Else
-                        .TelNr = TelNr
-                        .AnrName = AnrName
+                        .TelNr = C_Telefonat.TelNr
+                        .AnrName = C_Telefonat.Anrufer
                     End If
                 End Try
-
-                .TelNr = TelNr
+                .TelNr = C_Telefonat.TelNr
             Else
                 .Firma = C_DP.P_Def_StringEmpty
-                If AnrName = C_DP.P_Def_StringEmpty Then
+                If C_Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
                     .TelNr = C_DP.P_Def_StringEmpty
-                    .AnrName = TelNr
+                    .AnrName = C_Telefonat.TelNr
                 Else
-                    .TelNr = TelNr
-                    .AnrName = AnrName
+                    .TelNr = C_Telefonat.TelNr
+                    .AnrName = C_Telefonat.Anrufer
                 End If
             End If
         End With
@@ -156,7 +114,7 @@ Friend Class formAnrMon
     End Sub
 
     Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click
-        ThisAddIn.P_WClient.Rueckruf(aID)
+        ThisAddIn.P_WClient.Rueckruf(C_Telefonat)
     End Sub
 
     Private Sub ToolStripMenuItemKopieren_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemKopieren.Click
@@ -173,7 +131,13 @@ Friend Class formAnrMon
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        C_KF.ZeigeKontakt(KontaktID, StoreID, TelNr)
+        With C_Telefonat
+            If Not .olContact Is Nothing Then
+                .olContact.Display()
+            Else
+                C_KF.ZeigeKontakt(.KontaktID, .StoreID, .TelNr)
+            End If
+        End With
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed

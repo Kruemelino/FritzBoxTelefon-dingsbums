@@ -121,8 +121,10 @@ Friend Class AnrufMonitor
 
 #Region "BackgroundWorker"
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
-        Dim ID As Integer = CInt(e.Argument)
-        AnrMonList.Add(New formAnrMon(CInt(ID), True, C_DP, C_hf, Me, C_OlI, C_KF))
+        Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
+
+        'Dim ID As Integer = CInt(e.Argument)
+        AnrMonList.Add(New formAnrMon(Telefonat, True, C_DP, C_hf, Me, C_OlI, C_KF))
         Dim a As Integer
         Do
             a = AnrMonList.Count - 1
@@ -509,7 +511,7 @@ Friend Class AnrufMonitor
                 ' Daten für Anzeige im Anrurfmonitor speichern
                 If ShowForms And Not C_OlI.VollBildAnwendungAktiv Then
                     BWAnrMonEinblenden = New BackgroundWorker
-                    BWAnrMonEinblenden.RunWorkerAsync(.ID)
+                    BWAnrMonEinblenden.RunWorkerAsync(Telefonat)
                 End If
 
                 ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
