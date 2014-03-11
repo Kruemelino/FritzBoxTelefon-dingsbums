@@ -1017,47 +1017,50 @@ Public Class Contacts
             End With
         End With
     End Sub
+    Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal Telfonat As C_Telefonat, ByVal ContactShown As Boolean) As Long
 
-    Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal ContactShown As Boolean) As Long
+        'Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal ContactShown As Boolean) As Long
         FillNote = vbNull
+        With Telfonat
 
-        Dim oInsp As Outlook.Inspector = olContact.GetInspector
-        Dim oPage As Outlook.Pages
-        Dim oDoc As Word.Document = CType(oInsp.WordEditor, Word.Document)
-        Dim oTable As Word.Table = Nothing
+            Dim oInsp As Outlook.Inspector = .olContact.GetInspector
+            Dim oPage As Outlook.Pages
+            Dim oDoc As Word.Document = CType(oInsp.WordEditor, Word.Document)
+            Dim oTable As Word.Table = Nothing
 
-        Dim HeaderRow As Word.Row = Nothing
-        Dim CallRow As Word.Row = Nothing
-        Dim NoteRow As Word.Row = Nothing
+            Dim HeaderRow As Word.Row = Nothing
+            Dim CallRow As Word.Row = Nothing
+            Dim NoteRow As Word.Row = Nothing
 
-        CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf((AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL) And Not ContactShown, True, False)))
-        If Not CallRow Is Nothing Then
-            With CallRow
-                Select Case AnrMonTyp
-                    Case AnrufMonitor.AnrMonEvent.AnrMonRING, AnrufMonitor.AnrMonEvent.AnrMonCALL
-                        .Cells(1).Range.Text = CStr(IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING, C_DP.P_Def_AnrMonDirection_Ring, C_DP.P_Def_AnrMonDirection_Call))
-                        .Cells(2).Range.Text = C_OLI.BenutzerInitialien
-                        .Cells(3).Range.Text = TelNr
-                        .Cells(4).Range.Text = TelZeit
-                        .Cells(5).Range.Text = C_DP.P_Def_StringEmpty
-                        .Cells(6).Range.Text = C_DP.P_Def_StringEmpty
-                    Case AnrufMonitor.AnrMonEvent.AnrMonCONNECT
-                        .Cells(4).Range.Text = TelZeit
-                        FillNote = OutlookSecurity.SetFocus(GetBodyHandle(oInsp))
-                    Case AnrufMonitor.AnrMonEvent.AnrMonDISCONNECT
-                        .Cells(5).Range.Text = CDate(TelZeit).AddSeconds(Duration).ToString()
-                        .Cells(6).Range.Text = C_hf.GetTimeInterval(Duration)
-                        FillNote = OutlookSecurity.SetFocus(GetBodyHandle(oInsp))
-                End Select
-            End With
-        End If
+            CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf((AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL) And Not ContactShown, True, False)))
+            If Not CallRow Is Nothing Then
+                With CallRow
+                    Select Case AnrMonTyp
+                        Case AnrufMonitor.AnrMonEvent.AnrMonRING, AnrufMonitor.AnrMonEvent.AnrMonCALL
+                            .Cells(1).Range.Text = CStr(IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING, C_DP.P_Def_AnrMonDirection_Ring, C_DP.P_Def_AnrMonDirection_Call))
+                            .Cells(2).Range.Text = C_OLI.BenutzerInitialien
+                            .Cells(3).Range.Text = Telfonat.TelNr
+                            .Cells(4).Range.Text = CStr(Telfonat.Zeit)
+                            .Cells(5).Range.Text = C_DP.P_Def_StringEmpty
+                            .Cells(6).Range.Text = C_DP.P_Def_StringEmpty
+                        Case AnrufMonitor.AnrMonEvent.AnrMonCONNECT
+                            .Cells(4).Range.Text = CStr(Telfonat.Zeit)
+                            FillNote = OutlookSecurity.SetFocus(GetBodyHandle(oInsp))
+                        Case AnrufMonitor.AnrMonEvent.AnrMonDISCONNECT
+                            .Cells(5).Range.Text = Telfonat.Zeit.AddMinutes(Telfonat.Dauer).ToString()
+                            .Cells(6).Range.Text = C_hf.GetTimeInterval(Telfonat.Dauer * 60)
+                            FillNote = OutlookSecurity.SetFocus(GetBodyHandle(oInsp))
+                    End Select
+                End With
+            End If
 
-        If Not ContactShown Then
-            oPage = CType(oInsp.ModifiedFormPages, Outlook.Pages)
-            oPage.Add("General")
-            oInsp.HideFormPage("General")
-            olContact.Save()
-        End If
+            If Not ContactShown Then
+                oPage = CType(oInsp.ModifiedFormPages, Outlook.Pages)
+                oPage.Add("General")
+                oInsp.HideFormPage("General")
+                .olContact.Save()
+            End If
+        End With
     End Function
 
     Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)

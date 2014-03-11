@@ -129,7 +129,7 @@
         C_Phoner = Phonerklasse
     End Sub
 
-#Region "Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
+#Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
 #If Not OVer = 11 Then
     Public Sub OnActionWählen(ByVal control As Office.IRibbonControl)
         WählenInspector()
@@ -259,7 +259,7 @@
     End Sub
 #End Region 'Ribbon Inspector
 
-#Region "Office 2010/2013"
+#Region "Ribbon Expector Office 2010 & Office 2013"
 #If oVer >= 14 Then
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon

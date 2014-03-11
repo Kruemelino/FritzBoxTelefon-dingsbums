@@ -89,7 +89,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Globale Variablen"
-    Private STUhrDaten(5) As StructStoppUhr
+    Private StoppUhrDaten(5) As StructStoppUhr
     Private TelefonatsListe As New List(Of C_Telefonat)
 
     Private StandbyCounter As Integer
@@ -168,7 +168,7 @@ Friend Class AnrufMonitor
             End If
         End With
 
-        With STUhrDaten(ID)
+        With StoppUhrDaten(ID)
             Dim frmStUhr As New formStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
             C_hf.LogFile("Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
             BWStoppuhrEinblenden.WorkerSupportsCancellation = True
@@ -587,7 +587,7 @@ Friend Class AnrufMonitor
                 End If
                 'StoppUhr
                 If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
-                    With STUhrDaten(.ID)
+                    With StoppUhrDaten(.ID)
                         .Richtung = "Anruf von:"
                         If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
                             .Anruf = Telefonat.TelNr
@@ -609,7 +609,7 @@ Friend Class AnrufMonitor
                 'Notizeintag
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonRING, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
+                        C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
             End With
@@ -770,7 +770,7 @@ Friend Class AnrufMonitor
 #End If
                 'StoppUhr
                 If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
-                    With STUhrDaten(.ID)
+                    With StoppUhrDaten(.ID)
                         .Richtung = "Anruf zu:"
                         If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
                             .Anruf = Telefonat.TelNr
@@ -792,7 +792,7 @@ Friend Class AnrufMonitor
                 'Notizeintag
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonCALL, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, CDbl(C_DP.P_Def_ErrorMinusOne), C_DP.P_CBAnrMonZeigeKontakt)
+                        C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
             End With
@@ -872,7 +872,7 @@ Friend Class AnrufMonitor
                         ' StoppUhr einblenden
                         If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                             C_hf.LogFile("StoppUhr wird eingeblendet.")
-                            With STUhrDaten(.ID)
+                            With StoppUhrDaten(.ID)
                                 .MSN = CStr(IIf(Telefonat.TelName = C_DP.P_Def_StringEmpty, Telefonat.MSN, Telefonat.TelName))
                                 .StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
                                 .Abbruch = False
@@ -889,7 +889,7 @@ Friend Class AnrufMonitor
                 'Notizeintag
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, C_DP.P_CBAnrMonZeigeKontakt)
+                        C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
             End With
@@ -921,7 +921,6 @@ Friend Class AnrufMonitor
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
-        'Dim Typ As C_Telefonat.JournalTyp
 
         Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
 
@@ -930,7 +929,6 @@ Friend Class AnrufMonitor
                 NSN = .NSN
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
-                'Dim JMSN As String = C_hf.OrtsVorwahlEntfernen(.MSN, C_DP.P_TBVorwahl)
                 If Not .MSN = Nothing Then
                     With xPathTeile
                         .Add("Telefone")
@@ -944,16 +942,7 @@ Friend Class AnrufMonitor
 
                         .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Dauer = 0, "nicht ", C_DP.P_Def_StringEmpty)) & "angenommen" & vbCrLf & vbCrLf
                         If Not .vCard = C_DP.P_Def_StringEmpty Then
-                            ' kein Kontakt vorhanden
-                            'prüfen ob das schon im Telefonat steht
 
-                            'AnrName = Mid(KontaktID, 3, InStr(KontaktID, ";") - 3)
-                            'If AnrName = C_DP.P_Def_StringEmpty Then AnrName = TelNr
-                            'If InStr(1, AnrName, "Firma", CompareMethod.Text) = 1 Then
-                            '    AnrName = Right(AnrName, Len(AnrName) - 5)
-                            'End If
-                            'AnrName = Trim(AnrName)
-                            'vCard = Mid(KontaktID, InStr(KontaktID, ";") + 1)
                             .Companies = ReadFromVCard(.vCard, "ORG", "")
                             .Body += "Kontaktdaten (vCard):" & vbCrLf & .vCard & vbCrLf
                         Else
@@ -984,34 +973,6 @@ Friend Class AnrufMonitor
                         End If
 
                         If C_DP.P_CBJournal Then
-                            'Select Case NSN
-                            '    Case 0 To 2 ' FON1-3
-                            '        NSN += 1
-                            '    Case 10 To 19 ' DECT
-                            '        NSN += 50
-                            'End Select
-                            'Select Case NSN
-                            '    Case 3
-                            '        TelName = "Durchwahl"
-                            '    Case 4
-                            '        TelName = "ISDN Gerät"
-                            '    Case 5
-                            '        TelName = "Fax (intern/PC)"
-                            '    Case 36
-                            '        TelName = "Data S0"
-                            '    Case 37
-                            '        TelName = "Data PC"
-                            '    Case Else
-                            '        With xPathTeile
-                            '            .Clear()
-                            '            .Add("Telefone")
-                            '            .Add("Telefone")
-                            '            .Add("*")
-                            '            .Add("Telefon[@Dialport = """ & NSN & """]")
-                            '            .Add("TelName")
-                            '        End With
-                            '        TelName = C_DP.Read(xPathTeile, "")
-                            'End Select
 
                             Select Case .Typ
                                 Case C_Telefonat.JournalTyp.Eingehend
@@ -1029,12 +990,9 @@ Friend Class AnrufMonitor
                                         CallDirection = "Ausgehender Anruf zu"
                                     End If
                             End Select
-                            ' für Journal
 
                             .Categories = .TelName & "; FritzBox Anrufmonitor; Telefonanrufe"
                             .Subject = CallDirection & " " & .Anrufer & CStr(IIf(.Anrufer = .TelNr, C_DP.P_Def_StringEmpty, " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & .TelName & ")"))
-
-                            ' Journaleintrag schreiben
 
                             C_OlI.ErstelleJournalEintrag(Telefonat)
                         End If
@@ -1045,14 +1003,12 @@ Friend Class AnrufMonitor
                                 .Item(.Count - 1) = C_Telefonat.JournalTyp.Ausgehend.ToString
                             End With
                             With C_DP
-                                ' Prüfen ob das mit .Dauer funktioniert.
-                                .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer))
+                                .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
                             End With
                         End If
                         C_DP.P_StatJournal += 1
 
                         If .Zeit > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
-
                     End If
                 Else
                     C_hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
@@ -1073,12 +1029,11 @@ Friend Class AnrufMonitor
                     End If
                 End If
 
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then STUhrDaten(.ID).Abbruch = True
+                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then StoppUhrDaten(.ID).Abbruch = True
                 'Notizeintag
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
-                        ' Prüfen ob das mit .Dauer funktioniert.
-                        C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, .olContact, CStr(FBStatus.GetValue(0)), .TelNr, .Dauer, C_DP.P_CBAnrMonZeigeKontakt)
+                        C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
             End With
