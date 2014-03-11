@@ -70,9 +70,16 @@ Friend Class formAnrMon
             .Uhrzeit = C_Telefonat.Zeit.ToString
             ' Telefonnamen eintragen
             .TelName = C_Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & C_Telefonat.MSN & ")", C_DP.P_Def_StringEmpty))
-            If Not C_Telefonat.olContact Is Nothing Then
+
+            If Not C_Telefonat.olContact Is Nothing Or Not C_Telefonat.vCard = C_DP.P_Def_StringEmpty Then
+
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
                 ' Kontakt einblenden wenn in Outlook gefunden
+                With C_Telefonat
+                    If Not .vCard = C_DP.P_Def_StringEmpty And .olContact Is Nothing Then
+                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                    End If
+                End With
                 Try
                     C_KF.KontaktInformation(C_Telefonat.olContact, .AnrName, .Firma)
                     If C_DP.P_CBAnrMonContactImage Then

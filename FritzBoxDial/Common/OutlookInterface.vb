@@ -22,6 +22,7 @@
     Private _vCard As String
     Private _Anrufer As String
     Private _TelName As String
+    Private _frm_AnrMon As formAnrMon
 #End Region
 
 #Region "Properties"
@@ -159,6 +160,14 @@
         End Get
         Set(ByVal value As String)
             _TelName = value
+        End Set
+    End Property
+    Friend Property FormAnrMon() As formAnrMon
+        Get
+            Return _frm_AnrMon
+        End Get
+        Set(ByVal value As formAnrMon)
+            _frm_AnrMon = value
         End Set
     End Property
 #End Region
