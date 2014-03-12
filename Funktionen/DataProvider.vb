@@ -1067,6 +1067,16 @@ Public Class DataProvider
             Return "FBDB_Note_Table"
         End Get
     End Property
+    Public ReadOnly Property P_Def_Begin_vCard() As String
+        Get
+            Return "BEGIN:VCARD"
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_End_vCard() As String
+        Get
+            Return "END:VCARD"
+        End Get
+    End Property
     'Public ReadOnly Property P_Def_Note_Table_HeaderRow() As String
     '    Get
     '        Return "FBDB_Note_Table_HeaderRow"

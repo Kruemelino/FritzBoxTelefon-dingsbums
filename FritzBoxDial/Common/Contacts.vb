@@ -147,22 +147,35 @@ Public Class Contacts
     Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
         Dim FritzFolderExists As Boolean = False
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
+        Dim olFolder As Outlook.MAPIFolder
 
-        If Not vCard = C_DP.P_Def_StringEmpty Then
-            Dim olFolder As Outlook.MAPIFolder
 
-            olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-            olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
-            If olFolder Is Nothing Then olFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-            olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-            C_hf.NAR(olFolder)
-            vCard2Contact(vCard, olKontakt)
+        olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+        olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
+        If olFolder Is Nothing Then olFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
+        With olKontakt
+            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
+                .MobileTelephoneNumber = TelNr
+            Else
+                .BusinessTelephoneNumber = TelNr
+            End If
 
-            With olKontakt
-                If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                    .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                    .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
+            If Not vCard = C_DP.P_Def_StringEmpty Then
+                vCard2Contact(vCard, olKontakt)
+
+                If Not TelNr = C_DP.P_Def_StringEmpty Then
+                    If vCard = C_DP.P_Def_ErrorMinusOne Or vCard = C_DP.P_Def_StringEmpty Then
+                        .BusinessTelephoneNumber = TelNr
+                    Else
+                        If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                            .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
+                        ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                            .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
+                        End If
+                    End If
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
@@ -173,151 +186,75 @@ Public Class Contacts
                     StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
                 End If
                 C_hf.LogFile("Kontakt " & .FullName & " wurde erstellt")
-            End With
-        End If
+
+            End If
+        End With
         ErstelleKontakt = olKontakt
+        C_hf.NAR(olFolder)
         'C_hf.NAR(olKontakt)
-        olKontakt = Nothing
     End Function
 
-    Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
-        ErstelleKontakt = Nothing
-        Dim vCard As String
-        vCard = Split(KontaktID, ";", 2, CompareMethod.Text)(1)
-        If Not vCard = C_DP.P_Def_StringEmpty Then
-            Return ErstelleKontakt(KontaktID, StoreID, vCard, TelNr, Speichern)
-        End If
+    Friend Overloads Function ErstelleKontakt(ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
+        Return ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, TelNr, Speichern)
     End Function
 
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Sub KontaktErstellen()
+    Friend Sub ZeigeKontaktAusJournal()
         Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Journal)
         Dim vCard As String
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim olKontakt As Outlook.ContactItem = Nothing ' Objekt des Kontakteintrags
-        Dim olFolder As Outlook.MAPIFolder
         Dim TelNr As String
-
         olAuswahl = C_OLI.OutlookApplication.ActiveInspector
         If Not olAuswahl Is Nothing Then
             If TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then
                 olJournal = CType(olAuswahl.CurrentItem, Outlook.JournalItem)
                 With olJournal
                     If Not InStr(1, .Categories, "FritzBox Anrufmonitor", CompareMethod.Text) = 0 Then
-                        ' Telefonnummer aus dem .Body herausfiltern
+                        'Telefonnummer aus dem .Body herausfiltern
                         TelNr = C_hf.StringEntnehmen(.Body, "Tel.-Nr.: ", "Status: ")
-                        ' vCard aus dem .Body herausfiltern
-                        vCard = C_hf.StringEntnehmen(.Body, "BEGIN:VCARD", "END:VCARD")
-                        ' Wenn keine vCard vorhanden ist, dann Kontakt anzeigen
-                        If vCard = C_DP.P_Def_ErrorMinusOne Then
-#If Not OVer = 15 Then
-                            Dim olLink As Outlook.Link = Nothing
-                            For Each olLink In .Links
-                                Try
-                                    If TypeOf olLink.Item Is Outlook.ContactItem Then
-                                        olKontakt = CType(olLink.Item, Outlook.ContactItem)
-                                        olKontakt.Display()
-                                        C_hf.NAR(olKontakt)
-                                        olKontakt = Nothing
-                                        Exit For
-                                    End If
-                                Catch
-                                    C_hf.LogFile("KontaktErstellen: Kontakt nicht gefunden")
-                                End Try
-                            Next
-                            C_hf.NAR(olLink) : olLink = Nothing
-#Else
-                            'Todo
-#End If
-                        Else
-                            olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
-                            If olFolder Is Nothing Then olFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                            olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-                            olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                            vCard = "BEGIN:VCARD" & vCard & "END:VCARD"
-                            vCard2Contact(vCard, olKontakt)
-                            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
-                                olKontakt.MobileTelephoneNumber = TelNr
-                            Else
-                                olKontakt.BusinessTelephoneNumber = TelNr
-                            End If
 
-                            With olKontakt
-                                If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                                    .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                                ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                                    .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                        ' Prüfe ob TelNr unterdrückt
+                        If TelNr = C_DP.P_Def_StringUnknown Then
+                            olKontakt = ErstelleKontakt(C_DP.P_Def_StringEmpty, False)
+                        Else
+                            ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
+                            ' vCard aus dem .Body herausfiltern
+                            vCard = C_DP.P_Def_Begin_vCard & C_hf.StringEntnehmen(.Body, C_DP.P_Def_Begin_vCard, C_DP.P_Def_End_vCard) & C_DP.P_Def_End_vCard
+
+                            'Wenn keine vCard im Body gefunden
+                            If vCard = C_DP.P_Def_Begin_vCard & C_DP.P_Def_ErrorMinusOne & C_DP.P_Def_End_vCard Then
+                                'dann prüfe ob eingebetteter Kontakt vorhanden ist.
+                                ' wenn ja olContact damit belegen
+#If Not OVer = 15 Then
+                                For Each olLink As Outlook.Link In .Links
+                                    Try
+                                        If TypeOf olLink.Item Is Outlook.ContactItem Then
+                                            olKontakt = CType(olLink.Item, Outlook.ContactItem)
+                                            Exit For
+                                        End If
+                                    Catch : End Try
+                                Next
+#End If
+                                If olKontakt Is Nothing Then
+                                    ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
+                                    olKontakt = ErstelleKontakt(TelNr, False)
                                 End If
-                                .Categories = "Fritz!Box" 'Alle Kontakte, die erstellt werdn, haben die Kategorie "Fritz!Box". Damit sind sie einfach zu erkennen
-                                C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde aus einem Journaleintrag erzeugt.")
-                                .Display()
-                            End With
-                            C_hf.NAR(olFolder)
-                            olFolder = Nothing
+                            Else
+                                'vCard gefunden
+                                olKontakt = ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, TelNr, vCard, False)
+                            End If
                         End If
                     End If
                 End With
+                If Not olKontakt Is Nothing Then olKontakt.Display()
+                C_hf.NAR(olJournal)
             End If
         End If
     End Sub ' (KontaktErstellen)
-
-    ''' <summary>
-    ''' Zeigt einen Kontakt an. Ist der Kontakt nicht vorhanden wird er aus einer vCard oder ein leerer Kontakt erstellt
-    ''' </summary>
-    ''' <param name="KontaktID">Eindeutige Identifizierung des Kontaktes. Enthält die vCard, wenn kein Outlookkontakt.</param>
-    ''' <param name="StoreID">Eindeutige Identifizierung des Speicherordners des Kontaktes. Enthält die -1, wenn kein Outlookkontakt.</param>
-    ''' <param name="TelNr">telefonnummer des Kontaktes</param>
-    ''' <param name="Notiz">Notiz, die dem Kontakt hinzugefügt wird.</param>
-    ''' <param name="AnrufRichtung">0 Eingehend, 1 Ausgehend</param>
-    ''' <remarks></remarks>
-    Public Function ZeigeKontakt(ByVal KontaktID As String, ByVal StoreID As String, ByVal TelNr As String) As Outlook.ContactItem
-
-        ZeigeKontakt = Nothing
-        ' alle Telefonnummern in der vCard
-        If StoreID = C_DP.P_Def_ErrorMinusOne Then
-            Dim vCard As String
-            Dim alleTelNr As String
-            ' kein Kontakteintrag vorhanden, dann anlegen und ausfüllen
-            ZeigeKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-            vCard = KontaktID
-            With ZeigeKontakt
-
-                If Not vCard = C_DP.P_Def_ErrorMinusOne And Not vCard = C_DP.P_Def_StringEmpty Then
-                    vCard2Contact(vCard, ZeigeKontakt)
-                    .Body = .Body & vbNewLine & "Kontaktdaten (vCard):" & vbNewLine & vCard
-                End If
-                If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
-                    .MobileTelephoneNumber = TelNr
-                Else
-                    If vCard = C_DP.P_Def_ErrorMinusOne Or vCard = C_DP.P_Def_StringEmpty Then
-                        .BusinessTelephoneNumber = TelNr
-                    Else
-                        ' falls TelNr bei der Rückwärtssuche geändert wurde, diese Nummer als Zweitnummer eintragen
-                        alleTelNr = ReadFromVCard(vCard, "TEL", "")
-                        If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
-                            .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
-                        ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
-                            .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
-                        End If
-                    End If
-                End If
-                .Categories = "Fritz!Box"
-            End With
-        Else
-            ' Kontakteintrag anzeigen
-            Try
-                ZeigeKontakt = GetOutlookKontakt(KontaktID, StoreID)
-            Catch ex As Exception
-                C_hf.FBDB_MsgBox("Der hinterlegte Kontakt ist nicht mehr verfügbar. Wurde er eventuell gelöscht?", MsgBoxStyle.Information, "")
-            End Try
-        End If
-        If Not ZeigeKontakt Is Nothing Then ZeigeKontakt.Display()
-    End Function
 
     Friend Overloads Sub KontaktInformation(ByRef olContact As Outlook.ContactItem, _
                               Optional ByRef FullName As String = vbNullString, _

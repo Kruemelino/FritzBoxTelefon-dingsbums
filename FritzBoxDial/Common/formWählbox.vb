@@ -180,13 +180,23 @@ Friend Class formWählbox
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
         Dim KontaktDaten() As String
+        Dim olKontakt As Outlook.ContactItem
 
         If Me.Tag.ToString = C_DP.P_Def_ErrorMinusOne Then
             'Kein Outlook-Kontakt
             Me.Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
         End If
+        KontaktDaten = Split(CStr(Me.Tag), ";", , CompareMethod.Text)
+        If Not KontaktDaten.Contains(C_DP.P_Def_StringErrorMinusOne) Then
+            olKontakt = C_KF.GetOutlookKontakt(KontaktDaten(0), KontaktDaten(1))
+        Else
+            olKontakt = C_KF.ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, ListTel.Rows(0).Cells(2).Value.ToString, C_DP.P_Def_StringEmpty, False)
+        End If
+
         KontaktDaten = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(2).Value.ToString, ";", , CompareMethod.Text)
-        C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2))
+
+
+        'C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2))
         Me.CloseButton.Focus()
     End Sub
 
@@ -390,20 +400,16 @@ Friend Class formWählbox
         Dim index As Integer ' Zählvariable
         Dim KontaktID As String
         Dim StoreID As String
+        Dim Kontaktdaten() As String
 
         nameStart = InStr(Me.Text, "ruf: ") + 5
         If Not nameStart = 5 And Not Number = "ATH" And ThisAddIn.P_AnrMon.AnrMonAktiv Then
             ' Symbolleisteneintrag für Wahlwiederholung vornehmen
             ' nur wenn Timer aus ist sonst macht das 'AnrMonCALL'
             index = CInt(C_DP.Read("Wwdh", "Index", "0"))
-            If Not CStr(Me.Tag) = C_DP.P_Def_ErrorMinusOne Then
-                KontaktID = Mid(CStr(Me.Tag), 1, InStr(1, CStr(Me.Tag), ";", CompareMethod.Text) - 1)
-                StoreID = Mid(CStr(Me.Tag), InStr(1, CStr(Me.Tag), ";", CompareMethod.Text) + 1)
-            Else
-                KontaktID = C_DP.P_Def_ErrorMinusOne
-                StoreID = C_DP.P_Def_ErrorMinusOne
-            End If
-
+            Kontaktdaten = Split(Me.Tag.ToString, ";", , CompareMethod.Text)
+            KontaktID = Kontaktdaten(0)
+            StoreID = Kontaktdaten(1)
             If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), ""), C_DP.P_TBLandesVW) = C_hf.nurZiffern(Number, C_DP.P_TBLandesVW) Then
                 Dim xPathTeile() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
                 C_DP.Write("Wwdh", "WwdhEintrag" & index, Join(xPathTeile, ";"))

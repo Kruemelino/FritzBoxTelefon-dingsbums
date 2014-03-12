@@ -37,7 +37,6 @@ Public Class Wählclient
         Dim pos1 As Integer
         Dim pos2 As Integer
         Dim vCard As String
-        Dim name As String
 
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
         ' Ist überhaupt etwas ausgewählt?
@@ -109,19 +108,16 @@ Public Class Wählclient
                         Next 'oAppLink
                     Else
 #End If
-                        pos1 = InStr(1, aktJournal.Body, "BEGIN:VCARD", CompareMethod.Text)
-                        pos2 = InStr(1, aktJournal.Body, "END:VCARD", CompareMethod.Text)
-                        Dim vName As String
+                        pos1 = InStr(1, aktJournal.Body, C_DP.P_Def_Begin_vCard, CompareMethod.Text)
+                        pos2 = InStr(1, aktJournal.Body, C_DP.P_Def_End_vCard, CompareMethod.Text)
                         If Not pos1 = 0 And Not pos2 = 0 Then
-                            pos2 = pos2 + 9
+                            pos2 = pos2 + Len(C_DP.P_Def_End_vCard)
                             vCard = Mid(aktJournal.Body, pos1, pos2 - pos1)
-                            name = Replace(ReadFromVCard(vCard, "N", ""), ";", "", , , CompareMethod.Text)
-                            vName = C_DP.P_Def_ErrorMinusOne & name & ";" & vCard
                         Else
-                            vName = String.Empty
+                            vCard = C_DP.P_Def_StringEmpty
                         End If
 
-                        Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), False, vName)
+                        Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), False, vCard)
 #If Not OVer = 15 Then
                     End If
 #End If
@@ -137,7 +133,7 @@ Public Class Wählclient
         Exit Sub
     End Sub ' (WählboxStart)
 
-    Friend Sub Wählbox(ByVal oContact As Outlook.ContactItem, ByVal TelNr As String, ByVal Direktwahl As Boolean, ByVal vName As String)
+    Friend Sub Wählbox(ByVal oContact As Outlook.ContactItem, ByVal TelNr As String, ByVal Direktwahl As Boolean, ByVal vCard As String)
         ' macht alle Eintragungen in 'formWählbox'
         ' aus FritzBoxDial übernommen und überarbeitet
         ' Parameter:  oContact (ContactItem): Kontaktdaten des Anzurufenden
@@ -151,7 +147,7 @@ Public Class Wählclient
         frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF)
 
         If oContact Is Nothing Then
-            frm_Wählbox.Tag = vName ' C_DP.P_Def_ErrorMinusOne
+            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne & ";" & VCard ' C_DP.P_Def_ErrorMinusOne
         Else
             frm_Wählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
         End If
@@ -165,14 +161,14 @@ Public Class Wählclient
                 If Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 2) = "11" Then _
                     TelNr = C_DP.P_TBVorwahl & TelNr
 
-                If vName = String.Empty Then
+                If VCard = String.Empty Then
                     frm_Wählbox.Text = "Anruf: " & TelNr
                 Else
-                    Dim st As Integer = InStr(vName, ";", CompareMethod.Text)
+                    Dim st As Integer = InStr(VCard, ";", CompareMethod.Text)
                     If st = 0 Then
-                        frm_Wählbox.Text = "Anruf: " & vName
+                        frm_Wählbox.Text = "Anruf: " & VCard
                     Else
-                        frm_Wählbox.Text = "Anruf: " & Mid(vName, 3, st - 3)
+                        frm_Wählbox.Text = "Anruf: " & Mid(VCard, 3, st - 3)
                     End If
                 End If
                 ' Liste füllen
@@ -338,7 +334,6 @@ Public Class Wählclient
         Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Kontakt oder Journal)
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
         Dim vCard As String
-        Dim name As String
         Dim pos1 As Integer
         Dim pos2 As Integer
         Dim Absender As String
@@ -372,18 +367,16 @@ Public Class Wählclient
                         C_hf.NAR(olLink) : olLink = Nothing
                     Else ' Wenn in dem Journal kein Link hinterlegt ist, suche nach einer vCard im Body des Journaleintrags.
 #End If
-                        Dim vName As String
-                        pos1 = InStr(1, olJournal.Body, "BEGIN:VCARD", CompareMethod.Text)
-                        pos2 = InStr(1, olJournal.Body, "END:VCARD", CompareMethod.Text)
+                        pos1 = InStr(1, olJournal.Body, C_DP.P_Def_Begin_vCard, CompareMethod.Text)
+                        pos2 = InStr(1, olJournal.Body, C_DP.P_Def_End_vCard, CompareMethod.Text)
                         If Not pos1 = 0 And Not pos2 = 0 Then
-                            pos2 = pos2 + 9
+                            pos2 = pos2 + Len(C_DP.P_Def_End_vCard)
                             vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
-                            name = Replace(ReadFromVCard(vCard, "N", ""), ";", "", , , CompareMethod.Text)
-                            vName = C_DP.P_Def_ErrorMinusOne & name & ";" & vCard
                         Else
-                            vName = C_DP.P_Def_ErrorMinusOne & ";"
+                            vCard = C_DP.P_Def_StringEmpty
                         End If
-                        If Not TelNr Is String.Empty And Not vName Is String.Empty Then Wählbox(Nothing, TelNr, False, vName)
+
+                        If Not TelNr Is String.Empty And Not vCard Is String.Empty Then Wählbox(Nothing, TelNr, False, vCard)
 #If Not OVer = 15 Then
                     End If
 #End If

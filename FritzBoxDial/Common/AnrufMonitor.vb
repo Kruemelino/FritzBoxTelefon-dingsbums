@@ -57,12 +57,20 @@ Friend Class AnrufMonitor
             _AnrMonError = value
         End Set
     End Property
-    Public Property AnrMonPhoner() As Boolean
+    Friend Property AnrMonPhoner() As Boolean
         Get
             Return _AnrMonPhoner
         End Get
         Set(ByVal value As Boolean)
             _AnrMonPhoner = value
+        End Set
+    End Property
+    Friend Property LetzterAnrufer As C_Telefonat
+        Get
+            Return _LetzterAnrufer
+        End Get
+        Set(ByVal value As C_Telefonat)
+            _LetzterAnrufer = value
         End Set
     End Property
 #End Region
@@ -93,6 +101,7 @@ Friend Class AnrufMonitor
     Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
     Private _AnrMonError As Boolean
     Private _AnrMonPhoner As Boolean = False
+    Private _LetzterAnrufer As C_Telefonat
 #End Region
 
     Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
@@ -109,6 +118,8 @@ Friend Class AnrufMonitor
         F_RWS = RWS
         C_OlI = OutlInter
 
+        LetzterAnrufer = LadeLetzterAnrufer()
+
         AnrMonStartStopp()
     End Sub
 
@@ -119,7 +130,7 @@ Friend Class AnrufMonitor
 #Region "BackgroundWorker"
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-        Telefonat.FormAnrMon = New formAnrMon(Telefonat, True, C_DP, C_hf, Me, C_OlI, C_KF)
+        Telefonat.FormAnrMon = New formAnrMon(True, C_DP, C_hf, Me, C_OlI, C_KF)
         AnrMonList.Add(Telefonat.FormAnrMon)
         Dim a As Integer
         Do
@@ -456,7 +467,7 @@ Friend Class AnrufMonitor
         ' FBStatus(5): ???
 
         Dim RWSSuccess As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
-        Dim LetzterAnrufer(5) As String
+        'Dim LetzterAnrufer(5) As String
         Dim RWSIndex As Boolean
         Dim FullName As String = C_DP.P_Def_StringEmpty
         Dim CompanyName As String = C_DP.P_Def_StringEmpty
@@ -499,11 +510,7 @@ Friend Class AnrufMonitor
                 ' Ende Phoner
 
                 If Len(.TelNr) = 0 Then .TelNr = C_DP.P_Def_StringUnknown
-                LetzterAnrufer(0) = CStr(FBStatus.GetValue(0)) 'Zeit
-                LetzterAnrufer(1) = .Anrufer
-                LetzterAnrufer(2) = .TelNr
-                LetzterAnrufer(3) = .MSN
-                SpeichereLetzerAnrufer(Telefonat)
+
                 ' Daten für Anzeige im Anrurfmonitor speichern
                 If ShowForms And Not C_OlI.VollBildAnwendungAktiv Then
                     BWAnrMonEinblenden = New BackgroundWorker
@@ -562,7 +569,6 @@ Friend Class AnrufMonitor
                                 .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
                                 If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
                                 .Anrufer = Trim(.Anrufer)
-                                'KontaktID = C_DP.P_Def_ErrorMinusOne & Anrufer & ";" & vCard
                             End If
 
                             If RWSIndex Then
@@ -573,11 +579,8 @@ Friend Class AnrufMonitor
                         .TelNr = C_hf.formatTelNr(.TelNr)
                     End If
 
-                    LetzterAnrufer(1) = .Anrufer
-                    LetzterAnrufer(2) = .TelNr
-                    LetzterAnrufer(4) = .StoreID
-                    LetzterAnrufer(5) = .KontaktID 'FEHLER, wen vcard enthalten
-                    SpeichereLetzerAnrufer(Telefonat)
+                    LetzterAnrufer = Telefonat
+                    SpeichereLetzerAnrufer()
                     UpdateList("RingList", .Anrufer, .TelNr, FBStatus(0), .StoreID, .KontaktID)
 #If OVer < 14 Then
                 If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
@@ -598,7 +601,7 @@ Friend Class AnrufMonitor
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                     If C_DP.P_CBNote Then
                         If .olContact Is Nothing Then
-                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .TelNr, False)
+                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, C_DP.P_Def_StringEmpty, .TelNr, False)
                         End If
                         C_KF.AddNote(.olContact)
                     End If
@@ -748,8 +751,6 @@ Friend Class AnrufMonitor
                                     .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
                                 End If
                                 .Anrufer = Trim(.Anrufer)
-
-                                'KontaktID = C_DP.P_Def_ErrorMinusOne & .Anrufer & ";" & .vCard
                             Else
                                 .vCard = C_DP.P_Def_ErrorMinusTwo
                             End If
@@ -781,7 +782,7 @@ Friend Class AnrufMonitor
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                     If C_DP.P_CBNote Then
                         If .olContact Is Nothing Then
-                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .TelNr, False)
+                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, C_DP.P_Def_StringEmpty, .TelNr, False)
                         End If
                         C_KF.AddNote(.olContact)
                     End If
@@ -1044,54 +1045,54 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "LetzterAnrufer"
-    Sub SpeichereLetzerAnrufer(Telefonat As C_Telefonat)
-        'LA(0) = Zeit
-        'LA(1) = Anrufer
-        'LA(2) = TelNr
-        'LA(3) = MSN
-        'LA(4) = StoreID
-        'LA(5) = KontaktID
-
-        Dim LANodeNames As New ArrayList
-        Dim LANodeValues As New ArrayList
+    Sub SpeichereLetzerAnrufer()
         Dim xPathTeile As New ArrayList
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
-        With Telefonat
+
+        With LetzterAnrufer
             ' Uhrzeit
-            LANodeNames.Add("Zeit")
-            LANodeValues.Add(.Zeit)
+            NodeNames.Add("Zeit")
+            NodeValues.Add(.Zeit)
 
             ' Anrufername
             If Not .Anrufer = C_DP.P_Def_StringEmpty Then
-                LANodeNames.Add("Anrufer")
-                LANodeValues.Add(.Anrufer)
+                NodeNames.Add("Anrufer")
+                NodeValues.Add(.Anrufer)
             End If
 
             ' TelNr
-            LANodeNames.Add("TelNr")
-            LANodeValues.Add(.TelNr)
+            NodeNames.Add("TelNr")
+            NodeValues.Add(.TelNr)
 
             ' MSN
-            LANodeNames.Add("MSN")
-            LANodeValues.Add(.MSN)
+            NodeNames.Add("MSN")
+            NodeValues.Add(.MSN)
 
             ' StoreID
             If Not .StoreID = C_DP.P_Def_StringEmpty Then
-                LANodeNames.Add("StoreID")
-                LANodeValues.Add(.StoreID)
+                NodeNames.Add("StoreID")
+                NodeValues.Add(.StoreID)
             End If
 
             ' KontaktID
             If Not .KontaktID = C_DP.P_Def_StringEmpty Then
-                LANodeNames.Add("KontaktID")
-                LANodeValues.Add(.KontaktID)
+                NodeNames.Add("KontaktID")
+                NodeValues.Add(.KontaktID)
             End If
 
             ' vCard
             If Not .vCard = C_DP.P_Def_StringEmpty Then
-                LANodeNames.Add("KontaktID")
-                LANodeValues.Add(.vCard)
+                NodeNames.Add("vCard")
+                NodeValues.Add(.vCard)
+            End If
+
+            ' TelName
+            If Not .TelName = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("TelName")
+                NodeValues.Add(.TelName)
             End If
 
             AttributeNames.Add("ID")
@@ -1101,17 +1102,64 @@ Friend Class AnrufMonitor
             xPathTeile.Add("Letzter")
         End With
         With C_DP
-            .Write(xPathTeile, CStr(Telefonat.ID))
+            .Write(xPathTeile, CStr(LetzterAnrufer.ID))
             xPathTeile.Remove("Letzter")
-            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", LANodeNames, LANodeValues, AttributeNames, AttributeValues))
+            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
         End With
 
         xPathTeile = Nothing
-        LANodeNames = Nothing
-        LANodeValues = Nothing
+        NodeNames = Nothing
+        NodeValues = Nothing
         AttributeNames = Nothing
         AttributeValues = Nothing
     End Sub
+
+    Function LadeLetzterAnrufer() As C_Telefonat
+        LadeLetzterAnrufer = New C_Telefonat
+        Dim xPathTeile As New ArrayList
+        ' Das geht besser!! ReadNode oder sowas.
+
+
+        LadeLetzterAnrufer.ID = CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
+        With xPathTeile
+            .Add("LetzterAnrufer")
+            .Add("Eintrag[@ID = """ & LadeLetzterAnrufer.ID & """]")
+
+            .Add("Zeit")
+            LadeLetzterAnrufer.Zeit = CDate(C_DP.Read(xPathTeile, CStr(DateTime.Now)))
+
+            .Item(.Count - 1) = "Anrufer"
+            LadeLetzterAnrufer.Anrufer = C_DP.Read(xPathTeile, "")
+
+            .Item(.Count - 1) = "TelNr"
+            LadeLetzterAnrufer.TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
+
+            .Item(.Count - 1) = "MSN"
+            LadeLetzterAnrufer.MSN = C_DP.Read(xPathTeile, "")
+
+            .Item(.Count - 1) = "StoreID"
+            LadeLetzterAnrufer.StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+
+            .Item(.Count - 1) = "KontaktID"
+            LadeLetzterAnrufer.KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+
+            .Item(.Count - 1) = "vCard"
+            LadeLetzterAnrufer.vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+
+            .Item(.Count - 1) = "TelName"
+            LadeLetzterAnrufer.TelName = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+
+        End With
+        With LadeLetzterAnrufer
+            If .TelName = C_DP.P_Def_ErrorMinusOne Then .TelName = C_hf.TelefonName(.MSN)
+            If Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
+                .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+            ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne Then
+                .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+            End If
+        End With
+        xPathTeile = Nothing
+    End Function
 #End Region
 
 #Region "RingCallList"

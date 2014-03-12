@@ -633,38 +633,7 @@ Friend Class formCfg
                 System.Diagnostics.Process.Start(C_DP.GetXMLDateiPfad)
             Case "BAnrMonTest"
                 Speichern()
-                Dim xPathTeile As New ArrayList
-                Dim Telefonat As New C_Telefonat
-                Telefonat.ID = CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
-                With xPathTeile
-                    .Add("LetzterAnrufer")
-                    .Add("Eintrag[@ID = """ & Telefonat.ID & """]")
-                    .Add("Zeit")
-                    Telefonat.Zeit = CDate(C_DP.Read(xPathTeile, CStr(DateTime.Now)))
-
-                    .Item(.Count - 1) = "Anrufer"
-                    Telefonat.Anrufer = C_DP.Read(xPathTeile, "")
-
-                    .Item(.Count - 1) = "TelNr"
-                    Telefonat.TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
-
-                    .Item(.Count - 1) = "MSN"
-                    Telefonat.MSN = C_DP.Read(xPathTeile, "")
-
-                    .Item(.Count - 1) = "StoreID"
-                    Telefonat.StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
-                    .Item(.Count - 1) = "KontaktID"
-                    Telefonat.KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-                End With
-                With Telefonat
-                    .TelName = C_hf.TelefonName(.MSN)
-                    If Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
-                        .olContact = C_Kontakte.GetOutlookKontakt(.KontaktID, .StoreID)
-                    End If
-                End With
-
-                Dim forman As New formAnrMon(Telefonat, False, C_DP, C_hf, C_AnrMon, C_OlI, C_Kontakte)
+                Dim forman As New formAnrMon(False, C_DP, C_hf, C_AnrMon, C_OlI, C_Kontakte)
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
