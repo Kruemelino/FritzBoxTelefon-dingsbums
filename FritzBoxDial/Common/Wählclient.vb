@@ -158,19 +158,9 @@ Public Class Wählclient
             If Not Direktwahl Then
                 ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
-                If Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 2) = "11" Then _
-                    TelNr = C_DP.P_TBVorwahl & TelNr
+                If Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 2) = "11" Then TelNr = C_DP.P_TBVorwahl & TelNr
 
-                If VCard = String.Empty Then
-                    frm_Wählbox.Text = "Anruf: " & TelNr
-                Else
-                    Dim st As Integer = InStr(VCard, ";", CompareMethod.Text)
-                    If st = 0 Then
-                        frm_Wählbox.Text = "Anruf: " & VCard
-                    Else
-                        frm_Wählbox.Text = "Anruf: " & Mid(VCard, 3, st - 3)
-                    End If
-                End If
+                frm_Wählbox.Text = "Anruf: " & CStr(IIf(vCard = C_DP.P_Def_StringEmpty, TelNr, ReadFNfromVCard(vCard)))
                 ' Liste füllen
                 row(0) = CStr(iTelNr) 'Index Zeile im DataGrid
                 row(2) = TelNr
@@ -376,7 +366,7 @@ Public Class Wählclient
                             vCard = C_DP.P_Def_StringEmpty
                         End If
 
-                        If Not TelNr Is String.Empty And Not vCard Is String.Empty Then Wählbox(Nothing, TelNr, False, vCard)
+                        If Not TelNr Is C_DP.P_Def_StringEmpty Then Wählbox(Nothing, TelNr, False, vCard)
 #If Not OVer = 15 Then
                     End If
 #End If

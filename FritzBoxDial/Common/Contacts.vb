@@ -165,16 +165,12 @@ Public Class Contacts
                 vCard2Contact(vCard, olKontakt)
 
                 If Not TelNr = C_DP.P_Def_StringEmpty Then
-                    If vCard = C_DP.P_Def_ErrorMinusOne Or vCard = C_DP.P_Def_StringEmpty Then
-                        .BusinessTelephoneNumber = TelNr
-                    Else
-                        If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
-                            .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
-                        ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
-                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
-                            .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
-                        End If
+                    If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                        .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                        .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
+                    ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                        .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                        .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
                     End If
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
@@ -186,7 +182,6 @@ Public Class Contacts
                     StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
                 End If
                 C_hf.LogFile("Kontakt " & .FullName & " wurde erstellt")
-
             End If
         End With
         ErstelleKontakt = olKontakt
@@ -245,7 +240,7 @@ Public Class Contacts
                                 End If
                             Else
                                 'vCard gefunden
-                                olKontakt = ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, TelNr, vCard, False)
+                                olKontakt = ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, vCard, TelNr, False)
                             End If
                         End If
                     End If

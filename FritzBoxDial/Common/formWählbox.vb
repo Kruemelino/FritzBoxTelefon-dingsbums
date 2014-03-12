@@ -186,17 +186,14 @@ Friend Class formWählbox
             'Kein Outlook-Kontakt
             Me.Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
         End If
-        KontaktDaten = Split(CStr(Me.Tag), ";", , CompareMethod.Text)
+        KontaktDaten = Split(CStr(Me.Tag), ";", 2, CompareMethod.Text)
         If Not KontaktDaten.Contains(C_DP.P_Def_StringErrorMinusOne) Then
             olKontakt = C_KF.GetOutlookKontakt(KontaktDaten(0), KontaktDaten(1))
         Else
-            olKontakt = C_KF.ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, ListTel.Rows(0).Cells(2).Value.ToString, C_DP.P_Def_StringEmpty, False)
+            olKontakt = C_KF.ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, KontaktDaten(1), ListTel.Rows(0).Cells(2).Value.ToString, False)
         End If
+        If Not olKontakt Is Nothing Then olKontakt.Display()
 
-        KontaktDaten = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(2).Value.ToString, ";", , CompareMethod.Text)
-
-
-        'C_KF.ZeigeKontakt(KontaktDaten(0), KontaktDaten(1), KontaktDaten(2))
         Me.CloseButton.Focus()
     End Sub
 
