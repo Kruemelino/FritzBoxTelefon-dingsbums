@@ -190,7 +190,7 @@ Public Class formRWSuche
                         If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                     End If
                     ' Rückgabewert ermitteln
-                    RWS11880 = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+                    RWS11880 = Strings.Left(vCard, 11) = C_DP.P_Def_Begin_vCard
                     i = i + 1
                     tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 1) & 0
                 Else
@@ -330,7 +330,7 @@ Public Class formRWSuche
                 End If
             End If
             If HTMLFehler Then C_hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
-            RWSDasTelefonbuch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+            RWSDasTelefonbuch = Strings.Left(vCard, 11) = C_DP.P_Def_Begin_vCard
             i = i + 1
             tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
         Loop Until RWSDasTelefonbuch Or i = 3
@@ -377,7 +377,7 @@ Public Class formRWSuche
                 End If
 
                 ' Rückgabewert ermitteln
-                RWStelsearch = Strings.Left(vCard, 11) = "BEGIN:VCARD"
+                RWStelsearch = Strings.Left(vCard, 11) = C_DP.P_Def_Begin_vCard
                 i = i + 1
                 tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
             Else

@@ -1158,6 +1158,11 @@ Friend Class AnrufMonitor
                 .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
             End If
         End With
+        'Prüfen
+        'With xPathTeile
+        '    .Remove(.Item(.Count - 1))
+        'End With
+        'C_DP.Delete(xPathTeile)
         xPathTeile = Nothing
     End Function
 #End Region
