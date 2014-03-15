@@ -488,7 +488,7 @@ Friend Class AnrufMonitor
 
             Telefonat = New C_Telefonat
             With Telefonat
-                .Typ = C_Telefonat.JournalTyp.Eingehend
+                .Typ = C_Telefonat.AnrufRichtung.Eingehend
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
 
@@ -580,8 +580,8 @@ Friend Class AnrufMonitor
                     End If
 
                     LetzterAnrufer = Telefonat
-                    SpeichereLetzerAnrufer()
-                    UpdateList("RingList", .Anrufer, .TelNr, FBStatus(0), .StoreID, .KontaktID)
+                    SpeichereLetzerAnrufer(Telefonat)
+                    UpdateList(C_DP.NameListRING, Telefonat)
 #If OVer < 14 Then
                 If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
 #End If
@@ -658,7 +658,7 @@ Friend Class AnrufMonitor
                 .ID = CInt(FBStatus.GetValue(2))
                 .NSN = CLng(FBStatus.GetValue(3))
                 .MSN = CStr(FBStatus.GetValue(4))
-                .Typ = C_Telefonat.JournalTyp.Ausgehend
+                .Typ = C_Telefonat.AnrufRichtung.Ausgehend
 
                 ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
                 If MSN = C_DP.P_Def_StringEmpty Then
@@ -763,7 +763,7 @@ Friend Class AnrufMonitor
                     End If
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
-                UpdateList("CallList", .Anrufer, .TelNr, FBStatus(0), .StoreID, .KontaktID)      ' Hier geht es schief
+                UpdateList(C_DP.NameListCALL, Telefonat)      ' Hier geht es schief
 #If OVer < 14 Then
             If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
@@ -822,8 +822,6 @@ Friend Class AnrufMonitor
         If Not Telefonat Is Nothing Then
             With Telefonat
 
-                .Zeit = CDate(FBStatus.GetValue(0))
-                .NSN = CInt(FBStatus.GetValue(3))
 
                 If C_DP.P_CBJournal Or (C_DP.P_CBStoppUhrEinblenden And ShowForms) Then
                     If .MSN = C_DP.P_Def_ErrorMinusOne Then
@@ -868,6 +866,13 @@ Friend Class AnrufMonitor
                     End With
 
                     If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Or AnrMonPhoner Then
+                        .Zeit = CDate(FBStatus.GetValue(0))
+                        .NSN = CInt(FBStatus.GetValue(3))
+                        If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
+                            LetzterAnrufer = Telefonat
+                            SpeichereLetzerAnrufer(Telefonat)
+                        End If
+
                         ' StoppUhr einblenden
                         If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                             C_hf.LogFile("StoppUhr wird eingeblendet.")
@@ -974,14 +979,14 @@ Friend Class AnrufMonitor
                         If C_DP.P_CBJournal Then
 
                             Select Case .Typ
-                                Case C_Telefonat.JournalTyp.Eingehend
+                                Case C_Telefonat.AnrufRichtung.Eingehend
                                     If .Dauer = 0 Then
                                         C_DP.P_StatVerpasst += 1
                                         CallDirection = "Verpasster Anruf von"
                                     Else
                                         CallDirection = "Eingehender Anruf von"
                                     End If
-                                Case C_Telefonat.JournalTyp.Ausgehend
+                                Case C_Telefonat.AnrufRichtung.Ausgehend
                                     If .Dauer = 0 Then
                                         C_DP.P_StatNichtErfolgreich += 1
                                         CallDirection = "Nicht erfolgreicher Anruf zu"
@@ -999,7 +1004,7 @@ Friend Class AnrufMonitor
                         'Statistik
                         If .Dauer > 0 Then
                             With xPathTeile
-                                .Item(.Count - 1) = C_Telefonat.JournalTyp.Ausgehend.ToString
+                                .Item(.Count - 1) = C_Telefonat.AnrufRichtung.Ausgehend.ToString
                             End With
                             With C_DP
                                 .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
@@ -1029,6 +1034,12 @@ Friend Class AnrufMonitor
                 End If
 
                 If C_DP.P_CBStoppUhrEinblenden And ShowForms Then StoppUhrDaten(.ID).Abbruch = True
+
+                If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
+                    LetzterAnrufer = Telefonat
+                    SpeichereLetzerAnrufer(Telefonat)
+                End If
+
                 'Notizeintag
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
@@ -1037,22 +1048,22 @@ Friend Class AnrufMonitor
                 End If
             End With
         End If
-        C_hf.NAR(Telefonat.olContact)
-        Telefonat.olContact = Nothing
+        'C_hf.NAR(Telefonat.olContact)
+        'Telefonat.olContact = Nothing
         TelefonatsListe.Remove(Telefonat)
 
     End Sub '(AnrMonDISCONNECT)
 #End Region
 
 #Region "LetzterAnrufer"
-    Sub SpeichereLetzerAnrufer()
+    Private Sub SpeichereLetzerAnrufer(ByVal Telefonat As C_Telefonat)
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
         Dim NodeValues As New ArrayList
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        With LetzterAnrufer
+        With Telefonat
             ' Uhrzeit
             NodeNames.Add("Zeit")
             NodeValues.Add(.Zeit)
@@ -1114,66 +1125,77 @@ Friend Class AnrufMonitor
         AttributeValues = Nothing
     End Sub
 
-    Function LadeLetzterAnrufer() As C_Telefonat
+    Private Function LadeLetzterAnrufer() As C_Telefonat
         LadeLetzterAnrufer = New C_Telefonat
         Dim xPathTeile As New ArrayList
-        ' Das geht besser!! ReadNode oder sowas.
+        Dim ListNodeNames As New ArrayList
+        Dim ListNodeValues As New ArrayList
+
+        ' Zeit
+        ListNodeNames.Add("Zeit")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' Anrufer
+        ListNodeNames.Add("Anrufer")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' TelNr
+        ListNodeNames.Add("TelNr")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' MSN
+        ListNodeNames.Add("MSN")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' StoreID
+        ListNodeNames.Add("StoreID")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' KontaktID
+        ListNodeNames.Add("KontaktID")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' vCard
+        ListNodeNames.Add("vCard")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+
+        ' TelName
+        ListNodeNames.Add("TelName")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
 
 
         LadeLetzterAnrufer.ID = CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
         With xPathTeile
             .Add("LetzterAnrufer")
-            .Add("Eintrag[@ID = """ & LadeLetzterAnrufer.ID & """]")
-
-            .Add("Zeit")
-            LadeLetzterAnrufer.Zeit = CDate(C_DP.Read(xPathTeile, CStr(DateTime.Now)))
-
-            .Item(.Count - 1) = "Anrufer"
-            LadeLetzterAnrufer.Anrufer = C_DP.Read(xPathTeile, "")
-
-            .Item(.Count - 1) = "TelNr"
-            LadeLetzterAnrufer.TelNr = C_DP.Read(xPathTeile, C_DP.P_Def_StringUnknown)
-
-            .Item(.Count - 1) = "MSN"
-            LadeLetzterAnrufer.MSN = C_DP.Read(xPathTeile, "")
-
-            .Item(.Count - 1) = "StoreID"
-            LadeLetzterAnrufer.StoreID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
-            .Item(.Count - 1) = "KontaktID"
-            LadeLetzterAnrufer.KontaktID = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
-            .Item(.Count - 1) = "vCard"
-            LadeLetzterAnrufer.vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
-            .Item(.Count - 1) = "TelName"
-            LadeLetzterAnrufer.TelName = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-
+            .Add("Eintrag")
         End With
+
+        C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
         With LadeLetzterAnrufer
+            .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))
+            .Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
+            .TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
+            .MSN = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("MSN")))
+            .StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
+            .KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
+            .vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
+            .TelName = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelName")))
+
             If .TelName = C_DP.P_Def_ErrorMinusOne Then .TelName = C_hf.TelefonName(.MSN)
             If Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
                 .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
             ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne Then
+                'prüfen ob das Sinnvoll ist:
                 .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
             End If
         End With
-        'Prüfen
-        'With xPathTeile
-        '    .Remove(.Item(.Count - 1))
-        'End With
-        'C_DP.Delete(xPathTeile)
         xPathTeile = Nothing
     End Function
 #End Region
 
 #Region "RingCallList"
-    Sub UpdateList(ByVal ListName As String, _
-                   ByVal Anrufer As String, _
-                   ByVal TelNr As String, _
-                   ByVal Zeit As String, _
-                   ByVal StoreID As String, _
-                   ByVal KontaktID As String)
+
+    Sub UpdateList(ByVal ListName As String, ByVal Telefonat As C_Telefonat)
 
         Dim NodeNames As New ArrayList
         Dim NodeValues As New ArrayList
@@ -1187,54 +1209,61 @@ Friend Class AnrufMonitor
         xPathTeile.Add(ListName)
         xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
-        If Not C_hf.TelNrVergleich(C_DP.Read(xPathTeile, "0"), TelNr) Then
+        With Telefonat
 
-            If Not Anrufer = C_DP.P_Def_StringEmpty Then
-                NodeNames.Add("Anrufer")
-                NodeValues.Add(Anrufer)
+            If Not C_hf.TelNrVergleich(C_DP.Read(xPathTeile, "0"), .TelNr) Then
+                If Not .Anrufer = C_DP.P_Def_StringEmpty Then
+                    NodeNames.Add("Anrufer")
+                    NodeValues.Add(.Anrufer)
+                End If
+
+                If Not .TelNr = C_DP.P_Def_StringEmpty Then
+                    NodeNames.Add("TelNr")
+                    NodeValues.Add(.TelNr)
+                End If
+
+                If Not .Zeit = Nothing Then
+                    NodeNames.Add("Zeit")
+                    NodeValues.Add(.Zeit)
+                End If
+
+                NodeNames.Add("Index")
+                NodeValues.Add(CStr((index + 1) Mod 10))
+
+                If Not .StoreID = C_DP.P_Def_StringEmpty Then
+                    NodeNames.Add("StoreID")
+                    NodeValues.Add(.StoreID)
+                End If
+
+                If Not .KontaktID = C_DP.P_Def_StringEmpty Then
+                    NodeNames.Add("KontaktID")
+                    NodeValues.Add(.KontaktID)
+                End If
+
+                If Not .vCard = C_DP.P_Def_StringEmpty Then
+                    NodeNames.Add("vCard")
+                    NodeValues.Add(.vCard)
+                End If
+
+                AttributeNames.Add("ID")
+                AttributeValues.Add(CStr(index))
+
+                With C_DP
+                    xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
+                    xPathTeile.Add(ListName)
+                    xPathTeile.Add("Index")
+                    .Write(xPathTeile, CStr((index + 1) Mod 10))
+                    xPathTeile.Remove("Index")
+                    .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                End With
+            Else
+                ' Zeit anpassen
+                If Not .Zeit = Nothing Then
+                    xPathTeile.Item(xPathTeile.Count - 1) = "Zeit"
+                    C_DP.Write(xPathTeile, CStr(.Zeit))
+                End If
             End If
-
-            If Not TelNr = C_DP.P_Def_StringEmpty Then
-                NodeNames.Add("TelNr")
-                NodeValues.Add(TelNr)
-            End If
-
-            If Not Zeit = C_DP.P_Def_StringEmpty Then
-                NodeNames.Add("Zeit")
-                NodeValues.Add(Zeit)
-            End If
-
-            NodeNames.Add("Index")
-            NodeValues.Add(CStr((index + 1) Mod 10))
-
-            If Not StoreID = C_DP.P_Def_StringEmpty Then
-                NodeNames.Add("StoreID")
-                NodeValues.Add(StoreID)
-            End If
-
-            If Not KontaktID = C_DP.P_Def_StringEmpty Then
-                NodeNames.Add("KontaktID")
-                NodeValues.Add(KontaktID)
-            End If
-
-            AttributeNames.Add("ID")
-            AttributeValues.Add(CStr(index))
-
-            With C_DP
-                xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
-                xPathTeile.Add(ListName)
-                xPathTeile.Add("Index")
-                .Write(xPathTeile, CStr((index + 1) Mod 10))
-                xPathTeile.Remove("Index")
-                .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
-            End With
-        Else
-            ' Zeit anpassen
-            If Not Zeit = C_DP.P_Def_StringEmpty Then
-                xPathTeile.Item(xPathTeile.Count - 1) = "Zeit"
-                C_DP.Write(xPathTeile, Zeit)
-            End If
-        End If
+        End With
         xPathTeile = Nothing
         NodeNames = Nothing
         NodeValues = Nothing

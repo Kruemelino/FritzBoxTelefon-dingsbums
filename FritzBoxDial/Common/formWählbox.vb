@@ -88,6 +88,7 @@ Friend Class formWählbox
             End If
         End If
     End Sub
+
     Private Sub formWählbox_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Startwerte eintragen
 
@@ -341,7 +342,6 @@ Friend Class formWählbox
 #End Region
 
 #Region "Wählen"
-
     Private Sub StarteDialVorgang()
         If Not ListTel.SelectedRows.Count = 0 Then
             Dim ID As Argument

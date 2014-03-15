@@ -267,7 +267,8 @@
 
     Public Function DynMenüfüllen(ByVal control As Office.IRibbonControl) As String
 
-        Dim XMLListBaseNode As String = "VIPListe"
+        Dim XMLListBaseNode As String
+
         Dim index As Integer
         Dim i As Integer
 
@@ -283,11 +284,11 @@
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                XMLListBaseNode = "CallList"
+                XMLListBaseNode = C_DP.NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = "RingList"
-            Case "dynMVIPListe"
-                XMLListBaseNode = "VIPListe"
+                XMLListBaseNode = C_DP.NameListRING '"RingList"
+            Case Else '"dynMVIPListe"
+                XMLListBaseNode = C_DP.NameListVIP '"VIPList"
         End Select
 
         index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
@@ -306,22 +307,22 @@
         If Not XMLListBaseNode = "VIPListe" Then
             For ID = index + 9 To index Step -1
 
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
+                Anrufer = Replace(Anrufer, "&", "&#38;&#38;", , , CompareMethod.Text)
+
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne Then
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer)) & """")
+                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
                     MyStringBuilder.Append(" onAction=""OnActionListen""")
                     MyStringBuilder.Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
                     MyStringBuilder.Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
                     MyStringBuilder.Append("/>" & vbCrLf)
                     i += 1
-
-                    'xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne)
                     LANodeValues.Item(1) = (C_DP.P_Def_ErrorMinusOne)
                     LANodeValues.Item(2) = (C_DP.P_Def_ErrorMinusOne)
@@ -329,7 +330,7 @@
             Next
         Else
             For ID = 0 To index - 1
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne Then
@@ -355,16 +356,16 @@
     End Function
 
     Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
-        Dim XMLListBaseNode As String = "VIPListe"
+        Dim XMLListBaseNode As String
         Dim xPathTeile As New ArrayList
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                XMLListBaseNode = "CallList"
+                XMLListBaseNode = C_DP.NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = "RingList"
-            Case "dynMVIPListe"
-                XMLListBaseNode = "VIPListe"
+                XMLListBaseNode = C_DP.NameListRING '"RingList"
+            Case Else '"dynMVIPListe"
+                XMLListBaseNode = C_DP.NameListVIP '"VIPList"
         End Select
 
         Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
@@ -439,7 +440,7 @@
     End Sub
 
     Public Sub OnActionListen(ByVal control As Office.IRibbonControl)
-        KlickListen(control.Tag)
+        P_CallClient.OnActionListen(control.Tag)
     End Sub
 
     Public Sub OnActionEinstellungen(ByVal control As Office.IRibbonControl)
@@ -991,16 +992,16 @@
     End Sub
 
     Private Function CommandBarPopupEnabled(ByVal control As Office.CommandBarPopup) As Boolean
-        Dim XMLListBaseNode As String = "VIPListe"
+        Dim XMLListBaseNode As String
         Dim xPathTeile As New ArrayList
 
         Select Case control.Tag
             Case "Wwdh"
-                XMLListBaseNode = "CallList"
+                XMLListBaseNode = C_DP.NameListCALL
             Case "AnrListe"
-                XMLListBaseNode = "RingList"
-            Case "VIPListe"
-                XMLListBaseNode = "VIPListe"
+                XMLListBaseNode = C_DP.NameListRING
+            Case Else ' "VIPListe"
+                XMLListBaseNode = C_DP.NameListVIP
         End Select
 
         Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
@@ -1129,10 +1130,6 @@
 
     Friend Sub AnrMonNeustarten()
         C_AnrMon.AnrMonReStart()
-    End Sub
-
-    Friend Sub KlickListen(ByVal controlTag As String)
-        P_CallClient.OnActionListen(controlTag)
     End Sub
 
     Friend Sub WählenExplorer()

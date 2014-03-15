@@ -147,7 +147,7 @@ Public Class Wählclient
         frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF)
 
         If oContact Is Nothing Then
-            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne & ";" & VCard ' C_DP.P_Def_ErrorMinusOne
+            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne & ";" & vCard ' C_DP.P_Def_ErrorMinusOne
         Else
             frm_Wählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
         End If
@@ -257,6 +257,7 @@ Public Class Wählclient
         Dim StoreID As String
         Dim TelNr As String
         Dim Anrufer As String
+        Dim vCard As String
         Dim ListNodeNames As New ArrayList
         Dim ListNodeValues As New ArrayList
         Dim xPathTeile As New ArrayList
@@ -275,18 +276,24 @@ Public Class Wählclient
 
         ' KontaktID
         ListNodeNames.Add("KontaktID")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")  ' kann vCard enthalten
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
+
+        ' vCard
+        ListNodeNames.Add("vCard")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
 
         With xPathTeile
             .Add(Telefonat(0))
             .Add("Eintrag")
         End With
-        C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, Telefonat(1))
+        C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
 
         Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
         TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
         KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
+        vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
+
         If Not StoreID = C_DP.P_Def_ErrorMinusOne Then
             'If Not KontaktID = C_DP.P_Def_ErrorMinusOne And Not StoreID = C_DP.P_Def_ErrorMinusOne Then
             oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
@@ -303,18 +310,18 @@ Public Class Wählclient
         Else
             oContact = Nothing
         End If
-        Wählbox(oContact, TelNr, False, Anrufer) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
+
+        Wählbox(oContact, TelNr, False, vCard) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
     End Sub
 
-    ' (ZeigeKontakt)
     ''' <summary>
-    ''' Wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
+    '''  Wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
     ''' </summary>
-    ''' <param name="ID">Die ID des letzten Anrufers.</param>
-    ''' <remarks>131211 erfolgreich</remarks>
+    ''' <param name="Telefonat">Hinterlegtes Telefonat</param>
+    ''' <remarks></remarks>
     Friend Sub Rueckruf(ByVal Telefonat As C_Telefonat)
         With Telefonat
-            Wählbox(.olContact, .TelNr, False, C_DP.P_Def_StringEmpty)
+            Wählbox(.olContact, .TelNr, False, .vCard)
         End With
     End Sub
 

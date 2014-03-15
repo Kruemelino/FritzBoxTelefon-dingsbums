@@ -1077,6 +1077,24 @@ Public Class DataProvider
             Return "END:VCARD"
         End Get
     End Property
+
+    Public ReadOnly Property NameListCALL() As String
+        Get
+            Return "CallList"
+        End Get
+    End Property
+
+    Public ReadOnly Property NameListRING() As String
+        Get
+            Return "RingList"
+        End Get
+    End Property
+
+    Public ReadOnly Property NameListVIP() As String
+        Get
+            Return "VIPList"
+        End Get
+    End Property
     'Public ReadOnly Property P_Def_Note_Table_HeaderRow() As String
     '    Get
     '        Return "FBDB_Note_Table_HeaderRow"
@@ -1944,14 +1962,14 @@ Public Class DataProvider
         End If
     End Function
 
-    Sub ReadXMLNode(ByVal alxPathTeile As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal AttributeValue As String)
+    Sub ReadXMLNode(ByVal alxPathTeile As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String)
 
         If SubNodeName.Count = SubNodeValue.Count Then
             Dim xPath As String
             Dim tmpXMLNode As XmlNode
             With XMLDoc
                 ' BUG: 
-                If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.Add("[@ID=""" & AttributeValue & """]")
+                If Not AttributeValue = P_Def_StringEmpty And Not AttributeName = P_Def_StringEmpty Then alxPathTeile.Add("[@" & AttributeName & "=""" & AttributeValue & """]")
                 xPath = CreateXPath(alxPathTeile)
                 If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
                 tmpXMLNode = .SelectSingleNode(xPath)

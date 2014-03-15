@@ -1,12 +1,12 @@
 ﻿Friend Class C_Telefonat
-    Friend Enum JournalTyp
+    Friend Enum AnrufRichtung
         Eingehend = 1
         Ausgehend = 0
     End Enum
 
 #Region "Eigene Private Variablen"
     Private _ID As Integer
-    Private _Typ As JournalTyp
+    Private _Typ As AnrufRichtung
     Private _Zeit As Date
     Private _MSN As String
     Private _TelNr As String
@@ -34,11 +34,11 @@
             _ID = value
         End Set
     End Property
-    Friend Property Typ() As JournalTyp
+    Friend Property Typ() As AnrufRichtung
         Get
             Return _Typ
         End Get
-        Set(ByVal value As JournalTyp)
+        Set(ByVal value As AnrufRichtung)
             _Typ = value
         End Set
     End Property
