@@ -603,16 +603,20 @@ Friend Class AnrufMonitor
                         If .olContact Is Nothing Then
                             .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, C_DP.P_Def_StringEmpty, .TelNr, False)
                         End If
+#If Not OVer = 11 Then
                         C_KF.AddNote(.olContact)
+#End If
                     End If
                     .olContact.Display()
                 End If
                 'Notizeintag
+#If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
+#End If
             End With
             TelefonatsListe.Add(Telefonat)
         End If
@@ -784,16 +788,20 @@ Friend Class AnrufMonitor
                         If .olContact Is Nothing Then
                             .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, C_DP.P_Def_StringEmpty, .TelNr, False)
                         End If
+#If Not OVer = 11 Then
                         C_KF.AddNote(.olContact)
+#End If
                     End If
                     .olContact.Display()
                 End If
                 'Notizeintag
+#If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
+#End If
             End With
             TelefonatsListe.Add(Telefonat)
         End If
@@ -891,11 +899,13 @@ Friend Class AnrufMonitor
                     'End If
                 End If
                 'Notizeintag
+#If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
+#End If
             End With
         End If
     End Sub '(AnrMonCONNECT)
@@ -1041,11 +1051,14 @@ Friend Class AnrufMonitor
                 End If
 
                 'Notizeintag
+#If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
                     If Not .olContact Is Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
+#End If
+
             End With
         End If
         'C_hf.NAR(Telefonat.olContact)
@@ -1172,7 +1185,12 @@ Friend Class AnrufMonitor
 
         C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
         With LadeLetzterAnrufer
-            .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))
+            If ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")).ToString = C_DP.P_Def_ErrorMinusOne Then
+                .Zeit = System.DateTime.Now
+            Else
+                .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))
+            End If
+
             .Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
             .TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
             .MSN = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("MSN")))

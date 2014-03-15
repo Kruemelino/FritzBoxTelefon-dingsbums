@@ -179,10 +179,6 @@ Public Class ThisAddIn
         End If
     End Sub
 
-    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
-        C_KF.LöscheUserPropertyAnrMon(ContactSaved)
-    End Sub
-
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
         If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True)
     End Sub
@@ -282,7 +278,7 @@ Public Class ThisAddIn
                                                                                                           ePopVIP8.Click, _
                                                                                                           ePopVIP9.Click, _
                                                                                                           ePopVIP10.Click
-        C_GUI.KlickListen(control.Tag)
+        C_WClient.OnActionListen(control.Tag)
     End Sub
 #End Region
 #End If
@@ -322,8 +318,8 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
-                Case "Notiz"
-                    .AddNote(oApp.ActiveInspector)
+                    'Case "Notiz"
+                    '    .AddNote(oApp.ActiveInspector)
             End Select
         End With
     End Sub

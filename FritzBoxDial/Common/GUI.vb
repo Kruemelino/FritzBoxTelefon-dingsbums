@@ -800,7 +800,7 @@
         If Not XMLListBaseNode = "VIPListe" Then
             For ID = index + 9 To index Step -1
 
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
@@ -827,7 +827,7 @@
         Else
             For ID = 0 To 9
 
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, CStr(ID))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne And Not Anrufer = C_DP.P_Def_StringEmpty Then
@@ -1085,7 +1085,7 @@
                     End If
                     .Visible = C_DP.P_CBSymbVIP
                 End With
-                iBtnNotiz = AddButtonsToCmb(cmb, "Notiz", i, 2056, "IconandCaption", "Notiz", "Einen Notizeintrag hinzufügen")
+                'iBtnNotiz = AddButtonsToCmb(cmb, "Notiz", i, 2056, "IconandCaption", "Notiz", "Einen Notizeintrag hinzufügen")
             End If
             ' Journaleinträge
             If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
@@ -1141,6 +1141,7 @@
             oSel = Nothing : ActiveExplorer = Nothing
         End If
     End Sub
+
 #End Region
 
 #Region "Inspector Button Click"

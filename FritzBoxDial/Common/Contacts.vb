@@ -319,10 +319,10 @@ Public Class Contacts
         End Try
     End Function
 
-    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.Folder
+    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.MAPIFolder
         GetOutlookFolder = Nothing
         Try
-            GetOutlookFolder = CType(C_OLI.OutlookApplication.GetNamespace("MAPI").GetFolderFromID(FolderID, StoreID), Outlook.Folder)
+            GetOutlookFolder = CType(C_OLI.OutlookApplication.GetNamespace("MAPI").GetFolderFromID(FolderID, StoreID), Outlook.MAPIFolder)
         Catch ex As Exception
             C_hf.LogFile("GetOutlookFolder: " & ex.Message)
         End Try
@@ -797,6 +797,7 @@ Public Class Contacts
     End Sub
 
 #Region "KontaktNotiz"
+#If Not OVer = 11 Then
     Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
 
         Dim oInsp As Outlook.Inspector
@@ -1019,6 +1020,7 @@ Public Class Contacts
         window.HWnd = CType(hwnd, IntPtr)
         Return window
     End Function
+#End If
 #End Region
 
     Protected Overrides Sub Finalize()
