@@ -284,7 +284,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="..\Common\UnSaveNativeMethods.vb" />
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -349,15 +348,35 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\Ressources\Bild2.gif" />
-    <None Include="..\Common\Ressources\Bild4.gif" />
-    <None Include="..\Common\Ressources\Bild5.gif" />
+    <None Include="..\Common\Ressources\Bild2.gif">
+      <Link>Ressources\Bild2.gif</Link>
+    </None>
+    <None Include="..\Common\Ressources\Bild4.gif">
+      <Link>Ressources\Bild4.gif</Link>
+    </None>
+    <None Include="..\Common\Ressources\Bild4-1.gif">
+      <Link>Ressources\Bild4-1.gif</Link>
+    </None>
+    <None Include="..\Common\Ressources\Bild4-2.gif">
+      <Link>Ressources\Bild4-2.gif</Link>
+    </None>
+    <None Include="..\Common\Ressources\Bild5.gif">
+      <Link>Ressources\Bild5.gif</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml" />
-    <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml" />
-    <EmbeddedResource Include="..\Common\Ressources\RibbonMailRead.xml" />
-    <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml" />
+    <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml">
+      <Link>Ressources\RibbonJournal.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml">
+      <Link>Ressources\RibbonKontakt.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\RibbonMailRead.xml">
+      <Link>Ressources\RibbonMailRead.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml">
+      <Link>Ressources\RibbonExplorer.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <!-- Include the build rules for a Visual Basic project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

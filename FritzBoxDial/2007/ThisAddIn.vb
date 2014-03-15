@@ -133,7 +133,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.27"
+    Public Const Version As String = "3.7 Alpha 01"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -276,7 +276,7 @@ Public Class ThisAddIn
                                                                                                           ePopVIP8.Click, _
                                                                                                           ePopVIP9.Click, _
                                                                                                           ePopVIP10.Click
-        C_GUI.KlickListen(control.Tag)
+        C_WClient.OnActionListen(control.Tag)
     End Sub
 #End Region
 #End If

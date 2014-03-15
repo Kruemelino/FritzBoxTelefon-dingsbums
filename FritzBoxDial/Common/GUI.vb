@@ -875,15 +875,23 @@
 
     Private Sub bAnrMonTimer_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles bAnrMonTimer.Elapsed
         If Not FritzBoxDialCommandBar Is Nothing Then
-            Dim btnAnrMon As Office.CommandBarButton = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor", , False), Office.CommandBarButton)
-            Select Case bool_banrmon
-                Case True
-                    btnAnrMon.State = Office.MsoButtonState.msoButtonDown
-                    btnAnrMon.TooltipText = "Beendet den Anrufmonitor"
-                Case False
-                    btnAnrMon.State = Office.MsoButtonState.msoButtonUp
-                    btnAnrMon.TooltipText = "Startet den Anrufmonitor"
-            End Select
+            Dim btnAnrMon As Office.CommandBarButton = Nothing
+            Try
+                btnAnrMon = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor", , False), Office.CommandBarButton)
+            Catch ex As Exception
+                C_HF.LogFile("Fehler: btnAnrMon kann nicht gefunden werden.")
+            End Try
+            If Not btnAnrMon Is Nothing Then
+                Select Case bool_banrmon
+                    Case True
+                        btnAnrMon.State = Office.MsoButtonState.msoButtonDown
+                        btnAnrMon.TooltipText = "Beendet den Anrufmonitor"
+                    Case False
+                        btnAnrMon.State = Office.MsoButtonState.msoButtonUp
+                        btnAnrMon.TooltipText = "Startet den Anrufmonitor"
+                End Select
+            End If
+
             C_HF.KillTimer(bAnrMonTimer)
             btnAnrMon = Nothing
         End If
