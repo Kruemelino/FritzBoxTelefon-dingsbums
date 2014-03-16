@@ -23,6 +23,7 @@
     Private _Anrufer As String
     Private _TelName As String
     Private _frm_AnrMon As formAnrMon
+    Private _PfadKontaktBild As String
 #End Region
 
 #Region "Properties"
@@ -170,6 +171,14 @@
             _frm_AnrMon = value
         End Set
     End Property
+    Friend Property PfadKontaktBild() As String
+        Get
+            Return _PfadKontaktBild
+        End Get
+        Set(ByVal value As String)
+            _PfadKontaktBild = value
+        End Set
+    End Property
 #End Region
 End Class
 
@@ -186,17 +195,23 @@ Public Class OutlookInterface
 #End Region
 
 #Region "Properties"
-    Friend ReadOnly Property OutlookApplication() As Outlook.Application
+    Friend ReadOnly Property OutlookApplication As Outlook.Application
         Get
             Return ThisAddIn.P_oApp
         End Get
     End Property
 #End Region
+    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider)
+        C_hf = Helferklasse
+        C_DP = DataProviderKlasse
+        C_KF = KontaktKlasse
+        C_KF.C_OLI = Me
+    End Sub
 
     Friend Function ErstelleJournalEintrag(Telefonat As C_Telefonat) As Boolean
         ErstelleJournalEintrag = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
-        Dim oApp As Outlook.Application = OutlookApplication()
+        Dim oApp As Outlook.Application = OutlookApplication
         If Not oApp Is Nothing Then
             Try
                 olJournal = CType(oApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
@@ -232,17 +247,9 @@ Public Class OutlookInterface
         oApp = Nothing
     End Function
 
-    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal inipfad As String)
-        C_hf = Helferklasse
-        C_DP = DataProviderKlasse
-        C_KF = KontaktKlasse
-
-        C_KF.C_OLI = Me
-    End Sub
-
     Friend Function NeuEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
-        Dim oApp As Outlook.Application = OutlookApplication()
+        Dim oApp As Outlook.Application = OutlookApplication
         If Not oApp Is Nothing Then
             Try
                 olMail = CType(oApp.CreateItem(Outlook.OlItemType.olMailItem), Outlook.MailItem)
@@ -254,7 +261,7 @@ Public Class OutlookInterface
                     .Attachments.Add(tmpFile)
                     .Attachments.Add(XMLFile)
                     Try
-                        .Attachments.Add(C_hf.Dateipfade("LogDatei"))
+                        .Attachments.Add(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName)
                     Catch ex As Exception
                         .Body = vbNewLine & "Log wird nicht geschrieben."
                     End Try
@@ -303,39 +310,47 @@ Public Class OutlookInterface
     End Function
 
 #Region "Fenster"
-    Friend Sub InspectorVerschieben(ByVal r As Boolean)
-        Dim oApp As Outlook.Application = OutlookApplication()
-        If Not oApp Is Nothing Then
-            If r Then
-                If ActiveFensterIsOutlook() And oApp.ActiveWindow Is oApp.ActiveInspector Then
-                    OInsp = oApp.ActiveInspector()
+    ''' <summary>
+    ''' Sinn der Routine ist es einen aktiven Inspector wieder aktiv zu schalten, da der Anrufmonitor diesen deaktiviert.
+    ''' Nachdem der Anrufmonitor eingeblendet wurde, muss der Inspector wieder aktiviert werden.
+    ''' Zuvor müssen zwei Dinge geprüft werden:
+    ''' 1. Haut ein Outlookfenster (Inspector) gerade den Focus: (.ActiveWindow Is .ActiveInspector)
+    ''' 2. Ist das aktuell aktive Fenster der Inspector (OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = .ActiveInspector.Caption)
+    ''' 
+    ''' Um den ganzen vorgang abschließen zu können, wird der Inspector zwischengespeichert und nachdem der Anrufmonitor eingeblendet wurde wieder aktiviert.
+    ''' </summary>
+    ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
+    ''' <remarks></remarks>
+    Friend Sub KeepoInspAtivated(ByVal Activate As Boolean)
+
+        If Not OutlookApplication Is Nothing Then
+            If Activate Then
+                If Not OInsp Is Nothing Then
+                    If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
+                        OInsp.Activate()
+                        OInsp = Nothing
+                    End If
                 End If
             Else
-                Try
-                    If Not OInsp Is Nothing Then
-                        If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
-                            OInsp.Activate()
-                            OInsp = Nothing
+                If OInsp Is Nothing Then
+                    With OutlookApplication
+                        If .ActiveWindow Is .ActiveInspector Then
+                            If OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = .ActiveInspector.Caption Then
+                                OInsp = .ActiveInspector()
+                            End If
                         End If
-                    End If
-                Catch : End Try
+                    End With
+                End If
             End If
-        Else
-            C_hf.LogFile("Inspectorfenster konnte nicht verschoben werden.")
         End If
-        oApp = Nothing
     End Sub
 
-    'Aktive Fenster ermitteln & Handle des Aktiven Fenster ermitteln
-    Private Function ActiveFensterIsOutlook() As Boolean
-        'Fenster Name des Fensters mit Fokus ermitteln: OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow)
-        'Fenster Name des Outlook Fenster ermitteln: OutlookSecurity.FindWindowEX(IntPtr.Zero, IntPtr.Zero, "rctrl_renwnd32", C_DP.P_Def_StringEmpty)
-        Return OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = OutlookSecurity.GetWindowText(OutlookSecurity.FindWindowEX(IntPtr.Zero, IntPtr.Zero, "rctrl_renwnd32", C_DP.P_Def_StringEmpty))
-    End Function
-
+    ''' <summary>
+    ''' Prüfft ob ein Vollbildanwendung aktiv ist.
+    ''' </summary>
+    ''' <returns>True, wenn Vollbildanwendung erkannt, fals wenn nicht</returns>
+    ''' <remarks></remarks>
     Function VollBildAnwendungAktiv() As Boolean
-        Dim desktopHandle As IntPtr = OutlookSecurity.GetDesktopWindow()
-        Dim shellHandle As IntPtr = OutlookSecurity.GetShellWindow()
         'Detect if the current app is running in full screen
 
         Dim AppBounds As RECT
@@ -346,11 +361,11 @@ Public Class OutlookInterface
 
         'get the dimensions of the active window
         hWnd = OutlookSecurity.GetForegroundWindow()
+
         If Not hWnd = IntPtr.Zero Then
             ' Check we haven't picked up the desktop or the shell
-            If Not (hWnd.Equals(desktopHandle) Or hWnd.Equals(shellHandle)) Then
+            If Not (hWnd.Equals(OutlookSecurity.GetDesktopWindow) Or hWnd.Equals(OutlookSecurity.GetShellWindow)) Then
                 AppBounds = OutlookSecurity.GetWindowRect(hWnd)
-                'Return String.Concat(irect.top, ";", irect.bottom, ";", irect.left, ";", irect.right)
                 'determine if window is fullscreen
                 screenBounds = Windows.Forms.Screen.FromHandle(CType(hWnd, IntPtr)).Bounds
                 If (AppBounds.bottom - AppBounds.top = screenBounds.Height) And (AppBounds.right - AppBounds.left = screenBounds.Width) Then

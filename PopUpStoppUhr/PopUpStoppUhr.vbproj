@@ -151,6 +151,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Funktionen\Funktionen.vbproj">
+      <Project>{ccf5ae9e-c12e-4467-9334-504cd7902b78}</Project>
+      <Name>Funktionen</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>

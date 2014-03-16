@@ -100,7 +100,7 @@ Public Class FritzBox
                 If Not InpupPasswort = C_DP.P_Def_ErrorMinusOne Then
                     C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(InpupPasswort, "Fritz!Box Script")
                     C_DP.P_TBBenutzer = InpupBenutzer
-                    SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
+                    C_DP.SaveSettingsVBA("Zugang", "Fritz!Box Script")
                     C_hf.KeyChange()
                 End If
 
@@ -111,7 +111,7 @@ Public Class FritzBox
                 Dim sFormData As String
                 Dim sResponse As String
                 Dim sSIDResponse As String
-                Dim sZugang As String = GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne)
+                Dim sZugang As String = C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne)
                 Dim XMLDocLogin As New XmlDocument()
 
                 With XMLDocLogin

@@ -220,6 +220,7 @@ Friend Class formWählbox
 
     Private Sub CloseButton_Click() Handles CloseButton.Click
         Me.Hide()
+
         If Not TimerSchließen Is Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
         If Not UsePhonerOhneFritzBox Then ThisAddIn.P_FritzBox.FBLogOut(SID)
         Me.Close()
@@ -582,7 +583,6 @@ Friend Class formWählbox
             End If
         End If
     End Sub
-#End Region
 
     Private Sub BVIP_CheckedChanged(sender As Object, e As EventArgs)
         Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
@@ -594,4 +594,8 @@ Friend Class formWählbox
             End If
         End If
     End Sub
+#End Region
+
+
+
 End Class

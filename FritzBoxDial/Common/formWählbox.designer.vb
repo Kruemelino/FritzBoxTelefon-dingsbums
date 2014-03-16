@@ -365,10 +365,9 @@ Partial Class formWählbox
         '
         'ContactImage
         '
-        Me.ContactImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ContactImage.Location = New System.Drawing.Point(472, 66)
+        Me.ContactImage.Location = New System.Drawing.Point(473, 66)
         Me.ContactImage.Name = "ContactImage"
-        Me.ContactImage.Size = New System.Drawing.Size(75, 96)
+        Me.ContactImage.Size = New System.Drawing.Size(73, 96)
         Me.ContactImage.TabIndex = 17
         Me.ContactImage.TabStop = False
         '

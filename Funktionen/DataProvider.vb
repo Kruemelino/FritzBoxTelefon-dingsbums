@@ -3,7 +3,6 @@ Imports System.Timers
 
 Public Class DataProvider
     Private XMLDoc As XmlDocument
-    Private sDateiPfad As String
     Private WithEvents tSpeichern As Timer
 #Region "Windows Const für Office 2003"
 #If OVer = 11 Then
@@ -222,6 +221,8 @@ Public Class DataProvider
     Private _LLetzteIndizierung As Date
     ' Notiz
     Private _CBNote As Boolean
+    'Einstellungen
+    Private _Arbeitsverzeichnis As String
 #End Region
 #Region "Value Properties"
     ''' <summary>
@@ -934,6 +935,15 @@ Public Class DataProvider
             _CBNote = value
         End Set
     End Property
+    ' Einstellungen
+    Public Property P_Arbeitsverzeichnis() As String
+        Get
+            Return _Arbeitsverzeichnis
+        End Get
+        Set(value As String)
+            _Arbeitsverzeichnis = value
+        End Set
+    End Property
 #End Region
 #Region "Global Default Value Properties"
     ''' <summary>
@@ -1036,26 +1046,31 @@ Public Class DataProvider
             Return 15
         End Get
     End Property
+
     Public ReadOnly Property P_Def_AnrMonDirection_Call() As String
         Get
             Return "[->]"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_AnrMonDirection_Ring() As String
         Get
             Return "[<-]"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_AnrMonDirection_Default() As String
         Get
             Return "[<>]"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
         Get
             Return "FBDB-AnrMonDirection"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
         Get
             Return "FBDB-AnrMonZeit"
@@ -1067,80 +1082,60 @@ Public Class DataProvider
             Return "FBDB_Note_Table"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_Begin_vCard() As String
         Get
             Return "BEGIN:VCARD"
         End Get
     End Property
+
     Public ReadOnly Property P_Def_End_vCard() As String
         Get
             Return "END:VCARD"
         End Get
     End Property
 
-    Public ReadOnly Property NameListCALL() As String
+    Public ReadOnly Property P_Def_NameListCALL() As String
         Get
             Return "CallList"
         End Get
     End Property
 
-    Public ReadOnly Property NameListRING() As String
+    Public ReadOnly Property P_Def_NameListRING() As String
         Get
             Return "RingList"
         End Get
     End Property
 
-    Public ReadOnly Property NameListVIP() As String
+    Public ReadOnly Property P_Def_NameListVIP() As String
         Get
             Return "VIPList"
         End Get
     End Property
-    'Public ReadOnly Property P_Def_Note_Table_HeaderRow() As String
-    '    Get
-    '        Return "FBDB_Note_Table_HeaderRow"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow() As String
-    '    Get
-    '        Return "BDB_Note_Table_CallRow"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_NoteRow() As String
-    '    Get
-    '        Return "FBDB_Note_Table_NoteRow"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow_Direction() As String
-    '    Get
-    '        Return "FBDB_Note_Table_CallRow_Direction"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow_Initialen() As String
-    '    Get
-    '        Return "FBDB_Note_Table_CallRow_Initialen"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow_Anrufer() As String
-    '    Get
-    '        Return "FBDB_Note_Table_CallRow_Anrufer"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow_Begin() As String
-    '    Get
-    '        Return "FBDB_Note_Table_CallRow_Begin"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow_Ende() As String
-    '    Get
-    '        Return "FBDB_Note_Table_CallRow_Ende"
-    '    End Get
-    'End Property
-    'Public ReadOnly Property P_Def_Note_Table_CallRow_Dauer() As String
-    '    Get
-    '        Return "FBDB_Note_Table_CallRow_Dauer"
-    '    End Get
-    'End Property
 
+    Public ReadOnly Property P_Def_Addin_LangName() As String
+        Get
+            Return "Fritz!Box Telefon-dingsbums"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Addin_KurzName() As String
+        Get
+            Return "FritzOutlook"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Config_FileName() As String
+        Get
+            Return P_Def_Addin_KurzName & ".xml"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Log_FileName() As String
+        Get
+            Return P_Def_Addin_KurzName & ".log"
+        End Get
+    End Property
     ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
     ''' </summary>
@@ -1151,6 +1146,12 @@ Public Class DataProvider
             Return 1
         End Get
     End Property
+
+    'Private ReadOnly Property P_Def_Arbeitsverzeichnis As String
+    '    Get
+    '        Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\" & P_Def_Addin_LangName & "\"
+    '    End Get
+    'End Property
 #End Region
 #Region "Default Value Properties"
 
@@ -1567,16 +1568,21 @@ Public Class DataProvider
     End Property
 #End Region
 
-    Public Sub New(ByVal DateiPfad As String)
-        sDateiPfad = DateiPfad
+    Public Sub New()
+        ' Pfad zur Einstellungsdatei ermitteln
+        Dim ConfigPfad As String
+        P_Arbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\" & P_Def_Addin_LangName & "\")
+        configpfad = P_Arbeitsverzeichnis & P_Def_Config_FileName
+
         XMLDoc = New XmlDocument()
         With My.Computer.FileSystem
-            If .FileExists(sDateiPfad) And .GetFileInfo(sDateiPfad).Extension.ToString = ".xml" Then
-                XMLDoc.Load(sDateiPfad)
+            If .FileExists(ConfigPfad) Then
+                XMLDoc.Load(ConfigPfad)
             Else
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
-                .CreateDirectory(.GetParentPath(sDateiPfad))
-                .WriteAllText(sDateiPfad, XMLDoc.InnerXml, True)
+                If Not .DirectoryExists(P_Arbeitsverzeichnis) Then .CreateDirectory(P_Arbeitsverzeichnis)
+                .WriteAllText(ConfigPfad, XMLDoc.InnerXml, True)
+                SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
             End If
         End With
         CleanUpXML()
@@ -1674,6 +1680,7 @@ Public Class DataProvider
         ' Notiz
         Me.P_CBNote = CBool(Read(P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
     End Sub
+
     Private Sub SaveOptionData()
         Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
         Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
@@ -1755,12 +1762,13 @@ Public Class DataProvider
         Write(P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
         'indizierung
         Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
-        XMLDoc.Save(sDateiPfad)
+        XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
+        SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
     End Sub
 
     Protected Overrides Sub Finalize()
         SaveOptionData()
-        XMLDoc.Save(sDateiPfad)
+        XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         XMLDoc = Nothing
         If Not tSpeichern Is Nothing Then
             tSpeichern.Stop()
@@ -1771,7 +1779,7 @@ Public Class DataProvider
         MyBase.Finalize()
     End Sub
 
-    'XML Kram
+#Region "XML"
 #Region "Read"
     Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
         Dim xPathTeile As New ArrayList
@@ -2048,6 +2056,17 @@ Public Class DataProvider
         SaveOptionData()
     End Sub
 #End Region
+#End Region
+
+#Region "Registry VBA GetSettings SetSettings"
+    Public Function GetSettingsVBA(ByVal Key As String, ByVal DefaultValue As String) As String
+        Return GetSetting(P_Def_Addin_KurzName, P_Def_Options, Key, DefaultValue)
+    End Function
+    Public Sub SaveSettingsVBA(ByVal Key As String, ByVal DefaultValue As String)
+        SaveSetting(P_Def_Addin_KurzName, P_Def_Options, Key, DefaultValue)
+    End Sub
+#End Region
+
 
 #Region "Stuff"
     Private Sub CleanUpXML()
@@ -2083,10 +2102,6 @@ Public Class DataProvider
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
         CreateXPath = Replace(xPathSeperatorSlash & Join(xPathElements.ToArray(), xPathSeperatorSlash), xPathSeperatorSlash & xPathBracketOpen, xPathBracketOpen, , , CompareMethod.Text)
         CreateXPath = Replace(CreateXPath, xPathBracketClose & xPathBracketOpen, " and ", , , CompareMethod.Text)
-    End Function
-
-    Function GetXMLDateiPfad() As String
-        Return sDateiPfad
     End Function
 
     Private Function CheckXPathWrite(ByVal xPath As String) As Boolean

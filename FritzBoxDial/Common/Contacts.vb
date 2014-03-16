@@ -149,11 +149,8 @@ Public Class Contacts
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
 
-
         olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
         olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
-        If olFolder Is Nothing Then olFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
         With olKontakt
             If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
                 .MobileTelephoneNumber = TelNr
@@ -175,18 +172,19 @@ Public Class Contacts
                 End If
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
-                If Not C_DP.P_CBIndexAus Then IndiziereKontakt(olKontakt, True)
-                If Speichern Then
-                    .Save()
-                    KontaktID = .EntryID
-                    StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
-                End If
+            End If
+            If Speichern Then
+                KontaktID = .EntryID
+                StoreID = olFolder.StoreID
                 C_hf.LogFile("Kontakt " & .FullName & " wurde erstellt")
+
+                If Not C_DP.P_CBIndexAus Then IndiziereKontakt(olKontakt, True, False)
+                olKontakt = CType(.Move(olFolder), Outlook.ContactItem)
             End If
         End With
+
         ErstelleKontakt = olKontakt
         C_hf.NAR(olFolder)
-        'C_hf.NAR(olKontakt)
     End Function
 
     Friend Overloads Function ErstelleKontakt(ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
@@ -283,28 +281,39 @@ Public Class Contacts
         C_hf.NAR(Kontakt)
     End Sub
 
-    Friend Overloads Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
+    ''' <summary>
+    ''' Speichert das Kontaktbild in den temporären Ordner. 
+    ''' </summary>
+    ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
+    ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
+    ''' <remarks></remarks>
+    Friend Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
         KontaktBild = C_DP.P_Def_StringEmpty
         If Not olContact Is Nothing Then
             With olContact
                 With .Attachments
                     If Not .Item("ContactPicture.jpg") Is Nothing Then
-                        KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
+                        'KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
+                        KontaktBild = C_DP.P_Arbeitsverzeichnis & System.IO.Path.GetRandomFileName()
                         KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
                         .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
                     End If
                 End With
             End With
         End If
-        C_hf.NAR(olContact)
     End Function
 
-    Friend Overloads Function KontaktBild(ByRef KontaktID As String, ByRef StoreID As String) As String
-        Dim Kontakt As Outlook.ContactItem = GetOutlookKontakt(KontaktID, StoreID)
-        KontaktBild = KontaktBild(Kontakt)
-    End Function
+    Friend Sub DelKontaktBild(ByVal PfadKontaktBild As String)
+        If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
+            With My.Computer.FileSystem
+                If .FileExists(PfadKontaktBild) Then
+                    .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+                End If
+            End With
+        End If
+    End Sub
     ''' <summary>
-    ''' Ermittelt aus der KontaktID und der StoreID den zugehörigen Kontakt.
+    ''' Ermittelt aus der KontaktID (EntryID) und der StoreID den zugehörigen Kontakt.
     ''' </summary>
     ''' <param name="KontaktID">EntryID des Kontaktes</param>
     ''' <param name="StoreID">StoreID des beinhaltenden Ordners</param>
@@ -318,7 +327,13 @@ Public Class Contacts
             C_hf.LogFile("GetOutlookKontakt: " & ex.Message)
         End Try
     End Function
-
+    ''' <summary>
+    ''' Ermittelt aus der FolderID (EntryID) und der StoreID den zugehörigen Ordner.
+    ''' </summary>
+    ''' <param name="FolderID">EntryID des Ordners</param>
+    ''' <param name="StoreID">StoreID des Ordners</param>
+    ''' <returns>Erfolg: Ordner, Misserfolg: Standard-Kontaktordner</returns>
+    ''' <remarks>In Office 2003 ist Outlook.Folder unbekannt, daher Outlook.MAPIFolder</remarks>
     Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.MAPIFolder
         GetOutlookFolder = Nothing
         Try
@@ -326,13 +341,15 @@ Public Class Contacts
         Catch ex As Exception
             C_hf.LogFile("GetOutlookFolder: " & ex.Message)
         End Try
+        If GetOutlookFolder Is Nothing Then
+            GetOutlookFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+        End If
     End Function
 #Region "Kontaktindizierung"
-    Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
+    Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, ByVal Log As Boolean, ByVal Speichern As Boolean)
         If Not C_DP.P_CBIndexAus Then
             Dim LandesVW As String = C_DP.P_TBLandesVW
             Dim alleTE(16) As String  ' alle TelNr/Email eines Kontakts
-            Dim speichern As Boolean = False
             Dim tempTelNr As String
 
             With Kontakt
@@ -367,8 +384,8 @@ Public Class Contacts
                         .UserProperties.Find(UserProperties(i)).Delete()
                     End If
                 Next
-                If WriteLog Then C_hf.LogFile("Kontakt: " & .FullNameAndCompany & " wurde automatisch indiziert.")
-                .Save()
+                If Log Then C_hf.LogFile("Kontakt: " & .FullNameAndCompany & " wurde automatisch indiziert.")
+                If Speichern Then .Save()
             End With
         End If
     End Sub
@@ -953,7 +970,6 @@ Public Class Contacts
     End Sub
     Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal Telfonat As C_Telefonat, ByVal ContactShown As Boolean) As Long
 
-        'Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal olContact As Outlook.ContactItem, ByVal TelZeit As String, ByVal TelNr As String, ByVal Duration As Double, ByVal ContactShown As Boolean) As Long
         FillNote = vbNull
         With Telfonat
 

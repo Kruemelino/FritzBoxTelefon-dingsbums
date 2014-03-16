@@ -92,7 +92,7 @@ Friend Class formCfg
 #Region "Ausfüllen"
 
     Private Sub Ausfüllen()
-        Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.GetXMLDateiPfad)
+        Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
@@ -393,7 +393,7 @@ Friend Class formCfg
             End If
             If Not Me.TBPasswort.Text = "1234" Then
                 .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
-                SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
+                C_DP.SaveSettingsVBA("Zugang", "Fritz!Box Script")
                 C_hf.KeyChange()
             End If
             ' StoppUhr
@@ -504,14 +504,16 @@ Friend Class formCfg
                 If Not Me.TBPhonerPasswort.Text = C_DP.P_Def_StringEmpty Then
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
                         .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, "Fritz!Box Script")
-                        SaveSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", "Fritz!Box Script")
+                        C_DP.SaveSettingsVBA("ZugangPasswortPhoner", "Fritz!Box Script")
                         C_hf.KeyChange()
                     End If
                 End If
             End If
+            If Not Me.TVOutlookContact.SelectedNode Is Nothing Then
+                .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
+                .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)
+            End If
 
-            .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
-            .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)
             .SpeichereXMLDatei()
         End With
     End Function
@@ -531,9 +533,10 @@ Friend Class formCfg
                                                                                    BStartDebug.Click, _
                                                                                    BResetStat.Click, _
                                                                                    BProbleme.Click, _
-                                                                                   BStoppUhrAnzeigen.Click
+                                                                                   BStoppUhrAnzeigen.Click, _
+                                                                                   ButtonArbeitsverzeichnis.Click
 
-        Select Case CType(sender, Windows.Forms.Button).Name
+        Select CType(sender, Windows.Forms.Button).Name
             Case "ButtonZuruecksetzen"
                 ' Startwerte zurücksetzen
                 ' Einstellungen für das Wählmakro zurücksetzen
@@ -630,7 +633,7 @@ Friend Class formCfg
             Case "ButtonUebernehmen"
                 Speichern()
             Case "ButtonXML"
-                System.Diagnostics.Process.Start(C_DP.GetXMLDateiPfad)
+                System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
                 Dim forman As New formAnrMon(False, C_DP, C_hf, C_AnrMon, C_OlI, C_Kontakte)
@@ -746,6 +749,21 @@ Friend Class formCfg
                 C_DP.P_CBStoppUhrX = frmStUhr.Position.X
                 C_DP.P_CBStoppUhrY = frmStUhr.Position.Y
                 frmStUhr = Nothing
+            Case "ButtonArbeitsverzeichnis"
+                Dim fDialg As New System.Windows.Forms.FolderBrowserDialog
+                With fDialg
+                    .ShowNewFolderButton = True
+                    .SelectedPath = C_DP.P_Arbeitsverzeichnis
+                    .Description = "Wählen Sie das neue Arbeitsverzeichnis aus!"
+                    If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                        If Not C_DP.P_Arbeitsverzeichnis = .SelectedPath Then
+                            C_hf.LogFile("Arbeitsverzeichnis von " & C_DP.P_Arbeitsverzeichnis & " auf " & .SelectedPath & "\ geändert.")
+                            C_DP.P_Arbeitsverzeichnis = .SelectedPath & "\"
+                            Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
+                            C_DP.SpeichereXMLDatei()
+                        End If
+                    End If
+                End With
         End Select
     End Sub
 
@@ -762,7 +780,7 @@ Friend Class formCfg
             Case "LinkHomepage"
                 System.Diagnostics.Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
             Case "LinkLogFile"
-                System.Diagnostics.Process.Start(C_hf.Dateipfade("LogDatei"))
+                System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName)
         End Select
     End Sub
 
@@ -973,7 +991,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeuEmail(PfadTMPfile, C_DP.GetXMLDateiPfad, C_FBox.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
+        C_OlI.NeuEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
     End Sub
 
     Public Function SetTelNrListe() As Boolean
@@ -1122,15 +1140,14 @@ Friend Class formCfg
                         aktKontakt = CType(item, Outlook.ContactItem)
 
                         'With aktKontakt
-                        'KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
                         KontaktName = " (" & aktKontakt.FullName & ")"
-                        C_Kontakte.IndiziereKontakt(aktKontakt, False)
+                        C_Kontakte.IndiziereKontakt(aktKontakt, False, True)
+                        aktKontakt.Save()
                         BWIndexer.ReportProgress(1)
                         If BWIndexer.CancellationPending Then Exit For
                     Else
                         BWIndexer.ReportProgress(1)
                     End If
-                    C_hf.NAR(item)
                     Windows.Forms.Application.DoEvents()
                 Next 'Item
                 'Elemente = Nothing
@@ -1199,7 +1216,7 @@ Friend Class formCfg
 
 #Region "Logging"
     Sub FillLogTB()
-        Dim LogDatei As String = C_hf.Dateipfade("LogDatei")
+        Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName
 
         If C_DP.P_CBLogFile Then
             If My.Computer.FileSystem.FileExists(LogDatei) Then

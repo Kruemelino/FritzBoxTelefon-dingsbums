@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -75,6 +75,7 @@ Partial Class formCfg
         Me.BStartDebug = New System.Windows.Forms.Button()
         Me.BZwischenablage = New System.Windows.Forms.Button()
         Me.BProbleme = New System.Windows.Forms.Button()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.PInfo = New System.Windows.Forms.TabPage()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
@@ -196,6 +197,7 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ButtonArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -778,8 +780,19 @@ Partial Class formCfg
         "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.BProbleme.UseVisualStyleBackColor = True
         '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(254, 20)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(77, 13)
+        Me.Label7.TabIndex = 5
+        Me.Label7.Text = "Kontaktordner:"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label7, "Hier werden alle Kontakte gespeichert.")
+        '
         'PInfo
         '
+        Me.PInfo.Controls.Add(Me.ButtonArbeitsverzeichnis)
         Me.PInfo.Controls.Add(Me.Label17)
         Me.PInfo.Controls.Add(Me.Label16)
         Me.PInfo.Controls.Add(Me.Label10)
@@ -1030,9 +1043,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle7.Format = "T"
-        DataGridViewCellStyle7.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1044,9 +1057,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle8.Format = "T"
-        DataGridViewCellStyle8.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1058,9 +1071,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle9.Format = "T"
-        DataGridViewCellStyle9.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1203,6 +1216,7 @@ Partial Class formCfg
         '
         'GroupBoxRWS
         '
+        Me.GroupBoxRWS.Controls.Add(Me.Label7)
         Me.GroupBoxRWS.Controls.Add(Me.TVOutlookContact)
         Me.GroupBoxRWS.Controls.Add(Me.CBRWSIndex)
         Me.GroupBoxRWS.Controls.Add(Me.ComboBoxRWS)
@@ -1218,9 +1232,9 @@ Partial Class formCfg
         'TVOutlookContact
         '
         Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 17)
+        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 39)
         Me.TVOutlookContact.Name = "TVOutlookContact"
-        Me.TVOutlookContact.Size = New System.Drawing.Size(307, 66)
+        Me.TVOutlookContact.Size = New System.Drawing.Size(307, 47)
         Me.TVOutlookContact.TabIndex = 4
         '
         'ComboBoxRWS
@@ -2081,6 +2095,15 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
+        'ButtonArbeitsverzeichnis
+        '
+        Me.ButtonArbeitsverzeichnis.Location = New System.Drawing.Point(410, 58)
+        Me.ButtonArbeitsverzeichnis.Name = "ButtonArbeitsverzeichnis"
+        Me.ButtonArbeitsverzeichnis.Size = New System.Drawing.Size(155, 28)
+        Me.ButtonArbeitsverzeichnis.TabIndex = 6
+        Me.ButtonArbeitsverzeichnis.Text = "Arbeitsverzeichnis ändern"
+        Me.ButtonArbeitsverzeichnis.UseVisualStyleBackColor = True
+        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
@@ -2320,6 +2343,8 @@ Partial Class formCfg
     Friend WithEvents LAnrMonMoveDirection As System.Windows.Forms.Label
     Friend WithEvents CBNote As System.Windows.Forms.CheckBox
     Friend WithEvents TVOutlookContact As System.Windows.Forms.TreeView
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents ButtonArbeitsverzeichnis As System.Windows.Forms.Button
 #If OVer < 14 Then
 #End If
 End Class

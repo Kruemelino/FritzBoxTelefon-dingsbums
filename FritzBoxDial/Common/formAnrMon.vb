@@ -1,5 +1,6 @@
 Imports System.Timers
 Imports System.IO.Path
+Imports System.Drawing
 
 Friend Class formAnrMon
     Private C_DP As DataProvider
@@ -30,14 +31,13 @@ Friend Class formAnrMon
         AnrmonClosed = False
 
         Dim OInsp As Outlook.Inspector = Nothing
-        If Aktualisieren Then ' hä?
-
+        If Aktualisieren Then
             TimerAktualisieren = C_hf.SetTimer(100)
             If TimerAktualisieren Is Nothing Then
-                C_hf.LogFile("formAnrMon.New: TimerNeuStart nicht gestartet")
+                C_hf.LogFile("formAnrMon_New: TimerNeuStart nicht gestartet")
             End If
         End If
-        C_OLI.InspectorVerschieben(True)
+        C_OLI.KeepoInspAtivated(False)
 
         With PopUpAnrMon
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
@@ -45,14 +45,12 @@ Friend Class formAnrMon
             .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
             .EffektMove = C_DP.P_CBAnrMonMove
             .EffektTransparenz = C_DP.P_CBAnrMonTransp
-
             .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
             .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
-
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             .Popup()
         End With
-        C_OLI.InspectorVerschieben(False)
+        C_OLI.KeepoInspAtivated(True)
     End Sub
 
     Sub AnrMonausfüllen()
@@ -69,50 +67,50 @@ Friend Class formAnrMon
             ' Telefonnamen eintragen
             .TelName = C_AnrMon.LetzterAnrufer.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & C_AnrMon.LetzterAnrufer.MSN & ")", C_DP.P_Def_StringEmpty))
 
-            If Not C_AnrMon.LetzterAnrufer.olContact Is Nothing Or Not C_AnrMon.LetzterAnrufer.vCard = C_DP.P_Def_ErrorMinusOne Then
-
-                If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
-                ' Kontakt einblenden wenn in Outlook gefunden
-                With C_AnrMon.LetzterAnrufer
-                    If Not .vCard = C_DP.P_Def_StringEmpty And .olContact Is Nothing Then
-                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
-                    End If
-                End With
-                Try
-                    C_KF.KontaktInformation(C_AnrMon.LetzterAnrufer.olContact, .AnrName, .Firma)
+            If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
+            ' Kontakt einblenden wenn in Outlook gefunden
+            With C_AnrMon.LetzterAnrufer
+                If .olContact Is Nothing Then
+                    ''kontakt erstellen, wenn vcard vorhanden
+                    'If Not .vCard = C_DP.P_Def_StringEmpty Then
+                    '    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                    'End If
+                Else
+                    'Kontaktbild ermitteln
                     If C_DP.P_CBAnrMonContactImage Then
-                        Dim BildPfad = C_KF.KontaktBild(C_AnrMon.LetzterAnrufer.olContact)
-                        If Not BildPfad = C_DP.P_Def_StringEmpty Then
-                            PopUpAnrMon.Image = Drawing.Image.FromFile(BildPfad)
+                        C_AnrMon.LetzterAnrufer.PfadKontaktBild = C_KF.KontaktBild(C_AnrMon.LetzterAnrufer.olContact)
+                        If Not C_AnrMon.LetzterAnrufer.PfadKontaktBild = C_DP.P_Def_StringEmpty Then
+                            Using fs As New IO.FileStream(C_AnrMon.LetzterAnrufer.PfadKontaktBild, IO.FileMode.Open)
+                                PopUpAnrMon.Image = Image.FromStream(fs)
+                            End Using
+                            'Kontaktbild löschen
+                            C_KF.DelKontaktBild(C_AnrMon.LetzterAnrufer.PfadKontaktBild)
                             ' Seitenverhältnisse anpassen
-                            Dim Bildgröße As New Drawing.Size(PopUpAnrMon.ImageSize.Width, CInt((PopUpAnrMon.ImageSize.Width * PopUpAnrMon.Image.Size.Height) / PopUpAnrMon.Image.Size.Width))
+                            Dim Bildgröße As New Size(PopUpAnrMon.ImageSize.Width, CInt((PopUpAnrMon.ImageSize.Width * PopUpAnrMon.Image.Size.Height) / PopUpAnrMon.Image.Size.Width))
                             PopUpAnrMon.ImageSize = Bildgröße
                         End If
                     End If
-                Catch ex As Exception
-                    C_hf.LogFile("formAnrMon: Fehler beim Öffnen des Kontaktes " & C_AnrMon.LetzterAnrufer.Anrufer & " (" & ex.Message & ")")
-                    .Firma = C_DP.P_Def_StringEmpty
-                    If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.P_Def_StringEmpty Then
-                        .TelNr = C_DP.P_Def_StringEmpty
-                        .AnrName = C_AnrMon.LetzterAnrufer.TelNr
-                    Else
-                        .TelNr = C_AnrMon.LetzterAnrufer.TelNr
-                        .AnrName = C_AnrMon.LetzterAnrufer.Anrufer
-                    End If
-                End Try
-                .TelNr = C_AnrMon.LetzterAnrufer.TelNr
-            Else
-                .Firma = C_DP.P_Def_StringEmpty
-                If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.P_Def_StringEmpty Then
-                    .TelNr = C_DP.P_Def_StringEmpty
-                    .AnrName = C_AnrMon.LetzterAnrufer.TelNr
-                Else
-                    .TelNr = C_AnrMon.LetzterAnrufer.TelNr
-                    .AnrName = C_AnrMon.LetzterAnrufer.Anrufer
                 End If
+            End With
+
+            If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.P_Def_StringEmpty Then
+                .TelNr = C_DP.P_Def_StringEmpty
+                .AnrName = C_AnrMon.LetzterAnrufer.TelNr
+            Else
+                .TelNr = C_AnrMon.LetzterAnrufer.TelNr
+                .AnrName = C_AnrMon.LetzterAnrufer.Anrufer
             End If
+            .Firma = C_AnrMon.LetzterAnrufer.Companies
         End With
     End Sub
+
+    Private Function GetImage(path As String) As Image
+        If Not IO.File.Exists(path) Then Throw New IO.FileNotFoundException
+        Using fs As New IO.FileStream(path, IO.FileMode.Open)
+            Return Image.FromStream(fs)
+            'Return CType(, Image)
+        End Using
+    End Function
 
     Private Sub PopUpAnrMon_Close() Handles PopUpAnrMon.Close
         PopUpAnrMon.Hide()
@@ -128,15 +126,13 @@ Friend Class formAnrMon
         End With
     End Sub
 
-    Private Sub PopUpAnrMon_Closed() Handles PopUpAnrMon.Closed
-        AnrmonClosed = True
-        If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
-    End Sub
-
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
         With C_AnrMon.LetzterAnrufer
+            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne And Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
+                .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+            End If
             If Not .olContact Is Nothing Then
                 .olContact.Display()
             Else
@@ -149,6 +145,11 @@ Friend Class formAnrMon
         Dim VergleichString As String = PopUpAnrMon.AnrName
         AnrMonausfüllen()
         If Not VergleichString = PopUpAnrMon.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
+    End Sub
+
+    Private Sub PopUpAnrMon_Closed() Handles PopUpAnrMon.Closed
+        AnrmonClosed = True
+        If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
     Protected Overrides Sub Finalize()

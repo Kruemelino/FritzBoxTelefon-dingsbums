@@ -14,9 +14,8 @@
     Private C_Config As formCfg
     Private F_JournalImport As formJournalimport
     'Strings
-    Private DateiPfad As String
+    'Private DateiPfad As String
     Private SID As String
-
 
     Public Sub New()
 
@@ -25,19 +24,15 @@
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-        ' Pfad zur Einstellungsdatei ermitteln
-        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", "-1")
-        If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
-
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_DP = New DataProvider(DateiPfad)
+        C_DP = New DataProvider()
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
-        C_HF = New Helfer(DateiPfad, C_DP, C_Crypt)
-        C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & ThisAddIn.Version & " gestartet.")
+        C_HF = New Helfer(C_DP, C_Crypt)
+        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
         C_KF = New Contacts(C_DP, C_HF)
@@ -46,7 +41,7 @@
         C_RWS = New formRWSuche(C_HF, C_KF, C_DP)
 
         ' Klasse für die OutlookInterface generieren
-        C_OlI = New OutlookInterface(C_KF, C_HF, C_DP, DateiPfad)
+        C_OlI = New OutlookInterface(C_KF, C_HF, C_DP)
 
         ' Klasse für das PhonerInterface generieren
         C_Phoner = New PhonerInterface(C_HF, C_DP, C_Crypt)
@@ -57,7 +52,7 @@
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, DateiPfad, C_RWS, C_KF, C_Phoner)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, C_RWS, C_KF, C_Phoner)
 
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner)
             ThisAddIn.P_WClient = C_WählClient
@@ -92,7 +87,7 @@
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne Then
+        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne Then
             Rückgabe = False
             Me.ShowDialog()
             Rückgabe = True 'PrüfeAddin()
@@ -107,7 +102,7 @@
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpGET("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then
+            If Not InStr(C_HF.httpGET("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
                 C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
@@ -135,7 +130,7 @@
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, "Fritz!Box Script")
-        SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
+        C_DP.SaveSettingsVBA("Zugang", "Fritz!Box Script")
         C_HF.KeyChange()
         SID = C_FBox.FBLogIn(fw550)
         If Not SID = C_DP.P_Def_SessionID Then
@@ -263,16 +258,4 @@
         Me.Close()
 
     End Sub
-
-#Region "Fritz!Box Tests"
-
-    'Private Function FritzBoxVorhanden(IPAddresse As String) As Boolean
-
-    '    If C_Helfer.Ping(IPAddresse) Then Return True
-    '    If Not InStr(C_Helfer.httpRead("http://" & IPAddresse & "/login_sid.lua", System.Text.Encoding.UTF8), "<SID>0000000000000000</SID>", CompareMethod.Text) = 0 Then Return True
-    '    C_Helfer.LogFile("Es konnte keine Fritz!Box im Netzwerk unter der Adresse """ & IPAddresse & """ gefunden werden.")
-    '    Return False
-    'End Function
-
-#End Region
 End Class

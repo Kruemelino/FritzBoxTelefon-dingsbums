@@ -12,22 +12,20 @@ Public Class FormMain
     Private Delegate Sub DelgSetLine()
 
     Private StatusWert As String
-    Private DateiPfad As String
+
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-        DateiPfad = GetSetting("FritzBox", "Optionen", "TBxml", C_DP.P_Def_ErrorMinusOne)
-        If Not IO.File.Exists(DateiPfad) Then DateiPfad = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Fritz!Box Telefon-dingsbums\FritzOutlook.xml"
 
         ' Klasse zum IO-der INI-Struktiur erstellen
-        C_DP = New DataProvider(DateiPfad)
+        C_DP = New DataProvider()
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New Rijndael
 
         ' Klasse für Helferfunktionen erstellen
-        C_Helfer = New Helfer(DateiPfad, C_DP, C_Crypt)
+        C_Helfer = New Helfer(C_DP, C_Crypt)
 
         C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
@@ -69,7 +67,7 @@ Public Class FormMain
         C_DP.P_TBVorwahl = Me.TBVorwahl.Text
         If Not Me.TBPasswort.Text = "1234" Then
             C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, "Fritz!Box Script")
-            SaveSetting("FritzBox", "Optionen", "Zugang", "Fritz!Box Script")
+            C_DP.SaveSettingsVBA("Zugang", "Fritz!Box Script")
             C_Helfer.KeyChange()
         End If
         With C_FBox

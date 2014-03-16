@@ -191,17 +191,24 @@ Public Class Wählclient
                 alleTelNr(12) = .PagerNumber : alleNrTypen(12) = "Pager"
                 alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = "Haupttelefon"
                 alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = "Funkruf"
-                ImgPath = C_KF.KontaktBild(.EntryID, CType(.Parent, Outlook.MAPIFolder).StoreID)
+
+                ' Kontaktbild anzeigen
+                ImgPath = C_KF.KontaktBild(oContact)
                 If Not ImgPath = C_DP.P_Def_StringEmpty Then
-                    Dim orgIm As Image = Image.FromFile(ImgPath)
+                    Dim orgImage As Image
+                    Using fs As New IO.FileStream(ImgPath, IO.FileMode.Open)
+                        orgImage = Image.FromStream(fs)
+                    End Using
+                    C_KF.DelKontaktBild(ImgPath)
                     With frm_Wählbox.ContactImage
-                        Dim Bildgröße As New Size(.Width, CInt((.Width * orgIm.Size.Height) / orgIm.Size.Width))
-                        Dim showim As Image = New Bitmap(Bildgröße.Width, Bildgröße.Height)
-                        Dim g As Graphics = Graphics.FromImage(showim)
-                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        g.DrawImage(orgIm, 0, 0, Bildgröße.Width, Bildgröße.Height)
-                        g.Dispose()
-                        .Image = showim
+                        Dim Bildgröße As New Size(.Width, CInt((.Width * orgImage.Size.Height) / orgImage.Size.Width))
+                        Dim showImage As Image = New Bitmap(Bildgröße.Width, Bildgröße.Height)
+                        Using g As Graphics = Graphics.FromImage(showImage)
+                            g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                            g.DrawImage(orgImage, 0, 0, Bildgröße.Width, Bildgröße.Height)
+                            g.Dispose()
+                        End Using
+                        .Image = showImage
                     End With
                 Else
                     frm_Wählbox.ContactImage.Visible = False

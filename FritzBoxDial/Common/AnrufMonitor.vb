@@ -118,8 +118,6 @@ Friend Class AnrufMonitor
         F_RWS = RWS
         C_OlI = OutlInter
 
-        LetzterAnrufer = LadeLetzterAnrufer()
-
         AnrMonStartStopp()
     End Sub
 
@@ -452,9 +450,7 @@ Friend Class AnrufMonitor
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für RING
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für RING</param>
-    ''' <param name="AnrMonAnzeigen">Boolean: Soll Anrufmonitor angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
-    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
-    ''' <remarks></remarks>
+    ''' <param name="ShowForms">Boolean: Soll Anrufmonitor/StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet einen eingehenden Anruf aus
         ' Parameter: FBStatus (String ()):   Status-String der FritzBox
@@ -491,7 +487,7 @@ Friend Class AnrufMonitor
                 .Typ = C_Telefonat.AnrufRichtung.Eingehend
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
-
+                .TelName = C_hf.TelefonName(.MSN)
                 .ID = CInt(FBStatus.GetValue(2))
                 .TelNr = CStr(FBStatus.GetValue(3))
                 ' Phoner
@@ -581,7 +577,7 @@ Friend Class AnrufMonitor
 
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
-                    UpdateList(C_DP.NameListRING, Telefonat)
+                    UpdateList(C_DP.P_Def_NameListRING, Telefonat)
 #If OVer < 14 Then
                 If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
 #End If
@@ -626,7 +622,7 @@ Friend Class AnrufMonitor
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CALL
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CALL</param>
-    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
     Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet einen ausgehenden Anruf aus
@@ -767,7 +763,7 @@ Friend Class AnrufMonitor
                     End If
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
-                UpdateList(C_DP.NameListCALL, Telefonat)      ' Hier geht es schief
+                UpdateList(C_DP.P_Def_NameListCALL, Telefonat)      ' Hier geht es schief
 #If OVer < 14 Then
             If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
@@ -811,7 +807,7 @@ Friend Class AnrufMonitor
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT</param>
-    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
     Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet eine Zustande gekommene Verbindung aus
@@ -914,7 +910,7 @@ Friend Class AnrufMonitor
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT</param>
-    ''' <param name="StoppUhrAnzeigen">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
+    ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     ''' <remarks></remarks>
     Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' legt den Journaleintrag (und/oder Kontakt) an
@@ -1119,6 +1115,12 @@ Friend Class AnrufMonitor
                 NodeValues.Add(.TelName)
             End If
 
+            ' Companies
+            If Not .Companies = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("Companies")
+                NodeValues.Add(.Companies)
+            End If
+
             AttributeNames.Add("ID")
             AttributeValues.Add(.ID)
 
@@ -1138,7 +1140,7 @@ Friend Class AnrufMonitor
         AttributeValues = Nothing
     End Sub
 
-    Private Function LadeLetzterAnrufer() As C_Telefonat
+    Friend Function LadeLetzterAnrufer() As C_Telefonat
         LadeLetzterAnrufer = New C_Telefonat
         Dim xPathTeile As New ArrayList
         Dim ListNodeNames As New ArrayList
@@ -1146,19 +1148,19 @@ Friend Class AnrufMonitor
 
         ' Zeit
         ListNodeNames.Add("Zeit")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(System.DateTime.Now)
 
         ' Anrufer
         ListNodeNames.Add("Anrufer")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
         ' TelNr
         ListNodeNames.Add("TelNr")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
         ' MSN
         ListNodeNames.Add("MSN")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
         ' StoreID
         ListNodeNames.Add("StoreID")
@@ -1170,12 +1172,15 @@ Friend Class AnrufMonitor
 
         ' vCard
         ListNodeNames.Add("vCard")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
         ' TelName
         ListNodeNames.Add("TelName")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
+        ' Companies
+        ListNodeNames.Add("Companies")
+        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
         LadeLetzterAnrufer.ID = CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
         With xPathTeile
@@ -1185,12 +1190,8 @@ Friend Class AnrufMonitor
 
         C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
         With LadeLetzterAnrufer
-            If ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")).ToString = C_DP.P_Def_ErrorMinusOne Then
-                .Zeit = System.DateTime.Now
-            Else
-                .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))
-            End If
 
+            .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))
             .Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
             .TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
             .MSN = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("MSN")))
@@ -1198,13 +1199,16 @@ Friend Class AnrufMonitor
             .KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
             .vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
             .TelName = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelName")))
+            .Companies = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Companies")))
 
             If .TelName = C_DP.P_Def_ErrorMinusOne Then .TelName = C_hf.TelefonName(.MSN)
-            If Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
-                .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
-            ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne Then
-                'prüfen ob das Sinnvoll ist:
-                .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+            If Not C_OlI.OutlookApplication Is Nothing Then
+                If Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
+                    .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+                ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne Then
+                    'prüfen ob das Sinnvoll ist:
+                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                End If
             End If
         End With
         xPathTeile = Nothing
@@ -1230,6 +1234,10 @@ Friend Class AnrufMonitor
         With Telefonat
 
             If Not C_hf.TelNrVergleich(C_DP.Read(xPathTeile, "0"), .TelNr) Then
+
+                NodeNames.Add("Index")
+                NodeValues.Add(CStr((index + 1) Mod 10))
+
                 If Not .Anrufer = C_DP.P_Def_StringEmpty Then
                     NodeNames.Add("Anrufer")
                     NodeValues.Add(.Anrufer)
@@ -1245,8 +1253,6 @@ Friend Class AnrufMonitor
                     NodeValues.Add(.Zeit)
                 End If
 
-                NodeNames.Add("Index")
-                NodeValues.Add(CStr((index + 1) Mod 10))
 
                 If Not .StoreID = C_DP.P_Def_StringEmpty Then
                     NodeNames.Add("StoreID")

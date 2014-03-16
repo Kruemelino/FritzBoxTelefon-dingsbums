@@ -38,7 +38,7 @@
     <SignManifests>true</SignManifests>
     <ManifestKeyFile>
     </ManifestKeyFile>
-    <ManifestCertificateThumbprint>8FF169FE28327B28728435817C3C3B8AB0C0C180</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>277374D6BECB26ADDC7CFD445696711E6B3CADA8</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
@@ -122,8 +122,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <NoWarn>
@@ -155,8 +154,7 @@
     <DebugType>None</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <NoWarn>
@@ -356,11 +354,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Common\Ressources\Bild2.gif" />
-    <EmbeddedResource Include="..\Common\Ressources\Bild4.gif" />
-    <EmbeddedResource Include="..\Common\Ressources\Bild4-1.gif" />
-    <EmbeddedResource Include="..\Common\Ressources\Bild4-2.gif" />
-    <EmbeddedResource Include="..\Common\Ressources\Bild5.gif" />
+    <EmbeddedResource Include="..\Common\Ressources\Bild2.gif">
+      <Link>Ressources\Bild2.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\Bild4.gif">
+      <Link>Ressources\Bild4.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\Bild4-1.gif">
+      <Link>Ressources\Bild4-1.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\Bild4-2.gif">
+      <Link>Ressources\Bild4-2.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\Bild5.gif">
+      <Link>Ressources\Bild5.gif</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml">
@@ -369,6 +377,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml">
       <Link>Ressources\RibbonJournal.xml</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml">
       <SubType>Designer</SubType>

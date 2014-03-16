@@ -11,19 +11,6 @@ Public Class PopUpStoppUhr
     Event Close()
     Delegate Sub SchließeStoppUhr()
 
-    Private Declare Auto Function SetWindowPos Lib "user32" (ByVal hWnd As IntPtr, ByVal hWndInsertAfter As IntPtr, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As UInteger) As Boolean
-    Private Declare Function ShowWindow Lib "user32" (ByVal hwnd As Long, ByVal nCmdShow As Long) As Long
-
-    ReadOnly HWND_BOTTOM As New IntPtr(1)
-    ReadOnly HWND_NOTOPMOST As New IntPtr(-2)
-    ReadOnly HWND_TOP As New IntPtr(0)
-    ReadOnly HWND_TOPMOST As New IntPtr(-1)
-    ReadOnly SWP_NOSIZE As UInteger = 1
-    ReadOnly SWP_NOMOVE As UInteger = 2
-    ReadOnly SWP_NOACTIVATE As UInteger = 16 '0x0010; 
-    ReadOnly SW_SHOWNOACTIVATE = 4 ' Zeigt das Fenster an ohne es zu aktivieren
-    ReadOnly DS_SETFOREGROUND As UInteger = &H200 'Danke an Pikachu für den Tipp :)
-
 #Region "Properties"
     Private clHeader As Color = SystemColors.ControlDark
     <Category("Header"), _
@@ -262,13 +249,18 @@ Public Class PopUpStoppUhr
     End Sub
 
     Sub Popup()
+        Dim retVal As Boolean
         With fStopUhr
             .TopMost = True
             .Size = Size
             .Location = StartPosition
             .Show()
-            SetWindowPos(.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
-            SetWindowPos(.Handle.ToInt32, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE + DS_SETFOREGROUND)
+
+            retVal = OutlookSecurity.SetWindowPos(.Handle, hWndInsertAfterFlags.HWND_TOPMOST, 0, 0, 0, 0, _
+                                      SetWindowPosFlags.DoNotActivate + _
+                                      SetWindowPosFlags.IgnoreMove + _
+                                      SetWindowPosFlags.IgnoreResize + _
+                                      SetWindowPosFlags.DoNotChangeOwnerZOrder)
         End With
     End Sub
 

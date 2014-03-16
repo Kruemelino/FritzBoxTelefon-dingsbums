@@ -67,10 +67,6 @@
     Private F_RWS As formRWSuche
 #End Region
 
-#Region "Globale Variablen"
-    Private Dateipfad As String
-#End Region
-
 #Region "Properies"
     Friend Property P_CallClient() As Wählclient
         Get
@@ -116,14 +112,12 @@
     Friend Sub New(ByVal HelferKlasse As Helfer, _
                ByVal DataProviderKlasse As DataProvider, _
                ByVal CryptKlasse As Rijndael, _
-               ByVal iniPfad As String, _
                ByVal Inverssuche As formRWSuche, _
                ByVal KontaktKlasse As Contacts, _
                ByVal Phonerklasse As PhonerInterface)
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
         C_Crypt = CryptKlasse
-        Dateipfad = iniPfad
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
         C_Phoner = Phonerklasse
@@ -284,11 +278,11 @@
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                XMLListBaseNode = C_DP.NameListCALL '"CallList"
+                XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = C_DP.NameListRING '"RingList"
+                XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
             Case Else '"dynMVIPListe"
-                XMLListBaseNode = C_DP.NameListVIP '"VIPList"
+                XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
         End Select
 
         index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
@@ -361,11 +355,11 @@
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                XMLListBaseNode = C_DP.NameListCALL '"CallList"
+                XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = C_DP.NameListRING '"RingList"
+                XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
             Case Else '"dynMVIPListe"
-                XMLListBaseNode = C_DP.NameListVIP '"VIPList"
+                XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
         End Select
 
         Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
@@ -1125,7 +1119,6 @@
 
     Friend Sub ÖffneEinstellungen()
         ThisAddIn.P_Config.ShowDialog()
-        Dateipfad = GetSetting("FritzBox", "Optionen", "TBxml", C_DP.P_Def_ErrorMinusOne)
     End Sub
 
     Friend Sub ÖffneJournalImport()

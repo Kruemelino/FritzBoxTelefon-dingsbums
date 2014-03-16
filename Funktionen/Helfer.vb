@@ -7,10 +7,7 @@ Public Class Helfer
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
 
-    Private sDateiPfad As String
-
-    Public Sub New(ByVal ArbeitsPfad As String, ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As Rijndael)
-        sDateiPfad = ArbeitsPfad
+    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As Rijndael)
         C_DP = DataProviderKlasse
         C_Crypt = CryptKlasse
     End Sub
@@ -53,6 +50,7 @@ Public Class Helfer
             StringEntnehmen = C_DP.P_Def_ErrorMinusOne
         End If
     End Function
+
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
         Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
@@ -128,7 +126,6 @@ Public Class Helfer
     ''' Die HTML/URL müssen gesondert beachtet werden. Dafün muss die IPv6 in eckige Klammern gesetzt werden.
     ''' </summary>
     ''' <param name="InputIP">IP-Adresse</param>
-    ''' <param name="ValidIpv6URL">Gibt an, ob die IPv6 Adresse in ein URL-Konformen String gewandelt werden soll.</param>
     ''' <returns>Korrekte IP-Adresse</returns>
     Public Function ValidIP(ByVal InputIP As String) As String
         ValidIP = C_DP.P_Def_FritzBoxAdress
@@ -155,7 +152,7 @@ Public Class Helfer
     End Function
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
-        Dim LogDatei As String = Dateipfade("LogDatei")
+        Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName
         If C_DP.P_CBLogFile Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
@@ -186,27 +183,12 @@ Public Class Helfer
         Return MsgBox(Meldung, Style, "Fritz!Box Telefon-Dingsbums")
     End Function
 
-    Public Function Dateipfade(ByVal Datei As String) As String
-        Dim XMLDateiPfad As String = C_DP.GetXMLDateiPfad
-
-        Select Case Datei
-            Case "LogDatei"
-                Datei = "FBDB.log"
-            Case "AnrListe"
-                Datei = "AnrListe.csv"
-            Case "JournalXML"
-                Datei = "Journal.xml"
-            Case "FritzOutlookXML"
-                Datei = "FritzOutlook.xml"
-        End Select
-
-        Return Left(XMLDateiPfad, InStrRev(XMLDateiPfad, "\", , CompareMethod.Text)) & Datei
-    End Function
-
     ''' <summary>
     ''' Diese Routine ändert den Zugang zu den verschlüsselten Passwort.
     ''' </summary>
     ''' <remarks></remarks>
+    ''' 
+
     Public Sub KeyChange()
         Dim tempZugang As String
         Dim i As Long
@@ -217,8 +199,8 @@ Public Class Helfer
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, GetSetting("FritzBox", "Optionen", "Zugang", C_DP.P_Def_ErrorMinusOne)), tempZugang)
-            SaveSetting("Fritzbox", "Optionen", "Zugang", tempZugang)
+            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne)), tempZugang)
+            C_DP.SaveSettingsVBA("Zugang", tempZugang)
         End If
 
         If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
@@ -227,8 +209,8 @@ Public Class Helfer
                 tempZugang = tempZugang & Hex(Rnd() * 255)
             Next
             tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
-            C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, GetSetting("FritzBox", "Optionen", "ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne)), tempZugang)
-            SaveSetting("Fritzbox", "Optionen", "ZugangPasswortPhoner", tempZugang)
+            C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, C_DP.GetSettingsVBA("ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne)), tempZugang)
+            C_DP.SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
         End If
 
         C_DP.SpeichereXMLDatei()

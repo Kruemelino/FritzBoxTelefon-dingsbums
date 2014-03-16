@@ -31,6 +31,7 @@ Public Class ThisAddIn
     Private WithEvents iBtnRWSAlle As Office.CommandBarButton
     Private WithEvents iBtnKontakterstellen As Office.CommandBarButton
     Private WithEvents iBtnVIP As Office.CommandBarButton
+    Private WithEvents iBtnNotiz As Office.CommandBarButton
 #End If
 #End Region
     Private Shared oApp As Outlook.Application
@@ -134,7 +135,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.40"
+    Public Const Version As String = "3.7 Alpha 02"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -153,14 +154,20 @@ Public Class ThisAddIn
                 C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
-
+    ''' <summary>
+    ''' Startet das Fritz!Box Telefon-dingsbums
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
         Dim i As Integer = 2
 
         P_oApp = CType(Application, Outlook.Application)
-
+        ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
+        P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
         If Not P_oApp.ActiveExplorer Is Nothing Then
 #If OVer = 11 Then
             Initialisierung = New formInit
@@ -178,12 +185,10 @@ Public Class ThisAddIn
         End If
     End Sub
 
-    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
-        'C_KF.DeleteUserPropertyAnrMon(ContactSaved)
-    End Sub
-
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True)
+        If Not Cancel Then
+            If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True, True)
+        End If
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
@@ -204,7 +209,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO Then
@@ -281,7 +286,7 @@ Public Class ThisAddIn
                                                                                                           ePopVIP8.Click, _
                                                                                                           ePopVIP9.Click, _
                                                                                                           ePopVIP10.Click
-        C_GUI.KlickListen(control.Tag)
+        C_WClient.OnActionListen(control.Tag)
     End Sub
 #End Region
 #End If
@@ -295,7 +300,8 @@ Public Class ThisAddIn
                                                                                                                          iBtnRWStelSearch.Click, _
                                                                                                                          iBtnRWSAlle.Click, _
                                                                                                                          iBtnWwh.Click, _
-                                                                                                                         iBtnVIP.Click
+                                                                                                                         iBtnVIP.Click, _
+                                                                                                                         iBtnNotiz.Click
 
         With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Caption
@@ -320,6 +326,8 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
+                    'Case "Notiz"
+                    '    .AddNote(oApp.ActiveInspector)
             End Select
         End With
     End Sub
