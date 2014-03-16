@@ -5,7 +5,6 @@ Public Class DataProvider
     Private XMLDoc As XmlDocument
     Private WithEvents tSpeichern As Timer
 #Region "Windows Const für Office 2003"
-#If OVer = 11 Then
     Public Const ECM_FIRST As Long = &H1500
     Public Const EM_AUTOURLDETECT As Long = (WM_USER + 91)
     Public Const EM_CANPASTE As Long = (WM_USER + 50)  ' unique to rich edit control
@@ -123,9 +122,14 @@ Public Class DataProvider
     Public Const EM_STREAMIN As Long = (WM_USER + 73)  ' unique to rich edit control
     Public Const EM_STREAMOUT As Long = (WM_USER + 74) ' unique to rich edit control
     Public Const EM_UNDO As Long = &HC7
+
+    Public Const HTCAPTION As Short = 2
+
     Public Const WM_CONTEXTMENU As Long = &H7B ' unique to rich edit control
+    Public Const WM_NCLBUTTONDOWN As Short = &HA1S
     Public Const WM_USER As Long = &H400
-#End If
+    Public Const WM_SYSCOMMAND As Short = &H112S
+
 #End Region
 #Region "Konstanten"
     Private Const Speicherintervall As Double = 5 'in Minuten

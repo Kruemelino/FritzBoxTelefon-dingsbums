@@ -26,9 +26,9 @@ Public Class Wählclient
         C_Phoner = PhonerKlasse
 
     End Sub
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 #Region "Alles was mit dem Wählen zu tun hat"
     Friend Sub WählboxStart(ByVal olAuswahl As Outlook.Selection)
         ' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt

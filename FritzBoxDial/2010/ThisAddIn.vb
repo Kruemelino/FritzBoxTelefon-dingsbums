@@ -203,9 +203,9 @@ Public Class ThisAddIn
         End With
     End Sub
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then

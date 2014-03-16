@@ -1039,7 +1039,7 @@ Public Class Contacts
 #End If
 #End Region
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 End Class

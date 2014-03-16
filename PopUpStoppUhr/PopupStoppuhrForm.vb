@@ -15,19 +15,14 @@ Public Class PopupStoppuhrForm
     '               on any media without express permission.
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    Private Declare Function ReleaseCapture Lib "user32" () As Integer
-    Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, ByRef lParam As Object) As Integer
-
-    Private Const HTCAPTION As Short = 2
-    Private Const WM_NCLBUTTONDOWN As Short = &HA1S
-    Private Const WM_SYSCOMMAND As Short = &H112S
-    Public Event CloseClick()
     Private bMouseOnClose As Boolean = False
     Private bMouseOnLink As Boolean = False
     Private iHeightOfTitle As Integer
     Private iHeightOfZeit As Integer
     Private iHeightOfTelNr As Integer
-    Public Event CloseClickStoppUhr()
+
+    Public Event CloseClickStoppUhr(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Event CloseClick(ByVal sender As Object, ByVal e As System.EventArgs)
 
     Sub New(ByVal Parent As PopUpStoppUhr)
         pnParent = Parent
@@ -105,9 +100,13 @@ Public Class PopupStoppuhrForm
 #Region "Events"
 
     Private Sub PopupStoppuhrForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        Dim retIPVal As IntPtr
+        Dim HTCAPTION As IntPtr = 2
+        Dim WM_NCLBUTTONDOWN As Int32 = &HA1S
+        Dim retbVal As Boolean
         If Not RectClose.Contains(e.X, e.Y) Then
-            ReleaseCapture()
-            SendMessage(Me.Handle.ToInt32, WM_NCLBUTTONDOWN, HTCAPTION, 0)
+            retbVal = OutlookSecurity.ReleaseCapture()
+            retIPVal = OutlookSecurity.SendMessage(Me.Handle, WM_NCLBUTTONDOWN, HTCAPTION, IntPtr.Zero)
         End If
     End Sub
 
@@ -123,7 +122,7 @@ Public Class PopupStoppuhrForm
     Private Sub PopupStoppuhrForm_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
         If RectClose.Contains(e.X, e.Y) Then
             Me.Close()
-            RaiseEvent CloseClickStoppUhr()
+            RaiseEvent CloseClickStoppUhr(sender, e)
         End If
     End Sub
 

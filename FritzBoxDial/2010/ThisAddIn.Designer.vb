@@ -11,8 +11,6 @@
 Option Strict Off
 Option Explicit On
 
-
-
 '''
 <Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(0), _
  Global.System.Security.Permissions.PermissionSetAttribute(Global.System.Security.Permissions.SecurityAction.Demand, Name:="FullTrust")> _

@@ -1,11 +1,12 @@
 Imports System.ComponentModel
-<DefaultEvent("LinkClick")> _
-Public Class PopUpAnrMon
+
+<DefaultEvent("LinkClick")> Public Class PopUpAnrMon
     Inherits Component
 
-    Event LinkClick()
-    Event Close()
-    Event Closed()
+    Public Event LinkClick(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Event Close(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Event Closed(ByVal sender As Object, ByVal e As System.EventArgs)
+
     Private WithEvents fPopup As New PopUpAnrMonForm(Me)
     Private WithEvents tmAnimation As New Timer
     Private WithEvents tmWait As New Timer
@@ -502,12 +503,12 @@ Public Class PopUpAnrMon
     End Sub
 
     Private Sub fPopup_CloseClick() Handles fPopup.CloseClick
-        RaiseEvent Close()
+        RaiseEvent Close(Me, EventArgs.Empty)
         Me.Finalize()
     End Sub
 
     Private Sub fPopup_LinkClick() Handles fPopup.LinkClick
-        RaiseEvent LinkClick()
+        RaiseEvent LinkClick(Me, EventArgs.Empty)
     End Sub
 
     Private Function GetOpacityBasedOnPosition() As Double
@@ -610,7 +611,7 @@ Public Class PopUpAnrMon
                             .TopMost = False
                             .Close()
                             bAppearing = True
-                            RaiseEvent Closed()
+                            RaiseEvent Closed(Me, EventArgs.Empty)
                         End If
 
                         .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
@@ -636,7 +637,7 @@ Public Class PopUpAnrMon
                             .TopMost = False
                             .Close()
                             bAppearing = True
-                            RaiseEvent Closed()
+                            RaiseEvent Closed(Me, EventArgs.Empty)
                         End If
                     End If
                 End If
@@ -668,8 +669,9 @@ Public Class PopUpAnrMon
         tmAnimation.Start()
     End Sub
 
-    Protected Overrides Sub Finalize()
-        fPopup.TopMost = False
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    fPopup.TopMost = False
+    '    fPopup.Dispose(True)
+    'End Sub
+
 End Class

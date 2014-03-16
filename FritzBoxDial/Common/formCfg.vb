@@ -85,9 +85,9 @@ Friend Class formCfg
         Ausfüllen()
     End Sub
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 
 #Region "Ausfüllen"
 

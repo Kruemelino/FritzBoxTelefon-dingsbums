@@ -8,7 +8,7 @@ Public Class PopUpStoppUhr
     Private WithEvents TimerSchlieﬂen As New Timer
     Private Stoppwatch As New Stopwatch
     Private i As Integer = 0
-    Event Close()
+    Public Event Close(ByVal sender As Object, ByVal e As System.EventArgs)
     Delegate Sub SchlieﬂeStoppUhr()
 
 #Region "Properties"
@@ -292,9 +292,9 @@ Public Class PopUpStoppUhr
         End If
     End Sub
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 
     Private Sub timerZeit_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerZeit.Elapsed
         With Stoppwatch.Elapsed
@@ -312,7 +312,7 @@ Public Class PopUpStoppUhr
         TimerSchlieﬂen = Nothing
         StartPosition = fStopUhr.Location
         AutoSchlieﬂen()
-        RaiseEvent Close()
+        RaiseEvent Close(Me, EventArgs.Empty)
         Me.Finalize()
     End Sub
 
@@ -325,7 +325,7 @@ Public Class PopUpStoppUhr
         TimerZeit = Nothing
         StartPosition = fStopUhr.Location
         AutoSchlieﬂen()
-        RaiseEvent Close()
+        RaiseEvent Close(Me, EventArgs.Empty)
         Me.Finalize()
     End Sub
 

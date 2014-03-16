@@ -42,8 +42,9 @@ Public Class PopUpAnrMonForm
     Private iHeightOfAnrName As Integer
     Private iHeightOfTelNr As Integer
     Private iTitleOrigin As Integer
-    Public Event LinkClick()
-    Public Event CloseClick()
+
+    Public Event LinkClick(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Event CloseClick(ByVal sender As Object, ByVal e As System.EventArgs)
 
 #Region "Properties"
     Protected Overrides ReadOnly Property ShowWithoutActivation() As Boolean
@@ -193,10 +194,10 @@ Public Class PopUpAnrMonForm
 
     Private Sub Me_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
         If RectClose.Contains(e.X, e.Y) Then
-            RaiseEvent CloseClick()
+            RaiseEvent CloseClick(Me, EventArgs.Empty)
         End If
         If RectAnrName.Contains(e.X, e.Y) Then
-            RaiseEvent LinkClick()
+            RaiseEvent LinkClick(Me, EventArgs.Empty)
         End If
         If RectOptions.Contains(e.X, e.Y) Then
             If Not Parent.OptionsMenu Is Nothing Then

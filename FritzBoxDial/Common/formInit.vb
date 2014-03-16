@@ -80,9 +80,9 @@
         End If
     End Sub
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False

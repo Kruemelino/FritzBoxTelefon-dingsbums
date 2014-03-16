@@ -184,6 +184,10 @@ End Enum
     '<DllImport("user32.dll", SetLastError:=True)> _
     'Friend Shared Function GetActiveWindow() As IntPtr
     'End Function
+
+    <DllImport("user32.dll", EntryPoint:="ReleaseCapture", SetLastError:=True, CharSet:=CharSet.Unicode)> _
+    Friend Shared Function ReleaseCapture() As Boolean
+    End Function
 End Class
 
 Public NotInheritable Class OutlookSecurity
@@ -392,4 +396,18 @@ Public NotInheritable Class OutlookSecurity
     '        Return UnsafeNativeMethods.GetActiveWindow()
     '    End Get
     'End Property
+
+    ''' <summary>
+    ''' Releases the mouse capture from a window in the current thread and restores normal mouse input processing. 
+    ''' A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, 
+    ''' except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
+    ''' </summary>
+    ''' <value>Boolean</value>
+    ''' <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+    ''' <remarks></remarks>
+    Public Shared ReadOnly Property ReleaseCapture() As Boolean
+        Get
+            Return UnsafeNativeMethods.ReleaseCapture()
+        End Get
+    End Property
 End Class
