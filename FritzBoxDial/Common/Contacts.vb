@@ -1015,10 +1015,10 @@ Public Class Contacts
 
     Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
         ' Clear the window list
-        Dim ReturnValue As IntPtr
+        Dim ReturnValue As Int32
         _listChildren = New List(Of ApiWindow)
         ' Start the enumeration process.
-        ReturnValue = OutlookSecurity.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, &H0)
+        ReturnValue = OutlookSecurity.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, IntPtr.Zero)
         ' Return the children list when the process is completed.
         Return _listChildren
     End Function

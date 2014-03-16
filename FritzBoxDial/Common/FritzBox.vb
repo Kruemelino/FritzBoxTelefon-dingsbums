@@ -137,8 +137,7 @@ Public Class FritzBox
                                     C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description & " - " & sLink)
                                 End If
                             Else
-                                C_hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & sBlockTime & "Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
-                                C_hf.LogFile("Der anzumendende Nutzer verfügt über keine ausreichende Berechtigung.")
+                                C_hf.FBDB_MsgBox("Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & sBlockTime & " Sekunden zu.  Versuchen Sie es später erneut.", MsgBoxStyle.Critical, "FBLogin")
                                 Return C_DP.P_Def_SessionID
                             End If
                         Else

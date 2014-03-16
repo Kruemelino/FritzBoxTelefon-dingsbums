@@ -1,16 +1,21 @@
 ﻿Imports System.Security.Cryptography
 Imports System.IO
 Imports System.Text
+Imports System.Management
 
 Public Class Rijndael
 
+    Private HWID As String = GetHWID()
+    Private bytIV() As Byte = CreateIV(HWID)
+
     Public Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrEncryptionKey As String) As String
-        vstrEncryptionKey = String.Concat(vstrEncryptionKey, "-", "DiaelPw,ddiwl!", "-", getMd5Hash("FBDB", Encoding.Unicode))
+
+        vstrEncryptionKey = getMd5Hash(String.Concat(vstrEncryptionKey, HWID), Encoding.Unicode)
 
         Dim bytValue() As Byte
         Dim bytKey() As Byte
         Dim bytEncoded() As Byte = {0}
-        Dim bytIV() As Byte = {121, 241, 10, 1, 132, 74, 11, 39, 255, 91, 45, 78, 14, 211, 22, 62}
+        ' Dim bytIV() As Byte = {121, 241, 10, 1, 132, 74, 11, 39, 255, 91, 45, 78, 14, 211, 22, 62}
         Dim intLength As Integer
         Dim intRemaining As Integer
         Dim objMemoryStream As New MemoryStream()
@@ -57,22 +62,17 @@ Public Class Rijndael
         '   ***********************************************************************
 
         Try
-
-            objCryptoStream = New CryptoStream(objMemoryStream, _
-              objRijndaelManaged.CreateEncryptor(bytKey, bytIV), _
-              CryptoStreamMode.Write)
+            objCryptoStream = New CryptoStream(objMemoryStream, objRijndaelManaged.CreateEncryptor(bytKey, bytIV), CryptoStreamMode.Write)
             objCryptoStream.Write(bytValue, 0, bytValue.Length)
 
             objCryptoStream.FlushFinalBlock()
 
             bytEncoded = objMemoryStream.ToArray
+
             objMemoryStream.Close()
             objCryptoStream.Close()
-        Catch
 
-
-
-        End Try
+        Catch : End Try
 
         '   ***********************************************************************
         '   ******   Return encryptes value (converted from  byte Array to   ******
@@ -82,12 +82,13 @@ Public Class Rijndael
         Return Convert.ToBase64String(bytEncoded)
 
     End Function
+
     Public Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDecryptionKey As String) As String
-        vstrDecryptionKey = String.Concat(vstrDecryptionKey, "-", "DiaelPw,ddiwl!", "-", getMd5Hash("FBDB", Encoding.Unicode))
+        vstrDecryptionKey = getMd5Hash(String.Concat(vstrDecryptionKey, HWID), Encoding.Unicode)
 
         Dim bytDataToBeDecrypted() As Byte
         Dim bytTemp() As Byte
-        Dim bytIV() As Byte = {121, 241, 10, 1, 132, 74, 11, 39, 255, 91, 45, 78, 14, 211, 22, 62}
+        ' Dim bytIV() As Byte = {121, 241, 10, 1, 132, 74, 11, 39, 255, 91, 45, 78, 14, 211, 22, 62}
         Dim objRijndaelManaged As New RijndaelManaged()
         Dim objMemoryStream As MemoryStream
         Dim objCryptoStream As CryptoStream
@@ -134,19 +135,17 @@ Public Class Rijndael
 
         Try
 
-            objCryptoStream = New CryptoStream(objMemoryStream, _
-               objRijndaelManaged.CreateDecryptor(bytDecryptionKey, bytIV), _
-               CryptoStreamMode.Read)
+            objCryptoStream = New CryptoStream(objMemoryStream, objRijndaelManaged.CreateDecryptor(bytDecryptionKey, bytIV), CryptoStreamMode.Read)
 
             objCryptoStream.Read(bytTemp, 0, bytTemp.Length)
 
             objCryptoStream.FlushFinalBlock()
+
             objMemoryStream.Close()
+
             objCryptoStream.Close()
 
-        Catch
-
-        End Try
+        Catch : End Try
 
         '   *****************************************
         '   ******   Return decypted value     ******
@@ -155,6 +154,7 @@ Public Class Rijndael
         Return StripNullCharacters(Encoding.ASCII.GetString(bytTemp))
 
     End Function
+
     Public Function StripNullCharacters(ByVal vstrStringWithNulls As String) As String
 
         Dim intPosition As Integer
@@ -199,4 +199,85 @@ Public Class Rijndael
         Return sBuilder.ToString()
 
     End Function
+
+    ''' <summary>
+    ''' Erstellt einen Fingerabdruck des Rechners anhand der "ProcessorID", der "VolumeSerialnumber" der ersten Festplatte, der "Win32_BaseBoard_SerialNumber" und der Sicherheits-ID für den Benutzer
+    ''' </summary>
+    ''' <returns>Fingerabdruck bzw. HardwareID</returns>
+    ''' <remarks></remarks>
+    Private Function GetHWID() As String
+        Dim list As New List(Of String)
+
+
+        Dim Query As SelectQuery
+        Dim Search As ManagementObjectSearcher
+
+        Query = New SelectQuery("Win32_processor")
+        Search = New ManagementObjectSearcher(Query)
+
+        For Each info As ManagementObject In search.Get()
+            list.Add(info("processorId").ToString)
+        Next
+
+        Dim disk As ManagementObject
+
+        'For Each d As DriveInfo In DriveInfo.GetDrives()
+        '    If d.DriveType = DriveType.Fixed AndAlso d.IsReady Then
+        '        disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", d.Name.Substring(0, 2)))
+        '        list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
+        '    End If
+        'Next
+
+        disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", DriveInfo.GetDrives.First.Name.Substring(0, 2)))
+        list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
+
+        Query = New SelectQuery("Win32_BaseBoard")
+        Search = New ManagementObjectSearcher(Query)
+
+        For Each info As ManagementObject In Search.Get()
+            list.Add(info("SerialNumber").ToString)
+        Next
+
+        list.Add(System.Security.Principal.WindowsIdentity.GetCurrent.User.Value)
+        Query = Nothing
+        Search = Nothing
+        Return String.Join("-", list.ToArray())
+    End Function
+
+    ''' <summary>
+    ''' Erstellt einen Initialisierungsvektor (IV) für den symmetrischen Algorithmus.
+    ''' </summary>
+    ''' <param name="strData">Text, aus dem der Initialisierungsvektor generiert werden soll.</param>
+    ''' <returns>Initialisierungsvektor</returns>
+    ''' <remarks></remarks>
+    Private Function CreateIV(ByVal strData As String) As Byte()
+        'Convert strPassword to an array and store in chrData.
+        Dim chrData() As Char = strData.ToCharArray
+        'Use intLength to get strPassword size.
+        Dim intLength As Integer = chrData.GetUpperBound(0)
+        'Declare bytDataToHash and make it the same size as chrData.
+        Dim bytDataToHash(intLength) As Byte
+
+        'Use For Next to convert and store chrData into bytDataToHash.
+        For i As Integer = 0 To chrData.GetUpperBound(0)
+            bytDataToHash(i) = CByte(Asc(chrData(i)))
+        Next
+
+        'Declare what hash to use.
+        Dim SHA512 As New System.Security.Cryptography.SHA512Managed
+        'Declare bytResult, Hash bytDataToHash and store it in bytResult.
+        Dim bytResult As Byte() = SHA512.ComputeHash(bytDataToHash)
+        'Declare bytIV(15).  It will hold 128 bits.
+        Dim bytIV(15) As Byte
+
+        'Use For Next to put a specific size (128 bits) of 
+        'bytResult into bytIV. The 0 To 30 for bytKey used the first 256 bits.
+        'of the hashed password. The 32 To 47 will put the next 128 bits into bytIV.
+        For i As Integer = 32 To 47
+            bytIV(i - 32) = bytResult(i)
+        Next
+
+        Return bytIV 'return the IV
+    End Function
 End Class
+

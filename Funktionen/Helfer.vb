@@ -12,10 +12,6 @@ Public Class Helfer
         C_Crypt = CryptKlasse
     End Sub
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
-
 #Region " String Behandlung"
 
     Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, Optional ByVal Reverse As Boolean = False) As String
@@ -196,9 +192,8 @@ Public Class Helfer
         If Not C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Then
             tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
-                tempZugang = tempZugang & Hex(Rnd() * 255)
+                tempZugang = tempZugang & Hex(Rnd() * 64)
             Next
-            tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
             C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne)), tempZugang)
             C_DP.SaveSettingsVBA("Zugang", tempZugang)
         End If
@@ -206,9 +201,8 @@ Public Class Helfer
         If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
             tempZugang = C_DP.P_Def_StringEmpty
             For i = 0 To 2
-                tempZugang = tempZugang & Hex(Rnd() * 255)
+                tempZugang = tempZugang & Hex(Rnd() * 64)
             Next
-            tempZugang = C_Crypt.getMd5Hash(tempZugang, Encoding.Unicode)
             C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, C_DP.GetSettingsVBA("ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne)), tempZugang)
             C_DP.SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
         End If
@@ -594,7 +588,6 @@ Public Class Helfer
                             With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
                                 httpGET = .ReadToEnd()
                                 .Close()
-                                .Dispose()
                             End With
                         Catch exANE As ArgumentNullException
                             FBError = True

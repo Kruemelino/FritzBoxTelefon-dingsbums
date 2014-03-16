@@ -122,11 +122,11 @@ End Enum
     End Function
 
     <DllImport("user32.dll", EntryPoint:="GetWindowText", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function GetWindowText(ByVal hwnd As IntPtr, ByVal lpString As String, ByVal cch As Integer) As IntPtr
+    Friend Shared Function GetWindowText(ByVal hwnd As IntPtr, ByVal lpString As String, ByVal cch As Int32) As Int32
     End Function
 
     <DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As OutlookSecurity.EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
+    Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As OutlookSecurity.EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
     End Function
 
     <DllImport("user32.dll", EntryPoint:="GetWindowRect", SetLastError:=True, CharSet:=CharSet.Unicode)> _
@@ -154,7 +154,7 @@ End Enum
     End Function
 
     <DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
     End Function
 
     <DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)> _
@@ -215,8 +215,7 @@ Public NotInheritable Class OutlookSecurity
     Public Shared ReadOnly Property GetWindowText(ByVal hwnd As IntPtr) As String
         Get
             Dim lpString As String = Space(255)
-            Dim l As IntPtr = UnsafeNativeMethods.GetWindowText(hwnd, lpString, Len(lpString))
-            Return Left(lpString, CInt(l))
+            Return Left(lpString, UnsafeNativeMethods.GetWindowText(hwnd, lpString, Len(lpString)))
         End Get
     End Property
 
@@ -325,7 +324,7 @@ Public NotInheritable Class OutlookSecurity
     ''' <value>IntPtr</value>
     ''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
     ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Long, ByVal lParam As Long) As IntPtr
+    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
         Get
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get
@@ -358,7 +357,7 @@ Public NotInheritable Class OutlookSecurity
     ''' <value>IntPtr</value>
     ''' <returns></returns>
     ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633494(v=vs.85).aspx</remarks>
-    Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As Integer) As IntPtr
+    Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
         Get
             Return UnsafeNativeMethods.EnumChildWindows(hWndParent, lpEnumFunc, lParam)
         End Get
