@@ -135,7 +135,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Alpha 02"
+    Public Const Version As String = "3.7 Alpha 03"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -166,13 +166,13 @@ Public Class ThisAddIn
         Dim i As Integer = 2
 
         P_oApp = CType(Application, Outlook.Application)
-        ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
-        P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
+
         If Not P_oApp.ActiveExplorer Is Nothing Then
 #If OVer = 11 Then
             Initialisierung = New formInit
 #End If
-
+            ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
+            P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
 #If OVer < 14 Then
             C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
