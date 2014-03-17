@@ -135,7 +135,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.6.40"
+    Public Const Version As String = "3.7 Alpha 03"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -154,19 +154,25 @@ Public Class ThisAddIn
                 C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
-
+    ''' <summary>
+    ''' Startet das Fritz!Box Telefon-dingsbums
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
         Dim i As Integer = 2
 
         P_oApp = CType(Application, Outlook.Application)
+        ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
 
         If Not P_oApp.ActiveExplorer Is Nothing Then
 #If OVer = 11 Then
             Initialisierung = New formInit
 #End If
-
+            P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
 #If OVer < 14 Then
             C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
@@ -180,7 +186,9 @@ Public Class ThisAddIn
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True)
+        If Not Cancel Then
+            If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True, True)
+        End If
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
@@ -195,9 +203,9 @@ Public Class ThisAddIn
         End With
     End Sub
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    MyBase.Finalize()
+    'End Sub
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then

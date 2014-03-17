@@ -221,15 +221,16 @@ Public Class Rijndael
 
         Dim disk As ManagementObject
 
-        'For Each d As DriveInfo In DriveInfo.GetDrives()
-        '    If d.DriveType = DriveType.Fixed AndAlso d.IsReady Then
-        '        disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", d.Name.Substring(0, 2)))
-        '        list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
-        '    End If
-        'Next
+        For Each d As DriveInfo In DriveInfo.GetDrives()
+            If d.DriveType = DriveType.Fixed AndAlso d.IsReady Then
+                disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", d.Name.Substring(0, 2)))
+                list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
+                Exit For
+            End If
+        Next
 
-        disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", DriveInfo.GetDrives.First.Name.Substring(0, 2)))
-        list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
+        'disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", DriveInfo.GetDrives.First.Name.Substring(0, 2)))
+        'list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
 
         Query = New SelectQuery("Win32_BaseBoard")
         Search = New ManagementObjectSearcher(Query)

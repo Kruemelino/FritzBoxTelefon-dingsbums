@@ -999,11 +999,11 @@
 
         Select Case control.Tag
             Case "Wwdh"
-                XMLListBaseNode = C_DP.NameListCALL
+                XMLListBaseNode = C_DP.P_Def_NameListCALL
             Case "AnrListe"
-                XMLListBaseNode = C_DP.NameListRING
+                XMLListBaseNode = C_DP.P_Def_NameListRING
             Case Else ' "VIPListe"
-                XMLListBaseNode = C_DP.NameListVIP
+                XMLListBaseNode = C_DP.P_Def_NameListVIP
         End Select
 
         Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))

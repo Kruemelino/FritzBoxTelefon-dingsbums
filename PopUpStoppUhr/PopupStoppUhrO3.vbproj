@@ -11,7 +11,7 @@
     <AssemblyName>PopUpStoppUhr</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -48,6 +48,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -61,6 +64,7 @@
     <Import Include="System.Drawing" />
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\FritzBoxDial.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Funktionen\FunktionenO3.vbproj">
+      <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
+      <Name>FunktionenO3</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
