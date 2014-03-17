@@ -536,7 +536,7 @@ Friend Class formCfg
                                                                                    BStoppUhrAnzeigen.Click, _
                                                                                    ButtonArbeitsverzeichnis.Click
 
-        Select CType(sender, Windows.Forms.Button).Name
+        Select Case CType(sender, Windows.Forms.Button).Name
             Case "ButtonZuruecksetzen"
                 ' Startwerte zurücksetzen
                 ' Einstellungen für das Wählmakro zurücksetzen
