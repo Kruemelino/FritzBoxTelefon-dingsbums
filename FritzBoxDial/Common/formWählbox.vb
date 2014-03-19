@@ -204,7 +204,7 @@ Friend Class formWählbox
         row(2) = C_hf.nurZiffern(Me.TelNrBox.Text, C_DP.P_TBLandesVW)
         With Me
             .Text = "Anruf: " & row(2)
-            .Tag = C_DP.P_Def_ErrorMinusOne
+            .Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
             With .ListTel.Rows
                 .Add(row)
                 .Item(.Count - 1).Selected = True

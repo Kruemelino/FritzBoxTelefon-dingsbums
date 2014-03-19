@@ -1,7 +1,7 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
-#define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.6.30"
+#define MyAppName "Fritz!Box Telefon-dingsbums für Office 2010"
+#define MyAppVersion "3.7 Alpha 03"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "http://www.ip-phone-forum.de/showthread.php?t=237086"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder Rückwärtssuche."
@@ -76,7 +76,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
   Source: "2003\setcaspol.exe"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
 #endif
 ;Office 2003 - Debuginformationen
-#ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopupAnrMon.pdb" AND "2003\PopUpStoppuhr.pdb"
+#ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopUpAnrMon.pdb" AND "2003\PopUpStoppuhr.pdb"
   Source: "2003\FritzBoxDial.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
   Source: "2003\Funktionen.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
   Source: "2003\PopUpAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2003)
@@ -95,7 +95,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 #ifexist "2007\Fritz!Box Telefon-Dingsbums.pdb" AND "2007\Funktionen.pdb" AND "2007\PopupAnrMon.pdb" AND "2007\PopUpStoppuhr.pdb"
   Source: "2007\Fritz!Box Telefon-Dingsbums.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
   Source: "2007\Funktionen.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
-  Source: "2007\PopupAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
+  Source: "2007\PopUpAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
   Source: "2007\PopUpStoppuhr.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2007)
 #endif
 ;Office 2010
@@ -111,23 +111,23 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 #ifexist "2010\Fritz!Box Telefon-Dingsbums.pdb" AND "2010\Funktionen.pdb" AND "2010\PopupAnrMon.pdb" AND "2010\PopUpStoppuhr.pdb"
   Source: "2010\Fritz!Box Telefon-Dingsbums.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
   Source: "2010\Funktionen.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
-  Source: "2010\PopupAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
+  Source: "2010\PopUpAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
   Source: "2010\PopUpStoppuhr.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2010)
 #endif
 ;Office 2013
-#ifexist "2013\Fritz!Box Telefon-Dingsbums.dll" AND "2013\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2013\Fritz!Box Telefon-Dingsbums.vsto" AND "2013\Funktionen.dll" AND "2013\PopupAnrMon.dll" AND "2013\PopUpStoppuhr.dll"
+#ifexist "2013\Fritz!Box Telefon-Dingsbums.dll" AND "2013\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2013\Fritz!Box Telefon-Dingsbums.vsto" AND "2013\Funktionen.dll" AND "2013\PopUpAnrMon.dll" AND "2013\PopUpStoppuhr.dll"
   Source: "2013\Fritz!Box Telefon-Dingsbums.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
   Source: "2013\Fritz!Box Telefon-Dingsbums.dll.manifest"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
   Source: "2013\Fritz!Box Telefon-Dingsbums.vsto"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
   Source: "2013\Funktionen.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
-  Source: "2013\PopupAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
+  Source: "2013\PopUpAnrMon.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
   Source: "2013\PopUpStoppuhr.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
 #endif
 ;Office 2013 - Debuginformationen
 #ifexist "2013\Fritz!Box Telefon-Dingsbums.pdb" AND "2013\Funktionen.pdb" AND "2013\PopupAnrMon.pdb" AND "2013\PopUpStoppuhr.pdb"
   Source: "2013\Fritz!Box Telefon-Dingsbums.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
   Source: "2013\Funktionen.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
-  Source: "2013\PopupAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
+  Source: "2013\PopUpAnrMon.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
   Source: "2013\PopUpStoppuhr.pdb"; DestDir: "{app}"; Flags: ignoreversion; Check: OutlookVersion(2013)
 #endif
 ;Office 2007 & 2010 & 2013
