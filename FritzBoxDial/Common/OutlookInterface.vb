@@ -23,7 +23,6 @@
     Private _Anrufer As String
     Private _TelName As String
     Private _frm_AnrMon As formAnrMon
-    Private _PfadKontaktBild As String
 #End Region
 
 #Region "Properties"
@@ -169,14 +168,6 @@
         End Get
         Set(ByVal value As formAnrMon)
             _frm_AnrMon = value
-        End Set
-    End Property
-    Friend Property PfadKontaktBild() As String
-        Get
-            Return _PfadKontaktBild
-        End Get
-        Set(ByVal value As String)
-            _PfadKontaktBild = value
         End Set
     End Property
 #End Region

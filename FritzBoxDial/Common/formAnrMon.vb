@@ -11,6 +11,7 @@ Friend Class formAnrMon
 
     Private WithEvents TimerAktualisieren As Timer
     Public AnrmonClosed As Boolean
+    Private PfadKontaktBild As String
 
     Public Sub New(ByVal Aktualisieren As Boolean, _
                    ByVal DataProviderKlasse As DataProvider, _
@@ -78,9 +79,9 @@ Friend Class formAnrMon
                 Else
                     'Kontaktbild ermitteln
                     If C_DP.P_CBAnrMonContactImage Then
-                        C_AnrMon.LetzterAnrufer.PfadKontaktBild = C_KF.KontaktBild(C_AnrMon.LetzterAnrufer.olContact)
-                        If Not C_AnrMon.LetzterAnrufer.PfadKontaktBild = C_DP.P_Def_StringEmpty Then
-                            Using fs As New IO.FileStream(C_AnrMon.LetzterAnrufer.PfadKontaktBild, IO.FileMode.Open)
+                        PfadKontaktBild = C_KF.KontaktBild(C_AnrMon.LetzterAnrufer.olContact)
+                        If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
+                            Using fs As New IO.FileStream(PfadKontaktBild, IO.FileMode.Open)
                                 PopUpAnrMon.Image = Image.FromStream(fs)
                             End Using
 
@@ -146,11 +147,11 @@ Friend Class formAnrMon
     End Sub
 
     Private Sub PopUpAnrMon_Closed() Handles PopUpAnrMon.Closed
+        If (Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild)) Then
+            C_KF.DelKontaktBild(PfadKontaktBild)
+        End If
+
         AnrmonClosed = True
         If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
-
-    'Protected Overrides Sub Finalize()
-    '    MyBase.Finalize()
-    'End Sub
 End Class

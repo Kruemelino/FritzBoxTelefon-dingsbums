@@ -1054,9 +1054,6 @@ Friend Class AnrufMonitor
                     End If
                 End If
 #End If
-                If Not .PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso File.Exists(.PfadKontaktBild) Then
-                    C_KF.DelKontaktBild(.PfadKontaktBild)
-                End If
             End With
         End If
         'C_hf.NAR(Telefonat.olContact)

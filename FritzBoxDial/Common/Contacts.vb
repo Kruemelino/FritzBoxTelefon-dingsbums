@@ -282,7 +282,7 @@ Public Class Contacts
     End Sub
 
     ''' <summary>
-    ''' Speichert das Kontaktbild in den temporären Ordner. 
+    ''' Speichert das Kontaktbild in den Arbeitsorder. 
     ''' </summary>
     ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
     ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
@@ -293,8 +293,7 @@ Public Class Contacts
             With olContact
                 With .Attachments
                     If Not .Item("ContactPicture.jpg") Is Nothing Then
-                        'KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
-                        KontaktBild = C_DP.P_Arbeitsverzeichnis & System.IO.Path.GetRandomFileName()
+                        KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
                         KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
                         .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
                     End If
@@ -302,7 +301,11 @@ Public Class Contacts
             End With
         End If
     End Function
-
+    ''' <summary>
+    ''' Löscht das Kontaktbild in den Arbeitsorder. 
+    ''' </summary>
+    ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
+    ''' <remarks></remarks>
     Friend Sub DelKontaktBild(ByVal PfadKontaktBild As String)
         If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
             With My.Computer.FileSystem
@@ -312,6 +315,7 @@ Public Class Contacts
             End With
         End If
     End Sub
+
     ''' <summary>
     ''' Ermittelt aus der KontaktID (EntryID) und der StoreID den zugehörigen Kontakt.
     ''' </summary>
@@ -327,6 +331,7 @@ Public Class Contacts
             C_hf.LogFile("GetOutlookKontakt: " & ex.Message)
         End Try
     End Function
+
     ''' <summary>
     ''' Ermittelt aus der FolderID (EntryID) und der StoreID den zugehörigen Ordner.
     ''' </summary>
