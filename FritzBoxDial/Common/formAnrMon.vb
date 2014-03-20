@@ -83,11 +83,9 @@ Friend Class formAnrMon
                             Using fs As New IO.FileStream(C_AnrMon.LetzterAnrufer.PfadKontaktBild, IO.FileMode.Open)
                                 PopUpAnrMon.Image = Image.FromStream(fs)
                             End Using
-                            'Kontaktbild löschen
-                            C_KF.DelKontaktBild(C_AnrMon.LetzterAnrufer.PfadKontaktBild)
+
                             ' Seitenverhältnisse anpassen
-                            Dim Bildgröße As New Size(PopUpAnrMon.ImageSize.Width, CInt((PopUpAnrMon.ImageSize.Width * PopUpAnrMon.Image.Size.Height) / PopUpAnrMon.Image.Size.Width))
-                            PopUpAnrMon.ImageSize = Bildgröße
+                            PopUpAnrMon.ImageSize = New Size(PopUpAnrMon.ImageSize.Width, CInt((PopUpAnrMon.ImageSize.Width * PopUpAnrMon.Image.Size.Height) / PopUpAnrMon.Image.Size.Width))
                         End If
                     End If
                 End If
