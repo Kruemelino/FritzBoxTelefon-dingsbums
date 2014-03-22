@@ -201,7 +201,7 @@ Friend Class formWählbox
     Private Sub ButtonWeiter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonWeiter.Click
         Dim row(2) As String
         row(0) = "1" 'Index Zeile im DataGrid
-        row(2) = C_hf.nurZiffern(Me.TelNrBox.Text, C_DP.P_TBLandesVW)
+        row(2) = C_hf.nurZiffern(Me.TelNrBox.Text)
         With Me
             .Text = "Anruf: " & row(2)
             .Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
@@ -213,7 +213,7 @@ Friend Class formWählbox
     End Sub
 
     Private Sub TelNrBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TelNrBox.TextChanged
-        Dim TelNr As String = C_hf.nurZiffern(Me.TelNrBox.Text, C_DP.P_TBLandesVW)
+        Dim TelNr As String = C_hf.nurZiffern(Me.TelNrBox.Text)
         Me.ButtonWeiter.Enabled = Len(TelNr) > 0
         Me.LabelCheckTest.Text = "Diese Telefonnumer wird gewählt: " & TelNr
     End Sub
@@ -315,7 +315,7 @@ Friend Class formWählbox
                     StarteDialVorgang()
                 End If
             Else
-                code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString), C_DP.P_TBLandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
+                code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
                 Me.LabelStatus.Text = "Bitte warten..."
                 ' Ermitteln der URL für ein Orts- oder  Ferngespräch
                 If C_DP.P_TBVorwahl = Mid(code, 1, Len(C_DP.P_TBVorwahl)) And Not C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Then
@@ -408,7 +408,7 @@ Friend Class formWählbox
             Kontaktdaten = Split(Me.Tag.ToString, ";", , CompareMethod.Text)
             KontaktID = Kontaktdaten(0)
             StoreID = Kontaktdaten(1)
-            If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), ""), C_DP.P_TBLandesVW) = C_hf.nurZiffern(Number, C_DP.P_TBLandesVW) Then
+            If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), "")) = C_hf.nurZiffern(Number) Then
                 Dim xPathTeile() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
                 C_DP.Write("Wwdh", "WwdhEintrag" & index, Join(xPathTeile, ";"))
                 C_DP.Write("Wwdh", "Index", CStr((index + 1) Mod 10))
@@ -418,7 +418,7 @@ Friend Class formWählbox
             End If
         End If
 
-        Code = C_hf.nurZiffern(Number, C_DP.P_TBLandesVW) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
+        Code = C_hf.nurZiffern(Number) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
         'LogFile("Rufnummer " & Code & " wurde ausgewählt")
         If C_DP.P_CBVoIPBuster Then
             ' Änderung von "HardyX9" zur Nutzung des Scriptes mit VoIPBuster

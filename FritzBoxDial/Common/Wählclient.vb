@@ -51,8 +51,7 @@ Public Class Wählclient
                                                    StoreID:=C_DP.P_Def_StringEmpty, _
                                                    alleOrdner:=C_DP.P_CBKHO, _
                                                    TelNr:=C_DP.P_Def_StringEmpty, _
-                                                   Absender:=aktMail.SenderEmailAddress, _
-                                                   LandesVW:=C_DP.P_TBLandesVW)
+                                                   EMailAdresse:=aktMail.SenderEmailAddress)
                     If Not aktKontakt Is Nothing Then
                         Wählbox(aktKontakt, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
                     Else
@@ -158,7 +157,7 @@ Public Class Wählclient
             If Not Direktwahl Then
                 ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
-                If Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW), 2) = "11" Then TelNr = C_DP.P_TBVorwahl & TelNr
+                If Not Left(C_hf.nurZiffern(TelNr), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr), 2) = "11" Then TelNr = C_DP.P_TBVorwahl & TelNr
 
                 frm_Wählbox.Text = "Anruf: " & CStr(IIf(vCard = C_DP.P_Def_StringEmpty, TelNr, ReadFNfromVCard(vCard)))
                 ' Liste füllen
@@ -221,9 +220,9 @@ Public Class Wählclient
                     row(0) = CStr(iTelNr) 'Index wird eins hochgezählt
                     'Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
                     '(Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
-                    If Not Left(C_hf.nurZiffern(alleTelNr(i), C_DP.P_TBLandesVW), 1) = "0" And Not Left(C_hf.nurZiffern(alleTelNr(i), C_DP.P_TBLandesVW), 2) = "11" Then _
+                    If Not Left(C_hf.nurZiffern(alleTelNr(i)), 1) = "0" And Not Left(C_hf.nurZiffern(alleTelNr(i)), 2) = "11" Then _
                         alleTelNr(i) = C_DP.P_TBVorwahl & alleTelNr(i)
-                    If C_hf.nurZiffern(alleTelNr(i), C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) Then
+                    If C_hf.nurZiffern(alleTelNr(i)) = C_hf.nurZiffern(TelNr) Then
                         row(1) = alleNrTypen(i) & " *"
                     Else
                         row(1) = alleNrTypen(i)
@@ -393,7 +392,7 @@ Public Class Wählclient
             Absender = olMail.SenderEmailAddress
             ' Nun den zur Email-Adresse gehörigen Kontakt suchen
             If Not Absender = C_DP.P_Def_StringEmpty Then
-                oContact = C_KF.KontaktSuche(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_CBKHO, C_DP.P_Def_StringEmpty, Absender, C_DP.P_Def_StringEmpty)
+                oContact = C_KF.KontaktSuche(C_DP.P_Def_StringEmpty, Absender, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_CBKHO)
                 If Not oContact Is Nothing Then
                     Wählbox(oContact, C_DP.P_Def_StringEmpty, False, C_DP.P_Def_StringEmpty)
                 Else

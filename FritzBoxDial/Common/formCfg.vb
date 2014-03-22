@@ -1141,7 +1141,7 @@ Friend Class formCfg
 
                         'With aktKontakt
                         KontaktName = " (" & aktKontakt.FullName & ")"
-                        C_Kontakte.IndiziereKontakt(aktKontakt, False, True)
+                        C_Kontakte.IndiziereKontakt(aktKontakt)
                         aktKontakt.Save()
                         BWIndexer.ReportProgress(1)
                         If BWIndexer.CancellationPending Then Exit For
@@ -1192,7 +1192,7 @@ Friend Class formCfg
                         'With aktKontakt
                         'KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
                         KontaktName = " (" & aktKontakt.FullName & ")"
-                        C_Kontakte.DeIndizierungKontakt(aktKontakt, False)
+                        C_Kontakte.DeIndizierungKontakt(aktKontakt)
                         BWIndexer.ReportProgress(-1)
                         If BWIndexer.CancellationPending Then Exit For
                     Else

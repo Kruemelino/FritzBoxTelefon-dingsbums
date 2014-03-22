@@ -106,9 +106,9 @@ Public Class formRWSuche
                             ' wenn erfolgreich, dann Ergebnisse aus vCard in den Kontakt übertragen
                             C_KF.vCard2Contact(vCard, oContact)
                             ' falls TelNr bei der Rückwärtssuche geändert wurde, diese nummer als Zweitnummer eintragen
-                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
                                 .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
                                 .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                             End If
                             .Body = "Rückwärtssuche erfolgreich" & vbCrLf & "Achtung! Unter Umständen werden vorhandene Daten überschrieben. Wir übernehmen keine Haftung für verloren gegangene Daten und für falsche Informationen, die die Rückwärtssuche liefert! Nutzung auf eigene Gefahr!" & vbCrLf & .Body
@@ -169,7 +169,7 @@ Public Class formRWSuche
         Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
         Const SW2 As String = "'"
         ' TelNr sichern, da sie unter Umständen verändert wird
-        tmpTelNr = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)
+        tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen
@@ -308,7 +308,7 @@ Public Class formRWSuche
 
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
         vCard = C_DP.P_Def_StringEmpty
-        tmpTelNr = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)
+        tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen
@@ -356,7 +356,7 @@ Public Class formRWSuche
 
         ' Vorwahl erkennen
         ' TelNr sichern, da sie unter Umständen verändert wird
-        tmpTelNr = C_hf.nurZiffern(TelNr, "0041")
+        tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
         ' Schleife wird maximall drei mal durchlaufen

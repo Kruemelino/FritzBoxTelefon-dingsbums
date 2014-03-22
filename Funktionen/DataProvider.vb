@@ -1539,7 +1539,33 @@ Public Class DataProvider
             Return False
         End Get
     End Property
-
+    ''' <summary>
+    ''' Ein Array, welches den Namen der UserProperties, die die unformatierte Telefonnummer enthält.
+    ''' </summary>
+    ''' <value>String-Array</value>
+    ''' <returns>String-Array</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_UserProperties As String()
+        Get
+            Return {"FBDB-AssistantTelephoneNumber", _
+                    "FBDB-BusinessTelephoneNumber", _
+                    "FBDB-Business2TelephoneNumber", _
+                    "FBDB-CallbackTelephoneNumber", _
+                    "FBDB-CarTelephoneNumber", _
+                    "FBDB-CompanyMainTelephoneNumber", _
+                    "FBDB-HomeTelephoneNumber", _
+                    "FBDB-Home2TelephoneNumber", _
+                    "FBDB-ISDNNumber", _
+                    "FBDB-MobileTelephoneNumber", _
+                    "FBDB-OtherTelephoneNumber", _
+                    "FBDB-PagerNumber", _
+                    "FBDB-PrimaryTelephoneNumber", _
+                    "FBDB-RadioTelephoneNumber", _
+                    "FBDB-BusinessFaxNumber", _
+                    "FBDB-HomeFaxNumber", _
+                    "FBDB-OtherFaxNumber"}
+        End Get
+    End Property
 #End Region
 #Region "Organisation Properties"
     Private ReadOnly Property P_Def_Options() As String

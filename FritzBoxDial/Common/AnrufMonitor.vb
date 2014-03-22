@@ -501,7 +501,7 @@ Friend Class AnrufMonitor
                         If Not PhonerTelNr(1) = C_DP.P_Def_StringEmpty Then .TelNr = PhonerTelNr(1) & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
                         If Not PhonerTelNr(0) = C_DP.P_Def_StringEmpty Then .TelNr = PhonerTelNr(0) & Mid(.TelNr, 2)
                     End If
-                    .TelNr = C_hf.nurZiffern(.TelNr, C_DP.P_TBLandesVW)
+                    .TelNr = C_hf.nurZiffern(.TelNr)
                 End If
                 ' Ende Phoner
 
@@ -516,7 +516,7 @@ Friend Class AnrufMonitor
                 ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
-                    .olContact = C_KF.KontaktSuche(.KontaktID, .StoreID, C_DP.P_CBKHO, .TelNr, "", C_DP.P_TBLandesVW)
+                    .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne, .KontaktID, .StoreID, C_DP.P_CBKHO)
                     If Not Telefonat.olContact Is Nothing Then
                         'If Not C_KF.KontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Is Nothing Then
                         C_KF.KontaktInformation(Telefonat.olContact, FullName:=FullName, CompanyName:=CompanyName)
@@ -689,7 +689,7 @@ Friend Class AnrufMonitor
                     End Select
                 End If
 
-                .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)), C_DP.P_TBLandesVW)
+                .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)))
                 If .TelNr = C_DP.P_Def_StringEmpty Then .TelNr = C_DP.P_Def_StringUnknown
                 ' CbC-Vorwahl entfernen
                 If Left(.TelNr, 4) = "0100" Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
@@ -700,7 +700,7 @@ Friend Class AnrufMonitor
                 ' Daten zurücksetzen
 
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
-                    .olContact = C_KF.KontaktSuche(.KontaktID, .StoreID, C_DP.P_CBKHO, .TelNr, "", C_DP.P_TBLandesVW)
+                    .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne, .KontaktID, .StoreID, C_DP.P_CBKHO)
                     If Not Telefonat.olContact Is Nothing Then
                         C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=.Companies)
                         .Anrufer = Replace(FullName & " (" & .Companies & ")", " ()", "")

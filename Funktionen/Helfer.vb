@@ -219,13 +219,6 @@ Public Class Helfer
     ''' <returns>Die formatierte Telefonnummer</returns>
     ''' <remarks></remarks>
     Function formatTelNr(ByVal TelNr As String) As String
-        ' formatiert die Telefonnummer in der Form "(0# ##) # ## ## ##" bzw. "+## (# ##) # ## ## ##"
-        ' Parameter:  TelNr (String):     zu formatierende Telefonnummer
-        '             OrtsVW (String):    Ortsvorwahl der Telefonnummer
-        '             LandesVW (String):  Landesvorwahl der Telefonnummer
-        '             intl (Boolean):     wenn 'true' dann wird die internationale Form verwendet.
-        ' Rückgabewert (String):          formatierte Telefonnummer
-
         Dim RufNr As String ' Telefonnummer ohne Vorwahl
 
         Dim LandesVW As String
@@ -243,7 +236,7 @@ Public Class Helfer
         OrtsVW = TelTeile(1)
         Durchwahl = TelTeile(2)
 
-        TelNr = nurZiffern(TelNr, LandesVW)
+        TelNr = nurZiffern(TelNr)
         If Not OrtsVW = C_DP.P_Def_StringEmpty Then
             posOrtsVW = InStr(TelNr, OrtsVW, CompareMethod.Text)
             RufNr = Mid(TelNr, posOrtsVW + Len(OrtsVW))
@@ -423,7 +416,7 @@ Public Class Helfer
                 TelNr = Mid(TelNr, Len(OrtsVW) + CInt(IIf(Left(TelNr, 1) = "0", 2, 1)))
             Else
                 ' Ortsvorwahl in Klammern
-                OrtsVW = nurZiffern(Mid(TelNr, pos1, pos2 - pos1), LandesVW)
+                OrtsVW = nurZiffern(Mid(TelNr, pos1, pos2 - pos1))
                 TelNr = Trim(Mid(TelNr, pos2 + 1))
             End If
             pos1 = 0
@@ -484,7 +477,7 @@ Public Class Helfer
         Loop Until Not AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
     End Function
 
-    Public Function nurZiffern(ByVal TelNr As String, ByVal LandesVW As String) As String
+    Public Function nurZiffern(ByVal TelNr As String) As String
         ' aus FritzBoxDial übernommen
         ' ist jetzt eine eigenständige Funktion, da sie häufig gebraucht wird
         ' bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche
@@ -532,9 +525,9 @@ Public Class Helfer
             End Select
         Next
         ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-        If Left(nurZiffern, Len(LandesVW)) = LandesVW Then
-            nurZiffern = Replace(nurZiffern, LandesVW & "0", "0", , 1)
-            nurZiffern = Replace(nurZiffern, LandesVW, "0", , 1)
+        If Left(nurZiffern, Len(C_DP.P_TBLandesVW)) = C_DP.P_TBLandesVW Then
+            nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW & "0", "0", , 1)
+            nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW, "0", , 1)
         End If
 
         ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
@@ -551,7 +544,7 @@ Public Class Helfer
     End Function
 
     Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean
-        Return nurZiffern(TelNr1, C_DP.P_TBLandesVW) = nurZiffern(TelNr2, C_DP.P_TBLandesVW)
+        Return nurZiffern(TelNr1) = nurZiffern(TelNr2)
     End Function
 #End Region
 

@@ -18,8 +18,6 @@ Public Class Contacts
     Private _C_OLI As OutlookInterface
     Private _listChildren As New List(Of ApiWindow)
 
-    Private ReadOnly UserProperties() As String = Split("FBDB-AssistantTelephoneNumber;FBDB-BusinessTelephoneNumber;FBDB-Business2TelephoneNumber;FBDB-CallbackTelephoneNumber;FBDB-CarTelephoneNumber;FBDB-CompanyMainTelephoneNumber;FBDB-HomeTelephoneNumber;FBDB-Home2TelephoneNumber;FBDB-ISDNNumber;FBDB-MobileTelephoneNumber;FBDB-OtherTelephoneNumber;FBDB-PagerNumber;FBDB-PrimaryTelephoneNumber;FBDB-RadioTelephoneNumber;FBDB-BusinessFaxNumber;FBDB-HomeFaxNumber;FBDB-OtherFaxNumber", ";", , CompareMethod.Text)
-
     Public Property C_OLI() As OutlookInterface
         Get
             Return _C_OLI
@@ -36,66 +34,191 @@ Public Class Contacts
         C_hf = HelferKlasse
     End Sub
 
-    Friend Function KontaktSuche(ByRef KontaktID As String, _
-                ByRef StoreID As String, _
-                ByVal alleOrdner As Boolean, _
-                ByRef TelNr As String, _
-                ByVal Absender As String, _
-                ByVal LandesVW As String) As Outlook.ContactItem
+    ''' <summary>
+    ''' Startet die Kontaktsuche mit einer E-Mail oder einer Telefonnummer.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer, die als Suchkriterium verwendet werden soll.</param>
+    ''' <param name="EMailAdresse">E-Mail, die als Suchkriterium verwendet werden soll.</param>
+    ''' <param name="KontaktID">Rückgabewert: KontaktID des gefundenen Kontaktes.</param>
+    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der gefundene Kontaktes befindet.</param>
+    ''' <param name="alleOrdner">Flag, welches Bestimmt, ob alle Ordner durchsucht werden soll, oder nur der Hauptkontaktordner.</param>
+    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
+    ''' <remarks></remarks>
+    Friend Function KontaktSuche(ByRef TelNr As String, _
+                                 ByVal EMailAdresse As String, _
+                                 ByRef KontaktID As String, _
+                                 ByRef StoreID As String, _
+                                 ByVal alleOrdner As Boolean) As Outlook.ContactItem
+
         KontaktSuche = Nothing
         Dim oApp As Outlook.Application = C_OLI.OutlookApplication()
+        Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
         If Not oApp Is Nothing Then
-            Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
-            If alleOrdner Then
-                KontaktSuche = FindeKontakt(TelNr, Absender, LandesVW, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
+
+            If EMailAdresse = C_DP.P_Def_ErrorMinusOne Then
+                If alleOrdner Then
+                    KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
+                Else
+                    KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace)
+                End If
             Else
-                KontaktSuche = FindeKontakt(TelNr, Absender, LandesVW, olNamespace)
+                If alleOrdner Then
+                    KontaktSuche = FindeAbsenderKontakt(EMailAdresse, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
+                Else
+                    KontaktSuche = FindeAbsenderKontakt(EMailAdresse, olNamespace)
+                End If
             End If
+
             If Not KontaktSuche Is Nothing Then
                 With KontaktSuche
                     KontaktID = .EntryID
                     StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
                 End With
             End If
-            olNamespace = Nothing
         Else
             C_hf.LogFile("Kontaktsuche konnte nicht gestartet werden.")
         End If
+        olNamespace = Nothing
         oApp = Nothing
     End Function
 
-    Private Overloads Function FindeKontakt(ByRef TelNr As String, _
-                              ByVal Absender As String, _
-                              ByVal LandesVW As String, _
-                              ByVal NamensRaum As Outlook.NameSpace) _
-                              As Outlook.ContactItem
+    ''' <summary>
+    ''' Überladene Funktion die die Suche mit einer Telefonnummer durchführt. Start ist hier der <c>Outlook.NameSpace.</c>
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer, die als Suchkriterium verwendet wird.</param>
+    ''' <param name="NamensRaum">Startpunkt der Rekursiven Suche als <c>Outlook.NameSpace</c>.</param>
+    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
+    ''' <remarks></remarks>
+    Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal NamensRaum As Outlook.NameSpace) As Outlook.ContactItem
 
         Dim KontaktGefunden As Outlook.ContactItem = Nothing
 
         '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         Dim j As Integer = 1
         Do While (j <= NamensRaum.Folders.Count) And (KontaktGefunden Is Nothing)
-            KontaktGefunden = FindeKontakt(TelNr, Absender, LandesVW, NamensRaum.Folders.Item(j))
+            KontaktGefunden = FindeAnruferKontakt(TelNr, NamensRaum.Folders.Item(j))
             j = j + 1
             Windows.Forms.Application.DoEvents()
         Loop
         Return KontaktGefunden
     End Function
 
-    Private Overloads Function FindeKontakt(ByRef TelNr As String, _
-                                 ByVal Absender As String, _
-                                 ByVal LandesVW As String, _
-                                 ByVal Ordner As Outlook.MAPIFolder) _
-                                 As Outlook.ContactItem
+    ''' <summary>
+    ''' Überladene Funktion die die Suche mit einer Telefonnummer in einem Outlookordner durchführt. 
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer, die als Suchkriterium verwendet wird.</param>
+    ''' <param name="Ordner">Outlookordner in dem die Suche durchgeführt wird.</param>
+    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem.</c></returns>
+    ''' <remarks>Die Suche wird mittels der outlookinternen Suchroutine (<c>Ordner.Items.Find(sFilter)</c> durchgeführt.
+    ''' Der Abgleich erfolgt über die benutzerdefinierten Eigenschaften (<c>UserProperties</c>, die bei der Indizierung festgelegt werden. 
+    ''' Der Filter, der für die Suche verwendet wird, wird mittels Stringverkettung aus der Telefonnummer und der benutzerdefinierten Eigenschaften verknüpft.
+    ''' Der Filter behandelt dabei alle vorhandenen benutzerdefinierten Eigenschaften des Addins, die mit einem <c> OR </c> verknüpft sind.
+    ''' Die Suche über verkettete benutzerdefinierten Eigenschaften erfordert entweder, dass benutzerdefinierten Eigenschaften 
+    ''' auch dem Kontaktordner bekannt sind (nicht erwünscht), oder, dass die Suche über eine SQL-Abfrage mit
+    ''' <c>Verweisen auf Eigenschaften mithilfe von Namespaces</c> ("http://msdn.microsoft.com/en-us/library/office/ff868915.aspx") durchgeführt wird.
+    ''' 
+    ''' Es wird pro Kontaktordner ein Suchvorgang durchgeführt. Dieses Suchverfahren kann ab Officeversion 12 verwendet werden.
+    ''' 
+    ''' In Office 11 muss der Filter klassisch zusammengesetzt werden. Dabei sind pro Kontaktordner mehrere Suchvorgänge erforderlich, da die Verkettung
+    ''' mit <c> OR </c> nicht funktioniert.</remarks>
+    Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal Ordner As Outlook.MAPIFolder) As Outlook.ContactItem
 
-        ' sucht in der Kontaktdatenbank nach der TelNr/Email
-        ' Parameter:  TelNr (String):           Telefonnummer des zu Suchenden
-        '             Absender (String):        AbsenderEmailadresse, des Suchenden
-        '             LandesVW (String):        eigene Landesvorwahl
-        '             KontaktID (String):       ID der Kontaktdaten falls was gefunden wurde (nur Rückgabewert)
-        '             Ordner (Object):          der zu durchsuchende Kontaktordner (für die rekursive Suche)
-        '             NamensRaum:               Der Namespace, falls übergeordnet durchsucht werden soll.
-        ' Rückgabewert (Outlook.ContactItem):   Der gefundene Kontakt
+        Dim olKontakt As Outlook.ContactItem = Nothing ' was gefunden?
+        Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
+        Dim alleTE() As String  ' alle TelNr/Email eines Kontakts
+        Dim sFilter As String = C_DP.P_Def_StringEmpty
+
+        Dim Personen As Outlook.Items = Ordner.Items
+        Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
+
+        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+            If C_DP.P_CBIndex Then
+
+#If OVer = 11 Then
+                    For Each UserProperty In C_DP.P_Def_UserProperties
+                        sFilter = "[" & UserProperty & "] = """ & TelNr & """"
+                        Try
+                            oKontakt = CType(Personen.Find(sFilter), Outlook.ContactItem)
+                        Catch : End Try
+                        If Not oKontakt Is Nothing Then Exit For
+                    Next
+#Else
+                Dim JoinFilter(C_DP.P_Def_UserProperties.Length - 1) As String
+                For i = 0 To C_DP.P_Def_UserProperties.Length - 1
+                    JoinFilter(i) = String.Concat("""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", C_DP.P_Def_UserProperties(i), "/0x0000001f"" = '", TelNr, "'")
+                Next
+                sFilter = "@SQL=" & String.Join(" OR ", JoinFilter)
+                olKontakt = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
+#End If
+                If Not olKontakt Is Nothing Then
+                    With olKontakt
+                        alleTE = {.AssistantTelephoneNumber, _
+                                  .BusinessTelephoneNumber, _
+                                  .Business2TelephoneNumber, _
+                                  .CallbackTelephoneNumber, _
+                                  .CarTelephoneNumber, _
+                                  .CompanyMainTelephoneNumber, _
+                                  .HomeTelephoneNumber, _
+                                  .Home2TelephoneNumber, _
+                                  .ISDNNumber, _
+                                  .MobileTelephoneNumber, _
+                                  .OtherTelephoneNumber, _
+                                  .PagerNumber, _
+                                  .PrimaryTelephoneNumber, _
+                                  .RadioTelephoneNumber, _
+                                  .BusinessFaxNumber, _
+                                  .HomeFaxNumber, _
+                                  .OtherFaxNumber}
+                    End With
+                    For Each fTelNr As String In alleTE
+                        If TelNr = C_hf.nurZiffern(fTelNr) Then
+                            TelNr = fTelNr
+                            Exit For
+                        End If
+                    Next
+                End If
+            End If
+        End If
+        ' Unterordner werden rekursiv durchsucht
+        iOrdner = 1
+        Do While (iOrdner <= Ordner.Folders.Count) And (olKontakt Is Nothing)
+            olKontakt = FindeAnruferKontakt(TelNr, Ordner.Folders.Item(iOrdner))
+            iOrdner = iOrdner + 1
+            Windows.Forms.Application.DoEvents()
+        Loop
+        FindeAnruferKontakt = olKontakt
+        aktKontakt = Nothing
+    End Function '(FindeKontakt)
+
+    ''' <summary>
+    ''' Überladene Funktion die die Suche mit einer E-Mail-Adresse durchführt. Start ist hier der <c>Outlook.NameSpace.</c>
+    ''' </summary>
+    ''' <param name="EMailAdresse">E-Mail-Adresse, die als Suchkriterium verwendet wird.</param>
+    ''' <param name="NamensRaum">Startpunkt der Rekursiven Suche als <c>Outlook.NameSpace</c>.</param>
+    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
+    ''' <remarks></remarks>
+    Private Overloads Function FindeAbsenderKontakt(ByVal EMailAdresse As String, ByVal NamensRaum As Outlook.NameSpace) As Outlook.ContactItem
+
+        Dim KontaktGefunden As Outlook.ContactItem = Nothing
+
+        '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
+        Dim j As Integer = 1
+        Do While (j <= NamensRaum.Folders.Count) And (KontaktGefunden Is Nothing)
+            KontaktGefunden = FindeAbsenderKontakt(EMailAdresse, NamensRaum.Folders.Item(j))
+            j = j + 1
+            Windows.Forms.Application.DoEvents()
+        Loop
+        Return KontaktGefunden
+    End Function
+
+    ''' <summary>
+    ''' Überladene Funktion die die Suche mit einer Telefonnummer in einem Outlookordner durchführt. 
+    ''' </summary>
+    ''' <param name="EMailAdresse">E-Mail-Adresse, die als Suchkriterium verwendet wird.</param>
+    ''' <param name="Ordner">Outlookordner in dem die Suche durchgeführt wird.</param>
+    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem.</c></returns>
+    ''' <remarks>Die Suche wird mittels der outlookinternen Suchroutine (<c>Ordner.Items.Find(sFilter)</c> durchgeführt.</remarks>
+    Private Overloads Function FindeAbsenderKontakt(ByVal EMailAdresse As String, ByVal Ordner As Outlook.MAPIFolder) As Outlook.ContactItem
 
         Dim gefunden As Outlook.ContactItem = Nothing ' was gefunden?
 
@@ -105,46 +228,33 @@ Public Class Contacts
         Dim sFilter As String = C_DP.P_Def_StringEmpty
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
-            If Not Absender = C_DP.P_Def_StringEmpty Then
-                sFilter = String.Concat("[Email1Address] = """, Absender, """ OR [Email2Address] = """, Absender, """ OR [Email3Address] = """, Absender, """")
+            If Not EMailAdresse = C_DP.P_Def_StringEmpty Then
+                sFilter = String.Concat("[Email1Address] = """, EMailAdresse, """ OR [Email2Address] = """, EMailAdresse, """ OR [Email3Address] = """, EMailAdresse, """")
                 gefunden = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
-            Else
-                If C_DP.P_CBIndex Then
-                    Dim Personen As Outlook.Items = Ordner.Items
-                    ' In Outlook 2003 funktioniert die Verkettung mit OR nicht.
-#If OVer = 11 Then
-                    For Each UserProperty In UserProperties
-                        sFilter = "[" & UserProperty & "] = """ & TelNr & """"
-                        Try
-                            gefunden = CType(Personen.Find(sFilter), Outlook.ContactItem)
-                        Catch ex As Exception
-                        End Try
-                        If Not gefunden Is Nothing Then Exit For
-                    Next
-#Else
-                    Dim JoinFilter(UserProperties.Length - 1) As String
-                    For i = 0 To UserProperties.Length - 1
-                        JoinFilter(i) = String.Concat("""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", UserProperties(i), "/0x0000001f"" = '", TelNr, "'")
-                    Next
-                    sFilter = "@SQL=" & String.Join(" OR ", JoinFilter)
-                    gefunden = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
-#End If
-                    If Not gefunden Is Nothing Then TelNr = NrFormat(gefunden, TelNr, LandesVW)
-                End If
             End If
         End If
         ' Unterordner werden rekursiv durchsucht
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count) And (gefunden Is Nothing)
-            gefunden = FindeKontakt(TelNr, Absender, LandesVW, Ordner.Folders.Item(iOrdner))
+            gefunden = FindeAbsenderKontakt(EMailAdresse, Ordner.Folders.Item(iOrdner))
             iOrdner = iOrdner + 1
             Windows.Forms.Application.DoEvents()
         Loop
-        FindeKontakt = gefunden
+        FindeAbsenderKontakt = gefunden
         aktKontakt = Nothing
     End Function '(FindeKontakt)
 
-    Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
+    ''' <summary>
+    ''' Erstellt einen Kontakt aus einer vCard.
+    ''' </summary>
+    ''' <param name="KontaktID">Rückgabewert: KontaktID des gefundenen Kontaktes.</param>
+    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der gefundene Kontaktes befindet.</param>
+    ''' <param name="vCard">Kontaktdaten im vCard-Format.</param>
+    ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
+    ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
+    ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
+    ''' <remarks></remarks>
+    Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim FritzFolderExists As Boolean = False
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
@@ -152,7 +262,7 @@ Public Class Contacts
         olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
         olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
         With olKontakt
-            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW)) Then
+            If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr)) Then
                 .MobileTelephoneNumber = TelNr
             Else
                 .BusinessTelephoneNumber = TelNr
@@ -162,10 +272,10 @@ Public Class Contacts
                 vCard2Contact(vCard, olKontakt)
 
                 If Not TelNr = C_DP.P_Def_StringEmpty Then
-                    If Not C_hf.nurZiffern(.BusinessTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                    If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
                         .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
                         .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
-                    ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber, C_DP.P_TBLandesVW) = C_hf.nurZiffern(TelNr, C_DP.P_TBLandesVW) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
+                    ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
                         .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
                         .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
                     End If
@@ -173,13 +283,12 @@ Public Class Contacts
                 .Categories = "Fritz!Box (automatisch erstellt)" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
                 .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
             End If
-            If Speichern Then
+            If AutoSave Then
+                If olKontakt.GetInspector Is Nothing Then IndiziereKontakt(olKontakt)
+                olKontakt = CType(.Move(olFolder), Outlook.ContactItem)
                 KontaktID = .EntryID
                 StoreID = olFolder.StoreID
                 C_hf.LogFile("Kontakt " & .FullName & " wurde erstellt")
-
-                If Not C_DP.P_CBIndexAus Then IndiziereKontakt(olKontakt, True, False)
-                olKontakt = CType(.Move(olFolder), Outlook.ContactItem)
             End If
         End With
 
@@ -187,6 +296,13 @@ Public Class Contacts
         C_hf.NAR(olFolder)
     End Function
 
+    ''' <summary>
+    ''' Erstellt einen leeren Kontakt und ergänzt eine Telefonnummer.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
+    ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
+    ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
+    ''' <remarks></remarks>
     Friend Overloads Function ErstelleKontakt(ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
         Return ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, TelNr, Speichern)
     End Function
@@ -249,6 +365,15 @@ Public Class Contacts
         End If
     End Sub ' (KontaktErstellen)
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="olContact"></param>
+    ''' <param name="FullName"></param>
+    ''' <param name="CompanyName"></param>
+    ''' <param name="HomeAddress"></param>
+    ''' <param name="BusinessAddress"></param>
+    ''' <remarks></remarks>
     Friend Overloads Sub KontaktInformation(ByRef olContact As Outlook.ContactItem, _
                               Optional ByRef FullName As String = vbNullString, _
                               Optional ByRef CompanyName As String = vbNullString, _
@@ -266,6 +391,16 @@ Public Class Contacts
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="KontaktID"></param>
+    ''' <param name="StoreID"></param>
+    ''' <param name="FullName"></param>
+    ''' <param name="CompanyName"></param>
+    ''' <param name="HomeAddress"></param>
+    ''' <param name="BusinessAddress"></param>
+    ''' <remarks></remarks>
     Friend Overloads Sub KontaktInformation(ByRef KontaktID As String, _
                               ByRef StoreID As String, _
                               Optional ByRef FullName As String = vbNullString, _
@@ -301,6 +436,7 @@ Public Class Contacts
             End With
         End If
     End Function
+
     ''' <summary>
     ''' Löscht das Kontaktbild in den Arbeitsorder. 
     ''' </summary>
@@ -350,56 +486,65 @@ Public Class Contacts
             GetOutlookFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
         End If
     End Function
+
 #Region "Kontaktindizierung"
-    Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem, ByVal Log As Boolean, ByVal Speichern As Boolean)
+    ''' <summary>
+    ''' Indiziert einen Kontaktelement.
+    ''' </summary>
+    ''' <param name="Kontakt">Der Kontakt der indiziert werden soll.</param>
+    ''' <remarks></remarks>
+    Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
-            Dim LandesVW As String = C_DP.P_TBLandesVW
             Dim alleTE(16) As String  ' alle TelNr/Email eines Kontakts
             Dim tempTelNr As String
 
             With Kontakt
-                alleTE(0) = .AssistantTelephoneNumber
-                alleTE(1) = .BusinessTelephoneNumber
-                alleTE(2) = .Business2TelephoneNumber
-                alleTE(3) = .CallbackTelephoneNumber
-                alleTE(4) = .CarTelephoneNumber
-                alleTE(5) = .CompanyMainTelephoneNumber
-                alleTE(6) = .HomeTelephoneNumber
-                alleTE(7) = .Home2TelephoneNumber
-                alleTE(8) = .ISDNNumber
-                alleTE(9) = .MobileTelephoneNumber
-                alleTE(10) = .OtherTelephoneNumber
-                alleTE(11) = .PagerNumber
-                alleTE(12) = .PrimaryTelephoneNumber
-                alleTE(13) = .RadioTelephoneNumber
-                alleTE(14) = .BusinessFaxNumber
-                alleTE(15) = .HomeFaxNumber
-                alleTE(16) = .OtherFaxNumber
+                alleTE = {.AssistantTelephoneNumber, _
+                          .BusinessTelephoneNumber, _
+                          .Business2TelephoneNumber, _
+                          .CallbackTelephoneNumber, _
+                          .CarTelephoneNumber, _
+                          .CompanyMainTelephoneNumber, _
+                          .HomeTelephoneNumber, _
+                          .Home2TelephoneNumber, _
+                          .ISDNNumber, _
+                          .MobileTelephoneNumber, _
+                          .OtherTelephoneNumber, _
+                          .PagerNumber, _
+                          .PrimaryTelephoneNumber, _
+                          .RadioTelephoneNumber, _
+                          .BusinessFaxNumber, _
+                          .HomeFaxNumber, _
+                          .OtherFaxNumber}
 
                 For i = LBound(alleTE) To UBound(alleTE)
                     If Not alleTE(i) = C_DP.P_Def_StringEmpty Then ' Fall: Telefonnummer vorhanden
-                        If .UserProperties.Find(UserProperties(i)) Is Nothing Then
-                            .UserProperties.Add(UserProperties(i), Outlook.OlUserPropertyType.olText, False)
+                        If .UserProperties.Find(C_DP.P_Def_UserProperties(i)) Is Nothing Then
+                            .UserProperties.Add(C_DP.P_Def_UserProperties(i), Outlook.OlUserPropertyType.olText, False)
                         End If
-                        tempTelNr = C_hf.nurZiffern(alleTE(i), LandesVW)
-                        If Not CStr(.UserProperties.Find(UserProperties(i)).Value) = tempTelNr Then
-                            .UserProperties.Find(UserProperties(i)).Value = tempTelNr
+                        tempTelNr = C_hf.nurZiffern(alleTE(i))
+                        If Not CStr(.UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value) = tempTelNr Then
+                            .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value = tempTelNr
                         End If
-                    ElseIf Not .UserProperties.Find(UserProperties(i)) Is Nothing Then ' Fall:Index vorhanden, Telefonnummer nicht
-                        .UserProperties.Find(UserProperties(i)).Delete()
+                    ElseIf Not .UserProperties.Find(C_DP.P_Def_UserProperties(i)) Is Nothing Then ' Fall:Index vorhanden, Telefonnummer nicht
+                        .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Delete()
                     End If
                 Next
-                If Log Then C_hf.LogFile("Kontakt: " & .FullNameAndCompany & " wurde automatisch indiziert.")
-                If Speichern Then .Save()
+                .Save()
             End With
         End If
     End Sub
 
-    Friend Sub DeIndizierungKontakt(ByRef Kontakt As Outlook.ContactItem, WriteLog As Boolean)
+    ''' <summary>
+    ''' Entfernt alle Indizierungseinträge aus einem Kontaktelement.
+    ''' </summary>
+    ''' <param name="Kontakt">Der Kontakt der deindiziert werden soll.</param>
+    ''' <remarks></remarks>
+    Friend Sub DeIndizierungKontakt(ByRef Kontakt As Outlook.ContactItem)
         Dim UserEigenschaft As Outlook.UserProperty
         If Not C_DP.P_CBIndexAus Then
             With Kontakt.UserProperties
-                For Each UserProperty In UserProperties
+                For Each UserProperty In C_DP.P_Def_UserProperties
                     Try
                         UserEigenschaft = .Find(UserProperty)
                     Catch
@@ -413,53 +558,34 @@ Public Class Contacts
         End If
     End Sub
 
+#If Not OVer = 11 Then
+    ''' <summary>
+    ''' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
+    ''' </summary>
+    ''' <param name="Ordner">Der Ordner der deindiziert werden soll.</param>
+    ''' <remarks>Funktion wird eigentlich nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder in Ordnern erstellt werden.
+    ''' Die Funktion dient zum bereinigen von Ordner, die mit älteren Programmversionen indiziert wurden.</remarks>
     Friend Sub DeIndizierungOrdner(ByVal Ordner As Outlook.MAPIFolder)
         Try
-#If Not OVer = 11 Then
             With Ordner.UserDefinedProperties
                 For i = 1 To .Count
-                    If C_hf.IsOneOf(.Item(1).Name, UserProperties) Then .Remove(1)
+                    If C_hf.IsOneOf(.Item(1).Name, C_DP.P_Def_UserProperties) Then .Remove(1)
                 Next
             End With
-#End If
         Catch : End Try
     End Sub
+#End If
 #End Region
 
-    Private Function NrFormat(ByVal gefKontakt As Outlook.ContactItem, ByVal TelNr As String, ByVal LandesVW As String) As String
-        Dim alleTE(16) As String
-        With gefKontakt
-            alleTE(0) = .AssistantTelephoneNumber
-            alleTE(1) = .BusinessTelephoneNumber
-            alleTE(2) = .Business2TelephoneNumber
-            alleTE(3) = .CallbackTelephoneNumber
-            alleTE(4) = .CarTelephoneNumber
-            alleTE(5) = .CompanyMainTelephoneNumber
-            alleTE(6) = .HomeTelephoneNumber
-            alleTE(7) = .Home2TelephoneNumber
-            alleTE(8) = .ISDNNumber
-            alleTE(9) = .MobileTelephoneNumber
-            alleTE(10) = .OtherTelephoneNumber
-            alleTE(11) = .PagerNumber
-            alleTE(12) = .PrimaryTelephoneNumber
-            alleTE(13) = .RadioTelephoneNumber
-            alleTE(14) = .BusinessFaxNumber
-            alleTE(15) = .HomeFaxNumber
-            alleTE(16) = .OtherFaxNumber
-        End With
-        For Each Telefonnummer In alleTE
-            If TelNr = C_hf.nurZiffern(Telefonnummer, LandesVW) Then Return Telefonnummer
-        Next
-        Return TelNr
-    End Function
-
-    Sub vCard2Contact(ByVal vCard As String, ByRef Contact As Outlook.ContactItem)
-        ' überträgt den Inhalt einer vCard in einen Kontakt
-        ' Parameter:  vCard (String):         Quelle (zu übertragende vCard)
-        '             Contact (ContactItem):  Ziel (Kontakt, in den die Daten eingetragen werden sollen)
+    ''' <summary>
+    ''' Fürgt die Informationen einer vCard in ein Kontaktelement ein.
+    ''' </summary>
+    ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
+    ''' <param name="Contact">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
+    ''' <remarks></remarks>
+    Friend Sub vCard2Contact(ByVal vCard As String, ByRef Contact As Outlook.ContactItem)
 
         Dim ContactName As String  ' kompletter Name ("N") aus vCard
-        'Dim NameParts As Object ' Bestandteile von ContactName
         Dim pos As Integer    ' Position innerhalb eines Strings
         Dim tmp1 As String, tmp2 As String, tmp3 As String  ' Hilfsstrings
         Dim Company As String  ' Firmenname
@@ -820,6 +946,12 @@ Public Class Contacts
 
 #Region "KontaktNotiz"
 #If Not OVer = 11 Then
+
+    ''' <summary>
+    ''' Fügt einen Notizzeile in den Body eines Kontaktes
+    ''' </summary>
+    ''' <param name="olKontakt">Kontakt, in den die Notizzeile geschrieben werden soll.</param>
+    ''' <remarks></remarks>
     Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
 
         Dim oInsp As Outlook.Inspector
@@ -880,6 +1012,16 @@ Public Class Contacts
         Next
     End Function
 
+    ''' <summary>
+    ''' Erstellt die Notiztabelle, bzw. fügt Notizzeilen an.
+    ''' </summary>
+    ''' <param name="oDoc"></param>
+    ''' <param name="oTable"></param>
+    ''' <param name="HeaderRow"></param>
+    ''' <param name="CallRow"></param>
+    ''' <param name="NoteRow"></param>
+    ''' <param name="NeueZeile"></param>
+    ''' <remarks></remarks>
     Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row, ByVal NeueZeile As Boolean)
 
         Dim nRow As Integer = 1
@@ -973,6 +1115,15 @@ Public Class Contacts
             End With
         End With
     End Sub
+
+    ''' <summary>
+    ''' Füllt die Notizzeile mit Informationen
+    ''' </summary>
+    ''' <param name="AnrMonTyp"></param>
+    ''' <param name="Telfonat"></param>
+    ''' <param name="ContactShown"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Friend Function FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal Telfonat As C_Telefonat, ByVal ContactShown As Boolean) As Long
 
         FillNote = vbNull
@@ -1044,7 +1195,4 @@ Public Class Contacts
 #End If
 #End Region
 
-    'Protected Overrides Sub Finalize()
-    '    MyBase.Finalize()
-    'End Sub
 End Class

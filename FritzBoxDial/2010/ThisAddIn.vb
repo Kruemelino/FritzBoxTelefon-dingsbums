@@ -135,7 +135,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Alpha 04"
+    Public Const Version As String = "3.7 Alpha 05"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -187,7 +187,7 @@ Public Class ThisAddIn
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
         If Not Cancel Then
-            If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True, True)
+            C_KF.IndiziereKontakt(ContactSaved)
         End If
     End Sub
 
