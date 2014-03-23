@@ -335,8 +335,6 @@ Public Class FritzBox
         Dim Anzahl As Integer = 0
         Dim AnzahlISDN As Integer = 0
         Dim ID As Integer
-        Dim PortName() As String
-        Dim EndPortName() As String
         Dim Section As String
         Dim TelefonString() As String
         Dim j As Integer = 0
@@ -357,21 +355,21 @@ Public Class FritzBox
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        PortName = {"readFon123", _
-                    "readNTHotDialList", _
-                    "readDect1", _
-                    "readFonControl", _
-                    "readVoipExt", _
-                    "readTam", _
-                    "readFaxMail"}
+        Dim PortName() As String = {"readFon123", _
+                                    "readNTHotDialList", _
+                                    "readDect1", _
+                                    "readFonControl", _
+                                    "readVoipExt", _
+                                    "readTam", _
+                                    "readFaxMail"}
 
-        EndPortName = {"return list", _
-                       "return list", _
-                       "return list", _
-                       "return list", _
-                       "return Result", _
-                       "return list", _
-                       "return list"}
+        Dim EndPortName() As String = {"return list", _
+                                       "return list", _
+                                       "return list", _
+                                       "return list", _
+                                       "return Result", _
+                                       "return list", _
+                                       "return list"}
 
         With xPathTeile
             .Clear()

@@ -187,7 +187,7 @@ Public Class ThisAddIn
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
         If Not Cancel Then
-            If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True, True)
+            If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved)
         End If
     End Sub
 

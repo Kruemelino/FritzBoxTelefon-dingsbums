@@ -32,7 +32,6 @@ Public Class formRWSuche
         '               = 2: RWSDasTelefonbuch
         '               = 3: TelSearch.ch
 
-        Dim alleTE() As String   ' alle im Kontakt enthaltenen Telefonnummern
         Dim i As Integer, iTelNr As Integer      ' Zählvariablen
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
         Dim vCard As String = C_DP.P_Def_StringEmpty    ' gefundene vCard
@@ -53,25 +52,25 @@ Public Class formRWSuche
                     ' alle Telefonnummern in 'formRWSuche' eintragen
 
 
-                    alleTE = {.AssistantTelephoneNumber, _
-                                 .BusinessTelephoneNumber, _
-                                 .Business2TelephoneNumber, _
-                                 .CallbackTelephoneNumber, _
-                                 .CarTelephoneNumber, _
-                                 .CompanyMainTelephoneNumber, _
-                                 .HomeTelephoneNumber, _
-                                 .Home2TelephoneNumber, _
-                                 .ISDNNumber, _
-                                 .MobileTelephoneNumber, _
-                                 .OtherTelephoneNumber, _
-                                 .PagerNumber, _
-                                 .PrimaryTelephoneNumber, _
-                                 .RadioTelephoneNumber, _
-                                 .BusinessFaxNumber, _
-                                 .HomeFaxNumber, _
-                                 .OtherFaxNumber, _
-                                 .TelexNumber, _
-                                 .TTYTDDTelephoneNumber}
+                    Dim alleTE() As String = {.AssistantTelephoneNumber, _
+                                              .BusinessTelephoneNumber, _
+                                              .Business2TelephoneNumber, _
+                                              .CallbackTelephoneNumber, _
+                                              .CarTelephoneNumber, _
+                                              .CompanyMainTelephoneNumber, _
+                                              .HomeTelephoneNumber, _
+                                              .Home2TelephoneNumber, _
+                                              .ISDNNumber, _
+                                              .MobileTelephoneNumber, _
+                                              .OtherTelephoneNumber, _
+                                              .PagerNumber, _
+                                              .PrimaryTelephoneNumber, _
+                                              .RadioTelephoneNumber, _
+                                              .BusinessFaxNumber, _
+                                              .HomeFaxNumber, _
+                                              .OtherFaxNumber, _
+                                              .TelexNumber, _
+                                              .TTYTDDTelephoneNumber}
 
                     For i = LBound(alleTE) To UBound(alleTE)
                         If Not alleTE(i) = C_DP.P_Def_StringEmpty Then

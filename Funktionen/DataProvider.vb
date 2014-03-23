@@ -1547,48 +1547,50 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_Def_UserProperties As String()
         Get
-            Return {"FBDB-AssistantTelephoneNumber", _
-                    "FBDB-BusinessTelephoneNumber", _
-                    "FBDB-Business2TelephoneNumber", _
-                    "FBDB-CallbackTelephoneNumber", _
-                    "FBDB-CarTelephoneNumber", _
-                    "FBDB-CompanyMainTelephoneNumber", _
-                    "FBDB-HomeTelephoneNumber", _
-                    "FBDB-Home2TelephoneNumber", _
-                    "FBDB-ISDNNumber", _
-                    "FBDB-MobileTelephoneNumber", _
-                    "FBDB-OtherTelephoneNumber", _
-                    "FBDB-PagerNumber", _
-                    "FBDB-PrimaryTelephoneNumber", _
-                    "FBDB-RadioTelephoneNumber", _
-                    "FBDB-BusinessFaxNumber", _
-                    "FBDB-HomeFaxNumber", _
-                    "FBDB-OtherFaxNumber", _
-                    "FBDB-Telex", _
-                    "FBDB-TTYTDDTelephoneNumber"}
+            Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
+                                   "FBDB-BusinessTelephoneNumber", _
+                                   "FBDB-Business2TelephoneNumber", _
+                                   "FBDB-CallbackTelephoneNumber", _
+                                   "FBDB-CarTelephoneNumber", _
+                                   "FBDB-CompanyMainTelephoneNumber", _
+                                   "FBDB-HomeTelephoneNumber", _
+                                   "FBDB-Home2TelephoneNumber", _
+                                   "FBDB-ISDNNumber", _
+                                   "FBDB-MobileTelephoneNumber", _
+                                   "FBDB-OtherTelephoneNumber", _
+                                   "FBDB-PagerNumber", _
+                                   "FBDB-PrimaryTelephoneNumber", _
+                                   "FBDB-RadioTelephoneNumber", _
+                                   "FBDB-BusinessFaxNumber", _
+                                   "FBDB-HomeFaxNumber", _
+                                   "FBDB-OtherFaxNumber", _
+                                   "FBDB-Telex", _
+                                   "FBDB-TTYTDDTelephoneNumber"}
+            Return tmp
         End Get
     End Property
     Public ReadOnly Property P_Def_olTelNrTypen As String()
         Get
-            Return {"Assistent", _
-                    "Geschäftlich", _
-                    "Geschäftlich 2", _
-                    "Rückmeldung", _
-                    "Auto", _
-                    "Firma", _
-                    "Privat", _
-                    "Privat 2", _
-                    "ISDN", _
-                    "Mobiltelefon", _
-                    "Weitere", _
-                    "Pager", _
-                    "Haupttelefon", _
-                    "Funkruf", _
-                    "Fax geschäftl.", _
-                    "Fax privat", _
-                    "Weiteres Fax", _
-                    "Telex", _
-                    "Texttelefon"}
+            Dim tmp() As String = {"Assistent", _
+                                   "Geschäftlich", _
+                                   "Geschäftlich 2", _
+                                   "Rückmeldung", _
+                                   "Auto", _
+                                   "Firma", _
+                                   "Privat", _
+                                   "Privat 2", _
+                                   "ISDN", _
+                                   "Mobiltelefon", _
+                                   "Weitere", _
+                                   "Pager", _
+                                   "Haupttelefon", _
+                                   "Funkruf", _
+                                   "Fax geschäftl.", _
+                                   "Fax privat", _
+                                   "Weiteres Fax", _
+                                   "Telex", _
+                                   "Texttelefon"}
+            Return tmp
         End Get
     End Property
 #End Region

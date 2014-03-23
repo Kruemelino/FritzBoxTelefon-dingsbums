@@ -127,7 +127,6 @@ Public Class Contacts
 
         Dim olKontakt As Outlook.ContactItem = Nothing
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
-        Dim alleTE() As String  ' alle TelNr eines Kontakts
         Dim sFilter As String = C_DP.P_Def_StringEmpty
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
@@ -137,9 +136,9 @@ Public Class Contacts
             For Each UserProperty In C_DP.P_Def_UserProperties
                 sFilter = "[" & UserProperty & "] = """ & TelNr & """"
                 Try
-                    oKontakt = CType(Personen.Find(sFilter), Outlook.ContactItem)
+                    olKontakt = CType(Personen.Find(sFilter), Outlook.ContactItem)
                 Catch : End Try
-                If Not oKontakt Is Nothing Then Exit For
+                If Not olKontakt Is Nothing Then Exit For
             Next
 #Else
             Dim JoinFilter(C_DP.P_Def_UserProperties.Length - 1) As String
@@ -152,32 +151,33 @@ Public Class Contacts
 #End If
             If Not olKontakt Is Nothing Then
                 With olKontakt
-                    alleTE = {.AssistantTelephoneNumber, _
-                              .BusinessTelephoneNumber, _
-                              .Business2TelephoneNumber, _
-                              .CallbackTelephoneNumber, _
-                              .CarTelephoneNumber, _
-                              .CompanyMainTelephoneNumber, _
-                              .HomeTelephoneNumber, _
-                              .Home2TelephoneNumber, _
-                              .ISDNNumber, _
-                              .MobileTelephoneNumber, _
-                              .OtherTelephoneNumber, _
-                              .PagerNumber, _
-                              .PrimaryTelephoneNumber, _
-                              .RadioTelephoneNumber, _
-                              .BusinessFaxNumber, _
-                              .HomeFaxNumber, _
-                              .OtherFaxNumber, _
-                              .TelexNumber, _
-                              .TTYTDDTelephoneNumber}
+                    Dim alleTE() As String = {.AssistantTelephoneNumber, _
+                                              .BusinessTelephoneNumber, _
+                                              .Business2TelephoneNumber, _
+                                              .CallbackTelephoneNumber, _
+                                              .CarTelephoneNumber, _
+                                              .CompanyMainTelephoneNumber, _
+                                              .HomeTelephoneNumber, _
+                                              .Home2TelephoneNumber, _
+                                              .ISDNNumber, _
+                                              .MobileTelephoneNumber, _
+                                              .OtherTelephoneNumber, _
+                                              .PagerNumber, _
+                                              .PrimaryTelephoneNumber, _
+                                              .RadioTelephoneNumber, _
+                                              .BusinessFaxNumber, _
+                                              .HomeFaxNumber, _
+                                              .OtherFaxNumber, _
+                                              .TelexNumber, _
+                                              .TTYTDDTelephoneNumber}
+
+                    For Each fTelNr As String In alleTE
+                        If TelNr = C_hf.nurZiffern(fTelNr) Then
+                            TelNr = fTelNr
+                            Exit For
+                        End If
+                    Next
                 End With
-                For Each fTelNr As String In alleTE
-                    If TelNr = C_hf.nurZiffern(fTelNr) Then
-                        TelNr = fTelNr
-                        Exit For
-                    End If
-                Next
             End If
         End If
 
@@ -444,29 +444,28 @@ Public Class Contacts
     ''' <remarks></remarks>
     Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
-            Dim alleTE() As String  ' alle TelNr/Email eines Kontakts
             Dim tempTelNr As String
 
             With Kontakt
-                alleTE = {.AssistantTelephoneNumber, _
-                          .BusinessTelephoneNumber, _
-                          .Business2TelephoneNumber, _
-                          .CallbackTelephoneNumber, _
-                          .CarTelephoneNumber, _
-                          .CompanyMainTelephoneNumber, _
-                          .HomeTelephoneNumber, _
-                          .Home2TelephoneNumber, _
-                          .ISDNNumber, _
-                          .MobileTelephoneNumber, _
-                          .OtherTelephoneNumber, _
-                          .PagerNumber, _
-                          .PrimaryTelephoneNumber, _
-                          .RadioTelephoneNumber, _
-                          .BusinessFaxNumber, _
-                          .HomeFaxNumber, _
-                          .OtherFaxNumber, _
-                          .TelexNumber, _
-                          .TTYTDDTelephoneNumber}
+                Dim alleTE() As String = {.AssistantTelephoneNumber, _
+                                          .BusinessTelephoneNumber, _
+                                          .Business2TelephoneNumber, _
+                                          .CallbackTelephoneNumber, _
+                                          .CarTelephoneNumber, _
+                                          .CompanyMainTelephoneNumber, _
+                                          .HomeTelephoneNumber, _
+                                          .Home2TelephoneNumber, _
+                                          .ISDNNumber, _
+                                          .MobileTelephoneNumber, _
+                                          .OtherTelephoneNumber, _
+                                          .PagerNumber, _
+                                          .PrimaryTelephoneNumber, _
+                                          .RadioTelephoneNumber, _
+                                          .BusinessFaxNumber, _
+                                          .HomeFaxNumber, _
+                                          .OtherFaxNumber, _
+                                          .TelexNumber, _
+                                          .TTYTDDTelephoneNumber}
 
                 For i = LBound(alleTE) To UBound(alleTE)
                     If Not alleTE(i) = C_DP.P_Def_StringEmpty Then ' Fall: Telefonnummer vorhanden
@@ -509,7 +508,7 @@ Public Class Contacts
         End If
     End Sub
 
-#If Not OVer = 11 Then
+
     ''' <summary>
     ''' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
     ''' </summary>
@@ -517,6 +516,7 @@ Public Class Contacts
     ''' <remarks>Funktion wird eigentlich nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder in Ordnern erstellt werden.
     ''' Die Funktion dient zum bereinigen von Ordner, die mit älteren Programmversionen indiziert wurden.</remarks>
     Friend Sub DeIndizierungOrdner(ByVal Ordner As Outlook.MAPIFolder)
+#If Not OVer = 11 Then
         Try
             With Ordner.UserDefinedProperties
                 For i = 1 To .Count
@@ -524,17 +524,17 @@ Public Class Contacts
                 Next
             End With
         Catch : End Try
-    End Sub
 #End If
+    End Sub
 #End Region
 
 #Region "vCard"
-    ''' <summary>
-    ''' Fürgt die Informationen einer vCard in ein Kontaktelement ein.
-    ''' </summary>
-    ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
-    ''' <param name="Contact">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
-    ''' <remarks></remarks>
+        ''' <summary>
+        ''' Fürgt die Informationen einer vCard in ein Kontaktelement ein.
+        ''' </summary>
+        ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
+        ''' <param name="Contact">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
+        ''' <remarks></remarks>
     Friend Sub vCard2Contact(ByVal vCard As String, ByRef Contact As Outlook.ContactItem)
 
         Dim ContactName As String  ' kompletter Name ("N") aus vCard
