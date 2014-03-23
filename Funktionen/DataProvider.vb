@@ -1563,7 +1563,32 @@ Public Class DataProvider
                     "FBDB-RadioTelephoneNumber", _
                     "FBDB-BusinessFaxNumber", _
                     "FBDB-HomeFaxNumber", _
-                    "FBDB-OtherFaxNumber"}
+                    "FBDB-OtherFaxNumber", _
+                    "FBDB-Telex", _
+                    "FBDB-TTYTDDTelephoneNumber"}
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_olTelNrTypen As String()
+        Get
+            Return {"Assistent", _
+                    "Geschäftlich", _
+                    "Geschäftlich 2", _
+                    "Rückmeldung", _
+                    "Auto", _
+                    "Firma", _
+                    "Privat", _
+                    "Privat 2", _
+                    "ISDN", _
+                    "Mobiltelefon", _
+                    "Weitere", _
+                    "Pager", _
+                    "Haupttelefon", _
+                    "Funkruf", _
+                    "Fax geschäftl.", _
+                    "Fax privat", _
+                    "Weiteres Fax", _
+                    "Telex", _
+                    "Texttelefon"}
         End Get
     End Property
 #End Region

@@ -465,8 +465,6 @@ Friend Class AnrufMonitor
         Dim RWSSuccess As Boolean = False    ' 'true' wenn die Rückwärtssuche erfolgreich war
         'Dim LetzterAnrufer(5) As String
         Dim RWSIndex As Boolean
-        Dim FullName As String = C_DP.P_Def_StringEmpty
-        Dim CompanyName As String = C_DP.P_Def_StringEmpty
         Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)), C_DP.P_TBVorwahl)
 
         Dim Telefonat As C_Telefonat
@@ -517,10 +515,9 @@ Friend Class AnrufMonitor
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
                     .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                    If Not Telefonat.olContact Is Nothing Then
-                        'If Not C_KF.KontaktSuche(KontaktID, StoreID, C_DP.P_CBKHO, TelNr, "", C_DP.P_TBLandesVW) Is Nothing Then
-                        C_KF.KontaktInformation(Telefonat.olContact, FullName:=FullName, CompanyName:=CompanyName)
-                        .Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
+                    If Not .olContact Is Nothing Then
+                        .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
+                        .Companies = .olContact.CompanyName
                         If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
                         ' Anrufer per Rückwärtssuche ermitteln
@@ -551,9 +548,9 @@ Friend Class AnrufMonitor
                                     With Telefonat
                                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
                                         .vCard = C_DP.P_Def_StringEmpty
-                                        C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=CompanyName)
+                                        .Companies = .olContact.CompanyName
                                     End With
-                                    .Anrufer = Replace(FullName & " (" & CompanyName & ")", " ()", "")
+                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
                                     RWSSuccess = False
                                 End If
                             Else
@@ -640,7 +637,6 @@ Friend Class AnrufMonitor
         Dim RWSIndex As Boolean
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
-        Dim FullName As String = C_DP.P_Def_StringEmpty
 
         With xPathTeile
             .Clear()
@@ -702,8 +698,7 @@ Friend Class AnrufMonitor
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
                     .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne, .KontaktID, .StoreID, C_DP.P_CBKHO)
                     If Not Telefonat.olContact Is Nothing Then
-                        C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=.Companies)
-                        .Anrufer = Replace(FullName & " (" & .Companies & ")", " ()", "")
+                        .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
                         If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
                         ' .Anrufer per Rückwärtssuche ermitteln
@@ -735,9 +730,9 @@ Friend Class AnrufMonitor
                                     With Telefonat
                                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
                                         .vCard = C_DP.P_Def_StringEmpty
-                                        C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=.Companies)
+                                        .Companies = .olContact.Companies
                                     End With
-                                    .Anrufer = Replace(FullName & " (" & .Companies & ")", " ()", "")
+                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
                                     RWSSuccess = False
                                 End If
                             Else
@@ -925,9 +920,9 @@ Friend Class AnrufMonitor
         Dim NSN As Long = -1
         Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
 
-        Dim FullName As String = C_DP.P_Def_StringEmpty
-        Dim HomeAddress As String = C_DP.P_Def_StringEmpty
-        Dim BusinessAddress As String = C_DP.P_Def_StringEmpty
+        'Dim FullName As String = C_DP.P_Def_StringEmpty
+        'Dim HomeAddress As String = C_DP.P_Def_StringEmpty
+        'Dim BusinessAddress As String = C_DP.P_Def_StringEmpty
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
@@ -957,26 +952,22 @@ Friend Class AnrufMonitor
                             .Body += "Kontaktdaten (vCard):" & vbCrLf & .vCard & vbCrLf
                         Else
                             If Not .olContact Is Nothing Then
-                                C_KF.KontaktInformation(.olContact, FullName:=FullName, CompanyName:=.Companies, BusinessAddress:=BusinessAddress, HomeAddress:=HomeAddress)
 
-                                If FullName = C_DP.P_Def_StringEmpty Then
-                                    If .Companies = C_DP.P_Def_StringEmpty Then
-                                        .Anrufer = .TelNr
-                                    Else
-                                        .Anrufer = .Companies
-                                    End If
+                                If .olContact.FullName = C_DP.P_Def_StringEmpty Then
+                                    .Anrufer = CStr(IIf(.olContact.Companies = C_DP.P_Def_StringEmpty, .TelNr, .Companies))
                                 Else
-                                    .Anrufer = FullName
+                                    .Anrufer = .olContact.FullName
                                 End If
+
                                 If .Companies = C_DP.P_Def_StringEmpty Then
-                                    If Not HomeAddress = C_DP.P_Def_StringEmpty Then
+                                    If Not .olContact.HomeAddress = C_DP.P_Def_StringEmpty Then
                                         .Body += "Kontaktdaten:" & vbCrLf & .Anrufer _
-                                            & vbCrLf & .Companies & vbCrLf & HomeAddress & vbCrLf
+                                            & vbCrLf & .Companies & vbCrLf & .olContact.HomeAddress & vbCrLf
                                     End If
                                 Else
-                                    If Not BusinessAddress = C_DP.P_Def_StringEmpty Then
+                                    If Not .olContact.BusinessAddress = C_DP.P_Def_StringEmpty Then
                                         .Body += "Kontaktdaten:" & vbCrLf & .Anrufer _
-                                            & vbCrLf & .Companies & vbCrLf & BusinessAddress & vbCrLf
+                                            & vbCrLf & .Companies & vbCrLf & .olContact.BusinessAddress & vbCrLf
                                     End If
                                 End If
                             End If

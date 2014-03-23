@@ -1,6 +1,5 @@
 Imports System.Drawing
-Imports System.Runtime.InteropServices
-Imports System.ComponentModel
+Imports System.ComponentModel 'BackgroundWorker
 Imports System.Threading
 Imports System.Windows.Forms
 
@@ -20,6 +19,7 @@ Friend Class formCfg
 #Region "BackgroundWorker"
     Private WithEvents BWTelefone As BackgroundWorker
     Private WithEvents BWIndexer As BackgroundWorker
+    Private WithEvents BWTreeView As BackgroundWorker
 #End Region
 
 #Region "Delegaten"
@@ -84,10 +84,6 @@ Friend Class formCfg
         'Me.StartPosition = FormStartPosition.CenterParent
         Ausfüllen()
     End Sub
-
-    'Protected Overrides Sub Finalize()
-    '    MyBase.Finalize()
-    'End Sub
 
 #Region "Ausfüllen"
 
@@ -218,18 +214,18 @@ Friend Class formCfg
         ' Notiz
         Me.CBNote.Checked = C_DP.P_CBNote
 
-        If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
-        C_OlI.KontaktOrdnerInTreeView(Me.TVOutlookContact)
-        Me.TVOutlookContact.ExpandAll()
-        Dim tmpNode() As TreeNode = Me.TVOutlookContact.Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
-        If Not tmpNode.Length = 0 Then
-            Me.TVOutlookContact.SelectedNode = tmpNode(0)
-        End If
+
+        BWTreeView = New BackgroundWorker
+        With BWTreeView
+            .WorkerReportsProgress = False
+            .RunWorkerAsync(True)
+        End With
 
         FillLogTB()
         FillTelListe()
         CLBTelNrAusfüllen()
     End Sub
+
     ''' <summary>
     ''' Füllt die Telefonliste in den Einstellungen aus.
     ''' </summary>
@@ -1088,7 +1084,6 @@ Friend Class formCfg
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
-        Dim alleTE(13) As String  ' alle TelNr/Email eines Kontakts
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         If Not NamensRaum Is Nothing Then
             Dim j As Integer = 1
@@ -1285,7 +1280,7 @@ Friend Class formCfg
 
 #End Region
 
-#Region "BackGroundWorker - hHandle"
+#Region "BackGroundWorker - Handle"
     Private Sub BWIndexer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWIndexer.DoWork
 
         ErmittleKontaktanzahl()
@@ -1415,6 +1410,22 @@ Friend Class formCfg
         AddLine("BackgroundWorker wurde eliminiert.")
         If CBool(e.Result) Then AddLine("Das Einlesen der Telefone ist abgeschlossen.")
     End Sub
+
+    Private Sub BWTreeView_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWTreeView.DoWork
+        Me.TVOutlookContact.Enabled = False
+        If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
+        C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
+        Me.TVOutlookContact.ExpandAll()
+        Dim tmpNode() As TreeNode = Me.TVOutlookContact.Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
+        If Not tmpNode.Length = 0 Then
+            Me.TVOutlookContact.SelectedNode = tmpNode(0)
+        End If
+    End Sub
+
+    Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted
+        Me.TVOutlookContact.Enabled = True
+        BWTreeView = Nothing
+    End Sub
 #End Region
 
 #Region "Phoner"
@@ -1459,6 +1470,7 @@ Friend Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
+
 End Class
 
 

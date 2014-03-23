@@ -32,11 +32,10 @@ Public Class formRWSuche
         '               = 2: RWSDasTelefonbuch
         '               = 3: TelSearch.ch
 
-        Dim alleTelNr(14) As String   ' alle im Kontakt enthaltenen Telefonnummern
-        Dim alleNrTypen(14) As String   ' die Bezeichnungen der Telefonnummern
+        Dim alleTE() As String   ' alle im Kontakt enthaltenen Telefonnummern
         Dim i As Integer, iTelNr As Integer      ' Zählvariablen
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
-        Dim vCard As String = String.Empty    ' gefundene vCard
+        Dim vCard As String = C_DP.P_Def_StringEmpty    ' gefundene vCard
         Dim rws As Boolean   ' 'true' wenn was gefunden wurde
         Dim row(2) As String
 
@@ -52,27 +51,34 @@ Public Class formRWSuche
                 With oContact ' ist aktuelles Fenster ein Kontakt?
                     iTelNr = 0
                     ' alle Telefonnummern in 'formRWSuche' eintragen
-                    alleTelNr(0) = .AssistantTelephoneNumber
-                    alleTelNr(1) = .BusinessTelephoneNumber
-                    alleTelNr(2) = .Business2TelephoneNumber
-                    alleTelNr(3) = .CallbackTelephoneNumber
-                    alleTelNr(4) = .CarTelephoneNumber
-                    alleTelNr(5) = .CompanyMainTelephoneNumber
-                    alleTelNr(6) = .HomeTelephoneNumber
-                    alleTelNr(7) = .Home2TelephoneNumber
-                    alleTelNr(8) = .ISDNNumber
-                    alleTelNr(9) = .MobileTelephoneNumber
-                    alleTelNr(10) = .OtherTelephoneNumber
-                    alleTelNr(11) = .PagerNumber
-                    alleTelNr(12) = .PrimaryTelephoneNumber
-                    alleTelNr(13) = .RadioTelephoneNumber
-                    alleNrTypen = Split("Assistent,Geschäftlich,Geschäftlich2,Rückmeldung,Auto,Firma,Privat,Privat2,ISDN,Mobiltelefon,Weitere,Pager,Haupttelefon,Funkruf", ",", , CompareMethod.Text)
-                    For i = LBound(alleTelNr) To UBound(alleTelNr)
-                        If Not alleTelNr(i) = String.Empty Then ''''''''''''''' hier evtl. noch ein "or xxx = nothing?? rein?
+
+
+                    alleTE = {.AssistantTelephoneNumber, _
+                                 .BusinessTelephoneNumber, _
+                                 .Business2TelephoneNumber, _
+                                 .CallbackTelephoneNumber, _
+                                 .CarTelephoneNumber, _
+                                 .CompanyMainTelephoneNumber, _
+                                 .HomeTelephoneNumber, _
+                                 .Home2TelephoneNumber, _
+                                 .ISDNNumber, _
+                                 .MobileTelephoneNumber, _
+                                 .OtherTelephoneNumber, _
+                                 .PagerNumber, _
+                                 .PrimaryTelephoneNumber, _
+                                 .RadioTelephoneNumber, _
+                                 .BusinessFaxNumber, _
+                                 .HomeFaxNumber, _
+                                 .OtherFaxNumber, _
+                                 .TelexNumber, _
+                                 .TTYTDDTelephoneNumber}
+
+                    For i = LBound(alleTE) To UBound(alleTE)
+                        If Not alleTE(i) = C_DP.P_Def_StringEmpty Then
                             iTelNr += 1
                             row(0) = CStr(iTelNr)
-                            row(1) = alleNrTypen(i)
-                            row(2) = alleTelNr(i)
+                            row(1) = C_DP.P_Def_olTelNrTypen(i)
+                            row(2) = alleTE(i)
                             Me.ListTel.Rows.Add(row)
                         End If
                     Next

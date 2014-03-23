@@ -369,7 +369,7 @@ Public Class OutlookInterface
 #End Region
 
 #Region "TreeView"
-    Friend Overloads Sub KontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
+    Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
         Dim TVImageList As Windows.Forms.ImageList
         TVImageList = New Windows.Forms.ImageList

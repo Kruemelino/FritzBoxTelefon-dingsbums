@@ -13,9 +13,19 @@ Public Class Helfer
     End Sub
 
 #Region " String Behandlung"
-
+    ''' <summary>
+    ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
+    ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
+    ''' </summary>
+    ''' <param name="Text">String aus dem der Sub-String entnommen werden soll.</param>
+    ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
+    ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
+    ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <c>Textes</c> aus begonnen werden soll.</param>
+    ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
+    ''' <remarks></remarks>
     Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, Optional ByVal Reverse As Boolean = False) As String
         Dim pos(1) As Integer
+
         If Not Reverse Then
             pos(0) = InStr(1, Text, StringDavor, CompareMethod.Text) + Len(StringDavor)
             pos(1) = InStr(pos(0), Text, StringDanach, CompareMethod.Text)
@@ -23,6 +33,7 @@ Public Class Helfer
             pos(1) = InStrRev(Text, StringDanach, , CompareMethod.Text)
             pos(0) = InStrRev(Text, StringDavor, pos(1), CompareMethod.Text) + Len(StringDavor)
         End If
+
         If Not pos(0) = Len(StringDavor) Then
             StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
         Else
@@ -30,27 +41,42 @@ Public Class Helfer
         End If
     End Function
 
-    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef Position As Integer) As String
+    ''' <summary>
+    ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
+    ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
+    ''' Beginnt Suche nach TeilString an einem Startpunkt <c>StartPosition</c>.
+    ''' </summary>
+    ''' <param name="Text">String aus dem der Sub-String entnommen werden soll.</param>
+    ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
+    ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
+    ''' <param name="StartPosition">Startposition, bei der mit der Suche nach den Zeichenfolgen vor und nach dem Sub-String begonnen werden soll.</param>
+    ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
+    ''' <remarks></remarks>
+    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef StartPosition As Integer) As String
         Dim pos(1) As Integer
-        'If Not Reverse Then
-        pos(0) = InStr(Position, Text, StringDavor, CompareMethod.Text) + Len(StringDavor)
+
+        pos(0) = InStr(StartPosition, Text, StringDavor, CompareMethod.Text) + Len(StringDavor)
         pos(1) = InStr(pos(0), Text, StringDanach, CompareMethod.Text)
-        'Else
-        '    pos(1) = InStrRev(Text, StringDanach, , CompareMethod.Text)
-        '    pos(0) = InStrRev(Text, StringDavor, pos(1), CompareMethod.Text) + Len(StringDavor)
-        'End If
+
         If Not pos(0) = Len(StringDavor) Then
             StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
-            Position = pos(1)
+            StartPosition = pos(1)
         Else
             StringEntnehmen = C_DP.P_Def_ErrorMinusOne
         End If
+
     End Function
 
+    ''' <summary>
+    ''' Prüft ob, ein String <c>A</c> in einem Sting-Array <c>B</c> enthalten ist. 
+    ''' </summary>
+    ''' <param name="A">Zu prüfender String.</param>
+    ''' <param name="B">Array in dem zu prüfen ist.</param>
+    ''' <returns><c>True</c>, wenn enthalten, <c>False</c>, wenn nicht.</returns>
+    ''' <remarks></remarks>
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
         Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
-
 #End Region
 
     Public Sub NAR(ByVal o As Object)
@@ -183,8 +209,6 @@ Public Class Helfer
     ''' Diese Routine ändert den Zugang zu den verschlüsselten Passwort.
     ''' </summary>
     ''' <remarks></remarks>
-    ''' 
-
     Public Sub KeyChange()
         Dim tempZugang As String
         Dim i As Long
@@ -194,8 +218,11 @@ Public Class Helfer
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 64)
             Next
-            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne)), tempZugang)
-            C_DP.SaveSettingsVBA("Zugang", tempZugang)
+            With C_DP
+                .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne)), tempZugang)
+                .SaveSettingsVBA("Zugang", tempZugang)
+            End With
+
         End If
 
         If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
@@ -203,8 +230,10 @@ Public Class Helfer
             For i = 0 To 2
                 tempZugang = tempZugang & Hex(Rnd() * 64)
             Next
-            C_DP.P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(C_DP.P_TBPhonerPasswort, C_DP.GetSettingsVBA("ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne)), tempZugang)
-            C_DP.SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
+            With C_DP
+                .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne)), tempZugang)
+                .SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
+            End With
         End If
 
         C_DP.SpeichereXMLDatei()
@@ -226,9 +255,9 @@ Public Class Helfer
         Dim Durchwahl As String
         Dim posOrtsVW As Integer   ' Position der Vorwahl in TelNr
         Dim posDurchwahl As Integer   ' Position der Durchwahl in TelNr
-        Dim tempOrtsVW As String = String.Empty ' Hilfsstring für OrtsVW
-        Dim tempRufNr As String = String.Empty ' Hilfsstring für RufNr
-        Dim tempDurchwahl As String = String.Empty ' Hilfsstring für LandesVW
+        Dim tempOrtsVW As String = C_DP.P_Def_StringEmpty ' Hilfsstring für OrtsVW
+        Dim tempRufNr As String = C_DP.P_Def_StringEmpty ' Hilfsstring für RufNr
+        Dim tempDurchwahl As String = C_DP.P_Def_StringEmpty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
         Dim Maske As String = C_DP.P_TBTelNrMaske
 
@@ -708,7 +737,7 @@ Public Class Helfer
     End Function
 
     Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
-        If sTxt = String.Empty Then Return String.Empty
+        If sTxt = C_DP.P_Def_StringEmpty Then Return C_DP.P_Def_StringEmpty
         If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then
             Return Mid(sTxt, 1, Len(sTxt) - 1)
         End If
