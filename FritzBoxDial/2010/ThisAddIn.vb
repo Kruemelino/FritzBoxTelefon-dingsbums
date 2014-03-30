@@ -135,7 +135,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Alpha 05"
+    Public Const Version As String = "3.7 Alpha 07"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -154,6 +154,7 @@ Public Class ThisAddIn
                 C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
+
     ''' <summary>
     ''' Startet das Fritz!Box Telefon-dingsbums
     ''' </summary>
@@ -202,10 +203,6 @@ Public Class ThisAddIn
 #End If
         End With
     End Sub
-
-    'Protected Overrides Sub Finalize()
-    '    MyBase.Finalize()
-    'End Sub
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then

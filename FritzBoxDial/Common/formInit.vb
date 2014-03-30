@@ -87,7 +87,7 @@
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne Then
+        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String Then
             Rückgabe = False
             Me.ShowDialog()
             Rückgabe = True 'PrüfeAddin()

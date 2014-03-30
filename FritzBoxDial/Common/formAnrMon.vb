@@ -129,7 +129,7 @@ Friend Class formAnrMon
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
         With C_AnrMon.LetzterAnrufer
-            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne And Not .StoreID = C_DP.P_Def_ErrorMinusOne Then
+            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
                 .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
             End If
             If Not .olContact Is Nothing Then

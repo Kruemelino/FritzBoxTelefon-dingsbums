@@ -56,7 +56,7 @@ Public Class Contacts
         Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
         If Not oApp Is Nothing Then
 
-            If EMailAdresse = C_DP.P_Def_ErrorMinusOne Then
+            If EMailAdresse = C_DP.P_Def_ErrorMinusOne_String Then
                 If C_DP.P_CBIndex Then
                     If alleOrdner Then
                         KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
@@ -335,7 +335,7 @@ Public Class Contacts
                             vCard = C_DP.P_Def_Begin_vCard & C_hf.StringEntnehmen(.Body, C_DP.P_Def_Begin_vCard, C_DP.P_Def_End_vCard) & C_DP.P_Def_End_vCard
 
                             'Wenn keine vCard im Body gefunden
-                            If vCard = C_DP.P_Def_Begin_vCard & C_DP.P_Def_ErrorMinusOne & C_DP.P_Def_End_vCard Then
+                            If vCard = C_DP.P_Def_Begin_vCard & C_DP.P_Def_ErrorMinusOne_String & C_DP.P_Def_End_vCard Then
                                 'dann prüfe ob eingebetteter Kontakt vorhanden ist.
                                 ' wenn ja olContact damit belegen
 #If Not OVer = 15 Then
@@ -529,12 +529,12 @@ Public Class Contacts
 #End Region
 
 #Region "vCard"
-        ''' <summary>
-        ''' Fürgt die Informationen einer vCard in ein Kontaktelement ein.
-        ''' </summary>
-        ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
-        ''' <param name="Contact">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
-        ''' <remarks></remarks>
+    ''' <summary>
+    ''' Fürgt die Informationen einer vCard in ein Kontaktelement ein.
+    ''' </summary>
+    ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
+    ''' <param name="Contact">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
+    ''' <remarks></remarks>
     Friend Sub vCard2Contact(ByVal vCard As String, ByRef Contact As Outlook.ContactItem)
 
         Dim ContactName As String  ' kompletter Name ("N") aus vCard
@@ -958,14 +958,14 @@ Public Class Contacts
     Private Function GetBodyHandle(ByVal oInsp As Outlook.Inspector) As IntPtr
         Dim HandleNames() As String = {"AfxWndW", _
                                        "AfxWndW", _
-                                       C_DP.P_Def_ErrorMinusOne, _
+                                       C_DP.P_Def_ErrorMinusOne_String, _
                                        "AfxWndA", _
                                        "_WwB"}
 
         GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, "rctrl_renwnd32", oInsp.Caption)
 
         For Each HandleName As String In HandleNames
-            If HandleName = C_DP.P_Def_ErrorMinusOne Then
+            If HandleName = C_DP.P_Def_ErrorMinusOne_String Then
                 GetBodyHandle = GetChildWindows(GetBodyHandle).Item(0).HWnd
             Else
                 GetBodyHandle = OutlookSecurity.FindWindowEX(GetBodyHandle, IntPtr.Zero, HandleName, vbNullString)

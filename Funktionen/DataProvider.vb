@@ -5,6 +5,7 @@ Public Class DataProvider
     Private XMLDoc As XmlDocument
     Private WithEvents tSpeichern As Timer
 #Region "Windows Const für Office 2003"
+#If over = 11 Then
     Public Const ECM_FIRST As Long = &H1500
     Public Const EM_AUTOURLDETECT As Long = (WM_USER + 91)
     Public Const EM_CANPASTE As Long = (WM_USER + 50)  ' unique to rich edit control
@@ -129,7 +130,7 @@ Public Class DataProvider
     Public Const WM_NCLBUTTONDOWN As Short = &HA1S
     Public Const WM_USER As Long = &H400
     Public Const WM_SYSCOMMAND As Short = &H112S
-
+#End If
 #End Region
 #Region "Konstanten"
     Private Const Speicherintervall As Double = 5 'in Minuten
@@ -955,9 +956,15 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>-1</value>
     ''' <returns>String</returns>
-    Public ReadOnly Property P_Def_ErrorMinusOne() As String
+    Public ReadOnly Property P_Def_ErrorMinusOne_String() As String
         Get
             Return "-1"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_ErrorMinusOne_Integer() As Integer
+        Get
+            Return -1
         End Get
     End Property
 
@@ -1011,7 +1018,7 @@ Public Class DataProvider
 
     Public ReadOnly Property P_Def_StringErrorMinusOne() As String
         Get
-            Return CStr(P_Def_ErrorMinusOne)
+            Return CStr(P_Def_ErrorMinusOne_String)
         End Get
     End Property
 
@@ -1140,6 +1147,7 @@ Public Class DataProvider
             Return P_Def_Addin_KurzName & ".log"
         End Get
     End Property
+
     ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
     ''' </summary>
@@ -1151,12 +1159,99 @@ Public Class DataProvider
         End Get
     End Property
 
-    'Private ReadOnly Property P_Def_Arbeitsverzeichnis As String
-    '    Get
-    '        Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\" & P_Def_Addin_LangName & "\"
-    '    End Get
-    'End Property
+    Public ReadOnly Property P_Def_PathSeparator() As String
+        Get
+            Return IO.Path.PathSeparator
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_AddInPath() As String
+        Get
+            Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & P_Def_PathSeparator & P_Def_Addin_LangName & P_Def_PathSeparator
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Ein Array, welches den Namen der UserProperties, die die unformatierte Telefonnummer enthält.
+    ''' </summary>
+    ''' <value>String-Array</value>
+    ''' <returns>String-Array</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_UserProperties As String()
+        Get
+            Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
+                                   "FBDB-BusinessTelephoneNumber", _
+                                   "FBDB-Business2TelephoneNumber", _
+                                   "FBDB-CallbackTelephoneNumber", _
+                                   "FBDB-CarTelephoneNumber", _
+                                   "FBDB-CompanyMainTelephoneNumber", _
+                                   "FBDB-HomeTelephoneNumber", _
+                                   "FBDB-Home2TelephoneNumber", _
+                                   "FBDB-ISDNNumber", _
+                                   "FBDB-MobileTelephoneNumber", _
+                                   "FBDB-OtherTelephoneNumber", _
+                                   "FBDB-PagerNumber", _
+                                   "FBDB-PrimaryTelephoneNumber", _
+                                   "FBDB-RadioTelephoneNumber", _
+                                   "FBDB-BusinessFaxNumber", _
+                                   "FBDB-HomeFaxNumber", _
+                                   "FBDB-OtherFaxNumber", _
+                                   "FBDB-Telex", _
+                                   "FBDB-TTYTDDTelephoneNumber"}
+            Return tmp
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_olTelNrTypen As String()
+        Get
+            Dim tmp() As String = {"Assistent", _
+                                   "Geschäftlich", _
+                                   "Geschäftlich 2", _
+                                   "Rückmeldung", _
+                                   "Auto", _
+                                   "Firma", _
+                                   "Privat", _
+                                   "Privat 2", _
+                                   "ISDN", _
+                                   "Mobiltelefon", _
+                                   "Weitere", _
+                                   "Pager", _
+                                   "Haupttelefon", _
+                                   "Funkruf", _
+                                   "Fax geschäftl.", _
+                                   "Fax privat", _
+                                   "Weiteres Fax", _
+                                   "Telex", _
+                                   "Texttelefon"}
+            Return tmp
+        End Get
+    End Property
+
+    ' Journal
+    Public ReadOnly Property P_Def_Journal_Text_Eingehend() As String
+        Get
+            Return "Eingehender Anruf von"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Journal_Text_Ausgehend() As String
+        Get
+            Return "Ausgehender Anruf zu"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Journal_Text_Verpasst() As String
+        Get
+            Return "Verpasster Anruf von"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Journal_Text_NichtErfolgreich() As String
+        Get
+            Return "Nicht erfolgreicher Anruf zu"
+        End Get
+    End Property
 #End Region
+
 #Region "Default Value Properties"
 
     Public ReadOnly Property P_Def_TBLandesVW() As String
@@ -1166,7 +1261,7 @@ Public Class DataProvider
     End Property
     Public ReadOnly Property P_Def_TBAmt() As String
         Get
-            Return P_Def_ErrorMinusOne
+            Return P_Def_ErrorMinusOne_String
         End Get
     End Property
     Public ReadOnly Property P_Def_TBVorwahl() As String
@@ -1504,7 +1599,7 @@ Public Class DataProvider
     ' FritzBox
     Public ReadOnly Property P_Def_EncodeingFritzBox() As String
         Get
-            Return P_Def_ErrorMinusOne
+            Return P_Def_ErrorMinusOne_String
         End Get
     End Property
     Public ReadOnly Property P_Def_TBFBAdr() As String
@@ -1539,60 +1634,7 @@ Public Class DataProvider
             Return False
         End Get
     End Property
-    ''' <summary>
-    ''' Ein Array, welches den Namen der UserProperties, die die unformatierte Telefonnummer enthält.
-    ''' </summary>
-    ''' <value>String-Array</value>
-    ''' <returns>String-Array</returns>
-    ''' <remarks></remarks>
-    Public ReadOnly Property P_Def_UserProperties As String()
-        Get
-            Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
-                                   "FBDB-BusinessTelephoneNumber", _
-                                   "FBDB-Business2TelephoneNumber", _
-                                   "FBDB-CallbackTelephoneNumber", _
-                                   "FBDB-CarTelephoneNumber", _
-                                   "FBDB-CompanyMainTelephoneNumber", _
-                                   "FBDB-HomeTelephoneNumber", _
-                                   "FBDB-Home2TelephoneNumber", _
-                                   "FBDB-ISDNNumber", _
-                                   "FBDB-MobileTelephoneNumber", _
-                                   "FBDB-OtherTelephoneNumber", _
-                                   "FBDB-PagerNumber", _
-                                   "FBDB-PrimaryTelephoneNumber", _
-                                   "FBDB-RadioTelephoneNumber", _
-                                   "FBDB-BusinessFaxNumber", _
-                                   "FBDB-HomeFaxNumber", _
-                                   "FBDB-OtherFaxNumber", _
-                                   "FBDB-Telex", _
-                                   "FBDB-TTYTDDTelephoneNumber"}
-            Return tmp
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_olTelNrTypen As String()
-        Get
-            Dim tmp() As String = {"Assistent", _
-                                   "Geschäftlich", _
-                                   "Geschäftlich 2", _
-                                   "Rückmeldung", _
-                                   "Auto", _
-                                   "Firma", _
-                                   "Privat", _
-                                   "Privat 2", _
-                                   "ISDN", _
-                                   "Mobiltelefon", _
-                                   "Weitere", _
-                                   "Pager", _
-                                   "Haupttelefon", _
-                                   "Funkruf", _
-                                   "Fax geschäftl.", _
-                                   "Fax privat", _
-                                   "Weiteres Fax", _
-                                   "Telex", _
-                                   "Texttelefon"}
-            Return tmp
-        End Get
-    End Property
+
 #End Region
 #Region "Organisation Properties"
     Private ReadOnly Property P_Def_Options() As String
@@ -1628,14 +1670,12 @@ Public Class DataProvider
     Public Sub New()
         ' Pfad zur Einstellungsdatei ermitteln
         Dim ConfigPfad As String
-        P_Arbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\" & P_Def_Addin_LangName & "\")
-        configpfad = P_Arbeitsverzeichnis & P_Def_Config_FileName
+        P_Arbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", P_Def_AddInPath)
+        ConfigPfad = P_Arbeitsverzeichnis & P_Def_Config_FileName
 
         XMLDoc = New XmlDocument()
         With My.Computer.FileSystem
-            If .FileExists(ConfigPfad) Then
-                XMLDoc.Load(ConfigPfad)
-            Else
+            If Not (.FileExists(ConfigPfad) AndAlso XMLValidator(ConfigPfad)) Then
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
                 If Not .DirectoryExists(P_Arbeitsverzeichnis) Then .CreateDirectory(P_Arbeitsverzeichnis)
                 .WriteAllText(ConfigPfad, XMLDoc.InnerXml, True)
@@ -1782,7 +1822,7 @@ Public Class DataProvider
         Write(P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
         Write(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(Me.P_TVKontaktOrdnerEntryID))
         Write(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(Me.P_TVKontaktOrdnerStoreID))
-        Write(P_Def_Options, "", CStr(Me.P_ComboBoxRWS))
+        Write(P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
         Write(P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
         Write(P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
         Write(P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
@@ -1805,11 +1845,11 @@ Public Class DataProvider
         Write(P_Def_Phoner, "TBPhonerPasswort", Me.P_TBPhonerPasswort)
         Write(P_Def_Phoner, "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
         ' Statistik
-        Write(P_Def_Statistics, "CBPhoner", CStr(Me.P_StatResetZeit))
-        Write(P_Def_Statistics, "PhonerVerfügbar", CStr(Me.P_StatVerpasst))
-        Write(P_Def_Statistics, "ComboBoxPhonerSIP", CStr(Me.P_StatNichtErfolgreich))
-        Write(P_Def_Statistics, "CBPhonerAnrMon", CStr(Me.P_StatKontakt))
-        Write(P_Def_Statistics, "TBPhonerPasswort", CStr(Me.P_StatJournal))
+        Write(P_Def_Statistics, "ResetZeit", CStr(Me.P_StatResetZeit))
+        Write(P_Def_Statistics, "Verpasst", CStr(Me.P_StatVerpasst))
+        Write(P_Def_Statistics, "Nichterfolgreich", CStr(Me.P_StatNichtErfolgreich))
+        Write(P_Def_Statistics, "Kontakt", CStr(Me.P_StatKontakt))
+        Write(P_Def_Statistics, "Journal", CStr(Me.P_StatJournal))
         Write(P_Def_Journal, "SchließZeit", CStr(Me.P_StatOLClosedZeit))
         ' Wählbox
         Write(P_Def_Options, "Anschluss", CStr(Me.P_TelAnschluss))
@@ -1866,11 +1906,39 @@ Public Class DataProvider
         xPathTeile = Nothing
     End Function
 
-    Function ReadElementName(ByVal ZielKnoten As ArrayList, ByVal sDefault As String) As String
+    Public Sub GetProperXPath(ByRef xPathTeile As ArrayList)
+        Dim i As Integer = 1
+
+        Dim xPath As String
+        Dim tmpXMLNode As XmlNode
+        Dim tmpParentXMLNode As XmlNode
+        'Dim xPathWildCardIndex As Integer = xPathTeile.IndexOf(xPathWildCard)
+
+
+        xPath = CreateXPath(xPathTeile)
+
+        tmpXMLNode = XMLDoc.SelectSingleNode(xPath)
+        If Not tmpXMLNode Is Nothing Then
+            tmpParentXMLNode = tmpXMLNode.ParentNode
+            Do Until tmpParentXMLNode.Name = xPathTeile.Item(1).ToString
+                If Not Left(xPathTeile.Item(xPathTeile.Count - i).ToString, 1) = xPathBracketOpen Then
+                    xPathTeile.Item(xPathTeile.Count - 1 - i) = tmpParentXMLNode.Name
+                    tmpParentXMLNode = tmpParentXMLNode.ParentNode
+                End If
+                i += 1
+            Loop
+        End If
+
+
+
+
+    End Sub
+
+    Function ReadElementName(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
         ReadElementName = sDefault
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
-        xPath = CreateXPath(ZielKnoten)
+        xPath = CreateXPath(xPathTeile)
         With XMLDoc
             tmpXMLNode = .SelectSingleNode(xPath)
             If Not tmpXMLNode Is Nothing Then
@@ -2004,7 +2072,7 @@ Public Class DataProvider
             tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, P_Def_StringEmpty)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
-                    If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne Then
+                    If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne_String Then
                         tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, P_Def_StringEmpty)
                         tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
                         .AppendChild(tmpXMLChildNode)
@@ -2112,6 +2180,22 @@ Public Class DataProvider
     Private Sub tSpeichern_Elapsed(sender As Object, e As ElapsedEventArgs) Handles tSpeichern.Elapsed
         SaveOptionData()
     End Sub
+#End Region
+#Region "Validator"
+    ''' <summary>
+    ''' Prüft ob die XML-Datei geöffnet werden kann.
+    ''' </summary>
+    ''' <param name="XMLpath"></param>
+    ''' <returns><c>True</c>, wenn Datei geöffnet werden kann, ansonsten <c>False</c>.</returns>
+    ''' <remarks></remarks>
+    Private Function XMLValidator(ByVal XMLpath As String) As Boolean
+        XMLValidator = True
+        Try
+            XMLDoc.Load(XMLpath)
+        Catch
+            XMLValidator = False
+        End Try
+    End Function
 #End Region
 #End Region
 

@@ -28,6 +28,7 @@ Friend Class formCfg
     Private Delegate Sub DelgSetFillTelListe()
     Private Delegate Sub DelgStatistik()
     Private Delegate Sub DelgSetProgressbar()
+    Private Delegate Sub DelgSetTreeView()
 #End Region
 
 #Region "EventMulticaster"
@@ -95,7 +96,7 @@ Friend Class formCfg
         ' Beim Einblenden die Werte aus der Registry einlesen
         ' Einstellungen für das Wählmakro laden
         Me.TBLandesVW.Text = C_DP.P_TBLandesVW
-        Me.TBAmt.Text = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne, "", C_DP.P_TBAmt))
+        Me.TBAmt.Text = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt))
         Me.TBFBAdr.Text = C_DP.P_TBFBAdr
 
         Me.CBForceFBAddr.Checked = C_DP.P_CBForceFBAddr
@@ -189,8 +190,8 @@ Friend Class formCfg
         'Me.CBPhonerKeineFB.Checked = CBool(IIf(C_DP.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
         'If Not Me.CBPhonerKeineFB.Checked Then
         For i = 20 To 29
-            TelName = Split(C_DP.Read("Telefone", CStr(i), C_DP.P_Def_ErrorMinusOne & ";"), ";", , CompareMethod.Text)
-            If Not TelName(0) = C_DP.P_Def_ErrorMinusOne And Not TelName.Length = 2 Then
+            TelName = Split(C_DP.Read("Telefone", CStr(i), C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
+            If Not TelName(0) = C_DP.P_Def_ErrorMinusOne_String And Not TelName.Length = 2 Then
                 Me.ComboBoxPhonerSIP.Items.Add(TelName(2))
             End If
         Next
@@ -244,9 +245,9 @@ Friend Class formCfg
             .Add("Telefon")
             .Add("TelName")
         End With
-        Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne & ";"), ";", , CompareMethod.Text)
+        Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
 
-        If Not Nebenstellen(0) = C_DP.P_Def_ErrorMinusOne Then
+        If Not Nebenstellen(0) = C_DP.P_Def_ErrorMinusOne_String Then
             With Me.TelList
                 .Rows.Clear()
                 j = 0
@@ -264,9 +265,9 @@ Friend Class formCfg
                         Zeile.Add(CBool(C_DP.Read(xPathTeile, "False")))
                         Zeile.Add(CStr(j))
                         .Item(.Count - 1) = "@Dialport"
-                        Zeile.Add(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne & ";")) 'Nebenstelle
+                        Zeile.Add(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";")) 'Nebenstelle
                         .RemoveAt(.Count - 1)
-                        Zeile.Add(C_DP.ReadElementName(xPathTeile, C_DP.P_Def_ErrorMinusOne & ";")) 'Telefontyp
+                        Zeile.Add(C_DP.ReadElementName(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";")) 'Telefontyp
                         Zeile.Add(Nebenstelle) ' TelName
                         .Add("TelNr")
                         Zeile.Add(Replace(C_DP.Read(xPathTeile, "-"), ";", ", ", , , CompareMethod.Text)) 'TelNr
@@ -402,7 +403,7 @@ Friend Class formCfg
             End If
 
             .P_TBLandesVW = Me.TBLandesVW.Text
-            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = C_DP.P_Def_StringEmpty, C_DP.P_Def_ErrorMinusOne, Me.TBAmt.Text))
+            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = C_DP.P_Def_StringEmpty, C_DP.P_Def_ErrorMinusOne_String, Me.TBAmt.Text))
             .P_TBFBAdr = Me.TBFBAdr.Text
             .P_TBVorwahl = Me.TBVorwahl.Text
 
@@ -481,7 +482,7 @@ Friend Class formCfg
 
             For i = 20 To 29
                 TelName = Split(C_DP.Read("Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
-                If Not TelName(0) = C_DP.P_Def_ErrorMinusOne And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
+                If Not TelName(0) = C_DP.P_Def_ErrorMinusOne_String And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
                     If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
                         PhonerTelNameIndex = i
                         Exit For
@@ -1278,6 +1279,25 @@ Friend Class formCfg
         End If
     End Sub
 
+    Private Sub DelSetTreeView()
+        If Me.InvokeRequired Then
+            Dim D As New DelgButtonTelEinl(AddressOf DelSetTreeView)
+            Me.Invoke(D)
+        Else
+            Me.TVOutlookContact.Enabled = False
+            If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
+
+            C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
+            Me.TVOutlookContact.ExpandAll()
+            Dim tmpNode() As TreeNode = Me.TVOutlookContact.Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
+            If Not tmpNode.Length = 0 Then
+                Me.TVOutlookContact.SelectedNode = tmpNode(0)
+            End If
+
+
+        End If
+    End Sub
+
 #End Region
 
 #Region "BackGroundWorker - Handle"
@@ -1368,12 +1388,12 @@ Friend Class formCfg
                 .Item(.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
                 .Item(.Count - 1) = "TelName"
                 ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
-                tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
-                If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne Then
+                tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+                If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne_String Then
                     .Item(.Count - 1) = "TelNr"
                     If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
                         If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
-                            C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
+                            C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
                             Dim Dauer As Date
                             .Item(.Count - 1) = "Eingehend"
                             Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
@@ -1412,14 +1432,7 @@ Friend Class formCfg
     End Sub
 
     Private Sub BWTreeView_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWTreeView.DoWork
-        Me.TVOutlookContact.Enabled = False
-        If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
-        C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
-        Me.TVOutlookContact.ExpandAll()
-        Dim tmpNode() As TreeNode = Me.TVOutlookContact.Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
-        If Not tmpNode.Length = 0 Then
-            Me.TVOutlookContact.SelectedNode = tmpNode(0)
-        End If
+        DelSetTreeView()
     End Sub
 
     Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted

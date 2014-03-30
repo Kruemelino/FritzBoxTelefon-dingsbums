@@ -146,7 +146,7 @@ Public Class Wählclient
         frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF)
 
         If oContact Is Nothing Then
-            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne & ";" & vCard ' C_DP.P_Def_ErrorMinusOne
+            frm_Wählbox.Tag = C_DP.P_Def_ErrorMinusOne_String & ";" & vCard ' C_DP.P_Def_ErrorMinusOne
         Else
             frm_Wählbox.Tag = oContact.EntryID & ";" & CType(oContact.Parent, Outlook.MAPIFolder).StoreID
         End If
@@ -270,23 +270,23 @@ Public Class Wählclient
 
         ' TelNr
         ListNodeNames.Add("TelNr")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
 
         ' Anrufer
         ListNodeNames.Add("Anrufer")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
 
         ' StoreID
         ListNodeNames.Add("StoreID")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
 
         ' KontaktID
         ListNodeNames.Add("KontaktID")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String & ";")
 
         ' vCard
         ListNodeNames.Add("vCard")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne & ";")
+        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String & ";")
 
         With xPathTeile
             .Add(Telefonat(0))
@@ -300,7 +300,7 @@ Public Class Wählclient
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
         vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
 
-        If Not StoreID = C_DP.P_Def_ErrorMinusOne Then
+        If Not StoreID = C_DP.P_Def_ErrorMinusOne_String Then
             'If Not KontaktID = C_DP.P_Def_ErrorMinusOne And Not StoreID = C_DP.P_Def_ErrorMinusOne Then
             oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
             If oContact Is Nothing Then

@@ -104,12 +104,12 @@ Friend Class formWählbox
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1)]") ' Keine Anrufbeantworter, kein Fax
             .Add("TelName")
 
-            Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne & ";"), ";", , CompareMethod.Text)
+            Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
 
             For Each Nebenstelle In Nebenstellen
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
-                DialPort = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne)
+                DialPort = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
                 tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", C_DP.P_Def_StringEmpty))
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
@@ -183,9 +183,9 @@ Friend Class formWählbox
         Dim KontaktDaten() As String
         Dim olKontakt As Outlook.ContactItem
 
-        If Me.Tag.ToString = C_DP.P_Def_ErrorMinusOne Then
+        If Me.Tag.ToString = C_DP.P_Def_ErrorMinusOne_String Then
             'Kein Outlook-Kontakt
-            Me.Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
+            Me.Tag = C_DP.P_Def_ErrorMinusOne_String & ";" & C_DP.P_Def_ErrorMinusOne_String
         End If
         KontaktDaten = Split(CStr(Me.Tag), ";", 2, CompareMethod.Text)
         If Not KontaktDaten.Contains(C_DP.P_Def_StringErrorMinusOne) Then
@@ -204,7 +204,7 @@ Friend Class formWählbox
         row(2) = C_hf.nurZiffern(Me.TelNrBox.Text)
         With Me
             .Text = "Anruf: " & row(2)
-            .Tag = C_DP.P_Def_ErrorMinusOne & ";" & C_DP.P_Def_ErrorMinusOne
+            .Tag = C_DP.P_Def_ErrorMinusOne_String & ";" & C_DP.P_Def_ErrorMinusOne_String
             With .ListTel.Rows
                 .Add(row)
                 .Item(.Count - 1).Selected = True
@@ -258,7 +258,7 @@ Friend Class formWählbox
     End Sub
 
     Function GetDialport(ByVal Nebenstelle As String) As String
-        GetDialport = C_DP.P_Def_ErrorMinusOne
+        GetDialport = C_DP.P_Def_ErrorMinusOne_String
         Dim tmpint As Double
         Dim xPathTeile As New ArrayList
         With xPathTeile
@@ -268,7 +268,7 @@ Friend Class formWählbox
             .Add("Telefon")
             .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
             .Add("@Dialport")
-            tmpint = CDbl(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne))
+            tmpint = CDbl(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
         End With
 
         If Not tmpint = -1 Then
@@ -428,7 +428,7 @@ Friend Class formWählbox
         End If
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
-        Code = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne, "", C_DP.P_TBAmt)) & Code
+        Code = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt)) & Code
 
         If Not UsePhonerOhneFritzBox Then
             If CLIR Then Code = "*31#" & Code
@@ -575,7 +575,7 @@ Friend Class formWählbox
         Else
             Me.checkCLIR.Enabled = True
             Me.checkNetz.Enabled = True
-            If SID = C_DP.P_Def_ErrorMinusOne Or SID = C_DP.P_Def_SessionID Then
+            If SID = C_DP.P_Def_ErrorMinusOne_String Or SID = C_DP.P_Def_SessionID Then
                 If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
                 WählboxBereit = False
                 Me.LabelStatus.Text = "Bitte warten..."
@@ -586,7 +586,7 @@ Friend Class formWählbox
 
     Private Sub BVIP_CheckedChanged(sender As Object, e As EventArgs)
         Dim KontaktDaten() As String = Split(CStr(Me.Tag) & ";" & ListTel.Rows(0).Cells(1).Value.ToString, ";", , CompareMethod.Text)
-        If Not KontaktDaten(0) = C_DP.P_Def_ErrorMinusOne Then
+        If Not KontaktDaten(0) = C_DP.P_Def_ErrorMinusOne_String Then
             If Not BVIP.Checked Then
                 C_GUI.RemoveVIP(KontaktDaten(0), KontaktDaten(1))
             Else

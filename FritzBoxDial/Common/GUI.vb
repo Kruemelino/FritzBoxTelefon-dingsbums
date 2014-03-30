@@ -290,9 +290,9 @@
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -309,17 +309,17 @@
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = C_DP.P_Def_ErrorMinusOne Then
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
+                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
                     MyStringBuilder.Append(" onAction=""OnActionListen""")
                     MyStringBuilder.Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
                     MyStringBuilder.Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
                     MyStringBuilder.Append("/>" & vbCrLf)
                     i += 1
-                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne)
-                    LANodeValues.Item(1) = (C_DP.P_Def_ErrorMinusOne)
-                    LANodeValues.Item(2) = (C_DP.P_Def_ErrorMinusOne)
+                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
                 End If
             Next
         Else
@@ -327,7 +327,7 @@
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-                If Not Anrufer = C_DP.P_Def_ErrorMinusOne Then
+                If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
 
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod index) & """")
                     MyStringBuilder.Append(" label=""" & CStr(Anrufer) & """")
@@ -336,7 +336,7 @@
                     MyStringBuilder.Append("/>" & vbCrLf)
 
                     'xPathTeile.RemoveAt(xPathTeile.Count - 1)
-                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne)
+                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
                 End If
             Next
         End If
@@ -362,7 +362,7 @@
                 XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -521,7 +521,7 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
-        IsVIP = Not C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne
+        IsVIP = Not C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String
         xPathTeile = Nothing
     End Function
 

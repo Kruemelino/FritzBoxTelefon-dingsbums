@@ -37,7 +37,7 @@ Public Class Helfer
         If Not pos(0) = Len(StringDavor) Then
             StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
         Else
-            StringEntnehmen = C_DP.P_Def_ErrorMinusOne
+            StringEntnehmen = C_DP.P_Def_ErrorMinusOne_String
         End If
     End Function
 
@@ -62,7 +62,7 @@ Public Class Helfer
             StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
             StartPosition = pos(1)
         Else
-            StringEntnehmen = C_DP.P_Def_ErrorMinusOne
+            StringEntnehmen = C_DP.P_Def_ErrorMinusOne_String
         End If
 
     End Function
@@ -219,7 +219,7 @@ Public Class Helfer
                 tempZugang = tempZugang & Hex(Rnd() * 64)
             Next
             With C_DP
-                .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne)), tempZugang)
+                .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne_String)), tempZugang)
                 .SaveSettingsVBA("Zugang", tempZugang)
             End With
 
@@ -231,7 +231,7 @@ Public Class Helfer
                 tempZugang = tempZugang & Hex(Rnd() * 64)
             Next
             With C_DP
-                .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne)), tempZugang)
+                .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne_String)), tempZugang)
                 .SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
             End With
         End If
@@ -366,7 +366,8 @@ Public Class Helfer
         Next
     End Function
 
-    Function OrtsVorwahlEntfernen(ByVal TelNr As String, ByVal Vorwahl As String) As String
+    Function OrtsVorwahlEntfernen(ByVal TelNr As String) As String
+        Dim Vorwahl As String = C_DP.P_TBVorwahl
         If Left(Vorwahl, 1) = "0" Then Vorwahl = Mid(Vorwahl, 2)
         If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
         If Strings.Left(TelNr, Len(Vorwahl)) = Vorwahl Then TelNr = Mid(TelNr, Len(Vorwahl) + 1)

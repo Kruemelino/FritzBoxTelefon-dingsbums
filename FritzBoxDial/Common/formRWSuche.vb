@@ -189,7 +189,7 @@ Public Class formRWSuche
                     htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
                     ' Link zum Herunterladen der vCard suchen
                     EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                    If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
+                    If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                         myurl = "http://classic.11880.com" & EintragsID
                         vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
                         If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
@@ -329,7 +329,7 @@ Public Class formRWSuche
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                     'myurl = C_hf.StringEntnehmen(htmlRWS, SW3, Sw1, True)
                     vCard = C_hf.httpGET("http://www1.dastelefonbuch.de/" & SW1 & EintragsID, System.Text.Encoding.Default, HTMLFehler)
                 End If
@@ -375,7 +375,7 @@ Public Class formRWSuche
 
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                If Not EintragsID = C_DP.P_Def_ErrorMinusOne Then
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                     ' vCard herunterladen
                     myurl = Replace("http://tel.search.ch/vcard/" & EintragsID, "html", "vcf")
                     vCard = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)

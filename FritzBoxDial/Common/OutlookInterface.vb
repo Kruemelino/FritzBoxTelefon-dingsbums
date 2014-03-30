@@ -23,6 +23,7 @@
     Private _Anrufer As String
     Private _TelName As String
     Private _frm_AnrMon As formAnrMon
+    Private _Connected As Boolean = False
 #End Region
 
 #Region "Properties"
@@ -170,6 +171,14 @@
             _frm_AnrMon = value
         End Set
     End Property
+    Friend Property Conncected() As Boolean
+        Get
+            Return _Connected
+        End Get
+        Set(ByVal value As Boolean)
+            _Connected = value
+        End Set
+    End Property
 #End Region
 End Class
 
@@ -219,7 +228,8 @@ Public Class OutlookInterface
                     .Categories = Telefonat.Categories
 
 #If Not OVer = 15 Then
-                    If (Not (Telefonat.KontaktID = C_DP.P_Def_StringEmpty Or Telefonat.StoreID = C_DP.P_Def_StringEmpty)) And Not Left(Telefonat.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne Then
+                    If (Not (Telefonat.KontaktID = C_DP.P_Def_StringEmpty Or Telefonat.StoreID = C_DP.P_Def_StringEmpty)) And Not _
+                        Left(Telefonat.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne_String Then
                         Try
                             .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(Telefonat.KontaktID, Telefonat.StoreID), Outlook.ContactItem))
                         Catch ex As Exception
