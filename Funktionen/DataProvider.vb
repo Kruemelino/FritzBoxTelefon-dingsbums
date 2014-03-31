@@ -4,6 +4,7 @@ Imports System.Timers
 Public Class DataProvider
     Private XMLDoc As XmlDocument
     Private WithEvents tSpeichern As Timer
+
 #Region "Windows Const für Office 2003"
 #If over = 11 Then
     Public Const ECM_FIRST As Long = &H1500
@@ -191,6 +192,7 @@ Public Class DataProvider
     Private _CBJournal As Boolean
     Private _CBUseAnrMon As Boolean
     Private _CBCheckMobil As Boolean
+    Private _CLBTelNr() As String
     'StoppUhr
     Private _CBStoppUhrEinblenden As Boolean
     Private _CBStoppUhrAusblenden As Boolean
@@ -654,6 +656,15 @@ Public Class DataProvider
             _CBCheckMobil = value
         End Set
     End Property
+
+    Public Property P_CLBTelNr As String()
+        Get
+            Return _CLBTelNr
+        End Get
+        Set(ByVal value As String())
+            _CLBTelNr = value
+        End Set
+    End Property
     'StoppUhr
     Public Property P_CBStoppUhrEinblenden() As Boolean
         Get
@@ -950,6 +961,7 @@ Public Class DataProvider
         End Set
     End Property
 #End Region
+
 #Region "Global Default Value Properties"
     ''' <summary>
     ''' Default Fehlerwert
@@ -1636,6 +1648,7 @@ Public Class DataProvider
     End Property
 
 #End Region
+
 #Region "Organisation Properties"
     Private ReadOnly Property P_Def_Options() As String
         Get
@@ -1692,6 +1705,7 @@ Public Class DataProvider
     End Sub
 
     Private Sub LoadOptionData()
+        Dim xPathTeile As New ArrayList
 
         Me.P_TBLandesVW = Read(P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
         Me.P_TBAmt = Read(P_Def_Options, "TBAmt", P_Def_TBAmt)
@@ -1776,6 +1790,15 @@ Public Class DataProvider
         Me.P_LLetzteIndizierung = CDate(Read(P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
         ' Notiz
         Me.P_CBNote = CBool(Read(P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
+
+        With xPathTeile
+            .Clear()
+            .Add("Telefone")
+            .Add("Nummern")
+            .Add("*")
+            .Add("[@Checked=""1""]")
+        End With
+        Me.P_CLBTelNr = (From x In Split(Read(xPathTeile, Me.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
     End Sub
 
     Private Sub SaveOptionData()
@@ -1859,8 +1882,10 @@ Public Class DataProvider
         Write(P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
         'indizierung
         Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
+
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
+
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -1912,8 +1937,6 @@ Public Class DataProvider
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
         Dim tmpParentXMLNode As XmlNode
-        'Dim xPathWildCardIndex As Integer = xPathTeile.IndexOf(xPathWildCard)
-
 
         xPath = CreateXPath(xPathTeile)
 
@@ -1928,10 +1951,6 @@ Public Class DataProvider
                 i += 1
             Loop
         End If
-
-
-
-
     End Sub
 
     Function ReadElementName(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
@@ -2208,7 +2227,6 @@ Public Class DataProvider
     End Sub
 #End Region
 
-
 #Region "Stuff"
     Private Sub CleanUpXML()
         Dim tmpNode As XmlNode
@@ -2251,6 +2269,7 @@ Public Class DataProvider
         If Not InStr(xPath, xPathSeperatorSlash & xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
         If Right(xPath, 1) = xPathSeperatorSlash Then Return False
     End Function
+
     Private Function CheckXPathRead(ByVal xPath As String) As Boolean
         CheckXPathRead = True
 

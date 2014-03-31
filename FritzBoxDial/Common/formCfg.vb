@@ -476,6 +476,16 @@ Friend Class formCfg
                     C_DP.WriteAttribute(xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
                 Next
             End With
+
+            With xPathTeile
+                .Clear()
+                .Add("Telefone")
+                .Add("Nummern")
+                .Add("*")
+                .Add("[@Checked=""1""]")
+            End With
+            .P_CLBTelNr = (From x In Split(.Read(xPathTeile, .P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
+
             ' Phoner
             Dim TelName() As String
             Dim PhonerTelNameIndex As Integer = 0
