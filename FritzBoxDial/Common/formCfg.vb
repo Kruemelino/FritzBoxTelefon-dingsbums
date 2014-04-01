@@ -214,8 +214,9 @@ Friend Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
         ' Notiz
         Me.CBNote.Checked = C_DP.P_CBNote
-
-
+        'TreeView
+        Me.TVOutlookContact.Enabled = False
+        If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
         BWTreeView = New BackgroundWorker
         With BWTreeView
             .WorkerReportsProgress = False
@@ -1294,16 +1295,17 @@ Friend Class formCfg
             Dim D As New DelgButtonTelEinl(AddressOf DelSetTreeView)
             Me.Invoke(D)
         Else
-            Me.TVOutlookContact.Enabled = False
-            If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
+            Dim tmpNode As TreeNode()
 
             C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
-            Me.TVOutlookContact.ExpandAll()
-            Dim tmpNode() As TreeNode = Me.TVOutlookContact.Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
-            If Not tmpNode.Length = 0 Then
-                Me.TVOutlookContact.SelectedNode = tmpNode(0)
-            End If
-
+            With Me.TVOutlookContact
+                .ExpandAll()
+                tmpNode = .Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
+                If Not tmpNode.Length = 0 Then
+                    .SelectedNode = tmpNode(0)
+                End If
+                .Enabled = True
+            End With
 
         End If
     End Sub
@@ -1446,7 +1448,6 @@ Friend Class formCfg
     End Sub
 
     Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted
-        Me.TVOutlookContact.Enabled = True
         BWTreeView = Nothing
     End Sub
 #End Region
