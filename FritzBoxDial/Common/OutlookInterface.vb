@@ -23,7 +23,7 @@
     Private _Anrufer As String
     Private _TelName As String
     Private _frm_AnrMon As formAnrMon
-    Private _Connected As Boolean = False
+    Private _Angenommen As Boolean = False
 #End Region
 
 #Region "Properties"
@@ -171,12 +171,12 @@
             _frm_AnrMon = value
         End Set
     End Property
-    Friend Property Conncected() As Boolean
+    Friend Property Angenommen() As Boolean
         Get
-            Return _Connected
+            Return _Angenommen
         End Get
         Set(ByVal value As Boolean)
-            _Connected = value
+            _Angenommen = value
         End Set
     End Property
 #End Region

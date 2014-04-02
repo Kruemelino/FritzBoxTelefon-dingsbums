@@ -2064,16 +2064,20 @@ Public Class DataProvider
     End Function
 
     Public Overloads Function Delete(ByVal alxPathTeile As ArrayList) As Boolean
-        Dim tmpXMLNode As XmlNode
+        Dim tmpXMLNodeList As XmlNodeList
+
         Dim xPath As String = CreateXPath(alxPathTeile)
         With XMLDoc
-            If Not .SelectSingleNode(xPath) Is Nothing Then
-                tmpXMLNode = .SelectSingleNode(xPath).ParentNode
-                tmpXMLNode.RemoveChild(.SelectSingleNode(xPath))
-                If tmpXMLNode.ChildNodes.Count = 0 Then
-                    tmpXMLNode.ParentNode.RemoveChild(tmpXMLNode)
+            tmpXMLNodeList = .SelectNodes(xPath)
+            For Each tmpXMLNode As XmlNode In tmpXMLNodeList
+                If Not tmpXMLNode Is Nothing Then
+                    tmpXMLNode = .SelectSingleNode(xPath).ParentNode
+                    tmpXMLNode.RemoveChild(.SelectSingleNode(xPath))
+                    If tmpXMLNode.ChildNodes.Count = 0 Then
+                        tmpXMLNode.ParentNode.RemoveChild(tmpXMLNode)
+                    End If
                 End If
-            End If
+            Next
         End With
         alxPathTeile = Nothing
         Return True

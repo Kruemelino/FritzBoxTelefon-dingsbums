@@ -579,15 +579,17 @@ Friend Class AnrufMonitor
                 End If
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
-                    If C_DP.P_CBNote Then
-                        If .olContact Is Nothing Then
-                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, C_DP.P_Def_StringEmpty, .TelNr, False)
-                        End If
-#If Not OVer = 11 Then
-                        C_KF.AddNote(.olContact)
-#End If
+                    If .olContact Is Nothing Then
+                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     End If
-                    .olContact.Display()
+#If Not OVer = 11 Then
+                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+#End If
+                    Try
+                        .olContact.Display()
+                    Catch ex As Exception
+                        C_hf.LogFile("AnrMonRING: Kontakt kann nicht angezeigt werden. Grund: " & ex.Message)
+                    End Try
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
@@ -745,15 +747,17 @@ Friend Class AnrufMonitor
                 End If
                 ' Kontakt öffnen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
-                    If C_DP.P_CBNote Then
-                        If .olContact Is Nothing Then
-                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, C_DP.P_Def_StringEmpty, .TelNr, False)
-                        End If
-#If Not OVer = 11 Then
-                        C_KF.AddNote(.olContact)
-#End If
+                    If .olContact Is Nothing Then
+                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     End If
-                    .olContact.Display()
+#If Not OVer = 11 Then
+                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+#End If
+                    Try
+                        .olContact.Display()
+                    Catch ex As Exception
+                        C_hf.LogFile("AnrMonCALL: Kontakt kann nicht angezeigt werden. Grund: " & ex.Message)
+                    End Try
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
@@ -790,7 +794,7 @@ Friend Class AnrufMonitor
         Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
         If Not Telefonat Is Nothing Then
             With Telefonat
-                .Conncected = True
+                .Angenommen = True
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .NSN = CInt(FBStatus.GetValue(3))
 
@@ -844,9 +848,6 @@ Friend Class AnrufMonitor
                         .RunWorkerAsync(Telefonat.ID)
                     End With
                 End If
-                'End If
-                'End If
-                'End If
                 'Notizeintag
 #If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
@@ -888,7 +889,7 @@ Friend Class AnrufMonitor
                 NSN = .NSN
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
-                .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Dauer = 0, "nicht ", C_DP.P_Def_StringEmpty)) & "angenommen" & vbCrLf & vbCrLf
+                .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Angenommen, C_DP.P_Def_StringEmpty, "nicht ")) & "angenommen" & vbCrLf & vbCrLf
                 If Not .vCard = C_DP.P_Def_StringEmpty Then
 
                     .Companies = ReadFromVCard(.vCard, "ORG", "")
@@ -917,7 +918,7 @@ Friend Class AnrufMonitor
 
                 If C_DP.P_CBJournal Then
 
-                    If .Conncected Then
+                    If .Angenommen Then
                         With xPathTeile
                             .Clear()
                             .Add("Telefone")

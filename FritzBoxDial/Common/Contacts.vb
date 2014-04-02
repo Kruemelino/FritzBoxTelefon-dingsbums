@@ -267,7 +267,7 @@ Public Class Contacts
                 .BusinessTelephoneNumber = TelNr
             End If
 
-            If Not vCard = C_DP.P_Def_StringEmpty Then
+            If Not (vCard = C_DP.P_Def_StringEmpty Or vCard = C_DP.P_Def_ErrorMinusOne_String Or vCard = C_DP.P_Def_ErrorMinusTwo) Then
                 vCard2Contact(vCard, olKontakt)
 
                 If Not TelNr = C_DP.P_Def_StringEmpty Then

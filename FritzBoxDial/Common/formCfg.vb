@@ -629,15 +629,10 @@ Friend Class formCfg
 #If OVer >= 14 Then
                 C_GUI.RefreshRibbon()
 #End If
-                If formschlieﬂen Then
-                    Me.Hide()
-                    'Dispose(True)
-                End If
-
+                If formschlieﬂen Then Me.Hide()
             Case "ButtonAbbruch"
                 ' Schlieﬂt das Fenster
                 Me.Hide()
-                'Dispose(True)
             Case "ButtonUebernehmen"
                 Speichern()
             Case "ButtonXML"
@@ -696,23 +691,28 @@ Friend Class formCfg
                 End With
                 fDialg = Nothing
             Case "BResetStat"
+
+                C_DP.P_StatResetZeit = System.DateTime.Now
+                C_DP.P_StatVerpasst = 0
+                C_DP.P_StatNichtErfolgreich = 0
+                C_DP.P_StatKontakt = 0
+                C_DP.P_StatJournal = 0
+                C_DP.P_StatOLClosedZeit = System.DateTime.Now
+
                 Dim xPathTeile As New ArrayList
-                C_DP.Delete("Statistik")
                 With xPathTeile
-                    .Add("Statistik")
-                    .Add("ResetZeit")
-                    C_DP.Write(xPathTeile, CStr(System.DateTime.Now))
                     .Clear()
                     .Add("Telefone")
                     .Add("Telefone")
                     .Add("*")
                     .Add("Telefon")
                     .Add("Eingehend")
-                    C_DP.Write(xPathTeile, "0")
+                    C_DP.Delete(xPathTeile)
                     .Item(.Count - 1) = "Ausgehend"
-                    C_DP.Write(xPathTeile, "0")
+                    C_DP.Delete(xPathTeile)
                 End With
-                FillTelListe()
+                C_DP.SpeichereXMLDatei()
+                Ausf¸llen()
                 xPathTeile = Nothing
             Case "BIndizierungStart"
                 StarteIndizierung()
