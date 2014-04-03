@@ -230,11 +230,12 @@ Public Class OutlookInterface
 #If Not OVer = 15 Then
                     If (Not (Telefonat.KontaktID = C_DP.P_Def_StringEmpty Or Telefonat.StoreID = C_DP.P_Def_StringEmpty)) And Not _
                         Left(Telefonat.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne_String Then
-                        Try
-                            .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(Telefonat.KontaktID, Telefonat.StoreID), Outlook.ContactItem))
-                        Catch ex As Exception
-                            C_hf.LogFile("Fehler (ErstelleJournalEintrag): Kann eingebetteten Link zum Kontakt nicht erstellen: " & ex.Message)
-                        End Try
+                        .Links.Add(Telefonat.olContact)
+                        'Try
+                        '    .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(Telefonat.KontaktID, Telefonat.StoreID), Outlook.ContactItem))
+                        'Catch ex As Exception
+                        '    C_hf.LogFile("Fehler (ErstelleJournalEintrag): Kann eingebetteten Link zum Kontakt nicht erstellen: " & ex.Message)
+                        'End Try
                     End If
 #End If
                     .Save()

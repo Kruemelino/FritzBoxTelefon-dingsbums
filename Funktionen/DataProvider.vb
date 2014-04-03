@@ -1880,8 +1880,10 @@ Public Class DataProvider
         Write(P_Def_Options, "CLIR", CStr(Me.P_TelCLIR))
         'FritzBox
         Write(P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
-        'indizierung
+        'Indizierung
         Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
+        ' Notiz
+        Write(P_Def_Options, "CBNote", CStr(Me.P_CBNote))
 
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
