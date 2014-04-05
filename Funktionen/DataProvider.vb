@@ -1670,10 +1670,16 @@ Public Class DataProvider
             Return "Phoner"
         End Get
     End Property
+
 #End Region
 
 #Region "Debug Properties"
     Public ReadOnly Property P_Debug_Use_WebClient() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Public ReadOnly Property P_Debug_AnrufSimulation() As Boolean
         Get
             Return False
         End Get

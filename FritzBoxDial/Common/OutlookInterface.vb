@@ -18,6 +18,7 @@
     Private _Body As String
     Private _Companies As String
     Private _Categories As String
+    'Private WithEvents _olContact As Outlook.ContactItem
     Private _olContact As Outlook.ContactItem
     Private _vCard As String
     Private _Anrufer As String
@@ -180,6 +181,10 @@
         End Set
     End Property
 #End Region
+
+    'Private Sub cContact_Write(ByRef Cancel As Boolean) Handles _olContact.Write
+    '    MsgBox(_olContact.Parent.ToString)
+    'End Sub
 End Class
 
 Public Class OutlookInterface
@@ -231,15 +236,10 @@ Public Class OutlookInterface
                     If (Not (Telefonat.KontaktID = C_DP.P_Def_StringEmpty Or Telefonat.StoreID = C_DP.P_Def_StringEmpty)) And Not _
                         Left(Telefonat.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne_String Then
                         .Links.Add(Telefonat.olContact)
-                        'Try
-                        '    .Links.Add(CType(oApp.GetNamespace("MAPI").GetItemFromID(Telefonat.KontaktID, Telefonat.StoreID), Outlook.ContactItem))
-                        'Catch ex As Exception
-                        '    C_hf.LogFile("Fehler (ErstelleJournalEintrag): Kann eingebetteten Link zum Kontakt nicht erstellen: " & ex.Message)
-                        'End Try
                     End If
 #End If
                     .Save()
-                    .Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
+                    '.Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
                 End With
                 olJournal = Nothing
             End If
@@ -323,7 +323,7 @@ Public Class OutlookInterface
     ''' </summary>
     ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
     ''' <remarks></remarks>
-    Friend Sub KeepoInspAtivated(ByVal Activate As Boolean)
+    Friend Sub KeepoInspActivated(ByVal Activate As Boolean)
 
         If Not OutlookApplication Is Nothing Then
             If Activate Then

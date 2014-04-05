@@ -38,7 +38,7 @@ Friend Class formAnrMon
                 C_hf.LogFile("formAnrMon_New: TimerNeuStart nicht gestartet")
             End If
         End If
-        C_OLI.KeepoInspAtivated(False)
+        C_OLI.KeepoInspActivated(False)
 
         With PopUpAnrMon
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
@@ -51,7 +51,7 @@ Friend Class formAnrMon
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             .Popup()
         End With
-        C_OLI.KeepoInspAtivated(True)
+        C_OLI.KeepoInspActivated(True)
     End Sub
 
     Sub AnrMonausfüllen()

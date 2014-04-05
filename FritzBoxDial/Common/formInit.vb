@@ -76,13 +76,9 @@
             ThisAddIn.P_KontaktFunktionen = C_KF
 
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
-            'F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
+            If C_DP.P_Debug_AnrufSimulation Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
         End If
     End Sub
-
-    'Protected Overrides Sub Finalize()
-    '    MyBase.Finalize()
-    'End Sub
 
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False

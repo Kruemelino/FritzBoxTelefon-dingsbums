@@ -209,17 +209,11 @@ Public Class ThisAddIn
         C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If C_DP.P_CBKHO Then
-                Dim Ordner As Outlook.MAPIFolder
-                Dim StandardOrdner As Outlook.MAPIFolder
-                Dim olNamespace As Outlook.NameSpace
-                Ordner = CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder)
-                olNamespace = P_oApp.GetNamespace("MAPI")
-                StandardOrdner = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                If Not StandardOrdner.StoreID = Ordner.StoreID Then Exit Sub
+            If C_DP.P_CBKHO AndAlso Not _
+                    CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
+                    P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
             End If
-            ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
-        End If
+        ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
     End Sub
 
 #Region " Office 2003 & 2007"

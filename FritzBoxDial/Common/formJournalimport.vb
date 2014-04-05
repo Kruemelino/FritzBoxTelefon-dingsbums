@@ -176,16 +176,7 @@ Friend Class formJournalimport
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-                        With xPathTeile
-                            .Clear()
-                            .Add("Telefone")
-                            .Add("Nummern")
-                            .Add("*")
-                            .Add("[. = """ & C_hf.OrtsVorwahlEntfernen(MSN) & """]")
-                            .Add("@Checked")
-                        End With
-
-                        If C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)) Then
+                        If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN), C_DP.P_CLBTelNr) Then
                             b += 1
                             i = 0
                             NSN = -1
@@ -229,21 +220,21 @@ Friend Class formJournalimport
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, False)
+                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, False)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                                 Case 2 ' eingehender Anruf: nicht angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, False)
+                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                                 Case 3, 4 ' ausgehender Anruf
                                     vFBStatus = Split(AnrZeit & ";CALL;25;0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCALL(vFBStatus, False)
+                                    C_AnrMon.AnrMonCALL(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, False)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                             End Select
                             If Abbruch Then Exit For
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;25;" & Dauer & ";", ";", , CompareMethod.Text)
-                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, False)
+                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1

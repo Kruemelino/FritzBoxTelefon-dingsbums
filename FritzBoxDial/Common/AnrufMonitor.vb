@@ -518,6 +518,7 @@ Friend Class AnrufMonitor
                                 End With
                                 .vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
                             End If
+
                             If .vCard = C_DP.P_Def_ErrorMinusOne_String Then
                                 Select Case C_DP.P_ComboBoxRWS
                                     Case 0
@@ -577,6 +578,7 @@ Friend Class AnrufMonitor
                         End If
                     End With
                 End If
+
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                     If .olContact Is Nothing Then
@@ -586,18 +588,19 @@ Friend Class AnrufMonitor
                     If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
                     Try
+                        ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
+                        ' Grund für den Save-Forgang ist unbekannt.
                         .olContact.Display()
                     Catch ex As Exception
                         C_hf.LogFile("AnrMonRING: Kontakt kann nicht angezeigt werden. Grund: " & ex.Message)
                     End Try
                 End If
-                'Notizeintag
+
+        'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote Then
-                    If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-                    End If
-                End If
+        If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
+            C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+        End If
 #End If
             End With
             TelefonatsListe.Add(Telefonat)
@@ -761,10 +764,8 @@ Friend Class AnrufMonitor
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote Then
-                    If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-                    End If
+                If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                 End If
 #End If
             End With

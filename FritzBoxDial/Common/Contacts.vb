@@ -54,14 +54,26 @@ Public Class Contacts
 
         Dim oApp As Outlook.Application = C_OLI.OutlookApplication()
         Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
+        Dim sFilter As String = C_DP.P_Def_StringEmpty
+        Dim JoinFilter(C_DP.P_Def_UserProperties.Length - 1) As String
+
         If Not oApp Is Nothing Then
 
             If EMailAdresse = C_DP.P_Def_ErrorMinusOne_String Then
                 If C_DP.P_CBIndex Then
+                    ' Filter zusammenstellen
+#If Not OVer = 11 Then
+                    For i = 0 To C_DP.P_Def_UserProperties.Length - 1
+                        JoinFilter(i) = String.Concat("""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", _
+                                                      C_DP.P_Def_UserProperties(i), "/0x0000001f"" = '", TelNr, "'")
+                    Next
+                    sFilter = "@SQL=" & String.Join(" OR ", JoinFilter)
+#End If
+
                     If alleOrdner Then
-                        KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts))
+                        KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), sFilter)
                     Else
-                        KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace)
+                        KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace, sFilter)
                     End If
                 End If
             ElseIf Not EMailAdresse = C_DP.P_Def_StringEmpty Then
@@ -91,14 +103,14 @@ Public Class Contacts
     ''' <param name="NamensRaum">Startpunkt der Rekursiven Suche als <c>Outlook.NameSpace</c>.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
     ''' <remarks></remarks>
-    Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal NamensRaum As Outlook.NameSpace) As Outlook.ContactItem
+    Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal NamensRaum As Outlook.NameSpace, ByVal sFilter As String) As Outlook.ContactItem
 
         Dim KontaktGefunden As Outlook.ContactItem = Nothing
 
         '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         Dim j As Integer = 1
         Do While (j <= NamensRaum.Folders.Count) And (KontaktGefunden Is Nothing)
-            KontaktGefunden = FindeAnruferKontakt(TelNr, NamensRaum.Folders.Item(j))
+            KontaktGefunden = FindeAnruferKontakt(TelNr, NamensRaum.Folders.Item(j), sFilter)
             j = j + 1
             Windows.Forms.Application.DoEvents()
         Loop
@@ -123,11 +135,11 @@ Public Class Contacts
     ''' 
     ''' In Office 11 muss der Filter klassisch zusammengesetzt werden. Dabei sind pro Kontaktordner mehrere Suchvorgänge erforderlich, da die Verkettung
     ''' mit <c> OR </c> nicht funktioniert.</remarks>
-    Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal Ordner As Outlook.MAPIFolder) As Outlook.ContactItem
+    Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal Ordner As Outlook.MAPIFolder, ByVal sFilter As String) As Outlook.ContactItem
 
         Dim olKontakt As Outlook.ContactItem = Nothing
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
-        Dim sFilter As String = C_DP.P_Def_StringEmpty
+        'Dim sFilter As String = C_DP.P_Def_StringEmpty
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
@@ -141,12 +153,8 @@ Public Class Contacts
                 If Not olKontakt Is Nothing Then Exit For
             Next
 #Else
-            Dim JoinFilter(C_DP.P_Def_UserProperties.Length - 1) As String
-            For i = 0 To C_DP.P_Def_UserProperties.Length - 1
-                JoinFilter(i) = String.Concat("""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", _
-                                              C_DP.P_Def_UserProperties(i), "/0x0000001f"" = '", TelNr, "'")
-            Next
-            sFilter = "@SQL=" & String.Join(" OR ", JoinFilter)
+
+
             olKontakt = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
 #End If
             If Not olKontakt Is Nothing Then
@@ -184,7 +192,7 @@ Public Class Contacts
         ' Unterordner werden rekursiv durchsucht
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count) And (olKontakt Is Nothing)
-            olKontakt = FindeAnruferKontakt(TelNr, Ordner.Folders.Item(iOrdner))
+            olKontakt = FindeAnruferKontakt(TelNr, Ordner.Folders.Item(iOrdner), sFilter)
             iOrdner = iOrdner + 1
             Windows.Forms.Application.DoEvents()
         Loop
@@ -440,13 +448,13 @@ Public Class Contacts
     ''' <summary>
     ''' Indiziert einen Kontaktelement.
     ''' </summary>
-    ''' <param name="Kontakt">Der Kontakt der indiziert werden soll.</param>
+    ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
     ''' <remarks></remarks>
-    Friend Sub IndiziereKontakt(ByRef Kontakt As Outlook.ContactItem)
+    Friend Sub IndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
             Dim tempTelNr As String
 
-            With Kontakt
+            With olKontakt
                 Dim alleTE() As String = {.AssistantTelephoneNumber, _
                                           .BusinessTelephoneNumber, _
                                           .Business2TelephoneNumber, _
@@ -488,12 +496,12 @@ Public Class Contacts
     ''' <summary>
     ''' Entfernt alle Indizierungseinträge aus einem Kontaktelement.
     ''' </summary>
-    ''' <param name="Kontakt">Der Kontakt der deindiziert werden soll.</param>
+    ''' <param name="olKontakt">Der Kontakt der deindiziert werden soll.</param>
     ''' <remarks></remarks>
-    Friend Sub DeIndizierungKontakt(ByRef Kontakt As Outlook.ContactItem)
+    Friend Sub DeIndizierungKontakt(ByRef olKontakt As Outlook.ContactItem)
         Dim UserEigenschaft As Outlook.UserProperty
         If Not C_DP.P_CBIndexAus Then
-            With Kontakt.UserProperties
+            With olKontakt.UserProperties
                 For Each UserProperty In C_DP.P_Def_UserProperties
                     Try
                         UserEigenschaft = .Find(UserProperty)
@@ -504,7 +512,7 @@ Public Class Contacts
                     UserEigenschaft = Nothing
                 Next
             End With
-            Kontakt.Save()
+            olKontakt.Save()
         End If
     End Sub
 
@@ -906,10 +914,8 @@ Public Class Contacts
     ''' <param name="olKontakt">Kontakt, in den die Notizzeile geschrieben werden soll.</param>
     ''' <remarks></remarks>
     Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
-
         Dim oInsp As Outlook.Inspector
         Dim Handle As IntPtr
-
         Dim ReturnValue As Long
         Dim oDoc As Word.Document
         Dim oTable As Word.Table = Nothing
@@ -924,10 +930,12 @@ Public Class Contacts
         If Not Handle = IntPtr.Zero Then
             oDoc = CType(oInsp.WordEditor, Word.Document)
             CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, True)
+
             With CallRow
                 .Cells(1).Range.Text = C_DP.P_Def_AnrMonDirection_Default
                 .Cells(2).Range.Text = C_OLI.BenutzerInitialien
             End With
+
             If Not NoteRow Is Nothing Then
                 startLocation = NoteRow.Range.Start
                 oDoc.Range(startLocation, startLocation).Select()
@@ -945,7 +953,6 @@ Public Class Contacts
                 .NAR(NoteRow)
             End With
         End If
-        'End If
     End Sub
 
 
