@@ -185,11 +185,16 @@ Public Class ThisAddIn
             C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
     End Sub
-
+    ''' <summary>
+    ''' Startet Die Indizierung des gespeicherten Kontaktes. Bedingung dafür: der Kontakt ist bereits vorhanden.
+    ''' </summary>
+    ''' <param name="Cancel"></param>
+    ''' <remarks></remarks>
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not Cancel Then
+        If C_KF.IndizierungErforderlich(ContactSaved) And Not Cancel Then
             C_KF.IndiziereKontakt(ContactSaved)
         End If
+
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown

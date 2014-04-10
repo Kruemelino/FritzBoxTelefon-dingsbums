@@ -176,7 +176,7 @@ Friend Class formJournalimport
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-                        If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN), C_DP.P_CLBTelNr) Then
+                        If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
                             b += 1
                             i = 0
                             NSN = -1
@@ -199,9 +199,8 @@ Friend Class formJournalimport
                                             .Add("Telefone")
                                             .Add("Telefone")
                                             .Add("*")
-                                            .Add("Telefon") 'Select Case Nebenstelle
+                                            .Add("Telefon")
                                             .Add("[TelName = """ & Nebenstelle & """]")
-                                            'End Select
                                             .Add("@Dialport")
                                             NSN = CInt(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
                                         End With

@@ -542,21 +542,19 @@ Friend Class formWählbox
     Private Sub BWLogin_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWLogin.DoWork
         Element = Me.ComboBoxFon
         AnAus = False
-        SetEnabled()
+        'SetEnabled()
         SID = C_FBox.FBLogIn(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
-        If Not SID = C_DP.P_Def_SessionID Then
+        Element = Me.ListTel
+        If Not SID = C_DP.P_Def_SessionID Then ' Login erfolgreich?
             StatusText = "Der Wählclient ist bereit."
             WählboxBereit = True
-            Element = Me.ListTel
             AnAus = True
-            SetEnabled()
         Else
             StatusText = "Login fehlgeschlagen"
             C_hf.LogFile("BWLogin: Login fehlgeschlagen")
-            Element = Me.ListTel
-            Enabled = False
-            SetEnabled()
+            'Enabled = False
         End If
+        SetEnabled()
         SetStatusText()
     End Sub
 
