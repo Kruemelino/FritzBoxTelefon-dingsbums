@@ -300,7 +300,7 @@ Public Class Contacts
 
             C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
         Else
-            olKontakt.UserProperties.Add("FBDB_Save", Outlook.OlUserPropertyType.olYesNo).Value = vbNo
+            olKontakt.UserProperties.Add(C_DP.P_Def_UserPropertyIndex, Outlook.OlUserPropertyType.olYesNo).Value = False
         End If
         ErstelleKontakt = olKontakt
         C_hf.NAR(olFolder)
@@ -471,11 +471,17 @@ Public Class Contacts
                                       .OtherFaxNumber, _
                                       .TelexNumber, _
                                       .TTYTDDTelephoneNumber}
+
+
             alleTE = (From x In alleTE Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
             If Not alleTE.LongCount = 0 Then
                 ' Reicht nicht aus! Weiterer Gehirnschmalz erforderlich
-                If Not .UserProperties.Find("FBDB_Save") Is Nothing Then
-
+                If Not .UserProperties.Find(C_DP.P_Def_UserPropertyIndex) Is Nothing Then
+                    If CBool(.UserProperties.Find(C_DP.P_Def_UserPropertyIndex).Value) = False Then
+                        IndizierungErforderlich = False
+                    End If
+                    .UserProperties.Find(C_DP.P_Def_UserPropertyIndex).Delete()
+                    Return IndizierungErforderlich
                 End If
                 Return True
             End If

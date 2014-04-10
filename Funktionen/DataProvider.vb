@@ -1238,6 +1238,11 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public ReadOnly Property P_Def_UserPropertyIndex As String
+        Get
+            Return "FBDB-Save"
+        End Get
+    End Property
     ' Journal
     Public ReadOnly Property P_Def_Journal_Text_Eingehend() As String
         Get

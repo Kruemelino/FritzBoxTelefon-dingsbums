@@ -73,7 +73,7 @@
             ThisAddIn.P_GUI = C_GUI
             ThisAddIn.P_XML = C_DP
             ThisAddIn.P_hf = C_HF
-            ThisAddIn.P_KontaktFunktionen = C_KF
+            ThisAddIn.P_KF = C_KF
 
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
             If C_DP.P_Debug_AnrufSimulation Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)

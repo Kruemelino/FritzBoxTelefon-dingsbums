@@ -1,5 +1,21 @@
 ﻿Imports Microsoft.Office.Core
 Imports Microsoft.Win32
+Imports System.Collections.Generic
+
+Public Class ContactSaved
+    Friend WithEvents ContactSaved As Outlook.ContactItem
+
+    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
+        ThisAddIn.ListofOpenContacts.Remove(Me)
+    End Sub
+
+    Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
+        If ThisAddIn.P_KF.IndizierungErforderlich(ContactSaved) Then
+            ThisAddIn.P_KF.IndiziereKontakt(ContactSaved)
+        End If
+    End Sub
+
+End Class
 
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
@@ -35,9 +51,9 @@ Public Class ThisAddIn
 #End If
 #End Region
     Private Shared oApp As Outlook.Application
-    Private WithEvents ContactSaved As Outlook.ContactItem
-    Private WithEvents oInsps As Outlook.Inspectors
 
+    Private WithEvents oInsps As Outlook.Inspectors
+    Friend Shared ListofOpenContacts As New List(Of ContactSaved)
     Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
     Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
     Private Shared C_AnrMon As AnrufMonitor
@@ -75,7 +91,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_KontaktFunktionen() As Contacts
+    Friend Shared Property P_KF() As Contacts
         Get
             Return C_KF
         End Get
@@ -185,19 +201,13 @@ Public Class ThisAddIn
             C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
         End If
     End Sub
-    ''' <summary>
-    ''' Startet Die Indizierung des gespeicherten Kontaktes. Bedingung dafür: der Kontakt ist bereits vorhanden.
-    ''' </summary>
-    ''' <param name="Cancel"></param>
-    ''' <remarks></remarks>
-    Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If C_KF.IndizierungErforderlich(ContactSaved) And Not Cancel Then
-            C_KF.IndiziereKontakt(ContactSaved)
-        End If
+
+
+    Friend Sub ContactSaved_Write(ByRef olKontakt As Outlook.ContactItem) ' Handles ContactSaved.Write
 
     End Sub
 
-    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+    Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
         C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
@@ -217,8 +227,11 @@ Public Class ThisAddIn
             If C_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
                     P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
-            End If
-        ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
+            Dim KS As New ContactSaved
+            KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
+            ListofOpenContacts.Add(KS)
+        End If
+
     End Sub
 
 #Region " Office 2003 & 2007"
