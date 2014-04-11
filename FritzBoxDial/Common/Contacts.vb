@@ -1226,3 +1226,21 @@ Public Class Contacts
 #End Region
 
 End Class
+
+Public Class ContactSaved
+    Friend WithEvents ContactSaved As Outlook.ContactItem
+
+    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
+        ThisAddIn.ListofOpenContacts.Remove(Me)
+    End Sub
+
+    Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
+        If ThisAddIn.P_KF.IndizierungErforderlich(ContactSaved) Then
+            ThisAddIn.P_KF.IndiziereKontakt(ContactSaved)
+        End If
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
+End Class

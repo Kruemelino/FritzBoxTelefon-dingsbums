@@ -1,21 +1,5 @@
 ﻿Imports Microsoft.Office.Core
 Imports Microsoft.Win32
-Imports System.Collections.Generic
-
-Public Class ContactSaved
-    Friend WithEvents ContactSaved As Outlook.ContactItem
-
-    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
-        ThisAddIn.ListofOpenContacts.Remove(Me)
-    End Sub
-
-    Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If ThisAddIn.P_KF.IndizierungErforderlich(ContactSaved) Then
-            ThisAddIn.P_KF.IndiziereKontakt(ContactSaved)
-        End If
-    End Sub
-
-End Class
 
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
@@ -53,7 +37,8 @@ Public Class ThisAddIn
     Private Shared oApp As Outlook.Application
 
     Private WithEvents oInsps As Outlook.Inspectors
-    Friend Shared ListofOpenContacts As New List(Of ContactSaved)
+    Friend Shared ListofOpenContacts As New Generic.List(Of ContactSaved)
+
     Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
     Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
     Private Shared C_AnrMon As AnrufMonitor
@@ -151,7 +136,7 @@ Public Class ThisAddIn
 #End If
 
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Alpha 10"
+    Public Const Version As String = "3.7 Alpha 11"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
