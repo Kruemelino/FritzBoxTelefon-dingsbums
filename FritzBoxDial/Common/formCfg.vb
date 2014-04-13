@@ -88,13 +88,13 @@ Friend Class formCfg
         Me.BTelefonliste.Enabled = Not C_FBox Is Nothing
         Me.FBDB_MP.SelectedIndex = 0
         'Me.StartPosition = FormStartPosition.CenterParent
+        LandesVW = C_DP.P_TBLandesVW
         Ausfüllen()
     End Sub
 
 #Region "Ausfüllen"
 
     Private Sub Ausfüllen()
-        LandesVW = C_DP.P_TBLandesVW
         Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
@@ -361,7 +361,7 @@ Friend Class formCfg
             End If
         End With
 
-        'LandesVW = Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1)
+        'LandesVW = 
 
         With Me.CBoxVorwahl
             .DataSource = ListOV
@@ -954,14 +954,25 @@ Friend Class formCfg
             Case "ComboBox"
                 Select Case CType(sender, ComboBox).Name
                     Case "CBoxLandesVorwahl"
-                        LandesVW = Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1)
-                        If BWCBox Is Nothing OrElse Not BWCBox.IsBusy Then
-                            BWCBox = New BackgroundWorker
-                            With BWCBox
-                                .WorkerReportsProgress = False
-                                .RunWorkerAsync(True)
-                            End With
+                        Dim Vorwahliste As String
+                        If Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1) = C_DP.P_Def_TBLandesVW Then
+                            ' Ortsvorwahlen Deutschland
+                            Vorwahliste = Replace(C_hf.VorwahlListe(Helfer.Vorwahllisten.Liste_Ortsvorwahlen_Deutschland), ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+                            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
+
+                            ListOV = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
+                        Else
+                            LandesVW = Strings.Replace(LandesVW, "00", "", , 1, CompareMethod.Text)
+
+                            Vorwahliste = Replace(C_hf.VorwahlListe(Helfer.Vorwahllisten.Liste_Ortsvorwahlen_Ausland), ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+                            Dim tmpvw() As String
+                            ListOV = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like LandesVW & ";*" Select s).ToArray
+                            For i = LBound(ListOV) To UBound(ListOV)
+                                tmpvw = Split(ListOV(i), ";", , CompareMethod.Text)
+                                ListOV(i) = tmpvw(1) & " (" & tmpvw(2)
+                            Next
                         End If
+                        Me.CBoxVorwahl.DataSource = ListOV
                 End Select
         End Select
     End Sub
@@ -1541,10 +1552,6 @@ Friend Class formCfg
 
     Private Sub BWCBbox_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWCBox.RunWorkerCompleted
         DelSetCBox()
-
-
-
-
         BWCBox = Nothing
     End Sub
 #End Region
