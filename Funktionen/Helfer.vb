@@ -3,6 +3,11 @@ Imports System.Text
 Imports System.Threading
 
 Public Class Helfer
+    Public Enum Vorwahllisten
+        Liste_Landesvorwahlen = 0
+        Liste_Ortsvorwahlen_Ausland = 1
+        Liste_Ortsvorwahlen_Deutschland = 2
+    End Enum
 
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
@@ -490,7 +495,7 @@ Public Class Helfer
         TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
         AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
         Dim Suchmuster As String
-        Dim Vorwahlen() As String = Split(My.Resources.VorwahlenAusland, vbNewLine, , CompareMethod.Text)
+        Dim Vorwahlen() As String = Split(My.Resources.Liste_Ortsvorwahlen_Ausland, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 1
         Dim tmpvorwahl() As String
         If Left(LandesVW, 2) = "00" Then LandesVW = Mid(LandesVW, 3)
@@ -564,7 +569,7 @@ Public Class Helfer
         If Left(nurZiffern, 3) = "000" Then nurZiffern = Right(nurZiffern, Len(nurZiffern) - 2)
     End Function '(nurZiffern)
 
-    Function Mobilnummer(ByVal TelNr As String) As Boolean
+    Public Function Mobilnummer(ByVal TelNr As String) As Boolean
         Dim TempTelNr As String() = TelNrTeile(TelNr)
         Dim Vorwahl As String = Left(TempTelNr(1), 2)
         If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
@@ -576,6 +581,21 @@ Public Class Helfer
     Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean
         Return nurZiffern(TelNr1) = nurZiffern(TelNr2)
     End Function
+
+    Public Function VorwahlListe(ByVal VList As Vorwahllisten) As String
+        Select Case VList
+            Case Vorwahllisten.Liste_Landesvorwahlen
+                VorwahlListe = My.Resources.Liste_Landesvorwahlen
+            Case Vorwahllisten.Liste_Ortsvorwahlen_Ausland
+                VorwahlListe = My.Resources.Liste_Ortsvorwahlen_Ausland
+            Case Vorwahllisten.Liste_Ortsvorwahlen_Deutschland
+                VorwahlListe = My.Resources.Liste_Ortsvorwahlen_Deutschland
+            Case Else
+                VorwahlListe = C_DP.P_Def_ErrorMinusOne_String
+        End Select
+    End Function
+
+
 #End Region
 
 #Region " HTTPTransfer"

@@ -20,6 +20,7 @@ Friend Class formCfg
     Private WithEvents BWTelefone As BackgroundWorker
     Private WithEvents BWIndexer As BackgroundWorker
     Private WithEvents BWTreeView As BackgroundWorker
+    Private WithEvents BWCBox As BackgroundWorker
 #End Region
 
 #Region "Delegaten"
@@ -29,6 +30,7 @@ Friend Class formCfg
     Private Delegate Sub DelgStatistik()
     Private Delegate Sub DelgSetProgressbar()
     Private Delegate Sub DelgSetTreeView()
+    Private Delegate Sub DelgSetCBox()
 #End Region
 
 #Region "EventMulticaster"
@@ -43,6 +45,9 @@ Friend Class formCfg
     Private Startzeit As Date
     Private _StoppUhrAnzeigen As Boolean
     Private Dauer As TimeSpan
+    Private ListLV As String()
+    Private ListOV As String()
+    Private LandesVW As String
 #End Region
 
     Public Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
@@ -89,13 +94,16 @@ Friend Class formCfg
 #Region "Ausfüllen"
 
     Private Sub Ausfüllen()
+        LandesVW = C_DP.P_TBLandesVW
         Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
         ' Beim Einblenden die Werte aus der Registry einlesen
         ' Einstellungen für das Wählmakro laden
-        Me.TBLandesVW.Text = C_DP.P_TBLandesVW
+        'Me.TBLandesVW.Text = C_DP.P_TBLandesVW
+        'Me.CBoxLandesVorwahl.SelectedIndex = C_DP.P_CBoxLandesVorwahl
+
         Me.TBAmt.Text = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt))
         Me.TBFBAdr.Text = C_DP.P_TBFBAdr
 
@@ -109,7 +117,7 @@ Friend Class formCfg
         End If
 
         If Not Len(C_DP.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
-        Me.TBVorwahl.Text = C_DP.P_TBVorwahl
+        'Me.TBVorwahl.Text = C_DP.P_TBVorwahl
         Me.TBEnblDauer.Text = CStr(C_DP.P_TBEnblDauer)
         Me.CBAnrMonAuto.Checked = C_DP.P_CBAnrMonAuto
         Me.TBAnrMonX.Text = CStr(C_DP.P_TBAnrMonX)
@@ -210,8 +218,6 @@ Friend Class formCfg
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
         C_DP.P_PhonerVerfügbar = PhonerInstalliert
-        ' Tooltipp
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
         ' Notiz
         Me.CBNote.Checked = C_DP.P_CBNote
         'TreeView
@@ -226,6 +232,12 @@ Friend Class formCfg
         FillLogTB()
         FillTelListe()
         CLBTelNrAusfüllen()
+
+        BWCBox = New BackgroundWorker
+        With BWCBox
+            .WorkerReportsProgress = False
+            .RunWorkerAsync(True)
+        End With
     End Sub
 
     ''' <summary>
@@ -339,6 +351,29 @@ Friend Class formCfg
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
     End Sub
 
+    Private Sub ComboBoxOrtsVWAusfüllen()
+        With Me.CBoxLandesVorwahl
+            .DataSource = ListLV
+            If C_DP.P_CBoxLandesVorwahl = C_DP.P_Def_ErrorMinusOne_Integer Then
+                .SelectedIndex = Me.CBoxLandesVorwahl.FindString(C_DP.P_Def_TBLandesVW)
+            Else
+                .SelectedIndex = C_DP.P_CBoxLandesVorwahl
+            End If
+        End With
+
+        'LandesVW = Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1)
+
+        With Me.CBoxVorwahl
+            .DataSource = ListOV
+            If C_DP.P_CBoxVorwahl > .Items.Count - 1 Then
+                '.SelectedIndex = 0
+            Else
+                .SelectedIndex = C_DP.P_CBoxVorwahl
+            End If
+        End With
+
+    End Sub
+
 #End Region
 
     Private Function Speichern() As Boolean
@@ -403,11 +438,12 @@ Friend Class formCfg
                 Me.TBStoppUhr.Text = "10"
             End If
 
-            .P_TBLandesVW = Me.TBLandesVW.Text
+            .P_TBLandesVW = Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1)
+            .P_CBoxLandesVorwahl = Me.CBoxLandesVorwahl.SelectedIndex
             .P_TBAmt = CStr(IIf(Me.TBAmt.Text = C_DP.P_Def_StringEmpty, C_DP.P_Def_ErrorMinusOne_String, Me.TBAmt.Text))
             .P_TBFBAdr = Me.TBFBAdr.Text
-            .P_TBVorwahl = Me.TBVorwahl.Text
-
+            .P_TBVorwahl = Strings.Left(Me.CBoxVorwahl.SelectedItem.ToString, InStr(Me.CBoxVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1)
+            .P_CBoxVorwahl = Me.CBoxVorwahl.SelectedIndex
             .P_TBAnrMonX = CInt(Me.TBAnrMonX.Text)
             .P_TBAnrMonY = CInt(Me.TBAnrMonY.Text)
             .P_CBLogFile = Me.CBLogFile.Checked
@@ -549,7 +585,7 @@ Friend Class formCfg
                 ' Startwerte zurücksetzen
                 ' Einstellungen für das Wählmakro zurücksetzen
                 With C_DP
-                    Me.TBLandesVW.Text = .P_Def_TBLandesVW
+                    Me.CBoxLandesVorwahl.SelectedIndex = Me.CBoxLandesVorwahl.FindString(C_DP.P_Def_TBLandesVW)
                     Me.TBAmt.Text = .P_Def_StringEmpty
                     Me.CBCheckMobil.Checked = .P_Def_CBCheckMobil
 
@@ -807,14 +843,12 @@ Friend Class formCfg
                                                                         CBStoppUhrEinblenden.CheckedChanged, _
                                                                         CBStoppUhrAusblenden.CheckedChanged, _
                                                                         CBLogFile.CheckedChanged, _
-                                                                        TBLandesVW.Leave, _
-                                                                        TBVorwahl.TextChanged, _
                                                                         TBEnblDauer.TextChanged, _
                                                                         TBAnrMonX.TextChanged, _
                                                                         TBAnrMonY.TextChanged, _
-                                                                        TBLandesVW.TextChanged, _
                                                                         TBTelNrMaske.Leave, _
-                                                                        CLBTelNr.SelectedIndexChanged
+                                                                        CLBTelNr.SelectedIndexChanged, _
+                                                                        CBoxLandesVorwahl.SelectedIndexChanged
         Select Case sender.GetType().Name
             Case "CheckBox"
                 Select Case CType(sender, CheckBox).Name
@@ -870,7 +904,7 @@ Friend Class formCfg
             Case "TextBox"
                 Select Case CType(sender, TextBox).Name
                     Case "TBLandesVW"
-                        If Me.TBLandesVW.Text = C_DP.P_TBLandesVW Then
+                        If Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1) = C_DP.P_TBLandesVW Then
                             Me.CBRWS.Enabled = True
                             Me.CBKErstellen.Enabled = True
                             Me.ComboBoxRWS.Enabled = Me.CBRWS.Checked
@@ -882,8 +916,8 @@ Friend Class formCfg
                             Me.CBKErstellen.Checked = False
                             Me.ComboBoxRWS.Enabled = False
                         End If
-                    Case "TBVorwahl"
-                        C_hf.AcceptOnlyNumeric(Me.TBVorwahl.Text)
+                        'Case "TBVorwahl"
+                        '    C_hf.AcceptOnlyNumeric(Me.TBVorwahl.Text)
                     Case "TBEnblDauer"
                         C_hf.AcceptOnlyNumeric(Me.TBEnblDauer.Text)
                     Case "TBAnrMonX"
@@ -891,7 +925,8 @@ Friend Class formCfg
                     Case "TBAnrMonY"
                         C_hf.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
                     Case "TBLandesVW"
-                        Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
+                        Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & _
+                                                        Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1) & " immer mitgewählt.")
                     Case "TBTelNrMaske"
                         PrüfeMaske()
                 End Select
@@ -915,6 +950,18 @@ Friend Class formCfg
                                     .SetItemChecked(0, alle)
                             End Select
                         End With
+                End Select
+            Case "ComboBox"
+                Select Case CType(sender, ComboBox).Name
+                    Case "CBoxLandesVorwahl"
+                        LandesVW = Strings.Left(Me.CBoxLandesVorwahl.SelectedItem.ToString, InStr(Me.CBoxLandesVorwahl.SelectedItem.ToString, " (", CompareMethod.Text) - 1)
+                        If BWCBox Is Nothing OrElse Not BWCBox.IsBusy Then
+                            BWCBox = New BackgroundWorker
+                            With BWCBox
+                                .WorkerReportsProgress = False
+                                .RunWorkerAsync(True)
+                            End With
+                        End If
                 End Select
         End Select
     End Sub
@@ -1072,7 +1119,7 @@ Friend Class formCfg
         ErmittleKontaktanzahl = True
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
         Dim olfolder As Outlook.MAPIFolder
-        Dim LandesVW As String = Me.TBLandesVW.Text
+
         Anzahl = 0
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
@@ -1310,6 +1357,14 @@ Friend Class formCfg
         End If
     End Sub
 
+    Private Sub DelSetCBox()
+        If Me.InvokeRequired Then
+            Dim D As New DelgButtonTelEinl(AddressOf DelSetCBox)
+            Me.Invoke(D)
+        Else
+            ComboBoxOrtsVWAusfüllen()
+        End If
+    End Sub
 #End Region
 
 #Region "BackGroundWorker - Handle"
@@ -1323,20 +1378,19 @@ Friend Class formCfg
 
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
         Dim olfolder As Outlook.MAPIFolder
-        Dim LandesVW As String = Me.TBLandesVW.Text
 
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
             olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
             If Me.RadioButtonErstelle.Checked Then
-                KontaktIndexer(LandesVW, Ordner:=olfolder)
+                KontaktIndexer(C_DP.P_TBLandesVW, Ordner:=olfolder)
             ElseIf Me.RadioButtonEntfernen.Checked Then
                 KontaktDeIndexer(olfolder, Nothing)
             End If
         Else
             If Me.RadioButtonErstelle.Checked Then
-                KontaktIndexer(LandesVW, NamensRaum:=olNamespace)
+                KontaktIndexer(C_DP.P_TBLandesVW, NamensRaum:=olNamespace)
             ElseIf Me.RadioButtonEntfernen.Checked Then
                 KontaktDeIndexer(Nothing, olNamespace)
             End If
@@ -1450,6 +1504,49 @@ Friend Class formCfg
     Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted
         BWTreeView = Nothing
     End Sub
+
+    Private Sub BWCBbox_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWCBox.DoWork
+        Dim Vorwahliste As String
+
+        If Me.CBoxLandesVorwahl.Items.Count = 0 Then
+            ' Landesvorwahlen
+            Vorwahliste = Replace(C_hf.VorwahlListe(Helfer.Vorwahllisten.Liste_Landesvorwahlen), ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
+
+            ListLV = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray
+        End If
+
+        LandesVW = CStr(IIf(LandesVW = C_DP.P_Def_StringEmpty, C_DP.P_TBLandesVW, LandesVW))
+
+        If LandesVW = C_DP.P_Def_TBLandesVW Then
+            ' Ortsvorwahlen Deutschland
+            Vorwahliste = Replace(C_hf.VorwahlListe(Helfer.Vorwahllisten.Liste_Ortsvorwahlen_Deutschland), ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
+
+            ListOV = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
+        Else
+            LandesVW = Strings.Replace(LandesVW, "00", "", , 1, CompareMethod.Text)
+
+            Vorwahliste = Replace(C_hf.VorwahlListe(Helfer.Vorwahllisten.Liste_Ortsvorwahlen_Ausland), ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+            Dim tmpvw() As String
+            ListOV = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like LandesVW & ";*" Select s).ToArray
+            For i = LBound(ListOV) To UBound(ListOV)
+                tmpvw = Split(ListOV(i), ";", , CompareMethod.Text)
+                ListOV(i) = tmpvw(1) & " (" & tmpvw(2)
+            Next
+        End If
+
+
+    End Sub
+
+    Private Sub BWCBbox_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWCBox.RunWorkerCompleted
+        DelSetCBox()
+
+
+
+
+        BWCBox = Nothing
+    End Sub
 #End Region
 
 #Region "Phoner"
@@ -1494,6 +1591,7 @@ Friend Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
+
 
 End Class
 

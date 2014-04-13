@@ -176,11 +176,13 @@ Public Class DataProvider
     Private _TVKontaktOrdnerStoreID As String
     Private _CBIndex As Boolean
     Private _TBLandesVW As String
+    Private _CBoxLandesVorwahl As Integer
     Private _TBAmt As String
     Private _TBFBAdr As String
     Private _TBBenutzer As String
     Private _TBPasswort As String
     Private _TBVorwahl As String
+    Private _CBoxVorwahl As Integer
     'Anrufmonitor
     Private _TBEnblDauer As Integer
     Private _TBAnrMonX As Integer
@@ -247,6 +249,20 @@ Public Class DataProvider
         End Set
     End Property
     ''' <summary>
+    ''' Enthält den Index im Combobox
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_CBoxLandesVorwahl() As Integer
+        Get
+            Return _CBoxLandesVorwahl
+        End Get
+        Set(ByVal value As Integer)
+            _CBoxLandesVorwahl = value
+        End Set
+    End Property
+    ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
     ''' <value>String</value>
@@ -272,6 +288,20 @@ Public Class DataProvider
         End Get
         Set(ByVal value As String)
             _TBVorwahl = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' Enthält den Index im Combobox
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_CBoxVorwahl() As Integer
+        Get
+            Return _CBoxVorwahl
+        End Get
+        Set(ByVal value As Integer)
+            _CBoxVorwahl = value
         End Set
     End Property
     ' Anrufmonitor
@@ -980,7 +1010,7 @@ Public Class DataProvider
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_ErrorMinusTwo() As String
+    Public ReadOnly Property P_Def_ErrorMinusTwo_String() As String
         Get
             Return "-2"
         End Get
@@ -1276,6 +1306,11 @@ Public Class DataProvider
             Return "0049"
         End Get
     End Property
+    Public ReadOnly Property P_Def_CBoxLandesVorwahl() As Integer
+        Get
+            Return P_Def_ErrorMinusOne_Integer
+        End Get
+    End Property
     Public ReadOnly Property P_Def_TBAmt() As String
         Get
             Return P_Def_ErrorMinusOne_String
@@ -1284,6 +1319,11 @@ Public Class DataProvider
     Public ReadOnly Property P_Def_TBVorwahl() As String
         Get
             Return P_Def_StringEmpty
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_CBoxVorwahl() As Integer
+        Get
+            Return 0
         End Get
     End Property
     Public ReadOnly Property P_Def_TBEnblDauer() As Integer
@@ -1719,13 +1759,14 @@ Public Class DataProvider
         Dim xPathTeile As New ArrayList
 
         Me.P_TBLandesVW = Read(P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
+        Me.P_CBoxLandesVorwahl = CInt(Read(P_Def_Options, "CBoxLandesVorwahl", CStr(P_Def_CBoxLandesVorwahl)))
         Me.P_TBAmt = Read(P_Def_Options, "TBAmt", P_Def_TBAmt)
         Me.P_TBFBAdr = Read(P_Def_Options, "TBFBAdr", P_Def_TBFBAdr)
         Me.P_CBForceFBAddr = CBool(Read(P_Def_Options, "CBForceFBAddr", CStr(P_Def_CBForceFBAddr)))
         Me.P_TBBenutzer = Read(P_Def_Options, "TBBenutzer", P_Def_TBBenutzer)
         Me.P_TBPasswort = Read(P_Def_Options, "TBPasswort", P_Def_TBPasswort)
-
         Me.P_TBVorwahl = Read(P_Def_Options, "TBVorwahl", P_Def_TBVorwahl)
+        Me.P_CBoxVorwahl = CInt(Read(P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
         Me.P_TBEnblDauer = CInt(Read(P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
         Me.P_CBAnrMonAuto = CBool(Read(P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
         Me.P_TBAnrMonX = CInt(Read(P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
@@ -1814,12 +1855,14 @@ Public Class DataProvider
 
     Private Sub SaveOptionData()
         Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
+        Write(P_Def_Options, "CBoxLandesVorwahl", CStr(Me.P_CBoxLandesVorwahl))
         Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
         Write(P_Def_Options, "TBFBAdr", Me.P_TBFBAdr)
         Write(P_Def_Options, "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
         Write(P_Def_Options, "TBBenutzer", Me.P_TBBenutzer)
         Write(P_Def_Options, "TBPasswort", Me.P_TBPasswort)
         Write(P_Def_Options, "TBVorwahl", Me.P_TBVorwahl)
+        Write(P_Def_Options, "CBoxVorwahl", CStr(Me.P_CBoxVorwahl))
         Write(P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
         Write(P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
         Write(P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))

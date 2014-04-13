@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ButtonZuruecksetzen = New System.Windows.Forms.Button()
         Me.ButtonAbbruch = New System.Windows.Forms.Button()
         Me.ButtonUebernehmen = New System.Windows.Forms.Button()
@@ -59,14 +59,14 @@ Partial Class formCfg
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TBAmt = New System.Windows.Forms.TextBox()
         Me.FrameErforderlich = New System.Windows.Forms.GroupBox()
+        Me.CBoxLandesVorwahl = New System.Windows.Forms.ComboBox()
+        Me.CBoxVorwahl = New System.Windows.Forms.ComboBox()
         Me.TBPasswort = New System.Windows.Forms.MaskedTextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.TBBenutzer = New System.Windows.Forms.TextBox()
         Me.CBForceFBAddr = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.TBLandesVW = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.TBVorwahl = New System.Windows.Forms.TextBox()
         Me.lblTBPasswort = New System.Windows.Forms.Label()
         Me.TBFBAdr = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -77,6 +77,7 @@ Partial Class formCfg
         Me.BProbleme = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.PInfo = New System.Windows.Forms.TabPage()
+        Me.ButtonArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -197,7 +198,6 @@ Partial Class formCfg
         Me.ButtonXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ButtonArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -540,7 +540,7 @@ Partial Class formCfg
         'CBCallByCall
         '
         Me.CBCallByCall.AutoSize = True
-        Me.CBCallByCall.Location = New System.Drawing.Point(148, 100)
+        Me.CBCallByCall.Location = New System.Drawing.Point(148, 99)
         Me.CBCallByCall.Name = "CBCallByCall"
         Me.CBCallByCall.Size = New System.Drawing.Size(124, 17)
         Me.CBCallByCall.TabIndex = 10
@@ -580,6 +580,7 @@ Partial Class formCfg
         Me.CBVoIPBuster.Size = New System.Drawing.Size(178, 17)
         Me.CBVoIPBuster.TabIndex = 6
         Me.CBVoIPBuster.Text = "Landesvorwahl immer mitwählen"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die definierte Landesvorwahl immer mitgewählt.")
         Me.CBVoIPBuster.UseVisualStyleBackColor = True
         '
         'CBCbCunterbinden
@@ -614,14 +615,14 @@ Partial Class formCfg
         '
         'FrameErforderlich
         '
+        Me.FrameErforderlich.Controls.Add(Me.CBoxLandesVorwahl)
+        Me.FrameErforderlich.Controls.Add(Me.CBoxVorwahl)
         Me.FrameErforderlich.Controls.Add(Me.TBPasswort)
         Me.FrameErforderlich.Controls.Add(Me.Label3)
         Me.FrameErforderlich.Controls.Add(Me.TBBenutzer)
         Me.FrameErforderlich.Controls.Add(Me.CBForceFBAddr)
         Me.FrameErforderlich.Controls.Add(Me.Label5)
-        Me.FrameErforderlich.Controls.Add(Me.TBLandesVW)
         Me.FrameErforderlich.Controls.Add(Me.Label4)
-        Me.FrameErforderlich.Controls.Add(Me.TBVorwahl)
         Me.FrameErforderlich.Controls.Add(Me.lblTBPasswort)
         Me.FrameErforderlich.Controls.Add(Me.TBFBAdr)
         Me.FrameErforderlich.Location = New System.Drawing.Point(0, 38)
@@ -630,6 +631,31 @@ Partial Class formCfg
         Me.FrameErforderlich.TabIndex = 16
         Me.FrameErforderlich.TabStop = False
         Me.FrameErforderlich.Text = "Erforderliche Angaben"
+        '
+        'CBoxLandesVorwahl
+        '
+        Me.CBoxLandesVorwahl.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.CBoxLandesVorwahl.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.CBoxLandesVorwahl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CBoxLandesVorwahl.DropDownWidth = 200
+        Me.CBoxLandesVorwahl.FormattingEnabled = True
+        Me.CBoxLandesVorwahl.Location = New System.Drawing.Point(6, 123)
+        Me.CBoxLandesVorwahl.Name = "CBoxLandesVorwahl"
+        Me.CBoxLandesVorwahl.Size = New System.Drawing.Size(100, 21)
+        Me.CBoxLandesVorwahl.TabIndex = 19
+        '
+        'CBoxVorwahl
+        '
+        Me.CBoxVorwahl.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.CBoxVorwahl.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.CBoxVorwahl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CBoxVorwahl.DropDownWidth = 200
+        Me.CBoxVorwahl.FormattingEnabled = True
+        Me.CBoxVorwahl.Items.AddRange(New Object() {""})
+        Me.CBoxVorwahl.Location = New System.Drawing.Point(6, 97)
+        Me.CBoxVorwahl.Name = "CBoxVorwahl"
+        Me.CBoxVorwahl.Size = New System.Drawing.Size(100, 21)
+        Me.CBoxVorwahl.TabIndex = 18
         '
         'TBPasswort
         '
@@ -678,13 +704,6 @@ Partial Class formCfg
         Me.Label5.TabIndex = 13
         Me.Label5.Text = "Landesvorwahl" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
-        'TBLandesVW
-        '
-        Me.TBLandesVW.Location = New System.Drawing.Point(6, 123)
-        Me.TBLandesVW.Name = "TBLandesVW"
-        Me.TBLandesVW.Size = New System.Drawing.Size(100, 20)
-        Me.TBLandesVW.TabIndex = 5
-        '
         'Label4
         '
         Me.Label4.AutoSize = True
@@ -693,13 +712,6 @@ Partial Class formCfg
         Me.Label4.Size = New System.Drawing.Size(81, 13)
         Me.Label4.TabIndex = 11
         Me.Label4.Text = "Eigene Vorwahl" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
-        '
-        'TBVorwahl
-        '
-        Me.TBVorwahl.Location = New System.Drawing.Point(6, 97)
-        Me.TBVorwahl.Name = "TBVorwahl"
-        Me.TBVorwahl.Size = New System.Drawing.Size(100, 20)
-        Me.TBVorwahl.TabIndex = 4
         '
         'lblTBPasswort
         '
@@ -807,6 +819,15 @@ Partial Class formCfg
         Me.PInfo.TabIndex = 4
         Me.PInfo.Text = "Info..."
         Me.PInfo.UseVisualStyleBackColor = True
+        '
+        'ButtonArbeitsverzeichnis
+        '
+        Me.ButtonArbeitsverzeichnis.Location = New System.Drawing.Point(410, 58)
+        Me.ButtonArbeitsverzeichnis.Name = "ButtonArbeitsverzeichnis"
+        Me.ButtonArbeitsverzeichnis.Size = New System.Drawing.Size(155, 28)
+        Me.ButtonArbeitsverzeichnis.TabIndex = 6
+        Me.ButtonArbeitsverzeichnis.Text = "Arbeitsverzeichnis ändern"
+        Me.ButtonArbeitsverzeichnis.UseVisualStyleBackColor = True
         '
         'Label17
         '
@@ -1043,9 +1064,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1057,9 +1078,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1071,9 +1092,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -2095,82 +2116,73 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'ButtonArbeitsverzeichnis
-        '
-        Me.ButtonArbeitsverzeichnis.Location = New System.Drawing.Point(410, 58)
-        Me.ButtonArbeitsverzeichnis.Name = "ButtonArbeitsverzeichnis"
-        Me.ButtonArbeitsverzeichnis.Size = New System.Drawing.Size(155, 28)
-        Me.ButtonArbeitsverzeichnis.TabIndex = 6
-        Me.ButtonArbeitsverzeichnis.Text = "Arbeitsverzeichnis ändern"
-        Me.ButtonArbeitsverzeichnis.UseVisualStyleBackColor = True
-        '
         'formCfg
         '
         Me.AcceptButton = Me.ButtonOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.ButtonAbbruch
         Me.ClientSize = New System.Drawing.Size(584, 366)
         Me.Controls.Add(Me.TableLayoutPanel2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
+        Me.MaximizeBox = false
+        Me.MinimizeBox = false
         Me.Name = "formCfg"
         Me.Text = "Einstellungen für das Fritz!Box Telefon-Dingsbums"
-        Me.PGrundeinstellungen.ResumeLayout(False)
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
-        Me.GroupBoxStoppUhr.ResumeLayout(False)
-        Me.GroupBoxStoppUhr.PerformLayout()
-        Me.Frame3.ResumeLayout(False)
-        Me.Frame3.PerformLayout()
-        Me.FrameErforderlich.ResumeLayout(False)
-        Me.FrameErforderlich.PerformLayout()
-        Me.PInfo.ResumeLayout(False)
-        Me.PInfo.PerformLayout()
-        Me.PTelefone.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        CType(Me.TelList, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.PIndex.ResumeLayout(False)
-        Me.GroupBoxIndex.ResumeLayout(False)
-        Me.GroupBoxIndex.PerformLayout()
-        Me.GroupBoxRWS.ResumeLayout(False)
-        Me.GroupBoxRWS.PerformLayout()
-        Me.PAnrufmonitor.ResumeLayout(False)
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
-        CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Frame1.ResumeLayout(False)
-        Me.Frame1.PerformLayout()
-        Me.PanelAnrMon.ResumeLayout(False)
-        Me.PanelAnrMon.PerformLayout()
-        Me.FBDB_MP.ResumeLayout(False)
-        Me.PSymbolleiste.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        Me.PPhoner.ResumeLayout(False)
-        Me.PPhoner.PerformLayout()
-        Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
-        Me.PanelPhoner.ResumeLayout(False)
-        Me.PanelPhoner.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
-        Me.PLogging.ResumeLayout(False)
-        Me.PLogging.PerformLayout()
-        Me.GBLogging.ResumeLayout(False)
-        Me.GBLogging.PerformLayout()
-        Me.PDebug.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.PTelefonDatei.ResumeLayout(False)
-        Me.PTelefonDatei.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.ResumeLayout(False)
+        Me.PGrundeinstellungen.ResumeLayout(false)
+        Me.GroupBox5.ResumeLayout(false)
+        Me.GroupBox5.PerformLayout
+        Me.GroupBoxStoppUhr.ResumeLayout(false)
+        Me.GroupBoxStoppUhr.PerformLayout
+        Me.Frame3.ResumeLayout(false)
+        Me.Frame3.PerformLayout
+        Me.FrameErforderlich.ResumeLayout(false)
+        Me.FrameErforderlich.PerformLayout
+        Me.PInfo.ResumeLayout(false)
+        Me.PInfo.PerformLayout
+        Me.PTelefone.ResumeLayout(false)
+        Me.GroupBox1.ResumeLayout(false)
+        Me.GroupBox1.PerformLayout
+        CType(Me.TelList,System.ComponentModel.ISupportInitialize).EndInit
+        Me.PIndex.ResumeLayout(false)
+        Me.GroupBoxIndex.ResumeLayout(false)
+        Me.GroupBoxIndex.PerformLayout
+        Me.GroupBoxRWS.ResumeLayout(false)
+        Me.GroupBoxRWS.PerformLayout
+        Me.PAnrufmonitor.ResumeLayout(false)
+        Me.GroupBox6.ResumeLayout(false)
+        Me.GroupBox6.PerformLayout
+        CType(Me.TBAnrMonMoveGeschwindigkeit,System.ComponentModel.ISupportInitialize).EndInit
+        Me.Frame1.ResumeLayout(false)
+        Me.Frame1.PerformLayout
+        Me.PanelAnrMon.ResumeLayout(false)
+        Me.PanelAnrMon.PerformLayout
+        Me.FBDB_MP.ResumeLayout(false)
+        Me.PSymbolleiste.ResumeLayout(false)
+        Me.GroupBox3.ResumeLayout(false)
+        Me.GroupBox3.PerformLayout
+        Me.PPhoner.ResumeLayout(false)
+        Me.PPhoner.PerformLayout
+        Me.GroupBox4.ResumeLayout(false)
+        Me.GroupBox4.PerformLayout
+        Me.PanelPhoner.ResumeLayout(false)
+        Me.PanelPhoner.PerformLayout
+        Me.GroupBox7.ResumeLayout(false)
+        Me.GroupBox7.PerformLayout
+        Me.PLogging.ResumeLayout(false)
+        Me.PLogging.PerformLayout
+        Me.GBLogging.ResumeLayout(false)
+        Me.GBLogging.PerformLayout
+        Me.PDebug.ResumeLayout(false)
+        Me.GroupBox2.ResumeLayout(false)
+        Me.GroupBox2.PerformLayout
+        Me.PTelefonDatei.ResumeLayout(false)
+        Me.PTelefonDatei.PerformLayout
+        Me.TableLayoutPanel1.ResumeLayout(false)
+        Me.TableLayoutPanel2.ResumeLayout(false)
+        Me.ResumeLayout(false)
 
-    End Sub
+End Sub
     Friend WithEvents ButtonZuruecksetzen As System.Windows.Forms.Button
     Friend WithEvents ButtonAbbruch As System.Windows.Forms.Button
     Friend WithEvents ButtonUebernehmen As System.Windows.Forms.Button
@@ -2242,9 +2254,7 @@ Partial Class formCfg
     Friend WithEvents TBAmt As System.Windows.Forms.TextBox
     Friend WithEvents FrameErforderlich As System.Windows.Forms.GroupBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents TBLandesVW As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents TBVorwahl As System.Windows.Forms.TextBox
     Friend WithEvents lblTBPasswort As System.Windows.Forms.Label
     Friend WithEvents TBFBAdr As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
@@ -2345,6 +2355,8 @@ Partial Class formCfg
     Friend WithEvents TVOutlookContact As System.Windows.Forms.TreeView
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents ButtonArbeitsverzeichnis As System.Windows.Forms.Button
+    Friend WithEvents CBoxVorwahl As System.Windows.Forms.ComboBox
+    Friend WithEvents CBoxLandesVorwahl As System.Windows.Forms.ComboBox
 #If OVer < 14 Then
 #End If
 End Class

@@ -509,7 +509,8 @@ Friend Class AnrufMonitor
                     Else
                         ' Anrufer per Rückwärtssuche ermitteln
                         If C_DP.P_CBRWS Then
-                            .vCard = C_DP.P_Def_ErrorMinusOne_String
+                            .vCard = C_DP.P_Def_ErrorMinusTwo_String
+                            ' RWS-Index überprüfen
                             If C_DP.P_CBRWSIndex Then
                                 With xPathTeile
                                     .Clear()
@@ -518,44 +519,53 @@ Friend Class AnrufMonitor
                                 End With
                                 .vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
                             End If
-
-                            If .vCard = C_DP.P_Def_ErrorMinusOne_String Then
-                                Select Case C_DP.P_ComboBoxRWS
-                                    Case 0
-                                        RWSSuccess = F_RWS.RWS11880(.TelNr, .vCard)
-                                    Case 1
-                                        RWSSuccess = F_RWS.RWSDasTelefonbuch(.TelNr, .vCard)
-                                    Case 2
-                                        RWSSuccess = F_RWS.RWStelsearch(.TelNr, .vCard)
-                                    Case 3
-                                        RWSSuccess = F_RWS.RWSAlle(.TelNr, .vCard)
-                                End Select
-                                ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
-                                ' Dies geschieht nur, wenn es gewünscht ist.
-                                If RWSSuccess And C_DP.P_CBKErstellen Then
-                                    With Telefonat
-                                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                        .vCard = C_DP.P_Def_StringEmpty
-                                        .Companies = .olContact.CompanyName
-                                    End With
-                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
-                                    RWSSuccess = False
-                                End If
-                            Else
-                                RWSSuccess = Not .vCard = C_DP.P_Def_ErrorMinusTwo
-                            End If
+                            ' Drei mögliche Rückgaben
+                            ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. Rückgabe: gültige vCard
+                            ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert. Rückgabe: -2
+                            ' Fall 3: Es gibt keinen Eintrag. Rückgabe: -1
+                            'ToDo:
+                            ' Fall 1: vCard übernehmen
+                            ' Fall 2: keine erneute RWS durchführen
+                            ' Fall 3: RWS durchführen
+                            Select Case .vCard
+                                Case C_DP.P_Def_ErrorMinusTwo_String ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert.
+                                    '.vCard = C_DP.P_Def_ErrorMinusTwo_String
+                                Case C_DP.P_Def_ErrorMinusOne_String
+                                    '
+                                    Select Case C_DP.P_ComboBoxRWS ' Fall 3: Es gibt keinen Eintrag.
+                                        Case 0
+                                            RWSSuccess = F_RWS.RWS11880(.TelNr, .vCard)
+                                        Case 1
+                                            RWSSuccess = F_RWS.RWSDasTelefonbuch(.TelNr, .vCard)
+                                        Case 2
+                                            RWSSuccess = F_RWS.RWStelsearch(.TelNr, .vCard)
+                                        Case 3
+                                            RWSSuccess = F_RWS.RWSAlle(.TelNr, .vCard)
+                                    End Select
+                                    If C_DP.P_CBRWSIndex Then
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
+                                        C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
+                                    End If
+                                Case Else ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. 
+                                    RWSSuccess = True
+                            End Select
 
                             If RWSSuccess Then
-                                .Anrufer = ReadFNfromVCard(.vCard)
-                                .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
-                                .Anrufer = Trim(.Anrufer)
+                                If C_DP.P_CBKErstellen Then
+                                    ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                                    ' Dies geschieht nur, wenn es gewünscht ist.
+                                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
+                                    .vCard = C_DP.P_Def_StringEmpty
+                                    .Companies = .olContact.CompanyName
+                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
+                                Else
+                                    .Anrufer = ReadFNfromVCard(.vCard)
+                                    .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
+                                    If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
+                                    .Anrufer = Trim(.Anrufer)
+                                End If
                             End If
 
-                            If C_DP.P_CBRWSIndex Then
-                                xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
-                                C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
-                            End If
                         End If
                         .TelNr = C_hf.formatTelNr(.TelNr)
                     End If
@@ -596,11 +606,11 @@ Friend Class AnrufMonitor
                     End Try
                 End If
 
-        'Notizeintag
+                'Notizeintag
 #If Not OVer = 11 Then
-        If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
-            C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-        End If
+                If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                End If
 #End If
             End With
             TelefonatsListe.Add(Telefonat)
@@ -679,7 +689,8 @@ Friend Class AnrufMonitor
                     Else
                         ' .Anrufer per Rückwärtssuche ermitteln
                         If C_DP.P_CBRWS Then
-                            .vCard = C_DP.P_Def_ErrorMinusOne_String
+                            .vCard = C_DP.P_Def_ErrorMinusTwo_String
+                            ' RWS-Index überprüfen
                             If C_DP.P_CBRWSIndex Then
                                 With xPathTeile
                                     .Clear()
@@ -688,45 +699,51 @@ Friend Class AnrufMonitor
                                 End With
                                 .vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
                             End If
-                            If .vCard = C_DP.P_Def_ErrorMinusOne_String Then
-                                Select Case C_DP.P_ComboBoxRWS
-                                    Case 0
-                                        RWSSuccess = F_RWS.RWS11880(.TelNr, .vCard)
-                                    Case 1
-                                        RWSSuccess = F_RWS.RWSDasTelefonbuch(.TelNr, .vCard)
-                                    Case 2
-                                        RWSSuccess = F_RWS.RWStelsearch(.TelNr, .vCard)
-                                    Case 3
-                                        RWSSuccess = F_RWS.RWSAlle(.TelNr, .vCard)
-                                End Select
-                                ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
-                                ' Dies geschieht nur, wenn es gewünscht ist.
-                                If RWSSuccess And C_DP.P_CBKErstellen Then
-                                    With Telefonat
-                                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                        .vCard = C_DP.P_Def_StringEmpty
-                                        .Companies = .olContact.Companies
-                                    End With
-                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
-                                    RWSSuccess = False
-                                End If
-                            Else
-                                RWSSuccess = Not .vCard = C_DP.P_Def_ErrorMinusTwo
-                            End If
+                            ' Drei mögliche Rückgaben
+                            ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. Rückgabe: gültige vCard
+                            ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert. Rückgabe: -2
+                            ' Fall 3: Es gibt keinen Eintrag. Rückgabe: -1
+                            'ToDo:
+                            ' Fall 1: vCard übernehmen
+                            ' Fall 2: keine erneute RWS durchführen
+                            ' Fall 3: RWS durchführen
+                            Select Case .vCard
+                                Case C_DP.P_Def_ErrorMinusTwo_String ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert.
+                                    '.vCard = C_DP.P_Def_ErrorMinusTwo_String
+                                Case C_DP.P_Def_ErrorMinusOne_String
+                                    '
+                                    Select Case C_DP.P_ComboBoxRWS ' Fall 3: Es gibt keinen Eintrag.
+                                        Case 0
+                                            RWSSuccess = F_RWS.RWS11880(.TelNr, .vCard)
+                                        Case 1
+                                            RWSSuccess = F_RWS.RWSDasTelefonbuch(.TelNr, .vCard)
+                                        Case 2
+                                            RWSSuccess = F_RWS.RWStelsearch(.TelNr, .vCard)
+                                        Case 3
+                                            RWSSuccess = F_RWS.RWSAlle(.TelNr, .vCard)
+                                    End Select
+                                    If C_DP.P_CBRWSIndex Then
+                                        xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
+                                        C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
+                                    End If
+                                Case Else ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. 
+                                    RWSSuccess = True
+                            End Select
 
                             If RWSSuccess Then
-                                .Anrufer = ReadFNfromVCard(.vCard)
-                                .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then
-                                    .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
+                                If C_DP.P_CBKErstellen Then
+                                    ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                                    ' Dies geschieht nur, wenn es gewünscht ist.
+                                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
+                                    .vCard = C_DP.P_Def_StringEmpty
+                                    .Companies = .olContact.CompanyName
+                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
+                                Else
+                                    .Anrufer = ReadFNfromVCard(.vCard)
+                                    .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
+                                    If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
+                                    .Anrufer = Trim(.Anrufer)
                                 End If
-                                .Anrufer = Trim(.Anrufer)
-                            Else
-                                .vCard = C_DP.P_Def_ErrorMinusTwo
-                            End If
-                            If C_DP.P_CBRWSIndex Then
-                                xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
-                                C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
                             End If
                         End If
                         .TelNr = C_hf.formatTelNr(.TelNr)
@@ -1135,7 +1152,7 @@ Friend Class AnrufMonitor
                     .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
                 ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne_String Then
                     'prüfen ob das Sinnvoll ist:
-                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                    '.olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                 End If
             End If
         End With

@@ -275,7 +275,7 @@ Public Class Contacts
                 .BusinessTelephoneNumber = TelNr
             End If
 
-            If Not (vCard = C_DP.P_Def_StringEmpty Or vCard = C_DP.P_Def_ErrorMinusOne_String Or vCard = C_DP.P_Def_ErrorMinusTwo) Then
+            If Not (vCard = C_DP.P_Def_StringEmpty Or vCard = C_DP.P_Def_ErrorMinusOne_String Or vCard = C_DP.P_Def_ErrorMinusTwo_String) Then
                 vCard2Contact(vCard, olKontakt)
 
                 If Not TelNr = C_DP.P_Def_StringEmpty Then
@@ -300,7 +300,8 @@ Public Class Contacts
 
             C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
         Else
-            olKontakt.UserProperties.Add(C_DP.P_Def_UserPropertyIndex, Outlook.OlUserPropertyType.olYesNo).Value = False
+            olKontakt.UserProperties.Add(C_DP.P_Def_UserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
+
         End If
         ErstelleKontakt = olKontakt
         C_hf.NAR(olFolder)
@@ -534,7 +535,12 @@ Public Class Contacts
                         .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Delete()
                     End If
                 Next
-                If Not .Saved Then .Save()
+
+                If Not .Saved Then
+                    .Save()
+                    C_hf.LogFile("Kontakt " & olKontakt.FullNameAndCompany & " wurde durch die Indizierung gespeichert.")
+                End If
+
             End With
         End If
     End Sub

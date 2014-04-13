@@ -174,6 +174,7 @@ Public Class formRWSuche
         Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
         Const SW2 As String = "'"
         ' TelNr sichern, da sie unter Umständen verändert wird
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -195,7 +196,11 @@ Public Class formRWSuche
                         If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                     End If
                     ' Rückgabewert ermitteln
-                    RWS11880 = Strings.Left(vCard, 11) = C_DP.P_Def_Begin_vCard
+                    If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
+                        RWS11880 = True
+                    Else
+                        vCard = C_DP.P_Def_ErrorMinusTwo_String
+                    End If
                     i = i + 1
                     tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 1) & 0
                 Else
@@ -211,7 +216,6 @@ Public Class formRWSuche
             If InStr(1, ReadFromVCard(vCard, "N", ""), ";;;;", CompareMethod.Text) > 0 Then ''''''''''''' beim Debuggen aufpassen, dass auch das richtige Ergebnis ausgeworfen wird!!
                 vCard = Replace(vCard, Chr(10) & "FN:", Chr(10) & "ORG:", , , CompareMethod.Text)
             End If
-
         End If
     End Function
 
@@ -311,8 +315,9 @@ Public Class formRWSuche
         Const SW2 As String = "&"
         'Const SW3 As String = "'"
 
+        RWSDasTelefonbuch = False
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
-        vCard = C_DP.P_Def_StringEmpty
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -321,8 +326,6 @@ Public Class formRWSuche
 
         myurl = "http://www.dastelefonbuch.de/"
         Do
-
-            'htmlRWS = C_hf.httpPOST(myurl, "cmd=detail&kw=" & tmpTelNr, System.Text.Encoding.Default)
             htmlRWS = C_hf.httpGET(myurl & "?cmd=detail&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
 
             If Not htmlRWS = C_DP.P_Def_StringEmpty Then
@@ -335,7 +338,11 @@ Public Class formRWSuche
                 End If
             End If
             If HTMLFehler Then C_hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
-            RWSDasTelefonbuch = Strings.Left(vCard, 11) = C_DP.P_Def_Begin_vCard
+            If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
+                RWSDasTelefonbuch = True
+            Else
+                vCard = C_DP.P_Def_ErrorMinusTwo_String
+            End If
             i = i + 1
             tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
         Loop Until RWSDasTelefonbuch Or i = 3
@@ -359,8 +366,10 @@ Public Class formRWSuche
         Const SW1 As String = "<a href='/vCard/"
         Const SW2 As String = "'"
 
+        RWStelsearch = False
         ' Vorwahl erkennen
         ' TelNr sichern, da sie unter Umständen verändert wird
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -382,7 +391,11 @@ Public Class formRWSuche
                 End If
 
                 ' Rückgabewert ermitteln
-                RWStelsearch = Strings.Left(vCard, 11) = C_DP.P_Def_Begin_vCard
+                If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
+                    RWStelsearch = True
+                Else
+                    vCard = C_DP.P_Def_ErrorMinusTwo_String
+                End If
                 i = i + 1
                 tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
             Else
