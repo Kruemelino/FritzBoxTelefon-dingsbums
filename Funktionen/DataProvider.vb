@@ -1,10 +1,13 @@
 ﻿Imports System.Xml
 Imports System.Timers
+Imports System.ComponentModel
 
 Public Class DataProvider
     Private XMLDoc As XmlDocument
     Private WithEvents tSpeichern As Timer
-
+#Region "BackgroundWorker"
+    Private WithEvents BWCBox As BackgroundWorker
+#End Region
 #Region "Windows Const für Office 2003"
 #If over = 11 Then
     Public Const ECM_FIRST As Long = &H1500
@@ -232,6 +235,9 @@ Public Class DataProvider
     Private _CBNote As Boolean
     'Einstellungen
     Private _Arbeitsverzeichnis As String
+    ' Vorwahllisten
+    Private _ListeOrtsVorwahlen As String()
+    Private _ListeLandesVorwahlen As String()
 #End Region
 #Region "Value Properties"
     ''' <summary>
@@ -990,6 +996,23 @@ Public Class DataProvider
             _Arbeitsverzeichnis = value
         End Set
     End Property
+    ' Vorwahllisten
+    Public Property P_ListeOrtsVorwahlen() As String()
+        Get
+            Return _ListeOrtsVorwahlen
+        End Get
+        Set(value As String())
+            _ListeOrtsVorwahlen = value
+        End Set
+    End Property
+    Public Property P_ListeLandesVorwahlen() As String()
+        Get
+            Return _ListeLandesVorwahlen
+        End Get
+        Set(value As String())
+            _ListeLandesVorwahlen = value
+        End Set
+    End Property
 #End Region
 
 #Region "Global Default Value Properties"
@@ -1297,6 +1320,7 @@ Public Class DataProvider
             Return "Nicht erfolgreicher Anruf zu"
         End Get
     End Property
+
 #End Region
 
 #Region "Default Value Properties"
@@ -1942,6 +1966,12 @@ Public Class DataProvider
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
 
+        BWCBox = New BackgroundWorker
+        With BWCBox
+            .WorkerReportsProgress = False
+            .RunWorkerAsync(True)
+        End With
+
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -2336,6 +2366,47 @@ Public Class DataProvider
         If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
         If Right(xPath, 1) = xPathSeperatorSlash Then Return False
     End Function
+#End Region
+
+#Region "Backgroundworker"
+    Private Sub BWCBbox_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWCBox.DoWork
+        Dim Vorwahliste As String
+        Dim i As Integer
+        Dim tmpVorwahl As String = P_TBLandesVW
+
+        If P_ListeLandesVorwahlen Is Nothing Then
+            ' Landesvorwahlen
+            Vorwahliste = Replace(My.Resources.Liste_Landesvorwahlen, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
+
+            P_ListeLandesVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray
+        End If
+
+        tmpVorwahl = CStr(IIf(tmpVorwahl = P_Def_StringEmpty, P_TBLandesVW, tmpVorwahl))
+
+        If P_TBLandesVW = P_Def_TBLandesVW Then
+            ' Ortsvorwahlen Deutschland
+            Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Deutschland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
+
+            P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
+        Else
+            tmpVorwahl = Strings.Replace(tmpVorwahl, "00", "", , 1, CompareMethod.Text)
+
+            Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Ausland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
+            Dim tmpvw() As String
+            P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like tmpVorwahl & ";*" Select s).ToArray
+            For i = LBound(P_ListeOrtsVorwahlen) To UBound(P_ListeOrtsVorwahlen)
+                tmpvw = Split(P_ListeOrtsVorwahlen(i), ";", , CompareMethod.Text)
+                P_ListeOrtsVorwahlen(i) = tmpvw(1) & " (" & tmpvw(2)
+            Next
+        End If
+    End Sub
+
+
+    Private Sub BWCBbox_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWCBox.RunWorkerCompleted
+        BWCBox = Nothing
+    End Sub
 #End Region
 End Class
 
