@@ -783,9 +783,9 @@
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -800,7 +800,7 @@
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = C_DP.P_Def_ErrorMinusOne Then
+                If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     With cPopUp.Controls.Item(i)
                         If Anrufer = C_DP.P_Def_StringEmpty Then .Caption = TelNr Else .Caption = Anrufer
                         .TooltipText = "Zeit: " & Zeit & Environment.NewLine & "Telefonnummer: " & TelNr
@@ -812,9 +812,9 @@
 
                     xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     With LANodeValues
-                        .Item(0) = (C_DP.P_Def_ErrorMinusOne)
-                        .Item(1) = (C_DP.P_Def_ErrorMinusOne)
-                        .Item(2) = (C_DP.P_Def_ErrorMinusOne)
+                        .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
                     End With
                 End If
             Next
@@ -824,7 +824,7 @@
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not Anrufer = C_DP.P_Def_ErrorMinusOne And Not Anrufer = C_DP.P_Def_StringEmpty Then
+                If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String And Not Anrufer = C_DP.P_Def_StringEmpty Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
@@ -833,9 +833,9 @@
                         i += 1
                     End With
                     With LANodeValues
-                        .Item(0) = (C_DP.P_Def_ErrorMinusOne)
-                        .Item(1) = (C_DP.P_Def_ErrorMinusOne)
-                        .Item(2) = (C_DP.P_Def_ErrorMinusOne)
+                        .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
                     End With
 
                 Else
@@ -1006,7 +1006,7 @@
                 XMLListBaseNode = C_DP.P_Def_NameListVIP
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne) = C_DP.P_Def_ErrorMinusOne, True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
     End Function
 
 #End If

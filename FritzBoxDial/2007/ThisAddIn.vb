@@ -31,11 +31,14 @@ Public Class ThisAddIn
     Private WithEvents iBtnRWSAlle As Office.CommandBarButton
     Private WithEvents iBtnKontakterstellen As Office.CommandBarButton
     Private WithEvents iBtnVIP As Office.CommandBarButton
+    Private WithEvents iBtnNotiz As Office.CommandBarButton
 #End If
 #End Region
     Private Shared oApp As Outlook.Application
-    Private WithEvents ContactSaved As Outlook.ContactItem
+
     Private WithEvents oInsps As Outlook.Inspectors
+    Friend Shared ListofOpenContacts As New Generic.List(Of ContactSaved)
+
     Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
     Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
     Private Shared C_AnrMon As AnrufMonitor
@@ -73,7 +76,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_KontaktFunktionen() As Contacts
+    Friend Shared Property P_KF() As Contacts
         Get
             Return C_KF
         End Get
@@ -127,13 +130,8 @@ Public Class ThisAddIn
         End Set
     End Property
 #End Region
-
-#If OVer < 14 Then
-    Private FritzCmdBar As Office.CommandBar
-#End If
-
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Alpha 01"
+    Public Const Version As String = "3.7 Alpha 11"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -153,6 +151,12 @@ Public Class ThisAddIn
         End Select
     End Sub
 
+    ''' <summary>
+    ''' Startet das Fritz!Box Telefon-dingsbums
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
@@ -164,7 +168,8 @@ Public Class ThisAddIn
 #If OVer = 11 Then
             Initialisierung = New formInit
 #End If
-
+            ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
+            P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
 #If OVer < 14 Then
             C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
@@ -177,42 +182,28 @@ Public Class ThisAddIn
         End If
     End Sub
 
-    Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If Not C_DP.P_CBIndexAus Then C_KF.IndiziereKontakt(ContactSaved, True)
-    End Sub
-
-    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+    Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
         C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
             .NAR(P_oApp)
-#If OVer < 14 Then
-            .NAR(FritzCmdBar)
-#End If
         End With
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
     End Sub
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If C_DP.P_CBKHO Then
-                Dim Ordner As Outlook.MAPIFolder
-                Dim StandardOrdner As Outlook.MAPIFolder
-                Dim olNamespace As Outlook.NameSpace
-                Ordner = CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder)
-                olNamespace = P_oApp.GetNamespace("MAPI")
-                StandardOrdner = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                If Not StandardOrdner.StoreID = Ordner.StoreID Then Exit Sub
-            End If
-            ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
+            If C_DP.P_CBKHO AndAlso Not _
+                    CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
+                    P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
+            Dim KS As New ContactSaved
+            KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
+            ListofOpenContacts.Add(KS)
         End If
+
     End Sub
 
 #Region " Office 2003 & 2007"
@@ -290,7 +281,8 @@ Public Class ThisAddIn
                                                                                                                          iBtnRWStelSearch.Click, _
                                                                                                                          iBtnRWSAlle.Click, _
                                                                                                                          iBtnWwh.Click, _
-                                                                                                                         iBtnVIP.Click
+                                                                                                                         iBtnVIP.Click, _
+                                                                                                                         iBtnNotiz.Click
 
         With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Caption
@@ -315,11 +307,12 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
+                    'Case "Notiz"
+                    '    .AddNote(oApp.ActiveInspector)
             End Select
         End With
     End Sub
 #End If
 #End Region
-
 
 End Class

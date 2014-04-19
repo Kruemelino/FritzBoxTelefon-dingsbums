@@ -450,6 +450,7 @@ Public Class Contacts
 #Region "Kontaktindizierung"
 
     Friend Function IndizierungErforderlich(ByVal olKontaKt As Outlook.ContactItem) As Boolean
+        IndizierungErforderlich = True
         With olKontaKt
             ' Nicht Indizieren, wenn Kontakt, der eventuell schon Daten enthält, nur angezeigt wird, aber noch nicht gespeichert wurde.
             ' Indizierung betrifft Telefonnummer, daher Prüfe ob Telefonnummern eingetragen vorhanden.
