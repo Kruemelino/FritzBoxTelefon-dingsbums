@@ -814,39 +814,42 @@ Friend Class AnrufMonitor
             With Telefonat
                 .Angenommen = True
                 .Zeit = CDate(FBStatus.GetValue(0))
-                .NSN = CInt(FBStatus.GetValue(3))
+                If AnrMonPhoner Then
+                    '.telname = "Phoner"
+                Else
 
-                'If .TelName = C_DP.P_Def_StringEmpty Then ' theoretisch nur bei eingehenden Telefonaten
-                Select Case .NSN
-                    Case 0 To 2 ' FON1-3
-                        .NSN += 1
-                    Case 10 To 19 ' DECT
-                        .NSN += 50
-                End Select
-                Select Case .NSN
-                    Case 3
-                        .TelName = "Durchwahl"
-                    Case 4
-                        .TelName = "ISDN Gerät"
-                    Case 5
-                        .TelName = "Fax (intern/PC)"
-                    Case 36
-                        .TelName = "Data S0"
-                    Case 37
-                        .TelName = "Data PC"
-                    Case Else
-                        With xPathTeile
-                            .Clear()
-                            .Add("Telefone")
-                            .Add("Telefone")
-                            .Add("*")
-                            .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
-                            .Add("TelName")
-                        End With
-                        .TelName = C_DP.Read(xPathTeile, "")
-                End Select
-                ' End If
+                    .NSN = CInt(FBStatus.GetValue(3))
 
+                    Select Case .NSN
+                        Case 0 To 2 ' FON1-3
+                            .NSN += 1
+                        Case 10 To 19 ' DECT
+                            .NSN += 50
+                    End Select
+                    Select Case .NSN
+                        Case 3
+                            .TelName = "Durchwahl"
+                        Case 4
+                            .TelName = "ISDN Gerät"
+                        Case 5
+                            .TelName = "Fax (intern/PC)"
+                        Case 36
+                            .TelName = "Data S0"
+                        Case 37
+                            .TelName = "Data PC"
+                        Case Else
+                            With xPathTeile
+                                .Clear()
+                                .Add("Telefone")
+                                .Add("Telefone")
+                                .Add("*")
+                                .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
+                                .Add("TelName")
+                            End With
+                            .TelName = C_DP.Read(xPathTeile, "")
+                    End Select
+
+                End If
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)

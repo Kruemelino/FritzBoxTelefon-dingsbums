@@ -169,8 +169,12 @@ Friend Class formWählbox
         ' Abbruch-Button wieder verstecken
         cancelCallButton.Visible = False
         ' Abbruch ausführen
-        If P_Dialing And Not PhonerCall Then
-            Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+        If P_Dialing Then
+            If Not PhonerCall Then
+                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+            Else
+
+            End If
         End If
         P_Dialing = False
         TimerSchließen.Stop()
@@ -396,7 +400,6 @@ Friend Class formWählbox
             Telefonanschluss = .fonanschluss
         End With
 
-
         Dim Code As String  ' zu wählende Nummer
         Dim nameStart As Integer ' Position des Namens im Fenstertitel
         Dim index As Integer ' Zählvariable
@@ -441,9 +444,11 @@ Friend Class formWählbox
         If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then
             C_hf.LogFile("Folgende Nummer wird zum Wählen an Phoner gesendet: " & Code)
             StatusText = C_Phoner.DialPhoner(Code)
+            PhonerCall = True
         Else
             C_hf.LogFile("Folgende Nummer wird zum Wählen an die Box gesendet: " & Code & " über Anschluss: " & Telefonanschluss)
             StatusText = C_FBox.SendDialRequestToBox(Code, Telefonanschluss, False)
+            PhonerCall = False
         End If
 
         dialNumber = StatusText
