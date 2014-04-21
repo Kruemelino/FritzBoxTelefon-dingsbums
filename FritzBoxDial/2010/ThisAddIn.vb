@@ -130,13 +130,8 @@ Public Class ThisAddIn
         End Set
     End Property
 #End Region
-
-#If OVer < 14 Then
-    Private FritzCmdBar As Office.CommandBar
-#End If
-
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Alpha 11"
+    Public Const Version As String = "3.7 Alpha 12"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -187,20 +182,12 @@ Public Class ThisAddIn
         End If
     End Sub
 
-
-    Friend Sub ContactSaved_Write(ByRef olKontakt As Outlook.ContactItem) ' Handles ContactSaved.Write
-
-    End Sub
-
     Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
         C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
             .NAR(P_oApp)
-#If OVer < 14 Then
-            .NAR(FritzCmdBar)
-#End If
         End With
     End Sub
 

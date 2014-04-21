@@ -180,7 +180,6 @@ Friend Class formCfg
 #End If
         'Phoner
         Dim PhonerVerfuegbar As Boolean = C_DP.P_PhonerVerfügbar
-        Dim TelName() As String
         Me.PanelPhoner.Enabled = PhonerVerfuegbar
         If PhonerVerfuegbar Then
             Me.CBPhoner.Checked = C_DP.P_CBPhoner
@@ -190,15 +189,32 @@ Friend Class formCfg
         Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfuegbar, "", " nicht")), , , CompareMethod.Text)
         'Me.CBPhonerKeineFB.Checked = CBool(IIf(C_DP.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
         'If Not Me.CBPhonerKeineFB.Checked Then
-        For i = 20 To 29
-            TelName = Split(C_DP.Read("Telefone", CStr(i), C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
-            If Not TelName(0) = C_DP.P_Def_ErrorMinusOne_String And Not TelName.Length = 2 Then
-                Me.ComboBoxPhonerSIP.Items.Add(TelName(2))
-            End If
-        Next
+
+        Dim xPathTeile As New ArrayList
+        Dim tmpTelefon As String
+
+        'Statistik zurückschreiben
+        With xPathTeile
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+            .Add("TelName")
+        End With
+
+        tmpTelefon = C_DP.Read(xPathTeile, "Phoner")
+        If InStr(tmpTelefon, ";", CompareMethod.Text) = 0 Then
+            Me.ComboBoxPhonerSIP.Items.Add(tmpTelefon)
+        Else
+            Me.ComboBoxPhonerSIP.DataSource = Split(tmpTelefon, ";", , CompareMethod.Text)
+        End If
+
         If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then
             Me.ComboBoxPhonerSIP.SelectedIndex = C_DP.P_ComboBoxPhonerSIP
         End If
+
+
         'Else
         'Me.ComboBoxPhonerSIP.SelectedIndex = 0
         'Me.ComboBoxPhonerSIP.Enabled = False

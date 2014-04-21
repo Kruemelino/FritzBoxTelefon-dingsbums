@@ -1171,4 +1171,100 @@
     End Sub
 #End Region
 
+#Region "RingCallList"
+
+    Friend Overloads Sub UpdateList(ByVal ListName As String, _
+                                    ByVal Anrufer As String, _
+                                    ByVal TelNr As String, _
+                                    ByVal Zeit As String, _
+                                    ByVal StoreID As String, _
+                                    ByVal KontaktID As String, _
+                                    ByVal vCard As String)
+
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
+        Dim xPathTeile As New ArrayList
+        Dim index As Integer              ' Zählvariable
+
+        index = CInt(C_DP.Read(ListName, "Index", "0"))
+
+        xPathTeile.Add(ListName)
+        xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
+        xPathTeile.Add("TelNr")
+        'With Telefonat
+
+        If Not C_HF.TelNrVergleich(C_DP.Read(xPathTeile, "0"), TelNr) Then
+
+            NodeNames.Add("Index")
+            NodeValues.Add(CStr((index + 1) Mod 10))
+
+            If Not Anrufer = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("Anrufer")
+                NodeValues.Add(Anrufer)
+            End If
+
+            If Not TelNr = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("TelNr")
+                NodeValues.Add(TelNr)
+            End If
+
+            If Not Zeit = Nothing Then
+                NodeNames.Add("Zeit")
+                NodeValues.Add(Zeit)
+            End If
+
+            If Not StoreID = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("StoreID")
+                NodeValues.Add(StoreID)
+            End If
+
+            If Not KontaktID = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("KontaktID")
+                NodeValues.Add(KontaktID)
+            End If
+
+            If Not vCard = C_DP.P_Def_StringEmpty Then
+                NodeNames.Add("vCard")
+                NodeValues.Add(vCard)
+            End If
+
+            AttributeNames.Add("ID")
+            AttributeValues.Add(CStr(index))
+
+            With C_DP
+                xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
+                xPathTeile.Add(ListName)
+                xPathTeile.Add("Index")
+                .Write(xPathTeile, CStr((index + 1) Mod 10))
+                xPathTeile.Remove("Index")
+                .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
+            End With
+        Else
+            ' Zeit anpassen
+            If Not Zeit = Nothing Then
+                xPathTeile.Item(xPathTeile.Count - 1) = "Zeit"
+                C_DP.Write(xPathTeile, CStr(Zeit))
+            End If
+        End If
+        'End With
+        xPathTeile = Nothing
+        NodeNames = Nothing
+        NodeValues = Nothing
+        AttributeNames = Nothing
+        AttributeValues = Nothing
+#If OVer > 12 Then
+        RefreshRibbon()
+#End If
+
+    End Sub
+
+    Friend Overloads Sub UpdateList(ByVal ListName As String, ByVal Telefonat As C_Telefonat)
+        With Telefonat
+            UpdateList(ListName, .Anrufer, .TelNr, CStr(.Zeit), .StoreID, .KontaktID, .vCard)
+        End With
+    End Sub
+#End Region
+
 End Class

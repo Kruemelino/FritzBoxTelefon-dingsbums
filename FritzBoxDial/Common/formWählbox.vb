@@ -117,10 +117,6 @@ Friend Class formWählbox
             Next
         End With
         xPathTeile = Nothing
-        Me.ComboBoxFon.SelectedIndex = C_DP.P_TelAnschluss
-
-        If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
-
         ' Phoner
         If C_DP.P_CBPhoner Then
             If C_Phoner.PhonerReady() Then
@@ -130,6 +126,14 @@ Friend Class formWählbox
             End If
         End If
         ' End Phoner 
+
+        If C_DP.P_TelAnschluss >= Me.ComboBoxFon.Items.Count Then
+            Me.ComboBoxFon.SelectedIndex = 0
+        Else
+            Me.ComboBoxFon.SelectedIndex = C_DP.P_TelAnschluss
+        End If
+
+        If Not BWLogin.IsBusy Then BWLogin.RunWorkerAsync()
         Me.ListTel.Enabled = True
         Me.ComboBoxFon.Enabled = True
         WählboxBereit = True
@@ -404,28 +408,24 @@ Friend Class formWählbox
         If Not nameStart = 5 And Not Number = "ATH" And ThisAddIn.P_AnrMon.AnrMonAktiv Then
             ' Symbolleisteneintrag für Wahlwiederholung vornehmen
             ' nur wenn Timer aus ist sonst macht das 'AnrMonCALL'
-            index = CInt(C_DP.Read("Wwdh", "Index", "0"))
+            index = CInt(C_DP.Read(C_DP.P_Def_NameListCALL, "Index", "0"))
             Kontaktdaten = Split(Me.Tag.ToString, ";", , CompareMethod.Text)
             KontaktID = Kontaktdaten(0)
             StoreID = Kontaktdaten(1)
-            If Not C_hf.nurZiffern(C_DP.Read("Wwdh", "TelNr" & Trim(Str((index + 9) Mod 10)), "")) = C_hf.nurZiffern(Number) Then
-                Dim xPathTeile() As String = {Mid(Me.Text, nameStart), Number, CStr(System.DateTime.Now), CStr((index + 1) Mod 10), StoreID, KontaktID}
-                C_DP.Write("Wwdh", "WwdhEintrag" & index, Join(xPathTeile, ";"))
-                C_DP.Write("Wwdh", "Index", CStr((index + 1) Mod 10))
-#If OVer < 14 Then
-                If C_DP.Read("Optionen", "CBSymbWwdh", "False") = "True" Then C_GUI.FillPopupItems("Wwdh")
-#End If
-            End If
+
+            C_GUI.UpdateList(C_DP.P_Def_NameListCALL, Mid(Me.Text, Len("Anruf: ") + 1), Number, System.DateTime.Now.ToString, StoreID, KontaktID, C_DP.P_Def_StringEmpty)
+
         End If
 
         Code = C_hf.nurZiffern(Number) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
-        'LogFile("Rufnummer " & Code & " wurde ausgewählt")
+
         If C_DP.P_CBVoIPBuster Then
             ' Änderung von "HardyX9" zur Nutzung des Scriptes mit VoIPBuster
             ' Dadurch wird die Länderkennung 0049 immer mitgewählt
             If Not Mid(Code, 1, 2) = "00" Then Code = Replace(Code, "0", C_DP.P_TBLandesVW, 1, 1)
             C_hf.LogFile("VoIPBuster umgewandelte Rufnummer lautet: " & Code)
         End If
+
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
         Code = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt)) & Code
@@ -436,6 +436,7 @@ Friend Class formWählbox
             ' Sagt der FB dass die Nummer jetzt zuende ist
             Code = Code & "#"
         End If
+
         ' Jetzt Code an Box bzw. Phoner senden
         If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then
             C_hf.LogFile("Folgende Nummer wird zum Wählen an Phoner gesendet: " & Code)
@@ -567,6 +568,7 @@ Friend Class formWählbox
 
 #Region "Änderungen"
     Private Sub ComboBoxFon_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxFon.SelectedIndexChanged
+        C_DP.P_TelAnschluss = ComboBoxFon.SelectedIndex
         If Me.ComboBoxFon.SelectedIndex = PhonerFon Then
             Me.checkCLIR.Enabled = False
             Me.checkNetz.Enabled = False
