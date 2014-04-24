@@ -169,12 +169,18 @@ Public Class Helfer
                     ValidIP = InputIP
             End Select
         Else
-            IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
-            For Each IPAddresse In IPHostInfo.AddressList
-                If IPAddresse.AddressFamily = Sockets.AddressFamily.InterNetwork Then
-                    ValidIP = IPAddresse.ToString
-                End If
-            Next
+            Try
+                IPHostInfo = Dns.GetHostEntry(C_DP.P_TBFBAdr)
+                For Each IPAddresse In IPHostInfo.AddressList
+                    If IPAddresse.AddressFamily = Sockets.AddressFamily.InterNetwork Then
+                        ValidIP = IPAddresse.ToString
+                    End If
+                Next
+            Catch ex As Exception
+                LogFile("Die Adresse """ & C_DP.P_TBFBAdr & """ kann nicht zugeordnet werden.")
+                ValidIP = C_DP.P_TBFBAdr
+            End Try
+
         End If
     End Function
 
