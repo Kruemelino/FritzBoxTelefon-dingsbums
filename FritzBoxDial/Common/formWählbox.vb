@@ -170,10 +170,10 @@ Friend Class formWählbox
         cancelCallButton.Visible = False
         ' Abbruch ausführen
         If P_Dialing Then
-            If Not PhonerCall Then
-                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+            If PhonerCall Then
+                Me.LabelStatus.Text = C_Phoner.DialPhoner("HangUp")  ' Funktionalität sicherstellen
             Else
-
+                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
             End If
         End If
         P_Dialing = False
