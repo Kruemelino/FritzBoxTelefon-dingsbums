@@ -38,7 +38,7 @@
     <SignManifests>true</SignManifests>
     <ManifestKeyFile>
     </ManifestKeyFile>
-    <ManifestCertificateThumbprint>277374D6BECB26ADDC7CFD445696711E6B3CADA8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>False</IsWebBootstrapper>
