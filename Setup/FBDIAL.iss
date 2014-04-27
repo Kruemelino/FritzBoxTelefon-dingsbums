@@ -1,7 +1,7 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
-#define MyAppName "Fritz!Box Telefon-dingsbums für Office 2010"
-#define MyAppVersion "3.7 Alpha 03"
+#define MyAppName "Fritz!Box Telefon-dingsbums"
+#define MyAppVersion "3.7_Beta_1"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "http://www.ip-phone-forum.de/showthread.php?t=237086"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder Rückwärtssuche."
@@ -37,15 +37,15 @@ Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Fla
 Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: dword; ValueName: "LoadBehavior"; ValueData: "3"; Check: OutlookVersion(2003)
 Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest"; ValueData: "{app}\{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
 
-Root: HKLM; Subkey: "Software\Classes\{#MyAppNameKurz}\CLSID"; Flags: uninsdeletekey; ValueType: string; ValueData: {code:CorrectGUID}; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}"; Flags: uninsdeletekey; ValueType: string; ValueData: {#MyAppDescription}; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cf}\Microsoft Shared\VSTO\8.0\AddinLoader.dll"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestLocation"; ValueData: "{app}\"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestName"; ValueData: "{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ThreadingModel"; ValueData: "Both"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\ProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\Programmable"; Flags: uninsdeletekey; Check: OutlookVersion(2003)
-Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CorrectGUID}\VersionIndependentProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\{#MyAppNameKurz}\CLSID"; Flags: uninsdeletekey; ValueType: string; ValueData: {code:CurrectGUID}; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}"; Flags: uninsdeletekey; ValueType: string; ValueData: {#MyAppDescription}; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cf}\Microsoft Shared\VSTO\8.0\AddinLoader.dll"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestLocation"; ValueData: "{app}\"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ManifestName"; ValueData: "{#MyAppNameKurz}.dll.manifest"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\InprocServer32"; Flags: uninsdeletekey; ValueType: string; ValueName: "ThreadingModel"; ValueData: "Both"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\ProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\Programmable"; Flags: uninsdeletekey; Check: OutlookVersion(2003)
+Root: HKLM; Subkey: "Software\Classes\CLSID\{code:CurrectGUID}\VersionIndependentProgID"; Flags: uninsdeletekey; ValueType: string; ValueData: "{#MyAppNameKurz}"; Check: OutlookVersion(2003)
 
 ;Office 2007
 Root: HKCU; Subkey: "Software\Microsoft\Office\Outlook\Addins\FBDB.FritzBoxDial"; Flags: uninsdeletekey; ValueType: string; ValueName: "Description"; ValueData: "{#MyAppDescription}"; Check: OutlookVersion(2007)
@@ -159,7 +159,7 @@ Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Di
 [UninstallRun]
 ;Office 2003
 Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Start..."
-  Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Entferne Berechtigung..."
+Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Entferne Berechtigung..."
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app} Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Ende!"
 
 ;Filename: {app}\setcaspol.exe; Parameters: "uninstall;{code:CaspolPath};{app};500"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "SetCaspol : Uninstall"
@@ -170,7 +170,6 @@ Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Di
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-
 
 [Code]
 var Versionspfad:String;
@@ -206,7 +205,7 @@ function OutlookVersion (Get:Integer): boolean;
     else Result:= false;
 end;
 
-function CorrectGUID(dummy: String): String;
+function CurrectGUID(dummy: String): String;
 begin
   Result := '{' + '{#myGUID}' +  '}'
 end;
@@ -426,11 +425,80 @@ function DefDirRoot(Param: String): String;
   Result := ExpandConstant('{pf}')
 end;
 
+// found at: https://stackoverflow.com/questions/2000296/innosetup-how-to-automatically-uninstall-previous-installed-version
+/////////////////////////////////////////////////////////////////////
+function GetUninstallString(): String;
+var
+  sUnInstPath: String;
+  sUnInstallString: String;
+begin
+  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+  sUnInstallString := '';
+  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+  begin
+    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+  end
+  
+  if (IsWin64) and (sUnInstallString = '') then
+  begin
+    sUnInstPath := ExpandConstant('Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{#emit SetupSetting("AppId")}_is1');
+    if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+    begin
+      RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+    end
+  end 
+  Result := sUnInstallString;
+end;
+ 
+/////////////////////////////////////////////////////////////////////
+function IsUpgrade(): Boolean;
+begin
+  Result := (GetUninstallString() <> '');
+end;
+
+/////////////////////////////////////////////////////////////////////
+function UnInstallOldVersion(): Integer;
+var
+  sUnInstallString: String;
+  iResultCode: Integer;
+begin
+// Return Values:
+// 1 - uninstall string is empty
+// 2 - error executing the UnInstallString
+// 3 - successfully executed the UnInstallString
+
+  // default return value
+  Result := 0;
+
+  // get the uninstall string of the old app
+  sUnInstallString := GetUninstallString();
+  if sUnInstallString <> '' then begin
+    sUnInstallString := RemoveQuotes(sUnInstallString);
+    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
+      Result := 3
+    else
+      Result := 2;
+  end else
+    Result := 1;
+end;
+
+/////////////////////////////////////////////////////////////////////
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if (CurStep=ssInstall) then
+  begin
+    if (IsUpgrade()) then
+    begin
+      UnInstallOldVersion();
+    end;
+  end;
+end;
+
 function InitializeSetup(): Boolean;
   var
     strNET, strNET2, strERR:String;
-    tmpInt:Integer;
-    VSTORFeature:Cardinal;
+    tmpInt: Integer;
+    VSTORFeature: Cardinal;
   begin
     Version:= GetOutlookVersion;
     tmpInt:= StrToInt(Version);
@@ -488,8 +556,7 @@ function InitializeSetup(): Boolean;
             Result := false
           end 
         end
-     
-        
+                  
         if not Result then 
         begin
           Result:=false;
@@ -594,5 +661,6 @@ function InitializeSetup(): Boolean;
       end
     end
 end;
+
 
 //EOF
