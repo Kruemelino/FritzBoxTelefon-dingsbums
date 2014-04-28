@@ -171,7 +171,7 @@ Friend Class formWählbox
         ' Abbruch ausführen
         If P_Dialing Then
             If PhonerCall Then
-                Me.LabelStatus.Text = C_Phoner.DialPhoner("HangUp")  ' Funktionalität sicherstellen
+                Me.LabelStatus.Text = C_Phoner.DialPhoner("DISCONNECT")  ' Funktionalität sicherstellen
             Else
                 Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
             End If

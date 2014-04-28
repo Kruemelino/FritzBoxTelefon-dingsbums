@@ -47,7 +47,11 @@ Public Class PhonerInterface
                                 .WriteLine("Response=" & Response)
                                 C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then
-                                    .WriteLine("CONNECT " & dialCode)
+                                    If dialCode = "DISCONNECT" Then
+                                        .WriteLine(dialCode)
+                                    Else
+                                        .WriteLine("CONNECT " & dialCode)
+                                    End If
                                     DialPhoner = "Nr. " & dialCode & " an Phoner übergeben"
                                 Else
                                     DialPhoner = "Fehler!" & vbCrLf & "Das Phoner-Passwort ist falsch!"
