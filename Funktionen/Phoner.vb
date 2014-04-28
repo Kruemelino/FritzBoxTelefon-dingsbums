@@ -41,16 +41,16 @@ Public Class PhonerInterface
                         With StreamWriter
                             .WriteLine("Login")
                             .AutoFlush = True
-                            If StreamReader.ReadLine() = "Welcome to Phoner" Then
-                                Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len("Challenge=") + 1)
+                            If StreamReader.ReadLine() = C_DP.P_Def_Phoner_Ready Then ' "Welcome to Phoner"
+                                Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len(C_DP.P_Def_Phoner_Challenge) + 1)
                                 Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII))
-                                .WriteLine("Response=" & Response)
+                                .WriteLine(C_DP.P_Def_Phoner_Response & Response)
                                 C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then
-                                    If dialCode = "DISCONNECT" Then
+                                    If dialCode = C_DP.P_Def_Phoner_DISCONNECT Then  '"DISCONNECT"
                                         .WriteLine(dialCode)
                                     Else
-                                        .WriteLine("CONNECT " & dialCode)
+                                        .WriteLine(C_DP.P_Def_Phoner_CONNECT & dialCode)
                                     End If
                                     DialPhoner = "Nr. " & dialCode & " an Phoner übergeben"
                                 Else

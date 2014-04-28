@@ -8,6 +8,7 @@ Public Class DataProvider
 #Region "BackgroundWorker"
     Private WithEvents BWCBox As BackgroundWorker
 #End Region
+
 #Region "Windows Const für Office 2003"
 #If over = 11 Then
     Public Const ECM_FIRST As Long = &H1500
@@ -136,6 +137,7 @@ Public Class DataProvider
     Public Const WM_SYSCOMMAND As Short = &H112S
 #End If
 #End Region
+
 #Region "Konstanten"
     Private Const Speicherintervall As Double = 5 'in Minuten
     Private Const RootName As String = "FritzOutlookXML"
@@ -144,6 +146,7 @@ Public Class DataProvider
     Private Const xPathBracketOpen As String = "["
     Private Const xPathBracketClose As String = "]"
 #End Region
+
 #Region "PrivateData"
 
     Private _CBForceFBAddr As Boolean
@@ -239,6 +242,7 @@ Public Class DataProvider
     Private _ListeOrtsVorwahlen As String()
     Private _ListeLandesVorwahlen As String()
 #End Region
+
 #Region "Value Properties"
     ''' <summary>
     ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
@@ -1291,7 +1295,7 @@ Public Class DataProvider
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_UserPropertyIndex As String
+    Public ReadOnly Property P_Def_UserPropertyIndex() As String
         Get
             Return "FBDB-Save"
         End Get
@@ -1320,7 +1324,36 @@ Public Class DataProvider
             Return "Nicht erfolgreicher Anruf zu"
         End Get
     End Property
+    ' Phoner
+    Public ReadOnly Property P_Def_Phoner_CONNECT As String
+        Get
+            Return "CONNECT " 'Das Leerzeichen wird benötigt!
+        End Get
+    End Property
 
+    Public ReadOnly Property P_Def_Phoner_DISCONNECT As String
+        Get
+            Return "DISCONNECT"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Phoner_Challenge As String
+        Get
+            Return "Challenge="
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Phoner_Response As String
+        Get
+            Return "Response="
+        End Get
+    End Property
+
+    Public ReadOnly Property P_Def_Phoner_Ready As String
+        Get
+            Return "Welcome to Phoner"
+        End Get
+    End Property
 #End Region
 
 #Region "Default Value Properties"
