@@ -444,6 +444,8 @@ Public Class Contacts
         End Try
         If GetOutlookFolder Is Nothing Then
             GetOutlookFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+            C_DP.P_TVKontaktOrdnerEntryID = GetOutlookFolder.EntryID
+            C_DP.P_TVKontaktOrdnerStoreID = CType(GetOutlookFolder.Parent, Outlook.MAPIFolder).StoreID
         End If
     End Function
 
