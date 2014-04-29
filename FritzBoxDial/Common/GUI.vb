@@ -1114,7 +1114,7 @@
 
 #Region "Explorer Button Click"
     Friend Sub WähleDirektwahl()
-        P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, True, C_DP.P_Def_StringEmpty)
+        P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, True)
     End Sub
 
     Friend Sub ÖffneEinstellungen()

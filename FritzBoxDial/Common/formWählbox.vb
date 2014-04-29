@@ -12,6 +12,7 @@ Friend Class formWählbox
     Private C_GUI As GraphicalUserInterface
     Private C_Phoner As PhonerInterface
     Private C_KF As Contacts
+    Private C_WC As Wählclient
     Private Client As New Sockets.TcpClient()
     Private WithEvents TimerSchließen As System.Timers.Timer
     Private CallNr As System.Threading.Thread
@@ -30,7 +31,7 @@ Friend Class formWählbox
     Private Nebenstellen As String()
     ' Phoner
     Private PhonerCall As Boolean = False
-    Private UsePhonerOhneFritzBox As Boolean = False
+    'Private UsePhonerOhneFritzBox As Boolean = False
     Private PhonerFon As Integer = -1
 
     Structure Argument
@@ -57,7 +58,8 @@ Friend Class formWählbox
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
                    ByVal PhonerKlasse As PhonerInterface, _
-                   ByVal KontaktFunktionen As Contacts)
+                   ByVal KontaktFunktionen As Contacts, _
+                   ByVal WählClientKlasse As Wählclient)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -67,6 +69,7 @@ Friend Class formWählbox
         C_FBox = FritzBoxKlasse
         C_KF = KontaktFunktionen
         C_GUI = InterfacesKlasse
+        C_WC = WählClientKlasse
         bDirektwahl = Direktwahl
 
         C_Phoner = PhonerKlasse
@@ -76,6 +79,10 @@ Friend Class formWählbox
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
         Me.KeyPreview = Not bDirektwahl
+    End Sub
+
+    Private Sub formWählbox_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        C_WC._listFormWählbox.Remove(Me)
     End Sub
 
     Private Sub formWählbox_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -171,9 +178,9 @@ Friend Class formWählbox
         ' Abbruch ausführen
         If P_Dialing Then
             If PhonerCall Then
-                Me.LabelStatus.Text = C_Phoner.DialPhoner("DISCONNECT")  ' Funktionalität sicherstellen
+                Me.LabelStatus.Text = C_Phoner.DialPhoner("DISCONNECT")
             Else
-                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, Nebenstellen(Me.ComboBoxFon.SelectedIndex), True)
+                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(C_DP.P_Def_StringEmpty, GetDialport(Nebenstellen(Me.ComboBoxFon.SelectedIndex)), True)
             End If
         End If
         P_Dialing = False
@@ -230,7 +237,8 @@ Friend Class formWählbox
         Me.Hide()
 
         If Not TimerSchließen Is Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
-        If Not UsePhonerOhneFritzBox Then ThisAddIn.P_FritzBox.FBLogOut(SID)
+        'If Not UsePhonerOhneFritzBox Then
+        ThisAddIn.P_FritzBox.FBLogOut(SID)
         Me.Close()
         Me.Dispose(True)
     End Sub
@@ -256,7 +264,7 @@ Friend Class formWählbox
         Return Replace(Trim(Strings.Join(tempArray, "")), " ,", ",", , , CompareMethod.Text)
     End Function
 
-    Sub AutoClose()
+    Private Sub AutoClose()
         If Me.InvokeRequired Then
             Dim D As New SchließeForm(AddressOf AutoClose)
             Me.Invoke(D)
@@ -265,7 +273,7 @@ Friend Class formWählbox
         End If
     End Sub
 
-    Function GetDialport(ByVal Nebenstelle As String) As String
+    Private Function GetDialport(ByVal Nebenstelle As String) As String
         GetDialport = C_DP.P_Def_ErrorMinusOne_String
         Dim tmpint As Double
         Dim xPathTeile As New ArrayList
@@ -433,12 +441,12 @@ Friend Class formWählbox
         ' Amtsholungsziffer voranstellen
         Code = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt)) & Code
 
-        If Not UsePhonerOhneFritzBox Then
-            If CLIR Then Code = "*31#" & Code
-            If Festnetz Then Code = "*11#" & Code
-            ' Sagt der FB dass die Nummer jetzt zuende ist
-            Code = Code & "#"
-        End If
+        'If Not UsePhonerOhneFritzBox Then
+        If CLIR Then Code = "*31#" & Code
+        If Festnetz Then Code = "*11#" & Code
+        ' Sagt der FB dass die Nummer jetzt zuende ist
+        Code = Code & "#"
+        'End If
 
         ' Jetzt Code an Box bzw. Phoner senden
         If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then

@@ -460,4 +460,8 @@ Partial Class formWählbox
     Friend WithEvents Tarif As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Bemerkung As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents BVIP As System.Windows.Forms.CheckBox
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class

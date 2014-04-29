@@ -259,20 +259,6 @@ Public Class DataProvider
         End Set
     End Property
     ''' <summary>
-    ''' Enthält den Index im Combobox
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property P_CBoxLandesVorwahl() As Integer
-        Get
-            Return _CBoxLandesVorwahl
-        End Get
-        Set(ByVal value As Integer)
-            _CBoxLandesVorwahl = value
-        End Set
-    End Property
-    ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
     ''' <value>String</value>
@@ -1067,15 +1053,15 @@ Public Class DataProvider
         End Get
     End Property
 
-    Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
+    Public ReadOnly Property P_Def_TelCodeActivateFritzBoxCallMonitor() As String
         Get
-            Return 1012
+            Return "#96*5*"
         End Get
     End Property
 
-    Public ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer
+    Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
         Get
-            Return 2012
+            Return 1012
         End Get
     End Property
 
@@ -1300,7 +1286,7 @@ Public Class DataProvider
             Return "FBDB-Save"
         End Get
     End Property
-    ' Journal
+#Region "Journal"
     Public ReadOnly Property P_Def_Journal_Text_Eingehend() As String
         Get
             Return "Eingehender Anruf von"
@@ -1324,7 +1310,9 @@ Public Class DataProvider
             Return "Nicht erfolgreicher Anruf zu"
         End Get
     End Property
-    ' Phoner
+#End Region
+
+#Region "Phoner"
     Public ReadOnly Property P_Def_Phoner_CONNECT As String
         Get
             Return "CONNECT " 'Das Leerzeichen wird benötigt!
@@ -1354,6 +1342,20 @@ Public Class DataProvider
             Return "Welcome to Phoner"
         End Get
     End Property
+
+    Public ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer
+        Get
+            Return 2012
+        End Get
+    End Property
+#End Region
+    ' Passwortverschlüsselung
+    Public ReadOnly Property P_Def_PassWordDecryptionKey As String
+        Get
+            Return "Fritz!Box Script"
+        End Get
+    End Property
+
 #End Region
 
 #Region "Default Value Properties"
@@ -1816,7 +1818,6 @@ Public Class DataProvider
         Dim xPathTeile As New ArrayList
 
         Me.P_TBLandesVW = Read(P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
-        Me.P_CBoxLandesVorwahl = CInt(Read(P_Def_Options, "CBoxLandesVorwahl", CStr(P_Def_CBoxLandesVorwahl)))
         Me.P_TBAmt = Read(P_Def_Options, "TBAmt", P_Def_TBAmt)
         Me.P_TBFBAdr = Read(P_Def_Options, "TBFBAdr", P_Def_TBFBAdr)
         Me.P_CBForceFBAddr = CBool(Read(P_Def_Options, "CBForceFBAddr", CStr(P_Def_CBForceFBAddr)))
@@ -1912,7 +1913,6 @@ Public Class DataProvider
 
     Private Sub SaveOptionData()
         Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
-        Write(P_Def_Options, "CBoxLandesVorwahl", CStr(Me.P_CBoxLandesVorwahl))
         Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
         Write(P_Def_Options, "TBFBAdr", Me.P_TBFBAdr)
         Write(P_Def_Options, "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
