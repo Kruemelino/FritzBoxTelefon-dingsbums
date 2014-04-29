@@ -10,6 +10,7 @@ Friend Class AnrufMonitor
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
     Private WithEvents BWStartTCPReader As BackgroundWorker
+    Private WithEvents BWActivateCallmonitor As BackgroundWorker
 #End Region
 
 #Region "Timer"
@@ -198,6 +199,7 @@ Friend Class AnrufMonitor
         Dim FBAnrMonPort As Integer
         Dim AnrMonTCPSocket As Socket
 
+
         If C_DP.P_CBPhonerAnrMon Then
             FBAnrMonPort = C_DP.P_DefaultPhonerAnrMonPort
             'IPAddresse = IPAddress.Loopback ' 127.0.0.1 ' Wert bei "Dim" schon gesetzt
@@ -215,8 +217,32 @@ Friend Class AnrufMonitor
 
         Try
             AnrMonTCPSocket.Connect(RemoteEP)
+        Catch SocketError As SocketException
+             Select SocketError.SocketErrorCode
+                Case Sockets.SocketError.ConnectionRefused
+                    If FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort Then
+                        'Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte.
+                        If C_hf.FBDB_MsgBox("Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & C_DP.P_Def_NeueZeile & _
+                                            "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & C_DP.P_Def_TelCodeActivateFritzBoxCallMonitor & _
+                                            """ kann dieser aktiviert werden." & C_DP.P_Def_NeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)" _
+                                         , MsgBoxStyle.YesNo, "Soll der Fritz!Box Callmonitor aktiviert werden?") = MsgBoxResult.Yes Then
+
+                            BWActivateCallmonitor = New BackgroundWorker
+                            With BWActivateCallmonitor
+                                .RunWorkerAsync()
+                            End With
+                        Else
+                            C_hf.LogFile("Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen.")
+                        End If
+                    End If
+                Case Else
+                    C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & SocketError.Message)
+                    AnrMonError = True
+                    e.Result = False
+            End Select
         Catch Err As Exception
             C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
+
             AnrMonError = True
             e.Result = False
         End Try
@@ -261,6 +287,13 @@ Friend Class AnrufMonitor
             C_hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.")
         End If
         BWStartTCPReader.Dispose()
+    End Sub
+
+    Sub BWActivateCallmonitor_DoWork() Handles BWActivateCallmonitor.DoWork
+        C_GUI.P_CallClient.Wählbox(Nothing, C_DP.P_Def_TelCodeActivateFritzBoxCallMonitor, C_DP.P_Def_StringEmpty, True)
+        Do
+            Windows.Forms.Application.DoEvents()
+        Loop Until C_GUI.P_CallClient._listFormWählbox.Count = 0
     End Sub
 #End Region
 
@@ -313,7 +346,7 @@ Friend Class AnrufMonitor
             C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
             AnrMonStartStopp()
             AnrMonError = True
-            If Not TimerReStart.Enabled Then
+            If Not TimerReStart Is Nothing AndAlso Not TimerReStart.Enabled Then
                 StandbyCounter = 1
                 TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
             End If
