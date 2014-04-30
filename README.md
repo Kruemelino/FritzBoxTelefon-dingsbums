@@ -1,4 +1,4 @@
-FritzBox Telefon-dingsbums
+Fritz!Box Telefon-dingsbums
 =========================
 
 Fritz!Box Telefon-dingsbums
