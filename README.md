@@ -15,15 +15,15 @@ Alle weiteren Komponenten (.NET Framework, VSTO, PIA), die das Addin benöti-gen
 
 1.2	Systemvoraussetzungen für Outlook 2013, Outlook 2010, Outlook 2007
 
--   Microsoft Outlook 2013 oder Outlook 2010 oder Outlook 2007
+- Microsoft Outlook 2013 oder Outlook 2010 oder Outlook 2007
 - Microsoft .NET Framework 4.0 Client Profile: http://www.microsoft.com/de-de/download/details.aspx?id=24872 
 - Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTOR 2010): http://go.microsoft.com/fwlink/?LinkId=158918
 
 Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
 
-Windows 8 x64 & Office 2013 x64
+Windows 8.1 x64 & Office 2010 x64, Windows 8.1 x64 & Office 2013 x64
 Windows 7 x64 & Office 2010 x64, Windows 7 x86 & Office 2010 x86
-Windows XP SP3 (Entwicklungsrechner VS2010)
+Windows XP SP3 (Entwicklungsrechner)
 
 1.3	Systemvoraussetzungen für Outlook 2003
 
