@@ -218,7 +218,7 @@ Friend Class AnrufMonitor
         Try
             AnrMonTCPSocket.Connect(RemoteEP)
         Catch SocketError As SocketException
-             Select SocketError.SocketErrorCode
+            Select Case SocketError.SocketErrorCode
                 Case Sockets.SocketError.ConnectionRefused
                     If FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort Then
                         'Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte.
@@ -426,8 +426,8 @@ Friend Class AnrufMonitor
     End Function
 
     Friend Sub AnrMonReStart()
-        AnrMonStartStopp()
-        AnrMonStartStopp()
+        AnrMonStartStopp() ' Ausschalten
+        AnrMonStartStopp() ' Einschalten
     End Sub
 
 #End Region
@@ -526,7 +526,9 @@ Friend Class AnrufMonitor
                 If Len(.TelNr) = 0 Then .TelNr = C_DP.P_Def_StringUnknown
 
                 ' Daten für Anzeige im Anrurfmonitor speichern
-                If ShowForms And Not C_OlI.VollBildAnwendungAktiv Then
+
+                If ShowForms AndAlso Not C_OlI.VollBildAnwendungAktiv Then
+                    LetzterAnrufer = Telefonat
                     BWAnrMonEinblenden = New BackgroundWorker
                     BWAnrMonEinblenden.RunWorkerAsync(Telefonat)
                 End If
@@ -536,7 +538,7 @@ Friend Class AnrufMonitor
                     ' Anrufer in den Outlook-Kontakten suchen
                     .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
                     If Not .olContact Is Nothing Then
-                        .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
+                        .Anrufer = .olContact.FullName ' Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
                         .Companies = .olContact.CompanyName
                         If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
@@ -590,7 +592,7 @@ Friend Class AnrufMonitor
                                     .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
                                     .vCard = C_DP.P_Def_StringEmpty
                                     .Companies = .olContact.CompanyName
-                                    .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
+                                    .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
                                 Else
                                     .Anrufer = ReadFNfromVCard(.vCard)
                                     .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
@@ -1103,14 +1105,15 @@ Friend Class AnrufMonitor
             End If
 
             AttributeNames.Add("ID")
-            AttributeValues.Add(.ID)
+            AttributeValues.Add("0")
+            'AttributeValues.Add(.ID)
 
             xPathTeile.Add("LetzterAnrufer")
-            xPathTeile.Add("Letzter")
+            'xPathTeile.Add("Letzter")
         End With
         With C_DP
-            .Write(xPathTeile, CStr(LetzterAnrufer.ID))
-            xPathTeile.Remove("Letzter")
+            '.Write(xPathTeile, CStr(LetzterAnrufer.ID))
+            'xPathTeile.Remove("Letzter")
             .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
         End With
 
@@ -1163,12 +1166,11 @@ Friend Class AnrufMonitor
         ListNodeNames.Add("Companies")
         ListNodeValues.Add(C_DP.P_Def_StringEmpty)
 
-        LadeLetzterAnrufer.ID = CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
+        LadeLetzterAnrufer.ID = 0 'CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
         With xPathTeile
             .Add("LetzterAnrufer")
             .Add("Eintrag")
         End With
-
         C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
         With LadeLetzterAnrufer
 
@@ -1195,7 +1197,5 @@ Friend Class AnrufMonitor
         xPathTeile = Nothing
     End Function
 #End Region
-
-
 
 End Class

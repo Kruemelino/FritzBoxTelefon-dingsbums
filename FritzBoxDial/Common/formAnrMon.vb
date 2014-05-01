@@ -56,6 +56,7 @@ Friend Class formAnrMon
 
     Sub AnrMonausfüllen()
         With PopUpAnrMon
+
             If C_AnrMon.LetzterAnrufer.TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
                     .Items("ToolStripMenuItemRückruf").Enabled = False ' kein Rückruf im Fall 1
@@ -68,7 +69,6 @@ Friend Class formAnrMon
             ' Telefonnamen eintragen
             .TelName = C_AnrMon.LetzterAnrufer.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & C_AnrMon.LetzterAnrufer.MSN & ")", C_DP.P_Def_StringEmpty))
 
-            If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
             ' Kontakt einblenden wenn in Outlook gefunden
             With C_AnrMon.LetzterAnrufer
                 If .olContact Is Nothing Then
@@ -98,6 +98,7 @@ Friend Class formAnrMon
             Else
                 .TelNr = C_AnrMon.LetzterAnrufer.TelNr
                 .AnrName = C_AnrMon.LetzterAnrufer.Anrufer
+                If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
             End If
             .Firma = C_AnrMon.LetzterAnrufer.Companies
         End With
@@ -107,7 +108,6 @@ Friend Class formAnrMon
         If Not IO.File.Exists(path) Then Throw New IO.FileNotFoundException
         Using fs As New IO.FileStream(path, IO.FileMode.Open)
             Return Image.FromStream(fs)
-            'Return CType(, Image)
         End Using
     End Function
 

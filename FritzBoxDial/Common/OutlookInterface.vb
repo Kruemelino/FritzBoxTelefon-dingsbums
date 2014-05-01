@@ -182,9 +182,6 @@
     End Property
 #End Region
 
-    'Private Sub cContact_Write(ByRef Cancel As Boolean) Handles _olContact.Write
-    '    MsgBox(_olContact.Parent.ToString)
-    'End Sub
 End Class
 
 Public Class OutlookInterface
