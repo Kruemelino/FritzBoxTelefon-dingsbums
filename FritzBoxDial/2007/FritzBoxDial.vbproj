@@ -33,7 +33,7 @@
     <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>D3CD516BC2C35F90ADB3A653BF359AA48C812C17</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
@@ -166,6 +166,9 @@
     </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>FritzBoxDial.pfx</ManifestKeyFile>
   </PropertyGroup>
   <!--
     This section specifies references for the project.
