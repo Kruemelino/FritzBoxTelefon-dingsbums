@@ -274,8 +274,6 @@ Friend Class formWählbox
     End Sub
 
     Private Function GetDialport(ByVal Nebenstelle As String) As String
-        GetDialport = C_DP.P_Def_ErrorMinusOne_String
-        Dim tmpint As Double
         Dim xPathTeile As New ArrayList
         With xPathTeile
             .Add("Telefone")
@@ -284,17 +282,8 @@ Friend Class formWählbox
             .Add("Telefon")
             .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
             .Add("@Dialport")
-            tmpint = CDbl(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
+            GetDialport = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
         End With
-
-        ' Das ist Quatsch! Dialport für FON 1...3. So werden die auch gespeichert!
-        'If Not tmpint = -1 Then
-        '    Select Case tmpint
-        '        Case 1 To 4
-        '            tmpint -= 1
-        '    End Select
-        'End If
-        Return CStr(tmpint)
     End Function
 #End Region
 

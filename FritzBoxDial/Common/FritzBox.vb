@@ -530,7 +530,7 @@ Public Class FritzBox
                                         End If
                                         pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
                                         pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
-                                        DialPort = CStr(CInt(Mid(Telefon, pos(4), pos(5) - pos(4))) + 1)
+                                        DialPort = CStr(CInt(Mid(Telefon, pos(4), pos(5) - pos(4))) + 1) ' + 1 für FON
                                         pos(2) = InStr(pos(1), Telefon, "outgoing: '", CompareMethod.Text) + Len("outgoing: '")
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                         PushStatus("Analogtelefon gefunden: FON" & CStr(DialPort) & ", " & TelNr & ", " & TelName)
@@ -1071,7 +1071,7 @@ Public Class FritzBox
                     If tmparray.Length = 0 Then tmparray = MSN
 
                     TelNr = String.Join(";", tmparray)
-                    DialPort = CStr(CInt(Port) + 1)
+                    DialPort = CStr(CInt(Port) + 1) ' + 1 für FON
 
                     PushStatus("Analogtelefon gefunden: FON" & DialPort & ", " & TelNr & ", " & TelName)
                     If P_SpeichereDaten Then
