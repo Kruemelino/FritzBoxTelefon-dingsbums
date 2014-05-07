@@ -287,12 +287,13 @@ Friend Class formWählbox
             tmpint = CDbl(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
         End With
 
-        If Not tmpint = -1 Then
-            Select Case tmpint
-                Case 1 To 4
-                    tmpint -= 1
-            End Select
-        End If
+        ' Das ist Quatsch! Dialport für FON 1...3. So werden die auch gespeichert!
+        'If Not tmpint = -1 Then
+        '    Select Case tmpint
+        '        Case 1 To 4
+        '            tmpint -= 1
+        '    End Select
+        'End If
         Return CStr(tmpint)
     End Function
 #End Region
