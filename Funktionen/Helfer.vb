@@ -213,7 +213,7 @@ Public Class Helfer
             Meldung = "Die Funktion " & Aufruf & " meldet folgenden Fehler:" & vbCrLf & vbCrLf & Meldung
             LogFile(Meldung)
         End If
-        Return MsgBox(Meldung, Style, "Fritz!Box Telefon-Dingsbums")
+        Return MsgBox(Meldung, Style, C_DP.P_Def_Addin_LangName) '"Fritz!Box Telefon-Dingsbums"
     End Function
 
     ''' <summary>

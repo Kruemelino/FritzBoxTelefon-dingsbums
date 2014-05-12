@@ -287,8 +287,8 @@ Public Class Contacts
                         .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
                     End If
                 End If
-                .Categories = "Fritz!Box Telefon-dingsbums" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                .Body = .Body & vbCrLf & "Erstellt durch das Fritz!Box Telefon-dingsbums am " & System.DateTime.Now
+                .Categories = C_DP.P_Def_Addin_LangName '"Fritz!Box Telefon-dingsbums" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
+                .Body = .Body & vbCrLf & "Erstellt durch das " & C_DP.P_Def_Addin_LangName & " am " & System.DateTime.Now
             End If
         End With
 

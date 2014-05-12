@@ -246,7 +246,6 @@
         Return "Erstellt einen Kontakt aus diesem Journaleintrag"
     End Function
 
-
     Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         C_KF.AddNote(CType(Insp.CurrentItem, Outlook.ContactItem))

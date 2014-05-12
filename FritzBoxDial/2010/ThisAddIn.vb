@@ -178,13 +178,13 @@ Public Class ThisAddIn
 #End If
             If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
         Else
-            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
+            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
     End Sub
 
     Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
+        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
             .NAR(P_oApp)
@@ -202,8 +202,9 @@ Public Class ThisAddIn
             Dim KS As New ContactSaved
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)
-        End If
 
+        End If
+        MsgBox("test")
     End Sub
 
 #Region " Office 2003 & 2007"
