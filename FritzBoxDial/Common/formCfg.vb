@@ -88,7 +88,7 @@ Friend Class formCfg
 #Region "Ausfüllen"
 
     Private Sub Ausfüllen()
-        Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
 #If OVer >= 14 Then
         If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
@@ -542,11 +542,11 @@ Friend Class formCfg
     End Function
 
 #Region "Button Link"
-    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonZuruecksetzen.Click, _
-                                                                                   ButtonOK.Click, _
-                                                                                   ButtonAbbruch.Click, _
-                                                                                   ButtonUebernehmen.Click, _
-                                                                                   ButtonXML.Click, _
+    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, _
+                                                                                   BOK.Click, _
+                                                                                   BAbbruch.Click, _
+                                                                                   BApply.Click, _
+                                                                                   BXML.Click, _
                                                                                    BAnrMonTest.Click, _
                                                                                    BIndizierungStart.Click, _
                                                                                    BIndizierungAbbrechen.Click, _
@@ -557,10 +557,11 @@ Friend Class formCfg
                                                                                    BResetStat.Click, _
                                                                                    BProbleme.Click, _
                                                                                    BStoppUhrAnzeigen.Click, _
-                                                                                   ButtonArbeitsverzeichnis.Click
+                                                                                   BArbeitsverzeichnis.Click, _
+                                                                                   BRWSTest.Click
 
         Select Case CType(sender, Windows.Forms.Button).Name
-            Case "ButtonZuruecksetzen"
+            Case "BReset"
                 ' Startwerte zurücksetzen
                 ' Einstellungen für das Wählmakro zurücksetzen
                 With C_DP
@@ -625,6 +626,7 @@ Friend Class formCfg
                     'Notiz
                     Me.CBNote.Checked = C_DP.P_Def_CBNote
                 End With
+                C_hf.LogFile("Einstellungen zurückgesetzt")
             Case "BTelefonliste"
                 Dim xPathTeile As New ArrayList
                 C_FBox.SetEventProvider(emc)
@@ -645,12 +647,12 @@ Friend Class formCfg
                 C_GUI.RefreshRibbon()
 #End If
                 If formschließen Then Me.Hide()
-            Case "ButtonAbbruch"
+            Case "BAbbruch"
                 ' Schließt das Fenster
                 Me.Hide()
-            Case "ButtonUebernehmen"
+            Case "BApply"
                 Speichern()
-            Case "ButtonXML"
+            Case "BXML"
                 System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
@@ -772,7 +774,7 @@ Friend Class formCfg
                 C_DP.P_CBStoppUhrX = frmStUhr.Position.X
                 C_DP.P_CBStoppUhrY = frmStUhr.Position.Y
                 frmStUhr = Nothing
-            Case "ButtonArbeitsverzeichnis"
+            Case "BArbeitsverzeichnis"
                 Dim fDialg As New System.Windows.Forms.FolderBrowserDialog
                 With fDialg
                     .ShowNewFolderButton = True
@@ -782,11 +784,39 @@ Friend Class formCfg
                         If Not C_DP.P_Arbeitsverzeichnis = .SelectedPath Then
                             C_hf.LogFile("Arbeitsverzeichnis von " & C_DP.P_Arbeitsverzeichnis & " auf " & .SelectedPath & "\ geändert.")
                             C_DP.P_Arbeitsverzeichnis = .SelectedPath & "\"
-                            Me.ToolTipFBDBConfig.SetToolTip(Me.ButtonXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
+                            Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
                             C_DP.SpeichereXMLDatei()
                         End If
                     End If
                 End With
+            Case "BRWSTest"
+                Dim TelNr As String = Me.TBRWSTest.Text
+                If IsNumeric(TelNr) Then
+                    Dim frws As New formRWSuche(C_hf, C_KF, C_DP)
+                    Dim RWSAnbieter As formRWSuche.Suchmaschine
+                    Dim rws As Boolean
+                    Dim vCard As String = C_DP.P_Def_StringEmpty
+
+                    RWSAnbieter = CType(Me.ComboBoxRWS.SelectedIndex + 1, formRWSuche.Suchmaschine) ' +1, da Enum so definiert. die 0 war GoYellow
+
+                    Select Case RWSAnbieter
+                        'Case Suchmaschine.RWSGoYellow
+                        '    rws = RWSGoYellow(TelNr, vCard
+                        Case formRWSuche.Suchmaschine.RWS11880
+                            rws = frws.RWS11880(TelNr, vCard)
+                        Case formRWSuche.Suchmaschine.RWSDasTelefonbuch
+                            rws = frws.RWSDasTelefonbuch(TelNr, vCard)
+                        Case formRWSuche.Suchmaschine.RWStelSearch
+                            rws = frws.RWStelsearch(TelNr, vCard)
+                        Case formRWSuche.Suchmaschine.RWSAlle
+                            rws = frws.RWSAlle(TelNr, vCard)
+                    End Select
+
+                    C_hf.FBDB_MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
+                                    CStr(IIf(rws, "folgendes Ergebnis:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & vCard, "kein Ergebnis.")), MsgBoxStyle.Information, "RWSTest")
+                Else
+                    C_hf.FBDB_MsgBox("Doe Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "RWSTest")
+                End If
         End Select
     End Sub
 
@@ -826,7 +856,8 @@ Friend Class formCfg
                                                                         TBAnrMonX.TextChanged, _
                                                                         TBAnrMonY.TextChanged, _
                                                                         TBTelNrMaske.Leave, _
-                                                                        CLBTelNr.SelectedIndexChanged
+                                                                        CLBTelNr.SelectedIndexChanged, _
+                                                                        TBRWSTest.TextChanged
         Select Case sender.GetType().Name
             Case "CheckBox"
                 Select Case CType(sender, CheckBox).Name
@@ -842,6 +873,9 @@ Friend Class formCfg
                         Me.CBKErstellen.Enabled = Me.CBRWS.Checked
                         Me.CBRWSIndex.Enabled = Me.CBRWS.Checked
                         Me.CBRWSIndex.Checked = Me.CBRWS.Checked
+                        Me.LRWSTest.Enabled = Me.CBRWS.Checked
+                        Me.TBRWSTest.Enabled = Me.CBRWS.Checked
+                        'Me.BRWSTest.Enabled = Me.CBRWS.Checked
                     Case "CBCbCunterbinden"
                         Me.CBCallByCall.Enabled = Not Me.CBCbCunterbinden.Checked
                         If Me.CBCbCunterbinden.Checked Then Me.CBCallByCall.Checked = False
@@ -895,17 +929,20 @@ Friend Class formCfg
                             Me.ComboBoxRWS.Enabled = False
                         End If
                     Case "TBVorwahl"
-                        C_hf.AcceptOnlyNumeric(Me.TBVorwahl.Text)
+                        Me.TBVorwahl.Text = C_hf.AcceptOnlyNumeric(Me.TBVorwahl.Text)
                     Case "TBEnblDauer"
-                        C_hf.AcceptOnlyNumeric(Me.TBEnblDauer.Text)
+                        Me.TBEnblDauer.Text = C_hf.AcceptOnlyNumeric(Me.TBEnblDauer.Text)
                     Case "TBAnrMonX"
-                        C_hf.AcceptOnlyNumeric(Me.TBAnrMonX.Text)
+                        Me.TBAnrMonX.Text = C_hf.AcceptOnlyNumeric(Me.TBAnrMonX.Text)
                     Case "TBAnrMonY"
-                        C_hf.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
+                        Me.TBAnrMonY.Text = C_hf.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
                     Case "TBLandesVW"
                         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
                     Case "TBTelNrMaske"
                         PrüfeMaske()
+                    Case "TBRWSTest"
+                        Me.TBRWSTest.Text = C_hf.AcceptOnlyNumeric(Me.TBRWSTest.Text)
+                        Me.BRWSTest.Enabled = Len(C_hf.nurZiffern(Me.TBRWSTest.Text)) > 0
                 End Select
             Case "CheckedListBox"
                 Select Case CType(sender, CheckedListBox).Name
@@ -1498,7 +1535,7 @@ Friend Class formCfg
         System.Diagnostics.Process.Start("http://www.phoner.de/")
     End Sub
 
-    Private Sub ButtonPhoner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonPhoner.Click
+    Private Sub ButtonPhoner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BPhoner.Click
         Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
         Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
         Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
