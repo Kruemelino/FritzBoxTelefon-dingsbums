@@ -6,12 +6,13 @@ Public Class formRWSuche
     Private HTMLFehler As Boolean
 
     Public Enum Suchmaschine
-        'RWSGoYellow = 0
+        RWSDasOertliche = 0
         RWS11880 = 1
         RWSDasTelefonbuch = 2
         RWStelSearch = 3
         RWSAlle = 4
     End Enum
+
     Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal DataproviderKlasse As DataProvider)
@@ -22,6 +23,60 @@ Public Class formRWSuche
         C_DP = DataproviderKlasse
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
     End Sub
+
+    Friend Function AnrMonRWS(ByRef Telefonat As C_Telefonat) As Boolean
+        AnrMonRWS = False
+        With Telefonat
+
+            Dim xPathTeile As New ArrayList
+
+            If C_DP.P_CBRWSIndex Then
+                .vCard = C_DP.P_Def_ErrorMinusTwo_String
+                ' RWS-Index überprüfen
+                With xPathTeile
+                    .Clear()
+                    .Add("CBRWSIndex")
+                    .Add("Eintrag[@ID=""" & Telefonat.TelNr & """]")
+                End With
+                .vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+            Else
+                .vCard = C_DP.P_Def_ErrorMinusOne_String
+            End If
+            ' Drei mögliche Rückgaben
+            ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. Rückgabe: gültige vCard
+            ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert. Rückgabe: -2
+            ' Fall 3: Es gibt keinen Eintrag. Rückgabe: -1
+            'ToDo:
+            ' Fall 1: vCard übernehmen
+            ' Fall 2: keine erneute RWS durchführen
+            ' Fall 3: RWS durchführen
+            Select Case .vCard
+                Case C_DP.P_Def_ErrorMinusTwo_String ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert.
+                    '.vCard = C_DP.P_Def_ErrorMinusTwo_String
+                Case C_DP.P_Def_ErrorMinusOne_String
+                    '
+                    Select Case CType(C_DP.P_ComboBoxRWS, formRWSuche.Suchmaschine) ' Fall 3: Es gibt keinen Eintrag.
+                        Case Suchmaschine.RWSDasOertliche
+                            AnrMonRWS = RWSDasOertiche(.TelNr, .vCard)
+                        Case Suchmaschine.RWS11880
+                            AnrMonRWS = RWS11880(.TelNr, .vCard)
+                        Case Suchmaschine.RWSDasTelefonbuch
+                            AnrMonRWS = RWSDasTelefonbuch(.TelNr, .vCard)
+                        Case Suchmaschine.RWStelSearch
+                            AnrMonRWS = RWStelsearch(.TelNr, .vCard)
+                        Case Suchmaschine.RWSAlle
+                            AnrMonRWS = RWSAlle(.TelNr, .vCard)
+                    End Select
+                    If C_DP.P_CBRWSIndex Then
+                        xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
+                        C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
+                    End If
+                Case Else ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. 
+                    AnrMonRWS = True
+            End Select
+
+        End With
+    End Function
 
     Public Sub Rückwärtssuche(ByVal RWSAnbieter As Suchmaschine, ByVal olInsp As Outlook.Inspector)
         ' Startet die Rückwärtssuche mit verschiedenen Suchmaschinen
@@ -219,84 +274,51 @@ Public Class formRWSuche
         End If
     End Function
 
-    'Function RWSGoYellow(ByRef TelNr As String, ByRef vCard As String) As Boolean
-    '    ' führt die Rückwärtssuche über 'www.goyellow.de' durch
-    '    ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
-    '    '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
-    '    ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
+    Function RWSDasOertiche(ByRef TelNr As String, ByRef vCard As String) As Boolean
+        ' führt die Rückwärtssuche über 'www.dastelefonbuch.de' durch
+        ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
+        '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
+        ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
 
-    '    RWSGoYellow = False
+        Dim EintragsID As String    ' Hilfsstring
+        Dim tmpTelNr As String      ' Hilfsstring für TelNr
+        Dim htmlRWS As String       ' Inhalt der Webseite
+        Dim i As Integer            ' Zählvariable
+        Dim baseurl As String
 
-    '    Dim myurl As String             ' URL von 11880
-    '    Dim temp As String             ' Hilfsstring
-    '    Dim tempTelNr As String ' Hilfsstring für TelNr
-    '    Dim htmlGoYellow As String             ' Inhalt der Webseite
-    '    Dim pos, pos1, pos2 As Integer               ' Positionen in 'html11880'
-    '    Dim i As Long               ' Zählvariable
+        RWSDasOertiche = False
+        ' Webseite für Rückwärtssuche aufrufen und herunterladen
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
+        tmpTelNr = C_hf.nurZiffern(TelNr)
+        ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
+        ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
+        ' Schleife wird maximall drei mal durchlaufen
+        i = 0
 
-    '    'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-    '    Const SWVisitenkarte1 As String = "<a title=Eine Visitenkarte"
-    '    Const SWVisitenkarte2 As String = "href="
-    '    ' Vorwahl erkennen
-    '    ' TelNr sichern, da sie unter Umständen verändert wird
-    '    tempTelNr = hf.nurZiffern(TelNr, "0049")
-    '    ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
-    '    ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
-    '    ' Schleife wird maximall drei mal durchlaufen
-    '    i = 0
-    '    If Not Strings.Left(tempTelNr, 2) = "11" Then
-    '        Do
-    '            ' Webseite für Rückwärtssuche aufrufen und herunterladen
-    '            'myurl = "http://www.goyellow.de/inverssuche/?TEL=" & tempTelNr
-    '            myurl = "http://www.goyellow.de/suche/" & tempTelNr & "/-/seite-1?locs=true"
-    '            htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-    '            If Not FBFehle Then
-    '                htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
-    '                pos = InStr(1, htmlGoYellow, "<a href=/upgrade?q=", CompareMethod.Text)
-    '                If Not pos = 0 Then
-    '                    pos1 = InStr(pos, htmlGoYellow, " title", CompareMethod.Text)
-    '                    myurl = "http://www.goyellow.de/upgrade?TEL=" & tempTelNr & "&q=" & Mid(htmlGoYellow, pos + 19, pos1 - pos - 19)
-    '                    htmlGoYellow = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-    '                    htmlGoYellow = Replace(htmlGoYellow, Chr(34), "", , , CompareMethod.Text) '" enfernen
-    '                End If
+        baseurl = "http://www.dasoertliche.de?form_name="
 
-    '                ' Link zum Herunterladen der vCard suchen
-    '                pos = InStr(1, htmlGoYellow, SWVisitenkarte1, CompareMethod.Text)
-    '                If Not pos = 0 Then
-    '                    pos1 = InStr(pos, htmlGoYellow, SWVisitenkarte2) + Len(SWVisitenkarte2)
-    '                    pos2 = InStr(pos1, htmlGoYellow, ">", CompareMethod.Text)
-    '                    If Not pos1 = Len(SWVisitenkarte2) And Not pos2 = 0 Then
-    '                        ' vCard herunterladen
-    '                        myurl = "http://www.goyellow.de" & Mid(htmlGoYellow, pos1, pos2 - pos1)
-    '                        vCard = hf.httpRead(myurl, System.Text.Encoding.Default, HTMLFehler)
-    '                    End If
-    '                End If
-    '                ' Rückgabewert ermitteln
-    '                RWSGoYellow = Strings.Left(vCard, 11) = "BEGIN:VCARD"
-    '                i = i + 1
-    '                tempTelNr = Strings.Left(tempTelNr, Len(tempTelNr) - 2) & 0
-    '            Else
-    '                hf.LogFile("FBError (RWSGoYellow): " & Err.Number & " - " & Err.Description & " - " & myurl)
-    '                Exit Do
-    '            End If
-    '        Loop Until RWSGoYellow Or i = 3
-    '    End If
-    '    ' Bemerkungen und Webseiten aus vCard entfernen, da sie Werbung enthalten
-    '    If RWSGoYellow Then
-    '        pos1 = InStr(1, vCard, "URL", CompareMethod.Text)
-    '        If Not pos1 = 0 Then
-    '            pos2 = InStr(pos1, vCard, Chr(10), CompareMethod.Text)
-    '            If Not pos2 = 0 Then temp = Mid(vCard, pos1, pos2 - pos1 + 1) Else temp = C_DP.P_Def_StringEmpty
-    '            If Not InStr(1, vCard, "www.goyellow.de", CompareMethod.Text) = 0 Then vCard = Replace(vCard, temp, "", , , CompareMethod.Text)
-    '        End If
-    '        pos1 = InStr(1, vCard, "NOTE", CompareMethod.Text)
-    '        If Not pos1 = 0 Then
-    '            pos2 = InStr(pos1, vCard, Chr(10), CompareMethod.Text)
-    '            If Not pos2 = 0 Then temp = Mid(vCard, pos1, pos2 - pos1 + 1) Else temp = C_DP.P_Def_StringEmpty
-    '            If Not InStr(1, vCard, "www.goyellow.de", CompareMethod.Text) = 0 Then vCard = Replace(vCard, temp, "", , , CompareMethod.Text)
-    '        End If
-    '    End If
-    'End Function
+        Do
+            htmlRWS = C_hf.httpGET(baseurl & "search_nat&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
+
+            If Not htmlRWS = C_DP.P_Def_StringEmpty Then
+                htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
+                ' Link zum Herunterladen der vCard suchen
+                EintragsID = C_hf.StringEntnehmen(htmlRWS, "dasoertliche.de/?id=", "&")
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
+                    vCard = C_hf.httpGET(baseurl & "vcard&id=" & EintragsID, System.Text.Encoding.Default, HTMLFehler)
+                End If
+            End If
+            If HTMLFehler Then C_hf.LogFile("FBError (RWSDasOertiche): " & Err.Number & " - " & Err.Description)
+            If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
+                RWSDasOertiche = True
+            Else
+                vCard = C_DP.P_Def_ErrorMinusTwo_String
+            End If
+            i = i + 1
+            tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
+        Loop Until RWSDasOertiche Or i = 3
+
+    End Function
 
     Function RWSDasTelefonbuch(ByRef TelNr As String, ByRef vCard As String) As Boolean
         ' führt die Rückwärtssuche über 'www.dastelefonbuch.de' durch
@@ -417,12 +439,15 @@ Public Class formRWSuche
     End Function
 
     Function RWSAlle(ByRef TelNr As String, ByRef vCard As String) As Boolean
+        RWSAlle = RWSDasOertiche(TelNr, vCard)
+        If RWSAlle Then Exit Function
         RWSAlle = RWS11880(TelNr, vCard)
         If RWSAlle Then Exit Function
         RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
         If RWSAlle Then Exit Function
         RWSAlle = RWStelsearch(TelNr, vCard)
     End Function
+
 #Region "Helfer"
     Private Sub DirektTel_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles DirektTel.GotFocus
         Me.ListTel.ClearSelection()

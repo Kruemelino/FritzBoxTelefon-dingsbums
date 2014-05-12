@@ -70,10 +70,11 @@ Friend Class formCfg
         C_Phoner = Phonerklasse
         Me.LVersion.Text += ThisAddIn.Version
         With Me.ComboBoxRWS.Items
+            .Add("Das÷rtliche.de")
             .Add("11880.com")
             .Add("DasTelefonbuch.de")
             .Add("tel.search.ch")
-            .Add("Alle")
+            .Add("Alle Suchmaschinen")
         End With
     End Sub
 
@@ -793,15 +794,12 @@ Friend Class formCfg
                 Dim TelNr As String = Me.TBRWSTest.Text
                 If IsNumeric(TelNr) Then
                     Dim frws As New formRWSuche(C_hf, C_KF, C_DP)
-                    Dim RWSAnbieter As formRWSuche.Suchmaschine
                     Dim rws As Boolean
                     Dim vCard As String = C_DP.P_Def_StringEmpty
 
-                    RWSAnbieter = CType(Me.ComboBoxRWS.SelectedIndex + 1, formRWSuche.Suchmaschine) ' +1, da Enum so definiert. die 0 war GoYellow
-
-                    Select Case RWSAnbieter
-                        'Case Suchmaschine.RWSGoYellow
-                        '    rws = RWSGoYellow(TelNr, vCard
+                    Select Case CType(Me.ComboBoxRWS.SelectedIndex, formRWSuche.Suchmaschine)
+                        Case formRWSuche.Suchmaschine.RWSDasOertliche
+                            rws = frws.RWSDasOertiche(TelNr, vCard)
                         Case formRWSuche.Suchmaschine.RWS11880
                             rws = frws.RWS11880(TelNr, vCard)
                         Case formRWSuche.Suchmaschine.RWSDasTelefonbuch
