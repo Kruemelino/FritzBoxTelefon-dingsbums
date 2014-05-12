@@ -559,7 +559,7 @@ Friend Class AnrufMonitor
                             End If
 
                         End If
-                    .TelNr = C_hf.formatTelNr(.TelNr)
+                        .TelNr = C_hf.formatTelNr(.TelNr)
                     End If
 
                     LetzterAnrufer = Telefonat
@@ -696,7 +696,7 @@ Friend Class AnrufMonitor
                             End If
 
                         End If
-                    .TelNr = C_hf.formatTelNr(.TelNr)
+                        .TelNr = C_hf.formatTelNr(.TelNr)
                     End If
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
