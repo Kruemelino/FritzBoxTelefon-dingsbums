@@ -781,7 +781,6 @@ Public Class Helfer
                 .Add("*")
                 .Add("Telefon")
                 .Add("[contains(TelNr, """ & MSN & """) and not(@Dialport > 599)]") ' Keine Anrufbeantworter
-                '.Add("[TelNr = """ & MSN & """ and not(@Dialport > 599)]") ' Keine Anrufbeantworter
                 .Add("TelName")
             End With
             TelefonName = Replace(C_DP.Read(xPathTeile, ""), ";", ", ")

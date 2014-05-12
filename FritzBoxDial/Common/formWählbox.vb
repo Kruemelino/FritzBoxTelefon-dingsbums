@@ -599,6 +599,4 @@ Friend Class formWählbox
     End Sub
 #End Region
 
-
-
 End Class
