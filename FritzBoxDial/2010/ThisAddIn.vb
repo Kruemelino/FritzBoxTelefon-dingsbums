@@ -160,7 +160,6 @@ Public Class ThisAddIn
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
-        Dim i As Integer = 2
 
         P_oApp = CType(Application, Outlook.Application)
 
@@ -202,9 +201,7 @@ Public Class ThisAddIn
             Dim KS As New ContactSaved
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)
-
         End If
-        MsgBox("test")
     End Sub
 
 #Region " Office 2003 & 2007"
