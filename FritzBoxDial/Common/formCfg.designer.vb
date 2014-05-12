@@ -201,38 +201,38 @@ Partial Class formCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.PGrundeinstellungen.SuspendLayout
-        Me.GroupBox5.SuspendLayout
-        Me.GroupBoxStoppUhr.SuspendLayout
-        Me.Frame3.SuspendLayout
-        Me.FrameErforderlich.SuspendLayout
-        Me.PInfo.SuspendLayout
-        Me.PTelefone.SuspendLayout
-        Me.GroupBox1.SuspendLayout
-        CType(Me.TelList,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.PIndex.SuspendLayout
-        Me.GroupBoxIndex.SuspendLayout
-        Me.GroupBoxRWS.SuspendLayout
-        Me.PAnrufmonitor.SuspendLayout
-        Me.GroupBox6.SuspendLayout
-        CType(Me.TBAnrMonMoveGeschwindigkeit,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.Frame1.SuspendLayout
-        Me.PanelAnrMon.SuspendLayout
-        Me.FBDB_MP.SuspendLayout
-        Me.PSymbolleiste.SuspendLayout
-        Me.GroupBox3.SuspendLayout
-        Me.PPhoner.SuspendLayout
-        Me.GroupBox4.SuspendLayout
-        Me.PanelPhoner.SuspendLayout
-        Me.GroupBox7.SuspendLayout
-        Me.PLogging.SuspendLayout
-        Me.GBLogging.SuspendLayout
-        Me.PDebug.SuspendLayout
-        Me.GroupBox2.SuspendLayout
-        Me.PTelefonDatei.SuspendLayout
-        Me.TableLayoutPanel1.SuspendLayout
-        Me.TableLayoutPanel2.SuspendLayout
-        Me.SuspendLayout
+        Me.PGrundeinstellungen.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
+        Me.GroupBoxStoppUhr.SuspendLayout()
+        Me.Frame3.SuspendLayout()
+        Me.FrameErforderlich.SuspendLayout()
+        Me.PInfo.SuspendLayout()
+        Me.PTelefone.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PIndex.SuspendLayout()
+        Me.GroupBoxIndex.SuspendLayout()
+        Me.GroupBoxRWS.SuspendLayout()
+        Me.PAnrufmonitor.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Frame1.SuspendLayout()
+        Me.PanelAnrMon.SuspendLayout()
+        Me.FBDB_MP.SuspendLayout()
+        Me.PSymbolleiste.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.PPhoner.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.PanelPhoner.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
+        Me.PLogging.SuspendLayout()
+        Me.GBLogging.SuspendLayout()
+        Me.PDebug.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.PTelefonDatei.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.TableLayoutPanel2.SuspendLayout()
+        Me.SuspendLayout()
         '
         'BReset
         '
@@ -242,7 +242,7 @@ Partial Class formCfg
         Me.BReset.Size = New System.Drawing.Size(109, 28)
         Me.BReset.TabIndex = 4
         Me.BReset.Text = "Zurücksetzen"
-        Me.BReset.UseVisualStyleBackColor = true
+        Me.BReset.UseVisualStyleBackColor = True
         '
         'BAbbruch
         '
@@ -253,7 +253,7 @@ Partial Class formCfg
         Me.BAbbruch.Size = New System.Drawing.Size(109, 28)
         Me.BAbbruch.TabIndex = 3
         Me.BAbbruch.Text = "Abbruch"
-        Me.BAbbruch.UseVisualStyleBackColor = true
+        Me.BAbbruch.UseVisualStyleBackColor = True
         '
         'BApply
         '
@@ -263,7 +263,7 @@ Partial Class formCfg
         Me.BApply.Size = New System.Drawing.Size(109, 28)
         Me.BApply.TabIndex = 2
         Me.BApply.Text = "Übernehmen"
-        Me.BApply.UseVisualStyleBackColor = true
+        Me.BApply.UseVisualStyleBackColor = True
         '
         'BOK
         '
@@ -274,7 +274,7 @@ Partial Class formCfg
         Me.BOK.Size = New System.Drawing.Size(109, 28)
         Me.BOK.TabIndex = 1
         Me.BOK.Text = "OK"
-        Me.BOK.UseVisualStyleBackColor = true
+        Me.BOK.UseVisualStyleBackColor = True
         '
         'ToolTipFBDBConfig
         '
@@ -286,100 +286,100 @@ Partial Class formCfg
         '
         'CBKErstellen
         '
-        Me.CBKErstellen.AutoSize = true
-        Me.CBKErstellen.Enabled = false
+        Me.CBKErstellen.AutoSize = True
+        Me.CBKErstellen.Enabled = False
         Me.CBKErstellen.Location = New System.Drawing.Point(6, 69)
         Me.CBKErstellen.Name = "CBKErstellen"
         Me.CBKErstellen.Size = New System.Drawing.Size(217, 17)
         Me.CBKErstellen.TabIndex = 2
         Me.CBKErstellen.Text = "Kontakt bei erfolgreicher Suche erstellen"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt "& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " & _
         "erstellt.")
-        Me.CBKErstellen.UseVisualStyleBackColor = true
+        Me.CBKErstellen.UseVisualStyleBackColor = True
         '
         'CBRWSIndex
         '
-        Me.CBRWSIndex.AutoSize = true
-        Me.CBRWSIndex.Enabled = false
+        Me.CBRWSIndex.AutoSize = True
+        Me.CBRWSIndex.Enabled = False
         Me.CBRWSIndex.Location = New System.Drawing.Point(6, 92)
         Me.CBRWSIndex.Name = "CBRWSIndex"
         Me.CBRWSIndex.Size = New System.Drawing.Size(245, 17)
         Me.CBRWSIndex.TabIndex = 3
         Me.CBRWSIndex.Text = "Speichere Ergebnisse der Rückwärtssuche ab"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBRWSIndex, resources.GetString("CBRWSIndex.ToolTip"))
-        Me.CBRWSIndex.UseVisualStyleBackColor = true
+        Me.CBRWSIndex.UseVisualStyleBackColor = True
         '
         'CBKHO
         '
-        Me.CBKHO.AutoSize = true
+        Me.CBKHO.AutoSize = True
         Me.CBKHO.Location = New System.Drawing.Point(6, 19)
         Me.CBKHO.Name = "CBKHO"
         Me.CBKHO.Size = New System.Drawing.Size(227, 17)
         Me.CBKHO.TabIndex = 5
         Me.CBKHO.Text = "Nur den Hauptkontaktordner durchsuchen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBKHO, resources.GetString("CBKHO.ToolTip"))
-        Me.CBKHO.UseVisualStyleBackColor = true
+        Me.CBKHO.UseVisualStyleBackColor = True
         '
         'CBIndexAus
         '
-        Me.CBIndexAus.AutoSize = true
-        Me.CBIndexAus.Enabled = false
+        Me.CBIndexAus.AutoSize = True
+        Me.CBIndexAus.Enabled = False
         Me.CBIndexAus.Location = New System.Drawing.Point(248, 19)
         Me.CBIndexAus.Name = "CBIndexAus"
         Me.CBIndexAus.Size = New System.Drawing.Size(142, 17)
         Me.CBIndexAus.TabIndex = 6
         Me.CBIndexAus.Text = """Indizierung"" auschalten"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können sie die Indizierung auch aussch"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können sie die Indizierung auch aussch" & _
         "alten.")
-        Me.CBIndexAus.UseVisualStyleBackColor = true
+        Me.CBIndexAus.UseVisualStyleBackColor = True
         '
         'CBJImport
         '
-        Me.CBJImport.AutoSize = true
-        Me.CBJImport.Enabled = false
+        Me.CBJImport.AutoSize = True
+        Me.CBJImport.Enabled = False
         Me.CBJImport.Location = New System.Drawing.Point(8, 156)
         Me.CBJImport.Name = "CBJImport"
         Me.CBJImport.Size = New System.Drawing.Size(202, 17)
         Me.CBJImport.TabIndex = 6
         Me.CBJImport.Text = "Journaleinträge beim Start importieren"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBJImport, resources.GetString("CBJImport.ToolTip"))
-        Me.CBJImport.UseVisualStyleBackColor = true
+        Me.CBJImport.UseVisualStyleBackColor = True
         '
         'CBAnrMonTransp
         '
-        Me.CBAnrMonTransp.AutoSize = true
+        Me.CBAnrMonTransp.AutoSize = True
         Me.CBAnrMonTransp.Location = New System.Drawing.Point(4, 19)
         Me.CBAnrMonTransp.Name = "CBAnrMonTransp"
         Me.CBAnrMonTransp.Size = New System.Drawing.Size(136, 17)
         Me.CBAnrMonTransp.TabIndex = 7
         Me.CBAnrMonTransp.Text = "Verwende Transparenz"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonTransp, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor ein und ausgeblendet."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonTransp, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor ein und ausgeblendet." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & _
         "Dazu wird die Transparenz des Anrufmonitors erhöht, bzw. verringert.")
-        Me.CBAnrMonTransp.UseVisualStyleBackColor = true
+        Me.CBAnrMonTransp.UseVisualStyleBackColor = True
         '
         'CBAnrMonMove
         '
-        Me.CBAnrMonMove.AutoSize = true
+        Me.CBAnrMonMove.AutoSize = True
         Me.CBAnrMonMove.Location = New System.Drawing.Point(4, 42)
         Me.CBAnrMonMove.Name = "CBAnrMonMove"
         Me.CBAnrMonMove.Size = New System.Drawing.Size(186, 17)
         Me.CBAnrMonMove.TabIndex = 8
         Me.CBAnrMonMove.Text = "Verwende Anrufmonitorbewegung"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonMove, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor von unten in den Deskto"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonMove, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor von unten in den Deskto" & _
         "p hinein geschoben.")
-        Me.CBAnrMonMove.UseVisualStyleBackColor = true
+        Me.CBAnrMonMove.UseVisualStyleBackColor = True
         '
         'CBShowMSN
         '
-        Me.CBShowMSN.AutoSize = true
+        Me.CBShowMSN.AutoSize = True
         Me.CBShowMSN.Location = New System.Drawing.Point(4, 65)
         Me.CBShowMSN.Name = "CBShowMSN"
         Me.CBShowMSN.Size = New System.Drawing.Size(170, 17)
         Me.CBShowMSN.TabIndex = 9
         Me.CBShowMSN.Text = "Zeige MSN im Anrufmonitor an"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBShowMSN, "Wenn diese Einstellung gesetzt ist, wird die jeweilige MSN im Anrufmonitor angeze"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBShowMSN, "Wenn diese Einstellung gesetzt ist, wird die jeweilige MSN im Anrufmonitor angeze" & _
         "igt.")
-        Me.CBShowMSN.UseVisualStyleBackColor = true
+        Me.CBShowMSN.UseVisualStyleBackColor = True
         '
         'PGrundeinstellungen
         '
@@ -394,11 +394,11 @@ Partial Class formCfg
         Me.PGrundeinstellungen.TabIndex = 7
         Me.PGrundeinstellungen.Text = "Grundeinstellungen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.PGrundeinstellungen, "Bevor eine Handynummer gewählt wird")
-        Me.PGrundeinstellungen.UseVisualStyleBackColor = true
+        Me.PGrundeinstellungen.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
-        Me.GroupBox5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.GroupBox5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.GroupBox5.Controls.Add(Me.CBIgnoTelNrFormat)
         Me.GroupBox5.Controls.Add(Me.Label24)
         Me.GroupBox5.Controls.Add(Me.TBTelNrMaske)
@@ -408,22 +408,22 @@ Partial Class formCfg
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(282, 99)
         Me.GroupBox5.TabIndex = 17
-        Me.GroupBox5.TabStop = false
+        Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Formatierung von Telefonnummern"
         '
         'CBIgnoTelNrFormat
         '
-        Me.CBIgnoTelNrFormat.AutoSize = true
+        Me.CBIgnoTelNrFormat.AutoSize = True
         Me.CBIgnoTelNrFormat.Location = New System.Drawing.Point(6, 65)
         Me.CBIgnoTelNrFormat.Name = "CBIgnoTelNrFormat"
         Me.CBIgnoTelNrFormat.Size = New System.Drawing.Size(195, 17)
         Me.CBIgnoTelNrFormat.TabIndex = 15
         Me.CBIgnoTelNrFormat.Text = "Ignoriere Formatierung der Kontakte"
-        Me.CBIgnoTelNrFormat.UseVisualStyleBackColor = true
+        Me.CBIgnoTelNrFormat.UseVisualStyleBackColor = True
         '
         'Label24
         '
-        Me.Label24.AutoSize = true
+        Me.Label24.AutoSize = True
         Me.Label24.Location = New System.Drawing.Point(90, 20)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(42, 13)
@@ -441,29 +441,29 @@ Partial Class formCfg
         '
         'CBintl
         '
-        Me.CBintl.AutoSize = true
+        Me.CBintl.AutoSize = True
         Me.CBintl.Location = New System.Drawing.Point(6, 42)
         Me.CBintl.Name = "CBintl"
         Me.CBintl.Size = New System.Drawing.Size(205, 17)
         Me.CBintl.TabIndex = 14
         Me.CBintl.Text = "Internatlionale Vorwahl immer anfügen"
-        Me.CBintl.UseVisualStyleBackColor = true
+        Me.CBintl.UseVisualStyleBackColor = True
         '
         'CBTelNrGruppieren
         '
-        Me.CBTelNrGruppieren.AutoSize = true
+        Me.CBTelNrGruppieren.AutoSize = True
         Me.CBTelNrGruppieren.Location = New System.Drawing.Point(6, 19)
         Me.CBTelNrGruppieren.Name = "CBTelNrGruppieren"
         Me.CBTelNrGruppieren.Size = New System.Drawing.Size(78, 17)
         Me.CBTelNrGruppieren.TabIndex = 12
         Me.CBTelNrGruppieren.Text = "Gruppieren"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"Beispiel:"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"oh"& _ 
-        "ne Gruppierung: +49 (123) 4567890 "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"mit Gruppierung: +49 (1 23) 4 56 78 90 ")
-        Me.CBTelNrGruppieren.UseVisualStyleBackColor = true
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Beispiel:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "oh" & _
+        "ne Gruppierung: +49 (123) 4567890 " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "mit Gruppierung: +49 (1 23) 4 56 78 90 ")
+        Me.CBTelNrGruppieren.UseVisualStyleBackColor = True
         '
         'GroupBoxStoppUhr
         '
-        Me.GroupBoxStoppUhr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.GroupBoxStoppUhr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBoxStoppUhr.Controls.Add(Me.BStoppUhrAnzeigen)
         Me.GroupBoxStoppUhr.Controls.Add(Me.LabelStoppUhr)
         Me.GroupBoxStoppUhr.Controls.Add(Me.TBStoppUhr)
@@ -473,7 +473,7 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.Name = "GroupBoxStoppUhr"
         Me.GroupBoxStoppUhr.Size = New System.Drawing.Size(282, 99)
         Me.GroupBoxStoppUhr.TabIndex = 19
-        Me.GroupBoxStoppUhr.TabStop = false
+        Me.GroupBoxStoppUhr.TabStop = False
         Me.GroupBoxStoppUhr.Text = "Stoppuhr"
         '
         'BStoppUhrAnzeigen
@@ -483,11 +483,11 @@ Partial Class formCfg
         Me.BStoppUhrAnzeigen.Size = New System.Drawing.Size(112, 28)
         Me.BStoppUhrAnzeigen.TabIndex = 19
         Me.BStoppUhrAnzeigen.Text = "Anzeigen"
-        Me.BStoppUhrAnzeigen.UseVisualStyleBackColor = true
+        Me.BStoppUhrAnzeigen.UseVisualStyleBackColor = True
         '
         'LabelStoppUhr
         '
-        Me.LabelStoppUhr.AutoSize = true
+        Me.LabelStoppUhr.AutoSize = True
         Me.LabelStoppUhr.Location = New System.Drawing.Point(168, 43)
         Me.LabelStoppUhr.Name = "LabelStoppUhr"
         Me.LabelStoppUhr.Size = New System.Drawing.Size(76, 13)
@@ -503,29 +503,29 @@ Partial Class formCfg
         '
         'CBStoppUhrAusblenden
         '
-        Me.CBStoppUhrAusblenden.AutoSize = true
+        Me.CBStoppUhrAusblenden.AutoSize = True
         Me.CBStoppUhrAusblenden.Location = New System.Drawing.Point(6, 42)
         Me.CBStoppUhrAusblenden.Name = "CBStoppUhrAusblenden"
         Me.CBStoppUhrAusblenden.Size = New System.Drawing.Size(132, 17)
         Me.CBStoppUhrAusblenden.TabIndex = 17
         Me.CBStoppUhrAusblenden.Text = "Blende Stoppuhr nach"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrAusblenden, "Blendet die Stoppuhr nach Beendiging eines Telefonats aus."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
-        Me.CBStoppUhrAusblenden.UseVisualStyleBackColor = true
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrAusblenden, "Blendet die Stoppuhr nach Beendiging eines Telefonats aus." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.CBStoppUhrAusblenden.UseVisualStyleBackColor = True
         '
         'CBStoppUhrEinblenden
         '
-        Me.CBStoppUhrEinblenden.AutoSize = true
+        Me.CBStoppUhrEinblenden.AutoSize = True
         Me.CBStoppUhrEinblenden.Location = New System.Drawing.Point(6, 19)
         Me.CBStoppUhrEinblenden.Name = "CBStoppUhrEinblenden"
         Me.CBStoppUhrEinblenden.Size = New System.Drawing.Size(122, 17)
         Me.CBStoppUhrEinblenden.TabIndex = 16
         Me.CBStoppUhrEinblenden.Text = "Blende Stoppuhr ein"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrEinblenden, "Blendet eine Stoppuhr beim Zustandekommen einer Verbindung ein."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
-        Me.CBStoppUhrEinblenden.UseVisualStyleBackColor = true
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrEinblenden, "Blendet eine Stoppuhr beim Zustandekommen einer Verbindung ein." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.CBStoppUhrEinblenden.UseVisualStyleBackColor = True
         '
         'Frame3
         '
-        Me.Frame3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Frame3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Frame3.Controls.Add(Me.CBCallByCall)
         Me.Frame3.Controls.Add(Me.CBDialPort)
         Me.Frame3.Controls.Add(Me.CBCheckMobil)
@@ -537,70 +537,70 @@ Partial Class formCfg
         Me.Frame3.Name = "Frame3"
         Me.Frame3.Size = New System.Drawing.Size(282, 151)
         Me.Frame3.TabIndex = 18
-        Me.Frame3.TabStop = false
+        Me.Frame3.TabStop = False
         Me.Frame3.Text = "Einstellungen für die Wählhilfe"
         '
         'CBCallByCall
         '
-        Me.CBCallByCall.AutoSize = true
+        Me.CBCallByCall.AutoSize = True
         Me.CBCallByCall.Location = New System.Drawing.Point(148, 99)
         Me.CBCallByCall.Name = "CBCallByCall"
         Me.CBCallByCall.Size = New System.Drawing.Size(124, 17)
         Me.CBCallByCall.TabIndex = 10
         Me.CBCallByCall.Text = "Jedesmal Call-by-Call"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo"& _ 
-        "nieren. "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Te"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo" & _
+        "nieren. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Te" & _
         "lefonieren.de verwendet.")
-        Me.CBCallByCall.UseVisualStyleBackColor = true
+        Me.CBCallByCall.UseVisualStyleBackColor = True
         '
         'CBDialPort
         '
-        Me.CBDialPort.AutoSize = true
+        Me.CBDialPort.AutoSize = True
         Me.CBDialPort.Location = New System.Drawing.Point(6, 73)
         Me.CBDialPort.Name = "CBDialPort"
         Me.CBDialPort.Size = New System.Drawing.Size(108, 17)
         Me.CBDialPort.TabIndex = 8
         Me.CBDialPort.Text = "Dialport anzeigen"
-        Me.CBDialPort.UseVisualStyleBackColor = true
+        Me.CBDialPort.UseVisualStyleBackColor = True
         '
         'CBCheckMobil
         '
-        Me.CBCheckMobil.AutoSize = true
+        Me.CBCheckMobil.AutoSize = True
         Me.CBCheckMobil.Location = New System.Drawing.Point(6, 125)
         Me.CBCheckMobil.Name = "CBCheckMobil"
         Me.CBCheckMobil.Size = New System.Drawing.Size(233, 17)
         Me.CBCheckMobil.TabIndex = 11
         Me.CBCheckMobil.Text = "Nachfrage beim Wählen von Mobilnummern"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wähl"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wähl" & _
         "en eine zusätzliche Benutzereingabe erforderlich.")
-        Me.CBCheckMobil.UseVisualStyleBackColor = true
+        Me.CBCheckMobil.UseVisualStyleBackColor = True
         '
         'CBVoIPBuster
         '
-        Me.CBVoIPBuster.AutoSize = true
+        Me.CBVoIPBuster.AutoSize = True
         Me.CBVoIPBuster.Location = New System.Drawing.Point(6, 22)
         Me.CBVoIPBuster.Name = "CBVoIPBuster"
         Me.CBVoIPBuster.Size = New System.Drawing.Size(178, 17)
         Me.CBVoIPBuster.TabIndex = 6
         Me.CBVoIPBuster.Text = "Landesvorwahl immer mitwählen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die definierte Landesvorwahl immer mitgewählt.")
-        Me.CBVoIPBuster.UseVisualStyleBackColor = true
+        Me.CBVoIPBuster.UseVisualStyleBackColor = True
         '
         'CBCbCunterbinden
         '
-        Me.CBCbCunterbinden.AutoSize = true
+        Me.CBCbCunterbinden.AutoSize = True
         Me.CBCbCunterbinden.Location = New System.Drawing.Point(6, 99)
         Me.CBCbCunterbinden.Name = "CBCbCunterbinden"
         Me.CBCbCunterbinden.Size = New System.Drawing.Size(136, 17)
         Me.CBCbCunterbinden.TabIndex = 9
         Me.CBCbCunterbinden.Text = "Call-by-Call unterbinden"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"k"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "k" & _
         "einen Festnetzanschluss haben und nur über Ihren Internetanbieter telefonieren.")
-        Me.CBCbCunterbinden.UseVisualStyleBackColor = true
+        Me.CBCbCunterbinden.UseVisualStyleBackColor = True
         '
         'Label6
         '
-        Me.Label6.AutoSize = true
+        Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(42, 49)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(62, 13)
@@ -632,7 +632,7 @@ Partial Class formCfg
         Me.FrameErforderlich.Name = "FrameErforderlich"
         Me.FrameErforderlich.Size = New System.Drawing.Size(282, 151)
         Me.FrameErforderlich.TabIndex = 16
-        Me.FrameErforderlich.TabStop = false
+        Me.FrameErforderlich.TabStop = False
         Me.FrameErforderlich.Text = "Erforderliche Angaben"
         '
         'TBPasswort
@@ -641,11 +641,11 @@ Partial Class formCfg
         Me.TBPasswort.Name = "TBPasswort"
         Me.TBPasswort.Size = New System.Drawing.Size(100, 20)
         Me.TBPasswort.TabIndex = 17
-        Me.TBPasswort.UseSystemPasswordChar = true
+        Me.TBPasswort.UseSystemPasswordChar = True
         '
         'Label3
         '
-        Me.Label3.AutoSize = true
+        Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(113, 49)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(118, 13)
@@ -676,38 +676,38 @@ Partial Class formCfg
         '
         'CBForceFBAddr
         '
-        Me.CBForceFBAddr.AutoSize = true
+        Me.CBForceFBAddr.AutoSize = True
         Me.CBForceFBAddr.Location = New System.Drawing.Point(116, 22)
         Me.CBForceFBAddr.Name = "CBForceFBAddr"
         Me.CBForceFBAddr.Size = New System.Drawing.Size(107, 17)
         Me.CBForceFBAddr.TabIndex = 1
         Me.CBForceFBAddr.Text = "Fritz!Box Adresse"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu"& _ 
-        "ng zur eingegebenen Addresse aufgebaut."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"Das ist z.B. bei einigen dyndns-Anbiete"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" & _
+        "ng zur eingegebenen Addresse aufgebaut." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das ist z.B. bei einigen dyndns-Anbiete" & _
         "rn nötig, da diese Pings blockieren.")
-        Me.CBForceFBAddr.UseVisualStyleBackColor = true
+        Me.CBForceFBAddr.UseVisualStyleBackColor = True
         '
         'Label5
         '
-        Me.Label5.AutoSize = true
+        Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(113, 126)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(79, 13)
         Me.Label5.TabIndex = 13
-        Me.Label5.Text = "Landesvorwahl"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)
+        Me.Label5.Text = "Landesvorwahl" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'Label4
         '
-        Me.Label4.AutoSize = true
+        Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(113, 100)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(63, 13)
         Me.Label4.TabIndex = 11
-        Me.Label4.Text = "Ortsvorwahl"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)
+        Me.Label4.Text = "Ortsvorwahl" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'lblTBPasswort
         '
-        Me.lblTBPasswort.AutoSize = true
+        Me.lblTBPasswort.AutoSize = True
         Me.lblTBPasswort.Location = New System.Drawing.Point(113, 75)
         Me.lblTBPasswort.Name = "lblTBPasswort"
         Me.lblTBPasswort.Size = New System.Drawing.Size(93, 13)
@@ -724,7 +724,7 @@ Partial Class formCfg
         'Label13
         '
         Me.Label13.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.Location = New System.Drawing.Point(0, 0)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(570, 35)
@@ -734,7 +734,7 @@ Partial Class formCfg
         '
         'Label33
         '
-        Me.Label33.AutoSize = true
+        Me.Label33.AutoSize = True
         Me.Label33.Location = New System.Drawing.Point(113, 73)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(63, 13)
@@ -750,7 +750,7 @@ Partial Class formCfg
         Me.BAnrMonTest.TabIndex = 14
         Me.BAnrMonTest.Text = "Anzeigen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BAnrMonTest, "Zeigt den Anrufmonitor testweise an.")
-        Me.BAnrMonTest.UseVisualStyleBackColor = true
+        Me.BAnrMonTest.UseVisualStyleBackColor = True
         '
         'BStartDebug
         '
@@ -760,7 +760,7 @@ Partial Class formCfg
         Me.BStartDebug.TabIndex = 30
         Me.BStartDebug.Text = "Start"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BStartDebug, "Kopiert den Statustext in die Zwischenablage")
-        Me.BStartDebug.UseVisualStyleBackColor = true
+        Me.BStartDebug.UseVisualStyleBackColor = True
         '
         'BZwischenablage
         '
@@ -770,7 +770,7 @@ Partial Class formCfg
         Me.BZwischenablage.TabIndex = 32
         Me.BZwischenablage.Text = "Kopieren"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BZwischenablage, "Kopiert den Statustext in die Zwischenablage")
-        Me.BZwischenablage.UseVisualStyleBackColor = true
+        Me.BZwischenablage.UseVisualStyleBackColor = True
         '
         'BProbleme
         '
@@ -779,14 +779,14 @@ Partial Class formCfg
         Me.BProbleme.Size = New System.Drawing.Size(179, 28)
         Me.BProbleme.TabIndex = 33
         Me.BProbleme.Text = "Probleme?"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"Werden sie falsch zugeor"& _ 
-        "dnet?"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"Das Addin sammelt ein paar Informationen und schickt sie an den Entwick"& _ 
-        "ler."&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))
-        Me.BProbleme.UseVisualStyleBackColor = true
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" & _
+        "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" & _
+        "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.BProbleme.UseVisualStyleBackColor = True
         '
         'Label7
         '
-        Me.Label7.AutoSize = true
+        Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(254, 20)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(77, 13)
@@ -800,7 +800,7 @@ Partial Class formCfg
         Me.TBRWSTest.Name = "TBRWSTest"
         Me.TBRWSTest.Size = New System.Drawing.Size(100, 20)
         Me.TBRWSTest.TabIndex = 6
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch"& _ 
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch" & _
         "geführt werden soll.")
         '
         'PInfo
@@ -819,7 +819,7 @@ Partial Class formCfg
         Me.PInfo.Size = New System.Drawing.Size(570, 294)
         Me.PInfo.TabIndex = 4
         Me.PInfo.Text = "Info..."
-        Me.PInfo.UseVisualStyleBackColor = true
+        Me.PInfo.UseVisualStyleBackColor = True
         '
         'BArbeitsverzeichnis
         '
@@ -828,11 +828,11 @@ Partial Class formCfg
         Me.BArbeitsverzeichnis.Size = New System.Drawing.Size(155, 28)
         Me.BArbeitsverzeichnis.TabIndex = 6
         Me.BArbeitsverzeichnis.Text = "Arbeitsverzeichnis ändern"
-        Me.BArbeitsverzeichnis.UseVisualStyleBackColor = true
+        Me.BArbeitsverzeichnis.UseVisualStyleBackColor = True
         '
         'Label17
         '
-        Me.Label17.AutoSize = true
+        Me.Label17.AutoSize = True
         Me.Label17.Location = New System.Drawing.Point(3, 66)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(319, 13)
@@ -841,7 +841,7 @@ Partial Class formCfg
         '
         'Label16
         '
-        Me.Label16.AutoSize = true
+        Me.Label16.AutoSize = True
         Me.Label16.Location = New System.Drawing.Point(3, 50)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(150, 13)
@@ -850,7 +850,7 @@ Partial Class formCfg
         '
         'Label10
         '
-        Me.Label10.AutoSize = true
+        Me.Label10.AutoSize = True
         Me.Label10.Location = New System.Drawing.Point(3, 34)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(47, 13)
@@ -859,7 +859,7 @@ Partial Class formCfg
         '
         'LVersion
         '
-        Me.LVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LVersion.Location = New System.Drawing.Point(5, 9)
         Me.LVersion.Name = "LVersion"
         Me.LVersion.Size = New System.Drawing.Size(294, 16)
@@ -881,7 +881,7 @@ Partial Class formCfg
         Me.LinkHomepage.Name = "LinkHomepage"
         Me.LinkHomepage.Size = New System.Drawing.Size(150, 13)
         Me.LinkHomepage.TabIndex = 5
-        Me.LinkHomepage.TabStop = true
+        Me.LinkHomepage.TabStop = True
         Me.LinkHomepage.Text = "GitHub"
         Me.LinkHomepage.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
@@ -891,7 +891,7 @@ Partial Class formCfg
         Me.LinkEmail.Name = "LinkEmail"
         Me.LinkEmail.Size = New System.Drawing.Size(150, 13)
         Me.LinkEmail.TabIndex = 1
-        Me.LinkEmail.TabStop = true
+        Me.LinkEmail.TabStop = True
         Me.LinkEmail.Text = "kruemelino@gert-michael.de"
         Me.LinkEmail.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
@@ -901,7 +901,7 @@ Partial Class formCfg
         Me.LinkForum.Name = "LinkForum"
         Me.LinkForum.Size = New System.Drawing.Size(150, 13)
         Me.LinkForum.TabIndex = 2
-        Me.LinkForum.TabStop = true
+        Me.LinkForum.TabStop = True
         Me.LinkForum.Text = "www.ip-phone-forum.de"
         Me.LinkForum.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
@@ -915,7 +915,7 @@ Partial Class formCfg
         Me.PTelefone.Size = New System.Drawing.Size(570, 294)
         Me.PTelefone.TabIndex = 5
         Me.PTelefone.Text = "Telefone"
-        Me.PTelefone.UseVisualStyleBackColor = true
+        Me.PTelefone.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -930,7 +930,7 @@ Partial Class formCfg
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(570, 253)
         Me.GroupBox1.TabIndex = 27
-        Me.GroupBox1.TabStop = false
+        Me.GroupBox1.TabStop = False
         '
         'LTelStatus
         '
@@ -947,7 +947,7 @@ Partial Class formCfg
         Me.BResetStat.Size = New System.Drawing.Size(170, 28)
         Me.BResetStat.TabIndex = 34
         Me.BResetStat.Text = "Statistik zurücksetzen"
-        Me.BResetStat.UseVisualStyleBackColor = true
+        Me.BResetStat.UseVisualStyleBackColor = True
         '
         'BTelefonliste
         '
@@ -956,11 +956,11 @@ Partial Class formCfg
         Me.BTelefonliste.Size = New System.Drawing.Size(170, 28)
         Me.BTelefonliste.TabIndex = 35
         Me.BTelefonliste.Text = "Telefone erneut einlesen"
-        Me.BTelefonliste.UseVisualStyleBackColor = true
+        Me.BTelefonliste.UseVisualStyleBackColor = True
         '
         'TBAnderes
         '
-        Me.TBAnderes.AutoSize = true
+        Me.TBAnderes.AutoSize = True
         Me.TBAnderes.Location = New System.Drawing.Point(3, 195)
         Me.TBAnderes.Name = "TBAnderes"
         Me.TBAnderes.Size = New System.Drawing.Size(53, 13)
@@ -969,7 +969,7 @@ Partial Class formCfg
         '
         'TBSchließZeit
         '
-        Me.TBSchließZeit.AutoSize = true
+        Me.TBSchließZeit.AutoSize = True
         Me.TBSchließZeit.Location = New System.Drawing.Point(3, 182)
         Me.TBSchließZeit.Name = "TBSchließZeit"
         Me.TBSchließZeit.Size = New System.Drawing.Size(74, 13)
@@ -978,7 +978,7 @@ Partial Class formCfg
         '
         'TBReset
         '
-        Me.TBReset.AutoSize = true
+        Me.TBReset.AutoSize = True
         Me.TBReset.Location = New System.Drawing.Point(3, 169)
         Me.TBReset.Name = "TBReset"
         Me.TBReset.Size = New System.Drawing.Size(49, 13)
@@ -987,18 +987,18 @@ Partial Class formCfg
         '
         'TelList
         '
-        Me.TelList.AllowUserToAddRows = false
-        Me.TelList.AllowUserToDeleteRows = false
-        Me.TelList.AllowUserToResizeRows = false
+        Me.TelList.AllowUserToAddRows = False
+        Me.TelList.AllowUserToDeleteRows = False
+        Me.TelList.AllowUserToResizeRows = False
         Me.TelList.BackgroundColor = System.Drawing.SystemColors.Window
         Me.TelList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.TelList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnStandardTelefon, Me.Nr, Me.dialCode, Me.Typ, Me.Telefonname, Me.OutNr, Me.Eingehend, Me.Ausgehend, Me.Gesamt})
         Me.TelList.Dock = System.Windows.Forms.DockStyle.Top
         Me.TelList.Location = New System.Drawing.Point(3, 16)
-        Me.TelList.MultiSelect = false
+        Me.TelList.MultiSelect = False
         Me.TelList.Name = "TelList"
-        Me.TelList.RowHeadersVisible = false
+        Me.TelList.RowHeadersVisible = False
         Me.TelList.RowTemplate.Height = 18
         Me.TelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.TelList.Size = New System.Drawing.Size(564, 150)
@@ -1018,7 +1018,7 @@ Partial Class formCfg
         Me.Nr.HeaderText = "Nr."
         Me.Nr.MinimumWidth = 25
         Me.Nr.Name = "Nr"
-        Me.Nr.ReadOnly = true
+        Me.Nr.ReadOnly = True
         Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Nr.Width = 25
@@ -1028,7 +1028,7 @@ Partial Class formCfg
         Me.dialCode.HeaderText = "ID"
         Me.dialCode.MinimumWidth = 25
         Me.dialCode.Name = "dialCode"
-        Me.dialCode.ReadOnly = true
+        Me.dialCode.ReadOnly = True
         Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
@@ -1039,7 +1039,7 @@ Partial Class formCfg
         Me.Typ.HeaderText = "Typ"
         Me.Typ.MinimumWidth = 50
         Me.Typ.Name = "Typ"
-        Me.Typ.ReadOnly = true
+        Me.Typ.ReadOnly = True
         Me.Typ.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Typ.Width = 50
@@ -1049,7 +1049,7 @@ Partial Class formCfg
         Me.Telefonname.HeaderText = "Telefonname"
         Me.Telefonname.MinimumWidth = 75
         Me.Telefonname.Name = "Telefonname"
-        Me.Telefonname.ReadOnly = true
+        Me.Telefonname.ReadOnly = True
         Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Telefonname.Width = 115
         '
@@ -1058,7 +1058,7 @@ Partial Class formCfg
         Me.OutNr.HeaderText = "Telefonnummer"
         Me.OutNr.MinimumWidth = 100
         Me.OutNr.Name = "OutNr"
-        Me.OutNr.ReadOnly = true
+        Me.OutNr.ReadOnly = True
         Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.OutNr.Width = 115
         '
@@ -1071,7 +1071,7 @@ Partial Class formCfg
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
-        Me.Eingehend.ReadOnly = true
+        Me.Eingehend.ReadOnly = True
         Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Eingehend.Width = 65
@@ -1085,7 +1085,7 @@ Partial Class formCfg
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
-        Me.Ausgehend.ReadOnly = true
+        Me.Ausgehend.ReadOnly = True
         Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Ausgehend.Width = 65
@@ -1099,7 +1099,7 @@ Partial Class formCfg
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
-        Me.Gesamt.ReadOnly = true
+        Me.Gesamt.ReadOnly = True
         Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Gesamt.Width = 65
@@ -1107,7 +1107,7 @@ Partial Class formCfg
         'Label15
         '
         Me.Label15.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label15.Location = New System.Drawing.Point(3, 3)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(564, 35)
@@ -1126,7 +1126,7 @@ Partial Class formCfg
         Me.PIndex.Size = New System.Drawing.Size(570, 294)
         Me.PIndex.TabIndex = 6
         Me.PIndex.Text = "Kontaktsuche"
-        Me.PIndex.UseVisualStyleBackColor = true
+        Me.PIndex.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -1155,12 +1155,12 @@ Partial Class formCfg
         Me.GroupBoxIndex.Name = "GroupBoxIndex"
         Me.GroupBoxIndex.Size = New System.Drawing.Size(570, 132)
         Me.GroupBoxIndex.TabIndex = 10
-        Me.GroupBoxIndex.TabStop = false
+        Me.GroupBoxIndex.TabStop = False
         Me.GroupBoxIndex.Text = "Kontaktsuche in Outlook (Indizierung)"
         '
         'Label21
         '
-        Me.Label21.AutoSize = true
+        Me.Label21.AutoSize = True
         Me.Label21.Location = New System.Drawing.Point(3, 63)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(124, 13)
@@ -1169,35 +1169,35 @@ Partial Class formCfg
         '
         'RadioButtonEntfernen
         '
-        Me.RadioButtonEntfernen.AutoSize = true
+        Me.RadioButtonEntfernen.AutoSize = True
         Me.RadioButtonEntfernen.Location = New System.Drawing.Point(248, 61)
         Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
         Me.RadioButtonEntfernen.Size = New System.Drawing.Size(70, 17)
         Me.RadioButtonEntfernen.TabIndex = 8
-        Me.RadioButtonEntfernen.TabStop = true
+        Me.RadioButtonEntfernen.TabStop = True
         Me.RadioButtonEntfernen.Text = "entfernen"
-        Me.RadioButtonEntfernen.UseVisualStyleBackColor = true
+        Me.RadioButtonEntfernen.UseVisualStyleBackColor = True
         '
         'RadioButtonErstelle
         '
-        Me.RadioButtonErstelle.AutoSize = true
-        Me.RadioButtonErstelle.Checked = true
+        Me.RadioButtonErstelle.AutoSize = True
+        Me.RadioButtonErstelle.Checked = True
         Me.RadioButtonErstelle.Location = New System.Drawing.Point(149, 61)
         Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
         Me.RadioButtonErstelle.Size = New System.Drawing.Size(64, 17)
         Me.RadioButtonErstelle.TabIndex = 7
-        Me.RadioButtonErstelle.TabStop = true
+        Me.RadioButtonErstelle.TabStop = True
         Me.RadioButtonErstelle.Text = "erstellen"
-        Me.RadioButtonErstelle.UseVisualStyleBackColor = true
+        Me.RadioButtonErstelle.UseVisualStyleBackColor = True
         '
         'Label20
         '
-        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label20.Location = New System.Drawing.Point(6, 34)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(567, 24)
         Me.Label20.TabIndex = 14
-        Me.Label20.Text = "Falls keine Indizierung durgeführt wird, werden keine Kontakte im Anrufmonitor an"& _ 
+        Me.Label20.Text = "Falls keine Indizierung durgeführt wird, werden keine Kontakte im Anrufmonitor an" & _
     "gezeigt."
         Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -1212,13 +1212,13 @@ Partial Class formCfg
         '
         'BIndizierungAbbrechen
         '
-        Me.BIndizierungAbbrechen.Enabled = false
+        Me.BIndizierungAbbrechen.Enabled = False
         Me.BIndizierungAbbrechen.Location = New System.Drawing.Point(455, 97)
         Me.BIndizierungAbbrechen.Name = "BIndizierungAbbrechen"
         Me.BIndizierungAbbrechen.Size = New System.Drawing.Size(112, 28)
         Me.BIndizierungAbbrechen.TabIndex = 10
         Me.BIndizierungAbbrechen.Text = "Abbrechen"
-        Me.BIndizierungAbbrechen.UseVisualStyleBackColor = true
+        Me.BIndizierungAbbrechen.UseVisualStyleBackColor = True
         '
         'BIndizierungStart
         '
@@ -1227,7 +1227,7 @@ Partial Class formCfg
         Me.BIndizierungStart.Size = New System.Drawing.Size(112, 28)
         Me.BIndizierungStart.TabIndex = 9
         Me.BIndizierungStart.Text = "Start"
-        Me.BIndizierungStart.UseVisualStyleBackColor = true
+        Me.BIndizierungStart.UseVisualStyleBackColor = True
         '
         'ProgressBarIndex
         '
@@ -1251,22 +1251,22 @@ Partial Class formCfg
         Me.GroupBoxRWS.Name = "GroupBoxRWS"
         Me.GroupBoxRWS.Size = New System.Drawing.Size(571, 115)
         Me.GroupBoxRWS.TabIndex = 9
-        Me.GroupBoxRWS.TabStop = false
+        Me.GroupBoxRWS.TabStop = False
         Me.GroupBoxRWS.Text = "Rückwärtssuche (RWS)"
         '
         'BRWSTest
         '
-        Me.BRWSTest.Enabled = false
+        Me.BRWSTest.Enabled = False
         Me.BRWSTest.Location = New System.Drawing.Point(193, 44)
         Me.BRWSTest.Name = "BRWSTest"
         Me.BRWSTest.Size = New System.Drawing.Size(58, 20)
         Me.BRWSTest.TabIndex = 8
         Me.BRWSTest.Text = "Teste..."
-        Me.BRWSTest.UseVisualStyleBackColor = true
+        Me.BRWSTest.UseVisualStyleBackColor = True
         '
         'LRWSTest
         '
-        Me.LRWSTest.AutoSize = true
+        Me.LRWSTest.AutoSize = True
         Me.LRWSTest.Location = New System.Drawing.Point(3, 47)
         Me.LRWSTest.Name = "LRWSTest"
         Me.LRWSTest.Size = New System.Drawing.Size(78, 13)
@@ -1284,7 +1284,7 @@ Partial Class formCfg
         'ComboBoxRWS
         '
         Me.ComboBoxRWS.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.ComboBoxRWS.FormattingEnabled = true
+        Me.ComboBoxRWS.FormattingEnabled = True
         Me.ComboBoxRWS.Location = New System.Drawing.Point(121, 17)
         Me.ComboBoxRWS.Name = "ComboBoxRWS"
         Me.ComboBoxRWS.Size = New System.Drawing.Size(121, 21)
@@ -1292,13 +1292,13 @@ Partial Class formCfg
         '
         'CBRWS
         '
-        Me.CBRWS.AutoSize = true
+        Me.CBRWS.AutoSize = True
         Me.CBRWS.Location = New System.Drawing.Point(6, 19)
         Me.CBRWS.Name = "CBRWS"
         Me.CBRWS.Size = New System.Drawing.Size(109, 17)
         Me.CBRWS.TabIndex = 0
         Me.CBRWS.Text = "Rückwärtssuche:"
-        Me.CBRWS.UseVisualStyleBackColor = true
+        Me.CBRWS.UseVisualStyleBackColor = True
         '
         'PAnrufmonitor
         '
@@ -1311,7 +1311,7 @@ Partial Class formCfg
         Me.PAnrufmonitor.Size = New System.Drawing.Size(570, 294)
         Me.PAnrufmonitor.TabIndex = 0
         Me.PAnrufmonitor.Text = "Anrufmonitor"
-        Me.PAnrufmonitor.UseVisualStyleBackColor = true
+        Me.PAnrufmonitor.UseVisualStyleBackColor = True
         '
         'GroupBox6
         '
@@ -1337,12 +1337,12 @@ Partial Class formCfg
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(282, 256)
         Me.GroupBox6.TabIndex = 15
-        Me.GroupBox6.TabStop = false
+        Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Aussehen anpassen"
         '
         'LAnrMonMoveDirection
         '
-        Me.LAnrMonMoveDirection.AutoSize = true
+        Me.LAnrMonMoveDirection.AutoSize = True
         Me.LAnrMonMoveDirection.Location = New System.Drawing.Point(133, 147)
         Me.LAnrMonMoveDirection.Name = "LAnrMonMoveDirection"
         Me.LAnrMonMoveDirection.Size = New System.Drawing.Size(84, 13)
@@ -1351,7 +1351,7 @@ Partial Class formCfg
         '
         'Label19
         '
-        Me.Label19.AutoSize = true
+        Me.Label19.AutoSize = True
         Me.Label19.Location = New System.Drawing.Point(3, 148)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(47, 13)
@@ -1360,7 +1360,7 @@ Partial Class formCfg
         '
         'CBoxAnrMonMoveDirection
         '
-        Me.CBoxAnrMonMoveDirection.FormattingEnabled = true
+        Me.CBoxAnrMonMoveDirection.FormattingEnabled = True
         Me.CBoxAnrMonMoveDirection.Items.AddRange(New Object() {"Oben/Unten", "Links/Rechts"})
         Me.CBoxAnrMonMoveDirection.Location = New System.Drawing.Point(133, 165)
         Me.CBoxAnrMonMoveDirection.Name = "CBoxAnrMonMoveDirection"
@@ -1369,7 +1369,7 @@ Partial Class formCfg
         '
         'CBoxAnrMonStartPosition
         '
-        Me.CBoxAnrMonStartPosition.FormattingEnabled = true
+        Me.CBoxAnrMonStartPosition.FormattingEnabled = True
         Me.CBoxAnrMonStartPosition.Items.AddRange(New Object() {"Unten Rechts", "Unten Links", "Oben Links", "Oben Rechts"})
         Me.CBoxAnrMonStartPosition.Location = New System.Drawing.Point(6, 165)
         Me.CBoxAnrMonStartPosition.MaxDropDownItems = 4
@@ -1379,17 +1379,17 @@ Partial Class formCfg
         '
         'CBAnrMonContactImage
         '
-        Me.CBAnrMonContactImage.AutoSize = true
+        Me.CBAnrMonContactImage.AutoSize = True
         Me.CBAnrMonContactImage.Location = New System.Drawing.Point(4, 88)
         Me.CBAnrMonContactImage.Name = "CBAnrMonContactImage"
         Me.CBAnrMonContactImage.Size = New System.Drawing.Size(109, 17)
         Me.CBAnrMonContactImage.TabIndex = 910
         Me.CBAnrMonContactImage.Text = "Zeige Kontaktbild"
-        Me.CBAnrMonContactImage.UseVisualStyleBackColor = true
+        Me.CBAnrMonContactImage.UseVisualStyleBackColor = True
         '
         'Label18
         '
-        Me.Label18.AutoSize = true
+        Me.Label18.AutoSize = True
         Me.Label18.Location = New System.Drawing.Point(3, 114)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(127, 13)
@@ -1398,7 +1398,7 @@ Partial Class formCfg
         '
         'Label32
         '
-        Me.Label32.AutoSize = true
+        Me.Label32.AutoSize = True
         Me.Label32.Location = New System.Drawing.Point(207, 130)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(49, 13)
@@ -1408,7 +1408,7 @@ Partial Class formCfg
         '
         'Label28
         '
-        Me.Label28.AutoSize = true
+        Me.Label28.AutoSize = True
         Me.Label28.Location = New System.Drawing.Point(135, 130)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(55, 13)
@@ -1417,7 +1417,7 @@ Partial Class formCfg
         '
         'TBAnrMonY
         '
-        Me.TBAnrMonY.AcceptsReturn = true
+        Me.TBAnrMonY.AcceptsReturn = True
         Me.TBAnrMonY.Location = New System.Drawing.Point(6, 229)
         Me.TBAnrMonY.Name = "TBAnrMonY"
         Me.TBAnrMonY.Size = New System.Drawing.Size(30, 20)
@@ -1425,7 +1425,7 @@ Partial Class formCfg
         '
         'Label11
         '
-        Me.Label11.AutoSize = true
+        Me.Label11.AutoSize = True
         Me.Label11.Location = New System.Drawing.Point(42, 232)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(84, 13)
@@ -1434,7 +1434,7 @@ Partial Class formCfg
         '
         'Label14
         '
-        Me.Label14.AutoSize = true
+        Me.Label14.AutoSize = True
         Me.Label14.Location = New System.Drawing.Point(3, 189)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(181, 13)
@@ -1443,7 +1443,7 @@ Partial Class formCfg
         '
         'TBAnrMonX
         '
-        Me.TBAnrMonX.AcceptsReturn = true
+        Me.TBAnrMonX.AcceptsReturn = True
         Me.TBAnrMonX.Location = New System.Drawing.Point(6, 205)
         Me.TBAnrMonX.Name = "TBAnrMonX"
         Me.TBAnrMonX.Size = New System.Drawing.Size(30, 20)
@@ -1451,7 +1451,7 @@ Partial Class formCfg
         '
         'Label12
         '
-        Me.Label12.AutoSize = true
+        Me.Label12.AutoSize = True
         Me.Label12.Location = New System.Drawing.Point(42, 208)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(95, 13)
@@ -1474,7 +1474,7 @@ Partial Class formCfg
         'Label22
         '
         Me.Label22.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label22.Location = New System.Drawing.Point(3, 3)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(564, 35)
@@ -1490,7 +1490,7 @@ Partial Class formCfg
         Me.Frame1.Name = "Frame1"
         Me.Frame1.Size = New System.Drawing.Size(282, 256)
         Me.Frame1.TabIndex = 14
-        Me.Frame1.TabStop = false
+        Me.Frame1.TabStop = False
         Me.Frame1.Text = "Einstellungen für den Anrufmonitor"
         '
         'PanelAnrMon
@@ -1512,53 +1512,53 @@ Partial Class formCfg
         '
         'CBNote
         '
-        Me.CBNote.AutoSize = true
+        Me.CBNote.AutoSize = True
         Me.CBNote.Location = New System.Drawing.Point(7, 202)
         Me.CBNote.Name = "CBNote"
         Me.CBNote.Size = New System.Drawing.Size(184, 17)
         Me.CBNote.TabIndex = 34
         Me.CBNote.Text = "Notizeintrag automatisch erstellen"
-        Me.CBNote.UseVisualStyleBackColor = true
+        Me.CBNote.UseVisualStyleBackColor = True
         '
         'CBAnrMonZeigeKontakt
         '
-        Me.CBAnrMonZeigeKontakt.AutoSize = true
+        Me.CBAnrMonZeigeKontakt.AutoSize = True
         Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(7, 179)
         Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
         Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
         Me.CBAnrMonZeigeKontakt.TabIndex = 34
         Me.CBAnrMonZeigeKontakt.Text = "Kontakt bei Anruf öffnen"
-        Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = true
+        Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = True
         '
         'CBAnrMonAuto
         '
-        Me.CBAnrMonAuto.AutoSize = true
+        Me.CBAnrMonAuto.AutoSize = True
         Me.CBAnrMonAuto.Location = New System.Drawing.Point(8, 6)
         Me.CBAnrMonAuto.Name = "CBAnrMonAuto"
         Me.CBAnrMonAuto.Size = New System.Drawing.Size(176, 17)
         Me.CBAnrMonAuto.TabIndex = 1
         Me.CBAnrMonAuto.Text = "Anrufmonitor mit Outlook starten"
-        Me.CBAnrMonAuto.UseVisualStyleBackColor = true
+        Me.CBAnrMonAuto.UseVisualStyleBackColor = True
         '
         'CBJournal
         '
-        Me.CBJournal.AutoSize = true
+        Me.CBJournal.AutoSize = True
         Me.CBJournal.Location = New System.Drawing.Point(8, 133)
         Me.CBJournal.Name = "CBJournal"
         Me.CBJournal.Size = New System.Drawing.Size(153, 17)
         Me.CBJournal.TabIndex = 5
         Me.CBJournal.Text = "Journaleinträge hinzufügen"
-        Me.CBJournal.UseVisualStyleBackColor = true
+        Me.CBJournal.UseVisualStyleBackColor = True
         '
         'CBAutoClose
         '
-        Me.CBAutoClose.AutoSize = true
+        Me.CBAutoClose.AutoSize = True
         Me.CBAutoClose.Location = New System.Drawing.Point(8, 29)
         Me.CBAutoClose.Name = "CBAutoClose"
         Me.CBAutoClose.Size = New System.Drawing.Size(191, 17)
         Me.CBAutoClose.TabIndex = 2
         Me.CBAutoClose.Text = "Anruffenster automatisch schließen"
-        Me.CBAutoClose.UseVisualStyleBackColor = true
+        Me.CBAutoClose.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -1578,9 +1578,9 @@ Partial Class formCfg
         'CLBTelNr
         '
         Me.CLBTelNr.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.CLBTelNr.CheckOnClick = true
-        Me.CLBTelNr.FormattingEnabled = true
-        Me.CLBTelNr.HorizontalScrollbar = true
+        Me.CLBTelNr.CheckOnClick = True
+        Me.CLBTelNr.FormattingEnabled = True
+        Me.CLBTelNr.HorizontalScrollbar = True
         Me.CLBTelNr.Location = New System.Drawing.Point(8, 78)
         Me.CLBTelNr.Name = "CLBTelNr"
         Me.CLBTelNr.Size = New System.Drawing.Size(148, 47)
@@ -1588,7 +1588,7 @@ Partial Class formCfg
         '
         'LEnblDauer
         '
-        Me.LEnblDauer.AutoSize = true
+        Me.LEnblDauer.AutoSize = True
         Me.LEnblDauer.Location = New System.Drawing.Point(43, 55)
         Me.LEnblDauer.Name = "LEnblDauer"
         Me.LEnblDauer.Size = New System.Drawing.Size(191, 13)
@@ -1597,13 +1597,13 @@ Partial Class formCfg
         '
         'CBUseAnrMon
         '
-        Me.CBUseAnrMon.AutoSize = true
+        Me.CBUseAnrMon.AutoSize = True
         Me.CBUseAnrMon.Location = New System.Drawing.Point(8, 19)
         Me.CBUseAnrMon.Name = "CBUseAnrMon"
         Me.CBUseAnrMon.Size = New System.Drawing.Size(141, 17)
         Me.CBUseAnrMon.TabIndex = 0
         Me.CBUseAnrMon.Text = "Anrufmonitor verwenden"
-        Me.CBUseAnrMon.UseVisualStyleBackColor = true
+        Me.CBUseAnrMon.UseVisualStyleBackColor = True
         '
         'FBDB_MP
         '
@@ -1632,7 +1632,7 @@ Partial Class formCfg
         Me.PSymbolleiste.Size = New System.Drawing.Size(570, 294)
         Me.PSymbolleiste.TabIndex = 9
         Me.PSymbolleiste.Text = "Symbolleiste"
-        Me.PSymbolleiste.UseVisualStyleBackColor = true
+        Me.PSymbolleiste.UseVisualStyleBackColor = True
         '
         'GroupBox3
         '
@@ -1648,93 +1648,93 @@ Partial Class formCfg
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(199, 205)
         Me.GroupBox3.TabIndex = 25
-        Me.GroupBox3.TabStop = false
+        Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Einstellungen für Symbolleisten"
         '
         'CBSymbJournalimport
         '
-        Me.CBSymbJournalimport.AutoSize = true
+        Me.CBSymbJournalimport.AutoSize = True
         Me.CBSymbJournalimport.Location = New System.Drawing.Point(6, 180)
         Me.CBSymbJournalimport.Name = "CBSymbJournalimport"
         Me.CBSymbJournalimport.Size = New System.Drawing.Size(88, 17)
         Me.CBSymbJournalimport.TabIndex = 8
         Me.CBSymbJournalimport.Text = "Journalimport"
-        Me.CBSymbJournalimport.UseVisualStyleBackColor = true
+        Me.CBSymbJournalimport.UseVisualStyleBackColor = True
         '
         'CBSymbVIP
         '
-        Me.CBSymbVIP.AutoSize = true
+        Me.CBSymbVIP.AutoSize = True
         Me.CBSymbVIP.Location = New System.Drawing.Point(6, 157)
         Me.CBSymbVIP.Name = "CBSymbVIP"
         Me.CBSymbVIP.Size = New System.Drawing.Size(43, 17)
         Me.CBSymbVIP.TabIndex = 7
         Me.CBSymbVIP.Text = "VIP"
-        Me.CBSymbVIP.UseVisualStyleBackColor = true
+        Me.CBSymbVIP.UseVisualStyleBackColor = True
         '
         'CBSymbRWSuche
         '
-        Me.CBSymbRWSuche.AutoSize = true
+        Me.CBSymbRWSuche.AutoSize = True
         Me.CBSymbRWSuche.Location = New System.Drawing.Point(6, 134)
         Me.CBSymbRWSuche.Name = "CBSymbRWSuche"
         Me.CBSymbRWSuche.Size = New System.Drawing.Size(106, 17)
         Me.CBSymbRWSuche.TabIndex = 6
         Me.CBSymbRWSuche.Text = "Rückwärtssuche"
-        Me.CBSymbRWSuche.UseVisualStyleBackColor = true
+        Me.CBSymbRWSuche.UseVisualStyleBackColor = True
         '
         'CBSymbDirekt
         '
-        Me.CBSymbDirekt.AutoSize = true
+        Me.CBSymbDirekt.AutoSize = True
         Me.CBSymbDirekt.Location = New System.Drawing.Point(6, 111)
         Me.CBSymbDirekt.Name = "CBSymbDirekt"
         Me.CBSymbDirekt.Size = New System.Drawing.Size(76, 17)
         Me.CBSymbDirekt.TabIndex = 5
         Me.CBSymbDirekt.Text = "Direktwahl"
-        Me.CBSymbDirekt.UseVisualStyleBackColor = true
+        Me.CBSymbDirekt.UseVisualStyleBackColor = True
         '
         'CBSymbAnrMonNeuStart
         '
-        Me.CBSymbAnrMonNeuStart.AutoSize = true
+        Me.CBSymbAnrMonNeuStart.AutoSize = True
         Me.CBSymbAnrMonNeuStart.Location = New System.Drawing.Point(6, 42)
         Me.CBSymbAnrMonNeuStart.Name = "CBSymbAnrMonNeuStart"
         Me.CBSymbAnrMonNeuStart.Size = New System.Drawing.Size(138, 17)
         Me.CBSymbAnrMonNeuStart.TabIndex = 2
         Me.CBSymbAnrMonNeuStart.Text = "Anrufmonitor neustarten"
-        Me.CBSymbAnrMonNeuStart.UseVisualStyleBackColor = true
+        Me.CBSymbAnrMonNeuStart.UseVisualStyleBackColor = True
         '
         'CBSymbWwdh
         '
-        Me.CBSymbWwdh.AutoSize = true
+        Me.CBSymbWwdh.AutoSize = True
         Me.CBSymbWwdh.Location = New System.Drawing.Point(6, 65)
         Me.CBSymbWwdh.Name = "CBSymbWwdh"
         Me.CBSymbWwdh.Size = New System.Drawing.Size(118, 17)
         Me.CBSymbWwdh.TabIndex = 3
         Me.CBSymbWwdh.Text = "Wahlwiederhohung"
-        Me.CBSymbWwdh.UseVisualStyleBackColor = true
+        Me.CBSymbWwdh.UseVisualStyleBackColor = True
         '
         'CBSymbAnrMon
         '
-        Me.CBSymbAnrMon.AutoSize = true
+        Me.CBSymbAnrMon.AutoSize = True
         Me.CBSymbAnrMon.Location = New System.Drawing.Point(6, 19)
         Me.CBSymbAnrMon.Name = "CBSymbAnrMon"
         Me.CBSymbAnrMon.Size = New System.Drawing.Size(85, 17)
         Me.CBSymbAnrMon.TabIndex = 1
         Me.CBSymbAnrMon.Text = "Anrufmonitor"
-        Me.CBSymbAnrMon.UseVisualStyleBackColor = true
+        Me.CBSymbAnrMon.UseVisualStyleBackColor = True
         '
         'CBSymbAnrListe
         '
-        Me.CBSymbAnrListe.AutoSize = true
+        Me.CBSymbAnrListe.AutoSize = True
         Me.CBSymbAnrListe.Location = New System.Drawing.Point(6, 88)
         Me.CBSymbAnrListe.Name = "CBSymbAnrListe"
         Me.CBSymbAnrListe.Size = New System.Drawing.Size(72, 17)
         Me.CBSymbAnrListe.TabIndex = 4
         Me.CBSymbAnrListe.Text = "Anrufliste "
-        Me.CBSymbAnrListe.UseVisualStyleBackColor = true
+        Me.CBSymbAnrListe.UseVisualStyleBackColor = True
         '
         'LabelSymb
         '
         Me.LabelSymb.Dock = System.Windows.Forms.DockStyle.Top
-        Me.LabelSymb.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelSymb.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelSymb.Location = New System.Drawing.Point(0, 0)
         Me.LabelSymb.Name = "LabelSymb"
         Me.LabelSymb.Size = New System.Drawing.Size(570, 35)
@@ -1755,7 +1755,7 @@ Partial Class formCfg
         Me.PPhoner.Size = New System.Drawing.Size(570, 294)
         Me.PPhoner.TabIndex = 12
         Me.PPhoner.Text = "Phoner"
-        Me.PPhoner.UseVisualStyleBackColor = true
+        Me.PPhoner.UseVisualStyleBackColor = True
         '
         'GroupBox4
         '
@@ -1768,7 +1768,7 @@ Partial Class formCfg
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(570, 153)
         Me.GroupBox4.TabIndex = 27
-        Me.GroupBox4.TabStop = false
+        Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Phoner Einstellungen"
         '
         'PanelPhonerAktiv
@@ -1780,7 +1780,7 @@ Partial Class formCfg
         '
         'LabelPhoner
         '
-        Me.LabelPhoner.AutoSize = true
+        Me.LabelPhoner.AutoSize = True
         Me.LabelPhoner.Location = New System.Drawing.Point(133, 19)
         Me.LabelPhoner.Name = "LabelPhoner"
         Me.LabelPhoner.Size = New System.Drawing.Size(83, 13)
@@ -1808,18 +1808,18 @@ Partial Class formCfg
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(236, 91)
         Me.GroupBox7.TabIndex = 14
-        Me.GroupBox7.TabStop = false
+        Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Phoner Anrufmonitor"
         '
         'CBPhonerAnrMon
         '
-        Me.CBPhonerAnrMon.AutoSize = true
+        Me.CBPhonerAnrMon.AutoSize = True
         Me.CBPhonerAnrMon.Location = New System.Drawing.Point(9, 69)
         Me.CBPhonerAnrMon.Name = "CBPhonerAnrMon"
         Me.CBPhonerAnrMon.Size = New System.Drawing.Size(178, 17)
         Me.CBPhonerAnrMon.TabIndex = 1
         Me.CBPhonerAnrMon.Text = "Phoner Anrufmonitor verwenden"
-        Me.CBPhonerAnrMon.UseVisualStyleBackColor = true
+        Me.CBPhonerAnrMon.UseVisualStyleBackColor = True
         '
         'Label29
         '
@@ -1827,22 +1827,22 @@ Partial Class formCfg
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(199, 51)
         Me.Label29.TabIndex = 12
-        Me.Label29.Text = "Bei der Verwerndung des Phoner Anrufmonitors wird der Anrufmonitor der Fritz!Box "& _ 
+        Me.Label29.Text = "Bei der Verwerndung des Phoner Anrufmonitors wird der Anrufmonitor der Fritz!Box " & _
     "nicht mehr überwacht!"
         '
         'CBPhoner
         '
-        Me.CBPhoner.AutoSize = true
+        Me.CBPhoner.AutoSize = True
         Me.CBPhoner.Location = New System.Drawing.Point(7, 18)
         Me.CBPhoner.Name = "CBPhoner"
         Me.CBPhoner.Size = New System.Drawing.Size(168, 17)
         Me.CBPhoner.TabIndex = 3
         Me.CBPhoner.Text = "Softphone Phoner verwenden"
-        Me.CBPhoner.UseVisualStyleBackColor = true
+        Me.CBPhoner.UseVisualStyleBackColor = True
         '
         'ComboBoxPhonerSIP
         '
-        Me.ComboBoxPhonerSIP.FormattingEnabled = true
+        Me.ComboBoxPhonerSIP.FormattingEnabled = True
         Me.ComboBoxPhonerSIP.Location = New System.Drawing.Point(7, 70)
         Me.ComboBoxPhonerSIP.Name = "ComboBoxPhonerSIP"
         Me.ComboBoxPhonerSIP.Size = New System.Drawing.Size(100, 21)
@@ -1854,11 +1854,11 @@ Partial Class formCfg
         Me.TBPhonerPasswort.Name = "TBPhonerPasswort"
         Me.TBPhonerPasswort.Size = New System.Drawing.Size(100, 20)
         Me.TBPhonerPasswort.TabIndex = 7
-        Me.TBPhonerPasswort.UseSystemPasswordChar = true
+        Me.TBPhonerPasswort.UseSystemPasswordChar = True
         '
         'LPassworPhoner
         '
-        Me.LPassworPhoner.AutoSize = true
+        Me.LPassworPhoner.AutoSize = True
         Me.LPassworPhoner.Location = New System.Drawing.Point(113, 44)
         Me.LPassworPhoner.Name = "LPassworPhoner"
         Me.LPassworPhoner.Size = New System.Drawing.Size(87, 13)
@@ -1872,7 +1872,7 @@ Partial Class formCfg
         Me.BPhoner.Size = New System.Drawing.Size(99, 110)
         Me.BPhoner.TabIndex = 9
         Me.BPhoner.Text = "Teste die Verfügbarkeit von Phoner"
-        Me.BPhoner.UseVisualStyleBackColor = true
+        Me.BPhoner.UseVisualStyleBackColor = True
         '
         'Label31
         '
@@ -1885,7 +1885,7 @@ Partial Class formCfg
         'Label30
         '
         Me.Label30.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label30.Location = New System.Drawing.Point(0, 0)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(570, 35)
@@ -1895,17 +1895,17 @@ Partial Class formCfg
         '
         'LinkPhoner
         '
-        Me.LinkPhoner.AutoSize = true
+        Me.LinkPhoner.AutoSize = True
         Me.LinkPhoner.Location = New System.Drawing.Point(282, 106)
         Me.LinkPhoner.Name = "LinkPhoner"
         Me.LinkPhoner.Size = New System.Drawing.Size(41, 13)
         Me.LinkPhoner.TabIndex = 4
-        Me.LinkPhoner.TabStop = true
+        Me.LinkPhoner.TabStop = True
         Me.LinkPhoner.Text = "Phoner"
         '
         'Label27
         '
-        Me.Label27.AutoSize = true
+        Me.Label27.AutoSize = True
         Me.Label27.Location = New System.Drawing.Point(4, 122)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(330, 13)
@@ -1914,7 +1914,7 @@ Partial Class formCfg
         '
         'Label26
         '
-        Me.Label26.AutoSize = true
+        Me.Label26.AutoSize = True
         Me.Label26.Location = New System.Drawing.Point(4, 106)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(250, 13)
@@ -1932,7 +1932,7 @@ Partial Class formCfg
         Me.PLogging.Size = New System.Drawing.Size(570, 294)
         Me.PLogging.TabIndex = 11
         Me.PLogging.Text = "Logging"
-        Me.PLogging.UseVisualStyleBackColor = true
+        Me.PLogging.UseVisualStyleBackColor = True
         '
         'GBLogging
         '
@@ -1943,7 +1943,7 @@ Partial Class formCfg
         Me.GBLogging.Name = "GBLogging"
         Me.GBLogging.Size = New System.Drawing.Size(570, 218)
         Me.GBLogging.TabIndex = 26
-        Me.GBLogging.TabStop = false
+        Me.GBLogging.TabStop = False
         '
         'BLogging
         '
@@ -1952,7 +1952,7 @@ Partial Class formCfg
         Me.BLogging.Size = New System.Drawing.Size(223, 28)
         Me.BLogging.TabIndex = 27
         Me.BLogging.Text = "Log in die Zwischenablage kopieren"
-        Me.BLogging.UseVisualStyleBackColor = true
+        Me.BLogging.UseVisualStyleBackColor = True
         '
         'LinkLogFile
         '
@@ -1961,14 +1961,14 @@ Partial Class formCfg
         Me.LinkLogFile.Name = "LinkLogFile"
         Me.LinkLogFile.Size = New System.Drawing.Size(565, 15)
         Me.LinkLogFile.TabIndex = 26
-        Me.LinkLogFile.TabStop = true
+        Me.LinkLogFile.TabStop = True
         Me.LinkLogFile.Text = "Link zur Logfile"
         '
         'TBLogging
         '
         Me.TBLogging.Dock = System.Windows.Forms.DockStyle.Top
         Me.TBLogging.Location = New System.Drawing.Point(3, 16)
-        Me.TBLogging.Multiline = true
+        Me.TBLogging.Multiline = True
         Me.TBLogging.Name = "TBLogging"
         Me.TBLogging.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TBLogging.Size = New System.Drawing.Size(564, 147)
@@ -1976,18 +1976,18 @@ Partial Class formCfg
         '
         'CBLogFile
         '
-        Me.CBLogFile.AutoSize = true
+        Me.CBLogFile.AutoSize = True
         Me.CBLogFile.Location = New System.Drawing.Point(6, 50)
         Me.CBLogFile.Name = "CBLogFile"
         Me.CBLogFile.Size = New System.Drawing.Size(113, 17)
         Me.CBLogFile.TabIndex = 12
         Me.CBLogFile.Text = "Logging aktivieren"
-        Me.CBLogFile.UseVisualStyleBackColor = true
+        Me.CBLogFile.UseVisualStyleBackColor = True
         '
         'Label23
         '
         Me.Label23.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label23.Location = New System.Drawing.Point(3, 3)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(564, 35)
@@ -2005,7 +2005,7 @@ Partial Class formCfg
         Me.PDebug.Size = New System.Drawing.Size(570, 294)
         Me.PDebug.TabIndex = 10
         Me.PDebug.Text = "Debug"
-        Me.PDebug.UseVisualStyleBackColor = true
+        Me.PDebug.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
@@ -2019,14 +2019,14 @@ Partial Class formCfg
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(570, 253)
         Me.GroupBox2.TabIndex = 30
-        Me.GroupBox2.TabStop = false
+        Me.GroupBox2.TabStop = False
         '
         'PTelefonDatei
         '
         Me.PTelefonDatei.Controls.Add(Me.Label9)
         Me.PTelefonDatei.Controls.Add(Me.TBTelefonDatei)
         Me.PTelefonDatei.Controls.Add(Me.BTelefonDatei)
-        Me.PTelefonDatei.Enabled = false
+        Me.PTelefonDatei.Enabled = False
         Me.PTelefonDatei.Location = New System.Drawing.Point(384, 160)
         Me.PTelefonDatei.Name = "PTelefonDatei"
         Me.PTelefonDatei.Size = New System.Drawing.Size(186, 87)
@@ -2034,8 +2034,8 @@ Partial Class formCfg
         '
         'Label9
         '
-        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label9.AutoSize = true
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(3, 7)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(164, 13)
@@ -2044,7 +2044,7 @@ Partial Class formCfg
         '
         'TBTelefonDatei
         '
-        Me.TBTelefonDatei.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.TBTelefonDatei.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TBTelefonDatei.Location = New System.Drawing.Point(4, 30)
         Me.TBTelefonDatei.Name = "TBTelefonDatei"
         Me.TBTelefonDatei.Size = New System.Drawing.Size(179, 20)
@@ -2052,40 +2052,40 @@ Partial Class formCfg
         '
         'BTelefonDatei
         '
-        Me.BTelefonDatei.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.BTelefonDatei.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BTelefonDatei.Location = New System.Drawing.Point(4, 56)
         Me.BTelefonDatei.Name = "BTelefonDatei"
         Me.BTelefonDatei.Size = New System.Drawing.Size(179, 28)
         Me.BTelefonDatei.TabIndex = 6
         Me.BTelefonDatei.Text = "Laden"
-        Me.BTelefonDatei.UseVisualStyleBackColor = true
+        Me.BTelefonDatei.UseVisualStyleBackColor = True
         '
         'CBTelefonDatei
         '
-        Me.CBTelefonDatei.AutoSize = true
+        Me.CBTelefonDatei.AutoSize = True
         Me.CBTelefonDatei.Location = New System.Drawing.Point(385, 137)
         Me.CBTelefonDatei.Name = "CBTelefonDatei"
         Me.CBTelefonDatei.Size = New System.Drawing.Size(127, 17)
         Me.CBTelefonDatei.TabIndex = 34
         Me.CBTelefonDatei.Text = "Telefondatei einlesen"
-        Me.CBTelefonDatei.UseVisualStyleBackColor = true
+        Me.CBTelefonDatei.UseVisualStyleBackColor = True
         '
         'TBDiagnose
         '
         Me.TBDiagnose.BackColor = System.Drawing.SystemColors.Window
         Me.TBDiagnose.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TBDiagnose.Location = New System.Drawing.Point(2, 13)
-        Me.TBDiagnose.Multiline = true
+        Me.TBDiagnose.Multiline = True
         Me.TBDiagnose.Name = "TBDiagnose"
         Me.TBDiagnose.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TBDiagnose.Size = New System.Drawing.Size(376, 220)
         Me.TBDiagnose.TabIndex = 31
-        Me.TBDiagnose.TabStop = false
+        Me.TBDiagnose.TabStop = False
         '
         'Label8
         '
         Me.Label8.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.Location = New System.Drawing.Point(3, 3)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(564, 35)
@@ -2101,16 +2101,16 @@ Partial Class formCfg
         Me.BXML.Size = New System.Drawing.Size(112, 28)
         Me.BXML.TabIndex = 27
         Me.BXML.Text = "Einstellungsdatei"
-        Me.BXML.UseVisualStyleBackColor = true
+        Me.BXML.UseVisualStyleBackColor = True
         '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.ColumnCount = 5
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.BOK, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.BXML, 4, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.BApply, 1, 0)
@@ -2127,85 +2127,85 @@ Partial Class formCfg
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 1
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel1, 0, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.FBDB_MP, 0, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 2
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
         'formCfg
         '
         Me.AcceptButton = Me.BOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.BAbbruch
         Me.ClientSize = New System.Drawing.Size(584, 366)
         Me.Controls.Add(Me.TableLayoutPanel2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "formCfg"
         Me.Text = "Einstellungen für das Fritz!Box Telefon-Dingsbums"
-        Me.PGrundeinstellungen.ResumeLayout(false)
-        Me.GroupBox5.ResumeLayout(false)
-        Me.GroupBox5.PerformLayout
-        Me.GroupBoxStoppUhr.ResumeLayout(false)
-        Me.GroupBoxStoppUhr.PerformLayout
-        Me.Frame3.ResumeLayout(false)
-        Me.Frame3.PerformLayout
-        Me.FrameErforderlich.ResumeLayout(false)
-        Me.FrameErforderlich.PerformLayout
-        Me.PInfo.ResumeLayout(false)
-        Me.PInfo.PerformLayout
-        Me.PTelefone.ResumeLayout(false)
-        Me.GroupBox1.ResumeLayout(false)
-        Me.GroupBox1.PerformLayout
-        CType(Me.TelList,System.ComponentModel.ISupportInitialize).EndInit
-        Me.PIndex.ResumeLayout(false)
-        Me.GroupBoxIndex.ResumeLayout(false)
-        Me.GroupBoxIndex.PerformLayout
-        Me.GroupBoxRWS.ResumeLayout(false)
-        Me.GroupBoxRWS.PerformLayout
-        Me.PAnrufmonitor.ResumeLayout(false)
-        Me.GroupBox6.ResumeLayout(false)
-        Me.GroupBox6.PerformLayout
-        CType(Me.TBAnrMonMoveGeschwindigkeit,System.ComponentModel.ISupportInitialize).EndInit
-        Me.Frame1.ResumeLayout(false)
-        Me.Frame1.PerformLayout
-        Me.PanelAnrMon.ResumeLayout(false)
-        Me.PanelAnrMon.PerformLayout
-        Me.FBDB_MP.ResumeLayout(false)
-        Me.PSymbolleiste.ResumeLayout(false)
-        Me.GroupBox3.ResumeLayout(false)
-        Me.GroupBox3.PerformLayout
-        Me.PPhoner.ResumeLayout(false)
-        Me.PPhoner.PerformLayout
-        Me.GroupBox4.ResumeLayout(false)
-        Me.GroupBox4.PerformLayout
-        Me.PanelPhoner.ResumeLayout(false)
-        Me.PanelPhoner.PerformLayout
-        Me.GroupBox7.ResumeLayout(false)
-        Me.GroupBox7.PerformLayout
-        Me.PLogging.ResumeLayout(false)
-        Me.PLogging.PerformLayout
-        Me.GBLogging.ResumeLayout(false)
-        Me.GBLogging.PerformLayout
-        Me.PDebug.ResumeLayout(false)
-        Me.GroupBox2.ResumeLayout(false)
-        Me.GroupBox2.PerformLayout
-        Me.PTelefonDatei.ResumeLayout(false)
-        Me.PTelefonDatei.PerformLayout
-        Me.TableLayoutPanel1.ResumeLayout(false)
-        Me.TableLayoutPanel2.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.PGrundeinstellungen.ResumeLayout(False)
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        Me.GroupBoxStoppUhr.ResumeLayout(False)
+        Me.GroupBoxStoppUhr.PerformLayout()
+        Me.Frame3.ResumeLayout(False)
+        Me.Frame3.PerformLayout()
+        Me.FrameErforderlich.ResumeLayout(False)
+        Me.FrameErforderlich.PerformLayout()
+        Me.PInfo.ResumeLayout(False)
+        Me.PInfo.PerformLayout()
+        Me.PTelefone.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        CType(Me.TelList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PIndex.ResumeLayout(False)
+        Me.GroupBoxIndex.ResumeLayout(False)
+        Me.GroupBoxIndex.PerformLayout()
+        Me.GroupBoxRWS.ResumeLayout(False)
+        Me.GroupBoxRWS.PerformLayout()
+        Me.PAnrufmonitor.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Frame1.ResumeLayout(False)
+        Me.Frame1.PerformLayout()
+        Me.PanelAnrMon.ResumeLayout(False)
+        Me.PanelAnrMon.PerformLayout()
+        Me.FBDB_MP.ResumeLayout(False)
+        Me.PSymbolleiste.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.PPhoner.ResumeLayout(False)
+        Me.PPhoner.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        Me.PanelPhoner.ResumeLayout(False)
+        Me.PanelPhoner.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
+        Me.PLogging.ResumeLayout(False)
+        Me.PLogging.PerformLayout()
+        Me.GBLogging.ResumeLayout(False)
+        Me.GBLogging.PerformLayout()
+        Me.PDebug.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.PTelefonDatei.ResumeLayout(False)
+        Me.PTelefonDatei.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel2.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
     Friend WithEvents BReset As System.Windows.Forms.Button
     Friend WithEvents BAbbruch As System.Windows.Forms.Button
     Friend WithEvents BApply As System.Windows.Forms.Button
