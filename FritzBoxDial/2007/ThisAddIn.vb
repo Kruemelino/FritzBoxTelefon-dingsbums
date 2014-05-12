@@ -131,7 +131,7 @@ Public Class ThisAddIn
     End Property
 #End Region
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Beta 1"
+    Public Const Version As String = "3.7 Beta 2"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
@@ -160,7 +160,6 @@ Public Class ThisAddIn
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
-        Dim i As Integer = 2
 
         P_oApp = CType(Application, Outlook.Application)
 
@@ -178,13 +177,13 @@ Public Class ThisAddIn
 #End If
             If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
         Else
-            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden war")
+            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
     End Sub
 
     Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile("Fritz!Box Telefon-Dingsbums V" & Version & " beendet.")
+        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
             .NAR(P_oApp)
@@ -203,7 +202,6 @@ Public Class ThisAddIn
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)
         End If
-
     End Sub
 
 #Region " Office 2003 & 2007"
