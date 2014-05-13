@@ -491,7 +491,7 @@ Friend Class AnrufMonitor
         ' FBStatus(4): Angerufene eigene Telefonnummer, MSN
         ' FBStatus(5): ???
 
-        Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)))
+        Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
 
         Dim Telefonat As C_Telefonat
         Dim xPathTeile As New ArrayList
@@ -626,7 +626,7 @@ Friend Class AnrufMonitor
         ' FBStatus(4): Ausgehende eigene Telefonnummer, MSN
         ' FBStatus(5): die gewählte Rufnummer
 
-        Dim MSN As String = C_hf.OrtsVorwahlEntfernen(CStr(FBStatus.GetValue(4)))  ' Ausgehende eigene Telefonnummer, MSN
+        Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))  ' Ausgehende eigene Telefonnummer, MSN
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 

@@ -176,7 +176,7 @@ Friend Class formJournalimport
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-                        If C_hf.IsOneOf(C_hf.OrtsVorwahlEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
+                        If C_hf.IsOneOf(C_hf.EigeneVorwahlenEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
                             b += 1
                             i = 0
                             NSN = -1

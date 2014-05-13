@@ -420,7 +420,7 @@ Public Class FritzBox
             For i = 0 To 9
                 TelNr = C_hf.StringEntnehmen(tempstring, "nrs.msn.push('", "'", posSTR)
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String And Not TelNr = C_DP.P_Def_StringEmpty Then
-                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                    TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     MSN(i) = TelNr
                     j = i
                     PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
@@ -436,7 +436,7 @@ Public Class FritzBox
             For i = 0 To 19
                 TelNr = C_hf.StringEntnehmen(tempstring, "nrs.sip.push('", "'", posSTR)
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String And Not TelNr = C_DP.P_Def_StringEmpty Then
-                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                    TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     SIP(i) = TelNr
                     SIPID = CStr(i)
                     j = i
@@ -453,7 +453,7 @@ Public Class FritzBox
             For i = 0 To 9
                 TelNr = C_hf.StringEntnehmen(tempstring, "nrs.tam.push('", "'", posSTR)
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String And Not TelNr = C_DP.P_Def_StringEmpty Then
-                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                    TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     TAM(i) = TelNr
                     PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                     If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
@@ -464,7 +464,7 @@ Public Class FritzBox
 
             POTS = C_hf.StringEntnehmen(tempstring, "telcfg:settings/MSN/POTS' value='", "'")
             If Not POTS = C_DP.P_Def_ErrorMinusOne_String And Not POTS = C_DP.P_Def_StringEmpty Then
-                POTS = C_hf.OrtsVorwahlEntfernen(POTS)
+                POTS = C_hf.EigeneVorwahlenEntfernen(POTS)
                 PushStatus("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
                 If P_SpeichereDaten Then C_DP.Write("Telefone", "POTS", POTS)
             End If
@@ -473,7 +473,7 @@ Public Class FritzBox
 
             Mobil = C_hf.StringEntnehmen(tempstring, "nrs.mobil = '", "'")
             If Not Mobil = C_DP.P_Def_ErrorMinusOne_String And Not Mobil = C_DP.P_Def_StringEmpty Then
-                Mobil = C_hf.OrtsVorwahlEntfernen(Mobil)
+                Mobil = C_hf.EigeneVorwahlenEntfernen(Mobil)
                 PushStatus("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
                 If P_SpeichereDaten Then C_DP.Write("Telefone", "Mobil", Mobil)
             End If
@@ -526,7 +526,7 @@ Public Class FritzBox
                                         If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1'=='1" Then
                                             TelNr = AllIn
                                         Else
-                                            TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                                            TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                                         End If
                                         pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
                                         pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
@@ -555,7 +555,7 @@ Public Class FritzBox
                                                 TelNr = AllIn
                                             Else
                                                 TelNr = Trim(Mid(Telefon, pos(2), pos(3) - pos(2)))
-                                                TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                                                TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                                             End If
                                             pos(4) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
                                             pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
@@ -579,7 +579,7 @@ Public Class FritzBox
                                         pos(2) = InStr(Telefon, "n = parseInt('", CompareMethod.Text) + Len("n = parseInt('")
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                         ID = CInt(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))))
-                                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                                        TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                                         DialPort = "6" & ID
                                         TelName = "Fritz!Fon 7150"
                                         PushStatus("DECT Fritz!Fon 7150 gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
@@ -614,7 +614,7 @@ Public Class FritzBox
                                                     Do
                                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                                         tempTelNr = Mid(Telefon, pos(2), pos(3) - pos(2))
-                                                        TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                                                        TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                                                         TelNr += CStr(IIf(Right(TelNr, 1) = "#", C_DP.P_Def_StringEmpty, tempTelNr & ";"))
                                                         pos(2) = InStr(pos(3), Telefon, "num = '", CompareMethod.Text) + Len("num = '")
                                                     Loop Until pos(2) = 7
@@ -622,7 +622,7 @@ Public Class FritzBox
                                                 Else
                                                     pos(2) = InStr(TelNr, ":", CompareMethod.Text) + 2
                                                     TelNr = Trim(Mid(TelNr, pos(2)))
-                                                    TelNr = C_hf.OrtsVorwahlEntfernen(TelNr)
+                                                    TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                                                 End If
                                             End If
                                             pos(2) = InStr(pos(1), Telefon, "outgoing: isUnpersonalizedMini ? '' : '", CompareMethod.Text) + Len("outgoing: isUnpersonalizedMini ? '' : '")
@@ -678,7 +678,7 @@ Public Class FritzBox
                                                         Do
                                                             pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
                                                             tempTelNr = Mid(LANTelefon, pos(2), pos(3) - pos(2))
-                                                            TelNr = C_hf.OrtsVorwahlEntfernen(tempTelNr)
+                                                            TelNr = C_hf.EigeneVorwahlenEntfernen(tempTelNr)
                                                             InNums += CStr(IIf(Strings.Right(TelNr, 1) = "#", C_DP.P_Def_StringEmpty, TelNr & ";"))
                                                             pos(2) = InStr(pos(3), LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
                                                         Loop Until pos(2) = 7
@@ -699,7 +699,7 @@ Public Class FritzBox
                                                             Else
                                                                 pos(2) = InStr(pos(1), LANTelefon, "Number0 : '", CompareMethod.Text) + Len("Number0 : '")
                                                                 pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
-                                                                TelNr = C_hf.OrtsVorwahlEntfernen(Mid(LANTelefon, pos(2), pos(3) - pos(2)))
+                                                                TelNr = C_hf.EigeneVorwahlenEntfernen(Mid(LANTelefon, pos(2), pos(3) - pos(2)))
                                                             End If
                                                         End If
                                                         pos(4) = InStr(LANTelefon, "g_txtIpPhone + ' 62", CompareMethod.Text) + Len("g_txtIpPhone + ' 62")
@@ -916,7 +916,7 @@ Public Class FritzBox
             xPathTeile.Add("SIP")
             For Each SIPi In Split(.StringEntnehmen(Code, "['sip:settings/sip/list(" & .StringEntnehmen(Code, "['sip:settings/sip/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
                 If .StringEntnehmen(SIPi, "['activated'] = '", "'") = "1" Then
-                    TelNr = .OrtsVorwahlEntfernen(.StringEntnehmen(SIPi, "['displayname'] = '", "'"))
+                    TelNr = .EigeneVorwahlenEntfernen(.StringEntnehmen(SIPi, "['displayname'] = '", "'"))
                     Node = UCase(.StringEntnehmen(SIPi, "['_node'] = '", "'"))
                     SIPID = .StringEntnehmen(SIPi, "['ID'] = '", "'")
                     SIP(CInt(SIPID)) = TelNr
@@ -935,7 +935,7 @@ Public Class FritzBox
                 TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/MSN" & i & "'] = '", "'")
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     If Not Len(TelNr) = 0 Then
-                        TelNr = .OrtsVorwahlEntfernen(TelNr)
+                        TelNr = .EigeneVorwahlenEntfernen(TelNr)
                         MSN(i) = TelNr
                         PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
@@ -954,7 +954,7 @@ Public Class FritzBox
                                 If Strings.Left(TelNr, 3) = "SIP" Then
                                     TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                                 Else
-                                    TelNr = .OrtsVorwahlEntfernen(TelNr)
+                                    TelNr = .EigeneVorwahlenEntfernen(TelNr)
                                 End If
 
                                 If Not .IsOneOf(TelNr, MSN) Then
@@ -986,7 +986,7 @@ Public Class FritzBox
                         If Strings.Left(TelNr, 3) = "SIP" Then
                             TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                         Else
-                            TelNr = .OrtsVorwahlEntfernen(TelNr)
+                            TelNr = .EigeneVorwahlenEntfernen(TelNr)
                         End If
                         PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
@@ -1006,7 +1006,7 @@ Public Class FritzBox
                         If Strings.Left(TelNr, 3) = "SIP" Then
                             TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                         Else
-                            TelNr = .OrtsVorwahlEntfernen(TelNr)
+                            TelNr = .EigeneVorwahlenEntfernen(TelNr)
                         End If
                         PushStatus("Faxnummer (FAX) gefunden: FAX" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
@@ -1024,7 +1024,7 @@ Public Class FritzBox
                 If Strings.Left(POTS, 3) = "SIP" Then
                     POTS = SIP(CInt(Mid(POTS, 4, 1)))
                 Else
-                    POTS = .OrtsVorwahlEntfernen(POTS)
+                    POTS = .EigeneVorwahlenEntfernen(POTS)
                 End If
                 PushStatus("Plain old telephone service (POTS) gefunden: " & POTS)
                 If P_SpeichereDaten Then
@@ -1038,7 +1038,7 @@ Public Class FritzBox
                 If Strings.Left(Mobil, 3) = "SIP" Then
                     Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
                 Else
-                    Mobil = .OrtsVorwahlEntfernen(Mobil)
+                    Mobil = .EigeneVorwahlenEntfernen(Mobil)
                 End If
                 PushStatus("Mobilnummer (Mobil) gefunden: " & Mobil)
                 If P_SpeichereDaten Then
@@ -1112,7 +1112,7 @@ Public Class FritzBox
                             tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
                         Next
                         For Each Nr In (From x In tmpstrUser Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
-                            TelNr = TelNr & ";" & .OrtsVorwahlEntfernen(Nr)
+                            TelNr = TelNr & ";" & .EigeneVorwahlenEntfernen(Nr)
                         Next
                         TelNr = Mid(TelNr, 2)
                     End If
@@ -1144,7 +1144,7 @@ Public Class FritzBox
                                 If Strings.Left(tmpTelNr, 3) = "SIP" Then
                                     tmpTelNr = SIP(CInt(Mid(tmpTelNr, 4, 1)))
                                 Else
-                                    tmpTelNr = .OrtsVorwahlEntfernen(tmpTelNr)
+                                    tmpTelNr = .EigeneVorwahlenEntfernen(tmpTelNr)
                                 End If
                                 TelNr = tmpTelNr & ";" & TelNr
                             End If
@@ -1221,7 +1221,7 @@ Public Class FritzBox
                 If .StringEntnehmen(Anrufbeantworter, "['Active'] = '", "'") = "1" Then
                     TelName = .StringEntnehmen(Anrufbeantworter, "['Name'] = '", "'")
                     Port = .StringEntnehmen(Anrufbeantworter, "['_node'] = '", "'")
-                    TelNr = .OrtsVorwahlEntfernen(TAM(CInt(Strings.Right(Port, 1))))
+                    TelNr = .EigeneVorwahlenEntfernen(TAM(CInt(Strings.Right(Port, 1))))
                     DialPort = "60" & Strings.Right(Port, 1)
                     PushStatus("Anrufbeantworter gefunden: " & DialPort & ", " & ", " & TelNr & ", " & TelName)
                     If P_SpeichereDaten Then
