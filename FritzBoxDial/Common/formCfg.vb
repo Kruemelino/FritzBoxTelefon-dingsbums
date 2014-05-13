@@ -641,7 +641,7 @@ Friend Class formCfg
                     .WorkerReportsProgress = False
                     .RunWorkerAsync(True)
                 End With
-            Case "ButtonOK"
+            Case "BOK"
                 Dim formschließen As Boolean = Speichern()
                 C_DP.P_CBUseAnrMon = Me.CBUseAnrMon.Checked
 #If OVer >= 14 Then
