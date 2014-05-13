@@ -116,9 +116,9 @@ Public Class PopUpAnrMonForm
 
         Get
             If Not Parent.Image Is Nothing Then
-                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight, Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
+                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight), Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
             Else
-                Return New RectangleF(Parent.TextPadding.Left, Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight, Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
+                Return New RectangleF(Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight), Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
             End If
         End Get
     End Property
@@ -127,9 +127,12 @@ Public Class PopUpAnrMonForm
 
         Get
             If Not Parent.Image Is Nothing Then
-                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr, Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
+                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, _
+                                      CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr), _
+                                      Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
             Else
-                Return New RectangleF(Parent.TextPadding.Left, Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr, Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
+                Return New RectangleF(Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr), _
+                                      Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
             End If
         End Get
     End Property
@@ -247,9 +250,9 @@ Public Class PopUpAnrMonForm
                 End If
                 .FillPolygon(New SolidBrush(ForeColor), New Point() {New Point(RectOptions.Left + 4, RectOptions.Top + 6), New Point(RectOptions.Left + 12, RectOptions.Top + 6), New Point(RectOptions.Left + 8, RectOptions.Top + 4 + 6)})
             End If
-            iHeightOfTitle = .MeasureString("A", Parent.TitleFont).Height
-            iHeightOfAnrName = .MeasureString("A", Parent.ContentFont).Height
-            iHeightOfTelNr = .MeasureString("A", Parent.TelNrFont).Height
+            iHeightOfTitle = CInt(.MeasureString("A", Parent.TitleFont).Height)
+            iHeightOfAnrName = CInt(.MeasureString("A", Parent.ContentFont).Height)
+            iHeightOfTelNr = CInt(.MeasureString("A", Parent.TelNrFont).Height)
             iTitleOrigin = Parent.TextPadding.Left
             If Not Parent.Image Is Nothing Then
                 Dim showim As Image = New Bitmap(Parent.ImageSize.Width, Parent.ImageSize.Height)
@@ -263,17 +266,17 @@ Public Class PopUpAnrMonForm
             Länge = Parent.Size.Width - Parent.TextPadding.Right - 21 - iTitleOrigin + Parent.TextPadding.Left
             sUhrzeit = CDate(Parent.Uhrzeit).ToString("dddd, dd. MMMM yyyy HH:mm:ss")
             sTelName = Parent.TelName
-            iTelNameLänge = .MeasureString(sTelName, Parent.TitleFont).Width
-            iUhrzeitLänge = .MeasureString(sUhrzeit, Parent.TitleFont).Width
+            iTelNameLänge = CInt(.MeasureString(sTelName, Parent.TitleFont).Width)
+            iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
             If iTelNameLänge + iUhrzeitLänge > Länge Then
                 sUhrzeit = CDate(Parent.Uhrzeit).ToString("dddd, dd. MMM. yy HH:mm:ss")
-                iUhrzeitLänge = .MeasureString(sUhrzeit, Parent.TitleFont).Width
+                iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
                 If iTelNameLänge + iUhrzeitLänge > Länge Then
                     sUhrzeit = CDate(Parent.Uhrzeit).ToString("ddd, dd.MM.yy HH:mm:ss")
-                    iUhrzeitLänge = .MeasureString(sUhrzeit, Parent.TitleFont).Width
+                    iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
                     If iTelNameLänge + iUhrzeitLänge > Länge Then
                         sUhrzeit = CDate(Parent.Uhrzeit).ToString("dd.MM.yy HH:mm:ss")
-                        iUhrzeitLänge = .MeasureString(sUhrzeit, Parent.TitleFont).Width
+                        iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
                     End If
                 End If
             End If
@@ -283,7 +286,7 @@ Public Class PopUpAnrMonForm
             .DrawString(sUhrzeit, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectZeit)
             If iTelNameLänge > RectTelName.Width Then
                 RectTelName.Y = Parent.HeaderHeight
-                RectTelName.Size = New Size(RectTelName.Width, RectTelName.Height * 2 - 3)
+                RectTelName.Size = New Size(CInt(RectTelName.Width), CInt(RectTelName.Height * 2 - 3))
             End If
             .DrawString(sTelName, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectTelName, drawFormatRight)
             .DrawString(Parent.TelNr, Parent.TelNrFont, New SolidBrush(Parent.TitleColor), RectTelNr, drawFormatCenter)
@@ -292,12 +295,12 @@ Public Class PopUpAnrMonForm
             Dim tempfont As New Font("Microsoft Sans Serif", 16, FontStyle.Regular)
             Dim sAnrName As String
             sAnrName = Parent.AnrName
-            iAnrNameLänge = .MeasureString(sAnrName, tempfont, 0, StringFormat.GenericTypographic).Width
+            iAnrNameLänge = CInt(.MeasureString(sAnrName, tempfont, 0, StringFormat.GenericTypographic).Width)
 
             If iAnrNameLänge > RectAnrName.Width Then
                 Dim iFontSize As Integer
-                iFontSize = ((RectAnrName.Width - Parent.TextPadding.Right - Parent.TextPadding.Left) * (tempfont.Size / 72 * .DpiX - 1.5 * Parent.TextPadding.Top)) / (iAnrNameLänge - 2 * Parent.TextPadding.Left)
-                iFontSize = IIf(iFontSize < 8, 8, iFontSize)
+                iFontSize = CInt(((RectAnrName.Width - Parent.TextPadding.Right - Parent.TextPadding.Left) * (tempfont.Size / 72 * .DpiX - 1.5 * Parent.TextPadding.Top)) / (iAnrNameLänge - 2 * Parent.TextPadding.Left))
+                iFontSize = CInt(IIf(iFontSize < 8, 8, iFontSize))
                 tempfont = New Font("Microsoft Sans Serif", iFontSize, FontStyle.Regular)
             End If
 

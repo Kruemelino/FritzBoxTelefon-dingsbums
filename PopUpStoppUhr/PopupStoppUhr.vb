@@ -228,7 +228,7 @@ Public Class PopUpStoppUhr
             szSize = value
         End Set
     End Property
-    Private szStartPosition As Size = New Point(0, 0)
+    Private szStartPosition As Point = New Point(0, 0)
     <Category("Appearance")> _
     Property StartPosition() As Point
         Get
@@ -257,10 +257,10 @@ Public Class PopUpStoppUhr
             .Show()
 
             retVal = OutlookSecurity.SetWindowPos(.Handle, hWndInsertAfterFlags.HWND_TOPMOST, 0, 0, 0, 0, _
-                                      SetWindowPosFlags.DoNotActivate + _
+                                      CType(SetWindowPosFlags.DoNotActivate + _
                                       SetWindowPosFlags.IgnoreMove + _
                                       SetWindowPosFlags.IgnoreResize + _
-                                      SetWindowPosFlags.DoNotChangeOwnerZOrder)
+                                      SetWindowPosFlags.DoNotChangeOwnerZOrder, SetWindowPosFlags))
         End With
     End Sub
 

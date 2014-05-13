@@ -443,7 +443,7 @@ Imports System.ComponentModel
         With fPopup
             .TopMost = True
             .Size = Size
-            .Opacity = IIf(bEffektTransparenz, 0, 1)
+            .Opacity = CDbl(IIf(bEffektTransparenz, 0, 1))
 
             Select Case Startpunkt
                 Case eStartPosition.BottomLeft
@@ -481,13 +481,13 @@ Imports System.ComponentModel
             End If
 
             .Location = New Point(X, Y)
-            .Text = AnrName & IIf(TelNr = "", "", " (" & TelNr & ")")
+            .Text = AnrName & CStr(IIf(TelNr = "", "", " (" & TelNr & ")"))
 
             retVal = OutlookSecurity.SetWindowPos(.Handle, hWndInsertAfterFlags.HWND_TOPMOST, 0, 0, 0, 0, _
-                                                  SetWindowPosFlags.DoNotActivate + _
+                                                  CType(SetWindowPosFlags.DoNotActivate + _
                                                   SetWindowPosFlags.IgnoreMove + _
                                                   SetWindowPosFlags.IgnoreResize + _
-                                                  SetWindowPosFlags.DoNotChangeOwnerZOrder)
+                                                  SetWindowPosFlags.DoNotChangeOwnerZOrder, SetWindowPosFlags))
 
             .Show()
         End With
@@ -576,7 +576,7 @@ Imports System.ComponentModel
                         If bAutoAusblenden Then tmWait.Start()
                     End If
 
-                    .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
+                    .Opacity = CDbl(IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1))
 
                 Else 'Ausblenden
                     If bMouseIsOn Then
@@ -614,12 +614,12 @@ Imports System.ComponentModel
                             RaiseEvent Closed(Me, EventArgs.Empty)
                         End If
 
-                        .Opacity = IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1)
+                        .Opacity = CDbl(IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1))
                     End If
                 End If
             Else
                 If bAppearing Then
-                    .Opacity += IIf(bEffektTransparenz, 0.05, 1)
+                    .Opacity += CDbl(IIf(bEffektTransparenz, 0.05, 1))
                     If .Opacity = 1 Then
                         tmAnimation.Stop()
                         bAppearing = False
@@ -631,7 +631,7 @@ Imports System.ComponentModel
                         tmAnimation.Stop()
                         tmWait.Start()
                     Else
-                        .Opacity -= IIf(bEffektTransparenz, 0.05, 1)
+                        .Opacity -= CDbl(IIf(bEffektTransparenz, 0.05, 1))
                         If .Opacity = 0 Then
                             tmAnimation.Stop()
                             .TopMost = False
