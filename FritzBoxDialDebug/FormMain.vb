@@ -66,7 +66,7 @@ Public Class FormMain
         C_DP.P_TBBenutzer = Me.TBBenutzer.Text
         C_DP.P_TBVorwahl = Me.TBVorwahl.Text
         If Not Me.TBPasswort.Text = "1234" Then
-            C_DP.P_TBPasswort = C_Crypt.EncryptString(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
             C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
             C_Helfer.KeyChange()
         End If
