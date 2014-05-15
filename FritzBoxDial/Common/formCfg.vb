@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 Friend Class formCfg
 #Region "Eigene Klassen"
     Private C_DP As DataProvider
-    Private C_Crypt As Rijndael
+    Private C_Crypt As MyRijndael
     Private C_hf As Helfer
     Private C_KF As Contacts
     Private C_Phoner As PhonerInterface
@@ -48,7 +48,7 @@ Friend Class formCfg
     Public Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal XMLKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal CryptKlasse As Rijndael, _
+                   ByVal CryptKlasse As MyRijndael, _
                    ByVal AnrufMon As AnrufMonitor, _
                    ByVal fritzboxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
@@ -405,7 +405,7 @@ Friend Class formCfg
                 .P_TBBenutzer = Me.TBBenutzer.Text
             End If
             If Not Me.TBPasswort.Text = "1234" Then
-                .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+                .P_TBPasswort = C_Crypt.EncryptString(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
                 C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
                 C_hf.KeyChange()
             End If
@@ -525,7 +525,7 @@ Friend Class formCfg
             If Me.CBPhoner.Checked Then
                 If Not Me.TBPhonerPasswort.Text = C_DP.P_Def_StringEmpty Then
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
-                        .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+                        .P_TBPhonerPasswort = C_Crypt.EncryptString(Me.TBPhonerPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
                         C_DP.SaveSettingsVBA("ZugangPasswortPhoner", C_DP.P_Def_PassWordDecryptionKey)
                         C_hf.KeyChange()
                     End If

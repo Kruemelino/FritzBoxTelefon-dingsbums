@@ -54,7 +54,7 @@
 #Region "Eigene Klassen"
     Private C_HF As Helfer
     Private C_DP As DataProvider
-    Private C_Crypt As Rijndael
+    Private C_Crypt As MyRijndael
     Private C_WClient As Wählclient
     Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
@@ -111,7 +111,7 @@
 
     Friend Sub New(ByVal HelferKlasse As Helfer, _
                ByVal DataProviderKlasse As DataProvider, _
-               ByVal CryptKlasse As Rijndael, _
+               ByVal CryptKlasse As MyRijndael, _
                ByVal Inverssuche As formRWSuche, _
                ByVal KontaktKlasse As Contacts, _
                ByVal Phonerklasse As PhonerInterface)

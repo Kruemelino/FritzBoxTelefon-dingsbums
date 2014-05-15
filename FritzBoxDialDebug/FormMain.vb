@@ -3,7 +3,7 @@
 Public Class FormMain
     Private C_DP As DataProvider
     Private C_Helfer As Helfer
-    Private C_Crypt As Rijndael
+    Private C_Crypt As MyRijndael
     Private C_FBox As FritzBox
 
     Private WithEvents emc As New EventMulticaster
@@ -22,7 +22,7 @@ Public Class FormMain
         C_DP = New DataProvider()
 
         ' Klasse für Verschlüsselung erstellen
-        C_Crypt = New Rijndael
+        C_Crypt = New MyRijndael
 
         ' Klasse für Helferfunktionen erstellen
         C_Helfer = New Helfer(C_DP, C_Crypt)
@@ -66,7 +66,7 @@ Public Class FormMain
         C_DP.P_TBBenutzer = Me.TBBenutzer.Text
         C_DP.P_TBVorwahl = Me.TBVorwahl.Text
         If Not Me.TBPasswort.Text = "1234" Then
-            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+            C_DP.P_TBPasswort = C_Crypt.EncryptString(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
             C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
             C_Helfer.KeyChange()
         End If

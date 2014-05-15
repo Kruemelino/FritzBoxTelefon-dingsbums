@@ -4,14 +4,14 @@ Imports System.IO
 Public Class PhonerInterface
     Private C_DP As DataProvider
     Private C_hf As Helfer
-    Private C_Crypt As Rijndael
+    Private C_Crypt As MyRijndael
 
     Private PhonerAddresse As String = "127.0.0.1"
     Private PhonerAnrMonPort As Integer = 2012
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal DataProviderKlasse As DataProvider, _
-                   ByVal CryptKlasse As Rijndael)
+                   ByVal CryptKlasse As MyRijndael)
 
         C_Crypt = CryptKlasse
         C_DP = DataProviderKlasse
@@ -43,7 +43,7 @@ Public Class PhonerInterface
                             .AutoFlush = True
                             If StreamReader.ReadLine() = C_DP.P_Def_Phoner_Ready Then ' "Welcome to Phoner"
                                 Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len(C_DP.P_Def_Phoner_Challenge) + 1)
-                                Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII))
+                                Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII))
                                 .WriteLine(C_DP.P_Def_Phoner_Response & Response)
                                 C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then

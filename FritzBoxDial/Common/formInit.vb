@@ -2,7 +2,7 @@
     ' Klassen
     Private C_DP As DataProvider
     Private C_HF As Helfer
-    Private C_Crypt As Rijndael
+    Private C_Crypt As MyRijndael
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
     Private C_AnrMon As AnrufMonitor
@@ -28,7 +28,7 @@
         C_DP = New DataProvider()
 
         ' Klasse für Verschlüsselung erstellen
-        C_Crypt = New Rijndael
+        C_Crypt = New MyRijndael
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(C_DP, C_Crypt)
@@ -125,7 +125,7 @@
         Dim fw550 As Boolean
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
-        C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
+        C_DP.P_TBPasswort = C_Crypt.EncryptString(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
         C_HF.KeyChange()
         SID = C_FBox.FBLogIn(fw550)

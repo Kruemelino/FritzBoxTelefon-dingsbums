@@ -6,7 +6,7 @@ Imports System.ComponentModel
 Public Class FritzBox
 
     Private C_DP As DataProvider
-    Private C_Crypt As Rijndael
+    Private C_Crypt As MyRijndael
     Private C_hf As Helfer
 
     Private FBFehler As Boolean
@@ -33,7 +33,7 @@ Public Class FritzBox
 
     Public Sub New(ByVal xmlKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal CryptKlasse As Rijndael)
+                   ByVal CryptKlasse As MyRijndael)
 
 
         C_DP = xmlKlasse
@@ -98,7 +98,7 @@ Public Class FritzBox
             If InStr(slogin_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(slogin_xml) = 0 Then
 
                 If Not InpupPasswort = C_DP.P_Def_ErrorMinusOne_String Then
-                    C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(InpupPasswort, C_DP.P_Def_PassWordDecryptionKey)
+                    C_DP.P_TBPasswort = C_Crypt.EncryptString(InpupPasswort, C_DP.P_Def_PassWordDecryptionKey)
                     C_DP.P_TBBenutzer = InpupBenutzer
                     C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
                     C_hf.KeyChange()
@@ -121,7 +121,7 @@ Public Class FritzBox
                         sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
 
                         With C_Crypt
-                            sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode))
+                            sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString(sFBPasswort, sZugang)), Encoding.Unicode))
                         End With
                         If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 

@@ -131,7 +131,7 @@ Public Class ThisAddIn
     End Property
 #End Region
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Beta 3"
+    Public Const Version As String = "3.7 Beta 4"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
