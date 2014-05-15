@@ -1,10 +1,10 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.7 Beta 1"
+#define MyAppVersion "3.7 Beta 3"
 #define MyAppPublisher "Kruemelino"
-#define MyAppURL "http://www.ip-phone-forum.de/showthread.php?t=237086"
-#define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder Rückwärtssuche."
+#define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
+#define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
 #define MyGUID "411894A1-05D5-4F89-B336-4A4175D5E537" 
 #define MyAppNameKurz "FritzBoxDial"
 #define MyAppTime GetDateTimeString('yymmdd', '', '') 
@@ -25,7 +25,7 @@ Compression=lzma2
 SolidCompression=yes
 PrivilegesRequired=none
 SignTool=WinSDK /d $q{#MyAppDescription}$q /du $q{#MyAppURL}$q $f
-
+SignedUninstaller=yes
 [Languages]
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
@@ -87,9 +87,9 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
   Source: "2003\PopUpStoppUhr.pdb";                                   Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
-;#expr DeleteFile("Common\Funktionen.dll")
-;#expr DeleteFile("Common\PopUpAnrMon.dll")
-;#expr DeleteFile("Common\PopUpStoppuhr.dll")
+#expr DeleteFile("Common\Funktionen.dll")
+#expr DeleteFile("Common\PopUpAnrMon.dll")
+#expr DeleteFile("Common\PopUpStoppuhr.dll")
 
 ;Office 2007
 #if FileExists("2007\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2007\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2007\Fritz!Box Telefon-Dingsbums.vsto")

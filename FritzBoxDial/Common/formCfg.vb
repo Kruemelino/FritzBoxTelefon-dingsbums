@@ -405,7 +405,7 @@ Friend Class formCfg
                 .P_TBBenutzer = Me.TBBenutzer.Text
             End If
             If Not Me.TBPasswort.Text = "1234" Then
-                .P_TBPasswort = C_Crypt.EncryptString(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+                .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
                 C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
                 C_hf.KeyChange()
             End If
@@ -525,7 +525,7 @@ Friend Class formCfg
             If Me.CBPhoner.Checked Then
                 If Not Me.TBPhonerPasswort.Text = C_DP.P_Def_StringEmpty Then
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
-                        .P_TBPhonerPasswort = C_Crypt.EncryptString(Me.TBPhonerPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+                        .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
                         C_DP.SaveSettingsVBA("ZugangPasswortPhoner", C_DP.P_Def_PassWordDecryptionKey)
                         C_hf.KeyChange()
                     End If

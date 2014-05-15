@@ -222,27 +222,19 @@ Public Class Helfer
     ''' <remarks></remarks>
     Public Sub KeyChange()
         Dim tempZugang As String
-        Dim i As Long
 
         If Not C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Then
-            tempZugang = C_DP.P_Def_StringEmpty
-            For i = 0 To 2
-                tempZugang = tempZugang & Hex(Rnd() * 64)
-            Next
+            tempZugang = C_Crypt.GetSalt
             With C_DP
-                .P_TBPasswort = C_Crypt.EncryptString(C_Crypt.DecryptString(.P_TBPasswort, .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne_String)), tempZugang)
+                .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne_String)), tempZugang)
                 .SaveSettingsVBA("Zugang", tempZugang)
             End With
-
         End If
 
         If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
-            tempZugang = C_DP.P_Def_StringEmpty
-            For i = 0 To 2
-                tempZugang = tempZugang & Hex(Rnd() * 64)
-            Next
+            tempZugang = C_Crypt.GetSalt
             With C_DP
-                .P_TBPhonerPasswort = C_Crypt.EncryptString(C_Crypt.DecryptString(.P_TBPhonerPasswort, .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne_String)), tempZugang)
+                .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne_String)), tempZugang)
                 .SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
             End With
         End If

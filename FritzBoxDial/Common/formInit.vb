@@ -125,7 +125,7 @@
         Dim fw550 As Boolean
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
-        C_DP.P_TBPasswort = C_Crypt.EncryptString(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
+        C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
         C_HF.KeyChange()
         SID = C_FBox.FBLogIn(fw550)
