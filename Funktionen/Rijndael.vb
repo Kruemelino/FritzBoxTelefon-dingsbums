@@ -21,15 +21,13 @@ Public Class MyRijndael
 
     Public Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrEncryptionKey As String) As String
 
-        vstrEncryptionKey = GetHash(String.Concat(vstrEncryptionKey, HWID), HashType.MD5, Encoding.Unicode)
+        vstrEncryptionKey = getMd5Hash(String.Concat(vstrEncryptionKey, HWID), Encoding.Unicode, False)
 
         Dim bytValue() As Byte
         Dim bytKey() As Byte
         Dim bytEncoded() As Byte = {0}
         Dim intLength As Integer
         Dim intRemaining As Integer
-        Dim objMemoryStream As New MemoryStream()
-        Dim objRijndaelManaged As RijndaelManaged
 
         '   **********************************************************************
         '   ******  Strip any null character from string to be encrypted    ******
@@ -61,8 +59,6 @@ Public Class MyRijndael
         End If
 
         bytKey = Encoding.ASCII.GetBytes(vstrEncryptionKey.ToCharArray)
-
-        objRijndaelManaged = New RijndaelManaged()
 
         '   ***********************************************************************
         '   ******  Create the encryptor and write value to it after it is   ******
@@ -99,11 +95,9 @@ Public Class MyRijndael
 
     Public Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDecryptionKey As String) As String
 
-        vstrDecryptionKey = GetHash(String.Concat(vstrDecryptionKey, HWID), HashType.MD5, Encoding.Unicode)
+        vstrDecryptionKey = getMd5Hash(String.Concat(vstrDecryptionKey, HWID), Encoding.Unicode, False)
 
         Dim bytDataToBeDecrypted() As Byte
-        Dim objRijndaelManaged As New RijndaelManaged()
-        Dim objMemoryStream As MemoryStream
         Dim bytDecryptionKey() As Byte
 
         Dim intLength As Integer
@@ -134,10 +128,6 @@ Public Class MyRijndael
         End If
 
         bytDecryptionKey = Encoding.ASCII.GetBytes(vstrDecryptionKey.ToCharArray)
-
-        'ReDim bytTemp(bytDataToBeDecrypted.Length)
-
-        objMemoryStream = New MemoryStream(bytDataToBeDecrypted)
 
         '   ***********************************************************************
         '   ******  Create the decryptor and write value to it after it is   ******
@@ -202,8 +192,8 @@ Public Class MyRijndael
         Dim tokenData(16 - 1) As Byte
 
         rng.GetNonZeroBytes(tokenData)
-
         rng.Dispose()
+
         Return Convert.ToBase64String(tokenData)
     End Function
 
@@ -314,24 +304,24 @@ Public Class MyRijndael
         Return bytIV 'return the IV
     End Function
 
-    Public Function GetHash(ByVal original As String, ByVal hashType As HashType, ByVal UE As Encoding) As String
-        Dim hash As String
-        Select Case hashType
-            Case hashType.MD5
-                hash = getMd5Hash(original, UE, False)
-            Case hashType.SHA1
-                hash = GetSHA1Hash(original, UE)
-            Case hashType.SHA256
-                hash = GetSHA256Hash(original, UE)
-            Case hashType.SHA384
-                hash = GetSHA384Hash(original, UE)
-            Case hashType.SHA512
-                hash = GetSHA512Hash(original, UE)
-            Case Else
-                Throw New ArgumentOutOfRangeException("hashType", hashType, "Unsupported HashType.")
-        End Select
-        Return hash
-    End Function
+    'Public Function GetHash(ByVal original As String, ByVal hashType As HashType, ByVal UE As Encoding) As String
+    '    Dim hash As String
+    '    Select Case hashType
+    '        Case hashType.MD5
+    '            hash = getMd5Hash(original, UE, False)
+    '        Case hashType.SHA1
+    '            hash = GetSHA1Hash(original, UE)
+    '        Case hashType.SHA256
+    '            hash = GetSHA256Hash(original, UE)
+    '        Case hashType.SHA384
+    '            hash = GetSHA384Hash(original, UE)
+    '        Case hashType.SHA512
+    '            hash = GetSHA512Hash(original, UE)
+    '        Case Else
+    '            Throw New ArgumentOutOfRangeException("hashType", hashType, "Unsupported HashType.")
+    '    End Select
+    '    Return hash
+    'End Function
 
     'Private Overloads Function GetMD5Hash(ByVal original As String, ByVal UE As Encoding) As String
     '    Dim HashValue As Byte()
@@ -345,52 +335,52 @@ Public Class MyRijndael
     '    Return strHex
     'End Function
 
-    Private Function GetSHA1Hash(ByVal original As String, ByVal UE As Encoding) As String
-        Dim HashValue As Byte()
-        Dim MessageBytes As Byte() = UE.GetBytes(original)
-        Dim SHhash As SHA1Managed = New SHA1Managed
-        Dim strHex As String = ""
-        HashValue = SHhash.ComputeHash(MessageBytes)
-        For Each b As Byte In HashValue
-            strHex &= String.Format("{0:x2}", b)
-        Next
-        Return strHex
-    End Function
+    'Private Function GetSHA1Hash(ByVal original As String, ByVal UE As Encoding) As String
+    '    Dim HashValue As Byte()
+    '    Dim MessageBytes As Byte() = UE.GetBytes(original)
+    '    Dim SHhash As SHA1Managed = New SHA1Managed
+    '    Dim strHex As String = ""
+    '    HashValue = SHhash.ComputeHash(MessageBytes)
+    '    For Each b As Byte In HashValue
+    '        strHex &= String.Format("{0:x2}", b)
+    '    Next
+    '    Return strHex
+    'End Function
 
-    Private Function GetSHA256Hash(ByVal original As String, ByVal UE As Encoding) As String
-        Dim HashValue As Byte()
-        Dim MessageBytes As Byte() = UE.GetBytes(original)
-        Dim SHhash As SHA256Managed = New SHA256Managed
-        Dim strHex As String = ""
-        HashValue = SHhash.ComputeHash(MessageBytes)
-        For Each b As Byte In HashValue
-            strHex &= String.Format("{0:x2}", b)
-        Next
-        Return strHex
-    End Function
+    'Private Function GetSHA256Hash(ByVal original As String, ByVal UE As Encoding) As String
+    '    Dim HashValue As Byte()
+    '    Dim MessageBytes As Byte() = UE.GetBytes(original)
+    '    Dim SHhash As SHA256Managed = New SHA256Managed
+    '    Dim strHex As String = ""
+    '    HashValue = SHhash.ComputeHash(MessageBytes)
+    '    For Each b As Byte In HashValue
+    '        strHex &= String.Format("{0:x2}", b)
+    '    Next
+    '    Return strHex
+    'End Function
 
-    Private Function GetSHA384Hash(ByVal original As String, ByVal UE As Encoding) As String
-        Dim HashValue As Byte()
-        Dim MessageBytes As Byte() = UE.GetBytes(original)
-        Dim SHhash As SHA384Managed = New SHA384Managed
-        Dim strHex As String = ""
-        HashValue = SHhash.ComputeHash(MessageBytes)
-        For Each b As Byte In HashValue
-            strHex &= String.Format("{0:x2}", b)
-        Next
-        Return strHex
-    End Function
+    'Private Function GetSHA384Hash(ByVal original As String, ByVal UE As Encoding) As String
+    '    Dim HashValue As Byte()
+    '    Dim MessageBytes As Byte() = UE.GetBytes(original)
+    '    Dim SHhash As SHA384Managed = New SHA384Managed
+    '    Dim strHex As String = ""
+    '    HashValue = SHhash.ComputeHash(MessageBytes)
+    '    For Each b As Byte In HashValue
+    '        strHex &= String.Format("{0:x2}", b)
+    '    Next
+    '    Return strHex
+    'End Function
 
-    Private Function GetSHA512Hash(ByVal original As String, ByVal UE As Encoding) As String
-        Dim HashValue As Byte()
-        Dim MessageBytes As Byte() = UE.GetBytes(original)
-        Dim SHhash As SHA512Managed = New SHA512Managed
-        Dim strHex As String = ""
-        HashValue = SHhash.ComputeHash(MessageBytes)
-        For Each b As Byte In HashValue
-            strHex &= String.Format("{0:x2}", b)
-        Next
-        Return strHex
-    End Function
+    'Private Function GetSHA512Hash(ByVal original As String, ByVal UE As Encoding) As String
+    '    Dim HashValue As Byte()
+    '    Dim MessageBytes As Byte() = UE.GetBytes(original)
+    '    Dim SHhash As SHA512Managed = New SHA512Managed
+    '    Dim strHex As String = ""
+    '    HashValue = SHhash.ComputeHash(MessageBytes)
+    '    For Each b As Byte In HashValue
+    '        strHex &= String.Format("{0:x2}", b)
+    '    Next
+    '    Return strHex
+    'End Function
 End Class
 
