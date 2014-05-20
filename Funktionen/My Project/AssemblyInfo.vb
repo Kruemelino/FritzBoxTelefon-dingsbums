@@ -1,6 +1,4 @@
-﻿Imports System.Resources
-
-Imports System
+﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -16,8 +14,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")> 
 <Assembly: AssemblyCopyright("")> 
 <Assembly: AssemblyTrademark("")> 
-<Assembly: CLSCompliant(False)> 
-<Assembly: ComVisible(False)> 
+
+<Assembly: ComVisible(False)>
 
 'Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 <Assembly: Guid("411894A1-05D5-4F89-B336-4A4175D5E537")> 
@@ -35,5 +33,3 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyVersion("3.7.0.0")> 
 <Assembly: AssemblyFileVersion("3.7.0.0")> 
-
-<Assembly: NeutralResourcesLanguageAttribute("de-DE")> 

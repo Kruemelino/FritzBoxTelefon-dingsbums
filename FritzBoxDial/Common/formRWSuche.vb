@@ -1,20 +1,17 @@
 Imports System.Windows.Forms
-
-Friend Enum RückwärtsSuchmaschine
-    RWSDasOertliche = 0
-    RWS11880 = 1
-    RWSDasTelefonbuch = 2
-    RWStelSearch = 3
-    RWSAlle = 4
-End Enum
-
-Friend Class FormRWSuche
+Public Class formRWSuche
     Private C_hf As Helfer
     Private C_KF As Contacts
     Private C_DP As DataProvider
     Private HTMLFehler As Boolean
 
-
+    Public Enum Suchmaschine
+        RWSDasOertliche = 0
+        RWS11880 = 1
+        RWSDasTelefonbuch = 2
+        RWStelSearch = 3
+        RWSAlle = 4
+    End Enum
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
@@ -33,17 +30,17 @@ Friend Class FormRWSuche
 
             Dim xPathTeile As New ArrayList
 
-            If C_DP.ProperyCBRWSIndex Then
-                .vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+            If C_DP.P_CBRWSIndex Then
+                .vCard = C_DP.P_Def_ErrorMinusTwo_String
                 ' RWS-Index überprüfen
                 With xPathTeile
                     .Clear()
                     .Add("CBRWSIndex")
                     .Add("Eintrag[@ID=""" & Telefonat.TelNr & """]")
                 End With
-                .vCard = C_DP.Read(xPathTeile, C_DP.Propery_Def_ErrorMinusOne_String)
+                .vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
             Else
-                .vCard = C_DP.Propery_Def_ErrorMinusOne_String
+                .vCard = C_DP.P_Def_ErrorMinusOne_String
             End If
             ' Drei mögliche Rückgaben
             ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. Rückgabe: gültige vCard
@@ -54,23 +51,23 @@ Friend Class FormRWSuche
             ' Fall 2: keine erneute RWS durchführen
             ' Fall 3: RWS durchführen
             Select Case .vCard
-                Case C_DP.Propery_Def_ErrorMinusTwo_String ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert.
-                    '.vCard = C_DP.Propery_Def_ErrorMinusTwo_String
-                Case C_DP.Propery_Def_ErrorMinusOne_String
+                Case C_DP.P_Def_ErrorMinusTwo_String ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert.
+                    '.vCard = C_DP.P_Def_ErrorMinusTwo_String
+                Case C_DP.P_Def_ErrorMinusOne_String
                     '
-                    Select Case CType(C_DP.ProperyComboBoxRWS, RückwärtsSuchmaschine) ' Fall 3: Es gibt keinen Eintrag.
-                        Case RückwärtsSuchmaschine.RWSDasOertliche
+                    Select Case CType(C_DP.P_ComboBoxRWS, formRWSuche.Suchmaschine) ' Fall 3: Es gibt keinen Eintrag.
+                        Case Suchmaschine.RWSDasOertliche
                             AnrMonRWS = RWSDasOertiche(.TelNr, .vCard)
-                        Case RückwärtsSuchmaschine.RWS11880
+                        Case Suchmaschine.RWS11880
                             AnrMonRWS = RWS11880(.TelNr, .vCard)
-                        Case RückwärtsSuchmaschine.RWSDasTelefonbuch
+                        Case Suchmaschine.RWSDasTelefonbuch
                             AnrMonRWS = RWSDasTelefonbuch(.TelNr, .vCard)
-                        Case RückwärtsSuchmaschine.RWStelSearch
+                        Case Suchmaschine.RWStelSearch
                             AnrMonRWS = RWStelsearch(.TelNr, .vCard)
-                        Case RückwärtsSuchmaschine.RWSAlle
+                        Case Suchmaschine.RWSAlle
                             AnrMonRWS = RWSAlle(.TelNr, .vCard)
                     End Select
-                    If C_DP.ProperyCBRWSIndex Then
+                    If C_DP.P_CBRWSIndex Then
                         xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
                         C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
                     End If
@@ -81,7 +78,7 @@ Friend Class FormRWSuche
         End With
     End Function
 
-    Public Sub Rückwärtssuche(ByVal RWSAnbieter As RückwärtsSuchmaschine, ByVal olInsp As Outlook.Inspector)
+    Public Sub Rückwärtssuche(ByVal RWSAnbieter As Suchmaschine, ByVal olInsp As Outlook.Inspector)
         ' Startet die Rückwärtssuche mit verschiedenen Suchmaschinen
         ' funktioniert nur in Kontakt- und Journaleinträgen
         ' Parameter:  Suchmaschine (Integer):  Kennnummer der Suchmaschinen
@@ -92,7 +89,7 @@ Friend Class FormRWSuche
 
         Dim i As Integer, iTelNr As Integer      ' Zählvariablen
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
-        Dim vCard As String = C_DP.Propery_Def_StringEmpty    ' gefundene vCard
+        Dim vCard As String = C_DP.P_Def_StringEmpty    ' gefundene vCard
         Dim rws As Boolean   ' 'true' wenn was gefunden wurde
         Dim row(2) As String
 
@@ -131,10 +128,10 @@ Friend Class FormRWSuche
                                               .TTYTDDTelephoneNumber}
 
                     For i = LBound(alleTE) To UBound(alleTE)
-                        If Not alleTE(i) = C_DP.Propery_Def_StringEmpty Then
+                        If Not alleTE(i) = C_DP.P_Def_StringEmpty Then
                             iTelNr += 1
                             row(0) = CStr(iTelNr)
-                            row(1) = C_DP.Propery_Def_olTelNrTypen(i)
+                            row(1) = C_DP.P_Def_olTelNrTypen(i)
                             row(2) = alleTE(i)
                             Me.ListTel.Rows.Add(row)
                         End If
@@ -152,26 +149,26 @@ Friend Class FormRWSuche
                         TelNr = Me.DirektTel.Text
                     End If
                     ' je nach 'Suchmaschine' Suche durchführen
-                    If Not TelNr = C_DP.Propery_Def_StringEmpty Then
+                    If Not TelNr = C_DP.P_Def_StringEmpty Then
                         Select Case RWSAnbieter
                             'Case Suchmaschine.RWSGoYellow
                             '    rws = RWSGoYellow(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWS11880
+                            Case Suchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWSDasTelefonbuch
+                            Case Suchmaschine.RWSDasTelefonbuch
                                 rws = RWSDasTelefonbuch(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWStelSearch
+                            Case Suchmaschine.RWStelSearch
                                 rws = RWStelsearch(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWSAlle
+                            Case Suchmaschine.RWSAlle
                                 rws = RWSAlle(TelNr, vCard)
                         End Select
                         If rws Then
                             ' wenn erfolgreich, dann Ergebnisse aus vCard in den Kontakt übertragen
                             C_KF.vCard2Contact(vCard, oContact)
                             ' falls TelNr bei der Rückwärtssuche geändert wurde, diese nummer als Zweitnummer eintragen
-                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = C_DP.Propery_Def_StringEmpty Then
+                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = C_DP.P_Def_StringEmpty Then
                                 .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = C_DP.Propery_Def_StringEmpty Then
+                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = C_DP.P_Def_StringEmpty Then
                                 .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                             End If
                             .Body = "Rückwärtssuche erfolgreich" & vbCrLf & "Achtung! Unter Umständen werden vorhandene Daten überschrieben. Wir übernehmen keine Haftung für verloren gegangene Daten und für falsche Informationen, die die Rückwärtssuche liefert! Nutzung auf eigene Gefahr!" & vbCrLf & .Body
@@ -192,13 +189,13 @@ Friend Class FormRWSuche
                         Select Case RWSAnbieter
                             'Case Suchmaschine.RWSGoYellow
                             '    rws = RWSGoYellow(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWS11880
+                            Case Suchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWSDasTelefonbuch
+                            Case Suchmaschine.RWSDasTelefonbuch
                                 rws = RWSDasTelefonbuch(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWStelSearch
+                            Case Suchmaschine.RWStelSearch
                                 rws = RWStelsearch(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWSAlle
+                            Case Suchmaschine.RWSAlle
                                 rws = RWSAlle(TelNr, vCard)
                         End Select
                         If rws Then
@@ -232,7 +229,7 @@ Friend Class FormRWSuche
         Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
         Const SW2 As String = "'"
         ' TelNr sichern, da sie unter Umständen verändert wird
-        vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -248,16 +245,16 @@ Friend Class FormRWSuche
                     htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
                     ' Link zum Herunterladen der vCard suchen
                     EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                    If Not EintragsID = C_DP.Propery_Def_ErrorMinusOne_String Then
+                    If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                         myurl = "http://classic.11880.com" & EintragsID
                         vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
                         If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
                     End If
                     ' Rückgabewert ermitteln
-                    If Strings.Left(vCard, Len(C_DP.Propery_Def_Begin_vCard)) = C_DP.Propery_Def_Begin_vCard Then
+                    If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
                         RWS11880 = True
                     Else
-                        vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+                        vCard = C_DP.P_Def_ErrorMinusTwo_String
                     End If
                     i = i + 1
                     tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 1) & 0
@@ -291,7 +288,7 @@ Friend Class FormRWSuche
 
         RWSDasOertiche = False
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
-        vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -303,19 +300,19 @@ Friend Class FormRWSuche
         Do
             htmlRWS = C_hf.httpGET(baseurl & "search_nat&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
 
-            If Not htmlRWS = C_DP.Propery_Def_StringEmpty Then
+            If Not htmlRWS = C_DP.P_Def_StringEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, "dasoertliche.de/?id=", "&")
-                If Not EintragsID = C_DP.Propery_Def_ErrorMinusOne_String Then
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                     vCard = C_hf.httpGET(baseurl & "vcard&id=" & EintragsID, System.Text.Encoding.Default, HTMLFehler)
                 End If
             End If
             If HTMLFehler Then C_hf.LogFile("FBError (RWSDasOertiche): " & Err.Number & " - " & Err.Description)
-            If Strings.Left(vCard, Len(C_DP.Propery_Def_Begin_vCard)) = C_DP.Propery_Def_Begin_vCard Then
+            If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
                 RWSDasOertiche = True
             Else
-                vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+                vCard = C_DP.P_Def_ErrorMinusTwo_String
             End If
             i = i + 1
             tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
@@ -342,7 +339,7 @@ Friend Class FormRWSuche
 
         RWSDasTelefonbuch = False
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
-        vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -353,20 +350,20 @@ Friend Class FormRWSuche
         Do
             htmlRWS = C_hf.httpGET(myurl & "?cmd=detail&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
 
-            If Not htmlRWS = C_DP.Propery_Def_StringEmpty Then
+            If Not htmlRWS = C_DP.P_Def_StringEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                If Not EintragsID = C_DP.Propery_Def_ErrorMinusOne_String Then
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                     'myurl = C_hf.StringEntnehmen(htmlRWS, SW3, Sw1, True)
                     vCard = C_hf.httpGET("http://www1.dastelefonbuch.de/" & SW1 & EintragsID, System.Text.Encoding.Default, HTMLFehler)
                 End If
             End If
             If HTMLFehler Then C_hf.LogFile("FBError (RWSDasTelefonbuch): " & Err.Number & " - " & Err.Description & " - " & myurl)
-            If Strings.Left(vCard, Len(C_DP.Propery_Def_Begin_vCard)) = C_DP.Propery_Def_Begin_vCard Then
+            If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
                 RWSDasTelefonbuch = True
             Else
-                vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+                vCard = C_DP.P_Def_ErrorMinusTwo_String
             End If
             i = i + 1
             tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
@@ -394,7 +391,7 @@ Friend Class FormRWSuche
         RWStelsearch = False
         ' Vorwahl erkennen
         ' TelNr sichern, da sie unter Umständen verändert wird
-        vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+        vCard = C_DP.P_Def_ErrorMinusTwo_String
         tmpTelNr = C_hf.nurZiffern(TelNr)
         ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
         ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
@@ -409,17 +406,17 @@ Friend Class FormRWSuche
 
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                If Not EintragsID = C_DP.Propery_Def_ErrorMinusOne_String Then
+                If Not EintragsID = C_DP.P_Def_ErrorMinusOne_String Then
                     ' vCard herunterladen
                     myurl = Replace("http://tel.search.ch/vcard/" & EintragsID, "html", "vcf")
                     vCard = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
                 End If
 
                 ' Rückgabewert ermitteln
-                If Strings.Left(vCard, Len(C_DP.Propery_Def_Begin_vCard)) = C_DP.Propery_Def_Begin_vCard Then
+                If Strings.Left(vCard, Len(C_DP.P_Def_Begin_vCard)) = C_DP.P_Def_Begin_vCard Then
                     RWStelsearch = True
                 Else
-                    vCard = C_DP.Propery_Def_ErrorMinusTwo_String
+                    vCard = C_DP.P_Def_ErrorMinusTwo_String
                 End If
                 i = i + 1
                 tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0

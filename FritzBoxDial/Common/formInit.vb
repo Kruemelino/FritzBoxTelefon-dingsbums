@@ -8,12 +8,13 @@
     Private C_AnrMon As AnrufMonitor
     Private C_FBox As FritzBox
     Private C_KF As Contacts
-    Private C_RWS As FormRWSuche
+    Private C_RWS As formRWSuche
     Private C_WählClient As Wählclient
     Private C_Phoner As PhonerInterface
     Private C_Config As formCfg
     Private F_JournalImport As formJournalimport
     'Strings
+    'Private DateiPfad As String
     Private SID As String
 
     Public Sub New()
@@ -31,13 +32,13 @@
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(C_DP, C_Crypt)
-        C_HF.LogFile(C_DP.Propery_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
+        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
         C_KF = New Contacts(C_DP, C_HF)
 
         ' Klasse für die Rückwärtssuche generieren
-        C_RWS = New FormRWSuche(C_HF, C_KF, C_DP)
+        C_RWS = New formRWSuche(C_HF, C_KF, C_DP)
 
         ' Klasse für die OutlookInterface generieren
         C_OlI = New OutlookInterface(C_KF, C_HF, C_DP)
@@ -49,40 +50,40 @@
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
-            ThisAddIn.ProperyFritzBox = C_FBox
+            ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, C_RWS, C_KF, C_Phoner)
 
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner)
-            ThisAddIn.ProperyWClient = C_WählClient
+            ThisAddIn.P_WClient = C_WählClient
 
             C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI)
-            ThisAddIn.ProperyAnrMon = C_AnrMon
+            ThisAddIn.P_AnrMon = C_AnrMon
 
             C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner)
-            ThisAddIn.ProperyConfig = C_Config
+            ThisAddIn.P_Config = C_Config
 
             With C_GUI
-                .ProperyAnrufMonitor = C_AnrMon
-                .ProperyOlInterface = C_OlI
-                .ProperyCallClient = C_WählClient
-                .ProperyFritzBox = C_FBox
+                .P_AnrufMonitor = C_AnrMon
+                .P_OlInterface = C_OlI
+                .P_CallClient = C_WählClient
+                .P_FritzBox = C_FBox
             End With
 
-            ThisAddIn.ProperyGUI = C_GUI
-            ThisAddIn.ProperyXML = C_DP
-            ThisAddIn.Properyhf = C_HF
-            ThisAddIn.ProperyKF = C_KF
+            ThisAddIn.P_GUI = C_GUI
+            ThisAddIn.P_XML = C_DP
+            ThisAddIn.P_hf = C_HF
+            ThisAddIn.P_KF = C_KF
 
-            If C_DP.ProperyCBJImport And C_DP.ProperyCBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
-            If C_DP.ProperyDebug_AnrufSimulation Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
+            If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
+            If C_DP.P_Debug_AnrufSimulation Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
         End If
     End Sub
 
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.ProperyTBPasswort = C_DP.Propery_Def_StringEmpty Or C_DP.ProperyTBVorwahl = C_DP.Propery_Def_StringEmpty Or C_DP.GetSettingsVBA("Zugang", C_DP.Propery_Def_ErrorMinusOne_String) = C_DP.Propery_Def_ErrorMinusOne_String Then
+        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String Then
             Rückgabe = False
             Me.ShowDialog()
             Rückgabe = True 'PrüfeAddin()
@@ -97,9 +98,9 @@
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpGET("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.Propery_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
-                C_DP.ProperyTBFBAdr = FBIPAdresse
-                C_DP.ProperyCBForceFBAddr = Me.CBForceFBAddr.Checked
+            If Not InStr(C_HF.httpGET("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
+                C_DP.P_TBFBAdr = FBIPAdresse
+                C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
                 Me.TBFBUser.Enabled = True
                 Me.LabelFBUser.Enabled = True
@@ -123,12 +124,12 @@
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
-        C_DP.ProperyTBBenutzer = Me.TBFBUser.Text
-        C_DP.ProperyTBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.Propery_Def_PassWordDecryptionKey)
-        C_DP.SaveSettingsVBA("Zugang", C_DP.Propery_Def_PassWordDecryptionKey)
+        C_DP.P_TBBenutzer = Me.TBFBUser.Text
+        C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
+        C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
         C_HF.KeyChange()
         SID = C_FBox.FBLogIn(fw550)
-        If Not SID = C_DP.Propery_Def_SessionID Then
+        If Not SID = C_DP.P_Def_SessionID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False
@@ -156,9 +157,9 @@
         Me.BTelEinlesen.Text = "Bitte warten..."
         Me.BTelEinlesen.Enabled = False
 
-        C_DP.ProperyTBVorwahl = Me.TBVorwahl.Text
-        C_DP.ProperyTBLandesVW = Me.TBLandesvorwahl.Text
-        C_FBox.ProperySpeichereDaten = True
+        C_DP.P_TBVorwahl = Me.TBVorwahl.Text
+        C_DP.P_TBLandesVW = Me.TBLandesvorwahl.Text
+        C_FBox.P_SpeichereDaten = True
         C_FBox.FritzBoxDaten()
 
         Me.CLBTelNr.Enabled = True
@@ -180,7 +181,7 @@
 
             Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_DP.Read(xPathTeile, ""), ";", , CompareMethod.Text)
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like C_DP.Propery_Def_StringEmpty Select x).ToArray ' Leere entfernen
+            TelNrString = (From x In TelNrString Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString
@@ -222,7 +223,7 @@
         End If
 
         Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = C_DP.Propery_Def_StringEmpty
+        Dim tmpTeile As String = C_DP.P_Def_StringEmpty
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
@@ -234,7 +235,7 @@
             tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
             .Add("[" & tmpTeile & "]")
             C_DP.WriteAttribute(xPathTeile, "Checked", "0")
-            tmpTeile = C_DP.Propery_Def_StringEmpty
+            tmpTeile = C_DP.P_Def_StringEmpty
             For i = 0 To CheckTelNr.Count - 1
                 tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
             Next

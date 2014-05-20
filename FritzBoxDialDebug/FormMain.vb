@@ -30,10 +30,10 @@ Public Class FormMain
         C_FBox = New FritzBox(C_DP, C_Helfer, C_Crypt)
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         With C_DP
-            Me.TBLandesVW.Text = .ProperyTBLandesVW
-            Me.TBBenutzer.Text = .ProperyTBBenutzer
-            If Not Len(.ProperyTBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
-            Me.TBVorwahl.Text = .ProperyTBVorwahl
+            Me.TBLandesVW.Text = .P_TBLandesVW
+            Me.TBBenutzer.Text = .P_TBBenutzer
+            If Not Len(.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
+            Me.TBVorwahl.Text = .P_TBVorwahl
         End With
     End Sub
 
@@ -62,17 +62,17 @@ Public Class FormMain
     End Sub
 
     Private Sub BStart_Click(sender As Object, e As EventArgs) Handles BStart.Click
-        C_DP.ProperyTBLandesVW = Me.TBLandesVW.Text
-        C_DP.ProperyTBBenutzer = Me.TBBenutzer.Text
-        C_DP.ProperyTBVorwahl = Me.TBVorwahl.Text
+        C_DP.P_TBLandesVW = Me.TBLandesVW.Text
+        C_DP.P_TBBenutzer = Me.TBBenutzer.Text
+        C_DP.P_TBVorwahl = Me.TBVorwahl.Text
         If Not Me.TBPasswort.Text = "1234" Then
-            C_DP.ProperyTBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, C_DP.Propery_Def_PassWordDecryptionKey)
-            C_DP.SaveSettingsVBA("Zugang", C_DP.Propery_Def_PassWordDecryptionKey)
+            C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, C_DP.P_Def_PassWordDecryptionKey)
+            C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
             C_Helfer.KeyChange()
         End If
         With C_FBox
             .SetEventProvider(emc)
-            .ProperySpeichereDaten = False
+            .P_SpeichereDaten = False
             .FritzBoxDaten()
         End With
     End Sub
@@ -84,7 +84,7 @@ Public Class FormMain
         Dim tempstring As String
 
         sSID = C_FBox.FBLogIn(FW550)
-        If Not sSID = C_DP.Propery_Def_SessionID Then
+        If Not sSID = C_DP.P_Def_SessionID Then
             If FW550 Then
                 sLink = "http://fritz.box/fon_num/fon_num_list.lua?sid=" & sSID
             Else

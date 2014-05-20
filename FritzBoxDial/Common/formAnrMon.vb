@@ -31,6 +31,7 @@ Friend Class formAnrMon
         AnrMonausfüllen()
         AnrmonClosed = False
 
+        Dim OInsp As Outlook.Inspector = Nothing
         If Aktualisieren Then
             TimerAktualisieren = C_hf.SetTimer(100)
             If TimerAktualisieren Is Nothing Then
@@ -40,14 +41,14 @@ Friend Class formAnrMon
         C_OLI.KeepoInspActivated(False)
 
         With PopUpAnrMon
-            .ShowDelay = C_DP.ProperyTBEnblDauer * 1000
-            .AutoAusblenden = C_DP.ProperyCBAutoClose
-            .PositionsKorrektur = New Drawing.Size(C_DP.ProperyTBAnrMonX, C_DP.ProperyTBAnrMonY)
-            .EffektMove = C_DP.ProperyCBAnrMonMove
-            .EffektTransparenz = C_DP.ProperyCBAnrMonTransp
-            .Startpunkt = CType(C_DP.ProperyCBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
-            .MoveDirecktion = CType(C_DP.ProperyCBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
-            .EffektMoveGeschwindigkeit = 44 - C_DP.ProperyTBAnrMonMoveGeschwindigkeit * 4
+            .ShowDelay = C_DP.P_TBEnblDauer * 1000
+            .AutoAusblenden = C_DP.P_CBAutoClose
+            .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
+            .EffektMove = C_DP.P_CBAnrMonMove
+            .EffektTransparenz = C_DP.P_CBAnrMonTransp
+            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
+            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
+            .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             .Popup()
         End With
         C_OLI.KeepoInspActivated(True)
@@ -56,7 +57,7 @@ Friend Class formAnrMon
     Sub AnrMonausfüllen()
         With PopUpAnrMon
 
-            If C_AnrMon.LetzterAnrufer.TelNr = C_DP.Propery_Def_StringUnknown Then
+            If C_AnrMon.LetzterAnrufer.TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
                     .Items("ToolStripMenuItemRückruf").Enabled = False ' kein Rückruf im Fall 1
                     .Items("ToolStripMenuItemKopieren").Enabled = False ' in dem Fall sinnlos
@@ -66,20 +67,20 @@ Friend Class formAnrMon
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = C_AnrMon.LetzterAnrufer.Zeit.ToString
             ' Telefonnamen eintragen
-            .TelName = C_AnrMon.LetzterAnrufer.TelName & CStr(IIf(C_DP.ProperyCBShowMSN, " (" & C_AnrMon.LetzterAnrufer.MSN & ")", C_DP.Propery_Def_StringEmpty))
+            .TelName = C_AnrMon.LetzterAnrufer.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & C_AnrMon.LetzterAnrufer.MSN & ")", C_DP.P_Def_StringEmpty))
 
             ' Kontakt einblenden wenn in Outlook gefunden
             With C_AnrMon.LetzterAnrufer
                 If .olContact Is Nothing Then
                     ''kontakt erstellen, wenn vcard vorhanden
-                    'If Not .vCard = C_DP.Propery_Def_StringEmpty Then
+                    'If Not .vCard = C_DP.P_Def_StringEmpty Then
                     '    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     'End If
                 Else
                     'Kontaktbild ermitteln
-                    If C_DP.ProperyCBAnrMonContactImage Then
+                    If C_DP.P_CBAnrMonContactImage Then
                         PfadKontaktBild = C_KF.KontaktBild(C_AnrMon.LetzterAnrufer.olContact)
-                        If Not PfadKontaktBild = C_DP.Propery_Def_StringEmpty Then
+                        If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
                             Using fs As New IO.FileStream(PfadKontaktBild, IO.FileMode.Open)
                                 PopUpAnrMon.Image = Image.FromStream(fs)
                             End Using
@@ -91,8 +92,8 @@ Friend Class formAnrMon
                 End If
             End With
 
-            If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.Propery_Def_StringEmpty Then
-                .TelNr = C_DP.Propery_Def_StringEmpty
+            If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.P_Def_StringEmpty Then
+                .TelNr = C_DP.P_Def_StringEmpty
                 .AnrName = C_AnrMon.LetzterAnrufer.TelNr
             Else
                 .TelNr = C_AnrMon.LetzterAnrufer.TelNr
@@ -115,7 +116,7 @@ Friend Class formAnrMon
     End Sub
 
     Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click
-        ThisAddIn.ProperyWClient.Rueckruf(C_AnrMon.LetzterAnrufer)
+        ThisAddIn.P_WClient.Rueckruf(C_AnrMon.LetzterAnrufer)
     End Sub
 
     Private Sub ToolStripMenuItemKopieren_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemKopieren.Click
@@ -128,7 +129,7 @@ Friend Class formAnrMon
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
         With C_AnrMon.LetzterAnrufer
-            If Not .KontaktID = C_DP.Propery_Def_ErrorMinusOne_String And Not .StoreID = C_DP.Propery_Def_ErrorMinusOne_String Then
+            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
                 .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
             End If
             If Not .olContact Is Nothing Then
@@ -146,7 +147,7 @@ Friend Class formAnrMon
     End Sub
 
     Private Sub PopUpAnrMon_Closed() Handles PopUpAnrMon.Closed
-        If (Not PfadKontaktBild = C_DP.Propery_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild)) Then
+        If (Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild)) Then
             C_KF.DelKontaktBild(PfadKontaktBild)
         End If
 

@@ -199,7 +199,7 @@ Public Class OutlookInterface
 #Region "Properties"
     Friend ReadOnly Property OutlookApplication As Outlook.Application
         Get
-            Return ThisAddIn.ProperyoApp
+            Return ThisAddIn.P_oApp
         End Get
     End Property
 #End Region
@@ -230,8 +230,8 @@ Public Class OutlookInterface
                     .Categories = Telefonat.Categories
 
 #If Not OVer = 15 Then
-                    If (Not (Telefonat.KontaktID = C_DP.Propery_Def_StringEmpty Or Telefonat.StoreID = C_DP.Propery_Def_StringEmpty)) And Not _
-                        Left(Telefonat.KontaktID, 2) = C_DP.Propery_Def_ErrorMinusOne_String Then
+                    If (Not (Telefonat.KontaktID = C_DP.P_Def_StringEmpty Or Telefonat.StoreID = C_DP.P_Def_StringEmpty)) And Not _
+                        Left(Telefonat.KontaktID, 2) = C_DP.P_Def_ErrorMinusOne_String Then
                         .Links.Add(Telefonat.olContact)
                     End If
 #End If
@@ -260,7 +260,7 @@ Public Class OutlookInterface
                     .Attachments.Add(tmpFile)
                     .Attachments.Add(XMLFile)
                     Try
-                        .Attachments.Add(C_DP.ProperyArbeitsverzeichnis & C_DP.Propery_Def_Log_FileName)
+                        .Attachments.Add(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName)
                     Catch ex As Exception
                         .Body = vbNewLine & "Log wird nicht geschrieben."
                     End Try
@@ -417,5 +417,8 @@ Public Class OutlookInterface
 
     End Sub
 #End Region
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class
 

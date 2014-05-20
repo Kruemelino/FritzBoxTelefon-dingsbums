@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FormStoppUhr
+Partial Class formStoppUhr
     Inherits System.Windows.Forms.Form
 #If OVer = 11 Then
     Friend WithEvents Stoppuhr As FritzBoxDial.PopUpStoppUhr
