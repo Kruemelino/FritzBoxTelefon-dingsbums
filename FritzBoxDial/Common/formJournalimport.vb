@@ -25,7 +25,6 @@ Friend Class formJournalimport
 #End Region
 
 #Region "Eigene Variablen"
-    Private CSVArg As ImportZeitraum
     Private Abbruch As Boolean
     Private anzeigen As Boolean
     Private CSVAnrliste As String
@@ -58,7 +57,7 @@ Friend Class formJournalimport
 
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim StartZeit As Date
-        StartZeit = C_DP.P_StatOLClosedZeit
+        StartZeit = C_DP.ProperyStatOLClosedZeit
         Me.StartDatum.Value = StartZeit
         Me.StartZeit.Value = StartZeit
         Me.EndDatum.Value = System.DateTime.Now
@@ -67,7 +66,7 @@ Friend Class formJournalimport
 
 #Region " Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles DownloadAnrListe.DoWork
-        e.Result = ThisAddIn.P_FritzBox.DownloadAnrListe
+        e.Result = ThisAddIn.ProperyFritzBox.DownloadAnrListe
     End Sub
 
     Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles DownloadAnrListe.RunWorkerCompleted
@@ -81,7 +80,7 @@ Friend Class formJournalimport
         End If
 
         With Übergabe
-            .StartZeit = C_DP.P_StatOLClosedZeit
+            .StartZeit = C_DP.ProperyStatOLClosedZeit
             .EndZeit = System.DateTime.Now
         End With
         If Not anzeigen Then
@@ -111,7 +110,7 @@ Friend Class formJournalimport
         Dim vFBStatus As String()  ' generierter Status-String
         Dim Startzeit As Date    ' Letzter Journalimports
         Dim Endzeit As Date    ' Ende des Journalimports
-        Dim i, j, a, b As Integer    ' Zählvariable
+        Dim j, a, b As Integer    ' Zählvariable
         Dim Übergabewerte As ImportZeitraum = CType(e.Argument, ImportZeitraum)
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
@@ -124,9 +123,9 @@ Friend Class formJournalimport
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
 
-        ThisAddIn.P_FritzBox.FBLogOut(SID)
+        ThisAddIn.ProperyFritzBox.FBLogOut(SID)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = C_DP.P_Def_StringEmpty Then
+        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = C_DP.Propery_Def_StringEmpty Then
 
             CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.
@@ -139,7 +138,7 @@ Friend Class formJournalimport
                 Loop Until AnrListe.GetValue(j).ToString = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer" Or j = AnrListe.Length
                 ' Ermittle die Position des Ersten und Letzten zu importierenden Telefonats
                 StartZeile = j + 1
-                If CStr(AnrListe.GetValue(j + 1)) = C_DP.P_Def_StringEmpty Then
+                If CStr(AnrListe.GetValue(j + 1)) = C_DP.Propery_Def_StringEmpty Then
                     j += 1
                     StartZeile = j + 1
                 End If
@@ -172,13 +171,12 @@ Friend Class formJournalimport
 
                         Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
                         ' Bei analogen Anschlüssen steht "Festnetz" in MSN
-                        If MSN = "Festnetz" Then MSN = C_DP.Read("Telefone", "POTS", C_DP.P_Def_ErrorMinusOne_String)
+                        If MSN = "Festnetz" Then MSN = C_DP.Read("Telefone", "POTS", C_DP.Propery_Def_ErrorMinusOne_String)
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-                        If C_hf.IsOneOf(C_hf.EigeneVorwahlenEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
+                        If C_hf.IsOneOf(C_hf.EigeneVorwahlenEntfernen(MSN), C_DP.ProperyCLBTelNr) Or C_DP.ProperyDebug_AnrufSimulation Then
                             b += 1
-                            i = 0
                             NSN = -1
                             If Not AnrTyp = "2" Then
                                 'Wird im Fall 2 nicht benötigt: Verpasster Anruf.
@@ -202,7 +200,7 @@ Friend Class formJournalimport
                                             .Add("Telefon")
                                             .Add("[TelName = """ & Nebenstelle & """]")
                                             .Add("@Dialport")
-                                            NSN = CInt(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
+                                            NSN = CInt(C_DP.Read(xPathTeile, C_DP.Propery_Def_ErrorMinusOne_String))
                                         End With
                                 End Select
                             End If
@@ -219,28 +217,28 @@ Friend Class formJournalimport
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.ProperyDebug_AnrufSimulation)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.ProperyDebug_AnrufSimulation)
                                 Case 2 ' eingehender Anruf: nicht angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.ProperyDebug_AnrufSimulation)
                                 Case 3, 4 ' ausgehender Anruf
                                     vFBStatus = Split(AnrZeit & ";CALL;25;0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCALL(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCALL(vFBStatus, C_DP.ProperyDebug_AnrufSimulation)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.ProperyDebug_AnrufSimulation)
                             End Select
                             If Abbruch Then Exit For
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;25;" & Dauer & ";", ";", , CompareMethod.Text)
-                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, C_DP.ProperyDebug_AnrufSimulation)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1
                     Next
                 End If
                 ' Registry zurückschreiben
-                C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
+                C_DP.ProperyStatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
                 C_hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
                 C_hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")

@@ -24,9 +24,9 @@ Public Class PhonerInterface
 
     Public Function DialPhoner(ByVal dialCode As String) As String
         If PhonerReady() Then
-            Dim PhonerPasswort As String = C_DP.P_TBPhonerPasswort
-            Dim ZugangPasswortPhoner As String = C_DP.GetSettingsVBA("ZugangPasswortPhoner", C_DP.P_Def_ErrorMinusOne_String)
-            If Not PhonerPasswort = C_DP.P_Def_ErrorMinusOne_String Or Not ZugangPasswortPhoner = C_DP.P_Def_ErrorMinusOne_String Then
+            Dim PhonerPasswort As String = C_DP.ProperyTBPhonerPasswort
+            Dim ZugangPasswortPhoner As String = C_DP.GetSettingsVBA("ZugangPasswortPhoner", C_DP.Propery_Def_ErrorMinusOne_String)
+            If Not PhonerPasswort = C_DP.Propery_Def_ErrorMinusOne_String Or Not ZugangPasswortPhoner = C_DP.Propery_Def_ErrorMinusOne_String Then
                 Dim Stream As NetworkStream
                 Dim remoteEP As New System.Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
                 Dim tcpClient As New TcpClient()
@@ -41,17 +41,17 @@ Public Class PhonerInterface
                         With StreamWriter
                             .WriteLine("Login")
                             .AutoFlush = True
-                            If StreamReader.ReadLine() = C_DP.P_Def_Phoner_Ready Then ' "Welcome to Phoner"
-                                Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len(C_DP.P_Def_Phoner_Challenge) + 1)
+                            If StreamReader.ReadLine() = C_DP.Propery_Def_Phoner_Ready Then ' "Welcome to Phoner"
+                                Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len(C_DP.Propery_Def_Phoner_Challenge) + 1)
                                 ' Anmerkung: Hat bis jetzt funktioniert. Aber es kann sein, dass eine Umwandlung der Zeichen, dessen Codepoint > 255 ist, nicht notig ist.
                                 Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII, True))
-                                .WriteLine(C_DP.P_Def_Phoner_Response & Response)
+                                .WriteLine(C_DP.Propery_Def_Phoner_Response & Response)
                                 C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then
-                                    If dialCode = C_DP.P_Def_Phoner_DISCONNECT Then  '"DISCONNECT"
+                                    If dialCode = C_DP.Propery_Def_Phoner_DISCONNECT Then  '"DISCONNECT"
                                         .WriteLine(dialCode)
                                     Else
-                                        .WriteLine(C_DP.P_Def_Phoner_CONNECT & dialCode)
+                                        .WriteLine(C_DP.Propery_Def_Phoner_CONNECT & dialCode)
                                     End If
                                     DialPhoner = "Nr. " & dialCode & " an Phoner übergeben"
                                 Else

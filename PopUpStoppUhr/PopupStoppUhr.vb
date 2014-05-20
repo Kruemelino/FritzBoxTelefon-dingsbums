@@ -303,7 +303,7 @@ Public Class PopUpStoppUhr
         fStopUhr.Invalidate()
     End Sub
 
-    Private Sub fPopup_CloseClick() Handles fStopUhr.CloseClickStoppUhr
+    Private Sub fPopuProperyCloseClick() Handles fStopUhr.CloseClickStoppUhr
         Stoppwatch.Stop()
         TimerZeit.Close()
         TimerSchlieﬂen.Close()

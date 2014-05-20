@@ -28,13 +28,10 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Eigene Formulare"
-    Private F_Config As formCfg
-    Private F_RWS As formRWSuche
-    Private F_StoppUhr As formStoppUhr
+    Private F_RWS As FormRWSuche
 #End Region
 
 #Region "Thread"
-    Private ReceiveThread As Thread
 #End Region
 
 #Region "NetworkStream"
@@ -106,7 +103,7 @@ Friend Class AnrufMonitor
 #End Region
 
     Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
-                   ByVal RWS As formRWSuche, _
+                   ByVal RWS As FormRWSuche, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
@@ -154,13 +151,13 @@ Friend Class AnrufMonitor
         Dim x As Integer = 0
         Dim y As Integer = 0
 
-        If C_DP.P_CBStoppUhrAusblenden Then
-            WarteZeit = C_DP.P_TBStoppUhr
+        If C_DP.ProperyCBStoppUhrAusblenden Then
+            WarteZeit = C_DP.ProperyTBStoppUhr
         Else
             WarteZeit = -1
         End If
 
-        StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
+        StartPosition = New System.Drawing.Point(C_DP.ProperyCBStoppUhrX, C_DP.ProperyCBStoppUhrY)
         For Each Bildschirm In Windows.Forms.Screen.AllScreens
             x += Bildschirm.Bounds.Size.Width
             y += Bildschirm.Bounds.Size.Height
@@ -173,20 +170,20 @@ Friend Class AnrufMonitor
         End With
 
         With StoppUhrDaten(ID)
-            Dim frmStUhr As New formStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
-            C_hf.LogFile("Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
-            BWStoppuhrEinblenden.WorkerSupportsCancellation = True
-            Do Until frmStUhr.StUhrClosed
-                If Not Beendet And .Abbruch Then
-                    frmStUhr.Stopp()
-                    Beendet = True
-                End If
-                C_hf.ThreadSleep(20)
-                Windows.Forms.Application.DoEvents()
-            Loop
-            C_DP.P_CBStoppUhrX = frmStUhr.Position.X
-            C_DP.P_CBStoppUhrY = frmStUhr.Position.Y
-            frmStUhr = Nothing
+            Using frmStUhr As New FormStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
+                C_hf.LogFile("Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
+                BWStoppuhrEinblenden.WorkerSupportsCancellation = True
+                Do Until frmStUhr.StUhrClosed
+                    If Not Beendet And .Abbruch Then
+                        frmStUhr.Stopp()
+                        Beendet = True
+                    End If
+                    C_hf.ThreadSleep(20)
+                    Windows.Forms.Application.DoEvents()
+                Loop
+                C_DP.ProperyCBStoppUhrX = frmStUhr.Position.X
+                C_DP.ProperyCBStoppUhrY = frmStUhr.Position.Y
+            End Using
         End With
     End Sub
 
@@ -200,14 +197,14 @@ Friend Class AnrufMonitor
         Dim AnrMonTCPSocket As Socket
 
 
-        If C_DP.P_CBPhonerAnrMon Then
-            FBAnrMonPort = C_DP.P_DefaultPhonerAnrMonPort
+        If C_DP.ProperyCBPhonerAnrMon Then
+            FBAnrMonPort = C_DP.Propery_DefaultPhonerAnrMonPort
             'IPAddresse = IPAddress.Loopback ' 127.0.0.1 ' Wert bei "Dim" schon gesetzt
         Else
-            FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
-            If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
+            FBAnrMonPort = C_DP.Propery_DefaultFBAnrMonPort
+            If Not IPAddress.TryParse(C_DP.ProperyTBFBAdr, IPAddresse) Then
                 ' Versuche über Default-IP zur Fritz!Box zu gelangen
-                IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
+                IPHostInfo = Dns.GetHostEntry(C_DP.Propery_Def_FritzBoxAdress)
                 IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString) ' Kann auch IPv6 sein
             End If
         End If
@@ -220,11 +217,11 @@ Friend Class AnrufMonitor
         Catch SocketError As SocketException
             Select Case SocketError.SocketErrorCode
                 Case Sockets.SocketError.ConnectionRefused
-                    If FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort Then
+                    If FBAnrMonPort = C_DP.Propery_DefaultFBAnrMonPort Then
                         'Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte.
-                        If C_hf.FBDB_MsgBox("Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & C_DP.P_Def_NeueZeile & _
-                                            "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & C_DP.P_Def_TelCodeActivateFritzBoxCallMonitor & _
-                                            """ kann dieser aktiviert werden." & C_DP.P_Def_NeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)" _
+                        If C_hf.FBDB_MsgBox("Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & C_DP.Propery_Def_NeueZeile & _
+                                            "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & C_DP.Propery_Def_TelCodeActivateFritzBoxCallMonitor & _
+                                            """ kann dieser aktiviert werden." & C_DP.Propery_Def_NeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)" _
                                          , MsgBoxStyle.YesNo, "Soll der Fritz!Box Callmonitor aktiviert werden?") = MsgBoxResult.Yes Then
 
                             BWActivateCallmonitor = New BackgroundWorker
@@ -257,7 +254,7 @@ Friend Class AnrufMonitor
                     AnrMonAktiv = .IsAlive
                 End With
                 ' Timer AnrufmonitorCheck starten
-                If Not C_DP.P_CBPhonerAnrMon Then TimerCheckAnrMon = C_hf.SetTimer(TimeSpan.FromMinutes(C_DP.P_Def_CheckAnrMonIntervall).TotalMilliseconds)
+                If Not C_DP.ProperyCBPhonerAnrMon Then TimerCheckAnrMon = C_hf.SetTimer(TimeSpan.FromMinutes(C_DP.Propery_Def_CheckAnrMonIntervall).TotalMilliseconds)
                 e.Result = AnrMonAktiv
             Else
                 AnrMonError = True
@@ -290,21 +287,24 @@ Friend Class AnrufMonitor
     End Sub
 
     Sub BWActivateCallmonitor_DoWork() Handles BWActivateCallmonitor.DoWork
-        C_GUI.P_CallClient.Wählbox(Nothing, C_DP.P_Def_TelCodeActivateFritzBoxCallMonitor, C_DP.P_Def_StringEmpty, True)
+        C_GUI.ProperyCallClient.Wählbox(Nothing, C_DP.Propery_Def_TelCodeActivateFritzBoxCallMonitor, C_DP.Propery_Def_StringEmpty, True)
         Do
             Windows.Forms.Application.DoEvents()
-        Loop Until C_GUI.P_CallClient._listFormWählbox.Count = 0
+        Loop Until C_GUI.ProperyCallClient._listFormWählbox.Count = 0
     End Sub
 #End Region
 
 #Region "Timer"
     Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
+
+        Dim frmJimport As formJournalimport
+
         AnrMonAktiv = False
-        If StandbyCounter < C_DP.P_Def_TryMaxRestart Then
-            If C_DP.P_CBForceFBAddr Then
-                C_hf.httpGET(C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), AnrMonError)
+        If StandbyCounter < C_DP.Propery_Def_TryMaxRestart Then
+            If C_DP.ProperyCBForceFBAddr Then
+                C_hf.httpGET(C_DP.ProperyTBFBAdr, C_hf.GetEncoding(C_DP.ProperyEncodeingFritzBox), AnrMonError)
             Else
-                AnrMonError = Not C_hf.Ping(C_DP.P_TBFBAdr)
+                AnrMonError = Not C_hf.Ping(C_DP.ProperyTBFBAdr)
             End If
 
             If AnrMonError Then
@@ -313,7 +313,7 @@ Friend Class AnrufMonitor
             Else
                 C_hf.LogFile("Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...")
                 AnrMonStartStopp()
-                If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+                If C_DP.ProperyCBJournal Then frmJimport = New formJournalimport(Me, C_hf, C_DP, False)
             End If
         Else
             C_hf.LogFile("Reaktivierung des Anrufmonitors nicht erfolgreich.")
@@ -327,17 +327,15 @@ Friend Class AnrufMonitor
         Dim IPAddresse As IPAddress = IPAddress.Loopback
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
-        Dim FBAnrMonPort As Integer
         Dim CheckAnrMonTCPSocket As Socket
 
-        FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
-        If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
+        If Not IPAddress.TryParse(C_DP.ProperyTBFBAdr, IPAddresse) Then
             ' Versuche über Default-IP zur Fritz!Box zu gelangen
-            IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
+            IPHostInfo = Dns.GetHostEntry(C_DP.Propery_Def_FritzBoxAdress)
             IPAddresse = IPAddress.Parse(IPHostInfo.AddressList(0).ToString) ' Kann auch IPv6 sein
         End If
 
-        RemoteEP = New IPEndPoint(IPAddresse, C_DP.P_DefaultFBAnrMonPort)
+        RemoteEP = New IPEndPoint(IPAddresse, C_DP.Propery_DefaultFBAnrMonPort)
         CheckAnrMonTCPSocket = New Sockets.Socket(IPAddresse.AddressFamily, Sockets.SocketType.Stream, Sockets.ProtocolType.Tcp)
 
         Try
@@ -348,7 +346,7 @@ Friend Class AnrufMonitor
             AnrMonError = True
             If Not TimerReStart Is Nothing AndAlso Not TimerReStart.Enabled Then
                 StandbyCounter = 1
-                TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
+                TimerReStart = C_hf.SetTimer(C_DP.Propery_Def_ReStartIntervall)
             End If
         End Try
 
@@ -393,9 +391,9 @@ Friend Class AnrufMonitor
 #End If
         Else
             ' TCP/IP-Verbindung öffnen
-            If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+            If C_DP.ProperyCBAnrMonAuto And C_DP.ProperyCBUseAnrMon Then
 
-                If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Or C_DP.P_CBPhonerAnrMon Then
+                If C_hf.Ping(C_DP.ProperyTBFBAdr) Or C_DP.ProperyCBForceFBAddr Or C_DP.ProperyCBPhonerAnrMon Then
                     BWStartTCPReader = New BackgroundWorker
                     With BWStartTCPReader
                         .WorkerReportsProgress = True
@@ -419,9 +417,9 @@ Friend Class AnrufMonitor
 #End If
         AnrMonStartNachStandby = False
 
-        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And TimerReStart Is Nothing Then
+        If C_DP.ProperyCBAnrMonAuto And C_DP.ProperyCBUseAnrMon And TimerReStart Is Nothing Then
             StandbyCounter = 1
-            TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
+            TimerReStart = C_hf.SetTimer(C_DP.Propery_Def_ReStartIntervall)
         End If
     End Function
 
@@ -494,10 +492,9 @@ Friend Class AnrufMonitor
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
 
         Dim Telefonat As C_Telefonat
-        Dim xPathTeile As New ArrayList
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
-        If C_hf.IsOneOf(MSN, C_DP.P_CLBTelNr) Or AnrMonPhoner Then
+        If C_hf.IsOneOf(MSN, C_DP.ProperyCLBTelNr) Or AnrMonPhoner Then
 
             Telefonat = New C_Telefonat
             With Telefonat
@@ -515,14 +512,14 @@ Friend Class AnrufMonitor
                         .TelNr = Left(.TelNr, pos - 1)
                     Else
                         PhonerTelNr = C_hf.TelNrTeile(.TelNr)
-                        If Not PhonerTelNr(1) = C_DP.P_Def_StringEmpty Then .TelNr = PhonerTelNr(1) & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
-                        If Not PhonerTelNr(0) = C_DP.P_Def_StringEmpty Then .TelNr = PhonerTelNr(0) & Mid(.TelNr, 2)
+                        If Not PhonerTelNr(1) = C_DP.Propery_Def_StringEmpty Then .TelNr = PhonerTelNr(1) & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
+                        If Not PhonerTelNr(0) = C_DP.Propery_Def_StringEmpty Then .TelNr = PhonerTelNr(0) & Mid(.TelNr, 2)
                     End If
                     .TelNr = C_hf.nurZiffern(.TelNr)
                 End If
                 ' Ende Phoner
 
-                If Len(.TelNr) = 0 Then .TelNr = C_DP.P_Def_StringUnknown
+                If Len(.TelNr) = 0 Then .TelNr = C_DP.Propery_Def_StringUnknown
 
                 ' Daten für Anzeige im Anrurfmonitor speichern
 
@@ -533,22 +530,22 @@ Friend Class AnrufMonitor
                 End If
 
                 ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
-                If Not .TelNr = C_DP.P_Def_StringUnknown Then
+                If Not .TelNr = C_DP.Propery_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
-                    .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
+                    .olContact = C_KF.KontaktSuche(.TelNr, C_DP.Propery_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.ProperyCBKHO)
                     If Not .olContact Is Nothing Then
                         .Anrufer = .olContact.FullName ' Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
                         .Companies = .olContact.CompanyName
-                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
+                        If C_DP.ProperyCBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
                         ' Anrufer per Rückwärtssuche ermitteln
-                        If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+                        If C_DP.ProperyCBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
 
-                            If C_DP.P_CBKErstellen Then
+                            If C_DP.ProperyCBKErstellen Then
                                 ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
                                 ' Dies geschieht nur, wenn es gewünscht ist.
                                 .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                .vCard = C_DP.P_Def_StringEmpty
+                                .vCard = C_DP.Propery_Def_StringEmpty
                                 .Companies = .olContact.CompanyName
                                 .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
                             Else
@@ -564,16 +561,16 @@ Friend Class AnrufMonitor
 
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
-                    C_GUI.UpdateList(C_DP.P_Def_NameListRING, Telefonat)
+                    C_GUI.UpdateList(C_DP.Propery_Def_NameListRING, Telefonat)
 #If OVer < 14 Then
-                If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
+                If C_DP.ProperyCBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
 #End If
                 End If
                 'StoppUhr
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
+                If C_DP.ProperyCBStoppUhrEinblenden And ShowForms Then
                     With StoppUhrDaten(.ID)
                         .Richtung = "Anruf von:"
-                        If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
+                        If Telefonat.Anrufer = C_DP.Propery_Def_StringEmpty Then
                             .Anruf = Telefonat.TelNr
                         Else
                             .Anruf = Telefonat.Anrufer
@@ -582,12 +579,12 @@ Friend Class AnrufMonitor
                 End If
 
                 ' Kontakt anzeigen
-                If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
+                If C_DP.ProperyCBAnrMonZeigeKontakt And ShowForms Then
                     If .olContact Is Nothing Then
                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     End If
 #If Not OVer = 11 Then
-                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+                    If C_DP.ProperyCBNote Then C_KF.AddNote(.olContact)
 #End If
                     Try
                         ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
@@ -600,8 +597,8 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
-                    C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                If C_DP.ProperyCBNote AndAlso Not .olContact Is Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.ProperyCBAnrMonZeigeKontakt)
                 End If
 #End If
             End With
@@ -630,7 +627,7 @@ Friend Class AnrufMonitor
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 
-        If C_hf.IsOneOf(MSN, C_DP.P_CLBTelNr) Or AnrMonPhoner Then
+        If C_hf.IsOneOf(MSN, C_DP.ProperyCLBTelNr) Or AnrMonPhoner Then
             Telefonat = New C_Telefonat
             With Telefonat
                 .Zeit = CDate(FBStatus.GetValue(0))
@@ -640,7 +637,7 @@ Friend Class AnrufMonitor
                 .Typ = C_Telefonat.AnrufRichtung.Ausgehend
 
                 ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
-                If .MSN = C_DP.P_Def_StringEmpty Then
+                If .MSN = C_DP.Propery_Def_StringEmpty Then
                     Select Case .NSN
                         Case 0 To 2 ' FON1-3
                             .NSN += 1
@@ -649,7 +646,7 @@ Friend Class AnrufMonitor
                     End Select
                     Select Case .NSN
                         Case 3, 4, 5, 36, 37
-                            .MSN = C_DP.P_Def_ErrorMinusOne_String
+                            .MSN = C_DP.Propery_Def_ErrorMinusOne_String
                         Case Else
                             With xPathTeile
                                 .Clear()
@@ -663,29 +660,29 @@ Friend Class AnrufMonitor
                     End Select
                 End If
                 .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)))
-                If .TelNr = C_DP.P_Def_StringEmpty Then .TelNr = C_DP.P_Def_StringUnknown
+                If .TelNr = C_DP.Propery_Def_StringEmpty Then .TelNr = C_DP.Propery_Def_StringUnknown
                 ' CbC-Vorwahl entfernen
                 If Left(.TelNr, 4) = "0100" Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
                 If Left(.TelNr, 3) = "010" Then .TelNr = Right(.TelNr, Len(.TelNr) - 5)
-                If Not Left(.TelNr, 1) = "0" And Not Left(.TelNr, 2) = "11" And Not Left(.TelNr, 1) = "+" Then .TelNr = C_DP.P_TBVorwahl & .TelNr
+                If Not Left(.TelNr, 1) = "0" And Not Left(.TelNr, 2) = "11" And Not Left(.TelNr, 1) = "+" Then .TelNr = C_DP.ProperyTBVorwahl & .TelNr
                 ' Raute entfernen
                 If Right(.TelNr, 1) = "#" Then .TelNr = Left(.TelNr, Len(.TelNr) - 1)
                 ' Daten zurücksetzen
 
-                If Not .TelNr = C_DP.P_Def_StringUnknown Then
-                    .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
+                If Not .TelNr = C_DP.Propery_Def_StringUnknown Then
+                    .olContact = C_KF.KontaktSuche(.TelNr, C_DP.Propery_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.ProperyCBKHO)
                     If Not Telefonat.olContact Is Nothing Then
                         .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
-                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
+                        If C_DP.ProperyCBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
                         ' .Anrufer per Rückwärtssuche ermitteln
-                        If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+                        If C_DP.ProperyCBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
 
-                            If C_DP.P_CBKErstellen Then
+                            If C_DP.ProperyCBKErstellen Then
                                 ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
                                 ' Dies geschieht nur, wenn es gewünscht ist.
                                 .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                .vCard = C_DP.P_Def_StringEmpty
+                                .vCard = C_DP.Propery_Def_StringEmpty
                                 .Companies = .olContact.CompanyName
                                 .Anrufer = Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
                             Else
@@ -700,15 +697,15 @@ Friend Class AnrufMonitor
                     End If
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
-                C_GUI.UpdateList(C_DP.P_Def_NameListCALL, Telefonat)
+                C_GUI.UpdateList(C_DP.Propery_Def_NameListCALL, Telefonat)
 #If OVer < 14 Then
-            If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
+            If C_DP.ProperyCBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
                 'StoppUhr
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
+                If C_DP.ProperyCBStoppUhrEinblenden And ShowForms Then
                     With StoppUhrDaten(.ID)
                         .Richtung = "Anruf zu:"
-                        If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
+                        If Telefonat.Anrufer = C_DP.Propery_Def_StringEmpty Then
                             .Anruf = Telefonat.TelNr
                         Else
                             .Anruf = Telefonat.Anrufer
@@ -716,12 +713,12 @@ Friend Class AnrufMonitor
                     End With
                 End If
                 ' Kontakt öffnen
-                If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
+                If C_DP.ProperyCBAnrMonZeigeKontakt And ShowForms Then
                     If .olContact Is Nothing Then
                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     End If
 #If Not OVer = 11 Then
-                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+                    If C_DP.ProperyCBNote Then C_KF.AddNote(.olContact)
 #End If
                     Try
                         .olContact.Display()
@@ -731,8 +728,8 @@ Friend Class AnrufMonitor
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
-                    C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                If C_DP.ProperyCBNote AndAlso Not .olContact Is Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.ProperyCBAnrMonZeigeKontakt)
                 End If
 #End If
             End With
@@ -806,11 +803,11 @@ Friend Class AnrufMonitor
                 End If
 
                 ' StoppUhr einblenden
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
+                If C_DP.ProperyCBStoppUhrEinblenden And ShowForms Then
                     C_hf.LogFile("StoppUhr wird eingeblendet.")
                     With StoppUhrDaten(.ID)
-                        .MSN = CStr(IIf(Telefonat.TelName = C_DP.P_Def_StringEmpty, Telefonat.MSN, Telefonat.TelName))
-                        .StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
+                        .MSN = CStr(IIf(Telefonat.TelName = C_DP.Propery_Def_StringEmpty, Telefonat.MSN, Telefonat.TelName))
+                        .StartZeit = String.Format(Globalization.CultureInfo.CurrentCulture, "{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
                         .Abbruch = False
                     End With
                     BWStoppuhrEinblenden = New BackgroundWorker
@@ -821,9 +818,9 @@ Friend Class AnrufMonitor
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote Then
+                If C_DP.ProperyCBNote Then
                     If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                        C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.ProperyCBAnrMonZeigeKontakt)
                     End If
                 End If
 #End If
@@ -846,9 +843,8 @@ Friend Class AnrufMonitor
         ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
         ' FBStatus(3): Dauer des Telefonates
 
-        Dim CallDirection As String = C_DP.P_Def_StringEmpty
-        Dim NSN As Long = -1
-        Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
+        Dim CallDirection As String = C_DP.Propery_Def_StringEmpty
+        Dim SchließZeit As Date = C_DP.ProperyStatOLClosedZeit
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
@@ -857,11 +853,10 @@ Friend Class AnrufMonitor
 
         If Not Telefonat Is Nothing Then
             With Telefonat
-                NSN = .NSN
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
-                .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Angenommen, C_DP.P_Def_StringEmpty, "nicht ")) & "angenommen" & vbCrLf & vbCrLf
-                If Not .vCard = C_DP.P_Def_StringEmpty Then
+                .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Angenommen, C_DP.Propery_Def_StringEmpty, "nicht ")) & "angenommen" & vbCrLf & vbCrLf
+                If Not .vCard = C_DP.Propery_Def_StringEmpty Then
 
                     .Companies = ReadFromVCard(.vCard, "ORG", "")
                     .Body += "Kontaktdaten (vCard):" & vbCrLf & .vCard & vbCrLf
@@ -869,25 +864,25 @@ Friend Class AnrufMonitor
                 Else
                     If Not .olContact Is Nothing Then
 
-                        If .olContact.FullName = C_DP.P_Def_StringEmpty Then
-                            .Anrufer = CStr(IIf(.olContact.Companies = C_DP.P_Def_StringEmpty, .TelNr, .Companies))
+                        If .olContact.FullName = C_DP.Propery_Def_StringEmpty Then
+                            .Anrufer = CStr(IIf(.olContact.Companies = C_DP.Propery_Def_StringEmpty, .TelNr, .Companies))
                         Else
                             .Anrufer = .olContact.FullName
                         End If
 
-                        If .Companies = C_DP.P_Def_StringEmpty Then
-                            If Not .olContact.HomeAddress = C_DP.P_Def_StringEmpty Then
+                        If .Companies = C_DP.Propery_Def_StringEmpty Then
+                            If Not .olContact.HomeAddress = C_DP.Propery_Def_StringEmpty Then
                                 .Body += "Kontaktdaten:" & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.HomeAddress & vbCrLf
                             End If
                         Else
-                            If Not .olContact.BusinessAddress = C_DP.P_Def_StringEmpty Then
+                            If Not .olContact.BusinessAddress = C_DP.Propery_Def_StringEmpty Then
                                 .Body += "Kontaktdaten:" & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.BusinessAddress & vbCrLf
                             End If
                         End If
                     End If
                 End If
 
-                If C_DP.P_CBJournal Then
+                If C_DP.ProperyCBJournal Then
 
                     If .Angenommen Then
                         With xPathTeile
@@ -901,10 +896,10 @@ Friend Class AnrufMonitor
 
                             If Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                                 .Add(C_Telefonat.AnrufRichtung.Eingehend.ToString)
-                                CallDirection = C_DP.P_Def_Journal_Text_Eingehend
+                                CallDirection = C_DP.Propery_Def_Journal_Text_Eingehend
                             Else
                                 .Add(C_Telefonat.AnrufRichtung.Ausgehend.ToString)
-                                CallDirection = C_DP.P_Def_Journal_Text_Ausgehend
+                                CallDirection = C_DP.Propery_Def_Journal_Text_Ausgehend
                             End If
                         End With
 
@@ -913,24 +908,24 @@ Friend Class AnrufMonitor
                         End With
                     Else
                         If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
-                            C_DP.P_StatVerpasst += 1
-                            CallDirection = C_DP.P_Def_Journal_Text_Verpasst
+                            C_DP.ProperyStatVerpasst += 1
+                            CallDirection = C_DP.Propery_Def_Journal_Text_Verpasst
                         Else
-                            C_DP.P_StatNichtErfolgreich += 1
-                            CallDirection = C_DP.P_Def_Journal_Text_NichtErfolgreich
+                            C_DP.ProperyStatNichtErfolgreich += 1
+                            CallDirection = C_DP.Propery_Def_Journal_Text_NichtErfolgreich
                         End If
                     End If
 
                     .Categories = .TelName & "; FritzBox Anrufmonitor; Telefonanrufe"
-                    .Subject = CallDirection & " " & .Anrufer & CStr(IIf(.Anrufer = .TelNr, C_DP.P_Def_StringEmpty, " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & .TelName & ")"))
+                    .Subject = CallDirection & " " & .Anrufer & CStr(IIf(.Anrufer = .TelNr, C_DP.Propery_Def_StringEmpty, " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.Propery_Def_StringEmpty, " (" & .TelName & ")"))
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)
-                    C_DP.P_StatJournal += 1
+                    C_DP.ProperyStatJournal += 1
                 End If
 
-                If .Zeit > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
+                If .Zeit > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.ProperyStatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
 
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then StoppUhrDaten(.ID).Abbruch = True
+                If C_DP.ProperyCBStoppUhrEinblenden And ShowForms Then StoppUhrDaten(.ID).Abbruch = True
 
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                     LetzterAnrufer = Telefonat
@@ -939,22 +934,22 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote Then
+                If C_DP.ProperyCBNote Then
                     If Not .olContact Is Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                        C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.ProperyCBAnrMonZeigeKontakt)
                     End If
                 End If
 #End If
             End With
             TelefonatsListe.Remove(Telefonat)
         Else
-            If C_DP.P_CBJournal And C_hf.IsOneOf(CStr(FBStatus.GetValue(3)), C_DP.P_CLBTelNr) Then
+            If C_DP.ProperyCBJournal And C_hf.IsOneOf(CStr(FBStatus.GetValue(3)), C_DP.ProperyCLBTelNr) Then
                 C_hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
                 ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
                 Dim ZeitAnruf As Date = CDate(FBStatus(0))
                 Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
                 ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + DauerAnruf + 70))
-                If ZeitAnruf < SchließZeit Then C_DP.P_StatOLClosedZeit = ZeitAnruf
+                If ZeitAnruf < SchließZeit Then C_DP.ProperyStatOLClosedZeit = ZeitAnruf
                 C_hf.LogFile("AnrMonDISCONNECT: Journalimport wird gestartet")
                 Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
             End If
@@ -976,7 +971,7 @@ Friend Class AnrufMonitor
             NodeValues.Add(.Zeit)
 
             ' Anrufername
-            If Not .Anrufer = C_DP.P_Def_StringEmpty Then
+            If Not .Anrufer = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(.Anrufer)
             End If
@@ -990,31 +985,31 @@ Friend Class AnrufMonitor
             NodeValues.Add(.MSN)
 
             ' StoreID
-            If Not .StoreID = C_DP.P_Def_StringEmpty Then
+            If Not .StoreID = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(.StoreID)
             End If
 
             ' KontaktID
-            If Not .KontaktID = C_DP.P_Def_StringEmpty Then
+            If Not .KontaktID = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(.KontaktID)
             End If
 
             ' vCard
-            If Not .vCard = C_DP.P_Def_StringEmpty Then
+            If Not .vCard = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("vCard")
                 NodeValues.Add(.vCard)
             End If
 
             ' TelName
-            If Not .TelName = C_DP.P_Def_StringEmpty Then
+            If Not .TelName = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("TelName")
                 NodeValues.Add(.TelName)
             End If
 
             ' Companies
-            If Not .Companies = C_DP.P_Def_StringEmpty Then
+            If Not .Companies = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("Companies")
                 NodeValues.Add(.Companies)
             End If
@@ -1051,35 +1046,35 @@ Friend Class AnrufMonitor
 
         ' Anrufer
         ListNodeNames.Add("Anrufer")
-        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
+        ListNodeValues.Add(C_DP.Propery_Def_StringEmpty)
 
         ' TelNr
         ListNodeNames.Add("TelNr")
-        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
+        ListNodeValues.Add(C_DP.Propery_Def_StringEmpty)
 
         ' MSN
         ListNodeNames.Add("MSN")
-        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
+        ListNodeValues.Add(C_DP.Propery_Def_StringEmpty)
 
         ' StoreID
         ListNodeNames.Add("StoreID")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        ListNodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
 
         ' KontaktID
         ListNodeNames.Add("KontaktID")
-        ListNodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        ListNodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
 
         ' vCard
         ListNodeNames.Add("vCard")
-        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
+        ListNodeValues.Add(C_DP.Propery_Def_StringEmpty)
 
         ' TelName
         ListNodeNames.Add("TelName")
-        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
+        ListNodeValues.Add(C_DP.Propery_Def_StringEmpty)
 
         ' Companies
         ListNodeNames.Add("Companies")
-        ListNodeValues.Add(C_DP.P_Def_StringEmpty)
+        ListNodeValues.Add(C_DP.Propery_Def_StringEmpty)
 
         LadeLetzterAnrufer.ID = 0 'CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
         With xPathTeile
@@ -1099,11 +1094,11 @@ Friend Class AnrufMonitor
             .TelName = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelName")))
             .Companies = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Companies")))
 
-            If .TelName = C_DP.P_Def_ErrorMinusOne_String Then .TelName = C_hf.TelefonName(.MSN)
+            If .TelName = C_DP.Propery_Def_ErrorMinusOne_String Then .TelName = C_hf.TelefonName(.MSN)
             If Not C_OlI.OutlookApplication Is Nothing Then
-                If Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not .StoreID = C_DP.Propery_Def_ErrorMinusOne_String Then
                     .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
-                ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne_String Then
+                ElseIf Not .vCard = C_DP.Propery_Def_ErrorMinusOne_String Then
                     'prüfen ob das Sinnvoll ist:
                     '.olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                 End If

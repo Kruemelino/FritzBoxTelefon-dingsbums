@@ -3,9 +3,9 @@
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
     Private RibbonObjekt As Office.IRibbonUI
-    Public Function GetCustomUI(ByVal ribbonID As String) As String Implements Office.IRibbonExtensibility.GetCustomUI
+    Public Function GetCustomUI(ByVal RibbonID As String) As String Implements Office.IRibbonExtensibility.GetCustomUI
         Dim File As String
-        Select Case ribbonID
+        Select Case RibbonID
 #If OVer >= 14 Then
             Case "Microsoft.Outlook.Explorer"
                 File = GetResourceText("FritzBoxDial.RibbonExplorer.xml")
@@ -17,10 +17,10 @@
             Case "Microsoft.Outlook.Contact"
                 File = GetResourceText("FritzBoxDial.RibbonKontakt.xml")
             Case Else
-                File = C_DP.P_Def_StringEmpty
+                File = C_DP.Propery_Def_StringEmpty
         End Select
 #If OVer = 12 Then
-        If Not File = C_DP.P_Def_StringEmpty Then
+        If Not File = C_DP.Propery_Def_StringEmpty Then
             File = Replace(File, "http://schemas.microsoft.com/office/2009/07/customui", "http://schemas.microsoft.com/office/2006/01/customui", , 1, CompareMethod.Text)
         End If
 #End If
@@ -54,21 +54,19 @@
 #Region "Eigene Klassen"
     Private C_HF As Helfer
     Private C_DP As DataProvider
-    Private C_Crypt As MyRijndael
     Private C_WClient As Wählclient
     Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
     Private C_FBox As FritzBox
-    Private C_Phoner As PhonerInterface
 #End Region
 
 #Region "Eigene Formulare"
-    Private F_RWS As formRWSuche
+    Private F_RWS As FormRWSuche
 #End Region
 
 #Region "Properies"
-    Friend Property P_CallClient() As Wählclient
+    Friend Property ProperyCallClient() As Wählclient
         Get
             Return C_WClient
         End Get
@@ -77,7 +75,7 @@
         End Set
     End Property
 
-    Friend Property P_AnrufMonitor() As AnrufMonitor
+    Friend Property ProperyAnrufMonitor() As AnrufMonitor
         Get
             Return C_AnrMon
         End Get
@@ -86,7 +84,7 @@
         End Set
     End Property
 
-    Public Property P_OlInterface() As OutlookInterface
+    Public Property ProperyOlInterface() As OutlookInterface
         Get
             Return C_OLI
         End Get
@@ -95,7 +93,7 @@
         End Set
     End Property
 
-    Public Property P_FritzBox() As FritzBox
+    Public Property ProperyFritzBox() As FritzBox
         Get
             Return C_FBox
         End Get
@@ -105,22 +103,14 @@
     End Property
 #End Region
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
-
     Friend Sub New(ByVal HelferKlasse As Helfer, _
                ByVal DataProviderKlasse As DataProvider, _
-               ByVal CryptKlasse As MyRijndael, _
-               ByVal Inverssuche As formRWSuche, _
-               ByVal KontaktKlasse As Contacts, _
-               ByVal Phonerklasse As PhonerInterface)
+               ByVal Inverssuche As FormRWSuche, _
+               ByVal KontaktKlasse As Contacts)
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
-        C_Crypt = CryptKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
-        C_Phoner = Phonerklasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -277,11 +267,11 @@
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
+                XMLListBaseNode = C_DP.Propery_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
+                XMLListBaseNode = C_DP.Propery_Def_NameListRING '"RingList"
             Case Else '"dynMVIPListe"
-                XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
+                XMLListBaseNode = C_DP.Propery_Def_NameListVIP '"VIPList"
         End Select
 
         index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
@@ -289,9 +279,9 @@
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -308,17 +298,17 @@
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not TelNr = C_DP.Propery_Def_ErrorMinusOne_String Then
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
+                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.Propery_Def_ErrorMinusOne_String, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.Propery_Def_ErrorMinusOne, TelNr, Anrufer))
                     MyStringBuilder.Append(" onAction=""OnActionListen""")
                     MyStringBuilder.Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
                     MyStringBuilder.Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
                     MyStringBuilder.Append("/>" & vbCrLf)
                     i += 1
-                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
-                    LANodeValues.Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
-                    LANodeValues.Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(0) = (C_DP.Propery_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(1) = (C_DP.Propery_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(2) = (C_DP.Propery_Def_ErrorMinusOne_String)
                 End If
             Next
         Else
@@ -326,7 +316,7 @@
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-                If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not Anrufer = C_DP.Propery_Def_ErrorMinusOne_String Then
 
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod index) & """")
                     MyStringBuilder.Append(" label=""" & CStr(Anrufer) & """")
@@ -335,7 +325,7 @@
                     MyStringBuilder.Append("/>" & vbCrLf)
 
                     'xPathTeile.RemoveAt(xPathTeile.Count - 1)
-                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(0) = (C_DP.Propery_Def_ErrorMinusOne_String)
                 End If
             Next
         End If
@@ -349,19 +339,18 @@
     End Function
 
     Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
-        Dim XMLListBaseNode As String
-        Dim xPathTeile As New ArrayList
-
-        Select Case Mid(control.Id, 1, Len(control.Id) - 2)
-            Case "dynMwwdh"
-                XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
-            Case "dynMAnrListe"
-                XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
-            Case Else '"dynMVIPListe"
-                XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
-        End Select
-
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+        Dim XMLListBaseNode As String = C_DP.Propery_Def_StringEmpty
+        If Not control Is Nothing Then
+            Select Case Mid(control.Id, 1, Len(control.Id) - 2)
+                Case "dynMwwdh"
+                    XMLListBaseNode = C_DP.Propery_Def_NameListCALL '"CallList"
+                Case "dynMAnrListe"
+                    XMLListBaseNode = C_DP.Propery_Def_NameListRING '"RingList"
+                Case Else '"dynMVIPListe"
+                    XMLListBaseNode = C_DP.Propery_Def_NameListVIP '"VIPList"
+            End Select
+        End If
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.Propery_Def_ErrorMinusOne_String) = C_DP.Propery_Def_ErrorMinusOne_String, True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -383,7 +372,7 @@
     End Function
 
     Public Function UseAnrMon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return C_DP.P_CBUseAnrMon
+        Return C_DP.ProperyCBUseAnrMon
     End Function
 
     Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -421,11 +410,11 @@
     End Sub
 
     Public Function GetVisibleAnrMonFKT(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return C_DP.P_CBUseAnrMon
+        Return C_DP.ProperyCBUseAnrMon
     End Function
 
     Public Function GetEnabledJI(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Return C_DP.P_CBJournal
+        Return C_DP.ProperyCBJournal
     End Function
 
     Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
@@ -433,7 +422,7 @@
     End Sub
 
     Public Sub OnActionListen(ByVal control As Office.IRibbonControl)
-        P_CallClient.OnActionListen(control.Tag)
+        ProperyCallClient.OnActionListen(control.Tag)
     End Sub
 
     Public Sub OnActionEinstellungen(ByVal control As Office.IRibbonControl)
@@ -491,7 +480,7 @@
     End Function
 
     Public Function GetScreenTipVIP(ByVal control As Microsoft.Office.Core.IRibbonControl) As String
-        GetScreenTipVIP = C_DP.P_Def_StringEmpty
+        GetScreenTipVIP = C_DP.Propery_Def_StringEmpty
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
             Dim aktKontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
@@ -520,7 +509,7 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
-        IsVIP = Not C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String
+        IsVIP = Not C_DP.Read(xPathTeile, C_DP.Propery_Def_ErrorMinusOne_String) = C_DP.Propery_Def_ErrorMinusOne_String
         xPathTeile = Nothing
     End Function
 
@@ -539,17 +528,17 @@
         xPathTeile.Add("VIPListe")
         xPathTeile.Add("ID[@ID=""" & Index & """]")
 
-        If Not Anrufer = C_DP.P_Def_StringEmpty Then
+        If Not Anrufer = C_DP.Propery_Def_StringEmpty Then
             NodeNames.Add("Anrufer")
             NodeValues.Add(Anrufer)
         End If
 
-        If Not StoreID = C_DP.P_Def_StringEmpty Then
+        If Not StoreID = C_DP.Propery_Def_StringEmpty Then
             NodeNames.Add("StoreID")
             NodeValues.Add(StoreID)
         End If
 
-        If Not KontaktID = C_DP.P_Def_StringEmpty Then
+        If Not KontaktID = C_DP.Propery_Def_StringEmpty Then
             NodeNames.Add("KontaktID")
             NodeValues.Add(KontaktID)
         End If
@@ -782,9 +771,9 @@
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
+        LANodeValues.Add(C_DP.Propery_Def_ErrorMinusOne_String)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -799,9 +788,9 @@
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not TelNr = C_DP.Propery_Def_ErrorMinusOne_String Then
                     With cPopUp.Controls.Item(i)
-                        If Anrufer = C_DP.P_Def_StringEmpty Then .Caption = TelNr Else .Caption = Anrufer
+                        If Anrufer = C_DP.Propery_Def_StringEmpty Then .Caption = TelNr Else .Caption = Anrufer
                         .TooltipText = "Zeit: " & Zeit & Environment.NewLine & "Telefonnummer: " & TelNr
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
@@ -811,9 +800,9 @@
 
                     xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     With LANodeValues
-                        .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(0) = (C_DP.Propery_Def_ErrorMinusOne_String)
+                        .Item(1) = (C_DP.Propery_Def_ErrorMinusOne_String)
+                        .Item(2) = (C_DP.Propery_Def_ErrorMinusOne_String)
                     End With
                 End If
             Next
@@ -823,7 +812,7 @@
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String And Not Anrufer = C_DP.P_Def_StringEmpty Then
+                If Not Anrufer = C_DP.Propery_Def_ErrorMinusOne_String And Not Anrufer = C_DP.Propery_Def_StringEmpty Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
@@ -832,9 +821,9 @@
                         i += 1
                     End With
                     With LANodeValues
-                        .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(0) = (C_DP.Propery_Def_ErrorMinusOne_String)
+                        .Item(1) = (C_DP.Propery_Def_ErrorMinusOne_String)
+                        .Item(2) = (C_DP.Propery_Def_ErrorMinusOne_String)
                     End With
 
                 Else
@@ -850,14 +839,14 @@
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_DP.P_CBSymbDirekt
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_DP.P_CBSymbAnrMon
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_DP.P_CBSymbAnrMon
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = C_DP.P_CBSymbAnrListe
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = C_DP.P_CBSymbWwdh
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_DP.P_CBSymbJournalimport
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_DP.P_CBSymbAnrMonNeuStart
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = C_DP.P_CBSymbVIP
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_DP.ProperyCBSymbDirekt
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_DP.ProperyCBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_DP.ProperyCBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = C_DP.ProperyCBSymbAnrListe
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = C_DP.ProperyCBSymbWwdh
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_DP.ProperyCBSymbJournalimport
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_DP.ProperyCBSymbAnrMonNeuStart
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = C_DP.ProperyCBSymbVIP
         Catch : End Try
     End Sub
 
@@ -922,24 +911,24 @@
 
         FillPopupItems("Wwdh")
         ' Direktwahl
-        ePopWwdh.Visible = C_DP.P_CBSymbWwdh
+        ePopWwdh.Visible = C_DP.ProperyCBSymbWwdh
         ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
         eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, "Direktwahl", i, 326, "IconandCaption", "Direktwahl", "Direktwahl")
         i += 1
 
-        eBtnDirektwahl.Visible = C_DP.P_CBSymbDirekt
+        eBtnDirektwahl.Visible = C_DP.ProperyCBSymbDirekt
         ' Symbol Anrufmonitor & Anzeigen
         eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor", i, 815, "IconandCaption", "Anrufmonitor", "Anrufmonitor starten oder stoppen") '815
 
         eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, "Anzeigen", i + 1, 682, "IconandCaption", "Anzeigen", "Letzte Anrufe anzeigen")
         i += 2
 
-        eBtnAnrMonitor.Visible = C_DP.P_CBSymbAnrMon
+        eBtnAnrMonitor.Visible = C_DP.ProperyCBSymbAnrMon
         eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
 
         eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor neustarten", i, 37, "IconandCaption", "AnrMonNeuStart", "")
         eBtnAnrMonNeuStart.TooltipText = "Startet den Anrufmonitor neu."
-        eBtnAnrMonNeuStart.Visible = C_DP.P_CBSymbAnrMonNeuStart
+        eBtnAnrMonNeuStart.Visible = C_DP.ProperyCBSymbAnrMonNeuStart
 
         i += 1
 
@@ -954,7 +943,7 @@
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
         FillPopupItems("AnrListe")
-        ePopAnr.Visible = C_DP.P_CBSymbAnrListe
+        ePopAnr.Visible = C_DP.ProperyCBSymbAnrListe
         ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
@@ -970,11 +959,11 @@
         End Try
         FillPopupItems("VIPListe")
         i += 1
-        ePopVIP.Visible = C_DP.P_CBSymbVIP
+        ePopVIP.Visible = C_DP.ProperyCBSymbVIP
         ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
 
         eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
-        eBtnJournalimport.Visible = C_DP.P_CBSymbJournalimport
+        eBtnJournalimport.Visible = C_DP.ProperyCBSymbJournalimport
         i += 1
         eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, "Einstellungen", i, 548, "IconandCaption", "Einstellungen", "Fritz!Box Einstellungen")
         i += 1
@@ -998,14 +987,14 @@
 
         Select Case control.Tag
             Case "Wwdh"
-                XMLListBaseNode = C_DP.P_Def_NameListCALL
+                XMLListBaseNode = C_DP.Propery_Def_NameListCALL
             Case "AnrListe"
-                XMLListBaseNode = C_DP.P_Def_NameListRING
+                XMLListBaseNode = C_DP.Propery_Def_NameListRING
             Case Else ' "VIPListe"
-                XMLListBaseNode = C_DP.P_Def_NameListVIP
+                XMLListBaseNode = C_DP.Propery_Def_NameListVIP
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.Propery_Def_ErrorMinusOne_String) = C_DP.Propery_Def_ErrorMinusOne_String, True, False))
     End Function
 
 #End If
@@ -1022,7 +1011,7 @@
         Dim cmbErstellen As Boolean = True
         Dim i As Integer = 1
 
-        If C_DP.P_CBSymbRWSuche Then
+        If C_DP.ProperyCBSymbRWSuche Then
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.JournalItem Or _
             TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
@@ -1084,7 +1073,7 @@
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
-                    .Visible = C_DP.P_CBSymbVIP
+                    .Visible = C_DP.ProperyCBSymbVIP
                 End With
                 'iBtnNotiz = AddButtonsToCmb(cmb, "Notiz", i, 2056, "IconandCaption", "Notiz", "Einen Notizeintrag hinzufügen")
             End If
@@ -1113,11 +1102,11 @@
 
 #Region "Explorer Button Click"
     Friend Sub WähleDirektwahl()
-        P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, True)
+        ProperyCallClient.Wählbox(Nothing, C_DP.Propery_Def_StringEmpty, C_DP.Propery_Def_StringEmpty, True)
     End Sub
 
     Friend Sub ÖffneEinstellungen()
-        ThisAddIn.P_Config.ShowDialog()
+        ThisAddIn.ProperyConfig.ShowDialog()
     End Sub
 
     Friend Sub ÖffneJournalImport()
@@ -1136,7 +1125,7 @@
         If Not C_OLI.OutlookApplication Is Nothing Then
             Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
             Dim oSel As Outlook.Selection = ActiveExplorer.Selection
-            P_CallClient.WählboxStart(oSel)
+            ProperyCallClient.WählboxStart(oSel)
             C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
             oSel = Nothing : ActiveExplorer = Nothing
         End If
@@ -1146,7 +1135,7 @@
 
 #Region "Inspector Button Click"
     Friend Sub WählenInspector()
-        P_CallClient.WählenAusInspector()
+        ProperyCallClient.WählenAusInspector()
     End Sub
 
     Friend Sub KontaktErstellen()
@@ -1154,19 +1143,19 @@
     End Sub
 
     Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWS11880, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, insp)
     End Sub
 
     Friend Sub RWSDasTelefonbuch(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSDasTelefonbuch, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, insp)
     End Sub
 
     Friend Sub RWSTelSearch(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWStelSearch, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, insp)
     End Sub
 
     Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSAlle, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, insp)
     End Sub
 #End Region
 
@@ -1199,12 +1188,12 @@
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod 10))
 
-            If Not Anrufer = C_DP.P_Def_StringEmpty Then
+            If Not Anrufer = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(Anrufer)
             End If
 
-            If Not TelNr = C_DP.P_Def_StringEmpty Then
+            If Not TelNr = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("TelNr")
                 NodeValues.Add(TelNr)
             End If
@@ -1214,17 +1203,17 @@
                 NodeValues.Add(Zeit)
             End If
 
-            If Not StoreID = C_DP.P_Def_StringEmpty Then
+            If Not StoreID = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(StoreID)
             End If
 
-            If Not KontaktID = C_DP.P_Def_StringEmpty Then
+            If Not KontaktID = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(KontaktID)
             End If
 
-            If Not vCard = C_DP.P_Def_StringEmpty Then
+            If Not vCard = C_DP.Propery_Def_StringEmpty Then
                 NodeNames.Add("vCard")
                 NodeValues.Add(vCard)
             End If

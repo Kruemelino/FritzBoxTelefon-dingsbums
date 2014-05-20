@@ -502,12 +502,12 @@ Imports System.ComponentModel
         tmAnimation.Start()
     End Sub
 
-    Private Sub fPopup_CloseClick() Handles fPopup.CloseClick
+    Private Sub fPopuProperyCloseClick() Handles fPopup.CloseClick
         RaiseEvent Close(Me, EventArgs.Empty)
         Me.Finalize()
     End Sub
 
-    Private Sub fPopup_LinkClick() Handles fPopup.LinkClick
+    Private Sub fPopuProperyLinkClick() Handles fPopup.LinkClick
         RaiseEvent LinkClick(Me, EventArgs.Empty)
     End Sub
 
@@ -655,11 +655,11 @@ Imports System.ComponentModel
 
     End Sub
 
-    Private Sub fPopup_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles fPopup.MouseEnter
+    Private Sub fPopuProperyMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles fPopup.MouseEnter
         bMouseIsOn = True
     End Sub
 
-    Private Sub fPopup_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles fPopup.MouseLeave
+    Private Sub fPopuProperyMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles fPopup.MouseLeave
         If Not bShouldRemainVisible Then bMouseIsOn = False
     End Sub
 

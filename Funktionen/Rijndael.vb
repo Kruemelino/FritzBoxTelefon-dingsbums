@@ -8,22 +8,26 @@ Imports System.Management
 ''' <remarks>http://icodesnippet.com/snippet/vbnet/computing-hash-values-vbnet-code-snippets</remarks>
 Public Class MyRijndael
 
-    Public Enum HashType
-        MD5
-        SHA1
-        SHA256
-        SHA384
-        SHA512
-    End Enum
-
     Private HWID As String = GetHWID()
     Private bytIV() As Byte = CreateIV(HWID)
+
+    Friend ReadOnly Property GetSalt As String
+        Get
+            Dim tokenData(16 - 1) As Byte
+
+            Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider()
+                rng.GetNonZeroBytes(tokenData)
+                rng.Dispose()
+            End Using
+
+            Return Convert.ToBase64String(tokenData)
+        End Get
+    End Property
 
     Public Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrEncryptionKey As String) As String
 
         vstrEncryptionKey = getMd5Hash(String.Concat(vstrEncryptionKey, HWID), Encoding.Unicode, False)
 
-        Dim bytValue() As Byte
         Dim bytKey() As Byte
         Dim bytEncoded() As Byte = {0}
         Dim intLength As Integer
@@ -38,8 +42,6 @@ Public Class MyRijndael
         '   **********************************************************************
         '   ******  Value must be within ASCII range (i.e., no DBCS chars)  ******
         '   **********************************************************************
-
-        bytValue = Encoding.ASCII.GetBytes(vstrTextToBeEncrypted.ToCharArray)
 
         intLength = Len(vstrEncryptionKey)
 
@@ -93,7 +95,7 @@ Public Class MyRijndael
 
     End Function
 
-    Public Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDecryptionKey As String) As String
+    Public Function DecryptString128Bit(ByVal vstrTextToBeDecrypted As String, ByVal vstrDecryptionKey As String) As String
 
         vstrDecryptionKey = getMd5Hash(String.Concat(vstrDecryptionKey, HWID), Encoding.Unicode, False)
 
@@ -102,13 +104,12 @@ Public Class MyRijndael
 
         Dim intLength As Integer
         Dim intRemaining As Integer
-        Dim strReturnString As String = String.Empty
 
         '   *****************************************************************
         '   ******   Convert base64 encrypted value to byte array      ******
         '   *****************************************************************
 
-        bytDataToBeDecrypted = Convert.FromBase64String(vstrStringToBeDecrypted)
+        bytDataToBeDecrypted = Convert.FromBase64String(vstrTextToBeDecrypted)
 
         '   ********************************************************************
         '   ******   Encryption Key must be 256 bits long (32 bytes)      ******
@@ -162,16 +163,16 @@ Public Class MyRijndael
 
     End Function
 
-    Public Function StripNullCharacters(ByVal vstrStringWithNulls As String) As String
+    Public Function StripNullCharacters(ByVal vstrTextWithNulls As String) As String
 
         Dim intPosition As Integer
         Dim strStringWithOutNulls As String
 
         intPosition = 1
-        strStringWithOutNulls = vstrStringWithNulls
+        strStringWithOutNulls = vstrTextWithNulls
 
         Do While intPosition > 0
-            intPosition = InStr(intPosition, vstrStringWithNulls, vbNullChar)
+            intPosition = InStr(intPosition, vstrTextWithNulls, vbNullChar)
 
             If intPosition > 0 Then
                 strStringWithOutNulls = Left$(strStringWithOutNulls, intPosition - 1) & _
@@ -185,16 +186,6 @@ Public Class MyRijndael
 
         Return strStringWithOutNulls
 
-    End Function
-
-    Public Function GetSalt() As String
-        Dim rng As RandomNumberGenerator = New RNGCryptoServiceProvider()
-        Dim tokenData(16 - 1) As Byte
-
-        rng.GetNonZeroBytes(tokenData)
-        rng.Dispose()
-
-        Return Convert.ToBase64String(tokenData)
     End Function
 
     Public Function getMd5Hash(ByVal input As String, ByVal Enkodierung As Encoding, ByVal CodePointFB As Boolean) As String 'Unicode für Fritz!Box

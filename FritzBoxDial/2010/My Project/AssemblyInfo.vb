@@ -18,11 +18,11 @@ Imports System.Security
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")> 
 <Assembly: AssemblyCopyright("")> 
 <Assembly: AssemblyTrademark("")> 
-
+<Assembly: CLSCompliant(False)> 
 ' Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
 ' für COM-Komponenten. Wenn Sie auf einen Zugriffstyp in dieser Assembly aus 
 ' COM zugreifen müssen, legen Sie das ComVisible-Attribut für diesen Typ auf "true" fest.
-<Assembly: ComVisible(True)> 
+<Assembly: ComVisible(False)> 
 
 'Die folgende GUID ist für die ID der typelib, wenn dieses Projekt für COM verfügbar gemacht wird
 <Assembly: Guid("411894A1-05D5-4F89-B336-4A4175D5E537")> 
@@ -38,8 +38,8 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.4.4.4")> 
-<Assembly: AssemblyFileVersion("3.4.4.4")> 
+<Assembly: AssemblyVersion("3.7.0.*")> 
+<Assembly: AssemblyFileVersion("3.7.0.0")> 
 
 Friend Module DesignTimeConstants
     Public Const RibbonTypeSerializer As String = "Microsoft.VisualStudio.Tools.Office.Ribbon.Serialization.RibbonTypeCodeDomSerializer, Microsoft.VisualStudio.Tools.Office.Designer, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"

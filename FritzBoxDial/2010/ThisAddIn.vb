@@ -49,7 +49,7 @@ Public Class ThisAddIn
     Private Shared F_Cfg As formCfg
 
 #Region "Properties"
-    Friend Shared Property P_oApp() As Outlook.Application
+    Friend Shared Property ProperyoApp() As Outlook.Application
         Get
             Return oApp
         End Get
@@ -58,7 +58,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_XML() As DataProvider
+    Friend Shared Property ProperyXML() As DataProvider
         Get
             Return C_DP
         End Get
@@ -67,7 +67,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_hf() As Helfer
+    Friend Shared Property Properyhf() As Helfer
         Get
             Return C_HF
         End Get
@@ -76,7 +76,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_KF() As Contacts
+    Friend Shared Property ProperyKF() As Contacts
         Get
             Return C_KF
         End Get
@@ -85,7 +85,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_GUI() As GraphicalUserInterface
+    Friend Shared Property ProperyGUI() As GraphicalUserInterface
         Get
             Return C_GUI
         End Get
@@ -94,7 +94,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_WClient() As Wählclient
+    Friend Shared Property ProperyWClient() As Wählclient
         Get
             Return C_WClient
         End Get
@@ -103,7 +103,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_FritzBox() As FritzBox
+    Friend Shared Property ProperyFritzBox() As FritzBox
         Get
             Return C_Fbox
         End Get
@@ -112,7 +112,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_AnrMon() As AnrufMonitor
+    Friend Shared Property ProperyAnrMon() As AnrufMonitor
         Get
             Return C_AnrMon
         End Get
@@ -121,7 +121,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_Config() As formCfg
+    Friend Shared Property ProperyConfig() As formCfg
         Get
             Return F_Cfg
         End Get
@@ -161,21 +161,21 @@ Public Class ThisAddIn
 
         AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
-        P_oApp = CType(Application, Outlook.Application)
+        ProperyoApp = CType(Application, Outlook.Application)
 
-        If Not P_oApp.ActiveExplorer Is Nothing Then
+        If Not ProperyoApp.ActiveExplorer Is Nothing Then
 #If OVer = 11 Then
             Initialisierung = New formInit
 #End If
-            ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
-            P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
+            ' Letzten Anrufer laden. Dazu wird ProperyoApp benötigt (Kontaktbild)
+            ProperyAnrMon.LetzterAnrufer = ProperyAnrMon.LadeLetzterAnrufer()
 #If OVer < 14 Then
             C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
                                      ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
                                      ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
                                      ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
 #End If
-            If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
+            'If Not C_DP.ProperyCBIndexAus Then oInsps = Application.Inspectors
         Else
             C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
@@ -183,10 +183,10 @@ Public Class ThisAddIn
 
     Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & Version & " beendet.")
+        C_HF.LogFile(C_DP.Propery_Def_Addin_LangName & " V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
-            .NAR(P_oApp)
+            .NAR(ProperyoApp)
         End With
     End Sub
 
@@ -195,9 +195,9 @@ Public Class ThisAddIn
         C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If C_DP.P_CBKHO AndAlso Not _
+            If C_DP.ProperyCBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
+                    ProperyoApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
             Dim KS As New ContactSaved
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)

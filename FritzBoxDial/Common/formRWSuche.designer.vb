@@ -1,5 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class formRWSuche
+Partial Class FormRWSuche
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -19,7 +19,7 @@ Partial Class formRWSuche
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formRWSuche))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormRWSuche))
         Me.LabelName = New System.Windows.Forms.Label()
         Me.DirektTel = New System.Windows.Forms.TextBox()
         Me.LabelDirekteingabe = New System.Windows.Forms.Label()

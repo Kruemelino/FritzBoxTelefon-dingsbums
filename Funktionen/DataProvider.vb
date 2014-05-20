@@ -149,98 +149,95 @@ Public Class DataProvider
 
 #Region "PrivateData"
 
-    Private _CBForceFBAddr As Boolean
-    Private _CBAnrMonContactImage As Boolean
-    Private _CBIndexAus As Boolean
-    Private _CBShowMSN As Boolean
-    Private _CBAnrMonMove As Boolean
-    Private _CBAnrMonTransp As Boolean
-    Private _CBAnrMonAuto As Boolean
-    Private _CBAutoClose As Boolean
-    Private _CBVoIPBuster As Boolean
-    Private _CBCbCunterbinden As Boolean
-    Private _CBCallByCall As Boolean
-    Private _CBDialPort As Boolean
-    Private _CBKErstellen As Boolean
-    Private _CBLogFile As Boolean
-#If OVer < 14 Then
-    Private _CBSymbWwdh As Boolean
-    Private _CBSymbAnrMon As Boolean
-    Private _CBSymbAnrMonNeuStart As Boolean
-    Private _CBSymbAnrListe As Boolean
-    Private _CBSymbDirekt As Boolean
-    Private _CBSymbRWSuche As Boolean
-    Private _CBSymbVIP As Boolean
-    Private _CBSymbJournalimport As Boolean
-#End If
-    Private _CBJImport As Boolean
-    Private _CBRWS As Boolean
-    Private _CBKHO As Boolean
-    Private _CBRWSIndex As Boolean
-    Private _ComboBoxRWS As Integer
-    Private _TVKontaktOrdnerEntryID As String
-    Private _TVKontaktOrdnerStoreID As String
-    Private _CBIndex As Boolean
-    Private _TBLandesVW As String
-    Private _CBoxLandesVorwahl As Integer
-    Private _TBAmt As String
-    Private _TBFBAdr As String
-    Private _TBBenutzer As String
-    Private _TBPasswort As String
-    Private _TBVorwahl As String
-    Private _CBoxVorwahl As Integer
+    Private ValueCBForceFBAddr As Boolean
+    Private ValueCBAnrMonContactImage As Boolean
+    Private ValueCBIndexAus As Boolean
+    Private ValueCBShowMSN As Boolean
+    Private ValueCBAnrMonMove As Boolean
+    Private ValueCBAnrMonTransp As Boolean
+    Private ValueCBAnrMonAuto As Boolean
+    Private ValueCBAutoClose As Boolean
+    Private ValueCBVoIPBuster As Boolean
+    Private ValueCBCbCunterbinden As Boolean
+    Private ValueCBCallByCall As Boolean
+    Private ValueCBDialPort As Boolean
+    Private ValueCBKErstellen As Boolean
+    Private ValueCBLogFile As Boolean
+    Private ValueCBSymbWwdh As Boolean
+    Private ValueCBSymbAnrMon As Boolean
+    Private ValueCBSymbAnrMonNeuStart As Boolean
+    Private ValueCBSymbAnrListe As Boolean
+    Private ValueCBSymbDirekt As Boolean
+    Private ValueCBSymbRWSuche As Boolean
+    Private ValueCBSymbVIP As Boolean
+    Private ValueCBSymbJournalimport As Boolean
+    Private ValueCBJImport As Boolean
+    Private ValueCBRWS As Boolean
+    Private ValueCBKHO As Boolean
+    Private ValueCBRWSIndex As Boolean
+    Private ValueComboBoxRWS As Integer
+    Private ValueTVKontaktOrdnerEntryID As String
+    Private ValueTVKontaktOrdnerStoreID As String
+    Private ValueCBIndex As Boolean
+    Private ValueTBLandesVW As String
+    Private ValueTBAmt As String
+    Private ValueTBFBAdr As String
+    Private ValueTBBenutzer As String
+    Private ValueTBPasswort As String
+    Private ValueTBVorwahl As String
+    Private ValueCBoxVorwahl As Integer
     'Anrufmonitor
-    Private _TBEnblDauer As Integer
-    Private _TBAnrMonX As Integer
-    Private _TBAnrMonY As Integer
-    Private _CBoxAnrMonStartPosition As Integer
-    Private _CBoxAnrMonMoveDirection As Integer
-    Private _TBAnrMonMoveGeschwindigkeit As Integer
-    Private _CBAnrMonZeigeKontakt As Boolean
-    Private _CBJournal As Boolean
-    Private _CBUseAnrMon As Boolean
-    Private _CBCheckMobil As Boolean
-    Private _CLBTelNr() As String
+    Private ValueTBEnblDauer As Integer
+    Private ValueTBAnrMonX As Integer
+    Private ValueTBAnrMonY As Integer
+    Private ValueCBoxAnrMonStartPosition As Integer
+    Private ValueCBoxAnrMonMoveDirection As Integer
+    Private ValueTBAnrMonMoveGeschwindigkeit As Integer
+    Private ValueCBAnrMonZeigeKontakt As Boolean
+    Private ValueCBJournal As Boolean
+    Private ValueCBUseAnrMon As Boolean
+    Private ValueCBCheckMobil As Boolean
+    Private ValueCLBTelNr() As String
     'StoppUhr
-    Private _CBStoppUhrEinblenden As Boolean
-    Private _CBStoppUhrAusblenden As Boolean
-    Private _TBStoppUhr As Integer
-    Private _CBStoppUhrX As Integer
-    Private _CBStoppUhrY As Integer
+    Private ValueCBStoppUhrEinblenden As Boolean
+    Private ValueCBStoppUhrAusblenden As Boolean
+    Private ValueTBStoppUhr As Integer
+    Private ValueCBStoppUhrX As Integer
+    Private ValueCBStoppUhrY As Integer
     ' Telefonnummernformatierung
-    Private _TBTelNrMaske As String
-    Private _CBTelNrGruppieren As Boolean
-    Private _CBintl As Boolean
-    Private _CBIgnoTelNrFormat As Boolean
+    Private ValueTBTelNrMaske As String
+    Private ValueCBTelNrGruppieren As Boolean
+    Private ValueCBintl As Boolean
+    Private ValueCBIgnoTelNrFormat As Boolean
     ' Phoner
-    Private _CBPhoner As Boolean
-    Private _PhonerVerfügbar As Boolean
-    Private _CBPhonerAnrMon As Boolean
-    Private _ComboBoxPhonerSIP As Integer
-    Private _TBPhonerPasswort As String
-    Private _PhonerTelNameIndex As Integer
+    Private ValueCBPhoner As Boolean
+    Private ValuePhonerVerfügbar As Boolean
+    Private ValueCBPhonerAnrMon As Boolean
+    Private ValueComboBoxPhonerSIP As Integer
+    Private ValueTBPhonerPasswort As String
+    Private ValuePhonerTelNameIndex As Integer
     ' Statistik
-    Private _StatResetZeit As Date
-    Private _StatVerpasst As Integer
-    Private _StatNichtErfolgreich As Integer
-    Private _StatKontakt As Integer
-    Private _StatJournal As Integer
-    Private _StatOLClosedZeit As Date
+    Private ValueStatResetZeit As Date
+    Private ValueStatVerpasst As Integer
+    Private ValueStatNichtErfolgreich As Integer
+    Private ValueStatKontakt As Integer
+    Private ValueStatJournal As Integer
+    Private ValueStatOLClosedZeit As Date
     ' Wählbox
-    Private _TelAnschluss As Integer
-    Private _TelFestnetz As Boolean
-    Private _TelCLIR As Boolean
+    Private ValueTelAnschluss As Integer
+    Private ValueTelFestnetz As Boolean
+    Private ValueTelCLIR As Boolean
     ' FritzBox
-    Private _EncodeingFritzBox As String
+    Private ValueEncodeingFritzBox As String
     ' Indizierung
-    Private _LLetzteIndizierung As Date
+    Private ValueLLetzteIndizierung As Date
     ' Notiz
-    Private _CBNote As Boolean
+    Private ValueCBNote As Boolean
     'Einstellungen
-    Private _Arbeitsverzeichnis As String
+    Private ValueArbeitsverzeichnis As String
     ' Vorwahllisten
-    Private _ListeOrtsVorwahlen As String()
-    Private _ListeLandesVorwahlen As String()
+    Private ValueListeOrtsVorwahlen As String()
+    Private ValueListeLandesVorwahlen As String()
 #End Region
 
 #Region "Value Properties"
@@ -250,12 +247,12 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>Landesvorwahl</returns>
     ''' <remarks></remarks>
-    Public Property P_TBLandesVW() As String
+    Public Property ProperyTBLandesVW() As String
         Get
-            Return _TBLandesVW
+            Return ValueTBLandesVW
         End Get
         Set(ByVal value As String)
-            _TBLandesVW = value
+            ValueTBLandesVW = value
         End Set
     End Property
     ''' <summary>
@@ -264,12 +261,12 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>Zahl für die Amtsholung</returns>
     ''' <remarks></remarks>
-    Public Property P_TBAmt() As String
+    Public Property ProperyTBAmt() As String
         Get
-            Return _TBAmt
+            Return ValueTBAmt
         End Get
         Set(ByVal value As String)
-            _TBAmt = value
+            ValueTBAmt = value
         End Set
     End Property
     ''' <summary>
@@ -278,12 +275,12 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>Ortsvorwahl</returns>
     ''' <remarks></remarks>
-    Public Property P_TBVorwahl() As String
+    Public Property ProperyTBVorwahl() As String
         Get
-            Return _TBVorwahl
+            Return ValueTBVorwahl
         End Get
         Set(ByVal value As String)
-            _TBVorwahl = value
+            ValueTBVorwahl = value
         End Set
     End Property
     ''' <summary>
@@ -292,12 +289,12 @@ Public Class DataProvider
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_CBoxVorwahl() As Integer
+    Public Property ProperyCBoxVorwahl() As Integer
         Get
-            Return _CBoxVorwahl
+            Return ValueCBoxVorwahl
         End Get
         Set(ByVal value As Integer)
-            _CBoxVorwahl = value
+            ValueCBoxVorwahl = value
         End Set
     End Property
     ' Anrufmonitor
@@ -307,12 +304,12 @@ Public Class DataProvider
     ''' <value>Integer</value>
     ''' <returns>Intervall</returns>
     ''' <remarks></remarks>
-    Public Property P_TBEnblDauer() As Integer
+    Public Property ProperyTBEnblDauer() As Integer
         Get
-            Return _TBEnblDauer
+            Return ValueTBEnblDauer
         End Get
         Set(ByVal value As Integer)
-            _TBEnblDauer = value
+            ValueTBEnblDauer = value
         End Set
     End Property
     ''' <summary>
@@ -321,12 +318,12 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns>Autostart</returns>
     ''' <remarks></remarks>
-    Public Property P_CBAnrMonAuto() As Boolean
+    Public Property ProperyCBAnrMonAuto() As Boolean
         Get
-            Return _CBAnrMonAuto
+            Return ValueCBAnrMonAuto
         End Get
         Set(ByVal value As Boolean)
-            _CBAnrMonAuto = value
+            ValueCBAnrMonAuto = value
         End Set
     End Property
     ''' <summary>
@@ -335,12 +332,12 @@ Public Class DataProvider
     ''' <value>Integer</value>
     ''' <returns>Positionskorrektur X</returns>
     ''' <remarks></remarks>
-    Public Property P_TBAnrMonX() As Integer
+    Public Property ProperyTBAnrMonX() As Integer
         Get
-            Return _TBAnrMonX
+            Return ValueTBAnrMonX
         End Get
         Set(ByVal value As Integer)
-            _TBAnrMonX = value
+            ValueTBAnrMonX = value
         End Set
     End Property
     ''' <summary>
@@ -349,12 +346,12 @@ Public Class DataProvider
     ''' <value>Integer</value>
     ''' <returns>Positionskorrektur Y</returns>
     ''' <remarks></remarks>
-    Public Property P_TBAnrMonY() As Integer
+    Public Property ProperyTBAnrMonY() As Integer
         Get
-            Return _TBAnrMonY
+            Return ValueTBAnrMonY
         End Get
         Set(ByVal value As Integer)
-            _TBAnrMonY = value
+            ValueTBAnrMonY = value
         End Set
     End Property
     ''' <summary>
@@ -363,12 +360,12 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns>Anrufmonitorbewegung</returns>
     ''' <remarks></remarks>
-    Public Property P_CBAnrMonMove() As Boolean
+    Public Property ProperyCBAnrMonMove() As Boolean
         Get
-            Return _CBAnrMonMove
+            Return ValueCBAnrMonMove
         End Get
         Set(ByVal value As Boolean)
-            _CBAnrMonMove = value
+            ValueCBAnrMonMove = value
         End Set
     End Property
     ''' <summary>
@@ -377,12 +374,12 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_CBAnrMonTransp() As Boolean
+    Public Property ProperyCBAnrMonTransp() As Boolean
         Get
-            Return _CBAnrMonTransp
+            Return ValueCBAnrMonTransp
         End Get
         Set(ByVal value As Boolean)
-            _CBAnrMonTransp = value
+            ValueCBAnrMonTransp = value
         End Set
     End Property
     ''' <summary>
@@ -391,12 +388,12 @@ Public Class DataProvider
     ''' <value>Integer</value>
     ''' <returns>Wert für die Position</returns>
     ''' <remarks>FritzBoxDial.PopUpAnrMon.eStartPosition</remarks>
-    Public Property P_CBoxAnrMonStartPosition() As Integer
+    Public Property ProperyCBoxAnrMonStartPosition() As Integer
         Get
-            Return _CBoxAnrMonStartPosition
+            Return ValueCBoxAnrMonStartPosition
         End Get
         Set(ByVal value As Integer)
-            _CBoxAnrMonStartPosition = value
+            ValueCBoxAnrMonStartPosition = value
         End Set
     End Property
     ''' <summary>
@@ -405,175 +402,175 @@ Public Class DataProvider
     ''' <value>Integer</value>
     ''' <returns>Wert für Richtung, abhängig von der Endosition.</returns>
     ''' <remarks>FritzBoxDial.PopUpAnrMon.eMoveDirection</remarks>
-    Public Property P_CBoxAnrMonMoveDirection() As Integer
+    Public Property ProperyCBoxAnrMonMoveDirection() As Integer
         Get
-            Return _CBoxAnrMonMoveDirection
+            Return ValueCBoxAnrMonMoveDirection
         End Get
         Set(ByVal value As Integer)
-            _CBoxAnrMonMoveDirection = value
+            ValueCBoxAnrMonMoveDirection = value
         End Set
     End Property
-    Public Property P_TBAnrMonMoveGeschwindigkeit() As Integer
+    Public Property ProperyTBAnrMonMoveGeschwindigkeit() As Integer
         Get
-            Return _TBAnrMonMoveGeschwindigkeit
+            Return ValueTBAnrMonMoveGeschwindigkeit
         End Get
         Set(ByVal value As Integer)
-            _TBAnrMonMoveGeschwindigkeit = value
+            ValueTBAnrMonMoveGeschwindigkeit = value
         End Set
     End Property
 
-    Public Property P_CBAnrMonZeigeKontakt() As Boolean
+    Public Property ProperyCBAnrMonZeigeKontakt() As Boolean
         Get
-            Return _CBAnrMonZeigeKontakt
+            Return ValueCBAnrMonZeigeKontakt
         End Get
         Set(ByVal value As Boolean)
-            _CBAnrMonZeigeKontakt = value
+            ValueCBAnrMonZeigeKontakt = value
         End Set
     End Property
-    Public Property P_CBAnrMonContactImage() As Boolean
+    Public Property ProperyCBAnrMonContactImage() As Boolean
         Get
-            Return _CBAnrMonContactImage
+            Return ValueCBAnrMonContactImage
         End Get
         Set(ByVal value As Boolean)
-            _CBAnrMonContactImage = value
+            ValueCBAnrMonContactImage = value
         End Set
     End Property
-    Public Property P_CBIndexAus() As Boolean
+    Public Property ProperyCBIndexAus() As Boolean
         Get
-            Return _CBIndexAus
+            Return ValueCBIndexAus
         End Get
         Set(ByVal value As Boolean)
-            _CBIndexAus = value
+            ValueCBIndexAus = value
         End Set
     End Property
-    Public Property P_CBShowMSN() As Boolean
+    Public Property ProperyCBShowMSN() As Boolean
         Get
-            Return _CBShowMSN
+            Return ValueCBShowMSN
         End Get
         Set(ByVal value As Boolean)
-            _CBShowMSN = value
+            ValueCBShowMSN = value
         End Set
     End Property
 
-    Public Property P_CBAutoClose() As Boolean
+    Public Property ProperyCBAutoClose() As Boolean
         Get
-            Return _CBAutoClose
+            Return ValueCBAutoClose
         End Get
         Set(ByVal value As Boolean)
-            _CBAutoClose = value
+            ValueCBAutoClose = value
         End Set
     End Property
-    Public Property P_CBVoIPBuster() As Boolean
+    Public Property ProperyCBVoIPBuster() As Boolean
         Get
-            Return _CBVoIPBuster
+            Return ValueCBVoIPBuster
         End Get
         Set(ByVal value As Boolean)
-            _CBVoIPBuster = value
+            ValueCBVoIPBuster = value
         End Set
     End Property
-    Public Property P_CBCbCunterbinden() As Boolean
+    Public Property ProperyCBCbCunterbinden() As Boolean
         Get
-            Return _CBCbCunterbinden
+            Return ValueCBCbCunterbinden
         End Get
         Set(ByVal value As Boolean)
-            _CBCbCunterbinden = value
+            ValueCBCbCunterbinden = value
         End Set
     End Property
-    Public Property P_CBCallByCall() As Boolean
+    Public Property ProperyCBCallByCall() As Boolean
         Get
-            Return _CBCallByCall
+            Return ValueCBCallByCall
         End Get
         Set(ByVal value As Boolean)
-            _CBCallByCall = value
+            ValueCBCallByCall = value
         End Set
     End Property
-    Public Property P_CBDialPort() As Boolean
+    Public Property ProperyCBDialPort() As Boolean
         Get
-            Return _CBDialPort
+            Return ValueCBDialPort
         End Get
         Set(ByVal value As Boolean)
-            _CBDialPort = value
+            ValueCBDialPort = value
         End Set
     End Property
-    Public Property P_CBLogFile() As Boolean
+    Public Property ProperyCBLogFile() As Boolean
         Get
-            Return _CBLogFile
+            Return ValueCBLogFile
         End Get
         Set(ByVal value As Boolean)
-            _CBLogFile = value
+            ValueCBLogFile = value
         End Set
     End Property
-    Public Property P_CBSymbWwdh() As Boolean
+    Public Property ProperyCBSymbWwdh() As Boolean
         Get
-            Return _CBSymbWwdh
+            Return ValueCBSymbWwdh
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbWwdh = value
+            ValueCBSymbWwdh = value
         End Set
     End Property
-    Public Property P_CBSymbAnrMon() As Boolean
+    Public Property ProperyCBSymbAnrMon() As Boolean
         Get
-            Return _CBLogFile
+            Return ValueCBSymbAnrMon
         End Get
         Set(ByVal value As Boolean)
-            _CBLogFile = value
+            ValueCBSymbAnrMon = value
         End Set
     End Property
-    Public Property P_CBSymbAnrMonNeuStart() As Boolean
+    Public Property ProperyCBSymbAnrMonNeuStart() As Boolean
         Get
-            Return _CBSymbAnrMonNeuStart
+            Return ValueCBSymbAnrMonNeuStart
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbAnrMonNeuStart = value
+            ValueCBSymbAnrMonNeuStart = value
         End Set
     End Property
     'Pffice 2003 und Office 2007
-    Public Property P_CBSymbAnrListe() As Boolean
+    Public Property ProperyCBSymbAnrListe() As Boolean
         Get
-            Return _CBSymbAnrListe
+            Return ValueCBSymbAnrListe
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbAnrListe = value
+            ValueCBSymbAnrListe = value
         End Set
     End Property
-    Public Property P_CBSymbDirekt() As Boolean
+    Public Property ProperyCBSymbDirekt() As Boolean
         Get
-            Return _CBSymbDirekt
+            Return ValueCBSymbDirekt
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbDirekt = value
+            ValueCBSymbDirekt = value
         End Set
     End Property
-    Public Property P_CBSymbRWSuche() As Boolean
+    Public Property ProperyCBSymbRWSuche() As Boolean
         Get
-            Return _CBSymbRWSuche
+            Return ValueCBSymbRWSuche
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbRWSuche = value
+            ValueCBSymbRWSuche = value
         End Set
     End Property
-    Public Property P_CBSymbVIP() As Boolean
+    Public Property ProperyCBSymbVIP() As Boolean
         Get
-            Return _CBSymbVIP
+            Return ValueCBSymbVIP
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbVIP = value
+            ValueCBSymbVIP = value
         End Set
     End Property
-    Public Property P_CBSymbJournalimport() As Boolean
+    Public Property ProperyCBSymbJournalimport() As Boolean
         Get
-            Return _CBSymbJournalimport
+            Return ValueCBSymbJournalimport
         End Get
         Set(ByVal value As Boolean)
-            _CBSymbJournalimport = value
+            ValueCBSymbJournalimport = value
         End Set
     End Property
-    Public Property P_CBJImport() As Boolean
+    Public Property ProperyCBJImport() As Boolean
         Get
-            Return _CBJImport
+            Return ValueCBJImport
         End Get
         Set(ByVal value As Boolean)
-            _CBJImport = value
+            ValueCBJImport = value
         End Set
     End Property
     ''' <summary>
@@ -582,60 +579,60 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns>True, wenn nur der Hauptkontaktordner durchsucht werden muss</returns>
     ''' <remarks></remarks>
-    Public Property P_CBKHO() As Boolean
+    Public Property ProperyCBKHO() As Boolean
         Get
-            Return _CBKHO
+            Return ValueCBKHO
         End Get
         Set(ByVal value As Boolean)
-            _CBKHO = value
+            ValueCBKHO = value
         End Set
     End Property
-    Public Property P_CBRWS() As Boolean
+    Public Property ProperyCBRWS() As Boolean
         Get
-            Return _CBRWS
+            Return ValueCBRWS
         End Get
         Set(ByVal value As Boolean)
-            _CBRWS = value
+            ValueCBRWS = value
         End Set
     End Property
-    Public Property P_CBKErstellen() As Boolean
+    Public Property ProperyCBKErstellen() As Boolean
         Get
-            Return _CBKErstellen
+            Return ValueCBKErstellen
         End Get
         Set(ByVal value As Boolean)
-            _CBKErstellen = value
+            ValueCBKErstellen = value
         End Set
     End Property
-    Public Property P_CBRWSIndex() As Boolean
+    Public Property ProperyCBRWSIndex() As Boolean
         Get
-            Return _CBRWSIndex
+            Return ValueCBRWSIndex
         End Get
         Set(ByVal value As Boolean)
-            _CBRWSIndex = value
+            ValueCBRWSIndex = value
         End Set
     End Property
-    Public Property P_ComboBoxRWS() As Integer
+    Public Property ProperyComboBoxRWS() As Integer
         Get
-            Return _ComboBoxRWS
+            Return ValueComboBoxRWS
         End Get
         Set(ByVal value As Integer)
-            _ComboBoxRWS = value
+            ValueComboBoxRWS = value
         End Set
     End Property
-    Public Property P_TVKontaktOrdnerEntryID() As String
+    Public Property ProperyTVKontaktOrdnerEntryID() As String
         Get
-            Return _TVKontaktOrdnerEntryID
+            Return ValueTVKontaktOrdnerEntryID
         End Get
         Set(ByVal value As String)
-            _TVKontaktOrdnerEntryID = value
+            ValueTVKontaktOrdnerEntryID = value
         End Set
     End Property
-    Public Property P_TVKontaktOrdnerStoreID() As String
+    Public Property ProperyTVKontaktOrdnerStoreID() As String
         Get
-            Return _TVKontaktOrdnerStoreID
+            Return ValueTVKontaktOrdnerStoreID
         End Get
         Set(ByVal value As String)
-            _TVKontaktOrdnerStoreID = value
+            ValueTVKontaktOrdnerStoreID = value
         End Set
     End Property
     ''' <summary>
@@ -644,12 +641,12 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns>True/False</returns>
     ''' <remarks></remarks>
-    Public Property P_CBIndex() As Boolean
+    Public Property ProperyCBIndex() As Boolean
         Get
-            Return _CBIndex
+            Return ValueCBIndex
         End Get
         Set(ByVal value As Boolean)
-            _CBIndex = value
+            ValueCBIndex = value
         End Set
     End Property
     ''' <summary>
@@ -658,234 +655,234 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns>True/False</returns>
     ''' <remarks></remarks>
-    Public Property P_CBJournal() As Boolean
+    Public Property ProperyCBJournal() As Boolean
         Get
-            Return _CBJournal
+            Return ValueCBJournal
         End Get
         Set(ByVal value As Boolean)
-            _CBJournal = value
+            ValueCBJournal = value
         End Set
     End Property
-    Public Property P_CBUseAnrMon() As Boolean
+    Public Property ProperyCBUseAnrMon() As Boolean
         Get
-            Return _CBUseAnrMon
+            Return ValueCBUseAnrMon
         End Get
         Set(ByVal value As Boolean)
-            _CBUseAnrMon = value
+            ValueCBUseAnrMon = value
         End Set
     End Property
-    Public Property P_CBCheckMobil() As Boolean
+    Public Property ProperyCBCheckMobil() As Boolean
         Get
-            Return _CBCheckMobil
+            Return ValueCBCheckMobil
         End Get
         Set(ByVal value As Boolean)
-            _CBCheckMobil = value
+            ValueCBCheckMobil = value
         End Set
     End Property
 
-    Public Property P_CLBTelNr As String()
+    Public Property ProperyCLBTelNr As String()
         Get
-            Return _CLBTelNr
+            Return ValueCLBTelNr
         End Get
         Set(ByVal value As String())
-            _CLBTelNr = value
+            ValueCLBTelNr = value
         End Set
     End Property
     'StoppUhr
-    Public Property P_CBStoppUhrEinblenden() As Boolean
+    Public Property ProperyCBStoppUhrEinblenden() As Boolean
         Get
-            Return _CBStoppUhrEinblenden
+            Return ValueCBStoppUhrEinblenden
         End Get
         Set(ByVal Value As Boolean)
-            _CBStoppUhrEinblenden = Value
+            ValueCBStoppUhrEinblenden = Value
         End Set
     End Property
-    Public Property P_CBStoppUhrAusblenden() As Boolean
+    Public Property ProperyCBStoppUhrAusblenden() As Boolean
         Get
-            Return _CBStoppUhrAusblenden
+            Return ValueCBStoppUhrAusblenden
         End Get
         Set(ByVal Value As Boolean)
-            _CBStoppUhrAusblenden = Value
+            ValueCBStoppUhrAusblenden = Value
         End Set
     End Property
-    Public Property P_TBStoppUhr() As Integer
+    Public Property ProperyTBStoppUhr() As Integer
         Get
-            Return _TBStoppUhr
+            Return ValueTBStoppUhr
         End Get
         Set(ByVal value As Integer)
-            _TBStoppUhr = value
+            ValueTBStoppUhr = value
         End Set
     End Property
-    Public Property P_CBStoppUhrX() As Integer
+    Public Property ProperyCBStoppUhrX() As Integer
         Get
-            Return _CBStoppUhrX
+            Return ValueCBStoppUhrX
         End Get
         Set(ByVal value As Integer)
-            _CBStoppUhrX = value
+            ValueCBStoppUhrX = value
         End Set
     End Property
-    Public Property P_CBStoppUhrY() As Integer
+    Public Property ProperyCBStoppUhrY() As Integer
         Get
-            Return _CBStoppUhrY
+            Return ValueCBStoppUhrY
         End Get
         Set(ByVal value As Integer)
-            _CBStoppUhrY = value
+            ValueCBStoppUhrY = value
         End Set
     End Property
     ' Telefonnummernformatierung
-    Public Property P_TBTelNrMaske() As String
+    Public Property ProperyTBTelNrMaske() As String
         Get
-            Return _TBTelNrMaske
+            Return ValueTBTelNrMaske
         End Get
         Set(ByVal value As String)
-            _TBTelNrMaske = value
+            ValueTBTelNrMaske = value
         End Set
     End Property
-    Public Property P_CBTelNrGruppieren() As Boolean
+    Public Property ProperyCBTelNrGruppieren() As Boolean
         Get
-            Return _CBTelNrGruppieren
+            Return ValueCBTelNrGruppieren
         End Get
         Set(ByVal value As Boolean)
-            _CBTelNrGruppieren = value
+            ValueCBTelNrGruppieren = value
         End Set
     End Property
-    Public Property P_CBintl() As Boolean
+    Public Property ProperyCBintl() As Boolean
         Get
-            Return _CBintl
+            Return ValueCBintl
         End Get
         Set(ByVal value As Boolean)
-            _CBintl = value
+            ValueCBintl = value
         End Set
     End Property
-    Public Property P_CBIgnoTelNrFormat() As Boolean
+    Public Property ProperyCBIgnoTelNrFormat() As Boolean
         Get
-            Return _CBIgnoTelNrFormat
+            Return ValueCBIgnoTelNrFormat
         End Get
         Set(ByVal value As Boolean)
-            _CBIgnoTelNrFormat = value
+            ValueCBIgnoTelNrFormat = value
         End Set
     End Property
     'Phoner
-    Public Property P_CBPhoner As Boolean
+    Public Property ProperyCBPhoner As Boolean
         Get
-            Return _CBPhoner
+            Return ValueCBPhoner
         End Get
         Set(ByVal value As Boolean)
-            _CBPhoner = value
+            ValueCBPhoner = value
         End Set
     End Property
-    Public Property P_PhonerVerfügbar As Boolean
+    Public Property ProperyPhonerVerfügbar As Boolean
         Get
-            Return _PhonerVerfügbar
+            Return ValuePhonerVerfügbar
         End Get
         Set(ByVal value As Boolean)
-            _PhonerVerfügbar = value
+            ValuePhonerVerfügbar = value
         End Set
     End Property
-    Public Property P_CBPhonerAnrMon As Boolean
+    Public Property ProperyCBPhonerAnrMon As Boolean
         Get
-            Return _CBPhonerAnrMon
+            Return ValueCBPhonerAnrMon
         End Get
         Set(ByVal value As Boolean)
-            _CBPhonerAnrMon = value
+            ValueCBPhonerAnrMon = value
         End Set
     End Property
-    Public Property P_ComboBoxPhonerSIP() As Integer
+    Public Property ProperyComboBoxPhonerSIP() As Integer
         Get
-            Return _ComboBoxPhonerSIP
+            Return ValueComboBoxPhonerSIP
         End Get
         Set(ByVal value As Integer)
-            _ComboBoxPhonerSIP = value
+            ValueComboBoxPhonerSIP = value
         End Set
     End Property
-    Public Property P_TBPhonerPasswort() As String
+    Public Property ProperyTBPhonerPasswort() As String
         Get
-            Return _TBPhonerPasswort
+            Return ValueTBPhonerPasswort
         End Get
         Set(ByVal value As String)
-            _TBPhonerPasswort = value
+            ValueTBPhonerPasswort = value
         End Set
     End Property
-    Public Property P_PhonerTelNameIndex() As Integer
+    Public Property ProperyPhonerTelNameIndex() As Integer
         Get
-            Return _PhonerTelNameIndex
+            Return ValuePhonerTelNameIndex
         End Get
         Set(ByVal value As Integer)
-            _PhonerTelNameIndex = value
+            ValuePhonerTelNameIndex = value
         End Set
     End Property
     ' Statistik
-    Public Property P_StatResetZeit As Date
+    Public Property ProperyStatResetZeit As Date
         Get
-            Return _StatResetZeit
+            Return ValueStatResetZeit
         End Get
         Set(ByVal value As Date)
-            _StatResetZeit = value
+            ValueStatResetZeit = value
         End Set
     End Property
-    Public Property P_StatVerpasst As Integer
+    Public Property ProperyStatVerpasst As Integer
         Get
-            Return _StatVerpasst
+            Return ValueStatVerpasst
         End Get
         Set(ByVal value As Integer)
-            _StatVerpasst = value
+            ValueStatVerpasst = value
         End Set
     End Property
-    Public Property P_StatNichtErfolgreich As Integer
+    Public Property ProperyStatNichtErfolgreich As Integer
         Get
-            Return _StatNichtErfolgreich
+            Return ValueStatNichtErfolgreich
         End Get
         Set(ByVal value As Integer)
-            _StatNichtErfolgreich = value
+            ValueStatNichtErfolgreich = value
         End Set
     End Property
-    Public Property P_StatJournal() As Integer
+    Public Property ProperyStatJournal() As Integer
         Get
-            Return _StatJournal
+            Return ValueStatJournal
         End Get
         Set(ByVal value As Integer)
-            _StatJournal = value
+            ValueStatJournal = value
         End Set
     End Property
-    Public Property P_StatKontakt() As Integer
+    Public Property ProperyStatKontakt() As Integer
         Get
-            Return _StatKontakt
+            Return ValueStatKontakt
         End Get
         Set(ByVal value As Integer)
-            _StatKontakt = value
+            ValueStatKontakt = value
         End Set
     End Property
-    Public Property P_StatOLClosedZeit() As Date
+    Public Property ProperyStatOLClosedZeit() As Date
         Get
-            Return _StatOLClosedZeit
+            Return ValueStatOLClosedZeit
         End Get
         Set(ByVal value As Date)
-            _StatOLClosedZeit = value
+            ValueStatOLClosedZeit = value
         End Set
     End Property
     ' Wählbox
-    Public Property P_TelAnschluss() As Integer
+    Public Property ProperyTelAnschluss() As Integer
         Get
-            Return _TelAnschluss
+            Return ValueTelAnschluss
         End Get
         Set(ByVal value As Integer)
-            _TelAnschluss = value
+            ValueTelAnschluss = value
         End Set
     End Property
-    Public Property P_TelFestnetz() As Boolean
+    Public Property ProperyTelFestnetz() As Boolean
         Get
-            Return _TelFestnetz
+            Return ValueTelFestnetz
         End Get
         Set(ByVal value As Boolean)
-            _TelFestnetz = value
+            ValueTelFestnetz = value
         End Set
     End Property
-    Public Property P_TelCLIR() As Boolean
+    Public Property ProperyTelCLIR() As Boolean
         Get
-            Return _TelCLIR
+            Return ValueTelCLIR
         End Get
         Set(ByVal value As Boolean)
-            _TelCLIR = value
+            ValueTelCLIR = value
         End Set
     End Property
     ' FritzBox
@@ -895,12 +892,12 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_EncodeingFritzBox() As String
+    Public Property ProperyEncodeingFritzBox() As String
         Get
-            Return _EncodeingFritzBox
+            Return ValueEncodeingFritzBox
         End Get
         Set(ByVal value As String)
-            _EncodeingFritzBox = value
+            ValueEncodeingFritzBox = value
         End Set
     End Property
     ''' <summary>
@@ -909,12 +906,12 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_TBFBAdr() As String
+    Public Property ProperyTBFBAdr() As String
         Get
-            Return _TBFBAdr
+            Return ValueTBFBAdr
         End Get
         Set(ByVal value As String)
-            _TBFBAdr = value
+            ValueTBFBAdr = value
         End Set
     End Property
     ''' <summary>
@@ -923,12 +920,12 @@ Public Class DataProvider
     ''' <value>Boolean</value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_CBForceFBAddr() As Boolean
+    Public Property ProperyCBForceFBAddr() As Boolean
         Get
-            Return _CBForceFBAddr
+            Return ValueCBForceFBAddr
         End Get
         Set(ByVal value As Boolean)
-            _CBForceFBAddr = value
+            ValueCBForceFBAddr = value
         End Set
     End Property
     ''' <summary>
@@ -937,12 +934,12 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_TBBenutzer() As String
+    Public Property ProperyTBBenutzer() As String
         Get
-            Return _TBBenutzer
+            Return ValueTBBenutzer
         End Get
         Set(ByVal value As String)
-            _TBBenutzer = value
+            ValueTBBenutzer = value
         End Set
     End Property
     ''' <summary>
@@ -951,56 +948,56 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>Das verschlüsselte Passwort</returns>
     ''' <remarks></remarks>
-    Public Property P_TBPasswort() As String
+    Public Property ProperyTBPasswort() As String
         Get
-            Return _TBPasswort
+            Return ValueTBPasswort
         End Get
         Set(ByVal value As String)
-            _TBPasswort = value
+            ValueTBPasswort = value
         End Set
     End Property
     ' Indizierung
-    Public Property P_LLetzteIndizierung() As Date
+    Public Property ProperyLLetzteIndizierung() As Date
         Get
-            Return _LLetzteIndizierung
+            Return ValueLLetzteIndizierung
         End Get
         Set(ByVal value As Date)
-            _LLetzteIndizierung = value
+            ValueLLetzteIndizierung = value
         End Set
     End Property
     ' Note
-    Public Property P_CBNote() As Boolean
+    Public Property ProperyCBNote() As Boolean
         Get
-            Return _CBNote
+            Return ValueCBNote
         End Get
         Set(ByVal value As Boolean)
-            _CBNote = value
+            ValueCBNote = value
         End Set
     End Property
     ' Einstellungen
-    Public Property P_Arbeitsverzeichnis() As String
+    Public Property ProperyArbeitsverzeichnis() As String
         Get
-            Return _Arbeitsverzeichnis
+            Return ValueArbeitsverzeichnis
         End Get
         Set(value As String)
-            _Arbeitsverzeichnis = value
+            ValueArbeitsverzeichnis = value
         End Set
     End Property
     ' Vorwahllisten
-    Public Property P_ListeOrtsVorwahlen() As String()
+    Public Property ProperyListeOrtsVorwahlen() As String()
         Get
-            Return _ListeOrtsVorwahlen
+            Return ValueListeOrtsVorwahlen
         End Get
         Set(value As String())
-            _ListeOrtsVorwahlen = value
+            ValueListeOrtsVorwahlen = value
         End Set
     End Property
-    Public Property P_ListeLandesVorwahlen() As String()
+    Public Property ProperyListeLandesVorwahlen() As String()
         Get
-            Return _ListeLandesVorwahlen
+            Return ValueListeLandesVorwahlen
         End Get
         Set(value As String())
-            _ListeLandesVorwahlen = value
+            ValueListeLandesVorwahlen = value
         End Set
     End Property
 #End Region
@@ -1011,195 +1008,195 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>-1</value>
     ''' <returns>String</returns>
-    Public ReadOnly Property P_Def_ErrorMinusOne_String() As String
+    Public ReadOnly Property Propery_Def_ErrorMinusOne_String() As String
         Get
             Return "-1"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_ErrorMinusOne_Integer() As Integer
+    Public ReadOnly Property Propery_Def_ErrorMinusOne_Integer() As Integer
         Get
             Return -1
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_ErrorMinusTwo_String() As String
+    Public ReadOnly Property Propery_Def_ErrorMinusTwo_String() As String
         Get
             Return "-2"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_StringEmpty() As String
+    Public ReadOnly Property Propery_Def_StringEmpty() As String
         Get
             Return String.Empty
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_NeueZeile() As String
+    Public ReadOnly Property Propery_Def_NeueZeile() As String
         Get
             Return vbCrLf
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_StringUnknown() As String
+    Public ReadOnly Property Propery_Def_StringUnknown() As String
         Get
             Return "unbekannt"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_FritzBoxAdress() As String
+    Public ReadOnly Property Propery_Def_FritzBoxAdress() As String
         Get
             Return "fritz.box"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_TelCodeActivateFritzBoxCallMonitor() As String
+    Public ReadOnly Property Propery_Def_TelCodeActivateFritzBoxCallMonitor() As String
         Get
             Return "#96*5*"
         End Get
     End Property
 
-    Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
+    Public ReadOnly Property Propery_DefaultFBAnrMonPort() As Integer
         Get
             Return 1012
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_StringNull() As String
+    Public ReadOnly Property Propery_Def_StringNull() As String
         Get
             Return "0"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_StringErrorMinusOne() As String
+    Public ReadOnly Property Propery_Def_StringErrorMinusOne() As String
         Get
-            Return CStr(P_Def_ErrorMinusOne_String)
+            Return CStr(Propery_Def_ErrorMinusOne_String)
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_SessionID() As String
+    Public ReadOnly Property Propery_Def_SessionID() As String
         Get
             Return "0000000000000000"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Header_UserAgent() As String
+    Public ReadOnly Property Propery_Def_Header_UserAgent() As String
         Get
             Return "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Header_ContentType() As String
+    Public ReadOnly Property Propery_Def_Header_ContentType() As String
         Get
             Return "application/x-www-form-urlencoded"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Header_Accept() As String
+    Public ReadOnly Property Propery_Def_Header_Accept() As String
         Get
             Return "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_ReStartIntervall() As Integer
+    Public ReadOnly Property Propery_Def_ReStartIntervall() As Integer
         Get
             Return 3000
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_TryMaxRestart() As Integer
+    Public ReadOnly Property Propery_Def_TryMaxRestart() As Integer
         Get
             Return 15
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_AnrMonDirection_Call() As String
+    Public ReadOnly Property Propery_Def_AnrMonDirection_Call() As String
         Get
             Return "[->]"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_AnrMonDirection_Ring() As String
+    Public ReadOnly Property Propery_Def_AnrMonDirection_Ring() As String
         Get
             Return "[<-]"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_AnrMonDirection_Default() As String
+    Public ReadOnly Property Propery_Def_AnrMonDirection_Default() As String
         Get
             Return "[<>]"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
+    Public ReadOnly Property Propery_Def_AnrMonDirection_UserProperty_Name() As String
         Get
             Return "FBDB-AnrMonDirection"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
+    Public ReadOnly Property Propery_Def_AnrMonDirection_UserProperty_Zeit() As String
         Get
             Return "FBDB-AnrMonZeit"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Note_Table() As String
+    Public ReadOnly Property Propery_Def_Note_Table() As String
         Get
             Return "FBDB_Note_Table"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Begin_vCard() As String
+    Public ReadOnly Property Propery_Def_Begin_vCard() As String
         Get
             Return "BEGIN:VCARD"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_End_vCard() As String
+    Public ReadOnly Property Propery_Def_End_vCard() As String
         Get
             Return "END:VCARD"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_NameListCALL() As String
+    Public ReadOnly Property Propery_Def_NameListCALL() As String
         Get
             Return "CallList"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_NameListRING() As String
+    Public ReadOnly Property Propery_Def_NameListRING() As String
         Get
             Return "RingList"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_NameListVIP() As String
+    Public ReadOnly Property Propery_Def_NameListVIP() As String
         Get
             Return "VIPList"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Addin_LangName() As String
+    Public ReadOnly Property Propery_Def_Addin_LangName() As String
         Get
             Return "Fritz!Box Telefon-dingsbums"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Addin_KurzName() As String
+    Public ReadOnly Property Propery_Def_Addin_KurzName() As String
         Get
             Return "FritzOutlook"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Config_FileName() As String
+    Public ReadOnly Property Propery_Def_Config_FileName() As String
         Get
-            Return P_Def_Addin_KurzName & ".xml"
+            Return Propery_Def_Addin_KurzName & ".xml"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Log_FileName() As String
+    Public ReadOnly Property Propery_Def_Log_FileName() As String
         Get
-            Return P_Def_Addin_KurzName & ".log"
+            Return Propery_Def_Addin_KurzName & ".log"
         End Get
     End Property
 
@@ -1208,20 +1205,20 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Integer</value>
     ''' <returns>Intervall in MINUTEN</returns>
-    Public ReadOnly Property P_Def_CheckAnrMonIntervall() As Integer
+    Public ReadOnly Property Propery_Def_CheckAnrMonIntervall() As Integer
         Get
             Return 1
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_DirectorySeparatorChar() As String
+    Public ReadOnly Property Propery_Def_DirectorySeparatorChar() As String
         Get
             Return IO.Path.DirectorySeparatorChar
         End Get
     End Property
-    Public ReadOnly Property P_Def_AddInPath() As String
+    Public ReadOnly Property Propery_Def_AddInPath() As String
         Get
-            Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & P_Def_DirectorySeparatorChar & P_Def_Addin_LangName & P_Def_DirectorySeparatorChar
+            Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & Propery_Def_DirectorySeparatorChar & Propery_Def_Addin_LangName & Propery_Def_DirectorySeparatorChar
         End Get
     End Property
 
@@ -1231,7 +1228,7 @@ Public Class DataProvider
     ''' <value>String-Array</value>
     ''' <returns>String-Array</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_Def_UserProperties As String()
+    Public ReadOnly Property Propery_Def_UserProperties As String()
         Get
             Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
                                    "FBDB-BusinessTelephoneNumber", _
@@ -1256,7 +1253,7 @@ Public Class DataProvider
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_olTelNrTypen As String()
+    Public ReadOnly Property Propery_Def_olTelNrTypen As String()
         Get
             Dim tmp() As String = {"Assistent", _
                                    "Geschäftlich", _
@@ -1281,31 +1278,31 @@ Public Class DataProvider
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_UserPropertyIndex() As String
+    Public ReadOnly Property Propery_Def_UserPropertyIndex() As String
         Get
             Return "FBDB-Save"
         End Get
     End Property
 #Region "Journal"
-    Public ReadOnly Property P_Def_Journal_Text_Eingehend() As String
+    Public ReadOnly Property Propery_Def_Journal_Text_Eingehend() As String
         Get
             Return "Eingehender Anruf von"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Journal_Text_Ausgehend() As String
+    Public ReadOnly Property Propery_Def_Journal_Text_Ausgehend() As String
         Get
             Return "Ausgehender Anruf zu"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Journal_Text_Verpasst() As String
+    Public ReadOnly Property Propery_Def_Journal_Text_Verpasst() As String
         Get
             Return "Verpasster Anruf von"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Journal_Text_NichtErfolgreich() As String
+    Public ReadOnly Property Propery_Def_Journal_Text_NichtErfolgreich() As String
         Get
             Return "Nicht erfolgreicher Anruf zu"
         End Get
@@ -1313,44 +1310,44 @@ Public Class DataProvider
 #End Region
 
 #Region "Phoner"
-    Public ReadOnly Property P_Def_Phoner_CONNECT As String
+    Public ReadOnly Property Propery_Def_Phoner_CONNECT As String
         Get
             Return "CONNECT " 'Das Leerzeichen wird benötigt!
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_DISCONNECT As String
+    Public ReadOnly Property Propery_Def_Phoner_DISCONNECT As String
         Get
             Return "DISCONNECT"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_Challenge As String
+    Public ReadOnly Property Propery_Def_Phoner_Challenge As String
         Get
             Return "Challenge="
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_Response As String
+    Public ReadOnly Property Propery_Def_Phoner_Response As String
         Get
             Return "Response="
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_Ready As String
+    Public ReadOnly Property Propery_Def_Phoner_Ready As String
         Get
             Return "Welcome to Phoner"
         End Get
     End Property
 
-    Public ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer
+    Public ReadOnly Property Propery_DefaultPhonerAnrMonPort() As Integer
         Get
             Return 2012
         End Get
     End Property
 #End Region
     ' Passwortverschlüsselung
-    Public ReadOnly Property P_Def_PassWordDecryptionKey As String
+    Public ReadOnly Property Propery_Def_PassWordDecryptionKey As String
         Get
             Return "Fritz!Box Script"
         End Get
@@ -1360,392 +1357,392 @@ Public Class DataProvider
 
 #Region "Default Value Properties"
 
-    Public ReadOnly Property P_Def_TBLandesVW() As String
+    Public ReadOnly Property Propery_Def_TBLandesVW() As String
         Get
             Return "0049"
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBoxLandesVorwahl() As Integer
+    Public ReadOnly Property Propery_Def_CBoxLandesVorwahl() As Integer
         Get
-            Return P_Def_ErrorMinusOne_Integer
+            Return Propery_Def_ErrorMinusOne_Integer
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAmt() As String
+    Public ReadOnly Property Propery_Def_TBAmt() As String
         Get
-            Return P_Def_ErrorMinusOne_String
+            Return Propery_Def_ErrorMinusOne_String
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBVorwahl() As String
+    Public ReadOnly Property Propery_Def_TBVorwahl() As String
         Get
-            Return P_Def_StringEmpty
+            Return Propery_Def_StringEmpty
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBoxVorwahl() As Integer
+    Public ReadOnly Property Propery_Def_CBoxVorwahl() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBEnblDauer() As Integer
+    Public ReadOnly Property Propery_Def_TBEnblDauer() As Integer
         Get
             Return 10
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrMonAuto() As Boolean
+    Public ReadOnly Property Propery_Def_CBAnrMonAuto() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAnrMonX() As Integer
+    Public ReadOnly Property Propery_Def_TBAnrMonX() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAnrMonY() As Integer
+    Public ReadOnly Property Propery_Def_TBAnrMonY() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrMonMove() As Boolean
+    Public ReadOnly Property Propery_Def_CBAnrMonMove() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrMonTransp() As Boolean
+    Public ReadOnly Property Propery_Def_CBAnrMonTransp() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAnrMonMoveGeschwindigkeit() As Integer
+    Public ReadOnly Property Propery_Def_TBAnrMonMoveGeschwindigkeit() As Integer
         Get
             Return 5
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBoxAnrMonStartPosition() As Integer
+    Public ReadOnly Property Propery_Def_CBoxAnrMonStartPosition() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBoxAnrMonMoveDirection() As Integer
+    Public ReadOnly Property Propery_Def_CBoxAnrMonMoveDirection() As Integer
         Get
             Return 0
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBAnrMonZeigeKontakt() As Boolean
+    Public ReadOnly Property Propery_Def_CBAnrMonZeigeKontakt() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrMonContactImage() As Boolean
+    Public ReadOnly Property Propery_Def_CBAnrMonContactImage() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBIndexAus() As Boolean
+    Public ReadOnly Property Propery_Def_CBIndexAus() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBShowMSN() As Boolean
+    Public ReadOnly Property Propery_Def_CBShowMSN() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBAutoClose() As Boolean
+    Public ReadOnly Property Propery_Def_CBAutoClose() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBVoIPBuster() As Boolean
+    Public ReadOnly Property Propery_Def_CBVoIPBuster() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBCbCunterbinden() As Boolean
+    Public ReadOnly Property Propery_Def_CBCbCunterbinden() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBCallByCall() As Boolean
+    Public ReadOnly Property Propery_Def_CBCallByCall() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBDialPort() As Boolean
+    Public ReadOnly Property Propery_Def_CBDialPort() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBKErstellen() As Boolean
+    Public ReadOnly Property Propery_Def_CBKErstellen() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBLogFile() As Boolean
+    Public ReadOnly Property Propery_Def_CBLogFile() As Boolean
         Get
             Return True
         End Get
     End Property
     'Einstellung für die Symbolleiste
-    Public ReadOnly Property P_Def_CBSymbWwdh() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbWwdh() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbAnrMon() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbAnrMon() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbAnrMonNeuStart() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbAnrMonNeuStart() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbAnrListe() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbAnrListe() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbDirekt() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbDirekt() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbRWSuche() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbRWSuche() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbVIP() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbVIP() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbJournalimport() As Boolean
+    Public ReadOnly Property Propery_Def_CBSymbJournalimport() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBJImport() As Boolean
+    Public ReadOnly Property Propery_Def_CBJImport() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBRWS() As Boolean
+    Public ReadOnly Property Propery_Def_CBRWS() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TVKontaktOrdnerEntryID() As String
+    Public ReadOnly Property Propery_Def_TVKontaktOrdnerEntryID() As String
         Get
-            Return P_Def_StringErrorMinusOne
+            Return Propery_Def_StringErrorMinusOne
         End Get
     End Property
-    Public ReadOnly Property P_Def_TVKontaktOrdnerStoreID() As String
+    Public ReadOnly Property Propery_Def_TVKontaktOrdnerStoreID() As String
         Get
-            Return P_Def_StringErrorMinusOne
+            Return Propery_Def_StringErrorMinusOne
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBKHO() As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBRWSIndex() As Boolean
+    Public ReadOnly Property Propery_Def_CBKHO() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_ComboBoxRWS() As Integer
+    Public ReadOnly Property Propery_Def_CBRWSIndex() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+    Public ReadOnly Property Propery_Def_ComboBoxRWS() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBIndex() As Boolean
+    Public ReadOnly Property Propery_Def_CBIndex() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBJournal() As Boolean
+    Public ReadOnly Property Propery_Def_CBJournal() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBUseAnrMon() As Boolean
+    Public ReadOnly Property Propery_Def_CBUseAnrMon() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBCheckMobil() As Boolean
+    Public ReadOnly Property Propery_Def_CBCheckMobil() As Boolean
         Get
             Return True
         End Get
     End Property
     'StoppUhr
-    Public ReadOnly Property P_Def_CBStoppUhrEinblenden() As Boolean
+    Public ReadOnly Property Propery_Def_CBStoppUhrEinblenden() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrAusblenden() As Boolean
+    Public ReadOnly Property Propery_Def_CBStoppUhrAusblenden() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBStoppUhr() As Integer
+    Public ReadOnly Property Propery_Def_TBStoppUhr() As Integer
         Get
             Return 10
         End Get
 
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrX() As Integer
+    Public ReadOnly Property Propery_Def_CBStoppUhrX() As Integer
         Get
             Return 10
         End Get
 
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrY() As Integer
+    Public ReadOnly Property Propery_Def_CBStoppUhrY() As Integer
         Get
             Return 10
         End Get
 
     End Property
     ' Telefonnummernformatierung
-    Public ReadOnly Property P_Def_TBTelNrMaske() As String
+    Public ReadOnly Property Propery_Def_TBTelNrMaske() As String
         Get
             Return "%L (%O) %N - %D"
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBTelNrGruppieren() As Boolean
+    Public ReadOnly Property Propery_Def_CBTelNrGruppieren() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBintl() As Boolean
+    Public ReadOnly Property Propery_Def_CBintl() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBIgnoTelNrFormat() As Boolean
+    Public ReadOnly Property Propery_Def_CBIgnoTelNrFormat() As Boolean
         Get
             Return False
         End Get
     End Property
     'Phoner
-    Public ReadOnly Property P_Def_CBPhoner As Boolean
+    Public ReadOnly Property Propery_Def_CBPhoner As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_PhonerVerfügbar As Boolean
+    Public ReadOnly Property Propery_Def_PhonerVerfügbar As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBPhonerAnrMon As Boolean
+    Public ReadOnly Property Propery_Def_CBPhonerAnrMon As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_ComboBoxPhonerSIP() As Integer
+    Public ReadOnly Property Propery_Def_ComboBoxPhonerSIP() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBPhonerPasswort() As String
+    Public ReadOnly Property Propery_Def_TBPhonerPasswort() As String
         Get
-            Return P_Def_StringEmpty
+            Return Propery_Def_StringEmpty
         End Get
     End Property
-    Public ReadOnly Property P_Def_PhonerTelNameIndex() As Integer
+    Public ReadOnly Property Propery_Def_PhonerTelNameIndex() As Integer
         Get
             Return 0
         End Get
     End Property
     ' Statistik
-    Public ReadOnly Property P_Def_StatResetZeit As Date
+    Public ReadOnly Property Propery_Def_StatResetZeit As Date
         Get
             Return System.DateTime.Now
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatVerpasst As Integer
+    Public ReadOnly Property Propery_Def_StatVerpasst As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatNichtErfolgreich As Integer
+    Public ReadOnly Property Propery_Def_StatNichtErfolgreich As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatJournal() As Integer
+    Public ReadOnly Property Propery_Def_StatJournal() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatKontakt() As Integer
+    Public ReadOnly Property Propery_Def_StatKontakt() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatOLClosedZeit() As Date
+    Public ReadOnly Property Propery_Def_StatOLClosedZeit() As Date
         Get
             Return System.DateTime.Now
         End Get
     End Property
     ' Wählbox
-    Public ReadOnly Property P_Def_TelAnschluss() As Integer
+    Public ReadOnly Property Propery_Def_TelAnschluss() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TelFestnetz() As Boolean
+    Public ReadOnly Property Propery_Def_TelFestnetz() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TelCLIR() As Boolean
+    Public ReadOnly Property Propery_Def_TelCLIR() As Boolean
         Get
             Return False
         End Get
     End Property
     ' FritzBox
-    Public ReadOnly Property P_Def_EncodeingFritzBox() As String
+    Public ReadOnly Property Propery_Def_EncodeingFritzBox() As String
         Get
-            Return P_Def_ErrorMinusOne_String
+            Return Propery_Def_ErrorMinusOne_String
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBFBAdr() As String
+    Public ReadOnly Property Propery_Def_TBFBAdr() As String
         Get
-            Return P_Def_FritzBoxAdress
+            Return Propery_Def_FritzBoxAdress
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBForceFBAddr() As Boolean
+    Public ReadOnly Property Propery_Def_CBForceFBAddr() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBBenutzer() As String
+    Public ReadOnly Property Propery_Def_TBBenutzer() As String
         Get
-            Return P_Def_StringEmpty
+            Return Propery_Def_StringEmpty
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBPasswort() As String
+    Public ReadOnly Property Propery_Def_TBPasswort() As String
         Get
-            Return P_Def_StringEmpty
+            Return Propery_Def_StringEmpty
         End Get
     End Property
     ' Indizierung
-    Public ReadOnly Property P_Def_LLetzteIndizierung() As Date
+    Public ReadOnly Property Propery_Def_LLetzteIndizierung() As Date
         Get
             Return System.DateTime.Now
         End Get
     End Property
     ' Note
-    Public ReadOnly Property P_Def_CBNote() As Boolean
+    Public ReadOnly Property Propery_Def_CBNote() As Boolean
         Get
             Return False
         End Get
@@ -1754,22 +1751,22 @@ Public Class DataProvider
 #End Region
 
 #Region "Organisation Properties"
-    Private ReadOnly Property P_Def_Options() As String
+    Private ReadOnly Property Propery_Def_Options() As String
         Get
             Return "Optionen"
         End Get
     End Property
-    Private ReadOnly Property P_Def_Statistics() As String
+    Private ReadOnly Property Propery_Def_Statistics() As String
         Get
             Return "Statistik"
         End Get
     End Property
-    Private ReadOnly Property P_Def_Journal() As String
+    Private ReadOnly Property Propery_Def_Journal() As String
         Get
             Return "Journal"
         End Get
     End Property
-    Private ReadOnly Property P_Def_Phoner() As String
+    Private ReadOnly Property Propery_Def_Phoner() As String
         Get
             Return "Phoner"
         End Get
@@ -1778,12 +1775,12 @@ Public Class DataProvider
 #End Region
 
 #Region "Debug Properties"
-    Public ReadOnly Property P_Debug_Use_WebClient() As Boolean
+    Public ReadOnly Property ProperyDebug_Use_WebClient() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Debug_AnrufSimulation() As Boolean
+    Public ReadOnly Property ProperyDebug_AnrufSimulation() As Boolean
         Get
             Return False
         End Get
@@ -1793,16 +1790,16 @@ Public Class DataProvider
     Public Sub New()
         ' Pfad zur Einstellungsdatei ermitteln
         Dim ConfigPfad As String
-        P_Arbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", P_Def_AddInPath)
-        ConfigPfad = P_Arbeitsverzeichnis & P_Def_Config_FileName
+        ProperyArbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", Propery_Def_AddInPath)
+        ConfigPfad = ProperyArbeitsverzeichnis & Propery_Def_Config_FileName
 
         XMLDoc = New XmlDocument()
         With My.Computer.FileSystem
             If Not (.FileExists(ConfigPfad) AndAlso XMLValidator(ConfigPfad)) Then
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
-                If Not .DirectoryExists(P_Arbeitsverzeichnis) Then .CreateDirectory(P_Arbeitsverzeichnis)
+                If Not .DirectoryExists(ProperyArbeitsverzeichnis) Then .CreateDirectory(ProperyArbeitsverzeichnis)
                 .WriteAllText(ConfigPfad, XMLDoc.InnerXml, True)
-                SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
+                SaveSettingsVBA("Arbeitsverzeichnis", ProperyArbeitsverzeichnis)
             End If
         End With
         CleanUpXML()
@@ -1817,89 +1814,89 @@ Public Class DataProvider
     Private Sub LoadOptionData()
         Dim xPathTeile As New ArrayList
 
-        Me.P_TBLandesVW = Read(P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
-        Me.P_TBAmt = Read(P_Def_Options, "TBAmt", P_Def_TBAmt)
-        Me.P_TBFBAdr = Read(P_Def_Options, "TBFBAdr", P_Def_TBFBAdr)
-        Me.P_CBForceFBAddr = CBool(Read(P_Def_Options, "CBForceFBAddr", CStr(P_Def_CBForceFBAddr)))
-        Me.P_TBBenutzer = Read(P_Def_Options, "TBBenutzer", P_Def_TBBenutzer)
-        Me.P_TBPasswort = Read(P_Def_Options, "TBPasswort", P_Def_TBPasswort)
-        Me.P_TBVorwahl = Read(P_Def_Options, "TBVorwahl", P_Def_TBVorwahl)
-        Me.P_CBoxVorwahl = CInt(Read(P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
-        Me.P_TBEnblDauer = CInt(Read(P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
-        Me.P_CBAnrMonAuto = CBool(Read(P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
-        Me.P_TBAnrMonX = CInt(Read(P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
-        Me.P_TBAnrMonY = CInt(Read(P_Def_Options, "TBAnrMonY", CStr(P_Def_TBAnrMonY)))
-        Me.P_CBAnrMonMove = CBool(Read(P_Def_Options, "CBAnrMonMove", CStr(P_Def_CBAnrMonMove)))
-        Me.P_CBAnrMonTransp = CBool(Read(P_Def_Options, "CBAnrMonTransp", CStr(P_Def_CBAnrMonTransp)))
-        Me.P_TBAnrMonMoveGeschwindigkeit = CInt(Read(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(P_Def_TBAnrMonMoveGeschwindigkeit)))
-        Me.P_CBoxAnrMonStartPosition = CInt(Read(P_Def_Options, "CBoxAnrMonStartPosition", CStr(P_Def_CBoxAnrMonStartPosition)))
-        Me.P_CBoxAnrMonMoveDirection = CInt(Read(P_Def_Options, "CBoxAnrMonMoveDirection", CStr(P_Def_CBoxAnrMonMoveDirection)))
-        Me.P_CBAnrMonZeigeKontakt = CBool(Read(P_Def_Options, "CBAnrMonZeigeKontakt", CStr(P_Def_CBAnrMonZeigeKontakt)))
-        Me.P_CBAnrMonContactImage = CBool(Read(P_Def_Options, "CBAnrMonContactImage", CStr(P_Def_CBAnrMonContactImage)))
-        Me.P_CBIndexAus = CBool(Read(P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
-        Me.P_CBShowMSN = CBool(Read(P_Def_Options, "CBShowMSN", CStr(P_Def_CBShowMSN)))
-        Me.P_CBJournal = CBool(Read(P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
-        Me.P_CBUseAnrMon = CBool(Read(P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
-        Me.P_CBCheckMobil = CBool(Read(P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
-        Me.P_CBAutoClose = CBool(Read(P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
-        Me.P_CBVoIPBuster = CBool(Read(P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
-        Me.P_CBCbCunterbinden = CBool(Read(P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
-        Me.P_CBCallByCall = CBool(Read(P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
-        Me.P_CBDialPort = CBool(Read(P_Def_Options, "CBDialPort", CStr(P_Def_CBDialPort)))
-        Me.P_CBKErstellen = CBool(Read(P_Def_Options, "CBKErstellen", CStr(P_Def_CBKErstellen)))
-        Me.P_CBLogFile = CBool(Read(P_Def_Options, "CBLogFile", CStr(P_Def_CBLogFile)))
+        Me.ProperyTBLandesVW = Read(Propery_Def_Options, "TBLandesVW", Propery_Def_TBLandesVW)
+        Me.ProperyTBAmt = Read(Propery_Def_Options, "TBAmt", Propery_Def_TBAmt)
+        Me.ProperyTBFBAdr = Read(Propery_Def_Options, "TBFBAdr", Propery_Def_TBFBAdr)
+        Me.ProperyCBForceFBAddr = CBool(Read(Propery_Def_Options, "CBForceFBAddr", CStr(Propery_Def_CBForceFBAddr)))
+        Me.ProperyTBBenutzer = Read(Propery_Def_Options, "TBBenutzer", Propery_Def_TBBenutzer)
+        Me.ProperyTBPasswort = Read(Propery_Def_Options, "TBPasswort", Propery_Def_TBPasswort)
+        Me.ProperyTBVorwahl = Read(Propery_Def_Options, "TBVorwahl", Propery_Def_TBVorwahl)
+        Me.ProperyCBoxVorwahl = CInt(Read(Propery_Def_Options, "CBoxVorwahl", CStr(Propery_Def_CBoxVorwahl)))
+        Me.ProperyTBEnblDauer = CInt(Read(Propery_Def_Options, "TBEnblDauer", CStr(Propery_Def_TBEnblDauer)))
+        Me.ProperyCBAnrMonAuto = CBool(Read(Propery_Def_Options, "CBAnrMonAuto", CStr(Propery_Def_CBAnrMonAuto)))
+        Me.ProperyTBAnrMonX = CInt(Read(Propery_Def_Options, "TBAnrMonX", CStr(Propery_Def_TBAnrMonX)))
+        Me.ProperyTBAnrMonY = CInt(Read(Propery_Def_Options, "TBAnrMonY", CStr(Propery_Def_TBAnrMonY)))
+        Me.ProperyCBAnrMonMove = CBool(Read(Propery_Def_Options, "CBAnrMonMove", CStr(Propery_Def_CBAnrMonMove)))
+        Me.ProperyCBAnrMonTransp = CBool(Read(Propery_Def_Options, "CBAnrMonTransp", CStr(Propery_Def_CBAnrMonTransp)))
+        Me.ProperyTBAnrMonMoveGeschwindigkeit = CInt(Read(Propery_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Propery_Def_TBAnrMonMoveGeschwindigkeit)))
+        Me.ProperyCBoxAnrMonStartPosition = CInt(Read(Propery_Def_Options, "CBoxAnrMonStartPosition", CStr(Propery_Def_CBoxAnrMonStartPosition)))
+        Me.ProperyCBoxAnrMonMoveDirection = CInt(Read(Propery_Def_Options, "CBoxAnrMonMoveDirection", CStr(Propery_Def_CBoxAnrMonMoveDirection)))
+        Me.ProperyCBAnrMonZeigeKontakt = CBool(Read(Propery_Def_Options, "CBAnrMonZeigeKontakt", CStr(Propery_Def_CBAnrMonZeigeKontakt)))
+        Me.ProperyCBAnrMonContactImage = CBool(Read(Propery_Def_Options, "CBAnrMonContactImage", CStr(Propery_Def_CBAnrMonContactImage)))
+        Me.ProperyCBIndexAus = CBool(Read(Propery_Def_Options, "CBIndexAus", CStr(Propery_Def_CBIndexAus)))
+        Me.ProperyCBShowMSN = CBool(Read(Propery_Def_Options, "CBShowMSN", CStr(Propery_Def_CBShowMSN)))
+        Me.ProperyCBJournal = CBool(Read(Propery_Def_Options, "CBJournal", CStr(Propery_Def_CBJournal)))
+        Me.ProperyCBUseAnrMon = CBool(Read(Propery_Def_Options, "CBUseAnrMon", CStr(Propery_Def_CBUseAnrMon)))
+        Me.ProperyCBCheckMobil = CBool(Read(Propery_Def_Options, "CBCheckMobil", CStr(Propery_Def_CBCheckMobil)))
+        Me.ProperyCBAutoClose = CBool(Read(Propery_Def_Options, "CBAutoClose", CStr(Propery_Def_CBAutoClose)))
+        Me.ProperyCBVoIPBuster = CBool(Read(Propery_Def_Options, "CBVoIPBuster", CStr(Propery_Def_CBVoIPBuster)))
+        Me.ProperyCBCbCunterbinden = CBool(Read(Propery_Def_Options, "CBCbCunterbinden", CStr(Propery_Def_CBCbCunterbinden)))
+        Me.ProperyCBCallByCall = CBool(Read(Propery_Def_Options, "CBCallByCall", CStr(Propery_Def_CBCallByCall)))
+        Me.ProperyCBDialPort = CBool(Read(Propery_Def_Options, "CBDialPort", CStr(Propery_Def_CBDialPort)))
+        Me.ProperyCBKErstellen = CBool(Read(Propery_Def_Options, "CBKErstellen", CStr(Propery_Def_CBKErstellen)))
+        Me.ProperyCBLogFile = CBool(Read(Propery_Def_Options, "CBLogFile", CStr(Propery_Def_CBLogFile)))
         ' Einstellungen für die Symbolleiste laden
-        Me.P_CBSymbWwdh = CBool(Read(P_Def_Options, "CBSymbWwdh", CStr(P_Def_CBSymbWwdh)))
-        Me.P_CBSymbAnrMon = CBool(Read(P_Def_Options, "CBSymbAnrMon", CStr(P_Def_CBSymbAnrMon)))
-        Me.P_CBSymbAnrMonNeuStart = CBool(Read(P_Def_Options, "CBSymbAnrMonNeuStart", CStr(P_Def_CBSymbAnrMonNeuStart)))
-        Me.P_CBSymbAnrListe = CBool(Read(P_Def_Options, "CBSymbAnrListe", CStr(P_Def_CBSymbAnrListe)))
-        Me.P_CBSymbDirekt = CBool(Read(P_Def_Options, "CBSymbDirekt", CStr(P_Def_CBSymbDirekt)))
-        Me.P_CBSymbRWSuche = CBool(Read(P_Def_Options, "CBSymbRWSuche", CStr(P_Def_CBSymbRWSuche)))
-        Me.P_TVKontaktOrdnerEntryID = Read(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(P_Def_TVKontaktOrdnerEntryID))
-        Me.P_TVKontaktOrdnerStoreID = Read(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(P_Def_TVKontaktOrdnerStoreID))
-        Me.P_CBSymbVIP = CBool(Read(P_Def_Options, "CBSymbVIP", CStr(P_Def_CBSymbVIP)))
-        Me.P_CBSymbJournalimport = CBool(Read(P_Def_Options, "CBSymbJournalimport", CStr(P_Def_CBSymbJournalimport)))
-        Me.P_CBJImport = CBool(Read(P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
+        Me.ProperyCBSymbWwdh = CBool(Read(Propery_Def_Options, "CBSymbWwdh", CStr(Propery_Def_CBSymbWwdh)))
+        Me.ProperyCBSymbAnrMon = CBool(Read(Propery_Def_Options, "CBSymbAnrMon", CStr(Propery_Def_CBSymbAnrMon)))
+        Me.ProperyCBSymbAnrMonNeuStart = CBool(Read(Propery_Def_Options, "CBSymbAnrMonNeuStart", CStr(Propery_Def_CBSymbAnrMonNeuStart)))
+        Me.ProperyCBSymbAnrListe = CBool(Read(Propery_Def_Options, "CBSymbAnrListe", CStr(Propery_Def_CBSymbAnrListe)))
+        Me.ProperyCBSymbDirekt = CBool(Read(Propery_Def_Options, "CBSymbDirekt", CStr(Propery_Def_CBSymbDirekt)))
+        Me.ProperyCBSymbRWSuche = CBool(Read(Propery_Def_Options, "CBSymbRWSuche", CStr(Propery_Def_CBSymbRWSuche)))
+        Me.ProperyTVKontaktOrdnerEntryID = Read(Propery_Def_Options, "TVKontaktOrdnerEntryID", CStr(Propery_Def_TVKontaktOrdnerEntryID))
+        Me.ProperyTVKontaktOrdnerStoreID = Read(Propery_Def_Options, "TVKontaktOrdnerStoreID", CStr(Propery_Def_TVKontaktOrdnerStoreID))
+        Me.ProperyCBSymbVIP = CBool(Read(Propery_Def_Options, "CBSymbVIP", CStr(Propery_Def_CBSymbVIP)))
+        Me.ProperyCBSymbJournalimport = CBool(Read(Propery_Def_Options, "CBSymbJournalimport", CStr(Propery_Def_CBSymbJournalimport)))
+        Me.ProperyCBJImport = CBool(Read(Propery_Def_Options, "CBJImport", CStr(Propery_Def_CBJImport)))
         ' Einstellungen füer die Rückwärtssuche laden
-        Me.P_CBKHO = CBool(Read(P_Def_Options, "CBKHO", CStr(P_Def_CBKHO)))
-        Me.P_CBRWS = CBool(Read(P_Def_Options, "CBRWS", CStr(P_Def_CBRWS)))
-        Me.P_CBRWSIndex = CBool(Read(P_Def_Options, "CBRWSIndex", CStr(P_Def_CBRWSIndex)))
-        Me.P_ComboBoxRWS = CInt(Read(P_Def_Options, "ComboBoxRWS", CStr(P_Def_ComboBoxRWS)))
-        Me.P_CBIndex = CBool(Read(P_Def_Options, "CBIndex", CStr(P_Def_CBIndex)))
+        Me.ProperyCBKHO = CBool(Read(Propery_Def_Options, "CBKHO", CStr(Propery_Def_CBKHO)))
+        Me.ProperyCBRWS = CBool(Read(Propery_Def_Options, "CBRWS", CStr(Propery_Def_CBRWS)))
+        Me.ProperyCBRWSIndex = CBool(Read(Propery_Def_Options, "CBRWSIndex", CStr(Propery_Def_CBRWSIndex)))
+        Me.ProperyComboBoxRWS = CInt(Read(Propery_Def_Options, "ComboBoxRWS", CStr(Propery_Def_ComboBoxRWS)))
+        Me.ProperyCBIndex = CBool(Read(Propery_Def_Options, "CBIndex", CStr(Propery_Def_CBIndex)))
         ' StoppUhr
-        Me.P_CBStoppUhrEinblenden = CBool(Read(P_Def_Options, "CBStoppUhrEinblenden", CStr(P_Def_CBStoppUhrEinblenden)))
-        Me.P_CBStoppUhrAusblenden = CBool(Read(P_Def_Options, "CBStoppUhrAusblenden", CStr(P_Def_CBStoppUhrAusblenden)))
-        Me.P_TBStoppUhr = CInt(Read(P_Def_Options, "TBStoppUhr", CStr(P_Def_TBStoppUhr)))
-        Me.P_CBStoppUhrX = CInt(Read(P_Def_Options, "CBStoppUhrX", CStr(P_Def_CBStoppUhrX)))
-        Me.P_CBStoppUhrY = CInt(Read(P_Def_Options, "CBStoppUhrY", CStr(P_Def_CBStoppUhrY)))
+        Me.ProperyCBStoppUhrEinblenden = CBool(Read(Propery_Def_Options, "CBStoppUhrEinblenden", CStr(Propery_Def_CBStoppUhrEinblenden)))
+        Me.ProperyCBStoppUhrAusblenden = CBool(Read(Propery_Def_Options, "CBStoppUhrAusblenden", CStr(Propery_Def_CBStoppUhrAusblenden)))
+        Me.ProperyTBStoppUhr = CInt(Read(Propery_Def_Options, "TBStoppUhr", CStr(Propery_Def_TBStoppUhr)))
+        Me.ProperyCBStoppUhrX = CInt(Read(Propery_Def_Options, "CBStoppUhrX", CStr(Propery_Def_CBStoppUhrX)))
+        Me.ProperyCBStoppUhrY = CInt(Read(Propery_Def_Options, "CBStoppUhrY", CStr(Propery_Def_CBStoppUhrY)))
         ' Telefonnummernformatierung
-        Me.P_TBTelNrMaske = Read(P_Def_Options, "TBTelNrMaske", P_Def_TBTelNrMaske)
-        Me.P_CBTelNrGruppieren = CBool(Read(P_Def_Options, "CBTelNrGruppieren", CStr(P_Def_CBTelNrGruppieren)))
-        Me.P_CBintl = CBool(Read(P_Def_Options, "CBintl", CStr(P_Def_CBintl)))
-        Me.P_CBIgnoTelNrFormat = CBool(Read(P_Def_Options, "CBIgnoTelNrFormat", CStr(P_Def_CBIgnoTelNrFormat)))
+        Me.ProperyTBTelNrMaske = Read(Propery_Def_Options, "TBTelNrMaske", Propery_Def_TBTelNrMaske)
+        Me.ProperyCBTelNrGruppieren = CBool(Read(Propery_Def_Options, "CBTelNrGruppieren", CStr(Propery_Def_CBTelNrGruppieren)))
+        Me.ProperyCBintl = CBool(Read(Propery_Def_Options, "CBintl", CStr(Propery_Def_CBintl)))
+        Me.ProperyCBIgnoTelNrFormat = CBool(Read(Propery_Def_Options, "CBIgnoTelNrFormat", CStr(Propery_Def_CBIgnoTelNrFormat)))
         ' Phoner
-        Me.P_CBPhoner = CBool(Read(P_Def_Phoner, "CBPhoner", CStr(P_Def_CBPhoner)))
-        Me.P_PhonerVerfügbar = CBool(Read(P_Def_Phoner, "PhonerVerfügbar", CStr(P_Def_PhonerVerfügbar)))
-        Me.P_ComboBoxPhonerSIP = CInt(Read(P_Def_Phoner, "ComboBoxPhonerSIP", CStr(P_Def_ComboBoxPhonerSIP)))
-        Me.P_CBPhonerAnrMon = CBool(Read(P_Def_Phoner, "CBPhonerAnrMon", CStr(P_Def_CBPhonerAnrMon)))
-        Me.P_TBPhonerPasswort = Read(P_Def_Phoner, "TBPhonerPasswort", P_Def_TBPhonerPasswort)
-        Me.P_PhonerTelNameIndex = CInt(Read(P_Def_Phoner, "PhonerTelNameIndex", CStr(P_Def_PhonerTelNameIndex)))
+        Me.ProperyCBPhoner = CBool(Read(Propery_Def_Phoner, "CBPhoner", CStr(Propery_Def_CBPhoner)))
+        Me.ProperyPhonerVerfügbar = CBool(Read(Propery_Def_Phoner, "PhonerVerfügbar", CStr(Propery_Def_PhonerVerfügbar)))
+        Me.ProperyComboBoxPhonerSIP = CInt(Read(Propery_Def_Phoner, "ComboBoxPhonerSIP", CStr(Propery_Def_ComboBoxPhonerSIP)))
+        Me.ProperyCBPhonerAnrMon = CBool(Read(Propery_Def_Phoner, "CBPhonerAnrMon", CStr(Propery_Def_CBPhonerAnrMon)))
+        Me.ProperyTBPhonerPasswort = Read(Propery_Def_Phoner, "TBPhonerPasswort", Propery_Def_TBPhonerPasswort)
+        Me.ProperyPhonerTelNameIndex = CInt(Read(Propery_Def_Phoner, "PhonerTelNameIndex", CStr(Propery_Def_PhonerTelNameIndex)))
         ' Statistik
-        Me.P_StatResetZeit = CDate(Read(P_Def_Statistics, "ResetZeit", CStr(P_Def_StatResetZeit)))
-        Me.P_StatVerpasst = CInt(Read(P_Def_Statistics, "Verpasst", CStr(P_Def_StatVerpasst)))
-        Me.P_StatNichtErfolgreich = CInt(Read(P_Def_Statistics, "Nichterfolgreich", CStr(P_Def_StatNichtErfolgreich)))
-        Me.P_StatKontakt = CInt(Read(P_Def_Statistics, "Kontakt", CStr(P_Def_StatKontakt)))
-        Me.P_StatJournal = CInt(Read(P_Def_Statistics, "Journal", CStr(P_Def_StatJournal)))
-        Me.P_StatOLClosedZeit = CDate(Read(P_Def_Journal, "SchließZeit", CStr(P_Def_StatOLClosedZeit)))
+        Me.ProperyStatResetZeit = CDate(Read(Propery_Def_Statistics, "ResetZeit", CStr(Propery_Def_StatResetZeit)))
+        Me.ProperyStatVerpasst = CInt(Read(Propery_Def_Statistics, "Verpasst", CStr(Propery_Def_StatVerpasst)))
+        Me.ProperyStatNichtErfolgreich = CInt(Read(Propery_Def_Statistics, "Nichterfolgreich", CStr(Propery_Def_StatNichtErfolgreich)))
+        Me.ProperyStatKontakt = CInt(Read(Propery_Def_Statistics, "Kontakt", CStr(Propery_Def_StatKontakt)))
+        Me.ProperyStatJournal = CInt(Read(Propery_Def_Statistics, "Journal", CStr(Propery_Def_StatJournal)))
+        Me.ProperyStatOLClosedZeit = CDate(Read(Propery_Def_Journal, "SchließZeit", CStr(Propery_Def_StatOLClosedZeit)))
         ' Wählbox
-        Me.P_TelAnschluss = CInt(Read(P_Def_Options, "Anschluss", CStr(P_Def_TelAnschluss)))
-        Me.P_TelFestnetz = CBool(Read(P_Def_Options, "Festnetz", CStr(P_TelFestnetz)))
-        Me.P_TelCLIR = CBool(Read(P_Def_Options, "CLIR", CStr(P_Def_TelCLIR)))
-        Me.P_EncodeingFritzBox = Read(P_Def_Options, "EncodeingFritzBox", P_Def_EncodeingFritzBox)
+        Me.ProperyTelAnschluss = CInt(Read(Propery_Def_Options, "Anschluss", CStr(Propery_Def_TelAnschluss)))
+        Me.ProperyTelFestnetz = CBool(Read(Propery_Def_Options, "Festnetz", CStr(ProperyTelFestnetz)))
+        Me.ProperyTelCLIR = CBool(Read(Propery_Def_Options, "CLIR", CStr(Propery_Def_TelCLIR)))
+        Me.ProperyEncodeingFritzBox = Read(Propery_Def_Options, "EncodeingFritzBox", Propery_Def_EncodeingFritzBox)
         ' Indizierung
-        Me.P_LLetzteIndizierung = CDate(Read(P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
+        Me.ProperyLLetzteIndizierung = CDate(Read(Propery_Def_Options, "LLetzteIndizierung", CStr(Propery_Def_LLetzteIndizierung)))
         ' Notiz
-        Me.P_CBNote = CBool(Read(P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
+        Me.ProperyCBNote = CBool(Read(Propery_Def_Options, "CBNote", CStr(Propery_Def_CBNote)))
 
         With xPathTeile
             .Clear()
@@ -1908,96 +1905,96 @@ Public Class DataProvider
             .Add("*")
             .Add("[@Checked=""1""]")
         End With
-        Me.P_CLBTelNr = (From x In Split(Read(xPathTeile, Me.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
+        Me.ProperyCLBTelNr = (From x In Split(Read(xPathTeile, Me.Propery_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
     End Sub
 
     Private Sub SaveOptionData()
-        Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
-        Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
-        Write(P_Def_Options, "TBFBAdr", Me.P_TBFBAdr)
-        Write(P_Def_Options, "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
-        Write(P_Def_Options, "TBBenutzer", Me.P_TBBenutzer)
-        Write(P_Def_Options, "TBPasswort", Me.P_TBPasswort)
-        Write(P_Def_Options, "TBVorwahl", Me.P_TBVorwahl)
-        Write(P_Def_Options, "CBoxVorwahl", CStr(Me.P_CBoxVorwahl))
-        Write(P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
-        Write(P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
-        Write(P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))
-        Write(P_Def_Options, "TBAnrMonY", CStr(Me.P_TBAnrMonY))
-        Write(P_Def_Options, "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
-        Write(P_Def_Options, "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
-        Write(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
-        Write(P_Def_Options, "CBoxAnrMonStartPosition", CStr(Me.P_CBoxAnrMonStartPosition))
-        Write(P_Def_Options, "CBoxAnrMonMoveDirection", CStr(Me.P_CBoxAnrMonMoveDirection))
-        Write(P_Def_Options, "CBAnrMonZeigeKontakt", CStr(Me.P_CBAnrMonZeigeKontakt))
-        Write(P_Def_Options, "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
-        Write(P_Def_Options, "CBIndexAus", CStr(Me.P_CBIndexAus))
-        Write(P_Def_Options, "CBShowMSN", CStr(Me.P_CBShowMSN))
-        Write(P_Def_Options, "CBAutoClose", CStr(Me.P_CBAutoClose))
-        Write(P_Def_Options, "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
-        Write(P_Def_Options, "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
-        Write(P_Def_Options, "CBCallByCall", CStr(Me.P_CBCallByCall))
-        Write(P_Def_Options, "CBDialPort", CStr(Me.P_CBDialPort))
-        Write(P_Def_Options, "CBKErstellen", CStr(Me.P_CBKErstellen))
-        Write(P_Def_Options, "CBLogFile", CStr(Me.P_CBLogFile))
+        Write(Propery_Def_Options, "TBLandesVW", Me.ProperyTBLandesVW)
+        Write(Propery_Def_Options, "TBAmt", Me.ProperyTBAmt)
+        Write(Propery_Def_Options, "TBFBAdr", Me.ProperyTBFBAdr)
+        Write(Propery_Def_Options, "CBForceFBAddr", CStr(Me.ProperyCBForceFBAddr))
+        Write(Propery_Def_Options, "TBBenutzer", Me.ProperyTBBenutzer)
+        Write(Propery_Def_Options, "TBPasswort", Me.ProperyTBPasswort)
+        Write(Propery_Def_Options, "TBVorwahl", Me.ProperyTBVorwahl)
+        Write(Propery_Def_Options, "CBoxVorwahl", CStr(Me.ProperyCBoxVorwahl))
+        Write(Propery_Def_Options, "TBEnblDauer", CStr(Me.ProperyTBEnblDauer))
+        Write(Propery_Def_Options, "CBAnrMonAuto", CStr(Me.ProperyCBAnrMonAuto))
+        Write(Propery_Def_Options, "TBAnrMonX", CStr(Me.ProperyTBAnrMonX))
+        Write(Propery_Def_Options, "TBAnrMonY", CStr(Me.ProperyTBAnrMonY))
+        Write(Propery_Def_Options, "CBAnrMonMove", CStr(Me.ProperyCBAnrMonMove))
+        Write(Propery_Def_Options, "CBAnrMonTransp", CStr(Me.ProperyCBAnrMonTransp))
+        Write(Propery_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Me.ProperyTBAnrMonMoveGeschwindigkeit))
+        Write(Propery_Def_Options, "CBoxAnrMonStartPosition", CStr(Me.ProperyCBoxAnrMonStartPosition))
+        Write(Propery_Def_Options, "CBoxAnrMonMoveDirection", CStr(Me.ProperyCBoxAnrMonMoveDirection))
+        Write(Propery_Def_Options, "CBAnrMonZeigeKontakt", CStr(Me.ProperyCBAnrMonZeigeKontakt))
+        Write(Propery_Def_Options, "CBAnrMonContactImage", CStr(Me.ProperyCBAnrMonContactImage))
+        Write(Propery_Def_Options, "CBIndexAus", CStr(Me.ProperyCBIndexAus))
+        Write(Propery_Def_Options, "CBShowMSN", CStr(Me.ProperyCBShowMSN))
+        Write(Propery_Def_Options, "CBAutoClose", CStr(Me.ProperyCBAutoClose))
+        Write(Propery_Def_Options, "CBVoIPBuster", CStr(Me.ProperyCBVoIPBuster))
+        Write(Propery_Def_Options, "CBCbCunterbinden", CStr(Me.ProperyCBVoIPBuster))
+        Write(Propery_Def_Options, "CBCallByCall", CStr(Me.ProperyCBCallByCall))
+        Write(Propery_Def_Options, "CBDialPort", CStr(Me.ProperyCBDialPort))
+        Write(Propery_Def_Options, "CBKErstellen", CStr(Me.ProperyCBKErstellen))
+        Write(Propery_Def_Options, "CBLogFile", CStr(Me.ProperyCBLogFile))
         ' Einstellungen für die Symbolleiste laden
-        Write(P_Def_Options, "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
-        Write(P_Def_Options, "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
-        Write(P_Def_Options, "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
-        Write(P_Def_Options, "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe))
-        Write(P_Def_Options, "CBSymbDirekt", CStr(Me.P_CBSymbDirekt))
-        Write(P_Def_Options, "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
-        Write(P_Def_Options, "CBSymbVIP", CStr(Me.P_CBSymbVIP))
-        Write(P_Def_Options, "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
-        Write(P_Def_Options, "CBJImport", CStr(Me.P_CBJImport))
+        Write(Propery_Def_Options, "CBSymbWwdh", CStr(Me.ProperyCBSymbWwdh))
+        Write(Propery_Def_Options, "CBSymbAnrMon", CStr(Me.ProperyCBSymbAnrMon))
+        Write(Propery_Def_Options, "CBSymbAnrMonNeuStart", CStr(Me.ProperyCBSymbAnrMonNeuStart))
+        Write(Propery_Def_Options, "CBSymbAnrListe", CStr(Me.ProperyCBSymbAnrListe))
+        Write(Propery_Def_Options, "CBSymbDirekt", CStr(Me.ProperyCBSymbDirekt))
+        Write(Propery_Def_Options, "CBSymbRWSuche", CStr(Me.ProperyCBSymbRWSuche))
+        Write(Propery_Def_Options, "CBSymbVIP", CStr(Me.ProperyCBSymbVIP))
+        Write(Propery_Def_Options, "CBSymbJournalimport", CStr(Me.ProperyCBSymbJournalimport))
+        Write(Propery_Def_Options, "CBJImport", CStr(Me.ProperyCBJImport))
         ' Einstellungen füer die Rückwärtssuche laden
-        Write(P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
-        Write(P_Def_Options, "CBRWS", CStr(Me.P_CBRWS))
-        Write(P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
-        Write(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(Me.P_TVKontaktOrdnerEntryID))
-        Write(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(Me.P_TVKontaktOrdnerStoreID))
-        Write(P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
-        Write(P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
-        Write(P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
-        Write(P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
-        Write(P_Def_Options, "CBCheckMobil", CStr(Me.P_CBCheckMobil))
+        Write(Propery_Def_Options, "CBKHO", CStr(Me.ProperyCBKHO))
+        Write(Propery_Def_Options, "CBRWS", CStr(Me.ProperyCBRWS))
+        Write(Propery_Def_Options, "CBRWSIndex", CStr(Me.ProperyCBRWSIndex))
+        Write(Propery_Def_Options, "TVKontaktOrdnerEntryID", CStr(Me.ProperyTVKontaktOrdnerEntryID))
+        Write(Propery_Def_Options, "TVKontaktOrdnerStoreID", CStr(Me.ProperyTVKontaktOrdnerStoreID))
+        Write(Propery_Def_Options, "ComboBoxRWS", CStr(Me.ProperyComboBoxRWS))
+        Write(Propery_Def_Options, "CBIndex", CStr(Me.ProperyCBIndex))
+        Write(Propery_Def_Options, "CBJournal", CStr(Me.ProperyCBJournal))
+        Write(Propery_Def_Options, "CBUseAnrMon", CStr(Me.ProperyCBUseAnrMon))
+        Write(Propery_Def_Options, "CBCheckMobil", CStr(Me.ProperyCBCheckMobil))
         'StoppUhr
-        Write(P_Def_Options, "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden))
-        Write(P_Def_Options, "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden))
-        Write(P_Def_Options, "TBStoppUhr", CStr(Me.P_TBStoppUhr))
-        Write(P_Def_Options, "TBTelNrMaske", Me.P_TBTelNrMaske)
-        Write(P_Def_Options, "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren))
-        Write(P_Def_Options, "CBintl", CStr(Me.P_CBintl))
-        Write(P_Def_Options, "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat))
-        Write(P_Def_Options, "CBStoppUhrX", CStr(Me.P_CBStoppUhrX))
-        Write(P_Def_Options, "CBStoppUhrY", CStr(Me.P_CBStoppUhrY))
+        Write(Propery_Def_Options, "CBStoppUhrEinblenden", CStr(Me.ProperyCBStoppUhrEinblenden))
+        Write(Propery_Def_Options, "CBStoppUhrAusblenden", CStr(Me.ProperyCBStoppUhrAusblenden))
+        Write(Propery_Def_Options, "TBStoppUhr", CStr(Me.ProperyTBStoppUhr))
+        Write(Propery_Def_Options, "TBTelNrMaske", Me.ProperyTBTelNrMaske)
+        Write(Propery_Def_Options, "CBTelNrGruppieren", CStr(Me.ProperyCBTelNrGruppieren))
+        Write(Propery_Def_Options, "CBintl", CStr(Me.ProperyCBintl))
+        Write(Propery_Def_Options, "CBIgnoTelNrFormat", CStr(Me.ProperyCBIgnoTelNrFormat))
+        Write(Propery_Def_Options, "CBStoppUhrX", CStr(Me.ProperyCBStoppUhrX))
+        Write(Propery_Def_Options, "CBStoppUhrY", CStr(Me.ProperyCBStoppUhrY))
         ' Phoner
-        Write(P_Def_Phoner, "CBPhoner", CStr(Me.P_CBPhoner))
-        Write(P_Def_Phoner, "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar))
-        Write(P_Def_Phoner, "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP))
-        Write(P_Def_Phoner, "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon))
-        Write(P_Def_Phoner, "TBPhonerPasswort", Me.P_TBPhonerPasswort)
-        Write(P_Def_Phoner, "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
+        Write(Propery_Def_Phoner, "CBPhoner", CStr(Me.ProperyCBPhoner))
+        Write(Propery_Def_Phoner, "PhonerVerfügbar", CStr(Me.ProperyPhonerVerfügbar))
+        Write(Propery_Def_Phoner, "ComboBoxPhonerSIP", CStr(Me.ProperyComboBoxPhonerSIP))
+        Write(Propery_Def_Phoner, "CBPhonerAnrMon", CStr(Me.ProperyCBPhonerAnrMon))
+        Write(Propery_Def_Phoner, "TBPhonerPasswort", Me.ProperyTBPhonerPasswort)
+        Write(Propery_Def_Phoner, "PhonerTelNameIndex", CStr(Me.ProperyPhonerTelNameIndex))
         ' Statistik
-        Write(P_Def_Statistics, "ResetZeit", CStr(Me.P_StatResetZeit))
-        Write(P_Def_Statistics, "Verpasst", CStr(Me.P_StatVerpasst))
-        Write(P_Def_Statistics, "Nichterfolgreich", CStr(Me.P_StatNichtErfolgreich))
-        Write(P_Def_Statistics, "Kontakt", CStr(Me.P_StatKontakt))
-        Write(P_Def_Statistics, "Journal", CStr(Me.P_StatJournal))
-        Write(P_Def_Journal, "SchließZeit", CStr(Me.P_StatOLClosedZeit))
+        Write(Propery_Def_Statistics, "ResetZeit", CStr(Me.ProperyStatResetZeit))
+        Write(Propery_Def_Statistics, "Verpasst", CStr(Me.ProperyStatVerpasst))
+        Write(Propery_Def_Statistics, "Nichterfolgreich", CStr(Me.ProperyStatNichtErfolgreich))
+        Write(Propery_Def_Statistics, "Kontakt", CStr(Me.ProperyStatKontakt))
+        Write(Propery_Def_Statistics, "Journal", CStr(Me.ProperyStatJournal))
+        Write(Propery_Def_Journal, "SchließZeit", CStr(Me.ProperyStatOLClosedZeit))
         ' Wählbox
-        Write(P_Def_Options, "Anschluss", CStr(Me.P_TelAnschluss))
-        Write(P_Def_Options, "Festnetz", CStr(Me.P_TelFestnetz))
-        Write(P_Def_Options, "CLIR", CStr(Me.P_TelCLIR))
+        Write(Propery_Def_Options, "Anschluss", CStr(Me.ProperyTelAnschluss))
+        Write(Propery_Def_Options, "Festnetz", CStr(Me.ProperyTelFestnetz))
+        Write(Propery_Def_Options, "CLIR", CStr(Me.ProperyTelCLIR))
         'FritzBox
-        Write(P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
+        Write(Propery_Def_Options, "EncodeingFritzBox", Me.ProperyEncodeingFritzBox)
         'Indizierung
-        Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
+        Write(Propery_Def_Options, "LLetzteIndizierung", CStr(Me.ProperyLLetzteIndizierung))
         ' Notiz
-        Write(P_Def_Options, "CBNote", CStr(Me.P_CBNote))
+        Write(Propery_Def_Options, "CBNote", CStr(Me.ProperyCBNote))
 
-        XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
-        SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
+        XMLDoc.Save(ProperyArbeitsverzeichnis & Propery_Def_Config_FileName)
+        SaveSettingsVBA("Arbeitsverzeichnis", ProperyArbeitsverzeichnis)
 
         BWCBox = New BackgroundWorker
         With BWCBox
@@ -2009,7 +2006,7 @@ Public Class DataProvider
 
     Protected Overrides Sub Finalize()
         SaveOptionData()
-        XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
+        XMLDoc.Save(ProperyArbeitsverzeichnis & Propery_Def_Config_FileName)
         XMLDoc = Nothing
         If Not tSpeichern Is Nothing Then
             tSpeichern.Stop()
@@ -2040,7 +2037,7 @@ Public Class DataProvider
         If CheckXPathRead(xPath) Then
             tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
             If Not tmpXMLNodeList.Count = 0 Then
-                Read = P_Def_StringEmpty
+                Read = Propery_Def_StringEmpty
                 For Each tmpXMLNode As XmlNode In tmpXMLNodeList
                     Read += tmpXMLNode.InnerText & ";"
                 Next
@@ -2097,12 +2094,12 @@ Public Class DataProvider
     End Function
 
     Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String) As Boolean
-        Return Write(ZielKnoten, Value, P_Def_StringEmpty, P_Def_StringEmpty)
+        Return Write(ZielKnoten, Value, Propery_Def_StringEmpty, Propery_Def_StringEmpty)
     End Function
 
     Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
         Dim xPathTeile As New ArrayList
-        Dim sTmpXPath As String = P_Def_StringEmpty
+        Dim sTmpXPath As String = Propery_Def_StringEmpty
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
         Dim tmpXMLNodeList As XmlNodeList
@@ -2113,9 +2110,9 @@ Public Class DataProvider
                 tmpXMLNodeList = .SelectNodes(xPath)
                 If Not tmpXMLNodeList.Count = 0 Then
                     For Each tmpXMLNode In tmpXMLNodeList
-                        If Not AttributeName = P_Def_StringEmpty Then
+                        If Not AttributeName = Propery_Def_StringEmpty Then
                             If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
-                                tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = P_Def_StringEmpty, "[@" & AttributeName & "=""" & AttributeValue & """]", P_Def_StringEmpty)))
+                                tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = Propery_Def_StringEmpty, "[@" & AttributeName & "=""" & AttributeValue & """]", Propery_Def_StringEmpty)))
                             End If
                             If tmpXMLNode Is Nothing Then
                                 tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
@@ -2211,11 +2208,11 @@ Public Class DataProvider
             Dim tmpXMLNode As XmlNode
             Dim tmpXMLChildNode As XmlNode
             Dim tmpXMLAttribute As XmlAttribute
-            tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, P_Def_StringEmpty)
+            tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, Propery_Def_StringEmpty)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
-                    If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne_String Then
-                        tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, P_Def_StringEmpty)
+                    If Not SubNodeValue.Item(i).ToString = Propery_Def_ErrorMinusOne_String Then
+                        tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, Propery_Def_StringEmpty)
                         tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
                         .AppendChild(tmpXMLChildNode)
                     End If
@@ -2244,9 +2241,9 @@ Public Class DataProvider
             Dim tmpXMLNode As XmlNode
             With XMLDoc
                 ' BUG: 
-                If Not AttributeValue = P_Def_StringEmpty And Not AttributeName = P_Def_StringEmpty Then alxPathTeile.Add("[@" & AttributeName & "=""" & AttributeValue & """]")
+                If Not AttributeValue = Propery_Def_StringEmpty And Not AttributeName = Propery_Def_StringEmpty Then alxPathTeile.Add("[@" & AttributeName & "=""" & AttributeValue & """]")
                 xPath = CreateXPath(alxPathTeile)
-                If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
+                If Not AttributeValue = Propery_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
                 tmpXMLNode = .SelectSingleNode(xPath)
                 If Not tmpXMLNode Is Nothing Then
                     With tmpXMLNode
@@ -2266,7 +2263,7 @@ Public Class DataProvider
     Sub AppendNode(ByVal alxPathTeile As ArrayList, ByVal Knoten As XmlNode)
         Dim xPathTeileEC As Long = alxPathTeile.Count
         Dim DestxPath As String
-        Dim tmpxPath As String = P_Def_StringEmpty
+        Dim tmpxPath As String = Propery_Def_StringEmpty
         Dim tmpXMLNode As XmlNode
         DestxPath = CreateXPath(alxPathTeile)
         With XMLDoc
@@ -2343,10 +2340,10 @@ Public Class DataProvider
 
 #Region "Registry VBA GetSettings SetSettings"
     Public Function GetSettingsVBA(ByVal Key As String, ByVal DefaultValue As String) As String
-        Return GetSetting(P_Def_Addin_KurzName, P_Def_Options, Key, DefaultValue)
+        Return GetSetting(Propery_Def_Addin_KurzName, Propery_Def_Options, Key, DefaultValue)
     End Function
     Public Sub SaveSettingsVBA(ByVal Key As String, ByVal DefaultValue As String)
-        SaveSetting(P_Def_Addin_KurzName, P_Def_Options, Key, DefaultValue)
+        SaveSetting(Propery_Def_Addin_KurzName, Propery_Def_Options, Key, DefaultValue)
     End Sub
 #End Region
 
@@ -2358,7 +2355,7 @@ Public Class DataProvider
 
         With XMLDoc
             ' Diverse Knoten des Journals löschen
-            xPathTeile.Add(P_Def_Journal)
+            xPathTeile.Add(Propery_Def_Journal)
             xPathTeile.Add("SchließZeit")
             xPath = CreateXPath(xPathTeile)
             tmpNode = .SelectSingleNode(xPath)
@@ -2405,33 +2402,33 @@ Public Class DataProvider
     Private Sub BWCBbox_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWCBox.DoWork
         Dim Vorwahliste As String
         Dim i As Integer
-        Dim tmpVorwahl As String = P_TBLandesVW
+        Dim tmpVorwahl As String = ProperyTBLandesVW
 
-        If P_ListeLandesVorwahlen Is Nothing Then
+        If ProperyListeLandesVorwahlen Is Nothing Then
             ' Landesvorwahlen
             Vorwahliste = Replace(My.Resources.Liste_Landesvorwahlen, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
             Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
 
-            P_ListeLandesVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray
+            ProperyListeLandesVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray
         End If
 
-        tmpVorwahl = CStr(IIf(tmpVorwahl = P_Def_StringEmpty, P_TBLandesVW, tmpVorwahl))
+        tmpVorwahl = CStr(IIf(tmpVorwahl = Propery_Def_StringEmpty, ProperyTBLandesVW, tmpVorwahl))
 
-        If P_TBLandesVW = P_Def_TBLandesVW Then
+        If ProperyTBLandesVW = Propery_Def_TBLandesVW Then
             ' Ortsvorwahlen Deutschland
             Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Deutschland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
             Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
 
-            P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
+            ProperyListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
         Else
             tmpVorwahl = Strings.Replace(tmpVorwahl, "00", "", , 1, CompareMethod.Text)
 
             Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Ausland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
             Dim tmpvw() As String
-            P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like tmpVorwahl & ";*" Select s).ToArray
-            For i = LBound(P_ListeOrtsVorwahlen) To UBound(P_ListeOrtsVorwahlen)
-                tmpvw = Split(P_ListeOrtsVorwahlen(i), ";", , CompareMethod.Text)
-                P_ListeOrtsVorwahlen(i) = tmpvw(1) & " (" & tmpvw(2)
+            ProperyListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like tmpVorwahl & ";*" Select s).ToArray
+            For i = LBound(ProperyListeOrtsVorwahlen) To UBound(ProperyListeOrtsVorwahlen)
+                tmpvw = Split(ProperyListeOrtsVorwahlen(i), ";", , CompareMethod.Text)
+                ProperyListeOrtsVorwahlen(i) = tmpvw(1) & " (" & tmpvw(2)
             Next
         End If
     End Sub
