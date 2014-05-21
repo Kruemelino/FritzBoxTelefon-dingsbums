@@ -25,7 +25,6 @@ Friend Class formJournalimport
 #End Region
 
 #Region "Eigene Variablen"
-    Private CSVArg As ImportZeitraum
     Private Abbruch As Boolean
     Private anzeigen As Boolean
     Private CSVAnrliste As String
@@ -34,7 +33,7 @@ Friend Class formJournalimport
     Private EntryCount As Integer = -1 ' Anzahl der zu importierenden Telefonate
 #End Region
 
-    Public Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
+    Friend Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal FormShow As Boolean)
@@ -48,7 +47,6 @@ Friend Class formJournalimport
 
         Abbruch = False
         anzeigen = FormShow
-
         If anzeigen Then Me.Show() 'wenn gewollt
         With DownloadAnrListe
             .WorkerSupportsCancellation = True
@@ -111,7 +109,7 @@ Friend Class formJournalimport
         Dim vFBStatus As String()  ' generierter Status-String
         Dim Startzeit As Date    ' Letzter Journalimports
         Dim Endzeit As Date    ' Ende des Journalimports
-        Dim i, j, a, b As Integer    ' Zählvariable
+        Dim j, a, b As Integer    ' Zählvariable
         Dim Übergabewerte As ImportZeitraum = CType(e.Argument, ImportZeitraum)
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
@@ -178,7 +176,6 @@ Friend Class formJournalimport
 
                         If C_hf.IsOneOf(C_hf.EigeneVorwahlenEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
                             b += 1
-                            i = 0
                             NSN = -1
                             If Not AnrTyp = "2" Then
                                 'Wird im Fall 2 nicht benötigt: Verpasster Anruf.

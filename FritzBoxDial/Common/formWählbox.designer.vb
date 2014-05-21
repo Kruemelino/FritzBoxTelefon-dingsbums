@@ -3,16 +3,16 @@ Partial Class formWählbox
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        If disposing AndAlso components IsNot Nothing Then
-            components.Dispose()
-        End If
-        MyBase.Dispose(disposing)
-    End Sub
+    '<System.Diagnostics.DebuggerNonUserCode()> _
+    'Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    '    If disposing AndAlso components IsNot Nothing Then
+    '        components.Dispose()
+    '    End If
+    '    MyBase.Dispose(disposing)
+    'End Sub
 
     'Wird vom Windows Form-Designer benötigt.
-    Private components As System.ComponentModel.IContainer
+    'Private components As System.ComponentModel.IContainer
 
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
@@ -460,8 +460,4 @@ Partial Class formWählbox
     Friend WithEvents Tarif As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Bemerkung As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents BVIP As System.Windows.Forms.CheckBox
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
 End Class

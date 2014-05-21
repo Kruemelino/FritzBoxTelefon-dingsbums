@@ -1,4 +1,6 @@
 ﻿Friend Class formInit
+    Implements IDisposable
+
     ' Klassen
     Private C_DP As DataProvider
     Private C_HF As Helfer
@@ -14,7 +16,6 @@
     Private C_Config As formCfg
     Private F_JournalImport As formJournalimport
     'Strings
-    'Private DateiPfad As String
     Private SID As String
 
     Public Sub New()
@@ -52,7 +53,7 @@
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_Crypt, C_RWS, C_KF, C_Phoner)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF)
 
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner)
             ThisAddIn.P_WClient = C_WählClient
@@ -75,8 +76,12 @@
             ThisAddIn.P_hf = C_HF
             ThisAddIn.P_KF = C_KF
 
-            If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
-            If C_DP.P_Debug_AnrufSimulation Then F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
+            If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then
+                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
+            End If
+            If C_DP.P_Debug_AnrufSimulation Then
+                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
+            End If
         End If
     End Sub
 
@@ -250,8 +255,9 @@
 
     Private Sub BSchließen_Click(sender As Object, e As EventArgs) Handles BSchließen.Click
 
-        Me.Dispose()
+        'Me.Dispose()
         Me.Close()
 
     End Sub
+
 End Class

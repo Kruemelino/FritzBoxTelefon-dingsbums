@@ -28,13 +28,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Eigene Formulare"
-    Private F_Config As formCfg
     Private F_RWS As formRWSuche
-    Private F_StoppUhr As formStoppUhr
-#End Region
-
-#Region "Thread"
-    Private ReceiveThread As Thread
 #End Region
 
 #Region "NetworkStream"
@@ -126,6 +120,7 @@ Friend Class AnrufMonitor
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
         Telefonat.FormAnrMon = New formAnrMon(True, C_DP, C_hf, Me, C_OlI, C_KF)
+        Telefonat.FormAnrMon.Start()
         AnrMonList.Add(Telefonat.FormAnrMon)
         Dim a As Integer
         Do
@@ -240,11 +235,12 @@ Friend Class AnrufMonitor
                     AnrMonError = True
                     e.Result = False
             End Select
-        Catch Err As Exception
-            C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & Err.Message)
+        Catch
+            C_hf.LogFile("TCP Verbindung nicht aufgebaut.")
 
             AnrMonError = True
             e.Result = False
+            Throw
         End Try
 
         If AnrMonTCPSocket.Connected Then
@@ -313,7 +309,10 @@ Friend Class AnrufMonitor
             Else
                 C_hf.LogFile("Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...")
                 AnrMonStartStopp()
-                If C_DP.P_CBJournal Then Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+                If C_DP.P_CBJournal Then
+                    Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+                End If
+
             End If
         Else
             C_hf.LogFile("Reaktivierung des Anrufmonitors nicht erfolgreich.")
@@ -327,10 +326,8 @@ Friend Class AnrufMonitor
         Dim IPAddresse As IPAddress = IPAddress.Loopback
         Dim RemoteEP As IPEndPoint
         Dim IPHostInfo As IPHostEntry
-        Dim FBAnrMonPort As Integer
         Dim CheckAnrMonTCPSocket As Socket
 
-        FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort
         If Not IPAddress.TryParse(C_DP.P_TBFBAdr, IPAddresse) Then
             ' Versuche über Default-IP zur Fritz!Box zu gelangen
             IPHostInfo = Dns.GetHostEntry(C_DP.P_Def_FritzBoxAdress)
@@ -342,7 +339,7 @@ Friend Class AnrufMonitor
 
         Try
             CheckAnrMonTCPSocket.Connect(RemoteEP)
-        Catch Err As Exception
+        Catch Err As SocketException
             C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
             AnrMonStartStopp()
             AnrMonError = True
@@ -381,7 +378,7 @@ Friend Class AnrufMonitor
             If Not AnrMonStream Is Nothing Then
                 With AnrMonStream
                     .Close()
-                    .Dispose()
+                    '.Dispose()
                 End With
                 AnrMonStream = Nothing
             End If
@@ -494,7 +491,6 @@ Friend Class AnrufMonitor
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
 
         Dim Telefonat As C_Telefonat
-        Dim xPathTeile As New ArrayList
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
         If C_hf.IsOneOf(MSN, C_DP.P_CLBTelNr) Or AnrMonPhoner Then
@@ -847,7 +843,6 @@ Friend Class AnrufMonitor
         ' FBStatus(3): Dauer des Telefonates
 
         Dim CallDirection As String = C_DP.P_Def_StringEmpty
-        Dim NSN As Long = -1
         Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
 
         Dim xPathTeile As New ArrayList
@@ -857,7 +852,6 @@ Friend Class AnrufMonitor
 
         If Not Telefonat Is Nothing Then
             With Telefonat
-                NSN = .NSN
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
                 .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Angenommen, C_DP.P_Def_StringEmpty, "nicht ")) & "angenommen" & vbCrLf & vbCrLf

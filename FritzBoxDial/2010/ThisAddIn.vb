@@ -129,9 +129,14 @@ Public Class ThisAddIn
             F_Cfg = value
         End Set
     End Property
+
+    Friend Shared ReadOnly Property Version() As String
+        Get
+            Return "3.7 Beta 4"
+        End Get
+    End Property
 #End Region
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Beta 4"
     Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then

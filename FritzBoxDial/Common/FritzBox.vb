@@ -4,13 +4,13 @@ Imports System.Threading
 Imports System.ComponentModel
 
 Public Class FritzBox
+    Implements IDisposable
 
     Private C_DP As DataProvider
     Private C_Crypt As MyRijndael
     Private C_hf As Helfer
 
     Private FBFehler As Boolean
-    Private threadTelefon As Thread
     Private FBEncoding As System.Text.Encoding = Encoding.UTF8
 
     Private tb As New System.Windows.Forms.TextBox
@@ -56,10 +56,6 @@ Public Class FritzBox
         Else
             FBEncoding = C_hf.GetEncoding(C_DP.P_EncodeingFritzBox)
         End If
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
     End Sub
 
 #Region "Login & Logout"
@@ -873,12 +869,6 @@ Public Class FritzBox
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        Dim OldTelDialPort As New ArrayList
-        Dim OldEingehend As New ArrayList
-        Dim OldAusgehend As New ArrayList
-        Dim OldTelName As New ArrayList
-        Dim OldTelNr As New ArrayList
-
         'NodeNames.Add("TelName")
         'NodeNames.Add("TelNr")
         'AttributeNames.Add("Fax")
@@ -1268,7 +1258,6 @@ Public Class FritzBox
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = C_DP.P_Def_StringEmpty
-        Dim max(MSN.Length + SIP.Length + TAM.Length + FAX.Length) As String
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & Strings.Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
         tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
         tmp = (From x In tmp Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
@@ -1280,7 +1269,6 @@ Public Class FritzBox
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = C_DP.P_Def_StringEmpty
-        Dim max(MSN.Length + SIP.Length + TAM.Length) As String
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
         tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
         tmp = (From x In tmp Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
@@ -1390,5 +1378,37 @@ Public Class FritzBox
             AddHandler tb.TextChanged, AddressOf ep.GenericHandler
         End If
     End Sub
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                tb.Dispose()
+                ' TODO: Verwalteten Zustand löschen (verwaltete Objekte).
+            End If
+
+            ' TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() unten überschreiben.
+            ' TODO: Große Felder auf NULL festlegen.
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    ' TODO: Finalize() nur überschreiben, wenn Dispose(ByVal disposing As Boolean) oben über Code zum Freigeben von nicht verwalteten Ressourcen verfügt.
+    'Protected Overrides Sub Finalize()
+    '    ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(ByVal disposing As Boolean) Bereinigungscode ein.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(disposing As Boolean) Bereinigungscode ein.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class

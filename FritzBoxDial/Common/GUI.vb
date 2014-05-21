@@ -54,13 +54,13 @@
 #Region "Eigene Klassen"
     Private C_HF As Helfer
     Private C_DP As DataProvider
-    Private C_Crypt As MyRijndael
+    'Private C_Crypt As MyRijndael
     Private C_WClient As Wählclient
     Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
     Private C_FBox As FritzBox
-    Private C_Phoner As PhonerInterface
+    'Private C_Phoner As PhonerInterface
 #End Region
 
 #Region "Eigene Formulare"
@@ -104,23 +104,22 @@
         End Set
     End Property
 #End Region
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
-
     Friend Sub New(ByVal HelferKlasse As Helfer, _
-               ByVal DataProviderKlasse As DataProvider, _
-               ByVal CryptKlasse As MyRijndael, _
-               ByVal Inverssuche As formRWSuche, _
-               ByVal KontaktKlasse As Contacts, _
-               ByVal Phonerklasse As PhonerInterface)
+           ByVal DataProviderKlasse As DataProvider, _
+           ByVal Inverssuche As formRWSuche, _
+           ByVal KontaktKlasse As Contacts)
+        'Friend Sub New(ByVal HelferKlasse As Helfer, _
+        '           ByVal DataProviderKlasse As DataProvider, _
+        '           ByVal CryptKlasse As MyRijndael, _
+        '           ByVal Inverssuche As formRWSuche, _
+        '           ByVal KontaktKlasse As Contacts, _
+        '           ByVal Phonerklasse As PhonerInterface)
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
-        C_Crypt = CryptKlasse
+        'C_Crypt = CryptKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
-        C_Phoner = Phonerklasse
+        'C_Phoner = Phonerklasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -1125,7 +1124,9 @@
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Dim forman As New formAnrMon(False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
+        Using F_AnrMon As New formAnrMon(False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
+            F_AnrMon.Start()
+        End Using
     End Sub
 
     Friend Sub AnrMonNeustarten()
@@ -1154,19 +1155,19 @@
     End Sub
 
     Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWS11880, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, insp)
     End Sub
 
     Friend Sub RWSDasTelefonbuch(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSDasTelefonbuch, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, insp)
     End Sub
 
     Friend Sub RWSTelSearch(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWStelSearch, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, insp)
     End Sub
 
     Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(formRWSuche.Suchmaschine.RWSAlle, insp)
+        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, insp)
     End Sub
 #End Region
 

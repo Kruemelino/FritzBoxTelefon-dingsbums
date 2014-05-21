@@ -4,6 +4,8 @@ Imports System.IO
 Imports System.Text
 
 Friend Class formWählbox
+    Implements IDisposable
+
     Private WithEvents BWLogin As New System.ComponentModel.BackgroundWorker
 
     Private C_DP As DataProvider
@@ -13,7 +15,6 @@ Friend Class formWählbox
     Private C_Phoner As PhonerInterface
     Private C_KF As Contacts
     Private C_WC As Wählclient
-    Private Client As New Sockets.TcpClient()
     Private WithEvents TimerSchließen As System.Timers.Timer
     Private CallNr As System.Threading.Thread
 
@@ -101,7 +102,6 @@ Friend Class formWählbox
 
         Dim tmpStr As String
         Dim DialPort As String
-        Dim SIP_Nr As Integer
         Dim xPathTeile As New ArrayList
         With xPathTeile
             .Add("Telefone")
@@ -127,7 +127,6 @@ Friend Class formWählbox
         ' Phoner
         If C_DP.P_CBPhoner Then
             If C_Phoner.PhonerReady() Then
-                SIP_Nr = C_DP.P_PhonerTelNameIndex
                 Me.ComboBoxFon.Items.Add("Phoner")
                 PhonerFon = Me.ComboBoxFon.Items.Count - 1
             End If
@@ -240,7 +239,7 @@ Friend Class formWählbox
         'If Not UsePhonerOhneFritzBox Then
         ThisAddIn.P_FritzBox.FBLogOut(SID)
         Me.Close()
-        Me.Dispose(True)
+        'Me.Dispose(True)
     End Sub
 #End Region
 
@@ -400,7 +399,6 @@ Friend Class formWählbox
 
         Dim Code As String  ' zu wählende Nummer
         Dim nameStart As Integer ' Position des Namens im Fenstertitel
-        Dim index As Integer ' Zählvariable
         Dim KontaktID As String
         Dim StoreID As String
         Dim Kontaktdaten() As String
@@ -409,7 +407,6 @@ Friend Class formWählbox
         If Not nameStart = 5 And Not Number = "ATH" And ThisAddIn.P_AnrMon.AnrMonAktiv Then
             ' Symbolleisteneintrag für Wahlwiederholung vornehmen
             ' nur wenn Timer aus ist sonst macht das 'AnrMonCALL'
-            index = CInt(C_DP.Read(C_DP.P_Def_NameListCALL, "Index", "0"))
             Kontaktdaten = Split(Me.Tag.ToString, ";", , CompareMethod.Text)
             KontaktID = Kontaktdaten(0)
             StoreID = Kontaktdaten(1)
@@ -480,7 +477,6 @@ Friend Class formWählbox
         Dim SuchString(3) As String
 
         Dim pos As Integer, pos1 As Integer, pos2 As Integer
-        Dim j As Integer = 0
 
         cbcHTML = Replace(cbcHTML, Chr(34), "'", , , CompareMethod.Text) 'die "-Zeichen entfernen zum besseren Durchsuchen.
         SuchString(0) = "Kosten für ein Telefonat mit dem Ziel "

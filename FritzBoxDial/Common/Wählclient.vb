@@ -2,6 +2,8 @@
 Imports System.Collections.Generic
 
 Public Class Wählclient
+    Implements IDisposable
+
     Private C_DP As DataProvider
     Private frm_Wählbox As formWählbox
     Private C_hf As Helfer
@@ -208,7 +210,7 @@ Public Class Wählclient
                         Using g As Graphics = Graphics.FromImage(showImage)
                             g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                             g.DrawImage(orgImage, 0, 0, Bildgröße.Width, Bildgröße.Height)
-                            g.Dispose()
+                            'g.Dispose()
                         End Using
                         .Image = showImage
                     End With
@@ -260,14 +262,13 @@ Public Class Wählclient
     End Sub '(Wählbox)
 
     Sub OnActionListen(ByVal index As String)
-        Dim oNS As Outlook.NameSpace = ThisAddIn.P_oApp.GetNamespace("MAPI")
         Dim oContact As Outlook.ContactItem
         Dim Telefonat As String() = Split(index, ";", , CompareMethod.Text) ' ####List;ID
         ' KontaktID, StoreID, TelNr ermitteln
         Dim KontaktID As String
         Dim StoreID As String
         Dim TelNr As String
-        Dim Anrufer As String
+        'Dim Anrufer As String
         Dim vCard As String
         Dim ListNodeNames As New ArrayList
         Dim ListNodeValues As New ArrayList
@@ -299,7 +300,7 @@ Public Class Wählclient
         End With
         C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
 
-        Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
+        'Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
         TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
         KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
@@ -345,7 +346,6 @@ Public Class Wählclient
         Dim pos1 As Integer
         Dim pos2 As Integer
         Dim Absender As String
-        Dim olNamespace As Outlook.NameSpace
         Dim olContact As Outlook.ContactItem
 
         olAuswahl = ThisAddIn.P_oApp.ActiveInspector
@@ -392,7 +392,6 @@ Public Class Wählclient
             End If
         ElseIf TypeOf olAuswahl.CurrentItem Is Outlook.MailItem Then ' ist aktuelles Fenster ein Mail?
             Dim oContact As Outlook.ContactItem
-            olNamespace = ThisAddIn.P_oApp.GetNamespace("MAPI")
             Dim olMail As Outlook.MailItem = CType(olAuswahl.CurrentItem, Outlook.MailItem)
             Absender = olMail.SenderEmailAddress
             ' Nun den zur Email-Adresse gehörigen Kontakt suchen
@@ -409,5 +408,36 @@ Public Class Wählclient
     End Sub '(WählenAusKontakt)
 #End Region
 
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                frm_Wählbox.Dispose()
+                ' TODO: Verwalteten Zustand löschen (verwaltete Objekte).
+            End If
+
+            ' TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() unten überschreiben.
+            ' TODO: Große Felder auf NULL festlegen.
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    ' TODO: Finalize() nur überschreiben, wenn Dispose(ByVal disposing As Boolean) oben über Code zum Freigeben von nicht verwalteten Ressourcen verfügt.
+    'Protected Overrides Sub Finalize()
+    '    ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(ByVal disposing As Boolean) Bereinigungscode ein.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(disposing As Boolean) Bereinigungscode ein.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class

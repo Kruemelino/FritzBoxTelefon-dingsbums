@@ -1,4 +1,6 @@
 ﻿Public Class formStoppUhr
+    Implements IDisposable
+
     Public StUhrClosed As Boolean
     Public Position As System.Drawing.Point
 
@@ -22,10 +24,6 @@
 
     Public Sub Stopp()
         PopUpStoppUhr.StoppuhrStopp()
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
     End Sub
 
     Private Sub Stoppuhr_Close() Handles PopUpStoppUhr.Close

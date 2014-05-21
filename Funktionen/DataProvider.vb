@@ -513,10 +513,10 @@ Public Class DataProvider
     End Property
     Public Property P_CBSymbAnrMon() As Boolean
         Get
-            Return _CBLogFile
+            Return _CBSymbAnrMon
         End Get
         Set(ByVal value As Boolean)
-            _CBLogFile = value
+            _CBSymbAnrMon = value
         End Set
     End Property
     Public Property P_CBSymbAnrMonNeuStart() As Boolean

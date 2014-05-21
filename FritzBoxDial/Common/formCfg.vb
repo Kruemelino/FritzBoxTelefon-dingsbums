@@ -36,12 +36,10 @@ Friend Class formCfg
 #End Region
 
 #Region "Eigene Variablen"
-    Private tmpCheckString As String
     Private StatusWert As String
     Private KontaktName As String
     Private Anzahl As Integer = 0
     Private Startzeit As Date
-    Private _StoppUhrAnzeigen As Boolean
     Private Dauer As TimeSpan
 #End Region
 
@@ -629,7 +627,6 @@ Friend Class formCfg
                 End With
                 C_hf.LogFile("Einstellungen zurückgesetzt")
             Case "BTelefonliste"
-                Dim xPathTeile As New ArrayList
                 C_FBox.SetEventProvider(emc)
                 Me.BTelefonliste.Enabled = False
                 Me.BTelefonliste.Text = "Bitte warten..."
@@ -657,7 +654,10 @@ Friend Class formCfg
                 System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
-                Dim forman As New formAnrMon(False, C_DP, C_hf, C_AnrMon, C_OlI, C_KF)
+                Using F_AnrMon As New formAnrMon(False, C_DP, C_hf, C_AnrMon, C_OlI, C_KF)
+                    F_AnrMon.Start()
+                End Using
+
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
@@ -742,7 +742,6 @@ Friend Class formCfg
                 Speichern()
                 Dim Zeit As String
                 Dim WarteZeit As Integer
-                Dim Beendet As Boolean = False
                 Dim StartPosition As System.Drawing.Point
                 Dim x As Integer = 0
                 Dim y As Integer = 0
@@ -797,16 +796,16 @@ Friend Class formCfg
                     Dim rws As Boolean
                     Dim vCard As String = C_DP.P_Def_StringEmpty
 
-                    Select Case CType(Me.ComboBoxRWS.SelectedIndex, formRWSuche.Suchmaschine)
-                        Case formRWSuche.Suchmaschine.RWSDasOertliche
+                    Select Case CType(Me.ComboBoxRWS.SelectedIndex, RückwärtsSuchmaschine)
+                        Case RückwärtsSuchmaschine.RWSDasOertliche
                             rws = frws.RWSDasOertiche(TelNr, vCard)
-                        Case formRWSuche.Suchmaschine.RWS11880
+                        Case RückwärtsSuchmaschine.RWS11880
                             rws = frws.RWS11880(TelNr, vCard)
-                        Case formRWSuche.Suchmaschine.RWSDasTelefonbuch
+                        Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                             rws = frws.RWSDasTelefonbuch(TelNr, vCard)
-                        Case formRWSuche.Suchmaschine.RWStelSearch
+                        Case RückwärtsSuchmaschine.RWStelSearch
                             rws = frws.RWStelsearch(TelNr, vCard)
-                        Case formRWSuche.Suchmaschine.RWSAlle
+                        Case RückwärtsSuchmaschine.RWSAlle
                             rws = frws.RWSAlle(TelNr, vCard)
                     End Select
 
@@ -1147,7 +1146,6 @@ Friend Class formCfg
         ZähleKontakte = 0
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
-        Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         If Not NamensRaum Is Nothing Then
             Dim j As Integer = 1
@@ -1155,7 +1153,6 @@ Friend Class formCfg
                 ZähleKontakte(NamensRaum.Folders.Item(j), Nothing)
                 j = j + 1
             Loop
-            aktKontakt = Nothing
             Return 0
         End If
 
@@ -1171,7 +1168,6 @@ Friend Class formCfg
             iOrdner = iOrdner + 1
         Loop
 
-        aktKontakt = Nothing
     End Function
 #End Region
 

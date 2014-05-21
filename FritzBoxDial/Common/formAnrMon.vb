@@ -12,8 +12,9 @@ Friend Class formAnrMon
     Private WithEvents TimerAktualisieren As Timer
     Public AnrmonClosed As Boolean
     Private PfadKontaktBild As String
+    Private UpdateForm As Boolean
 
-    Public Sub New(ByVal Aktualisieren As Boolean, _
+    Friend Sub New(ByVal Aktualisieren As Boolean, _
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal AnrufMonitorKlasse As AnrufMonitor, _
@@ -26,18 +27,22 @@ Friend Class formAnrMon
         C_OLI = OutlInter
         C_KF = KontaktFunktionen
         C_AnrMon = AnrufMonitorKlasse
-        'aID = iAnrufID
+
+        UpdateForm = Aktualisieren
 
         AnrMonausfüllen()
         AnrmonClosed = False
 
-        Dim OInsp As Outlook.Inspector = Nothing
-        If Aktualisieren Then
+    End Sub
+    Friend Sub Start()
+
+        If UpdateForm Then
             TimerAktualisieren = C_hf.SetTimer(100)
             If TimerAktualisieren Is Nothing Then
                 C_hf.LogFile("formAnrMon_New: TimerNeuStart nicht gestartet")
             End If
         End If
+
         C_OLI.KeepoInspActivated(False)
 
         With PopUpAnrMon
@@ -51,9 +56,9 @@ Friend Class formAnrMon
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             .Popup()
         End With
+
         C_OLI.KeepoInspActivated(True)
     End Sub
-
     Sub AnrMonausfüllen()
         With PopUpAnrMon
 
@@ -103,13 +108,6 @@ Friend Class formAnrMon
             .Firma = C_AnrMon.LetzterAnrufer.Companies
         End With
     End Sub
-
-    Private Function GetImage(path As String) As Image
-        If Not IO.File.Exists(path) Then Throw New IO.FileNotFoundException
-        Using fs As New IO.FileStream(path, IO.FileMode.Open)
-            Return Image.FromStream(fs)
-        End Using
-    End Function
 
     Private Sub PopUpAnrMon_Close() Handles PopUpAnrMon.Close
         PopUpAnrMon.Hide()

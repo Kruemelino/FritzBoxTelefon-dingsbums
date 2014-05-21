@@ -1,17 +1,20 @@
 Imports System.Windows.Forms
-Public Class formRWSuche
+
+
+Friend Enum RückwärtsSuchmaschine
+    RWSDasOertliche = 0
+    RWS11880 = 1
+    RWSDasTelefonbuch = 2
+    RWStelSearch = 3
+    RWSAlle = 4
+End Enum
+
+Friend Class formRWSuche
     Private C_hf As Helfer
     Private C_KF As Contacts
     Private C_DP As DataProvider
     Private HTMLFehler As Boolean
 
-    Public Enum Suchmaschine
-        RWSDasOertliche = 0
-        RWS11880 = 1
-        RWSDasTelefonbuch = 2
-        RWStelSearch = 3
-        RWSAlle = 4
-    End Enum
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
@@ -55,16 +58,16 @@ Public Class formRWSuche
                     '.vCard = C_DP.P_Def_ErrorMinusTwo_String
                 Case C_DP.P_Def_ErrorMinusOne_String
                     '
-                    Select Case CType(C_DP.P_ComboBoxRWS, formRWSuche.Suchmaschine) ' Fall 3: Es gibt keinen Eintrag.
-                        Case Suchmaschine.RWSDasOertliche
+                    Select Case CType(C_DP.P_ComboBoxRWS, RückwärtsSuchmaschine) ' Fall 3: Es gibt keinen Eintrag.
+                        Case RückwärtsSuchmaschine.RWSDasOertliche
                             AnrMonRWS = RWSDasOertiche(.TelNr, .vCard)
-                        Case Suchmaschine.RWS11880
+                        Case RückwärtsSuchmaschine.RWS11880
                             AnrMonRWS = RWS11880(.TelNr, .vCard)
-                        Case Suchmaschine.RWSDasTelefonbuch
+                        Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                             AnrMonRWS = RWSDasTelefonbuch(.TelNr, .vCard)
-                        Case Suchmaschine.RWStelSearch
+                        Case RückwärtsSuchmaschine.RWStelSearch
                             AnrMonRWS = RWStelsearch(.TelNr, .vCard)
-                        Case Suchmaschine.RWSAlle
+                        Case RückwärtsSuchmaschine.RWSAlle
                             AnrMonRWS = RWSAlle(.TelNr, .vCard)
                     End Select
                     If C_DP.P_CBRWSIndex Then
@@ -78,7 +81,7 @@ Public Class formRWSuche
         End With
     End Function
 
-    Public Sub Rückwärtssuche(ByVal RWSAnbieter As Suchmaschine, ByVal olInsp As Outlook.Inspector)
+    Public Sub Rückwärtssuche(ByVal RWSAnbieter As RückwärtsSuchmaschine, ByVal olInsp As Outlook.Inspector)
         ' Startet die Rückwärtssuche mit verschiedenen Suchmaschinen
         ' funktioniert nur in Kontakt- und Journaleinträgen
         ' Parameter:  Suchmaschine (Integer):  Kennnummer der Suchmaschinen
@@ -153,13 +156,13 @@ Public Class formRWSuche
                         Select Case RWSAnbieter
                             'Case Suchmaschine.RWSGoYellow
                             '    rws = RWSGoYellow(TelNr, vCard)
-                            Case Suchmaschine.RWS11880
+                            Case RückwärtsSuchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
-                            Case Suchmaschine.RWSDasTelefonbuch
+                            Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                                 rws = RWSDasTelefonbuch(TelNr, vCard)
-                            Case Suchmaschine.RWStelSearch
+                            Case RückwärtsSuchmaschine.RWStelSearch
                                 rws = RWStelsearch(TelNr, vCard)
-                            Case Suchmaschine.RWSAlle
+                            Case RückwärtsSuchmaschine.RWSAlle
                                 rws = RWSAlle(TelNr, vCard)
                         End Select
                         If rws Then
@@ -189,13 +192,13 @@ Public Class formRWSuche
                         Select Case RWSAnbieter
                             'Case Suchmaschine.RWSGoYellow
                             '    rws = RWSGoYellow(TelNr, vCard)
-                            Case Suchmaschine.RWS11880
+                            Case RückwärtsSuchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
-                            Case Suchmaschine.RWSDasTelefonbuch
+                            Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                                 rws = RWSDasTelefonbuch(TelNr, vCard)
-                            Case Suchmaschine.RWStelSearch
+                            Case RückwärtsSuchmaschine.RWStelSearch
                                 rws = RWStelsearch(TelNr, vCard)
-                            Case Suchmaschine.RWSAlle
+                            Case RückwärtsSuchmaschine.RWSAlle
                                 rws = RWSAlle(TelNr, vCard)
                         End Select
                         If rws Then

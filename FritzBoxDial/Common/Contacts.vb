@@ -15,15 +15,15 @@ End Class
 Public Class Contacts
     Private C_DP As DataProvider
     Private C_hf As Helfer
-    Private _C_OLI As OutlookInterface
-    Private _listChildren As New List(Of ApiWindow)
+    Private V_C_OLI As OutlookInterface
+    Private ListChildren As New List(Of ApiWindow)
 
     Public Property C_OLI() As OutlookInterface
         Get
-            Return _C_OLI
+            Return V_C_OLI
         End Get
         Set(ByVal value As OutlookInterface)
-            _C_OLI = value
+            V_C_OLI = value
         End Set
     End Property
 
@@ -262,7 +262,6 @@ Public Class Contacts
     ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
     ''' <remarks></remarks>
     Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal AutoSave As Boolean) As Outlook.ContactItem
-        Dim FritzFolderExists As Boolean = False
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
 
@@ -1202,11 +1201,11 @@ Public Class Contacts
     Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
         ' Clear the window list
         Dim ReturnValue As Int32
-        _listChildren = New List(Of ApiWindow)
+        ListChildren = New List(Of ApiWindow)
         ' Start the enumeration process.
         ReturnValue = OutlookSecurity.EnumChildWindows(hwnd, AddressOf EnumChildWindowProc, IntPtr.Zero)
         ' Return the children list when the process is completed.
-        Return _listChildren
+        Return ListChildren
     End Function
 
     ''' <summary>
@@ -1216,7 +1215,7 @@ Public Class Contacts
     ''' <param name="lParam"></param>
     ''' <remarks></remarks>
     Private Sub EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32)
-        _listChildren.Add(GetWindowIdentification(hwnd))
+        ListChildren.Add(GetWindowIdentification(hwnd))
     End Sub
 
     ''' <summary>
@@ -1247,9 +1246,5 @@ Public Class ContactSaved
         If ThisAddIn.P_KF.IndizierungErforderlich(ContactSaved) Then
             ThisAddIn.P_KF.IndiziereKontakt(ContactSaved)
         End If
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
     End Sub
 End Class
