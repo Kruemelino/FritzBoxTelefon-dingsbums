@@ -311,7 +311,7 @@ Public Class Wählclient
             oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
             If oContact Is Nothing Then
                 Select Case Telefonat(0)
-                    Case "VIPListe"
+                    Case C_DP.P_Def_NameListVIP
                         If C_hf.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionAnrListen") = MsgBoxResult.Yes Then
                             C_GUI.RemoveVIP(KontaktID, StoreID)
                         End If

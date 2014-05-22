@@ -296,7 +296,7 @@
             .Add("Eintrag")
         End With
         i = 1
-        If Not XMLListBaseNode = "VIPListe" Then
+        If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
@@ -330,7 +330,7 @@
                     MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod index) & """")
                     MyStringBuilder.Append(" label=""" & CStr(Anrufer) & """")
                     MyStringBuilder.Append(" onAction=""OnActionListen""")
-                    MyStringBuilder.Append(" tag=""VIPListe;" & CStr(ID) & """")
+                    MyStringBuilder.Append(" tag=""" & C_DP.P_Def_NameListVIP & ";" & CStr(ID) & """")
                     MyStringBuilder.Append("/>" & vbCrLf)
 
                     'xPathTeile.RemoveAt(xPathTeile.Count - 1)
@@ -497,7 +497,7 @@
             If IsVIP(aktKontakt) Then
                 GetScreenTipVIP = "Entferne diesen Kontakt von der VIP-Liste."
             Else
-                If CLng(C_DP.Read("VIPListe", "Anzahl", "0")) >= 10 Then
+                If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Anzahl", "0")) >= 10 Then
                     GetScreenTipVIP = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
                 Else
                     GetScreenTipVIP = "Füge diesen Kontakt der VIP-Liste hinzu."
@@ -516,7 +516,7 @@
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
         Dim xPathTeile As New ArrayList
 
-        xPathTeile.Add("VIPListe")
+        xPathTeile.Add(C_DP.P_Def_NameListVIP)
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
         IsVIP = Not C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String
@@ -525,7 +525,7 @@
 
     Friend Overloads Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
-        Dim Index As Integer = CInt(C_DP.Read("VIPListe", "Index", "0"))
+        Dim Index As Integer = CInt(C_DP.Read(C_DP.P_Def_NameListVIP, "Index", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
 
@@ -535,7 +535,7 @@
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        xPathTeile.Add("VIPListe")
+        xPathTeile.Add(C_DP.P_Def_NameListVIP)
         xPathTeile.Add("ID[@ID=""" & Index & """]")
 
         If Not Anrufer = C_DP.P_Def_StringEmpty Then
@@ -557,8 +557,8 @@
         AttributeValues.Add(CStr(Index))
 
         With C_DP
-            xPathTeile.RemoveRange(0, xPathTeile.Count)
-            xPathTeile.Add("VIPListe")
+            xPathTeile.Clear()
+            xPathTeile.Add(.P_Def_NameListVIP)
             xPathTeile.Add("Index")
             .Write(xPathTeile, CStr(Index + 1))
             xPathTeile.Remove("Index")
@@ -571,7 +571,7 @@
         AttributeNames = Nothing
         AttributeValues = Nothing
 #If OVer < 14 Then
-        FillPopupItems("VIPListe")
+        FillPopupItems(C_DP.P_Def_NameListVIP)
 #Else
         RefreshRibbon()
 #End If
@@ -598,7 +598,7 @@
 
         With xPathTeile
             ' Anzahl Speichern
-            .Add("VIPListe")
+            .Add(C_DP.P_Def_NameListVIP)
             .Add("Index")
             Anzahl = CInt(C_DP.Read(xPathTeile, "0"))
             ' Index Speichern
@@ -621,13 +621,13 @@
                 .Add("Index")
                 C_DP.Delete(xPathTeile)
             Else
-                C_DP.Write("VIPListe", "Index", CStr(Anzahl - 1))
+                C_DP.Write(C_DP.P_Def_NameListVIP, "Index", CStr(Anzahl - 1))
             End If
 
         End With
 
 #If OVer < 14 Then
-        FillPopupItems("VIPListe")
+        FillPopupItems(C_DP.P_Def_NameListVIP)
 #Else
         RefreshRibbon()
 #End If
@@ -789,7 +789,7 @@
             .Add("Eintrag")
         End With
         i = 1
-        If Not XMLListBaseNode = "VIPListe" Then
+        If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
@@ -1075,7 +1075,7 @@
                     If IsVIP(olKontact) Then
                         .State = Office.MsoButtonState.msoButtonDown
                     Else
-                        If CLng(C_DP.Read("VIPListe", "Anzahl", "0")) >= 10 Then
+                        If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Anzahl", "0")) >= 10 Then
                             .TooltipText = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
                             .Enabled = False
                         Else
