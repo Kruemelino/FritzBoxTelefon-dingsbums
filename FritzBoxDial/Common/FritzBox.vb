@@ -124,7 +124,7 @@ Public Class FritzBox
                         If .InnerXml.Contains("Rights") Then
                             ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
                             sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
-                            If sBlockTime = "0" Then
+                            If sBlockTime = C_DP.P_Def_StringNull Then ' "0"
                                 sLink = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
                                 sResponse = C_hf.httpGET(sLink, FBEncoding, FBFehler)
                                 If Not FBFehler Then
@@ -419,7 +419,7 @@ Public Class FritzBox
                     TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     MSN(i) = TelNr
                     j = i
-                    PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                    PushStatus("MSN-telefonnummer gefunden: MSN" & CStr(i) & ", " & TelNr)
                     If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
                 End If
             Next
@@ -436,7 +436,7 @@ Public Class FritzBox
                     SIP(i) = TelNr
                     SIPID = CStr(i)
                     j = i
-                    PushStatus("Internettelefonnummer (SIP) gefunden: SIP" & CStr(i) & ", " & TelNr)
+                    PushStatus("Internettelefonnummer gefunden: SIP" & CStr(i) & ", " & TelNr)
                     If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", SIPID)
                 End If
             Next
@@ -451,27 +451,29 @@ Public Class FritzBox
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String And Not TelNr = C_DP.P_Def_StringEmpty Then
                     TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     TAM(i) = TelNr
-                    PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
+                    PushStatus("Anrufbeantworternummer gefunden: TAM" & CStr(i) & ", " & TelNr)
                     If P_SpeichereDaten Then C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
                     j = i
                 End If
             Next
             ReDim Preserve TAM(j)
 
+            ' Plain old telephone service (POTS)
+            xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "POTS"
             POTS = C_hf.StringEntnehmen(tempstring, "telcfg:settings/MSN/POTS' value='", "'")
             If Not POTS = C_DP.P_Def_ErrorMinusOne_String And Not POTS = C_DP.P_Def_StringEmpty Then
                 POTS = C_hf.EigeneVorwahlenEntfernen(POTS)
-                PushStatus("Plain old telephone service (POTS) gefunden: POTS, " & POTS)
-                If P_SpeichereDaten Then C_DP.Write("Telefone", "POTS", POTS)
+                PushStatus("Plain old telephone service gefunden: POTS, " & POTS)
+                If P_SpeichereDaten Then C_DP.Write(xPathTeile, POTS, "ID", C_DP.P_Def_StringNull)
             End If
 
             'Mobilnummer ermitteln
-
+            xPathTeile.Item(xPathTeile.IndexOf("POTS")) = "Mobil"
             Mobil = C_hf.StringEntnehmen(tempstring, "nrs.mobil = '", "'")
             If Not Mobil = C_DP.P_Def_ErrorMinusOne_String And Not Mobil = C_DP.P_Def_StringEmpty Then
                 Mobil = C_hf.EigeneVorwahlenEntfernen(Mobil)
-                PushStatus("Mobilnummer (Mobil) gefunden: Mobil, " & Mobil)
-                If P_SpeichereDaten Then C_DP.Write("Telefone", "Mobil", Mobil)
+                PushStatus("Mobilnummer gefunden: Mobil, " & Mobil)
+                If P_SpeichereDaten Then C_DP.Write(xPathTeile, Mobil, "ID", C_DP.P_Def_StringNull)
             End If
 
             AllIn = AlleNummern(MSN, SIP, TAM, POTS, Mobil)
@@ -479,7 +481,7 @@ Public Class FritzBox
             'Telefone ermitteln
             pos(0) = 1
             xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
-            xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FON"
+            xPathTeile.Item(xPathTeile.IndexOf("Mobil")) = "FON"
 
 
             For i = 0 To UBound(PortName)
@@ -910,7 +912,7 @@ Public Class FritzBox
                     Node = UCase(.StringEntnehmen(SIPi, "['_node'] = '", "'"))
                     SIPID = .StringEntnehmen(SIPi, "['ID'] = '", "'")
                     SIP(CInt(SIPID)) = TelNr
-                    PushStatus("Internettelefonnummer (SIP) gefunden: " & Node & ", " & TelNr)
+                    PushStatus("Internettelefonnummer gefunden: " & Node & ", " & TelNr)
                     If P_SpeichereDaten Then
                         C_DP.Write(xPathTeile, TelNr, "ID", SIPID)
                     End If
@@ -927,7 +929,7 @@ Public Class FritzBox
                     If Not Len(TelNr) = 0 Then
                         TelNr = .EigeneVorwahlenEntfernen(TelNr)
                         MSN(i) = TelNr
-                        PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(i) & ", " & TelNr)
+                        PushStatus("MSN-Telefonnummer gefunden: MSN" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
                             C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
@@ -951,7 +953,7 @@ Public Class FritzBox
                                     For k = 0 To 9
                                         If MSN(k) = C_DP.P_Def_StringEmpty Then
                                             MSN(k) = TelNr
-                                            PushStatus("MSN-telefonnummer (MSN) gefunden: MSN" & CStr(k) & ", " & TelNr)
+                                            PushStatus("MSN-Telefonnummer gefunden: MSN" & CStr(k) & ", " & TelNr)
                                             If P_SpeichereDaten Then
                                                 C_DP.Write(xPathTeile, TelNr, "ID", CStr(k))
                                             End If
@@ -978,7 +980,7 @@ Public Class FritzBox
                         Else
                             TelNr = .EigeneVorwahlenEntfernen(TelNr)
                         End If
-                        PushStatus("Anrufbeantworternummer (TAM) gefunden: TAM" & CStr(i) & ", " & TelNr)
+                        PushStatus("Anrufbeantworternummer gefunden: TAM" & CStr(i) & ", " & TelNr)
                         If P_SpeichereDaten Then
                             C_DP.Write(xPathTeile, TelNr, "ID", CStr(i))
                         End If
@@ -1009,6 +1011,8 @@ Public Class FritzBox
             Next
             FAX = (From x In FAX Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
 
+
+            xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "POTS"
             POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
             If Not POTS = C_DP.P_Def_ErrorMinusOne_String And Not POTS = C_DP.P_Def_StringEmpty Then
                 If Strings.Left(POTS, 3) = "SIP" Then
@@ -1017,11 +1021,10 @@ Public Class FritzBox
                     POTS = .EigeneVorwahlenEntfernen(POTS)
                 End If
                 PushStatus("Plain old telephone service (POTS) gefunden: " & POTS)
-                If P_SpeichereDaten Then
-                    C_DP.Write("Telefone", "POTS", POTS)
-                End If
-
+                If P_SpeichereDaten Then C_DP.Write(xPathTeile, POTS, "ID", C_DP.P_Def_StringNull)
             End If
+
+            xPathTeile.Item(xPathTeile.IndexOf("POTS")) = "Mobil"
 
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
             If Not Mobil = C_DP.P_Def_ErrorMinusOne_String And Not Mobil = C_DP.P_Def_StringEmpty Then
@@ -1031,16 +1034,14 @@ Public Class FritzBox
                     Mobil = .EigeneVorwahlenEntfernen(Mobil)
                 End If
                 PushStatus("Mobilnummer (Mobil) gefunden: " & Mobil)
-                If P_SpeichereDaten Then
-                    C_DP.Write("Telefone", "Mobil", Mobil)
-                End If
+                If P_SpeichereDaten Then C_DP.Write(xPathTeile, Mobil, "ID", C_DP.P_Def_StringNull)
             End If
 
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
             pos(0) = 1
             xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
-            xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "FON"
+            xPathTeile.Item(xPathTeile.IndexOf("Mobil")) = "FON"
             'FON
             For Each Telefon In Split(.StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(" & .StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
                 TelName = .StringEntnehmen(Telefon, "['Name'] = '", "'")

@@ -1064,7 +1064,12 @@ Public Class DataProvider
             Return 1012
         End Get
     End Property
-
+    ''' <summary>
+    ''' Der Zahlenwert NULL <code>"0"</code> als String.
+    ''' </summary>
+    ''' <value>"0"</value>
+    ''' <returns>"0"</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_StringNull() As String
         Get
             Return "0"

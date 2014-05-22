@@ -687,7 +687,7 @@ Friend Class formCfg
                 AddLine("BackgroundWorker erstellt.")
                 With BWTelefone
                     .WorkerReportsProgress = True
-                    .RunWorkerAsync(True)
+                    .RunWorkerAsync(False)
                     AddLine("BackgroundWorker gestartet.")
                 End With
                 Me.TBTelefonDatei.Enabled = True
