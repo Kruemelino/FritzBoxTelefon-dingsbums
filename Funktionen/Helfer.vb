@@ -454,7 +454,7 @@ Public Class Helfer
             pos1 = InStr(1, TelNr, "(", CompareMethod.Text) + 1
             pos2 = InStr(1, TelNr, ")", CompareMethod.Text)
             If pos1 = 1 Or pos2 = 0 Then
-                If LandesVW = C_DP.P_TBLandesVW Or LandesVW = C_DP.P_Def_StringEmpty Then
+                If LandesVW = C_DP.P_Def_TBLandesVW Or LandesVW = C_DP.P_Def_StringEmpty Then 'nur Deutschland
                     ' Ortsvorwahl nicht in Klammern
                     If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
                     OrtsVW = VorwahlausDatei(TelNr, My.Resources.Vorwahlen)
@@ -465,12 +465,23 @@ Public Class Helfer
                         Case "150" ' Group3G UMTS Holding GmbH
                             If ErsteZiffer = "5" Then OrtsVW += ErsteZiffer
                         Case "151" ' Telekom Deutschland GmbH
-                            If IsOneOf(ErsteZiffer, New String() {"1", "2", "4", "5"}) Then OrtsVW += ErsteZiffer
+                            If IsOneOf(ErsteZiffer, New String() {"1", "2", "4", "5", "6", "7"}) Then OrtsVW += ErsteZiffer
                         Case "152" ' Vodafone D2 GmbH
-                            If IsOneOf(ErsteZiffer, New String() {"0", "1", "2", "3", "5"}) Then OrtsVW += ErsteZiffer
+                            If IsOneOf(ErsteZiffer, New String() {"0", "1", "2", "3", "5", "6"}) Then OrtsVW += ErsteZiffer
                         Case "157" ' E-Plus Mobilfunk GmbH & Co. KG 
-                            If IsOneOf(ErsteZiffer, New String() {"0", "3", "5", "7", "8"}) Then OrtsVW += ErsteZiffer
+                            If IsOneOf(ErsteZiffer, New String() {"0", "3", "5", "7", "8", "9"}) Then OrtsVW += ErsteZiffer
+                        Case "159" ' Telefónica Germany GmbH & Co. OHG (O2) 
+                            If IsOneOf(ErsteZiffer, New String() {"0"}) Then OrtsVW += ErsteZiffer
                     End Select
+
+                    'Die Vorwahlen sind von der Bundesnetzagentur wie folgt vergeben, Wikipedia abgerufen 24.05.2014
+
+                    'Telekom: 01511, 01512, 01514, 01515, 01516, 01517, 0160, 0170, 0171, 0175
+                    'Vodafone: 01520, 01522, 01523, 01525, 01526 (ab März 2014), 0162, 0172, 0173, 0174, 01529 (Tru)
+                    'Virtuelle Netzbetreiber (nutzt Netz von Vodafone, im Hintergrund eigene Infrastruktur): 01521 Lycamobile
+                    'E-Plus: 01573, 01575, 01577, 01578, 0163, 0177, 0178
+                    'Virtuelle Netzbetreiber (nutzen Netz von E-Plus, im Hintergrund eigene Infrastruktur): 01570 Telogic (Betrieb eingestellt), 01579 Sipgate Wireless
+                    'O2: 01590, 0176, 0179
                 Else
                     OrtsVW = AuslandsVorwahlausDatei(TelNr, LandesVW)
                     Select Case LandesVW

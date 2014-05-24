@@ -8,7 +8,7 @@
 151;T-Mobile
 152;Vodafone
 155;E-Plus
-1577;E-Plus
+157;E-Plus
 159;O2
 160;T-Mobile
 162;Vodafone
