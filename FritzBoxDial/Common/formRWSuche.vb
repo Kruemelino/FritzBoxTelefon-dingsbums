@@ -154,8 +154,8 @@ Friend Class formRWSuche
                     ' je nach 'Suchmaschine' Suche durchführen
                     If Not TelNr = C_DP.P_Def_StringEmpty Then
                         Select Case RWSAnbieter
-                            'Case Suchmaschine.RWSGoYellow
-                            '    rws = RWSGoYellow(TelNr, vCard)
+                            Case RückwärtsSuchmaschine.RWSDasOertliche
+                                rws = RWSDasOertiche(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWSDasTelefonbuch
@@ -190,8 +190,8 @@ Friend Class formRWSuche
                         TelNr = Mid(.Body, 11, InStr(1, .Body, vbNewLine) - 11)
                         ' je nach 'Suchmaschine' Suche durchführen
                         Select Case RWSAnbieter
-                            'Case Suchmaschine.RWSGoYellow
-                            '    rws = RWSGoYellow(TelNr, vCard)
+                            Case RückwärtsSuchmaschine.RWSDasOertliche
+                                rws = RWSDasOertiche(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWS11880
                                 rws = RWS11880(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWSDasTelefonbuch

@@ -56,13 +56,11 @@
 #Region "Eigene Klassen"
     Private C_HF As Helfer
     Private C_DP As DataProvider
-    'Private C_Crypt As MyRijndael
     Private C_WClient As Wählclient
     Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
     Private C_FBox As FritzBox
-    'Private C_Phoner As PhonerInterface
 #End Region
 
 #Region "Eigene Formulare"
@@ -110,18 +108,11 @@
            ByVal DataProviderKlasse As DataProvider, _
            ByVal Inverssuche As formRWSuche, _
            ByVal KontaktKlasse As Contacts)
-        'Friend Sub New(ByVal HelferKlasse As Helfer, _
-        '           ByVal DataProviderKlasse As DataProvider, _
-        '           ByVal CryptKlasse As MyRijndael, _
-        '           ByVal Inverssuche As formRWSuche, _
-        '           ByVal KontaktKlasse As Contacts, _
-        '           ByVal Phonerklasse As PhonerInterface)
+
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
-        'C_Crypt = CryptKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
-        'C_Phoner = Phonerklasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -134,24 +125,24 @@
         KontaktErstellen()
     End Sub
 
-    Public Sub OnActionRWS11880(ByVal control As Office.IRibbonControl)
+    Public Sub OnActionRWS(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        RWS11880(Insp)
-    End Sub
 
-    Public Sub OnActionRWSDasTelefonbuch(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        RWSDasTelefonbuch(Insp)
-    End Sub
+        With F_RWS
 
-    Public Sub OnActionRWSTelSearch(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        RWSTelSearch(Insp)
-    End Sub
-
-    Public Sub OnActionRWSAlle(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        RWSAlle(Insp)
+            Select Case control.Tag
+                Case "RWS11880"
+                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, Insp)
+                Case "RWSDasOertliche"
+                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, Insp)
+                Case "RWSDasTelefonbuch"
+                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, Insp)
+                Case "RWSTelSearch"
+                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, Insp)
+                Case "RWSAlle"
+                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, Insp)
+            End Select
+        End With
     End Sub
 
     Public Function GroupVisible(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
@@ -251,6 +242,7 @@
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         C_KF.AddNote(CType(Insp.CurrentItem, Outlook.ContactItem))
     End Sub
+
 #End Region 'Ribbon Inspector
 
 #Region "Ribbon Expector Office 2010 & Office 2013"
@@ -274,7 +266,7 @@
         Dim LANodeValues As New ArrayList
         Dim xPathTeile As New ArrayList
 
-        Dim MyStringBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
+        Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
@@ -303,23 +295,24 @@
 
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
-                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-                Anrufer = Replace(Anrufer, "&", "&#38;&#38;", , , CompareMethod.Text)
-
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
-                Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
-                    MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod 10) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
-                    MyStringBuilder.Append(" onAction=""OnActionListen""")
-                    MyStringBuilder.Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
-                    MyStringBuilder.Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
-                    MyStringBuilder.Append("/>" & vbCrLf)
+                    Anrufer = Replace(CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer"))), "&", "&#38;&#38;", , , CompareMethod.Text)
+                    Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+                    With RibbonListStrBuilder
+                        .Append("<button id=""button_" & CStr(ID Mod 10) & """")
+                        .Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
+                        .Append(" onAction=""OnActionListen""")
+                        .Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
+                        .Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
+                        .Append("/>" & vbCrLf)
+                    End With
+
                     i += 1
-                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
-                    LANodeValues.Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
-                    LANodeValues.Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
+                    LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
+                    LANodeValues.Item(1) = C_DP.P_Def_ErrorMinusOne_String
+                    LANodeValues.Item(2) = C_DP.P_Def_ErrorMinusOne_String
                 End If
             Next
         Else
@@ -327,23 +320,26 @@
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
+
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
+                    Anrufer = Replace(Anrufer, "&", "&#38;&#38;", , , CompareMethod.Text)
+                    With RibbonListStrBuilder
 
-                    MyStringBuilder.Append("<button id=""button_" & CStr(ID Mod index) & """")
-                    MyStringBuilder.Append(" label=""" & CStr(Anrufer) & """")
-                    MyStringBuilder.Append(" onAction=""OnActionListen""")
-                    MyStringBuilder.Append(" tag=""" & C_DP.P_Def_NameListVIP & ";" & CStr(ID) & """")
-                    MyStringBuilder.Append("/>" & vbCrLf)
+                        .Append("<button id=""button_" & CStr(ID Mod index) & """")
+                        .Append(" label=""" & CStr(Anrufer) & """")
+                        .Append(" onAction=""OnActionListen""")
+                        .Append(" tag=""" & C_DP.P_Def_NameListVIP & ";" & CStr(ID) & """")
+                        .Append("/>" & vbCrLf)
 
-                    'xPathTeile.RemoveAt(xPathTeile.Count - 1)
-                    LANodeValues.Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
+                    End With
+                    LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
                 End If
             Next
         End If
 
-        MyStringBuilder.Append("</menu>")
+        RibbonListStrBuilder.Append("</menu>")
 
-        DynMenüfüllen = MyStringBuilder.ToString
+        DynMenüfüllen = RibbonListStrBuilder.ToString
         LANodeNames = Nothing
         LANodeValues = Nothing
         xPathTeile = Nothing
@@ -1013,8 +1009,9 @@
 #If OVer = 11 Then
     Sub InspectorSybolleisteErzeugen(ByVal Inspector As Outlook.Inspector, _
                                      ByRef iPopRWS As Office.CommandBarPopup, ByRef iBtnWwh As Office.CommandBarButton, _
-                                     ByRef iBtnRws11880 As Office.CommandBarButton, ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, _
-                                     ByRef iBtnRWStelSearch As Office.CommandBarButton, ByRef iBtnRWSAlle As Office.CommandBarButton, _
+                                     ByRef iBtnRwsDasOertliche As Office.CommandBarButton, ByRef iBtnRws11880 As Office.CommandBarButton, _
+                                     ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, ByRef iBtnRWStelSearch As Office.CommandBarButton, _
+                                     ByRef iBtnRWSAlle As Office.CommandBarButton, _
                                      ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton, _
                                      ByRef iBtnNotiz As Office.CommandBarButton)
 
@@ -1052,17 +1049,15 @@
 
                 AddPopupsToExplorer(cmb, iPopRWS, "Rückwärtssuche", i, "RWS", "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.")
                 i += 1
-                'iBtnRwsGoYellow = AddPopupItems(iPopRWS, 1)
+                iBtnRwsDasOertliche = AddPopupItems(iPopRWS, 1)
                 iBtnRws11880 = AddPopupItems(iPopRWS, 2)
                 iBtnRWSDasTelefonbuch = AddPopupItems(iPopRWS, 3)
                 iBtnRWStelSearch = AddPopupItems(iPopRWS, 4)
                 iBtnRWSAlle = AddPopupItems(iPopRWS, 5)
-                'Dim rwsNamen() As String = {"GoYellow", "11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
-                'Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.goyellow.de'", "Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
 
-                Dim rwsNamen() As String = {"11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
-                Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
-                For i = 0 To 3
+                Dim rwsNamen() As String = {"DasÖrtliche", "11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
+                Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.dasoertliche.de'", "Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
+                For i = LBound(rwsNamen) To UBound(rwsNamen)
                     With iPopRWS.Controls.Item(i + 1)
                         .Caption = rwsNamen(i)
                         .TooltipText = rwsToolTipp(i)
@@ -1156,21 +1151,25 @@
         C_KF.ZeigeKontaktAusJournal()
     End Sub
 
-    Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, insp)
-    End Sub
+    'Friend Sub RWSDasOertliche(ByVal insp As Outlook.Inspector)
+    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, insp)
+    'End Sub
 
-    Friend Sub RWSDasTelefonbuch(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, insp)
-    End Sub
+    'Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
+    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, insp)
+    'End Sub
 
-    Friend Sub RWSTelSearch(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, insp)
-    End Sub
+    'Friend Sub RWSDasTelefonbuch(ByVal insp As Outlook.Inspector)
+    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, insp)
+    'End Sub
 
-    Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
-        F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, insp)
-    End Sub
+    'Friend Sub RWSTelSearch(ByVal insp As Outlook.Inspector)
+    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, insp)
+    'End Sub
+
+    'Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
+    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, insp)
+    'End Sub
 #End Region
 
 #Region "RingCallList"
