@@ -2,7 +2,9 @@
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
+
     Private RibbonObjekt As Office.IRibbonUI
+
     Public Function GetCustomUI(ByVal ribbonID As String) As String Implements Office.IRibbonExtensibility.GetCustomUI
         Dim File As String
         Select Case ribbonID

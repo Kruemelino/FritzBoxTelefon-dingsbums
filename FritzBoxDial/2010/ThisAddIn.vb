@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Office.Core
-Imports Microsoft.Win32
 
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
@@ -137,7 +136,7 @@ Public Class ThisAddIn
     End Property
 #End Region
     Private Initialisierung As formInit
-    Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
+    Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -146,12 +145,12 @@ Public Class ThisAddIn
     End Function
 #End If
 
-    Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
+    Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
         C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
-            Case PowerModes.Resume
+            Case Microsoft.Win32.PowerModes.Resume
                 C_AnrMon.AnrMonStartNachStandby()
-            Case PowerModes.Suspend
+            Case Microsoft.Win32.PowerModes.Suspend
                 C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
@@ -164,7 +163,7 @@ Public Class ThisAddIn
     ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
-        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
+        AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
         P_oApp = CType(Application, Outlook.Application)
 
