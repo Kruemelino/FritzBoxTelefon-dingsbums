@@ -855,7 +855,7 @@ Friend Class AnrufMonitor
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
                 .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Angenommen, C_DP.P_Def_StringEmpty, "nicht ")) & "angenommen" & vbCrLf & vbCrLf
-                If Not .vCard = C_DP.P_Def_StringEmpty Then
+                If Not .vCard = C_DP.P_Def_StringEmpty And Not .vCard = C_DP.P_Def_ErrorMinusTwo_String Then
 
                     .Companies = ReadFromVCard(.vCard, "ORG", "")
                     .Body += "Kontaktdaten (vCard):" & vbCrLf & .vCard & vbCrLf
