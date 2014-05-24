@@ -919,7 +919,7 @@ Public Class FritzBox
                 End If
             Next
 
-            SIP = (From x In SIP Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
+            'SIP = (From x In SIP Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
             PushStatus("Letzte SIP: " & SIPID)
 
             xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
@@ -967,8 +967,8 @@ Public Class FritzBox
                     Next
                 End If
             Next
-            MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
-            MSN = (From x In MSN Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
+            'MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
+            'MSN = (From x In MSN Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
 
             xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "TAM"
             For i = 0 To 9
@@ -1009,8 +1009,7 @@ Public Class FritzBox
                     End If
                 End If
             Next
-            FAX = (From x In FAX Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
-
+            ' FAX = (From x In FAX Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
 
             xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "POTS"
             POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
@@ -1037,7 +1036,16 @@ Public Class FritzBox
                 If P_SpeichereDaten Then C_DP.Write(xPathTeile, Mobil, "ID", C_DP.P_Def_StringNull)
             End If
 
+            SIP = (From x In SIP Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
+            MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
+            MSN = (From x In MSN Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
+            FAX = (From x In FAX Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
+
+
+
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
+
+            'Telefone Einlesen
 
             pos(0) = 1
             xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
