@@ -99,12 +99,17 @@ Friend Class formAnrMon
 
             If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.P_Def_StringEmpty Then
                 .TelNr = C_DP.P_Def_StringEmpty
-                .AnrName = C_AnrMon.LetzterAnrufer.TelNr
+                If C_AnrMon.LetzterAnrufer.TelNr = C_DP.P_Def_StringEmpty Then
+                    .AnrName = C_DP.P_Def_StringUnknown
+                Else
+                    .AnrName = C_AnrMon.LetzterAnrufer.TelNr
+                End If
             Else
                 .TelNr = C_AnrMon.LetzterAnrufer.TelNr
                 .AnrName = C_AnrMon.LetzterAnrufer.Anrufer
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
             End If
+
             .Firma = C_AnrMon.LetzterAnrufer.Companies
         End With
     End Sub
