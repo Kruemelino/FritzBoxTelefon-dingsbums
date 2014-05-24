@@ -256,7 +256,7 @@
         Dim XMLListBaseNode As String
 
         Dim index As Integer
-        Dim i As Integer
+        'Dim i As Integer
 
         Dim Anrufer As String
         Dim TelNr As String
@@ -266,7 +266,8 @@
         Dim LANodeValues As New ArrayList
         Dim xPathTeile As New ArrayList
 
-        Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
+        Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & _
+                                                                      "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
@@ -289,27 +290,23 @@
             .Add(XMLListBaseNode)
             .Add("Eintrag")
         End With
-        i = 1
+
         If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
-
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
 
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
-                    Anrufer = Replace(CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer"))), "&", "&#38;&#38;", , , CompareMethod.Text)
+                    Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                     Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
-                    With RibbonListStrBuilder
-                        .Append("<button id=""button_" & CStr(ID Mod 10) & """")
-                        .Append(" label=""" & CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)) & """")  ''CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne, TelNr, Anrufer))
-                        .Append(" onAction=""OnActionListen""")
-                        .Append(" tag=""" & XMLListBaseNode & ";" & CStr(ID Mod 10) & """")
-                        .Append(" supertip=""Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr & """")
-                        .Append("/>" & vbCrLf)
-                    End With
 
-                    i += 1
+                    GetButtonXMLString(RibbonListStrBuilder, _
+                            CStr(ID Mod 10), _
+                            CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
+                            XMLListBaseNode, _
+                            "Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr)
+
                     LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = C_DP.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(2) = C_DP.P_Def_ErrorMinusOne_String
@@ -320,18 +317,14 @@
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
-                    Anrufer = Replace(Anrufer, "&", "&#38;&#38;", , , CompareMethod.Text)
-                    With RibbonListStrBuilder
 
-                        .Append("<button id=""button_" & CStr(ID Mod index) & """")
-                        .Append(" label=""" & CStr(Anrufer) & """")
-                        .Append(" onAction=""OnActionListen""")
-                        .Append(" tag=""" & C_DP.P_Def_NameListVIP & ";" & CStr(ID) & """")
-                        .Append("/>" & vbCrLf)
+                    GetButtonXMLString(RibbonListStrBuilder, _
+                            CStr(ID Mod index), _
+                            Anrufer, _
+                            XMLListBaseNode, _
+                            C_DP.P_Def_StringEmpty)
 
-                    End With
                     LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
                 End If
             Next
@@ -344,6 +337,44 @@
         LANodeValues = Nothing
         xPathTeile = Nothing
     End Function
+
+    Private Sub GetButtonXMLString(ByRef StrBuilder As StringBuilder, ByVal ID As String, ByVal Label As String, ByVal Tag As String, SuperTip As String)
+        Dim Werte(3) As String
+
+        Werte(0) = ID
+        Werte(1) = Label
+        Werte(2) = Tag
+        Werte(3) = SuperTip
+        ' Nicht zugelassene Zeichen der XML-Notifikation ersetzen.
+        ' Zeichen	Notation in XML
+        ' <	        &lt;    &#60;
+        ' >	        &gt;    &#62;
+        ' &	        &amp;   &#38; Zweimal anfügen, da es ansonsten ignoriert wird
+        ' "	        &quot;  &#34;
+        ' '	        &apos;  &#38;
+
+        For i = LBound(Werte) To UBound(Werte)
+            If Not Werte(i) = C_DP.P_Def_StringEmpty Then
+                Werte(i) = Replace(Werte(i), "&", "&amp;&amp;", , , CompareMethod.Text)
+                Werte(i) = Replace(Werte(i), "&amp;&amp;#", "&#", , , CompareMethod.Text) ' Deizmalcode wiederherstellen
+                Werte(i) = Replace(Werte(i), "<", "&lt;", , , CompareMethod.Text)
+                Werte(i) = Replace(Werte(i), ">", "&gt;", , , CompareMethod.Text)
+                Werte(i) = Replace(Werte(i), Chr(34), "&quot;", , , CompareMethod.Text)
+                Werte(i) = Replace(Werte(i), "'", "&apos;", , , CompareMethod.Text)
+            End If
+        Next
+
+        With StrBuilder
+            .Append("<button id=""button_" & Werte(0) & """ ")
+            .Append("label=""" & Werte(1) & """ ")
+            .Append("onAction=""OnActionListen"" ")
+            .Append("tag=""" & Werte(2) & ";" & Werte(0) & """ ")
+            If Not Werte(3) = C_DP.P_Def_StringEmpty Then
+                .Append("supertip=""" & Werte(3) & """")
+            End If
+            .Append("/>" & vbCrLf)
+        End With
+    End Sub
 
     Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
         Dim XMLListBaseNode As String

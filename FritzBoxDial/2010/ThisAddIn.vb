@@ -131,7 +131,7 @@ Public Class ThisAddIn
 
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7 Beta 5"
+            Return "3.7 Beta 6"
         End Get
     End Property
 #End Region
