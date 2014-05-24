@@ -163,7 +163,7 @@ Public Class Wählclient
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
                 If Not Left(C_hf.nurZiffern(TelNr), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr), 2) = "11" Then TelNr = C_DP.P_TBVorwahl & TelNr
 
-                frm_Wählbox.Text = "Anruf: " & CStr(IIf(vCard = C_DP.P_Def_StringEmpty, TelNr, ReadFNfromVCard(vCard)))
+                frm_Wählbox.Text = "Anruf: " & CStr(IIf(vCard = C_DP.P_Def_StringEmpty Or vCard = C_DP.P_Def_ErrorMinusTwo_String, TelNr, ReadFNfromVCard(vCard)))
                 ' Liste füllen
                 row(0) = CStr(iTelNr) 'Index Zeile im DataGrid
                 row(2) = TelNr
