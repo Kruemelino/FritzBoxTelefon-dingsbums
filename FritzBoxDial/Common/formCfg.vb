@@ -813,9 +813,10 @@ Friend Class formCfg
                     End Select
 
                     C_hf.FBDB_MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
-                                    CStr(IIf(rws, "folgendes Ergebnis:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & vCard, "kein Ergebnis.")), MsgBoxStyle.Information, "RWSTest")
+                                    CStr(IIf(rws, "folgendes Ergebnis:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & vCard, "kein Ergebnis.")), MsgBoxStyle.Information, _
+                                    "Test der Rückwärtssuche " & Me.ComboBoxRWS.SelectedItem.ToString())
                 Else
-                    C_hf.FBDB_MsgBox("Doe Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "RWSTest")
+                    C_hf.FBDB_MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
                 End If
         End Select
     End Sub
