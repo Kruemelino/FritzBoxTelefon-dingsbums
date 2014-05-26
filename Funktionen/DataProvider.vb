@@ -1793,6 +1793,11 @@ Public Class DataProvider
             Return False
         End Get
     End Property
+    Public ReadOnly Property P_Debug_ImportTelefone() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 #End Region
 
     Public Sub New()

@@ -265,6 +265,7 @@ Public Class Contacts
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
 
+        ' Achtung 140526: TryCatch eventuell erforderlich
         olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
         olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
         With olKontakt

@@ -1041,8 +1041,6 @@ Public Class FritzBox
             MSN = (From x In MSN Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
             FAX = (From x In FAX Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
 
-
-
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
             'Telefone Einlesen
@@ -1213,8 +1211,9 @@ Public Class FritzBox
                     End If
                 End If
             End If
+
             xPathTeile.Item(xPathTeile.IndexOf("S0")) = "TAM"
-            ' TAM
+            ' TAM, Anrufbeantworter
             tmpstrUser = Split(.StringEntnehmen(Code, "['tam:settings/TAM/list(" & .StringEntnehmen(Code, "['tam:settings/TAM/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
             For Each Anrufbeantworter In tmpstrUser
                 If .StringEntnehmen(Anrufbeantworter, "['Active'] = '", "'") = "1" Then
@@ -1234,7 +1233,6 @@ Public Class FritzBox
                 End If
             Next
 
-
             ' integrierter Faxempfang
             xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             DialPort = .StringEntnehmen(Code, "['telcfg:settings/FaxMailActive'] = '", "'")
@@ -1253,6 +1251,7 @@ Public Class FritzBox
 
             End If
 
+            ' Landesvorwahl 
             Landesvorwahl = .StringEntnehmen(Code, "['country'] = '", "'")
             If Len(Landesvorwahl) > 2 Then
                 If Len(Landesvorwahl) = 3 And Left(Landesvorwahl, 1) = "0" Then
