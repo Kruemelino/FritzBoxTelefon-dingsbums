@@ -246,22 +246,24 @@ Public Class OutlookInterface
         oApp = Nothing
     End Function
 
-    Friend Function NeuEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
+    Friend Function NeueEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication
         If Not oApp Is Nothing Then
+
             Try
                 olMail = CType(oApp.CreateItem(Outlook.OlItemType.olMailItem), Outlook.MailItem)
             Catch ex As Exception
-                C_hf.LogFile("ErstelleJournalItem: " & ex.Message)
+                C_hf.LogFile("NeueEmail: " & ex.Message)
             End Try
+
             If Not olMail Is Nothing Then
                 With olMail
                     .Attachments.Add(tmpFile)
                     .Attachments.Add(XMLFile)
                     Try
                         .Attachments.Add(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName)
-                    Catch ex As Exception
+                    Catch
                         .Body = vbNewLine & "Log wird nicht geschrieben."
                     End Try
 
@@ -272,12 +274,18 @@ Public Class OutlookInterface
                         "Outlook-Version: ", oApp.Version, vbNewLine, _
                         "Fritz!Box Telefon-dingsbums-Version: ", ThisAddIn.Version, .Body)
                     .To = "kruemelino@gert-michael.de"
-                    .Display()
+                    Try
+                        .Display()
+                    Catch ex As System.Runtime.InteropServices.COMException
+                        C_hf.LogFile("NeueEmail: Die E-Mail wurde erstellt, konnte jedoch nicht angezeigt werden.")
+                        .Save()
+                    End Try
+
                 End With
                 olMail = Nothing
             End If
         Else
-            C_hf.LogFile("E-Mail konnte nicht erstellt werden.")
+            C_hf.LogFile("NeueEmail: E-Mail konnte nicht erstellt werden.")
         End If
         oApp = Nothing
         Return True

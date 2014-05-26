@@ -662,10 +662,13 @@ Friend Class formCfg
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
                 Dim T As New Thread(AddressOf NeueMail)
-                T.Start()
+
                 If C_hf.FBDB_MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
-                                                "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.Information, "") = MsgBoxResult.Ok Then
+                                                "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
+                    T.Start()
                     Me.Close()
+                Else
+                    T = Nothing
                 End If
             Case "BStartDebug"
                 Me.TBDiagnose.Text = C_DP.P_Def_StringEmpty
@@ -687,7 +690,7 @@ Friend Class formCfg
                 AddLine("BackgroundWorker erstellt.")
                 With BWTelefone
                     .WorkerReportsProgress = True
-                    .RunWorkerAsync(False)
+                    .RunWorkerAsync(C_DP.P_Debug_ImportTelefone)
                     AddLine("BackgroundWorker gestartet.")
                 End With
                 Me.TBTelefonDatei.Enabled = True
@@ -792,21 +795,21 @@ Friend Class formCfg
             Case "BRWSTest"
                 Dim TelNr As String = Me.TBRWSTest.Text
                 If IsNumeric(TelNr) Then
-                    Dim frws As New formRWSuche(C_hf, C_KF, C_DP)
+                    Dim F_RWS As New formRWSuche(C_hf, C_KF, C_DP)
                     Dim rws As Boolean
                     Dim vCard As String = C_DP.P_Def_StringEmpty
 
                     Select Case CType(Me.ComboBoxRWS.SelectedIndex, RückwärtsSuchmaschine)
                         Case RückwärtsSuchmaschine.RWSDasOertliche
-                            rws = frws.RWSDasOertiche(TelNr, vCard)
+                            rws = F_RWS.RWSDasOertiche(TelNr, vCard)
                         Case RückwärtsSuchmaschine.RWS11880
-                            rws = frws.RWS11880(TelNr, vCard)
+                            rws = F_RWS.RWS11880(TelNr, vCard)
                         Case RückwärtsSuchmaschine.RWSDasTelefonbuch
-                            rws = frws.RWSDasTelefonbuch(TelNr, vCard)
+                            rws = F_RWS.RWSDasTelefonbuch(TelNr, vCard)
                         Case RückwärtsSuchmaschine.RWStelSearch
-                            rws = frws.RWStelsearch(TelNr, vCard)
+                            rws = F_RWS.RWStelsearch(TelNr, vCard)
                         Case RückwärtsSuchmaschine.RWSAlle
-                            rws = frws.RWSAlle(TelNr, vCard)
+                            rws = F_RWS.RWSAlle(TelNr, vCard)
                     End Select
 
                     C_hf.FBDB_MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
@@ -1050,7 +1053,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeuEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
+        C_OlI.NeueEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
     End Sub
 
     Public Function SetTelNrListe() As Boolean
