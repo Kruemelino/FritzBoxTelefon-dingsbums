@@ -128,18 +128,18 @@
 
     Public Sub OnActionRWS(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-            Select Case control.Tag
-                Case "RWS11880"
-                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, Insp)
-                Case "RWSDasOertliche"
-                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, Insp)
-                Case "RWSDasTelefonbuch"
-                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, Insp)
-                Case "RWSTelSearch"
-                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, Insp)
-                Case "RWSAlle"
-                    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, Insp)
-            End Select
+        Select Case control.Tag
+            Case "RWS11880"
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, Insp)
+            Case "RWSDasOertliche"
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, Insp)
+            Case "RWSDasTelefonbuch"
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, Insp)
+            Case "RWSTelSearch"
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, Insp)
+            Case "RWSAlle"
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, Insp)
+        End Select
     End Sub
 
     Public Function GroupVisible(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
