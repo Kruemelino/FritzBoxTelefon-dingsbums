@@ -104,6 +104,7 @@
         End Set
     End Property
 #End Region
+
     Friend Sub New(ByVal HelferKlasse As Helfer, _
            ByVal DataProviderKlasse As DataProvider, _
            ByVal Inverssuche As formRWSuche, _
@@ -127,9 +128,6 @@
 
     Public Sub OnActionRWS(ByVal control As Office.IRibbonControl)
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-
-        With F_RWS
-
             Select Case control.Tag
                 Case "RWS11880"
                     F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, Insp)
@@ -142,7 +140,6 @@
                 Case "RWSAlle"
                     F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, Insp)
             End Select
-        End With
     End Sub
 
     Public Function GroupVisible(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
@@ -1182,25 +1179,25 @@
         C_KF.ZeigeKontaktAusJournal()
     End Sub
 
-    'Friend Sub RWSDasOertliche(ByVal insp As Outlook.Inspector)
-    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, insp)
-    'End Sub
+#If OVer = 11 Then
 
-    'Friend Sub RWS11880(ByVal insp As Outlook.Inspector)
-    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, insp)
-    'End Sub
+    Friend Sub OnActionRWS(ByVal oInsp As Outlook.Inspector, ByVal RWS As RückwärtsSuchmaschine)
 
-    'Friend Sub RWSDasTelefonbuch(ByVal insp As Outlook.Inspector)
-    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, insp)
-    'End Sub
+        Select Case RWS
+            Case RückwärtsSuchmaschine.RWS11880
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, oInsp)
+            Case RückwärtsSuchmaschine.RWSDasOertliche
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, oInsp)
+            Case RückwärtsSuchmaschine.RWSDasTelefonbuch
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, oInsp)
+            Case RückwärtsSuchmaschine.RWStelSearch
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, oInsp)
+            Case RückwärtsSuchmaschine.RWSAlle
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, oInsp)
+        End Select
+    End Sub
 
-    'Friend Sub RWSTelSearch(ByVal insp As Outlook.Inspector)
-    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, insp)
-    'End Sub
-
-    'Friend Sub RWSAlle(ByVal insp As Outlook.Inspector)
-    '    F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, insp)
-    'End Sub
+#End If
 #End Region
 
 #Region "RingCallList"

@@ -192,7 +192,8 @@ Public Class MyRijndael
         Dim tokenData(16 - 1) As Byte
 
         rng.GetNonZeroBytes(tokenData)
-        rng.Dispose()
+        'Fehler in Office 2003
+        'rng.Dispose()
 
         Return Convert.ToBase64String(tokenData)
     End Function
