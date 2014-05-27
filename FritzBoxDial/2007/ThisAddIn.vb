@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Office.Core
-Imports Microsoft.Win32
 
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
@@ -25,6 +24,7 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Private WithEvents iPopRWS As Office.CommandBarPopup
     Private WithEvents iBtnWwh As Office.CommandBarButton
+    Private WithEvents iBtnRWSDasOertliche As Office.CommandBarButton
     Private WithEvents iBtnRws11880 As Office.CommandBarButton
     Private WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Private WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -129,10 +129,15 @@ Public Class ThisAddIn
             F_Cfg = value
         End Set
     End Property
+
+    Friend Shared ReadOnly Property Version() As String
+        Get
+            Return "3.7 Beta 6"
+        End Get
+    End Property
 #End Region
     Private Initialisierung As formInit
-    Public Const Version As String = "3.7 Beta 3"
-    Public Shared Event PowerModeChanged As PowerModeChangedEventHandler
+    Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -141,12 +146,12 @@ Public Class ThisAddIn
     End Function
 #End If
 
-    Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As PowerModeChangedEventArgs)
+    Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
         C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
-            Case PowerModes.Resume
+            Case Microsoft.Win32.PowerModes.Resume
                 C_AnrMon.AnrMonStartNachStandby()
-            Case PowerModes.Suspend
+            Case Microsoft.Win32.PowerModes.Suspend
                 C_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
@@ -159,7 +164,7 @@ Public Class ThisAddIn
     ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
-        AddHandler SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
+        AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
         P_oApp = CType(Application, Outlook.Application)
 
@@ -192,7 +197,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
@@ -274,6 +279,7 @@ Public Class ThisAddIn
 #Region " Office 2003 Inspectorfenster"
 #If OVer = 11 Then
     Private Sub iBtn_Click(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnKontakterstellen.Click, _
+                                                                                                                         iBtnRWSDasOertliche.Click, _
                                                                                                                          iBtnRws11880.Click, _
                                                                                                                          iBtnRWSDasTelefonbuch.Click, _
                                                                                                                          iBtnRWStelSearch.Click, _
@@ -286,14 +292,16 @@ Public Class ThisAddIn
             Select Case CType(Ctrl, CommandBarButton).Caption
                 Case "Kontakt erstellen"
                     .KontaktErstellen()
+                Case "DasÖrtliche"
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasOertliche)
                 Case "11880"
-                    .RWS11880(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWS11880)
                 Case "DasTelefonbuch"
-                    .RWSDasTelefonbuch(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasTelefonbuch)
                 Case "tel.search.ch"
-                    .RWSTelSearch(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWStelSearch)
                 Case "Alle"
-                    .RWSAlle(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case "Wählen"
                     C_WClient.WählenAusInspector()
                 Case "VIP"
@@ -312,5 +320,4 @@ Public Class ThisAddIn
     End Sub
 #End If
 #End Region
-
 End Class
