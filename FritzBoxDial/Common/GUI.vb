@@ -1171,10 +1171,18 @@
 #End Region
 
 #Region "Inspector Button Click"
+    ''' <summary>
+    ''' Öffnet den Wähldialog.
+    ''' </summary>
+    ''' <remarks>Funktion wird für alle Office Versionen verwendet!</remarks>
     Friend Sub WählenInspector()
         P_CallClient.WählenAusInspector()
     End Sub
 
+    ''' <summary>
+    ''' Zeigt einen Kontakt aus einem Journal.
+    ''' </summary>
+    ''' <remarks>Funktion wird für alle Office Versionen verwendet!</remarks>
     Friend Sub KontaktErstellen()
         C_KF.ZeigeKontaktAusJournal()
     End Sub

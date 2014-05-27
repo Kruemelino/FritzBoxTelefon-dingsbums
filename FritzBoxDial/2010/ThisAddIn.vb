@@ -24,6 +24,7 @@ Public Class ThisAddIn
 #If OVer = 11 Then
     Private WithEvents iPopRWS As Office.CommandBarPopup
     Private WithEvents iBtnWwh As Office.CommandBarButton
+    Private WithEvents iBtnRWSDasOertliche As Office.CommandBarButton
     Private WithEvents iBtnRws11880 As Office.CommandBarButton
     Private WithEvents iBtnRWSDasTelefonbuch As Office.CommandBarButton
     Private WithEvents iBtnRWStelSearch As Office.CommandBarButton
@@ -196,7 +197,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
@@ -278,6 +279,7 @@ Public Class ThisAddIn
 #Region " Office 2003 Inspectorfenster"
 #If OVer = 11 Then
     Private Sub iBtn_Click(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles iBtnKontakterstellen.Click, _
+                                                                                                                         iBtnRWSDasOertliche.Click, _
                                                                                                                          iBtnRws11880.Click, _
                                                                                                                          iBtnRWSDasTelefonbuch.Click, _
                                                                                                                          iBtnRWStelSearch.Click, _
@@ -290,14 +292,16 @@ Public Class ThisAddIn
             Select Case CType(Ctrl, CommandBarButton).Caption
                 Case "Kontakt erstellen"
                     .KontaktErstellen()
+                Case "DasÖrtliche"
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasOertliche)
                 Case "11880"
-                    .RWS11880(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWS11880)
                 Case "DasTelefonbuch"
-                    .RWSDasTelefonbuch(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasTelefonbuch)
                 Case "tel.search.ch"
-                    .RWSTelSearch(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWStelSearch)
                 Case "Alle"
-                    .RWSAlle(oApp.ActiveInspector)
+                    .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case "Wählen"
                     C_WClient.WählenAusInspector()
                 Case "VIP"
@@ -316,5 +320,4 @@ Public Class ThisAddIn
     End Sub
 #End If
 #End Region
-
 End Class
