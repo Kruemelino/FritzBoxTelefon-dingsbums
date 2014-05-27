@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -444,9 +444,9 @@ Partial Class formCfg
         Me.CBintl.AutoSize = True
         Me.CBintl.Location = New System.Drawing.Point(6, 42)
         Me.CBintl.Name = "CBintl"
-        Me.CBintl.Size = New System.Drawing.Size(205, 17)
+        Me.CBintl.Size = New System.Drawing.Size(203, 17)
         Me.CBintl.TabIndex = 14
-        Me.CBintl.Text = "Internatlionale Vorwahl immer anfügen"
+        Me.CBintl.Text = "Internationale Vorwahl immer anfügen"
         Me.CBintl.UseVisualStyleBackColor = True
         '
         'CBTelNrGruppieren
@@ -1065,9 +1065,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1079,9 +1079,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1093,9 +1093,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
