@@ -126,10 +126,10 @@ Public Class Wählclient
 
                 End If
             Else
-                C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine E-Mail-Adresse oder ein Journal ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+                C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
             End If
         Else
-            C_hf.FBDB_MsgBox("Es muss genau ein Element ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+            C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
         End If
         olAuswahl = Nothing
         Exit Sub
