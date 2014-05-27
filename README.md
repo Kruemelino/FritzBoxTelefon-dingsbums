@@ -37,17 +37,19 @@ Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
 Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
 
 Windows XP SP3 (Entwicklungsrechner VS2008)
+
 Die Rechtevergabe (setCaspol.exe) wurde von Markus Debus www.citro-computer.de 2010 neu erstellt. Vielen Dank!
 
 1.4	Kontaktmöglichkeiten:
 Trotz sorgfältiger Überprüfung können Fehler nicht ausgeschlossen werden.
-Sofern jemand noch Fehler findet, bitte eine detaillierte Fehlerbeschreibung erstellen und diese mitteilen. Ansonsten kann es passieren, dass der Fehler ewig im Programm verbleibt, da er niemand anderem aufgefallen sein kann.
+Sofern jemand noch Fehler findet, bitte eine detaillierte Fehlerbeschreibung erstellen und diese hier bei github als Issue hinzufügen. Ansonsten kann es passieren, dass der Fehler ewig im Programm verbleibt, da er niemand anderem aufgefallen ist.
 
 1.	IPPF (Anmeldung erforderlich): http://www.ip-phone-forum.de/showthread.php?t=237086 
 2.	E-Mail:  kruemelino@gert-michael.de
 
 1.5	Updateinformationen
-Bevor eine neue Version aufgespielt werden kann, muss die alte vorher entfernt werden. Dazu muss über die Systemsteuerung das Addin zuerst deinstalliert werden. Erst danach kann eine neue Version aufgespielt werden.
+Bevor eine neue Version aufgespielt werden kann, muss die alte vorher entfernt werden. Dies übernimmt der Installer (ab Version 3.7). Es ist dennoch ratsam zu prüfen, ob die alte Version tatsächlich entfernt wurde. 
+Bei einem Update von einer älteren Version muss über die Systemsteuerung das alte Addin zuerst deinstalliert werden. Erst danach kann eine neue Version aufgespielt werden.
 
 1.6	Lizenzinformationen
 -	Der Anrufmonitor basiert auf dem "An Office 2003-like popup notifier" von Nicolas Wälti welches unter The Code Project Open License (CPOL) liziensiert ist.
