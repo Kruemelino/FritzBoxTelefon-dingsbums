@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
-  <ribbon>
+
+  <ribbon startFromScratch="false">
     <tabs>
-      <tab idMso="TabContacts">
-        <group id="TabContact" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+      <tab idMso="TabContacts" >
+        <group id="TabContact" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_C" size="large">
             <!--oberste Schaltfläche des SplitButton-->
             <button id="Button_C1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
@@ -33,7 +34,7 @@
         </group>
       </tab>
       <tab idMso="TabMail">
-        <group id="TabMail" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+        <group id="TabMail" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_M" size="large">
             <!--oberste Schaltfläche des SplitButton-->
             <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
@@ -63,7 +64,7 @@
         </group>
       </tab>
       <tab idMso="TabJournals">
-        <group id="TabJournal" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+        <group id="TabJournal" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_J" size="large">
             <!--oberste Schaltfläche des SplitButton-->
             <button id="Button_J1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
@@ -93,7 +94,7 @@
         </group>
       </tab>
       <tab idMso="TabCalendar">
-        <group id="TabCalendar" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
+        <group id="TabCalendar" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_K" size="large">
             <!--oberste Schaltfläche des SplitButton-->
             <button id="Button_K1" imageMso="AutoDial" onAction="OnActionWählenExplorer" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
