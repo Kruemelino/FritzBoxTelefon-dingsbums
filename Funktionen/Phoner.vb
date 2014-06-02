@@ -53,21 +53,21 @@ Public Class PhonerInterface
                                     Else
                                         .WriteLine(C_DP.P_Def_Phoner_CONNECT & dialCode)
                                     End If
-                                    DialPhoner = "Nr. " & dialCode & " an Phoner übergeben"
+                                    DialPhoner = C_DP.P_Lit_Phoner1(dialCode) '"Nr. " & dialCode & " an Phoner übergeben"
                                 Else
-                                    DialPhoner = "Fehler!" & vbCrLf & "Das Phoner-Passwort ist falsch!"
+                                    DialPhoner = C_DP.P_Lit_Phoner2 '"Fehler!" & vbCrLf & "Das Phoner-Passwort ist falsch!"
                                 End If
                             Else
-                                DialPhoner = "Fehler!" & vbCrLf & "Die Phoner-Verson ist zu alt!"
+                                DialPhoner = C_DP.P_Lit_Phoner3 '"Fehler!" & vbCrLf & "Die Phoner-Verson ist zu alt!"
                             End If
                         End With
                     Else
-                        DialPhoner = "Fehler!" & vbCrLf & "TCP Fehler (Stream.CanWrite = False)!"
+                        DialPhoner = C_DP.P_Lit_Phoner4 '"Fehler!" & vbCrLf & "TCP Fehler (Stream.CanWrite = False)!"
                     End If
                     StreamWriter = Nothing
                     StreamReader = Nothing
                 Else
-                    DialPhoner = "Fehler!" & vbCrLf & "TCP!"
+                    DialPhoner = C_DP.P_Lit_Phoner5 '"Fehler!" & vbCrLf & "TCP!"
                 End If
                 C_hf.ThreadSleep(500)
                 tcpClient.Close()
@@ -75,10 +75,10 @@ Public Class PhonerInterface
                 Stream = Nothing
                 C_hf.KeyChange()
             Else
-                DialPhoner = "Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
+                DialPhoner = C_DP.P_Lit_Phoner6 '"Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
             End If
         Else
-            DialPhoner = "Fehler!" & vbCrLf & "Phoner nicht verfügbar!"
+            DialPhoner = C_DP.P_Lit_Phoner7 '"Fehler!" & vbCrLf & "Phoner nicht verfügbar!"
         End If
     End Function
 

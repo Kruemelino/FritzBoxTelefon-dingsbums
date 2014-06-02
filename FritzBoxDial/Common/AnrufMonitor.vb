@@ -169,7 +169,7 @@ Friend Class AnrufMonitor
 
         With StoppUhrDaten(ID)
             Dim frmStUhr As New formStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
-            C_hf.LogFile("Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
+            C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(CStr(ID), .Anruf)) '"Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
             BWStoppuhrEinblenden.WorkerSupportsCancellation = True
             Do Until frmStUhr.StUhrClosed
                 If Not Beendet And .Abbruch Then
@@ -217,26 +217,22 @@ Friend Class AnrufMonitor
                 Case Sockets.SocketError.ConnectionRefused
                     If FBAnrMonPort = C_DP.P_DefaultFBAnrMonPort Then
                         'Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte.
-                        If C_hf.FBDB_MsgBox("Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & C_DP.P_Def_NeueZeile & _
-                                            "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & C_DP.P_Def_TelCodeActivateFritzBoxCallMonitor & _
-                                            """ kann dieser aktiviert werden." & C_DP.P_Def_NeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)" _
-                                         , MsgBoxStyle.YesNo, "Soll der Fritz!Box Callmonitor aktiviert werden?") = MsgBoxResult.Yes Then
-
+                        If C_hf.FBDB_MsgBox(C_DP.P_AnrMon_MsgBox_AnrMonStart1, MsgBoxStyle.YesNo, C_DP.P_AnrMon_MsgBox_AnrMonStart2) = MsgBoxResult.Yes Then
                             BWActivateCallmonitor = New BackgroundWorker
                             With BWActivateCallmonitor
                                 .RunWorkerAsync()
                             End With
                         Else
-                            C_hf.LogFile("Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen.")
+                            C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStart1)
                         End If
                     End If
                 Case Else
-                    C_hf.LogFile("TCP Verbindung nicht aufgebaut: " & SocketError.Message)
+                    C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStart2(SocketError.Message))
                     AnrMonError = True
                     e.Result = False
             End Select
         Catch
-            C_hf.LogFile("TCP Verbindung nicht aufgebaut.")
+            C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStart3)
 
             AnrMonError = True
             e.Result = False
@@ -277,10 +273,10 @@ Friend Class AnrufMonitor
         If AnrMonAktiv Then
             If Not TimerReStart Is Nothing Then
                 TimerReStart = C_hf.KillTimer(TimerReStart)
-                C_hf.LogFile("Anrufmonitor nach StandBy wiederaufgebaut.")
+                C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStart4)
             End If
         Else
-            C_hf.LogFile("BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.")
+            C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStart5)
         End If
         BWStartTCPReader.Dispose()
     End Sub
@@ -304,10 +300,10 @@ Friend Class AnrufMonitor
             End If
 
             If AnrMonError Then
-                C_hf.LogFile("Fritz!Box nach StandBy noch nicht verfügbar.")
+                C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer1)
                 StandbyCounter += 1
             Else
-                C_hf.LogFile("Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...")
+                C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer2)
                 AnrMonStartStopp()
                 If C_DP.P_CBJournal Then
                     Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
@@ -315,7 +311,7 @@ Friend Class AnrufMonitor
 
             End If
         Else
-            C_hf.LogFile("Reaktivierung des Anrufmonitors nicht erfolgreich.")
+            C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer3)
             TimerReStart = C_hf.KillTimer(TimerReStart)
         End If
     End Sub
@@ -340,7 +336,7 @@ Friend Class AnrufMonitor
         Try
             CheckAnrMonTCPSocket.Connect(RemoteEP)
         Catch Err As SocketException
-            C_hf.LogFile("Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.")
+            C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer4)
             AnrMonStartStopp()
             AnrMonError = True
             If Not TimerReStart Is Nothing AndAlso Not TimerReStart.Enabled Then
@@ -446,7 +442,7 @@ Friend Class AnrufMonitor
                     Case "Welcome to Phoner"
                         AnrMonPhoner = True
                     Case "Sorry, too many clients"
-                        C_hf.LogFile("AnrMonAktion, Phoner: ""Sorry, too many clients""")
+                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonPhoner1)
                     Case Else
                         C_hf.LogFile("AnrMonAktion: " & FBStatus)
                         aktZeile = Split(FBStatus, ";", , CompareMethod.Text)
@@ -589,8 +585,8 @@ Friend Class AnrufMonitor
                         ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
                         ' Grund für den Save-Forgang ist unbekannt.
                         .olContact.Display()
-                    Catch ex As Exception
-                        C_hf.LogFile("AnrMonRING: Kontakt kann nicht angezeigt werden. Grund: " & ex.Message)
+                    Catch Err As Exception
+                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
                     End Try
                 End If
 
@@ -721,8 +717,8 @@ Friend Class AnrufMonitor
 #End If
                     Try
                         .olContact.Display()
-                    Catch ex As Exception
-                        C_hf.LogFile("AnrMonCALL: Kontakt kann nicht angezeigt werden. Grund: " & ex.Message)
+                    Catch Err As Exception
+                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMon1("AnrMonCALL", Err.Message))
                     End Try
                 End If
                 'Notizeintag
@@ -803,7 +799,7 @@ Friend Class AnrufMonitor
 
                 ' StoppUhr einblenden
                 If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
-                    C_hf.LogFile("StoppUhr wird eingeblendet.")
+                    C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStoppUhr1)
                     With StoppUhrDaten(.ID)
                         .MSN = CStr(IIf(Telefonat.TelName = C_DP.P_Def_StringEmpty, Telefonat.MSN, Telefonat.TelName))
                         .StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)

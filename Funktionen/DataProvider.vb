@@ -1800,6 +1800,283 @@ Public Class DataProvider
     End Property
 #End Region
 
+#Region "Literale"
+    ' Phoner
+    ''' <summary>
+    ''' Nr. Code an Phoner übergeben
+    ''' </summary>
+    ''' <param name="Code"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner1(ByVal Code As String) As String
+        Get
+            Return "Nr. " & Code & " an Phoner übergeben"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler!
+    ''' Das Phoner-Passwort ist falsch!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner2() As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "Das Phoner-Passwort ist falsch!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler!
+    ''' Die Phoner-Verson ist zu alt!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner3() As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "Die Phoner-Verson ist zu alt!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler!
+    ''' TCP Fehler (Stream.CanWrite = False)!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner4() As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "TCP Fehler (Stream.CanWrite = False)!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler!
+    ''' TCP!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner5() As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "TCP!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler!
+    ''' Kein Passwort hinterlegt!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner6() As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "Kein Passwort hinterlegt!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler!
+    ''' Phoner nicht verfügbar!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Lit_Phoner7() As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "Phoner nicht verfügbar!"
+        End Get
+    End Property
+
+    ' AnrMon
+    ''' <summary>
+    ''' Stoppuhr gestartet - ID: %ID, Anruf:  %Anruf
+    ''' </summary>
+    ''' <param name="ID"></param>
+    ''' <param name="Anruf"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_StoppUhrStart1(ByVal ID As String, ByVal Anruf As String) As String
+        Get
+            Return "Stoppuhr gestartet - ID: " & ID & ", Anruf: " & Anruf
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert.
+    ''' Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode #96*5* kann dieser aktiviert werden.
+    ''' Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
+        Get
+            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_NeueZeile & _
+                   "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor & _
+                   """ kann dieser aktiviert werden." & P_Def_NeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
+
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Soll der Fritz!Box Callmonitor aktiviert werden?
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_MsgBox_AnrMonStart2() As String
+        Get
+            Return "Soll der Fritz!Box Callmonitor aktiviert werden?"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStart1() As String
+        Get
+            Return "Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' TCP Verbindung nicht aufgebaut: ErrMsg
+    ''' </summary>
+    ''' <param name="ErrMsg">Felermeldung</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStart2(ByVal ErrMsg As String) As String
+        Get
+            Return "TCP Verbindung nicht aufgebaut: " & ErrMsg
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' TCP Verbindung nicht aufgebaut.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStart3() As String
+        Get
+            Return "TCP Verbindung nicht aufgebaut."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anrufmonitor nach StandBy wiederaufgebaut.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStart4() As String
+        Get
+            Return "Anrufmonitor nach StandBy wiederaufgebaut."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStart5() As String
+        Get
+            Return "BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fritz!Box nach StandBy noch nicht verfügbar.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer1() As String
+        Get
+            Return "Fritz!Box nach StandBy noch nicht verfügbar."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer2() As String
+        Get
+            Return "Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor..."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Reaktivierung des Anrufmonitors nicht erfolgreich.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer3() As String
+        Get
+            Return "Reaktivierung des Anrufmonitors nicht erfolgreich."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer4() As String
+        Get
+            Return "Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' AnrMonAktion, Phoner: "Sorry, too many clients"
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonPhoner1() As String
+        Get
+            Return "AnrMonAktion, Phoner: ""Sorry, too many clients"""
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' AnrMonRING/CALL: Kontakt kann nicht angezeigt werden. Grund: %ErrMsg
+    ''' </summary>
+    ''' <param name="ErrMsg"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMon1(ByVal Fkt As String, ByVal ErrMsg As String) As String
+        Get
+            Return Fkt & ": Kontakt kann nicht angezeigt werden. Grund: " & ErrMsg
+        End Get
+    End Property
+
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr1() As String
+        Get
+            Return "StoppUhr wird eingeblendet."
+        End Get
+    End Property
+#End Region
     Public Sub New()
         ' Pfad zur Einstellungsdatei ermitteln
         Dim ConfigPfad As String
