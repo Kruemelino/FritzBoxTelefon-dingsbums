@@ -237,7 +237,7 @@ Friend Class formWählbox
 
         If Not TimerSchließen Is Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
         'If Not UsePhonerOhneFritzBox Then
-        ThisAddIn.P_FritzBox.FBLogOut(SID)
+        ThisAddIn.P_FritzBox.FBLogout(SID)
         Me.Close()
         'Me.Dispose(True)
     End Sub
@@ -543,7 +543,7 @@ Friend Class formWählbox
         Element = Me.ComboBoxFon
         AnAus = False
         'SetEnabled()
-        SID = C_FBox.FBLogIn(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
+        SID = C_FBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
         Element = Me.ListTel
         If Not SID = C_DP.P_Def_SessionID Then ' Login erfolgreich?
             StatusText = "Der Wählclient ist bereit."

@@ -122,7 +122,7 @@ Friend Class formJournalimport
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
 
-        ThisAddIn.P_FritzBox.FBLogOut(SID)
+        ThisAddIn.P_FritzBox.FBLogout(SID)
 
         If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = C_DP.P_Def_StringEmpty Then
 

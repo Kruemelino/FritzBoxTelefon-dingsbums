@@ -294,7 +294,7 @@ Friend Class AnrufMonitor
         AnrMonAktiv = False
         If StandbyCounter < C_DP.P_Def_TryMaxRestart Then
             If C_DP.P_CBForceFBAddr Then
-                C_hf.httpGET(C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), AnrMonError)
+                C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), AnrMonError)
             Else
                 AnrMonError = Not C_hf.Ping(C_DP.P_TBFBAdr)
             End If
@@ -308,7 +308,6 @@ Friend Class AnrufMonitor
                 If C_DP.P_CBJournal Then
                     Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
                 End If
-
             End If
         Else
             C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer3)
@@ -850,11 +849,12 @@ Friend Class AnrufMonitor
             With Telefonat
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
-                .Body = "Tel.-Nr.: " & .TelNr & vbCrLf & "Status: " & CStr(IIf(.Angenommen, C_DP.P_Def_StringEmpty, "nicht ")) & "angenommen" & vbCrLf & vbCrLf
+                .Body = C_DP.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
+
                 If Not .vCard = C_DP.P_Def_StringEmpty And Not .vCard = C_DP.P_Def_ErrorMinusTwo_String Then
 
                     .Companies = ReadFromVCard(.vCard, "ORG", "")
-                    .Body += "Kontaktdaten (vCard):" & vbCrLf & .vCard & vbCrLf
+                    .Body += C_DP.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
 
                 Else
                     If Not .olContact Is Nothing Then
@@ -867,11 +867,11 @@ Friend Class AnrufMonitor
 
                         If .Companies = C_DP.P_Def_StringEmpty Then
                             If Not .olContact.HomeAddress = C_DP.P_Def_StringEmpty Then
-                                .Body += "Kontaktdaten:" & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.HomeAddress & vbCrLf
+                                .Body += C_DP.P_AnrMon_Journal_Kontaktdaten & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.HomeAddress & vbCrLf
                             End If
                         Else
                             If Not .olContact.BusinessAddress = C_DP.P_Def_StringEmpty Then
-                                .Body += "Kontaktdaten:" & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.BusinessAddress & vbCrLf
+                                .Body += C_DP.P_AnrMon_Journal_Kontaktdaten & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.BusinessAddress & vbCrLf
                             End If
                         End If
                     End If
@@ -911,7 +911,7 @@ Friend Class AnrufMonitor
                         End If
                     End If
 
-                    .Categories = .TelName & "; FritzBox Anrufmonitor; Telefonanrufe"
+                    .Categories = .TelName & C_DP.P_AnrMon_Journal_Def_Categories '"; FritzBox Anrufmonitor; Telefonanrufe"
                     .Subject = CallDirection & " " & .Anrufer & CStr(IIf(.Anrufer = .TelNr, C_DP.P_Def_StringEmpty, " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & .TelName & ")"))
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)
@@ -939,13 +939,12 @@ Friend Class AnrufMonitor
             TelefonatsListe.Remove(Telefonat)
         Else
             If C_DP.P_CBJournal And C_hf.IsOneOf(CStr(FBStatus.GetValue(3)), C_DP.P_CLBTelNr) Then
-                C_hf.LogFile("AnrMonDISCONNECT: Ein unvollständiges Telefonat wurde registriert.")
+                C_hf.LogFile("AnrMonDISCONNECT: " & C_DP.P_AnrMon_AnrMonDISCONNECT_Error)
                 ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
                 Dim ZeitAnruf As Date = CDate(FBStatus(0))
                 Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
                 ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + DauerAnruf + 70))
                 If ZeitAnruf < SchließZeit Then C_DP.P_StatOLClosedZeit = ZeitAnruf
-                C_hf.LogFile("AnrMonDISCONNECT: Journalimport wird gestartet")
                 Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
             End If
         End If
@@ -953,6 +952,12 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "LetzterAnrufer"
+    ''' <summary>
+    ''' Speichert den letzten Anrufer ab, den das Addin registriert hat.
+    ''' Dies wird benötigt, damit das Addin nach dem Neustart von Outlook, weiß welchen Anrufer es einblenden soll.
+    ''' </summary>
+    ''' <param name="Telefonat">Das Telefonat, welches gespeichert werden soll.</param>
+    ''' <remarks></remarks>
     Private Sub SpeichereLetzerAnrufer(ByVal Telefonat As C_Telefonat)
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
@@ -1029,6 +1034,11 @@ Friend Class AnrufMonitor
         AttributeValues = Nothing
     End Sub
 
+    ''' <summary>
+    ''' Lädt den letzten Anrufer ab, den das Addin registriert hat.
+    ''' </summary>
+    ''' <returns>Telefonat</returns>
+    ''' <remarks></remarks>
     Friend Function LadeLetzterAnrufer() As C_Telefonat
         LadeLetzterAnrufer = New C_Telefonat
         Dim xPathTeile As New ArrayList

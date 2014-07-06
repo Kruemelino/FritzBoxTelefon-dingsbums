@@ -537,6 +537,7 @@ Friend Class formCfg
             End If
 
             .SpeichereXMLDatei()
+            C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
         End With
     End Function
 
@@ -1035,13 +1036,13 @@ Friend Class formCfg
                     Exit Sub
                 End If
             End If
-            sSID = C_FBox.FBLogIn(NeueFW, FBBenutzer, FBPasswort)
+            sSID = C_FBox.FBLogin(NeueFW, FBBenutzer, FBPasswort)
         Loop
 
         If NeueFW Then
-            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/fon_num/fon_num_list.lua?sid=" & sSID
+            URL = "http://" & C_DP.P_ValidFBAdr & "/fon_num/fon_num_list.lua?sid=" & sSID
         Else
-            URL = "http://" & C_hf.ValidIP(C_DP.P_TBFBAdr) & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+            URL = "http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End If
 
         MailText = C_hf.httpGET(URL, FBEncoding, Nothing)
@@ -1054,7 +1055,7 @@ Friend Class formCfg
             PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
             .WriteAllText(PfadTMPfile, MailText, False)
         End With
-        C_OlI.NeueEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox(C_DP.P_TBFBAdr))
+        C_OlI.NeueEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox())
     End Sub
 
     Public Function SetTelNrListe() As Boolean

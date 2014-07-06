@@ -148,7 +148,9 @@ Public Class MyRijndael
                     Using srDecrypt As New StreamReader(csDecrypt)
                         ' Read the decrypted bytes from the decrypting stream 
                         ' and place them in a string.
-                        plaintext = srDecrypt.ReadToEnd()
+                        Try
+                            plaintext = srDecrypt.ReadToEnd()
+                        Catch : End Try
                     End Using
                 End Using
             End Using
@@ -232,15 +234,14 @@ Public Class MyRijndael
     Private Function GetHWID() As String
         Dim list As New List(Of String)
 
-
         Dim Query As SelectQuery
         Dim Search As ManagementObjectSearcher
 
-        Query = New SelectQuery("Win32_processor")
+        Query = New SelectQuery("Win32_Processor")
         Search = New ManagementObjectSearcher(Query)
 
         For Each info As ManagementObject In Search.Get()
-            list.Add(info("processorId").ToString)
+            list.Add(info("ProcessorId").ToString)
         Next
 
         Dim disk As ManagementObject
@@ -252,9 +253,6 @@ Public Class MyRijndael
                 Exit For
             End If
         Next
-
-        'disk = New ManagementObject(String.Format("Win32_Logicaldisk='{0}'", DriveInfo.GetDrives.First.Name.Substring(0, 2)))
-        'list.Add(disk.Properties("VolumeSerialnumber").Value.ToString)
 
         Query = New SelectQuery("Win32_BaseBoard")
         Search = New ManagementObjectSearcher(Query)

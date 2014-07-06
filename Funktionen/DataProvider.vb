@@ -185,6 +185,7 @@ Public Class DataProvider
     Private _CBoxLandesVorwahl As Integer
     Private _TBAmt As String
     Private _TBFBAdr As String
+    Private _ValidFBAdr As String
     Private _TBBenutzer As String
     Private _TBPasswort As String
     Private _TBVorwahl As String
@@ -888,6 +889,7 @@ Public Class DataProvider
             _TelCLIR = value
         End Set
     End Property
+
     ' FritzBox
     ''' <summary>
     ''' Gibt die ermittelte Zeichencodierung der Fritzbox wieder. Der Wert wird automatisch ermittelt. 
@@ -903,6 +905,7 @@ Public Class DataProvider
             _EncodeingFritzBox = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt die eingegebene Fritz!Box IP-Adresse an. Dies ist eine Angabe, die der Nutzer in den Einstellungen ändern kann.
     ''' </summary>
@@ -917,6 +920,22 @@ Public Class DataProvider
             _TBFBAdr = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Gibt eine korrekte Fritz!Box IP-Adresse zurück.
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property P_ValidFBAdr() As String
+        Get
+            Return _ValidFBAdr
+        End Get
+        Set(ByVal value As String)
+            _ValidFBAdr = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Gibt an, ob eine Verbindung zur Fritz!Box trotz fehlgeschlagenen Pings aufgebaut werden soll.
     ''' </summary>
@@ -1053,17 +1072,54 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' Fritz!Box
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_FritzBoxName() As String
+        Get
+            Return "Fritz!Box"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' FRITZ!Box_Anrufliste.csv
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_AnrListFileName() As String
+        Get
+            Return "FRITZ!Box_Anrufliste.csv"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' #96*5*
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_TelCodeActivateFritzBoxCallMonitor() As String
         Get
             Return "#96*5*"
         End Get
     End Property
 
+    ''' <summary>
+    ''' 1012
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
         Get
             Return 1012
         End Get
     End Property
+
     ''' <summary>
     ''' Der Zahlenwert NULL <code>"0"</code> als String.
     ''' </summary>
@@ -1082,54 +1138,108 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' 0000000000000000
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_SessionID() As String
         Get
             Return "0000000000000000"
         End Get
     End Property
 
+    ''' <summary>
+    ''' Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Header_UserAgent() As String
         Get
             Return "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
         End Get
     End Property
 
+    ''' <summary>
+    ''' application/x-www-form-urlencoded
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Header_ContentType() As String
         Get
             Return "application/x-www-form-urlencoded"
         End Get
     End Property
 
+    ''' <summary>
+    ''' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Header_Accept() As String
         Get
             Return "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         End Get
     End Property
 
+    ''' <summary>
+    ''' 3000
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_ReStartIntervall() As Integer
         Get
             Return 3000
         End Get
     End Property
 
+    ''' <summary>
+    ''' 15
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_TryMaxRestart() As Integer
         Get
             Return 15
         End Get
     End Property
 
+    ''' <summary>
+    ''' [-&gt;]
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_AnrMonDirection_Call() As String
         Get
             Return "[->]"
         End Get
     End Property
 
+    ''' <summary>
+    ''' [&lt;-]
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_AnrMonDirection_Ring() As String
         Get
             Return "[<-]"
         End Get
     End Property
 
+    ''' <summary>
+    ''' [&lt;&gt;]
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_AnrMonDirection_Default() As String
         Get
             Return "[<>]"
@@ -1801,6 +1911,13 @@ Public Class DataProvider
 #End Region
 
 #Region "Literale"
+    ' Helfer
+    Public ReadOnly Property P_Lit_KeyChange(ByVal Code As String) As String
+        Get
+            Return "Das Passwort für " & Code & " kann nicht entschlüsselt werden."
+        End Get
+    End Property
+
     ' Phoner
     ''' <summary>
     ''' Nr. Code an Phoner übergeben
@@ -1811,7 +1928,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner1(ByVal Code As String) As String
         Get
-            Return "Nr. " & Code & " an Phoner übergeben"
+            Return "Nr. " & Code & " an Phoner übergeben."
         End Get
     End Property
 
@@ -2071,12 +2188,381 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' StoppUhr wird eingeblendet.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr1() As String
         Get
             Return "StoppUhr wird eingeblendet."
         End Get
     End Property
+
+    Public ReadOnly Property P_AnrMon_Journal_Def_Categories As String
+        Get
+            Return "; FritzBox Anrufmonitor; Telefonanrufe"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Kontaktdaten:
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Journal_Kontaktdaten As String
+        Get
+            Return "Kontaktdaten:"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Kontaktdaten (vCard):
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Journal As String
+        Get
+            Return "Kontaktdaten (vCard):"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Ein unvollständiges Telefonat wurde registriert.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Error As String
+        Get
+            Return "Ein unvollständiges Telefonat wurde registriert."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Tel.-Nr.: TelNr Status: (nicht) angenommen    
+    ''' </summary>
+    ''' <param name="TelNr">Tekefonnummer</param>
+    ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
+    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean) As String
+        Get
+            Return "Tel.-Nr.: " & TelNr & P_Def_NeueZeile & "Status: " & CStr(IIf(Angenommen, P_Def_StringEmpty, "nicht ")) & "angenommen" & P_Def_NeueZeile & P_Def_NeueZeile
+        End Get
+    End Property
+
+    ' Fritz!Box
+    ''' <summary>
+    ''' Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " &amp; Blocktime &amp; " Sekunden zu.  Versuchen Sie es später erneut.
+    ''' </summary>
+    ''' <param name="Blocktime"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LoginError_Blocktime(ByVal Blocktime As String) As String
+        Get
+            Return "Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & Blocktime & " Sekunden zu.  Versuchen Sie es später erneut."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LoginError_MissingPassword As String
+        Get
+            Return "Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: &amp; FBBenutzer
+    ''' </summary>
+    ''' <param name="FBBenutzer"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LoginError_MissingRights(ByVal FBBenutzer As String) As String
+        Get
+            Return "Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Die Anmeldedaten sind falsch.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LoginError_LoginIncorrect() As String
+        Get
+            Return "Die Anmeldedaten sind falsch."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Eine gültige SessionID ist bereits vorhanden: &amp; SID
+    ''' </summary>
+    ''' <param name="SID"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LoginInfo_SID(ByVal SID As String) As String
+        Get
+            Return "Eine gültige SessionID ist bereits vorhanden: " & SID
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LogoutTestString1 As String
+        Get
+            Return "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LogoutTestString2 As String
+        Get
+            Return "Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Logout eventuell NICHT erfolgreich!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LogoutError As String
+        Get
+            Return "Logout eventuell NICHT erfolgreich!"
+        End Get
+    End Property
+
+    ' Telefone
+
+    ''' <summary>
+    ''' Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_Error1 As String
+        Get
+            Return "Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_Error2 As String
+        Get
+            Return "Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_AlteRoutine As String
+        Get
+            Return "Alte Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_NeueRoutine As String
+        Get
+            Return "Neue Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fritz!Box Telefon Quelldatei: http://" &amp; C_DP.P_ValidFBAdr &amp; "/cgi-bin/webcm?sid=" &amp; SID &amp; "&amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=fondevices
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_AlteRoutine2(ByVal Link As String) As String
+        Get
+            Return P_Def_FritzBoxName & " Telefon Quelldatei: " & Link
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler beim Herunterladen der Telefone. Anmeldedaten korrekt?
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_ErrorAlt1 As String
+        Get
+            Return "Fehler beim Herunterladen der Telefone. Anmeldedaten korrekt?"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Telefonnummer gefunden: Typ+i, TelNr
+    ''' </summary>
+    ''' <param name="Typ">Telefonnummerntyp</param>
+    ''' <param name="idx">Nummer der Telefonnummer</param>
+    ''' <param name="TelNr">Telefonnummer</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_NrFound(ByVal Typ As String, ByVal idx As String, ByVal TelNr As String) As String
+        Get
+            Return "Telefonnummer gefunden: " & Typ & idx & ", " & TelNr
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Telefoniegerät gefunden: Typ+Dialport, TelNr, TelName
+    ''' </summary>
+    ''' <param name="Typ">Telefontyp (DECT, FON, FAX, TAM, S0, ...)</param>
+    ''' <param name="Dialport">Dialport</param>
+    ''' <param name="TelNr">Telefonnummer</param>
+    ''' <param name="TelName">Telefonname</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_DeviceFound(ByVal Typ As String, ByVal Dialport As String, ByVal TelNr As String, ByVal TelName As String) As String
+        Get
+            Return "Telefoniegerät gefunden: " & Typ & CStr(Dialport) & ", " & TelNr & ", " & TelName
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "Telefoniegerät: " &amp; TelName &amp; " (" &amp; Dialport &amp; ") ist ein FAX."
+    ''' </summary>
+    ''' <param name="Dialport"></param>
+    ''' <param name="TelName"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Tel_DeviceisFAX(ByVal Dialport As String, ByVal TelName As String) As String
+        Get
+            Return "Telefoniegerät: " & TelName & " (" & Dialport & ") ist ein FAX."
+        End Get
+    End Property
+
+    'Wählen (Fritz!Box)
+    ''' <summary>
+    ''' Fehler! Entwickler kontaktieren.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Dial_Error1 As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "Entwickler kontaktieren."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler! Logfile beachten!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Dial_Error2 As String
+        Get
+            Return "Fehler!" & P_Def_NeueZeile & "Logfile beachten!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Fehler bei dem Login. SessionID: SID 
+    ''' </summary>
+    ''' <param name="SID"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Dial_Error3(ByVal SID As String) As String
+        Get
+            Return "Fehler bei dem Login. SessionID: " & SID & "!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Verbindungsaufbau wurde abgebrochen!
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Dial_HangUp As String
+        Get
+            Return "Verbindungsaufbau" & P_Def_NeueZeile & "wurde abgebrochen!"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Wähle DialCode Jetzt abheben!
+    ''' </summary>
+    ''' <param name="DialCode"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_Dial_Start(ByVal DialCode As String) As String
+        Get
+            Return "Wähle " & DialCode & P_Def_NeueZeile & "Jetzt abheben!"
+        End Get
+    End Property
+
+    'Journalimport (Fritz!Box)
+    ''' <summary>
+    ''' Der Login in die Fritz!Box ist fehlgeschlagen Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_JI_Error1 As String
+        Get
+            Return "Der Login in die " & P_Def_FritzBoxName & " ist fehlgeschlagen" & P_Def_NeueZeile & P_Def_NeueZeile & "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
+        End Get
+    End Property
+
+    'Information
+    Public ReadOnly Property P_FritzBox_Info(ByVal FBTyp As String, ByVal FBFirmware As String) As String
+        Get
+            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_NeueZeile, P_Def_NeueZeile, _
+                     "Dein Name:", P_Def_NeueZeile, _
+                     "Problembeschreibung:", P_Def_NeueZeile, _
+                     "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_NeueZeile, _
+                     P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_NeueZeile, _
+                     "Firmware: ", FBFirmware, P_Def_NeueZeile)
+        End Get
+    End Property
+
 #End Region
+
+
     Public Sub New()
         ' Pfad zur Einstellungsdatei ermitteln
         Dim ConfigPfad As String
@@ -2282,6 +2768,8 @@ Public Class DataProvider
         Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         ' Notiz
         Write(P_Def_Options, "CBNote", CStr(Me.P_CBNote))
+
+        ' Do some Stuff
 
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)

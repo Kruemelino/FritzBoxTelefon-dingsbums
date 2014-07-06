@@ -151,6 +151,12 @@ Public Class Helfer
     ''' IPv4 und IPv6 müssen differenziert behandelt werden.
     ''' Für Anrufmonitor ist es egal ob IPv4 oder IPv6 da der RemoteEndPoint ein IPAddress-Objekt verwendet.
     ''' Die HTML/URL müssen gesondert beachtet werden. Dafün muss die IPv6 in eckige Klammern gesetzt werden.
+    ''' 
+    ''' Möglicher Input:
+    ''' IPv4: Nichts unternehmen
+    ''' IPv6: 
+    ''' String, der aufgelöst werden kann z.B. "fritz.box"
+    ''' String, der nicht aufgelöst werden kann
     ''' </summary>
     ''' <param name="InputIP">IP-Adresse</param>
     ''' <returns>Korrekte IP-Adresse</returns>
@@ -158,6 +164,7 @@ Public Class Helfer
         ValidIP = C_DP.P_Def_FritzBoxAdress
         Dim IPAddresse As IPAddress = Nothing
         Dim IPHostInfo As IPHostEntry
+
         If IPAddress.TryParse(InputIP, IPAddresse) Then
             Select Case IPAddresse.AddressFamily
                 Case Sockets.AddressFamily.InterNetworkV6
@@ -176,12 +183,12 @@ Public Class Helfer
                         ValidIP = IPAddresse.ToString
                     End If
                 Next
-            Catch ex As Exception
+            Catch ' ex As Exception
                 LogFile("Die Adresse """ & C_DP.P_TBFBAdr & """ kann nicht zugeordnet werden.")
                 ValidIP = C_DP.P_TBFBAdr
             End Try
-
         End If
+
     End Function
 
     Public Function LogFile(ByVal Meldung As String) As Boolean
@@ -221,21 +228,33 @@ Public Class Helfer
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub KeyChange()
-        Dim tempZugang As String
-
+        Dim AlterZugang As String
+        Dim NeuerZugang As String
         If Not C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Then
-            tempZugang = C_Crypt.GetSalt
             With C_DP
-                .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne_String)), tempZugang)
-                .SaveSettingsVBA("Zugang", tempZugang)
+                AlterZugang = .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne_String)
+                If Not AlterZugang = .P_Def_ErrorMinusOne_String Then
+                    NeuerZugang = C_Crypt.GetSalt
+                    .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, AlterZugang), NeuerZugang)
+                    .SaveSettingsVBA("Zugang", NeuerZugang)
+                Else
+                    LogFile(.P_Lit_KeyChange("die Fritz!Box"))
+                    .P_TBPasswort = .P_Def_StringEmpty
+                End If
             End With
         End If
 
         If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
-            tempZugang = C_Crypt.GetSalt
             With C_DP
-                .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne_String)), tempZugang)
-                .SaveSettingsVBA("ZugangPasswortPhoner", tempZugang)
+                AlterZugang = .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne_String)
+                If Not AlterZugang = .P_Def_ErrorMinusOne_String Then
+                    NeuerZugang = C_Crypt.GetSalt
+                    .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, AlterZugang), NeuerZugang)
+                    .SaveSettingsVBA("ZugangPasswortPhoner", NeuerZugang)
+                Else
+                    LogFile(.P_Lit_KeyChange("Phoner"))
+                    .P_TBPhonerPasswort = .P_Def_StringEmpty
+                End If
             End With
         End If
 

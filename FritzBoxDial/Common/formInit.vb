@@ -103,7 +103,7 @@
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpGET("http://" & C_HF.ValidIP(FBIPAdresse) & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
+            If Not InStr(C_HF.httpGET("http://" & C_DP.P_ValidFBAdr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
                 C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
@@ -133,7 +133,7 @@
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
         C_HF.KeyChange()
-        SID = C_FBox.FBLogIn(fw550)
+        SID = C_FBox.FBLogin(fw550)
         If Not SID = C_DP.P_Def_SessionID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
