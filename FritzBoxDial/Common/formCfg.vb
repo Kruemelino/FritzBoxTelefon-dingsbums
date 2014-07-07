@@ -558,7 +558,8 @@ Friend Class formCfg
                                                                                    BProbleme.Click, _
                                                                                    BStoppUhrAnzeigen.Click, _
                                                                                    BArbeitsverzeichnis.Click, _
-                                                                                   BRWSTest.Click
+                                                                                   BRWSTest.Click, _
+                                                                                   BTestLogin.Click
 
         Select Case CType(sender, Windows.Forms.Button).Name
             Case "BReset"
@@ -819,6 +820,12 @@ Friend Class formCfg
                 Else
                     C_hf.FBDB_MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
                 End If
+            Case "BTestLogin"
+                If C_FBox.FBLogin(True, Me.TBBenutzer.Text, Me.TBPasswort.Text) = C_DP.P_Def_SessionID Then
+                    Me.BTestLogin.Text = "Fehler!"
+                Else
+                    Me.BTestLogin.Text = "OK!"
+                End If
         End Select
     End Sub
 
@@ -859,7 +866,10 @@ Friend Class formCfg
                                                                         TBAnrMonY.TextChanged, _
                                                                         TBTelNrMaske.Leave, _
                                                                         CLBTelNr.SelectedIndexChanged, _
-                                                                        TBRWSTest.TextChanged
+                                                                        TBRWSTest.TextChanged, _
+                                                                        TBBenutzer.TextChanged, _
+                                                                        TBPasswort.TextChanged
+
         Select Case sender.GetType().Name
             Case "CheckBox"
                 Select Case CType(sender, CheckBox).Name
@@ -945,6 +955,8 @@ Friend Class formCfg
                     Case "TBRWSTest"
                         Me.TBRWSTest.Text = C_hf.AcceptOnlyNumeric(Me.TBRWSTest.Text)
                         Me.BRWSTest.Enabled = Len(C_hf.nurZiffern(Me.TBRWSTest.Text)) > 0
+                    Case "TBBenutzer", "TBPasswort"
+                        Me.BTestLogin.Text = "Test"
                 End Select
             Case "CheckedListBox"
                 Select Case CType(sender, CheckedListBox).Name

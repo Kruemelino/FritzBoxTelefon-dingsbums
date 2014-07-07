@@ -59,6 +59,7 @@ Partial Class formCfg
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TBAmt = New System.Windows.Forms.TextBox()
         Me.FrameErforderlich = New System.Windows.Forms.GroupBox()
+        Me.BTestLogin = New System.Windows.Forms.Button()
         Me.TBPasswort = New System.Windows.Forms.MaskedTextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.TBLandesVW = New System.Windows.Forms.TextBox()
@@ -618,6 +619,7 @@ Partial Class formCfg
         '
         'FrameErforderlich
         '
+        Me.FrameErforderlich.Controls.Add(Me.BTestLogin)
         Me.FrameErforderlich.Controls.Add(Me.TBPasswort)
         Me.FrameErforderlich.Controls.Add(Me.Label3)
         Me.FrameErforderlich.Controls.Add(Me.TBLandesVW)
@@ -634,6 +636,16 @@ Partial Class formCfg
         Me.FrameErforderlich.TabIndex = 16
         Me.FrameErforderlich.TabStop = False
         Me.FrameErforderlich.Text = "Erforderliche Angaben"
+        '
+        'BTestLogin
+        '
+        Me.BTestLogin.Location = New System.Drawing.Point(229, 71)
+        Me.BTestLogin.Name = "BTestLogin"
+        Me.BTestLogin.Size = New System.Drawing.Size(47, 23)
+        Me.BTestLogin.TabIndex = 32
+        Me.BTestLogin.Text = "Test"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BTestLogin, "Teste den eingegebenen Benutzername und Passwort.")
+        Me.BTestLogin.UseVisualStyleBackColor = True
         '
         'TBPasswort
         '
@@ -2383,6 +2395,7 @@ Partial Class formCfg
     Friend WithEvents BRWSTest As System.Windows.Forms.Button
     Friend WithEvents LRWSTest As System.Windows.Forms.Label
     Friend WithEvents TBRWSTest As System.Windows.Forms.TextBox
+    Friend WithEvents BTestLogin As System.Windows.Forms.Button
 #If OVer < 14 Then
 #End If
 End Class
