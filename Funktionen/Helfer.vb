@@ -264,7 +264,7 @@ Public Class Helfer
 
 #Region " Telefonnummern formatieren"
     ''' <summary>
-    ''' Formatiert die Telefonnummern nach gängigen Regelm
+    ''' Formatiert die Telefonnummern nach gängigen Regeln
     ''' </summary>
     ''' <param name="TelNr">Die zu formatierende Telefonnummer</param>
     ''' <returns>Die formatierte Telefonnummer</returns>
@@ -288,14 +288,42 @@ Public Class Helfer
         Durchwahl = TelTeile(2)
 
         TelNr = nurZiffern(TelNr)
+
+        ' 1. Landesvorwahl abtrennen
+        ' Landesvorwahl ist immer an erster Stelle (wenn vorhanden)
+        ' [0043]123456789
+        ' Italien ist eine Ausnahme:
+        ' Die führende Null der Ortskennung ist fester, unveränderlicher und unverzichtbarer Bestandteil und muss bestehen bleiben. 
+        ' Handynummern in Italien haben dagegen keine führende Null.
+        If Not LandesVW = C_DP.P_Def_StringEmpty Then
+            RufNr = Mid(TelNr, Len(LandesVW) + 1 )
+            'If LandesVW = "0039" AndAlso Left(RufNr, 1) = "0" Then ' Italien
+            ''Mach irgendwas. Oder auch nicht.
+            'End If
+        Else
+            RufNr = TelNr
+        End If
+
+        ' 2. Ortsvorwahl entfernen
+        ' [0123]456789
         If Not OrtsVW = C_DP.P_Def_StringEmpty Then
             posOrtsVW = InStr(TelNr, OrtsVW, CompareMethod.Text)
             RufNr = Mid(TelNr, posOrtsVW + Len(OrtsVW))
-            If Not LandesVW = "0039" Then RufNr = CStr(IIf(Left(RufNr, 1) = "0", Mid(RufNr, 2), RufNr))
         Else
-            RufNr = TelNr
-            If LandesVW = "0039" Then Durchwahl = CStr(IIf(Left(Durchwahl, 1) = "0", Durchwahl, "0" & Durchwahl))
+            If RufNr = C_DP.P_Def_StringEmpty Then RufNr = TelNr
         End If
+
+        'If Not OrtsVW = C_DP.P_Def_StringEmpty Then
+
+        '    If Not LandesVW = "0039" Then RufNr = CStr(IIf(Left(RufNr, 1) = "0", Mid(RufNr, 2), RufNr))
+        'Else
+        '    If Not LandesVW = C_DP.P_Def_StringEmpty Then
+        '        '
+
+        '        If LandesVW = "0039" Then Durchwahl = CStr(IIf(Left(Durchwahl, 1) = "0", Durchwahl, "0" & Durchwahl))
+        '    End If
+        '    RufNr = TelNr
+        'End If
 
         ' nur ausführen, wenn die Ortsvorwahl in der Telefonnummer enthalten ist
         ' LandesVW und RufNr aus TelNr separieren
@@ -307,10 +335,12 @@ Public Class Helfer
         Else
             Durchwahl = C_DP.P_Def_StringEmpty
         End If
+
         If LandesVW = "0" Then
             OrtsVW = "0" & OrtsVW
             LandesVW = C_DP.P_Def_StringEmpty
         End If
+
         ' Maske Prüfen
         If InStr(Maske, "%D", CompareMethod.Text) = 0 Then Maske = Replace(Maske, "%N", "%N%D")
         If Not InStr(Maske, "%N%D", CompareMethod.Text) = 0 Then
@@ -330,13 +360,16 @@ Public Class Helfer
         End If
         If LandesVW = C_DP.P_Def_StringEmpty Then LandesVW = C_DP.P_TBLandesVW
         If C_DP.P_CBintl Or Not LandesVW = C_DP.P_TBLandesVW Then
-            If Not OrtsVW = C_DP.P_Def_StringEmpty Then
-                If Left(OrtsVW, 1) = "0" Then OrtsVW = Mid(OrtsVW, 2)
-                OrtsVW = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & OrtsVW
-            Else
-                If Left(RufNr, 1) = "0" Then RufNr = Mid(RufNr, 2)
-                RufNr = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & RufNr
-            End If
+
+            'If Left(OrtsVW, 1) = "0" AndAlso Not LandesVW = "0039" Then OrtsVW = Mid(OrtsVW, 2)
+            ' QUATSCH
+            'If Not OrtsVW = C_DP.P_Def_StringEmpty Then
+
+            '    'OrtsVW = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & OrtsVW
+            'Else
+            '    'If Left(OrtsVW, 1) = "0" AndAlso Not LandesVW = "0039" Then OrtsVW = Mid(OrtsVW, 2)
+            '    'RufNr = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & RufNr
+            'End If
             If Left(LandesVW, 2) = "00" Then LandesVW = Replace(LandesVW, "00", "+", 1, 1, CompareMethod.Text)
         Else
             OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
@@ -504,14 +537,17 @@ Public Class Helfer
                 Else
                     OrtsVW = AuslandsVorwahlausDatei(TelNr, LandesVW)
                     Select Case LandesVW
-                        Case "007"
+                        Case "007" ' Kasachstan
                             ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
-                            ' Kasachstan
                             If IsOneOf(OrtsVW, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then OrtsVW += ErsteZiffer
-                            'case Polen
+                        Case "0039" ' Italien
+                            ' Omnitel Pronto: 347, 348, 349
+                            'Telecom Italia Mobile: 335, 338, 339
+                            'WIND: 3
+                            If Not IsOneOf(OrtsVW, New String() {"3", "335", "338", "339", "347", "348", "349", "3262"}) Then OrtsVW = "0" & OrtsVW
                     End Select
                 End If
-                TelNr = Mid(TelNr, Len(OrtsVW) + CInt(IIf(Left(TelNr, 1) = "0", 2, 1)))
+                TelNr = Mid(TelNr, Len(OrtsVW) + 1) 'CInt(IIf(Left(TelNr, 1) = "0", 2, 1))
             Else
                 ' Ortsvorwahl in Klammern
                 OrtsVW = nurZiffern(Mid(TelNr, pos1, pos2 - pos1))
@@ -559,7 +595,7 @@ Public Class Helfer
         AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
         Dim Suchmuster As String
         Dim Vorwahlen() As String = Split(My.Resources.Liste_Ortsvorwahlen_Ausland, vbNewLine, , CompareMethod.Text)
-        Dim i As Integer = 1
+        Dim i As Integer = 0
         Dim tmpvorwahl() As String
         If Left(LandesVW, 2) = "00" Then LandesVW = Mid(LandesVW, 3)
         If Left(LandesVW, 1) = "0" Then LandesVW = Mid(LandesVW, 2)

@@ -82,6 +82,23 @@
             If C_DP.P_Debug_AnrufSimulation Then
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
             End If
+
+            ' Code zum Testen von Funktionen
+
+            C_HF.FBDB_MsgBox(C_HF.formatTelNr("00436648381234") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("00390612345678") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("00390623456789") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("00393352345678") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("003903312345678") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("80303") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("03520880303") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("030399924-48") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("0152533887133") & C_DP.P_Def_NeueZeile & _
+                             C_HF.formatTelNr("0049152533887133") & C_DP.P_Def_NeueZeile _
+                             , MsgBoxStyle.Information, "Debugtest")
+
+
+
         End If
     End Sub
 
