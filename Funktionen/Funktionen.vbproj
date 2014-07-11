@@ -111,12 +111,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ressources\LandesVorwahlen.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Ressources\Vorwahlen.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Ressources\Liste_Ortsvorwahlen_Ausland.txt" />
   </ItemGroup>
   <ItemGroup>

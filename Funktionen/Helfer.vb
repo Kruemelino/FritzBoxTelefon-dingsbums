@@ -287,7 +287,7 @@ Public Class Helfer
         OrtsVW = TelTeile(1)
         Durchwahl = TelTeile(2)
 
-        TelNr = nurZiffern(TelNr)
+        TelNr = nurZiffern(TelNr) ' Nur ziffern erntfernt Landesvorwahl, wenn diese mir der in den Einstellungen übereinstimmt.
 
         ' 1. Landesvorwahl abtrennen
         ' Landesvorwahl ist immer an erster Stelle (wenn vorhanden)
@@ -295,8 +295,8 @@ Public Class Helfer
         ' Italien ist eine Ausnahme:
         ' Die führende Null der Ortskennung ist fester, unveränderlicher und unverzichtbarer Bestandteil und muss bestehen bleiben. 
         ' Handynummern in Italien haben dagegen keine führende Null.
-        If Not LandesVW = C_DP.P_Def_StringEmpty Then
-            RufNr = Mid(TelNr, Len(LandesVW) + 1 )
+        If Not LandesVW = C_DP.P_Def_StringEmpty And Not LandesVW = C_DP.P_TBLandesVW Then
+            RufNr = Mid(TelNr, Len(LandesVW) + 1)
             'If LandesVW = "0039" AndAlso Left(RufNr, 1) = "0" Then ' Italien
             ''Mach irgendwas. Oder auch nicht.
             'End If
@@ -307,23 +307,11 @@ Public Class Helfer
         ' 2. Ortsvorwahl entfernen
         ' [0123]456789
         If Not OrtsVW = C_DP.P_Def_StringEmpty Then
-            posOrtsVW = InStr(TelNr, OrtsVW, CompareMethod.Text)
-            RufNr = Mid(TelNr, posOrtsVW + Len(OrtsVW))
+            posOrtsVW = InStr(RufNr, OrtsVW, CompareMethod.Text)
+            RufNr = Mid(RufNr, posOrtsVW + Len(OrtsVW))
         Else
             If RufNr = C_DP.P_Def_StringEmpty Then RufNr = TelNr
         End If
-
-        'If Not OrtsVW = C_DP.P_Def_StringEmpty Then
-
-        '    If Not LandesVW = "0039" Then RufNr = CStr(IIf(Left(RufNr, 1) = "0", Mid(RufNr, 2), RufNr))
-        'Else
-        '    If Not LandesVW = C_DP.P_Def_StringEmpty Then
-        '        '
-
-        '        If LandesVW = "0039" Then Durchwahl = CStr(IIf(Left(Durchwahl, 1) = "0", Durchwahl, "0" & Durchwahl))
-        '    End If
-        '    RufNr = TelNr
-        'End If
 
         ' nur ausführen, wenn die Ortsvorwahl in der Telefonnummer enthalten ist
         ' LandesVW und RufNr aus TelNr separieren
@@ -348,7 +336,7 @@ Public Class Helfer
             tempDurchwahl = C_DP.P_Def_StringEmpty
         End If
 
-        If OrtsVW = C_DP.P_Def_StringEmpty Then
+        If OrtsVW = C_DP.P_Def_StringEmpty And Not C_DP.P_CBintl Then
             ' Keine Ortsvorwahl: Alles zwischen %L und %N entfernen
             Dim pos1 As Integer
             Dim pos2 As Integer
@@ -361,15 +349,16 @@ Public Class Helfer
         If LandesVW = C_DP.P_Def_StringEmpty Then LandesVW = C_DP.P_TBLandesVW
         If C_DP.P_CBintl Or Not LandesVW = C_DP.P_TBLandesVW Then
 
-            'If Left(OrtsVW, 1) = "0" AndAlso Not LandesVW = "0039" Then OrtsVW = Mid(OrtsVW, 2)
-            ' QUATSCH
-            'If Not OrtsVW = C_DP.P_Def_StringEmpty Then
+            If OrtsVW = C_DP.P_Def_StringEmpty Then
+                OrtsVW = C_DP.P_TBVorwahl
+                If Not LandesVW = "0039" Then
+                    'Else
+                    If Left(OrtsVW, 1) = "0" Then
+                        OrtsVW = Mid(OrtsVW, 2)
+                    End If
+                End If
+            End If
 
-            '    'OrtsVW = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & OrtsVW
-            'Else
-            '    'If Left(OrtsVW, 1) = "0" AndAlso Not LandesVW = "0039" Then OrtsVW = Mid(OrtsVW, 2)
-            '    'RufNr = CStr(IIf(LandesVW = "0039", "0", C_DP.P_Def_StringEmpty)) & RufNr
-            'End If
             If Left(LandesVW, 2) = "00" Then LandesVW = Replace(LandesVW, "00", "+", 1, 1, CompareMethod.Text)
         Else
             OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
@@ -493,7 +482,7 @@ Public Class Helfer
             TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
             If Left(TelNr, 2) = "00" Then
                 'Landesvorwahl vorhanden
-                LandesVW = VorwahlausDatei(TelNr, My.Resources.LandesVorwahlen)
+                LandesVW = VorwahlausDatei(TelNr, My.Resources.Liste_Landesvorwahlen)
                 If Not LandesVW = C_DP.P_Def_StringEmpty Then
                     LandesVW = "00" & LandesVW
                     TelNr = Mid(TelNr, Len(LandesVW) + 1)
@@ -509,31 +498,31 @@ Public Class Helfer
                 If LandesVW = C_DP.P_Def_TBLandesVW Or LandesVW = C_DP.P_Def_StringEmpty Then 'nur Deutschland
                     ' Ortsvorwahl nicht in Klammern
                     If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
-                    OrtsVW = VorwahlausDatei(TelNr, My.Resources.Vorwahlen)
+                    OrtsVW = VorwahlausDatei(TelNr, My.Resources.Liste_Ortsvorwahlen_Deutschland)
 
                     ' Vierstellige Mobilfunkvorwahlen ermitteln
-                    ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
-                    Select Case OrtsVW
-                        Case "150" ' Group3G UMTS Holding GmbH
-                            If ErsteZiffer = "5" Then OrtsVW += ErsteZiffer
-                        Case "151" ' Telekom Deutschland GmbH
-                            If IsOneOf(ErsteZiffer, New String() {"1", "2", "4", "5", "6", "7"}) Then OrtsVW += ErsteZiffer
-                        Case "152" ' Vodafone D2 GmbH
-                            If IsOneOf(ErsteZiffer, New String() {"0", "1", "2", "3", "5", "6"}) Then OrtsVW += ErsteZiffer
-                        Case "157" ' E-Plus Mobilfunk GmbH & Co. KG 
-                            If IsOneOf(ErsteZiffer, New String() {"0", "3", "5", "7", "8", "9"}) Then OrtsVW += ErsteZiffer
-                        Case "159" ' Telefónica Germany GmbH & Co. OHG (O2) 
-                            If IsOneOf(ErsteZiffer, New String() {"0"}) Then OrtsVW += ErsteZiffer
-                    End Select
+                    'ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
+                    'Select Case OrtsVW
+                    '    Case "150" ' Group3G UMTS Holding GmbH
+                    '        If ErsteZiffer = "5" Then OrtsVW += ErsteZiffer
+                    '    Case "151" ' Telekom Deutschland GmbH
+                    '        If IsOneOf(ErsteZiffer, New String() {"1", "2", "4", "5", "6", "7"}) Then OrtsVW += ErsteZiffer
+                    '    Case "152" ' Vodafone D2 GmbH
+                    '        If IsOneOf(ErsteZiffer, New String() {"0", "1", "2", "3", "5", "6"}) Then OrtsVW += ErsteZiffer
+                    '    Case "157" ' E-Plus Mobilfunk GmbH & Co. KG 
+                    '        If IsOneOf(ErsteZiffer, New String() {"0", "3", "5", "7", "8", "9"}) Then OrtsVW += ErsteZiffer
+                    '    Case "159" ' Telefónica Germany GmbH & Co. OHG (O2) 
+                    '        If IsOneOf(ErsteZiffer, New String() {"0"}) Then OrtsVW += ErsteZiffer
+                    'End Select
 
-                    'Die Vorwahlen sind von der Bundesnetzagentur wie folgt vergeben, Wikipedia abgerufen 24.05.2014
+                    ''Die Vorwahlen sind von der Bundesnetzagentur wie folgt vergeben, Wikipedia abgerufen 24.05.2014
 
-                    'Telekom: 01511, 01512, 01514, 01515, 01516, 01517, 0160, 0170, 0171, 0175
-                    'Vodafone: 01520, 01522, 01523, 01525, 01526 (ab März 2014), 0162, 0172, 0173, 0174, 01529 (Tru)
-                    'Virtuelle Netzbetreiber (nutzt Netz von Vodafone, im Hintergrund eigene Infrastruktur): 01521 Lycamobile
-                    'E-Plus: 01573, 01575, 01577, 01578, 0163, 0177, 0178
-                    'Virtuelle Netzbetreiber (nutzen Netz von E-Plus, im Hintergrund eigene Infrastruktur): 01570 Telogic (Betrieb eingestellt), 01579 Sipgate Wireless
-                    'O2: 01590, 0176, 0179
+                    ''Telekom: 01511, 01512, 01514, 01515, 01516, 01517, 0160, 0170, 0171, 0175
+                    ''Vodafone: 01520, 01522, 01523, 01525, 01526 (ab März 2014), 0162, 0172, 0173, 0174, 01529 (Tru)
+                    ''Virtuelle Netzbetreiber (nutzt Netz von Vodafone, im Hintergrund eigene Infrastruktur): 01521 Lycamobile
+                    ''E-Plus: 01573, 01575, 01577, 01578, 0163, 0177, 0178
+                    ''Virtuelle Netzbetreiber (nutzen Netz von E-Plus, im Hintergrund eigene Infrastruktur): 01570 Telogic (Betrieb eingestellt), 01579 Sipgate Wireless
+                    ''O2: 01590, 0176, 0179
                 Else
                     OrtsVW = AuslandsVorwahlausDatei(TelNr, LandesVW)
                     Select Case LandesVW
@@ -541,10 +530,7 @@ Public Class Helfer
                             ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
                             If IsOneOf(OrtsVW, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then OrtsVW += ErsteZiffer
                         Case "0039" ' Italien
-                            ' Omnitel Pronto: 347, 348, 349
-                            'Telecom Italia Mobile: 335, 338, 339
-                            'WIND: 3
-                            If Not IsOneOf(OrtsVW, New String() {"3", "335", "338", "339", "347", "348", "349", "3262"}) Then OrtsVW = "0" & OrtsVW
+                            If Left(TelNr, 1) = "0" Then OrtsVW = "0" & OrtsVW
                     End Select
                 End If
                 TelNr = Mid(TelNr, Len(OrtsVW) + 1) 'CInt(IIf(Left(TelNr, 1) = "0", 2, 1))
@@ -553,13 +539,14 @@ Public Class Helfer
                 OrtsVW = nurZiffern(Mid(TelNr, pos1, pos2 - pos1))
                 TelNr = Trim(Mid(TelNr, pos2 + 1))
             End If
+            'Durchwahl ermitteln
             pos1 = 0
             Do
                 pos1 = pos1 + 1
                 c = Mid(TelNr, pos1, 1)
                 Windows.Forms.Application.DoEvents()
             Loop While (c >= "0" And c <= "9") And pos1 <= Len(TelNr)
-            If Not pos1 = 0 Then
+            If Not pos1 = 0 And Not pos1 = Len(TelNr) + 1 Then
                 Durchwahl = Left(TelNr, pos1 - 1)
             Else
                 Durchwahl = C_DP.P_Def_StringEmpty
@@ -579,15 +566,22 @@ Public Class Helfer
         Dim Suchmuster As String
         Dim Vorwahlen() As String = Split(Liste, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 1
+        Dim tmpErgebnis As String
+        Dim Treffer As String = C_DP.P_Def_StringEmpty
+
         If Left(TelNr, 2) = "00" Then TelNr = Mid(TelNr, 3)
         If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
         Do
             i += 1
             Suchmuster = Strings.Left(TelNr, i) & ";*"
             Dim Trefferliste = From s In Vorwahlen Where s.ToLower Like Suchmuster.ToLower Select s
-            VorwahlausDatei = Split(Trefferliste(0), ";", , CompareMethod.Text)(0)
+            tmpErgebnis = Split(Trefferliste(0), ";", , CompareMethod.Text)(0)
+            If Not tmpErgebnis = C_DP.P_Def_StringEmpty Then
+                Treffer = tmpErgebnis
+            End If
             Windows.Forms.Application.DoEvents()
-        Loop Until Not VorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
+        Loop Until i = 5 'Loop Until Not VorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
+        Return Treffer
     End Function
 
     Function AuslandsVorwahlausDatei(ByVal TelNr As String, ByVal LandesVW As String) As String
@@ -597,6 +591,7 @@ Public Class Helfer
         Dim Vorwahlen() As String = Split(My.Resources.Liste_Ortsvorwahlen_Ausland, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 0
         Dim tmpvorwahl() As String
+
         If Left(LandesVW, 2) = "00" Then LandesVW = Mid(LandesVW, 3)
         If Left(LandesVW, 1) = "0" Then LandesVW = Mid(LandesVW, 2)
         If Left(TelNr, 2) = "00" Then TelNr = Mid(TelNr, 3)
@@ -608,7 +603,8 @@ Public Class Helfer
             Windows.Forms.Application.DoEvents()
             tmpvorwahl = Split(Trefferliste(0), ";", , CompareMethod.Text)
             If Not tmpvorwahl.Length = 1 Then AuslandsVorwahlausDatei = tmpvorwahl(1)
-        Loop Until Not AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
+        Loop Until i = 5
+        'Loop Until Not AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
     End Function
 
     Public Function nurZiffern(ByVal TelNr As String) As String

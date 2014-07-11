@@ -1474,7 +1474,11 @@ Public Class DataProvider
 #End Region
 
 #Region "Default Value Properties"
-
+    ''' <summary>
+    ''' Ist immer 0049
+    ''' </summary>
+    ''' <value>0049</value>
+    ''' <returns>0049</returns>
     Public ReadOnly Property P_Def_TBLandesVW() As String
         Get
             Return "0049"

@@ -61,69 +61,25 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die 1;USA/Kanada
-        '''7;Russland/GUS
-        '''20;Ägypten
-        '''27;Südafrika
-        '''30;Griechenland
-        '''31;Niederlande
-        '''32;Belgien
-        '''33;Frankreich
-        '''34;Spanien
-        '''36;Ungarn
-        '''39;Italien
-        '''40;Rumänien
-        '''41;Schweiz
-        '''43;Österreich
-        '''44;Großbritannien und Nordirland
-        '''45;Dänemark
-        '''46;Schweden
-        '''47;Norwegen
-        '''48;Polen
-        '''49;Deutschland
-        '''51;Peru
-        '''52;Mexiko
-        '''53;Kuba
-        '''54;Argentinien
-        '''55;Brasilien
-        '''56;Chile
-        '''57;Kolumbien
-        '''58;Venezuela
-        '''60;Malaysia
-        '''61;Australien
-        '''62;Indonesien
-        '''63;Philippinen
-        '''64;Neuseeland
-        '''65;Singapur
-        '''66;Thailand
-        '''81;Japan
-        '''82;Korea (Repub [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property LandesVorwahlen() As String
-            Get
-                Return ResourceManager.GetString("LandesVorwahlen", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &apos;*****************************************************************;;
         '''&apos; Access-Paradies - Tipps, Tricks, Tools, Beispiele für Access;;
         '''&apos; Download von http://www.access-paradies.de;;
         '''&apos;*****************************************************************;;
         '''
-        '''0093;Afghanistan;
-        '''0020;Ägypten;
-        '''00355;Albanien;
-        '''00213;Algerien;
-        '''00684;Amerikanisch-Samoa;
-        '''001340;Amerikanische Jungferninseln;
-        '''00376;Andorra;
-        '''00244;Angola;
-        '''001264;Anguilla;
-        '''001268;Antigua und Barbuda;
-        '''0054;Argentinien;
-        '''00374;Armenien;
-        '''00297;Aru [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''93;Afghanistan;
+        '''20;Ägypten;
+        '''355;Albanien;
+        '''213;Algerien;
+        '''684;Amerikanisch-Samoa;
+        '''1340;Amerikanische Jungferninseln;
+        '''376;Andorra;
+        '''244;Angola;
+        '''1264;Anguilla;
+        '''1268;Antigua und Barbuda;
+        '''54;Argentinien;
+        '''374;Armenien;
+        '''297;Aruba;
+        '''240;Äquatorial-Guinea [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property Liste_Landesvorwahlen() As String
             Get
@@ -166,71 +122,20 @@ Namespace My.Resources
         '''&apos; Access-Paradies - Tipps, Tricks, Tools, Beispiele für Access;
         '''&apos; Download von http://www.access-paradies.de;
         '''&apos;*****************************************************************;
-        '''
-        '''0201;Essen;
-        '''0202;Ennepetal;
-        '''0202;Haan;
-        '''0202;Hattingen;
-        '''0202;Radevormwald;
-        '''0202;Remscheid;
-        '''0202;Schwelm;
-        '''0202;Solingen;
-        '''0202;Sprockhövel;
-        '''0202;Wülfrath;
-        '''0202;Wuppertal;
-        '''0203;Duisburg;
-        '''0203;Düsseldorf;
-        '''02041;Bottrop;
-        '''02043;Gladbeck;Westfalen;
-        '''0204 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''&apos;Und Wikipedia 10.07.14
+        '''1010;Dritte HanseStar UG (haftungsbeschränkt);
+        '''1011;Ventelo GmbH;
+        '''1012;01012 Telecom GmbH;
+        '''1013;T&amp;Q Netzbetriebs GmbH &amp; Co. KG;
+        '''1014;EWE TEL GmbH;
+        '''1015;Maestro Telecom GmbH;
+        '''1016;envia TEL GmbH;
+        '''1017;Discount Telecom S&amp;V GmbH;
+        '''10 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property Liste_Ortsvorwahlen_Deutschland() As String
             Get
                 Return ResourceManager.GetString("Liste_Ortsvorwahlen_Deutschland", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die 30;Berlin
-        '''32;VoIP
-        '''40;Hamburg
-        '''69;Frankfurt a Main
-        '''89;München
-        '''130;FreeCall
-        '''137;T-VoteCall
-        '''151;T-Mobile
-        '''152;Vodafone
-        '''155;E-Plus
-        '''1577;E-Plus
-        '''159;O2
-        '''160;T-Mobile
-        '''162;Vodafone
-        '''163;E-Plus
-        '''170;T-Mobile
-        '''171;T-Mobile
-        '''172;Vodafone
-        '''173;Vodafone
-        '''174;Vodafone
-        '''175;T-Mobile
-        '''176;O2
-        '''177;E-Plus
-        '''178;E-Plus
-        '''179;O2
-        '''180;Service Nummer
-        '''190;Service Nummer
-        '''191;Internet-Einwahl
-        '''192;Internet-Einwahl
-        '''193;Internet-Einwahl
-        '''194;Internet-Einwahl
-        '''195;Internet-Einwahl
-        '''201;Essen
-        '''202;Wuppertal
-        '''203;Duisburg
-        '''20 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
-        '''</summary>
-        Friend ReadOnly Property Vorwahlen() As String
-            Get
-                Return ResourceManager.GetString("Vorwahlen", resourceCulture)
             End Get
         End Property
     End Module

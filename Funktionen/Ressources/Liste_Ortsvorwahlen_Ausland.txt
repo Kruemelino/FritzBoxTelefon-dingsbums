@@ -1082,6 +1082,49 @@
 36;84;Zam†rdi;
 36;27;ZebegÇny;
 36;23;Zs†mbÇk;
+39;320;Wind Telecomunicazione
+39;321;Wind Telecomunicazione
+39;322;Wind Telecomunicazione
+39;323;Wind Telecomunicazione
+39;324;Wind Telecomunicazione
+39;325;Wind Telecomunicazione
+39;326;Wind Telecomunicazione
+39;327;Wind Telecomunicazione
+39;328;Wind Telecomunicazione
+39;329;Wind Telecomunicazione
+39;330;Telecom Italia Mobile†(TIM)
+39;331;Telecom Italia Mobile†(TIM)
+39;332;Telecom Italia Mobile†(TIM)
+39;333;Telecom Italia Mobile†(TIM)
+39;334;Telecom Italia Mobile†(TIM)
+39;335;Telecom Italia Mobile†(TIM)
+39;336;Telecom Italia Mobile†(TIM)
+39;337;Telecom Italia Mobile†(TIM)
+39;338;Telecom Italia Mobile†(TIM)
+39;339;Telecom Italia Mobile†(TIM)
+39;340;Vodafone Omnitel
+39;341;Vodafone Omnitel
+39;342;Vodafone Omnitel
+39;343;Vodafone Omnitel
+39;344;Vodafone Omnitel
+39;345;Vodafone Omnitel
+39;346;Vodafone Omnitel
+39;347;Vodafone Omnitel
+39;348;Vodafone Omnitel
+39;349;Vodafone Omnitel
+39;360;Telecom Italia Mobile†(TIM)
+39;361;Telecom Italia Mobile†(TIM)
+39;362;Telecom Italia Mobile†(TIM)
+39;363;Telecom Italia Mobile†(TIM)
+39;364;Telecom Italia Mobile†(TIM)
+39;365;Telecom Italia Mobile†(TIM)
+39;366;Telecom Italia Mobile†(TIM)
+39;367;Telecom Italia Mobile†(TIM)
+39;368;Telecom Italia Mobile†(TIM)
+39;390;Tre (H3G)
+39;391;Tre (H3G)
+39;392;Tre (H3G)
+39;393;Tre (H3G)
 39;49;Abano Terme;
 39;2;Abbiategrasso;
 39;95;Acireale;
@@ -1939,449 +1982,1091 @@
 420;67;Zlin (Gottwaldov);
 420;624;Znojmo;
 420;855;Zvolen;
-43;4846;Abfaltersbach;
-43;5223;Absam;
-43;2278;Absdorf;
-43;6243;Abtenau;
-43;5246;Achenkirch;
-43;3611;Admont;
-43;3861;Aflenz Kurort;
-43;5579;Alberschwende;
-43;2824;Allentsteig;
-43;5336;Alpbach;
-43;3622;Altaussee;
-43;6452;Altenmarkt i Pongau;
-43;2673;Altenmarkt-Thenneberg;
-43;7723;Altheim;
-43;7472;Amstetten Nô;
-43;3175;Anger Steiermark;
-43;2283;Angern a d March;
-43;2175;Apetlon;
-43;7472;Ardagger Stift;
-43;4255;Arnoldstein;
-43;7476;Aschbach Markt;
-43;2642;Aspang-Markt;
-43;7666;Attersee;
-43;7674;Attnang-Puchheim;
-43;5515;Au Bregenzerwald;
-43;5234;Axams;
-43;3622;Bad Aussee;
-43;4244;Bad Bleiberg;
-43;2165;Bad Deutsch Altenburg;
-43;2622;Bad Fischau-Brunn;
-43;3159;Bad Gleichenberg;
-43;6135;Bad Goisern;
-43;7258;Bad Hall;
-43;6432;Bad Hofgastein;
-43;6132;Bad Ischl;
-43;4240;Bad Klein-kirchheim;
-43;7266;Bad Kreuzen;
-43;7213;Bad Leonfelden;
-43;3623;Bad Mitterndorf;
-43;3476;Bad Radkersburg;
-43;7249;Bad Schallerbach;
-43;4350;Bad St Leonhard im Lavanttal;
-43;3353;Bad Tatzmannsdort;
-43;2252;Bad Vîslau;
-43;7261;Bad Zell;
-43;2252;Baden b Wien;
-43;6434;Badgastein;
-43;3354;Bernstein;
-43;2672;Berridorf Niederîsterreich;
-43;5514;Bezau;
-43;5674;Bichlbach;
-43;2262;Bisamberg;
-43;6462;Bischofshofen;
-43;4235;Bleiburg;
-43;5552;Bludenz;
-43;5572;Bîdele;
-43;4243;Bodensdorf;
-43;5559;Brand;
-43;5331;Brandenberg Tirol;
-43;7722;Braunau a Inn;
-43;5574;Bregenz;
-43;2239;Breitenfurt b Wien;
-43;5337;Brixlegg;
-43;6545;Bruck a d Gro·glocknerstr;
-43;2162;Bruck a d Leitha;
-43;3862;Bruck a d Mur;
-43;2236;Brunn am Gebirge;
-43;3383;Burgau;
-43;5585;Dalaas;
-43;5510;DamÅls;
-43;2247;Deutsch Wagram;
-43;2613;Deutschkreutz;
-43;3462;Deutschlandsberg;
-43;2843;Dobersberg;
-43;3136;Dobl;
-43;5516;Doren;
-43;5572;Dornbirn;
-43;6432;Dortgastein;
-43;2686;Dra·burg;
-43;2711;DÅrnstein;
-43;5372;Ebbs;
-43;2624;Ebenfurth;
-43;7753;Eberschwang;
-43;7272;Eferding;
-43;5512;Egg;
-43;7748;Eggelsberg;
-43;2984;Eggenburg;
-43;2863;Eggern;
-43;5673;Ehrwald;
-43;5358;Eilmau;
-43;2682;Eisenstadt;
-43;5634;Elbigenalp;
-43;7223;Enns;
-43;2230;Enzersdorf a.d.Fischa;
-43;2757;Erlauf;
-43;2576;Ernstbrunn;
-43;7714;Esternberg;
-43;7474;Euratsfeld;
-43;4254;Faak a See;
-43;6228;Falstenau;
-43;5475;Feichten i Kaunertal;
-43;4245;Feistritz a.d. Drau;
-43;3152;Feldbach;
-43;5522;Feldkirch;
-43;7232;Feldkirchen a d Donau;
-43;4276;Feldkirchen i KÑrnten;
-43;4227;Ferlach;
-43;5354;Fieberbrunn;
-43;6453;Filzmoos;
-43;5285;Finkenberg;
-43;2232;Fischamend;
-43;6452;Flachau;
-43;5447;Flirsch;
-43;7684;Frankenmarkt;
-43;2172;Frauenkirchen;
-43;7942;Freistadt;
-43;3339;Friedberg;
-43;4268;Friesach;
-43;3126;Frohnleiten;
-43;5288;FÅgen;
-43;5225;Fulpmes;
-43;3382;FÅrstenfeld;
-43;6545;Fusch;
-43;6226;Fuschl am See;
-43;4221;Gafenstein;
-43;7446;Gaflenz;
-43;7235;Gallneukirchen;
-43;5443;GaltÅr;
-43;2282;GÑnserndorf;
-43;5557;Gargellen;
-43;2982;Gars a Kamp;
-43;5558;Gaschurn;
-43;2142;Gattendorf;
-43;2912;Geras;
-43;5284;Gerlos;
-43;5286;Ginzling;
-43;4277;Glanegg;
-43;3112;Gleisdorf;
-43;2662;Gloggnitz;
-43;4732;GmÅnd KÑrnten;
-43;2852;GmÅnd Niederîsterreich;
-43;7612;Gmunden;
-43;2525;Gnadendort;
-43;4278;Gnesau;
-43;6244;Golllng a d Salzach;
-43;2173;Gols;
-43;6136;Gosau;
-43;5234;Gîtzens;
-43;5523;Gîtzis;
-43;316;Graz;
-43;4712;Greifenburg;
-43;7268;Grein;
-43;5274;Gries a Brenner;
-43;4233;Griffen;
-43;3685;Grîbming;
-43;6246;Grîdig;
-43;2812;Gro· Gerungs;
-43;6414;Gro·arl;
-43;6247;Gro·gmain;
-43;3362;Gro·petersdort;
-43;7250;Gro·raming;
-43;2955;Gro·weikersdorf;
-43;4258;Gummern;
-43;3322;GÅssing;
-43;7732;Haag a Hausruck;
-43;7434;Haag Niederîsterrich;
-43;2734;Hadersdorf a Kamp;
-43;2165;Hainburg a d Donau;
-43;5223;Hall in Tirol;
-43;6245;Hallein;
-43;6134;Hallstatt;
-43;3332;Hartberg;
-43;2944;Haugsdort;
-43;3686;Haus;
-43;2265;Hausleiten;
-43;2848;Heidenreichstein;
-43;4824;Heiligenblut;
-43;2782;Herzogenburg;
-43;3634;Hieflau;
-43;5245;Hinterri·;
-43;7211;Hirschbach i MÅhlkreis;
-43;5513;Hittisau;
-43;5578;Hîchst;
-43;6221;Hof b Salzburg;
-43;7285;Hofkirchen i MÅhlkreis;
-43;2535;Hohenau a d March;
-43;5576;Hohenems;
-43;3615;Hohentauern;
-43;2952;Hollabrunn;
-43;5335;Hopfgarten;
-43;5573;Hîrbranz;
-43;2982;Horn;
-43;4872;Huben Osttirol;
-43;5412;Imst;
-43;5444;Ischgl;
-43;5244;Jenbach;
-43;3154;Jennersdorf;
-43;5355;Jochberg;
-43;3572;Judenburg;
-43;3333;Kaindorf b Hartberg;
-43;4872;Kals a Gro·glockner;
-43;5283;Kaltenbach Zillertal;
-43;3846;Kalwang;
-43;3862;Kapfenberg;
-43;5441;Kappl;
-43;6542;Kaprun;
-43;2844;Karlstein a d Thaya;
-43;4715;KÑtschach-Mauthen;
-43;7941;Kefermarkt;
-43;7448;Kemaien a d Ybbs;
-43;512;Kematen in Tirol;
-43;4284;Kirchbach;
-43;2279;Kirchberg a Wagram;
-43;2646;Kirchschlag i d Buckligen Welt;
-43;5356;KitzbÅhel;
-43;463;Klagenfurt;
-43;3147;Kleinlobming;
-43;2243;Klosterneuburg;
-43;5357;Klrchberg in Tirol;
-43;7582;Klrchdort a d Krems;
-43;3512;Knittelfeld;
-43;6221;Koppl;
-43;2262;Korneuburg;
-43;5374;Kîssen;
-43;2732;Krems a d Donau;
-43;7240;KremsmÅnster;
-43;5372;Kufstein;
-43;5239;KÅhtai;
-43;5338;Kundl;
-43;2522;Laa a d Thaya;
-43;7612;Laakirchen;
-43;5442;Landeck Tirol;
-43;5582;Langen a Adberg;
-43;5575;Langen b Bregenz;
-43;5253;LÑngenfeld;
-43;2734;Langenlois;
-43;4356;LavamÅnd;
-43;5583;Lech;
-43;3452;Leibnitz;
-43;6416;Lend;
-43;3842;Leoben St;
-43;2252;Leobersdort;
-43;6582;Leogang;
-43;5214;Leutasch;
-43;2813;Liebenau;
-43;4215;Liebenfels;
-43;4852;Lienz Osttirol;
-43;3612;Liezen;
-43;2762;Lilienfeld;
-43;732;Linz Donau;
-43;2863;Litschau;
-43;512;lnnsbruck;
-43;6588;Lofer;
-43;2754;Loosdorf Bez Melk;
-43;5577;Lustenau;
-43;4784;Mallnitz;
-43;6454;Mandling Steiermark;
-43;7250;Maria-Neustift;
-43;3882;Mariazell;
-43;5273;Matrei a Brenner;
-43;4874;Matrei i Osttirol;
-43;742;Mattighofen;
-43;6217;Mattsee;
-43;7724;Mauerkirchen;
-43;5243;Maurach;
-43;6472;Mauterndorf Lungau;
-43;7238;Mauthausen;
-43;5285;Mayrhofen;
-43;2752;Melk;
-43;5518;Mellau;
-43;5264;Mieming;
-43;4766;Millstatt;
-43;2572;Mistelbach;
-43;3858;Mitterdorf i MÅrztal;
-43;6562;Mittersill;
-43;2236;Mîdllng;
-43;6232;Mondsee;
-43;2642;Mînichkirchen;
-43;6566;MÅhlbach Oberpinzgau;
-43;3584;MÅhlen;
-43;3632;Murau;
-43;3472;Mureck;
-43;3852;MÅrzzuschlag;
-43;5265;Nassereith;
-43;5473;Nauders;
-43;5522;Nenzing;
-43;7282;Neufelden;
-43;6565;Neukirchen a Gro·venediger;
-43;2772;Neulengbach;
-43;6216;Neumarkt a Wallersee;
-43;7211;Neumarkt i MÅhlkreis;
-43;2988;Neupîlla;
-43;2533;Neusiedl a d Zaya;
-43;2167;Neusiedl a See;
-43;7412;Neustadtl Donau;
-43;5226;Neustift i Stubaital;
-43;6548;Niedernsill;
-43;4858;Nikolsdorf;
-43;4710;Oberdrauburg;
-43;7758;Obernberg am Inn;
-43;7482;Oberndorf an der Melk;
-43;6272;Oberndorf b Salzburg;
-43;2612;Oberpullendorf;
-43;4847;Obertilliach;
-43;4782;Obervellach;
-43;6233;Oberwang;
-43;3352;Oberwart;
-43;5252;Oetz Tirol;
-43;2212;Orth a d Donau;
-43;2872;Ottenschlag;
-43;5266;ôtztal-Bahnhof;
-43;3127;Peggau;
-43;7287;Peilstein i MÅhlviertel;
-43;7262;Perg;
-43;2163;Petronell;
-43;5448;Pettnau a Arlberg;
-43;5474;Pfunds;
-43;2757;Pîchlarn;
-43;2177;Podersdorf a See;
-43;4272;Pînschach a Wîrther See;
-43;2625;Pîttsching;
-43;2552;Poysdorf;
-43;5472;Prutz;
-43;2632;Puchberg a Schneeberg;
-43;2693;Purbach a Neusiedlersee;
-43;2231;Purkersdort;
-43;3571;Pusterwald;
-43;7762;Raab;
-43;2844;Raabs a d Thaya;
-43;4246;Radenthein;
-43;6452;Radstadt;
-43;5553;Raggal;
-43;6544;Rauris;
-43;3363;Rechnitz;
-43;7211;Reichenau i MÅhlkreis;
-43;4273;Reifnitz;
-43;2942;Reiz;
-43;5672;Reutte;
-43;7752;Ried i Innkreis;
-43;7289;Rohrbach Oberîerreich;
-43;2714;Rossatz;
-43;6242;Ru·bach a Pa· GschÅft;
-43;2685;Rust;
-43;6541;Saalbach;
-43;6582;Saalfelden a Steinernen Meer;
-43;662;Salzburg;
-43;5524;Satteins;
-43;7712;SchÑrding;
-43;5213;Scharnitz;
-43;3582;Scheifling;
-43;3687;Schladming;
-43;2853;Schrems;
-43;5519;Schrîcken;
-43;5556;Schruns;
-43;6415;Schwarzach i Pongau;
-43;2849;Schwarzenau;
-43;5242;Schwaz;
-43;1;Schwechat;
-43;5212;Seefeld i Tirol;
-43;6212;Seekirchen a Wallersee;
-43;5230;Sellrain;
-43;2664;Semmering;
-43;5476;Serfaus;
-43;2621;Sieggraben;
-43;7251;Sierning;
-43;4842;Sillian;
-43;5263;Silz;
-43;5254;Sîlden;
-43;5332;Sîll;
-43;4762;Spittal a d Drau;
-43;2713;Spitz;
-43;5446;St. Anton a Arlberg;
-43;5557;St. Gallenkirch;
-43;6138;St. Gilgen;
-43;4873;St. Jakob i Defereggen;
-43;6412;St. Johann i Pongau;
-43;5352;St. Johann in Tirol;
-43;5413;St. Leonhard i Pitztal;
-43;7751;St. Martin i Innkreis;
-43;2742;St. Pîlten;
-43;4212;St. Veit a d Glan;
-43;6132;St. Wolfgang i Salzkammergut;
-43;5632;Stanzach;
-43;5272;Steinach a Brenner;
-43;7252;Steyr;
-43;2266;Stockerau;
-43;4266;Stra·burg;
-43;6213;Stra·walchen;
-43;7432;Strengberg;
-43;6137;Strobl;
-43;3113;Stubenberg;
-43;5675;Tannheim Tirol;
-43;7719;Taufkirchen a d Pram;
-43;3688;Tauplitz;
-43;5262;Telfs;
-43;2630;Ternitz;
-43;5376;Thiersee;
-43;5550;ThÅringen;
-43;7221;Traun;
-43;7617;Traunkirchen;
-43;4248;Treffen;
-43;4262;Treibach;
-43;3615;Trieben;
-43;5275;Trins;
-43;2272;Tulln;
-43;5255;Umhausen;
-43;6589;Unken;
-43;7665;Unterach a Attersee;
-43;5256;Untergurgl;
-43;4274;Velden a Wîrther See;
-43;4242;Villach;
-43;5677;Vils;
-43;4874;Virgen Osttirol;
-43;7672;Vîcklabruck;
-43;4232;Vîlkermarkt;
-43;6413;Wagrain;
-43;2841;Waidhofen a d Thaya;
-43;7442;Waidhofen a d Ybbs;
-43;5353;Waidring;
-43;7276;Waizenkirchen;
-43;5374;Walchsee;
-43;2629;Warth Nô;
-43;5224;Wattens;
-43;7242;Weis;
-43;5675;Wei·enbach a Lech;
-43;2711;Wei·enkirchen i d Wachau;
-43;7952;Weitersfelden;
-43;2815;Weitra;
-43;3172;Weiz;
-43;5414;Wenns;
-43;6468;Werfen;
-43;5334;Westendorg Tirol;
-43;1;Wien;
-43;2622;Wiener Neustadt;
-43;3182;Wildon;
-43;4822;Winklern Mîlltal;
-43;4352;Wolfsberg K;
-43;5332;Wîrgl;
-43;7412;Ybbs a d Donau;
-43;6542;Zell am See;
-43;5282;Zell am Ziller;
-43;3577;Zeltweg;
-43;5238;Zirl;
+43;650;Mobil
+43;651;Mobil
+43;652;Mobil
+43;653;Mobil
+43;655;Mobil
+43;657;Mobil
+43;659;Mobil
+43;660;Mobil
+43;661;Mobil
+43;663;Mobil
+43;664;Mobil
+43;665;Mobil
+43;666;Mobil
+43;667;Mobil
+43;668;Mobil
+43;669;Mobil
+43;4846;Abfaltersbach
+43;2278;Absdorf
+43;6243;Abtenau
+43;7727;Ach
+43;5246;Achenkirch
+43;3613;Admont
+43;3861;Aflenz
+43;4247;Afritz
+43;2712;Aggsbach
+43;7281;Aigen im M√ºhlkreis
+43;4853;Ainet
+43;5579;Alberschwende
+43;7274;Alkoven
+43;2258;Alland
+43;2824;Allentsteig
+43;5336;Alpbach
+43;7230;Altenberg bei Linz
+43;7415;Altenmarkt (Yspertal)
+43;2673;Altenmarkt an der Triesting
+43;2774;Altlengbach
+43;7723;Altheim
+43;7612;Altm√ºnster
+43;7675;Ampflwang im Hausruckwald
+43;7472;Amstetten
+43;7766;Andorf
+43;7750;Andrichsfurt
+43;3175;Anger
+43;2283;Angern an der March
+43;6246;Anif
+43;6463;Annaberg-Lung√∂tz
+43;7229;Ansfelden
+43;6223;Anthering
+43;7759;Antiesenhofen
+43;2175;Apetlon
+43;2813;Arbesbach
+43;7479;Ardagger
+43;3455;Arnfels
+43;4255;Arnoldstein
+43;7273;Aschach an der Donau
+43;7476;Aschbach-Markt
+43;2642;Aspangberg-Sankt Peter
+43;2577;Asparn an der Zaya
+43;4855;Assling
+43;7666;Attersee
+43;7674;Attnang-Puchheim
+43;2275;Atzenbrugg
+43;6470;Atzmannsdorf
+43;5515;Au
+43;2288;Auersthal
+43;4785;Au√üerfragant
+43;4843;Au√üervillgraten
+43;5234;Axams
+43;3622;Bad Aussee
+43;4244;Bad Bleiberg
+43;2639;Bad Fischau
+43;6434;Bad Gastein
+43;3159;Bad Gleichenberg
+43;6135;Bad Goisern
+43;2857;Bad Gro√üpertholz
+43;7258;Bad Hall
+43;6432;Bad Hofgastein
+43;6132;Bad Ischl
+43;4240;Bad Kleinkirchheim
+43;7266;Bad Kreuzen
+43;7213;Bad Leonfelden
+43;3623;Bad Mitterndorf
+43;3476;Bad Radkersburg
+43;4350;Bad St. Leonhard im Lavanttal
+43;2625;Bad Sauerbrunn
+43;7249;Bad Schallerbach
+43;3353;Bad Tatzmannsdorf
+43;2878;Bad Traunstein
+43;7263;Bad Zell
+43;2252;Baden
+43;7269;Baumgartenberg
+43;2672;Berndorf
+43;2557;Bernhardsthal
+43;3354;Bernstein
+43;5514;Bezau
+43;5674;Bichlbach
+43;3174;Birkfeld
+43;3513;Bischoffeld
+43;6462;Bischofshofen
+43;4235;Bleiburg
+43;7473;Blindenmarkt
+43;5552;Bludenz
+43;4243;Bodensdorf
+43;6566;Bramberg am Wildkogel
+43;5559;Brand
+43;2859;Brand-Nagelberg
+43;5331;Brandenberg
+43;7722;Braunau am Inn
+43;5574;Bregenz
+43;3866;Breitenau am Hochlantsch
+43;2239;Breitenfurt bei Wien
+43;3576;Bretstein
+43;5337;Brixlegg
+43;6545;Bruck an der Gro√üglocknerstra√üe
+43;2162;Bruck an der Leitha
+43;3862;Bruck an der Mur
+43;2989;Brunn an der Wild
+43;4214;Br√ºckl
+43;3383;Burgau
+43;2743;B√∂heimkirchen
+43;5585;Dalaas
+43;5510;Dam√ºls
+43;4718;Dellach
+43;4714;Dellach im Drautal
+43;2255;Deutsch-Brodersdorf
+43;3474;Deutsch Goritz
+43;2144;Deutsch Jahrndorf
+43;3365;Deutsch Sch√ºtzen-Eisenberg
+43;2247;Deutsch-Wagram
+43;2613;Deutschkreutz
+43;3462;Deutschlandsberg
+43;6461;Dienten am Hochk√∂nig
+43;7260;Dimbach
+43;2843;Dobersberg
+43;3136;Dobl
+43;3683;Donnersbach
+43;3680;Donnersbachwald
+43;5516;Doren
+43;6433;Dorfgastein
+43;5572;Dornbirn
+43;2686;Dra√üburg
+43;2617;Dra√ümarkt
+43;2915;Drosendorf-Zissersdorf
+43;2719;Dro√ü
+43;2536;Dr√∂sing
+43;2538;D√ºrnkrut
+43;2711;D√ºrnstein
+43;5373;Ebbs
+43;4275;Ebene Reichenau
+43;2624;Ebenfurth
+43;6133;Ebensee
+43;3323;Eberau
+43;4236;Eberndorf
+43;7753;Eberschwang
+43;2254;Ebreichsdorf
+43;3145;Edelschrott
+43;7272;Eferding
+43;5512;Egg
+43;7748;Eggelsberg
+43;2984;Eggenburg
+43;7767;Eggerding
+43;2863;Eggern
+43;3117;Eggersdorf bei Graz
+43;3453;Ehrenhausen
+43;5673;Ehrwald
+43;3466;Eibiswald
+43;2773;Eichgraben
+43;3848;Eisenerz
+43;4238;Eisenkappel-Vellach
+43;2682;Eisenstadt
+43;5634;Elbigenalp
+43;5358;Ellmau
+43;5635;Elmen
+43;2876;Els
+43;7223;Enns
+43;2230;Enzersdorf an der Fischa
+43;2576;Ernstbrunn
+43;7714;Esternberg
+43;6225;Eugendorf
+43;7474;Euratsfeld
+43;4254;Faak am See
+43;6228;Faistenau
+43;3155;Fehring
+43;5475;Feichten
+43;4245;Feistritz an der Drau
+43;4228;Feistritz im Rosental
+43;3152;Feldbach
+43;5522;Feldkirch
+43;7233;Feldkirchen an der Donau
+43;4276;Feldkirchen in K√§rnten
+43;2628;Felixdorf
+43;2738;Fels am Wagram
+43;4227;Ferlach
+43;5354;Fieberbrunn
+43;6453;Filzmoos
+43;2232;Fischamend
+43;3170;Fischbach
+43;5476;Fiss
+43;6457;Flachau
+43;4269;Flattnitz
+43;5449;Flie√ü
+43;2741;Flinsbach
+43;5447;Flirsch
+43;3573;Fohnsdorf
+43;7683;Frankenburg am Hausruck
+43;2725;Frankenfels
+43;7684;Frankenmarkt
+43;2172;Frauenkirchen
+43;7942;Freistadt
+43;3456;Fresing
+43;3339;Friedberg
+43;7746;Friedburg
+43;4268;Friesach
+43;3126;Frohnleiten
+43;5225;Fulpmes
+43;6546;Fusch an der Gro√üglocknerstra√üe
+43;6226;Fuschl am See
+43;5288;F√ºgen
+43;4257;F√ºrnitz
+43;3382;F√ºrstenfeld
+43;2237;Gaaden
+43;7353;Gaflenz
+43;3617;Gaishorn am See
+43;4221;Gallizien
+43;7235;Gallneukirchen
+43;5443;Galt√ºr
+43;7485;Gaming
+43;3637;Gams bei Hieflau
+43;2753;Gansbach
+43;2282;G√§nserndorf
+43;2985;Gars am Kamp
+43;5558;Gaschurn
+43;3171;Gasen
+43;7735;Gaspoltshofen
+43;2142;Gattendorf
+43;2574;Gaweinstal
+43;3149;Geistthal
+43;4355;Gemmersdorf
+43;2912;Geras
+43;2246;Gerasdorf bei Wien
+43;5284;Gerlos
+43;2716;Gf√∂hl
+43;5285;Ginzling
+43;4277;Glanegg
+43;3457;Gleinst√§tten
+43;3112;Gleisdorf
+43;4230;Globasnitz
+43;2662;Gloggnitz
+43;7612;Gmunden
+43;2852;Gm√ºnd
+43;4732;Gm√ºnd in K√§rnten
+43;2525;Gnadendorf
+43;3151;Gnas
+43;4278;Gnesau
+43;6244;Golling an der Salzach
+43;2173;Gols
+43;6136;Gosau
+43;2875;Grafenschlag
+43;4225;Grafenstein
+43;2877;Grainbrunn
+43;2234;Gramatneusiedl
+43;3124;Gratkorn
+43;316;Graz
+43;4712;Greifenburg
+43;7268;Grein
+43;3465;Greith
+43;7487;Gresten
+43;5274;Gries am Brenner
+43;5236;Gries im Sellrain
+43;7248;Grieskirchen
+43;4233;Griffen
+43;2644;Grimmenstein
+43;2812;Gro√ü Gerungs
+43;3464;Gro√ü Sankt Florian
+43;2249;Gro√ü-Enzersdorf
+43;2847;Gro√ü-Siegharts
+43;6414;Gro√üarl
+43;2823;Gro√üglobnitz
+43;6247;Gro√ügmain
+43;4825;Gro√ükirchheim
+43;2556;Gro√ükrut
+43;2268;Gro√ümugl
+43;2615;Gro√ümutschen
+43;3362;Gro√üpetersdorf
+43;7254;Gro√üraming
+43;2263;Gro√üru√übach
+43;2815;Gro√üsch√∂nau
+43;3386;Gro√üsteinbach
+43;7218;Gro√ütraberg
+43;2955;Gro√üweikersdorf
+43;3685;Gr√∂bming
+43;6246;Gr√∂dig
+43;7616;Gr√ºnau im Almtal
+43;2637;Gr√ºnbach am Schneeberg
+43;7257;Gr√ºnburg
+43;5276;Gschnitz
+43;4245;Gummern
+43;2252;Gumpoldskirchen
+43;7246;Gunskirchen
+43;2951;Guntersdorf
+43;7757;Gurten
+43;7946;Gutau
+43;2634;Gutenstein
+43;2954;G√∂llersdorf
+43;2825;G√∂pfritz an der Wild
+43;6483;G√∂riach
+43;7484;G√∂stling an der Ybbs
+43;5523;G√∂tzis
+43;3322;G√ºssing
+43;7434;Haag
+43;7732;Haag am Hausruck
+43;2735;Hadersdorf am Kamp
+43;7279;Haibach ob der Donau
+43;2165;Hainburg a.d. Donau
+43;2764;Hainfeld
+43;5223;Hall in Tirol
+43;6245;Hallein
+43;6134;Hallstatt
+43;3364;Hannersdorf
+43;5574;Hard
+43;7225;Hargelsberg
+43;3332;Hartberg
+43;7273;Hartkirchen
+43;2944;Haugsdorf
+43;3686;Haus
+43;2533;Hausbrunn
+43;2265;Hausleiten
+43;7475;Ulmerfeld-Hausmening-Neufurth
+43;2862;Heidenreichstein
+43;4824;Heiligenblut am Gro√üglockner
+43;3134;Heiligenkreuz am Waasen
+43;3325;Heiligenkreuz im Lafnitztal
+43;7216;Helfenberg
+43;7215;Hellmons√∂dt
+43;6214;Henndorf am Wallersee
+43;4282;Hermagor
+43;2555;Herrnbaumgarten
+43;2782;Herzogenburg
+43;7231;Herzogsdorf
+43;3634;Hieflau
+43;5245;Hinterri√ü
+43;6224;Hintersee
+43;7564;Hinterstoder
+43;7948;Hirschbach im M√ºhlkreis
+43;2854;Hirschbach (Nieder√∂sterreich)
+43;3141;Hirschegg
+43;5517;Hirschegg im Kleinwalsertal
+43;5513;Hittisau
+43;5359;Hochfilzen
+43;5280;Hochf√ºgen
+43;2648;Hochneukirchen
+43;6229;Hof bei Salzburg
+43;7734;Hofkirchen an der Trattnach
+43;7285;Hofkirchen im M√ºhlkreis
+43;2535;Hohenau an der March
+43;2767;Hohenberg
+43;5576;Hohenems
+43;3618;Hohentauern
+43;2957;Hohenwarth-M√ºhlbach am Manhartsberg
+43;2952;Hollabrunn
+43;7445;Hollenstein an der Ybbs
+43;5335;Hopfgarten im Brixental
+43;2610;Horitschon
+43;2982;Horn
+43;2689;Hornstein
+43;4872;Huben
+43;5633;H√§gerau
+43;5289;H√§usling
+43;5578;H√∂chst
+43;5573;H√∂rbranz
+43;7221;H√∂rsching
+43;2913;H√∂tzelsdorf
+43;3475;H√ºrth
+43;6458;H√ºttau
+43;4263;H√ºttenberg
+43;6417;H√ºttschlag
+43;2731;Idolsberg
+43;2175;Illmitz
+43;3385;Ilz
+43;5412;Imst
+43;4736;Innerkrems
+43;2774;Innermanzing
+43;512;Innsbruck
+43;5238;Inzing
+43;2986;Irnfritz
+43;5444;Ischgl
+43;2914;Japons
+43;5244;Jenbach
+43;3329;Jennersdorf
+43;5355;Jochberg
+43;3611;Johnsbach
+43;2160;Jois
+43;3572;Judenburg
+43;5676;Jungholz
+43;3148;Kainach bei Voitsberg
+43;3334;Kaindorf
+43;4876;Kals am Gro√üglockner
+43;3135;Kalsdorf bei Graz
+43;5283;Kaltenbach
+43;2238;Kaltenleutgeben
+43;3846;Kalwang
+43;3844;Kammern im Liesingtal
+43;3157;Kapfenstein
+43;5445;Kappl
+43;6547;Kaprun
+43;2844;Karlstein an der Thaya
+43;2816;Karlstift
+43;4848;Kartitsch
+43;2744;Kasten bei B√∂heimkirchen
+43;3588;Katsch an der Mur
+43;2765;Kaumberg
+43;2524;Kautendorf
+43;2864;Kautzen
+43;7947;Kefermarkt
+43;7247;Kematen am Innbach
+43;7228;Kematen an der Krems
+43;7448;Kematen an der Ybbs
+43;5232;Kematen in Tirol
+43;2748;Kilb
+43;3865;Kindberg
+43;4284;Kirchbach
+43;3116;Kirchbach in Steiermark
+43;2279;Kirchberg am Wagram
+43;2854;Kirchberg am Walde
+43;2641;Kirchberg am Wechsel
+43;2722;Kirchberg an der Pielach
+43;7747;Kirchberg bei Mattighofen
+43;5357;Kirchberg in Tirol
+43;7582;Kirchdorf an der Krems
+43;7619;Kirchham
+43;2646;Kirchschlag in der Buckligen Welt
+43;2523;Kirchstetten (Neudorf bei Staatz)
+43;2143;Kittsee
+43;5356;Kitzb√ºhel
+43;463;Klagenfurt am W√∂rthersee
+43;7585;Klaus an der Pyhrnbahn
+43;2257;Klausen-Leopoldsdorf
+43;4768;Kleblach-Lind
+43;4264;Klein Sankt Paul
+43;6418;Kleinarl
+43;3516;Kleinlobming
+43;7357;Kleinreifling
+43;2614;Gro√üwarasdorf
+43;2766;Kleinzell
+43;2687;Klingenbach
+43;2243;Klosterneuburg
+43;5582;Kl√∂sterle
+43;3512;Knittelfeld
+43;3366;Kohfidisch
+43;7763;Kopfing im Innkreis
+43;2214;Kopfstetten
+43;6221;Koppl
+43;2262;Korneuburg
+43;2873;Kottes
+43;3535;Krakaudorf
+43;3832;Kraubath an der Mur
+43;2732;Krems an der Donau
+43;4735;Kremsbr√ºcke
+43;7583;Kremsm√ºnster
+43;7249;Krenglbach
+43;3855;Krieglach
+43;6564;Krimml
+43;6240;Krispl
+43;3143;Krottendorf-Gaisfeld
+43;2647;Krumbach
+43;4229;Krumpendorf am W√∂rthersee
+43;5372;Kufstein
+43;3328;Kukmirn
+43;3132;Kumberg
+43;5338;Kundl
+43;3144;K√∂flach
+43;7955;K√∂nigswiesen
+43;5375;K√∂ssen
+43;4715;K√∂tschach-Mauthen
+43;4220;K√∂ttmannsdorf
+43;5239;K√ºhtai
+43;2522;Laa an der Thaya
+43;7613;Laakirchen
+43;2619;Lackendorf
+43;2575;Ladendorf
+43;3338;Lafnitz
+43;7245;Lambach
+43;7765;Lambrechten
+43;6274;Lamprechtshausen
+43;5442;Landeck
+43;3633;Landl
+43;7480;Langau (Gaming)
+43;5575;Langen bei Bregenz
+43;2734;Langenlois
+43;3854;Langenwang
+43;2244;Langenzersdorf
+43;2814;Langschlag
+43;2213;Lassee
+43;5526;Laterns
+43;4213;Launsdorf
+43;4356;Lavam√ºnd
+43;5583;Lech
+43;3452;Leibnitz
+43;7286;Lembach im M√ºhlkreis
+43;6416;Lend
+43;3842;Leoben
+43;2256;Leobersdorf
+43;6583;Leogang
+43;2216;Leopoldsdorf im Marchfelde
+43;4716;Lesachtal
+43;6484;Lessach
+43;5214;Leutasch
+43;3454;Leutschach
+43;2718;Lichtenau im Waldviertel
+43;7239;Lichtenberg
+43;2643;Lichtenegg
+43;7953;Liebenau
+43;4215;Liebenfels
+43;4852;Lienz
+43;3612;Liezen
+43;2762;Lilienfeld
+43;732;Linz
+43;2865;Litschau
+43;3358;Litzelsdorf
+43;7745;Lochen am See
+43;2616;Lockenhaus
+43;6588;Lofer
+43;3359;Loipersdorf-Kitzladen
+43;2754;Loosdorf
+43;7255;Losenstein
+43;7486;Lunz am See
+43;5577;Lustenau
+43;2615;Lutzmannsburg
+43;5253;L√§ngenfeld
+43;2943;Mailberg
+43;2958;Maissau
+43;4784;Mallnitz
+43;4733;Malta
+43;6454;Mandling
+43;2755;Mank
+43;2168;Mannersdorf am Leithagebirge
+43;2611;Mannersdorf an der Rabnitz
+43;7413;Marbach an der Donau
+43;2285;Marchegg
+43;7243;Marchtrenk
+43;6584;Maria Alm am Steinernen Meer
+43;7250;Maria Neustift
+43;4223;Maria Saal
+43;7743;Maria Schmolln
+43;7413;Maria Taferl
+43;2235;Maria-Lanzendorf
+43;6473;Mariapfarr
+43;3882;Mariazell
+43;2248;Markgrafneusiedl
+43;3356;Markt Allhau
+43;3114;Markt Hartmannsdorf
+43;2633;Markt Piesting
+43;2618;Markt Sankt Martin
+43;2874;Martinsberg
+43;5273;Matrei am Brenner
+43;4875;Matrei in Osttirol
+43;2626;Mattersburg
+43;7742;Mattighofen
+43;6217;Mattsee
+43;2289;Matzen-Raggendorf
+43;7724;Mauerkirchen
+43;5243;Maurach
+43;3845;Mautern in Steiermark
+43;6472;Mauterndorf
+43;7238;Mauthausen
+43;5285;Mayrhofen
+43;2752;Melk
+43;5518;Mellau
+43;4267;Metnitz
+43;7755;Mettmach
+43;5264;Mieming
+43;4237;Miklauzhof
+43;4766;Millstatt am See
+43;2572;Mistelbach
+43;5517;Mittelberg im Kleinwalsertal
+43;3858;Mitterdorf im M√ºrztal
+43;6562;Mittersill
+43;4231;Mittertrixen
+43;3146;Modriach
+43;7584;Molln
+43;6232;Mondsee
+43;2858;Moorbad Harbach
+43;4272;Moosburg
+43;7748;Moosdorf
+43;6479;Muhr
+43;7744;Munderfing
+43;3532;Murau
+43;3472;Mureck
+43;3571;M√∂derbrugg
+43;2236;M√∂dling
+43;4769;M√∂llbr√ºcke
+43;7267;M√∂nchdorf
+43;2649;M√∂nichkirchen
+43;4826;M√∂rtschach
+43;6467;M√ºhlbach am Hochk√∂nig
+43;3586;M√ºhlen
+43;2259;M√ºnchendorf
+43;7716;M√ºnzkirchen
+43;3859;M√ºrzsteg
+43;3852;M√ºrzzuschlag
+43;2953;Nappersdorf
+43;5265;Nassereith
+43;5473;Nauders
+43;5278;Navis
+43;5525;Nenzing
+43;3133;Nestelbach
+43;3857;Neuberg an der M√ºrz
+43;3383;Neudau
+43;7282;Neufelden
+43;7227;Neuhofen an der Krems
+43;7618;Neukirchen (Altm√ºnster)
+43;6565;Neukirchen am Gro√üvenediger
+43;7278;Neukirchen am Walde
+43;7729;Neukirchen an der Enknach
+43;2772;Neulengbach
+43;6216;Neumarkt am Wallersee
+43;7733;Neumarkt im Hausruckkreis
+43;7941;Neumarkt im M√ºhlkreis
+43;3584;Neumarkt in Steiermark
+43;2635;Neunkirchen
+43;2988;Neup√∂lla
+43;2167;Neusiedl am See
+43;2533;Neusiedl an der Zaya
+43;7471;Neustadtl an der Donau
+43;5226;Neustift im Stubaital
+43;2146;Nickelsdorf
+43;2269;Niederfellabrunn
+43;2949;Niederfladnitz
+43;7224;Niederneukirchen
+43;6548;Niedernsill
+43;2534;Niedersulz
+43;4858;Nikolsdorf
+43;6276;Nu√üdorf am Haunsberg
+43;4256;N√∂tsch im Gailtal
+43;3578;Obdach
+43;2747;Ober-Grafendorf
+43;4710;Oberdrauburg
+43;3455;Oberhaag
+43;6213;Oberhofen am Irrsee
+43;7284;Oberkappel
+43;7758;Obernberg am Inn
+43;7483;Oberndorf an der Melk
+43;6272;Oberndorf bei Salzburg
+43;2612;Oberpullendorf
+43;3353;Obersch√ºtzen
+43;2286;Obersiebenbrunn
+43;6456;Obertauern
+43;4847;Obertilliach
+43;6131;Obertraun
+43;6219;Obertrum am See
+43;4782;Obervellach
+43;2253;Oberwaltersdorf
+43;6233;Oberwang
+43;3352;Oberwart
+43;2284;Oberweiden
+43;2786;Oberw√∂lbling
+43;3581;Oberw√∂lz
+43;2943;Obritz
+43;7478;Oed-Oehling
+43;5252;Oetz
+43;5266;√ñtztal-Bahnhof
+43;3619;Oppenberg
+43;7444;Opponitz
+43;2212;Orth an der Donau
+43;6278;Ostermiething
+43;2872;Ottenschlag
+43;7234;Ottensheim
+43;7676;Ottnang am Hausruck
+43;7265;Pabneukirchen
+43;3150;Paldau
+43;3638;Palfau
+43;2166;Parndorf
+43;3179;Passail
+43;2736;Paudorf
+43;3127;Peggau
+43;7287;Peilstein im M√ºhlviertel
+43;1;Perchtoldsdorf
+43;7262;Perg
+43;3867;Pernegg an der Mur
+43;2632;Pernitz
+43;2784;Perschling
+43;2163;Petronell-Carnuntum
+43;7586;Pettenbach
+43;5448;Pettneu am Arlberg
+43;7276;Peuerbach
+43;2848;Pfaffenschlag bei Waidhofen a.d.Thaya
+43;5474;Pfunds
+43;5442;Pians
+43;3624;Pichl-Kainisch
+43;6549;Piesendorf
+43;3357;Pinkafeld
+43;3339;Pinggau
+43;4224;Pischeldorf
+43;3113;Pischelsdorf in der Steiermark
+43;2627;Pitten
+43;2177;Podersdorf am See
+43;2757;P√∂chlarn
+43;2758;P√∂ggstall
+43;3465;P√∂lfing-Brunn
+43;3335;P√∂llau
+43;3579;P√∂ls
+43;4272;P√∂rtschach am W√∂rther See
+43;2631;P√∂ttsching
+43;2623;Pottendorf
+43;2552;Poysdorf
+43;7736;Pram
+43;4353;Prebl
+43;3185;Preding
+43;7236;Pregarten
+43;2665;Prein an der Rax
+43;4354;Preitenegg
+43;2145;Prellenkirchen
+43;2233;Pressbaum
+43;2749;Prinzersdorf
+43;2215;Probstdorf
+43;2282;Prottes
+43;5472;Prutz
+43;4877;Pr√§graten am Gro√üvenediger
+43;3177;Puch bei Weiz
+43;2636;Puchberg am Schneeberg
+43;2726;Puchenstuben
+43;2946;Pulkau
+43;2683;Purbach am Neusiedler See
+43;7489;Purgstall an der Erlauf
+43;2231;Purkersdorf
+43;3574;Pusterwald
+43;2745;Pyhra
+43;7762;Raab
+43;2846;Raabs an der Thaya
+43;2249;Raasdorf
+43;2723;Rabenstein an der Pielach
+43;4246;Radenthein
+43;3635;Radmer
+43;6452;Radstadt
+43;5553;Raggal
+43;7949;Rainbach im M√ºhlkreis
+43;6475;Ramingstein
+43;2828;Rappottenstein
+43;2826;Rastenfeld
+43;3173;Ratten
+43;6544;Rauris
+43;3363;Rechnitz
+43;2666;Reichenau an der Rax
+43;7211;Reichenau im M√ºhlkreis
+43;4359;Reichenfels
+43;7214;Reichenthal
+43;2276;Reidling
+43;4273;Reifnitz
+43;4783;Rei√üeck
+43;4734;Rennweg
+43;2942;Retz
+43;5672;Reutte
+43;2271;Ried am Riederberg
+43;7752;Ried im Innkreis
+43;7588;Ried im Traunkreis
+43;7764;Riedau
+43;3153;Riegersburg
+43;2916;Riegersburg (Hardegg)
+43;5517;Riezlern
+43;2164;Rohrau
+43;7289;Rohrbach in Ober√∂sterreich
+43;5417;Roppen
+43;7566;Rosenau am Hengstpa√ü
+43;2714;Rossatz
+43;4767;Rothenthurn
+43;3614;Rottenmann
+43;4234;Ruden
+43;2685;Rust
+43;6242;Ru√übach am Pa√ü Gsch√ºtt
+43;2264;R√ºckersdorf
+43;6541;Saalbach
+43;6582;Saalfelden am Steinernen Meer
+43;3147;Salla
+43;662;Salzburg
+43;7944;Sandl
+43;7717;Sankt Aegidi
+43;2768;Sankt Aegyd am Neuwalde
+43;4358;Sankt Andr√§
+43;2242;Sankt Andr√§-W√∂rdern
+43;3158;Sankt Anna am Aigen
+43;5446;Sankt Anton am Arlberg
+43;7224;Sankt Florian
+43;3632;Sankt Gallen
+43;5557;Sankt Gallenkirch
+43;7954;St. Georgen am Walde
+43;2742;St. Georgen am Steinfelde
+43;7237;St. Georgen an der Gusen
+43;3183;Sankt Georgen an der Stiefing
+43;7667;St. Georgen im Attergau
+43;3537;Sankt Georgen ob Murau
+43;6227;Sankt Gilgen
+43;4253;Sankt Jakob im Rosental
+43;4873;Sankt Jakob in Defereggen
+43;5279;Sankt Jodok am Brenner
+43;3575;Sankt Johann am Tauern
+43;6412;Sankt Johann im Pongau
+43;5352;St. Johann in Tirol
+43;4239;Sankt Kanzian am Klopeiner See
+43;3869;Sankt Katharein an der Laming
+43;6241;Sankt Koloman
+43;3585;Sankt Lambrecht
+43;2756;St. Leonhard am Forst
+43;2987;St. Leonhard am Hornerwald
+43;5413;Sankt Leonhard im Pitztal
+43;3331;Sankt Lorenzen am Wechsel
+43;3515;Sankt Lorenzen bei Knittelfeld
+43;3119;Sankt Marein bei Graz
+43;3864;Sankt Marein im M√ºrztal
+43;4226;Sankt Margareten im Rosental
+43;2680;Sankt Margarethen im Burgenland
+43;6476;Sankt Margarethen im Lungau
+43;3684;Sankt Martin am Grimming
+43;3140;Sankt Martin am W√∂llmi√überg
+43;7751;St. Martin im Innkreis
+43;7232;St. Martin im M√ºhlkreis
+43;3327;Sankt Michael im Burgenland
+43;6477;Sankt Michael im Lungau
+43;3843;Sankt Michael in Obersteiermark
+43;3689;Sankt Nikolai im S√∂lktal
+43;7945;St. Oswald bei Freistadt
+43;3123;Sankt Oswald bei Plankenwarth
+43;3469;Sankt Oswald in Freiland
+43;3468;Sankt Oswald ob Eibiswald
+43;7565;St. Pankraz
+43;6277;St. Pantaleon
+43;4357;Sankt Paul im Lavanttal
+43;3536;Sankt Peter am Kammersberg
+43;3477;Sankt Peter am Ottersbach
+43;7477;St. Peter in der Au
+43;2742;St. P√∂lten
+43;3178;Sankt Ruprecht an der Raab
+43;4283;Sankt Stefan im Gailtal
+43;7435;St. Valentin
+43;4212;Sankt Veit an der Glan
+43;2763;St. Veit an der G√∂lsen
+43;7217;St. Veit im M√ºhlkreis
+43;4879;Sankt Veit in Defereggen
+43;6138;St. Wolfgang im Salzkammergut
+43;7283;Sarleinsbach
+43;5524;Satteins
+43;7244;Sattledt
+43;2638;Saubersdorf
+43;7713;Schardenberg
+43;5213;Scharnitz
+43;7615;Scharnstein
+43;7482;Scheibbs
+43;3582;Scheifling
+43;7251;Schiedlberg
+43;3687;Schladming
+43;7582;Schlierbach
+43;2663;Schottwien
+43;2853;Schrems
+43;5556;Schruns
+43;5519;Schr√∂cken
+43;2230;Schwadorf
+43;3467;Schwanberg
+43;7728;Schwand im Innkreis
+43;7673;Schwanenstadt
+43;6415;Schwarzach im Pongau
+43;2667;Schwarzau im Gebirge
+43;2849;Schwarzenau
+43;2724;Schwarzenbach an der Pielach
+43;7280;Schwarzenberg am B√∂hmerwald
+43;5242;Schwaz
+43;2829;Schweiggers
+43;7712;Sch√§rding
+43;7261;Sch√∂nau im M√ºhlkreis
+43;2827;Sch√∂nbach
+43;2733;Sch√∂nberg am Kamp
+43;3587;Sch√∂nberg-Lachtal
+43;2282;Sch√∂nkirchen-Reyersdorf
+43;5418;Sch√∂nwies
+43;2684;Sch√ºtzen am Gebirge
+43;3333;Sebersdorf
+43;3514;Seckau
+43;5441;See
+43;4762;Seeboden am Millst√§tter See
+43;5212;Seefeld in Tirol
+43;6212;Seekirchen am Wallersee
+43;7662;Seewalchen am Attersee
+43;5230;Sellrain
+43;3616;Selzthal
+43;2664;Semmering
+43;5476;Serfaus
+43;2687;Siegendorf
+43;2621;Sieggraben
+43;2274;Sieghartskirchen
+43;2267;Sierndorf
+43;7259;Sierning
+43;2983;Sigmundsherberg
+43;4842;Sillian
+43;5263;Silz
+43;3118;Sinabelkirchen
+43;7240;Sipbachzell
+43;4279;Sirnitz
+43;2959;Sitzendorf an der Schmida
+43;3460;Soboth
+43;5554;Sonntag
+43;2538;Spannberg
+43;7563;Spital am Pyhrn
+43;3853;Spital am Semmering
+43;4762;Spittal an der Drau
+43;2713;Spitz
+43;3534;Stadl an der Mur
+43;3355;Stadtschlaining
+43;3682;Stainach
+43;3463;Stainz
+43;5632;Stanzach
+43;3326;Stegersbach
+43;2622;Steinabr√ºckl
+43;5272;Steinach am Brenner
+43;7488;Steinakirchen am Forst
+43;7663;Steinbach am Attersee
+43;5248;Steinberg am Rofan
+43;2688;Steinbrunn
+43;7241;Steinerkirchen an der Traun
+43;4717;Steinfeld (K√§rnten)
+43;4271;Steuerberg
+43;7252;Steyr
+43;4761;Stockenboi
+43;2266;Stockerau
+43;3473;Straden
+43;2287;Strasshof an der Nordbahn
+43;4266;Stra√üburg
+43;6215;Stra√üwalchen
+43;3324;Strem
+43;7432;Strengberg
+43;6137;Strobl
+43;2526;Stronsdorf
+43;3176;Stubenberg
+43;3115;Studenzen
+43;2554;St√ºtzenhofen
+43;7711;Suben
+43;3387;S√∂chau
+43;3137;S√∂ding
+43;5254;S√∂lden
+43;5333;S√∂ll
+43;2176;Tadten
+43;6474;Tamsweg
+43;5675;Tannheim
+43;7719;Taufkirchen an der Pram
+43;3688;Tauplitz
+43;6543;Taxenbach
+43;4713;Techendorf
+43;5262;Telfs
+43;7256;Ternberg
+43;2630;Ternitz
+43;3883;Terz
+43;3582;Teufenbach
+43;6235;Thalgau
+43;5223;Thaur
+43;2947;Theras
+43;5376;Thiersee
+43;5550;Th√ºringen
+43;2739;Tiefenfucha
+43;3833;Traboch
+43;3868;Trag√∂√ü
+43;3461;Trah√ºtten
+43;2783;Traismauer
+43;7229;Traun
+43;7617;Traunkirchen
+43;2169;Trautmannsdorf an der Leitha
+43;4248;Treffen
+43;4262;Treibach
+43;4823;Tresdorf (Rangersdorf)
+43;3615;Trieben
+43;5275;Trins
+43;3847;Trofaiach
+43;4285;Tr√∂polach
+43;2273;Tulbing
+43;2272;Tulln an der Donau
+43;3863;Turnau
+43;3533;Turrach
+43;5287;Tux
+43;6471;Tweng
+43;5477;T√∂sens
+43;2769;T√ºrnitz
+43;7288;Ulrichsberg
+43;5255;Umhausen
+43;6589;Unken
+43;2717;Unter-Meisling
+43;7665;Unterach am Attersee
+43;5256;Untergurgl
+43;3631;Unterlaussa
+43;6455;Untertauern
+43;7956;Unterwei√üenbach
+43;3583;Unzmarkt-Frauenburg
+43;6563;Uttendorf
+43;3125;√úbelbach
+43;3856;Veitsch
+43;4274;Velden am W√∂rther See
+43;2538;Velm-G√∂tzendorf
+43;4242;Villach
+43;5677;Vils
+43;4874;Virgen
+43;2841;Vitis
+43;3142;Voitsberg
+43;3337;Vorau
+43;7614;Vorchdorf
+43;3849;Vordernberg
+43;7219;Vorderwei√üenbach
+43;7672;V√∂cklabruck
+43;7682;V√∂cklamarkt
+43;4232;V√∂lkermarkt
+43;6413;Wagrain
+43;2842;Waidhofen an der Thaya
+43;7442;Waidhofen an der Ybbs
+43;5353;Waidring
+43;7277;Waizenkirchen
+43;5374;Walchsee
+43;3834;Wald am Schoberpa√ü
+43;3336;Waldbach
+43;2855;Waldenstein
+43;7260;Waldhausen im Strudengau
+43;7718;Waldkirchen am Wesen
+43;7754;Waldzell
+43;7249;Wallern an der Trattnach
+43;2174;Wallern im Burgenland
+43;7433;Wallsee-Sindelburg
+43;7587;Wartberg an der Krems
+43;2629;Warth
+43;5224;Wattens
+43;3884;Wegscheid
+43;3886;Weichselboden
+43;2845;Weikertschlag an der Thaya
+43;7414;Weins-Isperdorf
+43;4265;Weitensfeld im Gurktal
+43;2948;Weitersfeld
+43;7952;Weitersfelden
+43;2856;Weitra
+43;3172;Weiz
+43;4286;Wei√übriach
+43;5678;Wei√üenbach am Lech
+43;2674;Weissenbach an der Triesting
+43;2715;Wei√üenkirchen in der Wachau
+43;7242;Wels
+43;5414;Wenns
+43;6468;Werfen
+43;6466;Werfenweng
+43;4252;Wernberg
+43;5334;Westendorf
+43;7355;Weyer
+43;7664;Weyregg am Attersee
+43;1;Wien
+43;2622;Wiener Neustadt
+43;2728;Wienerbruck
+43;7416;Wieselburg
+43;2645;Wiesmath
+43;3636;Wildalpen
+43;3182;Wildon
+43;5339;Wildsch√∂nau
+43;2573;Wilfersdorf
+43;2746;Wilhelmsburg
+43;7226;Wilhering
+43;2620;Willendorf
+43;7943;Windhaag bei Freistadt
+43;7264;Windhaag bei Perg
+43;7562;Windischgarsten
+43;7472;Winklarn
+43;4822;Winklern
+43;2638;Winzendorf-Muthmannsdorf
+43;7253;Wolfern
+43;4352;Wolfsberg
+43;3184;Wolfsberg im Schwarzautal
+43;2245;Wolkersdorf im Weinviertel
+43;2687;Wulkaprodersdorf
+43;2527;Wulzeshofen
+43;2633;W√∂llersdorf-Steinabr√ºckl
+43;5332;W√∂rgl
+43;7412;Ybbs an der Donau
+43;7443;Ybbsitz
+43;6478;Zederhaus
+43;6234;Zell am Moos
+43;6542;Zell am See
+43;5282;Zell am Ziller
+43;7764;Zell an der Pram
+43;2945;Zellerndorf
+43;3577;Zeltweg
+43;2956;Ziersdorf
+43;5238;Zirl
+43;2532;Zistersdorf
+43;2147;Zurndorf
+43;2277;Zwentendorf an der Donau
+43;7212;Zwettl an der Rodl
+43;2822;Zwettl
 44;19;2;Hertford
 44;1685;Aberdare;
 44;1224;Aberdeen;
