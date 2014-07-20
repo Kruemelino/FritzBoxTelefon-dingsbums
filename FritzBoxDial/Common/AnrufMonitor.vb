@@ -90,7 +90,7 @@ Friend Class AnrufMonitor
 #Region "Globale Variablen"
     Private StoppUhrDaten(5) As StructStoppUhr
     Private TelefonatsListe As New List(Of C_Telefonat)
-    Private AnrMonList As New List(Of formAnrMon)
+    Private AnrMonList As New List(Of Popup)
 
     Private StandbyCounter As Integer
     Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
@@ -119,15 +119,15 @@ Friend Class AnrufMonitor
 #Region "BackgroundWorker"
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-        Telefonat.FormAnrMon = New formAnrMon(True, C_DP, C_hf, Me, C_OlI, C_KF)
-        Telefonat.FormAnrMon.Start()
+        Telefonat.FormAnrMon = New Popup
+        Telefonat.FormAnrMon.Start(True, C_DP, C_hf, Me, C_OlI, C_KF)
         AnrMonList.Add(Telefonat.FormAnrMon)
         Dim a As Integer
         Do
             a = AnrMonList.Count - 1
             For i = 0 To a
                 If i < AnrMonList.Count Then
-                    If CType(AnrMonList(i), formAnrMon).AnrmonClosed Then
+                    If CType(AnrMonList(i), Popup).AnrmonClosed Then
                         AnrMonList.Remove(Telefonat.FormAnrMon)
                         i = 0
                         a = AnrMonList.Count - 1
@@ -168,7 +168,8 @@ Friend Class AnrufMonitor
         End With
 
         With StoppUhrDaten(ID)
-            Dim frmStUhr As New formStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
+            Dim frmStUhr As New Popup
+            frmStUhr.ZeigeStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
             C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(CStr(ID), .Anruf)) '"Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
             BWStoppuhrEinblenden.WorkerSupportsCancellation = True
             Do Until frmStUhr.StUhrClosed

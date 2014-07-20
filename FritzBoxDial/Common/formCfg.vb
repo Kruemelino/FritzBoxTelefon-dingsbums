@@ -656,10 +656,9 @@ Friend Class formCfg
                 System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
-                Using F_AnrMon As New formAnrMon(False, C_DP, C_hf, C_AnrMon, C_OlI, C_KF)
-                    F_AnrMon.Start()
+                Using F_AnrMon As New Popup
+                    F_AnrMon.Start(False, C_DP, C_hf, C_AnrMon, C_OlI, C_KF)
                 End Using
-
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
@@ -750,6 +749,7 @@ Friend Class formCfg
                 Dim StartPosition As System.Drawing.Point
                 Dim x As Integer = 0
                 Dim y As Integer = 0
+
                 If C_DP.P_CBStoppUhrAusblenden Then
                     WarteZeit = CInt(Me.TBStoppUhr.Text)
                 Else
@@ -767,15 +767,19 @@ Friend Class formCfg
                         .Y = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 50) / 2)
                     End If
                 End With
+
                 With System.DateTime.Now
                     Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                 End With
 
-                Dim frmStUhr As New formStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
+                Dim frmStUhr As New Popup
+                frmStUhr.ZeigeStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
+
                 Do Until frmStUhr.StUhrClosed
                     C_hf.ThreadSleep(20)
                     Windows.Forms.Application.DoEvents()
                 Loop
+
                 C_DP.P_CBStoppUhrX = frmStUhr.Position.X
                 C_DP.P_CBStoppUhrY = frmStUhr.Position.Y
                 frmStUhr = Nothing

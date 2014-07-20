@@ -20,14 +20,14 @@ Public Class Wählclient
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfaceKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
-                   ByVal cFBox As FritzBox, _
+                   ByVal FritzBoxKlasse As FritzBox, _
                    ByVal PhonerKlasse As PhonerInterface)
         C_hf = HelferKlasse
         C_KF = KontaktKlasse
         C_GUI = InterfaceKlasse
         C_DP = DataProviderKlasse
         C_OlI = OutlInter
-        C_FBox = cFBox
+        C_FBox = FritzBoxKlasse
         C_Phoner = PhonerKlasse
 
     End Sub

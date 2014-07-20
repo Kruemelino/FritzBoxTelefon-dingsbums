@@ -1149,8 +1149,8 @@
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Using F_AnrMon As New formAnrMon(False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
-            F_AnrMon.Start()
+        Using F_AnrMon As New Popup()
+            F_AnrMon.Start(False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
         End Using
     End Sub
 

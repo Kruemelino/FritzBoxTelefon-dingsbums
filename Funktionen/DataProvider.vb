@@ -10,7 +10,7 @@ Public Class DataProvider
 #End Region
 
 #Region "Windows Const für Office 2003"
-#If over = 11 Then
+#If oVer = 11 Then
     Public Const ECM_FIRST As Long = &H1500
     Public Const EM_AUTOURLDETECT As Long = (WM_USER + 91)
     Public Const EM_CANPASTE As Long = (WM_USER + 50)  ' unique to rich edit control
@@ -139,12 +139,78 @@ Public Class DataProvider
 #End Region
 
 #Region "Konstanten"
-    Private Const Speicherintervall As Double = 5 'in Minuten
-    Private Const RootName As String = "FritzOutlookXML"
-    Private Const xPathSeperatorSlash As String = "/"
-    Private Const xPathWildCard As String = "*"
-    Private Const xPathBracketOpen As String = "["
-    Private Const xPathBracketClose As String = "]"
+    ' Helfer
+    ''' <summary>
+    ''' Intervall (in Minuten), in dem die XML-Datei gespeichert wird.
+    ''' </summary>
+    ''' <value>Double</value>
+    ''' <returns>5</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_SpeicherIntervall() As Double
+        Get
+            Return 5.0
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Name des Wurzelknotens der XML-Datei: "FritzOutlookXML"
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>FritzOutlookXML</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RootName() As String
+        Get
+            Return "FritzOutlookXML"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' xPath Steuerzeichen: Seperator /
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>/</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_xPathSeperatorSlash() As String
+        Get
+            Return "/"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' xPath Steuerzeichen: WildCard *
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>/</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_xPathWildCard() As String
+        Get
+            Return "*"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' xPath Steuerzeichen: Öffnende eckige Klammer [
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>/</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_xPathBracketOpen() As String
+        Get
+            Return "["
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' xPath Steuerzeichen: Schließende eckige Klammer ]
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>/</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_xPathBracketClose() As String
+        Get
+            Return "]"
+        End Get
+    End Property
 #End Region
 
 #Region "PrivateData"
@@ -1026,7 +1092,8 @@ Public Class DataProvider
 
 #Region "Global Default Value Properties"
     ''' <summary>
-    ''' Default Fehlerwert
+    ''' -1 als String.
+    ''' Default Fehler
     ''' </summary>
     ''' <value>-1</value>
     ''' <returns>String</returns>
@@ -1036,36 +1103,72 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' -1 als Integer
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_ErrorMinusOne_Integer() As Integer
         Get
             Return -1
         End Get
     End Property
 
+    ''' <summary>
+    ''' -2 als String
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_ErrorMinusTwo_String() As String
         Get
             Return "-2"
         End Get
     End Property
 
+    ''' <summary>
+    ''' Leerstring, String.Empty
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_StringEmpty() As String
         Get
             Return String.Empty
         End Get
     End Property
 
+    ''' <summary>
+    ''' vbCrLf
+    ''' </summary>
+    ''' <value>vbCrLf</value>
+    ''' <returns>vbCrLf</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_NeueZeile() As String
         Get
             Return vbCrLf
         End Get
     End Property
 
+    ''' <summary>
+    ''' String: unbekannt
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_StringUnknown() As String
         Get
             Return "unbekannt"
         End Get
     End Property
 
+    ''' <summary>
+    ''' fritz.box
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_FritzBoxAdress() As String
         Get
             Return "fritz.box"
@@ -1246,72 +1349,144 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' FBDB-AnrMonDirection
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
         Get
             Return "FBDB-AnrMonDirection"
         End Get
     End Property
 
+    ''' <summary>
+    ''' FBDB-AnrMonZeit
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
         Get
             Return "FBDB-AnrMonZeit"
         End Get
     End Property
 
+    ''' <summary>
+    ''' FBDB_Note_Table
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Note_Table() As String
         Get
             Return "FBDB_Note_Table"
         End Get
     End Property
 
+    ''' <summary>
+    ''' BEGIN:VCARD
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Begin_vCard() As String
         Get
             Return "BEGIN:VCARD"
         End Get
     End Property
 
+    ''' <summary>
+    ''' END:VCARD
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_End_vCard() As String
         Get
             Return "END:VCARD"
         End Get
     End Property
 
+    ''' <summary>
+    ''' CallList
+    ''' </summary>
+    ''' <value>CallList</value>
+    ''' <returns>CallList</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_NameListCALL() As String
         Get
             Return "CallList"
         End Get
     End Property
 
+    ''' <summary>
+    ''' RingList
+    ''' </summary>
+    ''' <value>RingList</value>
+    ''' <returns>RingList</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_NameListRING() As String
         Get
             Return "RingList"
         End Get
     End Property
 
+    ''' <summary>
+    ''' VIPList
+    ''' </summary>
+    ''' <value>VIPList</value>
+    ''' <returns>VIPList</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_NameListVIP() As String
         Get
             Return "VIPList"
         End Get
     End Property
 
+    ''' <summary>
+    ''' Fritz!Box Telefon-dingsbums
+    ''' </summary>
+    ''' <value>Fritz!Box Telefon-dingsbums</value>
+    ''' <returns>Fritz!Box Telefon-dingsbums</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Addin_LangName() As String
         Get
             Return "Fritz!Box Telefon-dingsbums"
         End Get
     End Property
 
+    ''' <summary>
+    ''' FritzOutlook
+    ''' </summary>
+    ''' <value>FritzOutlook</value>
+    ''' <returns>FritzOutlook</returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Addin_KurzName() As String
         Get
             Return "FritzOutlook"
         End Get
     End Property
 
+    ''' <summary>
+    ''' FritzOutlook.xml
+    ''' </summary>
+    ''' <value>FritzOutlook.xml</value>
+    ''' <returns>FritzOutlook.xml</returns>
+    ''' <remarks>Wird mit "P_Def_Addin_KurzName" erstellt.</remarks>
     Public ReadOnly Property P_Def_Config_FileName() As String
         Get
             Return P_Def_Addin_KurzName & ".xml"
         End Get
     End Property
 
+    ''' <summary>
+    ''' FritzOutlook.log
+    ''' </summary>
+    ''' <value>FritzOutlook.log</value>
+    ''' <returns>FritzOutlook.log</returns>
+    ''' <remarks>Wird mit "P_Def_Addin_KurzName" erstellt.</remarks>
     Public ReadOnly Property P_Def_Log_FileName() As String
         Get
             Return P_Def_Addin_KurzName & ".log"
@@ -1475,7 +1650,7 @@ Public Class DataProvider
 
 #Region "Default Value Properties"
     ''' <summary>
-    ''' Ist immer 0049
+    ''' Landesvorwahl für Deutschland mit zwei führenden Nullen: 0049
     ''' </summary>
     ''' <value>0049</value>
     ''' <returns>0049</returns>
@@ -1733,6 +1908,12 @@ Public Class DataProvider
 
     End Property
     ' Telefonnummernformatierung
+    ''' <summary>
+    ''' Nach der Maske werden Telefonnummern formatiert: %L (%O) %N - %D
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_TBTelNrMaske() As String
         Get
             Return "%L (%O) %N - %D"
@@ -2014,7 +2195,7 @@ Public Class DataProvider
         End Get
     End Property
 
-    ' AnrMon
+    ' Anrufmonitor
     ''' <summary>
     ''' Stoppuhr gestartet - ID: %ID, Anruf:  %Anruf
     ''' </summary>
@@ -2257,6 +2438,43 @@ Public Class DataProvider
         End Get
     End Property
 
+    'Anrufmonitor - PopUp
+    ''' <summary>
+    ''' Kontakt öffnen
+    ''' </summary>
+    ''' <value>Kontakt öffnen</value>
+    ''' <returns>Kontakt öffnen</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen As String
+        Get
+            Return "Kontakt öffnen"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Rückruf
+    ''' </summary>
+    ''' <value>Rückruf</value>
+    ''' <returns>Rückruf</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemRückruf As String
+        Get
+            Return "Rückruf"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' In Zwischenablage kopieren
+    ''' </summary>
+    ''' <value>In Zwischenablage kopieren</value>
+    ''' <returns>In Zwischenablage kopieren</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKopieren As String
+        Get
+            Return "In Zwischenablage kopieren"
+        End Get
+    End Property
+
     ' Fritz!Box
     ''' <summary>
     ''' Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " &amp; Blocktime &amp; " Sekunden zu.  Versuchen Sie es später erneut.
@@ -2358,7 +2576,6 @@ Public Class DataProvider
     End Property
 
     ' Telefone
-
     ''' <summary>
     ''' Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
     ''' </summary>
@@ -2564,8 +2781,8 @@ Public Class DataProvider
         End Get
     End Property
 
-#End Region
 
+#End Region
 
     Public Sub New()
         ' Pfad zur Einstellungsdatei ermitteln
@@ -2576,7 +2793,7 @@ Public Class DataProvider
         XMLDoc = New XmlDocument()
         With My.Computer.FileSystem
             If Not (.FileExists(ConfigPfad) AndAlso XMLValidator(ConfigPfad)) Then
-                XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & RootName & "/>")
+                XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & P_RootName & "/>")
                 If Not .DirectoryExists(P_Arbeitsverzeichnis) Then .CreateDirectory(P_Arbeitsverzeichnis)
                 .WriteAllText(ConfigPfad, XMLDoc.InnerXml, True)
                 SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
@@ -2585,12 +2802,16 @@ Public Class DataProvider
         CleanUpXML()
         tSpeichern = New Timer
         With tSpeichern
-            .Interval = TimeSpan.FromMinutes(Speicherintervall).TotalMilliseconds
+            .Interval = TimeSpan.FromMinutes(P_SpeicherIntervall).TotalMilliseconds
             .Start()
         End With
         LoadOptionData()
     End Sub
 
+    ''' <summary>
+    ''' Initiales Laden der Daten aus der XML-Datei
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub LoadOptionData()
         Dim xPathTeile As New ArrayList
 
@@ -2688,6 +2909,10 @@ Public Class DataProvider
         Me.P_CLBTelNr = (From x In Split(Read(xPathTeile, Me.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
     End Sub
 
+    ''' <summary>
+    ''' Speicher Daten, die in den Properties stehen in die XML-String.
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub SaveOptionData()
         Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
         Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
@@ -2842,7 +3067,7 @@ Public Class DataProvider
         If Not tmpXMLNode Is Nothing Then
             tmpParentXMLNode = tmpXMLNode.ParentNode
             Do Until tmpParentXMLNode.Name = xPathTeile.Item(1).ToString
-                If Not Left(xPathTeile.Item(xPathTeile.Count - i).ToString, 1) = xPathBracketOpen Then
+                If Not Left(xPathTeile.Item(xPathTeile.Count - i).ToString, 1) = P_xPathBracketOpen Then
                     xPathTeile.Item(xPathTeile.Count - 1 - i) = tmpParentXMLNode.Name
                     tmpParentXMLNode = tmpParentXMLNode.ParentNode
                 End If
@@ -3147,36 +3372,48 @@ Public Class DataProvider
                 .SelectSingleNode(xPath).RemoveAll()
                 .SelectSingleNode(xPath).AppendChild(tmpNode)
             End If
-            ' Alle Knoten LetzterAnrufer löschen
-            'xPathTeile.Clear()
-            'xPathTeile.Add("LetzterAnrufer")
-            'xPath = CreateXPath(xPathTeile)
-            'tmpNode = .SelectSingleNode(xPath)
-            'If Not tmpNode Is Nothing Then
-            '    .DocumentElement.RemoveChild(.SelectSingleNode(xPath))
-            'End If
             xPathTeile = Nothing
         End With
     End Sub
 
+    ''' <summary>
+    ''' Erstellt einen korrekten xPath aus einer Liste einzelnen xPath-Elementen zusammen
+    ''' </summary>
+    ''' <param name="xPathElements">Lista an xPath-Elementen</param>
+    ''' <returns>gültiger xPath</returns>
+    ''' <remarks></remarks>
     Function CreateXPath(ByVal xPathElements As ArrayList) As String
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-        CreateXPath = Replace(xPathSeperatorSlash & Join(xPathElements.ToArray(), xPathSeperatorSlash), xPathSeperatorSlash & xPathBracketOpen, xPathBracketOpen, , , CompareMethod.Text)
-        CreateXPath = Replace(CreateXPath, xPathBracketClose & xPathBracketOpen, " and ", , , CompareMethod.Text)
+        CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
+        CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text)
     End Function
 
+    ''' <summary>
+    ''' Prüft üb der xPath für das Schreiben in die XML-Datei möglich ist.
+    ''' Beispiel: Wildcard * darf nicht enthalten sein, da kein eindeutiges Ziel addressiert werden kann.
+    ''' </summary>
+    ''' <param name="xPath">zu prüfender xPath</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function CheckXPathWrite(ByVal xPath As String) As Boolean
         CheckXPathWrite = True
 
-        If Not InStr(xPath, xPathSeperatorSlash & xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
-        If Right(xPath, 1) = xPathSeperatorSlash Then Return False
+        If Not InStr(xPath, P_xPathSeperatorSlash & P_xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
+        If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
     End Function
 
+    ''' <summary>
+    ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
+    ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
+    ''' </summary>
+    ''' <param name="xPath">zu prüfender xPath</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function CheckXPathRead(ByVal xPath As String) As Boolean
         CheckXPathRead = True
 
         If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
-        If Right(xPath, 1) = xPathSeperatorSlash Then Return False
+        If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
     End Function
 #End Region
 

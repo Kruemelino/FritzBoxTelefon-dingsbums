@@ -576,7 +576,10 @@ Imports System.ComponentModel
                         If bAutoAusblenden Then tmWait.Start()
                     End If
 
-                    .Opacity = CDbl(IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1))
+                    Try
+                        .Opacity = CDbl(IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1))
+                    Catch : End Try
+
 
                 Else 'Ausblenden
                     If bMouseIsOn Then

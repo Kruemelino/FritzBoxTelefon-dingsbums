@@ -23,7 +23,7 @@
     Private _vCard As String
     Private _Anrufer As String
     Private _TelName As String
-    Private _frm_AnrMon As formAnrMon
+    Private _frm_Popup As Popup
     Private _Angenommen As Boolean = False
 #End Region
 
@@ -164,12 +164,12 @@
             _TelName = value
         End Set
     End Property
-    Friend Property FormAnrMon() As formAnrMon
+    Friend Property FormAnrMon() As Popup
         Get
-            Return _frm_AnrMon
+            Return _frm_Popup
         End Get
-        Set(ByVal value As formAnrMon)
-            _frm_AnrMon = value
+        Set(ByVal value As Popup)
+            _frm_Popup = value
         End Set
     End Property
     Friend Property Angenommen() As Boolean

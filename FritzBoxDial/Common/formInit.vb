@@ -82,10 +82,6 @@
             If C_DP.P_Debug_AnrufSimulation Then
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
             End If
-
-            ' Code zum Testen von Funktionen
-
-
         End If
     End Sub
 
