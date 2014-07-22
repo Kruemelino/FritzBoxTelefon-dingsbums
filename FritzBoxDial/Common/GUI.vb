@@ -61,6 +61,7 @@
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
     Private C_FBox As FritzBox
+    Private C_PopUp As Popup
 #End Region
 
 #Region "Eigene Formulare"
@@ -108,12 +109,14 @@
     Friend Sub New(ByVal HelferKlasse As Helfer, _
            ByVal DataProviderKlasse As DataProvider, _
            ByVal Inverssuche As formRWSuche, _
-           ByVal KontaktKlasse As Contacts)
+           ByVal KontaktKlasse As Contacts, _
+           ByVal PopUpKlasse As Popup)
 
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
+        C_PopUp = PopUpKlasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -1149,9 +1152,7 @@
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        Using F_AnrMon As New Popup()
-            F_AnrMon.Start(False, C_DP, C_HF, C_AnrMon, C_OLI, C_KF)
-        End Using
+        C_PopUp.Start(False, C_AnrMon.LetzterAnrufer)
     End Sub
 
     Friend Sub AnrMonNeustarten()

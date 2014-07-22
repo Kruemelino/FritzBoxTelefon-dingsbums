@@ -14,6 +14,7 @@ Friend Class formCfg
     Private C_OlI As OutlookInterface
     Private C_AnrMon As AnrufMonitor
     Private C_FBox As FritzBox
+    Private C_PopUp As Popup
 #End Region
 
 #Region "BackgroundWorker"
@@ -51,7 +52,8 @@ Friend Class formCfg
                    ByVal fritzboxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal kontaktklasse As Contacts, _
-                   ByVal Phonerklasse As PhonerInterface)
+                   ByVal Phonerklasse As PhonerInterface, _
+                   ByVal Popupklasse As Popup)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -66,6 +68,7 @@ Friend Class formCfg
         C_FBox = fritzboxKlasse
         C_KF = kontaktklasse
         C_Phoner = Phonerklasse
+        C_PopUp = Popupklasse
         Me.LVersion.Text += ThisAddIn.Version
         With Me.ComboBoxRWS.Items
             .Add("DasÖrtliche.de")
@@ -656,9 +659,8 @@ Friend Class formCfg
                 System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
-                Using F_AnrMon As New Popup
-                    F_AnrMon.Start(False, C_DP, C_hf, C_AnrMon, C_OlI, C_KF)
-                End Using
+                C_PopUp.Start(False, C_AnrMon.LetzterAnrufer)
+
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
             Case "BProbleme"
@@ -772,17 +774,16 @@ Friend Class formCfg
                     Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                 End With
 
-                Dim frmStUhr As New Popup
-                frmStUhr.ZeigeStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
+                C_PopUp.ZeigeStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
 
-                Do Until frmStUhr.StUhrClosed
+                Do Until C_PopUp.StUhrClosed
                     C_hf.ThreadSleep(20)
                     Windows.Forms.Application.DoEvents()
                 Loop
 
-                C_DP.P_CBStoppUhrX = frmStUhr.Position.X
-                C_DP.P_CBStoppUhrY = frmStUhr.Position.Y
-                frmStUhr = Nothing
+                C_DP.P_CBStoppUhrX = C_PopUp.Position.X
+                C_DP.P_CBStoppUhrY = C_PopUp.Position.Y
+                'frmStUhr = Nothing
             Case "BArbeitsverzeichnis"
                 Dim fDialg As New System.Windows.Forms.FolderBrowserDialog
                 With fDialg

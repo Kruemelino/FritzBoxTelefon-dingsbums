@@ -15,6 +15,7 @@
     Private C_Phoner As PhonerInterface
     Private C_Config As formCfg
     Private F_JournalImport As formJournalimport
+    Private C_PopUp As Popup
     'Strings
     Private SID As String
 
@@ -47,21 +48,22 @@
         ' Klasse für das PhonerInterface generieren
         C_Phoner = New PhonerInterface(C_HF, C_DP, C_Crypt)
 
+        C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF)
         If PrüfeAddin() Then
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp)
 
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner)
             ThisAddIn.P_WClient = C_WählClient
 
-            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI)
+            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp)
             ThisAddIn.P_AnrMon = C_AnrMon
 
-            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner)
+            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp)
             ThisAddIn.P_Config = C_Config
 
             With C_GUI

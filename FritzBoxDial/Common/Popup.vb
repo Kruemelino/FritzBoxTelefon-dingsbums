@@ -1,19 +1,31 @@
 ﻿Imports System.Timers
 Imports System.IO.Path
 Imports System.Drawing
+Imports System.Collections.Generic
 
 Public Class Popup
     Implements IDisposable
 
-    ' Track whether Dispose has been called.
-    Private disposed As Boolean = False
-
-#Region "Anrufmonitor"
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
-    Private C_AnrMon As AnrufMonitor
+    'Private C_AnrMon As AnrufMonitor
+    ' Track whether Dispose has been called.
+    Private disposed As Boolean = False
+
+    Friend Sub New(ByVal DataProviderKlasse As DataProvider, _
+                     ByVal HelferKlasse As Helfer, _
+                     ByVal OutlInter As OutlookInterface, _
+                     ByVal KontaktFunktionen As Contacts)
+
+        C_hf = HelferKlasse
+        C_DP = DataProviderKlasse
+        C_OLI = OutlInter
+        C_KF = KontaktFunktionen
+    End Sub
+
+#Region "Anrufmonitor"
 
     Private CompContainer As New System.ComponentModel.Container()
     Private WithEvents AnrMonContextMenuStrip As New System.Windows.Forms.ContextMenuStrip(CompContainer)
@@ -104,10 +116,10 @@ Public Class Popup
         Me.PopUpAnrMon.Uhrzeit = "07.09.09 12:00:00"
     End Sub
 
-    Sub AnrMonausfüllen()
+    Friend Sub AnrMonausfüllen(ByVal Telefonat As C_Telefonat)
         With PopUpAnrMon
 
-            If C_AnrMon.LetzterAnrufer.TelNr = C_DP.P_Def_StringUnknown Then
+            If Telefonat.TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
                     .Items("ToolStripMenuItemRückruf").Enabled = False ' kein Rückruf im Fall 1
                     .Items("ToolStripMenuItemKopieren").Enabled = False ' in dem Fall sinnlos
@@ -115,12 +127,12 @@ Public Class Popup
                 End With
             End If
             ' Uhrzeit des Telefonates eintragen
-            .Uhrzeit = C_AnrMon.LetzterAnrufer.Zeit.ToString
+            .Uhrzeit = Telefonat.Zeit.ToString
             ' Telefonnamen eintragen
-            .TelName = C_AnrMon.LetzterAnrufer.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & C_AnrMon.LetzterAnrufer.MSN & ")", C_DP.P_Def_StringEmpty))
+            .TelName = Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", C_DP.P_Def_StringEmpty))
 
             ' Kontakt einblenden wenn in Outlook gefunden
-            With C_AnrMon.LetzterAnrufer
+            With Telefonat
                 If .olContact Is Nothing Then
                     ''kontakt erstellen, wenn vcard vorhanden
                     'If Not .vCard = C_DP.P_Def_StringEmpty Then
@@ -129,7 +141,7 @@ Public Class Popup
                 Else
                     'Kontaktbild ermitteln
                     If C_DP.P_CBAnrMonContactImage Then
-                        PfadKontaktBild = C_KF.KontaktBild(C_AnrMon.LetzterAnrufer.olContact)
+                        PfadKontaktBild = C_KF.KontaktBild(.olContact)
                         If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
                             Using fs As New IO.FileStream(PfadKontaktBild, IO.FileMode.Open)
                                 PopUpAnrMon.Image = Image.FromStream(fs)
@@ -142,42 +154,30 @@ Public Class Popup
                 End If
             End With
 
-            If C_AnrMon.LetzterAnrufer.Anrufer = C_DP.P_Def_StringEmpty Then
+            If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
                 .TelNr = C_DP.P_Def_StringEmpty
-                If C_AnrMon.LetzterAnrufer.TelNr = C_DP.P_Def_StringEmpty Then
+                If Telefonat.TelNr = C_DP.P_Def_StringEmpty Then
                     .AnrName = C_DP.P_Def_StringUnknown
                 Else
-                    .AnrName = C_AnrMon.LetzterAnrufer.TelNr
+                    .AnrName = Telefonat.TelNr
                 End If
             Else
-                .TelNr = C_AnrMon.LetzterAnrufer.TelNr
-                .AnrName = C_AnrMon.LetzterAnrufer.Anrufer
+                .TelNr = Telefonat.TelNr
+                .AnrName = Telefonat.Anrufer
                 If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
             End If
 
-            .Firma = C_AnrMon.LetzterAnrufer.Companies
+            .Firma = Telefonat.Companies
         End With
     End Sub
 
-    Friend Sub Start(ByVal Aktualisieren As Boolean, _
-                     ByVal DataProviderKlasse As DataProvider, _
-                     ByVal HelferKlasse As Helfer, _
-                     ByVal AnrufMonitorKlasse As AnrufMonitor, _
-                     ByVal OutlInter As OutlookInterface, _
-                     ByVal KontaktFunktionen As Contacts)
-
-
-        C_hf = HelferKlasse
-        C_DP = DataProviderKlasse
-        C_OLI = OutlInter
-        C_KF = KontaktFunktionen
-        C_AnrMon = AnrufMonitorKlasse
+    Friend Function Start(ByVal Aktualisieren As Boolean, ByVal Telefonat As C_Telefonat) As FritzBoxDial.PopUpAnrMon
 
         AnrMonInitializeComponent()
 
         UpdateForm = Aktualisieren
 
-        AnrMonausfüllen()
+        AnrMonausfüllen(Telefonat)
 
         AnrmonClosed = False
 
@@ -203,7 +203,8 @@ Public Class Popup
         End With
 
         C_OLI.KeepoInspActivated(True)
-    End Sub
+        Return PopUpAnrMon
+    End Function
 
     Private Sub PopUpAnrMon_Close() Handles PopUpAnrMon.Close
         PopUpAnrMon.Hide()
@@ -211,7 +212,7 @@ Public Class Popup
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
         Dim VergleichString As String = PopUpAnrMon.AnrName
-        AnrMonausfüllen()
+        'AnrMonausfüllen()
         If Not VergleichString = PopUpAnrMon.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
@@ -225,7 +226,7 @@ Public Class Popup
     End Sub
 
     Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click
-        ThisAddIn.P_WClient.Rueckruf(C_AnrMon.LetzterAnrufer)
+        'ThisAddIn.P_WClient.Rueckruf(C_AnrMon.LetzterAnrufer)
     End Sub
 
     Private Sub ToolStripMenuItemKopieren_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemKopieren.Click
@@ -237,16 +238,16 @@ Public Class Popup
     Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
         ' blendet den Kontakteintrag des Anrufers ein
         ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        With C_AnrMon.LetzterAnrufer
-            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
-                .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
-            End If
-            If Not .olContact Is Nothing Then
-                .olContact.Display()
-            Else
-                C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
-            End If
-        End With
+        'With C_AnrMon.LetzterAnrufer
+        '    If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
+        '        .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+        '    End If
+        '    If Not .olContact Is Nothing Then
+        '        .olContact.Display()
+        '    Else
+        '        C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
+        '    End If
+        'End With
     End Sub
 #End Region
 
@@ -378,4 +379,5 @@ Public Class Popup
         End If
     End Sub
 #End Region
+
 End Class
