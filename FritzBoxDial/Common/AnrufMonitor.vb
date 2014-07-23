@@ -91,7 +91,7 @@ Friend Class AnrufMonitor
 #Region "Globale Variablen"
     Private StoppUhrDaten(5) As StructStoppUhr
     Private TelefonatsListe As New List(Of C_Telefonat)
-    Private AnrMonList As New List(Of PopUpAnrMon)
+    'Private AnrMonList As New List(Of PopUpAnrMon)
 
     Private StandbyCounter As Integer
     Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
@@ -119,30 +119,30 @@ Friend Class AnrufMonitor
     End Sub
 
 #Region "BackgroundWorker"
-    Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
-        Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-        Dim PUAnrMon As PopUpAnrMon
+    'Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
+    '    Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
+    '    'Dim PUAnrMon As PopUpAnrMon
 
-        PUAnrMon = C_Popup.Start(True, Telefonat)
-        AnrMonList.Add(PUAnrMon)
-        Dim a As Integer
-        Do
-            a = AnrMonList.Count - 1
-            For i = 0 To a
-                If i < AnrMonList.Count Then
-                    If C_Popup.AnrmonClosed Then
-                        AnrMonList.Remove(PUAnrMon)
-                        i = 0
-                        a = AnrMonList.Count - 1
-                    Else
-                        C_hf.ThreadSleep(2)
-                        Windows.Forms.Application.DoEvents()
-                    End If
-                End If
-            Next
-            Windows.Forms.Application.DoEvents()
-        Loop Until (AnrMonList.Count = 0)
-    End Sub
+    '    C_Popup.AnrMonEinblenden(True, Telefonat)
+    '    AnrMonList.Add(PUAnrMon)
+    '    Dim a As Integer
+    '    Do
+    '        a = AnrMonList.Count - 1
+    '        For i = 0 To a
+    '            If i < AnrMonList.Count Then
+    '                If C_Popup.AnrmonClosed Then
+    '                    'AnrMonList.Remove(PUAnrMon)
+    '                    i = 0
+    '                    a = AnrMonList.Count - 1
+    '                Else
+    '                    C_hf.ThreadSleep(2)
+    '                    Windows.Forms.Application.DoEvents()
+    '                End If
+    '            End If
+    '        Next
+    '        Windows.Forms.Application.DoEvents()
+    '    Loop Until (AnrMonList.Count = 0)
+    'End Sub
 
     Private Sub BWStoppuhrEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWStoppuhrEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)

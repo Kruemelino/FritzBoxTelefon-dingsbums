@@ -659,7 +659,7 @@ Friend Class formCfg
                 System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
-                C_PopUp.Start(False, C_AnrMon.LetzterAnrufer)
+                C_PopUp.AnrMonEinblenden(False, C_AnrMon.LetzterAnrufer)
 
             Case "BZwischenablage"
                 My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)

@@ -7,6 +7,8 @@ Imports System.ComponentModel
     Public Event Close(ByVal sender As Object, ByVal e As System.EventArgs)
     Public Event Closed(ByVal sender As Object, ByVal e As System.EventArgs)
 
+    Public Event ToolStripMenuItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
+
     Private WithEvents fPopup As New PopUpAnrMonForm(Me)
     Private WithEvents tmAnimation As New Timer
     Private WithEvents tmWait As New Timer
@@ -31,6 +33,7 @@ Imports System.ComponentModel
         Y
         X
     End Enum
+
 #Region "Properties"
 
     Private clHeader As Color = SystemColors.ControlDark
@@ -502,6 +505,7 @@ Imports System.ComponentModel
         tmAnimation.Start()
     End Sub
 
+#Region "Eigene Events"
     Private Sub fPopup_CloseClick() Handles fPopup.CloseClick
         RaiseEvent Close(Me, EventArgs.Empty)
         Me.Finalize()
@@ -510,6 +514,10 @@ Imports System.ComponentModel
     Private Sub fPopup_LinkClick() Handles fPopup.LinkClick
         RaiseEvent LinkClick(Me, EventArgs.Empty)
     End Sub
+    Private Sub fPopup_ToolStripMenuItemRückrufClickClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles ctContextMenu.ItemClicked
+        RaiseEvent ToolStripMenuItemClicked(Me, e)
+    End Sub
+#End Region
 
     Private Function GetOpacityBasedOnPosition() As Double
 

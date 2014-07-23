@@ -2,6 +2,7 @@
 Imports System.IO.Path
 Imports System.Drawing
 Imports System.Collections.Generic
+Imports System.Windows.Forms
 
 Public Class Popup
     Implements IDisposable
@@ -10,6 +11,8 @@ Public Class Popup
     Private C_hf As Helfer
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
+
+    Private PopUpAnrMonList As New List(Of PopUpAnrMon)
     'Private C_AnrMon As AnrufMonitor
     ' Track whether Dispose has been called.
     Private disposed As Boolean = False
@@ -28,12 +31,12 @@ Public Class Popup
 #Region "Anrufmonitor"
 
     Private CompContainer As New System.ComponentModel.Container()
-    Private WithEvents AnrMonContextMenuStrip As New System.Windows.Forms.ContextMenuStrip(CompContainer)
-    Private WithEvents ToolStripMenuItemKontaktöffnen As New System.Windows.Forms.ToolStripMenuItem()
-    Private WithEvents ToolStripMenuItemRückruf As New System.Windows.Forms.ToolStripMenuItem()
-    Private WithEvents ToolStripMenuItemKopieren As New System.Windows.Forms.ToolStripMenuItem()
-    Private WithEvents TimerAktualisieren As Timer
-    Private WithEvents PopUpAnrMon As New FritzBoxDial.PopUpAnrMon
+    Private WithEvents AnrMonContextMenuStrip As New ContextMenuStrip(CompContainer)
+    Private ToolStripMenuItemKontaktöffnen As New ToolStripMenuItem()
+    Private ToolStripMenuItemRückruf As New ToolStripMenuItem()
+    Private ToolStripMenuItemKopieren As New ToolStripMenuItem()
+    Private WithEvents TimerAktualisieren As System.Timers.Timer
+    Private WithEvents PopUpAnrufMonitor As PopUpAnrMon
 
     Public Property AnrmonClosed() As Boolean
         Get
@@ -57,9 +60,9 @@ Public Class Popup
     Private V_PfadKontaktBild As String
     Private V_AnrmonClosed As Boolean
 
-    Private Sub AnrMonInitializeComponent()
+    Private Sub AnrMonInitializeComponent(ByVal ThisPopUpAnrMon As PopUpAnrMon)
         '
-        'ContextMenuStrip1
+        'ContextMenuStrip
         '
         Me.AnrMonContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItemKontaktöffnen, Me.ToolStripMenuItemRückruf, Me.ToolStripMenuItemKopieren})
         Me.AnrMonContextMenuStrip.Name = "AnrMonContextMenuStrip"
@@ -92,32 +95,36 @@ Public Class Popup
         '
         'PopUpAnrMon
         '
-        Me.PopUpAnrMon.AnrName = "Anrufername"
-        Me.PopUpAnrMon.AutoAusblenden = False
-        Me.PopUpAnrMon.BorderColor = System.Drawing.SystemColors.WindowText
-        Me.PopUpAnrMon.ButtonHoverColor = System.Drawing.Color.Orange
-        Me.PopUpAnrMon.ContentFont = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PopUpAnrMon.Firma = "Firmenname"
-        Me.PopUpAnrMon.HeaderColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.PopUpAnrMon.Image = Nothing
-        Me.PopUpAnrMon.ImagePosition = New System.Drawing.Point(12, 32)
-        Me.PopUpAnrMon.ImageSize = New System.Drawing.Size(48, 48)
-        Me.PopUpAnrMon.LinkHoverColor = System.Drawing.SystemColors.Highlight
-        Me.PopUpAnrMon.OptionsButton = True
-        Me.PopUpAnrMon.OptionsMenu = Me.AnrMonContextMenuStrip
-        Me.PopUpAnrMon.PositionsKorrektur = New System.Drawing.Size(0, 0)
-        Me.PopUpAnrMon.Size = New System.Drawing.Size(400, 100)
-        Me.PopUpAnrMon.TelName = "Telefonname"
-        Me.PopUpAnrMon.TelNr = "01156 +49 (0815) 0123456789"
-        Me.PopUpAnrMon.TelNrFont = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PopUpAnrMon.TextPadding = New System.Windows.Forms.Padding(5)
-        Me.PopUpAnrMon.TitleColor = System.Drawing.SystemColors.ControlText
-        Me.PopUpAnrMon.TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PopUpAnrMon.Uhrzeit = "07.09.09 12:00:00"
+        With ThisPopUpAnrMon
+
+            .AnrName = "Anrufername"
+            .AutoAusblenden = False
+            .BorderColor = System.Drawing.SystemColors.WindowText
+            .ButtonHoverColor = System.Drawing.Color.Orange
+            .ContentFont = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            .Firma = "Firmenname"
+            .HeaderColor = System.Drawing.SystemColors.ControlDarkDark
+            .Image = Nothing
+            .ImagePosition = New System.Drawing.Point(12, 32)
+            .ImageSize = New System.Drawing.Size(48, 48)
+            .LinkHoverColor = System.Drawing.SystemColors.Highlight
+            .OptionsButton = True
+            .OptionsMenu = Me.AnrMonContextMenuStrip
+            .PositionsKorrektur = New System.Drawing.Size(0, 0)
+            .Size = New System.Drawing.Size(400, 100)
+            .TelName = "Telefonname"
+            .TelNr = "01156 +49 (0815) 0123456789"
+            .TelNrFont = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            .TextPadding = New System.Windows.Forms.Padding(5)
+            .TitleColor = System.Drawing.SystemColors.ControlText
+            .TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            .Uhrzeit = "07.09.09 12:00:00"
+
+        End With
     End Sub
 
-    Friend Sub AnrMonausfüllen(ByVal Telefonat As C_Telefonat)
-        With PopUpAnrMon
+    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As PopUpAnrMon, ByVal Telefonat As C_Telefonat)
+        With ThisPopUpAnrMon
 
             If Telefonat.TelNr = C_DP.P_Def_StringUnknown Then
                 With .OptionsMenu
@@ -144,11 +151,11 @@ Public Class Popup
                         PfadKontaktBild = C_KF.KontaktBild(.olContact)
                         If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
                             Using fs As New IO.FileStream(PfadKontaktBild, IO.FileMode.Open)
-                                PopUpAnrMon.Image = Image.FromStream(fs)
+                                ThisPopUpAnrMon.Image = Image.FromStream(fs)
                             End Using
 
                             ' Seitenverhältnisse anpassen
-                            PopUpAnrMon.ImageSize = New Size(PopUpAnrMon.ImageSize.Width, CInt((PopUpAnrMon.ImageSize.Width * PopUpAnrMon.Image.Size.Height) / PopUpAnrMon.Image.Size.Width))
+                            ThisPopUpAnrMon.ImageSize = New Size(ThisPopUpAnrMon.ImageSize.Width, CInt((ThisPopUpAnrMon.ImageSize.Width * ThisPopUpAnrMon.Image.Size.Height) / ThisPopUpAnrMon.Image.Size.Width))
                         End If
                     End If
                 End If
@@ -171,13 +178,16 @@ Public Class Popup
         End With
     End Sub
 
-    Friend Function Start(ByVal Aktualisieren As Boolean, ByVal Telefonat As C_Telefonat) As FritzBoxDial.PopUpAnrMon
+    Friend Sub AnrMonEinblenden(ByVal Aktualisieren As Boolean, ByVal Telefonat As C_Telefonat)
+        Dim ThisPopUpAnrMon As New PopUpAnrMon
 
-        AnrMonInitializeComponent()
+        AnrMonInitializeComponent(ThisPopUpAnrMon)
 
         UpdateForm = Aktualisieren
 
-        AnrMonausfüllen(Telefonat)
+        PopUpAnrMonList.Add(ThisPopUpAnrMon)
+
+        AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
 
         AnrmonClosed = False
 
@@ -190,7 +200,7 @@ Public Class Popup
 
         C_OLI.KeepoInspActivated(False)
 
-        With PopUpAnrMon
+        With ThisPopUpAnrMon
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
             .AutoAusblenden = C_DP.P_CBAutoClose
             .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
@@ -202,21 +212,26 @@ Public Class Popup
             .Popup()
         End With
 
-        C_OLI.KeepoInspActivated(True)
-        Return PopUpAnrMon
-    End Function
+        AddHandler ThisPopUpAnrMon.Close, AddressOf PopUpAnrMon_Close
+        AddHandler ThisPopUpAnrMon.Closed, AddressOf PopUpAnrMon_Closed
+        AddHandler ThisPopUpAnrMon.LinkClick, AddressOf ToolStripMenuItemKontaktöffnen_Click
+        AddHandler ThisPopUpAnrMon.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
 
-    Private Sub PopUpAnrMon_Close() Handles PopUpAnrMon.Close
-        PopUpAnrMon.Hide()
+        C_OLI.KeepoInspActivated(True)
+
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
-        Dim VergleichString As String = PopUpAnrMon.AnrName
+        Dim VergleichString As String = PopUpAnrufMonitor.AnrName
         'AnrMonausfüllen()
-        If Not VergleichString = PopUpAnrMon.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
+        If Not VergleichString = PopUpAnrufMonitor.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
-    Private Sub PopUpAnrMon_Closed() Handles PopUpAnrMon.Closed
+    Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles PopUpAnrufMonitor.Close
+        CType(sender, PopUpAnrMon).Hide()
+    End Sub
+
+    Private Sub PopUpAnrMon_Closed(ByVal sender As Object, ByVal e As System.EventArgs)
         If (Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild)) Then
             C_KF.DelKontaktBild(PfadKontaktBild)
         End If
@@ -225,29 +240,36 @@ Public Class Popup
         If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
-    Private Sub ToolStripMenuItemRückruf_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemRückruf.Click
+    Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
+        ' Todo: Möglichkeit finden, wie auf das Telefonat, welches zu dem PopUp gehört, zugreifen
+        Select Case e.ClickedItem.Name
+            Case ToolStripMenuItemKontaktöffnen.Name
+                ' blendet den Kontakteintrag des Anrufers ein
+                ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
+            Case ToolStripMenuItemRückruf.Name
+                ' Ruft den Kontakt zurück
+            Case ToolStripMenuItemKopieren.Name
+                '    With PopUpAnrufMonitor
+                '        My.Computer.Clipboard.SetText(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
+                '    End With
+        End Select
+
         'ThisAddIn.P_WClient.Rueckruf(C_AnrMon.LetzterAnrufer)
     End Sub
 
-    Private Sub ToolStripMenuItemKopieren_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ToolStripMenuItemKopieren.Click
-        With PopUpAnrMon
-            My.Computer.Clipboard.SetText(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
-        End With
-    End Sub
-
-    Private Sub ToolStripMenuItemKontaktöffnen_Click() Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrMon.LinkClick
-        ' blendet den Kontakteintrag des Anrufers ein
-        ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        'With C_AnrMon.LetzterAnrufer
-        '    If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
-        '        .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
-        '    End If
-        '    If Not .olContact Is Nothing Then
-        '        .olContact.Display()
-        '    Else
-        '        C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
-        '    End If
-        'End With
+    Private Sub ToolStripMenuItemKontaktöffnen_Click(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrufMonitor.LinkClick
+        '    ' blendet den Kontakteintrag des Anrufers ein
+        '    ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
+        '    'With C_AnrMon.LetzterAnrufer
+        '    '    If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
+        '    '        .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+        '    '    End If
+        '    '    If Not .olContact Is Nothing Then
+        '    '        .olContact.Display()
+        '    '    Else
+        '    '        C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
+        '    '    End If
+        '    'End With
     End Sub
 #End Region
 

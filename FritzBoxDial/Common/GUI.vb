@@ -1152,7 +1152,7 @@
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        C_PopUp.Start(False, C_AnrMon.LetzterAnrufer)
+        C_PopUp.AnrMonEinblenden(False, C_AnrMon.LetzterAnrufer)
     End Sub
 
     Friend Sub AnrMonNeustarten()
