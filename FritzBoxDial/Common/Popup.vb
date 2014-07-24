@@ -238,6 +238,7 @@ Public Class Popup
 
         AnrmonClosed = True
         If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
+        PopUpAnrMonList.Remove(CType(sender, PopUpAnrMon))
     End Sub
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
@@ -401,5 +402,6 @@ Public Class Popup
         End If
     End Sub
 #End Region
+
 
 End Class
