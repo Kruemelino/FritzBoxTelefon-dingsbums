@@ -90,8 +90,6 @@ Friend Class AnrufMonitor
 
 #Region "Globale Variablen"
     Private StoppUhrDaten(5) As StructStoppUhr
-    Private TelefonatsListe As New List(Of C_Telefonat)
-    'Private AnrMonList As New List(Of PopUpAnrMon)
 
     Private StandbyCounter As Integer
     Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
@@ -119,30 +117,30 @@ Friend Class AnrufMonitor
     End Sub
 
 #Region "BackgroundWorker"
-    'Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
-    '    Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-    '    'Dim PUAnrMon As PopUpAnrMon
+    Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
+        Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
+        'Dim PUAnrMon As PopUpAnrMon
 
-    '    C_Popup.AnrMonEinblenden(True, Telefonat)
-    '    AnrMonList.Add(PUAnrMon)
-    '    Dim a As Integer
-    '    Do
-    '        a = AnrMonList.Count - 1
-    '        For i = 0 To a
-    '            If i < AnrMonList.Count Then
-    '                If C_Popup.AnrmonClosed Then
-    '                    'AnrMonList.Remove(PUAnrMon)
-    '                    i = 0
-    '                    a = AnrMonList.Count - 1
-    '                Else
-    '                    C_hf.ThreadSleep(2)
-    '                    Windows.Forms.Application.DoEvents()
-    '                End If
-    '            End If
-    '        Next
-    '        Windows.Forms.Application.DoEvents()
-    '    Loop Until (AnrMonList.Count = 0)
-    'End Sub
+        C_Popup.AnrMonEinblenden(True, Telefonat)
+        'AnrMonList.Add(PUAnrMon)
+        'Dim a As Integer
+        Do
+            '    a = AnrMonList.Count - 1
+            '    For i = 0 To a
+            '        If i < AnrMonList.Count Then
+            '            If C_Popup.AnrmonClosed Then
+            '                AnrMonList.Remove(PUAnrMon)
+            '                i = 0
+            '                a = AnrMonList.Count - 1
+            '            Else
+            '                C_hf.ThreadSleep(2)
+            '                Windows.Forms.Application.DoEvents()
+            '            End If
+            '        End If
+            '    Next
+            Windows.Forms.Application.DoEvents()
+        Loop Until Telefonat.PopUpAnrMon Is Nothing
+    End Sub
 
     Private Sub BWStoppuhrEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWStoppuhrEinblenden.DoWork
         Dim ID As Integer = CInt(e.Argument)
@@ -600,7 +598,7 @@ Friend Class AnrufMonitor
                 End If
 #End If
             End With
-            TelefonatsListe.Add(Telefonat)
+            C_Popup.TelefonatsListe.Add(Telefonat)
         End If
     End Sub '(AnrMonRING)
 
@@ -731,7 +729,7 @@ Friend Class AnrufMonitor
                 End If
 #End If
             End With
-            TelefonatsListe.Add(Telefonat)
+            C_Popup.TelefonatsListe.Add(Telefonat)
         End If
     End Sub '(AnrMonCALL)
 
@@ -754,7 +752,7 @@ Friend Class AnrufMonitor
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 
-        Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
         If Not Telefonat Is Nothing Then
             With Telefonat
                 .Angenommen = True
@@ -847,7 +845,7 @@ Friend Class AnrufMonitor
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 
-        Telefonat = TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
 
         If Not Telefonat Is Nothing Then
             With Telefonat
@@ -940,7 +938,7 @@ Friend Class AnrufMonitor
                 End If
 #End If
             End With
-            TelefonatsListe.Remove(Telefonat)
+            C_Popup.TelefonatsListe.Remove(Telefonat)
         Else
             If C_DP.P_CBJournal And C_hf.IsOneOf(CStr(FBStatus.GetValue(3)), C_DP.P_CLBTelNr) Then
                 C_hf.LogFile("AnrMonDISCONNECT: " & C_DP.P_AnrMon_AnrMonDISCONNECT_Error)

@@ -18,13 +18,13 @@
     Private _Body As String
     Private _Companies As String
     Private _Categories As String
-    'Private WithEvents _olContact As Outlook.ContactItem
     Private _olContact As Outlook.ContactItem
     Private _vCard As String
     Private _Anrufer As String
     Private _TelName As String
     Private _frm_Popup As Popup
     Private _Angenommen As Boolean = False
+    Private _PopUpAnrMon As PopUpAnrMon
 #End Region
 
 #Region "Properties"
@@ -178,6 +178,14 @@
         End Get
         Set(ByVal value As Boolean)
             _Angenommen = value
+        End Set
+    End Property
+    Friend Property PopUpAnrMon() As PopUpAnrMon
+        Get
+            Return _PopUpAnrMon
+        End Get
+        Set(ByVal value As PopUpAnrMon)
+            _PopUpAnrMon = value
         End Set
     End Property
 #End Region

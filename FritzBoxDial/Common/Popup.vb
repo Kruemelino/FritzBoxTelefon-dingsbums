@@ -12,7 +12,6 @@ Public Class Popup
     Private C_OLI As OutlookInterface
     Private C_KF As Contacts
 
-    Private PopUpAnrMonList As New List(Of PopUpAnrMon)
     'Private C_AnrMon As AnrufMonitor
     ' Track whether Dispose has been called.
     Private disposed As Boolean = False
@@ -29,7 +28,8 @@ Public Class Popup
     End Sub
 
 #Region "Anrufmonitor"
-
+    Private PopUpAnrMonList As New List(Of PopUpAnrMon)
+    Friend TelefonatsListe As New List(Of C_Telefonat)
     Private CompContainer As New System.ComponentModel.Container()
     Private WithEvents AnrMonContextMenuStrip As New ContextMenuStrip(CompContainer)
     Private ToolStripMenuItemKontaktöffnen As New ToolStripMenuItem()
@@ -180,12 +180,25 @@ Public Class Popup
 
     Friend Sub AnrMonEinblenden(ByVal Aktualisieren As Boolean, ByVal Telefonat As C_Telefonat)
         Dim ThisPopUpAnrMon As New PopUpAnrMon
+        Dim TelinList As Boolean = False
 
         AnrMonInitializeComponent(ThisPopUpAnrMon)
 
         UpdateForm = Aktualisieren
 
         PopUpAnrMonList.Add(ThisPopUpAnrMon)
+        ' Prüfe ob Telefonat in Telefonatsliste
+
+        For Each tmpTelefonat In TelefonatsListe
+            If tmpTelefonat Is Telefonat Then
+                TelinList = True
+            End If
+        Next
+
+        If Not TelinList Then
+            TelefonatsListe.Add(Telefonat)
+        End If
+        Telefonat.PopUpAnrMon = ThisPopUpAnrMon
 
         AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
 
@@ -222,9 +235,15 @@ Public Class Popup
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
-        Dim VergleichString As String = PopUpAnrufMonitor.AnrName
-        'AnrMonausfüllen()
-        If Not VergleichString = PopUpAnrufMonitor.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
+
+        ' Dim tmpTelefonat As C_Telefonat
+
+        ' Dim VergleichString As String = tmpPopUpAnrMon.AnrName
+        For Each tmpTelefonat As C_Telefonat In TelefonatsListe
+            AnrMonausfüllen(tmpTelefonat.PopUpAnrMon, tmpTelefonat)
+        Next
+        'AnrMonausfüllen(tmpPopUpAnrMon, tmpTelefonat)
+        'If Not VergleichString = PopUpAnrufMonitor.AnrName Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
     End Sub
 
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles PopUpAnrufMonitor.Close
@@ -238,39 +257,61 @@ Public Class Popup
 
         AnrmonClosed = True
         If Not TimerAktualisieren Is Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
-        PopUpAnrMonList.Remove(CType(sender, PopUpAnrMon))
+
+        Dim tmpPopUpAnrMon As PopUpAnrMon = CType(sender, PopUpAnrMon)
+        Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is tmpPopUpAnrMon)
+
+        PopUpAnrMonList.Remove(tmpPopUpAnrMon)
+        tmpTelefonat.PopUpAnrMon = Nothing
     End Sub
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
-        ' Todo: Möglichkeit finden, wie auf das Telefonat, welches zu dem PopUp gehört, zugreifen
-        Select Case e.ClickedItem.Name
-            Case ToolStripMenuItemKontaktöffnen.Name
-                ' blendet den Kontakteintrag des Anrufers ein
-                ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-            Case ToolStripMenuItemRückruf.Name
-                ' Ruft den Kontakt zurück
-            Case ToolStripMenuItemKopieren.Name
-                '    With PopUpAnrufMonitor
-                '        My.Computer.Clipboard.SetText(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
-                '    End With
-        End Select
 
-        'ThisAddIn.P_WClient.Rueckruf(C_AnrMon.LetzterAnrufer)
+        Dim tmpPopUpAnrMon As PopUpAnrMon = CType(sender, PopUpAnrMon)
+        Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is tmpPopUpAnrMon)
+        ' Todo: Möglichkeit finden, wie auf das Telefonat, welches zu dem PopUp gehört, zugreifen
+
+        If Not tmpTelefonat Is Nothing Then
+
+            Select Case e.ClickedItem.Name
+                Case ToolStripMenuItemKontaktöffnen.Name
+                    AnruferAnzeigen(tmpTelefonat)
+                Case ToolStripMenuItemRückruf.Name
+                    ' Ruft den Kontakt zurück
+                    ThisAddIn.P_WClient.Rueckruf(tmpTelefonat)
+                Case ToolStripMenuItemKopieren.Name
+                    With tmpPopUpAnrMon
+                        My.Computer.Clipboard.SetText(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
+                    End With
+            End Select
+
+        End If
     End Sub
 
-    Private Sub ToolStripMenuItemKontaktöffnen_Click(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles ToolStripMenuItemKontaktöffnen.Click, PopUpAnrufMonitor.LinkClick
-        '    ' blendet den Kontakteintrag des Anrufers ein
-        '    ' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
-        '    'With C_AnrMon.LetzterAnrufer
-        '    '    If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
-        '    '        .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
-        '    '    End If
-        '    '    If Not .olContact Is Nothing Then
-        '    '        .olContact.Display()
-        '    '    Else
-        '    '        C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
-        '    '    End If
-        '    'End With
+    Private Sub ToolStripMenuItemKontaktöffnen_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim tmpPopUpAnrMon As PopUpAnrMon = CType(sender, PopUpAnrMon)
+        Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is tmpPopUpAnrMon)
+        AnruferAnzeigen(tmpTelefonat)
+    End Sub
+
+    ''' <summary>
+    ''' Blendet den Kontakteintrag des Anrufers ein.
+    ''' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
+    ''' </summary>
+    ''' <param name="tmpTelefonat">Telefonat, der angezeigt</param>
+    ''' <remarks></remarks>
+    Private Sub AnruferAnzeigen(ByVal tmpTelefonat As C_Telefonat)
+
+        With tmpTelefonat
+            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
+                .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+            End If
+            If Not .olContact Is Nothing Then
+                .olContact.Display()
+            Else
+                C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
+            End If
+        End With
     End Sub
 #End Region
 
