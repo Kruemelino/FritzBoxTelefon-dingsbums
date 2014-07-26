@@ -81,8 +81,8 @@ Friend Class formCfg
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(OutlookSecurity.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
-        Me.BAnrMonTest.Enabled = Not C_AnrMon Is Nothing
-        Me.BTelefonliste.Enabled = Not C_FBox Is Nothing
+        Me.BAnrMonTest.Enabled = C_AnrMon IsNot Nothing
+        Me.BTelefonliste.Enabled = C_FBox IsNot Nothing
         Me.FBDB_MP.SelectedIndex = 0
         Ausfüllen()
     End Sub
@@ -92,7 +92,7 @@ Friend Class formCfg
     Private Sub Ausfüllen()
         Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
 #If OVer >= 14 Then
-        If Not Me.FBDB_MP.TabPages.Item("PSymbolleiste") Is Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
+        If Me.FBDB_MP.TabPages.Item("PSymbolleiste") IsNot Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
         ' Beim Einblenden die Werte aus der Registry einlesen
         ' Einstellungen für das Wählmakro laden
@@ -508,7 +508,7 @@ Friend Class formCfg
 
             For i = 20 To 29
                 TelName = Split(C_DP.Read("Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
-                If Not TelName(0) = C_DP.P_Def_ErrorMinusOne_String And Not ComboBoxPhonerSIP.SelectedItem Is Nothing And Not TelName.Length = 2 Then
+                If Not TelName(0) = C_DP.P_Def_ErrorMinusOne_String And ComboBoxPhonerSIP.SelectedItem IsNot Nothing And Not TelName.Length = 2 Then
                     If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
                         PhonerTelNameIndex = i
                         Exit For
@@ -532,7 +532,7 @@ Friend Class formCfg
                     End If
                 End If
             End If
-            If Not Me.TVOutlookContact.SelectedNode Is Nothing Then
+            If Me.TVOutlookContact.SelectedNode IsNot Nothing Then
                 .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
                 .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)
             Else
@@ -774,16 +774,8 @@ Friend Class formCfg
                     Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
                 End With
 
-                C_PopUp.ZeigeStoppUhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
+                C_PopUp.ErzeugePopUpStoppuhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
 
-                Do Until C_PopUp.StUhrClosed
-                    C_hf.ThreadSleep(20)
-                    Windows.Forms.Application.DoEvents()
-                Loop
-
-                C_DP.P_CBStoppUhrX = C_PopUp.Position.X
-                C_DP.P_CBStoppUhrY = C_PopUp.Position.Y
-                'frmStUhr = Nothing
             Case "BArbeitsverzeichnis"
                 Dim fDialg As New System.Windows.Forms.FolderBrowserDialog
                 With fDialg
@@ -996,7 +988,7 @@ Friend Class formCfg
         ' Sichersellen, dass nur ein Haken gesetzt ist.
         If TypeOf Me.TelList.CurrentCell Is Windows.Forms.DataGridViewCheckBoxCell Then
             Me.TelList.EndEdit()
-            If Not Me.TelList.CurrentCell.Value Is Nothing Then
+            If Me.TelList.CurrentCell.Value IsNot Nothing Then
                 Dim cellVal As Boolean = DirectCast(Me.TelList.CurrentCell.Value, Boolean)
                 If cellVal Then
                     If Not Me.TelList.CurrentCell Is Me.TelList.Rows(Me.TelList.Rows.Count - 1).Cells(0) Then
@@ -1169,7 +1161,7 @@ Friend Class formCfg
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        If Not NamensRaum Is Nothing Then
+        If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
                 ZähleKontakte(NamensRaum.Folders.Item(j), Nothing)
@@ -1200,7 +1192,7 @@ Friend Class formCfg
         'Dim item As Object      ' aktuelles Element
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        If Not NamensRaum Is Nothing Then
+        If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
                 KontaktIndexer(LandesVW, NamensRaum.Folders.Item(j))
@@ -1248,7 +1240,7 @@ Friend Class formCfg
         'Dim item As Object      ' aktuelles Element
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        If Not NamensRaum Is Nothing Then
+        If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
                 KontaktDeIndexer(NamensRaum.Folders.Item(j), Nothing)

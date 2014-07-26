@@ -115,7 +115,7 @@ Public Class PopUpAnrMonForm
     Private ReadOnly Property RectTelNr() As RectangleF
 
         Get
-            If Not Parent.Image Is Nothing Then
+            If Parent.Image IsNot Nothing Then
                 Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight), Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
             Else
                 Return New RectangleF(Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight), Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
@@ -126,7 +126,7 @@ Public Class PopUpAnrMonForm
     Private ReadOnly Property RectAnrName() As RectangleF
 
         Get
-            If Not Parent.Image Is Nothing Then
+            If Parent.Image IsNot Nothing Then
                 Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, _
                                       CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr), _
                                       Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
@@ -140,7 +140,7 @@ Public Class PopUpAnrMonForm
     Private ReadOnly Property RectFirma() As RectangleF
 
         Get
-            If Not Parent.Image Is Nothing Then
+            If Parent.Image IsNot Nothing Then
                 Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, Me.Height - Parent.TextPadding.Bottom - iHeightOfTitle, Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTitle)
             Else
                 Return New RectangleF(Parent.TextPadding.Left, Me.Height - iHeightOfTitle - Parent.TextPadding.Bottom, Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTitle)
@@ -162,7 +162,7 @@ Public Class PopUpAnrMonForm
 
     Private ReadOnly Property RectImage() As Rectangle
         Get
-            If Not Parent.Image Is Nothing Then
+            If Parent.Image IsNot Nothing Then
                 Return New Rectangle(Parent.ImagePosition, Parent.ImageSize)
             End If
         End Get
@@ -203,7 +203,7 @@ Public Class PopUpAnrMonForm
             RaiseEvent LinkClick(Me, EventArgs.Empty)
         End If
         If RectOptions.Contains(e.X, e.Y) Then
-            If Not Parent.OptionsMenu Is Nothing Then
+            If Parent.OptionsMenu IsNot Nothing Then
                 Parent.OptionsMenu.Show(Me, New Point(RectOptions.Right - Parent.OptionsMenu.Width, RectOptions.Bottom))
                 Parent.bShouldRemainVisible = True
             End If
@@ -254,7 +254,7 @@ Public Class PopUpAnrMonForm
             iHeightOfAnrName = CInt(.MeasureString("A", Parent.ContentFont).Height)
             iHeightOfTelNr = CInt(.MeasureString("A", Parent.TelNrFont).Height)
             iTitleOrigin = Parent.TextPadding.Left
-            If Not Parent.Image Is Nothing Then
+            If Parent.Image IsNot Nothing Then
                 Dim showim As Image = New Bitmap(Parent.ImageSize.Width, Parent.ImageSize.Height)
                 Dim g1 As Graphics = Graphics.FromImage(showim)
                 g1.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic

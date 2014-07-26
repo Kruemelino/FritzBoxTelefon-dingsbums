@@ -22,6 +22,12 @@ Imports System.ComponentModel
     Private dMaxOpacity As Double
     Private dummybool As Boolean
 
+    Private CompContainer As New System.ComponentModel.Container()
+    Private WithEvents AnrMonContextMenuStrip As New ContextMenuStrip(CompContainer)
+    Private ToolStripMenuItemKontaktöffnen As New ToolStripMenuItem()
+    Private ToolStripMenuItemRückruf As New ToolStripMenuItem()
+    Private ToolStripMenuItemKopieren As New ToolStripMenuItem()
+
     Enum eStartPosition
         BottomRight
         BottomLeft
@@ -192,7 +198,7 @@ Imports System.ComponentModel
     Property ImageSize() As Size
         Get
             If szImageSize.Width = 0 Then
-                If Not Image Is Nothing Then
+                If Image IsNot Nothing Then
                     Return Image.Size
                 Else
                     Return New Size(32, 32)
@@ -416,17 +422,16 @@ Imports System.ComponentModel
         End Set
     End Property
 
-    Private _MoveDirecktion As eMoveDirection
+    Private _MoveDirection As eMoveDirection
     <Category("Appearance")> _
     Property MoveDirecktion() As eMoveDirection
         Get
-            Return _MoveDirecktion
+            Return _MoveDirection
         End Get
         Set(ByVal value As eMoveDirection)
-            _MoveDirecktion = value
+            _MoveDirection = value
         End Set
     End Property
-
 #End Region
 
     Public Sub New()
@@ -435,6 +440,7 @@ Imports System.ComponentModel
             .StartPosition = System.Windows.Forms.FormStartPosition.Manual
             .ShowInTaskbar = True
         End With
+        InitializeComponentContextMenuStrip()
     End Sub
 
     Public Sub Popup()
@@ -497,6 +503,53 @@ Imports System.ComponentModel
 
         tmAnimation.Interval = iEffektMoveGeschwindigkeit
         tmAnimation.Start()
+    End Sub
+
+    ''' <summary>
+    ''' Initialisierungsroutine des ehemaligen AnrMonForm. Es wird das ContextMenuStrip an Sich initialisiert 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub InitializeComponentContextMenuStrip()
+        '
+        'ContextMenuStrip
+        '
+        With Me.AnrMonContextMenuStrip
+            .Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItemKontaktöffnen, Me.ToolStripMenuItemRückruf, Me.ToolStripMenuItemKopieren})
+            .Name = "AnrMonContextMenuStrip"
+            .RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            .Size = New System.Drawing.Size(222, 70)
+        End With
+        '
+        'ToolStripMenuItemKontaktöffnen
+        '
+        With Me.ToolStripMenuItemKontaktöffnen
+            '.Image = ToolStripMenuItemKontaktöffnenImage
+            .ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+            .Name = "ToolStripMenuItemKontaktöffnen"
+            .Size = New System.Drawing.Size(221, 22)
+            '.Text = ToolStripMenuItemKontaktöffnenText '"Kontakt öffnen"
+        End With
+        '
+        'ToolStripMenuItemRückruf
+        '
+        With Me.ToolStripMenuItemRückruf
+            '.Image = ToolStripMenuItemKontaktöffnenImage
+            .ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+            .Name = "ToolStripMenuItemRückruf"
+            .Size = New System.Drawing.Size(221, 22)
+            '.Text = ToolStripMenuItemRückrufText '"Rückruf"
+        End With
+        '
+        'ToolStripMenuItemKopieren
+        '
+        With Me.ToolStripMenuItemKopieren
+            '.Image = ToolStripMenuItemKopierenImage
+            .ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+            .Name = "ToolStripMenuItemKopieren"
+            .Size = New System.Drawing.Size(221, 22)
+            '.Text = ToolStripMenuItemKopierenText '"In Zwischenablage kopieren"
+        End With
+        Me.OptionsMenu = Me.AnrMonContextMenuStrip
     End Sub
 
     Public Sub Hide()

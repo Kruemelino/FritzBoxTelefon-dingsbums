@@ -25,6 +25,7 @@
     Private _frm_Popup As Popup
     Private _Angenommen As Boolean = False
     Private _PopUpAnrMon As PopUpAnrMon
+    Private _PopUpStoppuhr As PopUpStoppUhr
 #End Region
 
 #Region "Properties"
@@ -188,6 +189,14 @@
             _PopUpAnrMon = value
         End Set
     End Property
+    Friend Property PopUpStoppuhr() As PopUpStoppUhr
+        Get
+            Return _PopUpStoppuhr
+        End Get
+        Set(ByVal value As PopUpStoppUhr)
+            _PopUpStoppuhr = value
+        End Set
+    End Property
 #End Region
 
 End Class
@@ -222,13 +231,13 @@ Public Class OutlookInterface
         ErstelleJournalEintrag = Nothing
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication
-        If Not oApp Is Nothing Then
+        If oApp IsNot Nothing Then
             Try
                 olJournal = CType(oApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
             Catch ex As Exception
                 C_hf.LogFile("ErstelleJournalItem: " & ex.Message)
             End Try
-            If Not olJournal Is Nothing Then
+            If olJournal IsNot Nothing Then
                 With olJournal
                     .Subject = Telefonat.Subject
                     .Duration = Telefonat.Dauer
@@ -257,15 +266,14 @@ Public Class OutlookInterface
     Friend Function NeueEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication
-        If Not oApp Is Nothing Then
-
+        If oApp IsNot Nothing Then
             Try
                 olMail = CType(oApp.CreateItem(Outlook.OlItemType.olMailItem), Outlook.MailItem)
             Catch ex As Exception
                 C_hf.LogFile("NeueEmail: " & ex.Message)
             End Try
 
-            If Not olMail Is Nothing Then
+            If olMail IsNot Nothing Then
                 With olMail
                     .Attachments.Add(tmpFile)
                     .Attachments.Add(XMLFile)
@@ -320,7 +328,7 @@ Public Class OutlookInterface
         Catch ex As Exception
             C_hf.LogFile("Fehler beim Zugriff auf die Registry (BenutzerInitialien): " & ex.Message)
         End Try
-        If Not Regkey Is Nothing Then Regkey.Close()
+        If Regkey IsNot Nothing Then Regkey.Close()
         BenutzerInitialien = UserInitials
     End Function
 
@@ -329,7 +337,7 @@ Public Class OutlookInterface
     ''' Sinn der Routine ist es einen aktiven Inspector wieder aktiv zu schalten, da der Anrufmonitor diesen deaktiviert.
     ''' Nachdem der Anrufmonitor eingeblendet wurde, muss der Inspector wieder aktiviert werden.
     ''' Zuvor müssen zwei Dinge geprüft werden:
-    ''' 1. Haut ein Outlookfenster (Inspector) gerade den Focus: (.ActiveWindow Is .ActiveInspector)
+    ''' 1. Hat ein Outlookfenster (Inspector) gerade den Focus: (.ActiveWindow Is .ActiveInspector)
     ''' 2. Ist das aktuell aktive Fenster der Inspector (OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = .ActiveInspector.Caption)
     ''' 
     ''' Um den ganzen vorgang abschließen zu können, wird der Inspector zwischengespeichert und nachdem der Anrufmonitor eingeblendet wurde wieder aktiviert.
@@ -338,9 +346,9 @@ Public Class OutlookInterface
     ''' <remarks></remarks>
     Friend Sub KeepoInspActivated(ByVal Activate As Boolean)
 
-        If Not OutlookApplication Is Nothing Then
+        If OutlookApplication IsNot Nothing Then
             If Activate Then
-                If Not OInsp Is Nothing Then
+                If OInsp IsNot Nothing Then
                     If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
                         OInsp.Activate()
                         OInsp = Nothing

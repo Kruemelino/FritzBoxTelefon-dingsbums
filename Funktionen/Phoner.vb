@@ -34,7 +34,7 @@ Public Class PhonerInterface
                 tcpClient.Connect(remoteEP)
                 Stream = tcpClient.GetStream()
 
-                If Not Stream Is Nothing Then
+                If Stream IsNot Nothing Then
                     Dim StreamWriter As New StreamWriter(Stream)
                     Dim StreamReader As New StreamReader(Stream)
                     If Stream.CanWrite Then

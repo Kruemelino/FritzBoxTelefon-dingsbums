@@ -55,7 +55,7 @@ Public Class Wählclient
                                                    alleOrdner:=C_DP.P_CBKHO, _
                                                    TelNr:=C_DP.P_Def_StringEmpty, _
                                                    EMailAdresse:=aktMail.SenderEmailAddress)
-                    If Not aktKontakt Is Nothing Then
+                    If aktKontakt IsNot Nothing Then
                         Wählbox(aktKontakt, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, False)
                     Else
                         C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & aktMail.SenderEmailAddress & " vorhanden!", MsgBoxStyle.Information, "WählboxStart")
@@ -397,7 +397,7 @@ Public Class Wählclient
             ' Nun den zur Email-Adresse gehörigen Kontakt suchen
             If Not Absender = C_DP.P_Def_StringEmpty Then
                 oContact = C_KF.KontaktSuche(C_DP.P_Def_StringEmpty, Absender, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_CBKHO)
-                If Not oContact Is Nothing Then
+                If oContact IsNot Nothing Then
                     Wählbox(oContact, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, False)
                 Else
                     C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")

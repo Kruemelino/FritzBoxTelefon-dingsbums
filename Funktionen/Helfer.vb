@@ -85,7 +85,7 @@ Public Class Helfer
 #End Region
 
     Public Sub NAR(ByVal o As Object)
-        If Not o Is Nothing Then
+        If o IsNot Nothing Then
             Try
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(o)
             Catch ex As Exception
@@ -116,7 +116,7 @@ Public Class Helfer
             Ping = False
         End Try
 
-        If Not PingReply Is Nothing Then
+        If PingReply IsNot Nothing Then
             With PingReply
                 If .Status = NetworkInformation.IPStatus.Success Then
                     If .Address.AddressFamily = Sockets.AddressFamily.InterNetworkV6 Then
@@ -825,7 +825,7 @@ Public Class Helfer
     End Function
 
     Public Function KillTimer(ByVal Timer As System.Timers.Timer) As System.Timers.Timer
-        If Not Timer Is Nothing Then
+        If Timer IsNot Nothing Then
             With Timer
                 .AutoReset = False
                 .Enabled = False

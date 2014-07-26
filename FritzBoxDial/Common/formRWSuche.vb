@@ -97,7 +97,7 @@ Friend Class formRWSuche
         Dim row(2) As String
 
 
-        If Not olInsp Is Nothing Then
+        If olInsp IsNot Nothing Then
             If TypeOf olInsp.CurrentItem Is Outlook.ContactItem Then
                 Dim oContact As Outlook.ContactItem = CType(olInsp.CurrentItem, Outlook.ContactItem)
                 With Me.ListTel

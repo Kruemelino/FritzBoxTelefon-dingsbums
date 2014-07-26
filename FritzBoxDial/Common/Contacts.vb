@@ -57,7 +57,7 @@ Public Class Contacts
         Dim sFilter As String = C_DP.P_Def_StringEmpty
         Dim JoinFilter(C_DP.P_Def_UserProperties.Length - 1) As String
 
-        If Not oApp Is Nothing Then
+        If oApp IsNot Nothing Then
 
             If EMailAdresse = C_DP.P_Def_ErrorMinusOne_String Then
                 If C_DP.P_CBIndex Then
@@ -88,7 +88,7 @@ Public Class Contacts
                 End If
             End If
 
-            If Not KontaktSuche Is Nothing Then
+            If KontaktSuche IsNot Nothing Then
                 With KontaktSuche
                     KontaktID = .EntryID
                     StoreID = CType(.Parent, Outlook.MAPIFolder).StoreID
@@ -154,12 +154,12 @@ Public Class Contacts
                 Try
                     olKontakt = CType(Personen.Find(sFilter), Outlook.ContactItem)
                 Catch : End Try
-                If Not olKontakt Is Nothing Then Exit For
+                If  olKontakt IsNot Nothing Then Exit For
             Next
 #Else
             olKontakt = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
 #End If
-            If Not olKontakt Is Nothing Then
+            If olKontakt IsNot Nothing Then
                 With olKontakt
                     Dim alleTE() As String = {.AssistantTelephoneNumber, _
                                               .BusinessTelephoneNumber, _
@@ -329,7 +329,7 @@ Public Class Contacts
         Dim olKontakt As Outlook.ContactItem = Nothing ' Objekt des Kontakteintrags
         Dim TelNr As String
         olAuswahl = C_OLI.OutlookApplication.ActiveInspector
-        If Not olAuswahl Is Nothing Then
+        If olAuswahl IsNot Nothing Then
             If TypeOf olAuswahl.CurrentItem Is Outlook.JournalItem Then
                 olJournal = CType(olAuswahl.CurrentItem, Outlook.JournalItem)
                 With olJournal
@@ -370,7 +370,7 @@ Public Class Contacts
                         End If
                     End If
                 End With
-                If Not olKontakt Is Nothing Then olKontakt.Display()
+                If olKontakt IsNot Nothing Then olKontakt.Display()
                 C_hf.NAR(olJournal)
             End If
         End If
@@ -384,10 +384,10 @@ Public Class Contacts
     ''' <remarks></remarks>
     Friend Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
         KontaktBild = C_DP.P_Def_StringEmpty
-        If Not olContact Is Nothing Then
+        If olContact IsNot Nothing Then
             With olContact
                 With .Attachments
-                    If Not .Item("ContactPicture.jpg") Is Nothing Then
+                    If .Item("ContactPicture.jpg") IsNot Nothing Then
                         KontaktBild = System.IO.Path.GetTempPath() & System.IO.Path.GetRandomFileName()
                         KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
                         .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
@@ -480,7 +480,7 @@ Public Class Contacts
             alleTE = (From x In alleTE Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
             If Not alleTE.LongCount = 0 Then
                 ' Reicht nicht aus! Weiterer Gehirnschmalz erforderlich
-                If Not .UserProperties.Find(C_DP.P_Def_UserPropertyIndex) Is Nothing Then
+                If .UserProperties.Find(C_DP.P_Def_UserPropertyIndex) IsNot Nothing Then
                     If CBool(.UserProperties.Find(C_DP.P_Def_UserPropertyIndex).Value) = False Then
                         IndizierungErforderlich = False
                     End If
@@ -534,7 +534,7 @@ Public Class Contacts
                         If Not CStr(.UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value) = tempTelNr Then
                             .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value = tempTelNr
                         End If
-                    ElseIf Not .UserProperties.Find(C_DP.P_Def_UserProperties(i)) Is Nothing Then ' Fall:Index vorhanden, Telefonnummer nicht
+                    ElseIf .UserProperties.Find(C_DP.P_Def_UserProperties(i)) IsNot Nothing Then ' Fall:Index vorhanden, Telefonnummer nicht
                         .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Delete()
                     End If
                 Next
@@ -563,7 +563,7 @@ Public Class Contacts
                     Catch
                         UserEigenschaft = Nothing
                     End Try
-                    If Not UserEigenschaft Is Nothing Then UserEigenschaft.Delete()
+                    If UserEigenschaft IsNot Nothing Then UserEigenschaft.Delete()
                     UserEigenschaft = Nothing
                 Next
             End With
@@ -990,7 +990,7 @@ Public Class Contacts
                 .Cells(2).Range.Text = C_OLI.BenutzerInitialien
             End With
 
-            If Not NoteRow Is Nothing Then
+            If NoteRow IsNot Nothing Then
                 startLocation = NoteRow.Range.Start
                 oDoc.Range(startLocation, startLocation).Select()
             End If
@@ -1163,7 +1163,7 @@ Public Class Contacts
             Dim NoteRow As Word.Row = Nothing
 
             CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf((AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL) And Not ContactShown, True, False)))
-            If Not CallRow Is Nothing Then
+            If CallRow IsNot Nothing Then
                 With CallRow
                     Select Case AnrMonTyp
                         Case AnrufMonitor.AnrMonEvent.AnrMonRING, AnrufMonitor.AnrMonEvent.AnrMonCALL

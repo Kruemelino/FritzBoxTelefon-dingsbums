@@ -264,7 +264,7 @@ Public Class PopUpStoppUhr
         End With
     End Sub
 
-    Sub StoppuhrStart()
+    Public Sub StoppuhrStart()
 
         With TimerZeit
             .Interval = 250
@@ -273,7 +273,7 @@ Public Class PopUpStoppUhr
         Stoppwatch.Start()
     End Sub
 
-    Sub StoppuhrStopp()
+    Public Sub StoppuhrStopp()
         Dim Zeit As String
         With System.DateTime.Now
             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
@@ -292,10 +292,6 @@ Public Class PopUpStoppUhr
         End If
     End Sub
 
-    'Protected Overrides Sub Finalize()
-    '    MyBase.Finalize()
-    'End Sub
-
     Private Sub timerZeit_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerZeit.Elapsed
         With Stoppwatch.Elapsed
             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hours, .Minutes, .Seconds)
@@ -303,20 +299,9 @@ Public Class PopUpStoppUhr
         fStopUhr.Invalidate()
     End Sub
 
-    Private Sub fPopup_CloseClick() Handles fStopUhr.CloseClickStoppUhr
-        Stoppwatch.Stop()
-        TimerZeit.Close()
-        TimerSchlieﬂen.Close()
-        Stoppwatch = Nothing
-        TimerZeit = Nothing
-        TimerSchlieﬂen = Nothing
-        StartPosition = fStopUhr.Location
-        AutoSchlieﬂen()
-        RaiseEvent Close(Me, EventArgs.Empty)
-        Me.Finalize()
-    End Sub
+    Private Sub TimerSchlieﬂen_Elapsed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles TimerSchlieﬂen.Elapsed, fStopUhr.CloseClickStoppUhr 'Ehemals: System.Timers.ElapsedEventArgs
 
-    Private Sub TimerSchlieﬂen_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerSchlieﬂen.Elapsed
         TimerSchlieﬂen.Stop()
         TimerSchlieﬂen = Nothing
         Stoppwatch.Stop()

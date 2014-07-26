@@ -59,7 +59,7 @@ Partial Public NotInheritable Class ThisAddIn
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
     Private Sub InitializeCachedData()
-        If (Me.DataHost Is Nothing) Then
+        If Me.DataHost Is Nothing Then
             Return
         End If
         If Me.DataHost.IsCacheInitialized Then

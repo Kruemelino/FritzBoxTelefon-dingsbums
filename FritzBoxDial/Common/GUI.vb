@@ -151,7 +151,7 @@
         Dim oapp As New Outlook.Application
         Dim anzeigen As Boolean
         ActiveExplorer = oapp.ActiveExplorer
-        anzeigen = Not ActiveExplorer Is Nothing
+        anzeigen = ActiveExplorer IsNot Nothing
         With C_HF
             .NAR(ActiveExplorer)
             .NAR(oapp)
@@ -394,14 +394,14 @@
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
         GetPressed = False
-        If Not C_AnrMon Is Nothing Then
+        If C_AnrMon IsNot Nothing Then
             GetPressed = C_AnrMon.AnrMonAktiv
         End If
     End Function
 
     Public Function GetImage(ByVal control As Office.IRibbonControl) As String
         GetImage = "PersonaStatusBusy"
-        If Not C_AnrMon Is Nothing Then
+        If C_AnrMon IsNot Nothing Then
             If C_AnrMon.AnrMonAktiv Then
                 GetImage = "PersonaStatusOnline"
             Else
@@ -443,7 +443,7 @@
                 Windows.Forms.Application.DoEvents()
             Loop
         End If
-        If Not RibbonObjekt Is Nothing Then
+        If RibbonObjekt IsNot Nothing Then
             RibbonObjekt.Invalidate()
         End If
     End Sub
@@ -866,7 +866,7 @@
                     End With
 
                 Else
-                    If Not cPopUp.Controls.Item(i) Is Nothing Then
+                    If cPopUp.Controls.Item(i) IsNot Nothing Then
                         cPopUp.Controls.Item(i).Visible = False
                     End If
                 End If
@@ -895,14 +895,14 @@
     End Sub
 
     Private Sub bAnrMonTimer_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles bAnrMonTimer.Elapsed
-        If Not FritzBoxDialCommandBar Is Nothing Then
+        If FritzBoxDialCommandBar IsNot Nothing Then
             Dim btnAnrMon As Office.CommandBarButton = Nothing
             Try
                 btnAnrMon = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor", , False), Office.CommandBarButton)
             Catch ex As Exception
                 C_HF.LogFile("Fehler: btnAnrMon kann nicht gefunden werden.")
             End Try
-            If Not btnAnrMon Is Nothing Then
+            If  btnAnrMon IsNot Nothing Then
                 Select Case bool_banrmon
                     Case True
                         btnAnrMon.State = Office.MsoButtonState.msoButtonDown
@@ -1160,7 +1160,7 @@
     End Sub
 
     Friend Sub WählenExplorer()
-        If Not C_OLI.OutlookApplication Is Nothing Then
+        If C_OLI.OutlookApplication IsNot Nothing Then
             Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
             Dim oSel As Outlook.Selection = ActiveExplorer.Selection
             P_CallClient.WählboxStart(oSel)

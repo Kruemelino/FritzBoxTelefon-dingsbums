@@ -999,7 +999,7 @@ Public Class FritzBox
                                             pos(5) = InStr(pos(4), Telefon, "'", CompareMethod.Text)
                                             tamMsnBits = CInt(Mid(Telefon, pos(4), pos(5) - pos(4)))
                                             For j = 0 To TAM.Length - 1
-                                                If Not TAM(j) Is Nothing Then
+                                                If TAM(j) IsNot Nothing Then
                                                     If (tamMsnBits And (1 << j)) > 0 Then ' Aus AVM Quellcode Funktion isBitSet übernommen 
                                                         TelNr += TAM(j) & ";"
                                                     End If

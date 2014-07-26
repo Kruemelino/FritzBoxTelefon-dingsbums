@@ -207,7 +207,7 @@ Friend Class formWählbox
         Else
             olKontakt = C_KF.ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, KontaktDaten(1), ListTel.Rows(0).Cells(2).Value.ToString, False)
         End If
-        If Not olKontakt Is Nothing Then olKontakt.Display()
+        If olKontakt IsNot Nothing Then olKontakt.Display()
 
         Me.CloseButton.Focus()
     End Sub
@@ -235,7 +235,7 @@ Friend Class formWählbox
     Private Sub CloseButton_Click() Handles CloseButton.Click
         Me.Hide()
 
-        If Not TimerSchließen Is Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
+        If TimerSchließen IsNot Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
         'If Not UsePhonerOhneFritzBox Then
         ThisAddIn.P_FritzBox.FBLogout(SID)
         Me.Close()
@@ -333,7 +333,7 @@ Friend Class formWählbox
                 End If
 
                 cbcHTML = C_hf.httpPOST(myurl, code, System.Text.Encoding.Default)
-                If Not HTMLFehler Is Nothing Then C_hf.LogFile("FBError (formWählbox.ListTel_SelectionChanged): " & Err.Number & " - " & Err.Description & " - " & myurl)
+                If HTMLFehler IsNot Nothing Then C_hf.LogFile("FBError (formWählbox.ListTel_SelectionChanged): " & Err.Number & " - " & Err.Description & " - " & myurl)
                 Me.LLBiligertelefonieren.Text = myurl
                 CbCBilligerTelefonieren(code, cbcHTML)
                 Me.Height = 515

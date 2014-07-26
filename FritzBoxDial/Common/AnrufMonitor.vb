@@ -7,8 +7,6 @@ Imports System.Collections.Generic
 
 Friend Class AnrufMonitor
 #Region "BackgroundWorker"
-    Private WithEvents BWAnrMonEinblenden As BackgroundWorker
-    Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
     Private WithEvents BWStartTCPReader As BackgroundWorker
     Private WithEvents BWActivateCallmonitor As BackgroundWorker
 #End Region
@@ -71,15 +69,7 @@ Friend Class AnrufMonitor
     End Property
 #End Region
 
-#Region "Strukturen"
-    Structure StructStoppUhr
-        Dim Anruf As String
-        Dim Abbruch As Boolean
-        Dim StartZeit As String
-        Dim Richtung As String
-        Dim MSN As String
-    End Structure
-
+#Region "Enumerationen"
     Enum AnrMonEvent
         AnrMonRING = 0
         AnrMonCALL = 2
@@ -89,7 +79,6 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Globale Variablen"
-    Private StoppUhrDaten(5) As StructStoppUhr
 
     Private StandbyCounter As Integer
     Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
@@ -117,76 +106,6 @@ Friend Class AnrufMonitor
     End Sub
 
 #Region "BackgroundWorker"
-    Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
-        Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-        'Dim PUAnrMon As PopUpAnrMon
-
-        C_Popup.AnrMonEinblenden(True, Telefonat)
-        'AnrMonList.Add(PUAnrMon)
-        'Dim a As Integer
-        Do
-            '    a = AnrMonList.Count - 1
-            '    For i = 0 To a
-            '        If i < AnrMonList.Count Then
-            '            If C_Popup.AnrmonClosed Then
-            '                AnrMonList.Remove(PUAnrMon)
-            '                i = 0
-            '                a = AnrMonList.Count - 1
-            '            Else
-            '                C_hf.ThreadSleep(2)
-            '                Windows.Forms.Application.DoEvents()
-            '            End If
-            '        End If
-            '    Next
-            Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopUpAnrMon Is Nothing
-    End Sub
-
-    Private Sub BWStoppuhrEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWStoppuhrEinblenden.DoWork
-        Dim ID As Integer = CInt(e.Argument)
-        Dim WarteZeit As Integer
-        Dim Beendet As Boolean = False
-        Dim StartPosition As System.Drawing.Point
-        Dim x As Integer = 0
-        Dim y As Integer = 0
-
-        If C_DP.P_CBStoppUhrAusblenden Then
-            WarteZeit = C_DP.P_TBStoppUhr
-        Else
-            WarteZeit = -1
-        End If
-
-        StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
-        For Each Bildschirm In Windows.Forms.Screen.AllScreens
-            x += Bildschirm.Bounds.Size.Width
-            y += Bildschirm.Bounds.Size.Height
-        Next
-        With StartPosition
-            If .X > x Or .Y > y Then
-                .X = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100) / 2)
-                .Y = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 50) / 2)
-            End If
-        End With
-
-        With StoppUhrDaten(ID)
-
-            C_Popup.ZeigeStoppUhr(.Anruf, .StartZeit, .Richtung, WarteZeit, StartPosition, .MSN)
-            C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(CStr(ID), .Anruf)) '"Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
-            BWStoppuhrEinblenden.WorkerSupportsCancellation = True
-            Do Until C_Popup.StUhrClosed
-                If Not Beendet And .Abbruch Then
-                    C_Popup.Stopp()
-                    Beendet = True
-                End If
-                C_hf.ThreadSleep(20)
-                Windows.Forms.Application.DoEvents()
-            Loop
-            C_DP.P_CBStoppUhrX = C_Popup.Position.X
-            C_DP.P_CBStoppUhrY = C_Popup.Position.Y
-            'C_Popup = Nothing
-        End With
-    End Sub
-
     Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
         C_hf.ThreadSleep(500)
         Dim IPAddresse As IPAddress = IPAddress.Loopback
@@ -273,7 +192,7 @@ Friend Class AnrufMonitor
         C_GUI.RefreshRibbon()
 #End If
         If AnrMonAktiv Then
-            If Not TimerReStart Is Nothing Then
+            If TimerReStart IsNot Nothing Then
                 TimerReStart = C_hf.KillTimer(TimerReStart)
                 C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStart4)
             End If
@@ -340,7 +259,7 @@ Friend Class AnrufMonitor
             C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer4)
             AnrMonStartStopp()
             AnrMonError = True
-            If Not TimerReStart Is Nothing AndAlso Not TimerReStart.Enabled Then
+            If TimerReStart IsNot Nothing AndAlso Not TimerReStart.Enabled Then
                 StandbyCounter = 1
                 TimerReStart = C_hf.SetTimer(C_DP.P_Def_ReStartIntervall)
             End If
@@ -364,7 +283,7 @@ Friend Class AnrufMonitor
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
             AnrMonAktiv = False
-            If Not TimerCheckAnrMon Is Nothing Then
+            If TimerCheckAnrMon IsNot Nothing Then
                 With TimerCheckAnrMon
                     .Stop()
                     .Dispose()
@@ -372,7 +291,7 @@ Friend Class AnrufMonitor
                 TimerCheckAnrMon = Nothing
             End If
 
-            If Not AnrMonStream Is Nothing Then
+            If AnrMonStream IsNot Nothing Then
                 With AnrMonStream
                     .Close()
                     '.Dispose()
@@ -521,15 +440,14 @@ Friend Class AnrufMonitor
 
                 If ShowForms AndAlso Not C_OlI.VollBildAnwendungAktiv Then
                     LetzterAnrufer = Telefonat
-                    BWAnrMonEinblenden = New BackgroundWorker
-                    BWAnrMonEinblenden.RunWorkerAsync(Telefonat)
+                    C_Popup.AnrMonEinblenden(Telefonat)
                 End If
 
                 ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
                     .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                    If Not .olContact Is Nothing Then
+                    If .olContact IsNot Nothing Then
                         .Anrufer = .olContact.FullName ' Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
                         .Companies = .olContact.CompanyName
                         If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
@@ -562,18 +480,6 @@ Friend Class AnrufMonitor
                 If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
 #End If
                 End If
-                'StoppUhr
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
-                    With StoppUhrDaten(.ID)
-                        .Richtung = "Anruf von:"
-                        If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
-                            .Anruf = Telefonat.TelNr
-                        Else
-                            .Anruf = Telefonat.Anrufer
-                        End If
-                    End With
-                End If
-
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                     If .olContact Is Nothing Then
@@ -593,7 +499,7 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
+                If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
                     C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                 End If
 #End If
@@ -667,7 +573,7 @@ Friend Class AnrufMonitor
 
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
                     .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                    If Not Telefonat.olContact Is Nothing Then
+                    If Telefonat.olContact IsNot Nothing Then
                         .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
                         If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
@@ -697,17 +603,6 @@ Friend Class AnrufMonitor
 #If OVer < 14 Then
             If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
 #End If
-                'StoppUhr
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
-                    With StoppUhrDaten(.ID)
-                        .Richtung = "Anruf zu:"
-                        If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
-                            .Anruf = Telefonat.TelNr
-                        Else
-                            .Anruf = Telefonat.Anrufer
-                        End If
-                    End With
-                End If
                 ' Kontakt öffnen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
                     If .olContact Is Nothing Then
@@ -724,7 +619,7 @@ Friend Class AnrufMonitor
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote AndAlso Not .olContact Is Nothing Then
+                If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
                     C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                 End If
 #End If
@@ -753,7 +648,7 @@ Friend Class AnrufMonitor
         Dim Telefonat As C_Telefonat
 
         Telefonat = C_Popup.TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
-        If Not Telefonat Is Nothing Then
+        If Telefonat IsNot Nothing Then
             With Telefonat
                 .Angenommen = True
                 .Zeit = CDate(FBStatus.GetValue(0))
@@ -801,21 +696,12 @@ Friend Class AnrufMonitor
                 ' StoppUhr einblenden
                 If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
                     C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStoppUhr1)
-                    With StoppUhrDaten(.ID)
-                        .MSN = CStr(IIf(Telefonat.TelName = C_DP.P_Def_StringEmpty, Telefonat.MSN, Telefonat.TelName))
-                        .StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
-                        .Abbruch = False
-                    End With
-                    BWStoppuhrEinblenden = New BackgroundWorker
-                    With BWStoppuhrEinblenden
-                        .WorkerSupportsCancellation = True
-                        .RunWorkerAsync(Telefonat.ID)
-                    End With
+                    C_Popup.StoppuhrEinblenden(Telefonat)
                 End If
                 'Notizeintag
 #If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
-                    If Not .olContact Is Nothing Then
+                    If .olContact IsNot Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
@@ -847,7 +733,7 @@ Friend Class AnrufMonitor
 
         Telefonat = C_Popup.TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
 
-        If Not Telefonat Is Nothing Then
+        If Telefonat IsNot Nothing Then
             With Telefonat
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
@@ -859,7 +745,7 @@ Friend Class AnrufMonitor
                     .Body += C_DP.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
 
                 Else
-                    If Not .olContact Is Nothing Then
+                    If .olContact IsNot Nothing Then
 
                         If .olContact.FullName = C_DP.P_Def_StringEmpty Then
                             .Anrufer = CStr(IIf(.olContact.Companies = C_DP.P_Def_StringEmpty, .TelNr, .Companies))
@@ -922,7 +808,9 @@ Friend Class AnrufMonitor
 
                 If .Zeit > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
 
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then StoppUhrDaten(.ID).Abbruch = True
+                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
+                    Telefonat.PopUpStoppuhr.StoppuhrStopp()
+                End If
 
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                     LetzterAnrufer = Telefonat
@@ -932,7 +820,7 @@ Friend Class AnrufMonitor
                 'Notizeintag
 #If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
-                    If Not .olContact Is Nothing Then
+                    If .olContact IsNot Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
@@ -1102,7 +990,7 @@ Friend Class AnrufMonitor
             .Companies = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Companies")))
 
             If .TelName = C_DP.P_Def_ErrorMinusOne_String Then .TelName = C_hf.TelefonName(.MSN)
-            If Not C_OlI.OutlookApplication Is Nothing Then
+            If C_OlI.OutlookApplication IsNot Nothing Then
                 If Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
                     .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
                 ElseIf Not .vCard = C_DP.P_Def_ErrorMinusOne_String Then

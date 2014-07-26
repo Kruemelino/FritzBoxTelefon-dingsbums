@@ -2197,16 +2197,15 @@ Public Class DataProvider
 
     ' Anrufmonitor
     ''' <summary>
-    ''' Stoppuhr gestartet - ID: %ID, Anruf:  %Anruf
+    ''' Stoppuhr für Telefonat gestartet: AnrName 
     ''' </summary>
-    ''' <param name="ID"></param>
-    ''' <param name="Anruf"></param>
+    ''' <param name="AnrName"></param>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_AnrMon_Log_StoppUhrStart1(ByVal ID As String, ByVal Anruf As String) As String
+    Public ReadOnly Property P_AnrMon_Log_StoppUhrStart1(ByVal AnrName As String) As String
         Get
-            Return "Stoppuhr gestartet - ID: " & ID & ", Anruf: " & Anruf
+            Return "Stoppuhr für Telefonat gestartet: " & AnrName
         End Get
     End Property
 
@@ -2450,7 +2449,17 @@ Public Class DataProvider
             Return "Kontakt öffnen"
         End Get
     End Property
-
+    ''' <summary>
+    ''' Kontakt erstellen
+    ''' </summary>
+    ''' <value>Kontakt erstellen</value>
+    ''' <returns>Kontakt erstellen</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen As String
+        Get
+            Return "Kontakt erstellen"
+        End Get
+    End Property
     ''' <summary>
     ''' Rückruf
     ''' </summary>
@@ -3015,7 +3024,7 @@ Public Class DataProvider
         SaveOptionData()
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         XMLDoc = Nothing
-        If Not tSpeichern Is Nothing Then
+        If tSpeichern IsNot Nothing Then
             tSpeichern.Stop()
             tSpeichern.Dispose()
             tSpeichern = Nothing
@@ -3064,7 +3073,7 @@ Public Class DataProvider
         xPath = CreateXPath(xPathTeile)
 
         tmpXMLNode = XMLDoc.SelectSingleNode(xPath)
-        If Not tmpXMLNode Is Nothing Then
+        If tmpXMLNode IsNot Nothing Then
             tmpParentXMLNode = tmpXMLNode.ParentNode
             Do Until tmpParentXMLNode.Name = xPathTeile.Item(1).ToString
                 If Not Left(xPathTeile.Item(xPathTeile.Count - i).ToString, 1) = P_xPathBracketOpen Then
@@ -3083,7 +3092,7 @@ Public Class DataProvider
         xPath = CreateXPath(xPathTeile)
         With XMLDoc
             tmpXMLNode = .SelectSingleNode(xPath)
-            If Not tmpXMLNode Is Nothing Then
+            If tmpXMLNode IsNot Nothing Then
                 ReadElementName = tmpXMLNode.ParentNode.Name
             End If
         End With
@@ -3193,7 +3202,7 @@ Public Class DataProvider
         With XMLDoc
             tmpXMLNodeList = .SelectNodes(xPath)
             For Each tmpXMLNode As XmlNode In tmpXMLNodeList
-                If Not tmpXMLNode Is Nothing Then
+                If tmpXMLNode IsNot Nothing Then
                     tmpXMLNode = .SelectSingleNode(xPath).ParentNode
                     tmpXMLNode.RemoveChild(.SelectSingleNode(xPath))
                     If tmpXMLNode.ChildNodes.Count = 0 Then
@@ -3226,7 +3235,7 @@ Public Class DataProvider
                 Next
             End With
             For i As Integer = 0 To AttributeName.Count - 1
-                If Not AttributeValue.Item(i) Is Nothing Then
+                If AttributeValue.Item(i) IsNot Nothing Then
                     tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName.Item(i).ToString)
                     tmpXMLAttribute.Value = AttributeValue.Item(i).ToString
                     tmpXMLNode.Attributes.Append(tmpXMLAttribute)
@@ -3252,7 +3261,7 @@ Public Class DataProvider
                 xPath = CreateXPath(alxPathTeile)
                 If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
                 tmpXMLNode = .SelectSingleNode(xPath)
-                If Not tmpXMLNode Is Nothing Then
+                If  tmpXMLNode IsNot Nothing Then
                     With tmpXMLNode
                         For Each XmlChildNode As XmlNode In tmpXMLNode.ChildNodes
                             If Not SubNodeName.IndexOf(XmlChildNode.Name) = -1 Then
@@ -3292,7 +3301,7 @@ Public Class DataProvider
             End With
             tmpxPath = CreateXPath(alxPathTeile)
 
-            If Not .SelectSingleNode(tmpxPath) Is Nothing Then
+            If .SelectSingleNode(tmpxPath) IsNot Nothing Then
                 tmpXMLNode.RemoveChild(.SelectSingleNode(tmpxPath))
             End If
             tmpXMLNode.AppendChild(Knoten)
@@ -3310,7 +3319,7 @@ Public Class DataProvider
         tmpxPath = CreateXPath(alxPathTeile)
         With XMLDoc
             tmpXMLNode = .SelectSingleNode(tmpxPath)
-            If Not tmpXMLNode Is Nothing Then
+            If tmpXMLNode IsNot Nothing Then
                 SubNoteCount = tmpXMLNode.ChildNodes.Count
             End If
         End With
@@ -3368,7 +3377,7 @@ Public Class DataProvider
             tmpNode = .SelectSingleNode(xPath)
             xPathTeile.Remove("SchließZeit")
             xPath = CreateXPath(xPathTeile)
-            If Not tmpNode Is Nothing Then
+            If tmpNode IsNot Nothing Then
                 .SelectSingleNode(xPath).RemoveAll()
                 .SelectSingleNode(xPath).AppendChild(tmpNode)
             End If
