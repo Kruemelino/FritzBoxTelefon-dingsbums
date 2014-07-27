@@ -10,7 +10,7 @@
     <StartupObject>
     </StartupObject>
     <RootNamespace>FritzBoxDial</RootNamespace>
-    <AssemblyName>PopUpAnrMon</AssemblyName>
+    <AssemblyName>PopupFenster</AssemblyName>
     <MyType>Windows</MyType>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -69,6 +69,9 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnrMonForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -84,22 +87,22 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="PopUpAnrMon.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PopUpAnrMonForm.vb">
+    <Compile Include="StoppuhrForm.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AnrMonForm.resx">
+      <DependentUpon>AnrMonForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PopUpAnrMonForm.resx">
-      <DependentUpon>PopUpAnrMonForm.vb</DependentUpon>
+    <EmbeddedResource Include="StoppuhrForm.resx">
+      <DependentUpon>StoppuhrForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

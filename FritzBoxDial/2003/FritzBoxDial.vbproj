@@ -177,12 +177,6 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="..\Common\AnrufMonitor.vb" />
     <Compile Include="..\Common\Contacts.vb" />
-    <Compile Include="..\Common\formAnrMon.designer.vb">
-      <DependentUpon>formAnrMon.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\formAnrMon.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="..\Common\formCfg.designer.vb">
       <DependentUpon>formCfg.vb</DependentUpon>
     </Compile>
@@ -199,12 +193,6 @@
       <DependentUpon>formRWSuche.vb</DependentUpon>
     </Compile>
     <Compile Include="..\Common\formRWSuche.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\Common\FormStoppUhr.designer.vb">
-      <DependentUpon>FormStoppUhr.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\FormStoppUhr.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="..\Common\formWählbox.designer.vb">
@@ -227,6 +215,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="..\Common\Popup.vb" />
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -239,9 +228,6 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <EmbeddedResource Include="..\Common\formAnrMon.resx">
-      <DependentUpon>formAnrMon.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formCfg.resx">
       <DependentUpon>formCfg.vb</DependentUpon>
     </EmbeddedResource>
@@ -250,9 +236,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formRWSuche.resx">
       <DependentUpon>formRWSuche.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\FormStoppUhr.resx">
-      <DependentUpon>FormStoppUhr.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formWählbox.resx">
       <DependentUpon>formWählbox.vb</DependentUpon>
@@ -287,13 +270,9 @@
       <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
       <Name>FunktionenO3</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PopUpAnrMon\PopUpAnrufMonitorO3.vbproj">
+    <ProjectReference Include="..\..\PopUpFenster\PopUpFensterO3.vbproj">
       <Project>{D8D8FAB5-B82D-4363-82B4-E6C295074075}</Project>
-      <Name>PopUpAnrufMonitorO3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PopUpStoppUhr\PopUpStoppUhrO3.vbproj">
-      <Project>{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}</Project>
-      <Name>PopUpStoppUhrO3</Name>
+      <Name>PopUpFensterO3</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

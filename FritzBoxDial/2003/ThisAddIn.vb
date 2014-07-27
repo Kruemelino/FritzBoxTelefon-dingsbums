@@ -132,7 +132,7 @@ Public Class ThisAddIn
 
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7 Beta 6"
+            Return "3.7.1"
         End Get
     End Property
 #End Region
@@ -168,7 +168,7 @@ Public Class ThisAddIn
 
         P_oApp = CType(Application, Outlook.Application)
 
-        If Not P_oApp.ActiveExplorer Is Nothing Then
+        If P_oApp.ActiveExplorer IsNot Nothing Then
 #If OVer = 11 Then
             Initialisierung = New formInit
 #End If
