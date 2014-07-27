@@ -28,7 +28,7 @@ Public Class Popup
 
     Private WithEvents TimerAktualisieren As System.Timers.Timer
 
-    Private WithEvents PopUpAnrufMonitor As PopUpAnrMon
+    Private WithEvents PopUpAnrufMonitor As F_AnrMon
     Friend TelefonatsListe As New List(Of C_Telefonat)
 #End Region
 
@@ -53,7 +53,7 @@ Public Class Popup
 #End Region
 
 #Region "Eigene Variablen für Stoppuhr"
-    Private WithEvents PopUpStoppUhr As FritzBoxDial.PopUpStoppUhr
+    Private WithEvents PopUpStoppUhr As FritzBoxDial.F_StoppUhr
 #End Region
 
     ' Track whether Dispose has been called.
@@ -77,7 +77,7 @@ Public Class Popup
     ''' </summary>
     ''' <param name="ThisPopUpAnrMon"></param>
     ''' <remarks></remarks>
-    Private Sub AnrMonInitializeComponent(ByVal ThisPopUpAnrMon As PopUpAnrMon)
+    Private Sub AnrMonInitializeComponent(ByVal ThisPopUpAnrMon As F_AnrMon)
         '
         'PopUpAnrMon
         '
@@ -107,7 +107,7 @@ Public Class Popup
     ''' <param name="ThisPopUpAnrMon">PopUpFenster</param>
     ''' <param name="Telefonat">telefonat, das angezeigt werden soll.</param>
     ''' <remarks></remarks>
-    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As PopUpAnrMon, ByVal Telefonat As C_Telefonat)
+    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As F_AnrMon, ByVal Telefonat As C_Telefonat)
         AnrMonInitializeComponent(ThisPopUpAnrMon)
         With ThisPopUpAnrMon
             With .OptionsMenu
@@ -181,7 +181,7 @@ Public Class Popup
     ''' <param name="Telefonat">Telefonalt, aus dem die Informationen gelesen werden sollen.</param>
     ''' <remarks>Timer: Bei jedem Durchlauf wird geschaut, ob neuere Informationen im Telefonat enthalten sind.</remarks>
     Friend Overloads Sub AnrMonEinblenden(ByVal Aktualisieren As Boolean, ByVal Telefonat As C_Telefonat)
-        Dim ThisPopUpAnrMon As New PopUpAnrMon
+        Dim ThisPopUpAnrMon As New F_AnrMon
         Dim TelinList As Boolean = False
 
         'AnrMonInitializeComponent(ThisPopUpAnrMon)
@@ -214,8 +214,8 @@ Public Class Popup
             .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
             .EffektMove = C_DP.P_CBAnrMonMove
             .EffektTransparenz = C_DP.P_CBAnrMonTransp
-            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.PopUpAnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
-            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.PopUpAnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
+            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
+            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             .Popup()
         End With
@@ -275,7 +275,7 @@ Public Class Popup
     End Sub
 
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles PopUpAnrufMonitor.Close
-        CType(sender, PopUpAnrMon).Hide()
+        CType(sender, F_AnrMon).Hide()
     End Sub
 
     Private Sub PopUpAnrMon_Closed(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -287,7 +287,7 @@ Public Class Popup
         If TimerAktualisieren IsNot Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
 
         Try
-            TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is CType(sender, PopUpAnrMon)).PopUpAnrMon = Nothing
+            TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is CType(sender, F_AnrMon)).PopUpAnrMon = Nothing
         Catch ex As Exception
             C_hf.LogFile("PopUpAnrMon_Closed: " & ex.Message)
         End Try
@@ -295,7 +295,7 @@ Public Class Popup
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
 
-        Dim tmpPopUpAnrMon As PopUpAnrMon = CType(sender, PopUpAnrMon)
+        Dim tmpPopUpAnrMon As F_AnrMon = CType(sender, F_AnrMon)
         Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is tmpPopUpAnrMon)
         ' Todo: Möglichkeit finden, wie auf das Telefonat, welches zu dem PopUp gehört, zugreifen
 
@@ -318,7 +318,7 @@ Public Class Popup
     End Sub
 
     Private Sub ToolStripMenuItemKontaktöffnen_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        AnruferAnzeigen(TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is CType(sender, PopUpAnrMon)))
+        AnruferAnzeigen(TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is CType(sender, F_AnrMon)))
     End Sub
 
     ''' <summary>
@@ -369,9 +369,9 @@ Public Class Popup
                              ByVal sRichtung As String, _
                              ByVal WarteZeit As Integer, _
                              ByVal PositionStart As System.Drawing.Point, _
-                             ByVal sMSN As String) As PopUpStoppUhr
+                             ByVal sMSN As String) As F_StoppUhr
 
-        Dim ThisPopUpStoppUhr As New PopUpStoppUhr
+        Dim ThisPopUpStoppUhr As New F_StoppUhr
         With ThisPopUpStoppUhr
             .ContentFont = New Font("Segoe UI", 18)
             .TitleFont = New Font("Segoe UI", 9)
@@ -441,7 +441,7 @@ Public Class Popup
     ''' <remarks></remarks>
     Private Sub PopUpStoppuhr_Close(ByVal sender As Object, ByVal e As System.EventArgs)
 
-        Dim tmpPopUpStoppuhr As PopUpStoppUhr = CType(sender, PopUpStoppUhr)
+        Dim tmpPopUpStoppuhr As F_StoppUhr = CType(sender, F_StoppUhr)
         C_DP.P_CBStoppUhrX = tmpPopUpStoppuhr.StartPosition.X
         C_DP.P_CBStoppUhrY = tmpPopUpStoppuhr.StartPosition.Y
         Try

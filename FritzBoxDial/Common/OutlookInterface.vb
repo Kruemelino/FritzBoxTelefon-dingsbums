@@ -24,8 +24,8 @@
     Private _TelName As String
     Private _frm_Popup As Popup
     Private _Angenommen As Boolean = False
-    Private _PopUpAnrMon As PopUpAnrMon
-    Private _PopUpStoppuhr As PopUpStoppUhr
+    Private _PopUpAnrMon As F_AnrMon
+    Private _PopUpStoppuhr As F_StoppUhr
 #End Region
 
 #Region "Properties"
@@ -181,19 +181,19 @@
             _Angenommen = value
         End Set
     End Property
-    Friend Property PopUpAnrMon() As PopUpAnrMon
+    Friend Property PopUpAnrMon() As F_AnrMon
         Get
             Return _PopUpAnrMon
         End Get
-        Set(ByVal value As PopUpAnrMon)
+        Set(ByVal value As F_AnrMon)
             _PopUpAnrMon = value
         End Set
     End Property
-    Friend Property PopUpStoppuhr() As PopUpStoppUhr
+    Friend Property PopUpStoppuhr() As F_StoppUhr
         Get
             Return _PopUpStoppuhr
         End Get
-        Set(ByVal value As PopUpStoppUhr)
+        Set(ByVal value As F_StoppUhr)
             _PopUpStoppuhr = value
         End Set
     End Property
