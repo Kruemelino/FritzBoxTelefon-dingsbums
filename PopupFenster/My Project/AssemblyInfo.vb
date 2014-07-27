@@ -8,7 +8,7 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums Anrufmonitor")> 
+<Assembly: AssemblyTitle("Fritz!Box Telefon-Dingsbums PopupFenster")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")> 
 <Assembly: AssemblyProduct("Fritz!Box Telefon-Dingsbums")> 

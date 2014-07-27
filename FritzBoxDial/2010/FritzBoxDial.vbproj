@@ -328,13 +328,9 @@
       <Project>{ccf5ae9e-c12e-4467-9334-504cd7902b78}</Project>
       <Name>Funktionen</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PopUpAnrMon\PopUpAnrufMonitor.vbproj">
+    <ProjectReference Include="..\..\PopupFenster\PopupFenster.vbproj">
       <Project>{d8d8fab5-b82d-4363-82b4-e6c295074075}</Project>
-      <Name>PopUpAnrufMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PopUpStoppUhr\PopUpStoppUhr.vbproj">
-      <Project>{6A85D223-B47F-4CA9-A8AD-96A6F4B8EB7C}</Project>
-      <Name>PopUpStoppUhr</Name>
+      <Name>PopupFenster</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
