@@ -284,18 +284,6 @@ Friend Class StoppuhrForm
 
 #End Region
 
-    Private Sub InitializeComponent()
-        Me.SuspendLayout()
-        '
-        'StoppuhrForm
-        '
-        Me.ClientSize = New System.Drawing.Size(392, 66)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "StoppuhrForm"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.ResumeLayout(False)
-
-    End Sub
 End Class
 
 Public Class F_StoppUhr

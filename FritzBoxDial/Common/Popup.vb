@@ -73,42 +73,12 @@ Public Class Popup
 #Region "Anrufmonitor"
 
     ''' <summary>
-    ''' Initialisierungsroutine des ehemaligen AnrMonForm. Es wird das ContextMenuStrip und der Anrufmonitor an Sich initialisiert 
-    ''' </summary>
-    ''' <param name="ThisPopUpAnrMon"></param>
-    ''' <remarks></remarks>
-    Private Sub AnrMonInitializeComponent(ByVal ThisPopUpAnrMon As F_AnrMon)
-        '
-        'PopUpAnrMon
-        '
-        With ThisPopUpAnrMon
-            .AutoAusblenden = False
-            .BorderColor = System.Drawing.SystemColors.WindowText
-            .ButtonHoverColor = System.Drawing.Color.Orange
-            .ContentFont = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            .HeaderColor = System.Drawing.SystemColors.ControlDarkDark
-            .Image = Nothing
-            .ImagePosition = New System.Drawing.Point(12, 32)
-            .ImageSize = New System.Drawing.Size(48, 48)
-            .LinkHoverColor = System.Drawing.SystemColors.Highlight
-            .OptionsButton = True
-            .PositionsKorrektur = New System.Drawing.Size(0, 0)
-            .Size = New System.Drawing.Size(400, 100)
-            .TelNrFont = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            .TextPadding = New System.Windows.Forms.Padding(5)
-            .TitleColor = System.Drawing.SystemColors.ControlText
-            .TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        End With
-    End Sub
-
-    ''' <summary>
     ''' Überträgt die Informationen aus dem Telefonat in das entsprechende PopUpFenster. 
     ''' </summary>
     ''' <param name="ThisPopUpAnrMon">PopUpFenster</param>
     ''' <param name="Telefonat">telefonat, das angezeigt werden soll.</param>
     ''' <remarks></remarks>
     Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As F_AnrMon, ByVal Telefonat As C_Telefonat)
-        AnrMonInitializeComponent(ThisPopUpAnrMon)
         With ThisPopUpAnrMon
             With .OptionsMenu
                 With .Items("ToolStripMenuItemRückruf")
@@ -184,8 +154,6 @@ Public Class Popup
         Dim ThisPopUpAnrMon As New F_AnrMon
         Dim TelinList As Boolean = False
 
-        'AnrMonInitializeComponent(ThisPopUpAnrMon)
-
         UpdateForm = Aktualisieren
 
         ' Prüfe ob Telefonat in Telefonatsliste
@@ -198,6 +166,7 @@ Public Class Popup
         If Not TelinList Then
             TelefonatsListe.Add(Telefonat)
         End If
+
         Telefonat.PopUpAnrMon = ThisPopUpAnrMon
 
         AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
@@ -214,8 +183,8 @@ Public Class Popup
             .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
             .EffektMove = C_DP.P_CBAnrMonMove
             .EffektTransparenz = C_DP.P_CBAnrMonTransp
-            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition) 'FritzBoxDial.PopUpAnrMon.eStartPosition.BottomRight
-            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection) 'FritzBoxDial.PopUpAnrMon.eMoveDirection.X
+            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
+            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
             .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
             .Popup()
         End With
@@ -270,7 +239,9 @@ Public Class Popup
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
         For Each tmpTelefonat As C_Telefonat In TelefonatsListe
-            AnrMonausfüllen(tmpTelefonat.PopUpAnrMon, tmpTelefonat)
+            If tmpTelefonat.PopUpAnrMon IsNot Nothing Then
+                AnrMonausfüllen(tmpTelefonat.PopUpAnrMon, tmpTelefonat)
+            End If
         Next
     End Sub
 

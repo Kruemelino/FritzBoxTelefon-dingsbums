@@ -808,7 +808,7 @@ Friend Class AnrufMonitor
 
                 If .Zeit > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
 
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
+                If C_DP.P_CBStoppUhrEinblenden And ShowForms AndAlso Telefonat.PopUpStoppuhr IsNot Nothing Then
                     Telefonat.PopUpStoppuhr.StoppuhrStopp()
                 End If
 

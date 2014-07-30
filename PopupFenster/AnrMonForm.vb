@@ -360,9 +360,8 @@ End Class
 
 #Region "Properties"
 
-    Private clHeader As Color = SystemColors.ControlDark
-    <Category("Header"), _
-    DefaultValue(GetType(Color), "ControlDark")> _
+    Private clHeader As Color = SystemColors.ControlDarkDark 'SystemColors.ControlDark
+    <Category("Header"), DefaultValue(GetType(Color), "ControlDark")> _
     Property HeaderColor() As Color
         Get
             Return clHeader
@@ -372,9 +371,9 @@ End Class
 
         End Set
     End Property
+
     Private clBody As Color = SystemColors.Control
-    <Category("Appearance"), _
-    DefaultValue(GetType(Color), "Control")> _
+    <Category("Appearance"), DefaultValue(GetType(Color), "Control")> _
     Property BodyColor() As Color
         Get
             Return clBody
@@ -384,9 +383,9 @@ End Class
 
         End Set
     End Property
-    Private clTitle As Color = Color.Gray
-    <Category("Title"), _
-    DefaultValue(GetType(Color), "Gray")> _
+
+    Private clTitle As Color = System.Drawing.SystemColors.ControlText 'Color.Gray
+    <Category("Title"), DefaultValue(GetType(Color), "Gray")> _
     Property TitleColor() As Color
         Get
             Return clTitle
@@ -396,9 +395,9 @@ End Class
 
         End Set
     End Property
+
     Private clBase As Color = SystemColors.ControlText
-    <Category("Content"), _
-    DefaultValue(GetType(Color), "ControlText")> _
+    <Category("Content"), DefaultValue(GetType(Color), "ControlText")> _
     Property ContentColor() As Color
         Get
             Return clBase
@@ -408,45 +407,42 @@ End Class
 
         End Set
     End Property
-    Private clBorder As Color = SystemColors.WindowFrame
-    <Category("Appearance"), _
-    DefaultValue(GetType(Color), "WindowFrame")> _
+
+    Private clBorder As Color = SystemColors.WindowText 'SystemColors.WindowFrame
+    <Category("Appearance"), DefaultValue(GetType(Color), "WindowText")> _
     Property BorderColor() As Color
         Get
             Return clBorder
         End Get
         Set(ByVal value As Color)
             clBorder = value
-
         End Set
     End Property
+
     Private clCloseBorder As Color = SystemColors.WindowFrame
-    <Category("Buttons"), _
-    DefaultValue(GetType(Color), "WindowFrame")> _
+    <Category("Buttons"), DefaultValue(GetType(Color), "WindowFrame")> _
     Property ButtonBorderColor() As Color
         Get
             Return clCloseBorder
         End Get
         Set(ByVal value As Color)
             clCloseBorder = value
-
         End Set
     End Property
-    Private clCloseHover As Color = SystemColors.Highlight
-    <Category("Buttons"), _
-    DefaultValue(GetType(Color), "Highlight")> _
+
+    Private clCloseHover As Color = Color.Orange 'SystemColors.Highlight
+    <Category("Buttons"), DefaultValue(GetType(Color), "Highlight")> _
     Property ButtonHoverColor() As Color
         Get
             Return clCloseHover
         End Get
         Set(ByVal value As Color)
             clCloseHover = value
-
         End Set
     End Property
-    Private clLinkHover As Color = SystemColors.HotTrack
-    <Category("Appearance"), _
-    DefaultValue(GetType(Color), "HotTrack")> _
+
+    Private clLinkHover As Color = SystemColors.Highlight 'SystemColors.HotTrack
+    <Category("Appearance"), DefaultValue(GetType(Color), "HotTrack")> _
     Property LinkHoverColor() As Color
         Get
             Return clLinkHover
@@ -456,9 +452,9 @@ End Class
 
         End Set
     End Property
+
     Private iDiffGradient As Integer = 50
-    <Category("Appearance"), _
-    DefaultValue(50)> _
+    <Category("Appearance"), DefaultValue(50)> _
     Property GradientPower() As Integer
         Get
             Return iDiffGradient
@@ -468,9 +464,9 @@ End Class
 
         End Set
     End Property
-    Private ftBase As Font = SystemFonts.DialogFont
-    <Category("Anrufername")> _
-    Property ContentFont() As Font
+
+    Private ftBase As Font = New Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.DialogFont
+    <Category("Anrufername")> Property ContentFont() As Font
         Get
             Return ftBase
         End Get
@@ -478,7 +474,8 @@ End Class
             ftBase = value
         End Set
     End Property
-    Private ftTitle As Font = SystemFonts.CaptionFont
+
+    Private ftTitle As Font = New Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
     <Category("Title")> _
     Property TitleFont() As Font
         Get
@@ -489,114 +486,8 @@ End Class
 
         End Set
     End Property
-    Private ftTelNr As Font = SystemFonts.CaptionFont
-    <Category("TelNr")> _
-    Property TelNrFont() As Font
-        Get
-            Return ftTelNr
-        End Get
-        Set(ByVal value As Font)
-            ftTelNr = value
 
-        End Set
-    End Property
-    Private ptImagePosition As Point = New Point(12, 21)
-    <Category("Image")> _
-    Property ImagePosition() As Point
-        Get
-            Return ptImagePosition
-        End Get
-        Set(ByVal value As Point)
-            ptImagePosition = value
-
-        End Set
-    End Property
-    Private szImageSize As Size = New Size(0, 0)
-    <Category("Image")> _
-    Property ImageSize() As Size
-        Get
-            If szImageSize.Width = 0 Then
-                If Image IsNot Nothing Then
-                    Return Image.Size
-                Else
-                    Return New Size(32, 32)
-                End If
-            Else
-                Return szImageSize
-            End If
-        End Get
-        Set(ByVal value As Size)
-            szImageSize = value
-
-        End Set
-    End Property
-    Private imImage As Image = Nothing
-    <Category("Image")> _
-    Property Image() As Image
-        Get
-            Return imImage
-        End Get
-        Set(ByVal value As Image)
-            imImage = value
-
-        End Set
-    End Property
-    Private sAnrName As String
-    <Category("Anrufername")> _
-    Property AnrName() As String
-        Get
-            Return sAnrName
-        End Get
-        Set(ByVal value As String)
-            sAnrName = value
-
-        End Set
-    End Property
-    Private sUhrzeit As String
-    <Category("Uhrzeit")> _
-    Property Uhrzeit() As String
-        Get
-            Return sUhrzeit
-        End Get
-        Set(ByVal value As String)
-            sUhrzeit = value
-
-        End Set
-    End Property
-    Private sTelNr As String
-    <Category("TelNr")> _
-    Property TelNr() As String
-        Get
-            Return sTelNr
-        End Get
-        Set(ByVal value As String)
-            sTelNr = value
-
-        End Set
-    End Property
-    Private sTelName As String
-    <Category("TelName")> _
-    Property TelName() As String
-        Get
-            Return sTelName
-        End Get
-        Set(ByVal value As String)
-            sTelName = value
-
-        End Set
-    End Property
-    Private sFirma As String
-    <Category("Firma")> _
-    Property Firma() As String
-        Get
-            Return sFirma
-        End Get
-        Set(ByVal value As String)
-            sFirma = value
-
-        End Set
-    End Property
-    Private pdTextPadding As Padding = New Padding(0)
+    Private pdTextPadding As Padding = New Padding(5) ' New Padding(0)
     <Category("Appearance")> _
     Property TextPadding() As Padding
         Get
@@ -607,9 +498,9 @@ End Class
 
         End Set
     End Property
+
     Private iHeaderHeight As Integer = 9
-    <Category("Header"), _
-    DefaultValue(9)> _
+    <Category("Header"), DefaultValue(9)> _
     Property HeaderHeight() As Integer
         Get
             Return iHeaderHeight
@@ -619,9 +510,9 @@ End Class
 
         End Set
     End Property
+
     Private bCloseButtonVisible As Boolean = True
-    <Category("Buttons"), _
-    DefaultValue(True)> _
+    <Category("Buttons"), DefaultValue(True)> _
     Property CloseButton() As Boolean
         Get
             Return bCloseButtonVisible
@@ -630,9 +521,9 @@ End Class
             bCloseButtonVisible = value
         End Set
     End Property
+
     Private bOptionsButtonVisible As Boolean = False
-    <Category("Buttons"), _
-    DefaultValue(False)> _
+    <Category("Buttons"), DefaultValue(False)> _
     Property OptionsButton() As Boolean
         Get
             Return bOptionsButtonVisible
@@ -642,6 +533,7 @@ End Class
 
         End Set
     End Property
+
     Private WithEvents ctContextMenu As ContextMenuStrip = Nothing
     <Category("Behavior")> _
     Property OptionsMenu() As ContextMenuStrip
@@ -652,9 +544,9 @@ End Class
             ctContextMenu = value
         End Set
     End Property
+
     Private iShowDelay As Integer = 3000
-    <Category("Behavior"), _
-    DefaultValue(3000)> _
+    <Category("Behavior"), DefaultValue(3000)> _
     Property ShowDelay() As Integer
         Get
             Return iShowDelay
@@ -663,6 +555,7 @@ End Class
             iShowDelay = value
         End Set
     End Property
+
     Private szSize As Size = New Size(400, 100)
     <Category("Appearance")> _
     Property Size() As Size
@@ -673,9 +566,9 @@ End Class
             szSize = value
         End Set
     End Property
+
     Private bAutoAusblenden As Boolean = True
-    <Category("Appearance"), _
-    DefaultValue(True)> _
+    <Category("Appearance"), DefaultValue(True)> _
     Property AutoAusblenden() As Boolean
         Get
             Return bAutoAusblenden
@@ -684,6 +577,7 @@ End Class
             bAutoAusblenden = value
         End Set
     End Property
+
     Private szPosition As Size = New Size(0, 0)
     <Category("Appearance")> _
     Property PositionsKorrektur() As Size
@@ -706,6 +600,7 @@ End Class
             bEffektTransparenz = value
         End Set
     End Property
+
     Private bEffektMove As Boolean = True
     <Category("Appearance"), _
     DefaultValue(True)> _
@@ -717,9 +612,9 @@ End Class
             bEffektMove = value
         End Set
     End Property
+
     Private iEffektMoveGeschwindigkeit As Integer = 5
-    <Category("Appearance"), _
-    DefaultValue(5)> _
+    <Category("Anrufmonitor"), DefaultValue(5)> _
     Property EffektMoveGeschwindigkeit() As Integer
         Get
             Return iEffektMoveGeschwindigkeit
@@ -730,7 +625,7 @@ End Class
     End Property
 
     Private pStartpunkt As eStartPosition
-    <Category("Appearance")> _
+    <Category("Anrufmonitor")> _
     Property Startpunkt() As eStartPosition
         Get
             Return pStartpunkt
@@ -741,7 +636,7 @@ End Class
     End Property
 
     Private _MoveDirection As eMoveDirection
-    <Category("Appearance")> _
+    <Category("Anrufmonitor")> _
     Property MoveDirecktion() As eMoveDirection
         Get
             Return _MoveDirection
@@ -750,6 +645,115 @@ End Class
             _MoveDirection = value
         End Set
     End Property
+
+    Private ftTelNr As Font = New Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
+    <Category("Anrufmonitor")> Property TelNrFont() As Font
+        Get
+            Return ftTelNr
+        End Get
+        Set(ByVal value As Font)
+            ftTelNr = value
+
+        End Set
+    End Property
+
+    Private ptImagePosition As Point = New Point(12, 32) 'New Point(12, 21)
+    <Category("Anrufmonitor")> _
+    Property ImagePosition() As Point
+        Get
+            Return ptImagePosition
+        End Get
+        Set(ByVal value As Point)
+            ptImagePosition = value
+
+        End Set
+    End Property
+
+    Private szImageSize As Size = New Size(48, 48) 'New Size(0, 0)
+    <Category("Anrufmonitor")> _
+    Property ImageSize() As Size
+        Get
+            If szImageSize.Width = 0 Then
+                If Image IsNot Nothing Then
+                    Return Image.Size
+                Else
+                    Return New Size(32, 32)
+                End If
+            Else
+                Return szImageSize
+            End If
+        End Get
+        Set(ByVal value As Size)
+            szImageSize = value
+        End Set
+    End Property
+
+    Private imImage As Image = Nothing
+    <Category("Anrufmonitor")> _
+    Property Image() As Image
+        Get
+            Return imImage
+        End Get
+        Set(ByVal value As Image)
+            imImage = value
+        End Set
+    End Property
+
+    Private sAnrName As String
+    <Category("Anrufmonitor")> _
+    Property AnrName() As String
+        Get
+            Return sAnrName
+        End Get
+        Set(ByVal value As String)
+            sAnrName = value
+        End Set
+    End Property
+
+    Private sUhrzeit As String
+    <Category("Anrufmonitor")> _
+    Property Uhrzeit() As String
+        Get
+            Return sUhrzeit
+        End Get
+        Set(ByVal value As String)
+            sUhrzeit = value
+        End Set
+    End Property
+
+    Private sTelNr As String
+    <Category("Anrufmonitor")> _
+    Property TelNr() As String
+        Get
+            Return sTelNr
+        End Get
+        Set(ByVal value As String)
+            sTelNr = value
+        End Set
+    End Property
+
+    Private sTelName As String
+    <Category("Anrufmonitor")> _
+    Property TelName() As String
+        Get
+            Return sTelName
+        End Get
+        Set(ByVal value As String)
+            sTelName = value
+        End Set
+    End Property
+
+    Private sFirma As String
+    <Category("Anrufmonitor")> _
+    Property Firma() As String
+        Get
+            Return sFirma
+        End Get
+        Set(ByVal value As String)
+            sFirma = value
+        End Set
+    End Property
+
 #End Region
 
     Public Sub New()
@@ -772,18 +776,19 @@ End Class
             .Size = Size
             .Opacity = CDbl(IIf(bEffektTransparenz, 0, 1))
 
+
             Select Case Startpunkt
                 Case eStartPosition.BottomLeft
                     X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
-                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - PositionsKorrektur.Height - fPopup.Height
+                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - .Height - PositionsKorrektur.Height
                 Case eStartPosition.TopLeft
                     X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
                     Y = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
                 Case eStartPosition.BottomRight
-                    X = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - PositionsKorrektur.Width
-                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - PositionsKorrektur.Height - fPopup.Height
+                    X = Screen.PrimaryScreen.WorkingArea.Right - 10 - .Size.Width - PositionsKorrektur.Width
+                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - .Height - PositionsKorrektur.Height
                 Case eStartPosition.TopRight
-                    X = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - PositionsKorrektur.Width
+                    X = Screen.PrimaryScreen.WorkingArea.Right - 10 - .Size.Width - PositionsKorrektur.Width
                     Y = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
             End Select
 
@@ -1050,10 +1055,5 @@ End Class
         bMouseIsOn = False
         tmAnimation.Start()
     End Sub
-
-    'Protected Overrides Sub Finalize()
-    '    fPopup.TopMost = False
-    '    fPopup.Dispose(True)
-    'End Sub
 
 End Class
