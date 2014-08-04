@@ -105,7 +105,8 @@
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpGET("http://" & C_DP.P_ValidFBAdr & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
+            If Not InStr(C_HF.httpGET("http://" & FBIPAdresse & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
+                Me.LMessage.Text = C_DP.P_Init_FritzBox_Found(FBIPAdresse)
                 C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
@@ -116,15 +117,14 @@
                 Me.BFBAdr.Enabled = False
                 Me.LFBAdr.Enabled = False
                 Me.CBForceFBAddr.Enabled = False
-                Me.LMessage.Text = "Eine Fritz!Box unter der IP " & FBIPAdresse & " gefunden."
             Else
-                Me.LMessage.Text = "Keine Fritz!Box unter der angegebenen IP gefunden."
+                Me.LMessage.Text = C_DP.P_Init_FritzBox_NotFound
             End If
         Else
             Me.CBForceFBAddr.Enabled = True
-            Me.TBFritzBoxAdr.Text = "192.168.178.1"
+            Me.TBFritzBoxAdr.Text = C_DP.P_Def_FritzBoxIPAdress
             FBIPAdresse = Me.TBFritzBoxAdr.Text
-            Me.LMessage.Text = "Keine Gegenstelle unter der angegebenen IP gefunden."
+            Me.LMessage.Text = C_DP.P_Init_NotthingFound
         End If
     End Sub
 
@@ -146,9 +146,9 @@
             Me.LLandesvorwahl.Enabled = True
             Me.TBVorwahl.Enabled = True
             Me.TBLandesvorwahl.Enabled = True
-            Me.LMessage.Text = "Das Anmelden an der Fritz!Box war erfolgreich."
+            Me.LMessage.Text = C_DP.P_Init_Login_Korrekt
         Else
-            Me.LMessage.Text = "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
+            Me.LMessage.Text = C_DP.P_Init_Login_Nicht_Korrekt
         End If
     End Sub
 
@@ -156,12 +156,12 @@
         Me.BFBPW.Enabled = Not Me.TBFBPW.Text.Length = 0
     End Sub
 
-    Private Sub BtELeINLESEN_Click(sender As Object, e As EventArgs) Handles BTelEinlesen.Click
+    Private Sub BTelEinlesen_Click(sender As Object, e As EventArgs) Handles BTelEinlesen.Click
         Me.LVorwahl.Enabled = False
         Me.LLandesvorwahl.Enabled = False
         Me.TBVorwahl.Enabled = False
         Me.TBLandesvorwahl.Enabled = False
-        Me.BTelEinlesen.Text = "Bitte warten..."
+        Me.BTelEinlesen.Text = C_DP.P_Def_Bitte_Warten
         Me.BTelEinlesen.Enabled = False
 
         C_DP.P_TBVorwahl = Me.TBVorwahl.Text

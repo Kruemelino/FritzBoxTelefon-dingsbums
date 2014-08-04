@@ -423,7 +423,6 @@ Public Class FritzBox
                                     FBLogout(SID)
                                     SID = C_DP.P_Def_SessionID
                                 End If
-                                C_DP.Write("Optionen", sFBBenutzer, CStr(IIf(SID = C_DP.P_Def_SessionID, 0, 2)))
                             End If
                         Else
                             C_hf.LogFile(C_DP.P_FritzBox_LoginError_LoginIncorrect)

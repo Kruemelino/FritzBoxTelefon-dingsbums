@@ -1176,6 +1176,18 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' 192.168.178.1
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_FritzBoxIPAdress() As String
+        Get
+            Return "192.168.178.1"
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Fritz!Box
     ''' </summary>
     ''' <value></value>
@@ -1232,6 +1244,18 @@ Public Class DataProvider
     Public ReadOnly Property P_Def_StringNull() As String
         Get
             Return "0"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Das Leerzeichen als <code>Chr(32)</code> als String.
+    ''' </summary>
+    ''' <value>" "</value>
+    ''' <returns>" "</returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_Leerzeichen() As String
+        Get
+            Return Chr(32) '" "
         End Get
     End Property
 
@@ -2790,7 +2814,80 @@ Public Class DataProvider
         End Get
     End Property
 
+    'Initialisierung
 
+    ''' <summary>
+    ''' "Fritz!Box unter der IP IPAdresse gefunden"
+    ''' </summary>
+    ''' <param name="IPAdresse"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Init_FritzBox_Found(ByVal IPAdresse As String) As String
+        Get
+            Return P_Def_FritzBoxName & " unter der IP " & IPAdresse & " gefunden"
+        End Get
+    End Property
+
+    ''' <summary>
+    '''"Keine Fritz!Box unter der angegebenen IP gefunden.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Init_FritzBox_NotFound() As String
+        Get
+            Return "Keine " & P_Def_FritzBoxName & " unter der angegebenen IP gefunden."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Keine Gegenstelle unter der angegebenen IP gefunden.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Init_NotthingFound() As String
+        Get
+            Return "Keine Gegenstelle unter der angegebenen IP gefunden."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Das Anmelden an der Fritz!Box war erfolgreich.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Init_Login_Korrekt() As String
+        Get
+            Return "Das Anmelden an der " & P_Def_FritzBoxName & " war erfolgreich."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Das Anmelden an der Fritz!Box war erfolgreich.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Init_Login_Nicht_Korrekt() As String
+        Get
+            Return "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Bitte warten...
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Def_Bitte_Warten() As String
+        Get
+            Return "Bitte warten..."
+        End Get
+    End Property
 #End Region
 
     Public Sub New()
@@ -3399,14 +3496,15 @@ Public Class DataProvider
 
     ''' <summary>
     ''' Prüft üb der xPath für das Schreiben in die XML-Datei möglich ist.
-    ''' Beispiel: Wildcard * darf nicht enthalten sein, da kein eindeutiges Ziel addressiert werden kann.
+    ''' Beispiel: Wildcard * darf nicht enthalten sein, da kein eindeutiges Ziel adressiert werden kann.
     ''' </summary>
     ''' <param name="xPath">zu prüfender xPath</param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <remarks>Test auf Leerzeichen in Elementname muss implementiert werden</remarks>
     Private Function CheckXPathWrite(ByVal xPath As String) As Boolean
         CheckXPathWrite = True
 
+        'If Not InStr(xPath, P_Def_Leerzeichen, CompareMethod.Text) = 0 Then Return False
         If Not InStr(xPath, P_xPathSeperatorSlash & P_xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
         If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
     End Function

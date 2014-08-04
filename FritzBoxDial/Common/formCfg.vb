@@ -103,12 +103,13 @@ Friend Class formCfg
 
         Me.CBForceFBAddr.Checked = C_DP.P_CBForceFBAddr
         Me.TBBenutzer.Text = C_DP.P_TBBenutzer
-        If Not Me.TBBenutzer.Text = C_DP.P_Def_StringEmpty Then
-            If C_DP.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
-                Me.TBBenutzer.BackColor = Color.Red
-                Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
-            End If
-        End If
+        ' Unnötige Spielerrei:
+        'If Not Me.TBBenutzer.Text = C_DP.P_Def_StringEmpty Then
+        '    If C_DP.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
+        '        Me.TBBenutzer.BackColor = Color.Red
+        '        Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
+        '    End If
+        'End If
 
         If Not Len(C_DP.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
         Me.TBVorwahl.Text = C_DP.P_TBVorwahl
@@ -1446,38 +1447,40 @@ Friend Class formCfg
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
         AddLine("BackgroundWorker ist fertig.")
         Dim xPathTeile As New ArrayList
-        Dim tmpTelefon As String
+        'Dim tmpTelefon As String
 
         'Statistik zurückschreiben
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
-            .Add("[@Dialport = """ & """]")
-            .Add("TelName")
 
-            For Row = 0 To TelList.Rows.Count - 2
-                .Item(.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
-                .Item(.Count - 1) = "TelName"
-                ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
-                tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
-                If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne_String Then
-                    .Item(.Count - 1) = "TelNr"
-                    If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
-                        If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
-                            C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
-                            Dim Dauer As Date
-                            .Item(.Count - 1) = "Eingehend"
-                            Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
-                            .Item(.Count - 1) = "Ausgehend"
-                            Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
-                        End If
-                    End If
-                End If
-            Next
+        ' Quatsch! da ist ein *. EIn Zurückschreiben schlägt definitv fehl!
+        With xPathTeile
+            '.Add("Telefone")
+            '.Add("Telefone")
+            '.Add("*") '????
+            '.Add("Telefon")
+            '.Add("[@Dialport = """ & """]")
+            '.Add("TelName")
+
+            'For Row = 0 To TelList.Rows.Count - 2
+            '    .Item(.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
+            '    .Item(.Count - 1) = "TelName"
+            '    ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
+            '    tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+            '    If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne_String Then
+            '        .Item(.Count - 1) = "TelNr"
+            '        If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
+            '            If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
+            '                C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
+            '                Dim Dauer As Date
+            '                .Item(.Count - 1) = "Eingehend"
+            '                Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
+            '                C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+            '                .Item(.Count - 1) = "Ausgehend"
+            '                Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
+            '                C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+            '            End If
+            '        End If
+            '    End If
+            'Next
 
             'CLBTelNrAusfüllen setzen
             .Clear()
