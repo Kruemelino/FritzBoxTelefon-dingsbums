@@ -44,7 +44,7 @@ Friend Class formCfg
     Private Dauer As TimeSpan
 #End Region
 
-    Public Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
+    Friend Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal XMLKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As MyRijndael, _
@@ -1009,7 +1009,7 @@ Friend Class formCfg
 #End Region
 
 #Region "Helfer"
-    Function PrüfeMaske() As Boolean
+    Private Function PrüfeMaske() As Boolean
         ' "%L (%O) %N - %D"
         Dim pos(2) As String
         pos(0) = CStr(InStr(Me.TBTelNrMaske.Text, "%L", CompareMethod.Text))
@@ -1068,7 +1068,7 @@ Friend Class formCfg
         C_OlI.NeueEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox())
     End Sub
 
-    Public Function SetTelNrListe() As Boolean
+    Private Function SetTelNrListe() As Boolean
         SetTelNrListe = False
         If Me.InvokeRequired Then
             Dim D As New DelgSetLine(AddressOf CLBTelNrAusfüllen)
@@ -1078,7 +1078,7 @@ Friend Class formCfg
         End If
     End Function
 
-    Public Function SetFillTelListe() As Boolean
+    Private Function SetFillTelListe() As Boolean
         SetFillTelListe = False
         If Me.InvokeRequired Then
             Dim D As New DelgSetFillTelListe(AddressOf FillTelListe)
@@ -1093,7 +1093,7 @@ Friend Class formCfg
         AddLine(StatusWert)
     End Sub
 
-    Public Function AddLine(ByVal Zeile As String) As Boolean
+    Private Function AddLine(ByVal Zeile As String) As Boolean
         AddLine = False
         StatusWert = Zeile
         If Me.InvokeRequired Then

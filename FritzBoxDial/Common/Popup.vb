@@ -33,7 +33,7 @@ Public Class Popup
 #End Region
 
 #Region "Eigene Properties für Anrufmonitor"
-    Public Property AnrmonClosed() As Boolean
+    Friend Property AnrmonClosed() As Boolean
         Get
             Return V_AnrmonClosed
         End Get
@@ -42,7 +42,7 @@ Public Class Popup
         End Set
     End Property
 
-    Public Property PfadKontaktBild() As String
+    Friend Property PfadKontaktBild() As String
         Get
             Return V_PfadKontaktBild
         End Get
@@ -53,7 +53,7 @@ Public Class Popup
 #End Region
 
 #Region "Eigene Variablen für Stoppuhr"
-    Private WithEvents PopUpStoppUhr As FritzBoxDial.F_StoppUhr
+    Private WithEvents PopUpStoppUhr As F_StoppUhr
 #End Region
 
     ' Track whether Dispose has been called.

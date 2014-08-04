@@ -87,7 +87,7 @@ Friend Class AnrufMonitor
     Private _LetzterAnrufer As C_Telefonat
 #End Region
 
-    Public Sub New(ByVal DataProvoderKlasse As DataProvider, _
+    Friend Sub New(ByVal DataProvoderKlasse As DataProvider, _
                    ByVal RWS As formRWSuche, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _

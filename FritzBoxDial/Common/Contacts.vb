@@ -18,7 +18,7 @@ Public Class Contacts
     Private V_C_OLI As OutlookInterface
     Private ListChildren As New List(Of ApiWindow)
 
-    Public Property C_OLI() As OutlookInterface
+    Friend Property C_OLI() As OutlookInterface
         Get
             Return V_C_OLI
         End Get
@@ -27,7 +27,7 @@ Public Class Contacts
         End Set
     End Property
 
-    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
+    Friend Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
         ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
         C_DP = DataProviderKlasse
@@ -1199,7 +1199,7 @@ Public Class Contacts
     ''' <param name="hwnd">Ausgangshandle</param>
     ''' <returns>Liste der Handles.</returns>
     ''' <remarks></remarks>
-    Public Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
+    Private Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
         ' Clear the window list
         Dim ReturnValue As Int32
         ListChildren = New List(Of ApiWindow)
@@ -1236,7 +1236,7 @@ Public Class Contacts
 
 End Class
 
-Public Class ContactSaved
+Friend Class ContactSaved
     Friend WithEvents ContactSaved As Outlook.ContactItem
 
     Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
