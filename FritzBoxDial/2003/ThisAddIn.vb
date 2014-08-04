@@ -49,6 +49,11 @@ Public Class ThisAddIn
     Private Shared F_Cfg As formCfg
 
 #Region "Properties"
+    Friend Shared ReadOnly Property Version() As String
+        Get
+            Return "3.7.1"
+        End Get
+    End Property
     Friend Shared Property P_oApp() As Outlook.Application
         Get
             Return oApp
@@ -130,11 +135,6 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared ReadOnly Property Version() As String
-        Get
-            Return "3.7.1"
-        End Get
-    End Property
 #End Region
     Private Initialisierung As formInit
     Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
