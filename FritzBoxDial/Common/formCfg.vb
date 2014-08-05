@@ -747,36 +747,7 @@ Friend Class formCfg
                 Me.BIndizierungStart.Enabled = True
             Case "BStoppUhrAnzeigen"
                 Speichern()
-                Dim Zeit As String
-                Dim WarteZeit As Integer
-                Dim StartPosition As System.Drawing.Point
-                Dim x As Integer = 0
-                Dim y As Integer = 0
-
-                If C_DP.P_CBStoppUhrAusblenden Then
-                    WarteZeit = CInt(Me.TBStoppUhr.Text)
-                Else
-                    WarteZeit = -1
-                End If
-
-                StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
-                For Each Bildschirm In Windows.Forms.Screen.AllScreens
-                    x += Bildschirm.Bounds.Size.Width
-                    y += Bildschirm.Bounds.Size.Height
-                Next
-                With StartPosition
-                    If .X > x Or .Y > y Then
-                        .X = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100) / 2)
-                        .Y = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 50) / 2)
-                    End If
-                End With
-
-                With System.DateTime.Now
-                    Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
-                End With
-
-                C_PopUp.ErzeugePopUpStoppuhr("Gegenstelle", Zeit, "Richtung:", WarteZeit, StartPosition, "Ihre MSN")
-
+                C_PopUp.StoppuhrEinblenden(C_AnrMon.LetzterAnrufer)
             Case "BArbeitsverzeichnis"
                 Dim fDialg As New System.Windows.Forms.FolderBrowserDialog
                 With fDialg

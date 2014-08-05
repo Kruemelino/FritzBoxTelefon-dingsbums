@@ -342,8 +342,8 @@ Public Class Popup
                              ByVal PositionStart As System.Drawing.Point, _
                              ByVal sMSN As String) As F_StoppUhr
 
-        Dim ThisPopUpStoppUhr As New F_StoppUhr
-        With ThisPopUpStoppUhr
+        ErzeugePopUpStoppuhr = New F_StoppUhr
+        With ErzeugePopUpStoppuhr
             .Anruf = Anrufer
             .StartZeit = ZeitStart
             .WarteZeit = WarteZeit
@@ -353,8 +353,8 @@ Public Class Popup
             .Popup()
             .MSN = sMSN
         End With
-        AddHandler ThisPopUpStoppUhr.Close, AddressOf PopUpStoppuhr_Close
-        Return ThisPopUpStoppUhr
+        AddHandler ErzeugePopUpStoppuhr.Close, AddressOf PopUpStoppuhr_Close
+
     End Function
 
     Private Sub BWStoppuhrEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWStoppuhrEinblenden.DoWork

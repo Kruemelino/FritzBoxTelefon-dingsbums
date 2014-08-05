@@ -51,7 +51,7 @@ Public Class ThisAddIn
 #Region "Properties"
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7.1"
+            Return "3.7.2"
         End Get
     End Property
     Friend Shared Property P_oApp() As Outlook.Application
