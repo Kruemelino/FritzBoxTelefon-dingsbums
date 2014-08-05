@@ -318,7 +318,7 @@ Public Class Popup
 
     Friend Sub StoppuhrEinblenden(ByVal Telefonat As C_Telefonat)
         BWStoppuhrEinblenden = New BackgroundWorker
-        With BWAnrMonEinblenden
+        With BWStoppuhrEinblenden
             .WorkerSupportsCancellation = True
             .WorkerReportsProgress = False
             .RunWorkerAsync(argument:=Telefonat)
@@ -344,10 +344,6 @@ Public Class Popup
 
         Dim ThisPopUpStoppUhr As New F_StoppUhr
         With ThisPopUpStoppUhr
-            .ContentFont = New Font("Segoe UI", 18)
-            .TitleFont = New Font("Segoe UI", 9)
-            .Size = New Size(250, 100)
-
             .Anruf = Anrufer
             .StartZeit = ZeitStart
             .WarteZeit = WarteZeit

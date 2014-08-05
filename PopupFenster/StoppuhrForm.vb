@@ -389,7 +389,7 @@ Public Class F_StoppUhr
 
         End Set
     End Property
-    Private ftBase As Font = SystemFonts.DialogFont
+    Private ftBase As Font = New Font("Segoe UI", 18) 'SystemFonts.DialogFont
     <Category("Zeit")> _
     Property ContentFont() As Font
         Get
@@ -399,7 +399,7 @@ Public Class F_StoppUhr
             ftBase = value
         End Set
     End Property
-    Private ftTitle As Font = SystemFonts.CaptionFont
+    Private ftTitle As Font = New Font("Segoe UI", 9) 'SystemFonts.CaptionFont
     <Category("Title")> _
     Property TitleFont() As Font
         Get
