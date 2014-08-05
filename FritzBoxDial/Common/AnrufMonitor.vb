@@ -78,6 +78,15 @@ Friend Class AnrufMonitor
     End Enum
 #End Region
 
+#Region "Strukturen"
+    Private Structure DefAnrMon
+        Friend Const FB_RING As String = "RING"
+        Friend Const FB_CALL As String = "CALL"
+        Friend Const FB_CONNECT As String = "CONNECT"
+        Friend Const FB_DISCONNECT As String = "DISCONNECT"
+    End Structure
+#End Region
+
 #Region "Globale Variablen"
 
     Private StandbyCounter As Integer
@@ -355,6 +364,7 @@ Friend Class AnrufMonitor
         Dim r As New StreamReader(AnrMonStream)
         Dim FBStatus As String  ' Status-String der FritzBox
         Dim aktZeile() As String  ' aktuelle Zeile im Status-String
+
         Do
             If AnrMonStream.DataAvailable And AnrMonAktiv Then
                 FBStatus = r.ReadLine
@@ -369,13 +379,13 @@ Friend Class AnrufMonitor
                         If Not aktZeile.Length = 1 Then
                             'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
                             Select Case CStr(aktZeile.GetValue(1))
-                                Case "RING"
+                                Case DefAnrMon.FB_RING '"RING"
                                     AnrMonRING(aktZeile, True)
-                                Case "CALL"
+                                Case DefAnrMon.FB_CALL '"CALL"
                                     AnrMonCALL(aktZeile, True)
-                                Case "CONNECT"
+                                Case DefAnrMon.FB_CONNECT '"CONNECT"
                                     AnrMonCONNECT(aktZeile, True)
-                                Case "DISCONNECT"
+                                Case DefAnrMon.FB_DISCONNECT '"DISCONNECT"
                                     AnrMonDISCONNECT(aktZeile, True)
                             End Select
                         End If
