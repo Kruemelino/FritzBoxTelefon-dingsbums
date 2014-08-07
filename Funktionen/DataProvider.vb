@@ -146,7 +146,7 @@ Public Class DataProvider
     ''' <value>Double</value>
     ''' <returns>5</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_SpeicherIntervall() As Double
+    Private ReadOnly Property P_SpeicherIntervall() As Double
         Get
             Return 5.0
         End Get
@@ -158,7 +158,7 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>FritzOutlookXML</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_RootName() As String
+    Private ReadOnly Property P_RootName() As String
         Get
             Return "FritzOutlookXML"
         End Get
@@ -170,7 +170,7 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>/</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_xPathSeperatorSlash() As String
+    Private ReadOnly Property P_xPathSeperatorSlash() As String
         Get
             Return "/"
         End Get
@@ -182,7 +182,7 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>/</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_xPathWildCard() As String
+    Private ReadOnly Property P_xPathWildCard() As String
         Get
             Return "*"
         End Get
@@ -194,7 +194,7 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>/</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_xPathBracketOpen() As String
+    Private ReadOnly Property P_xPathBracketOpen() As String
         Get
             Return "["
         End Get
@@ -206,9 +206,39 @@ Public Class DataProvider
     ''' <value>String</value>
     ''' <returns>/</returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_xPathBracketClose() As String
+    Private ReadOnly Property P_xPathBracketClose() As String
         Get
             Return "]"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Property P_NameStartChar As String
+        Set(value As String)
+            _NameStartChar = value
+        End Set
+        Get
+            Return _NameStartChar
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Property P_NameChar As String
+        Set(value As String)
+            _NameChar = value
+        End Set
+        Get
+            Return _NameChar
         End Get
     End Property
 #End Region
@@ -308,6 +338,9 @@ Public Class DataProvider
     ' Vorwahllisten
     Private _ListeOrtsVorwahlen As String()
     Private _ListeLandesVorwahlen As String()
+    ' XML Zeichen
+    Private _NameStartChar As String
+    Private _NameChar As String
 #End Region
 
 #Region "Value Properties"
@@ -2896,7 +2929,12 @@ Public Class DataProvider
         P_Arbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", P_Def_AddInPath)
         ConfigPfad = P_Arbeitsverzeichnis & P_Def_Config_FileName
 
+        'Xml Init
         XMLDoc = New XmlDocument()
+
+        P_NameStartChar = GetNameStartChar()
+        P_NameChar = GetNameChar()
+
         With My.Computer.FileSystem
             If Not (.FileExists(ConfigPfad) AndAlso XMLValidator(ConfigPfad)) Then
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & P_RootName & "/>")
@@ -2906,6 +2944,10 @@ Public Class DataProvider
             End If
         End With
         CleanUpXML()
+
+        'Test
+        Write("XMLTest", "Test Test", "PI")
+
         tSpeichern = New Timer
         With tSpeichern
             .Interval = TimeSpan.FromMinutes(P_SpeicherIntervall).TotalMilliseconds
@@ -2913,6 +2955,131 @@ Public Class DataProvider
         End With
         LoadOptionData()
     End Sub
+
+    ''' <summary>
+    ''' Erstellt ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält:
+    ''' ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+    ''' </summary>
+    ''' <returns>String, der alle erlaubten Startchars enthält</returns>
+    ''' <remarks>http://www.w3.org/TR/REC-xml/#NT-Name</remarks>
+    Private Function GetNameStartChar() As String
+        ' Doppelpunkt :
+        Dim tmp As String = Chr(58)
+
+        ' [A-Z]
+        For c = 65 To 90
+            tmp += Chr(c)
+        Next
+
+        ' Unterstrich _
+        tmp += Chr(95)
+
+        ' [a-z]
+        For c = 97 To 122
+            tmp += Chr(c)
+        Next
+
+        '[#xC0-#xD6]
+        For c = &HC0 To &HD6
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#xD8-#xF6]
+        For c = &HD8 To &HF6
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#xF8-#x2FF] 
+        For c = &HF8 To &H2FF
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#x370-#x37D]
+        For c = &H370 To &H37D
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#x37F-#x1FFF] 
+        For c = &H37F To &H1FFF
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#x200C-#x200D] 
+        For c = &H200C To &H200D
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#x2070-#x218F]
+        For c = &H2070 To &H218F
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#x2C00-#x2FEF]
+        For c = &H2C00 To &H2FEF
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#x3001-#xD7FF]
+        For c = &H3001 To &HD7FF
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#xF900-#xFDCF]
+        For c = &HF900 To &HFDCF
+            tmp += Convert.ToChar(c)
+        Next
+
+        '[#xFDF0-#xFFFD]
+        For c = &HFDF0 To &HFFFD
+            tmp += Convert.ToChar(c)
+        Next
+
+        ''[#x10000-#xEFFFF]
+        'For c = &H10000 To &HEFFFF
+        '    tmp += Convert.ToChar(c)
+        'Next
+
+        Return tmp
+
+    End Function
+
+    ''' <summary>
+    ''' Erstellt ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält:
+    ''' NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
+    ''' </summary>
+    ''' <returns>String, der alle erlaubten Startchars enthält</returns>
+    ''' <remarks>http://www.w3.org/TR/REC-xml/#NT-Name</remarks>
+    Private Function GetNameChar() As String
+        ' NameStartChar
+        Dim tmp As String = P_NameStartChar
+
+        ' Bindestrich -
+        tmp += Chr(45)
+
+        ' Punkt .
+        tmp += Chr(46)
+
+        ' [0-9]
+        For c = 48 To 57
+            tmp += Chr(c)
+        Next
+
+        ' Middle dot
+        tmp += Convert.ToChar(&HB7)
+
+        '[#x0300-#x036F]
+        For c = &H300 To &H36F
+            tmp += Convert.ToChar(c)
+        Next
+
+        ''[#x203F-#x2040]
+        For c = &H203F To &H2040
+            tmp += Convert.ToChar(c)
+        Next
+
+        Return tmp
+
+    End Function
 
     ''' <summary>
     ''' Initiales Laden der Daten aus der XML-Datei
@@ -3160,6 +3327,11 @@ Public Class DataProvider
         xPathTeile = Nothing
     End Function
 
+    ''' <summary>
+    ''' Ersetzt Wildcard durch einen vorhandenen Knoten.
+    ''' </summary>
+    ''' <param name="xPathTeile"></param>
+    ''' <remarks>Ich weiß nicht mehr was der hier macht.</remarks>
     Public Sub GetProperXPath(ByRef xPathTeile As ArrayList)
         Dim i As Integer = 1
 
@@ -3196,6 +3368,7 @@ Public Class DataProvider
         tmpXMLNode = Nothing
     End Function
 #End Region
+
 #Region "Write"
     Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String) As Boolean
         Dim xPathTeile As New ArrayList
@@ -3217,45 +3390,72 @@ Public Class DataProvider
         Dim tmpXMLNode As XmlNode
         Dim tmpXMLNodeList As XmlNodeList
         Dim tmpXMLAttribute As XmlAttribute
+
         xPath = CreateXPath(ZielKnoten)
-        If CheckXPathWrite(xPath) Then
-            With XMLDoc
-                tmpXMLNodeList = .SelectNodes(xPath)
-                If Not tmpXMLNodeList.Count = 0 Then
-                    For Each tmpXMLNode In tmpXMLNodeList
-                        If Not AttributeName = P_Def_StringEmpty Then
-                            If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
-                                tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = P_Def_StringEmpty, "[@" & AttributeName & "=""" & AttributeValue & """]", P_Def_StringEmpty)))
-                            End If
-                            If tmpXMLNode Is Nothing Then
-                                tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
-                            End If
-                            tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
-                            tmpXMLAttribute.Value = AttributeValue
-                            tmpXMLNode.Attributes.Append(tmpXMLAttribute)
+        With XMLDoc
+            tmpXMLNodeList = .SelectNodes(xPath)
+            If Not tmpXMLNodeList.Count = 0 Then
+                For Each tmpXMLNode In tmpXMLNodeList
+                    If Not AttributeName = P_Def_StringEmpty Then
+                        If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
+                            tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = P_Def_StringEmpty, "[@" & AttributeName & "=""" & AttributeValue & """]", P_Def_StringEmpty)))
                         End If
-                        tmpXMLNode.InnerText() = Value
-                    Next
-                Else
-                    For Each sNodeName As String In ZielKnoten
-                        If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-                        xPathTeile.Add(sNodeName)
-                        xPath = CreateXPath(xPathTeile)
-                        If .SelectSingleNode(xPath) Is Nothing Then
-                            .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
+                        If tmpXMLNode Is Nothing Then
+                            tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
                         End If
-                        sTmpXPath = xPath
-                    Next
-                    Write(ZielKnoten, Value, AttributeName, AttributeValue)
-                End If
-            End With
-            Write = True
-        Else
-            Write = False
-        End If
+                        tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
+                        tmpXMLAttribute.Value = AttributeValue
+                        tmpXMLNode.Attributes.Append(tmpXMLAttribute)
+                    End If
+                    tmpXMLNode.InnerText() = Value
+                Next
+            Else
+                For Each sNodeName As String In ZielKnoten
+                    ' Rüfe ob NodeName den XML-Namenskonvention entspricht
+                    If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
+                    xPathTeile.Add(sNodeName)
+                    xPath = CreateXPath(xPathTeile)
+                    If .SelectSingleNode(xPath) Is Nothing Then
+                        .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
+                    End If
+                    sTmpXPath = xPath
+                Next
+                Write(ZielKnoten, Value, AttributeName, AttributeValue)
+            End If
+        End With
+        Write = True
+
         xPathTeile = Nothing
         tmpXMLAttribute = Nothing
         tmpXMLNode = Nothing
+    End Function
+
+    ''' <summary>
+    ''' Prüft den NodeName auf nicht erlaubte Zeichen.
+    ''' Wenn das erste Zeichen nicht korrekt ist, wird ein _ davorgesetzt. Dies ist erlaubt.
+    ''' Wenn weiter Zeichen nicht korrekt sind, werden diese durch den Charcode ersetzt. (Prüfen)
+    ''' </summary>
+    ''' <param name="sNodeName">Korrekter String</param>
+    ''' <remarks>http://www.w3.org/TR/REC-xml/#NT-Name</remarks>
+    Private Function CheckNodeName(ByVal sNodeName As String) As String
+
+        ' Ist erstes Zeichen prüfen
+        If Not P_NameStartChar.Contains(Left(sNodeName, 1)) Then
+            sNodeName = "_" & sNodeName
+        End If
+
+        ' Prüfe ob nichterlaubte Zeichen im Namen sind
+        For Each C As Char In sNodeName
+            If Not P_NameChar.Contains(C) Then
+                'Prüfen ob das Sinnvoll ist
+                sNodeName = Replace(sNodeName, C, CStr(Asc(C)), , , CompareMethod.Text)
+            End If
+        Next
+
+        ' Nodename darf nicht mit XML beginnen
+        If LCase(Left(sNodeName, 3)) = "xml" Then sNodeName = "_" & sNodeName
+        'Rückgabe
+        Return sNodeName
     End Function
 
     Public Overloads Function WriteAttribute(ByVal ZielKnoten As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
@@ -3284,6 +3484,7 @@ Public Class DataProvider
         End With
     End Function
 #End Region
+
 #Region "Löschen"
 
     Public Overloads Function Delete(ByVal DieSektion As String) As Boolean
@@ -3313,6 +3514,7 @@ Public Class DataProvider
     End Function
 
 #End Region
+
 #Region "Knoten"
     Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As ArrayList, ByVal AttributeValue As ArrayList) As XmlNode
         CreateXMLNode = Nothing
@@ -3358,7 +3560,7 @@ Public Class DataProvider
                 xPath = CreateXPath(alxPathTeile)
                 If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
                 tmpXMLNode = .SelectSingleNode(xPath)
-                If  tmpXMLNode IsNot Nothing Then
+                If tmpXMLNode IsNot Nothing Then
                     With tmpXMLNode
                         For Each XmlChildNode As XmlNode In tmpXMLNode.ChildNodes
                             If Not SubNodeName.IndexOf(XmlChildNode.Name) = -1 Then
@@ -3424,6 +3626,7 @@ Public Class DataProvider
     End Function
 
 #End Region
+
 #Region "Speichern"
     Sub SpeichereXMLDatei()
         SaveOptionData()
@@ -3433,6 +3636,7 @@ Public Class DataProvider
         SaveOptionData()
     End Sub
 #End Region
+
 #Region "Validator"
     ''' <summary>
     ''' Prüft ob die XML-Datei geöffnet werden kann.
@@ -3449,6 +3653,56 @@ Public Class DataProvider
         End Try
     End Function
 #End Region
+
+    ''' <summary>
+    ''' Erstellt einen korrekten xPath aus einer Liste einzelnen xPath-Elementen zusammen
+    ''' </summary>
+    ''' <param name="xPathElements">Lista an xPath-Elementen</param>
+    ''' <returns>gültiger xPath</returns>
+    ''' <remarks></remarks>
+    Function CreateXPath(ByRef xPathElements As ArrayList) As String
+        ' fügt den Root-knoten an, falls nicht vorhanden
+
+        ' Todo: bei write darf kein * vorhanden sein.
+
+        Dim newxPath As New ArrayList
+
+        If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
+
+        'If xPathElements.Contains(P_xPathWildCard) Then
+        '    GetProperXPath(xPathElements)
+        'End If
+
+        For Each xPathElement As String In xPathElements
+            If xPathElement.StartsWith(P_xPathBracketOpen) And xPathElement.EndsWith(P_xPathBracketClose) Or xPathElement.StartsWith("@") Or xPathElement = P_xPathWildCard Then
+                ' Hier eventuell eingreifen Attributnamen prüfen
+                newxPath.Add(xPathElement)
+            Else
+                newxPath.Add(CheckNodeName(xPathElement))
+            End If
+        Next
+
+        xPathElements = newxPath
+
+        CreateXPath = Replace(P_xPathSeperatorSlash & Join(newxPath.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
+        CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text) ' ][ -> and
+        newxPath = Nothing
+    End Function
+
+
+    ''' <summary>
+    ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
+    ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
+    ''' </summary>
+    ''' <param name="xPath">zu prüfender xPath</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function CheckXPathRead(ByVal xPath As String) As Boolean
+        CheckXPathRead = True
+
+        If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
+        If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
+    End Function
 #End Region
 
 #Region "Registry VBA GetSettings SetSettings"
@@ -3481,47 +3735,6 @@ Public Class DataProvider
             xPathTeile = Nothing
         End With
     End Sub
-
-    ''' <summary>
-    ''' Erstellt einen korrekten xPath aus einer Liste einzelnen xPath-Elementen zusammen
-    ''' </summary>
-    ''' <param name="xPathElements">Lista an xPath-Elementen</param>
-    ''' <returns>gültiger xPath</returns>
-    ''' <remarks></remarks>
-    Function CreateXPath(ByVal xPathElements As ArrayList) As String
-        If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-        CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
-        CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text)
-    End Function
-
-    ''' <summary>
-    ''' Prüft üb der xPath für das Schreiben in die XML-Datei möglich ist.
-    ''' Beispiel: Wildcard * darf nicht enthalten sein, da kein eindeutiges Ziel adressiert werden kann.
-    ''' </summary>
-    ''' <param name="xPath">zu prüfender xPath</param>
-    ''' <returns></returns>
-    ''' <remarks>Test auf Leerzeichen in Elementname muss implementiert werden</remarks>
-    Private Function CheckXPathWrite(ByVal xPath As String) As Boolean
-        CheckXPathWrite = True
-
-        'If Not InStr(xPath, P_Def_Leerzeichen, CompareMethod.Text) = 0 Then Return False
-        If Not InStr(xPath, P_xPathSeperatorSlash & P_xPathWildCard, CompareMethod.Text) = 0 Then Return False '/*
-        If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
-    End Function
-
-    ''' <summary>
-    ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
-    ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
-    ''' </summary>
-    ''' <param name="xPath">zu prüfender xPath</param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function CheckXPathRead(ByVal xPath As String) As Boolean
-        CheckXPathRead = True
-
-        If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
-        If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
-    End Function
 #End Region
 
 #Region "Backgroundworker"
