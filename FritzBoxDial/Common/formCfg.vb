@@ -280,6 +280,7 @@ Friend Class formCfg
                         .Add("Telefon")
                         .Add("[TelName = """ & Nebenstelle & """]")
                         .Add("@Standard")
+
                         Zeile.Add(CBool(C_DP.Read(xPathTeile, "False")))
                         Zeile.Add(CStr(j))
                         .Item(.Count - 1) = "@Dialport"
@@ -1418,41 +1419,44 @@ Friend Class formCfg
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
         AddLine("BackgroundWorker ist fertig.")
         Dim xPathTeile As New ArrayList
-        'Dim tmpTelefon As String
+        Dim tmpTelefon As String
 
         'Statistik zurückschreiben
 
-        ' Quatsch! da ist ein *. EIn Zurückschreiben schlägt definitv fehl!
         With xPathTeile
-            '.Add("Telefone")
-            '.Add("Telefone")
-            '.Add("*") '????
-            '.Add("Telefon")
-            '.Add("[@Dialport = """ & """]")
-            '.Add("TelName")
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("[@Dialport = """ & """]")
+            .Add("TelName")
+        End With
 
-            'For Row = 0 To TelList.Rows.Count - 2
-            '    .Item(.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
-            '    .Item(.Count - 1) = "TelName"
-            '    ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
-            '    tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
-            '    If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne_String Then
-            '        .Item(.Count - 1) = "TelNr"
-            '        If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
-            '            If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
-            '                C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
-            '                Dim Dauer As Date
-            '                .Item(.Count - 1) = "Eingehend"
-            '                Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-            '                C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
-            '                .Item(.Count - 1) = "Ausgehend"
-            '                Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-            '                C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
-            '            End If
-            '        End If
-            '    End If
-            'Next
+        For Row = 0 To TelList.Rows.Count - 2
+            xPathTeile.Item(xPathTeile.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
+            xPathTeile.Item(xPathTeile.Count - 1) = "TelName"
+            ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
+            tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+            If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne_String Then
+                xPathTeile.Item(xPathTeile.Count - 1) = "TelNr"
+                If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
+                    If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
+                        C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
+                        Dim Dauer As Date
+                        ' HIER WEITER GetProperXPath arbeitet nicht korrekt
+                        C_DP.GetProperXPath(xPathTeile)
+                        xPathTeile.Item(xPathTeile.Count - 1) = "Eingehend"
+                        Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
+                        C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                        xPathTeile.Item(xPathTeile.Count - 1) = "Ausgehend"
+                        Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
+                        C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                    End If
+                End If
+            End If
+        Next
 
+        With xPathTeile
             'CLBTelNrAusfüllen setzen
             .Clear()
             Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems

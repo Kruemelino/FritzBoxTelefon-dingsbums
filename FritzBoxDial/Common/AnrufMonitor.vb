@@ -567,7 +567,8 @@ Friend Class AnrufMonitor
                                 .Add("Telefone")
                                 .Add("Telefone")
                                 .Add("*")
-                                .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
+                                .Add("Telefon")
+                                .Add("[@Dialport = """ & Telefonat.NSN & """]")
                                 .Add("TelNr")
                                 Telefonat.MSN = C_DP.Read(xPathTeile, "")
                             End With
@@ -693,7 +694,8 @@ Friend Class AnrufMonitor
                                 .Add("Telefone")
                                 .Add("Telefone")
                                 .Add("*")
-                                .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
+                                .Add("Telefon")
+                                .Add("[@Dialport = """ & Telefonat.NSN & """]")
                                 .Add("TelName")
                             End With
                             .TelName = C_DP.Read(xPathTeile, "")
@@ -787,7 +789,10 @@ Friend Class AnrufMonitor
                             .Add("*")
                             .Add("Telefon")
                             .Add("[TelName = """ & Telefonat.TelName & """]")
-                            C_DP.GetProperXPath(xPathTeile)
+
+                        End With
+                        C_DP.GetProperXPath(xPathTeile) ' xPathTeile hat sich durch GetProperXPath geändert.
+                        With xPathTeile
 
                             If Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                                 .Add(C_Telefonat.AnrufRichtung.Eingehend.ToString)
@@ -798,9 +803,9 @@ Friend Class AnrufMonitor
                             End If
                         End With
 
-                        'With C_DP
-                        '    .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
-                        'End With
+                        With C_DP
+                            .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
+                        End With
                     Else
                         If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                             C_DP.P_StatVerpasst += 1

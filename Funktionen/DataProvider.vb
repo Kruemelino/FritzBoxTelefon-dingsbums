@@ -213,6 +213,17 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' xPath Steuerzeichen: @
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>@</returns>
+    ''' <remarks></remarks>
+    Private ReadOnly Property P_xPathAttribute() As String
+        Get
+            Return "@"
+        End Get
+    End Property
+    ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält
     ''' </summary>
     ''' <value></value>
@@ -3314,16 +3325,16 @@ Public Class DataProvider
         Dim tmpXMLNodeList As XmlNodeList
         Dim xPath As String = CreateXPath(xPathTeile)
 
-        If CheckXPathRead(xPath) Then
-            tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
-            If Not tmpXMLNodeList.Count = 0 Then
-                Read = P_Def_StringEmpty
-                For Each tmpXMLNode As XmlNode In tmpXMLNodeList
-                    Read += tmpXMLNode.InnerText & ";"
-                Next
-                Read = Left(Read, Len(Read) - 1)
-            End If
+        'If CheckXPathRead(xPath) Then
+        tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
+        If Not tmpXMLNodeList.Count = 0 Then
+            Read = P_Def_StringEmpty
+            For Each tmpXMLNode As XmlNode In tmpXMLNodeList
+                Read += tmpXMLNode.InnerText & ";"
+            Next
+            Read = Left(Read, Len(Read) - 1)
         End If
+        'End If
         xPathTeile = Nothing
     End Function
 
@@ -3674,7 +3685,7 @@ Public Class DataProvider
         'End If
 
         For Each xPathElement As String In xPathElements
-            If xPathElement.StartsWith(P_xPathBracketOpen) And xPathElement.EndsWith(P_xPathBracketClose) Or xPathElement.StartsWith("@") Or xPathElement.StartsWith(P_xPathWildCard) Then
+            If xPathElement.StartsWith(P_xPathBracketOpen) And xPathElement.EndsWith(P_xPathBracketClose) Or xPathElement.StartsWith(P_xPathAttribute) Or xPathElement.StartsWith(P_xPathWildCard) Then
                 ' Hier eventuell eingreifen Attributnamen prüfen
                 newxPath.Add(xPathElement)
             Else
@@ -3695,19 +3706,19 @@ Public Class DataProvider
     'End Function
 
 
-    ''' <summary>
-    ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
-    ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
-    ''' </summary>
-    ''' <param name="xPath">zu prüfender xPath</param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function CheckXPathRead(ByVal xPath As String) As Boolean
-        CheckXPathRead = True
+    ' ''' <summary>
+    ' ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
+    ' ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
+    ' ''' </summary>
+    ' ''' <param name="xPath">zu prüfender xPath</param>
+    ' ''' <returns></returns>
+    ' ''' <remarks></remarks>
+    'Private Function CheckXPathRead(ByVal xPath As String) As Boolean
+    '    CheckXPathRead = True
 
-        If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
-        If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
-    End Function
+    '    If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
+    '    If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
+    'End Function
 #End Region
 
 #Region "Registry VBA GetSettings SetSettings"
