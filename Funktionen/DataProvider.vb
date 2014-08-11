@@ -2946,7 +2946,7 @@ Public Class DataProvider
         CleanUpXML()
 
         'Test
-        Write("XMLTest", "Test Test", "PI")
+        'Write("XMLTest", "Test Test", "PI")
 
         tSpeichern = New Timer
         With tSpeichern
@@ -3674,7 +3674,7 @@ Public Class DataProvider
         'End If
 
         For Each xPathElement As String In xPathElements
-            If xPathElement.StartsWith(P_xPathBracketOpen) And xPathElement.EndsWith(P_xPathBracketClose) Or xPathElement.StartsWith("@") Or xPathElement = P_xPathWildCard Then
+            If xPathElement.StartsWith(P_xPathBracketOpen) And xPathElement.EndsWith(P_xPathBracketClose) Or xPathElement.StartsWith("@") Or xPathElement.StartsWith(P_xPathWildCard) Then
                 ' Hier eventuell eingreifen Attributnamen prüfen
                 newxPath.Add(xPathElement)
             Else
@@ -3684,10 +3684,15 @@ Public Class DataProvider
 
         xPathElements = newxPath
 
-        CreateXPath = Replace(P_xPathSeperatorSlash & Join(newxPath.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
+        CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
         CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text) ' ][ -> and
         newxPath = Nothing
     End Function
+    'Function CreateXPath(ByVal xPathElements As ArrayList) As String
+    '    If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
+    '    CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
+    '    CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text)
+    'End Function
 
 
     ''' <summary>

@@ -181,7 +181,7 @@
             _Angenommen = value
         End Set
     End Property
-    Friend Property PopUpAnrMon() As F_AnrMon
+    Friend Property PopupAnrMon() As F_AnrMon
         Get
             Return _PopUpAnrMon
         End Get
@@ -189,7 +189,7 @@
             _PopUpAnrMon = value
         End Set
     End Property
-    Friend Property PopUpStoppuhr() As F_StoppUhr
+    Friend Property PopupStoppuhr() As F_StoppUhr
         Get
             Return _PopUpStoppuhr
         End Get

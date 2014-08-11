@@ -30,6 +30,7 @@ Public Class Popup
 
     Private WithEvents PopUpAnrufMonitor As F_AnrMon
     Friend TelefonatsListe As New List(Of C_Telefonat)
+    Friend AnrMonListe As New List(Of F_AnrMon)
 #End Region
 
 #Region "Eigene Properties für Anrufmonitor"
@@ -147,27 +148,16 @@ Public Class Popup
     ''' <summary>
     ''' Initiale Routine zum Einblenden eines Anrufmonitorfensters.
     ''' </summary>
-    ''' <param name="Aktualisieren">Gibt an, ob ein Aktualisierungs-Timer gestartet werden soll. </param>
     ''' <param name="Telefonat">Telefonalt, aus dem die Informationen gelesen werden sollen.</param>
+    ''' <param name="Aktualisieren">Gibt an, ob ein Aktualisierungs-Timer gestartet werden soll. </param>
     ''' <remarks>Timer: Bei jedem Durchlauf wird geschaut, ob neuere Informationen im Telefonat enthalten sind.</remarks>
-    Friend Overloads Sub AnrMonEinblenden(ByVal Aktualisieren As Boolean, ByVal Telefonat As C_Telefonat)
+    Friend Overloads Sub AnrMonEinblenden(ByVal Telefonat As C_Telefonat, ByVal Aktualisieren As Boolean)
         Dim ThisPopUpAnrMon As New F_AnrMon
         Dim TelinList As Boolean = False
 
         UpdateForm = Aktualisieren
 
-        ' Prüfe ob Telefonat in Telefonatsliste
-        For Each tmpTelefonat In TelefonatsListe
-            If tmpTelefonat Is Telefonat Then
-                TelinList = True
-            End If
-        Next
-
-        If Not TelinList Then
-            TelefonatsListe.Add(Telefonat)
-        End If
-
-        Telefonat.PopUpAnrMon = ThisPopUpAnrMon
+        Telefonat.PopupAnrMon = ThisPopUpAnrMon
 
         AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
 
@@ -176,6 +166,8 @@ Public Class Popup
         If Aktualisieren Then TimerAktualisieren = C_hf.SetTimer(500)
 
         C_OLI.KeepoInspActivated(False)
+
+        AnrMonListe.Add(ThisPopUpAnrMon)
 
         With ThisPopUpAnrMon
             .ShowDelay = C_DP.P_TBEnblDauer * 1000
@@ -190,7 +182,7 @@ Public Class Popup
         End With
 
         AddHandler ThisPopUpAnrMon.Close, AddressOf PopUpAnrMon_Close
-        AddHandler ThisPopUpAnrMon.Closed, AddressOf PopUpAnrMon_Closed
+        AddHandler ThisPopUpAnrMon.Closed, AddressOf PopupAnrMon_Closed
         AddHandler ThisPopUpAnrMon.LinkClick, AddressOf ToolStripMenuItemKontaktöffnen_Click
         AddHandler ThisPopUpAnrMon.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
 
@@ -210,7 +202,6 @@ Public Class Popup
             .WorkerReportsProgress = False
             .RunWorkerAsync(argument:=Telefonat)
         End With
-
     End Sub
 
     ''' <summary>
@@ -221,10 +212,10 @@ Public Class Popup
     ''' <remarks></remarks>
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-        AnrMonEinblenden(True, Telefonat)
+        AnrMonEinblenden(Telefonat, True)
         Do
             Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopUpAnrMon Is Nothing
+        Loop Until Telefonat.PopupAnrMon Is Nothing
     End Sub
 
     ''' <summary>
@@ -235,12 +226,13 @@ Public Class Popup
     ''' <remarks></remarks>
     Private Sub BWAnrMonEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWAnrMonEinblenden.RunWorkerCompleted
         BWAnrMonEinblenden.Dispose()
+        BWAnrMonEinblenden = Nothing
     End Sub
 
     Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
         For Each tmpTelefonat As C_Telefonat In TelefonatsListe
-            If tmpTelefonat.PopUpAnrMon IsNot Nothing Then
-                AnrMonausfüllen(tmpTelefonat.PopUpAnrMon, tmpTelefonat)
+            If tmpTelefonat.PopupAnrMon IsNot Nothing Then
+                AnrMonausfüllen(tmpTelefonat.PopupAnrMon, tmpTelefonat)
             End If
         Next
     End Sub
@@ -249,25 +241,35 @@ Public Class Popup
         CType(sender, F_AnrMon).Hide()
     End Sub
 
-    Private Sub PopUpAnrMon_Closed(ByVal sender As Object, ByVal e As System.EventArgs)
-        If (Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild)) Then
-            C_KF.DelKontaktBild(PfadKontaktBild)
-        End If
+    ''' <summary>
+    ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim Telefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is CType(sender, F_AnrMon))
 
+        AnrMonListe.Remove(CType(sender, F_AnrMon))
         AnrmonClosed = True
+
+        If Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
+
         If TimerAktualisieren IsNot Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
 
-        Try
-            TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is CType(sender, F_AnrMon)).PopUpAnrMon = Nothing
-        Catch ex As Exception
-            C_hf.LogFile("PopUpAnrMon_Closed: " & ex.Message)
-        End Try
+        ' Prüfen ob Anrufmonitor in der Telefonliste vorhanden ist
+        ' Ja: Dort Löschen
+        ' Nein: Nichts unternehmen
+        If Telefonat IsNot Nothing Then Telefonat.PopupAnrMon = Nothing
+        'Try
+        '    TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is CType(sender, F_AnrMon)).PopupAnrMon = Nothing
+        'Catch : End Try
     End Sub
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
 
         Dim tmpPopUpAnrMon As F_AnrMon = CType(sender, F_AnrMon)
-        Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is tmpPopUpAnrMon)
+        Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is tmpPopUpAnrMon)
         ' Todo: Möglichkeit finden, wie auf das Telefonat, welches zu dem PopUp gehört, zugreifen
 
         If tmpTelefonat IsNot Nothing Then
@@ -289,7 +291,7 @@ Public Class Popup
     End Sub
 
     Private Sub ToolStripMenuItemKontaktöffnen_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        AnruferAnzeigen(TelefonatsListe.Find(Function(JE) JE.PopUpAnrMon Is CType(sender, F_AnrMon)))
+        AnruferAnzeigen(TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is CType(sender, F_AnrMon)))
     End Sub
 
     ''' <summary>
@@ -392,13 +394,13 @@ Public Class Popup
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
 
-        Telefonat.PopUpStoppuhr = ErzeugePopUpStoppuhr(AnrName, StartZeit, Richtung, WarteZeit, StartPosition, Telefonat.MSN)
+        Telefonat.PopupStoppuhr = ErzeugePopUpStoppuhr(AnrName, StartZeit, Richtung, WarteZeit, StartPosition, Telefonat.MSN)
         C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(AnrName)) '"Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
         BWStoppuhrEinblenden.WorkerSupportsCancellation = True
 
         Do
             Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopUpStoppuhr Is Nothing
+        Loop Until Telefonat.PopupStoppuhr Is Nothing
 
     End Sub
 
@@ -408,15 +410,14 @@ Public Class Popup
     ''' <remarks></remarks>
     Private Sub PopUpStoppuhr_Close(ByVal sender As Object, ByVal e As System.EventArgs)
 
-        Dim tmpPopUpStoppuhr As F_StoppUhr = CType(sender, F_StoppUhr)
-        C_DP.P_CBStoppUhrX = tmpPopUpStoppuhr.StartPosition.X
-        C_DP.P_CBStoppUhrY = tmpPopUpStoppuhr.StartPosition.Y
+        Dim thisPopupStoppuhr As F_StoppUhr = CType(sender, F_StoppUhr)
+
+        C_DP.P_CBStoppUhrX = thisPopupStoppuhr.StartPosition.X
+        C_DP.P_CBStoppUhrY = thisPopupStoppuhr.StartPosition.Y
         Try
-            TelefonatsListe.Find(Function(JE) JE.PopUpStoppuhr Is tmpPopUpStoppuhr).PopUpStoppuhr = Nothing
-        Catch ex As Exception
-            C_hf.LogFile("PopUpStoppuhr_Close: " & ex.Message)
-        End Try
-        tmpPopUpStoppuhr = Nothing
+            TelefonatsListe.Find(Function(JE) JE.PopupStoppuhr Is thisPopupStoppuhr).PopupStoppuhr = Nothing
+        Catch : End Try
+        thisPopupStoppuhr = Nothing
     End Sub
 
     Private Sub BWStoppuhrEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStoppuhrEinblenden.RunWorkerCompleted

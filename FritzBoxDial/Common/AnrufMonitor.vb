@@ -422,6 +422,8 @@ Friend Class AnrufMonitor
         If C_hf.IsOneOf(MSN, C_DP.P_CLBTelNr) Or AnrMonPhoner Then
 
             Telefonat = New C_Telefonat
+            C_Popup.TelefonatsListe.Add(Telefonat)
+
             With Telefonat
                 .Typ = C_Telefonat.AnrufRichtung.Eingehend
                 .Zeit = CDate(FBStatus.GetValue(0))
@@ -514,7 +516,7 @@ Friend Class AnrufMonitor
                 End If
 #End If
             End With
-            C_Popup.TelefonatsListe.Add(Telefonat)
+
         End If
     End Sub '(AnrMonRING)
 
@@ -796,9 +798,9 @@ Friend Class AnrufMonitor
                             End If
                         End With
 
-                        With C_DP
-                            .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
-                        End With
+                        'With C_DP
+                        '    .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
+                        'End With
                     Else
                         If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                             C_DP.P_StatVerpasst += 1
@@ -818,8 +820,8 @@ Friend Class AnrufMonitor
 
                 If .Zeit > SchließZeit Or SchließZeit = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
 
-                If C_DP.P_CBStoppUhrEinblenden And ShowForms AndAlso Telefonat.PopUpStoppuhr IsNot Nothing Then
-                    Telefonat.PopUpStoppuhr.StoppuhrStopp()
+                If C_DP.P_CBStoppUhrEinblenden And ShowForms AndAlso Telefonat.PopupStoppuhr IsNot Nothing Then
+                    Telefonat.PopupStoppuhr.StoppuhrStopp()
                 End If
 
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
