@@ -3344,8 +3344,8 @@ Public Class DataProvider
     ''' <param name="xPathTeile"></param>
     ''' <remarks>Ich weiß nicht mehr was der hier macht.</remarks>
     Public Sub GetProperXPath(ByRef xPathTeile As ArrayList)
-        Dim i As Integer = 1
 
+        Dim i As Integer = 1
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
         Dim tmpParentXMLNode As XmlNode
@@ -3356,10 +3356,15 @@ Public Class DataProvider
         If tmpXMLNode IsNot Nothing Then
             tmpParentXMLNode = tmpXMLNode.ParentNode
             Do Until tmpParentXMLNode.Name = xPathTeile.Item(1).ToString
-                If Not Left(xPathTeile.Item(xPathTeile.Count - i).ToString, 1) = P_xPathBracketOpen Then
-                    xPathTeile.Item(xPathTeile.Count - 1 - i) = tmpParentXMLNode.Name
+
+                If Not (xPathTeile.Item(xPathTeile.Count - i - 1).ToString.StartsWith(P_xPathBracketOpen) Or _
+                        xPathTeile.Item(xPathTeile.Count - i - 1).ToString.StartsWith(P_xPathAttribute)) Then
+
+                    xPathTeile.Item(xPathTeile.Count - i - 1) = tmpParentXMLNode.Name
                     tmpParentXMLNode = tmpParentXMLNode.ParentNode
+
                 End If
+
                 i += 1
             Loop
         End If

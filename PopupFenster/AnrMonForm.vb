@@ -172,6 +172,10 @@ Friend Class AnrMonForm
 
 #Region "Events"
 
+    Private Sub AnrMonForm_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        Me.Finalize()
+    End Sub
+
     Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
         If Parent.CloseButton Then
             If RectClose.Contains(e.X, e.Y) Then
@@ -316,6 +320,10 @@ Friend Class AnrMonForm
 
 #End Region
 
+    Protected Overrides Sub Finalize()
+        Me.Hide()
+        MyBase.Finalize()
+    End Sub
 End Class
 
 <DefaultEvent("LinkClick")> Public Class F_AnrMon

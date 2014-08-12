@@ -99,6 +99,9 @@ Friend Class StoppuhrForm
 #End Region
 
 #Region "Events"
+    Private Sub StoppuhrForm_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        Me.Finalize()
+    End Sub
 
     Private Sub PopupStoppuhrForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
         Dim retIPVal As IntPtr
