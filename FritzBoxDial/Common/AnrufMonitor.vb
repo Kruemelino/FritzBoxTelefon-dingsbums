@@ -80,6 +80,9 @@ Friend Class AnrufMonitor
 
 #Region "Strukturen"
     Private Structure DefAnrMon
+#If OVer = 11 Then
+        Private Dymmy As String
+#End If
         Friend Const FB_RING As String = "RING"
         Friend Const FB_CALL As String = "CALL"
         Friend Const FB_CONNECT As String = "CONNECT"
