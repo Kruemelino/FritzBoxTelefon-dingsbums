@@ -3685,12 +3685,8 @@ Public Class DataProvider
 
         If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
 
-        'If xPathElements.Contains(P_xPathWildCard) Then
-        '    GetProperXPath(xPathElements)
-        'End If
-
         For Each xPathElement As String In xPathElements
-            If xPathElement.StartsWith(P_xPathBracketOpen) And xPathElement.EndsWith(P_xPathBracketClose) Or xPathElement.StartsWith(P_xPathAttribute) Or xPathElement.StartsWith(P_xPathWildCard) Then
+            If xPathElement.Contains(P_xPathBracketOpen) And xPathElement.Contains(P_xPathBracketClose) Or xPathElement.StartsWith(P_xPathAttribute) Or xPathElement.StartsWith(P_xPathWildCard) Then
                 ' Hier eventuell eingreifen Attributnamen prüfen
                 newxPath.Add(xPathElement)
             Else

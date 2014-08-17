@@ -567,8 +567,7 @@ Friend Class AnrufMonitor
                                 .Add("Telefone")
                                 .Add("Telefone")
                                 .Add("*")
-                                .Add("Telefon")
-                                .Add("[@Dialport = """ & Telefonat.NSN & """]")
+                                .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
                                 .Add("TelNr")
                                 Telefonat.MSN = C_DP.Read(xPathTeile, "")
                             End With
@@ -694,8 +693,7 @@ Friend Class AnrufMonitor
                                 .Add("Telefone")
                                 .Add("Telefone")
                                 .Add("*")
-                                .Add("Telefon")
-                                .Add("[@Dialport = """ & Telefonat.NSN & """]")
+                                .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
                                 .Add("TelName")
                             End With
                             .TelName = C_DP.Read(xPathTeile, "")
@@ -787,9 +785,7 @@ Friend Class AnrufMonitor
                             .Add("Telefone")
                             .Add("Telefone")
                             .Add("*")
-                            .Add("Telefon")
-                            .Add("[TelName = """ & Telefonat.TelName & """]")
-
+                            .Add("Telefon[TelName = """ & Telefonat.TelName & """]")
                         End With
                         C_DP.GetProperXPath(xPathTeile) ' xPathTeile hat sich durch GetProperXPath geändert.
                         With xPathTeile
