@@ -790,21 +790,23 @@ Friend Class AnrufMonitor
                             .Add("*")
                             .Add("Telefon[TelName = """ & Telefonat.TelName & """]")
                         End With
-                        C_DP.GetProperXPath(xPathTeile) ' xPathTeile hat sich durch GetProperXPath geändert.
-                        With xPathTeile
+                        If C_DP.GetProperXPath(xPathTeile) Then
+                            ' xPathTeile hat sich durch GetProperXPath geändert.
+                            With xPathTeile
 
-                            If Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend Then
-                                .Add(C_Telefonat.AnrufRichtung.Eingehend.ToString)
-                                CallDirection = C_DP.P_Def_Journal_Text_Eingehend
-                            Else
-                                .Add(C_Telefonat.AnrufRichtung.Ausgehend.ToString)
-                                CallDirection = C_DP.P_Def_Journal_Text_Ausgehend
-                            End If
-                        End With
+                                If Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend Then
+                                    .Add(C_Telefonat.AnrufRichtung.Eingehend.ToString)
+                                    CallDirection = C_DP.P_Def_Journal_Text_Eingehend
+                                Else
+                                    .Add(C_Telefonat.AnrufRichtung.Ausgehend.ToString)
+                                    CallDirection = C_DP.P_Def_Journal_Text_Ausgehend
+                                End If
+                            End With
 
-                        With C_DP
-                            .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
-                        End With
+                            With C_DP
+                                .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
+                            End With
+                        End If
                     Else
                         If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                             C_DP.P_StatVerpasst += 1

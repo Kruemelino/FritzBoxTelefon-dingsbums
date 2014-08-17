@@ -1442,15 +1442,16 @@ Friend Class formCfg
                 If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
                     If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
                         C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
-                        Dim Dauer As Date
                         ' HIER WEITER GetProperXPath arbeitet nicht korrekt
-                        C_DP.GetProperXPath(xPathTeile)
-                        xPathTeile.Item(xPathTeile.Count - 1) = "Eingehend"
-                        Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-                        C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
-                        xPathTeile.Item(xPathTeile.Count - 1) = "Ausgehend"
-                        Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-                        C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                        If C_DP.GetProperXPath(xPathTeile) Then
+                            Dim Dauer As Date
+                            xPathTeile.Item(xPathTeile.Count - 1) = "Eingehend"
+                            Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
+                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                            xPathTeile.Item(xPathTeile.Count - 1) = "Ausgehend"
+                            Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
+                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                        End If
                     End If
                 End If
             End If

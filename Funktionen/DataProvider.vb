@@ -3343,8 +3343,8 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="xPathTeile"></param>
     ''' <remarks>Ich weiß nicht mehr was der hier macht.</remarks>
-    Public Sub GetProperXPath(ByRef xPathTeile As ArrayList)
-
+    Public Function GetProperXPath(ByRef xPathTeile As ArrayList) As Boolean
+        GetProperXPath = False
         Dim i As Integer = 1
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
@@ -3364,11 +3364,12 @@ Public Class DataProvider
                     tmpParentXMLNode = tmpParentXMLNode.ParentNode
 
                 End If
-
                 i += 1
             Loop
+            GetProperXPath = True
         End If
-    End Sub
+
+    End Function
 
     Function ReadElementName(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
         ReadElementName = sDefault
@@ -3401,7 +3402,7 @@ Public Class DataProvider
 
     Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
         Dim xPathTeile As New ArrayList
-        Dim sTmpXPath As String = P_Def_StringEmpty
+        Dim sParentXPath As String = P_Def_StringEmpty
         Dim xPath As String
         Dim tmpXMLNode As XmlNode
         Dim tmpXMLNodeList As XmlNodeList
@@ -3426,16 +3427,31 @@ Public Class DataProvider
                     tmpXMLNode.InnerText() = Value
                 Next
             Else
+                ' Eintrag noch nicht vorhanden
+                'If xPath.Contains(P_xPathWildCard) Then
+                '    GetProperXPath(ZielKnoten)
+                '    xPath = CreateXPath(ZielKnoten)
+                'End If
+                sParentXPath = .DocumentElement.Name
                 For Each sNodeName As String In ZielKnoten
                     ' Rüfe ob NodeName den XML-Namenskonvention entspricht
                     If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
                     xPathTeile.Add(sNodeName)
                     xPath = CreateXPath(xPathTeile)
                     If .SelectSingleNode(xPath) Is Nothing Then
-                        .SelectSingleNode(sTmpXPath).AppendChild(.CreateElement(sNodeName))
+                        .SelectSingleNode(sParentXPath).AppendChild(.CreateElement(sNodeName))
+                        'If Not (sNodeName.Contains(P_xPathBracketOpen) And sNodeName.Contains(P_xPathBracketClose)) Then
+                        '    If .SelectSingleNode(sParentXPath) IsNot Nothing Then
+                        '        .SelectSingleNode(sParentXPath).AppendChild(.CreateElement(sNodeName))
+                        '    Else
+                        '        ' Wenn der Knoten, in den Geschrieben werden soll, nicht erstellt werden kann, dann wird Write auf False gesetzt.
+                        '        Write = False
+                        '    End If
+                        'End If
                     End If
-                    sTmpXPath = xPath
+                    sParentXPath = xPath
                 Next
+                ' Prüfen, ob es Probleme gab.
                 Write(ZielKnoten, Value, AttributeName, AttributeValue)
             End If
         End With
@@ -3676,10 +3692,8 @@ Public Class DataProvider
     ''' <param name="xPathElements">Lista an xPath-Elementen</param>
     ''' <returns>gültiger xPath</returns>
     ''' <remarks></remarks>
-    Function CreateXPath(ByRef xPathElements As ArrayList) As String
+    Function CreateXPath(ByVal xPathElements As ArrayList) As String
         ' fügt den Root-knoten an, falls nicht vorhanden
-
-        ' Todo: bei write darf kein * vorhanden sein.
 
         Dim newxPath As New ArrayList
 
