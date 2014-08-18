@@ -372,9 +372,9 @@ Friend Class AnrufMonitor
             If AnrMonStream.DataAvailable And AnrMonAktiv Then
                 FBStatus = r.ReadLine
                 Select Case FBStatus
-                    Case "Welcome to Phoner"
+                    Case C_DP.P_AnrMon_AnrMonPhonerWelcome '"Welcome to Phoner"
                         AnrMonPhoner = True
-                    Case "Sorry, too many clients"
+                    Case C_DP.P_AnrMon_AnrMonPhonerError '"Sorry, too many clients"
                         C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonPhoner1)
                     Case Else
                         C_hf.LogFile("AnrMonAktion: " & FBStatus)
@@ -844,7 +844,10 @@ Friend Class AnrufMonitor
                 End If
 #End If
             End With
-            C_Popup.TelefonatsListe.Remove(Telefonat)
+            If Telefonat.PopupAnrMon Is Nothing And Telefonat.PopupStoppuhr Is Nothing Then
+                C_Popup.TelefonatsListe.Remove(Telefonat)
+            End If
+
         Else
             If C_DP.P_CBJournal And C_hf.IsOneOf(CStr(FBStatus.GetValue(3)), C_DP.P_CLBTelNr) Then
                 C_hf.LogFile("AnrMonDISCONNECT: " & C_DP.P_AnrMon_AnrMonDISCONNECT_Error)
