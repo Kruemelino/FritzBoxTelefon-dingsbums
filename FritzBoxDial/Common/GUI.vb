@@ -1,4 +1,7 @@
-﻿<Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
+﻿#If OVer < 14 Then
+Imports Microsoft.Office.Core
+#End If
+<Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
 #If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
@@ -47,6 +50,7 @@
 
 #Region "Commandbar Grundlagen für Outlook 2003 & 2007"
 #If OVer < 14 Then
+
     Private FritzBoxDialCommandBar As Office.CommandBar
     Private WithEvents bAnrMonTimer As Timers.Timer
     Private bool_banrmon As Boolean
@@ -718,7 +722,7 @@
     End Function
 
     Friend Function AddButtonsToCmb(ByVal cmdBar As Office.CommandBar, _
-    ByVal btnCaption As String, ByVal PosIndex As Integer, ByVal btnFaceId As Long, ByVal btnStyle As String, _
+    ByVal btnCaption As String, ByVal PosIndex As Integer, ByVal btnFaceId As Long, ByVal btnStyle As Office.MsoButtonStyle, _
     ByVal btnTag As String, ByVal btnToolTip As String) As Office.CommandBarButton
         Dim cbBtn As Office.CommandBarControl
         Dim cBtn As Office.CommandBarButton
@@ -733,14 +737,7 @@
                 With cBtn
                     .BeginGroup = True
                     .FaceId = CInt(btnFaceId)
-                    Select Case btnStyle
-                        Case "IconandCaption"
-                            .Style = Office.MsoButtonStyle.msoButtonIconAndCaption
-                        Case "Icon"
-                            .Style = Office.MsoButtonStyle.msoButtonIcon
-                        Case "Caption"
-                            .Style = Office.MsoButtonStyle.msoButtonCaption
-                    End Select
+                    .Style = btnStyle
                     .Caption = btnCaption
                     .Tag = btnTag
                     .Visible = True
@@ -830,7 +827,7 @@
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     With cPopUp.Controls.Item(i)
                         If Anrufer = C_DP.P_Def_ErrorMinusOne_String Then .Caption = TelNr Else .Caption = Anrufer
-                        .TooltipText = "Zeit: " & Zeit & Environment.NewLine & "Telefonnummer: " & TelNr
+                        .TooltipText = C_DP.P_CMB_ToolTipp(Zeit, TelNr)
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
                         .Tag = XMLListBaseNode & ";" & CStr(ID Mod 10)
@@ -916,7 +913,7 @@
             Catch ex As Exception
                 C_HF.LogFile("Fehler: btnAnrMon kann nicht gefunden werden.")
             End Try
-            If  btnAnrMon IsNot Nothing Then
+            If btnAnrMon IsNot Nothing Then
                 Select Case bool_banrmon
                     Case True
                         btnAnrMon.State = Office.MsoButtonState.msoButtonDown
@@ -948,9 +945,9 @@
 
         FritzBoxDialCommandBar = AddCmdBar("FritzBoxDial", True)
 
-        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, "Wählen", 1, 568, "IconandCaption", "Wählen", "Wählen")
+        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen", C_DP.P_CMB_Dial_ToolTipp)
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, "Wahlwiederholung", i, C_DP.P_Def_NameListCALL, "Letzte Anrufe wiederholen")
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, C_DP.P_CMB_WWDH, i, C_DP.P_Def_NameListCALL, C_DP.P_CMB_WWDH_ToolTipp)
         i += 1
         Try
             ePopWwdh1 = AddPopupItems(ePopWwdh, 1) : ePopWwdh2 = AddPopupItems(ePopWwdh, 2)
@@ -966,26 +963,26 @@
         ' Direktwahl
         ePopWwdh.Visible = C_DP.P_CBSymbWwdh
         ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
-        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, "Direktwahl", i, 326, "IconandCaption", "Direktwahl", "Direktwahl")
+        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Direktwahl, i, 326, MsoButtonStyle.msoButtonIconAndCaption, "Direktwahl", C_DP.P_CMB_Direktwahl_ToolTipp)
         i += 1
 
         eBtnDirektwahl.Visible = C_DP.P_CBSymbDirekt
         ' Symbol Anrufmonitor & Anzeigen
-        eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor", i, 815, "IconandCaption", "Anrufmonitor", "Anrufmonitor starten oder stoppen") '815
+        eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_AnrMon, i, 815, MsoButtonStyle.msoButtonIconAndCaption, "Anrufmonitor", C_DP.P_CMB_AnrMon_ToolTipp) '815
 
-        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, "Anzeigen", i + 1, 682, "IconandCaption", "Anzeigen", "Letzte Anrufe anzeigen")
+        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_AnrMonAnzeigen, i + 1, 682, MsoButtonStyle.msoButtonIconAndCaption, "Anzeigen", C_DP.P_CMB_AnrMonAnzeigen_ToolTipp)
         i += 2
 
         eBtnAnrMonitor.Visible = C_DP.P_CBSymbAnrMon
         eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
 
-        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, "Anrufmonitor neustarten", i, 37, "IconandCaption", "AnrMonNeuStart", "")
-        eBtnAnrMonNeuStart.TooltipText = "Startet den Anrufmonitor neu."
+        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_AnrMonNeuStart, i, 37, MsoButtonStyle.msoButtonIconAndCaption, "AnrMonNeuStart", C_DP.P_CMB_AnrMonNeuStart_ToolTipp)
+
         eBtnAnrMonNeuStart.Visible = C_DP.P_CBSymbAnrMonNeuStart
 
         i += 1
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, "Rückruf", i, C_DP.P_Def_NameListRING, "Letze Anrufer zurückrufen")
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, C_DP.P_CMB_CallBack, i, C_DP.P_Def_NameListRING, C_DP.P_CMB_CallBack_ToolTipp)
         Try
             ePopAnr1 = AddPopupItems(ePopAnr, 1) : ePopAnr2 = AddPopupItems(ePopAnr, 2)
             ePopAnr3 = AddPopupItems(ePopAnr, 3) : ePopAnr4 = AddPopupItems(ePopAnr, 4)
@@ -1000,7 +997,7 @@
         ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, "VIP", i, C_DP.P_Def_NameListVIP, "VIP anrufen")
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, C_DP.P_CMB_VIP, i, C_DP.P_Def_NameListVIP, C_DP.P_CMB_VIP_ToolTipp)
         Try
             ePopVIP1 = AddPopupItems(ePopVIP, 1) : ePopVIP2 = AddPopupItems(ePopVIP, 2)
             ePopVIP3 = AddPopupItems(ePopVIP, 3) : ePopVIP4 = AddPopupItems(ePopVIP, 4)
@@ -1015,22 +1012,22 @@
         ePopVIP.Visible = C_DP.P_CBSymbVIP
         ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
 
-        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, "Journalimport", i, 591, "IconandCaption", "Journalimport", "Importiert die Anrufliste der Fritz!Box als Journaleinträge")
+        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Journal, i, 591, MsoButtonStyle.msoButtonIconAndCaption, "Journalimport", C_DP.P_CMB_Journal_ToolTipp)
         eBtnJournalimport.Visible = C_DP.P_CBSymbJournalimport
         i += 1
-        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, "Einstellungen", i, 548, "IconandCaption", "Einstellungen", "Fritz!Box Einstellungen")
+        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Setup, i, 548, MsoButtonStyle.msoButtonIconAndCaption, "Einstellungen", C_DP.P_CMB_Setup_ToolTipp)
         i += 1
 
-        eBtnWaehlen.TooltipText = "Öffnet den Wahldialog um das ausgewählte Element anzurufen."
-        ePopWwdh.TooltipText = "Öffnet den Wahldialog für die Wahlwiederholung."
-        eBtnAnrMonitor.TooltipText = "Startet den Anrufmonitor."
-        eBtnDirektwahl.TooltipText = "Öffnet den Wahldialog für die Diarektwahl"
-        eBtnAnzeigen.TooltipText = "Zeigt den letzten Anruf an."
-        eBtnAnrMonNeuStart.TooltipText = "Startet den Anrufmonitor neu."
-        ePopAnr.TooltipText = "Öffnet den Wahldialog für den Rückruf."
-        ePopVIP.TooltipText = "Öffnet den Wahldialog um einen VIP anzurufen."
-        eBtnJournalimport.TooltipText = "Importiert die Anrufliste der Fritz!Box als Journaleinträge."
-        eBtnEinstellungen.TooltipText = "Öffnet die Fritz!Box Telefon-dingsbums Einstellungen."
+        eBtnWaehlen.TooltipText = C_DP.P_CMB_Dial_ToolTipp
+        ePopWwdh.TooltipText = C_DP.P_CMB_WWDH_ToolTipp
+        eBtnAnrMonitor.TooltipText = C_DP.P_CMB_AnrMon_ToolTipp
+        eBtnDirektwahl.TooltipText = C_DP.P_CMB_Direktwahl_ToolTipp
+        eBtnAnzeigen.TooltipText = C_DP.P_CMB_AnrMonAnzeigen_ToolTipp
+        eBtnAnrMonNeuStart.TooltipText = C_DP.P_CMB_AnrMonNeuStart_ToolTipp
+        ePopAnr.TooltipText = C_DP.P_CMB_CallBack_ToolTipp
+        ePopVIP.TooltipText = C_DP.P_CMB_VIP_ToolTipp
+        eBtnJournalimport.TooltipText = C_DP.P_CMB_Journal_ToolTipp
+        eBtnEinstellungen.TooltipText = C_DP.P_CMB_Setup_ToolTipp
 
     End Sub
 
@@ -1089,7 +1086,7 @@
                         .NameLocal = "FritzBoxDial"
                         .Visible = True
                     End With
-                    iBtnWwh = AddButtonsToCmb(cmb, "Wählen", i, 568, "IconandCaption", "Wählen2", "FritzBox Wählclient für Outlook")
+                    iBtnWwh = AddButtonsToCmb(cmb, C_DP.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen2", C_DP.P_CMB_Dial_ToolTipp)
                     i += 1
                 End If
             End If
@@ -1115,7 +1112,7 @@
                 Next
             End If
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-                iBtnVIP = AddButtonsToCmb(cmb, "VIP", i, 3710, "IconandCaption", "VIP", "Füge diesen Kontakt der VIP-Liste hinzu.")
+                iBtnVIP = AddButtonsToCmb(cmb, "VIP", i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", "Füge diesen Kontakt der VIP-Liste hinzu.")
                 Dim olKontact As Outlook.ContactItem = CType(Inspector.CurrentItem, Outlook.ContactItem)
                 With iBtnVIP
                     If IsVIP(olKontact) Then
@@ -1135,7 +1132,7 @@
             End If
             ' Journaleinträge
             If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
-                iBtnKontakterstellen = AddButtonsToCmb(cmb, "Kontakt erstellen", i, 1099, "IconandCaption", "Kontakterstellen", "Erstellt einen Kontakt aus einem Journaleintrag")
+                iBtnKontakterstellen = AddButtonsToCmb(cmb, "Kontakt erstellen", i, 1099, MsoButtonStyle.msoButtonIconAndCaption, "Kontakterstellen", "Erstellt einen Kontakt aus einem Journaleintrag")
                 Dim olJournal As Outlook.JournalItem = CType(Inspector.CurrentItem, Outlook.JournalItem)
                 If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", vbTextCompare) = 0 Then
                     Dim olLink As Outlook.Link = Nothing
