@@ -318,7 +318,8 @@ Friend Class AnrufMonitor
 #End If
         Else
             ' TCP/IP-Verbindung öffnen
-            If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+            If C_DP.P_CBUseAnrMon Then
+                'If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
 
                 If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Or C_DP.P_CBPhonerAnrMon Then
                     BWStartTCPReader = New BackgroundWorker
@@ -492,7 +493,7 @@ Friend Class AnrufMonitor
                     SpeichereLetzerAnrufer(Telefonat)
                     C_GUI.UpdateList(C_DP.P_Def_NameListRING, Telefonat)
 #If OVer < 14 Then
-                If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems("AnrListe")
+                    If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems(C_DP.P_Def_NameListRING)
 #End If
                 End If
                 ' Kontakt anzeigen
@@ -616,7 +617,7 @@ Friend Class AnrufMonitor
                 ' Daten im Menü für Wahlwiederholung speichern
                 C_GUI.UpdateList(C_DP.P_Def_NameListCALL, Telefonat)
 #If OVer < 14 Then
-            If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems("Wwdh")
+                If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems(C_DP.P_Def_NameListCALL)
 #End If
                 ' Kontakt öffnen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
