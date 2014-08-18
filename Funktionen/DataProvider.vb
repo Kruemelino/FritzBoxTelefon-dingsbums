@@ -2416,6 +2416,30 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Welcome to Phoner
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_AnrMonPhonerWelcome() As String
+        Get
+            Return "Welcome to Phoner"
+        End Get
+    End Property
+    ''' <summary>
+    ''' Sorry, too many clients
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    ''' 
+    Public ReadOnly Property P_AnrMon_AnrMonPhonerError() As String
+        Get
+            Return "Sorry, too many clients"
+        End Get
+    End Property
+
+    ''' <summary>
     ''' AnrMonAktion, Phoner: "Sorry, too many clients"
     ''' </summary>
     ''' <value></value>
@@ -2423,7 +2447,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonPhoner1() As String
         Get
-            Return "AnrMonAktion, Phoner: ""Sorry, too many clients"""
+            Return "AnrMonAktion, Phoner: """ & P_AnrMon_AnrMonPhonerError & """"
         End Get
     End Property
 
