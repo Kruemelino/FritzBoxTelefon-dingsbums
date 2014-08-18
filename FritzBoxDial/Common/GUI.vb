@@ -829,7 +829,7 @@
 
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     With cPopUp.Controls.Item(i)
-                        If Anrufer = C_DP.P_Def_StringEmpty Then .Caption = TelNr Else .Caption = Anrufer
+                        If Anrufer = C_DP.P_Def_ErrorMinusOne_String Then .Caption = TelNr Else .Caption = Anrufer
                         .TooltipText = "Zeit: " & Zeit & Environment.NewLine & "Telefonnummer: " & TelNr
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
@@ -837,7 +837,7 @@
                         i += 1
                     End With
 
-                    xPathTeile.RemoveAt(xPathTeile.Count - 1)
+                    'xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     With LANodeValues
                         .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
                         .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
@@ -879,13 +879,27 @@
         ' Einstellungen für die Symbolleiste speichern
         Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_DP.P_CBSymbDirekt
+        Catch : End Try
+        Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_DP.P_CBSymbAnrMon
+        Catch : End Try
+        Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_DP.P_CBSymbAnrMon
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "AnrListe").Visible = C_DP.P_CBSymbAnrListe
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "Wwdh").Visible = C_DP.P_CBSymbWwdh
+        Catch : End Try
+        Try
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , C_DP.P_Def_NameListRING).Visible = C_DP.P_CBSymbAnrListe
+        Catch : End Try
+        Try
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , C_DP.P_Def_NameListCALL).Visible = C_DP.P_CBSymbWwdh
+        Catch : End Try
+        Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_DP.P_CBSymbJournalimport
+        Catch : End Try
+        Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_DP.P_CBSymbAnrMonNeuStart
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , "VIPListe").Visible = C_DP.P_CBSymbVIP
+        Catch : End Try
+        Try
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , C_DP.P_Def_NameListVIP).Visible = C_DP.P_CBSymbVIP
         Catch : End Try
     End Sub
 
@@ -936,7 +950,7 @@
 
         eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, "Wählen", 1, 568, "IconandCaption", "Wählen", "Wählen")
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, "Wahlwiederholung", i, "Wwdh", "Letzte Anrufe wiederholen")
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, "Wahlwiederholung", i, C_DP.P_Def_NameListCALL, "Letzte Anrufe wiederholen")
         i += 1
         Try
             ePopWwdh1 = AddPopupItems(ePopWwdh, 1) : ePopWwdh2 = AddPopupItems(ePopWwdh, 2)
@@ -948,7 +962,7 @@
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
         End Try
 
-        FillPopupItems("Wwdh")
+        FillPopupItems(C_DP.P_Def_NameListCALL)
         ' Direktwahl
         ePopWwdh.Visible = C_DP.P_CBSymbWwdh
         ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
@@ -971,7 +985,7 @@
 
         i += 1
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, "Rückruf", i, "AnrListe", "Letze Anrufer zurückrufen")
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, "Rückruf", i, C_DP.P_Def_NameListRING, "Letze Anrufer zurückrufen")
         Try
             ePopAnr1 = AddPopupItems(ePopAnr, 1) : ePopAnr2 = AddPopupItems(ePopAnr, 2)
             ePopAnr3 = AddPopupItems(ePopAnr, 3) : ePopAnr4 = AddPopupItems(ePopAnr, 4)
@@ -981,12 +995,12 @@
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
-        FillPopupItems("AnrListe")
+        FillPopupItems(C_DP.P_Def_NameListRING)
         ePopAnr.Visible = C_DP.P_CBSymbAnrListe
         ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, "VIP", i, "VIPListe", "VIP anrufen")
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, "VIP", i, C_DP.P_Def_NameListVIP, "VIP anrufen")
         Try
             ePopVIP1 = AddPopupItems(ePopVIP, 1) : ePopVIP2 = AddPopupItems(ePopVIP, 2)
             ePopVIP3 = AddPopupItems(ePopVIP, 3) : ePopVIP4 = AddPopupItems(ePopVIP, 4)
@@ -996,7 +1010,7 @@
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
-        FillPopupItems("VIPListe")
+        FillPopupItems(C_DP.P_Def_NameListVIP)
         i += 1
         ePopVIP.Visible = C_DP.P_CBSymbVIP
         ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
@@ -1021,19 +1035,23 @@
     End Sub
 
     Private Function CommandBarPopupEnabled(ByVal control As Office.CommandBarPopup) As Boolean
-        Dim XMLListBaseNode As String
+        Dim XMLListBaseNode As String = C_DP.P_Def_ErrorMinusOne_String
         Dim xPathTeile As New ArrayList
 
         Select Case control.Tag
-            Case "Wwdh"
+            Case C_DP.P_Def_NameListCALL
                 XMLListBaseNode = C_DP.P_Def_NameListCALL
-            Case "AnrListe"
+            Case C_DP.P_Def_NameListRING
                 XMLListBaseNode = C_DP.P_Def_NameListRING
-            Case Else ' "VIPListe"
+            Case C_DP.P_Def_NameListVIP ' "VIPListe"
                 XMLListBaseNode = C_DP.P_Def_NameListVIP
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+        If XMLListBaseNode = C_DP.P_Def_ErrorMinusOne_String Then
+            CommandBarPopupEnabled = False
+        Else
+            CommandBarPopupEnabled = CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+        End If
     End Function
 
 #End If
