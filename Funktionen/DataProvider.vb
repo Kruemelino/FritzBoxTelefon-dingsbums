@@ -2957,7 +2957,6 @@ Public Class DataProvider
         End Get
     End Property
 
-#If over < 14 Then
     ''' <summary>
     ''' Zeit: sZeit P_Def_NeueZeile  Telefonnummer: sTelNr
     ''' </summary>
@@ -2972,107 +2971,245 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' Wählen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Dial() As String
         Get
             Return "Wählen"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Wahlwiederholung
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_WWDH() As String
         Get
             Return "Wahlwiederholung"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Direktwahl
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Direktwahl() As String
         Get
             Return "Direktwahl"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Anrufmonitor
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMon() As String
         Get
             Return "Anrufmonitor"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Anzeigen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonAnzeigen() As String
         Get
             Return "Anzeigen"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Anrufmonitor neustarten
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonNeuStart() As String
         Get
             Return "Anrufmonitor neustarten"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Rückruf
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_CallBack() As String
         Get
             Return "Rückruf"
         End Get
     End Property
+
+    ''' <summary>
+    ''' VIP anrufen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP() As String
         Get
             Return "VIP anrufen"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Journalimport
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Journal() As String
         Get
             Return "Journalimport"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Einstellungen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Setup() As String
         Get
             Return "Einstellungen"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Öffnet den Wahldialog um das ausgewählte Element anzurufen.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Dial_ToolTipp() As String
         Get
-            Return "Öffnet den Wahldialog um das ausgewählte Element anzurufen."
+            Return "Öffnet den Wahldialog um das ausgewählte Element anzurufen"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Öffnet den Wahldialog für die Wahlwiederholung
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_WWDH_ToolTipp() As String
         Get
-            Return "Öffnet den Wahldialog für die Wahlwiederholung."
+            Return "Öffnet den Wahldialog für die Wahlwiederholung"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Startet den Anrufmonitor.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMon_ToolTipp() As String
         Get
-            Return "Startet den Anrufmonitor."
+            Return "Startet den Anrufmonitor"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Öffnet den Wahldialog für die Direktwahl
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Direktwahl_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für die Direktwahl"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Zeigt den letzten Anruf an
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonAnzeigen_ToolTipp() As String
         Get
-            Return "Zeigt den letzten Anruf an."
+            Return "Zeigt den letzten Anruf an"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Startet den Anrufmonitor neu
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonNeuStart_ToolTipp() As String
         Get
-            Return "Startet den Anrufmonitor neu."
+            Return "Startet den Anrufmonitor neu"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Öffnet den Wahldialog für den Rückruf
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_CallBack_ToolTipp() As String
         Get
-            Return "Öffnet den Wahldialog für den Rückruf."
+            Return "Öffnet den Wahldialog für den Rückruf"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Öffnet den Wahldialog um einen VIP anzurufen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP_ToolTipp() As String
         Get
-            Return "Öffnet den Wahldialog um einen VIP anzurufen."
+            Return "Öffnet den Wahldialog um einen VIP anzurufen"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Importiert die Anrufliste der Fritz!Box als Journaleinträge
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Journal_ToolTipp() As String
         Get
-            Return "Importiert die Anrufliste der Fritz!Box als Journaleinträge."
+            Return "Importiert die Anrufliste der Fritz!Box als Journaleinträge"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Setup_ToolTipp() As String
         Get
-            Return "Öffnet die Fritz!Box Telefon-dingsbums Einstellungen."
+            Return "Öffnet die Fritz!Box Telefon-dingsbums Einstellungen"
         End Get
     End Property
-#End If
 #End Region
 
     Public Sub New()
