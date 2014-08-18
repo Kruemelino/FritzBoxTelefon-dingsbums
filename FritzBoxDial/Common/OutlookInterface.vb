@@ -22,7 +22,6 @@
     Private _vCard As String
     Private _Anrufer As String
     Private _TelName As String
-    Private _frm_Popup As Popup
     Private _Angenommen As Boolean = False
     Private _PopUpAnrMon As F_AnrMon
     Private _PopUpStoppuhr As F_StoppUhr
@@ -165,14 +164,6 @@
             _TelName = value
         End Set
     End Property
-    Friend Property FormAnrMon() As Popup
-        Get
-            Return _frm_Popup
-        End Get
-        Set(ByVal value As Popup)
-            _frm_Popup = value
-        End Set
-    End Property
     Friend Property Angenommen() As Boolean
         Get
             Return _Angenommen
@@ -252,8 +243,8 @@ Public Class OutlookInterface
                         .Links.Add(Telefonat.olContact)
                     End If
 #End If
-                    .Save()
-                    '.Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
+                    '.Save()
+                    .Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
                 End With
                 olJournal = Nothing
             End If
