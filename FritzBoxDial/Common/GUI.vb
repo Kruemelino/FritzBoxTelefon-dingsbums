@@ -309,8 +309,7 @@ Imports Microsoft.Office.Core
                             CStr(ID Mod 10), _
                             CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
                             XMLListBaseNode, _
-                            "Zeit: " & Zeit & "&#13;Telefonnummer: " & TelNr)
-
+                            C_DP.P_CMB_ToolTipp(Zeit, TelNr))
                     LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = C_DP.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(2) = C_DP.P_Def_ErrorMinusOne_String
@@ -452,11 +451,85 @@ Imports Microsoft.Office.Core
         End If
     End Sub
 
-    Public Function GetVisibleAnrMonFKT(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
+    ''' <summary>
+    ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GetLabel(ByVal control As Office.IRibbonControl) As String
+        Select Case control.Id
+            Case "TabContact", "TabMail", "TabJournal", "TabCalendar", "TabReadMessage"
+                GetLabel = C_DP.P_Def_Addin_LangName
+            Case "dynMwwdh_C", "dynMwwdh_M", "dynMwwdh_J", "dynMwwdh_K"
+                GetLabel = C_DP.P_CMB_WWDH
+            Case "dynMAnrListe_C", "dynMAnrListe_M", "dynMAnrListe_J", "dynMAnrListe_K"
+                GetLabel = C_DP.P_CMB_CallBack
+            Case "dynMVIPListe_C", "dynMVIPListe_M", "dynMVIPListe_J", "dynMVIPListe_K"
+                GetLabel = C_DP.P_CMB_VIP
+            Case "Button_C1", "Button_M1", "Button_J1", "Button_K1"
+                GetLabel = C_DP.P_CMB_Dial
+            Case "Button_C2", "Button_M2", "Button_J2", "Button_K2"
+                GetLabel = C_DP.P_CMB_Direktwahl
+            Case "btnSplit_C", "btnSplit_M", "btnSplit_J", "btnSplit_K"
+                GetLabel = C_DP.P_CMB_AnrMon
+            Case "AnrMonBtn_C2", "AnrMonBtn_M2", "AnrMonBtn_J2", "AnrMonBtn_K2"
+                GetLabel = C_DP.P_CMB_AnrMonNeuStart
+            Case "AnrMonBtn_C1", "AnrMonBtn_M1", "AnrMonBtn_J1", "AnrMonBtn_K1"
+                GetLabel = C_DP.P_CMB_AnrMonAnzeigen
+            Case "AnrMonBtn_C4", "AnrMonBtn_M4", "AnrMonBtn_J4", "AnrMonBtn_K4"
+                GetLabel = C_DP.P_CMB_Journal
+            Case "ContextMenuContactItem_B", "ContextMenuJournalItem_F", "ContextMenuMailItem_H"
+                GetLabel = C_DP.P_CMB_ContextMenueItemCall
+            Case "ContextMenuContactItem_C", "Insp_VIP"
+                GetLabel = C_DP.P_CMB_ContextMenueItemVIP
+            Case "mnu_C01", "mnu_J01"
+                GetLabel = C_DP.P_CMB_Insp_RWS
+            Case Else
+                GetLabel = C_DP.P_Def_ErrorMinusOne_String
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt das ScreenTipp des Ribbon-Objektes ausgehend von der Ribbon-id
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GetScreenTipp(ByVal control As Office.IRibbonControl) As String
+        Select Case control.Id
+            Case "dynMwwdh_C", "dynMwwdh_M", "dynMwwdh_J", "dynMwwdh_K"
+                GetScreenTipp = C_DP.P_CMB_WWDH_ToolTipp
+            Case "dynMAnrListe_C", "dynMAnrListe_M", "dynMAnrListe_J", "dynMAnrListe_K"
+                GetScreenTipp = C_DP.P_CMB_CallBack_ToolTipp
+            Case "dynMVIPListe_C", "dynMVIPListe_M", "dynMVIPListe_J", "dynMVIPListe_K"
+                GetScreenTipp = C_DP.P_CMB_VIP_ToolTipp
+            Case "Button_C1", "Button_M1", "Button_J1", "Button_K1"
+                GetScreenTipp = C_DP.P_CMB_Dial_ToolTipp
+            Case "Button_C2", "Button_M2", "Button_J2", "Button_K2"
+                GetScreenTipp = C_DP.P_CMB_Direktwahl_ToolTipp
+            Case "btnSplit_C", "btnSplit_M", "btnSplit_J", "btnSplit_K"
+                GetScreenTipp = C_DP.P_CMB_AnrMon_ToolTipp
+            Case "AnrMonBtn_C2", "AnrMonBtn_M2", "AnrMonBtn_J2", "AnrMonBtn_K2"
+                GetScreenTipp = C_DP.P_CMB_AnrMonNeuStart_ToolTipp
+            Case "AnrMonBtn_C1", "AnrMonBtn_M1", "AnrMonBtn_J1", "AnrMonBtn_K1"
+                GetScreenTipp = C_DP.P_CMB_AnrMonAnzeigen_ToolTipp
+            Case "AnrMonBtn_C4", "AnrMonBtn_M4", "AnrMonBtn_J4", "AnrMonBtn_K4"
+                GetScreenTipp = C_DP.P_CMB_Journal_ToolTipp
+            Case "Einstellungen_C", "Einstellungen_M", "Einstellungen_J", "Einstellungen_K"
+                GetScreenTipp = C_DP.P_CMB_Setup_ToolTipp
+            Case "mnu_C01", "mnu_J01"
+                GetScreenTipp = C_DP.P_CMB_Insp_RWS_ToolTipp
+            Case Else
+                GetScreenTipp = C_DP.P_Def_ErrorMinusOne_String
+        End Select
+    End Function
+
+    Public Function GetVisibleAnrMonFKT(ByVal control As Office.IRibbonControl) As Boolean
         Return C_DP.P_CBUseAnrMon
     End Function
 
-    Public Function GetEnabledJI(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
+    Public Function GetEnabledJI(ByVal control As Office.IRibbonControl) As Boolean
         Return C_DP.P_CBJournal
     End Function
 

@@ -3063,7 +3063,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP() As String
         Get
-            Return "VIP anrufen"
+            Return "VIP-Liste"
         End Get
     End Property
 
@@ -3195,7 +3195,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Journal_ToolTipp() As String
         Get
-            Return "Importiert die Anrufliste der Fritz!Box als Journaleinträge"
+            Return "Importiert die Anrufliste der " & P_Def_FritzBoxName & " als Journaleinträge"
         End Get
     End Property
 
@@ -3207,9 +3207,58 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Setup_ToolTipp() As String
         Get
-            Return "Öffnet die Fritz!Box Telefon-dingsbums Einstellungen"
+            Return "Öffnet den " & P_Def_Addin_LangName & " Einstellungsdialog"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Anrufen (Fritz!Box Telefon-Dingsbums)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_ContextMenueItemCall() As String
+        Get
+            Return "Anrufen (" & P_Def_Addin_LangName & ")"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' VIP
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_ContextMenueItemVIP() As String
+        Get
+            Return "VIP"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Rückwärtssuche
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Insp_RWS() As String
+        Get
+            Return "Rückwärtssuche"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Insp_RWS_ToolTipp() As String
+        Get
+            Return "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche."
+        End Get
+    End Property
+
 #End Region
 
     Public Sub New()

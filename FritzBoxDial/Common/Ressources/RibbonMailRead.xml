@@ -3,8 +3,8 @@
   <ribbon>
     <tabs>
       <tab idMso="TabReadMessage">
-        <group id="TabReadMessage" label="Fritz!Box Telefon-Dingsbums" getVisible="GroupVisible">
-          <button id="ButtonM1" imageMso="AutoDial" onAction="OnActionWählen" size="large" label="Wählen" screentip="Fritz!Box Wählclient für Outlook"/>
+        <group id="TabReadMessage" getLabel="GetLabel" getVisible="GroupVisible">
+          <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählen" size="large" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
         </group>
       </tab>
     </tabs>
