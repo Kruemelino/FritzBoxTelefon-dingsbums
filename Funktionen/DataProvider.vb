@@ -3255,7 +3255,154 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_RWS_ToolTipp() As String
         Get
-            Return "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche."
+            Return "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_CMB_Insp_Note() As String
+        Get
+            Return "Notiz"
+        End Get
+    End Property
+
+    Public ReadOnly Property P_CMB_Insp_Note_ToolTipp() As String
+        Get
+            Return "Einen Notizeintrag hinzufügen"
+        End Get
+    End Property
+
+    ' Rückwärtssuche
+
+    ''' <summary>
+    ''' 11880
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWS11880_Name() As String
+        Get
+            Return "11880"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' dasÖrtliche
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSDasOertliche_Name() As String
+        Get
+            Return "dasÖrtliche"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' dasTelefonbuch
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSDasTelefonbuch_Name() As String
+        Get
+            Return "dasTelefonbuch"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' tel.search.ch
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSTelSearch_Name() As String
+        Get
+            Return "tel.search.ch"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Alle
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSAlle_Name() As String
+        Get
+            Return "Alle"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' www.11880.com
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWS11880_Link() As String
+        Get
+            Return "www.11880.com"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' www.dasoertliche.de
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSDasOertliche_Link() As String
+        Get
+            Return "www.dasoertliche.de"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' www.dastelefonbuch.de
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSDasTelefonbuch_Link() As String
+        Get
+            Return "www.dastelefonbuch.de"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' tel.search.ch
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_RWSTelSearch_Link() As String
+        Get
+            Return "tel.search.ch"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Rückwärtssuche mit <c>Link</c> 
+    ''' </summary>
+    ''' <param name="Link">Link der eingefügt werden soll</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Overloads ReadOnly Property P_RWS_ToolTipp(ByVal Link As String) As String
+        Get
+            Return "Rückwärtssuche mit &#34;" & Link & "&#34;"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Rückwärtssuche mit allen Anbietern
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Overloads ReadOnly Property P_RWS_ToolTipp() As String
+        Get
+            Return "Rückwärtssuche mit allen Anbietern"
         End Get
     End Property
 

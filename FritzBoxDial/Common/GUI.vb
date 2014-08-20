@@ -267,17 +267,17 @@ Imports Microsoft.Office.Core
             Case "tButton_C1"
                 GetInspLabel = C_DP.P_CMB_VIP
             Case "Button_C2"
-                GetInspLabel = "Notiz"
+                GetInspLabel = C_DP.P_CMB_Insp_Note
             Case "btn_C01", "btn_J01"
-                GetInspLabel = "11880"
+                GetInspLabel = C_DP.P_RWS11880_Name
             Case "btn_C02", "btn_J02"
-                GetInspLabel = "dasÖrtliche"
+                GetInspLabel = C_DP.P_RWSDasOertliche_Name
             Case "btn_C03", "btn_J03"
-                GetInspLabel = "dasTelefonbuch"
+                GetInspLabel = C_DP.P_RWSDasTelefonbuch_Name
             Case "btn_C04", "btn_J04"
-                GetInspLabel = "tel.search.ch"
+                GetInspLabel = C_DP.P_RWSTelSearch_Name
             Case "btn_C05", "btn_J05"
-                GetInspLabel = "Alle"
+                GetInspLabel = C_DP.P_RWSAlle_Name
             Case Else
                 GetInspLabel = C_DP.P_Def_ErrorMinusOne_String
         End Select
@@ -300,17 +300,17 @@ Imports Microsoft.Office.Core
             Case "tButton_C1"
                 GetInspScreenTipp = GetScreenTipVIP(control)
             Case "Button_C2"
-                GetInspScreenTipp = "Einen Notizeintrag hinzufügen"
+                GetInspScreenTipp = C_DP.P_CMB_Insp_Note_ToolTipp
             Case "btn_C01", "btn_J01"
-                GetInspScreenTipp = "Rückwärtssuche mit &#34;www.11880.com&#34;"
+                GetInspScreenTipp = C_DP.P_RWS_ToolTipp(C_DP.P_RWS11880_Link)
             Case "btn_C02", "btn_J02"
-                GetInspScreenTipp = "Rückwärtssuche mit &#34;www.dasoertliche.de&#34;"
+                GetInspScreenTipp = C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasOertliche_Link)
             Case "btn_C03", "btn_J03"
-                GetInspScreenTipp = "Rückwärtssuche mit &#34;www.dastelefonbuch.de/&#34;"
+                GetInspScreenTipp = C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasTelefonbuch_Link)
             Case "btn_C04", "btn_J04"
-                GetInspScreenTipp = "Rückwärtssuche mit &#34;tel.search.ch&#34;"
+                GetInspScreenTipp = C_DP.P_RWS_ToolTipp(C_DP.P_RWSTelSearch_Link)
             Case "btn_C05", "btn_J05"
-                GetInspScreenTipp = "Rückwärtssuche mit allen Anbietern"
+                GetInspScreenTipp = C_DP.P_RWS_ToolTipp()
             Case Else
                 GetInspScreenTipp = C_DP.P_Def_ErrorMinusOne_String
         End Select
