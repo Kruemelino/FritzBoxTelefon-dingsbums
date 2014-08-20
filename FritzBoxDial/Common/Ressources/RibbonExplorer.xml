@@ -3,122 +3,122 @@
   <ribbon startFromScratch="false">
     <tabs>
       <tab idMso="TabContacts" >
-        <group id="TabContact" getLabel="GetLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
+        <group id="TabContact" getLabel="GetExplLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_C" size="large">
             <!--oberste Schaltfläche des SplitButton-->
-            <button id="Button_C1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
+            <button id="Button_C1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetExplLabel" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_C1">
-              <button id="Button_C2" imageMso="SlidesPerPage9Slides" getLabel="GetLabel" onAction="OnActionDirektwahl" getScreentip="GetScreenTipp"/>
+              <button id="Button_C2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_C1"/>
-          <dynamicMenu id="dynMwwdh_C" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMAnrListe_C" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMVIPListe_C" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
+          <dynamicMenu id="dynMwwdh_C" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMAnrListe_C" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMVIPListe_C" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
           <separator id="Seperator_C2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_C" size="normal" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
-            <toggleButton id="btnSplit_C" getLabel="GetLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetScreenTipp"/>
+            <toggleButton id="btnSplit_C" getLabel="GetExplLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_C2">
-              <button id="AnrMonBtn_C2" getLabel="GetLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetScreenTipp"/>
+              <button id="AnrMonBtn_C2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="AnrMonBtn_C1" getLabel="GetLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetScreenTipp"/>
-          <button id="AnrMonBtn_C4" getLabel="GetLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getScreentip="GetScreenTipp"/>
+          <button id="AnrMonBtn_C1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
+          <button id="AnrMonBtn_C4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
           <dialogBoxLauncher>
-            <button id="Einstellungen_C" onAction="OnActionEinstellungen" getScreentip="GetScreenTipp"/>
+            <button id="Einstellungen_C" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
           </dialogBoxLauncher>
         </group>
       </tab>
       <tab idMso="TabMail">
-        <group id="TabMail" getLabel="GetLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
+        <group id="TabMail" getLabel="GetExplLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_M" size="large">
             <!--oberste Schaltfläche des SplitButton-->
-            <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
+            <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetExplLabel" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_M1">
-              <button id="Button_M2" imageMso="SlidesPerPage9Slides" getLabel="GetLabel" onAction="OnActionDirektwahl" getScreentip="GetScreenTipp"/>
+              <button id="Button_M2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_M1"/>
-          <dynamicMenu id="dynMwwdh_M" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMAnrListe_M" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMVIPListe_M" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
+          <dynamicMenu id="dynMwwdh_M" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMAnrListe_M" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMVIPListe_M" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
           <separator id="Seperator_M2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_M" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
-            <toggleButton id="btnSplit_M" getLabel="GetLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetScreenTipp"/>
+            <toggleButton id="btnSplit_M" getLabel="GetExplLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_M2">
-              <button id="AnrMonBtn_M2" getLabel="GetLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetScreenTipp"/>
+              <button id="AnrMonBtn_M2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="AnrMonBtn_M1" getLabel="GetLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetScreenTipp"/>
-          <button id="AnrMonBtn_M4" getLabel="GetLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI" getScreentip="GetScreenTipp"/>
+          <button id="AnrMonBtn_M1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
+          <button id="AnrMonBtn_M4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI" getScreentip="GetExplScreenTipp"/>
           <dialogBoxLauncher>
-            <button id="Einstellungen_M" onAction="OnActionEinstellungen" getScreentip="GetScreenTipp"/>
+            <button id="Einstellungen_M" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
           </dialogBoxLauncher>
         </group>
       </tab>
       <tab idMso="TabJournals">
-        <group id="TabJournal" getLabel="GetLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial" getScreentip="GetScreenTipp">
+        <group id="TabJournal" getLabel="GetExplLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial" getScreentip="GetExplScreenTipp">
           <splitButton id="spb1_J" size="large">
             <!--oberste Schaltfläche des SplitButton-->
-            <button id="Button_J1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
+            <button id="Button_J1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetExplLabel" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_J1">
-              <button id="Button_J2" imageMso="SlidesPerPage9Slides" getLabel="GetLabel" onAction="OnActionDirektwahl" getScreentip="GetScreenTipp"/>
+              <button id="Button_J2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_J1"/>
-          <dynamicMenu id="dynMwwdh_J" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMAnrListe_J" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMVIPListe_J" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
+          <dynamicMenu id="dynMwwdh_J" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMAnrListe_J" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMVIPListe_J" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
           <separator id="Seperator_J2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_J" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
-            <toggleButton id="btnSplit_J" getLabel="GetLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetScreenTipp"/>
+            <toggleButton id="btnSplit_J" getLabel="GetExplLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_J2">
-              <button id="AnrMonBtn_J2" getLabel="GetLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetScreenTipp"/>
+              <button id="AnrMonBtn_J2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="AnrMonBtn_J1" getLabel="GetLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetScreenTipp"/>
-          <button id="AnrMonBtn_J4" getLabel="GetLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI"/>
+          <button id="AnrMonBtn_J1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
+          <button id="AnrMonBtn_J4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI"/>
           <dialogBoxLauncher>
-            <button id="Einstellungen_J" onAction="OnActionEinstellungen" getScreentip="GetScreenTipp"/>
+            <button id="Einstellungen_J" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
           </dialogBoxLauncher>
         </group>
       </tab>
       <tab idMso="TabCalendar">
-        <group id="TabCalendar" getLabel="GetLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
+        <group id="TabCalendar" getLabel="GetExplLabel" getVisible="GroupVisible" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_K" size="large">
             <!--oberste Schaltfläche des SplitButton-->
-            <button id="Button_K1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
+            <button id="Button_K1" imageMso="AutoDial" onAction="OnActionWählenExplorer" getLabel="GetExplLabel" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_K1">
-              <button id="Button_K2" imageMso="SlidesPerPage9Slides" getLabel="GetLabel" onAction="OnActionDirektwahl" getScreentip="GetScreenTipp"/>
+              <button id="Button_K2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_K1"/>
-          <dynamicMenu id="dynMwwdh_K" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMAnrListe_K" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
-          <dynamicMenu id="dynMVIPListe_K" getLabel="GetLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetScreenTipp"/>
+          <dynamicMenu id="dynMwwdh_K" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMAnrListe_K" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
+          <dynamicMenu id="dynMVIPListe_K" getLabel="GetExplLabel" getContent="DynMenüfüllen" invalidateContentOnDrop="true" getEnabled="DynMenüEnabled" getScreentip="GetExplScreenTipp"/>
           <separator id="Seperator_K2" getVisible="GetVisibleAnrMonFKT"/>
           <splitButton id="spb2_K" getVisible="GetVisibleAnrMonFKT">
             <!--oberste Schaltfläche des SplitButton-->
-            <toggleButton id="btnSplit_K" getLabel="GetLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetScreenTipp"/>
+            <toggleButton id="btnSplit_K" getLabel="GetExplLabel" onAction="OnActionAnrMonAnAus" getPressed="GetPressed" getImage="getImage" getScreentip="GetExplScreenTipp"/>
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_K2">
-              <button id="AnrMonBtn_K2" getLabel="GetLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetScreenTipp"/>
+              <button id="AnrMonBtn_K2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="AnrMonBtn_K1" getLabel="GetLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetScreenTipp"/>
-          <button id="AnrMonBtn_K4" getLabel="GetLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI" getScreentip="GetScreenTipp"/>
+          <button id="AnrMonBtn_K1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
+          <button id="AnrMonBtn_K4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI" getScreentip="GetExplScreenTipp"/>
           <dialogBoxLauncher>
-            <button id="Einstellungen_K" onAction="OnActionEinstellungen" getScreentip="GetScreenTipp"/>
+            <button id="Einstellungen_K" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
           </dialogBoxLauncher>
         </group>
       </tab>
@@ -127,16 +127,16 @@
   <contextMenus>
     <contextMenu idMso="ContextMenuContactItem">
       <menuSeparator id="ContextMenuContactItem_A"/>
-      <button id="ContextMenuContactItem_B" getLabel="GetLabel" imageMso="AutoDial" onAction="ContextCall"/>
-      <toggleButton id="ContextMenuContactItem_C" getLabel="GetLabel" onAction="OnActionKontextVIP" getPressed="GetPressedKontextVIP" imageMso="Pushpin"/>
+      <button id="ContextMenuContactItem_B" getLabel="GetExplLabel" imageMso="AutoDial" onAction="ContextCall"/>
+      <toggleButton id="ContextMenuContactItem_C" getLabel="GetExplLabel" onAction="OnActionKontextVIP" getPressed="GetPressedKontextVIP" imageMso="Pushpin"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuJournalItem">
       <menuSeparator id="ContextMenuJournalItem_A"/>
-      <button id="ContextMenuJournalItem_F" getLabel="GetLabel" imageMso="AutoDial" onAction="ContextCall"/>
+      <button id="ContextMenuJournalItem_F" getLabel="GetExplLabel" imageMso="AutoDial" onAction="ContextCall"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuMailItem">
       <menuSeparator id="ContextMenuMailItem_G"/>
-      <button id="ContextMenuMailItem_H" getLabel="GetLabel" imageMso="AutoDial" onAction="ContextCall"/>
+      <button id="ContextMenuMailItem_H" getLabel="GetExplLabel" imageMso="AutoDial" onAction="ContextCall"/>
     </contextMenu>
   </contextMenus>
 </customUI>

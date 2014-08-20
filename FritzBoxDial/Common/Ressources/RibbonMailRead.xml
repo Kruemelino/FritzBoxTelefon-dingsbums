@@ -3,8 +3,8 @@
   <ribbon>
     <tabs>
       <tab idMso="TabReadMessage">
-        <group id="TabReadMessage" getLabel="GetLabel" getVisible="GroupVisible">
-          <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählen" size="large" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
+        <group id="TabReadMessage" getLabel="GetInspLabel" getVisible="GroupVisible">
+          <button id="Button_M1" imageMso="AutoDial" onAction="OnActionWählen" size="large" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp"/>
         </group>
       </tab>
     </tabs>

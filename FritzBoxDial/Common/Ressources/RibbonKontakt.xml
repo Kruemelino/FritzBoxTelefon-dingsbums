@@ -3,17 +3,17 @@
   <ribbon>
     <tabs>
       <tab idMso="TabContact">
-        <group id="TabContact" getLabel="GetLabel" getVisible="GroupVisible">
-          <button id="Button_C1" imageMso="AutoDial" onAction="OnActionWählen" size="large" getLabel="GetLabel" getScreentip="GetScreenTipp"/>
-          <menu id="mnu_C01" size="large" imageMso="CheckNames" getLabel="GetLabel" getScreentip="GetScreenTipp">
-            <button id="btn_C01" tag="RWS11880" label="11880" onAction="OnActionRWS" screentip="Rückwärtssuche mit &#34;www.11880.com&#34;"/>
-            <button id="btn_C02" tag="RWSDasOertliche" label="dasÖrtliche" onAction="OnActionRWS" screentip="Rückwärtssuche mit &#34;www.dasoertliche.de&#34;"/>
-            <button id="btn_C03" tag="RWSDasTelefonbuch" label="dasTelefonbuch" onAction="OnActionRWS" screentip="Rückwärtssuche mit &#34;www.dastelefonbuch.de/&#34;"/>
-            <button id="btn_C04" tag="RWSTelSearch" label="tel.search.ch" onAction="OnActionRWS" screentip="Rückwärtssuche mit &#34;tel.search.ch&#34;"/>
-            <button id="btn_C05" tag="RWSAlle" label="Alle" onAction="OnActionRWS" screentip="Rückwärtssuche mit allen Anbietern"/>
+        <group id="TabContact" getLabel="GetInspLabel" getVisible="GroupVisible">
+          <button id="Button_C1" imageMso="AutoDial" onAction="OnActionWählen" size="large" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp"/>
+          <menu id="mnu_C01" size="large" imageMso="CheckNames" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp">
+            <button id="btn_C01" tag="RWS11880" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
+            <button id="btn_C02" tag="RWSDasOertliche" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
+            <button id="btn_C03" tag="RWSDasTelefonbuch" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
+            <button id="btn_C04" tag="RWSTelSearch" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
+            <button id="btn_C05" tag="RWSAlle" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
           </menu>
-          <toggleButton id="Insp_VIP" getLabel="GetLabel" onAction="OnActionInspVIP" getPressed="GetPressedVIP" imageMso="Pushpin" size="large" getScreentip="GetScreenTipVIP"/>
-          <button id="ButtonC2" imageMso="ShowNotesPage" onAction="OnActionNote" size="large" label="Notiz" screentip="Einen Notizeintrag hinzufügen"/>
+          <toggleButton id="tButton_C1" getLabel="GetInspLabel" onAction="OnActionInspVIP" getPressed="GetPressedVIP" imageMso="Pushpin" size="large" getScreentip="GetInspScreenTipp"/>
+          <button id="Button_C2" getLabel="GetInspLabel" imageMso="ShowNotesPage" onAction="OnActionNote" size="large" getScreentip="GetInspScreenTipp"/>
         </group>
       </tab>
     </tabs>

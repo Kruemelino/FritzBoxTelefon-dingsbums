@@ -194,7 +194,7 @@ Imports Microsoft.Office.Core
         Return False
     End Function
 
-    Public Function SetLabelJournal(ByVal control As Microsoft.Office.Core.IRibbonControl) As String
+    Private Function SetLabelJournal(ByVal control As Office.IRibbonControl) As String
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
             Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
@@ -218,7 +218,7 @@ Imports Microsoft.Office.Core
         Return "Kontakt erstellen"
     End Function
 
-    Public Function SetScreenTipJournal(ByVal control As Microsoft.Office.Core.IRibbonControl) As String
+    Private Function SetScreenTipJournal(ByVal control As Office.IRibbonControl) As String
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
             Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
@@ -246,6 +246,76 @@ Imports Microsoft.Office.Core
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         C_KF.AddNote(CType(Insp.CurrentItem, Outlook.ContactItem))
     End Sub
+
+
+    ''' <summary>
+    ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Inspektoren
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GetInspLabel(ByVal control As Office.IRibbonControl) As String
+        Select Case control.Id
+            Case "TabContact", "TabJournal", "TabReadMessage"
+                GetInspLabel = C_DP.P_Def_Addin_LangName
+            Case "Button_C1", "Button_M1", "Button_J1"
+                GetInspLabel = C_DP.P_CMB_Dial
+            Case "mnu_C01", "mnu_J01"
+                GetInspLabel = C_DP.P_CMB_Insp_RWS
+            Case "Button_J2"
+                GetInspLabel = SetLabelJournal(control)
+            Case "tButton_C1"
+                GetInspLabel = C_DP.P_CMB_VIP
+            Case "Button_C2"
+                GetInspLabel = "Notiz"
+            Case "btn_C01", "btn_J01"
+                GetInspLabel = "11880"
+            Case "btn_C02", "btn_J02"
+                GetInspLabel = "dasÖrtliche"
+            Case "btn_C03", "btn_J03"
+                GetInspLabel = "dasTelefonbuch"
+            Case "btn_C04", "btn_J04"
+                GetInspLabel = "tel.search.ch"
+            Case "btn_C05", "btn_J05"
+                GetInspLabel = "Alle"
+            Case Else
+                GetInspLabel = C_DP.P_Def_ErrorMinusOne_String
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt das ScreenTipp des Ribbon-Objektes ausgehend von der Ribbon-id für Inspektoren
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GetInspScreenTipp(ByVal control As Office.IRibbonControl) As String
+        Select Case control.Id
+            Case "Button_C1", "Button_M1", "Button_J1"
+                GetInspScreenTipp = C_DP.P_CMB_Dial_ToolTipp
+            Case "mnu_C01", "mnu_J01"
+                GetInspScreenTipp = C_DP.P_CMB_Insp_RWS_ToolTipp
+            Case "Button_J2"
+                GetInspScreenTipp = SetScreenTipJournal(control)
+            Case "tButton_C1"
+                GetInspScreenTipp = GetScreenTipVIP(control)
+            Case "Button_C2"
+                GetInspScreenTipp = "Einen Notizeintrag hinzufügen"
+            Case "btn_C01", "btn_J01"
+                GetInspScreenTipp = "Rückwärtssuche mit &#34;www.11880.com&#34;"
+            Case "btn_C02", "btn_J02"
+                GetInspScreenTipp = "Rückwärtssuche mit &#34;www.dasoertliche.de&#34;"
+            Case "btn_C03", "btn_J03"
+                GetInspScreenTipp = "Rückwärtssuche mit &#34;www.dastelefonbuch.de/&#34;"
+            Case "btn_C04", "btn_J04"
+                GetInspScreenTipp = "Rückwärtssuche mit &#34;tel.search.ch&#34;"
+            Case "btn_C05", "btn_J05"
+                GetInspScreenTipp = "Rückwärtssuche mit allen Anbietern"
+            Case Else
+                GetInspScreenTipp = C_DP.P_Def_ErrorMinusOne_String
+        End Select
+    End Function
+
 
 #End Region 'Ribbon Inspector
 
@@ -452,76 +522,72 @@ Imports Microsoft.Office.Core
     End Sub
 
     ''' <summary>
-    ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id
+    ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GetLabel(ByVal control As Office.IRibbonControl) As String
+    Public Function GetExplLabel(ByVal control As Office.IRibbonControl) As String
         Select Case control.Id
-            Case "TabContact", "TabMail", "TabJournal", "TabCalendar", "TabReadMessage"
-                GetLabel = C_DP.P_Def_Addin_LangName
+            Case "TabContact", "TabMail", "TabJournal", "TabCalendar"
+                GetExplLabel = C_DP.P_Def_Addin_LangName
             Case "dynMwwdh_C", "dynMwwdh_M", "dynMwwdh_J", "dynMwwdh_K"
-                GetLabel = C_DP.P_CMB_WWDH
+                GetExplLabel = C_DP.P_CMB_WWDH
             Case "dynMAnrListe_C", "dynMAnrListe_M", "dynMAnrListe_J", "dynMAnrListe_K"
-                GetLabel = C_DP.P_CMB_CallBack
+                GetExplLabel = C_DP.P_CMB_CallBack
             Case "dynMVIPListe_C", "dynMVIPListe_M", "dynMVIPListe_J", "dynMVIPListe_K"
-                GetLabel = C_DP.P_CMB_VIP
+                GetExplLabel = C_DP.P_CMB_VIP
             Case "Button_C1", "Button_M1", "Button_J1", "Button_K1"
-                GetLabel = C_DP.P_CMB_Dial
+                GetExplLabel = C_DP.P_CMB_Dial
             Case "Button_C2", "Button_M2", "Button_J2", "Button_K2"
-                GetLabel = C_DP.P_CMB_Direktwahl
+                GetExplLabel = C_DP.P_CMB_Direktwahl
             Case "btnSplit_C", "btnSplit_M", "btnSplit_J", "btnSplit_K"
-                GetLabel = C_DP.P_CMB_AnrMon
+                GetExplLabel = C_DP.P_CMB_AnrMon
             Case "AnrMonBtn_C2", "AnrMonBtn_M2", "AnrMonBtn_J2", "AnrMonBtn_K2"
-                GetLabel = C_DP.P_CMB_AnrMonNeuStart
+                GetExplLabel = C_DP.P_CMB_AnrMonNeuStart
             Case "AnrMonBtn_C1", "AnrMonBtn_M1", "AnrMonBtn_J1", "AnrMonBtn_K1"
-                GetLabel = C_DP.P_CMB_AnrMonAnzeigen
+                GetExplLabel = C_DP.P_CMB_AnrMonAnzeigen
             Case "AnrMonBtn_C4", "AnrMonBtn_M4", "AnrMonBtn_J4", "AnrMonBtn_K4"
-                GetLabel = C_DP.P_CMB_Journal
+                GetExplLabel = C_DP.P_CMB_Journal
             Case "ContextMenuContactItem_B", "ContextMenuJournalItem_F", "ContextMenuMailItem_H"
-                GetLabel = C_DP.P_CMB_ContextMenueItemCall
-            Case "ContextMenuContactItem_C", "Insp_VIP"
-                GetLabel = C_DP.P_CMB_ContextMenueItemVIP
-            Case "mnu_C01", "mnu_J01"
-                GetLabel = C_DP.P_CMB_Insp_RWS
+                GetExplLabel = C_DP.P_CMB_ContextMenueItemCall
+            Case "ContextMenuContactItem_C"
+                GetExplLabel = C_DP.P_CMB_ContextMenueItemVIP
             Case Else
-                GetLabel = C_DP.P_Def_ErrorMinusOne_String
+                GetExplLabel = C_DP.P_Def_ErrorMinusOne_String
         End Select
     End Function
 
     ''' <summary>
-    ''' Ermittelt das ScreenTipp des Ribbon-Objektes ausgehend von der Ribbon-id
+    ''' Ermittelt das ScreenTipp des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GetScreenTipp(ByVal control As Office.IRibbonControl) As String
+    Public Function GetExplScreenTipp(ByVal control As Office.IRibbonControl) As String
         Select Case control.Id
             Case "dynMwwdh_C", "dynMwwdh_M", "dynMwwdh_J", "dynMwwdh_K"
-                GetScreenTipp = C_DP.P_CMB_WWDH_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_WWDH_ToolTipp
             Case "dynMAnrListe_C", "dynMAnrListe_M", "dynMAnrListe_J", "dynMAnrListe_K"
-                GetScreenTipp = C_DP.P_CMB_CallBack_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_CallBack_ToolTipp
             Case "dynMVIPListe_C", "dynMVIPListe_M", "dynMVIPListe_J", "dynMVIPListe_K"
-                GetScreenTipp = C_DP.P_CMB_VIP_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_VIP_ToolTipp
             Case "Button_C1", "Button_M1", "Button_J1", "Button_K1"
-                GetScreenTipp = C_DP.P_CMB_Dial_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_Dial_ToolTipp
             Case "Button_C2", "Button_M2", "Button_J2", "Button_K2"
-                GetScreenTipp = C_DP.P_CMB_Direktwahl_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_Direktwahl_ToolTipp
             Case "btnSplit_C", "btnSplit_M", "btnSplit_J", "btnSplit_K"
-                GetScreenTipp = C_DP.P_CMB_AnrMon_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_AnrMon_ToolTipp
             Case "AnrMonBtn_C2", "AnrMonBtn_M2", "AnrMonBtn_J2", "AnrMonBtn_K2"
-                GetScreenTipp = C_DP.P_CMB_AnrMonNeuStart_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_AnrMonNeuStart_ToolTipp
             Case "AnrMonBtn_C1", "AnrMonBtn_M1", "AnrMonBtn_J1", "AnrMonBtn_K1"
-                GetScreenTipp = C_DP.P_CMB_AnrMonAnzeigen_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_AnrMonAnzeigen_ToolTipp
             Case "AnrMonBtn_C4", "AnrMonBtn_M4", "AnrMonBtn_J4", "AnrMonBtn_K4"
-                GetScreenTipp = C_DP.P_CMB_Journal_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_Journal_ToolTipp
             Case "Einstellungen_C", "Einstellungen_M", "Einstellungen_J", "Einstellungen_K"
-                GetScreenTipp = C_DP.P_CMB_Setup_ToolTipp
-            Case "mnu_C01", "mnu_J01"
-                GetScreenTipp = C_DP.P_CMB_Insp_RWS_ToolTipp
+                GetExplScreenTipp = C_DP.P_CMB_Setup_ToolTipp
             Case Else
-                GetScreenTipp = C_DP.P_Def_ErrorMinusOne_String
+                GetExplScreenTipp = C_DP.P_Def_ErrorMinusOne_String
         End Select
     End Function
 
@@ -595,7 +661,7 @@ Imports Microsoft.Office.Core
         End If
     End Function
 
-    Public Function GetScreenTipVIP(ByVal control As Microsoft.Office.Core.IRibbonControl) As String
+    Private Function GetScreenTipVIP(ByVal control As Office.IRibbonControl) As String
         GetScreenTipVIP = C_DP.P_Def_StringEmpty
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
