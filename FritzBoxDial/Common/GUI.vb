@@ -649,7 +649,9 @@ Imports Microsoft.Office.Core
             End If
         End If
         ' Fehler unter Office 2007
-        ' RibbonObjekt.Invalidate()
+#If OVer >= 14 Then
+        RibbonObjekt.Invalidate()
+#End If
     End Sub
 
     Public Function GetPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
