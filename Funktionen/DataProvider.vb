@@ -3366,6 +3366,30 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' Zeigt den Kontakt zu diesem Journaleintrag an
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Kontakt_Anzeigen_ToolTipp() As String
+        Get
+            Return "Zeigt den Kontakt zu diesem Journaleintrag an"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Kontakt_Anzeigen_Error_ToolTipp() As String
+        Get
+            Return "Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag."
+        End Get
+    End Property
+
     ' Rückwärtssuche
 
     ''' <summary>

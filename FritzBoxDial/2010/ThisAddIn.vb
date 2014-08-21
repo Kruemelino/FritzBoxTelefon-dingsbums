@@ -31,7 +31,6 @@ Public Class ThisAddIn
     Private WithEvents iBtnRWSAlle As Office.CommandBarButton
     Private WithEvents iBtnKontakterstellen As Office.CommandBarButton
     Private WithEvents iBtnVIP As Office.CommandBarButton
-    Private WithEvents iBtnNotiz As Office.CommandBarButton
 #End If
 #End Region
     Private Shared oApp As Outlook.Application
@@ -51,7 +50,7 @@ Public Class ThisAddIn
 #Region "Properties"
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7.2"
+            Return "3.7.3"
         End Get
     End Property
     Friend Shared Property P_oApp() As Outlook.Application
@@ -197,7 +196,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnNotiz)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
@@ -285,26 +284,25 @@ Public Class ThisAddIn
                                                                                                                          iBtnRWStelSearch.Click, _
                                                                                                                          iBtnRWSAlle.Click, _
                                                                                                                          iBtnWwh.Click, _
-                                                                                                                         iBtnVIP.Click, _
-                                                                                                                         iBtnNotiz.Click
+                                                                                                                         iBtnVIP.Click
 
         With (C_GUI)
-            Select Case CType(Ctrl, CommandBarButton).Caption
-                Case "Kontakt erstellen"
+            Select Case CType(Ctrl, CommandBarButton).Tag
+                Case C_DP.P_Tag_Insp_Kontakt
                     .KontaktErstellen()
-                Case "DasÖrtliche"
+                Case C_DP.P_RWSDasOertliche_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasOertliche)
-                Case "11880"
+                Case C_DP.P_RWS11880_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWS11880)
-                Case "DasTelefonbuch"
+                Case C_DP.P_RWSDasTelefonbuch_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasTelefonbuch)
-                Case "tel.search.ch"
+                Case C_DP.P_RWSTelSearch_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWStelSearch)
-                Case "Alle"
+                Case C_DP.P_RWSAlle_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
-                Case "Wählen"
+                Case C_DP.P_Tag_Insp_Dial
                     C_WClient.WählenAusInspector()
-                Case "VIP"
+                Case C_DP.P_Tag_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
                         .RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
@@ -313,8 +311,6 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
-                    'Case "Notiz"
-                    '    .AddNote(oApp.ActiveInspector)
             End Select
         End With
     End Sub

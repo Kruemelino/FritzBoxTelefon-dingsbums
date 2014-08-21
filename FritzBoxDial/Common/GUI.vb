@@ -184,7 +184,7 @@ Imports Microsoft.Office.Core
         If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
             Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
             If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
-                If CBool(InStr(olJournal.Body, "Tel.-Nr.: unbekannt", CompareMethod.Text)) Then
+                If CBool(InStr(olJournal.Body, "Tel.-Nr.: " & C_DP.P_Def_StringUnknown, CompareMethod.Text)) Then
                     Return False
                 Else
                     Return True
@@ -203,19 +203,19 @@ Imports Microsoft.Office.Core
                 Dim olLink As Outlook.Link = Nothing
                 For Each olLink In olJournal.Links
                     Try
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then Return "Kontakt anzeigen"
+                        If TypeOf olLink.Item Is Outlook.ContactItem Then Return C_DP.P_CMB_Kontakt_Anzeigen
                         Exit For
                     Catch
-                        Return "Kontakt erstellen"
+                        Return C_DP.P_CMB_Kontakt_Erstellen
                     End Try
                 Next
                 C_HF.NAR(olLink) : olLink = Nothing
 #End If
             Else
-                Return "Kontakt erstellen"
+                Return C_DP.P_CMB_Kontakt_Erstellen
             End If
         End If
-        Return "Kontakt erstellen"
+        Return C_DP.P_CMB_Kontakt_Erstellen
     End Function
 
     Private Function SetScreenTipJournal(ByVal control As Office.IRibbonControl) As String
@@ -227,19 +227,19 @@ Imports Microsoft.Office.Core
                 Dim olLink As Outlook.Link = Nothing
                 For Each olLink In olJournal.Links
                     Try
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then Return "Zeigt den Kontakt zu diesem Journaleintrag an"
+                        If TypeOf olLink.Item Is Outlook.ContactItem Then Return C_DP.P_CMB_Kontakt_Anzeigen_ToolTipp
                         Exit For
                     Catch
-                        Return "Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag."
+                        Return C_DP.P_CMB_Kontakt_Anzeigen_Error_ToolTipp
                     End Try
                 Next
                 C_HF.NAR(olLink) : olLink = Nothing
 #End If
             Else
-                Return "Erstellt einen Kontakt aus diesem Journaleintrag"
+                Return C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
             End If
         End If
-        Return "Erstellt einen Kontakt aus diesem Journaleintrag"
+        Return C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
     End Function
 
     Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
@@ -265,7 +265,7 @@ Imports Microsoft.Office.Core
             Case "Button_J2"
                 GetInspLabel = SetLabelJournal(control)
             Case "tButton_C1"
-                GetInspLabel = C_DP.P_CMB_VIP
+                GetInspLabel = C_DP.P_CMB_Insp_VIP
             Case "Button_C2"
                 GetInspLabel = C_DP.P_CMB_Insp_Note
             Case "btn_C01", "btn_J01"
@@ -319,7 +319,7 @@ Imports Microsoft.Office.Core
 
 #End Region 'Ribbon Inspector
 
-#Region "Ribbon Expector Office 2010 & Office 2013"
+#Region "Ribbon Expector Office 2010 & Office 2013" 'Ribbon Explorer
 #If oVer >= 14 Then
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon
@@ -387,7 +387,7 @@ Imports Microsoft.Office.Core
             Next
         Else
             For ID = 0 To index - 1
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
+                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
@@ -667,13 +667,13 @@ Imports Microsoft.Office.Core
         If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
             Dim aktKontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
             If IsVIP(aktKontakt) Then
-                GetScreenTipVIP = "Entferne diesen Kontakt von der VIP-Liste."
+                GetScreenTipVIP = C_DP.P_CMB_VIP_Entfernen_ToolTipp
             Else
-                If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Anzahl", "0")) >= 10 Then
-                    GetScreenTipVIP = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
-                Else
-                    GetScreenTipVIP = "Füge diesen Kontakt der VIP-Liste hinzu."
-                End If
+                'If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Index", "0")) >= 10 Then
+                '    GetScreenTipVIP = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
+                'Else
+                GetScreenTipVIP = C_DP.P_CMB_VIP_Hinzufügen_ToolTipp
+                'End If
             End If
         End If
     End Function
@@ -1267,7 +1267,7 @@ Imports Microsoft.Office.Core
                         .State = Office.MsoButtonState.msoButtonDown
                         .TooltipText = C_DP.P_CMB_VIP_Entfernen_ToolTipp
                     Else
-                        If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Anzahl", "0")) >= 10 Then
+                        If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Index", "0")) >= 10 Then
                             .TooltipText = C_DP.P_CMB_VIP_O11_Voll_ToolTipp
                             .Enabled = False
                         Else
