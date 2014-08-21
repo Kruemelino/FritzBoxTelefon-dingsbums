@@ -3056,7 +3056,7 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' VIP anrufen
+    ''' VIP-Liste
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
@@ -3188,6 +3188,41 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Die VIP-Liste ist mit 10 Einträgen bereits voll.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_VIP_O11_Voll_ToolTipp() As String
+        Get
+            Return "Die VIP-Liste ist mit 10 Einträgen bereits voll."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Füge diesen Kontakt der VIP-Liste hinzu.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_VIP_Hinzufügen_ToolTipp() As String
+        Get
+            Return "Füge diesen Kontakt der VIP-Liste hinzu."
+        End Get
+    End Property
+    ''' <summary>
+    ''' Entfernt diesen Kontakt von der VIP-Liste.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_VIP_Entfernen_ToolTipp() As String
+        Get
+            Return "Entfernt diesen Kontakt von der VIP-Liste."
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Importiert die Anrufliste der Fritz!Box als Journaleinträge
     ''' </summary>
     ''' <value></value>
@@ -3229,9 +3264,21 @@ Public Class DataProvider
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property P_CMB_ContextMenueItemVIP() As String
+    Public ReadOnly Property P_CMB_Insp_VIP() As String
         Get
             Return "VIP"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' VIP (P_CMB_Insp_VIP)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_ContextMenueItemVIP() As String
+        Get
+            Return P_CMB_Insp_VIP
         End Get
     End Property
 
@@ -3259,15 +3306,63 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' Notiz
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_Note() As String
         Get
             Return "Notiz"
         End Get
     End Property
 
+    ''' <summary>
+    ''' Einen Notizeintrag hinzufügen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_Note_ToolTipp() As String
         Get
             Return "Einen Notizeintrag hinzufügen"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Kontakt erstellen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Kontakt_Erstellen() As String
+        Get
+            Return "Kontakt erstellen"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Erstellt einen Kontakt aus einem Journaleintrag
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Kontakt_Erstellen_ToolTipp() As String
+        Get
+            Return "Erstellt einen Kontakt aus einem Journaleintrag"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Kontakt anzeigen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Kontakt_Anzeigen() As String
+        Get
+            Return "Kontakt anzeigen"
         End Get
     End Property
 
@@ -3406,6 +3501,42 @@ Public Class DataProvider
         End Get
     End Property
 
+    ' Inspector Button Tag
+    ''' <summary>
+    ''' Dial_Tag
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Overloads ReadOnly Property P_Tag_Insp_Dial() As String
+        Get
+            Return "Dial_Tag"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Kontakt_Tag
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Overloads ReadOnly Property P_Tag_Insp_Kontakt() As String
+        Get
+            Return "Kontakt_Tag"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' VIP_Tag
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Overloads ReadOnly Property P_Tag_Insp_VIP() As String
+        Get
+            Return P_CMB_Insp_VIP & "_Tag"
+        End Get
+    End Property
 #End Region
 
     Public Sub New()

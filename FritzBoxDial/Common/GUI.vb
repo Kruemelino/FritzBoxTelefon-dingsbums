@@ -838,8 +838,8 @@ Imports Microsoft.Office.Core
 
             olMBar = oExp.CommandBars.Add(, , , True)
             With olMBar
-                .Name = "FritzBox"
-                .NameLocal = "FritzBox"
+                .Name = C_DP.P_Def_Addin_KurzName
+                .NameLocal = C_DP.P_Def_Addin_KurzName
                 .Visible = visible
                 .Position = Office.MsoBarPosition.msoBarTop
             End With
@@ -1082,7 +1082,7 @@ Imports Microsoft.Office.Core
                              ByRef ePopVIP9 As Office.CommandBarButton, ByRef ePopVIP10 As Office.CommandBarButton)
         Dim i As Integer = 2
 
-        FritzBoxDialCommandBar = AddCmdBar("FritzBoxDial", True)
+        FritzBoxDialCommandBar = AddCmdBar(C_DP.P_Def_Addin_KurzName, True)
 
         eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen", C_DP.P_CMB_Dial_ToolTipp)
 
@@ -1197,8 +1197,7 @@ Imports Microsoft.Office.Core
                                      ByRef iBtnRwsDasOertliche As Office.CommandBarButton, ByRef iBtnRws11880 As Office.CommandBarButton, _
                                      ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, ByRef iBtnRWStelSearch As Office.CommandBarButton, _
                                      ByRef iBtnRWSAlle As Office.CommandBarButton, _
-                                     ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton, _
-                                     ByRef iBtnNotiz As Office.CommandBarButton)
+                                     ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton)
 
         Dim cmbs As Office.CommandBars = Inspector.CommandBars
         Dim cmb As Office.CommandBar = Nothing
@@ -1213,26 +1212,26 @@ Imports Microsoft.Office.Core
                 ' Wenn die Leiste nicht gefunden werden konnte, dann füge sie hinzu.
                 If TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
                     For Each cmb In cmbs
-                        If cmb.NameLocal = "FritzBoxDial" Then
+                        If cmb.NameLocal = C_DP.P_Def_Addin_KurzName Then
                             cmbErstellen = False
                             Exit For
                         End If
                     Next
                 End If
                 If cmbErstellen Then
-                    cmb = Inspector.CommandBars.Add("FritzBoxDial", Microsoft.Office.Core.MsoBarPosition.msoBarTop, , True)
+                    cmb = Inspector.CommandBars.Add(C_DP.P_Def_Addin_KurzName, Microsoft.Office.Core.MsoBarPosition.msoBarTop, , True)
                     With cmb
-                        .NameLocal = "FritzBoxDial"
+                        .NameLocal = C_DP.P_Def_Addin_KurzName
                         .Visible = True
                     End With
-                    iBtnWwh = AddButtonsToCmb(cmb, C_DP.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen2", C_DP.P_CMB_Dial_ToolTipp)
+                    iBtnWwh = AddButtonsToCmb(cmb, C_DP.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, C_DP.P_Tag_Insp_Dial, C_DP.P_CMB_Dial_ToolTipp)
                     i += 1
                 End If
             End If
             ' Kontakteinträge
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
 
-                AddPopupsToExplorer(cmb, iPopRWS, "Rückwärtssuche", i, "RWS", "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.")
+                AddPopupsToExplorer(cmb, iPopRWS, C_DP.P_CMB_Insp_RWS, i, "RWS", C_DP.P_CMB_Insp_RWS_ToolTipp)
                 i += 1
                 iBtnRwsDasOertliche = AddPopupItems(iPopRWS, 1)
                 iBtnRws11880 = AddPopupItems(iPopRWS, 2)
@@ -1240,10 +1239,20 @@ Imports Microsoft.Office.Core
                 iBtnRWStelSearch = AddPopupItems(iPopRWS, 4)
                 iBtnRWSAlle = AddPopupItems(iPopRWS, 5)
 
-                Dim rwsNamen() As String = {"DasÖrtliche", "11880", "DasTelefonbuch", "tel.search.ch", "Alle"}
-                Dim rwsToolTipp() As String = {"Rückwärtssuche mit 'www.dasoertliche.de'", "Rückwärtssuche mit 'www.11880.com'", "Rückwärtssuche mit 'www.dastelefonbuch.de'", "Rückwärtssuche mit 'tel.search.ch'", "Rückwärtssuche mit allen Anbietern."}
+                Dim rwsNamen() As String = {C_DP.P_RWSDasOertliche_Name, _
+                                            C_DP.P_RWS11880_Name, _
+                                            C_DP.P_RWSDasTelefonbuch_Name, _
+                                            C_DP.P_RWSTelSearch_Name, _
+                                            C_DP.P_RWSAlle_Name}
+                Dim rwsToolTipp() As String = {C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasOertliche_Link), _
+                                               C_DP.P_RWS_ToolTipp(C_DP.P_RWS11880_Link), _
+                                               C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasTelefonbuch_Link), _
+                                               C_DP.P_RWS_ToolTipp(C_DP.P_RWSTelSearch_Link), _
+                                               C_DP.P_RWS_ToolTipp()}
+
                 For i = LBound(rwsNamen) To UBound(rwsNamen)
                     With iPopRWS.Controls.Item(i + 1)
+                        .Tag = rwsNamen(i)
                         .Caption = rwsNamen(i)
                         .TooltipText = rwsToolTipp(i)
                         .Visible = True
@@ -1251,37 +1260,43 @@ Imports Microsoft.Office.Core
                 Next
             End If
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-                iBtnVIP = AddButtonsToCmb(cmb, "VIP", i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", "Füge diesen Kontakt der VIP-Liste hinzu.")
+                iBtnVIP = AddButtonsToCmb(cmb, C_DP.P_CMB_Insp_VIP, i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", C_DP.P_CMB_VIP_Hinzufügen_ToolTipp)
                 Dim olKontact As Outlook.ContactItem = CType(Inspector.CurrentItem, Outlook.ContactItem)
                 With iBtnVIP
                     If IsVIP(olKontact) Then
                         .State = Office.MsoButtonState.msoButtonDown
+                        .TooltipText = C_DP.P_CMB_VIP_Entfernen_ToolTipp
                     Else
                         If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Anzahl", "0")) >= 10 Then
-                            .TooltipText = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
+                            .TooltipText = C_DP.P_CMB_VIP_O11_Voll_ToolTipp
                             .Enabled = False
                         Else
-                            .TooltipText = "Füge diesen Kontakt der VIP-Liste hinzu."
+                            .TooltipText = C_DP.P_CMB_VIP_Hinzufügen_ToolTipp
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
+                    .Tag = C_DP.P_Tag_Insp_VIP
                     .Visible = C_DP.P_CBSymbVIP
                 End With
-                'iBtnNotiz = AddButtonsToCmb(cmb, "Notiz", i, 2056, "IconandCaption", "Notiz", "Einen Notizeintrag hinzufügen")
             End If
             ' Journaleinträge
             If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
-                iBtnKontakterstellen = AddButtonsToCmb(cmb, "Kontakt erstellen", i, 1099, MsoButtonStyle.msoButtonIconAndCaption, "Kontakterstellen", "Erstellt einen Kontakt aus einem Journaleintrag")
+                iBtnKontakterstellen = AddButtonsToCmb(cmb, _
+                                                       C_DP.P_CMB_Kontakt_Erstellen, _
+                                                       i, 1099, MsoButtonStyle.msoButtonIconAndCaption, _
+                                                       C_DP.P_Tag_Insp_Kontakt, _
+                                                       C_DP.P_CMB_Kontakt_Erstellen_ToolTipp)
+
                 Dim olJournal As Outlook.JournalItem = CType(Inspector.CurrentItem, Outlook.JournalItem)
                 If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", vbTextCompare) = 0 Then
                     Dim olLink As Outlook.Link = Nothing
                     For Each olLink In olJournal.Links
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then iBtnKontakterstellen.Caption = "Kontakt anzeigen"
+                        If TypeOf olLink.Item Is Outlook.ContactItem Then iBtnKontakterstellen.Caption = C_DP.P_CMB_Kontakt_Anzeigen
                         Exit For
                     Next
                     C_HF.NAR(olLink) : olLink = Nothing
                     iPopRWS.Enabled = True
-                    iBtnWwh.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: unbekannt", CompareMethod.Text))
+                    iBtnWwh.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: " & C_DP.P_Def_StringUnknown, CompareMethod.Text))
                     iBtnKontakterstellen.Enabled = True
                 Else
                     cmb.Delete()
