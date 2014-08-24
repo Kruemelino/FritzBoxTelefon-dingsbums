@@ -464,7 +464,7 @@ Friend Class AnrufMonitor
                     ' Anrufer in den Outlook-Kontakten suchen
                     .olContact = C_KF.KontaktSuche(.TelNr, C_DP.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
                     If .olContact IsNot Nothing Then
-                        .Anrufer = .olContact.FullName ' Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
+                        .Anrufer = .olContact.FullName
                         .Companies = .olContact.CompanyName
                         If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
                     Else
@@ -481,11 +481,12 @@ Friend Class AnrufMonitor
                             Else
                                 .Anrufer = ReadFNfromVCard(.vCard)
                                 .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
+                                If .Anrufer.StartsWith("Firma") Then .Anrufer = Mid(.Anrufer, Len("Firma"))
                                 .Anrufer = Trim(.Anrufer)
                             End If
 
                         End If
+                        'Formatiere die Telefonnummer
                         .TelNr = C_hf.formatTelNr(.TelNr)
                     End If
 
@@ -498,29 +499,27 @@ Friend Class AnrufMonitor
                 End If
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And ShowForms Then
-                    If .olContact Is Nothing Then
-                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
-                    End If
+                    If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+
 #If Not OVer = 11 Then
-                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+                If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
-                    Try
-                        ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
-                        ' Grund für den Save-Forgang ist unbekannt.
-                        .olContact.Display()
-                    Catch Err As Exception
-                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
-                    End Try
+                Try
+                    ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
+                    ' Grund für den Save-Forgang ist unbekannt.
+                    .olContact.Display()
+                Catch Err As Exception
+                    C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
+                End Try
                 End If
 
-                'Notizeintag
+        'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
-                    C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-                End If
+        If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
+            C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+        End If
 #End If
             End With
-
         End If
     End Sub '(AnrMonRING)
 
@@ -663,15 +662,18 @@ Friend Class AnrufMonitor
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 
-        Telefonat = C_Popup.TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
+        ' 140824:
+        ' Achtung: ID Reicht nicht aus.
+
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus.GetValue(2)) And Not tmpTel.Beendet)
         If Telefonat IsNot Nothing Then
             With Telefonat
                 .Angenommen = True
                 .Zeit = CDate(FBStatus.GetValue(0))
+
                 If AnrMonPhoner Then
                     '.telname = "Phoner"
                 Else
-
                     .NSN = CInt(FBStatus.GetValue(3))
 
                     Select Case .NSN
@@ -702,8 +704,8 @@ Friend Class AnrufMonitor
                             End With
                             .TelName = C_DP.Read(xPathTeile, "")
                     End Select
-
                 End If
+
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
@@ -747,9 +749,12 @@ Friend Class AnrufMonitor
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 
-        Telefonat = C_Popup.TelefonatsListe.Find(Function(JE) JE.ID = CInt(FBStatus.GetValue(2)))
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus.GetValue(2)) And Not tmpTel.Beendet)
 
         If Telefonat IsNot Nothing Then
+
+            Telefonat.Beendet = True
+
             With Telefonat
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
 
@@ -1012,6 +1017,7 @@ Friend Class AnrufMonitor
             .Companies = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Companies")))
 
             If .TelName = C_DP.P_Def_ErrorMinusOne_String Then .TelName = C_hf.TelefonName(.MSN)
+
             If C_OlI.OutlookApplication IsNot Nothing Then
                 If Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
                     .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)

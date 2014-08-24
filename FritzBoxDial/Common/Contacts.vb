@@ -78,8 +78,8 @@ Public Class Contacts
                 End If
             ElseIf Not EMailAdresse = C_DP.P_Def_StringEmpty Then
                 sFilter = String.Concat("[Email1Address] = """, EMailAdresse, _
-                        """ OR [Email2Address] = """, EMailAdresse, _
-                        """ OR [Email3Address] = """, EMailAdresse, """")
+                                        """ OR [Email2Address] = """, EMailAdresse, _
+                                        """ OR [Email3Address] = """, EMailAdresse, """")
 
                 If alleOrdner Then
                     KontaktSuche = FindeAbsenderKontakt(EMailAdresse, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), sFilter)

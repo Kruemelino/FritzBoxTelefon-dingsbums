@@ -337,7 +337,7 @@ Public Class Popup
     ''' <param name="PositionStart">Bildschirmposition</param>
     ''' <param name="sMSN">Eigene MSN</param>
     ''' <remarks></remarks>
-    Friend Function ErzeugePopUpStoppuhr(ByVal Anrufer As String, _
+    Private Function ErzeugePopUpStoppuhr(ByVal Anrufer As String, _
                              ByVal ZeitStart As String, _
                              ByVal sRichtung As String, _
                              ByVal WarteZeit As Integer, _
@@ -368,8 +368,8 @@ Public Class Popup
         Dim Beendet As Boolean = False
         Dim Abbruch As Boolean
         Dim StartPosition As System.Drawing.Point
-        Dim x As Integer = 0
-        Dim y As Integer = 0
+        Dim ScreensX As Integer = 0
+        Dim ScreensY As Integer = 0
 
         If C_DP.P_CBStoppUhrAusblenden Then
             WarteZeit = C_DP.P_TBStoppUhr
@@ -379,11 +379,11 @@ Public Class Popup
 
         StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
         For Each Bildschirm In Windows.Forms.Screen.AllScreens
-            x += Bildschirm.Bounds.Size.Width
-            y += Bildschirm.Bounds.Size.Height
+            ScreensX += Bildschirm.Bounds.Size.Width
+            ScreensY += Bildschirm.Bounds.Size.Height
         Next
         With StartPosition
-            If .X > x Or .Y > y Then
+            If .X > ScreensX Or .Y > ScreensY Then
                 .X = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100) / 2)
                 .Y = CInt((Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 50) / 2)
             End If

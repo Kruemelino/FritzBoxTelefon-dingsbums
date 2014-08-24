@@ -27,6 +27,13 @@ Friend Class formRWSuche
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
     End Sub
 
+    ''' <summary>
+    ''' Führt eine Rückwärtssuche durch. Funktion wird durch den Anrufmonitor gestartet. Der RWSIndex wird zunächst geprüft, danach
+    ''' die ausgewählte RWS.
+    ''' </summary>
+    ''' <param name="Telefonat">Telefonat, das geprüft werden soll</param>
+    ''' <returns>True, wenn gefunden. Neue Daten werden in dem Telefonat abgelegt.</returns>
+    ''' <remarks></remarks>
     Friend Function AnrMonRWS(ByRef Telefonat As C_Telefonat) As Boolean
         AnrMonRWS = False
         With Telefonat
@@ -56,7 +63,7 @@ Friend Class formRWSuche
             Select Case .vCard
                 Case C_DP.P_Def_ErrorMinusTwo_String ' Fall 2: Eine frühere RWS hat kein Ergebnis geliefert.
                     '.vCard = C_DP.P_Def_ErrorMinusTwo_String
-                Case C_DP.P_Def_ErrorMinusOne_String
+                Case C_DP.P_Def_ErrorMinusOne_String ' Fall 3: Es gibt keinen Eintrag.
                     '
                     Select Case CType(C_DP.P_ComboBoxRWS, RückwärtsSuchmaschine) ' Fall 3: Es gibt keinen Eintrag.
                         Case RückwärtsSuchmaschine.RWSDasOertliche

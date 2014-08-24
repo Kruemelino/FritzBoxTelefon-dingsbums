@@ -5,26 +5,27 @@
     End Enum
 
 #Region "Eigene Private Variablen"
-    Private _ID As Integer
-    Private _Typ As AnrufRichtung
-    Private _Zeit As Date
-    Private _MSN As String
-    Private _TelNr As String
-    Private _KontaktID As String
-    Private _StoreID As String
-    Private _Dauer As Integer
-    Private _NSN As Long
-    Private _Subject As String
-    Private _Body As String
-    Private _Companies As String
-    Private _Categories As String
-    Private _olContact As Outlook.ContactItem
-    Private _vCard As String
-    Private _Anrufer As String
-    Private _TelName As String
     Private _Angenommen As Boolean = False
+    Private _Anrufer As String
+    Private _Beendet As Boolean = False
+    Private _Body As String
+    Private _Categories As String
+    Private _Companies As String
+    Private _Dauer As Integer
+    Private _ID As Integer
+    Private _KontaktID As String
+    Private _MSN As String
+    Private _NSN As Long
     Private _PopUpAnrMon As F_AnrMon
     Private _PopUpStoppuhr As F_StoppUhr
+    Private _StoreID As String
+    Private _Subject As String
+    Private _TelName As String
+    Private _TelNr As String
+    Private _Typ As AnrufRichtung
+    Private _Zeit As Date
+    Private _olContact As Outlook.ContactItem
+    Private _vCard As String
 #End Region
 
 #Region "Properties"
@@ -186,6 +187,14 @@
         End Get
         Set(ByVal value As F_StoppUhr)
             _PopUpStoppuhr = value
+        End Set
+    End Property
+    Friend Property Beendet() As Boolean
+        Get
+            Return _Beendet
+        End Get
+        Set(ByVal value As Boolean)
+            _Beendet = value
         End Set
     End Property
 #End Region
