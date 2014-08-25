@@ -994,7 +994,7 @@ Imports Microsoft.Office.Core
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
-                        .Tag = "VIPListe;" & CStr(ID)
+                        .Tag = XMLListBaseNode & ";" & CStr(ID)
                         i += 1
                     End With
                     With LANodeValues
