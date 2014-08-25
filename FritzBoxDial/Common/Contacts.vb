@@ -264,10 +264,17 @@ Public Class Contacts
     Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
+        Dim verschieben As Boolean = False
 
         ' Achtung 140526: TryCatch eventuell erforderlich
+        verschieben = Not (C_DP.P_TVKontaktOrdnerEntryID = C_DP.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = C_DP.P_Def_ErrorMinusOne_String)
+
         olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-        olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
+        'If Not (C_DP.P_TVKontaktOrdnerEntryID = C_DP.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = C_DP.P_Def_ErrorMinusOne_String) Then
+        '    olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
+        '    verschieben = True
+        'End If
+
         With olKontakt
             If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr)) Then
                 .MobileTelephoneNumber = TelNr
@@ -294,17 +301,23 @@ Public Class Contacts
 
         If AutoSave Then
             If olKontakt.GetInspector Is Nothing Then IndiziereKontakt(olKontakt)
-            olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
+            If verschieben Then
+                olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
+                olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
+            Else
+                olFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+                olKontakt.Save()
+            End If
             KontaktID = olKontakt.EntryID
             StoreID = olFolder.StoreID
 
             C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
+            C_hf.NAR(olFolder)
         Else
             olKontakt.UserProperties.Add(C_DP.P_Def_UserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
-
         End If
         ErstelleKontakt = olKontakt
-        C_hf.NAR(olFolder)
+
     End Function
 
     ''' <summary>
