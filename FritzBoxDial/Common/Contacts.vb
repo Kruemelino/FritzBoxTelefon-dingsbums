@@ -27,9 +27,9 @@ Public Class Contacts
         End Set
     End Property
 
-    Friend ReadOnly Property P_DefContactFolder As Outlook.Folder
+    Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder
         Get
-            Return CType(C_OLI.OutlookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), Outlook.Folder)
+            Return CType(C_OLI.OutlookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), Outlook.MAPIFolder)
         End Get
     End Property
 
@@ -463,12 +463,12 @@ Public Class Contacts
     ''' <param name="StoreID">StoreID des Ordners</param>
     ''' <returns>Erfolg: Ordner, Misserfolg: Standard-Kontaktordner</returns>
     ''' <remarks>In Office 2003 ist Outlook.Folder unbekannt, daher Outlook.MAPIFolder</remarks>
-    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.Folder
+    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.MAPIFolder
         GetOutlookFolder = Nothing
 
         If Not (FolderID = C_DP.P_Def_ErrorMinusOne_String Or StoreID = C_DP.P_Def_ErrorMinusOne_String) Then
             Try
-                GetOutlookFolder = CType(C_OLI.OutlookApplication.Session.GetFolderFromID(FolderID, StoreID), Outlook.Folder)
+                GetOutlookFolder = CType(C_OLI.OutlookApplication.Session.GetFolderFromID(FolderID, StoreID), Outlook.MAPIFolder)
             Catch ex As Exception
                 C_hf.LogFile("GetOutlookFolder: " & ex.Message)
             End Try
@@ -477,7 +477,7 @@ Public Class Contacts
         If GetOutlookFolder Is Nothing Then
             GetOutlookFolder = P_DefContactFolder
             FolderID = GetOutlookFolder.EntryID
-            StoreID = CType(GetOutlookFolder.Parent, Outlook.Folder).StoreID
+            StoreID = CType(GetOutlookFolder.Parent, Outlook.MAPIFolder).StoreID
             C_DP.P_TVKontaktOrdnerEntryID = FolderID
             C_DP.P_TVKontaktOrdnerStoreID = StoreID
         End If
@@ -611,7 +611,7 @@ Public Class Contacts
     ''' <param name="Ordner">Der Ordner der deindiziert werden soll.</param>
     ''' <remarks>Funktion wird eigentlich nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder in Ordnern erstellt werden.
     ''' Die Funktion dient zum bereinigen von Ordner, die mit älteren Programmversionen indiziert wurden.</remarks>
-    Friend Sub DeIndizierungOrdner(ByVal Ordner As Outlook.Folder)
+    Friend Sub DeIndizierungOrdner(ByVal Ordner As Outlook.MAPIFolder)
 #If Not OVer = 11 Then
         Try
             With Ordner.UserDefinedProperties

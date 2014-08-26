@@ -42,15 +42,6 @@ Friend Class formCfg
     Private Anzahl As Integer = 0
     Private Startzeit As Date
     Private Dauer As TimeSpan
-
-    Friend Structure oAppFolder
-#If OVer = 11 Then
-        Friend oFolder As Outlook.MAPIFolder
-#Else
-        Friend oFolder As Outlook.Folder
-#End If
-    End Structure
-
 #End Region
 
     Friend Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
@@ -1118,13 +1109,13 @@ Friend Class formCfg
     Private Function ErmittleKontaktanzahl() As Boolean
         ErmittleKontaktanzahl = True
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
-        Dim olfolder As oAppFolder 'Outlook.MAPIFolder
+        Dim olfolder As Outlook.MAPIFolder
 
         Anzahl = 0
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
-            olfolder.oFolder = C_KF.P_DefContactFolder
+            olfolder = C_KF.P_DefContactFolder
             ZähleKontakte(olfolder, Nothing)
         Else
             ZähleKontakte(Nothing, olNamespace)
