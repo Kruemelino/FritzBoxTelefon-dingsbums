@@ -220,6 +220,7 @@ Public Class OutlookInterface
         End Get
     End Property
 #End Region
+
     Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider)
         C_hf = Helferklasse
         C_DP = DataProviderKlasse

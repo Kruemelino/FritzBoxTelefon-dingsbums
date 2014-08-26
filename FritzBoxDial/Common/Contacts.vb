@@ -39,10 +39,6 @@ Public Class Contacts
         C_DP = DataProviderKlasse
         C_hf = HelferKlasse
 
-        'Kontaktspeicherort prüfen
-
-        GetOutlookFolder(C_DP.P_Def_TVKontaktOrdnerEntryID, C_DP.P_Def_TVKontaktOrdnerStoreID)
-
     End Sub
 
     ''' <summary>
