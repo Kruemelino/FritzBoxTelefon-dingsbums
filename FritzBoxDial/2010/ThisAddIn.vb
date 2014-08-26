@@ -50,7 +50,9 @@ Public Class ThisAddIn
 #Region "Properties"
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7.3"
+            With System.Reflection.Assembly.GetExecutingAssembly.GetName.Version
+                Return .Major & "." & .Minor & "." & .Build
+            End With
         End Get
     End Property
     Friend Shared Property P_oApp() As Outlook.Application

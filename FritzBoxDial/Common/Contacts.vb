@@ -27,11 +27,22 @@ Public Class Contacts
         End Set
     End Property
 
+    Friend ReadOnly Property P_DefContactFolder As Outlook.Folder
+        Get
+            Return CType(C_OLI.OutlookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), Outlook.Folder)
+        End Get
+    End Property
+
     Friend Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer)
 
         ' Zuweisen der an die Klasse übergebenen Parameter an die internen Variablen, damit sie in der Klasse global verfügbar sind
         C_DP = DataProviderKlasse
         C_hf = HelferKlasse
+
+        'Kontaktspeicherort prüfen
+
+        GetOutlookFolder(C_DP.P_Def_TVKontaktOrdnerEntryID, C_DP.P_Def_TVKontaktOrdnerStoreID)
+
     End Sub
 
     ''' <summary>
@@ -53,7 +64,7 @@ Public Class Contacts
         KontaktSuche = Nothing
 
         Dim oApp As Outlook.Application = C_OLI.OutlookApplication()
-        Dim olNamespace As Outlook.NameSpace = oApp.GetNamespace("MAPI")
+        Dim olSession As Outlook.NameSpace = oApp.Session
         Dim sFilter As String = C_DP.P_Def_StringEmpty
         Dim JoinFilter(C_DP.P_Def_UserProperties.Length - 1) As String
 
@@ -71,9 +82,9 @@ Public Class Contacts
 #End If
 
                     If alleOrdner Then
-                        KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), sFilter)
+                        KontaktSuche = FindeAnruferKontakt(TelNr, P_DefContactFolder, sFilter)
                     Else
-                        KontaktSuche = FindeAnruferKontakt(TelNr, olNamespace, sFilter)
+                        KontaktSuche = FindeAnruferKontakt(TelNr, olSession, sFilter)
                     End If
                 End If
             ElseIf Not EMailAdresse = C_DP.P_Def_StringEmpty Then
@@ -82,9 +93,9 @@ Public Class Contacts
                                         """ OR [Email3Address] = """, EMailAdresse, """")
 
                 If alleOrdner Then
-                    KontaktSuche = FindeAbsenderKontakt(EMailAdresse, olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), sFilter)
+                    KontaktSuche = FindeAbsenderKontakt(EMailAdresse, P_DefContactFolder, sFilter)
                 Else
-                    KontaktSuche = FindeAbsenderKontakt(EMailAdresse, olNamespace, sFilter)
+                    KontaktSuche = FindeAbsenderKontakt(EMailAdresse, olSession, sFilter)
                 End If
             End If
 
@@ -95,7 +106,7 @@ Public Class Contacts
                 End With
             End If
         End If
-        olNamespace = Nothing
+        olSession = Nothing
         oApp = Nothing
 
     End Function
@@ -267,7 +278,6 @@ Public Class Contacts
         Dim verschieben As Boolean = False
 
         ' Achtung 140526: TryCatch eventuell erforderlich
-        verschieben = Not (C_DP.P_TVKontaktOrdnerEntryID = C_DP.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = C_DP.P_Def_ErrorMinusOne_String)
 
         olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
         'If Not (C_DP.P_TVKontaktOrdnerEntryID = C_DP.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = C_DP.P_Def_ErrorMinusOne_String) Then
@@ -299,20 +309,29 @@ Public Class Contacts
             End If
         End With
 
+
         If AutoSave Then
             If olKontakt.GetInspector Is Nothing Then IndiziereKontakt(olKontakt)
-            If verschieben Then
-                olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
-                olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-            Else
-                olFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-                olKontakt.Save()
-            End If
-            KontaktID = olKontakt.EntryID
-            StoreID = olFolder.StoreID
+            ' Todo 1: Prüfe, ob ein Ordner ausgewählt wurde (Properties sind nicht -1)
+            ' Todo 2: Prüfe, ob Ordner aus 1 nicht der default Ordner ist.
 
-            C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
-            C_hf.NAR(olFolder)
+            'Handlung 1:
+            If Not (C_DP.P_TVKontaktOrdnerEntryID = C_DP.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = C_DP.P_Def_ErrorMinusOne_String) Then
+                olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
+                ' Handlung 2:
+                If olFolder Is P_DefContactFolder Then
+                    olKontakt.Save()
+                    C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde Hauptkontaktordner gespeichert.")
+                Else
+                    olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
+                    C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
+                End If
+
+                KontaktID = olKontakt.EntryID
+                StoreID = olFolder.StoreID
+                C_hf.NAR(olFolder)
+            End If
+
         Else
             olKontakt.UserProperties.Add(C_DP.P_Def_UserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
         End If
@@ -435,7 +454,7 @@ Public Class Contacts
     Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As Outlook.ContactItem
         GetOutlookKontakt = Nothing
         Try
-            GetOutlookKontakt = CType(C_OLI.OutlookApplication.GetNamespace("MAPI").GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+            GetOutlookKontakt = CType(C_OLI.OutlookApplication.Session.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Catch ex As Exception
             C_hf.LogFile("GetOutlookKontakt: " & ex.Message)
         End Try
@@ -448,17 +467,23 @@ Public Class Contacts
     ''' <param name="StoreID">StoreID des Ordners</param>
     ''' <returns>Erfolg: Ordner, Misserfolg: Standard-Kontaktordner</returns>
     ''' <remarks>In Office 2003 ist Outlook.Folder unbekannt, daher Outlook.MAPIFolder</remarks>
-    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.MAPIFolder
+    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.Folder
         GetOutlookFolder = Nothing
-        Try
-            GetOutlookFolder = CType(C_OLI.OutlookApplication.GetNamespace("MAPI").GetFolderFromID(FolderID, StoreID), Outlook.MAPIFolder)
-        Catch ex As Exception
-            C_hf.LogFile("GetOutlookFolder: " & ex.Message)
-        End Try
+
+        If Not (FolderID = C_DP.P_Def_ErrorMinusOne_String Or StoreID = C_DP.P_Def_ErrorMinusOne_String) Then
+            Try
+                GetOutlookFolder = CType(C_OLI.OutlookApplication.Session.GetFolderFromID(FolderID, StoreID), Outlook.Folder)
+            Catch ex As Exception
+                C_hf.LogFile("GetOutlookFolder: " & ex.Message)
+            End Try
+        End If
+
         If GetOutlookFolder Is Nothing Then
-            GetOutlookFolder = C_OLI.OutlookApplication.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-            C_DP.P_TVKontaktOrdnerEntryID = GetOutlookFolder.EntryID
-            C_DP.P_TVKontaktOrdnerStoreID = CType(GetOutlookFolder.Parent, Outlook.MAPIFolder).StoreID
+            GetOutlookFolder = P_DefContactFolder
+            FolderID = GetOutlookFolder.EntryID
+            StoreID = CType(GetOutlookFolder.Parent, Outlook.Folder).StoreID
+            C_DP.P_TVKontaktOrdnerEntryID = FolderID
+            C_DP.P_TVKontaktOrdnerStoreID = StoreID
         End If
     End Function
 
@@ -590,7 +615,7 @@ Public Class Contacts
     ''' <param name="Ordner">Der Ordner der deindiziert werden soll.</param>
     ''' <remarks>Funktion wird eigentlich nicht benötigt, da mit aktuellen Programmversionen keine benutzerdefinierten Kontaktfelder in Ordnern erstellt werden.
     ''' Die Funktion dient zum bereinigen von Ordner, die mit älteren Programmversionen indiziert wurden.</remarks>
-    Friend Sub DeIndizierungOrdner(ByVal Ordner As Outlook.MAPIFolder)
+    Friend Sub DeIndizierungOrdner(ByVal Ordner As Outlook.Folder)
 #If Not OVer = 11 Then
         Try
             With Ordner.UserDefinedProperties

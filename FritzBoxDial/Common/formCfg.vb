@@ -1109,13 +1109,13 @@ Friend Class formCfg
     Private Function ErmittleKontaktanzahl() As Boolean
         ErmittleKontaktanzahl = True
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
-        Dim olfolder As Outlook.MAPIFolder
+        Dim olfolder As Outlook.Folder
 
         Anzahl = 0
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
-            olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+            olfolder = C_KF.P_DefContactFolder
             ZähleKontakte(olfolder, Nothing)
         Else
             ZähleKontakte(Nothing, olNamespace)
@@ -1128,7 +1128,7 @@ Friend Class formCfg
         End If
     End Function
 
-    Private Function ZähleKontakte(ByVal Ordner As Outlook.MAPIFolder, ByVal NamensRaum As Outlook.NameSpace) As Integer
+    Private Function ZähleKontakte(ByVal Ordner As Outlook.Folder, ByVal NamensRaum As Outlook.NameSpace) As Integer
 
         ZähleKontakte = 0
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
@@ -1137,7 +1137,7 @@ Friend Class formCfg
         If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
-                ZähleKontakte(NamensRaum.Folders.Item(j), Nothing)
+                ZähleKontakte(CType(NamensRaum.Folders.Item(j), Outlook.Folder), Nothing)
                 j = j + 1
             Loop
             Return 0
@@ -1151,14 +1151,14 @@ Friend Class formCfg
         ' Unterordner werden rekursiv durchsucht
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count)
-            ZähleKontakte(Ordner.Folders.Item(iOrdner), Nothing)
+            ZähleKontakte(CType(Ordner.Folders.Item(iOrdner), Outlook.Folder), Nothing)
             iOrdner = iOrdner + 1
         Loop
 
     End Function
 #End Region
 
-    Private Sub KontaktIndexer(ByVal LandesVW As String, Optional ByVal Ordner As Outlook.MAPIFolder = Nothing, Optional ByVal NamensRaum As Outlook.NameSpace = Nothing) 'as Boolean
+    Private Sub KontaktIndexer(ByVal LandesVW As String, Optional ByVal Ordner As Outlook.Folder = Nothing, Optional ByVal NamensRaum As Outlook.NameSpace = Nothing) 'as Boolean
         'KontaktIndexer = False
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
@@ -1168,7 +1168,7 @@ Friend Class formCfg
         If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
-                KontaktIndexer(LandesVW, NamensRaum.Folders.Item(j))
+                KontaktIndexer(LandesVW, CType(NamensRaum.Folders.Item(j), Outlook.Folder))
                 j = j + 1
             Loop
             aktKontakt = Nothing
@@ -1198,14 +1198,14 @@ Friend Class formCfg
             ' Unterordner werden rekursiv durchsucht
             iOrdner = 1
             Do While (iOrdner <= Ordner.Folders.Count) And Not BWIndexer.CancellationPending
-                KontaktIndexer(LandesVW, Ordner.Folders.Item(iOrdner))
+                KontaktIndexer(LandesVW, CType(Ordner.Folders.Item(iOrdner), Outlook.Folder))
                 iOrdner = iOrdner + 1
             Loop
             aktKontakt = Nothing
         End If
     End Sub
 
-    Private Sub KontaktDeIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal NamensRaum As Outlook.NameSpace) 'As Boolean
+    Private Sub KontaktDeIndexer(ByVal Ordner As Outlook.Folder, ByVal NamensRaum As Outlook.NameSpace) 'As Boolean
 
         'KontaktDeIndexer = False
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
@@ -1216,7 +1216,7 @@ Friend Class formCfg
         If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
-                KontaktDeIndexer(NamensRaum.Folders.Item(j), Nothing)
+                KontaktDeIndexer(CType(NamensRaum.Folders.Item(j), Outlook.Folder), Nothing)
                 j = j + 1
             Loop
             aktKontakt = Nothing
@@ -1248,7 +1248,7 @@ Friend Class formCfg
             ' Unterordner werden rekursiv durchsucht
             iOrdner = 1
             Do While (iOrdner <= Ordner.Folders.Count) And Not BWIndexer.CancellationPending
-                KontaktDeIndexer(Ordner.Folders.Item(iOrdner), Nothing)
+                KontaktDeIndexer(CType(Ordner.Folders.Item(iOrdner), Outlook.Folder), Nothing)
                 iOrdner = iOrdner + 1
             Loop
             aktKontakt = Nothing
@@ -1357,12 +1357,12 @@ Friend Class formCfg
         End If
 
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
-        Dim olfolder As Outlook.MAPIFolder
+        Dim olfolder As Outlook.Folder
 
         olNamespace = C_OlI.OutlookApplication.GetNamespace("MAPI")
 
         If Me.CBKHO.Checked Then
-            olfolder = olNamespace.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+            olfolder = C_KF.P_DefContactFolder
             If Me.RadioButtonErstelle.Checked Then
                 KontaktIndexer(C_DP.P_TBLandesVW, Ordner:=olfolder)
             ElseIf Me.RadioButtonEntfernen.Checked Then
