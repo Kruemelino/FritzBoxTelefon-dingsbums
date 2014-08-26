@@ -502,22 +502,22 @@ Friend Class AnrufMonitor
                     If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
 
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
-                Try
-                    ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
-                    ' Grund für den Save-Forgang ist unbekannt.
-                    .olContact.Display()
-                Catch Err As Exception
-                    C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
-                End Try
+                    Try
+                        ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
+                        ' Grund für den Save-Forgang ist unbekannt.
+                        .olContact.Display()
+                    Catch Err As Exception
+                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
+                    End Try
                 End If
 
-        'Notizeintag
+                'Notizeintag
 #If Not OVer = 11 Then
-        If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
-            C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-        End If
+                If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
+                    C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                End If
 #End If
             End With
         End If
