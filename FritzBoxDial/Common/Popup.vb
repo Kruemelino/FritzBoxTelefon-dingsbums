@@ -18,7 +18,6 @@ Public Class Popup
 
 #Region "BackgroundWorker"
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
-    Private WithEvents BWStoppuhrEinblenden As BackgroundWorker
 #End Region
 
 #Region "Eigene Variablen für Anrufmonitor"
@@ -322,49 +321,6 @@ Public Class Popup
 #Region "Stoppuhr"
 
     Friend Sub StoppuhrEinblenden(ByVal Telefonat As C_Telefonat)
-        BWStoppuhrEinblenden = New BackgroundWorker
-        With BWStoppuhrEinblenden
-            .WorkerSupportsCancellation = True
-            .WorkerReportsProgress = False
-            .RunWorkerAsync(argument:=Telefonat)
-        End With
-    End Sub
-
-    ''' <summary>
-    ''' Blendet das Formular der StoppUhr ein
-    ''' </summary>
-    ''' <param name="Anrufer">Name bzw. Telefonnummer des Anrufers oder Angerufenen</param>
-    ''' <param name="ZeitStart">Zeitpunkt des Telefonatstartes</param>
-    ''' <param name="sRichtung">Eingehendes oder Ausgehendes Telefonat</param>
-    ''' <param name="WarteZeit">Wartezeit, nach dem Telefonat bis die Stoppuhr automatisch ausgeblendet wird.</param>
-    ''' <param name="PositionStart">Bildschirmposition</param>
-    ''' <param name="sMSN">Eigene MSN</param>
-    ''' <remarks></remarks>
-    Private Function ErzeugePopUpStoppuhr(ByVal Anrufer As String, _
-                             ByVal ZeitStart As String, _
-                             ByVal sRichtung As String, _
-                             ByVal WarteZeit As Integer, _
-                             ByVal PositionStart As System.Drawing.Point, _
-                             ByVal sMSN As String) As F_StoppUhr
-
-        ErzeugePopUpStoppuhr = New F_StoppUhr
-        StoppuhrListe.Add(ErzeugePopUpStoppuhr)
-        With ErzeugePopUpStoppuhr
-            .Anruf = Anrufer
-            .StartZeit = ZeitStart
-            .WarteZeit = WarteZeit
-            .StartPosition = PositionStart
-            .StoppuhrStart()
-            .Richtung = sRichtung
-            .Popup()
-            .MSN = sMSN
-        End With
-        AddHandler ErzeugePopUpStoppuhr.Close, AddressOf PopUpStoppuhr_Close
-
-    End Function
-
-    Private Sub BWStoppuhrEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWStoppuhrEinblenden.DoWork
-        Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
         Dim WarteZeit As Integer
         Dim Richtung As String
         Dim AnrName As String
@@ -374,7 +330,7 @@ Public Class Popup
         Dim StartPosition As System.Drawing.Point
         Dim ScreensX As Integer = 0
         Dim ScreensY As Integer = 0
-        Dim thisPopupStoppuhr As F_StoppUhr
+        Dim thisPopupStoppuhr As New F_StoppUhr
 
         If C_DP.P_CBStoppUhrAusblenden Then
             WarteZeit = C_DP.P_TBStoppUhr
@@ -398,16 +354,24 @@ Public Class Popup
         AnrName = CStr(IIf(Telefonat.Anrufer = C_DP.P_Def_StringEmpty, Telefonat.TelNr, Telefonat.Anrufer))
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
-        thisPopupStoppuhr = ErzeugePopUpStoppuhr(AnrName, StartZeit, Richtung, WarteZeit, StartPosition, Telefonat.MSN)
-        Telefonat.PopupStoppuhr = thisPopupStoppuhr
-        C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(AnrName)) '"Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
-        BWStoppuhrEinblenden.WorkerSupportsCancellation = True
 
-        Do
-            C_hf.ThreadSleep(20)
-            Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopupStoppuhr Is Nothing Or Not StoppuhrListe.Exists(Function(StUh) StUh Is thisPopupStoppuhr)
-        C_hf.LogFile("BWStoppuhrEinblenden.DoWork: Schleife verlassen")
+
+        StoppuhrListe.Add(thisPopupStoppuhr)
+        With thisPopupStoppuhr
+            .Anruf = AnrName
+            .StartZeit = StartZeit
+            .WarteZeit = WarteZeit
+            .StartPosition = StartPosition
+            .StoppuhrStart()
+            .Richtung = Richtung
+            .Popup()
+            .MSN = Telefonat.MSN
+        End With
+
+        Telefonat.PopupStoppuhr = thisPopupStoppuhr
+        C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(AnrName))
+
+        AddHandler thisPopupStoppuhr.Close, AddressOf PopUpStoppuhr_Close
     End Sub
 
     ''' <summary>
@@ -427,10 +391,6 @@ Public Class Popup
             Catch : End Try
         End If
         thisPopupStoppuhr = Nothing
-    End Sub
-
-    Private Sub BWStoppuhrEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStoppuhrEinblenden.RunWorkerCompleted
-        BWStoppuhrEinblenden.Dispose()
     End Sub
 #End Region
 

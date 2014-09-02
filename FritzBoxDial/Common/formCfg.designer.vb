@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -1077,9 +1077,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1091,9 +1091,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1105,9 +1105,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1402,6 +1402,7 @@ Partial Class formCfg
         'Label18
         '
         Me.Label18.AutoSize = True
+        Me.Label18.Enabled = False
         Me.Label18.Location = New System.Drawing.Point(3, 114)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(127, 13)
@@ -1411,21 +1412,25 @@ Partial Class formCfg
         'Label32
         '
         Me.Label32.AutoSize = True
+        Me.Label32.Enabled = False
         Me.Label32.Location = New System.Drawing.Point(207, 130)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(49, 13)
         Me.Label32.TabIndex = 27
         Me.Label32.Text = "schneller"
         Me.Label32.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label32, "Derzeit abgeschaltet!")
         '
         'Label28
         '
         Me.Label28.AutoSize = True
+        Me.Label28.Enabled = False
         Me.Label28.Location = New System.Drawing.Point(135, 130)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(55, 13)
         Me.Label28.TabIndex = 27
         Me.Label28.Text = "langsamer"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label28, "Derzeit abgeschaltet!")
         '
         'TBAnrMonY
         '
@@ -1473,6 +1478,7 @@ Partial Class formCfg
         'TBAnrMonMoveGeschwindigkeit
         '
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.TBAnrMonMoveGeschwindigkeit.Enabled = False
         Me.TBAnrMonMoveGeschwindigkeit.LargeChange = 2
         Me.TBAnrMonMoveGeschwindigkeit.Location = New System.Drawing.Point(131, 99)
         Me.TBAnrMonMoveGeschwindigkeit.Maximum = 9

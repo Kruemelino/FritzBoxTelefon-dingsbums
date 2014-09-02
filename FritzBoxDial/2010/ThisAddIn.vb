@@ -203,7 +203,7 @@ Public Class ThisAddIn
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
+                    C_KF.P_DefContactFolder.StoreID Then Exit Sub
             Dim KS As New ContactSaved
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)
