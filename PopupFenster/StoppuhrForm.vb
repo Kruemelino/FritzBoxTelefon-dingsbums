@@ -555,7 +555,7 @@ Public Class F_StoppUhr
     Public Sub StoppuhrStart()
 
         With TimerZeit
-            .Interval = 250
+            .Interval = 50
             .Start()
         End With
         Stoppwatch.Start()

@@ -31,6 +31,7 @@ Public Class Popup
     Private WithEvents PopUpAnrufMonitor As F_AnrMon
     Friend TelefonatsListe As New List(Of C_Telefonat)
     Friend AnrMonListe As New List(Of F_AnrMon)
+    Friend StoppuhrListe As New List(Of F_StoppUhr)
 #End Region
 
 #Region "Eigene Properties für Anrufmonitor"
@@ -214,8 +215,10 @@ Public Class Popup
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
         AnrMonEinblenden(Telefonat, True)
         Do
+            C_hf.ThreadSleep(20)
             Windows.Forms.Application.DoEvents()
         Loop Until Telefonat.PopupAnrMon Is Nothing
+        C_hf.LogFile("BWAnrMonEinblenden.DoWork: Schleife verlassen")
     End Sub
 
     ''' <summary>
@@ -345,6 +348,7 @@ Public Class Popup
                              ByVal sMSN As String) As F_StoppUhr
 
         ErzeugePopUpStoppuhr = New F_StoppUhr
+        StoppuhrListe.Add(ErzeugePopUpStoppuhr)
         With ErzeugePopUpStoppuhr
             .Anruf = Anrufer
             .StartZeit = ZeitStart
@@ -370,6 +374,7 @@ Public Class Popup
         Dim StartPosition As System.Drawing.Point
         Dim ScreensX As Integer = 0
         Dim ScreensY As Integer = 0
+        Dim thisPopupStoppuhr As F_StoppUhr
 
         If C_DP.P_CBStoppUhrAusblenden Then
             WarteZeit = C_DP.P_TBStoppUhr
@@ -393,15 +398,16 @@ Public Class Popup
         AnrName = CStr(IIf(Telefonat.Anrufer = C_DP.P_Def_StringEmpty, Telefonat.TelNr, Telefonat.Anrufer))
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
-
-        Telefonat.PopupStoppuhr = ErzeugePopUpStoppuhr(AnrName, StartZeit, Richtung, WarteZeit, StartPosition, Telefonat.MSN)
+        thisPopupStoppuhr = ErzeugePopUpStoppuhr(AnrName, StartZeit, Richtung, WarteZeit, StartPosition, Telefonat.MSN)
+        Telefonat.PopupStoppuhr = thisPopupStoppuhr
         C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(AnrName)) '"Stoppuhr gestartet - ID: " & ID & ", Anruf: " & .Anruf)
         BWStoppuhrEinblenden.WorkerSupportsCancellation = True
 
         Do
+            C_hf.ThreadSleep(20)
             Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopupStoppuhr Is Nothing
-
+        Loop Until Telefonat.PopupStoppuhr Is Nothing Or Not StoppuhrListe.Exists(Function(StUh) StUh Is thisPopupStoppuhr)
+        C_hf.LogFile("BWStoppuhrEinblenden.DoWork: Schleife verlassen")
     End Sub
 
     ''' <summary>
@@ -414,9 +420,12 @@ Public Class Popup
 
         C_DP.P_CBStoppUhrX = thisPopupStoppuhr.StartPosition.X
         C_DP.P_CBStoppUhrY = thisPopupStoppuhr.StartPosition.Y
-        Try
-            TelefonatsListe.Find(Function(JE) JE.PopupStoppuhr Is thisPopupStoppuhr).PopupStoppuhr = Nothing
-        Catch : End Try
+        StoppuhrListe.Remove(thisPopupStoppuhr)
+        If TelefonatsListe.Count > 0 Then
+            Try
+                TelefonatsListe.Find(Function(JE) JE.PopupStoppuhr Is thisPopupStoppuhr).PopupStoppuhr = Nothing
+            Catch : End Try
+        End If
         thisPopupStoppuhr = Nothing
     End Sub
 

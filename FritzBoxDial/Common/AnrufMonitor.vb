@@ -397,7 +397,7 @@ Friend Class AnrufMonitor
             End If
             C_hf.ThreadSleep(50)
             Windows.Forms.Application.DoEvents()
-        Loop Until Not AnrMonAktiv
+        Loop While AnrMonAktiv
         r.Close()
         r = Nothing
     End Sub

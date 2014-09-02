@@ -832,7 +832,7 @@ End Class
             .Show()
         End With
 
-        tmAnimation.Interval = iEffektMoveGeschwindigkeit
+        tmAnimation.Interval = 20 'iEffektMoveGeschwindigkeit
         tmAnimation.Start()
     End Sub
 
