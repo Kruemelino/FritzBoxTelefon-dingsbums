@@ -791,11 +791,19 @@ Friend Class formCfg
                     C_hf.FBDB_MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
                 End If
             Case "BTestLogin"
-                If C_FBox.FBLogin(True, Me.TBBenutzer.Text, Me.TBPasswort.Text) = C_DP.P_Def_SessionID Then
+                Dim SID As String
+                If Me.TBPasswort.Text = "1234" Then
+                    SID = C_FBox.FBLogin(True)
+                Else
+                    SID = C_FBox.FBLogin(True, Me.TBBenutzer.Text, Me.TBPasswort.Text)
+                End If
+
+                If SID = C_DP.P_Def_SessionID Then
                     Me.BTestLogin.Text = "Fehler!"
                 Else
                     Me.BTestLogin.Text = "OK!"
                 End If
+
         End Select
     End Sub
 
