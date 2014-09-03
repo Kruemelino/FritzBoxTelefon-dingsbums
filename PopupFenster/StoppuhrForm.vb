@@ -217,7 +217,7 @@ Friend Class StoppuhrForm
                 .X = ErsterEinzug
                 .Width = ZweiterEinzug - 2 * ErsterEinzug
                 .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
-                .Y = Parent.Size.Height - .Height ' - ErsterEinzug
+                .Y = Parent.Size.Height - .Height - 1 ' - ErsterEinzug
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectEnde)
             .DrawString("Ende: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectEnde)
@@ -266,7 +266,7 @@ Friend Class StoppuhrForm
                 .X = ZweiterEinzug
                 .Width = Parent.Size.Width - ZweiterEinzug - 1 * ErsterEinzug
                 .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
-                .Y = Parent.Size.Height - .Height '- ErsterEinzug
+                .Y = Parent.Size.Height - .Height - 1 '- ErsterEinzug
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectValueEnde)
             .DrawString(Parent.EndeZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueEnde)
@@ -279,7 +279,7 @@ Friend Class StoppuhrForm
                 .Width = Parent.Size.Width
                 .Height = CInt(e.Graphics.MeasureString(Parent.Zeit, Parent.ContentFont).Height)
             End With
-            ' .DrawRectangle(New Pen(Brushes.Black), RectZeit)
+            '.DrawRectangle(New Pen(Brushes.Black), RectZeit)
             .DrawString(Parent.Zeit, Parent.ContentFont, New SolidBrush(Parent.ContentColor), RectZeit, drawFormatCenter)
 
         End With
@@ -300,9 +300,8 @@ Public Class F_StoppUhr
     Delegate Sub SchließeStoppUhr()
 
 #Region "Properties"
-    Private clHeader As Color = SystemColors.ControlDark
-    <Category("Header"), _
-    DefaultValue(GetType(Color), "ControlDark")> _
+    Private clHeader As Color = SystemColors.ControlDarkDark
+    <Category("Header"), DefaultValue(GetType(Color), "ControlDark")> _
     Property HeaderColor() As Color
         Get
             Return clHeader
@@ -311,33 +310,31 @@ Public Class F_StoppUhr
             clHeader = value
         End Set
     End Property
+
     Private clBody As Color = SystemColors.Control
-    <Category("Appearance"), _
-    DefaultValue(GetType(Color), "Control")> _
+    <Category("Appearance"), DefaultValue(GetType(Color), "Control")> _
     Property BodyColor() As Color
         Get
             Return clBody
         End Get
         Set(ByVal value As Color)
             clBody = value
-
         End Set
     End Property
+
     Private clTitle As Color = Color.Gray
-    <Category("Title"), _
-    DefaultValue(GetType(Color), "Gray")> _
+    <Category("Title"), DefaultValue(GetType(Color), "Gray")> _
     Property TitleColor() As Color
         Get
             Return clTitle
         End Get
         Set(ByVal value As Color)
             clTitle = value
-
         End Set
     End Property
+
     Private clBase As Color = SystemColors.ControlText
-    <Category("Content"), _
-    DefaultValue(GetType(Color), "ControlText")> _
+    <Category("Content"), DefaultValue(GetType(Color), "ControlText")> _
     Property ContentColor() As Color
         Get
             Return clBase
@@ -346,9 +343,9 @@ Public Class F_StoppUhr
             clBase = value
         End Set
     End Property
+
     Private clBorder As Color = SystemColors.WindowFrame
-    <Category("Appearance"), _
-    DefaultValue(GetType(Color), "WindowFrame")> _
+    <Category("Appearance"), DefaultValue(GetType(Color), "WindowFrame")> _
     Property BorderColor() As Color
         Get
             Return clBorder
@@ -357,9 +354,9 @@ Public Class F_StoppUhr
             clBorder = value
         End Set
     End Property
+
     Private clCloseBorder As Color = SystemColors.WindowFrame
-    <Category("Buttons"), _
-    DefaultValue(GetType(Color), "WindowFrame")> _
+    <Category("Buttons"), DefaultValue(GetType(Color), "WindowFrame")> _
     Property ButtonBorderColor() As Color
         Get
             Return clCloseBorder
@@ -368,33 +365,31 @@ Public Class F_StoppUhr
             clCloseBorder = value
         End Set
     End Property
+
     Private clCloseHover As Color = SystemColors.Highlight
-    <Category("Buttons"), _
-    DefaultValue(GetType(Color), "Highlight")> _
+    <Category("Buttons"), DefaultValue(GetType(Color), "Highlight")> _
     Property ButtonHoverColor() As Color
         Get
             Return clCloseHover
         End Get
         Set(ByVal value As Color)
             clCloseHover = value
-
         End Set
     End Property
+
     Private iDiffGradient As Integer = 50
-    <Category("Appearance"), _
-    DefaultValue(50)> _
+    <Category("Appearance"), DefaultValue(50)> _
     Property GradientPower() As Integer
         Get
             Return iDiffGradient
         End Get
         Set(ByVal value As Integer)
             iDiffGradient = value
-
         End Set
     End Property
-    Private ftBase As Font = New Font("Segoe UI", 18) 'SystemFonts.DialogFont
-    <Category("Zeit")> _
-    Property ContentFont() As Font
+
+    Private ftBase As Font = New Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'New Font("Segoe UI", 18) 'SystemFonts.DialogFont
+    <Category("Stoppuhr")> Property ContentFont() As Font
         Get
             Return ftBase
         End Get
@@ -402,20 +397,19 @@ Public Class F_StoppUhr
             ftBase = value
         End Set
     End Property
-    Private ftTitle As Font = New Font("Segoe UI", 9) 'SystemFonts.CaptionFont
-    <Category("Title")> _
-    Property TitleFont() As Font
+
+    Private ftTitle As Font = New Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'New Font("Segoe UI", 9) 'SystemFonts.CaptionFont
+    <Category("Stoppuhr")> Property TitleFont() As Font
         Get
             Return ftTitle
         End Get
         Set(ByVal value As Font)
             ftTitle = value
-
         End Set
     End Property
+
     Private sZeit As String
-    <Category("Zeit")> _
-    Property Zeit() As String
+    <Category("Stoppuhr")> Property Zeit() As String
         Get
             Return sZeit
         End Get
@@ -423,9 +417,9 @@ Public Class F_StoppUhr
             sZeit = value
         End Set
     End Property
+
     Private sAnruf As String
-    <Category("Zeit")> _
-    Property Anruf() As String
+    <Category("Stoppuhr")> Property Anruf() As String
         Get
             Return sAnruf
         End Get
@@ -433,9 +427,9 @@ Public Class F_StoppUhr
             sAnruf = value
         End Set
     End Property
+
     Private sRichtung As String
-    <Category("Zeit")> _
-    Property Richtung() As String
+    <Category("Stoppuhr")> Property Richtung() As String
         Get
             Return sRichtung
         End Get
@@ -443,9 +437,9 @@ Public Class F_StoppUhr
             sRichtung = value
         End Set
     End Property
+
     Private sWarteZeit As Integer
-    <Category("Zeit")> _
-    Property WarteZeit() As Integer
+    <Category("Stoppuhr")> Property WarteZeit() As Integer
         Get
             Return sWarteZeit
         End Get
@@ -453,9 +447,9 @@ Public Class F_StoppUhr
             sWarteZeit = value
         End Set
     End Property
+
     Private sStartZeit As String
-    <Category("Zeit")> _
-    Property StartZeit() As String
+    <Category("Stoppuhr")> Property StartZeit() As String
         Get
             Return sStartZeit
         End Get
@@ -463,9 +457,9 @@ Public Class F_StoppUhr
             sStartZeit = value
         End Set
     End Property
+
     Private sEndeZeit As String
-    <Category("Zeit")> _
-    Property EndeZeit() As String
+    <Category("Stoppuhr")> Property EndeZeit() As String
         Get
             Return sEndeZeit
         End Get
@@ -473,9 +467,9 @@ Public Class F_StoppUhr
             sEndeZeit = value
         End Set
     End Property
+
     Private sMSN As String
-    <Category("MSN")> _
-    Property MSN() As String
+    <Category("Stoppuhr")> Property MSN() As String
         Get
             Return sMSN
         End Get
@@ -483,32 +477,30 @@ Public Class F_StoppUhr
             sMSN = value
         End Set
     End Property
+
     Private pdTextPadding As Padding = New Padding(0)
-    <Category("Appearance")> _
-    Property TextPadding() As Padding
+    <Category("Appearance")> Property TextPadding() As Padding
         Get
             Return pdTextPadding
         End Get
         Set(ByVal value As Padding)
             pdTextPadding = value
-
         End Set
     End Property
+
     Private iHeaderHeight As Integer = 9
-    <Category("Header"), _
-    DefaultValue(9)> _
+    <Category("Header"), DefaultValue(9)> _
     Property HeaderHeight() As Integer
         Get
             Return iHeaderHeight
         End Get
         Set(ByVal value As Integer)
             iHeaderHeight = value
-
         End Set
     End Property
+
     Private szSize As Size = New Size(250, 100)
-    <Category("Appearance")> _
-    Property Size() As Size
+    <Category("Appearance")> Property Size() As Size
         Get
             Return szSize
         End Get
@@ -516,9 +508,9 @@ Public Class F_StoppUhr
             szSize = value
         End Set
     End Property
+
     Private szStartPosition As Point = New Point(0, 0)
-    <Category("Appearance")> _
-    Property StartPosition() As Point
+    <Category("Appearance")> Property StartPosition() As Point
         Get
             Return szStartPosition
         End Get

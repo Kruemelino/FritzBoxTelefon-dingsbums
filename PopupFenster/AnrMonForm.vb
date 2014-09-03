@@ -228,12 +228,15 @@ Friend Class AnrMonForm
         Dim rcForm As New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)
         Dim brBody As New LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical)
         Dim drawFormatCenter As New StringFormat()
-        drawFormatCenter.Alignment = StringAlignment.Center
         Dim drawFormatRight As New StringFormat()
-        drawFormatRight.Alignment = StringAlignment.Far
+
         Dim brHeader As New LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical)
         Dim RectZeit As RectangleF
         Dim RectTelName As RectangleF
+
+        drawFormatCenter.Alignment = StringAlignment.Center
+        drawFormatRight.Alignment = StringAlignment.Far
+
         With e.Graphics
             .Clip = New Region(rcBody)
             .FillRectangle(brBody, rcBody)
@@ -376,7 +379,6 @@ End Class
         End Get
         Set(ByVal value As Color)
             clHeader = value
-
         End Set
     End Property
 
@@ -388,7 +390,6 @@ End Class
         End Get
         Set(ByVal value As Color)
             clBody = value
-
         End Set
     End Property
 
@@ -400,7 +401,6 @@ End Class
         End Get
         Set(ByVal value As Color)
             clTitle = value
-
         End Set
     End Property
 
@@ -469,29 +469,6 @@ End Class
         End Get
         Set(ByVal value As Integer)
             iDiffGradient = value
-
-        End Set
-    End Property
-
-    Private ftBase As Font = New Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.DialogFont
-    <Category("Anrufername")> Property ContentFont() As Font
-        Get
-            Return ftBase
-        End Get
-        Set(ByVal value As Font)
-            ftBase = value
-        End Set
-    End Property
-
-    Private ftTitle As Font = New Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
-    <Category("Title")> _
-    Property TitleFont() As Font
-        Get
-            Return ftTitle
-        End Get
-        Set(ByVal value As Font)
-            ftTitle = value
-
         End Set
     End Property
 
@@ -515,7 +492,6 @@ End Class
         End Get
         Set(ByVal value As Integer)
             iHeaderHeight = value
-
         End Set
     End Property
 
@@ -621,6 +597,27 @@ End Class
         End Set
     End Property
 
+    Private ftBase As Font = New Font("Microsoft Sans Serif", 15.75!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.DialogFont
+    <Category("Anrufmonitor")> Property ContentFont() As Font
+        Get
+            Return ftBase
+        End Get
+        Set(ByVal value As Font)
+            ftBase = value
+        End Set
+    End Property
+
+    Private ftTitle As Font = New Font("Microsoft Sans Serif", 8.25!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
+    <Category("Anrufmonitor")> _
+    Property TitleFont() As Font
+        Get
+            Return ftTitle
+        End Get
+        Set(ByVal value As Font)
+            ftTitle = value
+        End Set
+    End Property
+
     Private iEffektMoveGeschwindigkeit As Integer = 5
     <Category("Anrufmonitor"), DefaultValue(5)> _
     Property EffektMoveGeschwindigkeit() As Integer
@@ -654,7 +651,7 @@ End Class
         End Set
     End Property
 
-    Private ftTelNr As Font = New Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
+    Private ftTelNr As Font = New Font("Microsoft Sans Serif", 11.25!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
     <Category("Anrufmonitor")> Property TelNrFont() As Font
         Get
             Return ftTelNr
