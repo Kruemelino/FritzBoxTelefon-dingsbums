@@ -67,7 +67,9 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider.vb" />
+    <Compile Include="DataProvider.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Events.vb" />
     <Compile Include="Helfer.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

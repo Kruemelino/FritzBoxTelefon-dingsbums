@@ -1,7 +1,7 @@
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 
-<System.ComponentModel.DefaultPropertyAttribute("Content"), System.ComponentModel.DesignTimeVisible(False)> _
+'<System.ComponentModel.DefaultPropertyAttribute("Content"), System.ComponentModel.DesignTimeVisible(False)> _
 Friend Class AnrMonForm
     Inherits System.Windows.Forms.Form
 
@@ -15,8 +15,9 @@ Friend Class AnrMonForm
     '               online service, or distribute as source 
     '               on any media without express permission.
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Sub New(ByVal Parent As F_AnrMon)
-        pnParent = Parent
+    Sub New(ByVal vParent As F_AnrMon, ByRef vCommon As CommonFenster)
+        P_Parent = vParent
+        P_Common = vCommon
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.ResizeRedraw, True)
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
@@ -52,8 +53,9 @@ Friend Class AnrMonForm
             Return True
         End Get
     End Property
+
     Private pnParent As F_AnrMon
-    Shadows Property Parent() As F_AnrMon
+    Shadows Property P_Parent() As F_AnrMon
         Get
             Return pnParent
         End Get
@@ -61,6 +63,17 @@ Friend Class AnrMonForm
             pnParent = value
         End Set
     End Property
+
+    Private pnCmn As CommonFenster
+    Shadows Property P_Common() As CommonFenster
+        Get
+            Return pnCmn
+        End Get
+        Set(ByVal value As CommonFenster)
+            pnCmn = value
+        End Set
+    End Property
+
     'Protected Overrides ReadOnly Property CreateParams As CreateParams
 
     '    Get
@@ -78,47 +91,12 @@ Friend Class AnrMonForm
 #End Region
 
 #Region "Functions & Private properties"
-    Private Function AddValueMax255(ByVal Input As Integer, ByVal Add As Integer) As Integer
-        If Input + Add < 256 Then
-            Return Input + Add
-        Else
-            Return 255
-        End If
-    End Function
-
-    Private Function DedValueMin0(ByVal Input As Integer, ByVal Ded As Integer) As Integer
-        If Input - Ded > 0 Then
-            Return Input - Ded
-        Else
-            Return 0
-        End If
-    End Function
-
-    Private Function GetDarkerColor(ByVal Color As Color) As Color
-        Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(255, DedValueMin0(CInt(Color.R), Parent.GradientPower), DedValueMin0(CInt(Color.G), Parent.GradientPower), DedValueMin0(CInt(Color.B), Parent.GradientPower))
-        Return clNew
-    End Function
-
-    Private Function GetLighterColor(ByVal Color As Color) As Color
-        Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(255, AddValueMax255(CInt(Color.R), Parent.GradientPower), AddValueMax255(CInt(Color.G), Parent.GradientPower), AddValueMax255(CInt(Color.B), Parent.GradientPower))
-        Return clNew
-    End Function
-
-    Private Function GetLighterTransparentColor(ByVal Color As Color) As Color
-        Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(0, AddValueMax255(CInt(Color.R), Parent.GradientPower), AddValueMax255(CInt(Color.G), Parent.GradientPower), AddValueMax255(CInt(Color.B), Parent.GradientPower))
-        Return clNew
-    End Function
-
     Private ReadOnly Property RectTelNr() As RectangleF
-
         Get
-            If Parent.Image IsNot Nothing Then
-                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight), Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
+            If P_Parent.Image IsNot Nothing Then
+                Return New RectangleF(P_Parent.ImagePosition.X + P_Parent.ImageSize.Width + P_Common.TextPadding.Left, CSng(P_Common.TextPadding.Top + iHeightOfTitle + 1.5 * P_Common.HeaderHeight), Me.Width - P_Parent.ImageSize.Width - P_Parent.ImagePosition.X - P_Common.TextPadding.Left - P_Common.TextPadding.Right, iHeightOfTelNr)
             Else
-                Return New RectangleF(Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight), Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTelNr)
+                Return New RectangleF(P_Common.TextPadding.Left, CSng(P_Common.TextPadding.Top + iHeightOfTitle + 1.5 * P_Common.HeaderHeight), Me.Width - P_Common.TextPadding.Left - P_Common.TextPadding.Right, iHeightOfTelNr)
             End If
         End Get
     End Property
@@ -126,24 +104,23 @@ Friend Class AnrMonForm
     Private ReadOnly Property RectAnrName() As RectangleF
 
         Get
-            If Parent.Image IsNot Nothing Then
-                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, _
-                                      CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr), _
-                                      Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
+            If P_Parent.Image IsNot Nothing Then
+                Return New RectangleF(P_Parent.ImagePosition.X + P_Parent.ImageSize.Width + P_Common.TextPadding.Left, _
+                                      CSng(P_Common.TextPadding.Top + iHeightOfTitle + 1.5 * P_Common.HeaderHeight + iHeightOfTelNr), _
+                                      Me.Width - P_Parent.ImageSize.Width - P_Parent.ImagePosition.X - P_Common.TextPadding.Left - P_Common.TextPadding.Right, iHeightOfAnrName)
             Else
-                Return New RectangleF(Parent.TextPadding.Left, CSng(Parent.TextPadding.Top + iHeightOfTitle + 1.5 * Parent.HeaderHeight + iHeightOfTelNr), _
-                                      Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfAnrName)
+                Return New RectangleF(P_Common.TextPadding.Left, CSng(P_Common.TextPadding.Top + iHeightOfTitle + 1.5 * P_Common.HeaderHeight + iHeightOfTelNr), _
+                                      Me.Width - P_Common.TextPadding.Left - P_Common.TextPadding.Right, iHeightOfAnrName)
             End If
         End Get
     End Property
 
     Private ReadOnly Property RectFirma() As RectangleF
-
         Get
-            If Parent.Image IsNot Nothing Then
-                Return New RectangleF(Parent.ImagePosition.X + Parent.ImageSize.Width + Parent.TextPadding.Left, Me.Height - Parent.TextPadding.Bottom - iHeightOfTitle, Me.Width - Parent.ImageSize.Width - Parent.ImagePosition.X - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTitle)
+            If P_Parent.Image IsNot Nothing Then
+                Return New RectangleF(P_Parent.ImagePosition.X + P_Parent.ImageSize.Width + P_Common.TextPadding.Left, Me.Height - P_Common.TextPadding.Bottom - iHeightOfTitle, Me.Width - P_Parent.ImageSize.Width - P_Parent.ImagePosition.X - P_Common.TextPadding.Left - P_Common.TextPadding.Right, iHeightOfTitle)
             Else
-                Return New RectangleF(Parent.TextPadding.Left, Me.Height - iHeightOfTitle - Parent.TextPadding.Bottom, Me.Width - Parent.TextPadding.Left - Parent.TextPadding.Right, iHeightOfTitle)
+                Return New RectangleF(P_Common.TextPadding.Left, Me.Height - iHeightOfTitle - P_Common.TextPadding.Bottom, Me.Width - P_Common.TextPadding.Left - P_Common.TextPadding.Right, iHeightOfTitle)
             End If
         End Get
     End Property
@@ -162,8 +139,8 @@ Friend Class AnrMonForm
 
     Private ReadOnly Property RectImage() As Rectangle
         Get
-            If Parent.Image IsNot Nothing Then
-                Return New Rectangle(Parent.ImagePosition, Parent.ImageSize)
+            If P_Parent.Image IsNot Nothing Then
+                Return New Rectangle(P_Parent.ImagePosition, P_Parent.ImageSize)
             End If
         End Get
     End Property
@@ -177,14 +154,14 @@ Friend Class AnrMonForm
     End Sub
 
     Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
-        If Parent.CloseButton Then
+        If P_Common.CloseButton Then
             If RectClose.Contains(e.X, e.Y) Then
                 bMouseOnClose = True
             Else
                 bMouseOnClose = False
             End If
         End If
-        If Parent.OptionsButton Then
+        If P_Common.OptionsButton Then
             If RectOptions.Contains(e.X, e.Y) Then
                 bMouseOnOptions = True
             Else
@@ -207,9 +184,9 @@ Friend Class AnrMonForm
             RaiseEvent LinkClick(Me, EventArgs.Empty)
         End If
         If RectOptions.Contains(e.X, e.Y) Then
-            If Parent.OptionsMenu IsNot Nothing Then
-                Parent.OptionsMenu.Show(Me, New Point(RectOptions.Right - Parent.OptionsMenu.Width, RectOptions.Bottom))
-                Parent.bShouldRemainVisible = True
+            If P_Parent.OptionsMenu IsNot Nothing Then
+                P_Parent.OptionsMenu.Show(Me, New Point(RectOptions.Right - P_Parent.OptionsMenu.Width, RectOptions.Bottom))
+                P_Parent.bShouldRemainVisible = True
             End If
         End If
     End Sub
@@ -224,13 +201,13 @@ Friend Class AnrMonForm
 
         Dim rcBody As New Rectangle(0, 0, Me.Width, Me.Height)
 
-        Dim rcHeader As New Rectangle(0, 0, Me.Width, Parent.HeaderHeight)
+        Dim rcHeader As New Rectangle(0, 0, Me.Width, P_Common.HeaderHeight)
         Dim rcForm As New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)
-        Dim brBody As New LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical)
+        Dim brBody As New LinearGradientBrush(rcBody, P_Common.BodyColor, P_Common.GetLighterColor(P_Common.BodyColor), LinearGradientMode.Vertical)
         Dim drawFormatCenter As New StringFormat()
         Dim drawFormatRight As New StringFormat()
 
-        Dim brHeader As New LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical)
+        Dim brHeader As New LinearGradientBrush(rcHeader, P_Common.HeaderColor, P_Common.GetDarkerColor(P_Common.HeaderColor), LinearGradientMode.Vertical)
         Dim RectZeit As RectangleF
         Dim RectTelName As RectangleF
 
@@ -241,82 +218,82 @@ Friend Class AnrMonForm
             .Clip = New Region(rcBody)
             .FillRectangle(brBody, rcBody)
             .FillRectangle(brHeader, rcHeader)
-            .DrawRectangle(New Pen(Parent.BorderColor), rcForm)
-            If Parent.CloseButton Then
+            .DrawRectangle(New Pen(P_Common.BorderColor), rcForm)
+            If P_Common.CloseButton Then
                 If bMouseOnClose Then
-                    .FillRectangle(New SolidBrush(Parent.ButtonHoverColor), RectClose)
-                    .DrawRectangle(New Pen(Parent.ButtonBorderColor), RectClose)
+                    .FillRectangle(New SolidBrush(P_Common.ButtonHoverColor), RectClose)
+                    .DrawRectangle(New Pen(P_Common.ButtonBorderColor), RectClose)
                 End If
-                .DrawLine(New Pen(Parent.ContentColor, 2), RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4)
-                .DrawLine(New Pen(Parent.ContentColor, 2), RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4)
+                .DrawLine(New Pen(P_Common.ContentColor, 2), RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4)
+                .DrawLine(New Pen(P_Common.ContentColor, 2), RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4)
             End If
-            If Parent.OptionsButton Then
+            If P_Common.OptionsButton Then
                 If bMouseOnOptions Then
-                    .FillRectangle(New SolidBrush(Parent.ButtonHoverColor), RectOptions)
-                    .DrawRectangle(New Pen(Parent.ButtonBorderColor), RectOptions)
+                    .FillRectangle(New SolidBrush(P_Common.ButtonHoverColor), RectOptions)
+                    .DrawRectangle(New Pen(P_Common.ButtonBorderColor), RectOptions)
                 End If
                 .FillPolygon(New SolidBrush(ForeColor), New Point() {New Point(RectOptions.Left + 4, RectOptions.Top + 6), New Point(RectOptions.Left + 12, RectOptions.Top + 6), New Point(RectOptions.Left + 8, RectOptions.Top + 4 + 6)})
             End If
-            iHeightOfTitle = CInt(.MeasureString("A", Parent.TitleFont).Height)
-            iHeightOfAnrName = CInt(.MeasureString("A", Parent.ContentFont).Height)
-            iHeightOfTelNr = CInt(.MeasureString("A", Parent.TelNrFont).Height)
-            iTitleOrigin = Parent.TextPadding.Left
-            If Parent.Image IsNot Nothing Then
-                Dim showim As Image = New Bitmap(Parent.ImageSize.Width, Parent.ImageSize.Height)
+            iHeightOfTitle = CInt(.MeasureString("A", P_Common.TitleFont).Height)
+            iHeightOfAnrName = CInt(.MeasureString("A", P_Common.ContentFont).Height)
+            iHeightOfTelNr = CInt(.MeasureString("A", P_Common.TelNrFont).Height)
+            iTitleOrigin = P_Common.TextPadding.Left
+            If P_Parent.Image IsNot Nothing Then
+                Dim showim As Image = New Bitmap(P_Parent.ImageSize.Width, P_Parent.ImageSize.Height)
                 Dim g1 As Graphics = Graphics.FromImage(showim)
                 g1.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                g1.DrawImage(Parent.Image, 0, 0, Parent.ImageSize.Width, Parent.ImageSize.Height)
+                g1.DrawImage(P_Parent.Image, 0, 0, P_Parent.ImageSize.Width, P_Parent.ImageSize.Height)
                 g1.Dispose()
-                .DrawImage(showim, Parent.ImagePosition)
-                .DrawRectangle(New Pen(Parent.ButtonBorderColor), RectImage)
+                .DrawImage(showim, P_Parent.ImagePosition)
+                .DrawRectangle(New Pen(P_Common.ButtonBorderColor), RectImage)
             End If
-            Länge = Parent.Size.Width - Parent.TextPadding.Right - 21 - iTitleOrigin + Parent.TextPadding.Left
-            sUhrzeit = CDate(Parent.Uhrzeit).ToString("dddd, dd. MMMM yyyy HH:mm:ss")
-            sTelName = Parent.TelName
-            iTelNameLänge = CInt(.MeasureString(sTelName, Parent.TitleFont).Width)
-            iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
+            Länge = P_Parent.Size.Width - P_Common.TextPadding.Right - 21 - iTitleOrigin + P_Common.TextPadding.Left
+            sUhrzeit = CDate(P_Parent.Uhrzeit).ToString("dddd, dd. MMMM yyyy HH:mm:ss")
+            sTelName = P_Parent.TelName
+            iTelNameLänge = CInt(.MeasureString(sTelName, P_Common.TitleFont).Width)
+            iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, P_Common.TitleFont).Width)
             If iTelNameLänge + iUhrzeitLänge > Länge Then
-                sUhrzeit = CDate(Parent.Uhrzeit).ToString("dddd, dd. MMM. yy HH:mm:ss")
-                iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
+                sUhrzeit = CDate(P_Parent.Uhrzeit).ToString("dddd, dd. MMM. yy HH:mm:ss")
+                iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, P_Common.TitleFont).Width)
                 If iTelNameLänge + iUhrzeitLänge > Länge Then
-                    sUhrzeit = CDate(Parent.Uhrzeit).ToString("ddd, dd.MM.yy HH:mm:ss")
-                    iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
+                    sUhrzeit = CDate(P_Parent.Uhrzeit).ToString("ddd, dd.MM.yy HH:mm:ss")
+                    iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, P_Common.TitleFont).Width)
                     If iTelNameLänge + iUhrzeitLänge > Länge Then
-                        sUhrzeit = CDate(Parent.Uhrzeit).ToString("dd.MM.yy HH:mm:ss")
-                        iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, Parent.TitleFont).Width)
+                        sUhrzeit = CDate(P_Parent.Uhrzeit).ToString("dd.MM.yy HH:mm:ss")
+                        iUhrzeitLänge = CInt(.MeasureString(sUhrzeit, P_Common.TitleFont).Width)
                     End If
                 End If
             End If
-            RectZeit = New RectangleF(iTitleOrigin + Parent.TextPadding.Left, Parent.TextPadding.Top + Parent.HeaderHeight, .MeasureString(sUhrzeit, Parent.TitleFont).Width, iHeightOfTitle)
+            RectZeit = New RectangleF(iTitleOrigin + P_Common.TextPadding.Left, P_Common.TextPadding.Top + P_Common.HeaderHeight, .MeasureString(sUhrzeit, P_Common.TitleFont).Width, iHeightOfTitle)
             RectTelName = New RectangleF(RectZeit.Right, RectZeit.Top, RectClose.Left - RectZeit.Right, iHeightOfTitle)
 
-            .DrawString(sUhrzeit, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectZeit)
+            .DrawString(sUhrzeit, P_Common.TitleFont, New SolidBrush(P_Common.TitleColor), RectZeit)
             If iTelNameLänge > RectTelName.Width Then
-                RectTelName.Y = Parent.HeaderHeight
+                RectTelName.Y = P_Common.HeaderHeight
                 RectTelName.Size = New Size(CInt(RectTelName.Width), CInt(RectTelName.Height * 2 - 3))
             End If
-            .DrawString(sTelName, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectTelName, drawFormatRight)
-            .DrawString(Parent.TelNr, Parent.TelNrFont, New SolidBrush(Parent.TitleColor), RectTelNr, drawFormatCenter)
-            .DrawString(Parent.Firma, Parent.TitleFont, New SolidBrush(Parent.TitleColor), RectFirma, drawFormatCenter)
+            .DrawString(sTelName, P_Common.TitleFont, New SolidBrush(P_Common.TitleColor), RectTelName, drawFormatRight)
+            .DrawString(P_Parent.TelNr, P_Common.TelNrFont, New SolidBrush(P_Common.TitleColor), RectTelNr, drawFormatCenter)
+            .DrawString(P_Parent.Firma, P_Common.TitleFont, New SolidBrush(P_Common.TitleColor), RectFirma, drawFormatCenter)
 
             Dim tempfont As New Font("Microsoft Sans Serif", 16, FontStyle.Regular)
             Dim sAnrName As String
-            sAnrName = Parent.AnrName
+            sAnrName = P_Parent.AnrName
             iAnrNameLänge = CInt(.MeasureString(sAnrName, tempfont, 0, StringFormat.GenericTypographic).Width)
 
             If iAnrNameLänge > RectAnrName.Width Then
                 Dim iFontSize As Integer
-                iFontSize = CInt(((RectAnrName.Width - Parent.TextPadding.Right - Parent.TextPadding.Left) * (tempfont.Size / 72 * .DpiX - 1.5 * Parent.TextPadding.Top)) / (iAnrNameLänge - 2 * Parent.TextPadding.Left))
+                iFontSize = CInt(((RectAnrName.Width - P_Common.TextPadding.Right - P_Common.TextPadding.Left) * (tempfont.Size / 72 * .DpiX - 1.5 * P_Common.TextPadding.Top)) / (iAnrNameLänge - 2 * P_Common.TextPadding.Left))
                 iFontSize = CInt(IIf(iFontSize < 8, 8, iFontSize))
                 tempfont = New Font("Microsoft Sans Serif", iFontSize, FontStyle.Regular)
             End If
 
             If bMouseOnLink Then
                 Me.Cursor = Cursors.Hand
-                .DrawString(Parent.AnrName, tempfont, New SolidBrush(Parent.LinkHoverColor), RectAnrName, drawFormatCenter)
+                .DrawString(P_Parent.AnrName, tempfont, New SolidBrush(P_Common.LinkHoverColor), RectAnrName, drawFormatCenter)
             Else
                 Me.Cursor = Cursors.Default
-                .DrawString(Parent.AnrName, tempfont, New SolidBrush(Parent.ContentColor), RectAnrName, drawFormatCenter)
+                .DrawString(P_Parent.AnrName, tempfont, New SolidBrush(P_Common.ContentColor), RectAnrName, drawFormatCenter)
             End If
         End With
     End Sub
@@ -329,16 +306,17 @@ Friend Class AnrMonForm
     End Sub
 End Class
 
-<DefaultEvent("LinkClick")> Public Class F_AnrMon
+Public Class F_AnrMon
     Inherits Component
 
+    Private cmnPrps As New CommonFenster
     Public Event LinkClick(ByVal sender As Object, ByVal e As System.EventArgs)
     Public Event Close(ByVal sender As Object, ByVal e As System.EventArgs)
     Public Event Closed(ByVal sender As Object, ByVal e As System.EventArgs)
 
     Public Event ToolStripMenuItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
 
-    Private WithEvents fPopup As New AnrMonForm(Me)
+    Private WithEvents fPopup As New AnrMonForm(Me, cmnPrps)
     Private WithEvents tmAnimation As New Timer
     Private WithEvents tmWait As New Timer
 
@@ -371,156 +349,8 @@ End Class
 
 #Region "Properties"
 
-    Private clHeader As Color = SystemColors.ControlDarkDark 'SystemColors.ControlDark
-    <Category("Header"), DefaultValue(GetType(Color), "ControlDark")> _
-    Property HeaderColor() As Color
-        Get
-            Return clHeader
-        End Get
-        Set(ByVal value As Color)
-            clHeader = value
-        End Set
-    End Property
-
-    Private clBody As Color = SystemColors.Control
-    <Category("Appearance"), DefaultValue(GetType(Color), "Control")> _
-    Property BodyColor() As Color
-        Get
-            Return clBody
-        End Get
-        Set(ByVal value As Color)
-            clBody = value
-        End Set
-    End Property
-
-    Private clTitle As Color = System.Drawing.SystemColors.ControlText 'Color.Gray
-    <Category("Title"), DefaultValue(GetType(Color), "Gray")> _
-    Property TitleColor() As Color
-        Get
-            Return clTitle
-        End Get
-        Set(ByVal value As Color)
-            clTitle = value
-        End Set
-    End Property
-
-    Private clBase As Color = SystemColors.ControlText
-    <Category("Content"), DefaultValue(GetType(Color), "ControlText")> _
-    Property ContentColor() As Color
-        Get
-            Return clBase
-        End Get
-        Set(ByVal value As Color)
-            clBase = value
-
-        End Set
-    End Property
-
-    Private clBorder As Color = SystemColors.WindowText 'SystemColors.WindowFrame
-    <Category("Appearance"), DefaultValue(GetType(Color), "WindowText")> _
-    Property BorderColor() As Color
-        Get
-            Return clBorder
-        End Get
-        Set(ByVal value As Color)
-            clBorder = value
-        End Set
-    End Property
-
-    Private clCloseBorder As Color = SystemColors.WindowFrame
-    <Category("Buttons"), DefaultValue(GetType(Color), "WindowFrame")> _
-    Property ButtonBorderColor() As Color
-        Get
-            Return clCloseBorder
-        End Get
-        Set(ByVal value As Color)
-            clCloseBorder = value
-        End Set
-    End Property
-
-    Private clCloseHover As Color = Color.Orange 'SystemColors.Highlight
-    <Category("Buttons"), DefaultValue(GetType(Color), "Highlight")> _
-    Property ButtonHoverColor() As Color
-        Get
-            Return clCloseHover
-        End Get
-        Set(ByVal value As Color)
-            clCloseHover = value
-        End Set
-    End Property
-
-    Private clLinkHover As Color = SystemColors.Highlight 'SystemColors.HotTrack
-    <Category("Appearance"), DefaultValue(GetType(Color), "HotTrack")> _
-    Property LinkHoverColor() As Color
-        Get
-            Return clLinkHover
-        End Get
-        Set(ByVal value As Color)
-            clLinkHover = value
-
-        End Set
-    End Property
-
-    Private iDiffGradient As Integer = 50
-    <Category("Appearance"), DefaultValue(50)> _
-    Property GradientPower() As Integer
-        Get
-            Return iDiffGradient
-        End Get
-        Set(ByVal value As Integer)
-            iDiffGradient = value
-        End Set
-    End Property
-
-    Private pdTextPadding As Padding = New Padding(5) ' New Padding(0)
-    <Category("Appearance")> _
-    Property TextPadding() As Padding
-        Get
-            Return pdTextPadding
-        End Get
-        Set(ByVal value As Padding)
-            pdTextPadding = value
-
-        End Set
-    End Property
-
-    Private iHeaderHeight As Integer = 9
-    <Category("Header"), DefaultValue(9)> _
-    Property HeaderHeight() As Integer
-        Get
-            Return iHeaderHeight
-        End Get
-        Set(ByVal value As Integer)
-            iHeaderHeight = value
-        End Set
-    End Property
-
-    Private bCloseButtonVisible As Boolean = True
-    <Category("Buttons"), DefaultValue(True)> _
-    Property CloseButton() As Boolean
-        Get
-            Return bCloseButtonVisible
-        End Get
-        Set(ByVal value As Boolean)
-            bCloseButtonVisible = value
-        End Set
-    End Property
-
-    Private bOptionsButtonVisible As Boolean = False
-    <Category("Buttons"), DefaultValue(False)> _
-    Property OptionsButton() As Boolean
-        Get
-            Return bOptionsButtonVisible
-        End Get
-        Set(ByVal value As Boolean)
-            bOptionsButtonVisible = value
-
-        End Set
-    End Property
-
     Private WithEvents ctContextMenu As ContextMenuStrip = Nothing
-    <Category("Behavior")> _
-    Property OptionsMenu() As ContextMenuStrip
+    Public Property OptionsMenu() As ContextMenuStrip
         Get
             Return ctContextMenu
         End Get
@@ -530,8 +360,7 @@ End Class
     End Property
 
     Private iShowDelay As Integer = 3000
-    <Category("Behavior"), DefaultValue(3000)> _
-    Property ShowDelay() As Integer
+    Public Property ShowDelay() As Integer
         Get
             Return iShowDelay
         End Get
@@ -541,8 +370,7 @@ End Class
     End Property
 
     Private szSize As Size = New Size(400, 100)
-    <Category("Appearance")> _
-    Property Size() As Size
+    Public Property Size() As Size
         Get
             Return szSize
         End Get
@@ -552,8 +380,7 @@ End Class
     End Property
 
     Private bAutoAusblenden As Boolean = True
-    <Category("Appearance"), DefaultValue(True)> _
-    Property AutoAusblenden() As Boolean
+    Public Property AutoAusblenden() As Boolean
         Get
             Return bAutoAusblenden
         End Get
@@ -562,21 +389,18 @@ End Class
         End Set
     End Property
 
-    Private szPosition As Size = New Size(0, 0)
-    <Category("Appearance")> _
-    Property PositionsKorrektur() As Size
+    Private szPositionsKorrektur As Size = New Size(0, 0)
+    Public Property PositionsKorrektur() As Size
         Get
-            Return szPosition
+            Return szPositionsKorrektur
         End Get
         Set(ByVal value As Size)
-            szPosition = value
+            szPositionsKorrektur = value
         End Set
     End Property
 
     Private bEffektTransparenz As Boolean = True
-    <Category("Appearance"), _
-    DefaultValue(True)> _
-    Property EffektTransparenz() As Boolean
+    Public Property EffektTransparenz() As Boolean
         Get
             Return bEffektTransparenz
         End Get
@@ -586,9 +410,7 @@ End Class
     End Property
 
     Private bEffektMove As Boolean = True
-    <Category("Appearance"), _
-    DefaultValue(True)> _
-    Property EffektMove() As Boolean
+    Public Property EffektMove() As Boolean
         Get
             Return bEffektMove
         End Get
@@ -597,30 +419,8 @@ End Class
         End Set
     End Property
 
-    Private ftBase As Font = New Font("Microsoft Sans Serif", 15.75!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.DialogFont
-    <Category("Anrufmonitor")> Property ContentFont() As Font
-        Get
-            Return ftBase
-        End Get
-        Set(ByVal value As Font)
-            ftBase = value
-        End Set
-    End Property
-
-    Private ftTitle As Font = New Font("Microsoft Sans Serif", 8.25!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
-    <Category("Anrufmonitor")> _
-    Property TitleFont() As Font
-        Get
-            Return ftTitle
-        End Get
-        Set(ByVal value As Font)
-            ftTitle = value
-        End Set
-    End Property
-
     Private iEffektMoveGeschwindigkeit As Integer = 5
-    <Category("Anrufmonitor"), DefaultValue(5)> _
-    Property EffektMoveGeschwindigkeit() As Integer
+    Public Property EffektMoveGeschwindigkeit() As Integer
         Get
             Return iEffektMoveGeschwindigkeit
         End Get
@@ -630,8 +430,7 @@ End Class
     End Property
 
     Private pStartpunkt As eStartPosition
-    <Category("Anrufmonitor")> _
-    Property Startpunkt() As eStartPosition
+    Public Property Startpunkt() As eStartPosition
         Get
             Return pStartpunkt
         End Get
@@ -641,8 +440,7 @@ End Class
     End Property
 
     Private _MoveDirection As eMoveDirection
-    <Category("Anrufmonitor")> _
-    Property MoveDirecktion() As eMoveDirection
+    Public Property MoveDirecktion() As eMoveDirection
         Get
             Return _MoveDirection
         End Get
@@ -651,20 +449,8 @@ End Class
         End Set
     End Property
 
-    Private ftTelNr As Font = New Font("Microsoft Sans Serif", 11.25!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
-    <Category("Anrufmonitor")> Property TelNrFont() As Font
-        Get
-            Return ftTelNr
-        End Get
-        Set(ByVal value As Font)
-            ftTelNr = value
-
-        End Set
-    End Property
-
     Private ptImagePosition As Point = New Point(12, 32) 'New Point(12, 21)
-    <Category("Anrufmonitor")> _
-    Property ImagePosition() As Point
+    Public Property ImagePosition() As Point
         Get
             Return ptImagePosition
         End Get
@@ -675,8 +461,7 @@ End Class
     End Property
 
     Private szImageSize As Size = New Size(48, 48) 'New Size(0, 0)
-    <Category("Anrufmonitor")> _
-    Property ImageSize() As Size
+    Public Property ImageSize() As Size
         Get
             If szImageSize.Width = 0 Then
                 If Image IsNot Nothing Then
@@ -694,8 +479,7 @@ End Class
     End Property
 
     Private imImage As Image = Nothing
-    <Category("Anrufmonitor")> _
-    Property Image() As Image
+    Public Property Image() As Image
         Get
             Return imImage
         End Get
@@ -705,8 +489,7 @@ End Class
     End Property
 
     Private sAnrName As String
-    <Category("Anrufmonitor")> _
-    Property AnrName() As String
+    Public Property AnrName() As String
         Get
             Return sAnrName
         End Get
@@ -716,8 +499,7 @@ End Class
     End Property
 
     Private sUhrzeit As String
-    <Category("Anrufmonitor")> _
-    Property Uhrzeit() As String
+    Public Property Uhrzeit() As String
         Get
             Return sUhrzeit
         End Get
@@ -727,8 +509,7 @@ End Class
     End Property
 
     Private sTelNr As String
-    <Category("Anrufmonitor")> _
-    Property TelNr() As String
+    Public Property TelNr() As String
         Get
             Return sTelNr
         End Get
@@ -738,8 +519,7 @@ End Class
     End Property
 
     Private sTelName As String
-    <Category("Anrufmonitor")> _
-    Property TelName() As String
+    Public Property TelName() As String
         Get
             Return sTelName
         End Get
@@ -749,8 +529,7 @@ End Class
     End Property
 
     Private sFirma As String
-    <Category("Anrufmonitor")> _
-    Property Firma() As String
+    Public Property Firma() As String
         Get
             Return sFirma
         End Get

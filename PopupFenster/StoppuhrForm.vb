@@ -2,7 +2,6 @@
 Imports System.Drawing.Drawing2D
 Imports System.Timers
 
-<System.ComponentModel.DefaultPropertyAttribute("Content"), System.ComponentModel.DesignTimeVisible(False)> _
 Friend Class StoppuhrForm
     Inherits System.Windows.Forms.Form
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -25,8 +24,10 @@ Friend Class StoppuhrForm
     Friend Event CloseClickStoppUhr(ByVal sender As Object, ByVal e As System.EventArgs)
     Friend Event CloseClick(ByVal sender As Object, ByVal e As System.EventArgs)
 
-    Sub New(ByVal Parent As F_StoppUhr)
-        pnParent = Parent
+    Sub New(ByVal vParent As F_StoppUhr, ByVal vcmn As CommonFenster)
+        P_Parent = vParent
+        P_Common = vcmn
+
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.ResizeRedraw, True)
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
@@ -43,8 +44,9 @@ Friend Class StoppuhrForm
             Return True
         End Get
     End Property
+
     Private pnParent As F_StoppUhr
-    Shadows Property Parent() As F_StoppUhr
+    Shadows Property P_Parent() As F_StoppUhr
         Get
             Return pnParent
         End Get
@@ -53,43 +55,18 @@ Friend Class StoppuhrForm
         End Set
     End Property
 
+    Private pnCmn As CommonFenster
+    Shadows Property P_Common() As CommonFenster
+        Get
+            Return pnCmn
+        End Get
+        Set(ByVal value As CommonFenster)
+            pnCmn = value
+        End Set
+    End Property
 #End Region
 
 #Region "Functions & Private properties"
-    Private Function AddValueMax255(ByVal Input As Integer, ByVal Add As Integer) As Integer
-        If Input + Add < 256 Then
-            Return Input + Add
-        Else
-            Return 255
-        End If
-    End Function
-
-    Private Function DedValueMin0(ByVal Input As Integer, ByVal Ded As Integer) As Integer
-        If Input - Ded > 0 Then
-            Return Input - Ded
-        Else
-            Return 0
-        End If
-    End Function
-
-    Private Function GetDarkerColor(ByVal Color As Color) As Color
-        Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(255, DedValueMin0(CInt(Color.R), Parent.GradientPower), DedValueMin0(CInt(Color.G), Parent.GradientPower), DedValueMin0(CInt(Color.B), Parent.GradientPower))
-        Return clNew
-    End Function
-
-    Private Function GetLighterColor(ByVal Color As Color) As Color
-        Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(255, AddValueMax255(CInt(Color.R), Parent.GradientPower), AddValueMax255(CInt(Color.G), Parent.GradientPower), AddValueMax255(CInt(Color.B), Parent.GradientPower))
-        Return clNew
-    End Function
-
-    Private Function GetLighterTransparentColor(ByVal Color As Color) As Color
-        Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(0, AddValueMax255(CInt(Color.R), Parent.GradientPower), AddValueMax255(CInt(Color.G), Parent.GradientPower), AddValueMax255(CInt(Color.B), Parent.GradientPower))
-        Return clNew
-    End Function
-
     Private ReadOnly Property RectClose() As Rectangle
         Get
             Return New Rectangle(Me.Width - 5 - 16, 12, 16, 16)
@@ -132,12 +109,12 @@ Friend Class StoppuhrForm
 
     Private Sub PopupStopUhrPaint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         Dim rcBody As New Rectangle(0, 0, Me.Width, Me.Height)
-        Dim rcHeader As New Rectangle(0, 0, Me.Width, Parent.HeaderHeight)
+        Dim rcHeader As New Rectangle(0, 0, Me.Width, P_Common.HeaderHeight)
         Dim rcForm As New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)
-        Dim brBody As New LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical)
+        Dim brBody As New LinearGradientBrush(rcBody, P_Common.BodyColor, P_Common.GetLighterColor(P_Common.BodyColor), LinearGradientMode.Vertical)
         Dim drawFormatCenter As New StringFormat()
         Dim drawFormatRight As New StringFormat()
-        Dim brHeader As New LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical)
+        Dim brHeader As New LinearGradientBrush(rcHeader, P_Common.HeaderColor, P_Common.GetDarkerColor(P_Common.HeaderColor), LinearGradientMode.Vertical)
 
         Dim RectZeit As Rectangle
         Dim RectRichtung As Rectangle
@@ -160,55 +137,55 @@ Friend Class StoppuhrForm
         With e.Graphics
             .FillRectangle(brBody, rcBody)
             .FillRectangle(brHeader, rcHeader)
-            .DrawRectangle(New Pen(Parent.BorderColor), rcForm)
+            .DrawRectangle(New Pen(P_Common.BorderColor), rcForm)
             If bMouseOnClose Then
-                .FillRectangle(New SolidBrush(Parent.ButtonHoverColor), RectClose)
-                .DrawRectangle(New Pen(Parent.ButtonBorderColor), RectClose)
+                .FillRectangle(New SolidBrush(P_Common.ButtonHoverColor), RectClose)
+                .DrawRectangle(New Pen(P_Common.ButtonBorderColor), RectClose)
             End If
-            .DrawLine(New Pen(Parent.ContentColor, 2), RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4)
-            .DrawLine(New Pen(Parent.ContentColor, 2), RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4)
+            .DrawLine(New Pen(P_Common.ContentColor, 2), RectClose.Left + 4, RectClose.Top + 4, RectClose.Right - 4, RectClose.Bottom - 4)
+            .DrawLine(New Pen(P_Common.ContentColor, 2), RectClose.Left + 4, RectClose.Bottom - 4, RectClose.Right - 4, RectClose.Top + 4)
             rect = New Rectangle
             With rect
                 .X = 64
-                .Y = Parent.HeaderHeight + 5
+                .Y = P_Common.HeaderHeight + 5
                 .Width = RectClose.X - .X
-                .Height = CInt(e.Graphics.MeasureString("A", Parent.TitleFont).Height)
+                .Height = CInt(e.Graphics.MeasureString("A", P_Common.TitleFont).Height)
             End With
 
             ' <Rechteck Richtung>
             RectRichtung = New Rectangle()
             With RectRichtung
                 .X = ErsterEinzug
-                .Y = Parent.HeaderHeight + ErsterEinzug
+                .Y = P_Common.HeaderHeight + ErsterEinzug
                 .Width = ZweiterEinzug - 2 * ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectRichtung)
-            .DrawString(Parent.Richtung, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectRichtung)
+            .DrawString(P_Parent.Richtung, P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectRichtung)
             ' </Rechteck Richtung>
 
             ' <Rechteck MSN>
             RectMSN = New Rectangle()
             With RectMSN
                 .X = ErsterEinzug
-                .Y = 2 * (Parent.HeaderHeight + ErsterEinzug)
+                .Y = 2 * (P_Common.HeaderHeight + ErsterEinzug)
                 .Width = ZweiterEinzug - 2 * ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectMSN)
-            .DrawString("MSN: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectMSN)
+            .DrawString("MSN: ", P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectMSN)
             ' </Rechteck MSN>
 
             ' <Rechteck Start>
             RectStart = New Rectangle()
             With RectStart
                 .X = ErsterEinzug
-                .Y = 3 * (Parent.HeaderHeight + ErsterEinzug)
+                .Y = 3 * (P_Common.HeaderHeight + ErsterEinzug)
                 .Width = ZweiterEinzug - 2 * ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectStart)
-            .DrawString("Start: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectStart)
+            .DrawString("Start: ", P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectStart)
             ' </Rechteck Start>
 
             ' <Rechteck Ende>
@@ -216,71 +193,71 @@ Friend Class StoppuhrForm
             With RectEnde
                 .X = ErsterEinzug
                 .Width = ZweiterEinzug - 2 * ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
-                .Y = Parent.Size.Height - .Height - 1 ' - ErsterEinzug
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
+                .Y = P_Parent.Size.Height - .Height - 1 ' - ErsterEinzug
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectEnde)
-            .DrawString("Ende: ", Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectEnde)
+            .DrawString("Ende: ", P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectEnde)
             ' </Rechteck Ende>
 
             ' <Rechteck Value Anruf>
             RectAnruf = New Rectangle()
             With RectAnruf
                 .X = ZweiterEinzug
-                .Y = 1 * (Parent.HeaderHeight + ErsterEinzug)
+                .Y = 1 * (P_Common.HeaderHeight + ErsterEinzug)
                 .Width = RectClose.X - ZweiterEinzug - ErsterEinzug
-                '.Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug - RectClose.X
-                .Height = CInt(e.Graphics.MeasureString(Parent.Anruf, Parent.TitleFont).Height)
+                '.Width = P_Common.Size.Width - ZweiterEinzug - ErsterEinzug - RectClose.X
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Anruf, P_Common.TitleFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectAnruf)
-            .DrawString(Parent.Anruf, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectAnruf)
+            .DrawString(P_Parent.Anruf, P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectAnruf)
             ' </Rechteck Value Anruf>
 
             ' <Rechteck Value MSN>
             RectValueMSN = New Rectangle()
             With RectValueMSN
                 .X = ZweiterEinzug
-                .Y = 2 * (Parent.HeaderHeight + ErsterEinzug)
-                .Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
+                .Y = 2 * (P_Common.HeaderHeight + ErsterEinzug)
+                .Width = P_Parent.Size.Width - ZweiterEinzug - ErsterEinzug
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectValueMSN)
-            .DrawString(Parent.MSN, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueMSN)
+            .DrawString(P_Parent.MSN, P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectValueMSN)
             ' </Rechteck Value MSN>
 
             ' <Rechteck Value Start>
             RectValueStart = New Rectangle()
             With RectValueStart
                 .X = ZweiterEinzug
-                .Y = 3 * (Parent.HeaderHeight + ErsterEinzug)
-                .Width = Parent.Size.Width - ZweiterEinzug - ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
+                .Y = 3 * (P_Common.HeaderHeight + ErsterEinzug)
+                .Width = P_Parent.Size.Width - ZweiterEinzug - ErsterEinzug
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectValueStart)
-            .DrawString(Parent.StartZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueStart)
+            .DrawString(P_Parent.StartZeit, P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectValueStart)
             ' </Rechteck Value Start>
 
             ' <Rechteck Value Ende>
             RectValueEnde = New Rectangle()
             With RectValueEnde
                 .X = ZweiterEinzug
-                .Width = Parent.Size.Width - ZweiterEinzug - 1 * ErsterEinzug
-                .Height = CInt(e.Graphics.MeasureString(Parent.Richtung, Parent.TitleFont).Height)
-                .Y = Parent.Size.Height - .Height - 1 '- ErsterEinzug
+                .Width = P_Parent.Size.Width - ZweiterEinzug - 1 * ErsterEinzug
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Richtung, P_Common.TitleFont).Height)
+                .Y = P_Parent.Size.Height - .Height - 1 '- ErsterEinzug
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectValueEnde)
-            .DrawString(Parent.EndeZeit, Parent.TitleFont, New SolidBrush(Parent.ContentColor), RectValueEnde)
+            .DrawString(P_Parent.EndeZeit, P_Common.TitleFont, New SolidBrush(P_Common.ContentColor), RectValueEnde)
             ' </Rechteck Value Ende>
 
             RectZeit = New Rectangle()
             With RectZeit
                 .X = 0
-                .Y = CInt(2 * (Parent.Size.Height - Parent.ContentFont.Size) / 3 + 2)
-                .Width = Parent.Size.Width
-                .Height = CInt(e.Graphics.MeasureString(Parent.Zeit, Parent.ContentFont).Height)
+                .Y = CInt(2 * (P_Parent.Size.Height - P_Common.ContentFont.Size) / 3 + 2)
+                .Width = P_Parent.Size.Width
+                .Height = CInt(e.Graphics.MeasureString(P_Parent.Zeit, P_Common.fSUContentFont).Height)
             End With
             '.DrawRectangle(New Pen(Brushes.Black), RectZeit)
-            .DrawString(Parent.Zeit, Parent.ContentFont, New SolidBrush(Parent.ContentColor), RectZeit, drawFormatCenter)
+            .DrawString(P_Parent.Zeit, P_Common.fSUContentFont, New SolidBrush(P_Common.ContentColor), RectZeit, drawFormatCenter)
 
         End With
     End Sub
@@ -291,7 +268,9 @@ End Class
 
 Public Class F_StoppUhr
     Inherits Component
-    Private WithEvents fStopUhr As New StoppuhrForm(Me)
+
+    Private cmnPrps As New CommonFenster
+    Private WithEvents fStopUhr As New StoppuhrForm(Me, cmnPrps)
     Private WithEvents TimerZeit As New Timer
     Private WithEvents TimerSchließen As New Timer
     Private Stoppwatch As New Stopwatch
@@ -300,116 +279,9 @@ Public Class F_StoppUhr
     Delegate Sub SchließeStoppUhr()
 
 #Region "Properties"
-    Private clHeader As Color = SystemColors.ControlDarkDark
-    <Category("Header"), DefaultValue(GetType(Color), "ControlDark")> _
-    Property HeaderColor() As Color
-        Get
-            Return clHeader
-        End Get
-        Set(ByVal value As Color)
-            clHeader = value
-        End Set
-    End Property
-
-    Private clBody As Color = SystemColors.Control
-    <Category("Appearance"), DefaultValue(GetType(Color), "Control")> _
-    Property BodyColor() As Color
-        Get
-            Return clBody
-        End Get
-        Set(ByVal value As Color)
-            clBody = value
-        End Set
-    End Property
-
-    Private clTitle As Color = Color.Gray
-    <Category("Title"), DefaultValue(GetType(Color), "Gray")> _
-    Property TitleColor() As Color
-        Get
-            Return clTitle
-        End Get
-        Set(ByVal value As Color)
-            clTitle = value
-        End Set
-    End Property
-
-    Private clBase As Color = SystemColors.ControlText
-    <Category("Content"), DefaultValue(GetType(Color), "ControlText")> _
-    Property ContentColor() As Color
-        Get
-            Return clBase
-        End Get
-        Set(ByVal value As Color)
-            clBase = value
-        End Set
-    End Property
-
-    Private clBorder As Color = SystemColors.WindowFrame
-    <Category("Appearance"), DefaultValue(GetType(Color), "WindowFrame")> _
-    Property BorderColor() As Color
-        Get
-            Return clBorder
-        End Get
-        Set(ByVal value As Color)
-            clBorder = value
-        End Set
-    End Property
-
-    Private clCloseBorder As Color = SystemColors.WindowFrame
-    <Category("Buttons"), DefaultValue(GetType(Color), "WindowFrame")> _
-    Property ButtonBorderColor() As Color
-        Get
-            Return clCloseBorder
-        End Get
-        Set(ByVal value As Color)
-            clCloseBorder = value
-        End Set
-    End Property
-
-    Private clCloseHover As Color = SystemColors.Highlight
-    <Category("Buttons"), DefaultValue(GetType(Color), "Highlight")> _
-    Property ButtonHoverColor() As Color
-        Get
-            Return clCloseHover
-        End Get
-        Set(ByVal value As Color)
-            clCloseHover = value
-        End Set
-    End Property
-
-    Private iDiffGradient As Integer = 50
-    <Category("Appearance"), DefaultValue(50)> _
-    Property GradientPower() As Integer
-        Get
-            Return iDiffGradient
-        End Get
-        Set(ByVal value As Integer)
-            iDiffGradient = value
-        End Set
-    End Property
-
-    Private ftBase As Font = New Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'New Font("Segoe UI", 18) 'SystemFonts.DialogFont
-    <Category("Stoppuhr")> Property ContentFont() As Font
-        Get
-            Return ftBase
-        End Get
-        Set(ByVal value As Font)
-            ftBase = value
-        End Set
-    End Property
-
-    Private ftTitle As Font = New Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'New Font("Segoe UI", 9) 'SystemFonts.CaptionFont
-    <Category("Stoppuhr")> Property TitleFont() As Font
-        Get
-            Return ftTitle
-        End Get
-        Set(ByVal value As Font)
-            ftTitle = value
-        End Set
-    End Property
 
     Private sZeit As String
-    <Category("Stoppuhr")> Property Zeit() As String
+    Property Zeit() As String
         Get
             Return sZeit
         End Get
@@ -419,7 +291,7 @@ Public Class F_StoppUhr
     End Property
 
     Private sAnruf As String
-    <Category("Stoppuhr")> Property Anruf() As String
+    Property Anruf() As String
         Get
             Return sAnruf
         End Get
@@ -429,7 +301,7 @@ Public Class F_StoppUhr
     End Property
 
     Private sRichtung As String
-    <Category("Stoppuhr")> Property Richtung() As String
+    Property Richtung() As String
         Get
             Return sRichtung
         End Get
@@ -439,7 +311,7 @@ Public Class F_StoppUhr
     End Property
 
     Private sWarteZeit As Integer
-    <Category("Stoppuhr")> Property WarteZeit() As Integer
+    Property WarteZeit() As Integer
         Get
             Return sWarteZeit
         End Get
@@ -449,7 +321,7 @@ Public Class F_StoppUhr
     End Property
 
     Private sStartZeit As String
-    <Category("Stoppuhr")> Property StartZeit() As String
+    Property StartZeit() As String
         Get
             Return sStartZeit
         End Get
@@ -459,7 +331,7 @@ Public Class F_StoppUhr
     End Property
 
     Private sEndeZeit As String
-    <Category("Stoppuhr")> Property EndeZeit() As String
+    Property EndeZeit() As String
         Get
             Return sEndeZeit
         End Get
@@ -469,7 +341,7 @@ Public Class F_StoppUhr
     End Property
 
     Private sMSN As String
-    <Category("Stoppuhr")> Property MSN() As String
+    Property MSN() As String
         Get
             Return sMSN
         End Get
@@ -478,29 +350,8 @@ Public Class F_StoppUhr
         End Set
     End Property
 
-    Private pdTextPadding As Padding = New Padding(0)
-    <Category("Appearance")> Property TextPadding() As Padding
-        Get
-            Return pdTextPadding
-        End Get
-        Set(ByVal value As Padding)
-            pdTextPadding = value
-        End Set
-    End Property
-
-    Private iHeaderHeight As Integer = 9
-    <Category("Header"), DefaultValue(9)> _
-    Property HeaderHeight() As Integer
-        Get
-            Return iHeaderHeight
-        End Get
-        Set(ByVal value As Integer)
-            iHeaderHeight = value
-        End Set
-    End Property
-
     Private szSize As Size = New Size(250, 100)
-    <Category("Appearance")> Property Size() As Size
+    Property Size() As Size
         Get
             Return szSize
         End Get
@@ -510,7 +361,7 @@ Public Class F_StoppUhr
     End Property
 
     Private szStartPosition As Point = New Point(0, 0)
-    <Category("Appearance")> Property StartPosition() As Point
+    Property StartPosition() As Point
         Get
             Return szStartPosition
         End Get

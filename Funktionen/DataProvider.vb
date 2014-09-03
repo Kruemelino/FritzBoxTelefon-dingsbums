@@ -3,6 +3,7 @@ Imports System.Timers
 Imports System.ComponentModel
 
 Public Class DataProvider
+    Inherits Component
     Private XMLDoc As XmlDocument
     Private WithEvents tSpeichern As Timer
 #Region "BackgroundWorker"
@@ -288,7 +289,7 @@ Public Class DataProvider
     Private _TVKontaktOrdnerEntryID As String
     Private _TVKontaktOrdnerStoreID As String
     Private _CBIndex As Boolean
-    Private _TBLandesVW As String
+
     Private _CBoxLandesVorwahl As Integer
     Private _TBAmt As String
     Private _TBFBAdr As String
@@ -355,12 +356,21 @@ Public Class DataProvider
 #End Region
 
 #Region "Value Properties"
+
+
+    ' ''' <summary>
+    ' ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
+    ' ''' </summary>
+    ' ''' <value>String</value>
+    ' ''' <returns>Landesvorwahl</returns>
+    ' ''' <remarks></remarks>
+    ' ''' 
+
     ''' <summary>
     ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>Landesvorwahl</returns>
     ''' <remarks></remarks>
+    Private _TBLandesVW As String
     Public Property P_TBLandesVW() As String
         Get
             Return _TBLandesVW
@@ -369,6 +379,7 @@ Public Class DataProvider
             _TBLandesVW = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>

@@ -80,6 +80,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common.vb" />
     <Compile Include="StoppuhrForm.vb">
       <SubType>Form</SubType>
     </Compile>
