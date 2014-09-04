@@ -315,7 +315,7 @@ Public Class Contacts
             If Not (C_DP.P_TVKontaktOrdnerEntryID = C_DP.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = C_DP.P_Def_ErrorMinusOne_String) Then
                 olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
                 ' Handlung 2:
-                If olFolder Is P_DefContactFolder Then
+                If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
                     olKontakt.Save()
                     C_hf.LogFile("Kontakt " & olKontakt.FullName & " wurde Hauptkontaktordner gespeichert.")
                 Else
