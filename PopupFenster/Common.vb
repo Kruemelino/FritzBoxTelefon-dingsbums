@@ -357,7 +357,6 @@ Friend Class CommonFenster
 
 #End Region
 
-
     Private Function AddValueMax255(ByVal Input As Integer, ByVal Add As Integer) As Integer
         If Input + Add < 256 Then
             Return Input + Add

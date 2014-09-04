@@ -215,8 +215,9 @@ Public Class Popup
         AnrMonEinblenden(Telefonat, True)
         Do
             C_hf.ThreadSleep(20)
+            Telefonat.PopupAnrMon.tmAnimation_Tick()
             Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopupAnrMon Is Nothing
+        Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
         C_hf.LogFile("BWAnrMonEinblenden.DoWork: Schleife verlassen")
     End Sub
 

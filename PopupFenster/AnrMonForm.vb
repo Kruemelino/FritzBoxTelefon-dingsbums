@@ -23,7 +23,6 @@ Friend Class AnrMonForm
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
     End Sub
 
-
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
@@ -276,7 +275,7 @@ Friend Class AnrMonForm
             .DrawString(P_Parent.TelNr, P_Common.TelNrFont, New SolidBrush(P_Common.TitleColor), RectTelNr, drawFormatCenter)
             .DrawString(P_Parent.Firma, P_Common.TitleFont, New SolidBrush(P_Common.TitleColor), RectFirma, drawFormatCenter)
 
-            Dim tempfont As New Font("Microsoft Sans Serif", 16, FontStyle.Regular)
+            Dim tempfont As New Font(P_Common.DefFontName, 16, P_Common.DefFontStyle, P_Common.DefGraphicsUnit, P_Common.DefgdiCharSet)
             Dim sAnrName As String
             sAnrName = P_Parent.AnrName
             iAnrNameLänge = CInt(.MeasureString(sAnrName, tempfont, 0, StringFormat.GenericTypographic).Width)
@@ -285,7 +284,7 @@ Friend Class AnrMonForm
                 Dim iFontSize As Integer
                 iFontSize = CInt(((RectAnrName.Width - P_Common.TextPadding.Right - P_Common.TextPadding.Left) * (tempfont.Size / 72 * .DpiX - 1.5 * P_Common.TextPadding.Top)) / (iAnrNameLänge - 2 * P_Common.TextPadding.Left))
                 iFontSize = CInt(IIf(iFontSize < 8, 8, iFontSize))
-                tempfont = New Font("Microsoft Sans Serif", iFontSize, FontStyle.Regular)
+                tempfont = New Font(P_Common.DefFontName, 16, P_Common.DefFontStyle, P_Common.DefGraphicsUnit, P_Common.DefgdiCharSet)
             End If
 
             If bMouseOnLink Then
@@ -317,7 +316,7 @@ Public Class F_AnrMon
     Public Event ToolStripMenuItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
 
     Private WithEvents fPopup As New AnrMonForm(Me, cmnPrps)
-    Private WithEvents tmAnimation As New Timer
+    'Private WithEvents tmAnimation As New Timer
     Private WithEvents tmWait As New Timer
 
     Private bAppearing As Boolean = True
@@ -560,7 +559,6 @@ Public Class F_AnrMon
             .Size = Size
             .Opacity = CDbl(IIf(bEffektTransparenz, 0, 1))
 
-
             Select Case Startpunkt
                 Case eStartPosition.BottomLeft
                     X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
@@ -608,8 +606,8 @@ Public Class F_AnrMon
             .Show()
         End With
 
-        tmAnimation.Interval = 1 'iEffektMoveGeschwindigkeit
-        tmAnimation.Start()
+        'tmAnimation.Interval = 1 'iEffektMoveGeschwindigkeit
+        'tmAnimation.Start()
     End Sub
 
     ''' <summary>
@@ -662,7 +660,7 @@ Public Class F_AnrMon
     Public Sub Hide()
         bMouseIsOn = False
         tmWait.Stop()
-        tmAnimation.Start()
+        'tmAnimation.Start()
     End Sub
 
 #Region "Eigene Events"
@@ -709,7 +707,7 @@ Public Class F_AnrMon
         Return dPourcentOpacity / 100
     End Function
 
-    Private Sub tmAnimation_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmAnimation.Tick
+    Public Sub tmAnimation_Tick() '(ByVal sender As Object, ByVal e As System.EventArgs) ' Handles tmAnimation.Tick
         Dim StoppAnimation As Boolean = False
         With fPopup
             .Invalidate()
@@ -737,7 +735,7 @@ Public Class F_AnrMon
                     End Select
 
                     If StoppAnimation Then
-                        tmAnimation.Stop()
+                        'tmAnimation.Stop()
                         bAppearing = False
                         iMaxPosition = .Top
                         dMaxOpacity = .Opacity
@@ -750,65 +748,70 @@ Public Class F_AnrMon
 
 
                 Else 'Ausblenden
-                    If bMouseIsOn Then
-                        .Top = iMaxPosition
-                        .Opacity = dMaxOpacity
-                        tmAnimation.Stop()
-                        tmWait.Start()
-                    Else
-                        Select Case MoveDirecktion
-                            Case eMoveDirection.X
-                                Select Case Startpunkt
-                                    Case eStartPosition.BottomLeft, eStartPosition.TopLeft
-                                        .Left -= 2
-                                        StoppAnimation = .Right < Screen.PrimaryScreen.WorkingArea.Left
-                                    Case eStartPosition.BottomRight, eStartPosition.TopRight
-                                        .Left += 2
-                                        StoppAnimation = .Left > Screen.PrimaryScreen.WorkingArea.Right
-                                End Select
-                            Case eMoveDirection.Y
-                                Select Case Startpunkt
-                                    Case eStartPosition.BottomLeft, eStartPosition.BottomRight
-                                        .Top += 1
-                                        StoppAnimation = .Top > Screen.PrimaryScreen.WorkingArea.Bottom - PositionsKorrektur.Width
-                                    Case eStartPosition.TopLeft, eStartPosition.TopRight
-                                        .Top -= 1
-                                        StoppAnimation = .Bottom < Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Width
-                                End Select
-                        End Select
+                    If Not tmWait.Enabled Then
 
-                        If StoppAnimation Then
-                            tmAnimation.Stop()
-                            .TopMost = False
-                            .Close()
-                            bAppearing = True
-                            RaiseEvent Closed(Me, EventArgs.Empty)
+                        If bMouseIsOn Then
+                            .Top = iMaxPosition
+                            .Opacity = dMaxOpacity
+                            'tmAnimation.Stop()
+                            tmWait.Start()
+                        Else
+                            Select Case MoveDirecktion
+                                Case eMoveDirection.X
+                                    Select Case Startpunkt
+                                        Case eStartPosition.BottomLeft, eStartPosition.TopLeft
+                                            .Left -= 2
+                                            StoppAnimation = .Right < Screen.PrimaryScreen.WorkingArea.Left
+                                        Case eStartPosition.BottomRight, eStartPosition.TopRight
+                                            .Left += 2
+                                            StoppAnimation = .Left > Screen.PrimaryScreen.WorkingArea.Right
+                                    End Select
+                                Case eMoveDirection.Y
+                                    Select Case Startpunkt
+                                        Case eStartPosition.BottomLeft, eStartPosition.BottomRight
+                                            .Top += 1
+                                            StoppAnimation = .Top > Screen.PrimaryScreen.WorkingArea.Bottom - PositionsKorrektur.Width
+                                        Case eStartPosition.TopLeft, eStartPosition.TopRight
+                                            .Top -= 1
+                                            StoppAnimation = .Bottom < Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Width
+                                    End Select
+                            End Select
+
+                            If StoppAnimation Then
+                                'tmAnimation.Stop()
+                                .TopMost = False
+                                .Close()
+                                bAppearing = True
+                                RaiseEvent Closed(Me, EventArgs.Empty)
+                            End If
+
+                            .Opacity = CDbl(IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1))
                         End If
-
-                        .Opacity = CDbl(IIf(bEffektTransparenz, GetOpacityBasedOnPosition(), 1))
                     End If
                 End If
             Else
                 If bAppearing Then
                     .Opacity += CDbl(IIf(bEffektTransparenz, 0.05, 1))
                     If .Opacity = 1 Then
-                        tmAnimation.Stop()
+                        'tmAnimation.Stop()
                         bAppearing = False
                         If bAutoAusblenden Then tmWait.Start()
                     End If
                 Else
-                    If bMouseIsOn Then
-                        fPopup.Opacity = 1
-                        tmAnimation.Stop()
-                        tmWait.Start()
-                    Else
-                        .Opacity -= CDbl(IIf(bEffektTransparenz, 0.05, 1))
-                        If .Opacity = 0 Then
-                            tmAnimation.Stop()
-                            .TopMost = False
-                            .Close()
-                            bAppearing = True
-                            RaiseEvent Closed(Me, EventArgs.Empty)
+                    If Not tmWait.Enabled Then
+                        If bMouseIsOn Then
+                            fPopup.Opacity = 1
+                            'tmAnimation.Stop()
+                            tmWait.Start()
+                        Else
+                            .Opacity -= CDbl(IIf(bEffektTransparenz, 0.05, 1))
+                            If .Opacity = 0 Then
+                                'tmAnimation.Stop()
+                                .TopMost = False
+                                .Close()
+                                bAppearing = True
+                                RaiseEvent Closed(Me, EventArgs.Empty)
+                            End If
                         End If
                     End If
                 End If
@@ -818,9 +821,9 @@ Public Class F_AnrMon
 
     Private Sub tmWait_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmWait.Tick
         i += tmWait.Interval
-        If i = ShowDelay Then
+        If i > ShowDelay Then
             tmWait.Stop()
-            tmAnimation.Start()
+            'tmAnimation.Start()
         End If
         fPopup.Invalidate()
 
@@ -837,7 +840,7 @@ Public Class F_AnrMon
     Private Sub ctContextMenu_Closed(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripDropDownClosedEventArgs) Handles ctContextMenu.Closed
         bShouldRemainVisible = False
         bMouseIsOn = False
-        tmAnimation.Start()
+        'tmAnimation.Start()
     End Sub
 
 End Class
