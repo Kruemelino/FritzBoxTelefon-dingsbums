@@ -15,6 +15,48 @@ Friend Class CommonFenster
     'End Enum
 #End Region
 
+#Region "DefaultFont"
+    Private sDefFontName As String = "Microsoft Sans Serif"
+    Property DefFontName() As String
+        Get
+            Return sDefFontName
+        End Get
+        Set(ByVal value As String)
+            sDefFontName = value
+        End Set
+    End Property
+
+    Private sDefFontStyle As FontStyle = FontStyle.Regular
+    Property DefFontStyle() As FontStyle
+        Get
+            Return sDefFontStyle
+        End Get
+        Set(ByVal value As FontStyle)
+            sDefFontStyle = value
+        End Set
+    End Property
+
+    Private sDefGraphicsUnit As GraphicsUnit = GraphicsUnit.Point
+    Property DefGraphicsUnit() As GraphicsUnit
+        Get
+            Return sDefGraphicsUnit
+        End Get
+        Set(ByVal value As GraphicsUnit)
+            sDefGraphicsUnit = value
+        End Set
+    End Property
+
+    Private sDefgdiCharSet As Byte = CType(0, Byte)
+    Property DefgdiCharSet() As Byte
+        Get
+            Return sDefgdiCharSet
+        End Get
+        Set(ByVal value As Byte)
+            sDefgdiCharSet = value
+        End Set
+    End Property
+#End Region
+
 #Region "Properties Stoppuhr"
 
     Private clHeader As Color = SystemColors.ControlDarkDark
@@ -97,9 +139,10 @@ Friend Class CommonFenster
         End Set
     End Property
 
-    Private ftSUBase As Font = New Font("Microsoft Sans Serif", 18.0!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte))
+    Private ftSUBase As Font = New Font(DefFontName, 18.0!, DefFontStyle, sDefGraphicsUnit, DefgdiCharSet)
     Property fSUContentFont() As Font
         Get
+
             Return ftSUBase
         End Get
         Set(ByVal value As Font)
@@ -162,7 +205,7 @@ Friend Class CommonFenster
         End Set
     End Property
 
-    Private ftBase As Font = New Font("Microsoft Sans Serif", 15.75!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.DialogFont
+    Private ftBase As Font = New Font(DefFontName, 15.75!, DefFontStyle, sDefGraphicsUnit, DefgdiCharSet) 'SystemFonts.DialogFont
     Property ContentFont() As Font
         Get
             Return ftBase
@@ -172,7 +215,7 @@ Friend Class CommonFenster
         End Set
     End Property
 
-    Private ftTitle As Font = New Font("Microsoft Sans Serif", 8.25!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
+    Private ftTitle As Font = New Font(DefFontName, 8.25!, DefFontStyle, sDefGraphicsUnit, DefgdiCharSet) 'SystemFonts.CaptionFont
     Property TitleFont() As Font
         Get
             Return ftTitle
@@ -212,7 +255,7 @@ Friend Class CommonFenster
     '    End Set
     'End Property
 
-    Private ftTelNr As Font = New Font("Microsoft Sans Serif", 11.25!, FontStyle.Regular, GraphicsUnit.Point, CType(0, Byte)) 'SystemFonts.CaptionFont
+    Private ftTelNr As Font = New Font(DefFontName, 11.25!, DefFontStyle, sDefGraphicsUnit, DefgdiCharSet) 'SystemFonts.CaptionFont
     Property TelNrFont() As Font
         Get
             Return ftTelNr
