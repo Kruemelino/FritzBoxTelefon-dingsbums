@@ -146,51 +146,6 @@ Public Class Popup
     End Sub
 
     ''' <summary>
-    ''' Initiale Routine zum Einblenden eines Anrufmonitorfensters.
-    ''' </summary>
-    ''' <param name="Telefonat">Telefonalt, aus dem die Informationen gelesen werden sollen.</param>
-    ''' <param name="Aktualisieren">Gibt an, ob ein Aktualisierungs-Timer gestartet werden soll. </param>
-    ''' <remarks>Timer: Bei jedem Durchlauf wird geschaut, ob neuere Informationen im Telefonat enthalten sind.</remarks>
-    Friend Overloads Sub AnrMonEinblenden(ByVal Telefonat As C_Telefonat, ByVal Aktualisieren As Boolean)
-        Dim ThisPopUpAnrMon As New F_AnrMon
-        Dim TelinList As Boolean = False
-
-        UpdateForm = Aktualisieren
-
-        Telefonat.PopupAnrMon = ThisPopUpAnrMon
-
-        AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
-
-        AnrmonClosed = False
-
-        If Aktualisieren Then TimerAktualisieren = C_hf.SetTimer(500)
-
-        C_OLI.KeepoInspActivated(False)
-
-        AnrMonListe.Add(ThisPopUpAnrMon)
-
-        With ThisPopUpAnrMon
-            .ShowDelay = C_DP.P_TBEnblDauer * 1000
-            .AutoAusblenden = C_DP.P_CBAutoClose
-            .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
-            .EffektMove = C_DP.P_CBAnrMonMove
-            .EffektTransparenz = C_DP.P_CBAnrMonTransp
-            .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
-            .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
-            .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
-            .Popup()
-        End With
-
-        AddHandler ThisPopUpAnrMon.Close, AddressOf PopUpAnrMon_Close
-        AddHandler ThisPopUpAnrMon.Closed, AddressOf PopupAnrMon_Closed
-        AddHandler ThisPopUpAnrMon.LinkClick, AddressOf ToolStripMenuItemKontaktöffnen_Click
-        AddHandler ThisPopUpAnrMon.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
-
-        C_OLI.KeepoInspActivated(True)
-
-    End Sub
-
-    ''' <summary>
     ''' Startet den BackgroundWorker für das Einblenden des Anrufmonitors
     ''' </summary>
     ''' <param name="Telefonat">Telefonat, das angezeigt wird</param>
@@ -212,13 +167,60 @@ Public Class Popup
     ''' <remarks></remarks>
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
-        AnrMonEinblenden(Telefonat, True)
-        Do
-            C_hf.ThreadSleep(20)
-            Telefonat.PopupAnrMon.tmAnimation_Tick()
-            Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
-        C_hf.LogFile("BWAnrMonEinblenden.DoWork: Schleife verlassen")
+        Dim RemoveTelFromList As Boolean = False
+        Dim ThisPopUpAnrMon As New F_AnrMon
+        Dim TelinList As Boolean = False
+
+        'UpdateForm = Aktualisieren
+
+        ' Überprüfe ob Anrufmonitor für dieses Telefonat bereits angezeigt wird
+        If Telefonat.PopupAnrMon Is Nothing Then
+            Telefonat.PopupAnrMon = ThisPopUpAnrMon
+
+            If Not TelefonatsListe.Exists(Function(fAM) fAM Is Telefonat) Then
+                TelefonatsListe.Add(Telefonat)
+                RemoveTelFromList = True
+            End If
+
+            AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
+
+            AnrmonClosed = False
+
+            'If Aktualisieren Then TimerAktualisieren = C_hf.SetTimer(500)
+
+            C_OLI.KeepoInspActivated(False)
+
+            AnrMonListe.Add(ThisPopUpAnrMon)
+
+            With ThisPopUpAnrMon
+                .ShowDelay = C_DP.P_TBEnblDauer * 1000
+                .AutoAusblenden = C_DP.P_CBAutoClose
+                .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
+                .EffektMove = C_DP.P_CBAnrMonMove
+                .EffektTransparenz = C_DP.P_CBAnrMonTransp
+                .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
+                .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
+                .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
+                .Popup()
+            End With
+
+            AddHandler ThisPopUpAnrMon.Close, AddressOf PopUpAnrMon_Close
+            AddHandler ThisPopUpAnrMon.Closed, AddressOf PopupAnrMon_Closed
+            AddHandler ThisPopUpAnrMon.LinkClick, AddressOf ToolStripMenuItemKontaktöffnen_Click
+            AddHandler ThisPopUpAnrMon.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
+
+            C_OLI.KeepoInspActivated(True)
+
+            Do
+                C_hf.ThreadSleep(20)
+                Telefonat.PopupAnrMon.tmAnimation_Tick()
+                Windows.Forms.Application.DoEvents()
+            Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
+
+            If RemoveTelFromList Then TelefonatsListe.Remove(Telefonat)
+            C_hf.LogFile("BWAnrMonEinblenden.DoWork: Schleife verlassen")
+
+        End If
     End Sub
 
     ''' <summary>
@@ -273,7 +275,6 @@ Public Class Popup
 
         Dim tmpPopUpAnrMon As F_AnrMon = CType(sender, F_AnrMon)
         Dim tmpTelefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is tmpPopUpAnrMon)
-        ' Todo: Möglichkeit finden, wie auf das Telefonat, welches zu dem PopUp gehört, zugreifen
 
         If tmpTelefonat IsNot Nothing Then
 
@@ -285,11 +286,19 @@ Public Class Popup
                     ' Ruft den Kontakt zurück
                     ThisAddIn.P_WClient.Rueckruf(tmpTelefonat)
                 Case "ToolStripMenuItemKopieren" 'tmpPopUpAnrMon.OptionsMenu.Items("ToolStripMenuItemKopieren").Name
+                    Dim thrd As New Threading.Thread(AddressOf ClipboardSetText)
+                    thrd.SetApartmentState(Threading.ApartmentState.STA)
                     With tmpPopUpAnrMon
-                        My.Computer.Clipboard.SetText(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
+                        thrd.Start(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
                     End With
             End Select
 
+        End If
+    End Sub
+
+    Private Sub ClipboardSetText(ByVal Text As Object)
+        If Threading.Thread.CurrentThread.GetApartmentState = Threading.ApartmentState.STA Then
+            Clipboard.SetText(CStr(Text))
         End If
     End Sub
 
@@ -310,7 +319,11 @@ Public Class Popup
                 .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
             End If
             If .olContact IsNot Nothing Then
-                .olContact.Display()
+                Try
+                    .olContact.Display()
+                Catch ex As System.Runtime.InteropServices.COMException
+                    C_hf.FBDB_MsgBox(C_DP.P_Fehler_Kontakt_Anzeigen(ex.Message), MsgBoxStyle.Critical, "AnruferAnzeigen")
+                End Try
             Else
                 C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
             End If
@@ -446,6 +459,4 @@ Public Class Popup
         End If
     End Sub
 #End Region
-
-
 End Class

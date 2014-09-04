@@ -3,7 +3,6 @@ Imports System.Timers
 Imports System.ComponentModel
 
 Public Class DataProvider
-    Inherits Component
     Private XMLDoc As XmlDocument
     Private WithEvents tSpeichern As Timer
 #Region "BackgroundWorker"
@@ -3518,7 +3517,7 @@ Public Class DataProvider
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads ReadOnly Property P_RWS_ToolTipp(ByVal Link As String) As String
+    Public ReadOnly Property P_RWS_ToolTipp(ByVal Link As String) As String
         Get
             Return "Rückwärtssuche mit &#34;" & Link & "&#34;"
         End Get
@@ -3530,7 +3529,7 @@ Public Class DataProvider
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads ReadOnly Property P_RWS_ToolTipp() As String
+    Public ReadOnly Property P_RWS_ToolTipp() As String
         Get
             Return "Rückwärtssuche mit allen Anbietern"
         End Get
@@ -3543,7 +3542,7 @@ Public Class DataProvider
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads ReadOnly Property P_Tag_Insp_Dial() As String
+    Public ReadOnly Property P_Tag_Insp_Dial() As String
         Get
             Return "Dial_Tag"
         End Get
@@ -3555,21 +3554,23 @@ Public Class DataProvider
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads ReadOnly Property P_Tag_Insp_Kontakt() As String
+    Public ReadOnly Property P_Tag_Insp_Kontakt() As String
         Get
             Return "Kontakt_Tag"
         End Get
     End Property
 
     ''' <summary>
-    ''' VIP_Tag
+    '''  Der Kontakt kann angezeigt werden: 
+    ''' 
+    '''  ErrorMessage
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overloads ReadOnly Property P_Tag_Insp_VIP() As String
+    Public ReadOnly Property P_Fehler_Kontakt_Anzeigen(ByVal ErrorMessage As String) As String
         Get
-            Return P_CMB_Insp_VIP & "_Tag"
+            Return "Der Kontakt kann angezeigt werden: " & P_Def_NeueZeile & P_Def_NeueZeile & ErrorMessage
         End Get
     End Property
 #End Region

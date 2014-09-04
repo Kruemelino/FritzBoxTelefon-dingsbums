@@ -1323,7 +1323,7 @@ Imports Microsoft.Office.Core
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
-        C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer, False)
+        C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
     End Sub
 
     Friend Sub AnrMonNeustarten()
