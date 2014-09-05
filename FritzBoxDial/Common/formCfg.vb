@@ -232,8 +232,11 @@ Friend Class formCfg
         ' Notiz
         Me.CBNote.Checked = C_DP.P_CBNote
         'TreeView
-        Me.TVOutlookContact.Enabled = False
-        If Me.TVOutlookContact.Nodes.Count > 0 Then Me.TVOutlookContact.Nodes.Clear()
+        With Me.TVOutlookContact
+            .Enabled = False
+            If .Nodes.Count > 0 Then .Nodes.Clear()
+        End With
+
         BWTreeView = New BackgroundWorker
         With BWTreeView
             .WorkerReportsProgress = False
@@ -1342,14 +1345,11 @@ Friend Class formCfg
 
             C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
             With Me.TVOutlookContact
-                .ExpandAll()
                 tmpNode = .Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
-                If Not tmpNode.Length = 0 Then
-                    .SelectedNode = tmpNode(0)
-                End If
+                If Not tmpNode.Length = 0 Then .SelectedNode = tmpNode(0)
+                .ExpandAll()
                 .Enabled = True
             End With
-
         End If
     End Sub
 
@@ -1450,7 +1450,7 @@ Friend Class formCfg
                 If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
                     If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
                         C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
-                        ' HIER WEITER GetProperXPath arbeitet nicht korrekt
+
                         If C_DP.GetProperXPath(xPathTeile) Then
                             Dim Dauer As Date
                             xPathTeile.Item(xPathTeile.Count - 1) = "Eingehend"
@@ -1543,8 +1543,6 @@ Friend Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
-
-
 End Class
 
 
