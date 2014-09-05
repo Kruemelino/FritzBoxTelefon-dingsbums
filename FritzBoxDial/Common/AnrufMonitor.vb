@@ -796,23 +796,17 @@ Friend Class AnrufMonitor
                             .Add("*")
                             .Add("Telefon[TelName = """ & Telefonat.TelName & """]")
                         End With
+
                         If C_DP.GetProperXPath(xPathTeile) Then
                             ' xPathTeile hat sich durch GetProperXPath geändert.
-                            With xPathTeile
-
-                                If Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend Then
-                                    .Add(C_Telefonat.AnrufRichtung.Eingehend.ToString)
-                                    CallDirection = C_DP.P_Def_Journal_Text_Eingehend
-                                Else
-                                    .Add(C_Telefonat.AnrufRichtung.Ausgehend.ToString)
-                                    CallDirection = C_DP.P_Def_Journal_Text_Ausgehend
-                                End If
-                            End With
+                            xPathTeile.Add(CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, C_Telefonat.AnrufRichtung.Eingehend.ToString, C_Telefonat.AnrufRichtung.Ausgehend.ToString)))
 
                             With C_DP
                                 .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
                             End With
                         End If
+
+                        CallDirection = CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, C_DP.P_Def_Journal_Text_Eingehend, C_DP.P_Def_Journal_Text_Ausgehend))
                     Else
                         If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                             C_DP.P_StatVerpasst += 1
@@ -824,7 +818,7 @@ Friend Class AnrufMonitor
                     End If
 
                     .Categories = .TelName & C_DP.P_AnrMon_Journal_Def_Categories '"; FritzBox Anrufmonitor; Telefonanrufe"
-                    .Subject = CallDirection & " " & .Anrufer & CStr(IIf(.Anrufer = .TelNr, C_DP.P_Def_StringEmpty, " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & .TelName & ")"))
+                    .Subject = CallDirection & CStr(IIf(.Anrufer = C_DP.P_Def_StringEmpty, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & .TelName & ")"))
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)
                     C_DP.P_StatJournal += 1
