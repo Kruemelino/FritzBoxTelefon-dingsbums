@@ -1657,25 +1657,25 @@ Public Class DataProvider
 #Region "Journal"
     Public ReadOnly Property P_Def_Journal_Text_Eingehend() As String
         Get
-            Return "Eingehender Anruf von"
+            Return "Eingehender Anruf von "
         End Get
     End Property
 
     Public ReadOnly Property P_Def_Journal_Text_Ausgehend() As String
         Get
-            Return "Ausgehender Anruf zu"
+            Return "Ausgehender Anruf zu "
         End Get
     End Property
 
     Public ReadOnly Property P_Def_Journal_Text_Verpasst() As String
         Get
-            Return "Verpasster Anruf von"
+            Return "Verpasster Anruf von "
         End Get
     End Property
 
     Public ReadOnly Property P_Def_Journal_Text_NichtErfolgreich() As String
         Get
-            Return "Nicht erfolgreicher Anruf zu"
+            Return "Nicht erfolgreicher Anruf zu "
         End Get
     End Property
 #End Region
