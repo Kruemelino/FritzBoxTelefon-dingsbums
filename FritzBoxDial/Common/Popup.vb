@@ -1,5 +1,4 @@
 ﻿#Region "Imports"
-Imports System.Timers
 Imports System.IO.Path
 Imports System.Drawing
 Imports System.Collections.Generic
@@ -24,8 +23,6 @@ Public Class Popup
     Private V_PfadKontaktBild As String
     Private V_AnrmonClosed As Boolean
     Private UpdateForm As Boolean
-
-    Private WithEvents TimerAktualisieren As System.Timers.Timer
 
     Private WithEvents PopUpAnrufMonitor As F_AnrMon
     Friend TelefonatsListe As New List(Of C_Telefonat)
@@ -131,14 +128,15 @@ Public Class Popup
             If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
                 .TelNr = C_DP.P_Def_StringEmpty
                 If Telefonat.TelNr = C_DP.P_Def_StringEmpty Then
+                    'unterdrückte Nummer
                     .AnrName = C_DP.P_Def_StringUnknown
                 Else
+                    'unbekannte, aber nicht unterdrückte Nummer
                     .AnrName = Telefonat.TelNr
                 End If
             Else
                 .TelNr = Telefonat.TelNr
                 .AnrName = Telefonat.Anrufer
-                If TimerAktualisieren IsNot Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
             End If
 
             .Firma = Telefonat.Companies
@@ -157,6 +155,10 @@ Public Class Popup
             .WorkerReportsProgress = False
             .RunWorkerAsync(argument:=Telefonat)
         End With
+    End Sub
+
+    Friend Sub UpdateAnrMon(ByVal tmpTelefonat As C_Telefonat)
+        AnrMonausfüllen(tmpTelefonat.PopupAnrMon, tmpTelefonat)
     End Sub
 
     ''' <summary>
@@ -185,8 +187,6 @@ Public Class Popup
             AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
 
             AnrmonClosed = False
-
-            'If Aktualisieren Then TimerAktualisieren = C_hf.SetTimer(500)
 
             C_OLI.KeepoInspActivated(False)
 
@@ -234,14 +234,6 @@ Public Class Popup
         BWAnrMonEinblenden = Nothing
     End Sub
 
-    Private Sub TimerAktualisieren_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerAktualisieren.Elapsed
-        For Each tmpTelefonat As C_Telefonat In TelefonatsListe
-            If tmpTelefonat.PopupAnrMon IsNot Nothing Then
-                AnrMonausfüllen(tmpTelefonat.PopupAnrMon, tmpTelefonat)
-            End If
-        Next
-    End Sub
-
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles PopUpAnrufMonitor.Close
         CType(sender, F_AnrMon).Hide()
     End Sub
@@ -259,8 +251,6 @@ Public Class Popup
         AnrmonClosed = True
 
         If Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
-
-        If TimerAktualisieren IsNot Nothing Then TimerAktualisieren = C_hf.KillTimer(TimerAktualisieren)
 
         ' Prüfen ob Anrufmonitor in der Telefonliste vorhanden ist
         ' Ja: Dort Löschen
@@ -441,7 +431,6 @@ Public Class Popup
                 'ToolStripMenuItemKopieren.Dispose()
                 'AnrMonContextMenuStrip.Dispose()
                 'CompContainer.Dispose()
-                'TimerAktualisieren.Dispose()
                 'PopUpAnrMon.Dispose()
                 'PopUpStoppUhr.Dispose()
             End If
