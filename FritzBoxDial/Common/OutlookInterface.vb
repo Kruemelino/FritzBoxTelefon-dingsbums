@@ -405,24 +405,29 @@ Public Class OutlookInterface
     Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
         Dim TVImageList As Windows.Forms.ImageList
-        TVImageList = New Windows.Forms.ImageList
-        TVImageList.Images.Add("Kontakt", My.Resources.Bild4_1)
-        TVImageList.Images.Add("KontaktSel", My.Resources.Bild4_2)
-        TreeView.ImageList = TVImageList
-        TreeView.SelectedImageKey = "KontaktSel"
-        KontaktOrdnerInTreeView(olNamespace, TreeView)
-    End Sub
-    Private Overloads Sub KontaktOrdnerInTreeView(ByVal NamensRaum As Outlook.NameSpace, ByVal TreeView As Windows.Forms.TreeView)
-        TreeView.Nodes.Add("Kontaktordner")
-        '  Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         Dim j As Integer = 1
-        Do While (j <= NamensRaum.Folders.Count)
-            KontaktOrdnerInTreeView(NamensRaum.Folders.Item(j), TreeView, TreeView.Nodes(0))
-            j = j + 1
+
+        TVImageList = New Windows.Forms.ImageList
+
+        With TVImageList
+            .Images.Add("Kontakt", My.Resources.Bild4_1)
+            .Images.Add("KontaktSel", My.Resources.Bild4_2)
+        End With
+
+        With TreeView
+            .ImageList = TVImageList
+            .SelectedImageKey = "KontaktSel"
+            .Nodes.Add("Kontaktordner")
+        End With
+        C_hf.LogFile("GetKontaktOrdnerInTreeView, Anzahl Ordner: " & olNamespace.Folders.Count)
+        Do While (j <= olNamespace.Folders.Count)
+            KontaktOrdnerInTreeView(olNamespace.Folders.Item(j), TreeView, TreeView.Nodes(0))
+            j += 1
             Windows.Forms.Application.DoEvents()
         Loop
     End Sub
-    Private Overloads Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
+
+    Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
         Dim iOrdner As Integer
         Dim SubFolder As Outlook.MAPIFolder
         Dim ChildNode As System.Windows.Forms.TreeNode
@@ -430,16 +435,16 @@ Public Class OutlookInterface
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count)
             SubFolder = Ordner.Folders.Item(iOrdner)
+            C_hf.LogFile("KontaktOrdnerInTreeView, Ordner: " & SubFolder.Name & ", Anzahl Unterordner:" & SubFolder.Folders.Count)
             ChildNode = BaseNode
             If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
                 ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
                 ChildNode.Tag = SubFolder.EntryID & ";" & SubFolder.StoreID
             End If
             KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-            iOrdner = iOrdner + 1
+            iOrdner += 1
             Windows.Forms.Application.DoEvents()
         Loop
-
     End Sub
 #End Region
 End Class
