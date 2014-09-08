@@ -489,8 +489,11 @@ Friend Class AnrufMonitor
                         'Formatiere die Telefonnummer
                         .TelNr = C_hf.formatTelNr(.TelNr)
                     End If
-                    ' Hier Anrufmonitor aktualisieren!
-                    C_Popup.UpdateAnrMon(Telefonat)
+                    ' Hier Anrufmonitor aktualisieren! Nicht beim Journalimport!
+                    If Telefonat.PopupAnrMon IsNot Nothing Then
+                        C_Popup.UpdateAnrMon(Telefonat)
+                    End If
+
 
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
