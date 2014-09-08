@@ -119,6 +119,11 @@ Friend Class formCfg
         Me.TBAnrMonY.Text = CStr(C_DP.P_TBAnrMonY)
         Me.CBAnrMonMove.Checked = C_DP.P_CBAnrMonMove
         Me.CBAnrMonTransp.Checked = C_DP.P_CBAnrMonTransp
+
+        If C_DP.P_TBAnrMonMoveGeschwindigkeit < Me.TBAnrMonMoveGeschwindigkeit.Minimum Or C_DP.P_TBAnrMonMoveGeschwindigkeit > Me.TBAnrMonMoveGeschwindigkeit.Maximum Then
+            C_DP.P_TBAnrMonMoveGeschwindigkeit = 0
+        End If
+
         Me.TBAnrMonMoveGeschwindigkeit.Value = C_DP.P_TBAnrMonMoveGeschwindigkeit
         Me.CBoxAnrMonStartPosition.SelectedIndex = C_DP.P_CBoxAnrMonStartPosition
         Me.CBoxAnrMonMoveDirection.SelectedIndex = C_DP.P_CBoxAnrMonMoveDirection

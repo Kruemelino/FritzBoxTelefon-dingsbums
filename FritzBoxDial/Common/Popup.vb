@@ -212,7 +212,12 @@ Public Class Popup
             C_OLI.KeepoInspActivated(True)
 
             Do
-                C_hf.ThreadSleep(20)
+                ' Steuerung der Einblendgeschwindigkeit mit der Wartezeit des Threads
+                '10: Schnell 
+                '20: Normal
+                '30: Langsam
+                'C_DP.P_TBAnrMonMoveGeschwindigkeit
+                C_hf.ThreadSleep(20 + -1 * C_DP.P_TBAnrMonMoveGeschwindigkeit)
                 Telefonat.PopupAnrMon.tmAnimation_Tick()
                 Windows.Forms.Application.DoEvents()
             Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
