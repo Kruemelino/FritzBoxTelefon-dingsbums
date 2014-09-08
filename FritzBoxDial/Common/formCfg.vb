@@ -90,167 +90,171 @@ Friend Class formCfg
 #Region "Ausfüllen"
 
     Private Sub Ausfüllen()
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Config_FileName)
+        With C_DP
+
+            Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & .P_Arbeitsverzeichnis & .P_Def_Config_FileName)
 #If OVer >= 14 Then
-        If Me.FBDB_MP.TabPages.Item("PSymbolleiste") IsNot Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
+            If Me.FBDB_MP.TabPages.Item("PSymbolleiste") IsNot Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
 #End If
-        ' Beim Einblenden die Werte aus der Registry einlesen
-        ' Einstellungen für das Wählmakro laden
-        Me.TBLandesVW.Text = C_DP.P_TBLandesVW
+            ' Beim Einblenden die Werte aus der Registry einlesen
+            ' Einstellungen für das Wählmakro laden
+            Me.TBLandesVW.Text = .P_TBLandesVW
 
-        Me.TBAmt.Text = CStr(IIf(C_DP.P_TBAmt = C_DP.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt))
-        Me.TBFBAdr.Text = C_DP.P_TBFBAdr
+            Me.TBAmt.Text = CStr(IIf(.P_TBAmt = .P_Def_ErrorMinusOne_String, "", .P_TBAmt))
+            Me.TBFBAdr.Text = .P_TBFBAdr
 
-        Me.CBForceFBAddr.Checked = C_DP.P_CBForceFBAddr
-        Me.TBBenutzer.Text = C_DP.P_TBBenutzer
-        ' Unnötige Spielerrei:
-        'If Not Me.TBBenutzer.Text = C_DP.P_Def_StringEmpty Then
-        '    If C_DP.Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
-        '        Me.TBBenutzer.BackColor = Color.Red
-        '        Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
-        '    End If
-        'End If
+            Me.CBForceFBAddr.Checked = .P_CBForceFBAddr
+            Me.TBBenutzer.Text = .P_TBBenutzer
+            ' Unnötige Spielerrei:
+            'If Not Me.TBBenutzer.Text = .P_Def_StringEmpty Then
+            '    If .Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
+            '        Me.TBBenutzer.BackColor = Color.Red
+            '        Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
+            '    End If
+            'End If
 
-        If Not Len(C_DP.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
-        Me.TBVorwahl.Text = C_DP.P_TBVorwahl
-        Me.TBEnblDauer.Text = CStr(C_DP.P_TBEnblDauer)
-        Me.CBAnrMonAuto.Checked = C_DP.P_CBAnrMonAuto
-        Me.TBAnrMonX.Text = CStr(C_DP.P_TBAnrMonX)
-        Me.TBAnrMonY.Text = CStr(C_DP.P_TBAnrMonY)
-        Me.CBAnrMonMove.Checked = C_DP.P_CBAnrMonMove
-        Me.CBAnrMonTransp.Checked = C_DP.P_CBAnrMonTransp
+            If Not Len(.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
+            Me.TBVorwahl.Text = .P_TBVorwahl
+            Me.TBEnblDauer.Text = CStr(.P_TBEnblDauer)
+            Me.CBAnrMonAuto.Checked = .P_CBAnrMonAuto
+            Me.TBAnrMonX.Text = CStr(.P_TBAnrMonX)
+            Me.TBAnrMonY.Text = CStr(.P_TBAnrMonY)
+            Me.CBAnrMonMove.Checked = .P_CBAnrMonMove
+            Me.CBAnrMonTransp.Checked = .P_CBAnrMonTransp
 
-        If C_DP.P_TBAnrMonMoveGeschwindigkeit < Me.TBAnrMonMoveGeschwindigkeit.Minimum Or C_DP.P_TBAnrMonMoveGeschwindigkeit > Me.TBAnrMonMoveGeschwindigkeit.Maximum Then
-            C_DP.P_TBAnrMonMoveGeschwindigkeit = 0
-        End If
+            If .P_TBAnrMonMoveGeschwindigkeit < Me.TBAnrMonMoveGeschwindigkeit.Minimum Or .P_TBAnrMonMoveGeschwindigkeit > Me.TBAnrMonMoveGeschwindigkeit.Maximum Then
+                .P_TBAnrMonMoveGeschwindigkeit = .P_Def_TBAnrMonMoveGeschwindigkeit
+            End If
 
-        Me.TBAnrMonMoveGeschwindigkeit.Value = C_DP.P_TBAnrMonMoveGeschwindigkeit
-        Me.CBoxAnrMonStartPosition.SelectedIndex = C_DP.P_CBoxAnrMonStartPosition
-        Me.CBoxAnrMonMoveDirection.SelectedIndex = C_DP.P_CBoxAnrMonMoveDirection
-        Me.CBAnrMonZeigeKontakt.Checked = C_DP.P_CBAnrMonZeigeKontakt
-        Me.CBAnrMonContactImage.Checked = C_DP.P_CBAnrMonContactImage
-        Me.CBIndexAus.Checked = C_DP.P_CBIndexAus
-        Me.CBShowMSN.Checked = C_DP.P_CBShowMSN
-        ' optionale allgemeine Einstellungen laden
-        Me.CBAutoClose.Checked = C_DP.P_CBAutoClose
-        Me.CBVoIPBuster.Checked = C_DP.P_CBVoIPBuster
-        Me.CBCbCunterbinden.Checked = C_DP.P_CBCbCunterbinden
-        Me.CBCallByCall.Checked = C_DP.P_CBCallByCall
-        Me.CBDialPort.Checked = C_DP.P_CBDialPort
-        Me.CBRWS.Checked = C_DP.P_CBRWS
-        Me.CBKErstellen.Checked = C_DP.P_CBKErstellen
-        Me.CBLogFile.Checked = C_DP.P_CBLogFile
+            Me.TBAnrMonMoveGeschwindigkeit.Value = .P_TBAnrMonMoveGeschwindigkeit
+            Me.CBoxAnrMonStartPosition.SelectedIndex = .P_CBoxAnrMonStartPosition
+            Me.CBoxAnrMonMoveDirection.SelectedIndex = .P_CBoxAnrMonMoveDirection
+            Me.CBAnrMonZeigeKontakt.Checked = .P_CBAnrMonZeigeKontakt
+            Me.CBAnrMonContactImage.Checked = .P_CBAnrMonContactImage
+            Me.CBIndexAus.Checked = .P_CBIndexAus
+            Me.CBShowMSN.Checked = .P_CBShowMSN
+            ' optionale allgemeine Einstellungen laden
+            Me.CBAutoClose.Checked = .P_CBAutoClose
+            Me.CBVoIPBuster.Checked = .P_CBVoIPBuster
+            Me.CBCbCunterbinden.Checked = .P_CBCbCunterbinden
+            Me.CBCallByCall.Checked = .P_CBCallByCall
+            Me.CBDialPort.Checked = .P_CBDialPort
+            Me.CBRWS.Checked = .P_CBRWS
+            Me.CBKErstellen.Checked = .P_CBKErstellen
+            Me.CBLogFile.Checked = .P_CBLogFile
 #If OVer < 14 Then
-        ' Einstellungen für die Symbolleiste laden
-        Me.CBSymbWwdh.Checked = C_DP.P_CBSymbWwdh
-        Me.CBSymbAnrMon.Checked = C_DP.P_CBSymbAnrMon
-        Me.CBSymbAnrMonNeuStart.Checked = C_DP.P_CBSymbAnrMonNeuStart
-        Me.CBSymbAnrListe.Checked = C_DP.P_CBSymbAnrListe
-        Me.CBSymbDirekt.Checked = C_DP.P_CBSymbDirekt
-        Me.CBSymbRWSuche.Checked = C_DP.P_CBSymbRWSuche
-        Me.CBSymbVIP.Checked = C_DP.P_CBSymbVIP '
-        Me.CBSymbJournalimport.Checked = C_DP.P_CBSymbJournalimport
+            ' Einstellungen für die Symbolleiste laden
+            Me.CBSymbWwdh.Checked = .P_CBSymbWwdh
+            Me.CBSymbAnrMon.Checked = .P_CBSymbAnrMon
+            Me.CBSymbAnrMonNeuStart.Checked = .P_CBSymbAnrMonNeuStart
+            Me.CBSymbAnrListe.Checked = .P_CBSymbAnrListe
+            Me.CBSymbDirekt.Checked = .P_CBSymbDirekt
+            Me.CBSymbRWSuche.Checked = .P_CBSymbRWSuche
+            Me.CBSymbVIP.Checked = .P_CBSymbVIP '
+            Me.CBSymbJournalimport.Checked = .P_CBSymbJournalimport
 #End If
-        Me.CBJImport.Checked = C_DP.P_CBJImport
-        ' Einstellungen füer die Rückwärtssuche laden
-        Me.CBKHO.Checked = C_DP.P_CBKHO
-        Me.CBRWSIndex.Checked = C_DP.P_CBRWSIndex
+            Me.CBJImport.Checked = .P_CBJImport
+            ' Einstellungen füer die Rückwärtssuche laden
+            Me.CBKHO.Checked = .P_CBKHO
+            Me.CBRWSIndex.Checked = .P_CBRWSIndex
 
-        Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(C_DP.P_ComboBoxRWS)
-        If Not Me.CBRWS.Checked Then Me.ComboBoxRWS.Enabled = False
-        ' Einstellungen für das Journal laden
+            Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(.P_ComboBoxRWS)
+            If Not Me.CBRWS.Checked Then Me.ComboBoxRWS.Enabled = False
+            ' Einstellungen für das Journal laden
 
-        Me.CBJournal.Checked = C_DP.P_CBJournal
-        Me.CBUseAnrMon.Checked = C_DP.P_CBUseAnrMon
-        Me.CBCheckMobil.Checked = C_DP.P_CBCheckMobil
+            Me.CBJournal.Checked = .P_CBJournal
+            Me.CBUseAnrMon.Checked = .P_CBUseAnrMon
+            Me.CBCheckMobil.Checked = .P_CBCheckMobil
 
-        Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
-        Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
-        'StoppUhr
-        Me.CBStoppUhrEinblenden.Checked = C_DP.P_CBStoppUhrEinblenden
-        Me.CBStoppUhrAusblenden.Checked = C_DP.P_CBStoppUhrAusblenden
-        Me.TBStoppUhr.Text = CStr(C_DP.P_TBStoppUhr)
+            Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
+            Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
+            'StoppUhr
+            Me.CBStoppUhrEinblenden.Checked = .P_CBStoppUhrEinblenden
+            Me.CBStoppUhrAusblenden.Checked = .P_CBStoppUhrAusblenden
+            Me.TBStoppUhr.Text = CStr(.P_TBStoppUhr)
 
-        Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
-        If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
-        Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
+            Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
+            If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
+            Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
 
-        'Telefonnummernformat
-        Me.TBTelNrMaske.Text = C_DP.P_TBTelNrMaske
-        Me.CBTelNrGruppieren.Checked = C_DP.P_CBTelNrGruppieren
-        Me.CBintl.Checked = C_DP.P_CBintl
-        Me.CBIgnoTelNrFormat.Checked = C_DP.P_CBIgnoTelNrFormat
+            'Telefonnummernformat
+            Me.TBTelNrMaske.Text = .P_TBTelNrMaske
+            Me.CBTelNrGruppieren.Checked = .P_CBTelNrGruppieren
+            Me.CBintl.Checked = .P_CBintl
+            Me.CBIgnoTelNrFormat.Checked = .P_CBIgnoTelNrFormat
 
 #If OVer < 14 Then
         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
-        'Phoner
-        Dim PhonerVerfuegbar As Boolean = C_DP.P_PhonerVerfügbar
-        Me.PanelPhoner.Enabled = PhonerVerfuegbar
-        If PhonerVerfuegbar Then
-            Me.CBPhoner.Checked = C_DP.P_CBPhoner
-        Else
-            Me.CBPhoner.Checked = False
-        End If
-        Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfuegbar, "", " nicht")), , , CompareMethod.Text)
-        'Me.CBPhonerKeineFB.Checked = CBool(IIf(C_DP.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
-        'If Not Me.CBPhonerKeineFB.Checked Then
+            'Phoner
+            Dim PhonerVerfuegbar As Boolean = .P_PhonerVerfügbar
+            Me.PanelPhoner.Enabled = PhonerVerfuegbar
+            If PhonerVerfuegbar Then
+                Me.CBPhoner.Checked = .P_CBPhoner
+            Else
+                Me.CBPhoner.Checked = False
+            End If
+            Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfuegbar, "", " nicht")), , , CompareMethod.Text)
+            'Me.CBPhonerKeineFB.Checked = CBool(IIf(.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
+            'If Not Me.CBPhonerKeineFB.Checked Then
 
-        Dim xPathTeile As New ArrayList
-        Dim tmpTelefon As String
+            Dim xPathTeile As New ArrayList
+            Dim tmpTelefon As String
 
-        'Statistik zurückschreiben
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
-            .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
-            .Add("TelName")
+            'Statistik zurückschreiben
+            With xPathTeile
+                .Add("Telefone")
+                .Add("Telefone")
+                .Add("*")
+                .Add("Telefon")
+                .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+                .Add("TelName")
+            End With
+
+            tmpTelefon = .Read(xPathTeile, "Phoner")
+            If InStr(tmpTelefon, ";", CompareMethod.Text) = 0 Then
+                Me.ComboBoxPhonerSIP.Items.Add(tmpTelefon)
+            Else
+                Me.ComboBoxPhonerSIP.DataSource = Split(tmpTelefon, ";", , CompareMethod.Text)
+            End If
+
+            If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then
+                Me.ComboBoxPhonerSIP.SelectedIndex = .P_ComboBoxPhonerSIP
+            End If
+
+
+            'Else
+            'Me.ComboBoxPhonerSIP.SelectedIndex = 0
+            'Me.ComboBoxPhonerSIP.Enabled = False
+            'End If
+            Me.CBPhonerAnrMon.Checked = .P_CBPhonerAnrMon
+            If Not Len(.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
+
+            Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
+            Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
+            Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
+            Me.PanelPhoner.Enabled = PhonerInstalliert
+            .P_PhonerVerfügbar = PhonerInstalliert
+            ' Notiz
+            Me.CBNote.Checked = .P_CBNote
         End With
-
-        tmpTelefon = C_DP.Read(xPathTeile, "Phoner")
-        If InStr(tmpTelefon, ";", CompareMethod.Text) = 0 Then
-            Me.ComboBoxPhonerSIP.Items.Add(tmpTelefon)
-        Else
-            Me.ComboBoxPhonerSIP.DataSource = Split(tmpTelefon, ";", , CompareMethod.Text)
-        End If
-
-        If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then
-            Me.ComboBoxPhonerSIP.SelectedIndex = C_DP.P_ComboBoxPhonerSIP
-        End If
-
-
-        'Else
-        'Me.ComboBoxPhonerSIP.SelectedIndex = 0
-        'Me.ComboBoxPhonerSIP.Enabled = False
-        'End If
-        Me.CBPhonerAnrMon.Checked = C_DP.P_CBPhonerAnrMon
-        If Not Len(C_DP.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
-
-        Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
-        Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
-        Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
-        Me.PanelPhoner.Enabled = PhonerInstalliert
-        C_DP.P_PhonerVerfügbar = PhonerInstalliert
-        ' Notiz
-        Me.CBNote.Checked = C_DP.P_CBNote
         'TreeView
-        With Me.TVOutlookContact
-            .Enabled = False
-            If .Nodes.Count > 0 Then .Nodes.Clear()
-        End With
+            With Me.TVOutlookContact
+                .Enabled = False
+                If .Nodes.Count > 0 Then .Nodes.Clear()
+            End With
 
-        BWTreeView = New BackgroundWorker
-        With BWTreeView
-            .WorkerReportsProgress = False
-            .RunWorkerAsync(True)
-        End With
+            BWTreeView = New BackgroundWorker
+            With BWTreeView
+                .WorkerReportsProgress = False
+                .RunWorkerAsync(True)
+            End With
 
-        FillLogTB()
-        FillTelListe()
-        CLBTelNrAusfüllen()
+
+            FillLogTB()
+            FillTelListe()
+            CLBTelNrAusfüllen()
     End Sub
 
     ''' <summary>

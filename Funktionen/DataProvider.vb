@@ -1789,7 +1789,7 @@ Public Class DataProvider
     End Property
     Public ReadOnly Property P_Def_TBAnrMonMoveGeschwindigkeit() As Integer
         Get
-            Return 5
+            Return 0
         End Get
     End Property
     Public ReadOnly Property P_Def_CBoxAnrMonStartPosition() As Integer
