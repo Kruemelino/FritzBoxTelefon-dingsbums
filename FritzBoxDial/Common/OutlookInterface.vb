@@ -404,6 +404,7 @@ Public Class OutlookInterface
 #Region "TreeView"
     Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
+        C_hf.LogFile("GetKontaktOrdnerInTreeView: olNamespace Is Nothing: " & CStr(olNamespace Is Nothing))
         Dim TVImageList As Windows.Forms.ImageList
         Dim j As Integer = 1
 
@@ -419,12 +420,14 @@ Public Class OutlookInterface
             .SelectedImageKey = "KontaktSel"
             .Nodes.Add("Kontaktordner")
         End With
+
         C_hf.LogFile("GetKontaktOrdnerInTreeView, Anzahl Ordner: " & olNamespace.Folders.Count)
         Do While (j <= olNamespace.Folders.Count)
             KontaktOrdnerInTreeView(olNamespace.Folders.Item(j), TreeView, TreeView.Nodes(0))
             j += 1
             Windows.Forms.Application.DoEvents()
         Loop
+        C_hf.LogFile("GetKontaktOrdnerInTreeView: Schleife durchlaufen")
     End Sub
 
     Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
@@ -445,6 +448,7 @@ Public Class OutlookInterface
             iOrdner += 1
             Windows.Forms.Application.DoEvents()
         Loop
+        C_hf.LogFile("KontaktOrdnerInTreeView: Schleife durchlaufen")
     End Sub
 #End Region
 End Class

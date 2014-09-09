@@ -200,7 +200,11 @@ Public Class Helfer
                 End If
                 Try
                     .WriteAllText(LogDatei, Date.Now & " - " & Meldung & vbNewLine, True)
-                Catch : End Try
+                Catch ex As Exception
+                    MsgBox("Logfile konnte nicht geschrieben werden:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & _
+                                "Meldung: " & Meldung & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & _
+                                "Fehlermeldung: " & ex.Message, MsgBoxStyle.Critical, "LogFile")
+                End Try
             End With
         End If
         Return True

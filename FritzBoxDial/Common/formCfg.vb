@@ -240,21 +240,22 @@ Friend Class formCfg
             Me.CBNote.Checked = .P_CBNote
         End With
         'TreeView
-            With Me.TVOutlookContact
-                .Enabled = False
-                If .Nodes.Count > 0 Then .Nodes.Clear()
-            End With
+        C_hf.LogFile("Config: Starte TreeView ausfüllen")
+        With Me.TVOutlookContact
+            .Enabled = False
+            If .Nodes.Count > 0 Then .Nodes.Clear()
+        End With
 
-            BWTreeView = New BackgroundWorker
-            With BWTreeView
-                .WorkerReportsProgress = False
-                .RunWorkerAsync(True)
-            End With
+        BWTreeView = New BackgroundWorker
+        With BWTreeView
+            .WorkerReportsProgress = False
+            C_hf.LogFile("Config: Starte TreeView Backgroundworker")
+            .RunWorkerAsync(True)
+        End With
 
-
-            FillLogTB()
-            FillTelListe()
-            CLBTelNrAusfüllen()
+        FillLogTB()
+        FillTelListe()
+        CLBTelNrAusfüllen()
     End Sub
 
     ''' <summary>
@@ -1351,8 +1352,9 @@ Friend Class formCfg
             Me.Invoke(D)
         Else
             Dim tmpNode As TreeNode()
-
+            C_hf.LogFile("DelSetTreeView: Starte rekursive Suche")
             C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
+            C_hf.LogFile("DelSetTreeView: Rekursive Suche beendet")
             With Me.TVOutlookContact
                 tmpNode = .Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
                 If Not tmpNode.Length = 0 Then .SelectedNode = tmpNode(0)
