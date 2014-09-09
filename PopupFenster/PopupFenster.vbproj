@@ -80,10 +80,10 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common.vb" />
-    <Compile Include="StoppuhrForm.vb">
+    <Compile Include="Common.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="StoppuhrForm.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -99,9 +99,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="AnrMonForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AnrMonForm.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
