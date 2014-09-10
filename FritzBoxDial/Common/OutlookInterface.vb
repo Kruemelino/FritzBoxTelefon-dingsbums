@@ -1,4 +1,5 @@
-﻿Friend Class C_Telefonat
+﻿
+Friend Class C_Telefonat
     Friend Enum AnrufRichtung
         Eingehend = 1
         Ausgehend = 0
@@ -406,7 +407,7 @@ Public Class OutlookInterface
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
         C_hf.LogFile("GetKontaktOrdnerInTreeView: olNamespace Is Nothing: " & CStr(olNamespace Is Nothing))
         Dim TVImageList As Windows.Forms.ImageList
-        Dim j As Integer = 1
+        'Dim j As Integer = 1
 
         TVImageList = New Windows.Forms.ImageList
 
@@ -422,22 +423,18 @@ Public Class OutlookInterface
         End With
 
         C_hf.LogFile("GetKontaktOrdnerInTreeView, Anzahl Ordner: " & olNamespace.Folders.Count)
-        Do While (j <= olNamespace.Folders.Count)
-            KontaktOrdnerInTreeView(olNamespace.Folders.Item(j), TreeView, TreeView.Nodes(0))
-            j += 1
-            Windows.Forms.Application.DoEvents()
-        Loop
+        ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
+        For Each MAPISubFolder As Outlook.MAPIFolder In olNamespace.Folders
+            KontaktOrdnerInTreeView(MAPISubFolder, TreeView, TreeView.Nodes(0))
+        Next
         C_hf.LogFile("GetKontaktOrdnerInTreeView: Schleife durchlaufen")
     End Sub
 
     Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
-        Dim iOrdner As Integer
-        Dim SubFolder As Outlook.MAPIFolder
         Dim ChildNode As System.Windows.Forms.TreeNode
 
-        iOrdner = 1
-        Do While (iOrdner <= Ordner.Folders.Count)
-            SubFolder = Ordner.Folders.Item(iOrdner)
+        ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
+        For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
             C_hf.LogFile("KontaktOrdnerInTreeView, Ordner: " & SubFolder.Name & ", Anzahl Unterordner:" & SubFolder.Folders.Count)
             ChildNode = BaseNode
             If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
@@ -445,11 +442,11 @@ Public Class OutlookInterface
                 ChildNode.Tag = SubFolder.EntryID & ";" & SubFolder.StoreID
             End If
             KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-            iOrdner += 1
-            Windows.Forms.Application.DoEvents()
-        Loop
+        Next
+
         C_hf.LogFile("KontaktOrdnerInTreeView: Schleife durchlaufen")
     End Sub
 #End Region
+
 End Class
 
