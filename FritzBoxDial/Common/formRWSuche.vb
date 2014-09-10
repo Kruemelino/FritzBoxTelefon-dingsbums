@@ -1,6 +1,4 @@
 Imports System.Windows.Forms
-
-
 Friend Enum RückwärtsSuchmaschine
     RWSDasOertliche = 0
     RWS11880 = 1
