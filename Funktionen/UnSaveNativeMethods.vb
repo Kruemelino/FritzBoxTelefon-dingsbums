@@ -188,6 +188,21 @@ End Enum
     <DllImport("user32.dll", EntryPoint:="ReleaseCapture", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function ReleaseCapture() As Boolean
     End Function
+
+    ''' <summary>
+    ''' Allows an application to check if a connection to the Internet can be established.
+    ''' </summary>
+    ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
+    ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
+    ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
+    ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
+    ''' <param name="dwReserved">This parameter is reserved and must be 0</param>
+    ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
+    ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx</remarks>
+    <DllImport("wininet.dll", EntryPoint:="InternetCheckConnection", SetLastError:=True, CharSet:=CharSet.Unicode)> _
+    Friend Shared Function InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As Boolean
+    End Function
+
 End Class
 
 Public NotInheritable Class OutlookSecurity
@@ -408,6 +423,22 @@ Public NotInheritable Class OutlookSecurity
     Public Shared ReadOnly Property ReleaseCapture() As Boolean
         Get
             Return UnsafeNativeMethods.ReleaseCapture()
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Allows an application to check if a connection to the Internet can be established.
+    ''' </summary>
+    ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
+    ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
+    ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
+    ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
+    ''' <param name="dwReserved">This parameter is reserved and must be 0</param>
+    ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
+    ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx</remarks>
+    Public Shared ReadOnly Property InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As Boolean
+        Get
+            Return UnsafeNativeMethods.InternetCheckConnection(lpszUrl, dwFlags, dwReserved)
         End Get
     End Property
 End Class
