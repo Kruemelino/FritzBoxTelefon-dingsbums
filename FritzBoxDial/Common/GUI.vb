@@ -1277,7 +1277,7 @@ Imports Microsoft.Office.Core
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
-                    .Tag = C_DP.P_Tag_Insp_VIP
+                    .Tag = C_DP.P_CMB_Insp_VIP
                     .Visible = C_DP.P_CBSymbVIP
                 End With
             End If
