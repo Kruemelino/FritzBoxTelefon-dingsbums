@@ -1,6 +1,7 @@
 Imports System.Net
 Imports System.Text
 Imports System.Threading
+Imports System.IO
 
 Public Class Helfer
     Public Enum Vorwahllisten
@@ -191,7 +192,7 @@ Public Class Helfer
 
     End Function
 
-    Public Function LogFile(ByVal Meldung As String) As Boolean
+    Public Sub LogFile(ByVal Meldung As String)
         Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName
         If C_DP.P_CBLogFile Then
             With My.Computer.FileSystem
@@ -200,15 +201,10 @@ Public Class Helfer
                 End If
                 Try
                     .WriteAllText(LogDatei, Date.Now & " - " & Meldung & vbNewLine, True)
-                Catch ex As Exception
-                    MsgBox("Logfile konnte nicht geschrieben werden:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & _
-                                "Meldung: " & Meldung & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & _
-                                "Fehlermeldung: " & ex.Message, MsgBoxStyle.Critical, "LogFile")
-                End Try
+                Catch : End Try
             End With
         End If
-        Return True
-    End Function
+    End Sub
 
     Public Function GetEncoding(ByVal Encoding As String) As System.Text.Encoding
         Select Case LCase(Encoding)

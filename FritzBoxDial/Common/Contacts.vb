@@ -536,49 +536,53 @@ Public Class Contacts
     Friend Sub IndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
             Dim tempTelNr As String
+            Try
+                With olKontakt
 
-            With olKontakt
-                Dim alleTE() As String = {.AssistantTelephoneNumber, _
-                                          .BusinessTelephoneNumber, _
-                                          .Business2TelephoneNumber, _
-                                          .CallbackTelephoneNumber, _
-                                          .CarTelephoneNumber, _
-                                          .CompanyMainTelephoneNumber, _
-                                          .HomeTelephoneNumber, _
-                                          .Home2TelephoneNumber, _
-                                          .ISDNNumber, _
-                                          .MobileTelephoneNumber, _
-                                          .OtherTelephoneNumber, _
-                                          .PagerNumber, _
-                                          .PrimaryTelephoneNumber, _
-                                          .RadioTelephoneNumber, _
-                                          .BusinessFaxNumber, _
-                                          .HomeFaxNumber, _
-                                          .OtherFaxNumber, _
-                                          .TelexNumber, _
-                                          .TTYTDDTelephoneNumber}
+                    Dim alleTE() As String = {.AssistantTelephoneNumber, _
+                                              .BusinessTelephoneNumber, _
+                                              .Business2TelephoneNumber, _
+                                              .CallbackTelephoneNumber, _
+                                              .CarTelephoneNumber, _
+                                              .CompanyMainTelephoneNumber, _
+                                              .HomeTelephoneNumber, _
+                                              .Home2TelephoneNumber, _
+                                              .ISDNNumber, _
+                                              .MobileTelephoneNumber, _
+                                              .OtherTelephoneNumber, _
+                                              .PagerNumber, _
+                                              .PrimaryTelephoneNumber, _
+                                              .RadioTelephoneNumber, _
+                                              .BusinessFaxNumber, _
+                                              .HomeFaxNumber, _
+                                              .OtherFaxNumber, _
+                                              .TelexNumber, _
+                                              .TTYTDDTelephoneNumber}
 
-                For i = LBound(alleTE) To UBound(alleTE)
-                    If Not alleTE(i) = C_DP.P_Def_StringEmpty Then ' Fall: Telefonnummer vorhanden
-                        If .UserProperties.Find(C_DP.P_Def_UserProperties(i)) Is Nothing Then ' Fall Index nicht vorhanden
-                            .UserProperties.Add(C_DP.P_Def_UserProperties(i), Outlook.OlUserPropertyType.olText, False)
+                    For i = LBound(alleTE) To UBound(alleTE)
+                        If Not alleTE(i) = C_DP.P_Def_StringEmpty Then ' Fall: Telefonnummer vorhanden
+                            If .UserProperties.Find(C_DP.P_Def_UserProperties(i)) Is Nothing Then ' Fall Index nicht vorhanden
+                                .UserProperties.Add(C_DP.P_Def_UserProperties(i), Outlook.OlUserPropertyType.olText, False)
+                            End If
+
+                            tempTelNr = C_hf.nurZiffern(alleTE(i))
+                            If Not CStr(.UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value) = tempTelNr Then
+                                .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value = tempTelNr
+                            End If
+                        ElseIf .UserProperties.Find(C_DP.P_Def_UserProperties(i)) IsNot Nothing Then ' Fall:Index vorhanden, Telefonnummer nicht
+                            .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Delete()
                         End If
+                    Next
 
-                        tempTelNr = C_hf.nurZiffern(alleTE(i))
-                        If Not CStr(.UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value) = tempTelNr Then
-                            .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Value = tempTelNr
-                        End If
-                    ElseIf .UserProperties.Find(C_DP.P_Def_UserProperties(i)) IsNot Nothing Then ' Fall:Index vorhanden, Telefonnummer nicht
-                        .UserProperties.Find(C_DP.P_Def_UserProperties(i)).Delete()
+                    If Not .Saved Then
+                        .Save()
+                        C_hf.LogFile("Kontakt " & olKontakt.FullNameAndCompany & " wurde durch die Indizierung gespeichert.")
                     End If
-                Next
 
-                If Not .Saved Then
-                    .Save()
-                    C_hf.LogFile("Kontakt " & olKontakt.FullNameAndCompany & " wurde durch die Indizierung gespeichert.")
-                End If
-
-            End With
+                End With
+            Catch ex As Exception
+                C_hf.LogFile("Zugriff auf Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zuggriffen werden.")
+            End Try
         End If
     End Sub
 

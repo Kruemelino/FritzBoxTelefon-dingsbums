@@ -422,12 +422,10 @@ Public Class OutlookInterface
             .Nodes.Add("Kontaktordner")
         End With
 
-        C_hf.LogFile("GetKontaktOrdnerInTreeView, Anzahl Ordner: " & olNamespace.Folders.Count)
         ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
         For Each MAPISubFolder As Outlook.MAPIFolder In olNamespace.Folders
             KontaktOrdnerInTreeView(MAPISubFolder, TreeView, TreeView.Nodes(0))
         Next
-        C_hf.LogFile("GetKontaktOrdnerInTreeView: Schleife durchlaufen")
     End Sub
 
     Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
@@ -435,16 +433,22 @@ Public Class OutlookInterface
 
         ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
         For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
-            C_hf.LogFile("KontaktOrdnerInTreeView, Ordner: " & SubFolder.Name & ", Anzahl Unterordner:" & SubFolder.Folders.Count)
-            ChildNode = BaseNode
+
             If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
-                ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
-                ChildNode.Tag = SubFolder.EntryID & ";" & SubFolder.StoreID
+                Try
+                    ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
+                    ChildNode.Tag = ChildNode.Name 'SubFolder.EntryID & ";" & SubFolder.StoreID
+                Catch ex As Exception
+                    C_hf.LogFile("Zugriff auf Ornder " & SubFolder.Name & " kann nicht zuggriffen werden.")
+                    ChildNode = BaseNode
+                End Try
+            Else
+                ChildNode = BaseNode
             End If
+
             KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
         Next
 
-        C_hf.LogFile("KontaktOrdnerInTreeView: Schleife durchlaufen")
     End Sub
 #End Region
 

@@ -1152,15 +1152,11 @@ Friend Class formCfg
     Private Function ZähleKontakte(ByVal Ordner As Outlook.MAPIFolder, ByVal NamensRaum As Outlook.NameSpace) As Integer
 
         ZähleKontakte = 0
-        Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
-
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         If NamensRaum IsNot Nothing Then
-            Dim j As Integer = 1
-            Do While (j <= NamensRaum.Folders.Count)
-                ZähleKontakte(CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder), Nothing)
-                j = j + 1
-            Loop
+            For Each olFolder As Outlook.MAPIFolder In NamensRaum.Folders
+                ZähleKontakte(olFolder, Nothing)
+            Next
             Return 0
         End If
 
@@ -1170,12 +1166,9 @@ Friend Class formCfg
         End If
 
         ' Unterordner werden rekursiv durchsucht
-        iOrdner = 1
-        Do While (iOrdner <= Ordner.Folders.Count)
-            ZähleKontakte(CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder), Nothing)
-            iOrdner = iOrdner + 1
-        Loop
-
+        For Each olFolder As Outlook.MAPIFolder In Ordner.Folders
+            ZähleKontakte(olFolder, Nothing)
+        Next
     End Function
 #End Region
 
@@ -1352,9 +1345,7 @@ Friend Class formCfg
             Me.Invoke(D)
         Else
             Dim tmpNode As TreeNode()
-            C_hf.LogFile("DelSetTreeView: Starte rekursive Suche")
             C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
-            C_hf.LogFile("DelSetTreeView: Rekursive Suche beendet")
             With Me.TVOutlookContact
                 tmpNode = .Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
                 If Not tmpNode.Length = 0 Then .SelectedNode = tmpNode(0)

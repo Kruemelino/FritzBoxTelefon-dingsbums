@@ -1309,6 +1309,7 @@ Partial Class formCfg
         'TVOutlookContact
         '
         Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TVOutlookContact.FullRowSelect = True
         Me.TVOutlookContact.Location = New System.Drawing.Point(257, 39)
         Me.TVOutlookContact.Name = "TVOutlookContact"
         Me.TVOutlookContact.Size = New System.Drawing.Size(307, 70)
