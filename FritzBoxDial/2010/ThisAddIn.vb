@@ -304,7 +304,7 @@ Public Class ThisAddIn
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case C_DP.P_Tag_Insp_Dial
                     C_WClient.WählenAusInspector()
-                Case C_DP.P_Tag_Insp_VIP
+                Case C_DP.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
                         .RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
