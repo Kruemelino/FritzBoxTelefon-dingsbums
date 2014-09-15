@@ -50,7 +50,9 @@ Public Class ThisAddIn
 #Region "Properties"
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7.4"
+            With System.Reflection.Assembly.GetExecutingAssembly.GetName.Version
+                Return .Major & "." & .Minor & "." & .Build
+            End With
         End Get
     End Property
     Friend Shared Property P_oApp() As Outlook.Application
@@ -201,7 +203,7 @@ Public Class ThisAddIn
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
+                    C_KF.P_DefContactFolder.StoreID Then Exit Sub
             Dim KS As New ContactSaved
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)
@@ -302,7 +304,7 @@ Public Class ThisAddIn
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case C_DP.P_Tag_Insp_Dial
                     C_WClient.WählenAusInspector()
-                Case C_DP.P_Tag_Insp_VIP
+                Case C_DP.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
                         .RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
