@@ -405,9 +405,8 @@ Public Class OutlookInterface
 #Region "TreeView"
     Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
-        C_hf.LogFile("GetKontaktOrdnerInTreeView: olNamespace Is Nothing: " & CStr(olNamespace Is Nothing))
         Dim TVImageList As Windows.Forms.ImageList
-        'Dim j As Integer = 1
+        Dim iOrdner As Integer = 1
 
         TVImageList = New Windows.Forms.ImageList
 
@@ -422,32 +421,57 @@ Public Class OutlookInterface
             .Nodes.Add("Kontaktordner")
         End With
 
+        Do While iOrdner <= olNamespace.Folders.Count
+            KontaktOrdnerInTreeView(olNamespace.Folders.Item(iOrdner), TreeView, TreeView.Nodes(0))
+            iOrdner += 1
+            Windows.Forms.Application.DoEvents()
+        Loop
         ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
-        For Each MAPISubFolder As Outlook.MAPIFolder In olNamespace.Folders
-            KontaktOrdnerInTreeView(MAPISubFolder, TreeView, TreeView.Nodes(0))
-        Next
+        'For Each MAPISubFolder As Outlook.MAPIFolder In olNamespace.Folders
+        '    KontaktOrdnerInTreeView(MAPISubFolder, TreeView, TreeView.Nodes(0))
+        'Next
     End Sub
 
     Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
         Dim ChildNode As System.Windows.Forms.TreeNode
+        Dim iOrdner As Integer = 1
+        Dim SubFolder As Outlook.MAPIFolder
 
-        ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
-        For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
-
+        Do While iOrdner <= Ordner.Folders.Count
+            SubFolder = Ordner.Folders.Item(iOrdner)
+            'C_hf.LogFile("KontaktOrdnerInTreeView, Ordner: " & SubFolder.Name & ", Anzahl Unterordner:" & SubFolder.Folders.Count)
+            ChildNode = BaseNode
             If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
                 Try
                     ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
                     ChildNode.Tag = ChildNode.Name 'SubFolder.EntryID & ";" & SubFolder.StoreID
                 Catch ex As Exception
-                    C_hf.LogFile("Zugriff auf Ornder " & SubFolder.Name & " kann nicht zuggriffen werden.")
+                    C_hf.LogFile("Zugriff auf Ordner " & SubFolder.Name & " kann nicht zugegriffen werden.")
                     ChildNode = BaseNode
                 End Try
-            Else
-                ChildNode = BaseNode
             End If
-
             KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-        Next
+            iOrdner += 1
+            Windows.Forms.Application.DoEvents()
+        Loop
+
+        ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
+        'For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
+
+        '    If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        '        Try
+        '            ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
+        '            ChildNode.Tag = ChildNode.Name 'SubFolder.EntryID & ";" & SubFolder.StoreID
+        '        Catch ex As Exception
+        '            C_hf.LogFile("Zugriff auf Ornder " & SubFolder.Name & " kann nicht zuggriffen werden.")
+        '            ChildNode = BaseNode
+        '        End Try
+        '    Else
+        '        ChildNode = BaseNode
+        '    End If
+
+        '    KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
+        'Next
 
     End Sub
 #End Region
