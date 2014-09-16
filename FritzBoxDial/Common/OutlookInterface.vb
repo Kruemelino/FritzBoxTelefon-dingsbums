@@ -446,7 +446,7 @@ Public Class OutlookInterface
                     ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
                     ChildNode.Tag = ChildNode.Name 'SubFolder.EntryID & ";" & SubFolder.StoreID
                 Catch ex As Exception
-                    C_hf.LogFile("Zugriff auf Ordner " & SubFolder.Name & " kann nicht zugegriffen werden.")
+                    C_hf.LogFile("Auf den Ordner " & SubFolder.Name & " kann nicht zugegriffen werden.")
                     ChildNode = BaseNode
                 End Try
             End If
@@ -463,7 +463,7 @@ Public Class OutlookInterface
         '            ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
         '            ChildNode.Tag = ChildNode.Name 'SubFolder.EntryID & ";" & SubFolder.StoreID
         '        Catch ex As Exception
-        '            C_hf.LogFile("Zugriff auf Ornder " & SubFolder.Name & " kann nicht zuggriffen werden.")
+        '            C_hf.LogFile("Auf den Ordner " & SubFolder.Name & " kann nicht zugegriffen werden.")
         '            ChildNode = BaseNode
         '        End Try
         '    Else

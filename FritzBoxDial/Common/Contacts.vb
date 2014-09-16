@@ -581,7 +581,7 @@ Public Class Contacts
 
                 End With
             Catch ex As Exception
-                C_hf.LogFile("Zugriff auf Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zuggriffen werden.")
+                C_hf.LogFile("Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden.")
             End Try
         End If
     End Sub
