@@ -97,6 +97,12 @@ Public Class Helfer
         End If
     End Sub
 
+    ''' <summary>
+    ''' Führt einen Ping zur Gegenstelle aus.
+    ''' </summary>
+    ''' <param name="IPAdresse">IP-Adresse Netzwerkname der Gegenstelle. Rückgabe der IP-Adresse</param>
+    ''' <returns>Boolean</returns>
+    ''' <remarks></remarks>
     Public Function Ping(ByRef IPAdresse As String) As Boolean
         Ping = False
 
