@@ -240,7 +240,6 @@ Friend Class formCfg
             Me.CBNote.Checked = .P_CBNote
         End With
         'TreeView
-        C_hf.LogFile("Config: Starte TreeView ausfüllen")
         With Me.TVOutlookContact
             .Enabled = False
             If .Nodes.Count > 0 Then .Nodes.Clear()
@@ -249,7 +248,6 @@ Friend Class formCfg
         BWTreeView = New BackgroundWorker
         With BWTreeView
             .WorkerReportsProgress = False
-            C_hf.LogFile("Config: Starte TreeView Backgroundworker")
             .RunWorkerAsync(True)
         End With
 
@@ -1126,7 +1124,7 @@ Friend Class formCfg
 
     End Sub
 
-#Region "Vorbereitung"
+#Region "Indizierung - Vorbereitung"
     Private Function ErmittleKontaktanzahl() As Boolean
         ErmittleKontaktanzahl = True
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
@@ -1172,7 +1170,7 @@ Friend Class formCfg
     End Function
 #End Region
 
-    Private Sub KontaktIndexer(ByVal LandesVW As String, Optional ByVal Ordner As Outlook.MAPIFolder = Nothing, Optional ByVal NamensRaum As Outlook.NameSpace = Nothing) 'as Boolean
+    Private Sub KontaktIndexer(Optional ByVal Ordner As Outlook.MAPIFolder = Nothing, Optional ByVal NamensRaum As Outlook.NameSpace = Nothing) 'as Boolean
         'KontaktIndexer = False
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
@@ -1182,7 +1180,7 @@ Friend Class formCfg
         If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
-                KontaktIndexer(LandesVW, CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder))
+                KontaktIndexer(CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder))
                 j = j + 1
             Loop
             aktKontakt = Nothing
@@ -1212,7 +1210,7 @@ Friend Class formCfg
             ' Unterordner werden rekursiv durchsucht
             iOrdner = 1
             Do While (iOrdner <= Ordner.Folders.Count) And Not BWIndexer.CancellationPending
-                KontaktIndexer(LandesVW, CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder))
+                KontaktIndexer(CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder))
                 iOrdner = iOrdner + 1
             Loop
             aktKontakt = Nothing
@@ -1374,13 +1372,13 @@ Friend Class formCfg
         If Me.CBKHO.Checked Then
             olfolder = C_KF.P_DefContactFolder
             If Me.RadioButtonErstelle.Checked Then
-                KontaktIndexer(C_DP.P_TBLandesVW, Ordner:=olfolder)
+                KontaktIndexer(Ordner:=olfolder)
             ElseIf Me.RadioButtonEntfernen.Checked Then
                 KontaktDeIndexer(olfolder, Nothing)
             End If
         Else
             If Me.RadioButtonErstelle.Checked Then
-                KontaktIndexer(C_DP.P_TBLandesVW, NamensRaum:=olNamespace)
+                KontaktIndexer(NamensRaum:=olNamespace)
             ElseIf Me.RadioButtonEntfernen.Checked Then
                 KontaktDeIndexer(Nothing, olNamespace)
             End If
@@ -1409,9 +1407,9 @@ Friend Class formCfg
         Dauer = Date.Now - Startzeit
         If Me.RadioButtonErstelle.Checked And Not Me.RadioButtonEntfernen.Checked Then
             C_DP.P_LLetzteIndizierung = Date.Now
-            C_hf.LogFile("Indizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
+            C_hf.LogFile("Indizierung abgeschlossen: " & Me.ProgressBarIndex.Value & " von " & Anzahl & " Kontakten in " & Dauer.TotalSeconds & " s")
         ElseIf Me.RadioButtonEntfernen.Checked And Not Me.RadioButtonErstelle.Checked Then
-            C_hf.LogFile("Deindizierung abgeschlossen: " & Anzahl & " Kontakte in " & Dauer.TotalMilliseconds & " ms")
+            C_hf.LogFile("Deindizierung abgeschlossen: " & Me.ProgressBarIndex.Value & " von " & Anzahl & " Kontakten in " & Dauer.TotalSeconds & " s")
         End If
     End Sub
 
@@ -1427,7 +1425,7 @@ Friend Class formCfg
     End Sub
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
-        AddLine("BackgroundWorker ist fertig.")
+        AddLine("BackgroundWorker zum Einlesen der Telefone ist fertig.")
         Dim xPathTeile As New ArrayList
         Dim tmpTelefon As String
 
