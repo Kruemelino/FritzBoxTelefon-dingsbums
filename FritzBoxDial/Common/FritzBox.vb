@@ -78,7 +78,7 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/login_sid.lua?username=" &amp; FBBenutzer &amp; "&amp;response=" &amp; SIDResponse
     ''' </summary>
     ''' <param name="FBBenutzer">Hinterlegter Firtz!Box Benutzer</param>
-    ''' <param name="SIDResponse">Erstellres Response</param>
+    ''' <param name="SIDResponse">Erstelltes Response</param>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
@@ -435,7 +435,7 @@ Public Class FritzBox
                 XMLDocLogin = Nothing
             End If
         Else
-            C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description)
+            C_hf.LogFile("FBError (FBLogin): Login übersprungen")
         End If
         Return SID
     End Function
@@ -484,7 +484,7 @@ Public Class FritzBox
                 C_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description)
             End If
         Else
-            C_hf.LogFile("FBError (FBLogout): " & Err.Number & " - " & Err.Description)
+            C_hf.LogFile("FBError (FBLogout): Logout übersprungen")
         End If
         Return False
     End Function
@@ -1574,7 +1574,7 @@ Public Class FritzBox
                 C_hf.LogFile("FBError (DownloadAnrListe): " & Err.Number & " - " & Err.Description & " - " & sLink)
             End If
         Else
-            C_hf.FBDB_MsgBox(C_DP.P_FritzBox_JI_Error1, MsgBoxStyle.Critical, "DownloadAnrListe_DoWork")
+            C_hf.LogFile("DownloadAnrListe: " & C_DP.P_FritzBox_JI_Error1)
         End If
         Return ReturnString
     End Function

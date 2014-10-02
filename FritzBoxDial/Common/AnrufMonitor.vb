@@ -119,7 +119,6 @@ Friend Class AnrufMonitor
 
 #Region "BackgroundWorker"
     Private Sub BWStartTCPReader_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStartTCPReader.DoWork
-        C_hf.ThreadSleep(500)
         Dim IPAddresse As IPAddress = IPAddress.Loopback
         Dim ReceiveThread As Thread
         Dim RemoteEP As IPEndPoint
@@ -127,6 +126,7 @@ Friend Class AnrufMonitor
         Dim FBAnrMonPort As Integer
         Dim AnrMonTCPSocket As Socket
 
+        C_hf.ThreadSleep(500)
 
         If C_DP.P_CBPhonerAnrMon Then
             FBAnrMonPort = C_DP.P_DefaultPhonerAnrMonPort

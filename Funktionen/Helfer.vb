@@ -116,6 +116,7 @@ Public Class Helfer
         Dim timeout As Integer = 120
 
         Options.DontFragment = True
+
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
         Catch ex As Exception
@@ -153,6 +154,10 @@ Public Class Helfer
         PingSender = Nothing
     End Function
 
+    Public Function FastPing(ByVal URL As String) As Boolean
+        Return OutlookSecurity.InternetCheckConnection(URL, 0)
+    End Function
+
     ''' <summary>
     ''' Wandelt die eingegebene IP-Adresse in eine für dieses Addin gültige IPAdresse.
     ''' IPv4 und IPv6 müssen differenziert behandelt werden.
@@ -168,9 +173,10 @@ Public Class Helfer
     ''' <param name="InputIP">IP-Adresse</param>
     ''' <returns>Korrekte IP-Adresse</returns>
     Public Function ValidIP(ByVal InputIP As String) As String
-        ValidIP = C_DP.P_Def_FritzBoxAdress
         Dim IPAddresse As IPAddress = Nothing
         Dim IPHostInfo As IPHostEntry
+
+        ValidIP = C_DP.P_Def_FritzBoxAdress
 
         If IPAddress.TryParse(InputIP, IPAddresse) Then
             Select Case IPAddresse.AddressFamily
@@ -701,8 +707,10 @@ Public Class Helfer
 
 #Region " HTTPTransfer"
     Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
-        httpGET = C_DP.P_Def_StringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
+
+        httpGET = C_DP.P_Def_StringEmpty
+
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp
                 If C_DP.P_Debug_Use_WebClient Then
@@ -735,10 +743,10 @@ Public Class Helfer
                             End With
                         Catch exANE As ArgumentNullException
                             FBError = True
-                            LogFile("httpGET_Stream: " & exANE.Message)
+                            LogFile("httpGET_Stream (ArgumentNullException): " & exANE.Message)
                         Catch exWE As WebException
                             FBError = True
-                            LogFile("httpGET_Stream: " & exWE.Message & " - Link: " & Link)
+                            LogFile("httpGET_Stream (WebException): " & exWE.Message & " - Link: " & Link)
                         End Try
                     End With
                 End If

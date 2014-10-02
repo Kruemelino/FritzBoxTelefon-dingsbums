@@ -48,7 +48,9 @@
         ' Klasse für das PhonerInterface generieren
         C_Phoner = New PhonerInterface(C_HF, C_DP, C_Crypt)
 
+        ' Klasse für das Popup-Fenster
         C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF)
+
         If PrüfeAddin() Then
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
@@ -74,8 +76,8 @@
             End With
 
             ThisAddIn.P_GUI = C_GUI
-            ThisAddIn.P_XML = C_DP
-            ThisAddIn.P_hf = C_HF
+            ThisAddIn.P_DP = C_DP
+            ThisAddIn.P_HF = C_HF
             ThisAddIn.P_KF = C_KF
 
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then
@@ -90,10 +92,13 @@
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String Then
+        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or _
+            C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or _
+            C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String Then
+
             Rückgabe = False
             Me.ShowDialog()
-            Rückgabe = True 'PrüfeAddin()
+            Rückgabe = True
         Else
             Rückgabe = True
         End If
@@ -256,10 +261,7 @@
     End Sub
 
     Private Sub BSchließen_Click(sender As Object, e As EventArgs) Handles BSchließen.Click
-
-        'Me.Dispose()
         Me.Close()
-
     End Sub
 
 End Class

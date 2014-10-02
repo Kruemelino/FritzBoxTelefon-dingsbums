@@ -2876,7 +2876,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_JI_Error1 As String
         Get
-            Return "Der Login in die " & P_Def_FritzBoxName & " ist fehlgeschlagen" & P_Def_NeueZeile & P_Def_NeueZeile & "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
+            Return "Der Login in die " & P_Def_FritzBoxName & " ist fehlgeschlagen. Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
         End Get
     End Property
 
