@@ -47,12 +47,27 @@ Public Class ThisAddIn
     Private Shared C_GUI As GraphicalUserInterface
     Private Shared F_Cfg As formCfg
 
+    Private Initialisierung As formInit
+    Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
+
 #Region "Properties"
+    ''' <summary>
+    ''' Gibt die Versionsnummer des Addins zurück.
+    ''' </summary>
+    ''' <value>System.Reflection.Assembly.GetExecutingAssembly.GetName.Version</value>
+    ''' <returns>.Major.Minor.Build</returns>
+    ''' <remarks></remarks>
     Friend Shared ReadOnly Property Version() As String
         Get
-            Return "3.7.4"
+            With System.Reflection.Assembly.GetExecutingAssembly.GetName.Version
+                Return .Major & "." & .Minor & "." & .Build
+            End With
         End Get
     End Property
+
+    ''' <summary>
+    ''' Gibt die aktuelle Outlook-Application zurück.
+    ''' </summary>
     Friend Shared Property P_oApp() As Outlook.Application
         Get
             Return oApp
@@ -62,7 +77,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_XML() As DataProvider
+    Friend Shared Property P_DP() As DataProvider
         Get
             Return C_DP
         End Get
@@ -71,7 +86,7 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_hf() As Helfer
+    Friend Shared Property P_HF() As Helfer
         Get
             Return C_HF
         End Get
@@ -135,8 +150,6 @@ Public Class ThisAddIn
     End Property
 
 #End Region
-    Private Initialisierung As formInit
-    Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -201,7 +214,7 @@ Public Class ThisAddIn
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    P_oApp.GetNamespace("MAPI").GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).StoreID Then Exit Sub
+                    C_KF.P_DefContactFolder.StoreID Then Exit Sub
             Dim KS As New ContactSaved
             KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
             ListofOpenContacts.Add(KS)
@@ -302,7 +315,7 @@ Public Class ThisAddIn
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case C_DP.P_Tag_Insp_Dial
                     C_WClient.WählenAusInspector()
-                Case C_DP.P_Tag_Insp_VIP
+                Case C_DP.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
                         .RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
