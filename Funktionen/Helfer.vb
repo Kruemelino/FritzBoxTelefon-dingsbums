@@ -424,44 +424,49 @@ Public Class Helfer
 
     Function EigeneVorwahlenEntfernen(ByVal TelNr As String) As String
 
-        Dim tmpVorwahl As String
+        Dim tmpLandesVorwahl As String
+        Dim tmpOrtsVorwahl As String
 
-        ' TelNr bereinigen. vielleicht unnötig
-        TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "++", "00", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "+ ", "+", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "+", "00", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "[", "(", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "]", ")", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "{", "(", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "[", ")", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, "#", "", , , CompareMethod.Text)
-        TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
-        With C_DP
-            'Landesvorwahl vorhanden
-            If Left(TelNr, 2) = "00" Then
-                tmpVorwahl = .P_Def_TBLandesVW
+        If Not TelNr = C_DP.P_Def_StringEmpty Then
 
-                ' 00 davorhängen falls nötig
-                If Not Left(tmpVorwahl, 2) = "00" Then
-                    tmpVorwahl = "00" & tmpVorwahl
+            ' TelNr bereinigen. vielleicht unnötig
+            TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "++", "00", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "+ ", "+", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "+", "00", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "[", "(", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "]", ")", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "{", "(", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "[", ")", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, "#", "", , , CompareMethod.Text)
+            TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
+            With C_DP
+
+                tmpLandesVorwahl = .P_Def_TBLandesVW
+                tmpOrtsVorwahl = .P_TBVorwahl
+
+                ' Führende Null der Ortsvorwahl wegschneiden
+                If Left(tmpOrtsVorwahl, 1) = "0" Then tmpOrtsVorwahl = Mid(.P_TBVorwahl, 2)
+                ' Führende 00 der Landesvorwahl entfernen
+                If Left(tmpLandesVorwahl, 2) = "00" Then tmpLandesVorwahl = Mid(tmpLandesVorwahl, 3)
+
+                ' Landesvorwahl vorhanden
+                If Left(TelNr, 2) = "00" OrElse Left(TelNr, Len(tmpLandesVorwahl & tmpOrtsVorwahl)) = tmpLandesVorwahl & tmpOrtsVorwahl Then
+                    ' 00 davorhängen falls nötig
+                    If Left(TelNr, 2) = "00" Then tmpLandesVorwahl = "00" & tmpLandesVorwahl
+
+                    'Landesvorwahl entfernen
+                    If Left(TelNr, Len(tmpLandesVorwahl)) = tmpLandesVorwahl Then TelNr = Mid(TelNr, Len(tmpLandesVorwahl) + 1)
                 End If
-                'Landesvorwahl entfernen
-                If Left(TelNr, Len(tmpVorwahl)) = tmpVorwahl Then
-                    TelNr = Mid(TelNr, Len(tmpVorwahl) + 1)
-                End If
-            End If
 
-            tmpVorwahl = .P_TBVorwahl
 
-            ' Führende Null der Vorwahl wegschneiden
-            If Left(tmpVorwahl, 1) = "0" Then tmpVorwahl = Mid(.P_TBVorwahl, 2)
-            ' Führende Null der Telefonnummer wegschneide
-            If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
-            ' Vorwahl wegschneiden
-            If Strings.Left(TelNr, Len(tmpVorwahl)) = tmpVorwahl Then TelNr = Mid(TelNr, Len(tmpVorwahl) + 1)
+                ' Führende Null der Telefonnummer wegschneide
+                If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
+                ' Vorwahl wegschneiden
+                If Strings.Left(TelNr, Len(tmpOrtsVorwahl)) = tmpOrtsVorwahl Then TelNr = Mid(TelNr, Len(tmpOrtsVorwahl) + 1)
 
-        End With
+            End With
+        End If
         Return TelNr
     End Function
 
