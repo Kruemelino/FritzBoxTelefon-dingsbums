@@ -1461,7 +1461,7 @@ Public Class FritzBox
                     PushStatus(C_DP.P_FritzBox_Tel_DeviceFound("TAM", DialPort, TelNr, TelName))
                     If P_SpeichereDaten Then
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = IIf(TelNr = C_DP.P_Def_StringEmpty, allin, TelNr)
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                         AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
                         C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
