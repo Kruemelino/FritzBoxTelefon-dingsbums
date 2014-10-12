@@ -365,13 +365,13 @@ Public Class Helfer
                 OrtsVW = C_DP.P_TBVorwahl
                 If Not LandesVW = "0039" Then
                     'Else
-                    If Left(OrtsVW, 1) = "0" Then
+                    If OrtsVW.StartsWith("0") Then
                         OrtsVW = Mid(OrtsVW, 2)
                     End If
                 End If
             End If
 
-            If Left(LandesVW, 2) = "00" Then LandesVW = Replace(LandesVW, "00", "+", 1, 1, CompareMethod.Text)
+            If LandesVW.StartsWith("00") Then LandesVW = Replace(LandesVW, "00", "+", 1, 1, CompareMethod.Text)
         Else
             OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
             LandesVW = C_DP.P_Def_StringEmpty
@@ -441,18 +441,7 @@ Public Class Helfer
 
         If Not TelNr = C_DP.P_Def_StringEmpty Then
 
-            ' TelNr bereinigen. vielleicht unnötig
-            TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "++", "00", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "+ ", "+", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "+", "00", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "[", "(", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "]", ")", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "{", "(", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "[", ")", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "#", "", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
-
+            TelNrBereinigen(TelNr)
 
             With C_DP
 
@@ -488,6 +477,37 @@ Public Class Helfer
         Return TelNr
     End Function
 
+
+    ''' <summary>
+    ''' TelNr bereinigen
+    ''' </summary>
+    ''' <param name="TelNr"></param>
+    ''' <remarks></remarks>
+    Private Sub TelNrBereinigen(ByRef TelNr As String)
+
+        'TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "++", "00", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "+ ", "+", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "+", "00", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "[", "(", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "]", ")", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "{", "(", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "[", ")", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, "#", "", , , CompareMethod.Text)
+        'TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
+
+        TelNr = TelNr.Replace("(0)", " ")
+        TelNr = TelNr.Replace("++", "00")
+        TelNr = TelNr.Replace("+ ", "+")
+        TelNr = TelNr.Replace("+", "00")
+        TelNr = TelNr.Replace("[", "(")
+        TelNr = TelNr.Replace("]", ")")
+        TelNr = TelNr.Replace("{", "(")
+        TelNr = TelNr.Replace("[", ")")
+        TelNr = TelNr.Replace("#", "")
+        TelNr = TelNr.Replace(" ", "")
+    End Sub
+
     Function TelNrTeile(ByVal TelNr As String) As String()
         ' Findet die Ortsvorwahl in einem formatierten Telefonstring
         ' Kriterien: die Ortsvorwahl befindet sich in Klammern
@@ -505,17 +525,10 @@ Public Class Helfer
         Dim ErsteZiffer As String
 
         If Not TelNr = C_DP.P_Def_StringEmpty Then
-            TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "++", "00", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "+ ", "+", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "+", "00", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "[", "(", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "]", ")", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "{", "(", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "[", ")", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, "#", "", , , CompareMethod.Text)
-            TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
-            If Left(TelNr, 2) = "00" Then
+
+            TelNrBereinigen(TelNr)
+
+            If TelNr.StartsWith("00") Then
                 'Landesvorwahl vorhanden
                 LandesVW = VorwahlausDatei(TelNr, My.Resources.Liste_Landesvorwahlen)
                 If Not LandesVW = C_DP.P_Def_StringEmpty Then
@@ -527,12 +540,13 @@ Public Class Helfer
             End If
             LandesVW = Replace(LandesVW, " ", "", , , CompareMethod.Text) 'Leerzeichen entfernen'
 
-            pos1 = InStr(1, TelNr, "(", CompareMethod.Text) + 1
-            pos2 = InStr(1, TelNr, ")", CompareMethod.Text)
+            pos1 = InStr(TelNr, "(", CompareMethod.Text) + 1
+            pos2 = InStr(TelNr, ")", CompareMethod.Text)
             If pos1 = 1 Or pos2 = 0 Then
                 If LandesVW = C_DP.P_Def_TBLandesVW Or LandesVW = C_DP.P_Def_StringEmpty Then 'nur Deutschland
                     ' Ortsvorwahl nicht in Klammern
-                    If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
+
+                    If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1) ' Null entfernen
                     OrtsVW = VorwahlausDatei(TelNr, My.Resources.Liste_Ortsvorwahlen_Deutschland)
 
                     ' Vierstellige Mobilfunkvorwahlen ermitteln
@@ -565,7 +579,7 @@ Public Class Helfer
                             ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
                             If IsOneOf(OrtsVW, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then OrtsVW += ErsteZiffer
                         Case "0039" ' Italien
-                            If Left(TelNr, 1) = "0" Then OrtsVW = "0" & OrtsVW
+                            If TelNr.StartsWith("0") Then OrtsVW = "0" & OrtsVW
                     End Select
                 End If
                 TelNr = Mid(TelNr, Len(OrtsVW) + 1) 'CInt(IIf(Left(TelNr, 1) = "0", 2, 1))
@@ -604,8 +618,8 @@ Public Class Helfer
         Dim tmpErgebnis As String
         Dim Treffer As String = C_DP.P_Def_StringEmpty
 
-        If Left(TelNr, 2) = "00" Then TelNr = Mid(TelNr, 3)
-        If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
+        If TelNr.StartsWith("00") Then TelNr = TelNr.Remove(0, 2)
+        If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
         Do
             i += 1
             Suchmuster = Strings.Left(TelNr, i) & ";*"
@@ -615,22 +629,24 @@ Public Class Helfer
                 Treffer = tmpErgebnis
             End If
             Windows.Forms.Application.DoEvents()
-        Loop Until i = 5 'Loop Until Not VorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
+        Loop Until i = 5
         Return Treffer
     End Function
 
     Function AuslandsVorwahlausDatei(ByVal TelNr As String, ByVal LandesVW As String) As String
-        TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
-        AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
+
         Dim Suchmuster As String
         Dim Vorwahlen() As String = Split(My.Resources.Liste_Ortsvorwahlen_Ausland, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 0
         Dim tmpvorwahl() As String
 
-        If Left(LandesVW, 2) = "00" Then LandesVW = Mid(LandesVW, 3)
-        If Left(LandesVW, 1) = "0" Then LandesVW = Mid(LandesVW, 2)
-        If Left(TelNr, 2) = "00" Then TelNr = Mid(TelNr, 3)
-        If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
+        TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
+        AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
+
+        If LandesVW.StartsWith("00") Then LandesVW = LandesVW.Remove(0, 2)
+        If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
+        If TelNr.StartsWith("00") Then TelNr = TelNr.Remove(0, 2)
+        If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
         Do
             i += 1
             Suchmuster = LandesVW & ";" & Strings.Left(TelNr, i) & ";*"
@@ -696,7 +712,7 @@ Public Class Helfer
         End If
 
         ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
-        If Left(nurZiffern, 3) = "000" Then nurZiffern = Right(nurZiffern, Len(nurZiffern) - 2)
+        If nurZiffern.StartsWith("000") Then nurZiffern = Right(nurZiffern, Len(nurZiffern) - 2)
     End Function '(nurZiffern)
 
     Public Function Mobilnummer(ByVal TelNr As String) As Boolean

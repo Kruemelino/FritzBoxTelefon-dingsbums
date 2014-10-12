@@ -584,9 +584,9 @@ Friend Class AnrufMonitor
                 .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)))
                 If .TelNr = C_DP.P_Def_StringEmpty Then .TelNr = C_DP.P_Def_StringUnknown
                 ' CbC-Vorwahl entfernen
-                If Left(.TelNr, 4) = "0100" Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
-                If Left(.TelNr, 3) = "010" Then .TelNr = Right(.TelNr, Len(.TelNr) - 5)
-                If Not Left(.TelNr, 1) = "0" And Not Left(.TelNr, 2) = "11" And Not Left(.TelNr, 1) = "+" Then .TelNr = C_DP.P_TBVorwahl & .TelNr
+                If .TelNr.StartsWith("0100") Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
+                If .TelNr.StartsWith("010") Then .TelNr = Right(.TelNr, Len(.TelNr) - 5)
+                If Not .TelNr.StartsWith("0") And Not .TelNr.StartsWith("11") And Not .TelNr.StartsWith("+") Then .TelNr = C_DP.P_TBVorwahl & .TelNr
                 ' Raute entfernen
                 If Right(.TelNr, 1) = "#" Then .TelNr = Left(.TelNr, Len(.TelNr) - 1)
                 ' Daten zurücksetzen

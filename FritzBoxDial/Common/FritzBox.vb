@@ -760,9 +760,10 @@ Public Class FritzBox
                             TelNr = Replace(Trim(Mid(Telefon, pos(2), pos(3) - pos(2))), "'", "", , , CompareMethod.Text)
                             TelNr = Replace(TelNr, Chr(10), "", , , CompareMethod.Text)
                             TelNr = Replace(TelNr, Chr(13), "", , , CompareMethod.Text)
-                            If Right(TelNr, 1) = "," Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
-                            If Right(TelNr, 1) = "#" Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
-                            If Left(TelNr, 3) = "SIP" Then TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
+
+                            If TelNr.EndsWith(",") Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
+                            If TelNr.EndsWith("#") Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
+                            If TelNr.StartsWith("SIP") Then TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                             If Not Trim(TelName) = C_DP.P_Def_StringEmpty And Not Trim(TelNr) = C_DP.P_Def_StringEmpty Then
                                 Select Case i
                                     Case 0 ' FON 1-3
