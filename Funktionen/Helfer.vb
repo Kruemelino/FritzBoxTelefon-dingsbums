@@ -422,6 +422,18 @@ Public Class Helfer
         Next
     End Function
 
+
+    ''' <summary>
+    ''' Entfernt alle Vorahlen aus den eigenen Nummern. D.h. diese Funktion ist nur gedacht um konfigurierten Nummern aus der Fritz!Box zu verarbeiten.
+    ''' </summary>
+    ''' <param name="TelNr">Eigene Nummer aus der Fritz!Box</param>
+    ''' <returns>Eigene Nummer ohne Landes- und Ortsvorwahl</returns>
+    ''' <remarks>In einigen Boxen sind die Nummern mit Landes- und Ortsvorwahl integriert. 
+    ''' Problematisch ist dies unter Umständen, da die Nummern bei den Telefonen systematisch fehlerhaft eingetragen sind. Dies wirkt sich auch auf den Anrufmonitor aus.
+    ''' Es kann sein, dass die eigene Nummer mit der Landesvorwahl OHNE "+" oder "00" beginnt. In dem Fall wird geprüft, ob die eigene Nummer mit der 
+    ''' Landesvorwahl OHNE "+" oder "00" und der Ortsvorwahl beginnt. Hier ist weitere Optimierung nötig: 
+    ''' Es ist denkbar, dass es eine komplette Nummer gibt: +49304930NNN. Wenn diese Nummer in der Fritz!Box als 4930NNN (also ohne eigentliche Landes und Ortsvorwahl) hinterlegt ist,
+    ''' dann wird die Nummer fälschlicherweise nur zu NNN und nicht korrekt zu 4930NNN verarbeitet.</remarks>
     Function EigeneVorwahlenEntfernen(ByVal TelNr As String) As String
 
         Dim tmpLandesVorwahl As String
@@ -440,33 +452,39 @@ Public Class Helfer
             TelNr = Replace(TelNr, "[", ")", , , CompareMethod.Text)
             TelNr = Replace(TelNr, "#", "", , , CompareMethod.Text)
             TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
+
+
             With C_DP
 
                 tmpLandesVorwahl = .P_Def_TBLandesVW
                 tmpOrtsVorwahl = .P_TBVorwahl
 
                 ' Führende Null der Ortsvorwahl wegschneiden
-                If Left(tmpOrtsVorwahl, 1) = "0" Then tmpOrtsVorwahl = Mid(.P_TBVorwahl, 2)
-                ' Führende 00 der Landesvorwahl entfernen
-                If Left(tmpLandesVorwahl, 2) = "00" Then tmpLandesVorwahl = Mid(tmpLandesVorwahl, 3)
+                If tmpOrtsVorwahl.StartsWith("0") Then tmpOrtsVorwahl = Mid(.P_TBVorwahl, 2)
 
                 ' Landesvorwahl vorhanden
-                If Left(TelNr, 2) = "00" OrElse Left(TelNr, Len(tmpLandesVorwahl & tmpOrtsVorwahl)) = tmpLandesVorwahl & tmpOrtsVorwahl Then
+                If TelNr.StartsWith("00") Then
+                    ' 1. Fall: Klassisch 0049, +49 entfernen
                     ' 00 davorhängen falls nötig
-                    If Left(TelNr, 2) = "00" Then tmpLandesVorwahl = "00" & tmpLandesVorwahl
-
+                    If Not tmpLandesVorwahl.StartsWith("00") Then tmpLandesVorwahl = tmpLandesVorwahl.Insert(0, "00")
                     'Landesvorwahl entfernen
-                    If Left(TelNr, Len(tmpLandesVorwahl)) = tmpLandesVorwahl Then TelNr = Mid(TelNr, Len(tmpLandesVorwahl) + 1)
+                    If TelNr.StartsWith(tmpLandesVorwahl) Then TelNr = TelNr.Remove(0, Len(tmpLandesVorwahl))
+                Else
+                    ' 2. Fall: 49 ohne führende 00 oder +
+                    ' Führende 00 der Landesvorwahl entfernen
+                    If tmpLandesVorwahl.StartsWith("00") Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2) ' Führende 00 der Landesvorwahl entfernen
+                    'Landesvorwahl entfernen
+                    If TelNr.StartsWith(tmpLandesVorwahl & tmpOrtsVorwahl) Then TelNr = TelNr.Remove(0, Len(tmpLandesVorwahl))
                 End If
 
-
-                ' Führende Null der Telefonnummer wegschneide
-                If Left(TelNr, 1) = "0" Then TelNr = Mid(TelNr, 2)
+                ' Führende Null der Telefonnummer wegschneiden
+                If TelNr.StartsWith("0") Then TelNr = Mid(TelNr, 2)
                 ' Vorwahl wegschneiden
                 If Strings.Left(TelNr, Len(tmpOrtsVorwahl)) = tmpOrtsVorwahl Then TelNr = Mid(TelNr, Len(tmpOrtsVorwahl) + 1)
 
             End With
         End If
+
         Return TelNr
     End Function
 
