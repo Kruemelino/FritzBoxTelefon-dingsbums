@@ -30,7 +30,7 @@
         C_DP = New DataProvider()
 
         ' Klasse für Verschlüsselung erstellen
-        C_Crypt = New MyRijndael
+        C_Crypt = New MyRijndael(C_DP)
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(C_DP, C_Crypt)

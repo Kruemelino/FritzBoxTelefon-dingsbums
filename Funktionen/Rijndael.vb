@@ -2,11 +2,18 @@
 Imports System.IO
 Imports System.Text
 Imports System.Management
+
 ''' <summary>
 ''' 
 ''' </summary>
 ''' <remarks>http://icodesnippet.com/snippet/vbnet/computing-hash-values-vbnet-code-snippets</remarks>
 Public Class MyRijndael
+
+    Private C_DP As DataProvider
+
+    Public Sub New(ByVal DataProviderKlasse As DataProvider)
+        C_DP = DataProviderKlasse
+    End Sub
 
     Public Enum HashType
         MD5
@@ -20,148 +27,162 @@ Public Class MyRijndael
     Private bytIV() As Byte = CreateIV(HWID)
 
     Public Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrEncryptionKey As String) As String
+        ' Standardwert
+        EncryptString128Bit = C_DP.P_Def_ErrorMinusOne_String
 
-        vstrEncryptionKey = getMd5Hash(String.Concat(vstrEncryptionKey, HWID), Encoding.Unicode, False)
+        ' Test ob gültige Eingangsdaten vorhanden
+        If vstrTextToBeEncrypted IsNot C_DP.P_Def_ErrorMinusOne_String And vstrEncryptionKey IsNot C_DP.P_Def_ErrorMinusOne_String Then
 
-        Dim bytValue() As Byte
-        Dim bytKey() As Byte
-        Dim bytEncoded() As Byte = {0}
-        Dim intLength As Integer
-        Dim intRemaining As Integer
+            Dim bytValue() As Byte
+            Dim bytKey() As Byte
+            Dim bytEncoded() As Byte = {0}
+            Dim intLength As Integer
+            Dim intRemaining As Integer
 
-        '   **********************************************************************
-        '   ******  Strip any null character from string to be encrypted    ******
-        '   **********************************************************************
+            vstrEncryptionKey = getMd5Hash(String.Concat(vstrEncryptionKey, HWID), Encoding.Unicode, False)
 
-        vstrTextToBeEncrypted = StripNullCharacters(vstrTextToBeEncrypted)
+            '   **********************************************************************
+            '   ******  Strip any null character from string to be encrypted    ******
+            '   **********************************************************************
 
-        '   **********************************************************************
-        '   ******  Value must be within ASCII range (i.e., no DBCS chars)  ******
-        '   **********************************************************************
+            vstrTextToBeEncrypted = StripNullCharacters(vstrTextToBeEncrypted)
 
-        bytValue = Encoding.ASCII.GetBytes(vstrTextToBeEncrypted.ToCharArray)
+            '   **********************************************************************
+            '   ******  Value must be within ASCII range (i.e., no DBCS chars)  ******
+            '   **********************************************************************
 
-        intLength = Len(vstrEncryptionKey)
+            bytValue = Encoding.ASCII.GetBytes(vstrTextToBeEncrypted.ToCharArray)
 
-        '   ********************************************************************
-        '   ******   Encryption Key must be 256 bits long (32 bytes)      ******
-        '   ******   If it is longer than 32 bytes it will be truncated.  ******
-        '   ******   If it is shorter than 32 bytes it will be padded     ******
-        '   ******   with upper-case Xs.                                  ****** 
-        '   ********************************************************************
-
-        If intLength >= 32 Then
-            vstrEncryptionKey = Strings.Left(vstrEncryptionKey, 32)
-        Else
             intLength = Len(vstrEncryptionKey)
-            intRemaining = 32 - intLength
-            vstrEncryptionKey = vstrEncryptionKey & Strings.StrDup(intRemaining, "X")
-        End If
 
-        bytKey = Encoding.ASCII.GetBytes(vstrEncryptionKey.ToCharArray)
+            '   ********************************************************************
+            '   ******   Encryption Key must be 256 bits long (32 bytes)      ******
+            '   ******   If it is longer than 32 bytes it will be truncated.  ******
+            '   ******   If it is shorter than 32 bytes it will be padded     ******
+            '   ******   with upper-case Xs.                                  ****** 
+            '   ********************************************************************
 
-        '   ***********************************************************************
-        '   ******  Create the encryptor and write value to it after it is   ******
-        '   ******  converted into a byte array                              ******
-        '   ***********************************************************************
+            If intLength >= 32 Then
+                vstrEncryptionKey = Strings.Left(vstrEncryptionKey, 32)
+            Else
+                intLength = Len(vstrEncryptionKey)
+                intRemaining = 32 - intLength
+                vstrEncryptionKey = vstrEncryptionKey & Strings.StrDup(intRemaining, "X")
+            End If
 
-        Using rijAlg As New RijndaelManaged()
+            bytKey = Encoding.ASCII.GetBytes(vstrEncryptionKey.ToCharArray)
 
-            rijAlg.Key = bytKey
-            rijAlg.IV = bytIV
+            '   ***********************************************************************
+            '   ******  Create the encryptor and write value to it after it is   ******
+            '   ******  converted into a byte array                              ******
+            '   ***********************************************************************
 
-            ' Create a decrytor to perform the stream transform. 
-            Dim encryptor As ICryptoTransform = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV)
-            ' Create the streams used for encryption. 
-            Using msEncrypt As New MemoryStream()
-                Using csEncrypt As New CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write)
-                    Using swEncrypt As New StreamWriter(csEncrypt)
-                        'Write all data to the stream.
-                        swEncrypt.Write(vstrTextToBeEncrypted)
+            Using rijAlg As New RijndaelManaged()
+                With rijAlg
+                    .Key = bytKey
+                    .IV = bytIV
+
+                    ' Create a decrytor to perform the stream transform. 
+                    Using encryptor As ICryptoTransform = rijAlg.CreateEncryptor(.Key, .IV)
+                        ' Create the streams used for encryption. 
+                        Using msEncrypt As New MemoryStream()
+                            Using csEncrypt As New CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write)
+                                Using swEncrypt As New StreamWriter(csEncrypt)
+                                    'Write all data to the stream.
+                                    swEncrypt.Write(vstrTextToBeEncrypted)
+                                End Using
+                                bytEncoded = msEncrypt.ToArray()
+                            End Using
+                        End Using
                     End Using
-                    bytEncoded = msEncrypt.ToArray()
-                End Using
+                End With
             End Using
-        End Using
 
-        '   ***********************************************************************
-        '   ******   Return encryptes value (converted from  byte Array to   ******
-        '   ******   a base64 string).  Base64 is MIME encoding)             ******
-        '   ***********************************************************************
+            '   ***********************************************************************
+            '   ******   Return encryptes value (converted from  byte Array to   ******
+            '   ******   a base64 string).  Base64 is MIME encoding)             ******
+            '   ***********************************************************************
 
-        Return Convert.ToBase64String(bytEncoded)
+            Return Convert.ToBase64String(bytEncoded)
 
+        End If
     End Function
 
     Public Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDecryptionKey As String) As String
+        ' Standardwert
+        DecryptString128Bit = C_DP.P_Def_ErrorMinusOne_String
 
-        vstrDecryptionKey = getMd5Hash(String.Concat(vstrDecryptionKey, HWID), Encoding.Unicode, False)
+        ' Test ob gültige Eingangsdaten vorhanden
+        If vstrStringToBeDecrypted IsNot C_DP.P_Def_ErrorMinusOne_String And vstrDecryptionKey IsNot C_DP.P_Def_ErrorMinusOne_String Then
 
-        Dim bytDataToBeDecrypted() As Byte
-        Dim bytDecryptionKey() As Byte
+            Dim bytDataToBeDecrypted() As Byte
+            Dim bytDecryptionKey() As Byte
 
-        Dim intLength As Integer
-        Dim intRemaining As Integer
-        Dim strReturnString As String = String.Empty
+            Dim intLength As Integer
+            Dim intRemaining As Integer
 
-        '   *****************************************************************
-        '   ******   Convert base64 encrypted value to byte array      ******
-        '   *****************************************************************
+            Dim strReturnString As String = String.Empty
+            Dim plaintext As String = vbNullString
 
-        bytDataToBeDecrypted = Convert.FromBase64String(vstrStringToBeDecrypted)
+            vstrDecryptionKey = getMd5Hash(String.Concat(vstrDecryptionKey, HWID), Encoding.Unicode, False)
 
-        '   ********************************************************************
-        '   ******   Encryption Key must be 256 bits long (32 bytes)      ******
-        '   ******   If it is longer than 32 bytes it will be truncated.  ******
-        '   ******   If it is shorter than 32 bytes it will be padded     ******
-        '   ******   with upper-case Xs.                                  ****** 
-        '   ********************************************************************
+            '   *****************************************************************
+            '   ******   Convert base64 encrypted value to byte array      ******
+            '   *****************************************************************
 
-        intLength = Len(vstrDecryptionKey)
+            bytDataToBeDecrypted = Convert.FromBase64String(vstrStringToBeDecrypted)
 
-        If intLength >= 32 Then
-            vstrDecryptionKey = Strings.Left(vstrDecryptionKey, 32)
-        Else
+            '   ********************************************************************
+            '   ******   Encryption Key must be 256 bits long (32 bytes)      ******
+            '   ******   If it is longer than 32 bytes it will be truncated.  ******
+            '   ******   If it is shorter than 32 bytes it will be padded     ******
+            '   ******   with upper-case Xs.                                  ****** 
+            '   ********************************************************************
+
             intLength = Len(vstrDecryptionKey)
-            intRemaining = 32 - intLength
-            vstrDecryptionKey = vstrDecryptionKey & Strings.StrDup(intRemaining, "X")
-        End If
 
-        bytDecryptionKey = Encoding.ASCII.GetBytes(vstrDecryptionKey.ToCharArray)
+            If intLength >= 32 Then
+                vstrDecryptionKey = Strings.Left(vstrDecryptionKey, 32)
+            Else
+                intLength = Len(vstrDecryptionKey)
+                intRemaining = 32 - intLength
+                vstrDecryptionKey = vstrDecryptionKey & Strings.StrDup(intRemaining, "X")
+            End If
 
-        '   ***********************************************************************
-        '   ******  Create the decryptor and write value to it after it is   ******
-        '   ******  converted into a byte array                              ******
-        '   ***********************************************************************
+            bytDecryptionKey = Encoding.ASCII.GetBytes(vstrDecryptionKey.ToCharArray)
 
-        Dim plaintext As String = Nothing
-        Using rijAlg As New RijndaelManaged
-            rijAlg.Key = bytDecryptionKey
-            rijAlg.IV = bytIV
-
-            ' Create a decrytor to perform the stream transform. 
-            Dim decryptor As ICryptoTransform = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV)
-
-            ' Create the streams used for decryption. 
-            Using msDecrypt As New MemoryStream(bytDataToBeDecrypted)
-                Using csDecrypt As New CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read)
-                    Using srDecrypt As New StreamReader(csDecrypt)
-                        ' Read the decrypted bytes from the decrypting stream 
-                        ' and place them in a string.
-                        Try
-                            plaintext = srDecrypt.ReadToEnd()
-                        Catch : End Try
-                    End Using
+            '   ***********************************************************************
+            '   ******  Create the decryptor and write value to it after it is   ******
+            '   ******  converted into a byte array                              ******
+            '   ***********************************************************************
+            Try
+                Using rijAlg As New RijndaelManaged
+                    With rijAlg
+                        .Key = bytDecryptionKey
+                        .IV = bytIV
+                        ' Create a decrytor to perform the stream transform. 
+                        Using decryptor = rijAlg.CreateDecryptor(.Key, .IV)
+                            ' Create the streams used for decryption.
+                            Using msDecrypt As New MemoryStream(bytDataToBeDecrypted)
+                                Using csDecrypt As New CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read)
+                                    Using srDecrypt As New StreamReader(csDecrypt)
+                                        ' Read the decrypted bytes from the decrypting stream 
+                                        ' and place them in a string.
+                                        plaintext = srDecrypt.ReadToEnd()
+                                    End Using
+                                End Using
+                            End Using
+                        End Using
+                    End With
                 End Using
-            End Using
-        End Using
+            Catch : End Try ' Die Ausnahme tritt ein, wenn die Entschlüsselung nicht möglich ist.
 
-        '   *****************************************
-        '   ******   Return decypted value     ******
-        '   *****************************************
+            '   *****************************************
+            '   ******   Return decypted value     ******
+            '   *****************************************
 
-        Return StripNullCharacters(plaintext)
-
+            Return StripNullCharacters(plaintext)
+        End If
     End Function
 
     Public Function StripNullCharacters(ByVal vstrStringWithNulls As String) As String
@@ -172,7 +193,7 @@ Public Class MyRijndael
         intPosition = 1
         strStringWithOutNulls = vstrStringWithNulls
 
-        Do While intPosition > 0
+        Do While intPosition > 0 And vstrStringWithNulls IsNot vbNullString
             intPosition = InStr(intPosition, vstrStringWithNulls, vbNullChar)
 
             If intPosition > 0 Then
@@ -381,5 +402,6 @@ Public Class MyRijndael
     '    Next
     '    Return strHex
     'End Function
+
 End Class
 
