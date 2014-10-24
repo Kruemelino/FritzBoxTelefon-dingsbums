@@ -155,6 +155,19 @@
         Me.Finalize()
     End Sub
 
+    Private Sub PopupStoppuhrForm_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        If P_pnStoppuhr IsNot Nothing Then
+            Dim retIPVal As IntPtr
+            Dim HTCAPTION As IntPtr = CType(2, IntPtr)
+            Dim WM_NCLBUTTONDOWN As Int32 = &HA1S
+            Dim retbVal As Boolean
+            If Not RectClose.Contains(e.X, e.Y) Then
+                retbVal = OutlookSecurity.ReleaseCapture()
+                retIPVal = OutlookSecurity.SendMessage(Me.Handle, WM_NCLBUTTONDOWN, HTCAPTION, IntPtr.Zero)
+            End If
+        End If
+    End Sub
+
     Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
         If P_Common.CloseButton Then
             If RectClose.Contains(e.X, e.Y) Then
@@ -165,7 +178,6 @@
         End If
 
         If P_pnAnrMon IsNot Nothing Then
-
             If P_Common.OptionsButton Then
                 If RectOptions.Contains(e.X, e.Y) Then
                     bMouseOnOptions = True
