@@ -2626,6 +2626,18 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' as Passwort zur Fritz!Box kann nicht entschlüsselt werden, da das verschlüsselte Passwort und/oder der Zugangsschlüssel fehlt.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_FritzBox_LoginError_MissingData() As String
+        Get
+            Return "Das Passwort zur Fritz!Box kann nicht entschlüsselt werden, da das verschlüsselte Passwort und/oder der Zugangsschlüssel fehlt."
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Die Anmeldedaten sind falsch.
     ''' </summary>
     ''' <value></value>

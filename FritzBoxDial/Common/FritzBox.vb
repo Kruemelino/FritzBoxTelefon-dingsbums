@@ -357,86 +357,92 @@ Public Class FritzBox
                 Dim sZugang As String = C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne_String)
                 Dim XMLDocLogin As New XmlDocument()
 
-                With XMLDocLogin
-                    .LoadXml(slogin_xml)
+                ' Login nur durchführen, wenn überhaupt ein versclüsseltes Passwort und(!) ein Zugangsschlüssel vorhanden ist. Ansonsten bringt das ja nicht viel.
+                If sFBPasswort IsNot C_DP.P_Def_ErrorMinusOne_String And sZugang IsNot C_DP.P_Def_ErrorMinusOne_String Then
+                    With XMLDocLogin
+                        .LoadXml(slogin_xml)
 
-                    If .Item("SessionInfo").Item("SID").InnerText() = C_DP.P_Def_SessionID Then
-                        sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
+                        If .Item("SessionInfo").Item("SID").InnerText() = C_DP.P_Def_SessionID Then
+                            sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
 
-                        With C_Crypt
-                            sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode, True))
-                        End With
-                        If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
+                            With C_Crypt
+                                sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode, True))
+                            End With
+                            If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 
-                        If .InnerXml.Contains("Rights") Then
-                            ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
-                            sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
-                            If sBlockTime = C_DP.P_Def_StringNull Then ' "0"
-                                'sLink = "http://" & C_DP.P_ValidFBAdr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
+                            If .InnerXml.Contains("Rights") Then
+                                ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
+                                sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
+                                If sBlockTime = C_DP.P_Def_StringNull Then ' "0"
+                                    'sLink = "http://" & C_DP.P_ValidFBAdr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
 
-                                sResponse = C_hf.httpGET(P_Link_FB_LoginLuaTeil2(sFBBenutzer, sSIDResponse), FBEncoding, FBFehler)
-                                If Not FBFehler Then
-                                    LuaLogin = True
+                                    sResponse = C_hf.httpGET(P_Link_FB_LoginLuaTeil2(sFBBenutzer, sSIDResponse), FBEncoding, FBFehler)
+                                    If Not FBFehler Then
+                                        LuaLogin = True
+                                    Else
+                                        C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description)
+                                    End If
                                 Else
-                                    C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description)
+                                    C_hf.FBDB_MsgBox(C_DP.P_FritzBox_LoginError_Blocktime(sBlockTime), MsgBoxStyle.Critical, "FBLogin")
+                                    Return C_DP.P_Def_SessionID
                                 End If
                             Else
-                                C_hf.FBDB_MsgBox(C_DP.P_FritzBox_LoginError_Blocktime(sBlockTime), MsgBoxStyle.Critical, "FBLogin")
-                                Return C_DP.P_Def_SessionID
-                            End If
-                        Else
-                            ' Alter Login von Firmware xxx.04.76 bis Firmware xxx.05.28
-                            If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
-                                C_hf.LogFile(C_DP.P_FritzBox_LoginError_MissingPassword)
-                                Return .Item("SessionInfo").Item("SID").InnerText()
-                            End If
-
-                            'sLink = C_DP.P_Link_FB_Alt_Basis '"http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm"
-                            'sFormData = C_DP.P_Link_FB_LoginAltTeil2(sSIDResponse) ' "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
-                            sResponse = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_LoginAltTeil2(sSIDResponse), FBEncoding)
-
-                            LuaLogin = False
-                        End If
-
-                        .LoadXml(sResponse)
-
-                        '<SessionInfo>
-                        '   <SID>ff88e4d39354992f</SID>
-                        '   <Challenge>ab7190d6</Challenge>
-                        '   <BlockTime>128</BlockTime>
-                        '   <Rights>
-                        '       <Name>BoxAdmin</Name>
-                        '       <Access>2</Access>
-                        '       <Name>Phone</Name>
-                        '       </Access>2</Access>
-                        '       <Name>NAS></Name>
-                        '       <Access>2</Access>
-                        '   </Rights>
-                        '</SessionInfo>
-
-                        SID = .Item("SessionInfo").Item("SID").InnerText()
-
-                        If Not SID = C_DP.P_Def_SessionID Then
-                            If LuaLogin Then
-                                If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
-                                    C_hf.LogFile(C_DP.P_FritzBox_LoginError_MissingRights(sFBBenutzer))
-                                    FBLogout(SID)
-                                    SID = C_DP.P_Def_SessionID
+                                ' Alter Login von Firmware xxx.04.76 bis Firmware xxx.05.28
+                                If CBool(.Item("SessionInfo").Item("iswriteaccess").InnerText) Then
+                                    C_hf.LogFile(C_DP.P_FritzBox_LoginError_MissingPassword)
+                                    Return .Item("SessionInfo").Item("SID").InnerText()
                                 End If
-                            End If
-                        Else
-                            C_hf.LogFile(C_DP.P_FritzBox_LoginError_LoginIncorrect)
-                        End If
 
-                    ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
-                        C_hf.LogFile(C_DP.P_FritzBox_LoginInfo_SID(SID))
-                    End If
-                End With
-                XMLDocLogin = Nothing
+                                'sLink = C_DP.P_Link_FB_Alt_Basis '"http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm"
+                                'sFormData = C_DP.P_Link_FB_LoginAltTeil2(sSIDResponse) ' "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
+                                sResponse = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_LoginAltTeil2(sSIDResponse), FBEncoding)
+
+                                LuaLogin = False
+                            End If
+
+                            .LoadXml(sResponse)
+
+                            '<SessionInfo>
+                            '   <SID>ff88e4d39354992f</SID>
+                            '   <Challenge>ab7190d6</Challenge>
+                            '   <BlockTime>128</BlockTime>
+                            '   <Rights>
+                            '       <Name>BoxAdmin</Name>
+                            '       <Access>2</Access>
+                            '       <Name>Phone</Name>
+                            '       </Access>2</Access>
+                            '       <Name>NAS></Name>
+                            '       <Access>2</Access>
+                            '   </Rights>
+                            '</SessionInfo>
+
+                            SID = .Item("SessionInfo").Item("SID").InnerText()
+
+                            If Not SID = C_DP.P_Def_SessionID Then
+                                If LuaLogin Then
+                                    If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+                                        C_hf.LogFile(C_DP.P_FritzBox_LoginError_MissingRights(sFBBenutzer))
+                                        FBLogout(SID)
+                                        SID = C_DP.P_Def_SessionID
+                                    End If
+                                End If
+                            Else
+                                C_hf.LogFile(C_DP.P_FritzBox_LoginError_LoginIncorrect)
+                            End If
+
+                        ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
+                            C_hf.LogFile(C_DP.P_FritzBox_LoginInfo_SID(SID))
+                        End If
+                    End With
+                    XMLDocLogin = Nothing
+                End If
+            Else
+
             End If
         Else
-            C_hf.LogFile("FBError (FBLogin): Login übersprungen")
+            C_hf.LogFile(C_DP.P_FritzBox_LoginError_MissingData)
         End If
+
         Return SID
     End Function
 
