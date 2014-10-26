@@ -12,7 +12,6 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Timer"
-
     Private WithEvents TimerReStart As System.Timers.Timer
     Private WithEvents TimerCheckAnrMon As System.Timers.Timer
 #End Region
@@ -1029,5 +1028,4 @@ Friend Class AnrufMonitor
         xPathTeile = Nothing
     End Function
 #End Region
-
 End Class

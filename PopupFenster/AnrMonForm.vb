@@ -89,6 +89,26 @@ Public Class F_AnrMon
         End Set
     End Property
 
+    Private iAnzAnrMon As Integer = 1
+    Public Property AnzAnrMon() As Integer
+        Get
+            Return iAnzAnrMon
+        End Get
+        Set(ByVal value As Integer)
+            iAnzAnrMon = value
+        End Set
+    End Property
+
+    Private iAbstandAnrMon As Integer = 10
+    Public Property AbstandAnrMon() As Integer
+        Get
+            Return iAbstandAnrMon
+        End Get
+        Set(ByVal value As Integer)
+            iAbstandAnrMon = value
+        End Set
+    End Property
+
     Private bEffektTransparenz As Boolean = True
     Public Property EffektTransparenz() As Boolean
         Get
@@ -146,7 +166,6 @@ Public Class F_AnrMon
         End Get
         Set(ByVal value As Point)
             ptImagePosition = value
-
         End Set
     End Property
 
@@ -252,34 +271,34 @@ Public Class F_AnrMon
 
             Select Case Startpunkt
                 Case eStartPosition.BottomLeft
-                    X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
-                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - .Height - PositionsKorrektur.Height
+                    X = Screen.PrimaryScreen.WorkingArea.Left - PositionsKorrektur.Width + AbstandAnrMon
+                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - .Height - PositionsKorrektur.Height - AnzAnrMon * .Height - (AnzAnrMon + 1) * AbstandAnrMon
                 Case eStartPosition.TopLeft
-                    X = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
-                    Y = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
+                    X = Screen.PrimaryScreen.WorkingArea.Left - PositionsKorrektur.Width + AbstandAnrMon
+                    Y = Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Height + AnzAnrMon * .Height + (AnzAnrMon + 1) * AbstandAnrMon
                 Case eStartPosition.BottomRight
-                    X = Screen.PrimaryScreen.WorkingArea.Right - 10 - .Size.Width - PositionsKorrektur.Width
-                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - .Height - PositionsKorrektur.Height
+                    X = Screen.PrimaryScreen.WorkingArea.Right - .Size.Width - PositionsKorrektur.Width - AbstandAnrMon
+                    Y = Screen.PrimaryScreen.WorkingArea.Bottom - .Height - PositionsKorrektur.Height - AnzAnrMon * .Height - (AnzAnrMon + 1) * AbstandAnrMon
                 Case eStartPosition.TopRight
-                    X = Screen.PrimaryScreen.WorkingArea.Right - 10 - .Size.Width - PositionsKorrektur.Width
-                    Y = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
+                    X = Screen.PrimaryScreen.WorkingArea.Right - .Size.Width - PositionsKorrektur.Width - AbstandAnrMon
+                    Y = Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Height + AnzAnrMon * .Height + (AnzAnrMon + 1) * AbstandAnrMon
             End Select
 
             If bEffektMove Then
                 Select Case MoveDirecktion
                     Case eMoveDirection.X
                         Select Case Startpunkt
-                            Case eStartPosition.BottomLeft, eStartPosition.TopLeft
+                            Case eStartPosition.BottomLeft, eStartPosition.TopLeft ' -->
                                 X = Screen.PrimaryScreen.WorkingArea.Left - fPopup.Size.Width + 2
-                            Case eStartPosition.BottomRight, eStartPosition.TopRight
+                            Case eStartPosition.BottomRight, eStartPosition.TopRight ' <---
                                 X = Screen.PrimaryScreen.WorkingArea.Right + 2
                         End Select
                     Case eMoveDirection.Y
                         Select Case Startpunkt
                             Case eStartPosition.TopLeft, eStartPosition.TopRight
-                                Y = Screen.PrimaryScreen.WorkingArea.Top - fPopup.Height + 1
+                                Y = Screen.PrimaryScreen.WorkingArea.Top - fPopup.Height + 1 + AnzAnrMon * .Height
                             Case eStartPosition.BottomRight, eStartPosition.BottomLeft
-                                Y = Screen.PrimaryScreen.WorkingArea.Bottom - 1
+                                Y = Screen.PrimaryScreen.WorkingArea.Bottom - 1 - AnzAnrMon * .Height
                         End Select
                 End Select
 
@@ -296,13 +315,10 @@ Public Class F_AnrMon
 
             .Show()
         End With
-
-        'tmAnimation.Interval = 1 'iEffektMoveGeschwindigkeit
-        'tmAnimation.Start()
     End Sub
 
     ''' <summary>
-    ''' Initialisierungsroutine des ehemaligen AnrMonForm. Es wird das ContextMenuStrip an Sich initialisiert 
+    ''' Initialisierungsroutine des ehemaligen AnrMonForm. Es wird das ContextMenuStrip an sich initialisiert 
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub InitializeComponentContextMenuStrip()
@@ -350,8 +366,8 @@ Public Class F_AnrMon
 
     Public Sub Hide()
         bMouseIsOn = False
+        AutoAusblenden = True
         tmWait.Stop()
-        'tmAnimation.Start()
     End Sub
 
 #Region "Eigene Events"
@@ -388,9 +404,9 @@ Public Class F_AnrMon
                 iCentPurcent = fPopup.Height
                 Select Case Startpunkt
                     Case eStartPosition.BottomLeft, eStartPosition.BottomRight
-                        iCurrentlyShown = Screen.PrimaryScreen.WorkingArea.Height - fPopup.Top
+                        iCurrentlyShown = Screen.PrimaryScreen.WorkingArea.Height - fPopup.Top - AnzAnrMon * fPopup.Height
                     Case eStartPosition.TopLeft, eStartPosition.TopRight
-                        iCurrentlyShown = fPopup.Bottom
+                        iCurrentlyShown = fPopup.Bottom - AnzAnrMon * fPopup.Height
                 End Select
                 dPourcentOpacity = iCentPurcent / 100 * iCurrentlyShown
         End Select
@@ -398,8 +414,8 @@ Public Class F_AnrMon
         Return dPourcentOpacity / 100
     End Function
 
-    Public Sub tmAnimation_Tick() '(ByVal sender As Object, ByVal e As System.EventArgs) ' Handles tmAnimation.Tick
-        Dim StoppAnimation As Boolean = False
+    Public Sub tmAnimation_Tick()
+        Dim StoppPunkt As Boolean = False
         With fPopup
             .Invalidate()
             If bEffektMove Then
@@ -409,28 +425,27 @@ Public Class F_AnrMon
                             Select Case Startpunkt
                                 Case eStartPosition.BottomLeft, eStartPosition.TopLeft
                                     .Left += 2
-                                    StoppAnimation = .Left = Screen.PrimaryScreen.WorkingArea.Left + 10 - PositionsKorrektur.Width
+                                    StoppPunkt = .Left = Screen.PrimaryScreen.WorkingArea.Left - PositionsKorrektur.Width + AbstandAnrMon
                                 Case eStartPosition.BottomRight, eStartPosition.TopRight
                                     .Left -= 2
-                                    StoppAnimation = .Left = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - 10 - PositionsKorrektur.Width
+                                    StoppPunkt = .Left = Screen.PrimaryScreen.WorkingArea.Right - fPopup.Size.Width - PositionsKorrektur.Width - AbstandAnrMon
                             End Select
                         Case eMoveDirection.Y
                             Select Case Startpunkt
                                 Case eStartPosition.BottomLeft, eStartPosition.BottomRight
                                     .Top -= 1
-                                    StoppAnimation = .Top + .Height = Screen.PrimaryScreen.WorkingArea.Bottom - 10 - PositionsKorrektur.Height
+                                    StoppPunkt = .Top + .Height = Screen.PrimaryScreen.WorkingArea.Bottom - PositionsKorrektur.Height - AnzAnrMon * .Height - (AnzAnrMon + 1) * AbstandAnrMon
                                 Case eStartPosition.TopLeft, eStartPosition.TopRight
                                     .Top += 1
-                                    StoppAnimation = .Top = Screen.PrimaryScreen.WorkingArea.Top + 10 - PositionsKorrektur.Height
+                                    StoppPunkt = .Top = Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Height + AnzAnrMon * .Height + (AnzAnrMon + 1) * AbstandAnrMon
                             End Select
                     End Select
 
-                    If StoppAnimation Then
-                        'tmAnimation.Stop()
+                    If StoppPunkt Then
                         bAppearing = False
                         iMaxPosition = .Top
                         dMaxOpacity = .Opacity
-                        If bAutoAusblenden Then tmWait.Start()
+                        If AutoAusblenden Then tmWait.Start()
                     End If
 
                     Try
@@ -439,7 +454,7 @@ Public Class F_AnrMon
 
 
                 Else 'Ausblenden
-                    If Not tmWait.Enabled Then
+                    If Not tmWait.Enabled And AutoAusblenden Then
 
                         If bMouseIsOn Then
                             .Top = iMaxPosition
@@ -452,23 +467,23 @@ Public Class F_AnrMon
                                     Select Case Startpunkt
                                         Case eStartPosition.BottomLeft, eStartPosition.TopLeft
                                             .Left -= 2
-                                            StoppAnimation = .Right < Screen.PrimaryScreen.WorkingArea.Left
+                                            StoppPunkt = .Right < Screen.PrimaryScreen.WorkingArea.Left
                                         Case eStartPosition.BottomRight, eStartPosition.TopRight
                                             .Left += 2
-                                            StoppAnimation = .Left > Screen.PrimaryScreen.WorkingArea.Right
+                                            StoppPunkt = .Left > Screen.PrimaryScreen.WorkingArea.Right
                                     End Select
                                 Case eMoveDirection.Y
                                     Select Case Startpunkt
                                         Case eStartPosition.BottomLeft, eStartPosition.BottomRight
                                             .Top += 1
-                                            StoppAnimation = .Top > Screen.PrimaryScreen.WorkingArea.Bottom - PositionsKorrektur.Width
+                                            StoppPunkt = .Top > Screen.PrimaryScreen.WorkingArea.Bottom - PositionsKorrektur.Width - AnzAnrMon * .Height
                                         Case eStartPosition.TopLeft, eStartPosition.TopRight
                                             .Top -= 1
-                                            StoppAnimation = .Bottom < Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Width
+                                            StoppPunkt = .Bottom < Screen.PrimaryScreen.WorkingArea.Top - PositionsKorrektur.Width + AnzAnrMon * .Height
                                     End Select
                             End Select
 
-                            If StoppAnimation Then
+                            If StoppPunkt Then
                                 'tmAnimation.Stop()
                                 .TopMost = False
                                 .Close()
@@ -481,23 +496,21 @@ Public Class F_AnrMon
                     End If
                 End If
             Else
+                'Einblenden ohne Bewegung
                 If bAppearing Then
                     .Opacity += CDbl(IIf(bEffektTransparenz, 0.05, 1))
                     If .Opacity = 1 Then
-                        'tmAnimation.Stop()
                         bAppearing = False
-                        If bAutoAusblenden Then tmWait.Start()
+                        If AutoAusblenden Then tmWait.Start()
                     End If
                 Else
-                    If Not tmWait.Enabled Then
+                    If Not tmWait.Enabled And AutoAusblenden Then
                         If bMouseIsOn Then
                             fPopup.Opacity = 1
-                            'tmAnimation.Stop()
                             tmWait.Start()
                         Else
                             .Opacity -= CDbl(IIf(bEffektTransparenz, 0.05, 1))
                             If .Opacity = 0 Then
-                                'tmAnimation.Stop()
                                 .TopMost = False
                                 .Close()
                                 bAppearing = True
@@ -514,10 +527,8 @@ Public Class F_AnrMon
         i += tmWait.Interval
         If i > ShowDelay Then
             tmWait.Stop()
-            'tmAnimation.Start()
         End If
         fPopup.Invalidate()
-
     End Sub
 
     Private Sub fPopup_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles fPopup.MouseEnter

@@ -173,8 +173,6 @@ Public Class Popup
         Dim ThisPopUpAnrMon As New F_AnrMon
         Dim TelinList As Boolean = False
 
-        'UpdateForm = Aktualisieren
-
         ' Überprüfe ob Anrufmonitor für dieses Telefonat bereits angezeigt wird
         If Telefonat.PopupAnrMon Is Nothing Then
             Telefonat.PopupAnrMon = ThisPopUpAnrMon
@@ -201,6 +199,7 @@ Public Class Popup
                 .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
                 .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
                 .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
+                .AnzAnrMon = AnrMonListe.Count - 1
                 .Popup()
             End With
 
