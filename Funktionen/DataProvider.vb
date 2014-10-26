@@ -264,6 +264,7 @@ Public Class DataProvider
     Private _CBAnrMonTransp As Boolean
     Private _CBAnrMonAuto As Boolean
     Private _CBAutoClose As Boolean
+    Private _CBAnrMonCloseAtDISSCONNECT As Boolean
     Private _CBVoIPBuster As Boolean
     Private _CBCbCunterbinden As Boolean
     Private _CBCallByCall As Boolean
@@ -584,6 +585,16 @@ Public Class DataProvider
             _CBAutoClose = value
         End Set
     End Property
+
+    Public Property P_CBAnrMonCloseAtDISSCONNECT() As Boolean
+        Get
+            Return _CBAnrMonCloseAtDISSCONNECT
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrMonCloseAtDISSCONNECT = value
+        End Set
+    End Property
+
     Public Property P_CBVoIPBuster() As Boolean
         Get
             Return _CBVoIPBuster
@@ -1824,36 +1835,48 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public ReadOnly Property P_Def_CBAnrMonCloseAtDISSCONNECT() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Public ReadOnly Property P_Def_CBAutoClose() As Boolean
         Get
             Return True
         End Get
     End Property
+
     Public ReadOnly Property P_Def_CBVoIPBuster() As Boolean
         Get
             Return False
         End Get
     End Property
+
     Public ReadOnly Property P_Def_CBCbCunterbinden() As Boolean
         Get
             Return False
         End Get
     End Property
+
     Public ReadOnly Property P_Def_CBCallByCall() As Boolean
         Get
             Return False
         End Get
     End Property
+
     Public ReadOnly Property P_Def_CBDialPort() As Boolean
         Get
             Return False
         End Get
     End Property
+
     Public ReadOnly Property P_Def_CBKErstellen() As Boolean
         Get
             Return False
         End Get
     End Property
+
     Public ReadOnly Property P_Def_CBLogFile() As Boolean
         Get
             Return True
@@ -3777,6 +3800,8 @@ Public Class DataProvider
         Me.P_CBUseAnrMon = CBool(Read(P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
         Me.P_CBCheckMobil = CBool(Read(P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
         Me.P_CBAutoClose = CBool(Read(P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
+        Me.P_CBAnrMonCloseAtDISSCONNECT = CBool(Read(P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(P_Def_CBAnrMonCloseAtDISSCONNECT)))
+
         Me.P_CBVoIPBuster = CBool(Read(P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
         Me.P_CBCbCunterbinden = CBool(Read(P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
         Me.P_CBCallByCall = CBool(Read(P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
@@ -3873,6 +3898,7 @@ Public Class DataProvider
         Write(P_Def_Options, "CBIndexAus", CStr(Me.P_CBIndexAus))
         Write(P_Def_Options, "CBShowMSN", CStr(Me.P_CBShowMSN))
         Write(P_Def_Options, "CBAutoClose", CStr(Me.P_CBAutoClose))
+        Write(P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(Me.P_CBAnrMonCloseAtDISSCONNECT))
         Write(P_Def_Options, "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
         Write(P_Def_Options, "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
         Write(P_Def_Options, "CBCallByCall", CStr(Me.P_CBCallByCall))

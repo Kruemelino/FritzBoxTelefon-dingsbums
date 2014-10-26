@@ -147,6 +147,7 @@ Partial Class formCfg
         Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonAuto = New System.Windows.Forms.CheckBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
+        Me.CBAnrMonCloseAtDISSCONNECT = New System.Windows.Forms.CheckBox()
         Me.CBAutoClose = New System.Windows.Forms.CheckBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TBEnblDauer = New System.Windows.Forms.TextBox()
@@ -1515,6 +1516,7 @@ Partial Class formCfg
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonAuto)
         Me.PanelAnrMon.Controls.Add(Me.CBJImport)
         Me.PanelAnrMon.Controls.Add(Me.CBJournal)
+        Me.PanelAnrMon.Controls.Add(Me.CBAnrMonCloseAtDISSCONNECT)
         Me.PanelAnrMon.Controls.Add(Me.CBAutoClose)
         Me.PanelAnrMon.Controls.Add(Me.Label2)
         Me.PanelAnrMon.Controls.Add(Me.TBEnblDauer)
@@ -1528,7 +1530,7 @@ Partial Class formCfg
         'CBNote
         '
         Me.CBNote.AutoSize = True
-        Me.CBNote.Location = New System.Drawing.Point(7, 202)
+        Me.CBNote.Location = New System.Drawing.Point(8, 202)
         Me.CBNote.Name = "CBNote"
         Me.CBNote.Size = New System.Drawing.Size(184, 17)
         Me.CBNote.TabIndex = 34
@@ -1538,7 +1540,7 @@ Partial Class formCfg
         'CBAnrMonZeigeKontakt
         '
         Me.CBAnrMonZeigeKontakt.AutoSize = True
-        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(7, 179)
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(8, 179)
         Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
         Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
         Me.CBAnrMonZeigeKontakt.TabIndex = 34
@@ -1565,19 +1567,29 @@ Partial Class formCfg
         Me.CBJournal.Text = "Journaleinträge hinzufügen"
         Me.CBJournal.UseVisualStyleBackColor = True
         '
+        'CBAnrMonCloseAtDISSCONNECT
+        '
+        Me.CBAnrMonCloseAtDISSCONNECT.AutoSize = True
+        Me.CBAnrMonCloseAtDISSCONNECT.Location = New System.Drawing.Point(8, 78)
+        Me.CBAnrMonCloseAtDISSCONNECT.Name = "CBAnrMonCloseAtDISSCONNECT"
+        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(271, 17)
+        Me.CBAnrMonCloseAtDISSCONNECT.TabIndex = 2
+        Me.CBAnrMonCloseAtDISSCONNECT.Text = "Anruffenster automatisch beim Auflegen ausblenden"
+        Me.CBAnrMonCloseAtDISSCONNECT.UseVisualStyleBackColor = True
+        '
         'CBAutoClose
         '
         Me.CBAutoClose.AutoSize = True
         Me.CBAutoClose.Location = New System.Drawing.Point(8, 29)
         Me.CBAutoClose.Name = "CBAutoClose"
-        Me.CBAutoClose.Size = New System.Drawing.Size(191, 17)
+        Me.CBAutoClose.Size = New System.Drawing.Size(201, 17)
         Me.CBAutoClose.TabIndex = 2
-        Me.CBAutoClose.Text = "Anruffenster automatisch schließen"
+        Me.CBAutoClose.Text = "Anruffenster automatisch ausblenden"
         Me.CBAutoClose.UseVisualStyleBackColor = True
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(162, 78)
+        Me.Label2.Location = New System.Drawing.Point(162, 98)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(114, 52)
         Me.Label2.TabIndex = 33
@@ -1594,11 +1606,11 @@ Partial Class formCfg
         '
         Me.CLBTelNr.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.CLBTelNr.CheckOnClick = True
-        Me.CLBTelNr.FormattingEnabled = True
         Me.CLBTelNr.HorizontalScrollbar = True
-        Me.CLBTelNr.Location = New System.Drawing.Point(8, 78)
+        Me.CLBTelNr.IntegralHeight = False
+        Me.CLBTelNr.Location = New System.Drawing.Point(6, 101)
         Me.CLBTelNr.Name = "CLBTelNr"
-        Me.CLBTelNr.Size = New System.Drawing.Size(148, 47)
+        Me.CLBTelNr.Size = New System.Drawing.Size(148, 28)
         Me.CLBTelNr.TabIndex = 4
         '
         'LEnblDauer
@@ -2399,6 +2411,7 @@ Partial Class formCfg
     Friend WithEvents LRWSTest As System.Windows.Forms.Label
     Friend WithEvents TBRWSTest As System.Windows.Forms.TextBox
     Friend WithEvents BTestLogin As System.Windows.Forms.Button
+    Friend WithEvents CBAnrMonCloseAtDISSCONNECT As System.Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class

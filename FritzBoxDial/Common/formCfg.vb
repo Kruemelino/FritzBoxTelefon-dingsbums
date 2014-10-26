@@ -135,6 +135,7 @@ Friend Class formCfg
             Me.CBShowMSN.Checked = .P_CBShowMSN
             ' optionale allgemeine Einstellungen laden
             Me.CBAutoClose.Checked = .P_CBAutoClose
+            Me.CBAnrMonCloseAtDISSCONNECT.Checked = .P_CBAnrMonCloseAtDISSCONNECT
             Me.CBVoIPBuster.Checked = .P_CBVoIPBuster
             Me.CBCbCunterbinden.Checked = .P_CBCbCunterbinden
             Me.CBCallByCall.Checked = .P_CBCallByCall
@@ -442,6 +443,7 @@ Friend Class formCfg
             .P_TBEnblDauer = CInt(Me.TBEnblDauer.Text)
             .P_CBAnrMonAuto = Me.CBAnrMonAuto.Checked
             .P_CBAutoClose = Me.CBAutoClose.Checked
+            .P_CBAnrMonCloseAtDISSCONNECT = Me.CBAnrMonCloseAtDISSCONNECT.Checked
             .P_CBAnrMonMove = Me.CBAnrMonMove.Checked
             .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
             .P_CBAnrMonContactImage = Me.CBAnrMonContactImage.Checked
@@ -857,7 +859,7 @@ Friend Class formCfg
                                                                         CLBTelNr.SelectedIndexChanged, _
                                                                         TBRWSTest.TextChanged, _
                                                                         TBBenutzer.TextChanged, _
-                                                                        TBPasswort.TextChanged
+                                                                        TBPasswort.TextChanged, CBAnrMonCloseAtDISSCONNECT.CheckedChanged
 
         Select Case sender.GetType().Name
             Case "CheckBox"
@@ -883,6 +885,8 @@ Friend Class formCfg
                     Case "CBAutoClose"
                         Me.TBEnblDauer.Enabled = Me.CBAutoClose.Checked
                         Me.LEnblDauer.Enabled = Me.CBAutoClose.Checked
+                        Me.CBAnrMonCloseAtDISSCONNECT.Checked = False
+                        Me.CBAnrMonCloseAtDISSCONNECT.Enabled = Not Me.CBAutoClose.Checked
                     Case "CBJournal"
                         If Not Me.CBJournal.Checked Then Me.CBJImport.Checked = False
                         Me.CBJImport.Enabled = Me.CBJournal.Checked

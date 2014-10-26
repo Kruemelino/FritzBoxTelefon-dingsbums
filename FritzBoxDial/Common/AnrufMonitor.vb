@@ -834,6 +834,10 @@ Friend Class AnrufMonitor
                     Telefonat.PopupStoppuhr.StoppuhrStopp()
                 End If
 
+                If .PopupAnrMon IsNot Nothing And C_DP.P_CBAnrMonCloseAtDISSCONNECT Then
+                    .PopupAnrMon.Hide()
+                End If
+
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
