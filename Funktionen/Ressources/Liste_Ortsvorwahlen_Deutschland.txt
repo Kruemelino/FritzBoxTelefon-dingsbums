@@ -2,7 +2,9 @@
 ' Access-Paradies - Tipps, Tricks, Tools, Beispiele für Access;
 ' Download von http://www.access-paradies.de;
 '*****************************************************************;
-'Und Wikipedia 10.07.14
+'Wikipedia 07.11.14
+800;Freephone/ITFS
+'Wikipedia 10.07.14
 1010;Dritte HanseStar UG (haftungsbeschränkt);
 1011;Ventelo GmbH;
 1012;01012 Telecom GmbH;
