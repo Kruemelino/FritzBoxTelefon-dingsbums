@@ -686,6 +686,7 @@ Friend Class AnrufMonitor
                         Case 10 To 19 ' DECT
                             .NSN += 50
                     End Select
+
                     Select Case .NSN
                         Case 3
                             .TelName = "Durchwahl"
@@ -720,6 +721,7 @@ Friend Class AnrufMonitor
                     C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStoppUhr1)
                     C_Popup.StoppuhrEinblenden(Telefonat)
                 End If
+
                 'Notizeintag
 #If Not OVer = 11 Then
                 If C_DP.P_CBNote Then

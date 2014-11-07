@@ -17,6 +17,7 @@ Public Class Popup
 
 #Region "BackgroundWorker"
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
+    Private WithEvents BWStoppUhrEinblenden As BackgroundWorker
 #End Region
 
 #Region "Eigene Variablen für Anrufmonitor"
@@ -148,7 +149,7 @@ Public Class Popup
     ''' </summary>
     ''' <param name="Telefonat">Telefonat, das angezeigt wird</param>
     ''' <remarks></remarks>
-    Friend Overloads Sub AnrMonEinblenden(ByVal Telefonat As C_Telefonat)
+    Friend Sub AnrMonEinblenden(ByVal Telefonat As C_Telefonat)
         BWAnrMonEinblenden = New BackgroundWorker
         With BWAnrMonEinblenden
             .WorkerSupportsCancellation = False
@@ -327,8 +328,28 @@ Public Class Popup
 #End Region
 
 #Region "Stoppuhr"
-
+    ''' <summary>
+    ''' Startet den Hintergrundprozess, der die Stoppuhr einblendet.
+    ''' </summary>
+    ''' <param name="Telefonat"></param>
+    ''' <remarks></remarks>
     Friend Sub StoppuhrEinblenden(ByVal Telefonat As C_Telefonat)
+        BWStoppUhrEinblenden = New BackgroundWorker
+        With BWStoppUhrEinblenden
+            .WorkerSupportsCancellation = False
+            .WorkerReportsProgress = False
+            .RunWorkerAsync(argument:=Telefonat)
+        End With
+    End Sub
+
+    ''' <summary>
+    ''' Hintergrundprozess der Stoppuhr
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub BWStoppUhrEinblenden_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStoppUhrEinblenden.DoWork
+        Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
         Dim WarteZeit As Integer
         Dim Richtung As String
         Dim AnrName As String
@@ -380,6 +401,22 @@ Public Class Popup
         C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(AnrName))
 
         AddHandler thisPopupStoppuhr.Close, AddressOf PopUpStoppuhr_Close
+
+        Do
+            Windows.Forms.Application.DoEvents()
+        Loop Until Telefonat.PopupStoppuhr Is Nothing Or Not StoppuhrListe.Exists(Function(AM) AM Is Telefonat.PopupStoppuhr)
+
+    End Sub
+
+    ''' <summary>
+    ''' Gibt BackgroundWorkers frei. (Dispose)
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub BWStoppUhrEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStoppUhrEinblenden.RunWorkerCompleted
+        BWStoppUhrEinblenden.Dispose()
+        BWStoppUhrEinblenden = Nothing
     End Sub
 
     ''' <summary>
@@ -452,4 +489,5 @@ Public Class Popup
         End If
     End Sub
 #End Region
+
 End Class
