@@ -1502,7 +1502,7 @@ Public Class FritzBox
                 DialPort = C_DP.P_Def_MobilDialPort
                 PushStatus(C_DP.P_FritzBox_Tel_DeviceFound("Mobil", DialPort, Mobil, TelName))
                 If P_SpeichereDaten Then
-                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = IIf(TelName = C_DP.P_Def_ErrorMinusOne_String Or TelName = C_DP.P_Def_StringEmpty, Mobil, TelName)
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = Mobil
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                     AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull

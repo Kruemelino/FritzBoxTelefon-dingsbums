@@ -458,12 +458,14 @@ Public Class Helfer
             If tmpTelNrTeile(0) = tmpLandesVorwahl.Insert(0, "00") Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(0)))
 
             ' Ortsvorwahl entfernen
-            If tmpTelNrTeile(1) = tmpOrtsVorwahl And Not Mobilnummer(TelNr) Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(1)))
+            If tmpTelNrTeile(1) = tmpOrtsVorwahl And Not Mobilnummer(TelNr) Then
+                TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(1)) + CInt(IIf(TelNr.StartsWith("0"), 1, 0)))
+            End If
+
         End If
 
         Return TelNr
     End Function
-
 
     ''' <summary>
     ''' TelNr bereinigen
