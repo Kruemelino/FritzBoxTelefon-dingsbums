@@ -415,7 +415,7 @@ Friend Class AnrufMonitor
         ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
         ' FBStatus(3): Eingehende Telefonnummer, TelNr
         ' FBStatus(4): Angerufene eigene Telefonnummer, MSN
-        ' FBStatus(5): ???
+        ' FBStatus(5): Anschluss, SIP...
 
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
 

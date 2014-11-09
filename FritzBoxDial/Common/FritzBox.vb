@@ -1109,8 +1109,8 @@ Public Class FritzBox
         Dim MSNPort(2, 9) As String
         Dim MSN(9) As String
         Dim FAX(9) As String
-        Dim Mobil As String
-        Dim POTS As String
+        Dim Mobil As String = C_DP.P_Def_StringEmpty
+        Dim POTS As String = C_DP.P_Def_StringEmpty
         Dim allin As String
         Dim DialPort As String = "0"
 
@@ -1272,16 +1272,16 @@ Public Class FritzBox
             End If
 
             xPathTeile.Item(xPathTeile.IndexOf("POTS")) = "Mobil"
-
+            'Mobilnummer
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
             If Not Mobil = C_DP.P_Def_ErrorMinusOne_String And Not Mobil = C_DP.P_Def_StringEmpty Then
                 If Strings.Left(Mobil, 3) = "SIP" Then
                     Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
                 Else
-                    Mobil = .EigeneVorwahlenEntfernen(Mobil)
+                    'Mobil = .EigeneVorwahlenEntfernen(Mobil)
                 End If
-                PushStatus(C_DP.P_FritzBox_Tel_NrFound("Mobil", CStr(0), Mobil))
-                If P_SpeichereDaten Then C_DP.Write(xPathTeile, Mobil, "ID", C_DP.P_Def_StringNull)
+                PushStatus(C_DP.P_FritzBox_Tel_NrFound("Mobil", C_DP.P_Def_MobilDialPort, Mobil))
+                If P_SpeichereDaten Then C_DP.Write(xPathTeile, Mobil, "ID", C_DP.P_Def_MobilDialPort)
             End If
 
             SIP = (From x In SIP Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
@@ -1480,7 +1480,7 @@ Public Class FritzBox
             ' integrierter Faxempfang
             xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             DialPort = .StringEntnehmen(Code, "['telcfg:settings/FaxMailActive'] = '", "'")
-            If Not DialPort = "0" Then
+            If DialPort IsNot C_DP.P_Def_StringNull Then
                 TelNr = C_DP.P_Def_ErrorMinusOne_String
                 DialPort = "5"
                 TelName = "Faxempfang"
@@ -1493,7 +1493,22 @@ Public Class FritzBox
 
                     C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                 End If
+            End If
 
+            ' Mobiltelefon
+            xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "Mobil"
+            If Mobil IsNot C_DP.P_Def_StringEmpty Then
+                TelName = .StringEntnehmen(Code, "['telcfg:settings/Mobile/Name'] = '", "'")
+                DialPort = C_DP.P_Def_MobilDialPort
+                PushStatus(C_DP.P_FritzBox_Tel_DeviceFound("Mobil", DialPort, Mobil, TelName))
+                If P_SpeichereDaten Then
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = Mobil
+                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = C_DP.P_Def_StringNull
+
+                    C_DP.AppendNode(xPathTeile, C_DP.CreateXMLNode("Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                End If
             End If
 
             ' Landesvorwahl 

@@ -347,7 +347,7 @@ Friend Class formCfg
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
-            .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
+            .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"") or starts-with(name(.), ""Mobil"")]")
 
             TelNrString = Split("Alle Telefonnummern;" & C_DP.Read(xPathTeile, ""), ";", , CompareMethod.Text)
 

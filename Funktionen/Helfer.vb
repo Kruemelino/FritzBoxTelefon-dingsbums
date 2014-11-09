@@ -436,42 +436,29 @@ Public Class Helfer
     ''' dann wird die Nummer fälschlicherweise nur zu NNN und nicht korrekt zu 4930NNN verarbeitet.</remarks>
     Function EigeneVorwahlenEntfernen(ByVal TelNr As String) As String
 
+        Dim tmpTelNrTeile() As String
         Dim tmpLandesVorwahl As String
         Dim tmpOrtsVorwahl As String
 
+
         If Not TelNr = C_DP.P_Def_StringEmpty Then
 
+            ' Nummer korrigieren, falls diese mit der Landes- und Ortsvorwahl ohne führende "00" beginnt.
+            tmpLandesVorwahl = C_DP.P_TBLandesVW
+            tmpOrtsVorwahl = C_DP.P_TBVorwahl
+            If tmpLandesVorwahl.StartsWith("00") Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2)
+            If tmpOrtsVorwahl.StartsWith("0") Then tmpOrtsVorwahl = tmpOrtsVorwahl.Remove(0, 1)
+
+            If TelNr.StartsWith(tmpLandesVorwahl & tmpOrtsVorwahl) Then TelNr = TelNr.Insert(0, "+")
+
+            tmpTelNrTeile = TelNrTeile(TelNr)
             TelNrBereinigen(TelNr)
 
-            With C_DP
+            ' Landesvorwahl entfernen
+            If tmpTelNrTeile(0) = tmpLandesVorwahl.Insert(0, "00") Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(0)))
 
-                tmpLandesVorwahl = .P_Def_TBLandesVW
-                tmpOrtsVorwahl = .P_TBVorwahl
-
-                ' Führende Null der Ortsvorwahl wegschneiden
-                If tmpOrtsVorwahl.StartsWith("0") Then tmpOrtsVorwahl = Mid(.P_TBVorwahl, 2)
-
-                ' Landesvorwahl vorhanden
-                If TelNr.StartsWith("00") Then
-                    ' 1. Fall: Klassisch 0049, +49 entfernen
-                    ' 00 davorhängen falls nötig
-                    If Not tmpLandesVorwahl.StartsWith("00") Then tmpLandesVorwahl = tmpLandesVorwahl.Insert(0, "00")
-                    'Landesvorwahl entfernen
-                    If TelNr.StartsWith(tmpLandesVorwahl) Then TelNr = TelNr.Remove(0, Len(tmpLandesVorwahl))
-                Else
-                    ' 2. Fall: 49 ohne führende 00 oder +
-                    ' Führende 00 der Landesvorwahl entfernen
-                    If tmpLandesVorwahl.StartsWith("00") Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2) ' Führende 00 der Landesvorwahl entfernen
-                    'Landesvorwahl entfernen
-                    If TelNr.StartsWith(tmpLandesVorwahl & tmpOrtsVorwahl) Then TelNr = TelNr.Remove(0, Len(tmpLandesVorwahl))
-                End If
-
-                ' Führende Null der Telefonnummer wegschneiden
-                If TelNr.StartsWith("0") Then TelNr = Mid(TelNr, 2)
-                ' Vorwahl wegschneiden
-                If Strings.Left(TelNr, Len(tmpOrtsVorwahl)) = tmpOrtsVorwahl Then TelNr = Mid(TelNr, Len(tmpOrtsVorwahl) + 1)
-
-            End With
+            ' Ortsvorwahl entfernen
+            If tmpTelNrTeile(1) = tmpOrtsVorwahl And Not Mobilnummer(TelNr) Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(1)))
         End If
 
         Return TelNr
@@ -508,13 +495,19 @@ Public Class Helfer
         TelNr = TelNr.Replace(" ", "")
     End Sub
 
+    ''' <summary>
+    ''' Zerlegt die Telefonnummer in ihre Bestandteile (0: Landesvorwahl,1: Ortsvorwahl,2: Durchwahl).
+    ''' </summary>
+    ''' <param name="TelNr">Zu zerlegende Telefonnummer.</param>
+    ''' <returns>Stringarray:
+    ''' 0: Landesvorwahl mit führenden "00"
+    ''' 1: Ortsvorwahl ohne führende 0
+    ''' 2: Durchwahl</returns>
+    ''' <remarks>Findet die Ortsvorwahl in einem formatierten Telefonstring
+    '''  Kriterien: die Ortsvorwahl befindet sich in Klammern
+    '''  die OrtsVorwahl wird duch ein "-", "/" oder " " von der Rufnummer separiert
+    '''  Eine eventuell vorhandene Landesvorwahl wird berücksichtigt (vorher entfernt)</remarks>
     Function TelNrTeile(ByVal TelNr As String) As String()
-        ' Findet die Ortsvorwahl in einem formatierten Telefonstring
-        ' Kriterien: die Ortsvorwahl befindet sich in Klammern
-        '            die OrtsVorwahl wird duch ein "-", "/" oder " " von der Rufnummer separiert
-        ' Eine eventuell vorhandene Landesvorwahl wird berücksichtigt (vorher entfernt)
-        ' Parameter:  TelNr (String):  Telefonnummer, die die Ortsvorwahl enthält
-        ' Rückgabewert (String):       Ortsvorwahl
 
         Dim pos1 As Integer   ' Positionen innerhalb der TelNr
         Dim pos2 As Integer   ' Positionen innerhalb der TelNr
@@ -718,10 +711,14 @@ Public Class Helfer
     Public Function Mobilnummer(ByVal TelNr As String) As Boolean
         Dim TempTelNr As String() = TelNrTeile(TelNr)
         Dim Vorwahl As String = Left(TempTelNr(1), 2)
-        If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
-            If Vorwahl = "15" Or Vorwahl = "16" Or Vorwahl = "17" Then Return True
-        End If
-        Return False
+
+
+        'If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
+
+        Return (TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty) And (Vorwahl.StartsWith("15") Or Vorwahl.StartsWith("16") Or Vorwahl.StartsWith("17"))
+        'If Vorwahl = "15" Or Vorwahl = "16" Or Vorwahl = "17" Then Return True
+        'End If
+        'Return False
     End Function
 
     Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean

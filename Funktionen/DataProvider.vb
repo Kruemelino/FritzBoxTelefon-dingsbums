@@ -1593,11 +1593,23 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' Gibt den default Dialport für Mobilgeräte an. 
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>99</returns>
+    Public ReadOnly Property P_Def_MobilDialPort() As String
+        Get
+            Return "99"
+        End Get
+    End Property
+
     Public ReadOnly Property P_Def_DirectorySeparatorChar() As String
         Get
             Return IO.Path.DirectorySeparatorChar
         End Get
     End Property
+
     Public ReadOnly Property P_Def_AddInPath() As String
         Get
             Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & P_Def_DirectorySeparatorChar & P_Def_Addin_LangName & P_Def_DirectorySeparatorChar
