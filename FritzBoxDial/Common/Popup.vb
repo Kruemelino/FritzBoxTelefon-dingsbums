@@ -223,8 +223,6 @@ Public Class Popup
             Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
 
             If RemoveTelFromList Then TelefonatsListe.Remove(Telefonat)
-            C_hf.LogFile("BWAnrMonEinblenden.DoWork: Schleife verlassen")
-
         End If
     End Sub
 
