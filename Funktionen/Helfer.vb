@@ -363,7 +363,7 @@ Public Class Helfer
 
             If OrtsVW = C_DP.P_Def_StringEmpty Then
                 OrtsVW = C_DP.P_TBVorwahl
-                If Not LandesVW = "0039" Then
+                If Not LandesVW = C_DP.P_Def_PreLandesVW & "39" Then
                     'Else
                     If OrtsVW.StartsWith("0") Then
                         OrtsVW = Mid(OrtsVW, 2)
@@ -371,7 +371,7 @@ Public Class Helfer
                 End If
             End If
 
-            If LandesVW.StartsWith("00") Then LandesVW = Replace(LandesVW, "00", "+", 1, 1, CompareMethod.Text)
+            If LandesVW.StartsWith(C_DP.P_Def_PreLandesVW) Then LandesVW = Replace(LandesVW, C_DP.P_Def_PreLandesVW, "+", 1, 1, CompareMethod.Text)
         Else
             OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
             LandesVW = C_DP.P_Def_StringEmpty
@@ -446,7 +446,7 @@ Public Class Helfer
             ' Nummer korrigieren, falls diese mit der Landes- und Ortsvorwahl ohne führende "00" beginnt.
             tmpLandesVorwahl = C_DP.P_TBLandesVW
             tmpOrtsVorwahl = C_DP.P_TBVorwahl
-            If tmpLandesVorwahl.StartsWith("00") Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2)
+            If tmpLandesVorwahl.StartsWith(C_DP.P_Def_PreLandesVW) Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2)
             If tmpOrtsVorwahl.StartsWith("0") Then tmpOrtsVorwahl = tmpOrtsVorwahl.Remove(0, 1)
 
             If TelNr.StartsWith(tmpLandesVorwahl & tmpOrtsVorwahl) Then TelNr = TelNr.Insert(0, "+")
@@ -455,7 +455,7 @@ Public Class Helfer
             TelNrBereinigen(TelNr)
 
             ' Landesvorwahl entfernen
-            If tmpTelNrTeile(0) = tmpLandesVorwahl.Insert(0, "00") Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(0)))
+            If tmpTelNrTeile(0) = tmpLandesVorwahl.Insert(0, C_DP.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(0)))
 
             ' Ortsvorwahl entfernen
             If tmpTelNrTeile(1) = tmpOrtsVorwahl And Not Mobilnummer(TelNr) Then
@@ -486,9 +486,9 @@ Public Class Helfer
         'TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
 
         TelNr = TelNr.Replace("(0)", " ")
-        TelNr = TelNr.Replace("++", "00")
+        TelNr = TelNr.Replace("++", C_DP.P_Def_PreLandesVW)
         TelNr = TelNr.Replace("+ ", "+")
-        TelNr = TelNr.Replace("+", "00")
+        TelNr = TelNr.Replace("+", C_DP.P_Def_PreLandesVW)
         TelNr = TelNr.Replace("[", "(")
         TelNr = TelNr.Replace("]", ")")
         TelNr = TelNr.Replace("{", "(")
@@ -523,11 +523,11 @@ Public Class Helfer
 
             TelNrBereinigen(TelNr)
 
-            If TelNr.StartsWith("00") Then
+            If TelNr.StartsWith(C_DP.P_Def_PreLandesVW) Then
                 'Landesvorwahl vorhanden
                 LandesVW = VorwahlausDatei(TelNr, My.Resources.Liste_Landesvorwahlen)
                 If Not LandesVW = C_DP.P_Def_StringEmpty Then
-                    LandesVW = "00" & LandesVW
+                    LandesVW = C_DP.P_Def_PreLandesVW & LandesVW
                     TelNr = Mid(TelNr, Len(LandesVW) + 1)
                 End If
             Else
@@ -570,10 +570,10 @@ Public Class Helfer
                 Else
                     OrtsVW = AuslandsVorwahlausDatei(TelNr, LandesVW)
                     Select Case LandesVW
-                        Case "007" ' Kasachstan
+                        Case C_DP.P_Def_PreLandesVW & "7" ' Kasachstan
                             ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
                             If IsOneOf(OrtsVW, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then OrtsVW += ErsteZiffer
-                        Case "0039" ' Italien
+                        Case C_DP.P_Def_PreLandesVW & "39" ' Italien
                             If TelNr.StartsWith("0") Then OrtsVW = "0" & OrtsVW
                     End Select
                 End If
@@ -613,7 +613,7 @@ Public Class Helfer
         Dim tmpErgebnis As String
         Dim Treffer As String = C_DP.P_Def_StringEmpty
 
-        If TelNr.StartsWith("00") Then TelNr = TelNr.Remove(0, 2)
+        If TelNr.StartsWith(C_DP.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
         If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
         Do
             i += 1
@@ -638,9 +638,9 @@ Public Class Helfer
         TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
         AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
 
-        If LandesVW.StartsWith("00") Then LandesVW = LandesVW.Remove(0, 2)
+        If LandesVW.StartsWith(C_DP.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
         If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
-        If TelNr.StartsWith("00") Then TelNr = TelNr.Remove(0, 2)
+        If TelNr.StartsWith(C_DP.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
         If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
         Do
             i += 1
@@ -697,7 +697,7 @@ Public Class Helfer
                 Case "W" To "Z"
                     nurZiffern = nurZiffern + "9"
                 Case "+"
-                    nurZiffern = nurZiffern + "00"
+                    nurZiffern = nurZiffern + C_DP.P_Def_PreLandesVW
             End Select
         Next
         ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
@@ -835,12 +835,14 @@ Public Class Helfer
                     .Method = WebRequestMethods.Http.Post
                     .Proxy = Nothing
                     .KeepAlive = True
-                    .ContentLength = Daten.Length
+                    .ContentLength = Encoding.UTF8.GetBytes(Daten).Length
                     .ContentType = C_DP.P_Def_Header_ContentType
                     .Accept = C_DP.P_Def_Header_Accept
                     .UserAgent = C_DP.P_Def_Header_UserAgent
                     .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+
                     Try
+
                         With New IO.StreamWriter(.GetRequestStream)
                             .Write(Daten)
                             ThreadSleep(100)
@@ -852,6 +854,8 @@ Public Class Helfer
                             'ThreadSleep(1000)
                             .Close()
                         End With
+                    Catch exPVE As ProtocolViolationException
+                        LogFile("httpPOST_Stream: " & exPVE.Message & " - Link: " & .ContentLength)
                     Catch exANE As ArgumentNullException
                         LogFile("httpPOST_Stream: " & exANE.Message)
                     Catch exWE As WebException
@@ -901,7 +905,7 @@ Public Class Helfer
         nSeks = nSeks Mod 3600
         m = nSeks / 60
         nSeks = nSeks Mod 60
-        Return Format(h, "00") & ":" & Format(m, "00") & ":" & Format(nSeks, "00")
+        Return Format(h, C_DP.P_Def_PreLandesVW) & ":" & Format(m, C_DP.P_Def_PreLandesVW) & ":" & Format(nSeks, C_DP.P_Def_PreLandesVW)
     End Function
 
     Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String

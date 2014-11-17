@@ -1272,6 +1272,7 @@ Public Class Contacts
 #End If
 #End Region
 
+
 End Class
 
 Friend Class ContactSaved

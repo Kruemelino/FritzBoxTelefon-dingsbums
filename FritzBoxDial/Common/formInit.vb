@@ -83,6 +83,7 @@
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
             End If
+
             'If C_DP.P_Debug_AnrufSimulation Then
             '    F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
             'End If

@@ -420,7 +420,7 @@ Friend Class formWählbox
         If C_DP.P_CBVoIPBuster Then
             ' Änderung von "HardyX9" zur Nutzung des Scriptes mit VoIPBuster
             ' Dadurch wird die Länderkennung 0049 immer mitgewählt
-            If Not Mid(Code, 1, 2) = "00" Then Code = Replace(Code, "0", C_DP.P_TBLandesVW, 1, 1)
+            If Not Mid(Code, 1, 2) = C_DP.P_Def_PreLandesVW Then Code = Replace(Code, "0", C_DP.P_TBLandesVW, 1, 1)
             C_hf.LogFile("VoIPBuster umgewandelte Rufnummer lautet: " & Code)
         End If
 
