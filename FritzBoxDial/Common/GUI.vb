@@ -247,6 +247,18 @@ Imports Microsoft.Office.Core
         C_KF.AddNote(CType(Insp.CurrentItem, Outlook.ContactItem))
     End Sub
 
+    Public Sub OnUploadFB(ByVal control As Office.IRibbonControl)
+        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+
+        C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
+    End Sub
+    Public Sub OnUploadKontextFB(ByVal control As Office.IRibbonControl)
+        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+
+        C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
+    End Sub
+
+
 
     ''' <summary>
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Inspektoren
@@ -268,6 +280,8 @@ Imports Microsoft.Office.Core
                 GetInspLabel = C_DP.P_CMB_Insp_VIP
             Case "Button_C2"
                 GetInspLabel = C_DP.P_CMB_Insp_Note
+            Case "Button_C3"
+                GetInspLabel = C_DP.P_CMB_Insp_UploadKontakt
             Case "btn_C01", "btn_J01"
                 GetInspLabel = C_DP.P_RWS11880_Name
             Case "btn_C02", "btn_J02"
@@ -301,6 +315,8 @@ Imports Microsoft.Office.Core
                 GetInspScreenTipp = GetScreenTipVIP(control)
             Case "Button_C2"
                 GetInspScreenTipp = C_DP.P_CMB_Insp_Note_ToolTipp
+            Case "Button_C3"
+                GetInspScreenTipp = C_DP.P_CMB_Insp_UploadKontakt_ToolTipp
             Case "btn_C01", "btn_J01"
                 GetInspScreenTipp = C_DP.P_RWS_ToolTipp(C_DP.P_RWS11880_Link)
             Case "btn_C02", "btn_J02"
@@ -386,14 +402,14 @@ Imports Microsoft.Office.Core
                 End If
             Next
         Else
-            For ID = 0 To index - 1
+            For ID = 0 To index
                 C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
 
                     GetButtonXMLString(RibbonListStrBuilder, _
-                            CStr(ID Mod index), _
+                            CStr(ID), _
                             Anrufer, _
                             XMLListBaseNode, _
                             C_DP.P_Def_StringEmpty)
@@ -553,6 +569,8 @@ Imports Microsoft.Office.Core
                 GetExplLabel = C_DP.P_CMB_ContextMenueItemCall
             Case "ContextMenuContactItem_C"
                 GetExplLabel = C_DP.P_CMB_ContextMenueItemVIP
+            Case "ContextMenuContactItem_D"
+                GetExplLabel = C_DP.P_CMB_Insp_UploadKontakt
             Case Else
                 GetExplLabel = C_DP.P_Def_ErrorMinusOne_String
         End Select

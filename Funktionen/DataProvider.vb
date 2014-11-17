@@ -1157,6 +1157,16 @@ Public Class DataProvider
 
 #Region "Global Default Value Properties"
     ''' <summary>
+    ''' 00 als String
+    ''' </summary>
+    ''' <value>00</value>
+    ''' <returns>String</returns>
+    Public ReadOnly Property P_Def_PreLandesVW() As String
+        Get
+            Return "00"
+        End Get
+    End Property
+    ''' <summary>
     ''' -1 als String.
     ''' Default Fehler
     ''' </summary>
@@ -1757,7 +1767,7 @@ Public Class DataProvider
     ''' <returns>0049</returns>
     Public ReadOnly Property P_Def_TBLandesVW() As String
         Get
-            Return "0049"
+            Return P_Def_PreLandesVW & "49"
         End Get
     End Property
     Public ReadOnly Property P_Def_CBoxLandesVorwahl() As Integer
@@ -3388,6 +3398,30 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Upload
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Insp_UploadKontakt() As String
+        Get
+            Return "Upload"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Einen Notizeintrag hinzufügen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Insp_UploadKontakt_ToolTipp() As String
+        Get
+            Return "Lädt diesen Kontakt auf die " & P_Def_FritzBoxName & " hoch."
+        End Get
+    End Property
+
+    ''' <summary>          
     ''' Kontakt erstellen
     ''' </summary>
     ''' <value></value>
@@ -3618,6 +3652,44 @@ Public Class DataProvider
     Public ReadOnly Property P_Fehler_Kontakt_Anzeigen(ByVal ErrorMessage As String) As String
         Get
             Return "Der Kontakt kann angezeigt werden: " & P_Def_NeueZeile & P_Def_NeueZeile & ErrorMessage
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "Der Kontakt <c>KontaktName</c> wurde erfolgreich auf die Fritz!Box geladen."
+    ''' </summary>
+    ''' <param name="KontaktName"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Kontakt_Hochgeladen(ByVal KontaktName As String) As String
+        Get
+            Return "Der Kontakt " & KontaktName & " wurde erfolgreich auf die " & P_Def_FritzBoxName & " geladen."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Kontakt <c>KontaktName</c> konnte nicht auf die Fritz!Box geladen werden."
+    ''' </summary>
+    ''' <param name="KontaktName"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Fehler_Kontakt_Hochladen(ByVal KontaktName As String) As String
+        Get
+            Return "Der Kontakt " & KontaktName & " konnte nicht auf die " & P_Def_FritzBoxName & " geladen werden."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "Der Addressbuch der Fritz!Box kann nicht geöffnet werden."
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_Fehler_Export_Addressbuch() As String
+        Get
+            Return "Der Addressbuch der " & P_Def_FritzBoxName & " kann nicht geöffnet werden."
         End Get
     End Property
 #End Region
@@ -4482,7 +4554,7 @@ Public Class DataProvider
 
             P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
         Else
-            tmpVorwahl = Strings.Replace(tmpVorwahl, "00", "", , 1, CompareMethod.Text)
+            tmpVorwahl = Strings.Replace(tmpVorwahl, P_Def_PreLandesVW, "", , 1, CompareMethod.Text)
 
             Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Ausland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
             Dim tmpvw() As String

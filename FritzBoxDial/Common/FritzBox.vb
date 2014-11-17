@@ -279,6 +279,44 @@ Public Class FritzBox
             Return P_Link_FB_Basis & "/cgi-bin/system_status"
         End Get
     End Property
+
+    ''' <summary>
+    ''' http://P_ValidFBAdr/jason_boxinfo.xml
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private ReadOnly Property P_Link_FB_jason_boxinfo() As String
+        Get
+            Return P_Link_FB_Basis & "/jason_boxinfo.xml"
+        End Get
+    End Property
+
+    ' Telefonbuch
+    ''' <summary>
+    ''' http://P_ValidFBAdr/fon_num/fonbook_entry.lua
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private ReadOnly Property P_Link_FB_FonBook_Entry() As String
+        Get
+            Return P_Link_FB_Basis & "/fon_num/fonbook_entry.lua"
+        End Get
+    End Property
+
+
+    ''' <summary>
+    ''' http://P_ValidFBAdr/cgi-bin/firmwarecfg
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private ReadOnly Property P_Link_FB_ExportAddressbook() As String
+        Get
+            Return P_Link_FB_Basis & "/cgi-bin/firmwarecfg"
+        End Get
+    End Property
 #End Region
 
     Public Sub New(ByVal xmlKlasse As DataProvider, _
@@ -1610,8 +1648,6 @@ Public Class FritzBox
         Dim FBFirmware As String = C_DP.P_Def_StringUnknown
         Dim FritzBoxInformation() As String
 
-        'If LCase(FBAdr) = C_DP.P_Def_FritzBoxAdress Then C_hf.Ping(FBAdr)
-
         sLink = P_Link_FB_SystemStatus '"http://" & FBAdr & "/cgi-bin/system_status"
         FritzBoxInformation = Split(C_hf.StringEntnehmen(C_hf.httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
         FBTyp = FritzBoxInformation(0)
@@ -1621,6 +1657,144 @@ Public Class FritzBox
 
     End Function
 #End Region
+
+#Region "Kontakt2FB"
+    Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+
+        Dim EntryName As String
+        Dim EmailNew1 As String
+
+        Dim NumberNew(3) As String
+        Dim NumberType(3) As String
+
+
+        Dim cmd As String
+        Dim ReturnValue As String
+
+        NumberType(0) = "home"
+        NumberType(1) = "mobile"
+        NumberType(2) = "work"
+        NumberType(3) = "fax_work"
+
+        With Kontakt
+            EntryName = .FullName
+            NumberNew(0) = C_hf.nurZiffern(.HomeTelephoneNumber)
+            NumberNew(1) = C_hf.nurZiffern(.MobileTelephoneNumber)
+            NumberNew(2) = C_hf.nurZiffern(.BusinessTelephoneNumber)
+            NumberNew(3) = C_hf.nurZiffern(.BusinessFaxNumber)
+            EmailNew1 = .Email1Address
+        End With
+
+        If SID = C_DP.P_Def_SessionID Then FBLogin(True)
+
+        If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
+            cmd = "sid=" & SID & "&entryname=" & EntryName
+            For i = LBound(NumberType) To UBound(NumberType)
+                If Not NumberNew(i) = C_DP.P_Def_StringEmpty Then
+                    cmd += "&numbertypenew1=" & NumberType(i) & "&numbernew1=" & NumberNew(i)
+                End If
+            Next
+
+            If istVIP Then
+                cmd += "&category=on"
+            End If
+
+            If Not EmailNew1 = C_DP.P_Def_StringEmpty Then
+                cmd += "&emailnew1=" & EmailNew1
+            End If
+
+            cmd += "&apply=" 'Wichtig!
+
+            With C_hf
+                ReturnValue = .httpPOST(P_Link_FB_FonBook_Entry, cmd, FBEncoding)
+                If ReturnValue.Contains(EntryName) Then
+                    .LogFile(C_DP.P_Kontakt_Hochgeladen(EntryName))
+                    .FBDB_MsgBox(C_DP.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBox")
+                Else
+                    .FBDB_MsgBox(C_DP.P_Fehler_Kontakt_Hochladen(EntryName), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
+                End If
+
+            End With
+        Else
+            C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadKontaktToFritzBox")
+        End If
+    End Sub
+
+    '    +    public InputStream exportAddressbook() throws IOException
+    '+    {
+    '+        return httpPostMultipart("cgi-bin/firmwarecfg")
+    '+                .addParameter("sid", sid_).addParameter("PhonebookId", "0")
+    '+                .addParameter("PhonebookExportName", "Telefonbuch")
+    '+                .addParameter("PhonebookExport", "").execute();
+    '+    }
+    '+
+    '+    public OutputStream importAddressbook() throws IOException
+    '+    {
+    '+        return new ByteArrayOutputStream() {
+    '+            public void close() throws IOException
+    '+            {
+    '+                httpPostMultipart("cgi-bin/firmwarecfg")
+    '+                        .addParameter("sid", sid_)
+    '+                        .addParameter("PhonebookId", "0")
+    '+                        .addParameter("PhonebookImportFile", toByteArray(),
+    '+                                "iso-8859-1").execute().close();
+    '+            }
+    '+        };
+    '+    }
+    Friend Function DownloadAddressbook(ByVal BookID As String, ByVal BookName As String) As XmlDocument
+        ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
+        ' http://www.ip-phone-forum.de/showthread.php?t=226605
+        DownloadAddressbook = Nothing
+        Dim row As String
+        Dim cmd As String
+        Dim ReturnValue As String
+        Dim XMLFBAddressbuch As XmlDocument
+
+        If SID = C_DP.P_Def_SessionID Then FBLogin(True)
+        If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
+
+            row = "---" & 12345 + Rnd() * 16777216
+            cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & BookID & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExportName""" & vbCrLf & vbCrLf & BookName & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
+
+            With C_hf
+                ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding)
+                If ReturnValue.StartsWith("<?xml") Then
+                    XMLFBAddressbuch = New XmlDocument()
+                    Try
+                        XMLFBAddressbuch.LoadXml(ReturnValue)
+                    Catch ex As Exception
+                        .LogFile(C_DP.P_Fehler_Export_Addressbuch)
+                    End Try
+                    DownloadAddressbook = XMLFBAddressbuch
+                End If
+            End With
+        Else
+            C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "ExportAddressbook")
+        End If
+    End Function
+
+    'Book ID ermitteln NAME nicht vergessen. Herunterladen : http://192.168.180.1/fon_num/fonbook_select.lua?sid=0d4bf2bf7bc333a9
+    '<div class="formular">
+    '<input type="radio" checked id="uiBookid:0" value="0" name="bookid">
+    '<label for="uiBookid:0">Telefonbuch
+    '</label>
+    '</div>
+    '<div class="formular">
+    '<input type="radio" id="uiBookid:1" value="1" name="bookid">
+    '<label for="uiBookid:1">Testbuch
+    '</label>
+    '</div>
+
+    'Umschalten post: bookid=0&apply=&sid=0d4bf2bf7bc333a9
+    'Friend Function DownloadAddressbook(ByVal FBAddressbook As XmlDocument) As Boolean
+
+    'End Function
+
+#End Region
+
 
     Private Sub PushStatus(ByVal Status As String)
         tb.Text = Status

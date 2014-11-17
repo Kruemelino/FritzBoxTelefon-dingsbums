@@ -129,6 +129,7 @@
       <menuSeparator id="ContextMenuContactItem_A"/>
       <button id="ContextMenuContactItem_B" getLabel="GetExplLabel" imageMso="AutoDial" onAction="ContextCall"/>
       <toggleButton id="ContextMenuContactItem_C" getLabel="GetExplLabel" onAction="OnActionKontextVIP" getPressed="GetPressedKontextVIP" imageMso="Pushpin"/>
+      <button id="ContextMenuContactItem_D" getLabel="GetExplLabel" imageMso="ParentPermissions" onAction="OnUploadKontextFB"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuJournalItem">
       <menuSeparator id="ContextMenuJournalItem_A"/>
