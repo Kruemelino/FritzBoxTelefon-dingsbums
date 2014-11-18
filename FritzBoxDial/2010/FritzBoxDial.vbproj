@@ -275,6 +275,12 @@
     <Compile Include="..\Common\Wählclient.vb">
       <Link>Wählclient.vb</Link>
     </Compile>
+    <Compile Include="..\Common\formAdressbuch.Designer.vb">
+      <DependentUpon>formAdressbuch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\Common\formAdressbuch.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -306,6 +312,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\formInit.resx">
       <DependentUpon>formInit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\formAdressbuch.resx">
+      <DependentUpon>formAdressbuch.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

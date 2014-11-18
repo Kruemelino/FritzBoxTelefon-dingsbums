@@ -16,6 +16,7 @@
     Private C_Config As formCfg
     Private F_JournalImport As formJournalimport
     Private C_PopUp As Popup
+    Private F_Adressbuch As formAdressbuch
     'Strings
     Private SID As String
 
@@ -84,6 +85,7 @@
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
             End If
 
+            F_Adressbuch = New formAdressbuch
             'If C_DP.P_Debug_AnrufSimulation Then
             '    F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
             'End If
