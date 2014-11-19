@@ -8,6 +8,7 @@ Friend Class formWählbox
 
     Private WithEvents BWLogin As New System.ComponentModel.BackgroundWorker
 
+    Private C_XML As XML
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private C_FBox As FritzBox
@@ -15,6 +16,8 @@ Friend Class formWählbox
     Private C_Phoner As PhonerInterface
     Private C_KF As Contacts
     Private C_WC As Wählclient
+
+
     Private WithEvents TimerSchließen As System.Timers.Timer
     Private CallNr As System.Threading.Thread
 
@@ -54,18 +57,20 @@ Friend Class formWählbox
 #End Region
 
     Public Sub New(ByVal Direktwahl As Boolean, _
-                   ByVal XMLKlasse As DataProvider, _
+                   ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
                    ByVal PhonerKlasse As PhonerInterface, _
                    ByVal KontaktFunktionen As Contacts, _
-                   ByVal WählClientKlasse As Wählclient)
+                   ByVal WählClientKlasse As Wählclient, _
+                   ByVal XMLKlasse As XML)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        C_DP = XMLKlasse
+        C_XML = XMLKlasse
+        C_DP = DataProviderKlasse
         C_hf = HelferKlasse
         C_FBox = FritzBoxKlasse
         C_KF = KontaktFunktionen
@@ -111,16 +116,16 @@ Friend Class formWählbox
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1) and not(@Dialport = " & C_DP.P_Def_MobilDialPort & ")]") ' Keine Anrufbeantworter, kein Fax, kein Mobil
             .Add("TelName")
 
-            Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
+            Nebenstellen = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
 
             For Each Nebenstelle In Nebenstellen
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
-                DialPort = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+                DialPort = C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
                 tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", C_DP.P_Def_StringEmpty))
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
-                If CBool(C_DP.Read(xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
+                If CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
             Next
         End With
         xPathTeile = Nothing
@@ -281,7 +286,7 @@ Friend Class formWählbox
             .Add("Telefon")
             .Add("[not(@Dialport > 599) and TelName = """ & Nebenstelle & """]")
             .Add("@Dialport")
-            GetDialport = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+            GetDialport = C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
         End With
     End Function
 #End Region

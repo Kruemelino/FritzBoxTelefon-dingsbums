@@ -89,6 +89,7 @@
     <Compile Include="Rijndael.vb" />
     <Compile Include="UnSaveNativeMethods.vb" />
     <Compile Include="VCard.vb" />
+    <Compile Include="XML.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

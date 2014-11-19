@@ -58,6 +58,7 @@ Imports Microsoft.Office.Core
 #End Region
 
 #Region "Eigene Klassen"
+    Private C_XML As XML
     Private C_HF As Helfer
     Private C_DP As DataProvider
     Private C_WClient As Wählclient
@@ -114,13 +115,15 @@ Imports Microsoft.Office.Core
            ByVal DataProviderKlasse As DataProvider, _
            ByVal Inverssuche As formRWSuche, _
            ByVal KontaktKlasse As Contacts, _
-           ByVal PopUpKlasse As Popup)
+           ByVal PopUpKlasse As Popup, _
+           ByVal XMLKlasse As XML)
 
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
         C_PopUp = PopUpKlasse
+        C_XML = XMLKlasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -368,7 +371,7 @@ Imports Microsoft.Office.Core
                 XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
         End Select
 
-        index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
+        index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
 
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
@@ -384,7 +387,7 @@ Imports Microsoft.Office.Core
         If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
+                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
 
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
@@ -403,7 +406,7 @@ Imports Microsoft.Office.Core
             Next
         Else
             For ID = 0 To index
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
+                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
@@ -478,7 +481,7 @@ Imports Microsoft.Office.Core
                 XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
         End Select
 
-        Return CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+        Return CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -711,13 +714,13 @@ Imports Microsoft.Office.Core
         xPathTeile.Add(C_DP.P_Def_NameListVIP)
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
-        IsVIP = Not C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String
+        IsVIP = Not C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String
         xPathTeile = Nothing
     End Function
 
     Friend Overloads Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
-        Dim Index As Integer = CInt(C_DP.Read(C_DP.P_Def_NameListVIP, "Index", "0"))
+        Dim Index As Integer = CInt(C_XML.Read(C_DP.XMLDoc, C_DP.P_Def_NameListVIP, "Index", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
 
@@ -752,9 +755,9 @@ Imports Microsoft.Office.Core
             xPathTeile.Clear()
             xPathTeile.Add(.P_Def_NameListVIP)
             xPathTeile.Add("Index")
-            .Write(xPathTeile, CStr(Index + 1))
+            C_XML.Write(.XMLDoc, xPathTeile, CStr(Index + 1))
             xPathTeile.Remove("Index")
-            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
+            C_XML.AppendNode(.XMLDoc, xPathTeile, C_XML.CreateXMLNode(.XMLDoc, "Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
             .SpeichereXMLDatei()
         End With
         NodeNames = Nothing
@@ -792,28 +795,28 @@ Imports Microsoft.Office.Core
             ' Anzahl Speichern
             .Add(C_DP.P_Def_NameListVIP)
             .Add("Index")
-            Anzahl = CInt(C_DP.Read(xPathTeile, "0"))
+            Anzahl = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"))
             ' Index Speichern
             .Item(.Count - 1) = "Eintrag"
             .Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
             .Add("Index")
-            Index = CInt(C_DP.Read(xPathTeile, "0"))
+            Index = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"))
             ' Knoten löschen
             .Remove("Index")
-            C_DP.Delete(xPathTeile)
+            C_XML.Delete(C_DP.XMLDoc, xPathTeile)
             ' schleife durch jeden anderen Knoten und <Index> und Attribut ändern
             For i = Index + 1 To Anzahl - 1
                 .Item(.Count - 1) = "[@ID=""" & i & """]"
-                C_DP.WriteAttribute(xPathTeile, "ID", CStr(i - 1))
+                C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "ID", CStr(i - 1))
             Next
             'neue Anzahl (index) schreiben oder löschen
             .Remove(.Item(.Count - 1))
             .Remove("Eintrag")
-            If C_DP.SubNoteCount(xPathTeile) = 1 Then
+            If C_XML.SubNoteCount(C_DP.XMLDoc, xPathTeile) = 1 Then
                 .Add("Index")
-                C_DP.Delete(xPathTeile)
+                C_XML.Delete(C_DP.XMLDoc, xPathTeile)
             Else
-                C_DP.Write(C_DP.P_Def_NameListVIP, "Index", CStr(Anzahl - 1))
+                C_XML.Write(C_DP.XMLDoc, C_DP.P_Def_NameListVIP, "Index", CStr(Anzahl - 1))
             End If
 
         End With
@@ -1337,7 +1340,7 @@ Imports Microsoft.Office.Core
     End Sub
 
     Friend Sub ÖffneJournalImport()
-        Dim formjournalimort As New formJournalimport(C_AnrMon, C_HF, C_DP, True)
+        Dim formjournalimort As New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
     End Sub
 
     Friend Sub ÖffneAnrMonAnzeigen()
@@ -1415,14 +1418,14 @@ Imports Microsoft.Office.Core
         Dim xPathTeile As New ArrayList
         Dim index As Integer              ' Zählvariable
 
-        index = CInt(C_DP.Read(ListName, "Index", "0"))
+        index = CInt(C_XML.Read(C_DP.XMLDoc, ListName, "Index", "0"))
 
         xPathTeile.Add(ListName)
         xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
         'With Telefonat
 
-        If Not C_HF.TelNrVergleich(C_DP.Read(xPathTeile, "0"), TelNr) Then
+        If Not C_HF.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
 
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod 10))
@@ -1464,15 +1467,15 @@ Imports Microsoft.Office.Core
                 xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
                 xPathTeile.Add(ListName)
                 xPathTeile.Add("Index")
-                .Write(xPathTeile, CStr((index + 1) Mod 10))
+                C_XML.Write(.XMLDoc, xPathTeile, CStr((index + 1) Mod 10))
                 xPathTeile.Remove("Index")
-                .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
+                C_XML.AppendNode(.XMLDoc, xPathTeile, C_XML.CreateXMLNode(.XMLDoc, "Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
             End With
         Else
             ' Zeit anpassen
             If Not Zeit = Nothing Then
                 xPathTeile.Item(xPathTeile.Count - 1) = "Zeit"
-                C_DP.Write(xPathTeile, CStr(Zeit))
+                C_XML.Write(C_DP.XMLDoc, xPathTeile, CStr(Zeit))
             End If
         End If
         'End With

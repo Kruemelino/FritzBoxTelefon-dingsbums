@@ -2,21 +2,22 @@
     Implements IDisposable
 
     ' Klassen
-    Private C_DP As DataProvider
-    Private C_HF As Helfer
-    Private C_Crypt As MyRijndael
-    Private C_GUI As GraphicalUserInterface
-    Private C_OlI As OutlookInterface
-    Private C_AnrMon As AnrufMonitor
-    Private C_FBox As FritzBox
-    Private C_KF As Contacts
-    Private C_RWS As formRWSuche
-    Private C_WählClient As Wählclient
-    Private C_Phoner As PhonerInterface
-    Private C_Config As formCfg
-    Private F_JournalImport As formJournalimport
-    Private C_PopUp As Popup
-    Private F_Adressbuch As formAdressbuch
+    Private C_DP As FritzBoxDial.DataProvider
+    Private C_HF As FritzBoxDial.Helfer
+    Private C_Crypt As FritzBoxDial.MyRijndael
+    Private C_GUI As FritzBoxDial.GraphicalUserInterface
+    Private C_OlI As FritzBoxDial.OutlookInterface
+    Private C_AnrMon As FritzBoxDial.AnrufMonitor
+    Private C_FBox As FritzBoxDial.FritzBox
+    Private C_KF As FritzBoxDial.Contacts
+    Private C_RWS As FritzBoxDial.formRWSuche
+    Private C_WählClient As FritzBoxDial.Wählclient
+    Private C_Phoner As FritzBoxDial.PhonerInterface
+    Private C_Config As FritzBoxDial.formCfg
+    Private F_JournalImport As FritzBoxDial.formJournalimport
+    Private C_PopUp As FritzBoxDial.Popup
+    Private F_Adressbuch As FritzBoxDial.formAdressbuch
+    Private C_XML As FritzBoxDial.XML
     'Strings
     Private SID As String
 
@@ -27,21 +28,24 @@
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
-        ' Klasse zum IO-der INI-Struktiur erstellen
-        C_DP = New DataProvider()
+        ' Klasse zum IO-der XML-Struktur erstellen
+        C_XML = New XML()
+
+        ' Klasse zum Bereitstellen von Daten erstellen
+        C_DP = New DataProvider(C_XML)
 
         ' Klasse für Verschlüsselung erstellen
         C_Crypt = New MyRijndael(C_DP)
 
         ' Klasse für Helferfunktionen erstellen
-        C_HF = New Helfer(C_DP, C_Crypt)
+        C_HF = New Helfer(C_DP, C_Crypt, C_XML)
         C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
         C_KF = New Contacts(C_DP, C_HF)
 
         ' Klasse für die Rückwärtssuche generieren
-        C_RWS = New formRWSuche(C_HF, C_KF, C_DP)
+        C_RWS = New formRWSuche(C_HF, C_KF, C_DP, C_XML)
 
         ' Klasse für die OutlookInterface generieren
         C_OlI = New OutlookInterface(C_KF, C_HF, C_DP)
@@ -55,18 +59,18 @@
         If PrüfeAddin() Then
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
-            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
+            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML)
 
-            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner)
+            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner, C_XML)
             ThisAddIn.P_WClient = C_WählClient
 
-            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp)
+            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp, C_XML)
             ThisAddIn.P_AnrMon = C_AnrMon
 
-            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp)
+            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
             ThisAddIn.P_Config = C_Config
 
             With C_GUI
@@ -82,7 +86,7 @@
             ThisAddIn.P_KF = C_KF
 
             If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then
-                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, False)
+                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
             F_Adressbuch = New formAdressbuch
@@ -138,7 +142,7 @@
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
         Dim fw550 As Boolean
-        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt)
+        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
@@ -194,7 +198,7 @@
             .Add("Nummern")
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
-            Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_DP.Read(xPathTeile, ""), ";", , CompareMethod.Text)
+            Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
             TelNrString = (From x In TelNrString Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
@@ -249,14 +253,14 @@
             Next
             tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
             .Add("[" & tmpTeile & "]")
-            C_DP.WriteAttribute(xPathTeile, "Checked", "0")
+            C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "0")
             tmpTeile = C_DP.P_Def_StringEmpty
             For i = 0 To CheckTelNr.Count - 1
                 tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
             Next
             tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
             .Item(.Count - 1) = "[" & tmpTeile & "]"
-            C_DP.WriteAttribute(xPathTeile, "Checked", "1")
+            C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "1")
         End With
 
         Me.LMessage.Text = "Fertig"

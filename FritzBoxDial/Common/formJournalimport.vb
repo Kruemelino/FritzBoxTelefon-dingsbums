@@ -15,6 +15,7 @@ Friend Class formJournalimport
     Private C_AnrMon As AnrufMonitor
     Private C_hf As Helfer
     Private C_DP As DataProvider
+    Private C_XML As XML
 #End Region
 
 #Region "Structure"
@@ -36,6 +37,7 @@ Friend Class formJournalimport
     Friend Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal DataProviderKlasse As DataProvider, _
+                   ByVal XMLKlasse As XML, _
                    ByVal FormShow As Boolean)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
@@ -44,7 +46,7 @@ Friend Class formJournalimport
         C_DP = DataProviderKlasse
         C_hf = HelferKlasse
         C_AnrMon = AnrMonKlasse
-
+        C_XML = XMLKlasse
         Abbruch = False
         anzeigen = FormShow
         If anzeigen Then Me.Show() 'wenn gewollt
@@ -170,7 +172,7 @@ Friend Class formJournalimport
 
                         Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
                         ' Bei analogen Anschlüssen steht "Festnetz" in MSN
-                        If MSN = "Festnetz" Then MSN = C_DP.Read("Telefone", "POTS", C_DP.P_Def_ErrorMinusOne_String)
+                        If MSN = "Festnetz" Then MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", C_DP.P_Def_ErrorMinusOne_String)
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
@@ -199,7 +201,7 @@ Friend Class formJournalimport
                                             .Add("Telefon")
                                             .Add("[TelName = """ & Nebenstelle & """]")
                                             .Add("@Dialport")
-                                            NSN = CInt(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
+                                            NSN = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
                                         End With
                                 End Select
                             End If

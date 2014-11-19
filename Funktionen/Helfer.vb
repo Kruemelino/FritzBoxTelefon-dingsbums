@@ -10,10 +10,12 @@ Public Class Helfer
         Liste_Ortsvorwahlen_Deutschland = 2
     End Enum
 
+    Private C_XML As XML
     Private C_DP As DataProvider
     Private C_Crypt As MyRijndael
 
-    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As MyRijndael)
+    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As MyRijndael, XMLKlasse As XML)
+        C_XML = XMLKlasse
         C_DP = DataProviderKlasse
         C_Crypt = CryptKlasse
     End Sub
@@ -928,7 +930,7 @@ Public Class Helfer
                 .Add("[contains(TelNr, """ & MSN & """) and not(@Dialport > 599)]") ' Keine Anrufbeantworter
                 .Add("TelName")
             End With
-            TelefonName = Replace(C_DP.Read(xPathTeile, ""), ";", ", ")
+            TelefonName = Replace(C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", ", ")
             xPathTeile = Nothing
         End If
     End Function

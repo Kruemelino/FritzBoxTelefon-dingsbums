@@ -17,6 +17,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Eigene Klassen"
+    Private C_XML As XML
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
     Private C_KF As Contacts
@@ -104,8 +105,10 @@ Friend Class AnrufMonitor
                    ByVal KontaktKlasse As Contacts, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
-                   ByVal PopupKlasse As Popup)
+                   ByVal PopupKlasse As Popup, _
+                   ByVal XMLKlasse As XML)
 
+        C_XML = XMLKlasse
         C_DP = DataProvoderKlasse
         C_hf = HelferKlasse
         C_KF = KontaktKlasse
@@ -238,7 +241,7 @@ Friend Class AnrufMonitor
                 C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonTimer2)
                 AnrMonStartStopp()
                 If C_DP.P_CBJournal Then
-                    Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+                    Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, C_XML, False)
                 End If
             End If
         Else
@@ -576,7 +579,7 @@ Friend Class AnrufMonitor
                                 .Add("*")
                                 .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
                                 .Add("TelNr")
-                                Telefonat.MSN = C_DP.Read(xPathTeile, "")
+                                Telefonat.MSN = C_XML.Read(C_DP.XMLDoc, xPathTeile, "")
                             End With
                     End Select
                 End If
@@ -707,7 +710,7 @@ Friend Class AnrufMonitor
                                 .Add("Telefon[@Dialport = """ & Telefonat.NSN & """]")
                                 .Add("TelName")
                             End With
-                            .TelName = C_DP.Read(xPathTeile, "")
+                            .TelName = C_XML.Read(C_DP.XMLDoc, xPathTeile, "")
                     End Select
                 End If
 
@@ -803,12 +806,12 @@ Friend Class AnrufMonitor
                             .Add("Telefon[TelName = """ & Telefonat.TelName & """]")
                         End With
 
-                        If C_DP.GetProperXPath(xPathTeile) Then
+                        If C_XML.GetProperXPath(C_DP.XMLDoc, xPathTeile) Then
                             ' xPathTeile hat sich durch GetProperXPath geändert.
                             xPathTeile.Add(CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, C_Telefonat.AnrufRichtung.Eingehend.ToString, C_Telefonat.AnrufRichtung.Ausgehend.ToString)))
 
                             With C_DP
-                                .Write(xPathTeile, CStr(CInt(.Read(xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
+                                C_XML.Write(.XMLDoc, xPathTeile, CStr(CInt(C_XML.Read(.XMLDoc, xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
                             End With
                         End If
 
@@ -866,7 +869,7 @@ Friend Class AnrufMonitor
                 Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
                 ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + DauerAnruf + 70))
                 If ZeitAnruf < SchließZeit Then C_DP.P_StatOLClosedZeit = ZeitAnruf
-                Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, False)
+                Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, C_XML, False)
             End If
         End If
     End Sub '(AnrMonDISCONNECT)
@@ -945,7 +948,7 @@ Friend Class AnrufMonitor
         With C_DP
             '.Write(xPathTeile, CStr(LetzterAnrufer.ID))
             'xPathTeile.Remove("Letzter")
-            .AppendNode(xPathTeile, .CreateXMLNode("Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
+            C_XML.AppendNode(.XMLDoc, xPathTeile, C_XML.CreateXMLNode(.XMLDoc, "Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
         End With
 
         xPathTeile = Nothing
@@ -1007,7 +1010,7 @@ Friend Class AnrufMonitor
             .Add("LetzterAnrufer")
             .Add("Eintrag")
         End With
-        C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
+        C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
         With LadeLetzterAnrufer
 
             .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))

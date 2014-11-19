@@ -3,8 +3,11 @@ Imports System.Timers
 Imports System.ComponentModel
 
 Public Class DataProvider
-    Private XMLDoc As XmlDocument
+
+    Public XMLDoc As XmlDocument
+    Private C_XML As XML
     Private WithEvents tSpeichern As Timer
+
 #Region "BackgroundWorker"
     Private WithEvents BWCBox As BackgroundWorker
 #End Region
@@ -223,35 +226,6 @@ Public Class DataProvider
             Return "@"
         End Get
     End Property
-    ''' <summary>
-    ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Property P_NameStartChar As String
-        Set(value As String)
-            _NameStartChar = value
-        End Set
-        Get
-            Return _NameStartChar
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Property P_NameChar As String
-        Set(value As String)
-            _NameChar = value
-        End Set
-        Get
-            Return _NameChar
-        End Get
-    End Property
 #End Region
 
 #Region "PrivateData"
@@ -350,9 +324,6 @@ Public Class DataProvider
     ' Vorwahllisten
     Private _ListeOrtsVorwahlen As String()
     Private _ListeLandesVorwahlen As String()
-    ' XML Zeichen
-    Private _NameStartChar As String
-    Private _NameChar As String
 #End Region
 
 #Region "Value Properties"
@@ -1174,7 +1145,7 @@ Public Class DataProvider
     ''' <returns>String</returns>
     Public ReadOnly Property P_Def_ErrorMinusOne_String() As String
         Get
-            Return "-1"
+            Return C_XML.P_Def_ErrorMinusOne_String '"-1"
         End Get
     End Property
 
@@ -1210,7 +1181,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_Def_StringEmpty() As String
         Get
-            Return String.Empty
+            Return C_XML.P_Def_StringEmpty 'String.Empty
         End Get
     End Property
 
@@ -3694,7 +3665,9 @@ Public Class DataProvider
     End Property
 #End Region
 
-    Public Sub New()
+    Public Sub New(ByVal XMLKlasse As XML)
+
+        C_XML = XMLKlasse
         ' Pfad zur Einstellungsdatei ermitteln
         Dim ConfigPfad As String
         P_Arbeitsverzeichnis = GetSettingsVBA("Arbeitsverzeichnis", P_Def_AddInPath)
@@ -3703,11 +3676,8 @@ Public Class DataProvider
         'Xml Init
         XMLDoc = New XmlDocument()
 
-        P_NameStartChar = GetNameStartChar()
-        P_NameChar = GetNameChar()
-
         With My.Computer.FileSystem
-            If Not (.FileExists(ConfigPfad) AndAlso XMLValidator(ConfigPfad)) Then
+            If Not (.FileExists(ConfigPfad) AndAlso C_XML.XMLValidator(XMLDoc, ConfigPfad)) Then
                 XMLDoc.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><" & P_RootName & "/>")
                 If Not .DirectoryExists(P_Arbeitsverzeichnis) Then .CreateDirectory(P_Arbeitsverzeichnis)
                 .WriteAllText(ConfigPfad, XMLDoc.InnerXml, True)
@@ -3715,9 +3685,6 @@ Public Class DataProvider
             End If
         End With
         CleanUpXML()
-
-        'Test
-        'Write("XMLTest", "Test Test", "PI")
 
         tSpeichern = New Timer
         With tSpeichern
@@ -3728,222 +3695,97 @@ Public Class DataProvider
     End Sub
 
     ''' <summary>
-    ''' Erstellt ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält:
-    ''' ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
-    ''' </summary>
-    ''' <returns>String, der alle erlaubten Startchars enthält</returns>
-    ''' <remarks>http://www.w3.org/TR/REC-xml/#NT-Name</remarks>
-    Private Function GetNameStartChar() As String
-        ' Doppelpunkt :
-        Dim tmp As String = Chr(58)
-
-        ' [A-Z]
-        For c = 65 To 90
-            tmp += Chr(c)
-        Next
-
-        ' Unterstrich _
-        tmp += Chr(95)
-
-        ' [a-z]
-        For c = 97 To 122
-            tmp += Chr(c)
-        Next
-
-        '[#xC0-#xD6]
-        For c = &HC0 To &HD6
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#xD8-#xF6]
-        For c = &HD8 To &HF6
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#xF8-#x2FF] 
-        For c = &HF8 To &H2FF
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#x370-#x37D]
-        For c = &H370 To &H37D
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#x37F-#x1FFF] 
-        For c = &H37F To &H1FFF
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#x200C-#x200D] 
-        For c = &H200C To &H200D
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#x2070-#x218F]
-        For c = &H2070 To &H218F
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#x2C00-#x2FEF]
-        For c = &H2C00 To &H2FEF
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#x3001-#xD7FF]
-        For c = &H3001 To &HD7FF
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#xF900-#xFDCF]
-        For c = &HF900 To &HFDCF
-            tmp += Convert.ToChar(c)
-        Next
-
-        '[#xFDF0-#xFFFD]
-        For c = &HFDF0 To &HFFFD
-            tmp += Convert.ToChar(c)
-        Next
-
-        ''[#x10000-#xEFFFF]
-        'For c = &H10000 To &HEFFFF
-        '    tmp += Convert.ToChar(c)
-        'Next
-
-        Return tmp
-
-    End Function
-
-    ''' <summary>
-    ''' Erstellt ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält:
-    ''' NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
-    ''' </summary>
-    ''' <returns>String, der alle erlaubten Startchars enthält</returns>
-    ''' <remarks>http://www.w3.org/TR/REC-xml/#NT-Name</remarks>
-    Private Function GetNameChar() As String
-        ' NameStartChar
-        Dim tmp As String = P_NameStartChar
-
-        ' Bindestrich -
-        tmp += Chr(45)
-
-        ' Punkt .
-        tmp += Chr(46)
-
-        ' [0-9]
-        For c = 48 To 57
-            tmp += Chr(c)
-        Next
-
-        ' Middle dot
-        tmp += Convert.ToChar(&HB7)
-
-        '[#x0300-#x036F]
-        For c = &H300 To &H36F
-            tmp += Convert.ToChar(c)
-        Next
-
-        ''[#x203F-#x2040]
-        For c = &H203F To &H2040
-            tmp += Convert.ToChar(c)
-        Next
-
-        Return tmp
-
-    End Function
-
-    ''' <summary>
     ''' Initiales Laden der Daten aus der XML-Datei
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub LoadOptionData()
         Dim xPathTeile As New ArrayList
 
-        Me.P_TBLandesVW = Read(P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
-        Me.P_TBAmt = Read(P_Def_Options, "TBAmt", P_Def_TBAmt)
-        Me.P_TBFBAdr = Read(P_Def_Options, "TBFBAdr", P_Def_TBFBAdr)
-        Me.P_CBForceFBAddr = CBool(Read(P_Def_Options, "CBForceFBAddr", CStr(P_Def_CBForceFBAddr)))
-        Me.P_TBBenutzer = Read(P_Def_Options, "TBBenutzer", P_Def_TBBenutzer)
-        Me.P_TBPasswort = Read(P_Def_Options, "TBPasswort", P_Def_TBPasswort)
-        Me.P_TBVorwahl = Read(P_Def_Options, "TBVorwahl", P_Def_TBVorwahl)
-        Me.P_CBoxVorwahl = CInt(Read(P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
-        Me.P_TBEnblDauer = CInt(Read(P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
-        Me.P_CBAnrMonAuto = CBool(Read(P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
-        Me.P_TBAnrMonX = CInt(Read(P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
-        Me.P_TBAnrMonY = CInt(Read(P_Def_Options, "TBAnrMonY", CStr(P_Def_TBAnrMonY)))
-        Me.P_CBAnrMonMove = CBool(Read(P_Def_Options, "CBAnrMonMove", CStr(P_Def_CBAnrMonMove)))
-        Me.P_CBAnrMonTransp = CBool(Read(P_Def_Options, "CBAnrMonTransp", CStr(P_Def_CBAnrMonTransp)))
-        Me.P_TBAnrMonMoveGeschwindigkeit = CInt(Read(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(P_Def_TBAnrMonMoveGeschwindigkeit)))
-        Me.P_CBoxAnrMonStartPosition = CInt(Read(P_Def_Options, "CBoxAnrMonStartPosition", CStr(P_Def_CBoxAnrMonStartPosition)))
-        Me.P_CBoxAnrMonMoveDirection = CInt(Read(P_Def_Options, "CBoxAnrMonMoveDirection", CStr(P_Def_CBoxAnrMonMoveDirection)))
-        Me.P_CBAnrMonZeigeKontakt = CBool(Read(P_Def_Options, "CBAnrMonZeigeKontakt", CStr(P_Def_CBAnrMonZeigeKontakt)))
-        Me.P_CBAnrMonContactImage = CBool(Read(P_Def_Options, "CBAnrMonContactImage", CStr(P_Def_CBAnrMonContactImage)))
-        Me.P_CBIndexAus = CBool(Read(P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
-        Me.P_CBShowMSN = CBool(Read(P_Def_Options, "CBShowMSN", CStr(P_Def_CBShowMSN)))
-        Me.P_CBJournal = CBool(Read(P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
-        Me.P_CBUseAnrMon = CBool(Read(P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
-        Me.P_CBCheckMobil = CBool(Read(P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
-        Me.P_CBAutoClose = CBool(Read(P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
-        Me.P_CBAnrMonCloseAtDISSCONNECT = CBool(Read(P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(P_Def_CBAnrMonCloseAtDISSCONNECT)))
+        Me.P_TBLandesVW = C_XML.Read(XMLDoc, P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
+        Me.P_TBAmt = C_XML.Read(XMLDoc, P_Def_Options, "TBAmt", P_Def_TBAmt)
+        Me.P_TBFBAdr = C_XML.Read(XMLDoc, P_Def_Options, "TBFBAdr", P_Def_TBFBAdr)
+        Me.P_CBForceFBAddr = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBForceFBAddr", CStr(P_Def_CBForceFBAddr)))
+        Me.P_TBBenutzer = C_XML.Read(XMLDoc, P_Def_Options, "TBBenutzer", P_Def_TBBenutzer)
+        Me.P_TBPasswort = C_XML.Read(XMLDoc, P_Def_Options, "TBPasswort", P_Def_TBPasswort)
+        Me.P_TBVorwahl = C_XML.Read(XMLDoc, P_Def_Options, "TBVorwahl", P_Def_TBVorwahl)
+        Me.P_CBoxVorwahl = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
+        Me.P_TBEnblDauer = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
+        Me.P_CBAnrMonAuto = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
+        Me.P_TBAnrMonX = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
+        Me.P_TBAnrMonY = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonY", CStr(P_Def_TBAnrMonY)))
+        Me.P_CBAnrMonMove = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonMove", CStr(P_Def_CBAnrMonMove)))
+        Me.P_CBAnrMonTransp = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonTransp", CStr(P_Def_CBAnrMonTransp)))
+        Me.P_TBAnrMonMoveGeschwindigkeit = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(P_Def_TBAnrMonMoveGeschwindigkeit)))
+        Me.P_CBoxAnrMonStartPosition = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBoxAnrMonStartPosition", CStr(P_Def_CBoxAnrMonStartPosition)))
+        Me.P_CBoxAnrMonMoveDirection = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBoxAnrMonMoveDirection", CStr(P_Def_CBoxAnrMonMoveDirection)))
+        Me.P_CBAnrMonZeigeKontakt = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonZeigeKontakt", CStr(P_Def_CBAnrMonZeigeKontakt)))
+        Me.P_CBAnrMonContactImage = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonContactImage", CStr(P_Def_CBAnrMonContactImage)))
+        Me.P_CBIndexAus = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
+        Me.P_CBShowMSN = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBShowMSN", CStr(P_Def_CBShowMSN)))
+        Me.P_CBJournal = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
+        Me.P_CBUseAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
+        Me.P_CBCheckMobil = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
+        Me.P_CBAutoClose = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
+        Me.P_CBAnrMonCloseAtDISSCONNECT = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(P_Def_CBAnrMonCloseAtDISSCONNECT)))
 
-        Me.P_CBVoIPBuster = CBool(Read(P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
-        Me.P_CBCbCunterbinden = CBool(Read(P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
-        Me.P_CBCallByCall = CBool(Read(P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
-        Me.P_CBDialPort = CBool(Read(P_Def_Options, "CBDialPort", CStr(P_Def_CBDialPort)))
-        Me.P_CBKErstellen = CBool(Read(P_Def_Options, "CBKErstellen", CStr(P_Def_CBKErstellen)))
-        Me.P_CBLogFile = CBool(Read(P_Def_Options, "CBLogFile", CStr(P_Def_CBLogFile)))
+        Me.P_CBVoIPBuster = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
+        Me.P_CBCbCunterbinden = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
+        Me.P_CBCallByCall = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
+        Me.P_CBDialPort = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBDialPort", CStr(P_Def_CBDialPort)))
+        Me.P_CBKErstellen = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBKErstellen", CStr(P_Def_CBKErstellen)))
+        Me.P_CBLogFile = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBLogFile", CStr(P_Def_CBLogFile)))
         ' Einstellungen für die Symbolleiste laden
-        Me.P_CBSymbWwdh = CBool(Read(P_Def_Options, "CBSymbWwdh", CStr(P_Def_CBSymbWwdh)))
-        Me.P_CBSymbAnrMon = CBool(Read(P_Def_Options, "CBSymbAnrMon", CStr(P_Def_CBSymbAnrMon)))
-        Me.P_CBSymbAnrMonNeuStart = CBool(Read(P_Def_Options, "CBSymbAnrMonNeuStart", CStr(P_Def_CBSymbAnrMonNeuStart)))
-        Me.P_CBSymbAnrListe = CBool(Read(P_Def_Options, "CBSymbAnrListe", CStr(P_Def_CBSymbAnrListe)))
-        Me.P_CBSymbDirekt = CBool(Read(P_Def_Options, "CBSymbDirekt", CStr(P_Def_CBSymbDirekt)))
-        Me.P_CBSymbRWSuche = CBool(Read(P_Def_Options, "CBSymbRWSuche", CStr(P_Def_CBSymbRWSuche)))
-        Me.P_TVKontaktOrdnerEntryID = Read(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(P_Def_TVKontaktOrdnerEntryID))
-        Me.P_TVKontaktOrdnerStoreID = Read(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(P_Def_TVKontaktOrdnerStoreID))
-        Me.P_CBSymbVIP = CBool(Read(P_Def_Options, "CBSymbVIP", CStr(P_Def_CBSymbVIP)))
-        Me.P_CBSymbJournalimport = CBool(Read(P_Def_Options, "CBSymbJournalimport", CStr(P_Def_CBSymbJournalimport)))
-        Me.P_CBJImport = CBool(Read(P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
+        Me.P_CBSymbWwdh = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbWwdh", CStr(P_Def_CBSymbWwdh)))
+        Me.P_CBSymbAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbAnrMon", CStr(P_Def_CBSymbAnrMon)))
+        Me.P_CBSymbAnrMonNeuStart = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbAnrMonNeuStart", CStr(P_Def_CBSymbAnrMonNeuStart)))
+        Me.P_CBSymbAnrListe = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbAnrListe", CStr(P_Def_CBSymbAnrListe)))
+        Me.P_CBSymbDirekt = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbDirekt", CStr(P_Def_CBSymbDirekt)))
+        Me.P_CBSymbRWSuche = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbRWSuche", CStr(P_Def_CBSymbRWSuche)))
+        Me.P_TVKontaktOrdnerEntryID = C_XML.Read(XMLDoc, P_Def_Options, "TVKontaktOrdnerEntryID", CStr(P_Def_TVKontaktOrdnerEntryID))
+        Me.P_TVKontaktOrdnerStoreID = C_XML.Read(XMLDoc, P_Def_Options, "TVKontaktOrdnerStoreID", CStr(P_Def_TVKontaktOrdnerStoreID))
+        Me.P_CBSymbVIP = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbVIP", CStr(P_Def_CBSymbVIP)))
+        Me.P_CBSymbJournalimport = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbJournalimport", CStr(P_Def_CBSymbJournalimport)))
+        Me.P_CBJImport = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
         ' Einstellungen füer die Rückwärtssuche laden
-        Me.P_CBKHO = CBool(Read(P_Def_Options, "CBKHO", CStr(P_Def_CBKHO)))
-        Me.P_CBRWS = CBool(Read(P_Def_Options, "CBRWS", CStr(P_Def_CBRWS)))
-        Me.P_CBRWSIndex = CBool(Read(P_Def_Options, "CBRWSIndex", CStr(P_Def_CBRWSIndex)))
-        Me.P_ComboBoxRWS = CInt(Read(P_Def_Options, "ComboBoxRWS", CStr(P_Def_ComboBoxRWS)))
-        Me.P_CBIndex = CBool(Read(P_Def_Options, "CBIndex", CStr(P_Def_CBIndex)))
+        Me.P_CBKHO = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBKHO", CStr(P_Def_CBKHO)))
+        Me.P_CBRWS = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBRWS", CStr(P_Def_CBRWS)))
+        Me.P_CBRWSIndex = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBRWSIndex", CStr(P_Def_CBRWSIndex)))
+        Me.P_ComboBoxRWS = CInt(C_XML.Read(XMLDoc, P_Def_Options, "ComboBoxRWS", CStr(P_Def_ComboBoxRWS)))
+        Me.P_CBIndex = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBIndex", CStr(P_Def_CBIndex)))
         ' StoppUhr
-        Me.P_CBStoppUhrEinblenden = CBool(Read(P_Def_Options, "CBStoppUhrEinblenden", CStr(P_Def_CBStoppUhrEinblenden)))
-        Me.P_CBStoppUhrAusblenden = CBool(Read(P_Def_Options, "CBStoppUhrAusblenden", CStr(P_Def_CBStoppUhrAusblenden)))
-        Me.P_TBStoppUhr = CInt(Read(P_Def_Options, "TBStoppUhr", CStr(P_Def_TBStoppUhr)))
-        Me.P_CBStoppUhrX = CInt(Read(P_Def_Options, "CBStoppUhrX", CStr(P_Def_CBStoppUhrX)))
-        Me.P_CBStoppUhrY = CInt(Read(P_Def_Options, "CBStoppUhrY", CStr(P_Def_CBStoppUhrY)))
+        Me.P_CBStoppUhrEinblenden = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBStoppUhrEinblenden", CStr(P_Def_CBStoppUhrEinblenden)))
+        Me.P_CBStoppUhrAusblenden = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBStoppUhrAusblenden", CStr(P_Def_CBStoppUhrAusblenden)))
+        Me.P_TBStoppUhr = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBStoppUhr", CStr(P_Def_TBStoppUhr)))
+        Me.P_CBStoppUhrX = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBStoppUhrX", CStr(P_Def_CBStoppUhrX)))
+        Me.P_CBStoppUhrY = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBStoppUhrY", CStr(P_Def_CBStoppUhrY)))
         ' Telefonnummernformatierung
-        Me.P_TBTelNrMaske = Read(P_Def_Options, "TBTelNrMaske", P_Def_TBTelNrMaske)
-        Me.P_CBTelNrGruppieren = CBool(Read(P_Def_Options, "CBTelNrGruppieren", CStr(P_Def_CBTelNrGruppieren)))
-        Me.P_CBintl = CBool(Read(P_Def_Options, "CBintl", CStr(P_Def_CBintl)))
-        Me.P_CBIgnoTelNrFormat = CBool(Read(P_Def_Options, "CBIgnoTelNrFormat", CStr(P_Def_CBIgnoTelNrFormat)))
+        Me.P_TBTelNrMaske = C_XML.Read(XMLDoc, P_Def_Options, "TBTelNrMaske", P_Def_TBTelNrMaske)
+        Me.P_CBTelNrGruppieren = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBTelNrGruppieren", CStr(P_Def_CBTelNrGruppieren)))
+        Me.P_CBintl = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBintl", CStr(P_Def_CBintl)))
+        Me.P_CBIgnoTelNrFormat = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBIgnoTelNrFormat", CStr(P_Def_CBIgnoTelNrFormat)))
         ' Phoner
-        Me.P_CBPhoner = CBool(Read(P_Def_Phoner, "CBPhoner", CStr(P_Def_CBPhoner)))
-        Me.P_PhonerVerfügbar = CBool(Read(P_Def_Phoner, "PhonerVerfügbar", CStr(P_Def_PhonerVerfügbar)))
-        Me.P_ComboBoxPhonerSIP = CInt(Read(P_Def_Phoner, "ComboBoxPhonerSIP", CStr(P_Def_ComboBoxPhonerSIP)))
-        Me.P_CBPhonerAnrMon = CBool(Read(P_Def_Phoner, "CBPhonerAnrMon", CStr(P_Def_CBPhonerAnrMon)))
-        Me.P_TBPhonerPasswort = Read(P_Def_Phoner, "TBPhonerPasswort", P_Def_TBPhonerPasswort)
-        Me.P_PhonerTelNameIndex = CInt(Read(P_Def_Phoner, "PhonerTelNameIndex", CStr(P_Def_PhonerTelNameIndex)))
+        Me.P_CBPhoner = CBool(C_XML.Read(XMLDoc, P_Def_Phoner, "CBPhoner", CStr(P_Def_CBPhoner)))
+        Me.P_PhonerVerfügbar = CBool(C_XML.Read(XMLDoc, P_Def_Phoner, "PhonerVerfügbar", CStr(P_Def_PhonerVerfügbar)))
+        Me.P_ComboBoxPhonerSIP = CInt(C_XML.Read(XMLDoc, P_Def_Phoner, "ComboBoxPhonerSIP", CStr(P_Def_ComboBoxPhonerSIP)))
+        Me.P_CBPhonerAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Phoner, "CBPhonerAnrMon", CStr(P_Def_CBPhonerAnrMon)))
+        Me.P_TBPhonerPasswort = C_XML.Read(XMLDoc, P_Def_Phoner, "TBPhonerPasswort", P_Def_TBPhonerPasswort)
+        Me.P_PhonerTelNameIndex = CInt(C_XML.Read(XMLDoc, P_Def_Phoner, "PhonerTelNameIndex", CStr(P_Def_PhonerTelNameIndex)))
         ' Statistik
-        Me.P_StatResetZeit = CDate(Read(P_Def_Statistics, "ResetZeit", CStr(P_Def_StatResetZeit)))
-        Me.P_StatVerpasst = CInt(Read(P_Def_Statistics, "Verpasst", CStr(P_Def_StatVerpasst)))
-        Me.P_StatNichtErfolgreich = CInt(Read(P_Def_Statistics, "Nichterfolgreich", CStr(P_Def_StatNichtErfolgreich)))
-        Me.P_StatKontakt = CInt(Read(P_Def_Statistics, "Kontakt", CStr(P_Def_StatKontakt)))
-        Me.P_StatJournal = CInt(Read(P_Def_Statistics, "Journal", CStr(P_Def_StatJournal)))
-        Me.P_StatOLClosedZeit = CDate(Read(P_Def_Journal, "SchließZeit", CStr(P_Def_StatOLClosedZeit)))
+        Me.P_StatResetZeit = CDate(C_XML.Read(XMLDoc, P_Def_Statistics, "ResetZeit", CStr(P_Def_StatResetZeit)))
+        Me.P_StatVerpasst = CInt(C_XML.Read(XMLDoc, P_Def_Statistics, "Verpasst", CStr(P_Def_StatVerpasst)))
+        Me.P_StatNichtErfolgreich = CInt(C_XML.Read(XMLDoc, P_Def_Statistics, "Nichterfolgreich", CStr(P_Def_StatNichtErfolgreich)))
+        Me.P_StatKontakt = CInt(C_XML.Read(XMLDoc, P_Def_Statistics, "Kontakt", CStr(P_Def_StatKontakt)))
+        Me.P_StatJournal = CInt(C_XML.Read(XMLDoc, P_Def_Statistics, "Journal", CStr(P_Def_StatJournal)))
+        Me.P_StatOLClosedZeit = CDate(C_XML.Read(XMLDoc, P_Def_Journal, "SchließZeit", CStr(P_Def_StatOLClosedZeit)))
         ' Wählbox
-        Me.P_TelAnschluss = CInt(Read(P_Def_Options, "Anschluss", CStr(P_Def_TelAnschluss)))
-        Me.P_TelFestnetz = CBool(Read(P_Def_Options, "Festnetz", CStr(P_TelFestnetz)))
-        Me.P_TelCLIR = CBool(Read(P_Def_Options, "CLIR", CStr(P_Def_TelCLIR)))
-        Me.P_EncodeingFritzBox = Read(P_Def_Options, "EncodeingFritzBox", P_Def_EncodeingFritzBox)
+        Me.P_TelAnschluss = CInt(C_XML.Read(XMLDoc, P_Def_Options, "Anschluss", CStr(P_Def_TelAnschluss)))
+        Me.P_TelFestnetz = CBool(C_XML.Read(XMLDoc, P_Def_Options, "Festnetz", CStr(P_TelFestnetz)))
+        Me.P_TelCLIR = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CLIR", CStr(P_Def_TelCLIR)))
+        Me.P_EncodeingFritzBox = C_XML.Read(XMLDoc, P_Def_Options, "EncodeingFritzBox", P_Def_EncodeingFritzBox)
         ' Indizierung
-        Me.P_LLetzteIndizierung = CDate(Read(P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
+        Me.P_LLetzteIndizierung = CDate(C_XML.Read(XMLDoc, P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
         ' Notiz
-        Me.P_CBNote = CBool(Read(P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
+        Me.P_CBNote = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
 
         With xPathTeile
             .Clear()
@@ -3952,7 +3794,7 @@ Public Class DataProvider
             .Add("*")
             .Add("[@Checked=""1""]")
         End With
-        Me.P_CLBTelNr = (From x In Split(Read(xPathTeile, Me.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
+        Me.P_CLBTelNr = (From x In Split(C_XML.Read(XMLDoc, xPathTeile, Me.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
     End Sub
 
     ''' <summary>
@@ -3960,90 +3802,90 @@ Public Class DataProvider
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SaveOptionData()
-        Write(P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
-        Write(P_Def_Options, "TBAmt", Me.P_TBAmt)
-        Write(P_Def_Options, "TBFBAdr", Me.P_TBFBAdr)
-        Write(P_Def_Options, "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
-        Write(P_Def_Options, "TBBenutzer", Me.P_TBBenutzer)
-        Write(P_Def_Options, "TBPasswort", Me.P_TBPasswort)
-        Write(P_Def_Options, "TBVorwahl", Me.P_TBVorwahl)
-        Write(P_Def_Options, "CBoxVorwahl", CStr(Me.P_CBoxVorwahl))
-        Write(P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
-        Write(P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
-        Write(P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))
-        Write(P_Def_Options, "TBAnrMonY", CStr(Me.P_TBAnrMonY))
-        Write(P_Def_Options, "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
-        Write(P_Def_Options, "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
-        Write(P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
-        Write(P_Def_Options, "CBoxAnrMonStartPosition", CStr(Me.P_CBoxAnrMonStartPosition))
-        Write(P_Def_Options, "CBoxAnrMonMoveDirection", CStr(Me.P_CBoxAnrMonMoveDirection))
-        Write(P_Def_Options, "CBAnrMonZeigeKontakt", CStr(Me.P_CBAnrMonZeigeKontakt))
-        Write(P_Def_Options, "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
-        Write(P_Def_Options, "CBIndexAus", CStr(Me.P_CBIndexAus))
-        Write(P_Def_Options, "CBShowMSN", CStr(Me.P_CBShowMSN))
-        Write(P_Def_Options, "CBAutoClose", CStr(Me.P_CBAutoClose))
-        Write(P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(Me.P_CBAnrMonCloseAtDISSCONNECT))
-        Write(P_Def_Options, "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
-        Write(P_Def_Options, "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
-        Write(P_Def_Options, "CBCallByCall", CStr(Me.P_CBCallByCall))
-        Write(P_Def_Options, "CBDialPort", CStr(Me.P_CBDialPort))
-        Write(P_Def_Options, "CBKErstellen", CStr(Me.P_CBKErstellen))
-        Write(P_Def_Options, "CBLogFile", CStr(Me.P_CBLogFile))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
+        C_XML.Write(XMLDoc, P_Def_Options, "TBAmt", Me.P_TBAmt)
+        C_XML.Write(XMLDoc, P_Def_Options, "TBFBAdr", Me.P_TBFBAdr)
+        C_XML.Write(XMLDoc, P_Def_Options, "CBForceFBAddr", CStr(Me.P_CBForceFBAddr))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBBenutzer", Me.P_TBBenutzer)
+        C_XML.Write(XMLDoc, P_Def_Options, "TBPasswort", Me.P_TBPasswort)
+        C_XML.Write(XMLDoc, P_Def_Options, "TBVorwahl", Me.P_TBVorwahl)
+        C_XML.Write(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(Me.P_CBoxVorwahl))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonY", CStr(Me.P_TBAnrMonY))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonTransp", CStr(Me.P_CBAnrMonTransp))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonMoveGeschwindigkeit", CStr(Me.P_TBAnrMonMoveGeschwindigkeit))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBoxAnrMonStartPosition", CStr(Me.P_CBoxAnrMonStartPosition))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBoxAnrMonMoveDirection", CStr(Me.P_CBoxAnrMonMoveDirection))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonZeigeKontakt", CStr(Me.P_CBAnrMonZeigeKontakt))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonContactImage", CStr(Me.P_CBAnrMonContactImage))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBIndexAus", CStr(Me.P_CBIndexAus))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBShowMSN", CStr(Me.P_CBShowMSN))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAutoClose", CStr(Me.P_CBAutoClose))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(Me.P_CBAnrMonCloseAtDISSCONNECT))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBVoIPBuster", CStr(Me.P_CBVoIPBuster))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBCbCunterbinden", CStr(Me.P_CBVoIPBuster))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBCallByCall", CStr(Me.P_CBCallByCall))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBDialPort", CStr(Me.P_CBDialPort))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBKErstellen", CStr(Me.P_CBKErstellen))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBLogFile", CStr(Me.P_CBLogFile))
         ' Einstellungen für die Symbolleiste laden
-        Write(P_Def_Options, "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
-        Write(P_Def_Options, "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
-        Write(P_Def_Options, "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
-        Write(P_Def_Options, "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe))
-        Write(P_Def_Options, "CBSymbDirekt", CStr(Me.P_CBSymbDirekt))
-        Write(P_Def_Options, "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
-        Write(P_Def_Options, "CBSymbVIP", CStr(Me.P_CBSymbVIP))
-        Write(P_Def_Options, "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
-        Write(P_Def_Options, "CBJImport", CStr(Me.P_CBJImport))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbWwdh", CStr(Me.P_CBSymbWwdh))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbAnrMon", CStr(Me.P_CBSymbAnrMon))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbAnrMonNeuStart", CStr(Me.P_CBSymbAnrMonNeuStart))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbAnrListe", CStr(Me.P_CBSymbAnrListe))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbDirekt", CStr(Me.P_CBSymbDirekt))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbVIP", CStr(Me.P_CBSymbVIP))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBJImport", CStr(Me.P_CBJImport))
         ' Einstellungen füer die Rückwärtssuche laden
-        Write(P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
-        Write(P_Def_Options, "CBRWS", CStr(Me.P_CBRWS))
-        Write(P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
-        Write(P_Def_Options, "TVKontaktOrdnerEntryID", CStr(Me.P_TVKontaktOrdnerEntryID))
-        Write(P_Def_Options, "TVKontaktOrdnerStoreID", CStr(Me.P_TVKontaktOrdnerStoreID))
-        Write(P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
-        Write(P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
-        Write(P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
-        Write(P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
-        Write(P_Def_Options, "CBCheckMobil", CStr(Me.P_CBCheckMobil))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBRWS", CStr(Me.P_CBRWS))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBRWSIndex", CStr(Me.P_CBRWSIndex))
+        C_XML.Write(XMLDoc, P_Def_Options, "TVKontaktOrdnerEntryID", CStr(Me.P_TVKontaktOrdnerEntryID))
+        C_XML.Write(XMLDoc, P_Def_Options, "TVKontaktOrdnerStoreID", CStr(Me.P_TVKontaktOrdnerStoreID))
+        C_XML.Write(XMLDoc, P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBCheckMobil", CStr(Me.P_CBCheckMobil))
         'StoppUhr
-        Write(P_Def_Options, "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden))
-        Write(P_Def_Options, "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden))
-        Write(P_Def_Options, "TBStoppUhr", CStr(Me.P_TBStoppUhr))
-        Write(P_Def_Options, "TBTelNrMaske", Me.P_TBTelNrMaske)
-        Write(P_Def_Options, "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren))
-        Write(P_Def_Options, "CBintl", CStr(Me.P_CBintl))
-        Write(P_Def_Options, "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat))
-        Write(P_Def_Options, "CBStoppUhrX", CStr(Me.P_CBStoppUhrX))
-        Write(P_Def_Options, "CBStoppUhrY", CStr(Me.P_CBStoppUhrY))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBStoppUhrEinblenden", CStr(Me.P_CBStoppUhrEinblenden))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBStoppUhrAusblenden", CStr(Me.P_CBStoppUhrAusblenden))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBStoppUhr", CStr(Me.P_TBStoppUhr))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBTelNrMaske", Me.P_TBTelNrMaske)
+        C_XML.Write(XMLDoc, P_Def_Options, "CBTelNrGruppieren", CStr(Me.P_CBTelNrGruppieren))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBintl", CStr(Me.P_CBintl))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBIgnoTelNrFormat", CStr(Me.P_CBIgnoTelNrFormat))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBStoppUhrX", CStr(Me.P_CBStoppUhrX))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBStoppUhrY", CStr(Me.P_CBStoppUhrY))
         ' Phoner
-        Write(P_Def_Phoner, "CBPhoner", CStr(Me.P_CBPhoner))
-        Write(P_Def_Phoner, "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar))
-        Write(P_Def_Phoner, "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP))
-        Write(P_Def_Phoner, "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon))
-        Write(P_Def_Phoner, "TBPhonerPasswort", Me.P_TBPhonerPasswort)
-        Write(P_Def_Phoner, "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
+        C_XML.Write(XMLDoc, P_Def_Phoner, "CBPhoner", CStr(Me.P_CBPhoner))
+        C_XML.Write(XMLDoc, P_Def_Phoner, "PhonerVerfügbar", CStr(Me.P_PhonerVerfügbar))
+        C_XML.Write(XMLDoc, P_Def_Phoner, "ComboBoxPhonerSIP", CStr(Me.P_ComboBoxPhonerSIP))
+        C_XML.Write(XMLDoc, P_Def_Phoner, "CBPhonerAnrMon", CStr(Me.P_CBPhonerAnrMon))
+        C_XML.Write(XMLDoc, P_Def_Phoner, "TBPhonerPasswort", Me.P_TBPhonerPasswort)
+        C_XML.Write(XMLDoc, P_Def_Phoner, "PhonerTelNameIndex", CStr(Me.P_PhonerTelNameIndex))
         ' Statistik
-        Write(P_Def_Statistics, "ResetZeit", CStr(Me.P_StatResetZeit))
-        Write(P_Def_Statistics, "Verpasst", CStr(Me.P_StatVerpasst))
-        Write(P_Def_Statistics, "Nichterfolgreich", CStr(Me.P_StatNichtErfolgreich))
-        Write(P_Def_Statistics, "Kontakt", CStr(Me.P_StatKontakt))
-        Write(P_Def_Statistics, "Journal", CStr(Me.P_StatJournal))
-        Write(P_Def_Journal, "SchließZeit", CStr(Me.P_StatOLClosedZeit))
+        C_XML.Write(XMLDoc, P_Def_Statistics, "ResetZeit", CStr(Me.P_StatResetZeit))
+        C_XML.Write(XMLDoc, P_Def_Statistics, "Verpasst", CStr(Me.P_StatVerpasst))
+        C_XML.Write(XMLDoc, P_Def_Statistics, "Nichterfolgreich", CStr(Me.P_StatNichtErfolgreich))
+        C_XML.Write(XMLDoc, P_Def_Statistics, "Kontakt", CStr(Me.P_StatKontakt))
+        C_XML.Write(XMLDoc, P_Def_Statistics, "Journal", CStr(Me.P_StatJournal))
+        C_XML.Write(XMLDoc, P_Def_Journal, "SchließZeit", CStr(Me.P_StatOLClosedZeit))
         ' Wählbox
-        Write(P_Def_Options, "Anschluss", CStr(Me.P_TelAnschluss))
-        Write(P_Def_Options, "Festnetz", CStr(Me.P_TelFestnetz))
-        Write(P_Def_Options, "CLIR", CStr(Me.P_TelCLIR))
+        C_XML.Write(XMLDoc, P_Def_Options, "Anschluss", CStr(Me.P_TelAnschluss))
+        C_XML.Write(XMLDoc, P_Def_Options, "Festnetz", CStr(Me.P_TelFestnetz))
+        C_XML.Write(XMLDoc, P_Def_Options, "CLIR", CStr(Me.P_TelCLIR))
         'FritzBox
-        Write(P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
+        C_XML.Write(XMLDoc, P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox)
         'Indizierung
-        Write(P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
+        C_XML.Write(XMLDoc, P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         ' Notiz
-        Write(P_Def_Options, "CBNote", CStr(Me.P_CBNote))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBNote", CStr(Me.P_CBNote))
 
         ' Do some Stuff
 
@@ -4072,356 +3914,6 @@ Public Class DataProvider
     End Sub
 
 #Region "XML"
-#Region "Read"
-    Public Overloads Function Read(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal sDefault As String) As String
-        Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
-            .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
-        End With
-        Return Read(xPathTeile, sDefault)
-    End Function
-
-    Public Overloads Function Read(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
-        Read = sDefault
-
-        Dim tmpXMLNodeList As XmlNodeList
-        Dim xPath As String = CreateXPath(xPathTeile)
-
-        'If CheckXPathRead(xPath) Then
-        tmpXMLNodeList = XMLDoc.SelectNodes(xPath)
-        If Not tmpXMLNodeList.Count = 0 Then
-            Read = P_Def_StringEmpty
-            For Each tmpXMLNode As XmlNode In tmpXMLNodeList
-                Read += tmpXMLNode.InnerText & ";"
-            Next
-            Read = Left(Read, Len(Read) - 1)
-        End If
-        'End If
-        xPathTeile = Nothing
-    End Function
-
-    ''' <summary>
-    ''' Ersetzt Wildcard durch einen vorhandenen Knoten.
-    ''' </summary>
-    ''' <param name="xPathTeile"></param>
-    ''' <remarks>Ich weiß nicht mehr was der hier macht.</remarks>
-    Public Function GetProperXPath(ByRef xPathTeile As ArrayList) As Boolean
-        GetProperXPath = False
-        Dim i As Integer = 1
-        Dim xPath As String
-        Dim tmpXMLNode As XmlNode
-        Dim tmpParentXMLNode As XmlNode
-
-        xPath = CreateXPath(xPathTeile)
-
-        tmpXMLNode = XMLDoc.SelectSingleNode(xPath)
-        If tmpXMLNode IsNot Nothing Then
-            tmpParentXMLNode = tmpXMLNode.ParentNode
-            Do Until tmpParentXMLNode.Name = xPathTeile.Item(1).ToString
-
-                If Not (xPathTeile.Item(xPathTeile.Count - i - 1).ToString.StartsWith(P_xPathBracketOpen) Or _
-                        xPathTeile.Item(xPathTeile.Count - i - 1).ToString.StartsWith(P_xPathAttribute)) Then
-
-                    xPathTeile.Item(xPathTeile.Count - i - 1) = tmpParentXMLNode.Name
-                    tmpParentXMLNode = tmpParentXMLNode.ParentNode
-
-                End If
-                i += 1
-            Loop
-            GetProperXPath = True
-        End If
-
-    End Function
-
-    Function ReadElementName(ByVal xPathTeile As ArrayList, ByVal sDefault As String) As String
-        ReadElementName = sDefault
-        Dim xPath As String
-        Dim tmpXMLNode As XmlNode
-        xPath = CreateXPath(xPathTeile)
-        With XMLDoc
-            tmpXMLNode = .SelectSingleNode(xPath)
-            If tmpXMLNode IsNot Nothing Then
-                ReadElementName = tmpXMLNode.ParentNode.Name
-            End If
-        End With
-        tmpXMLNode = Nothing
-    End Function
-#End Region
-
-#Region "Write"
-    Public Overloads Function Write(ByVal DieSektion As String, ByVal DerEintrag As String, ByVal Value As String) As Boolean
-        Dim xPathTeile As New ArrayList
-        With xPathTeile
-            .Add(IIf(IsNumeric(Left(DieSektion, 1)), "ID" & DieSektion, DieSektion))
-            .Add(IIf(IsNumeric(Left(DerEintrag, 1)), "ID" & DerEintrag, DerEintrag))
-        End With
-        Return Write(xPathTeile, Value)
-    End Function
-
-    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String) As Boolean
-        Return Write(ZielKnoten, Value, P_Def_StringEmpty, P_Def_StringEmpty)
-    End Function
-
-    Public Overloads Function Write(ByVal ZielKnoten As ArrayList, ByVal Value As String, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
-        Dim xPathTeile As New ArrayList
-        Dim sParentXPath As String = P_Def_StringEmpty
-        Dim xPath As String
-        Dim tmpXMLNode As XmlNode
-        Dim tmpXMLNodeList As XmlNodeList
-        Dim tmpXMLAttribute As XmlAttribute
-
-        xPath = CreateXPath(ZielKnoten)
-        With XMLDoc
-            tmpXMLNodeList = .SelectNodes(xPath)
-            If Not tmpXMLNodeList.Count = 0 Then
-                For Each tmpXMLNode In tmpXMLNodeList
-                    If Not AttributeName = P_Def_StringEmpty Then
-                        If Not (tmpXMLNode.ChildNodes.Count = 0 And tmpXMLNode.Value = Nothing) Then
-                            tmpXMLNode = .SelectSingleNode(xPath & CStr(IIf(Not AttributeName = P_Def_StringEmpty, "[@" & AttributeName & "=""" & AttributeValue & """]", P_Def_StringEmpty)))
-                        End If
-                        If tmpXMLNode Is Nothing Then
-                            tmpXMLNode = .SelectSingleNode(xPath).ParentNode.AppendChild(.CreateElement(.SelectSingleNode(xPath).Name))
-                        End If
-                        tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName)
-                        tmpXMLAttribute.Value = AttributeValue
-                        tmpXMLNode.Attributes.Append(tmpXMLAttribute)
-                    End If
-                    tmpXMLNode.InnerText() = Value
-                Next
-            Else
-                ' Eintrag noch nicht vorhanden
-                'If xPath.Contains(P_xPathWildCard) Then
-                '    GetProperXPath(ZielKnoten)
-                '    xPath = CreateXPath(ZielKnoten)
-                'End If
-                sParentXPath = .DocumentElement.Name
-                For Each sNodeName As String In ZielKnoten
-                    ' Rüfe ob NodeName den XML-Namenskonvention entspricht
-                    If IsNumeric(Left(sNodeName, 1)) Then sNodeName = "ID" & sNodeName
-                    xPathTeile.Add(sNodeName)
-                    xPath = CreateXPath(xPathTeile)
-                    If .SelectSingleNode(xPath) Is Nothing Then
-                        .SelectSingleNode(sParentXPath).AppendChild(.CreateElement(sNodeName))
-                        'If Not (sNodeName.Contains(P_xPathBracketOpen) And sNodeName.Contains(P_xPathBracketClose)) Then
-                        '    If .SelectSingleNode(sParentXPath) IsNot Nothing Then
-                        '        .SelectSingleNode(sParentXPath).AppendChild(.CreateElement(sNodeName))
-                        '    Else
-                        '        ' Wenn der Knoten, in den Geschrieben werden soll, nicht erstellt werden kann, dann wird Write auf False gesetzt.
-                        '        Write = False
-                        '    End If
-                        'End If
-                    End If
-                    sParentXPath = xPath
-                Next
-                ' Prüfen, ob es Probleme gab.
-                Write(ZielKnoten, Value, AttributeName, AttributeValue)
-            End If
-        End With
-        Write = True
-
-        xPathTeile = Nothing
-        tmpXMLAttribute = Nothing
-        tmpXMLNode = Nothing
-    End Function
-
-    ''' <summary>
-    ''' Prüft den NodeName auf nicht erlaubte Zeichen.
-    ''' Wenn das erste Zeichen nicht korrekt ist, wird ein _ davorgesetzt. Dies ist erlaubt.
-    ''' Wenn weiter Zeichen nicht korrekt sind, werden diese durch den Charcode ersetzt. (Prüfen)
-    ''' </summary>
-    ''' <param name="sNodeName">Korrekter String</param>
-    ''' <remarks>http://www.w3.org/TR/REC-xml/#NT-Name</remarks>
-    Private Function CheckNodeName(ByVal sNodeName As String) As String
-
-        ' Ist erstes Zeichen prüfen
-        If Not P_NameStartChar.Contains(Left(sNodeName, 1)) Then
-            sNodeName = "_" & sNodeName
-        End If
-
-        ' Prüfe ob nichterlaubte Zeichen im Namen sind
-        For Each C As Char In sNodeName
-            If Not P_NameChar.Contains(C) Then
-                'Prüfen ob das Sinnvoll ist
-                sNodeName = Replace(sNodeName, C, CStr(Asc(C)), , , CompareMethod.Text)
-            End If
-        Next
-
-        ' Nodename darf nicht mit XML beginnen
-        If LCase(Left(sNodeName, 3)) = "xml" Then sNodeName = "_" & sNodeName
-        'Rückgabe
-        Return sNodeName
-    End Function
-
-    Public Overloads Function WriteAttribute(ByVal ZielKnoten As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
-        WriteAttribute = False
-        Dim xPath As String
-        xPath = CreateXPath(ZielKnoten)
-        WriteAttribute(XMLDoc.SelectNodes(xPath), AttributeName, AttributeValue)
-    End Function
-
-    Public Overloads Function WriteAttribute(ByRef tmpXMLNodeList As XmlNodeList, ByVal AttributeName As String, ByVal AttributeValue As String) As Boolean
-        WriteAttribute = True
-
-        Dim tmpXMLAttribute As XmlAttribute
-
-        With XMLDoc
-            If Not tmpXMLNodeList.Count = 0 Then
-                For Each tmpXMLNode As XmlNode In tmpXMLNodeList
-                    tmpXMLAttribute = tmpXMLNode.Attributes.ItemOf(AttributeName)
-                    If tmpXMLAttribute Is Nothing Then
-                        tmpXMLAttribute = .CreateAttribute(AttributeName)
-                        tmpXMLNode.Attributes.Append(tmpXMLAttribute)
-                    End If
-                    tmpXMLAttribute.Value = AttributeValue
-                Next
-            End If
-        End With
-    End Function
-#End Region
-
-#Region "Löschen"
-
-    Public Overloads Function Delete(ByVal DieSektion As String) As Boolean
-        Dim xPathTeile As New ArrayList
-        xPathTeile.Add(DieSektion)
-        Return Delete(xPathTeile)
-    End Function
-
-    Public Overloads Function Delete(ByVal alxPathTeile As ArrayList) As Boolean
-        Dim tmpXMLNodeList As XmlNodeList
-
-        Dim xPath As String = CreateXPath(alxPathTeile)
-        With XMLDoc
-            tmpXMLNodeList = .SelectNodes(xPath)
-            For Each tmpXMLNode As XmlNode In tmpXMLNodeList
-                If tmpXMLNode IsNot Nothing Then
-                    tmpXMLNode = .SelectSingleNode(xPath).ParentNode
-                    tmpXMLNode.RemoveChild(.SelectSingleNode(xPath))
-                    If tmpXMLNode.ChildNodes.Count = 0 Then
-                        tmpXMLNode.ParentNode.RemoveChild(tmpXMLNode)
-                    End If
-                End If
-            Next
-        End With
-        alxPathTeile = Nothing
-        Return True
-    End Function
-
-#End Region
-
-#Region "Knoten"
-    Function CreateXMLNode(ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As ArrayList, ByVal AttributeValue As ArrayList) As XmlNode
-        CreateXMLNode = Nothing
-        If SubNodeName.Count = SubNodeValue.Count Then
-
-            Dim tmpXMLNode As XmlNode
-            Dim tmpXMLChildNode As XmlNode
-            Dim tmpXMLAttribute As XmlAttribute
-            tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, P_Def_StringEmpty)
-            With tmpXMLNode
-                For i As Integer = 0 To SubNodeName.Count - 1
-                    If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne_String Then
-                        tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, P_Def_StringEmpty)
-                        tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
-                        .AppendChild(tmpXMLChildNode)
-                    End If
-                Next
-            End With
-            For i As Integer = 0 To AttributeName.Count - 1
-                If AttributeValue.Item(i) IsNot Nothing Then
-                    tmpXMLAttribute = XMLDoc.CreateAttribute(AttributeName.Item(i).ToString)
-                    tmpXMLAttribute.Value = AttributeValue.Item(i).ToString
-                    tmpXMLNode.Attributes.Append(tmpXMLAttribute)
-                End If
-            Next
-
-            CreateXMLNode = tmpXMLNode
-
-            tmpXMLAttribute = Nothing
-            tmpXMLNode = Nothing
-            tmpXMLChildNode = Nothing
-        End If
-    End Function
-
-    Sub ReadXMLNode(ByVal alxPathTeile As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String)
-
-        If SubNodeName.Count = SubNodeValue.Count Then
-            Dim xPath As String
-            Dim tmpXMLNode As XmlNode
-            With XMLDoc
-                ' BUG: 
-                If Not AttributeValue = P_Def_StringEmpty And Not AttributeName = P_Def_StringEmpty Then alxPathTeile.Add("[@" & AttributeName & "=""" & AttributeValue & """]")
-                xPath = CreateXPath(alxPathTeile)
-                If Not AttributeValue = P_Def_StringEmpty Then alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
-                tmpXMLNode = .SelectSingleNode(xPath)
-                If tmpXMLNode IsNot Nothing Then
-                    With tmpXMLNode
-                        For Each XmlChildNode As XmlNode In tmpXMLNode.ChildNodes
-                            If Not SubNodeName.IndexOf(XmlChildNode.Name) = -1 Then
-                                SubNodeValue.Item(SubNodeName.IndexOf(XmlChildNode.Name)) = XmlChildNode.InnerText
-                            End If
-
-                        Next
-                    End With
-                End If
-            End With
-            tmpXMLNode = Nothing
-        End If
-    End Sub
-
-    Sub AppendNode(ByVal alxPathTeile As ArrayList, ByVal Knoten As XmlNode)
-        Dim xPathTeileEC As Long = alxPathTeile.Count
-        Dim DestxPath As String
-        Dim tmpxPath As String = P_Def_StringEmpty
-        Dim tmpXMLNode As XmlNode
-        DestxPath = CreateXPath(alxPathTeile)
-        With XMLDoc
-            tmpXMLNode = .SelectSingleNode(DestxPath)
-            If tmpXMLNode Is Nothing Then
-                Write(alxPathTeile, "")
-                tmpXMLNode = .SelectSingleNode(DestxPath)
-            End If
-            'Attribute
-            alxPathTeile.Add(Knoten.Name)
-            With Knoten
-                If Not .Attributes.Count = 0 Then
-                    For i = 0 To .Attributes.Count - 1
-                        ' String "tmpxPath" wird hier missbraucht, damit keine unnötige Variable deklariert werden muss.
-                        tmpxPath += "[@" & .Attributes.Item(i).Name & "=""" & .Attributes.Item(i).Value & """]"
-                    Next
-                    alxPathTeile.Add(Replace(tmpxPath, "][@", " and @", , , CompareMethod.Text))
-                End If
-            End With
-            tmpxPath = CreateXPath(alxPathTeile)
-
-            If .SelectSingleNode(tmpxPath) IsNot Nothing Then
-                tmpXMLNode.RemoveChild(.SelectSingleNode(tmpxPath))
-            End If
-            tmpXMLNode.AppendChild(Knoten)
-        End With
-        Do Until alxPathTeile.Count = xPathTeileEC
-            alxPathTeile.RemoveAt(alxPathTeile.Count - 1)
-        Loop
-
-    End Sub
-
-    Function SubNoteCount(ByVal alxPathTeile As ArrayList) As Integer
-        SubNoteCount = 0
-        Dim tmpxPath As String
-        Dim tmpXMLNode As XmlNode
-        tmpxPath = CreateXPath(alxPathTeile)
-        With XMLDoc
-            tmpXMLNode = .SelectSingleNode(tmpxPath)
-            If tmpXMLNode IsNot Nothing Then
-                SubNoteCount = tmpXMLNode.ChildNodes.Count
-            End If
-        End With
-        tmpXMLNode = Nothing
-    End Function
-
-#End Region
-
 #Region "Speichern"
     Sub SpeichereXMLDatei()
         SaveOptionData()
@@ -4431,72 +3923,6 @@ Public Class DataProvider
         SaveOptionData()
     End Sub
 #End Region
-
-#Region "Validator"
-    ''' <summary>
-    ''' Prüft ob die XML-Datei geöffnet werden kann.
-    ''' </summary>
-    ''' <param name="XMLpath"></param>
-    ''' <returns><c>True</c>, wenn Datei geöffnet werden kann, ansonsten <c>False</c>.</returns>
-    ''' <remarks></remarks>
-    Private Function XMLValidator(ByVal XMLpath As String) As Boolean
-        XMLValidator = True
-        Try
-            XMLDoc.Load(XMLpath)
-        Catch
-            XMLValidator = False
-        End Try
-    End Function
-#End Region
-
-    ''' <summary>
-    ''' Erstellt einen korrekten xPath aus einer Liste einzelnen xPath-Elementen zusammen
-    ''' </summary>
-    ''' <param name="xPathElements">Lista an xPath-Elementen</param>
-    ''' <returns>gültiger xPath</returns>
-    ''' <remarks></remarks>
-    Function CreateXPath(ByVal xPathElements As ArrayList) As String
-        ' fügt den Root-knoten an, falls nicht vorhanden
-
-        Dim newxPath As New ArrayList
-
-        If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-
-        For Each xPathElement As String In xPathElements
-            If xPathElement.Contains(P_xPathBracketOpen) And xPathElement.Contains(P_xPathBracketClose) Or xPathElement.StartsWith(P_xPathAttribute) Or xPathElement.StartsWith(P_xPathWildCard) Then
-                ' Hier eventuell eingreifen Attributnamen prüfen
-                newxPath.Add(xPathElement)
-            Else
-                newxPath.Add(CheckNodeName(xPathElement))
-            End If
-        Next
-
-        xPathElements = newxPath
-
-        CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
-        CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text) ' ][ -> and
-        newxPath = Nothing
-    End Function
-    'Function CreateXPath(ByVal xPathElements As ArrayList) As String
-    '    If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-    '    CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
-    '    CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text)
-    'End Function
-
-
-    ' ''' <summary>
-    ' ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
-    ' ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
-    ' ''' </summary>
-    ' ''' <param name="xPath">zu prüfender xPath</param>
-    ' ''' <returns></returns>
-    ' ''' <remarks></remarks>
-    'Private Function CheckXPathRead(ByVal xPath As String) As Boolean
-    '    CheckXPathRead = True
-
-    '    If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
-    '    If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
-    'End Function
 #End Region
 
 #Region "Registry VBA GetSettings SetSettings"
@@ -4518,10 +3944,10 @@ Public Class DataProvider
             ' Diverse Knoten des Journals löschen
             xPathTeile.Add(P_Def_Journal)
             xPathTeile.Add("SchließZeit")
-            xPath = CreateXPath(xPathTeile)
+            xPath = C_XML.CreateXPath(XMLDoc, xPathTeile)
             tmpNode = .SelectSingleNode(xPath)
             xPathTeile.Remove("SchließZeit")
-            xPath = CreateXPath(xPathTeile)
+            xPath = C_XML.CreateXPath(XMLDoc, xPathTeile)
             If tmpNode IsNot Nothing Then
                 .SelectSingleNode(xPath).RemoveAll()
                 .SelectSingleNode(xPath).AppendChild(tmpNode)

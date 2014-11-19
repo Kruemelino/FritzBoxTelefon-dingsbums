@@ -12,6 +12,7 @@ Public Class Wählclient
     Private C_OlI As OutlookInterface
     Private C_FBox As FritzBox
     Private C_Phoner As PhonerInterface
+    Private C_XML As XML
     Friend _listFormWählbox As New List(Of formWählbox)
 
 
@@ -21,7 +22,8 @@ Public Class Wählclient
                    ByVal InterfaceKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
-                   ByVal PhonerKlasse As PhonerInterface)
+                   ByVal PhonerKlasse As PhonerInterface, _
+                   ByVal XMLKlasse As XML)
         C_hf = HelferKlasse
         C_KF = KontaktKlasse
         C_GUI = InterfaceKlasse
@@ -29,7 +31,7 @@ Public Class Wählclient
         C_OlI = OutlInter
         C_FBox = FritzBoxKlasse
         C_Phoner = PhonerKlasse
-
+        C_XML = XMLKlasse
     End Sub
 
 #Region "Alles was mit dem Wählen zu tun hat"
@@ -146,7 +148,7 @@ Public Class Wählclient
         Dim ImgPath As String = C_DP.P_Def_StringEmpty   ' Position innerhalb eines Strings
         Dim row(2) As String
 
-        frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF, Me)
+        frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF, Me, C_XML)
         _listFormWählbox.Add(frm_Wählbox)
 
         If oContact Is Nothing Then
@@ -298,7 +300,7 @@ Public Class Wählclient
             .Add(Telefonat(0))
             .Add("Eintrag")
         End With
-        C_DP.ReadXMLNode(xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
+        C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
 
         'Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
         TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))

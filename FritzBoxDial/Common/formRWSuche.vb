@@ -11,17 +11,20 @@ Friend Class formRWSuche
     Private C_hf As Helfer
     Private C_KF As Contacts
     Private C_DP As DataProvider
+    Private C_XML As XML
     Private HTMLFehler As Boolean
 
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal KontaktKlasse As Contacts, _
-                   ByVal DataproviderKlasse As DataProvider)
+                   ByVal DataproviderKlasse As DataProvider, _
+                   ByVal XMLKlasse As XML)
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         C_hf = HelferKlasse
         C_KF = KontaktKlasse
         C_DP = DataproviderKlasse
+        C_XML = XMLKlasse
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
     End Sub
 
@@ -46,7 +49,7 @@ Friend Class formRWSuche
                     .Add("CBRWSIndex")
                     .Add("Eintrag[@ID=""" & Telefonat.TelNr & """]")
                 End With
-                .vCard = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+                .vCard = C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
             Else
                 .vCard = C_DP.P_Def_ErrorMinusOne_String
             End If
@@ -77,7 +80,7 @@ Friend Class formRWSuche
                     End Select
                     If C_DP.P_CBRWSIndex Then
                         xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
-                        C_DP.Write(xPathTeile, .vCard, "ID", .TelNr)
+                        C_XML.Write(C_DP.XMLDoc, xPathTeile, .vCard, "ID", .TelNr)
                     End If
                 Case Else ' Fall 1: Eine frühere RWS hat ein Ergebnis geliefert. 
                     AnrMonRWS = True

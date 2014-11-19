@@ -5,6 +5,7 @@ Imports System.Windows.Forms
 
 Friend Class formCfg
 #Region "Eigene Klassen"
+    Private C_XML As XML
     Private C_DP As DataProvider
     Private C_Crypt As MyRijndael
     Private C_hf As Helfer
@@ -45,7 +46,7 @@ Friend Class formCfg
 #End Region
 
     Friend Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
-                   ByVal XMLKlasse As DataProvider, _
+                   ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal CryptKlasse As MyRijndael, _
                    ByVal AnrufMon As AnrufMonitor, _
@@ -53,14 +54,15 @@ Friend Class formCfg
                    ByVal OutlInter As OutlookInterface, _
                    ByVal kontaktklasse As Contacts, _
                    ByVal Phonerklasse As PhonerInterface, _
-                   ByVal Popupklasse As Popup)
+                   ByVal Popupklasse As Popup, _
+                   ByVal XMLKlasse As XML)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         C_hf = HelferKlasse
-        C_DP = XMLKlasse
+        C_DP = DataProviderKlasse
         C_Crypt = CryptKlasse
         C_GUI = InterfacesKlasse
         C_OlI = OutlInter
@@ -69,6 +71,7 @@ Friend Class formCfg
         C_KF = kontaktklasse
         C_Phoner = Phonerklasse
         C_PopUp = Popupklasse
+        C_XML = XMLKlasse
         Me.LVersion.Text += ThisAddIn.Version
         With Me.ComboBoxRWS.Items
             .Add("DasÖrtliche.de")
@@ -213,7 +216,7 @@ Friend Class formCfg
                 .Add("TelName")
             End With
 
-            tmpTelefon = .Read(xPathTeile, "Phoner")
+            tmpTelefon = C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner")
             If InStr(tmpTelefon, ";", CompareMethod.Text) = 0 Then
                 Me.ComboBoxPhonerSIP.Items.Add(tmpTelefon)
             Else
@@ -275,7 +278,7 @@ Friend Class formCfg
             .Add("Telefon")
             .Add("TelName")
         End With
-        Nebenstellen = Split(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
+        Nebenstellen = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
 
         If Not Nebenstellen(0) = C_DP.P_Def_ErrorMinusOne_String Then
             With Me.TelList
@@ -293,20 +296,20 @@ Friend Class formCfg
                         .Add("[TelName = """ & Nebenstelle & """]")
                         .Add("@Standard")
 
-                        Zeile.Add(CBool(C_DP.Read(xPathTeile, "False")))
+                        Zeile.Add(CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")))
                         Zeile.Add(CStr(j))
                         .Item(.Count - 1) = "@Dialport"
-                        Zeile.Add(C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";")) 'Nebenstelle
+                        Zeile.Add(C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";")) 'Nebenstelle
                         .RemoveAt(.Count - 1)
-                        Zeile.Add(C_DP.ReadElementName(xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";")) 'Telefontyp
+                        Zeile.Add(C_XML.ReadElementName(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String & ";")) 'Telefontyp
                         Zeile.Add(Nebenstelle) ' TelName
                         .Add("TelNr")
-                        Zeile.Add(Replace(C_DP.Read(xPathTeile, "-"), ";", ", ", , , CompareMethod.Text)) 'TelNr
+                        Zeile.Add(Replace(C_XML.Read(C_DP.XMLDoc, xPathTeile, "-"), ";", ", ", , , CompareMethod.Text)) 'TelNr
                         .Item(.Count - 1) = "Eingehend"
-                        Zeile.Add(C_DP.Read(xPathTeile, "0")) 'Eingehnd
+                        Zeile.Add(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0")) 'Eingehnd
                         tmpein(0) += CDbl(Zeile.Item(Zeile.Count - 1))
                         .Item(.Count - 1) = "Ausgehend"
-                        Zeile.Add(C_DP.Read(xPathTeile, "0")) 'Ausgehnd
+                        Zeile.Add(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0")) 'Ausgehnd
                         tmpein(1) += CDbl(Zeile.Item(Zeile.Count - 1))
                         Zeile.Add(CStr(CDbl(Zeile.Item(Zeile.Count - 2)) + CDbl(Zeile.Item(Zeile.Count - 1)))) 'Gesamt
                         tmpein(2) += CDbl(Zeile.Item(Zeile.Count - 1))
@@ -349,7 +352,7 @@ Friend Class formCfg
             .Add("Nummern")
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"") or starts-with(name(.), ""Mobil"")]")
 
-            TelNrString = Split("Alle Telefonnummern;" & C_DP.Read(xPathTeile, ""), ";", , CompareMethod.Text)
+            TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
 
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
             TelNrString = (From x In TelNrString Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
@@ -363,7 +366,7 @@ Friend Class formCfg
             For i = 1 To Me.CLBTelNr.Items.Count - 1
                 .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
                 .Item(.Count - 1) = "@Checked"
-                Me.CLBTelNr.SetItemChecked(i, C_hf.IsOneOf("1", Split(C_DP.Read(xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
+                Me.CLBTelNr.SetItemChecked(i, C_hf.IsOneOf("1", Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
             Next
         End With
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
@@ -392,14 +395,14 @@ Friend Class formCfg
                 Next
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Add("[" & tmpTeile & "]")
-                C_DP.WriteAttribute(xPathTeile, "Checked", "0")
+                C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "0")
                 tmpTeile = C_DP.P_Def_StringEmpty
                 For i = 0 To CheckTelNr.Count - 1
                     tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
                 Next
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Item(.Count - 1) = "[" & tmpTeile & "]"
-                C_DP.WriteAttribute(xPathTeile, "Checked", "1")
+                C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "1")
             End With
         End If
 
@@ -415,7 +418,7 @@ Friend Class formCfg
                     .Add("Optionen")
                     .Add("TBBenutzer")
                 End With
-                C_DP.Delete(xPathTeile)
+                C_XML.Delete(C_DP.XMLDoc, xPathTeile)
             Else
                 .P_TBBenutzer = Me.TBBenutzer.Text
             End If
@@ -504,7 +507,7 @@ Friend Class formCfg
                 .Add(C_DP.P_Def_StringEmpty)
                 For i = 0 To TelList.Rows.Count - 2
                     .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
-                    C_DP.WriteAttribute(xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
+                    C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
                 Next
             End With
 
@@ -515,14 +518,14 @@ Friend Class formCfg
                 .Add("*")
                 .Add("[@Checked=""1""]")
             End With
-            .P_CLBTelNr = (From x In Split(.Read(xPathTeile, .P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
+            .P_CLBTelNr = (From x In Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, .P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
 
             ' Phoner
             Dim TelName() As String
             Dim PhonerTelNameIndex As Integer = 0
 
             For i = 20 To 29
-                TelName = Split(C_DP.Read("Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
+                TelName = Split(C_XML.Read(C_DP.XMLDoc, "Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
                 If Not TelName(0) = C_DP.P_Def_ErrorMinusOne_String And ComboBoxPhonerSIP.SelectedItem IsNot Nothing And Not TelName.Length = 2 Then
                     If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
                         PhonerTelNameIndex = i
@@ -746,9 +749,9 @@ Friend Class formCfg
                     .Add("*")
                     .Add("Telefon")
                     .Add("Eingehend")
-                    C_DP.Delete(xPathTeile)
+                    C_XML.Delete(C_DP.XMLDoc, xPathTeile)
                     .Item(.Count - 1) = "Ausgehend"
-                    C_DP.Delete(xPathTeile)
+                    C_XML.Delete(C_DP.XMLDoc, xPathTeile)
                 End With
                 C_DP.SpeichereXMLDatei()
                 Ausfüllen()
@@ -780,7 +783,7 @@ Friend Class formCfg
             Case "BRWSTest"
                 Dim TelNr As String = Me.TBRWSTest.Text
                 If IsNumeric(TelNr) Then
-                    Dim F_RWS As New formRWSuche(C_hf, C_KF, C_DP)
+                    Dim F_RWS As New formRWSuche(C_hf, C_KF, C_DP, C_XML)
                     Dim rws As Boolean
                     Dim vCard As String = C_DP.P_Def_StringEmpty
 
@@ -1448,21 +1451,21 @@ Friend Class formCfg
             xPathTeile.Item(xPathTeile.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
             xPathTeile.Item(xPathTeile.Count - 1) = "TelName"
             ' Prüfe ob Telefonname und Telefonnummer übereinstimmt
-            tmpTelefon = C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
+            tmpTelefon = C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String)
             If Not tmpTelefon = C_DP.P_Def_ErrorMinusOne_String Then
                 xPathTeile.Item(xPathTeile.Count - 1) = "TelNr"
                 If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
                     If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
-                        C_DP.Read(xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
+                        C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
 
-                        If C_DP.GetProperXPath(xPathTeile) Then
+                        If C_XML.GetProperXPath(C_DP.XMLDoc, xPathTeile) Then
                             Dim Dauer As Date
                             xPathTeile.Item(xPathTeile.Count - 1) = "Eingehend"
                             Dauer = CDate(TelList.Rows(Row).Cells(6).Value.ToString())
-                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                            C_XML.Write(C_DP.XMLDoc, xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
                             xPathTeile.Item(xPathTeile.Count - 1) = "Ausgehend"
                             Dauer = CDate(TelList.Rows(Row).Cells(7).Value.ToString())
-                            C_DP.Write(xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
+                            C_XML.Write(C_DP.XMLDoc, xPathTeile, CStr((Dauer.Hour * 60 + Dauer.Minute) * 60 + Dauer.Second))
                         End If
                     End If
                 End If
@@ -1483,7 +1486,7 @@ Friend Class formCfg
                 Next
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Add("[" & tmpTeile & "]")
-                C_DP.WriteAttribute(xPathTeile, "Checked", "1")
+                C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "1")
             End If
         End With
 
