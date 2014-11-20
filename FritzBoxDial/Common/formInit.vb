@@ -89,7 +89,7 @@
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
-            F_Adressbuch = New formAdressbuch
+            F_Adressbuch = New formAdressbuch(C_XML, C_FBox, C_DP, C_KF)
             'If C_DP.P_Debug_AnrufSimulation Then
             '    F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
             'End If
