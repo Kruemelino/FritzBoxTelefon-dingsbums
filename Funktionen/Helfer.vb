@@ -99,6 +99,9 @@ Public Class Helfer
         End If
     End Sub
 
+    Private Function GetUnixTime() As Integer
+        Return CInt((DateTime.UtcNow - New DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds)
+    End Function
     ''' <summary>
     ''' Führt einen Ping zur Gegenstelle aus.
     ''' </summary>
