@@ -30,10 +30,16 @@ Partial Class formAdressbuch
         Me.SpeichernToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ImportToolStrip = New System.Windows.Forms.ToolStripButton()
         Me.ExportToolStripButton = New System.Windows.Forms.ToolStripButton()
-        Me.DGVAdressbuch = New System.Windows.Forms.DataGridView()
         Me.OFDAdressdbuch = New System.Windows.Forms.OpenFileDialog()
         Me.SFDAdressbuch = New System.Windows.Forms.SaveFileDialog()
+        Me.SCAdressbuch = New System.Windows.Forms.SplitContainer()
+        Me.DGVAdressbuch = New System.Windows.Forms.DataGridView()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.TSAdressbuch.SuspendLayout()
+        CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SCAdressbuch.Panel1.SuspendLayout()
+        Me.SCAdressbuch.Panel2.SuspendLayout()
+        Me.SCAdressbuch.SuspendLayout()
         CType(Me.DGVAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -99,25 +105,51 @@ Partial Class formAdressbuch
         Me.ExportToolStripButton.Size = New System.Drawing.Size(44, 22)
         Me.ExportToolStripButton.Text = "Export"
         '
+        'OFDAdressdbuch
+        '
+        Me.OFDAdressdbuch.FileName = "OpenFileDialog1"
+        '
+        'SCAdressbuch
+        '
+        Me.SCAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SCAdressbuch.Location = New System.Drawing.Point(0, 25)
+        Me.SCAdressbuch.Name = "SCAdressbuch"
+        '
+        'SCAdressbuch.Panel1
+        '
+        Me.SCAdressbuch.Panel1.Controls.Add(Me.DGVAdressbuch)
+        '
+        'SCAdressbuch.Panel2
+        '
+        Me.SCAdressbuch.Panel2.Controls.Add(Me.Button1)
+        Me.SCAdressbuch.Size = New System.Drawing.Size(784, 515)
+        Me.SCAdressbuch.SplitterDistance = 700
+        Me.SCAdressbuch.TabIndex = 3
+        '
         'DGVAdressbuch
         '
         Me.DGVAdressbuch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DGVAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DGVAdressbuch.Location = New System.Drawing.Point(0, 25)
+        Me.DGVAdressbuch.Location = New System.Drawing.Point(0, 0)
         Me.DGVAdressbuch.Name = "DGVAdressbuch"
-        Me.DGVAdressbuch.Size = New System.Drawing.Size(784, 515)
-        Me.DGVAdressbuch.TabIndex = 2
+        Me.DGVAdressbuch.Size = New System.Drawing.Size(700, 515)
+        Me.DGVAdressbuch.TabIndex = 3
         '
-        'OFDAdressdbuch
+        'Button1
         '
-        Me.OFDAdressdbuch.FileName = "OpenFileDialog1"
+        Me.Button1.Location = New System.Drawing.Point(3, 3)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 0
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'formAdressbuch
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(784, 562)
-        Me.Controls.Add(Me.DGVAdressbuch)
+        Me.Controls.Add(Me.SCAdressbuch)
         Me.Controls.Add(Me.TSAdressbuch)
         Me.Controls.Add(Me.StatStAdressbuch)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
@@ -127,6 +159,10 @@ Partial Class formAdressbuch
         Me.Text = "Adressbuch"
         Me.TSAdressbuch.ResumeLayout(False)
         Me.TSAdressbuch.PerformLayout()
+        Me.SCAdressbuch.Panel1.ResumeLayout(False)
+        Me.SCAdressbuch.Panel2.ResumeLayout(False)
+        CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SCAdressbuch.ResumeLayout(False)
         CType(Me.DGVAdressbuch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -136,10 +172,12 @@ Partial Class formAdressbuch
     Friend WithEvents TSAdressbuch As System.Windows.Forms.ToolStrip
     Friend WithEvents ÖffnenToolStripButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents SpeichernToolStripButton As System.Windows.Forms.ToolStripButton
-    Friend WithEvents DGVAdressbuch As System.Windows.Forms.DataGridView
     Friend WithEvents OFDAdressdbuch As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SFDAdressbuch As System.Windows.Forms.SaveFileDialog
     Friend WithEvents NeuToolStripButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents ImportToolStrip As System.Windows.Forms.ToolStripButton
     Friend WithEvents ExportToolStripButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents SCAdressbuch As System.Windows.Forms.SplitContainer
+    Friend WithEvents DGVAdressbuch As System.Windows.Forms.DataGridView
+    Friend WithEvents Button1 As System.Windows.Forms.Button
 End Class
