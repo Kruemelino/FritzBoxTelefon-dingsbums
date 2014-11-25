@@ -22,6 +22,7 @@ Partial Class formAdressbuch
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formAdressbuch))
         Me.StatStAdressbuch = New System.Windows.Forms.StatusStrip()
         Me.TSAdressbuch = New System.Windows.Forms.ToolStrip()
@@ -34,7 +35,22 @@ Partial Class formAdressbuch
         Me.SFDAdressbuch = New System.Windows.Forms.SaveFileDialog()
         Me.SCAdressbuch = New System.Windows.Forms.SplitContainer()
         Me.DGVAdressbuch = New System.Windows.Forms.DataGridView()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BTest = New System.Windows.Forms.Button()
+        Me.CMSAdressbuch = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Adrbk_ID = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_uniqueid = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_Mod_Time = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_VIP = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.Adrbk_Name = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_TelNrHome_prio = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.AdrBk_TelNrHome = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_TelNrMobil_prio = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.AdrBk_TelNrMobil = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_TelNrWork_prio = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.AdrBk_TelNrWork = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_TelNrFax_prio = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.AdrBk_TelNrFaxWork = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_EMail = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TSAdressbuch.SuspendLayout()
         CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SCAdressbuch.Panel1.SuspendLayout()
@@ -121,28 +137,167 @@ Partial Class formAdressbuch
         '
         'SCAdressbuch.Panel2
         '
-        Me.SCAdressbuch.Panel2.Controls.Add(Me.Button1)
+        Me.SCAdressbuch.Panel2.Controls.Add(Me.BTest)
         Me.SCAdressbuch.Size = New System.Drawing.Size(784, 515)
-        Me.SCAdressbuch.SplitterDistance = 700
+        Me.SCAdressbuch.SplitterDistance = 699
         Me.SCAdressbuch.TabIndex = 3
         '
         'DGVAdressbuch
         '
-        Me.DGVAdressbuch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVAdressbuch.AllowUserToResizeRows = False
+        Me.DGVAdressbuch.ColumnHeadersHeight = 25
+        Me.DGVAdressbuch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.DGVAdressbuch.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Adrbk_ID, Me.AdrBk_uniqueid, Me.AdrBk_Mod_Time, Me.AdrBk_VIP, Me.Adrbk_Name, Me.AdrBk_TelNrHome_prio, Me.AdrBk_TelNrHome, Me.AdrBk_TelNrMobil_prio, Me.AdrBk_TelNrMobil, Me.AdrBk_TelNrWork_prio, Me.AdrBk_TelNrWork, Me.AdrBk_TelNrFax_prio, Me.AdrBk_TelNrFaxWork, Me.AdrBk_EMail})
+        Me.DGVAdressbuch.ContextMenuStrip = Me.CMSAdressbuch
         Me.DGVAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DGVAdressbuch.Location = New System.Drawing.Point(0, 0)
         Me.DGVAdressbuch.Name = "DGVAdressbuch"
-        Me.DGVAdressbuch.Size = New System.Drawing.Size(700, 515)
+        Me.DGVAdressbuch.RowHeadersWidth = 25
+        Me.DGVAdressbuch.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.DGVAdressbuch.Size = New System.Drawing.Size(699, 515)
         Me.DGVAdressbuch.TabIndex = 3
         '
-        'Button1
+        'BTest
         '
-        Me.Button1.Location = New System.Drawing.Point(3, 3)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.BTest.Location = New System.Drawing.Point(3, 3)
+        Me.BTest.Name = "BTest"
+        Me.BTest.Size = New System.Drawing.Size(75, 23)
+        Me.BTest.TabIndex = 0
+        Me.BTest.Text = "Testen"
+        Me.BTest.UseVisualStyleBackColor = True
+        '
+        'CMSAdressbuch
+        '
+        Me.CMSAdressbuch.Name = "CMSAdressbuch"
+        Me.CMSAdressbuch.Size = New System.Drawing.Size(61, 4)
+        '
+        'Adrbk_ID
+        '
+        Me.Adrbk_ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Adrbk_ID.DataPropertyName = "ID"
+        Me.Adrbk_ID.FillWeight = 30.0!
+        Me.Adrbk_ID.HeaderText = "ID"
+        Me.Adrbk_ID.Name = "Adrbk_ID"
+        Me.Adrbk_ID.ReadOnly = True
+        Me.Adrbk_ID.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Adrbk_ID.Width = 30
+        '
+        'AdrBk_uniqueid
+        '
+        Me.AdrBk_uniqueid.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_uniqueid.DataPropertyName = "uniqueid"
+        Me.AdrBk_uniqueid.FillWeight = 30.0!
+        Me.AdrBk_uniqueid.HeaderText = "uID"
+        Me.AdrBk_uniqueid.Name = "AdrBk_uniqueid"
+        Me.AdrBk_uniqueid.ReadOnly = True
+        Me.AdrBk_uniqueid.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.AdrBk_uniqueid.ToolTipText = "uniqueid"
+        Me.AdrBk_uniqueid.Width = 30
+        '
+        'AdrBk_Mod_Time
+        '
+        Me.AdrBk_Mod_Time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_Mod_Time.DataPropertyName = "Mod_Time"
+        Me.AdrBk_Mod_Time.FillWeight = 80.0!
+        Me.AdrBk_Mod_Time.HeaderText = "Mod Time"
+        Me.AdrBk_Mod_Time.Name = "AdrBk_Mod_Time"
+        Me.AdrBk_Mod_Time.ReadOnly = True
+        Me.AdrBk_Mod_Time.Width = 80
+        '
+        'AdrBk_VIP
+        '
+        Me.AdrBk_VIP.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_VIP.DataPropertyName = "Category"
+        Me.AdrBk_VIP.FillWeight = 30.0!
+        Me.AdrBk_VIP.HeaderText = "VIP"
+        Me.AdrBk_VIP.Name = "AdrBk_VIP"
+        Me.AdrBk_VIP.Width = 30
+        '
+        'Adrbk_Name
+        '
+        Me.Adrbk_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Adrbk_Name.DataPropertyName = "RealName"
+        Me.Adrbk_Name.HeaderText = "Name"
+        Me.Adrbk_Name.MinimumWidth = 150
+        Me.Adrbk_Name.Name = "Adrbk_Name"
+        '
+        'AdrBk_TelNrHome_prio
+        '
+        Me.AdrBk_TelNrHome_prio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_TelNrHome_prio.DataPropertyName = "TelNr_Home_Prio"
+        Me.AdrBk_TelNrHome_prio.FillWeight = 30.0!
+        Me.AdrBk_TelNrHome_prio.HeaderText = "prio"
+        Me.AdrBk_TelNrHome_prio.Name = "AdrBk_TelNrHome_prio"
+        Me.AdrBk_TelNrHome_prio.ToolTipText = "Hauptnummer"
+        Me.AdrBk_TelNrHome_prio.Width = 30
+        '
+        'AdrBk_TelNrHome
+        '
+        Me.AdrBk_TelNrHome.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.AdrBk_TelNrHome.DataPropertyName = "TelNr_Home_TelNr"
+        Me.AdrBk_TelNrHome.HeaderText = "Nummer (Home)"
+        Me.AdrBk_TelNrHome.MinimumWidth = 120
+        Me.AdrBk_TelNrHome.Name = "AdrBk_TelNrHome"
+        '
+        'AdrBk_TelNrMobil_prio
+        '
+        Me.AdrBk_TelNrMobil_prio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_TelNrMobil_prio.DataPropertyName = "TelNr_Mobil_Prio"
+        Me.AdrBk_TelNrMobil_prio.FillWeight = 30.0!
+        Me.AdrBk_TelNrMobil_prio.HeaderText = "prio"
+        Me.AdrBk_TelNrMobil_prio.Name = "AdrBk_TelNrMobil_prio"
+        Me.AdrBk_TelNrMobil_prio.Width = 30
+        '
+        'AdrBk_TelNrMobil
+        '
+        Me.AdrBk_TelNrMobil.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.AdrBk_TelNrMobil.DataPropertyName = "TelNr_Mobil_TelNr"
+        Me.AdrBk_TelNrMobil.HeaderText = "Nummer (Mobil)"
+        Me.AdrBk_TelNrMobil.MinimumWidth = 120
+        Me.AdrBk_TelNrMobil.Name = "AdrBk_TelNrMobil"
+        '
+        'AdrBk_TelNrWork_prio
+        '
+        Me.AdrBk_TelNrWork_prio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_TelNrWork_prio.DataPropertyName = "TelNr_Work_Prio"
+        Me.AdrBk_TelNrWork_prio.FillWeight = 30.0!
+        Me.AdrBk_TelNrWork_prio.HeaderText = "prio"
+        Me.AdrBk_TelNrWork_prio.Name = "AdrBk_TelNrWork_prio"
+        Me.AdrBk_TelNrWork_prio.Width = 30
+        '
+        'AdrBk_TelNrWork
+        '
+        Me.AdrBk_TelNrWork.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.AdrBk_TelNrWork.DataPropertyName = "TelNr_Work_TelNr"
+        Me.AdrBk_TelNrWork.HeaderText = "Nummer (Work)"
+        Me.AdrBk_TelNrWork.MinimumWidth = 120
+        Me.AdrBk_TelNrWork.Name = "AdrBk_TelNrWork"
+        '
+        'AdrBk_TelNrFax_prio
+        '
+        Me.AdrBk_TelNrFax_prio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.AdrBk_TelNrFax_prio.DataPropertyName = "TelNr_Fax_Prio"
+        Me.AdrBk_TelNrFax_prio.FillWeight = 30.0!
+        Me.AdrBk_TelNrFax_prio.HeaderText = "prio"
+        Me.AdrBk_TelNrFax_prio.Name = "AdrBk_TelNrFax_prio"
+        Me.AdrBk_TelNrFax_prio.Width = 30
+        '
+        'AdrBk_TelNrFaxWork
+        '
+        Me.AdrBk_TelNrFaxWork.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.AdrBk_TelNrFaxWork.DataPropertyName = "TelNr_Fax_TelNr"
+        Me.AdrBk_TelNrFaxWork.HeaderText = "Nummer (Fax)"
+        Me.AdrBk_TelNrFaxWork.MinimumWidth = 120
+        Me.AdrBk_TelNrFaxWork.Name = "AdrBk_TelNrFaxWork"
+        '
+        'AdrBk_EMail
+        '
+        Me.AdrBk_EMail.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.AdrBk_EMail.DataPropertyName = "EMail"
+        Me.AdrBk_EMail.FillWeight = 200.0!
+        Me.AdrBk_EMail.HeaderText = "E-Mail"
+        Me.AdrBk_EMail.MinimumWidth = 200
+        Me.AdrBk_EMail.Name = "AdrBk_EMail"
         '
         'formAdressbuch
         '
@@ -179,5 +334,20 @@ Partial Class formAdressbuch
     Friend WithEvents ExportToolStripButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents SCAdressbuch As System.Windows.Forms.SplitContainer
     Friend WithEvents DGVAdressbuch As System.Windows.Forms.DataGridView
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents BTest As System.Windows.Forms.Button
+    Friend WithEvents CMSAdressbuch As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents Adrbk_ID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_uniqueid As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_Mod_Time As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_VIP As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents Adrbk_Name As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_TelNrHome_prio As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents AdrBk_TelNrHome As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_TelNrMobil_prio As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents AdrBk_TelNrMobil As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_TelNrWork_prio As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents AdrBk_TelNrWork As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_TelNrFax_prio As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents AdrBk_TelNrFaxWork As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_EMail As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

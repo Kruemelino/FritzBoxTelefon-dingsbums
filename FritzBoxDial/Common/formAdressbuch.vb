@@ -22,6 +22,9 @@ Public Class formAdressbuch
         C_KF = KontaktKlasse
         C_XML = XMLKlasse
 
+        'Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
+        'Me.DGVAdressbuch.Columns.Item("Uniqueid").Visible = False
+        'Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
         Me.Show()
     End Sub
 
@@ -61,25 +64,18 @@ Public Class formAdressbuch
         End With
     End Sub
 
-    'Sub FillDGV(ByVal XMLDatenSatz As XmlDocument, ByVal Eintrag As String)
-    '    Dim myStream As New MemoryStream()
-    '    XMLDatenSatz.Save(myStream)
-    '    myStream.Position = 0
+    Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
+        Dim XMLImportiertesAdressbuch As XmlDocument
+        Dim ImportiertesAdressbuch As S_Adressbuch
 
-    '    Me.DSAdressbuch.ReadXml(myStream, Data.XmlReadMode.Auto)
+        XMLImportiertesAdressbuch = C_FB.DownloadAddressbook("0", "Telefonbuch")
+        ImportiertesAdressbuch = ReadXMLTelefonbuch(XMLImportiertesAdressbuch)
+        FillDGVAdressbuch(ImportiertesAdressbuch)
+    End Sub
 
-    '    If Me.DSAdressbuch.HasChanges Then
-    '        With Me.DGVAdressbuch
-    '            .AutoGenerateColumns = True
-    '            column=New datagridviewcolumn
-    '            .DataSource = Me.DSAdressbuch.Tables("contact")
-
-    '        End With
-    '    End If
-    'End Sub
-
-    Private Sub ImportToolStrip_Click(sender As Object, e As EventArgs) Handles ImportToolStrip.Click
-        'FillDGV(C_FB.DownloadAddressbook("0", "Telefonbuch"), "person")
+    Private Sub FillDGVAdressbuch(ByVal Telefonbuch As S_Adressbuch)
+        Me.DGVAdressbuch.AutoGenerateColumns = False
+        Me.DGVAdressbuch.DataSource = Telefonbuch.EintragsListe
     End Sub
 
     'nid --> Anzahl
@@ -108,24 +104,23 @@ Public Class formAdressbuch
     '        </contact>
     '    <phonebook>
     '<phonebooks>
-#Region "Daten"
+#Region "Telefonbuch Datenstruktur"
 
-
-
-    Friend Enum TelNrType
+    Private Enum TelNrType
         home = 0
         mobile = 1
         work = 2
         fax_work = 3
     End Enum
 
-    Friend Structure C_Adressbuch
-        Friend EintragsListe As List(Of C_AdressbuchEintrag)
+    Private Structure S_Adressbuch
+        Public EintragsListe As List(Of S_AdressbuchEintrag)
     End Structure
 
-    Friend Structure C_Telefonnummer
+    Private Structure S_AdressbuchEintrag
+
         Private _ID As Integer
-        Friend Property ID() As Integer
+        Public Property ID() As Integer
             Get
                 Return _ID
             End Get
@@ -134,50 +129,187 @@ Public Class formAdressbuch
             End Set
         End Property
 
-        Private _prio As Integer
-        Friend Property Prio() As Integer
+        Private _category As Boolean
+        Public Property Category() As Boolean
             Get
-                Return _prio
+                Return _category
             End Get
-            Set(ByVal value As Integer)
-                _prio = value
+            Set(ByVal value As Boolean)
+                _category = value
             End Set
         End Property
 
-        Private _type As TelNrType
-        Friend Property Type() As TelNrType
+        Private _RealName As String
+        Public Property RealName() As String
             Get
-                Return _type
-            End Get
-            Set(ByVal value As TelNrType)
-                _type = value
-            End Set
-        End Property
-
-        Private _TelNr As String
-        Friend Property TelNr() As String
-            Get
-                Return _TelNr
+                Return _RealName
             End Get
             Set(ByVal value As String)
-                _TelNr = value
+                _RealName = value
             End Set
         End Property
-    End Structure
 
-    Friend Structure C_EMail
-        Private _ID As Integer
-        Friend Property ID() As Integer
+        Private _Mod_Time As String
+        Public Property Mod_Time() As String
             Get
-                Return _ID
+                Return _Mod_Time
+            End Get
+            Set(ByVal value As String)
+                _Mod_Time = value
+            End Set
+        End Property
+
+        Private _uniqueid As String
+        Public Property Uniqueid() As String
+            Get
+                Return _uniqueid
+            End Get
+            Set(ByVal value As String)
+                _uniqueid = value
+            End Set
+        End Property
+
+#Region "Telefonnummern Home"
+        Private _TelNr_Home_ID As Integer
+        Friend Property TelNr_Home_ID() As Integer
+            Get
+                Return _TelNr_Home_ID
             End Get
             Set(ByVal value As Integer)
-                _ID = value
+                _TelNr_Home_ID = value
+            End Set
+        End Property
+
+        Private _TelNr_Home_prio As Boolean
+        Public Property TelNr_Home_Prio() As Boolean
+            Get
+                Return _TelNr_Home_prio
+            End Get
+            Set(ByVal value As Boolean)
+                _TelNr_Home_prio = value
+            End Set
+        End Property
+
+        Private _TelNr_Home_TelNr As String
+        Friend Property TelNr_Home_TelNr() As String
+            Get
+                Return _TelNr_Home_TelNr
+            End Get
+            Set(ByVal value As String)
+                _TelNr_Home_TelNr = value
+            End Set
+        End Property
+#End Region
+
+#Region "Telefonnummern Work"
+        Private _TelNr_Work_ID As Integer
+        Public Property TelNr_Work_ID() As Integer
+            Get
+                Return _TelNr_Work_ID
+            End Get
+            Set(ByVal value As Integer)
+                _TelNr_Work_ID = value
+            End Set
+        End Property
+
+        Private _TelNr_Work_prio As Boolean
+        Public Property TelNr_Work_Prio() As Boolean
+            Get
+                Return _TelNr_Work_prio
+            End Get
+            Set(ByVal value As Boolean)
+                _TelNr_Work_prio = value
+            End Set
+        End Property
+
+        Private _TelNr_Work_TelNr As String
+        Public Property TelNr_Work_TelNr() As String
+            Get
+                Return _TelNr_Work_TelNr
+            End Get
+            Set(ByVal value As String)
+                _TelNr_Work_TelNr = value
+            End Set
+        End Property
+#End Region
+
+#Region "Telefonnummern Mobil"
+        Private _TelNr_Mobil_ID As Integer
+        Public Property TelNr_Mobil_ID() As Integer
+            Get
+                Return _TelNr_Mobil_ID
+            End Get
+            Set(ByVal value As Integer)
+                _TelNr_Mobil_ID = value
+            End Set
+        End Property
+
+        Private _TelNr_Mobil_prio As Boolean
+        Public Property TelNr_Mobil_Prio() As Boolean
+            Get
+                Return _TelNr_Mobil_prio
+            End Get
+            Set(ByVal value As Boolean)
+                _TelNr_Mobil_prio = value
+            End Set
+        End Property
+
+        Private _TelNr_Mobil_TelNr As String
+        Public Property TelNr_Mobil_TelNr() As String
+            Get
+                Return _TelNr_Mobil_TelNr
+            End Get
+            Set(ByVal value As String)
+                _TelNr_Mobil_TelNr = value
+            End Set
+        End Property
+#End Region
+
+#Region "Telefonnummern Fax"
+        Private _TelNr_Fax_ID As Boolean
+        Public Property TelNr_Fax_ID() As Boolean
+            Get
+                Return _TelNr_Fax_ID
+            End Get
+            Set(ByVal value As Boolean)
+                _TelNr_Fax_ID = value
+            End Set
+        End Property
+
+        Private _TelNr_Fax_prio As Integer
+        Public Property TelNr_Fax_Prio() As Integer
+            Get
+                Return _TelNr_Fax_prio
+            End Get
+            Set(ByVal value As Integer)
+                _TelNr_Fax_prio = value
+            End Set
+        End Property
+
+        Private _TelNr_Fax_TelNr As String
+        Public Property TelNr_Fax_TelNr() As String
+            Get
+                Return _TelNr_Fax_TelNr
+            End Get
+            Set(ByVal value As String)
+                _TelNr_Fax_TelNr = value
+            End Set
+        End Property
+#End Region
+
+#Region "E-Mail"
+        Private _E_Mail_ID As Integer
+        Public Property E_Mail_ID() As Integer
+            Get
+                Return _E_Mail_ID
+            End Get
+            Set(ByVal value As Integer)
+                _E_Mail_ID = value
             End Set
         End Property
 
         Private _classifier As String
-        Friend Property Classifier() As String
+        Public Property Classifier() As String
             Get
                 Return _classifier
             End Get
@@ -187,7 +319,7 @@ Public Class formAdressbuch
         End Property
 
         Private _EMail As String
-        Friend Property EMail() As String
+        Public Property EMail() As String
             Get
                 Return _EMail
             End Get
@@ -195,118 +327,91 @@ Public Class formAdressbuch
                 _EMail = value
             End Set
         End Property
-    End Structure
+#End Region
 
-    Friend Structure C_AdressbuchEintrag
-
-        Private _category As Integer
-        Friend Property Category() As Integer
-            Get
-                Return _category
-            End Get
-            Set(ByVal value As Integer)
-                _category = value
-            End Set
-        End Property
-
-        Private _RealName As String
-        Friend Property RealName() As String
-            Get
-                Return _RealName
-            End Get
-            Set(ByVal value As String)
-                _RealName = value
-            End Set
-        End Property
-
-        Friend TelNrListe As List(Of C_Telefonnummer)
-        Friend EMailListe As List(Of C_EMail)
-
-        Private _Mod_Time As Integer
-        Friend Property Mod_Time() As Integer
-            Get
-                Return _Mod_Time
-            End Get
-            Set(ByVal value As Integer)
-                _Mod_Time = value
-            End Set
-        End Property
-
-        Private _uniqueid As Integer
-        Friend Property uniqueid() As Integer
-            Get
-                Return _uniqueid
-            End Get
-            Set(ByVal value As Integer)
-                _uniqueid = value
-            End Set
-        End Property
     End Structure
 
 #End Region
 
-    Public Function ReadXMLTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As String 'As C_Adressbuch
-        Dim Adressbuch As New C_Adressbuch
+#Region "Telefonbuch Interaktionen"
+    Private Function ReadXMLTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As S_Adressbuch
+        Dim Adressbuch As New S_Adressbuch
         Dim XMLTelBuchEintraege As XmlNodeList
-        Dim AdressbuchEintrag As C_AdressbuchEintrag
-        Dim aktTelNr As C_Telefonnummer
-        Dim aktEmail As C_EMail
-        Dim aktTelNrListe As List(Of C_Telefonnummer)
-        Dim aktEMailListe As List(Of C_EMail)
-        Dim aktEintragsListe As New List(Of C_AdressbuchEintrag)
+        Dim AdressbuchEintrag As S_AdressbuchEintrag
+        Dim aktEintragsListe As New List(Of S_AdressbuchEintrag)
+
+
+        Dim i As Integer = 0
 
         XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
 
-        For Each XMLTelefonbucheintrag As XmlNode In XMLTelBuchEintraege
-            AdressbuchEintrag = New C_AdressbuchEintrag
+        For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
+            AdressbuchEintrag = New S_AdressbuchEintrag
+            i += 1
+            AdressbuchEintrag.ID = i
 
-            AdressbuchEintrag.Category = CInt(XMLTelefonbucheintrag.Item("category").InnerText)
-            AdressbuchEintrag.Mod_Time = CInt(XMLTelefonbucheintrag.Item("mod_time").InnerText)
-            AdressbuchEintrag.uniqueid = CInt(XMLTelefonbucheintrag.Item("uniqueid").InnerText)
+            For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
+                Select Case XMLEintragWerte.Name
+                    Case "category"
+                        If XMLEintragWerte.InnerText IsNot C_DP.P_Def_StringEmpty Then AdressbuchEintrag.Category = CBool(XMLEintragWerte.InnerText)
+                    Case "mod_time"
+                        AdressbuchEintrag.Mod_Time = XMLEintragWerte.InnerText
+                    Case "uniqueid"
+                        AdressbuchEintrag.Uniqueid = XMLEintragWerte.InnerText
+                    Case "person"
+                        For Each XMLEintragPerson As XmlElement In XMLEintragWerte.ChildNodes
+                            Select Case XMLEintragPerson.Name
+                                Case "realName"
+                                    AdressbuchEintrag.RealName = XMLEintragPerson.InnerText
+                                    'Case "imageURL"
+                            End Select
+                        Next
+                    Case "telephony"
+                        For Each XMLTelNr As XmlElement In XMLEintragWerte
 
-            AdressbuchEintrag.RealName = XMLTelefonbucheintrag.Item("person").Item("realName").InnerText
+                            If XMLTelNr.HasAttribute("type") Then
+                                Select Case XMLTelNr.GetAttribute("type")
+                                    Case TelNrType.home.ToString
+                                        AdressbuchEintrag.TelNr_Home_TelNr = XMLTelNr.InnerText
+                                        If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Home_ID = CInt(XMLTelNr.GetAttribute("id"))
+                                        If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Home_Prio = CBool(XMLTelNr.GetAttribute("prio"))
+                                    Case TelNrType.work.ToString
+                                        AdressbuchEintrag.TelNr_Work_TelNr = XMLTelNr.InnerText
+                                        If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Work_ID = CInt(XMLTelNr.GetAttribute("id"))
+                                        If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Work_Prio = CBool(XMLTelNr.GetAttribute("prio"))
+                                    Case TelNrType.mobile.ToString
+                                        AdressbuchEintrag.TelNr_Mobil_TelNr = XMLTelNr.InnerText
+                                        If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Mobil_ID = CInt(XMLTelNr.GetAttribute("id"))
+                                        If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Mobil_Prio = CBool(XMLTelNr.GetAttribute("prio"))
+                                    Case TelNrType.fax_work.ToString
+                                        AdressbuchEintrag.TelNr_Fax_TelNr = XMLTelNr.InnerText
+                                        If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Fax_ID = CBool(XMLTelNr.GetAttribute("id"))
+                                        If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Fax_Prio = CInt(XMLTelNr.GetAttribute("prio"))
+                                End Select
+                            End If
+                        Next
+                    Case "services"
 
-            aktTelNrListe = New List(Of C_Telefonnummer)
+                        For Each XMLEMail As XmlElement In XMLEintragWerte
+                            AdressbuchEintrag.EMail = XMLEMail.InnerText
 
-            For Each XMLTelNr As XmlElement In XMLTelefonbucheintrag.Item("telephony")
-                aktTelNr = New C_Telefonnummer
-                aktTelNr.TelNr = XMLTelNr.InnerText
+                            If XMLEMail.HasAttribute("id") Then AdressbuchEintrag.E_Mail_ID = CInt(XMLEMail.GetAttribute("id"))
 
-                aktTelNr.ID = CInt(XMLTelNr.GetAttribute("id"))
-
-                aktTelNr.Prio = CInt(XMLTelNr.GetAttribute("prio"))
-
-                Select Case XMLTelNr.GetAttribute("type")
-                    Case TelNrType.home.ToString
-                        aktTelNr.Type = TelNrType.home
-                    Case TelNrType.work.ToString
-                        aktTelNr.Type = TelNrType.work
-                    Case TelNrType.mobile.ToString
-                        aktTelNr.Type = TelNrType.mobile
-                    Case TelNrType.fax_work.ToString
-                        aktTelNr.Type = TelNrType.fax_work
+                            If XMLEMail.HasAttribute("classifier") Then AdressbuchEintrag.Classifier = XMLEMail.GetAttribute("classifier")
+                        Next
+                        'Case "setup"
+                        '    For Each XMLEintragPerson As XmlElement In XMLEintragWerte.ChildNodes
+                        '        Select Case XMLEintragPerson.Name
+                        '            Case "ringTone"
+                        '            Case "ringVolume"
+                        '        End Select
+                        '    Next
                 End Select
-
-                aktTelNrListe.Add(aktTelNr)
             Next
-            AdressbuchEintrag.TelNrListe = aktTelNrListe
-
-            aktEMailListe = New List(Of C_EMail)
-            For Each XMLEMail As XmlElement In XMLTelefonbucheintrag.Item("services")
-                aktEmail = New C_EMail
-                aktEmail.EMail = XMLEMail.InnerText
-
-                aktEmail.ID = CInt(XMLEMail.GetAttribute("id"))
-
-                aktEmail.Classifier = XMLEMail.GetAttribute("classifier")
-                aktEMailListe.Add(aktEmail)
-            Next
-            AdressbuchEintrag.EMailListe = aktEMailListe
-
             aktEintragsListe.Add(AdressbuchEintrag)
         Next
         Adressbuch.EintragsListe = aktEintragsListe
-        Return "dummy"
+        Return Adressbuch
     End Function
-
+#End Region
 End Class
