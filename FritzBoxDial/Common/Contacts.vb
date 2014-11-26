@@ -1094,7 +1094,7 @@ Public Class Contacts
         Dim oTableLineWidth_1 As Word.WdLineWidth = Word.WdLineWidth.wdLineWidth025pt
         Dim oTableLineWidth_2 As Word.WdLineWidth = Word.WdLineWidth.wdLineWidth150pt
         Dim oTableLineColor As Word.WdColor = Word.WdColor.wdColorBlack
-
+        Dim oTableFontColorIndex As Word.WdColorIndex = Word.WdColorIndex.wdBlack
         Dim Sel4BM As Object
 
         With oDoc.Bookmarks
@@ -1163,9 +1163,15 @@ Public Class Contacts
                 .Cells(i).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight
             Next
         End With
+
         With NoteRow
             .Cells.Merge()
-            .Cells(1).Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft
+
+            With .Cells(1).Range
+                .ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft
+                .Font.ColorIndex = oTableFontColorIndex
+            End With
+
             With .Borders(Word.WdBorderType.wdBorderBottom)
                 .LineStyle = oTableLineStyle
                 .LineWidth = oTableLineWidth_2
