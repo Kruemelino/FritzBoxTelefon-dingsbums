@@ -35,8 +35,6 @@ Partial Class formAdressbuch
         Me.SFDAdressbuch = New System.Windows.Forms.SaveFileDialog()
         Me.SCAdressbuch = New System.Windows.Forms.SplitContainer()
         Me.DGVAdressbuch = New System.Windows.Forms.DataGridView()
-        Me.BTest = New System.Windows.Forms.Button()
-        Me.CMSAdressbuch = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Adrbk_ID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_uniqueid = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_Mod_Time = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -51,12 +49,17 @@ Partial Class formAdressbuch
         Me.AdrBk_TelNrFax_prio = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.AdrBk_TelNrFaxWork = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_EMail = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CMSAdressbuch = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.TSMI_Add = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TSMI_Delete = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BTest = New System.Windows.Forms.Button()
         Me.TSAdressbuch.SuspendLayout()
         CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SCAdressbuch.Panel1.SuspendLayout()
         Me.SCAdressbuch.Panel2.SuspendLayout()
         Me.SCAdressbuch.SuspendLayout()
         CType(Me.DGVAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.CMSAdressbuch.SuspendLayout()
         Me.SuspendLayout()
         '
         'StatStAdressbuch
@@ -144,32 +147,21 @@ Partial Class formAdressbuch
         '
         'DGVAdressbuch
         '
+        Me.DGVAdressbuch.AllowDrop = True
         Me.DGVAdressbuch.AllowUserToResizeRows = False
         Me.DGVAdressbuch.ColumnHeadersHeight = 25
         Me.DGVAdressbuch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DGVAdressbuch.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Adrbk_ID, Me.AdrBk_uniqueid, Me.AdrBk_Mod_Time, Me.AdrBk_VIP, Me.Adrbk_Name, Me.AdrBk_TelNrHome_prio, Me.AdrBk_TelNrHome, Me.AdrBk_TelNrMobil_prio, Me.AdrBk_TelNrMobil, Me.AdrBk_TelNrWork_prio, Me.AdrBk_TelNrWork, Me.AdrBk_TelNrFax_prio, Me.AdrBk_TelNrFaxWork, Me.AdrBk_EMail})
         Me.DGVAdressbuch.ContextMenuStrip = Me.CMSAdressbuch
         Me.DGVAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.DGVAdressbuch.Enabled = False
         Me.DGVAdressbuch.Location = New System.Drawing.Point(0, 0)
         Me.DGVAdressbuch.Name = "DGVAdressbuch"
         Me.DGVAdressbuch.RowHeadersWidth = 25
         Me.DGVAdressbuch.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.DGVAdressbuch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.DGVAdressbuch.Size = New System.Drawing.Size(699, 515)
         Me.DGVAdressbuch.TabIndex = 3
-        '
-        'BTest
-        '
-        Me.BTest.Location = New System.Drawing.Point(3, 3)
-        Me.BTest.Name = "BTest"
-        Me.BTest.Size = New System.Drawing.Size(75, 23)
-        Me.BTest.TabIndex = 0
-        Me.BTest.Text = "Testen"
-        Me.BTest.UseVisualStyleBackColor = True
-        '
-        'CMSAdressbuch
-        '
-        Me.CMSAdressbuch.Name = "CMSAdressbuch"
-        Me.CMSAdressbuch.Size = New System.Drawing.Size(61, 4)
         '
         'Adrbk_ID
         '
@@ -299,6 +291,33 @@ Partial Class formAdressbuch
         Me.AdrBk_EMail.MinimumWidth = 200
         Me.AdrBk_EMail.Name = "AdrBk_EMail"
         '
+        'CMSAdressbuch
+        '
+        Me.CMSAdressbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMI_Add, Me.TSMI_Delete})
+        Me.CMSAdressbuch.Name = "CMSAdressbuch"
+        Me.CMSAdressbuch.Size = New System.Drawing.Size(177, 48)
+        '
+        'TSMI_Add
+        '
+        Me.TSMI_Add.Name = "TSMI_Add"
+        Me.TSMI_Add.Size = New System.Drawing.Size(176, 22)
+        Me.TSMI_Add.Text = "Eintrag Hinzufügen"
+        '
+        'TSMI_Delete
+        '
+        Me.TSMI_Delete.Name = "TSMI_Delete"
+        Me.TSMI_Delete.Size = New System.Drawing.Size(176, 22)
+        Me.TSMI_Delete.Text = "Eintrag Löschen"
+        '
+        'BTest
+        '
+        Me.BTest.Location = New System.Drawing.Point(3, 3)
+        Me.BTest.Name = "BTest"
+        Me.BTest.Size = New System.Drawing.Size(75, 23)
+        Me.BTest.TabIndex = 0
+        Me.BTest.Text = "Testen"
+        Me.BTest.UseVisualStyleBackColor = True
+        '
         'formAdressbuch
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -319,6 +338,7 @@ Partial Class formAdressbuch
         CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SCAdressbuch.ResumeLayout(False)
         CType(Me.DGVAdressbuch, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.CMSAdressbuch.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -350,4 +370,6 @@ Partial Class formAdressbuch
     Friend WithEvents AdrBk_TelNrFax_prio As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents AdrBk_TelNrFaxWork As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_EMail As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents TSMI_Delete As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TSMI_Add As System.Windows.Forms.ToolStripMenuItem
 End Class

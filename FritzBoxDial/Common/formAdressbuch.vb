@@ -2,13 +2,16 @@
 Imports System.Xml
 Imports System.Windows.Forms
 Imports System.Collections.Generic
+Imports System.ComponentModel
 
 Public Class formAdressbuch
+
     Private C_FB As FritzBox
     Private C_DP As DataProvider
     Private C_KF As Contacts
     Private C_XML As XML
     Private tmp As String
+    Private BS As BindingSource
 
     Private XMLAdressbuch As XmlDocument
     Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, KontaktKlasse As Contacts)
@@ -74,8 +77,17 @@ Public Class formAdressbuch
     End Sub
 
     Private Sub FillDGVAdressbuch(ByVal Telefonbuch As S_Adressbuch)
+
+        Me.BS = New BindingSource
+        Me.BS.DataSource = Telefonbuch.EintragsListe
+
         Me.DGVAdressbuch.AutoGenerateColumns = False
-        Me.DGVAdressbuch.DataSource = Telefonbuch.EintragsListe
+        Me.DGVAdressbuch.DataSource = BS
+        Me.DGVAdressbuch.ReadOnly = False
+        Me.DGVAdressbuch.RowHeadersVisible = False
+        Me.DGVAdressbuch.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+        Me.DGVAdressbuch.Enabled = True
+        AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
     End Sub
 
     'nid --> Anzahl
@@ -118,7 +130,6 @@ Public Class formAdressbuch
     End Structure
 
     Private Structure S_AdressbuchEintrag
-
         Private _ID As Integer
         Public Property ID() As Integer
             Get
@@ -191,7 +202,7 @@ Public Class formAdressbuch
         End Property
 
         Private _TelNr_Home_TelNr As String
-        Friend Property TelNr_Home_TelNr() As String
+        Public Property TelNr_Home_TelNr() As String
             Get
                 Return _TelNr_Home_TelNr
             End Get
@@ -266,22 +277,22 @@ Public Class formAdressbuch
 #End Region
 
 #Region "Telefonnummern Fax"
-        Private _TelNr_Fax_ID As Boolean
-        Public Property TelNr_Fax_ID() As Boolean
+        Private _TelNr_Fax_ID As Integer
+        Public Property TelNr_Fax_ID() As Integer
             Get
                 Return _TelNr_Fax_ID
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As Integer)
                 _TelNr_Fax_ID = value
             End Set
         End Property
 
-        Private _TelNr_Fax_prio As Integer
-        Public Property TelNr_Fax_Prio() As Integer
+        Private _TelNr_Fax_prio As Boolean
+        Public Property TelNr_Fax_Prio() As Boolean
             Get
                 Return _TelNr_Fax_prio
             End Get
-            Set(ByVal value As Integer)
+            Set(ByVal value As Boolean)
                 _TelNr_Fax_prio = value
             End Set
         End Property
@@ -385,8 +396,8 @@ Public Class formAdressbuch
                                         If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Mobil_Prio = CBool(XMLTelNr.GetAttribute("prio"))
                                     Case TelNrType.fax_work.ToString
                                         AdressbuchEintrag.TelNr_Fax_TelNr = XMLTelNr.InnerText
-                                        If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Fax_ID = CBool(XMLTelNr.GetAttribute("id"))
-                                        If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Fax_Prio = CInt(XMLTelNr.GetAttribute("prio"))
+                                        If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Fax_ID = CInt(XMLTelNr.GetAttribute("id"))
+                                        If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Fax_Prio = CBool(XMLTelNr.GetAttribute("prio"))
                                 End Select
                             End If
                         Next
@@ -414,4 +425,72 @@ Public Class formAdressbuch
         Return Adressbuch
     End Function
 #End Region
+
+    Private Sub DGVAdressbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
+
+        ' Von hinten durch die Brust ins Auge!
+
+        Dim ChangedData As String = Me.DGVAdressbuch.Columns(e.ColumnIndex).DataPropertyName
+        Dim EntryuID As String = CStr(Me.DGVAdressbuch.Rows(e.RowIndex).Cells("AdrBk_uniqueid").Value)
+        Dim ChangedCell As DataGridViewCell = Me.DGVAdressbuch.Rows(e.RowIndex).Cells(e.ColumnIndex)
+
+        Dim newList As List(Of S_AdressbuchEintrag)
+        Dim Eintrag As S_AdressbuchEintrag
+
+        newList = CType(BS.DataSource, List(Of S_AdressbuchEintrag))
+        If ChangedCell.Value IsNot ChangedCell.EditedFormattedValue Then
+            Eintrag = newList.Find(Function(tmp) tmp.Uniqueid = EntryuID)
+            newList.RemoveAt(e.RowIndex)
+            Select Case ChangedData
+                Case "Category" ' VIP
+                    Eintrag.Category = CBool(ChangedCell.EditedFormattedValue)
+                Case "Classifier"
+                    Eintrag.Classifier = CStr(ChangedCell.EditedFormattedValue)
+                Case "EMail"
+                    Eintrag.EMail = CStr(ChangedCell.EditedFormattedValue)
+                Case "RealName"
+                    Eintrag.RealName = CStr(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Home_Prio"
+                    Eintrag.TelNr_Home_Prio = CBool(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Home_TelNr"
+                    Eintrag.TelNr_Home_TelNr = CStr(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Mobil_Prio"
+                    Eintrag.TelNr_Mobil_Prio = CBool(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Mobil_TelNr"
+                    Eintrag.TelNr_Mobil_TelNr = CStr(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Work_Prio"
+                    Eintrag.TelNr_Work_Prio = CBool(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Work_TelNr"
+                    Eintrag.TelNr_Work_TelNr = CStr(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Fax_Prio"
+                    Eintrag.TelNr_Fax_Prio = CBool(ChangedCell.EditedFormattedValue)
+                Case "TelNr_Fax_TelNr"
+                    Eintrag.TelNr_Fax_TelNr = CStr(ChangedCell.EditedFormattedValue)
+            End Select
+            newList.Insert(e.RowIndex, Eintrag)
+
+            Me.BS.ResetBindings(False)
+        End If
+
+    End Sub
+
+
+    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
+
+    End Sub
+
+    Private Sub DGVAdressbuch_DataSourceChanged(sender As Object, e As EventArgs) Handles DGVAdressbuch.DataSourceChanged
+        'Stop
+    End Sub
+
+    Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click
+        Dim newList As List(Of S_AdressbuchEintrag)
+        Dim Eintrag As New S_AdressbuchEintrag
+        newList = CType(BS.DataSource, List(Of S_AdressbuchEintrag))
+        Eintrag.ID = newList.Count + 1
+        Eintrag.Uniqueid = CStr(CInt(newList.Max(Function(tmp) tmp.Uniqueid)) + 1)
+
+        newList.Add(Eintrag)
+        Me.BS.ResetBindings(False)
+    End Sub
 End Class
