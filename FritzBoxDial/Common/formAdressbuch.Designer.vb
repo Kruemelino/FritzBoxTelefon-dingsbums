@@ -295,7 +295,7 @@ Partial Class formAdressbuch
         '
         Me.CMSAdressbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMI_Add, Me.TSMI_Delete})
         Me.CMSAdressbuch.Name = "CMSAdressbuch"
-        Me.CMSAdressbuch.Size = New System.Drawing.Size(177, 48)
+        Me.CMSAdressbuch.Size = New System.Drawing.Size(177, 70)
         '
         'TSMI_Add
         '

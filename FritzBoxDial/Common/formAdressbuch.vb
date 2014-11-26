@@ -26,9 +26,9 @@ Public Class formAdressbuch
         C_XML = XMLKlasse
 
         'Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
-        'Me.DGVAdressbuch.Columns.Item("Uniqueid").Visible = False
+        'Me.DGVAdressbuch.Columns.Item("AdrBk_uniqueid").Visible = False
         'Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
-        Me.Show()
+        'Me.show()
     End Sub
 
     Private Sub ÖffnenToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ÖffnenToolStripButton.Click
@@ -62,7 +62,6 @@ Public Class formAdressbuch
             End If
 
             ReadXMLTelefonbuch(XMLAdressbuch)
-            'FillDGV(XMLAdressbuch, "person")             ' Test
 
         End With
     End Sub
@@ -474,15 +473,6 @@ Public Class formAdressbuch
 
     End Sub
 
-
-    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
-
-    End Sub
-
-    Private Sub DGVAdressbuch_DataSourceChanged(sender As Object, e As EventArgs) Handles DGVAdressbuch.DataSourceChanged
-        'Stop
-    End Sub
-
     Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click
         Dim newList As List(Of S_AdressbuchEintrag)
         Dim Eintrag As New S_AdressbuchEintrag
@@ -491,6 +481,17 @@ Public Class formAdressbuch
         Eintrag.Uniqueid = CStr(CInt(newList.Max(Function(tmp) tmp.Uniqueid)) + 1)
 
         newList.Add(Eintrag)
+        Me.BS.ResetBindings(False)
+    End Sub
+
+    Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click
+
+        Dim newList As List(Of S_AdressbuchEintrag)
+        newList = CType(BS.DataSource, List(Of S_AdressbuchEintrag))
+
+        For Each Eintrag As DataGridViewRow In Me.DGVAdressbuch.SelectedRows
+            newList.Remove(newList.Find(Function(tmp) tmp.Uniqueid Is Eintrag.Cells("AdrBk_uniqueid").Value))
+        Next
         Me.BS.ResetBindings(False)
     End Sub
 End Class
