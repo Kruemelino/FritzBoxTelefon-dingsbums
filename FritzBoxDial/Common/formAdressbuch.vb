@@ -28,7 +28,7 @@ Public Class formAdressbuch
         'Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
         'Me.DGVAdressbuch.Columns.Item("AdrBk_uniqueid").Visible = False
         'Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
-        'Me.show()
+        Me.Show()
     End Sub
 
     Private Sub ÖffnenToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ÖffnenToolStripButton.Click
@@ -71,17 +71,37 @@ Public Class formAdressbuch
         Dim ImportiertesAdressbuch As S_Adressbuch
 
         XMLImportiertesAdressbuch = C_FB.DownloadAddressbook("0", "Telefonbuch")
+        TransformTelefonbuch(XMLImportiertesAdressbuch)
+
         ImportiertesAdressbuch = ReadXMLTelefonbuch(XMLImportiertesAdressbuch)
-        FillDGVAdressbuch(ImportiertesAdressbuch)
+
+        'FillDGVAdressbuch(ImportiertesAdressbuch)
+        FillDGVAdressbuch(TransformTelefonbuch(XMLImportiertesAdressbuch))
     End Sub
 
-    Private Sub FillDGVAdressbuch(ByVal Telefonbuch As S_Adressbuch)
+    Private Overloads Sub FillDGVAdressbuch(ByVal Telefonbuch As S_Adressbuch)
 
         Me.BS = New BindingSource
         Me.BS.DataSource = Telefonbuch.EintragsListe
 
         Me.DGVAdressbuch.AutoGenerateColumns = False
         Me.DGVAdressbuch.DataSource = BS
+        Me.DGVAdressbuch.ReadOnly = False
+        Me.DGVAdressbuch.RowHeadersVisible = False
+        Me.DGVAdressbuch.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+        Me.DGVAdressbuch.Enabled = True
+        AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
+    End Sub
+
+    Private Overloads Sub FillDGVAdressbuch(ByVal Telefonbuch As XmlDocument)
+
+        Me.BS = New BindingSource
+        Me.BS.DataSource = Telefonbuch.InnerXml
+
+
+        Me.DGVAdressbuch.AutoGenerateColumns = False
+        Me.DGVAdressbuch.DataSource = BS
+        Me.DGVAdressbuch.DataMember = "AdrBk"
         Me.DGVAdressbuch.ReadOnly = False
         Me.DGVAdressbuch.RowHeadersVisible = False
         Me.DGVAdressbuch.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
@@ -344,6 +364,78 @@ Public Class formAdressbuch
 #End Region
 
 #Region "Telefonbuch Interaktionen"
+    Private Function TransformTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
+        Dim TransTelBook As New XmlDocument
+        TransTelBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><TrnsAdrBk/>")
+
+        Dim xPathTeile As New ArrayList
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
+        Dim XMLTelBuchEintraege As XmlNodeList
+
+        With xPathTeile
+            .Clear()
+            .Add("AdrBk")
+        End With
+        With NodeNames
+            .Clear()
+            .Add("uniqueid")
+            .Add("realName")
+            .Add("category")
+            .Add("mod_time")
+            .Add("person")
+            .Add("telephony")
+            .Add("services")
+            .Add("setup")
+        End With
+        With AttributeNames
+            .Clear()
+            '.Add("Fax")
+            '.Add("Dialport")
+        End With
+        With NodeValues
+            .Clear()
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+            .Add(C_DP.P_Def_StringEmpty)
+        End With
+        With AttributeValues
+            .Clear()
+            '.Add(C_DP.P_Def_StringEmpty)
+            '.Add(C_DP.P_Def_StringEmpty)
+        End With
+
+        XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
+        Dim i As Integer
+        For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
+            i += 1
+            For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
+                NodeValues.Item(NodeNames.IndexOf("uniqueid")) = "TelName"
+                NodeValues.Item(NodeNames.IndexOf(XMLEintragWerte.Name)) = XMLEintragWerte.InnerText
+
+                'AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = "Dialport"
+                'AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "Fax"
+                xPathTeile.Item(xPathTeile.Count - 1) = "AdrBk"
+                C_XML.AppendNode(TransTelBook, xPathTeile, C_XML.CreateXMLNode(TransTelBook, "AdrBk" & i, NodeNames, NodeValues, AttributeNames, AttributeValues))
+            Next
+        Next
+
+
+
+
+
+
+
+        Return TransTelBook
+    End Function
+
     Private Function ReadXMLTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As S_Adressbuch
         Dim Adressbuch As New S_Adressbuch
         Dim XMLTelBuchEintraege As XmlNodeList
