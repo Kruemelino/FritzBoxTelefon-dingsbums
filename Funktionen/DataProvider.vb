@@ -228,114 +228,7 @@ Public Class DataProvider
     End Property
 #End Region
 
-#Region "PrivateData"
-
-    Private _CBForceFBAddr As Boolean
-    Private _CBAnrMonContactImage As Boolean
-    Private _CBIndexAus As Boolean
-    Private _CBShowMSN As Boolean
-    Private _CBAnrMonMove As Boolean
-    Private _CBAnrMonTransp As Boolean
-    Private _CBAnrMonAuto As Boolean
-    Private _CBAutoClose As Boolean
-    Private _CBAnrMonCloseAtDISSCONNECT As Boolean
-    Private _CBVoIPBuster As Boolean
-    Private _CBCbCunterbinden As Boolean
-    Private _CBCallByCall As Boolean
-    Private _CBDialPort As Boolean
-    Private _CBKErstellen As Boolean
-    Private _CBLogFile As Boolean
-#If OVer < 14 Then
-    Private _CBSymbWwdh As Boolean
-    Private _CBSymbAnrMon As Boolean
-    Private _CBSymbAnrMonNeuStart As Boolean
-    Private _CBSymbAnrListe As Boolean
-    Private _CBSymbDirekt As Boolean
-    Private _CBSymbRWSuche As Boolean
-    Private _CBSymbVIP As Boolean
-    Private _CBSymbJournalimport As Boolean
-#End If
-    Private _CBJImport As Boolean
-    Private _CBRWS As Boolean
-    Private _CBKHO As Boolean
-    Private _CBRWSIndex As Boolean
-    Private _ComboBoxRWS As Integer
-    Private _TVKontaktOrdnerEntryID As String
-    Private _TVKontaktOrdnerStoreID As String
-    Private _CBIndex As Boolean
-
-    Private _CBoxLandesVorwahl As Integer
-    Private _TBAmt As String
-    Private _TBFBAdr As String
-    Private _ValidFBAdr As String
-    Private _TBBenutzer As String
-    Private _TBPasswort As String
-    Private _TBVorwahl As String
-    Private _CBoxVorwahl As Integer
-    'Anrufmonitor
-    Private _TBEnblDauer As Integer
-    Private _TBAnrMonX As Integer
-    Private _TBAnrMonY As Integer
-    Private _CBoxAnrMonStartPosition As Integer
-    Private _CBoxAnrMonMoveDirection As Integer
-    Private _TBAnrMonMoveGeschwindigkeit As Integer
-    Private _CBAnrMonZeigeKontakt As Boolean
-    Private _CBJournal As Boolean
-    Private _CBUseAnrMon As Boolean
-    Private _CBCheckMobil As Boolean
-    Private _CLBTelNr() As String
-    'StoppUhr
-    Private _CBStoppUhrEinblenden As Boolean
-    Private _CBStoppUhrAusblenden As Boolean
-    Private _TBStoppUhr As Integer
-    Private _CBStoppUhrX As Integer
-    Private _CBStoppUhrY As Integer
-    ' Telefonnummernformatierung
-    Private _TBTelNrMaske As String
-    Private _CBTelNrGruppieren As Boolean
-    Private _CBintl As Boolean
-    Private _CBIgnoTelNrFormat As Boolean
-    ' Phoner
-    Private _CBPhoner As Boolean
-    Private _PhonerVerfügbar As Boolean
-    Private _CBPhonerAnrMon As Boolean
-    Private _ComboBoxPhonerSIP As Integer
-    Private _TBPhonerPasswort As String
-    Private _PhonerTelNameIndex As Integer
-    ' Statistik
-    Private _StatResetZeit As Date
-    Private _StatVerpasst As Integer
-    Private _StatNichtErfolgreich As Integer
-    Private _StatKontakt As Integer
-    Private _StatJournal As Integer
-    Private _StatOLClosedZeit As Date
-    ' Wählbox
-    Private _TelAnschluss As Integer
-    Private _TelFestnetz As Boolean
-    Private _TelCLIR As Boolean
-    ' FritzBox
-    Private _EncodeingFritzBox As String
-    ' Indizierung
-    Private _LLetzteIndizierung As Date
-    ' Notiz
-    Private _CBNote As Boolean
-    'Einstellungen
-    Private _Arbeitsverzeichnis As String
-    ' Vorwahllisten
-    Private _ListeOrtsVorwahlen As String()
-    Private _ListeLandesVorwahlen As String()
-#End Region
-
 #Region "Value Properties"
-
-
-    ' ''' <summary>
-    ' ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
-    ' ''' </summary>
-    ' ''' <value>String</value>
-    ' ''' <returns>Landesvorwahl</returns>
-    ' ''' <remarks></remarks>
-    ' ''' 
 
     ''' <summary>
     ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
@@ -354,10 +247,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>Zahl für die Amtsholung</returns>
     ''' <remarks></remarks>
-    Public Property P_TBAmt() As String
+    Private _TBAmt As String
+    Public Property P_TBAmt As String
         Get
             Return _TBAmt
         End Get
@@ -365,12 +257,12 @@ Public Class DataProvider
             _TBAmt = value
         End Set
     End Property
+
     ''' <summary>
     ''' Eigenschaft für die hinterlege Ortsvorwahl
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>Ortsvorwahl</returns>
     ''' <remarks></remarks>
+    Private _TBVorwahl As String
     Public Property P_TBVorwahl() As String
         Get
             Return _TBVorwahl
@@ -379,12 +271,12 @@ Public Class DataProvider
             _TBVorwahl = value
         End Set
     End Property
+
     ''' <summary>
     ''' Enthält den Index im Combobox
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
+    Private _CBoxVorwahl As Integer
     Public Property P_CBoxVorwahl() As Integer
         Get
             Return _CBoxVorwahl
@@ -393,13 +285,14 @@ Public Class DataProvider
             _CBoxVorwahl = value
         End Set
     End Property
+
     ' Anrufmonitor
+
     ''' <summary>
     ''' Gibt an, wie lange der Anrufmonitor angezeigt werden soll, bevor er automatisch ausgeblendet wird
     ''' </summary>
-    ''' <value>Integer</value>
-    ''' <returns>Intervall</returns>
     ''' <remarks></remarks>
+    Private _TBEnblDauer As Integer
     Public Property P_TBEnblDauer() As Integer
         Get
             Return _TBEnblDauer
@@ -408,12 +301,12 @@ Public Class DataProvider
             _TBEnblDauer = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, ob der Anrufmonitor automatisch gestartét werden soll.
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>Autostart</returns>
     ''' <remarks></remarks>
+    Private _CBAnrMonAuto As Boolean
     Public Property P_CBAnrMonAuto() As Boolean
         Get
             Return _CBAnrMonAuto
@@ -422,12 +315,12 @@ Public Class DataProvider
             _CBAnrMonAuto = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, um wieviele Punkte der Anrufmonitor in X-Richtung verschoben werden soll.
     ''' </summary>
-    ''' <value>Integer</value>
-    ''' <returns>Positionskorrektur X</returns>
     ''' <remarks></remarks>
+    Private _TBAnrMonX As Integer
     Public Property P_TBAnrMonX() As Integer
         Get
             Return _TBAnrMonX
@@ -436,12 +329,12 @@ Public Class DataProvider
             _TBAnrMonX = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, um wieviele Punkte der Anrufmonitor in Y-Richtung verschoben werden soll.
     ''' </summary>
-    ''' <value>Integer</value>
-    ''' <returns>Positionskorrektur Y</returns>
     ''' <remarks></remarks>
+    Private _TBAnrMonY As Integer
     Public Property P_TBAnrMonY() As Integer
         Get
             Return _TBAnrMonY
@@ -450,12 +343,12 @@ Public Class DataProvider
             _TBAnrMonY = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an ob der Anrufmonitor in den Bildschirm hereingescrollt werden soll.
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>Anrufmonitorbewegung</returns>
     ''' <remarks></remarks>
+    Private _CBAnrMonMove As Boolean
     Public Property P_CBAnrMonMove() As Boolean
         Get
             Return _CBAnrMonMove
@@ -464,12 +357,12 @@ Public Class DataProvider
             _CBAnrMonMove = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, ob der Anrufmonitor eingeblendet werden soll.
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
+    Private _CBAnrMonTransp As Boolean
     Public Property P_CBAnrMonTransp() As Boolean
         Get
             Return _CBAnrMonTransp
@@ -478,12 +371,12 @@ Public Class DataProvider
             _CBAnrMonTransp = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt die Endposition des Anrufmonitors an.
     ''' </summary>
-    ''' <value>Integer</value>
-    ''' <returns>Wert für die Position</returns>
     ''' <remarks>FritzBoxDial.PopUpAnrMon.eStartPosition</remarks>
+    Private _CBoxAnrMonStartPosition As Integer
     Public Property P_CBoxAnrMonStartPosition() As Integer
         Get
             Return _CBoxAnrMonStartPosition
@@ -492,12 +385,12 @@ Public Class DataProvider
             _CBoxAnrMonStartPosition = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt die Bewegungsrichtung des Anrufmonitors an.
     ''' </summary>
-    ''' <value>Integer</value>
-    ''' <returns>Wert für Richtung, abhängig von der Endosition.</returns>
     ''' <remarks>FritzBoxDial.PopUpAnrMon.eMoveDirection</remarks>
+    Private _CBoxAnrMonMoveDirection As Integer
     Public Property P_CBoxAnrMonMoveDirection() As Integer
         Get
             Return _CBoxAnrMonMoveDirection
@@ -506,6 +399,8 @@ Public Class DataProvider
             _CBoxAnrMonMoveDirection = value
         End Set
     End Property
+
+    Private _TBAnrMonMoveGeschwindigkeit As Integer
     Public Property P_TBAnrMonMoveGeschwindigkeit() As Integer
         Get
             Return _TBAnrMonMoveGeschwindigkeit
@@ -515,6 +410,7 @@ Public Class DataProvider
         End Set
     End Property
 
+    Private _CBAnrMonZeigeKontakt As Boolean
     Public Property P_CBAnrMonZeigeKontakt() As Boolean
         Get
             Return _CBAnrMonZeigeKontakt
@@ -523,7 +419,9 @@ Public Class DataProvider
             _CBAnrMonZeigeKontakt = value
         End Set
     End Property
-    Public Property P_CBAnrMonContactImage() As Boolean
+
+    Private _CBAnrMonContactImage As Boolean
+    Public Property P_CBAnrMonContactImage As Boolean
         Get
             Return _CBAnrMonContactImage
         End Get
@@ -531,7 +429,9 @@ Public Class DataProvider
             _CBAnrMonContactImage = value
         End Set
     End Property
-    Public Property P_CBIndexAus() As Boolean
+
+    Private _CBIndexAus As Boolean
+    Public Property P_CBIndexAus As Boolean
         Get
             Return _CBIndexAus
         End Get
@@ -539,7 +439,9 @@ Public Class DataProvider
             _CBIndexAus = value
         End Set
     End Property
-    Public Property P_CBShowMSN() As Boolean
+
+    Private _CBShowMSN As Boolean
+    Public Property P_CBShowMSN As Boolean
         Get
             Return _CBShowMSN
         End Get
@@ -548,7 +450,8 @@ Public Class DataProvider
         End Set
     End Property
 
-    Public Property P_CBAutoClose() As Boolean
+    Private _CBAutoClose As Boolean
+    Public Property P_CBAutoClose As Boolean
         Get
             Return _CBAutoClose
         End Get
@@ -557,7 +460,8 @@ Public Class DataProvider
         End Set
     End Property
 
-    Public Property P_CBAnrMonCloseAtDISSCONNECT() As Boolean
+    Private _CBAnrMonCloseAtDISSCONNECT As Boolean
+    Public Property P_CBAnrMonCloseAtDISSCONNECT As Boolean
         Get
             Return _CBAnrMonCloseAtDISSCONNECT
         End Get
@@ -566,7 +470,8 @@ Public Class DataProvider
         End Set
     End Property
 
-    Public Property P_CBVoIPBuster() As Boolean
+    Private _CBVoIPBuster As Boolean
+    Public Property P_CBVoIPBuster As Boolean
         Get
             Return _CBVoIPBuster
         End Get
@@ -574,7 +479,9 @@ Public Class DataProvider
             _CBVoIPBuster = value
         End Set
     End Property
-    Public Property P_CBCbCunterbinden() As Boolean
+
+    Private _CBCbCunterbinden As Boolean
+    Public Property P_CBCbCunterbinden As Boolean
         Get
             Return _CBCbCunterbinden
         End Get
@@ -582,7 +489,9 @@ Public Class DataProvider
             _CBCbCunterbinden = value
         End Set
     End Property
-    Public Property P_CBCallByCall() As Boolean
+
+    Private _CBCallByCall As Boolean
+    Public Property P_CBCallByCall As Boolean
         Get
             Return _CBCallByCall
         End Get
@@ -590,7 +499,9 @@ Public Class DataProvider
             _CBCallByCall = value
         End Set
     End Property
-    Public Property P_CBDialPort() As Boolean
+
+    Private _CBDialPort As Boolean
+    Public Property P_CBDialPort As Boolean
         Get
             Return _CBDialPort
         End Get
@@ -598,7 +509,9 @@ Public Class DataProvider
             _CBDialPort = value
         End Set
     End Property
-    Public Property P_CBLogFile() As Boolean
+
+    Private _CBLogFile As Boolean
+    Public Property P_CBLogFile As Boolean
         Get
             Return _CBLogFile
         End Get
@@ -606,7 +519,9 @@ Public Class DataProvider
             _CBLogFile = value
         End Set
     End Property
-    Public Property P_CBSymbWwdh() As Boolean
+
+    Private _CBSymbWwdh As Boolean
+    Public Property P_CBSymbWwdh As Boolean
         Get
             Return _CBSymbWwdh
         End Get
@@ -614,7 +529,9 @@ Public Class DataProvider
             _CBSymbWwdh = value
         End Set
     End Property
-    Public Property P_CBSymbAnrMon() As Boolean
+
+    Private _CBSymbAnrMon As Boolean
+    Public Property P_CBSymbAnrMon As Boolean
         Get
             Return _CBSymbAnrMon
         End Get
@@ -622,7 +539,9 @@ Public Class DataProvider
             _CBSymbAnrMon = value
         End Set
     End Property
-    Public Property P_CBSymbAnrMonNeuStart() As Boolean
+
+    Private _CBSymbAnrMonNeuStart As Boolean
+    Public Property P_CBSymbAnrMonNeuStart As Boolean
         Get
             Return _CBSymbAnrMonNeuStart
         End Get
@@ -630,8 +549,11 @@ Public Class DataProvider
             _CBSymbAnrMonNeuStart = value
         End Set
     End Property
+
     'Pffice 2003 und Office 2007
-    Public Property P_CBSymbAnrListe() As Boolean
+
+    Private _CBSymbAnrListe As Boolean
+    Public Property P_CBSymbAnrListe As Boolean
         Get
             Return _CBSymbAnrListe
         End Get
@@ -639,7 +561,9 @@ Public Class DataProvider
             _CBSymbAnrListe = value
         End Set
     End Property
-    Public Property P_CBSymbDirekt() As Boolean
+
+    Private _CBSymbDirekt As Boolean
+    Public Property P_CBSymbDirekt As Boolean
         Get
             Return _CBSymbDirekt
         End Get
@@ -647,7 +571,9 @@ Public Class DataProvider
             _CBSymbDirekt = value
         End Set
     End Property
-    Public Property P_CBSymbRWSuche() As Boolean
+
+    Private _CBSymbRWSuche As Boolean
+    Public Property P_CBSymbRWSuche As Boolean
         Get
             Return _CBSymbRWSuche
         End Get
@@ -655,7 +581,9 @@ Public Class DataProvider
             _CBSymbRWSuche = value
         End Set
     End Property
-    Public Property P_CBSymbVIP() As Boolean
+
+    Private _CBSymbVIP As Boolean
+    Public Property P_CBSymbVIP As Boolean
         Get
             Return _CBSymbVIP
         End Get
@@ -663,7 +591,9 @@ Public Class DataProvider
             _CBSymbVIP = value
         End Set
     End Property
-    Public Property P_CBSymbJournalimport() As Boolean
+
+    Private _CBSymbJournalimport As Boolean
+    Public Property P_CBSymbJournalimport As Boolean
         Get
             Return _CBSymbJournalimport
         End Get
@@ -671,7 +601,9 @@ Public Class DataProvider
             _CBSymbJournalimport = value
         End Set
     End Property
-    Public Property P_CBJImport() As Boolean
+
+    Private _CBJImport As Boolean
+    Public Property P_CBJImport As Boolean
         Get
             Return _CBJImport
         End Get
@@ -679,13 +611,13 @@ Public Class DataProvider
             _CBJImport = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an ob nur der Hauptkontaktordner durchsucht werden muss oder alle möglichen eingebundenen Kontaktordner
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>True, wenn nur der Hauptkontaktordner durchsucht werden muss</returns>
     ''' <remarks></remarks>
-    Public Property P_CBKHO() As Boolean
+    Private _CBKHO As Boolean
+    Public Property P_CBKHO As Boolean
         Get
             Return _CBKHO
         End Get
@@ -693,7 +625,9 @@ Public Class DataProvider
             _CBKHO = value
         End Set
     End Property
-    Public Property P_CBRWS() As Boolean
+
+    Private _CBRWS As Boolean
+    Public Property P_CBRWS As Boolean
         Get
             Return _CBRWS
         End Get
@@ -701,7 +635,9 @@ Public Class DataProvider
             _CBRWS = value
         End Set
     End Property
-    Public Property P_CBKErstellen() As Boolean
+
+    Private _CBKErstellen As Boolean
+    Public Property P_CBKErstellen As Boolean
         Get
             Return _CBKErstellen
         End Get
@@ -709,7 +645,9 @@ Public Class DataProvider
             _CBKErstellen = value
         End Set
     End Property
-    Public Property P_CBRWSIndex() As Boolean
+
+    Private _CBRWSIndex As Boolean
+    Public Property P_CBRWSIndex As Boolean
         Get
             Return _CBRWSIndex
         End Get
@@ -717,7 +655,9 @@ Public Class DataProvider
             _CBRWSIndex = value
         End Set
     End Property
-    Public Property P_ComboBoxRWS() As Integer
+
+    Private _ComboBoxRWS As Integer
+    Public Property P_ComboBoxRWS As Integer
         Get
             Return _ComboBoxRWS
         End Get
@@ -725,7 +665,9 @@ Public Class DataProvider
             _ComboBoxRWS = value
         End Set
     End Property
-    Public Property P_TVKontaktOrdnerEntryID() As String
+
+    Private _TVKontaktOrdnerEntryID As String
+    Public Property P_TVKontaktOrdnerEntryID As String
         Get
             Return _TVKontaktOrdnerEntryID
         End Get
@@ -733,7 +675,9 @@ Public Class DataProvider
             _TVKontaktOrdnerEntryID = value
         End Set
     End Property
-    Public Property P_TVKontaktOrdnerStoreID() As String
+
+    Private _TVKontaktOrdnerStoreID As String
+    Public Property P_TVKontaktOrdnerStoreID As String
         Get
             Return _TVKontaktOrdnerStoreID
         End Get
@@ -741,13 +685,13 @@ Public Class DataProvider
             _TVKontaktOrdnerStoreID = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, ob die Indizierung durchgeführt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>True/False</returns>
     ''' <remarks></remarks>
-    Public Property P_CBIndex() As Boolean
+    Private _CBIndex As Boolean
+    Public Property P_CBIndex As Boolean
         Get
             Return _CBIndex
         End Get
@@ -755,13 +699,13 @@ Public Class DataProvider
             _CBIndex = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt an, ob Journaleinträge erstellt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>True/False</returns>
     ''' <remarks></remarks>
-    Public Property P_CBJournal() As Boolean
+    Private _CBJournal As Boolean
+    Public Property P_CBJournal As Boolean
         Get
             Return _CBJournal
         End Get
@@ -769,7 +713,9 @@ Public Class DataProvider
             _CBJournal = value
         End Set
     End Property
-    Public Property P_CBUseAnrMon() As Boolean
+
+    Private _CBUseAnrMon As Boolean
+    Public Property P_CBUseAnrMon As Boolean
         Get
             Return _CBUseAnrMon
         End Get
@@ -777,7 +723,9 @@ Public Class DataProvider
             _CBUseAnrMon = value
         End Set
     End Property
-    Public Property P_CBCheckMobil() As Boolean
+
+    Private _CBCheckMobil As Boolean
+    Public Property P_CBCheckMobil As Boolean
         Get
             Return _CBCheckMobil
         End Get
@@ -786,6 +734,7 @@ Public Class DataProvider
         End Set
     End Property
 
+    Private _CLBTelNr As String()
     Public Property P_CLBTelNr As String()
         Get
             Return _CLBTelNr
@@ -794,8 +743,11 @@ Public Class DataProvider
             _CLBTelNr = value
         End Set
     End Property
+
     'StoppUhr
-    Public Property P_CBStoppUhrEinblenden() As Boolean
+
+    Private _CBStoppUhrEinblenden As Boolean
+    Public Property P_CBStoppUhrEinblenden As Boolean
         Get
             Return _CBStoppUhrEinblenden
         End Get
@@ -803,7 +755,9 @@ Public Class DataProvider
             _CBStoppUhrEinblenden = Value
         End Set
     End Property
-    Public Property P_CBStoppUhrAusblenden() As Boolean
+
+    Private _CBStoppUhrAusblenden As Boolean
+    Public Property P_CBStoppUhrAusblenden As Boolean
         Get
             Return _CBStoppUhrAusblenden
         End Get
@@ -811,7 +765,9 @@ Public Class DataProvider
             _CBStoppUhrAusblenden = Value
         End Set
     End Property
-    Public Property P_TBStoppUhr() As Integer
+
+    Private _TBStoppUhr As Integer
+    Public Property P_TBStoppUhr As Integer
         Get
             Return _TBStoppUhr
         End Get
@@ -819,7 +775,9 @@ Public Class DataProvider
             _TBStoppUhr = value
         End Set
     End Property
-    Public Property P_CBStoppUhrX() As Integer
+
+    Private _CBStoppUhrX As Integer
+    Public Property P_CBStoppUhrX As Integer
         Get
             Return _CBStoppUhrX
         End Get
@@ -827,6 +785,8 @@ Public Class DataProvider
             _CBStoppUhrX = value
         End Set
     End Property
+
+    Private _CBStoppUhrY As Integer
     Public Property P_CBStoppUhrY() As Integer
         Get
             Return _CBStoppUhrY
@@ -835,8 +795,11 @@ Public Class DataProvider
             _CBStoppUhrY = value
         End Set
     End Property
+
     ' Telefonnummernformatierung
-    Public Property P_TBTelNrMaske() As String
+
+    Private _TBTelNrMaske As String
+    Public Property P_TBTelNrMaske As String
         Get
             Return _TBTelNrMaske
         End Get
@@ -844,7 +807,9 @@ Public Class DataProvider
             _TBTelNrMaske = value
         End Set
     End Property
-    Public Property P_CBTelNrGruppieren() As Boolean
+
+    Private _CBTelNrGruppieren As Boolean
+    Public Property P_CBTelNrGruppieren As Boolean
         Get
             Return _CBTelNrGruppieren
         End Get
@@ -852,7 +817,9 @@ Public Class DataProvider
             _CBTelNrGruppieren = value
         End Set
     End Property
-    Public Property P_CBintl() As Boolean
+
+    Private _CBintl As Boolean
+    Public Property P_CBintl As Boolean
         Get
             Return _CBintl
         End Get
@@ -860,6 +827,8 @@ Public Class DataProvider
             _CBintl = value
         End Set
     End Property
+
+    Private _CBIgnoTelNrFormat As Boolean
     Public Property P_CBIgnoTelNrFormat() As Boolean
         Get
             Return _CBIgnoTelNrFormat
@@ -868,7 +837,10 @@ Public Class DataProvider
             _CBIgnoTelNrFormat = value
         End Set
     End Property
+
     'Phoner
+
+    Private _CBPhoner As Boolean
     Public Property P_CBPhoner As Boolean
         Get
             Return _CBPhoner
@@ -877,6 +849,8 @@ Public Class DataProvider
             _CBPhoner = value
         End Set
     End Property
+
+    Private _PhonerVerfügbar As Boolean
     Public Property P_PhonerVerfügbar As Boolean
         Get
             Return _PhonerVerfügbar
@@ -885,6 +859,8 @@ Public Class DataProvider
             _PhonerVerfügbar = value
         End Set
     End Property
+
+    Private _CBPhonerAnrMon As Boolean
     Public Property P_CBPhonerAnrMon As Boolean
         Get
             Return _CBPhonerAnrMon
@@ -893,6 +869,8 @@ Public Class DataProvider
             _CBPhonerAnrMon = value
         End Set
     End Property
+
+    Private _ComboBoxPhonerSIP As Integer
     Public Property P_ComboBoxPhonerSIP() As Integer
         Get
             Return _ComboBoxPhonerSIP
@@ -901,6 +879,8 @@ Public Class DataProvider
             _ComboBoxPhonerSIP = value
         End Set
     End Property
+
+    Private _TBPhonerPasswort As String
     Public Property P_TBPhonerPasswort() As String
         Get
             Return _TBPhonerPasswort
@@ -909,7 +889,9 @@ Public Class DataProvider
             _TBPhonerPasswort = value
         End Set
     End Property
-    Public Property P_PhonerTelNameIndex() As Integer
+
+    Private _PhonerTelNameIndex As Integer
+    Public Property P_PhonerTelNameIndex As Integer
         Get
             Return _PhonerTelNameIndex
         End Get
@@ -917,7 +899,10 @@ Public Class DataProvider
             _PhonerTelNameIndex = value
         End Set
     End Property
+
     ' Statistik
+
+    Private _StatResetZeit As Date
     Public Property P_StatResetZeit As Date
         Get
             Return _StatResetZeit
@@ -926,6 +911,8 @@ Public Class DataProvider
             _StatResetZeit = value
         End Set
     End Property
+
+    Private _StatVerpasst As Integer
     Public Property P_StatVerpasst As Integer
         Get
             Return _StatVerpasst
@@ -934,6 +921,8 @@ Public Class DataProvider
             _StatVerpasst = value
         End Set
     End Property
+
+    Private _StatNichtErfolgreich As Integer
     Public Property P_StatNichtErfolgreich As Integer
         Get
             Return _StatNichtErfolgreich
@@ -942,7 +931,9 @@ Public Class DataProvider
             _StatNichtErfolgreich = value
         End Set
     End Property
-    Public Property P_StatJournal() As Integer
+
+    Private _StatJournal As Integer
+    Public Property P_StatJournal As Integer
         Get
             Return _StatJournal
         End Get
@@ -950,7 +941,9 @@ Public Class DataProvider
             _StatJournal = value
         End Set
     End Property
-    Public Property P_StatKontakt() As Integer
+
+    Private _StatKontakt As Integer
+    Public Property P_StatKontakt As Integer
         Get
             Return _StatKontakt
         End Get
@@ -958,7 +951,9 @@ Public Class DataProvider
             _StatKontakt = value
         End Set
     End Property
-    Public Property P_StatOLClosedZeit() As Date
+
+    Private _StatOLClosedZeit As Date
+    Public Property P_StatOLClosedZeit As Date
         Get
             Return _StatOLClosedZeit
         End Get
@@ -966,8 +961,11 @@ Public Class DataProvider
             _StatOLClosedZeit = value
         End Set
     End Property
+
     ' Wählbox
-    Public Property P_TelAnschluss() As Integer
+
+    Private _TelAnschluss As Integer
+    Public Property P_TelAnschluss As Integer
         Get
             Return _TelAnschluss
         End Get
@@ -975,7 +973,9 @@ Public Class DataProvider
             _TelAnschluss = value
         End Set
     End Property
-    Public Property P_TelFestnetz() As Boolean
+
+    Private _TelFestnetz As Boolean
+    Public Property P_TelFestnetz As Boolean
         Get
             Return _TelFestnetz
         End Get
@@ -983,7 +983,9 @@ Public Class DataProvider
             _TelFestnetz = value
         End Set
     End Property
-    Public Property P_TelCLIR() As Boolean
+
+    Private _TelCLIR As Boolean
+    Public Property P_TelCLIR As Boolean
         Get
             Return _TelCLIR
         End Get
@@ -993,13 +995,13 @@ Public Class DataProvider
     End Property
 
     ' FritzBox
+
     ''' <summary>
     ''' Gibt die ermittelte Zeichencodierung der Fritzbox wieder. Der Wert wird automatisch ermittelt. 
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_EncodeingFritzBox() As String
+    Private _EncodeingFritzBox As String
+    Public Property P_EncodeingFritzBox As String
         Get
             Return _EncodeingFritzBox
         End Get
@@ -1011,10 +1013,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt die eingegebene Fritz!Box IP-Adresse an. Dies ist eine Angabe, die der Nutzer in den Einstellungen ändern kann.
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_TBFBAdr() As String
+    Private _TBFBAdr As String
+    Public Property P_TBFBAdr As String
         Get
             Return _TBFBAdr
         End Get
@@ -1026,10 +1027,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt eine korrekte Fritz!Box IP-Adresse zurück.
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_ValidFBAdr() As String
+    Private _ValidFBAdr As String
+    Public Property P_ValidFBAdr As String
         Get
             Return _ValidFBAdr
         End Get
@@ -1041,10 +1041,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob eine Verbindung zur Fritz!Box trotz fehlgeschlagenen Pings aufgebaut werden soll.
     ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_CBForceFBAddr() As Boolean
+    Private _CBForceFBAddr As Boolean
+    Public Property P_CBForceFBAddr As Boolean
         Get
             Return _CBForceFBAddr
         End Get
@@ -1052,13 +1051,13 @@ Public Class DataProvider
             _CBForceFBAddr = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt den einegegebenen Benutzernamen für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property P_TBBenutzer() As String
+    Private _TBBenutzer As String
+    Public Property P_TBBenutzer As String
         Get
             Return _TBBenutzer
         End Get
@@ -1066,13 +1065,13 @@ Public Class DataProvider
             _TBBenutzer = value
         End Set
     End Property
+
     ''' <summary>
     ''' Gibt das eingegebene Passwort für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>Das verschlüsselte Passwort</returns>
     ''' <remarks></remarks>
-    Public Property P_TBPasswort() As String
+    Private _TBPasswort As String
+    Public Property P_TBPasswort As String
         Get
             Return _TBPasswort
         End Get
@@ -1080,8 +1079,11 @@ Public Class DataProvider
             _TBPasswort = value
         End Set
     End Property
+
     ' Indizierung
-    Public Property P_LLetzteIndizierung() As Date
+
+    Private _LLetzteIndizierung As Date
+    Public Property P_LLetzteIndizierung As Date
         Get
             Return _LLetzteIndizierung
         End Get
@@ -1089,8 +1091,11 @@ Public Class DataProvider
             _LLetzteIndizierung = value
         End Set
     End Property
+
     ' Note
-    Public Property P_CBNote() As Boolean
+
+    Private _CBNote As Boolean
+    Public Property P_CBNote As Boolean
         Get
             Return _CBNote
         End Get
@@ -1098,8 +1103,11 @@ Public Class DataProvider
             _CBNote = value
         End Set
     End Property
+
     ' Einstellungen
-    Public Property P_Arbeitsverzeichnis() As String
+
+    Private _Arbeitsverzeichnis As String
+    Public Property P_Arbeitsverzeichnis As String
         Get
             Return _Arbeitsverzeichnis
         End Get
@@ -1107,8 +1115,11 @@ Public Class DataProvider
             _Arbeitsverzeichnis = value
         End Set
     End Property
+
     ' Vorwahllisten
-    Public Property P_ListeOrtsVorwahlen() As String()
+
+    Private _ListeOrtsVorwahlen As String()
+    Public Property P_ListeOrtsVorwahlen As String()
         Get
             Return _ListeOrtsVorwahlen
         End Get
@@ -1116,7 +1127,9 @@ Public Class DataProvider
             _ListeOrtsVorwahlen = value
         End Set
     End Property
-    Public Property P_ListeLandesVorwahlen() As String()
+
+    Private _ListeLandesVorwahlen As String()
+    Public Property P_ListeLandesVorwahlen As String()
         Get
             Return _ListeLandesVorwahlen
         End Get
