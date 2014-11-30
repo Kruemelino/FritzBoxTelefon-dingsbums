@@ -12,7 +12,8 @@ Public Class formAdressbuch
     Private C_KF As Contacts
     Private C_XML As XML
     Private tmp As String
-    Private BS As BindingSource
+    'Private BS As BindingSource
+    Private DS As DataSet
 
     Private XMLAdressbuch As XmlDocument
     Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, KontaktKlasse As Contacts)
@@ -63,7 +64,7 @@ Public Class formAdressbuch
                 End Try
             End If
 
-            'ReadXMLTelefonbuch(XMLAdressbuch)
+            FillDGVAdressbuch(TransformTelefonbuch(XMLAdressbuch))
 
         End With
     End Sub
@@ -80,24 +81,24 @@ Public Class formAdressbuch
     Private Sub FillDGVAdressbuch(ByVal Telefonbuch As XmlDocument)
         Dim xmlStream As MemoryStream = New MemoryStream()
         Dim xmlFile As XmlReader
-        Dim ds As New DataSet
+
         Telefonbuch.Save(xmlStream)
         xmlStream.Position = 0
 
         xmlFile = XmlReader.Create(xmlStream, New XmlReaderSettings())
 
+        DS = New DataSet
         ds.ReadXml(xmlFile)
-
-        Me.DGVAdressbuch.AutoGenerateColumns = False
-
-        Me.DGVAdressbuch.DataSource = ds.Tables(0)
-
-        Me.DGVAdressbuch.ReadOnly = False
-        Me.DGVAdressbuch.RowHeadersVisible = False
-        Me.DGVAdressbuch.DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
-        Me.DGVAdressbuch.Enabled = True
-
-        Me.DGVAdressbuch.Update()
+        With Me.DGVAdressbuch
+            .AutoGenerateColumns = False
+            .DataSource = DS.Tables.Item(0)
+            .ReadOnly = False
+            .RowHeadersVisible = False
+            .DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+            .Enabled = True
+            .Update()
+        End With
+        xmlStream.Close()
         'AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
     End Sub
 
@@ -131,15 +132,14 @@ Public Class formAdressbuch
 #Region "Telefonbuch Interaktionen"
     Private Function TransformTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
         Dim TransTelBook As New XmlDocument
-        TransTelBook.LoadXml("<TrnsAdrBk/>")
-        '<?xml version=""1.0"" encoding=""UTF-8""?>
+        TransTelBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><TrnsAdrBk/>")
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
         Dim NodeValues As New ArrayList
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
         Dim XMLTelBuchEintraege As XmlNodeList
-        Dim sTMP As string
+        Dim sTMP As String
 
         With xPathTeile
             .Clear()
@@ -152,14 +152,11 @@ Public Class formAdressbuch
             .Add("category")
             .Add("mod_time")
             .Add("RealName")
+            .Add("TelNr_Prio")
             .Add("TelNr_home_TelNr")
-            .Add("TelNr_home_Prio")
             .Add("TelNr_work_TelNr")
-            .Add("TelNr_work_Prio")
             .Add("TelNr_mobile_TelNr")
-            .Add("TelNr_mobile_Prio")
             .Add("TelNr_fax_work_TelNr")
-            .Add("TelNr_fax_work_Prio")
             .Add("EMail")
             .Add("setup")
         End With
@@ -170,21 +167,9 @@ Public Class formAdressbuch
         End With
         With NodeValues
             .Clear()
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
-            .Add(C_DP.P_Def_StringEmpty)
+            For Each Wert As String In NodeNames
+                .Add(C_DP.P_Def_StringEmpty)
+            Next
         End With
         With AttributeValues
             .Clear()
@@ -195,10 +180,6 @@ Public Class formAdressbuch
         XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
         Dim i As Integer
         For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
-            NodeValues.Item(NodeNames.IndexOf("TelNr_home_Prio")) = False
-            NodeValues.Item(NodeNames.IndexOf("TelNr_mobile_Prio")) = False
-            NodeValues.Item(NodeNames.IndexOf("TelNr_work_Prio")) = False
-            NodeValues.Item(NodeNames.IndexOf("TelNr_fax_work_Prio")) = False
             i += 1
             NodeValues.Item(NodeNames.IndexOf("id")) = i
             For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
@@ -211,9 +192,20 @@ Public Class formAdressbuch
                         NodeValues.Item(NodeNames.IndexOf("RealName")) = XMLEintragWerte.Item("realName").InnerText
                     Case "telephony"
                         For Each XMLTelNr As XmlElement In XMLEintragWerte.ChildNodes
-                            sTMP = "TelNr_" & XMLTelNr.GetAttribute("type")
-                            NodeValues.Item(NodeNames.IndexOf(sTMP & "_TelNr")) = XMLTelNr.InnerText
-                            NodeValues.Item(NodeNames.IndexOf(sTMP & "_Prio")) = (XMLTelNr.InnerText IsNot C_DP.P_Def_StringEmpty) And CBool(XMLTelNr.GetAttribute("prio"))
+                            sTMP = XMLTelNr.GetAttribute("type")
+                            NodeValues.Item(NodeNames.IndexOf("TelNr_" & sTMP & "_TelNr")) = XMLTelNr.InnerText
+                            If XMLTelNr.GetAttribute("prio") = "1" Then
+                                Select Case sTMP
+                                    Case "home"
+                                        NodeValues.Item(NodeNames.IndexOf("TelNr_Prio")) = Me.Adrbk_Prio.Items(0).ToString
+                                    Case "work"
+                                        NodeValues.Item(NodeNames.IndexOf("TelNr_Prio")) = Me.Adrbk_Prio.Items(1).ToString
+                                    Case "mobile"
+                                        NodeValues.Item(NodeNames.IndexOf("TelNr_Prio")) = Me.Adrbk_Prio.Items(2).ToString
+                                    Case "fax_work"
+                                        NodeValues.Item(NodeNames.IndexOf("TelNr_Prio")) = Me.Adrbk_Prio.Items(3).ToString
+                                End Select
+                            End If
                         Next
                     Case "services"
                         For Each XMLEMail As XmlElement In XMLEintragWerte
@@ -231,154 +223,36 @@ Public Class formAdressbuch
         Return TransTelBook
     End Function
 
-    'Private Function ReadXMLTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As S_Adressbuch
-    '    Dim Adressbuch As New S_Adressbuch
-    '    Dim XMLTelBuchEintraege As XmlNodeList
-    '    Dim AdressbuchEintrag As S_AdressbuchEintrag
-    '    Dim aktEintragsListe As New List(Of S_AdressbuchEintrag)
+    Private Function GenerateXML(ByVal Datensatz As DataSet) As XmlDocument
+        Dim SW As New StringWriter()
+        Dim Telefonbuch As New XmlDocument
 
+        Datensatz.WriteXml(SW)
+        Telefonbuch.LoadXml(SW.ToString)
 
-    '    Dim i As Integer = 0
-
-    '    XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
-
-    '    For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
-    '        AdressbuchEintrag = New S_AdressbuchEintrag
-    '        i += 1
-    '        AdressbuchEintrag.ID = i
-
-    '        For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
-    '            Select Case XMLEintragWerte.Name
-    '                Case "category"
-    '                    If XMLEintragWerte.InnerText IsNot C_DP.P_Def_StringEmpty Then AdressbuchEintrag.Category = CBool(XMLEintragWerte.InnerText)
-    '                Case "mod_time"
-    '                    AdressbuchEintrag.Mod_Time = XMLEintragWerte.InnerText
-    '                Case "uniqueid"
-    '                    AdressbuchEintrag.Uniqueid = XMLEintragWerte.InnerText
-    '                Case "person"
-    '                    For Each XMLEintragPerson As XmlElement In XMLEintragWerte.ChildNodes
-    '                        Select Case XMLEintragPerson.Name
-    '                            Case "realName"
-    '                                AdressbuchEintrag.RealName = XMLEintragPerson.InnerText
-    '                                'Case "imageURL"
-    '                        End Select
-    '                    Next
-    '                Case "telephony"
-    '                    For Each XMLTelNr As XmlElement In XMLEintragWerte
-
-    '                        If XMLTelNr.HasAttribute("type") Then
-    '                            Select Case XMLTelNr.GetAttribute("type")
-    '                                Case TelNrType.home.ToString
-    '                                    AdressbuchEintrag.TelNr_Home_TelNr = XMLTelNr.InnerText
-    '                                    If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Home_ID = CInt(XMLTelNr.GetAttribute("id"))
-    '                                    If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Home_Prio = CBool(XMLTelNr.GetAttribute("prio"))
-    '                                Case TelNrType.work.ToString
-    '                                    AdressbuchEintrag.TelNr_Work_TelNr = XMLTelNr.InnerText
-    '                                    If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Work_ID = CInt(XMLTelNr.GetAttribute("id"))
-    '                                    If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Work_Prio = CBool(XMLTelNr.GetAttribute("prio"))
-    '                                Case TelNrType.mobile.ToString
-    '                                    AdressbuchEintrag.TelNr_Mobil_TelNr = XMLTelNr.InnerText
-    '                                    If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Mobil_ID = CInt(XMLTelNr.GetAttribute("id"))
-    '                                    If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Mobil_Prio = CBool(XMLTelNr.GetAttribute("prio"))
-    '                                Case TelNrType.fax_work.ToString
-    '                                    AdressbuchEintrag.TelNr_Fax_TelNr = XMLTelNr.InnerText
-    '                                    If XMLTelNr.HasAttribute("id") Then AdressbuchEintrag.TelNr_Fax_ID = CInt(XMLTelNr.GetAttribute("id"))
-    '                                    If XMLTelNr.HasAttribute("prio") Then AdressbuchEintrag.TelNr_Fax_Prio = CBool(XMLTelNr.GetAttribute("prio"))
-    '                            End Select
-    '                        End If
-    '                    Next
-    '                Case "services"
-
-    '                    For Each XMLEMail As XmlElement In XMLEintragWerte
-    '                        AdressbuchEintrag.EMail = XMLEMail.InnerText
-
-    '                        If XMLEMail.HasAttribute("id") Then AdressbuchEintrag.E_Mail_ID = CInt(XMLEMail.GetAttribute("id"))
-
-    '                        If XMLEMail.HasAttribute("classifier") Then AdressbuchEintrag.Classifier = XMLEMail.GetAttribute("classifier")
-    '                    Next
-    '                    'Case "setup"
-    '                    '    For Each XMLEintragPerson As XmlElement In XMLEintragWerte.ChildNodes
-    '                    '        Select Case XMLEintragPerson.Name
-    '                    '            Case "ringTone"
-    '                    '            Case "ringVolume"
-    '                    '        End Select
-    '                    '    Next
-    '            End Select
-    '        Next
-    '        aktEintragsListe.Add(AdressbuchEintrag)
-    '    Next
-    '    Adressbuch.EintragsListe = aktEintragsListe
-    '    Return Adressbuch
-    'End Function
+        Return Telefonbuch
+    End Function
 #End Region
 
-    'Private Sub DGVAdressbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
+    Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click, BAdd.Click
+        DS.Tables.Item(0).Rows.Add()
+    End Sub
 
-    '    ' Von hinten durch die Brust ins Auge!
+    Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click, BDel.Click
+        With Me.DGVAdressbuch
+            If .SelectedRows.Count > 0 Then
+                For I As Integer = .SelectedRows.Count - 1 To 0 Step -1
+                    .Rows.RemoveAt(.SelectedRows(I).Index)
+                Next
+            End If
+        End With
+    End Sub
 
-    '    Dim ChangedData As String = Me.DGVAdressbuch_orig.Columns(e.ColumnIndex).DataPropertyName
-    '    Dim EntryuID As String = CStr(Me.DGVAdressbuch_orig.Rows(e.RowIndex).Cells("AdrBk_uniqueid").Value)
-    '    Dim ChangedCell As DataGridViewCell = Me.DGVAdressbuch_orig.Rows(e.RowIndex).Cells(e.ColumnIndex)
+    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
+        GenerateXML(DS)
+    End Sub
 
-    '    Dim newList As List(Of S_AdressbuchEintrag)
-    '    Dim Eintrag As S_AdressbuchEintrag
+    Private Sub DGVAdressbuch_DragDrop(sender As Object, e As DragEventArgs) Handles DGVAdressbuch.DragDrop
 
-    '    newList = CType(BS.DataSource, List(Of S_AdressbuchEintrag))
-    '    If ChangedCell.Value IsNot ChangedCell.EditedFormattedValue Then
-    '        Eintrag = newList.Find(Function(tmp) tmp.Uniqueid = EntryuID)
-    '        newList.RemoveAt(e.RowIndex)
-    '        Select Case ChangedData
-    '            Case "Category" ' VIP
-    '                Eintrag.Category = CBool(ChangedCell.EditedFormattedValue)
-    '            Case "Classifier"
-    '                Eintrag.Classifier = CStr(ChangedCell.EditedFormattedValue)
-    '            Case "EMail"
-    '                Eintrag.EMail = CStr(ChangedCell.EditedFormattedValue)
-    '            Case "RealName"
-    '                Eintrag.RealName = CStr(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Home_Prio"
-    '                Eintrag.TelNr_Home_Prio = CBool(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Home_TelNr"
-    '                Eintrag.TelNr_Home_TelNr = CStr(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Mobil_Prio"
-    '                Eintrag.TelNr_Mobil_Prio = CBool(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Mobil_TelNr"
-    '                Eintrag.TelNr_Mobil_TelNr = CStr(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Work_Prio"
-    '                Eintrag.TelNr_Work_Prio = CBool(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Work_TelNr"
-    '                Eintrag.TelNr_Work_TelNr = CStr(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Fax_Prio"
-    '                Eintrag.TelNr_Fax_Prio = CBool(ChangedCell.EditedFormattedValue)
-    '            Case "TelNr_Fax_TelNr"
-    '                Eintrag.TelNr_Fax_TelNr = CStr(ChangedCell.EditedFormattedValue)
-    '        End Select
-    '        newList.Insert(e.RowIndex, Eintrag)
-
-    '        Me.BS.ResetBindings(False)
-    '    End If
-
-    'End Sub
-
-    'Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click
-    '    Dim newList As List(Of S_AdressbuchEintrag)
-    '    Dim Eintrag As New S_AdressbuchEintrag
-    '    newList = CType(BS.DataSource, List(Of S_AdressbuchEintrag))
-    '    Eintrag.ID = newList.Count + 1
-    '    Eintrag.Uniqueid = CStr(CInt(newList.Max(Function(tmp) tmp.Uniqueid)) + 1)
-
-    '    newList.Add(Eintrag)
-    '    Me.BS.ResetBindings(False)
-    'End Sub
-
-    'Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click
-
-    '    Dim newList As List(Of S_AdressbuchEintrag)
-    '    newList = CType(BS.DataSource, List(Of S_AdressbuchEintrag))
-
-    '    For Each Eintrag As DataGridViewRow In Me.DGVAdressbuch_orig.SelectedRows
-    '        newList.Remove(newList.Find(Function(tmp) tmp.Uniqueid Is Eintrag.Cells("AdrBk_uniqueid").Value))
-    '    Next
-    '    Me.BS.ResetBindings(False)
-    'End Sub
+    End Sub
 End Class
