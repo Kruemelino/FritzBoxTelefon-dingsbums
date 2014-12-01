@@ -552,7 +552,6 @@ Public Class XML
                             If Not SubNodeName.IndexOf(XmlChildNode.Name) = -1 Then
                                 SubNodeValue.Item(SubNodeName.IndexOf(XmlChildNode.Name)) = XmlChildNode.InnerText
                             End If
-
                         Next
                     End With
                 End If
@@ -561,7 +560,7 @@ Public Class XML
         End If
     End Sub
 
-    Sub AppendNode(ByRef XMLDoc As XmlDocument, ByVal alxPathTeile As ArrayList, ByVal Knoten As XmlNode)
+    Public Sub AppendNode(ByRef XMLDoc As XmlDocument, ByVal alxPathTeile As ArrayList, ByVal Knoten As XmlNode)
         Dim xPathTeileEC As Long = alxPathTeile.Count
         Dim DestxPath As String
         Dim tmpxPath As String = P_Def_StringEmpty
@@ -597,7 +596,7 @@ Public Class XML
 
     End Sub
 
-    Function SubNoteCount(ByVal XMLDoc As XmlDocument, ByVal alxPathTeile As ArrayList) As Integer
+    Public Function SubNoteCount(ByVal XMLDoc As XmlDocument, ByVal alxPathTeile As ArrayList) As Integer
         SubNoteCount = 0
         Dim tmpxPath As String
         Dim tmpXMLNode As XmlNode
@@ -610,7 +609,6 @@ Public Class XML
         End With
         tmpXMLNode = Nothing
     End Function
-
 #End Region
 
 #Region "Validator"

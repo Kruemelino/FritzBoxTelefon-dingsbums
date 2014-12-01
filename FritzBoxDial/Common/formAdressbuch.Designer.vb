@@ -40,15 +40,19 @@ Partial Class formAdressbuch
         Me.AdrBk_Mod_Time = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_VIP = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.Adrbk_Name = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_EMail = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Adrbk_Prio = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.AdrBk_TelNrHome = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_TelNrMobil = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_TelNrWork = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_TelNrFaxWork = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AdrBk_EMail = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_KwV = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.AdrBk_Kurzwahl = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AdrBk_Vanity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CMSAdressbuch = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.TSMI_Add = New System.Windows.Forms.ToolStripMenuItem()
         Me.TSMI_Delete = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.BDel = New System.Windows.Forms.Button()
         Me.BAdd = New System.Windows.Forms.Button()
         Me.BTest = New System.Windows.Forms.Button()
@@ -139,11 +143,12 @@ Partial Class formAdressbuch
         '
         'SCAdressbuch.Panel2
         '
+        Me.SCAdressbuch.Panel2.Controls.Add(Me.Label1)
         Me.SCAdressbuch.Panel2.Controls.Add(Me.BDel)
         Me.SCAdressbuch.Panel2.Controls.Add(Me.BAdd)
         Me.SCAdressbuch.Panel2.Controls.Add(Me.BTest)
         Me.SCAdressbuch.Size = New System.Drawing.Size(784, 515)
-        Me.SCAdressbuch.SplitterDistance = 699
+        Me.SCAdressbuch.SplitterDistance = 600
         Me.SCAdressbuch.TabIndex = 3
         '
         'DGVAdressbuch
@@ -153,7 +158,7 @@ Partial Class formAdressbuch
         Me.DGVAdressbuch.AllowUserToResizeRows = False
         Me.DGVAdressbuch.ColumnHeadersHeight = 25
         Me.DGVAdressbuch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.DGVAdressbuch.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Adrbk_ID, Me.AdrBk_uniqueid, Me.AdrBk_Mod_Time, Me.AdrBk_VIP, Me.Adrbk_Name, Me.Adrbk_Prio, Me.AdrBk_TelNrHome, Me.AdrBk_TelNrMobil, Me.AdrBk_TelNrWork, Me.AdrBk_TelNrFaxWork, Me.AdrBk_EMail})
+        Me.DGVAdressbuch.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Adrbk_ID, Me.AdrBk_uniqueid, Me.AdrBk_Mod_Time, Me.AdrBk_VIP, Me.Adrbk_Name, Me.AdrBk_EMail, Me.Adrbk_Prio, Me.AdrBk_TelNrHome, Me.AdrBk_TelNrMobil, Me.AdrBk_TelNrWork, Me.AdrBk_TelNrFaxWork, Me.AdrBk_KwV, Me.AdrBk_Kurzwahl, Me.AdrBk_Vanity})
         Me.DGVAdressbuch.ContextMenuStrip = Me.CMSAdressbuch
         Me.DGVAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DGVAdressbuch.Enabled = False
@@ -162,7 +167,7 @@ Partial Class formAdressbuch
         Me.DGVAdressbuch.RowHeadersWidth = 25
         Me.DGVAdressbuch.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.DGVAdressbuch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DGVAdressbuch.Size = New System.Drawing.Size(699, 515)
+        Me.DGVAdressbuch.Size = New System.Drawing.Size(600, 515)
         Me.DGVAdressbuch.TabIndex = 3
         '
         'Adrbk_ID
@@ -215,6 +220,15 @@ Partial Class formAdressbuch
         Me.Adrbk_Name.MinimumWidth = 150
         Me.Adrbk_Name.Name = "Adrbk_Name"
         '
+        'AdrBk_EMail
+        '
+        Me.AdrBk_EMail.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.AdrBk_EMail.DataPropertyName = "EMail"
+        Me.AdrBk_EMail.FillWeight = 200.0!
+        Me.AdrBk_EMail.HeaderText = "E-Mail"
+        Me.AdrBk_EMail.MinimumWidth = 200
+        Me.AdrBk_EMail.Name = "AdrBk_EMail"
+        '
         'Adrbk_Prio
         '
         Me.Adrbk_Prio.DataPropertyName = "TelNr_Prio"
@@ -254,14 +268,24 @@ Partial Class formAdressbuch
         Me.AdrBk_TelNrFaxWork.MinimumWidth = 120
         Me.AdrBk_TelNrFaxWork.Name = "AdrBk_TelNrFaxWork"
         '
-        'AdrBk_EMail
+        'AdrBk_KwV
         '
-        Me.AdrBk_EMail.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.AdrBk_EMail.DataPropertyName = "EMail"
-        Me.AdrBk_EMail.FillWeight = 200.0!
-        Me.AdrBk_EMail.HeaderText = "E-Mail"
-        Me.AdrBk_EMail.MinimumWidth = 200
-        Me.AdrBk_EMail.Name = "AdrBk_EMail"
+        Me.AdrBk_KwV.DataPropertyName = "TelNr_kwV"
+        Me.AdrBk_KwV.HeaderText = "Kurzwahl-/Vanity"
+        Me.AdrBk_KwV.Items.AddRange(New Object() {"Privat", "Mobil", "Geschäftlich", "Fax"})
+        Me.AdrBk_KwV.Name = "AdrBk_KwV"
+        '
+        'AdrBk_Kurzwahl
+        '
+        Me.AdrBk_Kurzwahl.DataPropertyName = "TelNr_Kurzwahl"
+        Me.AdrBk_Kurzwahl.HeaderText = "Kurzwahl"
+        Me.AdrBk_Kurzwahl.Name = "AdrBk_Kurzwahl"
+        '
+        'AdrBk_Vanity
+        '
+        Me.AdrBk_Vanity.DataPropertyName = "TelNr_Vanity"
+        Me.AdrBk_Vanity.HeaderText = "Vanity"
+        Me.AdrBk_Vanity.Name = "AdrBk_Vanity"
         '
         'CMSAdressbuch
         '
@@ -281,20 +305,28 @@ Partial Class formAdressbuch
         Me.TSMI_Delete.Size = New System.Drawing.Size(176, 22)
         Me.TSMI_Delete.Text = "Eintrag Löschen"
         '
+        'Label1
+        '
+        Me.Label1.Location = New System.Drawing.Point(3, 87)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(174, 196)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = resources.GetString("Label1.Text")
+        '
         'BDel
         '
         Me.BDel.Location = New System.Drawing.Point(2, 61)
         Me.BDel.Name = "BDel"
-        Me.BDel.Size = New System.Drawing.Size(75, 23)
+        Me.BDel.Size = New System.Drawing.Size(175, 23)
         Me.BDel.TabIndex = 1
         Me.BDel.Text = "Löschen"
         Me.BDel.UseVisualStyleBackColor = True
         '
         'BAdd
         '
-        Me.BAdd.Location = New System.Drawing.Point(2, 32)
+        Me.BAdd.Location = New System.Drawing.Point(3, 32)
         Me.BAdd.Name = "BAdd"
-        Me.BAdd.Size = New System.Drawing.Size(75, 23)
+        Me.BAdd.Size = New System.Drawing.Size(174, 23)
         Me.BAdd.TabIndex = 1
         Me.BAdd.Text = "Hinzufügen"
         Me.BAdd.UseVisualStyleBackColor = True
@@ -303,7 +335,7 @@ Partial Class formAdressbuch
         '
         Me.BTest.Location = New System.Drawing.Point(3, 3)
         Me.BTest.Name = "BTest"
-        Me.BTest.Size = New System.Drawing.Size(75, 23)
+        Me.BTest.Size = New System.Drawing.Size(174, 23)
         Me.BTest.TabIndex = 0
         Me.BTest.Text = "Testen"
         Me.BTest.UseVisualStyleBackColor = True
@@ -347,17 +379,21 @@ End Sub
     Friend WithEvents CMSAdressbuch As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents TSMI_Delete As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TSMI_Add As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents BDel As System.Windows.Forms.Button
+    Friend WithEvents BAdd As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Adrbk_ID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_uniqueid As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_Mod_Time As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_VIP As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents Adrbk_Name As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_EMail As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Adrbk_Prio As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents AdrBk_TelNrHome As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_TelNrMobil As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_TelNrWork As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_TelNrFaxWork As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents AdrBk_EMail As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents BDel As System.Windows.Forms.Button
-    Friend WithEvents BAdd As System.Windows.Forms.Button
+    Friend WithEvents AdrBk_KwV As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents AdrBk_Kurzwahl As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents AdrBk_Vanity As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class
