@@ -903,6 +903,10 @@ Public Class Helfer
     End Sub
 #End Region
 
+    Public Function ByteArrayToString(ByVal ByteArray As Byte()) As String
+        Return System.Text.Encoding.UTF8.GetString(ByteArray)
+    End Function
+
     Public Function GetTimeInterval(ByVal nSeks As Double) As String
         'http://www.vbarchiv.net/faq/date_sectotime.php
         Dim h As Double, m As Double

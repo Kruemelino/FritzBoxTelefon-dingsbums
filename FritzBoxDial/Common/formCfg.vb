@@ -694,6 +694,7 @@ Friend Class formCfg
             Case "BStartDebug"
                 Me.TBDiagnose.Text = C_DP.P_Def_StringEmpty
                 AddLine("Start")
+                AddLine(C_hf.formatTelNr("+49 (711) 123456"))
                 If Me.CBTelefonDatei.Checked Then
                     If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
                         If C_hf.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Einlesen einer fehlerhaften oder falschen Datei wird sehr unerfreulich enden.", _

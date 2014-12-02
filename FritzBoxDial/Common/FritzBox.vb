@@ -1723,27 +1723,6 @@ Public Class FritzBox
         End If
     End Sub
 
-    '    +    public InputStream exportAddressbook() throws IOException
-    '+    {
-    '+        return httpPostMultipart("cgi-bin/firmwarecfg")
-    '+                .addParameter("sid", sid_).addParameter("PhonebookId", "0")
-    '+                .addParameter("PhonebookExportName", "Telefonbuch")
-    '+                .addParameter("PhonebookExport", "").execute();
-    '+    }
-    '+
-    '+    public OutputStream importAddressbook() throws IOException
-    '+    {
-    '+        return new ByteArrayOutputStream() {
-    '+            public void close() throws IOException
-    '+            {
-    '+                httpPostMultipart("cgi-bin/firmwarecfg")
-    '+                        .addParameter("sid", sid_)
-    '+                        .addParameter("PhonebookId", "0")
-    '+                        .addParameter("PhonebookImportFile", toByteArray(),
-    '+                                "iso-8859-1").execute().close();
-    '+            }
-    '+        };
-    '+    }
     Friend Function DownloadAddressbook(ByVal BookID As String, ByVal BookName As String) As XmlDocument
         ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
         ' http://www.ip-phone-forum.de/showthread.php?t=226605
@@ -1775,26 +1754,43 @@ Public Class FritzBox
                 End If
             End With
         Else
-            C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "ExportAddressbook")
+            C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "DownloadAddressbook")
         End If
     End Function
 
-    'Book ID ermitteln NAME nicht vergessen. Herunterladen : http://192.168.180.1/fon_num/fonbook_select.lua?sid=0d4bf2bf7bc333a9
-    '<div class="formular">
-    '<input type="radio" checked id="uiBookid:0" value="0" name="bookid">
-    '<label for="uiBookid:0">Telefonbuch
-    '</label>
-    '</div>
-    '<div class="formular">
-    '<input type="radio" id="uiBookid:1" value="1" name="bookid">
-    '<label for="uiBookid:1">Testbuch
-    '</label>
-    '</div>
 
-    'Umschalten post: bookid=0&apply=&sid=0d4bf2bf7bc333a9
-    'Friend Function DownloadAddressbook(ByVal FBAddressbook As XmlDocument) As Boolean
+    'Friend Sub UploadAddressbook(ByVal BookID As String, ByVal Adressbuch As String)
+    '    ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
+    '    ' http://www.ip-phone-forum.de/showthread.php?t=226605
+    '    Dim row As String
+    '    Dim cmd As String
+    '    Dim ReturnValue As String
+    '    Dim XMLFBAddressbuch As XmlDocument
 
-    'End Function
+    '    If SID = C_DP.P_Def_SessionID Then FBLogin(True)
+    '    If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
+
+    '        row = "---" & 12345 + Rnd() * 16777216
+    '        cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
+    '         & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & BookID & vbCrLf _
+    '         & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""; filename=""Name.xml""" & vbCrLf & "Content-Type: text/xml" & vbCrLf & vbCrLf & Adressbuch & vbCrLf _
+    '         & row & vbCrLf '& "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
+
+    '        With C_hf
+    '            ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding)
+    '            If ReturnValue.StartsWith("<?xml") Then
+    '                XMLFBAddressbuch = New XmlDocument()
+    '                Try
+    '                    XMLFBAddressbuch.LoadXml(ReturnValue)
+    '                Catch ex As Exception
+    '                    .LogFile(C_DP.P_Fehler_Export_Addressbuch)
+    '                End Try
+    '            End If
+    '        End With
+    '    Else
+    '        C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadAddressbook")
+    '    End If
+    'End Sub
 
 #End Region
 

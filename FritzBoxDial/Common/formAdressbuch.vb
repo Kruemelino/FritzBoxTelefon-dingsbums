@@ -4,19 +4,19 @@ Imports System.Windows.Forms
 Imports System.Collections.Generic
 Imports System.ComponentModel
 Imports System.Data
+Imports System.Drawing
 
 Public Class formAdressbuch
 
+#Region "Deklarationen"
     Private C_FB As FritzBox
     Private C_DP As DataProvider
     Private C_KF As Contacts
     Private C_XML As XML
     Private C_hf As Helfer
-    Private tmp As String
-    'Private BS As BindingSource
     Private DS As DataSet
+#End Region
 
-    Private XMLAdressbuch As XmlDocument
     Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
@@ -31,82 +31,20 @@ Public Class formAdressbuch
 
         Me.DGVAdressbuch.RowHeadersVisible = False
         FillDGVAdressbuch(GetEmptyTelbook)
+
         Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
         Me.DGVAdressbuch.Columns.Item("AdrBk_uniqueid").Visible = False
         Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
 
+        ' Initialize the XMLViewerSettings.
+        Dim viewerSetting As XMLViewerSettings = New XMLViewerSettings With {.AttributeKey = Color.Red, .AttributeValue = Color.Blue, .Tag = Color.Blue, .Element = Color.DarkRed, .Value = Color.Black}
+        myXMLViewer.Settings = viewerSetting
+
         'Me.Show()
     End Sub
 
-    Private Sub ÖffnenToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ÖffnenToolStripButton.Click
-        Dim myStream As Stream = Nothing
-        Dim myStreamReader As StreamReader
-        XMLAdressbuch = New XmlDocument()
-        With OFDAdressdbuch
-            .Filter = "XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
-            .FilterIndex = 1
-            .RestoreDirectory = True
+#Region "Vorlage: Telefonbuchformate"
 
-            If .ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-                Try
-                    myStream = .OpenFile()
-                    If (myStream IsNot Nothing) Then
-                        myStreamReader = New StreamReader(myStream)
-                        XMLAdressbuch.LoadXml(myStreamReader.ReadToEnd)
-                        myStreamReader.Close()
-                    End If
-                Catch Ex As Exception
-
-                Finally
-                    ' Check this again, since we need to make sure we didn't throw an exception on open.
-                    If (myStream IsNot Nothing) Then
-                        myStream.Close()
-                    End If
-                End Try
-            End If
-            ' Auswahl, je nach Datei
-            FillDGVAdressbuch(TransformFritzBoxTelefonbuch(XMLAdressbuch))
-
-        End With
-    End Sub
-
-    Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
-        Dim XMLImportiertesAdressbuch As XmlDocument
-
-        XMLImportiertesAdressbuch = C_FB.DownloadAddressbook("0", "Telefonbuch")
-        TransformFritzBoxTelefonbuch(XMLImportiertesAdressbuch)
-
-        FillDGVAdressbuch(TransformFritzBoxTelefonbuch(XMLImportiertesAdressbuch))
-    End Sub
-
-    Private Sub FillDGVAdressbuch(ByVal TransformiertesTelefonbuch As XmlDocument)
-        Dim xmlStream As MemoryStream = New MemoryStream()
-        Dim xmlFile As XmlReader
-
-        TransformiertesTelefonbuch.Save(xmlStream)
-        xmlStream.Position = 0
-
-        xmlFile = XmlReader.Create(xmlStream, New XmlReaderSettings())
-
-        DS = New DataSet
-        DS.ReadXml(xmlFile)
-        With Me.DGVAdressbuch
-            .AutoGenerateColumns = False
-            .DataSource = DS.Tables.Item(0)
-            .ReadOnly = False
-            .RowHeadersVisible = False
-            .DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
-            .Enabled = True
-            .Update()
-        End With
-
-        DS.Tables.Item(0).Columns("uniqueid").Unique = True
-        xmlStream.Close()
-
-        AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
-    End Sub
-
-    'nid --> Anzahl
     '<phonebooks>
     '    <phonebook>
     '        <contact>
@@ -119,6 +57,7 @@ Public Class formAdressbuch
     '		        <number type="home" prio="1" quickdial="1" vanity="STRING" id="0">0123456789</number>
     '		        <number type="mobile" prio="0" id="1">0123456789</number>
     '		        <number type="work" prio="0" id="2">0123456789</number>
+    '               <number type="fax_work" prio="0" id="2">0123456789</number>
     '	        </telephony>
     '	        <services nid="1">
     '		        <email classifier="private" id="0">vorname.nachname@online.de</email>
@@ -148,12 +87,20 @@ Public Class formAdressbuch
     '	    <TelNr_fax_work_TelNr />
     '	    <TelNr_kwV>Privat</TelNr_kwV>
     '	    <TelNr_Kurzwahl>1</TelNr_Kurzwahl>
-    '	    <TelNr_Vanity>BMI</TelNr_Vanity>
+    '	    <TelNr_Vanity>STRING</TelNr_Vanity>
     '	    <setup />
     '    </AdrBk>
     '</TrnsAdrBk>
+#End Region
+
 #Region "Telefonbuch Interaktionen"
-    Private Function TransformFritzBoxTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
+    ''' <summary>
+    ''' Wandelt das Telefonbuch der Fritz!Box in ein XMLFile um, welches als DataSource für das DataGridView verwendet wird. Dabei werden nur relevante Daten übernommen.
+    ''' </summary>
+    ''' <param name="XMLTelefonbuch">Das umzuwandelnde Telefonbuch</param>
+    ''' <returns>Das umgewandelte Telefonbuch</returns>
+    ''' <remarks>Das umgewandelte Telefonbuch dient als interne Datenquelle und wird nie ausgegeben.</remarks>
+    Private Function GetDTVTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
         Dim TransTelBook As New XmlDocument
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
@@ -199,6 +146,8 @@ Public Class formAdressbuch
         '    '.Add(C_DP.P_Def_StringEmpty)
         '    '.Add(C_DP.P_Def_StringEmpty)
         'End With
+
+        Me.TBAdrbuchName.Text = XMLTelefonbuch.DocumentElement.Item("phonebook").GetAttribute("name")
 
         XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
 
@@ -264,58 +213,12 @@ Public Class formAdressbuch
         Return TransTelBook
     End Function
 
-    Private Function GetEmptyTelbook() As XmlDocument
-        Dim TransTelBook As New XmlDocument
-        Dim xPathTeile As New ArrayList
-        Dim NodeNames As New ArrayList
-        Dim NodeValues As New ArrayList
-        Dim AttributeNames As New ArrayList
-        Dim AttributeValues As New ArrayList
-
-        TransTelBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><TrnsAdrBk/>")
-
-        With xPathTeile
-            .Clear()
-            .Add("AdrBk")
-        End With
-
-        With NodeNames
-            .Clear()
-            .Add("id")
-            .Add("uniqueid")
-            .Add("category")
-            .Add("mod_time")
-            .Add("RealName")
-            .Add("EMail")
-            .Add("TelNr_Prio")
-            .Add("TelNr_kwV")
-            .Add("TelNr_Kurzwahl")
-            .Add("TelNr_Vanity")
-            .Add("TelNr_home_TelNr")
-            .Add("TelNr_work_TelNr")
-            .Add("TelNr_mobile_TelNr")
-            .Add("TelNr_fax_work_TelNr")
-            .Add("setup")
-        End With
-
-        With AttributeNames
-            .Clear()
-            '.Add("Fax")
-            '.Add("Dialport")
-        End With
-        With NodeValues
-            .Clear()
-            For Each Wert As String In NodeNames
-                .Add(C_DP.P_Def_StringEmpty)
-            Next
-        End With
-        NodeValues.Item(NodeNames.IndexOf("uniqueid")) = "1"
-        TransTelBook.Item("TrnsAdrBk").AppendChild(C_XML.CreateXMLNode(TransTelBook, "AdrBk", NodeNames, NodeValues, AttributeNames, AttributeValues))
-
-        Return TransTelBook
-    End Function
-
-    Private Function GetFritzBoxTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
+    ''' <summary>
+    ''' Erstellt ein Telefonbuch aus der DataSource des DataGridView, welches in die Fritz!Box importiert werden kann.
+    ''' </summary>
+    ''' <returns>Das fertige XML-Dokument.</returns>
+    ''' <remarks>Ausgabegröße</remarks>
+    Private Function GetFritzBoxTelefonbuch() As XmlDocument
         Dim FBoxAdrBook As New XmlDocument
 
         Dim BaseXmlNode As XmlNode
@@ -330,13 +233,20 @@ Public Class formAdressbuch
         Dim TelNrName() As String = {"home", "mobile", "work", "fax_work"}
         Dim i As Integer
 
-        ' Liste vorhandener Adressbücher erstellen
-        Dim AdressbookEntries As XmlNodeList = XMLTelefonbuch.GetElementsByTagName("AdrBk")
         ' Neues Adressbuch erstellen
         FBoxAdrBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><phonebooks><phonebook/></phonebooks>")
         ' Basisknoten festlegen
         BaseXmlNode = FBoxAdrBook.Item("phonebooks").Item("phonebook")
-        For Each AdressbookEntrie As XmlNode In AdressbookEntries
+
+        ' TelefonbuchName festlegen
+        If Me.TBAdrbuchName.Text IsNot C_DP.P_Def_StringEmpty Then
+            BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("name")).Value = Me.TBAdrbuchName.Text
+            ' Prüfen:
+            'BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("owner")).Value = "1"
+        End If
+
+        For Each DR As DataRow In DS.Tables(0).Rows
+            'For Each AdressbookEntrie As XmlNode In AdressbookEntries
 
             ' <contact>
             tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "contact", C_XML.P_Def_StringEmpty)
@@ -344,7 +254,7 @@ Public Class formAdressbuch
 
             ' <category>
             tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "category", C_XML.P_Def_StringEmpty)
-            tmpXmlNode.InnerText = CStr(IIf(CBool(AdressbookEntrie.Item("category").InnerText), 1, 0))
+            tmpXmlNode.InnerText = CStr(IIf(CBool(DR.Item("Category").ToString = "True"), 1, 0))
             BaseXmlNode.AppendChild(tmpXmlNode)
 
             ' <person>
@@ -353,7 +263,7 @@ Public Class formAdressbuch
 
             ' <realName>
             tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "realName", C_XML.P_Def_StringEmpty)
-            tmpXmlNode.InnerText = AdressbookEntrie.Item("RealName").InnerText
+            tmpXmlNode.InnerText = CStr(DR.Item("RealName"))
             BaseXmlNode.AppendChild(tmpXmlNode)
 
             ' <imageURL> nicht Implementiert
@@ -371,15 +281,15 @@ Public Class formAdressbuch
             ' Abhier etwas komplizierter
             ' Telefonnummern ermitteln
 
-            TelNrPrio = AdressbookEntrie.Item("TelNr_Prio").InnerText
-            TelNrkwV = AdressbookEntrie.Item("TelNr_kwV").InnerText
-            TelNrQuickDial = AdressbookEntrie.Item("TelNr_Kurzwahl").InnerText
-            TelNrVanity = AdressbookEntrie.Item("TelNr_Vanity").InnerText
+            TelNrPrio = CStr(DR.Item("TelNr_Prio"))
+            TelNrkwV = CStr(DR.Item("TelNr_kwV"))
+            TelNrQuickDial = CStr(DR.Item("TelNr_Kurzwahl"))
+            TelNrVanity = CStr(DR.Item("TelNr_Vanity"))
 
-            TelNr(0) = AdressbookEntrie.Item("TelNr_home_TelNr").InnerText     ' Home
-            TelNr(1) = AdressbookEntrie.Item("TelNr_mobile_TelNr").InnerText   ' Mobil
-            TelNr(2) = AdressbookEntrie.Item("TelNr_work_TelNr").InnerText     ' Work
-            TelNr(3) = AdressbookEntrie.Item("TelNr_fax_work_TelNr").InnerText ' Fax
+            TelNr(0) = CStr(DR.Item("TelNr_home_TelNr"))     ' Home
+            TelNr(1) = CStr(DR.Item("TelNr_mobile_TelNr"))   ' Mobil
+            TelNr(2) = CStr(DR.Item("TelNr_work_TelNr"))     ' Work
+            TelNr(3) = CStr(DR.Item("TelNr_fax_work_TelNr")) ' Fax
             ' Counter auf 0
             i = 0
             ' <number>
@@ -425,10 +335,10 @@ Public Class formAdressbuch
             BaseXmlNode = BaseXmlNode.AppendChild(tmpXmlNode)
 
             ' <email>
-            If AdressbookEntrie.Item("EMail").InnerText IsNot C_DP.P_Def_StringEmpty Then
+            If DR.Item("EMail") IsNot C_DP.P_Def_StringEmpty Then
                 i += 1
                 tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "email", C_XML.P_Def_StringEmpty)
-                tmpXmlNode.InnerText = AdressbookEntrie.Item("EMail").InnerText
+                tmpXmlNode.InnerText = CStr(DR.Item("EMail"))
                 tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("classifier")).Value = "private"
                 tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("id")).Value = CStr(i - 1)
                 BaseXmlNode.AppendChild(tmpXmlNode)
@@ -444,13 +354,13 @@ Public Class formAdressbuch
 
             '<mod_time>
             tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "mod_time", C_XML.P_Def_StringEmpty)
-            tmpXmlNode.InnerText = AdressbookEntrie.Item("mod_time").InnerText
+            tmpXmlNode.InnerText = CStr(DR.Item("mod_time"))
             BaseXmlNode.AppendChild(tmpXmlNode)
 
-            '<uniqueid>
-            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "uniqueid", C_XML.P_Def_StringEmpty)
-            tmpXmlNode.InnerText = AdressbookEntrie.Item("uniqueid").InnerText
-            BaseXmlNode.AppendChild(tmpXmlNode)
+            ''<uniqueid> ' Wird von FB überschrieben 
+            'tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "uniqueid", C_XML.P_Def_StringEmpty)
+            'tmpXmlNode.InnerText = CStr(DR.Item("uniqueid"))
+            'BaseXmlNode.AppendChild(tmpXmlNode)
 
             ' Eine Ebene zurück auf <phonebook>
             BaseXmlNode = BaseXmlNode.ParentNode
@@ -460,20 +370,141 @@ Public Class formAdressbuch
         Return FBoxAdrBook
     End Function
 
-    Private Function GenerateXML(ByVal Datensatz As DataSet) As XmlDocument
-        Dim SW As New StringWriter()
-        Dim Telefonbuch As New XmlDocument
+    ''' <summary>
+    ''' Erstellt ein leeres Telefonbuch, welches als DataSource für das DataGridView verwendet wird.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function GetEmptyTelbook() As XmlDocument
+        Dim TransTelBook As New XmlDocument
+        Dim xPathTeile As New ArrayList
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
 
-        Datensatz.WriteXml(SW)
-        Telefonbuch.LoadXml(SW.ToString)
+        TransTelBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><TrnsAdrBk/>")
 
-        Return Telefonbuch
+        With xPathTeile
+            .Clear()
+            .Add("AdrBk")
+        End With
+
+        With NodeNames
+            .Clear()
+            .Add("id")
+            .Add("uniqueid")
+            .Add("category")
+            .Add("mod_time")
+            .Add("RealName")
+            .Add("EMail")
+            .Add("TelNr_Prio")
+            .Add("TelNr_kwV")
+            .Add("TelNr_Kurzwahl")
+            .Add("TelNr_Vanity")
+            .Add("TelNr_home_TelNr")
+            .Add("TelNr_work_TelNr")
+            .Add("TelNr_mobile_TelNr")
+            .Add("TelNr_fax_work_TelNr")
+            .Add("setup")
+        End With
+
+        With AttributeNames
+            .Clear()
+            '.Add("Fax")
+            '.Add("Dialport")
+        End With
+        With NodeValues
+            .Clear()
+            For Each Wert As String In NodeNames
+                .Add(C_DP.P_Def_StringEmpty)
+            Next
+        End With
+        'NodeValues.Item(NodeNames.IndexOf("uniqueid")) = "1"
+        TransTelBook.Item("TrnsAdrBk").AppendChild(C_XML.CreateXMLNode(TransTelBook, "AdrBk", NodeNames, NodeValues, AttributeNames, AttributeValues))
+
+        Return TransTelBook
     End Function
+
+    ''' <summary>
+    ''' Übergibt das umgewandelte Telefonbuch an das DatagridView
+    ''' </summary>
+    ''' <param name="TransformiertesTelefonbuch"></param>
+    ''' <remarks></remarks>
+    Private Sub FillDGVAdressbuch(ByVal TransformiertesTelefonbuch As XmlDocument)
+        Dim xmlStream As MemoryStream = New MemoryStream()
+        Dim xmlFile As XmlReader
+
+        TransformiertesTelefonbuch.Save(xmlStream)
+        xmlStream.Position = 0
+
+        xmlFile = XmlReader.Create(xmlStream, New XmlReaderSettings())
+
+        DS = New DataSet
+        DS.ReadXml(xmlFile)
+        With Me.DGVAdressbuch
+            .AutoGenerateColumns = False
+            .DataSource = DS.Tables.Item(0)
+            .ReadOnly = False
+            .RowHeadersVisible = False
+            .DataBindings.DefaultDataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+            .Enabled = True
+            .Update()
+        End With
+
+        'DS.Tables.Item(0).Columns("uniqueid").Unique = True
+        xmlStream.Close()
+
+        AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
+    End Sub
 #End Region
 
+#Region "Button_Click"
+    Private Sub ÖffnenToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ÖffnenToolStripButton.Click
+        Dim myStream As Stream = Nothing
+        Dim myStreamReader As StreamReader
+        Dim XMLAdressbuch As New XmlDocument()
+        With OFDAdressdbuch
+            .Filter = "XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
+            .FilterIndex = 1
+            .RestoreDirectory = True
+
+            If .ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                Try
+                    myStream = .OpenFile()
+                    If (myStream IsNot Nothing) Then
+                        myStreamReader = New StreamReader(myStream)
+                        XMLAdressbuch.LoadXml(myStreamReader.ReadToEnd)
+                        myStreamReader.Close()
+                    End If
+                Catch Ex As Exception
+
+                Finally
+                    ' Check this again, since we need to make sure we didn't throw an exception on open.
+                    If (myStream IsNot Nothing) Then
+                        myStream.Close()
+                    End If
+                End Try
+            End If
+            ' Auswahl, je nach Datei
+            FillDGVAdressbuch(GetDTVTelefonbuch(XMLAdressbuch))
+            myStream = Nothing
+            myStreamReader = Nothing
+            XMLAdressbuch = Nothing
+        End With
+    End Sub
+
+    Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
+        Dim XMLImportiertesAdressbuch As XmlDocument
+
+        XMLImportiertesAdressbuch = C_FB.DownloadAddressbook("0", "Telefonbuch")
+
+        FillDGVAdressbuch(GetDTVTelefonbuch(XMLImportiertesAdressbuch))
+    End Sub
+
     Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click, BAdd.Click
-        Dim uID As String = GetUniqueID()
-        DS.Tables.Item(0).Rows.Add.Item("uniqueid") = uID
+        'Dim uID As String = GetUniqueID()
+        'DS.Tables.Item(0).Rows.Add.Item("uniqueid") = uID
     End Sub
 
     Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click, BDel.Click
@@ -485,10 +516,38 @@ Public Class formAdressbuch
             End If
         End With
     End Sub
+#End Region
 
-    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
-        GetFritzBoxTelefonbuch(GenerateXML(DS))
+#Region "XMlViewer"
+    Public Sub UpdateXML()
+        Dim ms As System.IO.MemoryStream
+        ms = FormatXMLDoc(GetFritzBoxTelefonbuch)
+        myXMLViewer.Text = C_hf.ByteArrayToString(ms.GetBuffer)
+        Try
+            myXMLViewer.Process(True)
+        Catch appException As ApplicationException
+            MessageBox.Show(appException.Message, "ApplicationException")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Exception")
+        End Try
     End Sub
+
+    Private Function FormatXMLDoc(ByVal xmlDoc As XmlDocument) As System.IO.MemoryStream
+        Dim retVal As New System.IO.MemoryStream
+        Dim writer As XmlTextWriter = New XmlTextWriter(retVal, New System.Text.ASCIIEncoding)
+        With writer
+
+            .Formatting = Formatting.Indented
+            .IndentChar = ControlChars.Tab
+            .Indentation = 1
+            xmlDoc.WriteTo(writer)
+            .Flush()
+            .Close()
+
+        End With
+        Return retVal
+    End Function
+#End Region
 
     Private Sub DGVAdressbuch_DragDrop(sender As Object, e As DragEventArgs) Handles DGVAdressbuch.DragDrop
 
@@ -504,16 +563,8 @@ Public Class formAdressbuch
         DS.Tables.Item(0).Rows(e.RowIndex).Item("mod_time") = UTime
     End Sub
 
-    Private Function GetUniqueID() As String
-        Dim rmp As Integer = 0
-
-        For Each DR As DataRow In DS.Tables.Item(0).Rows
-            If IsNumeric(DR.Item("uniqueid")) AndAlso rmp < CInt(DR.Item("uniqueid")) Then rmp = CInt(DR.Item(1))
-        Next
-        Return CStr(rmp + 1)
-    End Function
-
     Private Sub SpeicheFBAdressbuch(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
+
         Dim myStreamWriter As StreamWriter
         Dim myStringBuilder As New StringBuilder
         Dim myStringWriter As New StringWriter(myStringBuilder)
@@ -524,8 +575,7 @@ Public Class formAdressbuch
             .IndentChar = ControlChars.Tab
             .Indentation = 1
         End With
-
-        GetFritzBoxTelefonbuch(GenerateXML(DS)).WriteContentTo(myXmlTextWriter)
+        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
 
         With SFDAdressbuch
             .Filter = "XML Adressbuch (*.xml)|*.xml" '"XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
@@ -555,4 +605,26 @@ Public Class formAdressbuch
 
     End Sub
 
+    Private Sub TCAdressbuch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TCAdressbuch.SelectedIndexChanged
+        If Me.TCAdressbuch.SelectedTab Is Me.TPAdressbuchXML Then
+            UpdateXML()
+        End If
+    End Sub
+
+    Private Sub ExportToolStripButton_Click(sender As Object, e As EventArgs) Handles ExportToolStripButton.Click
+        Dim myStringBuilder As New StringBuilder
+        Dim myStringWriter As New StringWriter(myStringBuilder)
+        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
+
+        Dim sXML As String
+        With myXmlTextWriter
+            .Formatting = Formatting.Indented
+            .IndentChar = ControlChars.Tab
+            .Indentation = 1
+        End With
+        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
+        sXML = myStringBuilder.ToString()
+
+        'C_FB.UploadAddressbook("0", sXML)
+    End Sub
 End Class

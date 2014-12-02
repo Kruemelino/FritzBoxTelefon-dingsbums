@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="StatStAdressbuch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>153, 17</value>
+    <value>153, 15</value>
   </metadata>
   <metadata name="TSAdressbuch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>300, 17</value>
@@ -203,6 +203,14 @@
   <metadata name="SFDAdressbuch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="CMSAdressbuch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>574, 17</value>
+  </metadata>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Es werden maximal 4 Telefonnummern unterstützt. Es wird je eine Privat-, Geschäfts-, Mobil-, sowie Faxnummer unterstützt. Sollte ein Kontakt aus dem Fritz!Box Telefonbuch mehr Nummern haben, gehen diese verloren.
+
+Kontaktbilder werden nicht unterstützt und gehen ebenfalls verloren. </value>
+  </data>
   <metadata name="Adrbk_ID.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -245,12 +253,4 @@
   <metadata name="AdrBk_Vanity.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="CMSAdressbuch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>574, 17</value>
-  </metadata>
-  <data name="Label1.Text" xml:space="preserve">
-    <value>Es werden maximal 4 Telefonnummern unterstützt. Es wird je eine Privat-, Geschäfts-, Mobil-, sowie Faxnummer unterstützt. Sollte ein Kontakt aus dem Fritz!Box Telefonbuch mehr Nummern haben, gehen diese verloren.
-
-Kontaktbilder werden nicht unterstützt und gehen ebenfalls verloren. </value>
-  </data>
 </root>

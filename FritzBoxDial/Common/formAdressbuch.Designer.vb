@@ -24,6 +24,7 @@ Partial Class formAdressbuch
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formAdressbuch))
+        Dim XmlViewerSettings2 As FritzBoxDial.XMLViewerSettings = New FritzBoxDial.XMLViewerSettings()
         Me.StatStAdressbuch = New System.Windows.Forms.StatusStrip()
         Me.TSAdressbuch = New System.Windows.Forms.ToolStrip()
         Me.NeuToolStripButton = New System.Windows.Forms.ToolStripButton()
@@ -33,7 +34,12 @@ Partial Class formAdressbuch
         Me.ExportToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.OFDAdressdbuch = New System.Windows.Forms.OpenFileDialog()
         Me.SFDAdressbuch = New System.Windows.Forms.SaveFileDialog()
+        Me.CMSAdressbuch = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.TSMI_Add = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TSMI_Delete = New System.Windows.Forms.ToolStripMenuItem()
         Me.SCAdressbuch = New System.Windows.Forms.SplitContainer()
+        Me.TCAdressbuch = New System.Windows.Forms.TabControl()
+        Me.TPAdressbuchDTV = New System.Windows.Forms.TabPage()
         Me.DGVAdressbuch = New System.Windows.Forms.DataGridView()
         Me.Adrbk_ID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_uniqueid = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -49,20 +55,24 @@ Partial Class formAdressbuch
         Me.AdrBk_KwV = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.AdrBk_Kurzwahl = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AdrBk_Vanity = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.CMSAdressbuch = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.TSMI_Add = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TSMI_Delete = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TPAdressbuchXML = New System.Windows.Forms.TabPage()
+        Me.myXMLViewer = New FritzBoxDial.XMLViewer()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.BDel = New System.Windows.Forms.Button()
         Me.BAdd = New System.Windows.Forms.Button()
         Me.BTest = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TBAdrbuchName = New System.Windows.Forms.TextBox()
         Me.TSAdressbuch.SuspendLayout()
+        Me.CMSAdressbuch.SuspendLayout()
         CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SCAdressbuch.Panel1.SuspendLayout()
         Me.SCAdressbuch.Panel2.SuspendLayout()
         Me.SCAdressbuch.SuspendLayout()
+        Me.TCAdressbuch.SuspendLayout()
+        Me.TPAdressbuchDTV.SuspendLayout()
         CType(Me.DGVAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.CMSAdressbuch.SuspendLayout()
+        Me.TPAdressbuchXML.SuspendLayout()
         Me.SuspendLayout()
         '
         'StatStAdressbuch
@@ -131,6 +141,24 @@ Partial Class formAdressbuch
         '
         Me.OFDAdressdbuch.FileName = "OpenFileDialog1"
         '
+        'CMSAdressbuch
+        '
+        Me.CMSAdressbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMI_Add, Me.TSMI_Delete})
+        Me.CMSAdressbuch.Name = "CMSAdressbuch"
+        Me.CMSAdressbuch.Size = New System.Drawing.Size(177, 48)
+        '
+        'TSMI_Add
+        '
+        Me.TSMI_Add.Name = "TSMI_Add"
+        Me.TSMI_Add.Size = New System.Drawing.Size(176, 22)
+        Me.TSMI_Add.Text = "Eintrag Hinzufügen"
+        '
+        'TSMI_Delete
+        '
+        Me.TSMI_Delete.Name = "TSMI_Delete"
+        Me.TSMI_Delete.Size = New System.Drawing.Size(176, 22)
+        Me.TSMI_Delete.Text = "Eintrag Löschen"
+        '
         'SCAdressbuch
         '
         Me.SCAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
@@ -139,10 +167,12 @@ Partial Class formAdressbuch
         '
         'SCAdressbuch.Panel1
         '
-        Me.SCAdressbuch.Panel1.Controls.Add(Me.DGVAdressbuch)
+        Me.SCAdressbuch.Panel1.Controls.Add(Me.TCAdressbuch)
         '
         'SCAdressbuch.Panel2
         '
+        Me.SCAdressbuch.Panel2.Controls.Add(Me.TBAdrbuchName)
+        Me.SCAdressbuch.Panel2.Controls.Add(Me.Label2)
         Me.SCAdressbuch.Panel2.Controls.Add(Me.Label1)
         Me.SCAdressbuch.Panel2.Controls.Add(Me.BDel)
         Me.SCAdressbuch.Panel2.Controls.Add(Me.BAdd)
@@ -150,6 +180,30 @@ Partial Class formAdressbuch
         Me.SCAdressbuch.Size = New System.Drawing.Size(784, 515)
         Me.SCAdressbuch.SplitterDistance = 600
         Me.SCAdressbuch.TabIndex = 3
+        '
+        'TCAdressbuch
+        '
+        Me.TCAdressbuch.Alignment = System.Windows.Forms.TabAlignment.Bottom
+        Me.TCAdressbuch.Controls.Add(Me.TPAdressbuchDTV)
+        Me.TCAdressbuch.Controls.Add(Me.TPAdressbuchXML)
+        Me.TCAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TCAdressbuch.Location = New System.Drawing.Point(0, 0)
+        Me.TCAdressbuch.Multiline = True
+        Me.TCAdressbuch.Name = "TCAdressbuch"
+        Me.TCAdressbuch.SelectedIndex = 0
+        Me.TCAdressbuch.Size = New System.Drawing.Size(600, 515)
+        Me.TCAdressbuch.TabIndex = 4
+        '
+        'TPAdressbuchDTV
+        '
+        Me.TPAdressbuchDTV.Controls.Add(Me.DGVAdressbuch)
+        Me.TPAdressbuchDTV.Location = New System.Drawing.Point(4, 4)
+        Me.TPAdressbuchDTV.Name = "TPAdressbuchDTV"
+        Me.TPAdressbuchDTV.Padding = New System.Windows.Forms.Padding(3)
+        Me.TPAdressbuchDTV.Size = New System.Drawing.Size(592, 489)
+        Me.TPAdressbuchDTV.TabIndex = 0
+        Me.TPAdressbuchDTV.Text = "Adressbuch"
+        Me.TPAdressbuchDTV.UseVisualStyleBackColor = True
         '
         'DGVAdressbuch
         '
@@ -162,12 +216,12 @@ Partial Class formAdressbuch
         Me.DGVAdressbuch.ContextMenuStrip = Me.CMSAdressbuch
         Me.DGVAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DGVAdressbuch.Enabled = False
-        Me.DGVAdressbuch.Location = New System.Drawing.Point(0, 0)
+        Me.DGVAdressbuch.Location = New System.Drawing.Point(3, 3)
         Me.DGVAdressbuch.Name = "DGVAdressbuch"
         Me.DGVAdressbuch.RowHeadersWidth = 25
         Me.DGVAdressbuch.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.DGVAdressbuch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DGVAdressbuch.Size = New System.Drawing.Size(600, 515)
+        Me.DGVAdressbuch.Size = New System.Drawing.Size(586, 483)
         Me.DGVAdressbuch.TabIndex = 3
         '
         'Adrbk_ID
@@ -287,27 +341,37 @@ Partial Class formAdressbuch
         Me.AdrBk_Vanity.HeaderText = "Vanity"
         Me.AdrBk_Vanity.Name = "AdrBk_Vanity"
         '
-        'CMSAdressbuch
+        'TPAdressbuchXML
         '
-        Me.CMSAdressbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSMI_Add, Me.TSMI_Delete})
-        Me.CMSAdressbuch.Name = "CMSAdressbuch"
-        Me.CMSAdressbuch.Size = New System.Drawing.Size(177, 48)
+        Me.TPAdressbuchXML.Controls.Add(Me.myXMLViewer)
+        Me.TPAdressbuchXML.Location = New System.Drawing.Point(4, 4)
+        Me.TPAdressbuchXML.Name = "TPAdressbuchXML"
+        Me.TPAdressbuchXML.Padding = New System.Windows.Forms.Padding(3)
+        Me.TPAdressbuchXML.Size = New System.Drawing.Size(592, 489)
+        Me.TPAdressbuchXML.TabIndex = 1
+        Me.TPAdressbuchXML.Text = "XML"
+        Me.TPAdressbuchXML.UseVisualStyleBackColor = True
         '
-        'TSMI_Add
+        'myXMLViewer
         '
-        Me.TSMI_Add.Name = "TSMI_Add"
-        Me.TSMI_Add.Size = New System.Drawing.Size(176, 22)
-        Me.TSMI_Add.Text = "Eintrag Hinzufügen"
-        '
-        'TSMI_Delete
-        '
-        Me.TSMI_Delete.Name = "TSMI_Delete"
-        Me.TSMI_Delete.Size = New System.Drawing.Size(176, 22)
-        Me.TSMI_Delete.Text = "Eintrag Löschen"
+        Me.myXMLViewer.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.myXMLViewer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.myXMLViewer.Location = New System.Drawing.Point(3, 3)
+        Me.myXMLViewer.Name = "myXMLViewer"
+        Me.myXMLViewer.ReadOnly = True
+        XmlViewerSettings2.AttributeKey = System.Drawing.Color.Red
+        XmlViewerSettings2.AttributeValue = System.Drawing.Color.Blue
+        XmlViewerSettings2.Element = System.Drawing.Color.DarkRed
+        XmlViewerSettings2.Tag = System.Drawing.Color.Blue
+        XmlViewerSettings2.Value = System.Drawing.Color.Black
+        Me.myXMLViewer.Settings = XmlViewerSettings2
+        Me.myXMLViewer.Size = New System.Drawing.Size(586, 483)
+        Me.myXMLViewer.TabIndex = 0
+        Me.myXMLViewer.Text = ""
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(3, 87)
+        Me.Label1.Location = New System.Drawing.Point(3, 133)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(174, 196)
         Me.Label1.TabIndex = 2
@@ -315,16 +379,16 @@ Partial Class formAdressbuch
         '
         'BDel
         '
-        Me.BDel.Location = New System.Drawing.Point(2, 61)
+        Me.BDel.Location = New System.Drawing.Point(3, 107)
         Me.BDel.Name = "BDel"
-        Me.BDel.Size = New System.Drawing.Size(175, 23)
+        Me.BDel.Size = New System.Drawing.Size(174, 23)
         Me.BDel.TabIndex = 1
         Me.BDel.Text = "Löschen"
         Me.BDel.UseVisualStyleBackColor = True
         '
         'BAdd
         '
-        Me.BAdd.Location = New System.Drawing.Point(3, 32)
+        Me.BAdd.Location = New System.Drawing.Point(3, 78)
         Me.BAdd.Name = "BAdd"
         Me.BAdd.Size = New System.Drawing.Size(174, 23)
         Me.BAdd.TabIndex = 1
@@ -333,37 +397,57 @@ Partial Class formAdressbuch
         '
         'BTest
         '
-        Me.BTest.Location = New System.Drawing.Point(3, 3)
+        Me.BTest.Location = New System.Drawing.Point(3, 49)
         Me.BTest.Name = "BTest"
         Me.BTest.Size = New System.Drawing.Size(174, 23)
         Me.BTest.TabIndex = 0
         Me.BTest.Text = "Testen"
         Me.BTest.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(6, 7)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(92, 13)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Adressbuchname:"
+        '
+        'TBAdrbuchName
+        '
+        Me.TBAdrbuchName.Location = New System.Drawing.Point(4, 23)
+        Me.TBAdrbuchName.Name = "TBAdrbuchName"
+        Me.TBAdrbuchName.Size = New System.Drawing.Size(172, 20)
+        Me.TBAdrbuchName.TabIndex = 4
+        '
         'formAdressbuch
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(784, 562)
         Me.Controls.Add(Me.SCAdressbuch)
         Me.Controls.Add(Me.TSAdressbuch)
         Me.Controls.Add(Me.StatStAdressbuch)
         Me.Name = "formAdressbuch"
-        Me.ShowIcon = false
+        Me.ShowIcon = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.Text = "Adressbuch"
-        Me.TSAdressbuch.ResumeLayout(false)
-        Me.TSAdressbuch.PerformLayout
-        Me.SCAdressbuch.Panel1.ResumeLayout(false)
-        Me.SCAdressbuch.Panel2.ResumeLayout(false)
-        CType(Me.SCAdressbuch,System.ComponentModel.ISupportInitialize).EndInit
-        Me.SCAdressbuch.ResumeLayout(false)
-        CType(Me.DGVAdressbuch,System.ComponentModel.ISupportInitialize).EndInit
-        Me.CMSAdressbuch.ResumeLayout(false)
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.TSAdressbuch.ResumeLayout(False)
+        Me.TSAdressbuch.PerformLayout()
+        Me.CMSAdressbuch.ResumeLayout(False)
+        Me.SCAdressbuch.Panel1.ResumeLayout(False)
+        Me.SCAdressbuch.Panel2.ResumeLayout(False)
+        Me.SCAdressbuch.Panel2.PerformLayout()
+        CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SCAdressbuch.ResumeLayout(False)
+        Me.TCAdressbuch.ResumeLayout(False)
+        Me.TPAdressbuchDTV.ResumeLayout(False)
+        CType(Me.DGVAdressbuch, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TPAdressbuchXML.ResumeLayout(False)
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents StatStAdressbuch As System.Windows.Forms.StatusStrip
     Friend WithEvents TSAdressbuch As System.Windows.Forms.ToolStrip
     Friend WithEvents ÖffnenToolStripButton As System.Windows.Forms.ToolStripButton
@@ -396,4 +480,10 @@ End Sub
     Friend WithEvents AdrBk_KwV As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents AdrBk_Kurzwahl As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents AdrBk_Vanity As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents TCAdressbuch As System.Windows.Forms.TabControl
+    Friend WithEvents TPAdressbuchDTV As System.Windows.Forms.TabPage
+    Friend WithEvents TPAdressbuchXML As System.Windows.Forms.TabPage
+    Friend WithEvents myXMLViewer As New XMLViewer()
+    Friend WithEvents TBAdrbuchName As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class
