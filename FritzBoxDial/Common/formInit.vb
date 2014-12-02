@@ -62,7 +62,9 @@
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
             ThisAddIn.P_FritzBox = C_FBox
 
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML)
+            F_Adressbuch = New formAdressbuch(C_XML, C_FBox, C_DP, C_KF, C_HF)
+
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML, F_Adressbuch)
 
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner, C_XML)
             ThisAddIn.P_WClient = C_WählClient
@@ -72,6 +74,8 @@
 
             C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
             ThisAddIn.P_Config = C_Config
+
+
 
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
@@ -89,10 +93,11 @@
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
-            F_Adressbuch = New formAdressbuch(C_XML, C_FBox, C_DP, C_KF)
-            'If C_DP.P_Debug_AnrufSimulation Then
-            '    F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, True)
-            'End If
+
+
+            If C_DP.P_Debug_AnrufSimulation Then
+                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
+            End If
         End If
     End Sub
 

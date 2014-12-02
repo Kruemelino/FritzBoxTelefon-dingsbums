@@ -11,12 +11,13 @@ Public Class formAdressbuch
     Private C_DP As DataProvider
     Private C_KF As Contacts
     Private C_XML As XML
+    Private C_hf As Helfer
     Private tmp As String
     'Private BS As BindingSource
     Private DS As DataSet
 
     Private XMLAdressbuch As XmlDocument
-    Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, KontaktKlasse As Contacts)
+    Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -26,13 +27,15 @@ Public Class formAdressbuch
         C_DP = DataProviderKlasse
         C_KF = KontaktKlasse
         C_XML = XMLKlasse
+        C_hf = Helferklasse
 
         Me.DGVAdressbuch.RowHeadersVisible = False
         FillDGVAdressbuch(GetEmptyTelbook)
-        'Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
-        'Me.DGVAdressbuch.Columns.Item("AdrBk_uniqueid").Visible = False
-        'Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
-        Me.Show()
+        Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
+        Me.DGVAdressbuch.Columns.Item("AdrBk_uniqueid").Visible = False
+        Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
+
+        'Me.Show()
     End Sub
 
     Private Sub ÖffnenToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ÖffnenToolStripButton.Click
@@ -99,6 +102,8 @@ Public Class formAdressbuch
 
         DS.Tables.Item(0).Columns("uniqueid").Unique = True
         xmlStream.Close()
+
+        AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
     End Sub
 
     'nid --> Anzahl
@@ -311,189 +316,148 @@ Public Class formAdressbuch
     End Function
 
     Private Function GetFritzBoxTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
-        Dim TransTelBook As New XmlDocument
-        Dim xPathTeile As New ArrayList
-        Dim NodeNames As New ArrayList
-        Dim NodeValues As New ArrayList
-        Dim AttributeNames As New ArrayList
-        Dim AttributeValues As New ArrayList
-        Dim XMLTelBuchEintraege As XmlNodeList
+        Dim FBoxAdrBook As New XmlDocument
 
-        Dim XMLTelBuchEintrag As XmlNode
+        Dim BaseXmlNode As XmlNode
+        Dim tmpXmlNode As XmlNode
 
-        Dim XMLTelBuchRealName As XmlNode = Nothing
-        Dim XMLTelNrHome As XmlNode = Nothing
-        Dim XMLTelNrWork As XmlNode = Nothing
-        Dim XMLTelNrFax As XmlNode = Nothing
-        Dim XMLTelNrMobil As XmlNode = Nothing
-        Dim XMLTelBuchEMAIL As XmlNode = Nothing
+        Dim TelNrPrio As String
+        Dim TelNrkwV As String
+        Dim TelNrQuickDial As String
+        Dim TelNrVanity As String
 
-        Dim prio As String
-        Dim TelNr_kwV As String
-        Dim quickdial As String
-        Dim vanity As String
-
+        Dim TelNr(3) As String
+        Dim TelNrName() As String = {"home", "mobile", "work", "fax_work"}
         Dim i As Integer
 
-        TransTelBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><phonebooks><phonebook/></phonebooks>")
+        ' Liste vorhandener Adressbücher erstellen
+        Dim AdressbookEntries As XmlNodeList = XMLTelefonbuch.GetElementsByTagName("AdrBk")
+        ' Neues Adressbuch erstellen
+        FBoxAdrBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><phonebooks><phonebook/></phonebooks>")
+        ' Basisknoten festlegen
+        BaseXmlNode = FBoxAdrBook.Item("phonebooks").Item("phonebook")
+        For Each AdressbookEntrie As XmlNode In AdressbookEntries
 
-        With xPathTeile
-            .Clear()
-            .Add("phonebook")
-        End With
+            ' <contact>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "contact", C_XML.P_Def_StringEmpty)
+            BaseXmlNode = BaseXmlNode.AppendChild(tmpXmlNode)
 
-        With NodeNames
-            .Clear()
-            .Add("category")
-            .Add("person")
-            .Add("telephony")
-            .Add("services")
-            .Add("setup")
-            .Add("mod_time")
-            .Add("uniqueid")
-        End With
-        With AttributeNames
-            .Clear()
-            '.Add("Fax")
-            '.Add("Dialport")
-        End With
+            ' <category>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "category", C_XML.P_Def_StringEmpty)
+            tmpXmlNode.InnerText = CStr(IIf(CBool(AdressbookEntrie.Item("category").InnerText), 1, 0))
+            BaseXmlNode.AppendChild(tmpXmlNode)
 
-        XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("AdrBk")
+            ' <person>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "person", C_XML.P_Def_StringEmpty)
+            BaseXmlNode = BaseXmlNode.AppendChild(tmpXmlNode)
 
-        For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
+            ' <realName>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "realName", C_XML.P_Def_StringEmpty)
+            tmpXmlNode.InnerText = AdressbookEntrie.Item("RealName").InnerText
+            BaseXmlNode.AppendChild(tmpXmlNode)
 
-            With NodeValues
-                .Clear()
-                For Each Wert As String In NodeNames
-                    .Add(C_DP.P_Def_StringEmpty)
-                Next
-            End With
-            prio = C_DP.P_Def_StringEmpty
-            TelNr_kwV = C_DP.P_Def_StringEmpty
-            quickdial = C_DP.P_Def_StringEmpty
-            vanity = C_DP.P_Def_StringEmpty
+            ' <imageURL> nicht Implementiert
+            ' tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "imageURL", C_XML.P_Def_StringEmpty)
+            ' tmpXmlNode.InnerText = AdressbookEntrie.Item("imageURL").InnerText
+            ' BaseXmlNode.AppendChild(tmpXmlNode)
 
-            XMLTelNrHome = Nothing
-            XMLTelNrWork = Nothing
-            XMLTelNrMobil = Nothing
-            XMLTelNrFax = Nothing
-            XMLTelBuchEMAIL = Nothing
-            i += 1
+            ' Eine Ebene zurück auf <contact>
+            BaseXmlNode = BaseXmlNode.ParentNode
 
-            For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
-                Select Case XMLEintragWerte.Name
-                    Case "category", "uniqueid", "mod_time"
-                        NodeValues.Item(NodeNames.IndexOf(XMLEintragWerte.Name)) = XMLEintragWerte.InnerText
-                    Case "TelNr_Prio"
-                        prio = XMLEintragWerte.InnerText
-                    Case "TelNr_kwV"
-                        TelNr_kwV = XMLEintragWerte.InnerText
-                    Case "TelNr_Kurzwahl"
-                        quickdial = XMLEintragWerte.InnerText
-                    Case "TelNr_Vanity"
-                        vanity = XMLEintragWerte.InnerText
+            ' <telephony>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "telephony", C_XML.P_Def_StringEmpty)
+            BaseXmlNode = BaseXmlNode.AppendChild(tmpXmlNode)
 
-                    Case "RealName"
-                        XMLTelBuchRealName = TransTelBook.CreateNode(XmlNodeType.Element, "realName", C_XML.P_Def_StringEmpty)
-                        XMLTelBuchRealName.InnerText = XMLEintragWerte.InnerText
+            ' Abhier etwas komplizierter
+            ' Telefonnummern ermitteln
 
-                    Case "TelNr_home_TelNr"
-                        If XMLEintragWerte.InnerText IsNot C_DP.P_Def_StringEmpty Then
-                            XMLTelNrHome = TransTelBook.CreateNode(XmlNodeType.Element, "number", C_XML.P_Def_StringEmpty)
-                            XMLTelNrHome.InnerText = XMLEintragWerte.InnerText
+            TelNrPrio = AdressbookEntrie.Item("TelNr_Prio").InnerText
+            TelNrkwV = AdressbookEntrie.Item("TelNr_kwV").InnerText
+            TelNrQuickDial = AdressbookEntrie.Item("TelNr_Kurzwahl").InnerText
+            TelNrVanity = AdressbookEntrie.Item("TelNr_Vanity").InnerText
 
-                            XMLTelNrHome.Attributes.Append(TransTelBook.CreateAttribute("type")).Value = "home"
-                            XMLTelNrHome.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "0"
+            TelNr(0) = AdressbookEntrie.Item("TelNr_home_TelNr").InnerText     ' Home
+            TelNr(1) = AdressbookEntrie.Item("TelNr_mobile_TelNr").InnerText   ' Mobil
+            TelNr(2) = AdressbookEntrie.Item("TelNr_work_TelNr").InnerText     ' Work
+            TelNr(3) = AdressbookEntrie.Item("TelNr_fax_work_TelNr").InnerText ' Fax
+            ' Counter auf 0
+            i = 0
+            ' <number>
+            For j = 0 To 3
+                If TelNr(j) IsNot C_DP.P_Def_StringEmpty Then
+                    i += 1
+                    tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "number", C_XML.P_Def_StringEmpty)
+                    tmpXmlNode.InnerText = TelNr(j)
+
+                    ' Attribut id
+                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("id")).Value = CStr(i - 1)
+
+                    ' Attribut prio
+                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("prio")).Value = CStr(IIf(TelNrPrio = Me.AdrBk_KwV.Items(j).ToString, 1, 0))
+
+                    ' Attribut type
+                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("type")).Value = TelNrName(j)
+
+                    If TelNrkwV = Me.AdrBk_KwV.Items(j).ToString Then
+                        ' Attribut quickdial
+                        If TelNrQuickDial IsNot C_DP.P_Def_StringEmpty Then
+                            tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("quickdial")).Value = TelNrQuickDial
                         End If
-                    Case "TelNr_work_TelNr"
-                        If XMLEintragWerte.InnerText IsNot C_DP.P_Def_StringEmpty Then
-                            XMLTelNrWork = TransTelBook.CreateNode(XmlNodeType.Element, "number", C_XML.P_Def_StringEmpty)
-                            XMLTelNrWork.InnerText = XMLEintragWerte.InnerText
-
-                            XMLTelNrWork.Attributes.Append(TransTelBook.CreateAttribute("type")).Value = "work"
-                            XMLTelNrWork.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "0"
+                        ' Attribut vanity
+                        If TelNrVanity IsNot C_DP.P_Def_StringEmpty Then
+                            tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("vanity")).Value = TelNrVanity
                         End If
-                    Case "TelNr_mobile_TelNr"
-                        If XMLEintragWerte.InnerText IsNot C_DP.P_Def_StringEmpty Then
-                            XMLTelNrMobil = TransTelBook.CreateNode(XmlNodeType.Element, "number", C_XML.P_Def_StringEmpty)
-                            XMLTelNrMobil.InnerText = XMLEintragWerte.InnerText
-
-                            XMLTelNrMobil.Attributes.Append(TransTelBook.CreateAttribute("type")).Value = "mobile"
-                            XMLTelNrMobil.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "0"
-                        End If
-                    Case "TelNr_fax_work_TelNr"
-                        If XMLEintragWerte.InnerText IsNot C_DP.P_Def_StringEmpty Then
-                            XMLTelNrFax = TransTelBook.CreateNode(XmlNodeType.Element, "number", C_XML.P_Def_StringEmpty)
-                            XMLTelNrFax.InnerText = XMLEintragWerte.InnerText
-
-                            XMLTelNrFax.Attributes.Append(TransTelBook.CreateAttribute("type")).Value = "fax_work"
-                            XMLTelNrFax.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "0"
-                        End If
-                    Case "EMail"
-                        XMLTelBuchEMAIL = TransTelBook.CreateNode(XmlNodeType.Element, "email", C_XML.P_Def_StringEmpty)
-                        XMLTelBuchEMAIL.InnerText = XMLEintragWerte.InnerText
-
-                        XMLTelBuchEMAIL.Attributes.Append(TransTelBook.CreateAttribute("classifier")).Value = "private"
-                        XMLTelBuchEMAIL.Attributes.Append(TransTelBook.CreateAttribute("id")).Value = "0"
-                        'Case "setup"
-                    Case Else
-                        ' Do Nothing
-                End Select
+                    End If
+                    BaseXmlNode.AppendChild(tmpXmlNode)
+                End If
             Next
-            XMLTelBuchEintrag = C_XML.CreateXMLNode(TransTelBook, "contact", NodeNames, NodeValues, AttributeNames, AttributeValues)
+            ' Attribut nid
+            BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("nid")).Value = CStr(i)
 
-            'Name Hinzufügen
-            If XMLTelBuchRealName IsNot Nothing Then XMLTelBuchEintrag.Item("person").AppendChild(XMLTelBuchRealName)
+            ' Eine Ebene zurück auf <contact>
+            BaseXmlNode = BaseXmlNode.ParentNode
 
-            'Telefonnummer Hinzufügen
-            Select Case TelNr_kwV
-                Case Me.AdrBk_KwV.Items(0).ToString '"home"
-                    XMLTelNrHome.Attributes.Append(TransTelBook.CreateAttribute("quickdial")).Value = quickdial
-                    XMLTelNrHome.Attributes.Append(TransTelBook.CreateAttribute("vanity")).Value = vanity
-                Case Me.AdrBk_KwV.Items(1).ToString ' "work"
-                    XMLTelNrWork.Attributes.Append(TransTelBook.CreateAttribute("quickdial")).Value = quickdial
-                    XMLTelNrWork.Attributes.Append(TransTelBook.CreateAttribute("vanity")).Value = vanity
-                Case Me.AdrBk_KwV.Items(2).ToString ' "mobile"
-                    XMLTelNrMobil.Attributes.Append(TransTelBook.CreateAttribute("quickdial")).Value = quickdial
-                    XMLTelNrMobil.Attributes.Append(TransTelBook.CreateAttribute("vanity")).Value = vanity
-                Case Me.AdrBk_KwV.Items(3).ToString ' "fax_work"
-                    XMLTelNrFax.Attributes.Append(TransTelBook.CreateAttribute("quickdial")).Value = quickdial
-                    XMLTelNrFax.Attributes.Append(TransTelBook.CreateAttribute("vanity")).Value = vanity
-                Case Else
-                    ' Do Nothing
-            End Select
+            ' Counter auf 0
+            i = 0
 
-            Select Case prio
-                Case Me.AdrBk_KwV.Items(0).ToString '"home"
-                    XMLTelNrHome.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "1"
-                Case Me.AdrBk_KwV.Items(1).ToString ' "work"
-                    XMLTelNrWork.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "1"
-                Case Me.AdrBk_KwV.Items(2).ToString ' "mobile"
-                    XMLTelNrMobil.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "1"
-                Case Me.AdrBk_KwV.Items(3).ToString ' "fax_work"
-                    XMLTelNrFax.Attributes.Append(TransTelBook.CreateAttribute("prio")).Value = "1"
-                Case Else
-                    ' Do Nothing
-            End Select
+            ' <services>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "services", C_XML.P_Def_StringEmpty)
+            BaseXmlNode = BaseXmlNode.AppendChild(tmpXmlNode)
 
-            If XMLTelNrHome IsNot Nothing Then XMLTelBuchEintrag.Item("telephony").AppendChild(XMLTelNrHome)
-            If XMLTelNrWork IsNot Nothing Then XMLTelBuchEintrag.Item("telephony").AppendChild(XMLTelNrWork)
-            If XMLTelNrMobil IsNot Nothing Then XMLTelBuchEintrag.Item("telephony").AppendChild(XMLTelNrMobil)
-            If XMLTelNrFax IsNot Nothing Then XMLTelBuchEintrag.Item("telephony").AppendChild(XMLTelNrFax)
+            ' <email>
+            If AdressbookEntrie.Item("EMail").InnerText IsNot C_DP.P_Def_StringEmpty Then
+                i += 1
+                tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "email", C_XML.P_Def_StringEmpty)
+                tmpXmlNode.InnerText = AdressbookEntrie.Item("EMail").InnerText
+                tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("classifier")).Value = "private"
+                tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("id")).Value = CStr(i - 1)
+                BaseXmlNode.AppendChild(tmpXmlNode)
+                ' Attribut nid
+                BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("nid")).Value = CStr(i)
+            End If
+            ' Eine Ebene zurück auf <contact>
+            BaseXmlNode = BaseXmlNode.ParentNode
 
-            ' E-Mail hinzufügen
-            If XMLTelBuchEMAIL IsNot Nothing Then XMLTelBuchEintrag.Item("services").AppendChild(XMLTelBuchEMAIL)
+            ' <setup>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "setup", C_XML.P_Def_StringEmpty)
+            BaseXmlNode.AppendChild(tmpXmlNode)
 
-            TransTelBook.Item("phonebooks").Item("phonebook").AppendChild(XMLTelBuchEintrag)
+            '<mod_time>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "mod_time", C_XML.P_Def_StringEmpty)
+            tmpXmlNode.InnerText = AdressbookEntrie.Item("mod_time").InnerText
+            BaseXmlNode.AppendChild(tmpXmlNode)
+
+            '<uniqueid>
+            tmpXmlNode = FBoxAdrBook.CreateNode(XmlNodeType.Element, "uniqueid", C_XML.P_Def_StringEmpty)
+            tmpXmlNode.InnerText = AdressbookEntrie.Item("uniqueid").InnerText
+            BaseXmlNode.AppendChild(tmpXmlNode)
+
+            ' Eine Ebene zurück auf <phonebook>
+            BaseXmlNode = BaseXmlNode.ParentNode
+
+            ' Done
         Next
-        xPathTeile = Nothing
-        NodeNames = Nothing
-        NodeValues = Nothing
-        AttributeNames = Nothing
-        AttributeValues = Nothing
-        XMLTelBuchEintraege = Nothing
-
-        Return TransTelBook
+        Return FBoxAdrBook
     End Function
 
     Private Function GenerateXML(ByVal Datensatz As DataSet) As XmlDocument
@@ -523,7 +487,7 @@ Public Class formAdressbuch
     End Sub
 
     Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
-
+        GetFritzBoxTelefonbuch(GenerateXML(DS))
     End Sub
 
     Private Sub DGVAdressbuch_DragDrop(sender As Object, e As DragEventArgs) Handles DGVAdressbuch.DragDrop
@@ -534,9 +498,10 @@ Public Class formAdressbuch
         'Throw New NotImplementedException
     End Sub
 
-    Private Sub DGVAdressbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles DGVAdressbuch.CellValueChanged
+    Private Sub DGVAdressbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
         ' Datum ändern
-        ' C.hf.GetUnixTime
+        Dim UTime As Integer = C_hf.GetUnixTime
+        DS.Tables.Item(0).Rows(e.RowIndex).Item("mod_time") = UTime
     End Sub
 
     Private Function GetUniqueID() As String
@@ -548,7 +513,46 @@ Public Class formAdressbuch
         Return CStr(rmp + 1)
     End Function
 
-    Private Sub SpeichernToolStripButton_Click(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
-        GetFritzBoxTelefonbuch(GenerateXML(DS))
+    Private Sub SpeicheFBAdressbuch(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
+        Dim myStreamWriter As StreamWriter
+        Dim myStringBuilder As New StringBuilder
+        Dim myStringWriter As New StringWriter(myStringBuilder)
+        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
+
+        With myXmlTextWriter
+            .Formatting = Formatting.Indented
+            .IndentChar = ControlChars.Tab
+            .Indentation = 1
+        End With
+
+        GetFritzBoxTelefonbuch(GenerateXML(DS)).WriteContentTo(myXmlTextWriter)
+
+        With SFDAdressbuch
+            .Filter = "XML Adressbuch (*.xml)|*.xml" '"XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
+            .FilterIndex = 1
+            .RestoreDirectory = True
+
+            If .ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                Try
+                    myStreamWriter = File.CreateText(.FileName)
+                    With myStreamWriter
+                        .Write(myStringBuilder)
+                        .Flush()
+                        .Close()
+                    End With
+                Catch Ex As Exception
+                    C_hf.FBDB_MsgBox("Das Speichern ist nicht möglich:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & Ex.Message, MsgBoxStyle.Critical, "SpeicheFBAdressbuch")
+                Finally
+                    ' Check this again, since we need to make sure we didn't throw an exception on open.
+                    myStreamWriter = Nothing
+                    myStringBuilder = Nothing
+                    myStringWriter = Nothing
+                    myXmlTextWriter = Nothing
+                End Try
+            End If
+        End With
+
+
     End Sub
+
 End Class

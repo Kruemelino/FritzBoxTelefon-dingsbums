@@ -3298,6 +3298,18 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_AdrBk_ToolTipp() As String
+        Get
+            Return "Öffnet den Dialog zum Editieren des " & P_Def_FritzBoxName & "-Adressbuches."
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Anrufen (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
     ''' <value></value>
@@ -3390,6 +3402,18 @@ Public Class DataProvider
     Public ReadOnly Property P_CMB_Insp_UploadKontakt() As String
         Get
             Return "Upload"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Upload
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Expl_Adrbk() As String
+        Get
+            Return "Adressbuch"
         End Get
     End Property
 

@@ -67,6 +67,7 @@ Imports Microsoft.Office.Core
     Private C_KF As Contacts
     Private C_FBox As FritzBox
     Private C_PopUp As Popup
+    Private F_AdrBk As formAdressbuch
 #End Region
 
 #Region "Eigene Formulare"
@@ -116,7 +117,8 @@ Imports Microsoft.Office.Core
            ByVal Inverssuche As formRWSuche, _
            ByVal KontaktKlasse As Contacts, _
            ByVal PopUpKlasse As Popup, _
-           ByVal XMLKlasse As XML)
+           ByVal XMLKlasse As XML, _
+           ByVal AdrBkFormKlasse As formAdressbuch)
 
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
@@ -124,6 +126,7 @@ Imports Microsoft.Office.Core
         C_KF = KontaktKlasse
         C_PopUp = PopUpKlasse
         C_XML = XMLKlasse
+        F_AdrBk = AdrBkFormKlasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -568,6 +571,8 @@ Imports Microsoft.Office.Core
                 GetExplLabel = C_DP.P_CMB_AnrMonAnzeigen
             Case "AnrMonBtn_C4", "AnrMonBtn_M4", "AnrMonBtn_J4", "AnrMonBtn_K4"
                 GetExplLabel = C_DP.P_CMB_Journal
+            Case "AdrBtn_C1", "AdrBtn_M1", "AdrBtn_J1", "AdrBtn_K1"
+                GetExplLabel = C_DP.P_CMB_Expl_Adrbk()
             Case "ContextMenuContactItem_B", "ContextMenuJournalItem_F", "ContextMenuMailItem_H"
                 GetExplLabel = C_DP.P_CMB_ContextMenueItemCall
             Case "ContextMenuContactItem_C"
@@ -607,6 +612,8 @@ Imports Microsoft.Office.Core
                 GetExplScreenTipp = C_DP.P_CMB_Journal_ToolTipp
             Case "Einstellungen_C", "Einstellungen_M", "Einstellungen_J", "Einstellungen_K"
                 GetExplScreenTipp = C_DP.P_CMB_Setup_ToolTipp
+            Case "AdrBtn_C1", "AdrBtn_M1", "AdrBtn_J1", "AdrBtn_K1"
+                GetExplScreenTipp = C_DP.P_CMB_AdrBk_ToolTipp
             Case Else
                 GetExplScreenTipp = C_DP.P_Def_ErrorMinusOne_String
         End Select
@@ -654,6 +661,9 @@ Imports Microsoft.Office.Core
 
     Public Sub ContextCall(ByVal control As Office.IRibbonControl)
         WählenExplorer()
+    End Sub
+    Public Sub OnActionAdressbook(ByVal control As Office.IRibbonControl)
+        F_AdrBk.Show()
     End Sub
 #End If
 #End Region 'Ribbon Explorer
