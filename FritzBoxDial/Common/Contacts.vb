@@ -1275,6 +1275,7 @@ Public Class Contacts
         window.HWnd = CType(hwnd, IntPtr)
         Return window
     End Function
+
 #End If
 #End Region
 

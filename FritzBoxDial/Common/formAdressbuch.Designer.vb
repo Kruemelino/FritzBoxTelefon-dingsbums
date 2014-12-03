@@ -24,7 +24,7 @@ Partial Class formAdressbuch
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formAdressbuch))
-        Dim XmlViewerSettings1 As FritzBoxDial.XMLViewerSettings = New FritzBoxDial.XMLViewerSettings()
+        Dim XmlViewerSettings4 As FritzBoxDial.XMLViewerSettings = New FritzBoxDial.XMLViewerSettings()
         Me.StatStAdressbuch = New System.Windows.Forms.StatusStrip()
         Me.TSSLAdressbuch = New System.Windows.Forms.ToolStripStatusLabel()
         Me.TSAdressbuch = New System.Windows.Forms.ToolStrip()
@@ -94,6 +94,7 @@ Partial Class formAdressbuch
         '
         'TSAdressbuch
         '
+        Me.TSAdressbuch.AllowDrop = True
         Me.TSAdressbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NeuToolStripButton, Me.ÖffnenToolStripButton, Me.SpeichernToolStripButton, Me.ImportToolStrip, Me.ExportToolStripButton})
         Me.TSAdressbuch.Location = New System.Drawing.Point(0, 0)
         Me.TSAdressbuch.Name = "TSAdressbuch"
@@ -193,6 +194,7 @@ Partial Class formAdressbuch
         'TCAdressbuch
         '
         Me.TCAdressbuch.Alignment = System.Windows.Forms.TabAlignment.Bottom
+        Me.TCAdressbuch.AllowDrop = True
         Me.TCAdressbuch.Controls.Add(Me.TPAdressbuchDTV)
         Me.TCAdressbuch.Controls.Add(Me.TPAdressbuchXML)
         Me.TCAdressbuch.Dock = System.Windows.Forms.DockStyle.Fill
@@ -205,6 +207,7 @@ Partial Class formAdressbuch
         '
         'TPAdressbuchDTV
         '
+        Me.TPAdressbuchDTV.AllowDrop = True
         Me.TPAdressbuchDTV.Controls.Add(Me.DGVAdressbuch)
         Me.TPAdressbuchDTV.Location = New System.Drawing.Point(4, 4)
         Me.TPAdressbuchDTV.Name = "TPAdressbuchDTV"
@@ -367,12 +370,12 @@ Partial Class formAdressbuch
         Me.myXMLViewer.Location = New System.Drawing.Point(3, 3)
         Me.myXMLViewer.Name = "myXMLViewer"
         Me.myXMLViewer.ReadOnly = True
-        XmlViewerSettings1.AttributeKey = System.Drawing.Color.Red
-        XmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue
-        XmlViewerSettings1.Element = System.Drawing.Color.DarkRed
-        XmlViewerSettings1.Tag = System.Drawing.Color.Blue
-        XmlViewerSettings1.Value = System.Drawing.Color.Black
-        Me.myXMLViewer.Settings = XmlViewerSettings1
+        XmlViewerSettings4.AttributeKey = System.Drawing.Color.Red
+        XmlViewerSettings4.AttributeValue = System.Drawing.Color.Blue
+        XmlViewerSettings4.Element = System.Drawing.Color.DarkRed
+        XmlViewerSettings4.Tag = System.Drawing.Color.Blue
+        XmlViewerSettings4.Value = System.Drawing.Color.Black
+        Me.myXMLViewer.Settings = XmlViewerSettings4
         Me.myXMLViewer.Size = New System.Drawing.Size(586, 483)
         Me.myXMLViewer.TabIndex = 0
         Me.myXMLViewer.Text = ""

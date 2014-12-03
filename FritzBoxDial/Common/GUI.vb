@@ -67,7 +67,6 @@ Imports Microsoft.Office.Core
     Private C_KF As Contacts
     Private C_FBox As FritzBox
     Private C_PopUp As Popup
-    Private F_AdrBk As formAdressbuch
 #End Region
 
 #Region "Eigene Formulare"
@@ -117,8 +116,7 @@ Imports Microsoft.Office.Core
            ByVal Inverssuche As formRWSuche, _
            ByVal KontaktKlasse As Contacts, _
            ByVal PopUpKlasse As Popup, _
-           ByVal XMLKlasse As XML, _
-           ByVal AdrBkFormKlasse As formAdressbuch)
+           ByVal XMLKlasse As XML)
 
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
@@ -126,7 +124,6 @@ Imports Microsoft.Office.Core
         C_KF = KontaktKlasse
         C_PopUp = PopUpKlasse
         C_XML = XMLKlasse
-        F_AdrBk = AdrBkFormKlasse
     End Sub
 
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
@@ -663,7 +660,7 @@ Imports Microsoft.Office.Core
         WählenExplorer()
     End Sub
     Public Sub OnActionAdressbook(ByVal control As Office.IRibbonControl)
-        F_AdrBk.Show()
+        ÖffneAdressbuch()
     End Sub
 #End If
 #End Region 'Ribbon Explorer
@@ -1369,6 +1366,10 @@ Imports Microsoft.Office.Core
             C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
             oSel = Nothing : ActiveExplorer = Nothing
         End If
+    End Sub
+
+    Friend Sub ÖffneAdressbuch()
+        Dim F_AdrBk As New formAdressbuch(C_XML, C_FBox, C_DP, C_KF, C_HF, Me)
     End Sub
 
 #End Region

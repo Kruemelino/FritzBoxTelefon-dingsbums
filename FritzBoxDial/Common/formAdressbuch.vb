@@ -14,6 +14,8 @@ Public Class formAdressbuch
     Private C_KF As Contacts
     Private C_XML As XML
     Private C_hf As Helfer
+    Private C_GUI As GraphicalUserInterface
+
     Private DS As DataSet
 
     Private StatusText As String
@@ -29,8 +31,12 @@ Public Class formAdressbuch
     Private WithEvents BackgroundWorkerExport As BackgroundWorker
 #End Region
 
-
-    Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer)
+    Public Sub New(ByVal XMLKlasse As XML, _
+                   ByVal FritzBoxKlasse As FritzBox, _
+                   ByVal DataProviderKlasse As DataProvider, _
+                   ByVal KontaktKlasse As Contacts, _
+                   ByVal Helferklasse As Helfer, _
+                   ByVal GUIKlasse As GraphicalUserInterface)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -41,21 +47,25 @@ Public Class formAdressbuch
         C_KF = KontaktKlasse
         C_XML = XMLKlasse
         C_hf = Helferklasse
+        C_GUI = GUIKlasse
 
-        Me.DGVAdressbuch.RowHeadersVisible = False
+        With Me.DGVAdressbuch
+            .RowHeadersVisible = False
+            With .Columns
+                .Item("Adrbk_ID").Visible = False
+                .Item("AdrBk_uniqueid").Visible = False
+                .Item("AdrBk_Mod_Time").Visible = False
+            End With
+        End With
         FillDGVAdressbuch(GetEmptyTelbook)
-
-        Me.DGVAdressbuch.Columns.Item("Adrbk_ID").Visible = False
-        Me.DGVAdressbuch.Columns.Item("AdrBk_uniqueid").Visible = False
-        Me.DGVAdressbuch.Columns.Item("AdrBk_Mod_Time").Visible = False
-
         ' Initialize the XMLViewerSettings.
         Dim viewerSetting As XMLViewerSettings = New XMLViewerSettings With {.AttributeKey = Color.Red, .AttributeValue = Color.Blue, .Tag = Color.Blue, .Element = Color.DarkRed, .Value = Color.Black}
         myXMLViewer.Settings = viewerSetting
 
+        Me.Show()
         StatusText = "Formular geöffnet, leeres Adressbuch geladen"
         SetStatusText()
-        'Me.Show()
+
     End Sub
 
 #Region "Vorlage: Telefonbuchformate"
@@ -318,7 +328,7 @@ Public Class formAdressbuch
                     tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("id")).Value = CStr(i - 1)
 
                     ' Attribut prio
-                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("prio")).Value = CStr(IIf(TelNrPrio = Me.AdrBk_KwV.Items(j).ToString, 1, 0))
+                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("prio")).Value = CStr(IIf(TelNrPrio = Me.Adrbk_Prio.Items(j).ToString, 1, 0))
 
                     ' Attribut type
                     tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("type")).Value = TelNrName(j)
@@ -628,10 +638,6 @@ Public Class formAdressbuch
         Return retVal
     End Function
 #End Region
-
-    Private Sub DGVAdressbuch_DragDrop(sender As Object, e As DragEventArgs) Handles DGVAdressbuch.DragDrop
-
-    End Sub
 
     Private Sub DGVAdressbuch_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DGVAdressbuch.DataError
         'Throw New NotImplementedException

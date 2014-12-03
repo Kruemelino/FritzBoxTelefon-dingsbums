@@ -206,6 +206,13 @@
   <metadata name="CMSAdressbuch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>574, 17</value>
   </metadata>
+  <data name="LHinweis.Text" xml:space="preserve">
+    <value>Es werden maximal 4 Telefonnummern unterstützt. Es wird je eine Privat-, Geschäfts-, Mobil-, sowie Faxnummer unterstützt. Sollte ein Kontakt aus dem Fritz!Box Telefonbuch mehr Nummern haben, gehen diese verloren.
+
+Kontaktbilder werden nicht unterstützt und gehen ebenfalls verloren. 
+
+Es handelt sich bei dieser Funktionaltität um eine frühe Entwicklung. Benutzung auf eigene Gefahr!</value>
+  </data>
   <metadata name="Adrbk_ID.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -248,11 +255,4 @@
   <metadata name="AdrBk_Vanity.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="LHinweis.Text" xml:space="preserve">
-    <value>Es werden maximal 4 Telefonnummern unterstützt. Es wird je eine Privat-, Geschäfts-, Mobil-, sowie Faxnummer unterstützt. Sollte ein Kontakt aus dem Fritz!Box Telefonbuch mehr Nummern haben, gehen diese verloren.
-
-Kontaktbilder werden nicht unterstützt und gehen ebenfalls verloren. 
-
-Es handelt sich bei dieser Funktionaltität um eine frühe Entwicklung. Benutzung auf eigene Gefahr!</value>
-  </data>
 </root>
