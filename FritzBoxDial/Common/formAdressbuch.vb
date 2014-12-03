@@ -18,9 +18,17 @@ Public Class formAdressbuch
 
     Private StatusText As String
 #End Region
+
 #Region "Delegaten"
     Private Delegate Sub DelgTSSLAdressbuch()
+    Private Delegate Sub DelgDGVAdressbuch(ByVal AdrBk As XmlDocument)
 #End Region
+
+#Region "BackgroundWorker"
+    Private WithEvents BackgroundWorkerImport As BackgroundWorker
+    Private WithEvents BackgroundWorkerExport As BackgroundWorker
+#End Region
+
 
     Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer)
 
@@ -107,7 +115,7 @@ Public Class formAdressbuch
     ''' <param name="XMLTelefonbuch">Das umzuwandelnde Telefonbuch</param>
     ''' <returns>Das umgewandelte Telefonbuch</returns>
     ''' <remarks>Das umgewandelte Telefonbuch dient als interne Datenquelle und wird nie ausgegeben.</remarks>
-    Private Function GetDTVTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
+    Private Function GetDGVTelefonbuch(ByVal XMLTelefonbuch As XmlDocument) As XmlDocument
         Dim TransTelBook As New XmlDocument
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
@@ -293,10 +301,10 @@ Public Class formAdressbuch
             TelNrQuickDial = CStr(DR.Item("TelNr_Kurzwahl"))
             TelNrVanity = CStr(DR.Item("TelNr_Vanity"))
 
-            TelNr(0) = CStr(DR.Item("TelNr_home_TelNr"))     ' Home
-            TelNr(1) = CStr(DR.Item("TelNr_mobile_TelNr"))   ' Mobil
-            TelNr(2) = CStr(DR.Item("TelNr_work_TelNr"))     ' Work
-            TelNr(3) = CStr(DR.Item("TelNr_fax_work_TelNr")) ' Fax
+            TelNr(0) = C_hf.nurZiffern(CStr(DR.Item("TelNr_home_TelNr")))     ' Home
+            TelNr(1) = C_hf.nurZiffern(CStr(DR.Item("TelNr_mobile_TelNr")))  ' Mobil
+            TelNr(2) = C_hf.nurZiffern(CStr(DR.Item("TelNr_work_TelNr")))  ' Work
+            TelNr(3) = C_hf.nurZiffern(CStr(DR.Item("TelNr_fax_work_TelNr"))) ' Fax
             ' Counter auf 0
             i = 0
             ' <number>
@@ -494,27 +502,15 @@ Public Class formAdressbuch
                 End Try
             End If
             ' Auswahl, je nach Datei
-            FillDGVAdressbuch(GetDTVTelefonbuch(XMLAdressbuch))
+            FillDGVAdressbuch(GetDGVTelefonbuch(XMLAdressbuch))
             myStream = Nothing
             myStreamReader = Nothing
             XMLAdressbuch = Nothing
         End With
     End Sub
 
-    Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
-        Dim XMLImportiertesAdressbuch As XmlDocument
-        Dim BookID As String = "0"
-        Dim BookName As String = "Telefonbuch"
-        XMLImportiertesAdressbuch = C_FB.DownloadAddressbook(BookID, BookName)
-
-        FillDGVAdressbuch(GetDTVTelefonbuch(XMLImportiertesAdressbuch))
-        StatusText = "Telefonbuch " & BookID & " (" & BookName & ") wurde importiert."
-        SetStatusText()
-    End Sub
-
     Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click, BAdd.Click
-        'Dim uID As String = GetUniqueID()
-        'DS.Tables.Item(0).Rows.Add.Item("uniqueid") = uID
+        DS.Tables.Item(0).Rows.Add()
     End Sub
 
     Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click, BDel.Click
@@ -569,23 +565,37 @@ Public Class formAdressbuch
         End With
 
     End Sub
+#Region "Import Export"
+
+    Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
+        BackgroundWorkerImport = New BackgroundWorker
+
+        With BackgroundWorkerImport
+            .WorkerReportsProgress = False
+            .WorkerSupportsCancellation = False
+            .RunWorkerAsync()
+        End With
+    End Sub
 
     Private Sub ExportToolStripButton_Click(sender As Object, e As EventArgs) Handles ExportToolStripButton.Click
-        Dim myStringBuilder As New StringBuilder
-        Dim myStringWriter As New StringWriter(myStringBuilder)
-        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
 
-        Dim sXML As String
-        With myXmlTextWriter
-            .Formatting = Formatting.Indented
-            .IndentChar = ControlChars.Tab
-            .Indentation = 1
-        End With
-        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
-        sXML = myStringBuilder.ToString()
+        If C_hf.FBDB_MsgBox("Soll dieses Telefonbuch in die Fritz!Box exportiert werden? Falls dieses Telefonbuch bereits vorhanden ist, wird es überschrieben.", _
+                            MsgBoxStyle.YesNo, "ExportToolStripButton_Click") = MsgBoxResult.Yes Then
+            BackgroundWorkerExport = New BackgroundWorker
+            With BackgroundWorkerExport
+                .WorkerReportsProgress = False
+                .WorkerSupportsCancellation = False
+                .RunWorkerAsync()
+            End With
 
-        'C_FB.UploadAddressbook("0", sXML)
+            StatusText = "Telefonbuch wird zur Fritz!Box exportiert... (bitte warten)"
+        Else
+            StatusText = "Telefonbuch nicht zur Fritz!Box exportiert."
+        End If
+        SetStatusText()
     End Sub
+
+#End Region
 #End Region
 
 #Region "XMlViewer"
@@ -641,7 +651,7 @@ Public Class formAdressbuch
         End If
     End Sub
 
-#Region "Delegatenbehandlung"
+#Region "Behandlung Delegaten"
     Private Sub SetStatusText()
         If Me.InvokeRequired Then
             Dim D As New DelgTSSLAdressbuch(AddressOf SetStatusText)
@@ -650,5 +660,57 @@ Public Class formAdressbuch
             Me.TSSLAdressbuch.Text = StatusText
         End If
     End Sub
+
+    Private Sub SetDBVAdressBuch(ByVal AdrBk As XmlDocument)
+        If Me.InvokeRequired Then
+            Dim D As New DelgDGVAdressbuch(AddressOf SetDBVAdressBuch)
+            Me.Invoke(D, AdrBk)
+        Else
+            FillDGVAdressbuch(GetDGVTelefonbuch(AdrBk))
+        End If
+    End Sub
+
 #End Region
+
+#Region "Behandlung BackgroundWorker"
+
+    Private Sub BackgroundWorkerImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerImport.DoWork
+        Dim BookID As String = "0"
+        Dim BookName As String = "Telefonbuch"
+        StatusText = "Importvorgang des Telefonbuchs " & BookID & " (" & BookName & ") von der Fritz!Box gestartet... (bitte warten)"
+        SetStatusText()
+        e.Result = C_FB.DownloadAddressbook(BookID, BookName)
+    End Sub
+
+    Private Sub BackgroundWorkerImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerImport.RunWorkerCompleted
+        SetDBVAdressBuch(CType(e.Result, XmlDocument))
+        StatusText = "Telefonbuch von der Fritz!Box erfolgreich importiert."
+        SetStatusText()
+    End Sub
+
+    Private Sub BackgroundWorkerExport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerExport.DoWork
+        Dim myStringBuilder As New StringBuilder
+        Dim myStringWriter As New StringWriter(myStringBuilder)
+        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
+
+        Dim sXML As String
+
+        With myXmlTextWriter
+            .Formatting = Formatting.Indented
+            .IndentChar = ControlChars.Tab
+            .Indentation = 1
+        End With
+        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
+        sXML = myStringBuilder.ToString()
+
+        C_FB.UploadAddressbook("0", sXML)
+    End Sub
+
+    Private Sub BackgroundWorkerExport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerExport.RunWorkerCompleted
+        StatusText = "Telefonbuch in die Fritz!Box exportiert. Bitte Prüfen Sie, ob der Vorgang erfolgreich war."
+        SetStatusText()
+    End Sub
+
+#End Region
+
 End Class

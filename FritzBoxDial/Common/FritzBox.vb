@@ -1759,38 +1759,38 @@ Public Class FritzBox
     End Function
 
 
-    'Friend Sub UploadAddressbook(ByVal BookID As String, ByVal Adressbuch As String)
-    '    ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
-    '    ' http://www.ip-phone-forum.de/showthread.php?t=226605
-    '    Dim row As String
-    '    Dim cmd As String
-    '    Dim ReturnValue As String
-    '    Dim XMLFBAddressbuch As XmlDocument
+    Friend Sub UploadAddressbook(ByVal BookID As String, ByVal Adressbuch As String)
+        ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
+        ' http://www.ip-phone-forum.de/showthread.php?t=226605
+        Dim row As String
+        Dim cmd As String
+        Dim ReturnValue As String
+        Dim XMLFBAddressbuch As XmlDocument
 
-    '    If SID = C_DP.P_Def_SessionID Then FBLogin(True)
-    '    If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
+        If SID = C_DP.P_Def_SessionID Then FBLogin(True)
+        If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
 
-    '        row = "---" & 12345 + Rnd() * 16777216
-    '        cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
-    '         & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & BookID & vbCrLf _
-    '         & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""; filename=""Name.xml""" & vbCrLf & "Content-Type: text/xml" & vbCrLf & vbCrLf & Adressbuch & vbCrLf _
-    '         & row & vbCrLf '& "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
+            row = "---" & 12345 + Rnd() * 16777216
+            cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & BookID & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""; filename=""Name.xml""" & vbCrLf & "Content-Type: text/xml" & vbCrLf & vbCrLf & Adressbuch & vbCrLf _
+             & row & vbCrLf '& "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
 
-    '        With C_hf
-    '            ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding)
-    '            If ReturnValue.StartsWith("<?xml") Then
-    '                XMLFBAddressbuch = New XmlDocument()
-    '                Try
-    '                    XMLFBAddressbuch.LoadXml(ReturnValue)
-    '                Catch ex As Exception
-    '                    .LogFile(C_DP.P_Fehler_Export_Addressbuch)
-    '                End Try
-    '            End If
-    '        End With
-    '    Else
-    '        C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadAddressbook")
-    '    End If
-    'End Sub
+            With C_hf
+                ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding)
+                If ReturnValue.StartsWith("<?xml") Then
+                    XMLFBAddressbuch = New XmlDocument()
+                    Try
+                        XMLFBAddressbuch.LoadXml(ReturnValue)
+                    Catch ex As Exception
+                        .LogFile(C_DP.P_Fehler_Export_Addressbuch)
+                    End Try
+                End If
+            End With
+        Else
+            C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadAddressbook")
+        End If
+    End Sub
 
 #End Region
 
