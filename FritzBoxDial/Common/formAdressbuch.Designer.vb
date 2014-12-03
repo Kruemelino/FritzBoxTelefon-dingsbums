@@ -57,12 +57,14 @@ Partial Class formAdressbuch
         Me.AdrBk_Vanity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TPAdressbuchXML = New System.Windows.Forms.TabPage()
         Me.myXMLViewer = New FritzBoxDial.XMLViewer()
+        Me.TBAdrbuchName = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.BDel = New System.Windows.Forms.Button()
         Me.BAdd = New System.Windows.Forms.Button()
         Me.BTest = New System.Windows.Forms.Button()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.TBAdrbuchName = New System.Windows.Forms.TextBox()
+        Me.TSSLAdressbuch = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.StatStAdressbuch.SuspendLayout()
         Me.TSAdressbuch.SuspendLayout()
         Me.CMSAdressbuch.SuspendLayout()
         CType(Me.SCAdressbuch, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -77,6 +79,7 @@ Partial Class formAdressbuch
         '
         'StatStAdressbuch
         '
+        Me.StatStAdressbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSSLAdressbuch})
         Me.StatStAdressbuch.Location = New System.Drawing.Point(0, 540)
         Me.StatStAdressbuch.Name = "StatStAdressbuch"
         Me.StatStAdressbuch.Size = New System.Drawing.Size(784, 22)
@@ -354,7 +357,6 @@ Partial Class formAdressbuch
         '
         'myXMLViewer
         '
-        Me.myXMLViewer.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.myXMLViewer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.myXMLViewer.Location = New System.Drawing.Point(3, 3)
         Me.myXMLViewer.Name = "myXMLViewer"
@@ -368,6 +370,22 @@ Partial Class formAdressbuch
         Me.myXMLViewer.Size = New System.Drawing.Size(586, 483)
         Me.myXMLViewer.TabIndex = 0
         Me.myXMLViewer.Text = ""
+        '
+        'TBAdrbuchName
+        '
+        Me.TBAdrbuchName.Location = New System.Drawing.Point(4, 23)
+        Me.TBAdrbuchName.Name = "TBAdrbuchName"
+        Me.TBAdrbuchName.Size = New System.Drawing.Size(172, 20)
+        Me.TBAdrbuchName.TabIndex = 4
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(6, 7)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(92, 13)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Adressbuchname:"
         '
         'Label1
         '
@@ -404,21 +422,11 @@ Partial Class formAdressbuch
         Me.BTest.Text = "Testen"
         Me.BTest.UseVisualStyleBackColor = True
         '
-        'Label2
+        'TSSLAdressbuch
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 7)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(92, 13)
-        Me.Label2.TabIndex = 3
-        Me.Label2.Text = "Adressbuchname:"
-        '
-        'TBAdrbuchName
-        '
-        Me.TBAdrbuchName.Location = New System.Drawing.Point(4, 23)
-        Me.TBAdrbuchName.Name = "TBAdrbuchName"
-        Me.TBAdrbuchName.Size = New System.Drawing.Size(172, 20)
-        Me.TBAdrbuchName.TabIndex = 4
+        Me.TSSLAdressbuch.Name = "TSSLAdressbuch"
+        Me.TSSLAdressbuch.Size = New System.Drawing.Size(39, 17)
+        Me.TSSLAdressbuch.Text = "Status"
         '
         'formAdressbuch
         '
@@ -432,6 +440,8 @@ Partial Class formAdressbuch
         Me.ShowIcon = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.Text = "Adressbuch"
+        Me.StatStAdressbuch.ResumeLayout(False)
+        Me.StatStAdressbuch.PerformLayout()
         Me.TSAdressbuch.ResumeLayout(False)
         Me.TSAdressbuch.PerformLayout()
         Me.CMSAdressbuch.ResumeLayout(False)
@@ -486,4 +496,5 @@ Partial Class formAdressbuch
     Friend WithEvents myXMLViewer As New XMLViewer()
     Friend WithEvents TBAdrbuchName As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents TSSLAdressbuch As System.Windows.Forms.ToolStripStatusLabel
 End Class

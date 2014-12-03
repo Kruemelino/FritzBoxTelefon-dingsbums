@@ -15,6 +15,11 @@ Public Class formAdressbuch
     Private C_XML As XML
     Private C_hf As Helfer
     Private DS As DataSet
+
+    Private StatusText As String
+#End Region
+#Region "Delegaten"
+    Private Delegate Sub DelgTSSLAdressbuch()
 #End Region
 
     Public Sub New(ByVal XMLKlasse As XML, ByVal FritzBoxKlasse As FritzBox, ByVal DataProviderKlasse As DataProvider, ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer)
@@ -40,6 +45,8 @@ Public Class formAdressbuch
         Dim viewerSetting As XMLViewerSettings = New XMLViewerSettings With {.AttributeKey = Color.Red, .AttributeValue = Color.Blue, .Tag = Color.Blue, .Element = Color.DarkRed, .Value = Color.Black}
         myXMLViewer.Settings = viewerSetting
 
+        StatusText = "Formular geöffnet, leeres Adressbuch geladen"
+        SetStatusText()
         'Me.Show()
     End Sub
 
@@ -496,10 +503,13 @@ Public Class formAdressbuch
 
     Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
         Dim XMLImportiertesAdressbuch As XmlDocument
-
-        XMLImportiertesAdressbuch = C_FB.DownloadAddressbook("0", "Telefonbuch")
+        Dim BookID As String = "0"
+        Dim BookName As String = "Telefonbuch"
+        XMLImportiertesAdressbuch = C_FB.DownloadAddressbook(BookID, BookName)
 
         FillDGVAdressbuch(GetDTVTelefonbuch(XMLImportiertesAdressbuch))
+        StatusText = "Telefonbuch " & BookID & " (" & BookName & ") wurde importiert."
+        SetStatusText()
     End Sub
 
     Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click, BAdd.Click
@@ -513,8 +523,68 @@ Public Class formAdressbuch
                 For I As Integer = .SelectedRows.Count - 1 To 0 Step -1
                     .Rows.RemoveAt(.SelectedRows(I).Index)
                 Next
+                StatusText = "Eintrag / Einträge gelöscht."
+                SetStatusText()
             End If
         End With
+    End Sub
+
+    Private Sub SpeicheFBAdressbuch(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
+
+        Dim myStreamWriter As StreamWriter
+        Dim myStringBuilder As New StringBuilder
+        Dim myStringWriter As New StringWriter(myStringBuilder)
+        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
+
+        With myXmlTextWriter
+            .Formatting = Formatting.Indented
+            .IndentChar = ControlChars.Tab
+            .Indentation = 1
+        End With
+        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
+
+        With SFDAdressbuch
+            .Filter = "XML Adressbuch (*.xml)|*.xml" '"XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
+            .FilterIndex = 1
+            .RestoreDirectory = True
+
+            If .ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                Try
+                    myStreamWriter = File.CreateText(.FileName)
+                    With myStreamWriter
+                        .Write(myStringBuilder)
+                        .Flush()
+                        .Close()
+                    End With
+                Catch Ex As Exception
+                    C_hf.FBDB_MsgBox("Das Speichern ist nicht möglich:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & Ex.Message, MsgBoxStyle.Critical, "SpeicheFBAdressbuch")
+                Finally
+                    ' Check this again, since we need to make sure we didn't throw an exception on open.
+                    myStreamWriter = Nothing
+                    myStringBuilder = Nothing
+                    myStringWriter = Nothing
+                    myXmlTextWriter = Nothing
+                End Try
+            End If
+        End With
+
+    End Sub
+
+    Private Sub ExportToolStripButton_Click(sender As Object, e As EventArgs) Handles ExportToolStripButton.Click
+        Dim myStringBuilder As New StringBuilder
+        Dim myStringWriter As New StringWriter(myStringBuilder)
+        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
+
+        Dim sXML As String
+        With myXmlTextWriter
+            .Formatting = Formatting.Indented
+            .IndentChar = ControlChars.Tab
+            .Indentation = 1
+        End With
+        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
+        sXML = myStringBuilder.ToString()
+
+        'C_FB.UploadAddressbook("0", sXML)
     End Sub
 #End Region
 
@@ -558,51 +628,11 @@ Public Class formAdressbuch
     End Sub
 
     Private Sub DGVAdressbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
+        StatusText = "Eintrag " & CStr(DS.Tables.Item(0).Rows(e.RowIndex).Item("RealName")) & " geändert."
+        SetStatusText()
         ' Datum ändern
         Dim UTime As Integer = C_hf.GetUnixTime
         DS.Tables.Item(0).Rows(e.RowIndex).Item("mod_time") = UTime
-    End Sub
-
-    Private Sub SpeicheFBAdressbuch(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
-
-        Dim myStreamWriter As StreamWriter
-        Dim myStringBuilder As New StringBuilder
-        Dim myStringWriter As New StringWriter(myStringBuilder)
-        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
-
-        With myXmlTextWriter
-            .Formatting = Formatting.Indented
-            .IndentChar = ControlChars.Tab
-            .Indentation = 1
-        End With
-        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
-
-        With SFDAdressbuch
-            .Filter = "XML Adressbuch (*.xml)|*.xml" '"XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
-            .FilterIndex = 1
-            .RestoreDirectory = True
-
-            If .ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-                Try
-                    myStreamWriter = File.CreateText(.FileName)
-                    With myStreamWriter
-                        .Write(myStringBuilder)
-                        .Flush()
-                        .Close()
-                    End With
-                Catch Ex As Exception
-                    C_hf.FBDB_MsgBox("Das Speichern ist nicht möglich:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & Ex.Message, MsgBoxStyle.Critical, "SpeicheFBAdressbuch")
-                Finally
-                    ' Check this again, since we need to make sure we didn't throw an exception on open.
-                    myStreamWriter = Nothing
-                    myStringBuilder = Nothing
-                    myStringWriter = Nothing
-                    myXmlTextWriter = Nothing
-                End Try
-            End If
-        End With
-
-
     End Sub
 
     Private Sub TCAdressbuch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TCAdressbuch.SelectedIndexChanged
@@ -611,20 +641,14 @@ Public Class formAdressbuch
         End If
     End Sub
 
-    Private Sub ExportToolStripButton_Click(sender As Object, e As EventArgs) Handles ExportToolStripButton.Click
-        Dim myStringBuilder As New StringBuilder
-        Dim myStringWriter As New StringWriter(myStringBuilder)
-        Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
-
-        Dim sXML As String
-        With myXmlTextWriter
-            .Formatting = Formatting.Indented
-            .IndentChar = ControlChars.Tab
-            .Indentation = 1
-        End With
-        GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
-        sXML = myStringBuilder.ToString()
-
-        'C_FB.UploadAddressbook("0", sXML)
+#Region "Delegatenbehandlung"
+    Private Sub SetStatusText()
+        If Me.InvokeRequired Then
+            Dim D As New DelgTSSLAdressbuch(AddressOf SetStatusText)
+            Me.Invoke(D)
+        Else
+            Me.TSSLAdressbuch.Text = StatusText
+        End If
     End Sub
+#End Region
 End Class
