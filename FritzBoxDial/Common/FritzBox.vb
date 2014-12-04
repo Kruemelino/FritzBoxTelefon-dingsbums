@@ -1661,7 +1661,12 @@ Public Class FritzBox
     End Function
 #End Region
 
-#Region "Kontakt2FB"
+#Region "Fritz!Box Telefonbuch"
+    ''' <summary>
+    ''' Lädt ein einen einzelnen Kontakt in das aktuell geöffnete Telefonbuch der Fritz!Box hoch.
+    ''' </summary>
+    ''' <param name="Kontakt">Der Kontakt, der hichgeladen werden soll.</param>
+    ''' <param name="istVIP">Angabe, ob der Kontakt ein VIP ist. Diese Information wird übernommen.</param>
     Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
 
         Dim EntryName As String
@@ -1692,19 +1697,16 @@ Public Class FritzBox
 
         If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
             cmd = "sid=" & SID & "&entryname=" & EntryName
+
             For i = LBound(NumberType) To UBound(NumberType)
                 If Not NumberNew(i) = C_DP.P_Def_StringEmpty Then
                     cmd += "&numbertypenew1=" & NumberType(i) & "&numbernew1=" & NumberNew(i)
                 End If
             Next
 
-            If istVIP Then
-                cmd += "&category=on"
-            End If
+            If istVIP Then cmd += "&category=on"
 
-            If Not EmailNew1 = C_DP.P_Def_StringEmpty Then
-                cmd += "&emailnew1=" & EmailNew1
-            End If
+            If Not EmailNew1 = C_DP.P_Def_StringEmpty Then cmd += "&emailnew1=" & EmailNew1
 
             cmd += "&apply=" 'Wichtig!
 
@@ -1723,9 +1725,17 @@ Public Class FritzBox
         End If
     End Sub
 
-    Friend Function DownloadAddressbook(ByVal BookID As String, ByVal BookName As String) As XmlDocument
-        ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
-        ' http://www.ip-phone-forum.de/showthread.php?t=226605
+    ''' <summary>
+    ''' Lädt das gewünschte Telefonbuch von der Fritz!Box herunter.
+    ''' </summary>
+    ''' <param name="sPhonebookId">
+    ''' ID des Telefonbuches: 
+    ''' 0 = Haupttelefonbuch
+    ''' 255 = Intern
+    ''' 256 = Clip Info</param>
+    ''' <param name="sPhonebookExportName">Der Name des Telefonbuches, welcher mindestens ein Zeichen enthalten muss, wenn die ID größer als ID 1 ist.</param>
+    ''' <returns>XMl Telefonbuch</returns>
+    Friend Function DownloadAddressbook(ByVal sPhonebookId As String, ByVal sPhonebookExportName As String) As XmlDocument
         DownloadAddressbook = Nothing
         Dim row As String
         Dim cmd As String
@@ -1737,8 +1747,8 @@ Public Class FritzBox
 
             row = "---" & 12345 + Rnd() * 16777216
             cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & BookID & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExportName""" & vbCrLf & vbCrLf & BookName & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & sPhonebookId & vbCrLf _
+             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExportName""" & vbCrLf & vbCrLf & sPhonebookExportName & vbCrLf _
              & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
 
             With C_hf
@@ -1758,42 +1768,37 @@ Public Class FritzBox
         End If
     End Function
 
-
-    Friend Sub UploadAddressbook(ByVal BookID As String, ByVal Adressbuch As String)
-        ' To do: Mehrere Telefonbucher sind möglich. Zugriff prüfen.
-        ' http://www.ip-phone-forum.de/showthread.php?t=226605
-        Dim row As String
+    ''' <summary>
+    ''' Lädt ein Fritz!Box Telefonbuch im XML Format auf die Fritz!Box hoch. 
+    ''' </summary>
+    ''' <param name="sPhonebookId">
+    ''' ID des Telefonbuches: 
+    ''' 0 = Haupttelefonbuch
+    ''' 255 = Intern
+    ''' 256 = Clip Info</param>
+    ''' <param name="XMLAdressbuch">Das Telefonbuch im XML Format</param>
+    ''' <returns>Bollean, ob Upload erfolgreich war oder halt nicht.</returns>
+    Friend Function UploadAddressbook(ByVal sPhonebookId As String, ByVal XMLAdressbuch As String) As Boolean
         Dim cmd As String
-        Dim ReturnValue As String
-        Dim XMLFBAddressbuch As XmlDocument
+        UploadAddressbook = False
 
         If SID = C_DP.P_Def_SessionID Then FBLogin(True)
         If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
 
-            row = "---" & 12345 + Rnd() * 16777216
-            cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & BookID & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""; filename=""Name.xml""" & vbCrLf & "Content-Type: text/xml" & vbCrLf & vbCrLf & Adressbuch & vbCrLf _
-             & row & vbCrLf '& "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
+            cmd = "---" & 12345 + Rnd() * 16777216
+            cmd = cmd & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
+            & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & sPhonebookId & vbCrLf _
+            & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""" & vbCrLf & vbCrLf & "@" + XMLAdressbuch + ";type=text/xml" & vbCrLf _
+            & cmd & "--" & vbCrLf
 
-            With C_hf
-                ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding)
-                If ReturnValue.StartsWith("<?xml") Then
-                    XMLFBAddressbuch = New XmlDocument()
-                    Try
-                        XMLFBAddressbuch.LoadXml(ReturnValue)
-                    Catch ex As Exception
-                        .LogFile(C_DP.P_Fehler_Export_Addressbuch)
-                    End Try
-                End If
-            End With
+            UploadAddressbook = C_hf.httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding).Contains("Das Telefonbuch der FRITZ!Box wurde wiederhergestellt.")
+
         Else
             C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadAddressbook")
         End If
-    End Sub
+    End Function
 
 #End Region
-
 
     Private Sub PushStatus(ByVal Status As String)
         tb.Text = Status
