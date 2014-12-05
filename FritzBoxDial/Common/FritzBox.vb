@@ -318,6 +318,20 @@ Public Class FritzBox
             Return P_Link_FB_Basis & "/cgi-bin/firmwarecfg"
         End Get
     End Property
+
+
+    ''' <summary>
+    ''' http://<c>P_ValidFBAdr</c>/fon_num/fonbook_select.lua?sid=<c>sid</c>
+    ''' </summary>
+    ''' <param name="SID"></param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private ReadOnly Property P_Link_Telefonbuch_List(ByVal SID As String) As String
+        Get
+            Return P_Link_FB_Basis & "/fon_num/fonbook_select.lua?sid=" & SID
+        End Get
+    End Property
 #End Region
 
     Public Sub New(ByVal DataProviderKlasse As DataProvider, _
@@ -1795,6 +1809,40 @@ Public Class FritzBox
 
         Else
             C_hf.FBDB_MsgBox(C_DP.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadAddressbook")
+        End If
+    End Function
+
+    ' Link Telefonbuch hinzufügen
+    ' http://192.168.180.1/fon_num/fonbook_edit.lua?sid=9f4d23c5f4dcefd2&uid=new&back_to_page=%2Ffon_num%2Ffonbook_list.lua
+
+    ' 
+    ''' <summary>
+    ''' Gibt eine Liste der verfügbaren Fritz!Box Telefonbücher zurück.
+    ''' </summary>
+    ''' <returns>List</returns>
+    ''' <remarks>http://fritz.box/fon_num/fonbook_select.lua</remarks>
+    Friend Function GetTelefonbuchListe() As String()
+        GetTelefonbuchListe = {"Telefonbuch"}
+
+        Dim sPage As String
+        Dim tmp As String
+        Dim Liste As String = C_DP.P_Def_StringEmpty
+        Dim pos As Integer = 1
+
+        If SID = C_DP.P_Def_SessionID Then FBLogin(True)
+        If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
+            sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(SID), FBEncoding, FBFehler), Chr(34), "'", , , CompareMethod.Text)
+            sPage = sPage.Replace(Chr(13), "")
+            If sPage.Contains("label for='uiBookid:") Then
+                Do
+                    tmp = C_hf.StringEntnehmen(sPage, "label for='uiBookid:", "</label>", pos)
+                    If tmp IsNot C_DP.P_Def_ErrorMinusOne_String Then
+                        Liste += tmp & ";"
+                    End If
+                Loop Until pos = 0
+                Liste.Remove(Liste.Length - 1, 1)
+            End If
+            GetTelefonbuchListe = Split(Liste, ";", , CompareMethod.Text)
         End If
     End Function
 

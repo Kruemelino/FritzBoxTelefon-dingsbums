@@ -719,4 +719,7 @@ Public Class formAdressbuch
 
 #End Region
 
+    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
+        C_FB.GetTelefonbuchListe()
+    End Sub
 End Class

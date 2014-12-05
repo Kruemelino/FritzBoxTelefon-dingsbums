@@ -24,7 +24,7 @@ Partial Class formAdressbuch
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formAdressbuch))
-        Dim XmlViewerSettings4 As FritzBoxDial.XMLViewerSettings = New FritzBoxDial.XMLViewerSettings()
+        Dim XmlViewerSettings1 As FritzBoxDial.XMLViewerSettings = New FritzBoxDial.XMLViewerSettings()
         Me.StatStAdressbuch = New System.Windows.Forms.StatusStrip()
         Me.TSSLAdressbuch = New System.Windows.Forms.ToolStripStatusLabel()
         Me.TSAdressbuch = New System.Windows.Forms.ToolStrip()
@@ -370,12 +370,12 @@ Partial Class formAdressbuch
         Me.myXMLViewer.Location = New System.Drawing.Point(3, 3)
         Me.myXMLViewer.Name = "myXMLViewer"
         Me.myXMLViewer.ReadOnly = True
-        XmlViewerSettings4.AttributeKey = System.Drawing.Color.Red
-        XmlViewerSettings4.AttributeValue = System.Drawing.Color.Blue
-        XmlViewerSettings4.Element = System.Drawing.Color.DarkRed
-        XmlViewerSettings4.Tag = System.Drawing.Color.Blue
-        XmlViewerSettings4.Value = System.Drawing.Color.Black
-        Me.myXMLViewer.Settings = XmlViewerSettings4
+        XmlViewerSettings1.AttributeKey = System.Drawing.Color.Red
+        XmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue
+        XmlViewerSettings1.Element = System.Drawing.Color.DarkRed
+        XmlViewerSettings1.Tag = System.Drawing.Color.Blue
+        XmlViewerSettings1.Value = System.Drawing.Color.Black
+        Me.myXMLViewer.Settings = XmlViewerSettings1
         Me.myXMLViewer.Size = New System.Drawing.Size(586, 483)
         Me.myXMLViewer.TabIndex = 0
         Me.myXMLViewer.Text = ""
