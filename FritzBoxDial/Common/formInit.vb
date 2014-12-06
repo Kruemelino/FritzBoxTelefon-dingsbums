@@ -16,7 +16,7 @@
     Private C_Config As FritzBoxDial.formCfg
     Private F_JournalImport As FritzBoxDial.formJournalimport
     Private C_PopUp As FritzBoxDial.Popup
-    Private F_Adressbuch As FritzBoxDial.formAdressbuch
+    Private F_Telefonbuch As FritzBoxDial.formTelefonbuch
     Private C_XML As FritzBoxDial.XML
     'Strings
     Private SID As String

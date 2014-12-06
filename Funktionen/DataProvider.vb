@@ -3305,7 +3305,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AdrBk_ToolTipp() As String
         Get
-            Return "Öffnet den Dialog zum Editieren des " & P_Def_FritzBoxName & "-Adressbuches."
+            Return "Öffnet den Dialog zum Editieren des " & P_Def_FritzBoxName & "-Telefonbuches."
         End Get
     End Property
 
@@ -3413,7 +3413,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Expl_Adrbk() As String
         Get
-            Return "Adressbuch"
+            Return "Telefonbuch"
         End Get
     End Property
 

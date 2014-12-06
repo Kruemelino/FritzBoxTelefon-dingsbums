@@ -1790,9 +1790,9 @@ Public Class FritzBox
     ''' 0 = Haupttelefonbuch
     ''' 255 = Intern
     ''' 256 = Clip Info</param>
-    ''' <param name="XMLAdressbuch">Das Telefonbuch im XML Format</param>
+    ''' <param name="XMLTelefonbuch">Das Telefonbuch im XML Format</param>
     ''' <returns>Bollean, ob Upload erfolgreich war oder halt nicht.</returns>
-    Friend Function UploadAddressbook(ByVal sPhonebookId As String, ByVal XMLAdressbuch As String) As Boolean
+    Friend Function UploadAddressbook(ByVal sPhonebookId As String, ByVal XMLTelefonbuch As String) As Boolean
         Dim cmd As String
         UploadAddressbook = False
 
@@ -1802,7 +1802,7 @@ Public Class FritzBox
             cmd = "---" & 12345 + Rnd() * 16777216
             cmd = cmd & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
             & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & sPhonebookId & vbCrLf _
-            & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""" & vbCrLf & vbCrLf & "@" + XMLAdressbuch + ";type=text/xml" & vbCrLf _
+            & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""" & vbCrLf & vbCrLf & "@" + XMLTelefonbuch + ";type=text/xml" & vbCrLf _
             & cmd & "--" & vbCrLf
 
             UploadAddressbook = C_hf.httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding).Contains("Das Telefonbuch der FRITZ!Box wurde wiederhergestellt.")
@@ -1815,14 +1815,13 @@ Public Class FritzBox
     ' Link Telefonbuch hinzufügen
     ' http://192.168.180.1/fon_num/fonbook_edit.lua?sid=9f4d23c5f4dcefd2&uid=new&back_to_page=%2Ffon_num%2Ffonbook_list.lua
 
-    ' 
     ''' <summary>
     ''' Gibt eine Liste der verfügbaren Fritz!Box Telefonbücher zurück.
     ''' </summary>
     ''' <returns>List</returns>
     ''' <remarks>http://fritz.box/fon_num/fonbook_select.lua</remarks>
     Friend Function GetTelefonbuchListe() As String()
-        GetTelefonbuchListe = {"Telefonbuch"}
+        GetTelefonbuchListe = {"0'>Telefonbuch"}
 
         Dim sPage As String
         Dim tmp As String
@@ -1837,9 +1836,10 @@ Public Class FritzBox
                 Do
                     tmp = C_hf.StringEntnehmen(sPage, "label for='uiBookid:", "</label>", pos)
                     If tmp IsNot C_DP.P_Def_ErrorMinusOne_String Then
+                        tmp = tmp.Replace("'>", ": ")
                         Liste += tmp & ";"
                     End If
-                Loop Until pos = 0
+                Loop Until tmp Is C_DP.P_Def_ErrorMinusOne_String
                 Liste.Remove(Liste.Length - 1, 1)
             End If
             GetTelefonbuchListe = Split(Liste, ";", , CompareMethod.Text)

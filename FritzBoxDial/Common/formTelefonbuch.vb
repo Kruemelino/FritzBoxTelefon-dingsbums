@@ -6,7 +6,7 @@ Imports System.ComponentModel
 Imports System.Data
 Imports System.Drawing
 
-Public Class formAdressbuch
+Public Class formTelefonbuch
 
 #Region "Deklarationen"
     Private C_FB As FritzBox
@@ -22,11 +22,13 @@ Public Class formAdressbuch
 #End Region
 
 #Region "Delegaten"
-    Private Delegate Sub DelgTSSLAdressbuch()
-    Private Delegate Sub DelgDGVAdressbuch(ByVal AdrBk As XmlDocument)
+    Private Delegate Sub DelgTSSLTelefonbuch()
+    Private Delegate Sub DelgCBoxFBTelbuch(ByVal TelefonbuchListe As String())
+    Private Delegate Sub DelgDGVTelefonbuch(ByVal AdrBk As XmlDocument)
 #End Region
 
 #Region "BackgroundWorker"
+    Private WithEvents BackgroundWorkerLadeTelefonbuchListe As BackgroundWorker
     Private WithEvents BackgroundWorkerImport As BackgroundWorker
     Private WithEvents BackgroundWorkerExport As BackgroundWorker
 #End Region
@@ -49,7 +51,7 @@ Public Class formAdressbuch
         C_hf = Helferklasse
         C_GUI = GUIKlasse
 
-        With Me.DGVAdressbuch
+        With Me.DGVTelefonbuch
             .RowHeadersVisible = False
             With .Columns
                 .Item("Adrbk_ID").Visible = False
@@ -57,13 +59,17 @@ Public Class formAdressbuch
                 .Item("AdrBk_Mod_Time").Visible = False
             End With
         End With
-        FillDGVAdressbuch(GetEmptyTelbook)
+        FillDGVTelefonbuch(GetEmptyTelbook)
+
+        BackgroundWorkerLadeTelefonbuchListe = New BackgroundWorker
+        BackgroundWorkerLadeTelefonbuchListe.RunWorkerAsync()
+
         ' Initialize the XMLViewerSettings.
         Dim viewerSetting As XMLViewerSettings = New XMLViewerSettings With {.AttributeKey = Color.Red, .AttributeValue = Color.Blue, .Tag = Color.Blue, .Element = Color.DarkRed, .Value = Color.Black}
         myXMLViewer.Settings = viewerSetting
 
         Me.Show()
-        StatusText = "Formular geöffnet, leeres Adressbuch geladen"
+        StatusText = "Formular geöffnet, leeres Telefonbuch geladen"
         SetStatusText()
 
     End Sub
@@ -175,59 +181,62 @@ Public Class formAdressbuch
         Me.TBAdrbuchName.Text = XMLTelefonbuch.DocumentElement.Item("phonebook").GetAttribute("name")
 
         XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
+        If XMLTelBuchEintraege.Count > 0 Then
+            For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
+                With NodeValues
+                    .Clear()
+                    For Each Wert As String In NodeNames
+                        .Add(C_DP.P_Def_StringEmpty)
+                    Next
+                End With
+                i += 1
+                NodeValues.Item(NodeNames.IndexOf("id")) = i
+                For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
+                    Select Case XMLEintragWerte.Name
+                        Case "category"
+                            NodeValues.Item(NodeNames.IndexOf(XMLEintragWerte.Name)) = CStr(IIf(XMLEintragWerte.InnerText = "1", True, False))
+                        Case "person"
+                            NodeValues.Item(NodeNames.IndexOf("RealName")) = XMLEintragWerte.Item("realName").InnerText
+                        Case "telephony"
+                            For Each XMLTelNr As XmlElement In XMLEintragWerte.ChildNodes
+                                sTMP1 = XMLTelNr.GetAttribute("type")
+                                NodeValues.Item(NodeNames.IndexOf("TelNr_" & sTMP1 & "_TelNr")) = XMLTelNr.InnerText
+                                Select Case sTMP1
+                                    Case "work"
+                                        sTMP2 = Me.Adrbk_Prio.Items(1).ToString
+                                    Case "mobile"
+                                        sTMP2 = Me.Adrbk_Prio.Items(2).ToString
+                                    Case "fax_work"
+                                        sTMP2 = Me.Adrbk_Prio.Items(3).ToString
+                                    Case Else '"home"
+                                        sTMP2 = Me.Adrbk_Prio.Items(0).ToString
+                                End Select
 
-        For Each XMLTelefonbuchEintrag As XmlNode In XMLTelBuchEintraege
-            With NodeValues
-                .Clear()
-                For Each Wert As String In NodeNames
-                    .Add(C_DP.P_Def_StringEmpty)
+                                If XMLTelNr.GetAttribute("prio") = "1" Then
+                                    NodeValues.Item(NodeNames.IndexOf("TelNr_Prio")) = sTMP2
+                                End If
+                                If XMLTelNr.GetAttribute("quickdial") IsNot C_DP.P_Def_StringEmpty Or XMLTelNr.GetAttribute("vanity") IsNot C_DP.P_Def_StringEmpty Then
+                                    NodeValues.Item(NodeNames.IndexOf("TelNr_kwV")) = sTMP2
+                                    NodeValues.Item(NodeNames.IndexOf("TelNr_Kurzwahl")) = XMLTelNr.GetAttribute("quickdial")
+                                    NodeValues.Item(NodeNames.IndexOf("TelNr_Vanity")) = XMLTelNr.GetAttribute("vanity")
+                                End If
+                            Next
+                        Case "services"
+                            For Each XMLEMail As XmlElement In XMLEintragWerte
+                                NodeValues.Item(NodeNames.IndexOf("EMail")) = XMLEMail.InnerText
+                            Next
+                        Case Else
+                            NodeValues.Item(NodeNames.IndexOf(XMLEintragWerte.Name)) = XMLEintragWerte.InnerText
+                    End Select
+
                 Next
-            End With
-            i += 1
-            NodeValues.Item(NodeNames.IndexOf("id")) = i
-            For Each XMLEintragWerte As XmlElement In XMLTelefonbuchEintrag.ChildNodes
-                Select Case XMLEintragWerte.Name
-                    Case "category"
-                        NodeValues.Item(NodeNames.IndexOf(XMLEintragWerte.Name)) = CStr(IIf(XMLEintragWerte.InnerText = "1", True, False))
-                    Case "person"
-                        NodeValues.Item(NodeNames.IndexOf("RealName")) = XMLEintragWerte.Item("realName").InnerText
-                    Case "telephony"
-                        For Each XMLTelNr As XmlElement In XMLEintragWerte.ChildNodes
-                            sTMP1 = XMLTelNr.GetAttribute("type")
-                            NodeValues.Item(NodeNames.IndexOf("TelNr_" & sTMP1 & "_TelNr")) = XMLTelNr.InnerText
-                            Select Case sTMP1
-                                Case "work"
-                                    sTMP2 = Me.Adrbk_Prio.Items(1).ToString
-                                Case "mobile"
-                                    sTMP2 = Me.Adrbk_Prio.Items(2).ToString
-                                Case "fax_work"
-                                    sTMP2 = Me.Adrbk_Prio.Items(3).ToString
-                                Case Else '"home"
-                                    sTMP2 = Me.Adrbk_Prio.Items(0).ToString
-                            End Select
 
-                            If XMLTelNr.GetAttribute("prio") = "1" Then
-                                NodeValues.Item(NodeNames.IndexOf("TelNr_Prio")) = sTMP2
-                            End If
-                            If XMLTelNr.GetAttribute("quickdial") IsNot C_DP.P_Def_StringEmpty Or XMLTelNr.GetAttribute("vanity") IsNot C_DP.P_Def_StringEmpty Then
-                                NodeValues.Item(NodeNames.IndexOf("TelNr_kwV")) = sTMP2
-                                NodeValues.Item(NodeNames.IndexOf("TelNr_Kurzwahl")) = XMLTelNr.GetAttribute("quickdial")
-                                NodeValues.Item(NodeNames.IndexOf("TelNr_Vanity")) = XMLTelNr.GetAttribute("vanity")
-                            End If
-                        Next
-                    Case "services"
-                        For Each XMLEMail As XmlElement In XMLEintragWerte
-                            NodeValues.Item(NodeNames.IndexOf("EMail")) = XMLEMail.InnerText
-                        Next
-                    Case Else
-                        NodeValues.Item(NodeNames.IndexOf(XMLEintragWerte.Name)) = XMLEintragWerte.InnerText
-                End Select
-
+                TransTelBook.Item("TrnsAdrBk").AppendChild(C_XML.CreateXMLNode(TransTelBook, "AdrBk", NodeNames, NodeValues, AttributeNames, AttributeValues))
             Next
-
-            TransTelBook.Item("TrnsAdrBk").AppendChild(C_XML.CreateXMLNode(TransTelBook, "AdrBk", NodeNames, NodeValues, AttributeNames, AttributeValues))
-        Next
-
+        Else
+            ' Das Telefonbuch enthält keine Einträge
+ 
+        End If
         xPathTeile = Nothing
         NodeNames = Nothing
         NodeValues = Nothing
@@ -258,7 +267,7 @@ Public Class formAdressbuch
         Dim TelNrName() As String = {"home", "mobile", "work", "fax_work"}
         Dim i As Integer
 
-        ' Neues Adressbuch erstellen
+        ' Neues Telefonbuch erstellen
         FBoxAdrBook.LoadXml("<?xml version=""1.0"" encoding=""UTF-8""?><phonebooks><phonebook/></phonebooks>")
         ' Basisknoten festlegen
         BaseXmlNode = FBoxAdrBook.Item("phonebooks").Item("phonebook")
@@ -456,18 +465,24 @@ Public Class formAdressbuch
     ''' </summary>
     ''' <param name="TransformiertesTelefonbuch"></param>
     ''' <remarks></remarks>
-    Private Sub FillDGVAdressbuch(ByVal TransformiertesTelefonbuch As XmlDocument)
+    Private Sub FillDGVTelefonbuch(ByVal TransformiertesTelefonbuch As XmlDocument)
         Dim xmlStream As MemoryStream = New MemoryStream()
         Dim xmlFile As XmlReader
 
-        TransformiertesTelefonbuch.Save(xmlStream)
+        If TransformiertesTelefonbuch.GetElementsByTagName("AdrBk").Count > 0 Then
+            TransformiertesTelefonbuch.Save(xmlStream)
+        Else
+            GetEmptyTelbook.Save(xmlStream)
+        End If
+
         xmlStream.Position = 0
 
         xmlFile = XmlReader.Create(xmlStream, New XmlReaderSettings())
 
+
         DS = New DataSet
         DS.ReadXml(xmlFile)
-        With Me.DGVAdressbuch
+        With Me.DGVTelefonbuch
             .AutoGenerateColumns = False
             .DataSource = DS.Tables.Item(0)
             .ReadOnly = False
@@ -480,7 +495,7 @@ Public Class formAdressbuch
         'DS.Tables.Item(0).Columns("uniqueid").Unique = True
         xmlStream.Close()
 
-        AddHandler DGVAdressbuch.CellValueChanged, AddressOf DGVAdressbuch_CellValueChanged
+        AddHandler DGVTelefonbuch.CellValueChanged, AddressOf DGVTelefonbuch_CellValueChanged
     End Sub
 #End Region
 
@@ -488,9 +503,9 @@ Public Class formAdressbuch
     Private Sub ÖffnenToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ÖffnenToolStripButton.Click
         Dim myStream As Stream = Nothing
         Dim myStreamReader As StreamReader
-        Dim XMLAdressbuch As New XmlDocument()
+        Dim XMLTelefonbuch As New XmlDocument()
         With OFDAdressdbuch
-            .Filter = "XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
+            .Filter = "XML Telefonbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
             .FilterIndex = 1
             .RestoreDirectory = True
 
@@ -499,7 +514,7 @@ Public Class formAdressbuch
                     myStream = .OpenFile()
                     If (myStream IsNot Nothing) Then
                         myStreamReader = New StreamReader(myStream)
-                        XMLAdressbuch.LoadXml(myStreamReader.ReadToEnd)
+                        XMLTelefonbuch.LoadXml(myStreamReader.ReadToEnd)
                         myStreamReader.Close()
                     End If
                 Catch Ex As Exception
@@ -512,10 +527,10 @@ Public Class formAdressbuch
                 End Try
             End If
             ' Auswahl, je nach Datei
-            FillDGVAdressbuch(GetDGVTelefonbuch(XMLAdressbuch))
+            FillDGVTelefonbuch(GetDGVTelefonbuch(XMLTelefonbuch))
             myStream = Nothing
             myStreamReader = Nothing
-            XMLAdressbuch = Nothing
+            XMLTelefonbuch = Nothing
         End With
     End Sub
 
@@ -524,7 +539,7 @@ Public Class formAdressbuch
     End Sub
 
     Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click, BDel.Click
-        With Me.DGVAdressbuch
+        With Me.DGVTelefonbuch
             If .SelectedRows.Count > 0 Then
                 For I As Integer = .SelectedRows.Count - 1 To 0 Step -1
                     .Rows.RemoveAt(.SelectedRows(I).Index)
@@ -535,7 +550,7 @@ Public Class formAdressbuch
         End With
     End Sub
 
-    Private Sub SpeicheFBAdressbuch(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
+    Private Sub SpeicheFBTelefonbuch(sender As Object, e As EventArgs) Handles SpeichernToolStripButton.Click
 
         Dim myStreamWriter As StreamWriter
         Dim myStringBuilder As New StringBuilder
@@ -549,8 +564,8 @@ Public Class formAdressbuch
         End With
         GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
 
-        With SFDAdressbuch
-            .Filter = "XML Adressbuch (*.xml)|*.xml" '"XML Adressbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
+        With SFDTelefonbuch
+            .Filter = "XML Telefonbuch (*.xml)|*.xml" '"XML Telefonbuch (*.xml)|*.xml|Alle Dateien (*.*)|*.*"
             .FilterIndex = 1
             .RestoreDirectory = True
 
@@ -563,7 +578,7 @@ Public Class formAdressbuch
                         .Close()
                     End With
                 Catch Ex As Exception
-                    C_hf.FBDB_MsgBox("Das Speichern ist nicht möglich:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & Ex.Message, MsgBoxStyle.Critical, "SpeicheFBAdressbuch")
+                    C_hf.FBDB_MsgBox("Das Speichern ist nicht möglich:" & C_DP.P_Def_NeueZeile & C_DP.P_Def_NeueZeile & Ex.Message, MsgBoxStyle.Critical, "SpeicheFBTelefonbuch")
                 Finally
                     ' Check this again, since we need to make sure we didn't throw an exception on open.
                     myStreamWriter = Nothing
@@ -580,14 +595,22 @@ Public Class formAdressbuch
     Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
         BackgroundWorkerImport = New BackgroundWorker
 
+        Dim TelBuch As String = "0: Telefonbuch"
+
+        If CStr(Me.CBoxFBTelbuch.SelectedItem).Contains(": ") Then TelBuch = CStr(Me.CBoxFBTelbuch.SelectedItem)
+
         With BackgroundWorkerImport
             .WorkerReportsProgress = False
             .WorkerSupportsCancellation = False
-            .RunWorkerAsync()
+            .RunWorkerAsync(TelBuch)
         End With
     End Sub
 
     Private Sub ExportToolStripButton_Click(sender As Object, e As EventArgs) Handles ExportToolStripButton.Click
+
+        Dim TelBuch As String = "0: Telefonbuch"
+
+        If CStr(Me.CBoxFBTelbuch.SelectedItem).Contains(": ") Then TelBuch = CStr(Me.CBoxFBTelbuch.SelectedItem)
 
         If C_hf.FBDB_MsgBox("Soll dieses Telefonbuch in die Fritz!Box exportiert werden? Falls dieses Telefonbuch bereits vorhanden ist, wird es überschrieben.", _
                             MsgBoxStyle.YesNo, "ExportToolStripButton_Click") = MsgBoxResult.Yes Then
@@ -595,7 +618,7 @@ Public Class formAdressbuch
             With BackgroundWorkerExport
                 .WorkerReportsProgress = False
                 .WorkerSupportsCancellation = False
-                .RunWorkerAsync()
+                .RunWorkerAsync(TelBuch)
             End With
 
             StatusText = "Telefonbuch wird zur Fritz!Box exportiert... (bitte warten)"
@@ -639,11 +662,11 @@ Public Class formAdressbuch
     End Function
 #End Region
 
-    Private Sub DGVAdressbuch_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DGVAdressbuch.DataError
+    Private Sub DGVTelefonbuch_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DGVTelefonbuch.DataError
         'Throw New NotImplementedException
     End Sub
 
-    Private Sub DGVAdressbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
+    Private Sub DGVTelefonbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
         StatusText = "Eintrag " & CStr(DS.Tables.Item(0).Rows(e.RowIndex).Item("RealName")) & " geändert."
         SetStatusText()
         ' Datum ändern
@@ -651,8 +674,8 @@ Public Class formAdressbuch
         DS.Tables.Item(0).Rows(e.RowIndex).Item("mod_time") = UTime
     End Sub
 
-    Private Sub TCAdressbuch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TCAdressbuch.SelectedIndexChanged
-        If Me.TCAdressbuch.SelectedTab Is Me.TPAdressbuchXML Then
+    Private Sub TCTelefonbuch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TCTelefonbuch.SelectedIndexChanged
+        If Me.TCTelefonbuch.SelectedTab Is Me.TPTelefonbuchXML Then
             UpdateXML()
         End If
     End Sub
@@ -660,19 +683,31 @@ Public Class formAdressbuch
 #Region "Behandlung Delegaten"
     Private Sub SetStatusText()
         If Me.InvokeRequired Then
-            Dim D As New DelgTSSLAdressbuch(AddressOf SetStatusText)
+            Dim D As New DelgTSSLTelefonbuch(AddressOf SetStatusText)
             Me.Invoke(D)
         Else
-            Me.TSSLAdressbuch.Text = StatusText
+            Me.TSSLTelefonbuch.Text = StatusText
         End If
     End Sub
 
-    Private Sub SetDBVAdressBuch(ByVal AdrBk As XmlDocument)
+    Private Sub SetDBVTelefonbuch(ByVal AdrBk As XmlDocument)
         If Me.InvokeRequired Then
-            Dim D As New DelgDGVAdressbuch(AddressOf SetDBVAdressBuch)
+            Dim D As New DelgDGVTelefonbuch(AddressOf SetDBVTelefonbuch)
             Me.Invoke(D, AdrBk)
         Else
-            FillDGVAdressbuch(GetDGVTelefonbuch(AdrBk))
+            FillDGVTelefonbuch(GetDGVTelefonbuch(AdrBk))
+        End If
+    End Sub
+
+    Private Sub SetDelgCBoxFBTelbuch(ByVal FBTelBkList As String())
+        If Me.InvokeRequired Then
+            Dim D As New DelgCBoxFBTelbuch(AddressOf SetDelgCBoxFBTelbuch)
+            Me.Invoke(D, FBTelBkList)
+        Else
+            With Me.CBoxFBTelbuch
+                .Items.AddRange(FBTelBkList)
+                .SelectedIndex = 0
+            End With
         End If
     End Sub
 
@@ -683,13 +718,18 @@ Public Class formAdressbuch
     Private Sub BackgroundWorkerImport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerImport.DoWork
         Dim BookID As String = "0"
         Dim BookName As String = "Telefonbuch"
+        Dim TelBuch As String() = Split(CStr(e.Argument), ": ", , CompareMethod.Text)
+
+        If IsNumeric(TelBuch(0)) Then BookID = TelBuch(0)
+        BookName = TelBuch(1)
+
         StatusText = "Importvorgang des Telefonbuchs " & BookID & " (" & BookName & ") von der Fritz!Box gestartet... (bitte warten)"
         SetStatusText()
         e.Result = C_FB.DownloadAddressbook(BookID, BookName)
     End Sub
 
     Private Sub BackgroundWorkerImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerImport.RunWorkerCompleted
-        SetDBVAdressBuch(CType(e.Result, XmlDocument))
+        SetDBVTelefonbuch(CType(e.Result, XmlDocument))
         StatusText = "Telefonbuch von der Fritz!Box erfolgreich importiert."
         SetStatusText()
     End Sub
@@ -698,7 +738,7 @@ Public Class formAdressbuch
         Dim myStringBuilder As New StringBuilder
         Dim myStringWriter As New StringWriter(myStringBuilder)
         Dim myXmlTextWriter As New XmlTextWriter(myStringWriter)
-
+        Dim BookID As String = "0"
         Dim sXML As String
 
         With myXmlTextWriter
@@ -706,10 +746,18 @@ Public Class formAdressbuch
             .IndentChar = ControlChars.Tab
             .Indentation = 1
         End With
+
         GetFritzBoxTelefonbuch.WriteContentTo(myXmlTextWriter)
         sXML = myStringBuilder.ToString()
 
-        C_FB.UploadAddressbook("0", sXML)
+        Dim TelBuch As String() = Split(CStr(e.Argument), ": ", , CompareMethod.Text)
+
+        If IsNumeric(TelBuch(0)) Then BookID = TelBuch(0)
+
+        StatusText = "Exportvorgang des Telefonbuchs " & BookID & " zu der Fritz!Box gestartet... (bitte warten)"
+        SetStatusText()
+
+        C_FB.UploadAddressbook(BookID, sXML)
     End Sub
 
     Private Sub BackgroundWorkerExport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerExport.RunWorkerCompleted
@@ -717,9 +765,23 @@ Public Class formAdressbuch
         SetStatusText()
     End Sub
 
+    Private Sub BackgroundWorkerLadeTelefonbuchListe_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerLadeTelefonbuchListe.DoWork
+        StatusText = "Ermittlung vorhandener Telefonbucher von der Fritz!Box gestartet... (bitte warten)"
+        SetStatusText()
+        e.Result = C_FB.GetTelefonbuchListe()
+    End Sub
+
+    Private Sub BackgroundWorkerLadeTelefonbuchListe_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerLadeTelefonbuchListe.RunWorkerCompleted
+        SetDelgCBoxFBTelbuch(CType(e.Result, String()))
+        StatusText = "Ermittlung vorhandener Telefonbücher Fritz!Box erfolgreich abgeschlossen."
+        SetStatusText()
+    End Sub
+
 #End Region
 
+
     Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
-        C_FB.GetTelefonbuchListe()
+
     End Sub
+
 End Class

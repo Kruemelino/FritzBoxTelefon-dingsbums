@@ -660,7 +660,7 @@ Imports Microsoft.Office.Core
         WählenExplorer()
     End Sub
     Public Sub OnActionAdressbook(ByVal control As Office.IRibbonControl)
-        ÖffneAdressbuch()
+        ÖffneTelefonbuch()
     End Sub
 #End If
 #End Region 'Ribbon Explorer
@@ -1368,8 +1368,8 @@ Imports Microsoft.Office.Core
         End If
     End Sub
 
-    Friend Sub ÖffneAdressbuch()
-        Dim F_AdrBk As New formAdressbuch(C_XML, C_FBox, C_DP, C_KF, C_HF, Me)
+    Friend Sub ÖffneTelefonbuch()
+        Dim F_AdrBk As New formTelefonbuch(C_XML, C_FBox, C_DP, C_KF, C_HF, Me)
     End Sub
 
 #End Region
