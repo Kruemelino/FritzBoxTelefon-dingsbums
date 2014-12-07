@@ -782,6 +782,28 @@ Public Class formTelefonbuch
 
     Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
 
+        ' Me.TextBox1.Text = C_FB.FritzBoxQuery(InputBox("Abfrage"))
+
+        'Me.TextBox1.Text = C_FB.FritzBoxQuery("LKZPrefix=telcfg:settings/Location/LKZPrefix&LKZ=telcfg:settings/Location/LKZ&OKZPrefix=telcfg:settings/Location/OKZPrefix&OKZ=telcfg:settings/Location/OKZ&Port0=telcfg:settings/MSN/Port0/Name&Port1=telcfg:settings/MSN/Port1/Name&Port2=telcfg:settings/MSN/Port2/Name&TAM=tam:settings/TAM/list(Name)&IPP=telcfg:settings/VoipExtension/list(Name)&FON=telcfg:settings/Foncontrol/User/list(Name,Type,Intern)&MSN=telcfg:settings/SIP/list(MSN,Name)")
+        'C_FB.FritzBoxQuery("Boxzeit", "box:status/localtime")
+        'C_FB.FritzBoxQuery("Sperren", "telcfg:settings/CallerIDActions/list(CallerID,Action)")
+
+        ' DECT...
+        'C_FB.FritzBoxQuery("DeviceDECT", "telcfg:settings/Foncontrol/User/list(Id,Name,Type,Intern,MSN)")
+        ' DECT zugeordnete Nummern
+        ' User0, User1 User... 
+        'C_FB.FritzBoxQuery("TelNrDECT", "telcfg:settings/Foncontrol/User1/MSN/list(Number)")
+
+        ' MSN Geräte
+        'C_FB.FritzBoxQuery("DeviceMSN", "telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)")
+
+        'SIP - Nummern
+        'C_FB.FritzBoxQuery("SIP", "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)")
+
+        'TAM - Geräte
+        'C_FB.FritzBoxQuery("TAM", "tam:settings/TAM/list(Active,Name,Display,MSNBitmap)")
+        'TAM - Nummern
+
     End Sub
 
 End Class

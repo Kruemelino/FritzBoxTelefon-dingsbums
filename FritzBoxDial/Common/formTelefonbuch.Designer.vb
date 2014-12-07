@@ -58,14 +58,15 @@ Partial Class formTelefonbuch
         Me.AdrBk_Vanity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TPTelefonbuchXML = New System.Windows.Forms.TabPage()
         Me.myXMLViewer = New FritzBoxDial.XMLViewer()
+        Me.TBFBTelefonbuecher = New System.Windows.Forms.TabPage()
+        Me.CBoxFBTelbuch = New System.Windows.Forms.ComboBox()
         Me.TBAdrbuchName = New System.Windows.Forms.TextBox()
         Me.LTelefonbuchName = New System.Windows.Forms.Label()
         Me.LHinweis = New System.Windows.Forms.Label()
         Me.BDel = New System.Windows.Forms.Button()
         Me.BAdd = New System.Windows.Forms.Button()
         Me.BTest = New System.Windows.Forms.Button()
-        Me.TBFBTelefonbuecher = New System.Windows.Forms.TabPage()
-        Me.CBoxFBTelbuch = New System.Windows.Forms.ComboBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.StatStTelefonbuch.SuspendLayout()
         Me.TSTelefonbuch.SuspendLayout()
         Me.CMSTelefonbuch.SuspendLayout()
@@ -77,6 +78,7 @@ Partial Class formTelefonbuch
         Me.TPTelefonbuchDTV.SuspendLayout()
         CType(Me.DGVTelefonbuch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TPTelefonbuchXML.SuspendLayout()
+        Me.TBFBTelefonbuecher.SuspendLayout()
         Me.SuspendLayout()
         '
         'StatStTelefonbuch
@@ -384,6 +386,25 @@ Partial Class formTelefonbuch
         Me.myXMLViewer.TabIndex = 0
         Me.myXMLViewer.Text = ""
         '
+        'TBFBTelefonbuecher
+        '
+        Me.TBFBTelefonbuecher.Controls.Add(Me.TextBox1)
+        Me.TBFBTelefonbuecher.Location = New System.Drawing.Point(4, 4)
+        Me.TBFBTelefonbuecher.Name = "TBFBTelefonbuecher"
+        Me.TBFBTelefonbuecher.Padding = New System.Windows.Forms.Padding(3)
+        Me.TBFBTelefonbuecher.Size = New System.Drawing.Size(592, 489)
+        Me.TBFBTelefonbuecher.TabIndex = 2
+        Me.TBFBTelefonbuecher.Text = "Fritz!Box Telefonbücher"
+        Me.TBFBTelefonbuecher.UseVisualStyleBackColor = True
+        '
+        'CBoxFBTelbuch
+        '
+        Me.CBoxFBTelbuch.FormattingEnabled = True
+        Me.CBoxFBTelbuch.Location = New System.Drawing.Point(4, 50)
+        Me.CBoxFBTelbuch.Name = "CBoxFBTelbuch"
+        Me.CBoxFBTelbuch.Size = New System.Drawing.Size(172, 21)
+        Me.CBoxFBTelbuch.TabIndex = 5
+        '
         'TBAdrbuchName
         '
         Me.TBAdrbuchName.Location = New System.Drawing.Point(4, 23)
@@ -435,23 +456,13 @@ Partial Class formTelefonbuch
         Me.BTest.Text = "Testen"
         Me.BTest.UseVisualStyleBackColor = True
         '
-        'TBFBTelefonbuecher
+        'TextBox1
         '
-        Me.TBFBTelefonbuecher.Location = New System.Drawing.Point(4, 4)
-        Me.TBFBTelefonbuecher.Name = "TBFBTelefonbuecher"
-        Me.TBFBTelefonbuecher.Padding = New System.Windows.Forms.Padding(3)
-        Me.TBFBTelefonbuecher.Size = New System.Drawing.Size(592, 489)
-        Me.TBFBTelefonbuecher.TabIndex = 2
-        Me.TBFBTelefonbuecher.Text = "Fritz!Box Telefonbücher"
-        Me.TBFBTelefonbuecher.UseVisualStyleBackColor = True
-        '
-        'CBoxFBTelbuch
-        '
-        Me.CBoxFBTelbuch.FormattingEnabled = True
-        Me.CBoxFBTelbuch.Location = New System.Drawing.Point(4, 50)
-        Me.CBoxFBTelbuch.Name = "CBoxFBTelbuch"
-        Me.CBoxFBTelbuch.Size = New System.Drawing.Size(172, 21)
-        Me.CBoxFBTelbuch.TabIndex = 5
+        Me.TextBox1.Location = New System.Drawing.Point(29, 29)
+        Me.TextBox1.Multiline = True
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(515, 398)
+        Me.TextBox1.TabIndex = 0
         '
         'formTelefonbuch
         '
@@ -479,6 +490,8 @@ Partial Class formTelefonbuch
         Me.TPTelefonbuchDTV.ResumeLayout(False)
         CType(Me.DGVTelefonbuch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TPTelefonbuchXML.ResumeLayout(False)
+        Me.TBFBTelefonbuecher.ResumeLayout(False)
+        Me.TBFBTelefonbuecher.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -524,4 +537,5 @@ Partial Class formTelefonbuch
     Friend WithEvents TSSLTelefonbuch As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents TBFBTelefonbuecher As System.Windows.Forms.TabPage
     Friend WithEvents CBoxFBTelbuch As System.Windows.Forms.ComboBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
 End Class

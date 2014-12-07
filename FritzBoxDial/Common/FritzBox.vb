@@ -323,13 +323,27 @@ Public Class FritzBox
     ''' <summary>
     ''' http://<c>P_ValidFBAdr</c>/fon_num/fonbook_select.lua?sid=<c>sid</c>
     ''' </summary>
-    ''' <param name="SID"></param>
+    ''' <param name="SID">Session ID</param>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private ReadOnly Property P_Link_Telefonbuch_List(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/fon_num/fonbook_select.lua?sid=" & SID
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=?sid=<c>sid</c>&<c>Abfrage</c>
+    ''' </summary>
+    ''' <param name="SID">Session ID</param>
+    ''' <param name="Abfrage">Zu übersendende Abfrage</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private ReadOnly Property P_Link_Query(ByVal SID As String, ByVal Abfrage As String) As String
+        Get
+            Return P_Link_FB_Basis & "/query.lua?sid=" & SID & "&" & Abfrage
         End Get
     End Property
 #End Region
@@ -1659,6 +1673,7 @@ Public Class FritzBox
 #End Region
 
 #Region "Information"
+
     Public Function GetInformationSystemFritzBox() As String
         Dim sLink As String
         Dim FBTyp As String = C_DP.P_Def_StringUnknown
@@ -1673,6 +1688,7 @@ Public Class FritzBox
         Return C_DP.P_FritzBox_Info(FBTyp, FBFirmware)
 
     End Function
+
 #End Region
 
 #Region "Fritz!Box Telefonbuch"
@@ -1890,5 +1906,19 @@ Public Class FritzBox
         GC.SuppressFinalize(Me)
     End Sub
 #End Region
+
+#Region "Testlabor"
+    Public Function FritzBoxQuery(ByVal Abfrage As String) As String
+        FritzBoxQuery = C_DP.P_Def_ErrorMinusOne_String
+
+        If SID = C_DP.P_Def_SessionID Then FBLogin(True)
+        If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
+
+            FritzBoxQuery = C_hf.httpGET(P_Link_Query(SID, Abfrage), FBEncoding, FBFehler)
+        End If
+    End Function
+
+#End Region
+
 
 End Class
