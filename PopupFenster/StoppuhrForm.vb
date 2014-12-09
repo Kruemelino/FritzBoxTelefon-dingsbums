@@ -162,8 +162,7 @@ Public Class F_StoppUhr
         fStopUhr.Invalidate()
     End Sub
 
-    Private Sub TimerSchließen_Elapsed(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles TimerSchließen.Elapsed, fStopUhr.CloseClick 'Ehemals: System.Timers.ElapsedEventArgs
+    Private Sub TimerSchließen_Elapsed(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerSchließen.Elapsed, fStopUhr.CloseClick 'Ehemals: System.Timers.ElapsedEventArgs
 
         TimerSchließen.Stop()
         TimerSchließen = Nothing

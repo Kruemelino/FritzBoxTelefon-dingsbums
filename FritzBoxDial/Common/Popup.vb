@@ -213,12 +213,9 @@ Public Class Popup
 
             Do
                 ' Steuerung der Einblendgeschwindigkeit mit der Wartezeit des Threads
-                '10: Schnell 
-                '20: Normal
-                '30: Langsam
-                'C_DP.P_TBAnrMonMoveGeschwindigkeit
                 C_hf.ThreadSleep(20 + -1 * C_DP.P_TBAnrMonMoveGeschwindigkeit)
                 Telefonat.PopupAnrMon.tmAnimation_Tick()
+                C_hf.ThreadSleep(20)
                 Windows.Forms.Application.DoEvents()
             Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
 
@@ -362,7 +359,7 @@ Public Class Popup
         If C_DP.P_CBStoppUhrAusblenden Then
             WarteZeit = C_DP.P_TBStoppUhr
         Else
-            WarteZeit = -1
+            WarteZeit = C_DP.P_Def_ErrorMinusOne_Integer
         End If
 
         StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
@@ -381,7 +378,6 @@ Public Class Popup
         AnrName = CStr(IIf(Telefonat.Anrufer = C_DP.P_Def_StringEmpty, Telefonat.TelNr, Telefonat.Anrufer))
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
-
 
         StoppuhrListe.Add(thisPopupStoppuhr)
         With thisPopupStoppuhr
@@ -402,7 +398,8 @@ Public Class Popup
 
         Do
             Windows.Forms.Application.DoEvents()
-        Loop Until Telefonat.PopupStoppuhr Is Nothing Or Not StoppuhrListe.Exists(Function(AM) AM Is Telefonat.PopupStoppuhr)
+            C_hf.ThreadSleep(40)
+        Loop Until Telefonat.PopupStoppuhr Is Nothing Or Not StoppuhrListe.Exists(Function(SU) SU Is Telefonat.PopupStoppuhr)
 
     End Sub
 

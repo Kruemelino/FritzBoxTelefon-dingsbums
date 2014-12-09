@@ -334,7 +334,7 @@ Public Class FritzBox
     End Property
 
     ''' <summary>
-    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=?sid=<c>sid</c>&<c>Abfrage</c>
+    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=?sid=<c>sid</c>&amp;<c>Abfrage</c>
     ''' </summary>
     ''' <param name="SID">Session ID</param>
     ''' <param name="Abfrage">Zu übersendende Abfrage</param>
