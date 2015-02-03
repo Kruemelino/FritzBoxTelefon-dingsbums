@@ -129,15 +129,15 @@ Public Class F_AnrMon
         End Set
     End Property
 
-    Private iEffektMoveGeschwindigkeit As Integer = 5
-    Public Property EffektMoveGeschwindigkeit() As Integer
-        Get
-            Return iEffektMoveGeschwindigkeit
-        End Get
-        Set(ByVal value As Integer)
-            iEffektMoveGeschwindigkeit = value
-        End Set
-    End Property
+    'Private iEffektMoveGeschwindigkeit As Integer = 5
+    'Public Property EffektMoveGeschwindigkeit() As Integer
+    '    Get
+    '        Return iEffektMoveGeschwindigkeit
+    '    End Get
+    '    Set(ByVal value As Integer)
+    '        iEffektMoveGeschwindigkeit = value
+    '    End Set
+    'End Property
 
     Private pStartpunkt As eStartPosition
     Public Property Startpunkt() As eStartPosition
@@ -150,7 +150,7 @@ Public Class F_AnrMon
     End Property
 
     Private _MoveDirection As eMoveDirection
-    Public Property MoveDirecktion() As eMoveDirection
+    Public Property MoveDirection() As eMoveDirection
         Get
             Return _MoveDirection
         End Get
@@ -285,7 +285,7 @@ Public Class F_AnrMon
             End Select
 
             If bEffektMove Then
-                Select Case MoveDirecktion
+                Select Case MoveDirection
                     Case eMoveDirection.X
                         Select Case Startpunkt
                             Case eStartPosition.BottomLeft, eStartPosition.TopLeft ' -->
@@ -390,7 +390,7 @@ Public Class F_AnrMon
         Dim iCurrentlyShown As Integer
         Dim dPourcentOpacity As Double
 
-        Select Case MoveDirecktion
+        Select Case MoveDirection
             Case eMoveDirection.X
                 iCentPurcent = fPopup.Width
                 Select Case Startpunkt
@@ -420,7 +420,7 @@ Public Class F_AnrMon
             .Invalidate()
             If bEffektMove Then
                 If bAppearing Then 'Einblenden
-                    Select Case MoveDirecktion
+                    Select Case MoveDirection
                         Case eMoveDirection.X
                             Select Case Startpunkt
                                 Case eStartPosition.BottomLeft, eStartPosition.TopLeft
@@ -462,7 +462,7 @@ Public Class F_AnrMon
                             'tmAnimation.Stop()
                             tmWait.Start()
                         Else
-                            Select Case MoveDirecktion
+                            Select Case MoveDirection
                                 Case eMoveDirection.X
                                     Select Case Startpunkt
                                         Case eStartPosition.BottomLeft, eStartPosition.TopLeft

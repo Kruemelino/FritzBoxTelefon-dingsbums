@@ -796,6 +796,17 @@ Public Class DataProvider
         End Set
     End Property
 
+    Private _P_CBStoppUhrIgnIntFax As Boolean
+    Public Property P_CBStoppUhrIgnIntFax As Boolean
+        Get
+            Return _P_CBStoppUhrIgnIntFax
+        End Get
+        Set(ByVal Value As Boolean)
+            _P_CBStoppUhrIgnIntFax = Value
+        End Set
+    End Property
+
+
     ' Telefonnummernformatierung
 
     Private _TBTelNrMaske As String
@@ -2000,20 +2011,23 @@ Public Class DataProvider
         Get
             Return 10
         End Get
-
     End Property
     Public ReadOnly Property P_Def_CBStoppUhrX() As Integer
         Get
             Return 10
         End Get
-
     End Property
     Public ReadOnly Property P_Def_CBStoppUhrY() As Integer
         Get
             Return 10
         End Get
-
     End Property
+    Public ReadOnly Property P_Def_CBStoppUhrIgnIntFax() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     ' Telefonnummernformatierung
     ''' <summary>
     ''' Nach der Maske werden Telefonnummern formatiert: %L (%O) %N - %D
@@ -2512,6 +2526,18 @@ Public Class DataProvider
     Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr1() As String
         Get
             Return "StoppUhr wird eingeblendet."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Integrierte Faxfunktion wurde erkannt: Stoppuhr nicht eingeblendet.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr2() As String
+        Get
+            Return "Integrierte Faxfunktion wurde erkannt: Stoppuhr nicht eingeblendet."
         End Get
     End Property
 
@@ -3413,7 +3439,7 @@ Public Class DataProvider
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Expl_Adrbk() As String
         Get
-            Return "Telefonbuch"
+            Return P_Def_FritzBoxName & " Telefonbuch"
         End Get
     End Property
 

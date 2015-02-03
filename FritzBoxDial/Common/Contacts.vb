@@ -15,9 +15,9 @@ End Class
 Public Class Contacts
     Private C_DP As DataProvider
     Private C_hf As Helfer
-    Private V_C_OLI As OutlookInterface
     Private ListChildren As New List(Of ApiWindow)
 
+    Private V_C_OLI As OutlookInterface
     Friend Property C_OLI() As OutlookInterface
         Get
             Return V_C_OLI

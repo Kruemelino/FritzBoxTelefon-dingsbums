@@ -1222,8 +1222,10 @@ Public Class FritzBox
             .Add(C_DP.P_Def_StringEmpty)
             .Add(C_DP.P_Def_StringEmpty)
         End With
-        'SIP Nummern
+
         With C_hf
+
+            ' SIP Nummern
             xPathTeile.Add("SIP")
             For Each SIPi In Split(.StringEntnehmen(Code, "['sip:settings/sip/list(" & .StringEntnehmen(Code, "['sip:settings/sip/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
                 If .StringEntnehmen(SIPi, "['activated'] = '", "'") = "1" Then
@@ -1241,6 +1243,7 @@ Public Class FritzBox
             'SIP = (From x In SIP Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
             PushStatus("Letzte SIP: " & SIPID)
 
+            ' MSN Nummern
             xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/MSN" & i & "'] = '", "'")
@@ -1262,7 +1265,7 @@ Public Class FritzBox
                         TelNr = .StringEntnehmen(Code, "['telcfg:settings/MSN/Port" & i & "/MSN" & j & "'] = '", "'")
                         If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                             If Not Len(TelNr) = 0 Then
-                                If Strings.Left(TelNr, 3) = "SIP" Then
+                                If TelNr.StartsWith("SIP") Then
                                     TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                                 Else
                                     TelNr = .EigeneVorwahlenEntfernen(TelNr)
@@ -1287,12 +1290,13 @@ Public Class FritzBox
                 End If
             Next
 
+            ' TAM Nummern
             xPathTeile.Item(xPathTeile.IndexOf("MSN")) = "TAM"
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['tam:settings/MSN" & i & "'] = '", "'")
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     If Not Len(TelNr) = 0 Then
-                        If Strings.Left(TelNr, 3) = "SIP" Then
+                        If TelNr.StartsWith("SIP") Then
                             TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                         Else
                             TelNr = .EigeneVorwahlenEntfernen(TelNr)
@@ -1307,12 +1311,13 @@ Public Class FritzBox
                 End If
             Next
 
+            ' FAX Nummern
             xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
             For i = 0 To 9
                 TelNr = .StringEntnehmen(Code, "['telcfg:settings/FaxMSN" & i & "'] = '", "'")
                 If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
                     If Not Len(TelNr) = 0 Then
-                        If Strings.Left(TelNr, 3) = "SIP" Then
+                        If TelNr.StartsWith("SIP") Then
                             TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
                         Else
                             TelNr = .EigeneVorwahlenEntfernen(TelNr)
@@ -1328,10 +1333,11 @@ Public Class FritzBox
             Next
             ' FAX = (From x In FAX Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray
 
+            ' POTSnummer
             xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "POTS"
             POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
             If Not POTS = C_DP.P_Def_ErrorMinusOne_String And Not POTS = C_DP.P_Def_StringEmpty Then
-                If Strings.Left(POTS, 3) = "SIP" Then
+                If POTS.StartsWith("SIP") Then
                     POTS = SIP(CInt(Mid(POTS, 4, 1)))
                 Else
                     POTS = .EigeneVorwahlenEntfernen(POTS)
@@ -1341,10 +1347,11 @@ Public Class FritzBox
             End If
 
             xPathTeile.Item(xPathTeile.IndexOf("POTS")) = "Mobil"
-            'Mobilnummer
+
+            ' Mobilnummer
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
             If Not Mobil = C_DP.P_Def_ErrorMinusOne_String And Not Mobil = C_DP.P_Def_StringEmpty Then
-                If Strings.Left(Mobil, 3) = "SIP" Then
+                If Mobil.StartsWith("SIP") Then
                     Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
                 Else
                     'Mobil = .EigeneVorwahlenEntfernen(Mobil)
@@ -1592,6 +1599,170 @@ Public Class FritzBox
         End With
 
     End Sub
+
+
+    ' ''' <summary>
+    ' ''' Experimentelle Funktion
+    ' ''' Liest die wesentlichen Daten aus der Fritz!Box aus.
+    ' ''' Verwendet Query.lua der Fritz!Box
+    ' ''' Es können nicht alle Daten wie bisher ausgelesen werden. 
+    ' ''' Die Zuordnung der Telefonnummern zu Telefonen ist nicht mehr eindeutig möglich. 
+    ' ''' Es kann sein, dass dies erforderlich wird. Dann ist dieses Experiment fehlgeschlagen.  
+    ' ''' </summary>
+    ' ''' <remarks></remarks>
+    'Public Sub FritzBoxDatenExperimental()
+    '    Dim sjson As String
+    '    Dim FritzBoxInfos As FBInfo
+
+    '    Dim xPathTeile As New ArrayList
+    '    Dim NodeNames As New ArrayList
+    '    Dim NodeValues As New ArrayList
+    '    Dim AttributeNames As New ArrayList
+    '    Dim AttributeValues As New ArrayList
+
+    '    Dim tmpTelNr As String
+
+    '    Dim JSONQueries As New ArrayList
+
+    '    Dim SIPNr As New ArrayList
+    '    Dim TAMNr As New ArrayList
+    '    Dim MSNNr As New ArrayList
+    '    Dim FAXNr As New ArrayList
+
+    '    With xPathTeile
+    '        .Clear()
+    '        .Add("Telefone")
+    '        .Add("Nummern")
+    '    End With
+    '    With NodeNames
+    '        .Clear()
+    '        .Add("TelName")
+    '        .Add("TelNr")
+    '    End With
+    '    With AttributeNames
+    '        .Clear()
+    '        .Add("Fax")
+    '        .Add("Dialport")
+    '    End With
+    '    With NodeValues
+    '        .Clear()
+    '        .Add(C_DP.P_Def_StringEmpty)
+    '        .Add(C_DP.P_Def_StringEmpty)
+    '    End With
+    '    With AttributeValues
+    '        .Clear()
+    '        .Add(C_DP.P_Def_StringEmpty)
+    '        .Add(C_DP.P_Def_StringEmpty)
+    '    End With
+    '    'If P_SpeichereDaten Then C_XML.Delete(C_DP.XMLDoc, "Telefone")
+
+    '    With JSONQueries
+    '        '.Add("LKZPrefix=telcfg:settings/Location/LKZPrefix")
+    '        '.Add("LKZ=telcfg:settings/Location/LKZ")
+    '        '.Add("OKZPrefix=telcfg:settings/Location/OKZPrefix")
+    '        '.Add("OKZ=telcfg:settings/Location/OKZ")
+    '        .Add("FON1=telcfg:settings/MSN/Port0/Name")
+    '        .Add("FON2=telcfg:settings/MSN/Port1/Name")
+    '        .Add("FON3=telcfg:settings/MSN/Port2/Name")
+    '        .Add("POTS=telcfg:settings/MSN/POTS")
+    '        .Add("Mobil=telcfg:settings/Mobile/MSN")
+    '        .Add("MobilName=telcfg:settings/Mobile/Name")
+    '        .Add("TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)")
+    '        .Add("IPP=telcfg:settings/VoipExtension/list(Name)")
+    '        .Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id,Phonebook)")
+    '        .Add("SIP=sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)")
+
+    '        For i = 0 To 9
+    '            .Add("MSN" & i & "=telcfg:settings/MSN/MSN" & i)
+    '        Next
+
+    '        For i = 0 To 9
+    '            .Add("TAM" & i & "=tam:settings/MSN" & i)
+    '        Next
+
+    '        For i = 0 To 9
+    '            .Add("FAX" & i & "=telcfg:settings/FaxMSN" & i)
+    '        Next
+
+    '        For i = 0 To 2
+    '            For j = 0 To 9
+    '                .Add("MSNP" & i & "N" & j & "=telcfg:settings/MSN/Port" & i & "/MSN" & j)
+    '            Next
+    '        Next
+    '    End With
+    '    sjson = FritzBoxQuery(String.Join("&", JSONQueries.ToArray))
+
+    '    FritzBoxInfos = DeserializeObject(Of FBInfo)(sjson)
+    '    With C_hf
+
+    '        ' SIP Nummern
+    '        xPathTeile.Add("SIP")
+    '        For Each TelNr As myTelNr In FritzBoxInfos.SIP
+    '            If TelNr.activated = "1" Then
+    '                tmpTelNr = .EigeneVorwahlenEntfernen(TelNr.displayname)
+    '                SIPNr.Add(tmpTelNr)
+    '                PushStatus(C_DP.P_FritzBox_Tel_NrFound("SIP", TelNr.ID, tmpTelNr))
+    '                'If P_SpeichereDaten Then
+    '                '    C_XML.Write(C_DP.XMLDoc, xPathTeile, tmpTelNr, "ID", TelNr.ID)
+    '                'End If
+    '            End If
+    '        Next
+
+    '        ' MSN Nummern
+    '        xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "MSN"
+
+    '        With MSNNr
+    '            .Add(FritzBoxInfos.MSN0)
+    '            .Add(FritzBoxInfos.MSN1)
+    '            .Add(FritzBoxInfos.MSN2)
+    '            .Add(FritzBoxInfos.MSN3)
+    '            .Add(FritzBoxInfos.MSN4)
+    '            .Add(FritzBoxInfos.MSN5)
+    '            .Add(FritzBoxInfos.MSN6)
+    '            .Add(FritzBoxInfos.MSN7)
+    '            .Add(FritzBoxInfos.MSN8)
+    '            .Add(FritzBoxInfos.MSN9)
+    '            .Add(FritzBoxInfos.MSNP0N0)
+    '            .Add(FritzBoxInfos.MSNP0N1)
+    '            .Add(FritzBoxInfos.MSNP0N2)
+    '            .Add(FritzBoxInfos.MSNP0N3)
+    '            .Add(FritzBoxInfos.MSNP0N4)
+    '            .Add(FritzBoxInfos.MSNP0N5)
+    '            .Add(FritzBoxInfos.MSNP0N6)
+    '            .Add(FritzBoxInfos.MSNP0N7)
+    '            .Add(FritzBoxInfos.MSNP0N8)
+    '            .Add(FritzBoxInfos.MSNP0N9)
+    '            .Add(FritzBoxInfos.MSNP1N0)
+    '            .Add(FritzBoxInfos.MSNP1N1)
+    '            .Add(FritzBoxInfos.MSNP1N2)
+    '            .Add(FritzBoxInfos.MSNP1N3)
+    '            .Add(FritzBoxInfos.MSNP1N4)
+    '            .Add(FritzBoxInfos.MSNP1N5)
+    '            .Add(FritzBoxInfos.MSNP1N6)
+    '            .Add(FritzBoxInfos.MSNP1N7)
+    '            .Add(FritzBoxInfos.MSNP1N8)
+    '            .Add(FritzBoxInfos.MSNP1N9)
+    '            .Add(FritzBoxInfos.MSNP2N0)
+    '            .Add(FritzBoxInfos.MSNP2N1)
+    '            .Add(FritzBoxInfos.MSNP2N2)
+    '            .Add(FritzBoxInfos.MSNP2N3)
+    '            .Add(FritzBoxInfos.MSNP2N4)
+    '            .Add(FritzBoxInfos.MSNP2N5)
+    '            .Add(FritzBoxInfos.MSNP2N6)
+    '            .Add(FritzBoxInfos.MSNP2N7)
+    '            .Add(FritzBoxInfos.MSNP2N8)
+    '            .Add(FritzBoxInfos.MSNP2N9)
+    '            Do While .Contains(C_DP.P_Def_StringEmpty)
+    '                .Remove(C_DP.P_Def_StringEmpty)
+    '            Loop
+
+    '        End With
+
+
+    '        ' TAM Nummern
+    '        ' FAX Nummern
+    '    End With
+    'End Sub
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = C_DP.P_Def_StringEmpty
@@ -1913,12 +2084,132 @@ Public Class FritzBox
 
         If SID = C_DP.P_Def_SessionID Then FBLogin(True)
         If Not SID = C_DP.P_Def_SessionID And Len(SID) = Len(C_DP.P_Def_SessionID) Then
-
             FritzBoxQuery = C_hf.httpGET(P_Link_Query(SID, Abfrage), FBEncoding, FBFehler)
         End If
     End Function
 
+    'Public Function DeserializeJSON(ByVal sjson As String) As String
+    '    Dim FritzBoxValue As FBValue
+    '    FritzBoxValue = DeserializeObject(Of FBValue)(sjson)
+    '    Return FritzBoxValue.thisFBValue
+    'End Function
+
 #End Region
 
+    'Public Class FBValue
+    '    Public thisFBValue As String
+    'End Class
 
+    'Public Class FBInfo
+
+    '    Public LKZPrefix As String
+    '    Public LKZ As String
+    '    Public OKZPrefix As String
+    '    Public OKZ As String
+    '    Public FON1 As String
+    '    Public FON2 As String
+    '    Public FON3 As String
+    '    Public POTS As String
+    '    Public Mobil As String
+    '    Public MobilName As String
+
+    '    Public TAM As myTelDevice()
+    '    Public IPP As myTelDevice()
+    '    Public DECT As myTelDevice()
+    '    Public SIP As myTelNr()
+
+    '    Public MSN0 As String
+    '    Public MSN1 As String
+    '    Public MSN2 As String
+    '    Public MSN3 As String
+    '    Public MSN4 As String
+    '    Public MSN5 As String
+    '    Public MSN6 As String
+    '    Public MSN7 As String
+    '    Public MSN8 As String
+    '    Public MSN9 As String
+
+    '    Public TAM0 As String
+    '    Public TAM1 As String
+    '    Public TAM2 As String
+    '    Public TAM3 As String
+    '    Public TAM4 As String
+    '    Public TAM5 As String
+    '    Public TAM6 As String
+    '    Public TAM7 As String
+    '    Public TAM8 As String
+    '    Public TAM9 As String
+
+    '    Public FAX0 As String
+    '    Public FAX1 As String
+    '    Public FAX2 As String
+    '    Public FAX3 As String
+    '    Public FAX4 As String
+    '    Public FAX5 As String
+    '    Public FAX6 As String
+    '    Public FAX7 As String
+    '    Public FAX8 As String
+    '    Public FAX9 As String
+
+    '    Public MSNP0N0 As String
+    '    Public MSNP0N1 As String
+    '    Public MSNP0N2 As String
+    '    Public MSNP0N3 As String
+    '    Public MSNP0N4 As String
+    '    Public MSNP0N5 As String
+    '    Public MSNP0N6 As String
+    '    Public MSNP0N7 As String
+    '    Public MSNP0N8 As String
+    '    Public MSNP0N9 As String
+
+    '    Public MSNP1N0 As String
+    '    Public MSNP1N1 As String
+    '    Public MSNP1N2 As String
+    '    Public MSNP1N3 As String
+    '    Public MSNP1N4 As String
+    '    Public MSNP1N5 As String
+    '    Public MSNP1N6 As String
+    '    Public MSNP1N7 As String
+    '    Public MSNP1N8 As String
+    '    Public MSNP1N9 As String
+
+    '    Public MSNP2N0 As String
+    '    Public MSNP2N1 As String
+    '    Public MSNP2N2 As String
+    '    Public MSNP2N3 As String
+    '    Public MSNP2N4 As String
+    '    Public MSNP2N5 As String
+    '    Public MSNP2N6 As String
+    '    Public MSNP2N7 As String
+    '    Public MSNP2N8 As String
+    '    Public MSNP2N9 As String
+
+    'End Class
+
+    'Public Class myTelDevice
+    '    'Name,Type,Intern,Id,Phonebook
+    '    'Active,Name,Display,MSNBitmap
+    '    Public Name As String
+    '    Public Type As String
+    '    Public Intern As String
+    '    Public Id As String
+    '    Public Phonebook As String
+    '    Public Active As String
+    '    Public Display As String
+    '    Public MSNBitmap As String
+
+    'End Class
+
+    'Public Class myTelNr
+    '    'activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id
+    '    Public activated As String
+    '    Public displayname As String
+    '    Public registrar As String
+    '    Public outboundproxy As String
+    '    Public providername As String
+    '    Public ID As String
+    '    Public gui_readonly As String
+    '    Public webui_trunk_id As String
+
+    'End Class
 End Class

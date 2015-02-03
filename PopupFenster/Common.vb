@@ -216,7 +216,7 @@
     Private Sub Me_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         If P_pnAnrMon IsNot Nothing Then AnrMon_Paint(sender, e)
 
-        If P_pnStoppuhr IsNot Nothing Then StoppuhrPaint(sender, e)
+        If P_pnStoppuhr IsNot Nothing Then Stoppuhr_Paint(sender, e)
     End Sub
 
     Private Sub AnrMon_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
@@ -326,7 +326,7 @@
         End With
     End Sub
 
-    Private Sub StoppuhrPaint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
+    Private Sub Stoppuhr_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
         Dim rcBody As New Rectangle(0, 0, Me.Width, Me.Height)
         Dim rcHeader As New Rectangle(0, 0, Me.Width, P_Common.HeaderHeight)
         Dim rcForm As New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)

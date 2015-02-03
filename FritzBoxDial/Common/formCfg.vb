@@ -176,7 +176,7 @@ Friend Class formCfg
             Me.CBStoppUhrEinblenden.Checked = .P_CBStoppUhrEinblenden
             Me.CBStoppUhrAusblenden.Checked = .P_CBStoppUhrAusblenden
             Me.TBStoppUhr.Text = CStr(.P_TBStoppUhr)
-
+            Me.CBStoppUhrIgnIntFax.Checked = .P_CBStoppUhrIgnIntFax
             Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
             If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
             Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
@@ -472,6 +472,7 @@ Friend Class formCfg
             .P_CBStoppUhrEinblenden = Me.CBStoppUhrEinblenden.Checked
             .P_CBStoppUhrAusblenden = Me.CBStoppUhrAusblenden.Checked
             .P_TBStoppUhr = CInt(Me.TBStoppUhr.Text)
+            .P_CBStoppUhrIgnIntFax = Me.CBStoppUhrIgnIntFax.Checked
 #If OVer < 14 Then
             .P_CBSymbWwdh = Me.CBSymbWwdh.Checked
             .P_CBSymbAnrMonNeuStart = Me.CBSymbAnrMonNeuStart.Checked
@@ -639,7 +640,7 @@ Friend Class formCfg
                     Me.CBStoppUhrEinblenden.Checked = .P_Def_CBStoppUhrEinblenden
                     Me.CBStoppUhrAusblenden.Checked = .P_Def_CBStoppUhrAusblenden
                     Me.TBStoppUhr.Text = CStr(.P_Def_TBStoppUhr)
-
+                    Me.CBStoppUhrIgnIntFax.Checked = .P_Def_CBStoppUhrIgnIntFax
                     'Telefonnummernformat
                     Me.TBTelNrMaske.Text = .P_Def_TBTelNrMaske
                     Me.CBTelNrGruppieren.Checked = .P_Def_CBTelNrGruppieren

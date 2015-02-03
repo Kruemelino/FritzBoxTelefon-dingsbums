@@ -903,7 +903,12 @@ Public Class Helfer
     End Sub
 #End Region
 
-    Public Function ByteArrayToString(ByVal ByteArray As Byte()) As String
+    Public Overloads Function ByteArrayToString(ByVal ByteArray As Byte()) As String
+        'Dim hex As StringBuilder = New StringBuilder(ByteArray.Length * 2)
+        'For Each b As Byte In ByteArray
+        '    hex.AppendFormat("{0:x2}", b)
+        'Next
+        'Return hex.ToString()
         Return System.Text.Encoding.UTF8.GetString(ByteArray)
     End Function
 
@@ -941,4 +946,81 @@ Public Class Helfer
             xPathTeile = Nothing
         End If
     End Function
+End Class
+
+Public Class MyOleOutlookItemData
+
+    Private _Subject As String
+    Public Property Subject As String
+        Get
+            Return _Subject
+        End Get
+        Set(value As String)
+            _Subject = value
+        End Set
+    End Property
+
+    Private _EntryId As String
+    Public Property EntryId As String
+        Get
+            Return _EntryId
+        End Get
+        Set(value As String)
+            _EntryId = value
+        End Set
+    End Property
+
+    Private _SearchKey As String
+    Public Property SearchKey As String
+        Get
+            Return _SearchKey
+        End Get
+        Set(value As String)
+            _SearchKey = value
+        End Set
+    End Property
+
+    Private _MessageClass As String
+    Public Property MessageClass As String
+        Get
+            Return _MessageClass
+        End Get
+        Set(value As String)
+            _MessageClass = value
+        End Set
+    End Property
+
+End Class
+
+Public Class MyOleOutlookData
+
+    Private _StoreId As String
+    Public Property StoreId As String
+        Get
+            Return _StoreId
+        End Get
+        Set(value As String)
+            _StoreId = value
+        End Set
+    End Property
+
+    Private _FolderId As String
+    Public Property FolderId As String
+        Get
+            Return _FolderId
+        End Get
+        Set(value As String)
+            _FolderId = value
+        End Set
+    End Property
+
+    Private _SearchKey As MyOleOutlookItemData()
+    Public Property Items As MyOleOutlookItemData()
+        Get
+            Return _SearchKey
+        End Get
+        Set(value As MyOleOutlookItemData())
+            _SearchKey = value
+        End Set
+    End Property
 End Class

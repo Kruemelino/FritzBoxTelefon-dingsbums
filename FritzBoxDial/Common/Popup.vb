@@ -198,8 +198,8 @@ Public Class Popup
                 .EffektMove = C_DP.P_CBAnrMonMove
                 .EffektTransparenz = C_DP.P_CBAnrMonTransp
                 .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
-                .MoveDirecktion = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
-                .EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
+                .MoveDirection = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
+                '.EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
                 .AnzAnrMon = AnrMonListe.Count - 1
                 .Popup()
             End With
@@ -213,9 +213,9 @@ Public Class Popup
 
             Do
                 ' Steuerung der Einblendgeschwindigkeit mit der Wartezeit des Threads
-                C_hf.ThreadSleep(20 + -1 * C_DP.P_TBAnrMonMoveGeschwindigkeit)
+                'C_hf.ThreadSleep(40 + -1 * C_DP.P_TBAnrMonMoveGeschwindigkeit)
                 Telefonat.PopupAnrMon.tmAnimation_Tick()
-                C_hf.ThreadSleep(20)
+                C_hf.ThreadSleep(5 + 10 - C_DP.P_TBAnrMonMoveGeschwindigkeit)
                 Windows.Forms.Application.DoEvents()
             Loop Until Telefonat.PopupAnrMon Is Nothing Or Not AnrMonListe.Exists(Function(AM) AM Is Telefonat.PopupAnrMon)
 

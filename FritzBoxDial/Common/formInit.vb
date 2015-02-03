@@ -16,7 +16,7 @@
     Private C_Config As FritzBoxDial.formCfg
     Private F_JournalImport As FritzBoxDial.formJournalimport
     Private C_PopUp As FritzBoxDial.Popup
-    Private F_Telefonbuch As FritzBoxDial.formTelefonbuch
+    'Private F_Telefonbuch As FritzBoxDial.formTelefonbuch
     Private C_XML As FritzBoxDial.XML
     'Strings
     Private SID As String
@@ -72,8 +72,6 @@
 
             C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
             ThisAddIn.P_Config = C_Config
-
-
 
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon

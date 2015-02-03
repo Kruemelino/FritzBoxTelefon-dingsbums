@@ -45,6 +45,7 @@ Partial Class formCfg
         Me.CBintl = New System.Windows.Forms.CheckBox()
         Me.CBTelNrGruppieren = New System.Windows.Forms.CheckBox()
         Me.GroupBoxStoppUhr = New System.Windows.Forms.GroupBox()
+        Me.CBStoppUhrIgnIntFax = New System.Windows.Forms.CheckBox()
         Me.BStoppUhrAnzeigen = New System.Windows.Forms.Button()
         Me.LabelStoppUhr = New System.Windows.Forms.Label()
         Me.TBStoppUhr = New System.Windows.Forms.TextBox()
@@ -466,6 +467,7 @@ Partial Class formCfg
         'GroupBoxStoppUhr
         '
         Me.GroupBoxStoppUhr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBoxStoppUhr.Controls.Add(Me.CBStoppUhrIgnIntFax)
         Me.GroupBoxStoppUhr.Controls.Add(Me.BStoppUhrAnzeigen)
         Me.GroupBoxStoppUhr.Controls.Add(Me.LabelStoppUhr)
         Me.GroupBoxStoppUhr.Controls.Add(Me.TBStoppUhr)
@@ -477,6 +479,17 @@ Partial Class formCfg
         Me.GroupBoxStoppUhr.TabIndex = 19
         Me.GroupBoxStoppUhr.TabStop = False
         Me.GroupBoxStoppUhr.Text = "Stoppuhr"
+        '
+        'CBStoppUhrIgnIntFax
+        '
+        Me.CBStoppUhrIgnIntFax.AutoSize = True
+        Me.CBStoppUhrIgnIntFax.Location = New System.Drawing.Point(6, 65)
+        Me.CBStoppUhrIgnIntFax.Name = "CBStoppUhrIgnIntFax"
+        Me.CBStoppUhrIgnIntFax.Size = New System.Drawing.Size(145, 17)
+        Me.CBStoppUhrIgnIntFax.TabIndex = 20
+        Me.CBStoppUhrIgnIntFax.Text = "Ignoriere intern. Faxempf."
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrIgnIntFax, "Die Stoppuhr wird nicht angezeigt wenn ein interner Faxempfang erkannt wurde.")
+        Me.CBStoppUhrIgnIntFax.UseVisualStyleBackColor = True
         '
         'BStoppUhrAnzeigen
         '
@@ -1477,14 +1490,11 @@ Partial Class formCfg
         'TBAnrMonMoveGeschwindigkeit
         '
         Me.TBAnrMonMoveGeschwindigkeit.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.TBAnrMonMoveGeschwindigkeit.LargeChange = 2
+        Me.TBAnrMonMoveGeschwindigkeit.LargeChange = 1
         Me.TBAnrMonMoveGeschwindigkeit.Location = New System.Drawing.Point(131, 99)
-        Me.TBAnrMonMoveGeschwindigkeit.Minimum = -10
         Me.TBAnrMonMoveGeschwindigkeit.Name = "TBAnrMonMoveGeschwindigkeit"
         Me.TBAnrMonMoveGeschwindigkeit.Size = New System.Drawing.Size(123, 45)
-        Me.TBAnrMonMoveGeschwindigkeit.SmallChange = 2
         Me.TBAnrMonMoveGeschwindigkeit.TabIndex = 11
-        Me.TBAnrMonMoveGeschwindigkeit.TickFrequency = 2
         Me.TBAnrMonMoveGeschwindigkeit.TickStyle = System.Windows.Forms.TickStyle.TopLeft
         '
         'Label22
@@ -2412,6 +2422,7 @@ Partial Class formCfg
     Friend WithEvents TBRWSTest As System.Windows.Forms.TextBox
     Friend WithEvents BTestLogin As System.Windows.Forms.Button
     Friend WithEvents CBAnrMonCloseAtDISSCONNECT As System.Windows.Forms.CheckBox
+    Friend WithEvents CBStoppUhrIgnIntFax As System.Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class

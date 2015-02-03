@@ -1369,7 +1369,7 @@ Imports Microsoft.Office.Core
     End Sub
 
     Friend Sub ÖffneTelefonbuch()
-        Dim F_AdrBk As New formTelefonbuch(C_XML, C_FBox, C_DP, C_KF, C_HF, Me)
+        Dim F_AdrBk As New formTelefonbuch(C_XML, C_FBox, C_DP, C_KF, C_HF, Me, C_OLI)
     End Sub
 
 #End Region

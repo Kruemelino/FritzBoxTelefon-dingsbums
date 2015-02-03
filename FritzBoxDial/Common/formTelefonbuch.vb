@@ -9,20 +9,25 @@ Imports System.Drawing
 Public Class formTelefonbuch
 
 #Region "Deklarationen"
-    Private C_FB As FritzBox
-    Private C_DP As DataProvider
-    Private C_KF As Contacts
-    Private C_XML As XML
-    Private C_hf As Helfer
-    Private C_GUI As GraphicalUserInterface
+    Private C_FB As FritzBoxDial.FritzBox
+    Private C_DP As FritzBoxDial.DataProvider
+    Private C_KF As FritzBoxDial.Contacts
+    Private C_XML As FritzBoxDial.XML
+    Private C_hf As FritzBoxDial.Helfer
+    Private C_GUI As FritzBoxDial.GraphicalUserInterface
+    Private C_OLI As FritzBoxDial.OutlookInterface
 
-    Private DS As DataSet
+    Friend DS As DataSet
 
     Private StatusText As String
+
+    Dim F_TBDTV As formTBDTV
+    Dim F_TBControl As formTBControl
+    WithEvents F_DnD As MyDndForm
 #End Region
 
 #Region "Delegaten"
-    Private Delegate Sub DelgTSSLTelefonbuch()
+    Private Delegate Sub DelgTSSLTelefonbuch(ByVal StatusText As String)
     Private Delegate Sub DelgCBoxFBTelbuch(ByVal TelefonbuchListe As String())
     Private Delegate Sub DelgDGVTelefonbuch(ByVal AdrBk As XmlDocument)
 #End Region
@@ -38,7 +43,8 @@ Public Class formTelefonbuch
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal KontaktKlasse As Contacts, _
                    ByVal Helferklasse As Helfer, _
-                   ByVal GUIKlasse As GraphicalUserInterface)
+                   ByVal GUIKlasse As GraphicalUserInterface, _
+                   ByVal OLIKlasse As OutlookInterface)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -50,27 +56,46 @@ Public Class formTelefonbuch
         C_XML = XMLKlasse
         C_hf = Helferklasse
         C_GUI = GUIKlasse
+        C_OLI = OLIKlasse
 
-        With Me.DGVTelefonbuch
-            .RowHeadersVisible = False
-            With .Columns
-                .Item("Adrbk_ID").Visible = False
-                .Item("AdrBk_uniqueid").Visible = False
-                .Item("AdrBk_Mod_Time").Visible = False
-            End With
+        F_TBControl = New formTBControl(Me)
+        With F_TBControl
+            .MdiParent = Me
+            .Dock = DockStyle.Right
+            .Width = 200
+            .Show()
         End With
+
+        F_Dnd = New MyDndForm
+        With F_DnD
+            .MdiParent = Me
+            .Dock = DockStyle.Bottom
+            .Height = 100
+            .Show()
+        End With
+
+        F_TBDTV = New formTBDTV(Me)
+        With F_TBDTV
+            .MdiParent = Me
+            .Dock = DockStyle.Fill
+            With .DGVTelefonbuch
+                .RowHeadersVisible = False
+                With .Columns
+                    .Item("Adrbk_ID").Visible = False
+                    .Item("AdrBk_uniqueid").Visible = False
+                    .Item("AdrBk_Mod_Time").Visible = False
+                End With
+            End With
+            .Show()
+        End With
+
         FillDGVTelefonbuch(GetEmptyTelbook)
 
         BackgroundWorkerLadeTelefonbuchListe = New BackgroundWorker
         BackgroundWorkerLadeTelefonbuchListe.RunWorkerAsync()
 
-        ' Initialize the XMLViewerSettings.
-        Dim viewerSetting As XMLViewerSettings = New XMLViewerSettings With {.AttributeKey = Color.Red, .AttributeValue = Color.Blue, .Tag = Color.Blue, .Element = Color.DarkRed, .Value = Color.Black}
-        myXMLViewer.Settings = viewerSetting
-
         Me.Show()
-        StatusText = "Formular geöffnet, leeres Telefonbuch geladen"
-        SetStatusText()
+        SetStatusText("Formular geöffnet, leeres Telefonbuch geladen")
 
     End Sub
 
@@ -178,7 +203,7 @@ Public Class formTelefonbuch
         '    '.Add(C_DP.P_Def_StringEmpty)
         'End With
 
-        Me.TBAdrbuchName.Text = XMLTelefonbuch.DocumentElement.Item("phonebook").GetAttribute("name")
+        F_TBControl.TBAdrbuchName.Text = XMLTelefonbuch.DocumentElement.Item("phonebook").GetAttribute("name")
 
         XMLTelBuchEintraege = XMLTelefonbuch.GetElementsByTagName("contact")
         If XMLTelBuchEintraege.Count > 0 Then
@@ -203,13 +228,13 @@ Public Class formTelefonbuch
                                 NodeValues.Item(NodeNames.IndexOf("TelNr_" & sTMP1 & "_TelNr")) = XMLTelNr.InnerText
                                 Select Case sTMP1
                                     Case "work"
-                                        sTMP2 = Me.Adrbk_Prio.Items(1).ToString
+                                        sTMP2 = F_TBDTV.Adrbk_Prio.Items(1).ToString
                                     Case "mobile"
-                                        sTMP2 = Me.Adrbk_Prio.Items(2).ToString
+                                        sTMP2 = F_TBDTV.Adrbk_Prio.Items(2).ToString
                                     Case "fax_work"
-                                        sTMP2 = Me.Adrbk_Prio.Items(3).ToString
+                                        sTMP2 = F_TBDTV.Adrbk_Prio.Items(3).ToString
                                     Case Else '"home"
-                                        sTMP2 = Me.Adrbk_Prio.Items(0).ToString
+                                        sTMP2 = F_TBDTV.Adrbk_Prio.Items(0).ToString
                                 End Select
 
                                 If XMLTelNr.GetAttribute("prio") = "1" Then
@@ -273,8 +298,8 @@ Public Class formTelefonbuch
         BaseXmlNode = FBoxAdrBook.Item("phonebooks").Item("phonebook")
 
         ' TelefonbuchName festlegen
-        If Me.TBAdrbuchName.Text IsNot C_DP.P_Def_StringEmpty Then
-            BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("name")).Value = Me.TBAdrbuchName.Text
+        If F_TBControl.TBAdrbuchName.Text IsNot C_DP.P_Def_StringEmpty Then
+            BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("name")).Value = F_TBControl.TBAdrbuchName.Text
             ' Prüfen:
             'BaseXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("owner")).Value = "1"
         End If
@@ -337,12 +362,12 @@ Public Class formTelefonbuch
                     tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("id")).Value = CStr(i - 1)
 
                     ' Attribut prio
-                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("prio")).Value = CStr(IIf(TelNrPrio = Me.Adrbk_Prio.Items(j).ToString, 1, 0))
+                    tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("prio")).Value = CStr(IIf(TelNrPrio = F_TBDTV.Adrbk_Prio.Items(j).ToString, 1, 0))
 
                     ' Attribut type
                     tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("type")).Value = TelNrName(j)
 
-                    If TelNrkwV = Me.AdrBk_KwV.Items(j).ToString Then
+                    If TelNrkwV = F_TBDTV.AdrBk_KwV.Items(j).ToString Then
                         ' Attribut quickdial
                         If TelNrQuickDial IsNot C_DP.P_Def_StringEmpty Then
                             tmpXmlNode.Attributes.Append(FBoxAdrBook.CreateAttribute("quickdial")).Value = TelNrQuickDial
@@ -450,9 +475,24 @@ Public Class formTelefonbuch
         End With
         With NodeValues
             .Clear()
-            For Each Wert As String In NodeNames
-                .Add(C_DP.P_Def_StringEmpty)
-            Next
+            .Add(C_DP.P_Def_StringEmpty) ' id
+            .Add(C_DP.P_Def_StringEmpty) ' uniqueid
+            .Add("False")                ' category
+            .Add(C_DP.P_Def_StringEmpty) ' mod_time
+            .Add(C_DP.P_Def_StringEmpty) ' RealName
+            .Add(C_DP.P_Def_StringEmpty) ' EMail
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_Prio
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_kwV
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_Kurzwahl
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_Vanity
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_home_TelNr
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_work_TelNr
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_mobile_TelNr
+            .Add(C_DP.P_Def_StringEmpty) ' TelNr_fax_work_TelNr
+            .Add(C_DP.P_Def_StringEmpty) ' setup
+            'For Each Wert As String In NodeNames
+            '    .Add(C_DP.P_Def_StringEmpty)
+            'Next
         End With
         'NodeValues.Item(NodeNames.IndexOf("uniqueid")) = "1"
         TransTelBook.Item("TrnsAdrBk").AppendChild(C_XML.CreateXMLNode(TransTelBook, "AdrBk", NodeNames, NodeValues, AttributeNames, AttributeValues))
@@ -479,10 +519,9 @@ Public Class formTelefonbuch
 
         xmlFile = XmlReader.Create(xmlStream, New XmlReaderSettings())
 
-
         DS = New DataSet
         DS.ReadXml(xmlFile)
-        With Me.DGVTelefonbuch
+        With F_TBDTV.DGVTelefonbuch
             .AutoGenerateColumns = False
             .DataSource = DS.Tables.Item(0)
             .ReadOnly = False
@@ -495,8 +534,58 @@ Public Class formTelefonbuch
         'DS.Tables.Item(0).Columns("uniqueid").Unique = True
         xmlStream.Close()
 
-        AddHandler DGVTelefonbuch.CellValueChanged, AddressOf DGVTelefonbuch_CellValueChanged
+        AddHandler F_TBDTV.DGVTelefonbuch.CellValueChanged, AddressOf DGVTelefonbuch_CellValueChanged
+        AddHandler F_TBDTV.DGVTelefonbuch.DataError, AddressOf DGVTelefonbuch_DataError
     End Sub
+
+    Private Sub ADDTelefonbuchEintrag(ByVal DragDropString() As String)
+        'Name;Position;Firma;Speichern unter;Land/Region;Abteilung;Telefon geschäftlich;Fax geschäftl.;Telefon privat;Mobiltelefon;E-Mail;Kategorien;
+
+        '.Add("id")
+        '.Add("uniqueid")
+        '.Add("category")
+        '.Add("mod_time")
+        '.Add("RealName")
+        '.Add("EMail")
+        '.Add("TelNr_Prio")
+        '.Add("TelNr_kwV")
+        '.Add("TelNr_Kurzwahl")
+        '.Add("TelNr_Vanity")
+        '.Add("TelNr_home_TelNr")
+        '.Add("TelNr_work_TelNr")
+        '.Add("TelNr_mobile_TelNr")
+        '.Add("TelNr_fax_work_TelNr")
+
+        Dim BaseArray() As String
+        Dim DatenArray() As String
+        BaseArray = Split(DragDropString(0), ";", , CompareMethod.Text)
+        Dim neueZeile As DataRow
+        For i = 1 To DragDropString.Count - 1
+            DatenArray = Split(DragDropString(i), ";", , CompareMethod.Text)
+            neueZeile = DS.Tables.Item(0).NewRow()
+            neueZeile.Item("RealName") = DatenArray(Array.IndexOf(BaseArray, "Name"))
+            neueZeile.Item("EMail") = DatenArray(Array.IndexOf(BaseArray, "E-Mail"))
+
+            neueZeile.Item("TelNr_Prio") = F_TBDTV.Adrbk_Prio.Items(0).ToString
+
+            neueZeile.Item("TelNr_home_TelNr") = C_hf.nurZiffern(DatenArray(Array.IndexOf(BaseArray, "Telefon privat")))
+            neueZeile.Item("TelNr_work_TelNr") = C_hf.nurZiffern(DatenArray(Array.IndexOf(BaseArray, "Telefon geschäftlich")))
+            neueZeile.Item("TelNr_mobile_TelNr") = C_hf.nurZiffern(DatenArray(Array.IndexOf(BaseArray, "Mobiltelefon")))
+            neueZeile.Item("TelNr_fax_work_TelNr") = C_hf.nurZiffern(DatenArray(Array.IndexOf(BaseArray, "Fax geschäftl.")))
+            DS.Tables.Item(0).Rows.Add(neueZeile)
+        Next
+
+    End Sub
+
+    Friend Sub DGVTelefonbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
+
+        SetStatusText("Eintrag " & CStr(DS.Tables.Item(0).Rows(e.RowIndex).Item("RealName")) & " geändert.")
+        ' Datum ändern
+        Dim UTime As Integer = C_hf.GetUnixTime
+        DS.Tables.Item(0).Rows(e.RowIndex).Item("mod_time") = UTime
+
+    End Sub
+
 #End Region
 
 #Region "Button_Click"
@@ -534,18 +623,24 @@ Public Class formTelefonbuch
         End With
     End Sub
 
-    Private Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click, BAdd.Click
+    Private Overloads Sub Eintrag_Add_Click(sender As Object, e As EventArgs) Handles TSMI_Add.Click
+        Eintrag_Add_Click()
+    End Sub
+    Friend Overloads Sub Eintrag_Add_Click()
         DS.Tables.Item(0).Rows.Add()
     End Sub
 
-    Private Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click, BDel.Click
-        With Me.DGVTelefonbuch
+    Private Overloads Sub Eintrag_Delete_Click(sender As Object, e As EventArgs) Handles TSMI_Delete.Click
+        Eintrag_Delete_Click()
+    End Sub
+
+    Friend Overloads Sub Eintrag_Delete_Click()
+        With F_TBDTV.DGVTelefonbuch
             If .SelectedRows.Count > 0 Then
                 For I As Integer = .SelectedRows.Count - 1 To 0 Step -1
                     .Rows.RemoveAt(.SelectedRows(I).Index)
                 Next
-                StatusText = "Eintrag / Einträge gelöscht."
-                SetStatusText()
+                SetStatusText("Eintrag / Einträge gelöscht.")
             End If
         End With
     End Sub
@@ -590,14 +685,18 @@ Public Class formTelefonbuch
         End With
 
     End Sub
+
 #Region "Import Export"
 
     Private Sub ImportToolStrip_Click(ByVal sender As Object, e As EventArgs) Handles ImportToolStrip.Click
+        Dim TelBuch As String
+
         BackgroundWorkerImport = New BackgroundWorker
-
-        Dim TelBuch As String = "0: Telefonbuch"
-
-        If CStr(Me.CBoxFBTelbuch.SelectedItem).Contains(": ") Then TelBuch = CStr(Me.CBoxFBTelbuch.SelectedItem)
+        If F_TBControl.CBoxFBTelbuch.SelectedItem IsNot Nothing AndAlso CStr(F_TBControl.CBoxFBTelbuch.SelectedItem).Contains(": ") Then
+            TelBuch = CStr(F_TBControl.CBoxFBTelbuch.SelectedItem)
+        Else
+            TelBuch = "0: Telefonbuch"
+        End If
 
         With BackgroundWorkerImport
             .WorkerReportsProgress = False
@@ -609,8 +708,9 @@ Public Class formTelefonbuch
     Private Sub ExportToolStripButton_Click(sender As Object, e As EventArgs) Handles ExportToolStripButton.Click
 
         Dim TelBuch As String = "0: Telefonbuch"
+        Dim tmpStatusText As String
 
-        If CStr(Me.CBoxFBTelbuch.SelectedItem).Contains(": ") Then TelBuch = CStr(Me.CBoxFBTelbuch.SelectedItem)
+        If CStr(F_TBControl.CBoxFBTelbuch.SelectedItem).Contains(": ") Then TelBuch = CStr(F_TBControl.CBoxFBTelbuch.SelectedItem)
 
         If C_hf.FBDB_MsgBox("Soll dieses Telefonbuch in die Fritz!Box exportiert werden? Falls dieses Telefonbuch bereits vorhanden ist, wird es überschrieben.", _
                             MsgBoxStyle.YesNo, "ExportToolStripButton_Click") = MsgBoxResult.Yes Then
@@ -621,70 +721,21 @@ Public Class formTelefonbuch
                 .RunWorkerAsync(TelBuch)
             End With
 
-            StatusText = "Telefonbuch wird zur Fritz!Box exportiert... (bitte warten)"
+            tmpStatusText = "Telefonbuch wird zur Fritz!Box exportiert... (bitte warten)"
         Else
-            StatusText = "Telefonbuch nicht zur Fritz!Box exportiert."
+            tmpStatusText = "Telefonbuch nicht zur Fritz!Box exportiert."
         End If
-        SetStatusText()
+        SetStatusText(tmpStatusText)
     End Sub
 
 #End Region
 #End Region
-
-#Region "XMlViewer"
-    Public Sub UpdateXML()
-        Dim ms As System.IO.MemoryStream
-        ms = FormatXMLDoc(GetFritzBoxTelefonbuch)
-        myXMLViewer.Text = C_hf.ByteArrayToString(ms.GetBuffer)
-        Try
-            myXMLViewer.Process(True)
-        Catch appException As ApplicationException
-            MessageBox.Show(appException.Message, "ApplicationException")
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "Exception")
-        End Try
-    End Sub
-
-    Private Function FormatXMLDoc(ByVal xmlDoc As XmlDocument) As System.IO.MemoryStream
-        Dim retVal As New System.IO.MemoryStream
-        Dim writer As XmlTextWriter = New XmlTextWriter(retVal, New System.Text.ASCIIEncoding)
-        With writer
-
-            .Formatting = Formatting.Indented
-            .IndentChar = ControlChars.Tab
-            .Indentation = 1
-            xmlDoc.WriteTo(writer)
-            .Flush()
-            .Close()
-
-        End With
-        Return retVal
-    End Function
-#End Region
-
-    Private Sub DGVTelefonbuch_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DGVTelefonbuch.DataError
-        'Throw New NotImplementedException
-    End Sub
-
-    Private Sub DGVTelefonbuch_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
-        StatusText = "Eintrag " & CStr(DS.Tables.Item(0).Rows(e.RowIndex).Item("RealName")) & " geändert."
-        SetStatusText()
-        ' Datum ändern
-        Dim UTime As Integer = C_hf.GetUnixTime
-        DS.Tables.Item(0).Rows(e.RowIndex).Item("mod_time") = UTime
-    End Sub
-
-    Private Sub TCTelefonbuch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TCTelefonbuch.SelectedIndexChanged
-        If Me.TCTelefonbuch.SelectedTab Is Me.TPTelefonbuchXML Then
-            UpdateXML()
-        End If
-    End Sub
 
 #Region "Behandlung Delegaten"
-    Private Sub SetStatusText()
+    Private Sub SetStatusText(ByVal StatusText As String)
         If Me.InvokeRequired Then
             Dim D As New DelgTSSLTelefonbuch(AddressOf SetStatusText)
-            Me.Invoke(D)
+            Me.Invoke(D, StatusText)
         Else
             Me.TSSLTelefonbuch.Text = StatusText
         End If
@@ -704,7 +755,7 @@ Public Class formTelefonbuch
             Dim D As New DelgCBoxFBTelbuch(AddressOf SetDelgCBoxFBTelbuch)
             Me.Invoke(D, FBTelBkList)
         Else
-            With Me.CBoxFBTelbuch
+            With F_TBControl.CBoxFBTelbuch
                 .Items.AddRange(FBTelBkList)
                 .SelectedIndex = 0
             End With
@@ -722,16 +773,14 @@ Public Class formTelefonbuch
 
         If IsNumeric(TelBuch(0)) Then BookID = TelBuch(0)
         BookName = TelBuch(1)
-
-        StatusText = "Importvorgang des Telefonbuchs " & BookID & " (" & BookName & ") von der Fritz!Box gestartet... (bitte warten)"
-        SetStatusText()
+        BookName = Replace(BookName, vbLf, "", , , CompareMethod.Text)
+        SetStatusText("Importvorgang des Telefonbuchs " & BookID & " (" & BookName & ") von der Fritz!Box gestartet... (bitte warten)")
         e.Result = C_FB.DownloadAddressbook(BookID, BookName)
     End Sub
 
     Private Sub BackgroundWorkerImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerImport.RunWorkerCompleted
         SetDBVTelefonbuch(CType(e.Result, XmlDocument))
-        StatusText = "Telefonbuch von der Fritz!Box erfolgreich importiert."
-        SetStatusText()
+        SetStatusText("Telefonbuch von der Fritz!Box erfolgreich importiert.")
     End Sub
 
     Private Sub BackgroundWorkerExport_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerExport.DoWork
@@ -754,56 +803,43 @@ Public Class formTelefonbuch
 
         If IsNumeric(TelBuch(0)) Then BookID = TelBuch(0)
 
-        StatusText = "Exportvorgang des Telefonbuchs " & BookID & " zu der Fritz!Box gestartet... (bitte warten)"
-        SetStatusText()
+        SetStatusText("Exportvorgang des Telefonbuchs " & BookID & " zu der Fritz!Box gestartet... (bitte warten)")
 
         C_FB.UploadAddressbook(BookID, sXML)
     End Sub
 
     Private Sub BackgroundWorkerExport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerExport.RunWorkerCompleted
-        StatusText = "Telefonbuch in die Fritz!Box exportiert. Bitte Prüfen Sie, ob der Vorgang erfolgreich war."
-        SetStatusText()
+        SetStatusText("Telefonbuch in die Fritz!Box exportiert. Bitte Prüfen Sie, ob der Vorgang erfolgreich war.")
     End Sub
 
     Private Sub BackgroundWorkerLadeTelefonbuchListe_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerLadeTelefonbuchListe.DoWork
-        StatusText = "Ermittlung vorhandener Telefonbucher von der Fritz!Box gestartet... (bitte warten)"
-        SetStatusText()
+        SetStatusText("Ermittlung vorhandener Telefonbucher von der Fritz!Box gestartet... (bitte warten)")
         e.Result = C_FB.GetTelefonbuchListe()
     End Sub
 
     Private Sub BackgroundWorkerLadeTelefonbuchListe_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerLadeTelefonbuchListe.RunWorkerCompleted
         SetDelgCBoxFBTelbuch(CType(e.Result, String()))
-        StatusText = "Ermittlung vorhandener Telefonbücher Fritz!Box erfolgreich abgeschlossen."
-        SetStatusText()
+        SetStatusText("Ermittlung vorhandener Telefonbücher Fritz!Box erfolgreich abgeschlossen.")
     End Sub
 
 #End Region
 
+    Private Sub DGVTelefonbuch_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
+        Throw New NotImplementedException
+    End Sub
 
-    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles BTest.Click
-
-        ' Me.TextBox1.Text = C_FB.FritzBoxQuery(InputBox("Abfrage"))
-
-        'Me.TextBox1.Text = C_FB.FritzBoxQuery("LKZPrefix=telcfg:settings/Location/LKZPrefix&LKZ=telcfg:settings/Location/LKZ&OKZPrefix=telcfg:settings/Location/OKZPrefix&OKZ=telcfg:settings/Location/OKZ&Port0=telcfg:settings/MSN/Port0/Name&Port1=telcfg:settings/MSN/Port1/Name&Port2=telcfg:settings/MSN/Port2/Name&TAM=tam:settings/TAM/list(Name)&IPP=telcfg:settings/VoipExtension/list(Name)&FON=telcfg:settings/Foncontrol/User/list(Name,Type,Intern)&MSN=telcfg:settings/SIP/list(MSN,Name)")
-        'C_FB.FritzBoxQuery("Boxzeit", "box:status/localtime")
-        'C_FB.FritzBoxQuery("Sperren", "telcfg:settings/CallerIDActions/list(CallerID,Action)")
-
-        ' DECT...
-        'C_FB.FritzBoxQuery("DeviceDECT", "telcfg:settings/Foncontrol/User/list(Id,Name,Type,Intern,MSN)")
-        ' DECT zugeordnete Nummern
-        ' User0, User1 User... 
-        'C_FB.FritzBoxQuery("TelNrDECT", "telcfg:settings/Foncontrol/User1/MSN/list(Number)")
-
-        ' MSN Geräte
-        'C_FB.FritzBoxQuery("DeviceMSN", "telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)")
-
-        'SIP - Nummern
-        'C_FB.FritzBoxQuery("SIP", "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)")
-
-        'TAM - Geräte
-        'C_FB.FritzBoxQuery("TAM", "tam:settings/TAM/list(Active,Name,Display,MSNBitmap)")
-        'TAM - Nummern
+    Private Sub BTest_Click(sender As Object, e As EventArgs) Handles ToolStripButton1.Click
+        Dim NewMDIChild As New MyDndForm()
+        'Set the Parent Form of the Child window.
+        NewMDIChild.MdiParent = Me
+        'Display the new form.
+        NewMDIChild.Show()
 
     End Sub
 
+#Region "DnD"
+
+#End Region
+
 End Class
+

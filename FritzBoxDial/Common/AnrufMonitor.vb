@@ -721,8 +721,12 @@ Friend Class AnrufMonitor
 
                 ' StoppUhr einblenden
                 If C_DP.P_CBStoppUhrEinblenden And ShowForms Then
-                    C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStoppUhr1)
-                    C_Popup.StoppuhrEinblenden(Telefonat)
+                    If (Not .NSN = 5) Or (.NSN = 5 And Not C_DP.P_CBStoppUhrIgnIntFax) Then
+                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStoppUhr1)
+                        C_Popup.StoppuhrEinblenden(Telefonat)
+                    Else
+                        C_hf.LogFile(C_DP.P_AnrMon_Log_AnrMonStoppUhr2)
+                    End If
                 End If
 
                 'Notizeintag
