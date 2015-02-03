@@ -4,7 +4,7 @@
     <tabs>
       <tab idMso="TabJournal">
         <group id="TabJournal" getLabel="GetInspLabel" getVisible="GroupVisible">
-          <button id="Button_J1" imageMso="AutoDial" onAction="OnActionWählen" size="large" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp" getEnabled="ButtonEnableW"/>
+          <button id="Button_J1" size="large" imageMso="AutoDial" onAction="OnActionWählen" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp" getEnabled="ButtonEnableW"/>
            <menu id="mnu_J01" size="large" imageMso="CheckNames" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp" getEnabled="ButtonEnableW">
              <button id="btn_J01" tag="RWS11880" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
              <button id="btn_J02" tag="RWSDasOertliche" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
@@ -12,7 +12,7 @@
              <button id="btn_J04" tag="RWSTelSearch" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
              <button id="btn_J05" tag="RWSAlle" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
            </menu>
-          <button id="Button_J2" getLabel="GetInspLabel" imageMso="RecordsSaveAsOutlookContact" onAction="OnActionKontakterstellen" size="large" getEnabled="ButtonEnable" getScreentip="GetInspScreenTipp"/>
+          <button id="Button_J2" size="large" getLabel="GetInspLabel" imageMso="RecordsSaveAsOutlookContact" onAction="OnActionKontakterstellen" getEnabled="ButtonEnable" getScreentip="GetInspScreenTipp"/>
         </group>
       </tab>
     </tabs>

@@ -10,6 +10,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_C1">
               <button id="Button_C2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
+              <button id="AdrBtn_C1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_C1"/>
@@ -25,15 +26,7 @@
               <button id="AnrMonBtn_C2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <splitButton id="spb3_C" size="normal">
-            <!--oberste Schaltfläche des SplitButton-->
-            <button id="AnrMonBtn_C1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getScreentip="GetExplScreenTipp"/>
-            <!--Menü mit Schaltflächen des SplitButton-->
-            <menu id="mnu_C3">
-              <button id="AdrBtn_C1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
-            </menu>
-          </splitButton>
-          <!--<button id="AnrMonBtn_C1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>-->
+          <button id="AnrMonBtn_C1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
           <button id="AnrMonBtn_C4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_C" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
@@ -48,6 +41,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_M1">
               <button id="Button_M2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
+              <button id="AdrBtn_M1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_M1"/>
@@ -63,14 +57,7 @@
               <button id="AnrMonBtn_M2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <splitButton id="spb3_M" size="normal">
-            <!--oberste Schaltfläche des SplitButton-->
-            <button id="AnrMonBtn_M1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getScreentip="GetExplScreenTipp"/>
-            <!--Menü mit Schaltflächen des SplitButton-->
-            <menu id="mnu_M3">
-              <button id="AdrBtn_M1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
-            </menu>
-          </splitButton>
+          <button id="AnrMonBtn_M1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
           <button id="AnrMonBtn_M4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI" getScreentip="GetExplScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_M" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
@@ -85,6 +72,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_J1">
               <button id="Button_J2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
+              <button id="AdrBtn_J1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_J1"/>
@@ -100,14 +88,7 @@
               <button id="AnrMonBtn_J2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <splitButton id="spb3_J" size="normal">
-            <!--oberste Schaltfläche des SplitButton-->
-            <button id="AnrMonBtn_J1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getScreentip="GetExplScreenTipp"/>
-            <!--Menü mit Schaltflächen des SplitButton-->
-            <menu id="mnu_J3">
-              <button id="AdrBtn_J1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
-            </menu>
-          </splitButton>
+          <button id="AnrMonBtn_J1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
           <button id="AnrMonBtn_J4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_J" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
@@ -122,6 +103,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_K1">
               <button id="Button_K2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
+              <button id="AdrBtn_K1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
           <separator id="Seperator_K1"/>
@@ -137,14 +119,7 @@
               <button id="AnrMonBtn_K2" getLabel="GetExplLabel" onAction="OnActionAnrMonNeustarten" imageMso="RecurrenceEdit" getScreentip="GetExplScreenTipp"/>
             </menu>
           </splitButton>
-          <splitButton id="spb3_K" size="normal">
-            <!--oberste Schaltfläche des SplitButton-->
-            <button id="AnrMonBtn_K1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getScreentip="GetExplScreenTipp"/>
-            <!--Menü mit Schaltflächen des SplitButton-->
-            <menu id="mnu_K3">
-              <button id="AdrBtn_K1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
-            </menu>
-          </splitButton>
+          <button id="AnrMonBtn_K1" getLabel="GetExplLabel" onAction="OnActionAnrMonAnzeigen" imageMso="ClipArtInsert" getVisible="GetVisibleAnrMonFKT" getScreentip="GetExplScreenTipp"/>
           <button id="AnrMonBtn_K4" getLabel="GetExplLabel" onAction="OnActionJournalImport" imageMso="NewJournalEntry" getVisible="GetVisibleAnrMonFKT" getEnabled="GetEnabledJI" getScreentip="GetExplScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_K" onAction="OnActionEinstellungen" getScreentip="GetExplScreenTipp"/>
