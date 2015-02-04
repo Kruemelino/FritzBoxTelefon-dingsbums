@@ -9,13 +9,13 @@ Imports System.Drawing
 Public Class formTelefonbuch
 
 #Region "Deklarationen"
-    Private C_FB As FritzBoxDial.FritzBox
+    'Private C_FB As FritzBoxDial.FritzBox
     Private C_DP As FritzBoxDial.DataProvider
-    Private C_KF As FritzBoxDial.Contacts
+    'Private C_KF As FritzBoxDial.Contacts
     Private C_XML As FritzBoxDial.XML
     Private C_hf As FritzBoxDial.Helfer
-    Private C_GUI As FritzBoxDial.GraphicalUserInterface
-    Private C_OLI As FritzBoxDial.OutlookInterface
+    'Private C_GUI As FritzBoxDial.GraphicalUserInterface
+    'Private C_OLI As FritzBoxDial.OutlookInterface
 
     Friend DS As DataSet
 
@@ -39,24 +39,27 @@ Public Class formTelefonbuch
 #End Region
 
     Public Sub New(ByVal XMLKlasse As XML, _
-                   ByVal FritzBoxKlasse As FritzBox, _
                    ByVal DataProviderKlasse As DataProvider, _
-                   ByVal KontaktKlasse As Contacts, _
-                   ByVal Helferklasse As Helfer, _
-                   ByVal GUIKlasse As GraphicalUserInterface, _
-                   ByVal OLIKlasse As OutlookInterface)
+                   ByVal Helferklasse As Helfer)
 
+        'Public Sub New(ByVal XMLKlasse As XML, _
+        '               ByVal FritzBoxKlasse As FritzBox, _
+        '               ByVal DataProviderKlasse As DataProvider, _
+        '               ByVal KontaktKlasse As Contacts, _
+        '               ByVal Helferklasse As Helfer, _
+        '               ByVal GUIKlasse As GraphicalUserInterface, _
+        '               ByVal OLIKlasse As OutlookInterface)
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        C_FB = FritzBoxKlasse
+        'C_FB = FritzBoxKlasse
         C_DP = DataProviderKlasse
-        C_KF = KontaktKlasse
+        'C_KF = KontaktKlasse
         C_XML = XMLKlasse
         C_hf = Helferklasse
-        C_GUI = GUIKlasse
-        C_OLI = OLIKlasse
+        'C_GUI = GUIKlasse
+        'C_OLI = OLIKlasse
 
         F_TBControl = New formTBControl(Me)
         With F_TBControl
@@ -66,7 +69,7 @@ Public Class formTelefonbuch
             .Show()
         End With
 
-        F_Dnd = New MyDndForm
+        F_DnD = New MyDndForm
         With F_DnD
             .MdiParent = Me
             .Dock = DockStyle.Bottom
@@ -755,10 +758,12 @@ Public Class formTelefonbuch
             Dim D As New DelgCBoxFBTelbuch(AddressOf SetDelgCBoxFBTelbuch)
             Me.Invoke(D, FBTelBkList)
         Else
-            With F_TBControl.CBoxFBTelbuch
-                .Items.AddRange(FBTelBkList)
-                .SelectedIndex = 0
-            End With
+            If FBTelBkList IsNot Nothing Then
+                With F_TBControl.CBoxFBTelbuch
+                    .Items.AddRange(FBTelBkList)
+                    .SelectedIndex = 0
+                End With
+            End If
         End If
     End Sub
 
@@ -775,7 +780,7 @@ Public Class formTelefonbuch
         BookName = TelBuch(1)
         BookName = Replace(BookName, vbLf, "", , , CompareMethod.Text)
         SetStatusText("Importvorgang des Telefonbuchs " & BookID & " (" & BookName & ") von der Fritz!Box gestartet... (bitte warten)")
-        e.Result = C_FB.DownloadAddressbook(BookID, BookName)
+        'e.Result = C_FB.DownloadAddressbook(BookID, BookName)
     End Sub
 
     Private Sub BackgroundWorkerImport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerImport.RunWorkerCompleted
@@ -805,7 +810,7 @@ Public Class formTelefonbuch
 
         SetStatusText("Exportvorgang des Telefonbuchs " & BookID & " zu der Fritz!Box gestartet... (bitte warten)")
 
-        C_FB.UploadAddressbook(BookID, sXML)
+        'C_FB.UploadAddressbook(BookID, sXML)
     End Sub
 
     Private Sub BackgroundWorkerExport_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerExport.RunWorkerCompleted
@@ -814,7 +819,7 @@ Public Class formTelefonbuch
 
     Private Sub BackgroundWorkerLadeTelefonbuchListe_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorkerLadeTelefonbuchListe.DoWork
         SetStatusText("Ermittlung vorhandener Telefonbucher von der Fritz!Box gestartet... (bitte warten)")
-        e.Result = C_FB.GetTelefonbuchListe()
+        'e.Result = C_FB.GetTelefonbuchListe()
     End Sub
 
     Private Sub BackgroundWorkerLadeTelefonbuchListe_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgroundWorkerLadeTelefonbuchListe.RunWorkerCompleted

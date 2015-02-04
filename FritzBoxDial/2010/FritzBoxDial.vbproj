@@ -276,39 +276,15 @@
     <Compile Include="..\Common\Wählclient.vb">
       <Link>Wählclient.vb</Link>
     </Compile>
-    <Compile Include="..\Common\formTelefonbuch.Designer.vb">
-      <DependentUpon>formTelefonbuch.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\formTelefonbuch.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="..\Common\Popup.vb" />
-    <Compile Include="..\Common\TelefonbuchPanel\formTBControl.Designer.vb">
-      <DependentUpon>formTBControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\TelefonbuchPanel\formTBControl.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\Common\TelefonbuchPanel\formTBDTV.Designer.vb">
-      <DependentUpon>formTBDTV.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\TelefonbuchPanel\formTBDTV.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="..\Common\TelefonbuchPanel\formTBControl.resx">
-      <DependentUpon>formTBControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\TelefonbuchPanel\formTBDTV.resx">
-      <DependentUpon>formTBDTV.vb</DependentUpon>
-    </EmbeddedResource>
     <None Include="..\..\..\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
@@ -332,10 +308,6 @@
     <EmbeddedResource Include="..\Common\formInit.resx">
       <DependentUpon>formInit.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\formTelefonbuch.resx">
-      <DependentUpon>formTelefonbuch.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -353,10 +325,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DndForm\DnDForm.csproj">
-      <Project>{07b22a80-412f-424c-8d21-df58e6ea3041}</Project>
-      <Name>DnDForm</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Funktionen\Funktionen.vbproj">
       <Project>{ccf5ae9e-c12e-4467-9334-504cd7902b78}</Project>
       <Name>Funktionen</Name>
@@ -364,6 +332,10 @@
     <ProjectReference Include="..\..\PopupFenster\PopupFenster.vbproj">
       <Project>{d8d8fab5-b82d-4363-82b4-e6c295074075}</Project>
       <Name>PopupFenster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Telefonbuch\Telefonbuch.vbproj">
+      <Project>{53cdc1f5-ec82-4741-99ba-d2f4e56e41cd}</Project>
+      <Name>Telefonbuch</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

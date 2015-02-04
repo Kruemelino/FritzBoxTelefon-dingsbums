@@ -9,6 +9,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PopupFenster", "PopupFenste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDForm", "DndForm\DnDForm.csproj", "{07B22A80-412F-424C-8D21-DF58E6EA3041}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Telefonbuch", "Telefonbuch\Telefonbuch.vbproj", "{53CDC1F5-EC82-4741-99BA-D2F4E56E41CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{07B22A80-412F-424C-8D21-DF58E6EA3041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07B22A80-412F-424C-8D21-DF58E6EA3041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07B22A80-412F-424C-8D21-DF58E6EA3041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53CDC1F5-EC82-4741-99BA-D2F4E56E41CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53CDC1F5-EC82-4741-99BA-D2F4E56E41CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53CDC1F5-EC82-4741-99BA-D2F4E56E41CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53CDC1F5-EC82-4741-99BA-D2F4E56E41CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
