@@ -31,6 +31,7 @@ Public Class ThisAddIn
     Private WithEvents iBtnRWSAlle As Office.CommandBarButton
     Private WithEvents iBtnKontakterstellen As Office.CommandBarButton
     Private WithEvents iBtnVIP As Office.CommandBarButton
+    Private WithEvents iBtnUpload As Office.CommandBarButton
 #End If
 #End Region
     Private Shared oApp As Outlook.Application
@@ -209,7 +210,7 @@ Public Class ThisAddIn
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
 #If OVer = 11 Then
-        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP)
+        C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnUpload)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
             If C_DP.P_CBKHO AndAlso Not _
@@ -297,7 +298,8 @@ Public Class ThisAddIn
                                                                                                                          iBtnRWStelSearch.Click, _
                                                                                                                          iBtnRWSAlle.Click, _
                                                                                                                          iBtnWwh.Click, _
-                                                                                                                         iBtnVIP.Click
+                                                                                                                         iBtnVIP.Click, _
+                                                                                                                         iBtnUpload.click
 
         With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Tag
@@ -324,6 +326,9 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
+                Case C_DP.P_CMB_Insp_Upload
+                    Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
+                    C_Fbox.UploadKontaktToFritzBox(aktKontakt, .IsVIP(aktKontakt))
             End Select
         End With
     End Sub

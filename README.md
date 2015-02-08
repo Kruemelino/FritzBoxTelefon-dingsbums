@@ -38,8 +38,6 @@ Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
 
 Windows XP SP3 (Entwicklungsrechner VS2008)
 
-Die Rechtevergabe (setCaspol.exe) wurde von Markus Debus www.citro-computer.de 2010 neu erstellt. Vielen Dank!
-
 1.4	Kontaktmöglichkeiten:
 Trotz sorgfältiger Überprüfung können Fehler nicht ausgeschlossen werden.
 Sofern jemand noch Fehler findet, bitte eine detaillierte Fehlerbeschreibung erstellen und diese hier bei github als Issue hinzufügen. Ansonsten kann es passieren, dass der Fehler ewig im Programm verbleibt, da er niemand anderem aufgefallen ist.
