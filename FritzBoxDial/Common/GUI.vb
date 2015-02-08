@@ -261,8 +261,6 @@ Imports Microsoft.Office.Core
         C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
     End Sub
 
-
-
     ''' <summary>
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Inspektoren
     ''' </summary>
@@ -968,7 +966,7 @@ Imports Microsoft.Office.Core
         Dim xPathTeile As New ArrayList
         Dim i As Integer
 
-        index = CInt(C_DP.Read(XMLListBaseNode, "Index", "0"))
+        index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
 
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
@@ -984,7 +982,7 @@ Imports Microsoft.Office.Core
         If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
+                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
@@ -1011,7 +1009,7 @@ Imports Microsoft.Office.Core
         Else
             For ID = 0 To 9
 
-                C_DP.ReadXMLNode(xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
+                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
                 If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String And Not Anrufer = C_DP.P_Def_StringEmpty Then
@@ -1213,18 +1211,23 @@ Imports Microsoft.Office.Core
         If XMLListBaseNode = C_DP.P_Def_ErrorMinusOne_String Then
             CommandBarPopupEnabled = False
         Else
-            CommandBarPopupEnabled = CBool(IIf(Not C_DP.Read(XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+            CommandBarPopupEnabled = CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
         End If
     End Function
 
 #End If
 #If OVer = 11 Then
     Sub InspectorSybolleisteErzeugen(ByVal Inspector As Outlook.Inspector, _
-                                     ByRef iPopRWS As Office.CommandBarPopup, ByRef iBtnWwh As Office.CommandBarButton, _
-                                     ByRef iBtnRwsDasOertliche As Office.CommandBarButton, ByRef iBtnRws11880 As Office.CommandBarButton, _
-                                     ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, ByRef iBtnRWStelSearch As Office.CommandBarButton, _
+                                     ByRef iPopRWS As Office.CommandBarPopup, _
+                                     ByRef iBtnDial As Office.CommandBarButton, _
+                                     ByRef iBtnRwsDasOertliche As Office.CommandBarButton, _
+                                     ByRef iBtnRws11880 As Office.CommandBarButton, _
+                                     ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, _
+                                     ByRef iBtnRWStelSearch As Office.CommandBarButton, _
                                      ByRef iBtnRWSAlle As Office.CommandBarButton, _
-                                     ByRef iBtnKontakterstellen As Office.CommandBarButton, ByRef iBtnVIP As Office.CommandBarButton)
+                                     ByRef iBtnKontakterstellen As Office.CommandBarButton, _
+                                     ByRef iBtnVIP As Office.CommandBarButton, _
+                                     ByRef iBtnUpload As Office.CommandBarButton)
 
         Dim cmbs As Office.CommandBars = Inspector.CommandBars
         Dim cmb As Office.CommandBar = Nothing
@@ -1251,7 +1254,7 @@ Imports Microsoft.Office.Core
                         .NameLocal = C_DP.P_Def_Addin_KurzName
                         .Visible = True
                     End With
-                    iBtnWwh = AddButtonsToCmb(cmb, C_DP.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, C_DP.P_Tag_Insp_Dial, C_DP.P_CMB_Dial_ToolTipp)
+                    iBtnDial = AddButtonsToCmb(cmb, C_DP.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, C_DP.P_Tag_Insp_Dial, C_DP.P_CMB_Dial_ToolTipp)
                     i += 1
                 End If
             End If
@@ -1288,13 +1291,14 @@ Imports Microsoft.Office.Core
             End If
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
                 iBtnVIP = AddButtonsToCmb(cmb, C_DP.P_CMB_Insp_VIP, i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", C_DP.P_CMB_VIP_Hinzufügen_ToolTipp)
-                Dim olKontact As Outlook.ContactItem = CType(Inspector.CurrentItem, Outlook.ContactItem)
+                i += 1
+                Dim olKontakt As Outlook.ContactItem = CType(Inspector.CurrentItem, Outlook.ContactItem)
                 With iBtnVIP
-                    If IsVIP(olKontact) Then
+                    If IsVIP(olKontakt) Then
                         .State = Office.MsoButtonState.msoButtonDown
                         .TooltipText = C_DP.P_CMB_VIP_Entfernen_ToolTipp
                     Else
-                        If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Index", "0")) >= 10 Then
+                        If CLng(C_XML.Read(C_DP.XMLDoc, C_DP.P_Def_NameListVIP, "Index", "0")) >= 10 Then
                             .TooltipText = C_DP.P_CMB_VIP_O11_Voll_ToolTipp
                             .Enabled = False
                         Else
@@ -1305,6 +1309,9 @@ Imports Microsoft.Office.Core
                     .Tag = C_DP.P_CMB_Insp_VIP
                     .Visible = C_DP.P_CBSymbVIP
                 End With
+                ' Upload
+                iBtnUpload = AddButtonsToCmb(cmb, C_DP.P_CMB_Insp_Upload, i, 3732, MsoButtonStyle.msoButtonIconAndCaption, "Upload", C_DP.P_CMB_Insp_UploadKontakt_ToolTipp)
+                i += 1
             End If
             ' Journaleinträge
             If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
@@ -1313,7 +1320,7 @@ Imports Microsoft.Office.Core
                                                        i, 1099, MsoButtonStyle.msoButtonIconAndCaption, _
                                                        C_DP.P_Tag_Insp_Kontakt, _
                                                        C_DP.P_CMB_Kontakt_Erstellen_ToolTipp)
-
+                i += 1
                 Dim olJournal As Outlook.JournalItem = CType(Inspector.CurrentItem, Outlook.JournalItem)
                 If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", vbTextCompare) = 0 Then
                     Dim olLink As Outlook.Link = Nothing
@@ -1323,7 +1330,7 @@ Imports Microsoft.Office.Core
                     Next
                     C_HF.NAR(olLink) : olLink = Nothing
                     iPopRWS.Enabled = True
-                    iBtnWwh.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: " & C_DP.P_Def_StringUnknown, CompareMethod.Text))
+                    iBtnDial.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: " & C_DP.P_Def_StringUnknown, CompareMethod.Text))
                     iBtnKontakterstellen.Enabled = True
                 Else
                     cmb.Delete()
@@ -1385,7 +1392,6 @@ Imports Microsoft.Office.Core
     End Sub
 
 #If OVer = 11 Then
-
     Friend Sub OnActionRWS(ByVal oInsp As Outlook.Inspector, ByVal RWS As RückwärtsSuchmaschine)
 
         Select Case RWS

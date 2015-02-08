@@ -3375,6 +3375,18 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Upload
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_Insp_Upload() As String
+        Get
+            Return "Upload"
+        End Get
+    End Property
+
+    ''' <summary>
     ''' VIP (P_CMB_Insp_VIP)
     ''' </summary>
     ''' <value></value>
@@ -3435,19 +3447,7 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' Upload
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public ReadOnly Property P_CMB_Insp_UploadKontakt() As String
-        Get
-            Return "Upload"
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Upload
+    ''' Fritz!Box Telefonbuch
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>

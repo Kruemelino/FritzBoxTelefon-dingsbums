@@ -2008,7 +2008,7 @@ Public Class FritzBox
     ''' <returns>List</returns>
     ''' <remarks>http://fritz.box/fon_num/fonbook_select.lua</remarks>
     Friend Function GetTelefonbuchListe() As String()
-        GetTelefonbuchListe = {"0'>Telefonbuch"}
+        Dim ReturnTelefonbuchListe As String() = {"0'>Telefonbuch"}
 
         Dim sPage As String
         Dim tmp As String
@@ -2029,8 +2029,9 @@ Public Class FritzBox
                 Loop Until tmp Is C_DP.P_Def_ErrorMinusOne_String
                 Liste.Remove(Liste.Length - 1, 1)
             End If
-            GetTelefonbuchListe = Split(Liste, ";", , CompareMethod.Text)
+            ReturnTelefonbuchListe = Split(Liste, ";", , CompareMethod.Text)
         End If
+        Return ReturnTelefonbuchListe
     End Function
 
 #End Region
