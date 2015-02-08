@@ -345,10 +345,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml" />
-    <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml" />
-    <EmbeddedResource Include="..\Common\Ressources\RibbonMailRead.xml" />
-    <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml" />
+    <EmbeddedResource Include="..\Common\Ressources\RibbonJournal.xml">
+      <Link>Ressources\RibbonJournal.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\RibbonKontakt.xml">
+      <Link>Ressources\RibbonKontakt.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\RibbonMailRead.xml">
+      <Link>Ressources\RibbonMailRead.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressources\RibbonExplorer.xml">
+      <Link>Ressources\RibbonExplorer.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <!-- Include the build rules for a Visual Basic project. -->
   <PropertyGroup>
