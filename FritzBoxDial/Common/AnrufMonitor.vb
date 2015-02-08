@@ -421,8 +421,25 @@ Friend Class AnrufMonitor
         ' FBStatus(5): Anschluss, SIP...
 
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
+        Dim ID As Integer = CInt(FBStatus.GetValue(2))
 
         Dim Telefonat As C_Telefonat
+
+        ' Prüfe ob Telefonatsliste bereits eine nicht beendetes Telefonat mit gleicher ID enthalten ist
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = ID And Not tmpTel.Beendet)
+        If Telefonat IsNot Nothing Then
+            ' Eigentlich (!) sollte er hier nicht reinlaufen
+            C_hf.LogFile(C_DP.P_AnrMon_Log_TelList1("RING", CStr(ID)))
+            ' Wenn ein Telefonat hier gefunden wurde, dann muss es bereits beendet sein. Ansonsten hätte die Fritz!Box eine Andere ID gesendet
+            ' Wenn das Telefonat eine Stoppuhr ond/oder eine Anrufmonitor besitz, dann ist das Telefonat nicht aus der Liste zu entfernen.
+            If Telefonat.PopupAnrMon Is Nothing And Telefonat.PopupStoppuhr Is Nothing Then
+                C_Popup.TelefonatsListe.Remove(Telefonat)
+            Else
+                Telefonat.Beendet = True
+            End If
+            ' Telefonat aufräumen
+            Telefonat = Nothing
+        End If
 
         ' Anruf nur anzeigen, wenn die MSN stimmt
         If C_hf.IsOneOf(MSN, C_DP.P_CLBTelNr) Or AnrMonPhoner Then
@@ -435,7 +452,7 @@ Friend Class AnrufMonitor
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .MSN = MSN
                 .TelName = C_hf.TelefonName(.MSN)
-                .ID = CInt(FBStatus.GetValue(2))
+                .ID = ID
                 .TelNr = CStr(FBStatus.GetValue(3))
                 ' Phoner
                 If AnrMonPhoner Then
@@ -548,14 +565,31 @@ Friend Class AnrufMonitor
         ' FBStatus(5): die gewählte Rufnummer
 
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))  ' Ausgehende eigene Telefonnummer, MSN
+        Dim ID As Integer = CInt(FBStatus.GetValue(2))
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
+
+        ' Prüfe ob Telefonatsliste bereits eine nicht beendetes Telefonat mit gleicher ID enthalten ist
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = ID And Not tmpTel.Beendet)
+        If Telefonat IsNot Nothing Then
+            ' Eigentlich (!) sollte er hier nicht reinlaufen
+            C_hf.LogFile(C_DP.P_AnrMon_Log_TelList1("CALL", CStr(ID)))
+            ' Wenn ein Telefonat hier gefunden wurde, dann muss es bereits beendet sein. Ansonsten hätte die Fritz!Box eine Andere ID gesendet
+            ' Wenn das Telefonat eine Stoppuhr ond/oder eine Anrufmonitor besitz, dann ist das Telefonat nicht aus der Liste zu entfernen.
+            If Telefonat.PopupAnrMon Is Nothing And Telefonat.PopupStoppuhr Is Nothing Then
+                C_Popup.TelefonatsListe.Remove(Telefonat)
+            Else
+                Telefonat.Beendet = True
+            End If
+            ' Telefonat aufräumen
+            Telefonat = Nothing
+        End If
 
         If C_hf.IsOneOf(MSN, C_DP.P_CLBTelNr) Or AnrMonPhoner Then
             Telefonat = New C_Telefonat
             With Telefonat
                 .Zeit = CDate(FBStatus.GetValue(0))
-                .ID = CInt(FBStatus.GetValue(2))
+                .ID = ID
                 .NSN = CLng(FBStatus.GetValue(3))
                 .MSN = MSN 'CStr(FBStatus.GetValue(4))
                 .Typ = C_Telefonat.AnrufRichtung.Ausgehend
@@ -664,7 +698,7 @@ Friend Class AnrufMonitor
         ' FBStatus(1): CONNECT, wird nicht verwendet
         ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
         ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
-        ' FBStatus(3): 
+        ' FBStatus(4): Gewählte Nummer Telefonnummer bzw. eingehende Telefonnummer
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
@@ -675,6 +709,10 @@ Friend Class AnrufMonitor
         Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus.GetValue(2)) And Not tmpTel.Beendet)
         If Telefonat IsNot Nothing Then
             With Telefonat
+                ' Temporärer Test ob Nummern identisch
+                If Not C_hf.nurZiffern(.TelNr) = CStr(FBStatus.GetValue(4)) Then
+                    C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & CStr(FBStatus.GetValue(4)))
+                End If
                 .Angenommen = True
                 .Zeit = CDate(FBStatus.GetValue(0))
 
@@ -765,22 +803,15 @@ Friend Class AnrufMonitor
         Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus.GetValue(2)) And Not tmpTel.Beendet)
 
         If Telefonat IsNot Nothing Then
-
-            Telefonat.Beendet = True
-
             With Telefonat
+                .Beendet = True
                 .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
-
                 .Body = C_DP.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
-
                 If Not .vCard = C_DP.P_Def_StringEmpty And Not .vCard = C_DP.P_Def_ErrorMinusTwo_String Then
-
                     .Companies = ReadFromVCard(.vCard, "ORG", "")
                     .Body += C_DP.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
-
                 Else
                     If .olContact IsNot Nothing Then
-
                         If .olContact.FullName = C_DP.P_Def_StringEmpty Then
                             .Anrufer = CStr(IIf(.olContact.Companies = C_DP.P_Def_StringEmpty, .TelNr, .Companies))
                         Else
@@ -860,11 +891,12 @@ Friend Class AnrufMonitor
                     End If
                 End If
 #End If
+                If .PopupAnrMon Is Nothing And .PopupStoppuhr Is Nothing Then
+                    C_Popup.TelefonatsListe.Remove(Telefonat)
+                Else
+                    C_hf.LogFile("AnrMonDISCONNECT: Telefonat " & .ID & ":" & .TelNr & " nicht aus der Liste entfernt. AnrMon: " & CStr(.PopupAnrMon Is Nothing) & " Stoppuhr: " & CStr(.PopupStoppuhr Is Nothing))
+                End If
             End With
-            If Telefonat.PopupAnrMon Is Nothing And Telefonat.PopupStoppuhr Is Nothing Then
-                C_Popup.TelefonatsListe.Remove(Telefonat)
-            End If
-
         Else
             If C_DP.P_CBJournal And C_hf.IsOneOf(CStr(FBStatus.GetValue(3)), C_DP.P_CLBTelNr) Then
                 C_hf.LogFile("AnrMonDISCONNECT: " & C_DP.P_AnrMon_AnrMonDISCONNECT_Error)
@@ -1016,7 +1048,7 @@ Friend Class AnrufMonitor
         End With
         C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, ListNodeNames, ListNodeValues, "ID", CStr(LadeLetzterAnrufer.ID))
         With LadeLetzterAnrufer
-
+            .Beendet = True
             .Zeit = CDate(ListNodeValues.Item(ListNodeNames.IndexOf("Zeit")))
             .Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
             .TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))

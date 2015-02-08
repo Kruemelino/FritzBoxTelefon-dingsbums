@@ -97,6 +97,7 @@ Friend Class formJournalimport
         Me.ButtonHerunterladen.Enabled = True
     End Sub
 #End Region
+
 #Region " Auswertung"
     Private Sub BGAnrListeAuswerten_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BGAnrListeAuswerten.DoWork
 
@@ -269,6 +270,7 @@ Friend Class formJournalimport
         DownloadAnrListe.Dispose()
     End Sub
 #End Region
+
 #Region " Button"
     Private Sub ButtonSchließen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonSchließen.Click
         Me.Hide()

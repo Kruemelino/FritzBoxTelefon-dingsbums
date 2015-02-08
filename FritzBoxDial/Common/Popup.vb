@@ -21,8 +21,7 @@ Public Class Popup
 #End Region
 
 #Region "Eigene Variablen für Anrufmonitor"
-    Private V_PfadKontaktBild As String
-    Private V_AnrmonClosed As Boolean
+    Private _PfadKontaktBild As String
     Private UpdateForm As Boolean
 
     Private WithEvents PopUpAnrufMonitor As F_AnrMon
@@ -32,21 +31,12 @@ Public Class Popup
 #End Region
 
 #Region "Eigene Properties für Anrufmonitor"
-    Friend Property AnrmonClosed() As Boolean
-        Get
-            Return V_AnrmonClosed
-        End Get
-        Set(ByVal value As Boolean)
-            V_AnrmonClosed = value
-        End Set
-    End Property
-
     Friend Property PfadKontaktBild() As String
         Get
-            Return V_PfadKontaktBild
+            Return _PfadKontaktBild
         End Get
         Set(ByVal value As String)
-            V_PfadKontaktBild = value
+            _PfadKontaktBild = value
         End Set
     End Property
 #End Region
@@ -185,8 +175,6 @@ Public Class Popup
 
             AnrMonausfüllen(ThisPopUpAnrMon, Telefonat)
 
-            AnrmonClosed = False
-
             C_OLI.KeepoInspActivated(False)
 
             AnrMonListe.Add(ThisPopUpAnrMon)
@@ -245,20 +233,32 @@ Public Class Popup
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim Telefonat As C_Telefonat = TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is CType(sender, F_AnrMon))
 
-        AnrMonListe.Remove(CType(sender, F_AnrMon))
-        AnrmonClosed = True
+        Dim tmpPopupAnrMon As F_AnrMon = CType(sender, F_AnrMon)
+        Dim tmpTelefonat As C_Telefonat
 
+        ' Entferne Anrufmonitor aus der Anrufmonitorliste
+        AnrMonListe.Remove(tmpPopupAnrMon)
+
+        If TelefonatsListe.Count > 0 Then
+            tmpTelefonat = TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is tmpPopupAnrMon)
+            If tmpTelefonat IsNot Nothing Then
+                ' Entferne Anrufmonitor aus dem dazugehörigen Telefonat
+                With tmpTelefonat
+                    .PopupAnrMon = Nothing
+                    ' Wenn das Telefonat beendet wurde und keine Stoppuhr eingeblendet ist
+                    If .Beendet And .PopupStoppuhr Is Nothing Then
+                        ' dann entferne Telefonat aus Liste
+                        C_hf.LogFile("PopupAnrMon_Closed: Telefonat " & .ID & ":" & .TelNr & " aus der Liste entfernt.")
+                        TelefonatsListe.Remove(tmpTelefonat)
+                    End If
+                End With
+            End If
+        End If
         If Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
 
-        ' Prüfen ob Anrufmonitor in der Telefonliste vorhanden ist
-        ' Ja: Dort Löschen
-        ' Nein: Nichts unternehmen
-        If Telefonat IsNot Nothing Then Telefonat.PopupAnrMon = Nothing
-        'Try
-        '    TelefonatsListe.Find(Function(JE) JE.PopupAnrMon Is CType(sender, F_AnrMon)).PopupAnrMon = Nothing
-        'Catch : End Try
+        tmpPopupAnrMon = Nothing
+        tmpTelefonat = Nothing
     End Sub
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
@@ -420,17 +420,35 @@ Public Class Popup
     ''' <remarks></remarks>
     Private Sub PopUpStoppuhr_Close(ByVal sender As Object, ByVal e As System.EventArgs)
 
-        Dim thisPopupStoppuhr As F_StoppUhr = CType(sender, F_StoppUhr)
+        Dim tmpPopupStoppuhr As F_StoppUhr = CType(sender, F_StoppUhr)
+        Dim tmpTelefonat As C_Telefonat
 
-        C_DP.P_CBStoppUhrX = thisPopupStoppuhr.StartPosition.X
-        C_DP.P_CBStoppUhrY = thisPopupStoppuhr.StartPosition.Y
-        StoppuhrListe.Remove(thisPopupStoppuhr)
+        With tmpPopupStoppuhr.StartPosition
+            C_DP.P_CBStoppUhrX = .X
+            C_DP.P_CBStoppUhrY = .Y
+        End With
+
+        ' Entferne Stoppuhr aus der Stoppuhrliste
+        StoppuhrListe.Remove(tmpPopupStoppuhr)
+
         If TelefonatsListe.Count > 0 Then
-            Try
-                TelefonatsListe.Find(Function(JE) JE.PopupStoppuhr Is thisPopupStoppuhr).PopupStoppuhr = Nothing
-            Catch : End Try
+            tmpTelefonat = TelefonatsListe.Find(Function(JE) JE.PopupStoppuhr Is tmpPopupStoppuhr)
+            If tmpTelefonat IsNot Nothing Then
+                ' Entferne Anrufmonitor aus dem dazugehörigen Telefonat
+                With tmpTelefonat
+                    .PopupStoppuhr = Nothing
+                    ' Wenn das Telefonat beendet wurde und kein Anrufmonitor eingeblendet ist
+                    If .Beendet And .PopupAnrMon Is Nothing Then
+                        ' dann entferne Telefonat aus Liste
+                        C_hf.LogFile("PopUpStoppuhr_Close: Telefonat " & .ID & ":" & .TelNr & " aus der Liste entfernt.")
+                        TelefonatsListe.Remove(tmpTelefonat)
+                    End If
+                End With
+            End If
         End If
-        thisPopupStoppuhr = Nothing
+
+        tmpPopupStoppuhr = Nothing
+        tmpTelefonat = Nothing
     End Sub
 #End Region
 

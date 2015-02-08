@@ -2507,13 +2507,28 @@ Public Class DataProvider
     ''' <summary>
     ''' AnrMonRING/CALL: Kontakt kann nicht angezeigt werden. Grund: %ErrMsg
     ''' </summary>
-    ''' <param name="ErrMsg"></param>
+    ''' <param name="Fkt">Funktionsname</param>
+    ''' <param name="ErrMsg">Fehlermeldung</param>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMon1(ByVal Fkt As String, ByVal ErrMsg As String) As String
         Get
             Return Fkt & ": Kontakt kann nicht angezeigt werden. Grund: " & ErrMsg
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' AnrMonRING/CALL: Das Telefonat mit der ID%ID existiert bereits in der Liste.
+    ''' </summary>
+    ''' <param name="Fkt">Funktionsname</param>
+    ''' <param name="ID">ID des Telefonats</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_Log_TelList1(ByVal Fkt As String, ByVal ID As String) As String
+        Get
+            Return Fkt & ": Das Telefonat mit der ID" & ID & " existiert bereits in der Liste."
         End Get
     End Property
 
