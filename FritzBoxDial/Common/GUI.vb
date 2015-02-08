@@ -282,7 +282,7 @@ Imports Microsoft.Office.Core
             Case "Button_C2"
                 GetInspLabel = C_DP.P_CMB_Insp_Note
             Case "Button_C3"
-                GetInspLabel = C_DP.P_CMB_Insp_UploadKontakt
+                GetInspLabel = C_DP.P_CMB_Insp_Upload
             Case "btn_C01", "btn_J01"
                 GetInspLabel = C_DP.P_RWS11880_Name
             Case "btn_C02", "btn_J02"
@@ -573,7 +573,7 @@ Imports Microsoft.Office.Core
             Case "ContextMenuContactItem_C"
                 GetExplLabel = C_DP.P_CMB_ContextMenueItemVIP
             Case "ContextMenuContactItem_D"
-                GetExplLabel = C_DP.P_CMB_Insp_UploadKontakt
+                GetExplLabel = C_DP.P_CMB_Insp_Upload
             Case Else
                 GetExplLabel = C_DP.P_Def_ErrorMinusOne_String
         End Select
