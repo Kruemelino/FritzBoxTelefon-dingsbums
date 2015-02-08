@@ -13,7 +13,7 @@ Imports System.Security
 
 <Assembly: AssemblyTitle("Fritz!Box Telefon-dingsbums")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyCompany("Fritz!Box Telefon-Dingsbums")> 
 <Assembly: AssemblyProduct("Fritz!Box Telefon-dingsbums")> 
 <Assembly: AssemblyCopyright("")> 
 <Assembly: AssemblyTrademark("")> 
@@ -37,6 +37,6 @@ Imports System.Security
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.7.9.0")> 
-<Assembly: AssemblyFileVersion("3.7.9.0")> 
+<Assembly: AssemblyVersion("3.7.12.0")> 
+<Assembly: AssemblyFileVersion("3.7.12.0")> 
 <Assembly: NeutralResourcesLanguageAttribute("de-DE")> 
