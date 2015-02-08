@@ -38,10 +38,11 @@ Partial Class formTelefonbuch
         Me.TSTelefonbuch = New System.Windows.Forms.ToolStrip()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.TSSLTelefonbuch = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.CMSTelefonbuch.SuspendLayout
-        Me.TSTelefonbuch.SuspendLayout
-        Me.StatusStrip1.SuspendLayout
-        Me.SuspendLayout
+        Me.MDnDPanel = New FritzBoxDial.MyDndForm()
+        Me.CMSTelefonbuch.SuspendLayout()
+        Me.TSTelefonbuch.SuspendLayout()
+        Me.StatusStrip1.SuspendLayout()
+        Me.SuspendLayout()
         '
         'OFDAdressdbuch
         '
@@ -68,7 +69,7 @@ Partial Class formTelefonbuch
         'NeuToolStripButton
         '
         Me.NeuToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.NeuToolStripButton.Image = CType(resources.GetObject("NeuToolStripButton.Image"),System.Drawing.Image)
+        Me.NeuToolStripButton.Image = CType(resources.GetObject("NeuToolStripButton.Image"), System.Drawing.Image)
         Me.NeuToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.NeuToolStripButton.Name = "NeuToolStripButton"
         Me.NeuToolStripButton.Size = New System.Drawing.Size(33, 22)
@@ -77,7 +78,7 @@ Partial Class formTelefonbuch
         'ÖffnenToolStripButton
         '
         Me.ÖffnenToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ÖffnenToolStripButton.Image = CType(resources.GetObject("ÖffnenToolStripButton.Image"),System.Drawing.Image)
+        Me.ÖffnenToolStripButton.Image = CType(resources.GetObject("ÖffnenToolStripButton.Image"), System.Drawing.Image)
         Me.ÖffnenToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ÖffnenToolStripButton.Name = "ÖffnenToolStripButton"
         Me.ÖffnenToolStripButton.Size = New System.Drawing.Size(48, 22)
@@ -86,7 +87,7 @@ Partial Class formTelefonbuch
         'SpeichernToolStripButton
         '
         Me.SpeichernToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.SpeichernToolStripButton.Image = CType(resources.GetObject("SpeichernToolStripButton.Image"),System.Drawing.Image)
+        Me.SpeichernToolStripButton.Image = CType(resources.GetObject("SpeichernToolStripButton.Image"), System.Drawing.Image)
         Me.SpeichernToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.SpeichernToolStripButton.Name = "SpeichernToolStripButton"
         Me.SpeichernToolStripButton.Size = New System.Drawing.Size(63, 22)
@@ -95,7 +96,7 @@ Partial Class formTelefonbuch
         'ImportToolStrip
         '
         Me.ImportToolStrip.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ImportToolStrip.Image = CType(resources.GetObject("ImportToolStrip.Image"),System.Drawing.Image)
+        Me.ImportToolStrip.Image = CType(resources.GetObject("ImportToolStrip.Image"), System.Drawing.Image)
         Me.ImportToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ImportToolStrip.Name = "ImportToolStrip"
         Me.ImportToolStrip.Size = New System.Drawing.Size(47, 22)
@@ -104,7 +105,7 @@ Partial Class formTelefonbuch
         'ExportToolStripButton
         '
         Me.ExportToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ExportToolStripButton.Image = CType(resources.GetObject("ExportToolStripButton.Image"),System.Drawing.Image)
+        Me.ExportToolStripButton.Image = CType(resources.GetObject("ExportToolStripButton.Image"), System.Drawing.Image)
         Me.ExportToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ExportToolStripButton.Name = "ExportToolStripButton"
         Me.ExportToolStripButton.Size = New System.Drawing.Size(44, 22)
@@ -113,7 +114,7 @@ Partial Class formTelefonbuch
         'ToolStripButton1
         '
         Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"),System.Drawing.Image)
+        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
         Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ToolStripButton1.Name = "ToolStripButton1"
         Me.ToolStripButton1.Size = New System.Drawing.Size(23, 22)
@@ -121,7 +122,7 @@ Partial Class formTelefonbuch
         '
         'TSTelefonbuch
         '
-        Me.TSTelefonbuch.AllowDrop = true
+        Me.TSTelefonbuch.AllowDrop = True
         Me.TSTelefonbuch.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NeuToolStripButton, Me.ÖffnenToolStripButton, Me.SpeichernToolStripButton, Me.ImportToolStrip, Me.ExportToolStripButton, Me.ToolStripButton1})
         Me.TSTelefonbuch.Location = New System.Drawing.Point(0, 0)
         Me.TSTelefonbuch.Name = "TSTelefonbuch"
@@ -144,14 +145,23 @@ Partial Class formTelefonbuch
         Me.TSSLTelefonbuch.Size = New System.Drawing.Size(121, 17)
         Me.TSSLTelefonbuch.Text = "ToolStripStatusLabel1"
         '
+        'MDnDPanel
+        '
+        Me.MDnDPanel.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.MDnDPanel.Location = New System.Drawing.Point(357, 124)
+        Me.MDnDPanel.Name = "MDnDPanel"
+        Me.MDnDPanel.Size = New System.Drawing.Size(284, 262)
+        Me.MDnDPanel.TabIndex = 8
+        Me.MDnDPanel.Text = "Form1"
+        '
         'formTelefonbuch
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(784, 561)
+        Me.Controls.Add(Me.MDnDPanel)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.TSTelefonbuch)
-        Me.IsMdiContainer = True
         Me.MinimumSize = New System.Drawing.Size(800, 600)
         Me.Name = "formTelefonbuch"
         Me.ShowIcon = False
@@ -159,14 +169,14 @@ Partial Class formTelefonbuch
         Me.Text = "Fritz!Box Telefonbücher"
         Me.TopMost = True
         Me.CMSTelefonbuch.ResumeLayout(False)
-        Me.TSTelefonbuch.ResumeLayout(false)
-        Me.TSTelefonbuch.PerformLayout
-        Me.StatusStrip1.ResumeLayout(false)
-        Me.StatusStrip1.PerformLayout
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.TSTelefonbuch.ResumeLayout(False)
+        Me.TSTelefonbuch.PerformLayout()
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents OFDAdressdbuch As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SFDTelefonbuch As System.Windows.Forms.SaveFileDialog
     Friend WithEvents CMSTelefonbuch As System.Windows.Forms.ContextMenuStrip
@@ -181,4 +191,5 @@ End Sub
     Friend WithEvents TSTelefonbuch As System.Windows.Forms.ToolStrip
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
     Friend WithEvents TSSLTelefonbuch As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents MDnDPanel As FritzBoxDial.MyDndForm
 End Class

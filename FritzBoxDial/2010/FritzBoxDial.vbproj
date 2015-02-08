@@ -333,10 +333,6 @@
       <Project>{d8d8fab5-b82d-4363-82b4-e6c295074075}</Project>
       <Name>PopupFenster</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Telefonbuch\Telefonbuch.vbproj">
-      <Project>{53cdc1f5-ec82-4741-99ba-d2f4e56e41cd}</Project>
-      <Name>Telefonbuch</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Common\Ressources\Bild2.gif">

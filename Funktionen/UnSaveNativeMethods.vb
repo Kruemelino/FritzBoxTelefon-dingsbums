@@ -7,6 +7,7 @@ Public Structure RECT
     Dim right As Long
     Dim bottom As Long
 End Structure
+
 ''' <summary>
 ''' The window sizing and positioning flags.
 ''' </summary>
@@ -202,7 +203,6 @@ End Enum
     <DllImport("wininet.dll", EntryPoint:="InternetCheckConnection", SetLastError:=True, CharSet:=CharSet.Unicode)> _
     Friend Shared Function InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As Boolean
     End Function
-
 End Class
 
 Public NotInheritable Class OutlookSecurity
@@ -443,4 +443,6 @@ Public NotInheritable Class OutlookSecurity
             'Return UnsafeNativeMethods.InternetCheckConnection(lpszUrl, dwFlags, dwReserved)
         End Get
     End Property
+
+
 End Class

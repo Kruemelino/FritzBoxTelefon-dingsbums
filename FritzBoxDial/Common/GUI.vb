@@ -659,9 +659,6 @@ Imports Microsoft.Office.Core
     Public Sub ContextCall(ByVal control As Office.IRibbonControl)
         WählenExplorer()
     End Sub
-    Public Sub OnActionAdressbook(ByVal control As Office.IRibbonControl)
-        ÖffneTelefonbuch()
-    End Sub
 #End If
 #End Region 'Ribbon Explorer
 
@@ -1366,11 +1363,6 @@ Imports Microsoft.Office.Core
             C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
             oSel = Nothing : ActiveExplorer = Nothing
         End If
-    End Sub
-
-    Friend Sub ÖffneTelefonbuch()
-        'Dim F_AdrBk As New formTelefonbuch(C_XML, C_FBox, C_DP, C_KF, C_HF, Me, C_OLI)
-        Dim F_AdrBk As New formTelefonbuch(C_XML, C_DP, C_HF)
     End Sub
 
 #End Region

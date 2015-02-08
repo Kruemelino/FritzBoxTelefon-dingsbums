@@ -23,7 +23,8 @@ Public Class formTelefonbuch
 
     Dim F_TBDTV As formTBDTV
     Dim F_TBControl As formTBControl
-    WithEvents F_DnD As MyDndForm
+    'Dim F_DnD As MyDndForm
+
 #End Region
 
 #Region "Delegaten"
@@ -63,23 +64,23 @@ Public Class formTelefonbuch
 
         F_TBControl = New formTBControl(Me)
         With F_TBControl
-            .MdiParent = Me
+            '.MdiParent = Me
             .Dock = DockStyle.Right
             .Width = 200
-            .Show()
+            '.Show()
         End With
 
-        F_DnD = New MyDndForm
-        With F_DnD
-            .MdiParent = Me
-            .Dock = DockStyle.Bottom
-            .Height = 100
-            .Show()
-        End With
+        'F_DnD = New MyDndForm
+        'With F_DnD
+        '    '.MdiParent = Me
+        '    .Dock = DockStyle.Bottom
+        '    .Height = 100
+        '    .Show()
+        'End With
 
         F_TBDTV = New formTBDTV(Me)
         With F_TBDTV
-            .MdiParent = Me
+            '.MdiParent = Me
             .Dock = DockStyle.Fill
             With .DGVTelefonbuch
                 .RowHeadersVisible = False
@@ -89,7 +90,7 @@ Public Class formTelefonbuch
                     .Item("AdrBk_Mod_Time").Visible = False
                 End With
             End With
-            .Show()
+            '.Show()
         End With
 
         FillDGVTelefonbuch(GetEmptyTelbook)
@@ -834,11 +835,6 @@ Public Class formTelefonbuch
     End Sub
 
     Private Sub BTest_Click(sender As Object, e As EventArgs) Handles ToolStripButton1.Click
-        Dim NewMDIChild As New MyDndForm()
-        'Set the Parent Form of the Child window.
-        NewMDIChild.MdiParent = Me
-        'Display the new form.
-        NewMDIChild.Show()
 
     End Sub
 
@@ -846,5 +842,8 @@ Public Class formTelefonbuch
 
 #End Region
 
+    Private Sub formTelefonbuch_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        Me.MDnDPanel.RegisterDnD(Me.MDnDPanel.Handle)
+    End Sub
 End Class
 

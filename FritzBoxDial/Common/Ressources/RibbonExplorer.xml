@@ -10,7 +10,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_C1">
               <button id="Button_C2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
-              <button id="AdrBtn_C1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
+              <!--<button id="AdrBtn_C1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>-->
             </menu>
           </splitButton>
           <separator id="Seperator_C1"/>
@@ -41,7 +41,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_M1">
               <button id="Button_M2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
-              <button id="AdrBtn_M1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
+              <!--<button id="AdrBtn_M1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>-->
             </menu>
           </splitButton>
           <separator id="Seperator_M1"/>
@@ -72,7 +72,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_J1">
               <button id="Button_J2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
-              <button id="AdrBtn_J1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
+              <!--<button id="AdrBtn_J1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>-->
             </menu>
           </splitButton>
           <separator id="Seperator_J1"/>
@@ -103,7 +103,7 @@
             <!--Menü mit Schaltflächen des SplitButton-->
             <menu id="mnu_K1">
               <button id="Button_K2" imageMso="SlidesPerPage9Slides" getLabel="GetExplLabel" onAction="OnActionDirektwahl" getScreentip="GetExplScreenTipp"/>
-              <button id="AdrBtn_K1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>
+              <!--<button id="AdrBtn_K1" imageMso="AddressBook" getLabel="GetExplLabel" onAction="OnActionAdressbook" getScreentip="GetExplScreenTipp"/>-->
             </menu>
           </splitButton>
           <separator id="Seperator_K1"/>
