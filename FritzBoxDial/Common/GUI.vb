@@ -130,30 +130,6 @@ Imports Microsoft.Office.Core
 #If Not OVer = 11 Then
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
 
-    Public Sub OnActionDialInsp(ByVal control As Office.IRibbonControl)
-        WählenInspector()
-    End Sub
-
-    Public Sub OnActionKontakterstellen(ByVal control As Office.IRibbonControl)
-        KontaktErstellen()
-    End Sub
-
-    Public Sub OnActionRWS(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        Select Case control.Tag
-            Case "RWS11880"
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, Insp)
-            Case "RWSDasOertliche"
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, Insp)
-            Case "RWSDasTelefonbuch"
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, Insp)
-            Case "RWSTelSearch"
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, Insp)
-            Case "RWSAlle"
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, Insp)
-        End Select
-    End Sub
-
     Public Function EnableBtnAddContact(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
@@ -236,16 +212,10 @@ Imports Microsoft.Office.Core
         Return C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
     End Function
 
-    Public Sub OnActionNote(ByVal control As Office.IRibbonControl)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        C_KF.AddNote(CType(Insp.CurrentItem, Outlook.ContactItem))
-    End Sub
-
 #End Region 'Ribbon Inspector
 
 #Region "Ribbon Expector Office 2010 & Office 2013" 'Ribbon Explorer
 #If oVer >= 14 Then
-
     Public Function IsExplorerAvailable(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         Dim ActiveExplorer As Outlook.Explorer
         Dim oapp As New Outlook.Application
@@ -376,9 +346,9 @@ Imports Microsoft.Office.Core
         Next
 
         With StrBuilder
-            .Append("<button id=""button_" & Werte(0) & """ ")
+            .Append("<button id=""dynMListe_" & Werte(0) & """ ")
             .Append("label=""" & Werte(1) & """ ")
-            .Append("onAction=""OnActionListen"" ")
+            .Append("onAction=""BtnOnAction"" ")
             .Append("tag=""" & Werte(2) & ";" & Werte(0) & """ ")
             If Not Werte(3) = C_DP.P_Def_StringEmpty Then
                 .Append("supertip=""" & Werte(3) & """")
@@ -414,26 +384,6 @@ Imports Microsoft.Office.Core
         Return C_DP.P_CBUseAnrMon
     End Function
 
-    Public Function GetPressedKontextVIP(ByVal control As Office.IRibbonControl) As Boolean
-        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-        GetPressedKontextVIP = IsVIP(oKontact)
-        C_HF.NAR(oKontact)
-        oKontact = Nothing
-    End Function
-
-    Public Sub OnActionKontextVIP(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-
-        If IsVIP(oKontakt) Then
-            RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
-        Else
-            AddVIP(oKontakt)
-        End If
-        C_HF.NAR(oKontakt)
-        oKontakt = Nothing
-
-    End Sub
-
     Public Sub RefreshRibbon()
         If RibbonObjekt Is Nothing Then
             Dim i As Integer
@@ -455,53 +405,46 @@ Imports Microsoft.Office.Core
         Return C_DP.P_CBJournal
     End Function
 
-    Public Sub OnActionDirektwahl(ByVal control As Office.IRibbonControl)
-        WähleDirektwahl()
+    Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
+        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
+            Case "btnDialExpl"
+                WählenExplorer()
+            Case "btnDialInsp", "cbtnDial"
+                WählenInspector()
+            Case "btnDirektwahl"
+                WähleDirektwahl()
+            Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
+                P_CallClient.OnActionListen(control.Tag)
+            Case "btnAnrMonIO"
+                C_AnrMon.AnrMonStartStopp()
+            Case "btnAnrMonRestart"
+                AnrMonNeustarten()
+            Case "btnAnrMonShow"
+                ÖffneAnrMonAnzeigen()
+            Case "btnAnrMonJI"
+                ÖffneJournalImport()
+            Case "Einstellungen"
+                ÖffneEinstellungen()
+            Case "cbtnUpload", "btnUpload"
+                Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
+            Case "btnRWS01" ' RWS11880
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS02" ' RWSDasOertliche
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS03" ' RWSTelSearch
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS04" ' RWSTelSearch
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS05" ' RWSAlle
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, CType(control.Context, Outlook.Inspector))
+            Case "btnAddContact"
+                KontaktErstellen()
+            Case "btnNote"
+                C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
+        End Select
     End Sub
 
-    Public Sub OnActionListen(ByVal control As Office.IRibbonControl)
-        P_CallClient.OnActionListen(control.Tag)
-    End Sub
-
-    Public Sub OnActionEinstellungen(ByVal control As Office.IRibbonControl)
-        ÖffneEinstellungen()
-    End Sub
-
-    Public Sub OnActionJournalImport(ByVal control As Office.IRibbonControl)
-        ÖffneJournalImport()
-    End Sub
-
-    Public Sub OnActionAnrMonAnzeigen(ByVal control As Office.IRibbonControl)
-        ÖffneAnrMonAnzeigen()
-    End Sub
-
-    Public Sub OnActionAnrMonNeustarten(ByVal control As Office.IRibbonControl)
-        AnrMonNeustarten()
-    End Sub
-
-    Public Sub OnActionWählenExplorer(ByVal control As Office.IRibbonControl)
-        WählenExplorer()
-    End Sub
-
-    Public Sub OnActionAnrMonAnAus(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        C_AnrMon.AnrMonStartStopp()
-    End Sub
-
-    Public Sub ContextCall(ByVal control As Office.IRibbonControl)
-        WählenExplorer()
-    End Sub
-
-    Public Sub OnUploadFB(ByVal control As Office.IRibbonControl)
-        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
-
-        C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
-    End Sub
-
-    Public Sub OnUploadKontextFB(ByVal control As Office.IRibbonControl)
-        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-
-        C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
-    End Sub
 #End If
 #End Region 'Ribbon Explorer
 
@@ -516,7 +459,7 @@ Imports Microsoft.Office.Core
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "Tab"
                 Return C_DP.P_Def_Addin_LangName
-            Case "btnDial"
+            Case "btnDialExpl", "btnDialInsp"
                 Return C_DP.P_CMB_Dial
             Case "btnDirektwahl"
                 Return C_DP.P_CMB_Direktwahl
@@ -575,7 +518,7 @@ Imports Microsoft.Office.Core
     ''' <remarks></remarks>
     Public Function GetItemScreenTipp(ByVal control As Office.IRibbonControl) As String
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "btnDial"
+            Case "btnDialExpl", "btnDialInsp"
                 Return C_DP.P_CMB_Dial_ToolTipp
             Case "btnDirektwahl"
                 Return C_DP.P_CMB_Direktwahl_ToolTipp
@@ -612,7 +555,8 @@ Imports Microsoft.Office.Core
             Case "btnNote"
                 Return C_DP.P_CMB_Insp_Note_ToolTipp
             Case "tbtnVIP"
-                Return GetScreenTipVIP(control)
+                Return CStr(IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), C_DP.P_CMB_VIP_Entfernen_ToolTipp, C_DP.P_CMB_VIP_Hinzufügen_ToolTipp))
+
             Case "btnUpload"
                 Return C_DP.P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
@@ -629,7 +573,7 @@ Imports Microsoft.Office.Core
     Public Function GetItemImageMso(ByVal control As Office.IRibbonControl) As String
 
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "btnDial"
+            Case "btnDialExpl", "btnDialInsp"
                 Return "AutoDial"
             Case "btnDirektwahl"
                 Return "SlidesPerPage9Slides"
@@ -670,48 +614,32 @@ Imports Microsoft.Office.Core
 #End Region
 
 #Region "VIP-Ribbon"
-    Public Sub OnActionInspVIP(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
-            Dim aktKontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
-            If IsVIP(aktKontakt) Then
-                RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
-            Else
-                AddVIP(aktKontakt)
-            End If
+    Public Sub tBtnOnAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
+        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+
+        If IsVIP(oKontakt) Then
+            RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
+        Else
+            AddVIP(oKontakt)
         End If
+        C_HF.NAR(oKontakt)
+        oKontakt = Nothing
         ' Fehler unter Office 2007
 #If OVer >= 14 Then
         RibbonObjekt.Invalidate()
 #End If
     End Sub
 
-    Public Function GetPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
-        GetPressedVIP = False
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
-            Dim olContact As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
-            Return IsVIP(olContact)
-        End If
-    End Function
+    Public Function tBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
+        tBtnPressedVIP = False
+        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+        tBtnPressedVIP = IsVIP(oKontact)
 
-    Private Function GetScreenTipVIP(ByVal control As Office.IRibbonControl) As String
-        GetScreenTipVIP = C_DP.P_Def_StringEmpty
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
-            Dim aktKontakt As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
-            If IsVIP(aktKontakt) Then
-                GetScreenTipVIP = C_DP.P_CMB_VIP_Entfernen_ToolTipp
-            Else
-                'If CLng(C_DP.Read(C_DP.P_Def_NameListVIP, "Index", "0")) >= 10 Then
-                '    GetScreenTipVIP = "Die VIP-Liste ist mit 10 Einträgen bereits voll."
-                'Else
-                GetScreenTipVIP = C_DP.P_CMB_VIP_Hinzufügen_ToolTipp
-                'End If
-            End If
-        End If
+        C_HF.NAR(oKontact)
+        oKontact = Nothing
     End Function
 #End Region
+
 #End If
 #End Region
 

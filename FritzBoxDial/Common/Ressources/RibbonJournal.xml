@@ -4,15 +4,15 @@
     <tabs>
       <tab idMso="TabJournal">
         <group id="Tab_Journal" getLabel="GetItemLabel" getVisible="IsExplorerAvailable">
-          <button id="btnDial_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="OnActionDialInsp"/>
+          <button id="btnDialInsp_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnAction"/>
           <menu id="mnuRWS_J01" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" getEnabled="EnableBtnRWS" >
-             <button id="btnRWS01_J" tag="RWS11880" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
-             <button id="btnRWS02_J" tag="RWSDasOertliche" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
-             <button id="btnRWS03_J" tag="RWSDasTelefonbuch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
-             <button id="btnRWS04_J" tag="RWSTelSearch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
-             <button id="btnRWS05_J" tag="RWSAlle" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
+             <button id="btnRWS01_J" tag="RWS11880" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+             <button id="btnRWS02_J" tag="RWSDasOertliche" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+             <button id="btnRWS03_J" tag="RWSDasTelefonbuch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+             <button id="btnRWS04_J" tag="RWSTelSearch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+             <button id="btnRWS05_J" tag="RWSAlle" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
            </menu>
-          <button id="btnAddContact_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" getEnabled="EnableBtnAddContact" onAction="OnActionKontakterstellen"/>
+          <button id="btnAddContact_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" getEnabled="EnableBtnAddContact" onAction="BtnOnAction"/>
         </group>
       </tab>
     </tabs>
