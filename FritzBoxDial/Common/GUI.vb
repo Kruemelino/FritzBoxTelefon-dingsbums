@@ -630,14 +630,31 @@ Imports Microsoft.Office.Core
 #End If
     End Sub
 
-    Public Function tBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
-        tBtnPressedVIP = False
+    Public Function CtBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
+        CtBtnPressedVIP = False
         Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-        tBtnPressedVIP = IsVIP(oKontact)
+        CtBtnPressedVIP = IsVIP(oKontact)
 
         C_HF.NAR(oKontact)
         oKontact = Nothing
     End Function
+
+    Public Function tBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
+        tBtnPressedVIP = False
+        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector), Outlook.ContactItem)
+        tBtnPressedVIP = IsVIP(oKontact)
+
+        C_HF.NAR(oKontact)
+        oKontact = Nothing
+
+        'tBtnPressedVIP = False
+        'Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+        'If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
+        '    Dim olContact As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
+        '    Return IsVIP(olContact)
+        'End If
+    End Function
+
 #End Region
 
 #End If

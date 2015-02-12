@@ -112,7 +112,7 @@
     <contextMenu idMso="ContextMenuContactItem">
       <menuSeparator id="Seperator_CM1"/>
       <button id="cbtnDial_CMC" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnAction"/>
-      <toggleButton id="ctbtnVIP" getLabel="GetItemLabel" onAction="tBtnOnAction" getPressed="tBtnPressedVIP" imageMso="Pushpin"/>
+      <toggleButton id="ctbtnVIP" getLabel="GetItemLabel" onAction="tBtnOnAction" getPressed="CtBtnPressedVIP" imageMso="Pushpin"/>
       <button id="cbtnUpload_CMC" getLabel="GetItemLabel" imageMso="ParentPermissions" onAction="BtnOnAction"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuJournalItem">
