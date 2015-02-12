@@ -3,18 +3,18 @@
   <ribbon>
     <tabs>
       <tab idMso="TabContact">
-        <group id="TabContact" getLabel="GetInspLabel" getVisible="GroupVisible">
-          <button id="Button_C1" size="large" imageMso="AutoDial" onAction="OnActionWählen" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp"/>
-          <toggleButton id="tButton_C1" getLabel="GetInspLabel" onAction="OnActionInspVIP" getPressed="GetPressedVIP" imageMso="Pushpin" size="large" getScreentip="GetInspScreenTipp"/>
-          <menu id="mnu_C01" size="normal" imageMso="CheckNames" getLabel="GetInspLabel" getScreentip="GetInspScreenTipp">
-            <button id="btn_C01" tag="RWS11880" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
-            <button id="btn_C02" tag="RWSDasOertliche" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
-            <button id="btn_C03" tag="RWSDasTelefonbuch" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
-            <button id="btn_C04" tag="RWSTelSearch" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
-            <button id="btn_C05" tag="RWSAlle" getLabel="GetInspLabel" onAction="OnActionRWS" getScreentip="GetInspScreenTipp"/>
+        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="IsExplorerAvailable">
+          <button id="btnDial_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="OnActionDialInsp"/>
+          <toggleButton id="tbtnVIP_C1" getLabel="GetItemLabel" getImage="GetItemImageMso" getPressed="GetPressedVIP" size="large" getScreentip="GetItemScreenTipp" onAction="OnActionInspVIP"/>
+          <menu id="mnuRWS_C01" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal">
+            <button id="btnRWS01_C" tag="RWS11880" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
+            <button id="btnRWS02_C" tag="RWSDasOertliche" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
+            <button id="btnRWS03_C" tag="RWSDasTelefonbuch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
+            <button id="btnRWS04_C" tag="RWSTelSearch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
+            <button id="btnRWS05_C" tag="RWSAlle" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="OnActionRWS"/>
           </menu>
-          <button id="Button_C2" size="normal" getLabel="GetInspLabel" imageMso="ShowNotesPage" onAction="OnActionNote" getScreentip="GetInspScreenTipp"/>
-          <button id="Button_C3" size="normal" getLabel="GetInspLabel" imageMso="ParentPermissions" onAction="OnUploadFB" getScreentip="GetInspScreenTipp"/>
+          <button id="btnNote_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="OnActionNote"/>
+          <button id="btnUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="OnUploadFB"/>
         </group>
       </tab>
     </tabs>

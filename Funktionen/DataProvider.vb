@@ -3338,29 +3338,17 @@ Public Class DataProvider
         End Get
     End Property
 
-    ''' <summary>
-    ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public ReadOnly Property P_CMB_AdrBk_ToolTipp() As String
-        Get
-            Return "Öffnet den Dialog zum Editieren des " & P_Def_FritzBoxName & "-Telefonbuches."
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Anrufen (Fritz!Box Telefon-Dingsbums)
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public ReadOnly Property P_CMB_ContextMenueItemCall() As String
-        Get
-            Return "Anrufen (" & P_Def_Addin_LangName & ")"
-        End Get
-    End Property
+    ' ''' <summary>
+    ' ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
+    ' ''' </summary>
+    ' ''' <value></value>
+    ' ''' <returns></returns>
+    ' ''' <remarks></remarks>
+    'Public ReadOnly Property P_CMB_AdrBk_ToolTipp() As String
+    '    Get
+    '        Return "Öffnet den Dialog zum Editieren des " & P_Def_FritzBoxName & "-Telefonbuches."
+    '    End Get
+    'End Property
 
     ''' <summary>
     ''' VIP
@@ -3387,14 +3375,38 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' VIP (P_CMB_Insp_VIP)
+    ''' Anrufen (Fritz!Box Telefon-Dingsbums)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_ContextMenueItemCall() As String
+        Get
+            Return "Anrufen (" & P_Def_Addin_LangName & ")"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' VIP (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_ContextMenueItemVIP() As String
         Get
-            Return P_CMB_Insp_VIP
+            Return P_CMB_Insp_VIP & " (" & P_Def_Addin_LangName & ")"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Upload (Fritz!Box Telefon-Dingsbums)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_CMB_ContextMenueItemUpload() As String
+        Get
+            Return P_CMB_Insp_Upload & " (" & P_Def_Addin_LangName & ")"
         End Get
     End Property
 
