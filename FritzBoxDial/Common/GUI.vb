@@ -407,9 +407,9 @@ Imports Microsoft.Office.Core
 
     Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "btnDialExpl"
+            Case "btnDialExpl", "cbtnDial"
                 WählenExplorer()
-            Case "btnDialInsp", "cbtnDial"
+            Case "btnDialInsp"
                 WählenInspector()
             Case "btnDirektwahl"
                 WähleDirektwahl()
@@ -448,7 +448,7 @@ Imports Microsoft.Office.Core
 #End If
 #End Region 'Ribbon Explorer
 
-#Region "Ribbon: Label, ScreenTip, ImageMso"
+#Region "Ribbon: Label, ScreenTipp, ImageMso"
     ''' <summary>
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
@@ -633,6 +633,7 @@ Imports Microsoft.Office.Core
     Public Function CtBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
         CtBtnPressedVIP = False
         Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+
         CtBtnPressedVIP = IsVIP(oKontact)
 
         C_HF.NAR(oKontact)
@@ -641,18 +642,17 @@ Imports Microsoft.Office.Core
 
     Public Function tBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
         tBtnPressedVIP = False
-        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector), Outlook.ContactItem)
-        tBtnPressedVIP = IsVIP(oKontact)
 
-        C_HF.NAR(oKontact)
-        oKontact = Nothing
+        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
 
-        'tBtnPressedVIP = False
-        'Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        'If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
-        '    Dim olContact As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
-        '    Return IsVIP(olContact)
-        'End If
+        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
+            Dim olContact As Outlook.ContactItem = CType(Insp.CurrentItem, Outlook.ContactItem)
+
+            tBtnPressedVIP = IsVIP(olContact)
+
+            C_HF.NAR(olContact)
+            olContact = Nothing
+        End If
     End Function
 
 #End Region

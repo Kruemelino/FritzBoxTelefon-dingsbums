@@ -4,7 +4,7 @@
     <tabs>
       <tab idMso="TabContact">
         <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="IsExplorerAvailable">
-          <button id="btnDialInsp_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="tBtnOnAction"/>
+          <button id="btnDialInsp_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnAction"/>
           <toggleButton id="tbtnVIP_C1" getLabel="GetItemLabel" getImage="GetItemImageMso" getPressed="tBtnPressedVIP" size="large" getScreentip="GetItemScreenTipp" onAction="OnActionVIP"/>
           <menu id="mnuRWS_C01" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal">
             <button id="btnRWS01_C" tag="RWS11880" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
