@@ -1,21 +1,4 @@
 ﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!--
-    This section defines project-level properties.
-
-    AssemblyName
-      Name of the output assembly.
-    Configuration
-      Specifies a default value for debug.
-    OutputType
-      Must be "Library" for VSTO.
-    Platform
-      Specifies what CPU the output of this project can run on.
-    NoStandardLibraries
-      Set to "false" for VSTO.
-    RootNamespace
-      In C#, this specifies the namespace given to new files. In VB, all objects are
-      wrapped in this namespace at runtime.
-  -->
   <PropertyGroup>
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,12 +16,6 @@
     <OptionInfer>On</OptionInfer>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
-    <!--
-      VSTO_TrustAssembliesLocation
-        If "true", VSTO gives the project output full trust in user-level policy when the project is built.
-      VSTO_HostDocumentName
-        Not used in add-ins.
-    -->
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -47,64 +24,9 @@
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
   </PropertyGroup>
   <PropertyGroup>
-    <!--
-      Properties needed to register add-ins.
-
-      AddinRegistryHive
-        Root registry hive for the add-in.
-      AddinRegistryKey
-        Registry key where this add-in is registered.
-    -->
     <AddinRegistryHive>CurrentUser</AddinRegistryHive>
     <AddinRegistryKey>Software\Microsoft\Office\Outlook\Addins</AddinRegistryKey>
   </PropertyGroup>
-  <!--
-    This section defines properties that are set when the "Debug" configuration is selected.
-
-    DebugSymbols
-      If "true", create symbols (.pdb). If "false", do not create symbols.
-    DefineConstants
-      Constants defined for the preprocessor.
-    EnableUnmanagedDebugging
-      If "true", starting the debugger will attach both managed and unmanaged debuggers.
-    Optimize
-      If "true", optimize the build output. If "false", do not optimize.
-    OutputPath
-      Output path of project relative to the project file.
-    WarningLevel
-      Warning level for the compiler.
-  -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>OVer=11</DefineConstants>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <NoWarn>
-    </NoWarn>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-    <DocumentationFile>FritzBoxDial.xml</DocumentationFile>
-  </PropertyGroup>
-  <!--
-    This section defines properties that are set when the "Release" configuration is selected.
-
-    DebugSymbols
-      If "true", create symbols (.pdb). If "false", do not create symbols.
-    DefineConstants
-      Constants defined for the preprocessor.
-    EnableUnmanagedDebugging
-      If "true", starting the debugger will attach both managed and unmanaged debuggers.
-    Optimize
-      If "true", optimize the build output. If "false", do not optimize.
-    OutputPath
-      Output path of project relative to the project file.
-    WarningLevel
-      Warning level for the compiler.
-  -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineConstants>OVer=11</DefineConstants>
     <DefineDebug>true</DefineDebug>
@@ -119,19 +41,12 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <DocumentationFile>FritzBoxDial.xml</DocumentationFile>
   </PropertyGroup>
-  <!--
-    This section enables pre- and post-build steps. However, in VSTO use
-    MSBuild tasks instead of these properties.       
-  -->
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <!--
-    This section specifies references for the project.
-  -->
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -151,7 +66,6 @@
     </Reference>
     <Reference Include="System.XML" />
   </ItemGroup>
-  <!-- Visual Basic supports importing namespaces (equivalent to "using" statements in C#). -->
   <ItemGroup>
     <Import Include="FritzBoxDial" />
     <Import Include="Microsoft.VisualBasic" />
@@ -165,104 +79,131 @@
     <Import Include="Office = Microsoft.Office.Core" />
     <Import Include="Outlook = Microsoft.Office.Interop.Outlook" />
   </ItemGroup>
-  <!--
-    This section defines the user source files that are part of the project.
-     
-    A "Compile" element specifies a source file to compile.
-    An "EmbeddedResource" element specifies an .resx file for embedded resources.
-    A "None" element specifies a file that is not to be passed to the compiler (for instance, 
-    a text file or XML file).
-    The "AppDesigner" element specifies the directory where the application properties files
-    can be found.
-  -->
   <ItemGroup>
     <AppDesigner Include="My Project\" />
     <Compile Include="..\Common\AnrufMonitor.vb" />
     <Compile Include="..\Common\Contacts.vb" />
-    <Compile Include="..\Common\formCfg.designer.vb">
+    <Compile Include="..\Common\Formulare\formCfg.designer.vb">
       <DependentUpon>formCfg.vb</DependentUpon>
+      <link>Formulare\formCfg.designer.vb</link>
     </Compile>
-    <Compile Include="..\Common\formCfg.vb">
+    <Compile Include="..\Common\Formulare\formCfg.vb">
       <SubType>Form</SubType>
+      <link>Formulare\formCfg.vb</link>
     </Compile>
-    <Compile Include="..\Common\formJournalimport.designer.vb">
+    <EmbeddedResource Include="..\Common\Formulare\formCfg.resx">
+      <DependentUpon>formCfg.vb</DependentUpon>
+      <link>Formulare\formCfg.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formInit.Designer.vb">
+      <DependentUpon>formInit.vb</DependentUpon>
+      <link>Formulare\formInit.designer.vb</link>
+    </Compile>
+    <Compile Include="..\Common\Formulare\formInit.vb">
+      <SubType>Form</SubType>
+      <link>Formulare\formInit.vb</link>
+    </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formInit.resx">
+      <DependentUpon>formInit.vb</DependentUpon>
+      <link>Formulare\formInit.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formJournalimport.designer.vb">
       <DependentUpon>formJournalimport.vb</DependentUpon>
+      <link>Formulare\formJournalimport.designer.vb</link>
     </Compile>
-    <Compile Include="..\Common\formJournalimport.vb">
+    <Compile Include="..\Common\Formulare\formJournalimport.vb">
       <SubType>Form</SubType>
+      <link>Formulare\formJournalimport.vb</link>
     </Compile>
-    <Compile Include="..\Common\formRWSuche.designer.vb">
+    <EmbeddedResource Include="..\Common\Formulare\formJournalimport.resx">
+      <DependentUpon>formJournalimport.vb</DependentUpon>
+      <link>Formulare\formJournalimport.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formRWSuche.designer.vb">
       <DependentUpon>formRWSuche.vb</DependentUpon>
+      <link>Formulare\formRWSuche.designer.vb</link>
     </Compile>
-    <Compile Include="..\Common\formRWSuche.vb">
+    <Compile Include="..\Common\Formulare\formRWSuche.vb">
       <SubType>Form</SubType>
+      <link>Formulare\formRWSuche.vb</link>
     </Compile>
-    <Compile Include="..\Common\formWählbox.designer.vb">
+    <EmbeddedResource Include="..\Common\Formulare\formRWSuche.resx">
+      <DependentUpon>formRWSuche.vb</DependentUpon>
+      <link>Formulare\formRWSuche.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formWählbox.designer.vb">
       <DependentUpon>formWählbox.vb</DependentUpon>
+      <link>Formulare\formWählbox.designer.vb</link>
     </Compile>
-    <Compile Include="..\Common\formWählbox.vb">
+    <Compile Include="..\Common\Formulare\formWählbox.vb">
       <SubType>Form</SubType>
+      <link>Formulare\formWählbox.vb</link>
     </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formWählbox.resx">
+      <DependentUpon>formWählbox.vb</DependentUpon>
+      <link>Formulare\formWählbox.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\FritzBox.vb" />
     <Compile Include="..\Common\GUI.vb" />
     <Compile Include="..\Common\OutlookInterface.vb" />
-    <Compile Include="..\Common\FritzBox.vb" />
-    <Compile Include="..\Common\formInit.designer.vb">
-      <DependentUpon>formInit.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\Common\formInit.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="..\Common\Wählclient.vb" />
+    <Compile Include="..\Common\Popup.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="..\Common\Popup.vb" />
     <Compile Include="ThisAddIn.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\Common\Wählclient.vb" />
-    <None Include="..\..\..\FritzBoxDial.pfx" />
+    <Compile Include="ThisAddIn.Designer.vb">
+      <DependentUpon>ThisAddIn.vb</DependentUpon>
+    </Compile>
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
     </None>
-    <Compile Include="ThisAddIn.Designer.vb">
-      <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
-    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <EmbeddedResource Include="..\Common\formCfg.resx">
-      <DependentUpon>formCfg.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\formJournalimport.resx">
-      <DependentUpon>formJournalimport.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\formRWSuche.resx">
-      <DependentUpon>formRWSuche.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\formWählbox.resx">
-      <DependentUpon>formWählbox.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\formInit.resx">
-      <DependentUpon>formInit.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <None Include="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <None Include="..\..\..\FritzBoxDial.pfx">
+      <Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonExplorer.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonExplorer.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspector.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonInspector.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.gif">
+      <Link>Ressourcen\Icons\IMG_Copy.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Aktiv.gif">
+      <Link>Ressourcen\Icons\IMG_Kontakt_Aktiv.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Check.gif">
+      <Link>Ressourcen\Icons\IMG_Kontakt_Check.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif">
+      <Link>Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Telefon.gif">
+      <Link>Ressourcen\Icons\IMG_Telefon.gif</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -276,23 +217,6 @@
       <Project>{D8D8FAB5-B82D-4363-82B4-E6C295074075}</Project>
       <Name>PopUpFensterO3</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Common\Ressources\Bild2.gif">
-      <Link>Ressources\Bild2.gif</Link>
-    </None>
-    <None Include="..\Common\Ressources\Bild4.gif">
-      <Link>Ressources\Bild4.gif</Link>
-    </None>
-    <None Include="..\Common\Ressources\Bild4-1.gif">
-      <Link>Ressources\Bild4-1.gif</Link>
-    </None>
-    <None Include="..\Common\Ressources\Bild4-2.gif">
-      <Link>Ressources\Bild4-2.gif</Link>
-    </None>
-    <None Include="..\Common\Ressources\Bild5.gif">
-      <Link>Ressources\Bild5.gif</Link>
-    </None>
   </ItemGroup>
   <!-- Include the build rules for a Visual Basic project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

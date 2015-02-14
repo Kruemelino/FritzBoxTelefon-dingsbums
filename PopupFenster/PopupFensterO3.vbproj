@@ -57,8 +57,6 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -67,8 +65,6 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AnrMonForm.vb">
     </Compile>
     <Compile Include="Common.vb">
@@ -91,8 +87,6 @@
     </Compile>
     <Compile Include="StoppuhrForm.vb">
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="AnrMonForm.resx">
       <DependentUpon>AnrMonForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -105,8 +99,6 @@
     <EmbeddedResource Include="StoppuhrForm.resx">
       <DependentUpon>StoppuhrForm.vb</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -116,11 +108,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\FritzBoxDial.pfx" />
-  </ItemGroup>
-  <ItemGroup>
+  	<None Include="..\..\FritzBoxDial.pfx">
+		<Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
+	</None>
     <ProjectReference Include="..\Funktionen\FunktionenO3.vbproj">
       <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
       <Name>FunktionenO3</Name>
