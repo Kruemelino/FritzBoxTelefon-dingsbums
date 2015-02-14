@@ -412,8 +412,8 @@ Public Class OutlookInterface
         TVImageList = New Windows.Forms.ImageList
 
         With TVImageList
-            .Images.Add("Kontakt", My.Resources.Bild4_1)
-            .Images.Add("KontaktSel", My.Resources.Bild4_2)
+            .Images.Add("Kontakt", My.Resources.IMG_Kontakt_Inaktiv)
+            .Images.Add("KontaktSel", My.Resources.IMG_Kontakt_Check)
         End With
 
         With TreeView
@@ -427,10 +427,6 @@ Public Class OutlookInterface
             iOrdner += 1
             Windows.Forms.Application.DoEvents()
         Loop
-        ' Umbau auf For Each, nach Hinweis voon jcc aus dem ippf 10.09.14
-        'For Each MAPISubFolder As Outlook.MAPIFolder In olNamespace.Folders
-        '    KontaktOrdnerInTreeView(MAPISubFolder, TreeView, TreeView.Nodes(0))
-        'Next
     End Sub
 
     Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)

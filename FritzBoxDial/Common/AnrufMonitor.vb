@@ -861,7 +861,7 @@ Friend Class AnrufMonitor
                         End If
                     End If
 
-                    .Categories = .TelName & C_DP.P_AnrMon_Journal_Def_Categories '"; FritzBox Anrufmonitor; Telefonanrufe"
+                    .Categories = .TelName & "; " & String.Join("; ", C_DP.P_AnrMon_Journal_Def_Categories)
                     .Subject = CallDirection & CStr(IIf(.Anrufer = C_DP.P_Def_StringEmpty, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, C_DP.P_Def_StringEmpty, " (" & .TelName & ")"))
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)

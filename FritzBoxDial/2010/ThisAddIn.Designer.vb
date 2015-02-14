@@ -1,7 +1,6 @@
 ﻿Option Strict On
 Option Explicit On
 
-'''
 <Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(0), _
  Global.System.Security.Permissions.PermissionSetAttribute(Global.System.Security.Permissions.SecurityAction.Demand, Name:="FullTrust"), _
  Global.System.Runtime.InteropServices.ComVisibleAttribute(False)> _
@@ -13,7 +12,6 @@ Partial Public NotInheritable Class ThisAddIn
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0")> _
     Friend WithEvents Application As Microsoft.Office.Interop.Outlook.Application
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
     Public Sub New(ByVal factory As Global.Microsoft.Office.Tools.Outlook.Factory, ByVal serviceProvider As Global.System.IServiceProvider)
@@ -21,7 +19,6 @@ Partial Public NotInheritable Class ThisAddIn
         Globals.Factory = factory
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -36,7 +33,6 @@ Partial Public NotInheritable Class ThisAddIn
         Me.InitializeData()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -44,7 +40,6 @@ Partial Public NotInheritable Class ThisAddIn
         Me.OnStartup()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -54,7 +49,6 @@ Partial Public NotInheritable Class ThisAddIn
         Me.EndInitialization()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -67,42 +61,36 @@ Partial Public NotInheritable Class ThisAddIn
         End If
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
     Private Sub InitializeData()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
     Private Sub BindToData()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
     Private Sub StartCaching(ByVal MemberName As String)
         Me.DataHost.StartCaching(Me, MemberName)
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
     Private Sub StopCaching(ByVal MemberName As String)
         Me.DataHost.StopCaching(Me, MemberName)
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
     Private Function IsCached(ByVal MemberName As String) As Boolean
         Return Me.DataHost.IsCached(Me, MemberName)
     End Function
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -111,7 +99,6 @@ Partial Public NotInheritable Class ThisAddIn
         Me.CustomTaskPanes.BeginInit()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -120,7 +107,6 @@ Partial Public NotInheritable Class ThisAddIn
         Me.EndInit()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -128,21 +114,18 @@ Partial Public NotInheritable Class ThisAddIn
         Me.CustomTaskPanes = Globals.Factory.CreateCustomTaskPaneCollection(Nothing, Nothing, "CustomTaskPanes", "CustomTaskPanes", Me)
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
     Private Sub InitializeComponents()
     End Sub
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
     Private Function NeedsFill(ByVal MemberName As String) As Boolean
         Return Me.DataHost.NeedsFill(Me, MemberName)
     End Function
 
-    '''
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0"), _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
@@ -152,12 +135,10 @@ Partial Public NotInheritable Class ThisAddIn
     End Sub
 End Class
 
-'''
 <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
  Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "11.0.0.0")> _
 Partial Friend NotInheritable Class Globals
 
-    '''
     Private Sub New()
         MyBase.New()
     End Sub

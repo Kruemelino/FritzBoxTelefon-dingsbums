@@ -72,19 +72,19 @@ Public Class Popup
             With .OptionsMenu
                 With .Items("ToolStripMenuItemRückruf")
                     .Text = C_DP.P_AnrMon_PopUp_ToolStripMenuItemRückruf
-                    .Image = Global.FritzBoxDial.My.Resources.Bild2
+                    .Image = Global.FritzBoxDial.My.Resources.IMG_Telefon
                     .Enabled = Not Telefonat.TelNr = C_DP.P_Def_StringUnknown ' kein Rückruf
                 End With
                 With .Items("ToolStripMenuItemKopieren")
                     .Text = C_DP.P_AnrMon_PopUp_ToolStripMenuItemKopieren
-                    .Image = Global.FritzBoxDial.My.Resources.Bild5
+                    .Image = Global.FritzBoxDial.My.Resources.IMG_Copy
                     .Enabled = Not Telefonat.TelNr = C_DP.P_Def_StringUnknown ' in dem Fall sinnlos
                 End With
                 With .Items("ToolStripMenuItemKontaktöffnen")
                     .Text = CStr(IIf(Telefonat.TelNr = C_DP.P_Def_StringUnknown, _
                                 C_DP.P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen, _
                                 C_DP.P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen))
-                    .Image = Global.FritzBoxDial.My.Resources.Bild4
+                    .Image = Global.FritzBoxDial.My.Resources.IMG_Kontakt_Aktiv
                 End With
             End With
 

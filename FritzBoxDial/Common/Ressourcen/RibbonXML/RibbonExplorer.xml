@@ -3,7 +3,7 @@
   <ribbon startFromScratch="false">
     <tabs>
       <tab idMso="TabCalendar">
-        <group id="Tab_Calendar" getLabel="GetItemLabel" getVisible="IsExplorerAvailable" autoScale="false" imageMso="AutoDial">
+        <group id="Tab_Calendar" getLabel="GetItemLabel" getVisible="ShowExplorerRibbon" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_K" size="large">
             <button id="btnDialExpl_K" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction"  getScreentip="GetItemScreenTipp"/>
             <menu id="mnu_K1">
@@ -29,7 +29,7 @@
         </group>
       </tab>
       <tab idMso="TabContacts" >
-        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="IsExplorerAvailable" autoScale="false" imageMso="AutoDial">
+        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="ShowExplorerRibbon" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_C" size="large">
             <button id="btnDialExpl_C" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction"  getScreentip="GetItemScreenTipp"/>
             <menu id="mnu_C1">
@@ -55,7 +55,7 @@
         </group>
       </tab>
       <tab idMso="TabJournals">
-        <group id="Tab_Journal" getLabel="GetItemLabel" getVisible="IsExplorerAvailable" autoScale="false" imageMso="AutoDial" getScreentip="GetItemScreenTipp">
+        <group id="Tab_Journal" getLabel="GetItemLabel" getVisible="ShowExplorerRibbon" autoScale="false" imageMso="AutoDial" getScreentip="GetItemScreenTipp">
           <splitButton id="spb1_J" size="large">
             <button id="btnDialExpl_J" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction"  getScreentip="GetItemScreenTipp"/>
             <menu id="mnu_J1">
@@ -81,7 +81,7 @@
         </group>
       </tab>
       <tab idMso="TabMail">
-        <group id="Tab_Mail" getLabel="GetItemLabel" getVisible="IsExplorerAvailable" autoScale="false" imageMso="AutoDial">
+        <group id="Tab_Mail" getLabel="GetItemLabel" getVisible="ShowExplorerRibbon" autoScale="false" imageMso="AutoDial">
           <splitButton id="spb1_M" size="large">
             <button id="btnDialExpl_M" getLabel="GetItemLabel" getImage="GetItemImageMso" onAction="BtnOnAction"  getScreentip="GetItemScreenTipp"/>
             <menu id="mnu_M1">

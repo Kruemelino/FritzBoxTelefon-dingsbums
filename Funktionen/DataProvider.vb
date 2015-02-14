@@ -2556,9 +2556,10 @@ Public Class DataProvider
         End Get
     End Property
 
-    Public ReadOnly Property P_AnrMon_Journal_Def_Categories As String
+    Public ReadOnly Property P_AnrMon_Journal_Def_Categories As String()
         Get
-            Return "; FritzBox Anrufmonitor; Telefonanrufe"
+            Dim tmp() As String = {"FritzBox Anrufmonitor", "Telefonanrufe"}
+            Return tmp
         End Get
     End Property
 
@@ -2605,7 +2606,19 @@ Public Class DataProvider
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
     Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean) As String
         Get
-            Return "Tel.-Nr.: " & TelNr & P_Def_NeueZeile & "Status: " & CStr(IIf(Angenommen, P_Def_StringEmpty, "nicht ")) & "angenommen" & P_Def_NeueZeile & P_Def_NeueZeile
+            Return P_AnrMon_AnrMonDISCONNECT_JournalTelNr & TelNr & P_Def_NeueZeile & "Status: " & CStr(IIf(Angenommen, P_Def_StringEmpty, "nicht ")) & "angenommen" & P_Def_NeueZeile & P_Def_NeueZeile
+        End Get
+    End Property
+
+    ''' <summary>
+    '''  Tel.-Nr.: 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalTelNr() As String
+        Get
+            Return "Tel.-Nr.: "
         End Get
     End Property
 

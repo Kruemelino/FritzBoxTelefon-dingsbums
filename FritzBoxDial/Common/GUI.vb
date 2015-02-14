@@ -15,12 +15,8 @@ Imports Microsoft.Office.Core
             Case "Microsoft.Outlook.Explorer"
                 File = GetResourceText("FritzBoxDial.RibbonExplorer.xml")
 #End If
-            Case "Microsoft.Outlook.Mail.Read"
-                File = GetResourceText("FritzBoxDial.RibbonMailRead.xml")
-            Case "Microsoft.Outlook.Journal"
-                File = GetResourceText("FritzBoxDial.RibbonJournal.xml")
-            Case "Microsoft.Outlook.Contact"
-                File = GetResourceText("FritzBoxDial.RibbonKontakt.xml")
+            Case "Microsoft.Outlook.Mail.Read", "Microsoft.Outlook.Journal", "Microsoft.Outlook.Contact"
+                File = GetResourceText("FritzBoxDial.RibbonInspector.xml")
             Case Else
                 File = C_DP.P_Def_StringEmpty
         End Select
@@ -130,104 +126,127 @@ Imports Microsoft.Office.Core
 #If Not OVer = 11 Then
 #Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
 
-    Public Function EnableBtnAddContact(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
-            Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
-            If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
-                Return True
-            Else
-                Return False
-            End If
-        End If
-        Return False
-    End Function
+    ''' <summary>
+    ''' Gibt zurück, ob das JournalItem, von diesem Addin erstellt wurde. Dazu wird die Kategorie geprüft.
+    ''' </summary>
+    ''' <param name="control">Das Ribbon Control</param>
+    ''' <returns>True, wenn JournalItem, von diesem Addin erstellt wurde. Ansonsten False</returns>
+    ''' <remarks></remarks>
+    Private Function CheckJournalInspector(ByVal control As Microsoft.Office.Core.IRibbonControl) As Outlook.JournalItem
+        CheckJournalInspector = Nothing
 
-    Public Function EnableBtnRWS(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
-            Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
-            If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
-                If CBool(InStr(olJournal.Body, "Tel.-Nr.: " & C_DP.P_Def_StringUnknown, CompareMethod.Text)) Then
-                    Return False
-                Else
-                    Return True
+        Dim oInsp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+        Dim olJournal As Outlook.JournalItem = Nothing
+        Dim olLink As Outlook.Link = Nothing
+
+        With C_HF
+            If TypeOf oInsp.CurrentItem Is Outlook.JournalItem Then
+                olJournal = CType(oInsp.CurrentItem, Outlook.JournalItem)
+
+                ' Bei Journal nur wenn Kategorien korrekt
+                ' Wenn Journal keine Kategorie enthält, dann ist es kein vom Addin erzeugtes JournalItem
+                If olJournal.Categories IsNot Nothing AndAlso olJournal.Categories.Contains(String.Join("; ", C_DP.P_AnrMon_Journal_Def_Categories)) Then
+                    CheckJournalInspector = olJournal
                 End If
             End If
-        End If
-        Return False
-    End Function
-
-    Private Function SetLabelJournal(ByVal control As Office.IRibbonControl) As String
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
-            Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
-            If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
-#If Not OVer = 15 Then
-                Dim olLink As Outlook.Link = Nothing
-                For Each olLink In olJournal.Links
-                    Try
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then Return C_DP.P_CMB_Kontakt_Anzeigen
-                        Exit For
-                    Catch
-                        Return C_DP.P_CMB_Kontakt_Erstellen
-                    End Try
-                Next
-                C_HF.NAR(olLink) : olLink = Nothing
-#End If
-            Else
-                Return C_DP.P_CMB_Kontakt_Erstellen
-            End If
-        End If
-        Return C_DP.P_CMB_Kontakt_Erstellen
+            .NAR(olJournal) : olJournal = Nothing
+            .NAR(olLink) : olLink = Nothing
+            .NAR(oInsp) : oInsp = Nothing
+        End With
     End Function
 
     ''' <summary>
-    ''' Gibt den ScreenTip zurück, ob ein Kontakt erstellt oder angezeigt werden soll
+    ''' Gibt zurück, ob das Journal eine gültige Telefonnummer enthält
     ''' </summary>
     ''' <param name="control"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function SetScreenTipJournal(ByVal control As Office.IRibbonControl) As String
-        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
-        If TypeOf Insp.CurrentItem Is Outlook.JournalItem Then
-            Dim olJournal As Outlook.JournalItem = CType(Insp.CurrentItem, Outlook.JournalItem)
-            If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", CompareMethod.Text) = 0 Then
-#If Not OVer = 15 Then
-                Dim olLink As Outlook.Link = Nothing
-                For Each olLink In olJournal.Links
-                    Try
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then Return C_DP.P_CMB_Kontakt_Anzeigen_ToolTipp
-                        Exit For
-                    Catch
-                        Return C_DP.P_CMB_Kontakt_Anzeigen_Error_ToolTipp
-                    End Try
-                Next
-                C_HF.NAR(olLink) : olLink = Nothing
-#End If
-            Else
-                Return C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
-            End If
+    Public Function EnableBtnJournal(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
+        EnableBtnJournal = False
+
+        Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
+
+        If olJournal IsNot Nothing Then
+            EnableBtnJournal = Not olJournal.Body.Contains(C_DP.P_AnrMon_AnrMonDISCONNECT_JournalTelNr & C_DP.P_Def_StringUnknown)
         End If
-        Return C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
+
+    End Function
+
+    ''' <summary>
+    ''' Gibt das Label des Buttons "Kontakt Erstellen" bzw. "Kontakt Anzeigen" zurück. 
+    ''' </summary>
+    ''' <param name="control">Das Ribbon Control</param>
+    ''' <returns>"Kontakt Anzeigen", wenn Link im JournalItem zu einem ContactItem führt. Ansonsten "Kontakt Erstellen"</returns>
+    ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
+    Private Function SetLabelJournal(ByVal control As Office.IRibbonControl) As String
+        SetLabelJournal = C_DP.P_CMB_Kontakt_Erstellen
+
+#If Not OVer = 15 Then
+        Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
+        If olJournal IsNot Nothing Then
+            For Each olLink As Outlook.Link In olJournal.Links
+                ' Catch tritt ein, wenn der Kontakt nicht mehr verfügbar ist.
+                Try
+                    If TypeOf olLink.Item Is Outlook.ContactItem Then
+                        SetLabelJournal = C_DP.P_CMB_Kontakt_Anzeigen
+                        Exit For
+                    End If
+                Catch : End Try
+            Next
+        End If
+#End If
+    End Function
+
+    ''' <summary>
+    ''' Gibt das ScreenTip des Buttons "Kontakt Erstellen" bzw. "Kontakt Anzeigen" zurück. 
+    ''' </summary>
+    ''' <param name="control">Das Ribbon Control</param>
+    ''' <returns>Den entsprechenden ScreenTip, wenn Link im JournalItem zu einem ContactItem führt. Ansonsten den anderen. Falls Link ins Leere führt, dann wird Fehlermeldung ausgegeben.</returns>
+    ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
+    Private Function SetScreenTipJournal(ByVal control As Office.IRibbonControl) As String
+        SetScreenTipJournal = C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
+
+#If Not OVer = 15 Then
+        Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
+        If olJournal IsNot Nothing Then
+            For Each olLink As Outlook.Link In olJournal.Links
+                ' Catch tritt ein, wenn der Kontakt nicht mehr verfügbar ist.
+                Try
+                    If TypeOf olLink.Item Is Outlook.ContactItem Then
+                        SetScreenTipJournal = C_DP.P_CMB_Kontakt_Anzeigen_ToolTipp
+                        Exit For
+                    End If
+                Catch
+                    SetScreenTipJournal = C_DP.P_CMB_Kontakt_Anzeigen_Error_ToolTipp
+                End Try
+            Next
+        End If
+#End If
+
+    End Function
+
+    ''' <summary>
+    ''' Die Ribbons der Inspectoren sollen nur eingeblendet werden, wenn ein Explorer vorhanden ist.
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function ShowInspectorRibbon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
+        ShowInspectorRibbon = False
+
+        ' Einblendenm wenn Explorer vorhanden ist
+        ShowInspectorRibbon = (New Outlook.Application).ActiveExplorer IsNot Nothing
+
+        ' Extra Prüfung bei JournalItem
+        If TypeOf CType(control.Context, Outlook.Inspector).CurrentItem Is Outlook.JournalItem Then
+            ShowInspectorRibbon = CheckJournalInspector(control) IsNot Nothing
+        End If
     End Function
 
 #End Region 'Ribbon Inspector
 
 #Region "Ribbon Expector Office 2010 & Office 2013" 'Ribbon Explorer
 #If oVer >= 14 Then
-    Public Function IsExplorerAvailable(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
-        Dim ActiveExplorer As Outlook.Explorer
-        Dim oapp As New Outlook.Application
-        Dim anzeigen As Boolean
-        ActiveExplorer = oapp.ActiveExplorer
-        anzeigen = ActiveExplorer IsNot Nothing
-        With C_HF
-            .NAR(ActiveExplorer)
-            .NAR(oapp)
-        End With
-        Return anzeigen
-    End Function
 
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon
@@ -361,8 +380,8 @@ Imports Microsoft.Office.Core
         Dim XMLListBaseNode As String
         Dim xPathTeile As New ArrayList
 
-        Select Case Mid(control.Id, 1, Len(control.Id) - 2)
-            Case "dynMwwdh"
+        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
+            Case "dynMWwdListe"
                 XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
                 XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
@@ -405,45 +424,15 @@ Imports Microsoft.Office.Core
         Return C_DP.P_CBJournal
     End Function
 
-    Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
-        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "btnDialExpl", "cbtnDial"
-                WählenExplorer()
-            Case "btnDialInsp"
-                WählenInspector()
-            Case "btnDirektwahl"
-                WähleDirektwahl()
-            Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
-                P_CallClient.OnActionListen(control.Tag)
-            Case "btnAnrMonIO"
-                C_AnrMon.AnrMonStartStopp()
-            Case "btnAnrMonRestart"
-                AnrMonNeustarten()
-            Case "btnAnrMonShow"
-                ÖffneAnrMonAnzeigen()
-            Case "btnAnrMonJI"
-                ÖffneJournalImport()
-            Case "Einstellungen"
-                ÖffneEinstellungen()
-            Case "cbtnUpload", "btnUpload"
-                Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
-            Case "btnRWS01" ' RWS11880
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, CType(control.Context, Outlook.Inspector))
-            Case "btnRWS02" ' RWSDasOertliche
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, CType(control.Context, Outlook.Inspector))
-            Case "btnRWS03" ' RWSTelSearch
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, CType(control.Context, Outlook.Inspector))
-            Case "btnRWS04" ' RWSTelSearch
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, CType(control.Context, Outlook.Inspector))
-            Case "btnRWS05" ' RWSAlle
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, CType(control.Context, Outlook.Inspector))
-            Case "btnAddContact"
-                KontaktErstellen()
-            Case "btnNote"
-                C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
-        End Select
-    End Sub
+    ''' <summary>
+    ''' Die Ribbons der Explorer sollen nur eingeblendet werden, wenn ... (momentan immer :) )
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns>True</returns>
+    ''' <remarks></remarks>
+    Public Function ShowExplorerRibbon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
+        Return True
+    End Function
 
 #End If
 #End Region 'Ribbon Explorer
@@ -599,7 +588,7 @@ Imports Microsoft.Office.Core
             Case "btnAnrMonJI"
                 Return "NewJournalEntry"
             Case "btnUpload"
-                Return "ParentPermissions"
+                Return "DistributionListAddNewMember"
             Case "mnuRWS" ' Inspector
                 Return "CheckNames"
             Case "btnAddContact" ' Inspector
@@ -611,6 +600,54 @@ Imports Microsoft.Office.Core
         End Select
 
     End Function
+
+    ''' <summary>
+    ''' Ruft die jeweilige Funktion auf, die dem Button hinterlegt ist.
+    ''' </summary>
+    ''' <param name="control">Die id des Ribbon Controls</param>
+    ''' <remarks></remarks>
+    Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
+        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
+            Case "btnDialExpl", "cbtnDial"
+                WählenExplorer()
+            Case "btnDialInsp"
+                WählenInspector()
+            Case "btnDirektwahl"
+                WähleDirektwahl()
+            Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
+                P_CallClient.OnActionListen(control.Tag)
+            Case "btnAnrMonIO"
+                C_AnrMon.AnrMonStartStopp()
+            Case "btnAnrMonRestart"
+                AnrMonNeustarten()
+            Case "btnAnrMonShow"
+                ÖffneAnrMonAnzeigen()
+            Case "btnAnrMonJI"
+                ÖffneJournalImport()
+            Case "Einstellungen"
+                ÖffneEinstellungen()
+            Case "cbtnUpload"
+                Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
+            Case "btnUpload"
+                Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
+            Case "btnRWS01" ' RWS11880
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS02" ' RWSDasOertliche
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS03" ' RWSTelSearch
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS04" ' RWSTelSearch
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, CType(control.Context, Outlook.Inspector))
+            Case "btnRWS05" ' RWSAlle
+                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, CType(control.Context, Outlook.Inspector))
+            Case "btnAddContact"
+                KontaktErstellen()
+            Case "btnNote"
+                C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
+        End Select
+    End Sub
 #End Region
 
 #Region "VIP-Ribbon"
