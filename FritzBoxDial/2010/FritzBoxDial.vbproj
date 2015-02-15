@@ -1,280 +1,293 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
-		<ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{134F151B-0399-4286-B5F6-4EDD0DF6C297}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<RootNamespace>FritzBoxDial</RootNamespace>
-		<AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
-		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-		<TargetFrameworkProfile>Client</TargetFrameworkProfile>
-		<DefineConstants>VSTO40</DefineConstants>
-		<StartupObject>
-		</StartupObject>
-		<OptionExplicit>On</OptionExplicit>
-		<OptionCompare>Binary</OptionCompare>
-		<OptionStrict>On</OptionStrict>
-		<OptionInfer>On</OptionInfer>
-		<SignManifests>true</SignManifests>
-		<ManifestKeyFile>
-		</ManifestKeyFile>
-		<ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
-		<IsWebBootstrapper>False</IsWebBootstrapper>
-		<FileUpgradeFlags>
-		</FileUpgradeFlags>
-		<UpgradeBackupLocation>
-		</UpgradeBackupLocation>
-		<OldToolsVersion>4.0</OldToolsVersion>
-		<VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
-		<BootstrapperEnabled>false</BootstrapperEnabled>
-		<PublishUrl>publish\</PublishUrl>
-		<InstallUrl />
-		<TargetCulture>de</TargetCulture>
-		<ApplicationVersion>1.0.0.0</ApplicationVersion>
-		<AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
-		<UpdateEnabled>true</UpdateEnabled>
-		<UpdateInterval>7</UpdateInterval>
-		<UpdateIntervalUnits>days</UpdateIntervalUnits>
-		<ProductName>Fritz!Box Telefon-dingsbums</ProductName>
-		<PublisherName />
-		<SupportUrl />
-		<FriendlyName>Fritz!Box Telefon-dingsbums</FriendlyName>
-		<OfficeApplicationDescription />
-		<LoadBehavior>3</LoadBehavior>
-		<OfficeApplication>Outlook</OfficeApplication>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DefineConstants>OVer=14</DefineConstants>
-		<DefineDebug>true</DefineDebug>
-		<DefineTrace>true</DefineTrace>
-		<DebugType>Full</DebugType>
-		<DebugSymbols>true</DebugSymbols>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Debug\</OutputPath>
-		<DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
-		<RegisterForComInterop>false</RegisterForComInterop>
-		<RemoveIntegerChecks>false</RemoveIntegerChecks>
-		<NoWarn>
-		</NoWarn>
-		<WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-		<RunCodeAnalysis>false</RunCodeAnalysis>
-		<CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DefineConstants>OVer=14</DefineConstants>
-		<DefineDebug>true</DefineDebug>
-		<DefineTrace>true</DefineTrace>
-		<DebugType>None</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release\</OutputPath>
-		<DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
-		<RegisterForComInterop>false</RegisterForComInterop>
-		<RemoveIntegerChecks>false</RemoveIntegerChecks>
-		<NoWarn>
-		</NoWarn>
-		<WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-	</PropertyGroup>
-	<PropertyGroup>
-		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
-			<EmbedInteropTypes>True</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-			<EmbedInteropTypes>True</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<EmbedInteropTypes>False</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<EmbedInteropTypes>False</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-		<Reference Include="Microsoft.Office.Tools.Outlook, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<EmbedInteropTypes>False</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="Microsoft.Office.Tools.Outlook.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-			<EmbedInteropTypes>False</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-		<Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
-			<EmbedInteropTypes>True</EmbedInteropTypes>
-		</Reference>
-		<Reference Include="System" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Drawing" />
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Xml" />
-		<Reference Include="System.Core" />
-		<Reference Include="System.Xml.Linq" />
-		<Import Include="Microsoft.VisualBasic" />
-		<Import Include="System" />
-		<Import Include="System.Collections" />
-		<Import Include="System.Diagnostics" />
-		<Import Include="System.Linq" />
-		<Import Include="System.Text" />
-		<Import Include="System.Xml.Linq" />
-		<Import Include="Office = Microsoft.Office.Core" />
-		<Import Include="Outlook = Microsoft.Office.Interop.Outlook" />
-		<Import Include="Word = Microsoft.Office.Interop.Word" />
-		<AppDesigner Include="My Project\" />
-		<Compile Include="..\Common\AnrufMonitor.vb" />
-		<Compile Include="..\Common\Contacts.vb" />
-		<Compile Include="..\Common\Formulare\formCfg.designer.vb">
-			<DependentUpon>formCfg.vb</DependentUpon>
-			<link>Formulare\formCfg.designer.vb</link>
-		</Compile>
-		<Compile Include="..\Common\Formulare\formCfg.vb">
-			<SubType>Form</SubType>
-			<link>Formulare\formCfg.vb</link>
-		</Compile>
-		<EmbeddedResource Include="..\Common\Formulare\formCfg.resx">
-			<DependentUpon>formCfg.vb</DependentUpon>
-			<link>Formulare\formCfg.resx</link>
-		</EmbeddedResource>
-		<Compile Include="..\Common\Formulare\formInit.Designer.vb">
-			<DependentUpon>formInit.vb</DependentUpon>
-			<link>Formulare\formInit.designer.vb</link>
-		</Compile>
-		<Compile Include="..\Common\Formulare\formInit.vb">
-			<SubType>Form</SubType>
-			<link>Formulare\formInit.vb</link>
-		</Compile>
-		<EmbeddedResource Include="..\Common\Formulare\formInit.resx">
-			<DependentUpon>formInit.vb</DependentUpon>
-			<link>Formulare\formInit.resx</link>
-		</EmbeddedResource>
-		<Compile Include="..\Common\Formulare\formJournalimport.designer.vb">
-			<DependentUpon>formJournalimport.vb</DependentUpon>
-			<link>Formulare\formJournalimport.designer.vb</link>
-		</Compile>
-		<Compile Include="..\Common\Formulare\formJournalimport.vb">
-			<SubType>Form</SubType>
-			<link>Formulare\formJournalimport.vb</link>
-		</Compile>
-		<EmbeddedResource Include="..\Common\Formulare\formJournalimport.resx">
-			<DependentUpon>formJournalimport.vb</DependentUpon>
-			<link>Formulare\formJournalimport.resx</link>
-		</EmbeddedResource>
-		<Compile Include="..\Common\Formulare\formRWSuche.designer.vb">
-			<DependentUpon>formRWSuche.vb</DependentUpon>
-			<link>Formulare\formRWSuche.designer.vb</link>
-		</Compile>
-		<Compile Include="..\Common\Formulare\formRWSuche.vb">
-			<SubType>Form</SubType>
-			<link>Formulare\formRWSuche.vb</link>
-		</Compile>
-		<EmbeddedResource Include="..\Common\Formulare\formRWSuche.resx">
-			<DependentUpon>formRWSuche.vb</DependentUpon>
-			<link>Formulare\formRWSuche.resx</link>
-		</EmbeddedResource>
-		<Compile Include="..\Common\Formulare\formWählbox.designer.vb">
-			<DependentUpon>formWählbox.vb</DependentUpon>
-			<link>Formulare\formWählbox.designer.vb</link>
-		</Compile>
-		<Compile Include="..\Common\Formulare\formWählbox.vb">
-			<SubType>Form</SubType>
-			<link>Formulare\formWählbox.vb</link>
-		</Compile>
-		<EmbeddedResource Include="..\Common\Formulare\formWählbox.resx">
-			<DependentUpon>formWählbox.vb</DependentUpon>
-			<link>Formulare\formWählbox.resx</link>
-		</EmbeddedResource>
-		<Compile Include="..\Common\FritzBox.vb" />
-		<Compile Include="..\Common\GUI.vb" />
-		<Compile Include="..\Common\OutlookInterface.vb" />
-		<Compile Include="..\Common\Wählclient.vb" />
-		<Compile Include="..\Common\Popup.vb" />
-		<Compile Include="My Project\Resources.Designer.vb">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
-		<Compile Include="ThisAddIn.vb">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="ThisAddIn.Designer.vb">
-			<DependentUpon>ThisAddIn.vb</DependentUpon>
-		</Compile>
-		<None Include="ThisAddIn.Designer.xml">
-			<DependentUpon>ThisAddIn.vb</DependentUpon>
-		</None>
-		<Compile Include="My Project\AssemblyInfo.vb" />
-		<EmbeddedResource Include="My Project\Resources.resx">
-			<Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-			<CustomToolNamespace>My.Resources</CustomToolNamespace>
-			<SubType>Designer</SubType>
-			<LastGenOutput>Resources.Designer.vb</LastGenOutput>
-		</EmbeddedResource>
-		<Compile Include="My Project\Settings.Designer.vb">
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Settings.settings</DependentUpon>
-			<DesignTimeSharedInput>True</DesignTimeSharedInput>
-		</Compile>
-		<None Include="..\..\..\FritzBoxDial.pfx">
-			<Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
-		</None>
-		<None Include="My Project\Settings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>Settings.Designer.vb</LastGenOutput>
-		</None>
-		<ProjectReference Include="..\..\Funktionen\Funktionen.vbproj">
-			<Project>{ccf5ae9e-c12e-4467-9334-504cd7902b78}</Project>
-			<Name>Funktionen</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\..\PopupFenster\PopupFenster.vbproj">
-			<Project>{d8d8fab5-b82d-4363-82b4-e6c295074075}</Project>
-			<Name>PopupFenster</Name>
-		</ProjectReference>
-		<EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonExplorer.xml">
-			<SubType>Designer</SubType>
-			<Link>Ressourcen\RibbonXML\RibbonExplorer.xml</Link>
-		</EmbeddedResource>
-		<EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspector.xml">
-			<SubType>Designer</SubType>
-			<Link>Ressourcen\RibbonXML\RibbonInspector.xml</Link>
-		</EmbeddedResource>
-		<EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.gif">
-			<Link>Ressourcen\Icons\IMG_Copy.gif</Link>
-		</EmbeddedResource>
-		<EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Aktiv.gif">
-			<Link>Ressourcen\Icons\IMG_Kontakt_Aktiv.gif</Link>
-		</EmbeddedResource>
-		<EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Check.gif">
-			<Link>Ressourcen\Icons\IMG_Kontakt_Check.gif</Link>
-		</EmbeddedResource>
-		<EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif">
-			<Link>Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif</Link>
-		</EmbeddedResource>
-		<EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Telefon.gif">
-			<Link>Ressourcen\Icons\IMG_Telefon.gif</Link>
-		</EmbeddedResource>
-	</ItemGroup>
-	<!-- Include the build rules for a Visual Basic project. -->
-	<PropertyGroup>
-		<VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-		<VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-	</PropertyGroup>
-	<Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-	<!-- Include additional build rules for an Office application add-in. -->
-	<Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
-	<!-- This section defines VSTO properties that describe the host-changeable project properties. -->
-	<ProjectExtensions>
-		<VisualStudio>
-			<FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-				<ProjectProperties HostName="Outlook" HostPackage="{20A848B8-E01F-4801-962E-25DB0FF57389}" OfficeVersion="14.0" VstxVersion="4.0" ApplicationType="Outlook" Language="vb" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\14.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{5D898164-AEB5-470F-97BA-9253F022FD71}" />
-				<Host Name="Outlook" IconIndex="0">
-					<HostItem Name="ThisAddIn" Code="ThisAddIn.vb" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.vb" />
-				</Host>
-			</FlavorProperties>
-		</VisualStudio>
-	</ProjectExtensions>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{134F151B-0399-4286-B5F6-4EDD0DF6C297}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FritzBoxDial</RootNamespace>
+    <AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <DefineConstants>VSTO40</DefineConstants>
+    <StartupObject>
+    </StartupObject>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SignManifests>true</SignManifests>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+    <ManifestCertificateThumbprint>2D0955976091F4222A13E5EB76912871C33A16B3</ManifestCertificateThumbprint>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\FritzBoxDial.pfx</AssemblyOriginatorKeyFile>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
+    <PublishUrl>publish\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>de</TargetCulture>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>Fritz!Box Telefon-dingsbums</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>Fritz!Box Telefon-dingsbums</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
+    <OfficeApplication>Outlook</OfficeApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>OVer=14</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugType>Full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>OVer=14</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugType>None</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Setup\2010\</OutputPath>
+    <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Tools.Outlook, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Outlook.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Text" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="Office = Microsoft.Office.Core" />
+    <Import Include="Outlook = Microsoft.Office.Interop.Outlook" />
+    <Import Include="Word = Microsoft.Office.Interop.Word" />
+    <AppDesigner Include="My Project\" />
+    <Compile Include="..\Common\AnrufMonitor.vb" />
+    <Compile Include="..\Common\Contacts.vb" />
+    <Compile Include="..\Common\Formulare\formCfg.designer.vb">
+      <DependentUpon>formCfg.vb</DependentUpon>
+      <link>Formulare\formCfg.designer.vb</link>
+    </Compile>
+    <Compile Include="..\Common\Formulare\formCfg.vb">
+      <SubType>Form</SubType>
+      <link>Formulare\formCfg.vb</link>
+    </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formCfg.resx">
+      <DependentUpon>formCfg.vb</DependentUpon>
+      <link>Formulare\formCfg.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formInit.Designer.vb">
+      <DependentUpon>formInit.vb</DependentUpon>
+      <link>Formulare\formInit.designer.vb</link>
+    </Compile>
+    <Compile Include="..\Common\Formulare\formInit.vb">
+      <SubType>Form</SubType>
+      <link>Formulare\formInit.vb</link>
+    </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formInit.resx">
+      <DependentUpon>formInit.vb</DependentUpon>
+      <link>Formulare\formInit.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formJournalimport.designer.vb">
+      <DependentUpon>formJournalimport.vb</DependentUpon>
+      <link>Formulare\formJournalimport.designer.vb</link>
+    </Compile>
+    <Compile Include="..\Common\Formulare\formJournalimport.vb">
+      <SubType>Form</SubType>
+      <link>Formulare\formJournalimport.vb</link>
+    </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formJournalimport.resx">
+      <DependentUpon>formJournalimport.vb</DependentUpon>
+      <link>Formulare\formJournalimport.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formRWSuche.designer.vb">
+      <DependentUpon>formRWSuche.vb</DependentUpon>
+      <link>Formulare\formRWSuche.designer.vb</link>
+    </Compile>
+    <Compile Include="..\Common\Formulare\formRWSuche.vb">
+      <SubType>Form</SubType>
+      <link>Formulare\formRWSuche.vb</link>
+    </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formRWSuche.resx">
+      <DependentUpon>formRWSuche.vb</DependentUpon>
+      <link>Formulare\formRWSuche.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\Formulare\formWählbox.designer.vb">
+      <DependentUpon>formWählbox.vb</DependentUpon>
+      <link>Formulare\formWählbox.designer.vb</link>
+    </Compile>
+    <Compile Include="..\Common\Formulare\formWählbox.vb">
+      <SubType>Form</SubType>
+      <link>Formulare\formWählbox.vb</link>
+    </Compile>
+    <EmbeddedResource Include="..\Common\Formulare\formWählbox.resx">
+      <DependentUpon>formWählbox.vb</DependentUpon>
+      <link>Formulare\formWählbox.resx</link>
+    </EmbeddedResource>
+    <Compile Include="..\Common\FritzBox.vb" />
+    <Compile Include="..\Common\GUI.vb" />
+    <Compile Include="..\Common\OutlookInterface.vb" />
+    <Compile Include="..\Common\Wählclient.vb" />
+    <Compile Include="..\Common\Popup.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ThisAddIn.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ThisAddIn.Designer.vb">
+      <DependentUpon>ThisAddIn.vb</DependentUpon>
+    </Compile>
+    <None Include="ThisAddIn.Designer.xml">
+      <DependentUpon>ThisAddIn.vb</DependentUpon>
+    </None>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="..\..\..\FritzBoxDial.pfx">
+      <Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <ProjectReference Include="..\..\Funktionen\Funktionen.vbproj">
+      <Project>{ccf5ae9e-c12e-4467-9334-504cd7902b78}</Project>
+      <Name>Funktionen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PopupFenster\PopupFenster.vbproj">
+      <Project>{d8d8fab5-b82d-4363-82b4-e6c295074075}</Project>
+      <Name>PopupFenster</Name>
+    </ProjectReference>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonExplorer.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonExplorer.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspector.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonInspector.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.gif">
+      <Link>Ressourcen\Icons\IMG_Copy.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Aktiv.gif">
+      <Link>Ressourcen\Icons\IMG_Kontakt_Aktiv.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Check.gif">
+      <Link>Ressourcen\Icons\IMG_Kontakt_Check.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif">
+      <Link>Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Telefon.gif">
+      <Link>Ressourcen\Icons\IMG_Telefon.gif</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <!-- Include the build rules for a Visual Basic project. -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- Include additional build rules for an Office application add-in. -->
+  <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- This section defines VSTO properties that describe the host-changeable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
+        <ProjectProperties HostName="Outlook" HostPackage="{20A848B8-E01F-4801-962E-25DB0FF57389}" OfficeVersion="14.0" VstxVersion="4.0" ApplicationType="Outlook" Language="vb" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\14.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{5D898164-AEB5-470F-97BA-9253F022FD71}" />
+        <Host Name="Outlook" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.vb" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.vb" />
+        </Host>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>REM SET RELEASEPATH="\\OBELIX\Setup\2013\"
+SET RELEASEPATH="\\OBELIX\Setup\2010\"
+REM SET RELEASEPATH="\\OBELIX\Setup\2007\"
+REM SET RELEASEPATH="\\OBELIX\Setup\2003\"
+IF EXIST %25RELEASEPATH%25 (
+	copy /Y "$(TargetDir)*.dll" "%25RELEASEPATH%25*.dll"
+	copy /Y "$(TargetDir)*.pdb" "%25RELEASEPATH%25*.pdb"
+	copy /Y "$(TargetDir)$(TargetName).vsto" "%25RELEASEPATH%25$(TargetName).vsto"
+	copy /Y "$(TargetDir)$(TargetName).dll.manifest" "%25RELEASEPATH%25$(TargetName).dll.manifest"
+	copy /Y "$(TargetDir)*.xml" "%25RELEASEPATH%25*.xml"        
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
