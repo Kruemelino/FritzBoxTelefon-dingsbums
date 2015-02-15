@@ -19,6 +19,7 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <PublishUrl>publish\</PublishUrl>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
@@ -27,13 +28,13 @@
     <AddinRegistryHive>CurrentUser</AddinRegistryHive>
     <AddinRegistryKey>Software\Microsoft\Office\Outlook\Addins</AddinRegistryKey>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>OVer=11</DefineConstants>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <DebugType>None</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <NoWarn>
@@ -46,6 +47,17 @@
     </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>OVer=11</DefineConstants>
+    <DocumentationFile>FritzBoxDial.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>None</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -239,7 +251,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>SET RELEASEPATH="Z:\2003\"
+IF EXIST %25RELEASEPATH%25 (
+	copy /Y "$(TargetDir)*.dll" "%25RELEASEPATH%25*.dll"
+	copy /Y "$(TargetDir)*.pdb" "%25RELEASEPATH%25*.pdb"
+	copy /Y "$(TargetDir)$(TargetName).dll.manifest" "%25RELEASEPATH%25$(TargetName).dll.manifest"
+	copy /Y "$(TargetDir)*.xml" "%25RELEASEPATH%25*.xml"        
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>

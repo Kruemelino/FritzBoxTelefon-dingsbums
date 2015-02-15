@@ -42,7 +42,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>
@@ -108,9 +108,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  	<None Include="..\..\FritzBoxDial.pfx">
-		<Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
-	</None>
+    <None Include="..\..\FritzBoxDial.pfx">
+      <Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
+    </None>
     <ProjectReference Include="..\Funktionen\FunktionenO3.vbproj">
       <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
       <Name>FunktionenO3</Name>
