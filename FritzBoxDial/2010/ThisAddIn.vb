@@ -159,6 +159,12 @@ Public Class ThisAddIn
     End Function
 #End If
 
+    ''' <summary>
+    ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
         C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
@@ -213,12 +219,14 @@ Public Class ThisAddIn
         C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnUpload)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If C_DP.P_CBKHO AndAlso Not _
+            If Not (C_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    C_KF.P_DefContactFolder.StoreID Then Exit Sub
-            Dim KS As New ContactSaved
-            KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
-            ListofOpenContacts.Add(KS)
+                    C_KF.P_DefContactFolder.StoreID) Then
+
+                Dim KS As New ContactSaved
+                KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
+                ListofOpenContacts.Add(KS)
+            End If
         End If
     End Sub
 
@@ -304,7 +312,7 @@ Public Class ThisAddIn
         With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Tag
                 Case C_DP.P_Tag_Insp_Kontakt
-                    .KontaktErstellen()
+                    .OnAction(GraphicalUserInterface.TaskToDo.CreateContact)
                 Case C_DP.P_RWSDasOertliche_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasOertliche)
                 Case C_DP.P_RWS11880_Name
@@ -316,7 +324,7 @@ Public Class ThisAddIn
                 Case C_DP.P_RWSAlle_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case C_DP.P_Tag_Insp_Dial
-                    C_WClient.WählenAusInspector()
+                    .OnAction(GraphicalUserInterface.TaskToDo.DialInspector)
                 Case C_DP.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then

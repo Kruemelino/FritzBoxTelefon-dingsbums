@@ -72,14 +72,7 @@ Friend Class formCfg
         C_Phoner = Phonerklasse
         C_PopUp = Popupklasse
         C_XML = XMLKlasse
-        Me.LVersion.Text += ThisAddIn.Version
-        With Me.ComboBoxRWS.Items
-            .Add("DasÖrtliche.de")
-            .Add("11880.com")
-            .Add("DasTelefonbuch.de")
-            .Add("tel.search.ch")
-            .Add("Alle Suchmaschinen")
-        End With
+
     End Sub
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -91,9 +84,16 @@ Friend Class formCfg
     End Sub
 
 #Region "Ausfüllen"
-
     Private Sub Ausfüllen()
         With C_DP
+            Me.LVersion.Text += ThisAddIn.Version
+            With Me.ComboBoxRWS.Items
+                .Add(C_DP.P_RWSDasOertliche_Name) '"DasÖrtliche"
+                .Add(C_DP.P_RWS11880_Name) '"11880.com"
+                .Add(C_DP.P_RWSDasTelefonbuch_Name) '"DasTelefonbuch.de"
+                .Add(C_DP.P_RWSTelSearch_Name) '"tel.search.ch"
+                .Add(C_DP.P_RWSAlle_Name) '"Alle Suchmaschinen"
+            End With
 
             Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & .P_Arbeitsverzeichnis & .P_Def_Config_FileName)
 #If OVer >= 14 Then
@@ -108,13 +108,6 @@ Friend Class formCfg
 
             Me.CBForceFBAddr.Checked = .P_CBForceFBAddr
             Me.TBBenutzer.Text = .P_TBBenutzer
-            ' Unnötige Spielerrei:
-            'If Not Me.TBBenutzer.Text = .P_Def_StringEmpty Then
-            '    If .Read("Optionen", Me.TBBenutzer.Text, "2") = "0" Then
-            '        Me.TBBenutzer.BackColor = Color.Red
-            '        Me.ToolTipFBDBConfig.SetToolTip(Me.TBBenutzer, "Der Benutzer " & Me.TBBenutzer.Text & " hat keine ausreichenden Berechtigungen auf der Fritz!Box.")
-            '    End If
-            'End If
 
             If Not Len(.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
             Me.TBVorwahl.Text = .P_TBVorwahl
@@ -175,12 +168,16 @@ Friend Class formCfg
             'StoppUhr
             Me.CBStoppUhrEinblenden.Checked = .P_CBStoppUhrEinblenden
             Me.CBStoppUhrAusblenden.Checked = .P_CBStoppUhrAusblenden
+
             Me.TBStoppUhr.Text = CStr(.P_TBStoppUhr)
             Me.CBStoppUhrIgnIntFax.Checked = .P_CBStoppUhrIgnIntFax
-            Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
-            If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
-            Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
 
+            If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
+
+            Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
+            Me.LabelStoppUhr.Enabled = Me.CBStoppUhrEinblenden.Checked
+            Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
+            Me.CBStoppUhrIgnIntFax.Enabled = Me.CBStoppUhrEinblenden.Checked
             'Telefonnummernformat
             Me.TBTelNrMaske.Text = .P_TBTelNrMaske
             Me.CBTelNrGruppieren.Checked = .P_CBTelNrGruppieren
@@ -227,11 +224,6 @@ Friend Class formCfg
                 Me.ComboBoxPhonerSIP.SelectedIndex = .P_ComboBoxPhonerSIP
             End If
 
-
-            'Else
-            'Me.ComboBoxPhonerSIP.SelectedIndex = 0
-            'Me.ComboBoxPhonerSIP.Enabled = False
-            'End If
             Me.CBPhonerAnrMon.Checked = .P_CBPhonerAnrMon
             If Not Len(.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
 
@@ -915,6 +907,7 @@ Friend Class formCfg
                         If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
                         Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
                         Me.LabelStoppUhr.Enabled = Me.CBStoppUhrEinblenden.Checked
+                        Me.CBStoppUhrIgnIntFax.Enabled = Me.CBStoppUhrEinblenden.Checked
                     Case "CBStoppUhrAusblenden"
                         Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
                     Case "CBLogFile"
