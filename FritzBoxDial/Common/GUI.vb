@@ -609,23 +609,23 @@ Imports Microsoft.Office.Core
     Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "btnDialExpl", "cbtnDial"
-                WählenExplorer()
+                OnAction(TaskToDo.DialExplorer)
             Case "btnDialInsp"
-                WählenInspector()
+                OnAction(TaskToDo.DialInspector)
             Case "btnDirektwahl"
-                WähleDirektwahl()
+                OnAction(TaskToDo.DialDirect)
             Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
                 P_CallClient.OnActionListen(control.Tag)
             Case "btnAnrMonIO"
                 C_AnrMon.AnrMonStartStopp()
             Case "btnAnrMonRestart"
-                AnrMonNeustarten()
+                OnAction(TaskToDo.RestartAnrMon)
             Case "btnAnrMonShow"
-                ÖffneAnrMonAnzeigen()
+                OnAction(TaskToDo.ShowAnrMon)
             Case "btnAnrMonJI"
-                ÖffneJournalImport()
+                OnAction(TaskToDo.OpenJournalimport)
             Case "Einstellungen"
-                ÖffneEinstellungen()
+                OnAction(TaskToDo.OpenConfig)
             Case "cbtnUpload"
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
                 C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
@@ -643,7 +643,7 @@ Imports Microsoft.Office.Core
             Case "btnRWS05" ' RWSAlle
                 F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, CType(control.Context, Outlook.Inspector))
             Case "btnAddContact"
-                KontaktErstellen()
+                OnAction(TaskToDo.CreateContact)
             Case "btnNote"
                 C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
         End Select
@@ -1334,58 +1334,62 @@ Imports Microsoft.Office.Core
 #End Region 'für Office 2003 und 2007
 
 #Region "Explorer Button Click"
-    Friend Sub WähleDirektwahl()
-        P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, True)
-    End Sub
+    ''' <summary>
+    ''' Mögliche Anwendungen, die durch den klick auf ein Button/Ribbon ausgelöst werden können.
+    ''' Warum, die Englisch sind? Keine Ahnung.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Friend Enum TaskToDo
+        OpenConfig          ' Explorer: Einstellung Öffnen
+        OpenJournalimport   ' Explorer: Journalimport öffnen
+        ShowAnrMon          ' Explorer: Letzten Anrufer anzeigen
+        RestartAnrMon       ' Explorer: Anrufmonitor neu starten
+        DialExplorer        ' Explorer: Klassischen Wähldialog über das ausgewählte Objekt öffnen
+        DialDirect          ' Explorer: Direktwahl öffnen
+        DialInspector       ' Inspector: Wähldialog öffnen 
+        CreateContact       ' Inspector: Journal, Kontakt erstellen
+    End Enum
 
-    Friend Sub ÖffneEinstellungen()
-        ThisAddIn.P_Config.ShowDialog()
-    End Sub
-
-    Friend Sub ÖffneJournalImport()
-        Dim formjournalimort As New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
-    End Sub
-
-    Friend Sub ÖffneAnrMonAnzeigen()
-        C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
-    End Sub
-
-    Friend Sub AnrMonNeustarten()
-        C_AnrMon.AnrMonReStart()
-    End Sub
-
-    Friend Sub WählenExplorer()
-        If C_OLI.OutlookApplication IsNot Nothing Then
-            Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
-            Dim oSel As Outlook.Selection = ActiveExplorer.Selection
-            P_CallClient.WählboxStart(oSel)
-            C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
-            oSel = Nothing : ActiveExplorer = Nothing
-        End If
+    ''' <summary>
+    ''' Steuert die aufzurufende Funktion anhand der Übergebenen <c>Aufgabe</c>
+    ''' </summary>
+    ''' <param name="Aufgabe">Übergabe Wert, der besitmt, was getan werden soll.</param>
+    ''' <remarks></remarks>
+    Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
+        Select Case Aufgabe
+            Case TaskToDo.DialDirect
+                P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, True)
+            Case TaskToDo.DialExplorer
+                'If C_OLI.OutlookApplication IsNot Nothing Then
+                '    Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
+                '    Dim oSel As Outlook.Selection = ActiveExplorer.Selection
+                '    P_CallClient.WählboxStart(oSel)
+                '    C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
+                '    oSel = Nothing : ActiveExplorer = Nothing
+                'End If
+                If C_OLI.OutlookApplication IsNot Nothing Then
+                    P_CallClient.WählboxStart(C_OLI.OutlookApplication.ActiveExplorer.Selection)
+                End If
+            Case TaskToDo.OpenConfig
+                ThisAddIn.P_Config.ShowDialog()
+            Case TaskToDo.OpenJournalimport
+                Dim formjournalimort As New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
+            Case TaskToDo.RestartAnrMon
+                C_AnrMon.AnrMonReStart()
+            Case TaskToDo.ShowAnrMon
+                C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
+            Case TaskToDo.DialInspector
+                P_CallClient.WählenAusInspector()
+            Case TaskToDo.CreateContact
+                C_KF.ZeigeKontaktAusJournal()
+        End Select
     End Sub
 
 #End Region
 
 #Region "Inspector Button Click"
-    ''' <summary>
-    ''' Öffnet den Wähldialog.
-    ''' </summary>
-    ''' <remarks>Funktion wird für alle Office Versionen verwendet!</remarks>
-    Friend Sub WählenInspector()
-        P_CallClient.WählenAusInspector()
-    End Sub
-
-    ''' <summary>
-    ''' Zeigt einen Kontakt aus einem Journal.
-    ''' </summary>
-    ''' <remarks>Funktion wird für alle Office Versionen verwendet!</remarks>
-    Friend Sub KontaktErstellen()
-        C_KF.ZeigeKontaktAusJournal()
-    End Sub
-
 #If OVer = 11 Then
     Friend Sub OnActionRWS(ByVal oInsp As Outlook.Inspector, ByVal RWS As RückwärtsSuchmaschine)
-
         Select Case RWS
             Case RückwärtsSuchmaschine.RWS11880
                 F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, oInsp)
@@ -1399,7 +1403,6 @@ Imports Microsoft.Office.Core
                 F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, oInsp)
         End Select
     End Sub
-
 #End If
 #End Region
 
