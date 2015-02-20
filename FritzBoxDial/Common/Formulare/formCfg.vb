@@ -163,6 +163,7 @@ Friend Class formCfg
             Me.CBJournal.Checked = .P_CBJournal
             Me.CBAnrListeUpdateJournal.Checked = .P_CBAnrListeUpdateJournal
             Me.CBAnrListeUpdateCallLists.Checked = .P_CBAnrListeUpdateCallLists
+            Me.CBAnrListeShowAnrMon.Checked = .P_CBAnrListeShowAnrMon
             Me.CBUseAnrMon.Checked = .P_CBUseAnrMon
             Me.CBCheckMobil.Checked = .P_CBCheckMobil
 
@@ -465,6 +466,7 @@ Friend Class formCfg
             .P_CBJournal = Me.CBJournal.Checked
             .P_CBAnrListeUpdateJournal = Me.CBAnrListeUpdateJournal.Checked
             .P_CBAnrListeUpdateCallLists = Me.CBAnrListeUpdateCallLists.Checked
+            .P_CBAnrListeShowAnrMon = Me.CBAnrListeShowAnrMon.Checked
             .P_CBUseAnrMon = Me.CBUseAnrMon.Checked
             .P_CBAutoAnrList = Me.CBAutoAnrList.Checked
             .P_CBCheckMobil = Me.CBCheckMobil.Checked
@@ -637,6 +639,7 @@ Friend Class formCfg
                     Me.CBAutoAnrList.Checked = .P_Def_CBJImport
                     Me.CBAnrListeUpdateJournal.Checked = .P_Def_CBAnrListeUpdateJournal
                     Me.CBAnrListeUpdateCallLists.Checked = .P_Def_CBAnrListeUpdateCallLists
+                    Me.CBAnrListeShowAnrMon.Checked = .P_Def_CBAnrListeShowAnrMon
                     Me.CBLogFile.Checked = .P_Def_CBLogFile
                     'StoppUhr
                     Me.CBStoppUhrEinblenden.Checked = .P_Def_CBStoppUhrEinblenden
@@ -869,7 +872,8 @@ Friend Class formCfg
                                                                         CBAnrMonCloseAtDISSCONNECT.CheckedChanged, _
                                                                         CBAnrMonKeepActiv.CheckedChanged, _
                                                                         CBJournal.CheckedChanged, _
-                                                                        TBAnrBeantworterTimeout.TextChanged
+                                                                        TBAnrBeantworterTimeout.TextChanged, _
+                                                                        CBAutoAnrList.CheckedChanged
 
         Select Case sender.GetType().Name
             Case "CheckBox"
@@ -904,6 +908,15 @@ Friend Class formCfg
                         If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
                         Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
+                    Case "CBAutoAnrList"
+                        If Not Me.CBAutoAnrList.Checked Then
+                            Me.CBAnrListeUpdateJournal.Checked = False
+                            Me.CBAnrListeUpdateCallLists.Checked = False
+                            Me.CBAnrListeShowAnrMon.Checked = False
+                        End If
+                        Me.CBAnrListeUpdateJournal.Enabled = Me.CBAutoAnrList.Checked
+                        Me.CBAnrListeUpdateCallLists.Enabled = Me.CBAutoAnrList.Checked
+                        Me.CBAnrListeShowAnrMon.Enabled = Me.CBAutoAnrList.Checked
                     Case "CBAnrMonKeepActiv"
                         Me.TBAnrBeantworterTimeout.Enabled = Me.CBAnrMonKeepActiv.Checked
                         Me.LAnrBeantworterTimeout.Enabled = Me.CBAnrMonKeepActiv.Checked

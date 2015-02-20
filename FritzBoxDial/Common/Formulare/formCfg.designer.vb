@@ -171,6 +171,7 @@ Partial Class formCfg
         Me.CBSymbAnrMon = New System.Windows.Forms.CheckBox()
         Me.CBSymbAnrListe = New System.Windows.Forms.CheckBox()
         Me.GboxAnrListeMain = New System.Windows.Forms.GroupBox()
+        Me.CBAnrListeShowAnrMon = New System.Windows.Forms.CheckBox()
         Me.CBAnrListeUpdateJournal = New System.Windows.Forms.CheckBox()
         Me.CBAnrListeUpdateCallLists = New System.Windows.Forms.CheckBox()
         Me.Label25 = New System.Windows.Forms.Label()
@@ -1826,6 +1827,7 @@ Partial Class formCfg
         '
         'GboxAnrListeMain
         '
+        Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeShowAnrMon)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateJournal)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAutoAnrList)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
@@ -1835,6 +1837,16 @@ Partial Class formCfg
         Me.GboxAnrListeMain.TabIndex = 31
         Me.GboxAnrListeMain.TabStop = False
         Me.GboxAnrListeMain.Text = "Auswertung der Anrufliste"
+        '
+        'CBAnrListeShowAnrMon
+        '
+        Me.CBAnrListeShowAnrMon.AutoSize = True
+        Me.CBAnrListeShowAnrMon.Location = New System.Drawing.Point(3, 88)
+        Me.CBAnrListeShowAnrMon.Name = "CBAnrListeShowAnrMon"
+        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(251, 17)
+        Me.CBAnrListeShowAnrMon.TabIndex = 9
+        Me.CBAnrListeShowAnrMon.Text = "Verpasste Telefonate mit Anrufmonitor anzeigen"
+        Me.CBAnrListeShowAnrMon.UseVisualStyleBackColor = True
         '
         'CBAnrListeUpdateJournal
         '
@@ -2523,6 +2535,7 @@ Partial Class formCfg
     Friend WithEvents CBSymbAnrListe As System.Windows.Forms.CheckBox
     Friend WithEvents GBoxJournal As System.Windows.Forms.GroupBox
     Friend WithEvents CBAnrListeUpdateJournal As System.Windows.Forms.CheckBox
+    Friend WithEvents CBAnrListeShowAnrMon As System.Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class

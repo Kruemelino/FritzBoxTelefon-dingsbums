@@ -770,6 +770,20 @@ Public Class DataProvider
         End Set
     End Property
 
+    ''' <summary>
+    ''' Gibt an, ob verpasste Anrufe mit Hilfe des Anrufmonitors angezeigt werden sollen.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private _CBAnrListeShowAnrMon As Boolean
+    Public Property P_CBAnrListeShowAnrMon As Boolean
+        Get
+            Return _CBAnrListeShowAnrMon
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrListeShowAnrMon = value
+        End Set
+    End Property
+
     Private _CBUseAnrMon As Boolean
     Public Property P_CBUseAnrMon As Boolean
         Get
@@ -2017,6 +2031,11 @@ Public Class DataProvider
         End Get
     End Property
     Public ReadOnly Property P_Def_CBAnrListeUpdateCallLists() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_CBAnrListeShowAnrMon() As Boolean
         Get
             Return False
         End Get
@@ -3905,6 +3924,7 @@ Public Class DataProvider
         Me.P_CBJournal = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
         Me.P_CBAnrListeUpdateJournal = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrListeUpdateJournal", CStr(P_Def_CBAnrListeUpdateJournal)))
         Me.P_CBAnrListeUpdateCallLists = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrListeUpdateCallLists", CStr(P_Def_CBAnrListeUpdateCallLists)))
+        Me.P_CBAnrListeShowAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrListeShowAnrMon", CStr(P_Def_CBAnrListeShowAnrMon)))
         Me.P_CBUseAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
         Me.P_CBCheckMobil = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
         Me.P_CBAutoClose = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
@@ -4035,6 +4055,7 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
         C_XML.Write(XMLDoc, P_Def_Options, "CBAnrListeUpdateJournal", CStr(Me.P_CBAnrListeUpdateJournal))
         C_XML.Write(XMLDoc, P_Def_Options, "CBAnrListeUpdateCallLists", CStr(Me.P_CBAnrListeUpdateCallLists))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrListeShowAnrMon", CStr(Me.P_CBAnrListeShowAnrMon))
         C_XML.Write(XMLDoc, P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
         C_XML.Write(XMLDoc, P_Def_Options, "CBCheckMobil", CStr(Me.P_CBCheckMobil))
         'StoppUhr
