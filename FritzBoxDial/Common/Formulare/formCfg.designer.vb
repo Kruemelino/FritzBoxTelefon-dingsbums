@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -33,7 +33,6 @@ Partial Class formCfg
         Me.CBRWSIndex = New System.Windows.Forms.CheckBox()
         Me.CBKHO = New System.Windows.Forms.CheckBox()
         Me.CBIndexAus = New System.Windows.Forms.CheckBox()
-        Me.CBJImport = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonTransp = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonMove = New System.Windows.Forms.CheckBox()
         Me.CBShowMSN = New System.Windows.Forms.CheckBox()
@@ -81,6 +80,9 @@ Partial Class formCfg
         Me.TBRWSTest = New System.Windows.Forms.TextBox()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label28 = New System.Windows.Forms.Label()
+        Me.CBAutoAnrList = New System.Windows.Forms.CheckBox()
+        Me.TBAnrBeantworterTimeout = New System.Windows.Forms.TextBox()
+        Me.LAnrBeantworterTimeout = New System.Windows.Forms.Label()
         Me.PInfo = New System.Windows.Forms.TabPage()
         Me.BArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -128,7 +130,7 @@ Partial Class formCfg
         Me.ComboBoxRWS = New System.Windows.Forms.ComboBox()
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.GBoxAnrMonLayout = New System.Windows.Forms.GroupBox()
         Me.LAnrMonMoveDirection = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.CBoxAnrMonMoveDirection = New System.Windows.Forms.ComboBox()
@@ -142,12 +144,12 @@ Partial Class formCfg
         Me.Label12 = New System.Windows.Forms.Label()
         Me.TBAnrMonMoveGeschwindigkeit = New System.Windows.Forms.TrackBar()
         Me.Label22 = New System.Windows.Forms.Label()
-        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.GBoxAnrMonMain = New System.Windows.Forms.GroupBox()
         Me.PanelAnrMon = New System.Windows.Forms.Panel()
         Me.CBNote = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonAuto = New System.Windows.Forms.CheckBox()
-        Me.CBJournal = New System.Windows.Forms.CheckBox()
+        Me.CBAnrMonKeepActiv = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonCloseAtDISSCONNECT = New System.Windows.Forms.CheckBox()
         Me.CBAutoClose = New System.Windows.Forms.CheckBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -156,8 +158,10 @@ Partial Class formCfg
         Me.LEnblDauer = New System.Windows.Forms.Label()
         Me.CBUseAnrMon = New System.Windows.Forms.CheckBox()
         Me.FBDB_MP = New System.Windows.Forms.TabControl()
-        Me.PSymbolleiste = New System.Windows.Forms.TabPage()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.PAnrListe = New System.Windows.Forms.TabPage()
+        Me.GBoxJournal = New System.Windows.Forms.GroupBox()
+        Me.CBJournal = New System.Windows.Forms.CheckBox()
+        Me.GBoxSymbolleiste = New System.Windows.Forms.GroupBox()
         Me.CBSymbJournalimport = New System.Windows.Forms.CheckBox()
         Me.CBSymbVIP = New System.Windows.Forms.CheckBox()
         Me.CBSymbRWSuche = New System.Windows.Forms.CheckBox()
@@ -166,7 +170,10 @@ Partial Class formCfg
         Me.CBSymbWwdh = New System.Windows.Forms.CheckBox()
         Me.CBSymbAnrMon = New System.Windows.Forms.CheckBox()
         Me.CBSymbAnrListe = New System.Windows.Forms.CheckBox()
-        Me.LabelSymb = New System.Windows.Forms.Label()
+        Me.GboxAnrListeMain = New System.Windows.Forms.GroupBox()
+        Me.CBAnrListeUpdateJournal = New System.Windows.Forms.CheckBox()
+        Me.CBAnrListeUpdateCallLists = New System.Windows.Forms.CheckBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.PPhoner = New System.Windows.Forms.TabPage()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.PanelPhonerAktiv = New System.Windows.Forms.Panel()
@@ -217,13 +224,15 @@ Partial Class formCfg
         Me.GroupBoxIndex.SuspendLayout()
         Me.GroupBoxRWS.SuspendLayout()
         Me.PAnrufmonitor.SuspendLayout()
-        Me.GroupBox6.SuspendLayout()
+        Me.GBoxAnrMonLayout.SuspendLayout()
         CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Frame1.SuspendLayout()
+        Me.GBoxAnrMonMain.SuspendLayout()
         Me.PanelAnrMon.SuspendLayout()
         Me.FBDB_MP.SuspendLayout()
-        Me.PSymbolleiste.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
+        Me.PAnrListe.SuspendLayout()
+        Me.GBoxJournal.SuspendLayout()
+        Me.GBoxSymbolleiste.SuspendLayout()
+        Me.GboxAnrListeMain.SuspendLayout()
         Me.PPhoner.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.PanelPhoner.SuspendLayout()
@@ -335,18 +344,6 @@ Partial Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können sie die Indizierung auch aussch" & _
         "alten.")
         Me.CBIndexAus.UseVisualStyleBackColor = True
-        '
-        'CBJImport
-        '
-        Me.CBJImport.AutoSize = True
-        Me.CBJImport.Enabled = False
-        Me.CBJImport.Location = New System.Drawing.Point(8, 156)
-        Me.CBJImport.Name = "CBJImport"
-        Me.CBJImport.Size = New System.Drawing.Size(202, 17)
-        Me.CBJImport.TabIndex = 6
-        Me.CBJImport.Text = "Journaleinträge beim Start importieren"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBJImport, resources.GetString("CBJImport.ToolTip"))
-        Me.CBJImport.UseVisualStyleBackColor = True
         '
         'CBAnrMonTransp
         '
@@ -850,6 +847,41 @@ Partial Class formCfg
         Me.Label28.Text = "langsamer"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label28, "Derzeit abgeschaltet!")
         '
+        'CBAutoAnrList
+        '
+        Me.CBAutoAnrList.AutoSize = True
+        Me.CBAutoAnrList.Location = New System.Drawing.Point(3, 19)
+        Me.CBAutoAnrList.Name = "CBAutoAnrList"
+        Me.CBAutoAnrList.Size = New System.Drawing.Size(171, 17)
+        Me.CBAutoAnrList.TabIndex = 8
+        Me.CBAutoAnrList.Text = "Anrufliste beim Start auswerten"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
+        Me.CBAutoAnrList.UseVisualStyleBackColor = True
+        '
+        'TBAnrBeantworterTimeout
+        '
+        Me.TBAnrBeantworterTimeout.Enabled = False
+        Me.TBAnrBeantworterTimeout.Location = New System.Drawing.Point(2, 119)
+        Me.TBAnrBeantworterTimeout.Name = "TBAnrBeantworterTimeout"
+        Me.TBAnrBeantworterTimeout.Size = New System.Drawing.Size(29, 20)
+        Me.TBAnrBeantworterTimeout.TabIndex = 35
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" & _
+        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" & _
+        "ntworter.")
+        '
+        'LAnrBeantworterTimeout
+        '
+        Me.LAnrBeantworterTimeout.AutoSize = True
+        Me.LAnrBeantworterTimeout.Enabled = False
+        Me.LAnrBeantworterTimeout.Location = New System.Drawing.Point(37, 122)
+        Me.LAnrBeantworterTimeout.Name = "LAnrBeantworterTimeout"
+        Me.LAnrBeantworterTimeout.Size = New System.Drawing.Size(137, 13)
+        Me.LAnrBeantworterTimeout.TabIndex = 36
+        Me.LAnrBeantworterTimeout.Text = "Anrufbentworter-Timeout [s]"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.LAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" & _
+        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" & _
+        "ntworter.")
+        '
         'PInfo
         '
         Me.PInfo.Controls.Add(Me.BArbeitsverzeichnis)
@@ -1112,9 +1144,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1126,9 +1158,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1140,9 +1172,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1350,9 +1382,9 @@ Partial Class formCfg
         '
         'PAnrufmonitor
         '
-        Me.PAnrufmonitor.Controls.Add(Me.GroupBox6)
+        Me.PAnrufmonitor.Controls.Add(Me.GBoxAnrMonLayout)
         Me.PAnrufmonitor.Controls.Add(Me.Label22)
-        Me.PAnrufmonitor.Controls.Add(Me.Frame1)
+        Me.PAnrufmonitor.Controls.Add(Me.GBoxAnrMonMain)
         Me.PAnrufmonitor.Location = New System.Drawing.Point(4, 22)
         Me.PAnrufmonitor.Name = "PAnrufmonitor"
         Me.PAnrufmonitor.Padding = New System.Windows.Forms.Padding(3)
@@ -1361,32 +1393,32 @@ Partial Class formCfg
         Me.PAnrufmonitor.Text = "Anrufmonitor"
         Me.PAnrufmonitor.UseVisualStyleBackColor = True
         '
-        'GroupBox6
+        'GBoxAnrMonLayout
         '
-        Me.GroupBox6.Controls.Add(Me.LAnrMonMoveDirection)
-        Me.GroupBox6.Controls.Add(Me.Label19)
-        Me.GroupBox6.Controls.Add(Me.CBoxAnrMonMoveDirection)
-        Me.GroupBox6.Controls.Add(Me.CBoxAnrMonStartPosition)
-        Me.GroupBox6.Controls.Add(Me.CBAnrMonContactImage)
-        Me.GroupBox6.Controls.Add(Me.CBShowMSN)
-        Me.GroupBox6.Controls.Add(Me.Label18)
-        Me.GroupBox6.Controls.Add(Me.Label32)
-        Me.GroupBox6.Controls.Add(Me.Label28)
-        Me.GroupBox6.Controls.Add(Me.BAnrMonTest)
-        Me.GroupBox6.Controls.Add(Me.CBAnrMonMove)
-        Me.GroupBox6.Controls.Add(Me.CBAnrMonTransp)
-        Me.GroupBox6.Controls.Add(Me.TBAnrMonY)
-        Me.GroupBox6.Controls.Add(Me.Label11)
-        Me.GroupBox6.Controls.Add(Me.Label14)
-        Me.GroupBox6.Controls.Add(Me.TBAnrMonX)
-        Me.GroupBox6.Controls.Add(Me.Label12)
-        Me.GroupBox6.Controls.Add(Me.TBAnrMonMoveGeschwindigkeit)
-        Me.GroupBox6.Location = New System.Drawing.Point(288, 38)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(282, 256)
-        Me.GroupBox6.TabIndex = 15
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Aussehen anpassen"
+        Me.GBoxAnrMonLayout.Controls.Add(Me.LAnrMonMoveDirection)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label19)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.CBoxAnrMonMoveDirection)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.CBoxAnrMonStartPosition)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.CBAnrMonContactImage)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.CBShowMSN)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label18)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label32)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label28)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.BAnrMonTest)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.CBAnrMonMove)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.CBAnrMonTransp)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.TBAnrMonY)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label11)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label14)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.TBAnrMonX)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.Label12)
+        Me.GBoxAnrMonLayout.Controls.Add(Me.TBAnrMonMoveGeschwindigkeit)
+        Me.GBoxAnrMonLayout.Location = New System.Drawing.Point(288, 38)
+        Me.GBoxAnrMonLayout.Name = "GBoxAnrMonLayout"
+        Me.GBoxAnrMonLayout.Size = New System.Drawing.Size(282, 256)
+        Me.GBoxAnrMonLayout.TabIndex = 15
+        Me.GBoxAnrMonLayout.TabStop = False
+        Me.GBoxAnrMonLayout.Text = "Aussehen anpassen"
         '
         'LAnrMonMoveDirection
         '
@@ -1508,24 +1540,25 @@ Partial Class formCfg
         Me.Label22.Text = "Einstellungen für den Anrufmonitor"
         Me.Label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Frame1
+        'GBoxAnrMonMain
         '
-        Me.Frame1.Controls.Add(Me.PanelAnrMon)
-        Me.Frame1.Controls.Add(Me.CBUseAnrMon)
-        Me.Frame1.Location = New System.Drawing.Point(0, 38)
-        Me.Frame1.Name = "Frame1"
-        Me.Frame1.Size = New System.Drawing.Size(282, 256)
-        Me.Frame1.TabIndex = 14
-        Me.Frame1.TabStop = False
-        Me.Frame1.Text = "Einstellungen für den Anrufmonitor"
+        Me.GBoxAnrMonMain.Controls.Add(Me.PanelAnrMon)
+        Me.GBoxAnrMonMain.Controls.Add(Me.CBUseAnrMon)
+        Me.GBoxAnrMonMain.Location = New System.Drawing.Point(0, 38)
+        Me.GBoxAnrMonMain.Name = "GBoxAnrMonMain"
+        Me.GBoxAnrMonMain.Size = New System.Drawing.Size(282, 256)
+        Me.GBoxAnrMonMain.TabIndex = 14
+        Me.GBoxAnrMonMain.TabStop = False
+        Me.GBoxAnrMonMain.Text = "Einstellungen für den Anrufmonitor"
         '
         'PanelAnrMon
         '
+        Me.PanelAnrMon.Controls.Add(Me.TBAnrBeantworterTimeout)
+        Me.PanelAnrMon.Controls.Add(Me.LAnrBeantworterTimeout)
         Me.PanelAnrMon.Controls.Add(Me.CBNote)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonZeigeKontakt)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonAuto)
-        Me.PanelAnrMon.Controls.Add(Me.CBJImport)
-        Me.PanelAnrMon.Controls.Add(Me.CBJournal)
+        Me.PanelAnrMon.Controls.Add(Me.CBAnrMonKeepActiv)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonCloseAtDISSCONNECT)
         Me.PanelAnrMon.Controls.Add(Me.CBAutoClose)
         Me.PanelAnrMon.Controls.Add(Me.Label2)
@@ -1540,17 +1573,17 @@ Partial Class formCfg
         'CBNote
         '
         Me.CBNote.AutoSize = True
-        Me.CBNote.Location = New System.Drawing.Point(8, 202)
+        Me.CBNote.Location = New System.Drawing.Point(155, 196)
         Me.CBNote.Name = "CBNote"
-        Me.CBNote.Size = New System.Drawing.Size(184, 17)
+        Me.CBNote.Size = New System.Drawing.Size(124, 17)
         Me.CBNote.TabIndex = 34
-        Me.CBNote.Text = "Notizeintrag automatisch erstellen"
+        Me.CBNote.Text = "Notizeintrag erstellen"
         Me.CBNote.UseVisualStyleBackColor = True
         '
         'CBAnrMonZeigeKontakt
         '
         Me.CBAnrMonZeigeKontakt.AutoSize = True
-        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(8, 179)
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(3, 196)
         Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
         Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
         Me.CBAnrMonZeigeKontakt.TabIndex = 34
@@ -1560,37 +1593,37 @@ Partial Class formCfg
         'CBAnrMonAuto
         '
         Me.CBAnrMonAuto.AutoSize = True
-        Me.CBAnrMonAuto.Location = New System.Drawing.Point(8, 6)
+        Me.CBAnrMonAuto.Location = New System.Drawing.Point(3, 6)
         Me.CBAnrMonAuto.Name = "CBAnrMonAuto"
         Me.CBAnrMonAuto.Size = New System.Drawing.Size(176, 17)
         Me.CBAnrMonAuto.TabIndex = 1
         Me.CBAnrMonAuto.Text = "Anrufmonitor mit Outlook starten"
         Me.CBAnrMonAuto.UseVisualStyleBackColor = True
         '
-        'CBJournal
+        'CBAnrMonKeepActiv
         '
-        Me.CBJournal.AutoSize = True
-        Me.CBJournal.Location = New System.Drawing.Point(8, 133)
-        Me.CBJournal.Name = "CBJournal"
-        Me.CBJournal.Size = New System.Drawing.Size(153, 17)
-        Me.CBJournal.TabIndex = 5
-        Me.CBJournal.Text = "Journaleinträge hinzufügen"
-        Me.CBJournal.UseVisualStyleBackColor = True
+        Me.CBAnrMonKeepActiv.AutoSize = True
+        Me.CBAnrMonKeepActiv.Location = New System.Drawing.Point(3, 98)
+        Me.CBAnrMonKeepActiv.Name = "CBAnrMonKeepActiv"
+        Me.CBAnrMonKeepActiv.Size = New System.Drawing.Size(255, 17)
+        Me.CBAnrMonKeepActiv.TabIndex = 2
+        Me.CBAnrMonKeepActiv.Text = "Anr.fen. bei verpassten Anrufen bestehen lassen" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.CBAnrMonKeepActiv.UseVisualStyleBackColor = True
         '
         'CBAnrMonCloseAtDISSCONNECT
         '
         Me.CBAnrMonCloseAtDISSCONNECT.AutoSize = True
-        Me.CBAnrMonCloseAtDISSCONNECT.Location = New System.Drawing.Point(8, 78)
+        Me.CBAnrMonCloseAtDISSCONNECT.Location = New System.Drawing.Point(3, 75)
         Me.CBAnrMonCloseAtDISSCONNECT.Name = "CBAnrMonCloseAtDISSCONNECT"
-        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(271, 17)
+        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(211, 17)
         Me.CBAnrMonCloseAtDISSCONNECT.TabIndex = 2
-        Me.CBAnrMonCloseAtDISSCONNECT.Text = "Anruffenster automatisch beim Auflegen ausblenden"
+        Me.CBAnrMonCloseAtDISSCONNECT.Text = "Anruffenster beim Auflegen ausblenden"
         Me.CBAnrMonCloseAtDISSCONNECT.UseVisualStyleBackColor = True
         '
         'CBAutoClose
         '
         Me.CBAutoClose.AutoSize = True
-        Me.CBAutoClose.Location = New System.Drawing.Point(8, 29)
+        Me.CBAutoClose.Location = New System.Drawing.Point(3, 29)
         Me.CBAutoClose.Name = "CBAutoClose"
         Me.CBAutoClose.Size = New System.Drawing.Size(201, 17)
         Me.CBAutoClose.TabIndex = 2
@@ -1599,15 +1632,15 @@ Partial Class formCfg
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(162, 98)
+        Me.Label2.Location = New System.Drawing.Point(156, 145)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(114, 52)
+        Me.Label2.Size = New System.Drawing.Size(114, 48)
         Me.Label2.TabIndex = 33
         Me.Label2.Text = "Stellen Sie die zu überwachenden Telefonnummern ein."
         '
         'TBEnblDauer
         '
-        Me.TBEnblDauer.Location = New System.Drawing.Point(8, 52)
+        Me.TBEnblDauer.Location = New System.Drawing.Point(2, 50)
         Me.TBEnblDauer.Name = "TBEnblDauer"
         Me.TBEnblDauer.Size = New System.Drawing.Size(29, 20)
         Me.TBEnblDauer.TabIndex = 3
@@ -1618,15 +1651,15 @@ Partial Class formCfg
         Me.CLBTelNr.CheckOnClick = True
         Me.CLBTelNr.HorizontalScrollbar = True
         Me.CLBTelNr.IntegralHeight = False
-        Me.CLBTelNr.Location = New System.Drawing.Point(6, 101)
+        Me.CLBTelNr.Location = New System.Drawing.Point(2, 144)
         Me.CLBTelNr.Name = "CLBTelNr"
-        Me.CLBTelNr.Size = New System.Drawing.Size(148, 28)
+        Me.CLBTelNr.Size = New System.Drawing.Size(148, 49)
         Me.CLBTelNr.TabIndex = 4
         '
         'LEnblDauer
         '
         Me.LEnblDauer.AutoSize = True
-        Me.LEnblDauer.Location = New System.Drawing.Point(43, 55)
+        Me.LEnblDauer.Location = New System.Drawing.Point(37, 53)
         Me.LEnblDauer.Name = "LEnblDauer"
         Me.LEnblDauer.Size = New System.Drawing.Size(191, 13)
         Me.LEnblDauer.TabIndex = 31
@@ -1635,7 +1668,7 @@ Partial Class formCfg
         'CBUseAnrMon
         '
         Me.CBUseAnrMon.AutoSize = True
-        Me.CBUseAnrMon.Location = New System.Drawing.Point(8, 19)
+        Me.CBUseAnrMon.Location = New System.Drawing.Point(3, 19)
         Me.CBUseAnrMon.Name = "CBUseAnrMon"
         Me.CBUseAnrMon.Size = New System.Drawing.Size(141, 17)
         Me.CBUseAnrMon.TabIndex = 0
@@ -1646,8 +1679,8 @@ Partial Class formCfg
         '
         Me.FBDB_MP.Controls.Add(Me.PGrundeinstellungen)
         Me.FBDB_MP.Controls.Add(Me.PAnrufmonitor)
+        Me.FBDB_MP.Controls.Add(Me.PAnrListe)
         Me.FBDB_MP.Controls.Add(Me.PIndex)
-        Me.FBDB_MP.Controls.Add(Me.PSymbolleiste)
         Me.FBDB_MP.Controls.Add(Me.PTelefone)
         Me.FBDB_MP.Controls.Add(Me.PPhoner)
         Me.FBDB_MP.Controls.Add(Me.PLogging)
@@ -1660,33 +1693,56 @@ Partial Class formCfg
         Me.FBDB_MP.Size = New System.Drawing.Size(578, 320)
         Me.FBDB_MP.TabIndex = 1
         '
-        'PSymbolleiste
+        'PAnrListe
         '
-        Me.PSymbolleiste.Controls.Add(Me.GroupBox3)
-        Me.PSymbolleiste.Controls.Add(Me.LabelSymb)
-        Me.PSymbolleiste.Location = New System.Drawing.Point(4, 22)
-        Me.PSymbolleiste.Name = "PSymbolleiste"
-        Me.PSymbolleiste.Size = New System.Drawing.Size(570, 294)
-        Me.PSymbolleiste.TabIndex = 9
-        Me.PSymbolleiste.Text = "Symbolleiste"
-        Me.PSymbolleiste.UseVisualStyleBackColor = True
+        Me.PAnrListe.Controls.Add(Me.GBoxJournal)
+        Me.PAnrListe.Controls.Add(Me.GBoxSymbolleiste)
+        Me.PAnrListe.Controls.Add(Me.GboxAnrListeMain)
+        Me.PAnrListe.Controls.Add(Me.Label25)
+        Me.PAnrListe.Location = New System.Drawing.Point(4, 22)
+        Me.PAnrListe.Name = "PAnrListe"
+        Me.PAnrListe.Padding = New System.Windows.Forms.Padding(3)
+        Me.PAnrListe.Size = New System.Drawing.Size(570, 294)
+        Me.PAnrListe.TabIndex = 13
+        Me.PAnrListe.Text = "Anrufliste / Symbolleise"
+        Me.PAnrListe.UseVisualStyleBackColor = True
         '
-        'GroupBox3
+        'GBoxJournal
         '
-        Me.GroupBox3.Controls.Add(Me.CBSymbJournalimport)
-        Me.GroupBox3.Controls.Add(Me.CBSymbVIP)
-        Me.GroupBox3.Controls.Add(Me.CBSymbRWSuche)
-        Me.GroupBox3.Controls.Add(Me.CBSymbDirekt)
-        Me.GroupBox3.Controls.Add(Me.CBSymbAnrMonNeuStart)
-        Me.GroupBox3.Controls.Add(Me.CBSymbWwdh)
-        Me.GroupBox3.Controls.Add(Me.CBSymbAnrMon)
-        Me.GroupBox3.Controls.Add(Me.CBSymbAnrListe)
-        Me.GroupBox3.Location = New System.Drawing.Point(3, 64)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(199, 205)
-        Me.GroupBox3.TabIndex = 25
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Einstellungen für Symbolleisten"
+        Me.GBoxJournal.Controls.Add(Me.CBJournal)
+        Me.GBoxJournal.Location = New System.Drawing.Point(0, 38)
+        Me.GBoxJournal.Name = "GBoxJournal"
+        Me.GBoxJournal.Size = New System.Drawing.Size(282, 86)
+        Me.GBoxJournal.TabIndex = 33
+        Me.GBoxJournal.TabStop = False
+        Me.GBoxJournal.Text = "Outlook Journal"
+        '
+        'CBJournal
+        '
+        Me.CBJournal.AutoSize = True
+        Me.CBJournal.Location = New System.Drawing.Point(3, 23)
+        Me.CBJournal.Name = "CBJournal"
+        Me.CBJournal.Size = New System.Drawing.Size(140, 17)
+        Me.CBJournal.TabIndex = 7
+        Me.CBJournal.Text = "Journaleinträge erstellen"
+        Me.CBJournal.UseVisualStyleBackColor = True
+        '
+        'GBoxSymbolleiste
+        '
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbJournalimport)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbVIP)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbRWSuche)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbDirekt)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbAnrMonNeuStart)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbWwdh)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbAnrMon)
+        Me.GBoxSymbolleiste.Controls.Add(Me.CBSymbAnrListe)
+        Me.GBoxSymbolleiste.Location = New System.Drawing.Point(288, 38)
+        Me.GBoxSymbolleiste.Name = "GBoxSymbolleiste"
+        Me.GBoxSymbolleiste.Size = New System.Drawing.Size(283, 207)
+        Me.GBoxSymbolleiste.TabIndex = 32
+        Me.GBoxSymbolleiste.TabStop = False
+        Me.GBoxSymbolleiste.Text = "Einstellungen für Symbolleisten"
         '
         'CBSymbJournalimport
         '
@@ -1763,21 +1819,54 @@ Partial Class formCfg
         Me.CBSymbAnrListe.AutoSize = True
         Me.CBSymbAnrListe.Location = New System.Drawing.Point(6, 88)
         Me.CBSymbAnrListe.Name = "CBSymbAnrListe"
-        Me.CBSymbAnrListe.Size = New System.Drawing.Size(72, 17)
+        Me.CBSymbAnrListe.Size = New System.Drawing.Size(85, 17)
         Me.CBSymbAnrListe.TabIndex = 4
-        Me.CBSymbAnrListe.Text = "Anrufliste "
+        Me.CBSymbAnrListe.Text = "Rückrufliste "
         Me.CBSymbAnrListe.UseVisualStyleBackColor = True
         '
-        'LabelSymb
+        'GboxAnrListeMain
         '
-        Me.LabelSymb.Dock = System.Windows.Forms.DockStyle.Top
-        Me.LabelSymb.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelSymb.Location = New System.Drawing.Point(0, 0)
-        Me.LabelSymb.Name = "LabelSymb"
-        Me.LabelSymb.Size = New System.Drawing.Size(570, 35)
-        Me.LabelSymb.TabIndex = 24
-        Me.LabelSymb.Text = "Einstellung für die Symbolleiste"
-        Me.LabelSymb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateJournal)
+        Me.GboxAnrListeMain.Controls.Add(Me.CBAutoAnrList)
+        Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
+        Me.GboxAnrListeMain.Location = New System.Drawing.Point(0, 130)
+        Me.GboxAnrListeMain.Name = "GboxAnrListeMain"
+        Me.GboxAnrListeMain.Size = New System.Drawing.Size(282, 115)
+        Me.GboxAnrListeMain.TabIndex = 31
+        Me.GboxAnrListeMain.TabStop = False
+        Me.GboxAnrListeMain.Text = "Auswertung der Anrufliste"
+        '
+        'CBAnrListeUpdateJournal
+        '
+        Me.CBAnrListeUpdateJournal.AutoSize = True
+        Me.CBAnrListeUpdateJournal.Enabled = False
+        Me.CBAnrListeUpdateJournal.Location = New System.Drawing.Point(3, 42)
+        Me.CBAnrListeUpdateJournal.Name = "CBAnrListeUpdateJournal"
+        Me.CBAnrListeUpdateJournal.Size = New System.Drawing.Size(178, 17)
+        Me.CBAnrListeUpdateJournal.TabIndex = 8
+        Me.CBAnrListeUpdateJournal.Text = "Journaleinträge vervollständigen"
+        Me.CBAnrListeUpdateJournal.UseVisualStyleBackColor = True
+        '
+        'CBAnrListeUpdateCallLists
+        '
+        Me.CBAnrListeUpdateCallLists.AutoSize = True
+        Me.CBAnrListeUpdateCallLists.Location = New System.Drawing.Point(3, 65)
+        Me.CBAnrListeUpdateCallLists.Name = "CBAnrListeUpdateCallLists"
+        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(264, 17)
+        Me.CBAnrListeUpdateCallLists.TabIndex = 7
+        Me.CBAnrListeUpdateCallLists.Text = "Rückruf- und Wahlwiederholungsliste aktualisieren"
+        Me.CBAnrListeUpdateCallLists.UseVisualStyleBackColor = True
+        '
+        'Label25
+        '
+        Me.Label25.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.Location = New System.Drawing.Point(3, 3)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(564, 35)
+        Me.Label25.TabIndex = 30
+        Me.Label25.Text = "Auswertung der Fritz!box Anrufliste"
+        Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'PPhoner
         '
@@ -2210,17 +2299,21 @@ Partial Class formCfg
         Me.GroupBoxRWS.ResumeLayout(False)
         Me.GroupBoxRWS.PerformLayout()
         Me.PAnrufmonitor.ResumeLayout(False)
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
+        Me.GBoxAnrMonLayout.ResumeLayout(False)
+        Me.GBoxAnrMonLayout.PerformLayout()
         CType(Me.TBAnrMonMoveGeschwindigkeit, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Frame1.ResumeLayout(False)
-        Me.Frame1.PerformLayout()
+        Me.GBoxAnrMonMain.ResumeLayout(False)
+        Me.GBoxAnrMonMain.PerformLayout()
         Me.PanelAnrMon.ResumeLayout(False)
         Me.PanelAnrMon.PerformLayout()
         Me.FBDB_MP.ResumeLayout(False)
-        Me.PSymbolleiste.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
+        Me.PAnrListe.ResumeLayout(False)
+        Me.GBoxJournal.ResumeLayout(False)
+        Me.GBoxJournal.PerformLayout()
+        Me.GBoxSymbolleiste.ResumeLayout(False)
+        Me.GBoxSymbolleiste.PerformLayout()
+        Me.GboxAnrListeMain.ResumeLayout(False)
+        Me.GboxAnrListeMain.PerformLayout()
         Me.PPhoner.ResumeLayout(False)
         Me.PPhoner.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -2266,7 +2359,7 @@ Partial Class formCfg
     Friend WithEvents CBKErstellen As System.Windows.Forms.CheckBox
     Friend WithEvents CBRWS As System.Windows.Forms.CheckBox
     Friend WithEvents PAnrufmonitor As System.Windows.Forms.TabPage
-    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents GBoxAnrMonLayout As System.Windows.Forms.GroupBox
     Friend WithEvents CBAnrMonContactImage As System.Windows.Forms.CheckBox
     Friend WithEvents CBShowMSN As System.Windows.Forms.CheckBox
     Friend WithEvents Label18 As System.Windows.Forms.Label
@@ -2282,11 +2375,9 @@ Partial Class formCfg
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents TBAnrMonMoveGeschwindigkeit As System.Windows.Forms.TrackBar
     Friend WithEvents Label22 As System.Windows.Forms.Label
-    Friend WithEvents Frame1 As System.Windows.Forms.GroupBox
+    Friend WithEvents GBoxAnrMonMain As System.Windows.Forms.GroupBox
     Friend WithEvents PanelAnrMon As System.Windows.Forms.Panel
     Friend WithEvents CBAnrMonAuto As System.Windows.Forms.CheckBox
-    Friend WithEvents CBJImport As System.Windows.Forms.CheckBox
-    Friend WithEvents CBJournal As System.Windows.Forms.CheckBox
     Friend WithEvents CBAutoClose As System.Windows.Forms.CheckBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents TBEnblDauer As System.Windows.Forms.TextBox
@@ -2319,17 +2410,6 @@ Partial Class formCfg
     Friend WithEvents TBFBAdr As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents FBDB_MP As System.Windows.Forms.TabControl
-    Friend WithEvents PSymbolleiste As System.Windows.Forms.TabPage
-    Friend WithEvents LabelSymb As System.Windows.Forms.Label
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents CBSymbRWSuche As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbDirekt As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbAnrMonNeuStart As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbWwdh As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbAnrMon As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbAnrListe As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbVIP As System.Windows.Forms.CheckBox
-    Friend WithEvents CBSymbJournalimport As System.Windows.Forms.CheckBox
     Friend WithEvents LinkForum As System.Windows.Forms.LinkLabel
     Friend WithEvents CBDialPort As System.Windows.Forms.CheckBox
     Friend WithEvents LabelAnzahl As System.Windows.Forms.Label
@@ -2423,6 +2503,26 @@ Partial Class formCfg
     Friend WithEvents BTestLogin As System.Windows.Forms.Button
     Friend WithEvents CBAnrMonCloseAtDISSCONNECT As System.Windows.Forms.CheckBox
     Friend WithEvents CBStoppUhrIgnIntFax As System.Windows.Forms.CheckBox
+    Friend WithEvents PAnrListe As System.Windows.Forms.TabPage
+    Friend WithEvents GboxAnrListeMain As System.Windows.Forms.GroupBox
+    Friend WithEvents Label25 As System.Windows.Forms.Label
+    Friend WithEvents CBAnrMonKeepActiv As System.Windows.Forms.CheckBox
+    Friend WithEvents CBAutoAnrList As System.Windows.Forms.CheckBox
+    Friend WithEvents CBJournal As System.Windows.Forms.CheckBox
+    Friend WithEvents TBAnrBeantworterTimeout As System.Windows.Forms.TextBox
+    Friend WithEvents LAnrBeantworterTimeout As System.Windows.Forms.Label
+    Friend WithEvents CBAnrListeUpdateCallLists As System.Windows.Forms.CheckBox
+    Friend WithEvents GBoxSymbolleiste As System.Windows.Forms.GroupBox
+    Friend WithEvents CBSymbJournalimport As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbVIP As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbRWSuche As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbDirekt As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbAnrMonNeuStart As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbWwdh As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbAnrMon As System.Windows.Forms.CheckBox
+    Friend WithEvents CBSymbAnrListe As System.Windows.Forms.CheckBox
+    Friend WithEvents GBoxJournal As System.Windows.Forms.GroupBox
+    Friend WithEvents CBAnrListeUpdateJournal As System.Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class

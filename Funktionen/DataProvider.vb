@@ -317,16 +317,44 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Gibt an, ob das Anrufmonitorfenster bei fehlendem CONNECT bestehen bleibt
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private _P_CBAnrMonKeepActiv As Boolean
+    Public Property P_CBAnrMonKeepActiv() As Boolean
+        Get
+            Return _P_CBAnrMonKeepActiv
+        End Get
+        Set(ByVal value As Boolean)
+            _P_CBAnrMonKeepActiv = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Gibt das Timeout an, ab dem alle Telefonate als verpasst behandelt werden sollen.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private _TBAnrBeantworterTimeout As Integer
+    Public Property P_TBAnrBeantworterTimeout() As Integer
+        Get
+            Return _TBAnrBeantworterTimeout
+        End Get
+        Set(ByVal value As Integer)
+            _TBAnrBeantworterTimeout = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Gibt an, um wieviele Punkte der Anrufmonitor in X-Richtung verschoben werden soll.
     ''' </summary>
     ''' <remarks></remarks>
     Private _TBAnrMonX As Integer
     Public Property P_TBAnrMonX() As Integer
         Get
-            Return _TBAnrMonX
+            Return _TBAnrBeantworterTimeout
         End Get
         Set(ByVal value As Integer)
-            _TBAnrMonX = value
+            _TBAnrBeantworterTimeout = value
         End Set
     End Property
 
@@ -602,13 +630,13 @@ Public Class DataProvider
         End Set
     End Property
 
-    Private _CBJImport As Boolean
-    Public Property P_CBJImport As Boolean
+    Private _CBAutoAnrList As Boolean
+    Public Property P_CBAutoAnrList As Boolean
         Get
-            Return _CBJImport
+            Return _CBAutoAnrList
         End Get
         Set(ByVal value As Boolean)
-            _CBJImport = value
+            _CBAutoAnrList = value
         End Set
     End Property
 
@@ -711,6 +739,34 @@ Public Class DataProvider
         End Get
         Set(ByVal value As Boolean)
             _CBJournal = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Gibt an, ob bei der Auswertung der Anrufliste die Journaleinträge aktualisiert werden sollen.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private _CBAnrListeUpdateJournal As Boolean
+    Public Property P_CBAnrListeUpdateJournal As Boolean
+        Get
+            Return _CBAnrListeUpdateJournal
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrListeUpdateJournal = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Gibt an, ob bei der Auswertung der Anrufliste die Wahlwiederholungs- und Rückrufliste aktualisiert werden sollen.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private _CBAnrListeUpdateCallLists As Boolean
+    Public Property P_CBAnrListeUpdateCallLists As Boolean
+        Get
+            Return _CBAnrListeUpdateCallLists
+        End Get
+        Set(ByVal value As Boolean)
+            _CBAnrListeUpdateCallLists = value
         End Set
     End Property
 
@@ -1795,6 +1851,16 @@ Public Class DataProvider
             Return False
         End Get
     End Property
+    Public ReadOnly Property P_Def_CBAnrMonKeepActiv() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_TBAnrBeantworterTimeout() As Integer
+        Get
+            Return 30
+        End Get
+    End Property
     Public ReadOnly Property P_Def_TBAnrMonX() As Integer
         Get
             Return 0
@@ -1940,8 +2006,17 @@ Public Class DataProvider
             Return False
         End Get
     End Property
-
     Public ReadOnly Property P_Def_CBJImport() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_CBAnrListeUpdateJournal() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+    Public ReadOnly Property P_Def_CBAnrListeUpdateCallLists() As Boolean
         Get
             Return False
         End Get
@@ -3814,6 +3889,8 @@ Public Class DataProvider
         Me.P_CBoxVorwahl = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
         Me.P_TBEnblDauer = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
         Me.P_CBAnrMonAuto = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
+        Me.P_CBAnrMonKeepActiv = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonKeepActiv", CStr(P_Def_CBAnrMonKeepActiv)))
+        Me.P_TBAnrBeantworterTimeout = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrBeantworterTimeout", CStr(P_Def_TBAnrBeantworterTimeout)))
         Me.P_TBAnrMonX = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
         Me.P_TBAnrMonY = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonY", CStr(P_Def_TBAnrMonY)))
         Me.P_CBAnrMonMove = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonMove", CStr(P_Def_CBAnrMonMove)))
@@ -3826,11 +3903,12 @@ Public Class DataProvider
         Me.P_CBIndexAus = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBIndexAus", CStr(P_Def_CBIndexAus)))
         Me.P_CBShowMSN = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBShowMSN", CStr(P_Def_CBShowMSN)))
         Me.P_CBJournal = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJournal", CStr(P_Def_CBJournal)))
+        Me.P_CBAnrListeUpdateJournal = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrListeUpdateJournal", CStr(P_Def_CBAnrListeUpdateJournal)))
+        Me.P_CBAnrListeUpdateCallLists = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrListeUpdateCallLists", CStr(P_Def_CBAnrListeUpdateCallLists)))
         Me.P_CBUseAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBUseAnrMon", CStr(P_Def_CBUseAnrMon)))
         Me.P_CBCheckMobil = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCheckMobil", CStr(P_Def_CBCheckMobil)))
         Me.P_CBAutoClose = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAutoClose", CStr(P_Def_CBAutoClose)))
         Me.P_CBAnrMonCloseAtDISSCONNECT = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonCloseAtDISSCONNECT", CStr(P_Def_CBAnrMonCloseAtDISSCONNECT)))
-
         Me.P_CBVoIPBuster = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBVoIPBuster", CStr(P_Def_CBVoIPBuster)))
         Me.P_CBCbCunterbinden = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCbCunterbinden", CStr(P_Def_CBCbCunterbinden)))
         Me.P_CBCallByCall = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBCallByCall", CStr(P_Def_CBCallByCall)))
@@ -3848,7 +3926,7 @@ Public Class DataProvider
         Me.P_TVKontaktOrdnerStoreID = C_XML.Read(XMLDoc, P_Def_Options, "TVKontaktOrdnerStoreID", CStr(P_Def_TVKontaktOrdnerStoreID))
         Me.P_CBSymbVIP = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbVIP", CStr(P_Def_CBSymbVIP)))
         Me.P_CBSymbJournalimport = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbJournalimport", CStr(P_Def_CBSymbJournalimport)))
-        Me.P_CBJImport = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
+        Me.P_CBAutoAnrList = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
         ' Einstellungen füer die Rückwärtssuche laden
         Me.P_CBKHO = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBKHO", CStr(P_Def_CBKHO)))
         Me.P_CBRWS = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBRWS", CStr(P_Def_CBRWS)))
@@ -3915,6 +3993,8 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(Me.P_CBoxVorwahl))
         C_XML.Write(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
         C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonKeepActiv", CStr(Me.P_CBAnrMonKeepActiv))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBAnrBeantworterTimeout", CStr(Me.P_TBAnrBeantworterTimeout))
         C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))
         C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonY", CStr(Me.P_TBAnrMonY))
         C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonMove", CStr(Me.P_CBAnrMonMove))
@@ -3943,7 +4023,7 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "CBSymbRWSuche", CStr(Me.P_CBSymbRWSuche))
         C_XML.Write(XMLDoc, P_Def_Options, "CBSymbVIP", CStr(Me.P_CBSymbVIP))
         C_XML.Write(XMLDoc, P_Def_Options, "CBSymbJournalimport", CStr(Me.P_CBSymbJournalimport))
-        C_XML.Write(XMLDoc, P_Def_Options, "CBJImport", CStr(Me.P_CBJImport))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBJImport", CStr(Me.P_CBAutoAnrList))
         ' Einstellungen füer die Rückwärtssuche laden
         C_XML.Write(XMLDoc, P_Def_Options, "CBKHO", CStr(Me.P_CBKHO))
         C_XML.Write(XMLDoc, P_Def_Options, "CBRWS", CStr(Me.P_CBRWS))
@@ -3953,6 +4033,8 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "ComboBoxRWS", CStr(Me.P_ComboBoxRWS))
         C_XML.Write(XMLDoc, P_Def_Options, "CBIndex", CStr(Me.P_CBIndex))
         C_XML.Write(XMLDoc, P_Def_Options, "CBJournal", CStr(Me.P_CBJournal))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrListeUpdateJournal", CStr(Me.P_CBAnrListeUpdateJournal))
+        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrListeUpdateCallLists", CStr(Me.P_CBAnrListeUpdateCallLists))
         C_XML.Write(XMLDoc, P_Def_Options, "CBUseAnrMon", CStr(Me.P_CBUseAnrMon))
         C_XML.Write(XMLDoc, P_Def_Options, "CBCheckMobil", CStr(Me.P_CBCheckMobil))
         'StoppUhr

@@ -132,11 +132,6 @@ sinnvoll wenn nur Sie nur eine Datendatei (pst) verwenden, oder
 die anderen keine Kontakte enthalten.
 </value>
   </data>
-  <data name="CBJImport.ToolTip" xml:space="preserve">
-    <value>Beim Start von Outlook , können Telefonate aus der Fritz!Box in das Journal
- importiert werden. Dazu werden alle Telefonate, die zwischen dem Beenden 
-und Start von Outlook stattgefunden haben, in das Journal importiert. </value>
-  </data>
   <data name="Label24.ToolTip" xml:space="preserve">
     <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
 %L für die Landesvorwahl,
@@ -168,6 +163,11 @@ Geben Sie den Benutzername ein, der für die Anmeldung an der Fritz!Box erforder
 Anmeldung mit dem FRITZ!Box-Kennwort:
 Lassen Sie das Feld leer!</value>
   </data>
+  <data name="CBAutoAnrList.ToolTip" xml:space="preserve">
+    <value>Beim Start von Outlook , können Telefonate aus der Fritz!Box Anrufliste ausgewertet 
+werden. Dazu werden alle Telefonate, die zwischen dem Beenden und Start von Outlook
+stattgefunden haben,berücksichtigt.</value>
+  </data>
   <data name="RichTextBox1.Text" xml:space="preserve">
     <value>Haftungshinweis:
 
@@ -188,33 +188,6 @@ Datenschutzhinweis:
          2. Bei der Suche nach Call-By-Call Anbietern wird die zu wählende Nummer an Billiger-Telefonieren.de
              übermittelt. Bitte die Hinweise von Billiger-Telefonieren.de beachten!</value>
   </data>
-  <metadata name="ColumnStandardTelefon.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Nr.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dialCode.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Typ.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Telefonname.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="OutNr.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Eingehend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Ausgehend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Gesamt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="ColumnStandardTelefon.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

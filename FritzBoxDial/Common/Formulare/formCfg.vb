@@ -97,7 +97,7 @@ Friend Class formCfg
 
             Me.ToolTipFBDBConfig.SetToolTip(Me.BXML, "Öffnet die Datei " & vbCrLf & .P_Arbeitsverzeichnis & .P_Def_Config_FileName)
 #If OVer >= 14 Then
-            If Me.FBDB_MP.TabPages.Item("PSymbolleiste") IsNot Nothing Then Me.FBDB_MP.TabPages.Remove(Me.FBDB_MP.TabPages.Item("PSymbolleiste"))
+            Me.GBoxSymbolleiste.Enabled = False
 #End If
             ' Beim Einblenden die Werte aus der Registry einlesen
             ' Einstellungen für das Wählmakro laden
@@ -113,6 +113,8 @@ Friend Class formCfg
             Me.TBVorwahl.Text = .P_TBVorwahl
             Me.TBEnblDauer.Text = CStr(.P_TBEnblDauer)
             Me.CBAnrMonAuto.Checked = .P_CBAnrMonAuto
+            Me.CBAnrMonKeepActiv.Checked = .P_CBAnrMonKeepActiv
+            Me.TBAnrBeantworterTimeout.Text = CStr(.P_TBAnrBeantworterTimeout)
             Me.TBAnrMonX.Text = CStr(.P_TBAnrMonX)
             Me.TBAnrMonY.Text = CStr(.P_TBAnrMonY)
             Me.CBAnrMonMove.Checked = .P_CBAnrMonMove
@@ -150,7 +152,7 @@ Friend Class formCfg
             Me.CBSymbVIP.Checked = .P_CBSymbVIP '
             Me.CBSymbJournalimport.Checked = .P_CBSymbJournalimport
 #End If
-            Me.CBJImport.Checked = .P_CBJImport
+            Me.CBAutoAnrList.Checked = .P_CBAutoAnrList
             ' Einstellungen füer die Rückwärtssuche laden
             Me.CBKHO.Checked = .P_CBKHO
             Me.CBRWSIndex.Checked = .P_CBRWSIndex
@@ -158,8 +160,9 @@ Friend Class formCfg
             Me.ComboBoxRWS.SelectedItem = Me.ComboBoxRWS.Items.Item(.P_ComboBoxRWS)
             If Not Me.CBRWS.Checked Then Me.ComboBoxRWS.Enabled = False
             ' Einstellungen für das Journal laden
-
             Me.CBJournal.Checked = .P_CBJournal
+            Me.CBAnrListeUpdateJournal.Checked = .P_CBAnrListeUpdateJournal
+            Me.CBAnrListeUpdateCallLists.Checked = .P_CBAnrListeUpdateCallLists
             Me.CBUseAnrMon.Checked = .P_CBUseAnrMon
             Me.CBCheckMobil.Checked = .P_CBCheckMobil
 
@@ -439,8 +442,10 @@ Friend Class formCfg
             .P_CBAnrMonAuto = Me.CBAnrMonAuto.Checked
             .P_CBAutoClose = Me.CBAutoClose.Checked
             .P_CBAnrMonCloseAtDISSCONNECT = Me.CBAnrMonCloseAtDISSCONNECT.Checked
+            .P_CBAnrMonKeepActiv = Me.CBAnrMonKeepActiv.Checked
             .P_CBAnrMonMove = Me.CBAnrMonMove.Checked
             .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
+            .P_TBAnrBeantworterTimeout = CInt(Me.TBAnrBeantworterTimeout.Text)
             .P_CBAnrMonContactImage = Me.CBAnrMonContactImage.Checked
             .P_TBAnrMonMoveGeschwindigkeit = Me.TBAnrMonMoveGeschwindigkeit.Value
             .P_CBoxAnrMonMoveDirection = Me.CBoxAnrMonMoveDirection.SelectedIndex
@@ -458,8 +463,10 @@ Friend Class formCfg
             .P_CBKHO = Me.CBKHO.Checked
             .P_CBRWSIndex = Me.CBRWSIndex.Checked
             .P_CBJournal = Me.CBJournal.Checked
+            .P_CBAnrListeUpdateJournal = Me.CBAnrListeUpdateJournal.Checked
+            .P_CBAnrListeUpdateCallLists = Me.CBAnrListeUpdateCallLists.Checked
             .P_CBUseAnrMon = Me.CBUseAnrMon.Checked
-            .P_CBJImport = Me.CBJImport.Checked
+            .P_CBAutoAnrList = Me.CBAutoAnrList.Checked
             .P_CBCheckMobil = Me.CBCheckMobil.Checked
             .P_CBStoppUhrEinblenden = Me.CBStoppUhrEinblenden.Checked
             .P_CBStoppUhrAusblenden = Me.CBStoppUhrAusblenden.Checked
@@ -589,6 +596,8 @@ Friend Class formCfg
                     Me.TBAnrMonX.Text = CStr(.P_Def_TBAnrMonX)
                     Me.TBAnrMonY.Text = CStr(.P_Def_TBAnrMonY)
                     Me.CBAnrMonAuto.Checked = .P_Def_CBAnrMonAuto
+                    Me.CBAnrMonKeepActiv.Checked = .P_Def_CBAnrMonKeepActiv
+                    Me.TBAnrBeantworterTimeout.Text = CStr(.P_Def_TBAnrBeantworterTimeout)
                     Me.CBAutoClose.Checked = .P_Def_CBAutoClose
                     Me.CBAnrMonMove.Checked = .P_Def_CBAnrMonMove
                     Me.CBAnrMonTransp.Checked = .P_Def_CBAnrMonTransp
@@ -617,17 +626,18 @@ Friend Class formCfg
                     Me.CBSymbRWSuche.Checked = .P_Def_CBSymbRWSuche
                     Me.CBSymbJournalimport.Checked = .P_Def_CBSymbJournalimport
 #End If
-                    ' Einstellungen für die Rückwärtssuche zurücksetzen
+                    ' Einstellungen für die Kontaktsuche zurücksetzen
                     Me.CBRWS.Checked = .P_Def_CBRWS
                     Me.ComboBoxRWS.Enabled = .P_Def_CBRWS
                     Me.ComboBoxRWS.SelectedIndex = .P_Def_ComboBoxRWS
                     Me.CBRWSIndex.Checked = .P_Def_CBRWSIndex
-                    ' Einstellungen für das Journal zurücksetzen
                     Me.CBKHO.Checked = .P_Def_CBKHO
+                    ' Einstellungen für das Journal zurücksetzen
                     Me.CBJournal.Checked = .P_Def_CBJournal
-                    Me.CBJImport.Checked = .P_Def_CBJImport
+                    Me.CBAutoAnrList.Checked = .P_Def_CBJImport
+                    Me.CBAnrListeUpdateJournal.Checked = .P_Def_CBAnrListeUpdateJournal
+                    Me.CBAnrListeUpdateCallLists.Checked = .P_Def_CBAnrListeUpdateCallLists
                     Me.CBLogFile.Checked = .P_Def_CBLogFile
-
                     'StoppUhr
                     Me.CBStoppUhrEinblenden.Checked = .P_Def_CBStoppUhrEinblenden
                     Me.CBStoppUhrAusblenden.Checked = .P_Def_CBStoppUhrAusblenden
@@ -842,7 +852,6 @@ Friend Class formCfg
                                                                         CBCbCunterbinden.CheckedChanged, _
                                                                         CBAutoClose.CheckedChanged, _
                                                                         CBTelefonDatei.CheckedChanged, _
-                                                                        CBJournal.CheckedChanged, _
                                                                         CBIndexAus.CheckedChanged, _
                                                                         CBUseAnrMon.CheckedChanged, _
                                                                         CBAnrMonMove.CheckedChanged, _
@@ -856,7 +865,11 @@ Friend Class formCfg
                                                                         CLBTelNr.SelectedIndexChanged, _
                                                                         TBRWSTest.TextChanged, _
                                                                         TBBenutzer.TextChanged, _
-                                                                        TBPasswort.TextChanged, CBAnrMonCloseAtDISSCONNECT.CheckedChanged
+                                                                        TBPasswort.TextChanged, _
+                                                                        CBAnrMonCloseAtDISSCONNECT.CheckedChanged, _
+                                                                        CBAnrMonKeepActiv.CheckedChanged, _
+                                                                        CBJournal.CheckedChanged, _
+                                                                        TBAnrBeantworterTimeout.TextChanged
 
         Select Case sender.GetType().Name
             Case "CheckBox"
@@ -885,12 +898,15 @@ Friend Class formCfg
                         Me.CBAnrMonCloseAtDISSCONNECT.Checked = False
                         Me.CBAnrMonCloseAtDISSCONNECT.Enabled = Not Me.CBAutoClose.Checked
                     Case "CBJournal"
-                        If Not Me.CBJournal.Checked Then Me.CBJImport.Checked = False
-                        Me.CBJImport.Enabled = Me.CBJournal.Checked
+                        If Not Me.CBJournal.Checked Then Me.CBAnrListeUpdateJournal.Checked = False
+                        Me.CBAnrListeUpdateJournal.Enabled = Me.CBJournal.Checked
 #If OVer < 14 Then
-                If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
-                Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
+                        If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
+                        Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
+                    Case "CBAnrMonKeepActiv"
+                        Me.TBAnrBeantworterTimeout.Enabled = Me.CBAnrMonKeepActiv.Checked
+                        Me.LAnrBeantworterTimeout.Enabled = Me.CBAnrMonKeepActiv.Checked
                     Case "CBIndexAus"
                         Me.BIndizierungStart.Enabled = Not Me.CBIndexAus.Checked
                     Case "CBUseAnrMon"
@@ -948,6 +964,8 @@ Friend Class formCfg
                         Me.BRWSTest.Enabled = Len(C_hf.nurZiffern(Me.TBRWSTest.Text)) > 0
                     Case "TBBenutzer", "TBPasswort"
                         Me.BTestLogin.Text = "Test"
+                    Case "TBAnrBeantworterTimeout"
+                        Me.TBAnrBeantworterTimeout.Text = C_hf.AcceptOnlyNumeric(Me.TBAnrBeantworterTimeout.Text)
                 End Select
             Case "CheckedListBox"
                 Select Case CType(sender, CheckedListBox).Name
@@ -998,7 +1016,6 @@ Friend Class formCfg
             End If
         End If
     End Sub
-
 #End Region
 
 #Region "Helfer"
@@ -1545,6 +1562,7 @@ Friend Class formCfg
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
 #End Region
+
 End Class
 
 

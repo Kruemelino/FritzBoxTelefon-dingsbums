@@ -85,7 +85,7 @@
             ThisAddIn.P_HF = C_HF
             ThisAddIn.P_KF = C_KF
 
-            If C_DP.P_CBJImport And C_DP.P_CBUseAnrMon Then
+            If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
