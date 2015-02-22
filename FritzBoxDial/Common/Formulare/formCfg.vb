@@ -259,7 +259,7 @@ Friend Class formCfg
     ''' <summary>
     ''' Füllt die Telefonliste in den Einstellungen aus.
     ''' </summary>
-    ''' <remarks></remarks>
+
     Private Sub FillTelListe()
         Dim Zeile As New ArrayList
         Dim Nebenstellen() As String
@@ -367,7 +367,6 @@ Friend Class formCfg
         End With
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
     End Sub
-
 #End Region
 
     Private Function Speichern() As Boolean

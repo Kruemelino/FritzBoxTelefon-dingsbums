@@ -112,7 +112,7 @@ Partial Class formCfg
         Me.Ausgehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Gesamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.PIndex = New System.Windows.Forms.TabPage()
+        Me.PKontaktsuche = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBoxIndex = New System.Windows.Forms.GroupBox()
         Me.Label21 = New System.Windows.Forms.Label()
@@ -158,7 +158,7 @@ Partial Class formCfg
         Me.LEnblDauer = New System.Windows.Forms.Label()
         Me.CBUseAnrMon = New System.Windows.Forms.CheckBox()
         Me.FBDB_MP = New System.Windows.Forms.TabControl()
-        Me.PAnrListe = New System.Windows.Forms.TabPage()
+        Me.PDiverses = New System.Windows.Forms.TabPage()
         Me.GBoxJournal = New System.Windows.Forms.GroupBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
         Me.GBoxSymbolleiste = New System.Windows.Forms.GroupBox()
@@ -221,7 +221,7 @@ Partial Class formCfg
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.PIndex.SuspendLayout()
+        Me.PKontaktsuche.SuspendLayout()
         Me.GroupBoxIndex.SuspendLayout()
         Me.GroupBoxRWS.SuspendLayout()
         Me.PAnrufmonitor.SuspendLayout()
@@ -230,7 +230,7 @@ Partial Class formCfg
         Me.GBoxAnrMonMain.SuspendLayout()
         Me.PanelAnrMon.SuspendLayout()
         Me.FBDB_MP.SuspendLayout()
-        Me.PAnrListe.SuspendLayout()
+        Me.PDiverses.SuspendLayout()
         Me.GBoxJournal.SuspendLayout()
         Me.GBoxSymbolleiste.SuspendLayout()
         Me.GboxAnrListeMain.SuspendLayout()
@@ -1195,18 +1195,18 @@ Partial Class formCfg
         Me.Label15.Text = "Telefone und Statistik"
         Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'PIndex
+        'PKontaktsuche
         '
-        Me.PIndex.Controls.Add(Me.Label1)
-        Me.PIndex.Controls.Add(Me.GroupBoxIndex)
-        Me.PIndex.Controls.Add(Me.GroupBoxRWS)
-        Me.PIndex.Location = New System.Drawing.Point(4, 22)
-        Me.PIndex.Name = "PIndex"
-        Me.PIndex.Padding = New System.Windows.Forms.Padding(3)
-        Me.PIndex.Size = New System.Drawing.Size(570, 294)
-        Me.PIndex.TabIndex = 6
-        Me.PIndex.Text = "Kontaktsuche"
-        Me.PIndex.UseVisualStyleBackColor = True
+        Me.PKontaktsuche.Controls.Add(Me.Label1)
+        Me.PKontaktsuche.Controls.Add(Me.GroupBoxIndex)
+        Me.PKontaktsuche.Controls.Add(Me.GroupBoxRWS)
+        Me.PKontaktsuche.Location = New System.Drawing.Point(4, 22)
+        Me.PKontaktsuche.Name = "PKontaktsuche"
+        Me.PKontaktsuche.Padding = New System.Windows.Forms.Padding(3)
+        Me.PKontaktsuche.Size = New System.Drawing.Size(570, 294)
+        Me.PKontaktsuche.TabIndex = 6
+        Me.PKontaktsuche.Text = "Kontaktsuche"
+        Me.PKontaktsuche.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -1680,8 +1680,8 @@ Partial Class formCfg
         '
         Me.FBDB_MP.Controls.Add(Me.PGrundeinstellungen)
         Me.FBDB_MP.Controls.Add(Me.PAnrufmonitor)
-        Me.FBDB_MP.Controls.Add(Me.PAnrListe)
-        Me.FBDB_MP.Controls.Add(Me.PIndex)
+        Me.FBDB_MP.Controls.Add(Me.PKontaktsuche)
+        Me.FBDB_MP.Controls.Add(Me.PDiverses)
         Me.FBDB_MP.Controls.Add(Me.PTelefone)
         Me.FBDB_MP.Controls.Add(Me.PPhoner)
         Me.FBDB_MP.Controls.Add(Me.PLogging)
@@ -1694,19 +1694,19 @@ Partial Class formCfg
         Me.FBDB_MP.Size = New System.Drawing.Size(578, 320)
         Me.FBDB_MP.TabIndex = 1
         '
-        'PAnrListe
+        'PDiverses
         '
-        Me.PAnrListe.Controls.Add(Me.GBoxJournal)
-        Me.PAnrListe.Controls.Add(Me.GBoxSymbolleiste)
-        Me.PAnrListe.Controls.Add(Me.GboxAnrListeMain)
-        Me.PAnrListe.Controls.Add(Me.Label25)
-        Me.PAnrListe.Location = New System.Drawing.Point(4, 22)
-        Me.PAnrListe.Name = "PAnrListe"
-        Me.PAnrListe.Padding = New System.Windows.Forms.Padding(3)
-        Me.PAnrListe.Size = New System.Drawing.Size(570, 294)
-        Me.PAnrListe.TabIndex = 13
-        Me.PAnrListe.Text = "Anrufliste / Symbolleise"
-        Me.PAnrListe.UseVisualStyleBackColor = True
+        Me.PDiverses.Controls.Add(Me.GBoxJournal)
+        Me.PDiverses.Controls.Add(Me.GBoxSymbolleiste)
+        Me.PDiverses.Controls.Add(Me.GboxAnrListeMain)
+        Me.PDiverses.Controls.Add(Me.Label25)
+        Me.PDiverses.Location = New System.Drawing.Point(4, 22)
+        Me.PDiverses.Name = "PDiverses"
+        Me.PDiverses.Padding = New System.Windows.Forms.Padding(3)
+        Me.PDiverses.Size = New System.Drawing.Size(570, 294)
+        Me.PDiverses.TabIndex = 13
+        Me.PDiverses.Text = "Weitere Funktionen"
+        Me.PDiverses.UseVisualStyleBackColor = True
         '
         'GBoxJournal
         '
@@ -2305,7 +2305,7 @@ Partial Class formCfg
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.TelList, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.PIndex.ResumeLayout(False)
+        Me.PKontaktsuche.ResumeLayout(False)
         Me.GroupBoxIndex.ResumeLayout(False)
         Me.GroupBoxIndex.PerformLayout()
         Me.GroupBoxRWS.ResumeLayout(False)
@@ -2319,7 +2319,7 @@ Partial Class formCfg
         Me.PanelAnrMon.ResumeLayout(False)
         Me.PanelAnrMon.PerformLayout()
         Me.FBDB_MP.ResumeLayout(False)
-        Me.PAnrListe.ResumeLayout(False)
+        Me.PDiverses.ResumeLayout(False)
         Me.GBoxJournal.ResumeLayout(False)
         Me.GBoxJournal.PerformLayout()
         Me.GBoxSymbolleiste.ResumeLayout(False)
@@ -2360,7 +2360,7 @@ Partial Class formCfg
     Friend WithEvents LVersion As System.Windows.Forms.Label
     Friend WithEvents RichTextBox1 As System.Windows.Forms.RichTextBox
     Friend WithEvents PTelefone As System.Windows.Forms.TabPage
-    Friend WithEvents PIndex As System.Windows.Forms.TabPage
+    Friend WithEvents PKontaktsuche As System.Windows.Forms.TabPage
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents GroupBoxIndex As System.Windows.Forms.GroupBox
     Friend WithEvents CBIndexAus As System.Windows.Forms.CheckBox
@@ -2515,7 +2515,7 @@ Partial Class formCfg
     Friend WithEvents BTestLogin As System.Windows.Forms.Button
     Friend WithEvents CBAnrMonCloseAtDISSCONNECT As System.Windows.Forms.CheckBox
     Friend WithEvents CBStoppUhrIgnIntFax As System.Windows.Forms.CheckBox
-    Friend WithEvents PAnrListe As System.Windows.Forms.TabPage
+    Friend WithEvents PDiverses As System.Windows.Forms.TabPage
     Friend WithEvents GboxAnrListeMain As System.Windows.Forms.GroupBox
     Friend WithEvents Label25 As System.Windows.Forms.Label
     Friend WithEvents CBAnrMonKeepActiv As System.Windows.Forms.CheckBox

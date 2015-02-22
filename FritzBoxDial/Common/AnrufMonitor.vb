@@ -364,7 +364,6 @@ Friend Class AnrufMonitor
     ''' <summary>
     ''' Hauptfunktion des Anrufmonitors. Ruft, je nach eingehenden String, die jeweilige Funktion auf.
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub AnrMonAktion()
         ' schaut in der FritzBox im Port 1012 nach und startet entsprechende Unterprogramme
         Dim r As New StreamReader(AnrMonStream)
@@ -431,7 +430,7 @@ Friend Class AnrufMonitor
             ' Eigentlich (!) sollte er hier nicht reinlaufen
             C_hf.LogFile(C_DP.P_AnrMon_Log_TelList1("RING", CStr(ID)))
             ' Wenn ein Telefonat hier gefunden wurde, dann muss es bereits beendet sein. Ansonsten hätte die Fritz!Box eine Andere ID gesendet
-            ' Wenn das Telefonat eine Stoppuhr ond/oder eine Anrufmonitor besitz, dann ist das Telefonat nicht aus der Liste zu entfernen.
+            ' Wenn das Telefonat eine Stoppuhr ond/oder eine Anrufmonitor besitzt, dann ist das Telefonat nicht aus der Liste zu entfernen.
             If Telefonat.PopupAnrMon Is Nothing And Telefonat.PopupStoppuhr Is Nothing Then
                 C_Popup.TelefonatsListe.Remove(Telefonat)
             Else
@@ -454,6 +453,8 @@ Friend Class AnrufMonitor
                 .TelName = C_hf.TelefonName(.MSN)
                 .ID = ID
                 .TelNr = CStr(FBStatus.GetValue(3))
+                .Online = CBool(IIf(.ID < 100, True, False))
+                .RingTime = C_DP.P_Def_ErrorMinusOne_Integer
                 ' Phoner
                 If AnrMonPhoner Then
                     Dim PhonerTelNr() As String
@@ -472,8 +473,8 @@ Friend Class AnrufMonitor
                 If Len(.TelNr) = 0 Then .TelNr = C_DP.P_Def_StringUnknown
 
                 ' Daten für Anzeige im Anrurfmonitor speichern
-
                 If ShowForms AndAlso Not C_OlI.VollBildAnwendungAktiv Then
+                    .AnrMonAusblenden = True
                     LetzterAnrufer = Telefonat
                     C_Popup.AnrMonEinblenden(Telefonat)
                 End If
@@ -513,7 +514,6 @@ Friend Class AnrufMonitor
                         C_Popup.UpdateAnrMon(Telefonat)
                     End If
 
-
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
                     C_GUI.UpdateList(C_DP.P_Def_NameListRING, Telefonat)
@@ -552,7 +552,6 @@ Friend Class AnrufMonitor
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CALL</param>
     ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
-    ''' <remarks></remarks>
     Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet einen ausgehenden Anruf aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
@@ -590,10 +589,11 @@ Friend Class AnrufMonitor
             With Telefonat
                 .Zeit = CDate(FBStatus.GetValue(0))
                 .ID = ID
-                .NSN = CLng(FBStatus.GetValue(3))
+                .NSN = CInt(FBStatus.GetValue(3))
                 .MSN = MSN 'CStr(FBStatus.GetValue(4))
                 .Typ = C_Telefonat.AnrufRichtung.Ausgehend
-
+                .Online = CBool(IIf(.ID < 100, True, False))
+                .RingTime = C_DP.P_Def_ErrorMinusOne_Integer
                 ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
                 If .MSN = C_DP.P_Def_StringEmpty Then
                     Select Case .NSN
@@ -617,14 +617,18 @@ Friend Class AnrufMonitor
                             End With
                     End Select
                 End If
+
                 .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)))
                 If .TelNr = C_DP.P_Def_StringEmpty Then .TelNr = C_DP.P_Def_StringUnknown
                 ' CbC-Vorwahl entfernen
                 If .TelNr.StartsWith("0100") Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
                 If .TelNr.StartsWith("010") Then .TelNr = Right(.TelNr, Len(.TelNr) - 5)
                 If Not .TelNr.StartsWith("0") And Not .TelNr.StartsWith("11") And Not .TelNr.StartsWith("+") Then .TelNr = C_DP.P_TBVorwahl & .TelNr
-                ' Raute entfernen
-                If Right(.TelNr, 1) = "#" Then .TelNr = Left(.TelNr, Len(.TelNr) - 1)
+
+                ' Doppelkreuz (#) entfernen
+                .TelNr = .TelNr.Trim(Chr(35)) ' "#" 
+                'If .TelNr.EndsWith("#") Then .TelNr = .TelNr.Remove(.TelNr.Length - 1, 1)
+                'If Right(.TelNr, 1) = "#" Then .TelNr = Left(.TelNr, Len(.TelNr) - 1)
                 ' Daten zurücksetzen
 
                 If Not .TelNr = C_DP.P_Def_StringUnknown Then
@@ -689,7 +693,6 @@ Friend Class AnrufMonitor
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT</param>
     ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
-    ''' <remarks></remarks>
     Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' wertet eine Zustande gekommene Verbindung aus
         ' Parameter: FBStatus (String()):  Status-String der FritzBox
@@ -714,6 +717,8 @@ Friend Class AnrufMonitor
                     C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & CStr(FBStatus.GetValue(4)))
                 End If
                 .Angenommen = True
+
+                .RingTime = CType(.Zeit - CDate(FBStatus.GetValue(0)), TimeSpan).TotalSeconds
                 .Zeit = CDate(FBStatus.GetValue(0))
 
                 If AnrMonPhoner Then
@@ -784,7 +789,6 @@ Friend Class AnrufMonitor
     ''' </summary>
     ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT</param>
     ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
-    ''' <remarks></remarks>
     Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
         ' legt den Journaleintrag (und/oder Kontakt) an
         ' Parameter: FBStatus (String):     Status-String der FritzBox
@@ -805,32 +809,44 @@ Friend Class AnrufMonitor
         If Telefonat IsNot Nothing Then
             With Telefonat
                 .Beendet = True
-                .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
-                .Body = C_DP.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
-                If Not .vCard = C_DP.P_Def_StringEmpty And Not .vCard = C_DP.P_Def_ErrorMinusTwo_String Then
-                    .Companies = ReadFromVCard(.vCard, "ORG", "")
-                    .Body += C_DP.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
-                Else
-                    If .olContact IsNot Nothing Then
-                        If .olContact.FullName = C_DP.P_Def_StringEmpty Then
-                            .Anrufer = CStr(IIf(.olContact.Companies = C_DP.P_Def_StringEmpty, .TelNr, .Companies))
-                        Else
-                            .Anrufer = .olContact.FullName
-                        End If
 
-                        If .Companies = C_DP.P_Def_StringEmpty Then
-                            If Not .olContact.HomeAddress = C_DP.P_Def_StringEmpty Then
-                                .Body += C_DP.P_AnrMon_Journal_Kontaktdaten & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.HomeAddress & vbCrLf
-                            End If
-                        Else
-                            If Not .olContact.BusinessAddress = C_DP.P_Def_StringEmpty Then
-                                .Body += C_DP.P_AnrMon_Journal_Kontaktdaten & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.BusinessAddress & vbCrLf
-                            End If
-                        End If
-                    End If
+                If .RingTime = C_DP.P_Def_ErrorMinusOne_Integer Then
+                    .RingTime = CType(.Zeit - CDate(FBStatus.GetValue(0)), TimeSpan).TotalSeconds
+                End If
+
+                ' Regel für verpasstes Telefonat:
+                ' 1. Flag "Angenommen" ist false
+                ' 2. Flag "Angenommen" ist True, und RingTime > Grenzwert aus Einstellungen (Angenommen)
+
+                If Not .Angenommen Xor C_DP.P_TBAnrBeantworterTimeout >= .RingTime Then
+                    .Verpasst = True
                 End If
 
                 If C_DP.P_CBJournal Then
+                    .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
+                    .Body = C_DP.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
+                    If Not .vCard = C_DP.P_Def_StringEmpty And Not .vCard = C_DP.P_Def_ErrorMinusTwo_String Then
+                        .Companies = ReadFromVCard(.vCard, "ORG", "")
+                        .Body += C_DP.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
+                    Else
+                        If .olContact IsNot Nothing Then
+                            If .olContact.FullName = C_DP.P_Def_StringEmpty Then
+                                .Anrufer = CStr(IIf(.olContact.Companies = C_DP.P_Def_StringEmpty, .TelNr, .Companies))
+                            Else
+                                .Anrufer = .olContact.FullName
+                            End If
+
+                            If .Companies = C_DP.P_Def_StringEmpty Then
+                                If Not .olContact.HomeAddress = C_DP.P_Def_StringEmpty Then
+                                    .Body += C_DP.P_AnrMon_Journal_Kontaktdaten & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.HomeAddress & vbCrLf
+                                End If
+                            Else
+                                If Not .olContact.BusinessAddress = C_DP.P_Def_StringEmpty Then
+                                    .Body += C_DP.P_AnrMon_Journal_Kontaktdaten & vbCrLf & .Anrufer & vbCrLf & .Companies & vbCrLf & .olContact.BusinessAddress & vbCrLf
+                                End If
+                            End If
+                        End If
+                    End If
 
                     If .Angenommen Then
                         With xPathTeile
@@ -874,15 +890,27 @@ Friend Class AnrufMonitor
                     Telefonat.PopupStoppuhr.StoppuhrStopp()
                 End If
 
-                If .PopupAnrMon IsNot Nothing And C_DP.P_CBAnrMonCloseAtDISSCONNECT Then
-                    .PopupAnrMon.Hide()
-                End If
-
                 If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
+
                     LetzterAnrufer = Telefonat
                     SpeichereLetzerAnrufer(Telefonat)
-                End If
 
+                    ' Verpassten Anruf über Anrufmonitor anzeigen
+                    If C_DP.P_CBAnrMonKeepActiv And .Verpasst Then
+                        .AnrMonAusblenden = False
+                        ' Prüfung ob PopUp vorhanden
+                        If .PopupAnrMon IsNot Nothing Then
+                            'Nein: Neu erstellen
+                            C_OlI.VollBildAnwendungAktiv()
+                            C_Popup.AnrMonEinblenden(Telefonat)
+                        End If
+                    End If
+
+                    If C_DP.P_CBAnrMonCloseAtDISSCONNECT And .AnrMonAusblenden And .PopupAnrMon IsNot Nothing Then
+                        .PopupAnrMon.Hide()
+                    End If
+
+                End If
                 'Notizeintag
 #If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
@@ -917,7 +945,6 @@ Friend Class AnrufMonitor
     ''' Dies wird benötigt, damit das Addin nach dem Neustart von Outlook, weiß welchen Anrufer es einblenden soll.
     ''' </summary>
     ''' <param name="Telefonat">Das Telefonat, welches gespeichert werden soll.</param>
-    ''' <remarks></remarks>
     Private Sub SpeichereLetzerAnrufer(ByVal Telefonat As C_Telefonat)
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
@@ -998,7 +1025,6 @@ Friend Class AnrufMonitor
     ''' Lädt den letzten Anrufer ab, den das Addin registriert hat.
     ''' </summary>
     ''' <returns>Telefonat</returns>
-    ''' <remarks></remarks>
     Friend Function LadeLetzterAnrufer() As C_Telefonat
         LadeLetzterAnrufer = New C_Telefonat
         Dim xPathTeile As New ArrayList

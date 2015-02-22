@@ -148,7 +148,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Double</value>
     ''' <returns>5</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_SpeicherIntervall() As Double
         Get
             Return 5.0
@@ -160,7 +160,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>FritzOutlookXML</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_RootName() As String
         Get
             Return "FritzOutlookXML"
@@ -172,7 +172,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathSeperatorSlash() As String
         Get
             Return "/"
@@ -184,7 +184,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathWildCard() As String
         Get
             Return "*"
@@ -196,7 +196,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathBracketOpen() As String
         Get
             Return "["
@@ -208,7 +208,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathBracketClose() As String
         Get
             Return "]"
@@ -220,7 +220,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>@</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathAttribute() As String
         Get
             Return "@"
@@ -233,7 +233,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBLandesVW As String
     Public Property P_TBLandesVW() As String
         Get
@@ -247,7 +246,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBAmt As String
     Public Property P_TBAmt As String
         Get
@@ -261,7 +259,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Eigenschaft für die hinterlege Ortsvorwahl
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBVorwahl As String
     Public Property P_TBVorwahl() As String
         Get
@@ -275,7 +272,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Enthält den Index im Combobox
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBoxVorwahl As Integer
     Public Property P_CBoxVorwahl() As Integer
         Get
@@ -291,7 +287,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, wie lange der Anrufmonitor angezeigt werden soll, bevor er automatisch ausgeblendet wird
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBEnblDauer As Integer
     Public Property P_TBEnblDauer() As Integer
         Get
@@ -305,7 +300,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob der Anrufmonitor automatisch gestartét werden soll.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBAnrMonAuto As Boolean
     Public Property P_CBAnrMonAuto() As Boolean
         Get
@@ -319,7 +313,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob das Anrufmonitorfenster bei fehlendem CONNECT bestehen bleibt
     ''' </summary>
-    ''' <remarks></remarks>
     Private _P_CBAnrMonKeepActiv As Boolean
     Public Property P_CBAnrMonKeepActiv() As Boolean
         Get
@@ -333,13 +326,12 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt das Timeout an, ab dem alle Telefonate als verpasst behandelt werden sollen.
     ''' </summary>
-    ''' <remarks></remarks>
-    Private _TBAnrBeantworterTimeout As Integer
-    Public Property P_TBAnrBeantworterTimeout() As Integer
+    Private _TBAnrBeantworterTimeout As Double
+    Public Property P_TBAnrBeantworterTimeout() As Double
         Get
             Return _TBAnrBeantworterTimeout
         End Get
-        Set(ByVal value As Integer)
+        Set(ByVal value As Double)
             _TBAnrBeantworterTimeout = value
         End Set
     End Property
@@ -347,21 +339,19 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, um wieviele Punkte der Anrufmonitor in X-Richtung verschoben werden soll.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBAnrMonX As Integer
     Public Property P_TBAnrMonX() As Integer
         Get
-            Return _TBAnrBeantworterTimeout
+            Return _TBAnrMonX
         End Get
         Set(ByVal value As Integer)
-            _TBAnrBeantworterTimeout = value
+            _TBAnrMonX = value
         End Set
     End Property
 
     ''' <summary>
     ''' Gibt an, um wieviele Punkte der Anrufmonitor in Y-Richtung verschoben werden soll.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBAnrMonY As Integer
     Public Property P_TBAnrMonY() As Integer
         Get
@@ -375,7 +365,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an ob der Anrufmonitor in den Bildschirm hereingescrollt werden soll.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBAnrMonMove As Boolean
     Public Property P_CBAnrMonMove() As Boolean
         Get
@@ -389,7 +378,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob der Anrufmonitor eingeblendet werden soll.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBAnrMonTransp As Boolean
     Public Property P_CBAnrMonTransp() As Boolean
         Get
@@ -578,7 +566,7 @@ Public Class DataProvider
         End Set
     End Property
 
-    'Pffice 2003 und Office 2007
+    'Office 2003 und Office 2007
 
     Private _CBSymbAnrListe As Boolean
     Public Property P_CBSymbAnrListe As Boolean
@@ -643,7 +631,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an ob nur der Hauptkontaktordner durchsucht werden muss oder alle möglichen eingebundenen Kontaktordner
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBKHO As Boolean
     Public Property P_CBKHO As Boolean
         Get
@@ -717,7 +704,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob die Indizierung durchgeführt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBIndex As Boolean
     Public Property P_CBIndex As Boolean
         Get
@@ -731,7 +717,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob Journaleinträge erstellt werden soll. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBJournal As Boolean
     Public Property P_CBJournal As Boolean
         Get
@@ -745,7 +730,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob bei der Auswertung der Anrufliste die Journaleinträge aktualisiert werden sollen.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBAnrListeUpdateJournal As Boolean
     Public Property P_CBAnrListeUpdateJournal As Boolean
         Get
@@ -759,7 +743,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob bei der Auswertung der Anrufliste die Wahlwiederholungs- und Rückrufliste aktualisiert werden sollen.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBAnrListeUpdateCallLists As Boolean
     Public Property P_CBAnrListeUpdateCallLists As Boolean
         Get
@@ -773,7 +756,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob verpasste Anrufe mit Hilfe des Anrufmonitors angezeigt werden sollen.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBAnrListeShowAnrMon As Boolean
     Public Property P_CBAnrListeShowAnrMon As Boolean
         Get
@@ -1080,7 +1062,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt die ermittelte Zeichencodierung der Fritzbox wieder. Der Wert wird automatisch ermittelt. 
     ''' </summary>
-    ''' <remarks></remarks>
     Private _EncodeingFritzBox As String
     Public Property P_EncodeingFritzBox As String
         Get
@@ -1094,7 +1075,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt die eingegebene Fritz!Box IP-Adresse an. Dies ist eine Angabe, die der Nutzer in den Einstellungen ändern kann.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBFBAdr As String
     Public Property P_TBFBAdr As String
         Get
@@ -1108,7 +1088,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt eine korrekte Fritz!Box IP-Adresse zurück.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _ValidFBAdr As String
     Public Property P_ValidFBAdr As String
         Get
@@ -1122,7 +1101,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob eine Verbindung zur Fritz!Box trotz fehlgeschlagenen Pings aufgebaut werden soll.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _CBForceFBAddr As Boolean
     Public Property P_CBForceFBAddr As Boolean
         Get
@@ -1136,7 +1114,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt den einegegebenen Benutzernamen für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBBenutzer As String
     Public Property P_TBBenutzer As String
         Get
@@ -1150,7 +1127,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt das eingegebene Passwort für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
     ''' </summary>
-    ''' <remarks></remarks>
     Private _TBPasswort As String
     Public Property P_TBPasswort As String
         Get
@@ -1246,9 +1222,9 @@ Public Class DataProvider
     ''' <summary>
     ''' -1 als Integer
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_ErrorMinusOne_Integer() As Integer
         Get
             Return -1
@@ -1258,9 +1234,9 @@ Public Class DataProvider
     ''' <summary>
     ''' -2 als String
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_ErrorMinusTwo_String() As String
         Get
             Return "-2"
@@ -1270,9 +1246,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Leerstring, String.Empty
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_StringEmpty() As String
         Get
             Return C_XML.P_Def_StringEmpty 'String.Empty
@@ -1284,7 +1260,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>vbCrLf</value>
     ''' <returns>vbCrLf</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_NeueZeile() As String
         Get
             Return vbCrLf
@@ -1294,9 +1270,9 @@ Public Class DataProvider
     ''' <summary>
     ''' String: unbekannt
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_StringUnknown() As String
         Get
             Return "unbekannt"
@@ -1306,9 +1282,9 @@ Public Class DataProvider
     ''' <summary>
     ''' fritz.box
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_FritzBoxAdress() As String
         Get
             Return "fritz.box"
@@ -1318,9 +1294,9 @@ Public Class DataProvider
     ''' <summary>
     ''' 192.168.178.1
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_FritzBoxIPAdress() As String
         Get
             Return "192.168.178.1"
@@ -1330,9 +1306,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_FritzBoxName() As String
         Get
             Return "Fritz!Box"
@@ -1342,9 +1318,9 @@ Public Class DataProvider
     ''' <summary>
     ''' FRITZ!Box_Anrufliste.csv
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_AnrListFileName() As String
         Get
             Return "FRITZ!Box_Anrufliste.csv"
@@ -1354,9 +1330,9 @@ Public Class DataProvider
     ''' <summary>
     ''' #96*5*
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_TelCodeActivateFritzBoxCallMonitor() As String
         Get
             Return "#96*5*"
@@ -1366,9 +1342,9 @@ Public Class DataProvider
     ''' <summary>
     ''' 1012
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
         Get
             Return 1012
@@ -1380,7 +1356,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>"0"</value>
     ''' <returns>"0"</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_StringNull() As String
         Get
             Return "0"
@@ -1392,7 +1368,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>" "</value>
     ''' <returns>" "</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_Leerzeichen() As String
         Get
             Return Chr(32) '" "
@@ -1408,9 +1384,9 @@ Public Class DataProvider
     ''' <summary>
     ''' 0000000000000000
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_SessionID() As String
         Get
             Return "0000000000000000"
@@ -1420,9 +1396,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_Header_UserAgent() As String
         Get
             Return "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
@@ -1432,9 +1408,9 @@ Public Class DataProvider
     ''' <summary>
     ''' application/x-www-form-urlencoded
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_Header_ContentType() As String
         Get
             Return "application/x-www-form-urlencoded"
@@ -1444,9 +1420,9 @@ Public Class DataProvider
     ''' <summary>
     ''' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_Header_Accept() As String
         Get
             Return "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
@@ -1456,9 +1432,9 @@ Public Class DataProvider
     ''' <summary>
     ''' 3000
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_ReStartIntervall() As Integer
         Get
             Return 3000
@@ -1468,9 +1444,9 @@ Public Class DataProvider
     ''' <summary>
     ''' 15
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_TryMaxRestart() As Integer
         Get
             Return 15
@@ -1480,9 +1456,9 @@ Public Class DataProvider
     ''' <summary>
     ''' [-&gt;]
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_AnrMonDirection_Call() As String
         Get
             Return "[->]"
@@ -1492,9 +1468,9 @@ Public Class DataProvider
     ''' <summary>
     ''' [&lt;-]
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_AnrMonDirection_Ring() As String
         Get
             Return "[<-]"
@@ -1504,9 +1480,9 @@ Public Class DataProvider
     ''' <summary>
     ''' [&lt;&gt;]
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_AnrMonDirection_Default() As String
         Get
             Return "[<>]"
@@ -1516,9 +1492,9 @@ Public Class DataProvider
     ''' <summary>
     ''' FBDB-AnrMonDirection
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
         Get
             Return "FBDB-AnrMonDirection"
@@ -1528,9 +1504,9 @@ Public Class DataProvider
     ''' <summary>
     ''' FBDB-AnrMonZeit
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
         Get
             Return "FBDB-AnrMonZeit"
@@ -1540,9 +1516,9 @@ Public Class DataProvider
     ''' <summary>
     ''' FBDB_Note_Table
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_Note_Table() As String
         Get
             Return "FBDB_Note_Table"
@@ -1552,9 +1528,9 @@ Public Class DataProvider
     ''' <summary>
     ''' BEGIN:VCARD
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_Begin_vCard() As String
         Get
             Return "BEGIN:VCARD"
@@ -1564,9 +1540,9 @@ Public Class DataProvider
     ''' <summary>
     ''' END:VCARD
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_End_vCard() As String
         Get
             Return "END:VCARD"
@@ -1578,7 +1554,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>CallList</value>
     ''' <returns>CallList</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_NameListCALL() As String
         Get
             Return "CallList"
@@ -1590,7 +1566,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>RingList</value>
     ''' <returns>RingList</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_NameListRING() As String
         Get
             Return "RingList"
@@ -1602,7 +1578,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>VIPList</value>
     ''' <returns>VIPList</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_NameListVIP() As String
         Get
             Return "VIPList"
@@ -1614,7 +1590,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Fritz!Box Telefon-dingsbums</value>
     ''' <returns>Fritz!Box Telefon-dingsbums</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_Addin_LangName() As String
         Get
             Return "Fritz!Box Telefon-dingsbums"
@@ -1626,7 +1602,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>FritzOutlook</value>
     ''' <returns>FritzOutlook</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_Addin_KurzName() As String
         Get
             Return "FritzOutlook"
@@ -1696,7 +1672,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String-Array</value>
     ''' <returns>String-Array</returns>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property P_Def_UserProperties As String()
         Get
             Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
@@ -2126,9 +2102,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Nach der Maske werden Telefonnummern formatiert: %L (%O) %N - %D
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_TBTelNrMaske() As String
         Get
             Return "%L (%O) %N - %D"
@@ -2323,9 +2296,6 @@ Public Class DataProvider
     ''' Nr. Code an Phoner übergeben
     ''' </summary>
     ''' <param name="Code"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner1(ByVal Code As String) As String
         Get
             Return "Nr. " & Code & " an Phoner übergeben."
@@ -2336,9 +2306,6 @@ Public Class DataProvider
     ''' Fehler!
     ''' Das Phoner-Passwort ist falsch!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner2() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Das Phoner-Passwort ist falsch!"
@@ -2349,9 +2316,6 @@ Public Class DataProvider
     ''' Fehler!
     ''' Die Phoner-Verson ist zu alt!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner3() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Die Phoner-Verson ist zu alt!"
@@ -2362,9 +2326,6 @@ Public Class DataProvider
     ''' Fehler!
     ''' TCP Fehler (Stream.CanWrite = False)!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner4() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "TCP Fehler (Stream.CanWrite = False)!"
@@ -2375,9 +2336,6 @@ Public Class DataProvider
     ''' Fehler!
     ''' TCP!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner5() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "TCP!"
@@ -2388,9 +2346,6 @@ Public Class DataProvider
     ''' Fehler!
     ''' Kein Passwort hinterlegt!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner6() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Kein Passwort hinterlegt!"
@@ -2401,9 +2356,6 @@ Public Class DataProvider
     ''' Fehler!
     ''' Phoner nicht verfügbar!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Lit_Phoner7() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Phoner nicht verfügbar!"
@@ -2415,9 +2367,6 @@ Public Class DataProvider
     ''' Stoppuhr für Telefonat gestartet: AnrName 
     ''' </summary>
     ''' <param name="AnrName"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_StoppUhrStart1(ByVal AnrName As String) As String
         Get
             Return "Stoppuhr für Telefonat gestartet: " & AnrName
@@ -2429,9 +2378,6 @@ Public Class DataProvider
     ''' Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode #96*5* kann dieser aktiviert werden.
     ''' Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
         Get
             Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_NeueZeile & _
@@ -2444,9 +2390,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Soll der Fritz!Box Callmonitor aktiviert werden?
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_MsgBox_AnrMonStart2() As String
         Get
             Return "Soll der Fritz!Box Callmonitor aktiviert werden?"
@@ -2456,9 +2399,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStart1() As String
         Get
             Return "Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen."
@@ -2469,9 +2409,6 @@ Public Class DataProvider
     ''' TCP Verbindung nicht aufgebaut: ErrMsg
     ''' </summary>
     ''' <param name="ErrMsg">Felermeldung</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStart2(ByVal ErrMsg As String) As String
         Get
             Return "TCP Verbindung nicht aufgebaut: " & ErrMsg
@@ -2481,9 +2418,6 @@ Public Class DataProvider
     ''' <summary>
     ''' TCP Verbindung nicht aufgebaut.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStart3() As String
         Get
             Return "TCP Verbindung nicht aufgebaut."
@@ -2493,9 +2427,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufmonitor nach StandBy wiederaufgebaut.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStart4() As String
         Get
             Return "Anrufmonitor nach StandBy wiederaufgebaut."
@@ -2505,9 +2436,6 @@ Public Class DataProvider
     ''' <summary>
     ''' BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStart5() As String
         Get
             Return "BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten."
@@ -2517,9 +2445,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box nach StandBy noch nicht verfügbar.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonTimer1() As String
         Get
             Return "Fritz!Box nach StandBy noch nicht verfügbar."
@@ -2529,9 +2454,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonTimer2() As String
         Get
             Return "Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor..."
@@ -2541,9 +2463,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Reaktivierung des Anrufmonitors nicht erfolgreich.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonTimer3() As String
         Get
             Return "Reaktivierung des Anrufmonitors nicht erfolgreich."
@@ -2553,9 +2472,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonTimer4() As String
         Get
             Return "Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren."
@@ -2565,9 +2481,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Welcome to Phoner
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_AnrMonPhonerWelcome() As String
         Get
             Return "Welcome to Phoner"
@@ -2576,10 +2489,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Sorry, too many clients
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    ''' 
     Public ReadOnly Property P_AnrMon_AnrMonPhonerError() As String
         Get
             Return "Sorry, too many clients"
@@ -2589,9 +2498,6 @@ Public Class DataProvider
     ''' <summary>
     ''' AnrMonAktion, Phoner: "Sorry, too many clients"
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonPhoner1() As String
         Get
             Return "AnrMonAktion, Phoner: """ & P_AnrMon_AnrMonPhonerError & """"
@@ -2603,9 +2509,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="Fkt">Funktionsname</param>
     ''' <param name="ErrMsg">Fehlermeldung</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMon1(ByVal Fkt As String, ByVal ErrMsg As String) As String
         Get
             Return Fkt & ": Kontakt kann nicht angezeigt werden. Grund: " & ErrMsg
@@ -2617,9 +2520,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="Fkt">Funktionsname</param>
     ''' <param name="ID">ID des Telefonats</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_TelList1(ByVal Fkt As String, ByVal ID As String) As String
         Get
             Return Fkt & ": Das Telefonat mit der ID" & ID & " existiert bereits in der Liste."
@@ -2629,9 +2529,6 @@ Public Class DataProvider
     ''' <summary>
     ''' StoppUhr wird eingeblendet.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr1() As String
         Get
             Return "StoppUhr wird eingeblendet."
@@ -2641,9 +2538,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Integrierte Faxfunktion wurde erkannt: Stoppuhr nicht eingeblendet.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr2() As String
         Get
             Return "Integrierte Faxfunktion wurde erkannt: Stoppuhr nicht eingeblendet."
@@ -2660,9 +2554,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontaktdaten:
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_Journal_Kontaktdaten As String
         Get
             Return "Kontaktdaten:"
@@ -2672,9 +2563,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontaktdaten (vCard):
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Journal As String
         Get
             Return "Kontaktdaten (vCard):"
@@ -2684,9 +2572,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Ein unvollständiges Telefonat wurde registriert.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Error As String
         Get
             Return "Ein unvollständiges Telefonat wurde registriert."
@@ -2707,9 +2592,6 @@ Public Class DataProvider
     ''' <summary>
     '''  Tel.-Nr.: 
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalTelNr() As String
         Get
             Return "Tel.-Nr.: "
@@ -2722,18 +2604,17 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Kontakt öffnen</value>
     ''' <returns>Kontakt öffnen</returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen As String
         Get
             Return "Kontakt öffnen"
         End Get
     End Property
+
     ''' <summary>
     ''' Kontakt erstellen
     ''' </summary>
     ''' <value>Kontakt erstellen</value>
     ''' <returns>Kontakt erstellen</returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen As String
         Get
             Return "Kontakt erstellen"
@@ -2744,7 +2625,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Rückruf</value>
     ''' <returns>Rückruf</returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemRückruf As String
         Get
             Return "Rückruf"
@@ -2756,7 +2636,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>In Zwischenablage kopieren</value>
     ''' <returns>In Zwischenablage kopieren</returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKopieren As String
         Get
             Return "In Zwischenablage kopieren"
@@ -2768,9 +2647,6 @@ Public Class DataProvider
     ''' Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " &amp; Blocktime &amp; " Sekunden zu.  Versuchen Sie es später erneut.
     ''' </summary>
     ''' <param name="Blocktime"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LoginError_Blocktime(ByVal Blocktime As String) As String
         Get
             Return "Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & Blocktime & " Sekunden zu.  Versuchen Sie es später erneut."
@@ -2780,9 +2656,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LoginError_MissingPassword As String
         Get
             Return "Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren."
@@ -2792,10 +2665,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: &amp; FBBenutzer
     ''' </summary>
-    ''' <param name="FBBenutzer"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <param name="FBBenutzer">Nutzername</param>
     Public ReadOnly Property P_FritzBox_LoginError_MissingRights(ByVal FBBenutzer As String) As String
         Get
             Return "Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer
@@ -2805,9 +2675,6 @@ Public Class DataProvider
     ''' <summary>
     ''' as Passwort zur Fritz!Box kann nicht entschlüsselt werden, da das verschlüsselte Passwort und/oder der Zugangsschlüssel fehlt.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LoginError_MissingData() As String
         Get
             Return "Das Passwort zur Fritz!Box kann nicht entschlüsselt werden, da das verschlüsselte Passwort und/oder der Zugangsschlüssel fehlt."
@@ -2817,9 +2684,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Die Anmeldedaten sind falsch.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LoginError_LoginIncorrect() As String
         Get
             Return "Die Anmeldedaten sind falsch."
@@ -2830,9 +2694,8 @@ Public Class DataProvider
     ''' Eine gültige SessionID ist bereits vorhanden: &amp; SID
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
     Public ReadOnly Property P_FritzBox_LoginInfo_SID(ByVal SID As String) As String
         Get
             Return "Eine gültige SessionID ist bereits vorhanden: " & SID
@@ -2842,9 +2705,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LogoutTestString1 As String
         Get
             Return "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet."
@@ -2854,9 +2714,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LogoutTestString2 As String
         Get
             Return "Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet."
@@ -2866,9 +2723,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Logout eventuell NICHT erfolgreich!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_LogoutError As String
         Get
             Return "Logout eventuell NICHT erfolgreich!"
@@ -2879,9 +2733,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_Error1 As String
         Get
             Return "Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
@@ -2891,9 +2742,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_Error2 As String
         Get
             Return "Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden."
@@ -2903,9 +2751,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_AlteRoutine As String
         Get
             Return "Alte Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
@@ -2915,9 +2760,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_NeueRoutine As String
         Get
             Return "Neue Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
@@ -2927,9 +2769,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box Telefon Quelldatei: http://" &amp; C_DP.P_ValidFBAdr &amp; "/cgi-bin/webcm?sid=" &amp; SID &amp; "&amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=fondevices
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_AlteRoutine2(ByVal Link As String) As String
         Get
             Return P_Def_FritzBoxName & " Telefon Quelldatei: " & Link
@@ -2939,9 +2778,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler beim Herunterladen der Telefone. Anmeldedaten korrekt?
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_ErrorAlt1 As String
         Get
             Return "Fehler beim Herunterladen der Telefone. Anmeldedaten korrekt?"
@@ -2954,9 +2790,6 @@ Public Class DataProvider
     ''' <param name="Typ">Telefonnummerntyp</param>
     ''' <param name="idx">Nummer der Telefonnummer</param>
     ''' <param name="TelNr">Telefonnummer</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_NrFound(ByVal Typ As String, ByVal idx As String, ByVal TelNr As String) As String
         Get
             Return "Telefonnummer gefunden: " & Typ & idx & ", " & TelNr
@@ -2970,9 +2803,6 @@ Public Class DataProvider
     ''' <param name="Dialport">Dialport</param>
     ''' <param name="TelNr">Telefonnummer</param>
     ''' <param name="TelName">Telefonname</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Tel_DeviceFound(ByVal Typ As String, ByVal Dialport As String, ByVal TelNr As String, ByVal TelName As String) As String
         Get
             Return "Telefoniegerät gefunden: " & Typ & CStr(Dialport) & ", " & TelNr & ", " & TelName
@@ -2982,11 +2812,8 @@ Public Class DataProvider
     ''' <summary>
     ''' "Telefoniegerät: " &amp; TelName &amp; " (" &amp; Dialport &amp; ") ist ein FAX."
     ''' </summary>
-    ''' <param name="Dialport"></param>
-    ''' <param name="TelName"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <param name="Dialport">Dialport</param>
+    ''' <param name="TelName">Telefonname</param>
     Public ReadOnly Property P_FritzBox_Tel_DeviceisFAX(ByVal Dialport As String, ByVal TelName As String) As String
         Get
             Return "Telefoniegerät: " & TelName & " (" & Dialport & ") ist ein FAX."
@@ -2997,9 +2824,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler! Entwickler kontaktieren.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Dial_Error1 As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Entwickler kontaktieren."
@@ -3009,9 +2833,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler! Logfile beachten!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Dial_Error2 As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Logfile beachten!"
@@ -3021,10 +2842,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler bei dem Login. SessionID: SID 
     ''' </summary>
-    ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <param name="SID">SessionID</param>
     Public ReadOnly Property P_FritzBox_Dial_Error3(ByVal SID As String) As String
         Get
             Return "Fehler bei dem Login. SessionID: " & SID & "!"
@@ -3034,9 +2852,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Verbindungsaufbau wurde abgebrochen!
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Dial_HangUp As String
         Get
             Return "Verbindungsaufbau" & P_Def_NeueZeile & "wurde abgebrochen!"
@@ -3047,9 +2862,6 @@ Public Class DataProvider
     ''' Wähle DialCode Jetzt abheben!
     ''' </summary>
     ''' <param name="DialCode"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_Dial_Start(ByVal DialCode As String) As String
         Get
             Return "Wähle " & DialCode & P_Def_NeueZeile & "Jetzt abheben!"
@@ -3060,9 +2872,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Der Login in die Fritz!Box ist fehlgeschlagen Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_FritzBox_JI_Error1 As String
         Get
             Return "Der Login in die " & P_Def_FritzBoxName & " ist fehlgeschlagen. Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
@@ -3087,9 +2896,6 @@ Public Class DataProvider
     ''' "Fritz!Box unter der IP IPAdresse gefunden"
     ''' </summary>
     ''' <param name="IPAdresse"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Init_FritzBox_Found(ByVal IPAdresse As String) As String
         Get
             Return P_Def_FritzBoxName & " unter der IP " & IPAdresse & " gefunden"
@@ -3099,9 +2905,6 @@ Public Class DataProvider
     ''' <summary>
     '''"Keine Fritz!Box unter der angegebenen IP gefunden.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Init_FritzBox_NotFound() As String
         Get
             Return "Keine " & P_Def_FritzBoxName & " unter der angegebenen IP gefunden."
@@ -3111,9 +2914,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Keine Gegenstelle unter der angegebenen IP gefunden.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Init_NotthingFound() As String
         Get
             Return "Keine Gegenstelle unter der angegebenen IP gefunden."
@@ -3123,9 +2923,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Das Anmelden an der Fritz!Box war erfolgreich.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Init_Login_Korrekt() As String
         Get
             Return "Das Anmelden an der " & P_Def_FritzBoxName & " war erfolgreich."
@@ -3135,9 +2932,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Das Anmelden an der Fritz!Box war erfolgreich.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Init_Login_Nicht_Korrekt() As String
         Get
             Return "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung."
@@ -3147,9 +2941,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Bitte warten...
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Def_Bitte_Warten() As String
         Get
             Return "Bitte warten..."
@@ -3159,11 +2950,8 @@ Public Class DataProvider
     ''' <summary>
     ''' Zeit: sZeit P_Def_NeueZeile  Telefonnummer: sTelNr
     ''' </summary>
-    ''' <value></value>
     ''' <param name="sZeit">Zeit</param>
     ''' <param name="sTelNr">Telefonnummer</param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_ToolTipp(ByVal sZeit As String, ByVal sTelNr As String) As String
         Get
             Return "Zeit: " & sZeit & P_Def_NeueZeile & "Telefonnummer: " & sTelNr
@@ -3173,9 +2961,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Wählen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Dial() As String
         Get
             Return "Wählen"
@@ -3185,9 +2970,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Wahlwiederholung
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_WWDH() As String
         Get
             Return "Wahlwiederholung"
@@ -3197,9 +2979,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Direktwahl
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Direktwahl() As String
         Get
             Return "Direktwahl"
@@ -3209,9 +2988,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufmonitor
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMon() As String
         Get
             Return "Anrufmonitor"
@@ -3221,9 +2997,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Anzeigen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonAnzeigen() As String
         Get
             Return "Anzeigen"
@@ -3233,9 +3006,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufmonitor neustarten
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonNeuStart() As String
         Get
             Return "Anrufmonitor neustarten"
@@ -3245,9 +3015,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Rückruf
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_CallBack() As String
         Get
             Return "Rückruf"
@@ -3257,9 +3024,6 @@ Public Class DataProvider
     ''' <summary>
     ''' VIP-Liste
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP() As String
         Get
             Return "VIP-Liste"
@@ -3269,9 +3033,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Journalimport
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Journal() As String
         Get
             Return "Journalimport"
@@ -3281,9 +3042,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Einstellungen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Setup() As String
         Get
             Return "Einstellungen"
@@ -3293,9 +3051,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog um das ausgewählte Element anzurufen.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Dial_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog um das ausgewählte Element anzurufen"
@@ -3305,9 +3060,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog für die Wahlwiederholung
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_WWDH_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für die Wahlwiederholung"
@@ -3317,9 +3069,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Startet den Anrufmonitor.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMon_ToolTipp() As String
         Get
             Return "Startet den Anrufmonitor"
@@ -3329,9 +3078,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog für die Direktwahl
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Direktwahl_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für die Direktwahl"
@@ -3341,9 +3087,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Zeigt den letzten Anruf an
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonAnzeigen_ToolTipp() As String
         Get
             Return "Zeigt den letzten Anruf an"
@@ -3353,9 +3096,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Startet den Anrufmonitor neu
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_AnrMonNeuStart_ToolTipp() As String
         Get
             Return "Startet den Anrufmonitor neu"
@@ -3365,9 +3105,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog für den Rückruf
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_CallBack_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für den Rückruf"
@@ -3377,9 +3114,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog um einen VIP anzurufen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog um einen VIP anzurufen"
@@ -3389,9 +3123,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Die VIP-Liste ist mit 10 Einträgen bereits voll.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP_O11_Voll_ToolTipp() As String
         Get
             Return "Die VIP-Liste ist mit 10 Einträgen bereits voll."
@@ -3401,9 +3132,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Füge diesen Kontakt der VIP-Liste hinzu.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP_Hinzufügen_ToolTipp() As String
         Get
             Return "Füge diesen Kontakt der VIP-Liste hinzu."
@@ -3412,9 +3140,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Entfernt diesen Kontakt von der VIP-Liste.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_VIP_Entfernen_ToolTipp() As String
         Get
             Return "Entfernt diesen Kontakt von der VIP-Liste."
@@ -3424,9 +3149,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Importiert die Anrufliste der Fritz!Box als Journaleinträge
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Journal_ToolTipp() As String
         Get
             Return "Importiert die Anrufliste der " & P_Def_FritzBoxName & " als Journaleinträge"
@@ -3436,33 +3158,15 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Setup_ToolTipp() As String
         Get
             Return "Öffnet den " & P_Def_Addin_LangName & " Einstellungsdialog"
         End Get
     End Property
 
-    ' ''' <summary>
-    ' ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
-    ' ''' </summary>
-    ' ''' <value></value>
-    ' ''' <returns></returns>
-    ' ''' <remarks></remarks>
-    'Public ReadOnly Property P_CMB_AdrBk_ToolTipp() As String
-    '    Get
-    '        Return "Öffnet den Dialog zum Editieren des " & P_Def_FritzBoxName & "-Telefonbuches."
-    '    End Get
-    'End Property
-
     ''' <summary>
     ''' VIP
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_VIP() As String
         Get
             Return "VIP"
@@ -3472,9 +3176,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Upload
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_Upload() As String
         Get
             Return "Upload"
@@ -3484,9 +3185,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufen (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_ContextMenueItemCall() As String
         Get
             Return "Anrufen (" & P_Def_Addin_LangName & ")"
@@ -3496,9 +3194,6 @@ Public Class DataProvider
     ''' <summary>
     ''' VIP (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_ContextMenueItemVIP() As String
         Get
             Return P_CMB_Insp_VIP & " (" & P_Def_Addin_LangName & ")"
@@ -3508,9 +3203,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Upload (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_ContextMenueItemUpload() As String
         Get
             Return P_CMB_Insp_Upload & " (" & P_Def_Addin_LangName & ")"
@@ -3520,9 +3212,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Rückwärtssuche
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_RWS() As String
         Get
             Return "Rückwärtssuche"
@@ -3532,9 +3221,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_RWS_ToolTipp() As String
         Get
             Return "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche"
@@ -3544,9 +3230,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Notiz
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_Note() As String
         Get
             Return "Notiz"
@@ -3556,9 +3239,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Einen Notizeintrag hinzufügen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_Note_ToolTipp() As String
         Get
             Return "Einen Notizeintrag hinzufügen"
@@ -3568,9 +3248,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box Telefonbuch
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Expl_Adrbk() As String
         Get
             Return P_Def_FritzBoxName & " Telefonbuch"
@@ -3580,9 +3257,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Einen Notizeintrag hinzufügen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Insp_UploadKontakt_ToolTipp() As String
         Get
             Return "Lädt diesen Kontakt auf die " & P_Def_FritzBoxName & " hoch."
@@ -3592,9 +3266,6 @@ Public Class DataProvider
     ''' <summary>          
     ''' Kontakt erstellen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Kontakt_Erstellen() As String
         Get
             Return "Kontakt erstellen"
@@ -3604,9 +3275,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Journaleintrag
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Kontakt_Erstellen_ToolTipp() As String
         Get
             Return "Erstellt einen Kontakt aus einem Journaleintrag"
@@ -3616,9 +3284,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontakt anzeigen
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Kontakt_Anzeigen() As String
         Get
             Return "Kontakt anzeigen"
@@ -3628,9 +3293,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Zeigt den Kontakt zu diesem Journaleintrag an
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Kontakt_Anzeigen_ToolTipp() As String
         Get
             Return "Zeigt den Kontakt zu diesem Journaleintrag an"
@@ -3640,9 +3302,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_CMB_Kontakt_Anzeigen_Error_ToolTipp() As String
         Get
             Return "Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag."
@@ -3654,9 +3313,6 @@ Public Class DataProvider
     ''' <summary>
     ''' 11880
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWS11880_Name() As String
         Get
             Return "11880"
@@ -3666,9 +3322,6 @@ Public Class DataProvider
     ''' <summary>
     ''' dasÖrtliche
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSDasOertliche_Name() As String
         Get
             Return "dasÖrtliche"
@@ -3678,9 +3331,6 @@ Public Class DataProvider
     ''' <summary>
     ''' dasTelefonbuch
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSDasTelefonbuch_Name() As String
         Get
             Return "dasTelefonbuch"
@@ -3690,9 +3340,6 @@ Public Class DataProvider
     ''' <summary>
     ''' tel.search.ch
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSTelSearch_Name() As String
         Get
             Return "tel.search.ch"
@@ -3702,9 +3349,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Alle
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSAlle_Name() As String
         Get
             Return "Alle"
@@ -3714,9 +3358,6 @@ Public Class DataProvider
     ''' <summary>
     ''' www.11880.com
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWS11880_Link() As String
         Get
             Return "www.11880.com"
@@ -3726,9 +3367,6 @@ Public Class DataProvider
     ''' <summary>
     ''' www.dasoertliche.de
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSDasOertliche_Link() As String
         Get
             Return "www.dasoertliche.de"
@@ -3738,9 +3376,6 @@ Public Class DataProvider
     ''' <summary>
     ''' www.dastelefonbuch.de
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSDasTelefonbuch_Link() As String
         Get
             Return "www.dastelefonbuch.de"
@@ -3750,9 +3385,6 @@ Public Class DataProvider
     ''' <summary>
     ''' tel.search.ch
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWSTelSearch_Link() As String
         Get
             Return "tel.search.ch"
@@ -3763,9 +3395,6 @@ Public Class DataProvider
     ''' Rückwärtssuche mit <c>Link</c> 
     ''' </summary>
     ''' <param name="Link">Link der eingefügt werden soll</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWS_ToolTipp(ByVal Link As String) As String
         Get
             Return "Rückwärtssuche mit &#34;" & Link & "&#34;"
@@ -3775,9 +3404,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Rückwärtssuche mit allen Anbietern
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_RWS_ToolTipp() As String
         Get
             Return "Rückwärtssuche mit allen Anbietern"
@@ -3788,9 +3414,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Dial_Tag
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Tag_Insp_Dial() As String
         Get
             Return "Dial_Tag"
@@ -3800,9 +3423,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontakt_Tag
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Tag_Insp_Kontakt() As String
         Get
             Return "Kontakt_Tag"
@@ -3814,9 +3434,6 @@ Public Class DataProvider
     ''' 
     '''  ErrorMessage
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Fehler_Kontakt_Anzeigen(ByVal ErrorMessage As String) As String
         Get
             Return "Der Kontakt kann angezeigt werden: " & P_Def_NeueZeile & P_Def_NeueZeile & ErrorMessage
@@ -3827,9 +3444,6 @@ Public Class DataProvider
     ''' "Der Kontakt <c>KontaktName</c> wurde erfolgreich auf die Fritz!Box geladen."
     ''' </summary>
     ''' <param name="KontaktName"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Kontakt_Hochgeladen(ByVal KontaktName As String) As String
         Get
             Return "Der Kontakt " & KontaktName & " wurde erfolgreich auf die " & P_Def_FritzBoxName & " geladen."
@@ -3840,9 +3454,6 @@ Public Class DataProvider
     ''' Der Kontakt <c>KontaktName</c> konnte nicht auf die Fritz!Box geladen werden."
     ''' </summary>
     ''' <param name="KontaktName"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Fehler_Kontakt_Hochladen(ByVal KontaktName As String) As String
         Get
             Return "Der Kontakt " & KontaktName & " konnte nicht auf die " & P_Def_FritzBoxName & " geladen werden."
@@ -3852,9 +3463,6 @@ Public Class DataProvider
     ''' <summary>
     ''' "Der Addressbuch der Fritz!Box kann nicht geöffnet werden."
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property P_Fehler_Export_Addressbuch() As String
         Get
             Return "Der Addressbuch der " & P_Def_FritzBoxName & " kann nicht geöffnet werden."
@@ -3894,7 +3502,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Initiales Laden der Daten aus der XML-Datei
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub LoadOptionData()
         Dim xPathTeile As New ArrayList
 
@@ -4001,7 +3608,6 @@ Public Class DataProvider
     ''' <summary>
     ''' Speicher Daten, die in den Properties stehen in die XML-String.
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub SaveOptionData()
         C_XML.Write(XMLDoc, P_Def_Options, "TBLandesVW", Me.P_TBLandesVW)
         C_XML.Write(XMLDoc, P_Def_Options, "TBAmt", Me.P_TBAmt)

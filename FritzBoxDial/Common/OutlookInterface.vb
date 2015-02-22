@@ -48,6 +48,16 @@ Friend Class C_Telefonat
         End Set
     End Property
 
+    Private _RingTime As Double
+    Friend Property RingTime() As Double
+        Get
+            Return _RingTime
+        End Get
+        Set(ByVal value As Double)
+            _RingTime = value
+        End Set
+    End Property
+
     Private _TelNr As String
     Friend Property TelNr() As String
         Get
@@ -238,6 +248,15 @@ Friend Class C_Telefonat
         End Set
     End Property
 
+    Private _AnrMonAusblenden As Boolean
+    Friend Property AnrMonAusblenden() As Boolean
+        Get
+            Return _AnrMonAusblenden
+        End Get
+        Set(ByVal value As Boolean)
+            _AnrMonAusblenden = value
+        End Set
+    End Property
 #End Region
 
 End Class
