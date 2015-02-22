@@ -100,25 +100,49 @@ Friend Class formJournalimport
 
 #Region " Auswertung"
     Private Sub BGAnrListeAuswerten_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BGAnrListeAuswerten.DoWork
+        JournalCSV(CType(e.Argument, ImportZeitraum))
+    End Sub
 
-        Dim aktZeile As String()  ' aktuell bearbeitete Zeile
-        Dim AnrTyp As String  ' Typ des Anrufs
-        Dim AnrZeit As String  ' Zeitpunkt des Anrufs
-        Dim AnrTelNr As String  ' Name und TelNr des Telefonpartners
-        Dim Nebenstelle As String  ' verwendete Nebenstelle
-        Dim MSN As String  ' verwendete MSN
-        Dim NSN As Integer  ' verwendete Nebenstellennummer
-        Dim Dauer As String  ' Dauer des Telefonats
-        Dim vFBStatus As String()  ' generierter Status-String
-        Dim Startzeit As Date    ' Letzter Journalimports
-        Dim Endzeit As Date    ' Ende des Journalimports
-        Dim j, a, b As Integer    ' Zählvariable
-        Dim Übergabewerte As ImportZeitraum = CType(e.Argument, ImportZeitraum)
+    Private Sub BGAnrListeAuswerten_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BGAnrListeAuswerten.ProgressChanged
+        StatusWert = e.ProgressPercentage
+        If Me.InvokeRequired Then
+            Dim D As New DelgSetProgressbar(AddressOf SetProgressbar)
+            Invoke(D)
+        End If
+    End Sub
+
+    Private Sub SetProgressbar()
+        Me.ProgressBar1.Value = StatusWert
+        Me.lblBG1Percent.Text = StatusWert & " % (" & StatusWert * EntryCount \ 100 & "/" & EntryCount & ")"
+        Me.Text = "Journalimport - " & Me.lblBG1Percent.Text
+        If StatusWert = 100 Then Me.ButtonStart.Enabled = True
+    End Sub
+
+    Private Sub BGAnrListeAuswerten_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BGAnrListeAuswerten.RunWorkerCompleted
+        BGAnrListeAuswerten.Dispose()
+        DownloadAnrListe.Dispose()
+    End Sub
+
+    Private Sub JournalCSV(ByVal Zeitraum As ImportZeitraum)
+
+        Dim aktZeile As String()        ' aktuell bearbeitete Zeile
+        Dim AnrTyp As String            ' Typ des Anrufs
+        Dim AnrZeit As String           ' Zeitpunkt des Anrufs
+        Dim AnrTelNr As String          ' Name und TelNr des Telefonpartners
+        Dim AnrID As String             ' ID des Anrufes
+        Dim Nebenstelle As String       ' verwendete Nebenstelle
+        Dim MSN As String               ' verwendete MSN
+        Dim NSN As Integer              ' verwendete Nebenstellennummer
+        Dim Dauer As String             ' Dauer des Telefonats
+        Dim vFBStatus As String()       ' generierter Status-String
+        Dim Startzeit As Date           ' Letzter Journalimports
+        Dim Endzeit As Date             ' Ende des Journalimports
+        Dim j, a, b As Integer          ' Zählvariable
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
 
         DownloadAnrListe.Dispose()
-        With Übergabewerte
+        With Zeitraum
             Startzeit = .StartZeit
             Endzeit = .EndZeit
         End With
@@ -180,6 +204,7 @@ Friend Class formJournalimport
                         If C_hf.IsOneOf(C_hf.EigeneVorwahlenEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
                             b += 1
                             NSN = -1
+                            AnrID = Str(100 + b)
                             If Not AnrTyp = "2" Then
                                 'Wird im Fall 2 nicht benötigt: Verpasster Anruf.
                                 Select Case Nebenstelle
@@ -218,21 +243,21 @@ Friend Class formJournalimport
 
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
-                                    vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
+                                    vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
                                     C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
-                                    vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
+                                    vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
                                     C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                                 Case 2 ' eingehender Anruf: nicht angenommen
-                                    vFBStatus = Split(AnrZeit & ";RING;25;" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
+                                    vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
                                     C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                                 Case 3, 4 ' ausgehender Anruf
-                                    vFBStatus = Split(AnrZeit & ";CALL;25;0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
+                                    vFBStatus = Split(AnrZeit & ";CALL;" & AnrID & ";0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
                                     C_AnrMon.AnrMonCALL(vFBStatus, C_DP.P_Debug_AnrufSimulation)
-                                    vFBStatus = Split(AnrZeit & ";CONNECT;25;" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
+                                    vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
                                     C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                             End Select
                             If Abbruch Then Exit For
-                            vFBStatus = Split(AnrZeit & ";DISCONNECT;25;" & Dauer & ";", ";", , CompareMethod.Text)
+                            vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
                             C_AnrMon.AnrMonDISCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
@@ -248,26 +273,7 @@ Friend Class formJournalimport
             If anzeigen Then BGAnrListeAuswerten.ReportProgress(100)
             BGAnrListeAuswerten.Dispose()
         End If
-    End Sub
 
-    Private Sub BGAnrListeAuswerten_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BGAnrListeAuswerten.ProgressChanged
-        StatusWert = e.ProgressPercentage
-        If Me.InvokeRequired Then
-            Dim D As New DelgSetProgressbar(AddressOf SetProgressbar)
-            Invoke(D)
-        End If
-    End Sub
-
-    Private Sub SetProgressbar()
-        Me.ProgressBar1.Value = StatusWert
-        Me.lblBG1Percent.Text = StatusWert & " % (" & StatusWert * EntryCount \ 100 & "/" & EntryCount & ")"
-        Me.Text = "Journalimport - " & Me.lblBG1Percent.Text
-        If StatusWert = 100 Then Me.ButtonStart.Enabled = True
-    End Sub
-
-    Private Sub BGAnrListeAuswerten_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BGAnrListeAuswerten.RunWorkerCompleted
-        BGAnrListeAuswerten.Dispose()
-        DownloadAnrListe.Dispose()
     End Sub
 #End Region
 

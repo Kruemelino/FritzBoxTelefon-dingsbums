@@ -93,25 +93,21 @@ End Enum
     ''' <summary>
     ''' Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its topmost status and is placed at the bottom of all other windows.
     ''' </summary>
-    ''' <remarks></remarks>
     HWND_BOTTOM = 1
 
     ''' <summary>
     ''' Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window is already a non-topmost window.
     ''' </summary>
-    ''' <remarks></remarks>
     HWND_NOTOPMOST = -2
 
     ''' <summary>
     ''' Places the window at the top of the Z order.
     ''' </summary>
-    ''' <remarks></remarks>
     HWND_TOP = 0
 
     ''' <summary>
     ''' Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.
     ''' </summary>
-    ''' <remarks></remarks>
     HWND_TOPMOST = -1
 End Enum
 
@@ -214,7 +210,6 @@ Public NotInheritable Class OutlookSecurity
     ''' </summary>
     ''' <value>IntPtr</value>
     ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation.</returns>
-    ''' <remarks></remarks>
     Public Shared ReadOnly Property GetForegroundWindow() As IntPtr
         Get
             Return UnsafeNativeMethods.GetForegroundWindow()
@@ -226,11 +221,9 @@ Public NotInheritable Class OutlookSecurity
     ''' However, GetWindowText cannot retrieve the text of a control in another application.
     ''' </summary>
     ''' <param name="hwnd">A handle to the window or control containing the text.</param>
-    ''' <value></value>
     ''' <returns>If the function succeeds, the return value is the length, in characters, of the copied string, not including the terminating null character.
     ''' If the window has no title bar or text, if the title bar is empty, or if the window or control handle is invalid, the return value is zero. To get extended error information, call GetLastError.
     ''' This function cannot retrieve the text of an edit control in another application.</returns>
-    ''' <remarks></remarks>
     Public Shared ReadOnly Property GetWindowText(ByVal hwnd As IntPtr) As String
         Get
             Dim lpString As String = Space(255)
@@ -253,7 +246,6 @@ Public NotInheritable Class OutlookSecurity
     ''' <param name="lpszWindow">The window name (the window's title). If this parameter is NULL, all window names match.</param>
     ''' <value>IntPtr</value>
     ''' <returns>If the function succeeds, the return value is a handle to the window that has the specified class and window names.</returns>
-    ''' <remarks></remarks>
     Public Shared ReadOnly Property FindWindowEX(ByVal hWndParent As IntPtr, ByVal hWndChildAfter As IntPtr, ByVal lpszClass As String, ByVal lpszWindow As String) As IntPtr
         Get
             Return UnsafeNativeMethods.FindWindowEx(hWndParent, hWndChildAfter, lpszClass, lpszWindow)
@@ -265,7 +257,6 @@ Public NotInheritable Class OutlookSecurity
     ''' </summary>
     ''' <value>IntPtr</value>
     ''' <returns>The return value is the handle of the Shell's desktop window. If no Shell process is present, the return value is NULL.</returns>
-    ''' <remarks></remarks>
     Public Shared ReadOnly Property GetShellWindow() As IntPtr
         Get
             Return UnsafeNativeMethods.GetShellWindow()
@@ -304,7 +295,6 @@ Public NotInheritable Class OutlookSecurity
     ''' Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.
     ''' </summary>
     ''' <param name="hwnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
-    ''' <value></value>
     ''' <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. </returns>
     ''' <remarks>
     ''' The SetFocus function sends a WM_KILLFOCUS message to the window that loses the keyboard focus and a WM_SETFOCUS message to the window that receives the keyboard focus. It also activates either the window that receives the focus or the parent of the window that receives the focus.
@@ -374,7 +364,6 @@ Public NotInheritable Class OutlookSecurity
     ''' <param name="lpEnumFunc">A pointer to an application-defined callback function.</param>
     ''' <param name="lParam">An application-defined value to be passed to the callback function.</param>
     ''' <value>IntPtr</value>
-    ''' <returns></returns>
     ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633494(v=vs.85).aspx</remarks>
     Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
         Get
@@ -419,7 +408,6 @@ Public NotInheritable Class OutlookSecurity
     ''' </summary>
     ''' <value>Boolean</value>
     ''' <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-    ''' <remarks></remarks>
     Public Shared ReadOnly Property ReleaseCapture() As Boolean
         Get
             Return UnsafeNativeMethods.ReleaseCapture()

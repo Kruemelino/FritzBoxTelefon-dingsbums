@@ -18,7 +18,7 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>FritzOutlookXML</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_RootName() As String
         Get
             Return "FritzOutlookXML"
@@ -30,7 +30,7 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathSeperatorSlash() As String
         Get
             Return "/"
@@ -42,7 +42,7 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathWildCard() As String
         Get
             Return "*"
@@ -54,7 +54,7 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathBracketOpen() As String
         Get
             Return "["
@@ -66,7 +66,7 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathBracketClose() As String
         Get
             Return "]"
@@ -78,7 +78,7 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>@</returns>
-    ''' <remarks></remarks>
+
     Private ReadOnly Property P_xPathAttribute() As String
         Get
             Return "@"
@@ -87,9 +87,9 @@ Public Class XML
     ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private Property P_NameStartChar As String
         Set(value As String)
             _NameStartChar = value
@@ -102,9 +102,9 @@ Public Class XML
     ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private Property P_NameChar As String
         Set(value As String)
             _NameChar = value
@@ -116,9 +116,9 @@ Public Class XML
     ''' <summary>
     ''' Leerstring, String.Empty
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Public ReadOnly Property P_Def_StringEmpty() As String
         Get
             Return String.Empty
@@ -138,7 +138,7 @@ Public Class XML
 #End Region
 
     ''' <summary>
-    ''' Erstellt ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält:
+    ''' Erstellt ein String, der alle gültigen Zeichen nach den 2.3 Common Syntactic Constructs für NameStartChar enthält:
     ''' ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
     ''' </summary>
     ''' <returns>String, der alle erlaubten Startchars enthält</returns>
@@ -225,7 +225,7 @@ Public Class XML
     End Function
 
     ''' <summary>
-    ''' Erstellt ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält:
+    ''' Erstellt ein String, der alle gültigen Zeichen nach den 2.3 Common Syntactic Constructs für NameChar enthält:
     ''' NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
     ''' </summary>
     ''' <returns>String, der alle erlaubten Startchars enthält</returns>
@@ -617,7 +617,6 @@ Public Class XML
     ''' </summary>
     ''' <param name="XMLpath"></param>
     ''' <returns><c>True</c>, wenn Datei geöffnet werden kann, ansonsten <c>False</c>.</returns>
-    ''' <remarks></remarks>
     Public Function XMLValidator(ByRef XMLDoc As XmlDocument, ByVal XMLpath As String) As Boolean
         XMLValidator = True
         Try
@@ -633,7 +632,6 @@ Public Class XML
     ''' </summary>
     ''' <param name="xPathElements">Lista an xPath-Elementen</param>
     ''' <returns>gültiger xPath</returns>
-    ''' <remarks></remarks>
     Function CreateXPath(ByVal XMLDoc As XmlDocument, ByVal xPathElements As ArrayList) As String
         ' fügt den Root-knoten an, falls nicht vorhanden
 
@@ -656,26 +654,6 @@ Public Class XML
         CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text) ' ][ -> and
         newxPath = Nothing
     End Function
-    'Function CreateXPath(ByVal xPathElements As ArrayList) As String
-    '    If Not xPathElements.Item(0).ToString = XMLDoc.DocumentElement.Name Then xPathElements.Insert(0, XMLDoc.DocumentElement.Name)
-    '    CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
-    '    CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text)
-    'End Function
-
-
-    ' ''' <summary>
-    ' ''' Prüft üb der xPath für das Lesen in die XML-Datei möglich ist.
-    ' ''' Beispiel: Ausrufezeichen ! darf nicht enthalten sein.
-    ' ''' </summary>
-    ' ''' <param name="xPath">zu prüfender xPath</param>
-    ' ''' <returns></returns>
-    ' ''' <remarks></remarks>
-    'Private Function CheckXPathRead(ByVal xPath As String) As Boolean
-    '    CheckXPathRead = True
-
-    '    If Not InStr(xPath, "!", CompareMethod.Text) = 0 Then Return False
-    '    If Right(xPath, 1) = P_xPathSeperatorSlash Then Return False
-    'End Function
 #End Region
 
 

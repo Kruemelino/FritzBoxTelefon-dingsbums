@@ -30,7 +30,7 @@ Public Class Helfer
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <c>Textes</c> aus begonnen werden soll.</param>
     ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-    ''' <remarks></remarks>
+
     Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, Optional ByVal Reverse As Boolean = False) As String
         Dim pos(1) As Integer
 
@@ -59,7 +59,7 @@ Public Class Helfer
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="StartPosition">Startposition, bei der mit der Suche nach den Zeichenfolgen vor und nach dem Sub-String begonnen werden soll.</param>
     ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-    ''' <remarks></remarks>
+
     Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef StartPosition As Integer) As String
         Dim pos(1) As Integer
 
@@ -81,7 +81,7 @@ Public Class Helfer
     ''' <param name="A">Zu prüfender String.</param>
     ''' <param name="B">Array in dem zu prüfen ist.</param>
     ''' <returns><c>True</c>, wenn enthalten, <c>False</c>, wenn nicht.</returns>
-    ''' <remarks></remarks>
+
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
         Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
@@ -102,12 +102,12 @@ Public Class Helfer
     Public Function GetUnixTime() As Integer
         Return CInt((DateTime.UtcNow - New DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds)
     End Function
+
     ''' <summary>
     ''' Führt einen Ping zur Gegenstelle aus.
     ''' </summary>
     ''' <param name="IPAdresse">IP-Adresse Netzwerkname der Gegenstelle. Rückgabe der IP-Adresse</param>
     ''' <returns>Boolean</returns>
-    ''' <remarks></remarks>
     Public Function Ping(ByRef IPAdresse As String) As Boolean
         Ping = False
 
@@ -243,7 +243,6 @@ Public Class Helfer
     ''' <summary>
     ''' Diese Routine ändert den Zugang zu den verschlüsselten Passwort.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub KeyChange()
         Dim AlterZugang As String
         Dim NeuerZugang As String
@@ -285,7 +284,7 @@ Public Class Helfer
     ''' </summary>
     ''' <param name="TelNr">Die zu formatierende Telefonnummer</param>
     ''' <returns>Die formatierte Telefonnummer</returns>
-    ''' <remarks></remarks>
+
     Function formatTelNr(ByVal TelNr As String) As String
         Dim RufNr As String ' Telefonnummer ohne Vorwahl
 
@@ -476,7 +475,7 @@ Public Class Helfer
     ''' TelNr bereinigen
     ''' </summary>
     ''' <param name="TelNr"></param>
-    ''' <remarks></remarks>
+
     Private Sub TelNrBereinigen(ByRef TelNr As String)
 
         'TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
@@ -946,81 +945,4 @@ Public Class Helfer
             xPathTeile = Nothing
         End If
     End Function
-End Class
-
-Public Class MyOleOutlookItemData
-
-    Private _Subject As String
-    Public Property Subject As String
-        Get
-            Return _Subject
-        End Get
-        Set(value As String)
-            _Subject = value
-        End Set
-    End Property
-
-    Private _EntryId As String
-    Public Property EntryId As String
-        Get
-            Return _EntryId
-        End Get
-        Set(value As String)
-            _EntryId = value
-        End Set
-    End Property
-
-    Private _SearchKey As String
-    Public Property SearchKey As String
-        Get
-            Return _SearchKey
-        End Get
-        Set(value As String)
-            _SearchKey = value
-        End Set
-    End Property
-
-    Private _MessageClass As String
-    Public Property MessageClass As String
-        Get
-            Return _MessageClass
-        End Get
-        Set(value As String)
-            _MessageClass = value
-        End Set
-    End Property
-
-End Class
-
-Public Class MyOleOutlookData
-
-    Private _StoreId As String
-    Public Property StoreId As String
-        Get
-            Return _StoreId
-        End Get
-        Set(value As String)
-            _StoreId = value
-        End Set
-    End Property
-
-    Private _FolderId As String
-    Public Property FolderId As String
-        Get
-            Return _FolderId
-        End Get
-        Set(value As String)
-            _FolderId = value
-        End Set
-    End Property
-
-    Private _SearchKey As MyOleOutlookItemData()
-    Public Property Items As MyOleOutlookItemData()
-        Get
-            Return _SearchKey
-        End Get
-        Set(value As MyOleOutlookItemData())
-            _SearchKey = value
-        End Set
-    End Property
 End Class

@@ -34,7 +34,6 @@ Friend Class formRWSuche
     ''' </summary>
     ''' <param name="Telefonat">Telefonat, das geprüft werden soll</param>
     ''' <returns>True, wenn gefunden. Neue Daten werden in dem Telefonat abgelegt.</returns>
-    ''' <remarks></remarks>
     Friend Function AnrMonRWS(ByRef Telefonat As C_Telefonat) As Boolean
         AnrMonRWS = False
         With Telefonat
@@ -89,14 +88,13 @@ Friend Class formRWSuche
         End With
     End Function
 
+    ''' <summary>
+    ''' Startet die Rückwärtssuche mit verschiedenen Suchmaschinen. 
+    ''' </summary>
+    ''' <param name="RWSAnbieter">Die zu verwendende Rückwärtssuchmaschine</param>
+    ''' <param name="olInsp">Outlook Inspector Fenster</param>
+    ''' <remarks>Funktioniert nur in Kontakt- und Journaleinträgen</remarks>
     Public Sub Rückwärtssuche(ByVal RWSAnbieter As RückwärtsSuchmaschine, ByVal olInsp As Outlook.Inspector)
-        ' Startet die Rückwärtssuche mit verschiedenen Suchmaschinen
-        ' funktioniert nur in Kontakt- und Journaleinträgen
-        ' Parameter:  Suchmaschine (Integer):  Kennnummer der Suchmaschinen
-        '               = 0: GoYellow
-        '               = 1: 11880
-        '               = 2: RWSDasTelefonbuch
-        '               = 3: TelSearch.ch
 
         Dim i As Integer, iTelNr As Integer      ' Zählvariablen
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
@@ -222,11 +220,13 @@ Friend Class formRWSuche
         End If
     End Sub
 
+    ''' <summary>
+    ''' Führt die Rückwärtssuche über 'www.11880.com' durch.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ''' <returns>'true' wenn was gefunden wurde</returns>
     Function RWS11880(ByRef TelNr As String, ByRef vCard As String) As Boolean
-        ' führt die Rückwärtssuche über 'www.11880.com' durch
-        ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
-        '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
-        ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
 
         RWS11880 = False
 
@@ -285,11 +285,13 @@ Friend Class formRWSuche
         End If
     End Function
 
+    ''' <summary>
+    ''' Führt die Rückwärtssuche über 'www.dasoertliche.de' durch.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ''' <returns>'true' wenn was gefunden wurde</returns>
     Function RWSDasOertiche(ByRef TelNr As String, ByRef vCard As String) As Boolean
-        ' führt die Rückwärtssuche über 'www.dastelefonbuch.de' durch
-        ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
-        '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
-        ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
 
         Dim EintragsID As String    ' Hilfsstring
         Dim tmpTelNr As String      ' Hilfsstring für TelNr
@@ -331,6 +333,12 @@ Friend Class formRWSuche
 
     End Function
 
+    ''' <summary>
+    ''' Führt die Rückwärtssuche über 'www.dastelefonbuch.de' durch.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ''' <returns>'true' wenn was gefunden wurde</returns>
     Function RWSDasTelefonbuch(ByRef TelNr As String, ByRef vCard As String) As Boolean
         ' führt die Rückwärtssuche über 'www.dastelefonbuch.de' durch
         ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
@@ -382,12 +390,14 @@ Friend Class formRWSuche
 
     End Function
 
+    ''' <summary>
+    ''' Führt die Rückwärtssuche über 'www.telsearch.ch' durch.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ''' <returns>'true' wenn was gefunden wurde</returns>
+    ''' <remarks>Nur für die Schweiz</remarks>
     Function RWStelsearch(ByRef TelNr As String, ByRef vCard As String) As Boolean
-        ' Suchmaschienen Script für die Schweiz
-        ' führt die Rückwärtssuche über 'www.telsearch.ch' durch
-        ' Parameter:  TelNr (String):  Telefonnummer des zu Suchenden
-        '             vCard (String):  vCard falls was gefunden wurde (nur Rückgabewert)
-        ' Rückgabewert (Boolean):      'true' wenn was gefunden wurde
 
         Dim myurl As String         ' URL von 11880
         Dim EintragsID As String    ' Hilfsstring
@@ -449,14 +459,27 @@ Friend Class formRWSuche
 
     End Function
 
+    ''' <summary>
+    ''' Führt die Rückwärtssuche mit allen vorhanden Rückwärtssuchmaschinen durch, so lange bis etwas gefunden wurde.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ''' <returns>'true' wenn was gefunden wurde</returns>
     Function RWSAlle(ByRef TelNr As String, ByRef vCard As String) As Boolean
+
         RWSAlle = RWSDasOertiche(TelNr, vCard)
-        If RWSAlle Then Exit Function
-        RWSAlle = RWS11880(TelNr, vCard)
-        If RWSAlle Then Exit Function
-        RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
-        If RWSAlle Then Exit Function
-        RWSAlle = RWStelsearch(TelNr, vCard)
+
+        If Not RWSAlle Then
+            RWSAlle = RWS11880(TelNr, vCard)
+        End If
+
+        If Not RWSAlle Then
+            RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
+        End If
+
+        If Not RWSAlle Then
+            RWSAlle = RWStelsearch(TelNr, vCard)
+        End If
     End Function
 
 #Region "Helfer"

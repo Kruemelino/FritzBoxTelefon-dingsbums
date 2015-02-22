@@ -50,7 +50,6 @@ Public Class Contacts
     ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der gefundene Kontaktes befindet.</param>
     ''' <param name="alleOrdner">Flag, welches Bestimmt, ob alle Ordner durchsucht werden soll, oder nur der Hauptkontaktordner.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    ''' <remarks></remarks>
     Friend Function KontaktSuche(ByRef TelNr As String, _
                                  ByVal EMailAdresse As String, _
                                  ByRef KontaktID As String, _
@@ -113,7 +112,6 @@ Public Class Contacts
     ''' <param name="TelNr">Telefonnummer, die als Suchkriterium verwendet wird.</param>
     ''' <param name="NamensRaum">Startpunkt der Rekursiven Suche als <c>Outlook.NameSpace</c>.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    ''' <remarks></remarks>
     Private Overloads Function FindeAnruferKontakt(ByRef TelNr As String, ByVal NamensRaum As Outlook.NameSpace, ByVal sFilter As String) As Outlook.ContactItem
 
         Dim KontaktGefunden As Outlook.ContactItem = Nothing
@@ -215,7 +213,6 @@ Public Class Contacts
     ''' <param name="NamensRaum">Startpunkt der Rekursiven Suche als <c>Outlook.NameSpace</c>.</param>
     ''' <param name="sFilter">Der Filter, mit dem die Suche nach dem Kontakt durchgeführt werden soll.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    ''' <remarks></remarks>
     Private Overloads Function FindeAbsenderKontakt(ByVal EMailAdresse As String, ByVal NamensRaum As Outlook.NameSpace, ByVal sFilter As String) As Outlook.ContactItem
 
         Dim KontaktGefunden As Outlook.ContactItem = Nothing
@@ -267,7 +264,6 @@ Public Class Contacts
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
     ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
-    ''' <remarks></remarks>
     Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
@@ -341,7 +337,6 @@ Public Class Contacts
     ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
     ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
     ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
-    ''' <remarks></remarks>
     Friend Overloads Function ErstelleKontakt(ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
         Return ErstelleKontakt(C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, TelNr, Speichern)
     End Function
@@ -349,7 +344,6 @@ Public Class Contacts
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Sub ZeigeKontaktAusJournal()
         Dim olAuswahl As Outlook.Inspector ' das aktuelle Inspector-Fenster (Journal)
         Dim vCard As String
@@ -409,7 +403,6 @@ Public Class Contacts
     ''' </summary>
     ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
     ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
-    ''' <remarks></remarks>
     Friend Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
         KontaktBild = C_DP.P_Def_StringEmpty
         If olContact IsNot Nothing Then
@@ -429,7 +422,6 @@ Public Class Contacts
     ''' Löscht das Kontaktbild in den Arbeitsorder. 
     ''' </summary>
     ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
-    ''' <remarks></remarks>
     Friend Sub DelKontaktBild(ByVal PfadKontaktBild As String)
         If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
             With My.Computer.FileSystem
@@ -446,7 +438,6 @@ Public Class Contacts
     ''' <param name="KontaktID">EntryID des Kontaktes</param>
     ''' <param name="StoreID">StoreID des beinhaltenden Ordners</param>
     ''' <returns>Erfolg: Kontakt, Misserfolg: Nothing</returns>
-    ''' <remarks></remarks>
     Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As Outlook.ContactItem
         GetOutlookKontakt = Nothing
         Try
@@ -532,7 +523,7 @@ Public Class Contacts
     ''' Indiziert einen Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
-    ''' <remarks></remarks>
+
     Friend Sub IndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
             Dim tempTelNr As String
@@ -590,7 +581,7 @@ Public Class Contacts
     ''' Entfernt alle Indizierungseinträge aus einem Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der deindiziert werden soll.</param>
-    ''' <remarks></remarks>
+
     Friend Sub DeIndizierungKontakt(ByRef olKontakt As Outlook.ContactItem)
         Dim UserEigenschaft As Outlook.UserProperty
         If Not C_DP.P_CBIndexAus Then
@@ -634,7 +625,6 @@ Public Class Contacts
     ''' </summary>
     ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
     ''' <param name="Contact">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
-    ''' <remarks></remarks>
     Friend Sub vCard2Contact(ByVal vCard As String, ByRef Contact As Outlook.ContactItem)
 
         Dim ContactName As String  ' kompletter Name ("N") aus vCard
@@ -1004,7 +994,6 @@ Public Class Contacts
     ''' Fügt einen Notizzeile in den Body eines Kontaktes
     ''' </summary>
     ''' <param name="olKontakt">Kontakt, in den die Notizzeile geschrieben werden soll.</param>
-    ''' <remarks></remarks>
     Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
         Dim oInsp As Outlook.Inspector
         Dim Handle As IntPtr
@@ -1053,7 +1042,6 @@ Public Class Contacts
     ''' </summary>
     ''' <param name="oInsp">Inspector eines Kontaktes.</param>
     ''' <returns>Pointer auf das Body-Element.</returns>
-    ''' <remarks></remarks>
     Private Function GetBodyHandle(ByVal oInsp As Outlook.Inspector) As IntPtr
         Dim HandleNames() As String = {"AfxWndW", _
                                        "AfxWndW", _
@@ -1084,7 +1072,6 @@ Public Class Contacts
     ''' <param name="CallRow">Die Kopfzeile des einzelnen Anrufes.</param>
     ''' <param name="NoteRow">BEreich in den die Notizen eingetragen werden.</param>
     ''' <param name="NeueZeile">Flag, die angibt ob eine neue Zeile hinzugefügt werden soll.</param>
-    ''' <remarks></remarks>
     Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row, ByVal NeueZeile As Boolean)
 
         Dim nRow As Integer = 1
@@ -1191,7 +1178,6 @@ Public Class Contacts
     ''' <param name="AnrMonTyp">Gibt, an ob es sich um einen RING, CALL, CONNECT oder DISCONNECT handelt.</param>
     ''' <param name="Telfonat">Alle Informationen zu dem Telefonat.</param>
     ''' <param name="ContactShown">Gibt an ob der Kontakt angezeigt wird.</param>
-    ''' <remarks></remarks>
     Friend Sub FillNote(ByVal AnrMonTyp As AnrufMonitor.AnrMonEvent, ByVal Telfonat As C_Telefonat, ByVal ContactShown As Boolean)
 
         'FillNote = vbNull
@@ -1242,7 +1228,6 @@ Public Class Contacts
     ''' </summary>
     ''' <param name="hwnd">Ausgangshandle</param>
     ''' <returns>Liste der Handles.</returns>
-    ''' <remarks></remarks>
     Private Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
         ' Clear the window list
         Dim ReturnValue As Int32
@@ -1258,7 +1243,6 @@ Public Class Contacts
     ''' </summary>
     ''' <param name="hwnd"></param>
     ''' <param name="lParam"></param>
-    ''' <remarks></remarks>
     Private Sub EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32)
         ListChildren.Add(GetWindowIdentification(hwnd))
     End Sub
@@ -1268,8 +1252,6 @@ Public Class Contacts
     ''' Gibt hier das Handle zurück.
     ''' </summary>
     ''' <param name="hwnd"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function GetWindowIdentification(ByVal hwnd As IntPtr) As ApiWindow
         Dim window As New ApiWindow()
         window.HWnd = CType(hwnd, IntPtr)
@@ -1278,7 +1260,6 @@ Public Class Contacts
 
 #End If
 #End Region
-
 
 End Class
 

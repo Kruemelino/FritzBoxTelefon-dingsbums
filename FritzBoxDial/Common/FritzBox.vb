@@ -39,9 +39,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_Basis() As String
         Get
             Return "http://" & C_DP.P_ValidFBAdr
@@ -51,9 +51,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr/login_sid.lua?
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LoginLua_Basis() As String
         Get
             Return P_Link_FB_Basis & "/login_sid.lua?"
@@ -65,9 +65,9 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/login_sid.lua?sid=SID
     ''' </summary>
     ''' <param name="SID">SessionID</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LoginLuaTeil1(ByVal SID As String) As String
         Get
             Return P_Link_FB_LoginLua_Basis & "sid=" & SID
@@ -80,9 +80,9 @@ Public Class FritzBox
     ''' </summary>
     ''' <param name="FBBenutzer">Hinterlegter Firtz!Box Benutzer</param>
     ''' <param name="SIDResponse">Erstelltes Response</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LoginLuaTeil2(ByVal FBBenutzer As String, ByVal SIDResponse As String) As String
         Get
             Return P_Link_FB_LoginLua_Basis & "username=" & FBBenutzer & "&response=" & SIDResponse
@@ -93,9 +93,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr/cgi-bin/webcm
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_ExtBasis() As String
         Get
             Return P_Link_FB_Basis & "/cgi-bin/webcm"
@@ -107,9 +107,9 @@ Public Class FritzBox
     ''' http://fritz.box/cgi-bin/webcm?getpage=../html/login_sid.xml&amp;sid=SID
     ''' </summary>
     ''' <param name="SID">SessionID</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LoginAltTeil1(ByVal SID As String) As String
         Get
             Return P_Link_FB_ExtBasis & "?getpage=../html/login_sid.xml&sid=" & SID
@@ -121,9 +121,9 @@ Public Class FritzBox
     ''' Wird per POST geschickt. Kein "?"
     ''' </summary>
     ''' <param name="SIDResponse"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LoginAltTeil2(ByVal SIDResponse As String) As String
         Get
             Return "getpage=../html/login_sid.xml&login:command/response=" & SIDResponse
@@ -135,9 +135,9 @@ Public Class FritzBox
     ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/home/home.lua?sid=" &amp; sSID &amp; "&amp;logout=1"
     ''' </summary>
     ''' <param name="SID">SessionID</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LogoutLuaNeu(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/home/home.lua?sid=" & SID & "&logout=1"
@@ -148,9 +148,9 @@ Public Class FritzBox
     ''' http:// &amp; P_ValidFBAdr &amp; "/logout.lua?sid=" &amp; SID
     ''' </summary>
     ''' <param name="SID">SessionID</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_LogoutLuaAlt(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/logout.lua?sid=" & SID
@@ -162,9 +162,9 @@ Public Class FritzBox
     ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/fon_num_list.lua?sid=" &amp; SID
     ''' </summary>
     ''' <param name="SID">SessionID</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_Tel1(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/fon_num/fon_num_list.lua?sid=" & SID
@@ -175,9 +175,9 @@ Public Class FritzBox
     ''' http:// &amp; C_DP.P_ValidFBAdr &amp; /cgi-bin/webcm?sid= &amp; SID &amp; &amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=fondevices
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_TelAlt1(ByVal SID As String) As String
         Get
             Return P_Link_FB_ExtBasis & "?sid=" & SID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
@@ -193,9 +193,9 @@ Public Class FritzBox
     ''' <param name="DialPort">DialPort</param>
     ''' <param name="DialCode">Gewählte Telefonnummer</param>
     ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_Dial(ByVal SID As String, ByVal DialPort As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
             Return "sid=" & SID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
@@ -207,9 +207,9 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/fon_num/foncalls_list.lua?sid=SID
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_JI1(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/fon_num/foncalls_list.lua?sid=" & SID
@@ -220,9 +220,9 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/fon_num/foncalls_list.lua?sid=SID&amp;csv=
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_JI2(ByVal SID As String) As String
         Get
             Return P_Link_JI1(SID) & "&csv="
@@ -233,9 +233,9 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=SID&amp;getpage=../html/de/
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_JIAlt_Basis(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/"
@@ -246,9 +246,9 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=SID&amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=foncalls
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_JIAlt_Child1(ByVal SID As String) As String
         Get
             Return P_Link_JIAlt_Basis(SID) & "menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
@@ -259,9 +259,9 @@ Public Class FritzBox
     ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=SID&amp;getpage=../html/de/FRITZ!Box_Anrufliste.csv
     ''' </summary>
     ''' <param name="SID"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_JIAlt_Child2(ByVal SID As String) As String
         Get
             Return P_Link_JIAlt_Basis(SID) & C_DP.P_Def_AnrListFileName
@@ -272,9 +272,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr/cgi-bin/system_status
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_SystemStatus() As String
         Get
             Return P_Link_FB_Basis & "/cgi-bin/system_status"
@@ -284,9 +284,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr/jason_boxinfo.xml
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_jason_boxinfo() As String
         Get
             Return P_Link_FB_Basis & "/jason_boxinfo.xml"
@@ -297,9 +297,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr/fon_num/fonbook_entry.lua
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_FonBook_Entry() As String
         Get
             Return P_Link_FB_Basis & "/fon_num/fonbook_entry.lua"
@@ -310,9 +310,9 @@ Public Class FritzBox
     ''' <summary>
     ''' http://P_ValidFBAdr/cgi-bin/firmwarecfg
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_FB_ExportAddressbook() As String
         Get
             Return P_Link_FB_Basis & "/cgi-bin/firmwarecfg"
@@ -324,9 +324,9 @@ Public Class FritzBox
     ''' http://<c>P_ValidFBAdr</c>/fon_num/fonbook_select.lua?sid=<c>sid</c>
     ''' </summary>
     ''' <param name="SID">Session ID</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_Telefonbuch_List(ByVal SID As String) As String
         Get
             Return P_Link_FB_Basis & "/fon_num/fonbook_select.lua?sid=" & SID
@@ -338,9 +338,9 @@ Public Class FritzBox
     ''' </summary>
     ''' <param name="SID">Session ID</param>
     ''' <param name="Abfrage">Zu übersendende Abfrage</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
     Private ReadOnly Property P_Link_Query(ByVal SID As String, ByVal Abfrage As String) As String
         Get
             Return P_Link_FB_Basis & "/query.lua?sid=" & SID & "&" & Abfrage
@@ -2097,120 +2097,4 @@ Public Class FritzBox
 
 #End Region
 
-    'Public Class FBValue
-    '    Public thisFBValue As String
-    'End Class
-
-    'Public Class FBInfo
-
-    '    Public LKZPrefix As String
-    '    Public LKZ As String
-    '    Public OKZPrefix As String
-    '    Public OKZ As String
-    '    Public FON1 As String
-    '    Public FON2 As String
-    '    Public FON3 As String
-    '    Public POTS As String
-    '    Public Mobil As String
-    '    Public MobilName As String
-
-    '    Public TAM As myTelDevice()
-    '    Public IPP As myTelDevice()
-    '    Public DECT As myTelDevice()
-    '    Public SIP As myTelNr()
-
-    '    Public MSN0 As String
-    '    Public MSN1 As String
-    '    Public MSN2 As String
-    '    Public MSN3 As String
-    '    Public MSN4 As String
-    '    Public MSN5 As String
-    '    Public MSN6 As String
-    '    Public MSN7 As String
-    '    Public MSN8 As String
-    '    Public MSN9 As String
-
-    '    Public TAM0 As String
-    '    Public TAM1 As String
-    '    Public TAM2 As String
-    '    Public TAM3 As String
-    '    Public TAM4 As String
-    '    Public TAM5 As String
-    '    Public TAM6 As String
-    '    Public TAM7 As String
-    '    Public TAM8 As String
-    '    Public TAM9 As String
-
-    '    Public FAX0 As String
-    '    Public FAX1 As String
-    '    Public FAX2 As String
-    '    Public FAX3 As String
-    '    Public FAX4 As String
-    '    Public FAX5 As String
-    '    Public FAX6 As String
-    '    Public FAX7 As String
-    '    Public FAX8 As String
-    '    Public FAX9 As String
-
-    '    Public MSNP0N0 As String
-    '    Public MSNP0N1 As String
-    '    Public MSNP0N2 As String
-    '    Public MSNP0N3 As String
-    '    Public MSNP0N4 As String
-    '    Public MSNP0N5 As String
-    '    Public MSNP0N6 As String
-    '    Public MSNP0N7 As String
-    '    Public MSNP0N8 As String
-    '    Public MSNP0N9 As String
-
-    '    Public MSNP1N0 As String
-    '    Public MSNP1N1 As String
-    '    Public MSNP1N2 As String
-    '    Public MSNP1N3 As String
-    '    Public MSNP1N4 As String
-    '    Public MSNP1N5 As String
-    '    Public MSNP1N6 As String
-    '    Public MSNP1N7 As String
-    '    Public MSNP1N8 As String
-    '    Public MSNP1N9 As String
-
-    '    Public MSNP2N0 As String
-    '    Public MSNP2N1 As String
-    '    Public MSNP2N2 As String
-    '    Public MSNP2N3 As String
-    '    Public MSNP2N4 As String
-    '    Public MSNP2N5 As String
-    '    Public MSNP2N6 As String
-    '    Public MSNP2N7 As String
-    '    Public MSNP2N8 As String
-    '    Public MSNP2N9 As String
-
-    'End Class
-
-    'Public Class myTelDevice
-    '    'Name,Type,Intern,Id,Phonebook
-    '    'Active,Name,Display,MSNBitmap
-    '    Public Name As String
-    '    Public Type As String
-    '    Public Intern As String
-    '    Public Id As String
-    '    Public Phonebook As String
-    '    Public Active As String
-    '    Public Display As String
-    '    Public MSNBitmap As String
-
-    'End Class
-
-    'Public Class myTelNr
-    '    'activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id
-    '    Public activated As String
-    '    Public displayname As String
-    '    Public registrar As String
-    '    Public outboundproxy As String
-    '    Public providername As String
-    '    Public ID As String
-    '    Public gui_readonly As String
-    '    Public webui_trunk_id As String
-
-    'End Class
 End Class

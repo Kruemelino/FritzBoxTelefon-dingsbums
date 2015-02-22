@@ -131,7 +131,6 @@ Imports Microsoft.Office.Core
     ''' </summary>
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>True, wenn JournalItem, von diesem Addin erstellt wurde. Ansonsten False</returns>
-    ''' <remarks></remarks>
     Private Function CheckJournalInspector(ByVal control As Microsoft.Office.Core.IRibbonControl) As Outlook.JournalItem
         CheckJournalInspector = Nothing
 
@@ -159,8 +158,6 @@ Imports Microsoft.Office.Core
     ''' Gibt zurück, ob das Journal eine gültige Telefonnummer enthält
     ''' </summary>
     ''' <param name="control"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function EnableBtnJournal(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         EnableBtnJournal = False
 
@@ -229,8 +226,6 @@ Imports Microsoft.Office.Core
     ''' Die Ribbons der Inspectoren sollen nur eingeblendet werden, wenn ein Explorer vorhanden ist.
     ''' </summary>
     ''' <param name="control"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function ShowInspectorRibbon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         ShowInspectorRibbon = False
 
@@ -257,8 +252,6 @@ Imports Microsoft.Office.Core
         Dim XMLListBaseNode As String
 
         Dim index As Integer
-        'Dim i As Integer
-
         Dim Anrufer As String
         Dim TelNr As String
         Dim Zeit As String
@@ -429,7 +422,6 @@ Imports Microsoft.Office.Core
     ''' </summary>
     ''' <param name="control"></param>
     ''' <returns>True</returns>
-    ''' <remarks></remarks>
     Public Function ShowExplorerRibbon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
         Return True
     End Function
@@ -442,8 +434,6 @@ Imports Microsoft.Office.Core
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function GetItemLabel(ByVal control As Office.IRibbonControl) As String
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "Tab"
@@ -503,8 +493,6 @@ Imports Microsoft.Office.Core
     ''' Ermittelt das ScreenTipp des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function GetItemScreenTipp(ByVal control As Office.IRibbonControl) As String
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "btnDialExpl", "btnDialInsp"
@@ -605,7 +593,6 @@ Imports Microsoft.Office.Core
     ''' Ruft die jeweilige Funktion auf, die dem Button hinterlegt ist.
     ''' </summary>
     ''' <param name="control">Die id des Ribbon Controls</param>
-    ''' <remarks></remarks>
     Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "btnDialExpl", "cbtnDial"
@@ -1338,7 +1325,7 @@ Imports Microsoft.Office.Core
     ''' Mögliche Anwendungen, die durch den klick auf ein Button/Ribbon ausgelöst werden können.
     ''' Warum, die Englisch sind? Keine Ahnung.
     ''' </summary>
-    ''' <remarks></remarks>
+
     Friend Enum TaskToDo
         OpenConfig          ' Explorer: Einstellung Öffnen
         OpenJournalimport   ' Explorer: Journalimport öffnen
@@ -1354,7 +1341,7 @@ Imports Microsoft.Office.Core
     ''' Steuert die aufzurufende Funktion anhand der Übergebenen <c>Aufgabe</c>
     ''' </summary>
     ''' <param name="Aufgabe">Übergabe Wert, der besitmt, was getan werden soll.</param>
-    ''' <remarks></remarks>
+
     Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.DialDirect

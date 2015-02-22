@@ -6,31 +6,9 @@ Friend Class C_Telefonat
         Ausgehend = 0
     End Enum
 
-#Region "Eigene Private Variablen"
-    Private _Angenommen As Boolean = False
-    Private _Anrufer As String
-    Private _Beendet As Boolean = False
-    Private _Body As String
-    Private _Categories As String
-    Private _Companies As String
-    Private _Dauer As Integer
-    Private _ID As Integer
-    Private _KontaktID As String
-    Private _MSN As String
-    Private _NSN As Long
-    Private _PopUpAnrMon As F_AnrMon
-    Private _PopUpStoppuhr As F_StoppUhr
-    Private _StoreID As String
-    Private _Subject As String
-    Private _TelName As String
-    Private _TelNr As String
-    Private _Typ As AnrufRichtung
-    Private _Zeit As Date
-    Private _olContact As Outlook.ContactItem
-    Private _vCard As String
-#End Region
-
 #Region "Properties"
+
+    Private _ID As Integer
     Friend Property ID() As Integer
         Get
             Return _ID
@@ -39,6 +17,8 @@ Friend Class C_Telefonat
             _ID = value
         End Set
     End Property
+
+    Private _Typ As AnrufRichtung
     Friend Property Typ() As AnrufRichtung
         Get
             Return _Typ
@@ -47,6 +27,8 @@ Friend Class C_Telefonat
             _Typ = value
         End Set
     End Property
+
+    Private _Zeit As Date
     Friend Property Zeit() As Date
         Get
             Return _Zeit
@@ -55,6 +37,8 @@ Friend Class C_Telefonat
             _Zeit = value
         End Set
     End Property
+
+    Private _MSN As String
     Friend Property MSN() As String
         Get
             Return _MSN
@@ -63,6 +47,8 @@ Friend Class C_Telefonat
             _MSN = value
         End Set
     End Property
+
+    Private _TelNr As String
     Friend Property TelNr() As String
         Get
             Return _TelNr
@@ -71,6 +57,8 @@ Friend Class C_Telefonat
             _TelNr = value
         End Set
     End Property
+
+    Private _KontaktID As String
     Friend Property KontaktID() As String
         Get
             Return _KontaktID
@@ -79,6 +67,8 @@ Friend Class C_Telefonat
             _KontaktID = value
         End Set
     End Property
+
+    Private _StoreID As String
     Friend Property StoreID() As String
         Get
             Return _StoreID
@@ -87,6 +77,8 @@ Friend Class C_Telefonat
             _StoreID = value
         End Set
     End Property
+
+    Private _Dauer As Integer
     Friend Property Dauer() As Integer
         Get
             Return _Dauer
@@ -95,14 +87,18 @@ Friend Class C_Telefonat
             _Dauer = value
         End Set
     End Property
-    Friend Property NSN() As Long
+
+    Private _NSN As Integer
+    Friend Property NSN() As Integer
         Get
             Return _NSN
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             _NSN = value
         End Set
     End Property
+
+    Private _Subject As String
     Friend Property Subject() As String
         Get
             Return _Subject
@@ -111,6 +107,8 @@ Friend Class C_Telefonat
             _Subject = value
         End Set
     End Property
+
+    Private _Body As String
     Friend Property Body() As String
         Get
             Return _Body
@@ -119,6 +117,8 @@ Friend Class C_Telefonat
             _Body = value
         End Set
     End Property
+
+    Private _Categories As String
     Friend Property Categories() As String
         Get
             Return _Categories
@@ -127,6 +127,8 @@ Friend Class C_Telefonat
             _Categories = value
         End Set
     End Property
+
+    Private _Companies As String
     Friend Property Companies() As String
         Get
             Return _Companies
@@ -135,6 +137,8 @@ Friend Class C_Telefonat
             _Companies = value
         End Set
     End Property
+
+    Private _olContact As Outlook.ContactItem
     Friend Property olContact() As Outlook.ContactItem
         Get
             Return _olContact
@@ -143,6 +147,8 @@ Friend Class C_Telefonat
             _olContact = value
         End Set
     End Property
+
+    Private _vCard As String
     Friend Property vCard() As String
         Get
             Return _vCard
@@ -151,6 +157,8 @@ Friend Class C_Telefonat
             _vCard = value
         End Set
     End Property
+
+    Private _Anrufer As String
     Friend Property Anrufer() As String
         Get
             Return _Anrufer
@@ -159,6 +167,8 @@ Friend Class C_Telefonat
             _Anrufer = value
         End Set
     End Property
+
+    Private _TelName As String
     Friend Property TelName() As String
         Get
             Return _TelName
@@ -167,6 +177,8 @@ Friend Class C_Telefonat
             _TelName = value
         End Set
     End Property
+
+    Private _Angenommen As Boolean
     Friend Property Angenommen() As Boolean
         Get
             Return _Angenommen
@@ -175,6 +187,8 @@ Friend Class C_Telefonat
             _Angenommen = value
         End Set
     End Property
+
+    Private _PopUpAnrMon As F_AnrMon
     Friend Property PopupAnrMon() As F_AnrMon
         Get
             Return _PopUpAnrMon
@@ -183,6 +197,8 @@ Friend Class C_Telefonat
             _PopUpAnrMon = value
         End Set
     End Property
+
+    Private _PopUpStoppuhr As F_StoppUhr
     Friend Property PopupStoppuhr() As F_StoppUhr
         Get
             Return _PopUpStoppuhr
@@ -191,6 +207,8 @@ Friend Class C_Telefonat
             _PopUpStoppuhr = value
         End Set
     End Property
+
+    Private _Beendet As Boolean
     Friend Property Beendet() As Boolean
         Get
             Return _Beendet
@@ -199,6 +217,27 @@ Friend Class C_Telefonat
             _Beendet = value
         End Set
     End Property
+
+    Private _Online As Boolean
+    Friend Property Online() As Boolean
+        Get
+            Return _Online
+        End Get
+        Set(ByVal value As Boolean)
+            _Online = value
+        End Set
+    End Property
+
+    Private _Verpasst As Boolean
+    Friend Property Verpasst() As Boolean
+        Get
+            Return _Verpasst
+        End Get
+        Set(ByVal value As Boolean)
+            _Verpasst = value
+        End Set
+    End Property
+
 #End Region
 
 End Class
@@ -342,11 +381,9 @@ Public Class OutlookInterface
     ''' Zuvor müssen zwei Dinge geprüft werden:
     ''' 1. Hat ein Outlookfenster (Inspector) gerade den Focus: (.ActiveWindow Is .ActiveInspector)
     ''' 2. Ist das aktuell aktive Fenster der Inspector (OutlookSecurity.GetWindowText(OutlookSecurity.GetForegroundWindow) = .ActiveInspector.Caption)
-    ''' 
     ''' Um den ganzen vorgang abschließen zu können, wird der Inspector zwischengespeichert und nachdem der Anrufmonitor eingeblendet wurde wieder aktiviert.
     ''' </summary>
     ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
-    ''' <remarks></remarks>
     Friend Sub KeepoInspActivated(ByVal Activate As Boolean)
 
         If OutlookApplication IsNot Nothing Then
@@ -375,7 +412,6 @@ Public Class OutlookInterface
     ''' Prüfft ob ein Vollbildanwendung aktiv ist.
     ''' </summary>
     ''' <returns>True, wenn Vollbildanwendung erkannt, fals wenn nicht</returns>
-    ''' <remarks></remarks>
     Function VollBildAnwendungAktiv() As Boolean
         'Detect if the current app is running in full screen
 

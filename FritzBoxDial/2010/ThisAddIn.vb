@@ -57,7 +57,6 @@ Public Class ThisAddIn
     ''' </summary>
     ''' <value>System.Reflection.Assembly.GetExecutingAssembly.GetName.Version</value>
     ''' <returns>.Major.Minor.Build</returns>
-    ''' <remarks></remarks>
     Friend Shared ReadOnly Property Version() As String
         Get
             With System.Reflection.Assembly.GetExecutingAssembly.GetName.Version
@@ -162,9 +161,6 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
         C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
@@ -178,9 +174,6 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Startet das Fritz!Box Telefon-dingsbums
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy

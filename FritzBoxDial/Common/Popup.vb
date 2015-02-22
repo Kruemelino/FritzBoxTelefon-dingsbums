@@ -66,7 +66,6 @@ Public Class Popup
     ''' </summary>
     ''' <param name="ThisPopUpAnrMon">PopUpFenster</param>
     ''' <param name="Telefonat">telefonat, das angezeigt werden soll.</param>
-    ''' <remarks></remarks>
     Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As F_AnrMon, ByVal Telefonat As C_Telefonat)
         With ThisPopUpAnrMon
             With .OptionsMenu
@@ -137,14 +136,13 @@ Public Class Popup
     ''' <summary>
     ''' Startet den BackgroundWorker für das Einblenden des Anrufmonitors
     ''' </summary>
-    ''' <param name="Telefonat">Telefonat, das angezeigt wird</param>
-    ''' <remarks></remarks>
-    Friend Sub AnrMonEinblenden(ByVal Telefonat As C_Telefonat)
+    ''' <param name="tmpTelefonat">Telefonat, das angezeigt wird</param>
+    Friend Sub AnrMonEinblenden(ByVal tmpTelefonat As C_Telefonat)
         BWAnrMonEinblenden = New BackgroundWorker
         With BWAnrMonEinblenden
             .WorkerSupportsCancellation = False
             .WorkerReportsProgress = False
-            .RunWorkerAsync(argument:=Telefonat)
+            .RunWorkerAsync(argument:=tmpTelefonat)
         End With
     End Sub
 
@@ -155,9 +153,6 @@ Public Class Popup
     ''' <summary>
     ''' Abarbeitung des BackgroundWorkers für das Einblenden des Anrufmonitors
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
         Dim RemoveTelFromList As Boolean = False
@@ -187,7 +182,6 @@ Public Class Popup
                 .EffektTransparenz = C_DP.P_CBAnrMonTransp
                 .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
                 .MoveDirection = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
-                '.EffektMoveGeschwindigkeit = 44 - C_DP.P_TBAnrMonMoveGeschwindigkeit * 4
                 .AnzAnrMon = AnrMonListe.Count - 1
                 .Popup()
             End With
@@ -214,9 +208,6 @@ Public Class Popup
     ''' <summary>
     ''' Gibt BackgroundWorkers frei. (Dispose)
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub BWAnrMonEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWAnrMonEinblenden.RunWorkerCompleted
         BWAnrMonEinblenden.Dispose()
         BWAnrMonEinblenden = Nothing
@@ -229,9 +220,6 @@ Public Class Popup
     ''' <summary>
     ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As System.EventArgs)
 
         Dim tmpPopupAnrMon As F_AnrMon = CType(sender, F_AnrMon)
@@ -301,7 +289,6 @@ Public Class Popup
     ''' ist kein Kontakt vorhanden, dann wird einer angelegt und mit den vCard-Daten ausgefüllt
     ''' </summary>
     ''' <param name="tmpTelefonat">Telefonat, das angezeigt wird</param>
-    ''' <remarks></remarks>
     Private Sub AnruferAnzeigen(ByVal tmpTelefonat As C_Telefonat)
 
         With tmpTelefonat
@@ -327,7 +314,6 @@ Public Class Popup
     ''' Startet den Hintergrundprozess, der die Stoppuhr einblendet.
     ''' </summary>
     ''' <param name="Telefonat"></param>
-    ''' <remarks></remarks>
     Friend Sub StoppuhrEinblenden(ByVal Telefonat As C_Telefonat)
         BWStoppUhrEinblenden = New BackgroundWorker
         With BWStoppUhrEinblenden
@@ -342,7 +328,6 @@ Public Class Popup
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub BWStoppUhrEinblenden_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWStoppUhrEinblenden.DoWork
         Dim Telefonat As C_Telefonat = CType(e.Argument, C_Telefonat)
         Dim WarteZeit As Integer
@@ -408,7 +393,6 @@ Public Class Popup
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub BWStoppUhrEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWStoppUhrEinblenden.RunWorkerCompleted
         BWStoppUhrEinblenden.Dispose()
         BWStoppUhrEinblenden = Nothing
@@ -417,7 +401,6 @@ Public Class Popup
     ''' <summary>
     ''' Blendet die StoppUhr aus.
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub PopUpStoppuhr_Close(ByVal sender As Object, ByVal e As System.EventArgs)
 
         Dim tmpPopupStoppuhr As F_StoppUhr = CType(sender, F_StoppUhr)

@@ -320,7 +320,7 @@ Public Class F_AnrMon
     ''' <summary>
     ''' Initialisierungsroutine des ehemaligen AnrMonForm. Es wird das ContextMenuStrip an sich initialisiert 
     ''' </summary>
-    ''' <remarks></remarks>
+
     Private Sub InitializeComponentContextMenuStrip()
         '
         'ContextMenuStrip

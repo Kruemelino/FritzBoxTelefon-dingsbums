@@ -3,9 +3,6 @@ Imports System.IO
 Imports System.Text
 Imports System.Management
 
-''' <summary>
-''' 
-''' </summary>
 ''' <remarks>http://icodesnippet.com/snippet/vbnet/computing-hash-values-vbnet-code-snippets</remarks>
 Public Class MyRijndael
 
@@ -251,7 +248,6 @@ Public Class MyRijndael
     ''' Erstellt einen Fingerabdruck des Rechners anhand der "ProcessorID", der "VolumeSerialnumber" der ersten Festplatte, der "Win32_BaseBoard_SerialNumber" und der Sicherheits-ID für den Benutzer
     ''' </summary>
     ''' <returns>Fingerabdruck bzw. HardwareID</returns>
-    ''' <remarks></remarks>
     Private Function GetHWID() As String
         Dim list As New List(Of String)
 
@@ -293,7 +289,6 @@ Public Class MyRijndael
     ''' </summary>
     ''' <param name="strData">Text, aus dem der Initialisierungsvektor generiert werden soll.</param>
     ''' <returns>Initialisierungsvektor</returns>
-    ''' <remarks></remarks>
     Private Function CreateIV(ByVal strData As String) As Byte()
         'Convert strPassword to an array and store in chrData.
         Dim chrData() As Char = strData.ToCharArray

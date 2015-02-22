@@ -332,7 +332,6 @@ Public Class Wählclient
     '''  Wird durch formAnrMon Button Rückruf (für das direkte Rückrufen des letzten Anrufers) ausgelöst.
     ''' </summary>
     ''' <param name="Telefonat">Hinterlegtes Telefonat</param>
-    ''' <remarks></remarks>
     Friend Sub Rueckruf(ByVal Telefonat As C_Telefonat)
         With Telefonat
             Wählbox(.olContact, .TelNr, .vCard, False)
