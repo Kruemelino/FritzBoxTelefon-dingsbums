@@ -10,13 +10,18 @@ Imports Microsoft.Office.Core
 
     Public Function GetCustomUI(ByVal ribbonID As String) As String Implements Office.IRibbonExtensibility.GetCustomUI
         Dim File As String
+
         Select Case ribbonID
 #If OVer >= 14 Then
             Case "Microsoft.Outlook.Explorer"
                 File = GetResourceText("FritzBoxDial.RibbonExplorer.xml")
 #End If
-            Case "Microsoft.Outlook.Mail.Read", "Microsoft.Outlook.Journal", "Microsoft.Outlook.Contact"
-                File = GetResourceText("FritzBoxDial.RibbonInspector.xml")
+            Case "Microsoft.Outlook.Mail.Read"
+                File = GetResourceText("FritzBoxDial.RibbonInspectorMailRead.xml")
+            Case "Microsoft.Outlook.Journal"
+                File = GetResourceText("FritzBoxDial.RibbonInspectorJournal.xml")
+            Case "Microsoft.Outlook.Contact"
+                File = GetResourceText("FritzBoxDial.RibbonInspectorKontakt.xml")
             Case Else
                 File = C_DP.P_Def_StringEmpty
         End Select
@@ -1325,7 +1330,6 @@ Imports Microsoft.Office.Core
     ''' Mögliche Anwendungen, die durch den klick auf ein Button/Ribbon ausgelöst werden können.
     ''' Warum, die Englisch sind? Keine Ahnung.
     ''' </summary>
-
     Friend Enum TaskToDo
         OpenConfig          ' Explorer: Einstellung Öffnen
         OpenJournalimport   ' Explorer: Journalimport öffnen
@@ -1341,7 +1345,6 @@ Imports Microsoft.Office.Core
     ''' Steuert die aufzurufende Funktion anhand der Übergebenen <c>Aufgabe</c>
     ''' </summary>
     ''' <param name="Aufgabe">Übergabe Wert, der besitmt, was getan werden soll.</param>
-
     Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.DialDirect

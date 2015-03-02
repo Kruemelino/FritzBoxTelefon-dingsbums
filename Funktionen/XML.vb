@@ -14,23 +14,10 @@ Public Class XML
 
 #Region "Konstanten"
     ''' <summary>
-    ''' Name des Wurzelknotens der XML-Datei: "FritzOutlookXML"
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>FritzOutlookXML</returns>
-
-    Private ReadOnly Property P_RootName() As String
-        Get
-            Return "FritzOutlookXML"
-        End Get
-    End Property
-
-    ''' <summary>
     ''' xPath Steuerzeichen: Seperator /
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-
     Private ReadOnly Property P_xPathSeperatorSlash() As String
         Get
             Return "/"
@@ -41,8 +28,7 @@ Public Class XML
     ''' xPath Steuerzeichen: WildCard *
     ''' </summary>
     ''' <value>String</value>
-    ''' <returns>/</returns>
-
+    ''' <returns>*</returns>
     Private ReadOnly Property P_xPathWildCard() As String
         Get
             Return "*"
@@ -53,8 +39,7 @@ Public Class XML
     ''' xPath Steuerzeichen: Öffnende eckige Klammer [
     ''' </summary>
     ''' <value>String</value>
-    ''' <returns>/</returns>
-
+    ''' <returns>[</returns>
     Private ReadOnly Property P_xPathBracketOpen() As String
         Get
             Return "["
@@ -65,8 +50,7 @@ Public Class XML
     ''' xPath Steuerzeichen: Schließende eckige Klammer ]
     ''' </summary>
     ''' <value>String</value>
-    ''' <returns>/</returns>
-
+    ''' <returns>]</returns>
     Private ReadOnly Property P_xPathBracketClose() As String
         Get
             Return "]"
@@ -78,18 +62,15 @@ Public Class XML
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>@</returns>
-
     Private ReadOnly Property P_xPathAttribute() As String
         Get
             Return "@"
         End Get
     End Property
+
     ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält
     ''' </summary>
-
-
-
     Private Property P_NameStartChar As String
         Set(value As String)
             _NameStartChar = value
@@ -102,9 +83,6 @@ Public Class XML
     ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält
     ''' </summary>
-
-
-
     Private Property P_NameChar As String
         Set(value As String)
             _NameChar = value
@@ -113,17 +91,16 @@ Public Class XML
             Return _NameChar
         End Get
     End Property
+
     ''' <summary>
     ''' Leerstring, String.Empty
     ''' </summary>
-
-
-
     Public ReadOnly Property P_Def_StringEmpty() As String
         Get
             Return String.Empty
         End Get
     End Property
+
     ''' <summary>
     ''' -1 als String.
     ''' Default Fehler
