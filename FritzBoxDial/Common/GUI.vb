@@ -640,6 +640,9 @@ Imports Microsoft.Office.Core
                 C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
         End Select
     End Sub
+    Public Sub BtnOnToggleButtonAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
+        BtnOnAction(control)
+    End Sub
 #End Region
 
 #Region "VIP-Ribbon"
