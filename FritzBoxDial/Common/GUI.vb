@@ -640,6 +640,13 @@ Imports Microsoft.Office.Core
                 C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
         End Select
     End Sub
+
+    ''' <summary>
+    ''' Ruft die jeweilige Funktion auf, die dem ToogleButton hinterlegt ist.
+    ''' </summary>
+    ''' <param name="control">ToogleButton</param>
+    ''' <param name="pressed">Zustand des ToogleButtons</param>
+    ''' <remarks>Eine reine Weiterleitung auf die Standard-OnAction Funktion</remarks>
     Public Sub BtnOnToggleButtonAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
         BtnOnAction(control)
     End Sub
