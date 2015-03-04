@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Office.Core
-
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
 #If OVer < 14 Then
@@ -57,7 +56,6 @@ Public Class ThisAddIn
     ''' </summary>
     ''' <value>System.Reflection.Assembly.GetExecutingAssembly.GetName.Version</value>
     ''' <returns>.Major.Minor.Build</returns>
-    ''' <remarks></remarks>
     Friend Shared ReadOnly Property Version() As String
         Get
             With System.Reflection.Assembly.GetExecutingAssembly.GetName.Version
@@ -159,6 +157,9 @@ Public Class ThisAddIn
     End Function
 #End If
 
+    ''' <summary>
+    ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
+    ''' </summary>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
         C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
@@ -172,9 +173,6 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Startet das Fritz!Box Telefon-dingsbums
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
@@ -201,7 +199,7 @@ Public Class ThisAddIn
 
     Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & Version & " beendet.")
+        C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
             .NAR(P_oApp)
@@ -213,12 +211,14 @@ Public Class ThisAddIn
         C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnUpload)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If C_DP.P_CBKHO AndAlso Not _
+            If Not (C_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    C_KF.P_DefContactFolder.StoreID Then Exit Sub
-            Dim KS As New ContactSaved
-            KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
-            ListofOpenContacts.Add(KS)
+                    C_KF.P_DefContactFolder.StoreID) Then
+
+                Dim KS As New ContactSaved
+                KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
+                ListofOpenContacts.Add(KS)
+            End If
         End If
     End Sub
 
@@ -234,21 +234,21 @@ Public Class ThisAddIn
                                                                                                                          eBtnAnrMonNeuStart.Click
 
         With (C_GUI)
-            Select Case CType(Ctrl, CommandBarButton).Caption
-                Case "Direktwahl"
-                    .WähleDirektwahl()
-                Case "Wählen"
-                    .WählenExplorer()
-                Case "Einstellungen"
-                    .ÖffneEinstellungen()
-                Case "Anrufmonitor"
+            Select Case Ctrl.Tag
+                Case DataProvider.P_CMB_eBtnDirektwahl_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.DialDirect)
+                Case DataProvider.P_CMB_eBtnWaehlen_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.DialExplorer)
+                Case DataProvider.P_CMB_eBtnEinstellungen_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.OpenConfig)
+                Case DataProvider.P_CMB_eBtnAnrMon_Tag
                     C_AnrMon.AnrMonStartStopp()
-                Case "Anzeigen"
-                    .ÖffneAnrMonAnzeigen()
-                Case "Journalimport"
-                    .ÖffneJournalImport()
-                Case "Anrufmonitor neustarten"
-                    .AnrMonNeustarten()
+                Case DataProvider.P_CMB_eBtnAnzeigen_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.ShowAnrMon)
+                Case DataProvider.P_CMB_eBtnJournalimport_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.OpenJournalimport)
+                Case DataProvider.P_CMB_eBtnAnrMonNeuStart_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.RestartAnrMon)
             End Select
         End With
     End Sub
@@ -303,21 +303,21 @@ Public Class ThisAddIn
 
         With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Tag
-                Case C_DP.P_Tag_Insp_Kontakt
-                    .KontaktErstellen()
-                Case C_DP.P_RWSDasOertliche_Name
+                Case DataProvider.P_Tag_Insp_Kontakt
+                    .OnAction(GraphicalUserInterface.TaskToDo.CreateContact)
+                Case DataProvider.P_RWSDasOertliche_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasOertliche)
-                Case C_DP.P_RWS11880_Name
+                Case DataProvider.P_RWS11880_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWS11880)
-                Case C_DP.P_RWSDasTelefonbuch_Name
+                Case DataProvider.P_RWSDasTelefonbuch_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasTelefonbuch)
-                Case C_DP.P_RWSTelSearch_Name
+                Case DataProvider.P_RWSTelSearch_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWStelSearch)
-                Case C_DP.P_RWSAlle_Name
+                Case DataProvider.P_RWSAlle_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
-                Case C_DP.P_Tag_Insp_Dial
-                    C_WClient.WählenAusInspector()
-                Case C_DP.P_CMB_Insp_VIP
+                Case DataProvider.P_Tag_Insp_Dial
+                    .OnAction(GraphicalUserInterface.TaskToDo.DialInspector)
+                Case DataProvider.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
                         .RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
@@ -326,7 +326,7 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
-                Case C_DP.P_CMB_Insp_Upload
+                Case DataProvider.P_CMB_Insp_Upload
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     C_Fbox.UploadKontaktToFritzBox(aktKontakt, .IsVIP(aktKontakt))
             End Select

@@ -133,7 +133,13 @@
   <data name="IMG_Telefon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\..\common\ressourcen\icons\img_telefon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RibbonInspector" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\common\ressourcen\ribbonxml\ribboninspector.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="RibbonInspectorJournal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\common\ressourcen\ribbonxml\ribboninspectorjournal.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="RibbonInspectorKontakt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\common\ressourcen\ribbonxml\ribboninspectorkontakt.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="RibbonInspectorMailRead" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\common\ressourcen\ribbonxml\ribboninspectormailread.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>
