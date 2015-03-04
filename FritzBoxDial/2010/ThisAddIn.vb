@@ -1,5 +1,4 @@
 ﻿Imports Microsoft.Office.Core
-
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
 #If OVer < 14 Then
@@ -235,21 +234,21 @@ Public Class ThisAddIn
                                                                                                                          eBtnAnrMonNeuStart.Click
 
         With (C_GUI)
-            Select Case CType(Ctrl, CommandBarButton).Caption
-                Case "Direktwahl"
-                    .WähleDirektwahl()
-                Case "Wählen"
-                    .WählenExplorer()
-                Case "Einstellungen"
-                    .ÖffneEinstellungen()
-                Case "Anrufmonitor"
+            Select Case Ctrl.Tag
+                Case DataProvider.P_CMB_eBtnDirektwahl_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.DialDirect)
+                Case DataProvider.P_CMB_eBtnWaehlen_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.DialExplorer)
+                Case DataProvider.P_CMB_eBtnEinstellungen_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.OpenConfig)
+                Case DataProvider.P_CMB_eBtnAnrMon_Tag
                     C_AnrMon.AnrMonStartStopp()
-                Case "Anzeigen"
-                    .ÖffneAnrMonAnzeigen()
-                Case "Journalimport"
-                    .ÖffneJournalImport()
-                Case "Anrufmonitor neustarten"
-                    .AnrMonNeustarten()
+                Case DataProvider.P_CMB_eBtnAnzeigen_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.ShowAnrMon)
+                Case DataProvider.P_CMB_eBtnJournalimport_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.OpenJournalimport)
+                Case DataProvider.P_CMB_eBtnAnrMonNeuStart_Tag
+                    .OnAction(GraphicalUserInterface.TaskToDo.RestartAnrMon)
             End Select
         End With
     End Sub
@@ -304,19 +303,19 @@ Public Class ThisAddIn
 
         With (C_GUI)
             Select Case CType(Ctrl, CommandBarButton).Tag
-                Case C_DP.P_Tag_Insp_Kontakt
+                Case DataProvider.P_Tag_Insp_Kontakt
                     .OnAction(GraphicalUserInterface.TaskToDo.CreateContact)
-                Case C_DP.P_RWSDasOertliche_Name
+                Case DataProvider.P_RWSDasOertliche_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasOertliche)
-                Case C_DP.P_RWS11880_Name
+                Case DataProvider.P_RWS11880_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWS11880)
-                Case C_DP.P_RWSDasTelefonbuch_Name
+                Case DataProvider.P_RWSDasTelefonbuch_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSDasTelefonbuch)
-                Case C_DP.P_RWSTelSearch_Name
+                Case DataProvider.P_RWSTelSearch_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWStelSearch)
-                Case C_DP.P_RWSAlle_Name
+                Case DataProvider.P_RWSAlle_Name
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
-                Case C_DP.P_Tag_Insp_Dial
+                Case DataProvider.P_Tag_Insp_Dial
                     .OnAction(GraphicalUserInterface.TaskToDo.DialInspector)
                 Case DataProvider.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)

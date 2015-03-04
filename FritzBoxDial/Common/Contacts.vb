@@ -267,7 +267,6 @@ Public Class Contacts
     Friend Overloads Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As String, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
-        Dim verschieben As Boolean = False
 
         ' Achtung 140526: TryCatch eventuell erforderlich
 
