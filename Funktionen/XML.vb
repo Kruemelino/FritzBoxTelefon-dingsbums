@@ -95,7 +95,7 @@ Public Class XML
     ''' <summary>
     ''' Leerstring, String.Empty
     ''' </summary>
-    Public ReadOnly Property P_Def_StringEmpty() As String
+    Public Shared ReadOnly Property P_Def_StringEmpty() As String
         Get
             Return String.Empty
         End Get
@@ -107,7 +107,7 @@ Public Class XML
     ''' </summary>
     ''' <value>-1</value>
     ''' <returns>String</returns>
-    Public ReadOnly Property P_Def_ErrorMinusOne_String() As String
+    Public Shared ReadOnly Property P_Def_ErrorMinusOne_String() As String
         Get
             Return "-1"
         End Get

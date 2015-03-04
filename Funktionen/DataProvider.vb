@@ -1,6 +1,7 @@
 ﻿Imports System.Xml
 Imports System.Timers
 Imports System.ComponentModel
+Imports System.Collections.ObjectModel
 
 Public Class DataProvider
 
@@ -142,14 +143,12 @@ Public Class DataProvider
 #End Region
 
 #Region "Konstanten"
-    ' Helfer
     ''' <summary>
     ''' Intervall (in Minuten), in dem die XML-Datei gespeichert wird.
     ''' </summary>
     ''' <value>Double</value>
     ''' <returns>5</returns>
-
-    Private ReadOnly Property P_SpeicherIntervall() As Double
+    Private Shared ReadOnly Property P_SpeicherIntervall() As Double
         Get
             Return 5.0
         End Get
@@ -160,72 +159,66 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>FritzOutlookXML</returns>
-
-    Private ReadOnly Property P_RootName() As String
+    Private Shared ReadOnly Property P_RootName() As String
         Get
             Return "FritzOutlookXML"
         End Get
     End Property
 
-    ''' <summary>
-    ''' xPath Steuerzeichen: Seperator /
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>/</returns>
+    ' ''' <summary>
+    ' ''' xPath Steuerzeichen: Seperator /
+    ' ''' </summary>
+    ' ''' <value>String</value>
+    ' ''' <returns>/</returns>
+    'Private Shared ReadOnly Property P_xPathSeperatorSlash() As String
+    '    Get
+    '        Return "/"
+    '    End Get
+    'End Property
 
-    Private ReadOnly Property P_xPathSeperatorSlash() As String
-        Get
-            Return "/"
-        End Get
-    End Property
+    ' ''' <summary>
+    ' ''' xPath Steuerzeichen: WildCard *
+    ' ''' </summary>
+    ' ''' <value>String</value>
+    ' ''' <returns>*</returns>
+    'Private Shared ReadOnly Property P_xPathWildCard() As String
+    '    Get
+    '        Return "*"
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' xPath Steuerzeichen: WildCard *
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>/</returns>
+    ' ''' <summary>
+    ' ''' xPath Steuerzeichen: Öffnende eckige Klammer [
+    ' ''' </summary>
+    ' ''' <value>String</value>
+    ' ''' <returns>[</returns>
+    'Private Shared ReadOnly Property P_xPathBracketOpen() As String
+    '    Get
+    '        Return "["
+    '    End Get
+    'End Property
 
-    Private ReadOnly Property P_xPathWildCard() As String
-        Get
-            Return "*"
-        End Get
-    End Property
+    ' ''' <summary>
+    ' ''' xPath Steuerzeichen: Schließende eckige Klammer ]
+    ' ''' </summary>
+    ' ''' <value>String</value>
+    ' ''' <returns>]</returns>
+    'Private Shared ReadOnly Property P_xPathBracketClose() As String
+    '    Get
+    '        Return "]"
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' xPath Steuerzeichen: Öffnende eckige Klammer [
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>/</returns>
-
-    Private ReadOnly Property P_xPathBracketOpen() As String
-        Get
-            Return "["
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' xPath Steuerzeichen: Schließende eckige Klammer ]
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>/</returns>
-
-    Private ReadOnly Property P_xPathBracketClose() As String
-        Get
-            Return "]"
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' xPath Steuerzeichen: @
-    ''' </summary>
-    ''' <value>String</value>
-    ''' <returns>@</returns>
-
-    Private ReadOnly Property P_xPathAttribute() As String
-        Get
-            Return "@"
-        End Get
-    End Property
+    ' ''' <summary>
+    ' ''' xPath Steuerzeichen: @
+    ' ''' </summary>
+    ' ''' <value>String</value>
+    ' ''' <returns>@</returns>
+    'Private Shared ReadOnly Property P_xPathAttribute() As String
+    '    Get
+    '        Return "@"
+    '    End Get
+    'End Property
 #End Region
 
 #Region "Value Properties"
@@ -786,14 +779,11 @@ Public Class DataProvider
         End Set
     End Property
 
-    Private _CLBTelNr As String()
-    Public Property P_CLBTelNr As String()
+    Private _CLBTelNr As ReadOnlyCollection(Of String)
+    Public ReadOnly Property P_CLBTelNr() As ReadOnlyCollection(Of String)
         Get
             Return _CLBTelNr
         End Get
-        Set(ByVal value As String())
-            _CLBTelNr = value
-        End Set
     End Property
 
     'StoppUhr
@@ -1175,25 +1165,20 @@ Public Class DataProvider
 
     ' Vorwahllisten
 
-    Private _ListeOrtsVorwahlen As String()
-    Public Property P_ListeOrtsVorwahlen As String()
+    Private _ListeOrtsVorwahlen As ReadOnlyCollection(Of String)
+    Public ReadOnly Property P_ListeOrtsVorwahlen() As ReadOnlyCollection(Of String)
         Get
             Return _ListeOrtsVorwahlen
         End Get
-        Set(value As String())
-            _ListeOrtsVorwahlen = value
-        End Set
     End Property
 
-    Private _ListeLandesVorwahlen As String()
-    Public Property P_ListeLandesVorwahlen As String()
+    Private _ListeLandesVorwahlen As ReadOnlyCollection(Of String)
+    Public ReadOnly Property P_ListeLandesVorwahlen() As ReadOnlyCollection(Of String)
         Get
             Return _ListeLandesVorwahlen
         End Get
-        Set(value As String())
-            _ListeLandesVorwahlen = value
-        End Set
     End Property
+
 #End Region
 
 #Region "Global Default Value Properties"
@@ -1202,7 +1187,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>00</value>
     ''' <returns>String</returns>
-    Public ReadOnly Property P_Def_PreLandesVW() As String
+    Public Shared ReadOnly Property P_Def_PreLandesVW() As String
         Get
             Return "00"
         End Get
@@ -1213,19 +1198,16 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>-1</value>
     ''' <returns>String</returns>
-    Public ReadOnly Property P_Def_ErrorMinusOne_String() As String
+    Public Shared ReadOnly Property P_Def_ErrorMinusOne_String() As String
         Get
-            Return C_XML.P_Def_ErrorMinusOne_String '"-1"
+            Return XML.P_Def_ErrorMinusOne_String '"-1"
         End Get
     End Property
 
     ''' <summary>
     ''' -1 als Integer
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_ErrorMinusOne_Integer() As Integer
+    Public Shared ReadOnly Property P_Def_ErrorMinusOne_Integer() As Integer
         Get
             Return -1
         End Get
@@ -1234,10 +1216,7 @@ Public Class DataProvider
     ''' <summary>
     ''' -2 als String
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_ErrorMinusTwo_String() As String
+    Public Shared ReadOnly Property P_Def_ErrorMinusTwo_String() As String
         Get
             Return "-2"
         End Get
@@ -1246,12 +1225,9 @@ Public Class DataProvider
     ''' <summary>
     ''' Leerstring, String.Empty
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_StringEmpty() As String
+    Public Shared ReadOnly Property P_Def_StringEmpty() As String
         Get
-            Return C_XML.P_Def_StringEmpty 'String.Empty
+            Return XML.P_Def_StringEmpty 'String.Empty
         End Get
     End Property
 
@@ -1260,8 +1236,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>vbCrLf</value>
     ''' <returns>vbCrLf</returns>
-
-    Public ReadOnly Property P_Def_NeueZeile() As String
+    Public Shared ReadOnly Property P_Def_NeueZeile() As String
         Get
             Return vbCrLf
         End Get
@@ -1270,10 +1245,7 @@ Public Class DataProvider
     ''' <summary>
     ''' String: unbekannt
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_StringUnknown() As String
+    Public Shared ReadOnly Property P_Def_StringUnknown() As String
         Get
             Return "unbekannt"
         End Get
@@ -1282,10 +1254,7 @@ Public Class DataProvider
     ''' <summary>
     ''' fritz.box
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_FritzBoxAdress() As String
+    Public Shared ReadOnly Property P_Def_FritzBoxAdress() As String
         Get
             Return "fritz.box"
         End Get
@@ -1294,10 +1263,7 @@ Public Class DataProvider
     ''' <summary>
     ''' 192.168.178.1
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_FritzBoxIPAdress() As String
+    Public Shared ReadOnly Property P_Def_FritzBoxIPAdress() As String
         Get
             Return "192.168.178.1"
         End Get
@@ -1306,10 +1272,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_FritzBoxName() As String
+    Public Shared ReadOnly Property P_Def_FritzBoxName() As String
         Get
             Return "Fritz!Box"
         End Get
@@ -1318,10 +1281,7 @@ Public Class DataProvider
     ''' <summary>
     ''' FRITZ!Box_Anrufliste.csv
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_AnrListFileName() As String
+    Public Shared ReadOnly Property P_Def_AnrListFileName() As String
         Get
             Return "FRITZ!Box_Anrufliste.csv"
         End Get
@@ -1330,10 +1290,7 @@ Public Class DataProvider
     ''' <summary>
     ''' #96*5*
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_TelCodeActivateFritzBoxCallMonitor() As String
+    Public Shared ReadOnly Property P_Def_TelCodeActivateFritzBoxCallMonitor() As String
         Get
             Return "#96*5*"
         End Get
@@ -1342,10 +1299,7 @@ Public Class DataProvider
     ''' <summary>
     ''' 1012
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_DefaultFBAnrMonPort() As Integer
+    Public Shared ReadOnly Property P_DefaultFBAnrMonPort() As Integer
         Get
             Return 1012
         End Get
@@ -1356,8 +1310,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>"0"</value>
     ''' <returns>"0"</returns>
-
-    Public ReadOnly Property P_Def_StringNull() As String
+    Public Shared ReadOnly Property P_Def_StringNull() As String
         Get
             Return "0"
         End Get
@@ -1368,14 +1321,13 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>" "</value>
     ''' <returns>" "</returns>
-
-    Public ReadOnly Property P_Def_Leerzeichen() As String
+    Public Shared ReadOnly Property P_Def_Leerzeichen() As String
         Get
             Return Chr(32) '" "
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_StringErrorMinusOne() As String
+    Public Shared ReadOnly Property P_Def_StringErrorMinusOne() As String
         Get
             Return CStr(P_Def_ErrorMinusOne_String)
         End Get
@@ -1384,10 +1336,7 @@ Public Class DataProvider
     ''' <summary>
     ''' 0000000000000000
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_SessionID() As String
+    Public Shared ReadOnly Property P_Def_SessionID() As String
         Get
             Return "0000000000000000"
         End Get
@@ -1396,10 +1345,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_Header_UserAgent() As String
+    Public Shared ReadOnly Property P_Def_Header_UserAgent() As String
         Get
             Return "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
         End Get
@@ -1408,10 +1354,7 @@ Public Class DataProvider
     ''' <summary>
     ''' application/x-www-form-urlencoded
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_Header_ContentType() As String
+    Public Shared ReadOnly Property P_Def_Header_ContentType() As String
         Get
             Return "application/x-www-form-urlencoded"
         End Get
@@ -1420,10 +1363,7 @@ Public Class DataProvider
     ''' <summary>
     ''' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_Header_Accept() As String
+    Public Shared ReadOnly Property P_Def_Header_Accept() As String
         Get
             Return "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         End Get
@@ -1432,10 +1372,7 @@ Public Class DataProvider
     ''' <summary>
     ''' 3000
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_ReStartIntervall() As Integer
+    Public Shared ReadOnly Property P_Def_ReStartIntervall() As Integer
         Get
             Return 3000
         End Get
@@ -1444,10 +1381,7 @@ Public Class DataProvider
     ''' <summary>
     ''' 15
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_TryMaxRestart() As Integer
+    Public Shared ReadOnly Property P_Def_TryMaxRestart() As Integer
         Get
             Return 15
         End Get
@@ -1456,10 +1390,7 @@ Public Class DataProvider
     ''' <summary>
     ''' [-&gt;]
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_AnrMonDirection_Call() As String
+    Public Shared ReadOnly Property P_Def_AnrMonDirection_Call() As String
         Get
             Return "[->]"
         End Get
@@ -1468,10 +1399,7 @@ Public Class DataProvider
     ''' <summary>
     ''' [&lt;-]
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_AnrMonDirection_Ring() As String
+    Public Shared ReadOnly Property P_Def_AnrMonDirection_Ring() As String
         Get
             Return "[<-]"
         End Get
@@ -1480,10 +1408,7 @@ Public Class DataProvider
     ''' <summary>
     ''' [&lt;&gt;]
     ''' </summary>
-
-
-
-    Public ReadOnly Property P_Def_AnrMonDirection_Default() As String
+    Public Shared ReadOnly Property P_Def_AnrMonDirection_Default() As String
         Get
             Return "[<>]"
         End Get
@@ -1495,7 +1420,7 @@ Public Class DataProvider
 
 
 
-    Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
+    Public Shared ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
         Get
             Return "FBDB-AnrMonDirection"
         End Get
@@ -1507,7 +1432,7 @@ Public Class DataProvider
 
 
 
-    Public ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
+    Public Shared ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
         Get
             Return "FBDB-AnrMonZeit"
         End Get
@@ -1519,7 +1444,7 @@ Public Class DataProvider
 
 
 
-    Public ReadOnly Property P_Def_Note_Table() As String
+    Public Shared ReadOnly Property P_Def_Note_Table() As String
         Get
             Return "FBDB_Note_Table"
         End Get
@@ -1531,7 +1456,7 @@ Public Class DataProvider
 
 
 
-    Public ReadOnly Property P_Def_Begin_vCard() As String
+    Public Shared ReadOnly Property P_Def_Begin_vCard() As String
         Get
             Return "BEGIN:VCARD"
         End Get
@@ -1543,7 +1468,7 @@ Public Class DataProvider
 
 
 
-    Public ReadOnly Property P_Def_End_vCard() As String
+    Public Shared ReadOnly Property P_Def_End_vCard() As String
         Get
             Return "END:VCARD"
         End Get
@@ -1555,7 +1480,7 @@ Public Class DataProvider
     ''' <value>CallList</value>
     ''' <returns>CallList</returns>
 
-    Public ReadOnly Property P_Def_NameListCALL() As String
+    Public Shared ReadOnly Property P_Def_NameListCALL() As String
         Get
             Return "CallList"
         End Get
@@ -1567,7 +1492,7 @@ Public Class DataProvider
     ''' <value>RingList</value>
     ''' <returns>RingList</returns>
 
-    Public ReadOnly Property P_Def_NameListRING() As String
+    Public Shared ReadOnly Property P_Def_NameListRING() As String
         Get
             Return "RingList"
         End Get
@@ -1579,7 +1504,7 @@ Public Class DataProvider
     ''' <value>VIPList</value>
     ''' <returns>VIPList</returns>
 
-    Public ReadOnly Property P_Def_NameListVIP() As String
+    Public Shared ReadOnly Property P_Def_NameListVIP() As String
         Get
             Return "VIPList"
         End Get
@@ -1591,7 +1516,7 @@ Public Class DataProvider
     ''' <value>Fritz!Box Telefon-dingsbums</value>
     ''' <returns>Fritz!Box Telefon-dingsbums</returns>
 
-    Public ReadOnly Property P_Def_Addin_LangName() As String
+    Public Shared ReadOnly Property P_Def_Addin_LangName() As String
         Get
             Return "Fritz!Box Telefon-dingsbums"
         End Get
@@ -1603,7 +1528,7 @@ Public Class DataProvider
     ''' <value>FritzOutlook</value>
     ''' <returns>FritzOutlook</returns>
 
-    Public ReadOnly Property P_Def_Addin_KurzName() As String
+    Public Shared ReadOnly Property P_Def_Addin_KurzName() As String
         Get
             Return "FritzOutlook"
         End Get
@@ -1615,7 +1540,7 @@ Public Class DataProvider
     ''' <value>FritzOutlook.xml</value>
     ''' <returns>FritzOutlook.xml</returns>
     ''' <remarks>Wird mit "P_Def_Addin_KurzName" erstellt.</remarks>
-    Public ReadOnly Property P_Def_Config_FileName() As String
+    Public Shared ReadOnly Property P_Def_Config_FileName() As String
         Get
             Return P_Def_Addin_KurzName & ".xml"
         End Get
@@ -1627,7 +1552,7 @@ Public Class DataProvider
     ''' <value>FritzOutlook.log</value>
     ''' <returns>FritzOutlook.log</returns>
     ''' <remarks>Wird mit "P_Def_Addin_KurzName" erstellt.</remarks>
-    Public ReadOnly Property P_Def_Log_FileName() As String
+    Public Shared ReadOnly Property P_Def_Log_FileName() As String
         Get
             Return P_Def_Addin_KurzName & ".log"
         End Get
@@ -1638,7 +1563,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Integer</value>
     ''' <returns>Intervall in MINUTEN</returns>
-    Public ReadOnly Property P_Def_CheckAnrMonIntervall() As Integer
+    Public Shared ReadOnly Property P_Def_CheckAnrMonIntervall() As Integer
         Get
             Return 1
         End Get
@@ -1649,19 +1574,19 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>99</returns>
-    Public ReadOnly Property P_Def_MobilDialPort() As String
+    Public Shared ReadOnly Property P_Def_MobilDialPort() As String
         Get
             Return "99"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_DirectorySeparatorChar() As String
+    Public Shared ReadOnly Property P_Def_DirectorySeparatorChar() As String
         Get
             Return IO.Path.DirectorySeparatorChar
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_AddInPath() As String
+    Public Shared ReadOnly Property P_Def_AddInPath() As String
         Get
             Return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & P_Def_DirectorySeparatorChar & P_Def_Addin_LangName & P_Def_DirectorySeparatorChar
         End Get
@@ -1672,8 +1597,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String-Array</value>
     ''' <returns>String-Array</returns>
-
-    Public ReadOnly Property P_Def_UserProperties As String()
+    Public Shared ReadOnly Property P_Def_UserProperties() As ReadOnlyCollection(Of String)
         Get
             Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
                                    "FBDB-BusinessTelephoneNumber", _
@@ -1694,11 +1618,35 @@ Public Class DataProvider
                                    "FBDB-OtherFaxNumber", _
                                    "FBDB-Telex", _
                                    "FBDB-TTYTDDTelephoneNumber"}
-            Return tmp
+            Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
+    'Public  Shared ReadOnly Property P_Def_UserProperties As String()
+    '    Get
+    '        Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
+    '                               "FBDB-BusinessTelephoneNumber", _
+    '                               "FBDB-Business2TelephoneNumber", _
+    '                               "FBDB-CallbackTelephoneNumber", _
+    '                               "FBDB-CarTelephoneNumber", _
+    '                               "FBDB-CompanyMainTelephoneNumber", _
+    '                               "FBDB-HomeTelephoneNumber", _
+    '                               "FBDB-Home2TelephoneNumber", _
+    '                               "FBDB-ISDNNumber", _
+    '                               "FBDB-MobileTelephoneNumber", _
+    '                               "FBDB-OtherTelephoneNumber", _
+    '                               "FBDB-PagerNumber", _
+    '                               "FBDB-PrimaryTelephoneNumber", _
+    '                               "FBDB-RadioTelephoneNumber", _
+    '                               "FBDB-BusinessFaxNumber", _
+    '                               "FBDB-HomeFaxNumber", _
+    '                               "FBDB-OtherFaxNumber", _
+    '                               "FBDB-Telex", _
+    '                               "FBDB-TTYTDDTelephoneNumber"}
+    '        Return tmp
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property P_Def_olTelNrTypen As String()
+    Public Shared ReadOnly Property P_Def_olTelNrTypen() As ReadOnlyCollection(Of String)
         Get
             Dim tmp() As String = {"Assistent", _
                                    "Geschäftlich", _
@@ -1719,35 +1667,60 @@ Public Class DataProvider
                                    "Weiteres Fax", _
                                    "Telex", _
                                    "Texttelefon"}
-            Return tmp
+
+            Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
+    'Public  Shared ReadOnly Property P_Def_olTelNrTypen As String()
+    '    Get
+    '        Dim tmp() As String = {"Assistent", _
+    '                               "Geschäftlich", _
+    '                               "Geschäftlich 2", _
+    '                               "Rückmeldung", _
+    '                               "Auto", _
+    '                               "Firma", _
+    '                               "Privat", _
+    '                               "Privat 2", _
+    '                               "ISDN", _
+    '                               "Mobiltelefon", _
+    '                               "Weitere", _
+    '                               "Pager", _
+    '                               "Haupttelefon", _
+    '                               "Funkruf", _
+    '                               "Fax geschäftl.", _
+    '                               "Fax privat", _
+    '                               "Weiteres Fax", _
+    '                               "Telex", _
+    '                               "Texttelefon"}
+    '        Return tmp
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property P_Def_UserPropertyIndex() As String
+    Public Shared ReadOnly Property P_Def_UserPropertyIndex() As String
         Get
             Return "FBDB-Save"
         End Get
     End Property
 #Region "Journal"
-    Public ReadOnly Property P_Def_Journal_Text_Eingehend() As String
+    Public Shared ReadOnly Property P_Def_Journal_Text_Eingehend() As String
         Get
             Return "Eingehender Anruf von "
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Journal_Text_Ausgehend() As String
+    Public Shared ReadOnly Property P_Def_Journal_Text_Ausgehend() As String
         Get
             Return "Ausgehender Anruf zu "
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Journal_Text_Verpasst() As String
+    Public Shared ReadOnly Property P_Def_Journal_Text_Verpasst() As String
         Get
             Return "Verpasster Anruf von "
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Journal_Text_NichtErfolgreich() As String
+    Public Shared ReadOnly Property P_Def_Journal_Text_NichtErfolgreich() As String
         Get
             Return "Nicht erfolgreicher Anruf zu "
         End Get
@@ -1755,44 +1728,44 @@ Public Class DataProvider
 #End Region
 
 #Region "Phoner"
-    Public ReadOnly Property P_Def_Phoner_CONNECT As String
+    Public Shared ReadOnly Property P_Def_Phoner_CONNECT As String
         Get
             Return "CONNECT " 'Das Leerzeichen wird benötigt!
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_DISCONNECT As String
+    Public Shared ReadOnly Property P_Def_Phoner_DISCONNECT As String
         Get
             Return "DISCONNECT"
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_Challenge As String
+    Public Shared ReadOnly Property P_Def_Phoner_Challenge As String
         Get
             Return "Challenge="
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_Response As String
+    Public Shared ReadOnly Property P_Def_Phoner_Response As String
         Get
             Return "Response="
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_Phoner_Ready As String
+    Public Shared ReadOnly Property P_Def_Phoner_Ready As String
         Get
             Return "Welcome to Phoner"
         End Get
     End Property
 
-    Public ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer
+    Public Shared ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer
         Get
             Return 2012
         End Get
     End Property
 #End Region
     ' Passwortverschlüsselung
-    Public ReadOnly Property P_Def_PassWordDecryptionKey As String
+    Public Shared ReadOnly Property P_Def_PassWordDecryptionKey As String
         Get
             Return "Fritz!Box Script"
         End Get
@@ -1806,293 +1779,304 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>0049</value>
     ''' <returns>0049</returns>
-    Public ReadOnly Property P_Def_TBLandesVW() As String
+    Public Shared ReadOnly Property P_Def_TBLandesVW() As String
         Get
             Return P_Def_PreLandesVW & "49"
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBoxLandesVorwahl() As Integer
+    Public Shared ReadOnly Property P_Def_CBoxLandesVorwahl() As Integer
         Get
             Return P_Def_ErrorMinusOne_Integer
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAmt() As String
+    Public Shared ReadOnly Property P_Def_TBAmt() As String
         Get
             Return P_Def_ErrorMinusOne_String
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBVorwahl() As String
+    Public Shared ReadOnly Property P_Def_TBVorwahl() As String
         Get
             Return P_Def_StringEmpty
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBoxVorwahl() As Integer
+    Public Shared ReadOnly Property P_Def_CBoxVorwahl() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBEnblDauer() As Integer
+    Public Shared ReadOnly Property P_Def_TBEnblDauer() As Integer
         Get
             Return 10
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrMonAuto() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrMonAuto() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrMonKeepActiv() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrMonKeepActiv() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAnrBeantworterTimeout() As Integer
+
+    Public Shared ReadOnly Property P_Def_TBAnrBeantworterTimeout() As Integer
         Get
             Return 30
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBAnrMonX() As Integer
-        Get
-            Return 0
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_TBAnrMonY() As Integer
-        Get
-            Return 0
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBAnrMonMove() As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBAnrMonTransp() As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_TBAnrMonMoveGeschwindigkeit() As Integer
-        Get
-            Return 0
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBoxAnrMonStartPosition() As Integer
-        Get
-            Return 0
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBoxAnrMonMoveDirection() As Integer
+
+    Public Shared ReadOnly Property P_Def_TBAnrMonX() As Integer
         Get
             Return 0
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBAnrMonZeigeKontakt() As Boolean
+    Public Shared ReadOnly Property P_Def_TBAnrMonY() As Integer
         Get
-            Return False
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBAnrMonContactImage() As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBIndexAus() As Boolean
-        Get
-            Return False
-        End Get
-    End Property
-    Public ReadOnly Property P_Def_CBShowMSN() As Boolean
-        Get
-            Return False
+            Return 0
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBAnrMonCloseAtDISSCONNECT() As Boolean
-        Get
-            Return False
-        End Get
-    End Property
-
-    Public ReadOnly Property P_Def_CBAutoClose() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrMonMove() As Boolean
         Get
             Return True
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBVoIPBuster() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrMonTransp() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_TBAnrMonMoveGeschwindigkeit() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBoxAnrMonStartPosition() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBoxAnrMonMoveDirection() As Integer
+        Get
+            Return 0
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBAnrMonZeigeKontakt() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBCbCunterbinden() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrMonContactImage() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBIndexAus() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBCallByCall() As Boolean
+    Public Shared ReadOnly Property P_Def_CBShowMSN() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBDialPort() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrMonCloseAtDISSCONNECT() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBKErstellen() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAutoClose() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBVoIPBuster() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property P_Def_CBLogFile() As Boolean
+    Public Shared ReadOnly Property P_Def_CBCbCunterbinden() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBCallByCall() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBDialPort() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBKErstellen() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property P_Def_CBLogFile() As Boolean
         Get
             Return True
         End Get
     End Property
     'Einstellung für die Symbolleiste
-    Public ReadOnly Property P_Def_CBSymbWwdh() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbWwdh() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbAnrMon() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbAnrMon() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbAnrMonNeuStart() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbAnrMonNeuStart() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbAnrListe() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbAnrListe() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbDirekt() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbDirekt() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbRWSuche() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbRWSuche() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbVIP() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbVIP() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBSymbJournalimport() As Boolean
+    Public Shared ReadOnly Property P_Def_CBSymbJournalimport() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBJImport() As Boolean
+    Public Shared ReadOnly Property P_Def_CBJImport() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrListeUpdateJournal() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrListeUpdateJournal() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrListeUpdateCallLists() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrListeUpdateCallLists() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBAnrListeShowAnrMon() As Boolean
+    Public Shared ReadOnly Property P_Def_CBAnrListeShowAnrMon() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBRWS() As Boolean
+    Public Shared ReadOnly Property P_Def_CBRWS() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TVKontaktOrdnerEntryID() As String
+    Public Shared ReadOnly Property P_Def_TVKontaktOrdnerEntryID() As String
         Get
             Return P_Def_StringErrorMinusOne
         End Get
     End Property
-    Public ReadOnly Property P_Def_TVKontaktOrdnerStoreID() As String
+    Public Shared ReadOnly Property P_Def_TVKontaktOrdnerStoreID() As String
         Get
             Return P_Def_StringErrorMinusOne
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBKHO() As Boolean
+    Public Shared ReadOnly Property P_Def_CBKHO() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBRWSIndex() As Boolean
+    Public Shared ReadOnly Property P_Def_CBRWSIndex() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_ComboBoxRWS() As Integer
+    Public Shared ReadOnly Property P_Def_ComboBoxRWS() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBIndex() As Boolean
+    Public Shared ReadOnly Property P_Def_CBIndex() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBJournal() As Boolean
+    Public Shared ReadOnly Property P_Def_CBJournal() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBUseAnrMon() As Boolean
+    Public Shared ReadOnly Property P_Def_CBUseAnrMon() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBCheckMobil() As Boolean
+    Public Shared ReadOnly Property P_Def_CBCheckMobil() As Boolean
         Get
             Return True
         End Get
     End Property
     'StoppUhr
-    Public ReadOnly Property P_Def_CBStoppUhrEinblenden() As Boolean
+    Public Shared ReadOnly Property P_Def_CBStoppUhrEinblenden() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrAusblenden() As Boolean
+    Public Shared ReadOnly Property P_Def_CBStoppUhrAusblenden() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBStoppUhr() As Integer
+    Public Shared ReadOnly Property P_Def_TBStoppUhr() As Integer
         Get
             Return 10
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrX() As Integer
+    Public Shared ReadOnly Property P_Def_CBStoppUhrX() As Integer
         Get
             Return 10
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrY() As Integer
+    Public Shared ReadOnly Property P_Def_CBStoppUhrY() As Integer
         Get
             Return 10
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBStoppUhrIgnIntFax() As Boolean
+    Public Shared ReadOnly Property P_Def_CBStoppUhrIgnIntFax() As Boolean
         Get
             Return False
         End Get
@@ -2102,138 +2086,138 @@ Public Class DataProvider
     ''' <summary>
     ''' Nach der Maske werden Telefonnummern formatiert: %L (%O) %N - %D
     ''' </summary>
-    Public ReadOnly Property P_Def_TBTelNrMaske() As String
+    Public Shared ReadOnly Property P_Def_TBTelNrMaske() As String
         Get
             Return "%L (%O) %N - %D"
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBTelNrGruppieren() As Boolean
+    Public Shared ReadOnly Property P_Def_CBTelNrGruppieren() As Boolean
         Get
             Return True
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBintl() As Boolean
+    Public Shared ReadOnly Property P_Def_CBintl() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBIgnoTelNrFormat() As Boolean
+    Public Shared ReadOnly Property P_Def_CBIgnoTelNrFormat() As Boolean
         Get
             Return False
         End Get
     End Property
     'Phoner
-    Public ReadOnly Property P_Def_CBPhoner As Boolean
+    Public Shared ReadOnly Property P_Def_CBPhoner As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_PhonerVerfügbar As Boolean
+    Public Shared ReadOnly Property P_Def_PhonerVerfügbar As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBPhonerAnrMon As Boolean
+    Public Shared ReadOnly Property P_Def_CBPhonerAnrMon As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_ComboBoxPhonerSIP() As Integer
+    Public Shared ReadOnly Property P_Def_ComboBoxPhonerSIP() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBPhonerPasswort() As String
+    Public Shared ReadOnly Property P_Def_TBPhonerPasswort() As String
         Get
             Return P_Def_StringEmpty
         End Get
     End Property
-    Public ReadOnly Property P_Def_PhonerTelNameIndex() As Integer
+    Public Shared ReadOnly Property P_Def_PhonerTelNameIndex() As Integer
         Get
             Return 0
         End Get
     End Property
     ' Statistik
-    Public ReadOnly Property P_Def_StatResetZeit As Date
+    Public Shared ReadOnly Property P_Def_StatResetZeit As Date
         Get
             Return System.DateTime.Now
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatVerpasst As Integer
+    Public Shared ReadOnly Property P_Def_StatVerpasst As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatNichtErfolgreich As Integer
+    Public Shared ReadOnly Property P_Def_StatNichtErfolgreich As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatJournal() As Integer
+    Public Shared ReadOnly Property P_Def_StatJournal() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatKontakt() As Integer
+    Public Shared ReadOnly Property P_Def_StatKontakt() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_StatOLClosedZeit() As Date
+    Public Shared ReadOnly Property P_Def_StatOLClosedZeit() As Date
         Get
             Return System.DateTime.Now
         End Get
     End Property
     ' Wählbox
-    Public ReadOnly Property P_Def_TelAnschluss() As Integer
+    Public Shared ReadOnly Property P_Def_TelAnschluss() As Integer
         Get
             Return 0
         End Get
     End Property
-    Public ReadOnly Property P_Def_TelFestnetz() As Boolean
+    Public Shared ReadOnly Property P_Def_TelFestnetz() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TelCLIR() As Boolean
+    Public Shared ReadOnly Property P_Def_TelCLIR() As Boolean
         Get
             Return False
         End Get
     End Property
     ' FritzBox
-    Public ReadOnly Property P_Def_EncodeingFritzBox() As String
+    Public Shared ReadOnly Property P_Def_EncodeingFritzBox() As String
         Get
             Return P_Def_ErrorMinusOne_String
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBFBAdr() As String
+    Public Shared ReadOnly Property P_Def_TBFBAdr() As String
         Get
             Return P_Def_FritzBoxAdress
         End Get
     End Property
-    Public ReadOnly Property P_Def_CBForceFBAddr() As Boolean
+    Public Shared ReadOnly Property P_Def_CBForceFBAddr() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBBenutzer() As String
+    Public Shared ReadOnly Property P_Def_TBBenutzer() As String
         Get
             Return P_Def_StringEmpty
         End Get
     End Property
-    Public ReadOnly Property P_Def_TBPasswort() As String
+    Public Shared ReadOnly Property P_Def_TBPasswort() As String
         Get
             Return P_Def_StringEmpty
         End Get
     End Property
     ' Indizierung
-    Public ReadOnly Property P_Def_LLetzteIndizierung() As Date
+    Public Shared ReadOnly Property P_Def_LLetzteIndizierung() As Date
         Get
             Return System.DateTime.Now
         End Get
     End Property
     ' Note
-    Public ReadOnly Property P_Def_CBNote() As Boolean
+    Public Shared ReadOnly Property P_Def_CBNote() As Boolean
         Get
             Return False
         End Get
@@ -2266,17 +2250,17 @@ Public Class DataProvider
 #End Region
 
 #Region "Debug Properties"
-    Public ReadOnly Property P_Debug_Use_WebClient() As Boolean
+    Public Shared ReadOnly Property P_Debug_Use_WebClient() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Debug_AnrufSimulation() As Boolean
+    Public Shared ReadOnly Property P_Debug_AnrufSimulation() As Boolean
         Get
             Return False
         End Get
     End Property
-    Public ReadOnly Property P_Debug_ImportTelefone() As Boolean
+    Public Shared ReadOnly Property P_Debug_ImportTelefone() As Boolean
         Get
             Return False
         End Get
@@ -2285,7 +2269,7 @@ Public Class DataProvider
 
 #Region "Literale"
     ' Helfer
-    Public ReadOnly Property P_Lit_KeyChange(ByVal Code As String) As String
+    Public Shared ReadOnly Property P_Lit_KeyChange(ByVal Code As String) As String
         Get
             Return "Das Passwort für " & Code & " kann nicht entschlüsselt werden."
         End Get
@@ -2296,7 +2280,7 @@ Public Class DataProvider
     ''' Nr. Code an Phoner übergeben
     ''' </summary>
     ''' <param name="Code"></param>
-    Public ReadOnly Property P_Lit_Phoner1(ByVal Code As String) As String
+    Public Shared ReadOnly Property P_Lit_Phoner1(ByVal Code As String) As String
         Get
             Return "Nr. " & Code & " an Phoner übergeben."
         End Get
@@ -2306,7 +2290,7 @@ Public Class DataProvider
     ''' Fehler!
     ''' Das Phoner-Passwort ist falsch!
     ''' </summary>
-    Public ReadOnly Property P_Lit_Phoner2() As String
+    Public Shared ReadOnly Property P_Lit_Phoner2() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Das Phoner-Passwort ist falsch!"
         End Get
@@ -2316,7 +2300,7 @@ Public Class DataProvider
     ''' Fehler!
     ''' Die Phoner-Verson ist zu alt!
     ''' </summary>
-    Public ReadOnly Property P_Lit_Phoner3() As String
+    Public Shared ReadOnly Property P_Lit_Phoner3() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Die Phoner-Verson ist zu alt!"
         End Get
@@ -2326,7 +2310,7 @@ Public Class DataProvider
     ''' Fehler!
     ''' TCP Fehler (Stream.CanWrite = False)!
     ''' </summary>
-    Public ReadOnly Property P_Lit_Phoner4() As String
+    Public Shared ReadOnly Property P_Lit_Phoner4() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "TCP Fehler (Stream.CanWrite = False)!"
         End Get
@@ -2336,7 +2320,7 @@ Public Class DataProvider
     ''' Fehler!
     ''' TCP!
     ''' </summary>
-    Public ReadOnly Property P_Lit_Phoner5() As String
+    Public Shared ReadOnly Property P_Lit_Phoner5() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "TCP!"
         End Get
@@ -2346,7 +2330,7 @@ Public Class DataProvider
     ''' Fehler!
     ''' Kein Passwort hinterlegt!
     ''' </summary>
-    Public ReadOnly Property P_Lit_Phoner6() As String
+    Public Shared ReadOnly Property P_Lit_Phoner6() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Kein Passwort hinterlegt!"
         End Get
@@ -2356,7 +2340,7 @@ Public Class DataProvider
     ''' Fehler!
     ''' Phoner nicht verfügbar!
     ''' </summary>
-    Public ReadOnly Property P_Lit_Phoner7() As String
+    Public Shared ReadOnly Property P_Lit_Phoner7() As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Phoner nicht verfügbar!"
         End Get
@@ -2367,7 +2351,7 @@ Public Class DataProvider
     ''' Stoppuhr für Telefonat gestartet: AnrName 
     ''' </summary>
     ''' <param name="AnrName"></param>
-    Public ReadOnly Property P_AnrMon_Log_StoppUhrStart1(ByVal AnrName As String) As String
+    Public Shared ReadOnly Property P_AnrMon_Log_StoppUhrStart1(ByVal AnrName As String) As String
         Get
             Return "Stoppuhr für Telefonat gestartet: " & AnrName
         End Get
@@ -2378,7 +2362,7 @@ Public Class DataProvider
     ''' Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode #96*5* kann dieser aktiviert werden.
     ''' Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
+    Public Shared ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
         Get
             Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_NeueZeile & _
                    "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor & _
@@ -2390,7 +2374,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Soll der Fritz!Box Callmonitor aktiviert werden?
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_MsgBox_AnrMonStart2() As String
+    Public Shared ReadOnly Property P_AnrMon_MsgBox_AnrMonStart2() As String
         Get
             Return "Soll der Fritz!Box Callmonitor aktiviert werden?"
         End Get
@@ -2399,7 +2383,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStart1() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStart1() As String
         Get
             Return "Das automatische Aktivieren des Fritz!Box Callmonitor wurde übersprungen."
         End Get
@@ -2409,7 +2393,7 @@ Public Class DataProvider
     ''' TCP Verbindung nicht aufgebaut: ErrMsg
     ''' </summary>
     ''' <param name="ErrMsg">Felermeldung</param>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStart2(ByVal ErrMsg As String) As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStart2(ByVal ErrMsg As String) As String
         Get
             Return "TCP Verbindung nicht aufgebaut: " & ErrMsg
         End Get
@@ -2418,7 +2402,7 @@ Public Class DataProvider
     ''' <summary>
     ''' TCP Verbindung nicht aufgebaut.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStart3() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStart3() As String
         Get
             Return "TCP Verbindung nicht aufgebaut."
         End Get
@@ -2427,7 +2411,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufmonitor nach StandBy wiederaufgebaut.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStart4() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStart4() As String
         Get
             Return "Anrufmonitor nach StandBy wiederaufgebaut."
         End Get
@@ -2436,7 +2420,7 @@ Public Class DataProvider
     ''' <summary>
     ''' BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStart5() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStart5() As String
         Get
             Return "BWStartTCPReader_RunWorkerCompleted: Es ist ein TCP/IP Fehler aufgetreten."
         End Get
@@ -2445,7 +2429,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box nach StandBy noch nicht verfügbar.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer1() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer1() As String
         Get
             Return "Fritz!Box nach StandBy noch nicht verfügbar."
         End Get
@@ -2454,7 +2438,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer2() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer2() As String
         Get
             Return "Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor..."
         End Get
@@ -2463,7 +2447,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Reaktivierung des Anrufmonitors nicht erfolgreich.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer3() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer3() As String
         Get
             Return "Reaktivierung des Anrufmonitors nicht erfolgreich."
         End Get
@@ -2472,7 +2456,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonTimer4() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer4() As String
         Get
             Return "Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren."
         End Get
@@ -2481,7 +2465,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Welcome to Phoner
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_AnrMonPhonerWelcome() As String
+    Public Shared ReadOnly Property P_AnrMon_AnrMonPhonerWelcome() As String
         Get
             Return "Welcome to Phoner"
         End Get
@@ -2489,7 +2473,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Sorry, too many clients
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_AnrMonPhonerError() As String
+    Public Shared ReadOnly Property P_AnrMon_AnrMonPhonerError() As String
         Get
             Return "Sorry, too many clients"
         End Get
@@ -2498,7 +2482,7 @@ Public Class DataProvider
     ''' <summary>
     ''' AnrMonAktion, Phoner: "Sorry, too many clients"
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonPhoner1() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonPhoner1() As String
         Get
             Return "AnrMonAktion, Phoner: """ & P_AnrMon_AnrMonPhonerError & """"
         End Get
@@ -2509,7 +2493,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="Fkt">Funktionsname</param>
     ''' <param name="ErrMsg">Fehlermeldung</param>
-    Public ReadOnly Property P_AnrMon_Log_AnrMon1(ByVal Fkt As String, ByVal ErrMsg As String) As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMon1(ByVal Fkt As String, ByVal ErrMsg As String) As String
         Get
             Return Fkt & ": Kontakt kann nicht angezeigt werden. Grund: " & ErrMsg
         End Get
@@ -2520,7 +2504,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="Fkt">Funktionsname</param>
     ''' <param name="ID">ID des Telefonats</param>
-    Public ReadOnly Property P_AnrMon_Log_TelList1(ByVal Fkt As String, ByVal ID As String) As String
+    Public Shared ReadOnly Property P_AnrMon_Log_TelList1(ByVal Fkt As String, ByVal ID As String) As String
         Get
             Return Fkt & ": Das Telefonat mit der ID" & ID & " existiert bereits in der Liste."
         End Get
@@ -2529,7 +2513,7 @@ Public Class DataProvider
     ''' <summary>
     ''' StoppUhr wird eingeblendet.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr1() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr1() As String
         Get
             Return "StoppUhr wird eingeblendet."
         End Get
@@ -2538,23 +2522,30 @@ Public Class DataProvider
     ''' <summary>
     ''' Integrierte Faxfunktion wurde erkannt: Stoppuhr nicht eingeblendet.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr2() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonStoppUhr2() As String
         Get
             Return "Integrierte Faxfunktion wurde erkannt: Stoppuhr nicht eingeblendet."
         End Get
     End Property
 
-    Public ReadOnly Property P_AnrMon_Journal_Def_Categories As String()
+    'Public  Shared ReadOnly Property P_AnrMon_Journal_Def_Categories As String()
+    '    Get
+    '        Dim tmp() As String = {"FritzBox Anrufmonitor", "Telefonanrufe"}
+    '        Return tmp
+    '    End Get
+    'End Property
+
+    Public Shared ReadOnly Property P_AnrMon_Journal_Def_Categories() As ReadOnlyCollection(Of String)
         Get
             Dim tmp() As String = {"FritzBox Anrufmonitor", "Telefonanrufe"}
-            Return tmp
+            Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
 
     ''' <summary>
     ''' Kontaktdaten:
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_Journal_Kontaktdaten As String
+    Public Shared ReadOnly Property P_AnrMon_Journal_Kontaktdaten As String
         Get
             Return "Kontaktdaten:"
         End Get
@@ -2563,7 +2554,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontaktdaten (vCard):
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Journal As String
+    Public Shared ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Journal As String
         Get
             Return "Kontaktdaten (vCard):"
         End Get
@@ -2572,7 +2563,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Ein unvollständiges Telefonat wurde registriert.
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Error As String
+    Public Shared ReadOnly Property P_AnrMon_AnrMonDISCONNECT_Error As String
         Get
             Return "Ein unvollständiges Telefonat wurde registriert."
         End Get
@@ -2583,7 +2574,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="TelNr">Tekefonnummer</param>
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
-    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean) As String
+    Public Shared ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean) As String
         Get
             Return P_AnrMon_AnrMonDISCONNECT_JournalTelNr & TelNr & P_Def_NeueZeile & "Status: " & CStr(IIf(Angenommen, P_Def_StringEmpty, "nicht ")) & "angenommen" & P_Def_NeueZeile & P_Def_NeueZeile
         End Get
@@ -2592,7 +2583,7 @@ Public Class DataProvider
     ''' <summary>
     '''  Tel.-Nr.: 
     ''' </summary>
-    Public ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalTelNr() As String
+    Public Shared ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalTelNr() As String
         Get
             Return "Tel.-Nr.: "
         End Get
@@ -2604,7 +2595,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Kontakt öffnen</value>
     ''' <returns>Kontakt öffnen</returns>
-    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen As String
+    Public Shared ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen As String
         Get
             Return "Kontakt öffnen"
         End Get
@@ -2615,7 +2606,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Kontakt erstellen</value>
     ''' <returns>Kontakt erstellen</returns>
-    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen As String
+    Public Shared ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen As String
         Get
             Return "Kontakt erstellen"
         End Get
@@ -2625,7 +2616,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Rückruf</value>
     ''' <returns>Rückruf</returns>
-    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemRückruf As String
+    Public Shared ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemRückruf As String
         Get
             Return "Rückruf"
         End Get
@@ -2636,7 +2627,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>In Zwischenablage kopieren</value>
     ''' <returns>In Zwischenablage kopieren</returns>
-    Public ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKopieren As String
+    Public Shared ReadOnly Property P_AnrMon_PopUp_ToolStripMenuItemKopieren As String
         Get
             Return "In Zwischenablage kopieren"
         End Get
@@ -2647,7 +2638,7 @@ Public Class DataProvider
     ''' Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " &amp; Blocktime &amp; " Sekunden zu.  Versuchen Sie es später erneut.
     ''' </summary>
     ''' <param name="Blocktime"></param>
-    Public ReadOnly Property P_FritzBox_LoginError_Blocktime(ByVal Blocktime As String) As String
+    Public Shared ReadOnly Property P_FritzBox_LoginError_Blocktime(ByVal Blocktime As String) As String
         Get
             Return "Die Fritz!Box lässt keinen weiteren Anmeldeversuch in den nächsten " & Blocktime & " Sekunden zu.  Versuchen Sie es später erneut."
         End Get
@@ -2656,7 +2647,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_LoginError_MissingPassword As String
+    Public Shared ReadOnly Property P_FritzBox_LoginError_MissingPassword As String
         Get
             Return "Die Fritz!Box benötigt kein Passwort. Das AddIn wird nicht funktionieren."
         End Get
@@ -2666,7 +2657,7 @@ Public Class DataProvider
     ''' Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: &amp; FBBenutzer
     ''' </summary>
     ''' <param name="FBBenutzer">Nutzername</param>
-    Public ReadOnly Property P_FritzBox_LoginError_MissingRights(ByVal FBBenutzer As String) As String
+    Public Shared ReadOnly Property P_FritzBox_LoginError_MissingRights(ByVal FBBenutzer As String) As String
         Get
             Return "Es fehlt die Berechtigung für den Zugriff auf die Fritz!Box. Benutzer: " & FBBenutzer
         End Get
@@ -2675,7 +2666,7 @@ Public Class DataProvider
     ''' <summary>
     ''' as Passwort zur Fritz!Box kann nicht entschlüsselt werden, da das verschlüsselte Passwort und/oder der Zugangsschlüssel fehlt.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_LoginError_MissingData() As String
+    Public Shared ReadOnly Property P_FritzBox_LoginError_MissingData() As String
         Get
             Return "Das Passwort zur Fritz!Box kann nicht entschlüsselt werden, da das verschlüsselte Passwort und/oder der Zugangsschlüssel fehlt."
         End Get
@@ -2684,7 +2675,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Die Anmeldedaten sind falsch.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_LoginError_LoginIncorrect() As String
+    Public Shared ReadOnly Property P_FritzBox_LoginError_LoginIncorrect() As String
         Get
             Return "Die Anmeldedaten sind falsch."
         End Get
@@ -2696,7 +2687,7 @@ Public Class DataProvider
     ''' <param name="SID"></param>
 
 
-    Public ReadOnly Property P_FritzBox_LoginInfo_SID(ByVal SID As String) As String
+    Public Shared ReadOnly Property P_FritzBox_LoginInfo_SID(ByVal SID As String) As String
         Get
             Return "Eine gültige SessionID ist bereits vorhanden: " & SID
         End Get
@@ -2705,7 +2696,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_LogoutTestString1 As String
+    Public Shared ReadOnly Property P_FritzBox_LogoutTestString1 As String
         Get
             Return "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet."
         End Get
@@ -2714,7 +2705,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_LogoutTestString2 As String
+    Public Shared ReadOnly Property P_FritzBox_LogoutTestString2 As String
         Get
             Return "Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet."
         End Get
@@ -2723,7 +2714,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Logout eventuell NICHT erfolgreich!
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_LogoutError As String
+    Public Shared ReadOnly Property P_FritzBox_LogoutError As String
         Get
             Return "Logout eventuell NICHT erfolgreich!"
         End Get
@@ -2733,7 +2724,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Tel_Error1 As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_Error1 As String
         Get
             Return "Fehler bei dem Herunterladen der Telefone: Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
         End Get
@@ -2742,7 +2733,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Tel_Error2 As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_Error2 As String
         Get
             Return "Fehler bei dem Herunterladen der Telefone: Telefonieseite kann nicht gelesen werden."
         End Get
@@ -2751,7 +2742,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Tel_AlteRoutine As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_AlteRoutine As String
         Get
             Return "Alte Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
         End Get
@@ -2760,7 +2751,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Tel_NeueRoutine As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_NeueRoutine As String
         Get
             Return "Neue Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
         End Get
@@ -2769,7 +2760,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box Telefon Quelldatei: http://" &amp; C_DP.P_ValidFBAdr &amp; "/cgi-bin/webcm?sid=" &amp; SID &amp; "&amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=fondevices
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Tel_AlteRoutine2(ByVal Link As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_AlteRoutine2(ByVal Link As String) As String
         Get
             Return P_Def_FritzBoxName & " Telefon Quelldatei: " & Link
         End Get
@@ -2778,7 +2769,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler beim Herunterladen der Telefone. Anmeldedaten korrekt?
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Tel_ErrorAlt1 As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_ErrorAlt1 As String
         Get
             Return "Fehler beim Herunterladen der Telefone. Anmeldedaten korrekt?"
         End Get
@@ -2790,7 +2781,7 @@ Public Class DataProvider
     ''' <param name="Typ">Telefonnummerntyp</param>
     ''' <param name="idx">Nummer der Telefonnummer</param>
     ''' <param name="TelNr">Telefonnummer</param>
-    Public ReadOnly Property P_FritzBox_Tel_NrFound(ByVal Typ As String, ByVal idx As String, ByVal TelNr As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_NrFound(ByVal Typ As String, ByVal idx As String, ByVal TelNr As String) As String
         Get
             Return "Telefonnummer gefunden: " & Typ & idx & ", " & TelNr
         End Get
@@ -2803,7 +2794,7 @@ Public Class DataProvider
     ''' <param name="Dialport">Dialport</param>
     ''' <param name="TelNr">Telefonnummer</param>
     ''' <param name="TelName">Telefonname</param>
-    Public ReadOnly Property P_FritzBox_Tel_DeviceFound(ByVal Typ As String, ByVal Dialport As String, ByVal TelNr As String, ByVal TelName As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_DeviceFound(ByVal Typ As String, ByVal Dialport As String, ByVal TelNr As String, ByVal TelName As String) As String
         Get
             Return "Telefoniegerät gefunden: " & Typ & CStr(Dialport) & ", " & TelNr & ", " & TelName
         End Get
@@ -2814,7 +2805,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="Dialport">Dialport</param>
     ''' <param name="TelName">Telefonname</param>
-    Public ReadOnly Property P_FritzBox_Tel_DeviceisFAX(ByVal Dialport As String, ByVal TelName As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_DeviceisFAX(ByVal Dialport As String, ByVal TelName As String) As String
         Get
             Return "Telefoniegerät: " & TelName & " (" & Dialport & ") ist ein FAX."
         End Get
@@ -2824,7 +2815,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler! Entwickler kontaktieren.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Dial_Error1 As String
+    Public Shared ReadOnly Property P_FritzBox_Dial_Error1 As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Entwickler kontaktieren."
         End Get
@@ -2833,7 +2824,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fehler! Logfile beachten!
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Dial_Error2 As String
+    Public Shared ReadOnly Property P_FritzBox_Dial_Error2 As String
         Get
             Return "Fehler!" & P_Def_NeueZeile & "Logfile beachten!"
         End Get
@@ -2843,7 +2834,7 @@ Public Class DataProvider
     ''' Fehler bei dem Login. SessionID: SID 
     ''' </summary>
     ''' <param name="SID">SessionID</param>
-    Public ReadOnly Property P_FritzBox_Dial_Error3(ByVal SID As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Dial_Error3(ByVal SID As String) As String
         Get
             Return "Fehler bei dem Login. SessionID: " & SID & "!"
         End Get
@@ -2852,7 +2843,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Verbindungsaufbau wurde abgebrochen!
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_Dial_HangUp As String
+    Public Shared ReadOnly Property P_FritzBox_Dial_HangUp As String
         Get
             Return "Verbindungsaufbau" & P_Def_NeueZeile & "wurde abgebrochen!"
         End Get
@@ -2862,7 +2853,7 @@ Public Class DataProvider
     ''' Wähle DialCode Jetzt abheben!
     ''' </summary>
     ''' <param name="DialCode"></param>
-    Public ReadOnly Property P_FritzBox_Dial_Start(ByVal DialCode As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Dial_Start(ByVal DialCode As String) As String
         Get
             Return "Wähle " & DialCode & P_Def_NeueZeile & "Jetzt abheben!"
         End Get
@@ -2872,14 +2863,14 @@ Public Class DataProvider
     ''' <summary>
     ''' Der Login in die Fritz!Box ist fehlgeschlagen Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich.
     ''' </summary>
-    Public ReadOnly Property P_FritzBox_JI_Error1 As String
+    Public Shared ReadOnly Property P_FritzBox_JI_Error1 As String
         Get
             Return "Der Login in die " & P_Def_FritzBoxName & " ist fehlgeschlagen. Die Anmeldedaten sind falsch oder es fehlt die Berechtigung für diesen Bereich."
         End Get
     End Property
 
     'Information
-    Public ReadOnly Property P_FritzBox_Info(ByVal FBTyp As String, ByVal FBFirmware As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Info(ByVal FBTyp As String, ByVal FBFirmware As String) As String
         Get
             Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_NeueZeile, P_Def_NeueZeile, _
                      "Dein Name:", P_Def_NeueZeile, _
@@ -2896,7 +2887,7 @@ Public Class DataProvider
     ''' "Fritz!Box unter der IP IPAdresse gefunden"
     ''' </summary>
     ''' <param name="IPAdresse"></param>
-    Public ReadOnly Property P_Init_FritzBox_Found(ByVal IPAdresse As String) As String
+    Public Shared ReadOnly Property P_Init_FritzBox_Found(ByVal IPAdresse As String) As String
         Get
             Return P_Def_FritzBoxName & " unter der IP " & IPAdresse & " gefunden"
         End Get
@@ -2905,7 +2896,7 @@ Public Class DataProvider
     ''' <summary>
     '''"Keine Fritz!Box unter der angegebenen IP gefunden.
     ''' </summary>
-    Public ReadOnly Property P_Init_FritzBox_NotFound() As String
+    Public Shared ReadOnly Property P_Init_FritzBox_NotFound() As String
         Get
             Return "Keine " & P_Def_FritzBoxName & " unter der angegebenen IP gefunden."
         End Get
@@ -2914,7 +2905,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Keine Gegenstelle unter der angegebenen IP gefunden.
     ''' </summary>
-    Public ReadOnly Property P_Init_NotthingFound() As String
+    Public Shared ReadOnly Property P_Init_NotthingFound() As String
         Get
             Return "Keine Gegenstelle unter der angegebenen IP gefunden."
         End Get
@@ -2923,7 +2914,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Das Anmelden an der Fritz!Box war erfolgreich.
     ''' </summary>
-    Public ReadOnly Property P_Init_Login_Korrekt() As String
+    Public Shared ReadOnly Property P_Init_Login_Korrekt() As String
         Get
             Return "Das Anmelden an der " & P_Def_FritzBoxName & " war erfolgreich."
         End Get
@@ -2932,7 +2923,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Das Anmelden an der Fritz!Box war erfolgreich.
     ''' </summary>
-    Public ReadOnly Property P_Init_Login_Nicht_Korrekt() As String
+    Public Shared ReadOnly Property P_Init_Login_Nicht_Korrekt() As String
         Get
             Return "Die Anmeldedaten sind falsch oder es fehlt die Berechtigung."
         End Get
@@ -2941,7 +2932,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Bitte warten...
     ''' </summary>
-    Public ReadOnly Property P_Def_Bitte_Warten() As String
+    Public Shared ReadOnly Property P_Def_Bitte_Warten() As String
         Get
             Return "Bitte warten..."
         End Get
@@ -2952,7 +2943,7 @@ Public Class DataProvider
     ''' </summary>
     ''' <param name="sZeit">Zeit</param>
     ''' <param name="sTelNr">Telefonnummer</param>
-    Public ReadOnly Property P_CMB_ToolTipp(ByVal sZeit As String, ByVal sTelNr As String) As String
+    Public Shared ReadOnly Property P_CMB_ToolTipp(ByVal sZeit As String, ByVal sTelNr As String) As String
         Get
             Return "Zeit: " & sZeit & P_Def_NeueZeile & "Telefonnummer: " & sTelNr
         End Get
@@ -2961,7 +2952,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Wählen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Dial() As String
+    Public Shared ReadOnly Property P_CMB_Dial() As String
         Get
             Return "Wählen"
         End Get
@@ -2970,7 +2961,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Wahlwiederholung
     ''' </summary>
-    Public ReadOnly Property P_CMB_WWDH() As String
+    Public Shared ReadOnly Property P_CMB_WWDH() As String
         Get
             Return "Wahlwiederholung"
         End Get
@@ -2979,7 +2970,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Direktwahl
     ''' </summary>
-    Public ReadOnly Property P_CMB_Direktwahl() As String
+    Public Shared ReadOnly Property P_CMB_Direktwahl() As String
         Get
             Return "Direktwahl"
         End Get
@@ -2988,7 +2979,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufmonitor
     ''' </summary>
-    Public ReadOnly Property P_CMB_AnrMon() As String
+    Public Shared ReadOnly Property P_CMB_AnrMon() As String
         Get
             Return "Anrufmonitor"
         End Get
@@ -2997,7 +2988,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Anzeigen
     ''' </summary>
-    Public ReadOnly Property P_CMB_AnrMonAnzeigen() As String
+    Public Shared ReadOnly Property P_CMB_AnrMonAnzeigen() As String
         Get
             Return "Anzeigen"
         End Get
@@ -3006,7 +2997,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufmonitor neustarten
     ''' </summary>
-    Public ReadOnly Property P_CMB_AnrMonNeuStart() As String
+    Public Shared ReadOnly Property P_CMB_AnrMonNeuStart() As String
         Get
             Return "Anrufmonitor neustarten"
         End Get
@@ -3015,7 +3006,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Rückruf
     ''' </summary>
-    Public ReadOnly Property P_CMB_CallBack() As String
+    Public Shared ReadOnly Property P_CMB_CallBack() As String
         Get
             Return "Rückruf"
         End Get
@@ -3024,7 +3015,7 @@ Public Class DataProvider
     ''' <summary>
     ''' VIP-Liste
     ''' </summary>
-    Public ReadOnly Property P_CMB_VIP() As String
+    Public Shared ReadOnly Property P_CMB_VIP() As String
         Get
             Return "VIP-Liste"
         End Get
@@ -3033,7 +3024,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Journalimport
     ''' </summary>
-    Public ReadOnly Property P_CMB_Journal() As String
+    Public Shared ReadOnly Property P_CMB_Journal() As String
         Get
             Return "Journalimport"
         End Get
@@ -3042,7 +3033,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Einstellungen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Setup() As String
+    Public Shared ReadOnly Property P_CMB_Setup() As String
         Get
             Return "Einstellungen"
         End Get
@@ -3051,7 +3042,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog um das ausgewählte Element anzurufen.
     ''' </summary>
-    Public ReadOnly Property P_CMB_Dial_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Dial_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog um das ausgewählte Element anzurufen"
         End Get
@@ -3060,7 +3051,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog für die Wahlwiederholung
     ''' </summary>
-    Public ReadOnly Property P_CMB_WWDH_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_WWDH_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für die Wahlwiederholung"
         End Get
@@ -3069,7 +3060,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Startet den Anrufmonitor.
     ''' </summary>
-    Public ReadOnly Property P_CMB_AnrMon_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_AnrMon_ToolTipp() As String
         Get
             Return "Startet den Anrufmonitor"
         End Get
@@ -3078,7 +3069,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog für die Direktwahl
     ''' </summary>
-    Public ReadOnly Property P_CMB_Direktwahl_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Direktwahl_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für die Direktwahl"
         End Get
@@ -3087,7 +3078,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Zeigt den letzten Anruf an
     ''' </summary>
-    Public ReadOnly Property P_CMB_AnrMonAnzeigen_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_AnrMonAnzeigen_ToolTipp() As String
         Get
             Return "Zeigt den letzten Anruf an"
         End Get
@@ -3096,7 +3087,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Startet den Anrufmonitor neu
     ''' </summary>
-    Public ReadOnly Property P_CMB_AnrMonNeuStart_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_AnrMonNeuStart_ToolTipp() As String
         Get
             Return "Startet den Anrufmonitor neu"
         End Get
@@ -3105,7 +3096,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog für den Rückruf
     ''' </summary>
-    Public ReadOnly Property P_CMB_CallBack_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_CallBack_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog für den Rückruf"
         End Get
@@ -3114,7 +3105,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet den Wahldialog um einen VIP anzurufen
     ''' </summary>
-    Public ReadOnly Property P_CMB_VIP_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_VIP_ToolTipp() As String
         Get
             Return "Öffnet den Wahldialog um einen VIP anzurufen"
         End Get
@@ -3123,7 +3114,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Die VIP-Liste ist mit 10 Einträgen bereits voll.
     ''' </summary>
-    Public ReadOnly Property P_CMB_VIP_O11_Voll_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_VIP_O11_Voll_ToolTipp() As String
         Get
             Return "Die VIP-Liste ist mit 10 Einträgen bereits voll."
         End Get
@@ -3132,7 +3123,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Füge diesen Kontakt der VIP-Liste hinzu.
     ''' </summary>
-    Public ReadOnly Property P_CMB_VIP_Hinzufügen_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_VIP_Hinzufügen_ToolTipp() As String
         Get
             Return "Füge diesen Kontakt der VIP-Liste hinzu."
         End Get
@@ -3140,7 +3131,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Entfernt diesen Kontakt von der VIP-Liste.
     ''' </summary>
-    Public ReadOnly Property P_CMB_VIP_Entfernen_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_VIP_Entfernen_ToolTipp() As String
         Get
             Return "Entfernt diesen Kontakt von der VIP-Liste."
         End Get
@@ -3149,7 +3140,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Importiert die Anrufliste der Fritz!Box als Journaleinträge
     ''' </summary>
-    Public ReadOnly Property P_CMB_Journal_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Journal_ToolTipp() As String
         Get
             Return "Importiert die Anrufliste der " & P_Def_FritzBoxName & " als Journaleinträge"
         End Get
@@ -3158,7 +3149,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Setup_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Setup_ToolTipp() As String
         Get
             Return "Öffnet den " & P_Def_Addin_LangName & " Einstellungsdialog"
         End Get
@@ -3167,7 +3158,7 @@ Public Class DataProvider
     ''' <summary>
     ''' VIP
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_VIP() As String
+    Public Shared ReadOnly Property P_CMB_Insp_VIP() As String
         Get
             Return "VIP"
         End Get
@@ -3176,7 +3167,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Upload
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_Upload() As String
+    Public Shared ReadOnly Property P_CMB_Insp_Upload() As String
         Get
             Return "Upload"
         End Get
@@ -3185,7 +3176,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Anrufen (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    Public ReadOnly Property P_CMB_ContextMenueItemCall() As String
+    Public Shared ReadOnly Property P_CMB_ContextMenueItemCall() As String
         Get
             Return "Anrufen (" & P_Def_Addin_LangName & ")"
         End Get
@@ -3194,7 +3185,7 @@ Public Class DataProvider
     ''' <summary>
     ''' VIP (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    Public ReadOnly Property P_CMB_ContextMenueItemVIP() As String
+    Public Shared ReadOnly Property P_CMB_ContextMenueItemVIP() As String
         Get
             Return P_CMB_Insp_VIP & " (" & P_Def_Addin_LangName & ")"
         End Get
@@ -3203,7 +3194,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Upload (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    Public ReadOnly Property P_CMB_ContextMenueItemUpload() As String
+    Public Shared ReadOnly Property P_CMB_ContextMenueItemUpload() As String
         Get
             Return P_CMB_Insp_Upload & " (" & P_Def_Addin_LangName & ")"
         End Get
@@ -3212,7 +3203,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Rückwärtssuche
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_RWS() As String
+    Public Shared ReadOnly Property P_CMB_Insp_RWS() As String
         Get
             Return "Rückwärtssuche"
         End Get
@@ -3221,7 +3212,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_RWS_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Insp_RWS_ToolTipp() As String
         Get
             Return "Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche"
         End Get
@@ -3230,7 +3221,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Notiz
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_Note() As String
+    Public Shared ReadOnly Property P_CMB_Insp_Note() As String
         Get
             Return "Notiz"
         End Get
@@ -3239,7 +3230,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Einen Notizeintrag hinzufügen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_Note_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Insp_Note_ToolTipp() As String
         Get
             Return "Einen Notizeintrag hinzufügen"
         End Get
@@ -3248,7 +3239,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box Telefonbuch
     ''' </summary>
-    Public ReadOnly Property P_CMB_Expl_Adrbk() As String
+    Public Shared ReadOnly Property P_CMB_Expl_Adrbk() As String
         Get
             Return P_Def_FritzBoxName & " Telefonbuch"
         End Get
@@ -3257,7 +3248,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Einen Notizeintrag hinzufügen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Insp_UploadKontakt_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Insp_UploadKontakt_ToolTipp() As String
         Get
             Return "Lädt diesen Kontakt auf die " & P_Def_FritzBoxName & " hoch."
         End Get
@@ -3266,7 +3257,7 @@ Public Class DataProvider
     ''' <summary>          
     ''' Kontakt erstellen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Kontakt_Erstellen() As String
+    Public Shared ReadOnly Property P_CMB_Kontakt_Erstellen() As String
         Get
             Return "Kontakt erstellen"
         End Get
@@ -3275,7 +3266,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Journaleintrag
     ''' </summary>
-    Public ReadOnly Property P_CMB_Kontakt_Erstellen_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Kontakt_Erstellen_ToolTipp() As String
         Get
             Return "Erstellt einen Kontakt aus einem Journaleintrag"
         End Get
@@ -3284,7 +3275,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontakt anzeigen
     ''' </summary>
-    Public ReadOnly Property P_CMB_Kontakt_Anzeigen() As String
+    Public Shared ReadOnly Property P_CMB_Kontakt_Anzeigen() As String
         Get
             Return "Kontakt anzeigen"
         End Get
@@ -3293,7 +3284,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Zeigt den Kontakt zu diesem Journaleintrag an
     ''' </summary>
-    Public ReadOnly Property P_CMB_Kontakt_Anzeigen_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Kontakt_Anzeigen_ToolTipp() As String
         Get
             Return "Zeigt den Kontakt zu diesem Journaleintrag an"
         End Get
@@ -3302,7 +3293,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag.
     ''' </summary>
-    Public ReadOnly Property P_CMB_Kontakt_Anzeigen_Error_ToolTipp() As String
+    Public Shared ReadOnly Property P_CMB_Kontakt_Anzeigen_Error_ToolTipp() As String
         Get
             Return "Der verknüpfte Kontakt kann nicht gefunden werden! Erstelle einen neuen Kontakt aus diesem Journaleintrag."
         End Get
@@ -3313,7 +3304,7 @@ Public Class DataProvider
     ''' <summary>
     ''' 11880
     ''' </summary>
-    Public ReadOnly Property P_RWS11880_Name() As String
+    Public Shared ReadOnly Property P_RWS11880_Name() As String
         Get
             Return "11880"
         End Get
@@ -3322,7 +3313,7 @@ Public Class DataProvider
     ''' <summary>
     ''' dasÖrtliche
     ''' </summary>
-    Public ReadOnly Property P_RWSDasOertliche_Name() As String
+    Public Shared ReadOnly Property P_RWSDasOertliche_Name() As String
         Get
             Return "dasÖrtliche"
         End Get
@@ -3331,7 +3322,7 @@ Public Class DataProvider
     ''' <summary>
     ''' dasTelefonbuch
     ''' </summary>
-    Public ReadOnly Property P_RWSDasTelefonbuch_Name() As String
+    Public Shared ReadOnly Property P_RWSDasTelefonbuch_Name() As String
         Get
             Return "dasTelefonbuch"
         End Get
@@ -3340,7 +3331,7 @@ Public Class DataProvider
     ''' <summary>
     ''' tel.search.ch
     ''' </summary>
-    Public ReadOnly Property P_RWSTelSearch_Name() As String
+    Public Shared ReadOnly Property P_RWSTelSearch_Name() As String
         Get
             Return "tel.search.ch"
         End Get
@@ -3349,7 +3340,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Alle
     ''' </summary>
-    Public ReadOnly Property P_RWSAlle_Name() As String
+    Public Shared ReadOnly Property P_RWSAlle_Name() As String
         Get
             Return "Alle"
         End Get
@@ -3358,7 +3349,7 @@ Public Class DataProvider
     ''' <summary>
     ''' www.11880.com
     ''' </summary>
-    Public ReadOnly Property P_RWS11880_Link() As String
+    Public Shared ReadOnly Property P_RWS11880_Link() As String
         Get
             Return "www.11880.com"
         End Get
@@ -3367,7 +3358,7 @@ Public Class DataProvider
     ''' <summary>
     ''' www.dasoertliche.de
     ''' </summary>
-    Public ReadOnly Property P_RWSDasOertliche_Link() As String
+    Public Shared ReadOnly Property P_RWSDasOertliche_Link() As String
         Get
             Return "www.dasoertliche.de"
         End Get
@@ -3376,7 +3367,7 @@ Public Class DataProvider
     ''' <summary>
     ''' www.dastelefonbuch.de
     ''' </summary>
-    Public ReadOnly Property P_RWSDasTelefonbuch_Link() As String
+    Public Shared ReadOnly Property P_RWSDasTelefonbuch_Link() As String
         Get
             Return "www.dastelefonbuch.de"
         End Get
@@ -3385,7 +3376,7 @@ Public Class DataProvider
     ''' <summary>
     ''' tel.search.ch
     ''' </summary>
-    Public ReadOnly Property P_RWSTelSearch_Link() As String
+    Public Shared ReadOnly Property P_RWSTelSearch_Link() As String
         Get
             Return "tel.search.ch"
         End Get
@@ -3395,7 +3386,7 @@ Public Class DataProvider
     ''' Rückwärtssuche mit <c>Link</c> 
     ''' </summary>
     ''' <param name="Link">Link der eingefügt werden soll</param>
-    Public ReadOnly Property P_RWS_ToolTipp(ByVal Link As String) As String
+    Public Shared ReadOnly Property P_RWS_ToolTipp(ByVal Link As String) As String
         Get
             Return "Rückwärtssuche mit &#34;" & Link & "&#34;"
         End Get
@@ -3404,7 +3395,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Rückwärtssuche mit allen Anbietern
     ''' </summary>
-    Public ReadOnly Property P_RWS_ToolTipp() As String
+    Public Shared ReadOnly Property P_RWS_ToolTipp() As String
         Get
             Return "Rückwärtssuche mit allen Anbietern"
         End Get
@@ -3414,7 +3405,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Dial_Tag
     ''' </summary>
-    Public ReadOnly Property P_Tag_Insp_Dial() As String
+    Public Shared ReadOnly Property P_Tag_Insp_Dial() As String
         Get
             Return "Dial_Tag"
         End Get
@@ -3423,7 +3414,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Kontakt_Tag
     ''' </summary>
-    Public ReadOnly Property P_Tag_Insp_Kontakt() As String
+    Public Shared ReadOnly Property P_Tag_Insp_Kontakt() As String
         Get
             Return "Kontakt_Tag"
         End Get
@@ -3434,7 +3425,7 @@ Public Class DataProvider
     ''' 
     '''  ErrorMessage
     ''' </summary>
-    Public ReadOnly Property P_Fehler_Kontakt_Anzeigen(ByVal ErrorMessage As String) As String
+    Public Shared ReadOnly Property P_Fehler_Kontakt_Anzeigen(ByVal ErrorMessage As String) As String
         Get
             Return "Der Kontakt kann angezeigt werden: " & P_Def_NeueZeile & P_Def_NeueZeile & ErrorMessage
         End Get
@@ -3444,7 +3435,7 @@ Public Class DataProvider
     ''' "Der Kontakt <c>KontaktName</c> wurde erfolgreich auf die Fritz!Box geladen."
     ''' </summary>
     ''' <param name="KontaktName"></param>
-    Public ReadOnly Property P_Kontakt_Hochgeladen(ByVal KontaktName As String) As String
+    Public Shared ReadOnly Property P_Kontakt_Hochgeladen(ByVal KontaktName As String) As String
         Get
             Return "Der Kontakt " & KontaktName & " wurde erfolgreich auf die " & P_Def_FritzBoxName & " geladen."
         End Get
@@ -3454,7 +3445,7 @@ Public Class DataProvider
     ''' Der Kontakt <c>KontaktName</c> konnte nicht auf die Fritz!Box geladen werden."
     ''' </summary>
     ''' <param name="KontaktName"></param>
-    Public ReadOnly Property P_Fehler_Kontakt_Hochladen(ByVal KontaktName As String) As String
+    Public Shared ReadOnly Property P_Fehler_Kontakt_Hochladen(ByVal KontaktName As String) As String
         Get
             Return "Der Kontakt " & KontaktName & " konnte nicht auf die " & P_Def_FritzBoxName & " geladen werden."
         End Get
@@ -3463,7 +3454,7 @@ Public Class DataProvider
     ''' <summary>
     ''' "Der Addressbuch der Fritz!Box kann nicht geöffnet werden."
     ''' </summary>
-    Public ReadOnly Property P_Fehler_Export_Addressbuch() As String
+    Public Shared ReadOnly Property P_Fehler_Export_Addressbuch() As String
         Get
             Return "Der Addressbuch der " & P_Def_FritzBoxName & " kann nicht geöffnet werden."
         End Get
@@ -3602,8 +3593,13 @@ Public Class DataProvider
             .Add("*")
             .Add("[@Checked=""1""]")
         End With
-        Me.P_CLBTelNr = (From x In Split(C_XML.Read(XMLDoc, xPathTeile, Me.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray
+        SetCLBTelNr(New ReadOnlyCollection(Of String)((From x In Split(C_XML.Read(XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray))
     End Sub
+
+    Public Sub SetCLBTelNr(ByVal coll As ReadOnlyCollection(Of String))
+        _CLBTelNr = coll
+    End Sub
+
 
     ''' <summary>
     ''' Speicher Daten, die in den Properties stehen in die XML-String.
@@ -3774,13 +3770,14 @@ Public Class DataProvider
         Dim Vorwahliste As String
         Dim i As Integer
         Dim tmpVorwahl As String = P_TBLandesVW
-
+        Dim tmpvwl() As String
+        Dim tmpvw() As String
         If P_ListeLandesVorwahlen Is Nothing Then
             ' Landesvorwahlen
             Vorwahliste = Replace(My.Resources.Liste_Landesvorwahlen, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
             Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
 
-            P_ListeLandesVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray
+            _ListeLandesVorwahlen = New ReadOnlyCollection(Of String)((From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray)
         End If
 
         tmpVorwahl = CStr(IIf(tmpVorwahl = P_Def_StringEmpty, P_TBLandesVW, tmpVorwahl))
@@ -3790,20 +3787,20 @@ Public Class DataProvider
             Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Deutschland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
             Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
 
-            P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray
+            _ListeOrtsVorwahlen = New ReadOnlyCollection(Of String)((From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray)
         Else
-            tmpVorwahl = Strings.Replace(tmpVorwahl, P_Def_PreLandesVW, "", , 1, CompareMethod.Text)
 
+            tmpVorwahl = Strings.Replace(tmpVorwahl, P_Def_PreLandesVW, "", , 1, CompareMethod.Text)
             Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Ausland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
-            Dim tmpvw() As String
-            P_ListeOrtsVorwahlen = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like tmpVorwahl & ";*" Select s).ToArray
-            For i = LBound(P_ListeOrtsVorwahlen) To UBound(P_ListeOrtsVorwahlen)
+            tmpvwl = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like tmpVorwahl & ";*" Select s).ToArray
+
+            For i = LBound(tmpvwl) To UBound(tmpvwl)
                 tmpvw = Split(P_ListeOrtsVorwahlen(i), ";", , CompareMethod.Text)
-                P_ListeOrtsVorwahlen(i) = tmpvw(1) & " (" & tmpvw(2)
+                tmpvwl(i) = tmpvw(1) & " (" & tmpvw(2)
             Next
+            _ListeOrtsVorwahlen = New ReadOnlyCollection(Of String)(tmpvwl)
         End If
     End Sub
-
 
     Private Sub BWCBbox_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) Handles BWCBox.RunWorkerCompleted
         BWCBox = Nothing

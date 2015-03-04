@@ -70,19 +70,19 @@ Public Class Popup
         With ThisPopUpAnrMon
             With .OptionsMenu
                 With .Items("ToolStripMenuItemRückruf")
-                    .Text = C_DP.P_AnrMon_PopUp_ToolStripMenuItemRückruf
+                    .Text = DataProvider.P_AnrMon_PopUp_ToolStripMenuItemRückruf
                     .Image = Global.FritzBoxDial.My.Resources.IMG_Telefon
-                    .Enabled = Not Telefonat.TelNr = C_DP.P_Def_StringUnknown ' kein Rückruf
+                    .Enabled = Not Telefonat.TelNr = DataProvider.P_Def_StringUnknown ' kein Rückruf
                 End With
                 With .Items("ToolStripMenuItemKopieren")
-                    .Text = C_DP.P_AnrMon_PopUp_ToolStripMenuItemKopieren
+                    .Text = DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKopieren
                     .Image = Global.FritzBoxDial.My.Resources.IMG_Copy
-                    .Enabled = Not Telefonat.TelNr = C_DP.P_Def_StringUnknown ' in dem Fall sinnlos
+                    .Enabled = Not Telefonat.TelNr = DataProvider.P_Def_StringUnknown ' in dem Fall sinnlos
                 End With
                 With .Items("ToolStripMenuItemKontaktöffnen")
-                    .Text = CStr(IIf(Telefonat.TelNr = C_DP.P_Def_StringUnknown, _
-                                C_DP.P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen, _
-                                C_DP.P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen))
+                    .Text = CStr(IIf(Telefonat.TelNr = DataProvider.P_Def_StringUnknown, _
+                                DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen, _
+                                DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen))
                     .Image = Global.FritzBoxDial.My.Resources.IMG_Kontakt_Aktiv
                 End With
             End With
@@ -90,20 +90,20 @@ Public Class Popup
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = Telefonat.Zeit.ToString
             ' Telefonnamen eintragen
-            .TelName = Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", C_DP.P_Def_StringEmpty))
+            .TelName = Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", DataProvider.P_Def_StringEmpty))
 
             ' Kontakt einblenden wenn in Outlook gefunden
             With Telefonat
                 If .olContact Is Nothing Then
                     ''kontakt erstellen, wenn vcard vorhanden
-                    'If Not .vCard = C_DP.P_Def_StringEmpty Then
+                    'If Not .vCard = DataProvider.P_Def_StringEmpty Then
                     '    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     'End If
                 Else
                     'Kontaktbild ermitteln
                     If C_DP.P_CBAnrMonContactImage Then
                         PfadKontaktBild = C_KF.KontaktBild(.olContact)
-                        If Not PfadKontaktBild = C_DP.P_Def_StringEmpty Then
+                        If Not PfadKontaktBild = DataProvider.P_Def_StringEmpty Then
                             Using fs As New IO.FileStream(PfadKontaktBild, IO.FileMode.Open)
                                 ThisPopUpAnrMon.Image = Image.FromStream(fs)
                             End Using
@@ -115,11 +115,11 @@ Public Class Popup
                 End If
             End With
 
-            If Telefonat.Anrufer = C_DP.P_Def_StringEmpty Then
-                .TelNr = C_DP.P_Def_StringEmpty
-                If Telefonat.TelNr = C_DP.P_Def_StringEmpty Then
+            If Telefonat.Anrufer = DataProvider.P_Def_StringEmpty Then
+                .TelNr = DataProvider.P_Def_StringEmpty
+                If Telefonat.TelNr = DataProvider.P_Def_StringEmpty Then
                     'unterdrückte Nummer
-                    .AnrName = C_DP.P_Def_StringUnknown
+                    .AnrName = DataProvider.P_Def_StringUnknown
                 Else
                     'unbekannte, aber nicht unterdrückte Nummer
                     .AnrName = Telefonat.TelNr
@@ -243,7 +243,7 @@ Public Class Popup
                 End With
             End If
         End If
-        If Not PfadKontaktBild = C_DP.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
+        If Not PfadKontaktBild = DataProvider.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
 
         tmpPopupAnrMon = Nothing
         tmpTelefonat = Nothing
@@ -292,14 +292,14 @@ Public Class Popup
     Private Sub AnruferAnzeigen(ByVal tmpTelefonat As C_Telefonat)
 
         With tmpTelefonat
-            If Not .KontaktID = C_DP.P_Def_ErrorMinusOne_String And Not .StoreID = C_DP.P_Def_ErrorMinusOne_String Then
+            If Not .KontaktID = DataProvider.P_Def_ErrorMinusOne_String And Not .StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
                 .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
             End If
             If .olContact IsNot Nothing Then
                 Try
                     .olContact.Display()
                 Catch ex As System.Runtime.InteropServices.COMException
-                    C_hf.FBDB_MsgBox(C_DP.P_Fehler_Kontakt_Anzeigen(ex.Message), MsgBoxStyle.Critical, "AnruferAnzeigen")
+                    C_hf.FBDB_MsgBox(DataProvider.P_Fehler_Kontakt_Anzeigen(ex.Message), MsgBoxStyle.Critical, "AnruferAnzeigen")
                 End Try
             Else
                 C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
@@ -344,7 +344,7 @@ Public Class Popup
         If C_DP.P_CBStoppUhrAusblenden Then
             WarteZeit = C_DP.P_TBStoppUhr
         Else
-            WarteZeit = C_DP.P_Def_ErrorMinusOne_Integer
+            WarteZeit = DataProvider.P_Def_ErrorMinusOne_Integer
         End If
 
         StartPosition = New System.Drawing.Point(C_DP.P_CBStoppUhrX, C_DP.P_CBStoppUhrY)
@@ -360,7 +360,7 @@ Public Class Popup
         End With
 
         Richtung = "Anruf " & CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, "von", "zu")) & ":"
-        AnrName = CStr(IIf(Telefonat.Anrufer = C_DP.P_Def_StringEmpty, Telefonat.TelNr, Telefonat.Anrufer))
+        AnrName = CStr(IIf(Telefonat.Anrufer = DataProvider.P_Def_StringEmpty, Telefonat.TelNr, Telefonat.Anrufer))
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
 
@@ -377,7 +377,7 @@ Public Class Popup
         End With
 
         Telefonat.PopupStoppuhr = thisPopupStoppuhr
-        C_hf.LogFile(C_DP.P_AnrMon_Log_StoppUhrStart1(AnrName))
+        C_hf.LogFile(DataProvider.P_AnrMon_Log_StoppUhrStart1(AnrName))
 
         AddHandler thisPopupStoppuhr.Close, AddressOf PopUpStoppuhr_Close
 

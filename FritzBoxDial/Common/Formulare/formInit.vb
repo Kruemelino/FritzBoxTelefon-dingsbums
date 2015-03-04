@@ -38,7 +38,7 @@
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(C_DP, C_Crypt, C_XML)
-        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
+        C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
         C_KF = New Contacts(C_DP, C_HF)
@@ -88,7 +88,7 @@
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
-            If C_DP.P_Debug_AnrufSimulation Then
+            If DataProvider.P_Debug_AnrufSimulation Then
                 F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
             End If
         End If
@@ -97,9 +97,9 @@
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Or _
-            C_DP.P_TBVorwahl = C_DP.P_Def_StringEmpty Or _
-            C_DP.GetSettingsVBA("Zugang", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String Then
+        If C_DP.P_TBPasswort = DataProvider.P_Def_StringEmpty Or _
+            C_DP.P_TBVorwahl = DataProvider.P_Def_StringEmpty Or _
+            C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String Then
 
             Rückgabe = False
             Me.ShowDialog()
@@ -115,8 +115,8 @@
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpGET("http://" & FBIPAdresse & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & C_DP.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
-                Me.LMessage.Text = C_DP.P_Init_FritzBox_Found(FBIPAdresse)
+            If Not InStr(C_HF.httpGET("http://" & FBIPAdresse & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & DataProvider.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
+                Me.LMessage.Text = DataProvider.P_Init_FritzBox_Found(FBIPAdresse)
                 C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked
                 Me.TBFBPW.Enabled = True
@@ -128,13 +128,13 @@
                 Me.LFBAdr.Enabled = False
                 Me.CBForceFBAddr.Enabled = False
             Else
-                Me.LMessage.Text = C_DP.P_Init_FritzBox_NotFound
+                Me.LMessage.Text = DataProvider.P_Init_FritzBox_NotFound
             End If
         Else
             Me.CBForceFBAddr.Enabled = True
-            Me.TBFritzBoxAdr.Text = C_DP.P_Def_FritzBoxIPAdress
+            Me.TBFritzBoxAdr.Text = DataProvider.P_Def_FritzBoxIPAdress
             FBIPAdresse = Me.TBFritzBoxAdr.Text
-            Me.LMessage.Text = C_DP.P_Init_NotthingFound
+            Me.LMessage.Text = DataProvider.P_Init_NotthingFound
         End If
     End Sub
 
@@ -142,11 +142,11 @@
         Dim fw550 As Boolean
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
-        C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, C_DP.P_Def_PassWordDecryptionKey)
-        C_DP.SaveSettingsVBA("Zugang", C_DP.P_Def_PassWordDecryptionKey)
+        C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, DataProvider.P_Def_PassWordDecryptionKey)
+        C_DP.SaveSettingsVBA("Zugang", DataProvider.P_Def_PassWordDecryptionKey)
         C_HF.KeyChange()
         SID = C_FBox.FBLogin(fw550)
-        If Not SID = C_DP.P_Def_SessionID Then
+        If Not SID = DataProvider.P_Def_SessionID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
             Me.BFBPW.Enabled = False
@@ -156,9 +156,9 @@
             Me.LLandesvorwahl.Enabled = True
             Me.TBVorwahl.Enabled = True
             Me.TBLandesvorwahl.Enabled = True
-            Me.LMessage.Text = C_DP.P_Init_Login_Korrekt
+            Me.LMessage.Text = DataProvider.P_Init_Login_Korrekt
         Else
-            Me.LMessage.Text = C_DP.P_Init_Login_Nicht_Korrekt
+            Me.LMessage.Text = DataProvider.P_Init_Login_Nicht_Korrekt
         End If
     End Sub
 
@@ -171,7 +171,7 @@
         Me.LLandesvorwahl.Enabled = False
         Me.TBVorwahl.Enabled = False
         Me.TBLandesvorwahl.Enabled = False
-        Me.BTelEinlesen.Text = C_DP.P_Def_Bitte_Warten
+        Me.BTelEinlesen.Text = DataProvider.P_Def_Bitte_Warten
         Me.BTelEinlesen.Enabled = False
 
         C_DP.P_TBVorwahl = Me.TBVorwahl.Text
@@ -198,7 +198,7 @@
 
             Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like C_DP.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString
@@ -240,7 +240,7 @@
         End If
 
         Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = C_DP.P_Def_StringEmpty
+        Dim tmpTeile As String = DataProvider.P_Def_StringEmpty
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
@@ -252,7 +252,7 @@
             tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
             .Add("[" & tmpTeile & "]")
             C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "0")
-            tmpTeile = C_DP.P_Def_StringEmpty
+            tmpTeile = DataProvider.P_Def_StringEmpty
             For i = 0 To CheckTelNr.Count - 1
                 tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
             Next

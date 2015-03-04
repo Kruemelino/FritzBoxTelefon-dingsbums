@@ -1,23 +1,23 @@
 Public Class F_AnrMon
+    Implements IDisposable
 
-    Private cmnPrps As New CommonFenster
+#Region "Event"
     Public Event LinkClick(ByVal sender As Object, ByVal e As System.EventArgs)
     Public Event Close(ByVal sender As Object, ByVal e As System.EventArgs)
     Public Event Closed(ByVal sender As Object, ByVal e As System.EventArgs)
-
     Public Event ToolStripMenuItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs)
+#End Region
 
+    Private cmnPrps As New CommonFenster
     Private WithEvents fPopup As New Common_Form(vAnrMon:=Me, vStoppuhr:=Nothing, vCommon:=cmnPrps)
     Private WithEvents tmWait As New Timer
 
-    Private bAppearing As Boolean = True
-    Public bShouldRemainVisible As Boolean = False
-    Private i As Integer = 0
-
     Private bMouseIsOn As Boolean = False
+    Private bAppearing As Boolean = True
+
+    Private i As Integer = 0
     Private iMaxPosition As Integer
     Private dMaxOpacity As Double
-    Private dummybool As Boolean
 
     Private CompContainer As New System.ComponentModel.Container()
     Private WithEvents AnrMonContextMenuStrip As New ContextMenuStrip(CompContainer)
@@ -38,6 +38,15 @@ Public Class F_AnrMon
     End Enum
 
 #Region "Properties"
+    Private bShouldRemainVisible As Boolean = False
+    Friend Property ShouldRemainVisible() As Boolean
+        Get
+            Return bShouldRemainVisible
+        End Get
+        Set(ByVal value As Boolean)
+            bShouldRemainVisible = value
+        End Set
+    End Property
 
     Private WithEvents ctContextMenu As ContextMenuStrip = Nothing
     Public Property OptionsMenu() As ContextMenuStrip
@@ -129,16 +138,6 @@ Public Class F_AnrMon
         End Set
     End Property
 
-    'Private iEffektMoveGeschwindigkeit As Integer = 5
-    'Public Property EffektMoveGeschwindigkeit() As Integer
-    '    Get
-    '        Return iEffektMoveGeschwindigkeit
-    '    End Get
-    '    Set(ByVal value As Integer)
-    '        iEffektMoveGeschwindigkeit = value
-    '    End Set
-    'End Property
-
     Private pStartpunkt As eStartPosition
     Public Property Startpunkt() As eStartPosition
         Get
@@ -159,7 +158,7 @@ Public Class F_AnrMon
         End Set
     End Property
 
-    Private ptImagePosition As Point = New Point(12, 32) 'New Point(12, 21)
+    Private ptImagePosition As Point = New Point(12, 32)
     Public Property ImagePosition() As Point
         Get
             Return ptImagePosition
@@ -169,7 +168,7 @@ Public Class F_AnrMon
         End Set
     End Property
 
-    Private szImageSize As Size = New Size(48, 48) 'New Size(0, 0)
+    Private szImageSize As Size = New Size(48, 48)
     Public Property ImageSize() As Size
         Get
             If szImageSize.Width = 0 Then
@@ -320,7 +319,6 @@ Public Class F_AnrMon
     ''' <summary>
     ''' Initialisierungsroutine des ehemaligen AnrMonForm. Es wird das ContextMenuStrip an sich initialisiert 
     ''' </summary>
-
     Private Sub InitializeComponentContextMenuStrip()
         '
         'ContextMenuStrip
@@ -536,13 +534,47 @@ Public Class F_AnrMon
     End Sub
 
     Private Sub fPopup_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles fPopup.MouseLeave
-        If Not bShouldRemainVisible Then bMouseIsOn = False
+        If Not ShouldRemainVisible Then bMouseIsOn = False
     End Sub
 
     Private Sub ctContextMenu_Closed(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripDropDownClosedEventArgs) Handles ctContextMenu.Closed
-        bShouldRemainVisible = False
+        ShouldRemainVisible = False
         bMouseIsOn = False
-        'tmAnimation.Start()
     End Sub
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                fPopup.Close()
+                With tmWait
+                    .Stop()
+                    .Dispose()
+                End With
+            End If
+
+            cmnPrps.Dispose()
+            CompContainer.Dispose()
+            AnrMonContextMenuStrip.Dispose()
+            ToolStripMenuItemKontaktöffnen.Dispose()
+            ToolStripMenuItemRückruf.Dispose()
+            ToolStripMenuItemKopieren.Dispose()
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class

@@ -23,10 +23,10 @@ Imports Microsoft.Office.Core
             Case "Microsoft.Outlook.Contact"
                 File = GetResourceText("FritzBoxDial.RibbonInspectorKontakt.xml")
             Case Else
-                File = C_DP.P_Def_StringEmpty
+                File = DataProvider.P_Def_StringEmpty
         End Select
 #If OVer = 12 Then
-        If Not File = C_DP.P_Def_StringEmpty Then
+        If Not File = DataProvider.P_Def_StringEmpty Then
             File = Replace(File, "http://schemas.microsoft.com/office/2009/07/customui", "http://schemas.microsoft.com/office/2006/01/customui", , 1, CompareMethod.Text)
         End If
 #End If
@@ -149,7 +149,7 @@ Imports Microsoft.Office.Core
 
                 ' Bei Journal nur wenn Kategorien korrekt
                 ' Wenn Journal keine Kategorie enthält, dann ist es kein vom Addin erzeugtes JournalItem
-                If olJournal.Categories IsNot Nothing AndAlso olJournal.Categories.Contains(String.Join("; ", C_DP.P_AnrMon_Journal_Def_Categories)) Then
+                If olJournal.Categories IsNot Nothing AndAlso olJournal.Categories.Contains(String.Join("; ", DataProvider.P_AnrMon_Journal_Def_Categories)) Then
                     CheckJournalInspector = olJournal
                 End If
             End If
@@ -169,7 +169,7 @@ Imports Microsoft.Office.Core
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
 
         If olJournal IsNot Nothing Then
-            EnableBtnJournal = Not olJournal.Body.Contains(C_DP.P_AnrMon_AnrMonDISCONNECT_JournalTelNr & C_DP.P_Def_StringUnknown)
+            EnableBtnJournal = Not olJournal.Body.Contains(DataProvider.P_AnrMon_AnrMonDISCONNECT_JournalTelNr & DataProvider.P_Def_StringUnknown)
         End If
 
     End Function
@@ -181,7 +181,7 @@ Imports Microsoft.Office.Core
     ''' <returns>"Kontakt Anzeigen", wenn Link im JournalItem zu einem ContactItem führt. Ansonsten "Kontakt Erstellen"</returns>
     ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
     Private Function SetLabelJournal(ByVal control As Office.IRibbonControl) As String
-        SetLabelJournal = C_DP.P_CMB_Kontakt_Erstellen
+        SetLabelJournal = DataProvider.P_CMB_Kontakt_Erstellen
 
 #If Not OVer = 15 Then
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
@@ -190,7 +190,7 @@ Imports Microsoft.Office.Core
                 ' Catch tritt ein, wenn der Kontakt nicht mehr verfügbar ist.
                 Try
                     If TypeOf olLink.Item Is Outlook.ContactItem Then
-                        SetLabelJournal = C_DP.P_CMB_Kontakt_Anzeigen
+                        SetLabelJournal = DataProvider.P_CMB_Kontakt_Anzeigen
                         Exit For
                     End If
                 Catch : End Try
@@ -206,7 +206,7 @@ Imports Microsoft.Office.Core
     ''' <returns>Den entsprechenden ScreenTip, wenn Link im JournalItem zu einem ContactItem führt. Ansonsten den anderen. Falls Link ins Leere führt, dann wird Fehlermeldung ausgegeben.</returns>
     ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
     Private Function SetScreenTipJournal(ByVal control As Office.IRibbonControl) As String
-        SetScreenTipJournal = C_DP.P_CMB_Kontakt_Erstellen_ToolTipp
+        SetScreenTipJournal = DataProvider.P_CMB_Kontakt_Erstellen_ToolTipp
 
 #If Not OVer = 15 Then
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
@@ -215,11 +215,11 @@ Imports Microsoft.Office.Core
                 ' Catch tritt ein, wenn der Kontakt nicht mehr verfügbar ist.
                 Try
                     If TypeOf olLink.Item Is Outlook.ContactItem Then
-                        SetScreenTipJournal = C_DP.P_CMB_Kontakt_Anzeigen_ToolTipp
+                        SetScreenTipJournal = DataProvider.P_CMB_Kontakt_Anzeigen_ToolTipp
                         Exit For
                     End If
                 Catch
-                    SetScreenTipJournal = C_DP.P_CMB_Kontakt_Anzeigen_Error_ToolTipp
+                    SetScreenTipJournal = DataProvider.P_CMB_Kontakt_Anzeigen_Error_ToolTipp
                 End Try
             Next
         End If
@@ -270,11 +270,11 @@ Imports Microsoft.Office.Core
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMwwdh"
-                XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
+                XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
+                XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
             Case Else '"dynMVIPListe"
-                XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
+                XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
         End Select
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
@@ -282,32 +282,32 @@ Imports Microsoft.Office.Core
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
         End With
 
-        If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
+        If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
                 C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
 
-                If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
                     Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                     Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
                     GetButtonXMLString(RibbonListStrBuilder, _
                             CStr(ID Mod 10), _
-                            CStr(IIf(Anrufer = C_DP.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
+                            CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
                             XMLListBaseNode, _
-                            C_DP.P_CMB_ToolTipp(Zeit, TelNr))
-                    LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
-                    LANodeValues.Item(1) = C_DP.P_Def_ErrorMinusOne_String
-                    LANodeValues.Item(2) = C_DP.P_Def_ErrorMinusOne_String
+                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr))
+                    LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
+                    LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
+                    LANodeValues.Item(2) = DataProvider.P_Def_ErrorMinusOne_String
                 End If
             Next
         Else
@@ -315,15 +315,15 @@ Imports Microsoft.Office.Core
                 C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
 
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-                If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String Then
 
                     GetButtonXMLString(RibbonListStrBuilder, _
                             CStr(ID), _
                             Anrufer, _
                             XMLListBaseNode, _
-                            C_DP.P_Def_StringEmpty)
+                            DataProvider.P_Def_StringEmpty)
 
-                    LANodeValues.Item(0) = C_DP.P_Def_ErrorMinusOne_String
+                    LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                 End If
             Next
         End If
@@ -352,7 +352,7 @@ Imports Microsoft.Office.Core
         ' '	        &apos;  &#38;
 
         For i = LBound(Werte) To UBound(Werte)
-            If Not Werte(i) = C_DP.P_Def_StringEmpty Then
+            If Not Werte(i) = DataProvider.P_Def_StringEmpty Then
                 Werte(i) = Replace(Werte(i), "&", "&amp;&amp;", , , CompareMethod.Text)
                 Werte(i) = Replace(Werte(i), "&amp;&amp;#", "&#", , , CompareMethod.Text) ' Deizmalcode wiederherstellen
                 Werte(i) = Replace(Werte(i), "<", "&lt;", , , CompareMethod.Text)
@@ -367,7 +367,7 @@ Imports Microsoft.Office.Core
             .Append("label=""" & Werte(1) & """ ")
             .Append("onAction=""BtnOnAction"" ")
             .Append("tag=""" & Werte(2) & ";" & Werte(0) & """ ")
-            If Not Werte(3) = C_DP.P_Def_StringEmpty Then
+            If Not Werte(3) = DataProvider.P_Def_StringEmpty Then
                 .Append("supertip=""" & Werte(3) & """")
             End If
             .Append("/>" & vbCrLf)
@@ -380,14 +380,14 @@ Imports Microsoft.Office.Core
 
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "dynMWwdListe"
-                XMLListBaseNode = C_DP.P_Def_NameListCALL '"CallList"
+                XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
-                XMLListBaseNode = C_DP.P_Def_NameListRING '"RingList"
+                XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
             Case Else '"dynMVIPListe"
-                XMLListBaseNode = C_DP.P_Def_NameListVIP '"VIPList"
+                XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
         End Select
 
-        Return CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+        Return CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -442,55 +442,55 @@ Imports Microsoft.Office.Core
     Public Function GetItemLabel(ByVal control As Office.IRibbonControl) As String
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "Tab"
-                Return C_DP.P_Def_Addin_LangName
+                Return DataProvider.P_Def_Addin_LangName
             Case "btnDialExpl", "btnDialInsp"
-                Return C_DP.P_CMB_Dial
+                Return DataProvider.P_CMB_Dial
             Case "btnDirektwahl"
-                Return C_DP.P_CMB_Direktwahl
+                Return DataProvider.P_CMB_Direktwahl
             Case "dynMWwdListe"
-                Return C_DP.P_CMB_WWDH
+                Return DataProvider.P_CMB_WWDH
             Case "dynMAnrListe"
-                Return C_DP.P_CMB_CallBack
+                Return DataProvider.P_CMB_CallBack
             Case "dynMVIPListe"
-                Return C_DP.P_CMB_VIP
+                Return DataProvider.P_CMB_VIP
             Case "btnAnrMonIO"
-                Return C_DP.P_CMB_AnrMon
+                Return DataProvider.P_CMB_AnrMon
             Case "btnAnrMonRestart"
-                Return C_DP.P_CMB_AnrMonNeuStart
+                Return DataProvider.P_CMB_AnrMonNeuStart
             Case "btnAnrMonShow"
-                Return C_DP.P_CMB_AnrMonAnzeigen
+                Return DataProvider.P_CMB_AnrMonAnzeigen
             Case "btnAnrMonJI"
-                Return C_DP.P_CMB_Journal
+                Return DataProvider.P_CMB_Journal
             Case "Einstellungen"
-                Return C_DP.P_CMB_Setup
+                Return DataProvider.P_CMB_Setup
             Case "cbtnDial" ' ContextMenu Dial
-                Return C_DP.P_CMB_ContextMenueItemCall
+                Return DataProvider.P_CMB_ContextMenueItemCall
             Case "ctbtnVIP" ' ContextMenu Dial
-                Return C_DP.P_CMB_ContextMenueItemVIP
+                Return DataProvider.P_CMB_ContextMenueItemVIP
             Case "cbtnUpload" ' ContextMenu Upload
-                Return C_DP.P_CMB_ContextMenueItemUpload
+                Return DataProvider.P_CMB_ContextMenueItemUpload
             Case "mnuRWS"
-                Return C_DP.P_CMB_Insp_RWS
+                Return DataProvider.P_CMB_Insp_RWS
             Case "btnRWS01"
-                Return C_DP.P_RWS11880_Name
+                Return DataProvider.P_RWS11880_Name
             Case "btnRWS02"
-                Return C_DP.P_RWSDasOertliche_Name
+                Return DataProvider.P_RWSDasOertliche_Name
             Case "btnRWS03"
-                Return C_DP.P_RWSDasTelefonbuch_Name
+                Return DataProvider.P_RWSDasTelefonbuch_Name
             Case "btnRWS04"
-                Return C_DP.P_RWSTelSearch_Name
+                Return DataProvider.P_RWSTelSearch_Name
             Case "btnRWS05"
-                Return C_DP.P_RWSAlle_Name
+                Return DataProvider.P_RWSAlle_Name
             Case "btnAddContact"
                 Return SetLabelJournal(control)
             Case "btnNote"
-                Return C_DP.P_CMB_Insp_Note
+                Return DataProvider.P_CMB_Insp_Note
             Case "tbtnVIP"
-                Return C_DP.P_CMB_Insp_VIP
+                Return DataProvider.P_CMB_Insp_VIP
             Case "btnUpload"
-                Return C_DP.P_CMB_Insp_Upload
+                Return DataProvider.P_CMB_Insp_Upload
             Case Else
-                Return C_DP.P_Def_ErrorMinusOne_String
+                Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
 
@@ -501,48 +501,48 @@ Imports Microsoft.Office.Core
     Public Function GetItemScreenTipp(ByVal control As Office.IRibbonControl) As String
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "btnDialExpl", "btnDialInsp"
-                Return C_DP.P_CMB_Dial_ToolTipp
+                Return DataProvider.P_CMB_Dial_ToolTipp
             Case "btnDirektwahl"
-                Return C_DP.P_CMB_Direktwahl_ToolTipp
+                Return DataProvider.P_CMB_Direktwahl_ToolTipp
             Case "dynMWwdListe"
-                Return C_DP.P_CMB_WWDH_ToolTipp
+                Return DataProvider.P_CMB_WWDH_ToolTipp
             Case "dynMAnrListe"
-                Return C_DP.P_CMB_CallBack_ToolTipp
+                Return DataProvider.P_CMB_CallBack_ToolTipp
             Case "dynMVIPListe"
-                Return C_DP.P_CMB_VIP_ToolTipp
+                Return DataProvider.P_CMB_VIP_ToolTipp
             Case "btnAnrMonIO"
-                Return C_DP.P_CMB_AnrMon_ToolTipp
+                Return DataProvider.P_CMB_AnrMon_ToolTipp
             Case "btnAnrMonRestart"
-                Return C_DP.P_CMB_AnrMonNeuStart_ToolTipp
+                Return DataProvider.P_CMB_AnrMonNeuStart_ToolTipp
             Case "btnAnrMonShow"
-                Return C_DP.P_CMB_AnrMonAnzeigen_ToolTipp()
+                Return DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp()
             Case "btnAnrMonJI"
-                Return C_DP.P_CMB_Journal_ToolTipp
+                Return DataProvider.P_CMB_Journal_ToolTipp
             Case "Einstellungen"
-                Return C_DP.P_CMB_Setup_ToolTipp
+                Return DataProvider.P_CMB_Setup_ToolTipp
             Case "mnuRWS"
-                Return C_DP.P_CMB_Insp_RWS_ToolTipp
+                Return DataProvider.P_CMB_Insp_RWS_ToolTipp
             Case "btnRWS01"
-                Return C_DP.P_RWS_ToolTipp(C_DP.P_RWS11880_Link)
+                Return DataProvider.P_RWS_ToolTipp(DataProvider.P_RWS11880_Link)
             Case "btnRWS02"
-                Return C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasOertliche_Link)
+                Return DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSDasOertliche_Link)
             Case "btnRWS03"
-                Return C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasTelefonbuch_Link)
+                Return DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSDasTelefonbuch_Link)
             Case "btnRWS04"
-                Return C_DP.P_RWS_ToolTipp(C_DP.P_RWSTelSearch_Link)
+                Return DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSTelSearch_Link)
             Case "btnRWS05"
-                Return C_DP.P_RWS_ToolTipp()
+                Return DataProvider.P_RWS_ToolTipp()
             Case "btnAddContact"
                 Return SetScreenTipJournal(control)
             Case "btnNote"
-                Return C_DP.P_CMB_Insp_Note_ToolTipp
+                Return DataProvider.P_CMB_Insp_Note_ToolTipp
             Case "tbtnVIP"
-                Return CStr(IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), C_DP.P_CMB_VIP_Entfernen_ToolTipp, C_DP.P_CMB_VIP_Hinzufügen_ToolTipp))
+                Return CStr(IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), DataProvider.P_CMB_VIP_Entfernen_ToolTipp, DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp))
 
             Case "btnUpload"
-                Return C_DP.P_CMB_Insp_UploadKontakt_ToolTipp()
+                Return DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
-                Return C_DP.P_Def_ErrorMinusOne_String
+                Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
 
@@ -589,7 +589,7 @@ Imports Microsoft.Office.Core
             Case "btnNote" ' Inspector
                 Return "ShowNotesPage"
             Case Else
-                Return C_DP.P_Def_ErrorMinusOne_String
+                Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
 
     End Function
@@ -707,16 +707,16 @@ Imports Microsoft.Office.Core
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
         Dim xPathTeile As New ArrayList
 
-        xPathTeile.Add(C_DP.P_Def_NameListVIP)
+        xPathTeile.Add(DataProvider.P_Def_NameListVIP)
         xPathTeile.Add("Eintrag")
         xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
-        IsVIP = Not C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String
+        IsVIP = Not C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
         xPathTeile = Nothing
     End Function
 
     Friend Overloads Function AddVIP(ByVal aktKontakt As Outlook.ContactItem) As Boolean
         Dim Anrufer As String = Replace(aktKontakt.FullName & " (" & aktKontakt.CompanyName & ")", " ()", "")
-        Dim Index As Integer = CInt(C_XML.Read(C_DP.XMLDoc, C_DP.P_Def_NameListVIP, "Index", "0"))
+        Dim Index As Integer = CInt(C_XML.Read(C_DP.XMLDoc, DataProvider.P_Def_NameListVIP, "Index", "0"))
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
 
@@ -726,20 +726,20 @@ Imports Microsoft.Office.Core
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        xPathTeile.Add(C_DP.P_Def_NameListVIP)
+        xPathTeile.Add(DataProvider.P_Def_NameListVIP)
         xPathTeile.Add("ID[@ID=""" & Index & """]")
 
-        If Not Anrufer = C_DP.P_Def_StringEmpty Then
+        If Not Anrufer = DataProvider.P_Def_StringEmpty Then
             NodeNames.Add("Anrufer")
             NodeValues.Add(Anrufer)
         End If
 
-        If Not StoreID = C_DP.P_Def_StringEmpty Then
+        If Not StoreID = DataProvider.P_Def_StringEmpty Then
             NodeNames.Add("StoreID")
             NodeValues.Add(StoreID)
         End If
 
-        If Not KontaktID = C_DP.P_Def_StringEmpty Then
+        If Not KontaktID = DataProvider.P_Def_StringEmpty Then
             NodeNames.Add("KontaktID")
             NodeValues.Add(KontaktID)
         End If
@@ -749,7 +749,7 @@ Imports Microsoft.Office.Core
 
         With C_DP
             xPathTeile.Clear()
-            xPathTeile.Add(.P_Def_NameListVIP)
+            xPathTeile.Add(DataProvider.P_Def_NameListVIP)
             xPathTeile.Add("Index")
             C_XML.Write(.XMLDoc, xPathTeile, CStr(Index + 1))
             xPathTeile.Remove("Index")
@@ -762,7 +762,7 @@ Imports Microsoft.Office.Core
         AttributeNames = Nothing
         AttributeValues = Nothing
 #If OVer < 14 Then
-        FillPopupItems(C_DP.P_Def_NameListVIP)
+        FillPopupItems(DataProvider.P_Def_NameListVIP)
 #Else
         RefreshRibbon()
 #End If
@@ -789,7 +789,7 @@ Imports Microsoft.Office.Core
 
         With xPathTeile
             ' Anzahl Speichern
-            .Add(C_DP.P_Def_NameListVIP)
+            .Add(DataProvider.P_Def_NameListVIP)
             .Add("Index")
             Anzahl = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"))
             ' Index Speichern
@@ -812,13 +812,13 @@ Imports Microsoft.Office.Core
                 .Add("Index")
                 C_XML.Delete(C_DP.XMLDoc, xPathTeile)
             Else
-                C_XML.Write(C_DP.XMLDoc, C_DP.P_Def_NameListVIP, "Index", CStr(Anzahl - 1))
+                C_XML.Write(C_DP.XMLDoc, DataProvider.P_Def_NameListVIP, "Index", CStr(Anzahl - 1))
             End If
 
         End With
 
 #If OVer < 14 Then
-        FillPopupItems(C_DP.P_Def_NameListVIP)
+        FillPopupItems(DataProvider.P_Def_NameListVIP)
 #Else
         RefreshRibbon()
 #End If
@@ -857,8 +857,8 @@ Imports Microsoft.Office.Core
 
             olMBar = oExp.CommandBars.Add(, , , True)
             With olMBar
-                .Name = C_DP.P_Def_Addin_KurzName
-                .NameLocal = C_DP.P_Def_Addin_KurzName
+                .Name = DataProvider.P_Def_Addin_KurzName
+                .NameLocal = DataProvider.P_Def_Addin_KurzName
                 .Visible = visible
                 .Position = Office.MsoBarPosition.msoBarTop
             End With
@@ -965,15 +965,15 @@ Imports Microsoft.Office.Core
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(C_DP.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
         End With
         i = 1
-        If Not XMLListBaseNode = C_DP.P_Def_NameListVIP Then
+        If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
                 C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
@@ -982,10 +982,10 @@ Imports Microsoft.Office.Core
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
 
-                If Not TelNr = C_DP.P_Def_ErrorMinusOne_String Then
+                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
                     With cPopUp.Controls.Item(i)
-                        If Anrufer = C_DP.P_Def_ErrorMinusOne_String Then .Caption = TelNr Else .Caption = Anrufer
-                        .TooltipText = C_DP.P_CMB_ToolTipp(Zeit, TelNr)
+                        If Anrufer = DataProvider.P_Def_ErrorMinusOne_String Then .Caption = TelNr Else .Caption = Anrufer
+                        .TooltipText = DataProvider.P_CMB_ToolTipp(Zeit, TelNr)
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
                         .Tag = XMLListBaseNode & ";" & CStr(ID Mod 10)
@@ -994,9 +994,9 @@ Imports Microsoft.Office.Core
 
                     'xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     With LANodeValues
-                        .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(0) = (DataProvider.P_Def_ErrorMinusOne_String)
+                        .Item(1) = (DataProvider.P_Def_ErrorMinusOne_String)
+                        .Item(2) = (DataProvider.P_Def_ErrorMinusOne_String)
                     End With
                 End If
             Next
@@ -1006,7 +1006,7 @@ Imports Microsoft.Office.Core
                 C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not Anrufer = C_DP.P_Def_ErrorMinusOne_String And Not Anrufer = C_DP.P_Def_StringEmpty Then
+                If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String And Not Anrufer = DataProvider.P_Def_StringEmpty Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
@@ -1015,9 +1015,9 @@ Imports Microsoft.Office.Core
                         i += 1
                     End With
                     With LANodeValues
-                        .Item(0) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(1) = (C_DP.P_Def_ErrorMinusOne_String)
-                        .Item(2) = (C_DP.P_Def_ErrorMinusOne_String)
+                        .Item(0) = (DataProvider.P_Def_ErrorMinusOne_String)
+                        .Item(1) = (DataProvider.P_Def_ErrorMinusOne_String)
+                        .Item(2) = (DataProvider.P_Def_ErrorMinusOne_String)
                     End With
 
                 Else
@@ -1042,10 +1042,10 @@ Imports Microsoft.Office.Core
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_DP.P_CBSymbAnrMon
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , C_DP.P_Def_NameListRING).Visible = C_DP.P_CBSymbAnrListe
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListRING).Visible = C_DP.P_CBSymbAnrListe
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , C_DP.P_Def_NameListCALL).Visible = C_DP.P_CBSymbWwdh
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListCALL).Visible = C_DP.P_CBSymbWwdh
         Catch : End Try
         Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_DP.P_CBSymbJournalimport
@@ -1054,7 +1054,7 @@ Imports Microsoft.Office.Core
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_DP.P_CBSymbAnrMonNeuStart
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , C_DP.P_Def_NameListVIP).Visible = C_DP.P_CBSymbVIP
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListVIP).Visible = C_DP.P_CBSymbVIP
         Catch : End Try
     End Sub
 
@@ -1101,11 +1101,11 @@ Imports Microsoft.Office.Core
                              ByRef ePopVIP9 As Office.CommandBarButton, ByRef ePopVIP10 As Office.CommandBarButton)
         Dim i As Integer = 2
 
-        FritzBoxDialCommandBar = AddCmdBar(C_DP.P_Def_Addin_KurzName, True)
+        FritzBoxDialCommandBar = AddCmdBar(DataProvider.P_Def_Addin_KurzName, True)
 
-        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen", C_DP.P_CMB_Dial_ToolTipp)
+        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen", DataProvider.P_CMB_Dial_ToolTipp)
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, C_DP.P_CMB_WWDH, i, C_DP.P_Def_NameListCALL, C_DP.P_CMB_WWDH_ToolTipp)
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, DataProvider.P_CMB_WWDH, i, DataProvider.P_Def_NameListCALL, DataProvider.P_CMB_WWDH_ToolTipp)
         i += 1
         Try
             ePopWwdh1 = AddPopupItems(ePopWwdh, 1) : ePopWwdh2 = AddPopupItems(ePopWwdh, 2)
@@ -1117,30 +1117,30 @@ Imports Microsoft.Office.Core
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
         End Try
 
-        FillPopupItems(C_DP.P_Def_NameListCALL)
+        FillPopupItems(DataProvider.P_Def_NameListCALL)
         ' Direktwahl
         ePopWwdh.Visible = C_DP.P_CBSymbWwdh
         ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
-        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Direktwahl, i, 326, MsoButtonStyle.msoButtonIconAndCaption, "Direktwahl", C_DP.P_CMB_Direktwahl_ToolTipp)
+        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Direktwahl, i, 326, MsoButtonStyle.msoButtonIconAndCaption, "Direktwahl", DataProvider.P_CMB_Direktwahl_ToolTipp)
         i += 1
 
         eBtnDirektwahl.Visible = C_DP.P_CBSymbDirekt
         ' Symbol Anrufmonitor & Anzeigen
-        eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_AnrMon, i, 815, MsoButtonStyle.msoButtonIconAndCaption, "Anrufmonitor", C_DP.P_CMB_AnrMon_ToolTipp) '815
+        eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMon, i, 815, MsoButtonStyle.msoButtonIconAndCaption, "Anrufmonitor", DataProvider.P_CMB_AnrMon_ToolTipp) '815
 
-        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_AnrMonAnzeigen, i + 1, 682, MsoButtonStyle.msoButtonIconAndCaption, "Anzeigen", C_DP.P_CMB_AnrMonAnzeigen_ToolTipp)
+        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonAnzeigen, i + 1, 682, MsoButtonStyle.msoButtonIconAndCaption, "Anzeigen", DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp)
         i += 2
 
         eBtnAnrMonitor.Visible = C_DP.P_CBSymbAnrMon
         eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
 
-        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_AnrMonNeuStart, i, 37, MsoButtonStyle.msoButtonIconAndCaption, "AnrMonNeuStart", C_DP.P_CMB_AnrMonNeuStart_ToolTipp)
+        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonNeuStart, i, 37, MsoButtonStyle.msoButtonIconAndCaption, "AnrMonNeuStart", DataProvider.P_CMB_AnrMonNeuStart_ToolTipp)
 
         eBtnAnrMonNeuStart.Visible = C_DP.P_CBSymbAnrMonNeuStart
 
         i += 1
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, C_DP.P_CMB_CallBack, i, C_DP.P_Def_NameListRING, C_DP.P_CMB_CallBack_ToolTipp)
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, DataProvider.P_CMB_CallBack, i, DataProvider.P_Def_NameListRING, DataProvider.P_CMB_CallBack_ToolTipp)
         Try
             ePopAnr1 = AddPopupItems(ePopAnr, 1) : ePopAnr2 = AddPopupItems(ePopAnr, 2)
             ePopAnr3 = AddPopupItems(ePopAnr, 3) : ePopAnr4 = AddPopupItems(ePopAnr, 4)
@@ -1150,12 +1150,12 @@ Imports Microsoft.Office.Core
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
-        FillPopupItems(C_DP.P_Def_NameListRING)
+        FillPopupItems(DataProvider.P_Def_NameListRING)
         ePopAnr.Visible = C_DP.P_CBSymbAnrListe
         ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, C_DP.P_CMB_VIP, i, C_DP.P_Def_NameListVIP, C_DP.P_CMB_VIP_ToolTipp)
+        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, DataProvider.P_CMB_VIP, i, DataProvider.P_Def_NameListVIP, DataProvider.P_CMB_VIP_ToolTipp)
         Try
             ePopVIP1 = AddPopupItems(ePopVIP, 1) : ePopVIP2 = AddPopupItems(ePopVIP, 2)
             ePopVIP3 = AddPopupItems(ePopVIP, 3) : ePopVIP4 = AddPopupItems(ePopVIP, 4)
@@ -1165,47 +1165,47 @@ Imports Microsoft.Office.Core
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
-        FillPopupItems(C_DP.P_Def_NameListVIP)
+        FillPopupItems(DataProvider.P_Def_NameListVIP)
         i += 1
         ePopVIP.Visible = C_DP.P_CBSymbVIP
         ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
 
-        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Journal, i, 591, MsoButtonStyle.msoButtonIconAndCaption, "Journalimport", C_DP.P_CMB_Journal_ToolTipp)
+        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Journal, i, 591, MsoButtonStyle.msoButtonIconAndCaption, "Journalimport", DataProvider.P_CMB_Journal_ToolTipp)
         eBtnJournalimport.Visible = C_DP.P_CBSymbJournalimport
         i += 1
-        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, C_DP.P_CMB_Setup, i, 548, MsoButtonStyle.msoButtonIconAndCaption, "Einstellungen", C_DP.P_CMB_Setup_ToolTipp)
+        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Setup, i, 548, MsoButtonStyle.msoButtonIconAndCaption, "Einstellungen", DataProvider.P_CMB_Setup_ToolTipp)
         i += 1
 
-        eBtnWaehlen.TooltipText = C_DP.P_CMB_Dial_ToolTipp
-        ePopWwdh.TooltipText = C_DP.P_CMB_WWDH_ToolTipp
-        eBtnAnrMonitor.TooltipText = C_DP.P_CMB_AnrMon_ToolTipp
-        eBtnDirektwahl.TooltipText = C_DP.P_CMB_Direktwahl_ToolTipp
-        eBtnAnzeigen.TooltipText = C_DP.P_CMB_AnrMonAnzeigen_ToolTipp
-        eBtnAnrMonNeuStart.TooltipText = C_DP.P_CMB_AnrMonNeuStart_ToolTipp
-        ePopAnr.TooltipText = C_DP.P_CMB_CallBack_ToolTipp
-        ePopVIP.TooltipText = C_DP.P_CMB_VIP_ToolTipp
-        eBtnJournalimport.TooltipText = C_DP.P_CMB_Journal_ToolTipp
-        eBtnEinstellungen.TooltipText = C_DP.P_CMB_Setup_ToolTipp
+        eBtnWaehlen.TooltipText = DataProvider.P_CMB_Dial_ToolTipp
+        ePopWwdh.TooltipText = DataProvider.P_CMB_WWDH_ToolTipp
+        eBtnAnrMonitor.TooltipText = DataProvider.P_CMB_AnrMon_ToolTipp
+        eBtnDirektwahl.TooltipText = DataProvider.P_CMB_Direktwahl_ToolTipp
+        eBtnAnzeigen.TooltipText = DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp
+        eBtnAnrMonNeuStart.TooltipText = DataProvider.P_CMB_AnrMonNeuStart_ToolTipp
+        ePopAnr.TooltipText = DataProvider.P_CMB_CallBack_ToolTipp
+        ePopVIP.TooltipText = DataProvider.P_CMB_VIP_ToolTipp
+        eBtnJournalimport.TooltipText = DataProvider.P_CMB_Journal_ToolTipp
+        eBtnEinstellungen.TooltipText = DataProvider.P_CMB_Setup_ToolTipp
 
     End Sub
 
     Private Function CommandBarPopupEnabled(ByVal control As Office.CommandBarPopup) As Boolean
-        Dim XMLListBaseNode As String = C_DP.P_Def_ErrorMinusOne_String
+        Dim XMLListBaseNode As String = DataProvider.P_Def_ErrorMinusOne_String
         Dim xPathTeile As New ArrayList
 
         Select Case control.Tag
-            Case C_DP.P_Def_NameListCALL
-                XMLListBaseNode = C_DP.P_Def_NameListCALL
-            Case C_DP.P_Def_NameListRING
-                XMLListBaseNode = C_DP.P_Def_NameListRING
-            Case C_DP.P_Def_NameListVIP ' "VIPListe"
-                XMLListBaseNode = C_DP.P_Def_NameListVIP
+            Case DataProvider.P_Def_NameListCALL
+                XMLListBaseNode = DataProvider.P_Def_NameListCALL
+            Case DataProvider.P_Def_NameListRING
+                XMLListBaseNode = DataProvider.P_Def_NameListRING
+            Case DataProvider.P_Def_NameListVIP ' "VIPListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListVIP
         End Select
 
-        If XMLListBaseNode = C_DP.P_Def_ErrorMinusOne_String Then
+        If XMLListBaseNode = DataProvider.P_Def_ErrorMinusOne_String Then
             CommandBarPopupEnabled = False
         Else
-            CommandBarPopupEnabled = CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", C_DP.P_Def_ErrorMinusOne_String) = C_DP.P_Def_ErrorMinusOne_String, True, False))
+            CommandBarPopupEnabled = CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False))
         End If
     End Function
 
@@ -1236,26 +1236,26 @@ Imports Microsoft.Office.Core
                 ' Wenn die Leiste nicht gefunden werden konnte, dann füge sie hinzu.
                 If TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
                     For Each cmb In cmbs
-                        If cmb.NameLocal = C_DP.P_Def_Addin_KurzName Then
+                        If cmb.NameLocal = DataProvider.P_Def_Addin_KurzName Then
                             cmbErstellen = False
                             Exit For
                         End If
                     Next
                 End If
                 If cmbErstellen Then
-                    cmb = Inspector.CommandBars.Add(C_DP.P_Def_Addin_KurzName, Microsoft.Office.Core.MsoBarPosition.msoBarTop, , True)
+                    cmb = Inspector.CommandBars.Add(DataProvider.P_Def_Addin_KurzName, Microsoft.Office.Core.MsoBarPosition.msoBarTop, , True)
                     With cmb
-                        .NameLocal = C_DP.P_Def_Addin_KurzName
+                        .NameLocal = DataProvider.P_Def_Addin_KurzName
                         .Visible = True
                     End With
-                    iBtnDial = AddButtonsToCmb(cmb, C_DP.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, C_DP.P_Tag_Insp_Dial, C_DP.P_CMB_Dial_ToolTipp)
+                    iBtnDial = AddButtonsToCmb(cmb, DataProvider.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, C_DP.P_Tag_Insp_Dial, DataProvider.P_CMB_Dial_ToolTipp)
                     i += 1
                 End If
             End If
             ' Kontakteinträge
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
 
-                AddPopupsToExplorer(cmb, iPopRWS, C_DP.P_CMB_Insp_RWS, i, "RWS", C_DP.P_CMB_Insp_RWS_ToolTipp)
+                AddPopupsToExplorer(cmb, iPopRWS, DataProvider.P_CMB_Insp_RWS, i, "RWS", DataProvider.P_CMB_Insp_RWS_ToolTipp)
                 i += 1
                 iBtnRwsDasOertliche = AddPopupItems(iPopRWS, 1)
                 iBtnRws11880 = AddPopupItems(iPopRWS, 2)
@@ -1284,47 +1284,47 @@ Imports Microsoft.Office.Core
                 Next
             End If
             If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-                iBtnVIP = AddButtonsToCmb(cmb, C_DP.P_CMB_Insp_VIP, i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", C_DP.P_CMB_VIP_Hinzufügen_ToolTipp)
+                iBtnVIP = AddButtonsToCmb(cmb, DataProvider.P_CMB_Insp_VIP, i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp)
                 i += 1
                 Dim olKontakt As Outlook.ContactItem = CType(Inspector.CurrentItem, Outlook.ContactItem)
                 With iBtnVIP
                     If IsVIP(olKontakt) Then
                         .State = Office.MsoButtonState.msoButtonDown
-                        .TooltipText = C_DP.P_CMB_VIP_Entfernen_ToolTipp
+                        .TooltipText = DataProvider.P_CMB_VIP_Entfernen_ToolTipp
                     Else
-                        If CLng(C_XML.Read(C_DP.XMLDoc, C_DP.P_Def_NameListVIP, "Index", "0")) >= 10 Then
-                            .TooltipText = C_DP.P_CMB_VIP_O11_Voll_ToolTipp
+                        If CLng(C_XML.Read(C_DP.XMLDoc, DataProvider.P_Def_NameListVIP, "Index", "0")) >= 10 Then
+                            .TooltipText = DataProvider.P_CMB_VIP_O11_Voll_ToolTipp
                             .Enabled = False
                         Else
-                            .TooltipText = C_DP.P_CMB_VIP_Hinzufügen_ToolTipp
+                            .TooltipText = DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp
                         End If
                         .State = Office.MsoButtonState.msoButtonUp
                     End If
-                    .Tag = C_DP.P_CMB_Insp_VIP
+                    .Tag = DataProvider.P_CMB_Insp_VIP
                     .Visible = C_DP.P_CBSymbVIP
                 End With
                 ' Upload
-                iBtnUpload = AddButtonsToCmb(cmb, C_DP.P_CMB_Insp_Upload, i, 3732, MsoButtonStyle.msoButtonIconAndCaption, "Upload", C_DP.P_CMB_Insp_UploadKontakt_ToolTipp)
+                iBtnUpload = AddButtonsToCmb(cmb, DataProvider.P_CMB_Insp_Upload, i, 3732, MsoButtonStyle.msoButtonIconAndCaption, "Upload", DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp)
                 i += 1
             End If
             ' Journaleinträge
             If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
                 iBtnKontakterstellen = AddButtonsToCmb(cmb, _
-                                                       C_DP.P_CMB_Kontakt_Erstellen, _
+                                                       DataProvider.P_CMB_Kontakt_Erstellen, _
                                                        i, 1099, MsoButtonStyle.msoButtonIconAndCaption, _
                                                        C_DP.P_Tag_Insp_Kontakt, _
-                                                       C_DP.P_CMB_Kontakt_Erstellen_ToolTipp)
+                                                       DataProvider.P_CMB_Kontakt_Erstellen_ToolTipp)
                 i += 1
                 Dim olJournal As Outlook.JournalItem = CType(Inspector.CurrentItem, Outlook.JournalItem)
                 If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", vbTextCompare) = 0 Then
                     Dim olLink As Outlook.Link = Nothing
                     For Each olLink In olJournal.Links
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then iBtnKontakterstellen.Caption = C_DP.P_CMB_Kontakt_Anzeigen
+                        If TypeOf olLink.Item Is Outlook.ContactItem Then iBtnKontakterstellen.Caption = DataProvider.P_CMB_Kontakt_Anzeigen
                         Exit For
                     Next
                     C_HF.NAR(olLink) : olLink = Nothing
                     iPopRWS.Enabled = True
-                    iBtnDial.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: " & C_DP.P_Def_StringUnknown, CompareMethod.Text))
+                    iBtnDial.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: " & DataProvider.P_Def_StringUnknown, CompareMethod.Text))
                     iBtnKontakterstellen.Enabled = True
                 Else
                     cmb.Delete()
@@ -1358,7 +1358,7 @@ Imports Microsoft.Office.Core
     Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.DialDirect
-                P_CallClient.Wählbox(Nothing, C_DP.P_Def_StringEmpty, C_DP.P_Def_StringEmpty, True)
+                P_CallClient.Wählbox(Nothing, DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, True)
             Case TaskToDo.DialExplorer
                 'If C_OLI.OutlookApplication IsNot Nothing Then
                 '    Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
@@ -1435,12 +1435,12 @@ Imports Microsoft.Office.Core
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod 10))
 
-            If Not Anrufer = C_DP.P_Def_StringEmpty Then
+            If Not Anrufer = DataProvider.P_Def_StringEmpty Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(Anrufer)
             End If
 
-            If Not TelNr = C_DP.P_Def_StringEmpty Then
+            If Not TelNr = DataProvider.P_Def_StringEmpty Then
                 NodeNames.Add("TelNr")
                 NodeValues.Add(TelNr)
             End If
@@ -1450,17 +1450,17 @@ Imports Microsoft.Office.Core
                 NodeValues.Add(Zeit)
             End If
 
-            If Not StoreID = C_DP.P_Def_StringEmpty Then
+            If Not StoreID = DataProvider.P_Def_StringEmpty Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(StoreID)
             End If
 
-            If Not KontaktID = C_DP.P_Def_StringEmpty Then
+            If Not KontaktID = DataProvider.P_Def_StringEmpty Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(KontaktID)
             End If
 
-            If Not vCard = C_DP.P_Def_StringEmpty Then
+            If Not vCard = DataProvider.P_Def_StringEmpty Then
                 NodeNames.Add("vCard")
                 NodeValues.Add(vCard)
             End If

@@ -207,7 +207,7 @@
             If RectOptions.Contains(e.X, e.Y) Then
                 If P_pnAnrMon.OptionsMenu IsNot Nothing Then
                     P_pnAnrMon.OptionsMenu.Show(Me, New Point(RectOptions.Right - P_pnAnrMon.OptionsMenu.Width, RectOptions.Bottom))
-                    P_pnAnrMon.bShouldRemainVisible = True
+                    P_pnAnrMon.ShouldRemainVisible = True
                 End If
             End If
         End If
@@ -490,20 +490,7 @@
 End Class
 
 Friend Class CommonFenster
-
-#Region "Enum"
-    'Enum eStartPosition
-    '    BottomRight
-    '    BottomLeft
-    '    TopLeft
-    '    TopRight
-    'End Enum
-
-    'Enum eMoveDirection
-    '    Y
-    '    X
-    'End Enum
-#End Region
+    Implements IDisposable
 
 #Region "DefaultFont"
     Private sDefFontName As String = "Microsoft Sans Serif"
@@ -715,6 +702,16 @@ Friend Class CommonFenster
         End Set
     End Property
 
+    Private ftTelNr As Font = New Font(DefFontName, 11.25!, DefFontStyle, sDefGraphicsUnit, DefgdiCharSet)
+    Property TelNrFont() As Font
+        Get
+            Return ftTelNr
+        End Get
+        Set(ByVal value As Font)
+            ftTelNr = value
+        End Set
+    End Property
+
     Private iEffektMoveGeschwindigkeit As Integer = 5
     Property EffektMoveGeschwindigkeit() As Integer
         Get
@@ -725,38 +722,7 @@ Friend Class CommonFenster
         End Set
     End Property
 
-    'Private pStartpunkt As eStartPosition
-    'Property Startpunkt() As eStartPosition
-    '    Get
-    '        Return pStartpunkt
-    '    End Get
-    '    Set(ByVal value As eStartPosition)
-    '        pStartpunkt = value
-    '    End Set
-    'End Property
-
-    'Private _MoveDirection As eMoveDirection
-    'Property MoveDirecktion() As eMoveDirection
-    '    Get
-    '        Return _MoveDirection
-    '    End Get
-    '    Set(ByVal value As eMoveDirection)
-    '        _MoveDirection = value
-    '    End Set
-    'End Property
-
-    Private ftTelNr As Font = New Font(DefFontName, 11.25!, DefFontStyle, sDefGraphicsUnit, DefgdiCharSet) 'SystemFonts.CaptionFont
-    Property TelNrFont() As Font
-        Get
-            Return ftTelNr
-        End Get
-        Set(ByVal value As Font)
-            ftTelNr = value
-
-        End Set
-    End Property
-
-    Private ptImagePosition As Point = New Point(12, 32) 'New Point(12, 21)
+    Private ptImagePosition As Point = New Point(12, 32)
     Property ImagePosition() As Point
         Get
             Return ptImagePosition
@@ -767,7 +733,7 @@ Friend Class CommonFenster
         End Set
     End Property
 
-    Private szImageSize As Size = New Size(48, 48) 'New Size(0, 0)
+    Private szImageSize As Size = New Size(48, 48)
     Property ImageSize() As Size
         Get
             If szImageSize.Width = 0 Then
@@ -875,10 +841,33 @@ Friend Class CommonFenster
         Return clNew
     End Function
 
-    'Private Function GetLighterTransparentColor(ByVal Color As Color) As Color
-    '    Dim clNew As Color
-    '    clNew = Drawing.Color.FromArgb(0, AddValueMax255(CInt(Color.R), GradientPower), AddValueMax255(CInt(Color.G), GradientPower), AddValueMax255(CInt(Color.B), GradientPower))
-    '    Return clNew
-    'End Function
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                ' Managed Code?
+            End If
+
+            ftSUBase.Dispose()
+            ftBase.Dispose()
+            ftTitle.Dispose()
+            ftTelNr.Dispose()
+
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class

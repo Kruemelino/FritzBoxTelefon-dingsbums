@@ -1,8 +1,10 @@
 ﻿Imports System.Timers
 
 Public Class F_StoppUhr
+    Implements IDisposable
+
     Private cmnPrps As New CommonFenster
-    Private WithEvents fStopUhr As New Common_Form(vAnrMon:=Nothing, vStoppuhr:=Me, vCommon:=cmnPrps)
+    Private WithEvents fStoppUhr As New Common_Form(vAnrMon:=Nothing, vStoppuhr:=Me, vCommon:=cmnPrps)
     Private WithEvents TimerZeit As New Timer
     Private WithEvents TimerSchließen As New Timer
     Private Stoppwatch As New Stopwatch
@@ -104,7 +106,7 @@ Public Class F_StoppUhr
 #End Region
 
     Sub New()
-        With fStopUhr
+        With fStoppUhr
             .FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             .StartPosition = System.Windows.Forms.FormStartPosition.Manual
             .ShowInTaskbar = True
@@ -113,7 +115,7 @@ Public Class F_StoppUhr
 
     Sub Popup()
         Dim retVal As Boolean
-        With fStopUhr
+        With fStoppUhr
             .TopMost = True
             .Size = Size
             .Location = StartPosition
@@ -142,7 +144,7 @@ Public Class F_StoppUhr
             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hour, .Minute, .Second)
         End With
         EndeZeit = Zeit
-        fStopUhr.Invalidate()
+        fStoppUhr.Invalidate()
         TimerZeit.Stop()
         Stoppwatch.Stop()
         If Not sWarteZeit = -1 Then
@@ -159,10 +161,10 @@ Public Class F_StoppUhr
         With Stoppwatch.Elapsed
             Zeit = String.Format("{0:00}:{1:00}:{2:00}", .Hours, .Minutes, .Seconds)
         End With
-        fStopUhr.Invalidate()
+        fStoppUhr.Invalidate()
     End Sub
 
-    Private Sub TimerSchließen_Elapsed(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerSchließen.Elapsed, fStopUhr.CloseClick 'Ehemals: System.Timers.ElapsedEventArgs
+    Private Sub TimerSchließen_Elapsed(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerSchließen.Elapsed, fStoppUhr.CloseClick 'Ehemals: System.Timers.ElapsedEventArgs
 
         TimerSchließen.Stop()
         TimerSchließen = Nothing
@@ -170,18 +172,45 @@ Public Class F_StoppUhr
         TimerZeit.Close()
         Stoppwatch = Nothing
         TimerZeit = Nothing
-        StartPosition = fStopUhr.Location
+        StartPosition = fStoppUhr.Location
         AutoSchließen()
         RaiseEvent Close(Me, EventArgs.Empty)
         Me.Finalize()
     End Sub
 
     Sub AutoSchließen()
-        If fStopUhr.InvokeRequired Then
+        If fStoppUhr.InvokeRequired Then
             Dim D As New SchließeStoppUhr(AddressOf AutoSchließen)
-            fStopUhr.Invoke(D)
+            fStoppUhr.Invoke(D)
         Else
-            fStopUhr.Close()
+            fStoppUhr.Close()
         End If
     End Sub
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                ' TODO: Verwalteten Zustand löschen (verwaltete Objekte).
+            End If
+            fStoppUhr.Dispose()
+            cmnPrps.Dispose()
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
+
 End Class

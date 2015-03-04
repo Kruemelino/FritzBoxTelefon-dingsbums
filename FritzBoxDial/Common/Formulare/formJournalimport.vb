@@ -151,7 +151,7 @@ Friend Class formJournalimport
 
         ThisAddIn.P_FritzBox.FBLogout(SID)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = C_DP.P_Def_StringEmpty Then
+        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = DataProvider.P_Def_StringEmpty Then
 
             CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.
@@ -164,7 +164,7 @@ Friend Class formJournalimport
                 Loop Until AnrListe.GetValue(j).ToString = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer" Or j = AnrListe.Length
                 ' Ermittle die Position des Ersten und Letzten zu importierenden Telefonats
                 StartZeile = j + 1
-                If CStr(AnrListe.GetValue(j + 1)) = C_DP.P_Def_StringEmpty Then
+                If CStr(AnrListe.GetValue(j + 1)) = DataProvider.P_Def_StringEmpty Then
                     j += 1
                     StartZeile = j + 1
                 End If
@@ -197,11 +197,11 @@ Friend Class formJournalimport
 
                         Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
                         ' Bei analogen Anschlüssen steht "Festnetz" in MSN
-                        If MSN = "Festnetz" Then MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", C_DP.P_Def_ErrorMinusOne_String)
+                        If MSN = "Festnetz" Then MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", DataProvider.P_Def_ErrorMinusOne_String)
                         ' MSN von dem "Internet: " bereinigen
                         If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-                        If C_hf.IsOneOf(C_hf.EigeneVorwahlenEntfernen(MSN), C_DP.P_CLBTelNr) Or C_DP.P_Debug_AnrufSimulation Then
+                        If C_DP.P_CLBTelNr.Contains(C_hf.EigeneVorwahlenEntfernen(MSN)) Or DataProvider.P_Debug_AnrufSimulation Then
                             b += 1
                             NSN = -1
                             AnrID = Str(100 + b)
@@ -227,7 +227,7 @@ Friend Class formJournalimport
                                             .Add("Telefon")
                                             .Add("[TelName = """ & Nebenstelle & """]")
                                             .Add("@Dialport")
-                                            NSN = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, C_DP.P_Def_ErrorMinusOne_String))
+                                            NSN = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String))
                                         End With
                                 End Select
                             End If
@@ -244,21 +244,21 @@ Friend Class formJournalimport
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonRING(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
                                 Case 2 ' eingehender Anruf: nicht angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonRING(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
                                 Case 3, 4 ' ausgehender Anruf
                                     vFBStatus = Split(AnrZeit & ";CALL;" & AnrID & ";0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCALL(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCALL(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
                             End Select
                             If Abbruch Then Exit For
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
-                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, C_DP.P_Debug_AnrufSimulation)
+                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1

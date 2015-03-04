@@ -25,10 +25,10 @@ Public Class MyRijndael
 
     Public Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrEncryptionKey As String) As String
         ' Standardwert
-        EncryptString128Bit = C_DP.P_Def_ErrorMinusOne_String
+        EncryptString128Bit = DataProvider.P_Def_ErrorMinusOne_String
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrTextToBeEncrypted IsNot C_DP.P_Def_ErrorMinusOne_String And vstrEncryptionKey IsNot C_DP.P_Def_ErrorMinusOne_String Then
+        If vstrTextToBeEncrypted IsNot DataProvider.P_Def_ErrorMinusOne_String And vstrEncryptionKey IsNot DataProvider.P_Def_ErrorMinusOne_String Then
 
             Dim bytValue() As Byte
             Dim bytKey() As Byte
@@ -107,10 +107,10 @@ Public Class MyRijndael
 
     Public Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDecryptionKey As String) As String
         ' Standardwert
-        DecryptString128Bit = C_DP.P_Def_ErrorMinusOne_String
+        DecryptString128Bit = DataProvider.P_Def_ErrorMinusOne_String
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrStringToBeDecrypted IsNot C_DP.P_Def_ErrorMinusOne_String And vstrDecryptionKey IsNot C_DP.P_Def_ErrorMinusOne_String Then
+        If vstrStringToBeDecrypted IsNot DataProvider.P_Def_ErrorMinusOne_String And vstrDecryptionKey IsNot DataProvider.P_Def_ErrorMinusOne_String Then
 
             Dim bytDataToBeDecrypted() As Byte
             Dim bytDecryptionKey() As Byte

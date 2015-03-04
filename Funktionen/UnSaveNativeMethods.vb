@@ -89,7 +89,7 @@ End Enum
 ''' The SetWindowPos hWndInsertAfter positioning flags.
 ''' </summary>
 ''' <remarks></remarks>
-<Flags> Public Enum hWndInsertAfterFlags As Integer
+Public Enum hWndInsertAfterFlags As Integer
     ''' <summary>
     ''' Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its topmost status and is placed at the bottom of all other windows.
     ''' </summary>
@@ -101,9 +101,9 @@ End Enum
     HWND_NOTOPMOST = -2
 
     ''' <summary>
-    ''' Places the window at the top of the Z order.
+    ''' Places the window at the top of the Z order. (Equal to HWND_TOP)
     ''' </summary>
-    HWND_TOP = 0
+    None = 0 ' HWND_TOP
 
     ''' <summary>
     ''' Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.
@@ -127,7 +127,7 @@ End Enum
     End Function
 
     <DllImport("user32.dll", EntryPoint:="GetWindowRect", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function GetWindowRect(ByVal hWnd As IntPtr, ByRef lpRect As RECT) As Boolean
+    Friend Shared Function GetWindowRect(ByVal hWnd As IntPtr, ByRef lpRect As RECT) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
     <DllImport("user32.dll", EntryPoint:="FindWindowEx", SetLastError:=True, CharSet:=CharSet.Unicode)> _
@@ -135,7 +135,7 @@ End Enum
     End Function
 
     <DllImport("UxTheme.dll", EntryPoint:="IsThemeActive", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function IsThemeActive() As Boolean
+    Friend Shared Function IsThemeActive() As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
     <DllImport("user32.dll", EntryPoint:="GetShellWindow", SetLastError:=True, CharSet:=CharSet.Unicode)> _
@@ -171,7 +171,7 @@ End Enum
     'End Function
 
     <DllImport("user32.dll", EntryPoint:="SetWindowPos", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As hWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As Boolean
+    Friend Shared Function SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As hWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
     '<DllImport("user32.dll", SetLastError:=True)> _
@@ -183,22 +183,22 @@ End Enum
     'End Function
 
     <DllImport("user32.dll", EntryPoint:="ReleaseCapture", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function ReleaseCapture() As Boolean
+    Friend Shared Function ReleaseCapture() As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
-    ''' <summary>
-    ''' Allows an application to check if a connection to the Internet can be established.
-    ''' </summary>
-    ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
-    ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
-    ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
-    ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
-    ''' <param name="dwReserved">This parameter is reserved and must be 0</param>
-    ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx</remarks>
-    <DllImport("wininet.dll", EntryPoint:="InternetCheckConnection", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As Boolean
-    End Function
+    ' ''' <summary>
+    ' ''' Allows an application to check if a connection to the Internet can be established.
+    ' ''' </summary>
+    ' ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
+    ' ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
+    ' ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
+    ' ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
+    ' ''' <param name="dwReserved">This parameter is reserved and must be 0</param>
+    ' ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
+    ' ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx</remarks>
+    '<DllImport("wininet.dll", EntryPoint:="InternetCheckConnection", SetLastError:=True, CharSet:=CharSet.Unicode)> _
+    'Friend Shared Function InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As <MarshalAs(UnmanagedType.Bool)> Boolean
+    'End Function
 End Class
 
 Public NotInheritable Class OutlookSecurity
@@ -338,6 +338,7 @@ Public NotInheritable Class OutlookSecurity
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get
     End Property
+
     ''' <summary>
     ''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
     ''' </summary>
@@ -355,7 +356,6 @@ Public NotInheritable Class OutlookSecurity
             Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
         End Get
     End Property
-
 
     ''' <summary>
     ''' Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to an application-defined callback function. EnumChildWindows continues until the last child window is enumerated or the callback function returns FALSE.
@@ -414,23 +414,23 @@ Public NotInheritable Class OutlookSecurity
         End Get
     End Property
 
-    ''' <summary>
-    ''' Allows an application to check if a connection to the Internet can be established.
-    ''' </summary>
-    ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
-    ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
-    ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
-    ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
-    ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx
-    ''' <param name="dwReserved">This parameter is reserved and must be 0</param></remarks>
-    Public Shared ReadOnly Property InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer) As Boolean
-        'Public Shared ReadOnly Property InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As Boolean
-        Get
-            Return UnsafeNativeMethods.InternetCheckConnection(lpszUrl, dwFlags, 0)
-            'Return UnsafeNativeMethods.InternetCheckConnection(lpszUrl, dwFlags, dwReserved)
-        End Get
-    End Property
+    ' ''' <summary>
+    ' ''' Allows an application to check if a connection to the Internet can be established.
+    ' ''' </summary>
+    ' ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
+    ' ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
+    ' ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
+    ' ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
+    ' ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
+    ' ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx
+    ' ''' <param name="dwReserved">This parameter is reserved and must be 0</param></remarks>
+    'Public Shared ReadOnly Property InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer) As Boolean
+    '    'Public Shared ReadOnly Property InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As Boolean
+    '    Get
+    '        Return UnsafeNativeMethods.InternetCheckConnection(lpszUrl, dwFlags, 0)
+    '        'Return UnsafeNativeMethods.InternetCheckConnection(lpszUrl, dwFlags, dwReserved)
+    '    End Get
+    'End Property
 
 
 End Class

@@ -200,7 +200,7 @@ Public Class ThisAddIn
 
     Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile(C_DP.P_Def_Addin_LangName & " V" & Version & " beendet.")
+        C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & Version & " beendet.")
         C_DP.SpeichereXMLDatei()
         With C_HF
             .NAR(P_oApp)
@@ -318,7 +318,7 @@ Public Class ThisAddIn
                     .OnActionRWS(oApp.ActiveInspector, RückwärtsSuchmaschine.RWSAlle)
                 Case C_DP.P_Tag_Insp_Dial
                     .OnAction(GraphicalUserInterface.TaskToDo.DialInspector)
-                Case C_DP.P_CMB_Insp_VIP
+                Case DataProvider.P_CMB_Insp_VIP
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     If .IsVIP(aktKontakt) Then
                         .RemoveVIP(aktKontakt.EntryID, CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID)
@@ -327,7 +327,7 @@ Public Class ThisAddIn
                         .AddVIP(aktKontakt)
                         Ctrl.State = MsoButtonState.msoButtonDown
                     End If
-                Case C_DP.P_CMB_Insp_Upload
+                Case DataProvider.P_CMB_Insp_Upload
                     Dim aktKontakt As Outlook.ContactItem = CType(oApp.ActiveInspector.CurrentItem, Outlook.ContactItem)
                     C_Fbox.UploadKontaktToFritzBox(aktKontakt, .IsVIP(aktKontakt))
             End Select

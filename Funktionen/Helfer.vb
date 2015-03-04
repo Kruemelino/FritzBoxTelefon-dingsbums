@@ -45,7 +45,7 @@ Public Class Helfer
         If Not pos(0) = Len(StringDavor) Then
             StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
         Else
-            StringEntnehmen = C_DP.P_Def_ErrorMinusOne_String
+            StringEntnehmen = DataProvider.P_Def_ErrorMinusOne_String
         End If
     End Function
 
@@ -70,7 +70,7 @@ Public Class Helfer
             StringEntnehmen = Mid(Text, pos(0), pos(1) - pos(0))
             StartPosition = pos(1)
         Else
-            StringEntnehmen = C_DP.P_Def_ErrorMinusOne_String
+            StringEntnehmen = DataProvider.P_Def_ErrorMinusOne_String
         End If
 
     End Function
@@ -115,7 +115,7 @@ Public Class Helfer
         Dim PingSender As New NetworkInformation.Ping()
         Dim Options As New NetworkInformation.PingOptions()
         Dim PingReply As NetworkInformation.PingReply = Nothing
-        Dim data As String = C_DP.P_Def_StringEmpty
+        Dim data As String = DataProvider.P_Def_StringEmpty
 
         Dim buffer As Byte() = Encoding.ASCII.GetBytes(data)
         Dim timeout As Integer = 120
@@ -159,10 +159,6 @@ Public Class Helfer
         PingSender = Nothing
     End Function
 
-    Public Function FastPing(ByVal URL As String) As Boolean
-        Return OutlookSecurity.InternetCheckConnection(URL, 0)
-    End Function
-
     ''' <summary>
     ''' Wandelt die eingegebene IP-Adresse in eine für dieses Addin gültige IPAdresse.
     ''' IPv4 und IPv6 müssen differenziert behandelt werden.
@@ -181,7 +177,7 @@ Public Class Helfer
         Dim IPAddresse As IPAddress = Nothing
         Dim IPHostInfo As IPHostEntry
 
-        ValidIP = C_DP.P_Def_FritzBoxAdress
+        ValidIP = DataProvider.P_Def_FritzBoxAdress
 
         If IPAddress.TryParse(InputIP, IPAddresse) Then
             Select Case IPAddresse.AddressFamily
@@ -210,7 +206,7 @@ Public Class Helfer
     End Function
 
     Public Sub LogFile(ByVal Meldung As String)
-        Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & C_DP.P_Def_Log_FileName
+        Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName
         If C_DP.P_CBLogFile Then
             With My.Computer.FileSystem
                 If .FileExists(LogDatei) Then
@@ -237,7 +233,7 @@ Public Class Helfer
             Meldung = "Die Funktion " & Aufruf & " meldet folgenden Fehler:" & vbCrLf & vbCrLf & Meldung
             LogFile(Meldung)
         End If
-        Return MsgBox(Meldung, Style, C_DP.P_Def_Addin_LangName) '"Fritz!Box Telefon-Dingsbums"
+        Return MsgBox(Meldung, Style, DataProvider.P_Def_Addin_LangName) '"Fritz!Box Telefon-Dingsbums"
     End Function
 
     ''' <summary>
@@ -246,30 +242,30 @@ Public Class Helfer
     Public Sub KeyChange()
         Dim AlterZugang As String
         Dim NeuerZugang As String
-        If Not C_DP.P_TBPasswort = C_DP.P_Def_StringEmpty Then
+        If Not C_DP.P_TBPasswort = DataProvider.P_Def_StringEmpty Then
             With C_DP
-                AlterZugang = .GetSettingsVBA("Zugang", .P_Def_ErrorMinusOne_String)
-                If Not AlterZugang = .P_Def_ErrorMinusOne_String Then
+                AlterZugang = .GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)
+                If Not AlterZugang = DataProvider.P_Def_ErrorMinusOne_String Then
                     NeuerZugang = C_Crypt.GetSalt
                     .P_TBPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPasswort, AlterZugang), NeuerZugang)
                     .SaveSettingsVBA("Zugang", NeuerZugang)
                 Else
-                    LogFile(.P_Lit_KeyChange("die Fritz!Box"))
-                    .P_TBPasswort = .P_Def_StringEmpty
+                    LogFile(DataProvider.P_Lit_KeyChange("die Fritz!Box"))
+                    .P_TBPasswort = DataProvider.P_Def_StringEmpty
                 End If
             End With
         End If
 
-        If Not C_DP.P_TBPhonerPasswort = C_DP.P_Def_StringEmpty Then
+        If Not C_DP.P_TBPhonerPasswort = DataProvider.P_Def_StringEmpty Then
             With C_DP
-                AlterZugang = .GetSettingsVBA("ZugangPasswortPhoner", .P_Def_ErrorMinusOne_String)
-                If Not AlterZugang = .P_Def_ErrorMinusOne_String Then
+                AlterZugang = .GetSettingsVBA("ZugangPasswortPhoner", DataProvider.P_Def_ErrorMinusOne_String)
+                If Not AlterZugang = DataProvider.P_Def_ErrorMinusOne_String Then
                     NeuerZugang = C_Crypt.GetSalt
                     .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(C_Crypt.DecryptString128Bit(.P_TBPhonerPasswort, AlterZugang), NeuerZugang)
                     .SaveSettingsVBA("ZugangPasswortPhoner", NeuerZugang)
                 Else
-                    LogFile(.P_Lit_KeyChange("Phoner"))
-                    .P_TBPhonerPasswort = .P_Def_StringEmpty
+                    LogFile(DataProvider.P_Lit_KeyChange("Phoner"))
+                    .P_TBPhonerPasswort = DataProvider.P_Def_StringEmpty
                 End If
             End With
         End If
@@ -293,9 +289,9 @@ Public Class Helfer
         Dim Durchwahl As String
         Dim posOrtsVW As Integer   ' Position der Vorwahl in TelNr
         Dim posDurchwahl As Integer   ' Position der Durchwahl in TelNr
-        Dim tempOrtsVW As String = C_DP.P_Def_StringEmpty ' Hilfsstring für OrtsVW
-        Dim tempRufNr As String = C_DP.P_Def_StringEmpty ' Hilfsstring für RufNr
-        Dim tempDurchwahl As String = C_DP.P_Def_StringEmpty ' Hilfsstring für LandesVW
+        Dim tempOrtsVW As String = DataProvider.P_Def_StringEmpty ' Hilfsstring für OrtsVW
+        Dim tempRufNr As String = DataProvider.P_Def_StringEmpty ' Hilfsstring für RufNr
+        Dim tempDurchwahl As String = DataProvider.P_Def_StringEmpty ' Hilfsstring für LandesVW
         Dim TelTeile() As String = TelNrTeile(TelNr)
         Dim Maske As String = C_DP.P_TBTelNrMaske
 
@@ -311,7 +307,7 @@ Public Class Helfer
         ' Italien ist eine Ausnahme:
         ' Die führende Null der Ortskennung ist fester, unveränderlicher und unverzichtbarer Bestandteil und muss bestehen bleiben. 
         ' Handynummern in Italien haben dagegen keine führende Null.
-        If Not LandesVW = C_DP.P_Def_StringEmpty And Not LandesVW = C_DP.P_TBLandesVW Then
+        If Not LandesVW = DataProvider.P_Def_StringEmpty And Not LandesVW = C_DP.P_TBLandesVW Then
             RufNr = Mid(TelNr, Len(LandesVW) + 1)
             'If LandesVW = "0039" AndAlso Left(RufNr, 1) = "0" Then ' Italien
             ''Mach irgendwas. Oder auch nicht.
@@ -322,37 +318,37 @@ Public Class Helfer
 
         ' 2. Ortsvorwahl entfernen
         ' [0123]456789
-        If Not OrtsVW = C_DP.P_Def_StringEmpty Then
+        If Not OrtsVW = DataProvider.P_Def_StringEmpty Then
             posOrtsVW = InStr(RufNr, OrtsVW, CompareMethod.Text)
             RufNr = Mid(RufNr, posOrtsVW + Len(OrtsVW))
         Else
-            If RufNr = C_DP.P_Def_StringEmpty Then RufNr = TelNr
+            If RufNr = DataProvider.P_Def_StringEmpty Then RufNr = TelNr
         End If
 
         ' nur ausführen, wenn die Ortsvorwahl in der Telefonnummer enthalten ist
         ' LandesVW und RufNr aus TelNr separieren
 
         posDurchwahl = InStr(1, RufNr, Durchwahl, CompareMethod.Text)
-        If posDurchwahl = 1 And Not Durchwahl = C_DP.P_Def_StringEmpty Then
+        If posDurchwahl = 1 And Not Durchwahl = DataProvider.P_Def_StringEmpty Then
             tempDurchwahl = Mid(RufNr, Len(Durchwahl) + 1)
             RufNr = Durchwahl
         Else
-            Durchwahl = C_DP.P_Def_StringEmpty
+            Durchwahl = DataProvider.P_Def_StringEmpty
         End If
 
         If LandesVW = "0" Then
             OrtsVW = "0" & OrtsVW
-            LandesVW = C_DP.P_Def_StringEmpty
+            LandesVW = DataProvider.P_Def_StringEmpty
         End If
 
         ' Maske Prüfen
         If InStr(Maske, "%D", CompareMethod.Text) = 0 Then Maske = Replace(Maske, "%N", "%N%D")
         If Not InStr(Maske, "%N%D", CompareMethod.Text) = 0 Then
             RufNr = RufNr & tempDurchwahl
-            tempDurchwahl = C_DP.P_Def_StringEmpty
+            tempDurchwahl = DataProvider.P_Def_StringEmpty
         End If
 
-        If OrtsVW = C_DP.P_Def_StringEmpty And Not C_DP.P_CBintl Then
+        If OrtsVW = DataProvider.P_Def_StringEmpty And Not C_DP.P_CBintl Then
             ' Keine Ortsvorwahl: Alles zwischen %L und %N entfernen
             Dim pos1 As Integer
             Dim pos2 As Integer
@@ -360,14 +356,14 @@ Public Class Helfer
             pos1 = InStr(Maske, "%L", CompareMethod.Text) + 2
             pos2 = InStr(Maske, "%N", CompareMethod.Text)
             CutOut = Mid(Maske, pos1, pos2 - pos1)
-            Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", C_DP.P_Def_StringEmpty)), , 1, CompareMethod.Text)
+            Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", DataProvider.P_Def_StringEmpty)), , 1, CompareMethod.Text)
         End If
-        If LandesVW = C_DP.P_Def_StringEmpty Then LandesVW = C_DP.P_TBLandesVW
+        If LandesVW = DataProvider.P_Def_StringEmpty Then LandesVW = C_DP.P_TBLandesVW
         If C_DP.P_CBintl Or Not LandesVW = C_DP.P_TBLandesVW Then
 
-            If OrtsVW = C_DP.P_Def_StringEmpty Then
+            If OrtsVW = DataProvider.P_Def_StringEmpty Then
                 OrtsVW = C_DP.P_TBVorwahl
-                If Not LandesVW = C_DP.P_Def_PreLandesVW & "39" Then
+                If Not LandesVW = DataProvider.P_Def_PreLandesVW & "39" Then
                     'Else
                     If OrtsVW.StartsWith("0") Then
                         OrtsVW = Mid(OrtsVW, 2)
@@ -375,17 +371,17 @@ Public Class Helfer
                 End If
             End If
 
-            If LandesVW.StartsWith(C_DP.P_Def_PreLandesVW) Then LandesVW = Replace(LandesVW, C_DP.P_Def_PreLandesVW, "+", 1, 1, CompareMethod.Text)
+            If LandesVW.StartsWith(DataProvider.P_Def_PreLandesVW) Then LandesVW = Replace(LandesVW, DataProvider.P_Def_PreLandesVW, "+", 1, 1, CompareMethod.Text)
         Else
             OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
-            LandesVW = C_DP.P_Def_StringEmpty
+            LandesVW = DataProvider.P_Def_StringEmpty
         End If
 
         ' NANP
         If LandesVW = "+1" Then
             Maske = "%L (%O) %N-%D"
             C_DP.P_CBTelNrGruppieren = False
-            If tempDurchwahl = C_DP.P_Def_StringEmpty Then
+            If tempDurchwahl = DataProvider.P_Def_StringEmpty Then
                 tempDurchwahl = Mid(RufNr, 4)
                 RufNr = Left(RufNr, 3)
             End If
@@ -405,7 +401,7 @@ Public Class Helfer
         Maske = Replace(Maske, "%L", Trim(LandesVW))
         Maske = Replace(Maske, "%O", Trim(tempOrtsVW))
         Maske = Replace(Maske, "%N", tempRufNr)
-        If Not Trim(tempDurchwahl) = C_DP.P_Def_StringEmpty Then
+        If Not Trim(tempDurchwahl) = DataProvider.P_Def_StringEmpty Then
             Maske = Replace(Maske, "%D", Trim(tempDurchwahl))
         Else
             posDurchwahl = InStr(Maske, tempRufNr, CompareMethod.Text) + Len(tempRufNr) - 1
@@ -419,7 +415,7 @@ Public Class Helfer
     Function GruppiereNummer(ByVal Nr As String) As String
         Dim imax As Integer
         imax = CInt(Math.Round(Len(Nr) / 2 + 0.1))
-        GruppiereNummer = C_DP.P_Def_StringEmpty
+        GruppiereNummer = DataProvider.P_Def_StringEmpty
         For i = 1 To imax
             GruppiereNummer = Right(Nr, 2) & " " & GruppiereNummer
             If Not Len(Nr) = 1 Then Nr = Left(Nr, Len(Nr) - 2)
@@ -445,12 +441,12 @@ Public Class Helfer
         Dim tmpOrtsVorwahl As String
 
 
-        If Not TelNr = C_DP.P_Def_StringEmpty Then
+        If Not TelNr = DataProvider.P_Def_StringEmpty Then
 
             ' Nummer korrigieren, falls diese mit der Landes- und Ortsvorwahl ohne führende "00" beginnt.
             tmpLandesVorwahl = C_DP.P_TBLandesVW
             tmpOrtsVorwahl = C_DP.P_TBVorwahl
-            If tmpLandesVorwahl.StartsWith(C_DP.P_Def_PreLandesVW) Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2)
+            If tmpLandesVorwahl.StartsWith(DataProvider.P_Def_PreLandesVW) Then tmpLandesVorwahl = tmpLandesVorwahl.Remove(0, 2)
             If tmpOrtsVorwahl.StartsWith("0") Then tmpOrtsVorwahl = tmpOrtsVorwahl.Remove(0, 1)
 
             If TelNr.StartsWith(tmpLandesVorwahl & tmpOrtsVorwahl) Then TelNr = TelNr.Insert(0, "+")
@@ -459,7 +455,7 @@ Public Class Helfer
             TelNrBereinigen(TelNr)
 
             ' Landesvorwahl entfernen
-            If tmpTelNrTeile(0) = tmpLandesVorwahl.Insert(0, C_DP.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(0)))
+            If tmpTelNrTeile(0) = tmpLandesVorwahl.Insert(0, DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, Len(tmpTelNrTeile(0)))
 
             ' Ortsvorwahl entfernen
             If tmpTelNrTeile(1) = tmpOrtsVorwahl And Not Mobilnummer(TelNr) Then
@@ -490,9 +486,9 @@ Public Class Helfer
         'TelNr = Replace(TelNr, " ", "", , , CompareMethod.Text)
 
         TelNr = TelNr.Replace("(0)", " ")
-        TelNr = TelNr.Replace("++", C_DP.P_Def_PreLandesVW)
+        TelNr = TelNr.Replace("++", DataProvider.P_Def_PreLandesVW)
         TelNr = TelNr.Replace("+ ", "+")
-        TelNr = TelNr.Replace("+", C_DP.P_Def_PreLandesVW)
+        TelNr = TelNr.Replace("+", DataProvider.P_Def_PreLandesVW)
         TelNr = TelNr.Replace("[", "(")
         TelNr = TelNr.Replace("]", ")")
         TelNr = TelNr.Replace("{", "(")
@@ -518,31 +514,31 @@ Public Class Helfer
         Dim pos1 As Integer   ' Positionen innerhalb der TelNr
         Dim pos2 As Integer   ' Positionen innerhalb der TelNr
         Dim c As String ' einzelnes Zeichen des TelNr-Strings
-        Dim OrtsVW As String = C_DP.P_Def_StringEmpty
+        Dim OrtsVW As String = DataProvider.P_Def_StringEmpty
         Dim LandesVW As String
         Dim Durchwahl As String
         Dim ErsteZiffer As String
 
-        If Not TelNr = C_DP.P_Def_StringEmpty Then
+        If Not TelNr = DataProvider.P_Def_StringEmpty Then
 
             TelNrBereinigen(TelNr)
 
-            If TelNr.StartsWith(C_DP.P_Def_PreLandesVW) Then
+            If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then
                 'Landesvorwahl vorhanden
                 LandesVW = VorwahlausDatei(TelNr, My.Resources.Liste_Landesvorwahlen)
-                If Not LandesVW = C_DP.P_Def_StringEmpty Then
-                    LandesVW = C_DP.P_Def_PreLandesVW & LandesVW
+                If Not LandesVW = DataProvider.P_Def_StringEmpty Then
+                    LandesVW = DataProvider.P_Def_PreLandesVW & LandesVW
                     TelNr = Mid(TelNr, Len(LandesVW) + 1)
                 End If
             Else
-                LandesVW = C_DP.P_Def_StringEmpty
+                LandesVW = DataProvider.P_Def_StringEmpty
             End If
             LandesVW = Replace(LandesVW, " ", "", , , CompareMethod.Text) 'Leerzeichen entfernen'
 
             pos1 = InStr(TelNr, "(", CompareMethod.Text) + 1
             pos2 = InStr(TelNr, ")", CompareMethod.Text)
             If pos1 = 1 Or pos2 = 0 Then
-                If LandesVW = C_DP.P_Def_TBLandesVW Or LandesVW = C_DP.P_Def_StringEmpty Then 'nur Deutschland
+                If LandesVW = DataProvider.P_Def_TBLandesVW Or LandesVW = DataProvider.P_Def_StringEmpty Then 'nur Deutschland
                     ' Ortsvorwahl nicht in Klammern
 
                     If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1) ' Null entfernen
@@ -574,10 +570,10 @@ Public Class Helfer
                 Else
                     OrtsVW = AuslandsVorwahlausDatei(TelNr, LandesVW)
                     Select Case LandesVW
-                        Case C_DP.P_Def_PreLandesVW & "7" ' Kasachstan
+                        Case DataProvider.P_Def_PreLandesVW & "7" ' Kasachstan
                             ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
                             If IsOneOf(OrtsVW, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then OrtsVW += ErsteZiffer
-                        Case C_DP.P_Def_PreLandesVW & "39" ' Italien
+                        Case DataProvider.P_Def_PreLandesVW & "39" ' Italien
                             If TelNr.StartsWith("0") Then OrtsVW = "0" & OrtsVW
                     End Select
                 End If
@@ -597,34 +593,34 @@ Public Class Helfer
             If Not pos1 = 0 And Not pos1 = Len(TelNr) + 1 Then
                 Durchwahl = Left(TelNr, pos1 - 1)
             Else
-                Durchwahl = C_DP.P_Def_StringEmpty
+                Durchwahl = DataProvider.P_Def_StringEmpty
             End If
             Durchwahl = Replace(Durchwahl, " ", "", , , CompareMethod.Text) 'Leerzeichen entfernen'
         Else
-            LandesVW = C_DP.P_Def_StringEmpty
-            OrtsVW = C_DP.P_Def_StringEmpty
-            Durchwahl = C_DP.P_Def_StringEmpty
+            LandesVW = DataProvider.P_Def_StringEmpty
+            OrtsVW = DataProvider.P_Def_StringEmpty
+            Durchwahl = DataProvider.P_Def_StringEmpty
         End If
         TelNrTeile = New String() {LandesVW, OrtsVW, Durchwahl}
 
     End Function
 
     Function VorwahlausDatei(ByVal TelNr As String, ByVal Liste As String) As String
-        VorwahlausDatei = C_DP.P_Def_StringEmpty
+        VorwahlausDatei = DataProvider.P_Def_StringEmpty
         Dim Suchmuster As String
         Dim Vorwahlen() As String = Split(Liste, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 1
         Dim tmpErgebnis As String
-        Dim Treffer As String = C_DP.P_Def_StringEmpty
+        Dim Treffer As String = DataProvider.P_Def_StringEmpty
 
-        If TelNr.StartsWith(C_DP.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
+        If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
         If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
         Do
             i += 1
             Suchmuster = Strings.Left(TelNr, i) & ";*"
             Dim Trefferliste = From s In Vorwahlen Where s.ToLower Like Suchmuster.ToLower Select s
             tmpErgebnis = Split(Trefferliste(0), ";", , CompareMethod.Text)(0)
-            If Not tmpErgebnis = C_DP.P_Def_StringEmpty Then
+            If Not tmpErgebnis = DataProvider.P_Def_StringEmpty Then
                 Treffer = tmpErgebnis
             End If
             Windows.Forms.Application.DoEvents()
@@ -640,11 +636,11 @@ Public Class Helfer
         Dim tmpvorwahl() As String
 
         TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
-        AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty
+        AuslandsVorwahlausDatei = DataProvider.P_Def_StringEmpty
 
-        If LandesVW.StartsWith(C_DP.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
+        If LandesVW.StartsWith(DataProvider.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
         If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
-        If TelNr.StartsWith(C_DP.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
+        If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
         If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
         Do
             i += 1
@@ -654,7 +650,7 @@ Public Class Helfer
             tmpvorwahl = Split(Trefferliste(0), ";", , CompareMethod.Text)
             If Not tmpvorwahl.Length = 1 Then AuslandsVorwahlausDatei = tmpvorwahl(1)
         Loop Until i = 5
-        'Loop Until Not AuslandsVorwahlausDatei = C_DP.P_Def_StringEmpty Or i = 5
+        'Loop Until Not AuslandsVorwahlausDatei = DataProvider.P_Def_StringEmpty Or i = 5
     End Function
 
     Public Function nurZiffern(ByVal TelNr As String) As String
@@ -671,7 +667,7 @@ Public Class Helfer
         ' Dim Vorwahl As String
         'Dim pos As Integer
 
-        nurZiffern = C_DP.P_Def_StringEmpty
+        nurZiffern = DataProvider.P_Def_StringEmpty
         TelNr = UCase(TelNr)
         'Vorwahl = TelNrTeile(TelNr)(1)
         'pos = InStr(1, Vorwahl, ";", vbTextCompare) + 1
@@ -701,7 +697,7 @@ Public Class Helfer
                 Case "W" To "Z"
                     nurZiffern = nurZiffern + "9"
                 Case "+"
-                    nurZiffern = nurZiffern + C_DP.P_Def_PreLandesVW
+                    nurZiffern = nurZiffern + DataProvider.P_Def_PreLandesVW
             End Select
         Next
         ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
@@ -719,9 +715,9 @@ Public Class Helfer
         Dim Vorwahl As String = Left(TempTelNr(1), 2)
 
 
-        'If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty Then
+        'If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = DataProvider.P_Def_StringEmpty Then
 
-        Return (TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = C_DP.P_Def_StringEmpty) And (Vorwahl.StartsWith("15") Or Vorwahl.StartsWith("16") Or Vorwahl.StartsWith("17"))
+        Return (TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = DataProvider.P_Def_StringEmpty) And (Vorwahl.StartsWith("15") Or Vorwahl.StartsWith("16") Or Vorwahl.StartsWith("17"))
         'If Vorwahl = "15" Or Vorwahl = "16" Or Vorwahl = "17" Then Return True
         'End If
         'Return False
@@ -740,7 +736,7 @@ Public Class Helfer
             Case Vorwahllisten.Liste_Ortsvorwahlen_Deutschland
                 VorwahlListe = My.Resources.Liste_Ortsvorwahlen_Deutschland
             Case Else
-                VorwahlListe = C_DP.P_Def_ErrorMinusOne_String
+                VorwahlListe = DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
 
@@ -751,11 +747,11 @@ Public Class Helfer
     Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
 
-        httpGET = C_DP.P_Def_StringEmpty
+        httpGET = DataProvider.P_Def_StringEmpty
 
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp
-                If C_DP.P_Debug_Use_WebClient Then
+                If DataProvider.P_Debug_Use_WebClient Then
                     Dim webClient As New WebClient
                     With webClient
                         .Encoding = Encoding
@@ -809,10 +805,10 @@ Public Class Helfer
     End Function
 
     Public Function httpPOST(ByVal Link As String, ByVal Daten As String, ByVal ZeichenCodierung As System.Text.Encoding) As String
-        httpPOST = C_DP.P_Def_StringEmpty
+        httpPOST = DataProvider.P_Def_StringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
         If UniformResourceIdentifier.Scheme = Uri.UriSchemeHttp Then
-            If C_DP.P_Debug_Use_WebClient Then
+            If DataProvider.P_Debug_Use_WebClient Then
                 Dim webClient As New WebClient
                 With webClient
                     .Encoding = ZeichenCodierung
@@ -821,9 +817,9 @@ Public Class Helfer
 
                     With .Headers
                         .Add(HttpRequestHeader.ContentLength, Daten.Length.ToString)
-                        .Add(HttpRequestHeader.UserAgent, C_DP.P_Def_Header_UserAgent)
+                        .Add(HttpRequestHeader.UserAgent, DataProvider.P_Def_Header_UserAgent)
                         .Add(HttpRequestHeader.KeepAlive, "True")
-                        .Add(HttpRequestHeader.Accept, C_DP.P_Def_Header_Accept)
+                        .Add(HttpRequestHeader.Accept, DataProvider.P_Def_Header_Accept)
                     End With
 
                     Try
@@ -840,9 +836,9 @@ Public Class Helfer
                     .Proxy = Nothing
                     .KeepAlive = True
                     .ContentLength = Encoding.UTF8.GetBytes(Daten).Length
-                    .ContentType = C_DP.P_Def_Header_ContentType
-                    .Accept = C_DP.P_Def_Header_Accept
-                    .UserAgent = C_DP.P_Def_Header_UserAgent
+                    .ContentType = DataProvider.P_Def_Header_ContentType
+                    .Accept = DataProvider.P_Def_Header_Accept
+                    .UserAgent = DataProvider.P_Def_Header_UserAgent
                     .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
                     Try
@@ -918,11 +914,11 @@ Public Class Helfer
         nSeks = nSeks Mod 3600
         m = nSeks / 60
         nSeks = nSeks Mod 60
-        Return Format(h, C_DP.P_Def_PreLandesVW) & ":" & Format(m, C_DP.P_Def_PreLandesVW) & ":" & Format(nSeks, C_DP.P_Def_PreLandesVW)
+        Return Format(h, DataProvider.P_Def_PreLandesVW) & ":" & Format(m, DataProvider.P_Def_PreLandesVW) & ":" & Format(nSeks, DataProvider.P_Def_PreLandesVW)
     End Function
 
     Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
-        If sTxt = C_DP.P_Def_StringEmpty Then Return C_DP.P_Def_StringEmpty
+        If sTxt = DataProvider.P_Def_StringEmpty Then Return DataProvider.P_Def_StringEmpty
         If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then
             Return Mid(sTxt, 1, Len(sTxt) - 1)
         End If
@@ -930,8 +926,8 @@ Public Class Helfer
     End Function
 
     Public Function TelefonName(ByVal MSN As String) As String
-        TelefonName = C_DP.P_Def_StringEmpty
-        If Not MSN = C_DP.P_Def_StringEmpty Then
+        TelefonName = DataProvider.P_Def_StringEmpty
+        If Not MSN = DataProvider.P_Def_StringEmpty Then
             Dim xPathTeile As New ArrayList
             With xPathTeile
                 .Add("Telefone")
