@@ -32,7 +32,7 @@
     <DefineConstants>OVer=11</DefineConstants>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <DebugType>None</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <RegisterForComInterop>false</RegisterForComInterop>
@@ -51,13 +51,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>OVer=11</DefineConstants>
     <DocumentationFile>FritzBoxDial.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>None</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -197,9 +198,17 @@
       <SubType>Designer</SubType>
       <Link>Ressourcen\RibbonXML\RibbonExplorer.xml</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspector.xml">
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspectorJournal.xml">
       <SubType>Designer</SubType>
-      <Link>Ressourcen\RibbonXML\RibbonInspector.xml</Link>
+      <Link>Ressourcen\RibbonXML\RibbonInspectorJournal.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspectorKontakt.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonInspectorKontakt.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspectorMailRead.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonInspectorMailRead.xml</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.gif">
       <Link>Ressourcen\Icons\IMG_Copy.gif</Link>

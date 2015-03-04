@@ -876,7 +876,7 @@ Friend Class AnrufMonitor
                         End If
                     End If
 
-                    .Categories = .TelName & "; " & String.Join("; ", DataProvider.P_AnrMon_Journal_Def_Categories)
+                    .Categories = .TelName & "; " & String.Join("; ", DataProvider.P_AnrMon_Journal_Def_Categories.ToArray)
                     .Subject = CallDirection & CStr(IIf(.Anrufer = DataProvider.P_Def_StringEmpty, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, DataProvider.P_Def_StringEmpty, " (" & .TelName & ")"))
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)
