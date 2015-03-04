@@ -1621,30 +1621,6 @@ Public Class DataProvider
             Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
-    'Public  Shared ReadOnly Property P_Def_UserProperties As String()
-    '    Get
-    '        Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
-    '                               "FBDB-BusinessTelephoneNumber", _
-    '                               "FBDB-Business2TelephoneNumber", _
-    '                               "FBDB-CallbackTelephoneNumber", _
-    '                               "FBDB-CarTelephoneNumber", _
-    '                               "FBDB-CompanyMainTelephoneNumber", _
-    '                               "FBDB-HomeTelephoneNumber", _
-    '                               "FBDB-Home2TelephoneNumber", _
-    '                               "FBDB-ISDNNumber", _
-    '                               "FBDB-MobileTelephoneNumber", _
-    '                               "FBDB-OtherTelephoneNumber", _
-    '                               "FBDB-PagerNumber", _
-    '                               "FBDB-PrimaryTelephoneNumber", _
-    '                               "FBDB-RadioTelephoneNumber", _
-    '                               "FBDB-BusinessFaxNumber", _
-    '                               "FBDB-HomeFaxNumber", _
-    '                               "FBDB-OtherFaxNumber", _
-    '                               "FBDB-Telex", _
-    '                               "FBDB-TTYTDDTelephoneNumber"}
-    '        Return tmp
-    '    End Get
-    'End Property
 
     Public Shared ReadOnly Property P_Def_olTelNrTypen() As ReadOnlyCollection(Of String)
         Get
@@ -1671,30 +1647,6 @@ Public Class DataProvider
             Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
-    'Public  Shared ReadOnly Property P_Def_olTelNrTypen As String()
-    '    Get
-    '        Dim tmp() As String = {"Assistent", _
-    '                               "Geschäftlich", _
-    '                               "Geschäftlich 2", _
-    '                               "Rückmeldung", _
-    '                               "Auto", _
-    '                               "Firma", _
-    '                               "Privat", _
-    '                               "Privat 2", _
-    '                               "ISDN", _
-    '                               "Mobiltelefon", _
-    '                               "Weitere", _
-    '                               "Pager", _
-    '                               "Haupttelefon", _
-    '                               "Funkruf", _
-    '                               "Fax geschäftl.", _
-    '                               "Fax privat", _
-    '                               "Weiteres Fax", _
-    '                               "Telex", _
-    '                               "Texttelefon"}
-    '        Return tmp
-    '    End Get
-    'End Property
 
     Public Shared ReadOnly Property P_Def_UserPropertyIndex() As String
         Get
@@ -1765,11 +1717,84 @@ Public Class DataProvider
     End Property
 #End Region
     ' Passwortverschlüsselung
-    Public Shared ReadOnly Property P_Def_PassWordDecryptionKey As String
+    Public Shared ReadOnly Property P_Def_PassWordDecryptionKey() As String
         Get
             Return "Fritz!Box Script"
         End Get
     End Property
+
+#Region "CommandBar Office 2003 und Office 2007"
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Direktwahl
+    ''' </summary>
+    ''' <value>eBtnDirektwahl</value>
+    Public Shared ReadOnly Property P_CMB_eBtnDirektwahl_Tag() As String
+        Get
+            Return "eBtnDirektwahl"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Wählen
+    ''' </summary>
+    ''' <value>eBtnWaehlen</value>
+    Public Shared ReadOnly Property P_CMB_eBtnWaehlen_Tag() As String
+        Get
+            Return "eBtnWaehlen"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Einstellungen
+    ''' </summary>
+    ''' <value>eBtnEinstellungen</value>
+    Public Shared ReadOnly Property P_CMB_eBtnEinstellungen_Tag() As String
+        Get
+            Return "eBtnEinstellungen"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Anrufmonitor
+    ''' </summary>
+    ''' <value>eBtnAnrMon</value>
+    Public Shared ReadOnly Property P_CMB_eBtnAnrMon_Tag() As String
+        Get
+            Return "eBtnAnrMon"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Anrufmonitor Anzeigen
+    ''' </summary>
+    ''' <value>eBtnAnzeigen</value>
+    Public Shared ReadOnly Property P_CMB_eBtnAnzeigen_Tag() As String
+        Get
+            Return "eBtnAnzeigen"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Journalimport
+    ''' </summary>
+    ''' <value>eBtnJournalimport</value>
+    Public Shared ReadOnly Property P_CMB_eBtnJournalimport_Tag() As String
+        Get
+            Return "eBtnJournalimport"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Tag des CommandbarButtons Anrufmonitor Neustarten
+    ''' </summary>
+    ''' <value>eBtnAnrMonNeuStart</value>
+    Public Shared ReadOnly Property P_CMB_eBtnAnrMonNeuStart_Tag() As String
+        Get
+            Return "eBtnAnrMonNeuStart"
+        End Get
+    End Property
+#End Region
+
 
 #End Region
 
@@ -2534,7 +2559,6 @@ Public Class DataProvider
     '        Return tmp
     '    End Get
     'End Property
-
     Public Shared ReadOnly Property P_AnrMon_Journal_Def_Categories() As ReadOnlyCollection(Of String)
         Get
             Dim tmp() As String = {"FritzBox Anrufmonitor", "Telefonanrufe"}

@@ -1033,13 +1033,13 @@ Imports Microsoft.Office.Core
     Friend Sub SetVisibleButtons()
         ' Einstellungen für die Symbolleiste speichern
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Direktwahl").Visible = C_DP.P_CBSymbDirekt
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnDirektwahl_Tag).Visible = C_DP.P_CBSymbDirekt
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor").Visible = C_DP.P_CBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnrMon_Tag).Visible = C_DP.P_CBSymbAnrMon
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anzeigen").Visible = C_DP.P_CBSymbAnrMon
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnzeigen_Tag).Visible = C_DP.P_CBSymbAnrMon
         Catch : End Try
         Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListRING).Visible = C_DP.P_CBSymbAnrListe
@@ -1048,10 +1048,10 @@ Imports Microsoft.Office.Core
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListCALL).Visible = C_DP.P_CBSymbWwdh
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Journalimport").Visible = C_DP.P_CBSymbJournalimport
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnJournalimport_Tag).Visible = C_DP.P_CBSymbJournalimport
         Catch : End Try
         Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "AnrMonNeuStart").Visible = C_DP.P_CBSymbAnrMonNeuStart
+            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnrMonNeuStart_Tag).Visible = C_DP.P_CBSymbAnrMonNeuStart
         Catch : End Try
         Try
             FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListVIP).Visible = C_DP.P_CBSymbVIP
@@ -1067,9 +1067,9 @@ Imports Microsoft.Office.Core
         If FritzBoxDialCommandBar IsNot Nothing Then
             Dim btnAnrMon As Office.CommandBarButton = Nothing
             Try
-                btnAnrMon = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , "Anrufmonitor", , False), Office.CommandBarButton)
+                btnAnrMon = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnrMon_Tag, , False), Office.CommandBarButton)
             Catch ex As Exception
-                C_HF.LogFile("Fehler: btnAnrMon kann nicht gefunden werden.")
+                C_HF.LogFile("Fehler: " & DataProvider.P_CMB_eBtnAnrMon_Tag & " kann nicht gefunden werden (" & ex.Message & ").")
             End Try
             If btnAnrMon IsNot Nothing Then
                 Select Case bool_banrmon
@@ -1080,6 +1080,8 @@ Imports Microsoft.Office.Core
                         btnAnrMon.State = Office.MsoButtonState.msoButtonUp
                         btnAnrMon.TooltipText = "Startet den Anrufmonitor"
                 End Select
+            Else
+                C_HF.LogFile("Fehler: " & DataProvider.P_CMB_eBtnAnrMon_Tag & " kann nicht gefunden werden (btnAnrMon is Nothing).")
             End If
 
             C_HF.KillTimer(bAnrMonTimer)
@@ -1088,7 +1090,7 @@ Imports Microsoft.Office.Core
     End Sub
 
     Sub SymbolleisteErzeugen(ByRef ePopWwdh As Office.CommandBarPopup, ByRef ePopAnr As Office.CommandBarPopup, ByRef ePopVIP As Office.CommandBarPopup, _
-                             ByRef eBtnWaehlen As Office.CommandBarButton, ByRef eBtnDirektwahl As Office.CommandBarButton, ByRef eBtnAnrMonitor As Office.CommandBarButton, _
+                             ByRef eBtnWaehlen As Office.CommandBarButton, ByRef eBtnDirektwahl As Office.CommandBarButton, ByRef eBtnAnrMon As Office.CommandBarButton, _
                              ByRef eBtnAnzeigen As Office.CommandBarButton, ByRef eBtnAnrMonNeuStart As Office.CommandBarButton, ByRef eBtnJournalimport As Office.CommandBarButton, ByRef eBtnEinstellungen As Office.CommandBarButton, _
                              ByRef ePopWwdh1 As Office.CommandBarButton, ByRef ePopWwdh2 As Office.CommandBarButton, ByRef ePopWwdh3 As Office.CommandBarButton, ByRef ePopWwdh4 As Office.CommandBarButton, _
                              ByRef ePopWwdh5 As Office.CommandBarButton, ByRef ePopWwdh6 As Office.CommandBarButton, ByRef ePopWwdh7 As Office.CommandBarButton, ByRef ePopWwdh8 As Office.CommandBarButton, _
@@ -1103,7 +1105,7 @@ Imports Microsoft.Office.Core
 
         FritzBoxDialCommandBar = AddCmdBar(DataProvider.P_Def_Addin_KurzName, True)
 
-        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, "Wählen", DataProvider.P_CMB_Dial_ToolTipp)
+        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnWaehlen_Tag, DataProvider.P_CMB_Dial_ToolTipp)
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, DataProvider.P_CMB_WWDH, i, DataProvider.P_Def_NameListCALL, DataProvider.P_CMB_WWDH_ToolTipp)
         i += 1
@@ -1121,20 +1123,20 @@ Imports Microsoft.Office.Core
         ' Direktwahl
         ePopWwdh.Visible = C_DP.P_CBSymbWwdh
         ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
-        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Direktwahl, i, 326, MsoButtonStyle.msoButtonIconAndCaption, "Direktwahl", DataProvider.P_CMB_Direktwahl_ToolTipp)
+        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Direktwahl, i, 326, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnDirektwahl_Tag, DataProvider.P_CMB_Direktwahl_ToolTipp)
         i += 1
 
         eBtnDirektwahl.Visible = C_DP.P_CBSymbDirekt
         ' Symbol Anrufmonitor & Anzeigen
-        eBtnAnrMonitor = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMon, i, 815, MsoButtonStyle.msoButtonIconAndCaption, "Anrufmonitor", DataProvider.P_CMB_AnrMon_ToolTipp) '815
+        eBtnAnrMon = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMon, i, 815, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnAnrMon_Tag, DataProvider.P_CMB_AnrMon_ToolTipp) '815
 
-        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonAnzeigen, i + 1, 682, MsoButtonStyle.msoButtonIconAndCaption, "Anzeigen", DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp)
+        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonAnzeigen, i + 1, 682, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnAnzeigen_Tag, DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp)
         i += 2
 
-        eBtnAnrMonitor.Visible = C_DP.P_CBSymbAnrMon
-        eBtnAnzeigen.Visible = eBtnAnrMonitor.Visible
+        eBtnAnrMon.Visible = C_DP.P_CBSymbAnrMon
+        eBtnAnzeigen.Visible = eBtnAnrMon.Visible
 
-        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonNeuStart, i, 37, MsoButtonStyle.msoButtonIconAndCaption, "AnrMonNeuStart", DataProvider.P_CMB_AnrMonNeuStart_ToolTipp)
+        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonNeuStart, i, 37, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnAnrMonNeuStart_Tag, DataProvider.P_CMB_AnrMonNeuStart_ToolTipp)
 
         eBtnAnrMonNeuStart.Visible = C_DP.P_CBSymbAnrMonNeuStart
 
@@ -1170,15 +1172,15 @@ Imports Microsoft.Office.Core
         ePopVIP.Visible = C_DP.P_CBSymbVIP
         ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
 
-        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Journal, i, 591, MsoButtonStyle.msoButtonIconAndCaption, "Journalimport", DataProvider.P_CMB_Journal_ToolTipp)
+        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Journal, i, 591, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnJournalimport_Tag, DataProvider.P_CMB_Journal_ToolTipp)
         eBtnJournalimport.Visible = C_DP.P_CBSymbJournalimport
         i += 1
-        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Setup, i, 548, MsoButtonStyle.msoButtonIconAndCaption, "Einstellungen", DataProvider.P_CMB_Setup_ToolTipp)
+        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Setup, i, 548, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnEinstellungen_Tag, DataProvider.P_CMB_Setup_ToolTipp)
         i += 1
 
         eBtnWaehlen.TooltipText = DataProvider.P_CMB_Dial_ToolTipp
         ePopWwdh.TooltipText = DataProvider.P_CMB_WWDH_ToolTipp
-        eBtnAnrMonitor.TooltipText = DataProvider.P_CMB_AnrMon_ToolTipp
+        eBtnAnrMon.TooltipText = DataProvider.P_CMB_AnrMon_ToolTipp
         eBtnDirektwahl.TooltipText = DataProvider.P_CMB_Direktwahl_ToolTipp
         eBtnAnzeigen.TooltipText = DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp
         eBtnAnrMonNeuStart.TooltipText = DataProvider.P_CMB_AnrMonNeuStart_ToolTipp
@@ -1248,7 +1250,7 @@ Imports Microsoft.Office.Core
                         .NameLocal = DataProvider.P_Def_Addin_KurzName
                         .Visible = True
                     End With
-                    iBtnDial = AddButtonsToCmb(cmb, DataProvider.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, C_DP.P_Tag_Insp_Dial, DataProvider.P_CMB_Dial_ToolTipp)
+                    iBtnDial = AddButtonsToCmb(cmb, DataProvider.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_Tag_Insp_Dial, DataProvider.P_CMB_Dial_ToolTipp)
                     i += 1
                 End If
             End If
@@ -1263,16 +1265,16 @@ Imports Microsoft.Office.Core
                 iBtnRWStelSearch = AddPopupItems(iPopRWS, 4)
                 iBtnRWSAlle = AddPopupItems(iPopRWS, 5)
 
-                Dim rwsNamen() As String = {C_DP.P_RWSDasOertliche_Name, _
-                                            C_DP.P_RWS11880_Name, _
-                                            C_DP.P_RWSDasTelefonbuch_Name, _
-                                            C_DP.P_RWSTelSearch_Name, _
-                                            C_DP.P_RWSAlle_Name}
-                Dim rwsToolTipp() As String = {C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasOertliche_Link), _
-                                               C_DP.P_RWS_ToolTipp(C_DP.P_RWS11880_Link), _
-                                               C_DP.P_RWS_ToolTipp(C_DP.P_RWSDasTelefonbuch_Link), _
-                                               C_DP.P_RWS_ToolTipp(C_DP.P_RWSTelSearch_Link), _
-                                               C_DP.P_RWS_ToolTipp()}
+                Dim rwsNamen() As String = {DataProvider.P_RWSDasOertliche_Name, _
+                                            DataProvider.P_RWS11880_Name, _
+                                            DataProvider.P_RWSDasTelefonbuch_Name, _
+                                            DataProvider.P_RWSTelSearch_Name, _
+                                            DataProvider.P_RWSAlle_Name}
+                Dim rwsToolTipp() As String = {DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSDasOertliche_Link), _
+                                               DataProvider.P_RWS_ToolTipp(DataProvider.P_RWS11880_Link), _
+                                               DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSDasTelefonbuch_Link), _
+                                               DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSTelSearch_Link), _
+                                               DataProvider.P_RWS_ToolTipp()}
 
                 For i = LBound(rwsNamen) To UBound(rwsNamen)
                     With iPopRWS.Controls.Item(i + 1)
@@ -1312,7 +1314,7 @@ Imports Microsoft.Office.Core
                 iBtnKontakterstellen = AddButtonsToCmb(cmb, _
                                                        DataProvider.P_CMB_Kontakt_Erstellen, _
                                                        i, 1099, MsoButtonStyle.msoButtonIconAndCaption, _
-                                                       C_DP.P_Tag_Insp_Kontakt, _
+                                                       DataProvider.P_Tag_Insp_Kontakt, _
                                                        DataProvider.P_CMB_Kontakt_Erstellen_ToolTipp)
                 i += 1
                 Dim olJournal As Outlook.JournalItem = CType(Inspector.CurrentItem, Outlook.JournalItem)
