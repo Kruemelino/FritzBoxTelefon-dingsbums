@@ -241,9 +241,17 @@
       <SubType>Designer</SubType>
       <Link>Ressourcen\RibbonXML\RibbonExplorer.xml</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspector.xml">
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspectorJournal.xml">
       <SubType>Designer</SubType>
-      <Link>Ressourcen\RibbonXML\RibbonInspector.xml</Link>
+      <Link>Ressourcen\RibbonXML\RibbonInspectorJournal.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspectorKontakt.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonInspectorKontakt.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Common\Ressourcen\RibbonXML\RibbonInspectorMailRead.xml">
+      <SubType>Designer</SubType>
+      <Link>Ressourcen\RibbonXML\RibbonInspectorMailRead.xml</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.gif">
       <Link>Ressourcen\Icons\IMG_Copy.gif</Link>
@@ -308,10 +316,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>SET RELEASEPATH="\\OBELIX\Setup\2013\"
-REM SET RELEASEPATH="\\OBELIX\Setup\2010\"
-REM SET RELEASEPATH="\\OBELIX\Setup\2007\"
-REM SET RELEASEPATH="\\OBELIX\Setup\2003\"
+    <PostBuildEvent>SET RELEASEPATH="Z:\2013\"
 IF EXIST %25RELEASEPATH%25 (
 	copy /Y "$(TargetDir)*.dll" "%25RELEASEPATH%25*.dll"
 	copy /Y "$(TargetDir)*.pdb" "%25RELEASEPATH%25*.pdb"
