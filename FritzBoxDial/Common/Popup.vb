@@ -176,7 +176,7 @@ Public Class Popup
 
             With ThisPopUpAnrMon
                 .ShowDelay = C_DP.P_TBEnblDauer * 1000
-                .AutoAusblenden = C_DP.P_CBAutoClose And Not Telefonat.AnrMonAusblenden
+                .AutoAusblenden = C_DP.P_CBAutoClose And Telefonat.AnrMonAusblenden
                 .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
                 .EffektMove = C_DP.P_CBAnrMonMove
                 .EffektTransparenz = C_DP.P_CBAnrMonTransp

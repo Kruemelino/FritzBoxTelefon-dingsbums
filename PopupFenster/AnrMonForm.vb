@@ -371,7 +371,6 @@ Public Class F_AnrMon
 #Region "Eigene Events"
     Private Sub fPopup_CloseClick() Handles fPopup.CloseClick
         RaiseEvent Close(Me, EventArgs.Empty)
-        Me.Finalize()
     End Sub
 
     Private Sub fPopup_LinkClick() Handles fPopup.LinkClick

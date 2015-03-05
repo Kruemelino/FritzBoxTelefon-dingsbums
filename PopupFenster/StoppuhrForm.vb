@@ -197,7 +197,7 @@ Public Class F_StoppUhr
                 ' TODO: Verwalteten Zustand löschen (verwaltete Objekte).
             End If
             fStoppUhr.Dispose()
-            cmnPrps.Dispose()
+            'cmnPrps.Dispose()
         End If
         Me.disposedValue = True
     End Sub
