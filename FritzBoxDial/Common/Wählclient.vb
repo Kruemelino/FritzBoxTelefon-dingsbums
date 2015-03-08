@@ -7,21 +7,23 @@ Public Class Wählclient
     Private C_DP As DataProvider
     Private frm_Wählbox As formWählbox
     Private C_hf As Helfer
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
     Private C_FBox As FritzBox
     Private C_Phoner As PhonerInterface
     Private C_XML As XML
-    Friend _listFormWählbox As New List(Of formWählbox)
+    Private C_AnrMon As AnrufMonitor
 
+    Friend ListFormWählbox As New List(Of formWählbox)
 
-    Public Sub New(ByVal DataProviderKlasse As DataProvider, _
+    Friend Sub New(ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal KontaktKlasse As Contacts, _
+                   ByVal KontaktKlasse As KontaktFunktionen, _
                    ByVal InterfaceKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
+                   ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal PhonerKlasse As PhonerInterface, _
                    ByVal XMLKlasse As XML)
         C_hf = HelferKlasse
@@ -32,6 +34,7 @@ Public Class Wählclient
         C_FBox = FritzBoxKlasse
         C_Phoner = PhonerKlasse
         C_XML = XMLKlasse
+        C_AnrMon = AnrMonKlasse
     End Sub
 
 #Region "Alles was mit dem Wählen zu tun hat"
@@ -148,8 +151,8 @@ Public Class Wählclient
         Dim ImgPath As String = DataProvider.P_Def_StringEmpty   ' Position innerhalb eines Strings
         Dim row(2) As String
 
-        frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_Phoner, C_KF, Me, C_XML)
-        _listFormWählbox.Add(frm_Wählbox)
+        frm_Wählbox = New formWählbox(Direktwahl, C_DP, C_hf, C_GUI, C_FBox, C_AnrMon, C_Phoner, C_KF, Me, C_XML)
+        ListFormWählbox.Add(frm_Wählbox)
 
         If oContact Is Nothing Then
             frm_Wählbox.Tag = DataProvider.P_Def_ErrorMinusOne_String & ";" & vCard ' DataProvider.P_Def_ErrorMinusOne
@@ -418,6 +421,15 @@ Public Class Wählclient
             If disposing Then
                 frm_Wählbox.Dispose()
                 ' TODO: Verwalteten Zustand löschen (verwaltete Objekte).
+                C_hf = Nothing
+                C_KF = Nothing
+                C_GUI = Nothing
+                C_DP = Nothing
+                C_OlI = Nothing
+                C_FBox = Nothing
+                C_Phoner = Nothing
+                C_XML = Nothing
+                C_AnrMon = Nothing
             End If
 
             ' TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() unten überschreiben.
@@ -425,13 +437,6 @@ Public Class Wählclient
         End If
         Me.disposedValue = True
     End Sub
-
-    ' TODO: Finalize() nur überschreiben, wenn Dispose(ByVal disposing As Boolean) oben über Code zum Freigeben von nicht verwalteten Ressourcen verfügt.
-    'Protected Overrides Sub Finalize()
-    '    ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(ByVal disposing As Boolean) Bereinigungscode ein.
-    '    Dispose(False)
-    '    MyBase.Finalize()
-    'End Sub
 
     ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
     Public Sub Dispose() Implements IDisposable.Dispose

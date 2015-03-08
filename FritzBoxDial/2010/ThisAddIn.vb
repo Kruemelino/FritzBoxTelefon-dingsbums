@@ -37,19 +37,23 @@ Public Class ThisAddIn
 
     Private WithEvents oInsps As Outlook.Inspectors
     Friend Shared ListofOpenContacts As New Generic.List(Of ContactSaved)
-
-    Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
-    Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
-    Private Shared C_AnrMon As AnrufMonitor
-    Private Shared C_WClient As Wählclient
-    Private Shared C_HF As Helfer
-    Private Shared C_KF As Contacts
-    Private Shared C_GUI As GraphicalUserInterface
-    Private Shared F_Cfg As formCfg
-
-    Private Initialisierung As formInit
     Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
 
+#Region "Eigene Klassen"
+    Private C_DP As DataProvider ' Reader/Writer initialisieren
+    Private C_Fbox As FritzBox  'Deklarieren der Klasse
+    Private C_AnrMon As AnrufMonitor
+    Private C_WClient As Wählclient
+
+    Private C_HF As Helfer
+    Private C_KF As KontaktFunktionen
+    Private C_GUI As GraphicalUserInterface
+#End Region
+
+#Region "Eigene Formulare"
+    Private F_Cfg As formCfg
+    Private F_Init As formInit
+#End Region
 #Region "Properties"
     ''' <summary>
     ''' Gibt die Versionsnummer des Addins zurück.
@@ -76,7 +80,10 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_DP() As DataProvider
+    ''' <summary>
+    ''' Rückgabewert für die Klasse DataProvider 
+    ''' </summary>
+    Friend Property P_DP() As DataProvider
         Get
             Return C_DP
         End Get
@@ -85,7 +92,10 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_HF() As Helfer
+    ''' <summary>
+    ''' Rückgabewert für die Klasse Helfer 
+    ''' </summary>
+    Friend Property P_HF() As Helfer
         Get
             Return C_HF
         End Get
@@ -94,16 +104,22 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_KF() As Contacts
+    ''' <summary>
+    ''' Rückgabewert für die Klasse KontaktFunktionen 
+    ''' </summary>
+    Friend Property P_KF() As KontaktFunktionen
         Get
             Return C_KF
         End Get
-        Set(ByVal value As Contacts)
+        Set(ByVal value As KontaktFunktionen)
             C_KF = value
         End Set
     End Property
 
-    Friend Shared Property P_GUI() As GraphicalUserInterface
+    ''' <summary>
+    ''' Rückgabewert für die Klasse GraphicalUserInterface 
+    ''' </summary>
+    Friend Property P_GUI() As GraphicalUserInterface
         Get
             Return C_GUI
         End Get
@@ -112,25 +128,10 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_WClient() As Wählclient
-        Get
-            Return C_WClient
-        End Get
-        Set(ByVal value As Wählclient)
-            C_WClient = value
-        End Set
-    End Property
-
-    Friend Shared Property P_FritzBox() As FritzBox
-        Get
-            Return C_Fbox
-        End Get
-        Set(ByVal value As FritzBox)
-            C_Fbox = value
-        End Set
-    End Property
-
-    Friend Shared Property P_AnrMon() As AnrufMonitor
+    ''' <summary>
+    ''' Rückgabewert für die Klasse AnrufMonitor 
+    ''' </summary>
+    Friend Property P_AnrMon() As AnrufMonitor
         Get
             Return C_AnrMon
         End Get
@@ -139,21 +140,12 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_Config() As formCfg
-        Get
-            Return F_Cfg
-        End Get
-        Set(ByVal value As formCfg)
-            F_Cfg = value
-        End Set
-    End Property
-
 #End Region
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
-        Initialisierung = New formInit
-        Return C_GUI
+        F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon)
+        Return P_GUI
     End Function
 #End If
 
@@ -161,19 +153,19 @@ Public Class ThisAddIn
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
-        C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
+        P_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
-                C_AnrMon.AnrMonStartNachStandby()
+                P_AnrMon.AnrMonStartNachStandby()
             Case Microsoft.Win32.PowerModes.Suspend
-                C_AnrMon.AnrMonStartStopp()
+                P_AnrMon.AnrMonStartStopp()
         End Select
     End Sub
 
     ''' <summary>
     ''' Startet das Fritz!Box Telefon-dingsbums
     ''' </summary>
-    Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
+    Private Overloads Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
 
         AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
@@ -181,7 +173,7 @@ Public Class ThisAddIn
 
         If P_oApp.ActiveExplorer IsNot Nothing Then
 #If OVer = 11 Then
-            Initialisierung = New formInit
+            F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon)
 #End If
             ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
             P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
@@ -193,17 +185,23 @@ Public Class ThisAddIn
 #End If
             If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
         Else
-            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
+            P_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
     End Sub
 
-    Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
-        C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & Version & " beendet.")
-        C_DP.SpeichereXMLDatei()
-        With C_HF
-            .NAR(P_oApp)
-        End With
+    ''' <summary>
+    ''' Startet das Fritz!Box Telefon-dingsbums manuell
+    ''' </summary>
+    ''' <param name="Standby">Angabe, obb das Addin aus dem Standby automatisch gestartet wird.</param>
+    Private Overloads Sub ThisAddin_Startup(ByVal Standby As Boolean)
+
+    End Sub
+
+    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+        P_AnrMon.AnrMonStartStopp()
+        P_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & Version & " beendet.")
+        P_DP.SpeichereXMLDatei()
+        P_HF.NAR(P_oApp)
     End Sub
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
@@ -211,11 +209,11 @@ Public Class ThisAddIn
         C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnUpload)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If Not (C_DP.P_CBKHO AndAlso Not _
+            If Not (P_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    C_KF.P_DefContactFolder.StoreID) Then
+                    P_KF.P_DefContactFolder.StoreID) Then
 
-                Dim KS As New ContactSaved
+                Dim KS As New ContactSaved(P_KF)
                 KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
                 ListofOpenContacts.Add(KS)
             End If

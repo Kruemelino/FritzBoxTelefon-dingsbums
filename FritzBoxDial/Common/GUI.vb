@@ -65,7 +65,7 @@ Imports Microsoft.Office.Core
     Private C_WClient As Wählclient
     Private C_AnrMon As AnrufMonitor
     Private C_OLI As OutlookInterface
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_FBox As FritzBox
     Private C_PopUp As Popup
 #End Region
@@ -110,12 +110,21 @@ Imports Microsoft.Office.Core
             C_FBox = value
         End Set
     End Property
+
+    Public Property P_PopUp() As Popup
+        Get
+            Return C_PopUp
+        End Get
+        Set(ByVal value As Popup)
+            C_PopUp = value
+        End Set
+    End Property
 #End Region
 
     Friend Sub New(ByVal HelferKlasse As Helfer, _
            ByVal DataProviderKlasse As DataProvider, _
            ByVal Inverssuche As formRWSuche, _
-           ByVal KontaktKlasse As Contacts, _
+           ByVal KontaktKlasse As KontaktFunktionen, _
            ByVal PopUpKlasse As Popup, _
            ByVal XMLKlasse As XML)
 
@@ -1373,9 +1382,9 @@ Imports Microsoft.Office.Core
                     P_CallClient.WählboxStart(C_OLI.OutlookApplication.ActiveExplorer.Selection)
                 End If
             Case TaskToDo.OpenConfig
-                ThisAddIn.P_Config.ShowDialog()
+                'ThisAddIn.P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
-                Dim formjournalimort As New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
+                Dim formjournalimort As New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
             Case TaskToDo.RestartAnrMon
                 C_AnrMon.AnrMonReStart()
             Case TaskToDo.ShowAnrMon

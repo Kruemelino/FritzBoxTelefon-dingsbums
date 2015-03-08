@@ -12,6 +12,7 @@ Friend Class formJournalimport
 #End Region
 
 #Region "Eigene Klassen"
+    Private C_FBox As FritzBox
     Private C_AnrMon As AnrufMonitor
     Private C_hf As Helfer
     Private C_DP As DataProvider
@@ -34,7 +35,8 @@ Friend Class formJournalimport
     Private EntryCount As Integer = -1 ' Anzahl der zu importierenden Telefonate
 #End Region
 
-    Friend Sub New(ByVal AnrMonKlasse As AnrufMonitor, _
+    Friend Sub New(ByVal FritzBoxKlasse As FritzBox, _
+                   ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal XMLKlasse As XML, _
@@ -43,6 +45,7 @@ Friend Class formJournalimport
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        C_FBox = FritzBoxKlasse
         C_DP = DataProviderKlasse
         C_hf = HelferKlasse
         C_AnrMon = AnrMonKlasse
@@ -67,7 +70,7 @@ Friend Class formJournalimport
 
 #Region " Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles DownloadAnrListe.DoWork
-        e.Result = ThisAddIn.P_FritzBox.DownloadAnrListe
+        e.Result = C_FBox.DownloadAnrListe
     End Sub
 
     Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles DownloadAnrListe.RunWorkerCompleted
@@ -149,7 +152,7 @@ Friend Class formJournalimport
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
 
-        ThisAddIn.P_FritzBox.FBLogout(SID)
+        C_FBox.FBLogout(SID)
 
         If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = DataProvider.P_Def_StringEmpty Then
 

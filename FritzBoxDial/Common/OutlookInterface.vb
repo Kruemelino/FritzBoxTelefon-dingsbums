@@ -264,7 +264,7 @@ End Class
 Public Class OutlookInterface
 
 #Region "Eigene Klassen"
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_hf As Helfer
     Private C_DP As DataProvider
 #End Region
@@ -281,7 +281,7 @@ Public Class OutlookInterface
     End Property
 #End Region
 
-    Public Sub New(ByVal KontaktKlasse As Contacts, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider)
+    Public Sub New(ByVal KontaktKlasse As KontaktFunktionen, ByVal Helferklasse As Helfer, ByVal DataProviderKlasse As DataProvider)
         C_hf = Helferklasse
         C_DP = DataProviderKlasse
         C_KF = KontaktKlasse

@@ -12,7 +12,7 @@ Public Class ApiWindow
     End Property
 End Class
 
-Public Class Contacts
+Public Class KontaktFunktionen
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private ListChildren As New List(Of ApiWindow)
@@ -1264,15 +1264,45 @@ Public Class Contacts
 End Class
 
 Friend Class ContactSaved
+    Implements IDisposable
+
     Friend WithEvents ContactSaved As Outlook.ContactItem
+    Private C_KF As KontaktFunktionen
+
+    Public Sub New(ByVal KontaktKlasse As KontaktFunktionen)
+        C_KF = KontaktKlasse
+    End Sub
 
     Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles ContactSaved.Close
         ThisAddIn.ListofOpenContacts.Remove(Me)
+        Me.Dispose()
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles ContactSaved.Write
-        If ThisAddIn.P_KF.IndizierungErforderlich(ContactSaved) Then
-            ThisAddIn.P_KF.IndiziereKontakt(ContactSaved)
+        If C_KF.IndizierungErforderlich(ContactSaved) Then
+            C_KF.IndiziereKontakt(ContactSaved)
         End If
     End Sub
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                C_KF = Nothing
+            End If
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(disposing As Boolean) Bereinigungscode ein.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
+
 End Class

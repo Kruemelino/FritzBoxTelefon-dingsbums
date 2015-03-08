@@ -9,7 +9,7 @@
     Private C_OlI As FritzBoxDial.OutlookInterface
     Private C_AnrMon As FritzBoxDial.AnrufMonitor
     Private C_FBox As FritzBoxDial.FritzBox
-    Private C_KF As FritzBoxDial.Contacts
+    Private C_KF As FritzBoxDial.KontaktFunktionen
     Private C_RWS As FritzBoxDial.formRWSuche
     Private C_WählClient As FritzBoxDial.Wählclient
     Private C_Phoner As FritzBoxDial.PhonerInterface
@@ -20,7 +20,11 @@
     'Strings
     Private SID As String
 
-    Public Sub New()
+    Public Sub New(ByRef GUIKlasse As GraphicalUserInterface, _
+                   ByRef KFKlasse As KontaktFunktionen, _
+                   ByRef HFKlasse As Helfer, _
+                   ByRef DPKlasse As DataProvider, _
+                   ByRef AnrMonKlasse As AnrufMonitor)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -41,7 +45,7 @@
         C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für die Kontakte generieren
-        C_KF = New Contacts(C_DP, C_HF)
+        C_KF = New KontaktFunktionen(C_DP, C_HF)
 
         ' Klasse für die Rückwärtssuche generieren
         C_RWS = New formRWSuche(C_HF, C_KF, C_DP, C_XML)
@@ -52,46 +56,45 @@
         ' Klasse für das PhonerInterface generieren
         C_Phoner = New PhonerInterface(C_HF, C_DP, C_Crypt)
 
-        ' Klasse für das Popup-Fenster
-        C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF)
-
         If PrüfeAddin() Then
 
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
-            ThisAddIn.P_FritzBox = C_FBox
 
             C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML)
 
-            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_Phoner, C_XML)
-            ThisAddIn.P_WClient = C_WählClient
-
             C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp, C_XML)
-            ThisAddIn.P_AnrMon = C_AnrMon
+
+            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_AnrMon, C_Phoner, C_XML)
 
             C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
-            ThisAddIn.P_Config = C_Config
+
+            ' Klasse für das Popup-Fenster
+            C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF, C_WählClient)
 
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
                 .P_OlInterface = C_OlI
                 .P_CallClient = C_WählClient
                 .P_FritzBox = C_FBox
+                .P_PopUp = C_PopUp
             End With
 
-            ThisAddIn.P_GUI = C_GUI
-            ThisAddIn.P_DP = C_DP
-            ThisAddIn.P_HF = C_HF
-            ThisAddIn.P_KF = C_KF
-
             If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then
-                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, False)
+                F_JournalImport = New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
+            ' Ab hier nur noch Debug-Code
             If DataProvider.P_Debug_AnrufSimulation Then
-                F_JournalImport = New formJournalimport(C_AnrMon, C_HF, C_DP, C_XML, True)
+                F_JournalImport = New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
             End If
         End If
+
+        GUIKlasse = C_GUI
+        KFKlasse = C_KF
+        HFKlasse = C_HF
+        DPKlasse = C_DP
+        AnrMonKlasse = C_AnrMon
     End Sub
 
     Function PrüfeAddin() As Boolean

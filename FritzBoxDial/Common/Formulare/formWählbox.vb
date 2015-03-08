@@ -5,26 +5,46 @@ Imports System.Text
 
 Friend Class formWählbox
     Implements IDisposable
-
+#Region "Backgroundwärker"
     Private WithEvents BWLogin As New System.ComponentModel.BackgroundWorker
+#End Region
 
+#Region "Timer"
+    Private WithEvents TimerSchließen As System.Timers.Timer
+#End Region
+
+#Region "Tread"
+    Private CallNr As System.Threading.Thread
+#End Region
+
+#Region "Delegaten"
+    Delegate Sub SchließeForm()
+    Delegate Sub DlgStatusText()
+    Delegate Sub DlgAnAus()
+#End Region
+
+#Region "Structure"
+    Structure Argument
+        Dim TelNr As String
+        Dim clir As Boolean
+        Dim festnetz As Boolean
+        Dim fonanschluss As String
+    End Structure
+#End Region
+
+#Region "Eigene Klassen"
     Private C_XML As XML
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private C_FBox As FritzBox
     Private C_GUI As GraphicalUserInterface
     Private C_Phoner As PhonerInterface
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_WC As Wählclient
+    Private C_AnrMon As AnrufMonitor
+#End Region
 
-
-    Private WithEvents TimerSchließen As System.Timers.Timer
-    Private CallNr As System.Threading.Thread
-
-    Delegate Sub SchließeForm()
-    Delegate Sub DlgStatusText()
-    Delegate Sub DlgAnAus()
-
+#Region "Eigene Variablen"
     Private StatusText As String ' Wird für Delegaten DlgStatusText benötigt
     Private AnAus As Boolean ' Wird für Delegaten DlgAnAus benötigt
     Private Element As Control ' Wird für Delegaten DlgAnAus benötigt
@@ -37,13 +57,7 @@ Friend Class formWählbox
     Private PhonerCall As Boolean = False
     'Private UsePhonerOhneFritzBox As Boolean = False
     Private PhonerFon As Integer = -1
-
-    Structure Argument
-        Dim TelNr As String
-        Dim clir As Boolean
-        Dim festnetz As Boolean
-        Dim fonanschluss As String
-    End Structure
+#End Region
 
 #Region "Properties"
     Public Property P_Dialing() As Boolean
@@ -61,8 +75,9 @@ Friend Class formWählbox
                    ByVal HelferKlasse As Helfer, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal FritzBoxKlasse As FritzBox, _
+                   ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal PhonerKlasse As PhonerInterface, _
-                   ByVal KontaktFunktionen As Contacts, _
+                   ByVal KontaktFunktionen As KontaktFunktionen, _
                    ByVal WählClientKlasse As Wählclient, _
                    ByVal XMLKlasse As XML)
 
@@ -76,11 +91,12 @@ Friend Class formWählbox
         C_KF = KontaktFunktionen
         C_GUI = InterfacesKlasse
         C_WC = WählClientKlasse
-        bDirektwahl = Direktwahl
-
+        C_AnrMon = AnrMonKlasse
         C_Phoner = PhonerKlasse
 
+        bDirektwahl = Direktwahl
         SID = DataProvider.P_Def_SessionID
+
         Me.FrameDirektWahl.Visible = bDirektwahl
         Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
@@ -88,7 +104,7 @@ Friend Class formWählbox
     End Sub
 
     Private Sub formWählbox_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        C_WC._listFormWählbox.Remove(Me)
+        C_WC.ListFormWählbox.Remove(Me)
     End Sub
 
     Private Sub formWählbox_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -242,7 +258,7 @@ Friend Class formWählbox
 
         If TimerSchließen IsNot Nothing Then TimerSchließen = C_hf.KillTimer(TimerSchließen)
         'If Not UsePhonerOhneFritzBox Then
-        ThisAddIn.P_FritzBox.FBLogout(SID)
+        C_FBox.FBLogout(SID)
         Me.Close()
         'Me.Dispose(True)
     End Sub
@@ -403,15 +419,13 @@ Friend Class formWählbox
         End With
 
         Dim Code As String  ' zu wählende Nummer
-        Dim nameStart As Integer ' Position des Namens im Fenstertitel
         Dim KontaktID As String
         Dim StoreID As String
         Dim Kontaktdaten() As String
 
-        nameStart = InStr(Me.Text, "ruf: ") + 5
-        If Not nameStart = 5 And Not Number = "ATH" And ThisAddIn.P_AnrMon.AnrMonAktiv Then
+        If Not Number = "ATH" And C_AnrMon.AnrMonAktiv Then
             ' Symbolleisteneintrag für Wahlwiederholung vornehmen
-            ' nur wenn Timer aus ist sonst macht das 'AnrMonCALL'
+            ' nur wenn Anrufmonitor nicht aktiv ist sonst macht das 'AnrMonCALL'
             Kontaktdaten = Split(Me.Tag.ToString, ";", , CompareMethod.Text)
             KontaktID = Kontaktdaten(0)
             StoreID = Kontaktdaten(1)

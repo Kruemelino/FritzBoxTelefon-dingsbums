@@ -9,14 +9,14 @@ End Enum
 
 Friend Class formRWSuche
     Private C_hf As Helfer
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_DP As DataProvider
     Private C_XML As XML
     Private HTMLFehler As Boolean
 
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
-                   ByVal KontaktKlasse As Contacts, _
+                   ByVal KontaktKlasse As KontaktFunktionen, _
                    ByVal DataproviderKlasse As DataProvider, _
                    ByVal XMLKlasse As XML)
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.

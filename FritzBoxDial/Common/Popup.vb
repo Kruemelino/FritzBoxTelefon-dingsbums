@@ -12,7 +12,8 @@ Public Class Popup
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private C_OLI As OutlookInterface
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
+    Private C_WClient As Wählclient
 #End Region
 
 #Region "BackgroundWorker"
@@ -51,12 +52,14 @@ Public Class Popup
     Friend Sub New(ByVal DataProviderKlasse As DataProvider, _
                      ByVal HelferKlasse As Helfer, _
                      ByVal OutlInter As OutlookInterface, _
-                     ByVal KontaktFunktionen As Contacts)
+                     ByVal KontaktFunktionen As KontaktFunktionen, _
+                     ByVal WählClientKlasse As Wählclient)
 
         C_hf = HelferKlasse
         C_DP = DataProviderKlasse
         C_OLI = OutlInter
         C_KF = KontaktFunktionen
+        C_WClient = WählClientKlasse
     End Sub
 
 #Region "Anrufmonitor"
@@ -258,12 +261,12 @@ Public Class Popup
 
             Select Case e.ClickedItem.Name
 
-                Case "ToolStripMenuItemKontaktöffnen" 'tmpPopUpAnrMon.OptionsMenu.Items("ToolStripMenuItemKontaktöffnen").Name
+                Case "ToolStripMenuItemKontaktöffnen"
                     AnruferAnzeigen(tmpTelefonat)
-                Case "ToolStripMenuItemRückruf" 'tmpPopUpAnrMon.OptionsMenu.Items("ToolStripMenuItemRückruf").Name
+                Case "ToolStripMenuItemRückruf"
                     ' Ruft den Kontakt zurück
-                    ThisAddIn.P_WClient.Rueckruf(tmpTelefonat)
-                Case "ToolStripMenuItemKopieren" 'tmpPopUpAnrMon.OptionsMenu.Items("ToolStripMenuItemKopieren").Name
+                    C_WClient.Rueckruf(tmpTelefonat)
+                Case "ToolStripMenuItemKopieren"
                     Dim thrd As New Threading.Thread(AddressOf ClipboardSetText)
                     thrd.SetApartmentState(Threading.ApartmentState.STA)
                     With tmpPopUpAnrMon

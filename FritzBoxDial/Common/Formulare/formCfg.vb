@@ -10,7 +10,7 @@ Friend Class formCfg
     Private C_DP As DataProvider
     Private C_Crypt As MyRijndael
     Private C_hf As Helfer
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_Phoner As PhonerInterface
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
@@ -53,7 +53,7 @@ Friend Class formCfg
                    ByVal AnrufMon As AnrufMonitor, _
                    ByVal fritzboxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
-                   ByVal kontaktklasse As Contacts, _
+                   ByVal kontaktklasse As KontaktFunktionen, _
                    ByVal Phonerklasse As PhonerInterface, _
                    ByVal Popupklasse As Popup, _
                    ByVal XMLKlasse As XML)

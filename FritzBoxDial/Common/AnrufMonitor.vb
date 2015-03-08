@@ -20,7 +20,7 @@ Friend Class AnrufMonitor
     Private C_XML As XML
     Private C_GUI As GraphicalUserInterface
     Private C_OlI As OutlookInterface
-    Private C_KF As Contacts
+    Private C_KF As KontaktFunktionen
     Private C_DP As DataProvider
     Private C_hf As Helfer
     Private C_Popup As Popup
@@ -102,7 +102,7 @@ Friend Class AnrufMonitor
     Friend Sub New(ByVal DataProvoderKlasse As DataProvider, _
                    ByVal RWS As formRWSuche, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal KontaktKlasse As Contacts, _
+                   ByVal KontaktKlasse As KontaktFunktionen, _
                    ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal OutlInter As OutlookInterface, _
                    ByVal PopupKlasse As Popup, _
@@ -220,7 +220,7 @@ Friend Class AnrufMonitor
         C_GUI.P_CallClient.Wählbox(Nothing, DataProvider.P_Def_TelCodeActivateFritzBoxCallMonitor, DataProvider.P_Def_StringEmpty, True)
         Do
             Windows.Forms.Application.DoEvents()
-        Loop Until C_GUI.P_CallClient._listFormWählbox.Count = 0
+        Loop Until C_GUI.P_CallClient.ListFormWählbox.Count = 0
     End Sub
 #End Region
 
@@ -240,9 +240,9 @@ Friend Class AnrufMonitor
             Else
                 C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer2)
                 AnrMonStartStopp()
-                If C_DP.P_CBJournal Then
-                    Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, C_XML, False)
-                End If
+                'If C_DP.P_CBJournal Then
+                '    Dim formjournalimort As New formJournalimport(C_FB, Me, C_hf, C_DP, C_XML, False)
+                'End If
             End If
         Else
             C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer3)
@@ -932,7 +932,7 @@ Friend Class AnrufMonitor
                 Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
                 ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + DauerAnruf + 70))
                 If ZeitAnruf < SchließZeit Then C_DP.P_StatOLClosedZeit = ZeitAnruf
-                Dim formjournalimort As New formJournalimport(Me, C_hf, C_DP, C_XML, False)
+                ' Dim formjournalimort As New formJournalimport(C_FB, Me, C_hf, C_DP, C_XML, False)
             End If
         End If
     End Sub '(AnrMonDISCONNECT)
