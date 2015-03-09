@@ -294,6 +294,7 @@ Friend Class AnrufMonitor
 #Region "Anrufmonitor Grundlagen"
 
     Friend Sub AnrMonStartStopp()
+        ' Beenden
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
             AnrMonAktiv = False
@@ -337,21 +338,14 @@ Friend Class AnrufMonitor
         End If
     End Sub
 
-    Function AnrMonStartNachStandby() As Boolean
+    Friend Sub AnrMonStartNachStandby()
         AnrMonAktiv = False
         AnrMonError = True
-#If OVer < 14 Then
-        C_GUI.SetAnrMonButton(AnrMonAktiv)
-#Else
-        C_GUI.RefreshRibbon()
-#End If
-        AnrMonStartNachStandby = False
-
         If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And TimerReStart Is Nothing Then
             StandbyCounter = 1
             TimerReStart = C_hf.SetTimer(DataProvider.P_Def_ReStartIntervall)
         End If
-    End Function
+    End Sub
 
     Friend Sub AnrMonReStart()
         AnrMonStartStopp() ' Ausschalten

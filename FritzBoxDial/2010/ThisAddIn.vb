@@ -156,7 +156,7 @@ Public Class ThisAddIn
         P_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
-                P_AnrMon.AnrMonStartNachStandby()
+                ThisAddIn_Startup(True)
             Case Microsoft.Win32.PowerModes.Suspend
                 P_AnrMon.AnrMonStartStopp()
         End Select
@@ -169,24 +169,8 @@ Public Class ThisAddIn
 
         AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
-        P_oApp = CType(Application, Outlook.Application)
+        ThisAddIn_Startup(False)
 
-        If P_oApp.ActiveExplorer IsNot Nothing Then
-#If OVer = 11 Then
-            F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon)
-#End If
-            ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
-            P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
-#If OVer < 14 Then
-            C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
-                                     ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
-                                     ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
-                                     ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
-#End If
-            If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
-        Else
-            P_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
-        End If
     End Sub
 
     ''' <summary>
@@ -194,6 +178,36 @@ Public Class ThisAddIn
     ''' </summary>
     ''' <param name="Standby">Angabe, obb das Addin aus dem Standby automatisch gestartet wird.</param>
     Private Overloads Sub ThisAddin_Startup(ByVal Standby As Boolean)
+
+        If P_oApp Is Nothing Then
+            P_oApp = CType(Application, Outlook.Application)
+        End If
+
+        If Standby Then
+#If OVer < 14 Then
+            C_GUI.SetAnrMonButton(AnrMonAktiv)
+#Else
+            C_GUI.RefreshRibbon()
+#End If
+            P_AnrMon.AnrMonStartNachStandby()
+        Else
+            If P_oApp.ActiveExplorer IsNot Nothing Then
+#If OVer = 11 Then
+            F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon)
+#End If
+                ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
+                P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
+#If OVer < 14 Then
+            C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
+                                     ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
+                                     ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
+                                     ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
+#End If
+                If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
+            Else
+                P_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
+            End If
+        End If
 
     End Sub
 
