@@ -3624,7 +3624,6 @@ Public Class DataProvider
         _CLBTelNr = coll
     End Sub
 
-
     ''' <summary>
     ''' Speicher Daten, die in den Properties stehen in die XML-String.
     ''' </summary>

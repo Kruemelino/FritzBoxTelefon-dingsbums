@@ -1,10 +1,10 @@
 Imports System.Drawing
-Imports System.ComponentModel 'BackgroundWorker
+Imports System.ComponentModel
 Imports System.Threading
 Imports System.Windows.Forms
 Imports System.Collections.ObjectModel
 
-Friend Class formCfg
+Public Class formCfg
 #Region "Eigene Klassen"
     Private C_XML As XML
     Private C_DP As DataProvider
@@ -58,9 +58,7 @@ Friend Class formCfg
                    ByVal Popupklasse As Popup, _
                    ByVal XMLKlasse As XML)
 
-        ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
-        ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
 
         C_hf = HelferKlasse
         C_DP = DataProviderKlasse

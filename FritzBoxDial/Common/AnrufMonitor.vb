@@ -35,6 +35,14 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Properties"
+    Public Property P_PopUp() As Popup
+        Get
+            Return C_PopUp
+        End Get
+        Set(ByVal value As Popup)
+            C_PopUp = value
+        End Set
+    End Property
     Friend Property AnrMonAktiv() As Boolean
         Get
             Return _AnrMonAktiv

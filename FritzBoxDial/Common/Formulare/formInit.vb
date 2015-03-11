@@ -58,25 +58,37 @@
 
         If PrüfeAddin() Then
 
+            ' Klasse für die Interaktionen mit der Fritz!Box generieren
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
 
+            ' Klasse für das GraphicalUserInterface (GUI) generieren
             C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML)
 
+            ' Klasse für den AnrufMonitor generieren
             C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp, C_XML)
 
+            ' Klasse für den Wählclient generieren
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_AnrMon, C_Phoner, C_XML)
 
+            ' Klasse für das GraphicalUserInterface (GUI) generieren
             C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
 
-            ' Klasse für das Popup-Fenster
+            ' Klasse für das Popup-Fenster generieren
             C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF, C_WählClient)
 
+            ' Verschiedene Funktionen an die GraphicalUserInterface-Klasse übergeben
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
                 .P_OlInterface = C_OlI
                 .P_CallClient = C_WählClient
                 .P_FritzBox = C_FBox
+                .P_PopUp = C_PopUp
+                .P_Config = C_Config
+            End With
+
+            ' Verschiedene Funktionen an den AnrufMonitor-Klasse übergeben
+            With C_AnrMon
                 .P_PopUp = C_PopUp
             End With
 

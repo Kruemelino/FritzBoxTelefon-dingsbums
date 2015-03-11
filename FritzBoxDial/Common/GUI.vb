@@ -72,6 +72,7 @@ Imports Microsoft.Office.Core
 
 #Region "Eigene Formulare"
     Private F_RWS As formRWSuche
+    Private F_Cfg As formCfg
 #End Region
 
 #Region "Properies"
@@ -117,6 +118,15 @@ Imports Microsoft.Office.Core
         End Get
         Set(ByVal value As Popup)
             C_PopUp = value
+        End Set
+    End Property
+
+    Public Property P_Config() As formCfg
+        Get
+            Return F_Cfg
+        End Get
+        Set(ByVal value As formCfg)
+            F_Cfg = value
         End Set
     End Property
 #End Region
@@ -1365,24 +1375,17 @@ Imports Microsoft.Office.Core
     ''' <summary>
     ''' Steuert die aufzurufende Funktion anhand der Übergebenen <c>Aufgabe</c>
     ''' </summary>
-    ''' <param name="Aufgabe">Übergabe Wert, der besitmt, was getan werden soll.</param>
+    ''' <param name="Aufgabe">Übergabe Wert, der bestimmt, was getan werden soll.</param>
     Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.DialDirect
                 P_CallClient.Wählbox(Nothing, DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, True)
             Case TaskToDo.DialExplorer
-                'If C_OLI.OutlookApplication IsNot Nothing Then
-                '    Dim ActiveExplorer As Outlook.Explorer = C_OLI.OutlookApplication.ActiveExplorer
-                '    Dim oSel As Outlook.Selection = ActiveExplorer.Selection
-                '    P_CallClient.WählboxStart(oSel)
-                '    C_HF.NAR(oSel) : C_HF.NAR(ActiveExplorer)
-                '    oSel = Nothing : ActiveExplorer = Nothing
-                'End If
                 If C_OLI.OutlookApplication IsNot Nothing Then
                     P_CallClient.WählboxStart(C_OLI.OutlookApplication.ActiveExplorer.Selection)
                 End If
             Case TaskToDo.OpenConfig
-                'ThisAddIn.P_Config.ShowDialog()
+                P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
                 Dim formjournalimort As New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
             Case TaskToDo.RestartAnrMon
