@@ -286,9 +286,8 @@ Imports Microsoft.Office.Core
 
         Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & _
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
-
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
-            Case "dynMwwdh"
+            Case "dynMWwdListe"
                 XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
             Case "dynMAnrListe"
                 XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
@@ -350,6 +349,8 @@ Imports Microsoft.Office.Core
         RibbonListStrBuilder.Append("</menu>")
 
         DynMenüfüllen = RibbonListStrBuilder.ToString
+        RibbonListStrBuilder.Clear()
+        RibbonListStrBuilder = Nothing
         LANodeNames = Nothing
         LANodeValues = Nothing
         xPathTeile = Nothing
