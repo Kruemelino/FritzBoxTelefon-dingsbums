@@ -1,14 +1,14 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.7.12"
+#define MyAppVersion "3.8.2"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
 #define MyGUID "411894A1-05D5-4F89-B336-4A4175D5E537" 
 #define MyAppNameKurz "FritzBoxDial"
 #define MyAppTime GetDateTimeString('yymmdd', '', '') 
-#define MyAppType "Debug" 
+#define MyAppType "" 
 [Setup]
 AppId={{411894A1-05D5-4F89-B336-4A4175D5E537}}
 AppName={#MyAppName} {#MyAppType}
@@ -24,7 +24,7 @@ OutputBaseFilename=FBDBSetup_{#MyAppVersion}_{#MyAppTime}
 Compression=lzma2
 SolidCompression=yes
 PrivilegesRequired=none
-SignTool=WinSDK /d $q{#MyAppDescription}$q /du $q{#MyAppURL}$q $f
+SignTool=WinSDK /t $qhttp://timestamp.verisign.com/scripts/timstamp.dll$q /du $q{#MyAppURL}$q /d $q{#MyAppDescription}$q $f
 SignedUninstaller=yes
 [Languages]
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
@@ -67,182 +67,95 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 [Files]
 ;Office 2003
 #if FileExists("2003\FritzBoxDial.dll") & FileExists("2003\FritzBoxDial.dll.manifest") & FileExists("2003\Funktionen.dll") & FileExists("2003\PopupFenster.dll") 
-;#ifexist "2003\FritzBoxDial.dll" AND "2003\FritzBoxDial.dll.manifest" AND "2003\Funktionen.dll" AND "2003\PopUpAnrMon.dll" AND "2003\PopUpStoppUhr.dll"
   Source: "2003\FritzBoxDial.dll";                                    Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
   Source: "2003\FritzBoxDial.dll.manifest";                           Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
   Source: "2003\Funktionen.dll";                                      Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
-  Source: "2003\PopupFenster.dll";                                     Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2003\PopupFenster.dll";                                    Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
 #endif
 #if FileExists("2003\setcaspol.exe")
-;#ifexist "2003\setcaspol.exe"
   Source: "2003\setcaspol.exe";                                       Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
 #endif
 ;Office 2003 - Debuginformationen
 #if FileExists("2003\FritzBoxDial.pdb") & FileExists("2003\Funktionen.pdb") & FileExists("2003\PopupFenster.pdb") 
-;#ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopUpAnrMon.pdb" AND "2003\PopUpStoppuhr.pdb"
   Source: "2003\FritzBoxDial.pdb";                                    Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
   Source: "2003\Funktionen.pdb";                                      Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
   Source: "2003\PopupFenster.pdb";                                    Check: OutlookVersion(2003); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
-#expr DeleteFile("Common\Funktionen.dll")
-#expr DeleteFile("Common\PopupFenster.dll")
-
 ;Office 2007
-#if FileExists("2007\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2007\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2007\Fritz!Box Telefon-Dingsbums.vsto")
-;#ifexist "2007\Fritz!Box Telefon-Dingsbums.dll" AND "2007\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2007\Fritz!Box Telefon-Dingsbums.vsto"
+#if FileExists("2007\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2007\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2007\Fritz!Box Telefon-Dingsbums.vsto") & FileExists("2007\Funktionen.dll") & FileExists("2007\PopupFenster.dll")
   Source: "2007\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
   Source: "2007\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
   Source: "2007\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
-#endif
-
-#if FileExists("2007\Funktionen.dll") & FileExists("2007\PopupFenster.dll") 
-;#ifexist "2007\Funktionen.dll" AND "2007\PopUpAnrMon.dll" AND "2007\PopUpStoppuhr.dll"
-
-  ;#if GetFileVersion("2007\Funktionen.dll") > GetFileVersion("Common\Funktionen.dll")
-    #expr CopyFile("2007\Funktionen.dll",     "Common\Funktionen.dll");
-    #expr CopyFile("2007\PopupFenster.dll",   "Common\PopupFenster.dll");
-  ;#endif
-
+  Source: "2007\Funktionen.dll";                                      Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2007\PopupFenster.dll";                                    Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2007 - Debuginformationen
 #if FileExists("2007\\Fritz!Box Telefon-Dingsbums.pdb")
-;#ifexist "2007\Fritz!Box Telefon-Dingsbums.pdb"
   Source: "2007\Fritz!Box Telefon-Dingsbums.pdb";                     Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
-#endif
-
-#if FileExists("2007\Funktionen.pdb") & FileExists("2007\PopupFenster.pdb") 
-;#ifexist "2007\Funktionen.pdb" AND "2007\PopupAnrMon.pdb" AND "2007\PopUpStoppuhr.pdb"
-
-  ;#if GetFileVersion("2007\Funktionen.pdb") > GetFileVersion("Common\Funktionen.pdb");
-
-    #expr CopyFile("2007\Funktionen.pdb",     "Common\Funktionen.pdb");
-    #expr CopyFile("2007\PopupFenster.pdb",    "Common\PopupFenster.pdb");
-
-  ;#endif
-
+  Source: "2007\Funktionen.pdb";                                      Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2007\PopupFenster.pdb";                                    Check: OutlookVersion(2007); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2010
-#if FileExists("2010\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2010\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2010\Fritz!Box Telefon-Dingsbums.vsto")
+#if FileExists("2010\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2010\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2010\Fritz!Box Telefon-Dingsbums.vsto") & FileExists("2010\Funktionen.dll") & FileExists("2010\PopupFenster.dll")
 ;#ifexist "2010\Fritz!Box Telefon-Dingsbums.dll" AND "2010\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2010\Fritz!Box Telefon-Dingsbums.vsto";
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
   Source: "2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-#endif
-
-#if FileExists("2010\Funktionen.dll") & FileExists("2010\PopupFenster.dll") 
-;#ifexist "2010\Funktionen.dll" AND "2010\PopUpAnrMon.dll" AND "2010\PopUpStoppuhr.dll"
-
-  ;#if GetFileVersion("2010\Funktionen.dll") > GetFileVersion("Common\Funktionen.dll")
-
-    #expr CopyFile("2010\Funktionen.dll",     "Common\Funktionen.dll");
-    #expr CopyFile("2010\PopupFenster.dll",   "Common\PopupFenster.dll");
-
-  ;#endif
-
+  Source: "2010\Funktionen.dll";                                      Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2010\PopupFenster.dll";                                    Check: OutlookVersion(2001); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2010 - Debuginformationen
 #if FileExists("2010\\Fritz!Box Telefon-Dingsbums.pdb")
-;#ifexist "2010\Fritz!Box Telefon-Dingsbums.pdb";
   Source: "2010\Fritz!Box Telefon-Dingsbums.pdb";                     Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-#endif
-
-#if FileExists("2010\Funktionen.pdb") & FileExists("2010\PopUpAnrMon.pdb") & FileExists("2010\PopUpStoppuhr.pdb")
-;#ifexist "2010\Funktionen.pdb" AND "2010\PopupAnrMon.pdb" AND "2010\PopUpStoppuhr.pdb";
-  
-  ;#if GetFileVersion("2010\Funktionen.pdb") > GetFileVersion("Common\Funktionen.pdb");
-
-    #expr CopyFile("2010\Funktionen.pdb",     "Common\Funktionen.pdb");
-    #expr CopyFile("2010\PopupFenster.pdb",   "Common\PopupFenster.pdb");
-
-  ;#endif
-
+  Source: "2010\Funktionen.pdb";                                      Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2010\PopupFenster.pdb";                                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2013
-#if FileExists("2013\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2013\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2013\Fritz!Box Telefon-Dingsbums.vsto")
+#if FileExists("2013\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2013\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2013\Fritz!Box Telefon-Dingsbums.vsto") & FileExists("2013\Funktionen.dll") & FileExists("2013\PopupFenster.dll")
 ;#ifexist "2013\Fritz!Box Telefon-Dingsbums.dll" AND "2013\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2013\Fritz!Box Telefon-Dingsbums.vsto";
   Source: "2013\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
   Source: "2013\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
   Source: "2013\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
-#endif
-
-#if FileExists("2013\Funktionen.dll") & FileExists("2013\PopUpAnrMon.dll") & FileExists("2013\PopUpStoppuhr.dll")
-;#ifexist "2013\Funktionen.dll" AND "2013\PopUpAnrMon.dll" AND "2013\PopUpStoppuhr.dll"
-
-  ;#if GetFileVersion("2013\Funktionen.dll") > GetFileVersion("Common\Funktionen.dll")
-
-    #expr CopyFile("2013\Funktionen.dll",     "Common\Funktionen.dll");
-    #expr CopyFile("2013\PopupFenster.dll",   "Common\PopupFenster.dll");
- 
-  ;#endif
-
+  Source: "2013\Funktionen.dll";                                      Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\PopupFenster.dll";                                    Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2013 - Debuginformationen
 #if FileExists("2013\\Fritz!Box Telefon-Dingsbums.pdb")
-;#ifexist "2013\Fritz!Box Telefon-Dingsbums.pdb" 
   Source: "2013\Fritz!Box Telefon-Dingsbums.pdb";                     Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Funktionen.pdb";                                      Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\PopupFenster.pdb";                                    Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
 #endif
-
-#if FileExists("2013\Funktionen.pdb") & FileExists("2013\PopUpAnrMon.pdb") & FileExists("2013\PopUpStoppuhr.pdb")
-;#ifexist "2013\Funktionen.pdb" AND "2013\PopupAnrMon.pdb" AND "2013\PopUpStoppuhr.pdb"
-  
-  ;#if GetFileVersion("2013\Funktionen.pdb") > GetFileVersion("Common\Funktionen.pdb");
-
-    #expr CopyFile("2013\Funktionen.pdb",     "Common\Funktionen.pdb");
-    #expr CopyFile("2013\PopupFenster.pdb",   "Common\PopupFenster.pdb");
- 
-  ;#endif
-
-#endif
-
-
+   
 ;Office 2007 & 2010 & 2013 COMMON
 #if FileExists("2007\Fritz!Box Telefon-Dingsbums.dll") | FileExists("2010\Fritz!Box Telefon-Dingsbums.dll") | FileExists("2013\Fritz!Box Telefon-Dingsbums.dll")
-;#ifexist "2007\Fritz!Box Telefon-Dingsbums.dll" | "2010\Fritz!Box Telefon-Dingsbums.dll" | "2013\Fritz!Box Telefon-Dingsbums.dll"
   #if FileExists("Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll") & FileExists("Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll")
-; #ifexist "Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll" AND "Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll"
     Source: "Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";  Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
     Source: "Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll"; Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
   #else
     #error Microsoft.Office.Tools.Common.v4.0.Utilities.dll und/oder Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll fehlen im Ordner "Common"
   #endif
-
-  #if FileExists("Common\Funktionen.dll") & FileExists("Common\PopupFenster.dll") 
-; #ifexist "Common\Funktionen.dll" AND "Common\PopUpAnrMon.dll"  AND "Common\PopUpStoppuhr.dll"
-    Source: "Common\Funktionen.dll";                                    Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
-    Source: "Common\PopupFenster.dll";                                   Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
-  #else
-    #error Funktionen.dll, PopUpAnrMon.dll und/oder PopUpStoppuhr.dll fehlen im Ordner "Common"
-  #endif
-  #if FileExists("Common\Funktionen.pdb") & FileExists("Common\PopupFenster.pdb") 
-; #ifexist "Common\Funktionen.pdb" AND "Common\PopUpAnrMon.pdb"  AND "Common\PopUpStoppuhr.pdb"
-    Source: "Common\Funktionen.pdb";                                    Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
-    Source: "Common\PopupFenster.pdb";                                  Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
-   #endif
 #else
-  ;#error Funktionen.dll, PopUpAnrMon.dll und/oder PopUpStoppuhr.dll fehlen im Ordner "Common"
+
 #endif
 
 [Run]
 ;Office 2003
- Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Start..."
+Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Start..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\FritzBoxDial.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden ; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: FritzBoxDial.dll..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopupFenster.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopupFenster.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopupFenster.dll..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\Funktionen.dll"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (Funktionen.dll) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.dll..."
 #if FileExists("2003\FritzBoxDial.pdb") & FileExists("2003\Funktionen.pdb") & FileExists("2003\PopupFenster.pdb") 
-;#ifexist "2003\FritzBoxDial.pdb" AND "2003\Funktionen.pdb" AND "2003\PopUpAnrMon.pdb" AND "2003\PopUpStoppUhr.pdb"
 	Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\FritzBoxDial.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (FritzBoxDial.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: FritzBoxDial.pdb..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\PopupFenster.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (PopUpAnrMon.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: PopupFenster.pdb..."
   Filename: {code:CaspolPath}; Parameters: "-machine -addgroup 1 -strong -file ""{app}\Funktionen.pdb"" -noname -noversion  FullTrust -n ""{#MyAppNameKurz}"" -d ""{#MyAppNameKurz} (Funktionen.pdb) mit FullTrust"""; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Funktionen.pdb..."
 #endif
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {win}\Microsoft.NET\Framework\v2.0.50727\; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "Registriere Addin für Office 2003: Ende!"
-
-;Filename: {app}\setcaspol.exe; Parameters: "install;{code:CaspolPath};{app};500"; WorkingDir: {app}; Flags: waituntilidle runhidden; Check: OutlookVersion(2003); StatusMsg: "SetCaspol : Install"
 
 ;Office 2007 & 2010 & 2013
 Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: (not OutlookVersion(2003)); StatusMsg: "Installiere Fritz!Box Telefon-Dingsbums.vsto..."
@@ -252,8 +165,6 @@ Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Di
 Filename: {code:CaspolPath}; Parameters: "-pp off"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Start..."
 Filename: {code:CaspolPath}; Parameters: "-rg ""FritzBoxDial"""; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Entferne Berechtigung..."
 Filename: {code:CaspolPath}; Parameters: "-pp on"; WorkingDir: {app} Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "Deregistriere Addin für Office 2003: Ende!"
-
-;Filename: {app}\setcaspol.exe; Parameters: "uninstall;{code:CaspolPath};{app};500"; WorkingDir: {app}; Flags: runhidden; Check: OutlookVersion(2003); StatusMsg: "SetCaspol : Uninstall"
  
 ;Office 2007 & 2010 & 2013
 Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003)); StatusMsg: "Deinstalliere Fritz!Box Telefon-Dingsbums.vsto..."
