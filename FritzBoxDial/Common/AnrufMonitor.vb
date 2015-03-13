@@ -209,7 +209,7 @@ Friend Class AnrufMonitor
         AnrMonAktiv = CBool(e.Result)
         AnrMonError = Not AnrMonAktiv
 #If OVer < 14 Then
-        C_GUI.SetAnrMonButton(AnrMonAktiv)
+        C_GUI.SetAnrMonButton()
 #Else
         C_GUI.RefreshRibbon()
 #End If
@@ -292,7 +292,7 @@ Friend Class AnrufMonitor
         IPHostInfo = Nothing
 
 #If OVer < 14 Then
-        C_GUI.SetAnrMonButton(True)
+        C_GUI.SetAnrMonButton()
 #Else
         C_GUI.RefreshRibbon()
 #End If
@@ -323,7 +323,7 @@ Friend Class AnrufMonitor
             End If
 
 #If OVer < 14 Then
-            C_GUI.SetAnrMonButton(false)
+            C_GUI.SetAnrMonButton()
 #Else
             C_GUI.RefreshRibbon()
 #End If

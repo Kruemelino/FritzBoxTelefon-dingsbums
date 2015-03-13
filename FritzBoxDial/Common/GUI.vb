@@ -1078,8 +1078,8 @@ Imports Microsoft.Office.Core
         Catch : End Try
     End Sub
 
-    Friend Sub SetAnrMonButton(ByVal EinAus As Boolean)
-        bool_banrmon = EinAus
+    Friend Sub SetAnrMonButton()
+        bool_banrmon = C_AnrMon.AnrMonAktiv
         bAnrMonTimer = C_HF.SetTimer(200)
     End Sub
 
