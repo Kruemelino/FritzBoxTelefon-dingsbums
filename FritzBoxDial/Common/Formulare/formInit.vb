@@ -1,4 +1,6 @@
-﻿Friend Class formInit
+﻿Imports System.Timers
+
+Friend Class formInit
     Implements IDisposable
 
     ' Klassen
@@ -14,17 +16,25 @@
     Private C_WählClient As FritzBoxDial.Wählclient
     Private C_Phoner As FritzBoxDial.PhonerInterface
     Private C_Config As FritzBoxDial.formCfg
-    Private F_JournalImport As FritzBoxDial.formJournalimport
+    Private F_AnrListImport As FritzBoxDial.formImportAnrList
     Private C_PopUp As FritzBoxDial.Popup
     Private C_XML As FritzBoxDial.XML
-    'Strings
+    ' Strings
     Private SID As String
+    ' Integer
+    Private StandbyCounter As Integer
+    ' Timer
+    Private WithEvents TimerReStart As Timer
+    ' Boolean
+    Private ReStartError As Boolean
 
     Public Sub New(ByRef GUIKlasse As GraphicalUserInterface, _
                    ByRef KFKlasse As KontaktFunktionen, _
                    ByRef HFKlasse As Helfer, _
                    ByRef DPKlasse As DataProvider, _
-                   ByRef AnrMonKlasse As AnrufMonitor)
+                   ByRef AnrMonKlasse As AnrufMonitor, _
+                   ByRef XMLKlasse As XML, _
+                   ByRef FritzBoxKlasse As FritzBox)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -93,20 +103,22 @@
             End With
 
             If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then
-                F_JournalImport = New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, False)
+                F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, False)
             End If
 
             ' Ab hier nur noch Debug-Code
             If DataProvider.P_Debug_AnrufSimulation Then
-                F_JournalImport = New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
+                F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
             End If
         End If
 
+        FritzBoxKlasse = C_FBox
         GUIKlasse = C_GUI
         KFKlasse = C_KF
         HFKlasse = C_HF
         DPKlasse = C_DP
         AnrMonKlasse = C_AnrMon
+        XMLKlasse = C_XML
     End Sub
 
     Function PrüfeAddin() As Boolean
@@ -125,7 +137,59 @@
         Return Rückgabe
 
     End Function
+#Region "Timer"
 
+    Public Sub StandByReStart()
+
+        If C_DP.P_CBAutoAnrList Or C_DP.P_CBAnrMonAuto Then
+            If TimerReStart Is Nothing Then
+                StandbyCounter = 1
+                TimerReStart = C_HF.SetTimer(DataProvider.P_Def_ReStartIntervall)
+            End If
+        End If
+    End Sub
+
+
+    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
+        If StandbyCounter < DataProvider.P_Def_TryMaxRestart Then
+            If C_DP.P_CBForceFBAddr Then
+                C_HF.httpGET("http://" & C_DP.P_TBFBAdr, C_HF.GetEncoding(C_DP.P_EncodeingFritzBox), ReStartError)
+            Else
+                ReStartError = Not C_HF.Ping(C_DP.P_TBFBAdr)
+            End If
+
+            If ReStartError Then
+                ' Fehler! Verbindung zur Fritz!Box konnte nach Standby nicht wieder aufgebaut werden. Weitere Versuche werden folgen.
+                C_HF.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer1)
+                StandbyCounter += 1
+            Else
+                ' Erfolg! Verbindung zur Fritz!Box konnte nach Standby  wieder aufgebaut werden.
+                C_HF.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer2)
+
+                ' Beende Timer
+                TimerReStart = C_HF.KillTimer(TimerReStart)
+
+                ' Starte Anrufmonitor
+                If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+                    C_AnrMon.AnrMonStartStopp()
+                End If
+
+                ' Auswertung der Anrufliste anstoßen
+                If C_DP.P_CBAutoAnrList Then
+                    F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, False)
+                End If
+
+            End If
+        Else
+            ' Fehler! Verbindung zur Fritz!Box konnte nach final Standby nicht wieder aufgebaut werden.
+            C_HF.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer3)
+            TimerReStart = C_HF.KillTimer(TimerReStart)
+        End If
+    End Sub
+#End Region
+
+
+#Region "Formularfunktionen"
     Private Sub BFBAdr_Click(sender As Object, e As EventArgs) Handles BFBAdr.Click
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
@@ -283,5 +347,5 @@
     Private Sub BSchließen_Click(sender As Object, e As EventArgs) Handles BSchließen.Click
         Me.Close()
     End Sub
-
+#End Region
 End Class

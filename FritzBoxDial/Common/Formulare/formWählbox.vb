@@ -430,8 +430,7 @@ Friend Class formWählbox
             KontaktID = Kontaktdaten(0)
             StoreID = Kontaktdaten(1)
 
-            C_GUI.UpdateList(DataProvider.P_Def_NameListCALL, Mid(Me.Text, Len("Anruf: ") + 1), Number, System.DateTime.Now.ToString, StoreID, KontaktID, DataProvider.P_Def_StringEmpty)
-
+            C_GUI.UpdateList(DataProvider.P_Def_NameListCALL, Mid(Me.Text, Len("Anruf: ") + 1), Number, System.DateTime.Now.ToString, StoreID, KontaktID, DataProvider.P_Def_StringEmpty, False)
         End If
 
         Code = C_hf.nurZiffern(Number) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt

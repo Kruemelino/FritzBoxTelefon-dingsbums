@@ -653,26 +653,20 @@ Public Class Helfer
         'Loop Until Not AuslandsVorwahlausDatei = DataProvider.P_Def_StringEmpty Or i = 5
     End Function
 
+    ''' <summary>
+    ''' Bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche.
+    ''' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer mit Sonderzeichen</param>
+    ''' <returns>saubere Telefonnummer (nur aus Ziffern bestehend)</returns>
+    ''' <remarks>Achtung! "*", "#" bleiben Bestehen!!!</remarks>
     Public Function nurZiffern(ByVal TelNr As String) As String
-        ' aus FritzBoxDial übernommen
-        ' ist jetzt eine eigenständige Funktion, da sie häufig gebraucht wird
-        ' bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche
-        ' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen
-        ' Parameter:  TelNr (String):     Telefonnummer mit Sonderzeichen
-        '             LandesVW (String):  eigene Landesvorwahl (wird entfernt)
-        ' Rückgabewert (String):       saubere Telefonnummer (nur aus Ziffern bestehend)
-
         Dim i As Integer   ' Zählvariable
         Dim c As String ' einzelnes Zeichen
-        ' Dim Vorwahl As String
-        'Dim pos As Integer
 
         nurZiffern = DataProvider.P_Def_StringEmpty
         TelNr = UCase(TelNr)
-        'Vorwahl = TelNrTeile(TelNr)(1)
-        'pos = InStr(1, Vorwahl, ";", vbTextCompare) + 1
-        'Vorwahl = Mid(Vorwahl, pos, InStr(pos, Vorwahl, ";", vbTextCompare) - pos)
-        ' Nur gültige Zeichen in der Nummer erlauben!
+
         For i = 1 To Len(TelNr)
             c = Mid(TelNr, i, 1)
             Select Case c                ' Einzelnes Char auswerten
@@ -714,17 +708,12 @@ Public Class Helfer
         Dim TempTelNr As String() = TelNrTeile(TelNr)
         Dim Vorwahl As String = Left(TempTelNr(1), 2)
 
-
-        'If TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = DataProvider.P_Def_StringEmpty Then
-
         Return (TempTelNr(0) = C_DP.P_TBLandesVW Or TempTelNr(0) = DataProvider.P_Def_StringEmpty) And (Vorwahl.StartsWith("15") Or Vorwahl.StartsWith("16") Or Vorwahl.StartsWith("17"))
-        'If Vorwahl = "15" Or Vorwahl = "16" Or Vorwahl = "17" Then Return True
-        'End If
-        'Return False
+
     End Function
 
     Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean
-        Return nurZiffern(TelNr1) = nurZiffern(TelNr2)
+        Return nurZiffern(TelNr1).Equals(nurZiffern(TelNr2))
     End Function
 
     Public Function VorwahlListe(ByVal VList As Vorwahllisten) As String

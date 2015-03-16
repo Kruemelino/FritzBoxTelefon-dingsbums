@@ -1,6 +1,6 @@
 ﻿Imports System.Threading
 
-Friend Class formJournalimport
+Friend Class formImportAnrList
 #Region "BackgroundWorker"
     Private WithEvents DownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker

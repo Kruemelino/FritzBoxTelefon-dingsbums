@@ -40,17 +40,11 @@ Public Class ThisAddIn
     Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
 
 #Region "Eigene Klassen"
-    Private C_DP As DataProvider ' Reader/Writer initialisieren
-    Private C_Fbox As FritzBox  'Deklarieren der Klasse
-    Private C_AnrMon As AnrufMonitor
     Private C_WClient As Wählclient
-
-    Private C_HF As Helfer
-    Private C_KF As KontaktFunktionen
-    Private C_GUI As GraphicalUserInterface
 #End Region
 
 #Region "Eigene Formulare"
+    Private F_AnrListImport As formImportAnrList
     Private F_Cfg As formCfg
     Private F_Init As formInit
 #End Region
@@ -83,6 +77,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Rückgabewert für die Klasse DataProvider 
     ''' </summary>
+    Private C_DP As DataProvider
     Friend Property P_DP() As DataProvider
         Get
             Return C_DP
@@ -95,6 +90,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Rückgabewert für die Klasse Helfer 
     ''' </summary>
+    Private C_HF As Helfer
     Friend Property P_HF() As Helfer
         Get
             Return C_HF
@@ -107,6 +103,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Rückgabewert für die Klasse KontaktFunktionen 
     ''' </summary>
+    Private C_KF As KontaktFunktionen
     Friend Property P_KF() As KontaktFunktionen
         Get
             Return C_KF
@@ -119,6 +116,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Rückgabewert für die Klasse GraphicalUserInterface 
     ''' </summary>
+    Private C_GUI As GraphicalUserInterface
     Friend Property P_GUI() As GraphicalUserInterface
         Get
             Return C_GUI
@@ -131,6 +129,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Rückgabewert für die Klasse AnrufMonitor 
     ''' </summary>
+    Private C_AnrMon As AnrufMonitor
     Friend Property P_AnrMon() As AnrufMonitor
         Get
             Return C_AnrMon
@@ -140,11 +139,33 @@ Public Class ThisAddIn
         End Set
     End Property
 
+    ''' <summary>
+    ''' Rückgabewert für die Klasse XML 
+    ''' </summary>
+    Private C_XML As XML
+    Friend Property P_XML() As XML
+        Get
+            Return C_XML
+        End Get
+        Set(ByVal value As XML)
+            C_XML = value
+        End Set
+    End Property
+
+    Private C_Fbox As FritzBox
+    Friend Property P_FBox() As FritzBox
+        Get
+            Return C_Fbox
+        End Get
+        Set(ByVal value As FritzBox)
+            C_Fbox = value
+        End Set
+    End Property
 #End Region
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
-        F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon)
+        F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon, P_XML, P_FBox)
         Return P_GUI
     End Function
 #End If
@@ -159,6 +180,7 @@ Public Class ThisAddIn
                 ThisAddIn_Startup(True)
             Case Microsoft.Win32.PowerModes.Suspend
                 P_AnrMon.AnrMonStartStopp()
+                P_DP.SpeichereXMLDatei()
         End Select
     End Sub
 
@@ -189,11 +211,12 @@ Public Class ThisAddIn
 #Else
             C_GUI.RefreshRibbon()
 #End If
-            P_AnrMon.AnrMonStartNachStandby()
+            F_Init.StandByReStart()
+
         Else
             If P_oApp.ActiveExplorer IsNot Nothing Then
 #If OVer = 11 Then
-            F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon)
+                F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon, P_XML, P_FBox)
 #End If
                 ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
                 P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()

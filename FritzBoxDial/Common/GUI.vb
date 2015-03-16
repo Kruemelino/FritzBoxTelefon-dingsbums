@@ -279,6 +279,7 @@ Imports Microsoft.Office.Core
         Dim Anrufer As String
         Dim TelNr As String
         Dim Zeit As String
+        Dim Verpasst As Boolean = False
 
         Dim LANodeNames As New ArrayList
         Dim LANodeValues As New ArrayList
@@ -303,6 +304,13 @@ Imports Microsoft.Office.Core
         LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+
+        ' Signalisierung verpasster Anrufe
+        If XMLListBaseNode = DataProvider.P_Def_NameListRING Then
+            LANodeNames.Add("Verpasst")
+            LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        End If
+
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
@@ -317,12 +325,15 @@ Imports Microsoft.Office.Core
                 If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
                     Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                     Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+                    If XMLListBaseNode = DataProvider.P_Def_NameListRING Then Verpasst = CBool(LANodeValues.Item(LANodeNames.IndexOf("Verpasst")))
 
                     GetButtonXMLString(RibbonListStrBuilder, _
                             CStr(ID Mod 10), _
                             CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
                             XMLListBaseNode, _
-                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr))
+                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
+                            CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_StringEmpty)))
+
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(2) = DataProvider.P_Def_ErrorMinusOne_String
@@ -339,6 +350,7 @@ Imports Microsoft.Office.Core
                             CStr(ID), _
                             Anrufer, _
                             XMLListBaseNode, _
+                            DataProvider.P_Def_StringEmpty, _
                             DataProvider.P_Def_StringEmpty)
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
@@ -356,13 +368,15 @@ Imports Microsoft.Office.Core
         xPathTeile = Nothing
     End Function
 
-    Private Sub GetButtonXMLString(ByRef StrBuilder As StringBuilder, ByVal ID As String, ByVal Label As String, ByVal Tag As String, SuperTip As String)
-        Dim Werte(3) As String
+    Private Sub GetButtonXMLString(ByRef StrBuilder As StringBuilder, ByVal ID As String, ByVal Label As String, ByVal Tag As String, ByVal SuperTip As String, ByVal ImageMSO As String)
+        Dim Werte(4) As String
 
         Werte(0) = ID
         Werte(1) = Label
         Werte(2) = Tag
         Werte(3) = SuperTip
+        Werte(4) = ImageMSO
+
         ' Nicht zugelassene Zeichen der XML-Notifikation ersetzen.
         ' Zeichen	Notation in XML
         ' <	        &lt;    &#60;
@@ -373,12 +387,7 @@ Imports Microsoft.Office.Core
 
         For i = LBound(Werte) To UBound(Werte)
             If Not Werte(i) = DataProvider.P_Def_StringEmpty Then
-                Werte(i) = Replace(Werte(i), "&", "&amp;&amp;", , , CompareMethod.Text)
-                Werte(i) = Replace(Werte(i), "&amp;&amp;#", "&#", , , CompareMethod.Text) ' Deizmalcode wiederherstellen
-                Werte(i) = Replace(Werte(i), "<", "&lt;", , , CompareMethod.Text)
-                Werte(i) = Replace(Werte(i), ">", "&gt;", , , CompareMethod.Text)
-                Werte(i) = Replace(Werte(i), Chr(34), "&quot;", , , CompareMethod.Text)
-                Werte(i) = Replace(Werte(i), "'", "&apos;", , , CompareMethod.Text)
+                Werte(i) = Werte(i).Replace("&", "&amp;&amp;").Replace("&amp;&amp;#", "&#").Replace("<", "&lt;").Replace(">", "&gt;").Replace(Chr(34), "&quot;").Replace("'", "&apos;")
             End If
         Next
 
@@ -387,9 +396,10 @@ Imports Microsoft.Office.Core
             .Append("label=""" & Werte(1) & """ ")
             .Append("onAction=""BtnOnAction"" ")
             .Append("tag=""" & Werte(2) & ";" & Werte(0) & """ ")
-            If Not Werte(3) = DataProvider.P_Def_StringEmpty Then
-                .Append("supertip=""" & Werte(3) & """")
-            End If
+
+            If Not Werte(4) = DataProvider.P_Def_StringEmpty Then .Append("imageMso=""" & Werte(4) & """ ")
+            If Not Werte(3) = DataProvider.P_Def_StringEmpty Then .Append("supertip=""" & Werte(3) & """")
+
             .Append("/>" & vbCrLf)
         End With
     End Sub
@@ -1388,7 +1398,7 @@ Imports Microsoft.Office.Core
             Case TaskToDo.OpenConfig
                 P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
-                Dim formjournalimort As New formJournalimport(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
+                Dim formjournalimort As New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
             Case TaskToDo.RestartAnrMon
                 C_AnrMon.AnrMonReStart()
             Case TaskToDo.ShowAnrMon
@@ -1429,7 +1439,8 @@ Imports Microsoft.Office.Core
                                     ByVal Zeit As String, _
                                     ByVal StoreID As String, _
                                     ByVal KontaktID As String, _
-                                    ByVal vCard As String)
+                                    ByVal vCard As String, _
+                                    ByVal Verpasst As Boolean)
 
         Dim NodeNames As New ArrayList
         Dim NodeValues As New ArrayList
@@ -1443,7 +1454,6 @@ Imports Microsoft.Office.Core
         xPathTeile.Add(ListName)
         xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
-        'With Telefonat
 
         If Not C_HF.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
 
@@ -1497,13 +1507,18 @@ Imports Microsoft.Office.Core
                 xPathTeile.Item(xPathTeile.Count - 1) = "Zeit"
                 C_XML.Write(C_DP.XMLDoc, xPathTeile, CStr(Zeit))
             End If
+
+            ' Verpasst Status setzen
+            xPathTeile.Item(xPathTeile.Count - 1) = "Verpasst"
+            C_XML.Write(C_DP.XMLDoc, xPathTeile, CStr(Verpasst))
         End If
-        'End With
+
         xPathTeile = Nothing
         NodeNames = Nothing
         NodeValues = Nothing
         AttributeNames = Nothing
         AttributeValues = Nothing
+
 #If OVer > 12 Then
         RefreshRibbon()
 #End If
@@ -1512,7 +1527,7 @@ Imports Microsoft.Office.Core
 
     Friend Overloads Sub UpdateList(ByVal ListName As String, ByVal Telefonat As C_Telefonat)
         With Telefonat
-            UpdateList(ListName, .Anrufer, .TelNr, CStr(.Zeit), .StoreID, .KontaktID, .vCard)
+            UpdateList(ListName, .Anrufer, .TelNr, CStr(.Zeit), .StoreID, .KontaktID, .vCard, .Verpasst)
         End With
     End Sub
 #End Region

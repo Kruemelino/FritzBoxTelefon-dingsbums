@@ -273,7 +273,7 @@ Public Class Wählclient
         Dim KontaktID As String
         Dim StoreID As String
         Dim TelNr As String
-        'Dim Anrufer As String
+        Dim Verpasst As Boolean
         Dim vCard As String
         Dim ListNodeNames As New ArrayList
         Dim ListNodeValues As New ArrayList
@@ -299,17 +299,21 @@ Public Class Wählclient
         ListNodeNames.Add("vCard")
         ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
 
+        ' Verpasst
+        ListNodeNames.Add("Verpasst")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
+
         With xPathTeile
             .Add(Telefonat(0))
             .Add("Eintrag")
         End With
         C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
 
-        'Anrufer = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Anrufer")))
         TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
         KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
         vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
+        Verpasst = CBool(ListNodeValues.Item(ListNodeNames.IndexOf("Verpasst")))
 
         If Not StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
             'If Not KontaktID = DataProvider.P_Def_ErrorMinusOne And Not StoreID = DataProvider.P_Def_ErrorMinusOne Then
@@ -326,6 +330,15 @@ Public Class Wählclient
             End If
         Else
             oContact = Nothing
+        End If
+
+        ' Verpasst-Marker auf false setzen
+        If Verpasst Then
+            With xPathTeile
+                .Add("[@ID=""" & Telefonat(1) & """]")
+                .Add("Verpasst")
+            End With
+            C_XML.Write(C_DP.XMLDoc, xPathTeile, "False")
         End If
 
         Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.

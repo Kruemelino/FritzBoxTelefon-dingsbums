@@ -12,7 +12,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Timer"
-    Private WithEvents TimerReStart As System.Timers.Timer
+    'Private WithEvents TimerReStart As System.Timers.Timer
     Private WithEvents TimerCheckAnrMon As System.Timers.Timer
 #End Region
 
@@ -45,34 +45,34 @@ Friend Class AnrufMonitor
     End Property
     Friend Property AnrMonAktiv() As Boolean
         Get
-            Return _AnrMonAktiv
+            Return bAnrMonAktiv
         End Get
         Set(ByVal value As Boolean)
-            _AnrMonAktiv = value
+            bAnrMonAktiv = value
         End Set
     End Property
     Friend Property AnrMonError() As Boolean
         Get
-            Return _AnrMonError
+            Return bAnrMonError
         End Get
         Set(ByVal value As Boolean)
-            _AnrMonError = value
+            bAnrMonError = value
         End Set
     End Property
     Friend Property AnrMonPhoner() As Boolean
         Get
-            Return _AnrMonPhoner
+            Return bAnrMonPhoner
         End Get
         Set(ByVal value As Boolean)
-            _AnrMonPhoner = value
+            bAnrMonPhoner = value
         End Set
     End Property
     Friend Property LetzterAnrufer As C_Telefonat
         Get
-            Return _LetzterAnrufer
+            Return TLetzterAnrufer
         End Get
         Set(ByVal value As C_Telefonat)
-            _LetzterAnrufer = value
+            TLetzterAnrufer = value
         End Set
     End Property
 #End Region
@@ -100,11 +100,10 @@ Friend Class AnrufMonitor
 
 #Region "Globale Variablen"
 
-    Private StandbyCounter As Integer
-    Private _AnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
-    Private _AnrMonError As Boolean
-    Private _AnrMonPhoner As Boolean = False
-    Private _LetzterAnrufer As C_Telefonat
+    Private bAnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
+    Private bAnrMonError As Boolean
+    Private bAnrMonPhoner As Boolean = False
+    Private TLetzterAnrufer As C_Telefonat
 #End Region
 
     Friend Sub New(ByVal DataProvoderKlasse As DataProvider, _
@@ -214,10 +213,10 @@ Friend Class AnrufMonitor
         C_GUI.RefreshRibbon()
 #End If
         If AnrMonAktiv Then
-            If TimerReStart IsNot Nothing Then
-                TimerReStart = C_hf.KillTimer(TimerReStart)
-                C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonStart4)
-            End If
+            'If TimerReStart IsNot Nothing Then
+            '    TimerReStart = C_hf.KillTimer(TimerReStart)
+            '    C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonStart4)
+            'End If
         Else
             C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonStart5)
         End If
@@ -233,31 +232,6 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Timer"
-    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
-        AnrMonAktiv = False
-        If StandbyCounter < DataProvider.P_Def_TryMaxRestart Then
-            If C_DP.P_CBForceFBAddr Then
-                C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), AnrMonError)
-            Else
-                AnrMonError = Not C_hf.Ping(C_DP.P_TBFBAdr)
-            End If
-
-            If AnrMonError Then
-                C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer1)
-                StandbyCounter += 1
-            Else
-                C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer2)
-                AnrMonStartStopp()
-                'If C_DP.P_CBJournal Then
-                '    Dim formjournalimort As New formJournalimport(C_FB, Me, C_hf, C_DP, C_XML, False)
-                'End If
-            End If
-        Else
-            C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer3)
-            TimerReStart = C_hf.KillTimer(TimerReStart)
-        End If
-    End Sub
-
     Private Sub TimerCheckAnrMon_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerCheckAnrMon.Elapsed
         ' Es kann sein, dass die Verbindung zur FB abreißt. Z. B. wenn die VPN unterbrochen ist. 
 
@@ -281,10 +255,11 @@ Friend Class AnrufMonitor
             C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer4)
             AnrMonStartStopp()
             AnrMonError = True
-            If TimerReStart IsNot Nothing AndAlso Not TimerReStart.Enabled Then
-                StandbyCounter = 1
-                TimerReStart = C_hf.SetTimer(DataProvider.P_Def_ReStartIntervall)
-            End If
+            ' Erneute Verbindung aufbauen???
+            'If TimerReStart IsNot Nothing AndAlso Not TimerReStart.Enabled Then
+            '    StandbyCounter = 1
+            '    TimerReStart = C_hf.SetTimer(DataProvider.P_Def_ReStartIntervall)
+            'End If
         End Try
 
         CheckAnrMonTCPSocket.Close()
@@ -346,15 +321,6 @@ Friend Class AnrufMonitor
         End If
     End Sub
 
-    Friend Sub AnrMonStartNachStandby()
-        AnrMonAktiv = False
-        AnrMonError = True
-        If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon And TimerReStart Is Nothing Then
-            StandbyCounter = 1
-            TimerReStart = C_hf.SetTimer(DataProvider.P_Def_ReStartIntervall)
-        End If
-    End Sub
-
     Friend Sub AnrMonReStart()
         AnrMonStartStopp() ' Ausschalten
         AnrMonStartStopp() ' Einschalten
@@ -406,20 +372,19 @@ Friend Class AnrufMonitor
     End Sub
 
     ''' <summary>
-    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für RING
+    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für RING.
+    ''' Routie wertet einen eingehenden Anruf aus.
     ''' </summary>
-    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für RING</param>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für RING
+    ''' FBStatus(0): Uhrzeit
+    ''' FBStatus(1): RING, wird nicht verwendet
+    ''' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
+    ''' FBStatus(3): Eingehende Telefonnummer, TelNr
+    ''' FBStatus(4): Angerufene eigene Telefonnummer, MSN
+    ''' FBStatus(5): Anschluss, SIP...
+    ''' </param>
     ''' <param name="ShowForms">Boolean: Soll Anrufmonitor/StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     Friend Sub AnrMonRING(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
-        ' wertet einen eingehenden Anruf aus
-        ' Parameter: FBStatus (String ()):   Status-String der FritzBox
-        '            anzeigen (Boolean):  nur bei 'true' wird 'AnrMonEinblenden' ausgeführt
-        ' FBStatus(0): Uhrzeit
-        ' FBStatus(1): RING, wird nicht verwendet
-        ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-        ' FBStatus(3): Eingehende Telefonnummer, TelNr
-        ' FBStatus(4): Angerufene eigene Telefonnummer, MSN
-        ' FBStatus(5): Anschluss, SIP...
 
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
         Dim ID As Integer = CInt(FBStatus.GetValue(2))
@@ -549,20 +514,19 @@ Friend Class AnrufMonitor
     End Sub '(AnrMonRING)
 
     ''' <summary>
-    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CALL
+    ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CALL.
+    ''' Diese Routine wertet einen ausgehenden Anruf aus.
     ''' </summary>
-    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CALL</param>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CALL
+    ''' FBStatus(0): Uhrzeit
+    ''' FBStatus(1): CALL, wird nicht verwendet
+    ''' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
+    ''' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
+    ''' FBStatus(4): Ausgehende eigene Telefonnummer, MSN
+    ''' FBStatus(5): die gewählte Rufnummer
+    ''' </param>
     ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     Friend Sub AnrMonCALL(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
-        ' wertet einen ausgehenden Anruf aus
-        ' Parameter: FBStatus (String()):  Status-String der FritzBox
-
-        ' FBStatus(0): Uhrzeit
-        ' FBStatus(1): CALL, wird nicht verwendet
-        ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-        ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
-        ' FBStatus(4): Ausgehende eigene Telefonnummer, MSN
-        ' FBStatus(5): die gewählte Rufnummer
 
         Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))  ' Ausgehende eigene Telefonnummer, MSN
         Dim ID As Integer = CInt(FBStatus.GetValue(2))
@@ -691,18 +655,17 @@ Friend Class AnrufMonitor
 
     ''' <summary>
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT
+    ''' Diese Routine wertet eine Zustande gekommene Verbindung aus.
     ''' </summary>
-    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT</param>
+    ''' <param name="FBStatus">String(): Vom Anrufmonitor der Fritz!Box erhaltener String für CONNECT
+    ''' FBStatus(0): Uhrzeit
+    ''' FBStatus(1): CONNECT, wird nicht verwendet
+    ''' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
+    ''' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
+    ''' FBStatus(4): Gewählte Nummer Telefonnummer bzw. eingehende Telefonnummer
+    ''' </param>
     ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     Friend Sub AnrMonCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
-        ' wertet eine Zustande gekommene Verbindung aus
-        ' Parameter: FBStatus (String()):  Status-String der FritzBox
-
-        ' FBStatus(0): Uhrzeit
-        ' FBStatus(1): CONNECT, wird nicht verwendet
-        ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-        ' FBStatus(3): Nebenstellennummer, eindeutige Zuordnung des Telefons
-        ' FBStatus(4): Gewählte Nummer Telefonnummer bzw. eingehende Telefonnummer
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
@@ -714,11 +677,12 @@ Friend Class AnrufMonitor
         If Telefonat IsNot Nothing Then
             With Telefonat
                 ' Temporärer Test ob Nummern identisch
-                If Not C_hf.nurZiffern(.TelNr) = CStr(FBStatus.GetValue(4)) Then
+
+                If Not C_hf.nurZiffern(.TelNr).Equals(CStr(FBStatus.GetValue(4)).Replace("#", DataProvider.P_Def_StringEmpty)) Then
                     C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & CStr(FBStatus.GetValue(4)))
                 End If
-                .Angenommen = True
 
+                .Angenommen = True
                 .RingTime = CType(.Zeit - CDate(FBStatus.GetValue(0)), TimeSpan).TotalSeconds
                 .Zeit = CDate(FBStatus.GetValue(0))
 
@@ -788,16 +752,14 @@ Friend Class AnrufMonitor
     ''' <summary>
     ''' Behandelt den vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT
     ''' </summary>
-    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT</param>
+    ''' <param name="FBStatus">String: Vom Anrufmonitor der Fritz!Box erhaltener String für DISCONNECT
+    ''' FBStatus(0): Uhrzeit
+    ''' FBStatus(1): DISCONNECT, wird nicht verwendet
+    ''' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
+    ''' FBStatus(3): Dauer des Telefonates
+    ''' </param>
     ''' <param name="ShowForms">Boolean: Soll StoppUhr angezeigt werden. Bei Journalimport nicht, ansonsten ja (unabhängig von der Einstellung des Users)</param>
     Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String(), ByVal ShowForms As Boolean)
-        ' legt den Journaleintrag (und/oder Kontakt) an
-        ' Parameter: FBStatus (String):     Status-String der FritzBox
-
-        ' FBStatus(0): Uhrzeit
-        ' FBStatus(1): DISCONNECT, wird nicht verwendet
-        ' FBStatus(2): Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-        ' FBStatus(3): Dauer des Telefonates
 
         Dim CallDirection As String = DataProvider.P_Def_StringEmpty
         Dim SchließZeit As Date = C_DP.P_StatOLClosedZeit
@@ -819,7 +781,7 @@ Friend Class AnrufMonitor
                 ' 1. Flag "Angenommen" ist false
                 ' 2. Flag "Angenommen" ist True, und RingTime > Grenzwert aus Einstellungen (Angenommen)
 
-                If Not .Angenommen Xor C_DP.P_TBAnrBeantworterTimeout >= .RingTime Then
+                If Not .Angenommen Xor C_DP.P_TBAnrBeantworterTimeout <= .RingTime Then
                     .Verpasst = True
                 End If
 
@@ -878,6 +840,9 @@ Friend Class AnrufMonitor
                         End If
                     End If
 
+                    ' RingList! Verpasste Anrufe
+                    C_GUI.UpdateList(DataProvider.P_Def_NameListRING, Telefonat)
+
                     .Categories = .TelName & "; " & String.Join("; ", DataProvider.P_AnrMon_Journal_Def_Categories.ToArray)
                     .Subject = CallDirection & CStr(IIf(.Anrufer = DataProvider.P_Def_StringEmpty, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, DataProvider.P_Def_StringEmpty, " (" & .TelName & ")"))
 
@@ -912,6 +877,7 @@ Friend Class AnrufMonitor
                     End If
 
                 End If
+
                 'Notizeintag
 #If Not OVer = 11 Then
                 If C_DP.P_CBNote Then

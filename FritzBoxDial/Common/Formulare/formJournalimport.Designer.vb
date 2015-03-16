@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class formJournalimport
+Partial Class formImportAnrList
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
@@ -22,7 +22,7 @@ Partial Class formJournalimport
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formJournalimport))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formImportAnrList))
         Me.StartZeit = New System.Windows.Forms.DateTimePicker()
         Me.ButtonStart = New System.Windows.Forms.Button()
         Me.StartDatum = New System.Windows.Forms.DateTimePicker()
@@ -196,7 +196,7 @@ Partial Class formJournalimport
         Me.ButtonHerunterladen.Text = "Anrufliste erneut herunterladen"
         Me.ButtonHerunterladen.UseVisualStyleBackColor = True
         '
-        'formJournalimport
+        'formImportAnrList
         '
         Me.AcceptButton = Me.ButtonStart
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -214,9 +214,9 @@ Partial Class formJournalimport
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "formJournalimport"
+        Me.Name = "formImportAnrList"
         Me.ShowIcon = False
-        Me.Text = "Journalimport"
+        Me.Text = "Import der Anrufliste"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.BereichAuswertung.ResumeLayout(False)
