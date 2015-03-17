@@ -1374,7 +1374,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Def_ReStartIntervall() As Integer
         Get
-            Return 3000
+            Return 2000
         End Get
     End Property
 
@@ -2454,7 +2454,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box nach StandBy noch nicht verfügbar.
     ''' </summary>
-    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer1() As String
+    Public Shared ReadOnly Property P_Standby_Log_Timer1() As String
         Get
             Return "Fritz!Box nach StandBy noch nicht verfügbar."
         End Get
@@ -2463,7 +2463,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...
     ''' </summary>
-    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer2() As String
+    Public Shared ReadOnly Property P_Standby_Log_Timer2() As String
         Get
             Return "Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor..."
         End Get
@@ -2472,9 +2472,27 @@ Public Class DataProvider
     ''' <summary>
     ''' Reaktivierung des Anrufmonitors nicht erfolgreich.
     ''' </summary>
-    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer3() As String
+    Public Shared ReadOnly Property P_Standby_Log_Timer3() As String
         Get
             Return "Reaktivierung des Anrufmonitors nicht erfolgreich."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anrufmonitor nach dem Aufwachen aus Standby gestartet.
+    ''' </summary>
+    Public Shared ReadOnly Property P_Standby_Log_Timer4() As String
+        Get
+            Return "Anrufmonitor nach Aufwachen aus Standby gestartet."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Auswertung der Anrufliste nach dem Aufwachen aus Standby gestartet.
+    ''' </summary>
+    Public Shared ReadOnly Property P_Standby_Log_Timer5() As String
+        Get
+            Return "Auswertung der Anrufliste nach dem Aufwachen aus Standby gestartet."
         End Get
     End Property
 
