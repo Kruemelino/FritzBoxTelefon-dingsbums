@@ -137,21 +137,18 @@ Friend Class formInit
         Return Rückgabe
 
     End Function
-#Region "Timer"
 
+#Region "Standby"
     Public Sub StandByReStart()
-
         If C_DP.P_CBAutoAnrList Or C_DP.P_CBAnrMonAuto Then
             If TimerReStart Is Nothing Then
                 StandbyCounter = 0
                 TimerReStart = C_HF.SetTimer(DataProvider.P_Def_ReStartIntervall)
             End If
         End If
-
     End Sub
 
     Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
-
         If StandbyCounter < DataProvider.P_Def_TryMaxRestart Then
             If C_DP.P_CBForceFBAddr Then
                 C_HF.httpGET("http://" & C_DP.P_TBFBAdr, C_HF.GetEncoding(C_DP.P_EncodeingFritzBox), ReStartError)
@@ -187,10 +184,8 @@ Friend Class formInit
             C_HF.LogFile(DataProvider.P_Standby_Log_Timer3)
             TimerReStart = C_HF.KillTimer(TimerReStart)
         End If
-
     End Sub
 #End Region
-
 
 #Region "Formularfunktionen"
     Private Sub BFBAdr_Click(sender As Object, e As EventArgs) Handles BFBAdr.Click

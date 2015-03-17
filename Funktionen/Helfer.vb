@@ -872,6 +872,7 @@ Public Class Helfer
     Public Function KillTimer(ByVal Timer As System.Timers.Timer) As System.Timers.Timer
         If Timer IsNot Nothing Then
             With Timer
+                .Stop()
                 .AutoReset = False
                 .Enabled = False
                 .Dispose()

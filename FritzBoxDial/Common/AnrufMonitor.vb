@@ -277,23 +277,19 @@ Friend Class AnrufMonitor
 #Region "Anrufmonitor Grundlagen"
 
     Friend Sub AnrMonStartStopp()
+        Dim FBFehler As Boolean
+
         ' Beenden
         If AnrMonAktiv Then
             ' Timer stoppen, TCP/IP-Verbindung(schließen)
             AnrMonAktiv = False
             If TimerCheckAnrMon IsNot Nothing Then
-                With TimerCheckAnrMon
-                    .Stop()
-                    .Dispose()
-                End With
+                C_hf.KillTimer(TimerCheckAnrMon)
                 TimerCheckAnrMon = Nothing
             End If
 
             If AnrMonStream IsNot Nothing Then
-                With AnrMonStream
-                    .Close()
-                    '.Dispose()
-                End With
+                AnrMonStream.Close()
                 AnrMonStream = Nothing
             End If
 
@@ -305,9 +301,14 @@ Friend Class AnrufMonitor
         Else
             ' TCP/IP-Verbindung öffnen
             If C_DP.P_CBUseAnrMon Then
-                'If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+                ' Prüfe ob Fritz!Box erreichbar
+                If C_DP.P_CBForceFBAddr Then
+                    C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), FBFehler)
+                Else
+                    FBFehler = C_hf.Ping(C_DP.P_TBFBAdr)
+                End If
 
-                If C_hf.Ping(C_DP.P_TBFBAdr) Or C_DP.P_CBForceFBAddr Or C_DP.P_CBPhonerAnrMon Then
+                If Not FBFehler Or C_DP.P_CBPhonerAnrMon Then
                     BWStartTCPReader = New BackgroundWorker
                     With BWStartTCPReader
                         .WorkerReportsProgress = True
