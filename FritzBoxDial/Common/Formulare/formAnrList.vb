@@ -207,7 +207,7 @@ Friend Class formImportAnrList
                         If C_DP.P_CLBTelNr.Contains(C_hf.EigeneVorwahlenEntfernen(MSN)) Or DataProvider.P_Debug_AnrufSimulation Then
                             b += 1
                             NSN = -1
-                            AnrID = Str(100 + b)
+                            AnrID = CStr(DataProvider.P_Def_AnrListIDOffset + b)
                             If Not AnrTyp = "2" Then
                                 'Wird im Fall 2 nicht benötigt: Verpasster Anruf.
                                 Select Case Nebenstelle
@@ -247,21 +247,21 @@ Friend Class formImportAnrList
                             Select Case CInt(AnrTyp)
                                 Case 1 ' eingehender Anruf: angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonRING(vFBStatus)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus)
                                 Case 2 ' eingehender Anruf: nicht angenommen
                                     vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonRING(vFBStatus)
                                 Case 3, 4 ' ausgehender Anruf
                                     vFBStatus = Split(AnrZeit & ";CALL;" & AnrID & ";0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCALL(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCALL(vFBStatus)
                                     vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
+                                    C_AnrMon.AnrMonCONNECT(vFBStatus)
                             End Select
                             If Abbruch Then Exit For
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
-                            C_AnrMon.AnrMonDISCONNECT(vFBStatus, DataProvider.P_Debug_AnrufSimulation)
+                            C_AnrMon.AnrMonDISCONNECT(vFBStatus)
                         End If
                         If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1

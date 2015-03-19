@@ -1417,9 +1417,6 @@ Public Class DataProvider
     ''' <summary>
     ''' FBDB-AnrMonDirection
     ''' </summary>
-
-
-
     Public Shared ReadOnly Property P_Def_AnrMonDirection_UserProperty_Name() As String
         Get
             Return "FBDB-AnrMonDirection"
@@ -1429,9 +1426,6 @@ Public Class DataProvider
     ''' <summary>
     ''' FBDB-AnrMonZeit
     ''' </summary>
-
-
-
     Public Shared ReadOnly Property P_Def_AnrMonDirection_UserProperty_Zeit() As String
         Get
             Return "FBDB-AnrMonZeit"
@@ -1441,9 +1435,6 @@ Public Class DataProvider
     ''' <summary>
     ''' FBDB_Note_Table
     ''' </summary>
-
-
-
     Public Shared ReadOnly Property P_Def_Note_Table() As String
         Get
             Return "FBDB_Note_Table"
@@ -1453,9 +1444,6 @@ Public Class DataProvider
     ''' <summary>
     ''' BEGIN:VCARD
     ''' </summary>
-
-
-
     Public Shared ReadOnly Property P_Def_Begin_vCard() As String
         Get
             Return "BEGIN:VCARD"
@@ -1465,9 +1453,6 @@ Public Class DataProvider
     ''' <summary>
     ''' END:VCARD
     ''' </summary>
-
-
-
     Public Shared ReadOnly Property P_Def_End_vCard() As String
         Get
             Return "END:VCARD"
@@ -1479,7 +1464,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>CallList</value>
     ''' <returns>CallList</returns>
-
     Public Shared ReadOnly Property P_Def_NameListCALL() As String
         Get
             Return "CallList"
@@ -1491,7 +1475,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>RingList</value>
     ''' <returns>RingList</returns>
-
     Public Shared ReadOnly Property P_Def_NameListRING() As String
         Get
             Return "RingList"
@@ -1503,7 +1486,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>VIPList</value>
     ''' <returns>VIPList</returns>
-
     Public Shared ReadOnly Property P_Def_NameListVIP() As String
         Get
             Return "VIPList"
@@ -1515,7 +1497,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>Fritz!Box Telefon-dingsbums</value>
     ''' <returns>Fritz!Box Telefon-dingsbums</returns>
-
     Public Shared ReadOnly Property P_Def_Addin_LangName() As String
         Get
             Return "Fritz!Box Telefon-dingsbums"
@@ -1527,7 +1508,6 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>FritzOutlook</value>
     ''' <returns>FritzOutlook</returns>
-
     Public Shared ReadOnly Property P_Def_Addin_KurzName() As String
         Get
             Return "FritzOutlook"
@@ -1577,6 +1557,16 @@ Public Class DataProvider
     Public Shared ReadOnly Property P_Def_MobilDialPort() As String
         Get
             Return "99"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Der Offset der bei der Auswertung der Anrufliste der AnrufID gegeben wird
+    ''' </summary>
+    ''' <value>100</value>
+    Public Shared ReadOnly Property P_Def_AnrListIDOffset() As Integer
+        Get
+            Return 100
         End Get
     End Property
 

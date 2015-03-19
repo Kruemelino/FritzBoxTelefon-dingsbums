@@ -132,7 +132,7 @@ Public Class Popup
                 .AnrName = Telefonat.Anrufer
             End If
 
-            .Firma = Telefonat.Companies
+            .Firma = Telefonat.Firma
         End With
     End Sub
 

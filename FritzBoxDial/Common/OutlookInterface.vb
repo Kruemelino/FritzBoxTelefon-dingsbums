@@ -138,13 +138,13 @@ Friend Class C_Telefonat
         End Set
     End Property
 
-    Private _Companies As String
-    Friend Property Companies() As String
+    Private _Firma As String
+    Friend Property Firma() As String
         Get
-            Return _Companies
+            Return _Firma
         End Get
         Set(ByVal value As String)
-            _Companies = value
+            _Firma = value
         End Set
     End Property
 
@@ -304,7 +304,7 @@ Public Class OutlookInterface
                     .Duration = Telefonat.Dauer
                     .Body = Telefonat.Body
                     .Start = Telefonat.Zeit
-                    .Companies = Telefonat.Companies
+                    .Companies = Telefonat.Firma
                     .Categories = Telefonat.Categories
 
 #If Not OVer = 15 Then
