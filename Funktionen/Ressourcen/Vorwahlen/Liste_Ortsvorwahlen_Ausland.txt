@@ -281,7 +281,7 @@
 7;342;Ivano-Frankivsk;
 7;3432;Jekaterinburg (ehem. Sverdlovsk);
 7;8852;Jerewan;
-7;112;Kaliningrad (Kînigsberg);
+7;112;Kaliningrad (K√∂nigsberg);
 7;3212;Karaganda;
 7;8432;Kazan;
 7;44;Kiev;
@@ -692,9 +692,9 @@
 32;14;Bouwei;
 32;67;Braine-le-Comte ('s Gravenbrakel);
 32;3;Broechem;
-32;50;BrÅgge (Bruges Brugge);
-32;2;BrÅssel (Bruxelles);
-32;80;BÅllingen (Bullange);
+32;50;Br√ºgge (Bruges Brugge);
+32;2;Br√ºssel (Bruxelles);
+32;80;B√ºllingen (Bullange);
 32;71;Charleroi;
 32;68;Chievres;
 32;60;Chimay;
@@ -767,8 +767,8 @@
 32;3;Lier (Lierre);
 32;80;Lierneux;
 32;9;Lokeren;
-32;16;Lîwen (Leuven Louvain);
-32;41;LÅttich (Uege Lulk);
+32;16;L√∂wen (Leuven Louvain);
+32;41;L√ºttich (Uege Lulk);
 32;89;Maaseik;
 32;50;Maldegem;
 32;80;Malmedy;
@@ -846,8 +846,8 @@
 32;50;Zeebrugge;
 32;9;Zelzate;
 34;67;Albacete;
-34;5;Alcal† de Guadalra;
-34;1;Alcal† de Henares;
+34;5;Alcal√° de Guadalra;
+34;1;Alcal√° de Henares;
 34;6;Alcoy;
 34;56;Algeciras;
 34;6;Allcante;
@@ -861,7 +861,7 @@
 34;24;Badajoz;
 34;3;Badalona;
 34;3;Barcelona;
-34;23;BÇjar;
+34;23;B√©jar;
 34;5;Benalmadena-Costa;
 34;6;Benetusser;
 34;6;Benidorm;
@@ -870,7 +870,7 @@
 34;4;Bilbao;
 34;72;Blanes;
 34;47;Burgos;
-34;27;C†ceres;
+34;27;C√°ceres;
 34;56;Cadiz;
 34;76;Calatayud;
 34;3;Calella;
@@ -979,109 +979,67 @@
 34;45;Vitoria-Gastelz;
 34;80;Zamora;
 34;76;Zaragoza;
-36;37;Abas†r;
-36;85;Als¢bÇlatelep;
-36;86;Als¢îrs;
-36;86;Asz¢fî;
-36;87;Badacsony;
-36;79;Baja;
-36;35;Balassagyarmat;
-36;86;Balatonakali;
-36;88;Balatonaliga;
-36;88;Balatonalm†di;
-36;85;Balatonbogl†r;
-36;85;Balatonfenyves;
-36;84;Balatonf¢ldv†r;
-36;87;BalatonfÅred;
-36;88;BalatonfÅzfî;
-36;88;Balatonkenese;
-36;85;Balatonm†riafÅrd¢;
-36;84;Balatonszabadi;
-36;84;Balatonszemes;
-36;84;BalatonszÇplak;
-36;86;Balatonudvari;
-36;88;Balatonvil†gos;
-36;52;Balmaz£jv†ros;
-36;66;BÇkÇsesaba;
-36;1;Budapest;
-36;53;CeglÇd;
-36;63;Csongr†d;
-36;86;Csopak;
-36;52;Debrecen;
-36;74;Domb¢v†r;
-36;24;Dunaharaszti;
-36;25;Duna£jv†ros;
-36;36;Eger;
-36;23;Erd;
-36;33;Esztergom;
-36;85;Fony¢d;
-36;36;FÅzesabony;
-36;28;Gîdîllî;
-36;37;Gyîngyîs;
-36;96;Gyîr (Raab);
-36;88;Hajm†skÇr;
-36;72;Hark†ny;
-36;37;Hatvan;
-36;88;Herend;
-36;83;HÇviz;
-36;57;J†szberÇny;
-36;78;Kalocsa;
-36;82;Kaposv†r;
-36;96;Kapuv†r;
-36;59;Karcag;
-36;48;Kazinebarcika;
-36;76;Kecskem†t;
-36;78;Kisk¢rîs;
-36;77;Kiskunhalas;
-36;72;Koml¢;
-36;94;K¢szeg;
-36;26;Le†nyfalu;
-36;49;lisza£jv†ros;
-36;85;Marcali;
-36;44;M†tÇszalkai;
-36;37;M†trah†za;
-36;49;Mez¢kîvesd;
-36;46;Miskolc;
-36;69;Moh†cs;
-36;98;Mosonmagyar¢v†r;
-36;93;Nagykanizsa;
-36;42;Nyiregyh†za;
-36;72;OrfÅ;
-36;68;Orosh†za;
-36;48;Ozd;
-36;75;Paks;
-36;89;Papa;
-36;72;Pecs (FÅnfkirchen);
-36;26;Piliscsaba;
-36;26;Pilisv¢r¢sv†r;
-36;84;S†gv†r;
-36;32;Salg¢tarj†n;
-36;47;S†rospatak;
-36;47;S†toralja£jhely;
-36;72;Sikl¢s;
-36;84;Si¢fok;
-36;99;Sopron;
-36;84;Sz†nt¢d;
-36;66;Szarvas;
-36;62;Szeged (Szegedin);
-36;22;SzÇkesfehÇrv†r;
-36;74;Szeksz†rd;
-36;26;Szentendre (St. AndrÑ);
-36;24;Szigetszentmikl¢s;
-36;73;Szigetv†r;
-36;56;Szolnok;
-36;94;Szombathely;
-36;23;T†rnok;
-36;34;Tata;
-36;34;Tatab†nya;
-36;86;Tihany;
-36;27;V†c (Waitzen);
-36;88;V†rpalota;
-36;26;Visegr†d;
-36;92;Zalaegerszeg;
-36;84;Zam†rdi;
-36;27;ZebegÇny;
-36;23;Zs†mbÇk;
+36;1;Budapest
+36;20;Telenor
+36;22;Sz√©kesfeh√©rv√°r
+36;23;Biatorb√°gy
+36;24;Szigetszentmikl√≥s
+36;25;Duna√∫jv√°ros
+36;26;Szentendre
+36;27;Vac
+36;28;G√∂d√∂ll≈ë
+36;29;Monor
+36;30;T-Mobile
+36;31;Mobile Phones
+36;32;Salg√≥tarj√°n
+36;33;Esztergom
+36;34;Tatab√°nya
+36;35;Balassagyarmat
+36;36;Eger (Ungarn)
+36;37;Gy√∂ngy√∂s
+36;42;Ny√≠regyh√°za
+36;44;M√°t√©szalka
+36;45;Kisv√°rda
+36;46;Miskolc
+36;47;Szerencs
+36;48;√ìzd
+36;49;Mez≈ëk√∂vesd
+36;51;Dial-Up Internet service
+36;52;Debrecen
+36;53;Cegl√©d
+36;54;Beretty√≥√∫jfalu
+36;56;Szolnok
+36;57;J√°szber√©ny
+36;59;Karcag
+36;62;Szeged
+36;63;Szentes
+36;66;B√©k√©scsaba
+36;68;Orosh√°za
+36;69;Moh√°cs
+36;70;Vodafone
+36;71;Corporate networks
+36;72;P√©cs
+36;73;Szigetv√°r
+36;74;Szeksz√°rd
+36;75;Paks
+36;76;Kecskem√©t
+36;77;Kiskunhalas
+36;78;Kiskoros
+36;79;Baja
+36;80;Dorgicse
+36;82;Kaposv√°r
+36;83;Keszthely
+36;84;Si√≥fok
+36;85;Marcali
+36;87;Tapolca
+36;88;Veszpr√©m
+36;89;P√°pa
+36;92;Zalaegerszeg
+36;93;Nagykanizsa
+36;94;Szombathely
+36;95;S√°rv√°r
+36;96;Gy≈ër
+36;99;Sopron
 39;320;Wind Telecomunicazione
 39;321;Wind Telecomunicazione
 39;322;Wind Telecomunicazione
@@ -1092,16 +1050,16 @@
 39;327;Wind Telecomunicazione
 39;328;Wind Telecomunicazione
 39;329;Wind Telecomunicazione
-39;330;Telecom Italia Mobile†(TIM)
-39;331;Telecom Italia Mobile†(TIM)
-39;332;Telecom Italia Mobile†(TIM)
-39;333;Telecom Italia Mobile†(TIM)
-39;334;Telecom Italia Mobile†(TIM)
-39;335;Telecom Italia Mobile†(TIM)
-39;336;Telecom Italia Mobile†(TIM)
-39;337;Telecom Italia Mobile†(TIM)
-39;338;Telecom Italia Mobile†(TIM)
-39;339;Telecom Italia Mobile†(TIM)
+39;330;Telecom Italia Mobile (TIM)
+39;331;Telecom Italia Mobile (TIM)
+39;332;Telecom Italia Mobile (TIM)
+39;333;Telecom Italia Mobile (TIM)
+39;334;Telecom Italia Mobile (TIM)
+39;335;Telecom Italia Mobile (TIM)
+39;336;Telecom Italia Mobile (TIM)
+39;337;Telecom Italia Mobile (TIM)
+39;338;Telecom Italia Mobile (TIM)
+39;339;Telecom Italia Mobile (TIM)
 39;340;Vodafone Omnitel
 39;341;Vodafone Omnitel
 39;342;Vodafone Omnitel
@@ -1112,15 +1070,15 @@
 39;347;Vodafone Omnitel
 39;348;Vodafone Omnitel
 39;349;Vodafone Omnitel
-39;360;Telecom Italia Mobile†(TIM)
-39;361;Telecom Italia Mobile†(TIM)
-39;362;Telecom Italia Mobile†(TIM)
-39;363;Telecom Italia Mobile†(TIM)
-39;364;Telecom Italia Mobile†(TIM)
-39;365;Telecom Italia Mobile†(TIM)
-39;366;Telecom Italia Mobile†(TIM)
-39;367;Telecom Italia Mobile†(TIM)
-39;368;Telecom Italia Mobile†(TIM)
+39;360;Telecom Italia Mobile (TIM)
+39;361;Telecom Italia Mobile (TIM)
+39;362;Telecom Italia Mobile (TIM)
+39;363;Telecom Italia Mobile (TIM)
+39;364;Telecom Italia Mobile (TIM)
+39;365;Telecom Italia Mobile (TIM)
+39;366;Telecom Italia Mobile (TIM)
+39;367;Telecom Italia Mobile (TIM)
+39;368;Telecom Italia Mobile (TIM)
 39;390;Tre (H3G)
 39;391;Tre (H3G)
 39;392;Tre (H3G)
@@ -1233,7 +1191,7 @@
 39;365;Gardone Riviera;
 39;933;Gela;
 39;10;Genova (Genua);
-39;481;Gorizia (Gîrz);
+39;481;Gorizia (GÔøΩrz);
 39;564;Grosseto;
 39;75;Gubbio;
 39;542;Imola;
@@ -1409,7 +1367,7 @@
 39;323;Verbania;
 39;161;Vercelli;
 39;45;Verona;
-39;88;VeszprÇm;
+39;88;VeszprÔøΩm;
 39;584;Viareggio;
 39;444;Vicenza;
 39;381;Vigevano;
@@ -1435,7 +1393,7 @@
 40;32;Iasi (Jassy);
 40;41;Mamaia;
 40;41;Mangalia;
-40;59;Oradea (Gro·wardn);
+40;59;Oradea (GroÔøΩwardn);
 40;44;Ploiesti;
 40;55;Resita;
 40;61;Satu Mare;
@@ -1444,303 +1402,31 @@
 40;56;Timisoara (Temeschburg);
 40;65;Tirgu Mures (Neumarkt);
 40;40;Tulcea;
-41;64;Aarau;
-41;32;Aarberg;
-41;62;Aarburg;
-41;92;Acquarossa;
-41;33;Adelboden BE;
-41;1;Affoltern am Albis;
-41;34;Affoltern im Emmental;
-41;25;Aigle;
-41;94;Airolo;
-41;29;Albeuve;
-41;41;Alpnach Dorf;
-41;44;Altdorf UR;
-41;72;Alterswilen;
-41;72;Altnau;
-41;71;AltstÑtten;
-41;58;Amden;
-41;71;Amriswil;
-41;44;Amsteg;
-41;81;Andeer;
-41;52;Andelfingen;
-41;44;Andermatt;
-41;71;Appenzell;
-41;71;Arbon;
-41;61;Arlesheim;
-41;81;Arosa;
-41;93;Ascona;
-41;71;Au SG;
-41;21;Aubonne;
-41;37;Aumont;
-41;57;Auw;
-41;81;Azmoos;
-41;81;Bad Ragaz;
-41;56;Baden;
-41;62;Balsthal;
-41;61;Basel;
-41;66;Bassecourt;
-41;52;Bauma;
-41;73;Bazenheid;
-41;36;Beatenberg;
-41;92;Beilinzona;
-41;31;Bern;
-41;22;Bernex;
-41;45;BeromÅnster;
-41;32;Biel (Bienne);
-41;56;Birmenstorf;
-41;64;Birwil;
-41;71;Bischofszell;
-41;72;Bissegg;
-41;91;Bissone;
-41;92;Blasca;
-41;92;Bodio Tl;
-41;64;Boniswil;
-41;73;Braunau;
-41;61;Breitenbach SO;
-41;36;Brienz BE;
-41;28;Brigh;
-41;56;Brugg AG;
-41;43;Brunnen SZ;
-41;31;Brunnenthal;
-41;61;Bubendorf BL;
-41;81;Buchs SG;
-41;1;BÅlach;
-41;29;Bulle;
-41;34;Burgdorf;
-41;72;BÅrglen TG;
-41;92;Cadenazzo;
-41;25;Champery;
-41;91;Chiasso;
-41;81;Chur;
-41;38;Colombier NE;
-41;81;Compatsch (Samnaun);
-41;37;Cottens FR;
-41;62;Dagmersellen;
-41;81;Davos;
-41;66;Delemont;
-41;71;Diepoldsau;
-41;53;Diessenhofen;
-41;1;Dietikon;
-41;81;Domat (Ems);
-41;56;Dîttingen;
-41;1;DÅbendorf;
-41;74;Ebnat-Kappel;
-41;52;Effretikon;
-41;62;Egerkingen;
-41;35;Eggiwil;
-41;1;Eglisau;
-41;55;Einsiedeln;
-41;56;Endingen;
-41;41;Engelberg;
-41;63;Eriswil BE;
-41;33;Erlenbach im Simmental;
-41;72;Ermatingen;
-41;73;Eschlikon TG;
-41;94;Faido;
-41;52;Flaach;
-41;71;Flawil;
-41;81;Flims;
-41;41;FlÅhli LU;
-41;81;Flums;
-41;31;Fraubrunnen;
-41;54;Frauenfeld;
-41;37;Freiburg (Fdibourg);
-41;64;Frick;
-41;33;Frutigen;
-41;71;Gais;
-41;81;Gams;
-41;61;Gelterkinden;
-41;22;Genf (Geneve);
-41;41;Gersau;
-41;81;Glaris Davos;
-41;58;Glarus;
-41;1;Glattbrugg;
-41;44;Gîschenen;
-41;71;Gossau SG;
-41;27;Granges VS;
-41;64;GrÑnichen;
-41;36;Grindelwald;
-41;30;Gstaad;
-41;71;Heerbrugg;
-41;71;Heiden;
-41;41;Hergiswil NW;
-41;71;Herisau;
-41;32;Hermrigen;
-41;1;Hittnau;
-41;41;Hochdort;
-41;71;Hundwil AR;
-41;63;Huttwil;
-41;81;Ilanz;
-41;44;Isenthal;
-41;31;Jegenstorf;
-41;22;Jussy;
-41;33;Kandersteg;
-41;52;Kemptthal;
-41;56;Killwangen;
-41;34;Kirchberg BE;
-41;61;KleinlÅtzel;
-41;56;Klingnau;
-41;81;Klosters;
-41;56;Koblenz;
-41;31;Kînlz;
-41;72;Kreuzlingen;
-41;1;KÅsnacht ZH;
-41;41;KÅssnacht am Rigi;
-41;39;La Chaux-de-Fonds;
-41;39;La Locle;
-41;55;Lachen SZ;
-41;62;Langenbruck;
-41;63;Langenthal;
-41;35;Langnau im Emmental;
-41;61;Laufen;
-41;64;Laufenburg;
-41;21;Lausanne;
-41;36;Lauterbrunnen;
-41;56;Leibstadt;
-41;64;Lenzburg;
-41;81;Lenzerheide (Lail;
-41;27;Leukerbad;
-41;25;Leysin;
-41;61;Liestal;
-41;36;lnterlaken;
-41;93;Locarno;
-41;91;Lugano;
-41;41;Lungern;
-41;41;Luzern;
-41;32;Lyss;
-41;82;Maloja;
-41;26;Martigny;
-41;58;Matt GL;
-41;54;Matzingen;
-41;1;Meilen;
-41;41;Melchtal;
-41;42;Menzingen;
-41;21;Mezieres VD;
-41;39;Montfaucon;
-41;25;Monthey;
-41;21;Montreux;
-41;91;Morcote;
-41;28;Mîrel;
-41;21;Morges;
-41;71;Mîrschwil;
-41;32;Moutier;
-41;54;MÅllheim;
-41;31;MÅnsingen;
-41;28;MÅnster VS;
-41;63;Murgenthal;
-41;37;Murten;
-41;61;Muttenz;
-41;36;Nessental;
-41;38;Neuchatel;
-41;31;Neuenegg;
-41;41;Neuenkirch;
-41;71;Neuklrch Egnach;
-41;53;Neunkirch;
-41;58;Niederurnen;
-41;22;Nyon;
-41;31;Oberdiessbach;
-41;61;Oberdorf BL;
-41;33;Oberhofen am Thunersee;
-41;73;Oberwangen TG;
-41;25;Ollon VD;
-41;62;Olten;
-41;21;Pailly;
-41;55;PfÑffikon SZ;
-41;1;PfÑffikon ZH;
-41;62;Pfaffnau;
-41;82;Pontresina;
-41;93;Porto Ronco sopra Ascona;
-41;61;Pratteln;
-41;55;Rapperswil SG;
-41;33;Reichenbach im Kandertal;
-41;62;Reiden;
-41;30;Reidenbach;
-41;64;Reinach AG;
-41;61;Reinach BL;
-41;39;Renan;
-41;71;Rheineck;
-41;61;Rheinfelden;
-41;31;Riggisberg;
-41;38;Rochefort;
-41;71;Romanshorn;
-41;71;Rorschach;
-41;61;Rothenfluh BL;
-41;92;S.Bernardino-Passo Sud GR;
-41;28;Saas Fee;
-41;82;Samedan (Samaden);
-41;81;Sargans;
-41;41;Sarnen;
-41;22;Satigny;
-41;21;Savigny;
-41;53;Schaffhausen;
-41;56;Schinznach Bad;
-41;64;Schîftland;
-41;81;Schuls (Scuol);
-41;58;Schwanden GL;
-41;43;Schwyz;
-41;63;Seeberg BE;
-41;41;Senipach LU;
-41;27;Sierre;
-41;82;Silvaplana;
-41;28;Simplon Dorf;
-41;27;Sion VS;
-41;82;Slls im Engadin (Segl);
-41;65;Solothurn;
-41;21;Sottens;
-41;71;Speicher;
-41;33;Spiez;
-41;81;SplÅgen;
-41;56;Spreitenbach AG;
-41;38;St.Aubin-Sauges NE;
-41;71;St.Gallen;
-41;39;St.Imier;
-41;25;St.Maurice VS;
-41;82;St.Moritz;
-41;28;Stalden VS;
-41;41;Stans;
-41;54;Stein am Rhein;
-41;72;Sulgen;
-41;45;Sursee;
-41;27;Susten;
-41;61;Therwil;
-41;33;Thun;
-41;81;Thusis;
-41;73;Tobel TG;
-41;52;Turbenthal;
-41;74;Unterwasser;
-41;1;Uster;
-41;55;Uznach;
-41;73;Uzwil;
-41;21;Vevey;
-41;25;Villars-sur-Ollon;
-41;55;Vorderthal;
-41;1;WÑdenswil;
-41;1;Wallisellen;
-41;62;Wangen bei Olten;
-41;54;WÑngi;
-41;34;Wasen im Emmental;
-41;33;Wattenwil BE;
-41;74;Wattwil SG;
-41;41;Weggis;
-41;72;Weinfelden;
-41;33;Weissenburg;
-41;52;Weisslingen;
-41;36;Wengen BE;
-41;32;Wengi b BÅren;
-41;1;Wetzikon ZH;
-41;73;Wil SG;
-41;64;Wildegg;
-41;45;Willisau;
-41;52;Winterthur;
-41;57;Wohlen AG;
-41;24;Yverdon;
-41;45;Zell LU;
-41;28;Zermatt;
-41;62;Zofingen;
-41;42;Zug;
-41;1;ZÅrich;
-41;30;Zweisimmen;
+41;21;Lausanne
+41;22;Genf
+41;24;Yverdon-les-Bains
+41;26;Freiburg im √úechtland
+41;27;Sitten
+41;31;Bern
+41;32;Biel/Bienne
+41;33;Thun
+41;34;Burgdorf BE
+41;41;Luzern
+41;43;Z√ºrich
+41;44;Z√ºrich
+41;52;Winterthur
+41;55;Rapperswil BE
+41;56;Baden AG
+41;61;Basel
+41;62;Olten
+41;71;St. Gallen
+41;74;Paging Services
+41;76;GSM / UMTS - Sunrise (with Yallo, Cablecom, talktalk)
+41;77;GSM / UMTS - various (M-Budget, Tele2)
+41;78;GSM / UMTS - Orange (with CoopMobile)
+41;79;GSM / UMTS - Swisscom
+41;81;Chur
+41;91;Lugano
 420;832;Banovce n.B.;
 420;88;Banska Bystrica;
 420;859;Banska Stiavnica;
@@ -1754,10 +1440,10 @@
 420;6992;Bohumin;
 420;501;Boskovice (Boskowitz);
 420;202;Brandys n. L.;
-420;7;Bratislava (Pre·burg);
+420;7;Bratislava (Pre√üburg);
 420;627;Breclav (Lundenburg);
 420;867;Brezno;
-420;5;Brno (BrÅnn);
+420;5;Brno (Br√ºnn);
 420;447;Broumov (Braunau);
 420;505;Bystrice n. Per.;
 420;821;Bytca;
@@ -1791,7 +1477,7 @@
 420;454;Hlinlsko v Chechach;
 420;804;Hlohovec;
 420;865;Hnusta;
-420;628;Hodonin (Gîding);
+420;628;Hodonin (G√∂ding);
 420;635;Holesov (Holleschau);
 420;801;Holic (Holitz);
 420;456;Holice v Cechach;
@@ -1799,7 +1485,7 @@
 420;316;Horovice (Horowitz);
 420;188;Horsovsky Tyn;
 420;49;Hradec Kralove;
-420;642;Hranice (Ro·bach);
+420;642;Hranice (Ro√übach);
 420;933;Humenne;
 420;367;Humpolec (Humpoletz);
 420;818;Hurbanovo;
@@ -1815,7 +1501,7 @@
 420;336;Kaplice (Kaplitz);
 420;17;Karlovy Vary;
 420;699;Karvina (Karwin);
-420;968;Kezmarok (KÑsmark);
+420;968;Kezmarok (K√§smark);
 420;312;Kladno;
 420;186;Klatovy;
 420;321;Kolin;
@@ -1849,14 +1535,14 @@
 420;206;Melnik;
 420;946;Michalovce;
 420;625;Mikulov (Niklasberg);
-420;368;Milevsko (MÅhlhausen);
+420;368;Milevsko (M√ºhlhausen);
 420;326;Mlada Bolesiav;
 420;329;Mnichovo Hradiste;
 420;943;Moldava n. Bodvou;
 420;462;Moravska Trebove;
 420;617;Moravske Budejovice;
 420;621;Moravsky Krumlov;
-420;35;Most (BrÅx);
+420;35;Most (Br√ºx);
 420;441;Nachod;
 420;509;Namest n.Osl.;
 420;846;Namestovo;
@@ -1868,7 +1554,7 @@
 420;448;Novy Bydzov;
 420;656;Novy Jicin (Neutitschein);
 420;325;Nymburk;
-420;68;Olomouc (ôlmÅt);
+420;68;Olomouc (Olm√ºtz);
 420;653;Opava (Troppau);
 420;6995;Orlova;
 420;69;Ostrava (Ostrau);
@@ -1879,7 +1565,7 @@
 420;704;Pezinok;
 420;838;Piestany (Pistyan);
 420;362;Pisek;
-420;182;Plasy (Pla·);
+420;182;Plasy;
 420;19;Plzen (Pilsen);
 420;399;Podborany (Podersam);
 420;324;Podebrady (Podebrad);
@@ -1894,7 +1580,7 @@
 420;91;Presov;
 420;306;Pribram;
 420;862;Prievidza;
-420;508;Prostejov (Pro·nitz);
+420;508;Prostejov (Pro√ünitz);
 420;825;Puchov;
 420;823;Rajec n. Rajc.;
 420;313;Rakovnik (Rakonitz);
@@ -1930,7 +1616,7 @@
 420;810;Sturovo;
 420;649;Sumperk;
 420;816;Surany;
-420;187;Susice (SchÅttenhofen);
+420;187;Susice (Sch√ºttenhofen);
 420;937;Svidnik;
 420;461;Svitavy;
 420;361;Tabor;
@@ -3246,7 +2932,7 @@
 44;1492;Llandudno;
 44;1978;Llangollen;
 44;15202;Lochcarron;
-44;181;London Au·enbezirk;
+44;181;London AuÔøΩenbezirk;
 44;171;London Innenbezirk;
 44;1504;Londonderry;
 44;1507;Louth;
@@ -3389,76 +3075,364 @@
 44;1978;Wrexham;
 44;1935;Yeovil;
 44;1964;York;
-46;271;Alfta (-Edsbyn);
-46;251;élvdalen;
-46;690;Ange;
-46;583;Askersund;
-46;431;Bastad;
-46;531;Bengtsfors;
-46;921;Boden;
-46;33;Boras;
-46;571;Charlottenberg (-Amotsfors);
-46;171;Enkîplng;
-46;16;Eskilstuna (-TorshÑlla);
-46;223;Fagersta (-Norberg);
-46;23;Falun;
-46;493;Gamleby;
-46;26;GÑvle (-Sandken);
-46;31;Gîteborg;
-46;497;Gotland weitere Kennzahl 46 498;
-46;35;Halmstad;
-46;696;Hammarstrand;
-46;922;Haparanda;
-46;225;Hedemora (-SÑter);
-46;42;Heisingborg (-HÑganÑs);
-46;42;HîganÑs;
-46;415;Hîrby;
-46;36;Huskvarna;
-46;36;Jînkîping (-Huskvama);
-46;480;Kalmar;
-46;454;Karishamn (-Olofstrîm);
-46;455;Kariskrona;
-46;54;Karistad;
-46;686;Karlskoga;
-46;980;Kiruna;
-46;44;Kristianstad;
-46;418;Landskrona;
-46;13;Linkîping;
-46;920;Lulea;
-46;46;Lund;
-46;40;Malmî;
-46;530;Mellerud;
-46;141;Motala;
-46;11;Norrkîplng;
-46;155;Nykîping;
-46;485;ôland;
-46;19;ôrebro;
-46;63;ôstersund;
-46;457;Ronneby;
-46;26;Sandviken;
-46;511;Skara (-Gîtene);
-46;293;Sîderfors;
-46;270;Sîderhamn;
-46;8;SîdertÑlje;
-46;8;Stockholm;
-46;152;StrÑngnÑs;
-46;60;Sundsvall;
-46;410;Trelleborg;
-46;520;TrollhÑttan;
-46;522;Uddevalla;
-46;321;Ulricehamn;
-46;90;Umea;
-46;18;Uppsala;
-46;21;VÑsteras;
-46;490;VÑstervik;
-46;411;Ystad;
+44;20;London;
+44;23;Southampton;
+44;24;Coventry;
+44;28;Nordirland;
+44;29;Cardiff;
+44;7;Mobile;
+44;7701;Mobile;
+44;7718;Mobile;
+44;7724;Mobile;
+44;7729;Mobile;
+44;7734;Mobile;
+44;7736;Mobile;
+44;7738;Mobile;
+44;7742;Mobile;
+44;7745;Mobile;
+44;7749;Mobile;
+44;7759;Mobile;
+44;7761;Mobile;
+44;7783;Mobile;
+44;7793;Mobile;
+44;7801;Mobile;
+44;7808;Mobile;
+44;7819;Mobile;
+44;7834;Mobile;
+44;7840;Mobile;
+44;7849;Mobile;
+44;7860;Mobile;
+44;7864;Mobile;
+44;7871;Mobile;
+44;7885;Mobile;
+44;7889;Mobile;
+44;7892;Mobile;
+44;7912;Mobile;
+44;7921;Mobile;
+44;7925;Mobile;
+44;7933;Mobile;
+44;7938;Mobile;
+44;7955;Mobile;
+44;7999;Mobile;
+44;7772;Mobile;
+44;7779;Mobile;
+44;7790;Mobile;
+44;7794;Mobile;
+44;7800;Mobile;
+44;7805;Mobile;
+44;7807;Mobile;
+44;7811;Mobile;
+44;7837;Mobile;
+44;7854;Mobile;
+44;7866;Mobile;
+44;7870;Mobile;
+44;7875;Mobile;
+44;7890;Mobile;
+44;7896;Mobile;
+44;7929;Mobile;
+44;7964;Mobile;
+44;7980;Mobile;
+44;7989;Mobile;
+44;7722;Mobile;
+44;7726;Mobile;
+44;7757;Mobile;
+44;7804;Mobile;
+44;7806;Mobile;
+44;7847;Mobile;
+44;7852;Mobile;
+44;7903;Mobile;
+44;7908;Mobile;
+44;7910;Mobile;
+44;7913;Mobile;
+44;7930;Mobile;
+44;7931;Mobile;
+44;7939;Mobile;
+44;7956;Mobile;
+44;7981;Mobile;
+44;7982;Mobile;
+46;10;Geographically Independent Numbers
+46;11;Norrk√∂ping
+46;120;√Ötvidaberg
+46;121;S√∂derk√∂ping
+46;122;Finsp√•ng
+46;123;Valdemarsvik
+46;125;Vikbolandet
+46;13;Link√∂ping
+46;140;Tran√•s (Ort)
+46;141;Motala
+46;142;Mj√∂lby
+46;143;Vadstena
+46;144;√ñdesh√∂g
+46;150;Katrineholm
+46;151;Ving√•ker
+46;152;Str√§ngn√§s
+46;155;Nyk√∂ping
+46;156;Trosa-Vagnh√§rad
+46;157;Flen-Malmk√∂ping
+46;158;Gnesta
+46;159;Mariefred
+46;16;Eskilstuna
+46;171;Enk√∂ping
+46;173;√ñregrund
+46;174;Alunda
+46;175;Hallstavik
+46;176;Norrt√§lje
+46;18;Uppsala
+46;19;√ñrebro
+46;20;Toll-free
+46;21;V√§ster√•s
+46;220;Hallstahammar
+46;221;K√∂ping (Ort)
+46;222;Skinnskatteberg
+46;223;Fagersta
+46;224;Sala-Heby
+46;225;Hedemora-S√§ter
+46;226;Avesta (Gemeinde)
+46;227;Kungs√∂r
+46;23;Falun
+46;240;Ludvika-Smedjebacken
+46;241;Gagnef
+46;243;Borl√§nge
+46;246;Svardsjo
+46;247;Leksand
+46;248;R√§ttvik
+46;250;Mora-Orsa
+46;251;√Ñlvdalen
+46;253;Idre-S√§rna
+46;258;Furudal
+46;26;G√§vle
+46;270;S√∂derhamn (Stadt)
+46;271;Alfta-Edsbyn
+46;278;Bolln√§s
+46;280;Malung
+46;281;Vansbro
+46;290;Hofors
+46;291;Hedesunda
+46;292;Tarnsjo
+46;293;Tierp-S√∂derfors
+46;294;Karlholmsbruk
+46;295;√ñrbyhus
+46;297;Ockelbo
+46;300;Kungsbacka
+46;301;Hind√•s
+46;302;Lerum
+46;303;Kung√§lv
+46;304;Orust-Tj√∂rn
+46;31;G√∂teborg
+46;320;Kinna
+46;321;Ulricehamn
+46;322;Alings√•s
+46;325;Svenljunga
+46;33;Bor√•s
+46;340;Varberg
+46;345;Hyltebruk
+46;346;Falkenberg (Stadt in Schweden)
+46;35;Halmstad
+46;36;J√∂nk√∂ping
+46;370;V√§rnamo
+46;371;Gislaved
+46;372;Ljungby
+46;380;N√§ssj√∂
+46;381;Eksj√∂
+46;382;S√§vsj√∂
+46;383;Vetlanda
+46;390;Gr√§nna
+46;392;Mullsj√∂
+46;393;Vaggeryd
+46;40;Malm√∂
+46;410;Trelleborg
+46;411;Ystad
+46;413;Esl√∂v-H√∂√∂r
+46;414;Simrishamn
+46;415;Horby
+46;416;Sj√∂bo
+46;417;Tomelilla
+46;418;Landskrona-Sval√∂V
+46;42;Helsingborg
+46;430;Laholm
+46;431;√Ñngelholm-B√•stad
+46;433;Markaryd
+46;435;Klippans Bruk
+46;44;Kristianstad
+46;451;H√§ssleholm
+46;454;Karlshamn
+46;455;Karlskrona
+46;456;S√∂lvesborg
+46;457;Ronneby
+46;459;Ryd
+46;46;Lund
+46;470;V√§xj√∂
+46;471;Emmaboda
+46;472;Alvesta
+46;474;√Öseda-Lenhovda
+46;476;√Ñlmhult
+46;477;Tingsryd
+46;478;Lessebo
+46;479;Osby
+46;480;Kalmar
+46;481;Nybro
+46;485;Halltorp
+46;486;Tors√•s
+46;490;V√§stervik
+46;491;Oskarshamn
+46;492;Vimmerby
+46;493;Gamleby
+46;494;Kisa
+46;495;Hultsfred
+46;496;Mariannelund
+46;498;Roma (Gotland)
+46;499;M√∂nster√•s
+46;500;Sk√∂vde
+46;501;Mariestad
+46;502;Tidaholm
+46;503;Hjo
+46;504;Tibro
+46;505;Karlsborg
+46;506;T√∂reboda
+46;510;Lidk√∂ping
+46;511;Skara-G√∂tene
+46;512;Vara-Nossebro
+46;513;Herrljunga
+46;514;Gr√§storp
+46;515;Falk√∂ping
+46;520;Trollh√§ttan
+46;521;V√§nersborg
+46;522;Uddevalla
+46;523;Lysekil
+46;524;Munkedal
+46;525;Grebbestad
+46;526;Str√∂mstad
+46;528;F√§rgelanda
+46;530;Mellerud
+46;531;Bengtsfors
+46;532;√Öm√•l
+46;533;S√§ffle
+46;534;Ed (Schweden)
+46;54;Karlstad
+46;550;Kristinehamn
+46;551;Gullsp√•ng
+46;552;Deje
+46;553;Molkom
+46;554;Kil (Gemeinde)
+46;555;Grums
+46;560;Torsby
+46;563;Hagfors
+46;564;Syssleback
+46;565;Sunne
+46;570;Arvika
+46;571;Charlottenberg-√Ömotfors
+46;573;√Örj√§ng
+46;580;Kopparberg
+46;581;Lindesberg
+46;582;Hallsberg
+46;583;Askersund
+46;584;Lax√•
+46;585;Fjugesta
+46;586;Karlskoga
+46;587;Nora (Schweden)
+46;589;Arboga
+46;590;Filipstad
+46;591;H√§lleforsn√§s
+46;60;Sundsvall
+46;611;H√§rn√∂sand
+46;612;Kramfors
+46;613;Ull√•nger
+46;620;Sollefte√•
+46;621;Junsele
+46;622;Nasaker
+46;623;Ramsele
+46;624;Backe
+46;63;√ñstersund
+46;640;Krokom
+46;642;Lit (Schweden)
+46;643;Hallen (√Öre)
+46;644;Hammerdal
+46;645;F√∂llinge
+46;647;√Öre-J√§rpen
+46;650;Hudiksvall
+46;651;Ljusdal
+46;652;Bergsj√∂
+46;653;Delsbo
+46;657;Los (Schweden)
+46;660;√ñrnsk√∂ldsvik
+46;661;Bredbyn
+46;662;Bjorna
+46;663;Husum (Schweden)
+46;670;Str√∂msund
+46;671;Hoting
+46;672;G√§ddede
+46;680;Sveg
+46;682;Ratan
+46;684;Hede-Fun√§sdalen
+46;687;Svenstavik
+46;690;√Önge
+46;691;Torpshammar
+46;692;Liden
+46;693;Br√§cke
+46;695;Stugun
+46;696;Hammarstrand
+46;70;Mobile Phones
+46;71;Telematics in Mobile Networks
+46;72;Mobile Phones
+46;73;Mobile Phones
+46;74;Pagers
+46;76;Mobile Phones
+46;8;Stockholm
+46;90;Ume√•
+46;900;Premium rate calls
+46;910;Skellefte√•
+46;911;Pite√•
+46;912;Byske
+46;913;Lovanger
+46;914;Burtr√§sk
+46;915;Bastutr√§sk
+46;916;J√∂rn (Schweden)
+46;918;Norsj√∂
+46;920;Lule√•
+46;921;Boden (Schweden)
+46;922;Haparanda
+46;923;Kalix
+46;924;Ranea
+46;925;Lakatr√§sk
+46;926;√ñverkalix
+46;927;√ñvertorne√•
+46;928;Harads
+46;929;√Ñlvsbyn
+46;930;Nordmaling
+46;932;Bjurholm
+46;933;Vindeln
+46;934;Robertsfors
+46;935;V√§nn√§s
+46;939;Premium rate calls
+46;940;Vilhelmina
+46;941;√Ösele
+46;942;Dorotea (Ort)
+46;943;Fredrika
+46;944;Premium rate calls
+46;950;Lycksele
+46;951;Storuman
+46;952;Sorsele
+46;953;Mal√•
+46;954;T√§rnaby
+46;960;Arvidsjaur
+46;961;Arjeplog
+46;970;G√§llivare
+46;971;Jokkmokk
+46;973;Porjus
+46;975;Hakkas
+46;976;Vuollerim
+46;977;Korpilombolo
+46;978;Pajala
+46;980;Kiruna
+46;981;Vittangi
+46;99;Premium rate calls
 48;57;Biala Podlaska;
 48;85;Bialystok;
 48;30;Bielsko-Biala (Bielitz-Biala);
 48;52;Bydgoszcz (Bromberg);
 48;3;Bytom (Bwthen);
 48;82;Chelm;
-48;32;Chorzow (KînigshÅtte);
+48;32;Chorzow (K√∂nigsh√ºtte);
 48;23;Ciechanow;
 48;386;Cieszyn (Teschen);
 48;34;Czestochowa (Tschenstochau);
@@ -3495,7 +3469,7 @@
 48;48;Radom;
 48;25;Siedlce;
 48;47;Skarzysko Kamienna;
-48;95;Slubice (ôstl. Teil von Frankfur/Oder);
+48;95;Slubice (√∂stl. Teil von Frankfur/Oder);
 48;59;Slupsk;
 48;58;Sopot;
 48;32;Sosnowiec (Sosnowitz);
@@ -3516,7 +3490,7 @@
 48;3;Zabrze (Hindenburg);
 48;165;Zakopane;
 48;84;Zamosc;
-48;68;Zielona Gora (GrÅnberg);
+48;68;Zielona Gora (GrÔøΩnberg);
 51;54;Arequipa;
 51;74;Chidayo;
 51;44;Chimbote;
@@ -3954,7 +3928,7 @@
 90;488;Batman;
 90;458;Bayburt;
 90;228;Bilecik;
-90;426;Bingîl;
+90;426;Bing√∂l;
 90;434;Bitlis;
 90;374;Bolu;
 90;248;Burdur;
@@ -3972,7 +3946,7 @@
 90;392;Famagusta (Nordzypern);
 90;342;Gaziantep;
 90;454;Giresun;
-90;456;GÅmÅshane;
+90;456;G√ºm√ºshane;
 90;438;Hakkari;
 90;326;Hatay;
 90;476;Igdir;
@@ -3991,7 +3965,7 @@
 90;386;Kirsehir;
 90;262;Kocaell (lzmit);
 90;332;Konya;
-90;274;KÅtahya;
+90;274;K√ºtahya;
 90;392;Kyrenia (Nordzypern);
 90;324;lcel (Mersin);
 90;422;Malatya;
@@ -4324,7 +4298,7 @@
 263;20;Mutare;
 263;13;Vietoria Falls;
 264;631;Keetmanshoop;
-264;6331;LÅderitz;
+264;6331;LÔøΩderitz;
 264;6332;Oranjemund;
 264;6751;Oshakati;
 264;651;Otjiwarongo;
@@ -4412,9 +4386,9 @@
 354;3;Akranes;
 354;6;Akureyri;
 354;7;Egilsstadir;
-354;1;Hafnarfjîrdur;
+354;1;Hafnarfj√∂r√∞ur;
 354;6;Husavik;
-354;4;Isafjîrdur;
+354;4;√çsafj√∂r√∞ur;
 354;2;Keflavik;
 354;1;Kopavogur;
 354;1;Reykjavik;
@@ -4429,19 +4403,19 @@
 357;2;Nicosia (Lefkosia);
 357;6;Paphos;
 358;21;Abo (Turku);
-358;66;AlalÑrvi;
+358;66;Alal√§rvi;
 358;15;Borga (Porvoo);
-358;11;EkenÑs (Tammisaari);
+358;11;Eken√§s (Tammisaari);
 358;16;Forssa;
-358;17;HÑmeenlinna;
-358;11;Hanko (Hangî);
+358;17;H√§meenlinna;
+358;11;Hanko (Hang√∂);
 358;0;Helsinki (Helsingfors);
-358;14;HyvinkÑÑ;
+358;14;Hyvink√§√§;
 358;54;Imatra;
-358;42;JÑmsÑ;
-358;41;JyvÑskylÑ;
+358;42;J√§ms√§;
+358;41;Jyv√§skyl√§;
 358;86;Kajaani;
-358;30;KankaanpÑÑ;
+358;30;Kankaanp√§√§;
 358;52;Karhula (Kotka);
 358;698;Kemi;
 358;68;Kokkola;
@@ -4464,8 +4438,8 @@
 358;60;Rovaniemi;
 358;34;Ruovesi;
 358;24;Salo;
-358;64;SeinÑjoki;
-358;11;Tammisaari (EkenÑs);
+358;64;Sein√§joki;
+358;11;Tammisaari (EkenÔøΩs);
 358;31;Tampere;
 358;37;Toljala;
 358;21;Turku (Abo);
@@ -4473,6 +4447,10 @@
 358;32;Vammala;
 358;0;Vihti;
 358;83;Yllvieska;
+358;4;Mobile;
+358;457;Mobile;
+358;50;Mobile;
+358;500;Mobile;
 359;5722;Albena;
 359;579;Balchik;
 359;291;Bankya;
@@ -4551,7 +4529,7 @@
 371;45;Balvi;
 371;39;Bauska;
 371;41;Cesis;
-371;54;Daugavpils (DÅnaburg);
+371;54;Daugavpils (DÔøΩnaburg);
 371;37;Dobele;
 371;44;Gulbene;
 371;52;Jekabpils;
@@ -4575,7 +4553,7 @@
 372;47;Happsalu;
 372;37;Jogeva;
 372;46;Kardla;
-372;33;Kohtla-JÑrve;
+372;33;Kohtla-JÔøΩrve;
 372;45;Kuressaare;
 372;35;Narva;
 372;38;Paide;
@@ -4635,7 +4613,7 @@
 381;14;Valjevo;
 381;17;Vranje;
 381;19;Zajecar;
-381;23;Zrenjanin (Gro·betschkerek);
+381;23;Zrenjanin (GroÔøΩbetschkerek);
 385;43;Bielovar;
 385;51;Crikvenica;
 385;43;Daruvar;
@@ -4689,7 +4667,7 @@
 386;602;Ravne na Koroskem;
 386;62;Slovenska Bistrica;
 386;601;Trbovlje;
-386;63;Velenje (Wîllan);
+386;63;Velenje (WÔøΩllan);
 387;78;Banja Luka;
 387;77;Bihac;
 387;74;Bosanski Brod;
@@ -4804,7 +4782,7 @@
 599;9;Curacao;
 599;4;Saba;
 599;3;St. Eustatius;
-599;5;St. Maarten (sÅdl. Teil);
+599;5;St. Maarten (s√ºdl. Teil);
 672;4;Christmas-Island;
 672;3;Norfolk-Island;
 673;2;Bandar Serl Begawan;
