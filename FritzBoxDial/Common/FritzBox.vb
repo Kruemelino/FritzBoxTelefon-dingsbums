@@ -638,13 +638,13 @@ Public Class FritzBox
         End With
         With NodeValues
             .Clear()
-            .Add(DataProvider.P_Def_StringEmpty)
-            .Add(DataProvider.P_Def_StringEmpty)
+            .Add(DataProvider.P_Def_LeerString)
+            .Add(DataProvider.P_Def_LeerString)
         End With
         With AttributeValues
             .Clear()
-            .Add(DataProvider.P_Def_StringEmpty)
-            .Add(DataProvider.P_Def_StringEmpty)
+            .Add(DataProvider.P_Def_LeerString)
+            .Add(DataProvider.P_Def_LeerString)
         End With
 
         If Link = DataProvider.P_Def_ErrorMinusOne_String Then
@@ -669,7 +669,7 @@ Public Class FritzBox
             pos(0) = 1
             For i = 0 To 9
                 TelNr = C_hf.StringEntnehmen(tempstring, "nrs.msn.push('", "'", posSTR)
-                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String And Not TelNr = DataProvider.P_Def_StringEmpty Then
+                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String And Not TelNr = DataProvider.P_Def_LeerString Then
                     TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     MSN(i) = TelNr
                     j = i
@@ -685,7 +685,7 @@ Public Class FritzBox
             j = 0
             For i = 0 To 19
                 TelNr = C_hf.StringEntnehmen(tempstring, "nrs.sip.push('", "'", posSTR)
-                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String And Not TelNr = DataProvider.P_Def_StringEmpty Then
+                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String And Not TelNr = DataProvider.P_Def_LeerString Then
                     TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     SIP(i) = TelNr
                     SIPID = CStr(i)
@@ -702,7 +702,7 @@ Public Class FritzBox
             xPathTeile.Item(xPathTeile.IndexOf("SIP")) = "TAM"
             For i = 0 To 9
                 TelNr = C_hf.StringEntnehmen(tempstring, "nrs.tam.push('", "'", posSTR)
-                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String And Not TelNr = DataProvider.P_Def_StringEmpty Then
+                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String And Not TelNr = DataProvider.P_Def_LeerString Then
                     TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
                     TAM(i) = TelNr
                     PushStatus(DataProvider.P_FritzBox_Tel_NrFound("TAM", CStr(i), TelNr))
@@ -715,7 +715,7 @@ Public Class FritzBox
             ' Plain old telephone service (POTS)
             xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "POTS"
             POTS = C_hf.StringEntnehmen(tempstring, "telcfg:settings/MSN/POTS' value='", "'")
-            If Not POTS = DataProvider.P_Def_ErrorMinusOne_String And Not POTS = DataProvider.P_Def_StringEmpty Then
+            If Not POTS = DataProvider.P_Def_ErrorMinusOne_String And Not POTS = DataProvider.P_Def_LeerString Then
                 POTS = C_hf.EigeneVorwahlenEntfernen(POTS)
                 PushStatus(DataProvider.P_FritzBox_Tel_NrFound("POTS", CStr(0), POTS))
                 If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, POTS, "ID", DataProvider.P_Def_StringNull)
@@ -724,7 +724,7 @@ Public Class FritzBox
             'Mobilnummer ermitteln
             xPathTeile.Item(xPathTeile.IndexOf("POTS")) = "Mobil"
             Mobil = C_hf.StringEntnehmen(tempstring, "nrs.mobil = '", "'")
-            If Not Mobil = DataProvider.P_Def_ErrorMinusOne_String And Not Mobil = DataProvider.P_Def_StringEmpty Then
+            If Not Mobil = DataProvider.P_Def_ErrorMinusOne_String And Not Mobil = DataProvider.P_Def_LeerString Then
                 Mobil = C_hf.EigeneVorwahlenEntfernen(Mobil)
                 PushStatus(DataProvider.P_FritzBox_Tel_NrFound("Mobil", CStr(0), Mobil))
                 If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, Mobil, "ID", DataProvider.P_Def_StringNull)
@@ -770,7 +770,7 @@ Public Class FritzBox
                             If TelNr.EndsWith(",") Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
                             If TelNr.EndsWith("#") Then TelNr = Left(TelNr, Len(TelNr) - 1) ' Für die Firmware *85
                             If TelNr.StartsWith("SIP") Then TelNr = SIP(CInt(Mid(TelNr, 4, 1)))
-                            If Not Trim(TelName) = DataProvider.P_Def_StringEmpty And Not Trim(TelNr) = DataProvider.P_Def_StringEmpty Then
+                            If Not Trim(TelName) = DataProvider.P_Def_LeerString And Not Trim(TelNr) = DataProvider.P_Def_LeerString Then
                                 Select Case i
                                     Case 0 ' FON 1-3
                                         xPathTeile.Item(xPathTeile.Count - 1) = "FON"
@@ -862,13 +862,13 @@ Public Class FritzBox
                                                 TelNr = AllIn
                                             Else
                                                 pos(2) = InStr(Telefon, "num = '", CompareMethod.Text) + Len("num = '")
-                                                TelNr = DataProvider.P_Def_StringEmpty
+                                                TelNr = DataProvider.P_Def_LeerString
                                                 If Not pos(2) = 7 Then
                                                     Do
                                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                                         tempTelNr = Mid(Telefon, pos(2), pos(3) - pos(2))
                                                         TelNr = C_hf.EigeneVorwahlenEntfernen(TelNr)
-                                                        TelNr += CStr(IIf(Right(TelNr, 1) = "#", DataProvider.P_Def_StringEmpty, tempTelNr & ";"))
+                                                        TelNr += CStr(IIf(Right(TelNr, 1) = "#", DataProvider.P_Def_LeerString, tempTelNr & ";"))
                                                         pos(2) = InStr(pos(3), Telefon, "num = '", CompareMethod.Text) + Len("num = '")
                                                     Loop Until pos(2) = 7
                                                     TelNr = Left(TelNr, Len(TelNr) - 1)
@@ -909,16 +909,16 @@ Public Class FritzBox
                                             End If
                                         Else
                                             Dim LANTelefone() As String = Split(Telefon, "in_nums = [];", , CompareMethod.Text)
-                                            Dim InNums As String = DataProvider.P_Def_StringEmpty
+                                            Dim InNums As String = DataProvider.P_Def_LeerString
                                             Dim NetInfo As String
-                                            Dim NetInfoPush As String = DataProvider.P_Def_StringEmpty
+                                            Dim NetInfoPush As String = DataProvider.P_Def_LeerString
                                             pos(0) = InStr(LANTelefone(LANTelefone.Length - 1), "NetInfo.push(parseInt('", CompareMethod.Text)
                                             If Not pos(0) = 0 Then
                                                 NetInfo = Mid(LANTelefone(LANTelefone.Length - 1), pos(0))
                                                 pos(0) = 1
                                                 Do
                                                     pos(1) = InStr(pos(0), NetInfo, "', 10));", CompareMethod.Text) + Len("', 10));")
-                                                    NetInfoPush = Mid(NetInfo, pos(0) + Len("NetInfo.push(parseInt('"), 3) & CStr(IIf(Not NetInfoPush = DataProvider.P_Def_StringEmpty, ";" & NetInfoPush, DataProvider.P_Def_StringEmpty))
+                                                    NetInfoPush = Mid(NetInfo, pos(0) + Len("NetInfo.push(parseInt('"), 3) & CStr(IIf(Not NetInfoPush = DataProvider.P_Def_LeerString, ";" & NetInfoPush, DataProvider.P_Def_LeerString))
                                                     pos(0) = InStr(pos(1), NetInfo, "NetInfo.push(parseInt('", CompareMethod.Text)
                                                 Loop Until pos(0) = 0
                                             End If
@@ -926,14 +926,14 @@ Public Class FritzBox
                                                 If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '", vbTextCompare) = 0 Then
                                                     Dim tempTelNr As String
                                                     pos(2) = InStr(LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
-                                                    TelNr = DataProvider.P_Def_StringEmpty
+                                                    TelNr = DataProvider.P_Def_LeerString
                                                     If Not pos(2) = 7 Then
-                                                        InNums = DataProvider.P_Def_StringEmpty
+                                                        InNums = DataProvider.P_Def_LeerString
                                                         Do
                                                             pos(3) = InStr(pos(2), LANTelefon, "'", CompareMethod.Text)
                                                             tempTelNr = Mid(LANTelefon, pos(2), pos(3) - pos(2))
                                                             TelNr = C_hf.EigeneVorwahlenEntfernen(tempTelNr)
-                                                            InNums += CStr(IIf(Strings.Right(TelNr, 1) = "#", DataProvider.P_Def_StringEmpty, TelNr & ";"))
+                                                            InNums += CStr(IIf(Strings.Right(TelNr, 1) = "#", DataProvider.P_Def_LeerString, TelNr & ";"))
                                                             pos(2) = InStr(pos(3), LANTelefon, "num = '", CompareMethod.Text) + Len("num = '")
                                                         Loop Until pos(2) = 7
                                                         InNums = Left(InNums, Len(InNums) - 1)
@@ -942,7 +942,7 @@ Public Class FritzBox
                                                     pos(0) = InStr(LANTelefon, "Name : '", CompareMethod.Text) + Len("Name : '")
                                                     pos(1) = InStr(pos(0), LANTelefon, "'", CompareMethod.Text)
                                                     TelName = Mid(LANTelefon, pos(0), pos(1) - pos(0))
-                                                    If Not TelName = DataProvider.P_Def_StringEmpty Then
+                                                    If Not TelName = DataProvider.P_Def_LeerString Then
                                                         pos(2) = InStr(pos(1), Telefon, "AllIn: ('", CompareMethod.Text) + Len("AllIn: ('")
                                                         pos(3) = InStr(pos(2), Telefon, "')", CompareMethod.Text)
                                                         If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1' == '1" Then
@@ -958,7 +958,7 @@ Public Class FritzBox
                                                         End If
                                                         pos(4) = InStr(LANTelefon, "g_txtIpPhone + ' 62", CompareMethod.Text) + Len("g_txtIpPhone + ' 62")
                                                         ID = CInt(Mid(LANTelefon, pos(4), 1))
-                                                        If NetInfoPush = DataProvider.P_Def_StringEmpty Then
+                                                        If NetInfoPush = DataProvider.P_Def_LeerString Then
                                                             If Not InStr(LANTelefon, "TelCfg.push( { Enabled : '1',", CompareMethod.Text) = 0 Then
                                                                 DialPort = "2" & ID
                                                                 Anzahl += 1
@@ -994,7 +994,7 @@ Public Class FritzBox
                                     Case 5 ' Anrufbeantworter
                                         xPathTeile.Item(xPathTeile.Count - 1) = "TAM"
                                         Dim tamMsnBits As Integer
-                                        TelNr = DataProvider.P_Def_StringEmpty
+                                        TelNr = DataProvider.P_Def_LeerString
                                         pos(2) = InStr(Telefon, "tamDisplay = '", CompareMethod.Text) + Len("tamDisplay = '")
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                         If Mid(Telefon, pos(2), pos(3) - pos(2)) = "1" Then
@@ -1011,7 +1011,7 @@ Public Class FritzBox
                                                     End If
                                                 End If
                                             Next
-                                            If Not TelNr = DataProvider.P_Def_StringEmpty Then
+                                            If Not TelNr = DataProvider.P_Def_LeerString Then
                                                 TelNr = Left(TelNr, Len(TelNr) - 1)
                                                 DialPort = "60" & ID
                                                 PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("TAM", DialPort, TelNr, TelName))
@@ -1029,7 +1029,7 @@ Public Class FritzBox
                                     Case 6 ' integrierter Faxempfang
                                         xPathTeile.Item(xPathTeile.Count - 1) = "FAX"
                                         Dim FAXMSN(9) As String
-                                        TelNr = DataProvider.P_Def_StringEmpty
+                                        TelNr = DataProvider.P_Def_LeerString
                                         pos(2) = InStr(Telefon, "var isActive = '", CompareMethod.Text) + Len("var isActive = '")
                                         pos(3) = InStr(pos(2), Telefon, "'", CompareMethod.Text)
                                         If Not pos(2) = pos(3) Then
@@ -1076,12 +1076,12 @@ Public Class FritzBox
 
             If Not AnzahlISDN = 0 Then
                 DialPort = "50"
-                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("ISDN-Basis", DialPort, DataProvider.P_Def_StringEmpty, "ISDN-Basis"))
+                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("ISDN-Basis", DialPort, DataProvider.P_Def_LeerString, "ISDN-Basis"))
                 If P_SpeichereDaten Then
                     NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
-                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = DataProvider.P_Def_StringEmpty
+                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = DataProvider.P_Def_LeerString
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
-                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringEmpty
+                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_LeerString
                     C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                 End If
 
@@ -1109,8 +1109,8 @@ Public Class FritzBox
         Dim MSNPort(2, 9) As String
         Dim MSN(9) As String
         Dim FAX(9) As String
-        Dim Mobil As String = DataProvider.P_Def_StringEmpty
-        Dim POTS As String = DataProvider.P_Def_StringEmpty
+        Dim Mobil As String = DataProvider.P_Def_LeerString
+        Dim POTS As String = DataProvider.P_Def_LeerString
         Dim allin As String
         Dim DialPort As String = "0"
 
@@ -1145,13 +1145,13 @@ Public Class FritzBox
         End With
         With NodeValues
             .Clear()
-            .Add(DataProvider.P_Def_StringEmpty)
-            .Add(DataProvider.P_Def_StringEmpty)
+            .Add(DataProvider.P_Def_LeerString)
+            .Add(DataProvider.P_Def_LeerString)
         End With
         With AttributeValues
             .Clear()
-            .Add(DataProvider.P_Def_StringEmpty)
-            .Add(DataProvider.P_Def_StringEmpty)
+            .Add(DataProvider.P_Def_LeerString)
+            .Add(DataProvider.P_Def_LeerString)
         End With
 
         With C_hf
@@ -1204,7 +1204,7 @@ Public Class FritzBox
 
                                 If Not .IsOneOf(TelNr, MSN) Then
                                     For k = 0 To 9
-                                        If MSN(k) = DataProvider.P_Def_StringEmpty Then
+                                        If MSN(k) = DataProvider.P_Def_LeerString Then
                                             MSN(k) = TelNr
                                             PushStatus(DataProvider.P_FritzBox_Tel_NrFound("MSN", CStr(i), TelNr))
                                             If P_SpeichereDaten Then
@@ -1267,7 +1267,7 @@ Public Class FritzBox
             ' POTSnummer
             xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "POTS"
             POTS = .StringEntnehmen(Code, "['telcfg:settings/MSN/POTS'] = '", "'")
-            If Not POTS = DataProvider.P_Def_ErrorMinusOne_String And Not POTS = DataProvider.P_Def_StringEmpty Then
+            If Not POTS = DataProvider.P_Def_ErrorMinusOne_String And Not POTS = DataProvider.P_Def_LeerString Then
                 If POTS.StartsWith("SIP") Then
                     POTS = SIP(CInt(Mid(POTS, 4, 1)))
                 Else
@@ -1281,7 +1281,7 @@ Public Class FritzBox
 
             ' Mobilnummer
             Mobil = .StringEntnehmen(Code, "['telcfg:settings/Mobile/MSN'] = '", "'")
-            If Not Mobil = DataProvider.P_Def_ErrorMinusOne_String And Not Mobil = DataProvider.P_Def_StringEmpty Then
+            If Not Mobil = DataProvider.P_Def_ErrorMinusOne_String And Not Mobil = DataProvider.P_Def_LeerString Then
                 If Mobil.StartsWith("SIP") Then
                     Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
                 Else
@@ -1291,10 +1291,10 @@ Public Class FritzBox
                 If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, Mobil, "ID", DataProvider.P_Def_MobilDialPort)
             End If
 
-            SIP = (From x In SIP Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
+            SIP = (From x In SIP Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
             MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
-            MSN = (From x In MSN Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
-            FAX = (From x In FAX Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
+            MSN = (From x In MSN Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+            FAX = (From x In FAX Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
 
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
@@ -1306,20 +1306,20 @@ Public Class FritzBox
             'FON
             For Each Telefon In Split(.StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(" & .StringEntnehmen(Code, "['telcfg:settings/MSN/Port/list(", ")'] = {") & ")'] = {", "}" & Chr(10) & "  },"), " },", , CompareMethod.Text)
                 TelName = .StringEntnehmen(Telefon, "['Name'] = '", "'")
-                If Not (TelName = DataProvider.P_Def_ErrorMinusOne_String Or TelName = DataProvider.P_Def_StringEmpty) Then
-                    TelNr = DataProvider.P_Def_StringEmpty
+                If Not (TelName = DataProvider.P_Def_ErrorMinusOne_String Or TelName = DataProvider.P_Def_LeerString) Then
+                    TelNr = DataProvider.P_Def_LeerString
                     Port = Right(.StringEntnehmen(Telefon, "['_node'] = '", "'"), 1)
 
                     Dim tmparray(9) As String
                     For i = 0 To 9
                         tmpTelNr = MSNPort(CInt(Port), i)
-                        If Not tmpTelNr = DataProvider.P_Def_StringEmpty Then
+                        If Not tmpTelNr = DataProvider.P_Def_LeerString Then
                             tmparray(i) = MSNPort(CInt(Port), i)
                         Else
                             Exit For
                         End If
                     Next
-                    tmparray = (From x In tmparray Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
+                    tmparray = (From x In tmparray Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
                     If tmparray.Length = 0 Then tmparray = MSN
 
                     TelNr = String.Join(";", tmparray)
@@ -1344,8 +1344,8 @@ Public Class FritzBox
             For Each DectTelefon In Split(tmpTelefone, "] = {", , CompareMethod.Text)
 
                 DialPort = .StringEntnehmen(DectTelefon, "['Intern'] = '", "'")
-                If Not (DialPort = DataProvider.P_Def_ErrorMinusOne_String Or DialPort = DataProvider.P_Def_StringEmpty) Then
-                    TelNr = DataProvider.P_Def_StringEmpty
+                If Not (DialPort = DataProvider.P_Def_ErrorMinusOne_String Or DialPort = DataProvider.P_Def_LeerString) Then
+                    TelNr = DataProvider.P_Def_LeerString
                     DialPort = "6" & Strings.Right(DialPort, 1)
                     TelName = .StringEntnehmen(DectTelefon, "['Name'] = '", "'")
                     Node = .StringEntnehmen(DectTelefon, "['_node'] = '", "'")
@@ -1355,11 +1355,11 @@ Public Class FritzBox
                     Else
                         tmpstrUser = Split(.StringEntnehmen(Code, "['telcfg:settings/Foncontrol/" & Node & "/MSN/list(Number)'] = {", "}" & Chr(10) & "  },"), "['Number'] = '", , CompareMethod.Text)
 
-                        tmpstrUser(0) = DataProvider.P_Def_StringEmpty
+                        tmpstrUser(0) = DataProvider.P_Def_LeerString
                         For l As Integer = 1 To tmpstrUser.Length - 1
                             tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
                         Next
-                        For Each Nr In (From x In tmpstrUser Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+                        For Each Nr In (From x In tmpstrUser Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
                             TelNr = TelNr & ";" & .EigeneVorwahlenEntfernen(Nr)
                         Next
                         TelNr = Mid(TelNr, 2)
@@ -1383,7 +1383,7 @@ Public Class FritzBox
             For Each Telefon In tmpstrUser
                 If .StringEntnehmen(Telefon, "['enabled'] = '", "'") = "1" Then
                     TelName = .StringEntnehmen(Telefon, "['Name'] = '", "'")
-                    TelNr = DataProvider.P_Def_StringEmpty
+                    TelNr = DataProvider.P_Def_LeerString
                     Port = .StringEntnehmen(Telefon, "['_node'] = '", "'")
                     For j = 0 To 9
                         tmpTelNr = .StringEntnehmen(Code, "['telcfg:settings/" & Port & "/Number" & j & "'] = '", "'")
@@ -1398,7 +1398,7 @@ Public Class FritzBox
                             End If
                         End If
                     Next
-                    If Not TelNr = DataProvider.P_Def_StringEmpty Then
+                    If Not TelNr = DataProvider.P_Def_LeerString Then
                         TelNr = Strings.Left(TelNr, Len(TelNr) - 1)
                     End If
 
@@ -1421,7 +1421,7 @@ Public Class FritzBox
             For i = 1 To 8
                 TelName = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Name" & i & "'] = '", "'")
                 If Not TelName = DataProvider.P_Def_ErrorMinusOne_String Then
-                    If Not TelName = DataProvider.P_Def_StringEmpty Then
+                    If Not TelName = DataProvider.P_Def_LeerString Then
                         TelNr = .StringEntnehmen(Code, "['telcfg:settings/NTHotDialList/Number" & i & "'] = '", "'")
                         If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
                             DialPort = "5" & i
@@ -1449,10 +1449,10 @@ Public Class FritzBox
                     End If
                 End If
             Next
-            If Not DialPort = DataProvider.P_Def_StringEmpty Then
+            If Not DialPort = DataProvider.P_Def_LeerString Then
                 If CDbl(DialPort) > 50 And CDbl(DialPort) < 60 Then
                     DialPort = "50"
-                    PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("ISDN-Basis", DialPort, DataProvider.P_Def_StringEmpty, "ISDN-Basis"))
+                    PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("ISDN-Basis", DialPort, DataProvider.P_Def_LeerString, "ISDN-Basis"))
                     If P_SpeichereDaten Then
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
                         NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
@@ -1475,7 +1475,7 @@ Public Class FritzBox
                     PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("TAM", DialPort, TelNr, TelName))
                     If P_SpeichereDaten Then
                         NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
-                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = IIf(TelNr = DataProvider.P_Def_StringEmpty, allin, TelNr)
+                        NodeValues.Item(NodeNames.IndexOf("TelNr")) = IIf(TelNr = DataProvider.P_Def_LeerString, allin, TelNr)
                         AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                         AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
                         C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
@@ -1504,12 +1504,12 @@ Public Class FritzBox
 
             ' Mobiltelefon
             xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "Mobil"
-            If Mobil IsNot DataProvider.P_Def_StringEmpty Then
+            If Mobil IsNot DataProvider.P_Def_LeerString Then
                 TelName = .StringEntnehmen(Code, "['telcfg:settings/Mobile/Name'] = '", "'")
                 DialPort = DataProvider.P_Def_MobilDialPort
                 PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("Mobil", DialPort, Mobil, TelName))
                 If P_SpeichereDaten Then
-                    NodeValues.Item(NodeNames.IndexOf("TelName")) = IIf(TelName = DataProvider.P_Def_ErrorMinusOne_String Or TelName = DataProvider.P_Def_StringEmpty, Mobil, TelName)
+                    NodeValues.Item(NodeNames.IndexOf("TelName")) = IIf(TelName = DataProvider.P_Def_ErrorMinusOne_String Or TelName = DataProvider.P_Def_LeerString, Mobil, TelName)
                     NodeValues.Item(NodeNames.IndexOf("TelNr")) = Mobil
                     AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
                     AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
@@ -1532,10 +1532,10 @@ Public Class FritzBox
     End Sub
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
-        AlleNummern = DataProvider.P_Def_StringEmpty
+        AlleNummern = DataProvider.P_Def_LeerString
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & Strings.Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
         tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
-        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
         For Each Nr In tmp
             AlleNummern = Nr & ";" & AlleNummern
         Next
@@ -1543,10 +1543,10 @@ Public Class FritzBox
     End Function
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal POTS As String, ByVal Mobil As String) As String
-        AlleNummern = DataProvider.P_Def_StringEmpty
+        AlleNummern = DataProvider.P_Def_LeerString
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
         tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
-        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
         tmp = (From x In tmp Where Not x Like DataProvider.P_Def_ErrorMinusOne_String Select x).ToArray ' -1 entfernen
         For Each Nr In tmp
             AlleNummern = Nr & ";" & AlleNummern
@@ -1569,7 +1569,7 @@ Public Class FritzBox
         If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
             Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_Dial(SID, sDialPort, sDialCode, bHangUp), FBEncoding)
 
-            If Response = DataProvider.P_Def_StringEmpty Then
+            If Response = DataProvider.P_Def_LeerString Then
                 SendDialRequestToBox = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
             Else
                 SendDialRequestToBox = DataProvider.P_FritzBox_Dial_Error2
@@ -1585,7 +1585,7 @@ Public Class FritzBox
 
     Public Function DownloadAnrListe() As String
         Dim sLink As String
-        Dim ReturnString As String = DataProvider.P_Def_StringEmpty
+        Dim ReturnString As String = DataProvider.P_Def_LeerString
 
         SID = FBLogin(True)
         If Not SID = DataProvider.P_Def_SessionID Then
@@ -1667,14 +1667,14 @@ Public Class FritzBox
             cmd = "sid=" & SID & "&entryname=" & EntryName
 
             For i = LBound(NumberType) To UBound(NumberType)
-                If Not NumberNew(i) = DataProvider.P_Def_StringEmpty Then
+                If Not NumberNew(i) = DataProvider.P_Def_LeerString Then
                     cmd += "&numbertypenew1=" & NumberType(i) & "&numbernew1=" & NumberNew(i)
                 End If
             Next
 
             If istVIP Then cmd += "&category=on"
 
-            If Not EmailNew1 = DataProvider.P_Def_StringEmpty Then cmd += "&emailnew1=" & EmailNew1
+            If Not EmailNew1 = DataProvider.P_Def_LeerString Then cmd += "&emailnew1=" & EmailNew1
 
             cmd += "&apply=" 'Wichtig!
 
@@ -1779,7 +1779,7 @@ Public Class FritzBox
 
         Dim sPage As String
         Dim tmp As String
-        Dim Liste As String = DataProvider.P_Def_StringEmpty
+        Dim Liste As String = DataProvider.P_Def_LeerString
         Dim pos As Integer = 1
 
         If SID = DataProvider.P_Def_SessionID Then FBLogin(True)

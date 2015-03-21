@@ -308,7 +308,7 @@ Public Class OutlookInterface
                     .Categories = Telefonat.Categories
 
 #If Not OVer = 15 Then
-                    If (Not (Telefonat.KontaktID = DataProvider.P_Def_StringEmpty Or Telefonat.StoreID = DataProvider.P_Def_StringEmpty)) And Not _
+                    If (Not (Telefonat.KontaktID = DataProvider.P_Def_LeerString Or Telefonat.StoreID = DataProvider.P_Def_LeerString)) And Not _
                         Left(Telefonat.KontaktID, 2) = DataProvider.P_Def_ErrorMinusOne_String Then
                         .Links.Add(Telefonat.olContact)
                     End If

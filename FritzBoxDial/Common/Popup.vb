@@ -93,7 +93,7 @@ Public Class Popup
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = Telefonat.Zeit.ToString
             ' Telefonnamen eintragen
-            .TelName = Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", DataProvider.P_Def_StringEmpty))
+            .TelName = Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", DataProvider.P_Def_LeerString))
 
             ' Kontakt einblenden wenn in Outlook gefunden
             With Telefonat
@@ -106,7 +106,7 @@ Public Class Popup
                     'Kontaktbild ermitteln
                     If C_DP.P_CBAnrMonContactImage Then
                         PfadKontaktBild = C_KF.KontaktBild(.olContact)
-                        If Not PfadKontaktBild = DataProvider.P_Def_StringEmpty Then
+                        If Not PfadKontaktBild = DataProvider.P_Def_LeerString Then
                             Using fs As New IO.FileStream(PfadKontaktBild, IO.FileMode.Open)
                                 ThisPopUpAnrMon.Image = Image.FromStream(fs)
                             End Using
@@ -118,9 +118,9 @@ Public Class Popup
                 End If
             End With
 
-            If Telefonat.Anrufer = DataProvider.P_Def_StringEmpty Then
-                .TelNr = DataProvider.P_Def_StringEmpty
-                If Telefonat.TelNr = DataProvider.P_Def_StringEmpty Then
+            If Telefonat.Anrufer = DataProvider.P_Def_LeerString Then
+                .TelNr = DataProvider.P_Def_LeerString
+                If Telefonat.TelNr = DataProvider.P_Def_LeerString Then
                     'unterdrückte Nummer
                     .AnrName = DataProvider.P_Def_StringUnknown
                 Else
@@ -246,7 +246,7 @@ Public Class Popup
                 End With
             End If
         End If
-        If Not PfadKontaktBild = DataProvider.P_Def_StringEmpty AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
+        If Not PfadKontaktBild = DataProvider.P_Def_LeerString AndAlso System.IO.File.Exists(PfadKontaktBild) Then C_KF.DelKontaktBild(PfadKontaktBild)
 
         tmpPopupAnrMon = Nothing
         tmpTelefonat = Nothing
@@ -363,7 +363,7 @@ Public Class Popup
         End With
 
         Richtung = "Anruf " & CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, "von", "zu")) & ":"
-        AnrName = CStr(IIf(Telefonat.Anrufer = DataProvider.P_Def_StringEmpty, Telefonat.TelNr, Telefonat.Anrufer))
+        AnrName = CStr(IIf(Telefonat.Anrufer = DataProvider.P_Def_LeerString, Telefonat.TelNr, Telefonat.Anrufer))
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
 

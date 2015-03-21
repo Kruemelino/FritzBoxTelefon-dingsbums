@@ -124,8 +124,8 @@ Friend Class formInit
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = DataProvider.P_Def_StringEmpty Or _
-            C_DP.P_TBVorwahl = DataProvider.P_Def_StringEmpty Or _
+        If C_DP.P_TBPasswort = DataProvider.P_Def_LeerString Or _
+            C_DP.P_TBVorwahl = DataProvider.P_Def_LeerString Or _
             C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String Then
 
             Rückgabe = False
@@ -275,7 +275,7 @@ Friend Class formInit
 
             Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString
@@ -317,7 +317,7 @@ Friend Class formInit
         End If
 
         Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = DataProvider.P_Def_StringEmpty
+        Dim tmpTeile As String = DataProvider.P_Def_LeerString
         With xPathTeile
             .Add("Telefone")
             .Add("Nummern")
@@ -329,7 +329,7 @@ Friend Class formInit
             tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
             .Add("[" & tmpTeile & "]")
             C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "0")
-            tmpTeile = DataProvider.P_Def_StringEmpty
+            tmpTeile = DataProvider.P_Def_LeerString
             For i = 0 To CheckTelNr.Count - 1
                 tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
             Next

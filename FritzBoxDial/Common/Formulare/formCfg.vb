@@ -316,10 +316,10 @@ Public Class formCfg
                     Zeile.Clear()
                 Next
                 Zeile.Add(False)
-                Zeile.Add(DataProvider.P_Def_StringEmpty)
-                Zeile.Add(DataProvider.P_Def_StringEmpty)
-                Zeile.Add(DataProvider.P_Def_StringEmpty)
-                Zeile.Add(DataProvider.P_Def_StringEmpty)
+                Zeile.Add(DataProvider.P_Def_LeerString)
+                Zeile.Add(DataProvider.P_Def_LeerString)
+                Zeile.Add(DataProvider.P_Def_LeerString)
+                Zeile.Add(DataProvider.P_Def_LeerString)
                 Zeile.Add("Gesamt:")
                 For i = 0 To 2
                     Zeile.Add(C_hf.GetTimeInterval(tmpein(i)))
@@ -350,7 +350,7 @@ Public Class formCfg
             TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
 
             TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray ' Leere entfernen
+            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString
@@ -371,7 +371,7 @@ Public Class formCfg
     Private Function Speichern() As Boolean
         Speichern = True
         Dim xPathTeile As New ArrayList
-        Dim tmpTeile As String = DataProvider.P_Def_StringEmpty
+        Dim tmpTeile As String = DataProvider.P_Def_LeerString
         Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
         If CheckTelNr.Count = 0 Then
             For i = 0 To Me.CLBTelNr.Items.Count - 1
@@ -390,7 +390,7 @@ Public Class formCfg
                 tmpTeile = Strings.Left(tmpTeile, Len(tmpTeile) - Len(" or "))
                 .Add("[" & tmpTeile & "]")
                 C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "0")
-                tmpTeile = DataProvider.P_Def_StringEmpty
+                tmpTeile = DataProvider.P_Def_LeerString
                 For i = 0 To CheckTelNr.Count - 1
                     tmpTeile += ". = " & """" & CheckTelNr.Item(i).ToString & """" & " or "
                 Next
@@ -406,7 +406,7 @@ Public Class formCfg
 
             .P_CBForceFBAddr = Me.CBForceFBAddr.Checked
 
-            If Me.TBBenutzer.Text = DataProvider.P_Def_StringEmpty Then
+            If Me.TBBenutzer.Text = DataProvider.P_Def_LeerString Then
                 With xPathTeile
                     .Clear()
                     .Add("Optionen")
@@ -422,7 +422,7 @@ Public Class formCfg
                 C_hf.KeyChange()
             End If
             ' StoppUhr
-            If Not Me.TBStoppUhr.Text = DataProvider.P_Def_StringEmpty Then
+            If Not Me.TBStoppUhr.Text = DataProvider.P_Def_LeerString Then
                 If CInt(Me.TBStoppUhr.Text) < 0 Then
                     Me.TBStoppUhr.Text = "10"
                 End If
@@ -431,7 +431,7 @@ Public Class formCfg
             End If
 
             .P_TBLandesVW = Me.TBLandesVW.Text
-            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = DataProvider.P_Def_StringEmpty, DataProvider.P_Def_ErrorMinusOne_String, Me.TBAmt.Text))
+            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = DataProvider.P_Def_LeerString, DataProvider.P_Def_ErrorMinusOne_String, Me.TBAmt.Text))
             .P_TBFBAdr = Me.TBFBAdr.Text
             .P_TBVorwahl = Me.TBVorwahl.Text
             .P_TBAnrMonX = CInt(Me.TBAnrMonX.Text)
@@ -504,7 +504,7 @@ Public Class formCfg
                 .Add("Telefone")
                 .Add("*")
                 .Add("Telefon")
-                .Add(DataProvider.P_Def_StringEmpty)
+                .Add(DataProvider.P_Def_LeerString)
                 For i = 0 To TelList.Rows.Count - 2
                     .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
                     C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
@@ -535,14 +535,14 @@ Public Class formCfg
             Next
             .P_PhonerTelNameIndex = PhonerTelNameIndex
             'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
-            If Me.TBPhonerPasswort.Text = DataProvider.P_Def_StringEmpty And Me.CBPhoner.Checked Then
+            If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
                 If C_hf.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
                     Speichern = False
                 End If
             End If
 
             If Me.CBPhoner.Checked Then
-                If Not Me.TBPhonerPasswort.Text = DataProvider.P_Def_StringEmpty Then
+                If Not Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString Then
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
                         .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, DataProvider.P_Def_PassWordDecryptionKey)
                         C_DP.SaveSettingsVBA("ZugangPasswortPhoner", DataProvider.P_Def_PassWordDecryptionKey)
@@ -588,7 +588,7 @@ Public Class formCfg
                 ' Einstellungen für das Wählmakro zurücksetzen
 
                 Me.TBLandesVW.Text = DataProvider.P_Def_TBLandesVW
-                Me.TBAmt.Text = DataProvider.P_Def_StringEmpty
+                Me.TBAmt.Text = DataProvider.P_Def_LeerString
                 Me.CBCheckMobil.Checked = DataProvider.P_Def_CBCheckMobil
 
                 ' Einstellungen für den Anrufmonitor zurücksetzen
@@ -695,7 +695,7 @@ Public Class formCfg
                     T = Nothing
                 End If
             Case "BStartDebug"
-                Me.TBDiagnose.Text = DataProvider.P_Def_StringEmpty
+                Me.TBDiagnose.Text = DataProvider.P_Def_LeerString
                 AddLine("Start")
                 AddLine(C_hf.formatTelNr("+49 (711) 123456"))
                 If Me.CBTelefonDatei.Checked Then
@@ -789,7 +789,7 @@ Public Class formCfg
                 If IsNumeric(TelNr) Then
                     Dim F_RWS As New formRWSuche(C_hf, C_KF, C_DP, C_XML)
                     Dim rws As Boolean
-                    Dim vCard As String = DataProvider.P_Def_StringEmpty
+                    Dim vCard As String = DataProvider.P_Def_LeerString
 
                     Select Case CType(Me.ComboBoxRWS.SelectedIndex, RückwärtsSuchmaschine)
                         Case RückwärtsSuchmaschine.RWSDasOertliche
@@ -805,7 +805,7 @@ Public Class formCfg
                     End Select
 
                     C_hf.FBDB_MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
-                                    CStr(IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_NeueZeile & DataProvider.P_Def_NeueZeile & vCard, "kein Ergebnis.")), MsgBoxStyle.Information, _
+                                    CStr(IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis.")), MsgBoxStyle.Information, _
                                     "Test der Rückwärtssuche " & Me.ComboBoxRWS.SelectedItem.ToString())
                 Else
                     C_hf.FBDB_MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
@@ -878,7 +878,7 @@ Public Class formCfg
                     Case "CBTelefonDatei"
                         Me.PTelefonDatei.Enabled = Me.CBTelefonDatei.Checked
                         If Not Me.CBTelefonDatei.Checked Then
-                            Me.TBTelefonDatei.Text = DataProvider.P_Def_StringEmpty
+                            Me.TBTelefonDatei.Text = DataProvider.P_Def_LeerString
                         End If
                     Case "CBRWS"
                         ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
@@ -1322,7 +1322,7 @@ Public Class formCfg
 
     Private Sub BLogging_Click(sender As Object, e As EventArgs) Handles BLogging.Click
         With Me.TBLogging
-            If .SelectedText = DataProvider.P_Def_StringEmpty Then
+            If .SelectedText = DataProvider.P_Def_LeerString Then
                 My.Computer.Clipboard.SetText(.Text)
             Else
                 My.Computer.Clipboard.SetText(.SelectedText)
@@ -1446,7 +1446,7 @@ Public Class formCfg
         AddLine("Einlesen der Telefone gestartet.")
         C_FBox.P_SpeichereDaten = CBool(e.Argument)
         e.Result = CBool(e.Argument)
-        If Me.TBTelefonDatei.Text = DataProvider.P_Def_StringEmpty Then
+        If Me.TBTelefonDatei.Text = DataProvider.P_Def_LeerString Then
             C_FBox.FritzBoxDaten()
         Else
             C_FBox.FritzBoxDatenDebug(Me.TBTelefonDatei.Text)
@@ -1499,7 +1499,7 @@ Public Class formCfg
             .Clear()
             Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
             If Not CheckTelNr.Count = 0 Then
-                Dim tmpTeile As String = DataProvider.P_Def_StringEmpty
+                Dim tmpTeile As String = DataProvider.P_Def_LeerString
                 .Add("Telefone")
                 .Add("Nummern")
                 .Add("*")

@@ -138,7 +138,7 @@ Friend Class formWählbox
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
                 DialPort = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
-                tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", DataProvider.P_Def_StringEmpty))
+                tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", DataProvider.P_Def_LeerString))
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
                 If CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
@@ -200,7 +200,7 @@ Friend Class formWählbox
             If PhonerCall Then
                 Me.LabelStatus.Text = C_Phoner.DialPhoner("DISCONNECT")
             Else
-                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(DataProvider.P_Def_StringEmpty, GetDialport(Nebenstellen(Me.ComboBoxFon.SelectedIndex)), True)
+                Me.LabelStatus.Text = C_FBox.SendDialRequestToBox(DataProvider.P_Def_LeerString, GetDialport(Nebenstellen(Me.ComboBoxFon.SelectedIndex)), True)
             End If
         End If
         P_Dialing = False
@@ -226,7 +226,7 @@ Friend Class formWählbox
         If Not KontaktDaten.Contains(DataProvider.P_Def_StringErrorMinusOne) Then
             olKontakt = C_KF.GetOutlookKontakt(KontaktDaten(0), KontaktDaten(1))
         Else
-            olKontakt = C_KF.ErstelleKontakt(DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, KontaktDaten(1), ListTel.Rows(0).Cells(2).Value.ToString, False)
+            olKontakt = C_KF.ErstelleKontakt(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, KontaktDaten(1), ListTel.Rows(0).Cells(2).Value.ToString, False)
         End If
         If olKontakt IsNot Nothing Then olKontakt.Display()
 
@@ -279,7 +279,7 @@ Friend Class formWählbox
             Else
                 tempArray(i) = Trim(Strings.Left(tempArray(i), InStr(tempArray(i), "<", CompareMethod.Text) - 1))
             End If
-            If Not tempArray(i) = DataProvider.P_Def_StringEmpty Then tempArray(i) = tempArray(i) & " "
+            If Not tempArray(i) = DataProvider.P_Def_LeerString Then tempArray(i) = tempArray(i) & " "
         Next
         Return Replace(Trim(Strings.Join(tempArray, "")), " ,", ",", , , CompareMethod.Text)
     End Function
@@ -344,7 +344,7 @@ Friend Class formWählbox
                 code = C_hf.nurZiffern(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
                 Me.LabelStatus.Text = "Bitte warten..."
                 ' Ermitteln der URL für ein Orts- oder  Ferngespräch
-                If C_DP.P_TBVorwahl = Mid(code, 1, Len(C_DP.P_TBVorwahl)) And Not C_DP.P_TBVorwahl = DataProvider.P_Def_StringEmpty Then
+                If C_DP.P_TBVorwahl = Mid(code, 1, Len(C_DP.P_TBVorwahl)) And Not C_DP.P_TBVorwahl = DataProvider.P_Def_LeerString Then
                     ' Wenn die Vorwahl nicht der eigenen Vorwahl entspricht, ändere die URL
                     myurl = "http://www.billiger-telefonieren.de/festnetz/schnellrechner/"
                     code = "rechnen=true&p_zielvorwahl=58&p_typ%5B%5D=1&p_takt=-1"
@@ -430,7 +430,7 @@ Friend Class formWählbox
             KontaktID = Kontaktdaten(0)
             StoreID = Kontaktdaten(1)
 
-            C_GUI.UpdateList(DataProvider.P_Def_NameListCALL, Mid(Me.Text, Len("Anruf: ") + 1), Number, System.DateTime.Now.ToString, StoreID, KontaktID, DataProvider.P_Def_StringEmpty, False)
+            C_GUI.UpdateList(DataProvider.P_Def_NameListCALL, Mid(Me.Text, Len("Anruf: ") + 1), Number, System.DateTime.Now.ToString, StoreID, KontaktID, DataProvider.P_Def_LeerString, False)
         End If
 
         Code = C_hf.nurZiffern(Number) 'Ergebnis sind nur Ziffern, die eigene Landesvorwahl wird durch "0" ersetzt
@@ -528,7 +528,7 @@ Friend Class formWählbox
                         row(1) = Replace(HTMLTagsEntfernen(Daten(1)), "&euro;", ChrW(&H20AC), , , CompareMethod.Text) ' Ct/min
                         row(2) = HTMLTagsEntfernen(Daten(2)) ' Zugang
                         row(3) = HTMLTagsEntfernen(Daten(3)) ' Takt
-                        row(4) = Replace(HTMLTagsEntfernen(Daten(4)), "Call-by-Call", DataProvider.P_Def_StringEmpty, , , CompareMethod.Text) ' Tarif
+                        row(4) = Replace(HTMLTagsEntfernen(Daten(4)), "Call-by-Call", DataProvider.P_Def_LeerString, , , CompareMethod.Text) ' Tarif
                         row(5) = HTMLTagsEntfernen(Daten(5)) ' Bemerkung
                         .Rows.Add(row)
                     End If

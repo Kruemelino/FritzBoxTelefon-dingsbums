@@ -154,7 +154,7 @@ Friend Class formImportAnrList
 
         C_FBox.FBLogout(SID)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = DataProvider.P_Def_StringEmpty Then
+        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = DataProvider.P_Def_LeerString Then
 
             CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.
@@ -167,7 +167,7 @@ Friend Class formImportAnrList
                 Loop Until AnrListe.GetValue(j).ToString = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer" Or j = AnrListe.Length
                 ' Ermittle die Position des Ersten und Letzten zu importierenden Telefonats
                 StartZeile = j + 1
-                If CStr(AnrListe.GetValue(j + 1)) = DataProvider.P_Def_StringEmpty Then
+                If CStr(AnrListe.GetValue(j + 1)) = DataProvider.P_Def_LeerString Then
                     j += 1
                     StartZeile = j + 1
                 End If

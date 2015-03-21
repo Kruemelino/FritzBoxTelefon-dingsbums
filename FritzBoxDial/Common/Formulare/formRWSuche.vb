@@ -98,7 +98,7 @@ Friend Class formRWSuche
 
         Dim i As Integer, iTelNr As Integer      ' Zählvariablen
         Dim TelNr As String    ' Telefonnummer des zu Suchenden
-        Dim vCard As String = DataProvider.P_Def_StringEmpty    ' gefundene vCard
+        Dim vCard As String = DataProvider.P_Def_LeerString    ' gefundene vCard
         Dim rws As Boolean   ' 'true' wenn was gefunden wurde
         Dim row(2) As String
 
@@ -136,7 +136,7 @@ Friend Class formRWSuche
                                               .TTYTDDTelephoneNumber}
 
                     For i = LBound(alleTE) To UBound(alleTE)
-                        If Not alleTE(i) = DataProvider.P_Def_StringEmpty Then
+                        If Not alleTE(i) = DataProvider.P_Def_LeerString Then
                             iTelNr += 1
                             row(0) = CStr(iTelNr)
                             row(1) = DataProvider.P_Def_olTelNrTypen(i)
@@ -157,7 +157,7 @@ Friend Class formRWSuche
                         TelNr = Me.DirektTel.Text
                     End If
                     ' je nach 'Suchmaschine' Suche durchführen
-                    If Not TelNr = DataProvider.P_Def_StringEmpty Then
+                    If Not TelNr = DataProvider.P_Def_LeerString Then
                         Select Case RWSAnbieter
                             Case RückwärtsSuchmaschine.RWSDasOertliche
                                 rws = RWSDasOertiche(TelNr, vCard)
@@ -174,9 +174,9 @@ Friend Class formRWSuche
                             ' wenn erfolgreich, dann Ergebnisse aus vCard in den Kontakt übertragen
                             C_KF.vCard2Contact(vCard, oContact)
                             ' falls TelNr bei der Rückwärtssuche geändert wurde, diese nummer als Zweitnummer eintragen
-                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = DataProvider.P_Def_StringEmpty Then
+                            If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then
                                 .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
-                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = DataProvider.P_Def_StringEmpty Then
+                            ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then
                                 .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
                             End If
                             .Body = "Rückwärtssuche erfolgreich" & vbCrLf & "Achtung! Unter Umständen werden vorhandene Daten überschrieben. Wir übernehmen keine Haftung für verloren gegangene Daten und für falsche Informationen, die die Rückwärtssuche liefert! Nutzung auf eigene Gefahr!" & vbCrLf & .Body
@@ -312,7 +312,7 @@ Friend Class formRWSuche
         Do
             htmlRWS = C_hf.httpGET(baseurl & "search_nat&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
 
-            If Not htmlRWS = DataProvider.P_Def_StringEmpty Then
+            If Not htmlRWS = DataProvider.P_Def_LeerString Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, "dasoertliche.de/?id=", "&")
@@ -368,7 +368,7 @@ Friend Class formRWSuche
         Do
             htmlRWS = C_hf.httpGET(myurl & "?cmd=detail&kw=" & tmpTelNr, System.Text.Encoding.Default, False)
 
-            If Not htmlRWS = DataProvider.P_Def_StringEmpty Then
+            If Not htmlRWS = DataProvider.P_Def_LeerString Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)

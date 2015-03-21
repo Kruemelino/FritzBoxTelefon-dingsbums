@@ -1225,7 +1225,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Leerstring, String.Empty
     ''' </summary>
-    Public Shared ReadOnly Property P_Def_StringEmpty() As String
+    Public Shared ReadOnly Property P_Def_LeerString() As String
         Get
             Return XML.P_Def_StringEmpty 'String.Empty
         End Get
@@ -1236,9 +1236,20 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>vbCrLf</value>
     ''' <returns>vbCrLf</returns>
-    Public Shared ReadOnly Property P_Def_NeueZeile() As String
+    Public Shared ReadOnly Property P_Def_EineNeueZeile() As String
         Get
             Return vbCrLf
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' vbCrLf &amp; vbCrLf
+    ''' </summary>
+    ''' <value>vbCrLf &amp; vbCrLf</value>
+    ''' <returns>vbCrLf &amp; vbCrLf</returns>
+    Public Shared ReadOnly Property P_Def_ZweiNeueZeilen() As String
+        Get
+            Return P_Def_EineNeueZeile & P_Def_EineNeueZeile
         End Get
     End Property
 
@@ -1811,7 +1822,7 @@ Public Class DataProvider
     End Property
     Public Shared ReadOnly Property P_Def_TBVorwahl() As String
         Get
-            Return P_Def_StringEmpty
+            Return P_Def_LeerString
         End Get
     End Property
     Public Shared ReadOnly Property P_Def_CBoxVorwahl() As Integer
@@ -2144,7 +2155,7 @@ Public Class DataProvider
     End Property
     Public Shared ReadOnly Property P_Def_TBPhonerPasswort() As String
         Get
-            Return P_Def_StringEmpty
+            Return P_Def_LeerString
         End Get
     End Property
     Public Shared ReadOnly Property P_Def_PhonerTelNameIndex() As Integer
@@ -2217,12 +2228,12 @@ Public Class DataProvider
     End Property
     Public Shared ReadOnly Property P_Def_TBBenutzer() As String
         Get
-            Return P_Def_StringEmpty
+            Return P_Def_LeerString
         End Get
     End Property
     Public Shared ReadOnly Property P_Def_TBPasswort() As String
         Get
-            Return P_Def_StringEmpty
+            Return P_Def_LeerString
         End Get
     End Property
     ' Indizierung
@@ -2307,7 +2318,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Lit_Phoner2() As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "Das Phoner-Passwort ist falsch!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "Das Phoner-Passwort ist falsch!"
         End Get
     End Property
 
@@ -2317,7 +2328,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Lit_Phoner3() As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "Die Phoner-Verson ist zu alt!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "Die Phoner-Verson ist zu alt!"
         End Get
     End Property
 
@@ -2327,7 +2338,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Lit_Phoner4() As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "TCP Fehler (Stream.CanWrite = False)!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "TCP Fehler (Stream.CanWrite = False)!"
         End Get
     End Property
 
@@ -2337,7 +2348,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Lit_Phoner5() As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "TCP!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "TCP!"
         End Get
     End Property
 
@@ -2347,7 +2358,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Lit_Phoner6() As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "Kein Passwort hinterlegt!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "Kein Passwort hinterlegt!"
         End Get
     End Property
 
@@ -2357,7 +2368,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Lit_Phoner7() As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "Phoner nicht verfügbar!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "Phoner nicht verfügbar!"
         End Get
     End Property
 
@@ -2379,9 +2390,9 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
         Get
-            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_NeueZeile & _
+            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_EineNeueZeile & _
                    "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor & _
-                   """ kann dieser aktiviert werden." & P_Def_NeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
+                   """ kann dieser aktiviert werden." & P_Def_EineNeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
 
         End Get
     End Property
@@ -2608,7 +2619,7 @@ Public Class DataProvider
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
     Public Shared ReadOnly Property P_AnrMon_AnrMonDISCONNECT_JournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean) As String
         Get
-            Return P_AnrMon_AnrMonDISCONNECT_JournalTelNr & TelNr & P_Def_NeueZeile & "Status: " & CStr(IIf(Angenommen, P_Def_StringEmpty, "nicht ")) & "angenommen" & P_Def_NeueZeile & P_Def_NeueZeile
+            Return P_AnrMon_AnrMonDISCONNECT_JournalTelNr & TelNr & P_Def_EineNeueZeile & "Status: " & CStr(IIf(Angenommen, P_Def_LeerString, "nicht ")) & "angenommen" & P_Def_EineNeueZeile & P_Def_EineNeueZeile
         End Get
     End Property
 
@@ -2849,7 +2860,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_FritzBox_Dial_Error1 As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "Entwickler kontaktieren."
+            Return "Fehler!" & P_Def_EineNeueZeile & "Entwickler kontaktieren."
         End Get
     End Property
 
@@ -2858,7 +2869,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_FritzBox_Dial_Error2 As String
         Get
-            Return "Fehler!" & P_Def_NeueZeile & "Logfile beachten!"
+            Return "Fehler!" & P_Def_EineNeueZeile & "Logfile beachten!"
         End Get
     End Property
 
@@ -2877,7 +2888,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_FritzBox_Dial_HangUp As String
         Get
-            Return "Verbindungsaufbau" & P_Def_NeueZeile & "wurde abgebrochen!"
+            Return "Verbindungsaufbau" & P_Def_EineNeueZeile & "wurde abgebrochen!"
         End Get
     End Property
 
@@ -2887,7 +2898,7 @@ Public Class DataProvider
     ''' <param name="DialCode"></param>
     Public Shared ReadOnly Property P_FritzBox_Dial_Start(ByVal DialCode As String) As String
         Get
-            Return "Wähle " & DialCode & P_Def_NeueZeile & "Jetzt abheben!"
+            Return "Wähle " & DialCode & P_Def_EineNeueZeile & "Jetzt abheben!"
         End Get
     End Property
 
@@ -2904,12 +2915,12 @@ Public Class DataProvider
     'Information
     Public Shared ReadOnly Property P_FritzBox_Info(ByVal FBTyp As String, ByVal FBFirmware As String) As String
         Get
-            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_NeueZeile, P_Def_NeueZeile, _
-                     "Dein Name:", P_Def_NeueZeile, _
-                     "Problembeschreibung:", P_Def_NeueZeile, _
-                     "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_NeueZeile, _
-                     P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_NeueZeile, _
-                     "Firmware: ", FBFirmware, P_Def_NeueZeile)
+            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_EineNeueZeile, P_Def_EineNeueZeile, _
+                     "Dein Name:", P_Def_EineNeueZeile, _
+                     "Problembeschreibung:", P_Def_EineNeueZeile, _
+                     "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_EineNeueZeile, _
+                     P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_EineNeueZeile, _
+                     "Firmware: ", FBFirmware, P_Def_EineNeueZeile)
         End Get
     End Property
 
@@ -2977,7 +2988,7 @@ Public Class DataProvider
     ''' <param name="sTelNr">Telefonnummer</param>
     Public Shared ReadOnly Property P_CMB_ToolTipp(ByVal sZeit As String, ByVal sTelNr As String) As String
         Get
-            Return "Zeit: " & sZeit & P_Def_NeueZeile & "Telefonnummer: " & sTelNr
+            Return "Zeit: " & sZeit & P_Def_EineNeueZeile & "Telefonnummer: " & sTelNr
         End Get
     End Property
 
@@ -3459,7 +3470,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_Fehler_Kontakt_Anzeigen(ByVal ErrorMessage As String) As String
         Get
-            Return "Der Kontakt kann angezeigt werden: " & P_Def_NeueZeile & P_Def_NeueZeile & ErrorMessage
+            Return "Der Kontakt kann angezeigt werden: " & P_Def_EineNeueZeile & P_Def_EineNeueZeile & ErrorMessage
         End Get
     End Property
 
@@ -3811,7 +3822,7 @@ Public Class DataProvider
             _ListeLandesVorwahlen = New ReadOnlyCollection(Of String)((From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray)
         End If
 
-        tmpVorwahl = CStr(IIf(tmpVorwahl = P_Def_StringEmpty, P_TBLandesVW, tmpVorwahl))
+        tmpVorwahl = CStr(IIf(tmpVorwahl = P_Def_LeerString, P_TBLandesVW, tmpVorwahl))
 
         If P_TBLandesVW = P_Def_TBLandesVW Then
             ' Ortsvorwahlen Deutschland

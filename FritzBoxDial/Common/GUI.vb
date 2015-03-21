@@ -23,7 +23,7 @@ Imports Microsoft.Office.Core
             Case "Microsoft.Outlook.Contact"
                 File = GetResourceText("FritzBoxDial.RibbonInspectorKontakt.xml")
             Case Else
-                File = DataProvider.P_Def_StringEmpty
+                File = DataProvider.P_Def_LeerString
         End Select
 #If OVer = 12 Then
         If Not File = DataProvider.P_Def_StringEmpty Then
@@ -332,7 +332,7 @@ Imports Microsoft.Office.Core
                             CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
                             XMLListBaseNode, _
                             DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
-                            CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_StringEmpty)))
+                            CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString)))
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
@@ -350,8 +350,8 @@ Imports Microsoft.Office.Core
                             CStr(ID), _
                             Anrufer, _
                             XMLListBaseNode, _
-                            DataProvider.P_Def_StringEmpty, _
-                            DataProvider.P_Def_StringEmpty)
+                            DataProvider.P_Def_LeerString, _
+                            DataProvider.P_Def_LeerString)
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                 End If
@@ -386,7 +386,7 @@ Imports Microsoft.Office.Core
         ' '	        &apos;  &#38;
 
         For i = LBound(Werte) To UBound(Werte)
-            If Not Werte(i) = DataProvider.P_Def_StringEmpty Then
+            If Not Werte(i) = DataProvider.P_Def_LeerString Then
                 Werte(i) = Werte(i).Replace("&", "&amp;&amp;").Replace("&amp;&amp;#", "&#").Replace("<", "&lt;").Replace(">", "&gt;").Replace(Chr(34), "&quot;").Replace("'", "&apos;")
             End If
         Next
@@ -397,8 +397,8 @@ Imports Microsoft.Office.Core
             .Append("onAction=""BtnOnAction"" ")
             .Append("tag=""" & Werte(2) & ";" & Werte(0) & """ ")
 
-            If Not Werte(4) = DataProvider.P_Def_StringEmpty Then .Append("imageMso=""" & Werte(4) & """ ")
-            If Not Werte(3) = DataProvider.P_Def_StringEmpty Then .Append("supertip=""" & Werte(3) & """")
+            If Not Werte(4) = DataProvider.P_Def_LeerString Then .Append("imageMso=""" & Werte(4) & """ ")
+            If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """")
 
             .Append("/>" & vbCrLf)
         End With
@@ -759,17 +759,17 @@ Imports Microsoft.Office.Core
         xPathTeile.Add(DataProvider.P_Def_NameListVIP)
         xPathTeile.Add("ID[@ID=""" & Index & """]")
 
-        If Not Anrufer = DataProvider.P_Def_StringEmpty Then
+        If Not Anrufer = DataProvider.P_Def_LeerString Then
             NodeNames.Add("Anrufer")
             NodeValues.Add(Anrufer)
         End If
 
-        If Not StoreID = DataProvider.P_Def_StringEmpty Then
+        If Not StoreID = DataProvider.P_Def_LeerString Then
             NodeNames.Add("StoreID")
             NodeValues.Add(StoreID)
         End If
 
-        If Not KontaktID = DataProvider.P_Def_StringEmpty Then
+        If Not KontaktID = DataProvider.P_Def_LeerString Then
             NodeNames.Add("KontaktID")
             NodeValues.Add(KontaktID)
         End If
@@ -1390,7 +1390,7 @@ Imports Microsoft.Office.Core
     Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.DialDirect
-                P_CallClient.Wählbox(Nothing, DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, True)
+                P_CallClient.Wählbox(Nothing, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, True)
             Case TaskToDo.DialExplorer
                 If C_OLI.OutlookApplication IsNot Nothing Then
                     P_CallClient.WählboxStart(C_OLI.OutlookApplication.ActiveExplorer.Selection)
@@ -1398,7 +1398,7 @@ Imports Microsoft.Office.Core
             Case TaskToDo.OpenConfig
                 P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
-                Dim formjournalimort As New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
+                Dim ImportAnrList As New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
             Case TaskToDo.RestartAnrMon
                 C_AnrMon.AnrMonReStart()
             Case TaskToDo.ShowAnrMon
@@ -1460,12 +1460,12 @@ Imports Microsoft.Office.Core
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod 10))
 
-            If Not Anrufer = DataProvider.P_Def_StringEmpty Then
+            If Not Anrufer = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(Anrufer)
             End If
 
-            If Not TelNr = DataProvider.P_Def_StringEmpty Then
+            If Not TelNr = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("TelNr")
                 NodeValues.Add(TelNr)
             End If
@@ -1475,17 +1475,17 @@ Imports Microsoft.Office.Core
                 NodeValues.Add(Zeit)
             End If
 
-            If Not StoreID = DataProvider.P_Def_StringEmpty Then
+            If Not StoreID = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(StoreID)
             End If
 
-            If Not KontaktID = DataProvider.P_Def_StringEmpty Then
+            If Not KontaktID = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(KontaktID)
             End If
 
-            If Not vCard = DataProvider.P_Def_StringEmpty Then
+            If Not vCard = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("vCard")
                 NodeValues.Add(vCard)
             End If

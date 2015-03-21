@@ -224,7 +224,7 @@ Friend Class AnrufMonitor
     End Sub
 
     Sub BWActivateCallmonitor_DoWork() Handles BWActivateCallmonitor.DoWork
-        C_GUI.P_CallClient.Wählbox(Nothing, DataProvider.P_Def_TelCodeActivateFritzBoxCallMonitor, DataProvider.P_Def_StringEmpty, True)
+        C_GUI.P_CallClient.Wählbox(Nothing, DataProvider.P_Def_TelCodeActivateFritzBoxCallMonitor, DataProvider.P_Def_LeerString, True)
         Do
             Windows.Forms.Application.DoEvents()
         Loop Until C_GUI.P_CallClient.ListFormWählbox.Count = 0
@@ -429,8 +429,8 @@ Friend Class AnrufMonitor
                         .TelNr = Left(.TelNr, pos - 1)
                     Else
                         PhonerTelNr = C_hf.TelNrTeile(.TelNr)
-                        If Not PhonerTelNr(1) = DataProvider.P_Def_StringEmpty Then .TelNr = PhonerTelNr(1) & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
-                        If Not PhonerTelNr(0) = DataProvider.P_Def_StringEmpty Then .TelNr = PhonerTelNr(0) & Mid(.TelNr, 2)
+                        If Not PhonerTelNr(1) = DataProvider.P_Def_LeerString Then .TelNr = PhonerTelNr(1) & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
+                        If Not PhonerTelNr(0) = DataProvider.P_Def_LeerString Then .TelNr = PhonerTelNr(0) & Mid(.TelNr, 2)
                     End If
                     .TelNr = C_hf.nurZiffern(.TelNr)
                 End If
@@ -461,7 +461,7 @@ Friend Class AnrufMonitor
                                 ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
                                 ' Dies geschieht nur, wenn es gewünscht ist.
                                 .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                .vCard = DataProvider.P_Def_StringEmpty
+                                .vCard = DataProvider.P_Def_LeerString
                                 .Firma = .olContact.CompanyName
                                 .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
                             Else
@@ -564,7 +564,7 @@ Friend Class AnrufMonitor
                 .Online = CBool(IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False))
                 .RingTime = DataProvider.P_Def_ErrorMinusOne_Integer
                 ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
-                If .MSN = DataProvider.P_Def_StringEmpty Then
+                If .MSN = DataProvider.P_Def_LeerString Then
                     Select Case .NSN
                         Case 0 To 2 ' FON1-3
                             .NSN += 1
@@ -588,7 +588,7 @@ Friend Class AnrufMonitor
                 End If
 
                 .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)))
-                If .TelNr = DataProvider.P_Def_StringEmpty Then .TelNr = DataProvider.P_Def_StringUnknown
+                If .TelNr = DataProvider.P_Def_LeerString Then .TelNr = DataProvider.P_Def_StringUnknown
                 ' CbC-Vorwahl entfernen
                 If .TelNr.StartsWith("0100") Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
                 If .TelNr.StartsWith("010") Then .TelNr = Right(.TelNr, Len(.TelNr) - 5)
@@ -613,7 +613,7 @@ Friend Class AnrufMonitor
                                 ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
                                 ' Dies geschieht nur, wenn es gewünscht ist.
                                 .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                .vCard = DataProvider.P_Def_StringEmpty
+                                .vCard = DataProvider.P_Def_LeerString
                                 .Firma = .olContact.CompanyName
                                 .Anrufer = Replace(.olContact.FullName & " (" & .Firma & ")", " ()", "")
                             Else
@@ -684,7 +684,7 @@ Friend Class AnrufMonitor
             With Telefonat
                 ' Temporärer Test ob Nummern identisch
 
-                If Not C_hf.nurZiffern(.TelNr).Equals(CStr(FBStatus.GetValue(4)).Replace("#", DataProvider.P_Def_StringEmpty)) Then
+                If Not C_hf.nurZiffern(.TelNr).Equals(CStr(FBStatus.GetValue(4)).Replace("#", DataProvider.P_Def_LeerString)) Then
                     C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & CStr(FBStatus.GetValue(4)))
                 End If
 
@@ -766,7 +766,7 @@ Friend Class AnrufMonitor
     ''' </param>
     Friend Sub AnrMonDISCONNECT(ByVal FBStatus As String())
 
-        Dim CallDirection As String = DataProvider.P_Def_StringEmpty
+        Dim CallDirection As String = DataProvider.P_Def_LeerString
         Dim ZeitOutlookBeendet As Date = C_DP.P_StatOLClosedZeit
 
         Dim xPathTeile As New ArrayList
@@ -796,31 +796,31 @@ Friend Class AnrufMonitor
                 If C_DP.P_CBJournal Then
                     .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
                     .Body = DataProvider.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
-                    If Not .vCard = DataProvider.P_Def_StringEmpty And Not .vCard = DataProvider.P_Def_ErrorMinusTwo_String Then
+                    If Not .vCard = DataProvider.P_Def_LeerString And Not .vCard = DataProvider.P_Def_ErrorMinusTwo_String Then
                         .Firma = ReadFromVCard(.vCard, "ORG", "")
                         .Body += DataProvider.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
                     Else
                         If .olContact IsNot Nothing Then
-                            If .olContact.FullName = DataProvider.P_Def_StringEmpty Then
-                                .Anrufer = CStr(IIf(.olContact.Companies = DataProvider.P_Def_StringEmpty, .TelNr, .Firma))
+                            If .olContact.FullName = DataProvider.P_Def_LeerString Then
+                                .Anrufer = CStr(IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma))
                             Else
                                 .Anrufer = .olContact.FullName
                             End If
 
-                            If .Firma = DataProvider.P_Def_StringEmpty Then
-                                If Not .olContact.HomeAddress = DataProvider.P_Def_StringEmpty Then
+                            If .Firma = DataProvider.P_Def_LeerString Then
+                                If Not .olContact.HomeAddress = DataProvider.P_Def_LeerString Then
                                     .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten & _
-                                        DataProvider.P_Def_NeueZeile & .Anrufer & _
-                                        DataProvider.P_Def_NeueZeile & .Firma & _
-                                        DataProvider.P_Def_NeueZeile & .olContact.HomeAddress & _
-                                        DataProvider.P_Def_NeueZeile
+                                        DataProvider.P_Def_EineNeueZeile & .Anrufer & _
+                                        DataProvider.P_Def_EineNeueZeile & .Firma & _
+                                        DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress & _
+                                        DataProvider.P_Def_EineNeueZeile
                                 End If
                             Else
-                                If Not .olContact.BusinessAddress = DataProvider.P_Def_StringEmpty Then
+                                If Not .olContact.BusinessAddress = DataProvider.P_Def_LeerString Then
                                     .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten & _
-                                        DataProvider.P_Def_NeueZeile & .Anrufer & _
-                                        DataProvider.P_Def_NeueZeile & .olContact.BusinessAddress & _
-                                        DataProvider.P_Def_NeueZeile
+                                        DataProvider.P_Def_EineNeueZeile & .Anrufer & _
+                                        DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress & _
+                                        DataProvider.P_Def_EineNeueZeile
                                 End If
                             End If
                         End If
@@ -856,7 +856,7 @@ Friend Class AnrufMonitor
                     End If
 
                     .Categories = .TelName & "; " & String.Join("; ", DataProvider.P_AnrMon_Journal_Def_Categories.ToArray)
-                    .Subject = CallDirection & CStr(IIf(.Anrufer = DataProvider.P_Def_StringEmpty, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, DataProvider.P_Def_StringEmpty, " (" & .TelName & ")"))
+                    .Subject = CallDirection & CStr(IIf(.Anrufer = DataProvider.P_Def_LeerString, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, DataProvider.P_Def_LeerString, " (" & .TelName & ")"))
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)
                     C_DP.P_StatJournal += 1
@@ -950,7 +950,7 @@ Friend Class AnrufMonitor
             NodeValues.Add(.Zeit)
 
             ' Anrufername
-            If Not .Anrufer = DataProvider.P_Def_StringEmpty Then
+            If Not .Anrufer = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("Anrufer")
                 NodeValues.Add(.Anrufer)
             End If
@@ -964,31 +964,31 @@ Friend Class AnrufMonitor
             NodeValues.Add(.MSN)
 
             ' StoreID
-            If Not .StoreID = DataProvider.P_Def_StringEmpty Then
+            If Not .StoreID = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("StoreID")
                 NodeValues.Add(.StoreID)
             End If
 
             ' KontaktID
-            If Not .KontaktID = DataProvider.P_Def_StringEmpty Then
+            If Not .KontaktID = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("KontaktID")
                 NodeValues.Add(.KontaktID)
             End If
 
             ' vCard
-            If Not .vCard = DataProvider.P_Def_StringEmpty Then
+            If Not .vCard = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("vCard")
                 NodeValues.Add(.vCard)
             End If
 
             ' TelName
-            If Not .TelName = DataProvider.P_Def_StringEmpty Then
+            If Not .TelName = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("TelName")
                 NodeValues.Add(.TelName)
             End If
 
             ' Companies
-            If Not .Firma = DataProvider.P_Def_StringEmpty Then
+            If Not .Firma = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("Companies")
                 NodeValues.Add(.Firma)
             End If
@@ -1029,15 +1029,15 @@ Friend Class AnrufMonitor
 
         ' Anrufer
         ListNodeNames.Add("Anrufer")
-        ListNodeValues.Add(DataProvider.P_Def_StringEmpty)
+        ListNodeValues.Add(DataProvider.P_Def_LeerString)
 
         ' TelNr
         ListNodeNames.Add("TelNr")
-        ListNodeValues.Add(DataProvider.P_Def_StringEmpty)
+        ListNodeValues.Add(DataProvider.P_Def_LeerString)
 
         ' MSN
         ListNodeNames.Add("MSN")
-        ListNodeValues.Add(DataProvider.P_Def_StringEmpty)
+        ListNodeValues.Add(DataProvider.P_Def_LeerString)
 
         ' StoreID
         ListNodeNames.Add("StoreID")
@@ -1049,15 +1049,15 @@ Friend Class AnrufMonitor
 
         ' vCard
         ListNodeNames.Add("vCard")
-        ListNodeValues.Add(DataProvider.P_Def_StringEmpty)
+        ListNodeValues.Add(DataProvider.P_Def_LeerString)
 
         ' TelName
         ListNodeNames.Add("TelName")
-        ListNodeValues.Add(DataProvider.P_Def_StringEmpty)
+        ListNodeValues.Add(DataProvider.P_Def_LeerString)
 
         ' Companies
         ListNodeNames.Add("Companies")
-        ListNodeValues.Add(DataProvider.P_Def_StringEmpty)
+        ListNodeValues.Add(DataProvider.P_Def_LeerString)
 
         LadeLetzterAnrufer.ID = 0 'CInt(C_DP.Read("LetzterAnrufer", "Letzter", "0"))
         With xPathTeile
@@ -1076,7 +1076,7 @@ Friend Class AnrufMonitor
             .vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
             .TelName = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelName")))
             .Firma = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("Companies")))
-
+            .AnrMonAusblenden = True
             If .TelName = DataProvider.P_Def_ErrorMinusOne_String Then .TelName = C_hf.TelefonName(.MSN)
 
             If C_OlI.OutlookApplication IsNot Nothing Then
