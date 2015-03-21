@@ -60,7 +60,7 @@ Public Class KontaktFunktionen
 
         Dim oApp As Outlook.Application = C_OLI.OutlookApplication()
         Dim olSession As Outlook.NameSpace = oApp.Session
-        Dim sFilter As String = DataProvider.P_Def_StringEmpty
+        Dim sFilter As String = DataProvider.P_Def_LeerString
         Dim JoinFilter(DataProvider.P_Def_UserProperties.Count - 1) As String
 
         If oApp IsNot Nothing Then
@@ -82,7 +82,7 @@ Public Class KontaktFunktionen
                         KontaktSuche = FindeAnruferKontakt(TelNr, olSession, sFilter)
                     End If
                 End If
-            ElseIf Not EMailAdresse = DataProvider.P_Def_StringEmpty Then
+            ElseIf Not EMailAdresse = DataProvider.P_Def_LeerString Then
                 sFilter = String.Concat("[Email1Address] = """, EMailAdresse, _
                                         """ OR [Email2Address] = """, EMailAdresse, _
                                         """ OR [Email3Address] = """, EMailAdresse, """")
@@ -187,7 +187,7 @@ Public Class KontaktFunktionen
                                               .TTYTDDTelephoneNumber}
 
                     For Each fTelNr As String In alleTE
-                        If TelNr = C_hf.nurZiffern(fTelNr) Then
+                        If C_hf.TelNrVergleich(TelNr, fTelNr) Then
                             TelNr = fTelNr
                             Exit For
                         End If
@@ -258,8 +258,8 @@ Public Class KontaktFunktionen
     ''' <summary>
     ''' Erstellt einen Kontakt aus einer vCard.
     ''' </summary>
-    ''' <param name="KontaktID">Rückgabewert: KontaktID des gefundenen Kontaktes.</param>
-    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der gefundene Kontaktes befindet.</param>
+    ''' <param name="KontaktID">Rückgabewert: KontaktID des neu erstellten Kontaktes.</param>
+    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der neu erstellte Kontaktes befindet.</param>
     ''' <param name="vCard">Kontaktdaten im vCard-Format.</param>
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
@@ -268,13 +268,7 @@ Public Class KontaktFunktionen
         Dim olKontakt As Outlook.ContactItem = Nothing        ' Objekt des Kontakteintrags
         Dim olFolder As Outlook.MAPIFolder
 
-        ' Achtung 140526: TryCatch eventuell erforderlich
-
         olKontakt = CType(C_OLI.OutlookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-        'If Not (C_DP.P_TVKontaktOrdnerEntryID = DataProvider.P_Def_ErrorMinusOne_String Or C_DP.P_TVKontaktOrdnerStoreID = DataProvider.P_Def_ErrorMinusOne_String) Then
-        '    olFolder = GetOutlookFolder(C_DP.P_TVKontaktOrdnerEntryID, C_DP.P_TVKontaktOrdnerStoreID)
-        '    verschieben = True
-        'End If
 
         With olKontakt
             If C_hf.Mobilnummer(C_hf.nurZiffern(TelNr)) Then
@@ -283,23 +277,30 @@ Public Class KontaktFunktionen
                 .BusinessTelephoneNumber = TelNr
             End If
 
-            If Not (vCard = DataProvider.P_Def_StringEmpty Or vCard = DataProvider.P_Def_ErrorMinusOne_String Or vCard = DataProvider.P_Def_ErrorMinusTwo_String) Then
+            If Not (vCard = DataProvider.P_Def_LeerString Or vCard = DataProvider.P_Def_ErrorMinusOne_String Or vCard = DataProvider.P_Def_ErrorMinusTwo_String) Then
                 vCard2Contact(vCard, olKontakt)
 
-                If Not TelNr = DataProvider.P_Def_StringEmpty Then
-                    If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = DataProvider.P_Def_StringEmpty Then
-                        .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
-                        .BusinessTelephoneNumber = C_hf.formatTelNr(TelNr)
-                    ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = DataProvider.P_Def_StringEmpty Then
-                        .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
-                        .HomeTelephoneNumber = C_hf.formatTelNr(TelNr)
+                If Not TelNr = DataProvider.P_Def_LeerString Then
+                    ' Formatiere Telefonnummer
+                    TelNr = C_hf.formatTelNr(TelNr)
+                    If Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then
+                        If Not C_hf.TelNrVergleich(.BusinessTelephoneNumber, TelNr) Then
+                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                        End If
+                        .BusinessTelephoneNumber = TelNr
+                    ElseIf Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then
+                        If Not C_hf.TelNrVergleich(.HomeTelephoneNumber, TelNr) Then
+                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                        End If
+                        .HomeTelephoneNumber = TelNr
+                    ElseIf .HomeTelephoneNumber Is DataProvider.P_Def_LeerString Then
+                        .HomeTelephoneNumber = TelNr
                     End If
                 End If
                 .Categories = DataProvider.P_Def_Addin_LangName '"Fritz!Box Telefon-dingsbums" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                .Body = .Body & vbCrLf & "Erstellt durch das " & DataProvider.P_Def_Addin_LangName & " am " & System.DateTime.Now
+                .Body = .Body & vbCrLf & "Erstellt durch das " & DataProvider.P_Def_Addin_LangName & " am " & System.DateTime.Now & DataProvider.P_Def_ZweiNeueZeilen & "vCard:" & DataProvider.P_Def_ZweiNeueZeilen & vCard
             End If
         End With
-
 
         If AutoSave Then
             If olKontakt.GetInspector Is Nothing Then IndiziereKontakt(olKontakt)
@@ -337,7 +338,7 @@ Public Class KontaktFunktionen
     ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
     ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
     Friend Overloads Function ErstelleKontakt(ByVal TelNr As String, ByVal Speichern As Boolean) As Outlook.ContactItem
-        Return ErstelleKontakt(DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, TelNr, Speichern)
+        Return ErstelleKontakt(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, TelNr, Speichern)
     End Function
 
     ''' <summary>
@@ -360,7 +361,7 @@ Public Class KontaktFunktionen
 
                         ' Prüfe ob TelNr unterdrückt
                         If TelNr = DataProvider.P_Def_StringUnknown Then
-                            olKontakt = ErstelleKontakt(DataProvider.P_Def_StringEmpty, False)
+                            olKontakt = ErstelleKontakt(DataProvider.P_Def_LeerString, False)
                         Else
                             ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                             ' vCard aus dem .Body herausfiltern
@@ -386,7 +387,7 @@ Public Class KontaktFunktionen
                                 End If
                             Else
                                 'vCard gefunden
-                                olKontakt = ErstelleKontakt(DataProvider.P_Def_StringEmpty, DataProvider.P_Def_StringEmpty, vCard, TelNr, False)
+                                olKontakt = ErstelleKontakt(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, vCard, TelNr, False)
                             End If
                         End If
                     End If
@@ -403,7 +404,7 @@ Public Class KontaktFunktionen
     ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
     ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
     Friend Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
-        KontaktBild = DataProvider.P_Def_StringEmpty
+        KontaktBild = DataProvider.P_Def_LeerString
         If olContact IsNot Nothing Then
             With olContact
                 With .Attachments
@@ -422,7 +423,7 @@ Public Class KontaktFunktionen
     ''' </summary>
     ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
     Friend Sub DelKontaktBild(ByVal PfadKontaktBild As String)
-        If Not PfadKontaktBild = DataProvider.P_Def_StringEmpty Then
+        If Not PfadKontaktBild = DataProvider.P_Def_LeerString Then
             With My.Computer.FileSystem
                 If .FileExists(PfadKontaktBild) Then
                     .DeleteFile(PfadKontaktBild, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
@@ -501,7 +502,7 @@ Public Class KontaktFunktionen
                                       .TTYTDDTelephoneNumber}
 
 
-            alleTE = (From x In alleTE Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
+            alleTE = (From x In alleTE Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
             If Not alleTE.LongCount = 0 Then
                 ' Reicht nicht aus! Weiterer Gehirnschmalz erforderlich
                 If .UserProperties.Find(DataProvider.P_Def_UserPropertyIndex) IsNot Nothing Then
@@ -550,7 +551,7 @@ Public Class KontaktFunktionen
                                               .TTYTDDTelephoneNumber}
 
                     For i = LBound(alleTE) To UBound(alleTE)
-                        If Not alleTE(i) = DataProvider.P_Def_StringEmpty Then ' Fall: Telefonnummer vorhanden
+                        If Not alleTE(i) = DataProvider.P_Def_LeerString Then ' Fall: Telefonnummer vorhanden
                             If .UserProperties.Find(DataProvider.P_Def_UserProperties(i)) Is Nothing Then ' Fall Index nicht vorhanden
                                 .UserProperties.Add(DataProvider.P_Def_UserProperties(i), Outlook.OlUserPropertyType.olText, False)
                             End If
@@ -640,38 +641,38 @@ Public Class KontaktFunktionen
         With Contact
             'insert Name
             ContactName = ReadFromVCard(vCard, "N", "")
-            If Not ContactName = DataProvider.P_Def_StringEmpty Then
+            If Not ContactName = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, ContactName, "#", CompareMethod.Text)
                 If Not pos = 0 Then ContactName = Left(ContactName, pos - 1)
                 pos = InStr(1, ContactName, ";", CompareMethod.Text)
                 If pos = 0 Then
-                    If .LastName = DataProvider.P_Def_StringEmpty Then .LastName = ContactName
+                    If .LastName = DataProvider.P_Def_LeerString Then .LastName = ContactName
                 Else
-                    If .LastName = DataProvider.P_Def_StringEmpty Then .LastName = Left(ContactName, pos - 1)
+                    If .LastName = DataProvider.P_Def_LeerString Then .LastName = Left(ContactName, pos - 1)
                     ContactName = Mid(ContactName, pos + 1)
                     pos = InStr(1, ContactName, ";", CompareMethod.Text)
                     If pos = 0 Then
-                        If .FirstName = DataProvider.P_Def_StringEmpty Then .FirstName = ContactName
+                        If .FirstName = DataProvider.P_Def_LeerString Then .FirstName = ContactName
                     Else
-                        If .FirstName = DataProvider.P_Def_StringEmpty Then .FirstName = Left(ContactName, pos - 1)
+                        If .FirstName = DataProvider.P_Def_LeerString Then .FirstName = Left(ContactName, pos - 1)
                         ContactName = Mid(ContactName, pos + 1)
                         pos = InStr(1, ContactName, ";", CompareMethod.Text)
                         If pos = 0 Then
-                            If .MiddleName = DataProvider.P_Def_StringEmpty Then .MiddleName = ContactName
+                            If .MiddleName = DataProvider.P_Def_LeerString Then .MiddleName = ContactName
                         Else
-                            If .MiddleName = DataProvider.P_Def_StringEmpty Then .MiddleName = Left(ContactName, pos - 1)
+                            If .MiddleName = DataProvider.P_Def_LeerString Then .MiddleName = Left(ContactName, pos - 1)
                             ContactName = Mid(ContactName, pos + 1)
                             pos = InStr(1, ContactName, ";", CompareMethod.Text)
                             If pos = 0 Then
-                                If .Title = DataProvider.P_Def_StringEmpty Then .Title = ContactName
+                                If .Title = DataProvider.P_Def_LeerString Then .Title = ContactName
                             Else
-                                If .Title = DataProvider.P_Def_StringEmpty Then .Title = Left(ContactName, pos - 1)
+                                If .Title = DataProvider.P_Def_LeerString Then .Title = Left(ContactName, pos - 1)
                                 ContactName = Mid(ContactName, pos + 1)
                                 pos = InStr(1, ContactName, ";", CompareMethod.Text)
                                 If pos = 0 Then
-                                    If .Suffix = DataProvider.P_Def_StringEmpty Then .Suffix = ContactName
+                                    If .Suffix = DataProvider.P_Def_LeerString Then .Suffix = ContactName
                                 Else
-                                    If .Suffix = DataProvider.P_Def_StringEmpty Then .Suffix = Left(ContactName, pos - 1)
+                                    If .Suffix = DataProvider.P_Def_LeerString Then .Suffix = Left(ContactName, pos - 1)
                                 End If
                             End If
                             ' Eingefügt am 9.4.10: Grund 11880 liefert Firmenname mit dem Wort "Firma   " - unschön: entfernt
@@ -680,7 +681,7 @@ Public Class KontaktFunktionen
                     End If
                 End If
             Else
-                If .FullName = DataProvider.P_Def_StringEmpty Then
+                If .FullName = DataProvider.P_Def_LeerString Then
                     tmp1 = ReadFromVCard(vCard, "FN", "")
                     pos = InStr(1, tmp1, "#", CompareMethod.Text)
                     ' Eingefügt am 9.4.10: Grund 11880 liefert Firmenname mit dem Wort "Firma   " - unschön: entfernt
@@ -693,98 +694,98 @@ Public Class KontaktFunktionen
                     .FullName = tmp1
                 End If
             End If
-            If .NickName = DataProvider.P_Def_StringEmpty Then
+            If .NickName = DataProvider.P_Def_LeerString Then
                 tmp1 = ReadFromVCard(vCard, "NICKNAME", "")
                 pos = InStr(1, tmp1, "#", CompareMethod.Text)
                 If Not pos = 0 Then tmp1 = Left(tmp1, pos - 1)
                 .NickName = tmp1
             End If
             'insert Jobtitle and Companny
-            If .JobTitle = DataProvider.P_Def_StringEmpty Then
+            If .JobTitle = DataProvider.P_Def_LeerString Then
                 tmp1 = ReadFromVCard(vCard, "TITLE", "")
                 pos = InStr(1, tmp1, "#", CompareMethod.Text)
                 If Not pos = 0 Then tmp1 = Left(tmp1, pos - 1)
                 .JobTitle = tmp1
             End If
             Company = ReadFromVCard(vCard, "ORG", "")
-            If .CompanyName = DataProvider.P_Def_StringEmpty Then
+            If .CompanyName = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Company, "#", CompareMethod.Text)
                 If Not pos = 0 Then Company = Left(Company, pos - 1)
                 .CompanyName = Company
             End If
             'insert Telephone Numbers
             BFax = ReadFromVCard(vCard, "TEL", "WORK,FAX")
-            If BFax = DataProvider.P_Def_StringEmpty Then
+            If BFax = DataProvider.P_Def_LeerString Then
                 BTel = ReadFromVCard(vCard, "TEL", "WORK")
             Else
-                If .BusinessFaxNumber = DataProvider.P_Def_StringEmpty Then
+                If .BusinessFaxNumber = DataProvider.P_Def_LeerString Then
                     pos = InStr(1, BFax, "#", CompareMethod.Text)
                     If Not pos = 0 Then BFax = Left(BFax, pos - 1)
                     .BusinessFaxNumber = C_hf.formatTelNr(BFax)
                 End If
                 BTel = ReadFromVCard(vCard, "TEL", "WORK,VOICE")
             End If
-            If .BusinessTelephoneNumber = DataProvider.P_Def_StringEmpty Then
+            If .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, BTel, "#", CompareMethod.Text)
                 If Not pos = 0 Then BTel = Left(BTel, pos - 1)
                 .BusinessTelephoneNumber = C_hf.formatTelNr(BTel)
             End If
             HFax = ReadFromVCard(vCard, "TEL", "HOME,FAX")
-            If HFax = DataProvider.P_Def_StringEmpty Then
+            If HFax = DataProvider.P_Def_LeerString Then
                 HTel = ReadFromVCard(vCard, "TEL", "HOME")
             Else
-                If .HomeFaxNumber = DataProvider.P_Def_StringEmpty Then
+                If .HomeFaxNumber = DataProvider.P_Def_LeerString Then
                     pos = InStr(1, HFax, "#", CompareMethod.Text)
                     If Not pos = 0 Then HFax = Left(HFax, pos - 1)
                     .HomeFaxNumber = C_hf.formatTelNr(HFax)
                 End If
                 HTel = ReadFromVCard(vCard, "TEL", "HOME,VOICE")
             End If
-            If .HomeTelephoneNumber = DataProvider.P_Def_StringEmpty Then
+            If .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, HTel, "#", CompareMethod.Text)
                 If Not pos = 0 Then HTel = Left(HTel, pos - 1)
                 .HomeTelephoneNumber = C_hf.formatTelNr(HTel)
             End If
             Mobile = ReadFromVCard(vCard, "TEL", "CELL")
-            If .MobileTelephoneNumber = DataProvider.P_Def_StringEmpty Then
+            If .MobileTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Mobile, "#", CompareMethod.Text)
                 If Not pos = 0 Then Mobile = Left(Mobile, pos - 1)
                 .MobileTelephoneNumber = C_hf.formatTelNr(Mobile)
             End If
             Pager = ReadFromVCard(vCard, "TEL", "PAGER")
-            If .PagerNumber = DataProvider.P_Def_StringEmpty Then
+            If .PagerNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Pager, "#", CompareMethod.Text)
                 If Not pos = 0 Then Pager = Left(Pager, pos - 1)
                 .PagerNumber = C_hf.formatTelNr(Pager)
             End If
             Car = ReadFromVCard(vCard, "TEL", "CAR")
-            If .CarTelephoneNumber = DataProvider.P_Def_StringEmpty Then
+            If .CarTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Car, "#", CompareMethod.Text)
                 If Not pos = 0 Then Car = Left(Car, pos - 1)
                 .CarTelephoneNumber = C_hf.formatTelNr(Car)
             End If
             ISDN = ReadFromVCard(vCard, "TEL", "ISDN")
-            If .ISDNNumber = DataProvider.P_Def_StringEmpty Then
+            If .ISDNNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, ISDN, "#", CompareMethod.Text)
                 If Not pos = 0 Then ISDN = Left(ISDN, pos - 1)
                 .ISDNNumber = C_hf.formatTelNr(ISDN)
             End If
-            If BFax = DataProvider.P_Def_StringEmpty And _
-                BTel = DataProvider.P_Def_StringEmpty And _
-                HFax = DataProvider.P_Def_StringEmpty And _
-                HTel = DataProvider.P_Def_StringEmpty And _
-                Mobile = DataProvider.P_Def_StringEmpty And _
-                Pager = DataProvider.P_Def_StringEmpty And _
-                Car = DataProvider.P_Def_StringEmpty And _
-                ISDN = DataProvider.P_Def_StringEmpty Then
+            If BFax = DataProvider.P_Def_LeerString And _
+                BTel = DataProvider.P_Def_LeerString And _
+                HFax = DataProvider.P_Def_LeerString And _
+                HTel = DataProvider.P_Def_LeerString And _
+                Mobile = DataProvider.P_Def_LeerString And _
+                Pager = DataProvider.P_Def_LeerString And _
+                Car = DataProvider.P_Def_LeerString And _
+                ISDN = DataProvider.P_Def_LeerString Then
 
                 tmp1 = ReadFromVCard(vCard, "TEL", "")
                 pos = InStr(1, tmp1, "#", CompareMethod.Text)
                 If Not pos = 0 Then tmp1 = Left(tmp1, pos - 1)
-                If Company = DataProvider.P_Def_StringEmpty Then
-                    If .HomeTelephoneNumber = DataProvider.P_Def_StringEmpty Then .HomeTelephoneNumber = C_hf.formatTelNr(tmp1)
+                If Company = DataProvider.P_Def_LeerString Then
+                    If .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then .HomeTelephoneNumber = C_hf.formatTelNr(tmp1)
                 Else
-                    If .BusinessTelephoneNumber = DataProvider.P_Def_StringEmpty Then .BusinessTelephoneNumber = C_hf.formatTelNr(tmp1)
+                    If .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then .BusinessTelephoneNumber = C_hf.formatTelNr(tmp1)
                 End If
             End If
             'insert Birthday
@@ -792,16 +793,16 @@ Public Class KontaktFunktionen
             pos = InStr(1, tmp1, "#", CompareMethod.Text)
             If Not pos = 0 Then tmp1 = Left(tmp1, pos - 1)
             If Len(tmp1) = 8 Then tmp1 = Left(tmp1, 4) & "-" & Mid(tmp1, 5, 2) & "-" & Mid(tmp1, 7)
-            If Not tmp1 = DataProvider.P_Def_StringEmpty And CStr(.Birthday) = "01.01.4501" Then .Birthday = CDate(tmp1)
+            If Not tmp1 = DataProvider.P_Def_LeerString And CStr(.Birthday) = "01.01.4501" Then .Birthday = CDate(tmp1)
             'insert addresses
             tmp1 = ReadFromVCard(vCard, "ADR", "HOME,POSTAL")
-            If tmp1 = DataProvider.P_Def_StringEmpty Then tmp1 = ReadFromVCard(vCard, "ADR", "HOME,PARCEL")
-            If tmp1 = DataProvider.P_Def_StringEmpty Then tmp1 = ReadFromVCard(vCard, "ADR", "HOME")
+            If tmp1 = DataProvider.P_Def_LeerString Then tmp1 = ReadFromVCard(vCard, "ADR", "HOME,PARCEL")
+            If tmp1 = DataProvider.P_Def_LeerString Then tmp1 = ReadFromVCard(vCard, "ADR", "HOME")
             tmp2 = ReadFromVCard(vCard, "ADR", "WORK,POSTAL")
-            If tmp2 = DataProvider.P_Def_StringEmpty Then tmp2 = ReadFromVCard(vCard, "ADR", "WORK,PARCEL")
-            If tmp2 = DataProvider.P_Def_StringEmpty Then tmp2 = ReadFromVCard(vCard, "ADR", "WORK")
-            If tmp1 = DataProvider.P_Def_StringEmpty And tmp2 = DataProvider.P_Def_StringEmpty Then
-                If Company = DataProvider.P_Def_StringEmpty Then
+            If tmp2 = DataProvider.P_Def_LeerString Then tmp2 = ReadFromVCard(vCard, "ADR", "WORK,PARCEL")
+            If tmp2 = DataProvider.P_Def_LeerString Then tmp2 = ReadFromVCard(vCard, "ADR", "WORK")
+            If tmp1 = DataProvider.P_Def_LeerString And tmp2 = DataProvider.P_Def_LeerString Then
+                If Company = DataProvider.P_Def_LeerString Then
                     tmp1 = ReadFromVCard(vCard, "ADR", "")
                 Else
                     tmp2 = ReadFromVCard(vCard, "ADR", "")
@@ -813,45 +814,45 @@ Public Class KontaktFunktionen
             If Not pos = 0 Then tmp2 = Left(tmp2, pos - 1)
             pos = InStr(1, tmp1, ";", CompareMethod.Text)
             If pos = 0 Then
-                If .HomeAddressPostOfficeBox = DataProvider.P_Def_StringEmpty Then .HomeAddressPostOfficeBox = tmp1
+                If .HomeAddressPostOfficeBox = DataProvider.P_Def_LeerString Then .HomeAddressPostOfficeBox = tmp1
             Else
                 tmp3 = Left(tmp1, pos - 1)
                 tmp1 = Mid(tmp1, pos + 1)
                 pos = InStr(1, tmp1, ";", CompareMethod.Text)
                 If pos = 0 Then
-                    If .HomeAddressPostOfficeBox = DataProvider.P_Def_StringEmpty Then .HomeAddressPostOfficeBox = Trim(tmp3 & " " & tmp1)
+                    If .HomeAddressPostOfficeBox = DataProvider.P_Def_LeerString Then .HomeAddressPostOfficeBox = Trim(tmp3 & " " & tmp1)
                 Else
-                    If .HomeAddressPostOfficeBox = DataProvider.P_Def_StringEmpty Then .HomeAddressPostOfficeBox = Trim(tmp3 & " " & Left(tmp1, pos - 1))
+                    If .HomeAddressPostOfficeBox = DataProvider.P_Def_LeerString Then .HomeAddressPostOfficeBox = Trim(tmp3 & " " & Left(tmp1, pos - 1))
                     tmp1 = Mid(tmp1, pos + 1)
                     pos = InStr(1, tmp1, ";", CompareMethod.Text)
                     If pos = 0 Then
-                        If .HomeAddressStreet = DataProvider.P_Def_StringEmpty Then .HomeAddressStreet = tmp1
+                        If .HomeAddressStreet = DataProvider.P_Def_LeerString Then .HomeAddressStreet = tmp1
                     Else
-                        If .HomeAddressStreet = DataProvider.P_Def_StringEmpty Then .HomeAddressStreet = Left(tmp1, pos - 1)
+                        If .HomeAddressStreet = DataProvider.P_Def_LeerString Then .HomeAddressStreet = Left(tmp1, pos - 1)
                         tmp1 = Mid(tmp1, pos + 1)
                         pos = InStr(1, tmp1, ";", CompareMethod.Text)
                         If pos = 0 Then
-                            If .HomeAddressCity = DataProvider.P_Def_StringEmpty Then .HomeAddressCity = tmp1
+                            If .HomeAddressCity = DataProvider.P_Def_LeerString Then .HomeAddressCity = tmp1
                         Else
-                            If .HomeAddressCity = DataProvider.P_Def_StringEmpty Then .HomeAddressCity = Left(tmp1, pos - 1)
+                            If .HomeAddressCity = DataProvider.P_Def_LeerString Then .HomeAddressCity = Left(tmp1, pos - 1)
                             tmp1 = Mid(tmp1, pos + 1)
                             pos = InStr(1, tmp1, ";", CompareMethod.Text)
                             If pos = 0 Then
-                                If .HomeAddressState = DataProvider.P_Def_StringEmpty Then .HomeAddressState = tmp1
+                                If .HomeAddressState = DataProvider.P_Def_LeerString Then .HomeAddressState = tmp1
                             Else
-                                If .HomeAddressState = DataProvider.P_Def_StringEmpty Then .HomeAddressState = Left(tmp1, pos - 1)
+                                If .HomeAddressState = DataProvider.P_Def_LeerString Then .HomeAddressState = Left(tmp1, pos - 1)
                                 tmp1 = Mid(tmp1, pos + 1)
                                 pos = InStr(1, tmp1, ";", CompareMethod.Text)
                                 If pos = 0 Then
-                                    If .HomeAddressPostalCode = DataProvider.P_Def_StringEmpty Then .HomeAddressPostalCode = tmp1
+                                    If .HomeAddressPostalCode = DataProvider.P_Def_LeerString Then .HomeAddressPostalCode = tmp1
                                 Else
-                                    If .HomeAddressPostalCode = DataProvider.P_Def_StringEmpty Then .HomeAddressPostalCode = Left(tmp1, pos - 1)
+                                    If .HomeAddressPostalCode = DataProvider.P_Def_LeerString Then .HomeAddressPostalCode = Left(tmp1, pos - 1)
                                     tmp1 = Mid(tmp1, pos + 1)
                                     pos = InStr(1, tmp1, ";", CompareMethod.Text)
                                     If pos = 0 Then
-                                        If .HomeAddressCountry = DataProvider.P_Def_StringEmpty Then .HomeAddressCountry = tmp1
+                                        If .HomeAddressCountry = DataProvider.P_Def_LeerString Then .HomeAddressCountry = tmp1
                                     Else
-                                        If .HomeAddressCountry = DataProvider.P_Def_StringEmpty Then .HomeAddressCountry = Left(tmp1, pos - 1)
+                                        If .HomeAddressCountry = DataProvider.P_Def_LeerString Then .HomeAddressCountry = Left(tmp1, pos - 1)
                                     End If
                                 End If
                             End If
@@ -861,45 +862,45 @@ Public Class KontaktFunktionen
             End If
             pos = InStr(1, tmp2, ";", CompareMethod.Text)
             If pos = 0 Then
-                If .BusinessAddressPostOfficeBox = DataProvider.P_Def_StringEmpty Then .BusinessAddressPostOfficeBox = tmp2
+                If .BusinessAddressPostOfficeBox = DataProvider.P_Def_LeerString Then .BusinessAddressPostOfficeBox = tmp2
             Else
                 tmp3 = Left(tmp2, pos - 1)
                 tmp2 = Mid(tmp2, pos + 1)
                 pos = InStr(1, tmp2, ";", CompareMethod.Text)
                 If pos = 0 Then
-                    If .BusinessAddressPostOfficeBox = DataProvider.P_Def_StringEmpty Then .BusinessAddressPostOfficeBox = Trim(tmp3 & " " & tmp2)
+                    If .BusinessAddressPostOfficeBox = DataProvider.P_Def_LeerString Then .BusinessAddressPostOfficeBox = Trim(tmp3 & " " & tmp2)
                 Else
-                    If .BusinessAddressPostOfficeBox = DataProvider.P_Def_StringEmpty Then .BusinessAddressPostOfficeBox = Trim(tmp3 & " " & Left(tmp2, pos - 1))
+                    If .BusinessAddressPostOfficeBox = DataProvider.P_Def_LeerString Then .BusinessAddressPostOfficeBox = Trim(tmp3 & " " & Left(tmp2, pos - 1))
                     tmp2 = Mid(tmp2, pos + 1)
                     pos = InStr(1, tmp2, ";", CompareMethod.Text)
                     If pos = 0 Then
-                        If .BusinessAddressStreet = DataProvider.P_Def_StringEmpty Then .BusinessAddressStreet = tmp2
+                        If .BusinessAddressStreet = DataProvider.P_Def_LeerString Then .BusinessAddressStreet = tmp2
                     Else
-                        If .BusinessAddressStreet = DataProvider.P_Def_StringEmpty Then .BusinessAddressStreet = Left(tmp2, pos - 1)
+                        If .BusinessAddressStreet = DataProvider.P_Def_LeerString Then .BusinessAddressStreet = Left(tmp2, pos - 1)
                         tmp2 = Mid(tmp2, pos + 1)
                         pos = InStr(1, tmp2, ";", CompareMethod.Text)
                         If pos = 0 Then
-                            If .BusinessAddressCity = DataProvider.P_Def_StringEmpty Then .BusinessAddressCity = tmp2
+                            If .BusinessAddressCity = DataProvider.P_Def_LeerString Then .BusinessAddressCity = tmp2
                         Else
-                            If .BusinessAddressCity = DataProvider.P_Def_StringEmpty Then .BusinessAddressCity = Left(tmp2, pos - 1)
+                            If .BusinessAddressCity = DataProvider.P_Def_LeerString Then .BusinessAddressCity = Left(tmp2, pos - 1)
                             tmp2 = Mid(tmp2, pos + 1)
                             pos = InStr(1, tmp2, ";", CompareMethod.Text)
                             If pos = 0 Then
-                                If .BusinessAddressState = DataProvider.P_Def_StringEmpty Then .BusinessAddressState = tmp2
+                                If .BusinessAddressState = DataProvider.P_Def_LeerString Then .BusinessAddressState = tmp2
                             Else
-                                If .BusinessAddressState = DataProvider.P_Def_StringEmpty Then .BusinessAddressState = Left(tmp2, pos - 1)
+                                If .BusinessAddressState = DataProvider.P_Def_LeerString Then .BusinessAddressState = Left(tmp2, pos - 1)
                                 tmp2 = Mid(tmp2, pos + 1)
                                 pos = InStr(1, tmp2, ";", CompareMethod.Text)
                                 If pos = 0 Then
-                                    If .BusinessAddressPostalCode = DataProvider.P_Def_StringEmpty Then .BusinessAddressPostalCode = tmp2
+                                    If .BusinessAddressPostalCode = DataProvider.P_Def_LeerString Then .BusinessAddressPostalCode = tmp2
                                 Else
-                                    If .BusinessAddressPostalCode = DataProvider.P_Def_StringEmpty Then .BusinessAddressPostalCode = Left(tmp2, pos - 1)
+                                    If .BusinessAddressPostalCode = DataProvider.P_Def_LeerString Then .BusinessAddressPostalCode = Left(tmp2, pos - 1)
                                     tmp2 = Mid(tmp2, pos + 1)
                                     pos = InStr(1, tmp2, ";", CompareMethod.Text)
                                     If pos = 0 Then
-                                        If .BusinessAddressCountry = DataProvider.P_Def_StringEmpty Then .BusinessAddressCountry = tmp2
+                                        If .BusinessAddressCountry = DataProvider.P_Def_LeerString Then .BusinessAddressCountry = tmp2
                                     Else
-                                        If .BusinessAddressCountry = DataProvider.P_Def_StringEmpty Then .BusinessAddressCountry = Left(tmp2, pos - 1)
+                                        If .BusinessAddressCountry = DataProvider.P_Def_LeerString Then .BusinessAddressCountry = Left(tmp2, pos - 1)
                                     End If
                                 End If
                             End If
@@ -914,14 +915,14 @@ Public Class KontaktFunktionen
             tmp2 = ReadFromVCard(vCard, "EMAIL", "")
             pos = InStr(1, tmp2, "#", CompareMethod.Text)
             If Not pos = 0 Then tmp2 = Left(tmp2, pos - 1)
-            If Not tmp2 = DataProvider.P_Def_StringEmpty Then
+            If Not tmp2 = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, tmp2, tmp1, CompareMethod.Text)
-                If Not tmp1 = DataProvider.P_Def_StringEmpty And Not pos = 0 Then
+                If Not tmp1 = DataProvider.P_Def_LeerString And Not pos = 0 Then
                     tmp2 = tmp1 & ";" & Replace(Left(tmp2, pos - 1) & Mid(tmp2, pos + Len(tmp1)), ";;", ";", , , CompareMethod.Text)
                 End If
-                Email1 = DataProvider.P_Def_StringEmpty
-                Email2 = DataProvider.P_Def_StringEmpty
-                Email3 = DataProvider.P_Def_StringEmpty
+                Email1 = DataProvider.P_Def_LeerString
+                Email2 = DataProvider.P_Def_LeerString
+                Email3 = DataProvider.P_Def_LeerString
                 pos = InStr(1, tmp2, ";", CompareMethod.Text)
                 If pos = 0 Then
                     Email1 = tmp2
@@ -943,18 +944,18 @@ Public Class KontaktFunktionen
                     End If
                 End If
                 Try ' Fehler abfangen
-                    If .Email1Address = DataProvider.P_Def_StringEmpty Then
+                    If .Email1Address = DataProvider.P_Def_LeerString Then
                         .Email1Address = Email1
                     ElseIf Not .Email1Address = Email1 Then
                         If Not .Email1Address = Email2 Then Email3 = Email2
                         Email2 = Email1
                     End If
-                    If .Email2Address = DataProvider.P_Def_StringEmpty Then
+                    If .Email2Address = DataProvider.P_Def_LeerString Then
                         .Email2Address = Email2
                     ElseIf Not .Email2Address = Email2 Then
                         Email3 = Email2
                     End If
-                    If .Email3Address = DataProvider.P_Def_StringEmpty Then .Email3Address = Email3
+                    If .Email3Address = DataProvider.P_Def_LeerString Then .Email3Address = Email3
                 Catch
                     'LogFile("vCard2Contact: " & Err.Number)
                     If Err.Number = 287 Then
@@ -966,10 +967,10 @@ Public Class KontaktFunktionen
                 End Try
             End If
             'insert urls
-            If .WebPage = DataProvider.P_Def_StringEmpty Then .WebPage = Replace(ReadFromVCard(vCard, "URL", ""), ";", " ", , , CompareMethod.Text)
+            If .WebPage = DataProvider.P_Def_LeerString Then .WebPage = Replace(ReadFromVCard(vCard, "URL", ""), ";", " ", , , CompareMethod.Text)
             'insert note
             tmp1 = ReadFromVCard(vCard, "NOTE", "")
-            If Not tmp1 = DataProvider.P_Def_StringEmpty Then
+            If Not tmp1 = DataProvider.P_Def_LeerString Then
                 Try ' Fehler abfangen
                     .Body = tmp1 & vbNewLine & vbNewLine & .Body
                 Catch
@@ -1201,8 +1202,8 @@ Public Class KontaktFunktionen
                             .Cells(2).Range.Text = C_OLI.BenutzerInitialien
                             .Cells(3).Range.Text = Telfonat.TelNr
                             .Cells(4).Range.Text = CStr(Telfonat.Zeit)
-                            .Cells(5).Range.Text = DataProvider.P_Def_StringEmpty
-                            .Cells(6).Range.Text = DataProvider.P_Def_StringEmpty
+                            .Cells(5).Range.Text = DataProvider.P_Def_LeerString
+                            .Cells(6).Range.Text = DataProvider.P_Def_LeerString
                         Case AnrufMonitor.AnrMonEvent.AnrMonCONNECT
                             .Cells(4).Range.Text = CStr(Telfonat.Zeit)
                             OutlookSecurity.SetFocus(GetBodyHandle(oInsp)).ToString()
