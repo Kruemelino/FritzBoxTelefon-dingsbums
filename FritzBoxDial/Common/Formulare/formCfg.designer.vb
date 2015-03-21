@@ -2048,7 +2048,7 @@ Partial Class formCfg
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(330, 13)
         Me.Label27.TabIndex = 11
-        Me.Label27.Text = "Phoner Copyright 2013 Heiko Sommerfeldt. Alle Rechte vorbehalten."
+        Me.Label27.Text = "Phoner Copyright 2015 Heiko Sommerfeldt. Alle Rechte vorbehalten."
         '
         'Label26
         '
