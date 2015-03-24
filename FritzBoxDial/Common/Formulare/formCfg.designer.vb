@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -339,10 +339,10 @@ Partial Class formCfg
         Me.CBIndexAus.Enabled = False
         Me.CBIndexAus.Location = New System.Drawing.Point(248, 19)
         Me.CBIndexAus.Name = "CBIndexAus"
-        Me.CBIndexAus.Size = New System.Drawing.Size(142, 17)
+        Me.CBIndexAus.Size = New System.Drawing.Size(299, 17)
         Me.CBIndexAus.TabIndex = 6
-        Me.CBIndexAus.Text = """Indizierung"" auschalten"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können sie die Indizierung auch aussch" & _
+        Me.CBIndexAus.Text = "Indizierung auschalten (nur wenn Anrufmonitor deaktiviert)"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können Sie die Indizierung auch aussch" & _
         "alten.")
         Me.CBIndexAus.UseVisualStyleBackColor = True
         '
@@ -813,10 +813,10 @@ Partial Class formCfg
         Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(254, 20)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(77, 13)
+        Me.Label7.Size = New System.Drawing.Size(164, 13)
         Me.Label7.TabIndex = 5
-        Me.Label7.Text = "Kontaktordner:"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.Label7, "Hier werden alle Kontakte gespeichert.")
+        Me.Label7.Text = "Speicherort für erstellte Kontakte:"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label7, resources.GetString("Label7.ToolTip"))
         '
         'TBRWSTest
         '
@@ -1145,9 +1145,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle10.Format = "T"
+        DataGridViewCellStyle10.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle10
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1159,9 +1159,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle11.Format = "T"
+        DataGridViewCellStyle11.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle11
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1173,9 +1173,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle12.Format = "T"
+        DataGridViewCellStyle12.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle12
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1361,10 +1361,10 @@ Partial Class formCfg
         Me.TVOutlookContact.Name = "TVOutlookContact"
         Me.TVOutlookContact.Size = New System.Drawing.Size(307, 70)
         Me.TVOutlookContact.TabIndex = 4
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TVOutlookContact, resources.GetString("TVOutlookContact.ToolTip"))
         '
         'ComboBoxRWS
         '
-        Me.ComboBoxRWS.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ComboBoxRWS.FormattingEnabled = True
         Me.ComboBoxRWS.Location = New System.Drawing.Point(121, 17)
         Me.ComboBoxRWS.Name = "ComboBoxRWS"
