@@ -523,13 +523,11 @@ Public Class KontaktFunktionen
     ''' Indiziert einen Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der indiziert werden soll.</param>
-
     Friend Sub IndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
             Dim tempTelNr As String
             Try
                 With olKontakt
-
                     Dim alleTE() As String = {.AssistantTelephoneNumber, _
                                               .BusinessTelephoneNumber, _
                                               .Business2TelephoneNumber, _
@@ -553,7 +551,11 @@ Public Class KontaktFunktionen
                     For i = LBound(alleTE) To UBound(alleTE)
                         If Not alleTE(i) = DataProvider.P_Def_LeerString Then ' Fall: Telefonnummer vorhanden
                             If .UserProperties.Find(DataProvider.P_Def_UserProperties(i)) Is Nothing Then ' Fall Index nicht vorhanden
+#If OVer = 11 Then
+                                .UserProperties.Add(DataProvider.P_Def_UserProperties(i), Outlook.OlUserPropertyType.olText, True)
+#Else
                                 .UserProperties.Add(DataProvider.P_Def_UserProperties(i), Outlook.OlUserPropertyType.olText, False)
+#End If
                             End If
 
                             tempTelNr = C_hf.nurZiffern(alleTE(i))
@@ -581,7 +583,6 @@ Public Class KontaktFunktionen
     ''' Entfernt alle Indizierungseinträge aus einem Kontaktelement.
     ''' </summary>
     ''' <param name="olKontakt">Der Kontakt der deindiziert werden soll.</param>
-
     Friend Sub DeIndizierungKontakt(ByRef olKontakt As Outlook.ContactItem)
         Dim UserEigenschaft As Outlook.UserProperty
         If Not C_DP.P_CBIndexAus Then
@@ -612,12 +613,13 @@ Public Class KontaktFunktionen
             With Ordner.UserDefinedProperties
                 For i = 1 To .Count
                     If DataProvider.P_Def_UserProperties.Contains(.Item(1).Name) Then .Remove(1)
-                    'If C_hf.IsOneOf(.Item(1).Name, DataProvider.P_Def_UserProperties) Then .Remove(1)
                 Next
             End With
         Catch : End Try
 #End If
     End Sub
+
+
 #End Region
 
 #Region "vCard"

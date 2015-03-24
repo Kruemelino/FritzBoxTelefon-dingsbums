@@ -1036,7 +1036,7 @@ Imports Microsoft.Office.Core
                 C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
-                If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String And Not Anrufer = DataProvider.P_Def_StringEmpty Then
+                If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String And Not Anrufer = DataProvider.P_Def_LeerString Then
                     With cPopUp.Controls.Item(i)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)

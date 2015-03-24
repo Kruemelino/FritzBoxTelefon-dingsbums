@@ -120,17 +120,17 @@
       <DependentUpon>formInit.vb</DependentUpon>
       <link>Formulare\formInit.resx</link>
     </EmbeddedResource>
-    <Compile Include="..\Common\Formulare\formJournalimport.designer.vb">
-      <DependentUpon>formJournalimport.vb</DependentUpon>
-      <link>Formulare\formJournalimport.designer.vb</link>
+    <Compile Include="..\Common\Formulare\formAnrList.designer.vb">
+      <DependentUpon>formAnrList.vb</DependentUpon>
+      <link>Formulare\formAnrList.designer.vb</link>
     </Compile>
-    <Compile Include="..\Common\Formulare\formJournalimport.vb">
+    <Compile Include="..\Common\Formulare\formAnrList.vb">
       <SubType>Form</SubType>
-      <link>Formulare\formJournalimport.vb</link>
+      <link>Formulare\formAnrList.vb</link>
     </Compile>
-    <EmbeddedResource Include="..\Common\Formulare\formJournalimport.resx">
-      <DependentUpon>formJournalimport.vb</DependentUpon>
-      <link>Formulare\formJournalimport.resx</link>
+    <EmbeddedResource Include="..\Common\Formulare\formAnrList.resx">
+      <DependentUpon>formAnrList.vb</DependentUpon>
+      <link>Formulare\formAnrList.resx</link>
     </EmbeddedResource>
     <Compile Include="..\Common\Formulare\formRWSuche.designer.vb">
       <DependentUpon>formRWSuche.vb</DependentUpon>

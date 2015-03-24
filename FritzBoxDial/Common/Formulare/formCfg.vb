@@ -1246,54 +1246,53 @@ Public Class formCfg
         End If
     End Sub
 
-    Private Sub KontaktDeIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal NamensRaum As Outlook.NameSpace) 'As Boolean
+    Private Overloads Sub KontaktDeIndexer(ByVal NamensRaum As Outlook.NameSpace) 'As Boolean
 
-        'KontaktDeIndexer = False
-        Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
-
-        'Dim item As Object      ' aktuelles Element
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
         ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
         If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
-                KontaktDeIndexer(CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder), Nothing)
+                KontaktDeIndexer(CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder))
                 j = j + 1
             Loop
             aktKontakt = Nothing
             'Return True
-        Else
-
-            'If BWIndexer.CancellationPending Then Exit Function
-
-            If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And Not BWIndexer.CancellationPending Then
-                For Each item In Ordner.Items
-                    ' nur Kontakte werden durchsucht
-                    If TypeOf item Is Outlook.ContactItem Then
-                        aktKontakt = CType(item, Outlook.ContactItem)
-
-                        'With aktKontakt
-                        'KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
-                        KontaktName = " (" & aktKontakt.FullName & ")"
-                        C_KF.DeIndizierungKontakt(aktKontakt)
-                        BWIndexer.ReportProgress(-1)
-                        If BWIndexer.CancellationPending Then Exit For
-                    Else
-                        BWIndexer.ReportProgress(-1)
-                    End If
-                    C_hf.NAR(item)
-                    Windows.Forms.Application.DoEvents()
-                Next 'Item
-                C_KF.DeIndizierungOrdner(Ordner)
-            End If
-            ' Unterordner werden rekursiv durchsucht
-            iOrdner = 1
-            Do While (iOrdner <= Ordner.Folders.Count) And Not BWIndexer.CancellationPending
-                KontaktDeIndexer(CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder), Nothing)
-                iOrdner = iOrdner + 1
-            Loop
-            aktKontakt = Nothing
         End If
+    End Sub
+
+    Private Overloads Sub KontaktDeIndexer(ByVal Ordner As Outlook.MAPIFolder) 'As Boolean
+
+        Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
+        Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
+
+        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And Not BWIndexer.CancellationPending Then
+            For Each item In Ordner.Items
+                ' nur Kontakte werden durchsucht
+                If TypeOf item Is Outlook.ContactItem Then
+                    aktKontakt = CType(item, Outlook.ContactItem)
+
+                    'With aktKontakt
+                    'KontaktName = " (" & aktKontakt.FullNameAndCompany & ")"
+                    KontaktName = " (" & aktKontakt.FullName & ")"
+                    C_KF.DeIndizierungKontakt(aktKontakt)
+                    BWIndexer.ReportProgress(-1)
+                    If BWIndexer.CancellationPending Then Exit For
+                Else
+                    BWIndexer.ReportProgress(-1)
+                End If
+                C_hf.NAR(item)
+                Windows.Forms.Application.DoEvents()
+            Next 'Item
+            C_KF.DeIndizierungOrdner(Ordner)
+        End If
+        ' Unterordner werden rekursiv durchsucht
+        iOrdner = 1
+        Do While (iOrdner <= Ordner.Folders.Count) And Not BWIndexer.CancellationPending
+            KontaktDeIndexer(Ordner.Folders.Item(iOrdner))
+            iOrdner = iOrdner + 1
+        Loop
+        aktKontakt = Nothing
     End Sub
 #End Region
 
@@ -1403,13 +1402,13 @@ Public Class formCfg
             If Me.RadioButtonErstelle.Checked Then
                 KontaktIndexer(Ordner:=olfolder)
             ElseIf Me.RadioButtonEntfernen.Checked Then
-                KontaktDeIndexer(olfolder, Nothing)
+                KontaktDeIndexer(olfolder)
             End If
         Else
             If Me.RadioButtonErstelle.Checked Then
                 KontaktIndexer(NamensRaum:=olNamespace)
             ElseIf Me.RadioButtonEntfernen.Checked Then
-                KontaktDeIndexer(Nothing, olNamespace)
+                KontaktDeIndexer(olNamespace)
             End If
         End If
     End Sub
