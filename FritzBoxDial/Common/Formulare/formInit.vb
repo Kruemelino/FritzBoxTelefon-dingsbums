@@ -78,11 +78,11 @@ Friend Class formInit
             ' Klasse für den AnrufMonitor generieren
             C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp, C_XML)
 
-            ' Klasse für den Wählclient generieren
-            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_AnrMon, C_Phoner, C_XML)
-
             ' Klasse für das GraphicalUserInterface (GUI) generieren
             C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
+
+            ' Klasse für den Wählclient generieren
+            C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_AnrMon, C_Phoner, C_XML)
 
             ' Klasse für das Popup-Fenster generieren
             C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF, C_WählClient)
