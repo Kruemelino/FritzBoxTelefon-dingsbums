@@ -33,21 +33,17 @@ Public Class ThisAddIn
     Private WithEvents iBtnUpload As Office.CommandBarButton
 #End If
 #End Region
-    Private Shared oApp As Outlook.Application
 
     Private WithEvents oInsps As Outlook.Inspectors
     Friend Shared ListofOpenContacts As New Generic.List(Of ContactSaved)
     Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
-
-#Region "Eigene Klassen"
-    Private C_WClient As Wählclient
-#End Region
 
 #Region "Eigene Formulare"
     Private F_AnrListImport As formImportAnrList
     Private F_Cfg As formCfg
     Private F_Init As formInit
 #End Region
+
 #Region "Properties"
     ''' <summary>
     ''' Gibt die Versionsnummer des Addins zurück.
@@ -65,6 +61,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Gibt die aktuelle Outlook-Application zurück.
     ''' </summary>
+    Private Shared oApp As Outlook.Application
     Friend Shared Property P_oApp() As Outlook.Application
         Get
             Return oApp
@@ -188,11 +185,11 @@ Public Class ThisAddIn
     ''' Startet das Fritz!Box Telefon-dingsbums
     ''' </summary>
     Private Overloads Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
-
+        'StandBy Handler
         AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
+        ' Starte das Addin normal
         ThisAddIn_Startup(False)
-
     End Sub
 
     ''' <summary>
@@ -212,7 +209,6 @@ Public Class ThisAddIn
             C_GUI.RefreshRibbon()
 #End If
             F_Init.StandByReStart()
-
         Else
             If P_oApp.ActiveExplorer IsNot Nothing Then
 #If OVer = 11 Then
@@ -288,37 +284,37 @@ Public Class ThisAddIn
         End With
     End Sub
 
-    Private Sub ePopAnr1_click(ByVal control As Office.CommandBarButton, ByRef cancel As Boolean) Handles ePopAnr1.Click, _
-                                                                                                          ePopAnr2.Click, _
-                                                                                                          ePopAnr3.Click, _
-                                                                                                          ePopAnr4.Click, _
-                                                                                                          ePopAnr5.Click, _
-                                                                                                          ePopAnr6.Click, _
-                                                                                                          ePopAnr7.Click, _
-                                                                                                          ePopAnr8.Click, _
-                                                                                                          ePopAnr9.Click, _
-                                                                                                          ePopAnr10.Click, _
-                                                                                                          ePopWwdh1.Click, _
-                                                                                                          ePopWwdh2.Click, _
-                                                                                                          ePopWwdh3.Click, _
-                                                                                                          ePopWwdh4.Click, _
-                                                                                                          ePopWwdh5.Click, _
-                                                                                                          ePopWwdh6.Click, _
-                                                                                                          ePopWwdh7.Click, _
-                                                                                                          ePopWwdh8.Click, _
-                                                                                                          ePopWwdh9.Click, _
-                                                                                                          ePopWwdh10.Click, _
-                                                                                                          ePopVIP1.Click, _
-                                                                                                          ePopVIP2.Click, _
-                                                                                                          ePopVIP3.Click, _
-                                                                                                          ePopVIP4.Click, _
-                                                                                                          ePopVIP5.Click, _
-                                                                                                          ePopVIP6.Click, _
-                                                                                                          ePopVIP7.Click, _
-                                                                                                          ePopVIP8.Click, _
-                                                                                                          ePopVIP9.Click, _
-                                                                                                          ePopVIP10.Click
-        C_WClient.OnActionListen(control.Tag)
+    Private Sub ePopUp_Click(ByVal control As Office.CommandBarButton, ByRef cancel As Boolean) Handles ePopAnr1.Click, _
+                                                                                                        ePopAnr2.Click, _
+                                                                                                        ePopAnr3.Click, _
+                                                                                                        ePopAnr4.Click, _
+                                                                                                        ePopAnr5.Click, _
+                                                                                                        ePopAnr6.Click, _
+                                                                                                        ePopAnr7.Click, _
+                                                                                                        ePopAnr8.Click, _
+                                                                                                        ePopAnr9.Click, _
+                                                                                                        ePopAnr10.Click, _
+                                                                                                        ePopWwdh1.Click, _
+                                                                                                        ePopWwdh2.Click, _
+                                                                                                        ePopWwdh3.Click, _
+                                                                                                        ePopWwdh4.Click, _
+                                                                                                        ePopWwdh5.Click, _
+                                                                                                        ePopWwdh6.Click, _
+                                                                                                        ePopWwdh7.Click, _
+                                                                                                        ePopWwdh8.Click, _
+                                                                                                        ePopWwdh9.Click, _
+                                                                                                        ePopWwdh10.Click, _
+                                                                                                        ePopVIP1.Click, _
+                                                                                                        ePopVIP2.Click, _
+                                                                                                        ePopVIP3.Click, _
+                                                                                                        ePopVIP4.Click, _
+                                                                                                        ePopVIP5.Click, _
+                                                                                                        ePopVIP6.Click, _
+                                                                                                        ePopVIP7.Click, _
+                                                                                                        ePopVIP8.Click, _
+                                                                                                        ePopVIP9.Click, _
+                                                                                                        ePopVIP10.Click
+        C_GUI.OnActionListen(control.Tag)
     End Sub
 #End Region
 #End If

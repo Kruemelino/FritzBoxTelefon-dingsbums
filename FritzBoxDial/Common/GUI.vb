@@ -1410,88 +1410,6 @@ Imports Microsoft.Office.Core
         End Select
     End Sub
 
-    ''' <summary>
-    ''' Behandelt das Ereignis, welches beim Klick auf die PopUp-Items ausgelöst wird.
-    ''' Funktion würd für alle Offeice Versionen benötigt.
-    ''' </summary>
-    ''' <param name="ControlTag">Tag des Control Items in der folgenden Form: ####List;ID</param>
-    Friend Sub OnActionListen(ByVal ControlTag As String)
-        Dim oContact As Outlook.ContactItem
-        Dim Telefonat As String() = Split(ControlTag, ";", , CompareMethod.Text)
-        ' KontaktID, StoreID, TelNr ermitteln
-        Dim KontaktID As String
-        Dim StoreID As String
-        Dim TelNr As String
-        Dim Verpasst As Boolean
-        Dim vCard As String
-        Dim ListNodeNames As New ArrayList
-        Dim ListNodeValues As New ArrayList
-        Dim xPathTeile As New ArrayList
-
-        ' TelNr
-        ListNodeNames.Add("TelNr")
-        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-
-        ' Anrufer
-        ListNodeNames.Add("Anrufer")
-        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-
-        ' StoreID
-        ListNodeNames.Add("StoreID")
-        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-
-        ' KontaktID
-        ListNodeNames.Add("KontaktID")
-        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
-
-        ' vCard
-        ListNodeNames.Add("vCard")
-        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
-
-        ' Verpasst
-        ListNodeNames.Add("Verpasst")
-        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
-
-        With xPathTeile
-            .Add(Telefonat(0))
-            .Add("Eintrag")
-        End With
-        C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
-
-        TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
-        KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
-        StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
-        vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
-        Verpasst = CBool(ListNodeValues.Item(ListNodeNames.IndexOf("Verpasst")))
-
-        If Not StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
-            'If Not KontaktID = DataProvider.P_Def_ErrorMinusOne And Not StoreID = DataProvider.P_Def_ErrorMinusOne Then
-            oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
-            If oContact Is Nothing Then
-                Select Case Telefonat(0)
-                    Case DataProvider.P_Def_NameListVIP
-                        If C_HF.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionListen") = MsgBoxResult.Yes Then
-                            RemoveVIP(KontaktID, StoreID)
-                        End If
-                    Case Else
-                        C_HF.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionListen")
-                End Select
-            End If
-        Else
-            oContact = Nothing
-        End If
-
-        ' Verpasst-Marker auf false setzen
-        If Verpasst Then
-            With xPathTeile
-                .Add("[@ID=""" & Telefonat(1) & """]")
-                .Add("Verpasst")
-            End With
-            C_XML.Write(C_DP.XMLDoc, xPathTeile, "False")
-        End If
-
-        C_WClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
-    End Sub
 #End Region
 
 #Region "Inspector Button Click"
@@ -1611,6 +1529,87 @@ Imports Microsoft.Office.Core
         With Telefonat
             UpdateList(ListName, .Anrufer, .TelNr, CStr(.Zeit), .StoreID, .KontaktID, .vCard, .Verpasst)
         End With
+    End Sub
+
+    ''' <summary>
+    ''' Behandelt das Ereignis, welches beim Klick auf die PopUp-Items ausgelöst wird.
+    ''' Funktion würd für alle Offeice Versionen benötigt.
+    ''' </summary>
+    ''' <param name="ControlTag">Tag des Control Items in der folgenden Form: ####List;ID</param>
+    Friend Sub OnActionListen(ByVal ControlTag As String)
+        Dim oContact As Outlook.ContactItem
+        Dim Telefonat As String() = Split(ControlTag, ";", , CompareMethod.Text)
+        ' KontaktID, StoreID, TelNr ermitteln
+        Dim KontaktID As String
+        Dim StoreID As String
+        Dim TelNr As String
+        'Dim Verpasst As Boolean
+        Dim vCard As String
+        Dim ListNodeNames As New ArrayList
+        Dim ListNodeValues As New ArrayList
+        Dim xPathTeile As New ArrayList
+
+        ' TelNr
+        ListNodeNames.Add("TelNr")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+
+        ' Anrufer
+        ListNodeNames.Add("Anrufer")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+
+        ' StoreID
+        ListNodeNames.Add("StoreID")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+
+        ' KontaktID
+        ListNodeNames.Add("KontaktID")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
+
+        ' vCard
+        ListNodeNames.Add("vCard")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
+
+        ' Verpasst
+        ListNodeNames.Add("Verpasst")
+        ListNodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String & ";")
+
+        With xPathTeile
+            .Add(Telefonat(0))
+            .Add("Eintrag")
+        End With
+        C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, ListNodeNames, ListNodeValues, "ID", Telefonat(1))
+
+        TelNr = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("TelNr")))
+        KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
+        StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
+        vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
+        'Verpasst = CBool(ListNodeValues.Item(ListNodeNames.IndexOf("Verpasst")))
+
+        If Not StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
+            'If Not KontaktID = DataProvider.P_Def_ErrorMinusOne And Not StoreID = DataProvider.P_Def_ErrorMinusOne Then
+            oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
+            If oContact Is Nothing Then
+                Select Case Telefonat(0)
+                    Case DataProvider.P_Def_NameListVIP
+                        If C_HF.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionListen") = MsgBoxResult.Yes Then
+                            RemoveVIP(KontaktID, StoreID)
+                        End If
+                    Case Else
+                        C_HF.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionListen")
+                End Select
+            End If
+        Else
+            oContact = Nothing
+        End If
+
+        ' Verpasst-Marker auf false setzen
+        With xPathTeile
+            .Add("[@ID=""" & Telefonat(1) & """]")
+            .Add("Verpasst")
+        End With
+        C_XML.Write(C_DP.XMLDoc, xPathTeile, "False")
+
+        C_WClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
     End Sub
 #End Region
 
