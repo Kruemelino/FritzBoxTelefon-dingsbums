@@ -33,22 +33,16 @@ Public Class ThisAddIn
     Private WithEvents iBtnUpload As Office.CommandBarButton
 #End If
 #End Region
-    Private Shared oApp As Outlook.Application
 
     Private WithEvents oInsps As Outlook.Inspectors
     Friend Shared ListofOpenContacts As New Generic.List(Of ContactSaved)
-
-    Private Shared C_DP As DataProvider ' Reader/Writer initialisieren
-    Private Shared C_Fbox As FritzBox  'Deklarieren der Klasse
-    Private Shared C_AnrMon As AnrufMonitor
-    Private Shared C_WClient As Wählclient
-    Private Shared C_HF As Helfer
-    Private Shared C_KF As Contacts
-    Private Shared C_GUI As GraphicalUserInterface
-    Private Shared F_Cfg As formCfg
-
-    Private Initialisierung As formInit
     Public Shared Event PowerModeChanged As Microsoft.Win32.PowerModeChangedEventHandler
+
+#Region "Eigene Formulare"
+    Private F_AnrListImport As formImportAnrList
+    Private F_Cfg As formCfg
+    Private F_Init As formInit
+#End Region
 
 #Region "Properties"
     ''' <summary>
@@ -67,6 +61,7 @@ Public Class ThisAddIn
     ''' <summary>
     ''' Gibt die aktuelle Outlook-Application zurück.
     ''' </summary>
+    Private Shared oApp As Outlook.Application
     Friend Shared Property P_oApp() As Outlook.Application
         Get
             Return oApp
@@ -76,7 +71,11 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_DP() As DataProvider
+    ''' <summary>
+    ''' Rückgabewert für die Klasse DataProvider 
+    ''' </summary>
+    Private C_DP As DataProvider
+    Friend Property P_DP() As DataProvider
         Get
             Return C_DP
         End Get
@@ -85,7 +84,11 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_HF() As Helfer
+    ''' <summary>
+    ''' Rückgabewert für die Klasse Helfer 
+    ''' </summary>
+    Private C_HF As Helfer
+    Friend Property P_HF() As Helfer
         Get
             Return C_HF
         End Get
@@ -94,16 +97,24 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_KF() As Contacts
+    ''' <summary>
+    ''' Rückgabewert für die Klasse KontaktFunktionen 
+    ''' </summary>
+    Private C_KF As KontaktFunktionen
+    Friend Property P_KF() As KontaktFunktionen
         Get
             Return C_KF
         End Get
-        Set(ByVal value As Contacts)
+        Set(ByVal value As KontaktFunktionen)
             C_KF = value
         End Set
     End Property
 
-    Friend Shared Property P_GUI() As GraphicalUserInterface
+    ''' <summary>
+    ''' Rückgabewert für die Klasse GraphicalUserInterface 
+    ''' </summary>
+    Private C_GUI As GraphicalUserInterface
+    Friend Property P_GUI() As GraphicalUserInterface
         Get
             Return C_GUI
         End Get
@@ -112,25 +123,11 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_WClient() As Wählclient
-        Get
-            Return C_WClient
-        End Get
-        Set(ByVal value As Wählclient)
-            C_WClient = value
-        End Set
-    End Property
-
-    Friend Shared Property P_FritzBox() As FritzBox
-        Get
-            Return C_Fbox
-        End Get
-        Set(ByVal value As FritzBox)
-            C_Fbox = value
-        End Set
-    End Property
-
-    Friend Shared Property P_AnrMon() As AnrufMonitor
+    ''' <summary>
+    ''' Rückgabewert für die Klasse AnrufMonitor 
+    ''' </summary>
+    Private C_AnrMon As AnrufMonitor
+    Friend Property P_AnrMon() As AnrufMonitor
         Get
             Return C_AnrMon
         End Get
@@ -139,21 +136,34 @@ Public Class ThisAddIn
         End Set
     End Property
 
-    Friend Shared Property P_Config() As formCfg
+    ''' <summary>
+    ''' Rückgabewert für die Klasse XML 
+    ''' </summary>
+    Private C_XML As XML
+    Friend Property P_XML() As XML
         Get
-            Return F_Cfg
+            Return C_XML
         End Get
-        Set(ByVal value As formCfg)
-            F_Cfg = value
+        Set(ByVal value As XML)
+            C_XML = value
         End Set
     End Property
 
+    Private C_Fbox As FritzBox
+    Friend Property P_FBox() As FritzBox
+        Get
+            Return C_Fbox
+        End Get
+        Set(ByVal value As FritzBox)
+            C_Fbox = value
+        End Set
+    End Property
 #End Region
 
 #If Not OVer = 11 Then
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
-        Initialisierung = New formInit
-        Return C_GUI
+        F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon, P_XML, P_FBox)
+        Return P_GUI
     End Function
 #End If
 
@@ -161,49 +171,70 @@ Public Class ThisAddIn
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
-        C_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
+        P_HF.LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
-                C_AnrMon.AnrMonStartNachStandby()
+                ThisAddIn_Startup(True)
             Case Microsoft.Win32.PowerModes.Suspend
-                C_AnrMon.AnrMonStartStopp()
+                P_AnrMon.AnrMonStartStopp()
+                P_DP.SpeichereXMLDatei()
         End Select
     End Sub
 
     ''' <summary>
     ''' Startet das Fritz!Box Telefon-dingsbums
     ''' </summary>
-    Private Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
-
+    Private Overloads Sub ThisAddIn_Startup(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Startup
+        'StandBy Handler
         AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
 
-        P_oApp = CType(Application, Outlook.Application)
-
-        If P_oApp.ActiveExplorer IsNot Nothing Then
-#If OVer = 11 Then
-            Initialisierung = New formInit
-#End If
-            ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
-            P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
-#If OVer < 14 Then
-            C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
-                                     ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
-                                     ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
-                                     ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
-#End If
-            If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
-        Else
-            C_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
-        End If
+        ' Starte das Addin normal
+        ThisAddIn_Startup(False)
     End Sub
 
-    Private Shared Sub Application_Quit() Handles Application.Quit, Me.Shutdown
-        C_AnrMon.AnrMonStartStopp()
-        C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & Version & " beendet.")
-        C_DP.SpeichereXMLDatei()
-        With C_HF
-            .NAR(P_oApp)
-        End With
+    ''' <summary>
+    ''' Startet das Fritz!Box Telefon-dingsbums manuell
+    ''' </summary>
+    ''' <param name="Standby">Angabe, obb das Addin aus dem Standby automatisch gestartet wird.</param>
+    Private Overloads Sub ThisAddin_Startup(ByVal Standby As Boolean)
+
+        If P_oApp Is Nothing Then
+            P_oApp = CType(Application, Outlook.Application)
+        End If
+
+        If Standby Then
+#If OVer < 14 Then
+            C_GUI.SetAnrMonButton()
+#Else
+            C_GUI.RefreshRibbon()
+#End If
+            F_Init.StandByReStart()
+        Else
+            If P_oApp.ActiveExplorer IsNot Nothing Then
+#If OVer = 11 Then
+                F_Init = New formInit(P_GUI, P_KF, P_HF, P_DP, P_AnrMon, P_XML, P_FBox)
+#End If
+                ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
+                P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
+#If OVer < 14 Then
+                C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
+                                         ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
+                                         ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
+                                         ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
+#End If
+                If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
+            Else
+                P_HF.LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
+        P_AnrMon.AnrMonStartStopp()
+        P_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & Version & " beendet.")
+        P_DP.SpeichereXMLDatei()
+        P_HF.NAR(P_oApp)
     End Sub
 
     Private Sub myOlInspectors(ByVal Inspector As Outlook.Inspector) Handles oInsps.NewInspector
@@ -211,11 +242,11 @@ Public Class ThisAddIn
         C_GUI.InspectorSybolleisteErzeugen(Inspector, iPopRWS, iBtnWwh, iBtnRWSDasOertliche, iBtnRws11880, iBtnRWSDasTelefonbuch, iBtnRWStelSearch, iBtnRWSAlle, iBtnKontakterstellen, iBtnVIP, iBtnUpload)
 #End If
         If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-            If Not (C_DP.P_CBKHO AndAlso Not _
+            If Not (P_DP.P_CBKHO AndAlso Not _
                     CType(CType(Inspector.CurrentItem, Outlook.ContactItem).Parent, Outlook.MAPIFolder).StoreID = _
-                    C_KF.P_DefContactFolder.StoreID) Then
+                    P_KF.P_DefContactFolder.StoreID) Then
 
-                Dim KS As New ContactSaved
+                Dim KS As New ContactSaved(P_KF)
                 KS.ContactSaved = CType(Inspector.CurrentItem, Outlook.ContactItem)
                 ListofOpenContacts.Add(KS)
             End If
@@ -253,37 +284,37 @@ Public Class ThisAddIn
         End With
     End Sub
 
-    Private Sub ePopAnr1_click(ByVal control As Office.CommandBarButton, ByRef cancel As Boolean) Handles ePopAnr1.Click, _
-                                                                                                          ePopAnr2.Click, _
-                                                                                                          ePopAnr3.Click, _
-                                                                                                          ePopAnr4.Click, _
-                                                                                                          ePopAnr5.Click, _
-                                                                                                          ePopAnr6.Click, _
-                                                                                                          ePopAnr7.Click, _
-                                                                                                          ePopAnr8.Click, _
-                                                                                                          ePopAnr9.Click, _
-                                                                                                          ePopAnr10.Click, _
-                                                                                                          ePopWwdh1.Click, _
-                                                                                                          ePopWwdh2.Click, _
-                                                                                                          ePopWwdh3.Click, _
-                                                                                                          ePopWwdh4.Click, _
-                                                                                                          ePopWwdh5.Click, _
-                                                                                                          ePopWwdh6.Click, _
-                                                                                                          ePopWwdh7.Click, _
-                                                                                                          ePopWwdh8.Click, _
-                                                                                                          ePopWwdh9.Click, _
-                                                                                                          ePopWwdh10.Click, _
-                                                                                                          ePopVIP1.Click, _
-                                                                                                          ePopVIP2.Click, _
-                                                                                                          ePopVIP3.Click, _
-                                                                                                          ePopVIP4.Click, _
-                                                                                                          ePopVIP5.Click, _
-                                                                                                          ePopVIP6.Click, _
-                                                                                                          ePopVIP7.Click, _
-                                                                                                          ePopVIP8.Click, _
-                                                                                                          ePopVIP9.Click, _
-                                                                                                          ePopVIP10.Click
-        C_WClient.OnActionListen(control.Tag)
+    Private Sub ePopUp_Click(ByVal control As Office.CommandBarButton, ByRef cancel As Boolean) Handles ePopAnr1.Click, _
+                                                                                                        ePopAnr2.Click, _
+                                                                                                        ePopAnr3.Click, _
+                                                                                                        ePopAnr4.Click, _
+                                                                                                        ePopAnr5.Click, _
+                                                                                                        ePopAnr6.Click, _
+                                                                                                        ePopAnr7.Click, _
+                                                                                                        ePopAnr8.Click, _
+                                                                                                        ePopAnr9.Click, _
+                                                                                                        ePopAnr10.Click, _
+                                                                                                        ePopWwdh1.Click, _
+                                                                                                        ePopWwdh2.Click, _
+                                                                                                        ePopWwdh3.Click, _
+                                                                                                        ePopWwdh4.Click, _
+                                                                                                        ePopWwdh5.Click, _
+                                                                                                        ePopWwdh6.Click, _
+                                                                                                        ePopWwdh7.Click, _
+                                                                                                        ePopWwdh8.Click, _
+                                                                                                        ePopWwdh9.Click, _
+                                                                                                        ePopWwdh10.Click, _
+                                                                                                        ePopVIP1.Click, _
+                                                                                                        ePopVIP2.Click, _
+                                                                                                        ePopVIP3.Click, _
+                                                                                                        ePopVIP4.Click, _
+                                                                                                        ePopVIP5.Click, _
+                                                                                                        ePopVIP6.Click, _
+                                                                                                        ePopVIP7.Click, _
+                                                                                                        ePopVIP8.Click, _
+                                                                                                        ePopVIP9.Click, _
+                                                                                                        ePopVIP10.Click
+        C_GUI.OnActionListen(control.Tag)
     End Sub
 #End Region
 #End If
