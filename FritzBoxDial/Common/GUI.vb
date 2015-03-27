@@ -26,7 +26,7 @@ Imports Microsoft.Office.Core
                 File = DataProvider.P_Def_LeerString
         End Select
 #If OVer = 12 Then
-        If Not File = DataProvider.P_Def_StringEmpty Then
+        If Not File = DataProvider.P_Def_LeerString Then
             File = Replace(File, "http://schemas.microsoft.com/office/2009/07/customui", "http://schemas.microsoft.com/office/2006/01/customui", , 1, CompareMethod.Text)
         End If
 #End If
