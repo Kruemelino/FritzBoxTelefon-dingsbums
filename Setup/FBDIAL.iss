@@ -105,7 +105,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
   Source: "2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
   Source: "2010\Funktionen.dll";                                      Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-  Source: "2010\PopupFenster.dll";                                    Check: OutlookVersion(2001); DestDir: "{app}"; Flags: ignoreversion
+  Source: "2010\PopupFenster.dll";                                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2010 - Debuginformationen
