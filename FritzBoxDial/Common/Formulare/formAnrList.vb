@@ -1,6 +1,6 @@
 ﻿Imports System.Threading
 
-Friend Class formImportAnrList
+Public Class formImportAnrList
 #Region "BackgroundWorker"
     Private WithEvents DownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
     Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
@@ -21,26 +21,25 @@ Friend Class formImportAnrList
 
 #Region "Structure"
     Private Structure ImportZeitraum
-        Dim StartZeit As Date
-        Dim EndZeit As Date
+        Friend StartZeit As Date
+        Friend EndZeit As Date
     End Structure
 #End Region
 
 #Region "Eigene Variablen"
     Private Abbruch As Boolean
-    Private anzeigen As Boolean
+    Private Anzeigen As Boolean
     Private CSVAnrliste As String
     Private StatusWert As Integer
     Private SID As String
-    Private EntryCount As Integer = -1 ' Anzahl der zu importierenden Telefonate
+    Private EntryCount As Integer = -1
 #End Region
 
     Friend Sub New(ByVal FritzBoxKlasse As FritzBox, _
                    ByVal AnrMonKlasse As AnrufMonitor, _
                    ByVal HelferKlasse As Helfer, _
                    ByVal DataProviderKlasse As DataProvider, _
-                   ByVal XMLKlasse As XML, _
-                   ByVal FormShow As Boolean)
+                   ByVal XMLKlasse As XML)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()
@@ -50,13 +49,6 @@ Friend Class formImportAnrList
         C_hf = HelferKlasse
         C_AnrMon = AnrMonKlasse
         C_XML = XMLKlasse
-        Abbruch = False
-        anzeigen = FormShow
-        If anzeigen Then Me.Show() 'wenn gewollt
-        With DownloadAnrListe
-            .WorkerSupportsCancellation = True
-            .RunWorkerAsync()
-        End With
     End Sub
 
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -68,6 +60,15 @@ Friend Class formImportAnrList
         Me.EndZeit.Value = System.DateTime.Now
     End Sub
 
+    Friend Sub StartAuswertung(ByVal ShowForm As Boolean)
+        Abbruch = False
+        Anzeigen = ShowForm
+        If Anzeigen Then Me.Show() 'wenn gewollt
+        With DownloadAnrListe
+            .WorkerSupportsCancellation = True
+            .RunWorkerAsync()
+        End With
+    End Sub
 #Region " Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles DownloadAnrListe.DoWork
         e.Result = C_FBox.DownloadAnrListe

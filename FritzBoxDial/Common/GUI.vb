@@ -62,20 +62,15 @@ Imports Microsoft.Office.Core
     Private C_XML As XML
     Private C_HF As Helfer
     Private C_DP As DataProvider
-    Private C_WClient As Wählclient
-    Private C_AnrMon As AnrufMonitor
-    Private C_OLI As OutlookInterface
     Private C_KF As KontaktFunktionen
-    Private C_FBox As FritzBox
-    Private C_PopUp As Popup
 #End Region
 
 #Region "Eigene Formulare"
     Private F_RWS As formRWSuche
-    Private F_Cfg As formCfg
 #End Region
 
 #Region "Properies"
+    Private C_WClient As Wählclient
     Friend Property P_CallClient() As Wählclient
         Get
             Return C_WClient
@@ -85,6 +80,7 @@ Imports Microsoft.Office.Core
         End Set
     End Property
 
+    Private C_AnrMon As AnrufMonitor
     Friend Property P_AnrufMonitor() As AnrufMonitor
         Get
             Return C_AnrMon
@@ -94,6 +90,7 @@ Imports Microsoft.Office.Core
         End Set
     End Property
 
+    Private C_OLI As OutlookInterface
     Public Property P_OlInterface() As OutlookInterface
         Get
             Return C_OLI
@@ -103,6 +100,7 @@ Imports Microsoft.Office.Core
         End Set
     End Property
 
+    Private C_FBox As FritzBox
     Public Property P_FritzBox() As FritzBox
         Get
             Return C_FBox
@@ -112,6 +110,7 @@ Imports Microsoft.Office.Core
         End Set
     End Property
 
+    Private C_PopUp As Popup
     Public Property P_PopUp() As Popup
         Get
             Return C_PopUp
@@ -121,12 +120,23 @@ Imports Microsoft.Office.Core
         End Set
     End Property
 
+    Private F_Cfg As formCfg
     Public Property P_Config() As formCfg
         Get
             Return F_Cfg
         End Get
         Set(ByVal value As formCfg)
             F_Cfg = value
+        End Set
+    End Property
+
+    Private F_AnrList As formImportAnrList
+    Public Property P_AnrList() As formImportAnrList
+        Get
+            Return F_AnrList
+        End Get
+        Set(ByVal value As formImportAnrList)
+            F_AnrList = value
         End Set
     End Property
 #End Region
@@ -1398,7 +1408,10 @@ Imports Microsoft.Office.Core
             Case TaskToDo.OpenConfig
                 P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
-                Dim ImportAnrList As New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
+                If Not P_AnrList Is Nothing Then
+                    P_AnrList = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
+                End If
+                P_AnrList.StartAuswertung(True)
             Case TaskToDo.RestartAnrMon
                 C_AnrMon.AnrMonReStart()
             Case TaskToDo.ShowAnrMon

@@ -87,6 +87,9 @@ Friend Class formInit
             ' Klasse für das Popup-Fenster generieren
             C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF, C_WählClient)
 
+            ' Klasse für die Auswertung der Anrufliste generieren
+            F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
+
             ' Verschiedene Funktionen an die GraphicalUserInterface-Klasse übergeben
             With C_GUI
                 .P_AnrufMonitor = C_AnrMon
@@ -95,6 +98,7 @@ Friend Class formInit
                 .P_FritzBox = C_FBox
                 .P_PopUp = C_PopUp
                 .P_Config = C_Config
+                .P_AnrList = F_AnrListImport
             End With
 
             ' Verschiedene Funktionen an den AnrufMonitor-Klasse übergeben
@@ -103,13 +107,10 @@ Friend Class formInit
             End With
 
             If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then
-                F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, False)
+                'F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
+                F_AnrListImport.StartAuswertung(False)
             End If
 
-            ' Ab hier nur noch Debug-Code
-            If DataProvider.P_Debug_AnrufSimulation Then
-                F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, True)
-            End If
         End If
 
         FritzBoxKlasse = C_FBox
@@ -176,7 +177,10 @@ Friend Class formInit
                 ' Auswertung der Anrufliste anstoßen
                 If C_DP.P_CBAutoAnrList Then
                     C_HF.LogFile(DataProvider.P_Standby_Log_Timer5)
-                    F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML, False)
+                    If F_AnrListImport Is Nothing Then
+                        F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
+                    End If
+                    F_AnrListImport.StartAuswertung(False)
                 End If
             End If
         Else
