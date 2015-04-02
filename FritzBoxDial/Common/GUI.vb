@@ -297,6 +297,7 @@ Imports Microsoft.Office.Core
 
         Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & _
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
+
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
             Case "dynMWwdListe"
                 XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
@@ -326,7 +327,13 @@ Imports Microsoft.Office.Core
             .Add("Eintrag")
         End With
 
+        With RibbonListStrBuilder
+            .Append("<button id=""dynListDel_" & XMLListBaseNode & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso"" />" & vbCrLf)
+            .Append("<menuSeparator id=""separator"" />" & vbCrLf)
+        End With
+
         If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
+
             For ID = index + 9 To index Step -1
 
                 C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
@@ -402,13 +409,10 @@ Imports Microsoft.Office.Core
         Next
 
         With StrBuilder
-            .Append("<button id=""dynMListe_" & Werte(0) & """ ")
-            .Append("label=""" & Werte(1) & """ ")
-            .Append("onAction=""BtnOnAction"" ")
-            .Append("tag=""" & Werte(2) & ";" & Werte(0) & """ ")
+            .Append("<button id=""dynMListe_" & Werte(0) & """ label=""" & Werte(1) & """ onAction=""BtnOnAction"" tag=""" & Werte(2) & ";" & Werte(0) & """ ")
 
+            If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """ ")
             If Not Werte(4) = DataProvider.P_Def_LeerString Then .Append("imageMso=""" & Werte(4) & """ ")
-            If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """")
 
             .Append("/>" & vbCrLf)
         End With
@@ -495,6 +499,8 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_VIP
             Case "btnAnrMonIO"
                 Return DataProvider.P_CMB_AnrMon
+            Case "dynListDel"
+                Return DataProvider.P_CMB_ClearList
             Case "btnAnrMonRestart"
                 Return DataProvider.P_CMB_AnrMonNeuStart
             Case "btnAnrMonShow"
@@ -578,7 +584,6 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_Insp_Note_ToolTipp
             Case "tbtnVIP"
                 Return CStr(IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), DataProvider.P_CMB_VIP_Entfernen_ToolTipp, DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp))
-
             Case "btnUpload"
                 Return DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
@@ -605,6 +610,8 @@ Imports Microsoft.Office.Core
                 Return "DirectRepliesTo"
             Case "dynMVIPListe", "tbtnVIP"
                 Return "Pushpin"
+            Case "dynListDel"
+                Return "ToolDelete"
             Case "btnAnrMonIO"
                 GetItemImageMso = "PersonaStatusBusy"
                 If C_AnrMon IsNot Nothing Then
@@ -648,6 +655,8 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.DialDirect)
             Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
                 OnActionListen(control.Tag)
+            Case "dynListDel"
+                ClearList(control.Id)
             Case "btnAnrMonIO"
                 C_AnrMon.AnrMonStartStopp()
             Case "btnAnrMonRestart"
@@ -1623,6 +1632,37 @@ Imports Microsoft.Office.Core
         C_XML.Write(C_DP.XMLDoc, xPathTeile, "False")
 
         C_WClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
+    End Sub
+
+    ''' <summary>
+    ''' Löscht die gewählte Liste aus der XML
+    ''' </summary>
+    ''' <param name="ControlID">ID der Liste</param>
+    ''' <remarks></remarks>
+    Private Sub ClearList(ByVal ControlID As String)
+        ' 
+        Dim Liste As String = Split(ControlID, "_", 2, CompareMethod.Text)(1)
+        Dim NameListe As String = DataProvider.P_Def_StringNull
+
+        Select Case Liste
+            Case "RingList"
+                NameListe = DataProvider.P_MSG_ClearList(DataProvider.P_CMB_CallBack)
+            Case "CallList"
+                NameListe = DataProvider.P_MSG_ClearList(DataProvider.P_CMB_WWDH)
+            Case "VIPList"
+                NameListe = DataProvider.P_MSG_ClearVIPList
+        End Select
+
+        If Not NameListe = DataProvider.P_Def_StringNull AndAlso C_HF.FBDB_MsgBox(NameListe, MsgBoxStyle.YesNo, "") = MsgBoxResult.Yes Then
+            C_HF.LogFile("Die Liste " & Liste & " wurde gelöscht")
+            C_XML.Delete(C_DP.XMLDoc, Liste)
+            '#If OVer < 14 Then
+            'SetAnrMonButton()
+            '#Else
+            RefreshRibbon()
+            '#End If
+        End If
+
     End Sub
 #End Region
 
