@@ -1794,6 +1794,17 @@ Public Class DataProvider
             Return "eBtnAnrMonNeuStart"
         End Get
     End Property
+
+    ''' <summary>
+    ''' Der Tag des Löschbuttens der Anruf und VIP-Listen
+    ''' </summary>
+    ''' <value>dynListDel</value>
+    Public Shared ReadOnly Property P_CMB_eDynListDel_Tag() As String
+        Get
+            Return "dynListDel"
+        End Get
+    End Property
+
 #End Region
 
 

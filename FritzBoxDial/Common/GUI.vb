@@ -1,4 +1,6 @@
-﻿#If OVer < 14 Then
+﻿Imports System.Collections.Generic
+
+#If OVer < 14 Then
 Imports Microsoft.Office.Core
 #End If
 <Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
@@ -929,8 +931,13 @@ Imports Microsoft.Office.Core
     End Function
 
     Friend Function AddButtonsToCmb(ByVal cmdBar As Office.CommandBar, _
-    ByVal btnCaption As String, ByVal PosIndex As Integer, ByVal btnFaceId As Long, ByVal btnStyle As Office.MsoButtonStyle, _
-    ByVal btnTag As String, ByVal btnToolTip As String) As Office.CommandBarButton
+                                    ByVal btnCaption As String, _
+                                    ByVal PosIndex As Integer, _
+                                    ByVal btnFaceId As Integer, _
+                                    ByVal btnStyle As Office.MsoButtonStyle, _
+                                    ByVal btnTag As String, _
+                                    ByVal btnToolTip As String) As Office.CommandBarButton
+
         Dim cbBtn As Office.CommandBarControl
         Dim cBtn As Office.CommandBarButton
         AddButtonsToCmb = Nothing ' Default Return-Wert
@@ -943,7 +950,7 @@ Imports Microsoft.Office.Core
                 cBtn = CType(cmdBar.Controls.Add(Office.MsoControlType.msoControlButton, , , PosIndex, True), Office.CommandBarButton)
                 With cBtn
                     .BeginGroup = True
-                    .FaceId = CInt(btnFaceId)
+                    .FaceId = btnFaceId
                     .Style = btnStyle
                     .Caption = btnCaption
                     .Tag = btnTag
@@ -982,17 +989,13 @@ Imports Microsoft.Office.Core
 
     Friend Function AddPopupItems(ByRef btnPopup As Office.CommandBarPopup, _
                                   ByVal Index As Int32) As Office.CommandBarButton
-        Try
-            If btnPopup.Controls.Count > Index Then
-                Throw New Exception("Button already exists.")
-            Else
-                Dim btn As Office.CommandBarButton = CType(btnPopup.Controls.Add(Office.MsoControlType.msoControlButton, , , , True), Office.CommandBarButton)
-                btn.Visible = False 'erst mal verstecken, da wir nicht wissen ob da ein Wert drin ist.
-                Return btn
-            End If
-        Catch ex As Exception
-            Throw New Exception(ex.Message)
-        End Try
+        If btnPopup.Controls.Count > Index Then
+            Return Nothing
+        Else
+            Dim btn As Office.CommandBarButton = CType(btnPopup.Controls.Add(Office.MsoControlType.msoControlButton, , , , True), Office.CommandBarButton)
+            btn.Visible = False 'erst mal verstecken, da wir nicht wissen ob da ein Wert drin ist.
+            Return btn
+        End If
     End Function
 
     Friend Sub FillPopupItems(ByRef XMLListBaseNode As String)
@@ -1003,6 +1006,7 @@ Imports Microsoft.Office.Core
         Dim Anrufer As String
         Dim TelNr As String
         Dim Zeit As String
+        Dim Verpasst As Boolean
 
         Dim LANodeNames As New ArrayList
         Dim LANodeValues As New ArrayList
@@ -1014,14 +1018,31 @@ Imports Microsoft.Office.Core
         LANodeNames.Add("Anrufer")
         LANodeNames.Add("TelNr")
         LANodeNames.Add("Zeit")
+
         LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+
         With xPathTeile
             .Add(XMLListBaseNode)
             .Add("Eintrag")
         End With
+
+        ' Signalisierung verpasster Anrufe
+        If XMLListBaseNode = DataProvider.P_Def_NameListRING Then
+            LANodeNames.Add("Verpasst")
+            LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        End If
+
         i = 1
+        With CType(cPopUp.Controls.Item(1), Office.CommandBarButton)
+            .Caption = DataProvider.P_CMB_ClearList
+            .Style = MsoButtonStyle.msoButtonIconAndCaption
+            .FaceId = 1786
+            .Visible = True
+            .Tag = DataProvider.P_CMB_eDynListDel_Tag & "_" & XMLListBaseNode
+        End With
+
         If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
             For ID = index + 9 To index Step -1
 
@@ -1030,18 +1051,22 @@ Imports Microsoft.Office.Core
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
                 Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
+                If XMLListBaseNode = DataProvider.P_Def_NameListRING Then Verpasst = CBool(LANodeValues.Item(LANodeNames.IndexOf("Verpasst")))
 
                 If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
-                    With cPopUp.Controls.Item(i)
+
+                    With CType(cPopUp.Controls.Item(i + 1), Office.CommandBarButton)
                         If Anrufer = DataProvider.P_Def_ErrorMinusOne_String Then .Caption = TelNr Else .Caption = Anrufer
+                        .Style = MsoButtonStyle.msoButtonIconAndCaption
                         .TooltipText = DataProvider.P_CMB_ToolTipp(Zeit, TelNr)
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
                         .Tag = XMLListBaseNode & ";" & CStr(ID Mod 10)
+                        .BeginGroup = CBool(IIf(i = 1, True, False))
+                        .FaceId = CInt(IIf(Verpasst, 964, 0))
                         i += 1
                     End With
 
-                    'xPathTeile.RemoveAt(xPathTeile.Count - 1)
                     With LANodeValues
                         .Item(0) = (DataProvider.P_Def_ErrorMinusOne_String)
                         .Item(1) = (DataProvider.P_Def_ErrorMinusOne_String)
@@ -1056,11 +1081,12 @@ Imports Microsoft.Office.Core
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
 
                 If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String And Not Anrufer = DataProvider.P_Def_LeerString Then
-                    With cPopUp.Controls.Item(i)
+                    With CType(cPopUp.Controls.Item(i + 1), Office.CommandBarButton)
                         .Caption = Anrufer
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
                         .Tag = XMLListBaseNode & ";" & CStr(ID)
+                        .BeginGroup = CBool(IIf(i = 1, True, False))
                         i += 1
                     End With
                     With LANodeValues
@@ -1068,7 +1094,6 @@ Imports Microsoft.Office.Core
                         .Item(1) = (DataProvider.P_Def_ErrorMinusOne_String)
                         .Item(2) = (DataProvider.P_Def_ErrorMinusOne_String)
                     End With
-
                 Else
                     If cPopUp.Controls.Item(i) IsNot Nothing Then
                         cPopUp.Controls.Item(i).Visible = False
@@ -1138,18 +1163,35 @@ Imports Microsoft.Office.Core
         End If
     End Sub
 
-    Sub SymbolleisteErzeugen(ByRef ePopWwdh As Office.CommandBarPopup, ByRef ePopAnr As Office.CommandBarPopup, ByRef ePopVIP As Office.CommandBarPopup, _
-                             ByRef eBtnWaehlen As Office.CommandBarButton, ByRef eBtnDirektwahl As Office.CommandBarButton, ByRef eBtnAnrMon As Office.CommandBarButton, _
-                             ByRef eBtnAnzeigen As Office.CommandBarButton, ByRef eBtnAnrMonNeuStart As Office.CommandBarButton, ByRef eBtnJournalimport As Office.CommandBarButton, ByRef eBtnEinstellungen As Office.CommandBarButton, _
-                             ByRef ePopWwdh1 As Office.CommandBarButton, ByRef ePopWwdh2 As Office.CommandBarButton, ByRef ePopWwdh3 As Office.CommandBarButton, ByRef ePopWwdh4 As Office.CommandBarButton, _
-                             ByRef ePopWwdh5 As Office.CommandBarButton, ByRef ePopWwdh6 As Office.CommandBarButton, ByRef ePopWwdh7 As Office.CommandBarButton, ByRef ePopWwdh8 As Office.CommandBarButton, _
-                             ByRef ePopWwdh9 As Office.CommandBarButton, ByRef ePopWwdh10 As Office.CommandBarButton, _
-                             ByRef ePopAnr1 As Office.CommandBarButton, ByRef ePopAnr2 As Office.CommandBarButton, ByRef ePopAnr3 As Office.CommandBarButton, ByRef ePopAnr4 As Office.CommandBarButton, _
-                             ByRef ePopAnr5 As Office.CommandBarButton, ByRef ePopAnr6 As Office.CommandBarButton, ByRef ePopAnr7 As Office.CommandBarButton, ByRef ePopAnr8 As Office.CommandBarButton, _
-                             ByRef ePopAnr9 As Office.CommandBarButton, ByRef ePopAnr10 As Office.CommandBarButton, _
-                             ByRef ePopVIP1 As Office.CommandBarButton, ByRef ePopVIP2 As Office.CommandBarButton, ByRef ePopVIP3 As Office.CommandBarButton, ByRef ePopVIP4 As Office.CommandBarButton, _
-                             ByRef ePopVIP5 As Office.CommandBarButton, ByRef ePopVIP6 As Office.CommandBarButton, ByRef ePopVIP7 As Office.CommandBarButton, ByRef ePopVIP8 As Office.CommandBarButton, _
-                             ByRef ePopVIP9 As Office.CommandBarButton, ByRef ePopVIP10 As Office.CommandBarButton)
+    Sub SymbolleisteErzeugen(ByRef eBtnWaehlen As Office.CommandBarButton, _
+                             ByRef eBtnDirektwahl As Office.CommandBarButton, _
+                             ByRef eBtnAnrMon As Office.CommandBarButton, _
+                             ByRef eBtnAnzeigen As Office.CommandBarButton, _
+                             ByRef eBtnAnrMonNeuStart As Office.CommandBarButton, _
+                             ByRef eBtnJournalimport As Office.CommandBarButton, _
+                             ByRef eBtnEinstellungen As Office.CommandBarButton, _
+                             ByRef ePopWwdh As Office.CommandBarPopup, _
+                             ByRef ePopAnr As Office.CommandBarPopup, _
+                             ByRef ePopVIP As Office.CommandBarPopup, _
+                             ByRef ePopWwdhDel As Office.CommandBarButton, _
+                             ByRef ePopWwdh01 As Office.CommandBarButton, ByRef ePopWwdh02 As Office.CommandBarButton, ByRef ePopWwdh03 As Office.CommandBarButton, _
+                             ByRef ePopWwdh04 As Office.CommandBarButton, ByRef ePopWwdh05 As Office.CommandBarButton, ByRef ePopWwdh06 As Office.CommandBarButton, _
+                             ByRef ePopWwdh07 As Office.CommandBarButton, ByRef ePopWwdh08 As Office.CommandBarButton, ByRef ePopWwdh09 As Office.CommandBarButton, _
+                             ByRef ePopWwdh10 As Office.CommandBarButton, _
+                             ByRef ePopAnrDel As Office.CommandBarButton, _
+                             ByRef ePopAnr01 As Office.CommandBarButton, ByRef ePopAnr02 As Office.CommandBarButton, ByRef ePopAnr03 As Office.CommandBarButton, _
+                             ByRef ePopAnr04 As Office.CommandBarButton, ByRef ePopAnr05 As Office.CommandBarButton, ByRef ePopAnr06 As Office.CommandBarButton, _
+                             ByRef ePopAnr07 As Office.CommandBarButton, ByRef ePopAnr08 As Office.CommandBarButton, ByRef ePopAnr09 As Office.CommandBarButton, _
+                             ByRef ePopAnr10 As Office.CommandBarButton, _
+                             ByRef ePopVIPDel As Office.CommandBarButton, _
+                             ByRef ePopVIP01 As Office.CommandBarButton, ByRef ePopVIP02 As Office.CommandBarButton, ByRef ePopVIP03 As Office.CommandBarButton, _
+                             ByRef ePopVIP04 As Office.CommandBarButton, ByRef ePopVIP05 As Office.CommandBarButton, ByRef ePopVIP06 As Office.CommandBarButton, _
+                             ByRef ePopVIP07 As Office.CommandBarButton, ByRef ePopVIP08 As Office.CommandBarButton, ByRef ePopVIP09 As Office.CommandBarButton, _
+                             ByRef ePopVIP10 As Office.CommandBarButton)
+)
+
+
+
         Dim i As Integer = 2
 
         FritzBoxDialCommandBar = AddCmdBar(DataProvider.P_Def_Addin_KurzName, True)
@@ -1158,12 +1200,13 @@ Imports Microsoft.Office.Core
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, DataProvider.P_CMB_WWDH, i, DataProvider.P_Def_NameListCALL, DataProvider.P_CMB_WWDH_ToolTipp)
         i += 1
+
         Try
-            ePopWwdh1 = AddPopupItems(ePopWwdh, 1) : ePopWwdh2 = AddPopupItems(ePopWwdh, 2)
-            ePopWwdh3 = AddPopupItems(ePopWwdh, 3) : ePopWwdh4 = AddPopupItems(ePopWwdh, 4)
-            ePopWwdh5 = AddPopupItems(ePopWwdh, 5) : ePopWwdh6 = AddPopupItems(ePopWwdh, 6)
-            ePopWwdh7 = AddPopupItems(ePopWwdh, 7) : ePopWwdh8 = AddPopupItems(ePopWwdh, 8)
-            ePopWwdh9 = AddPopupItems(ePopWwdh, 9) : ePopWwdh10 = AddPopupItems(ePopWwdh, 10)
+            ePopWwdhDel = AddPopupItems(ePopWwdh, 1)
+            ePopWwdh01 = AddPopupItems(ePopWwdh, 2) : ePopWwdh02 = AddPopupItems(ePopWwdh, 3) : ePopWwdh03 = AddPopupItems(ePopWwdh, 4)
+            ePopWwdh04 = AddPopupItems(ePopWwdh, 5) : ePopWwdh05 = AddPopupItems(ePopWwdh, 6) : ePopWwdh06 = AddPopupItems(ePopWwdh, 7)
+            ePopWwdh07 = AddPopupItems(ePopWwdh, 8) : ePopWwdh08 = AddPopupItems(ePopWwdh, 9) : ePopWwdh09 = AddPopupItems(ePopWwdh, 10)
+            ePopWwdh10 = AddPopupItems(ePopWwdh, 11)
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
         End Try
@@ -1192,30 +1235,34 @@ Imports Microsoft.Office.Core
         i += 1
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, DataProvider.P_CMB_CallBack, i, DataProvider.P_Def_NameListRING, DataProvider.P_CMB_CallBack_ToolTipp)
+
         Try
-            ePopAnr1 = AddPopupItems(ePopAnr, 1) : ePopAnr2 = AddPopupItems(ePopAnr, 2)
-            ePopAnr3 = AddPopupItems(ePopAnr, 3) : ePopAnr4 = AddPopupItems(ePopAnr, 4)
-            ePopAnr5 = AddPopupItems(ePopAnr, 5) : ePopAnr6 = AddPopupItems(ePopAnr, 6)
-            ePopAnr7 = AddPopupItems(ePopAnr, 7) : ePopAnr8 = AddPopupItems(ePopAnr, 8)
-            ePopAnr9 = AddPopupItems(ePopAnr, 9) : ePopAnr10 = AddPopupItems(ePopAnr, 10)
+            ePopAnrDel = AddPopupItems(ePopAnr, 1)
+            ePopAnr01 = AddPopupItems(ePopAnr, 2) : ePopAnr02 = AddPopupItems(ePopAnr, 3) : ePopAnr03 = AddPopupItems(ePopAnr, 4)
+            ePopAnr04 = AddPopupItems(ePopAnr, 5) : ePopAnr05 = AddPopupItems(ePopAnr, 6) : ePopAnr06 = AddPopupItems(ePopAnr, 7)
+            ePopAnr07 = AddPopupItems(ePopAnr, 8) : ePopAnr08 = AddPopupItems(ePopAnr, 9) : ePopAnr09 = AddPopupItems(ePopAnr, 10)
+            ePopAnr10 = AddPopupItems(ePopAnr, 11)
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
+
         FillPopupItems(DataProvider.P_Def_NameListRING)
         ePopAnr.Visible = C_DP.P_CBSymbAnrListe
         ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
         i += 1
 
         AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, DataProvider.P_CMB_VIP, i, DataProvider.P_Def_NameListVIP, DataProvider.P_CMB_VIP_ToolTipp)
+
         Try
-            ePopVIP1 = AddPopupItems(ePopVIP, 1) : ePopVIP2 = AddPopupItems(ePopVIP, 2)
-            ePopVIP3 = AddPopupItems(ePopVIP, 3) : ePopVIP4 = AddPopupItems(ePopVIP, 4)
-            ePopVIP5 = AddPopupItems(ePopVIP, 5) : ePopVIP6 = AddPopupItems(ePopVIP, 6)
-            ePopVIP7 = AddPopupItems(ePopVIP, 7) : ePopVIP8 = AddPopupItems(ePopVIP, 8)
-            ePopVIP9 = AddPopupItems(ePopVIP, 9) : ePopVIP10 = AddPopupItems(ePopVIP, 10)
+            ePopVIPDel = AddPopupItems(ePopVIP, 1)
+            ePopVIP01 = AddPopupItems(ePopVIP, 2) : ePopVIP02 = AddPopupItems(ePopVIP, 3) : ePopVIP03 = AddPopupItems(ePopVIP, 4)
+            ePopVIP04 = AddPopupItems(ePopVIP, 5) : ePopVIP05 = AddPopupItems(ePopVIP, 6) : ePopVIP06 = AddPopupItems(ePopVIP, 7)
+            ePopVIP07 = AddPopupItems(ePopVIP, 8) : ePopVIP08 = AddPopupItems(ePopVIP, 9) : ePopVIP09 = AddPopupItems(ePopVIP, 10)
+            ePopVIP10 = AddPopupItems(ePopVIP, 11)
         Catch ex As Exception
             C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
+
         FillPopupItems(DataProvider.P_Def_NameListVIP)
         i += 1
         ePopVIP.Visible = C_DP.P_CBSymbVIP
@@ -1639,7 +1686,7 @@ Imports Microsoft.Office.Core
     ''' </summary>
     ''' <param name="ControlID">ID der Liste</param>
     ''' <remarks></remarks>
-    Private Sub ClearList(ByVal ControlID As String)
+    Friend Sub ClearList(ByVal ControlID As String)
         ' 
         Dim Liste As String = Split(ControlID, "_", 2, CompareMethod.Text)(1)
         Dim NameListe As String = DataProvider.P_Def_StringNull
@@ -1656,11 +1703,11 @@ Imports Microsoft.Office.Core
         If Not NameListe = DataProvider.P_Def_StringNull AndAlso C_HF.FBDB_MsgBox(NameListe, MsgBoxStyle.YesNo, "") = MsgBoxResult.Yes Then
             C_HF.LogFile("Die Liste " & Liste & " wurde gelöscht")
             C_XML.Delete(C_DP.XMLDoc, Liste)
-            '#If OVer < 14 Then
-            'SetAnrMonButton()
-            '#Else
+#If OVer < 14 Then
+            FillPopupItems(Liste)
+#Else
             RefreshRibbon()
-            '#End If
+#End If
         End If
 
     End Sub
