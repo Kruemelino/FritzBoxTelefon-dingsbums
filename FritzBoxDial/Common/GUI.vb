@@ -1188,9 +1188,6 @@ Imports Microsoft.Office.Core
                              ByRef ePopVIP04 As Office.CommandBarButton, ByRef ePopVIP05 As Office.CommandBarButton, ByRef ePopVIP06 As Office.CommandBarButton, _
                              ByRef ePopVIP07 As Office.CommandBarButton, ByRef ePopVIP08 As Office.CommandBarButton, ByRef ePopVIP09 As Office.CommandBarButton, _
                              ByRef ePopVIP10 As Office.CommandBarButton)
-)
-
-
 
         Dim i As Integer = 2
 
