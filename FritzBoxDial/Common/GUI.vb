@@ -307,14 +307,6 @@ Imports Microsoft.Office.Core
         Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & _
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
-        'Select Case Left(control.Id, Len(control.Id) - 2)
-        '    Case "dynMWwdListe"
-        '        XMLListBaseNode = DataProvider.P_Def_NameListCALL
-        '    Case "dynMAnrListe"
-        '        XMLListBaseNode = DataProvider.P_Def_NameListRING
-        '    Case Else '"dynMVIPListe"
-        '        XMLListBaseNode = DataProvider.P_Def_NameListVIP
-        'End Select
         XMLListBaseNode = Left(control.Id, Len(control.Id) - 2)
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
@@ -1527,14 +1519,12 @@ Imports Microsoft.Office.Core
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, ListName, "Index", "0"))
 
+        ' Telefonnummer des vorherigen Telefonats ermitteln und mit der aktuellen vergleichen
         xPathTeile.Add(ListName)
         xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
 
         If Not C_HF.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
-
-            NodeNames.Add("Index")
-            NodeValues.Add(CStr((index + 1) Mod 10))
 
             If Not Anrufer = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("Anrufer")
@@ -1570,7 +1560,7 @@ Imports Microsoft.Office.Core
             AttributeValues.Add(CStr(index))
 
             With C_DP
-                xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
+                xPathTeile.Clear()
                 xPathTeile.Add(ListName)
                 xPathTeile.Add("Index")
                 C_XML.Write(.XMLDoc, xPathTeile, CStr((index + 1) Mod 10))
@@ -1598,7 +1588,6 @@ Imports Microsoft.Office.Core
 #If OVer > 12 Then
         RefreshRibbon()
 #End If
-
     End Sub
 
     Friend Overloads Sub UpdateList(ByVal ListName As String, ByVal Telefonat As C_Telefonat)
@@ -1615,11 +1604,10 @@ Imports Microsoft.Office.Core
     Friend Sub OnActionListen(ByVal ControlTag As String)
         Dim oContact As Outlook.ContactItem
         Dim Telefonat As String() = Split(ControlTag, ";", , CompareMethod.Text)
-        ' KontaktID, StoreID, TelNr ermitteln
         Dim KontaktID As String
         Dim StoreID As String
         Dim TelNr As String
-        'Dim Verpasst As Boolean
+
         Dim vCard As String
         Dim ListNodeNames As New ArrayList
         Dim ListNodeValues As New ArrayList
@@ -1659,10 +1647,8 @@ Imports Microsoft.Office.Core
         KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
         vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
-        'Verpasst = CBool(ListNodeValues.Item(ListNodeNames.IndexOf("Verpasst")))
 
         If Not StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
-            'If Not KontaktID = DataProvider.P_Def_ErrorMinusOne And Not StoreID = DataProvider.P_Def_ErrorMinusOne Then
             oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
             If oContact Is Nothing Then
                 Select Case Telefonat(0)
@@ -1689,7 +1675,7 @@ Imports Microsoft.Office.Core
     End Sub
 
     ''' <summary>
-    ''' Löscht die gewählte Liste aus der XML
+    ''' Löscht die gesammte gewählte Liste aus der XML
     ''' </summary>
     ''' <param name="ControlID">ID der Liste</param>
     ''' <remarks></remarks>
@@ -1708,7 +1694,7 @@ Imports Microsoft.Office.Core
         End Select
 
         If Not NameListe = DataProvider.P_Def_StringNull AndAlso C_HF.FBDB_MsgBox(NameListe, MsgBoxStyle.YesNo, "") = MsgBoxResult.Yes Then
-            C_HF.LogFile("Die Liste " & Liste & " wurde gelöscht")
+            C_HF.LogFile("Die Liste " & Liste & " wurde gelöscht.")
             C_XML.Delete(C_DP.XMLDoc, Liste)
 #If OVer < 14 Then
             FillPopupItems(Liste)
@@ -1716,7 +1702,6 @@ Imports Microsoft.Office.Core
             RefreshRibbon()
 #End If
         End If
-
     End Sub
 #End Region
 

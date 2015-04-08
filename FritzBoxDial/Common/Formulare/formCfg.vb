@@ -165,18 +165,22 @@ Public Class formCfg
             Me.CBAnrListeShowAnrMon.Checked = .P_CBAnrListeShowAnrMon
             Me.CBUseAnrMon.Checked = .P_CBUseAnrMon
             Me.CBCheckMobil.Checked = .P_CBCheckMobil
-
             Me.CBIndexAus.Enabled = Not Me.CBUseAnrMon.Checked
             Me.PanelAnrMon.Enabled = Me.CBUseAnrMon.Checked
+            If Not Me.CBAutoAnrList.Checked Then
+                Me.CBAnrListeUpdateJournal.Checked = False
+                Me.CBAnrListeUpdateCallLists.Checked = False
+                Me.CBAnrListeShowAnrMon.Checked = False
+                Me.CBAnrListeUpdateJournal.Enabled = False
+                Me.CBAnrListeUpdateCallLists.Enabled = False
+                Me.CBAnrListeShowAnrMon.Enabled = False
+            End If
             'StoppUhr
             Me.CBStoppUhrEinblenden.Checked = .P_CBStoppUhrEinblenden
             Me.CBStoppUhrAusblenden.Checked = .P_CBStoppUhrAusblenden
-
             Me.TBStoppUhr.Text = CStr(.P_TBStoppUhr)
             Me.CBStoppUhrIgnIntFax.Checked = .P_CBStoppUhrIgnIntFax
-
             If Not Me.CBStoppUhrEinblenden.Checked Then Me.CBStoppUhrAusblenden.Checked = False
-
             Me.TBStoppUhr.Enabled = Me.CBStoppUhrAusblenden.Checked And Me.CBStoppUhrEinblenden.Checked
             Me.LabelStoppUhr.Enabled = Me.CBStoppUhrEinblenden.Checked
             Me.CBStoppUhrAusblenden.Enabled = Me.CBStoppUhrEinblenden.Checked
@@ -486,14 +490,11 @@ Public Class formCfg
             .P_CBTelNrGruppieren = Me.CBTelNrGruppieren.Checked
             .P_CBintl = Me.CBintl.Checked
             .P_CBIgnoTelNrFormat = Me.CBIgnoTelNrFormat.Checked
-
             .P_CBPhoner = Me.CBPhoner.Checked
-
             .P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
             .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
             ' Notiz
             .P_CBNote = Me.CBNote.Checked
-
             ' Telefone
 #If OVer < 14 Then
             C_GUI.SetVisibleButtons()

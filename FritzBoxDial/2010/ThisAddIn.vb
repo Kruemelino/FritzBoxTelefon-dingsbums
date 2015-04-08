@@ -1,4 +1,6 @@
 ﻿Imports Microsoft.Office.Core
+Imports System.Collections.Generic
+
 Public Class ThisAddIn
 #Region "Office 2003 & 2007 Eventhandler"
 #If OVer < 14 Then
@@ -10,15 +12,21 @@ Public Class ThisAddIn
     Private WithEvents eBtnLeitungsbelegung As Office.CommandBarButton
     Private WithEvents eBtnEinstellungen As Office.CommandBarButton
     Private WithEvents eBtnAnrMonNeuStart As Office.CommandBarButton
+
     Private WithEvents ePopWwdh As Office.CommandBarPopup
-    Private WithEvents ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5 As Office.CommandBarButton
-    Private WithEvents ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10 As Office.CommandBarButton
+    Private WithEvents ePopWwdhDel As Office.CommandBarButton
+    Private WithEvents ePopWwdh01, ePopWwdh02, ePopWwdh03, ePopWwdh04, ePopWwdh05 As Office.CommandBarButton
+    Private WithEvents ePopWwdh06, ePopWwdh07, ePopWwdh08, ePopWwdh09, ePopWwdh10 As Office.CommandBarButton
+
     Private WithEvents ePopAnr As Office.CommandBarPopup
-    Private WithEvents ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5 As Office.CommandBarButton
-    Private WithEvents ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10 As Office.CommandBarButton
+    Private WithEvents ePopAnrDel As Office.CommandBarButton
+    Private WithEvents ePopAnr01, ePopAnr02, ePopAnr03, ePopAnr04, ePopAnr05 As Office.CommandBarButton
+    Private WithEvents ePopAnr06, ePopAnr07, ePopAnr08, ePopAnr09, ePopAnr10 As Office.CommandBarButton
+
     Private WithEvents ePopVIP As Office.CommandBarPopup
-    Private WithEvents ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5 As Office.CommandBarButton
-    Private WithEvents ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10 As Office.CommandBarButton
+    Private WithEvents ePopVIPDel As Office.CommandBarButton
+    Private WithEvents ePopVIP01, ePopVIP02, ePopVIP03, ePopVIP04, ePopVIP05 As Office.CommandBarButton
+    Private WithEvents ePopVIP06, ePopVIP07, ePopVIP08, ePopVIP09, ePopVIP10 As Office.CommandBarButton
 #End If
 #If OVer = 11 Then
     Private WithEvents iPopRWS As Office.CommandBarPopup
@@ -217,10 +225,32 @@ Public Class ThisAddIn
                 ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
                 P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
 #If OVer < 14 Then
-                C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
-                                         ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
-                                         ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
-                                         ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
+
+                C_GUI.SymbolleisteErzeugen(eBtnWaehlen, _
+                                           eBtnDirektwahl, _
+                                           eBtnAnrMonitor, _
+                                           eBtnAnzeigen, _
+                                           eBtnAnrMonNeuStart, _
+                                           eBtnJournalimport, _
+                                           eBtnEinstellungen, _
+                                           ePopWwdh, _
+                                           ePopAnr, _
+                                           ePopVIP, _
+                                           ePopWwdhDel, _
+                                           ePopWwdh01, ePopWwdh02, ePopWwdh03, _
+                                           ePopWwdh04, ePopWwdh05, ePopWwdh06, _
+                                           ePopWwdh07, ePopWwdh08, ePopWwdh09, _
+                                           ePopWwdh10, _
+                                           ePopAnrDel, _
+                                           ePopAnr01, ePopAnr02, ePopAnr03, _
+                                           ePopAnr04, ePopAnr05, ePopAnr06, _
+                                           ePopAnr07, ePopAnr08, ePopAnr09, _
+                                           ePopAnr10, _
+                                           ePopVIPDel, _
+                                           ePopVIP01, ePopVIP02, ePopVIP03, _
+                                           ePopVIP04, ePopVIP05, ePopVIP06, _
+                                           ePopVIP07, ePopVIP08, ePopVIP09, _
+                                           ePopVIP10)
 #End If
                 If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
             Else
@@ -256,16 +286,16 @@ Public Class ThisAddIn
 #Region " Office 2003 & 2007"
 #If OVer < 14 Then
 #Region " Button"
-    Private Sub eBtn_Click(ByVal Ctrl As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles eBtnDirektwahl.Click, _
-                                                                                                                         eBtnWaehlen.Click, _
-                                                                                                                         eBtnEinstellungen.Click, _
-                                                                                                                         eBtnAnrMonitor.Click, _
-                                                                                                                         eBtnAnzeigen.Click, _
-                                                                                                                         eBtnJournalimport.Click, _
-                                                                                                                         eBtnAnrMonNeuStart.Click
+    Private Sub eBtn_Click(ByVal Control As Microsoft.Office.Core.CommandBarButton, ByRef CancelDefault As Boolean) Handles eBtnDirektwahl.Click, _
+                                                                                                                            eBtnWaehlen.Click, _
+                                                                                                                            eBtnEinstellungen.Click, _
+                                                                                                                            eBtnAnrMonitor.Click, _
+                                                                                                                            eBtnAnzeigen.Click, _
+                                                                                                                            eBtnJournalimport.Click, _
+                                                                                                                            eBtnAnrMonNeuStart.Click
 
-        With (C_GUI)
-            Select Case Ctrl.Tag
+        With C_GUI
+            Select Case Control.Tag
                 Case DataProvider.P_CMB_eBtnDirektwahl_Tag
                     .OnAction(GraphicalUserInterface.TaskToDo.DialDirect)
                 Case DataProvider.P_CMB_eBtnWaehlen_Tag
@@ -284,37 +314,45 @@ Public Class ThisAddIn
         End With
     End Sub
 
-    Private Sub ePopUp_Click(ByVal control As Office.CommandBarButton, ByRef cancel As Boolean) Handles ePopAnr1.Click, _
-                                                                                                        ePopAnr2.Click, _
-                                                                                                        ePopAnr3.Click, _
-                                                                                                        ePopAnr4.Click, _
-                                                                                                        ePopAnr5.Click, _
-                                                                                                        ePopAnr6.Click, _
-                                                                                                        ePopAnr7.Click, _
-                                                                                                        ePopAnr8.Click, _
-                                                                                                        ePopAnr9.Click, _
+    Private Sub ePopUp_Click(ByVal Control As Office.CommandBarButton, ByRef cancel As Boolean) Handles ePopAnr01.Click, _
+                                                                                                        ePopAnr02.Click, _
+                                                                                                        ePopAnr03.Click, _
+                                                                                                        ePopAnr04.Click, _
+                                                                                                        ePopAnr05.Click, _
+                                                                                                        ePopAnr06.Click, _
+                                                                                                        ePopAnr07.Click, _
+                                                                                                        ePopAnr08.Click, _
+                                                                                                        ePopAnr09.Click, _
                                                                                                         ePopAnr10.Click, _
-                                                                                                        ePopWwdh1.Click, _
-                                                                                                        ePopWwdh2.Click, _
-                                                                                                        ePopWwdh3.Click, _
-                                                                                                        ePopWwdh4.Click, _
-                                                                                                        ePopWwdh5.Click, _
-                                                                                                        ePopWwdh6.Click, _
-                                                                                                        ePopWwdh7.Click, _
-                                                                                                        ePopWwdh8.Click, _
-                                                                                                        ePopWwdh9.Click, _
+                                                                                                        ePopWwdh01.Click, _
+                                                                                                        ePopWwdh02.Click, _
+                                                                                                        ePopWwdh03.Click, _
+                                                                                                        ePopWwdh04.Click, _
+                                                                                                        ePopWwdh05.Click, _
+                                                                                                        ePopWwdh06.Click, _
+                                                                                                        ePopWwdh07.Click, _
+                                                                                                        ePopWwdh08.Click, _
+                                                                                                        ePopWwdh09.Click, _
                                                                                                         ePopWwdh10.Click, _
-                                                                                                        ePopVIP1.Click, _
-                                                                                                        ePopVIP2.Click, _
-                                                                                                        ePopVIP3.Click, _
-                                                                                                        ePopVIP4.Click, _
-                                                                                                        ePopVIP5.Click, _
-                                                                                                        ePopVIP6.Click, _
-                                                                                                        ePopVIP7.Click, _
-                                                                                                        ePopVIP8.Click, _
-                                                                                                        ePopVIP9.Click, _
-                                                                                                        ePopVIP10.Click
-        C_GUI.OnActionListen(control.Tag)
+                                                                                                        ePopVIP01.Click, _
+                                                                                                        ePopVIP02.Click, _
+                                                                                                        ePopVIP03.Click, _
+                                                                                                        ePopVIP04.Click, _
+                                                                                                        ePopVIP05.Click, _
+                                                                                                        ePopVIP06.Click, _
+                                                                                                        ePopVIP07.Click, _
+                                                                                                        ePopVIP08.Click, _
+                                                                                                        ePopVIP09.Click, _
+                                                                                                        ePopVIP10.Click, _
+                                                                                                        ePopWwdhDel.Click, _
+                                                                                                        ePopAnrDel.Click, _
+                                                                                                        ePopVIPDel.Click
+
+        If Split(Control.Tag, "_", , CompareMethod.Text)(0) = DataProvider.P_CMB_eDynListDel_Tag Then
+            C_GUI.ClearList(Control.Tag)
+        Else
+            C_GUI.OnActionListen(Control.Tag)
+        End If
     End Sub
 #End Region
 #End If
