@@ -3103,6 +3103,15 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Liste löschen...
+    ''' </summary>
+    Public Shared ReadOnly Property P_CMB_ClearEntry() As String
+        Get
+            Return "Eintrag löschen..."
+        End Get
+    End Property
+
+    ''' <summary>
     ''' "Die Liste <c>Liste</c>  wird gelöscht. Dies kann nicht rückgängig gemacht werden. Fortfahren?"
     ''' </summary>
     ''' <param name="Liste">Name der zu löschenden Liste</param>
