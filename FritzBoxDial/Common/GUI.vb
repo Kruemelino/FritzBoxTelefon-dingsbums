@@ -346,11 +346,11 @@ Imports Microsoft.Office.Core
                     If XMLListBaseNode = DataProvider.P_Def_NameListRING Then Verpasst = CBool(LANodeValues.Item(LANodeNames.IndexOf("Verpasst")))
 
                     GetButtonXMLString(RibbonListStrBuilder, _
-                            CStr(ID Mod 10), _
-                            CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
-                            XMLListBaseNode, _
-                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
-                            CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString)))
+                                       CStr(ID Mod 10), _
+                                       CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
+                                       XMLListBaseNode, _
+                                       DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
+                                       CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString)))
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
@@ -425,13 +425,33 @@ Imports Microsoft.Office.Core
             If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """ ")
             If Not Werte(4) = DataProvider.P_Def_LeerString Then .Append("imageMso=""" & Werte(4) & """ ")
             ' Menu und Button zum löschen des Eintrages
-            .Append("/><menu><button id=""dynEntryDel_" & Werte(0) & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso""/></menu></splitButton>" & vbCrLf)
+            .Append("/><menu>" & vbCrLf)
+            .Append("<button id=""dynEntryDel_" & Werte(2) & "_" & Werte(0) & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso""/>" & vbCrLf)
+            .Append("</menu></splitButton>" & vbCrLf)
         End With
 
     End Sub
 
+    ''' <summary>
+    ''' Legt fest, ob das dynamicMenu aktiviert wird.
+    ''' </summary>
+    ''' <param name="control">Ribbon Control</param>
+    ''' <returns>Boolean</returns>
+    ''' <remarks>    
+    ''' Dazu müssen mehr als zwei Einträge in der XML-Liste sein.
+    ''' Subnote Index und ein reguläres Telefonat.</remarks>
     Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
-        DynMenüEnabled = CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, Left(control.Id, Len(control.Id) - 2), "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False))
+        Dim xPathTeile As New ArrayList
+        DynMenüEnabled = False
+        With xPathTeile
+            .Add(Left(control.Id, Len(control.Id) - 2))
+            If C_XML.SubNoteCount(C_DP.XMLDoc, xPathTeile) > 1 Then
+                .Add("Index")
+                DynMenüEnabled = Not C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
+            End If
+            .Clear()
+        End With
+        xPathTeile = Nothing
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -648,7 +668,7 @@ Imports Microsoft.Office.Core
     ''' </summary>
     ''' <param name="control">Die id des Ribbon Controls</param>
     Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
-        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
+        Select Case Split(control.Id, "_", , CompareMethod.Text)(0)
             Case "btnDialExpl", "cbtnDial"
                 OnAction(TaskToDo.DialExplorer)
             Case "btnDialInsp"
@@ -657,11 +677,9 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.DialDirect)
             Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
                 OnActionListen(control.Tag)
-            Case "dynListDel"
-                ClearList(control.Id)
-            Case "dynEntryDel"
-                '...
-            Case "btnAnrMonIO"
+            Case "dynListDel", "dynEntryDel"
+                ClearInListe(control.Id)
+            Case "ClearInListe"
                 C_AnrMon.AnrMonStartStopp()
             Case "btnAnrMonRestart"
                 OnAction(TaskToDo.RestartAnrMon)
@@ -1679,23 +1697,33 @@ Imports Microsoft.Office.Core
     ''' </summary>
     ''' <param name="ControlID">ID der Liste</param>
     ''' <remarks></remarks>
-    Friend Sub ClearList(ByVal ControlID As String)
-        ' 
-        Dim Liste As String = Split(ControlID, "_", 2, CompareMethod.Text)(1)
+    Friend Sub ClearInListe(ByVal ControlID As String)
+        Dim xPathTeile As New ArrayList
+        Dim Eintrag() As String = Split(ControlID, "_", , CompareMethod.Text)
         Dim NameListe As String = DataProvider.P_Def_StringNull
 
-        Select Case Liste
+        Select Case Eintrag(1)
             Case "RingList"
-                NameListe = DataProvider.P_MSG_ClearList(DataProvider.P_CMB_CallBack)
+                NameListe = DataProvider.P_CMB_CallBack
             Case "CallList"
-                NameListe = DataProvider.P_MSG_ClearList(DataProvider.P_CMB_WWDH)
+                NameListe = DataProvider.P_CMB_WWDH
             Case "VIPList"
-                NameListe = DataProvider.P_MSG_ClearVIPList
+                NameListe = DataProvider.P_CMB_VIP
         End Select
 
-        If Not NameListe = DataProvider.P_Def_StringNull AndAlso C_HF.FBDB_MsgBox(NameListe, MsgBoxStyle.YesNo, "") = MsgBoxResult.Yes Then
-            C_HF.LogFile("Die Liste " & Liste & " wurde gelöscht.")
-            C_XML.Delete(C_DP.XMLDoc, Liste)
+        xPathTeile.Clear()
+        xPathTeile.Add(Eintrag(1)) 'Liste
+
+        If Not NameListe = DataProvider.P_Def_StringNull Then
+            If UBound(Eintrag) = 2 Then
+                xPathTeile.Add("Eintrag[@ID=""" & Eintrag(2) & """]")
+                C_HF.LogFile("Die Eintrag mit ID" & Eintrag(2) & " der Liste " & NameListe & " wurde gelöscht.")
+            Else
+                C_HF.LogFile("Die Liste " & NameListe & " wurde gelöscht.")
+            End If
+
+            C_XML.Delete(C_DP.XMLDoc, xPathTeile)
+
 #If OVer < 14 Then
             FillPopupItems(Liste)
 #Else
@@ -1703,6 +1731,7 @@ Imports Microsoft.Office.Core
 #End If
         End If
     End Sub
+
 #End Region
 
 End Class

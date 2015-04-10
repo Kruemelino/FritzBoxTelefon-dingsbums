@@ -3112,25 +3112,6 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' "Die Liste <c>Liste</c>  wird gelöscht. Dies kann nicht rückgängig gemacht werden. Fortfahren?"
-    ''' </summary>
-    ''' <param name="Liste">Name der zu löschenden Liste</param>
-    Public Shared ReadOnly Property P_MSG_ClearList(ByVal Liste As String) As String
-        Get
-            Return "Die Liste """ & Liste & """ wird gelöscht. Dies kann nicht rückgängig gemacht werden." & P_Def_ZweiNeueZeilen & "Fortfahren?"
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' "Die VIP-Liste wird gelöscht. Alle VIP-Einträge sind damit ebenfalls aufgehoben. Dies kann nicht rückgängig gemacht werden. Fortfahren?".
-    ''' </summary>
-    Public Shared ReadOnly Property P_MSG_ClearVIPList() As String
-        Get
-            Return "Die """ & P_CMB_VIP & """ wird gelöscht. Alle VIP-Einträge sind damit ebenfalls aufgehoben. Dies kann nicht rückgängig gemacht werden." & P_Def_ZweiNeueZeilen & "Fortfahren?"
-        End Get
-    End Property
-
-    ''' <summary>
     ''' Öffnet den Wahldialog um das ausgewählte Element anzurufen.
     ''' </summary>
     Public Shared ReadOnly Property P_CMB_Dial_ToolTipp() As String
