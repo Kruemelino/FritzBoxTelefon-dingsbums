@@ -698,7 +698,6 @@ Public Class formCfg
             Case "BStartDebug"
                 Me.TBDiagnose.Text = DataProvider.P_Def_LeerString
                 AddLine("Start")
-                AddLine(C_hf.formatTelNr("+49 (711) 123456"))
                 If Me.CBTelefonDatei.Checked Then
                     If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
                         If C_hf.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Einlesen einer fehlerhaften oder falschen Datei wird sehr unerfreulich enden.", _
@@ -710,7 +709,6 @@ Public Class formCfg
                     End If
                 End If
                 C_FBox.SetEventProvider(emc)
-                AddLine("Fritz!Box Klasse mit Verweis auf dieses Formular erstellt.")
 
                 BWTelefone = New BackgroundWorker
                 AddLine("BackgroundWorker erstellt.")

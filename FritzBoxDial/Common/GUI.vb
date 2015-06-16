@@ -409,15 +409,6 @@ Imports Microsoft.Office.Core
             End If
         Next
 
-        'With StrBuilder
-        '    .Append("<button id=""dynMListe_" & Werte(0) & """ label=""" & Werte(1) & """ onAction=""BtnOnAction"" tag=""" & Werte(2) & ";" & Werte(0) & """ ")
-
-        '    If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """ ")
-        '    If Not Werte(4) = DataProvider.P_Def_LeerString Then .Append("imageMso=""" & Werte(4) & """ ")
-
-        '    .Append("/>" & vbCrLf)
-        'End With
-
         With StrBuilder
             .Append("<splitButton id=""SplitBtn_" & Werte(0) & """>")
             ' Button des splitButton
