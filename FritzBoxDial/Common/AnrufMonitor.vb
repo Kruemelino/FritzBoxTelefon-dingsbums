@@ -697,7 +697,7 @@ Friend Class AnrufMonitor
                 ' Temporärer Test ob Nummern identisch
 
                 ' Nurzuffern und eigene Vorwahl für Vergleich entfernen.
-                If Not C_hf.nurZiffern(.TelNr).Equals(FBStatus(4).Replace("#", DataProvider.P_Def_LeerString)) Then
+                If Not C_hf.EigeneVorwahlenEntfernen(C_hf.nurZiffern(.TelNr)).Equals(CStr(FBStatus.GetValue(4)).Replace("#", DataProvider.P_Def_LeerString)) Then
                     C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & FBStatus(4))
                 End If
 
