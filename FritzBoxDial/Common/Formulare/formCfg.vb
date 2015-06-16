@@ -112,7 +112,6 @@ Public Class formCfg
             Me.TBVorwahl.Text = .P_TBVorwahl
             Me.TBEnblDauer.Text = CStr(.P_TBEnblDauer)
             Me.CBAnrMonAuto.Checked = .P_CBAnrMonAuto
-            Me.CBAnrMonKeepActiv.Checked = .P_CBAnrMonKeepActiv
             Me.TBAnrBeantworterTimeout.Text = CStr(.P_TBAnrBeantworterTimeout)
             Me.TBAnrMonX.Text = CStr(.P_TBAnrMonX)
             Me.TBAnrMonY.Text = CStr(.P_TBAnrMonY)
@@ -445,7 +444,6 @@ Public Class formCfg
             .P_CBAnrMonAuto = Me.CBAnrMonAuto.Checked
             .P_CBAutoClose = Me.CBAutoClose.Checked
             .P_CBAnrMonCloseAtDISSCONNECT = Me.CBAnrMonCloseAtDISSCONNECT.Checked
-            .P_CBAnrMonKeepActiv = Me.CBAnrMonKeepActiv.Checked
             .P_CBAnrMonMove = Me.CBAnrMonMove.Checked
             .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
             .P_TBAnrBeantworterTimeout = CInt(Me.TBAnrBeantworterTimeout.Text)
@@ -597,7 +595,6 @@ Public Class formCfg
                 Me.TBAnrMonX.Text = CStr(DataProvider.P_Def_TBAnrMonX)
                 Me.TBAnrMonY.Text = CStr(DataProvider.P_Def_TBAnrMonY)
                 Me.CBAnrMonAuto.Checked = DataProvider.P_Def_CBAnrMonAuto
-                Me.CBAnrMonKeepActiv.Checked = DataProvider.P_Def_CBAnrMonKeepActiv
                 Me.TBAnrBeantworterTimeout.Text = CStr(DataProvider.P_Def_TBAnrBeantworterTimeout)
                 Me.CBAutoClose.Checked = DataProvider.P_Def_CBAutoClose
                 Me.CBAnrMonMove.Checked = DataProvider.P_Def_CBAnrMonMove
@@ -866,9 +863,8 @@ Public Class formCfg
                                                                         TBBenutzer.TextChanged, _
                                                                         TBPasswort.TextChanged, _
                                                                         CBAnrMonCloseAtDISSCONNECT.CheckedChanged, _
-                                                                        CBAnrMonKeepActiv.CheckedChanged, _
                                                                         CBJournal.CheckedChanged, _
-                                                                        TBAnrBeantworterTimeout.TextChanged, _
+                                                                        CBAnrListeShowAnrMon.CheckedChanged, _
                                                                         CBAutoAnrList.CheckedChanged
 
         Select Case sender.GetType().Name
@@ -913,9 +909,9 @@ Public Class formCfg
                         Me.CBAnrListeUpdateJournal.Enabled = Me.CBAutoAnrList.Checked
                         Me.CBAnrListeUpdateCallLists.Enabled = Me.CBAutoAnrList.Checked
                         Me.CBAnrListeShowAnrMon.Enabled = Me.CBAutoAnrList.Checked
-                    Case "CBAnrMonKeepActiv"
-                        Me.TBAnrBeantworterTimeout.Enabled = Me.CBAnrMonKeepActiv.Checked
-                        Me.LAnrBeantworterTimeout.Enabled = Me.CBAnrMonKeepActiv.Checked
+                    Case "CBAnrListeShowAnrMon"
+                        Me.TBAnrBeantworterTimeout.Enabled = Me.CBAnrListeShowAnrMon.Checked
+                        Me.LAnrBeantworterTimeout.Enabled = Me.CBAnrListeShowAnrMon.Checked
                     Case "CBIndexAus"
                         Me.BIndizierungStart.Enabled = Not Me.CBIndexAus.Checked
                     Case "CBUseAnrMon"

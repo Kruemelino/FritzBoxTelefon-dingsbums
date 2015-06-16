@@ -172,6 +172,11 @@ die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor ode
 werden. Dazu werden alle Telefonate, die zwischen dem Beenden und Start von Outlook
 stattgefunden haben,berücksichtigt.</value>
   </data>
+  <data name="TVOutlookContact.ToolTip" xml:space="preserve">
+    <value>Hier werden alle Kontakte gespeichert, die von diesem Addin automatisch erstellt werden. Dies kann durch
+die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journal.eintrag erstellt wird.
+</value>
+  </data>
   <data name="RichTextBox1.Text" xml:space="preserve">
     <value>Haftungshinweis:
 
@@ -219,38 +224,6 @@ Datenschutzhinweis:
   <metadata name="Gesamt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="ColumnStandardTelefon.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Nr.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dialCode.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Typ.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Telefonname.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="OutNr.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Eingehend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Ausgehend.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Gesamt.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="TVOutlookContact.ToolTip" xml:space="preserve">
-    <value>Hier werden alle Kontakte gespeichert, die von diesem Addin automatisch erstellt werden. Dies kann durch
-die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journal.eintrag erstellt wird.
-</value>
-  </data>
   <data name="Label31.Text" xml:space="preserve">
     <value>Die Software ermöglicht Gesprächsverbindungen in das Festnetz, zu Mobiltelefonen und zu VoIP -Gegenstellen. Phoner kann als Softphone an analogen Teilnehmeranschlüssen, an digitalen ISDN Teilnehmeranschlussleitungen und als IP-Softphone auf stationären und mobilen Computersystemen benutzt werden. </value>
   </data>

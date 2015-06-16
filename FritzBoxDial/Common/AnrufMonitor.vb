@@ -912,7 +912,7 @@ Friend Class AnrufMonitor
                     If .Verpasst Then
                         C_hf.LogFile("Ein verpasstes Telefonat wurde erkannt: ID: " & .ID & ", " & .TelNr)
                         ' Verpassten Anruf über Anrufmonitor anzeigen
-                        If C_DP.P_CBAnrMonKeepActiv Then
+                        If C_DP.P_CBAnrListeShowAnrMon Then
                             .AnrMonAusblenden = False
                             ' Prüfung ob PopUp vorhanden
                             If .PopupAnrMon IsNot Nothing AndAlso Not C_OlI.VollBildAnwendungAktiv() Then

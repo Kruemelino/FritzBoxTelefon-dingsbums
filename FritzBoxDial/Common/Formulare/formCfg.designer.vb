@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -81,6 +81,7 @@ Partial Class formCfg
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label28 = New System.Windows.Forms.Label()
         Me.CBAutoAnrList = New System.Windows.Forms.CheckBox()
+        Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.TBAnrBeantworterTimeout = New System.Windows.Forms.TextBox()
         Me.LAnrBeantworterTimeout = New System.Windows.Forms.Label()
         Me.PInfo = New System.Windows.Forms.TabPage()
@@ -126,7 +127,6 @@ Partial Class formCfg
         Me.GroupBoxRWS = New System.Windows.Forms.GroupBox()
         Me.BRWSTest = New System.Windows.Forms.Button()
         Me.LRWSTest = New System.Windows.Forms.Label()
-        Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.ComboBoxRWS = New System.Windows.Forms.ComboBox()
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
@@ -149,7 +149,6 @@ Partial Class formCfg
         Me.CBNote = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonZeigeKontakt = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonAuto = New System.Windows.Forms.CheckBox()
-        Me.CBAnrMonKeepActiv = New System.Windows.Forms.CheckBox()
         Me.CBAnrMonCloseAtDISSCONNECT = New System.Windows.Forms.CheckBox()
         Me.CBAutoClose = New System.Windows.Forms.CheckBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -859,13 +858,23 @@ Partial Class formCfg
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
         Me.CBAutoAnrList.UseVisualStyleBackColor = True
         '
+        'TVOutlookContact
+        '
+        Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TVOutlookContact.FullRowSelect = True
+        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 39)
+        Me.TVOutlookContact.Name = "TVOutlookContact"
+        Me.TVOutlookContact.Size = New System.Drawing.Size(307, 70)
+        Me.TVOutlookContact.TabIndex = 4
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TVOutlookContact, resources.GetString("TVOutlookContact.ToolTip"))
+        '
         'TBAnrBeantworterTimeout
         '
         Me.TBAnrBeantworterTimeout.Enabled = False
-        Me.TBAnrBeantworterTimeout.Location = New System.Drawing.Point(2, 119)
+        Me.TBAnrBeantworterTimeout.Location = New System.Drawing.Point(2, 113)
         Me.TBAnrBeantworterTimeout.Name = "TBAnrBeantworterTimeout"
         Me.TBAnrBeantworterTimeout.Size = New System.Drawing.Size(29, 20)
-        Me.TBAnrBeantworterTimeout.TabIndex = 35
+        Me.TBAnrBeantworterTimeout.TabIndex = 37
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" & _
         "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" & _
         "ntworter.")
@@ -874,10 +883,10 @@ Partial Class formCfg
         '
         Me.LAnrBeantworterTimeout.AutoSize = True
         Me.LAnrBeantworterTimeout.Enabled = False
-        Me.LAnrBeantworterTimeout.Location = New System.Drawing.Point(37, 122)
+        Me.LAnrBeantworterTimeout.Location = New System.Drawing.Point(37, 116)
         Me.LAnrBeantworterTimeout.Name = "LAnrBeantworterTimeout"
         Me.LAnrBeantworterTimeout.Size = New System.Drawing.Size(137, 13)
-        Me.LAnrBeantworterTimeout.TabIndex = 36
+        Me.LAnrBeantworterTimeout.TabIndex = 38
         Me.LAnrBeantworterTimeout.Text = "Anrufbentworter-Timeout [s]"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" & _
         "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" & _
@@ -1145,9 +1154,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle10.Format = "T"
-        DataGridViewCellStyle10.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1159,9 +1168,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle11.Format = "T"
-        DataGridViewCellStyle11.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1173,9 +1182,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle12.Format = "T"
-        DataGridViewCellStyle12.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1352,16 +1361,6 @@ Partial Class formCfg
         Me.LRWSTest.Size = New System.Drawing.Size(78, 13)
         Me.LRWSTest.TabIndex = 7
         Me.LRWSTest.Text = "Test der RWS:"
-        '
-        'TVOutlookContact
-        '
-        Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TVOutlookContact.FullRowSelect = True
-        Me.TVOutlookContact.Location = New System.Drawing.Point(257, 39)
-        Me.TVOutlookContact.Name = "TVOutlookContact"
-        Me.TVOutlookContact.Size = New System.Drawing.Size(307, 70)
-        Me.TVOutlookContact.TabIndex = 4
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TVOutlookContact, resources.GetString("TVOutlookContact.ToolTip"))
         '
         'ComboBoxRWS
         '
@@ -1554,12 +1553,9 @@ Partial Class formCfg
         '
         'PanelAnrMon
         '
-        Me.PanelAnrMon.Controls.Add(Me.TBAnrBeantworterTimeout)
-        Me.PanelAnrMon.Controls.Add(Me.LAnrBeantworterTimeout)
         Me.PanelAnrMon.Controls.Add(Me.CBNote)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonZeigeKontakt)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonAuto)
-        Me.PanelAnrMon.Controls.Add(Me.CBAnrMonKeepActiv)
         Me.PanelAnrMon.Controls.Add(Me.CBAnrMonCloseAtDISSCONNECT)
         Me.PanelAnrMon.Controls.Add(Me.CBAutoClose)
         Me.PanelAnrMon.Controls.Add(Me.Label2)
@@ -1574,7 +1570,7 @@ Partial Class formCfg
         'CBNote
         '
         Me.CBNote.AutoSize = True
-        Me.CBNote.Location = New System.Drawing.Point(155, 196)
+        Me.CBNote.Location = New System.Drawing.Point(1, 171)
         Me.CBNote.Name = "CBNote"
         Me.CBNote.Size = New System.Drawing.Size(124, 17)
         Me.CBNote.TabIndex = 34
@@ -1584,7 +1580,7 @@ Partial Class formCfg
         'CBAnrMonZeigeKontakt
         '
         Me.CBAnrMonZeigeKontakt.AutoSize = True
-        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(3, 196)
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(1, 150)
         Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
         Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(141, 17)
         Me.CBAnrMonZeigeKontakt.TabIndex = 34
@@ -1600,16 +1596,6 @@ Partial Class formCfg
         Me.CBAnrMonAuto.TabIndex = 1
         Me.CBAnrMonAuto.Text = "Anrufmonitor mit Outlook starten"
         Me.CBAnrMonAuto.UseVisualStyleBackColor = True
-        '
-        'CBAnrMonKeepActiv
-        '
-        Me.CBAnrMonKeepActiv.AutoSize = True
-        Me.CBAnrMonKeepActiv.Location = New System.Drawing.Point(3, 98)
-        Me.CBAnrMonKeepActiv.Name = "CBAnrMonKeepActiv"
-        Me.CBAnrMonKeepActiv.Size = New System.Drawing.Size(255, 17)
-        Me.CBAnrMonKeepActiv.TabIndex = 2
-        Me.CBAnrMonKeepActiv.Text = "Anr.fen. bei verpassten Anrufen bestehen lassen" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
-        Me.CBAnrMonKeepActiv.UseVisualStyleBackColor = True
         '
         'CBAnrMonCloseAtDISSCONNECT
         '
@@ -1633,7 +1619,7 @@ Partial Class formCfg
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(156, 145)
+        Me.Label2.Location = New System.Drawing.Point(154, 99)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(114, 48)
         Me.Label2.TabIndex = 33
@@ -1652,7 +1638,7 @@ Partial Class formCfg
         Me.CLBTelNr.CheckOnClick = True
         Me.CLBTelNr.HorizontalScrollbar = True
         Me.CLBTelNr.IntegralHeight = False
-        Me.CLBTelNr.Location = New System.Drawing.Point(2, 144)
+        Me.CLBTelNr.Location = New System.Drawing.Point(0, 98)
         Me.CLBTelNr.Name = "CLBTelNr"
         Me.CLBTelNr.Size = New System.Drawing.Size(148, 49)
         Me.CLBTelNr.TabIndex = 4
@@ -1713,7 +1699,7 @@ Partial Class formCfg
         Me.GBoxJournal.Controls.Add(Me.CBJournal)
         Me.GBoxJournal.Location = New System.Drawing.Point(0, 38)
         Me.GBoxJournal.Name = "GBoxJournal"
-        Me.GBoxJournal.Size = New System.Drawing.Size(282, 86)
+        Me.GBoxJournal.Size = New System.Drawing.Size(282, 59)
         Me.GBoxJournal.TabIndex = 33
         Me.GBoxJournal.TabStop = False
         Me.GBoxJournal.Text = "Outlook Journal"
@@ -1827,13 +1813,15 @@ Partial Class formCfg
         '
         'GboxAnrListeMain
         '
+        Me.GboxAnrListeMain.Controls.Add(Me.TBAnrBeantworterTimeout)
+        Me.GboxAnrListeMain.Controls.Add(Me.LAnrBeantworterTimeout)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeShowAnrMon)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateJournal)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAutoAnrList)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
-        Me.GboxAnrListeMain.Location = New System.Drawing.Point(0, 130)
+        Me.GboxAnrListeMain.Location = New System.Drawing.Point(0, 103)
         Me.GboxAnrListeMain.Name = "GboxAnrListeMain"
-        Me.GboxAnrListeMain.Size = New System.Drawing.Size(282, 115)
+        Me.GboxAnrListeMain.Size = New System.Drawing.Size(282, 141)
         Me.GboxAnrListeMain.TabIndex = 31
         Me.GboxAnrListeMain.TabStop = False
         Me.GboxAnrListeMain.Text = "Auswertung der Anrufliste"
@@ -2518,11 +2506,8 @@ Partial Class formCfg
     Friend WithEvents PDiverses As System.Windows.Forms.TabPage
     Friend WithEvents GboxAnrListeMain As System.Windows.Forms.GroupBox
     Friend WithEvents Label25 As System.Windows.Forms.Label
-    Friend WithEvents CBAnrMonKeepActiv As System.Windows.Forms.CheckBox
     Friend WithEvents CBAutoAnrList As System.Windows.Forms.CheckBox
     Friend WithEvents CBJournal As System.Windows.Forms.CheckBox
-    Friend WithEvents TBAnrBeantworterTimeout As System.Windows.Forms.TextBox
-    Friend WithEvents LAnrBeantworterTimeout As System.Windows.Forms.Label
     Friend WithEvents CBAnrListeUpdateCallLists As System.Windows.Forms.CheckBox
     Friend WithEvents GBoxSymbolleiste As System.Windows.Forms.GroupBox
     Friend WithEvents CBSymbJournalimport As System.Windows.Forms.CheckBox
@@ -2536,6 +2521,8 @@ Partial Class formCfg
     Friend WithEvents GBoxJournal As System.Windows.Forms.GroupBox
     Friend WithEvents CBAnrListeUpdateJournal As System.Windows.Forms.CheckBox
     Friend WithEvents CBAnrListeShowAnrMon As System.Windows.Forms.CheckBox
+    Friend WithEvents TBAnrBeantworterTimeout As System.Windows.Forms.TextBox
+    Friend WithEvents LAnrBeantworterTimeout As System.Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class

@@ -304,19 +304,6 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' Gibt an, ob das Anrufmonitorfenster bei fehlendem CONNECT bestehen bleibt
-    ''' </summary>
-    Private _P_CBAnrMonKeepActiv As Boolean
-    Public Property P_CBAnrMonKeepActiv() As Boolean
-        Get
-            Return _P_CBAnrMonKeepActiv
-        End Get
-        Set(ByVal value As Boolean)
-            _P_CBAnrMonKeepActiv = value
-        End Set
-    End Property
-
-    ''' <summary>
     ''' Gibt das Timeout an, ab dem alle Telefonate als verpasst behandelt werden sollen.
     ''' </summary>
     Private _TBAnrBeantworterTimeout As Double
@@ -749,7 +736,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob verpasste Anrufe mit Hilfe des Anrufmonitors angezeigt werden sollen.
     ''' </summary>
-    Private _CBAnrListeShowAnrMon As Boolean
+    Public _CBAnrListeShowAnrMon As Boolean
     Public Property P_CBAnrListeShowAnrMon As Boolean
         Get
             Return _CBAnrListeShowAnrMon
@@ -1847,11 +1834,6 @@ Public Class DataProvider
         End Get
     End Property
     Public Shared ReadOnly Property P_Def_CBAnrMonAuto() As Boolean
-        Get
-            Return False
-        End Get
-    End Property
-    Public Shared ReadOnly Property P_Def_CBAnrMonKeepActiv() As Boolean
         Get
             Return False
         End Get
@@ -3579,7 +3561,6 @@ Public Class DataProvider
         Me.P_CBoxVorwahl = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
         Me.P_TBEnblDauer = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
         Me.P_CBAnrMonAuto = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))
-        Me.P_CBAnrMonKeepActiv = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonKeepActiv", CStr(P_Def_CBAnrMonKeepActiv)))
         Me.P_TBAnrBeantworterTimeout = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrBeantworterTimeout", CStr(P_Def_TBAnrBeantworterTimeout)))
         Me.P_TBAnrMonX = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonX", CStr(P_Def_TBAnrMonX)))
         Me.P_TBAnrMonY = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBAnrMonY", CStr(P_Def_TBAnrMonY)))
@@ -3687,7 +3668,6 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(Me.P_CBoxVorwahl))
         C_XML.Write(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(Me.P_TBEnblDauer))
         C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(Me.P_CBAnrMonAuto))
-        C_XML.Write(XMLDoc, P_Def_Options, "CBAnrMonKeepActiv", CStr(Me.P_CBAnrMonKeepActiv))
         C_XML.Write(XMLDoc, P_Def_Options, "TBAnrBeantworterTimeout", CStr(Me.P_TBAnrBeantworterTimeout))
         C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonX", CStr(Me.P_TBAnrMonX))
         C_XML.Write(XMLDoc, P_Def_Options, "TBAnrMonY", CStr(Me.P_TBAnrMonY))
