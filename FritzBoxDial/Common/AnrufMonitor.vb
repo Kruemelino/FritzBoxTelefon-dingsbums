@@ -386,8 +386,8 @@ Friend Class AnrufMonitor
     ''' </param>
     Friend Sub AnrMonRING(ByVal FBStatus As String())
 
-        Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))
-        Dim ID As Integer = CInt(FBStatus.GetValue(2))
+        Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(FBStatus(4))
+        Dim ID As Integer = CInt(FBStatus(2))
 
         Dim Telefonat As C_Telefonat
 
@@ -414,11 +414,17 @@ Friend Class AnrufMonitor
 
             With Telefonat
                 .Typ = C_Telefonat.AnrufRichtung.Eingehend
-                .Zeit = CDate(FBStatus.GetValue(0))
+                Try
+                    .Zeit = CDate(FBStatus(0))
+                Catch ex As InvalidCastException
+                    C_hf.LogFile("AnrMonRING: Das von der Fritz!Box übermitteltet Datum " & FBStatus(0) & " kann nicht in ein Date-Datentyp umgewandelt werden. Die Systemzeit wird verwendet.")
+                    .Zeit = System.DateTime.Now
+                End Try
+
                 .MSN = MSN
                 .TelName = C_hf.TelefonName(.MSN)
                 .ID = ID
-                .TelNr = CStr(FBStatus.GetValue(3))
+                .TelNr = FBStatus(3)
                 .Online = CBool(IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False))
                 .RingTime = DataProvider.P_Def_ErrorMinusOne_Integer
                 ' Phoner
@@ -532,8 +538,8 @@ Friend Class AnrufMonitor
     ''' </param>
     Friend Sub AnrMonCALL(ByVal FBStatus As String())
 
-        Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(CStr(FBStatus.GetValue(4)))  ' Ausgehende eigene Telefonnummer, MSN
-        Dim ID As Integer = CInt(FBStatus.GetValue(2))
+        Dim MSN As String = C_hf.EigeneVorwahlenEntfernen(FBStatus(4))  ' Ausgehende eigene Telefonnummer, MSN
+        Dim ID As Integer = CInt(FBStatus(2))
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
 
@@ -556,9 +562,14 @@ Friend Class AnrufMonitor
         If C_DP.P_CLBTelNr.Contains(MSN) Or AnrMonPhoner Then
             Telefonat = New C_Telefonat
             With Telefonat
-                .Zeit = CDate(FBStatus.GetValue(0))
+                Try
+                    .Zeit = CDate(FBStatus(0))
+                Catch ex As InvalidCastException
+                    C_hf.LogFile("AnrMonCALL: Das von der Fritz!Box übermitteltet Datum " & FBStatus(0) & " kann nicht in ein Date-Datentyp umgewandelt werden. Die Systemzeit wird verwendet.")
+                    .Zeit = System.DateTime.Now
+                End Try
                 .ID = ID
-                .NSN = CInt(FBStatus.GetValue(3))
+                .NSN = CInt(FBStatus(3))
                 .MSN = MSN
                 .Typ = C_Telefonat.AnrufRichtung.Ausgehend
                 .Online = CBool(IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False))
@@ -587,7 +598,7 @@ Friend Class AnrufMonitor
                     End Select
                 End If
 
-                .TelNr = C_hf.nurZiffern(CStr(FBStatus.GetValue(5)))
+                .TelNr = C_hf.nurZiffern(FBStatus(5))
                 If .TelNr = DataProvider.P_Def_LeerString Then .TelNr = DataProvider.P_Def_StringUnknown
                 ' CbC-Vorwahl entfernen
                 If .TelNr.StartsWith("0100") Then .TelNr = Right(.TelNr, Len(.TelNr) - 6)
@@ -656,6 +667,7 @@ Friend Class AnrufMonitor
                 End If
 #End If
             End With
+            xPathTeile = Nothing
             C_Popup.TelefonatsListe.Add(Telefonat)
         End If
     End Sub '(AnrMonCALL)
@@ -675,27 +687,36 @@ Friend Class AnrufMonitor
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
-
+        Dim tmpDate As Date
         ' 140824:
         ' Achtung: ID Reicht nicht aus.
 
-        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus.GetValue(2)) And Not tmpTel.Beendet)
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus(2)) And Not tmpTel.Beendet)
         If Telefonat IsNot Nothing Then
             With Telefonat
                 ' Temporärer Test ob Nummern identisch
 
-                If Not C_hf.nurZiffern(.TelNr).Equals(CStr(FBStatus.GetValue(4)).Replace("#", DataProvider.P_Def_LeerString)) Then
-                    C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & CStr(FBStatus.GetValue(4)))
+                ' Nurzuffern und eigene Vorwahl für Vergleich entfernen.
+                If Not C_hf.nurZiffern(.TelNr).Equals(FBStatus(4).Replace("#", DataProvider.P_Def_LeerString)) Then
+                    C_hf.LogFile("AnrMonCONNECT: Verbundene Nummer nicht mit hinterlegter Nummer identisch: " & .TelNr & " <> " & FBStatus(4))
                 End If
 
                 .Angenommen = True
-                .RingTime = CType(.Zeit - CDate(FBStatus.GetValue(0)), TimeSpan).TotalSeconds
-                .Zeit = CDate(FBStatus.GetValue(0))
+
+                Try
+                    tmpDate = CDate(FBStatus(0))
+                Catch ex As InvalidCastException
+                    C_hf.LogFile("AnrMonCONNECT: Das von der Fritz!Box übermitteltet Datum " & FBStatus(0) & " kann nicht in ein Date-Datentyp umgewandelt werden. Die Systemzeit wird verwendet.")
+                    tmpDate = System.DateTime.Now
+                End Try
+
+                .RingTime = CType(.Zeit - tmpDate, TimeSpan).TotalSeconds
+                .Zeit = tmpDate
 
                 If AnrMonPhoner Then
                     '.telname = "Phoner"
                 Else
-                    .NSN = CInt(FBStatus.GetValue(3))
+                    .NSN = CInt(FBStatus(3))
 
                     Select Case .NSN
                         Case 0 To 2 ' FON1-3
@@ -753,6 +774,8 @@ Friend Class AnrufMonitor
 #End If
             End With
         End If
+
+        xPathTeile = Nothing
     End Sub '(AnrMonCONNECT)
 
     ''' <summary>
@@ -771,8 +794,9 @@ Friend Class AnrufMonitor
 
         Dim xPathTeile As New ArrayList
         Dim Telefonat As C_Telefonat
+        Dim tmpDate As Date
 
-        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus.GetValue(2)) And Not tmpTel.Beendet)
+        Telefonat = C_Popup.TelefonatsListe.Find(Function(tmpTel) tmpTel.ID = CInt(FBStatus(2)) And Not tmpTel.Beendet)
 
         If Telefonat IsNot Nothing Then
             With Telefonat
@@ -781,7 +805,14 @@ Friend Class AnrufMonitor
 
                 ' Bestimmte die Zeit, des Klingelns [(DIS)CONNECT) - RING]
                 If .RingTime = DataProvider.P_Def_ErrorMinusOne_Integer Then
-                    .RingTime = CType(.Zeit - CDate(FBStatus.GetValue(0)), TimeSpan).TotalSeconds
+                    Try
+                        tmpDate = CDate(FBStatus(0))
+                    Catch ex As InvalidCastException
+                        C_hf.LogFile("AnrMonDISCONNECT: Das von der Fritz!Box übermitteltet Datum " & FBStatus(0) & " kann nicht in ein Date-Datentyp umgewandelt werden. Die Systemzeit wird verwendet.")
+                        tmpDate = System.DateTime.Now
+                    End Try
+
+                    .RingTime = CType(.Zeit - tmpDate, TimeSpan).TotalSeconds
                 End If
 
                 ' Regel für verpasstes Telefonat:
@@ -794,7 +825,7 @@ Friend Class AnrufMonitor
                 End If
 
                 If C_DP.P_CBJournal Then
-                    .Dauer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
+                    .Dauer = CInt(IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3)))) \ 60
                     .Body = DataProvider.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
                     If Not .vCard = DataProvider.P_Def_LeerString And Not .vCard = DataProvider.P_Def_ErrorMinusTwo_String Then
                         .Firma = ReadFromVCard(.vCard, "ORG", "")
@@ -918,16 +949,18 @@ Friend Class AnrufMonitor
                 End If
             End With
         Else
-            If C_DP.P_CBJournal And C_DP.P_CLBTelNr.Contains(CStr(FBStatus.GetValue(3))) Then
+            If C_DP.P_CBJournal And C_DP.P_CLBTelNr.Contains(FBStatus(3)) Then
                 C_hf.LogFile("AnrMonDISCONNECT: " & DataProvider.P_AnrMon_AnrMonDISCONNECT_Error)
                 ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
                 Dim ZeitAnruf As Date = CDate(FBStatus(0))
-                Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus.GetValue(3)) <= 30, 31, CInt(FBStatus.GetValue(3)))) \ 60
+                Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3)))) \ 60
                 ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + DauerAnruf + 70))
                 If ZeitAnruf < ZeitOutlookBeendet Then C_DP.P_StatOLClosedZeit = ZeitAnruf
                 ' Dim formjournalimort As New formJournalimport(C_FB, Me, C_hf, C_DP, C_XML, False)
             End If
         End If
+
+        xPathTeile = Nothing
     End Sub '(AnrMonDISCONNECT)
 #End Region
 
