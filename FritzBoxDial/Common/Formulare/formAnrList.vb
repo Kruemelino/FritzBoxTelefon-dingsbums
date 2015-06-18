@@ -176,7 +176,7 @@ Public Class formImportAnrList
                 Do
                     j += 1
                     AnrZeit = CStr(Split(CStr(AnrListe.GetValue(j)), ";", , CompareMethod.Text).GetValue(1)) & ":00"
-                    If CDate(AnrZeit) < Startzeit Then EndZeile = j - 1 ' AnrZeit nach  Startzeit
+                    If CDate(AnrZeit) < Startzeit Then EndZeile = j - 1 ' AnrZeit nach Startzeit
                     If CDate(AnrZeit) > Endzeit Then StartZeile = j + 1 ' AnrZeit vor Endzeit
                     Windows.Forms.Application.DoEvents()
                 Loop Until CDate(AnrZeit) < Startzeit Or j = AnrListe.Length - 1

@@ -952,10 +952,16 @@ Friend Class AnrufMonitor
             If C_DP.P_CBJournal And C_DP.P_CLBTelNr.Contains(FBStatus(3)) Then
                 C_hf.LogFile("AnrMonDISCONNECT: " & DataProvider.P_AnrMon_AnrMonDISCONNECT_Error)
                 ' Wenn Anruf vor dem Outlookstart begonnen wurde, wurde er nicht nachträglich importiert.
-                Dim ZeitAnruf As Date = CDate(FBStatus(0))
+                Try
+                    tmpDate = CDate(FBStatus(0))
+                Catch ex As InvalidCastException
+                    C_hf.LogFile("AnrMonDISCONNECT: Das von der Fritz!Box übermitteltet Datum " & FBStatus(0) & " kann nicht in ein Date-Datentyp umgewandelt werden. Die Systemzeit wird verwendet.")
+                    tmpDate = System.DateTime.Now
+                End Try
+
                 Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3)))) \ 60
-                ZeitAnruf = ZeitAnruf.AddSeconds(-1 * (ZeitAnruf.Second + DauerAnruf + 70))
-                If ZeitAnruf < ZeitOutlookBeendet Then C_DP.P_StatOLClosedZeit = ZeitAnruf
+                tmpDate = tmpDate.AddSeconds(-1 * (tmpDate.Second + DauerAnruf + 70))
+                If tmpDate < ZeitOutlookBeendet Then C_DP.P_StatOLClosedZeit = tmpDate
                 ' Dim formjournalimort As New formJournalimport(C_FB, Me, C_hf, C_DP, C_XML, False)
             End If
         End If

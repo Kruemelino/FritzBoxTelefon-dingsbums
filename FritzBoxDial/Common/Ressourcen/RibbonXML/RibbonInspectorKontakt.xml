@@ -12,7 +12,7 @@
             <button id="btnRWS04_C" tag="RWSTelSearch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
             <button id="btnRWS05_C" tag="RWSAlle" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
           </menu>
-          <toggleButton id="tbtnVIP_C1" getLabel="GetItemLabel" getImage="GetItemImageMso" getPressed="tBtnPressedVIP" size="normal" getScreentip="GetItemScreenTipp" onAction="OnActionVIP"/>
+          <toggleButton id="tbtnVIP_C1" getLabel="GetItemLabel" getImage="GetItemImageMso" getPressed="tBtnPressedVIP" size="normal" getScreentip="GetItemScreenTipp" onAction="tBtnOnAction"/>
           <button id="btnNote_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="BtnOnAction"/>
           <button id="btnUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="BtnOnAction"/>
         </group>

@@ -716,7 +716,7 @@ Imports Microsoft.Office.Core
 
 #Region "VIP-Ribbon"
     Public Sub tBtnOnAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
 
         If IsVIP(oKontakt) Then
             RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
@@ -733,7 +733,7 @@ Imports Microsoft.Office.Core
 
     Public Function CtBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
         CtBtnPressedVIP = False
-        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
 
         CtBtnPressedVIP = IsVIP(oKontact)
 
