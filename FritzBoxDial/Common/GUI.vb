@@ -716,24 +716,31 @@ Imports Microsoft.Office.Core
 
 #Region "VIP-Ribbon"
     Public Sub tBtnOnAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+        Dim oKontakt As Outlook.ContactItem = Nothing
 
-        If IsVIP(oKontakt) Then
-            RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
-        Else
-            AddVIP(oKontakt)
+        If TypeOf (control.Context) Is Outlook.Inspector Then
+            oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+        ElseIf TypeOf (control.Context) Is Outlook.Selection Then
+            oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
         End If
-        C_HF.NAR(oKontakt)
-        oKontakt = Nothing
-        ' Fehler unter Office 2007
+        If Not oKontakt Is Nothing Then
+            If IsVIP(oKontakt) Then
+                RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
+            Else
+                AddVIP(oKontakt)
+            End If
+            C_HF.NAR(oKontakt)
+            oKontakt = Nothing
+            ' Fehler unter Office 2007
 #If OVer >= 14 Then
-        RibbonObjekt.Invalidate()
+            RibbonObjekt.Invalidate()
 #End If
+        End If
     End Sub
 
     Public Function CtBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
         CtBtnPressedVIP = False
-        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+        Dim oKontact As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
 
         CtBtnPressedVIP = IsVIP(oKontact)
 
