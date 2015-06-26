@@ -670,7 +670,7 @@ Imports Microsoft.Office.Core
                 OnActionListen(control.Tag)
             Case "dynListDel", "dynEntryDel"
                 ClearInListe(control.Id)
-            Case "ClearInListe"
+            Case "btnAnrMonIO"
                 C_AnrMon.AnrMonStartStopp()
             Case "btnAnrMonRestart"
                 OnAction(TaskToDo.RestartAnrMon)
