@@ -21,6 +21,8 @@ Public Class FritzBox
 
     Private SID As String
 
+    Private WithEvents BWSetDialPort As BackgroundWorker
+
 #Region "Properties"
     Friend Property P_SpeichereDaten() As Boolean
         Get
@@ -160,9 +162,41 @@ Public Class FritzBox
     ''' <param name="DialPort">DialPort</param>
     ''' <param name="DialCode">Gewählte Telefonnummer</param>
     ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
-    Private ReadOnly Property P_Link_FB_Dial(ByVal SID As String, ByVal DialPort As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
+    Private ReadOnly Property P_Link_FB_DialV1(ByVal SID As String, ByVal DialPort As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
             Return "sid=" & SID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/dial_fonbook.lua"
+    ''' </summary>
+    Private ReadOnly Property P_Link_FB_TelV2() As String
+        Get
+            Return P_Link_FB_Basis & "/fon_num/dial_fonbook.lua"
+        End Get
+    End Property
+
+    ''' <summary>Http POST Data:
+    '''  sid=SID&amp;clicktodial=on&amp;port=DialPort&amp;btn_apply=
+    '''  </summary>
+    ''' <param name="SID">SessionID</param>
+    ''' <param name="DialPort">Der Dialport, auf den die Wählhilfe geändert werden soll.</param>
+    Private ReadOnly Property P_Link_FB_DialV2SetDialPort(ByVal SID As String, ByVal DialPort As String) As String
+        Get
+            Return "sid=" & SID & "&clicktodial=on&port=" & DialPort & "&btn_apply="
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/dial_fonbook.lua?sid=" &amp; SID &amp; hangup=||dial=DialCode
+    ''' </summary>
+    ''' <param name="SID">SessionID</param>
+    ''' <param name="DialCode">Gewählte Telefonnummer</param>
+    ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
+    Private ReadOnly Property P_Link_FB_DialV2(ByVal SID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
+        Get
+            Return P_Link_FB_TelV2 & "?sid=" & SID & "" & CStr(IIf(HangUp, "&hangup=", "&dial=" & DialCode))
         End Get
     End Property
 
@@ -1556,7 +1590,13 @@ Public Class FritzBox
 #End Region
 
 #Region "Wählen"
+
     Friend Function SendDialRequestToBox(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
+
+        Return SendDialRequestToBoxV2(sDialCode, sDialPort, bHangUp)
+
+    End Function
+    Private Function SendDialRequestToBoxV1(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
         ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
         ' Parameter:  dialCode (string):    zu wählende Nummer
         '             fonanschluss (long):  Welcher Anschluss wird verwendet?
@@ -1565,18 +1605,46 @@ Public Class FritzBox
         '
         Dim Response As String             ' Antwort der FritzBox
         '
-        SendDialRequestToBox = DataProvider.P_FritzBox_Dial_Error1           ' Antwortstring
+        SendDialRequestToBoxV1 = DataProvider.P_FritzBox_Dial_Error1           ' Antwortstring
         If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
-            Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_Dial(SID, sDialPort, sDialCode, bHangUp), FBEncoding)
+            Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_DialV1(SID, sDialPort, sDialCode, bHangUp), FBEncoding)
 
             If Response = DataProvider.P_Def_LeerString Then
-                SendDialRequestToBox = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
+                SendDialRequestToBoxV1 = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
             Else
-                SendDialRequestToBox = DataProvider.P_FritzBox_Dial_Error2
-                C_hf.LogFile("SendDialRequestToBox: Response: " & Response)
+                SendDialRequestToBoxV1 = DataProvider.P_FritzBox_Dial_Error2
+                C_hf.LogFile("SendDialRequestToBoxV1: Response: " & Response)
             End If
         Else
             C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "sendDialRequestToBox")
+        End If
+    End Function
+
+    Private Function SendDialRequestToBoxV2(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
+        Dim Response As String             ' Antwort der FritzBox
+        Dim PortChangeSuccess As Boolean
+        SendDialRequestToBoxV2 = DataProvider.P_FritzBox_Dial_Error2
+        ' DialPort setzen, wenn erforderlich
+        If FritzBoxQuery("DialPort=telcfg:settings/DialPort").Contains(sDialPort) Then
+            PortChangeSuccess = True
+        Else
+            ' per HTTP-POST Dialport ändern
+            Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(SID, sDialPort), FBEncoding)
+            PortChangeSuccess = Response.Contains("[""telcfg:settings/DialPort""] = """ & sDialPort & "")
+        End If
+
+        ' Wählen
+        If PortChangeSuccess Then
+            Response = C_hf.httpGET(P_Link_FB_DialV2(SID, sDialCode, bHangUp), FBEncoding, FBFehler)
+            If Response.Contains("""dialing"": """ & CStr(IIf(bHangUp, "false", Replace(sDialCode, "#", "", CompareMethod.Text))) & "") Then
+                SendDialRequestToBoxV2 = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
+                ' Achtung, nach diesem Aufruf ist der DialPort in der Box wieder auf 50 gesetzt. Dieser Reset ist nicht erklärbar. 
+                ' Daher erfolgt ein erneutes setzen des DialPorts in einem BackgroundWorker
+                BWSetDialPort = New BackgroundWorker
+                BWSetDialPort.RunWorkerAsync(argument:=sDialPort)
+            Else
+                C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response)
+            End If
         End If
     End Function
 #End Region
@@ -1846,8 +1914,20 @@ Public Class FritzBox
     End Sub
 #End Region
 
+#Region "Backgroundworker"
+    Private Sub BWSetDialPort_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWSetDialPort.DoWork
+        C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(SID, CStr(e.Argument)), FBEncoding)
+        e.Result = FritzBoxQuery("DialPort=telcfg:settings/DialPort")
+    End Sub
+
+    Private Sub BWSetDialPort_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWSetDialPort.RunWorkerCompleted
+        BWSetDialPort.Dispose()
+        BWSetDialPort = Nothing
+    End Sub
+#End Region
+
 #Region "Testlabor"
-    Public Function FritzBoxQuery(ByVal Abfrage As String) As String
+    Private Function FritzBoxQuery(ByVal Abfrage As String) As String
         FritzBoxQuery = DataProvider.P_Def_ErrorMinusOne_String
 
         If SID = DataProvider.P_Def_SessionID Then FBLogin(True)
@@ -1855,12 +1935,6 @@ Public Class FritzBox
             FritzBoxQuery = C_hf.httpGET(P_Link_Query(SID, Abfrage), FBEncoding, FBFehler)
         End If
     End Function
-
-    'Public Function DeserializeJSON(ByVal sjson As String) As String
-    '    Dim FritzBoxValue As FBValue
-    '    FritzBoxValue = DeserializeObject(Of FBValue)(sjson)
-    '    Return FritzBoxValue.thisFBValue
-    'End Function
 
 #End Region
 
