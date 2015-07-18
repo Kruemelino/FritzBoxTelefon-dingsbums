@@ -1166,6 +1166,16 @@ Public Class DataProvider
         End Get
     End Property
 
+    ' Fritz!Box Kommunikation
+    Private _RBFBComUPnP As Boolean
+    Public Property P_RBFBComUPnP() As Boolean
+        Set(value As Boolean)
+            _RBFBComUPnP = value
+        End Set
+        Get
+            Return _RBFBComUPnP
+        End Get
+    End Property
 #End Region
 
 #Region "Global Default Value Properties"
@@ -2241,7 +2251,12 @@ Public Class DataProvider
             Return False
         End Get
     End Property
-
+    ' Fritz!Box Kommunikation
+    Public Shared ReadOnly Property P_Def_RBFBComUPnP() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 #End Region
 
 #Region "Organisation Properties"
@@ -3639,6 +3654,8 @@ Public Class DataProvider
         Me.P_LLetzteIndizierung = CDate(C_XML.Read(XMLDoc, P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
         ' Notiz
         Me.P_CBNote = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBNote", CStr(P_Def_CBNote)))
+        ' Fritz!Box Kommunikation
+        Me.P_RBFBComUPnP = CBool(C_XML.Read(XMLDoc, P_Def_Options, "RBFBComUPnP", CStr(P_Def_RBFBComUPnP)))
 
         With xPathTeile
             .Clear()
@@ -3746,9 +3763,10 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         ' Notiz
         C_XML.Write(XMLDoc, P_Def_Options, "CBNote", CStr(Me.P_CBNote))
+        ' Fritz!Box Kommunikation
+        C_XML.Write(XMLDoc, P_Def_Options, "RBFBComUPnP", CStr(Me.P_RBFBComUPnP))
 
         ' Do some Stuff
-
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
 
@@ -3799,21 +3817,23 @@ Public Class DataProvider
         Dim tmpNode As XmlNode
         Dim xPathTeile As New ArrayList
         Dim xPath As String
-
+        Dim NnSpcMngr As XmlNamespaceManager = Nothing
         With XMLDoc
             ' Diverse Knoten des Journals löschen
             xPathTeile.Add(P_Def_Journal)
             xPathTeile.Add("SchließZeit")
             xPath = C_XML.CreateXPath(XMLDoc, xPathTeile)
-            tmpNode = .SelectSingleNode(xPath)
+            tmpNode = .SelectSingleNode(xPath, NnSpcMngr)
             xPathTeile.Remove("SchließZeit")
             xPath = C_XML.CreateXPath(XMLDoc, xPathTeile)
             If tmpNode IsNot Nothing Then
-                .SelectSingleNode(xPath).RemoveAll()
-                .SelectSingleNode(xPath).AppendChild(tmpNode)
+                .SelectSingleNode(xPath, NnSpcMngr).RemoveAll()
+                .SelectSingleNode(xPath, NnSpcMngr).AppendChild(tmpNode)
             End If
-            xPathTeile = Nothing
         End With
+        NnSpcMngr = Nothing
+        xPathTeile.Clear()
+        xPathTeile = Nothing
     End Sub
 #End Region
 

@@ -8,7 +8,7 @@ Public Class FritzBox
 
     Private C_XML As XML
     Private C_DP As DataProvider
-    Private C_Crypt As MyRijndael
+    Private C_Crypt As Rijndael
     Private C_hf As Helfer
 
     Private FBFehler As Boolean
@@ -18,9 +18,9 @@ Public Class FritzBox
     Private EventProvider As IEventProvider
 
     Private bValSpeichereDaten As Boolean = True
-
-    Private SID As String
-
+    Private ThisFBFirmware As FritzBoxFirmware
+    Private sSID As String
+    Private sFirmware As String
     Private WithEvents BWSetDialPort As BackgroundWorker
 
 #Region "Properties"
@@ -32,7 +32,81 @@ Public Class FritzBox
             bValSpeichereDaten = value
         End Set
     End Property
+
+    Private Property P_SID() As String
+        Get
+            Return sSID
+        End Get
+        Set(value As String)
+            sSID = value
+        End Set
+    End Property
+
+    Private Property P_Firmware() As String
+        Get
+            Return sFirmware
+        End Get
+        Set(value As String)
+            sFirmware = value
+        End Set
+    End Property
 #End Region
+
+    Private Structure FritzBoxFirmware
+        ''' <summary>
+        ''' Erster Teil der Fritz!OS Version. Kann dreistellig sein
+        ''' </summary>
+        Friend str1 As String
+
+        ''' <summary>
+        ''' Zweiter Teil der Fritz!OS Version. Ist zweistellig
+        ''' </summary>
+        Friend str2 As String
+
+        ''' <summary>
+        ''' Dritter Teil der Fritz!OS Version. Ist zweistellig
+        ''' </summary>
+        Friend str3 As String
+
+        ''' <summary>
+        ''' Revision Fritz!OS Version. Ist fünfstelligstellig
+        ''' </summary>
+        Friend Revision As String
+
+        ''' <summary>
+        ''' Setzt die internen Variablen
+        ''' </summary>
+        ''' <param name="FirmwareMinusRevision">Die Firmware in der Form XX.YY.ZZ-Revision</param>
+        ''' <remarks></remarks>
+        Friend Sub SetFirmware(ByVal FirmwareMinusRevision As String)
+            Dim tmp() As String
+
+            tmp = Split(FirmwareMinusRevision, "-", , CompareMethod.Text)
+
+            If tmp.Count = 2 Then
+                Revision = tmp(1)
+            End If
+
+            tmp = Split(tmp(0), ".", , CompareMethod.Text)
+            If tmp.Count = 3 Then
+                str1 = Format(CInt(tmp(tmp.Count - 3)), "000")
+            End If
+            str2 = Format(CInt(tmp(tmp.Count - 2)), "00")
+            str3 = Format(CInt(tmp(tmp.Count - 1)), "00")
+        End Sub
+
+        Friend Function ISLargerOREqual(ByVal FirmwareToCheck As String) As Boolean
+
+            Dim tmpFW As New FritzBoxFirmware
+            tmpFW.SetFirmware(FirmwareToCheck)
+            ISLargerOREqual = (str2 > tmpFW.str2)
+
+            If Not ISLargerOREqual Then
+                ISLargerOREqual = (str2 = tmpFW.str2) And str3 >= tmpFW.str3
+            End If
+        End Function
+
+    End Structure
 
 #Region "Properties Fritz!Box Links"
     ' Diese Properties sind hier angeordnet, da sie mit der SessionID gefüttet werden.
@@ -60,10 +134,10 @@ Public Class FritzBox
     ''' Link für den ersten Schritt des neuen SessionIDverfahrens:
     ''' http://P_ValidFBAdr/login_sid.lua?sid=SID
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
-    Private ReadOnly Property P_Link_FB_LoginLuaTeil1(ByVal SID As String) As String
+    ''' <param name="sSID">SessionID</param>
+    Private ReadOnly Property P_Link_FB_LoginLuaTeil1(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_LoginLua_Basis & "sid=" & SID
+            Return P_Link_FB_LoginLua_Basis & "sid=" & sSID
         End Get
     End Property
 
@@ -93,10 +167,10 @@ Public Class FritzBox
     ''' Link für das alte SessionID verfahren:
     ''' http://fritz.box/cgi-bin/webcm?getpage=../html/login_sid.xml&amp;sid=SID
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
-    Private ReadOnly Property P_Link_FB_LoginAltTeil1(ByVal SID As String) As String
+    ''' <param name="sSID">SessionID</param>
+    Private ReadOnly Property P_Link_FB_LoginAltTeil1(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_ExtBasis & "?getpage=../html/login_sid.xml&sid=" & SID
+            Return P_Link_FB_ExtBasis & "?getpage=../html/login_sid.xml&sid=" & sSID
         End Get
     End Property
 
@@ -115,56 +189,56 @@ Public Class FritzBox
     ''' <summary>
     ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/home/home.lua?sid=" &amp; sSID &amp; "&amp;logout=1"
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
-    Private ReadOnly Property P_Link_FB_LogoutLuaNeu(ByVal SID As String) As String
+    ''' <param name="sSID">SessionID</param>
+    Private ReadOnly Property P_Link_FB_LogoutLuaNeu(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_Basis & "/home/home.lua?sid=" & SID & "&logout=1"
+            Return P_Link_FB_Basis & "/home/home.lua?sid=" & sSID & "&logout=1"
         End Get
     End Property
 
     ''' <summary>
-    ''' http:// &amp; P_ValidFBAdr &amp; "/logout.lua?sid=" &amp; SID
+    ''' http:// &amp; P_ValidFBAdr &amp; "/logout.lua?sid=" &amp; sSID
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
-    Private ReadOnly Property P_Link_FB_LogoutLuaAlt(ByVal SID As String) As String
+    ''' <param name="sSID">SessionID</param>
+    Private ReadOnly Property P_Link_FB_LogoutLuaAlt(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_Basis & "/logout.lua?sid=" & SID
+            Return P_Link_FB_Basis & "/logout.lua?sid=" & sSID
         End Get
     End Property
 
     'Telefone
     ''' <summary>
-    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/fon_num_list.lua?sid=" &amp; SID
+    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/fon_num_list.lua?sid=" &amp; sSID
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
-    Private ReadOnly Property P_Link_FB_Tel1(ByVal SID As String) As String
+    ''' <param name="sSID">SessionID</param>
+    Private ReadOnly Property P_Link_FB_Tel1(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_Basis & "/fon_num/fon_num_list.lua?sid=" & SID
+            Return P_Link_FB_Basis & "/fon_num/fon_num_list.lua?sid=" & sSID
         End Get
     End Property
 
     ''' <summary>
-    ''' http:// &amp; C_DP.P_ValidFBAdr &amp; /cgi-bin/webcm?sid= &amp; SID &amp; &amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=fondevices
+    ''' http:// &amp; C_DP.P_ValidFBAdr &amp; /cgi-bin/webcm?sid= &amp; sSID &amp; &amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=fondevices
     ''' </summary>
-    ''' <param name="SID"></param>
-    Private ReadOnly Property P_Link_FB_TelAlt1(ByVal SID As String) As String
+    ''' <param name="sSID"></param>
+    Private ReadOnly Property P_Link_FB_TelAlt1(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_ExtBasis & "?sid=" & SID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+            Return P_Link_FB_ExtBasis & "?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
         End Get
     End Property
 
     ' Wählen
     ''' <summary>
-    ''' "sid=" &amp; SID &amp; "&amp;getpage=&amp;telcfg:settings/UseClickToDial=1&amp;telcfg:settings/DialPort=" &amp; DialPort &amp; "&amp;telcfg:command/" &amp; CStr(IIf(HangUp, "Hangup", "Dial=" &amp; DialCode))
+    ''' "sid=" &amp; sSID &amp; "&amp;getpage=&amp;telcfg:settings/UseClickToDial=1&amp;telcfg:settings/DialPort=" &amp; DialPort &amp; "&amp;telcfg:command/" &amp; CStr(IIf(HangUp, "Hangup", "Dial=" &amp; DialCode))
     ''' Wird per POST geschickt. Kein "?"
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
+    ''' <param name="sSID">SessionID</param>
     ''' <param name="DialPort">DialPort</param>
     ''' <param name="DialCode">Gewählte Telefonnummer</param>
     ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
-    Private ReadOnly Property P_Link_FB_DialV1(ByVal SID As String, ByVal DialPort As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
+    Private ReadOnly Property P_Link_FB_DialV1(ByVal sSID As String, ByVal DialPort As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
-            Return "sid=" & SID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
+            Return "sid=" & sSID & "&getpage=&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=" & DialPort & "&telcfg:command/" & CStr(IIf(HangUp, "Hangup", "Dial=" & DialCode))
         End Get
     End Property
 
@@ -178,86 +252,76 @@ Public Class FritzBox
     End Property
 
     ''' <summary>Http POST Data:
-    '''  sid=SID&amp;clicktodial=on&amp;port=DialPort&amp;btn_apply=
+    '''  sid=sSID&amp;clicktodial=on&amp;port=DialPort&amp;btn_apply=
     '''  </summary>
-    ''' <param name="SID">SessionID</param>
+    ''' <param name="sSID">SessionID</param>
     ''' <param name="DialPort">Der Dialport, auf den die Wählhilfe geändert werden soll.</param>
-    Private ReadOnly Property P_Link_FB_DialV2SetDialPort(ByVal SID As String, ByVal DialPort As String) As String
+    Private ReadOnly Property P_Link_FB_DialV2SetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
         Get
-            Return "sid=" & SID & "&clicktodial=on&port=" & DialPort & "&btn_apply="
+            Return "sid=" & sSID & "&clicktodial=on&port=" & DialPort & "&btn_apply="
         End Get
     End Property
 
     ''' <summary>
-    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/dial_fonbook.lua?sid=" &amp; SID &amp; hangup=||dial=DialCode
+    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/fonbook_list.lua?sid=" &amp; sSID &amp; hangup=||dial=DialCode
     ''' </summary>
-    ''' <param name="SID">SessionID</param>
+    ''' <param name="sSID">SessionID</param>
     ''' <param name="DialCode">Gewählte Telefonnummer</param>
     ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
-    Private ReadOnly Property P_Link_FB_DialV2(ByVal SID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
+    Private ReadOnly Property P_Link_FB_DialV2(ByVal sSID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
-            Return P_Link_FB_TelV2 & "?sid=" & SID & "" & CStr(IIf(HangUp, "&hangup=", "&dial=" & DialCode))
+            Return P_Link_FB_Basis & "/fon_num/fonbook_list.lua" & "?sid=" & sSID & "" & CStr(IIf(HangUp, "&hangup=", "&dial=" & DialCode))
         End Get
     End Property
 
     ' Journalimport
     ''' <summary>
-    ''' http://P_ValidFBAdr/fon_num/foncalls_list.lua?sid=SID
+    ''' http://P_ValidFBAdr/fon_num/foncalls_list.lua?sid=sSID
     ''' </summary>
-    ''' <param name="SID"></param>
-    Private ReadOnly Property P_Link_JI1(ByVal SID As String) As String
+    ''' <param name="sSID"></param>
+    Private ReadOnly Property P_Link_JI1(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_Basis & "/fon_num/foncalls_list.lua?sid=" & SID
+            Return P_Link_FB_Basis & "/fon_num/foncalls_list.lua?sid=" & sSID
         End Get
     End Property
 
     ''' <summary>
-    ''' http://P_ValidFBAdr/fon_num/foncalls_list.lua?sid=SID&amp;csv=
+    ''' http://P_ValidFBAdr/fon_num/foncalls_list.lua?sid=sSID&amp;csv=
     ''' </summary>
-    ''' <param name="SID"></param>
-    Private ReadOnly Property P_Link_JI2(ByVal SID As String) As String
+    ''' <param name="sSID"></param>
+    Private ReadOnly Property P_Link_JI2(ByVal sSID As String) As String
         Get
-            Return P_Link_JI1(SID) & "&csv="
+            Return P_Link_JI1(sSID) & "&csv="
         End Get
     End Property
 
     ''' <summary>
-    ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=SID&amp;getpage=../html/de/
+    ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=sSID&amp;getpage=../html/de/
     ''' </summary>
-    ''' <param name="SID"></param>
-    Private ReadOnly Property P_Link_JIAlt_Basis(ByVal SID As String) As String
+    ''' <param name="sSID"></param>
+    Private ReadOnly Property P_Link_JIAlt_Basis(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_Basis & "/cgi-bin/webcm?sid=" & SID & "&getpage=../html/de/"
+            Return P_Link_FB_Basis & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/"
         End Get
     End Property
 
     ''' <summary>
-    ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=SID&amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=foncalls
+    ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=sSID&amp;getpage=../html/de/menus/menu2.html&amp;var:lang=de&amp;var:menu=fon&amp;var:pagename=foncalls
     ''' </summary>
-    ''' <param name="SID"></param>
-    Private ReadOnly Property P_Link_JIAlt_Child1(ByVal SID As String) As String
+    ''' <param name="sSID"></param>
+    Private ReadOnly Property P_Link_JIAlt_Child1(ByVal sSID As String) As String
         Get
-            Return P_Link_JIAlt_Basis(SID) & "menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
+            Return P_Link_JIAlt_Basis(sSID) & "menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=foncalls"
         End Get
     End Property
 
     ''' <summary>                                                        
-    ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=SID&amp;getpage=../html/de/FRITZ!Box_Anrufliste.csv
+    ''' http://P_ValidFBAdr/cgi-bin/webcm?sid=sSID&amp;getpage=../html/de/FRITZ!Box_Anrufliste.csv
     ''' </summary>
-    ''' <param name="SID"></param>
-    Private ReadOnly Property P_Link_JIAlt_Child2(ByVal SID As String) As String
+    ''' <param name="sSID"></param>
+    Private ReadOnly Property P_Link_JIAlt_Child2(ByVal sSID As String) As String
         Get
-            Return P_Link_JIAlt_Basis(SID) & DataProvider.P_Def_AnrListFileName
-        End Get
-    End Property
-
-    ' Information
-    ''' <summary>
-    ''' http://P_ValidFBAdr/cgi-bin/system_status
-    ''' </summary>
-    Private ReadOnly Property P_Link_FB_SystemStatus() As String
-        Get
-            Return P_Link_FB_Basis & "/cgi-bin/system_status"
+            Return P_Link_JIAlt_Basis(sSID) & DataProvider.P_Def_AnrListFileName
         End Get
     End Property
 
@@ -294,28 +358,49 @@ Public Class FritzBox
     ''' <summary>
     ''' http://<c>P_ValidFBAdr</c>/fon_num/fonbook_select.lua?sid=<c>sid</c>
     ''' </summary>
-    ''' <param name="SID">Session ID</param>
-    Private ReadOnly Property P_Link_Telefonbuch_List(ByVal SID As String) As String
+    ''' <param name="sSID">Session ID</param>
+    Private ReadOnly Property P_Link_Telefonbuch_List(ByVal sSID As String) As String
         Get
-            Return P_Link_FB_Basis & "/fon_num/fonbook_select.lua?sid=" & SID
+            Return P_Link_FB_Basis & "/fon_num/fonbook_select.lua?sid=" & sSID
+        End Get
+    End Property
+
+    ' Query
+    ''' <summary>
+    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=?sid=<c>sid</c>&amp;<c>Abfrage</c>
+    ''' </summary>
+    ''' <param name="sSID">Session ID</param>
+    ''' <param name="Abfrage">Zu übersendende Abfrage</param>
+    Private ReadOnly Property P_Link_Query(ByVal sSID As String, ByVal Abfrage As String) As String
+        Get
+            Return P_Link_FB_Basis & "/query.lua?sid=" & sSID & "&" & Abfrage
+        End Get
+    End Property
+
+    ' Fritz!Box Info
+    ''' <summary>
+    ''' http://P_ValidFBAdr/jason_boxinfo.xml
+    ''' </summary>
+    Private ReadOnly Property P_Link_Jason_Boxinfo() As String
+        Get
+            Return P_Link_FB_Basis & "/jason_boxinfo.xml"
         End Get
     End Property
 
     ''' <summary>
-    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=?sid=<c>sid</c>&amp;<c>Abfrage</c>
+    ''' http://P_ValidFBAdr/cgi-bin/system_status
     ''' </summary>
-    ''' <param name="SID">Session ID</param>
-    ''' <param name="Abfrage">Zu übersendende Abfrage</param>
-    Private ReadOnly Property P_Link_Query(ByVal SID As String, ByVal Abfrage As String) As String
+    Private ReadOnly Property P_Link_FB_SystemStatus() As String
         Get
-            Return P_Link_FB_Basis & "/query.lua?sid=" & SID & "&" & Abfrage
+            Return P_Link_FB_Basis & "/cgi-bin/system_status"
         End Get
     End Property
+
 #End Region
 
     Public Sub New(ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal CryptKlasse As MyRijndael, _
+                   ByVal CryptKlasse As Rijndael, _
                    ByVal XMLKlasse As XML)
 
 
@@ -324,9 +409,11 @@ Public Class FritzBox
         C_Crypt = CryptKlasse
         C_XML = XMLKlasse
 
-        SID = DataProvider.P_Def_SessionID  ' Startwert: Ungültige SID
+        P_SID = DataProvider.P_Def_SessionID  ' Startwert: Ungültige SID
 
         C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
+
+        FBFirmware()
 
         If C_DP.P_EncodeingFritzBox = DataProvider.P_Def_ErrorMinusOne_String Then
             Dim Rückgabe As String
@@ -341,10 +428,14 @@ Public Class FritzBox
         Else
             FBEncoding = C_hf.GetEncoding(C_DP.P_EncodeingFritzBox)
         End If
+
+        'FritzBoxDatenV3()
+        'Dim FBUPnP As New FritzBoxUPnP(C_DP, C_hf, C_Crypt)
+
     End Sub
 
 #Region "Login & Logout"
-    Public Function FBLogin(ByRef LuaLogin As Boolean, Optional ByVal InpupBenutzer As String = "", Optional ByVal InpupPasswort As String = "-1") As String
+    Public Function FBLogin(Optional ByVal InpupBenutzer As String = "", Optional ByVal InpupPasswort As String = "-1") As String
         Dim slogin_xml As String
 
         ' Mögliche Login-XML:
@@ -366,10 +457,10 @@ Public Class FritzBox
         '    <Rights></Rights>
         ' </SessionInfo>
 
-        slogin_xml = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(SID), FBEncoding, FBFehler)
+        slogin_xml = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(P_SID), FBEncoding, FBFehler)
 
         If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
-            slogin_xml = C_hf.httpGET(P_Link_FB_LoginAltTeil1(SID), FBEncoding, FBFehler)
+            slogin_xml = C_hf.httpGET(P_Link_FB_LoginAltTeil1(P_SID), FBEncoding, FBFehler)
         End If
 
         If Not FBFehler Then
@@ -404,16 +495,15 @@ Public Class FritzBox
                             End With
                             If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 
-                            If .InnerXml.Contains("Rights") Then
+                            If ThisFBFirmware.ISLargerOREqual("5.29") Then
+                                'If .InnerXml.Contains("Rights") Then
                                 ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
                                 sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
                                 If sBlockTime = DataProvider.P_Def_StringNull Then ' "0"
                                     'sLink = "http://" & C_DP.P_ValidFBAdr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
 
                                     sResponse = C_hf.httpGET(P_Link_FB_LoginLuaTeil2(sFBBenutzer, sSIDResponse), FBEncoding, FBFehler)
-                                    If Not FBFehler Then
-                                        LuaLogin = True
-                                    Else
+                                    If FBFehler Then
                                         C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description)
                                     End If
                                 Else
@@ -430,8 +520,6 @@ Public Class FritzBox
                                 'sLink = C_DP.P_Link_FB_Alt_Basis '"http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm"
                                 'sFormData = C_DP.P_Link_FB_LoginAltTeil2(sSIDResponse) ' "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
                                 sResponse = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_LoginAltTeil2(sSIDResponse), FBEncoding)
-
-                                LuaLogin = False
                             End If
 
                             .LoadXml(sResponse)
@@ -450,22 +538,22 @@ Public Class FritzBox
                             '   </Rights>
                             '</SessionInfo>
 
-                            SID = .Item("SessionInfo").Item("SID").InnerText()
+                            P_SID = .Item("SessionInfo").Item("SID").InnerText()
 
-                            If Not SID = DataProvider.P_Def_SessionID Then
-                                If LuaLogin Then
+                            If Not P_SID = DataProvider.P_Def_SessionID Then
+                                If ThisFBFirmware.ISLargerOREqual("5.29") Then
                                     If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
                                         C_hf.LogFile(DataProvider.P_FritzBox_LoginError_MissingRights(sFBBenutzer))
-                                        FBLogout(SID)
-                                        SID = DataProvider.P_Def_SessionID
+                                        FBLogout(P_SID)
+                                        P_SID = DataProvider.P_Def_SessionID
                                     End If
                                 End If
                             Else
                                 C_hf.LogFile(DataProvider.P_FritzBox_LoginError_LoginIncorrect)
                             End If
 
-                        ElseIf .Item("SessionInfo").Item("SID").InnerText() = SID Then
-                            C_hf.LogFile(DataProvider.P_FritzBox_LoginInfo_SID(SID))
+                        ElseIf .Item("SessionInfo").Item("SID").InnerText() = P_SID Then
+                            C_hf.LogFile(DataProvider.P_FritzBox_LoginInfo_SID(P_SID))
                         End If
                     End With
                     XMLDocLogin = Nothing
@@ -477,7 +565,7 @@ Public Class FritzBox
             C_hf.LogFile(DataProvider.P_FritzBox_LoginError_MissingData)
         End If
 
-        Return SID
+        Return P_SID
     End Function
 
     Public Function FBLogout(ByRef sSID As String) As Boolean
@@ -548,33 +636,32 @@ Public Class FritzBox
                 tempstring = C_hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
             End If
             If Not tempstring = DataProvider.P_Def_ErrorMinusOne_String Then
-                FritzBoxDatenN(tempstring)
-                FBLogout(SID)
+                FritzBoxDatenV2(tempstring)
+                FBLogout(P_SID)
             Else
-                FritzBoxDatenA(sLink)
+                FritzBoxDatenV1(sLink)
             End If
         Else
-            FritzBoxDatenA()
+            FritzBoxDatenV1()
         End If
     End Sub
 
     Friend Sub FritzBoxDaten()
-        Dim FW550 As Boolean = True
         'Dim sLink As String
         Dim tempstring As String
         Dim tempstring_code As String
 
         If P_SpeichereDaten Then PushStatus(DataProvider.P_Def_FritzBoxName & " Adresse: " & C_DP.P_TBFBAdr)
 
-        FBLogin(FW550)
-        If Not SID = DataProvider.P_Def_SessionID Then
-            'sLink = "http://" & C_DP.P_ValidFBAdr & "/fon_num/fon_num_list.lua?sid=" & SID
+        FBLogin()
+        If Not P_SID = DataProvider.P_Def_SessionID Then
 
-            PushStatus(DataProvider.P_Def_FritzBoxName & " SessionID: " & SID)
-            PushStatus(DataProvider.P_Def_FritzBoxName & " Firmware 5.50: " & FW550.ToString)
-            tempstring = C_hf.httpGET(P_Link_FB_Tel1(SID), FBEncoding, FBFehler)
-            If Not FBFehler Then
-                If InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
+            'If ThisFBFirmware.ISLargerOREqual("6.25") Then
+            '    FritzBoxDatenV3()
+            'Else
+            If ThisFBFirmware.ISLargerOREqual("5.25") Then
+                tempstring = C_hf.httpGET(P_Link_FB_Tel1(P_SID), FBEncoding, FBFehler)
+                If Not FBFehler Then
                     tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                     tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
 
@@ -587,19 +674,17 @@ Public Class FritzBox
                             tempstring = C_hf.StringEntnehmen(tempstring, "<pre>", "</pre>")
                         End If
                         If Not tempstring = DataProvider.P_Def_ErrorMinusOne_String Then
-                            FritzBoxDatenN(tempstring)
-                            FBLogout(SID)
+                            FritzBoxDatenV2(tempstring)
+                            FBLogout(P_SID)
                         Else
                             C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Tel_Error2, MsgBoxStyle.Critical, "FritzBoxDaten #3")
                         End If
                     Else
-                        FritzBoxDatenA()
+                        C_hf.LogFile("FBError (FritzBoxDaten): " & Err.Number & " - " & Err.Description)
                     End If
-                Else
-                    C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Tel_Error1, MsgBoxStyle.Critical, "FritzBoxDaten #1")
                 End If
             Else
-                C_hf.LogFile("FBError (FritzBoxDaten): " & Err.Number & " - " & Err.Description)
+                FritzBoxDatenV1()
             End If
         Else
             C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Tel_Error1, MsgBoxStyle.Critical, "FritzBoxDaten #2")
@@ -607,7 +692,7 @@ Public Class FritzBox
 
     End Sub
 
-    Private Sub FritzBoxDatenA(Optional ByVal Link As String = "-1")
+    Private Sub FritzBoxDatenV1(Optional ByVal Link As String = "-1")
         PushStatus(DataProvider.P_FritzBox_Tel_AlteRoutine)
 
         'Dim Vorwahl As String = C_DP.P_TBVorwahl  ' In den Einstellungen eingegebene Vorwahl
@@ -682,7 +767,7 @@ Public Class FritzBox
         End With
 
         If Link = DataProvider.P_Def_ErrorMinusOne_String Then
-            sLink = P_Link_FB_TelAlt1(SID)
+            sLink = P_Link_FB_TelAlt1(P_SID)
         Else
             sLink = Link
         End If
@@ -698,7 +783,7 @@ Public Class FritzBox
 
             tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln
 
-            FBLogout(SID)
+            FBLogout(P_SID)
             xPathTeile.Add("MSN")
             pos(0) = 1
             For i = 0 To 9
@@ -1126,7 +1211,7 @@ Public Class FritzBox
 
     End Sub ' (FritzBoxDaten für ältere Firmware)
 
-    Private Sub FritzBoxDatenN(ByVal Code As String)
+    Private Sub FritzBoxDatenV2(ByVal Code As String)
         PushStatus(DataProvider.P_FritzBox_Tel_NeueRoutine)
 
         'Dim Vorwahl As String = C_DP.P_TBVorwahl                 ' In den Einstellungen eingegebene Vorwahl
@@ -1205,7 +1290,6 @@ Public Class FritzBox
                 End If
             Next
 
-            'SIP = (From x In SIP Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
             PushStatus("Letzte SIP: " & SIPID)
 
             ' MSN Nummern
@@ -1514,7 +1598,6 @@ Public Class FritzBox
                         AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
                         C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
                     End If
-
                 End If
             Next
 
@@ -1565,6 +1648,912 @@ Public Class FritzBox
 
     End Sub
 
+    'Private Sub FritzBoxDatenV3()
+    '    Dim TelQuery As New ArrayList
+
+    '    Dim i As Integer
+    '    Dim j As Integer
+
+    '    Dim FritzBoxJSONTelNr1 As FritzBoxJSONTelNrT1
+    '    Dim FritzBoxJSONTelNr2 As FritzBoxJSONTelNrT2
+    '    Dim FritzBoxJSONTelefone1 As FritzBoxJSONTelefone1
+    '    Dim FritzBoxJSONTelefone2 As FritzBoxJSONTelefone2
+
+    '    Dim TelName As String                 ' Gefundener Telefonname
+    '    Dim TelNr As String                 ' Dazugehörige Telefonnummer
+    '    Dim SIPID As String = DataProvider.P_Def_ErrorMinusOne_String
+    '    Dim pos(1) As Integer
+    '    Dim SIP(20) As String
+    '    Dim TAM(10) As String
+    '    Dim MSN(36) As String
+    '    Dim FAX(9) As String
+    '    Dim Mobil As String = DataProvider.P_Def_LeerString
+    '    Dim POTS As String = DataProvider.P_Def_LeerString
+    '    Dim allin As String
+    '    Dim DialPort As String = "0"
+
+    '    Dim tmpStr As String
+
+
+    '    Dim xPathTeile As New ArrayList
+    '    Dim NodeNames As New ArrayList
+    '    Dim NodeValues As New ArrayList
+    '    Dim AttributeNames As New ArrayList
+    '    Dim AttributeValues As New ArrayList
+
+    '    If P_SpeichereDaten Then C_XML.Delete(C_DP.XMLDoc, "Telefone")
+
+    '    With xPathTeile
+    '        .Clear()
+    '        .Add("Telefone")
+    '        .Add("Nummern")
+    '    End With
+    '    With NodeNames
+    '        .Clear()
+    '        .Add("TelName")
+    '        .Add("TelNr")
+    '    End With
+    '    With AttributeNames
+    '        .Clear()
+    '        .Add("Fax")
+    '        .Add("Dialport")
+    '    End With
+    '    With NodeValues
+    '        .Clear()
+    '        .Add(DataProvider.P_Def_LeerString)
+    '        .Add(DataProvider.P_Def_LeerString)
+    '    End With
+    '    With AttributeValues
+    '        .Clear()
+    '        .Add(DataProvider.P_Def_LeerString)
+    '        .Add(DataProvider.P_Def_LeerString)
+    '    End With
+
+    '    ' Telefonnummern ermitteln
+
+    '    With TelQuery
+    '        For i = 0 To 8
+    '            .Add("telcfg:settings/NTHotDialList/Name" & i)
+    '            .Add("telcfg:settings/NTHotDialList/Number" & i)
+    '        Next
+
+    '        For i = 0 To 10
+    '            .Add("telcfg:settings/SIP" & i & "/MSN")
+    '            .Add("telcfg:settings/SIP" & i & "/Name")
+    '        Next
+
+    '        .Add("POTS" & "=" & "telcfg:settings/MSN/POTS")
+    '        .Add("Mobile" & "=" & "telcfg:settings/Mobile/MSN")
+    '        For i = 0 To 2
+    '            .Add("Port" & i & "Name" & "=" & "telcfg:settings/MSN/Port" & i & "/Name")
+    '        Next
+
+    '        For i = 0 To 9
+    '            .Add("TAM" & i & "=" & "tam:settings/MSN" & i)
+    '            .Add("FAX" & i & "=" & "telcfg:settings/FaxMSN" & i)
+    '            .Add("MSN" & i & "=" & "telcfg:settings/MSN/MSN" & i)
+    '        Next
+
+    '        .Add("SIP" & "=" & "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)")
+
+    '        ' Führt das Fritz!Box Query aus und gibt die ersten Daten der Telefonnummern zurück
+    '        FritzBoxJSONTelNr1 = GetFBJSON1(TelQuery)
+    '        .Clear()
+    '        ' MSN Nummern mit zugehöriger Nummer ermitteln.
+    '        ' Es werden nur die Nummern ausgelesen, die auch einen Namen haben
+    '        If Not FritzBoxJSONTelNr1.Port0Name = "" Then
+    '            i = 0
+    '            For j = 0 To 9
+    '                .Add("MSN" & i & "Nr" & j & "=" & "telcfg:settings/MSN/Port" & i & "/MSN" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.Port1Name = "" Then
+    '            i = 1
+    '            For j = 0 To 9
+    '                .Add("MSN" & i & "Nr" & j & "=" & "telcfg:settings/MSN/Port" & i & "/MSN" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.Port2Name = "" Then
+    '            i = 2
+    '            For j = 0 To 9
+    '                .Add("MSN" & i & "Nr" & j & "=" & "telcfg:settings/MSN/Port" & i & "/MSN" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP0Enabled = "" Then
+    '            i = 0
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP1Enabled = "" Then
+    '            i = 1
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP2Enabled = "" Then
+    '            i = 2
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP3Enabled = "" Then
+    '            i = 3
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP4Enabled = "" Then
+    '            i = 4
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP5Enabled = "" Then
+    '            i = 5
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP6Enabled = "" Then
+    '            i = 6
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP7Enabled = "" Then
+    '            i = 7
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP8Enabled = "" Then
+    '            i = 8
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        If Not FritzBoxJSONTelNr1.VOIP9Enabled = "" Then
+    '            i = 9
+    '            For j = 0 To 9
+    '                .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+    '            Next
+    '        End If
+
+    '        FritzBoxJSONTelNr2 = GetFBJSON2(TelQuery)
+
+    '        ' Ab hier können die bereits gesammelten Daten ausgewertet werden.
+
+    '        ' SIP Nummern ermitteln
+    '        xPathTeile.Add("SIP")
+    '        For Each SIPi As SIPEntry In FritzBoxJSONTelNr1.SIP
+    '            With SIPi
+    '                If CBool(.activated) Then
+    '                    TelNr = C_hf.EigeneVorwahlenEntfernen(.displayname)
+    '                    SIPID = .ID
+    '                    SIP(CInt(SIPID)) = TelNr
+    '                    If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, TelNr, "ID", SIPID)
+    '                End If
+    '            End With
+    '        Next
+    '        SIP = (From x In SIP Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+    '        ' MSN Nummern
+    '        xPathTeile.Item(xPathTeile.Count - 1) = "MSN"
+    '        j = 0
+    '        With FritzBoxJSONTelNr1
+    '            MSN(j) = .MSN0 : j += 1
+    '            MSN(j) = .MSN1 : j += 1
+    '            MSN(j) = .MSN2 : j += 1
+    '            MSN(j) = .MSN3 : j += 1
+    '            MSN(j) = .MSN4 : j += 1
+    '            MSN(j) = .MSN5 : j += 1
+    '            MSN(j) = .MSN6 : j += 1
+    '            MSN(j) = .MSN7 : j += 1
+    '            MSN(j) = .MSN8 : j += 1
+    '            MSN(j) = .MSN9 : j += 1
+    '        End With
+
+    '        With FritzBoxJSONTelNr2
+    '            If Not FritzBoxJSONTelNr1.Port0Name = "" Then
+    '                MSN(j) = .MSN0Nr0 : j += 1
+    '                MSN(j) = .MSN0Nr1 : j += 1
+    '                MSN(j) = .MSN0Nr2 : j += 1
+    '                MSN(j) = .MSN0Nr3 : j += 1
+    '                MSN(j) = .MSN0Nr4 : j += 1
+    '                MSN(j) = .MSN0Nr5 : j += 1
+    '                MSN(j) = .MSN0Nr6 : j += 1
+    '                MSN(j) = .MSN0Nr7 : j += 1
+    '                MSN(j) = .MSN0Nr8 : j += 1
+    '                MSN(j) = .MSN0Nr9 : j += 1
+    '            End If
+
+    '            If Not FritzBoxJSONTelNr1.Port1Name = "" Then
+    '                MSN(j) = .MSN1Nr0 : j += 1
+    '                MSN(j) = .MSN1Nr1 : j += 1
+    '                MSN(j) = .MSN1Nr2 : j += 1
+    '                MSN(j) = .MSN1Nr3 : j += 1
+    '                MSN(j) = .MSN1Nr4 : j += 1
+    '                MSN(j) = .MSN1Nr5 : j += 1
+    '                MSN(j) = .MSN1Nr6 : j += 1
+    '                MSN(j) = .MSN1Nr7 : j += 1
+    '                MSN(j) = .MSN1Nr8 : j += 1
+    '                MSN(j) = .MSN1Nr9 : j += 1
+    '            End If
+
+    '            If Not FritzBoxJSONTelNr1.Port2Name = "" Then
+    '                MSN(j) = .MSN2Nr0 : j += 1
+    '                MSN(j) = .MSN2Nr1 : j += 1
+    '                MSN(j) = .MSN2Nr2 : j += 1
+    '                MSN(j) = .MSN2Nr3 : j += 1
+    '                MSN(j) = .MSN2Nr4 : j += 1
+    '                MSN(j) = .MSN2Nr5 : j += 1
+    '                MSN(j) = .MSN2Nr6 : j += 1
+    '                MSN(j) = .MSN2Nr7 : j += 1
+    '                MSN(j) = .MSN2Nr8 : j += 1
+    '                MSN(j) = .MSN2Nr9 : j += 1
+    '            End If
+    '        End With
+    '        ' Doppelte entfernen
+    '        MSN = (From x In MSN Select x Distinct).ToArray
+    '        ' Leere entfernen
+    '        MSN = (From x In MSN Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+    '        For i = LBound(MSN) To UBound(MSN)
+    '            If MSN(i).StartsWith("SIP") Then
+    '                MSN(i) = SIP(CInt(Mid(MSN(i), 4, 1)))
+    '            Else
+    '                MSN(i) = C_hf.EigeneVorwahlenEntfernen(MSN(i))
+    '            End If
+    '            If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, MSN(i), "ID", CStr(i))
+    '        Next
+
+    '        ' TAM Nummern
+    '        xPathTeile.Item(xPathTeile.Count - 1) = "TAM"
+    '        j = 0
+    '        With FritzBoxJSONTelNr1
+    '            TAM(j) = .TAM0 : j += 1
+    '            TAM(j) = .TAM1 : j += 1
+    '            TAM(j) = .TAM2 : j += 1
+    '            TAM(j) = .TAM3 : j += 1
+    '            TAM(j) = .TAM4 : j += 1
+    '            TAM(j) = .TAM5 : j += 1
+    '            TAM(j) = .TAM6 : j += 1
+    '            TAM(j) = .TAM7 : j += 1
+    '            TAM(j) = .TAM8 : j += 1
+    '            TAM(j) = .TAM9 : j += 1
+    '        End With
+    '        TAM = (From x In TAM Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+    '        For i = LBound(TAM) To UBound(TAM)
+    '            If TAM(i).StartsWith("SIP") Then
+    '                TAM(i) = SIP(CInt(Mid(TAM(i), 4, 1)))
+    '            Else
+    '                TAM(i) = C_hf.EigeneVorwahlenEntfernen(TAM(i))
+    '            End If
+    '            If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, TAM(i), "ID", CStr(i))
+    '        Next
+
+    '        ' FAX Nummern
+    '        xPathTeile.Item(xPathTeile.Count - 1) = "FAX"
+    '        j = 0
+
+    '        With FritzBoxJSONTelNr1
+    '            FAX(j) = .FAX0 : j += 1
+    '            FAX(j) = .FAX1 : j += 1
+    '            FAX(j) = .FAX2 : j += 1
+    '            FAX(j) = .FAX3 : j += 1
+    '            FAX(j) = .FAX4 : j += 1
+    '            FAX(j) = .FAX5 : j += 1
+    '            FAX(j) = .FAX6 : j += 1
+    '            FAX(j) = .FAX7 : j += 1
+    '            FAX(j) = .FAX8 : j += 1
+    '            FAX(j) = .FAX9 : j += 1
+    '        End With
+
+    '        FAX = (From x In FAX Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+    '        For i = LBound(FAX) To UBound(FAX)
+    '            If FAX(i).StartsWith("SIP") Then
+    '                FAX(i) = SIP(CInt(Mid(FAX(i), 4, 1)))
+    '            Else
+    '                FAX(i) = C_hf.EigeneVorwahlenEntfernen(FAX(i))
+    '            End If
+    '            If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, FAX(i), "ID", CStr(i))
+    '        Next
+
+    '        ' POTS
+    '        xPathTeile.Item(xPathTeile.Count - 1) = "POTS"
+    '        If Not FritzBoxJSONTelNr1.POTS = DataProvider.P_Def_LeerString Then
+    '            If FritzBoxJSONTelNr1.POTS.StartsWith("SIP") Then
+    '                FritzBoxJSONTelNr1.POTS = SIP(CInt(Mid(FritzBoxJSONTelNr1.POTS, 4, 1)))
+    '            Else
+    '                POTS = C_hf.EigeneVorwahlenEntfernen(FritzBoxJSONTelNr1.POTS)
+    '            End If
+    '            If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, FritzBoxJSONTelNr1.POTS, "ID", DataProvider.P_Def_StringNull)
+    '        End If
+
+    '        ' Mobilnummer
+    '        xPathTeile.Item(xPathTeile.Count - 1) = "Mobil"
+    '        Mobil = FritzBoxJSONTelNr1.Mobile
+    '        If Not Mobil = DataProvider.P_Def_LeerString Then
+    '            If Mobil.StartsWith("SIP") Then
+    '                Mobil = SIP(CInt(Mid(Mobil, 4, 1)))
+    '            End If
+    '            PushStatus(DataProvider.P_FritzBox_Tel_NrFound("Mobil", DataProvider.P_Def_MobilDialPort, Mobil))
+    '            If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, Mobil, "ID", DataProvider.P_Def_MobilDialPort)
+    '        End If
+
+    '        allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
+
+    '        .Clear()
+    '        .Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)")   ' FON
+    '        .Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)")                      ' DECT (Teil1)
+    '        .Add("VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)")                 ' IP-Telefoen
+    '        .Add("TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)")                            ' TAM
+    '        For i = 1 To 8
+    '            .Add("S0Name" & i & "=telcfg:settings/NTHotDialList/Name" & i)                          ' S0
+    '        Next
+
+    '        FritzBoxJSONTelefone1 = GetFBJSON3(TelQuery)
+
+    '        .Clear()
+    '        With FritzBoxJSONTelefone1
+    '            If Not .S0Name1 = "" Then
+    '                i = 1
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr1
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name2 = "" Then
+    '                i = 2
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr2
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name3 = "" Then
+    '                i = 3
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr3
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name4 = "" Then
+    '                i = 4
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr4
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name5 = "" Then
+    '                i = 5
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr5
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name6 = "" Then
+    '                i = 6
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr6
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name7 = "" Then
+    '                i = 7
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr7
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '            If Not .S0Name8 = "" Then
+    '                i = 8
+    '                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr8
+    '                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
+    '            End If
+
+    '        End With
+
+    '        For Each DECTTelefon As DECTEntry In FritzBoxJSONTelefone1.DECT                                         ' DECT (Teil2)
+    '            If Not DECTTelefon.Intern = "" Then
+
+    '                ' Fehler!
+    '                ' User0 und ID und Intern nicht eindeutig zuordenbar 
+    '                .Add("DECT" & Right(DECTTelefon.Intern, 1) & "RingOnAllMSNs=telcfg:settings/Foncontrol/User" & Right(DECTTelefon.Intern, 1) & "/RingOnAllMSNs")
+    '                .Add("DECT" & Right(DECTTelefon.Intern, 1) & "Nr=telcfg:settings/Foncontrol/User" & Right(DECTTelefon.Intern, 1) & "/MSN/list(Number)")
+    '            End If
+    '        Next
+    '        .Add("FaxMailActive=telcfg:settings/FaxMailActive")
+    '        .Add("MobileName=telcfg:settings/Mobile/Name")
+    '        FritzBoxJSONTelefone2 = GetFBJSON4(TelQuery)
+
+    '    End With
+
+    '    ' Telefone 
+
+    '    xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
+    '    xPathTeile.Item(xPathTeile.IndexOf("Mobil")) = "FON"
+
+    '    For i = LBound(FritzBoxJSONTelefone1.FON) To UBound(FritzBoxJSONTelefone1.FON)
+    '        With CType(FritzBoxJSONTelefone1.FON(i), MSNEntry)
+    '            If Not .Name = DataProvider.P_Def_LeerString Then
+    '                TelNr = DataProvider.P_Def_LeerString
+    '                DialPort = CStr(i + 1)
+    '                Dim tmparray(9) As String
+    '                With FritzBoxJSONTelNr2
+
+    '                    Select Case i
+    '                        Case 0
+    '                            If Not .MSN0Nr0 = DataProvider.P_Def_LeerString Then tmparray(0) = .MSN0Nr0
+    '                            If Not .MSN0Nr1 = DataProvider.P_Def_LeerString Then tmparray(1) = .MSN0Nr1
+    '                            If Not .MSN0Nr2 = DataProvider.P_Def_LeerString Then tmparray(2) = .MSN0Nr2
+    '                            If Not .MSN0Nr3 = DataProvider.P_Def_LeerString Then tmparray(3) = .MSN0Nr3
+    '                            If Not .MSN0Nr4 = DataProvider.P_Def_LeerString Then tmparray(4) = .MSN0Nr4
+    '                            If Not .MSN0Nr5 = DataProvider.P_Def_LeerString Then tmparray(5) = .MSN0Nr5
+    '                            If Not .MSN0Nr6 = DataProvider.P_Def_LeerString Then tmparray(6) = .MSN0Nr6
+    '                            If Not .MSN0Nr7 = DataProvider.P_Def_LeerString Then tmparray(7) = .MSN0Nr7
+    '                            If Not .MSN0Nr8 = DataProvider.P_Def_LeerString Then tmparray(8) = .MSN0Nr8
+    '                            If Not .MSN0Nr9 = DataProvider.P_Def_LeerString Then tmparray(9) = .MSN0Nr9
+    '                        Case 1
+    '                            If Not .MSN1Nr0 = DataProvider.P_Def_LeerString Then tmparray(0) = .MSN1Nr0
+    '                            If Not .MSN1Nr1 = DataProvider.P_Def_LeerString Then tmparray(1) = .MSN1Nr1
+    '                            If Not .MSN1Nr2 = DataProvider.P_Def_LeerString Then tmparray(2) = .MSN1Nr2
+    '                            If Not .MSN1Nr3 = DataProvider.P_Def_LeerString Then tmparray(3) = .MSN1Nr3
+    '                            If Not .MSN1Nr4 = DataProvider.P_Def_LeerString Then tmparray(4) = .MSN1Nr4
+    '                            If Not .MSN1Nr5 = DataProvider.P_Def_LeerString Then tmparray(5) = .MSN1Nr5
+    '                            If Not .MSN1Nr6 = DataProvider.P_Def_LeerString Then tmparray(6) = .MSN1Nr6
+    '                            If Not .MSN1Nr7 = DataProvider.P_Def_LeerString Then tmparray(7) = .MSN1Nr7
+    '                            If Not .MSN1Nr8 = DataProvider.P_Def_LeerString Then tmparray(8) = .MSN1Nr8
+    '                            If Not .MSN1Nr9 = DataProvider.P_Def_LeerString Then tmparray(9) = .MSN1Nr9
+    '                        Case 2
+    '                            If Not .MSN2Nr0 = DataProvider.P_Def_LeerString Then tmparray(0) = .MSN2Nr0
+    '                            If Not .MSN2Nr1 = DataProvider.P_Def_LeerString Then tmparray(1) = .MSN2Nr1
+    '                            If Not .MSN2Nr2 = DataProvider.P_Def_LeerString Then tmparray(2) = .MSN2Nr2
+    '                            If Not .MSN2Nr3 = DataProvider.P_Def_LeerString Then tmparray(3) = .MSN2Nr3
+    '                            If Not .MSN2Nr4 = DataProvider.P_Def_LeerString Then tmparray(4) = .MSN2Nr4
+    '                            If Not .MSN2Nr5 = DataProvider.P_Def_LeerString Then tmparray(5) = .MSN2Nr5
+    '                            If Not .MSN2Nr6 = DataProvider.P_Def_LeerString Then tmparray(6) = .MSN2Nr6
+    '                            If Not .MSN2Nr7 = DataProvider.P_Def_LeerString Then tmparray(7) = .MSN2Nr7
+    '                            If Not .MSN2Nr8 = DataProvider.P_Def_LeerString Then tmparray(8) = .MSN2Nr8
+    '                            If Not .MSN2Nr9 = DataProvider.P_Def_LeerString Then tmparray(9) = .MSN2Nr9
+    '                    End Select
+    '                End With
+
+    '                tmparray = (From x In tmparray Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+    '                If tmparray.Length = 0 Then tmparray = MSN
+    '                TelNr = String.Join(";", tmparray)
+    '                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("FON", DialPort, TelNr, .Name))
+    '                If P_SpeichereDaten Then
+    '                    NodeValues.Item(NodeNames.IndexOf("TelName")) = .Name
+    '                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = .Fax
+    '                    C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '                End If
+    '            End If
+    '        End With
+    '    Next
+
+    '    ' DECT
+    '    xPathTeile.Item(xPathTeile.IndexOf("FON")) = "DECT"
+    '    For Each DectTelefon As DECTEntry In FritzBoxJSONTelefone1.DECT
+    '        With DectTelefon
+
+    '            DialPort = .Intern
+    '            If Not (DialPort = DataProvider.P_Def_ErrorMinusOne_String Or DialPort = DataProvider.P_Def_LeerString) Then
+    '                TelNr = DataProvider.P_Def_LeerString
+    '                DialPort = "6" & Strings.Right(.Id, 1)
+    '                TelName = .Name
+
+    '                Dim tmpDectNr() As DECTNr = Nothing
+
+    '                Select Case .Id
+    '                    Case CStr(0)
+    '                        If FritzBoxJSONTelefone2.DECT0RingOnAllMSNs = "1" Then
+    '                            TelNr = allin
+    '                        Else
+    '                            tmpDectNr = FritzBoxJSONTelefone2.DECT0Nr
+    '                        End If
+    '                    Case CStr(1)
+    '                        If FritzBoxJSONTelefone2.DECT1RingOnAllMSNs = "1" Then
+    '                            TelNr = allin
+    '                        Else
+    '                            tmpDectNr = FritzBoxJSONTelefone2.DECT1Nr
+    '                        End If
+    '                    Case CStr(2)
+    '                        If FritzBoxJSONTelefone2.DECT2RingOnAllMSNs = "1" Then
+    '                            TelNr = allin
+    '                        Else
+    '                            tmpDectNr = FritzBoxJSONTelefone2.DECT2Nr
+    '                        End If
+    '                    Case CStr(3)
+    '                        If FritzBoxJSONTelefone2.DECT3RingOnAllMSNs = "1" Then
+    '                            TelNr = allin
+    '                        Else
+    '                            tmpDectNr = FritzBoxJSONTelefone2.DECT3Nr
+    '                        End If
+    '                    Case CStr(4)
+    '                        If FritzBoxJSONTelefone2.DECT4RingOnAllMSNs = "1" Then
+    '                            TelNr = allin
+    '                        Else
+    '                            tmpDectNr = FritzBoxJSONTelefone2.DECT4Nr
+    '                        End If
+    '                End Select
+
+    '                If Not TelNr = allin Then
+    '                    For Each DECTNr As DECTNr In tmpDectNr
+    '                        If Not DECTNr.Number = DataProvider.P_Def_LeerString Then
+    '                            TelNr = TelNr & ";" & C_hf.EigeneVorwahlenEntfernen(DECTNr.Number)
+    '                        End If
+    '                    Next
+    '                    TelNr = Mid(TelNr, 2)
+    '                End If
+
+    '                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("DECT", DialPort, TelNr, TelName))
+    '                If P_SpeichereDaten Then
+    '                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+    '                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
+
+    '                    C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '                End If
+
+    '            End If
+    '        End With
+    '    Next
+
+    '    xPathTeile.Item(xPathTeile.IndexOf("DECT")) = "VOIP"
+    '    'IP-Telefone
+    '    For i = LBound(FritzBoxJSONTelefone1.VOIP) To UBound(FritzBoxJSONTelefone1.VOIP)
+    '        With FritzBoxJSONTelefone1.VOIP(i)
+    '            If .enabled = "1" Then
+    '                TelName = .Name
+    '                TelNr = DataProvider.P_Def_LeerString
+    '                With FritzBoxJSONTelNr2
+    '                    Select Case i
+    '                        Case 0
+    '                            TelNr += CStr(IIf(.VOIP0Nr0 = "", CStr(IIf(Strings.Left(.VOIP0Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr1 = "", CStr(IIf(Strings.Left(.VOIP0Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr2 = "", CStr(IIf(Strings.Left(.VOIP0Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr3 = "", CStr(IIf(Strings.Left(.VOIP0Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr4 = "", CStr(IIf(Strings.Left(.VOIP0Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr5 = "", CStr(IIf(Strings.Left(.VOIP0Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr6 = "", CStr(IIf(Strings.Left(.VOIP0Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr7 = "", CStr(IIf(Strings.Left(.VOIP0Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr8 = "", CStr(IIf(Strings.Left(.VOIP0Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP0Nr9 = "", CStr(IIf(Strings.Left(.VOIP0Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP0Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP0Nr9))) & ";", ""))
+    '                        Case 1
+    '                            TelNr += CStr(IIf(.VOIP1Nr0 = "", CStr(IIf(Strings.Left(.VOIP1Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr1 = "", CStr(IIf(Strings.Left(.VOIP1Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr2 = "", CStr(IIf(Strings.Left(.VOIP1Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr3 = "", CStr(IIf(Strings.Left(.VOIP1Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr4 = "", CStr(IIf(Strings.Left(.VOIP1Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr5 = "", CStr(IIf(Strings.Left(.VOIP1Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr6 = "", CStr(IIf(Strings.Left(.VOIP1Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr7 = "", CStr(IIf(Strings.Left(.VOIP1Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr8 = "", CStr(IIf(Strings.Left(.VOIP1Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP1Nr9 = "", CStr(IIf(Strings.Left(.VOIP1Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP1Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP1Nr9))) & ";", ""))
+    '                        Case 2
+    '                            TelNr += CStr(IIf(.VOIP2Nr0 = "", CStr(IIf(Strings.Left(.VOIP2Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr1 = "", CStr(IIf(Strings.Left(.VOIP2Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr2 = "", CStr(IIf(Strings.Left(.VOIP2Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr3 = "", CStr(IIf(Strings.Left(.VOIP2Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr4 = "", CStr(IIf(Strings.Left(.VOIP2Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr5 = "", CStr(IIf(Strings.Left(.VOIP2Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr6 = "", CStr(IIf(Strings.Left(.VOIP2Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr7 = "", CStr(IIf(Strings.Left(.VOIP2Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr8 = "", CStr(IIf(Strings.Left(.VOIP2Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP2Nr9 = "", CStr(IIf(Strings.Left(.VOIP2Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP2Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP2Nr9))) & ";", ""))
+    '                        Case 3
+    '                            TelNr += CStr(IIf(.VOIP3Nr0 = "", CStr(IIf(Strings.Left(.VOIP3Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr1 = "", CStr(IIf(Strings.Left(.VOIP3Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr2 = "", CStr(IIf(Strings.Left(.VOIP3Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr3 = "", CStr(IIf(Strings.Left(.VOIP3Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr4 = "", CStr(IIf(Strings.Left(.VOIP3Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr5 = "", CStr(IIf(Strings.Left(.VOIP3Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr6 = "", CStr(IIf(Strings.Left(.VOIP3Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr7 = "", CStr(IIf(Strings.Left(.VOIP3Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr8 = "", CStr(IIf(Strings.Left(.VOIP3Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP3Nr9 = "", CStr(IIf(Strings.Left(.VOIP3Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP3Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP3Nr9))) & ";", ""))
+    '                        Case 4
+    '                            TelNr += CStr(IIf(.VOIP4Nr0 = "", CStr(IIf(Strings.Left(.VOIP4Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr1 = "", CStr(IIf(Strings.Left(.VOIP4Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr2 = "", CStr(IIf(Strings.Left(.VOIP4Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr3 = "", CStr(IIf(Strings.Left(.VOIP4Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr4 = "", CStr(IIf(Strings.Left(.VOIP4Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr5 = "", CStr(IIf(Strings.Left(.VOIP4Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr6 = "", CStr(IIf(Strings.Left(.VOIP4Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr7 = "", CStr(IIf(Strings.Left(.VOIP4Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr8 = "", CStr(IIf(Strings.Left(.VOIP4Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP4Nr9 = "", CStr(IIf(Strings.Left(.VOIP4Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP4Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP4Nr9))) & ";", ""))
+    '                        Case 5
+    '                            TelNr += CStr(IIf(.VOIP5Nr0 = "", CStr(IIf(Strings.Left(.VOIP5Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr1 = "", CStr(IIf(Strings.Left(.VOIP5Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr2 = "", CStr(IIf(Strings.Left(.VOIP5Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr3 = "", CStr(IIf(Strings.Left(.VOIP5Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr4 = "", CStr(IIf(Strings.Left(.VOIP5Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr5 = "", CStr(IIf(Strings.Left(.VOIP5Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr6 = "", CStr(IIf(Strings.Left(.VOIP5Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr7 = "", CStr(IIf(Strings.Left(.VOIP5Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr8 = "", CStr(IIf(Strings.Left(.VOIP5Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP5Nr9 = "", CStr(IIf(Strings.Left(.VOIP5Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP5Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP5Nr9))) & ";", ""))
+    '                        Case 6
+    '                            TelNr += CStr(IIf(.VOIP6Nr0 = "", CStr(IIf(Strings.Left(.VOIP6Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr1 = "", CStr(IIf(Strings.Left(.VOIP6Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr2 = "", CStr(IIf(Strings.Left(.VOIP6Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr3 = "", CStr(IIf(Strings.Left(.VOIP6Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr4 = "", CStr(IIf(Strings.Left(.VOIP6Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr5 = "", CStr(IIf(Strings.Left(.VOIP6Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr6 = "", CStr(IIf(Strings.Left(.VOIP6Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr7 = "", CStr(IIf(Strings.Left(.VOIP6Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr8 = "", CStr(IIf(Strings.Left(.VOIP6Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP6Nr9 = "", CStr(IIf(Strings.Left(.VOIP6Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP6Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP6Nr9))) & ";", ""))
+    '                        Case 7
+    '                            TelNr += CStr(IIf(.VOIP7Nr0 = "", CStr(IIf(Strings.Left(.VOIP7Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr1 = "", CStr(IIf(Strings.Left(.VOIP7Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr2 = "", CStr(IIf(Strings.Left(.VOIP7Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr3 = "", CStr(IIf(Strings.Left(.VOIP7Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr4 = "", CStr(IIf(Strings.Left(.VOIP7Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr5 = "", CStr(IIf(Strings.Left(.VOIP7Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr6 = "", CStr(IIf(Strings.Left(.VOIP7Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr7 = "", CStr(IIf(Strings.Left(.VOIP7Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr8 = "", CStr(IIf(Strings.Left(.VOIP7Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP7Nr9 = "", CStr(IIf(Strings.Left(.VOIP7Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP7Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP7Nr9))) & ";", ""))
+    '                        Case 8
+    '                            TelNr += CStr(IIf(.VOIP8Nr0 = "", CStr(IIf(Strings.Left(.VOIP8Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr1 = "", CStr(IIf(Strings.Left(.VOIP8Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr2 = "", CStr(IIf(Strings.Left(.VOIP8Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr3 = "", CStr(IIf(Strings.Left(.VOIP8Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr4 = "", CStr(IIf(Strings.Left(.VOIP8Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr5 = "", CStr(IIf(Strings.Left(.VOIP8Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr6 = "", CStr(IIf(Strings.Left(.VOIP8Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr7 = "", CStr(IIf(Strings.Left(.VOIP8Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr8 = "", CStr(IIf(Strings.Left(.VOIP8Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP8Nr9 = "", CStr(IIf(Strings.Left(.VOIP8Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP8Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP8Nr9))) & ";", ""))
+    '                        Case 9
+    '                            TelNr += CStr(IIf(.VOIP9Nr0 = "", CStr(IIf(Strings.Left(.VOIP9Nr0, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr0, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr0))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr1 = "", CStr(IIf(Strings.Left(.VOIP9Nr1, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr1, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr1))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr2 = "", CStr(IIf(Strings.Left(.VOIP9Nr2, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr2, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr2))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr3 = "", CStr(IIf(Strings.Left(.VOIP9Nr3, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr3, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr3))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr4 = "", CStr(IIf(Strings.Left(.VOIP9Nr4, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr4, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr4))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr5 = "", CStr(IIf(Strings.Left(.VOIP9Nr5, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr5, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr5))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr6 = "", CStr(IIf(Strings.Left(.VOIP9Nr6, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr6, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr6))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr7 = "", CStr(IIf(Strings.Left(.VOIP9Nr7, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr7, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr7))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr8 = "", CStr(IIf(Strings.Left(.VOIP9Nr8, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr8, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr8))) & ";", ""))
+    '                            TelNr += CStr(IIf(.VOIP9Nr9 = "", CStr(IIf(Strings.Left(.VOIP9Nr9, 3) = "SIP", SIP(CInt(Mid(.VOIP9Nr9, 4, 1))), C_hf.EigeneVorwahlenEntfernen(.VOIP9Nr9))) & ";", ""))
+    '                    End Select
+
+    '                    If Not TelNr = DataProvider.P_Def_LeerString Then TelNr = Strings.Left(TelNr, Len(TelNr) - 1)
+
+    '                End With
+    '                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("VOIP", DialPort, TelNr, TelName))
+
+    '                If P_SpeichereDaten Then
+    '                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+    '                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
+    '                    DialPort = "2" & i
+    '                    C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '                End If
+    '            End If
+    '        End With
+    '    Next
+    '    xPathTeile.Item(xPathTeile.IndexOf("VOIP")) = "S0"
+    '    ' S0
+    '    For i = 1 To 8
+    '        Select Case i
+    '            Case 1
+    '                TelName = FritzBoxJSONTelefone1.S0Name1
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr1
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type1
+    '            Case 2
+    '                TelName = FritzBoxJSONTelefone1.S0Name2
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr2
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type2
+    '            Case 3
+    '                TelName = FritzBoxJSONTelefone1.S0Name3
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr3
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type3
+    '            Case 4
+    '                TelName = FritzBoxJSONTelefone1.S0Name4
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr4
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type4
+    '            Case 5
+    '                TelName = FritzBoxJSONTelefone1.S0Name5
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr5
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type5
+    '            Case 6
+    '                TelName = FritzBoxJSONTelefone1.S0Name6
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr6
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type6
+    '            Case 7
+    '                TelName = FritzBoxJSONTelefone1.S0Name7
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr7
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type7
+    '            Case 8
+    '                TelName = FritzBoxJSONTelefone1.S0Name8
+    '                TelNr = FritzBoxJSONTelefone2.S0TelNr8
+    '                tmpStr = FritzBoxJSONTelefone2.S0Type8
+    '            Case Else
+    '                TelName = ""
+    '                tmpStr = ""
+    '                TelNr = ""
+    '        End Select
+    '        If Not TelName = DataProvider.P_Def_ErrorMinusOne_String And Not TelName = DataProvider.P_Def_LeerString And Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
+    '            DialPort = "5" & i
+    '            PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("S0-", DialPort, TelNr, TelName))
+    '            If P_SpeichereDaten Then
+    '                NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+    '                NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+    '                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = IIf(tmpStr = "Fax", 1, 0)
+
+    '                C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '            End If
+    '        End If
+
+    '    Next
+    '    If Not DialPort = DataProvider.P_Def_LeerString Then
+    '        If CDbl(DialPort) > 50 And CDbl(DialPort) < 60 Then
+    '            DialPort = "50"
+    '            PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("ISDN-Basis", DialPort, DataProvider.P_Def_LeerString, "ISDN-Basis"))
+    '            If P_SpeichereDaten Then
+    '                NodeValues.Item(NodeNames.IndexOf("TelName")) = "ISDN-Basis"
+    '                NodeValues.Item(NodeNames.IndexOf("TelNr")) = "50"
+    '                AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '                AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
+    '                C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '            End If
+    '        End If
+    '    End If
+
+    '    xPathTeile.Item(xPathTeile.IndexOf("S0")) = "TAM"
+    '    ' TAM, Anrufbeantworter
+    '    For i = LBound(FritzBoxJSONTelefone1.TAM) To UBound(FritzBoxJSONTelefone1.TAM)
+    '        With FritzBoxJSONTelefone1.TAM(i)
+    '            If .Active = "1" Then
+    '                TelName = .Name
+    '                TelNr = C_hf.EigeneVorwahlenEntfernen(TAM(i))
+    '                DialPort = "60" & i
+    '                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("TAM", DialPort, TelNr, TelName))
+    '                If P_SpeichereDaten Then
+    '                    NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+    '                    NodeValues.Item(NodeNames.IndexOf("TelNr")) = IIf(TelNr = DataProvider.P_Def_LeerString, allin, TelNr)
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '                    AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
+    '                    C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '                End If
+    '            End If
+    '        End With
+    '    Next
+
+    '    xPathTeile.Item(xPathTeile.IndexOf("TAM")) = "FAX"
+    '    ' integrierter Faxempfang
+    '    DialPort = FritzBoxJSONTelefone2.FaxMailActive
+    '    If DialPort IsNot DataProvider.P_Def_StringNull Then
+    '        TelNr = DataProvider.P_Def_ErrorMinusOne_String
+    '        DialPort = "5"
+    '        TelName = "Faxempfang"
+    '        PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("Integrierte Faxfunktion", DialPort, TelNr, TelName))
+    '        If P_SpeichereDaten Then
+    '            NodeValues.Item(NodeNames.IndexOf("TelName")) = TelName
+    '            NodeValues.Item(NodeNames.IndexOf("TelNr")) = TelNr
+    '            AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = "1"
+
+    '            C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '        End If
+    '    End If
+
+    '    ' Mobiltelefon
+    '    xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "Mobil"
+    '    If Mobil IsNot DataProvider.P_Def_LeerString Then
+    '        TelName = FritzBoxJSONTelefone2.MobileName
+    '        DialPort = DataProvider.P_Def_MobilDialPort
+    '        PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("Mobil", DialPort, Mobil, TelName))
+    '        If P_SpeichereDaten Then
+    '            NodeValues.Item(NodeNames.IndexOf("TelName")) = IIf(TelName = DataProvider.P_Def_ErrorMinusOne_String Or TelName = DataProvider.P_Def_LeerString, Mobil, TelName)
+    '            NodeValues.Item(NodeNames.IndexOf("TelNr")) = Mobil
+    '            AttributeValues.Item(AttributeNames.IndexOf("Dialport")) = DialPort
+    '            AttributeValues.Item(AttributeNames.IndexOf("Fax")) = DataProvider.P_Def_StringNull
+
+    '            C_XML.AppendNode(C_DP.XMLDoc, xPathTeile, C_XML.CreateXMLNode(C_DP.XMLDoc, "Telefon", NodeNames, NodeValues, AttributeNames, AttributeValues))
+    '        End If
+    '    End If
+
+    '    ' Aufräumen
+
+    '    FritzBoxJSONTelNr1 = Nothing
+    '    FritzBoxJSONTelNr2 = Nothing
+    '    FritzBoxJSONTelefone1 = Nothing
+    '    FritzBoxJSONTelefone2 = Nothing
+    '    xPathTeile.Clear()
+    '    NodeNames.Clear()
+    '    NodeValues.Clear()
+    '    AttributeNames.Clear()
+    '    AttributeValues.Clear()
+    '    xPathTeile = Nothing
+    '    NodeNames = Nothing
+    '    NodeValues = Nothing
+    '    AttributeNames = Nothing
+    '    AttributeValues = Nothing
+    'End Sub
+
+    ' ''' <summary>
+    ' ''' Führt das Fritz!Box Query aus und gibt die Daten verwendbar zurück
+    ' ''' </summary>
+    ' ''' <param name="QueryList">Die Liste der auszuführenden Querys</param>
+    ' ''' <returns></returns>
+    ' ''' <remarks></remarks>
+    'Private Function GetFBJSON1(ByVal QueryList As ArrayList) As FritzBoxJSONTelNrT1
+    '    Dim sQuery() As String
+    '    Dim C_JSON As New JSON
+
+    '    ReDim sQuery(UBound(QueryList.ToArray))
+    '    For i = LBound(sQuery) To UBound(sQuery)
+    '        sQuery(i) = QueryList.Item(i).ToString
+    '    Next
+
+    '    GetFBJSON1 = C_JSON.GetFirstValues(FritzBoxQuery(String.Join("&", sQuery)))
+    'End Function
+
+    'Private Function GetFBJSON2(ByVal QueryList As ArrayList) As FritzBoxJSONTelNrT2
+    '    Dim sQuery() As String
+    '    Dim C_JSON As New JSON
+
+    '    ReDim sQuery(UBound(QueryList.ToArray))
+    '    For i = LBound(sQuery) To UBound(sQuery)
+    '        sQuery(i) = QueryList.Item(i).ToString
+    '    Next
+
+    '    GetFBJSON2 = C_JSON.GetSecondValues(FritzBoxQuery(String.Join("&", sQuery)))
+    'End Function
+
+    'Private Function GetFBJSON3(ByVal QueryList As ArrayList) As FritzBoxJSONTelefone1
+    '    Dim sQuery() As String
+    '    Dim C_JSON As New JSON
+
+    '    ReDim sQuery(UBound(QueryList.ToArray))
+    '    For i = LBound(sQuery) To UBound(sQuery)
+    '        sQuery(i) = QueryList.Item(i).ToString
+    '    Next
+
+    '    GetFBJSON3 = C_JSON.GetThirdValues(FritzBoxQuery(String.Join("&", sQuery)))
+    'End Function
+
+    'Private Function GetFBJSON4(ByVal QueryList As ArrayList) As FritzBoxJSONTelefone2
+    '    Dim sQuery() As String
+    '    Dim C_JSON As New JSON
+
+    '    ReDim sQuery(UBound(QueryList.ToArray))
+    '    For i = LBound(sQuery) To UBound(sQuery)
+    '        sQuery(i) = QueryList.Item(i).ToString
+    '    Next
+
+    '    GetFBJSON4 = C_JSON.GetForthValues(FritzBoxQuery(String.Join("&", sQuery)))
+    'End Function
+
+    'Private Function GetFBJSON5(ByVal QueryList As ArrayList) As FritzBoxJSONTelefoneFONNr
+    '    Dim sQuery() As String
+    '    Dim C_JSON As New JSON
+
+    '    ReDim sQuery(UBound(QueryList.ToArray))
+    '    For i = LBound(sQuery) To UBound(sQuery)
+    '        sQuery(i) = QueryList.Item(i).ToString
+    '    Next
+
+    '    GetFBJSON5 = C_JSON.GetFifthValues(FritzBoxQuery(String.Join("&", sQuery)))
+    'End Function
+
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = DataProvider.P_Def_LeerString
         Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & Strings.Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
@@ -1593,7 +2582,11 @@ Public Class FritzBox
 
     Friend Function SendDialRequestToBox(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
 
-        Return SendDialRequestToBoxV2(sDialCode, sDialPort, bHangUp)
+        If Not ThisFBFirmware.ISLargerOREqual("6.25") Then
+            Return SendDialRequestToBoxV1(sDialCode, sDialPort, bHangUp)
+        Else
+            Return SendDialRequestToBoxV2(sDialCode, sDialPort, bHangUp)
+        End If
 
     End Function
     Private Function SendDialRequestToBoxV1(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
@@ -1606,8 +2599,8 @@ Public Class FritzBox
         Dim Response As String             ' Antwort der FritzBox
         '
         SendDialRequestToBoxV1 = DataProvider.P_FritzBox_Dial_Error1           ' Antwortstring
-        If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
-            Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_DialV1(SID, sDialPort, sDialCode, bHangUp), FBEncoding)
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_DialV1(P_SID, sDialPort, sDialCode, bHangUp), FBEncoding)
 
             If Response = DataProvider.P_Def_LeerString Then
                 SendDialRequestToBoxV1 = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
@@ -1616,7 +2609,7 @@ Public Class FritzBox
                 C_hf.LogFile("SendDialRequestToBoxV1: Response: " & Response)
             End If
         Else
-            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "sendDialRequestToBox")
+            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "sendDialRequestToBox")
         End If
     End Function
 
@@ -1629,19 +2622,19 @@ Public Class FritzBox
             PortChangeSuccess = True
         Else
             ' per HTTP-POST Dialport ändern
-            Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(SID, sDialPort), FBEncoding)
+            Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), FBEncoding)
             PortChangeSuccess = Response.Contains("[""telcfg:settings/DialPort""] = """ & sDialPort & "")
         End If
 
         ' Wählen
         If PortChangeSuccess Then
-            Response = C_hf.httpGET(P_Link_FB_DialV2(SID, sDialCode, bHangUp), FBEncoding, FBFehler)
+            Response = C_hf.httpGET(P_Link_FB_DialV2(P_SID, sDialCode, bHangUp), FBEncoding, FBFehler)
             If Response.Contains("""dialing"": """ & CStr(IIf(bHangUp, "false", Replace(sDialCode, "#", "", CompareMethod.Text))) & "") Then
                 SendDialRequestToBoxV2 = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
                 ' Achtung, nach diesem Aufruf ist der DialPort in der Box wieder auf 50 gesetzt. Dieser Reset ist nicht erklärbar. 
                 ' Daher erfolgt ein erneutes setzen des DialPorts in einem BackgroundWorker
-                BWSetDialPort = New BackgroundWorker
-                BWSetDialPort.RunWorkerAsync(argument:=sDialPort)
+                ' BWSetDialPort = New BackgroundWorker
+                ' BWSetDialPort.RunWorkerAsync(argument:=sDialPort)
             Else
                 C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response)
             End If
@@ -1655,16 +2648,15 @@ Public Class FritzBox
         Dim sLink As String
         Dim ReturnString As String = DataProvider.P_Def_LeerString
 
-        SID = FBLogin(True)
-        If Not SID = DataProvider.P_Def_SessionID Then
+        If Not P_SID = DataProvider.P_Def_SessionID Then
 
-            sLink = P_Link_JI2(SID) 'sLink(0) & "&csv="
+            sLink = P_Link_JI2(P_SID) 'sLink(0) & "&csv="
 
-            ReturnString = C_hf.httpGET(P_Link_JI1(SID), FBEncoding, FBFehler)
+            ReturnString = C_hf.httpGET(P_Link_JI1(P_SID), FBEncoding, FBFehler)
             If Not FBFehler Then
                 If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
-                    C_hf.httpGET(P_Link_JIAlt_Child1(SID), FBEncoding, FBFehler)
-                    sLink = P_Link_JIAlt_Child2(SID)
+                    C_hf.httpGET(P_Link_JIAlt_Child1(P_SID), FBEncoding, FBFehler)
+                    sLink = P_Link_JIAlt_Child2(P_SID)
                 End If
                 ReturnString = C_hf.httpGET(sLink, FBEncoding, FBFehler)
             Else
@@ -1681,13 +2673,12 @@ Public Class FritzBox
 #Region "Information"
 
     Public Function GetInformationSystemFritzBox() As String
-        Dim sLink As String
+
         Dim FBTyp As String = DataProvider.P_Def_StringUnknown
         Dim FBFirmware As String = DataProvider.P_Def_StringUnknown
         Dim FritzBoxInformation() As String
 
-        sLink = P_Link_FB_SystemStatus '"http://" & FBAdr & "/cgi-bin/system_status"
-        FritzBoxInformation = Split(C_hf.StringEntnehmen(C_hf.httpGET(sLink, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
+        FritzBoxInformation = Split(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_SystemStatus, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
         FBTyp = FritzBoxInformation(0)
         FBFirmware = Replace(Trim(C_hf.GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
 
@@ -1695,6 +2686,80 @@ Public Class FritzBox
 
     End Function
 
+    ''' <summary>
+    ''' Ermittlung der Firmware der Fritz!Box
+    ''' </summary>
+    ''' <returns>Fritz!Box Firmware-Version</returns>
+    ''' <remarks>http://fritz.box/jason_boxinfo.xml</remarks>
+    Private Function FBFirmware() As Boolean
+        Dim Response As String
+        Dim tmp() As String
+        Dim InfoXML As XmlDocument
+        Dim tmpFBFW As New FritzBoxFirmware
+
+        ' Login Lua 5.29 ab Firmware xxx.05.29 / xxx.05.5x 
+        ' Login Xml 5.28 ab Firmware xxx.04.74 - xxx.05.28 
+        ' 6.25
+
+        Response = C_hf.httpGET(P_Link_Jason_Boxinfo, FBEncoding, FBFehler)
+        ' To Do Fehler Abfangen
+        If Not FBFehler Then
+            ' Ab der Firmware an 4.82 gibt es die Fritz!BoxInformation am 
+
+            '<j:BoxInfo xmlns:j="http://jason.avm.de/updatecheck/">
+            '    <j:Name></j:Name>
+            '    <j:HW></j:HW>
+            '    <j:Version></j:Version>
+            '    <j:Revision></j:Revision>
+            '    <j:Serial></j:Serial>
+            '    <j:OEM></j:OEM>
+            '    <j:Lang></j:Lang>
+            '    <j:Annex></j:Annex>
+            '    <j:Lab/>
+            '    <j:Country></j:Country>
+            '</j:BoxInfo>
+
+            '<j:BoxInfo xmlns:j="http://jason.avm.de/updatecheck/">
+            '    <j:Name></j:Name>
+            '    <j:HW></j:HW>
+            '    <j:Version>84.06.25-30630</j:Version>
+            '    <j:Revision></j:Revision>
+            '    <j:Serial></j:Serial>
+            '    <j:OEM></j:OEM>
+            '    <j:Lang></j:Lang>
+            '    <j:Annex></j:Annex>
+            '    <j:Lab></j:Lab>
+            '    <j:Country></j:Country>
+            '    <j:Flag></j:Flag>
+            '    <j:UpdateConfig></j:UpdateConfig>
+            '</j:BoxInfo>
+
+            InfoXML = New XmlDocument
+            With InfoXML
+                .LoadXml(Response)
+                Response = .GetElementsByTagName("Version", "http://jason.avm.de/updatecheck/").Item(0).InnerText
+                tmp = Split(Response, "-", , CompareMethod.Text)
+                If tmp.Count = 1 Then
+                    ' Revision anhängen, bei LaborFW hängt es schon dran
+                    Response += "-" & .GetElementsByTagName("Revision", "http://jason.avm.de/updatecheck/").Item(0).InnerText
+                End If
+
+                tmpFBFW.SetFirmware(Response)
+            End With
+        Else
+            ' ältere Versionen bis 4.82 prüfen
+            ' dauert deutlich länger, als die Jason BoxInfo
+            Response = C_hf.httpGET(P_Link_FB_SystemStatus, FBEncoding, FBFehler)
+            tmp = Split(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_SystemStatus, FBEncoding, FBFehler), "<body>", "</body>"), "-", , CompareMethod.Text)
+
+            With tmpFBFW
+                Response = Replace(C_hf.GruppiereNummer(tmp(7)), " ", ".", , CompareMethod.Text) & "-" & tmp(8)
+                tmpFBFW.SetFirmware(Response)
+            End With
+        End If
+        ThisFBFirmware = tmpFBFW
+        Return FBFehler
+    End Function
 #End Region
 
 #Region "Fritz!Box Telefonbuch"
@@ -1729,10 +2794,10 @@ Public Class FritzBox
             EmailNew1 = .Email1Address
         End With
 
-        If SID = DataProvider.P_Def_SessionID Then FBLogin(True)
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
 
-        If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
-            cmd = "sid=" & SID & "&entryname=" & EntryName
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            cmd = "sid=" & P_SID & "&entryname=" & EntryName
 
             For i = LBound(NumberType) To UBound(NumberType)
                 If Not NumberNew(i) = DataProvider.P_Def_LeerString Then
@@ -1757,7 +2822,7 @@ Public Class FritzBox
 
             End With
         Else
-            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadKontaktToFritzBox")
+            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "UploadKontaktToFritzBox")
         End If
     End Sub
 
@@ -1778,11 +2843,11 @@ Public Class FritzBox
         Dim ReturnValue As String
         Dim XMLFBAddressbuch As XmlDocument
 
-        If SID = DataProvider.P_Def_SessionID Then FBLogin(True)
-        If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
 
             row = "---" & 12345 + Rnd() * 16777216
-            cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
+            cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & P_SID & vbCrLf _
              & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & sPhonebookId & vbCrLf _
              & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExportName""" & vbCrLf & vbCrLf & sPhonebookExportName & vbCrLf _
              & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
@@ -1800,7 +2865,7 @@ Public Class FritzBox
                 End If
             End With
         Else
-            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "DownloadAddressbook")
+            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "DownloadAddressbook")
         End If
     End Function
 
@@ -1818,11 +2883,11 @@ Public Class FritzBox
         Dim cmd As String
         UploadAddressbook = False
 
-        If SID = DataProvider.P_Def_SessionID Then FBLogin(True)
-        If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
 
             cmd = "---" & 12345 + Rnd() * 16777216
-            cmd = cmd & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & SID & vbCrLf _
+            cmd = cmd & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & P_SID & vbCrLf _
             & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & sPhonebookId & vbCrLf _
             & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""" & vbCrLf & vbCrLf & "@" + XMLTelefonbuch + ";type=text/xml" & vbCrLf _
             & cmd & "--" & vbCrLf
@@ -1830,7 +2895,7 @@ Public Class FritzBox
             UploadAddressbook = C_hf.httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding).Contains("Das Telefonbuch der FRITZ!Box wurde wiederhergestellt.")
 
         Else
-            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(SID), MsgBoxStyle.Critical, "UploadAddressbook")
+            C_hf.FBDB_MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "UploadAddressbook")
         End If
     End Function
 
@@ -1850,9 +2915,9 @@ Public Class FritzBox
         Dim Liste As String = DataProvider.P_Def_LeerString
         Dim pos As Integer = 1
 
-        If SID = DataProvider.P_Def_SessionID Then FBLogin(True)
-        If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
-            sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(SID), FBEncoding, FBFehler), Chr(34), "'", , , CompareMethod.Text)
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(P_SID), FBEncoding, FBFehler), Chr(34), "'", , , CompareMethod.Text)
             sPage = sPage.Replace(Chr(13), "")
             If sPage.Contains("label for='uiBookid:") Then
                 Do
@@ -1892,7 +2957,7 @@ Public Class FritzBox
                 tb.Dispose()
                 ' TODO: Verwalteten Zustand löschen (verwaltete Objekte).
             End If
-
+            BWSetDialPort.Dispose()
             ' TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() unten überschreiben.
             ' TODO: Große Felder auf NULL festlegen.
         End If
@@ -1914,28 +2979,102 @@ Public Class FritzBox
     End Sub
 #End Region
 
-#Region "Backgroundworker"
-    Private Sub BWSetDialPort_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWSetDialPort.DoWork
-        C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(SID, CStr(e.Argument)), FBEncoding)
-        e.Result = FritzBoxQuery("DialPort=telcfg:settings/DialPort")
-    End Sub
-
-    Private Sub BWSetDialPort_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWSetDialPort.RunWorkerCompleted
-        BWSetDialPort.Dispose()
-        BWSetDialPort = Nothing
-    End Sub
-#End Region
-
-#Region "Testlabor"
+#Region "FritzBoxQuery"
     Private Function FritzBoxQuery(ByVal Abfrage As String) As String
         FritzBoxQuery = DataProvider.P_Def_ErrorMinusOne_String
 
-        If SID = DataProvider.P_Def_SessionID Then FBLogin(True)
-        If Not SID = DataProvider.P_Def_SessionID And Len(SID) = Len(DataProvider.P_Def_SessionID) Then
-            FritzBoxQuery = C_hf.httpGET(P_Link_Query(SID, Abfrage), FBEncoding, FBFehler)
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            FritzBoxQuery = C_hf.httpGET(P_Link_Query(P_SID, Abfrage), FBEncoding, FBFehler)
         End If
     End Function
 
 #End Region
 
 End Class
+
+'Public Class FritzBoxUPnP
+'    Private C_DP As DataProvider
+'    Private C_Crypt As Rijndael
+'    Private C_hf As Helfer
+
+'    Private C_UPnP As FritzBoxServices
+'    Friend Sub New(ByVal DataProviderKlasse As DataProvider, _
+'                   ByVal HelferKlasse As Helfer, _
+'                   ByVal CryptKlasse As Rijndael)
+
+'        C_DP = DataProviderKlasse
+'        C_Crypt = CryptKlasse
+'        C_hf = HelferKlasse
+
+'        C_UPnP = New FritzBoxServices(C_DP.P_TBFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
+'        'Dial()
+'    End Sub
+
+'    'Friend Function Dial() As String
+'    '    ' File: FritzBoxSOAP.KnownSOAPFile.x_voipSCPD
+'    '    Dim InPutData As New Hashtable
+'    '    Dim OutPutData As New Hashtable
+
+
+'    '    ' Aktuelle Anrufeinstellungen ermitteln
+'    '    '<action>
+'    '    '<name>X_AVM-DE_GetPhonePort</name>
+'    '    '<argumentList>
+'    '    '<argument>
+'    '    '<name>NewIndex</name>
+'    '    '<direction>in</direction>
+'    '    '<relatedStateVariable>Index</relatedStateVariable>
+'    '    '</argument>
+'    '    '<argument>
+'    '    '<name>NewX_AVM-DE_PhoneName</name>
+'    '    '<direction>out</direction>
+'    '    '<relatedStateVariable>X_AVM-DE_PhoneName</relatedStateVariable>
+'    '    '</argument>
+'    '    '</argumentList>
+'    '    '</action>
+'    '    '<action>
+
+
+'    '    '' SIP-Telefone ermitteln
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetClients")
+
+'    '    '' Alle Telefonnummern ermitteln
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetNumbers")
+
+'    '    '' InputData beginnen mit 1. 2 ist (DECT: Kruemelino) ???
+'    '    'InPutData.Add("NewIndex", 1)
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetPhonePort", InPutData)
+
+'    '    'InPutData.Item("NewIndex") = 2
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetPhonePort", InPutData)
+
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+'    '    '' Wenn unconfigured zurückgegeben wird, dann ist Wählhilfe aus
+
+'    '    'InPutData.Clear()
+'    '    'InPutData.Add("NewX_AVM-DE_PhoneName", OutPutData.Item("NewX_AVM-DE_PhoneName"))
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
+
+'    '    ''OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+
+'    '    ''Funktioniert!
+'    '    'InPutData.Clear()
+'    '    'InPutData.Add("NewX_AVM-DE_PhoneNumber", sDialCode)
+'    '    ''OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
+
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_contactSCPD, "GetDECTHandsetList")
+
+'    '    'InPutData.Clear()
+'    '    'InPutData.Add("NewDectID", OutPutData.Item("NewDectIDList"))
+'    '    'OutPutData = C_UPnP.Start(FritzBoxSOAP.KnownSOAPFile.x_contactSCPD, "GetDECTHandsetInfo", InPutData)
+
+'    '    ''X_AVM-DE_DialGetConfig
+'    '    ''X_AVM-DE_DialNumber 
+'    '    ''X_AVM-DE_DialSetConfig 
+'    '    'X_AVM-DE_DialHangup
+'    '    '
+'    'End Function
+
+
+'End Class

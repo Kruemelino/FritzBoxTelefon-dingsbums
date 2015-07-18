@@ -204,7 +204,8 @@ Friend Class formWählbox
             End If
         End If
         P_Dialing = False
-        TimerSchließen.Stop()
+
+        If Not TimerSchließen Is Nothing Then TimerSchließen.Stop()
         ListTel.ClearSelection() ' Ein erneutes Wählen ermöglichen
     End Sub
 
@@ -561,7 +562,7 @@ Friend Class formWählbox
         Element = Me.ComboBoxFon
         AnAus = False
         'SetEnabled()
-        SID = C_FBox.FBLogin(True) ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
+        SID = C_FBox.FBLogin() ' Falls Login fehlgeschlagen ist, wird "-1" zurückgegeben oder die DefaultSID
         Element = Me.ListTel
         If Not SID = DataProvider.P_Def_SessionID Then ' Login erfolgreich?
             StatusText = "Der Wählclient ist bereit."

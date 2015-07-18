@@ -12,9 +12,9 @@ Public Class Helfer
 
     Private C_XML As XML
     Private C_DP As DataProvider
-    Private C_Crypt As MyRijndael
+    Private C_Crypt As Rijndael
 
-    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As MyRijndael, XMLKlasse As XML)
+    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As Rijndael, XMLKlasse As XML)
         C_XML = XMLKlasse
         C_DP = DataProviderKlasse
         C_Crypt = CryptKlasse
@@ -774,6 +774,7 @@ Public Class Helfer
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
                         Try
                             httpGET = .DownloadString(UniformResourceIdentifier)
+                            FBError = False
                         Catch exANE As ArgumentNullException
                             FBError = True
                             LogFile("httpGET_WebClient: " & exANE.Message)
@@ -790,6 +791,7 @@ Public Class Helfer
                         .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
                         Try
                             With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
+                                FBError = False
                                 httpGET = .ReadToEnd()
                                 .Close()
                             End With

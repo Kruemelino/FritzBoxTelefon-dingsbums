@@ -158,6 +158,9 @@ Partial Class formCfg
         Me.CBUseAnrMon = New System.Windows.Forms.CheckBox()
         Me.FBDB_MP = New System.Windows.Forms.TabControl()
         Me.PDiverses = New System.Windows.Forms.TabPage()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.RBFBComUPnP = New System.Windows.Forms.RadioButton()
+        Me.RBFBComWeb = New System.Windows.Forms.RadioButton()
         Me.GBoxJournal = New System.Windows.Forms.GroupBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
         Me.GBoxSymbolleiste = New System.Windows.Forms.GroupBox()
@@ -230,6 +233,7 @@ Partial Class formCfg
         Me.PanelAnrMon.SuspendLayout()
         Me.FBDB_MP.SuspendLayout()
         Me.PDiverses.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.GBoxJournal.SuspendLayout()
         Me.GBoxSymbolleiste.SuspendLayout()
         Me.GboxAnrListeMain.SuspendLayout()
@@ -1682,6 +1686,7 @@ Partial Class formCfg
         '
         'PDiverses
         '
+        Me.PDiverses.Controls.Add(Me.GroupBox3)
         Me.PDiverses.Controls.Add(Me.GBoxJournal)
         Me.PDiverses.Controls.Add(Me.GBoxSymbolleiste)
         Me.PDiverses.Controls.Add(Me.GboxAnrListeMain)
@@ -1693,6 +1698,40 @@ Partial Class formCfg
         Me.PDiverses.TabIndex = 13
         Me.PDiverses.Text = "Weitere Funktionen"
         Me.PDiverses.UseVisualStyleBackColor = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.RBFBComUPnP)
+        Me.GroupBox3.Controls.Add(Me.RBFBComWeb)
+        Me.GroupBox3.Location = New System.Drawing.Point(0, 247)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(283, 44)
+        Me.GroupBox3.TabIndex = 34
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Fritz!Box Kommunikation"
+        Me.GroupBox3.Visible = False
+        '
+        'RBFBComUPnP
+        '
+        Me.RBFBComUPnP.AutoSize = True
+        Me.RBFBComUPnP.Location = New System.Drawing.Point(115, 19)
+        Me.RBFBComUPnP.Name = "RBFBComUPnP"
+        Me.RBFBComUPnP.Size = New System.Drawing.Size(158, 17)
+        Me.RBFBComUPnP.TabIndex = 0
+        Me.RBFBComUPnP.Text = "UPnP (SOAP, experimentell)"
+        Me.RBFBComUPnP.UseVisualStyleBackColor = True
+        '
+        'RBFBComWeb
+        '
+        Me.RBFBComWeb.AutoSize = True
+        Me.RBFBComWeb.Checked = True
+        Me.RBFBComWeb.Location = New System.Drawing.Point(6, 19)
+        Me.RBFBComWeb.Name = "RBFBComWeb"
+        Me.RBFBComWeb.Size = New System.Drawing.Size(98, 17)
+        Me.RBFBComWeb.TabIndex = 0
+        Me.RBFBComWeb.TabStop = True
+        Me.RBFBComWeb.Text = "Weboberfläche"
+        Me.RBFBComWeb.UseVisualStyleBackColor = True
         '
         'GBoxJournal
         '
@@ -1819,7 +1858,7 @@ Partial Class formCfg
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateJournal)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAutoAnrList)
         Me.GboxAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
-        Me.GboxAnrListeMain.Location = New System.Drawing.Point(0, 103)
+        Me.GboxAnrListeMain.Location = New System.Drawing.Point(0, 104)
         Me.GboxAnrListeMain.Name = "GboxAnrListeMain"
         Me.GboxAnrListeMain.Size = New System.Drawing.Size(282, 141)
         Me.GboxAnrListeMain.TabIndex = 31
@@ -2308,6 +2347,8 @@ Partial Class formCfg
         Me.PanelAnrMon.PerformLayout()
         Me.FBDB_MP.ResumeLayout(False)
         Me.PDiverses.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.GBoxJournal.ResumeLayout(False)
         Me.GBoxJournal.PerformLayout()
         Me.GBoxSymbolleiste.ResumeLayout(False)
@@ -2523,6 +2564,9 @@ Partial Class formCfg
     Friend WithEvents CBAnrListeShowAnrMon As System.Windows.Forms.CheckBox
     Friend WithEvents TBAnrBeantworterTimeout As System.Windows.Forms.TextBox
     Friend WithEvents LAnrBeantworterTimeout As System.Windows.Forms.Label
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents RBFBComUPnP As System.Windows.Forms.RadioButton
+    Friend WithEvents RBFBComWeb As System.Windows.Forms.RadioButton
 #If OVer < 14 Then
 #End If
 End Class

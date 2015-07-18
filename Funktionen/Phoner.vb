@@ -4,14 +4,14 @@ Imports System.IO
 Public Class PhonerInterface
     Private C_DP As DataProvider
     Private C_hf As Helfer
-    Private C_Crypt As MyRijndael
+    Private C_Crypt As Rijndael
 
     Private PhonerAddresse As String = "127.0.0.1"
     Private PhonerAnrMonPort As Integer = 2012
 
     Public Sub New(ByVal HelferKlasse As Helfer, _
                    ByVal DataProviderKlasse As DataProvider, _
-                   ByVal CryptKlasse As MyRijndael)
+                   ByVal CryptKlasse As Rijndael)
 
         C_Crypt = CryptKlasse
         C_DP = DataProviderKlasse

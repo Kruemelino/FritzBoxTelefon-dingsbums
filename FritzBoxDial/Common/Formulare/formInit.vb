@@ -6,7 +6,7 @@ Friend Class formInit
     ' Klassen
     Private C_DP As FritzBoxDial.DataProvider
     Private C_HF As FritzBoxDial.Helfer
-    Private C_Crypt As FritzBoxDial.MyRijndael
+    Private C_Crypt As FritzBoxDial.Rijndael
     Private C_GUI As FritzBoxDial.GraphicalUserInterface
     Private C_OlI As FritzBoxDial.OutlookInterface
     Private C_AnrMon As FritzBoxDial.AnrufMonitor
@@ -48,7 +48,7 @@ Friend Class formInit
         C_DP = New DataProvider(C_XML)
 
         ' Klasse für Verschlüsselung erstellen
-        C_Crypt = New MyRijndael(C_DP)
+        C_Crypt = New Rijndael(C_DP)
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(C_DP, C_Crypt, C_XML)
@@ -220,13 +220,12 @@ Friend Class formInit
     End Sub
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
-        Dim fw550 As Boolean
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, DataProvider.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", DataProvider.P_Def_PassWordDecryptionKey)
         C_HF.KeyChange()
-        SID = C_FBox.FBLogin(fw550)
+        SID = C_FBox.FBLogin()
         If Not SID = DataProvider.P_Def_SessionID Then
             Me.TBFBPW.Enabled = False
             Me.LFBPW.Enabled = False
@@ -350,4 +349,5 @@ Friend Class formInit
         Me.Close()
     End Sub
 #End Region
+
 End Class

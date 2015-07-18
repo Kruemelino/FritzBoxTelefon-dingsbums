@@ -4,7 +4,7 @@ Imports System.Text
 Imports System.Management
 
 ''' <remarks>http://icodesnippet.com/snippet/vbnet/computing-hash-values-vbnet-code-snippets</remarks>
-Public Class MyRijndael
+Public Class Rijndael
 
     Private C_DP As DataProvider
 

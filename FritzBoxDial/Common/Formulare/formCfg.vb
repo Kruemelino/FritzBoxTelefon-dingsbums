@@ -8,7 +8,7 @@ Public Class formCfg
 #Region "Eigene Klassen"
     Private C_XML As XML
     Private C_DP As DataProvider
-    Private C_Crypt As MyRijndael
+    Private C_Crypt As Rijndael
     Private C_hf As Helfer
     Private C_KF As KontaktFunktionen
     Private C_Phoner As PhonerInterface
@@ -49,7 +49,7 @@ Public Class formCfg
     Friend Sub New(ByVal InterfacesKlasse As GraphicalUserInterface, _
                    ByVal DataProviderKlasse As DataProvider, _
                    ByVal HelferKlasse As Helfer, _
-                   ByVal CryptKlasse As MyRijndael, _
+                   ByVal CryptKlasse As Rijndael, _
                    ByVal AnrufMon As AnrufMonitor, _
                    ByVal fritzboxKlasse As FritzBox, _
                    ByVal OutlInter As OutlookInterface, _
@@ -87,6 +87,7 @@ Public Class formCfg
         With C_DP
             Me.LVersion.Text += ThisAddIn.Version
             With Me.ComboBoxRWS.Items
+                .Clear()
                 .Add(DataProvider.P_RWSDasOertliche_Name) '"DasÖrtliche"
                 .Add(DataProvider.P_RWS11880_Name) '"11880.com"
                 '.Add(DataProvider.P_RWSDasTelefonbuch_Name) '"DasTelefonbuch.de"
@@ -240,6 +241,9 @@ Public Class formCfg
             .P_PhonerVerfügbar = PhonerInstalliert
             ' Notiz
             Me.CBNote.Checked = .P_CBNote
+            ' Fritz!Box Kommunikation
+            Me.RBFBComUPnP.Checked = .P_RBFBComUPnP
+            Me.RBFBComUPnP.Checked = Not .P_RBFBComUPnP
         End With
         'TreeView
         With Me.TVOutlookContact
@@ -493,6 +497,8 @@ Public Class formCfg
             .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
             ' Notiz
             .P_CBNote = Me.CBNote.Checked
+            ' Fritz!Box Kommunikation
+            .P_RBFBComUPnP = Me.RBFBComUPnP.Checked
             ' Telefone
 #If OVer < 14 Then
             C_GUI.SetVisibleButtons()
@@ -637,18 +643,20 @@ Public Class formCfg
                 Me.CBAnrListeUpdateCallLists.Checked = DataProvider.P_Def_CBAnrListeUpdateCallLists
                 Me.CBAnrListeShowAnrMon.Checked = DataProvider.P_Def_CBAnrListeShowAnrMon
                 Me.CBLogFile.Checked = DataProvider.P_Def_CBLogFile
-                'StoppUhr
+                ' StoppUhr
                 Me.CBStoppUhrEinblenden.Checked = DataProvider.P_Def_CBStoppUhrEinblenden
                 Me.CBStoppUhrAusblenden.Checked = DataProvider.P_Def_CBStoppUhrAusblenden
                 Me.TBStoppUhr.Text = CStr(DataProvider.P_Def_TBStoppUhr)
                 Me.CBStoppUhrIgnIntFax.Checked = DataProvider.P_Def_CBStoppUhrIgnIntFax
-                'Telefonnummernformat
+                ' Telefonnummernformat
                 Me.TBTelNrMaske.Text = DataProvider.P_Def_TBTelNrMaske
                 Me.CBTelNrGruppieren.Checked = DataProvider.P_Def_CBTelNrGruppieren
                 Me.CBintl.Checked = DataProvider.P_Def_CBintl
                 Me.CBIgnoTelNrFormat.Checked = DataProvider.P_Def_CBIgnoTelNrFormat
-                'Notiz
+                ' Notiz
                 Me.CBNote.Checked = DataProvider.P_Def_CBNote
+                ' Fritz!Box Kommunikation
+                Me.RBFBComUPnP.Checked = DataProvider.P_Def_RBFBComUPnP
                 C_hf.LogFile("Einstellungen zurückgesetzt")
             Case "BTelefonliste"
                 C_FBox.SetEventProvider(emc)
@@ -809,9 +817,9 @@ Public Class formCfg
             Case "BTestLogin"
                 Dim SID As String
                 If Me.TBPasswort.Text = "1234" Then
-                    SID = C_FBox.FBLogin(True)
+                    SID = C_FBox.FBLogin()
                 Else
-                    SID = C_FBox.FBLogin(True, Me.TBBenutzer.Text, Me.TBPasswort.Text)
+                    SID = C_FBox.FBLogin(Me.TBBenutzer.Text, Me.TBPasswort.Text)
                 End If
 
                 If SID = DataProvider.P_Def_SessionID Then
@@ -1040,7 +1048,6 @@ Public Class formCfg
     End Function
 
     Private Sub NeueMail()
-        Dim NeueFW As Boolean
         Dim sSID As String = DataProvider.P_Def_SessionID
         Dim URL As String
         Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
@@ -1061,14 +1068,14 @@ Public Class formCfg
                     Exit Sub
                 End If
             End If
-            sSID = C_FBox.FBLogin(NeueFW, FBBenutzer, FBPasswort)
+            sSID = C_FBox.FBLogin(FBBenutzer, FBPasswort)
         Loop
 
-        If NeueFW Then
-            URL = "http://" & C_DP.P_ValidFBAdr & "/fon_num/fon_num_list.lua?sid=" & sSID
-        Else
-            URL = "http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
-        End If
+        'If NeueFW Then
+        URL = "http://" & C_DP.P_ValidFBAdr & "/fon_num/fon_num_list.lua?sid=" & sSID
+        'Else
+        '    URL = "http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
+        'End If
 
         MailText = C_hf.httpGET(URL, FBEncoding, Nothing)
 
