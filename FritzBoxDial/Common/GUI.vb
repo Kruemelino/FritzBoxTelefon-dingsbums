@@ -658,7 +658,7 @@ Imports Microsoft.Office.Core
             Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
                 OnActionListen(control.Tag)
             Case "dynListDel"
-                ClearList(control.Id)
+                ClearInListe(control.Id)
             Case "btnAnrMonIO"
                 C_AnrMon.AnrMonStartStopp()
             Case "btnAnrMonRestart"
