@@ -283,7 +283,7 @@ Imports Microsoft.Office.Core
         RibbonObjekt = Ribbon
     End Sub
 
-    Public Function DynMenüfüllen(ByVal control As Office.IRibbonControl) As String
+    Public Function FillDynamicMenu(ByVal control As Office.IRibbonControl) As String
 
         Dim XMLListBaseNode As String
 
@@ -301,11 +301,11 @@ Imports Microsoft.Office.Core
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
-            Case "dynMWwdListe"
+            Case DataProvider.P_Def_NameListCALL
                 XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
-            Case "dynMAnrListe"
+            Case DataProvider.P_Def_NameListRING
                 XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
-            Case Else '"dynMVIPListe"
+            Case Else 'DataProvider.P_Def_NameListVIP
                 XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
         End Select
 
@@ -379,7 +379,7 @@ Imports Microsoft.Office.Core
 
         RibbonListStrBuilder.Append("</menu>")
 
-        DynMenüfüllen = RibbonListStrBuilder.ToString
+        FillDynamicMenu = RibbonListStrBuilder.ToString
         RibbonListStrBuilder.Clear()
         RibbonListStrBuilder = Nothing
         LANodeNames = Nothing
@@ -411,7 +411,7 @@ Imports Microsoft.Office.Core
         Next
 
         With StrBuilder
-            .Append("<button id=""dynMListe_" & Werte(0) & """ label=""" & Werte(1) & """ onAction=""BtnOnAction"" tag=""" & Werte(2) & ";" & Werte(0) & """ ")
+            .Append("<button id=""" & Werte(2) & "_" & Werte(0) & """ label=""" & Werte(1) & """ onAction=""BtnOnAction"" tag=""" & Werte(2) & ";" & Werte(0) & """ ")
 
             If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """ ")
             If Not Werte(4) = DataProvider.P_Def_LeerString Then .Append("imageMso=""" & Werte(4) & """ ")
@@ -425,11 +425,11 @@ Imports Microsoft.Office.Core
         Dim xPathTeile As New ArrayList
 
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "dynMWwdListe"
+            Case DataProvider.P_Def_NameListCALL
                 XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
-            Case "dynMAnrListe"
+            Case DataProvider.P_Def_NameListRING
                 XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
-            Case Else '"dynMVIPListe"
+            Case Else 'DataProvider.P_Def_NameListVip
                 XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
         End Select
 
@@ -493,11 +493,11 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_Dial
             Case "btnDirektwahl"
                 Return DataProvider.P_CMB_Direktwahl
-            Case "dynMWwdListe"
+            Case "CallList"
                 Return DataProvider.P_CMB_WWDH
-            Case "dynMAnrListe"
+            Case "RingList"
                 Return DataProvider.P_CMB_CallBack
-            Case "dynMVIPListe"
+            Case "VIPList"
                 Return DataProvider.P_CMB_VIP
             Case "btnAnrMonIO"
                 Return DataProvider.P_CMB_AnrMon
@@ -552,11 +552,11 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_Dial_ToolTipp
             Case "btnDirektwahl"
                 Return DataProvider.P_CMB_Direktwahl_ToolTipp
-            Case "dynMWwdListe"
+            Case "CallList"
                 Return DataProvider.P_CMB_WWDH_ToolTipp
-            Case "dynMAnrListe"
+            Case "RingList"
                 Return DataProvider.P_CMB_CallBack_ToolTipp
-            Case "dynMVIPListe"
+            Case "VIPList"
                 Return DataProvider.P_CMB_VIP_ToolTipp
             Case "btnAnrMonIO"
                 Return DataProvider.P_CMB_AnrMon_ToolTipp
@@ -655,7 +655,7 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.DialInspector)
             Case "btnDirektwahl"
                 OnAction(TaskToDo.DialDirect)
-            Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
+            Case DataProvider.P_Def_NameListCALL, DataProvider.P_Def_NameListRING, DataProvider.P_Def_NameListVIP
                 OnActionListen(control.Tag)
             Case "dynListDel"
                 ClearInListe(control.Id)
@@ -705,14 +705,25 @@ Imports Microsoft.Office.Core
 
 #Region "VIP-Ribbon"
     Public Sub tBtnOnAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
 
-        If IsVIP(oKontakt) Then
-            RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
-        Else
-            AddVIP(oKontakt)
+        Dim oKontakt As Outlook.ContactItem = Nothing
+
+        Select Case control.Id
+            Case "ctbtnVIP" ' Kontext Menu
+                oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+            Case "tbtnVIP_C1"  ' Kontaktinspector 
+                oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+        End Select
+
+        If Not oKontakt Is Nothing Then
+            If IsVIP(oKontakt) Then
+                RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
+            Else
+                AddVIP(oKontakt)
+            End If
+            C_HF.NAR(oKontakt)
         End If
-        C_HF.NAR(oKontakt)
+
         oKontakt = Nothing
         ' Fehler unter Office 2007
 #If OVer >= 14 Then
@@ -1498,7 +1509,6 @@ Imports Microsoft.Office.Core
 #End Region
 
 #Region "RingCallList"
-
     Friend Overloads Sub UpdateList(ByVal ListName As String, _
                                     ByVal Anrufer As String, _
                                     ByVal TelNr As String, _
@@ -1678,7 +1688,6 @@ Imports Microsoft.Office.Core
         C_WClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
     End Sub
 
-
     ''' <summary>
     ''' Löscht die gesammte gewählte Liste aus der XML
     ''' </summary>
@@ -1690,11 +1699,11 @@ Imports Microsoft.Office.Core
         Dim NameListe As String = DataProvider.P_Def_StringNull
 
         Select Case Eintrag(1)
-            Case "RingList"
+            Case DataProvider.P_Def_NameListRING
                 NameListe = DataProvider.P_CMB_CallBack
-            Case "CallList"
+            Case DataProvider.P_Def_NameListCALL
                 NameListe = DataProvider.P_CMB_WWDH
-            Case "VIPList"
+            Case DataProvider.P_Def_NameListVIP
                 NameListe = DataProvider.P_CMB_VIP
         End Select
 
