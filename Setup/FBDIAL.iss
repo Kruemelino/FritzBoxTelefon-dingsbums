@@ -1,7 +1,7 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.8.2"
+#define MyAppVersion "3.9.0"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
@@ -100,7 +100,6 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 ;Office 2010
 #if FileExists("2010\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2010\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2010\Fritz!Box Telefon-Dingsbums.vsto") & FileExists("2010\Funktionen.dll") & FileExists("2010\PopupFenster.dll")
-;#ifexist "2010\Fritz!Box Telefon-Dingsbums.dll" AND "2010\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2010\Fritz!Box Telefon-Dingsbums.vsto";
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
   Source: "2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
   Source: "2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
@@ -117,7 +116,6 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 ;Office 2013
 #if FileExists("2013\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2013\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2013\Fritz!Box Telefon-Dingsbums.vsto") & FileExists("2013\Funktionen.dll") & FileExists("2013\PopupFenster.dll")
-;#ifexist "2013\Fritz!Box Telefon-Dingsbums.dll" AND "2013\Fritz!Box Telefon-Dingsbums.dll.manifest" AND "2013\Fritz!Box Telefon-Dingsbums.vsto";
   Source: "2013\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
   Source: "2013\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion
   Source: "2013\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2013); DestDir: "{app}"; Flags: ignoreversion

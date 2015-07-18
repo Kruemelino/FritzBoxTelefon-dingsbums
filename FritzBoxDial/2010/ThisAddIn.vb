@@ -338,7 +338,8 @@ Public Class ThisAddIn
                                                                                                         ePopAnr7.Click, _
                                                                                                         ePopAnr8.Click, _
                                                                                                         ePopAnr9.Click, _
-                                                                                                        ePopAnr10.Click, _
+                                                                                                        ePopAnrDel.Click, _
+                                                                                                        ePopWwdh1.Click, _
                                                                                                         ePopWwdh1.Click, _
                                                                                                         ePopWwdh2.Click, _
                                                                                                         ePopWwdh3.Click, _
@@ -349,6 +350,7 @@ Public Class ThisAddIn
                                                                                                         ePopWwdh8.Click, _
                                                                                                         ePopWwdh9.Click, _
                                                                                                         ePopWwdh10.Click, _
+                                                                                                        ePopWwdhDel.Click, _
                                                                                                         ePopVIP1.Click, _
                                                                                                         ePopVIP2.Click, _
                                                                                                         ePopVIP3.Click, _
@@ -358,8 +360,15 @@ Public Class ThisAddIn
                                                                                                         ePopVIP7.Click, _
                                                                                                         ePopVIP8.Click, _
                                                                                                         ePopVIP9.Click, _
-                                                                                                        ePopVIP10.Click
-        C_GUI.OnActionListen(control.Tag)
+                                                                                                        ePopVIP10.Click, _
+                                                                                                        ePopVIPDel.Click
+        Select Case control.Tag
+            Case ePopAnrDel.Tag, ePopWwdhDel.Tag, ePopVIPDel.Tag
+                C_GUI.ClearInListe(control.Tag)
+            Case Else
+                C_GUI.OnActionListen(control.Tag)
+        End Select
+
     End Sub
 #End Region
 #End If
