@@ -1294,7 +1294,7 @@ Friend Class ContactSaved
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not Me.disposedValue Then
             If disposing Then
-                C_KF = Nothing
+                'C_KF = Nothing
             End If
         End If
         Me.disposedValue = True

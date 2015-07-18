@@ -1106,8 +1106,9 @@ Imports Microsoft.Office.Core
                         .Item(2) = (DataProvider.P_Def_ErrorMinusOne_String)
                     End With
                 Else
-                    If cPopUp.Controls.Item(i) IsNot Nothing Then
-                        cPopUp.Controls.Item(i).Visible = False
+                    If cPopUp.Controls.Item(i + 1) IsNot Nothing Then
+                        cPopUp.Controls.Item(i + 1).Visible = False
+                        i += 1
                     End If
                 End If
             Next
