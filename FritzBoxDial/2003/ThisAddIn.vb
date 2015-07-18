@@ -10,13 +10,19 @@ Public Class ThisAddIn
     Private WithEvents eBtnLeitungsbelegung As Office.CommandBarButton
     Private WithEvents eBtnEinstellungen As Office.CommandBarButton
     Private WithEvents eBtnAnrMonNeuStart As Office.CommandBarButton
+
     Private WithEvents ePopWwdh As Office.CommandBarPopup
+    Private WithEvents ePopWwdhDel As Office.CommandBarButton
     Private WithEvents ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5 As Office.CommandBarButton
     Private WithEvents ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10 As Office.CommandBarButton
+
     Private WithEvents ePopAnr As Office.CommandBarPopup
+    Private WithEvents ePopAnrDel As Office.CommandBarButton
     Private WithEvents ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5 As Office.CommandBarButton
     Private WithEvents ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10 As Office.CommandBarButton
+
     Private WithEvents ePopVIP As Office.CommandBarPopup
+    Private WithEvents ePopVIPDel As Office.CommandBarButton
     Private WithEvents ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5 As Office.CommandBarButton
     Private WithEvents ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10 As Office.CommandBarButton
 #End If
@@ -217,10 +223,49 @@ Public Class ThisAddIn
                 ' Letzten Anrufer laden. Dazu wird P_oApp benötigt (Kontaktbild)
                 P_AnrMon.LetzterAnrufer = P_AnrMon.LadeLetzterAnrufer()
 #If OVer < 14 Then
-                C_GUI.SymbolleisteErzeugen(ePopWwdh, ePopAnr, ePopVIP, eBtnWaehlen, eBtnDirektwahl, eBtnAnrMonitor, eBtnAnzeigen, eBtnAnrMonNeuStart, eBtnJournalimport, eBtnEinstellungen, _
-                                         ePopWwdh1, ePopWwdh2, ePopWwdh3, ePopWwdh4, ePopWwdh5, ePopWwdh6, ePopWwdh7, ePopWwdh8, ePopWwdh9, ePopWwdh10, _
-                                         ePopAnr1, ePopAnr2, ePopAnr3, ePopAnr4, ePopAnr5, ePopAnr6, ePopAnr7, ePopAnr8, ePopAnr9, ePopAnr10, _
-                                         ePopVIP1, ePopVIP2, ePopVIP3, ePopVIP4, ePopVIP5, ePopVIP6, ePopVIP7, ePopVIP8, ePopVIP9, ePopVIP10)
+                C_GUI.SymbolleisteErzeugen(eBtnWaehlen:=eBtnWaehlen, _
+                                           eBtnDirektwahl:=eBtnDirektwahl, _
+                                           eBtnAnrMon:=eBtnAnrMonitor, _
+                                           eBtnAnzeigen:=eBtnAnzeigen, _
+                                           eBtnAnrMonNeuStart:=eBtnAnrMonNeuStart, _
+                                           eBtnJournalimport:=eBtnJournalimport, _
+                                           eBtnEinstellungen:=eBtnEinstellungen, _
+                                           ePopWwdh:=ePopWwdh, _
+                                           ePopWwdh01:=ePopWwdh1, _
+                                           ePopWwdh02:=ePopWwdh2, _
+                                           ePopWwdh03:=ePopWwdh3, _
+                                           ePopWwdh04:=ePopWwdh4, _
+                                           ePopWwdh05:=ePopWwdh5, _
+                                           ePopWwdh06:=ePopWwdh6, _
+                                           ePopWwdh07:=ePopWwdh7, _
+                                           ePopWwdh08:=ePopWwdh8, _
+                                           ePopWwdh09:=ePopWwdh9, _
+                                           ePopWwdh10:=ePopWwdh10, _
+                                           ePopWwdhDel:=ePopWwdhDel, _
+                                           ePopAnr:=ePopAnr, _
+                                           ePopAnr01:=ePopAnr1, _
+                                           ePopAnr02:=ePopAnr2, _
+                                           ePopAnr03:=ePopAnr3, _
+                                           ePopAnr04:=ePopAnr4, _
+                                           ePopAnr05:=ePopAnr5, _
+                                           ePopAnr06:=ePopAnr6, _
+                                           ePopAnr07:=ePopAnr7, _
+                                           ePopAnr08:=ePopAnr8, _
+                                           ePopAnr09:=ePopAnr9, _
+                                           ePopAnr10:=ePopAnr10, _
+                                           ePopAnrDel:=ePopAnrDel, _
+                                           ePopVIP:=ePopVIP, _
+                                           ePopVIP01:=ePopVIP1, _
+                                           ePopVIP02:=ePopVIP2, _
+                                           ePopVIP03:=ePopVIP3, _
+                                           ePopVIP04:=ePopVIP4, _
+                                           ePopVIP05:=ePopVIP5, _
+                                           ePopVIP06:=ePopVIP6, _
+                                           ePopVIP07:=ePopVIP7, _
+                                           ePopVIP08:=ePopVIP8, _
+                                           ePopVIP09:=ePopVIP9, _
+                                           ePopVIP10:=ePopVIP10, _
+                                           ePopVIPDel:=ePopVIPDel)
 #End If
                 If Not C_DP.P_CBIndexAus Then oInsps = Application.Inspectors
             Else
@@ -293,7 +338,8 @@ Public Class ThisAddIn
                                                                                                         ePopAnr7.Click, _
                                                                                                         ePopAnr8.Click, _
                                                                                                         ePopAnr9.Click, _
-                                                                                                        ePopAnr10.Click, _
+                                                                                                        ePopAnrDel.Click, _
+                                                                                                        ePopWwdh1.Click, _
                                                                                                         ePopWwdh1.Click, _
                                                                                                         ePopWwdh2.Click, _
                                                                                                         ePopWwdh3.Click, _
@@ -304,6 +350,7 @@ Public Class ThisAddIn
                                                                                                         ePopWwdh8.Click, _
                                                                                                         ePopWwdh9.Click, _
                                                                                                         ePopWwdh10.Click, _
+                                                                                                        ePopWwdhDel.Click, _
                                                                                                         ePopVIP1.Click, _
                                                                                                         ePopVIP2.Click, _
                                                                                                         ePopVIP3.Click, _
@@ -313,8 +360,15 @@ Public Class ThisAddIn
                                                                                                         ePopVIP7.Click, _
                                                                                                         ePopVIP8.Click, _
                                                                                                         ePopVIP9.Click, _
-                                                                                                        ePopVIP10.Click
-        C_GUI.OnActionListen(control.Tag)
+                                                                                                        ePopVIP10.Click, _
+                                                                                                        ePopVIPDel.Click
+        Select Case control.Tag
+            Case ePopAnrDel.Tag, ePopWwdhDel.Tag, ePopVIPDel.Tag
+                C_GUI.ClearInListe(control.Tag)
+            Case Else
+                C_GUI.OnActionListen(control.Tag)
+        End Select
+
     End Sub
 #End Region
 #End If

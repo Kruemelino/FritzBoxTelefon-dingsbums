@@ -1691,7 +1691,7 @@ Imports Microsoft.Office.Core
     End Sub
 
     ''' <summary>
-    ''' Löscht die gesammte gewählte Liste aus der XML
+    ''' Löscht die gesamte gewählte Liste aus der XML
     ''' </summary>
     ''' <param name="ControlID">ID der Liste</param>
     ''' <remarks></remarks>
@@ -1723,7 +1723,7 @@ Imports Microsoft.Office.Core
             C_XML.Delete(C_DP.XMLDoc, xPathTeile)
 
 #If OVer < 14 Then
-            FillPopupItems(Liste)
+            FillPopupItems(Eintrag(1))
 #Else
             RefreshRibbon()
 #End If
