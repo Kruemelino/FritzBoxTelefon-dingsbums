@@ -68,8 +68,8 @@ Friend Class formRWSuche
                     Select Case CType(C_DP.P_ComboBoxRWS, RückwärtsSuchmaschine) ' Fall 3: Es gibt keinen Eintrag.
                         Case RückwärtsSuchmaschine.RWSDasOertliche
                             AnrMonRWS = RWSDasOertiche(.TelNr, .vCard)
-                        Case RückwärtsSuchmaschine.RWS11880
-                            AnrMonRWS = RWS11880(.TelNr, .vCard)
+                            'Case RückwärtsSuchmaschine.RWS11880
+                            '    AnrMonRWS = RWS11880(.TelNr, .vCard)
                             'Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                             '    AnrMonRWS = RWSDasTelefonbuch(.TelNr, .vCard)
                         Case RückwärtsSuchmaschine.RWStelSearch
@@ -161,8 +161,8 @@ Friend Class formRWSuche
                         Select Case RWSAnbieter
                             Case RückwärtsSuchmaschine.RWSDasOertliche
                                 rws = RWSDasOertiche(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWS11880
-                                rws = RWS11880(TelNr, vCard)
+                                'Case RückwärtsSuchmaschine.RWS11880
+                                '    rws = RWS11880(TelNr, vCard)
                                 'Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                                 '    rws = RWSDasTelefonbuch(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWStelSearch
@@ -197,8 +197,8 @@ Friend Class formRWSuche
                         Select Case RWSAnbieter
                             Case RückwärtsSuchmaschine.RWSDasOertliche
                                 rws = RWSDasOertiche(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWS11880
-                                rws = RWS11880(TelNr, vCard)
+                                'Case RückwärtsSuchmaschine.RWS11880
+                                '    rws = RWS11880(TelNr, vCard)
                                 'Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                                 '    rws = RWSDasTelefonbuch(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWStelSearch
@@ -219,71 +219,71 @@ Friend Class formRWSuche
         End If
     End Sub
 
-    ''' <summary>
-    ''' Führt die Rückwärtssuche über 'www.11880.com' durch.
-    ''' </summary>
-    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
-    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
-    ''' <returns>'true' wenn was gefunden wurde</returns>
-    Function RWS11880(ByRef TelNr As String, ByRef vCard As String) As Boolean
+    ' ''' <summary>
+    ' ''' Führt die Rückwärtssuche über 'www.11880.com' durch.
+    ' ''' </summary>
+    ' ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ' ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ' ''' <returns>'true' wenn was gefunden wurde</returns>
+    'Function RWS11880(ByRef TelNr As String, ByRef vCard As String) As Boolean
 
-        RWS11880 = False
+    '    RWS11880 = False
 
-        Dim myurl As String         ' URL von 11880
-        Dim EintragsID As String    ' Hilfsstring
-        Dim tmpTelNr As String      ' Hilfsstring für TelNr
-        Dim htmlRWS As String       ' Inhalt der Webseite
-        Dim i As Integer            ' Zählvariable
+    '    Dim myurl As String         ' URL von 11880
+    '    Dim EintragsID As String    ' Hilfsstring
+    '    Dim tmpTelNr As String      ' Hilfsstring für TelNr
+    '    Dim htmlRWS As String       ' Inhalt der Webseite
+    '    Dim i As Integer            ' Zählvariable
 
-        'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
-        Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
-        Const SW2 As String = "'"
-        ' TelNr sichern, da sie unter Umständen verändert wird
-        vCard = DataProvider.P_Def_ErrorMinusTwo_String
-        tmpTelNr = C_hf.nurZiffern(TelNr)
-        ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
-        ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
-        ' Schleife wird maximall drei mal durchlaufen
-        i = 0
-        If Not Strings.Left(tmpTelNr, 2) = "11" Then
+    '    'Eindeutige Suchwörter, nach denen die gesuchten Daten anfangen (ohne ", chr(09), chr(10) und chr(13)):
+    '    Const SW1 As String = "<a class='micro_action vcf_enabled' rel='nofollow' href='"
+    '    Const SW2 As String = "'"
+    '    ' TelNr sichern, da sie unter Umständen verändert wird
+    '    vCard = DataProvider.P_Def_ErrorMinusTwo_String
+    '    tmpTelNr = C_hf.nurZiffern(TelNr)
+    '    ' Suche wird unter Umständen mehrfach durchgeführt, da auch Firmennummern gefunden werden sollen.
+    '    ' Dafür werden die letzten beiden Ziffern von TelNr durch '0' ersetzt und noch einmal gesucht.
+    '    ' Schleife wird maximall drei mal durchlaufen
+    '    i = 0
+    '    If Not Strings.Left(tmpTelNr, 2) = "11" Then
 
-            Do
-                ' Webseite für Rückwärtssuche aufrufen und herunterladen
-                myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tmpTelNr
-                htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
-                If Not HTMLFehler Then
-                    htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
-                    ' Link zum Herunterladen der vCard suchen
-                    EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
-                    If Not EintragsID = DataProvider.P_Def_ErrorMinusOne_String Then
-                        myurl = "http://classic.11880.com" & EintragsID
-                        vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
-                        If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
-                    End If
-                    ' Rückgabewert ermitteln
-                    If Strings.Left(vCard, Len(DataProvider.P_Def_Begin_vCard)) = DataProvider.P_Def_Begin_vCard Then
-                        RWS11880 = True
-                    Else
-                        vCard = DataProvider.P_Def_ErrorMinusTwo_String
-                    End If
-                    i = i + 1
-                    tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 1) & 0
-                Else
-                    RWS11880 = False
-                    C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
-                End If
-            Loop Until RWS11880 Or i = 3 Or HTMLFehler
+    '        Do
+    '            ' Webseite für Rückwärtssuche aufrufen und herunterladen
+    '            myurl = "http://classic.11880.com/inverssuche/index/search?method=searchSimple&_dvform_posted=1&phoneNumber=" & tmpTelNr
+    '            htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+    '            If Not HTMLFehler Then
+    '                htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text)  '" enfernen
+    '                ' Link zum Herunterladen der vCard suchen
+    '                EintragsID = C_hf.StringEntnehmen(htmlRWS, SW1, SW2)
+    '                If Not EintragsID = DataProvider.P_Def_ErrorMinusOne_String Then
+    '                    myurl = "http://classic.11880.com" & EintragsID
+    '                    vCard = C_hf.httpGET(myurl, System.Text.Encoding.Default, HTMLFehler)
+    '                    If HTMLFehler Then C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
+    '                End If
+    '                ' Rückgabewert ermitteln
+    '                If Strings.Left(vCard, Len(DataProvider.P_Def_Begin_vCard)) = DataProvider.P_Def_Begin_vCard Then
+    '                    RWS11880 = True
+    '                Else
+    '                    vCard = DataProvider.P_Def_ErrorMinusTwo_String
+    '                End If
+    '                i = i + 1
+    '                tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 1) & 0
+    '            Else
+    '                RWS11880 = False
+    '                C_hf.LogFile("FBError (RWS11880): " & Err.Number & " - " & Err.Description & " - " & myurl)
+    '            End If
+    '        Loop Until RWS11880 Or i = 3 Or HTMLFehler
 
-        End If
-        ' Besonderheit bei '11880': Vor- und Nachname sind in vCard separat angegeben
-        ' wenn kein Vorname vorhanden ist, dann "muss" es sich um eine Firma handeln
-        ' dann wird der volle Name in der vCard (FN) in den Firmennamen (ORG) übertragen
-        If RWS11880 Then
-            If InStr(1, ReadFromVCard(vCard, "N", ""), ";;;;", CompareMethod.Text) > 0 Then ''''''''''''' beim Debuggen aufpassen, dass auch das richtige Ergebnis ausgeworfen wird!!
-                vCard = Replace(vCard, Chr(10) & "FN:", Chr(10) & "ORG:", , , CompareMethod.Text)
-            End If
-        End If
-    End Function
+    '    End If
+    '    ' Besonderheit bei '11880': Vor- und Nachname sind in vCard separat angegeben
+    '    ' wenn kein Vorname vorhanden ist, dann "muss" es sich um eine Firma handeln
+    '    ' dann wird der volle Name in der vCard (FN) in den Firmennamen (ORG) übertragen
+    '    If RWS11880 Then
+    '        If InStr(1, ReadFromVCard(vCard, "N", ""), ";;;;", CompareMethod.Text) > 0 Then ''''''''''''' beim Debuggen aufpassen, dass auch das richtige Ergebnis ausgeworfen wird!!
+    '            vCard = Replace(vCard, Chr(10) & "FN:", Chr(10) & "ORG:", , , CompareMethod.Text)
+    '        End If
+    '    End If
+    'End Function
 
     ''' <summary>
     ''' Führt die Rückwärtssuche über 'www.dasoertliche.de' durch.
@@ -477,9 +477,9 @@ Friend Class formRWSuche
 
         RWSAlle = RWSDasOertiche(TelNr, vCard)
 
-        If Not RWSAlle Then
-            RWSAlle = RWS11880(TelNr, vCard)
-        End If
+        'If Not RWSAlle Then
+        '    RWSAlle = RWS11880(TelNr, vCard)
+        'End If
 
         'If Not RWSAlle Then
         '    RWSAlle = RWSDasTelefonbuch(TelNr, vCard)

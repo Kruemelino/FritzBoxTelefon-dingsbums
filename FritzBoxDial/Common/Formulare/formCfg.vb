@@ -89,7 +89,7 @@ Public Class formCfg
             With Me.ComboBoxRWS.Items
                 .Clear()
                 .Add(DataProvider.P_RWSDasOertliche_Name) '"DasÖrtliche"
-                .Add(DataProvider.P_RWS11880_Name) '"11880.com"
+                '.Add(DataProvider.P_RWS11880_Name) '"11880.com"
                 '.Add(DataProvider.P_RWSDasTelefonbuch_Name) '"DasTelefonbuch.de"
                 .Add(DataProvider.P_RWSTelSearch_Name) '"tel.search.ch"
                 .Add(DataProvider.P_RWSAlle_Name) '"Alle Suchmaschinen"
@@ -798,8 +798,8 @@ Public Class formCfg
                     Select Case CType(Me.ComboBoxRWS.SelectedIndex, RückwärtsSuchmaschine)
                         Case RückwärtsSuchmaschine.RWSDasOertliche
                             rws = F_RWS.RWSDasOertiche(TelNr, vCard)
-                        Case RückwärtsSuchmaschine.RWS11880
-                            rws = F_RWS.RWS11880(TelNr, vCard)
+                            'Case RückwärtsSuchmaschine.RWS11880
+                            '    rws = F_RWS.RWS11880(TelNr, vCard)
                             'Case RückwärtsSuchmaschine.RWSDasTelefonbuch
                             '    rws = F_RWS.RWSDasTelefonbuch(TelNr, vCard)
                         Case RückwärtsSuchmaschine.RWStelSearch
