@@ -283,14 +283,7 @@ Imports Microsoft.Office.Core
         RibbonObjekt = Ribbon
     End Sub
 
-
-    ''' <summary>
-    ''' Erstellt die XML-Datei welche dynamicMenu-Elemente füllt.
-    ''' </summary>
-    ''' <param name="control"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function FillDynamicMenu(ByVal control As Office.IRibbonControl) As String
+    Public Function DynMenüfüllen(ByVal control As Office.IRibbonControl) As String
 
         Dim XMLListBaseNode As String
 
@@ -307,7 +300,14 @@ Imports Microsoft.Office.Core
         Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & _
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
-        XMLListBaseNode = Left(control.Id, Len(control.Id) - 2)
+        Select Case Mid(control.Id, 1, Len(control.Id) - 2)
+            Case "dynMWwdListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
+            Case "dynMAnrListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
+            Case Else '"dynMVIPListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
+        End Select
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
 
@@ -330,27 +330,28 @@ Imports Microsoft.Office.Core
         End With
 
         With RibbonListStrBuilder
-            .Append("<button id=""dynListDel_" & XMLListBaseNode & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso""/>" & vbCrLf)
-            .Append("<menuSeparator id=""SepDynMenu""/>" & vbCrLf)
+            .Append("<button id=""dynListDel_" & XMLListBaseNode & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso"" />" & vbCrLf)
+            .Append("<menuSeparator id=""separator"" />" & vbCrLf)
         End With
 
         If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
 
             For ID = index + 9 To index Step -1
-                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
 
+                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
+
                 If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
                     Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                     Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
                     If XMLListBaseNode = DataProvider.P_Def_NameListRING Then Verpasst = CBool(LANodeValues.Item(LANodeNames.IndexOf("Verpasst")))
 
                     GetButtonXMLString(RibbonListStrBuilder, _
-                                       CStr(ID Mod 10), _
-                                       CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
-                                       XMLListBaseNode, _
-                                       DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
-                                       CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString)))
+                            CStr(ID Mod 10), _
+                            CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
+                            XMLListBaseNode, _
+                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
+                            CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString)))
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
@@ -378,7 +379,7 @@ Imports Microsoft.Office.Core
 
         RibbonListStrBuilder.Append("</menu>")
 
-        FillDynamicMenu = RibbonListStrBuilder.ToString
+        DynMenüfüllen = RibbonListStrBuilder.ToString
         RibbonListStrBuilder.Clear()
         RibbonListStrBuilder = Nothing
         LANodeNames = Nothing
@@ -387,13 +388,13 @@ Imports Microsoft.Office.Core
     End Function
 
     Private Sub GetButtonXMLString(ByRef StrBuilder As StringBuilder, ByVal ID As String, ByVal Label As String, ByVal Tag As String, ByVal SuperTip As String, ByVal ImageMSO As String)
-        Dim Werte() As String = {ID, Label, Tag, SuperTip, ImageMSO}
+        Dim Werte(4) As String
 
-        'Werte(0) = ID
-        'Werte(1) = Label
-        'Werte(2) = Tag
-        'Werte(3) = SuperTip
-        'Werte(4) = ImageMSO
+        Werte(0) = ID
+        Werte(1) = Label
+        Werte(2) = Tag
+        Werte(3) = SuperTip
+        Werte(4) = ImageMSO
 
         ' Nicht zugelassene Zeichen der XML-Notifikation ersetzen.
         ' Zeichen	Notation in XML
@@ -410,39 +411,29 @@ Imports Microsoft.Office.Core
         Next
 
         With StrBuilder
-            .Append("<splitButton id=""SplitBtn_" & Werte(0) & """>")
-            ' Button des splitButton
             .Append("<button id=""dynMListe_" & Werte(0) & """ label=""" & Werte(1) & """ onAction=""BtnOnAction"" tag=""" & Werte(2) & ";" & Werte(0) & """ ")
+
             If Not Werte(3) = DataProvider.P_Def_LeerString Then .Append("supertip=""" & Werte(3) & """ ")
             If Not Werte(4) = DataProvider.P_Def_LeerString Then .Append("imageMso=""" & Werte(4) & """ ")
-            ' Menu und Button zum löschen des Eintrages
-            .Append("/><menu>" & vbCrLf)
-            .Append("<button id=""dynEntryDel_" & Werte(2) & "_" & Werte(0) & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso""/>" & vbCrLf)
-            .Append("</menu></splitButton>" & vbCrLf)
-        End With
 
+            .Append("/>" & vbCrLf)
+        End With
     End Sub
 
-    ''' <summary>
-    ''' Legt fest, ob das dynamicMenu aktiviert wird.
-    ''' </summary>
-    ''' <param name="control">Ribbon Control</param>
-    ''' <returns>Boolean</returns>
-    ''' <remarks>    
-    ''' Dazu müssen mehr als zwei Einträge in der XML-Liste sein.
-    ''' Subnote Index und ein reguläres Telefonat.</remarks>
     Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
+        Dim XMLListBaseNode As String
         Dim xPathTeile As New ArrayList
-        DynMenüEnabled = False
-        With xPathTeile
-            .Add(Left(control.Id, Len(control.Id) - 2))
-            If C_XML.SubNoteCount(C_DP.XMLDoc, xPathTeile) > 1 Then
-                .Add("Index")
-                DynMenüEnabled = Not C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
-            End If
-            .Clear()
-        End With
-        xPathTeile = Nothing
+
+        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
+            Case "dynMWwdListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListCALL '"CallList"
+            Case "dynMAnrListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListRING '"RingList"
+            Case Else '"dynMVIPListe"
+                XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
+        End Select
+
+        Return CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False))
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -502,18 +493,16 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_Dial
             Case "btnDirektwahl"
                 Return DataProvider.P_CMB_Direktwahl
-            Case "CallList"
+            Case "dynMWwdListe"
                 Return DataProvider.P_CMB_WWDH
-            Case "RingList"
+            Case "dynMAnrListe"
                 Return DataProvider.P_CMB_CallBack
-            Case "VIPList"
+            Case "dynMVIPListe"
                 Return DataProvider.P_CMB_VIP
             Case "btnAnrMonIO"
                 Return DataProvider.P_CMB_AnrMon
             Case "dynListDel"
                 Return DataProvider.P_CMB_ClearList
-            Case "dynEntryDel"
-                Return DataProvider.P_CMB_ClearEntry()
             Case "btnAnrMonRestart"
                 Return DataProvider.P_CMB_AnrMonNeuStart
             Case "btnAnrMonShow"
@@ -563,11 +552,11 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_Dial_ToolTipp
             Case "btnDirektwahl"
                 Return DataProvider.P_CMB_Direktwahl_ToolTipp
-            Case "CallList"
+            Case "dynMWwdListe"
                 Return DataProvider.P_CMB_WWDH_ToolTipp
-            Case "RingList"
+            Case "dynMAnrListe"
                 Return DataProvider.P_CMB_CallBack_ToolTipp
-            Case "VIPList"
+            Case "dynMVIPListe"
                 Return DataProvider.P_CMB_VIP_ToolTipp
             Case "btnAnrMonIO"
                 Return DataProvider.P_CMB_AnrMon_ToolTipp
@@ -617,13 +606,13 @@ Imports Microsoft.Office.Core
                 Return "AutoDial"
             Case "btnDirektwahl"
                 Return "SlidesPerPage9Slides"
-            Case "CallList"
+            Case "dynMWwdListe"
                 Return "RecurrenceEdit"
-            Case "RingList"
+            Case "dynMAnrListe"
                 Return "DirectRepliesTo"
-            Case "VIPList", "tbtnVIP"
+            Case "dynMVIPListe", "tbtnVIP"
                 Return "Pushpin"
-            Case "dynListDel", "dynEntryDel"
+            Case "dynListDel"
                 Return "ToolDelete"
             Case "btnAnrMonIO"
                 GetItemImageMso = "PersonaStatusBusy"
@@ -659,7 +648,7 @@ Imports Microsoft.Office.Core
     ''' </summary>
     ''' <param name="control">Die id des Ribbon Controls</param>
     Public Sub BtnOnAction(ByVal control As Office.IRibbonControl)
-        Select Case Split(control.Id, "_", , CompareMethod.Text)(0)
+        Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case "btnDialExpl", "cbtnDial"
                 OnAction(TaskToDo.DialExplorer)
             Case "btnDialInsp"
@@ -668,8 +657,8 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.DialDirect)
             Case "dynMListe" ',"dynMWwdListe", "dynMAnrListe", "dynMVIPListe"
                 OnActionListen(control.Tag)
-            Case "dynListDel", "dynEntryDel"
-                ClearInListe(control.Id)
+            Case "dynListDel"
+                ClearList(control.Id)
             Case "btnAnrMonIO"
                 C_AnrMon.AnrMonStartStopp()
             Case "btnAnrMonRestart"
@@ -716,26 +705,19 @@ Imports Microsoft.Office.Core
 
 #Region "VIP-Ribbon"
     Public Sub tBtnOnAction(ByVal control As Office.IRibbonControl, ByVal pressed As Boolean)
-        Dim oKontakt As Outlook.ContactItem = Nothing
+        Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
 
-        If TypeOf (control.Context) Is Outlook.Inspector Then
-            oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
-        ElseIf TypeOf (control.Context) Is Outlook.Selection Then
-            oKontakt = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+        If IsVIP(oKontakt) Then
+            RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
+        Else
+            AddVIP(oKontakt)
         End If
-        If Not oKontakt Is Nothing Then
-            If IsVIP(oKontakt) Then
-                RemoveVIP(oKontakt.EntryID, CType(oKontakt.Parent, Outlook.MAPIFolder).StoreID)
-            Else
-                AddVIP(oKontakt)
-            End If
-            C_HF.NAR(oKontakt)
-            oKontakt = Nothing
-            ' Fehler unter Office 2007
+        C_HF.NAR(oKontakt)
+        oKontakt = Nothing
+        ' Fehler unter Office 2007
 #If OVer >= 14 Then
-            RibbonObjekt.Invalidate()
+        RibbonObjekt.Invalidate()
 #End If
-        End If
     End Sub
 
     Public Function CtBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -1535,12 +1517,14 @@ Imports Microsoft.Office.Core
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, ListName, "Index", "0"))
 
-        ' Telefonnummer des vorherigen Telefonats ermitteln und mit der aktuellen vergleichen
         xPathTeile.Add(ListName)
         xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
 
         If Not C_HF.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
+
+            NodeNames.Add("Index")
+            NodeValues.Add(CStr((index + 1) Mod 10))
 
             If Not Anrufer = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("Anrufer")
@@ -1576,7 +1560,7 @@ Imports Microsoft.Office.Core
             AttributeValues.Add(CStr(index))
 
             With C_DP
-                xPathTeile.Clear()
+                xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
                 xPathTeile.Add(ListName)
                 xPathTeile.Add("Index")
                 C_XML.Write(.XMLDoc, xPathTeile, CStr((index + 1) Mod 10))
@@ -1604,6 +1588,7 @@ Imports Microsoft.Office.Core
 #If OVer > 12 Then
         RefreshRibbon()
 #End If
+
     End Sub
 
     Friend Overloads Sub UpdateList(ByVal ListName As String, ByVal Telefonat As C_Telefonat)
@@ -1620,10 +1605,11 @@ Imports Microsoft.Office.Core
     Friend Sub OnActionListen(ByVal ControlTag As String)
         Dim oContact As Outlook.ContactItem
         Dim Telefonat As String() = Split(ControlTag, ";", , CompareMethod.Text)
+        ' KontaktID, StoreID, TelNr ermitteln
         Dim KontaktID As String
         Dim StoreID As String
         Dim TelNr As String
-
+        'Dim Verpasst As Boolean
         Dim vCard As String
         Dim ListNodeNames As New ArrayList
         Dim ListNodeValues As New ArrayList
@@ -1663,8 +1649,10 @@ Imports Microsoft.Office.Core
         KontaktID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("KontaktID")))
         StoreID = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("StoreID")))
         vCard = CStr(ListNodeValues.Item(ListNodeNames.IndexOf("vCard")))
+        'Verpasst = CBool(ListNodeValues.Item(ListNodeNames.IndexOf("Verpasst")))
 
         If Not StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
+            'If Not KontaktID = DataProvider.P_Def_ErrorMinusOne And Not StoreID = DataProvider.P_Def_ErrorMinusOne Then
             oContact = C_KF.GetOutlookKontakt(KontaktID, StoreID)
             If oContact Is Nothing Then
                 Select Case Telefonat(0)
@@ -1690,8 +1678,9 @@ Imports Microsoft.Office.Core
         C_WClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
     End Sub
 
+
     ''' <summary>
-    ''' Löscht die gesamte gewählte Liste aus der XML
+    ''' Löscht die gesammte gewählte Liste aus der XML
     ''' </summary>
     ''' <param name="ControlID">ID der Liste</param>
     ''' <remarks></remarks>
@@ -1729,7 +1718,6 @@ Imports Microsoft.Office.Core
 #End If
         End If
     End Sub
-
 #End Region
 
 End Class
