@@ -147,6 +147,7 @@ Public Class Wählclient
         '             TelNr (String):         Telefonnummer des Anzurufenden
         Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern
         Dim alleNrTypen(14) As String ' die Bezeichnungen der Telefonnummern
+        Dim tmpTelNr As String
         Dim i, iTelNr As Integer    ' Zählvariablen
         Dim ImgPath As String = DataProvider.P_Def_LeerString   ' Position innerhalb eines Strings
         Dim row(2) As String
@@ -164,9 +165,10 @@ Public Class Wählclient
         ' Ist der Kontakt nicht vorhanden (z.B. Rückruf)?
         If oContact Is Nothing Then
             If Not Direktwahl Then
-                ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0" beginnt und nicht mit "11"
+                ' Ortsvorwahl vor die Nummer setzen, falls eine Rufnummer nicht mit "0", "#" beginnt und nicht mit "11"
                 ' (Rufnummern die mit "11" beginnen sind Notrufnummern oder andere Sondernummern)
-                If Not Left(C_hf.nurZiffern(TelNr), 1) = "0" And Not Left(C_hf.nurZiffern(TelNr), 2) = "11" Then TelNr = C_DP.P_TBVorwahl & TelNr
+                tmpTelNr = C_hf.nurZiffern(TelNr)
+                If Not (tmpTelNr.StartsWith("0") Or tmpTelNr.StartsWith("11") Or tmpTelNr.StartsWith("#")) Then TelNr = C_DP.P_TBVorwahl & TelNr
 
                 frm_Wählbox.Text = "Anruf: " & CStr(IIf(vCard = DataProvider.P_Def_LeerString Or vCard = DataProvider.P_Def_ErrorMinusTwo_String, TelNr, ReadFNfromVCard(vCard)))
                 ' Liste füllen
@@ -215,7 +217,6 @@ Public Class Wählclient
                         Using g As Graphics = Graphics.FromImage(showImage)
                             g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                             g.DrawImage(orgImage, 0, 0, Bildgröße.Width, Bildgröße.Height)
-                            'g.Dispose()
                         End Using
                         .Image = showImage
                     End With
