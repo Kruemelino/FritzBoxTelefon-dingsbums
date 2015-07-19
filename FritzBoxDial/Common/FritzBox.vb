@@ -2648,9 +2648,14 @@ Public Class FritzBox
         Dim sLink As String
         Dim ReturnString As String = DataProvider.P_Def_LeerString
 
-        If Not P_SID = DataProvider.P_Def_SessionID Then
-
-            sLink = P_Link_JI2(P_SID) 'sLink(0) & "&csv="
+        If P_SID = DataProvider.P_Def_SessionID Then
+            If Not FBLogin() = DataProvider.P_Def_SessionID Then
+                ReturnString = DownloadAnrListe()
+            Else
+                C_hf.LogFile("DownloadAnrListe: " & DataProvider.P_FritzBox_JI_Error1)
+            End If
+        Else
+            sLink = P_Link_JI2(P_SID)
 
             ReturnString = C_hf.httpGET(P_Link_JI1(P_SID), FBEncoding, FBFehler)
             If Not FBFehler Then
@@ -2662,8 +2667,6 @@ Public Class FritzBox
             Else
                 C_hf.LogFile("FBError (DownloadAnrListe): " & Err.Number & " - " & Err.Description & " - " & sLink)
             End If
-        Else
-            C_hf.LogFile("DownloadAnrListe: " & DataProvider.P_FritzBox_JI_Error1)
         End If
         Return ReturnString
     End Function

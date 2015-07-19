@@ -106,11 +106,7 @@ Friend Class formInit
                 .P_PopUp = C_PopUp
             End With
 
-            If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then
-                'F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
-                F_AnrListImport.StartAuswertung(False)
-            End If
-
+            If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then F_AnrListImport.StartAuswertung(False)
         End If
 
         FritzBoxKlasse = C_FBox
