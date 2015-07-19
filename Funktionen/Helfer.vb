@@ -762,7 +762,6 @@ Public Class Helfer
         Dim UniformResourceIdentifier As New Uri(Link)
 
         httpGET = DataProvider.P_Def_LeerString
-
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp
                 If DataProvider.P_Debug_Use_WebClient Then

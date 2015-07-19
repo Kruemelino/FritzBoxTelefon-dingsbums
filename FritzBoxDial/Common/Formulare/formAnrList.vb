@@ -2,8 +2,8 @@
 
 Public Class formImportAnrList
 #Region "BackgroundWorker"
-    Private WithEvents DownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
-    Private WithEvents BGAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
+    Private WithEvents BWDownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
+    Private WithEvents BWAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
 #End Region
 
 #Region "Delegate"
@@ -64,17 +64,17 @@ Public Class formImportAnrList
         Abbruch = False
         Anzeigen = ShowForm
         If Anzeigen Then Me.Show() 'wenn gewollt
-        With DownloadAnrListe
+        With BWDownloadAnrListe
             .WorkerSupportsCancellation = True
             .RunWorkerAsync()
         End With
     End Sub
 #Region " Herunterladen"
-    Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles DownloadAnrListe.DoWork
+    Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWDownloadAnrListe.DoWork
         e.Result = C_FBox.DownloadAnrListe
     End Sub
 
-    Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles DownloadAnrListe.RunWorkerCompleted
+    Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWDownloadAnrListe.RunWorkerCompleted
         Dim Übergabe As ImportZeitraum
         CSVAnrliste = CStr(e.Result)
         If Me.InvokeRequired Then
@@ -89,7 +89,7 @@ Public Class formImportAnrList
             .EndZeit = System.DateTime.Now
         End With
         If Not anzeigen Then
-            With BGAnrListeAuswerten
+            With BWAnrListeAuswerten
                 .WorkerReportsProgress = True
                 .RunWorkerAsync(Übergabe)
             End With
@@ -103,11 +103,11 @@ Public Class formImportAnrList
 #End Region
 
 #Region " Auswertung"
-    Private Sub BGAnrListeAuswerten_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BGAnrListeAuswerten.DoWork
+    Private Sub BGAnrListeAuswerten_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrListeAuswerten.DoWork
         JournalCSV(CType(e.Argument, ImportZeitraum))
     End Sub
 
-    Private Sub BGAnrListeAuswerten_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BGAnrListeAuswerten.ProgressChanged
+    Private Sub BGAnrListeAuswerten_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BWAnrListeAuswerten.ProgressChanged
         StatusWert = e.ProgressPercentage
         If Me.InvokeRequired Then
             Dim D As New DelgSetProgressbar(AddressOf SetProgressbar)
@@ -122,9 +122,9 @@ Public Class formImportAnrList
         If StatusWert = 100 Then Me.ButtonStart.Enabled = True
     End Sub
 
-    Private Sub BGAnrListeAuswerten_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BGAnrListeAuswerten.RunWorkerCompleted
-        BGAnrListeAuswerten.Dispose()
-        DownloadAnrListe.Dispose()
+    Private Sub BGAnrListeAuswerten_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWAnrListeAuswerten.RunWorkerCompleted
+        BWAnrListeAuswerten.Dispose()
+        BWDownloadAnrListe.Dispose()
     End Sub
 
     Private Sub JournalCSV(ByVal Zeitraum As ImportZeitraum)
@@ -145,7 +145,7 @@ Public Class formImportAnrList
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
 
-        DownloadAnrListe.Dispose()
+        BWDownloadAnrListe.Dispose()
         With Zeitraum
             Startzeit = .StartZeit
             Endzeit = .EndZeit
@@ -264,7 +264,7 @@ Public Class formImportAnrList
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
                             C_AnrMon.AnrMonDISCONNECT(vFBStatus)
                         End If
-                        If anzeigen Then BGAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
+                        If anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1
                     Next
                 End If
@@ -274,8 +274,8 @@ Public Class formImportAnrList
             Else
                 C_hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")
             End If
-            If anzeigen Then BGAnrListeAuswerten.ReportProgress(100)
-            BGAnrListeAuswerten.Dispose()
+            If anzeigen Then BWAnrListeAuswerten.ReportProgress(100)
+            BWAnrListeAuswerten.Dispose()
         End If
 
     End Sub
@@ -289,7 +289,7 @@ Public Class formImportAnrList
         Dim Übergabe As ImportZeitraum
         Abbruch = False
         Me.ButtonStart.Enabled = False
-        Do While DownloadAnrListe.IsBusy
+        Do While BWDownloadAnrListe.IsBusy
             Windows.Forms.Application.DoEvents()
         Loop
         StatusWert = 0
@@ -301,7 +301,7 @@ Public Class formImportAnrList
                 .EndZeit = CDate(Me.EndDatum.Text & " " & Me.EndZeit.Text)
             End With
 
-            With BGAnrListeAuswerten
+            With BWAnrListeAuswerten
                 .WorkerReportsProgress = True
                 .RunWorkerAsync(Übergabe)
             End With
@@ -312,7 +312,7 @@ Public Class formImportAnrList
     End Sub
     Private Sub ButtonHerunterladen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonHerunterladen.Click
         Me.ButtonHerunterladen.Enabled = False
-        With DownloadAnrListe
+        With BWDownloadAnrListe
             .WorkerSupportsCancellation = True
             .RunWorkerAsync()
         End With

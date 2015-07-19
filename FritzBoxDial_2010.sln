@@ -7,8 +7,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Funktionen", "Funktionen\Fu
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PopupFenster", "PopUpFenster\PopupFenster.vbproj", "{D8D8FAB5-B82D-4363-82B4-E6C295074075}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FritzBoxUPnP", "FritzBoxUPnP\FritzBoxUPnP.vbproj", "{FC765CE6-040C-4C64-ACCF-5CD7BF3CF23B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8D8FAB5-B82D-4363-82B4-E6C295074075}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC765CE6-040C-4C64-ACCF-5CD7BF3CF23B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC765CE6-040C-4C64-ACCF-5CD7BF3CF23B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC765CE6-040C-4C64-ACCF-5CD7BF3CF23B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC765CE6-040C-4C64-ACCF-5CD7BF3CF23B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
