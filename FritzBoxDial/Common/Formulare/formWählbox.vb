@@ -451,7 +451,7 @@ Friend Class formWählbox
         If CLIR Then Code = "*31#" & Code
         If Festnetz Then Code = "*11#" & Code
         ' Sagt der FB dass die Nummer jetzt zuende ist
-        Code = Code & "#"
+        If Not Code.StartsWith("#") Then Code = Code & "#"
         'End If
 
         ' Jetzt Code an Box bzw. Phoner senden
