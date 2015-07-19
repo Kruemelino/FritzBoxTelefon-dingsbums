@@ -2589,6 +2589,7 @@ Public Class FritzBox
         End If
 
     End Function
+
     Private Function SendDialRequestToBoxV1(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
         ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
         ' Parameter:  dialCode (string):    zu wählende Nummer
@@ -2614,13 +2615,16 @@ Public Class FritzBox
     End Function
 
     Private Function SendDialRequestToBoxV2(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
-        Dim Response As String             ' Antwort der FritzBox
+        Dim Response As String              ' Antwort der FritzBox
         Dim PortChangeSuccess As Boolean
-        SendDialRequestToBoxV2 = DataProvider.P_FritzBox_Dial_Error2
+        Dim DialCodetoBox As String
+
+        SendDialRequestToBoxV2 = DataProvider.P_FritzBox_Dial_Error1
         ' DialPort setzen, wenn erforderlich
         If FritzBoxQuery("DialPort=telcfg:settings/DialPort").Contains(sDialPort) Then
             PortChangeSuccess = True
         Else
+            C_hf.LogFile("SendDialRequestToBoxV2: Ändere Dialport auf " & sDialPort)
             ' per HTTP-POST Dialport ändern
             Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), FBEncoding)
             PortChangeSuccess = Response.Contains("[""telcfg:settings/DialPort""] = """ & sDialPort & "")
@@ -2628,15 +2632,26 @@ Public Class FritzBox
 
         ' Wählen
         If PortChangeSuccess Then
-            Response = C_hf.httpGET(P_Link_FB_DialV2(P_SID, sDialCode, bHangUp), FBEncoding, FBFehler)
-            If Response.Contains("""dialing"": """ & CStr(IIf(bHangUp, "false", Replace(sDialCode, "#", "", CompareMethod.Text))) & "") Then
+            DialCodetoBox = sDialCode
+
+            ' Tipp von Pikachu: Umwandlung von # und *, da ansonsten die Telefoncodes verschluckt werden. 
+            ' Alternativ ein URLEncode (Uri.EscapeDataString(Link).Replace("%20", "+")), 
+            ' was aber in der Funktion httpGET zu einem Fehler bei dem Erstellen der neuen URI führt.
+            If sDialCode.StartsWith("#") Then
+                DialCodetoBox = Replace(DialCodetoBox, "#", "%23", , , CompareMethod.Text)
+                DialCodetoBox = Replace(DialCodetoBox, "*", "%2A", , , CompareMethod.Text)
+            End If
+
+            ' Senden des Wählkomandos
+            Response = C_hf.httpGET(P_Link_FB_DialV2(P_SID, DialCodetoBox, bHangUp), FBEncoding, FBFehler)
+            ' Die Rückgabe ist der JSON - Wert "dialing"
+            ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789"} ohne das abschließende "#"-Zeichen
+            ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
+            ' Bei der Wahl von Telefoncodes ist es ein {"dialing": false} ohne die umschließenden Anführungszeichen" 
+            If Response.Contains("""dialing"": " & CStr(IIf(bHangUp, "false", """" & Left(sDialCode, Len(sDialCode) - CInt(IIf(sDialCode.EndsWith("#"), 1, 0))) & """"))) Then
                 SendDialRequestToBoxV2 = CStr(IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode)))
-                ' Achtung, nach diesem Aufruf ist der DialPort in der Box wieder auf 50 gesetzt. Dieser Reset ist nicht erklärbar. 
-                ' Daher erfolgt ein erneutes setzen des DialPorts in einem BackgroundWorker
-                ' BWSetDialPort = New BackgroundWorker
-                ' BWSetDialPort.RunWorkerAsync(argument:=sDialPort)
             Else
-                C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response)
+                C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response.Replace(vbLf, ""))
             End If
         End If
     End Function
