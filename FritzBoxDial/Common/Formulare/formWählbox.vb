@@ -97,8 +97,6 @@ Friend Class formWählbox
         bDirektwahl = Direktwahl
         SID = DataProvider.P_Def_SessionID
 
-        Me.FrameDirektWahl.Visible = bDirektwahl
-        Me.FrameDirektWahl.Location = New Drawing.Point(12, 3)
         Me.Focus()
         Me.KeyPreview = Not bDirektwahl
     End Sub
@@ -169,19 +167,54 @@ Friend Class formWählbox
         Me.checkNetz.Checked = C_DP.P_TelFestnetz
         Me.checkCLIR.Checked = C_DP.P_TelCLIR
         Me.checkCBC.Checked = C_DP.P_CBCallByCall
+
+        ' Anordnung der Panel
+        With Me.PDialNormal
+            .Left = 3
+            .Height = Me.CloseButton.Top + Me.CloseButton.Height + 3
+        End With
+
+        With Me.PDialCbC
+            .Left = 3
+            .Top = Me.PDialNormal.Top + Me.PDialNormal.Height + 6
+            .Height = Me.GBoxCbC.Top + Me.GBoxCbC.Height + 3
+        End With
+        Me.listCbCAnbieter.Width = Me.GBoxCbC.Width - 6
+
+        With Me.PDialDirekt
+            .Left = 3
+            .Height = Me.ButtonWeiter.Top + Me.ButtonWeiter.Height + 3
+        End With
+        Me.TelNrBox.Width = Me.GBoxDirektWahl.Width - 6
+
         If checkCBC.Checked Then
-            Me.Height = 515
+            Me.ClientSize = New Drawing.Size(Me.PDialNormal.Width + 6, Me.PDialNormal.Height + Me.PDialCbC.Height + 12)
         Else
-            Me.Height = 283    ' Zuerst schalten wir auf klein, damit die CallbyCall-
+            Me.ClientSize = New Drawing.Size(Me.PDialNormal.Width + 6, Me.PDialNormal.Height + 6)
         End If
 
         ListTel.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         ListTel.ClearSelection()
+
+        ' Direktwahl
         If bDirektwahl Then
+            Me.PDialDirekt.Enabled = True
+            Me.PDialDirekt.Visible = True
+            Me.PDialDirekt.Top = Me.PDialNormal.Top
+            Me.PDialDirekt.Left = Me.PDialNormal.Left
+            Me.PDialDirekt.Height = Me.ContactImage.Height + Me.ContactImage.Top
+            Me.ButtonWeiter.Height = Me.PDialDirekt.Height - Me.ButtonWeiter.Top
+            Me.BVIP.Visible = False
+            Me.PDialDirekt.BringToFront()
             Me.TelNrBox.Focus()
         Else
+            Me.PDialDirekt.Enabled = False
+            Me.PDialDirekt.Visible = False
             Me.Focus()
         End If
+
+
+
         ' der AddHandler darf erst jetzt rein (kein Handles ListTel.SelectionChanged!!) weil wir
         ' sonst beim Laden der Form dieses Event schon auslösen würden!
         AddHandler ListTel.SelectionChanged, AddressOf ListTel_SelectionChanged
@@ -550,9 +583,13 @@ Friend Class formWählbox
 
     Private Sub checkCBC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles checkCBC.CheckedChanged
         If checkCBC.Checked Then
-            If Not Me.listCbCAnbieter.RowCount = 1 Then Me.Height = 515
+            Me.ClientSize = New Drawing.Size(Me.PDialNormal.Width + 6, Me.PDialNormal.Height + Me.PDialCbC.Height + 12)
+            Me.PDialCbC.Enabled = True
+            Me.PDialCbC.Visible = True
         Else
-            Me.Height = 283    ' Zuerst schalten wir auf klein, damit die CallbyCall-
+            Me.ClientSize = New Drawing.Size(Me.PDialNormal.Width + 6, Me.PDialNormal.Height + 6)
+            Me.PDialCbC.Enabled = False
+            Me.PDialCbC.Visible = False
         End If
     End Sub
 #End Region
@@ -613,5 +650,4 @@ Friend Class formWählbox
         End If
     End Sub
 #End Region
-
 End Class
