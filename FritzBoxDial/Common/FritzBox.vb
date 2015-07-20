@@ -2768,12 +2768,18 @@ Public Class FritzBox
             ' ältere Versionen bis 4.82 prüfen
             ' dauert deutlich länger, als die Jason BoxInfo
             Response = C_hf.httpGET(P_Link_FB_SystemStatus, FBEncoding, FBFehler)
-            tmp = Split(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_SystemStatus, FBEncoding, FBFehler), "<body>", "</body>"), "-", , CompareMethod.Text)
+            If Not FBFehler Then
+                tmp = Split(C_hf.StringEntnehmen(Response, "<body>", "</body>"), "-", , CompareMethod.Text)
+                If Not tmp.Count = 1 Then
+                    With tmpFBFW
+                        Response = Replace(C_hf.GruppiereNummer(tmp(7)), " ", ".", , CompareMethod.Text) & "-" & tmp(8)
+                        tmpFBFW.SetFirmware(Response)
+                    End With
+                Else
+                    FBFehler = True
+                End If
 
-            With tmpFBFW
-                Response = Replace(C_hf.GruppiereNummer(tmp(7)), " ", ".", , CompareMethod.Text) & "-" & tmp(8)
-                tmpFBFW.SetFirmware(Response)
-            End With
+            End If
         End If
         ThisFBFirmware = tmpFBFW
         Return FBFehler
