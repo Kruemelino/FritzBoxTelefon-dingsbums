@@ -243,7 +243,6 @@ Public Class formCfg
             Me.CBNote.Checked = .P_CBNote
             ' Fritz!Box Kommunikation
             Me.RBFBComUPnP.Checked = .P_RBFBComUPnP
-            Me.RBFBComUPnP.Checked = Not .P_RBFBComUPnP
         End With
         'TreeView
         With Me.TVOutlookContact
@@ -804,8 +803,8 @@ Public Class formCfg
                             '    rws = F_RWS.RWSDasTelefonbuch(TelNr, vCard)
                         Case RückwärtsSuchmaschine.RWStelSearch
                             rws = F_RWS.RWStelsearch(TelNr, vCard)
-                        Case RückwärtsSuchmaschine.RWSAlle
-                            rws = F_RWS.RWSAlle(TelNr, vCard)
+                            'Case RückwärtsSuchmaschine.RWSAlle
+                            '    rws = F_RWS.RWSAlle(TelNr, vCard)
                     End Select
 
                     C_hf.FBDB_MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
@@ -1513,6 +1512,7 @@ Public Class formCfg
             End If
         End With
 
+        Speichern()
         SetTelNrListe()
         SetFillTelListe()
         DelBTelefonliste()

@@ -183,8 +183,8 @@ Public Class Popup
                 .PositionsKorrektur = New Drawing.Size(C_DP.P_TBAnrMonX, C_DP.P_TBAnrMonY)
                 .EffektMove = C_DP.P_CBAnrMonMove
                 .EffektTransparenz = C_DP.P_CBAnrMonTransp
-                .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, FritzBoxDial.F_AnrMon.eStartPosition)
-                .MoveDirection = CType(C_DP.P_CBoxAnrMonMoveDirection, FritzBoxDial.F_AnrMon.eMoveDirection)
+                .Startpunkt = CType(C_DP.P_CBoxAnrMonStartPosition, F_AnrMon.eStartPosition)
+                .MoveDirection = CType(C_DP.P_CBoxAnrMonMoveDirection, F_AnrMon.eMoveDirection)
                 .AnzAnrMon = AnrMonListe.Count - 1
                 .Popup()
             End With

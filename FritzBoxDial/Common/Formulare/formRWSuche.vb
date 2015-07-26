@@ -74,8 +74,8 @@ Friend Class formRWSuche
                             '    AnrMonRWS = RWSDasTelefonbuch(.TelNr, .vCard)
                         Case RückwärtsSuchmaschine.RWStelSearch
                             AnrMonRWS = RWStelsearch(.TelNr, .vCard)
-                        Case RückwärtsSuchmaschine.RWSAlle
-                            AnrMonRWS = RWSAlle(.TelNr, .vCard)
+                            'Case RückwärtsSuchmaschine.RWSAlle
+                            '    AnrMonRWS = RWSAlle(.TelNr, .vCard)
                     End Select
                     If C_DP.P_CBRWSIndex Then
                         xPathTeile.Item(xPathTeile.Count - 1) = "Eintrag"
@@ -167,8 +167,8 @@ Friend Class formRWSuche
                                 '    rws = RWSDasTelefonbuch(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWStelSearch
                                 rws = RWStelsearch(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWSAlle
-                                rws = RWSAlle(TelNr, vCard)
+                                'Case RückwärtsSuchmaschine.RWSAlle
+                                '    rws = RWSAlle(TelNr, vCard)
                         End Select
                         If rws Then
                             ' wenn erfolgreich, dann Ergebnisse aus vCard in den Kontakt übertragen
@@ -203,8 +203,8 @@ Friend Class formRWSuche
                                 '    rws = RWSDasTelefonbuch(TelNr, vCard)
                             Case RückwärtsSuchmaschine.RWStelSearch
                                 rws = RWStelsearch(TelNr, vCard)
-                            Case RückwärtsSuchmaschine.RWSAlle
-                                rws = RWSAlle(TelNr, vCard)
+                                'Case RückwärtsSuchmaschine.RWSAlle
+                                '    rws = RWSAlle(TelNr, vCard)
                         End Select
                         If rws Then
                             ' wenn erfolgreich, dann Ergebnis (vCard) dem .Body hinzufügen
@@ -467,28 +467,28 @@ Friend Class formRWSuche
 
     End Function
 
-    ''' <summary>
-    ''' Führt die Rückwärtssuche mit allen vorhanden Rückwärtssuchmaschinen durch, so lange bis etwas gefunden wurde.
-    ''' </summary>
-    ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
-    ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
-    ''' <returns>'true' wenn was gefunden wurde</returns>
-    Function RWSAlle(ByRef TelNr As String, ByRef vCard As String) As Boolean
+    ' ''' <summary>
+    ' ''' Führt die Rückwärtssuche mit allen vorhanden Rückwärtssuchmaschinen durch, so lange bis etwas gefunden wurde.
+    ' ''' </summary>
+    ' ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
+    ' ''' <param name="vCard">vCard falls was gefunden wurde als Rückgabewert</param>
+    ' ''' <returns>'true' wenn was gefunden wurde</returns>
+    'Function RWSAlle(ByRef TelNr As String, ByRef vCard As String) As Boolean
 
-        RWSAlle = RWSDasOertiche(TelNr, vCard)
+    '    RWSAlle = RWSDasOertiche(TelNr, vCard)
 
-        'If Not RWSAlle Then
-        '    RWSAlle = RWS11880(TelNr, vCard)
-        'End If
+    '    'If Not RWSAlle Then
+    '    '    RWSAlle = RWS11880(TelNr, vCard)
+    '    'End If
 
-        'If Not RWSAlle Then
-        '    RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
-        'End If
+    '    'If Not RWSAlle Then
+    '    '    RWSAlle = RWSDasTelefonbuch(TelNr, vCard)
+    '    'End If
 
-        If Not RWSAlle Then
-            RWSAlle = RWStelsearch(TelNr, vCard)
-        End If
-    End Function
+    '    If Not RWSAlle Then
+    '        RWSAlle = RWStelsearch(TelNr, vCard)
+    '    End If
+    'End Function
 
 #Region "Helfer"
     Private Sub DirektTel_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles DirektTel.GotFocus

@@ -4,21 +4,22 @@ Friend Class formInit
     Implements IDisposable
 
     ' Klassen
-    Private C_DP As FritzBoxDial.DataProvider
-    Private C_HF As FritzBoxDial.Helfer
-    Private C_Crypt As FritzBoxDial.Rijndael
-    Private C_GUI As FritzBoxDial.GraphicalUserInterface
-    Private C_OlI As FritzBoxDial.OutlookInterface
-    Private C_AnrMon As FritzBoxDial.AnrufMonitor
-    Private C_FBox As FritzBoxDial.FritzBox
-    Private C_KF As FritzBoxDial.KontaktFunktionen
-    Private C_RWS As FritzBoxDial.formRWSuche
-    Private C_WählClient As FritzBoxDial.Wählclient
-    Private C_Phoner As FritzBoxDial.PhonerInterface
-    Private C_Config As FritzBoxDial.formCfg
-    Private F_AnrListImport As FritzBoxDial.formImportAnrList
-    Private C_PopUp As FritzBoxDial.Popup
-    Private C_XML As FritzBoxDial.XML
+    Private C_DP As DataProvider
+    Private C_HF As Helfer
+    Private C_Crypt As Rijndael
+    Private C_GUI As GraphicalUserInterface
+    Private C_OlI As OutlookInterface
+    Private C_AnrMon As AnrufMonitor
+    Private C_FBox As FritzBox
+    Private C_FBoxUPnP As FritzBoxServices
+    Private C_KF As KontaktFunktionen
+    Private C_RWS As formRWSuche
+    Private C_WählClient As Wählclient
+    Private C_Phoner As PhonerInterface
+    Private C_Config As formCfg
+    Private F_AnrListImport As formImportAnrList
+    Private C_PopUp As Popup
+    Private C_XML As XML
     ' Strings
     Private SID As String
     ' Integer
@@ -54,6 +55,9 @@ Friend Class formInit
         C_HF = New Helfer(C_DP, C_Crypt, C_XML)
         C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
+        ' Klasse für den UPnP Zugriff
+        C_FBoxUPnP = New FritzBoxServices()
+
         ' Klasse für die Kontakte generieren
         C_KF = New KontaktFunktionen(C_DP, C_HF)
 
@@ -70,7 +74,7 @@ Friend Class formInit
 
             ' Klasse für die Interaktionen mit der Fritz!Box generieren
             ' Wenn PrüfeAddin mit Dialog (Usereingaben) abgeschlossen wurde, exsistiert C_FBox schon 
-            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
+            If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML, C_FBoxUPnP)
 
             ' Klasse für das GraphicalUserInterface (GUI) generieren
             C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML)
@@ -216,7 +220,7 @@ Friend Class formInit
     End Sub
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
-        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML)
+        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML, Nothing)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, DataProvider.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", DataProvider.P_Def_PassWordDecryptionKey)

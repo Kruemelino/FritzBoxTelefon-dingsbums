@@ -1709,7 +1709,6 @@ Partial Class formCfg
         Me.GroupBox3.TabIndex = 34
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Fritz!Box Kommunikation"
-        Me.GroupBox3.Visible = False
         '
         'RBFBComUPnP
         '

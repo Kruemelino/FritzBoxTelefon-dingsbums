@@ -6,11 +6,11 @@
         <group id="Tab_Journal" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
           <button id="btnDialInsp_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" getEnabled="EnableBtnJournal" onAction="BtnOnAction"/>
           <menu id="mnuRWS_J01" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" getEnabled="EnableBtnJournal" >
-            <button id="btnRWS01_J" tag="RWS11880" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+            <!--<button id="btnRWS01_J" tag="RWS11880" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>-->
             <button id="btnRWS02_J" tag="RWSDasOertliche" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
-            <button id="btnRWS03_J" tag="RWSDasTelefonbuch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+            <!--<button id="btnRWS03_J" tag="RWSDasTelefonbuch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>-->
             <button id="btnRWS04_J" tag="RWSTelSearch" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
-            <button id="btnRWS05_J" tag="RWSAlle" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>
+            <!--<button id="btnRWS05_J" tag="RWSAlle" getLabel="GetItemLabel" getScreentip="GetItemScreenTipp" showImage="false" onAction="BtnOnAction"/>-->
           </menu>
           <button id="btnAddContact_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnAction"/>
         </group>

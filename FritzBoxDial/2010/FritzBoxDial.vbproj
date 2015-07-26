@@ -225,6 +225,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <ProjectReference Include="..\..\FritzBoxUPnP\FritzBoxUPnP.vbproj">
+      <Project>{fc765ce6-040c-4c64-accf-5cd7bf3cf23b}</Project>
+      <Name>FritzBoxUPnP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Funktionen\Funktionen.vbproj">
       <Project>{ccf5ae9e-c12e-4467-9334-504cd7902b78}</Project>
       <Name>Funktionen</Name>
