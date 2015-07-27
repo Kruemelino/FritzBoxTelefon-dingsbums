@@ -4,16 +4,25 @@ Imports System.Net
 Imports System.IO
 
 Friend Structure ArgumentDirection
+#If OVer = 11 Then
+    Private Dummy As String
+#End If
     Friend Shared directionIN As String = "in"
     Friend Shared directionOUT As String = "out"
 End Structure
 
 Friend Structure dataType
+#If OVer = 11 Then
+    Private Dummy As String
+#End If
     Friend Shared dataTypeString As String = "string"
     Friend Shared dataTypeuuid As String = "uuid"
 End Structure
 
 Friend Structure StateVariableSendEvent
+#If OVer = 11 Then
+    Private Dummy As String
+#End If
     Friend Shared SendEventYES As String = "yes"
     Friend Shared SendEventNO As String = "no"
 End Structure

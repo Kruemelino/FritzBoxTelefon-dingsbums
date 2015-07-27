@@ -230,6 +230,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FritzBoxUPnP\FritzBoxUPnPO3.vbproj">
+      <Project>{BA19BA65-1E15-4A4D-8B94-294A6A113433}</Project>
+      <Name>FritzBoxUPnPO3</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Funktionen\FunktionenO3.vbproj">
       <Project>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</Project>
       <Name>FunktionenO3</Name>

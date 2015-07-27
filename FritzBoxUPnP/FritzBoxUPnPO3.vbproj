@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F2E24BA6-FDA0-4CF7-BE9F-A9EE560C57E5}</ProjectGuid>
+    <ProjectGuid>{BA19BA65-1E15-4A4D-8B94-294A6A113433}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>FritzBoxDial</RootNamespace>
-    <AssemblyName>Funktionen</AssemblyName>
+    <AssemblyName>FritzBoxUPnP</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -27,10 +27,11 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Funktionen.xml</DocumentationFile>
+    <DocumentationFile>FritzBoxUPnP.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <DefineConstants>OVer=11</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>None</DebugType>
@@ -38,10 +39,11 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Funktionen.xml</DocumentationFile>
+    <DocumentationFile>FritzBoxUPnP.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <DefineConstants>OVer=11</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -65,8 +67,8 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
+    <Import Include="System.Text" />
     <Import Include="System.Xml.Linq" />
-    <Compile Include="JSON.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -82,20 +84,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="DataProvider.vb" />
-    <Compile Include="Events.vb" />
-    <Compile Include="Helfer.vb" />
-    <Compile Include="Phoner.vb" />
-    <Compile Include="Rijndael.vb" />
-    <Compile Include="UnSaveNativeMethods.vb" />
-    <Compile Include="VCard.vb" />
-    <Compile Include="XML.vb" />
-    <None Include="..\..\FritzBoxDial.pfx">
-      <Link>Ressourcen\pfx\FritzBoxDial.pfx</Link>
-    </None>
-    <Content Include="Ressourcen\Vorwahlen\Liste_Ortsvorwahlen_Ausland.txt" />
-    <Content Include="Ressourcen\Vorwahlen\Liste_Ortsvorwahlen_Deutschland.txt" />
-    <Content Include="Ressourcen\Vorwahlen\Liste_Landesvorwahlen.txt" />
+    <Compile Include="FritzBoxSOAP\FritzBoxSOAP.vb">
+    </Compile>
+    <Compile Include="FritzBoxSOAP\SOAP.vb">
+    </Compile>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
