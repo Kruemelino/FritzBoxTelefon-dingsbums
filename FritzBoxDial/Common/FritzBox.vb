@@ -84,9 +84,7 @@ Public Class FritzBox
 
             tmp = Split(FirmwareMinusRevision, "-", , CompareMethod.Text)
 
-            If tmp.Count = 2 Then
-                Revision = tmp(1)
-            End If
+            If tmp.Count = 2 Then Revision = tmp(1)
 
             tmp = Split(tmp(0), ".", , CompareMethod.Text)
             If tmp.Count = 3 Then
@@ -105,6 +103,10 @@ Public Class FritzBox
             If Not ISLargerOREqual Then
                 ISLargerOREqual = (str2 = tmpFW.str2) And str3 >= tmpFW.str3
             End If
+        End Function
+
+        Friend Function ISEmpty() As Boolean
+            Return str2 = DataProvider.P_Def_LeerString Or str3 = DataProvider.P_Def_LeerString
         End Function
 
     End Structure
@@ -494,6 +496,8 @@ Public Class FritzBox
                                 sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode, True))
                             End With
                             If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
+
+                            If ThisFBFirmware.ISEmpty Then FBFirmware()
 
                             If ThisFBFirmware.ISLargerOREqual("5.29") Then
                                 'If .InnerXml.Contains("Rights") Then
