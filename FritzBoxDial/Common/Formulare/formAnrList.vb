@@ -1,4 +1,5 @@
 ﻿Imports System.Threading
+Imports System.Xml
 
 Public Class formImportAnrList
 #Region "BackgroundWorker"
@@ -20,7 +21,7 @@ Public Class formImportAnrList
 #End Region
 
 #Region "Structure"
-    Private Structure ImportZeitraum
+    Private Structure AnrListData
         Friend StartZeit As Date
         Friend EndZeit As Date
     End Structure
@@ -29,10 +30,11 @@ Public Class formImportAnrList
 #Region "Eigene Variablen"
     Private Abbruch As Boolean
     Private Anzeigen As Boolean
-    Private CSVAnrliste As String
     Private StatusWert As Integer
     Private SID As String
     Private EntryCount As Integer = -1
+    Private CSVAnrListe As String
+    Private XMLAnrListe As XmlDocument
 #End Region
 
     Friend Sub New(ByVal FritzBoxKlasse As FritzBox, _
@@ -52,10 +54,8 @@ Public Class formImportAnrList
     End Sub
 
     Private Sub formJournalimport_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim StartZeit As Date
-        StartZeit = C_DP.P_StatOLClosedZeit
-        Me.StartDatum.Value = StartZeit
-        Me.StartZeit.Value = StartZeit
+        Me.StartDatum.Value = C_DP.P_StatOLClosedZeit
+        Me.StartZeit.Value = C_DP.P_StatOLClosedZeit
         Me.EndDatum.Value = System.DateTime.Now
         Me.EndZeit.Value = System.DateTime.Now
     End Sub
@@ -69,14 +69,18 @@ Public Class formImportAnrList
             .RunWorkerAsync()
         End With
     End Sub
-#Region " Herunterladen"
+#Region "Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWDownloadAnrListe.DoWork
-        e.Result = C_FBox.DownloadAnrListe
+        If C_DP.P_RBFBComUPnP Then
+            e.Result = C_FBox.DownloadAnrListeV2()
+        Else
+            C_FBox.DownloadAnrListeV1()
+        End If
     End Sub
 
     Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWDownloadAnrListe.RunWorkerCompleted
-        Dim Übergabe As ImportZeitraum
-        CSVAnrliste = CStr(e.Result)
+        Dim Übergabe As AnrListData
+
         If Me.InvokeRequired Then
             Dim D As New DelgSetButtonHerunterladen(AddressOf ButtonEnable)
             Invoke(D)
@@ -84,17 +88,25 @@ Public Class formImportAnrList
             Me.ButtonHerunterladen.Enabled = True
         End If
 
+        If C_DP.P_RBFBComUPnP Then
+            CSVAnrListe = DataProvider.P_Def_LeerString
+            XMLAnrListe = CType(e.Result, XmlDocument)
+        Else
+            CSVAnrListe = CStr(e.Result)
+            XMLAnrListe = Nothing
+        End If
+
         With Übergabe
             .StartZeit = C_DP.P_StatOLClosedZeit
             .EndZeit = System.DateTime.Now
         End With
-        If Not anzeigen Then
+
+        If Not Anzeigen Then
             With BWAnrListeAuswerten
                 .WorkerReportsProgress = True
                 .RunWorkerAsync(Übergabe)
             End With
         End If
-
     End Sub
 
     Sub ButtonEnable()
@@ -102,9 +114,13 @@ Public Class formImportAnrList
     End Sub
 #End Region
 
-#Region " Auswertung"
+#Region "Auswertung"
     Private Sub BGAnrListeAuswerten_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrListeAuswerten.DoWork
-        JournalCSV(CType(e.Argument, ImportZeitraum))
+        If C_DP.P_RBFBComUPnP Then
+            JournalXML(CType(e.Argument, AnrListData))
+        Else
+            JournalCSV(CType(e.Argument, AnrListData))
+        End If
     End Sub
 
     Private Sub BGAnrListeAuswerten_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BWAnrListeAuswerten.ProgressChanged
@@ -127,7 +143,7 @@ Public Class formImportAnrList
         BWDownloadAnrListe.Dispose()
     End Sub
 
-    Private Sub JournalCSV(ByVal Zeitraum As ImportZeitraum)
+    Private Sub JournalCSV(ByVal AnrListeData As AnrListData)
 
         Dim aktZeile As String()        ' aktuell bearbeitete Zeile
         Dim AnrTyp As String            ' Typ des Anrufs
@@ -146,7 +162,7 @@ Public Class formImportAnrList
         Dim xPathTeile As New ArrayList
 
         BWDownloadAnrListe.Dispose()
-        With Zeitraum
+        With AnrListeData
             Startzeit = .StartZeit
             Endzeit = .EndZeit
         End With
@@ -155,11 +171,11 @@ Public Class formImportAnrList
 
         C_FBox.FBLogout(SID)
 
-        If InStr(CSVAnrliste, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrliste = DataProvider.P_Def_LeerString Then
+        If InStr(CSVAnrListe, "!DOCTYPE", CompareMethod.Text) = 0 And Not CSVAnrListe = DataProvider.P_Def_LeerString Then
 
-            CSVAnrliste = Strings.Left(CSVAnrliste, Len(CSVAnrliste) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
+            CSVAnrListe = Strings.Left(CSVAnrListe, Len(CSVAnrListe) - 2) 'Datei endet mit zwei chr(10) -> abschneiden
             ' Datei wird zuerst in ein String-Array gelesen und dann ausgewertet.
-            AnrListe = Split(CSVAnrliste, Chr(10), , CompareMethod.Text)
+            AnrListe = Split(CSVAnrListe, Chr(10), , CompareMethod.Text)
             If Not AnrListe.Length = 1 Then
                 j = -1
                 ' Ermittle Startzeile
@@ -264,29 +280,88 @@ Public Class formImportAnrList
                             vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
                             C_AnrMon.AnrMonDISCONNECT(vFBStatus)
                         End If
-                        If anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
+                        If Anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
                         a += 1
                     Next
                 End If
                 ' Registry zurückschreiben
                 C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
-                C_hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
+                C_hf.LogFile("Aus der 'FRITZ!Box_Anrufliste.csv' " & C_hf.IIf(b = 1, "wurde " & b & " Journaleintag", "wurden " & b & " Journaleintäge").ToString & " importiert.")
             Else
                 C_hf.LogFile("Auswertung von 'Anrufliste.csv' wurde abgebrochen.")
             End If
-            If anzeigen Then BWAnrListeAuswerten.ReportProgress(100)
+            If Anzeigen Then BWAnrListeAuswerten.ReportProgress(100)
             BWAnrListeAuswerten.Dispose()
         End If
 
     End Sub
+
+    ''' <summary>
+    ''' Importiert die Journaleinträge aus der XML-Datei
+    ''' <c>
+    '''   <root>
+    '''  	<timestamp>123456</timestamp>
+    '''  	<Call>
+    '''  		<Id>123</Id>
+    '''  		<Type>3</Type>
+    '''  		<Called>0123456789</Called>
+    '''  		<Caller>SIP: 98765</Caller>
+    '''  		<Name>Max Mustermann</Name>
+    '''  		<Numbertype/>
+    '''  		<Device>Mobilteil 1</Device>
+    '''  		<Port>10</Port>
+    '''  		<Date>23.09.11 08:13</Date>
+    '''  		<Duration>0:01</Duration>
+    '''  		<Count/>
+    '''  		<Path/>
+    '''  	</Call>
+    '''  	<Call>
+    '''  		<Id>122</Id>
+    '''  		<Type>1</Type>
+    '''  		<Caller>012456789</Caller>
+    '''  		<Called>56789</Called>
+    '''  		<Name>Max Mustermann</Name>
+    '''  		<Numbertype/>
+    '''  		<Device>Anrufbeantworter 1</Device>
+    '''  		<Port>40</Port>
+    '''  		<Date>22.09.11 14:19</Date>
+    '''  		<Duration>0:01</Duration>
+    '''  		<Count/>
+    '''  		<Path>/download.lua?path=/var/media/ftp/JetFlash-Transcend4GB-01/FRITZ/voicebox/rec/rec.0.000</Path>
+    '''  	</Call>
+    '''  </root>
+    ''' </c>
+    ''' </summary>
+    ''' <param name="AnrListeData"></param>
+    ''' <remarks></remarks>
+    Private Sub JournalXML(ByVal AnrListeData As AnrListData)
+
+        Dim xPathTeile As New ArrayList
+        Dim CallNodeList As XmlNodeList
+        Dim xPath As String
+
+        'Tag 		Type 		Description
+        'Id 		Integer		Unique ID per call.
+        'Type 		Integer 	1 incoming,	2 missed, 3 outgoing, 9 active incoming, 10 rejected incoming, 11 active outgoing
+        'Called 	String 		Number of called party
+        'Caller 	String 		Number of calling party
+        'Name 		String 		Name of called/ called party (outgoing/ incoming call)
+        'Numbertype String 		pots, isdn, sip, umts, ''
+        'Device 	String 		Name of used telephone port.
+        'Port 		String 		Number of telephone port.
+        'Date 		Date-String	31.07.12 12:03
+        'Duration 	String 		hh:mm (minutes rounded up)
+        'Path 		String 		URL path to TAM or FAX file.
+    End Sub
 #End Region
 
-#Region " Button"
+#Region "Button"
     Private Sub ButtonSchließen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonSchließen.Click
         Me.Hide()
     End Sub
+
     Private Sub ButtonStart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonStart.Click
-        Dim Übergabe As ImportZeitraum
+        Dim Übergabe As AnrListData
         Abbruch = False
         Me.ButtonStart.Enabled = False
         Do While BWDownloadAnrListe.IsBusy
@@ -295,18 +370,17 @@ Public Class formImportAnrList
         StatusWert = 0
         SetProgressbar()
         BereichAuswertung.Enabled = True
-        If Not Len(CSVAnrliste) = 0 Then
-            With Übergabe
-                .StartZeit = CDate(Me.StartDatum.Text & " " & Me.StartZeit.Text)
-                .EndZeit = CDate(Me.EndDatum.Text & " " & Me.EndZeit.Text)
-            End With
+        With Übergabe
+            .StartZeit = CDate(Me.StartDatum.Text & " " & Me.StartZeit.Text)
+            .EndZeit = CDate(Me.EndDatum.Text & " " & Me.EndZeit.Text)
+        End With
 
-            With BWAnrListeAuswerten
-                .WorkerReportsProgress = True
-                .RunWorkerAsync(Übergabe)
-            End With
-        End If
+        With BWAnrListeAuswerten
+            .WorkerReportsProgress = True
+            .RunWorkerAsync(Übergabe)
+        End With
     End Sub
+
     Private Sub ButtonCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCancel.Click
         Abbruch = True
     End Sub

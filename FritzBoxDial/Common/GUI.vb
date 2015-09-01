@@ -348,10 +348,10 @@ Imports Microsoft.Office.Core
 
                     GetButtonXMLString(RibbonListStrBuilder, _
                             CStr(ID Mod 10), _
-                            CStr(IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer)), _
+                            C_HF.IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer), _
                             XMLListBaseNode, _
                             DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
-                            CStr(IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString)))
+                            C_HF.IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString))
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
@@ -433,14 +433,14 @@ Imports Microsoft.Office.Core
                 XMLListBaseNode = DataProvider.P_Def_NameListVIP '"VIPList"
         End Select
 
-        Return CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False))
+        Return Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
+
+        'Return C_HF.IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False)
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
         GetPressed = False
-        If C_AnrMon IsNot Nothing Then
-            GetPressed = C_AnrMon.AnrMonAktiv
-        End If
+        If C_AnrMon IsNot Nothing Then GetPressed = C_AnrMon.AnrMonAktiv
     End Function
 
     Public Function UseAnrMon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
@@ -585,7 +585,7 @@ Imports Microsoft.Office.Core
             Case "btnNote"
                 Return DataProvider.P_CMB_Insp_Note_ToolTipp
             Case "tbtnVIP"
-                Return CStr(IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), DataProvider.P_CMB_VIP_Entfernen_ToolTipp, DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp))
+                Return C_HF.IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), DataProvider.P_CMB_VIP_Entfernen_ToolTipp, DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp)
             Case "btnUpload"
                 Return DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
@@ -1073,8 +1073,8 @@ Imports Microsoft.Office.Core
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
                         .Tag = XMLListBaseNode & ";" & CStr(ID Mod 10)
-                        .BeginGroup = CBool(IIf(i = 1, True, False))
-                        .FaceId = CInt(IIf(Verpasst, 964, 0))
+                        .BeginGroup = C_hf.IIf(i = 1, True, False)
+                        .FaceId = C_hf.IIf(Verpasst, 964, 0)
                         i += 1
                     End With
 
@@ -1097,7 +1097,7 @@ Imports Microsoft.Office.Core
                         .Parameter = CStr(ID Mod 10)
                         .Visible = True
                         .Tag = XMLListBaseNode & ";" & CStr(ID)
-                        .BeginGroup = CBool(IIf(i = 1, True, False))
+                        .BeginGroup = C_hf.IIf(i = 1, True, False)
                         i += 1
                     End With
                     With LANodeValues
@@ -1312,7 +1312,9 @@ Imports Microsoft.Office.Core
         If XMLListBaseNode = DataProvider.P_Def_ErrorMinusOne_String Then
             CommandBarPopupEnabled = False
         Else
-            CommandBarPopupEnabled = CBool(IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False))
+            ' Prüfen Abfrage sieht seltsam aus:
+            ' CommandBarPopupEnabled = Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
+            CommandBarPopupEnabled = C_hf.IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False)
         End If
     End Function
 
@@ -1668,11 +1670,11 @@ Imports Microsoft.Office.Core
             If oContact Is Nothing Then
                 Select Case Telefonat(0)
                     Case DataProvider.P_Def_NameListVIP
-                        If C_HF.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionListen") = MsgBoxResult.Yes Then
+                        If C_HF.MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionListen") = MsgBoxResult.Yes Then
                             RemoveVIP(KontaktID, StoreID)
                         End If
                     Case Else
-                        C_HF.FBDB_MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionListen")
+                        C_HF.MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionListen")
                 End Select
             End If
         Else

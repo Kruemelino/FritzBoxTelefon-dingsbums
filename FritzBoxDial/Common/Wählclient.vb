@@ -63,7 +63,7 @@ Public Class Wählclient
                     If aktKontakt IsNot Nothing Then
                         Wählbox(aktKontakt, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, False)
                     Else
-                        C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & aktMail.SenderEmailAddress & " vorhanden!", MsgBoxStyle.Information, "WählboxStart")
+                        C_hf.MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & aktMail.SenderEmailAddress & " vorhanden!", MsgBoxStyle.Information, "WählboxStart")
                     End If
                     C_hf.NAR(aktKontakt)
                 End If
@@ -131,10 +131,10 @@ Public Class Wählclient
 
                 End If
             Else
-                C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+                C_hf.MsgBox("Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
             End If
         Else
-            C_hf.FBDB_MsgBox("Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
+            C_hf.MsgBox("Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!", MsgBoxStyle.Exclamation, "WählboxStart")
         End If
         olAuswahl = Nothing
         Exit Sub
@@ -170,7 +170,7 @@ Public Class Wählclient
                 tmpTelNr = C_hf.nurZiffern(TelNr)
                 If Not (tmpTelNr.StartsWith("0") Or tmpTelNr.StartsWith("11") Or tmpTelNr.StartsWith("#")) Then TelNr = C_DP.P_TBVorwahl & TelNr
 
-                frm_Wählbox.Text = "Anruf: " & CStr(IIf(vCard = DataProvider.P_Def_LeerString Or vCard = DataProvider.P_Def_ErrorMinusTwo_String, TelNr, ReadFNfromVCard(vCard)))
+                frm_Wählbox.Text = "Anruf: " & C_hf.IIf(vCard = DataProvider.P_Def_LeerString Or vCard = DataProvider.P_Def_ErrorMinusTwo_String, TelNr, ReadFNfromVCard(vCard))
                 ' Liste füllen
                 row(0) = CStr(iTelNr) 'Index Zeile im DataGrid
                 row(2) = TelNr
@@ -260,7 +260,7 @@ Public Class Wählclient
                 End If
 
             Else
-                C_hf.FBDB_MsgBox("Der Kontakt hat keine Telefonnummern.", MsgBoxStyle.Exclamation, "Wählbox")
+                C_hf.MsgBox("Der Kontakt hat keine Telefonnummern.", MsgBoxStyle.Exclamation, "Wählbox")
             End If
         End With
         ' Wähldialog anzeigen
@@ -341,7 +341,7 @@ Public Class Wählclient
                 If oContact IsNot Nothing Then
                     Wählbox(oContact, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, False)
                 Else
-                    C_hf.FBDB_MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
+                    C_hf.MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
                 End If
             End If
         End If

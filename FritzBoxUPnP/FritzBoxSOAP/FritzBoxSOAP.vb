@@ -245,13 +245,14 @@ Public Class FritzBoxServices
     Public Sub New()
         ErrorHashTable = New Hashtable
         ServicePointManager.ServerCertificateValidationCallback = New System.Net.Security.RemoteCertificateValidationCallback(AddressOf AcceptCert)
-        ServiceList = SetupServices(GetSOAPXMLFile("http://" & P_FritzBox_IP & ":" & P_Port_FB_SOAP & KnownSOAPFile.tr64desc))
     End Sub
 
     Public Sub SetFritzBoxData(ByVal FritzBoxIP As String, ByVal FritzBoxUserName As String, ByVal FritzBoxPasswort As String)
         P_FritzBox_IP = FritzBoxIP
         P_FritzBox_UserName = FritzBoxUserName
         P_FritzBox_Passwort = FritzBoxPasswort
+
+        ServiceList = SetupServices(GetSOAPXMLFile("http://" & P_FritzBox_IP & ":" & P_Port_FB_SOAP & KnownSOAPFile.tr64desc))
     End Sub
     Private Function AcceptCert(ByVal sender As Object, ByVal cert As System.Security.Cryptography.X509Certificates.X509Certificate, _
                 ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, _

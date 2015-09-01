@@ -108,7 +108,7 @@ Friend Class formWählbox
     Private Sub formWählbox_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         If WählboxBereit Then
             If (e.KeyCode >= Keys.D1 And e.KeyCode <= Keys.D9) Or (e.KeyCode >= Keys.NumPad1 And e.KeyCode <= Keys.NumPad9) Then
-                Dim gedrückteZahl As Integer = e.KeyCode - 48 * CInt(IIf(e.KeyCode > 96, 2, 1))
+                Dim gedrückteZahl As Integer = e.KeyCode - 48 * C_hf.IIf(e.KeyCode > 96, 2, 1)
                 If Not gedrückteZahl > Me.ListTel.RowCount Then
                     Me.ListTel.Rows.Item(gedrückteZahl - 1).Selected = True
                 End If
@@ -127,7 +127,7 @@ Friend Class formWählbox
             .Add("Telefone")
             .Add("*")
             .Add("Telefon")
-            .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1) and not(@Dialport = " & DataProvider.P_Def_MobilDialPort & ")" & CStr(IIf(C_DP.P_RBFBComUPnP, " and not(@Dialport > 0 and @Dialport < 4)", "")) & "]") ' Keine Anrufbeantworter, kein Fax, kein Mobil
+            .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1) and not(@Dialport = " & DataProvider.P_Def_MobilDialPort & ")" & C_hf.IIf(C_DP.P_RBFBComUPnP, " and not(@Dialport > 0 and @Dialport < 4)", "") & "]") ' Keine Anrufbeantworter, kein Fax, kein Mobil
             .Add("TelName")
 
 
@@ -137,7 +137,7 @@ Friend Class formWählbox
                 .Item(.Count - 2) = "[TelName = """ & Nebenstelle & """]"
                 .Item(.Count - 1) = "@Dialport"
                 DialPort = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
-                tmpStr = Nebenstelle & CStr(IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", DataProvider.P_Def_LeerString))
+                tmpStr = Nebenstelle & C_hf.IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", DataProvider.P_Def_LeerString)
                 Me.ComboBoxFon.Items.Add(tmpStr)
                 .Item(.Count - 1) = "@Standard"
                 If CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
@@ -368,7 +368,7 @@ Friend Class formWählbox
                 If C_DP.P_CBCheckMobil Then
                     If Not ListTel.SelectedRows.Count = 0 Then
                         If C_hf.Mobilnummer(CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)) Then
-                            CheckMobil = CBool(IIf(C_hf.FBDB_MsgBox("Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?", MsgBoxStyle.YesNo, "formWählbox.Start") = vbYes, True, False))
+                            CheckMobil = C_hf.IIf(C_hf.MsgBox("Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?", MsgBoxStyle.YesNo, "formWählbox.Start") = vbYes, True, False)
                         End If
                     End If
                 End If
@@ -480,7 +480,7 @@ Friend Class formWählbox
 
         If Me.checkCBC.Checked Then Code = CStr(listCbCAnbieter.SelectedRows.Item(0).Cells(2).Value.ToString) & Code
         ' Amtsholungsziffer voranstellen
-        Code = CStr(IIf(C_DP.P_TBAmt = DataProvider.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt)) & Code
+        Code = C_hf.IIf(C_DP.P_TBAmt = DataProvider.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt) & Code
 
         'If Not UsePhonerOhneFritzBox Then
         If CLIR Then Code = "*31#" & Code

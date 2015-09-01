@@ -962,9 +962,9 @@ Public Class KontaktFunktionen
                     'LogFile("vCard2Contact: " & Err.Number)
                     If Err.Number = 287 Then
                         'LogFile("Fehler-Beschreibung: " & Err.Description & vbNewLine & "Nutzer hat den Zugriff auf den Kontakt nicht gewährt")
-                        C_hf.FBDB_MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
                     Else
-                        C_hf.FBDB_MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
                     End If
                 End Try
             End If
@@ -979,9 +979,9 @@ Public Class KontaktFunktionen
                     'LogFile("vCard2Contact: " & Err.Number)
                     If Err.Number = 287 Then
                         'LogFile("Fehler-Beschreibung: " & Err.Description & vbNewLine & "Nutzer hat den Zugriff auf den Kontakt nicht gewährt")
-                        C_hf.FBDB_MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.MsgBox("Achtung: Sie haben einen Zugriff auf den Kontakt nicht zugelassen. Email-Addressen oder Notizen konnten nicht in den Kontakt eingetragen werden.", MsgBoxStyle.Exclamation, "vCard2Contact")
                     Else
-                        C_hf.FBDB_MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
+                        C_hf.MsgBox("Es is ein Fehler aufgetreten: " & Err.Description, MsgBoxStyle.Exclamation, "vCard2Contact")
                     End If
                 End Try
             End If
@@ -1195,12 +1195,12 @@ Public Class KontaktFunktionen
             Dim CallRow As Word.Row = Nothing
             Dim NoteRow As Word.Row = Nothing
 
-            CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, CBool(IIf((AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL) And Not ContactShown, True, False)))
+            CreateTable(oDoc, oTable, HeaderRow, CallRow, NoteRow, C_hf.IIf((AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING Or AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonCALL) And Not ContactShown, True, False))
             If CallRow IsNot Nothing Then
                 With CallRow
                     Select Case AnrMonTyp
                         Case AnrufMonitor.AnrMonEvent.AnrMonRING, AnrufMonitor.AnrMonEvent.AnrMonCALL
-                            .Cells(1).Range.Text = CStr(IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING, DataProvider.P_Def_AnrMonDirection_Ring, DataProvider.P_Def_AnrMonDirection_Call))
+                            .Cells(1).Range.Text = C_hf.IIf(AnrMonTyp = AnrufMonitor.AnrMonEvent.AnrMonRING, DataProvider.P_Def_AnrMonDirection_Ring, DataProvider.P_Def_AnrMonDirection_Call)
                             .Cells(2).Range.Text = C_OLI.BenutzerInitialien
                             .Cells(3).Range.Text = Telfonat.TelNr
                             .Cells(4).Range.Text = CStr(Telfonat.Zeit)

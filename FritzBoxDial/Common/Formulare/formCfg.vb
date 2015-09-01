@@ -75,7 +75,7 @@ Public Class formCfg
     End Sub
 
     Private Sub UserForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Me.TBAnrMonMoveGeschwindigkeit.BackColor = CType(IIf(OutlookSecurity.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight), Color)
+        Me.TBAnrMonMoveGeschwindigkeit.BackColor = C_hf.IIf(OutlookSecurity.IsThemeActive, SystemColors.ControlLightLight, SystemColors.ControlLight)
         Me.BAnrMonTest.Enabled = C_AnrMon IsNot Nothing
         Me.BTelefonliste.Enabled = C_FBox IsNot Nothing
         Me.FBDB_MP.SelectedIndex = 0
@@ -103,7 +103,7 @@ Public Class formCfg
             ' Einstellungen für das Wählmakro laden
             Me.TBLandesVW.Text = .P_TBLandesVW
 
-            Me.TBAmt.Text = CStr(IIf(.P_TBAmt = DataProvider.P_Def_ErrorMinusOne_String, "", .P_TBAmt))
+            Me.TBAmt.Text = C_hf.IIf(.P_TBAmt = DataProvider.P_Def_ErrorMinusOne_String, "", .P_TBAmt)
             Me.TBFBAdr.Text = .P_TBFBAdr
 
             Me.CBForceFBAddr.Checked = .P_CBForceFBAddr
@@ -203,8 +203,8 @@ Public Class formCfg
             Else
                 Me.CBPhoner.Checked = False
             End If
-            Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", CStr(IIf(PhonerVerfuegbar, "", " nicht")), , , CompareMethod.Text)
-            'Me.CBPhonerKeineFB.Checked = CBool(IIf(.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
+            Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", C_hf.IIf(PhonerVerfuegbar, "", " nicht"), , , CompareMethod.Text)
+            'Me.CBPhonerKeineFB.Checked = C_hf.IIf(.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
             'If Not Me.CBPhonerKeineFB.Checked Then
 
             Dim xPathTeile As New ArrayList
@@ -235,8 +235,8 @@ Public Class formCfg
             If Not Len(.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
 
             Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
-            Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
-            Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
+            Me.PanelPhonerAktiv.BackColor = C_hf.IIf(PhonerInstalliert, Color.LightGreen, Color.Red)
+            Me.LabelPhoner.Text = "Phoner ist " & C_hf.IIf(PhonerInstalliert, "", "nicht ") & "aktiv."
             Me.PanelPhoner.Enabled = PhonerInstalliert
             .P_PhonerVerfügbar = PhonerInstalliert
             ' Notiz
@@ -437,7 +437,7 @@ Public Class formCfg
             End If
 
             .P_TBLandesVW = Me.TBLandesVW.Text
-            .P_TBAmt = CStr(IIf(Me.TBAmt.Text = DataProvider.P_Def_LeerString, DataProvider.P_Def_ErrorMinusOne_String, Me.TBAmt.Text))
+            .P_TBAmt = C_hf.IIf(Me.TBAmt.Text = DataProvider.P_Def_LeerString, DataProvider.P_Def_ErrorMinusOne_String, Me.TBAmt.Text)
             .P_TBFBAdr = Me.TBFBAdr.Text
             .P_TBVorwahl = Me.TBVorwahl.Text
             .P_TBAnrMonX = CInt(Me.TBAnrMonX.Text)
@@ -540,7 +540,7 @@ Public Class formCfg
             .P_PhonerTelNameIndex = PhonerTelNameIndex
             'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
             If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
-                If C_hf.FBDB_MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
+                If C_hf.MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
                     Speichern = False
                 End If
             End If
@@ -692,7 +692,7 @@ Public Class formCfg
             Case "BProbleme"
                 Dim T As New Thread(AddressOf NeueMail)
 
-                If C_hf.FBDB_MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
+                If C_hf.MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
                                                 "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
                     T.Start()
                     Me.Close()
@@ -704,7 +704,7 @@ Public Class formCfg
                 AddLine("Start")
                 If Me.CBTelefonDatei.Checked Then
                     If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
-                        If C_hf.FBDB_MsgBox("Sind Sie sicher was sie da tun? Das Einlesen einer fehlerhaften oder falschen Datei wird sehr unerfreulich enden.", _
+                        If C_hf.MsgBox("Sind Sie sicher was sie da tun? Das Einlesen einer fehlerhaften oder falschen Datei wird sehr unerfreulich enden.", _
                                                         MsgBoxStyle.YesNo, "Telefondatei testen") = vbYes Then
                             Me.TBTelefonDatei.Enabled = False
                         End If
@@ -807,11 +807,11 @@ Public Class formCfg
                             '    rws = F_RWS.RWSAlle(TelNr, vCard)
                     End Select
 
-                    C_hf.FBDB_MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
-                                    CStr(IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis.")), MsgBoxStyle.Information, _
+                    C_hf.MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
+                                    C_hf.IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis."), MsgBoxStyle.Information, _
                                     "Test der Rückwärtssuche " & Me.ComboBoxRWS.SelectedItem.ToString())
                 Else
-                    C_hf.FBDB_MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
+                    C_hf.MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
                 End If
             Case "BTestLogin"
                 Dim SID As String
@@ -1038,7 +1038,7 @@ Public Class formCfg
         pos(1) = CStr(InStr(Me.TBTelNrMaske.Text, "%O", CompareMethod.Text))
         pos(2) = CStr(InStr(Me.TBTelNrMaske.Text, "%N", CompareMethod.Text))
         If C_hf.IsOneOf("0", pos) Then
-            C_hf.FBDB_MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & _
+            C_hf.MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & _
                         "Prüfen Sie, ob folgende Zeichen in der Maske Enthalten sind: ""%L"", ""%V"" und ""%N"" (""%D"" kann wegelassen werden)!" & vbNewLine & _
                         "Beispiel: ""%L (%O) %N - %D""", MsgBoxStyle.Information, "Einstellungen")
             Return False
@@ -1063,7 +1063,7 @@ Public Class formCfg
             FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
             FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
             If Len(FBPasswort) = 0 Then
-                If C_hf.FBDB_MsgBox("Abbrechen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
+                If C_hf.MsgBox("Abbrechen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
                     Exit Sub
                 End If
             End If
@@ -1562,8 +1562,8 @@ Public Class formCfg
 
     Private Sub ButtonPhoner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BPhoner.Click
         Dim PhonerInstalliert As Boolean = C_Phoner.PhonerReady()
-        Me.PanelPhonerAktiv.BackColor = CType(IIf(PhonerInstalliert, Color.LightGreen, Color.Red), Color)
-        Me.LabelPhoner.Text = "Phoner ist " & CStr(IIf(PhonerInstalliert, "", "nicht ")) & "aktiv."
+        Me.PanelPhonerAktiv.BackColor = C_hf.IIf(PhonerInstalliert, Color.LightGreen, Color.Red)
+        Me.LabelPhoner.Text = "Phoner ist " & C_hf.IIf(PhonerInstalliert, "", "nicht ") & "aktiv."
         Me.PanelPhoner.Enabled = PhonerInstalliert
         C_DP.P_PhonerVerfügbar = PhonerInstalliert
     End Sub

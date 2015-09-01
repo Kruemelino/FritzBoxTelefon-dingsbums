@@ -83,9 +83,9 @@ Public Class Popup
                     .Enabled = Not Telefonat.TelNr = DataProvider.P_Def_StringUnknown ' in dem Fall sinnlos
                 End With
                 With .Items("ToolStripMenuItemKontaktöffnen")
-                    .Text = CStr(IIf(Telefonat.TelNr = DataProvider.P_Def_StringUnknown, _
+                    .Text = C_hf.IIf(Telefonat.TelNr = DataProvider.P_Def_StringUnknown, _
                                 DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen, _
-                                DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen))
+                                DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen)
                     .Image = Global.FritzBoxDial.My.Resources.IMG_Kontakt_Aktiv
                 End With
             End With
@@ -93,7 +93,7 @@ Public Class Popup
             ' Uhrzeit des Telefonates eintragen
             .Uhrzeit = Telefonat.Zeit.ToString
             ' Telefonnamen eintragen
-            .TelName = Telefonat.TelName & CStr(IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", DataProvider.P_Def_LeerString))
+            .TelName = Telefonat.TelName & C_hf.IIf(C_DP.P_CBShowMSN, " (" & Telefonat.MSN & ")", DataProvider.P_Def_LeerString)
 
             ' Kontakt einblenden wenn in Outlook gefunden
             With Telefonat
@@ -270,7 +270,7 @@ Public Class Popup
                     Dim thrd As New Threading.Thread(AddressOf ClipboardSetText)
                     thrd.SetApartmentState(Threading.ApartmentState.STA)
                     With tmpPopUpAnrMon
-                        thrd.Start(.AnrName & CStr(IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")")))
+                        thrd.Start(.AnrName & C_hf.IIf(Len(.TelNr) = 0, "", " (" & .TelNr & ")"))
                     End With
             End Select
 
@@ -302,7 +302,7 @@ Public Class Popup
                 Try
                     .olContact.Display()
                 Catch ex As System.Runtime.InteropServices.COMException
-                    C_hf.FBDB_MsgBox(DataProvider.P_Fehler_Kontakt_Anzeigen(ex.Message), MsgBoxStyle.Critical, "AnruferAnzeigen")
+                    C_hf.MsgBox(DataProvider.P_Fehler_Kontakt_Anzeigen(ex.Message), MsgBoxStyle.Critical, "AnruferAnzeigen")
                 End Try
             Else
                 C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False).Display()
@@ -362,8 +362,8 @@ Public Class Popup
             End If
         End With
 
-        Richtung = "Anruf " & CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, "von", "zu")) & ":"
-        AnrName = CStr(IIf(Telefonat.Anrufer = DataProvider.P_Def_LeerString, Telefonat.TelNr, Telefonat.Anrufer))
+        Richtung = "Anruf " & C_hf.IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, "von", "zu") & ":"
+        AnrName = C_hf.IIf(Telefonat.Anrufer = DataProvider.P_Def_LeerString, Telefonat.TelNr, Telefonat.Anrufer)
         StartZeit = String.Format("{0:00}:{1:00}:{2:00}", System.DateTime.Now.Hour, System.DateTime.Now.Minute, System.DateTime.Now.Second)
         Abbruch = False
 

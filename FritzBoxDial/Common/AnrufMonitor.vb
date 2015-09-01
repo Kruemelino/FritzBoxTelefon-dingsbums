@@ -159,7 +159,7 @@ Friend Class AnrufMonitor
                 Case Sockets.SocketError.ConnectionRefused
                     If FBAnrMonPort = DataProvider.P_DefaultFBAnrMonPort Then
                         'Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte.
-                        If C_hf.FBDB_MsgBox(DataProvider.P_AnrMon_MsgBox_AnrMonStart1, MsgBoxStyle.YesNo, DataProvider.P_AnrMon_MsgBox_AnrMonStart2) = MsgBoxResult.Yes Then
+                        If C_hf.MsgBox(DataProvider.P_AnrMon_MsgBox_AnrMonStart1, MsgBoxStyle.YesNo, DataProvider.P_AnrMon_MsgBox_AnrMonStart2) = MsgBoxResult.Yes Then
                             BWActivateCallmonitor = New BackgroundWorker
                             With BWActivateCallmonitor
                                 .RunWorkerAsync()
@@ -425,7 +425,7 @@ Friend Class AnrufMonitor
                 .TelName = C_hf.TelefonName(.MSN)
                 .ID = ID
                 .TelNr = FBStatus(3)
-                .Online = CBool(IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False))
+                .Online = C_hf.IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False)
                 .RingTime = DataProvider.P_Def_ErrorMinusOne_Integer
                 ' Phoner
                 If AnrMonPhoner Then
@@ -572,7 +572,7 @@ Friend Class AnrufMonitor
                 .NSN = CInt(FBStatus(3))
                 .MSN = MSN
                 .Typ = C_Telefonat.AnrufRichtung.Ausgehend
-                .Online = CBool(IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False))
+                .Online = C_hf.IIf(.ID < DataProvider.P_Def_AnrListIDOffset, True, False)
                 .RingTime = DataProvider.P_Def_ErrorMinusOne_Integer
                 ' Problem DECT/IP-Telefone: keine MSN  über Anrufmonitor eingegangen. Aus Datei ermitteln.
                 If .MSN = DataProvider.P_Def_LeerString Then
@@ -825,7 +825,7 @@ Friend Class AnrufMonitor
                 End If
 
                 If C_DP.P_CBJournal Then
-                    .Dauer = CInt(IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3)))) \ 60
+                    .Dauer = C_hf.IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3))) \ 60
                     .Body = DataProvider.P_AnrMon_AnrMonDISCONNECT_JournalBody(.TelNr, .Angenommen)
                     If Not .vCard = DataProvider.P_Def_LeerString And Not .vCard = DataProvider.P_Def_ErrorMinusTwo_String Then
                         .Firma = ReadFromVCard(.vCard, "ORG", "")
@@ -833,7 +833,7 @@ Friend Class AnrufMonitor
                     Else
                         If .olContact IsNot Nothing Then
                             If .olContact.FullName = DataProvider.P_Def_LeerString Then
-                                .Anrufer = CStr(IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma))
+                                .Anrufer = C_hf.IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma)
                             Else
                                 .Anrufer = .olContact.FullName
                             End If
@@ -868,14 +868,14 @@ Friend Class AnrufMonitor
 
                         If C_XML.GetProperXPath(C_DP.XMLDoc, xPathTeile) Then
                             ' xPathTeile hat sich durch GetProperXPath geändert.
-                            xPathTeile.Add(CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, C_Telefonat.AnrufRichtung.Eingehend.ToString, C_Telefonat.AnrufRichtung.Ausgehend.ToString)))
+                            xPathTeile.Add(C_hf.IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, C_Telefonat.AnrufRichtung.Eingehend.ToString, C_Telefonat.AnrufRichtung.Ausgehend.ToString))
 
                             With C_DP
                                 C_XML.Write(.XMLDoc, xPathTeile, CStr(CInt(C_XML.Read(.XMLDoc, xPathTeile, CStr(0))) + Telefonat.Dauer * 60))
                             End With
                         End If
 
-                        CallDirection = CStr(IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, DataProvider.P_Def_Journal_Text_Eingehend, DataProvider.P_Def_Journal_Text_Ausgehend))
+                        CallDirection = C_hf.IIf(Telefonat.Typ = C_Telefonat.AnrufRichtung.Eingehend, DataProvider.P_Def_Journal_Text_Eingehend, DataProvider.P_Def_Journal_Text_Ausgehend)
                     Else
                         If .Typ = C_Telefonat.AnrufRichtung.Eingehend Then
                             C_DP.P_StatVerpasst += 1
@@ -887,7 +887,7 @@ Friend Class AnrufMonitor
                     End If
 
                     .Categories = .TelName & "; " & String.Join("; ", DataProvider.P_AnrMon_Journal_Def_Categories.ToArray)
-                    .Subject = CallDirection & CStr(IIf(.Anrufer = DataProvider.P_Def_LeerString, .TelNr, .Anrufer & " (" & .TelNr & ")")) & CStr(IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, DataProvider.P_Def_LeerString, " (" & .TelName & ")"))
+                    .Subject = CallDirection & C_hf.IIf(.Anrufer = DataProvider.P_Def_LeerString, .TelNr, .Anrufer & " (" & .TelNr & ")") & C_hf.IIf(Split(.TelName, ";", , CompareMethod.Text).Length = 1, DataProvider.P_Def_LeerString, " (" & .TelName & ")")
 
                     C_OlI.ErstelleJournalEintrag(Telefonat)
                     C_DP.P_StatJournal += 1
@@ -959,10 +959,9 @@ Friend Class AnrufMonitor
                     tmpDate = System.DateTime.Now
                 End Try
 
-                Dim DauerAnruf As Integer = CInt(IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3)))) \ 60
+                Dim DauerAnruf As Integer = C_hf.IIf(CInt(FBStatus(3)) <= 30, 31, CInt(FBStatus(3))) \ 60
                 tmpDate = tmpDate.AddSeconds(-1 * (tmpDate.Second + DauerAnruf + 70))
                 If tmpDate < ZeitOutlookBeendet Then C_DP.P_StatOLClosedZeit = tmpDate
-                ' Dim formjournalimort As New formJournalimport(C_FB, Me, C_hf, C_DP, C_XML, False)
             End If
         End If
 

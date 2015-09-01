@@ -20,7 +20,7 @@ Public Class Helfer
         C_Crypt = CryptKlasse
     End Sub
 
-#Region " String Behandlung"
+#Region "String Behandlung"
     ''' <summary>
     ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
     ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
@@ -30,7 +30,6 @@ Public Class Helfer
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <c>Textes</c> aus begonnen werden soll.</param>
     ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-
     Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, Optional ByVal Reverse As Boolean = False) As String
         Dim pos(1) As Integer
 
@@ -59,7 +58,6 @@ Public Class Helfer
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="StartPosition">Startposition, bei der mit der Suche nach den Zeichenfolgen vor und nach dem Sub-String begonnen werden soll.</param>
     ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-
     Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef StartPosition As Integer) As String
         Dim pos(1) As Integer
 
@@ -81,7 +79,6 @@ Public Class Helfer
     ''' <param name="A">Zu prüfender String.</param>
     ''' <param name="B">Array in dem zu prüfen ist.</param>
     ''' <returns><c>True</c>, wenn enthalten, <c>False</c>, wenn nicht.</returns>
-
     Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
         Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
     End Function
@@ -92,16 +89,12 @@ Public Class Helfer
             Try
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(o)
             Catch ex As Exception
-                FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "NAR")
+                MsgBox(ex.Message, MsgBoxStyle.Critical, "NAR")
             Finally
                 o = Nothing
             End Try
         End If
     End Sub
-
-    Public Function GetUnixTime() As Integer
-        Return CInt((DateTime.UtcNow - New DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds)
-    End Function
 
     ''' <summary>
     ''' Führt einen Ping zur Gegenstelle aus.
@@ -228,12 +221,12 @@ Public Class Helfer
         End Select
     End Function
 
-    Public Function FBDB_MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
+    Public Function MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
             Meldung = "Die Funktion " & Aufruf & " meldet folgenden Fehler:" & vbCrLf & vbCrLf & Meldung
             LogFile(Meldung)
         End If
-        Return MsgBox(Meldung, Style, DataProvider.P_Def_Addin_LangName) '"Fritz!Box Telefon-Dingsbums"
+        Return Microsoft.VisualBasic.MsgBox(Meldung, Style, DataProvider.P_Def_Addin_LangName) '"Fritz!Box Telefon-Dingsbums"
     End Function
 
     ''' <summary>
@@ -274,7 +267,98 @@ Public Class Helfer
 
     End Sub ' (Keyänderung) 
 
-#Region " Telefonnummern formatieren"
+
+    Public Function GetUNIXTimeStamp(ByVal dteDate As Date) As Long
+        'If dteDate.IsDaylightSavingTime Then dteDate = DateAdd(DateInterval.Hour, -1, dteDate)
+        Return DateDiff(DateInterval.Second, #1/1/1970#, dteDate)
+    End Function
+
+    'Public Function GetUnixTimestamp(ByVal currDate As DateTime) As Double
+    '    'create Timespan by subtracting the value provided from the Unix Epoch
+    '    Dim span As TimeSpan = (currDate - New DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime())
+    '    'return the total seconds (which is a UNIX timestamp)
+    '    Return span.TotalSeconds
+    'End Function
+
+    'Public Function GetTimestamp(ByVal FromDateTime As DateTime) As Integer
+    '    Dim Startdate As DateTime = #1/1/1970#
+    '    Dim Spanne As TimeSpan
+
+    '    Spanne = FromDateTime.Subtract(Startdate)
+    '    Return CType(Math.Abs(Spanne.TotalSeconds()), Integer)
+    'End Function
+
+
+
+#Region "Überladene .NET Funktionen"
+#Region "IIF"
+    ''' <summary>
+    ''' Überladene .NET-Funktion: Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Boolean zurück.
+    ''' </summary>
+    ''' <param name="Expression">Erforderlich. Boolean-Datentyp. Der Ausdruck, der ausgewertet werden soll.</param>
+    ''' <param name="TruePart">Erforderlich. Boolean. Wird zurückgegeben, wenn Expression <c>True</c> ergibt.</param>
+    ''' <param name="FalsePart">Erforderlich. Boolean. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
+    ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
+    ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Boolean, ByVal FalsePart As Boolean) As Boolean
+        If Expression Then
+            Return TruePart
+        Else
+            Return FalsePart
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Überladene .NET-Funktion: Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Integer zurück. 
+    ''' </summary>
+    ''' <param name="Expression">Erforderlich. Boolean-Datentyp. Der Ausdruck, der ausgewertet werden soll.</param>
+    ''' <param name="TruePart">Erforderlich. Integer. Wird zurückgegeben, wenn Expression <c>True</c> ergibt.</param>
+    ''' <param name="FalsePart">Erforderlich. Integer. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
+    ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
+    ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Integer, ByVal FalsePart As Integer) As Integer
+        If Expression Then
+            Return TruePart
+        Else
+            Return FalsePart
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Überladene .NET-Funktion: Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Strings zurück. 
+    ''' </summary>
+    ''' <param name="Expression">Erforderlich. Boolean-Datentyp. Der Ausdruck, der ausgewertet werden soll.</param>
+    ''' <param name="TruePart">Erforderlich. String. Wird zurückgegeben, wenn Expression <c>True</c> ergibt.</param>
+    ''' <param name="FalsePart">Erforderlich. String. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
+    ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
+    ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As String, ByVal FalsePart As String) As String
+        If Expression Then
+            Return TruePart
+        Else
+            Return FalsePart
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Überladene .NET-Funktion: Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei System.Drawing.Color zurück.  
+    ''' </summary>
+    ''' <param name="Expression">Erforderlich. Boolean-Datentyp. Der Ausdruck, der ausgewertet werden soll.</param>
+    ''' <param name="TruePart">Erforderlich. System.Drawing.Color. Wird zurückgegeben, wenn Expression <c>True</c> ergibt.</param>
+    ''' <param name="FalsePart">Erforderlich. System.Drawing.Color. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
+    ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
+    ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As System.Drawing.Color, ByVal FalsePart As System.Drawing.Color) As System.Drawing.Color
+        If Expression Then
+            Return TruePart
+        Else
+            Return FalsePart
+        End If
+    End Function
+#End Region
+#End Region
+
+#Region "Telefonnummern formatieren"
     ''' <summary>
     ''' Formatiert die Telefonnummern nach gängigen Regeln
     ''' </summary>
@@ -365,7 +449,7 @@ Public Class Helfer
             pos1 = InStr(Maske, "%L", CompareMethod.Text) + 2
             pos2 = InStr(Maske, "%N", CompareMethod.Text)
             CutOut = Mid(Maske, pos1, pos2 - pos1)
-            Maske = Replace(Maske, CutOut, CStr(IIf(Left(CutOut, 1) = " ", " ", DataProvider.P_Def_LeerString)), , 1, CompareMethod.Text)
+            Maske = Replace(Maske, CutOut, CStr(IIf(CutOut.StartsWith(" "), " ", DataProvider.P_Def_LeerString)), , 1, CompareMethod.Text)
         End If
 
         If C_DP.P_CBintl Then
@@ -380,7 +464,7 @@ Public Class Helfer
             End If
         Else
             If Not OrtsVW = DataProvider.P_Def_LeerString Then
-                OrtsVW = CStr(IIf(Left(OrtsVW, 1) = "0", OrtsVW, "0" & OrtsVW))
+                OrtsVW = CStr(IIf(OrtsVW.StartsWith("0"), OrtsVW, "0" & OrtsVW))
             End If
             If LandesVW = C_DP.P_TBLandesVW Then
                 LandesVW = DataProvider.P_Def_LeerString
@@ -437,7 +521,6 @@ Public Class Helfer
         Next
     End Function
 
-
     ''' <summary>
     ''' Entfernt alle Vorahlen aus den eigenen Nummern. D.h. diese Funktion ist nur gedacht um konfigurierten Nummern aus der Fritz!Box zu verarbeiten.
     ''' </summary>
@@ -486,7 +569,6 @@ Public Class Helfer
     ''' TelNr bereinigen
     ''' </summary>
     ''' <param name="TelNr"></param>
-
     Private Sub TelNrBereinigen(ByRef TelNr As String)
 
         'TelNr = Replace(TelNr, "(0)", " ", , , CompareMethod.Text)
@@ -592,7 +674,7 @@ Public Class Helfer
                             If TelNr.StartsWith("0") Then OrtsVW = "0" & OrtsVW
                     End Select
                 End If
-                TelNr = Mid(TelNr, Len(OrtsVW) + 1) 'CInt(IIf(Left(TelNr, 1) = "0", 2, 1))
+                TelNr = Mid(TelNr, Len(OrtsVW) + 1) 'C_hf.IIf(Left(TelNr, 1) = "0", 2, 1))
             Else
                 ' Ortsvorwahl in Klammern
                 OrtsVW = nurZiffern(Mid(TelNr, pos1, pos2 - pos1))
@@ -753,11 +835,9 @@ Public Class Helfer
                 VorwahlListe = DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
-
-
 #End Region
 
-#Region " HTTPTransfer"
+#Region "HTTPTransfer"
     Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
 
@@ -788,6 +868,7 @@ Public Class Helfer
                         .Proxy = Nothing
                         .KeepAlive = False
                         .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                        .Timeout = IIf(C_DP.P_CBForceFBAddr, 5000, 100000)
                         Try
                             With New IO.StreamReader(.GetResponse().GetResponseStream(), Encoding)
                                 FBError = False
@@ -829,7 +910,6 @@ Public Class Helfer
                     .Encoding = ZeichenCodierung
                     .Proxy = Nothing
                     .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-
                     With .Headers
                         .Add(HttpRequestHeader.ContentLength, Daten.Length.ToString)
                         .Add(HttpRequestHeader.UserAgent, DataProvider.P_Def_Header_UserAgent)
@@ -855,7 +935,7 @@ Public Class Helfer
                     .Accept = DataProvider.P_Def_Header_Accept
                     .UserAgent = DataProvider.P_Def_Header_UserAgent
                     .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-
+                    .Timeout = IIf(C_DP.P_CBForceFBAddr, 5000, 100000)
                     Try
 
                         With New IO.StreamWriter(.GetRequestStream)
@@ -882,7 +962,12 @@ Public Class Helfer
     End Function
 #End Region
 
-#Region " Timer"
+#Region "Timer"
+    ''' <summary>
+    ''' Erstellt einen Timer mit dem übergeben Intervall.
+    ''' </summary>
+    ''' <param name="Interval">Das Intervall des Timers.</param>
+    ''' <returns>Den gerade erstellten Timer.</returns>
     Public Function SetTimer(ByRef Interval As Double) As System.Timers.Timer
         Dim aTimer As New System.Timers.Timer
 
@@ -895,6 +980,11 @@ Public Class Helfer
 
     End Function
 
+    ''' <summary>
+    ''' Löscht den Timer und gibt dessen Ressoucen frei.
+    ''' </summary>
+    ''' <param name="Timer">Der zu löschende Timer.</param>
+    ''' <returns>Einen Timer, welcher <c>Nothing</c> ist.</returns>
     Public Function KillTimer(ByVal Timer As System.Timers.Timer) As System.Timers.Timer
         If Timer IsNot Nothing Then
             With Timer
@@ -913,15 +1003,6 @@ Public Class Helfer
         Thread.Sleep(Dauer)
     End Sub
 #End Region
-
-    Public Overloads Function ByteArrayToString(ByVal ByteArray As Byte()) As String
-        'Dim hex As StringBuilder = New StringBuilder(ByteArray.Length * 2)
-        'For Each b As Byte In ByteArray
-        '    hex.AppendFormat("{0:x2}", b)
-        'Next
-        'Return hex.ToString()
-        Return System.Text.Encoding.UTF8.GetString(ByteArray)
-    End Function
 
     Public Function GetTimeInterval(ByVal nSeks As Double) As String
         'http://www.vbarchiv.net/faq/date_sectotime.php
