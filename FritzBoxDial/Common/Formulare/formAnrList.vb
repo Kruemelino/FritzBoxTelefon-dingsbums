@@ -338,7 +338,59 @@ Public Class formImportAnrList
 
         Dim xPathTeile As New ArrayList
         Dim CallNodeList As XmlNodeList
+        Dim CallNode As XmlNode
         Dim xPath As String
+        Dim ImportXML As New XmlDocument
+        Dim AnrTyp As String            ' Typ des Anrufs
+        Dim AnrZeit As String           ' Zeitpunkt des Anrufs
+        Dim AnrTelNr As String          ' Name und TelNr des Telefonpartners
+        Dim AnrID As String             ' ID des Anrufes
+        Dim Nebenstelle As String       ' verwendete Nebenstelle
+        Dim MSN As String               ' verwendete MSN
+        Dim NSN As Integer              ' verwendete Nebenstellennummer
+        Dim Dauer As String             ' Dauer des Telefonats
+        Dim a, b As Integer          ' Zählvariable
+
+        ImportXML.InnerXml = "<root/>"
+
+
+        xPathTeile.Add("Call")
+        xPath = C_XML.CreateXPath(XMLAnrListe, xPathTeile)
+        CallNodeList = XMLAnrListe.SelectNodes(xPath)
+
+        For Each CallNodeListItem As XmlNode In CallNodeList
+            If CallNodeListItem.NodeType = XmlNodeType.Element Then
+                With CType(CallNodeListItem, XmlElement)
+                    If CDate(.Item("Date").InnerText) > AnrListeData.StartZeit And CDate(.Item("Date").InnerText) < AnrListeData.EndZeit Then
+                        ImportXML.Item("root").AppendChild(ImportXML.ImportNode(CallNodeListItem, True))
+                    End If
+                End With
+            End If
+        Next
+        XMLAnrListe = Nothing
+
+        xPath = C_XML.CreateXPath(ImportXML, xPathTeile)
+        CallNodeList = ImportXML.SelectNodes(xPath)
+
+        EntryCount = CallNodeList.Count
+        a = 1
+        For Each CallNodeListItem As XmlNode In CallNodeList
+            If Abbruch Then Exit For
+            If CallNodeListItem.NodeType = XmlNodeType.Element Then
+                With CType(CallNodeListItem, XmlElement)
+                    AnrTyp = .Item("Type").InnerText
+                    AnrZeit = .Item("Date").InnerText
+                    AnrTelNr = .Item("Called").InnerText
+                    Nebenstelle = .Item("Port").InnerText
+                    MSN = .Item("Caller").InnerText
+                    Dauer = .Item("Duration").InnerText
+
+                End With
+            End If
+
+            If Anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
+            a += 1
+        Next
 
         'Tag 		Type 		Description
         'Id 		Integer		Unique ID per call.
