@@ -34,7 +34,7 @@ Public Class formImportAnrList
     Private SID As String
     Private EntryCount As Integer = -1
     Private CSVAnrListe As String
-    Private XMLAnrListe As XmlDocument
+    'Private XMLAnrListe As XmlDocument
 #End Region
 
     Friend Sub New(ByVal FritzBoxKlasse As FritzBox, _
@@ -71,11 +71,11 @@ Public Class formImportAnrList
     End Sub
 #Region "Herunterladen"
     Private Sub DownloadAnrListe_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWDownloadAnrListe.DoWork
-        If C_DP.P_RBFBComUPnP Then
-            e.Result = C_FBox.DownloadAnrListeV2()
-        Else
-            C_FBox.DownloadAnrListeV1()
-        End If
+        'If C_DP.P_RBFBComUPnP Then
+        '  e.Result = C_FBox.DownloadAnrListeV2()
+        'Else
+        e.Result = C_FBox.DownloadAnrListeV1()
+        'End If
     End Sub
 
     Private Sub DownloadAnrListe_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWDownloadAnrListe.RunWorkerCompleted
@@ -88,13 +88,13 @@ Public Class formImportAnrList
             Me.ButtonHerunterladen.Enabled = True
         End If
 
-        If C_DP.P_RBFBComUPnP Then
-            CSVAnrListe = DataProvider.P_Def_LeerString
-            XMLAnrListe = CType(e.Result, XmlDocument)
-        Else
-            CSVAnrListe = CStr(e.Result)
-            XMLAnrListe = Nothing
-        End If
+        'If C_DP.P_RBFBComUPnP Then
+        '    CSVAnrListe = DataProvider.P_Def_LeerString
+        '    XMLAnrListe = CType(e.Result, XmlDocument)
+        'Else
+        CSVAnrListe = CStr(e.Result)
+        '    XMLAnrListe = Nothing
+        'End If
 
         With Übergabe
             .StartZeit = C_DP.P_StatOLClosedZeit
@@ -116,11 +116,11 @@ Public Class formImportAnrList
 
 #Region "Auswertung"
     Private Sub BGAnrListeAuswerten_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWAnrListeAuswerten.DoWork
-        If C_DP.P_RBFBComUPnP Then
-            JournalXML(CType(e.Argument, AnrListData))
-        Else
-            JournalCSV(CType(e.Argument, AnrListData))
-        End If
+        'If C_DP.P_RBFBComUPnP Then
+        '   JournalXML(CType(e.Argument, AnrListData))
+        'Else
+        JournalCSV(CType(e.Argument, AnrListData))
+        'End If
     End Sub
 
     Private Sub BGAnrListeAuswerten_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BWAnrListeAuswerten.ProgressChanged
@@ -296,115 +296,147 @@ Public Class formImportAnrList
 
     End Sub
 
-    ''' <summary>
-    ''' Importiert die Journaleinträge aus der XML-Datei
-    ''' <c>
-    '''   <root>
-    '''  	<timestamp>123456</timestamp>
-    '''  	<Call>
-    '''  		<Id>123</Id>
-    '''  		<Type>3</Type>
-    '''  		<Called>0123456789</Called>
-    '''  		<Caller>SIP: 98765</Caller>
-    '''  		<Name>Max Mustermann</Name>
-    '''  		<Numbertype/>
-    '''  		<Device>Mobilteil 1</Device>
-    '''  		<Port>10</Port>
-    '''  		<Date>23.09.11 08:13</Date>
-    '''  		<Duration>0:01</Duration>
-    '''  		<Count/>
-    '''  		<Path/>
-    '''  	</Call>
-    '''  	<Call>
-    '''  		<Id>122</Id>
-    '''  		<Type>1</Type>
-    '''  		<Caller>012456789</Caller>
-    '''  		<Called>56789</Called>
-    '''  		<Name>Max Mustermann</Name>
-    '''  		<Numbertype/>
-    '''  		<Device>Anrufbeantworter 1</Device>
-    '''  		<Port>40</Port>
-    '''  		<Date>22.09.11 14:19</Date>
-    '''  		<Duration>0:01</Duration>
-    '''  		<Count/>
-    '''  		<Path>/download.lua?path=/var/media/ftp/JetFlash-Transcend4GB-01/FRITZ/voicebox/rec/rec.0.000</Path>
-    '''  	</Call>
-    '''  </root>
-    ''' </c>
-    ''' </summary>
-    ''' <param name="AnrListeData"></param>
-    ''' <remarks></remarks>
-    Private Sub JournalXML(ByVal AnrListeData As AnrListData)
+    ' ''' <summary>
+    ' ''' Importiert die Journaleinträge aus der XML-Datei
+    ' ''' <c>
+    ' '''   <root>
+    ' '''  	<timestamp>123456</timestamp>
+    ' '''  	<Call>
+    ' '''  		<Id>123</Id>
+    ' '''  		<Type>3</Type>
+    ' '''  		<Called>0123456789</Called>
+    ' '''  		<Caller>SIP: 98765</Caller>
+    ' '''  		<Name>Max Mustermann</Name>
+    ' '''  		<Numbertype/>
+    ' '''  		<Device>Mobilteil 1</Device>
+    ' '''  		<Port>10</Port>
+    ' '''  		<Date>23.09.11 08:13</Date>
+    ' '''  		<Duration>0:01</Duration>
+    ' '''  		<Count/>
+    ' '''  		<Path/>
+    ' '''  	</Call>
+    ' '''  	<Call>
+    ' '''  		<Id>122</Id>
+    ' '''  		<Type>1</Type>
+    ' '''  		<Caller>012456789</Caller>
+    ' '''  		<Called>56789</Called>
+    ' '''  		<Name>Max Mustermann</Name>
+    ' '''  		<Numbertype/>
+    ' '''  		<Device>Anrufbeantworter 1</Device>
+    ' '''  		<Port>40</Port>
+    ' '''  		<Date>22.09.11 14:19</Date>
+    ' '''  		<Duration>0:01</Duration>
+    ' '''  		<Count/>
+    ' '''  		<Path>/download.lua?path=/var/media/ftp/JetFlash-Transcend4GB-01/FRITZ/voicebox/rec/rec.0.000</Path>
+    ' '''  	</Call>
+    ' '''  </root>
+    ' ''' </c>
+    ' ''' </summary>
+    ' ''' <param name="AnrListeData"></param>
+    ' ''' <remarks></remarks>
+    'Private Sub JournalXML(ByVal AnrListeData As AnrListData)
 
-        Dim xPathTeile As New ArrayList
-        Dim CallNodeList As XmlNodeList
-        Dim CallNode As XmlNode
-        Dim xPath As String
-        Dim ImportXML As New XmlDocument
-        Dim AnrTyp As String            ' Typ des Anrufs
-        Dim AnrZeit As String           ' Zeitpunkt des Anrufs
-        Dim AnrTelNr As String          ' Name und TelNr des Telefonpartners
-        Dim AnrID As String             ' ID des Anrufes
-        Dim Nebenstelle As String       ' verwendete Nebenstelle
-        Dim MSN As String               ' verwendete MSN
-        Dim NSN As Integer              ' verwendete Nebenstellennummer
-        Dim Dauer As String             ' Dauer des Telefonats
-        Dim a, b As Integer          ' Zählvariable
+    '    Dim xPathTeile As New ArrayList
+    '    Dim CallNodeList As XmlNodeList
+    '    Dim CallNode As XmlNode
+    '    Dim xPath As String
+    '    Dim ImportXML As New XmlDocument
+    '    Dim AnrTyp As String            ' Typ des Anrufs
+    '    Dim AnrZeit As String           ' Zeitpunkt des Anrufs
+    '    Dim AnrTelNr As String          ' Name und TelNr des Telefonpartners
+    '    Dim AnrID As String             ' ID des Anrufes
+    '    Dim Nebenstelle As String       ' verwendete Nebenstelle
+    '    Dim MSN As String               ' verwendete MSN
+    '    Dim NSN As Integer              ' verwendete Nebenstellennummer
+    '    Dim Dauer As String             ' Dauer des Telefonats
+    '    Dim a, b As Integer             ' Zählvariable
+    '    Dim vFBStatus As String()       ' generierter Status-String
 
-        ImportXML.InnerXml = "<root/>"
+    '    ImportXML.InnerXml = "<root/>"
 
 
-        xPathTeile.Add("Call")
-        xPath = C_XML.CreateXPath(XMLAnrListe, xPathTeile)
-        CallNodeList = XMLAnrListe.SelectNodes(xPath)
+    '    xPathTeile.Add("Call")
+    '    xPath = C_XML.CreateXPath(XMLAnrListe, xPathTeile)
+    '    CallNodeList = XMLAnrListe.SelectNodes(xPath)
 
-        For Each CallNodeListItem As XmlNode In CallNodeList
-            If CallNodeListItem.NodeType = XmlNodeType.Element Then
-                With CType(CallNodeListItem, XmlElement)
-                    If CDate(.Item("Date").InnerText) > AnrListeData.StartZeit And CDate(.Item("Date").InnerText) < AnrListeData.EndZeit Then
-                        ImportXML.Item("root").AppendChild(ImportXML.ImportNode(CallNodeListItem, True))
-                    End If
-                End With
-            End If
-        Next
-        XMLAnrListe = Nothing
+    '    For Each CallNodeListItem As XmlNode In CallNodeList
+    '        If CallNodeListItem.NodeType = XmlNodeType.Element Then
+    '            With CType(CallNodeListItem, XmlElement)
+    '                If CDate(.Item("Date").InnerText) > AnrListeData.StartZeit And CDate(.Item("Date").InnerText) < AnrListeData.EndZeit Then
+    '                    ImportXML.Item("root").AppendChild(ImportXML.ImportNode(CallNodeListItem, True))
+    '                End If
+    '            End With
+    '        End If
+    '    Next
+    '    XMLAnrListe = Nothing
 
-        xPath = C_XML.CreateXPath(ImportXML, xPathTeile)
-        CallNodeList = ImportXML.SelectNodes(xPath)
+    '    xPath = C_XML.CreateXPath(ImportXML, xPathTeile)
+    '    CallNodeList = ImportXML.SelectNodes(xPath)
 
-        EntryCount = CallNodeList.Count
-        a = 1
-        For Each CallNodeListItem As XmlNode In CallNodeList
-            If Abbruch Then Exit For
-            If CallNodeListItem.NodeType = XmlNodeType.Element Then
-                With CType(CallNodeListItem, XmlElement)
-                    AnrTyp = .Item("Type").InnerText
-                    AnrZeit = .Item("Date").InnerText
-                    AnrTelNr = .Item("Called").InnerText
-                    Nebenstelle = .Item("Port").InnerText
-                    MSN = .Item("Caller").InnerText
-                    Dauer = .Item("Duration").InnerText
+    '    EntryCount = CallNodeList.Count
+    '    a = 1
+    '    For Each CallNodeListItem As XmlNode In CallNodeList
+    '        If Abbruch Then Exit For
+    '        If CallNodeListItem.NodeType = XmlNodeType.Element Then
+    '            With CType(CallNodeListItem, XmlElement)
+    '                AnrTyp = .Item("Type").InnerText
+    '                AnrZeit = .Item("Date").InnerText & ":00"
+    '                AnrTelNr = .Item("Called").InnerText
+    '                Nebenstelle = .Item("Port").InnerText
+    '                MSN = .Item("Caller").InnerText
+    '                Dauer = .Item("Duration").InnerText
+    '                NSN = CInt(.Item("Port").InnerText)
+    '            End With
 
-                End With
-            End If
+    '            '' Bei analogen Anschlüssen steht "Festnetz" in MSN
+    '            'If MSN = "Festnetz" Then MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", DataProvider.P_Def_ErrorMinusOne_String)
+    '            '' MSN von dem "Internet: " bereinigen
+    '            'If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
 
-            If Anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
-            a += 1
-        Next
+    '            If C_DP.P_CLBTelNr.Contains(C_hf.EigeneVorwahlenEntfernen(MSN)) Or DataProvider.P_Debug_AnrufSimulation Then
+    '                b += 1
+    '                NSN = -1
+    '                AnrID = CStr(DataProvider.P_Def_AnrListIDOffset + b)
 
-        'Tag 		Type 		Description
-        'Id 		Integer		Unique ID per call.
-        'Type 		Integer 	1 incoming,	2 missed, 3 outgoing, 9 active incoming, 10 rejected incoming, 11 active outgoing
-        'Called 	String 		Number of called party
-        'Caller 	String 		Number of calling party
-        'Name 		String 		Name of called/ called party (outgoing/ incoming call)
-        'Numbertype String 		pots, isdn, sip, umts, ''
-        'Device 	String 		Name of used telephone port.
-        'Port 		String 		Number of telephone port.
-        'Date 		Date-String	31.07.12 12:03
-        'Duration 	String 		hh:mm (minutes rounded up)
-        'Path 		String 		URL path to TAM or FAX file.
-    End Sub
+    '                Select Case CInt(AnrTyp)
+    '                    Case 1 ' eingehender Anruf: angenommen
+    '                        vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
+    '                        C_AnrMon.AnrMonRING(vFBStatus)
+    '                        vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
+    '                        C_AnrMon.AnrMonCONNECT(vFBStatus)
+    '                    Case 2 ' eingehender Anruf: nicht angenommen
+    '                        vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
+    '                        C_AnrMon.AnrMonRING(vFBStatus)
+    '                    Case 3, 4 ' ausgehender Anruf
+    '                        vFBStatus = Split(AnrZeit & ";CALL;" & AnrID & ";0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
+    '                        C_AnrMon.AnrMonCALL(vFBStatus)
+    '                        vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
+    '                        C_AnrMon.AnrMonCONNECT(vFBStatus)
+    '                End Select
+    '                If Abbruch Then Exit For
+    '                vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
+    '                C_AnrMon.AnrMonDISCONNECT(vFBStatus)
+    '            End If
+
+    '            Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
+    '        End If
+    '        If Anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
+    '        a += 1
+    '    Next
+
+    '    'Tag 		Type 		Description
+    '    'Id 		Integer		Unique ID per call.
+    '    'Type 		Integer 	1 incoming,	2 missed, 3 outgoing, 9 active incoming, 10 rejected incoming, 11 active outgoing
+    '    'Called 	String 		Number of called party
+    '    'Caller 	String 		Number of calling party
+    '    'Name 		String 		Name of called/ called party (outgoing/ incoming call)
+    '    'Numbertype String 		pots, isdn, sip, umts, ''
+    '    'Device 	String 		Name of used telephone port.
+    '    'Port 		String 		Number of telephone port.
+    '    'Date 		Date-String	31.07.12 12:03
+    '    'Duration 	String 		hh:mm (minutes rounded up)
+    '    'Path 		String 		URL path to TAM or FAX file.
+    'End Sub
 #End Region
 
 #Region "Button"
