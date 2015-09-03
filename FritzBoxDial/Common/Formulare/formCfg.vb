@@ -492,7 +492,7 @@ Public Class formCfg
             .P_CBintl = Me.CBintl.Checked
             .P_CBIgnoTelNrFormat = Me.CBIgnoTelNrFormat.Checked
             .P_CBPhoner = Me.CBPhoner.Checked
-            .P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
+            '.P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
             .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
             ' Notiz
             .P_CBNote = Me.CBNote.Checked

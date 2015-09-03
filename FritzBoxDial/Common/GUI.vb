@@ -936,7 +936,7 @@ Imports Microsoft.Office.Core
             oExp = Nothing
 
         Catch ex As Exception
-            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddCmdBar")
+            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "AddCmdBar")
         End Try
 
     End Function
@@ -972,7 +972,7 @@ Imports Microsoft.Office.Core
             cBtn = CType(cbBtn, Office.CommandBarButton)
             Return cBtn
         Catch ex As Exception
-            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddButtonsToCmb")
+            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "AddButtonsToCmb")
         End Try
     End Function
 
@@ -993,7 +993,7 @@ Imports Microsoft.Office.Core
                 End With
             End If
         Catch ex As Exception
-            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "AddPopupsToExplorer")
+            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "AddPopupsToExplorer")
         End Try
 
     End Sub
@@ -1217,7 +1217,7 @@ Imports Microsoft.Office.Core
             ePopWwdh07 = AddPopupItems(ePopWwdh, 8) : ePopWwdh08 = AddPopupItems(ePopWwdh, 9) : ePopWwdh09 = AddPopupItems(ePopWwdh, 10)
             ePopWwdh10 = AddPopupItems(ePopWwdh, 11)
         Catch ex As Exception
-            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
+            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
         End Try
 
         FillPopupItems(DataProvider.P_Def_NameListCALL)
@@ -1252,7 +1252,7 @@ Imports Microsoft.Office.Core
             ePopAnr07 = AddPopupItems(ePopAnr, 8) : ePopAnr08 = AddPopupItems(ePopAnr, 9) : ePopAnr09 = AddPopupItems(ePopAnr, 10)
             ePopAnr10 = AddPopupItems(ePopAnr, 11)
         Catch ex As Exception
-            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
+            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
         End Try
 
         FillPopupItems(DataProvider.P_Def_NameListRING)
@@ -1269,7 +1269,7 @@ Imports Microsoft.Office.Core
             ePopVIP07 = AddPopupItems(ePopVIP, 8) : ePopVIP08 = AddPopupItems(ePopVIP, 9) : ePopVIP09 = AddPopupItems(ePopVIP, 10)
             ePopVIP10 = AddPopupItems(ePopVIP, 11)
         Catch ex As Exception
-            C_HF.FBDB_MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
+            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
         End Try
 
         FillPopupItems(DataProvider.P_Def_NameListVIP)
