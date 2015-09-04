@@ -85,7 +85,7 @@ Public Class formCfg
 #Region "Ausfüllen"
     Private Sub Ausfüllen()
         With C_DP
-            Me.LVersion.Text += ThisAddIn.Version
+            Me.LVersion.Text = DataProvider.P_Def_Addin_LangName & " " & ThisAddIn.Version
             With Me.ComboBoxRWS.Items
                 .Clear()
                 .Add(DataProvider.P_RWSDasOertliche_Name) '"DasÖrtliche"
@@ -192,8 +192,8 @@ Public Class formCfg
             Me.CBIgnoTelNrFormat.Checked = .P_CBIgnoTelNrFormat
 
 #If OVer < 14 Then
-        If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
-        Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
+            If Not Me.CBJournal.Checked Then Me.CBSymbJournalimport.Checked = False
+            Me.CBSymbJournalimport.Enabled = Me.CBJournal.Checked
 #End If
             'Phoner
             Dim PhonerVerfuegbar As Boolean = .P_PhonerVerfügbar
