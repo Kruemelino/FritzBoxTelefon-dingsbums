@@ -115,16 +115,16 @@ Public Class Wählclient
                         Next 'oAppLink
                     Else
 #End If
-                        pos1 = InStr(1, aktJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
-                        pos2 = InStr(1, aktJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
-                        If Not pos1 = 0 And Not pos2 = 0 Then
-                            pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
-                            vCard = Mid(aktJournal.Body, pos1, pos2 - pos1)
-                        Else
-                            vCard = DataProvider.P_Def_LeerString
-                        End If
+                    pos1 = InStr(1, aktJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
+                    pos2 = InStr(1, aktJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
+                    If Not pos1 = 0 And Not pos2 = 0 Then
+                        pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
+                        vCard = Mid(aktJournal.Body, pos1, pos2 - pos1)
+                    Else
+                        vCard = DataProvider.P_Def_LeerString
+                    End If
 
-                        Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), vCard, False)
+                    Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), vCard, False)
 #If Not OVer = 15 Then
                     End If
 #End If
@@ -316,16 +316,16 @@ Public Class Wählclient
                         C_hf.NAR(olLink) : olLink = Nothing
                     Else ' Wenn in dem Journal kein Link hinterlegt ist, suche nach einer vCard im Body des Journaleintrags.
 #End If
-                        pos1 = InStr(1, olJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
-                        pos2 = InStr(1, olJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
-                        If Not pos1 = 0 And Not pos2 = 0 Then
-                            pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
-                            vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
-                        Else
-                            vCard = DataProvider.P_Def_LeerString
-                        End If
+                    pos1 = InStr(1, olJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
+                    pos2 = InStr(1, olJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
+                    If Not pos1 = 0 And Not pos2 = 0 Then
+                        pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
+                        vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
+                    Else
+                        vCard = DataProvider.P_Def_LeerString
+                    End If
 
-                        If Not TelNr Is DataProvider.P_Def_LeerString Then Wählbox(Nothing, TelNr, vCard, False)
+                    If Not TelNr Is DataProvider.P_Def_LeerString Then Wählbox(Nothing, TelNr, vCard, False)
 #If Not OVer = 15 Then
                     End If
 #End If
