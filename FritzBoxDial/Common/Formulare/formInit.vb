@@ -220,7 +220,7 @@ Friend Class formInit
     End Sub
 
     Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
-        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML, Nothing)
+        C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML, C_FBoxUPnP)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, DataProvider.P_Def_PassWordDecryptionKey)
         C_DP.SaveSettingsVBA("Zugang", DataProvider.P_Def_PassWordDecryptionKey)
