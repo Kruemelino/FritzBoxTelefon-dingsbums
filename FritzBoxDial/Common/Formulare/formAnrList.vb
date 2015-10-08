@@ -152,7 +152,7 @@ Public Class formImportAnrList
         Dim j, a, b As Integer          ' Zählvariable
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
-        Dim tmp() As String
+        Dim Dauer() As String
 
         Dim CSVTelefonat As C_Telefonat
 
@@ -211,10 +211,8 @@ Public Class formImportAnrList
                             .TelNr = aktZeile(3)
                             .TelName = aktZeile(4)
                             .MSN = aktZeile(5)
-                            ' Umrechnung der Dauer (h:m) in volle Sekunden
-                            tmp = Split(aktZeile(6), ":")
-                            .Dauer = CInt(tmp(0)) * 60 + CInt(tmp(1)) * 60
-
+                            Dauer = Split(aktZeile(6), ":")
+                            .Dauer = CInt(Dauer(0)) * 60 + CInt(Dauer(1)) * 60
                             ' Bei analogen Anschlüssen steht "Festnetz" in MSN
                             If .MSN = "Festnetz" Then .MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", DataProvider.P_Def_ErrorMinusOne_String)
                             ' MSN von dem "Internet: " bereinigen
@@ -278,6 +276,7 @@ Public Class formImportAnrList
                                 End Select
 
                                 If Abbruch Then Exit For
+
                                 vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & .Dauer & ";", ";", , CompareMethod.Text)
                                 C_AnrMon.AnrMonDISCONNECT(vFBStatus)
 
