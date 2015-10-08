@@ -364,7 +364,6 @@ Public Class Helfer
     ''' </summary>
     ''' <param name="TelNr">Die zu formatierende Telefonnummer</param>
     ''' <returns>Die formatierte Telefonnummer</returns>
-
     Function formatTelNr(ByVal TelNr As String) As String
         Dim RufNr As String ' Telefonnummer ohne Vorwahl
         Dim LandesVW As String
@@ -792,7 +791,7 @@ Public Class Helfer
             End Select
         Next
         ' Landesvorwahl entfernen bei Inlandsgespr‰chen (einschlieﬂlich nachfolgender 0)
-        If Left(nurZiffern, Len(C_DP.P_TBLandesVW)) = C_DP.P_TBLandesVW Then
+        If nurZiffern.StartsWith(C_DP.P_TBLandesVW) Then
             nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW & "0", "0", , 1)
             nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW, "0", , 1)
         End If
