@@ -146,26 +146,17 @@ Public Class formImportAnrList
     Private Sub JournalCSV(ByVal AnrListeData As AnrListData)
 
         Dim aktZeile As String()        ' aktuell bearbeitete Zeile
-        Dim AnrTyp As String            ' Typ des Anrufs
         Dim AnrZeit As String           ' Zeitpunkt des Anrufs
-        Dim AnrTelNr As String          ' Name und TelNr des Telefonpartners
         Dim AnrID As String             ' ID des Anrufes
-        Dim Nebenstelle As String       ' verwendete Nebenstelle
-        Dim MSN As String               ' verwendete MSN
-        Dim NSN As Integer              ' verwendete Nebenstellennummer
-        Dim Dauer As String             ' Dauer des Telefonats
         Dim vFBStatus As String()       ' generierter Status-String
-        Dim Startzeit As Date           ' Letzter Journalimports
-        Dim Endzeit As Date             ' Ende des Journalimports
         Dim j, a, b As Integer          ' Zählvariable
         Dim AnrListe As String()
         Dim xPathTeile As New ArrayList
+        Dim tmp() As String
+
+        Dim CSVTelefonat As C_Telefonat
 
         BWDownloadAnrListe.Dispose()
-        With AnrListeData
-            Startzeit = .StartZeit
-            Endzeit = .EndZeit
-        End With
         Dim StartZeile As Integer ' Zeile der csv, die das Erste zu importierenden Telefonat enthält
         Dim EndZeile As Integer = -1 ' Zeile der csv, die das Letzte zu importierenden Telefonat enthält
 
@@ -183,6 +174,7 @@ Public Class formImportAnrList
                     j += 1
                 Loop Until AnrListe.GetValue(j).ToString = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer" Or j = AnrListe.Length
                 ' Ermittle die Position des Ersten und Letzten zu importierenden Telefonats
+
                 StartZeile = j + 1
                 If CStr(AnrListe.GetValue(j + 1)) = DataProvider.P_Def_LeerString Then
                     j += 1
@@ -192,96 +184,108 @@ Public Class formImportAnrList
                 Do
                     j += 1
                     AnrZeit = CStr(Split(CStr(AnrListe.GetValue(j)), ";", , CompareMethod.Text).GetValue(1)) & ":00"
-                    If CDate(AnrZeit) < Startzeit Then EndZeile = j - 1 ' AnrZeit nach Startzeit
-                    If CDate(AnrZeit) > Endzeit Then StartZeile = j + 1 ' AnrZeit vor Endzeit
+                    If CDate(AnrZeit) < AnrListeData.StartZeit Then EndZeile = j - 1 ' AnrZeit nach Startzeit
+                    If CDate(AnrZeit) > AnrListeData.EndZeit Then StartZeile = j + 1 ' AnrZeit vor Endzeit
                     Windows.Forms.Application.DoEvents()
-                Loop Until CDate(AnrZeit) < Startzeit Or j = AnrListe.Length - 1
+                Loop Until CDate(AnrZeit) < AnrListeData.StartZeit Or j = AnrListe.Length - 1
+
                 If j = AnrListe.Length - 1 Then EndZeile = AnrListe.Length - 1
+
                 EntryCount = EndZeile - StartZeile + 1
                 If EntryCount > 0 Then
 
                     b = 0 ' Anzahl der tatsächlich importierten Telefonate
                     a = 1
                     For j = EndZeile To StartZeile Step -1 ' Array wird Zeilenweise rückwärts durchlaufen
-                        If Abbruch Then Exit For
-                        ' aktuelle Zeile wird ebenfalls in ein Array geteilt, damit ist ein direkter Zugriff möglich.
-                        aktZeile = Split(CStr(AnrListe.GetValue(j)), ";", , CompareMethod.Text)
+                        CSVTelefonat = Nothing
+                        CSVTelefonat = New C_Telefonat
+                        With CSVTelefonat
+                            ' aktuelle Zeile wird ebenfalls in ein Array geteilt, damit ist ein direkter Zugriff möglich.
+                            aktZeile = Split(CStr(AnrListe.GetValue(j)), ";", , CompareMethod.Text)
 
-                        AnrTyp = CStr(aktZeile.GetValue(0))
-                        AnrZeit = CStr(aktZeile.GetValue(1)) & ":00"
-                        'AnrName = CStr(aktZeile.GetValue(2)) 'wird nicht benötigt
-                        AnrTelNr = CStr(aktZeile.GetValue(3))
-                        Nebenstelle = CStr(aktZeile.GetValue(4))
-                        MSN = CStr(aktZeile.GetValue(5))
-                        Dauer = CStr(aktZeile.GetValue(6))
-
-                        Dauer = CStr((CLng(Strings.Left(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) - 1)) * 60 + CLng(Mid(Dauer, InStr(1, Dauer, ":", CompareMethod.Text) + 1))) * 60)
-                        ' Bei analogen Anschlüssen steht "Festnetz" in MSN
-                        If MSN = "Festnetz" Then MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", DataProvider.P_Def_ErrorMinusOne_String)
-                        ' MSN von dem "Internet: " bereinigen
-                        If Not MSN = String.Empty Then MSN = Replace(MSN, "Internet: ", String.Empty)
-
-                        If C_DP.P_CLBTelNr.Contains(C_hf.EigeneVorwahlenEntfernen(MSN)) Or DataProvider.P_Debug_AnrufSimulation Then
-                            b += 1
-                            NSN = -1
-                            AnrID = CStr(DataProvider.P_Def_AnrListIDOffset + b)
-                            If Not AnrTyp = "2" Then
-                                'Wird im Fall 2 nicht benötigt: Verpasster Anruf.
-                                Select Case Nebenstelle
-                                    Case "Durchwahl"
-                                        NSN = 3
-                                    Case "ISDN Gerät"
-                                        NSN = 4
-                                    Case "Fax (intern/PC)"
-                                        NSN = 5
-                                    Case "Data S0"
-                                        NSN = 36
-                                    Case "Data PC"
-                                        NSN = 37
-                                    Case Else
-                                        With xPathTeile
-                                            .Clear()
-                                            .Add("Telefone")
-                                            .Add("Telefone")
-                                            .Add("*")
-                                            .Add("Telefon")
-                                            .Add("[TelName = """ & Nebenstelle & """]")
-                                            .Add("@Dialport")
-                                            NSN = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String))
-                                        End With
-                                End Select
-                            End If
-                            If Not NSN = -1 Then
-                                'If NSN < 4 Then NSN -= 1
-                                Select Case NSN
-                                    Case 1 To 3
-                                        NSN -= 1
-                                    Case 60 To 69 'DECT
-                                        NSN -= 50
-                                End Select
-                            End If
-
-                            Select Case CInt(AnrTyp)
-                                Case 1 ' eingehender Anruf: angenommen
-                                    vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus)
-                                    vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus)
-                                Case 2 ' eingehender Anruf: nicht angenommen
-                                    vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & AnrTelNr & ";" & MSN & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonRING(vFBStatus)
-                                Case 3, 4 ' ausgehender Anruf
-                                    vFBStatus = Split(AnrZeit & ";CALL;" & AnrID & ";0;" & MSN & ";" & AnrTelNr & ";;", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCALL(vFBStatus)
-                                    vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & NSN & ";" & AnrTelNr & ";", ";", , CompareMethod.Text)
-                                    C_AnrMon.AnrMonCONNECT(vFBStatus)
-                            End Select
                             If Abbruch Then Exit For
-                            vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & Dauer & ";", ";", , CompareMethod.Text)
-                            C_AnrMon.AnrMonDISCONNECT(vFBStatus)
-                        End If
-                        If Anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
-                        a += 1
+
+                            .Verpasst = aktZeile(0) = "2"
+                            .Angenommen = Not .Verpasst
+                            .Zeit = CDate(aktZeile(1))
+                            .TelNr = aktZeile(3)
+                            .TelName = aktZeile(4)
+                            .MSN = aktZeile(5)
+                            ' Umrechnung der Dauer (h:m) in volle Sekunden
+                            tmp = Split(aktZeile(6), ":")
+                            .Dauer = CInt(tmp(0)) * 60 + CInt(tmp(1)) * 60
+
+                            ' Bei analogen Anschlüssen steht "Festnetz" in MSN
+                            If .MSN = "Festnetz" Then .MSN = C_XML.Read(C_DP.XMLDoc, "Telefone", "POTS", DataProvider.P_Def_ErrorMinusOne_String)
+                            ' MSN von dem "Internet: " bereinigen
+                            .MSN = Replace(.MSN, "Internet: ", String.Empty)
+
+                            If C_DP.P_CLBTelNr.Contains(C_hf.EigeneVorwahlenEntfernen(.MSN)) Or DataProvider.P_Debug_AnrufSimulation Then
+                                b += 1
+                                .NSN = -1
+
+                                If Not .Verpasst Then
+                                    Select Case .TelName
+                                        Case "Durchwahl"
+                                            .NSN = 3
+                                        Case "ISDN Gerät"
+                                            .NSN = 4
+                                        Case "Fax (intern/PC)"
+                                            .NSN = 5
+                                        Case "Data S0"
+                                            .NSN = 36
+                                        Case "Data PC"
+                                            .NSN = 37
+                                        Case Else
+                                            With xPathTeile
+                                                .Clear()
+                                                .Add("Telefone")
+                                                .Add("Telefone")
+                                                .Add("*")
+                                                .Add("Telefon")
+                                                .Add("[TelName = """ & CSVTelefonat.TelName & """]")
+                                                .Add("@Dialport")
+                                            End With
+                                            .NSN = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String))
+                                    End Select
+                                End If
+
+                                If Not .NSN = -1 Then
+                                    'If NSN < 4 Then NSN -= 1
+                                    Select Case .NSN
+                                        Case 1 To 3
+                                            .NSN -= 1
+                                        Case 60 To 69 'DECT
+                                            .NSN -= 50
+                                    End Select
+                                End If
+
+                                AnrID = CStr(DataProvider.P_Def_AnrListIDOffset + b)
+                                Select Case CInt(aktZeile(0))
+                                    Case 1 ' eingehender Anruf: angenommen
+                                        vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & .TelNr & ";" & .MSN & ";;", ";", , CompareMethod.Text)
+                                        C_AnrMon.AnrMonRING(vFBStatus)
+                                        vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & .NSN & ";" & .TelNr & ";", ";", , CompareMethod.Text)
+                                        C_AnrMon.AnrMonCONNECT(vFBStatus)
+                                    Case 2 ' eingehender Anruf: nicht angenommen
+                                        vFBStatus = Split(AnrZeit & ";RING;" & AnrID & ";" & .TelNr & ";" & .MSN & ";;", ";", , CompareMethod.Text)
+                                        C_AnrMon.AnrMonRING(vFBStatus)
+                                    Case 3, 4 ' ausgehender Anruf
+                                        vFBStatus = Split(AnrZeit & ";CALL;" & AnrID & ";0;" & .MSN & ";" & .TelNr & ";;", ";", , CompareMethod.Text)
+                                        C_AnrMon.AnrMonCALL(vFBStatus)
+                                        vFBStatus = Split(AnrZeit & ";CONNECT;" & AnrID & ";" & .NSN & ";" & .TelNr & ";", ";", , CompareMethod.Text)
+                                        C_AnrMon.AnrMonCONNECT(vFBStatus)
+                                End Select
+
+                                If Abbruch Then Exit For
+                                vFBStatus = Split(AnrZeit & ";DISCONNECT;" & AnrID & ";" & .Dauer & ";", ";", , CompareMethod.Text)
+                                C_AnrMon.AnrMonDISCONNECT(vFBStatus)
+
+                            End If
+                            If Anzeigen Then BWAnrListeAuswerten.ReportProgress(a * 100 \ EntryCount)
+                            a += 1
+
+                        End With
                     Next
                 End If
                 ' Registry zurückschreiben
@@ -293,7 +297,7 @@ Public Class formImportAnrList
             If Anzeigen Then BWAnrListeAuswerten.ReportProgress(100)
             BWAnrListeAuswerten.Dispose()
         End If
-
+        CSVTelefonat = Nothing
     End Sub
 
     ' ''' <summary>
