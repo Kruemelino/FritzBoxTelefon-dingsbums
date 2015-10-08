@@ -51,6 +51,17 @@ Public Class FritzBox
             sFirmware = value
         End Set
     End Property
+
+    Private ReadOnly Property P_FritzBoxVorhanden(ByVal FritzBoxAdresse As String) As Boolean
+        Get
+            If C_DP.P_CBForceFBAddr Then
+                P_FritzBoxVorhanden = C_hf.Ping(FritzBoxAdresse)
+            Else
+                C_hf.httpGET("http://" & FritzBoxAdresse, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), FBFehler)
+                Return Not FBFehler
+            End If
+        End Get
+    End Property
 #End Region
 
     Private Structure FritzBoxFirmware
@@ -418,21 +429,26 @@ Public Class FritzBox
 
         C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
 
-        C_FBoxUPnP.SetFritzBoxData(C_hf.ValidIP(C_DP.P_TBFBAdr), C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
-        FBFirmware()
+        If P_FritzBoxVorhanden(C_DP.P_ValidFBAdr) Then
 
-        If C_DP.P_EncodeingFritzBox = DataProvider.P_Def_ErrorMinusOne_String Then
-            Dim Rückgabe As String
-            Rückgabe = C_hf.httpGET(P_Link_FB_Basis, FBEncoding, FBFehler)
-            If Not FBFehler Then
-                FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
-                C_DP.P_EncodeingFritzBox = FBEncoding.HeaderName
-                C_DP.SpeichereXMLDatei()
+            C_FBoxUPnP.SetFritzBoxData(C_DP.P_ValidFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
+            FBFirmware()
+
+            If C_DP.P_EncodeingFritzBox = DataProvider.P_Def_ErrorMinusOne_String Then
+                Dim Rückgabe As String
+                Rückgabe = C_hf.httpGET(P_Link_FB_Basis, FBEncoding, FBFehler)
+                If Not FBFehler Then
+                    FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
+                    C_DP.P_EncodeingFritzBox = FBEncoding.HeaderName
+                    C_DP.SpeichereXMLDatei()
+                Else
+                    C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & P_Link_FB_Basis)
+                End If
             Else
-                C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & P_Link_FB_Basis)
+                FBEncoding = C_hf.GetEncoding(C_DP.P_EncodeingFritzBox)
             End If
         Else
-            FBEncoding = C_hf.GetEncoding(C_DP.P_EncodeingFritzBox)
+            C_hf.LogFile("FBError (FritzBox.New): Keine Fritz!Box an der Gegenstelle " & C_DP.P_ValidFBAdr)
         End If
     End Sub
 
