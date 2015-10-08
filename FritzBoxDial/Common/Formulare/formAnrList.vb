@@ -259,7 +259,7 @@ Public Class formImportAnrList
                                             .NSN -= 50
                                     End Select
                                 End If
-
+                                AnrZeit = .Zeit.ToString
                                 AnrID = CStr(DataProvider.P_Def_AnrListIDOffset + b)
                                 Select Case CInt(aktZeile(0))
                                     Case 1 ' eingehender Anruf: angenommen
