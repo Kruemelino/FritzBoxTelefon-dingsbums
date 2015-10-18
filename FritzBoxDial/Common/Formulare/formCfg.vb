@@ -355,8 +355,8 @@ Public Class formCfg
 
             TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
 
-            TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
+            TelNrString = C_hf.ClearStringArray(TelNrString)
+
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString
@@ -522,7 +522,7 @@ Public Class formCfg
                 .Add("*")
                 .Add("[@Checked=""1""]")
             End With
-            .SetCLBTelNr(New ReadOnlyCollection(Of String)((From x In Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray))
+            .SetCLBTelNr(New ReadOnlyCollection(Of String)(C_hf.ClearStringArray(Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text), False, True, False)))
 
             ' Phoner
             Dim TelName() As String

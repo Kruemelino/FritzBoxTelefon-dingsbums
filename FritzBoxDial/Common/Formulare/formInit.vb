@@ -277,8 +277,8 @@ Friend Class formInit
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
             Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
-            TelNrString = (From x In TelNrString Select x Distinct).ToArray 'Doppelte entfernen
-            TelNrString = (From x In TelNrString Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
+            TelNrString = C_HF.ClearStringArray(TelNrString)
+
             Me.CLBTelNr.Items.Clear()
 
             For Each TelNr In TelNrString

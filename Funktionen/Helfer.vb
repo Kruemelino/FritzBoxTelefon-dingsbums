@@ -1037,4 +1037,27 @@ Public Class Helfer
             xPathTeile = Nothing
         End If
     End Function
+
+    ''' <summary>
+    ''' Entfernt doppelte und leere Einträge aus einem String-Array.
+    ''' </summary>
+    ''' <param name="ArraytoClear">Das zu bereinigende Array</param>
+    ''' <param name="ClearDouble">Angabe, ob doppelte Einträge entfernt werden sollen.</param>
+    ''' <param name="ClearEmpty">Angabe, ob leere Einträge entfernt werden sollen.</param>
+    ''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
+    ''' <returns>Das bereinigte String-Array</returns>
+    ''' <remarks></remarks>
+    Public Function ClearStringArray(ByVal ArraytoClear As String(), _
+                                     Optional ByVal ClearDouble As Boolean = True, _
+                                     Optional ByVal ClearEmpty As Boolean = True, _
+                                     Optional ByVal ClearMinusOne As Boolean = True) As String()
+        ' Doppelte entfernen
+        If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
+        ' Leere entfernen
+        If ClearEmpty Then ArraytoClear = (From x In ArraytoClear Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+        ' -1 entfernen
+        If ClearMinusOne Then ArraytoClear = (From x In ArraytoClear Where Not x Like DataProvider.P_Def_ErrorMinusOne_String Select x).ToArray
+
+        Return ArraytoClear
+    End Function
 End Class

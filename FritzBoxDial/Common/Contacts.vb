@@ -501,9 +501,7 @@ Public Class KontaktFunktionen
                                       .TelexNumber, _
                                       .TTYTDDTelephoneNumber}
 
-
-            alleTE = (From x In alleTE Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
-            If Not alleTE.LongCount = 0 Then
+            If Not C_hf.ClearStringArray(alleTE, False, True, False).Count = 0 Then
                 ' Reicht nicht aus! Weiterer Gehirnschmalz erforderlich
                 If .UserProperties.Find(DataProvider.P_Def_UserPropertyIndex) IsNot Nothing Then
                     If CBool(.UserProperties.Find(DataProvider.P_Def_UserPropertyIndex).Value) = False Then
