@@ -125,7 +125,6 @@ Public Class FritzBox
 #Region "Properties Fritz!Box Links"
     ' Diese Properties sind hier angeordnet, da sie mit der SessionID gefüttet werden.
     ' Die Session ID soll außerhalb dieser Klasse nicht verfügbar sein.
-
     ''' <summary>
     ''' http://P_ValidFBAdr
     ''' </summary>
@@ -407,6 +406,252 @@ Public Class FritzBox
     Private ReadOnly Property P_Link_FB_SystemStatus() As String
         Get
             Return P_Link_FB_Basis & "/cgi-bin/system_status"
+        End Get
+    End Property
+
+#End Region
+
+#Region "Fritz!Box Querys"
+
+    ''' <summary>
+    ''' "S0" &amp; <c>idx</c> &amp; Type &amp; "=telcfg:settings/NTHotDialList/" &amp; <c>Type</c> &amp; <c>idx</c>
+    ''' </summary>
+    ''' <param name="Type">Der Typ des Eintrages: Name oder Number</param>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    ''' <remarks>
+    ''' "S0" &amp; i &amp; "Name=telcfg:settings/NTHotDialList/Name" &amp; i
+    ''' "S0" &amp; i &amp; "Number=telcfg:settings/NTHotDialList/Number" &amp; i
+    ''' </remarks>
+    Private ReadOnly Property P_Query_FB_S0(ByVal Type As String, ByVal idx As Integer) As String
+        Get
+            Return "S0" & idx & Type & "=telcfg:settings/NTHotDialList/" & Type & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "POTS=telcfg:settings/MSN/POTS"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_POTS() As String
+        Get
+            Return "POTS=telcfg:settings/MSN/POTS"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "Mobile=telcfg:settings/Mobile/MSN"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_Mobile() As String
+        Get
+            Return "Mobile=telcfg:settings/Mobile/MSN"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "Port" &amp; <c>idx</c> &amp; "Name=telcfg:settings/MSN/Port" &amp; <c>idx</c> &amp; "/Name"
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    ''' <remarks>
+    ''' "S0" &amp; i &amp; "Name=telcfg:settings/NTHotDialList/Name" &amp; i
+    ''' "S0" &amp; i &amp; "Number=telcfg:settings/NTHotDialList/Number" &amp; i
+    ''' </remarks>
+    Private ReadOnly Property P_Query_FB_FON(ByVal idx As Integer) As String
+        Get
+            Return "Port" & idx & "Name=telcfg:settings/MSN/Port" & idx & "/Name"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "TAM" &amp; <c>idx</c> &amp; "=tam:settings/MSN" &amp; <c>idx</c>
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_TAM(ByVal idx As Integer) As String
+        Get
+            Return "TAM" & idx & "=tam:settings/MSN" & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "FAX" &amp; <c>idx</c> &amp; "=telcfg:settings/FaxMSN" &amp; <c>idx</c>
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_FAX(ByVal idx As Integer) As String
+        Get
+            Return "FAX" & idx & "=telcfg:settings/FaxMSN" & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "MSN" &amp; <c>idx</c> &amp; "=telcfg:settings/MSN/MSN" &amp; <c>idx</c>
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_MSN(ByVal idx As Integer) As String
+        Get
+            Return "MSN" & idx & "=telcfg:settings/MSN/MSN" & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "VOIP" &amp; <c>idx</c> &amp; "Enabled=" &amp; "telcfg:settings/VoipExtension" &amp; <c>idx</c> &amp; "/enabled"
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_VOIP(ByVal idx As Integer) As String
+        Get
+            Return "VOIP" & idx & "Enabled=" & "telcfg:settings/VoipExtension" & idx & "/enabled"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "SIP" &amp; "=" &amp; "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_SIP() As String
+        Get
+            Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "MSN" &amp; idx &amp; "Nr" &amp; jdx &amp; "=telcfg:settings/MSN/Port" &amp; idx &amp; "/MSN" &amp; jdx
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_MSN_List(ByVal idx As String, ByVal jdx As Integer) As String
+        Get
+            Return "MSN" & idx & "Nr" & jdx & "=telcfg:settings/MSN/Port" & idx & "/MSN" & jdx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "VOIP" &amp; idx &amp; "Nr" &amp; jdx &amp; "=telcfg:settings/VoipExtension" &amp; idx &amp; "/Number" &amp; jdx
+    ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_VOIP_List(ByVal idx As String, ByVal jdx As Integer) As String
+        Get
+            Return "VOIP" & idx & "Nr" & jdx & "=telcfg:settings/VoipExtension" & idx & "/Number" & jdx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_FON_List() As String
+        Get
+            Return "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_DECT_List() As String
+        Get
+            Return "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_VOIP_List() As String
+        Get
+            Return "VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_TAM_List() As String
+        Get
+            Return "TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "S0Name" &amp; idx &amp; "=telcfg:settings/NTHotDialList/Name" &amp; idx
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_S0_List(ByVal idx As Integer) As String
+        Get
+            Return "S0Name" & idx & "=telcfg:settings/NTHotDialList/Name" & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "S0TelNr" &amp; idx &amp; "=telcfg:settings/NTHotDialList/Number" &amp; idx
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_S0_TelNr(ByVal idx As String) As String
+        Get
+            Return "S0TelNr" & idx & "=telcfg:settings/NTHotDialList/Number" & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "S0Type" &amp; idx &amp; "=telcfg:settings/NTHotDialList/Type" &amp; idx
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_S0_Type(ByVal idx As String) As String
+        Get
+            Return "S0Type" & idx & "=telcfg:settings/NTHotDialList/Type" & idx
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "DECT" &amp; idx &amp; "RingOnAllMSNs=telcfg:settings/Foncontrol/User" &amp; idx &amp; "/RingOnAllMSNs"
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_DECT_RingOnAllMSNs(ByVal idx As Integer) As String
+        Get
+            Return "DECT" & idx & "RingOnAllMSNs=telcfg:settings/Foncontrol/User" & idx & "/RingOnAllMSNs"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "DECT" &amp; idx &amp; "Nr=telcfg:settings/Foncontrol/User" &amp; idx &amp; "/MSN/list(Number)"
+    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_DECT_NrList(ByVal idx As Integer) As String
+        Get
+            Return "DECT" & idx & "Nr=telcfg:settings/Foncontrol/User" & idx & "/MSN/list(Number)"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "FaxMailActive=telcfg:settings/FaxMailActive"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_FaxMailActive() As String
+        Get
+            Return "FaxMailActive=telcfg:settings/FaxMailActive"
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "MobileName=telcfg:settings/Mobile/Name"
+    ''' </summary>
+    ''' <returns>Der zusammengefügte String</returns>
+    Private ReadOnly Property P_Query_FB_MobileName() As String
+        Get
+            Return "MobileName=telcfg:settings/Mobile/Name"
         End Get
     End Property
 
@@ -1402,7 +1647,6 @@ Public Class FritzBox
                     End If
                 End If
             Next
-            ' FAX = (From x In FAX Where Not x Like DataProvider.P_Def_StringEmpty Select x).ToArray
 
             ' POTSnummer
             xPathTeile.Item(xPathTeile.IndexOf("FAX")) = "POTS"
@@ -1431,10 +1675,9 @@ Public Class FritzBox
                 If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, Mobil, "ID", DataProvider.P_Def_MobilDialPort)
             End If
 
-            SIP = (From x In SIP Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
-            MSN = (From x In MSN Select x Distinct).ToArray 'Doppelte entfernen
-            MSN = (From x In MSN Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
-            FAX = (From x In FAX Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+            SIP = C_hf.ClearStringArray(SIP)
+            MSN = C_hf.ClearStringArray(MSN)
+            FAX = C_hf.ClearStringArray(FAX)
 
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
@@ -1459,7 +1702,7 @@ Public Class FritzBox
                             Exit For
                         End If
                     Next
-                    tmparray = (From x In tmparray Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+                    tmparray = C_hf.ClearStringArray(tmparray)
                     If tmparray.Length = 0 Then tmparray = MSN
 
                     TelNr = String.Join(";", tmparray)
@@ -1499,7 +1742,7 @@ Public Class FritzBox
                         For l As Integer = 1 To tmpstrUser.Length - 1
                             tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
                         Next
-                        For Each Nr In (From x In tmpstrUser Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
+                        For Each Nr As String In C_hf.ClearStringArray(tmpstrUser)
                             TelNr = TelNr & ";" & .EigeneVorwahlenEntfernen(Nr)
                         Next
                         TelNr = Mid(TelNr, 2)
@@ -1694,6 +1937,7 @@ Public Class FritzBox
         Dim DialPort As String = "0"
 
         Dim tmpStr As String
+        Dim tmpStrArr As String()
 
         Dim xPathTeile As New ArrayList
         Dim NodeNames As New ArrayList
@@ -1735,26 +1979,26 @@ Public Class FritzBox
 
             ' S0-Port
             For i = 1 To 8
-                .Add("S0" & i & "Name=telcfg:settings/NTHotDialList/Name" & i)
-                .Add("S0" & i & "Number=telcfg:settings/NTHotDialList/Number" & i)
+                .Add(P_Query_FB_S0("Name", i))
+                .Add(P_Query_FB_S0("Number", i))
             Next
 
-            .Add("POTS" & "=" & "telcfg:settings/MSN/POTS")
-            .Add("Mobile" & "=" & "telcfg:settings/Mobile/MSN")
+            .Add(P_Query_FB_POTS)
+            .Add(P_Query_FB_Mobile)
 
             ' FON
             For i = 0 To 2
-                .Add("Port" & i & "Name" & "=" & "telcfg:settings/MSN/Port" & i & "/Name")
+                .Add(P_Query_FB_FON(i))
             Next
 
             For i = 0 To 9
-                .Add("TAM" & i & "=" & "tam:settings/MSN" & i)
-                .Add("FAX" & i & "=" & "telcfg:settings/FaxMSN" & i)
-                .Add("MSN" & i & "=" & "telcfg:settings/MSN/MSN" & i)
-                .Add("VOIP" & i & "Enabled=" & "telcfg:settings/VoipExtension" & i & "/enabled")
+                .Add(P_Query_FB_TAM(i))
+                .Add(P_Query_FB_FAX(i))
+                .Add(P_Query_FB_MSN(i))
+                .Add(P_Query_FB_VOIP(i))
             Next
 
-            .Add("SIP" & "=" & "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)")
+            .Add(P_Query_FB_SIP)
 
             ' Führt das Fritz!Box Query aus und gibt die ersten Daten der Telefonnummern zurück
             FritzBoxJSONTelNr1 = GetFBJSON1(TelQuery)
@@ -1763,102 +2007,39 @@ Public Class FritzBox
             ' Es werden nur die Nummern ausgelesen, die auch einen Namen haben
 
             If Not FritzBoxJSONTelNr1 Is Nothing Then
-                If Not FritzBoxJSONTelNr1.Port0Name = "" Then
-                    i = 0
-                    For j = 0 To 9
-                        .Add("MSN" & i & "Nr" & j & "=" & "telcfg:settings/MSN/Port" & i & "/MSN" & j)
-                    Next
-                End If
 
-                If Not FritzBoxJSONTelNr1.Port1Name = "" Then
-                    i = 1
-                    For j = 0 To 9
-                        .Add("MSN" & i & "Nr" & j & "=" & "telcfg:settings/MSN/Port" & i & "/MSN" & j)
-                    Next
-                End If
+                tmpStrArr = Split(String.Join(";", _
+                    IIf(FritzBoxJSONTelNr1.Port0Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "0"), _
+                    IIf(FritzBoxJSONTelNr1.Port1Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1"), _
+                    IIf(FritzBoxJSONTelNr1.Port2Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2")), ";", , CompareMethod.Text)
 
-                If Not FritzBoxJSONTelNr1.Port2Name = "" Then
-                    i = 2
+                For Each idx In C_hf.ClearStringArray(tmpStrArr, False)
                     For j = 0 To 9
-                        .Add("MSN" & i & "Nr" & j & "=" & "telcfg:settings/MSN/Port" & i & "/MSN" & j)
+                        .Add(P_Query_FB_MSN_List(idx, j))
                     Next
-                End If
+                Next
 
-                If Not FritzBoxJSONTelNr1.VOIP0Enabled = "" Then
-                    i = 0
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
+                tmpStrArr = Split(String.Join(";", _
+                    IIf(FritzBoxJSONTelNr1.VOIP0Enabled = "1", "0", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP1Enabled = "1", "1", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP2Enabled = "1", "2", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP3Enabled = "1", "3", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP4Enabled = "1", "4", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP5Enabled = "1", "5", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP6Enabled = "1", "6", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP7Enabled = "1", "7", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP8Enabled = "1", "8", DataProvider.P_Def_LeerString), _
+                    IIf(FritzBoxJSONTelNr1.VOIP9Enabled = "1", "9", DataProvider.P_Def_LeerString)), ";", , CompareMethod.Text)
 
-                If FritzBoxJSONTelNr1.VOIP1Enabled = "1" Then
-                    i = 1
+                For Each idx In C_hf.ClearStringArray(tmpStrArr, False)
                     For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
+                        .Add(P_Query_FB_VOIP_List(idx, j))
                     Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP2Enabled = "1" Then
-                    i = 2
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP3Enabled = "1" Then
-                    i = 3
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP4Enabled = "1" Then
-                    i = 4
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP5Enabled = "1" Then
-                    i = 5
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP6Enabled = "1" Then
-                    i = 6
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP7Enabled = "1" Then
-                    i = 7
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP8Enabled = "1" Then
-                    i = 8
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
-
-                If FritzBoxJSONTelNr1.VOIP9Enabled = "1" Then
-                    i = 9
-                    For j = 0 To 9
-                        .Add("VOIP" & i & "Nr" & j & "=" & "telcfg:settings/VoipExtension" & i & "/Number" & j)
-                    Next
-                End If
+                Next
 
                 FritzBoxJSONTelNr2 = GetFBJSON2(TelQuery)
 
                 If Not FritzBoxJSONTelNr2 Is Nothing Then
-                    ' Ab hier können die bereits gesammelten Daten ausgewertet werden.
-
                     ' SIP Nummern ermitteln
                     xPathTeile.Add("SIP")
                     For Each SIPi As SIPEntry In FritzBoxJSONTelNr1.SIP
@@ -1867,11 +2048,13 @@ Public Class FritzBox
                                 TelNr = C_hf.EigeneVorwahlenEntfernen(.displayname)
                                 SIPID = .ID
                                 SIP(CInt(SIPID)) = TelNr
+                                PushStatus(DataProvider.P_FritzBox_Tel_NrFound("SIP", SIPID, TelNr))
                                 If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, TelNr, "ID", SIPID)
                             End If
                         End With
                     Next
-                    SIP = (From x In SIP Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+                    SIP = C_hf.ClearStringArray(SIP)
 
                     ' MSN Nummern
                     xPathTeile.Item(xPathTeile.Count - 1) = "MSN"
@@ -1890,7 +2073,7 @@ Public Class FritzBox
                     End With
 
                     With FritzBoxJSONTelNr2
-                        If Not FritzBoxJSONTelNr1.Port0Name = "" Then
+                        If Not FritzBoxJSONTelNr1.Port0Name = DataProvider.P_Def_LeerString Then
                             MSN(j) = .MSN0Nr0 : j += 1
                             MSN(j) = .MSN0Nr1 : j += 1
                             MSN(j) = .MSN0Nr2 : j += 1
@@ -1903,7 +2086,7 @@ Public Class FritzBox
                             MSN(j) = .MSN0Nr9 : j += 1
                         End If
 
-                        If Not FritzBoxJSONTelNr1.Port1Name = "" Then
+                        If Not FritzBoxJSONTelNr1.Port1Name = DataProvider.P_Def_LeerString Then
                             MSN(j) = .MSN1Nr0 : j += 1
                             MSN(j) = .MSN1Nr1 : j += 1
                             MSN(j) = .MSN1Nr2 : j += 1
@@ -1916,7 +2099,7 @@ Public Class FritzBox
                             MSN(j) = .MSN1Nr9 : j += 1
                         End If
 
-                        If Not FritzBoxJSONTelNr1.Port2Name = "" Then
+                        If Not FritzBoxJSONTelNr1.Port2Name = DataProvider.P_Def_LeerString Then
                             MSN(j) = .MSN2Nr0 : j += 1
                             MSN(j) = .MSN2Nr1 : j += 1
                             MSN(j) = .MSN2Nr2 : j += 1
@@ -1929,10 +2112,8 @@ Public Class FritzBox
                             MSN(j) = .MSN2Nr9 : j += 1
                         End If
                     End With
-                    ' Doppelte entfernen
-                    MSN = (From x In MSN Select x Distinct).ToArray
-                    ' Leere entfernen
-                    MSN = (From x In MSN Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+                    MSN = C_hf.ClearStringArray(MSN)
 
                     For i = LBound(MSN) To UBound(MSN)
                         If MSN(i).StartsWith("SIP") Then
@@ -1940,6 +2121,7 @@ Public Class FritzBox
                         Else
                             MSN(i) = C_hf.EigeneVorwahlenEntfernen(MSN(i))
                         End If
+                        PushStatus(DataProvider.P_FritzBox_Tel_NrFound("MSN", CStr(i), MSN(i)))
                         If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, MSN(i), "ID", CStr(i))
                     Next
 
@@ -1958,7 +2140,8 @@ Public Class FritzBox
                         TAM(j) = .TAM8 : j += 1
                         TAM(j) = .TAM9 : j += 1
                     End With
-                    TAM = (From x In TAM Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+
+                    TAM = C_hf.ClearStringArray(TAM)
 
                     For i = LBound(TAM) To UBound(TAM)
                         If TAM(i).StartsWith("SIP") Then
@@ -1966,6 +2149,7 @@ Public Class FritzBox
                         Else
                             TAM(i) = C_hf.EigeneVorwahlenEntfernen(TAM(i))
                         End If
+                        PushStatus(DataProvider.P_FritzBox_Tel_NrFound("TAM", CStr(i), TAM(i)))
                         If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, TAM(i), "ID", CStr(i))
                     Next
 
@@ -1986,7 +2170,7 @@ Public Class FritzBox
                         FAX(j) = .FAX9 : j += 1
                     End With
 
-                    FAX = (From x In FAX Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+                    FAX = C_hf.ClearStringArray(FAX)
 
                     For i = LBound(FAX) To UBound(FAX)
                         If FAX(i).StartsWith("SIP") Then
@@ -1994,6 +2178,7 @@ Public Class FritzBox
                         Else
                             FAX(i) = C_hf.EigeneVorwahlenEntfernen(FAX(i))
                         End If
+                        PushStatus(DataProvider.P_FritzBox_Tel_NrFound("FAX", CStr(i), FAX(i)))
                         If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, FAX(i), "ID", CStr(i))
                     Next
 
@@ -2005,6 +2190,7 @@ Public Class FritzBox
                         Else
                             POTS = C_hf.EigeneVorwahlenEntfernen(FritzBoxJSONTelNr1.POTS)
                         End If
+                        PushStatus(DataProvider.P_FritzBox_Tel_NrFound("POTS", DataProvider.P_Def_LeerString, POTS))
                         If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, FritzBoxJSONTelNr1.POTS, "ID", DataProvider.P_Def_StringNull)
                     End If
 
@@ -2022,78 +2208,44 @@ Public Class FritzBox
                     allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
                     .Clear()
-                    .Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)")   ' FON
-                    .Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)")                      ' DECT (Teil1)
-                    .Add("VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)")                 ' IP-Telefoen
-                    .Add("TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)")                            ' TAM
+                    .Add(P_Query_FB_FON_List)       ' FON
+                    .Add(P_Query_FB_DECT_List)      ' DECT (Teil1)
+                    .Add(P_Query_FB_VOIP_List)      ' IP-Telefoen
+                    .Add(P_Query_FB_TAM_List)       ' TAM
+
                     For i = 1 To 8
-                        .Add("S0Name" & i & "=telcfg:settings/NTHotDialList/Name" & i)                          ' S0
+                        .Add(P_Query_FB_S0_List(i)) ' S0
                     Next
 
                     FritzBoxJSONTelefone1 = GetFBJSON3(TelQuery)
                     If Not FritzBoxJSONTelefone1 Is Nothing Then
                         .Clear()
-                        With FritzBoxJSONTelefone1
-                            If Not .S0Name1 = "" Then
-                                i = 1
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr1
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
 
-                            If Not .S0Name2 = "" Then
-                                i = 2
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr2
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
+                        tmpStrArr = Split(String.Join(";", _
+                            IIf(FritzBoxJSONTelefone1.S0Name1 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name2 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name3 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "3"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name4 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "4"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name5 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "5"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name6 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "6"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name7 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "7"), _
+                            IIf(FritzBoxJSONTelefone1.S0Name8 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "8")), ";", , CompareMethod.Text)
 
-                            If Not .S0Name3 = "" Then
-                                i = 3
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr3
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
-
-                            If Not .S0Name4 = "" Then
-                                i = 4
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr4
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
-
-                            If Not .S0Name5 = "" Then
-                                i = 5
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr5
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
-
-                            If Not .S0Name6 = "" Then
-                                i = 6
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr6
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
-
-                            If Not .S0Name7 = "" Then
-                                i = 7
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr7
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
-
-                            If Not .S0Name8 = "" Then
-                                i = 8
-                                TelQuery.Add("S0TelNr" & i & "=telcfg:settings/NTHotDialList/Number" & i) ' S0 Nr8
-                                TelQuery.Add("S0Type" & i & "=telcfg:settings/NTHotDialList/Type" & i) ' S0 Typ
-                            End If
-
-                        End With
+                        For Each idx In C_hf.ClearStringArray(tmpStrArr)
+                            TelQuery.Add(P_Query_FB_S0_TelNr(idx)) ' S0 Nr
+                            TelQuery.Add(P_Query_FB_S0_Type(idx)) ' S0 Typ
+                        Next
 
 
                         For i = LBound(FritzBoxJSONTelefone1.DECT) To UBound(FritzBoxJSONTelefone1.DECT)
                             If Not FritzBoxJSONTelefone1.DECT(i).Intern = DataProvider.P_Def_Leerzeichen Then
-                                .Add("DECT" & i & "RingOnAllMSNs=telcfg:settings/Foncontrol/User" & i & "/RingOnAllMSNs")
-                                .Add("DECT" & i & "Nr=telcfg:settings/Foncontrol/User" & i & "/MSN/list(Number)")
+                                .Add(P_Query_FB_DECT_RingOnAllMSNs(i))
+                                .Add(P_Query_FB_DECT_NrList(i))
                             End If
                         Next
 
-                        .Add("FaxMailActive=telcfg:settings/FaxMailActive")
-                        .Add("MobileName=telcfg:settings/Mobile/Name")
+                        .Add(P_Query_FB_FaxMailActive)
+                        .Add(P_Query_FB_MobileName)
                         FritzBoxJSONTelefone2 = GetFBJSON4(TelQuery)
                     End If
                 End If
@@ -2101,7 +2253,10 @@ Public Class FritzBox
         End With
 
         ' Telefone 
-        If Not FritzBoxJSONTelNr1 Is Nothing And Not FritzBoxJSONTelNr2 Is Nothing And Not FritzBoxJSONTelefone1 Is Nothing And Not FritzBoxJSONTelefone2 Is Nothing Then
+        If Not FritzBoxJSONTelNr1 Is Nothing And Not _
+               FritzBoxJSONTelNr2 Is Nothing And Not _
+               FritzBoxJSONTelefone1 Is Nothing And Not _
+               FritzBoxJSONTelefone2 Is Nothing Then
 
             xPathTeile.Item(xPathTeile.IndexOf("Nummern")) = "Telefone"
             xPathTeile.Item(xPathTeile.IndexOf("Mobil")) = "FON"
@@ -2111,58 +2266,65 @@ Public Class FritzBox
                     If Not .Name = DataProvider.P_Def_LeerString Then
                         TelNr = DataProvider.P_Def_LeerString
                         DialPort = CStr(i + 1)
-                        Dim tmparray(9) As String
+                        ReDim tmpStrArr(9)
                         With FritzBoxJSONTelNr2
 
                             Select Case i
                                 Case 0
-                                    If Not .MSN0Nr0 = DataProvider.P_Def_LeerString Then tmparray(0) = .MSN0Nr0
-                                    If Not .MSN0Nr1 = DataProvider.P_Def_LeerString Then tmparray(1) = .MSN0Nr1
-                                    If Not .MSN0Nr2 = DataProvider.P_Def_LeerString Then tmparray(2) = .MSN0Nr2
-                                    If Not .MSN0Nr3 = DataProvider.P_Def_LeerString Then tmparray(3) = .MSN0Nr3
-                                    If Not .MSN0Nr4 = DataProvider.P_Def_LeerString Then tmparray(4) = .MSN0Nr4
-                                    If Not .MSN0Nr5 = DataProvider.P_Def_LeerString Then tmparray(5) = .MSN0Nr5
-                                    If Not .MSN0Nr6 = DataProvider.P_Def_LeerString Then tmparray(6) = .MSN0Nr6
-                                    If Not .MSN0Nr7 = DataProvider.P_Def_LeerString Then tmparray(7) = .MSN0Nr7
-                                    If Not .MSN0Nr8 = DataProvider.P_Def_LeerString Then tmparray(8) = .MSN0Nr8
-                                    If Not .MSN0Nr9 = DataProvider.P_Def_LeerString Then tmparray(9) = .MSN0Nr9
+                                    tmpStrArr = Split(String.Join(";", _
+                                        .MSN0Nr0,
+                                        .MSN0Nr1,
+                                        .MSN0Nr2,
+                                        .MSN0Nr3,
+                                        .MSN0Nr4,
+                                        .MSN0Nr5,
+                                        .MSN0Nr6,
+                                        .MSN0Nr7,
+                                        .MSN0Nr8,
+                                        .MSN0Nr9) _
+                                        , ";", , CompareMethod.Text)
                                 Case 1
-                                    If Not .MSN1Nr0 = DataProvider.P_Def_LeerString Then tmparray(0) = .MSN1Nr0
-                                    If Not .MSN1Nr1 = DataProvider.P_Def_LeerString Then tmparray(1) = .MSN1Nr1
-                                    If Not .MSN1Nr2 = DataProvider.P_Def_LeerString Then tmparray(2) = .MSN1Nr2
-                                    If Not .MSN1Nr3 = DataProvider.P_Def_LeerString Then tmparray(3) = .MSN1Nr3
-                                    If Not .MSN1Nr4 = DataProvider.P_Def_LeerString Then tmparray(4) = .MSN1Nr4
-                                    If Not .MSN1Nr5 = DataProvider.P_Def_LeerString Then tmparray(5) = .MSN1Nr5
-                                    If Not .MSN1Nr6 = DataProvider.P_Def_LeerString Then tmparray(6) = .MSN1Nr6
-                                    If Not .MSN1Nr7 = DataProvider.P_Def_LeerString Then tmparray(7) = .MSN1Nr7
-                                    If Not .MSN1Nr8 = DataProvider.P_Def_LeerString Then tmparray(8) = .MSN1Nr8
-                                    If Not .MSN1Nr9 = DataProvider.P_Def_LeerString Then tmparray(9) = .MSN1Nr9
+                                    tmpStrArr = Split(String.Join(";", _
+                                        .MSN1Nr0,
+                                        .MSN1Nr1,
+                                        .MSN1Nr2,
+                                        .MSN1Nr3,
+                                        .MSN1Nr4,
+                                        .MSN1Nr5,
+                                        .MSN1Nr6,
+                                        .MSN1Nr7,
+                                        .MSN1Nr8,
+                                        .MSN1Nr9) _
+                                        , ";", , CompareMethod.Text)
                                 Case 2
-                                    If Not .MSN2Nr0 = DataProvider.P_Def_LeerString Then tmparray(0) = .MSN2Nr0
-                                    If Not .MSN2Nr1 = DataProvider.P_Def_LeerString Then tmparray(1) = .MSN2Nr1
-                                    If Not .MSN2Nr2 = DataProvider.P_Def_LeerString Then tmparray(2) = .MSN2Nr2
-                                    If Not .MSN2Nr3 = DataProvider.P_Def_LeerString Then tmparray(3) = .MSN2Nr3
-                                    If Not .MSN2Nr4 = DataProvider.P_Def_LeerString Then tmparray(4) = .MSN2Nr4
-                                    If Not .MSN2Nr5 = DataProvider.P_Def_LeerString Then tmparray(5) = .MSN2Nr5
-                                    If Not .MSN2Nr6 = DataProvider.P_Def_LeerString Then tmparray(6) = .MSN2Nr6
-                                    If Not .MSN2Nr7 = DataProvider.P_Def_LeerString Then tmparray(7) = .MSN2Nr7
-                                    If Not .MSN2Nr8 = DataProvider.P_Def_LeerString Then tmparray(8) = .MSN2Nr8
-                                    If Not .MSN2Nr9 = DataProvider.P_Def_LeerString Then tmparray(9) = .MSN2Nr9
+                                    tmpStrArr = Split(String.Join(";", _
+                                        .MSN2Nr0,
+                                        .MSN2Nr1,
+                                        .MSN2Nr2,
+                                        .MSN2Nr3,
+                                        .MSN2Nr4,
+                                        .MSN2Nr5,
+                                        .MSN2Nr6,
+                                        .MSN2Nr7,
+                                        .MSN2Nr8,
+                                        .MSN2Nr9) _
+                                        , ";", , CompareMethod.Text)
                             End Select
                         End With
 
-                        tmparray = (From x In tmparray Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
-                        If tmparray.Length = 0 Then tmparray = MSN
+                        tmpStrArr = C_hf.ClearStringArray(tmpStrArr)
 
-                        For j = LBound(tmparray) To UBound(tmparray)
-                            If tmparray(j).StartsWith("SIP") Then
-                                tmparray(j) = SIP(CInt(Mid(tmparray(j), 4, 1)))
+                        If tmpStrArr.Length = 0 Then tmpStrArr = MSN
+
+                        For j = LBound(tmpStrArr) To UBound(tmpStrArr)
+                            If tmpStrArr(j).StartsWith("SIP") Then
+                                tmpStrArr(j) = SIP(CInt(Mid(tmpStrArr(j), 4, 1)))
                             Else
-                                tmparray(j) = C_hf.EigeneVorwahlenEntfernen(tmparray(j))
+                                tmpStrArr(j) = C_hf.EigeneVorwahlenEntfernen(tmpStrArr(j))
                             End If
                         Next
 
-                        TelNr = String.Join(";", tmparray)
+                        TelNr = String.Join(";", tmpStrArr)
                         PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("FON", DialPort, TelNr, .Name))
                         If P_SpeichereDaten Then
                             NodeValues.Item(NodeNames.IndexOf("TelName")) = .Name
@@ -2223,10 +2385,13 @@ Public Class FritzBox
                         If Not TelNr = allin Then
                             For Each DECTNr As DECTNr In tmpDectNr
                                 If Not DECTNr.Number = DataProvider.P_Def_LeerString Then
-                                    TelNr = TelNr & ";" & C_hf.EigeneVorwahlenEntfernen(DECTNr.Number)
+                                    If TelNr = DataProvider.P_Def_LeerString Then
+                                        TelNr = C_hf.EigeneVorwahlenEntfernen(DECTNr.Number)
+                                    Else
+                                        TelNr = String.Join(";", TelNr, C_hf.EigeneVorwahlenEntfernen(DECTNr.Number))
+                                    End If
                                 End If
                             Next
-                            TelNr = Mid(TelNr, 2)
                         End If
 
                         PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("DECT", DialPort, TelNr, TelName))
@@ -2251,6 +2416,7 @@ Public Class FritzBox
                         TelName = .Name
                         DialPort = "2" & CStr(i)
                         TelNr = DataProvider.P_Def_LeerString
+
                         With FritzBoxJSONTelNr2
                             Select Case i
                                 Case 0
@@ -2381,6 +2547,7 @@ Public Class FritzBox
                     End If
                 End With
             Next
+
             xPathTeile.Item(xPathTeile.IndexOf("VOIP")) = "S0"
             ' S0
             For i = 1 To 8
@@ -2418,9 +2585,9 @@ Public Class FritzBox
                         TelNr = FritzBoxJSONTelefone2.S0TelNr8
                         tmpStr = FritzBoxJSONTelefone2.S0Type8
                     Case Else
-                        TelName = ""
-                        tmpStr = ""
-                        TelNr = ""
+                        TelName = DataProvider.P_Def_LeerString
+                        tmpStr = DataProvider.P_Def_LeerString
+                        TelNr = DataProvider.P_Def_LeerString
                 End Select
                 If Not TelName = DataProvider.P_Def_LeerString And Not TelNr = DataProvider.P_Def_LeerString Then
                     DialPort = "5" & i
@@ -2514,7 +2681,7 @@ Public Class FritzBox
         FBLogout(P_SID)
 
         ' Aufräumen
-
+        tmpStrArr = Nothing
         FritzBoxJSONTelNr1 = Nothing
         FritzBoxJSONTelNr2 = Nothing
         FritzBoxJSONTelefone1 = Nothing
@@ -2538,11 +2705,15 @@ Public Class FritzBox
     ''' <param name="SIPList">Die SIP-Liste</param>
     ''' <returns>EIne gültige Telefonnummer ohne Vorwahlen.</returns>
     Private Function GetFBVoipNr(ByVal VOIPNr As String, ByVal SIPList() As String) As String
-        GetFBVoipNr = ""
+        GetFBVoipNr = DataProvider.P_Def_LeerString
 
-        If Not VOIPNr = "" Then
+        If Not VOIPNr = DataProvider.P_Def_LeerString Then
             If VOIPNr.StartsWith("SIP") Then
-                GetFBVoipNr += SIPList(CInt(Mid(VOIPNr, 4, 1)))
+                If Not CInt(Mid(VOIPNr, 4, 1)) > UBound(SIPList) Then
+                    GetFBVoipNr += SIPList(CInt(Mid(VOIPNr, 4, 1)))
+                Else
+                    C_hf.LogFile("Die VoIP Nr. " & VOIPNr & " kann keiner SIP zugeordnet werden (UBound(SIPList) = " & UBound(SIPList) & ")")
+                End If
             Else
                 GetFBVoipNr += C_hf.EigeneVorwahlenEntfernen(VOIPNr)
             End If
@@ -2619,25 +2790,19 @@ Public Class FritzBox
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = DataProvider.P_Def_LeerString
-        Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & Strings.Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
-        tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
-        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
-        For Each Nr In tmp
-            AlleNummern = Nr & ";" & AlleNummern
-        Next
-        AlleNummern = Strings.Left(AlleNummern, Len(AlleNummern) - 1)
+        Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & _
+                                    Strings.Join(SIP, ";") & ";" & _
+                                    Strings.Join(TAM, ";") & ";" & _
+                                    Strings.Join(FAX, ";") & ";" & _
+                                    POTS & ";" & Mobil, ";", , CompareMethod.Text)
+
+        tmp = C_hf.ClearStringArray(tmp)
+        AlleNummern = Join(tmp, ";")
     End Function
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal POTS As String, ByVal Mobil As String) As String
-        AlleNummern = DataProvider.P_Def_LeerString
-        Dim tmp() As String = Split(Strings.Join(MSN, ";") & ";" & Strings.Join(SIP, ";") & ";" & Strings.Join(TAM, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
-        tmp = (From x In tmp Select x Distinct).ToArray 'Doppelte entfernen
-        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray ' Leere entfernen
-        tmp = (From x In tmp Where Not x Like DataProvider.P_Def_ErrorMinusOne_String Select x).ToArray ' -1 entfernen
-        For Each Nr In tmp
-            AlleNummern = Nr & ";" & AlleNummern
-        Next
-        AlleNummern = Strings.Left(AlleNummern, Len(AlleNummern) - 1)
+        Dim FAX As String() = Nothing
+        Return AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
     End Function
 #End Region
 
