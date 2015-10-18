@@ -434,8 +434,6 @@ Imports Microsoft.Office.Core
         End Select
 
         Return Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
-
-        'Return C_HF.IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False)
     End Function
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
@@ -538,6 +536,7 @@ Imports Microsoft.Office.Core
             Case "btnUpload"
                 Return DataProvider.P_CMB_Insp_Upload
             Case Else
+                C_HF.LogFile("GetItemLabel: Kann control.Id " & control.Id & " nicht auswerten.")
                 Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
@@ -589,6 +588,7 @@ Imports Microsoft.Office.Core
             Case "btnUpload"
                 Return DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
+                C_HF.LogFile("GetItemScreenTipp: Kann control.Id " & control.Id & " nicht auswerten.")
                 Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
@@ -637,7 +637,10 @@ Imports Microsoft.Office.Core
                 Return "RecordsSaveAsOutlookContact"
             Case "btnNote" ' Inspector
                 Return "ShowNotesPage"
+                'Case "CallList", "RingList", "VIPList"
+                '    Return DataProvider.P_Def_LeerString
             Case Else
+                C_HF.LogFile("GetItemImageMso: Kann control.Id " & control.Id & " nicht auswerten.")
                 Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
 
