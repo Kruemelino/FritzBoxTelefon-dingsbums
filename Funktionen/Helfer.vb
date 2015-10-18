@@ -267,28 +267,10 @@ Public Class Helfer
 
     End Sub ' (Keyänderung) 
 
-
     Public Function GetUNIXTimeStamp(ByVal dteDate As Date) As Long
         'If dteDate.IsDaylightSavingTime Then dteDate = DateAdd(DateInterval.Hour, -1, dteDate)
         Return DateDiff(DateInterval.Second, #1/1/1970#, dteDate)
     End Function
-
-    'Public Function GetUnixTimestamp(ByVal currDate As DateTime) As Double
-    '    'create Timespan by subtracting the value provided from the Unix Epoch
-    '    Dim span As TimeSpan = (currDate - New DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime())
-    '    'return the total seconds (which is a UNIX timestamp)
-    '    Return span.TotalSeconds
-    'End Function
-
-    'Public Function GetTimestamp(ByVal FromDateTime As DateTime) As Integer
-    '    Dim Startdate As DateTime = #1/1/1970#
-    '    Dim Spanne As TimeSpan
-
-    '    Spanne = FromDateTime.Subtract(Startdate)
-    '    Return CType(Math.Abs(Spanne.TotalSeconds()), Integer)
-    'End Function
-
-
 
 #Region "Überladene .NET Funktionen"
 #Region "IIF"
