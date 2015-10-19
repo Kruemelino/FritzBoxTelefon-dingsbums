@@ -530,7 +530,8 @@ Public Class formCfg
 
             For i = 20 To 29
                 TelName = Split(C_XML.Read(C_DP.XMLDoc, "Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
-                If Not TelName(0) = DataProvider.P_Def_ErrorMinusOne_String And ComboBoxPhonerSIP.SelectedItem IsNot Nothing And Not TelName.Length = 2 Then
+                If Not TelName(0) = DataProvider.P_Def_ErrorMinusOne_String And Not TelName.Length = 2 Then
+                    'If Not TelName(0) = DataProvider.P_Def_ErrorMinusOne_String And Not TelName.Length = 2 AndAlso ComboBoxPhonerSIP.SelectedItem IsNot Nothing Then
                     If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
                         PhonerTelNameIndex = i
                         Exit For
