@@ -38,7 +38,7 @@ Public Class FritzBox
         Get
             Return sSID
         End Get
-        Set(value As String)
+        Set(ByVal value As String)
             sSID = value
         End Set
     End Property
@@ -47,7 +47,7 @@ Public Class FritzBox
         Get
             Return sFirmware
         End Get
-        Set(value As String)
+        Set(ByVal value As String)
             sFirmware = value
         End Set
     End Property
@@ -2008,10 +2008,11 @@ Public Class FritzBox
 
             If Not FritzBoxJSONTelNr1 Is Nothing Then
 
-                tmpStrArr = Split(String.Join(";", _
-                    IIf(FritzBoxJSONTelNr1.Port0Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "0"), _
-                    IIf(FritzBoxJSONTelNr1.Port1Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1"), _
-                    IIf(FritzBoxJSONTelNr1.Port2Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2")), ";", , CompareMethod.Text)
+                ReDim tmpStrArr(2)
+                j = 0
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.Port0Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "0") : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.Port1Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1") : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.Port2Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2")
 
                 For Each idx In C_hf.ClearStringArray(tmpStrArr, False)
                     For j = 0 To 9
@@ -2019,17 +2020,18 @@ Public Class FritzBox
                     Next
                 Next
 
-                tmpStrArr = Split(String.Join(";", _
-                    IIf(FritzBoxJSONTelNr1.VOIP0Enabled = "1", "0", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP1Enabled = "1", "1", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP2Enabled = "1", "2", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP3Enabled = "1", "3", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP4Enabled = "1", "4", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP5Enabled = "1", "5", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP6Enabled = "1", "6", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP7Enabled = "1", "7", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP8Enabled = "1", "8", DataProvider.P_Def_LeerString), _
-                    IIf(FritzBoxJSONTelNr1.VOIP9Enabled = "1", "9", DataProvider.P_Def_LeerString)), ";", , CompareMethod.Text)
+                ReDim tmpStrArr(9)
+                j = 0
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP0Enabled = "1", "0", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP1Enabled = "1", "1", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP2Enabled = "1", "2", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP3Enabled = "1", "3", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP4Enabled = "1", "4", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP5Enabled = "1", "5", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP6Enabled = "1", "6", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP7Enabled = "1", "7", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP8Enabled = "1", "8", DataProvider.P_Def_LeerString) : j += 1
+                tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP9Enabled = "1", "9", DataProvider.P_Def_LeerString)
 
                 For Each idx In C_hf.ClearStringArray(tmpStrArr, False)
                     For j = 0 To 9
@@ -2221,21 +2223,21 @@ Public Class FritzBox
                     If Not FritzBoxJSONTelefone1 Is Nothing Then
                         .Clear()
 
-                        tmpStrArr = Split(String.Join(";", _
-                            IIf(FritzBoxJSONTelefone1.S0Name1 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name2 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name3 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "3"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name4 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "4"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name5 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "5"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name6 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "6"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name7 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "7"), _
-                            IIf(FritzBoxJSONTelefone1.S0Name8 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "8")), ";", , CompareMethod.Text)
+                        ReDim tmpStrArr(7)
+                        j = 0
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name1 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name2 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name3 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "3") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name4 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "4") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name5 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "5") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name6 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "6") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name7 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "7") : j += 1
+                        tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name8 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "8")
 
                         For Each idx In C_hf.ClearStringArray(tmpStrArr)
                             TelQuery.Add(P_Query_FB_S0_TelNr(idx)) ' S0 Nr
                             TelQuery.Add(P_Query_FB_S0_Type(idx)) ' S0 Typ
                         Next
-
 
                         For i = LBound(FritzBoxJSONTelefone1.DECT) To UBound(FritzBoxJSONTelefone1.DECT)
                             If Not FritzBoxJSONTelefone1.DECT(i).Intern = DataProvider.P_Def_Leerzeichen Then
@@ -2271,44 +2273,44 @@ Public Class FritzBox
 
                             Select Case i
                                 Case 0
-                                    tmpStrArr = Split(String.Join(";", _
-                                        .MSN0Nr0,
-                                        .MSN0Nr1,
-                                        .MSN0Nr2,
-                                        .MSN0Nr3,
-                                        .MSN0Nr4,
-                                        .MSN0Nr5,
-                                        .MSN0Nr6,
-                                        .MSN0Nr7,
-                                        .MSN0Nr8,
-                                        .MSN0Nr9) _
-                                        , ";", , CompareMethod.Text)
+                                    ReDim tmpStrArr(10)
+                                    j = 0
+                                    tmpStrArr(j) = .MSN0Nr0 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr1 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr2 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr3 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr4 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr5 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr6 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr7 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr8 : j += 1
+                                    tmpStrArr(j) = .MSN0Nr9
                                 Case 1
-                                    tmpStrArr = Split(String.Join(";", _
-                                        .MSN1Nr0,
-                                        .MSN1Nr1,
-                                        .MSN1Nr2,
-                                        .MSN1Nr3,
-                                        .MSN1Nr4,
-                                        .MSN1Nr5,
-                                        .MSN1Nr6,
-                                        .MSN1Nr7,
-                                        .MSN1Nr8,
-                                        .MSN1Nr9) _
-                                        , ";", , CompareMethod.Text)
+                                    ReDim tmpStrArr(10)
+                                    j = 0
+                                    tmpStrArr(j) = .MSN1Nr0 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr1 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr2 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr3 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr4 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr5 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr6 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr7 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr8 : j += 1
+                                    tmpStrArr(j) = .MSN1Nr9
                                 Case 2
-                                    tmpStrArr = Split(String.Join(";", _
-                                        .MSN2Nr0,
-                                        .MSN2Nr1,
-                                        .MSN2Nr2,
-                                        .MSN2Nr3,
-                                        .MSN2Nr4,
-                                        .MSN2Nr5,
-                                        .MSN2Nr6,
-                                        .MSN2Nr7,
-                                        .MSN2Nr8,
-                                        .MSN2Nr9) _
-                                        , ";", , CompareMethod.Text)
+                                    ReDim tmpStrArr(10)
+                                    j = 0
+                                    tmpStrArr(j) = .MSN2Nr0 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr1 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr2 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr3 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr4 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr5 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr6 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr7 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr8 : j += 1
+                                    tmpStrArr(j) = .MSN2Nr9
                             End Select
                         End With
 
@@ -2388,7 +2390,7 @@ Public Class FritzBox
                                     If TelNr = DataProvider.P_Def_LeerString Then
                                         TelNr = C_hf.EigeneVorwahlenEntfernen(DECTNr.Number)
                                     Else
-                                        TelNr = String.Join(";", TelNr, C_hf.EigeneVorwahlenEntfernen(DECTNr.Number))
+                                        TelNr += ";" & C_hf.EigeneVorwahlenEntfernen(DECTNr.Number)
                                     End If
                                 End If
                             Next
@@ -2807,7 +2809,7 @@ Public Class FritzBox
 #End Region
 
 #Region "Wählen"
-    Friend Function SendDialRequestToBox(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
+    Friend Function SendDialRequestToBox(ByVal sDialCode As String, ByVal sDialPort As String, ByVal bHangUp As Boolean) As String
         If C_DP.P_RBFBComUPnP Then
             Return SendDialRequestToBoxV3(sDialCode, sDialPort, bHangUp)
         Else
@@ -2819,7 +2821,7 @@ Public Class FritzBox
         End If
     End Function
 
-    Private Function SendDialRequestToBoxV1(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
+    Private Function SendDialRequestToBoxV1(ByVal sDialCode As String, ByVal sDialPort As String, ByVal bHangUp As Boolean) As String
         ' überträgt die zum Verbindungsaufbau notwendigen Daten per WinHttp an die FritzBox
         ' Parameter:  dialCode (string):    zu wählende Nummer
         '             fonanschluss (long):  Welcher Anschluss wird verwendet?
@@ -2843,7 +2845,7 @@ Public Class FritzBox
         End If
     End Function
 
-    Private Function SendDialRequestToBoxV2(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
+    Private Function SendDialRequestToBoxV2(ByVal sDialCode As String, ByVal sDialPort As String, ByVal bHangUp As Boolean) As String
         Dim Response As String              ' Antwort der FritzBox
         Dim PortChangeSuccess As Boolean
         Dim DialCodetoBox As String
@@ -2883,7 +2885,7 @@ Public Class FritzBox
         End If
     End Function
 
-    Private Function SendDialRequestToBoxV3(ByVal sDialCode As String, ByVal sDialPort As String, bHangUp As Boolean) As String
+    Private Function SendDialRequestToBoxV3(ByVal sDialCode As String, ByVal sDialPort As String, ByVal bHangUp As Boolean) As String
         Dim PortChangeSuccess As Boolean
         Dim DialCodetoBox As String
         Dim UPnPDialport As String
@@ -3317,7 +3319,7 @@ Public Class FritzBox
     Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
 
     ' IDisposable
-    Protected Overridable Sub Dispose(disposing As Boolean)
+    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
             If disposing Then
                 tb.Dispose()
