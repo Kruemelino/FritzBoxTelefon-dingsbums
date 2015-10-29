@@ -28,7 +28,7 @@ Public Class Rijndael
         EncryptString128Bit = DataProvider.P_Def_ErrorMinusOne_String
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrTextToBeEncrypted IsNot DataProvider.P_Def_ErrorMinusOne_String And vstrEncryptionKey IsNot DataProvider.P_Def_ErrorMinusOne_String Then
+        If Not vstrTextToBeEncrypted = DataProvider.P_Def_ErrorMinusOne_String And vstrEncryptionKey = DataProvider.P_Def_ErrorMinusOne_String Then
 
             Dim bytValue() As Byte
             Dim bytKey() As Byte
@@ -110,7 +110,7 @@ Public Class Rijndael
         DecryptString128Bit = DataProvider.P_Def_ErrorMinusOne_String
 
         ' Test ob gültige Eingangsdaten vorhanden
-        If vstrStringToBeDecrypted IsNot DataProvider.P_Def_ErrorMinusOne_String And vstrDecryptionKey IsNot DataProvider.P_Def_ErrorMinusOne_String Then
+        If Not vstrStringToBeDecrypted = DataProvider.P_Def_ErrorMinusOne_String And Not vstrDecryptionKey = DataProvider.P_Def_ErrorMinusOne_String Then
 
             Dim bytDataToBeDecrypted() As Byte
             Dim bytDecryptionKey() As Byte
