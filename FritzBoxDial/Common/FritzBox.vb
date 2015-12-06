@@ -357,6 +357,14 @@ Public Class FritzBox
         End Get
     End Property
 
+    ''' <summary>
+    ''' http://P_ValidFBAdr/data.lua
+    ''' </summary>
+    Private ReadOnly Property P_Link_FB_Data() As String
+        Get
+            Return P_Link_FB_Basis & "/data.lua"
+        End Get
+    End Property
 
     ''' <summary>
     ''' http://P_ValidFBAdr/cgi-bin/firmwarecfg
@@ -3131,12 +3139,21 @@ Public Class FritzBox
 #End Region
 
 #Region "Fritz!Box Telefonbuch"
+
+    Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+        If ThisFBFirmware.ISLargerOREqual("6.30") Then
+            UploadKontaktToFritzBoxV2(Kontakt, istVIP)
+        Else
+            UploadKontaktToFritzBoxV1(Kontakt, istVIP)
+        End If
+    End Sub
+
     ''' <summary>
     ''' Lädt ein einen einzelnen Kontakt in das aktuell geöffnete Telefonbuch der Fritz!Box hoch.
     ''' </summary>
     ''' <param name="Kontakt">Der Kontakt, der hichgeladen werden soll.</param>
     ''' <param name="istVIP">Angabe, ob der Kontakt ein VIP ist. Diese Information wird übernommen.</param>
-    Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+    Sub UploadKontaktToFritzBoxV1(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
 
         Dim EntryName As String
         Dim EmailNew1 As String
@@ -3192,6 +3209,128 @@ Public Class FritzBox
         Else
             C_hf.MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "UploadKontaktToFritzBox")
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Lädt ein einen einzelnen Kontakt in das aktuell geöffnete Telefonbuch der Fritz!Box hoch.
+    ''' </summary>
+    ''' <param name="Kontakt">Der Kontakt, der hichgeladen werden soll.</param>
+    ''' <param name="istVIP">Angabe, ob der Kontakt ein VIP ist. Diese Information wird übernommen.</param>
+    Sub UploadKontaktToFritzBoxV2(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+
+        Dim EntryName As String
+        Dim EmailNew1 As String
+
+        Dim NumberNew(3) As String
+        Dim NumberType(3) As String
+
+        Dim FritzBoxJSONUploadKontakt As FritzBoxJSONUploadResult = Nothing
+        Dim C_JSON As New JSON
+        Dim cmd As String
+        Dim ReturnValue As String
+
+        NumberType(0) = "home"
+        NumberType(1) = "mobile"
+        NumberType(2) = "work"
+        NumberType(3) = "fax_work"
+
+        With Kontakt
+            EntryName = Replace(.FullName, DataProvider.P_Def_Leerzeichen, "+")
+            NumberNew(0) = C_hf.nurZiffern(.HomeTelephoneNumber)
+            NumberNew(1) = C_hf.nurZiffern(.MobileTelephoneNumber)
+            NumberNew(2) = C_hf.nurZiffern(.BusinessTelephoneNumber)
+            NumberNew(3) = C_hf.nurZiffern(.BusinessFaxNumber)
+            EmailNew1 = .Email1Address
+        End With
+
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            cmd = "sid=" & P_SID & "&entryname=" & EntryName
+
+            For i = LBound(NumberType) To UBound(NumberType) - 1
+                If Not NumberNew(i) = DataProvider.P_Def_LeerString Then
+                    cmd += "&numbertypenew" & i + 1 & "=" & NumberType(i) & "&numbernew" & i + 1 & "=" & NumberNew(i)
+                End If
+            Next
+
+            If istVIP Then cmd += "&category=on"
+
+            If Not EmailNew1 = DataProvider.P_Def_LeerString Then cmd += "&emailnew1=" & EmailNew1
+            cmd += "&prionumber=none"
+            cmd += "&bookid=0"
+            cmd += "&validate=apply"
+
+            'cmd += "&back_to_page=/fon_num/fonbook_list.lua"
+            'cmd += "&vanity="
+            'cmd += "&code="
+            'cmd += "&idx="
+            'cmd += "&uid="
+            cmd += "&xhr=1"
+
+            With C_hf
+                ReturnValue = .httpPOST(P_Link_FB_FonBook_Entry, cmd, FBEncoding)
+                FritzBoxJSONUploadKontakt = C_JSON.GetUploadResult(ReturnValue)
+
+                If FritzBoxJSONUploadKontakt.ok And FritzBoxJSONUploadKontakt.result.ToLower = "ok" Then
+
+                    ' xhr=1&
+                    ' sid=b14a6a7b97c4ad41&
+                    ' lang=de&
+                    ' no_sidrenew=&
+                    ' idx=&
+                    ' uid=&
+                    ' entryname=Tim+Roch&
+                    ' numbertypenew1=home&
+                    ' numbernew1=&
+                    ' numbertypenew2=mobile&
+                    ' numbernew2=&
+                    ' numbertypenew3=work&
+                    ' numbernew3=0123456789&
+                    ' prionumber=none&
+                    ' code=&
+                    ' vanity=&
+                    ' emailnew1=&
+                    ' bookid=0&
+                    ' back_to_page=/fon_num/fonbook_list.lua&
+                    ' apply=&
+                    ' oldpage=/fon_num/fonbook_entry.lua'
+
+                    cmd = "xhr=1"
+                    cmd += "&sid=" & P_SID
+                    cmd += "&lang=de"
+                    cmd += "&no_sidrenew="
+                    cmd += "&idx="
+                    cmd += "&uid="
+                    cmd += "&entryname=" & EntryName
+                    For i = LBound(NumberType) To UBound(NumberType) - 1
+                        If Not NumberNew(i) = DataProvider.P_Def_LeerString Then
+                            cmd += "&numbertypenew" & i + 1 & "=" & NumberType(i) & "&numbernew" & i + 1 & "=" & NumberNew(i)
+                        End If
+                    Next
+                    cmd += "&prionumber=none"
+                    cmd += "&code="
+                    cmd += "&vanity="
+                    If Not EmailNew1 = DataProvider.P_Def_LeerString Then cmd += "&emailnew1=" & EmailNew1
+                    cmd += "&bookid=0"
+                    cmd += "&back_to_page=/fon_num/fonbook_list.lua"
+                    cmd += "&apply="
+                    cmd += "&oldpage=/fon_num/fonbook_entry.lua"
+
+                    ReturnValue = .httpPOST(P_Link_FB_Data, cmd, FBEncoding)
+
+                    .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
+                    .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBox")
+                Else
+                    .MsgBox(DataProvider.P_Fehler_Kontakt_Hochladen(EntryName), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
+                End If
+            End With
+
+        Else
+            C_hf.MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "UploadKontaktToFritzBox")
+        End If
+
+        C_JSON = Nothing
     End Sub
 
     ''' <summary>
@@ -3268,7 +3407,7 @@ Public Class FritzBox
     End Function
 
     ' Link Telefonbuch hinzufügen
-    ' http://192.168.180.1/fon_num/fonbook_edit.lua?sid=9f4d23c5f4dcefd2&uid=new&back_to_page=%2Ffon_num%2Ffonbook_list.lua
+    ' http://192.168.180.1/fon_num/fonbook_edit.lua?sid=9f4d23c5f4dcefd2&uid=new&back_to_page=/fon_num/fonbook_list.lua
 
     ''' <summary>
     ''' Gibt eine Liste der verfügbaren Fritz!Box Telefonbücher zurück.

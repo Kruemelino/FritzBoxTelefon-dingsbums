@@ -2507,6 +2507,22 @@ Public Class FritzBoxJSONTelefoneFONNr
     End Property
 End Class
 
+''' <summary>
+''' Klasse für den Upload von Kontakten
+''' </summary>
+Public Class Tomark
+End Class
+
+''' <summary>
+''' Klasse für den Upload von Kontakten
+''' </summary>
+Public Class FritzBoxJSONUploadResult
+    Public Property tomark As Tomark
+    Public Property validate As String
+    Public Property result As String
+    Public Property ok As Boolean
+End Class
+
 Public Class JSON
 
     Public Function GetFirstValues(ByVal strJSON As String) As FritzBoxJSONTelNrT1
@@ -2529,4 +2545,7 @@ Public Class JSON
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelefoneFONNr)(strJSON)
     End Function
 
+    Public Function GetUploadResult(ByVal strJSON As String) As FritzBoxJSONUploadResult
+        Return JsonConvert.DeserializeObject(Of FritzBoxJSONUploadResult)(strJSON)
+    End Function
 End Class
