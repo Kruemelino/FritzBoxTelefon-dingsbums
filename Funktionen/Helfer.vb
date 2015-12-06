@@ -2,6 +2,7 @@ Imports System.Net
 Imports System.Text
 Imports System.Threading
 Imports System.IO
+Imports System.Collections.ObjectModel
 
 Public Class Helfer
     Public Enum Vorwahllisten
@@ -235,7 +236,7 @@ Public Class Helfer
     Public Sub KeyChange()
         Dim AlterZugang As String
         Dim NeuerZugang As String
-        If Not C_DP.P_TBPasswort = DataProvider.P_Def_LeerString Then
+        If Not C_DP.P_TBPasswort = DataProvider.P_Def_LeerString And Not C_DP.P_TBPasswort = DataProvider.P_Def_ErrorMinusOne_String Then
             With C_DP
                 AlterZugang = .GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)
                 If Not AlterZugang = DataProvider.P_Def_ErrorMinusOne_String Then
@@ -249,7 +250,7 @@ Public Class Helfer
             End With
         End If
 
-        If Not C_DP.P_TBPhonerPasswort = DataProvider.P_Def_LeerString Then
+        If Not C_DP.P_TBPhonerPasswort = DataProvider.P_Def_LeerString And Not C_DP.P_TBPhonerPasswort = DataProvider.P_Def_ErrorMinusOne_String Then
             With C_DP
                 AlterZugang = .GetSettingsVBA("ZugangPasswortPhoner", DataProvider.P_Def_ErrorMinusOne_String)
                 If Not AlterZugang = DataProvider.P_Def_ErrorMinusOne_String Then
@@ -603,7 +604,7 @@ Public Class Helfer
 
             If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then
                 'Landesvorwahl vorhanden
-                LandesVW = VorwahlausDatei(TelNr, My.Resources.Liste_Landesvorwahlen)
+                LandesVW = VorwahlausDatei(TelNr, DataProvider.P_Def_LeerString, C_DP.P_ListeLandesVorwahlen)
                 If Not LandesVW = DataProvider.P_Def_LeerString Then
                     LandesVW = DataProvider.P_Def_PreLandesVW & LandesVW
                     TelNr = Mid(TelNr, Len(LandesVW) + 1)
@@ -620,33 +621,9 @@ Public Class Helfer
                     ' Ortsvorwahl nicht in Klammern
 
                     If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1) ' Null entfernen
-                    OrtsVW = VorwahlausDatei(TelNr, My.Resources.Liste_Ortsvorwahlen_Deutschland)
-
-                    ' Vierstellige Mobilfunkvorwahlen ermitteln
-                    'ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
-                    'Select Case OrtsVW
-                    '    Case "150" ' Group3G UMTS Holding GmbH
-                    '        If ErsteZiffer = "5" Then OrtsVW += ErsteZiffer
-                    '    Case "151" ' Telekom Deutschland GmbH
-                    '        If IsOneOf(ErsteZiffer, New String() {"1", "2", "4", "5", "6", "7"}) Then OrtsVW += ErsteZiffer
-                    '    Case "152" ' Vodafone D2 GmbH
-                    '        If IsOneOf(ErsteZiffer, New String() {"0", "1", "2", "3", "5", "6"}) Then OrtsVW += ErsteZiffer
-                    '    Case "157" ' E-Plus Mobilfunk GmbH & Co. KG 
-                    '        If IsOneOf(ErsteZiffer, New String() {"0", "3", "5", "7", "8", "9"}) Then OrtsVW += ErsteZiffer
-                    '    Case "159" ' Telefónica Germany GmbH & Co. OHG (O2) 
-                    '        If IsOneOf(ErsteZiffer, New String() {"0"}) Then OrtsVW += ErsteZiffer
-                    'End Select
-
-                    ''Die Vorwahlen sind von der Bundesnetzagentur wie folgt vergeben, Wikipedia abgerufen 24.05.2014
-
-                    ''Telekom: 01511, 01512, 01514, 01515, 01516, 01517, 0160, 0170, 0171, 0175
-                    ''Vodafone: 01520, 01522, 01523, 01525, 01526 (ab März 2014), 0162, 0172, 0173, 0174, 01529 (Tru)
-                    ''Virtuelle Netzbetreiber (nutzt Netz von Vodafone, im Hintergrund eigene Infrastruktur): 01521 Lycamobile
-                    ''E-Plus: 01573, 01575, 01577, 01578, 0163, 0177, 0178
-                    ''Virtuelle Netzbetreiber (nutzen Netz von E-Plus, im Hintergrund eigene Infrastruktur): 01570 Telogic (Betrieb eingestellt), 01579 Sipgate Wireless
-                    ''O2: 01590, 0176, 0179
+                    OrtsVW = VorwahlausDatei(TelNr, LandesVW, C_DP.P_ListeOrtsVorwahlenD)
                 Else
-                    OrtsVW = AuslandsVorwahlausDatei(TelNr, LandesVW)
+                    OrtsVW = VorwahlausDatei(TelNr, LandesVW, C_DP.P_ListeOrtsVorwahlenA)
                     Select Case LandesVW
                         Case DataProvider.P_Def_PreLandesVW & "7" ' Kasachstan
                             ErsteZiffer = Mid(TelNr, Len(OrtsVW) + 1, 1)
@@ -683,52 +660,30 @@ Public Class Helfer
 
     End Function
 
-    Function VorwahlausDatei(ByVal TelNr As String, ByVal Liste As String) As String
+    Function VorwahlausDatei(ByVal TelNr As String, ByVal LandesVW As String, ByVal Vorwahlliste As ReadOnlyCollection(Of String)) As String
         VorwahlausDatei = DataProvider.P_Def_LeerString
-        Dim Suchmuster As String
-        Dim Vorwahlen() As String = Split(Liste, vbNewLine, , CompareMethod.Text)
-        Dim i As Integer = 1
-        Dim tmpErgebnis As String
-        Dim Treffer As String = DataProvider.P_Def_LeerString
-
-        If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
-        If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
-        Do
-            i += 1
-            Suchmuster = Strings.Left(TelNr, i) & ";*"
-            Dim Trefferliste = From s In Vorwahlen Where s.ToLower Like Suchmuster.ToLower Select s
-            tmpErgebnis = Split(Trefferliste(0), ";", , CompareMethod.Text)(0)
-            If Not tmpErgebnis = DataProvider.P_Def_LeerString Then
-                Treffer = tmpErgebnis
-            End If
-            Windows.Forms.Application.DoEvents()
-        Loop Until i = 5
-        Return Treffer
-    End Function
-
-    Function AuslandsVorwahlausDatei(ByVal TelNr As String, ByVal LandesVW As String) As String
-
-        Dim Suchmuster As String
-        Dim Vorwahlen() As String = Split(My.Resources.Liste_Ortsvorwahlen_Ausland, vbNewLine, , CompareMethod.Text)
         Dim i As Integer = 0
-        Dim tmpvorwahl() As String
+        Dim Prefix As String = DataProvider.P_Def_LeerString
+        Dim Trefferliste As IEnumerable(Of String) = Nothing
 
         TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
-        AuslandsVorwahlausDatei = DataProvider.P_Def_LeerString
-
-        If LandesVW.StartsWith(DataProvider.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
-        If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
         If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
         If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
+
+        If Vorwahlliste Is C_DP.P_ListeOrtsVorwahlenA Then
+            If LandesVW.StartsWith(DataProvider.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
+            If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
+            Prefix = LandesVW & ":"
+        End If
+
         Do
             i += 1
-            Suchmuster = LandesVW & ";" & Strings.Left(TelNr, i) & ";*"
-            Dim Trefferliste = From s In Vorwahlen Where s.ToLower Like Suchmuster.ToLower Select s
-            Windows.Forms.Application.DoEvents()
-            tmpvorwahl = Split(Trefferliste(0), ";", , CompareMethod.Text)
-            If Not tmpvorwahl.Length = 1 Then AuslandsVorwahlausDatei = tmpvorwahl(1)
-        Loop Until i = 5
-        'Loop Until Not AuslandsVorwahlausDatei = DataProvider.P_Def_StringEmpty Or i = 5
+            Trefferliste = From s In Vorwahlliste Where s.ToLower Like Prefix & Left(TelNr, i).ToLower Select s
+        Loop Until Trefferliste.Count = 1 Or i = 6
+
+        If Trefferliste.Count = 1 Then VorwahlausDatei = Trefferliste(0).Substring(Prefix.Length)
+
+        Trefferliste = Nothing
     End Function
 
     ''' <summary>
