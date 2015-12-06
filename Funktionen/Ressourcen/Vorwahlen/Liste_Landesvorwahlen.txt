@@ -1,257 +1,229 @@
-'*****************************************************************;;
-' Access-Paradies - Tipps, Tricks, Tools, Beispiele für Access;;
-' Download von http://www.access-paradies.de;;
-'*****************************************************************;;
-
-93;Afghanistan;
-20;Ägypten;
-355;Albanien;
-213;Algerien;
-684;Amerikanisch-Samoa;
-1340;Amerikanische Jungferninseln;
-376;Andorra;
-244;Angola;
-1264;Anguilla;
-1268;Antigua und Barbuda;
-54;Argentinien;
-374;Armenien;
-297;Aruba;
-240;Äquatorial-Guinea;
-247;Ascension;
-994;Aserbaidschan;
-251;Äthiopien;
-871;Atlantischer Ozean (Ost);
-874;Atlantischer Ozean (West);
-61;Australien;
-1242;Bahamas;
-973;Bahrain;
-880;Bangladesch;
-1246;Barbados;
-375;Belarus (Weißrußland);
-32;Belgien;
-501;Belize;
-229;Benin;
-1441;Bermuda;
-975;Bhutan;
-591;Bolivien;
-387;Bosnien-Herzegowina;
-267;Botsuana (Botswana);
-55;Brasilien;
-1284;Britische Jungferninseln;
-673;Brunei Darussalam;
-359;Bulgarien;
-226;Burkina Faso (Obervolta);
-257;Burundi;
-6721;Casey (Antarktis);
-1345;Caymaninseln;
-56;Chile;
-886;China (Taiwan);
-86;China (Volksrepublik);
-682;Cook-Inseln;
-506;Costa Rica;
-225;Cote d'Ivoire (Elfenbeinküste);
-45;Dänemark;
-6721;Davis (Antarktis);
-49;Deutschland;
-1767;Dominica;
-1809;Dominikanische Republik;
-253;Dschibuti;
-593;Ecuador;
-503;El Salvador;
-225;Elfenbeinküste (Cote d'Ivoire);
-291;Eritrea;
-372;Estland;
-500;Falklandinseln;
-298;Färöer;
-679;Fidschi;
-358;Finnland;
-33;Frankreich;
-594;Französisch-Guayana;
-689;Französisch-Polynesien;
-7;GUS (Russische Föderation);
-241;Gabun;
-220;Gambia;
-995;Georgien;
-233;Ghana;
-350;Gibraltar;
-1473;Grenada;
-30;Griechenland;
-299;Grönland;
-44;Großbritannien und Nordirland;
-590;Guadeloupe;
-671;Guam;
-502;Guatemala;
-44;Guernsey (Großbritannien);
-224;Guinea;
-245;Guinea-Bissau;
-592;Guyana;
-509;Haiti;
-504;Honduras;
-852;Hongkong;
-91;Indien;
-873;Indischer Ozean;
-62;Indonesien;
-44;Insel Man (Großbritannien);
-964;Irak;
-98;Iran;
-353;Irland;
-354;Island;
-972;Israel;
-39;Italien;
-1876;Jamaika;
-81;Japan;
-967;Jemen (Arabische Republik);
-44;Jersey (Großbritannien);
-962;Jordanien;
-381;Jugoslawien Montenegro;
-381;Jugoslawien Serbien;
-1345;Kaimaninseln;
-855;Kambodscha;
-237;Kamerun;
-1;Kanada;
-44;Kanalinseln (Großbritannien);
-238;Kap Verde;
-7;Kasachstan;
-974;Katar;
-254;Kenia;
-996;Kirgisistan;
-686;Kiribati;
-6722;Kokosinseln (Australien);
-57;Kolumbien;
-269;Komoren;
-242;Kongo;
-850;Korea (Dem. Republik, Nord);
-82;Korea (Republik, Süd);
-385;Kroatien;
-53;Kuba;
-965;Kuwait;
-856;Laos;
-266;Lesotho;
-371;Lettland;
-961;Libanon;
-231;Liberia;
-218;Libyen;
-423;Liechtenstein;
-370;Litauen;
-352;Luxemburg;
-853;Macao;
-6721;Macquarie Island (Antarktis);
-261;Madagaskar;
-389;Makedonien;
-265;Malawi;
-60;Malaysia;
-960;Malediven;
-223;Mali;
-356;Malta;
-44;Man (Großbritannien);
-670;Marianen;
-212;Marokko;
-692;Marshallinseln;
-596;Martinique;
-222;Mauretanien;
-230;Mauritius;
-6721;Mawson (Antarktis);
-269;Mayotte;
-389;Mazedonien;
-52;Mexiko;
-691;Mikronesien;
-373;Moldawien;
-377;Monaco;
-976;Mongolei;
-1664;Montserrat;
-258;Mosambik;
-95;Myanmar (Birma/Burma);
-264;Namibia;
-674;Nauru;
-977;Nepal;
-687;Neukaledonien;
-64;Neuseeland;
-505;Nicaragua;
-31;Niederlande;
-599;Niederländische Antillen;
-227;Niger;
-234;Nigeria;
-683;Niue;
-44;Nordirland;
-6723;Norfolkinseln (Australien);
-47;Norwegen;
-968;Oman;
-43;Österreich;
-670;Ost-Timor;
-92;Pakistan;
-680;Palau;
-507;Panama;
-675;Papua-Neuguinea;
-595;Paraguay;
-872;Pazifischer Ozean;
-51;Peru;
-63;Philippinen;
-48;Polen;
-351;Portugal;
-1787;Puerto Rico;
-262;Reunion;
-250;Ruanda;
-40;Rumänien;
-290;Saint Helena;
-1869;Saint Kitts and Nevis;
-1758;Saint Lucia;
-508;Saint Pierre und Miquelon;
-1784;Saint Vincent und die Grenadinen;
-677;Salomonen;
-260;Sambia;
-685;Samoa;
-378;San Marino;
-239;Sao Tome und Principe;
-966;Saudi-Arabien;
-46;Schweden;
-41;Schweiz;
-221;Senegal;
-381;Serbien;
-248;Seyschellen;
-232;Sierra Leone;
-263;Simbabwe;
-65;Singapur;
-421;Slowakei;
-386;Slowenien;
-252;Somalia;
-34;Spanien;
-94;Sri Lanka;
-27;Südafrika;
-249;Sudan;
-597;Suriname;
-268;Swasiland;
-963;Syrien;
-992;Tadschikistan;
-886;Taiwan;
-255;Tansania;
-66;Thailand;
-228;Togo;
-690;Tokelau;
-676;Tonga;
-1868;Trinidad und Tobago;
-235;Tschad;
-420;Tschechien;
-216;Tunesien;
-90;Türkei;
-993;Turkmenistan;
-1649;Turks- und Caicos-Inseln;
-688;Tuvalu;
-256;Uganda;
-380;Ukraine;
-36;Ungarn;
-598;Uruguay;
-998;Usbekistan;
-678;Vanuatu;
-396;Vatikanstadt;
-58;Venezuela;
-971;Vereinigte Arabische Emirate;
-1;Vereinigte Staaten (USA);
-84;Vietnam;
-681;Wallis- und Futuna-Inseln;
-6724;Weihnachtsinsel (Australien);
-375;Weißrußland (Belarus);
-243;Zaire (Demokrat. Republik Kongo);
-236;Zentralafrikanische Republik;
-263;Zimbabwe;
-357;Zypern;
-90;Zypern (Nordzypern);
+1
+7
+20
+27
+30
+31
+32
+33
+34
+36
+39
+40
+41
+43
+44
+45
+46
+47
+48
+49
+51
+52
+53
+54
+55
+56
+57
+58
+60
+61
+62
+63
+64
+65
+66
+81
+82
+84
+86
+90
+91
+92
+93
+94
+95
+98
+212
+213
+216
+218
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+290
+291
+297
+298
+299
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+370
+371
+372
+373
+374
+375
+376
+377
+378
+380
+381
+385
+386
+387
+389
+420
+421
+423
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+670
+671
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+850
+852
+853
+855
+856
+871
+872
+873
+874
+880
+886
+960
+961
+962
+963
+964
+965
+966
+967
+968
+971
+972
+973
+974
+975
+976
+977
+992
+993
+994
+995
+996
+998
+1242
+1246
+1264
+1268
+1284
+1340
+1345
+1441
+1473
+1649
+1664
+1758
+1767
+1784
+1787
+1809
+1868
+1869
+1876
+6721
+6722
+6723
+6724

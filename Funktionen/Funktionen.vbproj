@@ -110,8 +110,15 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <Content Include="Ressourcen\Vorwahlen\Liste_Ortsvorwahlen_Ausland.txt" />
-    <Content Include="Ressourcen\Vorwahlen\Liste_Ortsvorwahlen_Deutschland.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Ressourcen\Vorwahlen\Liste_Landesvorwahlen.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Ressourcen\Vorwahlen\Liste_Ortsvorwahlen_Ausland.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Ressourcen\Vorwahlen\Liste_Ortsvorwahlen_Deutschland.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

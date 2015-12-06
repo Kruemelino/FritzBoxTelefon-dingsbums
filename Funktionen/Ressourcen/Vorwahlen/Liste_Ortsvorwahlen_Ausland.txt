@@ -1,4967 +1,4037 @@
-1;915;Abilene Texas;
-1;216;Akron Ohio;
-1;610;Alameda;
-1;912;Albany Georgia;
-1;518;Albany New York;
-1;505;Albuquerque New Mexico;
-1;517;Alpena Michigan;
-1;618;Alton Illinois;
-1;1809;Amerikanische Jungferninseln;
-1;907;Anchorage Alaska;
-1;1809;Anguilla;
-1;1809;Antigua und Barbuda;
-1;617;Arlington Massachusetts;
-1;913;Atchison Kansas;
-1;404;Atlanta Georgia;
-1;609;Atlantic City;
-1;315;Auburn New York;
-1;207;Auguste Maine;
-1;512;Austin Texas;
-1;1809;Bahamas;
-1;805;Bakersfield California;
-1;410;Baltimore;
-1;403;Banff Alberta;
-1;1809;Barbados;
-1;918;Bartleaville Oklahoma;
-1;504;Baton Rouge Louisiana;
-1;409;Beaumont;
-1;1809;Bermuda;
-1;310;Beverley Hills;
-1;701;Bisrnarck North Dakota;
-1;208;Boiso Idaho;
-1;617;Boston Massachusetts;
-1;204;Brandon Manitoba;
-1;1809;Britische Jungferninsein;
-1;718;Brooklyn New York;
-1;912;Brunswick Georgia;
-1;716;Buffalo New York;
-1;403;Calgary Alberta;
-1;617;Cambridge;
-1;216;Canton Ohio;
-1;702;Carson City Nevada;
-1;1809;Caymaninseln;
-1;304;Charleston West Virginia;
-1;704;Charlotte Norlh Carolina;
-1;804;Charlottesville Virginia;
-1;902;Charlottetown Prince Edward Island;
-1;615;Chattanooga;
-1;307;Cheyenne Wyoming;
-1;312;Chicago Illinois;
-1;916;Chico;
-1;513;Cineinnati Ohio;
-1;216;Cleveland Ohio;
-1;615;Cleveland Tennessee;
-1;719;Colorado Springs;
-1;803;Columbia South Carolina;
-1;706;Columbus Georgia;
-1;614;Columbus Ohio;
-1;603;Concord New Hampshire;
-1;709;Cornerbrook Neufundland;
-1;512;Corpus Christi Texas;
-1;214;Dallas Texas;
-1;902;Dartmouth Nova Scotia;
-1;319;Davenport Iowa;
-1;513;Dayton Ohio;
-1;904;Daytona Beach Florida;
-1;210;Del Rio Texas;
-1;903;Denison Texas;
-1;817;Denton Texas;
-1;303;Denver Colorado;
-1;515;Des Moines Iowa;
-1;313;Detroit Michigan;
-1;316;Dodge City Kansas;
-1;1809;Dominica;
-1;1809;Dominikanische Republik;
-1;302;Dover Delaware;
-1;901;Dyersburg Tennessee;
-1;403;Edmonton Alberta;
-1;506;Edmunston New Brunswick;
-1;915;El Paso Texas;
-1;607;Elmira New York;
-1;707;Eureka;
-1;206;Everett Washington;
-1;907;Fairbanks Alaska;
-1;515;Fort Dodge Iowa;
-1;305;Fort Lauderdale;
-1;604;Fort Nelson Brit. Columbia;
-1;817;Fort Worth Texas;
-1;508;Framingham;
-1;502;Franktort Kentucky;
-1;506;Fredericton New Brunswick;
-1;904;Gainesville Florida;
-1;709;Gander Neufundland;
-1;919;Goldsboro;
-1;910;Greensboro;
-1;903;Greenville Texas;
-1;1809;Grenada;
-1;902;Halifax Nova Scotia;
-1;905;Hamilton Ontario;
-1;504;Hammond Louisiana;
-1;209;Hanford California;
-1;203;Hartford Connecticut;
-1;406;Helena Montana;
-1;717;Herrisburg Pennsylvania;
-1;213;Hollywood California;
-1;808;Honolulu Hawaii;
-1;713;Houston;
-1;514;Hull Quebec;
-1;316;Hutchinson Kansas;
-1;316;Independence Kansas;
-1;517;Jackson Michigan;
-1;601;Jackson Mississipi;
-1;901;Jackson Tennessee;
-1;904;Jacksonville Florida;
-1;1809;Jamaika;
-1;716;Jamestown New York;
-1;314;Jefferson City Missouri;
-1;201;Jersey City New Jersey;
-1;913;Kansas City Kansas;
-1;816;Kansas City Missouri;
-1;613;Kingstone Ontario;
-1;615;Knoxville Tennessee;
-1;317;Kokomo Indiana;
-1;709;Labrador City Wabush Neufundland;
-1;318;Lafayette Lousiana;
-1;318;Lake Charles Louisiana;
-1;813;Lakeland Florida;
-1;517;Lansing Michigan;
-1;702;Las Vages Nevada;
-1;514;Laval Quebec;
-1;403;Lethbridge Alberta;
-1;606;Lexington Kentucky;
-1;419;Lima Ohio;
-1;402;Lincoln Nebraska;
-1;501;Little Rock Arkansas;
-1;519;London Ontario;
-1;310;Long Beach California;
-1;213;Los Angeles;
-1;607;lthaca New York;
-1;912;Macon Georgia;
-1;608;Madison Wisconsin;
-1;502;Madisonville Kentucky;
-1;419;Mansfield Ohio;
-1;614;Marion Ohio;
-1;513;Mason Ohio;
-1;901;Memphis Tennessee;
-1;305;Miami Florida;
-1;606;Middlesboro Kentucky;
-1;414;Milwaukee Wisconsin;
-1;612;Minneapolis Minnesota;
-1;209;Modesto California;
-1;205;Montgomery Alabama;
-1;506;Monton New Brunswick;
-1;514;Montreal Quebec;
-1;1809;Montserrat;
-1;615;Nashville Tennessee;
-1;412;New Castle Pennsylvania;
-1;504;New Orleans Louisiana;
-1;212;New York City;
-1;201;Newark New Jersey;
-1;614;Newark Ohio;
-1;804;Newport News Virginia;
-1;905;Niagara Falls Ontario;
-1;402;Norfolk Nebraska;
-1;510;Oakland California;
-1;405;Oklahoma City;
-1;360;Olympia Washington;
-1;402;Omaha Nebraska;
-1;407;Orlando Florida;
-1;613;Ottawa Ontario;
-1;407;Palm Beach Florida;
-1;619;Palm Springs California;
-1;818;Pasadena California;
-1;904;Pensacola Florida;
-1;309;Peoria Illinois;
-1;804;Petersburg Virginia;
-1;215;Philadelphia;
-1;602;Phoenix Arizona;
-1;412;Pittsburg Pennsylvania;
-1;503;Portland Oregon;
-1;306;Prince Albert Saskatchewan;
-1;401;Providence;
-1;1809;Puerto Rico;
-1;418;Quebec;
-1;718;Queens New York;
-1;919;Raleigh North Carolina;
-1;306;Regina Saskatchewan;
-1;804;Richmond Virginia;
-1;909;Riverside California;
-1;507;Rochester Minnesota;
-1;716;Rochester New York;
-1;309;Rock Island Illinois;
-1;815;Rockford Illinois;
-1;916;Sacramento California;
-1;517;Saginaw Michigan;
-1;801;Salt Lake City Utah;
-1;210;San Antonio Texas;
-1;619;San Diego California;
-1;415;San Francisco California;
-1;408;San Jose California;
-1;1809;San Juan;
-1;805;Santa Barbara California;
-1;408;Santa Clara Califomia;
-1;408;Santa Cruz California;
-1;505;Santa Fe New Mexico;
-1;918;Sapulpa Oklahoma;
-1;813;Sarasota Florida;
-1;306;Saskatoon Saskatchewan;
-1;912;Savannah Georgia;
-1;206;Seattle Washington;
-1;816;Sedalia Missouri;
-1;405;Shawnee Oklahoma;
-1;819;Sherbrooke Quebec;
-1;903;Sherman Texas;
-1;318;Shreveport Louisiana;
-1;712;Sioux City Iowa;
-1;217;Springfield Illinois;
-1;616;Springfield Michigan;
-1;513;Springfield Ohio;
-1;506;St John New Brunswick;
-1;709;St John's Neufundland;
-1;314;St Louis Missouri;
-1;1809;St. Kitts und Nevis;
-1;1809;St. Lucia;
-1;1809;St. Vincent und die Grenadinen;
-1;612;St.Paul Minnesota;
-1;209;Stockton California;
-1;519;Stratford Ontario;
-1;902;Sydney Nova Scotia;
-1;315;Syracuse New York;
-1;206;Tacoma Washington;
-1;904;Tallahassee Florida;
-1;813;Tampa Florida;
-1;912;Thomasville Georgia;
-1;204;Thomson Manitoba;
-1;419;Toledo Ohio;
-1;913;Topeka Kansas;
-1;416;Toronto Ontario;
-1;905;Toronto Umland;
-1;609;Trenton New Jersey;
-1;819;Trois Rivieres Quebec;
-1;902;Truro Nova Scotia;
-1;918;Tulsa Oklahoma;
-1;1809;Turks- und Caicos-Inseln;
-1;604;Vancouver Brit. Columbia;
-1;360;Vancouver Washington;
-1;604;Victoria Brit. Columbia;
-1;817;Waco Texas;
-1;202;Washington DC;
-1;403;Whitehorse (Yukon Territory);
-1;316;Wichita Kansas;
-1;717;Williamsport;
-1;910;Wilmington;
-1;519;Windsor Ontario;
-1;204;Winnipeg Manitoba;
-1;508;Worcester;
-1;902;Yarmouth Nova Scotia;
-1;403;Yellowknife (Nodhwest Territories);
-3;1172;Breskens;
-7;31722;Akmola;
-7;3292;Aktau;
-7;3132;Aktubinsk;
-7;3272;Almaty (ehem. Aima-Ata);
-7;33022;Arkalyk;
-7;818;Arkhangelsk;
-7;3632;Aschgabat;
-7;31222;Atyrau;
-7;3312;Bishkek;
-7;2251;Bobruisk;
-7;1777;Borisov;
-7;162;Brest;
-7;36522;Bukhara;
-7;572;Charkov;
-7;472;Cherkasy;
-7;372;Chernivtsi;
-7;382;Chmelnyzkyj;
-7;562;Dnipropetrovsk;
-7;622;Donetsk;
-7;3732;Fergana;
-7;152;Grodno;
-7;3952;Irkutsk;
-7;342;Ivano-Frankivsk;
-7;3432;Jekaterinburg (ehem. Sverdlovsk);
-7;8852;Jerewan;
-7;112;Kaliningrad (Königsberg);
-7;3212;Karaganda;
-7;8432;Kazan;
-7;44;Kiev;
-7;31622;Kokshetau;
-7;3142;Kostanai;
-7;32422;Kzyl-Orda;
-7;33622;Leninsk;
-7;642;Luhansk;
-7;322;Lviv (Lemberg);
-7;172;Minsk;
-7;222;Mogilev;
-7;1773;Molodechno;
-7;95;Moskau;
-7;96;Moskau (Umland);
-7;2351;Mozyr;
-7;8152;Murmansk;
-7;36922;Namangan;
-7;33522;Naryn;
-7;8312;Nizhnlj Novgorod (ehem. Gorki);
-7;1597;Novogrudok;
-7;3832;Novosibirsk;
-7;482;Odessa;
-7;3812;Omsk;
-7;33222;Osh;
-7;3182;Pavlodar;
-7;3422;Perm;
-7;3152;Petropavlovsk;
-7;1653;Pinsk;
-7;2144;Polotsk;
-7;362;Rivne;
-7;8632;Rostov-na-Donu;
-7;8462;Samara (ehem. Kuibyshev);
-7;3662;Samarkand;
-7;8452;Saratov;
-7;3222;Semipalatinsk;
-7;3252;Shymkent;
-7;652;Simferopol;
-7;1562;Sionim;
-7;1795;Slutsk;
-7;1592;Smorgon;
-7;8622;Sochi;
-7;1710;Sollgorsk;
-7;812;St. Petersburg;
-7;725;Stary Oskol;
-7;2342;Svetiogorsk;
-7;377;Tadschikistan;
-7;32822;Taldykorgan;
-7;3712;Tashkent;
-7;8482;Toliatti;
-7;3472;Ufa;
-7;31122;Uralsk;
-7;3232;Ust-Kamenogorsk;
-7;212;Vitebsk;
-7;4232;Vladivostok;
-7;8442;Volgograd;
-7;432;Winnytsya;
-7;654;Yalta (Krim);
-7;612;Zaporizhzhya;
-7;3262;Zhambyl;
-7;3102;Zhezkazgan;
-7;2334;Zhlobin;
-7;1775;Zhodino;
-20;15;10 Ramadan;
-20;2;6 October;
-20;3;Alexandria;
-20;97;Assuan;
-20;13;Banha;
-20;45;Damanhour;
-20;57;Damiett;
-20;84;Fayoum;
-20;65;Hurghada;
-20;2;Kairo;
-20;64;lsmailla;
-20;95;Luxor;
-20;50;Mansoura;
-20;43;Mehalla;
-20;66;Port Sald;
-20;68;Rafah;
-20;49;Sadat City;
-20;93;Sohag;
-20;62;Suez;
-20;40;Tanta;
-20;55;Zagazig;
-27;11;Alberton;
-27;21;Bellville;
-27;51;Bloemfontein;
-27;21;Cape Town (Kapstadt);
-27;1491;Carletonville;
-27;31;Durban;
-27;431;East London;
-27;11;Germiston;
-27;461;Grahamstown;
-27;11;Johannesburg;
-27;11;Kempton Park;
-27;531;Kimberley;
-27;433;King William's Town;
-27;1411;Kroonstad;
-27;3931;Margate;
-27;443;Oudtshoorn;
-27;331;Pietermaritzburg;
-27;4457;Plettenberg Bay;
-27;41;Port Elizabeth;
-27;12;Pretoria;
-27;393;Ramsgate;
-27;16;Sasolburg;
-27;2231;Stellenbosch;
-27;358;Ulundi;
-27;54;Upington;
-27;16;Vereeniging;
-27;171;Welkom;
-30;741;Agii Theodori;
-30;235;Agios Konstantinos Lokridos;
-30;841;Agios Nikolaos;
-30;641;Agrinion;
-30;551;Alexandroupolis;
-30;424;Alonissos;
-30;285;Amorgos;
-30;282;Andros;
-30;752;Argolis;
-30;751;Argos;
-30;243;Astypalea;
-30;1;Athen (Athinai);
-30;375;Chalkidiki N. Marmaras;
-30;821;Chania;
-30;271;Chios (Hios);
-30;741;Corinthos;
-30;265;Delfi;
-30;521;Drama;
-30;381;Edessa;
-30;753;Epidavros;
-30;221;Evia;
-30;221;Halkis;
-30;821;Hania;
-30;651;Idannina;
-30;842;Ierapetra;
-30;665;Igoumenitsa;
-30;286;Ios;
-30;81;Iraklion Kritis (Heraklion);
-30;674;Ithaki;
-30;721;Kalamata;
-30;432;Kalambaka;
-30;441;Karditsa;
-30;245;Karpathos;
-30;351;Katerini;
-30;51;Kavala;
-30;671;Kefalonia;
-30;661;Kerkyra (Korfu);
-30;341;Kilkis;
-30;531;Komotini;
-30;242;Kos;
-30;461;Kozani;
-30;623;Kylini;
-30;231;Lamia (Fthiotidos);
-30;41;Larissa;
-30;645;Lefkas;
-30;251;Lesbos;
-30;261;Levadia;
-30;741;Loutrakion Korinthias;
-30;287;Milos;
-30;289;Mykonos;
-30;251;Mytilini;
-30;284;Paros;
-30;247;Patmos;
-30;61;Patras (Patrai);
-30;1;Piraeus (Pireefs);
-30;621;Pyrgos Ilias;
-30;241;Rhodos (Rodos);
-30;1;Salamis;
-30;273;Samos;
-30;551;Samothraki;
-30;286;Santorin;
-30;281;Serifos;
-30;321;Serrai;
-30;219;Sifnos;
-30;665;Sivota;
-30;427;Skiathos;
-30;424;Skopelos;
-30;731;Sparta (Sparti);
-30;298;Spetse;
-30;241;Symi;
-30;281;Syros;
-30;593;Thassos;
-30;31;Thessaloniki (Saloniki);
-30;283;Tinos;
-30;431;Trikala;
-30;71;Tripolis;
-30;421;Volos;
-30;1;Vouliagmeni;
-30;298;Ydra;
-30;695;Zakynthos;
-31;2977;Aalsmeer;
-31;1859;Alblasserdam;
-31;72;Alkmaar;
-31;546;Almelo;
-31;36;Almere;
-31;1720;Alphen a d Rijn;
-31;5191;Ameland;
-31;33;Amersfoort;
-31;20;Amstelveen;
-31;20;Amsterdam;
-31;55;Apeldoorn;
-31;85;Arnhem;
-31;5920;Assen;
-31;2154;Baarn;
-31;20;Badhoevedorp;
-31;1806;Barendrecht;
-31;3420;Barneveld;
-31;5930;Beilen;
-31;2208;Bergen aan Zee;
-31;1640;Bergen op Zoom;
-31;1891;Berkel en Rodenrijs;
-31;4998;Best;
-31;2510;Beverwijk;
-31;2153;Blaricum;
-31;1727;Boskoop;
-31;10;Botlek;
-31;8865;Boxmeer;
-31;4116;Boxtel;
-31;76;Breda;
-31;1810;Brielle;
-31;1113;Bruinisse;
-31;45;Brunssum;
-31;2159;Bussum;
-31;2248;Callantsoog;
-31;2518;Castricum;
-31;5240;Coevorden;
-31;8850;Cuijk;
-31;3450;Culemborg;
-31;5293;Dalfsen;
-31;5230;Dedemsvaart;
-31;15;Delft;
-31;5960;Delfzljl;
-31;73;Den Bosch;
-31;70;Den Haag;
-31;2230;Den Helder;
-31;6700;Deventer;
-31;20;Diemen;
-31;8340;Doetinchem;
-31;5190;Dokkum;
-31;1188;Domburg;
-31;3430;Doorn;
-31;78;Dordrecht;
-31;5120;Drachten;
-31;3210;Dronten;
-31;2993;Edam;
-31;8380;Ede Geldedand;
-31;2206;Egmond aan Zee;
-31;40;Eindhoven;
-31;5910;Emmen Drente;
-31;2260;Enkhuizen;
-31;53;Enschede;
-31;3417;Ermelo;
-31;1608;Etten-Leur;
-31;1819;Europoort;
-31;5170;Franeker;
-31;40;Geldrop;
-31;46;Geleen;
-31;1100;Goes;
-31;1820;Gouda;
-31;70;Gravenhage 's-Gravenhage;
-31;50;Groningen;
-31;5662;Grouw;
-31;23;Haarlem;
-31;3410;Harderwijk;
-31;5178;Harlingen;
-31;5130;Heerenveen;
-31;45;Heerlen;
-31;4920;Helmond;
-31;74;Hengelo Overijssel;
-31;50;Heran Groningen;
-31;73;Herzogenbusch ('s-Hedogenbosch);
-31;35;Hilversum;
-31;1747;Hoek van Holland;
-31;2503;Hoofddorp;
-31;5280;Hoogeveen;
-31;5980;Hoogezand;
-31;2290;Hoorn Noord-Holland;
-31;2550;IJmuiden;
-31;5138;Joure;
-31;2524;Kaag;
-31;5202;Kampen;
-31;1718;Katwijk aan Zee;
-31;75;Koog aan de Zaan;
-31;45;Landgraaf;
-31;2153;Laren Noord-Holland;
-31;3451;Leerdam;
-31;58;Leeuwarden;
-31;71;Leiden;
-31;3200;Lelystad;
-31;2521;Lisse;
-31;5730;Lochem;
-31;2158;Loosdrecht;
-31;3432;Maarn;
-31;1899;Maassluis;
-31;43;Maastricht;
-31;1819;Maasviakte;
-31;5476;Markelo;
-31;2996;Marken;
-31;2274;Medemblik;
-31;5220;Meppel;
-31;1180;Middelburg;
-31;1870;Middelharnis;
-31;1740;Naaldwijk;
-31;1803;Nieuwerkerk aan den ljssel;
-31;3494;Nijkerk;
-31;80;Nijmegen (Nimwegen);
-31;2523;Nooidwijkerhout;
-31;1719;Noordwijk Zuid-Holland;
-31;4242;Oisterwijk;
-31;5410;Oldenzaal;
-31;5708;Olst;
-31;5291;Ommen;
-31;4120;Oos;
-31;1620;Oosterhout Noord-Brabant;
-31;1815;Oostvoorne;
-31;1860;Oud-Beijerland;
-31;2963;Ouderkerk aan de Amstel;
-31;1808;Ouderkerk aan den lissel;
-31;78;Papendrecht;
-31;10;Pernis;
-31;2990;Purmerend;
-31;1116;Renesse;
-31;8309;Rheden;
-31;8376;Rhenen;
-31;1804;Ridderkerk;
-31;1718;Rijnsburg;
-31;1814;Rockanje;
-31;4750;Roermond;
-31;1650;Roosendaal;
-31;4192;Rosmalen;
-31;10;Rotterdam;
-31;1819;Rozenburg Zuid-Holland;
-31;2522;Sassenheim;
-31;70;Scheveningen;
-31;10;Schiedam;
-31;20;Schlphol (Flughafen);
-31;1840;Sliedrecht;
-31;46;Slttard;
-31;2155;Soest;
-31;1880;Spijkenisse;
-31;5990;Stadskanaal;
-31;5149;Stavoren;
-31;5210;Steenwijk;
-31;1150;Terneuzen;
-31;5620;Terschellilg;
-31;2220;Texel;
-31;3440;Tiel;
-31;13;Tilburg;
-31;2975;Ulthoorn;
-31;30;Utrecht;
-31;4454;Vaals;
-31;4406;Valkenburg Limburg;
-31;5987;Veendam;
-31;8385;Veenendaal;
-31;1181;Veere;
-31;4130;Veghei;
-31;77;Venlo;
-31;4780;Venray;
-31;10;Vlaardingen;
-31;5621;Vlieland;
-31;1184;Vlissingen;
-31;546;Vriezenveen;
-31;4160;Waalwijk;
-31;1828;Waddinxveen;
-31;8370;Wageningen;
-31;1751;Wassenaar;
-31;4950;Weert;
-31;2940;Weesp;
-31;546;Wierden;
-31;5970;Winschoten;
-31;5430;Winterswijk;
-31;3480;Woerden;
-31;75;Zaanstad;
-31;2507;Zandvoort;
-31;3404;Zeist;
-31;8360;Zevenaar;
-31;1110;Zierikzee;
-31;79;Zoetermeer;
-31;5750;Zutphen;
-31;38;Zwolle;
-32;53;Aalst (Alost);
-32;16;Aarschot;
-32;80;Ambleve;
-32;80;Amei (Ambleve);
-32;41;Ans;
-32;69;Antoing;
-32;3;Antwerpen (Anvers);
-32;63;Arlon (Aarlen);
-32;83;Assesse;
-32;68;Ath (Aat);
-32;87;Aubel;
-32;56;Avelgem;
-32;41;Aywaille;
-32;86;Barvaux;
-32;41;Bassenge (Bitsingen);
-32;61;Bastogne (Bastenaken);
-32;82;Beauraing;
-32;65;Bergen (Mons);
-32;61;Bertrix;
-32;64;Binche;
-32;50;Blankenberge;
-32;69;Blaton;
-32;69;Bleharies;
-32;61;Blevre;
-32;3;Boom;
-32;19;Borgworm (Waremme);
-32;61;Bouillon;
-32;14;Bouwei;
-32;67;Braine-le-Comte ('s Gravenbrakel);
-32;3;Broechem;
-32;50;Brügge (Bruges Brugge);
-32;2;Brüssel (Bruxelles);
-32;80;Büllingen (Bullange);
-32;71;Charleroi;
-32;68;Chievres;
-32;60;Chimay;
-32;83;Ciney;
-32;56;Comines (Komen);
-32;56;Courtral (Kodrilk);
-32;60;Couvin;
-32;60;Cul-des-Sarts;
-32;58;De Panne (La Panne);
-32;9;Deinze;
-32;52;Dendermonde (Termonde);
-32;13;Diest;
-32;82;Dinant;
-32;69;Doornik (Tournai);
-32;56;Dottenljs (Dottignies);
-32;65;Dour;
-32;9;Eeklo;
-32;81;Eghezee;
-32;80;Elsenborn;
-32;41;Engis;
-32;86;Erezee;
-32;41;Esneux;
-32;87;Eupen;
-32;87;Eynatten;
-32;67;Feluy;
-32;86;Ferrieres;
-32;41;Fexhe-le-Haut-Clocher;
-32;71;Fleurus;
-32;68;Flobecq (Vloesberg);
-32;61;Florenvilie;
-32;58;Furnes (Veume);
-32;14;Geel;
-32;11;Geetbets;
-32;81;Gembloux;
-32;89;Genk;
-32;9;Gent (Gand);
-32;54;Geraardsbergen;
-32;83;Gesves;
-32;41;Gions;
-32;60;Gonrieux;
-32;67;Grafenbrakei ('s Grafenbrakel;Braine- le-Comte);
-32;63;Habay-la-Neuve;
-32;63;Habay-la-Vieille;
-32;83;Hamols;
-32;11;Hamont;
-32;11;Hasselt;
-32;83;Havelange;
-32;15;Heist-op-den-Berg;
-32;56;Helchin (Helkijn);
-32;14;Herentals;
-32;87;Hergenrath;
-32;86;Heyd;
-32;82;Houyet;
-32;85;Huy (Hoei);
-32;3;Kapellen;
-32;50;Knokke-Heist;
-32;58;Koksijde;
-32;56;Komen (Comines);
-32;11;Kortessem;
-32;56;Kortrijk (Courtrai);
-32;80;La Gleize;
-32;64;La Louviere;
-32;58;La Panne (De Panne);
-32;84;La Roche-en-Ardenne;
-32;58;Leisele;
-32;57;leper (Ypres);
-32;61;Libin;
-32;61;Libramont;
-32;51;Lichtervelde;
-32;3;Lier (Lierre);
-32;80;Lierneux;
-32;9;Lokeren;
-32;16;Löwen (Leuven Louvain);
-32;41;Lüttich (Uege Lulk);
-32;89;Maaseik;
-32;50;Maldegem;
-32;80;Malmedy;
-32;80;Manderfeld;
-32;84;Marche-en-Famenne;
-32;60;Mariembourg;
-32;15;Mechelen (Malines);
-32;14;Meerhout;
-32;3;Meerle;
-32;56;Menin (Menen);
-32;51;Merkem;
-32;82;Mesnil-Saint-Blaise;
-32;41;Micheroux;
-32;14;Mol;
-32;60;Momignies;
-32;65;Mons (Bergen);
-32;87;Montzen;
-32;56;Mouscron (Moeskroen);
-32;81;Namur (Namen);
-32;61;Neufchateau;
-32;58;Nieuwpoort (Nieuport);
-32;67;Nivelles (Nijvel);
-32;54;Oetingen;
-32;59;Oostende (Ostende);
-32;55;Oudenaarde (Audenarde);
-32;86;Ouffet;
-32;9;Overmere;
-32;69;Peruwelz;
-32;60;Rance;
-32;68;Rebaix;
-32;80;Reuland;
-32;51;Roeselare (Roulers);
-32;55;Ronse (Renaix);
-32;80;Saint Vith;
-32;61;Saint-Hubert;
-32;3;Sint-Gillis-Waas;
-32;3;Sint-Niklaas (Saint-Nicolas);
-32;11;Sint-Truiden;
-32;60;Sivry;
-32;86;Somme-Leuze;
-32;87;Spa;
-32;80;Stavelot;
-32;3;Stekene;
-32;53;Termonde (Dendermonde);
-32;51;Tielt;
-32;16;Tienen (Tirlemont);
-32;12;Tongeren (Tongres);
-32;50;Torhout;
-32;69;Tournai (Doornik);
-32;41;Trembleur;
-32;80;Trois-Ponts;
-32;14;Turnhout;
-32;41;Verlaine;
-32;87;Verviers;
-32;58;Veurne (Furnes);
-32;56;Vichte;
-32;80;Vielsalm;
-32;63;Virton;
-32;41;Vise (Wezet);
-32;68;Vloesberg (Flobecq);
-32;71;Walcourt;
-32;56;Waregem;
-32;19;Waremme (Borgworm);
-32;2;Waterloo;
-32;10;Wavre (Waver);
-32;87;Welkenraedt;
-32;86;Werbomont;
-32;14;Westerlo;
-32;9;Wetteren;
-32;41;Wezet (Vise);
-32;11;Wijchmaal;
-32;69;Willemeau;
-32;3;Wuustwezel;
-32;3;Zandhoven;
-32;50;Zeebrugge;
-32;9;Zelzate;
-34;67;Albacete;
-34;5;Alcalá de Guadalra;
-34;1;Alcalá de Henares;
-34;6;Alcoy;
-34;56;Algeciras;
-34;6;Allcante;
-34;50;Almeria;
-34;58;Almunecar;
-34;5;Antequera;
-34;1;Aranjuez;
-34;28;Arrecife;
-34;20;Avila;
-34;8;Aviles;
-34;24;Badajoz;
-34;3;Badalona;
-34;3;Barcelona;
-34;23;Béjar;
-34;5;Benalmadena-Costa;
-34;6;Benetusser;
-34;6;Benidorm;
-34;3;Berga;
-34;4;Bermeo;
-34;4;Bilbao;
-34;72;Blanes;
-34;47;Burgos;
-34;27;Cáceres;
-34;56;Cadiz;
-34;76;Calatayud;
-34;3;Calella;
-34;68;Cartagena;
-34;3;Castelldefels;
-34;64;Castellon de la Plana;
-34;3;Cervello;
-34;56;Ceuta;
-34;26;Ciudad Real;
-34;57;Cordoba;
-34;3;Cornella de Llobregat;
-34;69;Cuenca;
-34;6;Denia;
-34;4;Durango;
-34;43;Eibar;
-34;6;Elche;
-34;6;Elda;
-34;3;Espluges de Llobregat;
-34;5;Estepona;
-34;72;Flgueres;
-34;6;Gandia;
-34;72;Gerona;
-34;8;Gijon;
-34;58;Granada;
-34;3;Granollers;
-34;49;Guadalajara;
-34;59;Huelva;
-34;74;Huesca;
-34;71;Ibiza;
-34;43;Irun;
-34;53;Jaen;
-34;56;Jerez de la Frontera;
-34;81;La Coruna;
-34;72;La Escala;
-34;22;La Orotava;
-34;28;Las Palmas de Gran Canaria;
-34;1;Leganes;
-34;87;Leon;
-34;73;Lerida;
-34;53;Linares;
-34;72;Lloret de Mar;
-34;41;Logrono;
-34;68;Lorca;
-34;82;Lugo;
-34;1;Madrid;
-34;71;Mahon;
-34;5;Malaga;
-34;3;Manresa;
-34;5;Marbeila;
-34;3;Mataro;
-34;5;Melilla;
-34;24;Merida;
-34;47;Miranda de Ebro;
-34;3;Molins de Rei;
-34;6;Moncada;
-34;68;Murcia;
-34;48;Murieta;
-34;5;Nerja;
-34;64;Nules;
-34;88;Orense;
-34;6;Orihuela;
-34;8;Oviedo;
-34;72;Palamos;
-34;79;Palencia;
-34;71;Palma de Mallorca;
-34;48;Pamplona;
-34;6;Paterna;
-34;64;Peniscola;
-34;3;Pineda de Mar;
-34;27;Plasencia;
-34;86;Pontevedra;
-34;72;Portbou;
-34;22;Puerto de la Cruz;
-34;28;Puerto del Rosario;
-34;26;Puertollano;
-34;77;Reus;
-34;3;Sabadell;
-34;6;Sagunto;
-34;23;Salamanca;
-34;77;Salou;
-34;56;San Fernando;
-34;1;San Lorenzo del Escorial;
-34;22;San Sebastian de Gomera;
-34;22;Santa Cruz de la Palma;
-34;22;Santa Cruz de Tenerife;
-34;71;Santa Eulalia del Rio;
-34;42;Santander;
-34;81;Santiago de Compostela;
-34;76;Saragossa (Zamgoza);
-34;21;Segovia;
-34;5;Sevilla;
-34;3;Sitges;
-34;75;Soria;
-34;77;Tarragona;
-34;28;Telde;
-34;3;Terrasse;
-34;78;Teruel;
-34;25;Toledo;
-34;5;Torremolinos;
-34;77;Tortosa;
-34;72;Tossa de Mar;
-34;6;Valencia;
-34;83;Valladolid;
-34;3;VIC;
-34;86;Vigo;
-34;45;Vitoria-Gastelz;
-34;80;Zamora;
-34;76;Zaragoza;
-36;1;Budapest
-36;20;Telenor
-36;22;Székesfehérvár
-36;23;Biatorbágy
-36;24;Szigetszentmiklós
-36;25;Dunaújváros
-36;26;Szentendre
-36;27;Vac
-36;28;Gödöllő
-36;29;Monor
-36;30;T-Mobile
-36;31;Mobile Phones
-36;32;Salgótarján
-36;33;Esztergom
-36;34;Tatabánya
-36;35;Balassagyarmat
-36;36;Eger (Ungarn)
-36;37;Gyöngyös
-36;42;Nyíregyháza
-36;44;Mátészalka
-36;45;Kisvárda
-36;46;Miskolc
-36;47;Szerencs
-36;48;Ózd
-36;49;Mezőkövesd
-36;51;Dial-Up Internet service
-36;52;Debrecen
-36;53;Cegléd
-36;54;Berettyóújfalu
-36;56;Szolnok
-36;57;Jászberény
-36;59;Karcag
-36;62;Szeged
-36;63;Szentes
-36;66;Békéscsaba
-36;68;Orosháza
-36;69;Mohács
-36;70;Vodafone
-36;71;Corporate networks
-36;72;Pécs
-36;73;Szigetvár
-36;74;Szekszárd
-36;75;Paks
-36;76;Kecskemét
-36;77;Kiskunhalas
-36;78;Kiskoros
-36;79;Baja
-36;80;Dorgicse
-36;82;Kaposvár
-36;83;Keszthely
-36;84;Siófok
-36;85;Marcali
-36;87;Tapolca
-36;88;Veszprém
-36;89;Pápa
-36;92;Zalaegerszeg
-36;93;Nagykanizsa
-36;94;Szombathely
-36;95;Sárvár
-36;96;Győr
-36;99;Sopron
-39;320;Wind Telecomunicazione
-39;321;Wind Telecomunicazione
-39;322;Wind Telecomunicazione
-39;323;Wind Telecomunicazione
-39;324;Wind Telecomunicazione
-39;325;Wind Telecomunicazione
-39;326;Wind Telecomunicazione
-39;327;Wind Telecomunicazione
-39;328;Wind Telecomunicazione
-39;329;Wind Telecomunicazione
-39;330;Telecom Italia Mobile (TIM)
-39;331;Telecom Italia Mobile (TIM)
-39;332;Telecom Italia Mobile (TIM)
-39;333;Telecom Italia Mobile (TIM)
-39;334;Telecom Italia Mobile (TIM)
-39;335;Telecom Italia Mobile (TIM)
-39;336;Telecom Italia Mobile (TIM)
-39;337;Telecom Italia Mobile (TIM)
-39;338;Telecom Italia Mobile (TIM)
-39;339;Telecom Italia Mobile (TIM)
-39;340;Vodafone Omnitel
-39;341;Vodafone Omnitel
-39;342;Vodafone Omnitel
-39;343;Vodafone Omnitel
-39;344;Vodafone Omnitel
-39;345;Vodafone Omnitel
-39;346;Vodafone Omnitel
-39;347;Vodafone Omnitel
-39;348;Vodafone Omnitel
-39;349;Vodafone Omnitel
-39;360;Telecom Italia Mobile (TIM)
-39;361;Telecom Italia Mobile (TIM)
-39;362;Telecom Italia Mobile (TIM)
-39;363;Telecom Italia Mobile (TIM)
-39;364;Telecom Italia Mobile (TIM)
-39;365;Telecom Italia Mobile (TIM)
-39;366;Telecom Italia Mobile (TIM)
-39;367;Telecom Italia Mobile (TIM)
-39;368;Telecom Italia Mobile (TIM)
-39;390;Tre (H3G)
-39;391;Tre (H3G)
-39;392;Tre (H3G)
-39;393;Tre (H3G)
-39;49;Abano Terme;
-39;2;Abbiategrasso;
-39;95;Acireale;
-39;144;Acqui Terme;
-39;426;Adria;
-39;81;Afragola;
-39;922;Agrigento;
-39;182;Alassio;
-39;173;Alba;
-39;182;Albenga;
-39;131;Alessandria;
-39;89;Amalfi;
-39;71;Ancona;
-39;883;Andria;
-39;6;Anzio;
-39;165;Aosta;
-39;575;Arezzo;
-39;736;Ascoli Piceno;
-39;75;Assisi;
-39;931;Augusta;
-39;473;Avelengo (Hafling);
-39;825;Avellino;
-39;81;Aversa;
-39;471;Badia;
-39;80;Bari;
-39;883;Barletta;
-39;424;Bassano del Grappa;
-39;828;Battipaglia;
-39;323;Baveno;
-39;341;Bellano;
-39;437;Belluno;
-39;824;Benevento;
-39;35;Bergamo;
-39;15;Biella;
-39;80;Bisceglie;
-39;51;Bologna;
-39;471;Bolzano (Bozen);
-39;184;Bordighera;
-39;342;Bormio;
-39;472;Brennero (Brenner);
-39;30;Brescia;
-39;472;Bressanone (Brixen);
-39;831;Brindisi;
-39;474;Brunico (Bruneck);
-39;45;Bussolengo;
-39;70;Cagliari;
-39;471;Caldaro (Kaltern);
-39;934;Caltanissetta;
-39;11;Caluso;
-39;474;Campo Tures (Sand in Taufers);
-39;874;Campobasso;
-39;462;Canazei;
-39;922;Canicatti;
-39;323;Cannobio;
-39;91;Capri;
-39;85;Caramanico Terme;
-39;585;Carrara;
-39;823;Caserta;
-39;51;Castel S. Pietro Terme;
-39;59;Castelfranco Emilia;
-39;471;Castelrotto (Kastelruth);
-39;95;Catania;
-39;961;Catanzaro;
-39;541;Cattolica;
-39;921;Cefalu;
-39;544;Cervia;
-39;547;Cesena;
-39;547;Cesenatico;
-39;343;Chiavenna;
-39;871;Chieti;
-39;41;Chioggia;
-39;472;Chiusa (Klausen);
-39;578;Chiusi;
-39;766;Civitavecchia;
-39;31;Como;
-39;436;Cortina d'Ampezzo;
-39;984;Cosenza;
-39;372;Cremona;
-39;962;Crotorie;
-39;171;Cuneo;
-39;30;Desenzano del Gardaa;
-39;183;Diano Marina;
-39;474;Dobbiaco (Toblach);
-39;324;Domodossola;
-39;828;Eboli;
-39;471;Egna (Neumarkt);
-39;571;Empoli;
-39;935;Enna;
-39;31;Erba;
-39;546;Faenza;
-39;941;Falcone;
-39;721;Fano;
-39;439;Feltre;
-39;532;Ferrara;
-39;19;Finale Ligure;
-39;55;Firenze (Florenz);
-39;881;Foggia;
-39;742;Foligno;
-39;543;Forli;
-39;472;Fortezza (Franzensfeste);
-39;85;Francavilla a Mare;
-39;6;Frascati;
-39;775;Frosinone;
-39;771;Gaeta;
-39;45;Garda;
-39;365;Gardone Riviera;
-39;933;Gela;
-39;10;Genova (Genua);
-39;481;Gorizia (G�rz);
-39;564;Grosseto;
-39;75;Gubbio;
-39;542;Imola;
-39;183;Imperia;
-39;81;Ischia;
-39;30;Iseo;
-39;125;Ivrea;
-39;421;Jesolo;
-39;187;La Spezia;
-39;473;Lagundo (Algund);
-39;182;Laigueglia;
-39;862;L'Aquila;
-39;773;Latina;
-39;832;Lecce;
-39;341;Lecco;
-39;331;Legnano;
-39;187;Lerici;
-39;187;Levanto;
-39;365;Limone sul Garda;
-39;90;Lipari;
-39;586;Livorno;
-39;19;Loano;
-39;80;Locorotondo;
-39;371;Lodi;
-39;71;Loreto;
-39;583;Lucca;
-39;545;Lugo;
-39;332;Luino;
-39;322;Madonna del Sasso;
-39;45;Malcesine;
-39;365;Manerba del Garda;
-39;376;Mantova (Mantua);
-39;59;Maranello;
-39;6;Marino;
-39;473;Marlengo (Marling);
-39;923;Marsala;
-39;545;Massa Lombarda;
-39;835;Matera;
-39;51;Medicina;
-39;473;Merano (Meran);
-39;90;Messina;
-39;2;Milano (Mailand);
-39;41;Mira;
-39;535;Mirandola;
-39;91;Misilmeri;
-39;59;Modena;
-39;80;Molfetta;
-39;481;Monfalcone;
-39;80;Monopoli;
-39;91;Monreale;
-39;61;Monterotondo;
-39;39;Monza;
-39;81;Napoli (Neapel);
-39;473;Naturno (Naturns);
-39;6;Nemi;
-39;442;Nogara;
-39;81;Nola;
-39;471;Nova Levante;
-39;321;Novara;
-39;941;Oliveri;
-39;35;Oneta;
-39;564;Orbetello;
-39;471;Ortisei (St. Ulrich);
-39;85;Ortona;
-39;763;Orvieto;
-39;461;Ospedaletto;
-39;836;Otranto;
-39;49;Padova (Padua);
-39;91;Palermo;
-39;6;Palestrina;
-39;432;Palmanova;
-39;45;Palu;
-39;521;Parma;
-39;941;Patti;
-39;382;Pavia;
-39;75;Perugla;
-39;721;Pesaro;
-39;83;Pescaro;
-39;45;Peschiera del Garda;
-39;523;Piacenza;
-39;578;Pienza;
-39;19;Pietra Ligure;
-39;584;Pietrasanta;
-39;435;Pieve di Cadore;
-39;81;Pimonte;
-39;50;Pisa;
-39;573;Pistoia;
-39;81;Pompei;
-39;471;Ponte Gardena (Waldbruck);
-39;434;Pordenone;
-39;185;Portofino;
-39;89;Positano;
-39;473;Postal (Burgstall);
-39;971;Potenza;
-39;574;Prato;
-39;70;Pula;
-39;932;Ragusa;
-39;185;Rapallo;
-39;544;Ravenna;
-39;965;Reggio Calabria;
-39;522;Reggio Emilla;
-39;433;Resia (Reschen);
-39;925;Ribera;
-39;541;Riccione;
-39;746;Rieti;
-39;541;Rimini;
-39;464;Rive del Garda;
-39;39;Robbiate;
-39;384;Robbio;
-39;6;Rom (Roma);
-39;30;Rovato;
-39;464;Rovereto (Rovreit);
-39;55;Ruifina;
-39;473;S.Leonardo in Passiria (St.Leonhard in Passeir);
-39;773;Sabaudia;
-39;89;Salerno;
-39;365;Salo;
-39;184;San Remo;
-39;81;Sarno;
-39;79;Sassari;
-39;59;Sassuolo;
-39;19;Savona;
-39;985;Scalea;
-39;473;Scena (Schenna);
-39;471;Selva di Val Gardena;
-39;71;Senigallia;
-39;362;Seregno;
-39;474;Sesto Pusteria (Sexten Pustertal);
-39;122;Sestriere;
-39;577;Siena;
-39;473;Silandro (Schlanders);
-39;784;Siniscola;
-39;931;Siracusa (Syrakus);
-39;30;Sirmione;
-39;342;Sondrio (Sonders);
-39;81;Sorrento (Sorrent);
-39;427;Spilimbergo;
-39;743;Spoleto;
-39;19;Spotorno;
-39;473;Stelvio;
-39;323;Stresa;
-39;122;Susa;
-39;942;Taormina;
-39;99;Tarent (Taranto);
-39;861;Teramo;
-39;91;Termini Imerese;
-39;744;Terni;
-39;773;Terracina;
-39;342;Tirano;
-39;473;Tirolo di Merano;
-39;774;Tivoli;
-39;464;Torbole;
-39;11;Torino (Turin);
-39;81;Torre Annunziata;
-39;883;Trani;
-39;923;Trapani;
-39;984;Trenta;
-39;461;Trento;
-39;742;Trevi;
-39;422;Treviso;
-39;40;Trieste (Triest);
-39;473;Tubre (Taufers);
-39;432;Udine;
-39;429;Urbana;
-39;722;Urbino;
-39;19;Vado Ligure;
-39;19;Varazze;
-39;332;Varese;
-39;6;Vatikanstadt;
-39;6;Velletri;
-39;41;Venezia (Venedig);
-39;184;Ventimiglia;
-39;323;Verbania;
-39;161;Vercelli;
-39;45;Verona;
-39;88;Veszpr�m;
-39;584;Viareggio;
-39;444;Vicenza;
-39;381;Vigevano;
-39;91;Villabate;
-39;11;Villarbasse;
-39;472;Vipiteno (Sterzing);
-39;761;Viterbo;
-39;438;Vittorio Veneto;
-40;57;Arad;
-40;34;Bacau;
-40;62;Baia Mare;
-40;33;Bicaz;
-40;39;Braile;
-40;68;Brasov (Kronstadt);
-40;1;Bukarest (Bucuresti);
-40;38;Buzau;
-40;51;Calafat;
-40;64;Cluj-Napoca;
-40;41;Constanta (Konstanza);
-40;51;Craiova;
-40;41;Eforie;
-40;36;Galati (Galatz);
-40;32;Iasi (Jassy);
-40;41;Mamaia;
-40;41;Mangalia;
-40;59;Oradea (Gro�wardn);
-40;44;Ploiesti;
-40;55;Resita;
-40;61;Satu Mare;
-40;69;Sibiu (Hermannstadt);
-40;40;Sulina;
-40;56;Timisoara (Temeschburg);
-40;65;Tirgu Mures (Neumarkt);
-40;40;Tulcea;
-41;21;Lausanne
-41;22;Genf
-41;24;Yverdon-les-Bains
-41;26;Freiburg im Üechtland
-41;27;Sitten
-41;31;Bern
-41;32;Biel/Bienne
-41;33;Thun
-41;34;Burgdorf BE
-41;41;Luzern
-41;43;Zürich
-41;44;Zürich
-41;52;Winterthur
-41;55;Rapperswil BE
-41;56;Baden AG
-41;61;Basel
-41;62;Olten
-41;71;St. Gallen
-41;74;Paging Services
-41;76;GSM / UMTS - Sunrise (with Yallo, Cablecom, talktalk)
-41;77;GSM / UMTS - various (M-Budget, Tele2)
-41;78;GSM / UMTS - Orange (with CoopMobile)
-41;79;GSM / UMTS - Swisscom
-41;81;Chur
-41;91;Lugano
-420;832;Banovce n.B.;
-420;88;Banska Bystrica;
-420;859;Banska Stiavnica;
-420;935;Bardejov;
-420;301;Benesov u Prahy;
-420;311;Beroun (Beraun);
-420;655;Bilovec (Wagstadt);
-420;506;Blansko;
-420;344;Blatna;
-420;185;Blovice (Blowitz);
-420;6992;Bohumin;
-420;501;Boskovice (Boskowitz);
-420;202;Brandys n. L.;
-420;7;Bratislava (Preßburg);
-420;627;Breclav (Lundenburg);
-420;867;Brezno;
-420;5;Brno (Brünn);
-420;447;Broumov (Braunau);
-420;505;Bystrice n. Per.;
-420;821;Bytca;
-420;824;Cadca;
-420;322;Caslav (Caslau);
-420;425;Ceska Lipa;
-420;38;Ceske Budejovice (Budweis);
-420;203;Cesky Brod;
-420;337;Cesky Krumlov;
-420;166;Cheb (Eger);
-420;396;Chomutov (Komotau);
-420;453;Chotebor;
-420;455;Chrudim;
-420;332;Dacice;
-420;412;Decin (Tetschen);
-420;305;Dobris;
-420;443;Dobruska;
-420;845;Dolny Kubin;
-420;189;Domazlice;
-420;827;Dubnica n. Vahom;
-420;709;Dunajska Streda;
-420;437;Dvur Kralove n.L.;
-420;166;Frantiskgvy Lazne;
-420;658;Frydek-Mystek;
-420;427;Frydiarit v Cechach;
-420;707;Galanta;
-420;944;Gelnica;
-420;936;Giraltovce;
-420;6994;Havirov;
-420;451;Havlickuv Brod;
-420;454;Hlinlsko v Chechach;
-420;804;Hlohovec;
-420;865;Hnusta;
-420;628;Hodonin (Göding);
-420;635;Holesov (Holleschau);
-420;801;Holic (Holitz);
-420;456;Holice v Cechach;
-420;435;Horice v Podkrkonosi;
-420;316;Horovice (Horowitz);
-420;188;Horsovsky Tyn;
-420;49;Hradec Kralove;
-420;642;Hranice (Roßbach);
-420;933;Humenne;
-420;367;Humpolec (Humpoletz);
-420;818;Hurbanovo;
-420;626;Hustopece u Brna;
-420;428;Jablonec n.Nisou;
-420;442;Jaromer;
-420;433;Jicin;
-420;66;Jihlava (Iglau);
-420;432;Jilemnice;
-420;331;Jindrichuv Hradec;
-420;398;Kadan;
-420;364;Kamenice n.L.;
-420;336;Kaplice (Kaplitz);
-420;17;Karlovy Vary;
-420;699;Karvina (Karwin);
-420;968;Kezmarok (Käsmark);
-420;312;Kladno;
-420;186;Klatovy;
-420;321;Kolin;
-420;819;Komarno (Komarn);
-420;95;Kosice (Kaschau);
-420;444;Kosteleo n.Orl.;
-420;949;Kral. Chlmec;
-420;205;Kralupy n.Vlt.;
-420;652;Krnov;
-420;634;Kromeriz (Kremsier);
-420;856;Krupina;
-420;327;Kutna Hora (Kuttenberg);
-420;629;Kyjov;
-420;826;Kysucke Nove Mesto;
-420;467;Lanskroun (Landskron);
-420;452;Ledec n.Saz. (Ledec);
-420;813;Levice (Lewenz);
-420;966;Levoca;
-420;48;Liberec;
-420;844;Liptovsky Hradok;
-420;849;Liptovsky Mikulas;
-420;416;Litomerice;
-420;464;Litornysl (Leomischl);
-420;395;Louny (Laun);
-420;419;Lovosice (Lobositz);
-420;863;Lucenc;
-420;703;Malacky;
-420;165;Marianske Lazne;
-420;842;Martin;
-420;939;Medzilaborce;
-420;206;Melnik;
-420;946;Michalovce;
-420;625;Mikulov (Niklasberg);
-420;368;Milevsko (Mühlhausen);
-420;326;Mlada Bolesiav;
-420;329;Mnichovo Hradiste;
-420;943;Moldava n. Bodvou;
-420;462;Moravska Trebove;
-420;617;Moravske Budejovice;
-420;621;Moravsky Krumlov;
-420;35;Most (Brüx);
-420;441;Nachod;
-420;509;Namest n.Osl.;
-420;846;Namestovo;
-420;817;Ngve Zamky;
-420;87;Nitra;
-420;434;Nova Paka (Neupaka);
-420;834;Nove Mesto nad Vahom;
-420;424;Novy Bor (Haida);
-420;448;Novy Bydzov;
-420;656;Novy Jicin (Neutitschein);
-420;325;Nymburk;
-420;68;Olomouc (Olmütz);
-420;653;Opava (Troppau);
-420;6995;Orlova;
-420;69;Ostrava (Ostrau);
-420;164;Ostrov n.Ohri;
-420;365;Pacov (Patzau);
-420;40;Pardubice (Pardubitz);
-420;366;Pelhrimov (Pilgram);
-420;704;Pezinok;
-420;838;Piestany (Pistyan);
-420;362;Pisek;
-420;182;Plasy;
-420;19;Plzen (Pilsen);
-420;399;Podborany (Podersam);
-420;324;Podebrady (Podebrad);
-420;463;Policka;
-420;864;Poltar;
-420;92;Poprad (Deutschendorf);
-420;822;Povazska Bystrica;
-420;338;Prachatice;
-420;2;Praha (Prag);
-420;457;Prelouc;
-420;641;Prerov;
-420;91;Presov;
-420;306;Pribram;
-420;862;Prievidza;
-420;508;Prostejov (Proßnitz);
-420;825;Puchov;
-420;823;Rajec n. Rajc.;
-420;313;Rakovnik (Rakonitz);
-420;941;Revuca;
-420;204;Ricany u Prahy;
-420;866;Rimavska Sobota;
-420;181;Rokycany;
-420;502;Rosice u Brna;
-420;411;Roudnice n.L.;
-420;942;Roznava (Rosenau);
-420;413;Rumburk;
-420;848;Ruzomberok;
-420;445;Rychnov n. Kneznou;
-420;934;Sabinov;
-420;812;Sahy;
-420;706;Sala;
-420;708;Samorin;
-420;304;Sedlcany (Selcan);
-420;431;Semily (Semil);
-420;802;Senica n. Myj.;
-420;314;Slany;
-420;932;Snina;
-420;363;Sobeslav (Sobeslau);
-420;947;Sobrance;
-420;168;Sokolov (Falkenau Eger);
-420;965;Spisska Nova Ves;
-420;964;Spisska Stara Ves;
-420;963;Stara Lubovna;
-420;969;Stary Smokovec;
-420;342;Strakonice;
-420;183;Stribro;
-420;938;Stropkov;
-420;810;Sturovo;
-420;649;Sumperk;
-420;816;Surany;
-420;187;Susice (Schüttenhofen);
-420;937;Svidnik;
-420;461;Svitavy;
-420;361;Tabor;
-420;184;Tachov;
-420;417;Teplice (Teplitz);
-420;333;Tiebon;
-420;504;Tisnov;
-420;815;Topolcany;
-420;868;Tornala;
-420;169;Touzim;
-420;618;Trebic;
-420;948;Trebisov;
-420;831;Trencin (Trentschin);
-420;335;Trhove Sviny;
-420;659;Trinec;
-420;805;Trnava;
-420;439;Trutnov (Trautenau);
-420;841;Turcianske Teplice;
-420;436;Turnov (Turnau);
-420;847;Tvrdosin;
-420;334;Tyn n.Vitavou;
-420;632;Uherske Hradiste;
-420;633;Uhersky Brod;
-420;328;Uhlirske Janovice;
-420;47;Usti nad Labem;
-420;465;Usti nad Orlici;
-420;636;Valasske Klobouky;
-420;651;Valasske Mezirici;
-420;619;Velke Mezirici;
-420;854;Velky Krtis;
-420;631;Veseli n.Moravou;
-420;339;Vimperk (Winterberg);
-420;654;Vitkov;
-420;303;Vlasim (Wlaschim);
-420;302;Votice (Wotitz);
-420;931;Vranov n. Toplou;
-420;438;Vrchlabi (Hohenelbe);
-420;657;Vsetin (Wesen);
-420;507;Vyskov;
-420;468;Vysoke Myto;
-420;648;Zabreh (Hohenstadt);
-420;446;Zamberk (Senftenberg);
-420;858;Zarnovica;
-420;397;Zatec;
-420;616;Zdar n.Sazavou (Saar);
-420;811;Zellezovce;
-420;89;Zilina (Sillein);
-420;814;Zlate Moravce;
-420;67;Zlin (Gottwaldov);
-420;624;Znojmo;
-420;855;Zvolen;
-43;650;Mobil
-43;651;Mobil
-43;652;Mobil
-43;653;Mobil
-43;655;Mobil
-43;657;Mobil
-43;659;Mobil
-43;660;Mobil
-43;661;Mobil
-43;663;Mobil
-43;664;Mobil
-43;665;Mobil
-43;666;Mobil
-43;667;Mobil
-43;668;Mobil
-43;669;Mobil
-43;4846;Abfaltersbach
-43;2278;Absdorf
-43;6243;Abtenau
-43;7727;Ach
-43;5246;Achenkirch
-43;3613;Admont
-43;3861;Aflenz
-43;4247;Afritz
-43;2712;Aggsbach
-43;7281;Aigen im Mühlkreis
-43;4853;Ainet
-43;5579;Alberschwende
-43;7274;Alkoven
-43;2258;Alland
-43;2824;Allentsteig
-43;5336;Alpbach
-43;7230;Altenberg bei Linz
-43;7415;Altenmarkt (Yspertal)
-43;2673;Altenmarkt an der Triesting
-43;2774;Altlengbach
-43;7723;Altheim
-43;7612;Altmünster
-43;7675;Ampflwang im Hausruckwald
-43;7472;Amstetten
-43;7766;Andorf
-43;7750;Andrichsfurt
-43;3175;Anger
-43;2283;Angern an der March
-43;6246;Anif
-43;6463;Annaberg-Lungötz
-43;7229;Ansfelden
-43;6223;Anthering
-43;7759;Antiesenhofen
-43;2175;Apetlon
-43;2813;Arbesbach
-43;7479;Ardagger
-43;3455;Arnfels
-43;4255;Arnoldstein
-43;7273;Aschach an der Donau
-43;7476;Aschbach-Markt
-43;2642;Aspangberg-Sankt Peter
-43;2577;Asparn an der Zaya
-43;4855;Assling
-43;7666;Attersee
-43;7674;Attnang-Puchheim
-43;2275;Atzenbrugg
-43;6470;Atzmannsdorf
-43;5515;Au
-43;2288;Auersthal
-43;4785;Außerfragant
-43;4843;Außervillgraten
-43;5234;Axams
-43;3622;Bad Aussee
-43;4244;Bad Bleiberg
-43;2639;Bad Fischau
-43;6434;Bad Gastein
-43;3159;Bad Gleichenberg
-43;6135;Bad Goisern
-43;2857;Bad Großpertholz
-43;7258;Bad Hall
-43;6432;Bad Hofgastein
-43;6132;Bad Ischl
-43;4240;Bad Kleinkirchheim
-43;7266;Bad Kreuzen
-43;7213;Bad Leonfelden
-43;3623;Bad Mitterndorf
-43;3476;Bad Radkersburg
-43;4350;Bad St. Leonhard im Lavanttal
-43;2625;Bad Sauerbrunn
-43;7249;Bad Schallerbach
-43;3353;Bad Tatzmannsdorf
-43;2878;Bad Traunstein
-43;7263;Bad Zell
-43;2252;Baden
-43;7269;Baumgartenberg
-43;2672;Berndorf
-43;2557;Bernhardsthal
-43;3354;Bernstein
-43;5514;Bezau
-43;5674;Bichlbach
-43;3174;Birkfeld
-43;3513;Bischoffeld
-43;6462;Bischofshofen
-43;4235;Bleiburg
-43;7473;Blindenmarkt
-43;5552;Bludenz
-43;4243;Bodensdorf
-43;6566;Bramberg am Wildkogel
-43;5559;Brand
-43;2859;Brand-Nagelberg
-43;5331;Brandenberg
-43;7722;Braunau am Inn
-43;5574;Bregenz
-43;3866;Breitenau am Hochlantsch
-43;2239;Breitenfurt bei Wien
-43;3576;Bretstein
-43;5337;Brixlegg
-43;6545;Bruck an der Großglocknerstraße
-43;2162;Bruck an der Leitha
-43;3862;Bruck an der Mur
-43;2989;Brunn an der Wild
-43;4214;Brückl
-43;3383;Burgau
-43;2743;Böheimkirchen
-43;5585;Dalaas
-43;5510;Damüls
-43;4718;Dellach
-43;4714;Dellach im Drautal
-43;2255;Deutsch-Brodersdorf
-43;3474;Deutsch Goritz
-43;2144;Deutsch Jahrndorf
-43;3365;Deutsch Schützen-Eisenberg
-43;2247;Deutsch-Wagram
-43;2613;Deutschkreutz
-43;3462;Deutschlandsberg
-43;6461;Dienten am Hochkönig
-43;7260;Dimbach
-43;2843;Dobersberg
-43;3136;Dobl
-43;3683;Donnersbach
-43;3680;Donnersbachwald
-43;5516;Doren
-43;6433;Dorfgastein
-43;5572;Dornbirn
-43;2686;Draßburg
-43;2617;Draßmarkt
-43;2915;Drosendorf-Zissersdorf
-43;2719;Droß
-43;2536;Drösing
-43;2538;Dürnkrut
-43;2711;Dürnstein
-43;5373;Ebbs
-43;4275;Ebene Reichenau
-43;2624;Ebenfurth
-43;6133;Ebensee
-43;3323;Eberau
-43;4236;Eberndorf
-43;7753;Eberschwang
-43;2254;Ebreichsdorf
-43;3145;Edelschrott
-43;7272;Eferding
-43;5512;Egg
-43;7748;Eggelsberg
-43;2984;Eggenburg
-43;7767;Eggerding
-43;2863;Eggern
-43;3117;Eggersdorf bei Graz
-43;3453;Ehrenhausen
-43;5673;Ehrwald
-43;3466;Eibiswald
-43;2773;Eichgraben
-43;3848;Eisenerz
-43;4238;Eisenkappel-Vellach
-43;2682;Eisenstadt
-43;5634;Elbigenalp
-43;5358;Ellmau
-43;5635;Elmen
-43;2876;Els
-43;7223;Enns
-43;2230;Enzersdorf an der Fischa
-43;2576;Ernstbrunn
-43;7714;Esternberg
-43;6225;Eugendorf
-43;7474;Euratsfeld
-43;4254;Faak am See
-43;6228;Faistenau
-43;3155;Fehring
-43;5475;Feichten
-43;4245;Feistritz an der Drau
-43;4228;Feistritz im Rosental
-43;3152;Feldbach
-43;5522;Feldkirch
-43;7233;Feldkirchen an der Donau
-43;4276;Feldkirchen in Kärnten
-43;2628;Felixdorf
-43;2738;Fels am Wagram
-43;4227;Ferlach
-43;5354;Fieberbrunn
-43;6453;Filzmoos
-43;2232;Fischamend
-43;3170;Fischbach
-43;5476;Fiss
-43;6457;Flachau
-43;4269;Flattnitz
-43;5449;Fließ
-43;2741;Flinsbach
-43;5447;Flirsch
-43;3573;Fohnsdorf
-43;7683;Frankenburg am Hausruck
-43;2725;Frankenfels
-43;7684;Frankenmarkt
-43;2172;Frauenkirchen
-43;7942;Freistadt
-43;3456;Fresing
-43;3339;Friedberg
-43;7746;Friedburg
-43;4268;Friesach
-43;3126;Frohnleiten
-43;5225;Fulpmes
-43;6546;Fusch an der Großglocknerstraße
-43;6226;Fuschl am See
-43;5288;Fügen
-43;4257;Fürnitz
-43;3382;Fürstenfeld
-43;2237;Gaaden
-43;7353;Gaflenz
-43;3617;Gaishorn am See
-43;4221;Gallizien
-43;7235;Gallneukirchen
-43;5443;Galtür
-43;7485;Gaming
-43;3637;Gams bei Hieflau
-43;2753;Gansbach
-43;2282;Gänserndorf
-43;2985;Gars am Kamp
-43;5558;Gaschurn
-43;3171;Gasen
-43;7735;Gaspoltshofen
-43;2142;Gattendorf
-43;2574;Gaweinstal
-43;3149;Geistthal
-43;4355;Gemmersdorf
-43;2912;Geras
-43;2246;Gerasdorf bei Wien
-43;5284;Gerlos
-43;2716;Gföhl
-43;5285;Ginzling
-43;4277;Glanegg
-43;3457;Gleinstätten
-43;3112;Gleisdorf
-43;4230;Globasnitz
-43;2662;Gloggnitz
-43;7612;Gmunden
-43;2852;Gmünd
-43;4732;Gmünd in Kärnten
-43;2525;Gnadendorf
-43;3151;Gnas
-43;4278;Gnesau
-43;6244;Golling an der Salzach
-43;2173;Gols
-43;6136;Gosau
-43;2875;Grafenschlag
-43;4225;Grafenstein
-43;2877;Grainbrunn
-43;2234;Gramatneusiedl
-43;3124;Gratkorn
-43;316;Graz
-43;4712;Greifenburg
-43;7268;Grein
-43;3465;Greith
-43;7487;Gresten
-43;5274;Gries am Brenner
-43;5236;Gries im Sellrain
-43;7248;Grieskirchen
-43;4233;Griffen
-43;2644;Grimmenstein
-43;2812;Groß Gerungs
-43;3464;Groß Sankt Florian
-43;2249;Groß-Enzersdorf
-43;2847;Groß-Siegharts
-43;6414;Großarl
-43;2823;Großglobnitz
-43;6247;Großgmain
-43;4825;Großkirchheim
-43;2556;Großkrut
-43;2268;Großmugl
-43;2615;Großmutschen
-43;3362;Großpetersdorf
-43;7254;Großraming
-43;2263;Großrußbach
-43;2815;Großschönau
-43;3386;Großsteinbach
-43;7218;Großtraberg
-43;2955;Großweikersdorf
-43;3685;Gröbming
-43;6246;Grödig
-43;7616;Grünau im Almtal
-43;2637;Grünbach am Schneeberg
-43;7257;Grünburg
-43;5276;Gschnitz
-43;4245;Gummern
-43;2252;Gumpoldskirchen
-43;7246;Gunskirchen
-43;2951;Guntersdorf
-43;7757;Gurten
-43;7946;Gutau
-43;2634;Gutenstein
-43;2954;Göllersdorf
-43;2825;Göpfritz an der Wild
-43;6483;Göriach
-43;7484;Göstling an der Ybbs
-43;5523;Götzis
-43;3322;Güssing
-43;7434;Haag
-43;7732;Haag am Hausruck
-43;2735;Hadersdorf am Kamp
-43;7279;Haibach ob der Donau
-43;2165;Hainburg a.d. Donau
-43;2764;Hainfeld
-43;5223;Hall in Tirol
-43;6245;Hallein
-43;6134;Hallstatt
-43;3364;Hannersdorf
-43;5574;Hard
-43;7225;Hargelsberg
-43;3332;Hartberg
-43;7273;Hartkirchen
-43;2944;Haugsdorf
-43;3686;Haus
-43;2533;Hausbrunn
-43;2265;Hausleiten
-43;7475;Ulmerfeld-Hausmening-Neufurth
-43;2862;Heidenreichstein
-43;4824;Heiligenblut am Großglockner
-43;3134;Heiligenkreuz am Waasen
-43;3325;Heiligenkreuz im Lafnitztal
-43;7216;Helfenberg
-43;7215;Hellmonsödt
-43;6214;Henndorf am Wallersee
-43;4282;Hermagor
-43;2555;Herrnbaumgarten
-43;2782;Herzogenburg
-43;7231;Herzogsdorf
-43;3634;Hieflau
-43;5245;Hinterriß
-43;6224;Hintersee
-43;7564;Hinterstoder
-43;7948;Hirschbach im Mühlkreis
-43;2854;Hirschbach (Niederösterreich)
-43;3141;Hirschegg
-43;5517;Hirschegg im Kleinwalsertal
-43;5513;Hittisau
-43;5359;Hochfilzen
-43;5280;Hochfügen
-43;2648;Hochneukirchen
-43;6229;Hof bei Salzburg
-43;7734;Hofkirchen an der Trattnach
-43;7285;Hofkirchen im Mühlkreis
-43;2535;Hohenau an der March
-43;2767;Hohenberg
-43;5576;Hohenems
-43;3618;Hohentauern
-43;2957;Hohenwarth-Mühlbach am Manhartsberg
-43;2952;Hollabrunn
-43;7445;Hollenstein an der Ybbs
-43;5335;Hopfgarten im Brixental
-43;2610;Horitschon
-43;2982;Horn
-43;2689;Hornstein
-43;4872;Huben
-43;5633;Hägerau
-43;5289;Häusling
-43;5578;Höchst
-43;5573;Hörbranz
-43;7221;Hörsching
-43;2913;Hötzelsdorf
-43;3475;Hürth
-43;6458;Hüttau
-43;4263;Hüttenberg
-43;6417;Hüttschlag
-43;2731;Idolsberg
-43;2175;Illmitz
-43;3385;Ilz
-43;5412;Imst
-43;4736;Innerkrems
-43;2774;Innermanzing
-43;512;Innsbruck
-43;5238;Inzing
-43;2986;Irnfritz
-43;5444;Ischgl
-43;2914;Japons
-43;5244;Jenbach
-43;3329;Jennersdorf
-43;5355;Jochberg
-43;3611;Johnsbach
-43;2160;Jois
-43;3572;Judenburg
-43;5676;Jungholz
-43;3148;Kainach bei Voitsberg
-43;3334;Kaindorf
-43;4876;Kals am Großglockner
-43;3135;Kalsdorf bei Graz
-43;5283;Kaltenbach
-43;2238;Kaltenleutgeben
-43;3846;Kalwang
-43;3844;Kammern im Liesingtal
-43;3157;Kapfenstein
-43;5445;Kappl
-43;6547;Kaprun
-43;2844;Karlstein an der Thaya
-43;2816;Karlstift
-43;4848;Kartitsch
-43;2744;Kasten bei Böheimkirchen
-43;3588;Katsch an der Mur
-43;2765;Kaumberg
-43;2524;Kautendorf
-43;2864;Kautzen
-43;7947;Kefermarkt
-43;7247;Kematen am Innbach
-43;7228;Kematen an der Krems
-43;7448;Kematen an der Ybbs
-43;5232;Kematen in Tirol
-43;2748;Kilb
-43;3865;Kindberg
-43;4284;Kirchbach
-43;3116;Kirchbach in Steiermark
-43;2279;Kirchberg am Wagram
-43;2854;Kirchberg am Walde
-43;2641;Kirchberg am Wechsel
-43;2722;Kirchberg an der Pielach
-43;7747;Kirchberg bei Mattighofen
-43;5357;Kirchberg in Tirol
-43;7582;Kirchdorf an der Krems
-43;7619;Kirchham
-43;2646;Kirchschlag in der Buckligen Welt
-43;2523;Kirchstetten (Neudorf bei Staatz)
-43;2143;Kittsee
-43;5356;Kitzbühel
-43;463;Klagenfurt am Wörthersee
-43;7585;Klaus an der Pyhrnbahn
-43;2257;Klausen-Leopoldsdorf
-43;4768;Kleblach-Lind
-43;4264;Klein Sankt Paul
-43;6418;Kleinarl
-43;3516;Kleinlobming
-43;7357;Kleinreifling
-43;2614;Großwarasdorf
-43;2766;Kleinzell
-43;2687;Klingenbach
-43;2243;Klosterneuburg
-43;5582;Klösterle
-43;3512;Knittelfeld
-43;3366;Kohfidisch
-43;7763;Kopfing im Innkreis
-43;2214;Kopfstetten
-43;6221;Koppl
-43;2262;Korneuburg
-43;2873;Kottes
-43;3535;Krakaudorf
-43;3832;Kraubath an der Mur
-43;2732;Krems an der Donau
-43;4735;Kremsbrücke
-43;7583;Kremsmünster
-43;7249;Krenglbach
-43;3855;Krieglach
-43;6564;Krimml
-43;6240;Krispl
-43;3143;Krottendorf-Gaisfeld
-43;2647;Krumbach
-43;4229;Krumpendorf am Wörthersee
-43;5372;Kufstein
-43;3328;Kukmirn
-43;3132;Kumberg
-43;5338;Kundl
-43;3144;Köflach
-43;7955;Königswiesen
-43;5375;Kössen
-43;4715;Kötschach-Mauthen
-43;4220;Köttmannsdorf
-43;5239;Kühtai
-43;2522;Laa an der Thaya
-43;7613;Laakirchen
-43;2619;Lackendorf
-43;2575;Ladendorf
-43;3338;Lafnitz
-43;7245;Lambach
-43;7765;Lambrechten
-43;6274;Lamprechtshausen
-43;5442;Landeck
-43;3633;Landl
-43;7480;Langau (Gaming)
-43;5575;Langen bei Bregenz
-43;2734;Langenlois
-43;3854;Langenwang
-43;2244;Langenzersdorf
-43;2814;Langschlag
-43;2213;Lassee
-43;5526;Laterns
-43;4213;Launsdorf
-43;4356;Lavamünd
-43;5583;Lech
-43;3452;Leibnitz
-43;7286;Lembach im Mühlkreis
-43;6416;Lend
-43;3842;Leoben
-43;2256;Leobersdorf
-43;6583;Leogang
-43;2216;Leopoldsdorf im Marchfelde
-43;4716;Lesachtal
-43;6484;Lessach
-43;5214;Leutasch
-43;3454;Leutschach
-43;2718;Lichtenau im Waldviertel
-43;7239;Lichtenberg
-43;2643;Lichtenegg
-43;7953;Liebenau
-43;4215;Liebenfels
-43;4852;Lienz
-43;3612;Liezen
-43;2762;Lilienfeld
-43;732;Linz
-43;2865;Litschau
-43;3358;Litzelsdorf
-43;7745;Lochen am See
-43;2616;Lockenhaus
-43;6588;Lofer
-43;3359;Loipersdorf-Kitzladen
-43;2754;Loosdorf
-43;7255;Losenstein
-43;7486;Lunz am See
-43;5577;Lustenau
-43;2615;Lutzmannsburg
-43;5253;Längenfeld
-43;2943;Mailberg
-43;2958;Maissau
-43;4784;Mallnitz
-43;4733;Malta
-43;6454;Mandling
-43;2755;Mank
-43;2168;Mannersdorf am Leithagebirge
-43;2611;Mannersdorf an der Rabnitz
-43;7413;Marbach an der Donau
-43;2285;Marchegg
-43;7243;Marchtrenk
-43;6584;Maria Alm am Steinernen Meer
-43;7250;Maria Neustift
-43;4223;Maria Saal
-43;7743;Maria Schmolln
-43;7413;Maria Taferl
-43;2235;Maria-Lanzendorf
-43;6473;Mariapfarr
-43;3882;Mariazell
-43;2248;Markgrafneusiedl
-43;3356;Markt Allhau
-43;3114;Markt Hartmannsdorf
-43;2633;Markt Piesting
-43;2618;Markt Sankt Martin
-43;2874;Martinsberg
-43;5273;Matrei am Brenner
-43;4875;Matrei in Osttirol
-43;2626;Mattersburg
-43;7742;Mattighofen
-43;6217;Mattsee
-43;2289;Matzen-Raggendorf
-43;7724;Mauerkirchen
-43;5243;Maurach
-43;3845;Mautern in Steiermark
-43;6472;Mauterndorf
-43;7238;Mauthausen
-43;5285;Mayrhofen
-43;2752;Melk
-43;5518;Mellau
-43;4267;Metnitz
-43;7755;Mettmach
-43;5264;Mieming
-43;4237;Miklauzhof
-43;4766;Millstatt am See
-43;2572;Mistelbach
-43;5517;Mittelberg im Kleinwalsertal
-43;3858;Mitterdorf im Mürztal
-43;6562;Mittersill
-43;4231;Mittertrixen
-43;3146;Modriach
-43;7584;Molln
-43;6232;Mondsee
-43;2858;Moorbad Harbach
-43;4272;Moosburg
-43;7748;Moosdorf
-43;6479;Muhr
-43;7744;Munderfing
-43;3532;Murau
-43;3472;Mureck
-43;3571;Möderbrugg
-43;2236;Mödling
-43;4769;Möllbrücke
-43;7267;Mönchdorf
-43;2649;Mönichkirchen
-43;4826;Mörtschach
-43;6467;Mühlbach am Hochkönig
-43;3586;Mühlen
-43;2259;Münchendorf
-43;7716;Münzkirchen
-43;3859;Mürzsteg
-43;3852;Mürzzuschlag
-43;2953;Nappersdorf
-43;5265;Nassereith
-43;5473;Nauders
-43;5278;Navis
-43;5525;Nenzing
-43;3133;Nestelbach
-43;3857;Neuberg an der Mürz
-43;3383;Neudau
-43;7282;Neufelden
-43;7227;Neuhofen an der Krems
-43;7618;Neukirchen (Altmünster)
-43;6565;Neukirchen am Großvenediger
-43;7278;Neukirchen am Walde
-43;7729;Neukirchen an der Enknach
-43;2772;Neulengbach
-43;6216;Neumarkt am Wallersee
-43;7733;Neumarkt im Hausruckkreis
-43;7941;Neumarkt im Mühlkreis
-43;3584;Neumarkt in Steiermark
-43;2635;Neunkirchen
-43;2988;Neupölla
-43;2167;Neusiedl am See
-43;2533;Neusiedl an der Zaya
-43;7471;Neustadtl an der Donau
-43;5226;Neustift im Stubaital
-43;2146;Nickelsdorf
-43;2269;Niederfellabrunn
-43;2949;Niederfladnitz
-43;7224;Niederneukirchen
-43;6548;Niedernsill
-43;2534;Niedersulz
-43;4858;Nikolsdorf
-43;6276;Nußdorf am Haunsberg
-43;4256;Nötsch im Gailtal
-43;3578;Obdach
-43;2747;Ober-Grafendorf
-43;4710;Oberdrauburg
-43;3455;Oberhaag
-43;6213;Oberhofen am Irrsee
-43;7284;Oberkappel
-43;7758;Obernberg am Inn
-43;7483;Oberndorf an der Melk
-43;6272;Oberndorf bei Salzburg
-43;2612;Oberpullendorf
-43;3353;Oberschützen
-43;2286;Obersiebenbrunn
-43;6456;Obertauern
-43;4847;Obertilliach
-43;6131;Obertraun
-43;6219;Obertrum am See
-43;4782;Obervellach
-43;2253;Oberwaltersdorf
-43;6233;Oberwang
-43;3352;Oberwart
-43;2284;Oberweiden
-43;2786;Oberwölbling
-43;3581;Oberwölz
-43;2943;Obritz
-43;7478;Oed-Oehling
-43;5252;Oetz
-43;5266;Ötztal-Bahnhof
-43;3619;Oppenberg
-43;7444;Opponitz
-43;2212;Orth an der Donau
-43;6278;Ostermiething
-43;2872;Ottenschlag
-43;7234;Ottensheim
-43;7676;Ottnang am Hausruck
-43;7265;Pabneukirchen
-43;3150;Paldau
-43;3638;Palfau
-43;2166;Parndorf
-43;3179;Passail
-43;2736;Paudorf
-43;3127;Peggau
-43;7287;Peilstein im Mühlviertel
-43;1;Perchtoldsdorf
-43;7262;Perg
-43;3867;Pernegg an der Mur
-43;2632;Pernitz
-43;2784;Perschling
-43;2163;Petronell-Carnuntum
-43;7586;Pettenbach
-43;5448;Pettneu am Arlberg
-43;7276;Peuerbach
-43;2848;Pfaffenschlag bei Waidhofen a.d.Thaya
-43;5474;Pfunds
-43;5442;Pians
-43;3624;Pichl-Kainisch
-43;6549;Piesendorf
-43;3357;Pinkafeld
-43;3339;Pinggau
-43;4224;Pischeldorf
-43;3113;Pischelsdorf in der Steiermark
-43;2627;Pitten
-43;2177;Podersdorf am See
-43;2757;Pöchlarn
-43;2758;Pöggstall
-43;3465;Pölfing-Brunn
-43;3335;Pöllau
-43;3579;Pöls
-43;4272;Pörtschach am Wörther See
-43;2631;Pöttsching
-43;2623;Pottendorf
-43;2552;Poysdorf
-43;7736;Pram
-43;4353;Prebl
-43;3185;Preding
-43;7236;Pregarten
-43;2665;Prein an der Rax
-43;4354;Preitenegg
-43;2145;Prellenkirchen
-43;2233;Pressbaum
-43;2749;Prinzersdorf
-43;2215;Probstdorf
-43;2282;Prottes
-43;5472;Prutz
-43;4877;Prägraten am Großvenediger
-43;3177;Puch bei Weiz
-43;2636;Puchberg am Schneeberg
-43;2726;Puchenstuben
-43;2946;Pulkau
-43;2683;Purbach am Neusiedler See
-43;7489;Purgstall an der Erlauf
-43;2231;Purkersdorf
-43;3574;Pusterwald
-43;2745;Pyhra
-43;7762;Raab
-43;2846;Raabs an der Thaya
-43;2249;Raasdorf
-43;2723;Rabenstein an der Pielach
-43;4246;Radenthein
-43;3635;Radmer
-43;6452;Radstadt
-43;5553;Raggal
-43;7949;Rainbach im Mühlkreis
-43;6475;Ramingstein
-43;2828;Rappottenstein
-43;2826;Rastenfeld
-43;3173;Ratten
-43;6544;Rauris
-43;3363;Rechnitz
-43;2666;Reichenau an der Rax
-43;7211;Reichenau im Mühlkreis
-43;4359;Reichenfels
-43;7214;Reichenthal
-43;2276;Reidling
-43;4273;Reifnitz
-43;4783;Reißeck
-43;4734;Rennweg
-43;2942;Retz
-43;5672;Reutte
-43;2271;Ried am Riederberg
-43;7752;Ried im Innkreis
-43;7588;Ried im Traunkreis
-43;7764;Riedau
-43;3153;Riegersburg
-43;2916;Riegersburg (Hardegg)
-43;5517;Riezlern
-43;2164;Rohrau
-43;7289;Rohrbach in Oberösterreich
-43;5417;Roppen
-43;7566;Rosenau am Hengstpaß
-43;2714;Rossatz
-43;4767;Rothenthurn
-43;3614;Rottenmann
-43;4234;Ruden
-43;2685;Rust
-43;6242;Rußbach am Paß Gschütt
-43;2264;Rückersdorf
-43;6541;Saalbach
-43;6582;Saalfelden am Steinernen Meer
-43;3147;Salla
-43;662;Salzburg
-43;7944;Sandl
-43;7717;Sankt Aegidi
-43;2768;Sankt Aegyd am Neuwalde
-43;4358;Sankt Andrä
-43;2242;Sankt Andrä-Wördern
-43;3158;Sankt Anna am Aigen
-43;5446;Sankt Anton am Arlberg
-43;7224;Sankt Florian
-43;3632;Sankt Gallen
-43;5557;Sankt Gallenkirch
-43;7954;St. Georgen am Walde
-43;2742;St. Georgen am Steinfelde
-43;7237;St. Georgen an der Gusen
-43;3183;Sankt Georgen an der Stiefing
-43;7667;St. Georgen im Attergau
-43;3537;Sankt Georgen ob Murau
-43;6227;Sankt Gilgen
-43;4253;Sankt Jakob im Rosental
-43;4873;Sankt Jakob in Defereggen
-43;5279;Sankt Jodok am Brenner
-43;3575;Sankt Johann am Tauern
-43;6412;Sankt Johann im Pongau
-43;5352;St. Johann in Tirol
-43;4239;Sankt Kanzian am Klopeiner See
-43;3869;Sankt Katharein an der Laming
-43;6241;Sankt Koloman
-43;3585;Sankt Lambrecht
-43;2756;St. Leonhard am Forst
-43;2987;St. Leonhard am Hornerwald
-43;5413;Sankt Leonhard im Pitztal
-43;3331;Sankt Lorenzen am Wechsel
-43;3515;Sankt Lorenzen bei Knittelfeld
-43;3119;Sankt Marein bei Graz
-43;3864;Sankt Marein im Mürztal
-43;4226;Sankt Margareten im Rosental
-43;2680;Sankt Margarethen im Burgenland
-43;6476;Sankt Margarethen im Lungau
-43;3684;Sankt Martin am Grimming
-43;3140;Sankt Martin am Wöllmißberg
-43;7751;St. Martin im Innkreis
-43;7232;St. Martin im Mühlkreis
-43;3327;Sankt Michael im Burgenland
-43;6477;Sankt Michael im Lungau
-43;3843;Sankt Michael in Obersteiermark
-43;3689;Sankt Nikolai im Sölktal
-43;7945;St. Oswald bei Freistadt
-43;3123;Sankt Oswald bei Plankenwarth
-43;3469;Sankt Oswald in Freiland
-43;3468;Sankt Oswald ob Eibiswald
-43;7565;St. Pankraz
-43;6277;St. Pantaleon
-43;4357;Sankt Paul im Lavanttal
-43;3536;Sankt Peter am Kammersberg
-43;3477;Sankt Peter am Ottersbach
-43;7477;St. Peter in der Au
-43;2742;St. Pölten
-43;3178;Sankt Ruprecht an der Raab
-43;4283;Sankt Stefan im Gailtal
-43;7435;St. Valentin
-43;4212;Sankt Veit an der Glan
-43;2763;St. Veit an der Gölsen
-43;7217;St. Veit im Mühlkreis
-43;4879;Sankt Veit in Defereggen
-43;6138;St. Wolfgang im Salzkammergut
-43;7283;Sarleinsbach
-43;5524;Satteins
-43;7244;Sattledt
-43;2638;Saubersdorf
-43;7713;Schardenberg
-43;5213;Scharnitz
-43;7615;Scharnstein
-43;7482;Scheibbs
-43;3582;Scheifling
-43;7251;Schiedlberg
-43;3687;Schladming
-43;7582;Schlierbach
-43;2663;Schottwien
-43;2853;Schrems
-43;5556;Schruns
-43;5519;Schröcken
-43;2230;Schwadorf
-43;3467;Schwanberg
-43;7728;Schwand im Innkreis
-43;7673;Schwanenstadt
-43;6415;Schwarzach im Pongau
-43;2667;Schwarzau im Gebirge
-43;2849;Schwarzenau
-43;2724;Schwarzenbach an der Pielach
-43;7280;Schwarzenberg am Böhmerwald
-43;5242;Schwaz
-43;2829;Schweiggers
-43;7712;Schärding
-43;7261;Schönau im Mühlkreis
-43;2827;Schönbach
-43;2733;Schönberg am Kamp
-43;3587;Schönberg-Lachtal
-43;2282;Schönkirchen-Reyersdorf
-43;5418;Schönwies
-43;2684;Schützen am Gebirge
-43;3333;Sebersdorf
-43;3514;Seckau
-43;5441;See
-43;4762;Seeboden am Millstätter See
-43;5212;Seefeld in Tirol
-43;6212;Seekirchen am Wallersee
-43;7662;Seewalchen am Attersee
-43;5230;Sellrain
-43;3616;Selzthal
-43;2664;Semmering
-43;5476;Serfaus
-43;2687;Siegendorf
-43;2621;Sieggraben
-43;2274;Sieghartskirchen
-43;2267;Sierndorf
-43;7259;Sierning
-43;2983;Sigmundsherberg
-43;4842;Sillian
-43;5263;Silz
-43;3118;Sinabelkirchen
-43;7240;Sipbachzell
-43;4279;Sirnitz
-43;2959;Sitzendorf an der Schmida
-43;3460;Soboth
-43;5554;Sonntag
-43;2538;Spannberg
-43;7563;Spital am Pyhrn
-43;3853;Spital am Semmering
-43;4762;Spittal an der Drau
-43;2713;Spitz
-43;3534;Stadl an der Mur
-43;3355;Stadtschlaining
-43;3682;Stainach
-43;3463;Stainz
-43;5632;Stanzach
-43;3326;Stegersbach
-43;2622;Steinabrückl
-43;5272;Steinach am Brenner
-43;7488;Steinakirchen am Forst
-43;7663;Steinbach am Attersee
-43;5248;Steinberg am Rofan
-43;2688;Steinbrunn
-43;7241;Steinerkirchen an der Traun
-43;4717;Steinfeld (Kärnten)
-43;4271;Steuerberg
-43;7252;Steyr
-43;4761;Stockenboi
-43;2266;Stockerau
-43;3473;Straden
-43;2287;Strasshof an der Nordbahn
-43;4266;Straßburg
-43;6215;Straßwalchen
-43;3324;Strem
-43;7432;Strengberg
-43;6137;Strobl
-43;2526;Stronsdorf
-43;3176;Stubenberg
-43;3115;Studenzen
-43;2554;Stützenhofen
-43;7711;Suben
-43;3387;Söchau
-43;3137;Söding
-43;5254;Sölden
-43;5333;Söll
-43;2176;Tadten
-43;6474;Tamsweg
-43;5675;Tannheim
-43;7719;Taufkirchen an der Pram
-43;3688;Tauplitz
-43;6543;Taxenbach
-43;4713;Techendorf
-43;5262;Telfs
-43;7256;Ternberg
-43;2630;Ternitz
-43;3883;Terz
-43;3582;Teufenbach
-43;6235;Thalgau
-43;5223;Thaur
-43;2947;Theras
-43;5376;Thiersee
-43;5550;Thüringen
-43;2739;Tiefenfucha
-43;3833;Traboch
-43;3868;Tragöß
-43;3461;Trahütten
-43;2783;Traismauer
-43;7229;Traun
-43;7617;Traunkirchen
-43;2169;Trautmannsdorf an der Leitha
-43;4248;Treffen
-43;4262;Treibach
-43;4823;Tresdorf (Rangersdorf)
-43;3615;Trieben
-43;5275;Trins
-43;3847;Trofaiach
-43;4285;Tröpolach
-43;2273;Tulbing
-43;2272;Tulln an der Donau
-43;3863;Turnau
-43;3533;Turrach
-43;5287;Tux
-43;6471;Tweng
-43;5477;Tösens
-43;2769;Türnitz
-43;7288;Ulrichsberg
-43;5255;Umhausen
-43;6589;Unken
-43;2717;Unter-Meisling
-43;7665;Unterach am Attersee
-43;5256;Untergurgl
-43;3631;Unterlaussa
-43;6455;Untertauern
-43;7956;Unterweißenbach
-43;3583;Unzmarkt-Frauenburg
-43;6563;Uttendorf
-43;3125;Übelbach
-43;3856;Veitsch
-43;4274;Velden am Wörther See
-43;2538;Velm-Götzendorf
-43;4242;Villach
-43;5677;Vils
-43;4874;Virgen
-43;2841;Vitis
-43;3142;Voitsberg
-43;3337;Vorau
-43;7614;Vorchdorf
-43;3849;Vordernberg
-43;7219;Vorderweißenbach
-43;7672;Vöcklabruck
-43;7682;Vöcklamarkt
-43;4232;Völkermarkt
-43;6413;Wagrain
-43;2842;Waidhofen an der Thaya
-43;7442;Waidhofen an der Ybbs
-43;5353;Waidring
-43;7277;Waizenkirchen
-43;5374;Walchsee
-43;3834;Wald am Schoberpaß
-43;3336;Waldbach
-43;2855;Waldenstein
-43;7260;Waldhausen im Strudengau
-43;7718;Waldkirchen am Wesen
-43;7754;Waldzell
-43;7249;Wallern an der Trattnach
-43;2174;Wallern im Burgenland
-43;7433;Wallsee-Sindelburg
-43;7587;Wartberg an der Krems
-43;2629;Warth
-43;5224;Wattens
-43;3884;Wegscheid
-43;3886;Weichselboden
-43;2845;Weikertschlag an der Thaya
-43;7414;Weins-Isperdorf
-43;4265;Weitensfeld im Gurktal
-43;2948;Weitersfeld
-43;7952;Weitersfelden
-43;2856;Weitra
-43;3172;Weiz
-43;4286;Weißbriach
-43;5678;Weißenbach am Lech
-43;2674;Weissenbach an der Triesting
-43;2715;Weißenkirchen in der Wachau
-43;7242;Wels
-43;5414;Wenns
-43;6468;Werfen
-43;6466;Werfenweng
-43;4252;Wernberg
-43;5334;Westendorf
-43;7355;Weyer
-43;7664;Weyregg am Attersee
-43;1;Wien
-43;2622;Wiener Neustadt
-43;2728;Wienerbruck
-43;7416;Wieselburg
-43;2645;Wiesmath
-43;3636;Wildalpen
-43;3182;Wildon
-43;5339;Wildschönau
-43;2573;Wilfersdorf
-43;2746;Wilhelmsburg
-43;7226;Wilhering
-43;2620;Willendorf
-43;7943;Windhaag bei Freistadt
-43;7264;Windhaag bei Perg
-43;7562;Windischgarsten
-43;7472;Winklarn
-43;4822;Winklern
-43;2638;Winzendorf-Muthmannsdorf
-43;7253;Wolfern
-43;4352;Wolfsberg
-43;3184;Wolfsberg im Schwarzautal
-43;2245;Wolkersdorf im Weinviertel
-43;2687;Wulkaprodersdorf
-43;2527;Wulzeshofen
-43;2633;Wöllersdorf-Steinabrückl
-43;5332;Wörgl
-43;7412;Ybbs an der Donau
-43;7443;Ybbsitz
-43;6478;Zederhaus
-43;6234;Zell am Moos
-43;6542;Zell am See
-43;5282;Zell am Ziller
-43;7764;Zell an der Pram
-43;2945;Zellerndorf
-43;3577;Zeltweg
-43;2956;Ziersdorf
-43;5238;Zirl
-43;2532;Zistersdorf
-43;2147;Zurndorf
-43;2277;Zwentendorf an der Donau
-43;7212;Zwettl an der Rodl
-43;2822;Zwettl
-44;19;2;Hertford
-44;1685;Aberdare;
-44;1224;Aberdeen;
-44;1970;Aberystwyth;
-44;1481;Alderney;
-44;1252;Aldershot;
-44;1665;Alnwick;
-44;1264;Andover;
-44;1861;Armagh;
-44;15394;Arnbleside;
-44;1344;Ascot Berkshire;
-44;1233;Ashford Kent;
-44;1784;Ashford Middlesex;
-44;1479;Aviemore;
-44;1296;Aylesbury;
-44;1292;Ayr;
-44;1629;Bakewell;
-44;1678;Bala;
-44;13397;Ballater;
-44;1266;Ballymena;
-44;1295;Banbury;
-44;1247;Bangor Co Down;
-44;1248;Bangor N.Wales;
-44;1341;Barmouth;
-44;1226;Barnsley Yorkshire;
-44;1271;Barnstabie;
-44;1268;Basildon;
-44;1256;Basingstoke;
-44;1225;Bath;
-44;1234;Bedford;
-44;1232;Belfast;
-44;1289;Berwick-on-Tweed;
-44;121;Birmingham;
-44;1254;Blackburn Lancashire;
-44;1253;Blackpool;
-44;1204;Bolton;
-44;1243;Bosham Sussex;
-44;1205;Boston Lincolnshire;
-44;1202;Bournemouth;
-44;1274;Bradford Yorkshire;
-44;13397;Braemar;
-44;1277;Brentwood;
-44;1278;Bridgwater;
-44;1273;Brighton;
-44;117;Bristol;
-44;1770;Brodick;
-44;1288;Bude;
-44;1282;Burnley;
-44;1284;Bury St. Edmunds;
-44;1298;Buxton;
-44;1286;Caernarfon;
-44;1222;Caerphilly;
-44;1581;Cairnryan;
-44;1877;Callander;
-44;1276;Camberley;
-44;1223;Cambridge;
-44;1227;Canterbury;
-44;1222;Cardiff;
-44;1239;Cardigan;
-44;1228;Carlisle;
-44;1267;Carmarthen;
-44;1245;Chelmsford;
-44;1242;Cheltenham;
-44;1244;Chester;
-44;1246;Chesterfield;
-44;1243;Chichester;
-44;1285;Cirencester;
-44;1900;Cockermouth;
-44;1206;Colchester;
-44;15394;Coniston;
-44;1203;Coventry;
-44;1293;Crawley Sussex;
-44;1381;Cromarty;
-44;1556;Dalbeatty;
-44;1325;Darlington;
-44;1322;Dartford Kent;
-44;1803;Dartmouth;
-44;1626;Dawlish;
-44;1332;Derby;
-44;1302;Doncaster;
-44;1305;Dorchester Dorset;
-44;1624;Douglas Isle of Man;
-44;1304;Dover;
-44;1387;Dumfries;
-44;1368;Dunbar;
-44;1382;Dundee;
-44;1383;Dunfermline;
-44;1582;Dunstable;
-44;191;Durham;
-44;1342;East Grinstead;
-44;1323;Eastbourne;
-44;1732;Edenbridge;
-44;131;Edinburgh;
-44;1504;Eglinton;
-44;1343;Eigin;
-44;1353;Ely (Cambs);
-44;1365;Enniskillen;
-44;1372;Epsom;
-44;1386;Evesham;
-44;1392;Exeter;
-44;1324;Falkirk;
-44;1252;Farnborough Hampshire;
-44;1295;Farnborough Oxon;
-44;1394;Felixstowe;
-44;1348;Fishguard;
-44;1303;Folkestone;
-44;1309;Forres;
-44;1397;Fort William;
-44;1445;Gairloch;
-44;1896;Galashiels;
-44;141;Glasgow;
-44;1458;Glastonbury;
-44;1452;Gloucester;
-44;1476;Grantham;
-44;1479;Grantown-on-Spey;
-44;15394;Grasmere;
-44;1474;Gravesend;
-44;1493;Great Yarmouth;
-44;1823;Greenham;
-44;1475;Greenock;
-44;1461;Gretna;
-44;1472;Grimsby;
-44;1481;Guernsey;
-44;1483;Guildford Surrey;
-44;1422;Halifax;
-44;1698;Hamilton;
-44;1766;Harlech;
-44;1279;Harlow Essex;
-44;1859;Harris Isle of Harris;
-44;1423;Harrogate;
-44;1429;Hartlepool;
-44;1255;Harwich Essex;
-44;1428;Hasleniere;
-44;1424;Hastings;
-44;1707;Hatfield Herts.;
-44;1705;Havant;
-44;1969;Hawes;
-44;1535;Haworth;
-44;1736;Hayle;
-44;1442;Hemel Hempstead;
-44;1491;Henley-on-Thames;
-44;1432;Hereford;
-44;1407;Holyhead;
-44;1403;Horsham;
-44;1484;Huddersfield;
-44;1482;Hull;
-44;1480;Huntingdon;
-44;1703;Hythe Hampshire;
-44;1935;Ilchester;
-44;1271;Ilfracombe;
-44;1499;Inveraray;
-44;1463;Inverness;
-44;1473;Ipswich;
-44;1835;Jedburgh;
-44;1534;Jersey;
-44;1573;Kelso;
-44;1539;Kendal;
-44;1926;Kenilworth;
-44;17687;Keswick;
-44;1536;Kettering;
-44;1562;Kidderminster;
-44;1563;Kilmarnock;
-44;1553;King's Lynn;
-44;1548;Kingsbridge;
-44;1592;Kirkcaldy;
-44;1555;Lanark;
-44;1524;Lancaster;
-44;1574;Larne;
-44;113;Leeds;
-44;116;Leicester;
-44;1595;Lerwick;
-44;1543;Lichfield;
-44;1522;Lincoln;
-44;1506;Linlithgow;
-44;151;Liverpool;
-44;1597;Llandrindod Wells;
-44;1492;Llandudno;
-44;1978;Llangollen;
-44;15202;Lochcarron;
-44;181;London Au�enbezirk;
-44;171;London Innenbezirk;
-44;1504;Londonderry;
-44;1507;Louth;
-44;1502;Lowestoft;
-44;1582;Luton Bedordshire;
-44;1297;Lyme Regis;
-44;1253;Lytham;
-44;1625;Macclesfield;
-44;1628;Maidenhead;
-44;1622;Maidstone;
-44;1687;Mallaig;
-44;161;Manchester;
-44;1623;Mansfield;
-44;1858;Market Harborough;
-44;1672;Marlborough;
-44;1896;Melrose;
-44;1642;Middlesbrough;
-44;1646;Milford Haven;
-44;1643;Minehead;
-44;1683;Moffat;
-44;1600;Monmouth;
-44;1674;Montrose;
-44;1524;Morecombe;
-44;1670;Morpeth;
-44;1698;Motherwell;
-44;1270;Nantwich;
-44;1636;Newark;
-44;1635;Newbury;
-44;13967;Newcastle Co Down;
-44;1782;Newcastle Staffordshire;
-44;1273;Newhaven;
-44;1638;Newmarket;
-44;1633;Newport Gwent;
-44;1637;Newquay Cornwall;
-44;1693;Newry;
-44;1604;Northampton;
-44;1603;Norwich;
-44;115;Nottingham;
-44;1631;Oban;
-44;1837;Okehampton;
-44;1662;Omagh;
-44;1691;Oswestry;
-44;1865;Oxford;
-44;1803;Paignton;
-44;1646;Pembroke;
-44;1768;Penrith;
-44;1736;Penzance;
-44;1738;Perth;
-44;1733;Peterborough;
-44;1779;Peterhead;
-44;1751;Pickering;
-44;1796;Pitlochry;
-44;1752;Plymouth;
-44;1443;Pontypridd;
-44;1265;Portrush;
-44;1705;Portsmouth;
-44;1265;Portstewart;
-44;1707;Potters Bar;
-44;1305;Preston (Dorset);
-44;1772;Preston Lancashire;
-44;1292;Prestwick;
-44;1229;Ravenglass;
-44;1734;Reading;
-44;1737;Redhill Surrey;
-44;1737;Reigate;
-44;1748;Richmond;
-44;1923;Rickmansworth;
-44;1773;Ripley Derbyshire;
-44;1889;Rocester;
-44;1706;Rochdale;
-44;1989;Ross-on-Wye;
-44;1709;Rotherham;
-44;1788;Rugby;
-44;189;Ruislip Middlesex;
-44;1983;Ryde;
-44;1722;Salisbury;
-44;1481;Sark;
-44;1723;Scarborough;
-44;1757;Selby;
-44;1732;Sevenoaks;
-44;114;Sheffield;
-44;1743;Shrewsbury;
-44;1756;Skipton;
-44;1703;Southampton;
-44;1702;Southend-on-Sea;
-44;1704;Southport;
-44;1775;Spalding;
-44;1727;St. Albans;
-44;1744;St. Helens;
-44;1480;St. Ives;
-44;1785;Stafford;
-44;1784;Staines;
-44;1780;Stamford;
-44;1580;Staplehurst;
-44;1786;Stirling;
-44;1642;Stockton-on-Tees;
-44;1782;Stoke-on-Trent;
-44;1569;Stonehaven;
-44;1851;Stornaway;
-44;1384;Stourbridge;
-44;1776;Stranraer;
-44;1789;Stratford-upon-Avon;
-44;1929;Swanage;
-44;1792;Swansea;
-44;1793;Swindon;
-44;1880;Tarbert;
-44;1823;Taunton;
-44;1952;Telford;
-44;1834;Tenby;
-44;1684;Tewkesbury;
-44;1843;Thanet;
-44;1842;Thetford;
-44;1375;TiIbury;
-44;1621;Tiptree;
-44;1688;Tobermory;
-44;1732;Tonbridge;
-44;1803;Torquay;
-44;1892;Tunbridge Wells;
-44;191;Tyneside;
-44;1854;Ullapool;
-44;1895;Uxbridge;
-44;1924;Wakefield;
-44;1922;Walsall;
-44;1925;Warrington Cheshire;
-44;1926;Warwick;
-44;1923;Watford;
-44;1749;Wells;
-44;1938;Welshpool;
-44;1937;Wetherby;
-44;1932;Weybridge;
-44;1305;Weymouth;
-44;1947;Whitby;
-44;1942;Wigan;
-44;1962;Winchester;
-44;15394;Windermere;
-44;1753;Windsor Berkshire;
-44;1902;Wolverhampton;
-44;1905;Worcester;
-44;1903;Worthing;
-44;1978;Wrexham;
-44;1935;Yeovil;
-44;1964;York;
-44;20;London;
-44;23;Southampton;
-44;24;Coventry;
-44;28;Nordirland;
-44;29;Cardiff;
-44;7;Mobile;
-44;7701;Mobile;
-44;7718;Mobile;
-44;7724;Mobile;
-44;7729;Mobile;
-44;7734;Mobile;
-44;7736;Mobile;
-44;7738;Mobile;
-44;7742;Mobile;
-44;7745;Mobile;
-44;7749;Mobile;
-44;7759;Mobile;
-44;7761;Mobile;
-44;7783;Mobile;
-44;7793;Mobile;
-44;7801;Mobile;
-44;7808;Mobile;
-44;7819;Mobile;
-44;7834;Mobile;
-44;7840;Mobile;
-44;7849;Mobile;
-44;7860;Mobile;
-44;7864;Mobile;
-44;7871;Mobile;
-44;7885;Mobile;
-44;7889;Mobile;
-44;7892;Mobile;
-44;7912;Mobile;
-44;7921;Mobile;
-44;7925;Mobile;
-44;7933;Mobile;
-44;7938;Mobile;
-44;7955;Mobile;
-44;7999;Mobile;
-44;7772;Mobile;
-44;7779;Mobile;
-44;7790;Mobile;
-44;7794;Mobile;
-44;7800;Mobile;
-44;7805;Mobile;
-44;7807;Mobile;
-44;7811;Mobile;
-44;7837;Mobile;
-44;7854;Mobile;
-44;7866;Mobile;
-44;7870;Mobile;
-44;7875;Mobile;
-44;7890;Mobile;
-44;7896;Mobile;
-44;7929;Mobile;
-44;7964;Mobile;
-44;7980;Mobile;
-44;7989;Mobile;
-44;7722;Mobile;
-44;7726;Mobile;
-44;7757;Mobile;
-44;7804;Mobile;
-44;7806;Mobile;
-44;7847;Mobile;
-44;7852;Mobile;
-44;7903;Mobile;
-44;7908;Mobile;
-44;7910;Mobile;
-44;7913;Mobile;
-44;7930;Mobile;
-44;7931;Mobile;
-44;7939;Mobile;
-44;7956;Mobile;
-44;7981;Mobile;
-44;7982;Mobile;
-46;10;Geographically Independent Numbers
-46;11;Norrköping
-46;120;Åtvidaberg
-46;121;Söderköping
-46;122;Finspång
-46;123;Valdemarsvik
-46;125;Vikbolandet
-46;13;Linköping
-46;140;Tranås (Ort)
-46;141;Motala
-46;142;Mjölby
-46;143;Vadstena
-46;144;Ödeshög
-46;150;Katrineholm
-46;151;Vingåker
-46;152;Strängnäs
-46;155;Nyköping
-46;156;Trosa-Vagnhärad
-46;157;Flen-Malmköping
-46;158;Gnesta
-46;159;Mariefred
-46;16;Eskilstuna
-46;171;Enköping
-46;173;Öregrund
-46;174;Alunda
-46;175;Hallstavik
-46;176;Norrtälje
-46;18;Uppsala
-46;19;Örebro
-46;20;Toll-free
-46;21;Västerås
-46;220;Hallstahammar
-46;221;Köping (Ort)
-46;222;Skinnskatteberg
-46;223;Fagersta
-46;224;Sala-Heby
-46;225;Hedemora-Säter
-46;226;Avesta (Gemeinde)
-46;227;Kungsör
-46;23;Falun
-46;240;Ludvika-Smedjebacken
-46;241;Gagnef
-46;243;Borlänge
-46;246;Svardsjo
-46;247;Leksand
-46;248;Rättvik
-46;250;Mora-Orsa
-46;251;Älvdalen
-46;253;Idre-Särna
-46;258;Furudal
-46;26;Gävle
-46;270;Söderhamn (Stadt)
-46;271;Alfta-Edsbyn
-46;278;Bollnäs
-46;280;Malung
-46;281;Vansbro
-46;290;Hofors
-46;291;Hedesunda
-46;292;Tarnsjo
-46;293;Tierp-Söderfors
-46;294;Karlholmsbruk
-46;295;Örbyhus
-46;297;Ockelbo
-46;300;Kungsbacka
-46;301;Hindås
-46;302;Lerum
-46;303;Kungälv
-46;304;Orust-Tjörn
-46;31;Göteborg
-46;320;Kinna
-46;321;Ulricehamn
-46;322;Alingsås
-46;325;Svenljunga
-46;33;Borås
-46;340;Varberg
-46;345;Hyltebruk
-46;346;Falkenberg (Stadt in Schweden)
-46;35;Halmstad
-46;36;Jönköping
-46;370;Värnamo
-46;371;Gislaved
-46;372;Ljungby
-46;380;Nässjö
-46;381;Eksjö
-46;382;Sävsjö
-46;383;Vetlanda
-46;390;Gränna
-46;392;Mullsjö
-46;393;Vaggeryd
-46;40;Malmö
-46;410;Trelleborg
-46;411;Ystad
-46;413;Eslöv-Höör
-46;414;Simrishamn
-46;415;Horby
-46;416;Sjöbo
-46;417;Tomelilla
-46;418;Landskrona-SvalöV
-46;42;Helsingborg
-46;430;Laholm
-46;431;Ängelholm-Båstad
-46;433;Markaryd
-46;435;Klippans Bruk
-46;44;Kristianstad
-46;451;Hässleholm
-46;454;Karlshamn
-46;455;Karlskrona
-46;456;Sölvesborg
-46;457;Ronneby
-46;459;Ryd
-46;46;Lund
-46;470;Växjö
-46;471;Emmaboda
-46;472;Alvesta
-46;474;Åseda-Lenhovda
-46;476;Älmhult
-46;477;Tingsryd
-46;478;Lessebo
-46;479;Osby
-46;480;Kalmar
-46;481;Nybro
-46;485;Halltorp
-46;486;Torsås
-46;490;Västervik
-46;491;Oskarshamn
-46;492;Vimmerby
-46;493;Gamleby
-46;494;Kisa
-46;495;Hultsfred
-46;496;Mariannelund
-46;498;Roma (Gotland)
-46;499;Mönsterås
-46;500;Skövde
-46;501;Mariestad
-46;502;Tidaholm
-46;503;Hjo
-46;504;Tibro
-46;505;Karlsborg
-46;506;Töreboda
-46;510;Lidköping
-46;511;Skara-Götene
-46;512;Vara-Nossebro
-46;513;Herrljunga
-46;514;Grästorp
-46;515;Falköping
-46;520;Trollhättan
-46;521;Vänersborg
-46;522;Uddevalla
-46;523;Lysekil
-46;524;Munkedal
-46;525;Grebbestad
-46;526;Strömstad
-46;528;Färgelanda
-46;530;Mellerud
-46;531;Bengtsfors
-46;532;Åmål
-46;533;Säffle
-46;534;Ed (Schweden)
-46;54;Karlstad
-46;550;Kristinehamn
-46;551;Gullspång
-46;552;Deje
-46;553;Molkom
-46;554;Kil (Gemeinde)
-46;555;Grums
-46;560;Torsby
-46;563;Hagfors
-46;564;Syssleback
-46;565;Sunne
-46;570;Arvika
-46;571;Charlottenberg-Åmotfors
-46;573;Årjäng
-46;580;Kopparberg
-46;581;Lindesberg
-46;582;Hallsberg
-46;583;Askersund
-46;584;Laxå
-46;585;Fjugesta
-46;586;Karlskoga
-46;587;Nora (Schweden)
-46;589;Arboga
-46;590;Filipstad
-46;591;Hälleforsnäs
-46;60;Sundsvall
-46;611;Härnösand
-46;612;Kramfors
-46;613;Ullånger
-46;620;Sollefteå
-46;621;Junsele
-46;622;Nasaker
-46;623;Ramsele
-46;624;Backe
-46;63;Östersund
-46;640;Krokom
-46;642;Lit (Schweden)
-46;643;Hallen (Åre)
-46;644;Hammerdal
-46;645;Föllinge
-46;647;Åre-Järpen
-46;650;Hudiksvall
-46;651;Ljusdal
-46;652;Bergsjö
-46;653;Delsbo
-46;657;Los (Schweden)
-46;660;Örnsköldsvik
-46;661;Bredbyn
-46;662;Bjorna
-46;663;Husum (Schweden)
-46;670;Strömsund
-46;671;Hoting
-46;672;Gäddede
-46;680;Sveg
-46;682;Ratan
-46;684;Hede-Funäsdalen
-46;687;Svenstavik
-46;690;Ånge
-46;691;Torpshammar
-46;692;Liden
-46;693;Bräcke
-46;695;Stugun
-46;696;Hammarstrand
-46;70;Mobile Phones
-46;71;Telematics in Mobile Networks
-46;72;Mobile Phones
-46;73;Mobile Phones
-46;74;Pagers
-46;76;Mobile Phones
-46;8;Stockholm
-46;90;Umeå
-46;900;Premium rate calls
-46;910;Skellefteå
-46;911;Piteå
-46;912;Byske
-46;913;Lovanger
-46;914;Burträsk
-46;915;Bastuträsk
-46;916;Jörn (Schweden)
-46;918;Norsjö
-46;920;Luleå
-46;921;Boden (Schweden)
-46;922;Haparanda
-46;923;Kalix
-46;924;Ranea
-46;925;Lakaträsk
-46;926;Överkalix
-46;927;Övertorneå
-46;928;Harads
-46;929;Älvsbyn
-46;930;Nordmaling
-46;932;Bjurholm
-46;933;Vindeln
-46;934;Robertsfors
-46;935;Vännäs
-46;939;Premium rate calls
-46;940;Vilhelmina
-46;941;Åsele
-46;942;Dorotea (Ort)
-46;943;Fredrika
-46;944;Premium rate calls
-46;950;Lycksele
-46;951;Storuman
-46;952;Sorsele
-46;953;Malå
-46;954;Tärnaby
-46;960;Arvidsjaur
-46;961;Arjeplog
-46;970;Gällivare
-46;971;Jokkmokk
-46;973;Porjus
-46;975;Hakkas
-46;976;Vuollerim
-46;977;Korpilombolo
-46;978;Pajala
-46;980;Kiruna
-46;981;Vittangi
-46;99;Premium rate calls
-48;57;Biala Podlaska;
-48;85;Bialystok;
-48;30;Bielsko-Biala (Bielitz-Biala);
-48;52;Bydgoszcz (Bromberg);
-48;3;Bytom (Bwthen);
-48;82;Chelm;
-48;32;Chorzow (Königshütte);
-48;23;Ciechanow;
-48;386;Cieszyn (Teschen);
-48;34;Czestochowa (Tschenstochau);
-48;50;Elblag (Elbing);
-48;58;Gdansk (Danzig);
-48;58;Gdynia (Gdingen);
-48;3;Gliwice (Gleiwitz);
-48;66;Gniezno;
-48;75;Jelenia Gora;
-48;62;Kalisz;
-48;32;Katowice (Kattowitz);
-48;41;Kieice;
-48;63;Konin;
-48;61;Kostrzyn Wielkopolski;
-48;12;Krakow (Krakau);
-48;135;Krynica;
-48;76;Legnica (Liegnitz);
-48;65;Leszno (Lissa);
-48;42;Lodz;
-48;70;Lubin;
-48;81;Lublin;
-48;196;Mielec;
-48;115;Myslenice;
-48;187;Niedzica;
-48;187;Nowy Targ (Neumarkt);
-48;89;Olsztyn (Allenstein);
-48;77;Opole (Oppeln);
-48;381;Oswiecim (Auschwitz);
-48;2;Otwock;
-48;67;Pila;
-48;24;Plock;
-48;22;Podkowa Lesna;
-48;61;Poznan (Posen);
-48;48;Radom;
-48;25;Siedlce;
-48;47;Skarzysko Kamienna;
-48;95;Slubice (östl. Teil von Frankfur/Oder);
-48;59;Slupsk;
-48;58;Sopot;
-48;32;Sosnowiec (Sosnowitz);
-48;474;Starachowice;
-48;87;Suwalki;
-48;81;Swidnik;
-48;32;Swietochlowice;
-48;91;Szczecin (Stettin);
-48;15;Tarnobrzeg;
-48;14;Tarnow;
-48;56;Torun (Thorn);
-48;3;Tychy (Tichau);
-48;74;Walbrzych (Waldenburg);
-48;22;Warsrhau;
-48;12;Wieliczka;
-48;54;Wloclawek;
-48;71;Wroclaw (Brslau);
-48;3;Zabrze (Hindenburg);
-48;165;Zakopane;
-48;84;Zamosc;
-48;68;Zielona Gora (Gr�nberg);
-51;54;Arequipa;
-51;74;Chidayo;
-51;44;Chimbote;
-51;84;Cuzco;
-51;64;Huancayo;
-51;94;Iquitos;
-51;1;Lima;
-51;74;Piura;
-51;54;Puno;
-51;44;Trujillo;
-52;74;Acapulco;
-52;633;Agua Prieta;
-52;49;Aguascallentes;
-52;981;Campeche;
-52;98;Cancun;
-52;14;Chihuahua;
-52;877;Ciudad Acuna;
-52;16;Ciudad Juarez;
-52;73;Cuernavaca;
-52;67;Culiacan;
-52;3;Guadalajara;
-52;62;Hermosillo;
-52;112;La Paz Baja California;
-52;47;Leon;
-52;88;Matamoros Tamaulipas;
-52;99;Merida;
-52;65;Mexicali;
-52;5;Mexico City;
-52;8;Monterrey;
-52;631;Nogales Sonora;
-52;87;Nuevo Laredo;
-52;878;Piedras Negras Coahuila;
-52;22;Puebla;
-52;42;Queretaro;
-52;89;Reynosa;
-52;84;Saltillo;
-52;48;San Luis Potosi;
-52;12;Tampico;
-52;665;Tecate;
-52;66;Tijuana;
-52;17;Torreon;
-53;21;Guantanamo;
-53;7;Havanna;
-53;24;Holguin;
-53;226;Santiago de Cuba;
-54;281;Azul;
-54;91;Bahia Blanca;
-54;314;Bolivar;
-54;1;Buenos Aires;
-54;868;Cafayate;
-54;833;Catamarca;
-54;967;Comodoro Rivadavia;
-54;51;Cordoba;
-54;42;Coronda;
-54;783;Corrientes;
-54;945;Esquel;
-54;717;Formosa;
-54;362;Junin (Buenos Aires);
-54;21;La Plata;
-54;323;Lujan;
-54;61;Maipu (Mendoza);
-54;23;Mar del Plata;
-54;61;Mendoza;
-54;99;Neuquen;
-54;43;Parana;
-54;752;Posadas;
-54;965;Rawson (Chubut);
-54;722;Resistencia;
-54;41;Rosario;
-54;944;San Carlos de Bariloche;
-54;64;San Juan;
-54;652;San Luis;
-54;972;San Martin de los Andes;
-54;882;San Saivador de Jujuy;
-54;42;Santa Fe;
-54;954;Santa Rosa;
-54;85;Santiago del Estero;
-54;87;Seita;
-54;293;Tandil;
-54;901;Ushuaia;
-54;920;Viedma;
-54;535;Villa Maria;
-54;328;Zarate;
-55;79;Aracaju;
-55;91;Belem;
-55;31;Belo Horizonte;
-55;473;Biumenau;
-55;95;Boa Vista;
-55;61;Brasilia;
-55;246;Cabo Frio (Buzios);
-55;192;Campinas;
-55;67;Campo Grande;
-55;247;Campos;
-55;33;Caratinga;
-55;65;Cuiaba;
-55;41;Curitiba;
-55;21;Duque de Caxias;
-55;482;Florianopolis;
-55;85;Fortaleza;
-55;455;Foz do Iguacu;
-55;62;Goiania;
-55;11;Guarulhos;
-55;83;Joao Pessoa;
-55;73;ltabuna;
-55;96;Macapa;
-55;82;Maceio;
-55;92;Manaus;
-55;84;Natal;
-55;21;Nova Iguacu;
-55;11;Osasco;
-55;63;Palmas;
-55;51;Porto Alegre;
-55;69;Porto Velho;
-55;81;Recife;
-55;68;Rio Branco;
-55;21;Rio de Janeiro;
-55;71;Salvador;
-55;11;Santo Andre;
-55;132;Santos;
-55;11;Sao Bernardo do Campo;
-55;21;Sao Goncalo RJ;
-55;98;Sao Luis;
-55;11;Sao Paulo;
-55;86;Teresina;
-55;27;Vitoria;
-56;656;Ancud;
-56;55;Antofagasta;
-56;58;Arica;
-56;56;Calama;
-56;42;Chillan;
-56;41;Concepcion;
-56;52;Copiapo;
-56;51;Coquimbo;
-56;67;Coyhaique;
-56;75;Curico;
-56;57;Iquique;
-56;39;Isia de Paseua (Osterinsel);
-56;51;La Serena;
-56;64;Osorno;
-56;65;Puerto Montt;
-56;61;Puerto Natales;
-56;61;Punta Arenas-Punta Delgada;
-56;72;Rancagua;
-56;35;San Antonio;
-56;2;Santiago;
-56;41;Talcahuano;
-56;71;Talca-Maule;
-56;45;Temuco;
-56;63;Valdivia;
-56;32;Valparaiso;
-56;32;Vina del Mar;
-57;67;Armenia (Qui);
-57;58;Barranquilla;
-57;1;Bogota;
-57;76;Bucaramanga;
-57;222;Buenaventura;
-57;2;Cali;
-57;53;Cartagena;
-57;75;Cucuta;
-57;88;Florencia;
-57;82;Ibague;
-57;819;Leticia;
-57;68;Manizales;
-57;4;Medellin;
-57;47;Monteria;
-57;27;Pasto;
-57;63;Pereira;
-57;28;Popayan;
-57;54;Riohacha;
-57;811;San Andres;
-57;54;Santa Marta;
-57;87;Tunja;
-57;866;Villavicencio;
-58;81;Barcelona;
-58;51;Barquisimeto;
-58;64;Cabinas;
-58;2;Caracas;
-58;94;Carupano;
-58;85;Ciudad Bolivar;
-58;33;Colonia Tovar;
-58;68;Coro;
-58;93;Cumana;
-58;57;Guanare;
-58;95;La Asuncion;
-58;31;La Guaira;
-58;31;Litoral;
-58;32;Los Teques;
-58;31;Maiquetia;
-58;61;Maracaibo;
-58;43;Maracay;
-58;91;Maturin;
-58;74;Merida;
-58;96;Poriamar Insel Margarita;
-58;48;Puerto Ayacucho;
-58;42;Puerto Cabello;
-58;81;Puerto la Cruz;
-58;86;Puerto Ordaz;
-58;58;San Carlos (Cojdes);
-58;76;San Cristobal;
-58;46;San Juan de los Morros;
-58;72;Trujillo;
-58;87;Tucupita;
-58;41;Valencia;
-60;4;Alor Setar;
-60;5;Ipoh;
-60;7;Johor Bahru;
-60;4;Kangar;
-60;9;Kota Bharu;
-60;88;Kota Kinabalu;
-60;3;Kuala Lumpur;
-60;9;Kuala Terengganu;
-60;9;Kuantan;
-60;82;Kuching;
-60;87;Labuan;
-60;6;Meiaka;
-60;4;Penang;
-60;6;Seremban;
-61;8;Adeialde;
-61;51;Bairnsdale;
-61;53;Ballarat;
-61;85;Barossa Valley;
-61;63;Bathurst;
-61;54;Bendigo;
-61;7;Brisbane;
-61;70;Cairns;
-61;46;Campletown;
-61;6;Canberra;
-61;91;Cocos-Island;
-61;8;Darwin;
-61;52;Geelong;
-61;7;Gold Coast;
-61;43;Gosford;
-61;3;Hobart;
-61;65;Kempsey;
-61;3;Launceston;
-61;66;Lismore;
-61;65;Lord Howe Island;
-61;79;Mackay/Rockhampton;
-61;71;Maryborough;
-61;3;Melbourne;
-61;59;Mornington;
-61;49;Newcastle;
-61;47;Penrith;
-61;9;Perth (Westem Australia);
-61;76;Roma;
-61;71;Suneshine Coast;
-61;2;Sydney;
-61;67;Tamworth;
-61;76;Toowoomba;
-61;77;Townsville;
-61;42;Wollongong;
-62;911;Ambon;
-62;22;Bandung;
-62;511;Banjarmasin;
-62;361;Denpasar;
-62;21;Jakarta;
-62;967;Jayapura;
-62;391;Kupang;
-62;341;Malang;
-62;61;Medan;
-62;751;Padang;
-62;711;Palembang;
-62;451;Palu;
-62;761;Pekanbaru;
-62;561;Pontianak;
-62;541;Samarinda;
-62;24;Semarang;
-62;31;Surabaya;
-62;411;Ujungpandang;
-62;274;Yogyakarta;
-63;45;Angeles;
-63;34;Bacolod;
-63;74;Baguio;
-63;43;Batangas;
-63;8822;Cagayan de Oro;
-63;2;Caloocan;
-63;95;Cavite;
-63;32;Cebu;
-63;64;Cotabato;
-63;82;Davao;
-63;83;General Santos;
-63;33;Iloilo City;
-63;43;Lipa;
-63;2;Manila;
-63;56;Masbate;
-63;65;Ozamis;
-63;2;Pasay;
-63;2;Quezon City;
-63;93;San Pablo;
-63;53;Tacioban;
-63;45;Tarlac;
-63;62;Zamboanga;
-64;9;Auckland;
-64;3;Christchurch;
-64;3;Dunedin;
-64;6;Gisborne;
-64;9;Glenbrook;
-64;7;Hamilton;
-64;3;Invercargill;
-64;6;Masterton;
-64;6;Napier;
-64;3;Nelson;
-64;6;New Plymouth;
-64;6;Palmerston North;
-64;7;Rotorua;
-64;7;Taupo;
-64;7;Tauranga;
-64;7;Thames;
-64;3;Timaru;
-64;3;Waltangi;
-64;6;Wanganui;
-64;4;Weillington;
-64;9;Whangarei;
-66;2;Bangkok;
-66;53;Chiang Mai;
-66;38;Chon Buri;
-66;34;Kanchanaburi;
-66;44;Nakhon Ratchasima;
-66;42;Nong Khai;
-66;55;Phitsanulok;
-66;76;Phuket;
-66;74;Songkhla;
-66;77;Surat Thani;
-81;78;Akashi;
-81;424;Chofu;
-81;92;Fukuoka;
-81;93;Fukuoka Ashiya;
-81;245;Fukushima;
-81;138;Hakodate;
-81;425;Hino Tokio;
-81;82;Hiroshima;
-81;294;Hitachi Ibaraki;
-81;45;Hiyoshi Kanagawa;
-81;776;Kanazu;
-81;44;Kawasaki Kanagawa;
-81;93;Kita-Kyushu Fukuoka;
-81;78;Kobe;
-81;552;Kofu;
-81;98;Koza Okinawa;
-81;154;Kushiro;
-81;75;Kyoto;
-81;727;lkeda Osaka F;
-81;143;Muroran;
-81;258;Nagaoka Niigata;
-81;958;Nagasaki;
-81;980;Nago Okinawa;
-81;52;Nagoya;
-81;98;Naha;
-81;93;Nakama;
-81;975;Oita;
-81;6;Osaka;
-81;234;Sakata;
-81;11;Sapporo;
-81;996;Sendai Kagoshima;
-81;22;Sendai Miyagi;
-81;3;Tokyo;
-81;764;Toyama;
-81;6;Toyonaka Osaka;
-81;48;Urawa;
-81;745;Yamato Takada;
-81;75;Yamazaki Kyoto;
-81;45;Yokohama Kanagawa;
-82;64;Cheju;
-82;431;Chongju;
-82;652;Chonju;
-82;361;Chunchon;
-82;32;Incheon;
-82;62;Kwangju;
-82;561;Kyongju;
-82;551;Masan Kyongsangnam-do;
-82;51;Pusan;
-82;2;Seoul;
-82;331;Suwon;
-82;53;Taegu;
-82;42;Taejon;
-82;351;Uijongbu;
-84;64;Ba Ria Vung Tau;
-84;71;Can Tho;
-84;51;Da Nang;
-84;31;Hai Phong;
-84;4;Hanoi;
-84;8;Ho-Chi-Minh-Stadt;
-84;54;Hue;
-84;58;Khanh Hoa;
-84;35;Nam Ha;
-84;33;Quang Ninh;
-84;54;Thua Thien Hue;
-86;1;Beijing (Peking);
-86;431;Changchun (Tschang-tschun);
-86;731;Changsha;
-86;28;Chengdu;
-86;411;Dalian (Dairen);
-86;591;Fuzhou;
-86;20;Guangzhou (Kanton);
-86;851;Guiyang (Kweiyang);
-86;898;Haikou;
-86;571;Hangzhou;
-86;451;Harbin;
-86;551;Hefei;
-86;471;Huhehaote (Hohot);
-86;531;Jinan (Tsinan);
-86;871;Kunming;
-86;931;Lanzhou (Lantschou);
-86;891;Lhasa;
-86;791;Nanchang;
-86;25;Nanjing (Nanking);
-86;771;Nanning;
-86;1;Peking (Beijing);
-86;532;Qingdao (Tschingtau; Tsingtao);
-86;21;Shanghai (Schanghai);
-86;24;Shenyang (Schenjang);
-86;755;Shenzhen;
-86;311;Shijiazhuang;
-86;351;Taiyuan (Taijuan);
-86;22;Tianjin (Tientsin);
-86;27;Wuhan;
-86;991;Wulumuqi (Urumqi);
-86;29;Xian (Sian);
-86;971;Xining;
-86;951;Yinchuan;
-90;322;Adana;
-90;264;Adapazari (Sakarya);
-90;416;Adiyaman;
-90;272;Afyon;
-90;472;Agri;
-90;382;Aksaray;
-90;358;Amasya;
-90;312;Ankara;
-90;242;Antalya;
-90;478;Ardahan;
-90;466;Artvin;
-90;256;Aydin;
-90;266;Balikesir;
-90;378;Bartin;
-90;488;Batman;
-90;458;Bayburt;
-90;228;Bilecik;
-90;426;Bingöl;
-90;434;Bitlis;
-90;374;Bolu;
-90;248;Burdur;
-90;224;Bursa;
-90;286;Canakkale;
-90;376;Cankiri;
-90;364;Corum;
-90;258;Denizli;
-90;412;Diyarbakir;
-90;284;Edirne;
-90;424;Elazig;
-90;446;Erzincan;
-90;442;Erzurum;
-90;222;Eskisehir;
-90;392;Famagusta (Nordzypern);
-90;342;Gaziantep;
-90;454;Giresun;
-90;456;Gümüshane;
-90;438;Hakkari;
-90;326;Hatay;
-90;476;Igdir;
-90;246;Isparta;
-90;216;Istanbul (Anatolia);
-90;212;Istanbul (Thrace);
-90;232;Izmir;
-90;262;Izmit (Kocaeli);
-90;344;Kahramanmaras;
-90;338;Karaman;
-90;474;Kars;
-90;366;Kastamonu;
-90;352;Kayseri;
-90;318;Kirikkale;
-90;288;Kirklareli;
-90;386;Kirsehir;
-90;262;Kocaell (lzmit);
-90;332;Konya;
-90;274;Kütahya;
-90;392;Kyrenia (Nordzypern);
-90;324;lcel (Mersin);
-90;422;Malatya;
-90;236;Manisa;
-90;482;Mardin;
-90;324;Mersin;
-90;252;Mugla;
-90;436;Mus;
-90;384;Nevsehir;
-90;392;Nicosia (Lefkosa) (Nordzypem);
-90;388;Nigde;
-90;452;Ordu;
-90;464;Rize;
-90;264;Sakarya (Adapazani);
-90;362;Samsun;
-90;414;Sanliurfa;
-90;484;Siirt;
-90;368;Sinop;
-90;486;Sirnak;
-90;346;Sivas;
-90;282;Tekirdag;
-90;356;Tokat;
-90;462;Trabzon;
-90;428;Tunceli;
-90;276;Usak;
-90;432;Van;
-90;354;Yozgat;
-90;372;Zonguldak;
-91;562;Agra;
-91;79;Ahmedabad;
-91;532;Allahabad;
-91;183;Amritsar;
-91;80;Bangalore;
-91;265;Baroda;
-91;755;Bhopal;
-91;674;Bhubaneshwar;
-91;22;Bombay;
-91;172;Chandigarh;
-91;484;Cochin;
-91;422;Coimbatore;
-91;354;Darjeeling;
-91;359;Gangtok;
-91;361;Gauhati;
-91;40;Hyderabad;
-91;731;Indore;
-91;761;Jabalpur;
-91;141;Jaipur;
-91;291;Jodhpur;
-91;33;Kalkutta;
-91;512;Kanpur;
-91;522;Luckrtow;
-91;44;Madras;
-91;452;Madural;
-91;4113;Mahabalipuram;
-91;824;Mangalore;
-91;121;Meerut;
-91;1362;Mussoorie;
-91;821;Mysore;
-91;712;Nagpur;
-91;5942;Nainital;
-91;11;Neu Delhi;
-91;423;Ooty;
-91;832;Panjim (Goa);
-91;612;Patna;
-91;212;Pune;
-91;6752;Puri;
-91;661;Rourkela;
-91;177;Simla;
-91;642;Varanasi;
-91;891;Vishakapatnam;
-92;411;Faisalabad;
-92;431;Gujranwala;
-92;221;Hyderabad;
-92;51;Islamabad;
-92;21;Karachi;
-92;42;Lahore;
-92;61;Multan;
-92;521;Peshawar;
-92;81;Quetta;
-92;51;Rawalpindi;
-92;432;Sialkot;
-92;71;Sukkur;
-94;25;Anuradhapura;
-94;57;Bandarawela;
-94;1;Colombo;
-94;9;Galle;
-94;33;Gampaha;
-94;8;Kandy;
-94;31;Negombo;
-95;2;Mandalay;
-95;81;Taunggyi;
-95;1;Yangon (Rangoon);
-98;631;Abadan;
-98;61;Ahwaz;
-98;431;Bakhtaran;
-98;761;Bandar-e-Abbas;
-98;771;Bandar-e-Bushehr;
-98;671;Behbahan;
-98;561;Birdjahd;
-98;6621;Borujerd;
-98;641;Dezfoul;
-98;251;Ghom;
-98;261;Hamadan;
-98;31;Isfahan;
-98;361;Kashan;
-98;341;Kerman;
-98;6394;Khorramshahr;
-98;51;Mashad;
-98;231;Rasht;
-98;5221;Sabzevar;
-98;71;Shiraz;
-98;41;Tabriz;
-98;21;Teheran;
-98;351;Yazd;
-212;8;Agadir;
-212;9;Al Hoceima;
-212;8;Assa-Zag;
-212;3;Beni Mellal;
-212;6;Berkane;
-212;2;Casablanca;
-212;8;Dakhla (Westsahara);
-212;5;Errachidia;
-212;5;Fes;
-212;7;Kenitra;
-212;7;Khemisset;
-212;5;Khenifra;
-212;3;Khouribga;
-212;8;Laayoune (Westsahara);
-212;4;Marrakech;
-212;5;Meknes;
-212;3;Mohammedia;
-212;6;Nador;
-212;6;Oujda;
-212;7;Rabat;
-212;4;Safi;
-212;3;Settat;
-212;7;Sidi Kacem;
-212;9;Tanger;
-212;8;Tan-Tan;
-212;8;Tata;
-212;9;Tetouan;
-212;8;Tiznit;
-213;2;Algier;
-213;8;Annaba;
-213;6;Arzew;
-213;4;Batna;
-213;7;Bechar;
-213;5;Belala;
-213;4;Biskra;
-213;3;Blida;
-213;4;Constantine;
-213;9;Ghardaia;
-213;6;Mascara;
-213;3;Medea;
-213;6;Mostaganem;
-213;6;Oran;
-213;5;Setif;
-213;7;Sidi-bei-Abbes;
-213;8;Skikda;
-213;9;Tamanrasset;
-213;3;Tizi-Ouzou;
-213;7;Tlemcen;
-216;1;Ariana;
-216;8;Beja;
-216;1;Ben Arous;
-216;2;Bizerte;
-216;1;Carthago;
-216;5;Djerba;
-216;5;Gabes;
-216;6;Gafsa;
-216;2;Hammamet;
-216;8;Jendouba;
-216;7;Kairouan;
-216;7;Kasserine;
-216;5;Kebili;
-216;2;Kelibia;
-216;8;Le Kef;
-216;3;Mahdia;
-216;5;Mednine;
-216;3;Monastir;
-216;2;Nabeul;
-216;4;Sfax;
-216;6;Sidi Bouzid;
-216;8;Siliana;
-216;3;Sousse;
-216;5;Tataouine;
-216;6;Tozeur;
-216;1;Tunis;
-216;2;Zaghouan;
-218;64;Adjidabia;
-218;282;Agilat;
-218;63;Benena;
-218;22;Bengasher;
-218;61;Bengasi;
-218;81;Derna;
-218;281;Djimall;
-218;41;Garyan;
-218;44;Jado;
-218;421;Jefren;
-218;31;Khoms;
-218;51;Mesrata;
-218;47;Nalot;
-218;24;Sabrata;
-218;71;Sebha;
-218;273;Sorman;
-218;21;Tripolis;
-218;272;Zahra;
-218;23;Zavia;
-218;25;Zuara;
-222;261;Akjoujt;
-222;245;Nouadhibou;
-222;2;Nouakchott;
-222;269;Rosso;
-232;32;Bo;
-232;22;Freetown;
-232;24;Juba;
-232;42;Kenema;
-232;53;Koidu;
-232;25;Lungi;
-232;54;Magburaka;
-232;52;Makeni;
-233;21;Accra;
-233;72;Bolgatanga;
-233;42;Cape Coast;
-233;91;Ho;
-233;81;Koforidua;
-233;51;Kumasi;
-233;61;Sunyani;
-233;71;Tamale;
-234;82;Aba;
-234;9;Abuja;
-234;52;Benin City;
-234;87;Calabar;
-234;42;Enugu;
-234;2;Ibadan;
-234;31;Ilorin;
-234;62;Kaduna;
-234;64;Kano;
-234;1;Lagos;
-234;44;Makurdi;
-234;34;Ondo;
-234;46;Onitsha;
-234;83;Owerri;
-234;84;Port Harcourt;
-234;60;Sokoto;
-240;8;Bata;
-240;9;Malabo;
-243;12;Kinschasa;
-243;222;Lubumbashi;
-244;99;Benguela;
-244;2;Luanda;
-249;21;Atbara;
-249;81;EI Obeid;
-249;441;Gedaref;
-249;41;Kassala;
-249;11;Khartoum;
-249;31;Port Sudan;
-249;51;Wad Madeni;
-251;1;Addis Abeba;
-251;3;Dessie;
-251;5;Diredawa;
-251;8;Gonder;
-251;5;Harrar;
-251;7;Jimma;
-251;4;Mekele;
-251;2;Nazareth;
-252;3;Chisimaio;
-252;1;Mogadischu;
-254;15;Athi River;
-254;33;Bungoma;
-254;321;Eldoret;
-254;161;Embu;
-254;131;Garissa;
-254;331;Kakamega;
-254;35;Kisumu;
-254;325;Kitale;
-254;121;Lamu;
-254;123;Malindi;
-254;11;Mombasa;
-254;2;Nairobi;
-254;37;Nakuru;
-254;176;Nanyuki;
-254;171;Nyeri;
-254;151;Thika;
-255;57;Arusha;
-255;51;Daressalam;
-255;61;Dodoma;
-255;695;Kigoma;
-255;55;Moshi;
-255;68;Mwanza;
-255;54;Sansibar;
-255;53;Tanga;
-256;42;Entebbe;
-256;43;Jinja;
-256;43;Kakira;
-256;41;Kampala;
-256;41;Kawempe;
-256;43;Lugazi;
-256;45;Mbale;
-257;42;Bubanza;
-257;22;Bujumbura;
-257;50;Bururi;
-257;41;Cibitoke;
-257;40;Gitega;
-257;43;Muramvya;
-257;30;Ngozi;
-258;3;Beira;
-258;1;Maputo;
-258;1;Matola;
-258;6;Nampula;
-258;4;Quelimane;
-260;2;Kitwe;
-260;3;Livingstone;
-260;1;Lusaka;
-260;2;Ndola;
-261;8;Antalaha;
-261;2;Antananarivo;
-261;4;Antsirabe;
-261;8;Antsiranana;
-261;7;Flanarantsoa;
-261;6;Mahajanga;
-261;5;Tamatave (Taomasina);
-261;9;Tolagnaro;
-261;9;Toliara;
-263;9;Bulawayo;
-263;54;Gweru;
-263;4;Harare;
-263;81;Hwange;
-263;68;Kadoma;
-263;20;Mutare;
-263;13;Vietoria Falls;
-264;631;Keetmanshoop;
-264;6331;L�deritz;
-264;6332;Oranjemund;
-264;6751;Oshakati;
-264;651;Otjiwarongo;
-264;641;Swakopmund;
-264;671;Tsumeb;
-264;642;Waivis Bay;
-264;61;Windhoek;
-264;626;Windhoek Airport;
-351;41;Abrantes;
-351;1;Almada;
-351;95;Angra do Heroismo (Azoren);
-351;35;Arganil;
-351;34;Aveiro;
-351;84;Beja;
-351;53;Braga;
-351;73;Braganca;
-351;62;Caldas da Rainha;
-351;72;Castelo Branco;
-351;86;Castro Verde;
-351;76;Chaves;
-351;39;Coimbra;
-351;75;Covilha;
-351;68;Estremoz;
-351;66;Evora;
-351;89;Faro;
-351;49;Fatima;
-351;33;Figueira da Foz;
-351;91;Funchal (Madeira);
-351;71;Guarda;
-351;92;Horta (Azoren);
-351;77;Idanha-a-Nova;
-351;44;Leiria;
-351;1;Lissabon (Lisboa);
-351;31;Mealhada;
-351;78;Mirandela;
-351;79;Moncorvo;
-351;85;Moura;
-351;83;Odemira;
-351;55;Penafiel;
-351;54;Peso da Regua;
-351;36;Pombal;
-351;96;Ponta Delgada (Azoren);
-351;42;Ponte Sor;
-351;45;Portalegre;
-351;82;Portimao;
-351;2;Porto;
-351;74;Proenca-a-Nova;
-351;43;Santarem;
-351;69;Santiago do Cacem;
-351;56;Sao Joao da Madeira;
-351;38;Seia;
-351;65;Setubal;
-351;81;Tavira;
-351;49;Torres Novas;
-351;61;Torres Vedras;
-351;51;Valenca;
-351;58;Viana do Castelo;
-351;63;Vila Franca de Xira;
-351;59;Vila Real;
-351;32;Viseu;
-353;402;Arklow;
-353;902;Athlone;
-353;96;Ballina;
-353;503;Carlow;
-353;78;Carrick on Shannon;
-353;94;Castlebar;
-353;21;Cork;
-353;41;Drogheda;
-353;1;Dublin;
-353;42;Dundalk;
-353;65;Ennis;
-353;91;Galway;
-353;56;Kilkenny;
-353;64;Killarney;
-353;74;Letterkenny;
-353;61;Limerick;
-353;47;Monaghan;
-353;44;Mullingar;
-353;61;Shannon;
-353;71;Sligo;
-353;66;Tralee;
-353;51;Waterford;
-353;53;Wexford;
-353;404;Wicklow;
-354;3;Akranes;
-354;6;Akureyri;
-354;7;Egilsstadir;
-354;1;Hafnarfjörður;
-354;6;Husavik;
-354;4;Ísafjörður;
-354;2;Keflavik;
-354;1;Kopavogur;
-354;1;Reykjavik;
-354;8;Vestmannaeyjar;
-355;52;Durres;
-355;545;Eibasan;
-355;824;Korce;
-355;42;Tirana;
-357;3;Agia Napa;
-357;4;Larnaca;
-357;5;Limassol (Lemesos);
-357;2;Nicosia (Lefkosia);
-357;6;Paphos;
-358;21;Abo (Turku);
-358;66;Alalärvi;
-358;15;Borga (Porvoo);
-358;11;Ekenäs (Tammisaari);
-358;16;Forssa;
-358;17;Hämeenlinna;
-358;11;Hanko (Hangö);
-358;0;Helsinki (Helsingfors);
-358;14;Hyvinkää;
-358;54;Imatra;
-358;42;Jämsä;
-358;41;Jyväskylä;
-358;86;Kajaani;
-358;30;Kankaanpää;
-358;52;Karhula (Kotka);
-358;698;Kemi;
-358;68;Kokkola;
-358;52;Kotka;
-358;51;Kouvola;
-358;71;Kuopio;
-358;89;Kuusamo;
-358;18;Lahti;
-358;53;Lappeenranta;
-358;12;Lohja (Lojo);
-358;55;Mikkeli;
-358;76;Nurmes;
-358;81;Oulu;
-358;19;Padasjoki;
-358;33;Parkano;
-358;39;Pori;
-358;15;Porvoo (Borga);
-358;82;Raahe;
-358;38;Rauma (Raumo);
-358;60;Rovaniemi;
-358;34;Ruovesi;
-358;24;Salo;
-358;64;Seinäjoki;
-358;11;Tammisaari (Eken�s);
-358;31;Tampere;
-358;37;Toljala;
-358;21;Turku (Abo);
-358;61;Vaasa (Vasa);
-358;32;Vammala;
-358;0;Vihti;
-358;83;Yllvieska;
-358;4;Mobile;
-358;457;Mobile;
-358;50;Mobile;
-358;500;Mobile;
-359;5722;Albena;
-359;579;Balchik;
-359;291;Bankya;
-359;7443;Bansko;
-359;7218;Borovetz;
-359;56;Bourgas;
-359;554;Nesebar;
-359;3021;Pamporovo;
-359;64;Pleven;
-359;32;Plovdiv;
-359;596;Pomorie;
-359;5561;Primorsko;
-359;82;Rousse;
-359;746;Sandanski;
-359;44;Sliven;
-359;2;Sofia;
-359;5514;Sozopol;
-359;42;Stara Zagora;
-359;52;Varna;
-359;62;Veliko Tarnovo;
-359;359;Velingrad;
-359;94;Vidin;
-370;35;Alytus;
-370;51;Anyksciai;
-370;10;Birstonas;
-370;20;Birzai;
-370;33;Druskininkai;
-370;37;Elektrenai;
-370;40;Gargzdai;
-370;29;Ignalina;
-370;19;Jonava;
-370;96;Joniskis;
-370;48;Jurbarkas;
-370;56;Kaisiadorys;
-370;7;Kaunas;
-370;57;Kedainiai;
-370;97;Kelme;
-370;61;Klalpeda (Memel);
-370;58;Kretinga;
-370;31;Kupiskis;
-370;68;Lazdijai;
-370;43;Marijampole;
-370;93;Mazeikiai;
-370;30;Moletai;
-370;95;Nauloji Akmene;
-370;59;Nida;
-370;91;Pakruojis;
-370;36;Palanga;
-370;54;Panevezys;
-370;71;Pasvalys;
-370;18;Plunge;
-370;49;Prienai;
-370;92;Radviliskis;
-370;28;Raseiniai;
-370;78;Rokiskis;
-370;47;Sakiai;
-370;50;Salcininkai;
-370;14;Siauliai;
-370;69;Silale;
-370;41;Silute;
-370;32;Sirvintos;
-370;16;Skuodas;
-370;66;Snieckus;
-370;17;Svencionys;
-370;46;Taurage (Tauroggen);
-370;94;Telsiai;
-370;38;Trakai;
-370;11;Ukmerge;
-370;39;Utena;
-370;60;Varena;
-370;42;Vilkaviskis;
-370;2;Vilnius (Wilna);
-370;70;Zarasai;
-371;43;Aluksne;
-371;51;Alzkraukle;
-371;45;Balvi;
-371;39;Bauska;
-371;41;Cesis;
-371;54;Daugavpils (D�naburg);
-371;37;Dobele;
-371;44;Gulbene;
-371;52;Jekabpils;
-371;30;Jelgava (Mitau);
-371;56;Kraslava;
-371;33;Kuldiga;
-371;34;Liepaja (Libau);
-371;40;Limbazi;
-371;57;Ludza;
-371;48;Madona;
-371;50;Ogre;
-371;53;Preili;
-371;46;Rezekne;
-371;2;Riga;
-371;38;Saldus;
-371;32;Talsi;
-371;31;Tukums;
-371;47;Valka;
-371;42;Valmiera;
-371;36;Ventspils (Windau);
-372;47;Happsalu;
-372;37;Jogeva;
-372;46;Kardla;
-372;33;Kohtla-J�rve;
-372;45;Kuressaare;
-372;35;Narva;
-372;38;Paide;
-372;44;Parnu;
-372;30;Polva;
-372;32;Rakvere;
-372;48;Rapla;
-372;2;Tallin (Reval);
-372;6;Tallin (Reval);
-372;7;Tartu (Dorpat);
-372;42;Valga;
-372;43;Viljandi;
-372;41;Voru;
-373;2;Chisinau;
-381;85;Bar;
-381;11;Belgrad (Beograd);
-381;84;Bijelo Polje;
-381;30;Bor;
-381;86;Budva;
-381;32;Cacak;
-381;86;Cetinje;
-381;390;Dakovica;
-381;280;Gnjilane;
-381;82;Herceg Novi;
-381;871;Ivangrad;
-381;35;Jagodina;
-381;230;Kikinda;
-381;28;Kosovska Mitrovica;
-381;82;Kotor;
-381;34;Kragujevac;
-381;36;Kraljevo;
-381;37;Krusevac;
-381;16;Leskovac;
-381;83;Niksic;
-381;18;Nis;
-381;20;Novi Pazar;
-381;21;Novi Sad (Neusatz);
-381;13;Pancevo (Pantschowa);
-381;35;Paracin;
-381;39;Pec;
-381;10;Pirot;
-381;872;Pljevlja;
-381;81;Podgorica;
-381;12;Pozarevac;
-381;33;Prijepolje;
-381;38;Pristina;
-381;29;Prizren;
-381;27;Prokuplje;
-381;15;Sabac;
-381;26;Smederevo (Semendria);
-381;25;Sombor;
-381;22;Sremska Mitrovica (Mitrowitz);
-381;24;Subotica;
-381;85;Ulcinj;
-381;290;Urosevac;
-381;31;Uzice;
-381;14;Valjevo;
-381;17;Vranje;
-381;19;Zajecar;
-381;23;Zrenjanin (Gro�betschkerek);
-385;43;Bielovar;
-385;51;Crikvenica;
-385;43;Daruvar;
-385;20;Dubrovnik;
-385;53;Gospic;
-385;21;Hvar;
-385;47;Karlovac (Karlstadt);
-385;20;Korcula;
-385;49;Krapina;
-385;51;Krk;
-385;44;Kutina;
-385;21;Makarska;
-385;51;Mali Losinj;
-385;34;Nasice;
-385;47;Ogulin:;
-385;51;Opatija;
-385;31;Osijek;
-385;52;Pazin;
-385;52;Porec;
-385;22;Primosten;
-385;52;Pula;
-385;51;Rab;
-385;52;Rabac;
-385;51;Rijeka;
-385;52;Rovinj;
-385;1;Samobor;
-385;22;Sibenik;
-385;44;Sisak (Sissek);
-385;35;Slavonski Brod (Brod);
-385;21;Split;
-385;1;Sv. lvan Zelina;
-385;42;Varazdin (Warasdin);
-385;32;Vinkovci;
-385;49;Zabok;
-385;23;Zadar;
-385;1;Zagreb (Agram);
-386;64;Bied (Veldes);
-386;63;Celje;
-386;61;Domzale (Domschale);
-386;602;Dravograd;
-386;64;Jesenice;
-386;66;Koper;
-386;64;Kranj;
-386;608;Krsko;
-386;61;Ljubljana;
-386;62;Maribor (Marburg);
-386;69;Murska Sobota;
-386;65;Nova Gorica;
-386;68;Novo Mesto;
-386;67;Postojna (Adelsberg);
-386;602;Ravne na Koroskem;
-386;62;Slovenska Bistrica;
-386;601;Trbovlje;
-386;63;Velenje (W�llan);
-387;78;Banja Luka;
-387;77;Bihac;
-387;74;Bosanski Brod;
-387;78;Bosnisch-Gradiska;
-387;79;Bosnisch-Novi;
-387;76;Brcko;
-387;89;Divin;
-387;74;Doboj;
-387;80;Duvno;
-387;89;Duzi;
-387;88;Duzice;
-387;72;Frarnik;
-387;80;Glamoc;
-387;73;Gorazde;
-387;71;Krusevo;
-387;88;Listica;
-387;80;Livno;
-387;89;Ljubomir;
-387;88;Mostar;
-387;79;Prijedor;
-387;71;Sarajevo;
-387;72;Travnik;
-387;75;Tuzla;
-387;71;Vares;
-387;88;Vitina;
-387;72;Zenica;
-387;88;Zugulja;
-389;97;Bitola;
-389;95;Kicevo;
-389;903;Kocani;
-389;901;Kumanovo;
-389;96;Ohrid;
-389;98;Prilep;
-389;91;Skopje;
-389;92;Stip;
-389;902;Strumica;
-389;94;Tetovo;
-389;93;Titov Veles;
-501;2;Belize-City;
-501;8;Belmopan;
-502;9;Amatitlan;
-502;9;Antigua;
-502;9;Chiquimula;
-502;2;Guatemala City;
-502;9;Quezaltenango;
-502;9;Zacapa;
-505;54;Boaco;
-505;341;Chinandega;
-505;42;Diriamba;
-505;71;Esteli;
-505;55;Granada;
-505;311;Leon;
-505;2;Managua;
-505;52;Masaya;
-505;61;Matagalpa;
-505;46;Rivas;
-591;842;Cobija;
-591;42;Cochabamba;
-591;2;La Paz;
-591;52;Oruro;
-591;62;Potosi;
-591;3;Santa Cruz;
-591;64;Sucre;
-591;66;Tarija;
-591;46;Trinidad;
-592;2;Georgetown;
-592;3;New Amsterdam;
-593;3;Ambato;
-593;7;Cuenca;
-593;6;Esmeraldas;
-593;5;Galapagos;
-593;4;Guayaquil;
-593;6;Ibarra;
-593;7;Loja;
-593;7;Machala;
-593;5;Manta;
-593;4;Portoviejo;
-593;3;Puyo;
-593;5;Quevedo;
-593;2;Quito;
-593;3;Riobamba;
-593;2;Santo Domingo;
-593;6;Tulcan;
-595;291;Aregua;
-595;21;Asuncion;
-595;511;Caacupe;
-595;28;Capiata;
-595;61;Ciudad del Este;
-595;548;Colonia Independencia;
-595;31;Concepcion;
-595;521;Coronel Oviedo;
-595;71;Encarnacion;
-595;91;Filadelfia;
-595;75;Hohenau;
-595;5138;Itagua;
-595;36;Pedro Juan Caballero;
-595;86;Pilar;
-595;512;San Bernardino;
-595;541;Villarrica;
-595;513;Ypacarai;
-598;542;Carmelo;
-598;522;Colonia;
-598;352;Florida;
-598;473;La Paloma;
-598;42;Maldonado;
-598;2;Montevideo;
-598;722;Paysandu;
-598;42;Punta del Este;
-598;732;Salto;
-598;342;San Jose;
-599;7;Bonaire;
-599;9;Curacao;
-599;4;Saba;
-599;3;St. Eustatius;
-599;5;St. Maarten (südl. Teil);
-672;4;Christmas-Island;
-672;3;Norfolk-Island;
-673;2;Bandar Serl Begawan;
-673;3;Kuala Belait;
-673;3;Seria;
-850;2;Pyongyang;
-855;23;Phnom Penh;
-856;21;Vientiane;
-880;431;Barisal;
-880;841;Chandpur;
-880;31;Chittagong;
-880;81;Comilla;
-880;2;Dhaka;
-880;631;Faridpur;
-880;41;Khulna;
-880;521;Rangpur;
-880;552;Saldpur;
-880;741;Shantahar;
-880;751;Sirajgonj;
-880;821;Sylhet;
-886;47;Changhua;
-886;5;Chial;
-886;38;Hualien;
-886;7;Kaohsiung;
-886;37;Miaoli;
-886;69;Penghu;
-886;4;Taichung;
-886;6;Tainan;
-886;2;Taipei;
-886;89;Taitung;
-886;3;Taoynan;
-961;6;Amioun;
-961;4;Arbanieh;
-961;8;Baalbek;
-961;6;Batroun;
-961;5;Bei Eddine;
-961;1;Beirut;
-961;4;Beit Merry;
-961;4;Beskinta;
-961;4;Bloktaya;
-961;4;Broumana;
-961;4;Dhour Choueir;
-961;7;Jezzine;
-961;9;Jounieh;
-961;8;Ras Baalbek;
-961;7;Seida;
-961;6;Tripoli;
-961;7;Tyrys;
-961;8;Zahle;
-962;6;Amman;
-962;3;Aqaba;
-962;2;Irbid;
-962;4;Jerash;
-962;3;Karak;
-962;8;Madaba;
-962;5;Salt;
-962;3;Wadi Musa (Petra);
-962;9;Zarqa;
-963;53;AI-Qameshli;
-963;13;AI-Zabadani;
-963;21;Aleppo (Halab);
-963;43;Banias;
-963;11;Damaskus;
-963;51;Deir al Zour;
-963;33;Hama;
-963;31;Hom;
-963;41;Latakia;
-963;32;Safita;
-963;43;Tartous;
-964;43;Amara;
-964;1;Baghdad;
-964;25;Baquba;
-964;40;Basrah;
-964;36;Diwaniya;
-964;30;Hilla;
-964;32;Kerbala;
-964;50;Kirkuk;
-964;23;Kut;
-964;60;Mosul;
-964;33;Najaf;
-964;42;Nasiriya;
-964;24;Ramadi;
-964;37;Samawa;
-964;21;Tikrit;
-966;7;Abha;
-966;4;Arar;
-966;3;Damman;
-966;3;Dhahran;
-966;4;Hail;
-966;2;Jeddah;
-966;7;Jizan;
-966;3;Jubail;
-966;4;Madinah (Medina);
-966;2;Makkah (Mekka);
-966;7;Najran;
-966;4;Oassim;
-966;1;Riyadh;
-966;4;Tabuk;
-966;2;Taif;
-967;2;Aden;
-967;3;Hodeidah;
-967;1;Sanaa;
-967;4;Taiz;
-971;2;Abu Dhabi;
-971;6;Ajman;
-971;3;Al Ain;
-971;4;Dubal;
-971;9;Fujairah;
-971;84;Jebel Ali;
-971;7;Ras Al Khaimah;
-971;6;Sharjah;
-971;6;Umm Al Quwain;
-972;6;Afula;
-972;4;Ako;
-972;8;Ashdod;
-972;7;Ashkelon;
-972;6;Baka el Garbia;
-972;3;Bat Yam;
-972;7;Beer Sheva;
-972;6;Beit Shean;
-972;2;Beit Shemesh;
-972;2;Bethlehem;
-972;3;Bnei Brak;
-972;7;Dimona;
-972;7;Eilat;
-972;7;Gaza (Gaza-Streifen);
-972;7;Gaza und Westbank (siehe Israel);
-972;8;Gedera;
-972;4;Haifa;
-972;6;Hedera;
-972;9;Herzeliya;
-972;9;Hod Hasharon;
-972;3;Holon;
-972;3;Jaffa;
-972;2;Jericho;
-972;2;Jerusalem -;
-972;4;Kiryat Bialik;
-972;4;Kiryat Haroshet;
-972;4;Kiryat Tiv'on;
-972;8;Lod;
-972;6;Migdal Haemek;
-972;9;Nablus;
-972;4;Nahariya;
-972;9;Natanya;
-972;6;Nazareth;
-972;4;Nesher;
-972;6;Or Akiva;
-972;3;Or Yehuda;
-972;3;Petah Tikva;
-972;3;Ramat Hasharon;
-972;8;Ramla;
-972;8;Rehovot;
-972;3;Rishon Lezion;
-972;7;Sderot;
-972;4;Shfar'am;
-972;3;Tel-Aviv;
-972;6;Tiberias;
-972;9;Tira;
-972;4;Tirat Hacarmel;
-972;6;Tsefat;
-972;6;Um el Fahem;
-972;8;Yavne;
-972;3;Yehud;
-972;7;Zikim;
-975;3;Bumtha;
-975;25;Phuntsholing;
-975;4;Tashigang;
-975;2;Thimbu;
-976;37;Darhan;
-976;61;Dornod;
-976;35;Erdenet;
-976;65;Govi-Altai;
-976;39;Hentii;
-976;43;Hovd;
-976;1;Ulan Bator;
-976;55;Uverhangai;
-977;1;Kathmandu;
-977;61;Pokhara;
-992;22;Duschanbe
-922;922;Chudshant (ehem. Leninabad)
-995;881;Suchumi;
-995;8832;Tbilissi;
+1:915
+1:216
+1:610
+1:912
+1:518
+1:505
+1:517
+1:618
+1:1809
+1:907
+1:617
+1:913
+1:404
+1:609
+1:315
+1:207
+1:512
+1:805
+1:410
+1:403
+1:918
+1:504
+1:409
+1:310
+1:701
+1:208
+1:204
+1:718
+1:716
+1:702
+1:304
+1:704
+1:804
+1:902
+1:615
+1:307
+1:312
+1:916
+1:513
+1:719
+1:803
+1:706
+1:614
+1:603
+1:709
+1:214
+1:319
+1:904
+1:210
+1:903
+1:817
+1:303
+1:515
+1:313
+1:316
+1:302
+1:901
+1:506
+1:915
+1:607
+1:707
+1:206
+1:305
+1:604
+1:508
+1:502
+1:919
+1:910
+1:905
+1:209
+1:203
+1:406
+1:717
+1:213
+1:808
+1:713
+1:514
+1:601
+1:314
+1:201
+1:816
+1:613
+1:317
+1:318
+1:813
+1:606
+1:419
+1:402
+1:501
+1:519
+1:608
+1:414
+1:612
+1:205
+1:412
+1:212
+1:510
+1:405
+1:360
+1:407
+1:619
+1:818
+1:309
+1:215
+1:602
+1:503
+1:306
+1:401
+1:418
+1:909
+1:507
+1:815
+1:801
+1:415
+1:408
+1:819
+1:712
+1:217
+1:616
+1:416
+1:202
+3:1172
+7:31722
+7:3292
+7:3132
+7:3272
+7:33022
+7:818
+7:3632
+7:31222
+7:3312
+7:2251
+7:1777
+7:162
+7:36522
+7:572
+7:472
+7:372
+7:382
+7:562
+7:622
+7:3732
+7:152
+7:3952
+7:342
+7:3432
+7:8852
+7:112
+7:3212
+7:8432
+7:44
+7:31622
+7:3142
+7:32422
+7:33622
+7:642
+7:322
+7:172
+7:222
+7:1773
+7:95
+7:96
+7:2351
+7:8152
+7:36922
+7:33522
+7:8312
+7:1597
+7:3832
+7:482
+7:3812
+7:33222
+7:3182
+7:3422
+7:3152
+7:1653
+7:2144
+7:362
+7:8632
+7:8462
+7:3662
+7:8452
+7:3222
+7:3252
+7:652
+7:1562
+7:1795
+7:1592
+7:8622
+7:1710
+7:812
+7:725
+7:2342
+7:377
+7:32822
+7:3712
+7:8482
+7:3472
+7:31122
+7:3232
+7:212
+7:4232
+7:8442
+7:432
+7:654
+7:612
+7:3262
+7:3102
+7:2334
+7:1775
+20:15
+20:2
+20:3
+20:97
+20:13
+20:45
+20:57
+20:84
+20:65
+20:64
+20:95
+20:50
+20:43
+20:66
+20:68
+20:49
+20:93
+20:62
+20:40
+20:55
+27:11
+27:21
+27:51
+27:1491
+27:31
+27:431
+27:461
+27:531
+27:433
+27:1411
+27:3931
+27:443
+27:331
+27:4457
+27:41
+27:12
+27:393
+27:16
+27:2231
+27:358
+27:54
+27:171
+30:741
+30:235
+30:841
+30:641
+30:551
+30:424
+30:285
+30:282
+30:752
+30:751
+30:243
+30:1
+30:375
+30:821
+30:271
+30:265
+30:521
+30:381
+30:753
+30:221
+30:651
+30:842
+30:665
+30:286
+30:81
+30:674
+30:721
+30:432
+30:441
+30:245
+30:351
+30:51
+30:671
+30:661
+30:341
+30:531
+30:242
+30:461
+30:623
+30:231
+30:41
+30:645
+30:251
+30:261
+30:287
+30:289
+30:284
+30:247
+30:61
+30:621
+30:241
+30:273
+30:281
+30:321
+30:219
+30:427
+30:731
+30:298
+30:593
+30:31
+30:283
+30:431
+30:71
+30:421
+30:695
+31:2977
+31:1859
+31:72
+31:546
+31:36
+31:1720
+31:5191
+31:33
+31:20
+31:55
+31:85
+31:5920
+31:2154
+31:1806
+31:3420
+31:5930
+31:2208
+31:1640
+31:1891
+31:4998
+31:2510
+31:2153
+31:1727
+31:10
+31:8865
+31:4116
+31:76
+31:1810
+31:1113
+31:45
+31:2159
+31:2248
+31:2518
+31:5240
+31:8850
+31:3450
+31:5293
+31:5230
+31:15
+31:5960
+31:73
+31:70
+31:2230
+31:6700
+31:8340
+31:5190
+31:1188
+31:3430
+31:78
+31:5120
+31:3210
+31:2993
+31:8380
+31:2206
+31:40
+31:5910
+31:2260
+31:53
+31:3417
+31:1608
+31:1819
+31:5170
+31:46
+31:1100
+31:1820
+31:50
+31:5662
+31:23
+31:3410
+31:5178
+31:5130
+31:4920
+31:74
+31:35
+31:1747
+31:2503
+31:5280
+31:5980
+31:2290
+31:2550
+31:5138
+31:2524
+31:5202
+31:1718
+31:75
+31:3451
+31:58
+31:71
+31:3200
+31:2521
+31:5730
+31:2158
+31:3432
+31:1899
+31:43
+31:5476
+31:2996
+31:2274
+31:5220
+31:1180
+31:1870
+31:1740
+31:1803
+31:3494
+31:80
+31:2523
+31:1719
+31:4242
+31:5410
+31:5708
+31:5291
+31:4120
+31:1620
+31:1815
+31:1860
+31:2963
+31:1808
+31:2990
+31:1116
+31:8309
+31:8376
+31:1804
+31:1814
+31:4750
+31:1650
+31:4192
+31:2522
+31:1840
+31:2155
+31:1880
+31:5990
+31:5149
+31:5210
+31:1150
+31:5620
+31:2220
+31:3440
+31:13
+31:2975
+31:30
+31:4454
+31:4406
+31:5987
+31:8385
+31:1181
+31:4130
+31:77
+31:4780
+31:5621
+31:1184
+31:4160
+31:1828
+31:8370
+31:1751
+31:4950
+31:2940
+31:5970
+31:5430
+31:3480
+31:2507
+31:3404
+31:8360
+31:1110
+31:79
+31:5750
+31:38
+32:53
+32:16
+32:80
+32:41
+32:69
+32:3
+32:63
+32:83
+32:68
+32:87
+32:56
+32:86
+32:61
+32:82
+32:65
+32:64
+32:50
+32:19
+32:14
+32:67
+32:2
+32:71
+32:60
+32:58
+32:9
+32:52
+32:13
+32:81
+32:11
+32:89
+32:54
+32:15
+32:85
+32:84
+32:57
+32:51
+32:59
+32:55
+32:12
+32:10
+34:67
+34:5
+34:1
+34:6
+34:56
+34:50
+34:58
+34:28
+34:20
+34:8
+34:24
+34:3
+34:23
+34:4
+34:72
+34:47
+34:27
+34:76
+34:68
+34:64
+34:26
+34:57
+34:69
+34:43
+34:49
+34:59
+34:74
+34:71
+34:53
+34:81
+34:22
+34:87
+34:73
+34:41
+34:82
+34:48
+34:88
+34:79
+34:86
+34:77
+34:42
+34:21
+34:75
+34:78
+34:25
+34:83
+34:45
+34:80
+36:1
+36:20
+36:22
+36:23
+36:24
+36:25
+36:26
+36:27
+36:28
+36:29
+36:30
+36:31
+36:32
+36:33
+36:34
+36:35
+36:36
+36:37
+36:42
+36:44
+36:45
+36:46
+36:47
+36:48
+36:49
+36:51
+36:52
+36:53
+36:54
+36:56
+36:57
+36:59
+36:62
+36:63
+36:66
+36:68
+36:69
+36:70
+36:71
+36:72
+36:73
+36:74
+36:75
+36:76
+36:77
+36:78
+36:79
+36:80
+36:82
+36:83
+36:84
+36:85
+36:87
+36:88
+36:89
+36:92
+36:93
+36:94
+36:95
+36:96
+36:99
+39:320
+39:321
+39:322
+39:323
+39:324
+39:325
+39:326
+39:327
+39:328
+39:329
+39:330
+39:331
+39:332
+39:333
+39:334
+39:335
+39:336
+39:337
+39:338
+39:339
+39:340
+39:341
+39:342
+39:343
+39:344
+39:345
+39:346
+39:347
+39:348
+39:349
+39:360
+39:361
+39:362
+39:363
+39:364
+39:365
+39:366
+39:367
+39:368
+39:380
+39:381
+39:382
+39:383
+39:384
+39:385
+39:386
+39:387
+39:388
+39:389
+39:390
+39:391
+39:392
+39:393
+39:49
+39:2
+39:95
+39:144
+39:426
+39:81
+39:922
+39:182
+39:173
+39:131
+39:89
+39:71
+39:883
+39:6
+39:165
+39:575
+39:736
+39:75
+39:931
+39:473
+39:825
+39:471
+39:80
+39:424
+39:828
+39:437
+39:824
+39:35
+39:15
+39:51
+39:184
+39:472
+39:30
+39:831
+39:474
+39:45
+39:70
+39:934
+39:11
+39:874
+39:462
+39:91
+39:85
+39:585
+39:823
+39:59
+39:961
+39:541
+39:921
+39:544
+39:547
+39:871
+39:41
+39:578
+39:766
+39:31
+39:436
+39:984
+39:372
+39:962
+39:171
+39:183
+39:571
+39:935
+39:546
+39:941
+39:721
+39:439
+39:532
+39:19
+39:55
+39:881
+39:742
+39:543
+39:775
+39:771
+39:933
+39:10
+39:481
+39:564
+39:542
+39:125
+39:421
+39:187
+39:862
+39:773
+39:832
+39:90
+39:586
+39:371
+39:583
+39:545
+39:376
+39:923
+39:835
+39:535
+39:61
+39:39
+39:442
+39:763
+39:461
+39:836
+39:432
+39:521
+39:382
+39:83
+39:523
+39:584
+39:435
+39:50
+39:573
+39:434
+39:185
+39:971
+39:574
+39:932
+39:965
+39:522
+39:433
+39:925
+39:746
+39:464
+39:384
+39:79
+39:985
+39:122
+39:577
+39:784
+39:427
+39:743
+39:942
+39:99
+39:861
+39:744
+39:774
+39:422
+39:40
+39:429
+39:722
+39:161
+39:88
+39:444
+39:381
+39:761
+39:438
+40:57
+40:34
+40:62
+40:33
+40:39
+40:68
+40:1
+40:38
+40:51
+40:64
+40:41
+40:36
+40:32
+40:59
+40:44
+40:55
+40:61
+40:69
+40:40
+40:56
+40:65
+41:21
+41:22
+41:24
+41:26
+41:27
+41:31
+41:32
+41:33
+41:34
+41:41
+41:43
+41:44
+41:52
+41:55
+41:56
+41:61
+41:62
+41:71
+41:74
+41:76
+41:77
+41:78
+41:79
+41:81
+41:91
+420:832
+420:88
+420:859
+420:935
+420:301
+420:311
+420:655
+420:506
+420:344
+420:185
+420:6992
+420:501
+420:202
+420:7
+420:627
+420:867
+420:5
+420:447
+420:505
+420:821
+420:824
+420:322
+420:425
+420:38
+420:203
+420:337
+420:166
+420:396
+420:453
+420:455
+420:332
+420:412
+420:305
+420:443
+420:845
+420:189
+420:827
+420:709
+420:437
+420:658
+420:427
+420:707
+420:944
+420:936
+420:6994
+420:451
+420:454
+420:804
+420:865
+420:628
+420:635
+420:801
+420:456
+420:435
+420:316
+420:188
+420:49
+420:642
+420:933
+420:367
+420:818
+420:626
+420:428
+420:442
+420:433
+420:66
+420:432
+420:331
+420:398
+420:364
+420:336
+420:17
+420:699
+420:968
+420:312
+420:186
+420:321
+420:819
+420:95
+420:444
+420:949
+420:205
+420:652
+420:634
+420:856
+420:327
+420:629
+420:826
+420:467
+420:452
+420:813
+420:966
+420:48
+420:844
+420:849
+420:416
+420:464
+420:395
+420:419
+420:863
+420:703
+420:165
+420:842
+420:939
+420:206
+420:946
+420:625
+420:368
+420:326
+420:329
+420:943
+420:462
+420:617
+420:621
+420:35
+420:441
+420:509
+420:846
+420:817
+420:87
+420:434
+420:834
+420:424
+420:448
+420:656
+420:325
+420:68
+420:653
+420:6995
+420:69
+420:164
+420:365
+420:40
+420:366
+420:704
+420:838
+420:362
+420:182
+420:19
+420:399
+420:324
+420:463
+420:864
+420:92
+420:822
+420:338
+420:2
+420:457
+420:641
+420:91
+420:306
+420:862
+420:508
+420:825
+420:823
+420:313
+420:941
+420:204
+420:866
+420:181
+420:502
+420:411
+420:942
+420:413
+420:848
+420:445
+420:934
+420:812
+420:706
+420:708
+420:304
+420:431
+420:802
+420:314
+420:932
+420:363
+420:947
+420:168
+420:965
+420:964
+420:963
+420:969
+420:342
+420:183
+420:938
+420:810
+420:649
+420:816
+420:187
+420:937
+420:461
+420:361
+420:184
+420:417
+420:333
+420:504
+420:815
+420:868
+420:169
+420:618
+420:948
+420:831
+420:335
+420:659
+420:805
+420:439
+420:841
+420:436
+420:847
+420:334
+420:632
+420:633
+420:328
+420:47
+420:465
+420:636
+420:651
+420:619
+420:854
+420:631
+420:339
+420:654
+420:303
+420:302
+420:931
+420:438
+420:657
+420:507
+420:468
+420:648
+420:446
+420:858
+420:397
+420:616
+420:811
+420:89
+420:814
+420:67
+420:624
+420:855
+43:650
+43:651
+43:652
+43:653
+43:655
+43:657
+43:659
+43:660
+43:661
+43:663
+43:664
+43:665
+43:666
+43:667
+43:668
+43:669
+43:4846
+43:2278
+43:6243
+43:7727
+43:5246
+43:3613
+43:3861
+43:4247
+43:2712
+43:7281
+43:4853
+43:5579
+43:7274
+43:2258
+43:2824
+43:5336
+43:7230
+43:7415
+43:2673
+43:2774
+43:7723
+43:7612
+43:7675
+43:7472
+43:7766
+43:7750
+43:3175
+43:2283
+43:6246
+43:6463
+43:7229
+43:6223
+43:7759
+43:2175
+43:2813
+43:7479
+43:3455
+43:4255
+43:7273
+43:7476
+43:2642
+43:2577
+43:4855
+43:7666
+43:7674
+43:2275
+43:6470
+43:5515
+43:2288
+43:4785
+43:4843
+43:5234
+43:3622
+43:4244
+43:2639
+43:6434
+43:3159
+43:6135
+43:2857
+43:7258
+43:6432
+43:6132
+43:4240
+43:7266
+43:7213
+43:3623
+43:3476
+43:4350
+43:2625
+43:7249
+43:3353
+43:2878
+43:7263
+43:2252
+43:7269
+43:2672
+43:2557
+43:3354
+43:5514
+43:5674
+43:3174
+43:3513
+43:6462
+43:4235
+43:7473
+43:5552
+43:4243
+43:6566
+43:5559
+43:2859
+43:5331
+43:7722
+43:5574
+43:3866
+43:2239
+43:3576
+43:5337
+43:6545
+43:2162
+43:3862
+43:2989
+43:4214
+43:3383
+43:2743
+43:5585
+43:5510
+43:4718
+43:4714
+43:2255
+43:3474
+43:2144
+43:3365
+43:2247
+43:2613
+43:3462
+43:6461
+43:7260
+43:2843
+43:3136
+43:3683
+43:3680
+43:5516
+43:6433
+43:5572
+43:2686
+43:2617
+43:2915
+43:2719
+43:2536
+43:2538
+43:2711
+43:5373
+43:4275
+43:2624
+43:6133
+43:3323
+43:4236
+43:7753
+43:2254
+43:3145
+43:7272
+43:5512
+43:7748
+43:2984
+43:7767
+43:2863
+43:3117
+43:3453
+43:5673
+43:3466
+43:2773
+43:3848
+43:4238
+43:2682
+43:5634
+43:5358
+43:5635
+43:2876
+43:7223
+43:2230
+43:2576
+43:7714
+43:6225
+43:7474
+43:4254
+43:6228
+43:3155
+43:5475
+43:4245
+43:4228
+43:3152
+43:5522
+43:7233
+43:4276
+43:2628
+43:2738
+43:4227
+43:5354
+43:6453
+43:2232
+43:3170
+43:5476
+43:6457
+43:4269
+43:5449
+43:2741
+43:5447
+43:3573
+43:7683
+43:2725
+43:7684
+43:2172
+43:7942
+43:3456
+43:3339
+43:7746
+43:4268
+43:3126
+43:5225
+43:6546
+43:6226
+43:5288
+43:4257
+43:3382
+43:2237
+43:7353
+43:3617
+43:4221
+43:7235
+43:5443
+43:7485
+43:3637
+43:2753
+43:2282
+43:2985
+43:5558
+43:3171
+43:7735
+43:2142
+43:2574
+43:3149
+43:4355
+43:2912
+43:2246
+43:5284
+43:2716
+43:5285
+43:4277
+43:3457
+43:3112
+43:4230
+43:2662
+43:2852
+43:4732
+43:2525
+43:3151
+43:4278
+43:6244
+43:2173
+43:6136
+43:2875
+43:4225
+43:2877
+43:2234
+43:3124
+43:316
+43:4712
+43:7268
+43:3465
+43:7487
+43:5274
+43:5236
+43:7248
+43:4233
+43:2644
+43:2812
+43:3464
+43:2249
+43:2847
+43:6414
+43:2823
+43:6247
+43:4825
+43:2556
+43:2268
+43:2615
+43:3362
+43:7254
+43:2263
+43:2815
+43:3386
+43:7218
+43:2955
+43:3685
+43:7616
+43:2637
+43:7257
+43:5276
+43:7246
+43:2951
+43:7757
+43:7946
+43:2634
+43:2954
+43:2825
+43:6483
+43:7484
+43:5523
+43:3322
+43:7434
+43:7732
+43:2735
+43:7279
+43:2165
+43:2764
+43:5223
+43:6245
+43:6134
+43:3364
+43:7225
+43:3332
+43:2944
+43:3686
+43:2533
+43:2265
+43:7475
+43:2862
+43:4824
+43:3134
+43:3325
+43:7216
+43:7215
+43:6214
+43:4282
+43:2555
+43:2782
+43:7231
+43:3634
+43:5245
+43:6224
+43:7564
+43:7948
+43:2854
+43:3141
+43:5517
+43:5513
+43:5359
+43:5280
+43:2648
+43:6229
+43:7734
+43:7285
+43:2535
+43:2767
+43:5576
+43:3618
+43:2957
+43:2952
+43:7445
+43:5335
+43:2610
+43:2982
+43:2689
+43:4872
+43:5633
+43:5289
+43:5578
+43:5573
+43:7221
+43:2913
+43:3475
+43:6458
+43:4263
+43:6417
+43:2731
+43:3385
+43:5412
+43:4736
+43:512
+43:5238
+43:2986
+43:5444
+43:2914
+43:5244
+43:3329
+43:5355
+43:3611
+43:2160
+43:3572
+43:5676
+43:3148
+43:3334
+43:4876
+43:3135
+43:5283
+43:2238
+43:3846
+43:3844
+43:3157
+43:5445
+43:6547
+43:2844
+43:2816
+43:4848
+43:2744
+43:3588
+43:2765
+43:2524
+43:2864
+43:7947
+43:7247
+43:7228
+43:7448
+43:5232
+43:2748
+43:3865
+43:4284
+43:3116
+43:2279
+43:2641
+43:2722
+43:7747
+43:5357
+43:7582
+43:7619
+43:2646
+43:2523
+43:2143
+43:5356
+43:463
+43:7585
+43:2257
+43:4768
+43:4264
+43:6418
+43:3516
+43:7357
+43:2614
+43:2766
+43:2687
+43:2243
+43:5582
+43:3512
+43:3366
+43:7763
+43:2214
+43:6221
+43:2262
+43:2873
+43:3535
+43:3832
+43:2732
+43:4735
+43:7583
+43:3855
+43:6564
+43:6240
+43:3143
+43:2647
+43:4229
+43:5372
+43:3328
+43:3132
+43:5338
+43:3144
+43:7955
+43:5375
+43:4715
+43:4220
+43:5239
+43:2522
+43:7613
+43:2619
+43:2575
+43:3338
+43:7245
+43:7765
+43:6274
+43:5442
+43:3633
+43:7480
+43:5575
+43:2734
+43:3854
+43:2244
+43:2814
+43:2213
+43:5526
+43:4213
+43:4356
+43:5583
+43:3452
+43:7286
+43:6416
+43:3842
+43:2256
+43:6583
+43:2216
+43:4716
+43:6484
+43:5214
+43:3454
+43:2718
+43:7239
+43:2643
+43:7953
+43:4215
+43:4852
+43:3612
+43:2762
+43:732
+43:2865
+43:3358
+43:7745
+43:2616
+43:6588
+43:3359
+43:2754
+43:7255
+43:7486
+43:5577
+43:5253
+43:2943
+43:2958
+43:4784
+43:4733
+43:6454
+43:2755
+43:2168
+43:2611
+43:7413
+43:2285
+43:7243
+43:6584
+43:7250
+43:4223
+43:7743
+43:2235
+43:6473
+43:3882
+43:2248
+43:3356
+43:3114
+43:2633
+43:2618
+43:2874
+43:5273
+43:4875
+43:2626
+43:7742
+43:6217
+43:2289
+43:7724
+43:5243
+43:3845
+43:6472
+43:7238
+43:2752
+43:5518
+43:4267
+43:7755
+43:5264
+43:4237
+43:4766
+43:2572
+43:3858
+43:6562
+43:4231
+43:3146
+43:7584
+43:6232
+43:2858
+43:4272
+43:6479
+43:7744
+43:3532
+43:3472
+43:3571
+43:2236
+43:4769
+43:7267
+43:2649
+43:4826
+43:6467
+43:3586
+43:2259
+43:7716
+43:3859
+43:3852
+43:2953
+43:5265
+43:5473
+43:5278
+43:5525
+43:3133
+43:3857
+43:7282
+43:7227
+43:7618
+43:6565
+43:7278
+43:7729
+43:2772
+43:6216
+43:7733
+43:7941
+43:3584
+43:2635
+43:2988
+43:2167
+43:7471
+43:5226
+43:2146
+43:2269
+43:2949
+43:7224
+43:6548
+43:2534
+43:4858
+43:6276
+43:4256
+43:3578
+43:2747
+43:4710
+43:6213
+43:7284
+43:7758
+43:7483
+43:6272
+43:2612
+43:2286
+43:6456
+43:4847
+43:6131
+43:6219
+43:4782
+43:2253
+43:6233
+43:3352
+43:2284
+43:2786
+43:3581
+43:7478
+43:5252
+43:5266
+43:3619
+43:7444
+43:2212
+43:6278
+43:2872
+43:7234
+43:7676
+43:7265
+43:3150
+43:3638
+43:2166
+43:3179
+43:2736
+43:3127
+43:7287
+43:1
+43:7262
+43:3867
+43:2632
+43:2784
+43:2163
+43:7586
+43:5448
+43:7276
+43:2848
+43:5474
+43:3624
+43:6549
+43:3357
+43:4224
+43:3113
+43:2627
+43:2177
+43:2757
+43:2758
+43:3335
+43:3579
+43:2631
+43:2623
+43:2552
+43:7736
+43:4353
+43:3185
+43:7236
+43:2665
+43:4354
+43:2145
+43:2233
+43:2749
+43:2215
+43:5472
+43:4877
+43:3177
+43:2636
+43:2726
+43:2946
+43:2683
+43:7489
+43:2231
+43:3574
+43:2745
+43:7762
+43:2846
+43:2723
+43:4246
+43:3635
+43:6452
+43:5553
+43:7949
+43:6475
+43:2828
+43:2826
+43:3173
+43:6544
+43:3363
+43:2666
+43:7211
+43:4359
+43:7214
+43:2276
+43:4273
+43:4783
+43:4734
+43:2942
+43:5672
+43:2271
+43:7752
+43:7588
+43:7764
+43:3153
+43:2916
+43:2164
+43:7289
+43:5417
+43:7566
+43:2714
+43:4767
+43:3614
+43:4234
+43:2685
+43:6242
+43:2264
+43:6541
+43:6582
+43:3147
+43:662
+43:7944
+43:7717
+43:2768
+43:4358
+43:2242
+43:3158
+43:5446
+43:3632
+43:5557
+43:7954
+43:2742
+43:7237
+43:3183
+43:7667
+43:3537
+43:6227
+43:4253
+43:4873
+43:5279
+43:3575
+43:6412
+43:5352
+43:4239
+43:3869
+43:6241
+43:3585
+43:2756
+43:2987
+43:5413
+43:3331
+43:3515
+43:3119
+43:3864
+43:4226
+43:2680
+43:6476
+43:3684
+43:3140
+43:7751
+43:7232
+43:3327
+43:6477
+43:3843
+43:3689
+43:7945
+43:3123
+43:3469
+43:3468
+43:7565
+43:6277
+43:4357
+43:3536
+43:3477
+43:7477
+43:3178
+43:4283
+43:7435
+43:4212
+43:2763
+43:7217
+43:4879
+43:6138
+43:7283
+43:5524
+43:7244
+43:2638
+43:7713
+43:5213
+43:7615
+43:7482
+43:3582
+43:7251
+43:3687
+43:2663
+43:2853
+43:5556
+43:5519
+43:3467
+43:7728
+43:7673
+43:6415
+43:2667
+43:2849
+43:2724
+43:7280
+43:5242
+43:2829
+43:7712
+43:7261
+43:2827
+43:2733
+43:3587
+43:5418
+43:2684
+43:3333
+43:3514
+43:5441
+43:4762
+43:5212
+43:6212
+43:7662
+43:5230
+43:3616
+43:2664
+43:2621
+43:2274
+43:2267
+43:7259
+43:2983
+43:4842
+43:5263
+43:3118
+43:7240
+43:4279
+43:2959
+43:3460
+43:5554
+43:7563
+43:3853
+43:2713
+43:3534
+43:3355
+43:3682
+43:3463
+43:5632
+43:3326
+43:2622
+43:5272
+43:7488
+43:7663
+43:5248
+43:2688
+43:7241
+43:4717
+43:4271
+43:7252
+43:4761
+43:2266
+43:3473
+43:2287
+43:4266
+43:6215
+43:3324
+43:7432
+43:6137
+43:2526
+43:3176
+43:3115
+43:2554
+43:7711
+43:3387
+43:3137
+43:5254
+43:5333
+43:2176
+43:6474
+43:5675
+43:7719
+43:3688
+43:6543
+43:4713
+43:5262
+43:7256
+43:2630
+43:3883
+43:6235
+43:2947
+43:5376
+43:5550
+43:2739
+43:3833
+43:3868
+43:3461
+43:2783
+43:7617
+43:2169
+43:4248
+43:4262
+43:4823
+43:3615
+43:5275
+43:3847
+43:4285
+43:2273
+43:2272
+43:3863
+43:3533
+43:5287
+43:6471
+43:5477
+43:2769
+43:7288
+43:5255
+43:6589
+43:2717
+43:7665
+43:5256
+43:3631
+43:6455
+43:7956
+43:3583
+43:6563
+43:3125
+43:3856
+43:4274
+43:4242
+43:5677
+43:4874
+43:2841
+43:3142
+43:3337
+43:7614
+43:3849
+43:7219
+43:7672
+43:7682
+43:4232
+43:6413
+43:2842
+43:7442
+43:5353
+43:7277
+43:5374
+43:3834
+43:3336
+43:2855
+43:7718
+43:7754
+43:2174
+43:7433
+43:7587
+43:2629
+43:5224
+43:3884
+43:3886
+43:2845
+43:7414
+43:4265
+43:2948
+43:7952
+43:2856
+43:3172
+43:4286
+43:5678
+43:2674
+43:2715
+43:7242
+43:5414
+43:6468
+43:6466
+43:4252
+43:5334
+43:7355
+43:7664
+43:2728
+43:7416
+43:2645
+43:3636
+43:3182
+43:5339
+43:2573
+43:2746
+43:7226
+43:2620
+43:7943
+43:7264
+43:7562
+43:4822
+43:7253
+43:4352
+43:3184
+43:2245
+43:2527
+43:5332
+43:7412
+43:7443
+43:6478
+43:6234
+43:6542
+43:5282
+43:2945
+43:3577
+43:2956
+43:2532
+43:2147
+43:2277
+43:7212
+43:2822
+44:19
+44:1685
+44:1224
+44:1970
+44:1481
+44:1252
+44:1665
+44:1264
+44:1861
+44:15394
+44:1344
+44:1233
+44:1784
+44:1479
+44:1296
+44:1292
+44:1629
+44:1678
+44:13397
+44:1266
+44:1295
+44:1247
+44:1248
+44:1341
+44:1226
+44:1271
+44:1268
+44:1256
+44:1225
+44:1234
+44:1232
+44:1289
+44:121
+44:1254
+44:1253
+44:1204
+44:1243
+44:1205
+44:1202
+44:1274
+44:1277
+44:1278
+44:1273
+44:117
+44:1770
+44:1288
+44:1282
+44:1284
+44:1298
+44:1286
+44:1222
+44:1581
+44:1877
+44:1276
+44:1223
+44:1227
+44:1239
+44:1228
+44:1267
+44:1245
+44:1242
+44:1244
+44:1246
+44:1285
+44:1900
+44:1206
+44:1203
+44:1293
+44:1381
+44:1556
+44:1325
+44:1322
+44:1803
+44:1626
+44:1332
+44:1302
+44:1305
+44:1624
+44:1304
+44:1387
+44:1368
+44:1382
+44:1383
+44:1582
+44:191
+44:1342
+44:1323
+44:1732
+44:131
+44:1504
+44:1343
+44:1353
+44:1365
+44:1372
+44:1386
+44:1392
+44:1324
+44:1394
+44:1348
+44:1303
+44:1309
+44:1397
+44:1445
+44:1896
+44:141
+44:1458
+44:1452
+44:1476
+44:1474
+44:1493
+44:1823
+44:1475
+44:1461
+44:1472
+44:1483
+44:1422
+44:1698
+44:1766
+44:1279
+44:1859
+44:1423
+44:1429
+44:1255
+44:1428
+44:1424
+44:1707
+44:1705
+44:1969
+44:1535
+44:1736
+44:1442
+44:1491
+44:1432
+44:1407
+44:1403
+44:1484
+44:1482
+44:1480
+44:1703
+44:1935
+44:1499
+44:1463
+44:1473
+44:1835
+44:1534
+44:1573
+44:1539
+44:1926
+44:17687
+44:1536
+44:1562
+44:1563
+44:1553
+44:1548
+44:1592
+44:1555
+44:1524
+44:1574
+44:113
+44:116
+44:1595
+44:1543
+44:1522
+44:1506
+44:151
+44:1597
+44:1492
+44:1978
+44:15202
+44:181
+44:171
+44:1507
+44:1502
+44:1297
+44:1625
+44:1628
+44:1622
+44:1687
+44:161
+44:1623
+44:1858
+44:1672
+44:1642
+44:1646
+44:1643
+44:1683
+44:1600
+44:1674
+44:1670
+44:1270
+44:1636
+44:1635
+44:13967
+44:1782
+44:1638
+44:1633
+44:1637
+44:1693
+44:1604
+44:1603
+44:115
+44:1631
+44:1837
+44:1662
+44:1691
+44:1865
+44:1768
+44:1738
+44:1733
+44:1779
+44:1751
+44:1796
+44:1752
+44:1443
+44:1265
+44:1772
+44:1229
+44:1734
+44:1737
+44:1748
+44:1923
+44:1773
+44:1889
+44:1706
+44:1989
+44:1709
+44:1788
+44:189
+44:1983
+44:1722
+44:1723
+44:1757
+44:114
+44:1743
+44:1756
+44:1702
+44:1704
+44:1775
+44:1727
+44:1744
+44:1785
+44:1780
+44:1580
+44:1786
+44:1569
+44:1851
+44:1384
+44:1776
+44:1789
+44:1929
+44:1792
+44:1793
+44:1880
+44:1952
+44:1834
+44:1684
+44:1843
+44:1842
+44:1375
+44:1621
+44:1688
+44:1892
+44:1854
+44:1895
+44:1924
+44:1922
+44:1925
+44:1749
+44:1938
+44:1937
+44:1932
+44:1947
+44:1942
+44:1962
+44:1753
+44:1902
+44:1905
+44:1903
+44:1964
+44:20
+44:23
+44:24
+44:28
+44:29
+44:7
+44:7701
+44:7718
+44:7724
+44:7729
+44:7734
+44:7736
+44:7738
+44:7742
+44:7745
+44:7749
+44:7759
+44:7761
+44:7783
+44:7793
+44:7801
+44:7808
+44:7819
+44:7834
+44:7840
+44:7849
+44:7860
+44:7864
+44:7871
+44:7885
+44:7889
+44:7892
+44:7912
+44:7921
+44:7925
+44:7933
+44:7938
+44:7955
+44:7999
+44:7772
+44:7779
+44:7790
+44:7794
+44:7800
+44:7805
+44:7807
+44:7811
+44:7837
+44:7854
+44:7866
+44:7870
+44:7875
+44:7890
+44:7896
+44:7929
+44:7964
+44:7980
+44:7989
+44:7722
+44:7726
+44:7757
+44:7804
+44:7806
+44:7847
+44:7852
+44:7903
+44:7908
+44:7910
+44:7913
+44:7930
+44:7931
+44:7939
+44:7956
+44:7981
+44:7982
+46:10
+46:11
+46:120
+46:121
+46:122
+46:123
+46:125
+46:13
+46:140
+46:141
+46:142
+46:143
+46:144
+46:150
+46:151
+46:152
+46:155
+46:156
+46:157
+46:158
+46:159
+46:16
+46:171
+46:173
+46:174
+46:175
+46:176
+46:18
+46:19
+46:20
+46:21
+46:220
+46:221
+46:222
+46:223
+46:224
+46:225
+46:226
+46:227
+46:23
+46:240
+46:241
+46:243
+46:246
+46:247
+46:248
+46:250
+46:251
+46:253
+46:258
+46:26
+46:270
+46:271
+46:278
+46:280
+46:281
+46:290
+46:291
+46:292
+46:293
+46:294
+46:295
+46:297
+46:300
+46:301
+46:302
+46:303
+46:304
+46:31
+46:320
+46:321
+46:322
+46:325
+46:33
+46:340
+46:345
+46:346
+46:35
+46:36
+46:370
+46:371
+46:372
+46:380
+46:381
+46:382
+46:383
+46:390
+46:392
+46:393
+46:40
+46:410
+46:411
+46:413
+46:414
+46:415
+46:416
+46:417
+46:418
+46:42
+46:430
+46:431
+46:433
+46:435
+46:44
+46:451
+46:454
+46:455
+46:456
+46:457
+46:459
+46:46
+46:470
+46:471
+46:472
+46:474
+46:476
+46:477
+46:478
+46:479
+46:480
+46:481
+46:485
+46:486
+46:490
+46:491
+46:492
+46:493
+46:494
+46:495
+46:496
+46:498
+46:499
+46:500
+46:501
+46:502
+46:503
+46:504
+46:505
+46:506
+46:510
+46:511
+46:512
+46:513
+46:514
+46:515
+46:520
+46:521
+46:522
+46:523
+46:524
+46:525
+46:526
+46:528
+46:530
+46:531
+46:532
+46:533
+46:534
+46:54
+46:550
+46:551
+46:552
+46:553
+46:554
+46:555
+46:560
+46:563
+46:564
+46:565
+46:570
+46:571
+46:573
+46:580
+46:581
+46:582
+46:583
+46:584
+46:585
+46:586
+46:587
+46:589
+46:590
+46:591
+46:60
+46:611
+46:612
+46:613
+46:620
+46:621
+46:622
+46:623
+46:624
+46:63
+46:640
+46:642
+46:643
+46:644
+46:645
+46:647
+46:650
+46:651
+46:652
+46:653
+46:657
+46:660
+46:661
+46:662
+46:663
+46:670
+46:671
+46:672
+46:680
+46:682
+46:684
+46:687
+46:690
+46:691
+46:692
+46:693
+46:695
+46:696
+46:70
+46:71
+46:72
+46:73
+46:74
+46:76
+46:8
+46:90
+46:900
+46:910
+46:911
+46:912
+46:913
+46:914
+46:915
+46:916
+46:918
+46:920
+46:921
+46:922
+46:923
+46:924
+46:925
+46:926
+46:927
+46:928
+46:929
+46:930
+46:932
+46:933
+46:934
+46:935
+46:939
+46:940
+46:941
+46:942
+46:943
+46:944
+46:950
+46:951
+46:952
+46:953
+46:954
+46:960
+46:961
+46:970
+46:971
+46:973
+46:975
+46:976
+46:977
+46:978
+46:980
+46:981
+46:99
+48:57
+48:85
+48:30
+48:52
+48:3
+48:82
+48:32
+48:23
+48:386
+48:34
+48:50
+48:58
+48:66
+48:75
+48:62
+48:41
+48:63
+48:61
+48:12
+48:135
+48:76
+48:65
+48:42
+48:70
+48:81
+48:196
+48:115
+48:187
+48:89
+48:77
+48:381
+48:2
+48:67
+48:24
+48:22
+48:48
+48:25
+48:47
+48:95
+48:59
+48:474
+48:87
+48:91
+48:15
+48:14
+48:56
+48:74
+48:54
+48:71
+48:165
+48:84
+48:68
+51:54
+51:74
+51:44
+51:84
+51:64
+51:94
+51:1
+52:74
+52:633
+52:49
+52:981
+52:98
+52:14
+52:877
+52:16
+52:73
+52:67
+52:3
+52:62
+52:112
+52:47
+52:88
+52:99
+52:65
+52:5
+52:8
+52:631
+52:87
+52:878
+52:22
+52:42
+52:89
+52:84
+52:48
+52:12
+52:665
+52:66
+52:17
+53:21
+53:7
+53:24
+53:226
+54:281
+54:91
+54:314
+54:1
+54:868
+54:833
+54:967
+54:51
+54:42
+54:783
+54:945
+54:717
+54:362
+54:21
+54:323
+54:61
+54:23
+54:99
+54:43
+54:752
+54:965
+54:722
+54:41
+54:944
+54:64
+54:652
+54:972
+54:882
+54:954
+54:85
+54:87
+54:293
+54:901
+54:920
+54:535
+54:328
+55:79
+55:91
+55:31
+55:473
+55:95
+55:61
+55:246
+55:192
+55:67
+55:247
+55:33
+55:65
+55:41
+55:21
+55:482
+55:85
+55:455
+55:62
+55:11
+55:83
+55:73
+55:96
+55:82
+55:92
+55:84
+55:63
+55:51
+55:69
+55:81
+55:68
+55:71
+55:132
+55:98
+55:86
+55:27
+56:656
+56:55
+56:58
+56:56
+56:42
+56:41
+56:52
+56:51
+56:67
+56:75
+56:57
+56:39
+56:64
+56:65
+56:61
+56:72
+56:35
+56:2
+56:71
+56:45
+56:63
+56:32
+57:67
+57:58
+57:1
+57:76
+57:222
+57:2
+57:53
+57:75
+57:88
+57:82
+57:819
+57:68
+57:4
+57:47
+57:27
+57:63
+57:28
+57:54
+57:811
+57:87
+57:866
+58:81
+58:51
+58:64
+58:2
+58:94
+58:85
+58:33
+58:68
+58:93
+58:57
+58:95
+58:31
+58:32
+58:61
+58:43
+58:91
+58:74
+58:96
+58:48
+58:42
+58:86
+58:58
+58:76
+58:46
+58:72
+58:87
+58:41
+60:4
+60:5
+60:7
+60:9
+60:88
+60:3
+60:82
+60:87
+60:6
+61:8
+61:51
+61:53
+61:85
+61:63
+61:54
+61:7
+61:70
+61:46
+61:6
+61:91
+61:52
+61:43
+61:3
+61:65
+61:66
+61:79
+61:71
+61:59
+61:49
+61:47
+61:9
+61:76
+61:2
+61:67
+61:77
+61:42
+62:911
+62:22
+62:511
+62:361
+62:21
+62:967
+62:391
+62:341
+62:61
+62:751
+62:711
+62:451
+62:761
+62:561
+62:541
+62:24
+62:31
+62:411
+62:274
+63:45
+63:34
+63:74
+63:43
+63:8822
+63:2
+63:95
+63:32
+63:64
+63:82
+63:83
+63:33
+63:56
+63:65
+63:93
+63:53
+63:62
+64:9
+64:3
+64:6
+64:7
+64:4
+66:2
+66:53
+66:38
+66:34
+66:44
+66:42
+66:55
+66:76
+66:74
+66:77
+81:78
+81:424
+81:92
+81:93
+81:245
+81:138
+81:425
+81:82
+81:294
+81:45
+81:776
+81:44
+81:552
+81:98
+81:154
+81:75
+81:727
+81:143
+81:258
+81:958
+81:980
+81:52
+81:975
+81:6
+81:234
+81:11
+81:996
+81:22
+81:3
+81:764
+81:48
+81:745
+82:64
+82:431
+82:652
+82:361
+82:32
+82:62
+82:561
+82:551
+82:51
+82:2
+82:331
+82:53
+82:42
+82:351
+84:64
+84:71
+84:51
+84:31
+84:4
+84:8
+84:54
+84:58
+84:35
+84:33
+86:1
+86:431
+86:731
+86:28
+86:411
+86:591
+86:20
+86:851
+86:898
+86:571
+86:451
+86:551
+86:471
+86:531
+86:871
+86:931
+86:891
+86:791
+86:25
+86:771
+86:532
+86:21
+86:24
+86:755
+86:311
+86:351
+86:22
+86:27
+86:991
+86:29
+86:971
+86:951
+90:322
+90:264
+90:416
+90:272
+90:472
+90:382
+90:358
+90:312
+90:242
+90:478
+90:466
+90:256
+90:266
+90:378
+90:488
+90:458
+90:228
+90:426
+90:434
+90:374
+90:248
+90:224
+90:286
+90:376
+90:364
+90:258
+90:412
+90:284
+90:424
+90:446
+90:442
+90:222
+90:392
+90:342
+90:454
+90:456
+90:438
+90:326
+90:476
+90:246
+90:216
+90:212
+90:232
+90:262
+90:344
+90:338
+90:474
+90:366
+90:352
+90:318
+90:288
+90:386
+90:332
+90:274
+90:324
+90:422
+90:236
+90:482
+90:252
+90:436
+90:384
+90:388
+90:452
+90:464
+90:362
+90:414
+90:484
+90:368
+90:486
+90:346
+90:282
+90:356
+90:462
+90:428
+90:276
+90:432
+90:354
+90:372
+91:562
+91:79
+91:532
+91:183
+91:80
+91:265
+91:755
+91:674
+91:22
+91:172
+91:484
+91:422
+91:354
+91:359
+91:361
+91:40
+91:731
+91:761
+91:141
+91:291
+91:33
+91:512
+91:522
+91:44
+91:452
+91:4113
+91:824
+91:121
+91:1362
+91:821
+91:712
+91:5942
+91:11
+91:423
+91:832
+91:612
+91:212
+91:6752
+91:661
+91:177
+91:642
+91:891
+92:411
+92:431
+92:221
+92:51
+92:21
+92:42
+92:61
+92:521
+92:81
+92:432
+92:71
+94:25
+94:57
+94:1
+94:9
+94:33
+94:8
+94:31
+95:2
+95:81
+95:1
+98:631
+98:61
+98:431
+98:761
+98:771
+98:671
+98:561
+98:6621
+98:641
+98:251
+98:261
+98:31
+98:361
+98:341
+98:6394
+98:51
+98:231
+98:5221
+98:71
+98:41
+98:21
+98:351
+212:8
+212:9
+212:3
+212:6
+212:2
+212:5
+212:7
+212:4
+213:2
+213:8
+213:6
+213:4
+213:7
+213:5
+213:3
+213:9
+216:1
+216:8
+216:2
+216:5
+216:6
+216:7
+216:3
+216:4
+218:64
+218:282
+218:63
+218:22
+218:61
+218:81
+218:281
+218:41
+218:44
+218:421
+218:31
+218:51
+218:47
+218:24
+218:71
+218:273
+218:21
+218:272
+218:23
+218:25
+222:261
+222:245
+222:2
+222:269
+232:32
+232:22
+232:24
+232:42
+232:53
+232:25
+232:54
+232:52
+233:21
+233:72
+233:42
+233:91
+233:81
+233:51
+233:61
+233:71
+234:82
+234:9
+234:52
+234:87
+234:42
+234:2
+234:31
+234:62
+234:64
+234:1
+234:44
+234:34
+234:46
+234:83
+234:84
+234:60
+240:8
+240:9
+243:12
+243:222
+244:99
+244:2
+249:21
+249:81
+249:441
+249:41
+249:11
+249:31
+249:51
+251:1
+251:3
+251:5
+251:8
+251:7
+251:4
+251:2
+252:3
+252:1
+254:15
+254:33
+254:321
+254:161
+254:131
+254:331
+254:35
+254:325
+254:121
+254:123
+254:11
+254:2
+254:37
+254:176
+254:171
+254:151
+255:57
+255:51
+255:61
+255:695
+255:55
+255:68
+255:54
+255:53
+256:42
+256:43
+256:41
+256:45
+257:42
+257:22
+257:50
+257:41
+257:40
+257:43
+257:30
+258:3
+258:1
+258:6
+258:4
+260:2
+260:3
+260:1
+261:8
+261:2
+261:4
+261:7
+261:6
+261:5
+261:9
+263:9
+263:54
+263:4
+263:81
+263:68
+263:20
+263:13
+264:631
+264:6331
+264:6332
+264:6751
+264:651
+264:641
+264:671
+264:642
+264:61
+264:626
+351:41
+351:1
+351:95
+351:35
+351:34
+351:84
+351:53
+351:73
+351:62
+351:72
+351:86
+351:76
+351:39
+351:75
+351:68
+351:66
+351:89
+351:49
+351:33
+351:91
+351:71
+351:92
+351:77
+351:44
+351:31
+351:78
+351:79
+351:85
+351:83
+351:55
+351:54
+351:36
+351:96
+351:42
+351:45
+351:82
+351:2
+351:74
+351:43
+351:69
+351:56
+351:38
+351:65
+351:81
+351:61
+351:51
+351:58
+351:63
+351:59
+351:32
+353:402
+353:902
+353:96
+353:503
+353:78
+353:94
+353:21
+353:41
+353:1
+353:42
+353:65
+353:91
+353:56
+353:64
+353:74
+353:61
+353:47
+353:44
+353:71
+353:66
+353:51
+353:53
+353:404
+354:3
+354:6
+354:7
+354:1
+354:4
+354:2
+354:8
+355:52
+355:545
+355:824
+355:42
+357:3
+357:4
+357:5
+357:2
+357:6
+358:21
+358:66
+358:15
+358:11
+358:16
+358:17
+358:0
+358:14
+358:54
+358:42
+358:41
+358:86
+358:30
+358:52
+358:698
+358:68
+358:51
+358:71
+358:89
+358:18
+358:53
+358:12
+358:55
+358:76
+358:81
+358:19
+358:33
+358:39
+358:82
+358:38
+358:60
+358:34
+358:24
+358:64
+358:31
+358:37
+358:61
+358:32
+358:83
+358:4
+358:457
+358:50
+358:500
+359:5722
+359:579
+359:291
+359:7443
+359:7218
+359:56
+359:554
+359:3021
+359:64
+359:32
+359:596
+359:5561
+359:82
+359:746
+359:44
+359:2
+359:5514
+359:42
+359:52
+359:62
+359:359
+359:94
+370:35
+370:51
+370:10
+370:20
+370:33
+370:37
+370:40
+370:29
+370:19
+370:96
+370:48
+370:56
+370:7
+370:57
+370:97
+370:61
+370:58
+370:31
+370:68
+370:43
+370:93
+370:30
+370:95
+370:59
+370:91
+370:36
+370:54
+370:71
+370:18
+370:49
+370:92
+370:28
+370:78
+370:47
+370:50
+370:14
+370:69
+370:41
+370:32
+370:16
+370:66
+370:17
+370:46
+370:94
+370:38
+370:11
+370:39
+370:60
+370:42
+370:2
+370:70
+371:43
+371:51
+371:45
+371:39
+371:41
+371:54
+371:37
+371:44
+371:52
+371:30
+371:56
+371:33
+371:34
+371:40
+371:57
+371:48
+371:50
+371:53
+371:46
+371:2
+371:38
+371:32
+371:31
+371:47
+371:42
+371:36
+372:47
+372:37
+372:46
+372:33
+372:45
+372:35
+372:38
+372:44
+372:30
+372:32
+372:48
+372:2
+372:6
+372:7
+372:42
+372:43
+372:41
+373:2
+381:85
+381:11
+381:84
+381:30
+381:86
+381:32
+381:390
+381:280
+381:82
+381:871
+381:35
+381:230
+381:28
+381:34
+381:36
+381:37
+381:16
+381:83
+381:18
+381:20
+381:21
+381:13
+381:39
+381:10
+381:872
+381:81
+381:12
+381:33
+381:38
+381:29
+381:27
+381:15
+381:26
+381:25
+381:22
+381:24
+381:290
+381:31
+381:14
+381:17
+381:19
+381:23
+385:43
+385:51
+385:20
+385:53
+385:21
+385:47
+385:49
+385:44
+385:34
+385:31
+385:52
+385:22
+385:1
+385:35
+385:42
+385:32
+385:23
+386:64
+386:63
+386:61
+386:602
+386:66
+386:608
+386:62
+386:69
+386:65
+386:68
+386:67
+386:601
+387:78
+387:77
+387:74
+387:79
+387:76
+387:89
+387:80
+387:88
+387:72
+387:73
+387:71
+387:75
+389:97
+389:95
+389:903
+389:901
+389:96
+389:98
+389:91
+389:92
+389:902
+389:94
+389:93
+501:2
+501:8
+502:9
+502:2
+505:54
+505:341
+505:42
+505:71
+505:55
+505:311
+505:2
+505:52
+505:61
+505:46
+591:842
+591:42
+591:2
+591:52
+591:62
+591:3
+591:64
+591:66
+591:46
+592:2
+592:3
+593:3
+593:7
+593:6
+593:5
+593:4
+593:2
+595:291
+595:21
+595:511
+595:28
+595:61
+595:548
+595:31
+595:521
+595:71
+595:91
+595:75
+595:5138
+595:36
+595:86
+595:512
+595:541
+595:513
+598:542
+598:522
+598:352
+598:473
+598:42
+598:2
+598:722
+598:732
+598:342
+599:7
+599:9
+599:4
+599:3
+599:5
+672:4
+672:3
+673:2
+673:3
+850:2
+855:23
+856:21
+880:431
+880:841
+880:31
+880:81
+880:2
+880:631
+880:41
+880:521
+880:552
+880:741
+880:751
+880:821
+886:47
+886:5
+886:38
+886:7
+886:37
+886:69
+886:4
+886:6
+886:2
+886:89
+886:3
+961:6
+961:4
+961:8
+961:5
+961:1
+961:7
+961:9
+962:6
+962:3
+962:2
+962:4
+962:8
+962:5
+962:9
+963:53
+963:13
+963:21
+963:43
+963:11
+963:51
+963:33
+963:31
+963:41
+963:32
+964:43
+964:1
+964:25
+964:40
+964:36
+964:30
+964:32
+964:50
+964:23
+964:60
+964:33
+964:42
+964:24
+964:37
+964:21
+966:7
+966:4
+966:3
+966:2
+966:1
+967:2
+967:3
+967:1
+967:4
+971:2
+971:6
+971:3
+971:4
+971:9
+971:84
+971:7
+972:6
+972:4
+972:8
+972:7
+972:3
+972:2
+972:9
+975:3
+975:25
+975:4
+975:2
+976:37
+976:61
+976:35
+976:65
+976:39
+976:43
+976:1
+976:55
+977:1
+977:61
+992:22
+922:922
+995:881
+995:8832

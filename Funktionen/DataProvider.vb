@@ -1151,11 +1151,10 @@ Public Class DataProvider
     End Property
 
     ' Vorwahllisten
-
-    Private _ListeOrtsVorwahlen As ReadOnlyCollection(Of String)
-    Public ReadOnly Property P_ListeOrtsVorwahlen() As ReadOnlyCollection(Of String)
+    Private _ListeOrtsVorwahlenD As ReadOnlyCollection(Of String)
+    Public ReadOnly Property P_ListeOrtsVorwahlenD() As ReadOnlyCollection(Of String)
         Get
-            Return _ListeOrtsVorwahlen
+            Return _ListeOrtsVorwahlenD
         End Get
     End Property
 
@@ -1163,6 +1162,13 @@ Public Class DataProvider
     Public ReadOnly Property P_ListeLandesVorwahlen() As ReadOnlyCollection(Of String)
         Get
             Return _ListeLandesVorwahlen
+        End Get
+    End Property
+
+    Private _ListeOrtsVorwahlenA As ReadOnlyCollection(Of String)
+    Public ReadOnly Property P_ListeOrtsVorwahlenA() As ReadOnlyCollection(Of String)
+        Get
+            Return _ListeOrtsVorwahlenA
         End Get
     End Property
 
@@ -3665,6 +3671,13 @@ Public Class DataProvider
             .Add("[@Checked=""1""]")
         End With
         SetCLBTelNr(New ReadOnlyCollection(Of String)((From x In Split(C_XML.Read(XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray))
+
+        BWCBox = New BackgroundWorker
+        With BWCBox
+            .WorkerReportsProgress = False
+            .RunWorkerAsync(True)
+        End With
+
     End Sub
 
     Public Sub SetCLBTelNr(ByVal coll As ReadOnlyCollection(Of String))
@@ -3769,13 +3782,6 @@ Public Class DataProvider
         ' Do some Stuff
         XMLDoc.Save(P_Arbeitsverzeichnis & P_Def_Config_FileName)
         SaveSettingsVBA("Arbeitsverzeichnis", P_Arbeitsverzeichnis)
-
-        BWCBox = New BackgroundWorker
-        With BWCBox
-            .WorkerReportsProgress = False
-            .RunWorkerAsync(True)
-        End With
-
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -3839,38 +3845,21 @@ Public Class DataProvider
 
 #Region "Backgroundworker"
     Private Sub BWCBbox_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs) Handles BWCBox.DoWork
-        Dim Vorwahliste As String
-        Dim i As Integer
         Dim tmpVorwahl As String = P_TBLandesVW
-        Dim tmpvwl() As String
-        Dim tmpvw() As String
+
         If P_ListeLandesVorwahlen Is Nothing Then
             ' Landesvorwahlen
-            Vorwahliste = Replace(My.Resources.Liste_Landesvorwahlen, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
-            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
-
-            _ListeLandesVorwahlen = New ReadOnlyCollection(Of String)((From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "00*" Select s).ToArray)
+            _ListeLandesVorwahlen = New ReadOnlyCollection(Of String)((Split(My.Resources.Liste_Landesvorwahlen, vbNewLine, , CompareMethod.Text)).ToArray)
         End If
 
-        tmpVorwahl = CStr(IIf(tmpVorwahl = P_Def_LeerString, P_TBLandesVW, tmpVorwahl))
-
-        If P_TBLandesVW = P_Def_TBLandesVW Then
+        If P_ListeOrtsVorwahlenD Is Nothing Then
             ' Ortsvorwahlen Deutschland
-            Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Deutschland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
-            Vorwahliste = Replace(Vorwahliste, ";", " (", , , CompareMethod.Text)
+            _ListeOrtsVorwahlenD = New ReadOnlyCollection(Of String)((Split(My.Resources.Liste_Ortsvorwahlen_Deutschland, vbNewLine, , CompareMethod.Text)).ToArray)
+        End If
 
-            _ListeOrtsVorwahlen = New ReadOnlyCollection(Of String)((From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like "0*" Select s).ToArray)
-        Else
-
-            tmpVorwahl = Strings.Replace(tmpVorwahl, P_Def_PreLandesVW, "", , 1, CompareMethod.Text)
-            Vorwahliste = Replace(My.Resources.Liste_Ortsvorwahlen_Ausland, ";" & vbNewLine, ")" & vbNewLine, , , CompareMethod.Text)
-            tmpvwl = (From s In Split(Vorwahliste, vbNewLine, , CompareMethod.Text) Where s.ToLower Like tmpVorwahl & ";*" Select s).ToArray
-
-            For i = LBound(tmpvwl) To UBound(tmpvwl)
-                tmpvw = Split(P_ListeOrtsVorwahlen(i), ";", , CompareMethod.Text)
-                tmpvwl(i) = tmpvw(1) & " (" & tmpvw(2)
-            Next
-            _ListeOrtsVorwahlen = New ReadOnlyCollection(Of String)(tmpvwl)
+        If P_ListeOrtsVorwahlenA Is Nothing Then
+            ' Ortsvorwahlen Ausland
+            _ListeOrtsVorwahlenA = New ReadOnlyCollection(Of String)((Split(My.Resources.Liste_Ortsvorwahlen_Ausland, vbNewLine, , CompareMethod.Text)).ToArray)
         End If
     End Sub
 
