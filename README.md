@@ -13,7 +13,7 @@ Fritz!Box Telefon-dingsbums
 
 Alle weiteren Komponenten (.NET Framework, VSTO, PIA), die das Addin benötigen, hängen von der jeweiligen Office Version ab. Die Installation lädt die Kompo-nenten automatisch runter und versucht sie zu installieren. Wenn es Probleme damit gibt, dann Installieren Sie die Komponenten per Hand vor der Installation des Addins.
 
-1.2	Systemvoraussetzungen für Outlook 365, Outlook 2013, Outlook 2010, Outlook 2007
+1.2	Systemvoraussetzungen für Outlook 365, Outlook 2016, Outlook 2013, Outlook 2010, Outlook 2007
 
 - Microsoft Outlook 365 oder Outlook 2013 oder Outlook 2010 oder Outlook 2007
 - Microsoft .NET Framework 4.0 Client Profile: http://www.microsoft.com/de-de/download/details.aspx?id=24872 
@@ -21,7 +21,8 @@ Alle weiteren Komponenten (.NET Framework, VSTO, PIA), die das Addin benötigen,
 
 Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
 
-- Windows 8.1 x64 & Office 2010 x64, Windows 8.1 x64 & Office 2013 x64
+- Windows 10 x64 & Office 2010 x64, Windows 10 x64 & Office 2016 x32
+- Windows 8.1 x64 & Office 2010 x86, Windows 8.1 x64 & Office 2013 x64
 - Windows 7 x64 & Office 2010 x64, Windows 7 x86 & Office 2010 x86
 - Windows XP SP3 (Entwicklungsrechner)
 - Outlook 365 (kein direkter Support möglich)
