@@ -5,12 +5,6 @@ Imports System.IO
 Imports System.Collections.ObjectModel
 
 Public Class Helfer
-    Public Enum Vorwahllisten
-        Liste_Landesvorwahlen = 0
-        Liste_Ortsvorwahlen_Ausland = 1
-        Liste_Ortsvorwahlen_Deutschland = 2
-    End Enum
-
     Private C_XML As XML
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
@@ -757,19 +751,6 @@ Public Class Helfer
     ''' <returns>True, wenn gleich, False wenn nicht gleich.</returns>
     Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean
         Return nurZiffern(TelNr1).Equals(nurZiffern(TelNr2))
-    End Function
-
-    Public Function VorwahlListe(ByVal VList As Vorwahllisten) As String
-        Select Case VList
-            Case Vorwahllisten.Liste_Landesvorwahlen
-                VorwahlListe = My.Resources.Liste_Landesvorwahlen
-            Case Vorwahllisten.Liste_Ortsvorwahlen_Ausland
-                VorwahlListe = My.Resources.Liste_Ortsvorwahlen_Ausland
-            Case Vorwahllisten.Liste_Ortsvorwahlen_Deutschland
-                VorwahlListe = My.Resources.Liste_Ortsvorwahlen_Deutschland
-            Case Else
-                VorwahlListe = DataProvider.P_Def_ErrorMinusOne_String
-        End Select
     End Function
 #End Region
 
