@@ -2517,10 +2517,45 @@ End Class
 ''' Klasse für den Upload von Kontakten
 ''' </summary>
 Public Class FritzBoxJSONUploadResult
-    Public Property tomark As Tomark
-    Public Property validate As String
-    Public Property result As String
-    Public Property ok As Boolean
+    Private ntomark As Tomark
+    Public Property tomark() As Tomark
+        Get
+            Return ntomark
+        End Get
+        Set(ByVal value As Tomark)
+            ntomark = value
+        End Set
+    End Property
+
+    Private svalidate As String
+    Public Property validate() As String
+        Get
+            Return svalidate
+        End Get
+        Set(ByVal value As String)
+            svalidate = value
+        End Set
+    End Property
+
+    Private sresult As String
+    Public Property result() As String
+        Get
+            Return sresult
+        End Get
+        Set(ByVal value As String)
+            sresult = value
+        End Set
+    End Property
+
+    Private bok As Boolean
+    Public Property ok() As Boolean
+        Get
+            Return bok
+        End Get
+        Set(ByVal value As Boolean)
+            bok = value
+        End Set
+    End Property
 End Class
 
 Public Class JSON
