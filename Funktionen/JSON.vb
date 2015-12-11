@@ -1545,7 +1545,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP0Nr6 As String
     Public Property VOIP0Nr6() As String
         Get
-            Return sVOIP0Nr5
+            Return sVOIP0Nr6
         End Get
         Set(ByVal value As String)
             sVOIP0Nr6 = value
@@ -1645,7 +1645,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP1Nr6 As String
     Public Property VOIP1Nr6() As String
         Get
-            Return sVOIP1Nr5
+            Return sVOIP1Nr6
         End Get
         Set(ByVal value As String)
             sVOIP1Nr6 = value
@@ -1745,7 +1745,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP2Nr6 As String
     Public Property VOIP2Nr6() As String
         Get
-            Return sVOIP2Nr5
+            Return sVOIP2Nr6
         End Get
         Set(ByVal value As String)
             sVOIP2Nr6 = value
@@ -1835,7 +1835,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP3Nr5 As String
     Public Property VOIP3Nr5() As String
         Get
-            Return sVOIP3Nr5
+            Return sVOIP3Nr6
         End Get
         Set(ByVal value As String)
             sVOIP3Nr5 = value
@@ -1845,7 +1845,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP3Nr6 As String
     Public Property VOIP3Nr6() As String
         Get
-            Return sVOIP3Nr5
+            Return sVOIP3Nr6
         End Get
         Set(ByVal value As String)
             sVOIP3Nr6 = value
@@ -1945,7 +1945,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP4Nr6 As String
     Public Property VOIP4Nr6() As String
         Get
-            Return sVOIP4Nr5
+            Return sVOIP4Nr6
         End Get
         Set(ByVal value As String)
             sVOIP4Nr6 = value
@@ -2045,7 +2045,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP5Nr6 As String
     Public Property VOIP5Nr6() As String
         Get
-            Return sVOIP5Nr5
+            Return sVOIP5Nr6
         End Get
         Set(ByVal value As String)
             sVOIP5Nr6 = value
@@ -2145,7 +2145,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP6Nr6 As String
     Public Property VOIP6Nr6() As String
         Get
-            Return sVOIP6Nr5
+            Return sVOIP6Nr6
         End Get
         Set(ByVal value As String)
             sVOIP6Nr6 = value
@@ -2245,7 +2245,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP7Nr6 As String
     Public Property VOIP7Nr6() As String
         Get
-            Return sVOIP7Nr5
+            Return sVOIP7Nr6
         End Get
         Set(ByVal value As String)
             sVOIP7Nr6 = value
@@ -2345,7 +2345,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP8Nr6 As String
     Public Property VOIP8Nr6() As String
         Get
-            Return sVOIP8Nr5
+            Return sVOIP8Nr6
         End Get
         Set(ByVal value As String)
             sVOIP8Nr6 = value
@@ -2445,7 +2445,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP9Nr6 As String
     Public Property VOIP9Nr6() As String
         Get
-            Return sVOIP9Nr5
+            Return sVOIP9Nr6
         End Get
         Set(ByVal value As String)
             sVOIP9Nr6 = value
