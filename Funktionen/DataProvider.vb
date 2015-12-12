@@ -1603,50 +1603,55 @@ Public Class DataProvider
     ''' <returns>String-Array</returns>
     Public Shared ReadOnly Property P_Def_UserProperties() As ReadOnlyCollection(Of String)
         Get
-            Dim tmp() As String = {"FBDB-AssistantTelephoneNumber",
-                                   "FBDB-BusinessTelephoneNumber",
-                                   "FBDB-Business2TelephoneNumber",
-                                   "FBDB-CallbackTelephoneNumber",
-                                   "FBDB-CarTelephoneNumber",
-                                   "FBDB-CompanyMainTelephoneNumber",
-                                   "FBDB-HomeTelephoneNumber",
-                                   "FBDB-Home2TelephoneNumber",
-                                   "FBDB-ISDNNumber",
-                                   "FBDB-MobileTelephoneNumber",
-                                   "FBDB-OtherTelephoneNumber",
-                                   "FBDB-PagerNumber",
-                                   "FBDB-PrimaryTelephoneNumber",
-                                   "FBDB-RadioTelephoneNumber",
-                                   "FBDB-BusinessFaxNumber",
-                                   "FBDB-HomeFaxNumber",
-                                   "FBDB-OtherFaxNumber",
-                                   "FBDB-Telex",
-                                   "FBDB-TTYTDDTelephoneNumber"}
+            Dim tmp As New List(Of String)
+
+            tmp.Add("FBDB-AssistantTelephoneNumber")
+            tmp.Add("FBDB-BusinessTelephoneNumber")
+            tmp.Add("FBDB-Business2TelephoneNumber")
+            tmp.Add("FBDB-CallbackTelephoneNumber")
+            tmp.Add("FBDB-CarTelephoneNumber")
+            tmp.Add("FBDB-CompanyMainTelephoneNumber")
+            tmp.Add("FBDB-HomeTelephoneNumber")
+            tmp.Add("FBDB-Home2TelephoneNumber")
+            tmp.Add("FBDB-ISDNNumber")
+            tmp.Add("FBDB-MobileTelephoneNumber")
+            tmp.Add("FBDB-OtherTelephoneNumber")
+            tmp.Add("FBDB-PagerNumber")
+            tmp.Add("FBDB-PrimaryTelephoneNumber")
+            tmp.Add("FBDB-RadioTelephoneNumber")
+            tmp.Add("FBDB-BusinessFaxNumber")
+            tmp.Add("FBDB-HomeFaxNumber")
+            tmp.Add("FBDB-OtherFaxNumber")
+            tmp.Add("FBDB-Telex")
+            tmp.Add("FBDB-TTYTDDTelephoneNumber")
+
             Return New ReadOnlyCollection(Of String)(tmp)
         End Get
     End Property
 
     Public Shared ReadOnly Property P_Def_olTelNrTypen() As ReadOnlyCollection(Of String)
         Get
-            Dim tmp() As String = {"Assistent",
-                                   "Geschäftlich",
-                                   "Geschäftlich 2",
-                                   "Rückmeldung",
-                                   "Auto",
-                                   "Firma",
-                                   "Privat",
-                                   "Privat 2",
-                                   "ISDN",
-                                   "Mobiltelefon",
-                                   "Weitere",
-                                   "Pager",
-                                   "Haupttelefon",
-                                   "Funkruf",
-                                   "Fax geschäftl.",
-                                   "Fax privat",
-                                   "Weiteres Fax",
-                                   "Telex",
-                                   "Texttelefon"}
+            Dim tmp As New List(Of String)
+
+            tmp.Add("Assistent")
+            tmp.Add("Geschäftlich")
+            tmp.Add("Geschäftlich 2")
+            tmp.Add("Rückmeldung")
+            tmp.Add("Auto")
+            tmp.Add("Firma")
+            tmp.Add("Privat")
+            tmp.Add("Privat 2")
+            tmp.Add("ISDN")
+            tmp.Add("Mobiltelefon")
+            tmp.Add("Weitere")
+            tmp.Add("Pager")
+            tmp.Add("Haupttelefon")
+            tmp.Add("Funkruf")
+            tmp.Add("Fax geschäftl.")
+            tmp.Add("Fax privat")
+            tmp.Add("Weiteres Fax")
+            tmp.Add("Telex")
+            tmp.Add("Texttelefon")
 
             Return New ReadOnlyCollection(Of String)(tmp)
         End Get
@@ -2413,10 +2418,7 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
         Get
-            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_EineNeueZeile &
-                   "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor &
-                   """ kann dieser aktiviert werden." & P_Def_EineNeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
-
+            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_EineNeueZeile & "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor & """ kann dieser aktiviert werden." & P_Def_EineNeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
         End Get
     End Property
 
@@ -2938,12 +2940,7 @@ Public Class DataProvider
     'Information
     Public Shared ReadOnly Property P_FritzBox_Info(ByVal FBTyp As String, ByVal FBFirmware As String) As String
         Get
-            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_EineNeueZeile, P_Def_EineNeueZeile,
-                     "Dein Name:", P_Def_EineNeueZeile,
-                     "Problembeschreibung:", P_Def_EineNeueZeile,
-                     "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_EineNeueZeile,
-                     P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_EineNeueZeile,
-                     "Firmware: ", FBFirmware, P_Def_EineNeueZeile)
+            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_ZweiNeueZeilen, "Dein Name:", P_Def_EineNeueZeile, "Problembeschreibung:", P_Def_EineNeueZeile, "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_EineNeueZeile, P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_EineNeueZeile, "Firmware: ", FBFirmware, P_Def_EineNeueZeile)
         End Get
     End Property
 

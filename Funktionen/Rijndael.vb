@@ -208,9 +208,14 @@ Public Class Rijndael
     Public ReadOnly Property GetSalt As String
         Get
             Dim tokenData(16 - 1) As Byte
+#If OVer = 11 Then
+            Dim rng As RandomNumberGenerator = New RNGCryptoServiceProvider
+            rng.GetNonZeroBytes(tokenData)
+#Else
             Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
                 rng.GetNonZeroBytes(tokenData)
             End Using
+#End If
             Return Convert.ToBase64String(tokenData)
         End Get
     End Property

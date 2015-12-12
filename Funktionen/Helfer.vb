@@ -982,10 +982,7 @@ Public Class Helfer
     ''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
     ''' <returns>Das bereinigte String-Array</returns>
     ''' <remarks></remarks>
-    Public Function ClearStringArray(ByVal ArraytoClear As String(),
-                                     ByVal ClearDouble As Boolean,
-                                     ByVal ClearEmpty As Boolean,
-                                     ByVal ClearMinusOne As Boolean) As String()
+    Public Function ClearStringArray(ByVal ArraytoClear As String(), ByVal ClearDouble As Boolean, ByVal ClearEmpty As Boolean, ByVal ClearMinusOne As Boolean) As String()
         ' Doppelte entfernen
         If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
         ' Leere entfernen
