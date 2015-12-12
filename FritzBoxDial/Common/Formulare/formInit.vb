@@ -18,7 +18,7 @@ Friend Class formInit
     Private C_Phoner As PhonerInterface
     Private C_Config As formCfg
     Private F_AnrListImport As formImportAnrList
-    Private C_PopUp As Popup
+    Private F_PopUp As Popup
     Private C_XML As XML
     ' Strings
     Private SID As String
@@ -29,12 +29,12 @@ Friend Class formInit
     ' Boolean
     Private ReStartError As Boolean
 
-    Public Sub New(ByRef GUIKlasse As GraphicalUserInterface, _
-                   ByRef KFKlasse As KontaktFunktionen, _
-                   ByRef HFKlasse As Helfer, _
-                   ByRef DPKlasse As DataProvider, _
-                   ByRef AnrMonKlasse As AnrufMonitor, _
-                   ByRef XMLKlasse As XML, _
+    Public Sub New(ByRef GUIKlasse As GraphicalUserInterface,
+                   ByRef KFKlasse As KontaktFunktionen,
+                   ByRef HFKlasse As Helfer,
+                   ByRef DPKlasse As DataProvider,
+                   ByRef AnrMonKlasse As AnrufMonitor,
+                   ByRef XMLKlasse As XML,
                    ByRef FritzBoxKlasse As FritzBox)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
@@ -77,19 +77,19 @@ Friend Class formInit
             If C_FBox Is Nothing Then C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML, C_FBoxUPnP)
 
             ' Klasse für das GraphicalUserInterface (GUI) generieren
-            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, C_PopUp, C_XML)
+            C_GUI = New GraphicalUserInterface(C_HF, C_DP, C_RWS, C_KF, F_PopUp, C_XML)
 
             ' Klasse für den AnrufMonitor generieren
-            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, C_PopUp, C_XML)
-
-            ' Klasse für das GraphicalUserInterface (GUI) generieren
-            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, C_PopUp, C_XML)
+            C_AnrMon = New AnrufMonitor(C_DP, C_RWS, C_HF, C_KF, C_GUI, C_OlI, F_PopUp, C_XML)
 
             ' Klasse für den Wählclient generieren
             C_WählClient = New Wählclient(C_DP, C_HF, C_KF, C_GUI, C_OlI, C_FBox, C_AnrMon, C_Phoner, C_XML)
 
             ' Klasse für das Popup-Fenster generieren
-            C_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF, C_WählClient)
+            F_PopUp = New Popup(C_DP, C_HF, C_OlI, C_KF, C_WählClient)
+
+            ' Klasse für das Einstellungsformular generieren
+            C_Config = New formCfg(C_GUI, C_DP, C_HF, C_Crypt, C_AnrMon, C_FBox, C_OlI, C_KF, C_Phoner, F_PopUp, C_XML)
 
             ' Klasse für die Auswertung der Anrufliste generieren
             F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
@@ -100,14 +100,14 @@ Friend Class formInit
                 .P_OlInterface = C_OlI
                 .P_CallClient = C_WählClient
                 .P_FritzBox = C_FBox
-                .P_PopUp = C_PopUp
+                .P_PopUp = F_PopUp
                 .P_Config = C_Config
                 .P_AnrList = F_AnrListImport
             End With
 
             ' Verschiedene Funktionen an den AnrufMonitor-Klasse übergeben
             With C_AnrMon
-                .P_PopUp = C_PopUp
+                .P_PopUp = F_PopUp
             End With
 
             If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then F_AnrListImport.StartAuswertung(False)
