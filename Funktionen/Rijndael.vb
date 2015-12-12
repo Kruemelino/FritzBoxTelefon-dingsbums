@@ -6,10 +6,8 @@ Imports System.Management
 ''' <remarks>http://icodesnippet.com/snippet/vbnet/computing-hash-values-vbnet-code-snippets</remarks>
 Public Class Rijndael
 
-    Private C_DP As DataProvider
+    Public Sub New()
 
-    Public Sub New(ByVal DataProviderKlasse As DataProvider)
-        C_DP = DataProviderKlasse
     End Sub
 
     Public Enum HashType
@@ -207,16 +205,15 @@ Public Class Rijndael
 
     End Function
 
-    Public Function GetSalt() As String
-        Dim rng As RandomNumberGenerator = New RNGCryptoServiceProvider()
-        Dim tokenData(16 - 1) As Byte
-
-        rng.GetNonZeroBytes(tokenData)
-        'Fehler in Office 2003
-        'rng.Dispose()
-
-        Return Convert.ToBase64String(tokenData)
-    End Function
+    Public ReadOnly Property GetSalt As String
+        Get
+            Dim tokenData(16 - 1) As Byte
+            Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
+                rng.GetNonZeroBytes(tokenData)
+            End Using
+            Return Convert.ToBase64String(tokenData)
+        End Get
+    End Property
 
     Public Function getMd5Hash(ByVal input As String, ByVal Enkodierung As Encoding, ByVal CodePointFB As Boolean) As String 'Unicode für Fritz!Box
 

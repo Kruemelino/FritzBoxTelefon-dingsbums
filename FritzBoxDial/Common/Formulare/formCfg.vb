@@ -355,7 +355,7 @@ Public Class formCfg
 
             TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
 
-            TelNrString = C_hf.ClearStringArray(TelNrString)
+            TelNrString = C_hf.ClearStringArray(TelNrString, True, True, True)
 
             Me.CLBTelNr.Items.Clear()
 

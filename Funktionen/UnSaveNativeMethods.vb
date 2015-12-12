@@ -2,17 +2,53 @@
 Imports System.Runtime.InteropServices
 
 Public Structure RECT
-    Dim left As Long
-    Dim top As Long
-    Dim right As Long
-    Dim bottom As Long
+    Private P_left As Long
+    Private P_top As Long
+    Private P_right As Long
+    Private P_bottom As Long
+
+    Public Property Left As Long
+        Get
+            Return P_left
+        End Get
+        Set(value As Long)
+            P_left = value
+        End Set
+    End Property
+
+    Public Property Top As Long
+        Get
+            Return P_top
+        End Get
+        Set(value As Long)
+            P_top = value
+        End Set
+    End Property
+
+    Public Property Right As Long
+        Get
+            Return P_right
+        End Get
+        Set(value As Long)
+            P_right = value
+        End Set
+    End Property
+
+    Public Property Bottom As Long
+        Get
+            Return P_bottom
+        End Get
+        Set(value As Long)
+            P_bottom = value
+        End Set
+    End Property
 End Structure
 
 ''' <summary>
 ''' The window sizing and positioning flags.
 ''' </summary>
 ''' <remarks></remarks>
-<Flags> Public Enum SetWindowPosFlags As UInteger
+<Flags> Public Enum SetWindowPosFlags As Integer
     ''' <summary>If the calling thread and the thread that owns the window are attached to different input queues, 
     ''' the system posts the request to the thread that owns the window. This prevents the calling thread from 
     ''' blocking its execution while other threads process the request.</summary>
@@ -186,19 +222,19 @@ End Enum
     Friend Shared Function ReleaseCapture() As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
-    ''' <summary>
-    ''' Allows an application to check if a connection to the Internet can be established.
-    ''' </summary>
-    ''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
-    ''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
-    ''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
-    ''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
-    ''' <param name="dwReserved">This parameter is reserved and must be 0</param>
-    ''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx</remarks>
-    <DllImport("wininet.dll", EntryPoint:="InternetCheckConnection", SetLastError:=True, CharSet:=CharSet.Unicode)> _
-    Friend Shared Function InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As <MarshalAs(UnmanagedType.Bool)> Boolean
-    End Function
+    '''' <summary>
+    '''' Allows an application to check if a connection to the Internet can be established.
+    '''' </summary>
+    '''' <param name="lpszUrl">Pointer to a null-terminated string that specifies the URL to use to check the connection. This value can be NULL.</param>
+    '''' <param name="dwFlags">FLAG_ICC_FORCE_CONNECTION is the only flag that is currently available. If this flag is set, it forces a connection. A sockets connection is attempted in the following order:
+    '''' If lpszUrl is non-NULL, the host value is extracted from it and used to ping that specific host.
+    '''' If lpszUrl is NULL and there is an entry in the internal server database for the nearest server, the host value is extracted from the entry and used to ping that server. </param>
+    '''' <param name="dwReserved">This parameter is reserved and must be 0</param>
+    '''' <returns>Returns TRUE if a connection is made successfully, or FALSE otherwise. Use GetLastError to retrieve the error code. ERROR_NOT_CONNECTED is returned by GetLastError if a connection cannot be made or if the sockets database is unconditionally offline.</returns>
+    '''' <remarks>http://msdn.microsoft.com/en-us/library/aa384346(VS.85).aspx</remarks>
+    '<DllImport("wininet.dll", EntryPoint:="InternetCheckConnection", SetLastError:=True, CharSet:=CharSet.Unicode)> _
+    'Friend Shared Function InternetCheckConnection(ByVal lpszUrl As String, ByVal dwFlags As Integer, ByVal dwReserved As Integer) As <MarshalAs(UnmanagedType.Bool)> Boolean
+    'End Function
 
 End Class
 

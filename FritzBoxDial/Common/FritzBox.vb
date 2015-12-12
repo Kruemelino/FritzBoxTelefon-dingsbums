@@ -1683,9 +1683,9 @@ Public Class FritzBox
                 If P_SpeichereDaten Then C_XML.Write(C_DP.XMLDoc, xPathTeile, Mobil, "ID", DataProvider.P_Def_MobilDialPort)
             End If
 
-            SIP = C_hf.ClearStringArray(SIP)
-            MSN = C_hf.ClearStringArray(MSN)
-            FAX = C_hf.ClearStringArray(FAX)
+            SIP = C_hf.ClearStringArray(SIP, True, True, True)
+            MSN = C_hf.ClearStringArray(MSN, True, True, True)
+            FAX = C_hf.ClearStringArray(FAX, True, True, True)
 
             allin = AlleNummern(MSN, SIP, TAM, FAX, POTS, Mobil)
 
@@ -1710,7 +1710,7 @@ Public Class FritzBox
                             Exit For
                         End If
                     Next
-                    tmparray = C_hf.ClearStringArray(tmparray)
+                    tmparray = C_hf.ClearStringArray(tmparray, True, True, True)
                     If tmparray.Length = 0 Then tmparray = MSN
 
                     TelNr = String.Join(";", tmparray)
@@ -1750,7 +1750,7 @@ Public Class FritzBox
                         For l As Integer = 1 To tmpstrUser.Length - 1
                             tmpstrUser(l) = Strings.Left(tmpstrUser(l), InStr(tmpstrUser(l), "'", CompareMethod.Text) - 1)
                         Next
-                        For Each Nr As String In C_hf.ClearStringArray(tmpstrUser)
+                        For Each Nr As String In C_hf.ClearStringArray(tmpstrUser, True, True, True)
                             TelNr = TelNr & ";" & .EigeneVorwahlenEntfernen(Nr)
                         Next
                         TelNr = Mid(TelNr, 2)
@@ -2022,7 +2022,7 @@ Public Class FritzBox
                 tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.Port1Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "1") : j += 1
                 tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.Port2Name = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "2")
 
-                For Each idx In C_hf.ClearStringArray(tmpStrArr, False)
+                For Each idx In C_hf.ClearStringArray(tmpStrArr, False, True, True)
                     For j = 0 To 9
                         .Add(P_Query_FB_MSN_List(idx, j))
                     Next
@@ -2041,7 +2041,7 @@ Public Class FritzBox
                 tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP8Enabled = "1", "8", DataProvider.P_Def_LeerString) : j += 1
                 tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelNr1.VOIP9Enabled = "1", "9", DataProvider.P_Def_LeerString)
 
-                For Each idx In C_hf.ClearStringArray(tmpStrArr, False)
+                For Each idx In C_hf.ClearStringArray(tmpStrArr, False, True, True)
                     For j = 0 To 9
                         .Add(P_Query_FB_VOIP_List(idx, j))
                     Next
@@ -2064,7 +2064,7 @@ Public Class FritzBox
                         End With
                     Next
 
-                    SIP = C_hf.ClearStringArray(SIP)
+                    SIP = C_hf.ClearStringArray(SIP, True, True, True)
 
                     ' MSN Nummern
                     xPathTeile.Item(xPathTeile.Count - 1) = "MSN"
@@ -2123,7 +2123,7 @@ Public Class FritzBox
                         End If
                     End With
 
-                    MSN = C_hf.ClearStringArray(MSN)
+                    MSN = C_hf.ClearStringArray(MSN, True, True, True)
 
                     For i = LBound(MSN) To UBound(MSN)
                         If MSN(i).StartsWith("SIP") Then
@@ -2151,7 +2151,7 @@ Public Class FritzBox
                         TAM(j) = .TAM9 : j += 1
                     End With
 
-                    TAM = C_hf.ClearStringArray(TAM)
+                    TAM = C_hf.ClearStringArray(TAM, True, True, True)
 
                     For i = LBound(TAM) To UBound(TAM)
                         If TAM(i).StartsWith("SIP") Then
@@ -2180,7 +2180,7 @@ Public Class FritzBox
                         FAX(j) = .FAX9 : j += 1
                     End With
 
-                    FAX = C_hf.ClearStringArray(FAX)
+                    FAX = C_hf.ClearStringArray(FAX, True, True, True)
 
                     For i = LBound(FAX) To UBound(FAX)
                         If FAX(i).StartsWith("SIP") Then
@@ -2242,7 +2242,7 @@ Public Class FritzBox
                         tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name7 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "7") : j += 1
                         tmpStrArr(j) = C_hf.IIf(FritzBoxJSONTelefone1.S0Name8 = DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, "8")
 
-                        For Each idx In C_hf.ClearStringArray(tmpStrArr)
+                        For Each idx In C_hf.ClearStringArray(tmpStrArr, True, True, True)
                             TelQuery.Add(P_Query_FB_S0_TelNr(idx)) ' S0 Nr
                             TelQuery.Add(P_Query_FB_S0_Type(idx)) ' S0 Typ
                         Next
@@ -2322,7 +2322,7 @@ Public Class FritzBox
                             End Select
                         End With
 
-                        tmpStrArr = C_hf.ClearStringArray(tmpStrArr)
+                        tmpStrArr = C_hf.ClearStringArray(tmpStrArr, True, True, True)
 
                         If tmpStrArr.Length = 0 Then tmpStrArr = MSN
 
@@ -2806,7 +2806,7 @@ Public Class FritzBox
                                     Strings.Join(FAX, ";") & ";" & _
                                     POTS & ";" & Mobil, ";", , CompareMethod.Text)
 
-        tmp = C_hf.ClearStringArray(tmp)
+        tmp = C_hf.ClearStringArray(tmp, True, True, True)
         AlleNummern = Join(tmp, ";")
     End Function
 

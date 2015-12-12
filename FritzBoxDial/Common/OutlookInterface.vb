@@ -449,7 +449,7 @@ Public Class OutlookInterface
                 AppBounds = OutlookSecurity.GetWindowRect(hWnd)
                 'determine if window is fullscreen
                 screenBounds = Windows.Forms.Screen.FromHandle(CType(hWnd, IntPtr)).Bounds
-                If (AppBounds.bottom - AppBounds.top = screenBounds.Height) And (AppBounds.right - AppBounds.left = screenBounds.Width) Then
+                If (AppBounds.Bottom - AppBounds.Top = screenBounds.Height) And (AppBounds.Right - AppBounds.Left = screenBounds.Width) Then
                     VollBildAnwendungAktiv = True
                     C_hf.LogFile("Eine aktive Vollbildanwendung wurde detektiert.")
                 End If

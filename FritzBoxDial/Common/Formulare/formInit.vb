@@ -49,7 +49,7 @@ Friend Class formInit
         C_DP = New DataProvider(C_XML)
 
         ' Klasse für Verschlüsselung erstellen
-        C_Crypt = New Rijndael(C_DP)
+        C_Crypt = New Rijndael()
 
         ' Klasse für Helferfunktionen erstellen
         C_HF = New Helfer(C_DP, C_Crypt, C_XML)
@@ -277,7 +277,7 @@ Friend Class formInit
             .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"")]")
 
             Dim TelNrString() As String = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
-            TelNrString = C_HF.ClearStringArray(TelNrString)
+            TelNrString = C_HF.ClearStringArray(TelNrString, True, True, True)
 
             Me.CLBTelNr.Items.Clear()
 

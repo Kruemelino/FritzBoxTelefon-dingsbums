@@ -5,7 +5,7 @@ Imports System.Collections.ObjectModel
 
 Public Class DataProvider
 
-    Public XMLDoc As XmlDocument
+    Private P_xMLDoc As XmlDocument
     Private C_XML As XML
     Private WithEvents tSpeichern As Timer
 
@@ -736,7 +736,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt an, ob verpasste Anrufe mit Hilfe des Anrufmonitors angezeigt werden sollen.
     ''' </summary>
-    Public _CBAnrListeShowAnrMon As Boolean
+    Private _CBAnrListeShowAnrMon As Boolean
     Public Property P_CBAnrListeShowAnrMon As Boolean
         Get
             Return _CBAnrListeShowAnrMon
@@ -1603,24 +1603,24 @@ Public Class DataProvider
     ''' <returns>String-Array</returns>
     Public Shared ReadOnly Property P_Def_UserProperties() As ReadOnlyCollection(Of String)
         Get
-            Dim tmp() As String = {"FBDB-AssistantTelephoneNumber", _
-                                   "FBDB-BusinessTelephoneNumber", _
-                                   "FBDB-Business2TelephoneNumber", _
-                                   "FBDB-CallbackTelephoneNumber", _
-                                   "FBDB-CarTelephoneNumber", _
-                                   "FBDB-CompanyMainTelephoneNumber", _
-                                   "FBDB-HomeTelephoneNumber", _
-                                   "FBDB-Home2TelephoneNumber", _
-                                   "FBDB-ISDNNumber", _
-                                   "FBDB-MobileTelephoneNumber", _
-                                   "FBDB-OtherTelephoneNumber", _
-                                   "FBDB-PagerNumber", _
-                                   "FBDB-PrimaryTelephoneNumber", _
-                                   "FBDB-RadioTelephoneNumber", _
-                                   "FBDB-BusinessFaxNumber", _
-                                   "FBDB-HomeFaxNumber", _
-                                   "FBDB-OtherFaxNumber", _
-                                   "FBDB-Telex", _
+            Dim tmp() As String = {"FBDB-AssistantTelephoneNumber",
+                                   "FBDB-BusinessTelephoneNumber",
+                                   "FBDB-Business2TelephoneNumber",
+                                   "FBDB-CallbackTelephoneNumber",
+                                   "FBDB-CarTelephoneNumber",
+                                   "FBDB-CompanyMainTelephoneNumber",
+                                   "FBDB-HomeTelephoneNumber",
+                                   "FBDB-Home2TelephoneNumber",
+                                   "FBDB-ISDNNumber",
+                                   "FBDB-MobileTelephoneNumber",
+                                   "FBDB-OtherTelephoneNumber",
+                                   "FBDB-PagerNumber",
+                                   "FBDB-PrimaryTelephoneNumber",
+                                   "FBDB-RadioTelephoneNumber",
+                                   "FBDB-BusinessFaxNumber",
+                                   "FBDB-HomeFaxNumber",
+                                   "FBDB-OtherFaxNumber",
+                                   "FBDB-Telex",
                                    "FBDB-TTYTDDTelephoneNumber"}
             Return New ReadOnlyCollection(Of String)(tmp)
         End Get
@@ -1628,24 +1628,24 @@ Public Class DataProvider
 
     Public Shared ReadOnly Property P_Def_olTelNrTypen() As ReadOnlyCollection(Of String)
         Get
-            Dim tmp() As String = {"Assistent", _
-                                   "Geschäftlich", _
-                                   "Geschäftlich 2", _
-                                   "Rückmeldung", _
-                                   "Auto", _
-                                   "Firma", _
-                                   "Privat", _
-                                   "Privat 2", _
-                                   "ISDN", _
-                                   "Mobiltelefon", _
-                                   "Weitere", _
-                                   "Pager", _
-                                   "Haupttelefon", _
-                                   "Funkruf", _
-                                   "Fax geschäftl.", _
-                                   "Fax privat", _
-                                   "Weiteres Fax", _
-                                   "Telex", _
+            Dim tmp() As String = {"Assistent",
+                                   "Geschäftlich",
+                                   "Geschäftlich 2",
+                                   "Rückmeldung",
+                                   "Auto",
+                                   "Firma",
+                                   "Privat",
+                                   "Privat 2",
+                                   "ISDN",
+                                   "Mobiltelefon",
+                                   "Weitere",
+                                   "Pager",
+                                   "Haupttelefon",
+                                   "Funkruf",
+                                   "Fax geschäftl.",
+                                   "Fax privat",
+                                   "Weiteres Fax",
+                                   "Telex",
                                    "Texttelefon"}
 
             Return New ReadOnlyCollection(Of String)(tmp)
@@ -2266,6 +2266,15 @@ Public Class DataProvider
 #End Region
 
 #Region "Organisation Properties"
+    Public Property XMLDoc As XmlDocument
+        Get
+            Return P_xMLDoc
+        End Get
+        Set(value As XmlDocument)
+            P_xMLDoc = value
+        End Set
+    End Property
+
     Private ReadOnly Property P_Def_Options() As String
         Get
             Return "Optionen"
@@ -2404,8 +2413,8 @@ Public Class DataProvider
     ''' </summary>
     Public Shared ReadOnly Property P_AnrMon_MsgBox_AnrMonStart1() As String
         Get
-            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_EineNeueZeile & _
-                   "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor & _
+            Return "Der Anrufmonitor kann nicht gestartet werden, da die Fritz!Box die Verbindung verweigert." & P_Def_EineNeueZeile &
+                   "Dies ist meist der Fall, wenn der Fritz!Box Callmonitor deaktiviert ist. Mit dem Telefoncode """ & P_Def_TelCodeActivateFritzBoxCallMonitor &
                    """ kann dieser aktiviert werden." & P_Def_EineNeueZeile & "Soll versucht werden, den Fritz!Box Callmonitor über die Direktwahl zu aktivieren? (Danach kann der Anrufmonitor manuell aktiviert werden.)"
 
         End Get
@@ -2929,11 +2938,11 @@ Public Class DataProvider
     'Information
     Public Shared ReadOnly Property P_FritzBox_Info(ByVal FBTyp As String, ByVal FBFirmware As String) As String
         Get
-            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_EineNeueZeile, P_Def_EineNeueZeile, _
-                     "Dein Name:", P_Def_EineNeueZeile, _
-                     "Problembeschreibung:", P_Def_EineNeueZeile, _
-                     "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_EineNeueZeile, _
-                     P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_EineNeueZeile, _
+            Return String.Concat("Ergänze bitte folgende Angaben:", P_Def_EineNeueZeile, P_Def_EineNeueZeile,
+                     "Dein Name:", P_Def_EineNeueZeile,
+                     "Problembeschreibung:", P_Def_EineNeueZeile,
+                     "Datum & Uhrzeit: ", System.DateTime.Now, P_Def_EineNeueZeile,
+                     P_Def_FritzBoxName & "-Typ: ", FBTyp, P_Def_EineNeueZeile,
                      "Firmware: ", FBFirmware, P_Def_EineNeueZeile)
         End Get
     End Property
@@ -3535,6 +3544,7 @@ Public Class DataProvider
             Return "Der Addressbuch der " & P_Def_FritzBoxName & " kann nicht geöffnet werden."
         End Get
     End Property
+
 #End Region
 
     Public Sub New(ByVal XMLKlasse As XML)

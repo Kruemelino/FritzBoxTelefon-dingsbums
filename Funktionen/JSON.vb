@@ -1,4 +1,5 @@
-﻿Imports Newtonsoft.Json
+﻿Imports FritzBoxDial
+Imports Newtonsoft.Json
 
 Public Class TAMEntry
     Private sActive As String
@@ -349,10 +350,10 @@ Public Class DECTEntry
 End Class
 
 Public Class FritzBoxJSONTelefone1
-    Public TAM() As TAMEntry
-    Public DECT() As DECTEntry
-    Public FON() As MSNEntry
-    Public VOIP() As VOIPEntry
+    Private _tAM() As TAMEntry
+    Private _dECT() As DECTEntry
+    Private _fON() As MSNEntry
+    Private _vOIP() As VOIPEntry
 
     Private sS0Name1 As String
     Public Property S0Name1() As String
@@ -431,6 +432,42 @@ Public Class FritzBoxJSONTelefone1
         End Get
         Set(ByVal value As String)
             sS0Name8 = value
+        End Set
+    End Property
+
+    Public Property TAM As TAMEntry()
+        Get
+            Return _tAM
+        End Get
+        Set(value As TAMEntry())
+            _tAM = value
+        End Set
+    End Property
+
+    Public Property DECT As DECTEntry()
+        Get
+            Return _dECT
+        End Get
+        Set(value As DECTEntry())
+            _dECT = value
+        End Set
+    End Property
+
+    Public Property FON As MSNEntry()
+        Get
+            Return _fON
+        End Get
+        Set(value As MSNEntry())
+            _fON = value
+        End Set
+    End Property
+
+    Public Property VOIP As VOIPEntry()
+        Get
+            Return _vOIP
+        End Get
+        Set(value As VOIPEntry())
+            _vOIP = value
         End Set
     End Property
 End Class
@@ -1835,7 +1872,7 @@ Public Class FritzBoxJSONTelNrT2
     Private sVOIP3Nr5 As String
     Public Property VOIP3Nr5() As String
         Get
-            Return sVOIP3Nr6
+            Return sVOIP3Nr5
         End Get
         Set(ByVal value As String)
             sVOIP3Nr5 = value

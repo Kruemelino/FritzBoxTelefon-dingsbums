@@ -25,7 +25,7 @@ Public Class Helfer
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <c>Textes</c> aus begonnen werden soll.</param>
     ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, Optional ByVal Reverse As Boolean = False) As String
+    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByVal Reverse As Boolean) As String
         Dim pos(1) As Integer
 
         If Not Reverse Then
@@ -41,6 +41,18 @@ Public Class Helfer
         Else
             StringEntnehmen = DataProvider.P_Def_ErrorMinusOne_String
         End If
+    End Function
+
+    ''' <summary>
+    ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
+    ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
+    ''' </summary>
+    ''' <param name="Text">String aus dem der Sub-String entnommen werden soll.</param>
+    ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
+    ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
+    ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
+    Public Overloads Function StringEntnehmen(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String) As String
+        Return StringEntnehmen(Text, StringDavor, StringDanach, False)
     End Function
 
     ''' <summary>
@@ -79,14 +91,19 @@ Public Class Helfer
     End Function
 #End Region
 
-    Public Sub NAR(ByVal o As Object)
-        If o IsNot Nothing Then
+    ''' <summary>
+    ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
+    ''' </summary>
+    ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
+    Public Sub NAR(ByVal COMObject As Object)
+
+        If COMObject IsNot Nothing Then
             Try
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(o)
-            Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, "NAR")
+                Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)
+            Catch ex As ArgumentException
+                MsgBox("COM-Object ist kein gültiges COM-Objekt: " & ex.Message, MsgBoxStyle.Critical, "NAR")
             Finally
-                o = Nothing
+                COMObject = Nothing
             End Try
         End If
     End Sub
@@ -885,7 +902,7 @@ Public Class Helfer
     ''' </summary>
     ''' <param name="Interval">Das Intervall des Timers.</param>
     ''' <returns>Den gerade erstellten Timer.</returns>
-    Public Function SetTimer(ByRef Interval As Double) As System.Timers.Timer
+    Public Function SetTimer(ByVal Interval As Double) As System.Timers.Timer
         Dim aTimer As New System.Timers.Timer
 
         With aTimer
@@ -916,7 +933,7 @@ Public Class Helfer
 #End Region
 
 #Region "Threads"
-    Sub ThreadSleep(ByRef Dauer As Integer)
+    Sub ThreadSleep(ByVal Dauer As Integer)
         Thread.Sleep(Dauer)
     End Sub
 #End Region
@@ -965,10 +982,10 @@ Public Class Helfer
     ''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
     ''' <returns>Das bereinigte String-Array</returns>
     ''' <remarks></remarks>
-    Public Function ClearStringArray(ByVal ArraytoClear As String(), _
-                                     Optional ByVal ClearDouble As Boolean = True, _
-                                     Optional ByVal ClearEmpty As Boolean = True, _
-                                     Optional ByVal ClearMinusOne As Boolean = True) As String()
+    Public Function ClearStringArray(ByVal ArraytoClear As String(),
+                                     ByVal ClearDouble As Boolean,
+                                     ByVal ClearEmpty As Boolean,
+                                     ByVal ClearMinusOne As Boolean) As String()
         ' Doppelte entfernen
         If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
         ' Leere entfernen
