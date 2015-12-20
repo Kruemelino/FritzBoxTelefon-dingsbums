@@ -2193,7 +2193,7 @@ Public Class FritzBox
                         .Add(P_Query_FB_S0_List(i)) ' S0
                     Next
 
-                FritzBoxJSONTelefone1 = C_JSON.GetThirdValues(GetQuery(TelQuery))
+                FritzBoxJSONTelefone1 = C_JSON.GetSecondValues(GetQuery(TelQuery))
                 If Not FritzBoxJSONTelefone1 Is Nothing Then
                     .Clear()
 
@@ -2222,7 +2222,7 @@ Public Class FritzBox
 
                     .Add(P_Query_FB_FaxMailActive)
                     .Add(P_Query_FB_MobileName)
-                    FritzBoxJSONTelefone2 = C_JSON.GetForthValues(GetQuery(TelQuery))
+                    FritzBoxJSONTelefone2 = C_JSON.GetThirdValues(GetQuery(TelQuery))
                 End If
                     'End If
                 End If
@@ -2297,6 +2297,12 @@ Public Class FritzBox
                                     TelNr = allin
                                 Else
                                     tmpDectNr = FritzBoxJSONTelefone2.DECT4Nr
+                                End If
+                            Case 5
+                                If FritzBoxJSONTelefone2.DECT5RingOnAllMSNs = "1" Then
+                                    TelNr = allin
+                                Else
+                                    tmpDectNr = FritzBoxJSONTelefone2.DECT5Nr
                                 End If
                         End Select
 
