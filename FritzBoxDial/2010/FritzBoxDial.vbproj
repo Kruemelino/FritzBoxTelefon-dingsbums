@@ -54,7 +54,7 @@
     <DefineTrace>true</DefineTrace>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
@@ -69,8 +69,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineConstants>OVer=14</DefineConstants>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>false</DefineTrace>
     <DebugType>None</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\Setup\2010\</OutputPath>

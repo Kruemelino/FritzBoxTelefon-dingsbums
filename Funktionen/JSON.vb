@@ -1218,1304 +1218,1519 @@ Public Class FritzBoxJSONTelNrT1
     End Property
 End Class
 
-Public Class FritzBoxJSONTelNrT2
-    Private sMSN0Nr0 As String
-    Public Property MSN0Nr0() As String
-        Get
-            Return sMSN0Nr0
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr0 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr1 As String
-    Public Property MSN0Nr1() As String
-        Get
-            Return sMSN0Nr1
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr1 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr2 As String
-    Public Property MSN0Nr2() As String
-        Get
-            Return sMSN0Nr2
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr2 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr3 As String
-    Public Property MSN0Nr3() As String
-        Get
-            Return sMSN0Nr3
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr3 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr4 As String
-    Public Property MSN0Nr4() As String
-        Get
-            Return sMSN0Nr4
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr4 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr5 As String
-    Public Property MSN0Nr5() As String
-        Get
-            Return sMSN0Nr5
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr5 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr6 As String
-    Public Property MSN0Nr6() As String
-        Get
-            Return sMSN0Nr6
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr6 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr7 As String
-    Public Property MSN0Nr7() As String
-        Get
-            Return sMSN0Nr7
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr7 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr8 As String
-    Public Property MSN0Nr8() As String
-        Get
-            Return sMSN0Nr8
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr8 = value
-        End Set
-    End Property
-
-    Private sMSN0Nr9 As String
-    Public Property MSN0Nr9() As String
-        Get
-            Return sMSN0Nr9
-        End Get
-        Set(ByVal value As String)
-            sMSN0Nr9 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr As String
-    Public Property MSN1Nr0() As String
-        Get
-            Return sMSN1Nr
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr = value
-        End Set
-    End Property
-
-    Private sMSN1Nr1 As String
-    Public Property MSN1Nr1() As String
-        Get
-            Return sMSN1Nr1
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr1 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr2 As String
-    Public Property MSN1Nr2() As String
-        Get
-            Return sMSN1Nr2
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr2 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr3 As String
-    Public Property MSN1Nr3() As String
-        Get
-            Return sMSN1Nr3
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr3 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr4 As String
-    Public Property MSN1Nr4() As String
-        Get
-            Return sMSN1Nr4
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr4 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr5 As String
-    Public Property MSN1Nr5() As String
-        Get
-            Return sMSN1Nr5
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr5 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr6 As String
-    Public Property MSN1Nr6() As String
-        Get
-            Return sMSN1Nr6
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr6 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr7 As String
-    Public Property MSN1Nr7() As String
-        Get
-            Return sMSN1Nr7
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr7 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr8 As String
-    Public Property MSN1Nr8() As String
-        Get
-            Return sMSN1Nr8
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr8 = value
-        End Set
-    End Property
-
-    Private sMSN1Nr9 As String
-    Public Property MSN1Nr9() As String
-        Get
-            Return sMSN1Nr9
-        End Get
-        Set(ByVal value As String)
-            sMSN1Nr9 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr0 As String
-    Public Property MSN2Nr0() As String
-        Get
-            Return sMSN2Nr0
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr0 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr1 As String
-    Public Property MSN2Nr1() As String
-        Get
-            Return sMSN2Nr1
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr1 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr2 As String
-    Public Property MSN2Nr2() As String
-        Get
-            Return sMSN2Nr2
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr2 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr3 As String
-    Public Property MSN2Nr3() As String
-        Get
-            Return sMSN2Nr3
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr3 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr4 As String
-    Public Property MSN2Nr4() As String
-        Get
-            Return sMSN2Nr4
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr4 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr5 As String
-    Public Property MSN2Nr5() As String
-        Get
-            Return sMSN2Nr5
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr5 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr6 As String
-    Public Property MSN2Nr6() As String
-        Get
-            Return sMSN2Nr6
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr6 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr7 As String
-    Public Property MSN2Nr7() As String
-        Get
-            Return sMSN2Nr7
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr7 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr8 As String
-    Public Property MSN2Nr8() As String
-        Get
-            Return sMSN2Nr8
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr8 = value
-        End Set
-    End Property
-
-    Private sMSN2Nr9 As String
-    Public Property MSN2Nr9() As String
-        Get
-            Return sMSN2Nr9
-        End Get
-        Set(ByVal value As String)
-            sMSN2Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr0 As String
-    Public Property VOIP0Nr0() As String
-        Get
-            Return sVOIP0Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr1 As String
-    Public Property VOIP0Nr1() As String
-        Get
-            Return sVOIP0Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr2 As String
-    Public Property VOIP0Nr2() As String
-        Get
-            Return sVOIP0Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr3 As String
-    Public Property VOIP0Nr3() As String
-        Get
-            Return sVOIP0Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr4 As String
-    Public Property VOIP0Nr4() As String
-        Get
-            Return sVOIP0Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr5 As String
-    Public Property VOIP0Nr5() As String
-        Get
-            Return sVOIP0Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr6 As String
-    Public Property VOIP0Nr6() As String
-        Get
-            Return sVOIP0Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr7 As String
-    Public Property VOIP0Nr7() As String
-        Get
-            Return sVOIP0Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr8 As String
-    Public Property VOIP0Nr8() As String
-        Get
-            Return sVOIP0Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP0Nr9 As String
-    Public Property VOIP0Nr9() As String
-        Get
-            Return sVOIP0Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP0Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr0 As String
-    Public Property VOIP1Nr0() As String
-        Get
-            Return sVOIP1Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr1 As String
-    Public Property VOIP1Nr1() As String
-        Get
-            Return sVOIP1Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr2 As String
-    Public Property VOIP1Nr2() As String
-        Get
-            Return sVOIP1Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr3 As String
-    Public Property VOIP1Nr3() As String
-        Get
-            Return sVOIP1Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr4 As String
-    Public Property VOIP1Nr4() As String
-        Get
-            Return sVOIP1Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr5 As String
-    Public Property VOIP1Nr5() As String
-        Get
-            Return sVOIP1Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr6 As String
-    Public Property VOIP1Nr6() As String
-        Get
-            Return sVOIP1Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr7 As String
-    Public Property VOIP1Nr7() As String
-        Get
-            Return sVOIP1Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr8 As String
-    Public Property VOIP1Nr8() As String
-        Get
-            Return sVOIP1Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP1Nr9 As String
-    Public Property VOIP1Nr9() As String
-        Get
-            Return sVOIP1Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP1Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr0 As String
-    Public Property VOIP2Nr0() As String
-        Get
-            Return sVOIP2Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr1 As String
-    Public Property VOIP2Nr1() As String
-        Get
-            Return sVOIP2Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr2 As String
-    Public Property VOIP2Nr2() As String
-        Get
-            Return sVOIP2Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr3 As String
-    Public Property VOIP2Nr3() As String
-        Get
-            Return sVOIP2Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr4 As String
-    Public Property VOIP2Nr4() As String
-        Get
-            Return sVOIP2Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr5 As String
-    Public Property VOIP2Nr5() As String
-        Get
-            Return sVOIP2Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr6 As String
-    Public Property VOIP2Nr6() As String
-        Get
-            Return sVOIP2Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr7 As String
-    Public Property VOIP2Nr7() As String
-        Get
-            Return sVOIP2Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr8 As String
-    Public Property VOIP2Nr8() As String
-        Get
-            Return sVOIP2Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP2Nr9 As String
-    Public Property VOIP2Nr9() As String
-        Get
-            Return sVOIP2Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP2Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr0 As String
-    Public Property VOIP3Nr0() As String
-        Get
-            Return sVOIP3Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr1 As String
-    Public Property VOIP3Nr1() As String
-        Get
-            Return sVOIP3Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr2 As String
-    Public Property VOIP3Nr2() As String
-        Get
-            Return sVOIP3Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr3 As String
-    Public Property VOIP3Nr3() As String
-        Get
-            Return sVOIP3Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr4 As String
-    Public Property VOIP3Nr4() As String
-        Get
-            Return sVOIP3Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr5 As String
-    Public Property VOIP3Nr5() As String
-        Get
-            Return sVOIP3Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr6 As String
-    Public Property VOIP3Nr6() As String
-        Get
-            Return sVOIP3Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr7 As String
-    Public Property VOIP3Nr7() As String
-        Get
-            Return sVOIP3Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr8 As String
-    Public Property VOIP3Nr8() As String
-        Get
-            Return sVOIP3Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP3Nr9 As String
-    Public Property VOIP3Nr9() As String
-        Get
-            Return sVOIP3Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP3Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr0 As String
-    Public Property VOIP4Nr0() As String
-        Get
-            Return sVOIP4Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr1 As String
-    Public Property VOIP4Nr1() As String
-        Get
-            Return sVOIP4Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr2 As String
-    Public Property VOIP4Nr2() As String
-        Get
-            Return sVOIP4Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr3 As String
-    Public Property VOIP4Nr3() As String
-        Get
-            Return sVOIP4Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr4 As String
-    Public Property VOIP4Nr4() As String
-        Get
-            Return sVOIP4Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr5 As String
-    Public Property VOIP4Nr5() As String
-        Get
-            Return sVOIP4Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr6 As String
-    Public Property VOIP4Nr6() As String
-        Get
-            Return sVOIP4Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr7 As String
-    Public Property VOIP4Nr7() As String
-        Get
-            Return sVOIP4Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr8 As String
-    Public Property VOIP4Nr8() As String
-        Get
-            Return sVOIP4Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP4Nr9 As String
-    Public Property VOIP4Nr9() As String
-        Get
-            Return sVOIP4Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP4Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr0 As String
-    Public Property VOIP5Nr0() As String
-        Get
-            Return sVOIP5Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr1 As String
-    Public Property VOIP5Nr1() As String
-        Get
-            Return sVOIP5Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr2 As String
-    Public Property VOIP5Nr2() As String
-        Get
-            Return sVOIP5Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr3 As String
-    Public Property VOIP5Nr3() As String
-        Get
-            Return sVOIP5Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr4 As String
-    Public Property VOIP5Nr4() As String
-        Get
-            Return sVOIP5Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr5 As String
-    Public Property VOIP5Nr5() As String
-        Get
-            Return sVOIP5Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr6 As String
-    Public Property VOIP5Nr6() As String
-        Get
-            Return sVOIP5Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr7 As String
-    Public Property VOIP5Nr7() As String
-        Get
-            Return sVOIP5Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr8 As String
-    Public Property VOIP5Nr8() As String
-        Get
-            Return sVOIP5Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP5Nr9 As String
-    Public Property VOIP5Nr9() As String
-        Get
-            Return sVOIP5Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP5Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr0 As String
-    Public Property VOIP6Nr0() As String
-        Get
-            Return sVOIP6Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr1 As String
-    Public Property VOIP6Nr1() As String
-        Get
-            Return sVOIP6Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr2 As String
-    Public Property VOIP6Nr2() As String
-        Get
-            Return sVOIP6Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr3 As String
-    Public Property VOIP6Nr3() As String
-        Get
-            Return sVOIP6Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr4 As String
-    Public Property VOIP6Nr4() As String
-        Get
-            Return sVOIP6Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr5 As String
-    Public Property VOIP6Nr5() As String
-        Get
-            Return sVOIP6Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr6 As String
-    Public Property VOIP6Nr6() As String
-        Get
-            Return sVOIP6Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr7 As String
-    Public Property VOIP6Nr7() As String
-        Get
-            Return sVOIP6Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr8 As String
-    Public Property VOIP6Nr8() As String
-        Get
-            Return sVOIP6Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP6Nr9 As String
-    Public Property VOIP6Nr9() As String
-        Get
-            Return sVOIP6Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP6Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr0 As String
-    Public Property VOIP7Nr0() As String
-        Get
-            Return sVOIP7Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr1 As String
-    Public Property VOIP7Nr1() As String
-        Get
-            Return sVOIP7Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr2 As String
-    Public Property VOIP7Nr2() As String
-        Get
-            Return sVOIP7Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr3 As String
-    Public Property VOIP7Nr3() As String
-        Get
-            Return sVOIP7Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr4 As String
-    Public Property VOIP7Nr4() As String
-        Get
-            Return sVOIP7Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr5 As String
-    Public Property VOIP7Nr5() As String
-        Get
-            Return sVOIP7Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr6 As String
-    Public Property VOIP7Nr6() As String
-        Get
-            Return sVOIP7Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr7 As String
-    Public Property VOIP7Nr7() As String
-        Get
-            Return sVOIP7Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr8 As String
-    Public Property VOIP7Nr8() As String
-        Get
-            Return sVOIP7Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP7Nr9 As String
-    Public Property VOIP7Nr9() As String
-        Get
-            Return sVOIP7Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP7Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr0 As String
-    Public Property VOIP8Nr0() As String
-        Get
-            Return sVOIP8Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr1 As String
-    Public Property VOIP8Nr1() As String
-        Get
-            Return sVOIP8Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr2 As String
-    Public Property VOIP8Nr2() As String
-        Get
-            Return sVOIP8Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr3 As String
-    Public Property VOIP8Nr3() As String
-        Get
-            Return sVOIP8Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr4 As String
-    Public Property VOIP8Nr4() As String
-        Get
-            Return sVOIP8Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr5 As String
-    Public Property VOIP8Nr5() As String
-        Get
-            Return sVOIP8Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr6 As String
-    Public Property VOIP8Nr6() As String
-        Get
-            Return sVOIP8Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr7 As String
-    Public Property VOIP8Nr7() As String
-        Get
-            Return sVOIP8Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr8 As String
-    Public Property VOIP8Nr8() As String
-        Get
-            Return sVOIP8Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP8Nr9 As String
-    Public Property VOIP8Nr9() As String
-        Get
-            Return sVOIP8Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP8Nr9 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr0 As String
-    Public Property VOIP9Nr0() As String
-        Get
-            Return sVOIP9Nr0
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr0 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr1 As String
-    Public Property VOIP9Nr1() As String
-        Get
-            Return sVOIP9Nr1
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr1 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr2 As String
-    Public Property VOIP9Nr2() As String
-        Get
-            Return sVOIP9Nr2
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr2 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr3 As String
-    Public Property VOIP9Nr3() As String
-        Get
-            Return sVOIP9Nr3
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr3 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr4 As String
-    Public Property VOIP9Nr4() As String
-        Get
-            Return sVOIP9Nr4
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr4 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr5 As String
-    Public Property VOIP9Nr5() As String
-        Get
-            Return sVOIP9Nr5
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr5 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr6 As String
-    Public Property VOIP9Nr6() As String
-        Get
-            Return sVOIP9Nr6
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr6 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr7 As String
-    Public Property VOIP9Nr7() As String
-        Get
-            Return sVOIP9Nr7
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr7 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr8 As String
-    Public Property VOIP9Nr8() As String
-        Get
-            Return sVOIP9Nr8
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr8 = value
-        End Set
-    End Property
-
-    Private sVOIP9Nr9 As String
-    Public Property VOIP9Nr9() As String
-        Get
-            Return sVOIP9Nr9
-        End Get
-        Set(ByVal value As String)
-            sVOIP9Nr9 = value
+'Public Class FritzBoxJSONTelNrT2
+'#Region "MSN0"
+'    Private sMSN0Nr0 As String
+'    Public Property MSN0Nr0() As String
+'        Get
+'            Return sMSN0Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr1 As String
+'    Public Property MSN0Nr1() As String
+'        Get
+'            Return sMSN0Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr2 As String
+'    Public Property MSN0Nr2() As String
+'        Get
+'            Return sMSN0Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr3 As String
+'    Public Property MSN0Nr3() As String
+'        Get
+'            Return sMSN0Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr4 As String
+'    Public Property MSN0Nr4() As String
+'        Get
+'            Return sMSN0Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr5 As String
+'    Public Property MSN0Nr5() As String
+'        Get
+'            Return sMSN0Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr6 As String
+'    Public Property MSN0Nr6() As String
+'        Get
+'            Return sMSN0Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr7 As String
+'    Public Property MSN0Nr7() As String
+'        Get
+'            Return sMSN0Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr8 As String
+'    Public Property MSN0Nr8() As String
+'        Get
+'            Return sMSN0Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sMSN0Nr9 As String
+'    Public Property MSN0Nr9() As String
+'        Get
+'            Return sMSN0Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN0Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "MSN1"
+'    Private sMSN1Nr0 As String
+'    Public Property MSN1Nr0() As String
+'        Get
+'            Return sMSN1Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr1 As String
+'    Public Property MSN1Nr1() As String
+'        Get
+'            Return sMSN1Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr2 As String
+'    Public Property MSN1Nr2() As String
+'        Get
+'            Return sMSN1Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr3 As String
+'    Public Property MSN1Nr3() As String
+'        Get
+'            Return sMSN1Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr4 As String
+'    Public Property MSN1Nr4() As String
+'        Get
+'            Return sMSN1Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr5 As String
+'    Public Property MSN1Nr5() As String
+'        Get
+'            Return sMSN1Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr6 As String
+'    Public Property MSN1Nr6() As String
+'        Get
+'            Return sMSN1Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr7 As String
+'    Public Property MSN1Nr7() As String
+'        Get
+'            Return sMSN1Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr8 As String
+'    Public Property MSN1Nr8() As String
+'        Get
+'            Return sMSN1Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sMSN1Nr9 As String
+'    Public Property MSN1Nr9() As String
+'        Get
+'            Return sMSN1Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN1Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "MSN2"
+'    Private sMSN2Nr0 As String
+'    Public Property MSN2Nr0() As String
+'        Get
+'            Return sMSN2Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr1 As String
+'    Public Property MSN2Nr1() As String
+'        Get
+'            Return sMSN2Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr2 As String
+'    Public Property MSN2Nr2() As String
+'        Get
+'            Return sMSN2Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr3 As String
+'    Public Property MSN2Nr3() As String
+'        Get
+'            Return sMSN2Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr4 As String
+'    Public Property MSN2Nr4() As String
+'        Get
+'            Return sMSN2Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr5 As String
+'    Public Property MSN2Nr5() As String
+'        Get
+'            Return sMSN2Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr6 As String
+'    Public Property MSN2Nr6() As String
+'        Get
+'            Return sMSN2Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr7 As String
+'    Public Property MSN2Nr7() As String
+'        Get
+'            Return sMSN2Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr8 As String
+'    Public Property MSN2Nr8() As String
+'        Get
+'            Return sMSN2Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sMSN2Nr9 As String
+'    Public Property MSN2Nr9() As String
+'        Get
+'            Return sMSN2Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sMSN2Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP0"
+'    Private sVOIP0Nr0 As String
+'    Public Property VOIP0Nr0() As String
+'        Get
+'            Return sVOIP0Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr1 As String
+'    Public Property VOIP0Nr1() As String
+'        Get
+'            Return sVOIP0Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr2 As String
+'    Public Property VOIP0Nr2() As String
+'        Get
+'            Return sVOIP0Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr3 As String
+'    Public Property VOIP0Nr3() As String
+'        Get
+'            Return sVOIP0Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr4 As String
+'    Public Property VOIP0Nr4() As String
+'        Get
+'            Return sVOIP0Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr5 As String
+'    Public Property VOIP0Nr5() As String
+'        Get
+'            Return sVOIP0Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr6 As String
+'    Public Property VOIP0Nr6() As String
+'        Get
+'            Return sVOIP0Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr7 As String
+'    Public Property VOIP0Nr7() As String
+'        Get
+'            Return sVOIP0Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr8 As String
+'    Public Property VOIP0Nr8() As String
+'        Get
+'            Return sVOIP0Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP0Nr9 As String
+'    Public Property VOIP0Nr9() As String
+'        Get
+'            Return sVOIP0Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP0Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP1"
+'    Private sVOIP1Nr0 As String
+'    Public Property VOIP1Nr0() As String
+'        Get
+'            Return sVOIP1Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr1 As String
+'    Public Property VOIP1Nr1() As String
+'        Get
+'            Return sVOIP1Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr2 As String
+'    Public Property VOIP1Nr2() As String
+'        Get
+'            Return sVOIP1Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr3 As String
+'    Public Property VOIP1Nr3() As String
+'        Get
+'            Return sVOIP1Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr4 As String
+'    Public Property VOIP1Nr4() As String
+'        Get
+'            Return sVOIP1Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr5 As String
+'    Public Property VOIP1Nr5() As String
+'        Get
+'            Return sVOIP1Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr6 As String
+'    Public Property VOIP1Nr6() As String
+'        Get
+'            Return sVOIP1Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr7 As String
+'    Public Property VOIP1Nr7() As String
+'        Get
+'            Return sVOIP1Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr8 As String
+'    Public Property VOIP1Nr8() As String
+'        Get
+'            Return sVOIP1Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP1Nr9 As String
+'    Public Property VOIP1Nr9() As String
+'        Get
+'            Return sVOIP1Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP1Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP2"
+'    Private sVOIP2Nr0 As String
+'    Public Property VOIP2Nr0() As String
+'        Get
+'            Return sVOIP2Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr1 As String
+'    Public Property VOIP2Nr1() As String
+'        Get
+'            Return sVOIP2Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr2 As String
+'    Public Property VOIP2Nr2() As String
+'        Get
+'            Return sVOIP2Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr3 As String
+'    Public Property VOIP2Nr3() As String
+'        Get
+'            Return sVOIP2Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr4 As String
+'    Public Property VOIP2Nr4() As String
+'        Get
+'            Return sVOIP2Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr5 As String
+'    Public Property VOIP2Nr5() As String
+'        Get
+'            Return sVOIP2Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr6 As String
+'    Public Property VOIP2Nr6() As String
+'        Get
+'            Return sVOIP2Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr7 As String
+'    Public Property VOIP2Nr7() As String
+'        Get
+'            Return sVOIP2Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr8 As String
+'    Public Property VOIP2Nr8() As String
+'        Get
+'            Return sVOIP2Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP2Nr9 As String
+'    Public Property VOIP2Nr9() As String
+'        Get
+'            Return sVOIP2Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP2Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP3"
+'    Private sVOIP3Nr0 As String
+'    Public Property VOIP3Nr0() As String
+'        Get
+'            Return sVOIP3Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr1 As String
+'    Public Property VOIP3Nr1() As String
+'        Get
+'            Return sVOIP3Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr2 As String
+'    Public Property VOIP3Nr2() As String
+'        Get
+'            Return sVOIP3Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr3 As String
+'    Public Property VOIP3Nr3() As String
+'        Get
+'            Return sVOIP3Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr4 As String
+'    Public Property VOIP3Nr4() As String
+'        Get
+'            Return sVOIP3Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr5 As String
+'    Public Property VOIP3Nr5() As String
+'        Get
+'            Return sVOIP3Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr6 As String
+'    Public Property VOIP3Nr6() As String
+'        Get
+'            Return sVOIP3Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr7 As String
+'    Public Property VOIP3Nr7() As String
+'        Get
+'            Return sVOIP3Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr8 As String
+'    Public Property VOIP3Nr8() As String
+'        Get
+'            Return sVOIP3Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP3Nr9 As String
+'    Public Property VOIP3Nr9() As String
+'        Get
+'            Return sVOIP3Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP3Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP4"
+'    Private sVOIP4Nr0 As String
+'    Public Property VOIP4Nr0() As String
+'        Get
+'            Return sVOIP4Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr1 As String
+'    Public Property VOIP4Nr1() As String
+'        Get
+'            Return sVOIP4Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr2 As String
+'    Public Property VOIP4Nr2() As String
+'        Get
+'            Return sVOIP4Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr3 As String
+'    Public Property VOIP4Nr3() As String
+'        Get
+'            Return sVOIP4Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr4 As String
+'    Public Property VOIP4Nr4() As String
+'        Get
+'            Return sVOIP4Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr5 As String
+'    Public Property VOIP4Nr5() As String
+'        Get
+'            Return sVOIP4Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr6 As String
+'    Public Property VOIP4Nr6() As String
+'        Get
+'            Return sVOIP4Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr7 As String
+'    Public Property VOIP4Nr7() As String
+'        Get
+'            Return sVOIP4Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr8 As String
+'    Public Property VOIP4Nr8() As String
+'        Get
+'            Return sVOIP4Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP4Nr9 As String
+'    Public Property VOIP4Nr9() As String
+'        Get
+'            Return sVOIP4Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP4Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP5"
+'    Private sVOIP5Nr0 As String
+'    Public Property VOIP5Nr0() As String
+'        Get
+'            Return sVOIP5Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr1 As String
+'    Public Property VOIP5Nr1() As String
+'        Get
+'            Return sVOIP5Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr2 As String
+'    Public Property VOIP5Nr2() As String
+'        Get
+'            Return sVOIP5Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr3 As String
+'    Public Property VOIP5Nr3() As String
+'        Get
+'            Return sVOIP5Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr4 As String
+'    Public Property VOIP5Nr4() As String
+'        Get
+'            Return sVOIP5Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr5 As String
+'    Public Property VOIP5Nr5() As String
+'        Get
+'            Return sVOIP5Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr6 As String
+'    Public Property VOIP5Nr6() As String
+'        Get
+'            Return sVOIP5Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr7 As String
+'    Public Property VOIP5Nr7() As String
+'        Get
+'            Return sVOIP5Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr8 As String
+'    Public Property VOIP5Nr8() As String
+'        Get
+'            Return sVOIP5Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP5Nr9 As String
+'    Public Property VOIP5Nr9() As String
+'        Get
+'            Return sVOIP5Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP5Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP6"
+'    Private sVOIP6Nr0 As String
+'    Public Property VOIP6Nr0() As String
+'        Get
+'            Return sVOIP6Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr1 As String
+'    Public Property VOIP6Nr1() As String
+'        Get
+'            Return sVOIP6Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr2 As String
+'    Public Property VOIP6Nr2() As String
+'        Get
+'            Return sVOIP6Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr3 As String
+'    Public Property VOIP6Nr3() As String
+'        Get
+'            Return sVOIP6Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr4 As String
+'    Public Property VOIP6Nr4() As String
+'        Get
+'            Return sVOIP6Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr5 As String
+'    Public Property VOIP6Nr5() As String
+'        Get
+'            Return sVOIP6Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr6 As String
+'    Public Property VOIP6Nr6() As String
+'        Get
+'            Return sVOIP6Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr7 As String
+'    Public Property VOIP6Nr7() As String
+'        Get
+'            Return sVOIP6Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr8 As String
+'    Public Property VOIP6Nr8() As String
+'        Get
+'            Return sVOIP6Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP6Nr9 As String
+'    Public Property VOIP6Nr9() As String
+'        Get
+'            Return sVOIP6Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP6Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP7"
+'    Private sVOIP7Nr0 As String
+'    Public Property VOIP7Nr0() As String
+'        Get
+'            Return sVOIP7Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr1 As String
+'    Public Property VOIP7Nr1() As String
+'        Get
+'            Return sVOIP7Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr2 As String
+'    Public Property VOIP7Nr2() As String
+'        Get
+'            Return sVOIP7Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr3 As String
+'    Public Property VOIP7Nr3() As String
+'        Get
+'            Return sVOIP7Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr4 As String
+'    Public Property VOIP7Nr4() As String
+'        Get
+'            Return sVOIP7Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr5 As String
+'    Public Property VOIP7Nr5() As String
+'        Get
+'            Return sVOIP7Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr6 As String
+'    Public Property VOIP7Nr6() As String
+'        Get
+'            Return sVOIP7Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr7 As String
+'    Public Property VOIP7Nr7() As String
+'        Get
+'            Return sVOIP7Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr8 As String
+'    Public Property VOIP7Nr8() As String
+'        Get
+'            Return sVOIP7Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP7Nr9 As String
+'    Public Property VOIP7Nr9() As String
+'        Get
+'            Return sVOIP7Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP7Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP8"
+'    Private sVOIP8Nr0 As String
+'    Public Property VOIP8Nr0() As String
+'        Get
+'            Return sVOIP8Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr1 As String
+'    Public Property VOIP8Nr1() As String
+'        Get
+'            Return sVOIP8Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr2 As String
+'    Public Property VOIP8Nr2() As String
+'        Get
+'            Return sVOIP8Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr3 As String
+'    Public Property VOIP8Nr3() As String
+'        Get
+'            Return sVOIP8Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr4 As String
+'    Public Property VOIP8Nr4() As String
+'        Get
+'            Return sVOIP8Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr5 As String
+'    Public Property VOIP8Nr5() As String
+'        Get
+'            Return sVOIP8Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr6 As String
+'    Public Property VOIP8Nr6() As String
+'        Get
+'            Return sVOIP8Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr7 As String
+'    Public Property VOIP8Nr7() As String
+'        Get
+'            Return sVOIP8Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr8 As String
+'    Public Property VOIP8Nr8() As String
+'        Get
+'            Return sVOIP8Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP8Nr9 As String
+'    Public Property VOIP8Nr9() As String
+'        Get
+'            Return sVOIP8Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP8Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'#Region "VOIP9"
+'    Private sVOIP9Nr0 As String
+'    Public Property VOIP9Nr0() As String
+'        Get
+'            Return sVOIP9Nr0
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr0 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr1 As String
+'    Public Property VOIP9Nr1() As String
+'        Get
+'            Return sVOIP9Nr1
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr1 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr2 As String
+'    Public Property VOIP9Nr2() As String
+'        Get
+'            Return sVOIP9Nr2
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr2 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr3 As String
+'    Public Property VOIP9Nr3() As String
+'        Get
+'            Return sVOIP9Nr3
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr3 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr4 As String
+'    Public Property VOIP9Nr4() As String
+'        Get
+'            Return sVOIP9Nr4
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr4 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr5 As String
+'    Public Property VOIP9Nr5() As String
+'        Get
+'            Return sVOIP9Nr5
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr5 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr6 As String
+'    Public Property VOIP9Nr6() As String
+'        Get
+'            Return sVOIP9Nr6
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr6 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr7 As String
+'    Public Property VOIP9Nr7() As String
+'        Get
+'            Return sVOIP9Nr7
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr7 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr8 As String
+'    Public Property VOIP9Nr8() As String
+'        Get
+'            Return sVOIP9Nr8
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr8 = value
+'        End Set
+'    End Property
+
+'    Private sVOIP9Nr9 As String
+'    Public Property VOIP9Nr9() As String
+'        Get
+'            Return sVOIP9Nr9
+'        End Get
+'        Set(ByVal value As String)
+'            sVOIP9Nr9 = value
+'        End Set
+'    End Property
+'#End Region
+'End Class
+
+''' <summary>
+''' Klasse einer Liste mit 10 Telefonnummernfelder
+''' </summary>
+Public Class TelNrList
+
+    ''' <summary>
+    ''' Gibt die Telefonnummern als Array zurück. Leere Felder und doppelte Werte werden nicht heraus gefiltert.
+    ''' </summary>
+    ''' <returns>String-Array</returns>
+    Public Function ToArray() As String()
+        ToArray = {TelNr0, TelNr1, TelNr2, TelNr3, TelNr4, TelNr5, TelNr6, TelNr7, TelNr8, TelNr9}
+    End Function
+
+    ''' <summary>
+    ''' Gibt die Telefonnummern als Array zurück. Leere Felder und doppelte Werte werden heraus gefiltert.
+    ''' </summary>
+    ''' <returns>String-Array</returns>
+    Public Function ToDistinctArray() As String()
+        ' Doppelte entfernen
+        ToDistinctArray = (From x In ToArray() Select x Distinct).ToArray
+        ' Leere entfernen
+        ToDistinctArray = (From x In ToDistinctArray Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+    End Function
+
+    ''' <summary>
+    ''' Gibt den niedrigsten verfügbaren Feldindex für die angegebene Dimension eines Arrays zurück.
+    ''' </summary>
+    ''' <returns>Integer. Der niedrigste Wert, den der Feldindex für die angegebene Dimension enthalten kann. 
+    ''' LBound gibt stets 0 (null) zurück, sofern Array initialisiert wurde, auch wenn das Array keine Elemente enthält, beispielsweise wenn es eine Zeichenfolge mit der Länge 0 (null) ist.
+    ''' Wenn Array den Wert Nothing hat, löst LBound eine ArgumentNullException-Ausnahme aus.</returns>
+    Public ReadOnly Property LBound As Integer
+        Get
+            Return ToArray.GetLowerBound(0)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' ibt den höchsten verfügbaren Feldindex für die angegebene Dimension eines Arrays zurück.
+    ''' </summary>
+    ''' <returns>Integer. Der höchste Wert, den der Feldindex für die angegebene Dimension enthalten kann. Wenn Array nur ein Element enthält, gibt UBound 0 (null) zurück. Enthält Array keine Elemente, z. B. wenn es sich um eine Zeichenfolge mit der Länge 0 (null) handelt, dann gibt UBound -1 zurück.</returns>
+    Public ReadOnly Property UBound As Integer
+        Get
+            Return ToArray.GetUpperBound(0)
+        End Get
+    End Property
+
+    Public Property Item(ByVal idx As Integer) As String
+        Get
+            Select Case idx
+                Case 0
+                    Item = sTelNr0
+                Case 1
+                    Item = sTelNr1
+                Case 2
+                    Item = sTelNr2
+                Case 3
+                    Item = sTelNr3
+                Case 4
+                    Item = sTelNr4
+                Case 5
+                    Item = sTelNr5
+                Case 6
+                    Item = sTelNr6
+                Case 7
+                    Item = sTelNr7
+                Case 8
+                    Item = sTelNr5
+                Case 9
+                    Item = sTelNr6
+                Case Else
+                    Item = DataProvider.P_Def_LeerString
+            End Select
+            Return Item
+        End Get
+        Set(ByVal value As String)
+            Select Case idx
+                Case 0
+                    sTelNr0 = value
+                Case 1
+                    sTelNr0 = value
+                Case 2
+                    sTelNr0 = value
+                Case 3
+                    sTelNr0 = value
+                Case 4
+                    sTelNr0 = value
+                Case 5
+                    sTelNr0 = value
+                Case 6
+                    sTelNr0 = value
+                Case 7
+                    sTelNr0 = value
+                Case 8
+                    sTelNr0 = value
+                Case 9
+                    sTelNr0 = value
+            End Select
+        End Set
+    End Property
+
+    Private sTelNr0 As String
+    Public Property TelNr0() As String
+        Get
+            Return sTelNr0
+        End Get
+        Set(ByVal value As String)
+            sTelNr0 = value
+        End Set
+    End Property
+
+    Private sTelNr1 As String
+    Public Property TelNr1() As String
+        Get
+            Return sTelNr1
+        End Get
+        Set(ByVal value As String)
+            sTelNr1 = value
+        End Set
+    End Property
+
+    Private sTelNr2 As String
+    Public Property TelNr2() As String
+        Get
+            Return sTelNr2
+        End Get
+        Set(ByVal value As String)
+            sTelNr2 = value
+        End Set
+    End Property
+
+    Private sTelNr3 As String
+    Public Property TelNr3() As String
+        Get
+            Return sTelNr3
+        End Get
+        Set(ByVal value As String)
+            sTelNr3 = value
+        End Set
+    End Property
+
+    Private sTelNr4 As String
+    Public Property TelNr4() As String
+        Get
+            Return sTelNr4
+        End Get
+        Set(ByVal value As String)
+            sTelNr4 = value
+        End Set
+    End Property
+
+    Private sTelNr5 As String
+    Public Property TelNr5() As String
+        Get
+            Return sTelNr5
+        End Get
+        Set(ByVal value As String)
+            sTelNr5 = value
+        End Set
+    End Property
+
+    Private sTelNr6 As String
+    Public Property TelNr6() As String
+        Get
+            Return sTelNr6
+        End Get
+        Set(ByVal value As String)
+            sTelNr6 = value
+        End Set
+    End Property
+
+    Private sTelNr7 As String
+    Public Property TelNr7() As String
+        Get
+            Return sTelNr7
+        End Get
+        Set(ByVal value As String)
+            sTelNr7 = value
+        End Set
+    End Property
+
+    Private sTelNr8 As String
+    Public Property TelNr8() As String
+        Get
+            Return sTelNr8
+        End Get
+        Set(ByVal value As String)
+            sTelNr8 = value
+        End Set
+    End Property
+
+    Private sTelNr9 As String
+    Public Property TelNr9() As String
+        Get
+            Return sTelNr9
+        End Get
+        Set(ByVal value As String)
+            sTelNr9 = value
         End Set
     End Property
 End Class
@@ -2601,10 +2816,6 @@ Public Class JSON
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelNrT1)(strJSON)
     End Function
 
-    Public Function GetSecondValues(ByVal strJSON As String) As FritzBoxJSONTelNrT2
-        Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelNrT2)(strJSON)
-    End Function
-
     Public Function GetThirdValues(ByVal strJSON As String) As FritzBoxJSONTelefone1
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelefone1)(strJSON)
     End Function
@@ -2617,7 +2828,12 @@ Public Class JSON
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelefoneFONNr)(strJSON)
     End Function
 
+    Public Function GetTelNrListJSON(ByVal strJSON As String) As TelNrList
+        Return JsonConvert.DeserializeObject(Of TelNrList)(strJSON)
+    End Function
+
     Public Function GetUploadResult(ByVal strJSON As String) As FritzBoxJSONUploadResult
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONUploadResult)(strJSON)
     End Function
+
 End Class

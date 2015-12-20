@@ -1568,9 +1568,9 @@ Public Class DataProvider
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>99</returns>
-    Public Shared ReadOnly Property P_Def_MobilDialPort() As String
+    Public Shared ReadOnly Property P_Def_MobilDialPort() As Integer
         Get
-            Return "99"
+            Return 99
         End Get
     End Property
 
@@ -2849,7 +2849,7 @@ Public Class DataProvider
     ''' <param name="Typ">Telefonnummerntyp</param>
     ''' <param name="idx">Nummer der Telefonnummer</param>
     ''' <param name="TelNr">Telefonnummer</param>
-    Public Shared ReadOnly Property P_FritzBox_Tel_NrFound(ByVal Typ As String, ByVal idx As String, ByVal TelNr As String) As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_NrFound(ByVal Typ As String, ByVal idx As Integer, ByVal TelNr As String) As String
         Get
             Return "Telefonnummer gefunden: " & Typ & idx & ", " & TelNr
         End Get
