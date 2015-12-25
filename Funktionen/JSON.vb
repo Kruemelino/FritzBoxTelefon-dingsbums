@@ -470,88 +470,94 @@ Public Class FritzBoxJSONTelefone1
             _vOIP = value
         End Set
     End Property
+
+    Public ReadOnly Property S0NameList As String()
+        Get
+            Return {S0Name1, S0Name2, S0Name3, S0Name4, S0Name5, S0Name6, S0Name7, S0Name8}
+        End Get
+    End Property
 End Class
 
 Public Class FritzBoxJSONTelefone2
 #Region "S0"
 
-    Private sS0TelNr1 As String
-    Public Property S0TelNr1() As String
+    Private sS0Number1 As String
+    Public Property S0Number1() As String
         Get
-            Return sS0TelNr1
+            Return sS0Number1
         End Get
         Set(ByVal value As String)
-            sS0TelNr1 = value
+            sS0Number1 = value
         End Set
     End Property
 
-    Private sS0TelNr2 As String
-    Public Property S0TelNr2() As String
+    Private sS0Number2 As String
+    Public Property S0Number2() As String
         Get
-            Return sS0TelNr2
+            Return sS0Number2
         End Get
         Set(ByVal value As String)
-            sS0TelNr2 = value
+            sS0Number2 = value
         End Set
     End Property
 
-    Private sS0TelNr3 As String
-    Public Property S0TelNr3() As String
+    Private sS0Number3 As String
+    Public Property S0Number3() As String
         Get
-            Return sS0TelNr3
+            Return sS0Number3
         End Get
         Set(ByVal value As String)
-            sS0TelNr3 = value
+            sS0Number3 = value
         End Set
     End Property
 
-    Private sS0TelNr4 As String
-    Public Property S0TelNr4() As String
+    Private sS0Number4 As String
+    Public Property S0Number4() As String
         Get
-            Return sS0TelNr4
+            Return sS0Number4
         End Get
         Set(ByVal value As String)
-            sS0TelNr4 = value
+            sS0Number4 = value
         End Set
     End Property
 
-    Private sS0TelNr5 As String
-    Public Property S0TelNr5() As String
+    Private sS0Number5 As String
+    Public Property S0Number5() As String
         Get
-            Return sS0TelNr5
+            Return sS0Number5
         End Get
         Set(ByVal value As String)
-            sS0TelNr5 = value
+            sS0Number5 = value
         End Set
     End Property
 
-    Private sS0TelNr6 As String
-    Public Property S0TelNr6() As String
+    Private sS0Number6 As String
+    Public Property S0Number6() As String
         Get
-            Return sS0TelNr6
+            Return sS0Number6
         End Get
         Set(ByVal value As String)
-            sS0TelNr6 = value
+            sS0Number6 = value
         End Set
     End Property
 
-    Private sS0TelNr7 As String
-    Public Property S0TelNr7() As String
+    Private sS0Number7 As String
+    Public Property S0Number7() As String
         Get
-            Return sS0TelNr7
+            Return sS0Number7
         End Get
         Set(ByVal value As String)
-            sS0TelNr7 = value
+            sS0Number7 = value
         End Set
     End Property
 
-    Private sS0TelNr8 As String
-    Public Property S0TelNr8() As String
+    Private sS0Number8 As String
+    Public Property S0Number8() As String
         Get
-            Return sS0TelNr8
+            Return sS0Number8
         End Get
         Set(ByVal value As String)
-            sS0TelNr8 = value
+            sS0Number8 = value
         End Set
     End Property
 
@@ -634,6 +640,19 @@ Public Class FritzBoxJSONTelefone2
             sS0Type8 = value
         End Set
     End Property
+
+    Public ReadOnly Property S0NumberList As String()
+        Get
+            Return {S0Number1, S0Number2, S0Number3, S0Number4, S0Number5, S0Number6, S0Number7, S0Number8}
+        End Get
+    End Property
+
+    Public ReadOnly Property S0TypeList As String()
+        Get
+            Return {S0Type1, S0Type2, S0Type3, S0Type4, S0Type5, S0Type6, S0Type7, S0Type8}
+        End Get
+    End Property
+
 
 #End Region
 
@@ -758,6 +777,17 @@ Public Class FritzBoxJSONTelefone2
         End Set
     End Property
 
+    Public ReadOnly Property DECTRingOnAllMSNs As String()
+        Get
+            Return {sDECT0RingOnAllMSNs, sDECT1RingOnAllMSNs, sDECT2RingOnAllMSNs, sDECT3RingOnAllMSNs, sDECT4RingOnAllMSNs, sDECT5RingOnAllMSNs}
+        End Get
+    End Property
+
+    Public ReadOnly Property DECTTelNr As DECTNr()()
+        Get
+            Return {DECT0Nr(), DECT1Nr(), DECT2Nr(), DECT3Nr(), DECT4Nr(), DECT5Nr()}
+        End Get
+    End Property
 #End Region
 
     Private sFaxMailActive As String
@@ -789,7 +819,6 @@ Public Class FritzBoxJSONTelNrT1
         End Get
         Set(ByVal value As String)
             sPOTS = value
-
         End Set
     End Property
 
@@ -1242,6 +1271,36 @@ Public Class FritzBoxJSONTelNrT1
             eSIP = value
         End Set
     End Property
+
+    Public ReadOnly Property TAMList As String()
+        Get
+            Return {TAM0, TAM1, TAM2, TAM3, TAM4, TAM5, TAM6, TAM7, TAM8, TAM9}
+        End Get
+    End Property
+
+    Public ReadOnly Property MSNList As String()
+        Get
+            Return {MSN0, MSN1, MSN2, MSN3, MSN4, MSN5, MSN6, MSN7, MSN8, MSN9}
+        End Get
+    End Property
+
+    Public ReadOnly Property FAXList As String()
+        Get
+            Return {FAX0, FAX1, FAX2, FAX3, FAX4, FAX5, FAX6, FAX7, FAX8, FAX9}
+        End Get
+    End Property
+
+    Public ReadOnly Property MSNPortEnabled As String()
+        Get
+            Return {Port0Name, Port1Name, Port2Name}
+        End Get
+    End Property
+
+    Public ReadOnly Property VOIPPortEnabled As String()
+        Get
+            Return {VOIP0Enabled, VOIP1Enabled, VOIP2Enabled, VOIP3Enabled, VOIP4Enabled, VOIP5Enabled, VOIP6Enabled, VOIP7Enabled, VOIP8Enabled, VOIP9Enabled}
+        End Get
+    End Property
 End Class
 
 ''' <summary>
@@ -1497,7 +1556,6 @@ Public Class FritzBoxJSONUploadResult
 End Class
 
 Public Class JSON
-
     Public Function GetFirstValues(ByVal strJSON As String) As FritzBoxJSONTelNrT1
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelNrT1)(strJSON)
     End Function
@@ -1517,5 +1575,4 @@ Public Class JSON
     Public Function GetUploadResult(ByVal strJSON As String) As FritzBoxJSONUploadResult
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONUploadResult)(strJSON)
     End Function
-
 End Class

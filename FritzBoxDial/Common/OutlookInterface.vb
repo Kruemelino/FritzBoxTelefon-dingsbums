@@ -1,6 +1,4 @@
-﻿Imports System.IO
-
-Friend Class C_Telefonat
+﻿Friend Class C_Telefonat
     Friend Enum AnrufRichtung
         Eingehend = 1
         Ausgehend = 0
