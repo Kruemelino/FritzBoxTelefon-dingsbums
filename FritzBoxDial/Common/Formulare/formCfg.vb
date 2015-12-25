@@ -1,8 +1,8 @@
-Imports System.Drawing
+Imports System.Collections.ObjectModel
 Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Threading
 Imports System.Windows.Forms
-Imports System.Collections.ObjectModel
 
 Public Class formCfg
 #Region "Eigene Klassen"

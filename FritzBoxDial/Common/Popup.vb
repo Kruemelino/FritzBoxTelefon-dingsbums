@@ -1,9 +1,8 @@
 ﻿#Region "Imports"
-Imports System.IO.Path
-Imports System.Drawing
 Imports System.Collections.Generic
-Imports System.Windows.Forms
 Imports System.ComponentModel
+Imports System.Drawing
+Imports System.Windows.Forms
 #End Region
 
 Public Class Popup

@@ -1,7 +1,4 @@
-﻿Imports System.Threading
-Imports System.Xml
-
-Public Class formImportAnrList
+﻿Public Class formImportAnrList
 #Region "BackgroundWorker"
     Private WithEvents BWDownloadAnrListe As New System.ComponentModel.BackgroundWorker ' Background Worker zum Runterladen der Anrufliste
     Private WithEvents BWAnrListeAuswerten As New System.ComponentModel.BackgroundWorker
@@ -37,11 +34,7 @@ Public Class formImportAnrList
     'Private XMLAnrListe As XmlDocument
 #End Region
 
-    Friend Sub New(ByVal FritzBoxKlasse As FritzBox, _
-                   ByVal AnrMonKlasse As AnrufMonitor, _
-                   ByVal HelferKlasse As Helfer, _
-                   ByVal DataProviderKlasse As DataProvider, _
-                   ByVal XMLKlasse As XML)
+    Friend Sub New(ByVal FritzBoxKlasse As FritzBox, ByVal AnrMonKlasse As AnrufMonitor, ByVal HelferKlasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal XMLKlasse As XML)
 
         ' Dieser Aufruf ist für den Windows Form-Designer erforderlich.
         InitializeComponent()

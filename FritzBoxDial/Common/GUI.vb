@@ -1,6 +1,4 @@
-﻿Imports System.Collections.Generic
-
-#If OVer < 14 Then
+﻿#If OVer < 14 Then
 Imports Microsoft.Office.Core
 #End If
 <Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface

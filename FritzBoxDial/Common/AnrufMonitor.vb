@@ -1,9 +1,8 @@
-﻿Imports System.Net
+﻿Imports System.ComponentModel
 Imports System.IO
-Imports System.ComponentModel
+Imports System.Net
 Imports System.Net.Sockets
 Imports System.Threading
-Imports System.Collections.Generic
 
 Friend Class AnrufMonitor
 #Region "BackgroundWorker"
@@ -607,8 +606,6 @@ Friend Class AnrufMonitor
 
                 ' Doppelkreuz (#) entfernen
                 .TelNr = .TelNr.Trim(Chr(35)) ' "#" 
-                'If .TelNr.EndsWith("#") Then .TelNr = .TelNr.Remove(.TelNr.Length - 1, 1)
-                'If Right(.TelNr, 1) = "#" Then .TelNr = Left(.TelNr, Len(.TelNr) - 1)
                 ' Daten zurücksetzen
 
                 If Not .TelNr = DataProvider.P_Def_StringUnknown Then
@@ -651,7 +648,7 @@ Friend Class AnrufMonitor
                     If .olContact Is Nothing Then
                         .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                     End If
-#If Not OVer = 11 Then
+#If OVer > 11 Then
                     If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
                     Try
@@ -661,7 +658,7 @@ Friend Class AnrufMonitor
                     End Try
                 End If
                 'Notizeintag
-#If Not OVer = 11 Then
+#If OVer > 11 Then
                 If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
                     C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                 End If
@@ -935,7 +932,7 @@ Friend Class AnrufMonitor
                 End If
 
                 'Notizeintag
-#If Not OVer = 11 Then
+#If OVer > 11 Then
                 If C_DP.P_CBNote Then
                     If .olContact IsNot Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)

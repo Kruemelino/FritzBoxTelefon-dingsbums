@@ -1,7 +1,4 @@
 ﻿Imports System.Windows.Forms
-Imports System.Net
-Imports System.IO
-Imports System.Text
 
 Friend Class formWählbox
     Implements IDisposable
