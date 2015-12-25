@@ -628,10 +628,11 @@ Public Class Helfer
             pos1 = InStr(TelNr, "(", CompareMethod.Text) + 1
             pos2 = InStr(TelNr, ")", CompareMethod.Text)
             If pos1 = 1 Or pos2 = 0 Then
+                ' Ortsvorwahl nicht in Klammern
                 If LandesVW = DataProvider.P_Def_TBLandesVW Or LandesVW = DataProvider.P_Def_LeerString Then 'nur Deutschland
-                    ' Ortsvorwahl nicht in Klammern
-
-                    If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1) ' Null entfernen
+                    If TelNr.StartsWith("0") Then
+                        TelNr = TelNr.Remove(0, 1) ' Null entfernen
+                    End If
                     OrtsVW = VorwahlausDatei(TelNr, LandesVW, C_DP.P_ListeOrtsVorwahlenD)
                 Else
                     OrtsVW = VorwahlausDatei(TelNr, LandesVW, C_DP.P_ListeOrtsVorwahlenA)
