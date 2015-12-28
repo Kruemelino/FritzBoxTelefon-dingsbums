@@ -12,7 +12,7 @@ Public Class FritzBox
     Private C_FBoxUPnP As FritzBoxServices
 
     Private FBFehler As Boolean
-    Private FBEncoding As Encoding = Encoding.UTF8
+    Private FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
 
     Private tb As New Windows.Forms.TextBox
     Private EventProvider As IEventProvider
@@ -55,11 +55,11 @@ Public Class FritzBox
         ''' Liste von Telefonnummern
         ''' </summary>
         ''' <returns></returns>
-        Friend Property Nummernliste As List(Of FritzBoxTelefonnummer)
+        Friend Property Nummernliste() As List(Of FritzBoxTelefonnummer)
             Get
                 Return lNummernListe
             End Get
-            Set(value As List(Of FritzBoxTelefonnummer))
+            Set(ByVal value As List(Of FritzBoxTelefonnummer))
                 lNummernListe = value
             End Set
         End Property
@@ -105,7 +105,8 @@ Public Class FritzBox
             Dim retVal As New List(Of FritzBoxTelefonnummer)
 
             For Each Telefonnummer As FritzBoxTelefonnummer In Nummernliste
-                If retVal.Find(Function(TelNr) TelNr.TelNr = Telefonnummer.TelNr).TelNr = DataProvider.P_Def_LeerString Then
+                Dim tmpTelNr As String = Telefonnummer.TelNr
+                If retVal.Find(Function(TelNr) TelNr.TelNr = tmpTelNr).TelNr = DataProvider.P_Def_LeerString Then
                     retVal.Add(Telefonnummer)
                 End If
             Next
@@ -152,11 +153,11 @@ Public Class FritzBox
         ''' Liste von Telefonen
         ''' </summary>
         ''' <returns></returns>
-        Friend Property Telefonliste As List(Of FritzBoxTelefon)
+        Friend Property Telefonliste() As List(Of FritzBoxTelefon)
             Get
                 Return lTelefonListe
             End Get
-            Set(value As List(Of FritzBoxTelefon))
+            Set(ByVal value As List(Of FritzBoxTelefon))
                 lTelefonListe = value
             End Set
         End Property
@@ -232,11 +233,11 @@ Public Class FritzBox
         ''' <summary>
         ''' Die komplette unformatierte Telefonnummer 
         ''' </summary>
-        Friend Property TelNr As String
+        Friend Property TelNr() As String
             Get
                 Return sTelNr
             End Get
-            Set(value As String)
+            Set(ByVal value As String)
                 sTelNr = value
             End Set
         End Property
@@ -297,11 +298,11 @@ Public Class FritzBox
         ''' <summary>
         ''' Der Telefontyp der Telefonnummer: FON, DECT, VOIP, S0
         ''' </summary>
-        Friend Property TelTyp As TelTyp
+        Friend Property TelTyp() As TelTyp
             Get
                 Return sTelTyp
             End Get
-            Set(value As TelTyp)
+            Set(ByVal value As TelTyp)
                 sTelTyp = value
             End Set
         End Property
@@ -311,11 +312,11 @@ Public Class FritzBox
         ''' Eine eindeutige Identifikation der Telefonnummer
         ''' </summary>
         ''' <returns></returns>
-        Public Property ID0 As Integer
+        Public Property ID0() As Integer
             Get
                 Return iID0
             End Get
-            Set(value As Integer)
+            Set(ByVal value As Integer)
                 iID0 = value
             End Set
         End Property
@@ -325,11 +326,11 @@ Public Class FritzBox
         ''' Eine eindeutige Identifikation der Telefonnummer
         ''' </summary>
         ''' <returns></returns>
-        Public Property ID1 As Integer
+        Public Property ID1() As Integer
             Get
                 Return iID1
             End Get
-            Set(value As Integer)
+            Set(ByVal value As Integer)
                 iID1 = value
             End Set
         End Property
@@ -348,11 +349,11 @@ Public Class FritzBox
         ''' <summary>
         ''' Der Telefonname des Telefons
         ''' </summary>
-        Friend Property TelName As String
+        Friend Property TelName() As String
             Get
                 Return sTelName
             End Get
-            Set(value As String)
+            Set(ByVal value As String)
                 sTelName = value
             End Set
         End Property
@@ -361,11 +362,11 @@ Public Class FritzBox
         ''' <summary>
         ''' Der Telefontyp des Telefons: FON, DECT, VOIP, S0
         ''' </summary>
-        Friend Property TelTyp As TelTyp
+        Friend Property TelTyp() As TelTyp
             Get
                 Return sTelTyp
             End Get
-            Set(value As TelTyp)
+            Set(ByVal value As TelTyp)
                 sTelTyp = value
             End Set
         End Property
@@ -374,11 +375,11 @@ Public Class FritzBox
         ''' <summary>
         ''' Ausgehende Nummer des Telefons
         ''' </summary>
-        Friend Property AusgehendeNummer As FritzBoxTelefonnummer
+        Friend Property AusgehendeNummer() As FritzBoxTelefonnummer
             Get
                 Return sAusgehendeNummer
             End Get
-            Set(value As FritzBoxTelefonnummer)
+            Set(ByVal value As FritzBoxTelefonnummer)
                 sAusgehendeNummer = value
             End Set
         End Property
@@ -388,11 +389,11 @@ Public Class FritzBox
         ''' Liste der eingehenden Nummern, auf die das Telefon reagiert
         ''' </summary>
         ''' <returns></returns>
-        Friend Property EingehendeNummern As FritzBoxTelefonnummernListe
+        Friend Property EingehendeNummern() As FritzBoxTelefonnummernListe
             Get
                 Return sEingehendeNummern
             End Get
-            Set(value As FritzBoxTelefonnummernListe)
+            Set(ByVal value As FritzBoxTelefonnummernListe)
                 sEingehendeNummern = value
             End Set
         End Property
@@ -401,11 +402,11 @@ Public Class FritzBox
         ''' <summary>
         ''' Gibt an oder legt fest, ob es sich bei dem Telfon um ein Fax handelt
         ''' </summary>
-        Public Property IsFax As Boolean
+        Public Property IsFax() As Boolean
             Get
                 Return bIsFax
             End Get
-            Set(value As Boolean)
+            Set(ByVal value As Boolean)
                 bIsFax = value
             End Set
         End Property
@@ -415,11 +416,11 @@ Public Class FritzBox
         ''' Der Dialport des Telefons
         ''' </summary>
         ''' <returns></returns>
-        Public Property Dialport As Integer
+        Public Property Dialport() As Integer
             Get
                 Return iDialport
             End Get
-            Set(value As Integer)
+            Set(ByVal value As Integer)
                 iDialport = value
             End Set
         End Property
@@ -1077,12 +1078,7 @@ Public Class FritzBox
 
 #End Region
 
-    Public Sub New(ByVal DataProviderKlasse As DataProvider,
-                   ByVal HelferKlasse As Helfer,
-                   ByVal CryptKlasse As Rijndael,
-                   ByVal XMLKlasse As XML,
-                   ByVal UPnpKlasse As FritzBoxServices)
-
+    Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer, ByVal CryptKlasse As Rijndael, ByVal XMLKlasse As XML, ByVal UPnpKlasse As FritzBoxServices)
 
         C_DP = DataProviderKlasse
         C_hf = HelferKlasse
@@ -1174,7 +1170,7 @@ Public Class FritzBox
                             sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
 
                             With C_Crypt
-                                sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode, True))
+                                sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), System.Text.Encoding.Unicode, True))
                             End With
                             If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 
@@ -1272,15 +1268,12 @@ Public Class FritzBox
                 'End If
 
                 'IIf(.InnerXml.Contains("Rights"), C_DP.P_Link_FB_LogoutLuaNeu(sSID), C_DP.P_Link_FB_LogoutLuaAlt(sSID))
-                Response = C_hf.httpGET(C_hf.IIf(.InnerXml.Contains("Rights"),
-                                                 P_Link_FB_LogoutLuaNeu(sSID),
-                                                 P_Link_FB_LogoutLuaAlt(sSID)), FBEncoding, FBFehler)
+                Response = C_hf.httpGET(C_hf.IIf(.InnerXml.Contains("Rights"), P_Link_FB_LogoutLuaNeu(sSID), P_Link_FB_LogoutLuaAlt(sSID)), FBEncoding, FBFehler)
             End With
             xml = Nothing
             C_hf.KeyChange()
             If Not FBFehler Then
-                If Not InStr(Response, DataProvider.P_FritzBox_LogoutTestString1, CompareMethod.Text) = 0 Or
-                    Not InStr(Response, DataProvider.P_FritzBox_LogoutTestString2, CompareMethod.Text) = 0 Then
+                If Not InStr(Response, DataProvider.P_FritzBox_LogoutTestString1, CompareMethod.Text) = 0 Or Not InStr(Response, DataProvider.P_FritzBox_LogoutTestString2, CompareMethod.Text) = 0 Then
                     ' C_hf.LogFile("Logout erfolgreich")
                     sSID = DataProvider.P_Def_SessionID
                     Return True
@@ -1411,21 +1404,9 @@ Public Class FritzBox
         Dim AttributeNames As New ArrayList
         Dim AttributeValues As New ArrayList
 
-        Dim PortName() As String = {"readFon123",
-                                    "readNTHotDialList",
-                                    "readDect1",
-                                    "readFonControl",
-                                    "readVoipExt",
-                                    "readTam",
-                                    "readFaxMail"}
+        Dim PortName() As String = {"readFon123", "readNTHotDialList", "readDect1", "readFonControl", "readVoipExt", "readTam", "readFaxMail"}
 
-        Dim EndPortName() As String = {"return list",
-                                       "return list",
-                                       "return list",
-                                       "return list",
-                                       "return Result",
-                                       "return list",
-                                       "return list"}
+        Dim EndPortName() As String = {"return list", "return list", "return list", "return list", "return Result", "return list", "return list"}
 
         With xPathTeile
             .Clear()
@@ -3030,7 +3011,7 @@ Public Class FritzBox
             If Not .Mobile = DataProvider.P_Def_LeerString Then
                 tmpTelNr = New FritzBoxTelefonnummer
                 tmpTelNr.TelNr = .Mobile
-                tmpTelNr.TelTyp = TelTyp.MOBIL
+                tmpTelNr.TelTyp = TelTyp.Mobil
                 TelefonNummern.Add(tmpTelNr)
                 PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
             End If
@@ -3153,7 +3134,8 @@ Public Class FritzBox
                     Else
                         For Each aktDECTNr As DECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
                             If Not aktDECTNr.Number = DataProvider.P_Def_LeerString Then
-                                tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = aktDECTNr.Number))
+                                Dim tmpDectNr As String = aktDECTNr.Number
+                                tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = tmpDectNr))
                             End If
                         Next
                     End If
@@ -3236,7 +3218,7 @@ Public Class FritzBox
 
         'Mobil
         PushStatus("Verarbeite Gerät: Mobil")
-        If TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.MOBIL).TelNr IsNot Nothing Then
+        If TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.Mobil).TelNr IsNot Nothing Then
             tmpTelefon = New FritzBoxTelefon(C_hf)
             tmpTelefon.TelTyp = TelTyp.Mobil
             tmpTelefon.Dialport = DataProvider.P_Def_MobilDialPort
@@ -3297,11 +3279,7 @@ Public Class FritzBox
 
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = DataProvider.P_Def_LeerString
-        Dim tmp() As String = Split(Join(MSN, ";") & ";" &
-                                    Join(SIP, ";") & ";" &
-                                    Join(TAM, ";") & ";" &
-                                    Join(FAX, ";") & ";" &
-                                    POTS & ";" & Mobil, ";", , CompareMethod.Text)
+        Dim tmp() As String = Split(Join(MSN, ";") & ";" & Join(SIP, ";") & ";" & Join(TAM, ";") & ";" & Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
 
         tmp = C_hf.ClearStringArray(tmp, True, True, True)
         AlleNummern = Join(tmp, ";")

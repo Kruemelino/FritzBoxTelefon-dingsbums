@@ -29,13 +29,7 @@ Friend Class formInit
     ' Boolean
     Private ReStartError As Boolean
 
-    Public Sub New(ByRef GUIKlasse As GraphicalUserInterface,
-                   ByRef KFKlasse As KontaktFunktionen,
-                   ByRef HFKlasse As Helfer,
-                   ByRef DPKlasse As DataProvider,
-                   ByRef AnrMonKlasse As AnrufMonitor,
-                   ByRef XMLKlasse As XML,
-                   ByRef FritzBoxKlasse As FritzBox)
+    Public Sub New(ByRef GUIKlasse As GraphicalUserInterface, ByRef KFKlasse As KontaktFunktionen, ByRef HFKlasse As Helfer, ByRef DPKlasse As DataProvider, ByRef AnrMonKlasse As AnrufMonitor, ByRef XMLKlasse As XML, ByRef FritzBoxKlasse As FritzBox)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
