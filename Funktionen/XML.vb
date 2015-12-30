@@ -489,7 +489,7 @@ Public Class XML
             tmpXMLNode = XMLDoc.CreateNode(XmlNodeType.Element, NodeName, P_Def_StringEmpty)
             With tmpXMLNode
                 For i As Integer = 0 To SubNodeName.Count - 1
-                    If Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne_String Then
+                    If Not SubNodeValue.Item(i) Is Nothing AndAlso Not SubNodeValue.Item(i).ToString = P_Def_ErrorMinusOne_String Then
                         tmpXMLChildNode = XMLDoc.CreateNode(XmlNodeType.Element, SubNodeName.Item(i).ToString, P_Def_StringEmpty)
                         tmpXMLChildNode.InnerText = SubNodeValue.Item(i).ToString
                         .AppendChild(tmpXMLChildNode)
