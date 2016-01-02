@@ -348,7 +348,7 @@ Public Class OutlookInterface
                         BodyString, _
                         "Outlook-Version: ", oApp.Version, vbNewLine, _
                         "Fritz!Box Telefon-dingsbums-Version: ", ThisAddIn.Version, .Body)
-                    .To = "kruemelino@gert-michael.de"
+                    .To = DataProvider.P_AddinKontaktMail
                     Try
                         .Display()
                     Catch ex As System.Runtime.InteropServices.COMException

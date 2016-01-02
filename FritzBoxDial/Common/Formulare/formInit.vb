@@ -251,7 +251,7 @@ Friend Class formInit
         C_DP.P_TBVorwahl = Me.TBVorwahl.Text
         C_DP.P_TBLandesVW = Me.TBLandesvorwahl.Text
         C_FBox.P_SpeichereDaten = True
-        C_FBox.FritzBoxDaten()
+        C_FBox.FritzBoxDaten(False)
 
         Me.CLBTelNr.Enabled = True
         Me.LTelListe.Enabled = True

@@ -2808,20 +2808,47 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
+    ''' Ausleseroutine für &amp; P_Def_FritzBoxName &amp; bis Firmware 5.25 gestartet...
     ''' </summary>
-    Public Shared ReadOnly Property P_FritzBox_Tel_AlteRoutine As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_RoutineBis525 As String
         Get
-            Return "Alte Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
+            Return " Ausleseroutine für " & P_Def_FritzBoxName & " bis Firmware 5.25 gestartet..."
         End Get
     End Property
 
     ''' <summary>
-    ''' Alte Ausleseroutine für Fritz!Box Telefone gestartet...
+    ''' " Ausleseroutine für " &amp; P_Def_FritzBoxName &amp; " ab Firmware 5.25 bis Firmware 6.05 gestartet..."
     ''' </summary>
-    Public Shared ReadOnly Property P_FritzBox_Tel_NeueRoutine As String
+    Public Shared ReadOnly Property P_FritzBox_Tel_RoutineAb525 As String
         Get
-            Return "Neue Ausleseroutine für " & P_Def_FritzBoxName & " Telefone gestartet..."
+            Return " Ausleseroutine für " & P_Def_FritzBoxName & " ab Firmware 5.26 bis Firmware 6.04 gestartet..."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Ausleseroutine für &amp; P_Def_FritzBoxName &amp; ab Firmware 6.05 gestartet...
+    ''' </summary>
+    Public Shared ReadOnly Property P_FritzBox_Tel_RoutineAb605 As String
+        Get
+            Return " Ausleseroutine für " & P_Def_FritzBoxName & " ab Firmware 6.05 gestartet..."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Bitte sende diese Datei an folgende E-Mail: &amp; P_AddinKontaktMail
+    ''' </summary>
+    Public Shared ReadOnly Property P_FritzBox_Tel_DebugMsgAb605 As String
+        Get
+            Return "Bitte sende diese Datei an folgende E-Mail: " & P_AddinKontaktMail
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' E-Mail kruemelino@gert-michael.de
+    ''' </summary>
+    Public Shared ReadOnly Property P_AddinKontaktMail As String
+        Get
+            Return "kruemelino@gert-michael.de"
         End Get
     End Property
 
@@ -2876,6 +2903,18 @@ Public Class DataProvider
     Public Shared ReadOnly Property P_FritzBox_Tel_DeviceisFAX(ByVal Dialport As String, ByVal TelName As String) As String
         Get
             Return "Telefoniegerät: " & TelName & " (" & Dialport & ") ist ein FAX."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' "Sende " &amp; i &amp; ". von insgesamt " &amp; n &amp; " Hauptanfragen an Fritz!Box..."
+    ''' </summary>
+    ''' <param name="i">Nummer der aktuellen Anfrage</param>
+    ''' <param name="n">Gesamtanzahl an Anfragen</param>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property P_FritzBox_Tel_SendQuery(ByVal i As Integer, ByVal n As Integer) As String
+        Get
+            Return "Sende " & i & ". von insgesamt " & n & " Hauptanfragen an die " & P_Def_FritzBoxName & "..."
         End Get
     End Property
 

@@ -568,24 +568,7 @@ Public Class formCfg
     End Function
 
 #Region "Button Link"
-    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, _
-                                                                                   BOK.Click, _
-                                                                                   BAbbruch.Click, _
-                                                                                   BApply.Click, _
-                                                                                   BXML.Click, _
-                                                                                   BAnrMonTest.Click, _
-                                                                                   BIndizierungStart.Click, _
-                                                                                   BIndizierungAbbrechen.Click, _
-                                                                                   BZwischenablage.Click, _
-                                                                                   BTelefonliste.Click, _
-                                                                                   BTelefonDatei.Click, _
-                                                                                   BStartDebug.Click, _
-                                                                                   BResetStat.Click, _
-                                                                                   BProbleme.Click, _
-                                                                                   BStoppUhrAnzeigen.Click, _
-                                                                                   BArbeitsverzeichnis.Click, _
-                                                                                   BRWSTest.Click, _
-                                                                                   BTestLogin.Click
+    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, BOK.Click, BAbbruch.Click, BApply.Click, BXML.Click, BAnrMonTest.Click, BIndizierungStart.Click, BIndizierungAbbrechen.Click, BZwischenablage.Click, BTelefonliste.Click, BStartDebug.Click, BResetStat.Click, BProbleme.Click, BStoppUhrAnzeigen.Click, BArbeitsverzeichnis.Click, BRWSTest.Click, BTestLogin.Click
 
         Select Case CType(sender, Windows.Forms.Button).Name
             Case "BReset"
@@ -693,8 +676,7 @@ Public Class formCfg
             Case "BProbleme"
                 Dim T As New Thread(AddressOf NeueMail)
 
-                If C_hf.MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & _
-                                                "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
+                If C_hf.MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & "Anschließend werden eine Reihe von Dateien geöffnet, welche Sie bitte an die E-Mail " & DataProvider.P_AddinKontaktMail & "senden. Vielen Dank.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
                     T.Start()
                     Me.Close()
                 Else
@@ -703,18 +685,7 @@ Public Class formCfg
             Case "BStartDebug"
                 Me.TBDiagnose.Text = DataProvider.P_Def_LeerString
                 AddLine("Start")
-                If Me.CBTelefonDatei.Checked Then
-                    If System.IO.File.Exists(Me.TBTelefonDatei.Text) Then
-                        If C_hf.MsgBox("Sind Sie sicher was sie da tun? Das Einlesen einer fehlerhaften oder falschen Datei wird sehr unerfreulich enden.", _
-                                                        MsgBoxStyle.YesNo, "Telefondatei testen") = vbYes Then
-                            Me.TBTelefonDatei.Enabled = False
-                        End If
-                    Else
-                        Me.CBTelefonDatei.Checked = False
-                    End If
-                End If
                 C_FBox.SetEventProvider(emc)
-
                 BWTelefone = New BackgroundWorker
                 AddLine("BackgroundWorker erstellt.")
                 With BWTelefone
@@ -722,24 +693,6 @@ Public Class formCfg
                     .RunWorkerAsync(DataProvider.P_Debug_ImportTelefone)
                     AddLine("BackgroundWorker gestartet.")
                 End With
-                Me.TBTelefonDatei.Enabled = True
-            Case "BTelefonDatei"
-                Dim fDialg As New System.Windows.Forms.OpenFileDialog
-                With fDialg
-                    .Filter = "htm-Dateien (*.htm)| *.htm"
-                    .Multiselect = False
-                    .Title = "Fritz!Box Telefon-Datei auswählen"
-                    .FilterIndex = 1
-                    .RestoreDirectory = True
-                    If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                        If System.IO.File.Exists(fDialg.FileName) Then
-                            Me.TBTelefonDatei.Text = fDialg.FileName
-                        Else
-                            Me.TBTelefonDatei.Text = "Fehler!"
-                        End If
-                    End If
-                End With
-                fDialg = Nothing
             Case "BResetStat"
 
                 C_DP.P_StatResetZeit = System.DateTime.Now
@@ -808,8 +761,8 @@ Public Class formCfg
                             '    rws = F_RWS.RWSAlle(TelNr, vCard)
                     End Select
 
-                    C_hf.MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & _
-                                    C_hf.IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis."), MsgBoxStyle.Information, _
+                    C_hf.MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " &
+                                    C_hf.IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis."), MsgBoxStyle.Information,
                                     "Test der Rückwärtssuche " & Me.ComboBoxRWS.SelectedItem.ToString())
                 Else
                     C_hf.MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
@@ -831,9 +784,9 @@ Public Class formCfg
         End Select
     End Sub
 
-    Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked, _
-                                                                                                                                LinkForum.LinkClicked, _
-                                                                                                                                LinkEmail.LinkClicked, _
+    Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked,
+                                                                                                                                LinkForum.LinkClicked,
+                                                                                                                                LinkEmail.LinkClicked,
                                                                                                                                 LinkLogFile.LinkClicked
         Select Case CType(sender, Windows.Forms.LinkLabel).Name
             Case "LinkEmail"
@@ -851,38 +804,11 @@ Public Class formCfg
 #End Region
 
 #Region "Änderungen"
-    Private Sub ValueChanged(sender As Object, e As EventArgs) Handles _
-                                                                        CBRWS.CheckedChanged, _
-                                                                        CBCbCunterbinden.CheckedChanged, _
-                                                                        CBAutoClose.CheckedChanged, _
-                                                                        CBTelefonDatei.CheckedChanged, _
-                                                                        CBIndexAus.CheckedChanged, _
-                                                                        CBUseAnrMon.CheckedChanged, _
-                                                                        CBAnrMonMove.CheckedChanged, _
-                                                                        CBStoppUhrEinblenden.CheckedChanged, _
-                                                                        CBStoppUhrAusblenden.CheckedChanged, _
-                                                                        CBLogFile.CheckedChanged, _
-                                                                        TBEnblDauer.TextChanged, _
-                                                                        TBAnrMonX.TextChanged, _
-                                                                        TBAnrMonY.TextChanged, _
-                                                                        TBTelNrMaske.Leave, _
-                                                                        CLBTelNr.SelectedIndexChanged, _
-                                                                        TBRWSTest.TextChanged, _
-                                                                        TBBenutzer.TextChanged, _
-                                                                        TBPasswort.TextChanged, _
-                                                                        CBAnrMonCloseAtDISSCONNECT.CheckedChanged, _
-                                                                        CBJournal.CheckedChanged, _
-                                                                        CBAnrListeShowAnrMon.CheckedChanged, _
-                                                                        CBAutoAnrList.CheckedChanged
+    Private Sub ValueChanged(sender As Object, e As EventArgs) Handles CBRWS.CheckedChanged, CBCbCunterbinden.CheckedChanged, CBAutoClose.CheckedChanged, CBIndexAus.CheckedChanged, CBUseAnrMon.CheckedChanged, CBAnrMonMove.CheckedChanged, CBStoppUhrEinblenden.CheckedChanged, CBStoppUhrAusblenden.CheckedChanged, CBLogFile.CheckedChanged, TBEnblDauer.TextChanged, TBAnrMonX.TextChanged, TBAnrMonY.TextChanged, TBTelNrMaske.Leave, CLBTelNr.SelectedIndexChanged, TBRWSTest.TextChanged, TBBenutzer.TextChanged, TBPasswort.TextChanged, CBAnrMonCloseAtDISSCONNECT.CheckedChanged, CBJournal.CheckedChanged, CBAnrListeShowAnrMon.CheckedChanged, CBAutoAnrList.CheckedChanged
 
         Select Case sender.GetType().Name
             Case "CheckBox"
                 Select Case CType(sender, CheckBox).Name
-                    Case "CBTelefonDatei"
-                        Me.PTelefonDatei.Enabled = Me.CBTelefonDatei.Checked
-                        If Not Me.CBTelefonDatei.Checked Then
-                            Me.TBTelefonDatei.Text = DataProvider.P_Def_LeerString
-                        End If
                     Case "CBRWS"
                         ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
                         Me.ComboBoxRWS.Enabled = Me.CBRWS.Checked
@@ -1048,46 +974,7 @@ Public Class formCfg
     End Function
 
     Private Sub NeueMail()
-        Dim sSID As String = DataProvider.P_Def_SessionID
-        Dim URL As String
-        Dim FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
-        Dim MailText As String
-        Dim PfadTMPfile As String
-        Dim tmpFileName As String
-        Dim tmpFilePath As String
-        Dim FBBenutzer As String
-        Dim FBPasswort As String
-
-        C_FBox.SetEventProvider(emc)
-
-        Do While sSID = DataProvider.P_Def_SessionID
-            FBBenutzer = InputBox("Geben Sie den Benutzernamen der Fritz!Box ein (Lassen Sie das Feld leer, falls Sie kein Benutzername benötigen.):")
-            FBPasswort = InputBox("Geben Sie das Passwort der Fritz!Box ein:")
-            If Len(FBPasswort) = 0 Then
-                If C_hf.MsgBox("Abbrechen?", MsgBoxStyle.YesNo, "NewMail") = vbYes Then
-                    Exit Sub
-                End If
-            End If
-            sSID = C_FBox.FBLogin(FBBenutzer, FBPasswort)
-        Loop
-
-        'If NeueFW Then
-        URL = "http://" & C_DP.P_ValidFBAdr & "/fon_num/fon_num_list.lua?sid=" & sSID
-        'Else
-        '    URL = "http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm?sid=" & sSID & "&getpage=../html/de/menus/menu2.html&var:lang=de&var:menu=fon&var:pagename=fondevices"
-        'End If
-
-        MailText = C_hf.httpGET(URL, FBEncoding, Nothing)
-
-        With My.Computer.FileSystem
-            PfadTMPfile = .GetTempFileName()
-            tmpFilePath = .GetFileInfo(PfadTMPfile).DirectoryName
-            tmpFileName = Split(.GetFileInfo(PfadTMPfile).Name, ".", , CompareMethod.Text)(0) & "_Telefoniegeräte.htm"
-            .RenameFile(PfadTMPfile, tmpFileName)
-            PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, "*_Telefoniegeräte.htm")(0).ToString
-            .WriteAllText(PfadTMPfile, MailText, False)
-        End With
-        C_OlI.NeueEmail(PfadTMPfile, C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox())
+        C_FBox.FritzBoxDaten(True)
     End Sub
 
     Private Function SetTelNrListe() As Boolean
@@ -1386,7 +1273,7 @@ Public Class formCfg
 #End Region
 
 #Region "BackGroundWorker - Handle"
-    Private Sub BWIndexer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWIndexer.DoWork
+    Private Sub BWIndexer_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs) Handles BWIndexer.DoWork
 
         ErmittleKontaktanzahl()
         If Me.RadioButtonEntfernen.Checked And Not Me.RadioButtonErstelle.Checked Then
@@ -1415,7 +1302,7 @@ Public Class formCfg
         End If
     End Sub
 
-    Private Sub BWIndexer_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BWIndexer.ProgressChanged
+    Private Sub BWIndexer_ProgressChanged(ByVal sender As Object, ByVal e As ProgressChangedEventArgs) Handles BWIndexer.ProgressChanged
         StatusWert = CStr(e.ProgressPercentage)
         If Me.InvokeRequired Then
             Dim D As New DelgSetProgressbar(AddressOf SetProgressbar)
@@ -1425,7 +1312,7 @@ Public Class formCfg
         End If
     End Sub
 
-    Private Sub BWIndexer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWIndexer.RunWorkerCompleted
+    Private Sub BWIndexer_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) Handles BWIndexer.RunWorkerCompleted
 
         If Me.InvokeRequired Then
             Dim D As New DelgSetProgressbar(AddressOf SetProgressbarToMax)
@@ -1443,18 +1330,14 @@ Public Class formCfg
         End If
     End Sub
 
-    Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BWTelefone.DoWork
+    Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs) Handles BWTelefone.DoWork
         AddLine("Einlesen der Telefone gestartet.")
         C_FBox.P_SpeichereDaten = CBool(e.Argument)
         e.Result = CBool(e.Argument)
-        If Me.TBTelefonDatei.Text = DataProvider.P_Def_LeerString Then
-            C_FBox.FritzBoxDaten()
-        Else
-            C_FBox.FritzBoxDatenDebug(Me.TBTelefonDatei.Text)
-        End If
+        C_FBox.FritzBoxDaten(False)
     End Sub
 
-    Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
+    Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
         AddLine("BackgroundWorker zum Einlesen der Telefone ist fertig.")
         Dim xPathTeile As New ArrayList
         Dim tmpTelefon As String
@@ -1478,7 +1361,7 @@ Public Class formCfg
             If Not tmpTelefon = DataProvider.P_Def_ErrorMinusOne_String Then
                 xPathTeile.Item(xPathTeile.Count - 1) = "TelNr"
                 If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
-                    If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And _
+                    If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And
                         C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
 
                         If C_XML.GetProperXPath(C_DP.XMLDoc, xPathTeile) Then
