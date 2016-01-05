@@ -615,11 +615,15 @@ Public Class Helfer
 
             If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then
                 'Landesvorwahl vorhanden
-                LandesVW = VorwahlausDatei(TelNr, DataProvider.P_Def_LeerString, C_DP.P_ListeLandesVorwahlen)
-                If Not LandesVW = DataProvider.P_Def_LeerString Then
-                    LandesVW = DataProvider.P_Def_PreLandesVW & LandesVW
-                    TelNr = Mid(TelNr, Len(LandesVW) + 1)
+                If TelNr.StartsWith(C_DP.P_TBLandesVW) Then
+                    LandesVW = C_DP.P_TBLandesVW
+                Else
+                    LandesVW = VorwahlausDatei(TelNr, DataProvider.P_Def_LeerString, C_DP.P_ListeLandesVorwahlen)
+                    If Not LandesVW = DataProvider.P_Def_LeerString Then
+                        LandesVW = DataProvider.P_Def_PreLandesVW & LandesVW
+                    End If
                 End If
+                TelNr = Mid(TelNr, Len(LandesVW) + 1)
             Else
                 LandesVW = DataProvider.P_Def_LeerString
             End If
