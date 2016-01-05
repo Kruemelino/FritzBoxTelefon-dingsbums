@@ -780,7 +780,6 @@ Public Class formCfg
                 Else
                     Me.BTestLogin.Text = "OK!"
                 End If
-
         End Select
     End Sub
 
@@ -1088,7 +1087,7 @@ Public Class formCfg
     End Function
 #End Region
 
-    Private Sub KontaktIndexer(Optional ByVal Ordner As Outlook.MAPIFolder = Nothing, Optional ByVal NamensRaum As Outlook.NameSpace = Nothing) 'as Boolean
+    Private Sub KontaktIndexer(ByVal KorrNumbers As Boolean, Optional ByVal Ordner As Outlook.MAPIFolder = Nothing, Optional ByVal NamensRaum As Outlook.NameSpace = Nothing) 'as Boolean
         'KontaktIndexer = False
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
@@ -1098,7 +1097,7 @@ Public Class formCfg
         If NamensRaum IsNot Nothing Then
             Dim j As Integer = 1
             Do While (j <= NamensRaum.Folders.Count)
-                KontaktIndexer(CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder))
+                KontaktIndexer(Me.CBTelFormKorr.Checked, CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder))
                 j = j + 1
             Loop
             aktKontakt = Nothing
@@ -1114,6 +1113,7 @@ Public Class formCfg
                         'With aktKontakt
                         KontaktName = " (" & aktKontakt.FullName & ")"
                         C_KF.IndiziereKontakt(aktKontakt)
+                        If KorrNumbers Then C_KF.KontaktFormatTelNr(aktKontakt)
                         aktKontakt.Save()
                         BWIndexer.ReportProgress(1)
                         If BWIndexer.CancellationPending Then Exit For
@@ -1128,7 +1128,7 @@ Public Class formCfg
             ' Unterordner werden rekursiv durchsucht
             iOrdner = 1
             Do While (iOrdner <= Ordner.Folders.Count) And Not BWIndexer.CancellationPending
-                KontaktIndexer(CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder))
+                KontaktIndexer(Me.CBTelFormKorr.Checked, CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder))
                 iOrdner = iOrdner + 1
             Loop
             aktKontakt = Nothing
@@ -1289,13 +1289,13 @@ Public Class formCfg
         If Me.CBKHO.Checked Then
             olfolder = C_KF.P_DefContactFolder
             If Me.RadioButtonErstelle.Checked Then
-                KontaktIndexer(Ordner:=olfolder)
+                KontaktIndexer(Me.CBTelFormKorr.Checked, Ordner:=olfolder)
             ElseIf Me.RadioButtonEntfernen.Checked Then
                 KontaktDeIndexer(olfolder)
             End If
         Else
             If Me.RadioButtonErstelle.Checked Then
-                KontaktIndexer(NamensRaum:=olNamespace)
+                KontaktIndexer(Me.CBTelFormKorr.Checked, NamensRaum:=olNamespace)
             ElseIf Me.RadioButtonEntfernen.Checked Then
                 KontaktDeIndexer(olNamespace)
             End If

@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -81,6 +81,9 @@ Partial Class formCfg
         Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.TBAnrBeantworterTimeout = New System.Windows.Forms.TextBox()
         Me.LAnrBeantworterTimeout = New System.Windows.Forms.Label()
+        Me.BProbleme = New System.Windows.Forms.Button()
+        Me.BZwischenablage = New System.Windows.Forms.Button()
+        Me.BStartDebug = New System.Windows.Forms.Button()
         Me.PInfo = New System.Windows.Forms.TabPage()
         Me.BArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -200,15 +203,13 @@ Partial Class formCfg
         Me.CBLogFile = New System.Windows.Forms.CheckBox()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.PDebug = New System.Windows.Forms.TabPage()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TBDiagnose = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TBDiagnose = New System.Windows.Forms.TextBox()
-        Me.BProbleme = New System.Windows.Forms.Button()
-        Me.BZwischenablage = New System.Windows.Forms.Button()
-        Me.BStartDebug = New System.Windows.Forms.Button()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.CBTelFormKorr = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -239,9 +240,9 @@ Partial Class formCfg
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
         Me.PDebug.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'BReset
@@ -858,6 +859,38 @@ Partial Class formCfg
         "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" &
         "ntworter.")
         '
+        'BProbleme
+        '
+        Me.BProbleme.Location = New System.Drawing.Point(388, 103)
+        Me.BProbleme.Name = "BProbleme"
+        Me.BProbleme.Size = New System.Drawing.Size(179, 28)
+        Me.BProbleme.TabIndex = 33
+        Me.BProbleme.Text = "Probleme?"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" &
+        "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" &
+        "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.BProbleme.UseVisualStyleBackColor = True
+        '
+        'BZwischenablage
+        '
+        Me.BZwischenablage.Location = New System.Drawing.Point(388, 69)
+        Me.BZwischenablage.Name = "BZwischenablage"
+        Me.BZwischenablage.Size = New System.Drawing.Size(179, 28)
+        Me.BZwischenablage.TabIndex = 32
+        Me.BZwischenablage.Text = "Kopieren"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BZwischenablage, "Kopiert den Statustext in die Zwischenablage")
+        Me.BZwischenablage.UseVisualStyleBackColor = True
+        '
+        'BStartDebug
+        '
+        Me.BStartDebug.Location = New System.Drawing.Point(388, 35)
+        Me.BStartDebug.Name = "BStartDebug"
+        Me.BStartDebug.Size = New System.Drawing.Size(179, 28)
+        Me.BStartDebug.TabIndex = 30
+        Me.BStartDebug.Text = "Start"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BStartDebug, "Kopiert den Statustext in die Zwischenablage")
+        Me.BStartDebug.UseVisualStyleBackColor = True
+        '
         'PInfo
         '
         Me.PInfo.Controls.Add(Me.BArbeitsverzeichnis)
@@ -1120,9 +1153,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1134,9 +1167,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1148,9 +1181,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1196,6 +1229,7 @@ Partial Class formCfg
         '
         'GroupBoxIndex
         '
+        Me.GroupBoxIndex.Controls.Add(Me.CBTelFormKorr)
         Me.GroupBoxIndex.Controls.Add(Me.Label21)
         Me.GroupBoxIndex.Controls.Add(Me.RadioButtonEntfernen)
         Me.GroupBoxIndex.Controls.Add(Me.RadioButtonErstelle)
@@ -2133,6 +2167,30 @@ Partial Class formCfg
         Me.PDebug.Text = "Debug"
         Me.PDebug.UseVisualStyleBackColor = True
         '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.BStartDebug)
+        Me.GroupBox2.Controls.Add(Me.BZwischenablage)
+        Me.GroupBox2.Controls.Add(Me.BProbleme)
+        Me.GroupBox2.Controls.Add(Me.TBDiagnose)
+        Me.GroupBox2.Location = New System.Drawing.Point(0, 41)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(570, 253)
+        Me.GroupBox2.TabIndex = 30
+        Me.GroupBox2.TabStop = False
+        '
+        'TBDiagnose
+        '
+        Me.TBDiagnose.BackColor = System.Drawing.SystemColors.Window
+        Me.TBDiagnose.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TBDiagnose.Location = New System.Drawing.Point(2, 13)
+        Me.TBDiagnose.Multiline = True
+        Me.TBDiagnose.Name = "TBDiagnose"
+        Me.TBDiagnose.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TBDiagnose.Size = New System.Drawing.Size(376, 220)
+        Me.TBDiagnose.TabIndex = 31
+        Me.TBDiagnose.TabStop = False
+        '
         'Label8
         '
         Me.Label8.Dock = System.Windows.Forms.DockStyle.Top
@@ -2190,61 +2248,15 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'TBDiagnose
+        'CBTelFormKorr
         '
-        Me.TBDiagnose.BackColor = System.Drawing.SystemColors.Window
-        Me.TBDiagnose.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TBDiagnose.Location = New System.Drawing.Point(2, 13)
-        Me.TBDiagnose.Multiline = True
-        Me.TBDiagnose.Name = "TBDiagnose"
-        Me.TBDiagnose.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBDiagnose.Size = New System.Drawing.Size(376, 220)
-        Me.TBDiagnose.TabIndex = 31
-        Me.TBDiagnose.TabStop = False
-        '
-        'BProbleme
-        '
-        Me.BProbleme.Location = New System.Drawing.Point(388, 103)
-        Me.BProbleme.Name = "BProbleme"
-        Me.BProbleme.Size = New System.Drawing.Size(179, 28)
-        Me.BProbleme.TabIndex = 33
-        Me.BProbleme.Text = "Probleme?"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" &
-        "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" &
-        "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
-        Me.BProbleme.UseVisualStyleBackColor = True
-        '
-        'BZwischenablage
-        '
-        Me.BZwischenablage.Location = New System.Drawing.Point(388, 69)
-        Me.BZwischenablage.Name = "BZwischenablage"
-        Me.BZwischenablage.Size = New System.Drawing.Size(179, 28)
-        Me.BZwischenablage.TabIndex = 32
-        Me.BZwischenablage.Text = "Kopieren"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BZwischenablage, "Kopiert den Statustext in die Zwischenablage")
-        Me.BZwischenablage.UseVisualStyleBackColor = True
-        '
-        'BStartDebug
-        '
-        Me.BStartDebug.Location = New System.Drawing.Point(388, 35)
-        Me.BStartDebug.Name = "BStartDebug"
-        Me.BStartDebug.Size = New System.Drawing.Size(179, 28)
-        Me.BStartDebug.TabIndex = 30
-        Me.BStartDebug.Text = "Start"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BStartDebug, "Kopiert den Statustext in die Zwischenablage")
-        Me.BStartDebug.UseVisualStyleBackColor = True
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.BStartDebug)
-        Me.GroupBox2.Controls.Add(Me.BZwischenablage)
-        Me.GroupBox2.Controls.Add(Me.BProbleme)
-        Me.GroupBox2.Controls.Add(Me.TBDiagnose)
-        Me.GroupBox2.Location = New System.Drawing.Point(0, 41)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(570, 253)
-        Me.GroupBox2.TabIndex = 30
-        Me.GroupBox2.TabStop = False
+        Me.CBTelFormKorr.AutoSize = True
+        Me.CBTelFormKorr.Location = New System.Drawing.Point(344, 62)
+        Me.CBTelFormKorr.Name = "CBTelFormKorr"
+        Me.CBTelFormKorr.Size = New System.Drawing.Size(215, 17)
+        Me.CBTelFormKorr.TabIndex = 19
+        Me.CBTelFormKorr.Text = "Telefonnummernformatierung korrigieren"
+        Me.CBTelFormKorr.UseVisualStyleBackColor = True
         '
         'formCfg
         '
@@ -2310,10 +2322,10 @@ Partial Class formCfg
         Me.GBLogging.ResumeLayout(False)
         Me.GBLogging.PerformLayout()
         Me.PDebug.ResumeLayout(False)
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -2502,6 +2514,7 @@ Partial Class formCfg
     Friend WithEvents BZwischenablage As Windows.Forms.Button
     Friend WithEvents BProbleme As Windows.Forms.Button
     Friend WithEvents TBDiagnose As Windows.Forms.TextBox
+    Friend WithEvents CBTelFormKorr As Windows.Forms.CheckBox
 #If OVer < 14 Then
 #End If
 End Class

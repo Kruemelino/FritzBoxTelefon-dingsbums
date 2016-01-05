@@ -526,24 +526,24 @@ Public Class KontaktFunktionen
             Dim tempTelNr As String
             Try
                 With olKontakt
-                    Dim alleTE() As String = {.AssistantTelephoneNumber, _
-                                              .BusinessTelephoneNumber, _
-                                              .Business2TelephoneNumber, _
-                                              .CallbackTelephoneNumber, _
-                                              .CarTelephoneNumber, _
-                                              .CompanyMainTelephoneNumber, _
-                                              .HomeTelephoneNumber, _
-                                              .Home2TelephoneNumber, _
-                                              .ISDNNumber, _
-                                              .MobileTelephoneNumber, _
-                                              .OtherTelephoneNumber, _
-                                              .PagerNumber, _
-                                              .PrimaryTelephoneNumber, _
-                                              .RadioTelephoneNumber, _
-                                              .BusinessFaxNumber, _
-                                              .HomeFaxNumber, _
-                                              .OtherFaxNumber, _
-                                              .TelexNumber, _
+                    Dim alleTE() As String = { .AssistantTelephoneNumber,
+                                              .BusinessTelephoneNumber,
+                                              .Business2TelephoneNumber,
+                                              .CallbackTelephoneNumber,
+                                              .CarTelephoneNumber,
+                                              .CompanyMainTelephoneNumber,
+                                              .HomeTelephoneNumber,
+                                              .Home2TelephoneNumber,
+                                              .ISDNNumber,
+                                              .MobileTelephoneNumber,
+                                              .OtherTelephoneNumber,
+                                              .PagerNumber,
+                                              .PrimaryTelephoneNumber,
+                                              .RadioTelephoneNumber,
+                                              .BusinessFaxNumber,
+                                              .HomeFaxNumber,
+                                              .OtherFaxNumber,
+                                              .TelexNumber,
                                               .TTYTDDTelephoneNumber}
 
                     For i = LBound(alleTE) To UBound(alleTE)
@@ -568,6 +568,42 @@ Public Class KontaktFunktionen
                     If Not .Saved Then
                         .Save()
                         C_hf.LogFile("Kontakt " & olKontakt.FullNameAndCompany & " wurde durch die Indizierung gespeichert.")
+                    End If
+
+                End With
+            Catch ex As Exception
+                C_hf.LogFile("Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden.")
+            End Try
+        End If
+    End Sub
+
+    Friend Sub KontaktFormatTelNr(ByRef olKontakt As Outlook.ContactItem)
+        If Not C_DP.P_CBIndexAus Then
+            Try
+                With olKontakt
+                    If Not .AssistantTelephoneNumber = DataProvider.P_Def_LeerString Then .AssistantTelephoneNumber = C_hf.formatTelNr(.AssistantTelephoneNumber)
+                    If Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then .BusinessTelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                    If Not .Business2TelephoneNumber = DataProvider.P_Def_LeerString Then .Business2TelephoneNumber = C_hf.formatTelNr(.Business2TelephoneNumber)
+                    If Not .CallbackTelephoneNumber = DataProvider.P_Def_LeerString Then .CallbackTelephoneNumber = C_hf.formatTelNr(.CallbackTelephoneNumber)
+                    If Not .CarTelephoneNumber = DataProvider.P_Def_LeerString Then .CarTelephoneNumber = C_hf.formatTelNr(.CarTelephoneNumber)
+                    If Not .CompanyMainTelephoneNumber = DataProvider.P_Def_LeerString Then .CompanyMainTelephoneNumber = C_hf.formatTelNr(.CompanyMainTelephoneNumber)
+                    If Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then .HomeTelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                    If Not .Home2TelephoneNumber = DataProvider.P_Def_LeerString Then .Home2TelephoneNumber = C_hf.formatTelNr(.Home2TelephoneNumber)
+                    If Not .ISDNNumber = DataProvider.P_Def_LeerString Then .ISDNNumber = C_hf.formatTelNr(.ISDNNumber)
+                    If Not .MobileTelephoneNumber = DataProvider.P_Def_LeerString Then .MobileTelephoneNumber = C_hf.formatTelNr(.MobileTelephoneNumber)
+                    If Not .OtherTelephoneNumber = DataProvider.P_Def_LeerString Then .OtherTelephoneNumber = C_hf.formatTelNr(.OtherTelephoneNumber)
+                    If Not .PagerNumber = DataProvider.P_Def_LeerString Then .PagerNumber = C_hf.formatTelNr(.PagerNumber)
+                    If Not .PrimaryTelephoneNumber = DataProvider.P_Def_LeerString Then .PrimaryTelephoneNumber = C_hf.formatTelNr(.PrimaryTelephoneNumber)
+                    If Not .RadioTelephoneNumber = DataProvider.P_Def_LeerString Then .RadioTelephoneNumber = C_hf.formatTelNr(.RadioTelephoneNumber)
+                    If Not .BusinessFaxNumber = DataProvider.P_Def_LeerString Then .BusinessFaxNumber = C_hf.formatTelNr(.BusinessFaxNumber)
+                    If Not .HomeFaxNumber = DataProvider.P_Def_LeerString Then .HomeFaxNumber = C_hf.formatTelNr(.HomeFaxNumber)
+                    If Not .OtherFaxNumber = DataProvider.P_Def_LeerString Then .OtherFaxNumber = C_hf.formatTelNr(.OtherFaxNumber)
+                    If Not .TelexNumber = DataProvider.P_Def_LeerString Then .TelexNumber = C_hf.formatTelNr(.TelexNumber)
+                    If Not .TTYTDDTelephoneNumber = DataProvider.P_Def_LeerString Then .TTYTDDTelephoneNumber = C_hf.formatTelNr(.TTYTDDTelephoneNumber)
+
+                    If Not .Saved Then
+                        .Save()
+                        C_hf.LogFile("Kontakt " & olKontakt.FullNameAndCompany & " wurde durch das Formatieren der Nummern gespeichert.")
                     End If
 
                 End With
