@@ -12,7 +12,7 @@ Public Class FritzBox
     Private C_FBoxUPnP As FritzBoxServices
 
     Private FBFehler As Boolean
-    Private FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
+    Private En_FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
 
     Private tb As New Windows.Forms.TextBox
     Private EventProvider As IEventProvider
@@ -472,10 +472,10 @@ Public Class FritzBox
     Private ReadOnly Property P_FritzBoxVorhanden(ByVal FritzBoxAdresse As String) As Boolean
         Get
             If C_DP.P_CBForceFBAddr Then
-                P_FritzBoxVorhanden = C_hf.Ping(FritzBoxAdresse)
-            Else
                 C_hf.httpGET("http://" & FritzBoxAdresse, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), FBFehler)
                 Return Not FBFehler
+            Else
+                Return C_hf.Ping(FritzBoxAdresse)
             End If
         End Get
     End Property
@@ -1087,6 +1087,15 @@ Public Class FritzBox
         Get
             Return "MobileName=telcfg:settings/Mobile/Name"
         End Get
+    End Property
+
+    Public Property FBEncoding As Encoding
+        Get
+            Return En_FBEncoding
+        End Get
+        Set(value As Encoding)
+            En_FBEncoding = value
+        End Set
     End Property
 
 #End Region

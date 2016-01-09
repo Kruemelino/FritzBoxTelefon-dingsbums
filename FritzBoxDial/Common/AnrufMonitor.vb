@@ -11,7 +11,7 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Timer"
-    'Private WithEvents TimerReStart As System.Timers.Timer
+    Private WithEvents TimerReStart As System.Timers.Timer
     Private WithEvents TimerCheckAnrMon As System.Timers.Timer
 #End Region
 
@@ -27,6 +27,7 @@ Friend Class AnrufMonitor
 
 #Region "Eigene Formulare"
     Private F_RWS As formRWSuche
+    Private F_AnrListImport As formImportAnrList
 #End Region
 
 #Region "NetworkStream"
@@ -34,14 +35,33 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Properties"
+    ''' <summary>
+    ''' Klasse für das Anrufmonitor- und Stoppuhr-Popup
+    ''' </summary>
     Public Property P_PopUp() As Popup
         Get
-            Return C_PopUp
+            Return C_Popup
         End Get
         Set(ByVal value As Popup)
-            C_PopUp = value
+            C_Popup = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Klasse für die Anruflistenauswertung
+    ''' </summary>
+    Public Property P_FormAnrList() As formImportAnrList
+        Get
+            Return F_AnrListImport
+        End Get
+        Set(ByVal value As formImportAnrList)
+            F_AnrListImport = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor aktiv ist.
+    ''' </summary>
     Friend Property AnrMonAktiv() As Boolean
         Get
             Return bAnrMonAktiv
@@ -50,6 +70,10 @@ Friend Class AnrufMonitor
             bAnrMonAktiv = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Angabe, ob es beim Aufbau des Anrufmonitors ein Fehler gab.
+    ''' </summary>
     Friend Property AnrMonError() As Boolean
         Get
             Return bAnrMonError
@@ -58,6 +82,10 @@ Friend Class AnrufMonitor
             bAnrMonError = value
         End Set
     End Property
+
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor von Phoner verwendet werden soll.
+    ''' </summary>
     Friend Property AnrMonPhoner() As Boolean
         Get
             Return bAnrMonPhoner
@@ -66,6 +94,10 @@ Friend Class AnrufMonitor
             bAnrMonPhoner = value
         End Set
     End Property
+
+    ''' <summary>
+    '''Der letzte Anrufer.
+    ''' </summary>
     Friend Property LetzterAnrufer As C_Telefonat
         Get
             Return TLetzterAnrufer
@@ -98,22 +130,14 @@ Friend Class AnrufMonitor
 #End Region
 
 #Region "Globale Variablen"
-
     Private bAnrMonAktiv As Boolean                    ' damit 'AnrMonAktion' nur einmal aktiv ist
     Private bAnrMonError As Boolean
     Private bAnrMonPhoner As Boolean = False
     Private TLetzterAnrufer As C_Telefonat
+    Private RestartCounter As Integer
 #End Region
 
-    Friend Sub New(ByVal DataProvoderKlasse As DataProvider, _
-                   ByVal RWS As formRWSuche, _
-                   ByVal HelferKlasse As Helfer, _
-                   ByVal KontaktKlasse As KontaktFunktionen, _
-                   ByVal InterfacesKlasse As GraphicalUserInterface, _
-                   ByVal OutlInter As OutlookInterface, _
-                   ByVal PopupKlasse As Popup, _
-                   ByVal XMLKlasse As XML)
-
+    Friend Sub New(ByVal DataProvoderKlasse As DataProvider, ByVal RWS As formRWSuche, ByVal HelferKlasse As Helfer, ByVal KontaktKlasse As KontaktFunktionen, ByVal InterfacesKlasse As GraphicalUserInterface, ByVal OutlInter As OutlookInterface, ByVal PopupKlasse As Popup, ByVal XMLKlasse As XML)
         C_XML = XMLKlasse
         C_DP = DataProvoderKlasse
         C_hf = HelferKlasse
@@ -254,11 +278,8 @@ Friend Class AnrufMonitor
             C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMonTimer4)
             AnrMonStartStopp()
             AnrMonError = True
-            ' Erneute Verbindung aufbauen???
-            'If TimerReStart IsNot Nothing AndAlso Not TimerReStart.Enabled Then
-            '    StandbyCounter = 1
-            '    TimerReStart = C_hf.SetTimer(DataProvider.P_Def_ReStartIntervall)
-            'End If
+            ' Erneute Verbindung aufbauen per Timer
+            Restart(True)
         End Try
 
         CheckAnrMonTCPSocket.Close()
@@ -270,6 +291,46 @@ Friend Class AnrufMonitor
 #Else
         C_GUI.RefreshRibbon()
 #End If
+    End Sub
+
+    Private Sub TimerReStart_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
+        Dim ReStartError As Boolean
+
+        If RestartCounter < DataProvider.P_Def_TryMaxRestart Then
+            If C_DP.P_CBForceFBAddr Then
+                C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), ReStartError)
+            Else
+                ReStartError = Not C_hf.Ping(C_DP.P_TBFBAdr)
+            End If
+
+            If ReStartError Then
+                ' Fehler! Verbindung zur Fritz!Box konnte nach dem Verbindungsverlust noch nicht wieder aufgebaut werden. Weitere Versuche werden folgen.
+                C_hf.LogFile(DataProvider.P_ReStart_Log_Timer1)
+                RestartCounter += 1
+            Else
+                ' Erfolg! Verbindung zur Fritz!Box konnte nach dem Verbindungsverlust wieder aufgebaut werden.
+                C_hf.LogFile(DataProvider.P_ReStart_Log_Timer2)
+
+                ' Beende Timer
+                TimerReStart = C_hf.KillTimer(TimerReStart)
+
+                ' Starte Anrufmonitor
+                If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
+                    C_hf.LogFile(DataProvider.P_ReStart_Log_Timer4)
+                    AnrMonStartStopp()
+                End If
+
+                ' Auswertung der Anrufliste anstoßen
+                If F_AnrListImport IsNot Nothing AndAlso C_DP.P_CBAutoAnrList Then
+                    C_hf.LogFile(DataProvider.P_ReStart_Log_Timer5)
+                    F_AnrListImport.StartAuswertung(False)
+                End If
+            End If
+        Else
+            ' Fehler! Verbindung zur Fritz!Box konnte final nach dem Verbindungsverlusty nicht wieder aufgebaut werden.
+            C_hf.LogFile(DataProvider.P_ReStart_Log_Timer3)
+            TimerReStart = C_hf.KillTimer(TimerReStart)
+        End If
     End Sub
 #End Region
 
@@ -321,11 +382,20 @@ Friend Class AnrufMonitor
         End If
     End Sub
 
-    Friend Sub AnrMonReStart()
-        AnrMonStartStopp() ' Ausschalten
-        AnrMonStartStopp() ' Einschalten
+    Friend Sub Restart(ByVal UseTimer As Boolean)
+        If UseTimer Then
+            If TimerReStart Is Nothing Then
+                RestartCounter = 1
+                TimerReStart = C_hf.SetTimer(DataProvider.P_Def_ReStartIntervall)
+            Else
+                TimerReStart = C_hf.KillTimer(TimerReStart)
+                Restart(True)
+            End If
+        Else
+            AnrMonStartStopp() ' Ausschalten
+            AnrMonStartStopp() ' Einschalten 
+        End If
     End Sub
-
 #End Region
 
 #Region "Anrufmonitor"

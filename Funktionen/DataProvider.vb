@@ -2478,56 +2478,56 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
-    ''' Fritz!Box nach StandBy noch nicht verfügbar.
+    ''' Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.
     ''' </summary>
-    Public Shared ReadOnly Property P_Standby_Log_Timer1() As String
+    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer4() As String
         Get
-            Return "Fritz!Box nach StandBy noch nicht verfügbar."
+            Return "Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren."
         End Get
     End Property
 
     ''' <summary>
-    ''' Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor...
+    ''' Fritz!Box nach einem Verbindungsverlust noch nicht verfügbar.
     ''' </summary>
-    Public Shared ReadOnly Property P_Standby_Log_Timer2() As String
+    Public Shared ReadOnly Property P_ReStart_Log_Timer1() As String
         Get
-            Return "Fritz!Box nach StandBy wieder verfügbar. Initialisiere Anrufmonitor..."
+            Return P_Def_FritzBoxName & " nach einem Verbindungsverlust noch nicht verfügbar."
         End Get
     End Property
 
     ''' <summary>
-    ''' Reaktivierung des Anrufmonitors nicht erfolgreich.
+    ''' Fritz!Box nach Verbindungsverlust wieder verfügbar. Initialisiere Anrufmonitor...
     ''' </summary>
-    Public Shared ReadOnly Property P_Standby_Log_Timer3() As String
+    Public Shared ReadOnly Property P_ReStart_Log_Timer2() As String
         Get
-            Return "Reaktivierung des Anrufmonitors nicht erfolgreich."
+            Return P_Def_FritzBoxName & " nach Verbindungsverlust wieder verfügbar. Initialisiere Anrufmonitor..."
         End Get
     End Property
 
     ''' <summary>
-    ''' Anrufmonitor nach dem Aufwachen aus Standby gestartet.
+    ''' Reaktivierung des Anrufmonitors nach einem Verbindungsverlust nicht erfolgreich.
     ''' </summary>
-    Public Shared ReadOnly Property P_Standby_Log_Timer4() As String
+    Public Shared ReadOnly Property P_ReStart_Log_Timer3() As String
         Get
-            Return "Anrufmonitor nach Aufwachen aus Standby gestartet."
+            Return "Reaktivierung des Anrufmonitors nach einem Verbindungsverlust nicht erfolgreich."
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Anrufmonitor nach einem Verbindungsverlust gestartet
+    ''' </summary>
+    Public Shared ReadOnly Property P_ReStart_Log_Timer4() As String
+        Get
+            Return "Anrufmonitor nach einem Verbindungsverlust gestartet."
         End Get
     End Property
 
     ''' <summary>
     ''' Auswertung der Anrufliste nach dem Aufwachen aus Standby gestartet.
     ''' </summary>
-    Public Shared ReadOnly Property P_Standby_Log_Timer5() As String
+    Public Shared ReadOnly Property P_ReStart_Log_Timer5() As String
         Get
-            Return "Auswertung der Anrufliste nach dem Aufwachen aus Standby gestartet."
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren.
-    ''' </summary>
-    Public Shared ReadOnly Property P_AnrMon_Log_AnrMonTimer4() As String
-        Get
-            Return "Die TCP-Verbindung zum Fritz!Box Anrufmonitor wurde verloren."
+            Return "Auswertung der Anrufliste nach einem Verbindungsverlust gestartet."
         End Get
     End Property
 

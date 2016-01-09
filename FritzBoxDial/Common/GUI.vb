@@ -1481,7 +1481,7 @@ Imports Microsoft.Office.Core
                 End If
                 P_AnrList.StartAuswertung(True)
             Case TaskToDo.RestartAnrMon
-                C_AnrMon.AnrMonReStart()
+                C_AnrMon.Restart(False)
             Case TaskToDo.ShowAnrMon
                 C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
             Case TaskToDo.DialInspector

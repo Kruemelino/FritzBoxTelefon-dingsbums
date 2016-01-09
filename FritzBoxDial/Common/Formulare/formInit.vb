@@ -24,10 +24,6 @@ Friend Class formInit
     Private SID As String
     ' Integer
     Private StandbyCounter As Integer
-    ' Timer
-    Private WithEvents TimerReStart As Timer
-    ' Boolean
-    Private ReStartError As Boolean
 
     Public Sub New(ByRef GUIKlasse As GraphicalUserInterface, ByRef KFKlasse As KontaktFunktionen, ByRef HFKlasse As Helfer, ByRef DPKlasse As DataProvider, ByRef AnrMonKlasse As AnrufMonitor, ByRef XMLKlasse As XML, ByRef FritzBoxKlasse As FritzBox)
 
@@ -102,6 +98,7 @@ Friend Class formInit
             ' Verschiedene Funktionen an den AnrufMonitor-Klasse übergeben
             With C_AnrMon
                 .P_PopUp = F_PopUp
+                .P_FormAnrList = F_AnrListImport
             End With
 
             If C_DP.P_CBAutoAnrList And C_DP.P_CBUseAnrMon Then F_AnrListImport.StartAuswertung(False)
@@ -135,54 +132,11 @@ Friend Class formInit
 
 #Region "Standby"
     Public Sub StandByReStart()
-        If C_DP.P_CBAutoAnrList Or C_DP.P_CBAnrMonAuto Then
-            If TimerReStart Is Nothing Then
-                StandbyCounter = 0
-                TimerReStart = C_HF.SetTimer(DataProvider.P_Def_ReStartIntervall)
-            End If
+        If C_AnrMon IsNot Nothing AndAlso (C_DP.P_CBAutoAnrList Or C_DP.P_CBAnrMonAuto) Then
+            C_AnrMon.Restart(True)
         End If
     End Sub
 
-    Private Sub TimerReStartStandBy_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
-        If StandbyCounter < DataProvider.P_Def_TryMaxRestart Then
-            If C_DP.P_CBForceFBAddr Then
-                C_HF.httpGET("http://" & C_DP.P_TBFBAdr, C_HF.GetEncoding(C_DP.P_EncodeingFritzBox), ReStartError)
-            Else
-                ReStartError = Not C_HF.Ping(C_DP.P_TBFBAdr)
-            End If
-
-            If ReStartError Then
-                ' Fehler! Verbindung zur Fritz!Box konnte nach dem Aufwachen aus dem Standby noch nicht wieder aufgebaut werden. Weitere Versuche werden folgen.
-                C_HF.LogFile(DataProvider.P_Standby_Log_Timer1)
-                StandbyCounter += 1
-            Else
-                ' Erfolg! Verbindung zur Fritz!Box konnte nach dem Aufwachen aus dem Standby wieder aufgebaut werden.
-                C_HF.LogFile(DataProvider.P_Standby_Log_Timer2)
-
-                ' Beende Timer
-                TimerReStart = C_HF.KillTimer(TimerReStart)
-
-                ' Starte Anrufmonitor
-                If C_DP.P_CBAnrMonAuto And C_DP.P_CBUseAnrMon Then
-                    C_HF.LogFile(DataProvider.P_Standby_Log_Timer4)
-                    C_AnrMon.AnrMonStartStopp()
-                End If
-
-                ' Auswertung der Anrufliste anstoßen
-                If C_DP.P_CBAutoAnrList Then
-                    C_HF.LogFile(DataProvider.P_Standby_Log_Timer5)
-                    If F_AnrListImport Is Nothing Then
-                        F_AnrListImport = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
-                    End If
-                    F_AnrListImport.StartAuswertung(False)
-                End If
-            End If
-        Else
-            ' Fehler! Verbindung zur Fritz!Box final konnte nach dem Aufwachen aus dem Standby nicht wieder aufgebaut werden.
-            C_HF.LogFile(DataProvider.P_Standby_Log_Timer3)
-            TimerReStart = C_HF.KillTimer(TimerReStart)
-        End If
-    End Sub
 #End Region
 
 #Region "Formularfunktionen"
