@@ -327,7 +327,7 @@ Friend Class AnrufMonitor
                 End If
             End If
         Else
-            ' Fehler! Verbindung zur Fritz!Box konnte final nach dem Verbindungsverlusty nicht wieder aufgebaut werden.
+            ' Fehler! Verbindung zur Fritz!Box konnte final nach dem Verbindungsverlust nicht wieder aufgebaut werden.
             C_hf.LogFile(DataProvider.P_ReStart_Log_Timer3)
             TimerReStart = C_hf.KillTimer(TimerReStart)
         End If
