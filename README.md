@@ -15,7 +15,7 @@ Alle weiteren Komponenten (.NET Framework, VSTO, PIA), die das Addin benötigen,
 
 1.2	Systemvoraussetzungen für Outlook 365, Outlook 2016, Outlook 2013, Outlook 2010, Outlook 2007
 
-- Microsoft Outlook 365 oder Outlook 2013 oder Outlook 2010 oder Outlook 2007
+- Microsoft Outlook 2016, Outlook 365 oder Outlook 2013 oder Outlook 2010 oder Outlook 2007
 - Microsoft .NET Framework 4.0 Client Profile: http://www.microsoft.com/de-de/download/details.aspx?id=24872 
 - Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTOR 2010): http://go.microsoft.com/fwlink/?LinkId=158918
 
