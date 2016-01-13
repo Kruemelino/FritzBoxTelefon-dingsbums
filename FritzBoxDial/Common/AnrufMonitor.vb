@@ -498,14 +498,14 @@ Friend Class AnrufMonitor
                 .RingTime = DataProvider.P_Def_ErrorMinusOne_Integer
                 ' Phoner
                 If AnrMonPhoner Then
-                    Dim PhonerTelNr() As String
+                    Dim PhonerTelNr As Helfer.Telefonnummer
                     Dim pos As Integer = InStr(.TelNr, "@", CompareMethod.Text)
                     If Not pos = 0 Then
                         .TelNr = Left(.TelNr, pos - 1)
                     Else
                         PhonerTelNr = C_hf.TelNrTeile(.TelNr)
-                        If Not PhonerTelNr(1) = DataProvider.P_Def_LeerString Then .TelNr = PhonerTelNr(1) & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
-                        If Not PhonerTelNr(0) = DataProvider.P_Def_LeerString Then .TelNr = PhonerTelNr(0) & Mid(.TelNr, 2)
+                        If Not PhonerTelNr.Ortsvorwahl = DataProvider.P_Def_LeerString Then .TelNr = PhonerTelNr.Ortsvorwahl & Mid(.TelNr, InStr(.TelNr, ")", CompareMethod.Text) + 2)
+                        If Not PhonerTelNr.Landesvorwahl = DataProvider.P_Def_LeerString Then .TelNr = PhonerTelNr.Landesvorwahl & Mid(.TelNr, 2)
                     End If
                     .TelNr = C_hf.nurZiffern(.TelNr)
                 End If
@@ -527,7 +527,7 @@ Friend Class AnrufMonitor
                     If .olContact IsNot Nothing Then
                         .Anrufer = .olContact.FullName
                         .Firma = .olContact.CompanyName
-                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
+                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
                     Else
                         ' Anrufer per Rückwärtssuche ermitteln
                         If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
@@ -548,7 +548,7 @@ Friend Class AnrufMonitor
 
                         End If
                         'Formatiere die Telefonnummer
-                        .TelNr = C_hf.formatTelNr(.TelNr)
+                        .TelNr = C_hf.FormatTelNr(.TelNr)
                     End If
                     ' Hier Anrufmonitor aktualisieren! Nicht beim Journalimport!
                     If Telefonat.PopupAnrMon IsNot Nothing Then
@@ -682,7 +682,7 @@ Friend Class AnrufMonitor
                     .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
                     If Telefonat.olContact IsNot Nothing Then
                         .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
-                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.formatTelNr(.TelNr)
+                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
                     Else
                         ' .Anrufer per Rückwärtssuche ermitteln
                         If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
@@ -702,7 +702,7 @@ Friend Class AnrufMonitor
                             End If
 
                         End If
-                        .TelNr = C_hf.formatTelNr(.TelNr)
+                        .TelNr = C_hf.FormatTelNr(.TelNr)
                     End If
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern

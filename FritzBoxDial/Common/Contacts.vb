@@ -282,15 +282,15 @@ Public Class KontaktFunktionen
 
                 If Not TelNr = DataProvider.P_Def_LeerString Then
                     ' Formatiere Telefonnummer
-                    TelNr = C_hf.formatTelNr(TelNr)
+                    TelNr = C_hf.FormatTelNr(TelNr)
                     If Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then
                         If Not C_hf.TelNrVergleich(.BusinessTelephoneNumber, TelNr) Then
-                            .Business2TelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
+                            .Business2TelephoneNumber = C_hf.FormatTelNr(.BusinessTelephoneNumber)
                         End If
                         .BusinessTelephoneNumber = TelNr
                     ElseIf Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then
                         If Not C_hf.TelNrVergleich(.HomeTelephoneNumber, TelNr) Then
-                            .Home2TelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
+                            .Home2TelephoneNumber = C_hf.FormatTelNr(.HomeTelephoneNumber)
                         End If
                         .HomeTelephoneNumber = TelNr
                     ElseIf .HomeTelephoneNumber Is DataProvider.P_Def_LeerString Then
@@ -581,25 +581,25 @@ Public Class KontaktFunktionen
         If Not C_DP.P_CBIndexAus Then
             Try
                 With olKontakt
-                    If Not .AssistantTelephoneNumber = DataProvider.P_Def_LeerString Then .AssistantTelephoneNumber = C_hf.formatTelNr(.AssistantTelephoneNumber)
-                    If Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then .BusinessTelephoneNumber = C_hf.formatTelNr(.BusinessTelephoneNumber)
-                    If Not .Business2TelephoneNumber = DataProvider.P_Def_LeerString Then .Business2TelephoneNumber = C_hf.formatTelNr(.Business2TelephoneNumber)
-                    If Not .CallbackTelephoneNumber = DataProvider.P_Def_LeerString Then .CallbackTelephoneNumber = C_hf.formatTelNr(.CallbackTelephoneNumber)
-                    If Not .CarTelephoneNumber = DataProvider.P_Def_LeerString Then .CarTelephoneNumber = C_hf.formatTelNr(.CarTelephoneNumber)
-                    If Not .CompanyMainTelephoneNumber = DataProvider.P_Def_LeerString Then .CompanyMainTelephoneNumber = C_hf.formatTelNr(.CompanyMainTelephoneNumber)
-                    If Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then .HomeTelephoneNumber = C_hf.formatTelNr(.HomeTelephoneNumber)
-                    If Not .Home2TelephoneNumber = DataProvider.P_Def_LeerString Then .Home2TelephoneNumber = C_hf.formatTelNr(.Home2TelephoneNumber)
-                    If Not .ISDNNumber = DataProvider.P_Def_LeerString Then .ISDNNumber = C_hf.formatTelNr(.ISDNNumber)
-                    If Not .MobileTelephoneNumber = DataProvider.P_Def_LeerString Then .MobileTelephoneNumber = C_hf.formatTelNr(.MobileTelephoneNumber)
-                    If Not .OtherTelephoneNumber = DataProvider.P_Def_LeerString Then .OtherTelephoneNumber = C_hf.formatTelNr(.OtherTelephoneNumber)
-                    If Not .PagerNumber = DataProvider.P_Def_LeerString Then .PagerNumber = C_hf.formatTelNr(.PagerNumber)
-                    If Not .PrimaryTelephoneNumber = DataProvider.P_Def_LeerString Then .PrimaryTelephoneNumber = C_hf.formatTelNr(.PrimaryTelephoneNumber)
-                    If Not .RadioTelephoneNumber = DataProvider.P_Def_LeerString Then .RadioTelephoneNumber = C_hf.formatTelNr(.RadioTelephoneNumber)
-                    If Not .BusinessFaxNumber = DataProvider.P_Def_LeerString Then .BusinessFaxNumber = C_hf.formatTelNr(.BusinessFaxNumber)
-                    If Not .HomeFaxNumber = DataProvider.P_Def_LeerString Then .HomeFaxNumber = C_hf.formatTelNr(.HomeFaxNumber)
-                    If Not .OtherFaxNumber = DataProvider.P_Def_LeerString Then .OtherFaxNumber = C_hf.formatTelNr(.OtherFaxNumber)
-                    If Not .TelexNumber = DataProvider.P_Def_LeerString Then .TelexNumber = C_hf.formatTelNr(.TelexNumber)
-                    If Not .TTYTDDTelephoneNumber = DataProvider.P_Def_LeerString Then .TTYTDDTelephoneNumber = C_hf.formatTelNr(.TTYTDDTelephoneNumber)
+                    If Not .AssistantTelephoneNumber = DataProvider.P_Def_LeerString Then .AssistantTelephoneNumber = C_hf.FormatTelNr(.AssistantTelephoneNumber)
+                    If Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then .BusinessTelephoneNumber = C_hf.FormatTelNr(.BusinessTelephoneNumber)
+                    If Not .Business2TelephoneNumber = DataProvider.P_Def_LeerString Then .Business2TelephoneNumber = C_hf.FormatTelNr(.Business2TelephoneNumber)
+                    If Not .CallbackTelephoneNumber = DataProvider.P_Def_LeerString Then .CallbackTelephoneNumber = C_hf.FormatTelNr(.CallbackTelephoneNumber)
+                    If Not .CarTelephoneNumber = DataProvider.P_Def_LeerString Then .CarTelephoneNumber = C_hf.FormatTelNr(.CarTelephoneNumber)
+                    If Not .CompanyMainTelephoneNumber = DataProvider.P_Def_LeerString Then .CompanyMainTelephoneNumber = C_hf.FormatTelNr(.CompanyMainTelephoneNumber)
+                    If Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then .HomeTelephoneNumber = C_hf.FormatTelNr(.HomeTelephoneNumber)
+                    If Not .Home2TelephoneNumber = DataProvider.P_Def_LeerString Then .Home2TelephoneNumber = C_hf.FormatTelNr(.Home2TelephoneNumber)
+                    If Not .ISDNNumber = DataProvider.P_Def_LeerString Then .ISDNNumber = C_hf.FormatTelNr(.ISDNNumber)
+                    If Not .MobileTelephoneNumber = DataProvider.P_Def_LeerString Then .MobileTelephoneNumber = C_hf.FormatTelNr(.MobileTelephoneNumber)
+                    If Not .OtherTelephoneNumber = DataProvider.P_Def_LeerString Then .OtherTelephoneNumber = C_hf.FormatTelNr(.OtherTelephoneNumber)
+                    If Not .PagerNumber = DataProvider.P_Def_LeerString Then .PagerNumber = C_hf.FormatTelNr(.PagerNumber)
+                    If Not .PrimaryTelephoneNumber = DataProvider.P_Def_LeerString Then .PrimaryTelephoneNumber = C_hf.FormatTelNr(.PrimaryTelephoneNumber)
+                    If Not .RadioTelephoneNumber = DataProvider.P_Def_LeerString Then .RadioTelephoneNumber = C_hf.FormatTelNr(.RadioTelephoneNumber)
+                    If Not .BusinessFaxNumber = DataProvider.P_Def_LeerString Then .BusinessFaxNumber = C_hf.FormatTelNr(.BusinessFaxNumber)
+                    If Not .HomeFaxNumber = DataProvider.P_Def_LeerString Then .HomeFaxNumber = C_hf.FormatTelNr(.HomeFaxNumber)
+                    If Not .OtherFaxNumber = DataProvider.P_Def_LeerString Then .OtherFaxNumber = C_hf.FormatTelNr(.OtherFaxNumber)
+                    If Not .TelexNumber = DataProvider.P_Def_LeerString Then .TelexNumber = C_hf.FormatTelNr(.TelexNumber)
+                    If Not .TTYTDDTelephoneNumber = DataProvider.P_Def_LeerString Then .TTYTDDTelephoneNumber = C_hf.FormatTelNr(.TTYTDDTelephoneNumber)
 
                     If Not .Saved Then
                         .Save()
@@ -757,14 +757,14 @@ Public Class KontaktFunktionen
                 If .BusinessFaxNumber = DataProvider.P_Def_LeerString Then
                     pos = InStr(1, BFax, "#", CompareMethod.Text)
                     If Not pos = 0 Then BFax = Left(BFax, pos - 1)
-                    .BusinessFaxNumber = C_hf.formatTelNr(BFax)
+                    .BusinessFaxNumber = C_hf.FormatTelNr(BFax)
                 End If
                 BTel = ReadFromVCard(vCard, "TEL", "WORK,VOICE")
             End If
             If .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, BTel, "#", CompareMethod.Text)
                 If Not pos = 0 Then BTel = Left(BTel, pos - 1)
-                .BusinessTelephoneNumber = C_hf.formatTelNr(BTel)
+                .BusinessTelephoneNumber = C_hf.FormatTelNr(BTel)
             End If
             HFax = ReadFromVCard(vCard, "TEL", "HOME,FAX")
             If HFax = DataProvider.P_Def_LeerString Then
@@ -773,38 +773,38 @@ Public Class KontaktFunktionen
                 If .HomeFaxNumber = DataProvider.P_Def_LeerString Then
                     pos = InStr(1, HFax, "#", CompareMethod.Text)
                     If Not pos = 0 Then HFax = Left(HFax, pos - 1)
-                    .HomeFaxNumber = C_hf.formatTelNr(HFax)
+                    .HomeFaxNumber = C_hf.FormatTelNr(HFax)
                 End If
                 HTel = ReadFromVCard(vCard, "TEL", "HOME,VOICE")
             End If
             If .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, HTel, "#", CompareMethod.Text)
                 If Not pos = 0 Then HTel = Left(HTel, pos - 1)
-                .HomeTelephoneNumber = C_hf.formatTelNr(HTel)
+                .HomeTelephoneNumber = C_hf.FormatTelNr(HTel)
             End If
             Mobile = ReadFromVCard(vCard, "TEL", "CELL")
             If .MobileTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Mobile, "#", CompareMethod.Text)
                 If Not pos = 0 Then Mobile = Left(Mobile, pos - 1)
-                .MobileTelephoneNumber = C_hf.formatTelNr(Mobile)
+                .MobileTelephoneNumber = C_hf.FormatTelNr(Mobile)
             End If
             Pager = ReadFromVCard(vCard, "TEL", "PAGER")
             If .PagerNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Pager, "#", CompareMethod.Text)
                 If Not pos = 0 Then Pager = Left(Pager, pos - 1)
-                .PagerNumber = C_hf.formatTelNr(Pager)
+                .PagerNumber = C_hf.FormatTelNr(Pager)
             End If
             Car = ReadFromVCard(vCard, "TEL", "CAR")
             If .CarTelephoneNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, Car, "#", CompareMethod.Text)
                 If Not pos = 0 Then Car = Left(Car, pos - 1)
-                .CarTelephoneNumber = C_hf.formatTelNr(Car)
+                .CarTelephoneNumber = C_hf.FormatTelNr(Car)
             End If
             ISDN = ReadFromVCard(vCard, "TEL", "ISDN")
             If .ISDNNumber = DataProvider.P_Def_LeerString Then
                 pos = InStr(1, ISDN, "#", CompareMethod.Text)
                 If Not pos = 0 Then ISDN = Left(ISDN, pos - 1)
-                .ISDNNumber = C_hf.formatTelNr(ISDN)
+                .ISDNNumber = C_hf.FormatTelNr(ISDN)
             End If
             If BFax = DataProvider.P_Def_LeerString And _
                 BTel = DataProvider.P_Def_LeerString And _
@@ -819,9 +819,9 @@ Public Class KontaktFunktionen
                 pos = InStr(1, tmp1, "#", CompareMethod.Text)
                 If Not pos = 0 Then tmp1 = Left(tmp1, pos - 1)
                 If Company = DataProvider.P_Def_LeerString Then
-                    If .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then .HomeTelephoneNumber = C_hf.formatTelNr(tmp1)
+                    If .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then .HomeTelephoneNumber = C_hf.FormatTelNr(tmp1)
                 Else
-                    If .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then .BusinessTelephoneNumber = C_hf.formatTelNr(tmp1)
+                    If .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then .BusinessTelephoneNumber = C_hf.FormatTelNr(tmp1)
                 End If
             End If
             'insert Birthday

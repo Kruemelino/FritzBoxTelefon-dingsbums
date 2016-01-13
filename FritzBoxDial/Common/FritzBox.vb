@@ -254,58 +254,6 @@ Public Class FritzBox
             End Set
         End Property
 
-        'Private sOrtsvorwahl As String
-        '''' <summary>
-        '''' Die Ortsvorwahl der Telefonnummer
-        '''' </summary>
-        'Friend Property Ortsvorwahl As String
-        '    Get
-        '        Return sOrtsvorwahl
-        '    End Get
-        '    Set(value As String)
-        '        sOrtsvorwahl = value
-        '    End Set
-        'End Property
-
-        'Private sLandesvorwahl As String
-        '''' <summary>
-        '''' Die Landesvorwahl der Telefonnummer
-        '''' </summary>
-        'Friend Property Landesvorwahl As String
-        '    Get
-        '        Return sLandesvorwahl
-        '    End Get
-        '    Set(value As String)
-        '        sLandesvorwahl = value
-        '    End Set
-        'End Property
-
-        'Private sDurchwahl As String
-        '''' <summary>
-        '''' Die Durchwahl der Telefonnummer
-        '''' </summary>
-        'Friend Property Durchwahl As String
-        '    Get
-        '        Return sDurchwahl
-        '    End Get
-        '    Set(value As String)
-        '        sDurchwahl = value
-        '    End Set
-        'End Property
-
-        'Private sNummer As String
-        '''' <summary>
-        '''' Der Rest der Nummer, wenn alle bekannten Teile abgeschnitten wurden
-        '''' </summary>
-        'Friend Property Nummer As String
-        '    Get
-        '        Return sNummer
-        '    End Get
-        '    Set(value As String)
-        '        sNummer = value
-        '    End Set
-        'End Property
-
         Private sTelTyp As TelTyp
         ''' <summary>
         ''' Der Telefontyp der Telefonnummer: FON, DECT, VOIP, S0

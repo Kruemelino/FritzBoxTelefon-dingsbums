@@ -1657,6 +1657,69 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public Shared ReadOnly Property P_Def_MobilVorwahlItalien() As ReadOnlyCollection(Of String)
+        Get
+            Dim tmp As New List(Of String)
+            tmp.Add("330")
+            tmp.Add("331")
+            tmp.Add("332")
+            tmp.Add("333")
+            tmp.Add("334")
+            tmp.Add("335")
+            tmp.Add("336")
+            tmp.Add("337")
+            tmp.Add("338")
+            tmp.Add("339")
+            tmp.Add("360")
+            tmp.Add("361")
+            tmp.Add("362")
+            tmp.Add("363")
+            tmp.Add("364")
+            tmp.Add("365")
+            tmp.Add("366")
+            tmp.Add("367")
+            tmp.Add("368")
+            tmp.Add("390")
+            tmp.Add("391")
+            tmp.Add("392")
+            tmp.Add("393")
+            tmp.Add("340")
+            tmp.Add("341")
+            tmp.Add("342")
+            tmp.Add("343")
+            tmp.Add("344")
+            tmp.Add("345")
+            tmp.Add("346")
+            tmp.Add("347")
+            tmp.Add("348")
+            tmp.Add("349")
+            tmp.Add("380")
+            tmp.Add("381")
+            tmp.Add("382")
+            tmp.Add("383")
+            tmp.Add("384")
+            tmp.Add("385")
+            tmp.Add("386")
+            tmp.Add("387")
+            tmp.Add("388")
+            tmp.Add("389")
+            tmp.Add("320")
+            tmp.Add("321")
+            tmp.Add("322")
+            tmp.Add("323")
+            tmp.Add("324")
+            tmp.Add("325")
+            tmp.Add("326")
+            tmp.Add("327")
+            tmp.Add("328")
+            tmp.Add("329")
+
+
+            Return New ReadOnlyCollection(Of String)(tmp)
+        End Get
+    End Property
+
+
     Public Shared ReadOnly Property P_Def_UserPropertyIndex() As String
         Get
             Return "FBDB-Save"
@@ -1715,7 +1778,7 @@ Public Class DataProvider
 
     Public Shared ReadOnly Property P_Def_Phoner_Ready As String
         Get
-            Return "Welcome to Phoner"
+            Return "Welcome To Phoner"
         End Get
     End Property
 

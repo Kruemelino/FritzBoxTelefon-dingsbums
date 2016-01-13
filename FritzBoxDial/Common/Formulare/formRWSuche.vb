@@ -175,9 +175,9 @@ Friend Class formRWSuche
                             C_KF.vCard2Contact(vCard, oContact)
                             ' falls TelNr bei der Rückwärtssuche geändert wurde, diese nummer als Zweitnummer eintragen
                             If Not C_hf.nurZiffern(.BusinessTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .BusinessTelephoneNumber = DataProvider.P_Def_LeerString Then
-                                .Business2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                                .Business2TelephoneNumber = C_hf.FormatTelNr(TelNr)
                             ElseIf Not C_hf.nurZiffern(.HomeTelephoneNumber) = C_hf.nurZiffern(TelNr) And Not .HomeTelephoneNumber = DataProvider.P_Def_LeerString Then
-                                .Home2TelephoneNumber = C_hf.formatTelNr(TelNr)
+                                .Home2TelephoneNumber = C_hf.FormatTelNr(TelNr)
                             End If
                             .Body = "Rückwärtssuche erfolgreich" & vbCrLf & "Achtung! Unter Umständen werden vorhandene Daten überschrieben. Wir übernehmen keine Haftung für verloren gegangene Daten und für falsche Informationen, die die Rückwärtssuche liefert! Nutzung auf eigene Gefahr!" & vbCrLf & .Body
                         Else
