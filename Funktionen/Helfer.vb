@@ -293,13 +293,13 @@ Public Class Helfer
         End If
     End Sub
 
-    Public Function GetEncoding(ByVal Encoding As String) As System.Text.Encoding
-        Select Case LCase(Encoding)
-            Case "utf-8"
-                Return System.Text.Encoding.UTF8
-            Case Else
-                Return System.Text.Encoding.Default
-        End Select
+    Public Function GetEncoding(ByVal Codepagename As String) As System.Text.Encoding
+        Try
+            GetEncoding = Encoding.GetEncoding(Codepagename)
+        Catch ex As ArgumentException
+            GetEncoding = Encoding.Default
+            LogFile("Die Codierung " & Codepagename & " kann nicht verarbeitet werden.")
+        End Try
     End Function
 
     Public Function MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
@@ -771,7 +771,7 @@ Public Class Helfer
 #End Region
 
 #Region "HTTPTransfer"
-    Public Function httpGET(ByVal Link As String, ByVal Encoding As System.Text.Encoding, ByRef FBError As Boolean) As String
+    Public Function httpGET(ByVal Link As String, ByVal Encoding As Encoding, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
 
         httpGET = DataProvider.P_Def_LeerString

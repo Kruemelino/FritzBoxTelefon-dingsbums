@@ -44,7 +44,7 @@ Public Class PhonerInterface
                             If StreamReader.ReadLine() = DataProvider.P_Def_Phoner_Ready Then ' "Welcome to Phoner"
                                 Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len(DataProvider.P_Def_Phoner_Challenge) + 1)
                                 ' Anmerkung: Hat bis jetzt funktioniert. Aber es kann sein, dass eine Umwandlung der Zeichen, dessen Codepoint > 255 ist, nicht notig ist.
-                                Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), System.Text.Encoding.ASCII, True))
+                                Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), Text.Encoding.ASCII, True))
                                 .WriteLine(DataProvider.P_Def_Phoner_Response & Response)
                                 C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then

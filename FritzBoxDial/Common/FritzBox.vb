@@ -12,7 +12,6 @@ Public Class FritzBox
     Private C_FBoxUPnP As FritzBoxServices
 
     Private FBFehler As Boolean
-    Private En_FBEncoding As System.Text.Encoding = System.Text.Encoding.UTF8
 
     Private tb As New Windows.Forms.TextBox
     Private EventProvider As IEventProvider
@@ -420,7 +419,7 @@ Public Class FritzBox
     Private ReadOnly Property P_FritzBoxVorhanden(ByVal FritzBoxAdresse As String) As Boolean
         Get
             If C_DP.P_CBForceFBAddr Then
-                C_hf.httpGET("http://" & FritzBoxAdresse, C_hf.GetEncoding(C_DP.P_EncodeingFritzBox), FBFehler)
+                C_hf.httpGET("http://" & FritzBoxAdresse, C_DP.P_EncodeingFritzBox, FBFehler)
                 Return Not FBFehler
             Else
                 Return C_hf.Ping(FritzBoxAdresse)
@@ -1037,15 +1036,6 @@ Public Class FritzBox
         End Get
     End Property
 
-    Public Property FBEncoding As Encoding
-        Get
-            Return En_FBEncoding
-        End Get
-        Set(value As Encoding)
-            En_FBEncoding = value
-        End Set
-    End Property
-
 #End Region
 
     Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal HelferKlasse As Helfer, ByVal CryptKlasse As Rijndael, ByVal XMLKlasse As XML, ByVal UPnpKlasse As FritzBoxServices)
@@ -1061,23 +1051,13 @@ Public Class FritzBox
         C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
 
         If P_FritzBoxVorhanden(C_DP.P_ValidFBAdr) Then
-
+            ' Übergebe an die UPnP-Klasse die Daten der
             C_FBoxUPnP.SetFritzBoxData(C_DP.P_ValidFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
+            ' Setze Firmware der Fritz!Box
             FBFirmware()
 
-            If C_DP.P_EncodeingFritzBox = DataProvider.P_Def_ErrorMinusOne_String Then
-                Dim Rückgabe As String
-                Rückgabe = C_hf.httpGET(P_Link_FB_Basis, FBEncoding, FBFehler)
-                If Not FBFehler Then
-                    FBEncoding = C_hf.GetEncoding(C_hf.StringEntnehmen(Rückgabe, "charset=", """>"))
-                    C_DP.P_EncodeingFritzBox = FBEncoding.HeaderName
-                    C_DP.SpeichereXMLDatei()
-                Else
-                    C_hf.LogFile("FBError (FritzBox.New): " & Err.Number & " - " & Err.Description & " - " & P_Link_FB_Basis)
-                End If
-            Else
-                FBEncoding = C_hf.GetEncoding(C_DP.P_EncodeingFritzBox)
-            End If
+            C_DP.P_EncodeingFritzBox = C_hf.GetEncoding(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_Basis, C_DP.P_EncodeingFritzBox, FBFehler), "charset=", """>"))
+            C_DP.SpeichereXMLDatei()
         Else
             C_hf.LogFile("FBError (FritzBox.New): Keine Fritz!Box an der Gegenstelle " & C_DP.P_ValidFBAdr)
         End If
@@ -1106,10 +1086,10 @@ Public Class FritzBox
         '    <Rights></Rights>
         ' </SessionInfo>
 
-        slogin_xml = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(P_SID), FBEncoding, FBFehler)
+        slogin_xml = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(P_SID), C_DP.P_EncodeingFritzBox, FBFehler)
 
         If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
-            slogin_xml = C_hf.httpGET(P_Link_FB_LoginAltTeil1(P_SID), FBEncoding, FBFehler)
+            slogin_xml = C_hf.httpGET(P_Link_FB_LoginAltTeil1(P_SID), C_DP.P_EncodeingFritzBox, FBFehler)
         End If
 
         If Not FBFehler Then
@@ -1153,7 +1133,7 @@ Public Class FritzBox
                                 If sBlockTime = DataProvider.P_Def_StringNull Then ' "0"
                                     'sLink = "http://" & C_DP.P_ValidFBAdr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
 
-                                    sResponse = C_hf.httpGET(P_Link_FB_LoginLuaTeil2(sFBBenutzer, sSIDResponse), FBEncoding, FBFehler)
+                                    sResponse = C_hf.httpGET(P_Link_FB_LoginLuaTeil2(sFBBenutzer, sSIDResponse), C_DP.P_EncodeingFritzBox, FBFehler)
                                     If FBFehler Then
                                         C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description)
                                     End If
@@ -1170,7 +1150,7 @@ Public Class FritzBox
 
                                 'sLink = C_DP.P_Link_FB_Alt_Basis '"http://" & C_DP.P_ValidFBAdr & "/cgi-bin/webcm"
                                 'sFormData = C_DP.P_Link_FB_LoginAltTeil2(sSIDResponse) ' "getpage=../html/login_sid.xml&login:command/response=" + sSIDResponse
-                                sResponse = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_LoginAltTeil2(sSIDResponse), FBEncoding)
+                                sResponse = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_LoginAltTeil2(sSIDResponse), C_DP.P_EncodeingFritzBox)
                             End If
 
                             .LoadXml(sResponse)
@@ -1227,7 +1207,7 @@ Public Class FritzBox
         Dim xml As New XmlDocument()
 
         'sLink = "http://" & C_DP.P_ValidFBAdr & "/login_sid.lua?sid=" & sSID
-        Response = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(sSID), FBEncoding, FBFehler)
+        Response = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(sSID), C_DP.P_EncodeingFritzBox, FBFehler)
         If Not FBFehler Then
             With xml
                 .LoadXml(Response)
@@ -1238,7 +1218,7 @@ Public Class FritzBox
                 'End If
 
                 'IIf(.InnerXml.Contains("Rights"), C_DP.P_Link_FB_LogoutLuaNeu(sSID), C_DP.P_Link_FB_LogoutLuaAlt(sSID))
-                Response = C_hf.httpGET(C_hf.IIf(.InnerXml.Contains("Rights"), P_Link_FB_LogoutLuaNeu(sSID), P_Link_FB_LogoutLuaAlt(sSID)), FBEncoding, FBFehler)
+                Response = C_hf.httpGET(C_hf.IIf(.InnerXml.Contains("Rights"), P_Link_FB_LogoutLuaNeu(sSID), P_Link_FB_LogoutLuaAlt(sSID)), C_DP.P_EncodeingFritzBox, FBFehler)
             End With
             xml = Nothing
             C_hf.KeyChange()
@@ -1281,7 +1261,7 @@ Public Class FritzBox
                 PushStatus("Starte AuswertungV3")
                 FritzBoxDatenV3(Debug)
             ElseIf ThisFBFirmware.ISLargerOREqual("5.25") Then
-                tempstring = C_hf.httpGET(P_Link_FB_Tel1(P_SID), FBEncoding, FBFehler)
+                tempstring = C_hf.httpGET(P_Link_FB_Tel1(P_SID), C_DP.P_EncodeingFritzBox, FBFehler)
                 If Not FBFehler Then
                     tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
                     tempstring = Replace(tempstring, Chr(13), "", , , CompareMethod.Text)
@@ -1379,7 +1359,7 @@ Public Class FritzBox
         sLink = P_Link_FB_TelAlt1(P_SID)
 
         If P_SpeichereDaten Then PushStatus(DataProvider.P_FritzBox_Tel_AlteRoutine2(sLink))
-        tempstring = C_hf.httpGET(sLink, FBEncoding, FBFehler)
+        tempstring = C_hf.httpGET(sLink, C_DP.P_EncodeingFritzBox, FBFehler)
         If Not FBFehler Then
             If Not InStr(tempstring, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 Then
                 C_hf.MsgBox(DataProvider.P_FritzBox_Tel_ErrorAlt1, MsgBoxStyle.Critical, "FritzBoxDaten_FWbelow5_50")
@@ -2675,7 +2655,7 @@ Public Class FritzBox
         '
         SendDialRequestToBoxV1 = DataProvider.P_FritzBox_Dial_Error1           ' Antwortstring
         If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
-            Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_DialV1(P_SID, sDialPort, sDialCode, bHangUp), FBEncoding)
+            Response = C_hf.httpPOST(P_Link_FB_ExtBasis, P_Link_FB_DialV1(P_SID, sDialPort, sDialCode, bHangUp), C_DP.P_EncodeingFritzBox)
 
             If Response = DataProvider.P_Def_LeerString Then
                 SendDialRequestToBoxV1 = C_hf.IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode))
@@ -2700,7 +2680,7 @@ Public Class FritzBox
         Else
             C_hf.LogFile("SendDialRequestToBoxV2: Ändere Dialport auf " & sDialPort)
             ' per HTTP-POST Dialport ändern
-            Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), FBEncoding)
+            Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodeingFritzBox)
             PortChangeSuccess = Response.Contains("[""telcfg:settings/DialPort""] = """ & sDialPort & "")
         End If
 
@@ -2715,7 +2695,7 @@ Public Class FritzBox
             DialCodetoBox = Replace(DialCodetoBox, "*", "%2A", , , CompareMethod.Text)
 
             ' Senden des Wählkomandos
-            Response = C_hf.httpGET(P_Link_FB_DialV2(P_SID, DialCodetoBox, bHangUp), FBEncoding, FBFehler)
+            Response = C_hf.httpGET(P_Link_FB_DialV2(P_SID, DialCodetoBox, bHangUp), C_DP.P_EncodeingFritzBox, FBFehler)
             ' Die Rückgabe ist der JSON - Wert "dialing"
             ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789#"}
             ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
@@ -2745,8 +2725,9 @@ Public Class FritzBox
             .Add("Telefon")
             .Add("[@Dialport = """ & sDialPort & """]")
             .Add("TelName")
-            UPnPDialport = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
         End With
+
+        UPnPDialport = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
 
         Select Case CInt(sDialPort)
             'Case 1 To 3
@@ -2818,13 +2799,13 @@ Public Class FritzBox
         Else
             sLink = P_Link_JI2(P_SID)
 
-            ReturnString = C_hf.httpGET(P_Link_JI1(P_SID), FBEncoding, FBFehler)
+            ReturnString = C_hf.httpGET(P_Link_JI1(P_SID), C_DP.P_EncodeingFritzBox, FBFehler)
             If Not FBFehler Then
                 If Not InStr(ReturnString, "Luacgi not readable", CompareMethod.Text) = 0 Then
-                    C_hf.httpGET(P_Link_JIAlt_Child1(P_SID), FBEncoding, FBFehler)
+                    C_hf.httpGET(P_Link_JIAlt_Child1(P_SID), C_DP.P_EncodeingFritzBox, FBFehler)
                     sLink = P_Link_JIAlt_Child2(P_SID)
                 End If
-                ReturnString = C_hf.httpGET(sLink, FBEncoding, FBFehler)
+                ReturnString = C_hf.httpGET(sLink, C_DP.P_EncodeingFritzBox, FBFehler)
             Else
                 C_hf.LogFile("FBError (DownloadAnrListe): " & Err.Number & " - " & Err.Description & " - " & sLink)
             End If
@@ -2907,7 +2888,7 @@ Public Class FritzBox
         ' Login Xml 5.28 ab Firmware xxx.04.74 - xxx.05.28 
         ' 6.25
 
-        Response = C_hf.httpGET(P_Link_Jason_Boxinfo, FBEncoding, FBFehler)
+        Response = C_hf.httpGET(P_Link_Jason_Boxinfo, C_DP.P_EncodeingFritzBox, FBFehler)
         ' To Do Fehler Abfangen
         If Not FBFehler Then
             ' Ab der Firmware an 4.82 gibt es die Fritz!BoxInformation an 
@@ -2955,7 +2936,7 @@ Public Class FritzBox
         Else
             ' ältere Versionen bis 4.82 prüfen
             ' dauert deutlich länger, als die Jason BoxInfo
-            Response = C_hf.httpGET(P_Link_FB_SystemStatus, FBEncoding, FBFehler)
+            Response = C_hf.httpGET(P_Link_FB_SystemStatus, C_DP.P_EncodeingFritzBox, FBFehler)
             If Not FBFehler Then
                 tmp = Split(C_hf.StringEntnehmen(Response, "<body>", "</body>"), "-", , CompareMethod.Text)
                 If Not tmp.Count = 1 Then
@@ -3032,7 +3013,7 @@ Public Class FritzBox
             cmd += "&apply=" 'Wichtig!
 
             With C_hf
-                ReturnValue = .httpPOST(P_Link_FB_FonBook_Entry, cmd, FBEncoding)
+                ReturnValue = .httpPOST(P_Link_FB_FonBook_Entry, cmd, C_DP.P_EncodeingFritzBox)
                 If ReturnValue.Contains(EntryName) Then
                     .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
                     .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBox")
@@ -3104,7 +3085,7 @@ Public Class FritzBox
             cmd += "&xhr=1"
 
             With C_hf
-                ReturnValue = .httpPOST(P_Link_FB_FonBook_Entry, cmd, FBEncoding)
+                ReturnValue = .httpPOST(P_Link_FB_FonBook_Entry, cmd, C_DP.P_EncodeingFritzBox)
                 FritzBoxJSONUploadKontakt = C_JSON.GetUploadResult(ReturnValue)
 
                 If FritzBoxJSONUploadKontakt.ok And FritzBoxJSONUploadKontakt.result.ToLower = "ok" Then
@@ -3152,7 +3133,7 @@ Public Class FritzBox
                     cmd += "&apply="
                     cmd += "&oldpage=/fon_num/fonbook_entry.lua"
 
-                    ReturnValue = .httpPOST(P_Link_FB_Data, cmd, FBEncoding)
+                    ReturnValue = .httpPOST(P_Link_FB_Data, cmd, C_DP.P_EncodeingFritzBox)
 
                     .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
                     .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBox")
@@ -3195,7 +3176,7 @@ Public Class FritzBox
              & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
 
             With C_hf
-                ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding)
+                ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, C_DP.P_EncodeingFritzBox)
                 If ReturnValue.StartsWith("<?xml") Then
                     XMLFBAddressbuch = New XmlDocument()
                     Try
@@ -3234,7 +3215,7 @@ Public Class FritzBox
             & cmd & vbCrLf & "Content-Disposition: form-data; name=""PhonebookImportFile""" & vbCrLf & vbCrLf & "@" + XMLTelefonbuch + ";type=text/xml" & vbCrLf _
             & cmd & "--" & vbCrLf
 
-            UploadAddressbook = C_hf.httpPOST(P_Link_FB_ExportAddressbook, cmd, FBEncoding).Contains("Das Telefonbuch der FRITZ!Box wurde wiederhergestellt.")
+            UploadAddressbook = C_hf.httpPOST(P_Link_FB_ExportAddressbook, cmd, C_DP.P_EncodeingFritzBox).Contains("Das Telefonbuch der FRITZ!Box wurde wiederhergestellt.")
 
         Else
             C_hf.MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "UploadAddressbook")
@@ -3259,7 +3240,7 @@ Public Class FritzBox
 
         If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
         If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
-            sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(P_SID), FBEncoding, FBFehler), Chr(34), "'", , , CompareMethod.Text)
+            sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(P_SID), C_DP.P_EncodeingFritzBox, FBFehler), Chr(34), "'", , , CompareMethod.Text)
             sPage = sPage.Replace(Chr(13), "")
             If sPage.Contains("label for='uiBookid:") Then
                 Do
@@ -3290,7 +3271,7 @@ Public Class FritzBox
 
         If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
         If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
-            FritzBoxQuery = C_hf.httpGET(P_Link_Query(P_SID, Abfrage), FBEncoding, FBFehler)
+            FritzBoxQuery = C_hf.httpGET(P_Link_Query(P_SID, Abfrage), C_DP.P_EncodeingFritzBox, FBFehler)
         End If
 
         If InDateiSpeichern Then
