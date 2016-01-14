@@ -761,9 +761,7 @@ Public Class formCfg
                             '    rws = F_RWS.RWSAlle(TelNr, vCard)
                     End Select
 
-                    C_hf.MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " &
-                                    C_hf.IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis."), MsgBoxStyle.Information,
-                                    "Test der Rückwärtssuche " & Me.ComboBoxRWS.SelectedItem.ToString())
+                    C_hf.MsgBox("Die Rückwärtssuche mit der Nummer """ & TelNr & """ brachte mit der Suchmaschine """ & Me.ComboBoxRWS.SelectedItem.ToString() & """ " & C_hf.IIf(rws, "folgendes Ergebnis:" & DataProvider.P_Def_EineNeueZeile & DataProvider.P_Def_EineNeueZeile & vCard, "kein Ergebnis."), MsgBoxStyle.Information, "Test der Rückwärtssuche " & Me.ComboBoxRWS.SelectedItem.ToString())
                 Else
                     C_hf.MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
                 End If
@@ -783,10 +781,7 @@ Public Class formCfg
         End Select
     End Sub
 
-    Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked,
-                                                                                                                                LinkForum.LinkClicked,
-                                                                                                                                LinkEmail.LinkClicked,
-                                                                                                                                LinkLogFile.LinkClicked
+    Private Sub Link_LinkClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkHomepage.LinkClicked, LinkForum.LinkClicked, LinkEmail.LinkClicked, LinkLogFile.LinkClicked
         Select Case CType(sender, Windows.Forms.LinkLabel).Name
             Case "LinkEmail"
                 Me.Close()
@@ -1361,9 +1356,7 @@ Public Class formCfg
             If Not tmpTelefon = DataProvider.P_Def_ErrorMinusOne_String Then
                 xPathTeile.Item(xPathTeile.Count - 1) = "TelNr"
                 If Not ((TelList.Rows(Row).Cells(4).Value Is Nothing) Or (TelList.Rows(Row).Cells(5).Value Is Nothing)) Then
-                    If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And
-                        C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
-
+                    If tmpTelefon = TelList.Rows(Row).Cells(4).Value.ToString And C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = Replace(TelList.Rows(Row).Cells(5).Value.ToString, ", ", ";", , , CompareMethod.Text) Then
                         If C_XML.GetProperXPath(C_DP.XMLDoc, xPathTeile) Then
                             Dim Dauer As Date
                             xPathTeile.Item(xPathTeile.Count - 1) = "Eingehend"

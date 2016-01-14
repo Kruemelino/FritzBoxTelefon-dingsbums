@@ -1,4 +1,5 @@
 ﻿Imports System.Collections.Generic
+Imports System.Collections.ObjectModel
 
 Public Class ApiWindow
     Private _hWnd As IntPtr
@@ -159,7 +160,7 @@ Public Class KontaktFunktionen
                 Try
                     olKontakt = CType(Personen.Find(sFilter), Outlook.ContactItem)
                 Catch : End Try
-                If  olKontakt IsNot Nothing Then Exit For
+                If olKontakt IsNot Nothing Then Exit For
             Next
 #Else
             olKontakt = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
@@ -524,29 +525,30 @@ Public Class KontaktFunktionen
     Friend Sub IndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
         If Not C_DP.P_CBIndexAus Then
             Dim tempTelNr As String
+            Dim alleTE As New List(Of String)
             Try
                 With olKontakt
-                    Dim alleTE() As String = { .AssistantTelephoneNumber,
-                                              .BusinessTelephoneNumber,
-                                              .Business2TelephoneNumber,
-                                              .CallbackTelephoneNumber,
-                                              .CarTelephoneNumber,
-                                              .CompanyMainTelephoneNumber,
-                                              .HomeTelephoneNumber,
-                                              .Home2TelephoneNumber,
-                                              .ISDNNumber,
-                                              .MobileTelephoneNumber,
-                                              .OtherTelephoneNumber,
-                                              .PagerNumber,
-                                              .PrimaryTelephoneNumber,
-                                              .RadioTelephoneNumber,
-                                              .BusinessFaxNumber,
-                                              .HomeFaxNumber,
-                                              .OtherFaxNumber,
-                                              .TelexNumber,
-                                              .TTYTDDTelephoneNumber}
+                    alleTE.Add(.AssistantTelephoneNumber)
+                    alleTE.Add(.BusinessTelephoneNumber)
+                    alleTE.Add(.Business2TelephoneNumber)
+                    alleTE.Add(.CallbackTelephoneNumber)
+                    alleTE.Add(.CarTelephoneNumber)
+                    alleTE.Add(.CompanyMainTelephoneNumber)
+                    alleTE.Add(.HomeTelephoneNumber)
+                    alleTE.Add(.Home2TelephoneNumber)
+                    alleTE.Add(.ISDNNumber)
+                    alleTE.Add(.MobileTelephoneNumber)
+                    alleTE.Add(.OtherTelephoneNumber)
+                    alleTE.Add(.PagerNumber)
+                    alleTE.Add(.PrimaryTelephoneNumber)
+                    alleTE.Add(.RadioTelephoneNumber)
+                    alleTE.Add(.BusinessFaxNumber)
+                    alleTE.Add(.HomeFaxNumber)
+                    alleTE.Add(.OtherFaxNumber)
+                    alleTE.Add(.TelexNumber)
+                    alleTE.Add(.TTYTDDTelephoneNumber)
 
-                    For i = LBound(alleTE) To UBound(alleTE)
+                    For i = 0 To alleTE.Count
                         If Not alleTE(i) = DataProvider.P_Def_LeerString Then ' Fall: Telefonnummer vorhanden
                             If .UserProperties.Find(DataProvider.P_Def_UserProperties(i)) Is Nothing Then ' Fall Index nicht vorhanden
 #If OVer = 11 Then
@@ -574,6 +576,7 @@ Public Class KontaktFunktionen
             Catch ex As Exception
                 C_hf.LogFile("Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden.")
             End Try
+            alleTE = Nothing
         End If
     End Sub
 
@@ -1325,7 +1328,7 @@ Friend Class ContactSaved
     Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
 
     ' IDisposable
-    Protected Overridable Sub Dispose(disposing As Boolean)
+    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
         If Not Me.disposedValue Then
             If disposing Then
                 'C_KF = Nothing
