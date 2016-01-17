@@ -1056,7 +1056,7 @@ Public Class FritzBox
             ' Setze Firmware der Fritz!Box
             FBFirmware()
 
-            C_DP.P_EncodeingFritzBox = C_hf.GetEncoding(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_Basis, C_DP.P_EncodeingFritzBox, FBFehler), "charset=", """>"))
+            C_DP.P_EncodeingFritzBox = C_hf.GetEncoding(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_Basis, C_DP.P_EncodeingFritzBox, FBFehler), "charset=", """"))
             C_DP.SpeichereXMLDatei()
         Else
             C_hf.LogFile("FBError (FritzBox.New): Keine Fritz!Box an der Gegenstelle " & C_DP.P_ValidFBAdr)

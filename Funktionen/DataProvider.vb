@@ -2288,6 +2288,10 @@ Public Class DataProvider
         End Get
     End Property
     ' FritzBox
+    ''' <summary>
+    ''' Standard-Codierung der Fritz!Box: utf-8
+    ''' </summary>
+    ''' <returns>Text.Encoding.UTF8</returns>
     Public Shared ReadOnly Property P_Def_EncodeingFritzBox() As Text.Encoding
         Get
             Return Text.Encoding.UTF8

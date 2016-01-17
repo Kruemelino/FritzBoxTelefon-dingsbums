@@ -293,11 +293,11 @@ Public Class Helfer
         End If
     End Sub
 
-    Public Function GetEncoding(ByVal Codepagename As String) As System.Text.Encoding
+    Public Function GetEncoding(ByVal Codepagename As String) As Encoding
         Try
             GetEncoding = Encoding.GetEncoding(Codepagename)
         Catch ex As ArgumentException
-            GetEncoding = Encoding.Default
+            GetEncoding = DataProvider.P_Def_EncodeingFritzBox
             LogFile("Die Codierung " & Codepagename & " kann nicht verarbeitet werden.")
         End Try
     End Function
