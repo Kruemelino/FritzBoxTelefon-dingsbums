@@ -1039,13 +1039,13 @@ Public Class DataProvider
     ''' <summary>
     ''' Gibt die ermittelte Zeichencodierung der Fritzbox wieder. Der Wert wird automatisch ermittelt. 
     ''' </summary>
-    Private _EncodeingFritzBox As Text.Encoding
-    Public Property P_EncodeingFritzBox As Text.Encoding
+    Private _EncodingFritzBox As Text.Encoding
+    Public Property P_EncodingFritzBox As Text.Encoding
         Get
-            Return _EncodeingFritzBox
+            Return _EncodingFritzBox
         End Get
         Set(ByVal value As Text.Encoding)
-            _EncodeingFritzBox = value
+            _EncodingFritzBox = value
         End Set
     End Property
 
@@ -2292,7 +2292,7 @@ Public Class DataProvider
     ''' Standard-Codierung der Fritz!Box: utf-8
     ''' </summary>
     ''' <returns>Text.Encoding.UTF8</returns>
-    Public Shared ReadOnly Property P_Def_EncodeingFritzBox() As Text.Encoding
+    Public Shared ReadOnly Property P_Def_EncodingFritzBox() As Text.Encoding
         Get
             Return Text.Encoding.UTF8
         End Get
@@ -3768,7 +3768,7 @@ Public Class DataProvider
         Me.P_TelAnschluss = CInt(C_XML.Read(XMLDoc, P_Def_Options, "Anschluss", CStr(P_Def_TelAnschluss)))
         Me.P_TelFestnetz = CBool(C_XML.Read(XMLDoc, P_Def_Options, "Festnetz", CStr(P_TelFestnetz)))
         Me.P_TelCLIR = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CLIR", CStr(P_Def_TelCLIR)))
-        Me.P_EncodeingFritzBox = Text.Encoding.GetEncoding(C_XML.Read(XMLDoc, P_Def_Options, "EncodeingFritzBox", P_Def_EncodeingFritzBox.HeaderName))
+        Me.P_EncodingFritzBox = Text.Encoding.GetEncoding(C_XML.Read(XMLDoc, P_Def_Options, "EncodingFritzBox", P_Def_EncodingFritzBox.HeaderName))
         ' Indizierung
         Me.P_LLetzteIndizierung = CDate(C_XML.Read(XMLDoc, P_Def_Options, "LLetzteIndizierung", CStr(P_Def_LLetzteIndizierung)))
         ' Notiz
@@ -3884,7 +3884,7 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "Festnetz", CStr(Me.P_TelFestnetz))
         C_XML.Write(XMLDoc, P_Def_Options, "CLIR", CStr(Me.P_TelCLIR))
         'FritzBox
-        C_XML.Write(XMLDoc, P_Def_Options, "EncodeingFritzBox", Me.P_EncodeingFritzBox.HeaderName)
+        C_XML.Write(XMLDoc, P_Def_Options, "EncodingFritzBox", Me.P_EncodingFritzBox.HeaderName)
         'Indizierung
         C_XML.Write(XMLDoc, P_Def_Options, "LLetzteIndizierung", CStr(Me.P_LLetzteIndizierung))
         ' Notiz

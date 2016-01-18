@@ -298,7 +298,7 @@ Friend Class AnrufMonitor
 
         If RestartCounter < DataProvider.P_Def_TryMaxRestart Then
             If C_DP.P_CBForceFBAddr Then
-                C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_DP.P_EncodeingFritzBox, ReStartError)
+                C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_DP.P_EncodingFritzBox, ReStartError)
             Else
                 ReStartError = Not C_hf.Ping(C_DP.P_TBFBAdr)
             End If
@@ -363,7 +363,7 @@ Friend Class AnrufMonitor
             If C_DP.P_CBUseAnrMon Then
                 ' Prüfe ob Fritz!Box erreichbar
                 If C_DP.P_CBForceFBAddr Then
-                    C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_DP.P_EncodeingFritzBox, FBFehler)
+                    C_hf.httpGET("http://" & C_DP.P_TBFBAdr, C_DP.P_EncodingFritzBox, FBFehler)
                 Else
                     FBFehler = Not C_hf.Ping(C_DP.P_TBFBAdr)
                 End If

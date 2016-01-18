@@ -293,13 +293,28 @@ Public Class Helfer
         End If
     End Sub
 
-    Public Function GetEncoding(ByVal Codepagename As String) As Encoding
-        Try
-            GetEncoding = Encoding.GetEncoding(Codepagename)
-        Catch ex As ArgumentException
-            GetEncoding = DataProvider.P_Def_EncodeingFritzBox
-            LogFile("Die Codierung " & Codepagename & " kann nicht verarbeitet werden.")
-        End Try
+    ''' <summary>
+    ''' Gibt die Zeichenkodierung der Fritz!Box-Oberfläche Zurück. Dies sollte im Standardfall UTF-8 sein. 
+    ''' </summary>
+    ''' <param name="Quelltext">Der Quelltext einer Seite der Fritz!Box-Oberfläche</param>
+    ''' <returns>Die Zeichencodierung als <c>System.Text.Encoding</c></returns>
+    Public Function GetEncoding(ByVal Quelltext As String) As Encoding
+        If Quelltext.Contains("charset=utf-8") Then
+            ' Schnelle Weg für den Standardfall
+            GetEncoding = DataProvider.P_Def_EncodingFritzBox ' Standard: UTF-8
+        Else
+            ' Ermittle die Zeichencodierung
+            Dim CodePageName As String
+            ' Extrahiere den Codepage-Namen der Codierung (Entspricht dem Header-Name). 
+            CodePageName = StringEntnehmen(Quelltext, "charset=", """")
+            Try
+                GetEncoding = Encoding.GetEncoding(CodePageName)
+            Catch ex As ArgumentException
+                GetEncoding = DataProvider.P_Def_EncodingFritzBox
+                LogFile("Die Codierung " & CodePageName & " kann nicht verarbeitet werden.")
+            End Try
+        End If
+
     End Function
 
     Public Function MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
