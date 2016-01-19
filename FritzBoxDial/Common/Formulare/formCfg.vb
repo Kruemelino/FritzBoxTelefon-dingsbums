@@ -666,7 +666,7 @@ Public Class formCfg
             Case "BApply"
                 Speichern()
             Case "BXML"
-                System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName)
+                Process.Start(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName)
             Case "BAnrMonTest"
                 Speichern()
                 C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
@@ -676,7 +676,7 @@ Public Class formCfg
             Case "BProbleme"
                 Dim T As New Thread(AddressOf NeueMail)
 
-                If C_hf.MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & "Anschließend werden eine Reihe von Dateien geöffnet, welche Sie bitte an die E-Mail " & DataProvider.P_AddinKontaktMail & "senden. Vielen Dank.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
+                If C_hf.MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
                     T.Start()
                     Me.Close()
                 Else
@@ -969,8 +969,9 @@ Public Class formCfg
 
     Private Sub NeueMail()
         C_FBox.FritzBoxDaten(True)
-    End Sub
 
+        C_OlI.NeueEmail(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox())
+    End Sub
     Private Function SetTelNrListe() As Boolean
         SetTelNrListe = False
         If Me.InvokeRequired Then

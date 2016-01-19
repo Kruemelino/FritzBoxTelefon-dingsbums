@@ -322,7 +322,7 @@ Public Class OutlookInterface
         oApp = Nothing
     End Function
 
-    Friend Function NeueEmail(ByRef tmpFile As String, ByRef XMLFile As String, ByRef BodyString As String) As Boolean
+    Friend Function NeueEmail(ByRef XMLFile As String, ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication
         If oApp IsNot Nothing Then
@@ -334,7 +334,15 @@ Public Class OutlookInterface
 
             If olMail IsNot Nothing Then
                 With olMail
-                    .Attachments.Add(tmpFile)
+                    If C_DP.P_Debug_FBFile IsNot Nothing Then
+                        For Each QueryFile As String In C_DP.P_Debug_FBFile
+                            If My.Computer.FileSystem.FileExists(QueryFile) Then
+                                .Attachments.Add(QueryFile)
+                                My.Computer.FileSystem.DeleteFile(QueryFile)
+                            End If
+
+                        Next
+                    End If
                     .Attachments.Add(XMLFile)
                     Try
                         .Attachments.Add(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName)
@@ -343,15 +351,14 @@ Public Class OutlookInterface
                     End Try
 
                     .Subject = "Einleseproblem der Telefone im Fritz!Box Telefon-dingsbums"
-                    My.Computer.FileSystem.DeleteFile(tmpFile)
-                    .Body = String.Concat( _
-                        BodyString, _
-                        "Outlook-Version: ", oApp.Version, vbNewLine, _
+                    .Body = String.Concat(
+                        BodyString,
+                        "Outlook-Version: ", oApp.Version, vbNewLine,
                         "Fritz!Box Telefon-dingsbums-Version: ", ThisAddIn.Version, .Body)
                     .To = DataProvider.P_AddinKontaktMail
                     Try
                         .Display()
-                    Catch ex As System.Runtime.InteropServices.COMException
+                    Catch ex As Runtime.InteropServices.COMException
                         C_hf.LogFile("NeueEmail: Die E-Mail wurde erstellt, konnte jedoch nicht angezeigt werden.")
                         .Save()
                     End Try

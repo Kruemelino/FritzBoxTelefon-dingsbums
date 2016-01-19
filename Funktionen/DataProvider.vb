@@ -2386,6 +2386,18 @@ Public Class DataProvider
             Return False
         End Get
     End Property
+
+    Private _Debug_FBFile As List(Of String)
+    Public Property P_Debug_FBFile As List(Of String)
+        Get
+            Return _Debug_FBFile
+        End Get
+        Set(value As List(Of String))
+            _Debug_FBFile = value
+        End Set
+    End Property
+
+
 #End Region
 
 #Region "Literale"
@@ -3905,6 +3917,11 @@ Public Class DataProvider
             tSpeichern.Stop()
             tSpeichern.Dispose()
             tSpeichern = Nothing
+        End If
+
+        If P_Debug_FBFile IsNot Nothing Then
+            P_Debug_FBFile.Clear()
+            P_Debug_FBFile = Nothing
         End If
 
         MyBase.Finalize()

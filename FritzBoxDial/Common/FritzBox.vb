@@ -3287,7 +3287,9 @@ Public Class FritzBox
                 PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, tmpFileBase & ".txt")(0).ToString
                 .WriteAllText(PfadTMPfile, DataProvider.P_FritzBox_Tel_DebugMsgAb605 & DataProvider.P_Def_EineNeueZeile & "Pfad zur Datei: " & PfadTMPfile & DataProvider.P_Def_ZweiNeueZeilen & P_Link_Query(P_SID, Abfrage) & DataProvider.P_Def_ZweiNeueZeilen & FritzBoxQuery, False)
                 'Rückgabe des Dateipfades
-                Process.Start(PfadTMPfile)
+                If C_DP.P_Debug_FBFile Is Nothing Then C_DP.P_Debug_FBFile = New List(Of String)
+
+                C_DP.P_Debug_FBFile.Add(PfadTMPfile)
             End With
         End If
     End Function
