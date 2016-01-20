@@ -672,7 +672,9 @@ Public Class formCfg
                 C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
 
             Case "BZwischenablage"
-                My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
+                If Not Me.TBDiagnose.Text = DataProvider.P_Def_LeerString Then
+                    My.Computer.Clipboard.SetText(Me.TBDiagnose.Text)
+                End If
             Case "BProbleme"
                 Dim T As New Thread(AddressOf NeueMail)
 
