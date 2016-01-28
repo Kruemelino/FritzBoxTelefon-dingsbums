@@ -1120,7 +1120,7 @@ Public Class FritzBox
                             sChallenge = .Item("SessionInfo").Item("Challenge").InnerText()
 
                             With C_Crypt
-                                sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), System.Text.Encoding.Unicode, True))
+                                sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode, True))
                             End With
                             If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 
@@ -2861,13 +2861,19 @@ Public Class FritzBox
 
     Public Function GetInformationSystemFritzBox() As String
 
-        Dim FBTyp As String = DataProvider.P_Def_StringUnknown
-        Dim FBFirmware As String = DataProvider.P_Def_StringUnknown
+        Dim FBReturnValue As String
+
+        Dim FBTyp As String = DataProvider.P_Def_ErrorMinusOne_String
+        Dim FBFirmware As String = DataProvider.P_Def_ErrorMinusOne_String
         Dim FritzBoxInformation() As String
 
-        FritzBoxInformation = Split(C_hf.StringEntnehmen(C_hf.httpGET(P_Link_FB_SystemStatus, System.Text.Encoding.UTF8, Nothing), "<body>", "</body>"), "-", , CompareMethod.Text)
-        FBTyp = FritzBoxInformation(0)
-        FBFirmware = Replace(Trim(C_hf.GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
+
+        FBReturnValue = C_hf.httpGET(P_Link_FB_SystemStatus, DataProvider.P_Def_EncodingFritzBox, FBFehler)
+        If Not FBFehler Then
+            FritzBoxInformation = Split(C_hf.StringEntnehmen(FBReturnValue, "<body>", "</body>"), "-", , CompareMethod.Text)
+            FBTyp = FritzBoxInformation(0)
+            FBFirmware = Replace(Trim(C_hf.GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
+        End If
 
         Return DataProvider.P_FritzBox_Info(FBTyp, FBFirmware)
 

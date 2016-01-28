@@ -144,7 +144,7 @@ Friend Class formInit
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
-            If Not InStr(C_HF.httpGET("http://" & FBIPAdresse & "/login_sid.lua", System.Text.Encoding.UTF8, Nothing), "<SID>" & DataProvider.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
+            If Not InStr(C_HF.httpGET("http://" & FBIPAdresse & "/login_sid.lua", Encoding.UTF8, Nothing), "<SID>" & DataProvider.P_Def_SessionID & "</SID>", CompareMethod.Text) = 0 Then
                 Me.LMessage.Text = DataProvider.P_Init_FritzBox_Found(FBIPAdresse)
                 C_DP.P_TBFBAdr = FBIPAdresse
                 C_DP.P_CBForceFBAddr = Me.CBForceFBAddr.Checked

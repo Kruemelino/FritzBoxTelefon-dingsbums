@@ -322,7 +322,7 @@ Public Class OutlookInterface
         oApp = Nothing
     End Function
 
-    Friend Function NeueEmail(ByRef XMLFile As String, ByRef BodyString As String) As Boolean
+    Friend Function NeueEmail(ByRef BodyString As String) As Boolean
         Dim olMail As Outlook.MailItem = Nothing
         Dim oApp As Outlook.Application = OutlookApplication
         If oApp IsNot Nothing Then
@@ -343,18 +343,17 @@ Public Class OutlookInterface
 
                         Next
                     End If
-                    .Attachments.Add(XMLFile)
-                    Try
+                    ' Einstellungsdatei anfügen
+                    If My.Computer.FileSystem.FileExists(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName) Then .Attachments.Add(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName)
+                    ' Logdatei anfügen, falls sie geschrieben wird
+                    If My.Computer.FileSystem.FileExists(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName) Then
                         .Attachments.Add(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName)
-                    Catch
-                        .Body = vbNewLine & "Log wird nicht geschrieben."
-                    End Try
+                    Else
+                        .Body = DataProvider.P_Def_EineNeueZeile & "Log wird nicht geschrieben." & DataProvider.P_Def_EineNeueZeile
+                    End If
 
-                    .Subject = "Einleseproblem der Telefone im Fritz!Box Telefon-dingsbums"
-                    .Body = String.Concat(
-                        BodyString,
-                        "Outlook-Version: ", oApp.Version, vbNewLine,
-                        "Fritz!Box Telefon-dingsbums-Version: ", ThisAddIn.Version, .Body)
+                    .Subject = "Einleseproblem der Telefone im " & DataProvider.P_Def_Addin_LangName
+                    .Body = String.Concat(BodyString, "Outlook-Version: ", oApp.Version, DataProvider.P_Def_EineNeueZeile, DataProvider.P_Def_Addin_LangName, "-Version: ", ThisAddIn.Version, .Body)
                     .To = DataProvider.P_AddinKontaktMail
                     Try
                         .Display()

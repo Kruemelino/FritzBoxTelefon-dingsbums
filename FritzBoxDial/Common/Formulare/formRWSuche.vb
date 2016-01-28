@@ -311,7 +311,7 @@ Friend Class formRWSuche
         baseurl = "http://www.dasoertliche.de?form_name="
 
         Do
-            htmlRWS = C_hf.httpGET(baseurl & "search_nat&kw=" & tmpTelNr, System.Text.Encoding.Default, HTMLFehler)
+            htmlRWS = C_hf.httpGET(baseurl & "search_nat&kw=" & tmpTelNr, Encoding.Default, HTMLFehler)
             If Not HTMLFehler Then
                 If Not htmlRWS = DataProvider.P_Def_LeerString Then
                     htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
@@ -319,7 +319,7 @@ Friend Class formRWSuche
                     EintragsID = C_hf.StringEntnehmen(htmlRWS, "dasoertliche.de/?id=", "&")
                     If Not EintragsID = DataProvider.P_Def_ErrorMinusOne_String Then
 
-                        vCard = C_hf.httpGET(baseurl & "vcard&id=" & EintragsID, System.Text.Encoding.Default, HTMLFehler)
+                        vCard = C_hf.httpGET(baseurl & "vcard&id=" & EintragsID, Encoding.Default, HTMLFehler)
                         If HTMLFehler Then C_hf.LogFile("FBError (RWSDasOertiche): " & Err.Number & " - " & Err.Description & " - " & baseurl & "vcard&id=" & EintragsID)
                     End If
                 End If
@@ -430,7 +430,7 @@ Friend Class formRWSuche
         Do
             ' Webseite für Rückwärtssuche aufrufen und herunterladen
             myurl = "http://tel.search.ch/result.html?name=&misc=&strasse=&ort=&kanton=&tel=" & tmpTelNr
-            htmlRWS = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
+            htmlRWS = C_hf.httpGET(myurl, Encoding.UTF8, HTMLFehler)
             If Not HTMLFehler Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , vbTextCompare) '" enfernen
 
@@ -439,7 +439,7 @@ Friend Class formRWSuche
                 If Not EintragsID = DataProvider.P_Def_ErrorMinusOne_String Then
                     ' vCard herunterladen
                     myurl = Replace("http://tel.search.ch/vcard/" & EintragsID, "html", "vcf")
-                    vCard = C_hf.httpGET(myurl, System.Text.Encoding.UTF8, HTMLFehler)
+                    vCard = C_hf.httpGET(myurl, Encoding.UTF8, HTMLFehler)
                 End If
 
                 ' Rückgabewert ermitteln

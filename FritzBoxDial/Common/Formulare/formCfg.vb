@@ -972,7 +972,7 @@ Public Class formCfg
     Private Sub NeueMail()
         C_FBox.FritzBoxDaten(True)
 
-        C_OlI.NeueEmail(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName, C_FBox.GetInformationSystemFritzBox())
+        C_OlI.NeueEmail(C_FBox.GetInformationSystemFritzBox())
     End Sub
     Private Function SetTelNrListe() As Boolean
         SetTelNrListe = False
@@ -1391,10 +1391,13 @@ Public Class formCfg
                 C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "1")
             End If
         End With
-
+        AddLine("Speichere Einstellungen")
         Speichern()
+        AddLine("Fülle Telefonnummernliste in den Einstellungen")
         SetTelNrListe()
+        AddLine("Fülle Telefonliste in den Einstellungen")
         SetFillTelListe()
+        AddLine("Setze Button Label und räume auf")
         DelBTelefonliste()
         BWTelefone = Nothing
         AddLine("BackgroundWorker wurde eliminiert.")

@@ -1187,6 +1187,13 @@ Friend Class AnrufMonitor
             If C_OlI.OutlookApplication IsNot Nothing Then
                 If Not .StoreID = DataProvider.P_Def_ErrorMinusOne_String Then
                     .olContact = C_KF.GetOutlookKontakt(.KontaktID, .StoreID)
+                    ' Löche Daten, wenn Kontakt nicht mehr auffindbar ist
+                    If .olContact Is Nothing Then
+                        .KontaktID = DataProvider.P_Def_LeerString
+                        .StoreID = DataProvider.P_Def_LeerString
+                        SpeichereLetzerAnrufer(LadeLetzterAnrufer)
+                    End If
+
                 ElseIf Not .vCard = DataProvider.P_Def_ErrorMinusOne_String Then
                     'prüfen ob das Sinnvoll ist:
                     '.olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
