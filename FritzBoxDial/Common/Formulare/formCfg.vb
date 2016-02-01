@@ -688,6 +688,9 @@ Public Class formCfg
                 Me.TBDiagnose.Text = DataProvider.P_Def_LeerString
                 AddLine("Start")
                 C_FBox.SetEventProvider(emc)
+                AddLine("Fritz!Box Typ: " & C_FBox.P_FritzBoxTyp)
+                AddLine("Fritz!Box Firmware: " & C_FBox.P_FritzBoxFirmware)
+
                 BWTelefone = New BackgroundWorker
                 AddLine("BackgroundWorker erstellt.")
                 With BWTelefone
@@ -972,7 +975,7 @@ Public Class formCfg
     Private Sub NeueMail()
         C_FBox.FritzBoxDaten(True)
 
-        C_OlI.NeueEmail(C_FBox.GetInformationSystemFritzBox())
+        C_OlI.NeueEmail(DataProvider.P_FritzBox_Info(C_FBox.P_FritzBoxTyp, C_FBox.P_FritzBoxFirmware))
     End Sub
     Private Function SetTelNrListe() As Boolean
         SetTelNrListe = False
@@ -1330,6 +1333,7 @@ Public Class formCfg
 
     Private Sub BWTelefone_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs) Handles BWTelefone.DoWork
         AddLine("Einlesen der Telefone gestartet.")
+
         C_FBox.P_SpeichereDaten = CBool(e.Argument)
         e.Result = CBool(e.Argument)
         C_FBox.FritzBoxDaten(False)

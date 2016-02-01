@@ -426,6 +426,18 @@ Public Class FritzBox
             End If
         End Get
     End Property
+
+    Friend ReadOnly Property P_FritzBoxTyp As String
+        Get
+            Return ThisFBFirmware.FritzBoxTyp
+        End Get
+    End Property
+
+    Friend ReadOnly Property P_FritzBoxFirmware As String
+        Get
+            Return ThisFBFirmware.str1 & "." & ThisFBFirmware.str2 & "." & ThisFBFirmware.str3 & "-" & ThisFBFirmware.Revision
+        End Get
+    End Property
 #End Region
 
     Private Structure FritzBoxFirmware
@@ -450,11 +462,15 @@ Public Class FritzBox
         Friend Revision As String
 
         ''' <summary>
+        ''' Der Fritz!Box Typ
+        ''' </summary>
+        Friend FritzBoxTyp As String
+
+        ''' <summary>
         ''' Setzt die internen Variablen
         ''' </summary>
         ''' <param name="FirmwareMinusRevision">Die Firmware in der Form XX.YY.ZZ-Revision</param>
-        ''' <remarks></remarks>
-        Friend Sub SetFirmware(ByVal FirmwareMinusRevision As String)
+        Friend Overloads Sub SetFirmware(ByVal FirmwareMinusRevision As String)
             Dim tmp() As String
 
             tmp = Split(FirmwareMinusRevision, "-", , CompareMethod.Text)
@@ -463,10 +479,48 @@ Public Class FritzBox
 
             tmp = Split(tmp(0), ".", , CompareMethod.Text)
             If tmp.Count = 3 Then
-                str1 = Format(CInt(tmp(tmp.Count - 3)), "000")
+                If Len(tmp(tmp.Count - 3)) = 3 Then
+                    str1 = Format(CInt(tmp(tmp.Count - 3)), "000")
+                Else
+                    str1 = Format(CInt(tmp(tmp.Count - 3)), "00")
+                End If
             End If
             str2 = Format(CInt(tmp(tmp.Count - 2)), "00")
             str3 = Format(CInt(tmp(tmp.Count - 1)), "00")
+        End Sub
+
+
+        ''' <summary>
+        ''' Liest die Firmware und den Fritz!Box Typ aus dem ServiceCode der Fritz!Box aus 
+        ''' </summary>
+        ''' <param name="ServiceCode">ServiceCode der Fritz!Box (http://fritz.box/cgi-bin/system_status)</param>
+        Friend Overloads Sub SetFirmware(ByVal ServiceCode() As String)
+            Dim idx As Integer
+
+            ' FRITZ!Box 6360 Cable (kdg)-Kabel-132103-010101-320574-607226-787902-850606-30492-kdg
+            ' Es muss darauf geachtet werden, dass die entscheidenden Datenfelder dynamisch ermittelt werden. 
+            ' Das letzte Datenfeld (n) ist das Brandung
+            ' Das vorletzte Datenfeld (n-1) ist die Revision
+            ' Das vor-vor-letze Datenfeld (n-2) ist die Firmware
+
+            ' Lese den Fritz!Box Typ
+            idx = LBound(ServiceCode)
+            FritzBoxTyp = ServiceCode(idx)
+
+            ' Lese Firmwareversion aus
+            idx = UBound(ServiceCode) - 2
+            If IsNumeric(ServiceCode(idx)) AndAlso Len(ServiceCode(idx)) = 6 Then
+                str1 = Mid(ServiceCode(idx), 1, 2)
+                str2 = Mid(ServiceCode(idx), 3, 2)
+                str3 = Mid(ServiceCode(idx), 5, 2)
+            End If
+
+            ' Lese Revision aus
+            idx = UBound(ServiceCode) - 1
+            If IsNumeric(ServiceCode(idx)) AndAlso Len(ServiceCode(idx)) = 5 Then
+                Revision = ServiceCode(idx)
+            End If
+            ' Lese Firmwareversion und Sub-Version aus
         End Sub
 
         Friend Function ISLargerOREqual(ByVal FirmwareToCheck As String) As Boolean
@@ -2858,27 +2912,6 @@ Public Class FritzBox
 #End Region
 
 #Region "Information"
-
-    Public Function GetInformationSystemFritzBox() As String
-
-        Dim FBReturnValue As String
-
-        Dim FBTyp As String = DataProvider.P_Def_ErrorMinusOne_String
-        Dim FBFirmware As String = DataProvider.P_Def_ErrorMinusOne_String
-        Dim FritzBoxInformation() As String
-
-
-        FBReturnValue = C_hf.httpGET(P_Link_FB_SystemStatus, DataProvider.P_Def_EncodingFritzBox, FBFehler)
-        If Not FBFehler Then
-            FritzBoxInformation = Split(C_hf.StringEntnehmen(FBReturnValue, "<body>", "</body>"), "-", , CompareMethod.Text)
-            FBTyp = FritzBoxInformation(0)
-            FBFirmware = Replace(Trim(C_hf.GruppiereNummer(FritzBoxInformation(7))), " ", ".", , , CompareMethod.Text)
-        End If
-
-        Return DataProvider.P_FritzBox_Info(FBTyp, FBFirmware)
-
-    End Function
-
     ''' <summary>
     ''' Ermittlung der Firmware der Fritz!Box
     ''' </summary>
@@ -2936,7 +2969,7 @@ Public Class FritzBox
                     ' Revision anhängen, bei LaborFW hängt es schon dran
                     Response += "-" & .GetElementsByTagName("Revision", "http://jason.avm.de/updatecheck/").Item(0).InnerText
                 End If
-
+                tmpFBFW.FritzBoxTyp = .GetElementsByTagName("Name", "http://jason.avm.de/updatecheck/").Item(0).InnerText
                 tmpFBFW.SetFirmware(Response)
             End With
         Else
@@ -2944,15 +2977,7 @@ Public Class FritzBox
             ' dauert deutlich länger, als die Jason BoxInfo
             Response = C_hf.httpGET(P_Link_FB_SystemStatus, C_DP.P_EncodingFritzBox, FBFehler)
             If Not FBFehler Then
-                tmp = Split(C_hf.StringEntnehmen(Response, "<body>", "</body>"), "-", , CompareMethod.Text)
-                If Not tmp.Count = 1 Then
-                    With tmpFBFW
-                        Response = Replace(C_hf.GruppiereNummer(tmp(7)), " ", ".", , CompareMethod.Text) & "-" & tmp(8)
-                        tmpFBFW.SetFirmware(Response)
-                    End With
-                Else
-                    FBFehler = True
-                End If
+                tmpFBFW.SetFirmware(Split(C_hf.StringEntnehmen(Response, "<body>", "</body>"), "-", , CompareMethod.Text))
             End If
         End If
         ThisFBFirmware = tmpFBFW
