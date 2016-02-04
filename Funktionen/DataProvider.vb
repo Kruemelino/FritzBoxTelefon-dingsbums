@@ -275,6 +275,16 @@ Public Class DataProvider
         End Set
     End Property
 
+    Private _TBNumEntryList As Integer
+    Public Property P_TBNumEntryList As Integer
+        Get
+            Return _TBNumEntryList
+        End Get
+        Set(ByVal value As Integer)
+            _TBNumEntryList = value
+        End Set
+    End Property
+
     ' Anrufmonitor
 
     ''' <summary>
@@ -545,6 +555,7 @@ Public Class DataProvider
             _CBSymbAnrMonNeuStart = value
         End Set
     End Property
+
 
     'Office 2003 und Office 2007
 
@@ -835,7 +846,6 @@ Public Class DataProvider
         End Set
     End Property
 
-
     ' Telefonnummernformatierung
 
     Private _TBTelNrMaske As String
@@ -1115,7 +1125,6 @@ Public Class DataProvider
     End Property
 
     ' Indizierung
-
     Private _LLetzteIndizierung As Date
     Public Property P_LLetzteIndizierung As Date
         Get
@@ -1126,8 +1135,7 @@ Public Class DataProvider
         End Set
     End Property
 
-    ' Note
-
+    ' Notiz
     Private _CBNote As Boolean
     Public Property P_CBNote As Boolean
         Get
@@ -1907,34 +1915,64 @@ Public Class DataProvider
             Return P_Def_LeerString
         End Get
     End Property
+
+    ''' <summary>
+    ''' 10
+    ''' </summary>
+    Public Shared ReadOnly Property P_Def_TBNumEntryList() As Integer
+        Get
+            Return 10
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' 0
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_CBoxVorwahl() As Integer
         Get
             Return 0
         End Get
     End Property
+
+    ''' <summary>
+    ''' 10
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_TBEnblDauer() As Integer
         Get
             Return 10
         End Get
     End Property
+
+    ''' <summary>
+    ''' False
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_CBAnrMonAuto() As Boolean
         Get
             Return False
         End Get
     End Property
 
+    ''' <summary>
+    ''' 30
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_TBAnrBeantworterTimeout() As Integer
         Get
             Return 30
         End Get
     End Property
 
+    ''' <summary>
+    ''' 0
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_TBAnrMonX() As Integer
         Get
             Return 0
         End Get
     End Property
 
+    ''' <summary>
+    ''' 0
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_TBAnrMonY() As Integer
         Get
             Return 0
@@ -1953,18 +1991,27 @@ Public Class DataProvider
         End Get
     End Property
 
+    ''' <summary>
+    ''' 0
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_TBAnrMonMoveGeschwindigkeit() As Integer
         Get
             Return 0
         End Get
     End Property
 
+    ''' <summary>
+    ''' 0
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_CBoxAnrMonStartPosition() As Integer
         Get
             Return 0
         End Get
     End Property
 
+    ''' <summary>
+    ''' 0
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_CBoxAnrMonMoveDirection() As Integer
         Get
             Return 0
@@ -3704,6 +3751,7 @@ Public Class DataProvider
         Me.P_TBBenutzer = C_XML.Read(XMLDoc, P_Def_Options, "TBBenutzer", P_Def_TBBenutzer)
         Me.P_TBPasswort = C_XML.Read(XMLDoc, P_Def_Options, "TBPasswort", P_Def_TBPasswort)
         Me.P_TBVorwahl = C_XML.Read(XMLDoc, P_Def_Options, "TBVorwahl", P_Def_TBVorwahl)
+        Me.P_TBNumEntryList = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBNumEntryList", CStr(P_Def_TBNumEntryList)))
         Me.P_CBoxVorwahl = CInt(C_XML.Read(XMLDoc, P_Def_Options, "CBoxVorwahl", CStr(P_Def_CBoxVorwahl)))
         Me.P_TBEnblDauer = CInt(C_XML.Read(XMLDoc, P_Def_Options, "TBEnblDauer", CStr(P_Def_TBEnblDauer)))
         Me.P_CBAnrMonAuto = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBAnrMonAuto", CStr(P_Def_CBAnrMonAuto)))

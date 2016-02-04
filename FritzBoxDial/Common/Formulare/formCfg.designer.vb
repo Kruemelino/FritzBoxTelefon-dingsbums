@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -84,6 +84,8 @@ Partial Class formCfg
         Me.BProbleme = New System.Windows.Forms.Button()
         Me.BZwischenablage = New System.Windows.Forms.Button()
         Me.BStartDebug = New System.Windows.Forms.Button()
+        Me.TBNumEntryList = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
         Me.PInfo = New System.Windows.Forms.TabPage()
         Me.BArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -116,6 +118,7 @@ Partial Class formCfg
         Me.PKontaktsuche = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBoxIndex = New System.Windows.Forms.GroupBox()
+        Me.CBTelFormKorr = New System.Windows.Forms.CheckBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RadioButtonEntfernen = New System.Windows.Forms.RadioButton()
         Me.RadioButtonErstelle = New System.Windows.Forms.RadioButton()
@@ -158,6 +161,7 @@ Partial Class formCfg
         Me.CBUseAnrMon = New System.Windows.Forms.CheckBox()
         Me.FBDB_MP = New System.Windows.Forms.TabControl()
         Me.PDiverses = New System.Windows.Forms.TabPage()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.RBFBComUPnP = New System.Windows.Forms.RadioButton()
         Me.RBFBComWeb = New System.Windows.Forms.RadioButton()
@@ -209,7 +213,6 @@ Partial Class formCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.CBTelFormKorr = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -229,6 +232,7 @@ Partial Class formCfg
         Me.PanelAnrMon.SuspendLayout()
         Me.FBDB_MP.SuspendLayout()
         Me.PDiverses.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GBoxJournal.SuspendLayout()
         Me.GBoxSymbolleiste.SuspendLayout()
@@ -304,7 +308,8 @@ Partial Class formCfg
         Me.CBKErstellen.Size = New System.Drawing.Size(217, 17)
         Me.CBKErstellen.TabIndex = 2
         Me.CBKErstellen.Text = "Kontakt bei erfolgreicher Suche erstellen"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt erstellt.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
+        "erstellt.")
         Me.CBKErstellen.UseVisualStyleBackColor = True
         '
         'CBRWSIndex
@@ -339,7 +344,8 @@ Partial Class formCfg
         Me.CBIndexAus.Size = New System.Drawing.Size(299, 17)
         Me.CBIndexAus.TabIndex = 6
         Me.CBIndexAus.Text = "Indizierung auschalten (nur wenn Anrufmonitor deaktiviert)"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können Sie die Indizierung auch ausschalten.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können Sie die Indizierung auch aussch" &
+        "alten.")
         Me.CBIndexAus.UseVisualStyleBackColor = True
         '
         'CBAnrMonTransp
@@ -350,7 +356,8 @@ Partial Class formCfg
         Me.CBAnrMonTransp.Size = New System.Drawing.Size(136, 17)
         Me.CBAnrMonTransp.TabIndex = 7
         Me.CBAnrMonTransp.Text = "Verwende Transparenz"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonTransp, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor ein und ausgeblendet." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Dazu wird die Transparenz des Anrufmonitors erhöht, bzw. verringert.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonTransp, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor ein und ausgeblendet." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) &
+        "Dazu wird die Transparenz des Anrufmonitors erhöht, bzw. verringert.")
         Me.CBAnrMonTransp.UseVisualStyleBackColor = True
         '
         'CBAnrMonMove
@@ -361,7 +368,8 @@ Partial Class formCfg
         Me.CBAnrMonMove.Size = New System.Drawing.Size(186, 17)
         Me.CBAnrMonMove.TabIndex = 8
         Me.CBAnrMonMove.Text = "Verwende Anrufmonitorbewegung"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonMove, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor von unten in den Desktop hinein geschoben.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonMove, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor von unten in den Deskto" &
+        "p hinein geschoben.")
         Me.CBAnrMonMove.UseVisualStyleBackColor = True
         '
         'CBShowMSN
@@ -372,7 +380,8 @@ Partial Class formCfg
         Me.CBShowMSN.Size = New System.Drawing.Size(170, 17)
         Me.CBShowMSN.TabIndex = 9
         Me.CBShowMSN.Text = "Zeige MSN im Anrufmonitor an"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBShowMSN, "Wenn diese Einstellung gesetzt ist, wird die jeweilige MSN im Anrufmonitor angezeigt.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBShowMSN, "Wenn diese Einstellung gesetzt ist, wird die jeweilige MSN im Anrufmonitor angeze" &
+        "igt.")
         Me.CBShowMSN.UseVisualStyleBackColor = True
         '
         'PGrundeinstellungen
@@ -451,7 +460,8 @@ Partial Class formCfg
         Me.CBTelNrGruppieren.Size = New System.Drawing.Size(78, 17)
         Me.CBTelNrGruppieren.TabIndex = 12
         Me.CBTelNrGruppieren.Text = "Gruppieren"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Beispiel:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "ohne Gruppierung: +49 (123) 4567890 " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "mit Gruppierung: +49 (1 23) 4 56 78 90 ")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Beispiel:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "oh" &
+        "ne Gruppierung: +49 (123) 4567890 " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "mit Gruppierung: +49 (1 23) 4 56 78 90 ")
         Me.CBTelNrGruppieren.UseVisualStyleBackColor = True
         '
         'GroupBoxStoppUhr
@@ -553,7 +563,9 @@ Partial Class formCfg
         Me.CBCallByCall.Size = New System.Drawing.Size(124, 17)
         Me.CBCallByCall.TabIndex = 10
         Me.CBCallByCall.Text = "Jedesmal Call-by-Call"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefonieren. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Telefonieren.de verwendet.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo" &
+        "nieren. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Um die aktuell günstigsten Vorvorwahlen zu ermitteln, wird Billiger-Te" &
+        "lefonieren.de verwendet.")
         Me.CBCallByCall.UseVisualStyleBackColor = True
         '
         'CBDialPort
@@ -574,7 +586,8 @@ Partial Class formCfg
         Me.CBCheckMobil.Size = New System.Drawing.Size(233, 17)
         Me.CBCheckMobil.TabIndex = 11
         Me.CBCheckMobil.Text = "Nachfrage beim Wählen von Mobilnummern"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wählen eine zusätzliche Benutzereingabe erforderlich.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wähl" &
+        "en eine zusätzliche Benutzereingabe erforderlich.")
         Me.CBCheckMobil.UseVisualStyleBackColor = True
         '
         'CBVoIPBuster
@@ -596,7 +609,8 @@ Partial Class formCfg
         Me.CBCbCunterbinden.Size = New System.Drawing.Size(136, 17)
         Me.CBCbCunterbinden.TabIndex = 9
         Me.CBCbCunterbinden.Text = "Call-by-Call unterbinden"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "keinen Festnetzanschluss haben und nur über Ihren Internetanbieter telefonieren.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "k" &
+        "einen Festnetzanschluss haben und nur über Ihren Internetanbieter telefonieren.")
         Me.CBCbCunterbinden.UseVisualStyleBackColor = True
         '
         'Label6
@@ -694,7 +708,9 @@ Partial Class formCfg
         Me.CBForceFBAddr.Size = New System.Drawing.Size(107, 17)
         Me.CBForceFBAddr.TabIndex = 1
         Me.CBForceFBAddr.Text = "Fritz!Box Adresse"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindung zur eingegebenen Addresse aufgebaut." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das ist z.B. bei einigen dyndns-Anbietern nötig, da diese Pings blockieren.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" &
+        "ng zur eingegebenen Addresse aufgebaut." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das ist z.B. bei einigen dyndns-Anbiete" &
+        "rn nötig, da diese Pings blockieren.")
         Me.CBForceFBAddr.UseVisualStyleBackColor = True
         '
         'Label5
@@ -778,7 +794,8 @@ Partial Class formCfg
         Me.TBRWSTest.Name = "TBRWSTest"
         Me.TBRWSTest.Size = New System.Drawing.Size(100, 20)
         Me.TBRWSTest.TabIndex = 6
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durchgeführt werden soll.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch" &
+        "geführt werden soll.")
         '
         'Label32
         '
@@ -829,7 +846,9 @@ Partial Class formCfg
         Me.TBAnrBeantworterTimeout.Name = "TBAnrBeantworterTimeout"
         Me.TBAnrBeantworterTimeout.Size = New System.Drawing.Size(29, 20)
         Me.TBAnrBeantworterTimeout.TabIndex = 37
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TBAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Verpasst"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbeantworter.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
+        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" &
+        "ntworter.")
         '
         'LAnrBeantworterTimeout
         '
@@ -840,7 +859,9 @@ Partial Class formCfg
         Me.LAnrBeantworterTimeout.Size = New System.Drawing.Size(137, 13)
         Me.LAnrBeantworterTimeout.TabIndex = 38
         Me.LAnrBeantworterTimeout.Text = "Anrufbentworter-Timeout [s]"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.LAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Verpasst"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbeantworter.")
+        Me.ToolTipFBDBConfig.SetToolTip(Me.LAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
+        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" &
+        "ntworter.")
         '
         'BProbleme
         '
@@ -849,7 +870,9 @@ Partial Class formCfg
         Me.BProbleme.Size = New System.Drawing.Size(179, 28)
         Me.BProbleme.TabIndex = 33
         Me.BProbleme.Text = "Probleme?"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeordnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwickler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
+        Me.ToolTipFBDBConfig.SetToolTip(Me.BProbleme, "Werden nicht alle Telefonnummern oder Telefone erkannt?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Werden sie falsch zugeor" &
+        "dnet?" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Das Addin sammelt ein paar Informationen und schickt sie an den Entwick" &
+        "ler." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.BProbleme.UseVisualStyleBackColor = True
         '
         'BZwischenablage
@@ -871,6 +894,28 @@ Partial Class formCfg
         Me.BStartDebug.Text = "Start"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BStartDebug, "Kopiert den Statustext in die Zwischenablage")
         Me.BStartDebug.UseVisualStyleBackColor = True
+        '
+        'TBNumEntryList
+        '
+        Me.TBNumEntryList.Location = New System.Drawing.Point(6, 18)
+        Me.TBNumEntryList.Name = "TBNumEntryList"
+        Me.TBNumEntryList.Size = New System.Drawing.Size(29, 20)
+        Me.TBNumEntryList.TabIndex = 39
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBNumEntryList, "Gibt die Anzahl der Listenelemente an, die in der Wahlwiederholungs und Rückrufli" &
+        "ste aufgeführt werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Eine Reduktion des Wertes bedeutet automatisch, dass die" &
+        " Listen geleert werden.")
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(41, 21)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(167, 13)
+        Me.Label9.TabIndex = 40
+        Me.Label9.Text = "Anzahl der Listenelemente je Liste"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.Label9, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
+        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" &
+        "ntworter.")
         '
         'PInfo
         '
@@ -1134,9 +1179,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Format = "T"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1148,9 +1193,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Format = "T"
-        DataGridViewCellStyle5.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1162,9 +1207,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Format = "T"
-        DataGridViewCellStyle6.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1228,6 +1273,16 @@ Partial Class formCfg
         Me.GroupBoxIndex.TabStop = False
         Me.GroupBoxIndex.Text = "Kontaktsuche in Outlook (Indizierung)"
         '
+        'CBTelFormKorr
+        '
+        Me.CBTelFormKorr.AutoSize = True
+        Me.CBTelFormKorr.Location = New System.Drawing.Point(344, 62)
+        Me.CBTelFormKorr.Name = "CBTelFormKorr"
+        Me.CBTelFormKorr.Size = New System.Drawing.Size(215, 17)
+        Me.CBTelFormKorr.TabIndex = 19
+        Me.CBTelFormKorr.Text = "Telefonnummernformatierung korrigieren"
+        Me.CBTelFormKorr.UseVisualStyleBackColor = True
+        '
         'Label21
         '
         Me.Label21.AutoSize = True
@@ -1267,7 +1322,8 @@ Partial Class formCfg
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(567, 24)
         Me.Label20.TabIndex = 14
-        Me.Label20.Text = "Falls keine Indizierung durgeführt wird, werden keine Kontakte im Anrufmonitor angezeigt."
+        Me.Label20.Text = "Falls keine Indizierung durgeführt wird, werden keine Kontakte im Anrufmonitor an" &
+    "gezeigt."
         Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelAnzahl
@@ -1662,6 +1718,7 @@ Partial Class formCfg
         '
         'PDiverses
         '
+        Me.PDiverses.Controls.Add(Me.GroupBox6)
         Me.PDiverses.Controls.Add(Me.GroupBox3)
         Me.PDiverses.Controls.Add(Me.GBoxJournal)
         Me.PDiverses.Controls.Add(Me.GBoxSymbolleiste)
@@ -1674,6 +1731,17 @@ Partial Class formCfg
         Me.PDiverses.TabIndex = 13
         Me.PDiverses.Text = "Weitere Funktionen"
         Me.PDiverses.UseVisualStyleBackColor = True
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.TBNumEntryList)
+        Me.GroupBox6.Controls.Add(Me.Label9)
+        Me.GroupBox6.Location = New System.Drawing.Point(288, 247)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(283, 44)
+        Me.GroupBox6.TabIndex = 35
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Anruflisten"
         '
         'GroupBox3
         '
@@ -1967,7 +2035,8 @@ Partial Class formCfg
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(199, 51)
         Me.Label29.TabIndex = 12
-        Me.Label29.Text = "Bei der Verwerndung des Phoner Anrufmonitors wird der Anrufmonitor der Fritz!Box nicht mehr überwacht!"
+        Me.Label29.Text = "Bei der Verwerndung des Phoner Anrufmonitors wird der Anrufmonitor der Fritz!Box " &
+    "nicht mehr überwacht!"
         '
         'CBPhoner
         '
@@ -2227,16 +2296,6 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(584, 366)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'CBTelFormKorr
-        '
-        Me.CBTelFormKorr.AutoSize = True
-        Me.CBTelFormKorr.Location = New System.Drawing.Point(344, 62)
-        Me.CBTelFormKorr.Name = "CBTelFormKorr"
-        Me.CBTelFormKorr.Size = New System.Drawing.Size(215, 17)
-        Me.CBTelFormKorr.TabIndex = 19
-        Me.CBTelFormKorr.Text = "Telefonnummernformatierung korrigieren"
-        Me.CBTelFormKorr.UseVisualStyleBackColor = True
-        '
         'formCfg
         '
         Me.AcceptButton = Me.BOK
@@ -2280,6 +2339,8 @@ Partial Class formCfg
         Me.PanelAnrMon.PerformLayout()
         Me.FBDB_MP.ResumeLayout(False)
         Me.PDiverses.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GBoxJournal.ResumeLayout(False)
@@ -2494,6 +2555,9 @@ Partial Class formCfg
     Friend WithEvents BProbleme As Windows.Forms.Button
     Friend WithEvents TBDiagnose As Windows.Forms.TextBox
     Friend WithEvents CBTelFormKorr As Windows.Forms.CheckBox
+    Friend WithEvents GroupBox6 As Windows.Forms.GroupBox
+    Friend WithEvents TBNumEntryList As Windows.Forms.TextBox
+    Friend WithEvents Label9 As Windows.Forms.Label
 #If OVer < 14 Then
 #End If
 End Class

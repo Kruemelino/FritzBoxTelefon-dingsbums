@@ -111,6 +111,7 @@ Public Class formCfg
 
             If Not Len(.P_TBPasswort) = 0 Then Me.TBPasswort.Text = "1234"
             Me.TBVorwahl.Text = .P_TBVorwahl
+            Me.TBNumEntryList.Text = CStr(.P_TBNumEntryList)
             Me.TBEnblDauer.Text = CStr(.P_TBEnblDauer)
             Me.CBAnrMonAuto.Checked = .P_CBAnrMonAuto
             Me.TBAnrBeantworterTimeout.Text = CStr(.P_TBAnrBeantworterTimeout)
@@ -430,10 +431,10 @@ Public Class formCfg
             ' StoppUhr
             If Not Me.TBStoppUhr.Text = DataProvider.P_Def_LeerString Then
                 If CInt(Me.TBStoppUhr.Text) < 0 Then
-                    Me.TBStoppUhr.Text = "10"
+                    Me.TBStoppUhr.Text = CStr(DataProvider.P_Def_TBStoppUhr)
                 End If
             Else
-                Me.TBStoppUhr.Text = "10"
+                Me.TBStoppUhr.Text = CStr(DataProvider.P_Def_TBStoppUhr)
             End If
 
             .P_TBLandesVW = Me.TBLandesVW.Text
@@ -562,6 +563,23 @@ Public Class formCfg
                 C_KF.GetOutlookFolder(.P_TVKontaktOrdnerEntryID, .P_TVKontaktOrdnerStoreID)
             End If
 
+            ' Anruflisten
+            If Not Me.TBNumEntryList.Text = DataProvider.P_Def_LeerString Then
+                If CInt(Me.TBNumEntryList.Text) < 1 Then
+                    Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
+                End If
+            Else
+                Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
+            End If
+
+            If CInt(Me.TBNumEntryList.Text) < .P_TBNumEntryList Then
+                ' Lösche  CallList
+                C_XML.Delete(C_DP.XMLDoc, DataProvider.P_Def_NameListCALL)
+                ' Lösche  RingList
+                C_XML.Delete(C_DP.XMLDoc, DataProvider.P_Def_NameListRING)
+            End If
+            .P_TBNumEntryList = CInt(Me.TBNumEntryList.Text)
+
             .SpeichereXMLDatei()
             C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
         End With
@@ -573,12 +591,10 @@ Public Class formCfg
         Select Case CType(sender, Windows.Forms.Button).Name
             Case "BReset"
                 ' Startwerte zurücksetzen
-                ' Einstellungen für das Wählmakro zurücksetzen
-
                 Me.TBLandesVW.Text = DataProvider.P_Def_TBLandesVW
                 Me.TBAmt.Text = DataProvider.P_Def_LeerString
                 Me.CBCheckMobil.Checked = DataProvider.P_Def_CBCheckMobil
-
+                Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
                 ' Einstellungen für den Anrufmonitor zurücksetzen
                 Me.TBEnblDauer.Text = CStr(DataProvider.P_Def_TBEnblDauer)
                 Me.TBAnrMonX.Text = CStr(DataProvider.P_Def_TBAnrMonX)
@@ -803,7 +819,7 @@ Public Class formCfg
 #End Region
 
 #Region "Änderungen"
-    Private Sub ValueChanged(sender As Object, e As EventArgs) Handles CBRWS.CheckedChanged, CBCbCunterbinden.CheckedChanged, CBAutoClose.CheckedChanged, CBIndexAus.CheckedChanged, CBUseAnrMon.CheckedChanged, CBAnrMonMove.CheckedChanged, CBStoppUhrEinblenden.CheckedChanged, CBStoppUhrAusblenden.CheckedChanged, CBLogFile.CheckedChanged, TBEnblDauer.TextChanged, TBAnrMonX.TextChanged, TBAnrMonY.TextChanged, TBTelNrMaske.Leave, CLBTelNr.SelectedIndexChanged, TBRWSTest.TextChanged, TBBenutzer.TextChanged, TBPasswort.TextChanged, CBAnrMonCloseAtDISSCONNECT.CheckedChanged, CBJournal.CheckedChanged, CBAnrListeShowAnrMon.CheckedChanged, CBAutoAnrList.CheckedChanged
+    Private Sub ValueChanged(sender As Object, e As EventArgs) Handles CBRWS.CheckedChanged, CBCbCunterbinden.CheckedChanged, CBAutoClose.CheckedChanged, CBIndexAus.CheckedChanged, CBUseAnrMon.CheckedChanged, CBAnrMonMove.CheckedChanged, CBStoppUhrEinblenden.CheckedChanged, CBStoppUhrAusblenden.CheckedChanged, CBLogFile.CheckedChanged, TBEnblDauer.TextChanged, TBAnrMonX.TextChanged, TBAnrMonY.TextChanged, TBTelNrMaske.Leave, CLBTelNr.SelectedIndexChanged, TBRWSTest.TextChanged, TBBenutzer.TextChanged, TBPasswort.TextChanged, CBAnrMonCloseAtDISSCONNECT.CheckedChanged, CBJournal.CheckedChanged, CBAnrListeShowAnrMon.CheckedChanged, CBAutoAnrList.CheckedChanged, TBNumEntryList.TextChanged
 
         Select Case sender.GetType().Name
             Case "CheckBox"
@@ -893,6 +909,14 @@ Public Class formCfg
                         Me.TBAnrMonX.Text = C_hf.AcceptOnlyNumeric(Me.TBAnrMonX.Text)
                     Case "TBAnrMonY"
                         Me.TBAnrMonY.Text = C_hf.AcceptOnlyNumeric(Me.TBAnrMonY.Text)
+                    Case "TBNumEntryList"
+                        Me.TBNumEntryList.Text = C_hf.AcceptOnlyNumeric(Me.TBNumEntryList.Text)
+                        If Me.TBNumEntryList.Text = DataProvider.P_Def_LeerString Or Me.TBNumEntryList.Text < "1" Then Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
+                        If CInt(Me.TBNumEntryList.Text) < C_DP.P_TBNumEntryList Then
+                            Me.TBNumEntryList.ForeColor = Color.Red
+                        Else
+                            Me.TBNumEntryList.ForeColor = SystemColors.WindowText
+                        End If
                     Case "TBLandesVW"
                         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & Me.TBLandesVW.Text & " immer mitgewählt.")
                     Case "TBTelNrMaske"
@@ -945,7 +969,7 @@ Public Class formCfg
                         For i = 0 To TelList.Rows.Count - 1
                             Me.TelList.Rows(i).Cells(0).Value = False
                         Next
-                        If Not (Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "TAM" Or _
+                        If Not (Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "TAM" Or
                              Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "FAX") Then Me.TelList.CurrentCell.Value = cellVal
                     Else
                         Me.TelList.CurrentCell.Value = False
@@ -964,9 +988,7 @@ Public Class formCfg
         pos(1) = CStr(InStr(Me.TBTelNrMaske.Text, "%O", CompareMethod.Text))
         pos(2) = CStr(InStr(Me.TBTelNrMaske.Text, "%N", CompareMethod.Text))
         If C_hf.IsOneOf("0", pos) Then
-            C_hf.MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & _
-                        "Prüfen Sie, ob folgende Zeichen in der Maske Enthalten sind: ""%L"", ""%V"" und ""%N"" (""%D"" kann wegelassen werden)!" & vbNewLine & _
-                        "Beispiel: ""%L (%O) %N - %D""", MsgBoxStyle.Information, "Einstellungen")
+            C_hf.MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & "Prüfen Sie, ob folgende Zeichen in der Maske enthalten sind: ""%L"", ""%V"" und ""%N"" (""%D"" kann wegelassen werden)!" & vbNewLine & "Beispiel: ""%L (%O) %N - %D""", MsgBoxStyle.Information, "Einstellungen")
             Return False
         End If
         Return True

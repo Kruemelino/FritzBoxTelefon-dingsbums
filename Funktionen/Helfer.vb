@@ -963,11 +963,17 @@ Public Class Helfer
     End Function
 
     Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
-        If sTxt = DataProvider.P_Def_LeerString Then Return DataProvider.P_Def_LeerString
-        If Mid(sTxt, Len(sTxt), 1) Like "[0-9]" = False Then
-            Return Mid(sTxt, 1, Len(sTxt) - 1)
+
+        Dim regex As RegularExpressions.Regex = New RegularExpressions.Regex("^[+-]?\d+$")
+        Dim match As RegularExpressions.Match = regex.Match(sTxt)
+        If match.Success Then
+            AcceptOnlyNumeric = match.Value
+        Else
+            AcceptOnlyNumeric = DataProvider.P_Def_LeerString
         End If
-        Return sTxt
+
+        match = Nothing
+        regex = Nothing
     End Function
 
     Public Function TelefonName(ByVal MSN As String) As String

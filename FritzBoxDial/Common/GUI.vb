@@ -156,9 +156,9 @@ Imports Microsoft.Office.Core
         C_XML = XMLKlasse
     End Sub
 
-#Region "Ribbon Behandlung für Outlook 2007 bis 2013"
+#Region "Ribbon Behandlung für Outlook 2007 bis 2016"
 #If Not OVer = 11 Then
-#Region "Ribbon Inspector Office 2007 & Office 2010 & Office 2013" ' Ribbon Inspektorfenster
+#Region "Ribbon Inspector Office 2007 bis Office 2016" ' Ribbon Inspektorfenster
 
     ''' <summary>
     ''' Gibt zurück, ob das JournalItem, von diesem Addin erstellt wurde. Dazu wird die Kategorie geprüft.
@@ -274,15 +274,14 @@ Imports Microsoft.Office.Core
 
 #End Region 'Ribbon Inspector
 
-#Region "Ribbon Expector Office 2010 & Office 2013" 'Ribbon Explorer
-#If oVer >= 14 Then
+#Region "Ribbon Expector Office 2010 bis Office 2016" 'Ribbon Explorer
+#If OVer >= 14 Then
 
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon
     End Sub
 
     Public Function FillDynamicMenu(ByVal control As Office.IRibbonControl) As String
-
         Dim XMLListBaseNode As String
 
         Dim index As Integer
@@ -334,9 +333,9 @@ Imports Microsoft.Office.Core
 
         If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
 
-            For ID = index + 9 To index Step -1
+            For ID = index + C_DP.P_TBNumEntryList - 1 To index Step -1
 
-                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
+                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod C_DP.P_TBNumEntryList))
                 TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
 
                 If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
@@ -344,11 +343,11 @@ Imports Microsoft.Office.Core
                     Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
                     If XMLListBaseNode = DataProvider.P_Def_NameListRING Then Verpasst = CBool(LANodeValues.Item(LANodeNames.IndexOf("Verpasst")))
 
-                    GetButtonXMLString(RibbonListStrBuilder, _
-                            CStr(ID Mod 10), _
-                            C_HF.IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer), _
-                            XMLListBaseNode, _
-                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr), _
+                    GetButtonXMLString(RibbonListStrBuilder,
+                            CStr(ID Mod C_DP.P_TBNumEntryList),
+                            C_HF.IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer),
+                            XMLListBaseNode,
+                            DataProvider.P_CMB_ToolTipp(Zeit, TelNr),
                             C_HF.IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString))
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
@@ -1529,6 +1528,8 @@ Imports Microsoft.Office.Core
         Dim xPathTeile As New ArrayList
         Dim index As Integer              ' Zählvariable
 
+
+
         index = CInt(C_XML.Read(C_DP.XMLDoc, ListName, "Index", "0"))
 
         xPathTeile.Add(ListName)
@@ -1538,7 +1539,7 @@ Imports Microsoft.Office.Core
         If Not C_HF.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
 
             NodeNames.Add("Index")
-            NodeValues.Add(CStr((index + 1) Mod 10))
+            NodeValues.Add(CStr((index + 1) Mod C_DP.P_TBNumEntryList))
 
             If Not Anrufer = DataProvider.P_Def_LeerString Then
                 NodeNames.Add("Anrufer")
@@ -1577,7 +1578,7 @@ Imports Microsoft.Office.Core
                 xPathTeile.Clear() 'RemoveRange(0, xPathTeile.Count)
                 xPathTeile.Add(ListName)
                 xPathTeile.Add("Index")
-                C_XML.Write(.XMLDoc, xPathTeile, CStr((index + 1) Mod 10))
+                C_XML.Write(.XMLDoc, xPathTeile, CStr((index + 1) Mod C_DP.P_TBNumEntryList))
                 xPathTeile.Remove("Index")
                 C_XML.AppendNode(.XMLDoc, xPathTeile, C_XML.CreateXMLNode(.XMLDoc, "Eintrag", NodeNames, NodeValues, AttributeNames, AttributeValues))
             End With
