@@ -26,25 +26,36 @@ Public Class PhonerInterface
         If PhonerReady() Then
             Dim PhonerPasswort As String = C_DP.P_TBPhonerPasswort
             Dim ZugangPasswortPhoner As String = C_DP.GetSettingsVBA("ZugangPasswortPhoner", DataProvider.P_Def_ErrorMinusOne_String)
-            If Not PhonerPasswort = DataProvider.P_Def_ErrorMinusOne_String Or Not ZugangPasswortPhoner = DataProvider.P_Def_ErrorMinusOne_String Then
-                Dim Stream As NetworkStream
-                Dim remoteEP As New System.Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
-                Dim tcpClient As New TcpClient()
 
-                tcpClient.Connect(remoteEP)
-                Stream = tcpClient.GetStream()
+            Dim Stream As NetworkStream
+            Dim remoteEP As System.Net.IPEndPoint
+            Dim PhonertcpClient As TcpClient
+            Dim StreamWriter As StreamWriter
+            Dim StreamReader As StreamReader
+            Dim Zeile As String
+            Dim Challenge As String
+            Dim Response As String
+            If Not PhonerPasswort = DataProvider.P_Def_ErrorMinusOne_String Or Not ZugangPasswortPhoner = DataProvider.P_Def_ErrorMinusOne_String Then
+
+                remoteEP = New System.Net.IPEndPoint(Net.IPAddress.Parse(PhonerAddresse), PhonerAnrMonPort)
+                PhonertcpClient = New TcpClient()
+
+                PhonertcpClient.Connect(remoteEP)
+                Stream = PhonertcpClient.GetStream()
 
                 If Stream IsNot Nothing Then
-                    Dim StreamWriter As New StreamWriter(Stream)
-                    Dim StreamReader As New StreamReader(Stream)
+                    StreamWriter = New StreamWriter(Stream)
+                    StreamReader = New StreamReader(Stream)
+
                     If Stream.CanWrite Then
                         With StreamWriter
                             .WriteLine("Login")
                             .AutoFlush = True
-                            If StreamReader.ReadLine() = DataProvider.P_Def_Phoner_Ready Then ' "Welcome to Phoner"
-                                Dim Challenge As String = Mid(StreamReader.ReadLine(), Strings.Len(DataProvider.P_Def_Phoner_Challenge) + 1)
+                            Zeile = StreamReader.ReadLine()
+                            If LCase(Zeile) = LCase(DataProvider.P_Def_Phoner_Ready) Then ' "Welcome to Phoner" 
+                                Challenge = Mid(StreamReader.ReadLine(), Strings.Len(DataProvider.P_Def_Phoner_Challenge) + 1)
                                 ' Anmerkung: Hat bis jetzt funktioniert. Aber es kann sein, dass eine Umwandlung der Zeichen, dessen Codepoint > 255 ist, nicht notig ist.
-                                Dim Response As String = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), Text.Encoding.ASCII, True))
+                                Response = UCase(C_Crypt.getMd5Hash(Challenge & C_Crypt.DecryptString128Bit(PhonerPasswort, ZugangPasswortPhoner), Text.Encoding.ASCII, True))
                                 .WriteLine(DataProvider.P_Def_Phoner_Response & Response)
                                 C_hf.ThreadSleep(100)
                                 If Stream.DataAvailable Then
@@ -64,19 +75,22 @@ Public Class PhonerInterface
                     Else
                         DialPhoner = DataProvider.P_Lit_Phoner4 '"Fehler!" & vbCrLf & "TCP Fehler (Stream.CanWrite = False)!"
                     End If
-                    StreamWriter = Nothing
-                    StreamReader = Nothing
+
                 Else
                     DialPhoner = DataProvider.P_Lit_Phoner5 '"Fehler!" & vbCrLf & "TCP!"
                 End If
                 C_hf.ThreadSleep(500)
-                tcpClient.Close()
-                tcpClient = Nothing
-                Stream = Nothing
                 C_hf.KeyChange()
+                PhonertcpClient.Close()
             Else
                 DialPhoner = DataProvider.P_Lit_Phoner6 '"Fehler!" & vbCrLf & "Kein Passwort hinterlegt!"
             End If
+
+            Stream = Nothing
+            PhonertcpClient = Nothing
+            StreamWriter = Nothing
+            StreamReader = Nothing
+            remoteEP = Nothing
         Else
             DialPhoner = DataProvider.P_Lit_Phoner7 '"Fehler!" & vbCrLf & "Phoner nicht verfügbar!"
         End If

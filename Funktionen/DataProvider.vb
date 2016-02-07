@@ -1784,6 +1784,10 @@ Public Class DataProvider
         End Get
     End Property
 
+
+    ''' <summary>
+    ''' Welcome To Phoner
+    ''' </summary>
     Public Shared ReadOnly Property P_Def_Phoner_Ready As String
         Get
             Return "Welcome To Phoner"
