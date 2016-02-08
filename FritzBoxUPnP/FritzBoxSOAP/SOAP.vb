@@ -244,56 +244,50 @@ Friend Module BaseFuctions
         Dim fbURI As New Uri(urlFull)
 
         fbPostBytes = Encoding.ASCII.GetBytes(SOAPXML)
+        If Not (P_FritzBox_UserName = "" Or P_FritzBox_Passwort = "") Then
+            With CType(WebRequest.Create(fbURI), HttpWebRequest)
+                .Proxy = Nothing
+                .KeepAlive = False
+                .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                .Credentials = New System.Net.NetworkCredential(P_FritzBox_UserName, P_FritzBox_Passwort)
+                .Method = WebRequestMethods.Http.Post
+                .Headers.Add("SOAPACTION", """" + ServiceType + "#" + SOAPAction + """")
+                .ContentType = P_SOAPContentType
+                .UserAgent = P_SOAPUserAgent
+                .ContentLength = CLng(Len(SOAPXML).ToString)
 
-        With CType(WebRequest.Create(fbURI), HttpWebRequest)
-            .Proxy = Nothing
-            .KeepAlive = False
-            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-            .Credentials = New System.Net.NetworkCredential(P_FritzBox_UserName, P_FritzBox_Passwort)
-            .Method = WebRequestMethods.Http.Post
-            .Headers.Add("SOAPACTION", """" + ServiceType + "#" + SOAPAction + """")
-            .ContentType = P_SOAPContentType
-            .UserAgent = P_SOAPUserAgent
-            .ContentLength = CLng(Len(SOAPXML).ToString)
+                With .GetRequestStream
+                    .Write(fbPostBytes, 0, fbPostBytes.Length)
+                    .Close()
+                End With
 
-            With .GetRequestStream
-                .Write(fbPostBytes, 0, fbPostBytes.Length)
-                .Close()
+                Try
+                    With New StreamReader(.GetResponse.GetResponseStream())
+                        RetVal.LoadXml(.ReadToEnd())
+                    End With
+                Catch ex As WebException When ex.Message.Contains("606")
+                    ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """Action not authorized"""
+                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+                Catch ex As WebException When ex.Message.Contains("500")
+                    ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction & vbNewLine & vbNewLine & "Method: " & .Method.ToString & vbNewLine & "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & "ContentType: " & .ContentType.ToString & vbNewLine & "UserAgent: " & .UserAgent.ToString & vbNewLine & "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & SOAPXML
+                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+                Catch ex As WebException When ex.Message.Contains("713")
+                    ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """Invalid array index"""
+                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+                Catch ex As WebException When ex.Message.Contains("820")
+                    ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """Internal error """
+                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+                Catch ex As WebException When ex.Message.Contains("401")
+                    ErrorText = "SOAP Login-Fehler 401: " & SOAPAction
+                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+                End Try
             End With
 
-            Try
-                With New StreamReader(.GetResponse.GetResponseStream())
-                    RetVal.LoadXml(.ReadToEnd())
-                End With
-            Catch ex As WebException When ex.Message.Contains("606")
-                ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """Action not authorized"""
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("500")
-                ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction & vbNewLine & vbNewLine & _
-                    "Method: " & .Method.ToString & vbNewLine & _
-                    "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & _
-                    "ContentType: " & .ContentType.ToString & vbNewLine & _
-                    "UserAgent: " & .UserAgent.ToString & vbNewLine & _
-                    "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & _
-                    SOAPXML
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("713")
-                ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """Invalid array index"""
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("820")
-                ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """Internal error """
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("401")
-                ErrorText = "SOAP Login-Fehler 401: " & SOAPAction
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            End Try
-        End With
-
-        If Not ErrorText = "" Then
-            RetVal.LoadXml("<FEHLER>" & ErrorText.Replace("<", "CHR(60)").Replace(">", "CHR(62)") & "</FEHLER>")
+            If Not ErrorText = "" Then
+                RetVal.LoadXml("<FEHLER>" & ErrorText.Replace("<", "CHR(60)").Replace(">", "CHR(62)") & "</FEHLER>")
+            End If
         End If
-
-
+        fbURI = Nothing
         Return RetVal
     End Function
 #End Region

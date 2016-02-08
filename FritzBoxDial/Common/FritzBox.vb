@@ -1105,8 +1105,10 @@ Public Class FritzBox
         C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
 
         If P_FritzBoxVorhanden(C_DP.P_ValidFBAdr) Then
-            ' Übergebe an die UPnP-Klasse die Daten der
-            C_FBoxUPnP.SetFritzBoxData(C_DP.P_ValidFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
+            ' Übergebe an die UPnP-Klasse die Daten der Fritz!Box
+            If C_DP.P_RBFBComUPnP Then
+                C_FBoxUPnP.SetFritzBoxData(C_DP.P_ValidFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
+            End If
             ' Setze Firmware der Fritz!Box
             FBFirmware()
 

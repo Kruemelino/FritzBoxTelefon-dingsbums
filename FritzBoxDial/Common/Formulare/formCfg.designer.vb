@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -1179,9 +1179,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Format = "T"
+        DataGridViewCellStyle4.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle4
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1193,9 +1193,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Format = "T"
+        DataGridViewCellStyle5.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle5
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1207,9 +1207,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Format = "T"
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle6
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1753,6 +1753,8 @@ Partial Class formCfg
         Me.GroupBox3.TabIndex = 34
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Fritz!Box Kommunikation"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.GroupBox3, "Bei Änderung der Fritz!Box Kommunikation ist ein Neustart des Addins erforderlich" &
+        ".")
         '
         'RBFBComUPnP
         '
@@ -1762,6 +1764,8 @@ Partial Class formCfg
         Me.RBFBComUPnP.Size = New System.Drawing.Size(158, 17)
         Me.RBFBComUPnP.TabIndex = 0
         Me.RBFBComUPnP.Text = "UPnP (SOAP, experimentell)"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.RBFBComUPnP, "Bei Änderung der Fritz!Box Kommunikation ist ein Neustart des Addins erforderlich" &
+        ".")
         Me.RBFBComUPnP.UseVisualStyleBackColor = True
         '
         'RBFBComWeb
@@ -1774,6 +1778,8 @@ Partial Class formCfg
         Me.RBFBComWeb.TabIndex = 0
         Me.RBFBComWeb.TabStop = True
         Me.RBFBComWeb.Text = "Weboberfläche"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.RBFBComWeb, "Bei Änderung der Fritz!Box Kommunikation ist ein Neustart des Addins erforderlich" &
+        ".")
         Me.RBFBComWeb.UseVisualStyleBackColor = True
         '
         'GBoxJournal

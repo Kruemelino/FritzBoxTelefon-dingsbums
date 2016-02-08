@@ -254,9 +254,8 @@ Public Class FritzBoxServices
 
         ServiceList = SetupServices(GetSOAPXMLFile("http://" & P_FritzBox_IP & ":" & P_Port_FB_SOAP & KnownSOAPFile.tr64desc))
     End Sub
-    Private Function AcceptCert(ByVal sender As Object, ByVal cert As System.Security.Cryptography.X509Certificates.X509Certificate, _
-                ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, _
-                ByVal errors As System.Net.Security.SslPolicyErrors) As Boolean
+
+    Private Function AcceptCert(ByVal sender As Object, ByVal cert As System.Security.Cryptography.X509Certificates.X509Certificate, ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, ByVal errors As System.Net.Security.SslPolicyErrors) As Boolean
         Return True
     End Function
 
