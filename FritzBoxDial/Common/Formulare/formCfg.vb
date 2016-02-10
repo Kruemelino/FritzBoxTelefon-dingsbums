@@ -969,8 +969,7 @@ Public Class formCfg
                         For i = 0 To TelList.Rows.Count - 1
                             Me.TelList.Rows(i).Cells(0).Value = False
                         Next
-                        If Not (Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "TAM" Or
-                             Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "FAX") Then Me.TelList.CurrentCell.Value = cellVal
+                        If Not (Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "TAM" Or Me.TelList.Rows(Me.TelList.CurrentCell.RowIndex).Cells(3).Value.ToString = "FAX") Then Me.TelList.CurrentCell.Value = cellVal
                     Else
                         Me.TelList.CurrentCell.Value = False
                     End If

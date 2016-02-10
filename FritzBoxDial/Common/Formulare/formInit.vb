@@ -140,7 +140,7 @@ Friend Class formInit
 #End Region
 
 #Region "Formularfunktionen"
-    Private Sub BFBAdr_Click(sender As Object, e As EventArgs) Handles BFBAdr.Click
+    Private Sub BFBAdr_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BFBAdr.Click
         Dim FBIPAdresse As String = Me.TBFritzBoxAdr.Text
         If C_HF.Ping(FBIPAdresse) Or Me.CBForceFBAddr.Checked Then
             Me.TBFritzBoxAdr.Text = FBIPAdresse
@@ -167,7 +167,7 @@ Friend Class formInit
         End If
     End Sub
 
-    Private Sub BFBPW_Click(sender As Object, e As EventArgs) Handles BFBPW.Click
+    Private Sub BFBPW_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BFBPW.Click
         C_FBox = New FritzBox(C_DP, C_HF, C_Crypt, C_XML, C_FBoxUPnP)
         C_DP.P_TBBenutzer = Me.TBFBUser.Text
         C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBFBPW.Text, DataProvider.P_Def_PassWordDecryptionKey)
@@ -190,11 +190,11 @@ Friend Class formInit
         End If
     End Sub
 
-    Private Sub TBFBPW_TextChanged(sender As Object, e As EventArgs) Handles TBFBPW.TextChanged
+    Private Sub TBFBPW_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TBFBPW.TextChanged
         Me.BFBPW.Enabled = Not Me.TBFBPW.Text.Length = 0
     End Sub
 
-    Private Sub BTelEinlesen_Click(sender As Object, e As EventArgs) Handles BTelEinlesen.Click
+    Private Sub BTelEinlesen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BTelEinlesen.Click
         Me.LVorwahl.Enabled = False
         Me.LLandesvorwahl.Enabled = False
         Me.TBVorwahl.Enabled = False
@@ -213,7 +213,7 @@ Friend Class formInit
         CLBtelnrAusfüllen()
     End Sub
 
-    Private Sub TextBox_TextChanged(sender As Object, e As EventArgs) Handles TBVorwahl.TextChanged, TBLandesvorwahl.TextChanged
+    Private Sub TextBox_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TBVorwahl.TextChanged, TBLandesvorwahl.TextChanged
         Me.BTelEinlesen.Enabled = (Not Me.TBVorwahl.Text.Length = 0) And (Not Me.TBLandesvorwahl.Text.Length = 0)
     End Sub
 
@@ -258,7 +258,7 @@ Friend Class formInit
         Me.BFertigstellen.Enabled = Not CLBTelNr.CheckedItems.Count = 0
     End Sub
 
-    Private Sub BFertigstellen_Click(sender As Object, e As EventArgs) Handles BFertigstellen.Click
+    Private Sub BFertigstellen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BFertigstellen.Click
         Dim CheckTelNr As Windows.Forms.CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
         If CheckTelNr.Count = 0 Then
             For i = 0 To Me.CLBTelNr.Items.Count - 1
@@ -293,7 +293,7 @@ Friend Class formInit
         Me.BSchließen.Enabled = True
     End Sub
 
-    Private Sub BSchließen_Click(sender As Object, e As EventArgs) Handles BSchließen.Click
+    Private Sub BSchließen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BSchließen.Click
         Me.Close()
     End Sub
 #End Region
