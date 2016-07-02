@@ -1144,12 +1144,13 @@ Public Class FritzBox
 
         slogin_xml = C_hf.httpGET(P_Link_FB_LoginLuaTeil1(P_SID), C_DP.P_EncodingFritzBox, FBFehler)
 
-        If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
-            slogin_xml = C_hf.httpGET(P_Link_FB_LoginAltTeil1(P_SID), C_DP.P_EncodingFritzBox, FBFehler)
-        End If
-
         If Not FBFehler Then
-            If InStr(slogin_xml, "FRITZ!Box Anmeldung", CompareMethod.Text) = 0 And Not Len(slogin_xml) = 0 Then
+
+            If InStr(slogin_xml, "BlockTime", CompareMethod.Text) = 0 Then
+                slogin_xml = C_hf.httpGET(P_Link_FB_LoginAltTeil1(P_SID), C_DP.P_EncodingFritzBox, FBFehler)
+            End If
+
+            If Not (slogin_xml = DataProvider.P_Def_LeerString Or slogin_xml.Contains("FRITZ!Box Anmeldung")) Then
 
                 If Not InpupPasswort = DataProvider.P_Def_ErrorMinusOne_String Then
                     C_DP.P_TBPasswort = C_Crypt.EncryptString128Bit(InpupPasswort, DataProvider.P_Def_PassWordDecryptionKey)
@@ -1178,17 +1179,17 @@ Public Class FritzBox
                             With C_Crypt
                                 sSIDResponse = String.Concat(sChallenge, "-", .getMd5Hash(String.Concat(sChallenge, "-", .DecryptString128Bit(sFBPasswort, sZugang)), Encoding.Unicode, True))
                             End With
-                            If P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
+
+                            If Not P_SpeichereDaten Then PushStatus("Challenge: " & sChallenge & vbNewLine & "SIDResponse: " & sSIDResponse)
 
                             If ThisFBFirmware.ISEmpty Then FBFirmware()
 
                             If ThisFBFirmware.ISLargerOREqual("5.29") Then
                                 'If .InnerXml.Contains("Rights") Then
                                 ' Lua Login ab Firmware xxx.05.29 / xxx.05.5x
-                                sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText()
+                                sBlockTime = .Item("SessionInfo").Item("BlockTime").InnerText
                                 If sBlockTime = DataProvider.P_Def_StringNull Then ' "0"
                                     'sLink = "http://" & C_DP.P_ValidFBAdr & "/login_sid.lua?username=" & sFBBenutzer & "&response=" & sSIDResponse
-
                                     sResponse = C_hf.httpGET(P_Link_FB_LoginLuaTeil2(sFBBenutzer, sSIDResponse), C_DP.P_EncodingFritzBox, FBFehler)
                                     If FBFehler Then
                                         C_hf.LogFile("FBError (FBLogin): " & Err.Number & " - " & Err.Description)
@@ -1245,8 +1246,6 @@ Public Class FritzBox
                     End With
                     XMLDocLogin = Nothing
                 End If
-            Else
-
             End If
         Else
             C_hf.LogFile(DataProvider.P_FritzBox_LoginError_MissingData)
@@ -2725,11 +2724,12 @@ Public Class FritzBox
     End Function
 
     Private Function SendDialRequestToBoxV2(ByVal sDialCode As String, ByVal sDialPort As String, ByVal bHangUp As Boolean) As String
-        Dim Response As String              ' Antwort der FritzBox
+        Dim Response As String = ""             ' Antwort der FritzBox
         Dim PortChangeSuccess As Boolean
         Dim DialCodetoBox As String
 
         SendDialRequestToBoxV2 = DataProvider.P_FritzBox_Dial_Error1
+
         ' DialPort setzen, wenn erforderlich
         If FritzBoxQuery("DialPort=telcfg:settings/DialPort", False).Contains(sDialPort) Then
             PortChangeSuccess = True
@@ -2737,7 +2737,8 @@ Public Class FritzBox
             C_hf.LogFile("SendDialRequestToBoxV2: Ändere Dialport auf " & sDialPort)
             ' per HTTP-POST Dialport ändern
             Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
-            PortChangeSuccess = Response.Contains("[""telcfg:settings/DialPort""] = """ & sDialPort & "")
+            ' Prüfen, ob es erfolgreich war
+            PortChangeSuccess = FritzBoxQuery("DialPort=telcfg:settings/DialPort", False).Contains(sDialPort)
         End If
 
         ' Wählen
@@ -2761,6 +2762,8 @@ Public Class FritzBox
             Else
                 C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response.Replace(vbLf, ""))
             End If
+        Else
+            C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response.Replace(vbLf, ""))
         End If
     End Function
 

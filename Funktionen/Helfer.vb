@@ -363,9 +363,73 @@ Public Class Helfer
 
     End Sub ' (Keyänderung) 
 
-    Public Function GetUNIXTimeStamp(ByVal dteDate As Date) As Long
-        'If dteDate.IsDaylightSavingTime Then dteDate = DateAdd(DateInterval.Hour, -1, dteDate)
-        Return DateDiff(DateInterval.Second, #1/1/1970#, dteDate)
+    ''' <summary>
+    ''' Wandelt eine Zeitspanne in Sekunden in ein Format in Stunden:Minuten:Sekunden um
+    ''' </summary>
+    ''' <param name="nSeks">Sekunden der Zeitspanne</param>
+    Public Function GetTimeInterval(ByVal nSeks As Double) As String
+        'http://www.vbarchiv.net/faq/date_sectotime.php
+        Dim h As Double, m As Double
+        h = nSeks / 3600
+        nSeks = nSeks Mod 3600
+        m = nSeks / 60
+        nSeks = nSeks Mod 60
+        Return Format(h, "00") & ":" & Format(m, "00") & ":" & Format(nSeks, "00")
+    End Function
+
+    ''' <summary>
+    ''' Gibt nur die Numerischen Ziffen eines String zurück
+    ''' </summary>
+    ''' <param name="sTxt">String der umgewandelt werden soll</param>
+    Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
+
+        Dim regex As RegularExpressions.Regex = New RegularExpressions.Regex("^[+-]?\d+$")
+        Dim match As RegularExpressions.Match = regex.Match(sTxt)
+        If match.Success Then
+            AcceptOnlyNumeric = match.Value
+        Else
+            AcceptOnlyNumeric = DataProvider.P_Def_LeerString
+        End If
+
+        match = Nothing
+        regex = Nothing
+    End Function
+
+    Public Function TelefonName(ByVal MSN As String) As String
+        TelefonName = DataProvider.P_Def_LeerString
+        If Not MSN = DataProvider.P_Def_LeerString Then
+            Dim xPathTeile As New ArrayList
+            With xPathTeile
+                .Add("Telefone")
+                .Add("Telefone")
+                .Add("*")
+                .Add("Telefon")
+                .Add("[contains(TelNr, """ & MSN & """) and not(@Dialport > 599)]") ' Keine Anrufbeantworter
+                .Add("TelName")
+            End With
+            TelefonName = Replace(C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", ", ")
+            xPathTeile = Nothing
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Entfernt doppelte und leere Einträge aus einem String-Array.
+    ''' </summary>
+    ''' <param name="ArraytoClear">Das zu bereinigende Array</param>
+    ''' <param name="ClearDouble">Angabe, ob doppelte Einträge entfernt werden sollen.</param>
+    ''' <param name="ClearEmpty">Angabe, ob leere Einträge entfernt werden sollen.</param>
+    ''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
+    ''' <returns>Das bereinigte String-Array</returns>
+    ''' <remarks></remarks>
+    Public Function ClearStringArray(ByVal ArraytoClear As String(), ByVal ClearDouble As Boolean, ByVal ClearEmpty As Boolean, ByVal ClearMinusOne As Boolean) As String()
+        ' Doppelte entfernen
+        If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
+        ' Leere entfernen
+        If ClearEmpty Then ArraytoClear = (From x In ArraytoClear Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
+        ' -1 entfernen
+        If ClearMinusOne Then ArraytoClear = (From x In ArraytoClear Where Not x Like DataProvider.P_Def_ErrorMinusOne_String Select x).ToArray
+
+        Return ArraytoClear
     End Function
 
 #Region "Überladene .NET Funktionen"
@@ -426,7 +490,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. System.Drawing.Color. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
-    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As System.Drawing.Color, ByVal FalsePart As System.Drawing.Color) As System.Drawing.Color
+    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Drawing.Color, ByVal FalsePart As Drawing.Color) As Drawing.Color
         If Expression Then
             Return TruePart
         Else
@@ -952,64 +1016,53 @@ Public Class Helfer
     End Sub
 #End Region
 
-    Public Function GetTimeInterval(ByVal nSeks As Double) As String
-        'http://www.vbarchiv.net/faq/date_sectotime.php
-        Dim h As Double, m As Double
-        h = nSeks / 3600
-        nSeks = nSeks Mod 3600
-        m = nSeks / 60
-        nSeks = nSeks Mod 60
-        Return Format(h, DataProvider.P_Def_PreLandesVW) & ":" & Format(m, DataProvider.P_Def_PreLandesVW) & ":" & Format(nSeks, DataProvider.P_Def_PreLandesVW)
-    End Function
+#Region "Momentan nicht verwendeter Code"
+    'Public Function GetUNIXTimeStamp(ByVal dteDate As Date) As Long
+    '    'If dteDate.IsDaylightSavingTime Then dteDate = DateAdd(DateInterval.Hour, -1, dteDate)
+    '    Return DateDiff(DateInterval.Second, #1/1/1970#, dteDate)
+    'End Function  
+#Region "GZip"
+    '    Public Function GZipCompressString(ByVal text As String) As String
+    '        Dim buffer As Byte() = Encoding.Unicode.GetBytes(text)
+    '        Dim compressed As Byte()
+    '        Dim gzBuffer As Byte()
 
-    Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
+    '        Using ms As New MemoryStream
+    '            Using zipStream As New Compression.GZipStream(ms, Compression.CompressionMode.Compress, True)
+    '                zipStream.Write(buffer, 0, buffer.Length)
+    '            End Using
+    '            ms.Position = 0
 
-        Dim regex As RegularExpressions.Regex = New RegularExpressions.Regex("^[+-]?\d+$")
-        Dim match As RegularExpressions.Match = regex.Match(sTxt)
-        If match.Success Then
-            AcceptOnlyNumeric = match.Value
-        Else
-            AcceptOnlyNumeric = DataProvider.P_Def_LeerString
-        End If
+    '            compressed = New Byte(CInt(ms.Length - 1)) {}
 
-        match = Nothing
-        regex = Nothing
-    End Function
+    '            ms.Read(compressed, 0, compressed.Length)
+    '            gzBuffer = New Byte(compressed.Length + 3) {}
 
-    Public Function TelefonName(ByVal MSN As String) As String
-        TelefonName = DataProvider.P_Def_LeerString
-        If Not MSN = DataProvider.P_Def_LeerString Then
-            Dim xPathTeile As New ArrayList
-            With xPathTeile
-                .Add("Telefone")
-                .Add("Telefone")
-                .Add("*")
-                .Add("Telefon")
-                .Add("[contains(TelNr, """ & MSN & """) and not(@Dialport > 599)]") ' Keine Anrufbeantworter
-                .Add("TelName")
-            End With
-            TelefonName = Replace(C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", ", ")
-            xPathTeile = Nothing
-        End If
-    End Function
+    '            System.Buffer.BlockCopy(compressed, 0, gzBuffer, 4, compressed.Length)
+    '            System.Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gzBuffer, 0, 4)
+    '            Return Convert.ToBase64String(gzBuffer)
+    '        End Using
+    '    End Function
 
-    ''' <summary>
-    ''' Entfernt doppelte und leere Einträge aus einem String-Array.
-    ''' </summary>
-    ''' <param name="ArraytoClear">Das zu bereinigende Array</param>
-    ''' <param name="ClearDouble">Angabe, ob doppelte Einträge entfernt werden sollen.</param>
-    ''' <param name="ClearEmpty">Angabe, ob leere Einträge entfernt werden sollen.</param>
-    ''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
-    ''' <returns>Das bereinigte String-Array</returns>
-    ''' <remarks></remarks>
-    Public Function ClearStringArray(ByVal ArraytoClear As String(), ByVal ClearDouble As Boolean, ByVal ClearEmpty As Boolean, ByVal ClearMinusOne As Boolean) As String()
-        ' Doppelte entfernen
-        If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
-        ' Leere entfernen
-        If ClearEmpty Then ArraytoClear = (From x In ArraytoClear Where Not x Like DataProvider.P_Def_LeerString Select x).ToArray
-        ' -1 entfernen
-        If ClearMinusOne Then ArraytoClear = (From x In ArraytoClear Where Not x Like DataProvider.P_Def_ErrorMinusOne_String Select x).ToArray
+    '    Public Function GZipDecompressString(ByVal compressedText As String) As String
+    '        Dim gzBuffer As Byte() = Convert.FromBase64String(compressedText)
+    '        Dim msgLength As Integer
+    '        Dim buffer As Byte()
 
-        Return ArraytoClear
-    End Function
+    '        Using ms As New MemoryStream()
+    '            msgLength = BitConverter.ToInt32(gzBuffer, 0)
+    '            ms.Write(gzBuffer, 4, gzBuffer.Length - 4)
+
+    '            buffer = New Byte(msgLength - 1) {}
+
+    '            ms.Position = 0
+    '            Using zipStream As New Compression.GZipStream(ms, Compression.CompressionMode.Decompress)
+    '                zipStream.Read(buffer, 0, buffer.Length)
+    '            End Using
+
+    '            Return Encoding.Unicode.GetString(buffer, 0, buffer.Length)
+    '        End Using
+    '    End Function
+#End Region
+#End Region
 End Class

@@ -276,8 +276,11 @@ Public Class Rijndael
         Query = New SelectQuery("Win32_BaseBoard")
         Search = New ManagementObjectSearcher(Query)
 
+        ' Auf einigen Rechner gibt es offenbar den Eintrag nicht. Daher die Abfrage, ob es ihn gibt.
         For Each info As ManagementObject In Search.Get()
-            list.Add(info("SerialNumber").ToString)
+            If info("SerialNumber") IsNot Nothing Then
+                list.Add(info("SerialNumber").ToString)
+            End If
         Next
 
         list.Add(System.Security.Principal.WindowsIdentity.GetCurrent.User.Value)

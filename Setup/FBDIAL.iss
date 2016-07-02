@@ -144,12 +144,24 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
    
 ;Office 2007 & 2010 & 2013 & 2016 COMMON
 #if FileExists("2007\Fritz!Box Telefon-Dingsbums.dll") | FileExists("2010\Fritz!Box Telefon-Dingsbums.dll") | FileExists("2013\Fritz!Box Telefon-Dingsbums.dll")
-  #if FileExists("Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll") & FileExists("Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll")
-    Source: "Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";  Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
-    Source: "Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll"; Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
+  #if FileExists("Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll") & FileExists("Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll") & FileExists("Common\Microsoft.Office.Tools.Common.dll") & FileExists("Common\Microsoft.Office.Tools.dll") & FileExists("Common\Microsoft.Office.Tools.Outlook.dll") & FileExists("Common\Microsoft.VisualStudio.Tools.Applications.Runtime.dll")
+    Source: "Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";        Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
+    Source: "Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll";       Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
+    ;Source: "Common\Microsoft.Office.Tools.Common.dll";                       Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
+    ;Source: "Common\Microsoft.Office.Tools.dll";                              Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
+    ;Source: "Common\Microsoft.Office.Tools.Outlook.dll";                      Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
+    ;Source: "Common\Microsoft.VisualStudio.Tools.Applications.Runtime.dll";   Check: (not OutlookVersion(2003)); DestDir: "{app}"; Flags: ignoreversion
   #else
     #error Microsoft.Office.Tools.Common.v4.0.Utilities.dll und/oder Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll fehlen im Ordner "Common"
   #endif
+
+  #if FileExists("2010\Fritz!Box Telefon-Dingsbums.dll")
+    Source: "Common\Microsoft.Office.Tools.Common.dll";                       Check: (OutlookVersion(2010)); DestDir: "{app}"; Flags: ignoreversion
+    Source: "Common\Microsoft.Office.Tools.dll";                              Check: (OutlookVersion(2010)); DestDir: "{app}"; Flags: ignoreversion
+    Source: "Common\Microsoft.Office.Tools.Outlook.dll";                      Check: (OutlookVersion(2010)); DestDir: "{app}"; Flags: ignoreversion
+    Source: "Common\Microsoft.VisualStudio.Tools.Applications.Runtime.dll";   Check: (OutlookVersion(2010)); DestDir: "{app}"; Flags: ignoreversion
+  #endif
+
 #else
 
 #endif
