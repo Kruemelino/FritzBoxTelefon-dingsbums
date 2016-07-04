@@ -306,7 +306,7 @@ Public Class Helfer
             ' Ermittle die Zeichencodierung
             Dim CodePageName As String
             ' Extrahiere den Codepage-Namen der Codierung (Entspricht dem Header-Name). 
-            CodePageName = StringEntnehmen(Quelltext, "charset=", """")
+            CodePageName = StringEntnehmen(Quelltext.Replace("""", "'"), "charset=", "'")
             Try
                 GetEncoding = Encoding.GetEncoding(CodePageName)
             Catch ex As ArgumentException
