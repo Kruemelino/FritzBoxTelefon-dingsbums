@@ -254,20 +254,14 @@
       <SubType>Designer</SubType>
       <Link>Ressourcen\RibbonXML\RibbonInspectorMailRead.xml</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.gif">
-      <Link>Ressourcen\Icons\IMG_Copy.gif</Link>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Copy.png">
+      <Link>Ressourcen\Icons\IMG_Copy.png</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Aktiv.gif">
-      <Link>Ressourcen\Icons\IMG_Kontakt_Aktiv.gif</Link>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt.png">
+      <Link>Ressourcen\Icons\IMG_Kontakt.png</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Check.gif">
-      <Link>Ressourcen\Icons\IMG_Kontakt_Check.gif</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif">
-      <Link>Ressourcen\Icons\IMG_Kontakt_Inaktiv.gif</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Telefon.gif">
-      <Link>Ressourcen\Icons\IMG_Telefon.gif</Link>
+    <EmbeddedResource Include="..\Common\Ressourcen\Icons\IMG_Telefon.png">
+      <Link>Ressourcen\Icons\IMG_Telefon.png</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -465,19 +465,19 @@ Public Class OutlookInterface
 #Region "TreeView"
     Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
         Dim olNamespace As Outlook.NameSpace = OutlookApplication.GetNamespace("MAPI")
-        Dim TVImageList As Windows.Forms.ImageList
+        'Dim TVImageList As Windows.Forms.ImageList
         Dim iOrdner As Integer = 1
 
-        TVImageList = New Windows.Forms.ImageList
+        'TVImageList = New Windows.Forms.ImageList
 
-        With TVImageList
-            .Images.Add("Kontakt", My.Resources.IMG_Kontakt_Inaktiv)
-            .Images.Add("KontaktSel", My.Resources.IMG_Kontakt_Check)
-        End With
+        'With TVImageList
+        '    .Images.Add("Kontakt", My.Resources.IMG_Check_0)
+        '    .Images.Add("KontaktSel", My.Resources.IMG_Check_1)
+        'End With
 
         With TreeView
-            .ImageList = TVImageList
-            .SelectedImageKey = "KontaktSel"
+            '.ImageList = TVImageList
+            '.SelectedImageKey = "KontaktSel"
             .Nodes.Add("Kontaktordner")
         End With
 

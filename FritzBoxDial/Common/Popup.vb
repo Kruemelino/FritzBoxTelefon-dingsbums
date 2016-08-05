@@ -85,7 +85,7 @@ Public Class Popup
                     .Text = C_hf.IIf(Telefonat.TelNr = DataProvider.P_Def_StringUnknown, _
                                 DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktErstellen, _
                                 DataProvider.P_AnrMon_PopUp_ToolStripMenuItemKontaktöffnen)
-                    .Image = Global.FritzBoxDial.My.Resources.IMG_Kontakt_Aktiv
+                    .Image = Global.FritzBoxDial.My.Resources.IMG_Kontakt
                 End With
             End With
 

@@ -1287,7 +1287,10 @@ Public Class formCfg
             C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
             With Me.TVOutlookContact
                 tmpNode = .Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
-                If Not tmpNode.Length = 0 Then .SelectedNode = tmpNode(0)
+                If Not tmpNode.Length = 0 Then
+                    .SelectedNode = tmpNode(0)
+                    .SelectedNode.Checked = True
+                End If
                 .ExpandAll()
                 .Enabled = True
             End With
