@@ -479,19 +479,18 @@ Friend Class formWählbox
         ' Amtsholungsziffer voranstellen
         Code = C_hf.IIf(C_DP.P_TBAmt = DataProvider.P_Def_ErrorMinusOne_String, "", C_DP.P_TBAmt) & Code
 
-        'If Not UsePhonerOhneFritzBox Then
         If CLIR Then Code = "*31#" & Code
         If Festnetz Then Code = "*11#" & Code
-        ' Sagt der FB dass die Nummer jetzt zuende ist
-        If Not Code.StartsWith("#") Then Code = Code & "#"
-        'End If
 
         ' Jetzt Code an Box bzw. Phoner senden
         If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then
+            If Code.EndsWith("#") Then Code = Code.Remove(Code.Length - 1, 1)
             C_hf.LogFile("Folgende Nummer wird zum Wählen an Phoner gesendet: " & Code)
             StatusText = C_Phoner.DialPhoner(Code)
             PhonerCall = True
         Else
+            ' Sagt der Fritz!Box dass die Nummer jetzt zuende ist
+            If Not Code.StartsWith("#") Then Code = Code & "#"
             C_hf.LogFile("Folgende Nummer wird zum Wählen an die Box gesendet: " & Code & " über Anschluss: " & Telefonanschluss)
             StatusText = C_FBox.SendDialRequestToBox(Code, Telefonanschluss, False)
             PhonerCall = False
