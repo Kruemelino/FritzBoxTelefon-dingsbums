@@ -368,7 +368,8 @@ Public Class formCfg
             For i = 1 To Me.CLBTelNr.Items.Count - 1
                 .Item(.Count - 2) = "*[. = """ & Me.CLBTelNr.Items(i).ToString & """]"
                 .Item(.Count - 1) = "@Checked"
-                Me.CLBTelNr.SetItemChecked(i, C_hf.IsOneOf("1", Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
+                Me.CLBTelNr.SetItemChecked(i, Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0;") & ";", ";", , CompareMethod.Text).Contains("1"))
+                'Me.CLBTelNr.SetItemChecked(i, C_hf.IsOneOf("1", Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0;") & ";", ";", , CompareMethod.Text)))
             Next
         End With
         Me.CLBTelNr.SetItemChecked(0, Me.CLBTelNr.CheckedItems.Count = Me.CLBTelNr.Items.Count - 1)
@@ -986,7 +987,8 @@ Public Class formCfg
         pos(0) = CStr(InStr(Me.TBTelNrMaske.Text, "%L", CompareMethod.Text))
         pos(1) = CStr(InStr(Me.TBTelNrMaske.Text, "%O", CompareMethod.Text))
         pos(2) = CStr(InStr(Me.TBTelNrMaske.Text, "%N", CompareMethod.Text))
-        If C_hf.IsOneOf("0", pos) Then
+        If pos.Contains("0") Then
+            'If C_hf.IsOneOf("0", pos) Then
             C_hf.MsgBox("Achtung: Die Maske für die Telefonnummernformatierung ist nicht korrekt." & vbNewLine & "Prüfen Sie, ob folgende Zeichen in der Maske enthalten sind: ""%L"", ""%V"" und ""%N"" (""%D"" kann wegelassen werden)!" & vbNewLine & "Beispiel: ""%L (%O) %N - %D""", MsgBoxStyle.Information, "Einstellungen")
             Return False
         End If
@@ -1285,7 +1287,10 @@ Public Class formCfg
             C_OlI.GetKontaktOrdnerInTreeView(Me.TVOutlookContact)
             With Me.TVOutlookContact
                 tmpNode = .Nodes.Find(C_DP.P_TVKontaktOrdnerEntryID & ";" & C_DP.P_TVKontaktOrdnerStoreID, True)
-                If Not tmpNode.Length = 0 Then .SelectedNode = tmpNode(0)
+                If Not tmpNode.Length = 0 Then
+                    .SelectedNode = tmpNode(0)
+                    .SelectedNode.Checked = True
+                End If
                 .ExpandAll()
                 .Enabled = True
             End With

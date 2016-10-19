@@ -5,6 +5,8 @@ Imports System.IO
 Imports System.Collections.ObjectModel
 
 Public Class Helfer
+    Private Const Epsilon As Single = Single.Epsilon
+
     Private C_XML As XML
     Private C_DP As DataProvider
     Private C_Crypt As Rijndael
@@ -78,6 +80,16 @@ Public Class Helfer
 #End Region
     End Structure
 
+#Region "Vergleichsmodi"
+    Friend Enum Vergleichsmodus
+        KleinerGleich = -2
+        Kleiner = -1
+        Gleich = 0
+        Größer = 1
+        GrößerGleich = 2
+    End Enum
+#End Region
+
     Public Sub New(ByVal DataProviderKlasse As DataProvider, ByVal CryptKlasse As Rijndael, XMLKlasse As XML)
         C_XML = XMLKlasse
         C_DP = DataProviderKlasse
@@ -149,21 +161,24 @@ Public Class Helfer
 
     End Function
 
-    ''' <summary>
-    ''' Prüft ob, ein String <c>A</c> in einem Sting-Array <c>B</c> enthalten ist. 
-    ''' </summary>
-    ''' <param name="A">Zu prüfender String.</param>
-    ''' <param name="B">Array in dem zu prüfen ist.</param>
-    ''' <returns><c>True</c>, wenn enthalten, <c>False</c>, wenn nicht.</returns>
-    Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
-        Return CBool(IIf((From Strng In B Where Strng = A).ToArray.Count = 0, False, True))
-    End Function
+    '''' <summary>
+    '''' Prüft ob, ein String <c>A</c> in einem Sting-Array <c>B</c> enthalten ist. 
+    '''' </summary>
+    '''' <param name="A">Zu prüfender String.</param>
+    '''' <param name="B">Array in dem zu prüfen ist.</param>
+    '''' <returns><c>True</c>, wenn enthalten, <c>False</c>, wenn nicht.</returns>
+    '<DebuggerStepThrough>
+    'Public Function IsOneOf(ByVal A As String, ByVal B() As String) As Boolean
+    '    Return B.Contains(A)
+    '    'Return IIf(CheckIsZero((From Strng In B Where Strng = A).ToArray.Count), False, True)
+    'End Function
 #End Region
 
     ''' <summary>
     ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
     ''' </summary>
     ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
+    <DebuggerStepThrough>
     Public Sub NAR(ByVal COMObject As Object)
 
         If COMObject IsNot Nothing Then
@@ -279,6 +294,7 @@ Public Class Helfer
 
     End Function
 
+    <DebuggerStepThrough>
     Public Sub LogFile(ByVal Meldung As String)
         Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName
         If C_DP.P_CBLogFile Then
@@ -442,6 +458,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. Boolean. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    <DebuggerStepThrough>
     Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Boolean, ByVal FalsePart As Boolean) As Boolean
         If Expression Then
             Return TruePart
@@ -458,6 +475,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. Integer. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    <DebuggerStepThrough>
     Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Integer, ByVal FalsePart As Integer) As Integer
         If Expression Then
             Return TruePart
@@ -474,6 +492,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. String. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    <DebuggerStepThrough>
     Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As String, ByVal FalsePart As String) As String
         If Expression Then
             Return TruePart
@@ -490,7 +509,25 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. System.Drawing.Color. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    <DebuggerStepThrough>
     Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Drawing.Color, ByVal FalsePart As Drawing.Color) As Drawing.Color
+        If Expression Then
+            Return TruePart
+        Else
+            Return FalsePart
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Überladene .NET-Funktion: Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Double zurück.
+    ''' </summary>
+    ''' <param name="Expression">Erforderlich. Boolean-Datentyp. Der Ausdruck, der ausgewertet werden soll.</param>
+    ''' <param name="TruePart">Erforderlich. Double. Wird zurückgegeben, wenn Expression <c>True</c> ergibt.</param>
+    ''' <param name="FalsePart">Erforderlich. Double. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
+    ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
+    ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
+    <DebuggerStepThrough>
+    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Double, ByVal FalsePart As Double) As Double
         If Expression Then
             Return TruePart
         Else
@@ -515,8 +552,11 @@ Public Class Helfer
         With TelTeile
 
             ' Maske Prüfen
-            If InStr(FormatTelNr, "%D", CompareMethod.Text) = 0 Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
-            If Not InStr(FormatTelNr, "%N%D", CompareMethod.Text) = 0 Then
+            'If InStr(FormatTelNr, "%D", CompareMethod.Text) = 0 Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
+            If Not FormatTelNr.Contains("%D") Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
+
+            'If Not InStr(FormatTelNr, "%N%D", CompareMethod.Text) = 0 Then
+            If FormatTelNr.Contains("%N%D") Then
                 .Nummer = .Nummer & .Durchwahl
                 .Durchwahl = DataProvider.P_Def_LeerString
             End If
@@ -597,7 +637,7 @@ Public Class Helfer
         imax = CInt(Math.Round(Len(Nr) / 2 + 0.1))
         GruppiereNummer = DataProvider.P_Def_LeerString
         For i = 1 To imax
-            GruppiereNummer = Right(Nr, 2) & " " & GruppiereNummer
+            GruppiereNummer = Right(Nr, 2) & DataProvider.P_Def_Leerzeichen & GruppiereNummer
             If Not Len(Nr) = 1 Then Nr = Left(Nr, Len(Nr) - 2)
         Next
         Return Trim(GruppiereNummer)
@@ -727,7 +767,8 @@ Public Class Helfer
                     Select Case .Landesvorwahl
                         Case DataProvider.P_Def_PreLandesVW & "7" ' Kasachstan
                             ErsteZiffer = Mid(TelNr, Len(.Ortsvorwahl) + 1, 1)
-                            If IsOneOf(.Ortsvorwahl, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then .Ortsvorwahl += ErsteZiffer
+                            If New String() {"3292", "3152", "3252", "3232", "3262"}.Contains(.Ortsvorwahl) And ErsteZiffer = "2" Then .Ortsvorwahl += ErsteZiffer
+                            'If IsOneOf(.Ortsvorwahl, New String() {"3292", "3152", "3252", "3232", "3262"}) And ErsteZiffer = "2" Then .Ortsvorwahl += ErsteZiffer
                         Case DataProvider.P_Def_PreLandesVW & "39" ' Italien
                             ' Dies betrifft nur das Festnetz
                             If Not DataProvider.P_Def_MobilVorwahlItalien.Contains(.Ortsvorwahl) Then
@@ -1014,6 +1055,153 @@ Public Class Helfer
     Sub ThreadSleep(ByVal Dauer As Integer)
         Thread.Sleep(Dauer)
     End Sub
+#End Region
+
+#Region "Vergleichsfunktionen"
+    ''' <summary>
+    ''' Prüft, ob die übergebende Größe Null ist.
+    ''' </summary>
+    ''' <param name="Val1">Zu prüfende Größe</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsZero(ByVal Val1 As Double) As Boolean
+        CheckIsZero = Val1 < Epsilon
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob die beiden übergebenen Größen gleich sind: <c>Val1</c> = <c>Val2</c>
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+        CheckIsEqual = Math.Abs((Val1 - Val2)) < Epsilon
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> kleiner als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &lt; <c>Val2</c>
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsLess(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+        CheckIsLess = Val2 - Val1 > Epsilon
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> kleiner oder gleich als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &lt;= <c>Val2</c>
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsLessOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+        CheckIsLessOrEqual = Val1 - Val2 <= Epsilon
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> größer als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &gt; <c>Val2</c>
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+        CheckIsLarger = Val1 - Val2 > Epsilon
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> größer oder gleich als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &gt;= <c>Val2</c>
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsLargerOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+        CheckIsLargerOrEqual = Val2 - Val1 <= Epsilon
+    End Function
+
+    ''' <summary>
+    ''' Prüft, ob die übergebene Größe <c>Val1</c> sich innerhalb eines Bereiches befindet: <c>LVal</c> &lt; <c>Val1</c> &lt; <c>UVal</c>.
+    ''' </summary>
+    ''' <param name="Val1">Zu prüfende Größe</param>
+    ''' <param name="LVal">Untere Schwelle</param>
+    ''' <param name="UVal">Obere schwelle</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckIsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
+        CheckIsInRange = CheckIsLarger(Val1, LVal) And CheckIsLess(Val1, UVal)
+    End Function
+
+    ''' <summary>
+    ''' Vergleicht beide Größen und gibt die kleinere der beiden übergebenen Größen zurück.
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Kleinere der beiden Größen</returns>
+    <DebuggerStepThrough>
+    Friend Function GetLower(ByVal Val1 As Double, ByVal Val2 As Double) As Double
+        GetLower = IIf(CheckIsLess(Val1, Val2), Val1, Val2)
+    End Function
+
+    ''' <summary>
+    ''' Vergleicht beide Größen und gibt die größere der beiden übergebenen Größen zurück.
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns>Größere der beiden Größen</returns>
+    <DebuggerStepThrough>
+    Friend Function GetLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Double
+        GetLarger = IIf(CheckIsLarger(Val1, Val2), Val1, Val2)
+    End Function
+
+    ''' <summary>
+    ''' Prüft über den Vergleichsmodus <c>Modus</c>, ob die erste übergebene Größe <c>Val1</c> kleiner, größer etc. als die zweite übergebene Größe <c>Val2</c> ist.
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <param name="Modus">Vergleichsmodus</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <DebuggerStepThrough>
+    Friend Function CheckValues(ByVal Val1 As Double, ByVal Val2 As Double, ByVal Modus As Vergleichsmodus) As Boolean
+
+        Select Case Modus
+            Case Vergleichsmodus.KleinerGleich
+                Return CheckIsLessOrEqual(Val1, Val2)
+            Case Vergleichsmodus.Kleiner
+                Return CheckIsLess(Val1, Val2)
+            Case Vergleichsmodus.Gleich
+                Return CheckIsEqual(Val1, Val2)
+            Case Vergleichsmodus.Größer
+                Return CheckIsLarger(Val1, Val2)
+            Case Vergleichsmodus.GrößerGleich
+                Return CheckIsLargerOrEqual(Val1, Val2)
+            Case Else
+                Return Nothing
+        End Select
+    End Function
+
+    ''' <summary>
+    ''' Gibt das Verhältnis der ersten übergebene Größe <c>Val1</c> zur zweiten übergebene Größe <c>Val2</c> an.
+    ''' </summary>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
+    ''' <returns></returns>
+    <DebuggerStepThrough>
+    Friend Function CheckValues(ByVal Val1 As Double, ByVal Val2 As Double) As Vergleichsmodus
+        If CheckIsEqual(Val1, Val2) Then
+            CheckValues = Vergleichsmodus.Gleich
+        Else
+            If CheckIsLess(Val1, Val2) Then
+                CheckValues = Vergleichsmodus.Kleiner
+            Else
+                CheckValues = Vergleichsmodus.Größer
+            End If
+        End If
+    End Function
+
 #End Region
 
 #Region "Momentan nicht verwendeter Code"

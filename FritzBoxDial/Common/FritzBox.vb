@@ -1230,7 +1230,8 @@ Public Class FritzBox
 
                             If Not P_SID = DataProvider.P_Def_SessionID Then
                                 If ThisFBFirmware.ISLargerOREqual("5.29") Then
-                                    If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
+                                    If Not Split(.SelectSingleNode("//Rights").InnerText, "2").Contains("BoxAdmin") Then
+                                        'If Not C_hf.IsOneOf("BoxAdmin", Split(.SelectSingleNode("//Rights").InnerText, "2")) Then
                                         C_hf.LogFile(DataProvider.P_FritzBox_LoginError_MissingRights(sFBBenutzer))
                                         FBLogout(P_SID)
                                         P_SID = DataProvider.P_Def_SessionID
@@ -1733,7 +1734,8 @@ Public Class FritzBox
 
                                                             End If
                                                         Else
-                                                            If C_hf.IsOneOf("62" & ID, Split(NetInfoPush, ";", , CompareMethod.Text)) Then
+                                                            If Split(NetInfoPush, ";", , CompareMethod.Text).Contains("62" & ID) Then
+                                                                'If C_hf.IsOneOf("62" & ID, Split(NetInfoPush, ";", , CompareMethod.Text)) Then
                                                                 DialPort = "2" & ID
                                                                 Anzahl += 1
                                                                 PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound("IP-Telefon ", DialPort, TelNr, TelName))
@@ -1961,7 +1963,8 @@ Public Class FritzBox
                                     TelNr = .EigeneVorwahlenEntfernen(TelNr)
                                 End If
 
-                                If Not .IsOneOf(TelNr, MSN) Then
+                                If Not MSN.Contains(TelNr) Then
+                                    'If Not .IsOneOf(TelNr, MSN) Then
                                     For k = 0 To 9
                                         If MSN(k) = DataProvider.P_Def_LeerString Then
                                             MSN(k) = TelNr
