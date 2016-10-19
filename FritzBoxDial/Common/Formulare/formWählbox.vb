@@ -484,7 +484,7 @@ Friend Class formWählbox
 
         ' Jetzt Code an Box bzw. Phoner senden
         If (CDbl(Telefonanschluss) >= 20 And CDbl(Telefonanschluss) <= 29) Or CDbl(Telefonanschluss) = -2 Then
-            If Code.EndsWith("#") Then Code = Code.Remove(Code.Length - 1, 1)
+            Code = Code.Replace("#", "")
             C_hf.LogFile("Folgende Nummer wird zum Wählen an Phoner gesendet: " & Code)
             StatusText = C_Phoner.DialPhoner(Code)
             PhonerCall = True

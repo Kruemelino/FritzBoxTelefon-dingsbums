@@ -298,11 +298,11 @@ SET RELEASEPATH="\\OBELIX\Setup\2010\"
 REM SET RELEASEPATH="\\OBELIX\Setup\2007\"
 REM SET RELEASEPATH="\\OBELIX\Setup\2003\"
 IF EXIST %25RELEASEPATH%25 (
-	copy /Y "$(TargetDir)*.dll" "%25RELEASEPATH%25*.dll"
 	copy /Y "$(TargetDir)*.pdb" "%25RELEASEPATH%25*.pdb"
+	copy /Y "$(TargetDir)*.xml" "%25RELEASEPATH%25*.xml"  
+	copy /Y "$(TargetDir)*.dll" "%25RELEASEPATH%25*.dll"
 	copy /Y "$(TargetDir)$(TargetName).vsto" "%25RELEASEPATH%25$(TargetName).vsto"
 	copy /Y "$(TargetDir)$(TargetName).dll.manifest" "%25RELEASEPATH%25$(TargetName).dll.manifest"
-	copy /Y "$(TargetDir)*.xml" "%25RELEASEPATH%25*.xml"        
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>
