@@ -119,19 +119,13 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="IMG_Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\common\ressourcen\icons\img_copy.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\common\ressourcen\icons\img_copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IMG_Kontakt_Aktiv" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\common\ressourcen\icons\img_kontakt_aktiv.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IMG_Kontakt_Check" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\common\ressourcen\icons\img_kontakt_check.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="IMG_Kontakt_Inaktiv" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\common\ressourcen\icons\img_kontakt_inaktiv.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IMG_Kontakt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\common\ressourcen\icons\img_kontakt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IMG_Telefon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\common\ressourcen\icons\img_telefon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\..\common\ressourcen\icons\img_telefon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RibbonExplorer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\..\common\ressourcen\ribbonxml\ribbonexplorer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

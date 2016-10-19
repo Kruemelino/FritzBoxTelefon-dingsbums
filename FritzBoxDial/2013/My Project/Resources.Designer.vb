@@ -73,29 +73,9 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property IMG_Kontakt_Aktiv() As System.Drawing.Bitmap
+        Friend ReadOnly Property IMG_Kontakt() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("IMG_Kontakt_Aktiv", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property IMG_Kontakt_Check() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("IMG_Kontakt_Check", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property IMG_Kontakt_Inaktiv() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("IMG_Kontakt_Inaktiv", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("IMG_Kontakt", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
