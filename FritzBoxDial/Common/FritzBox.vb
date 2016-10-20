@@ -3310,6 +3310,7 @@ Public Class FritzBox
 
         If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
         If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            C_hf.LogFile(P_Link_Query(P_SID, Abfrage))
             FritzBoxQuery = C_hf.httpGET(P_Link_Query(P_SID, Abfrage), C_DP.P_EncodingFritzBox, FBFehler)
         End If
 
