@@ -920,14 +920,12 @@ Public Class FritzBox
     End Property
 
     ''' <summary>
-    ''' "SIP" &amp; "=" &amp; "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)"
+    ''' "SIP" &amp; "=" &amp; "sip:settings/sip/list(activated,displayname,ID)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
     Private ReadOnly Property P_Query_FB_SIP() As String
         Get
             Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,ID)"
-
-            'Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)"
         End Get
     End Property
 
@@ -966,7 +964,8 @@ Public Class FritzBox
     ''' <returns>Der zusammengefügte String</returns>
     Private ReadOnly Property P_Query_FB_FON_List() As String
         Get
-            Return "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
+            Return "FON=telcfg:settings/MSN/Port/list(Name,Fax)"
+            'Return "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
         End Get
     End Property
 
@@ -976,7 +975,7 @@ Public Class FritzBox
     ''' <returns>Der zusammengefügte String</returns>
     Private ReadOnly Property P_Query_FB_DECT_List() As String
         Get
-            Return "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
+            Return "DECT=telcfg:settings/Foncontrol/User/list(Name,Intern)"
         End Get
     End Property
 
@@ -986,7 +985,7 @@ Public Class FritzBox
     ''' <returns>Der zusammengefügte String</returns>
     Private ReadOnly Property P_Query_FB_VOIP_List() As String
         Get
-            Return "VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)"
+            Return "VOIP=telcfg:settings/VoipExtension/list(enabled,Name)"
         End Get
     End Property
 
@@ -996,7 +995,7 @@ Public Class FritzBox
     ''' <returns>Der zusammengefügte String</returns>
     Private ReadOnly Property P_Query_FB_TAM_List() As String
         Get
-            Return "TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)"
+            Return "TAM=tam:settings/TAM/list(Active,Name)"
         End Get
     End Property
 

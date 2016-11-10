@@ -22,25 +22,25 @@ Public Class TAMEntry
         End Set
     End Property
 
-    Private sDisplay As String
-    Public Property Display() As String
-        Get
-            Return sDisplay
-        End Get
-        Set(ByVal value As String)
-            sDisplay = value
-        End Set
-    End Property
+    'Private sDisplay As String
+    'Public Property Display() As String
+    '    Get
+    '        Return sDisplay
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sDisplay = value
+    '    End Set
+    'End Property
 
-    Private sMSNBitmap As String
-    Public Property MSNBitmap() As String
-        Get
-            Return sMSNBitmap
-        End Get
-        Set(ByVal value As String)
-            sMSNBitmap = value
-        End Set
-    End Property
+    'Private sMSNBitmap As String
+    'Public Property MSNBitmap() As String
+    '    Get
+    '        Return sMSNBitmap
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sMSNBitmap = value
+    '    End Set
+    'End Property
 End Class
 
 Public Class SIPEntry
@@ -146,35 +146,35 @@ Public Class MSNEntry
         End Set
     End Property
 
-    Private sGroupCall As String
-    Public Property GroupCall() As String
-        Get
-            Return sGroupCall
-        End Get
-        Set(ByVal value As String)
-            sGroupCall = value
-        End Set
-    End Property
+    ''Private sGroupCall As String
+    ''Public Property GroupCall() As String
+    ''    Get
+    ''        Return sGroupCall
+    ''    End Get
+    ''    Set(ByVal value As String)
+    ''        sGroupCall = value
+    ''    End Set
+    ''End Property
 
-    Private sAllIncomingCalls As String
-    Public Property AllIncomingCalls() As String
-        Get
-            Return sAllIncomingCalls
-        End Get
-        Set(ByVal value As String)
-            sAllIncomingCalls = value
-        End Set
-    End Property
+    ''Private sAllIncomingCalls As String
+    ''Public Property AllIncomingCalls() As String
+    ''    Get
+    ''        Return sAllIncomingCalls
+    ''    End Get
+    ''    Set(ByVal value As String)
+    ''        sAllIncomingCalls = value
+    ''    End Set
+    ''End Property
 
-    Private sOutDialing As String
-    Public Property OutDialing() As String
-        Get
-            Return sOutDialing
-        End Get
-        Set(ByVal value As String)
-            sOutDialing = value
-        End Set
-    End Property
+    'Private sOutDialing As String
+    'Public Property OutDialing() As String
+    '    Get
+    '        Return sOutDialing
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sOutDialing = value
+    '    End Set
+    'End Property
 End Class
 
 Public Class VOIPEntry
@@ -198,15 +198,15 @@ Public Class VOIPEntry
         End Set
     End Property
 
-    Private sRingOnAllMSNs As String
-    Public Property RingOnAllMSNs() As String
-        Get
-            Return sRingOnAllMSNs
-        End Get
-        Set(ByVal value As String)
-            sRingOnAllMSNs = value
-        End Set
-    End Property
+    'Private sRingOnAllMSNs As String
+    'Public Property RingOnAllMSNs() As String
+    '    Get
+    '        Return sRingOnAllMSNs
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sRingOnAllMSNs = value
+    '    End Set
+    'End Property
 End Class
 
 Friend Class FoncontrolUserList
@@ -263,37 +263,37 @@ Friend Class FoncontrolUserNList
     End Property
 End Class
 
-Friend Class VoipExtensionList
-    Private senabled As String
-    Friend Property enabled() As String
-        Get
-            Return senabled
-        End Get
-        Set(ByVal value As String)
-            senabled = value
-        End Set
-    End Property
+'Friend Class VoipExtensionList
+'    'Private senabled As String
+'    'Friend Property enabled() As String
+'    '    Get
+'    '        Return senabled
+'    '    End Get
+'    '    Set(ByVal value As String)
+'    '        senabled = value
+'    '    End Set
+'    'End Property
 
-    Private sName As String
-    Friend Property Name() As String
-        Get
-            Return sName
-        End Get
-        Set(ByVal value As String)
-            sName = value
-        End Set
-    End Property
+'    'Private sName As String
+'    'Friend Property Name() As String
+'    '    Get
+'    '        Return sName
+'    '    End Get
+'    '    Set(ByVal value As String)
+'    '        sName = value
+'    '    End Set
+'    'End Property
 
-    Private sRingOnAllMSNs As String
-    Friend Property RingOnAllMSNs() As String
-        Get
-            Return sRingOnAllMSNs
-        End Get
-        Set(ByVal value As String)
-            sRingOnAllMSNs = value
-        End Set
-    End Property
-End Class
+'    'Private sRingOnAllMSNs As String
+'    'Friend Property RingOnAllMSNs() As String
+'    '    Get
+'    '        Return sRingOnAllMSNs
+'    '    End Get
+'    '    Set(ByVal value As String)
+'    '        sRingOnAllMSNs = value
+'    '    End Set
+'    'End Property
+'End Class
 
 Public Class DECTNr
     Private sNumber As String
@@ -318,15 +318,15 @@ Public Class DECTEntry
         End Set
     End Property
 
-    Private sType As String
-    Public Property Type() As String
-        Get
-            Return sType
-        End Get
-        Set(ByVal value As String)
-            sType = value
-        End Set
-    End Property
+    'Private sType As String
+    'Public Property Type() As String
+    '    Get
+    '        Return sType
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sType = value
+    '    End Set
+    'End Property
 
     Private sIntern As String
     Public Property Intern() As String
@@ -338,15 +338,15 @@ Public Class DECTEntry
         End Set
     End Property
 
-    Private sId As String
-    Public Property Id() As String
-        Get
-            Return sId
-        End Get
-        Set(ByVal value As String)
-            sId = value
-        End Set
-    End Property
+    'Private sId As String
+    'Public Property Id() As String
+    '    Get
+    '        Return sId
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sId = value
+    '    End Set
+    'End Property
 End Class
 
 Public Class FritzBoxJSONTelefone1
