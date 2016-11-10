@@ -806,13 +806,13 @@ Public Class FritzBox
 
     ' Query
     ''' <summary>
-    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=?sid=<c>sid</c>&amp;<c>Abfrage</c>
+    ''' http://<c>P_ValidFBAdr</c>/query.lua/?sid=<c>sSID</c>&amp;<c>sAbfrage</c>
     ''' </summary>
     ''' <param name="sSID">Session ID</param>
-    ''' <param name="Abfrage">Zu übersendende Abfrage</param>
-    Private ReadOnly Property P_Link_Query(ByVal sSID As String, ByVal Abfrage As String) As String
+    ''' <param name="sAbfrage">Zu übersendende Abfrage</param>
+    Private ReadOnly Property P_Link_Query(ByVal sSID As String, ByVal sAbfrage As String) As String
         Get
-            Return P_Link_FB_Basis & "/query.lua?sid=" & sSID & "&" & Abfrage
+            Return P_Link_FB_Basis & "/query.lua?sid=" & sSID & "&" & sAbfrage
         End Get
     End Property
 
@@ -925,7 +925,9 @@ Public Class FritzBox
     ''' <returns>Der zusammengefügte String</returns>
     Private ReadOnly Property P_Query_FB_SIP() As String
         Get
-            Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)"
+            Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,ID)"
+
+            'Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,registrar,outboundproxy,providername,ID,gui_readonly,webui_trunk_id)"
         End Get
     End Property
 
@@ -2332,7 +2334,6 @@ Public Class FritzBox
 
             ' SIP-Nummern
             .Add(P_Query_FB_SIP)
-
             ' Führt das Fritz!Box Query aus und gibt die ersten Daten der Telefonnummern zurück
             PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(1, 3))
             FritzBoxJSONTelNr1 = C_JSON.GetFirstValues(GetQuery(TelQuery, Debug))

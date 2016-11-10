@@ -64,35 +64,35 @@ Public Class SIPEntry
         End Set
     End Property
 
-    Private sregistrar As String
-    Public Property registrar() As String
-        Get
-            Return sregistrar
-        End Get
-        Set(ByVal value As String)
-            sregistrar = value
-        End Set
-    End Property
+    'Private sregistrar As String
+    'Public Property registrar() As String
+    '    Get
+    '        Return sregistrar
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sregistrar = value
+    '    End Set
+    'End Property
 
-    Private soutboundproxy As String
-    Public Property outboundproxy() As String
-        Get
-            Return soutboundproxy
-        End Get
-        Set(ByVal value As String)
-            soutboundproxy = value
-        End Set
-    End Property
+    'Private soutboundproxy As String
+    'Public Property outboundproxy() As String
+    '    Get
+    '        Return soutboundproxy
+    '    End Get
+    '    Set(ByVal value As String)
+    '        soutboundproxy = value
+    '    End Set
+    'End Property
 
-    Private sprovidername As String
-    Public Property providername() As String
-        Get
-            Return sprovidername
-        End Get
-        Set(ByVal value As String)
-            sprovidername = value
-        End Set
-    End Property
+    'Private sprovidername As String
+    'Public Property providername() As String
+    '    Get
+    '        Return sprovidername
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sprovidername = value
+    '    End Set
+    'End Property
 
     Private sID As String
     Public Property ID() As String
@@ -104,25 +104,25 @@ Public Class SIPEntry
         End Set
     End Property
 
-    Private sgui_readonly As String
-    Public Property gui_readonly() As String
-        Get
-            Return sgui_readonly
-        End Get
-        Set(ByVal value As String)
-            sgui_readonly = value
-        End Set
-    End Property
+    'Private sgui_readonly As String
+    'Public Property gui_readonly() As String
+    '    Get
+    '        Return sgui_readonly
+    '    End Get
+    '    Set(ByVal value As String)
+    '        sgui_readonly = value
+    '    End Set
+    'End Property
 
-    Private swebui_trunk_id As String
-    Public Property webui_trunk_id() As String
-        Get
-            Return swebui_trunk_id
-        End Get
-        Set(ByVal value As String)
-            swebui_trunk_id = value
-        End Set
-    End Property
+    'Private swebui_trunk_id As String
+    'Public Property webui_trunk_id() As String
+    '    Get
+    '        Return swebui_trunk_id
+    '    End Get
+    '    Set(ByVal value As String)
+    '        swebui_trunk_id = value
+    '    End Set
+    'End Property
 End Class
 
 Public Class MSNEntry

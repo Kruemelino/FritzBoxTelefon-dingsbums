@@ -213,6 +213,7 @@
     <Compile Include="ThisAddIn.Designer.vb">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.vb</DependentUpon>
     </None>
