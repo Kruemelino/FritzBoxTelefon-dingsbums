@@ -205,11 +205,8 @@ Public Class formCfg
                 Me.CBPhoner.Checked = False
             End If
             Me.LabelPhoner.Text = Replace(Me.LabelPhoner.Text, " [nicht]", C_hf.IIf(PhonerVerfuegbar, "", " nicht"), , , CompareMethod.Text)
-            'Me.CBPhonerKeineFB.Checked = C_hf.IIf(.Read("Phoner", "CBPhonerKeineFB", "False") = "True", True, False))
-            'If Not Me.CBPhonerKeineFB.Checked Then
 
             Dim xPathTeile As New ArrayList
-            Dim tmpTelefon As String
 
             'Statistik zurückschreiben
             With xPathTeile
@@ -221,16 +218,9 @@ Public Class formCfg
                 .Add("TelName")
             End With
 
-            tmpTelefon = C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner")
-            If InStr(tmpTelefon, ";", CompareMethod.Text) = 0 Then
-                Me.ComboBoxPhonerSIP.Items.Add(tmpTelefon)
-            Else
-                Me.ComboBoxPhonerSIP.DataSource = Split(tmpTelefon, ";", , CompareMethod.Text)
-            End If
+            Me.ComboBoxPhonerSIP.DataSource = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), , , CompareMethod.Text)
 
-            If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then
-                Me.ComboBoxPhonerSIP.SelectedIndex = .P_ComboBoxPhonerSIP
-            End If
+            If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then Me.ComboBoxPhonerSIP.SelectedIndex = .P_ComboBoxPhonerSIP
 
             Me.CBPhonerAnrMon.Checked = .P_CBPhonerAnrMon
             If Not Len(.P_TBPhonerPasswort) = 0 Then Me.TBPhonerPasswort.Text = "1234"
