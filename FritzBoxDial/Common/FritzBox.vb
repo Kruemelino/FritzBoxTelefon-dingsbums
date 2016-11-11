@@ -2602,6 +2602,7 @@ Public Class FritzBox
             tmpTelefon.TelTyp = TelTyp.FAX
             tmpTelefon.Dialport = DialPortBase.Fax
             tmpTelefon.TelName = "Faxempfang"
+            tmpTelefon.IsFax = True
             tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.TelTyp = TelTyp.FAX)
             Telefone.Add(tmpTelefon)
             PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
