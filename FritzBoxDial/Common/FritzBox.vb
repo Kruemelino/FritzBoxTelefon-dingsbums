@@ -2761,7 +2761,7 @@ Public Class FritzBox
             ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789#"}
             ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
             ' Bei der Wahl Des Hangup ist es ein {"dialing": false} ohne die umschließenden Anführungszeichen" 
-            If Response.Contains("""dialing"": " & C_hf.IIf(bHangUp, "false", """" & sDialCode & """")) Then
+            If Response.Contains("""dialing""") And Response.Contains(C_hf.IIf(bHangUp, "false", sDialCode)) Then
                 SendDialRequestToBoxV2 = C_hf.IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode))
             Else
                 C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response.Replace(vbLf, ""))
