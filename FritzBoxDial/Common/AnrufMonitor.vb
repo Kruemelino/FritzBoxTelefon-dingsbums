@@ -930,18 +930,18 @@ Friend Class AnrufMonitor
 
                                 If .Firma = DataProvider.P_Def_LeerString Then
                                     If Not .olContact.HomeAddress = DataProvider.P_Def_LeerString Then
-                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten &
-                                            DataProvider.P_Def_EineNeueZeile & .Anrufer &
-                                            DataProvider.P_Def_EineNeueZeile & .Firma &
-                                            DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress &
-                                            DataProvider.P_Def_EineNeueZeile
+                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten
+                                        .Body += DataProvider.P_Def_EineNeueZeile & .Anrufer
+                                        .Body += DataProvider.P_Def_EineNeueZeile & .Firma
+                                        .Body += DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress
+                                        .Body += DataProvider.P_Def_EineNeueZeile
                                     End If
                                 Else
                                     If Not .olContact.BusinessAddress = DataProvider.P_Def_LeerString Then
-                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten &
-                                            DataProvider.P_Def_EineNeueZeile & .Anrufer &
-                                            DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress &
-                                            DataProvider.P_Def_EineNeueZeile
+                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten
+                                        .Body += DataProvider.P_Def_EineNeueZeile & .Anrufer
+                                        .Body += DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress
+                                        .Body += DataProvider.P_Def_EineNeueZeile
                                     End If
                                 End If
                             End If
