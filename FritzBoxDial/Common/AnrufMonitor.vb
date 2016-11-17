@@ -523,33 +523,40 @@ Friend Class AnrufMonitor
                 ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
                 If Not .TelNr = DataProvider.P_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
-                    .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                    If .olContact IsNot Nothing Then
-                        .Anrufer = .olContact.FullName
-                        .Firma = .olContact.CompanyName
-                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
-                    Else
-                        ' Anrufer per Rückwärtssuche ermitteln
-                        If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+                    Try
 
-                            If C_DP.P_CBKErstellen Then
-                                ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
-                                ' Dies geschieht nur, wenn es gewünscht ist.
-                                .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                .vCard = DataProvider.P_Def_LeerString
-                                .Firma = .olContact.CompanyName
-                                .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
-                            Else
-                                .Anrufer = ReadFNfromVCard(.vCard)
-                                .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                If .Anrufer.StartsWith("Firma") Then .Anrufer = Mid(.Anrufer, Len("Firma"))
-                                .Anrufer = Trim(.Anrufer)
+
+                        .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
+                        If .olContact IsNot Nothing Then
+                            .Anrufer = .olContact.FullName
+                            .Firma = .olContact.CompanyName
+                            If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
+                        Else
+                            ' Anrufer per Rückwärtssuche ermitteln
+                            If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+
+                                If C_DP.P_CBKErstellen Then
+                                    ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                                    ' Dies geschieht nur, wenn es gewünscht ist.
+                                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
+                                    .vCard = DataProvider.P_Def_LeerString
+                                    .Firma = .olContact.CompanyName
+                                    .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
+                                Else
+                                    .Anrufer = ReadFNfromVCard(.vCard)
+                                    .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
+                                    If .Anrufer.StartsWith("Firma") Then .Anrufer = Mid(.Anrufer, Len("Firma"))
+                                    .Anrufer = Trim(.Anrufer)
+                                End If
+
                             End If
-
+                            'Formatiere die Telefonnummer
+                            .TelNr = C_hf.FormatTelNr(.TelNr)
                         End If
-                        'Formatiere die Telefonnummer
-                        .TelNr = C_hf.FormatTelNr(.TelNr)
-                    End If
+                    Catch ex As Exception
+                        Throw ex
+                        C_hf.LogFile(ex.Message)
+                    End Try
                     ' Hier Anrufmonitor aktualisieren! Nicht beim Journalimport!
                     If Telefonat.PopupAnrMon IsNot Nothing Then
                         C_Popup.UpdateAnrMon(Telefonat)
@@ -569,16 +576,18 @@ Friend Class AnrufMonitor
                 End If
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And .Online Then
-                    If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                    Try
+                        If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
 
 #If Not OVer = 11 Then
-                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+                        If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
-                    Try
+
                         ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
                         ' Grund für den Save-Forgang ist unbekannt.
                         .olContact.Display()
                     Catch Err As Exception
+                        Throw Err
                         C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
                     End Try
                 End If
@@ -679,31 +688,36 @@ Friend Class AnrufMonitor
                 ' Daten zurücksetzen
 
                 If Not .TelNr = DataProvider.P_Def_StringUnknown Then
-                    .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                    If Telefonat.olContact IsNot Nothing Then
-                        .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
-                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
-                    Else
-                        ' .Anrufer per Rückwärtssuche ermitteln
-                        If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+                    Try
+                        .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
+                        If Telefonat.olContact IsNot Nothing Then
+                            .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
+                            If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
+                        Else
+                            ' .Anrufer per Rückwärtssuche ermitteln
+                            If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
 
-                            If C_DP.P_CBKErstellen Then
-                                ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
-                                ' Dies geschieht nur, wenn es gewünscht ist.
-                                .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                .vCard = DataProvider.P_Def_LeerString
-                                .Firma = .olContact.CompanyName
-                                .Anrufer = Replace(.olContact.FullName & " (" & .Firma & ")", " ()", "")
-                            Else
-                                .Anrufer = ReadFNfromVCard(.vCard)
-                                .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
-                                .Anrufer = Trim(.Anrufer)
+                                If C_DP.P_CBKErstellen Then
+                                    ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                                    ' Dies geschieht nur, wenn es gewünscht ist.
+                                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
+                                    .vCard = DataProvider.P_Def_LeerString
+                                    .Firma = .olContact.CompanyName
+                                    .Anrufer = Replace(.olContact.FullName & " (" & .Firma & ")", " ()", "")
+                                Else
+                                    .Anrufer = ReadFNfromVCard(.vCard)
+                                    .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
+                                    If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
+                                    .Anrufer = Trim(.Anrufer)
+                                End If
+
                             End If
-
+                            .TelNr = C_hf.FormatTelNr(.TelNr)
                         End If
-                        .TelNr = C_hf.FormatTelNr(.TelNr)
-                    End If
+                    Catch ex As Exception
+                        Throw ex
+                    C_hf.LogFile(ex.Message)
+                    End Try
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
                 ' Update der Liste bei der Listenauswertung nur wenn gewünscht
@@ -715,15 +729,17 @@ Friend Class AnrufMonitor
 #End If
                 ' Kontakt öffnen
                 If C_DP.P_CBAnrMonZeigeKontakt And .Online Then
-                    If .olContact Is Nothing Then
-                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
-                    End If
-#If OVer > 11 Then
-                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
-#End If
                     Try
+                        If .olContact Is Nothing Then
+                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                        End If
+#If OVer > 11 Then
+                        If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+#End If
+
                         .olContact.Display()
                     Catch Err As Exception
+                        Throw Err
                         C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMon1("AnrMonCALL", Err.Message))
                     End Try
                 End If
@@ -833,11 +849,16 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If Not OVer = 11 Then
-                If C_DP.P_CBNote Then
-                    If .olContact IsNot Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                Try
+                    If C_DP.P_CBNote Then
+                        If .olContact IsNot Nothing Then
+                            C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                        End If
                     End If
-                End If
+                Catch ex As Exception
+                    Throw ex
+                    C_hf.LogFile(ex.Message)
+                End Try
 #End If
             End With
         End If
@@ -898,30 +919,37 @@ Friend Class AnrufMonitor
                         .Firma = ReadFromVCard(.vCard, "ORG", "")
                         .Body += DataProvider.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
                     Else
-                        If .olContact IsNot Nothing Then
-                            If .olContact.FullName = DataProvider.P_Def_LeerString Then
-                                .Anrufer = C_hf.IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma)
-                            Else
-                                .Anrufer = .olContact.FullName
-                            End If
+                        ' Zum Testen. Es scheint, als ob die Abstürze aus den Kontaktelementen kommen
+                        Try
+                            If .olContact IsNot Nothing Then
+                                If .olContact.FullName = DataProvider.P_Def_LeerString Then
+                                    .Anrufer = C_hf.IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma)
+                                Else
+                                    .Anrufer = .olContact.FullName
+                                End If
 
-                            If .Firma = DataProvider.P_Def_LeerString Then
-                                If Not .olContact.HomeAddress = DataProvider.P_Def_LeerString Then
-                                    .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten & _
-                                        DataProvider.P_Def_EineNeueZeile & .Anrufer & _
-                                        DataProvider.P_Def_EineNeueZeile & .Firma & _
-                                        DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress & _
-                                        DataProvider.P_Def_EineNeueZeile
-                                End If
-                            Else
-                                If Not .olContact.BusinessAddress = DataProvider.P_Def_LeerString Then
-                                    .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten & _
-                                        DataProvider.P_Def_EineNeueZeile & .Anrufer & _
-                                        DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress & _
-                                        DataProvider.P_Def_EineNeueZeile
+                                If .Firma = DataProvider.P_Def_LeerString Then
+                                    If Not .olContact.HomeAddress = DataProvider.P_Def_LeerString Then
+                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten &
+                                            DataProvider.P_Def_EineNeueZeile & .Anrufer &
+                                            DataProvider.P_Def_EineNeueZeile & .Firma &
+                                            DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress &
+                                            DataProvider.P_Def_EineNeueZeile
+                                    End If
+                                Else
+                                    If Not .olContact.BusinessAddress = DataProvider.P_Def_LeerString Then
+                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten &
+                                            DataProvider.P_Def_EineNeueZeile & .Anrufer &
+                                            DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress &
+                                            DataProvider.P_Def_EineNeueZeile
+                                    End If
                                 End If
                             End If
-                        End If
+                        Catch ex As Exception
+                            Throw ex
+                            C_hf.LogFile(ex.Message)
+                        End Try
+
                     End If
 
                     If .Angenommen Then
@@ -1003,11 +1031,16 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If OVer > 11 Then
-                If C_DP.P_CBNote Then
-                    If .olContact IsNot Nothing Then
-                        C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                Try
+                    If C_DP.P_CBNote Then
+                        If .olContact IsNot Nothing Then
+                            C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
+                        End If
                     End If
-                End If
+                Catch ex As Exception
+                    Throw ex
+                    C_hf.LogFile(ex.Message)
+                End Try
 #End If
                 If .PopupAnrMon Is Nothing And .PopupStoppuhr Is Nothing Then
                     C_Popup.TelefonatsListe.Remove(Telefonat)
