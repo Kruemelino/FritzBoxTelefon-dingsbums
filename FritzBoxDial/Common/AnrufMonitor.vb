@@ -907,36 +907,30 @@ Friend Class AnrufMonitor
                         .Body += DataProvider.P_AnrMon_AnrMonDISCONNECT_Journal & vbCrLf & .vCard & vbCrLf
                     Else
                         ' Zum Testen. Es scheint, als ob die Abstürze aus den Kontaktelementen kommen
-                        Try
-                            If .olContact IsNot Nothing Then
-                                If .olContact.FullName = DataProvider.P_Def_LeerString Then
-                                    .Anrufer = C_hf.IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma)
-                                Else
-                                    .Anrufer = .olContact.FullName
-                                End If
+                        If .olContact IsNot Nothing Then
+                            If .olContact.FullName = DataProvider.P_Def_LeerString Then
+                                .Anrufer = C_hf.IIf(.olContact.Companies = DataProvider.P_Def_LeerString, .TelNr, .Firma)
+                            Else
+                                .Anrufer = .olContact.FullName
+                            End If
 
-                                If .Firma = DataProvider.P_Def_LeerString Then
-                                    If Not .olContact.HomeAddress = DataProvider.P_Def_LeerString Then
-                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten
-                                        .Body += DataProvider.P_Def_EineNeueZeile & .Anrufer
-                                        .Body += DataProvider.P_Def_EineNeueZeile & .Firma
-                                        .Body += DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress
-                                        .Body += DataProvider.P_Def_EineNeueZeile
-                                    End If
-                                Else
-                                    If Not .olContact.BusinessAddress = DataProvider.P_Def_LeerString Then
-                                        .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten
-                                        .Body += DataProvider.P_Def_EineNeueZeile & .Anrufer
-                                        .Body += DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress
-                                        .Body += DataProvider.P_Def_EineNeueZeile
-                                    End If
+                            If .Firma = DataProvider.P_Def_LeerString Then
+                                If Not .olContact.HomeAddress = DataProvider.P_Def_LeerString Then
+                                    .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten
+                                    .Body += DataProvider.P_Def_EineNeueZeile & .Anrufer
+                                    .Body += DataProvider.P_Def_EineNeueZeile & .Firma
+                                    .Body += DataProvider.P_Def_EineNeueZeile & .olContact.HomeAddress
+                                    .Body += DataProvider.P_Def_EineNeueZeile
+                                End If
+                            Else
+                                If Not .olContact.BusinessAddress = DataProvider.P_Def_LeerString Then
+                                    .Body += DataProvider.P_AnrMon_Journal_Kontaktdaten
+                                    .Body += DataProvider.P_Def_EineNeueZeile & .Anrufer
+                                    .Body += DataProvider.P_Def_EineNeueZeile & .olContact.BusinessAddress
+                                    .Body += DataProvider.P_Def_EineNeueZeile
                                 End If
                             End If
-                        Catch ex As Exception
-                            Throw ex
-                            C_hf.LogFile(ex.Message)
-                        End Try
-
+                        End If
                     End If
 
                     If .Angenommen Then
@@ -977,7 +971,7 @@ Friend Class AnrufMonitor
                     ' Erstellung des Journaleintrages abgeschlossen
                 End If
 
-                ' Setze ZeitOutlookBeendet auf Jetzt + 1 Munitem wenn Anrufzeit nach der vorhanden ZeitOutlookBeendet oder ZeitOutlookBeendet Jetzt ust
+                ' Setze ZeitOutlookBeendet auf Jetzt + 1 Muniten wenn Anrufzeit nach der vorhanden ZeitOutlookBeendet oder ZeitOutlookBeendet Jetzt ist
                 If .Zeit > ZeitOutlookBeendet Or ZeitOutlookBeendet = System.DateTime.Now Then C_DP.P_StatOLClosedZeit = System.DateTime.Now.AddMinutes(1)
 
                 ' Stoppuhr anhalten
