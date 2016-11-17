@@ -576,20 +576,13 @@ Friend Class AnrufMonitor
                 End If
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And .Online Then
-                    Try
-                        If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
-
+                    If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
 #If Not OVer = 11 Then
-                        If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
-
-                        ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
-                        ' Grund für den Save-Forgang ist unbekannt.
-                        .olContact.Display()
-                    Catch Err As Exception
-                        Throw Err
-                        C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMon1("AnrMonRING", Err.Message))
-                    End Try
+                    ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
+                    ' Grund für den Save-Forgang ist unbekannt.
+                    .olContact.Display()
                 End If
 
                 'Notizeintag
@@ -716,7 +709,7 @@ Friend Class AnrufMonitor
                         End If
                     Catch ex As Exception
                         Throw ex
-                    C_hf.LogFile(ex.Message)
+                        C_hf.LogFile(ex.Message)
                     End Try
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
@@ -729,17 +722,16 @@ Friend Class AnrufMonitor
 #End If
                 ' Kontakt öffnen
                 If C_DP.P_CBAnrMonZeigeKontakt And .Online Then
-                    Try
-                        If .olContact Is Nothing Then
+
+                    If .olContact Is Nothing Then
                             .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
                         End If
 #If OVer > 11 Then
                         If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
 #End If
-
+                    Try
                         .olContact.Display()
                     Catch Err As Exception
-                        Throw Err
                         C_hf.LogFile(DataProvider.P_AnrMon_Log_AnrMon1("AnrMonCALL", Err.Message))
                     End Try
                 End If
@@ -849,16 +841,11 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If Not OVer = 11 Then
-                Try
-                    If C_DP.P_CBNote Then
-                        If .olContact IsNot Nothing Then
-                            C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-                        End If
+                If C_DP.P_CBNote Then
+                    If .olContact IsNot Nothing Then
+                        C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
-                Catch ex As Exception
-                    Throw ex
-                    C_hf.LogFile(ex.Message)
-                End Try
+                End If
 #End If
             End With
         End If
@@ -1031,16 +1018,11 @@ Friend Class AnrufMonitor
 
                 'Notizeintag
 #If OVer > 11 Then
-                Try
-                    If C_DP.P_CBNote Then
-                        If .olContact IsNot Nothing Then
-                            C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
-                        End If
+                If C_DP.P_CBNote Then
+                    If .olContact IsNot Nothing Then
+                        C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
-                Catch ex As Exception
-                    Throw ex
-                    C_hf.LogFile(ex.Message)
-                End Try
+                End If
 #End If
                 If .PopupAnrMon Is Nothing And .PopupStoppuhr Is Nothing Then
                     C_Popup.TelefonatsListe.Remove(Telefonat)
