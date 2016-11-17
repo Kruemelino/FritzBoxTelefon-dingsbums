@@ -178,8 +178,7 @@ Public Class Helfer
     ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
     ''' </summary>
     ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
-    <DebuggerStepThrough>
-    Public Sub NAR(ByVal COMObject As Object)
+    <DebuggerStepThrough()> Public Sub NAR(ByVal COMObject As Object)
 
         If COMObject IsNot Nothing Then
             Try
@@ -294,8 +293,7 @@ Public Class Helfer
 
     End Function
 
-    <DebuggerStepThrough>
-    Public Sub LogFile(ByVal Meldung As String)
+    <DebuggerStepThrough()> Public Sub LogFile(ByVal Meldung As String)
         Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName
         If C_DP.P_CBLogFile Then
             With My.Computer.FileSystem
@@ -458,8 +456,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. Boolean. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
-    <DebuggerStepThrough>
-    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Boolean, ByVal FalsePart As Boolean) As Boolean
+    <DebuggerStepThrough()> Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Boolean, ByVal FalsePart As Boolean) As Boolean
         If Expression Then
             Return TruePart
         Else
@@ -475,8 +472,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. Integer. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
-    <DebuggerStepThrough>
-    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Integer, ByVal FalsePart As Integer) As Integer
+    <DebuggerStepThrough()> Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Integer, ByVal FalsePart As Integer) As Integer
         If Expression Then
             Return TruePart
         Else
@@ -492,8 +488,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. String. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
-    <DebuggerStepThrough>
-    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As String, ByVal FalsePart As String) As String
+    <DebuggerStepThrough()> Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As String, ByVal FalsePart As String) As String
         If Expression Then
             Return TruePart
         Else
@@ -509,8 +504,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. System.Drawing.Color. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
-    <DebuggerStepThrough>
-    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Drawing.Color, ByVal FalsePart As Drawing.Color) As Drawing.Color
+    <DebuggerStepThrough()> Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Drawing.Color, ByVal FalsePart As Drawing.Color) As Drawing.Color
         If Expression Then
             Return TruePart
         Else
@@ -526,8 +520,7 @@ Public Class Helfer
     ''' <param name="FalsePart">Erforderlich. Double. Wird zurückgegeben, wenn Expression <c>False</c> ergibt.</param>
     ''' <returns>Gibt abhängig von der Auswertung eines Ausdrucks eines von zwei Objekten zurück.</returns>
     ''' <remarks>https://msdn.microsoft.com/de-de/library/27ydhh0d(v=vs.90).aspx</remarks>
-    <DebuggerStepThrough>
-    Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Double, ByVal FalsePart As Double) As Double
+    <DebuggerStepThrough()> Public Overloads Function IIf(ByVal Expression As Boolean, ByVal TruePart As Double, ByVal FalsePart As Double) As Double
         If Expression Then
             Return TruePart
         Else
@@ -1063,8 +1056,7 @@ Public Class Helfer
     ''' </summary>
     ''' <param name="Val1">Zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsZero(ByVal Val1 As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsZero(ByVal Val1 As Double) As Boolean
         CheckIsZero = Val1 < Epsilon
     End Function
 
@@ -1074,8 +1066,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
         CheckIsEqual = Math.Abs((Val1 - Val2)) < Epsilon
     End Function
 
@@ -1085,8 +1076,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsLess(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsLess(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
         CheckIsLess = Val2 - Val1 > Epsilon
     End Function
 
@@ -1096,8 +1086,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsLessOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsLessOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
         CheckIsLessOrEqual = Val1 - Val2 <= Epsilon
     End Function
 
@@ -1107,8 +1096,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
         CheckIsLarger = Val1 - Val2 > Epsilon
     End Function
 
@@ -1118,8 +1106,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsLargerOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsLargerOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
         CheckIsLargerOrEqual = Val2 - Val1 <= Epsilon
     End Function
 
@@ -1130,8 +1117,7 @@ Public Class Helfer
     ''' <param name="LVal">Untere Schwelle</param>
     ''' <param name="UVal">Obere schwelle</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckIsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckIsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
         CheckIsInRange = CheckIsLarger(Val1, LVal) And CheckIsLess(Val1, UVal)
     End Function
 
@@ -1141,8 +1127,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Kleinere der beiden Größen</returns>
-    <DebuggerStepThrough>
-    Friend Function GetLower(ByVal Val1 As Double, ByVal Val2 As Double) As Double
+    <DebuggerStepThrough()> Friend Function GetLower(ByVal Val1 As Double, ByVal Val2 As Double) As Double
         GetLower = IIf(CheckIsLess(Val1, Val2), Val1, Val2)
     End Function
 
@@ -1152,8 +1137,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Größere der beiden Größen</returns>
-    <DebuggerStepThrough>
-    Friend Function GetLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Double
+    <DebuggerStepThrough()> Friend Function GetLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Double
         GetLarger = IIf(CheckIsLarger(Val1, Val2), Val1, Val2)
     End Function
 
@@ -1164,8 +1148,7 @@ Public Class Helfer
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <param name="Modus">Vergleichsmodus</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <DebuggerStepThrough>
-    Friend Function CheckValues(ByVal Val1 As Double, ByVal Val2 As Double, ByVal Modus As Vergleichsmodus) As Boolean
+    <DebuggerStepThrough()> Friend Function CheckValues(ByVal Val1 As Double, ByVal Val2 As Double, ByVal Modus As Vergleichsmodus) As Boolean
 
         Select Case Modus
             Case Vergleichsmodus.KleinerGleich
@@ -1189,8 +1172,7 @@ Public Class Helfer
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns></returns>
-    <DebuggerStepThrough>
-    Friend Function CheckValues(ByVal Val1 As Double, ByVal Val2 As Double) As Vergleichsmodus
+    <DebuggerStepThrough()> Friend Function CheckValues(ByVal Val1 As Double, ByVal Val2 As Double) As Vergleichsmodus
         If CheckIsEqual(Val1, Val2) Then
             CheckValues = Vergleichsmodus.Gleich
         Else
