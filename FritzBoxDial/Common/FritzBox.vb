@@ -2490,148 +2490,151 @@ Public Class FritzBox
         PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(3, 3))
         FritzBoxJSONTelefone2 = C_JSON.GetThirdValues(GetQuery(TelQuery, Debug))
 
-        PushStatus("Alle relevanten Daten von der Fritz!Box erhalten. Ermittle vorhandene Telefone...")
-        'FON
-        PushStatus("Verarbeite Geräte: FON")
-        For idx = LBound(FritzBoxJSONTelefone1.FON) To UBound(FritzBoxJSONTelefone1.FON)
-            With FritzBoxJSONTelefone1.FON(idx)
-                If Not .Name = DataProvider.P_Def_LeerString Then
-                    tmpTelefon = New FritzBoxTelefon(C_hf)
-                    tmpTelefon.TelTyp = TelTyp.FON
-                    tmpTelefon.Dialport = DialPortBase.FON + idx
-                    tmpTelefon.IsFax = CBool(.Fax)
-                    tmpTelefon.TelName = .Name
-                    tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.ID1 = idx And Nummern.TelTyp = TelTyp.MSN)
-                    Telefone.Add(tmpTelefon)
-                    PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
-                End If
-            End With
-        Next
+        ' Wenn der User auf Probleme geklicckt hat, sollen nur die Dateien ermittelt werden, und nicht noch eine Auswertung gestartet werden, die eventuell zum Absturz führt.
+        If Not Debug Then
 
-        'DECT
-        PushStatus("Verarbeite Geräte: DECT")
-        For idx = LBound(FritzBoxJSONTelefone1.DECT) To UBound(FritzBoxJSONTelefone1.DECT)
-            With FritzBoxJSONTelefone1.DECT(idx)
-
-                If Not .Name = DataProvider.P_Def_LeerString Then
-                    tmpTelefon = New FritzBoxTelefon(C_hf)
-                    tmpTelefon.TelTyp = TelTyp.DECT
-                    tmpTelefon.Dialport = DialPortBase.DECT + CInt(Right(.Intern, 1))
-                    tmpTelefon.IsFax = False
-                    tmpTelefon.TelName = .Name
-
-                    If FritzBoxJSONTelefone2.DECTRingOnAllMSNs(idx) = "1" Then
-                        tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.EinmaligeNummern
-                    Else
-                        For Each aktDECTNr As DECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
-                            If Not aktDECTNr.Number = DataProvider.P_Def_LeerString Then
-                                Dim tmpDectNr As String = aktDECTNr.Number
-                                tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = tmpDectNr))
-                            End If
-                        Next
+            PushStatus("Alle relevanten Daten von der Fritz!Box erhalten. Ermittle vorhandene Telefone...")
+            'FON
+            PushStatus("Verarbeite Geräte: FON")
+            For idx = LBound(FritzBoxJSONTelefone1.FON) To UBound(FritzBoxJSONTelefone1.FON)
+                With FritzBoxJSONTelefone1.FON(idx)
+                    If Not .Name = DataProvider.P_Def_LeerString Then
+                        tmpTelefon = New FritzBoxTelefon(C_hf)
+                        tmpTelefon.TelTyp = TelTyp.FON
+                        tmpTelefon.Dialport = DialPortBase.FON + idx
+                        tmpTelefon.IsFax = CBool(.Fax)
+                        tmpTelefon.TelName = .Name
+                        tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.ID1 = idx And Nummern.TelTyp = TelTyp.MSN)
+                        Telefone.Add(tmpTelefon)
+                        PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
                     End If
-                    Telefone.Add(tmpTelefon)
-                    PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
-                End If
-            End With
+                End With
+            Next
 
-        Next
+            'DECT
+            PushStatus("Verarbeite Geräte: DECT")
+            For idx = LBound(FritzBoxJSONTelefone1.DECT) To UBound(FritzBoxJSONTelefone1.DECT)
+                With FritzBoxJSONTelefone1.DECT(idx)
 
-        'IP-Telefone
-        PushStatus("Verarbeite Geräte: IP-Telefone")
-        For idx = LBound(FritzBoxJSONTelefone1.VOIP) To UBound(FritzBoxJSONTelefone1.VOIP)
-            With FritzBoxJSONTelefone1.VOIP(idx)
-                If .enabled = "1" Then
+                    If Not .Name = DataProvider.P_Def_LeerString Then
+                        tmpTelefon = New FritzBoxTelefon(C_hf)
+                        tmpTelefon.TelTyp = TelTyp.DECT
+                        tmpTelefon.Dialport = DialPortBase.DECT + CInt(Right(.Intern, 1))
+                        tmpTelefon.IsFax = False
+                        tmpTelefon.TelName = .Name
+
+                        If FritzBoxJSONTelefone2.DECTRingOnAllMSNs(idx) = "1" Then
+                            tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.EinmaligeNummern
+                        Else
+                            For Each aktDECTNr As DECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
+                                If Not aktDECTNr.Number = DataProvider.P_Def_LeerString Then
+                                    Dim tmpDectNr As String = aktDECTNr.Number
+                                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = tmpDectNr))
+                                End If
+                            Next
+                        End If
+                        Telefone.Add(tmpTelefon)
+                        PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
+                    End If
+                End With
+
+            Next
+
+            'IP-Telefone
+            PushStatus("Verarbeite Geräte: IP-Telefone")
+            For idx = LBound(FritzBoxJSONTelefone1.VOIP) To UBound(FritzBoxJSONTelefone1.VOIP)
+                With FritzBoxJSONTelefone1.VOIP(idx)
+                    If .enabled = "1" Then
+                        tmpTelefon = New FritzBoxTelefon(C_hf)
+                        tmpTelefon.TelTyp = TelTyp.IP
+                        tmpTelefon.Dialport = DialPortBase.IP + idx
+                        tmpTelefon.TelName = .Name
+                        tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.ID1 = idx And Nummern.TelTyp = TelTyp.IP)
+                        Telefone.Add(tmpTelefon)
+                        PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
+                    End If
+                End With
+            Next
+
+            'S0
+            PushStatus("Verarbeite Geräte: S0")
+            For idx = 0 To 7
+                If Not FritzBoxJSONTelefone1.S0NameList(idx) = DataProvider.P_Def_LeerString And Not FritzBoxJSONTelefone2.S0NumberList(idx) = DataProvider.P_Def_LeerString Then
                     tmpTelefon = New FritzBoxTelefon(C_hf)
-                    tmpTelefon.TelTyp = TelTyp.IP
-                    tmpTelefon.Dialport = DialPortBase.IP + idx
-                    tmpTelefon.TelName = .Name
-                    tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.ID1 = idx And Nummern.TelTyp = TelTyp.IP)
+                    tmpTelefon.TelTyp = TelTyp.S0
+                    tmpTelefon.Dialport = DialPortBase.S0 + idx + 1
+                    tmpTelefon.TelName = FritzBoxJSONTelefone1.S0NameList(idx)
+                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummern) Nummern.TelNr = C_hf.EigeneVorwahlenEntfernen(FritzBoxJSONTelefone2.S0NumberList(idx))))
                     Telefone.Add(tmpTelefon)
                     PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
                 End If
-            End With
-        Next
-
-        'S0
-        PushStatus("Verarbeite Geräte: S0")
-        For idx = 0 To 7
-            If Not FritzBoxJSONTelefone1.S0NameList(idx) = DataProvider.P_Def_LeerString And Not FritzBoxJSONTelefone2.S0NumberList(idx) = DataProvider.P_Def_LeerString Then
+            Next
+            If Not Telefone.Telefonliste.Find(Function(Telefon) Telefon.TelTyp = TelTyp.S0) Is Nothing Then
                 tmpTelefon = New FritzBoxTelefon(C_hf)
                 tmpTelefon.TelTyp = TelTyp.S0
-                tmpTelefon.Dialport = DialPortBase.S0 + idx + 1
-                tmpTelefon.TelName = FritzBoxJSONTelefone1.S0NameList(idx)
-                tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummern) Nummern.TelNr = C_hf.EigeneVorwahlenEntfernen(FritzBoxJSONTelefone2.S0NumberList(idx))))
+                tmpTelefon.Dialport = DialPortBase.S0
+                tmpTelefon.TelName = "ISDN-Basis"
                 Telefone.Add(tmpTelefon)
                 PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
             End If
-        Next
-        If Not Telefone.Telefonliste.Find(Function(Telefon) Telefon.TelTyp = TelTyp.S0) Is Nothing Then
-            tmpTelefon = New FritzBoxTelefon(C_hf)
-            tmpTelefon.TelTyp = TelTyp.S0
-            tmpTelefon.Dialport = DialPortBase.S0
-            tmpTelefon.TelName = "ISDN-Basis"
-            Telefone.Add(tmpTelefon)
-            PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
-        End If
 
-        ' TAM, Anrufbeantworter
-        PushStatus("Verarbeite Geräte: Anrufbeantworter")
-        For idx = LBound(FritzBoxJSONTelefone1.TAM) To UBound(FritzBoxJSONTelefone1.TAM)
-            With FritzBoxJSONTelefone1.TAM(idx)
-                If .Active = "1" Then
-                    tmpTelefon = New FritzBoxTelefon(C_hf)
-                    tmpTelefon.TelTyp = TelTyp.TAM
-                    tmpTelefon.Dialport = DialPortBase.TAM + idx
-                    tmpTelefon.TelName = .Name
-                    If TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.TelTyp = TelTyp.TAM).Count = 0 Then
-                        tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.EinmaligeNummern
-                    Else
-                        tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.TAM And Nummer.ID0 = idx))
+            ' TAM, Anrufbeantworter
+            PushStatus("Verarbeite Geräte: Anrufbeantworter")
+            For idx = LBound(FritzBoxJSONTelefone1.TAM) To UBound(FritzBoxJSONTelefone1.TAM)
+                With FritzBoxJSONTelefone1.TAM(idx)
+                    If .Active = "1" Then
+                        tmpTelefon = New FritzBoxTelefon(C_hf)
+                        tmpTelefon.TelTyp = TelTyp.TAM
+                        tmpTelefon.Dialport = DialPortBase.TAM + idx
+                        tmpTelefon.TelName = .Name
+                        If TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.TelTyp = TelTyp.TAM).Count = 0 Then
+                            tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.EinmaligeNummern
+                        Else
+                            tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.TAM And Nummer.ID0 = idx))
+                        End If
+                        Telefone.Add(tmpTelefon)
+                        PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
                     End If
-                    Telefone.Add(tmpTelefon)
-                    PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
-                End If
-            End With
-        Next
+                End With
+            Next
 
-        ' integrierter Faxempfang
-        PushStatus("Verarbeite Gerät: integrierter Faxempfang")
-        If FritzBoxJSONTelefone2.FaxMailActive IsNot DataProvider.P_Def_StringNull Then
-            tmpTelefon = New FritzBoxTelefon(C_hf)
-            tmpTelefon.TelTyp = TelTyp.FAX
-            tmpTelefon.Dialport = DialPortBase.Fax
-            tmpTelefon.TelName = "Faxempfang"
-            tmpTelefon.IsFax = True
-            tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.TelTyp = TelTyp.FAX)
-            Telefone.Add(tmpTelefon)
-            PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
+            ' integrierter Faxempfang
+            PushStatus("Verarbeite Gerät: integrierter Faxempfang")
+            If FritzBoxJSONTelefone2.FaxMailActive IsNot DataProvider.P_Def_StringNull Then
+                tmpTelefon = New FritzBoxTelefon(C_hf)
+                tmpTelefon.TelTyp = TelTyp.FAX
+                tmpTelefon.Dialport = DialPortBase.Fax
+                tmpTelefon.TelName = "Faxempfang"
+                tmpTelefon.IsFax = True
+                tmpTelefon.EingehendeNummern.Nummernliste = TelefonNummern.Nummernliste.FindAll(Function(Nummern) Nummern.TelTyp = TelTyp.FAX)
+                Telefone.Add(tmpTelefon)
+                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
+            End If
+
+            'Mobil
+            PushStatus("Verarbeite Gerät: Mobil")
+            If TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.Mobil).TelNr IsNot Nothing Then
+                tmpTelefon = New FritzBoxTelefon(C_hf)
+                tmpTelefon.TelTyp = TelTyp.Mobil
+                tmpTelefon.Dialport = DataProvider.P_Def_MobilDialPort
+                tmpTelefon.TelName = FritzBoxJSONTelefone2.MobileName
+                tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.Mobil))
+                Telefone.Add(tmpTelefon)
+                PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
+            End If
+            PushStatus("Verarbeitung der Telefoniegeräte abgeschlossen.")
+
+            If P_SpeichereDaten Then
+                PushStatus(" Speicher Telefonnummern und Telefoniegeräte. Lösche alte Daten...")
+                C_XML.Delete(C_DP.XMLDoc, "Telefone")
+                PushStatus("Speichere Telefonnummern...")
+                TelefonNummern.SpeicherNummer(C_XML, C_DP.XMLDoc)
+                PushStatus("Speichere Telefone...")
+                Telefone.SpeicherTelefone(C_XML, C_DP.XMLDoc)
+            End If
+
+            PushStatus("Das Einlesen der Telefone und Telefonnummern aus der Fritz!Box ist abgeschlossen.")
         End If
-
-        'Mobil
-        PushStatus("Verarbeite Gerät: Mobil")
-        If TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.Mobil).TelNr IsNot Nothing Then
-            tmpTelefon = New FritzBoxTelefon(C_hf)
-            tmpTelefon.TelTyp = TelTyp.Mobil
-            tmpTelefon.Dialport = DataProvider.P_Def_MobilDialPort
-            tmpTelefon.TelName = FritzBoxJSONTelefone2.MobileName
-            tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelTyp = TelTyp.Mobil))
-            Telefone.Add(tmpTelefon)
-            PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
-        End If
-        PushStatus("Verarbeitung der Telefoniegeräte abgeschlossen.")
-
-        If P_SpeichereDaten Then
-            PushStatus(" Speicher Telefonnummern und Telefoniegeräte. Lösche alte Daten...")
-            C_XML.Delete(C_DP.XMLDoc, "Telefone")
-            PushStatus("Speichere Telefonnummern...")
-            TelefonNummern.SpeicherNummer(C_XML, C_DP.XMLDoc)
-            PushStatus("Speichere Telefone...")
-            Telefone.SpeicherTelefone(C_XML, C_DP.XMLDoc)
-        End If
-
-        PushStatus("Das Einlesen der Telefone und Telefonnummern aus der Fritz!Box ist abgeschlossen.")
-
         ' Aufräumen
         tmpTelNr = Nothing
         C_JSON = Nothing
