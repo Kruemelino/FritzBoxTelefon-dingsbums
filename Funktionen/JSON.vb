@@ -718,6 +718,66 @@ Public Class FritzBoxJSONTelefone2
         End Set
     End Property
 
+    Private eDECT6Nr As DECTNr()
+    Public Property DECT6Nr() As DECTNr()
+        Get
+            Return eDECT6Nr
+        End Get
+        Set(ByVal value As DECTNr())
+            eDECT6Nr = value
+        End Set
+    End Property
+
+    Private eDECT7Nr As DECTNr()
+    Public Property DECT7Nr() As DECTNr()
+        Get
+            Return eDECT7Nr
+        End Get
+        Set(ByVal value As DECTNr())
+            eDECT7Nr = value
+        End Set
+    End Property
+
+    Private eDECT8Nr As DECTNr()
+    Public Property DECT8Nr() As DECTNr()
+        Get
+            Return eDECT8Nr
+        End Get
+        Set(ByVal value As DECTNr())
+            eDECT8Nr = value
+        End Set
+    End Property
+
+    Private eDECT9Nr As DECTNr()
+    Public Property DECT9Nr() As DECTNr()
+        Get
+            Return eDECT9Nr
+        End Get
+        Set(ByVal value As DECTNr())
+            eDECT9Nr = value
+        End Set
+    End Property
+
+    Private eDECT10Nr As DECTNr()
+    Public Property DECT10Nr() As DECTNr()
+        Get
+            Return eDECT10Nr
+        End Get
+        Set(ByVal value As DECTNr())
+            eDECT10Nr = value
+        End Set
+    End Property
+
+    Private eDECT11Nr As DECTNr()
+    Public Property DECT11Nr() As DECTNr()
+        Get
+            Return eDECT11Nr
+        End Get
+        Set(ByVal value As DECTNr())
+            eDECT11Nr = value
+        End Set
+    End Property
+
     Private sDECT0RingOnAllMSNs As String
     Public Property DECT0RingOnAllMSNs() As String
         Get
@@ -778,16 +838,76 @@ Public Class FritzBoxJSONTelefone2
         End Set
     End Property
 
+    Private sDECT6RingOnAllMSNs As String
+    Public Property DECT6RingOnAllMSNs() As String
+        Get
+            Return sDECT6RingOnAllMSNs
+        End Get
+        Set(ByVal value As String)
+            sDECT6RingOnAllMSNs = value
+        End Set
+    End Property
+
+    Private sDECT7RingOnAllMSNs As String
+    Public Property DECT7RingOnAllMSNs() As String
+        Get
+            Return sDECT7RingOnAllMSNs
+        End Get
+        Set(ByVal value As String)
+            sDECT7RingOnAllMSNs = value
+        End Set
+    End Property
+
+    Private sDECT8RingOnAllMSNs As String
+    Public Property DECT8RingOnAllMSNs() As String
+        Get
+            Return sDECT8RingOnAllMSNs
+        End Get
+        Set(ByVal value As String)
+            sDECT8RingOnAllMSNs = value
+        End Set
+    End Property
+
+    Private sDECT9RingOnAllMSNs As String
+    Public Property DECT9RingOnAllMSNs() As String
+        Get
+            Return sDECT9RingOnAllMSNs
+        End Get
+        Set(ByVal value As String)
+            sDECT9RingOnAllMSNs = value
+        End Set
+    End Property
+
+    Private sDECT10RingOnAllMSNs As String
+    Public Property DECT10RingOnAllMSNs() As String
+        Get
+            Return sDECT10RingOnAllMSNs
+        End Get
+        Set(ByVal value As String)
+            sDECT10RingOnAllMSNs = value
+        End Set
+    End Property
+
+    Private sDECT11RingOnAllMSNs As String
+    Public Property DECT11RingOnAllMSNs() As String
+        Get
+            Return sDECT11RingOnAllMSNs
+        End Get
+        Set(ByVal value As String)
+            sDECT11RingOnAllMSNs = value
+        End Set
+    End Property
+
     Public ReadOnly Property DECTRingOnAllMSNs As String()
         Get
-            Dim tmp() As String = {sDECT0RingOnAllMSNs, sDECT1RingOnAllMSNs, sDECT2RingOnAllMSNs, sDECT3RingOnAllMSNs, sDECT4RingOnAllMSNs, sDECT5RingOnAllMSNs}
+            Dim tmp() As String = {sDECT0RingOnAllMSNs, sDECT1RingOnAllMSNs, sDECT2RingOnAllMSNs, sDECT3RingOnAllMSNs, sDECT4RingOnAllMSNs, sDECT5RingOnAllMSNs, sDECT6RingOnAllMSNs, sDECT7RingOnAllMSNs, sDECT8RingOnAllMSNs, sDECT9RingOnAllMSNs, sDECT10RingOnAllMSNs, sDECT11RingOnAllMSNs}
             Return tmp
         End Get
     End Property
 
     Public ReadOnly Property DECTTelNr As DECTNr()()
         Get
-            Dim tmp As DECTNr()() = {DECT0Nr(), DECT1Nr(), DECT2Nr(), DECT3Nr(), DECT4Nr(), DECT5Nr()}
+            Dim tmp As DECTNr()() = {DECT0Nr(), DECT1Nr(), DECT2Nr(), DECT3Nr(), DECT4Nr(), DECT5Nr(), DECT6Nr(), DECT7Nr(), DECT8Nr(), DECT9Nr(), DECT10Nr(), DECT11Nr()}
             Return tmp
         End Get
     End Property
