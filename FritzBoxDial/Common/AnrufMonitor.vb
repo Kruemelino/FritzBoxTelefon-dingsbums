@@ -524,8 +524,6 @@ Friend Class AnrufMonitor
                 If Not .TelNr = DataProvider.P_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
                     Try
-
-
                         .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
                         If .olContact IsNot Nothing Then
                             .Anrufer = .olContact.FullName

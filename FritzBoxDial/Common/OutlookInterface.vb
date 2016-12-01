@@ -468,16 +468,7 @@ Public Class OutlookInterface
         'Dim TVImageList As Windows.Forms.ImageList
         Dim iOrdner As Integer = 1
 
-        'TVImageList = New Windows.Forms.ImageList
-
-        'With TVImageList
-        '    .Images.Add("Kontakt", My.Resources.IMG_Check_0)
-        '    .Images.Add("KontaktSel", My.Resources.IMG_Check_1)
-        'End With
-
         With TreeView
-            '.ImageList = TVImageList
-            '.SelectedImageKey = "KontaktSel"
             .Nodes.Add("Kontaktordner")
         End With
 
@@ -495,12 +486,12 @@ Public Class OutlookInterface
 
         Do While iOrdner <= Ordner.Folders.Count
             SubFolder = Ordner.Folders.Item(iOrdner)
-            'C_hf.LogFile("KontaktOrdnerInTreeView, Ordner: " & SubFolder.Name & ", Anzahl Unterordner:" & SubFolder.Folders.Count)
             ChildNode = BaseNode
             If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
                 Try
                     ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
-                    ChildNode.Tag = ChildNode.Name 'SubFolder.EntryID & ";" & SubFolder.StoreID
+                    ChildNode.Tag = ChildNode.Name
+                    If ChildNode.Level = 1 Then ChildNode.Text += " (" & Ordner.Name & ")"
                 Catch ex As Exception
                     C_hf.LogFile("Auf den Ordner " & SubFolder.Name & " kann nicht zugegriffen werden.")
                     ChildNode = BaseNode
