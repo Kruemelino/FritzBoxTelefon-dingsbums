@@ -577,7 +577,7 @@ Public Class formCfg
     End Function
 
 #Region "Button Link"
-    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, BOK.Click, BAbbruch.Click, BApply.Click, BXML.Click, BAnrMonTest.Click, BIndizierungStart.Click, BIndizierungAbbrechen.Click, BZwischenablage.Click, BTelefonliste.Click, BStartDebug.Click, BResetStat.Click, BProbleme.Click, BStoppUhrAnzeigen.Click, BArbeitsverzeichnis.Click, BRWSTest.Click, BTestLogin.Click
+    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, BOK.Click, BAbbruch.Click, BApply.Click, BXML.Click, BAnrMonTest.Click, BIndizierungStart.Click, BIndizierungAbbrechen.Click, BZwischenablage.Click, BTelefonliste.Click, BStartDebug.Click, BResetStat.Click, BProbleme.Click, BStoppUhrAnzeigen.Click, BArbeitsverzeichnis.Click, BRWSTest.Click, BTestLogin.Click, BManLoad.Click
 
         Select Case CType(sender, Windows.Forms.Button).Name
             Case "BReset"
@@ -790,6 +790,17 @@ Public Class formCfg
                 Else
                     Me.BTestLogin.Text = "OK!"
                 End If
+            Case "BManLoad"
+                Using FBD As New FolderBrowserDialog
+                    With FBD
+                        .Description = "Wähle den Ordner aus, in dem sich die Konfigurationsdateien befinden"
+                        .ShowNewFolderButton = False
+                        If .ShowDialog() = DialogResult.OK Then
+                            C_DP.P_Debug_PfadKonfig = .SelectedPath
+                            AddLine("Pfad: " & C_DP.P_Debug_PfadKonfig)
+                        End If
+                    End With
+                End Using
         End Select
     End Sub
 
@@ -986,7 +997,7 @@ Public Class formCfg
     End Function
 
     Private Sub NeueMail()
-        C_FBox.FritzBoxDaten(True)
+        C_FBox.FritzBoxDaten(True, True)
 
         C_OlI.NeueEmail(DataProvider.P_FritzBox_Info(C_FBox.P_FritzBoxTyp, C_FBox.P_FritzBoxFirmware))
     End Sub
@@ -1352,7 +1363,7 @@ Public Class formCfg
 
         C_FBox.P_SpeichereDaten = CBool(e.Argument)
         e.Result = CBool(e.Argument)
-        C_FBox.FritzBoxDaten(False)
+        C_FBox.FritzBoxDaten(False, C_DP.P_Debug_PfadKonfig = DataProvider.P_Def_LeerString)
     End Sub
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
@@ -1475,6 +1486,8 @@ Public Class formCfg
         Me.TBPhonerPasswort.Enabled = Me.CBPhoner.Checked
         Me.LPassworPhoner.Enabled = Me.CBPhoner.Checked
     End Sub
+
+
 #End Region
 
 End Class

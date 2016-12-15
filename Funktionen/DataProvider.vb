@@ -2448,6 +2448,30 @@ Public Class DataProvider
         End Set
     End Property
 
+    Private _P_Debug_PfadKonfig As String
+    Public Property P_Debug_PfadKonfig() As String
+        Set(value As String)
+            _P_Debug_PfadKonfig = value
+        End Set
+        Get
+            Return _P_Debug_PfadKonfig
+        End Get
+    End Property
+
+    Public Function Debug_getFileContend(ByVal QueryID As String) As String
+        Debug_getFileContend = P_Def_LeerString
+        Dim oDir As IO.DirectoryInfo
+        oDir = New IO.DirectoryInfo(P_Debug_PfadKonfig)
+
+        With oDir.GetFiles(QueryID & ".txt").First
+            If .Exists Then
+                Using ReadStream As New IO.StreamReader(.FullName)
+                    Debug_getFileContend = ReadStream.ReadToEnd()
+                    Debug_getFileContend = New String(Debug_getFileContend.Skip(InStr(Debug_getFileContend, "{", CompareMethod.Text) - 1).ToArray)
+                End Using
+            End If
+        End With
+    End Function
 
 #End Region
 

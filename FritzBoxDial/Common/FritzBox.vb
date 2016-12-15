@@ -1304,7 +1304,7 @@ Public Class FritzBox
 #End Region
 
 #Region "Telefonnummern, Telefonnamen"
-    Friend Sub FritzBoxDaten(ByVal Debug As Boolean)
+    Friend Sub FritzBoxDaten(ByVal Debug As Boolean, ByVal VonFritzBox As Boolean)
         'Dim sLink As String
         Dim tempstring As String
         Dim tempstring_code As String
@@ -1316,7 +1316,7 @@ Public Class FritzBox
 
             If ThisFBFirmware.ISLargerOREqual("6.05") Then
                 PushStatus("Starte AuswertungV3")
-                FritzBoxDatenV3(Debug)
+                FritzBoxDatenV3(Debug, VonFritzBox)
             ElseIf ThisFBFirmware.ISLargerOREqual("5.25") Then
                 tempstring = C_hf.httpGET(P_Link_FB_Tel1(P_SID), C_DP.P_EncodingFritzBox, FBFehler)
                 If Not FBFehler Then
@@ -2290,10 +2290,11 @@ Public Class FritzBox
 
     End Sub
 
-    Private Sub FritzBoxDatenV3(ByVal Debug As Boolean)
+    Private Sub FritzBoxDatenV3(ByVal Debug As Boolean, ByVal LadeVonFritzBox As Boolean)
         PushStatus(DataProvider.P_FritzBox_Tel_RoutineAb605)
+
         Dim C_JSON As New JSON
-        Dim TelQuery As New ArrayList
+        Dim TelQuery As New List(Of String)
         Dim FritzBoxJSONTelNr1 As FritzBoxJSONTelNrT1
         Dim FritzBoxJSONTelefone1 As FritzBoxJSONTelefone1
         Dim FritzBoxJSONTelefone2 As FritzBoxJSONTelefone2
@@ -2302,11 +2303,15 @@ Public Class FritzBox
         Dim Telefone As New FritzBoxTelefonListe(C_hf)
 
         Dim tmpTelNr As FritzBoxTelefonnummer
+        Dim tmpTelNrList As TelNrList
         Dim tmpTelefon As FritzBoxTelefon
         Dim tmpStrArr As String()
         Dim idx As Integer
         Dim jdx As Integer
         Dim kdx As Integer
+
+        Dim QueryID() As String
+        QueryID = {"MainQuery01", "MainQuery02", "MainQuery03", "ListMSN", "ListVOIP"}
 
         With TelQuery
 
@@ -2334,103 +2339,122 @@ Public Class FritzBox
             ' SIP-Nummern
             .Add(P_Query_FB_SIP)
             ' Führt das Fritz!Box Query aus und gibt die ersten Daten der Telefonnummern zurück
-            PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(1, 3))
-            FritzBoxJSONTelNr1 = C_JSON.GetFirstValues(GetQuery(TelQuery, Debug))
+            If LadeVonFritzBox Then
+                PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(1, 3))
+                FritzBoxJSONTelNr1 = C_JSON.GetFirstValues(FritzBoxQuery(String.Join("&", TelQuery.ToArray), QueryID(0), Debug))
+            Else
+                PushStatus("Lade Datei: " & C_DP.P_Debug_PfadKonfig & IO.Path.DirectorySeparatorChar & QueryID(0) & ".txt")
+                FritzBoxJSONTelNr1 = C_JSON.GetFirstValues(C_DP.Debug_getFileContend(QueryID(0)))
+            End If
+
             .Clear()
         End With
 
-        With FritzBoxJSONTelNr1
-            PushStatus("Ermittle vorhandene Telefonnummern...")
-            ' Verarbeite Telefonnummern: MSN, TAM, FAX
-            ReDim tmpStrArr(-1)
-            For jdx = 1 To 3
-                Select Case jdx
-                    Case 1
-                        ' Verarbeite MSN-Nummern
-                        tmpStrArr = .MSNList
-                    Case 2
-                        ' Verarbeite TAM-Nummern (Anrufbeantworter)
-                        tmpStrArr = .TAMList
-                    Case 3
-                        ' Verarbeite FAX-Nummern
-                        tmpStrArr = .FAXList
-                End Select
+        ReDim tmpStrArr(-1)
 
-                For idx = LBound(tmpStrArr) To UBound(tmpStrArr)
-                    If Not tmpStrArr(idx) = DataProvider.P_Def_LeerString Then
-                        tmpTelNr = New FritzBoxTelefonnummer
-                        tmpTelNr.TelNr = tmpStrArr(idx)
-                        tmpTelNr.ID0 = idx
-                        Select Case jdx
-                            Case 1
-                                tmpTelNr.TelTyp = TelTyp.MSN
-                            Case 2
-                                tmpTelNr.TelTyp = TelTyp.TAM
-                            Case 3
-                                tmpTelNr.TelTyp = TelTyp.FAX
-                        End Select
-                        TelefonNummern.Add(tmpTelNr)
-                        PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
-                    End If
-                Next
-            Next
+        If Not Debug Then
 
-            ' Verarbeite Telefonnummern: SIP
-            For Each SIPi As SIPEntry In FritzBoxJSONTelNr1.SIP
-                With SIPi
-                    If CBool(.activated) Then
-                        tmpTelNr = New FritzBoxTelefonnummer
-                        tmpTelNr.TelNr = .displayname
-                        tmpTelNr.ID0 = CInt(.ID)
-                        tmpTelNr.TelTyp = TelTyp.SIP
-                        TelefonNummern.Add(tmpTelNr)
-                        PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
-                    End If
-                End With
-            Next
+            With FritzBoxJSONTelNr1
+                PushStatus("Ermittle vorhandene Telefonnummern...")
+                ' Verarbeite Telefonnummern: MSN, TAM, FAX
 
-            ' Verarbeite Telefonnummern: POTS
-            If Not .POTS = DataProvider.P_Def_LeerString Then
-                tmpTelNr = New FritzBoxTelefonnummer
-                tmpTelNr.TelNr = .POTS
-                tmpTelNr.TelTyp = TelTyp.POTS
-                TelefonNummern.Add(tmpTelNr)
-                PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
-            End If
+                For jdx = 1 To 3
+                    Select Case jdx
+                        Case 1
+                            ' Verarbeite MSN-Nummern
+                            tmpStrArr = .MSNList
+                        Case 2
+                            ' Verarbeite TAM-Nummern (Anrufbeantworter)
+                            tmpStrArr = .TAMList
+                        Case 3
+                            ' Verarbeite FAX-Nummern
+                            tmpStrArr = .FAXList
+                    End Select
 
-            ' Verarbeite Telefonnummern: Mobil
-            If Not .Mobile = DataProvider.P_Def_LeerString Then
-                tmpTelNr = New FritzBoxTelefonnummer
-                tmpTelNr.TelNr = .Mobile
-                tmpTelNr.TelTyp = TelTyp.Mobil
-                TelefonNummern.Add(tmpTelNr)
-                PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
-            End If
-
-            ' Verarbeite Telefonnummern über die angeschlossenen Geräte
-            For kdx = 0 To 1
-                Select Case kdx
-                    Case 0
-                        tmpStrArr = .MSNPortEnabled
-                    Case 1
-                        tmpStrArr = .VOIPPortEnabled
-                End Select
-
-                For idx = LBound(tmpStrArr) To UBound(tmpStrArr)
-                    If (kdx = 0 And Not tmpStrArr(idx) = DataProvider.P_Def_LeerString) OrElse (kdx = 1 And tmpStrArr(idx) = "1") Then
-                        ' Füge alle 10 möglichen zugeordneten Nummern hinzu
-                        TelQuery.Clear()
-                        For jdx = 0 To 9
-                            Select Case kdx
-                                Case 0
-                                    TelQuery.Add(P_Query_FB_MSN_TelNrList(idx, jdx))
+                    For idx = LBound(tmpStrArr) To UBound(tmpStrArr)
+                        If Not tmpStrArr(idx) = DataProvider.P_Def_LeerString Then
+                            tmpTelNr = New FritzBoxTelefonnummer
+                            tmpTelNr.TelNr = tmpStrArr(idx)
+                            tmpTelNr.ID0 = idx
+                            Select Case jdx
                                 Case 1
-                                    TelQuery.Add(P_Query_FB_VOIP_TelNrList(idx, jdx))
+                                    tmpTelNr.TelTyp = TelTyp.MSN
+                                Case 2
+                                    tmpTelNr.TelTyp = TelTyp.TAM
+                                Case 3
+                                    tmpTelNr.TelTyp = TelTyp.FAX
                             End Select
-                        Next
-                        ' Pro Gerät erfolgt eine Abfrage an die Fritz!Box
-                        With C_JSON.GetTelNrListJSON(GetQuery(TelQuery, Debug))
-                            For jdx = .LBound To .UBound
+                            TelefonNummern.Add(tmpTelNr)
+                            PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
+                        End If
+                    Next
+                Next
+
+                ' Verarbeite Telefonnummern: SIP
+                For Each SIPi As SIPEntry In FritzBoxJSONTelNr1.SIP
+                    With SIPi
+                        If CBool(.activated) Then
+                            tmpTelNr = New FritzBoxTelefonnummer
+                            tmpTelNr.TelNr = .displayname
+                            tmpTelNr.ID0 = CInt(.ID)
+                            tmpTelNr.TelTyp = TelTyp.SIP
+                            TelefonNummern.Add(tmpTelNr)
+                            PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
+                        End If
+                    End With
+                Next
+
+                ' Verarbeite Telefonnummern: POTS
+                If Not .POTS = DataProvider.P_Def_LeerString Then
+                    tmpTelNr = New FritzBoxTelefonnummer
+                    tmpTelNr.TelNr = .POTS
+                    tmpTelNr.TelTyp = TelTyp.POTS
+                    TelefonNummern.Add(tmpTelNr)
+                    PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
+                End If
+
+                ' Verarbeite Telefonnummern: Mobil
+                If Not .Mobile = DataProvider.P_Def_LeerString Then
+                    tmpTelNr = New FritzBoxTelefonnummer
+                    tmpTelNr.TelNr = .Mobile
+                    tmpTelNr.TelTyp = TelTyp.Mobil
+                    TelefonNummern.Add(tmpTelNr)
+                    PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
+                End If
+            End With 'FritzBoxJSONTelNr1
+        End If
+
+        ' Verarbeite Telefonnummern über die angeschlossenen Geräte
+        For kdx = 0 To 1
+            Select Case kdx
+                Case 0
+                    tmpStrArr = FritzBoxJSONTelNr1.MSNPortEnabled
+                Case 1
+                    tmpStrArr = FritzBoxJSONTelNr1.VOIPPortEnabled
+            End Select
+
+            For idx = LBound(tmpStrArr) To UBound(tmpStrArr)
+                If (kdx = 0 And Not tmpStrArr(idx) = DataProvider.P_Def_LeerString) OrElse (kdx = 1 And tmpStrArr(idx) = "1") Then
+                    ' Füge alle 10 möglichen zugeordneten Nummern hinzu
+                    TelQuery.Clear()
+                    For jdx = 0 To 9
+                        Select Case kdx
+                            Case 0
+                                TelQuery.Add(P_Query_FB_MSN_TelNrList(idx, jdx))
+                            Case 1
+                                TelQuery.Add(P_Query_FB_VOIP_TelNrList(idx, jdx))
+                        End Select
+                    Next
+                    ' Pro Gerät erfolgt eine Abfrage an die Fritz!Box
+                    If LadeVonFritzBox Then
+                        tmpTelNrList = C_JSON.GetTelNrListJSON(FritzBoxQuery(String.Join("&", TelQuery.ToArray), QueryID(kdx + 3) & idx, Debug))
+                    Else
+                        PushStatus("Lade Datei: " & C_DP.P_Debug_PfadKonfig & IO.Path.DirectorySeparatorChar & QueryID(kdx + 3) & idx & ".txt")
+                        tmpTelNrList = C_JSON.GetTelNrListJSON(C_DP.Debug_getFileContend(QueryID(kdx + 3) & idx))
+                    End If
+                    With tmpTelNrList
+                        For jdx = .LBound To .UBound
+                            If Not Debug Then
                                 If Not .Item(jdx) = DataProvider.P_Def_LeerString Then
                                     tmpTelNr = New FritzBoxTelefonnummer
                                     tmpTelNr.TelNr = .Item(jdx)
@@ -2445,12 +2469,12 @@ Public Class FritzBox
                                     TelefonNummern.Add(tmpTelNr)
                                     PushStatus(DataProvider.P_FritzBox_Tel_NrFound([Enum].GetName(GetType(TelTyp), tmpTelNr.TelTyp), tmpTelNr.ID0, tmpTelNr.TelNr))
                                 End If
-                            Next
-                        End With
-                    End If
-                Next
+                            End If
+                        Next
+                    End With
+                End If
             Next
-        End With 'FritzBoxJSONTelNr1
+        Next
 
         With TelQuery
             .Clear()
@@ -2463,8 +2487,15 @@ Public Class FritzBox
                 .Add(P_Query_FB_S0("Name", idx))
             Next
         End With 'TelQuery
-        PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(2, 3))
-        FritzBoxJSONTelefone1 = C_JSON.GetSecondValues(GetQuery(TelQuery, Debug))
+
+        If LadeVonFritzBox Then
+            PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(2, 3))
+            FritzBoxJSONTelefone1 = C_JSON.GetSecondValues(FritzBoxQuery(String.Join("&", TelQuery.ToArray), QueryID(1), Debug))
+        Else
+            PushStatus("Lade Datei: " & C_DP.P_Debug_PfadKonfig & IO.Path.DirectorySeparatorChar & QueryID(1) & ".txt")
+            FritzBoxJSONTelefone1 = C_JSON.GetSecondValues(C_DP.Debug_getFileContend(QueryID(1)))
+        End If
+
 
         With FritzBoxJSONTelefone1
             TelQuery.Clear()
@@ -2487,8 +2518,14 @@ Public Class FritzBox
 
         End With ' FritzBoxJSONTelefone1
 
-        PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(3, 3))
-        FritzBoxJSONTelefone2 = C_JSON.GetThirdValues(GetQuery(TelQuery, Debug))
+        If LadeVonFritzBox Then
+            PushStatus(DataProvider.P_FritzBox_Tel_SendQuery(3, 3))
+            FritzBoxJSONTelefone2 = C_JSON.GetThirdValues(FritzBoxQuery(String.Join("&", TelQuery.ToArray), QueryID(2), Debug))
+        Else
+            PushStatus("Lade Datei: " & C_DP.P_Debug_PfadKonfig & IO.Path.DirectorySeparatorChar & QueryID(2) & ".txt")
+            FritzBoxJSONTelefone2 = C_JSON.GetThirdValues(C_DP.Debug_getFileContend(QueryID(2)))
+        End If
+
 
         ' Wenn der User auf Probleme geklicckt hat, sollen nur die Dateien ermittelt werden, und nicht noch eine Auswertung gestartet werden, die eventuell zum Absturz führt.
         If Not Debug Then
@@ -2668,17 +2705,6 @@ Public Class FritzBox
 
     End Function
 
-    ''' <summary>
-    ''' Stellt die gesammte Anfrage an die Fritz!Box zusammen unf führt die Anfrage aus.
-    ''' </summary>
-    ''' <param name="QueryList">Einzelelemente der Anfrage</param>
-    ''' <returns></returns>
-    Private Function GetQuery(ByVal QueryList As ArrayList, ByVal InDateiSpeichern As Boolean) As String
-        Dim sQuery(QueryList.Count - 1) As String
-        QueryList.CopyTo(sQuery, 0)
-        Return FritzBoxQuery(String.Join("&", sQuery), InDateiSpeichern)
-    End Function
-
     Private Overloads Function AlleNummern(ByVal MSN() As String, ByVal SIP() As String, ByVal TAM() As String, ByVal FAX() As String, ByVal POTS As String, ByVal Mobil As String) As String
         AlleNummern = DataProvider.P_Def_LeerString
         Dim tmp() As String = Split(Join(MSN, ";") & ";" & Join(SIP, ";") & ";" & Join(TAM, ";") & ";" & Join(FAX, ";") & ";" & POTS & ";" & Mobil, ";", , CompareMethod.Text)
@@ -2738,14 +2764,14 @@ Public Class FritzBox
         SendDialRequestToBoxV2 = DataProvider.P_FritzBox_Dial_Error1
 
         ' DialPort setzen, wenn erforderlich
-        If FritzBoxQuery("DialPort=telcfg:settings/DialPort", False).Contains(sDialPort) Then
+        If FritzBoxQuery("DialPort=telcfg:settings/DialPort", "", False).Contains(sDialPort) Then
             PortChangeSuccess = True
         Else
             C_hf.LogFile("SendDialRequestToBoxV2: Ändere Dialport auf " & sDialPort)
             ' per HTTP-POST Dialport ändern
             Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
             ' Prüfen, ob es erfolgreich war
-            PortChangeSuccess = FritzBoxQuery("DialPort=telcfg:settings/DialPort", False).Contains(sDialPort)
+            PortChangeSuccess = FritzBoxQuery("DialPort=telcfg:settings/DialPort", "", False).Contains(sDialPort)
         End If
 
         ' Wählen
@@ -3309,7 +3335,7 @@ Public Class FritzBox
     ''' <param name="Abfrage">Die durchzuführende Abfrage</param>
     ''' <param name="InDateiSpeichern">Angabe, ob die Abfrage zu Debugzwecken gespeichert werden soll</param>
     ''' <returns></returns>
-    Private Function FritzBoxQuery(ByVal Abfrage As String, ByVal InDateiSpeichern As Boolean) As String
+    Private Function FritzBoxQuery(ByVal Abfrage As String, ByVal QueryID As String, ByVal InDateiSpeichern As Boolean) As String
         FritzBoxQuery = DataProvider.P_Def_ErrorMinusOne_String
 
         If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
@@ -3321,14 +3347,15 @@ Public Class FritzBox
         If InDateiSpeichern Then
             Dim PfadTMPfile As String
             Dim tmpFilePath As String
-            Dim tmpFileBase As String
+            'Dim tmpFileBase As String
             With My.Computer.FileSystem
                 PfadTMPfile = .GetTempFileName()
                 tmpFilePath = .GetFileInfo(PfadTMPfile).DirectoryName
-                tmpFileBase = Split(.GetFileInfo(PfadTMPfile).Name, ".", , CompareMethod.Text)(0)
+                'tmpFileBase = Split(.GetFileInfo(PfadTMPfile).Name, ".", , CompareMethod.Text)(0)
 
-                .RenameFile(PfadTMPfile, tmpFileBase & ".txt")
-                PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, tmpFileBase & ".txt")(0).ToString
+                '.RenameFile(PfadTMPfile, tmpFileBase & ".txt")
+                .RenameFile(PfadTMPfile, QueryID & ".txt")
+                PfadTMPfile = .GetFiles(tmpFilePath, FileIO.SearchOption.SearchTopLevelOnly, QueryID & ".txt")(0).ToString
                 .WriteAllText(PfadTMPfile, DataProvider.P_FritzBox_Tel_DebugMsgAb605 & DataProvider.P_Def_EineNeueZeile & "Pfad zur Datei: " & PfadTMPfile & DataProvider.P_Def_ZweiNeueZeilen & P_Link_Query(P_SID, Abfrage) & DataProvider.P_Def_ZweiNeueZeilen & FritzBoxQuery, False)
                 'Rückgabe des Dateipfades
                 If C_DP.P_Debug_FBFile Is Nothing Then C_DP.P_Debug_FBFile = New List(Of String)
