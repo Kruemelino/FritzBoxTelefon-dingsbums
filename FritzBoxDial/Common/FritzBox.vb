@@ -2318,8 +2318,7 @@ Public Class FritzBox
         Dim jdx As Integer
         Dim kdx As Integer
 
-        Dim QueryID() As String
-        QueryID = {"MainQuery01", "MainQuery02", "MainQuery03", "ListMSN", "ListVOIP"}
+        Dim QueryID() As String = {"MainQuery01", "MainQuery02", "MainQuery03", "ListMSN", "ListVOIP"}
 
         With TelQuery
 
@@ -2780,9 +2779,7 @@ Public Class FritzBox
             Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
             ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
             If Response.Contains("twofactor") Then
-                C_hf.MsgBox("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist." & DataProvider.P_Def_ZweiNeueZeilen &
-                            "In der Fritz!Box:" & DataProvider.P_Def_EineNeueZeile & "System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz" & DataProvider.P_Def_EineNeueZeile &
-                            "Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", MsgBoxStyle.Critical, "SendDialRequestToBoxV2")
+                C_hf.MsgBox("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist." & DataProvider.P_Def_ZweiNeueZeilen &                             "In der Fritz!Box:" & DataProvider.P_Def_EineNeueZeile & "System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz" & DataProvider.P_Def_EineNeueZeile &"Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", MsgBoxStyle.Critical, "SendDialRequestToBoxV2")
                 PortChangeSuccess = False
             Else
                 ' Prüfen, ob es erfolgreich war
