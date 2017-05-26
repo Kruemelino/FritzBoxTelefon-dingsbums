@@ -773,7 +773,7 @@ Public Class Helfer
                 TelNr = Mid(TelNr, Len(.Ortsvorwahl) + 1)
 
                 If .TelNr.Contains("-") Then
-                    .Durchwahl = Trim(Mid(.TelNr, InStrRev(.TelNr, "-",, CompareMethod.Text) + 1))
+                    .Durchwahl = Trim(Mid(.TelNr, InStrRev(.TelNr, "-", , CompareMethod.Text) + 1))
                 End If
                 .Nummer = Left(TelNr, Len(TelNr) - Len(.Durchwahl))
             End If

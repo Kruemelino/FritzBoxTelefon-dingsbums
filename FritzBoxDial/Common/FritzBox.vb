@@ -816,6 +816,12 @@ Public Class FritzBox
         End Get
     End Property
 
+    'Private ReadOnly Property P_Link_TwoFactor(ByVal sSID As String) As String
+    '    Get
+    '        Return P_Link_FB_Basis & "/twofactor.lua?sid=" & sSID
+    '    End Get
+    'End Property
+
     ' Fritz!Box Info
     ''' <summary>
     ''' http://P_ValidFBAdr/jason_boxinfo.xml
@@ -1316,8 +1322,10 @@ Public Class FritzBox
 
             If ThisFBFirmware.ISLargerOREqual("6.05") Then
                 PushStatus("Starte AuswertungV3")
+
                 FritzBoxDatenV3(Debug, VonFritzBox)
             ElseIf ThisFBFirmware.ISLargerOREqual("5.25") Then
+
                 tempstring = C_hf.httpGET(P_Link_FB_Tel1(P_SID), C_DP.P_EncodingFritzBox, FBFehler)
                 If Not FBFehler Then
                     tempstring = Replace(tempstring, Chr(34), "'", , , CompareMethod.Text)   ' " in ' umwandeln 
@@ -2760,7 +2768,7 @@ Public Class FritzBox
         Dim Response As String = ""             ' Antwort der FritzBox
         Dim PortChangeSuccess As Boolean
         Dim DialCodetoBox As String
-
+        ' Dim tempstring As String
         SendDialRequestToBoxV2 = DataProvider.P_FritzBox_Dial_Error1
 
         ' DialPort setzen, wenn erforderlich
@@ -2770,10 +2778,17 @@ Public Class FritzBox
             C_hf.LogFile("SendDialRequestToBoxV2: Ändere Dialport auf " & sDialPort)
             ' per HTTP-POST Dialport ändern
             Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
-            ' Prüfen, ob es erfolgreich war
-            PortChangeSuccess = FritzBoxQuery("DialPort=telcfg:settings/DialPort", "", False).Contains(sDialPort)
+            ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
+            If Response.Contains("twofactor") Then
+                C_hf.MsgBox("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist." & DataProvider.P_Def_ZweiNeueZeilen &
+                            "In der Fritz!Box:" & DataProvider.P_Def_EineNeueZeile & "System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz" & DataProvider.P_Def_EineNeueZeile &
+                            "Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", MsgBoxStyle.Critical, "SendDialRequestToBoxV2")
+                PortChangeSuccess = False
+            Else
+                ' Prüfen, ob es erfolgreich war
+                PortChangeSuccess = FritzBoxQuery("DialPort=telcfg:settings/DialPort", "", False).Contains(sDialPort)
+            End If
         End If
-
         ' Wählen
         If PortChangeSuccess Then
             DialCodetoBox = sDialCode

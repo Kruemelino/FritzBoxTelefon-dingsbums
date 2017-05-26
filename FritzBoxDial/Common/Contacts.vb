@@ -574,7 +574,7 @@ Public Class KontaktFunktionen
 
                 End With
             Catch ex As Exception
-                C_hf.LogFile("Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden.")
+                C_hf.LogFile("IndiziereKontakt: Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden." & DataProvider.P_Def_EineNeueZeile & ex.Message)
             End Try
             alleTE = Nothing
         End If
@@ -611,7 +611,7 @@ Public Class KontaktFunktionen
 
                 End With
             Catch ex As Exception
-                C_hf.LogFile("Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden.")
+                C_hf.LogFile("KontaktFormatTelNr: Auf den Kontakt " & olKontakt.FullNameAndCompany & " kann nicht zugegriffen werden." & DataProvider.P_Def_EineNeueZeile & ex.Message)
             End Try
         End If
     End Sub

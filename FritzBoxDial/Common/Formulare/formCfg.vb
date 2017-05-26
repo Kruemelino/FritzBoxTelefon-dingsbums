@@ -705,6 +705,7 @@ Public Class formCfg
                     .RunWorkerAsync(DataProvider.P_Debug_ImportTelefone)
                     AddLine("BackgroundWorker gestartet.")
                 End With
+
             Case "BResetStat"
 
                 C_DP.P_StatResetZeit = System.DateTime.Now
