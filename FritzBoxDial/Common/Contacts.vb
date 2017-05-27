@@ -548,7 +548,7 @@ Public Class KontaktFunktionen
                     alleTE.Add(.TelexNumber)
                     alleTE.Add(.TTYTDDTelephoneNumber)
 
-                    For i = 0 To alleTE.Count
+                    For i = LBound(alleTE.ToArray) To UBound(alleTE.ToArray)
                         If Not alleTE(i) = DataProvider.P_Def_LeerString Then ' Fall: Telefonnummer vorhanden
                             If .UserProperties.Find(DataProvider.P_Def_UserProperties(i)) Is Nothing Then ' Fall Index nicht vorhanden
 #If OVer = 11 Then
