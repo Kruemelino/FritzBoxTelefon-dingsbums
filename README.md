@@ -8,6 +8,7 @@ Fritz!Box Telefon-dingsbums
 - Fritz!Box
 - Der interne Anrufmonitor der Fritz!Box muss eingeschaltet sein  (Telefoncode zum Einschalten: #96\*5\*).
 - Für ein korrektes Wählen ist es wichtig, dass der Haken „Wählhilfe verwenden“ in der Fritz!Box gesetzt wurde (Telefonbuch/Wählhilfe).
+- Die Zwei-Wege-Authentifizierung der Fritz!Box muss deaktiviert werden. Ansonsten ist das Wählen mit den ausgewählten Telefon nicht möglich.
 - Bei Anmeldung mit Username und Benutzername an der Fritz!Box, muss der entsprechende Fritz!User BoxAdmin sein.
 
 
