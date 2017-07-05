@@ -1643,12 +1643,12 @@ End Class
 ''' Klasse für den Upload von Kontakten
 ''' </summary>
 Public Class FritzBoxJSONUploadResult
-    Private ntomark As Tomark
-    Public Property tomark() As Tomark
+    Private ntomark() As Tomark
+    Public Property tomark() As Tomark()
         Get
             Return ntomark
         End Get
-        Set(ByVal value As Tomark)
+        Set(ByVal value As Tomark())
             ntomark = value
         End Set
     End Property
