@@ -140,16 +140,34 @@ Friend Class formWählbox
                 If CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
             Next
         End With
-        xPathTeile = Nothing
+
         ' Phoner
         If C_DP.P_CBPhoner Then
             If C_Phoner.PhonerReady() Then
-                Me.ComboBoxFon.Items.Add("Phoner")
-                PhonerFon = Me.ComboBoxFon.Items.Count - 1
+                With xPathTeile
+                    .Clear()
+                    .Add("Telefone")
+                    .Add("Telefone")
+                    .Add("*")
+                    .Add("Telefon")
+                    .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+                    .Add("TelName")
+                End With
+                tmpStr = C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner")
+
+                If C_DP.P_PhonerTelNameIndex = -1 Or Not tmpStr.Contains(";") Then
+                    Me.ComboBoxFon.Items.Add(tmpStr)
+                    PhonerFon = Me.ComboBoxFon.Items.Count - 1
+                Else
+                    Me.ComboBoxFon.Items.Add(Split(tmpStr, ";", , CompareMethod.Text)(1))
+                    PhonerFon = Me.ComboBoxFon.Items.Count - 1
+                End If
+
             End If
         End If
         ' End Phoner 
 
+        xPathTeile = Nothing
         If C_DP.P_TelAnschluss >= Me.ComboBoxFon.Items.Count Then
             Me.ComboBoxFon.SelectedIndex = 0
         Else
@@ -210,8 +228,6 @@ Friend Class formWählbox
             Me.PDialDirekt.Visible = False
             Me.Focus()
         End If
-
-
 
         ' der AddHandler darf erst jetzt rein (kein Handles ListTel.SelectionChanged!!) weil wir
         ' sonst beim Laden der Form dieses Event schon auslösen würden!

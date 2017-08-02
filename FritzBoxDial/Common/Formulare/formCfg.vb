@@ -218,7 +218,7 @@ Public Class formCfg
                 .Add("TelName")
             End With
 
-            Me.ComboBoxPhonerSIP.DataSource = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), , , CompareMethod.Text)
+            Me.ComboBoxPhonerSIP.DataSource = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
 
             If Not Me.ComboBoxPhonerSIP.Items.Count = 0 Then Me.ComboBoxPhonerSIP.SelectedIndex = .P_ComboBoxPhonerSIP
 
@@ -255,7 +255,6 @@ Public Class formCfg
     ''' <summary>
     ''' Füllt die Telefonliste in den Einstellungen aus.
     ''' </summary>
-
     Private Sub FillTelListe()
         Dim Zeile As New ArrayList
         Dim Nebenstellen() As String
@@ -484,7 +483,10 @@ Public Class formCfg
             .P_CBintl = Me.CBintl.Checked
             .P_CBIgnoTelNrFormat = Me.CBIgnoTelNrFormat.Checked
             .P_CBPhoner = Me.CBPhoner.Checked
-            '.P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
+            If Me.ComboBoxPhonerSIP.Items.Count > 0 Then
+                .P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
+            End If
+
             .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
             ' Notiz
             .P_CBNote = Me.CBNote.Checked
@@ -517,20 +519,26 @@ Public Class formCfg
             .SetCLBTelNr(New ReadOnlyCollection(Of String)(C_hf.ClearStringArray(Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text), False, True, False)))
 
             ' Phoner
-            Dim TelName() As String
-            Dim PhonerTelNameIndex As Integer = 0
+            With xPathTeile
+                .Clear()
+                .Add("Telefone")
+                .Add("Telefone")
+                .Add("*")
+                .Add("Telefon")
+                .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+                .Add("TelName")
+            End With
 
-            For i = 20 To 29
-                TelName = Split(C_XML.Read(C_DP.XMLDoc, "Telefone", CStr(i), "-1;;"), ";", , CompareMethod.Text)
-                If Not TelName(0) = DataProvider.P_Def_ErrorMinusOne_String And Not TelName.Length = 2 Then
-                    'If Not TelName(0) = DataProvider.P_Def_ErrorMinusOne_String And Not TelName.Length = 2 AndAlso ComboBoxPhonerSIP.SelectedItem IsNot Nothing Then
-                    If TelName(2) = ComboBoxPhonerSIP.SelectedItem.ToString Then
-                        PhonerTelNameIndex = i
-                        Exit For
-                    End If
+            Dim TelNames As String()
+            TelNames = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
+
+            For Each TelName As String In TelNames
+                If TelName = ComboBoxPhonerSIP.SelectedItem.ToString Then
+                    .P_PhonerTelNameIndex = Array.IndexOf(TelNames, TelName)
+                    Exit For
                 End If
             Next
-            .P_PhonerTelNameIndex = PhonerTelNameIndex
+
             'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
             If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
                 If C_hf.MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
@@ -1423,6 +1431,19 @@ Public Class formCfg
                 C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Checked", "1")
             End If
         End With
+
+        With xPathTeile
+            .Clear()
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+            .Add("TelName")
+        End With
+
+        Me.ComboBoxPhonerSIP.DataSource = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
+
         AddLine("Speichere Einstellungen")
         Speichern()
         AddLine("Fülle Telefonnummernliste in den Einstellungen")
