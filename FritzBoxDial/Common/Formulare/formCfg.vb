@@ -519,34 +519,33 @@ Public Class formCfg
             .SetCLBTelNr(New ReadOnlyCollection(Of String)(C_hf.ClearStringArray(Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text), False, True, False)))
 
             ' Phoner
-            With xPathTeile
-                .Clear()
-                .Add("Telefone")
-                .Add("Telefone")
-                .Add("*")
-                .Add("Telefon")
-                .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
-                .Add("TelName")
-            End With
-
-            Dim TelNames As String()
-            TelNames = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
-
-            For Each TelName As String In TelNames
-                If TelName = ComboBoxPhonerSIP.SelectedItem.ToString Then
-                    .P_PhonerTelNameIndex = Array.IndexOf(TelNames, TelName)
-                    Exit For
-                End If
-            Next
-
-            'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
-            If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
-                If C_hf.MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
-                    Speichern = False
-                End If
-            End If
-
             If Me.CBPhoner.Checked Then
+                With xPathTeile
+                    .Clear()
+                    .Add("Telefone")
+                    .Add("Telefone")
+                    .Add("*")
+                    .Add("Telefon")
+                    .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+                    .Add("TelName")
+                End With
+
+                Dim TelNames As String()
+                TelNames = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
+
+                For Each TelName As String In TelNames
+                    xPathTeile.Item(xPathTeile.Count - 1) = "[TelName = """ & TelName & """]"
+                    C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "PhonerPhone", CStr(TelName = ComboBoxPhonerSIP.SelectedItem.ToString))
+                Next
+
+                'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
+                If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
+                    If C_hf.MsgBox("Es wurde kein Passwort für Phoner eingegeben! Da Wählen über Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
+                        Speichern = False
+                    End If
+                End If
+
+
                 If Not Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString Then
                     If Not Me.TBPhonerPasswort.Text = "1234" Then
                         .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, DataProvider.P_Def_PassWordDecryptionKey)
@@ -555,6 +554,7 @@ Public Class formCfg
                     End If
                 End If
             End If
+
             If Me.TVOutlookContact.SelectedNode IsNot Nothing Then
                 .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
                 .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)

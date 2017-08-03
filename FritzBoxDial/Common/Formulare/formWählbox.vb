@@ -127,7 +127,6 @@ Friend Class formWählbox
             .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1) and not(@Dialport = " & DataProvider.P_Def_MobilDialPort & ")" & C_hf.IIf(C_DP.P_RBFBComUPnP, " and not(@Dialport > 0 and @Dialport < 4)", "") & "]") ' Keine Anrufbeantworter, kein Fax, kein Mobil
             .Add("TelName")
 
-
             Nebenstellen = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
 
             For Each Nebenstelle In Nebenstellen
@@ -136,8 +135,6 @@ Friend Class formWählbox
                 DialPort = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
                 tmpStr = Nebenstelle & C_hf.IIf(C_DP.P_CBDialPort, " (" & DialPort & ")", DataProvider.P_Def_LeerString)
                 Me.ComboBoxFon.Items.Add(tmpStr)
-                .Item(.Count - 1) = "@Standard"
-                If CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")) Then C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.Count - 1
             Next
         End With
 
@@ -150,22 +147,30 @@ Friend Class formWählbox
                     .Add("Telefone")
                     .Add("*")
                     .Add("Telefon")
-                    .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+                    .Add("[@PhonerPhone = ""True""]") ' Nur das PhonerPhone
                     .Add("TelName")
                 End With
-                tmpStr = C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner")
 
-                If C_DP.P_PhonerTelNameIndex = -1 Or Not tmpStr.Contains(";") Then
-                    Me.ComboBoxFon.Items.Add(tmpStr)
-                    PhonerFon = Me.ComboBoxFon.Items.Count - 1
-                Else
-                    Me.ComboBoxFon.Items.Add(Split(tmpStr, ";", , CompareMethod.Text)(1))
-                    PhonerFon = Me.ComboBoxFon.Items.Count - 1
-                End If
-
+                Me.ComboBoxFon.Items.Add(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"))
+                PhonerFon = Me.ComboBoxFon.Items.Count - 1
             End If
         End If
         ' End Phoner 
+
+        ' Standard-Telefon
+        With xPathTeile
+            .Clear()
+            .Add("Telefone")
+            .Add("Telefone")
+            .Add("*")
+            .Add("Telefon")
+            .Add("[@Standard = ""True""]") ' Nur Standard-Telefon
+            .Add("TelName")
+        End With
+        tmpStr = C_XML.Read(C_DP.XMLDoc, xPathTeile, CStr(C_DP.P_TelAnschluss))
+        If Not tmpStr = CStr(C_DP.P_TelAnschluss) Then
+            C_DP.P_TelAnschluss = Me.ComboBoxFon.Items.IndexOf(C_XML.Read(C_DP.XMLDoc, xPathTeile, CStr(C_DP.P_TelAnschluss)))
+        End If
 
         xPathTeile = Nothing
         If C_DP.P_TelAnschluss >= Me.ComboBoxFon.Items.Count Then
