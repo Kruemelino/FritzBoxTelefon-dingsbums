@@ -152,8 +152,10 @@ Friend Class formWählbox
                 End With
 
                 Me.ComboBoxFon.Items.Add(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"))
-                PhonerFon = Me.ComboBoxFon.Items.Count - 1
+            Else
+                Me.ComboBoxFon.Items.Add("Fehler: Phoner ist nicht bereit!")
             End If
+            PhonerFon = Me.ComboBoxFon.Items.Count - 1
         End If
         ' End Phoner 
 

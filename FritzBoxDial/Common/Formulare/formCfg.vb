@@ -370,13 +370,16 @@ Public Class formCfg
         Dim xPathTeile As New ArrayList
         Dim tmpTeile As String = DataProvider.P_Def_LeerString
         Dim CheckTelNr As CheckedListBox.CheckedItemCollection = Me.CLBTelNr.CheckedItems
-        If CheckTelNr.Count = 0 Then
-            For i = 0 To Me.CLBTelNr.Items.Count - 1
-                Me.CLBTelNr.SetItemChecked(i, True)
-            Next
-            CheckTelNr = Me.CLBTelNr.CheckedItems
-        End If
-        If Me.CLBTelNr.Items.Count > 1 Then
+
+        ' dieses Try-Catch ist erforderlich, da es beim Debuggen ab und zu unerkl‰rlichen Zugriffs-Fehlern kommt.
+        Try
+            If CheckTelNr.Count = 0 Then
+                For i = 0 To Me.CLBTelNr.Items.Count - 1
+                    Me.CLBTelNr.SetItemChecked(i, True)
+                Next
+                CheckTelNr = Me.CLBTelNr.CheckedItems
+            End If
+            If Me.CLBTelNr.Items.Count > 1 Then
             With xPathTeile
                 .Add("Telefone")
                 .Add("Nummern")
@@ -399,189 +402,195 @@ Public Class formCfg
 
         ' Sichert die Einstellungen und schlieﬂt das Fenster
         If (CInt(Me.TBEnblDauer.Text) < 4) Then Me.TBEnblDauer.Text = "4"
-        With C_DP
+            With C_DP
 
-            .P_CBForceFBAddr = Me.CBForceFBAddr.Checked
+                .P_CBForceFBAddr = Me.CBForceFBAddr.Checked
 
-            If Me.TBBenutzer.Text = DataProvider.P_Def_LeerString Then
-                With xPathTeile
-                    .Clear()
-                    .Add("Optionen")
-                    .Add("TBBenutzer")
-                End With
-                C_XML.Delete(C_DP.XMLDoc, xPathTeile)
-            Else
-                .P_TBBenutzer = Me.TBBenutzer.Text
-            End If
-            If Not Me.TBPasswort.Text = "1234" Then
-                .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, DataProvider.P_Def_PassWordDecryptionKey)
-                C_DP.SaveSettingsVBA("Zugang", DataProvider.P_Def_PassWordDecryptionKey)
-                C_hf.KeyChange()
-            End If
-            ' StoppUhr
-            If Not Me.TBStoppUhr.Text = DataProvider.P_Def_LeerString Then
-                If CInt(Me.TBStoppUhr.Text) < 0 Then
+                If Me.TBBenutzer.Text = DataProvider.P_Def_LeerString Then
+                    With xPathTeile
+                        .Clear()
+                        .Add("Optionen")
+                        .Add("TBBenutzer")
+                    End With
+                    C_XML.Delete(C_DP.XMLDoc, xPathTeile)
+                Else
+                    .P_TBBenutzer = Me.TBBenutzer.Text
+                End If
+                If Not Me.TBPasswort.Text = "1234" Then
+                    .P_TBPasswort = C_Crypt.EncryptString128Bit(Me.TBPasswort.Text, DataProvider.P_Def_PassWordDecryptionKey)
+                    C_DP.SaveSettingsVBA("Zugang", DataProvider.P_Def_PassWordDecryptionKey)
+                    C_hf.KeyChange()
+                End If
+                ' StoppUhr
+                If Not Me.TBStoppUhr.Text = DataProvider.P_Def_LeerString Then
+                    If CInt(Me.TBStoppUhr.Text) < 0 Then
+                        Me.TBStoppUhr.Text = CStr(DataProvider.P_Def_TBStoppUhr)
+                    End If
+                Else
                     Me.TBStoppUhr.Text = CStr(DataProvider.P_Def_TBStoppUhr)
                 End If
-            Else
-                Me.TBStoppUhr.Text = CStr(DataProvider.P_Def_TBStoppUhr)
-            End If
 
-            .P_TBLandesVW = Me.TBLandesVW.Text
-            .P_TBAmt = C_hf.IIf(Me.TBAmt.Text = DataProvider.P_Def_LeerString, DataProvider.P_Def_ErrorMinusOne_String, Me.TBAmt.Text)
-            .P_TBFBAdr = Me.TBFBAdr.Text
-            .P_TBVorwahl = Me.TBVorwahl.Text
-            .P_TBAnrMonX = CInt(Me.TBAnrMonX.Text)
-            .P_TBAnrMonY = CInt(Me.TBAnrMonY.Text)
-            .P_CBLogFile = Me.CBLogFile.Checked
-            .P_TBEnblDauer = CInt(Me.TBEnblDauer.Text)
-            .P_CBAnrMonAuto = Me.CBAnrMonAuto.Checked
-            .P_CBAutoClose = Me.CBAutoClose.Checked
-            .P_CBAnrMonCloseAtDISSCONNECT = Me.CBAnrMonCloseAtDISSCONNECT.Checked
-            .P_CBAnrMonMove = Me.CBAnrMonMove.Checked
-            .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
-            .P_TBAnrBeantworterTimeout = CInt(Me.TBAnrBeantworterTimeout.Text)
-            .P_CBAnrMonContactImage = Me.CBAnrMonContactImage.Checked
-            .P_TBAnrMonMoveGeschwindigkeit = Me.TBAnrMonMoveGeschwindigkeit.Value
-            .P_CBoxAnrMonMoveDirection = Me.CBoxAnrMonMoveDirection.SelectedIndex
-            .P_CBoxAnrMonStartPosition = Me.CBoxAnrMonStartPosition.SelectedIndex
-            .P_CBAnrMonZeigeKontakt = Me.CBAnrMonZeigeKontakt.Checked
-            .P_CBIndexAus = Me.CBIndexAus.Checked
-            .P_CBShowMSN = Me.CBShowMSN.Checked
-            .P_CBVoIPBuster = Me.CBVoIPBuster.Checked
-            .P_CBDialPort = Me.CBDialPort.Checked
-            .P_CBCbCunterbinden = Me.CBCbCunterbinden.Checked
-            .P_CBCallByCall = Me.CBCallByCall.Checked
-            .P_CBRWS = Me.CBRWS.Checked
-            .P_CBKErstellen = Me.CBKErstellen.Checked
-            .P_ComboBoxRWS = Me.ComboBoxRWS.SelectedIndex
-            .P_CBKHO = Me.CBKHO.Checked
-            .P_CBRWSIndex = Me.CBRWSIndex.Checked
-            .P_CBJournal = Me.CBJournal.Checked
-            .P_CBAnrListeUpdateJournal = Me.CBAnrListeUpdateJournal.Checked
-            .P_CBAnrListeUpdateCallLists = Me.CBAnrListeUpdateCallLists.Checked
-            .P_CBAnrListeShowAnrMon = Me.CBAnrListeShowAnrMon.Checked
-            .P_CBUseAnrMon = Me.CBUseAnrMon.Checked
-            .P_CBAutoAnrList = Me.CBAutoAnrList.Checked
-            .P_CBCheckMobil = Me.CBCheckMobil.Checked
-            .P_CBStoppUhrEinblenden = Me.CBStoppUhrEinblenden.Checked
-            .P_CBStoppUhrAusblenden = Me.CBStoppUhrAusblenden.Checked
-            .P_TBStoppUhr = CInt(Me.TBStoppUhr.Text)
-            .P_CBStoppUhrIgnIntFax = Me.CBStoppUhrIgnIntFax.Checked
+                .P_TBLandesVW = Me.TBLandesVW.Text
+                .P_TBAmt = C_hf.IIf(Me.TBAmt.Text = DataProvider.P_Def_LeerString, DataProvider.P_Def_ErrorMinusOne_String, Me.TBAmt.Text)
+                .P_TBFBAdr = Me.TBFBAdr.Text
+                .P_TBVorwahl = Me.TBVorwahl.Text
+                .P_TBAnrMonX = CInt(Me.TBAnrMonX.Text)
+                .P_TBAnrMonY = CInt(Me.TBAnrMonY.Text)
+                .P_CBLogFile = Me.CBLogFile.Checked
+                .P_TBEnblDauer = CInt(Me.TBEnblDauer.Text)
+                .P_CBAnrMonAuto = Me.CBAnrMonAuto.Checked
+                .P_CBAutoClose = Me.CBAutoClose.Checked
+                .P_CBAnrMonCloseAtDISSCONNECT = Me.CBAnrMonCloseAtDISSCONNECT.Checked
+                .P_CBAnrMonMove = Me.CBAnrMonMove.Checked
+                .P_CBAnrMonTransp = Me.CBAnrMonTransp.Checked
+                .P_TBAnrBeantworterTimeout = CInt(Me.TBAnrBeantworterTimeout.Text)
+                .P_CBAnrMonContactImage = Me.CBAnrMonContactImage.Checked
+                .P_TBAnrMonMoveGeschwindigkeit = Me.TBAnrMonMoveGeschwindigkeit.Value
+                .P_CBoxAnrMonMoveDirection = Me.CBoxAnrMonMoveDirection.SelectedIndex
+                .P_CBoxAnrMonStartPosition = Me.CBoxAnrMonStartPosition.SelectedIndex
+                .P_CBAnrMonZeigeKontakt = Me.CBAnrMonZeigeKontakt.Checked
+                .P_CBIndexAus = Me.CBIndexAus.Checked
+                .P_CBShowMSN = Me.CBShowMSN.Checked
+                .P_CBVoIPBuster = Me.CBVoIPBuster.Checked
+                .P_CBDialPort = Me.CBDialPort.Checked
+                .P_CBCbCunterbinden = Me.CBCbCunterbinden.Checked
+                .P_CBCallByCall = Me.CBCallByCall.Checked
+                .P_CBRWS = Me.CBRWS.Checked
+                .P_CBKErstellen = Me.CBKErstellen.Checked
+                .P_ComboBoxRWS = Me.ComboBoxRWS.SelectedIndex
+                .P_CBKHO = Me.CBKHO.Checked
+                .P_CBRWSIndex = Me.CBRWSIndex.Checked
+                .P_CBJournal = Me.CBJournal.Checked
+                .P_CBAnrListeUpdateJournal = Me.CBAnrListeUpdateJournal.Checked
+                .P_CBAnrListeUpdateCallLists = Me.CBAnrListeUpdateCallLists.Checked
+                .P_CBAnrListeShowAnrMon = Me.CBAnrListeShowAnrMon.Checked
+                .P_CBUseAnrMon = Me.CBUseAnrMon.Checked
+                .P_CBAutoAnrList = Me.CBAutoAnrList.Checked
+                .P_CBCheckMobil = Me.CBCheckMobil.Checked
+                .P_CBStoppUhrEinblenden = Me.CBStoppUhrEinblenden.Checked
+                .P_CBStoppUhrAusblenden = Me.CBStoppUhrAusblenden.Checked
+                .P_TBStoppUhr = CInt(Me.TBStoppUhr.Text)
+                .P_CBStoppUhrIgnIntFax = Me.CBStoppUhrIgnIntFax.Checked
 #If OVer < 14 Then
-            .P_CBSymbWwdh = Me.CBSymbWwdh.Checked
-            .P_CBSymbAnrMonNeuStart = Me.CBSymbAnrMonNeuStart.Checked
-            .P_CBSymbAnrMon = Me.CBSymbAnrMon.Checked
-            .P_CBSymbAnrListe = Me.CBSymbAnrListe.Checked
-            .P_CBSymbDirekt = Me.CBSymbDirekt.Checked
-            .P_CBSymbRWSuche = Me.CBSymbRWSuche.Checked
-            .P_CBSymbJournalimport = Me.CBSymbJournalimport.Checked
-            .P_CBSymbVIP = Me.CBSymbVIP.Checked
+                .P_CBSymbWwdh = Me.CBSymbWwdh.Checked
+                .P_CBSymbAnrMonNeuStart = Me.CBSymbAnrMonNeuStart.Checked
+                .P_CBSymbAnrMon = Me.CBSymbAnrMon.Checked
+                .P_CBSymbAnrListe = Me.CBSymbAnrListe.Checked
+                .P_CBSymbDirekt = Me.CBSymbDirekt.Checked
+                .P_CBSymbRWSuche = Me.CBSymbRWSuche.Checked
+                .P_CBSymbJournalimport = Me.CBSymbJournalimport.Checked
+                .P_CBSymbVIP = Me.CBSymbVIP.Checked
 #End If
-            If Pr¸feMaske() Then .P_TBTelNrMaske = Me.TBTelNrMaske.Text
-            .P_CBTelNrGruppieren = Me.CBTelNrGruppieren.Checked
-            .P_CBintl = Me.CBintl.Checked
-            .P_CBIgnoTelNrFormat = Me.CBIgnoTelNrFormat.Checked
-            .P_CBPhoner = Me.CBPhoner.Checked
-            If Me.ComboBoxPhonerSIP.Items.Count > 0 Then
-                .P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
-            End If
+                If Pr¸feMaske() Then .P_TBTelNrMaske = Me.TBTelNrMaske.Text
+                .P_CBTelNrGruppieren = Me.CBTelNrGruppieren.Checked
+                .P_CBintl = Me.CBintl.Checked
+                .P_CBIgnoTelNrFormat = Me.CBIgnoTelNrFormat.Checked
+                .P_CBPhoner = Me.CBPhoner.Checked
+                If Me.ComboBoxPhonerSIP.Items.Count > 0 Then
+                    .P_ComboBoxPhonerSIP = Me.ComboBoxPhonerSIP.SelectedIndex
+                End If
 
-            .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
-            ' Notiz
-            .P_CBNote = Me.CBNote.Checked
-            ' Fritz!Box Kommunikation
-            .P_RBFBComUPnP = Me.RBFBComUPnP.Checked
-            ' Telefone
+                .P_CBPhonerAnrMon = Me.CBPhonerAnrMon.Checked
+                ' Notiz
+                .P_CBNote = Me.CBNote.Checked
+                ' Fritz!Box Kommunikation
+                .P_RBFBComUPnP = Me.RBFBComUPnP.Checked
+                ' Telefone
 #If OVer < 14 Then
             C_GUI.SetVisibleButtons()
 #End If
-            With xPathTeile
-                .Clear()
-                .Add("Telefone")
-                .Add("Telefone")
-                .Add("*")
-                .Add("Telefon")
-                .Add(DataProvider.P_Def_LeerString)
-                For i = 0 To TelList.Rows.Count - 2
-                    .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
-                    C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
-                Next
-            End With
-
-            With xPathTeile
-                .Clear()
-                .Add("Telefone")
-                .Add("Nummern")
-                .Add("*")
-                .Add("[@Checked=""1""]")
-            End With
-            .SetCLBTelNr(New ReadOnlyCollection(Of String)(C_hf.ClearStringArray(Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text), False, True, False)))
-
-            ' Phoner
-            If Me.CBPhoner.Checked Then
                 With xPathTeile
                     .Clear()
                     .Add("Telefone")
                     .Add("Telefone")
                     .Add("*")
                     .Add("Telefon")
-                    .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
-                    .Add("TelName")
+                    .Add(DataProvider.P_Def_LeerString)
+                    For i = 0 To TelList.Rows.Count - 2
+                        .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
+                        C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
+                    Next
                 End With
 
-                Dim TelNames As String()
-                TelNames = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
+                With xPathTeile
+                    .Clear()
+                    .Add("Telefone")
+                    .Add("Nummern")
+                    .Add("*")
+                    .Add("[@Checked=""1""]")
+                End With
+                .SetCLBTelNr(New ReadOnlyCollection(Of String)(C_hf.ClearStringArray(Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text), False, True, False)))
 
-                For Each TelName As String In TelNames
-                    xPathTeile.Item(xPathTeile.Count - 1) = "[TelName = """ & TelName & """]"
-                    C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "PhonerPhone", CStr(TelName = ComboBoxPhonerSIP.SelectedItem.ToString))
-                Next
+                ' Phoner
+                If Me.CBPhoner.Checked Then
+                    With xPathTeile
+                        .Clear()
+                        .Add("Telefone")
+                        .Add("Telefone")
+                        .Add("*")
+                        .Add("Telefon")
+                        .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+                        .Add("TelName")
+                    End With
 
-                'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
-                If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
-                    If C_hf.MsgBox("Es wurde kein Passwort f¸r Phoner eingegeben! Da W‰hlen ¸ber Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
-                        Speichern = False
+                    Dim TelNames As String()
+                    TelNames = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
+
+                    For Each TelName As String In TelNames
+                        xPathTeile.Item(xPathTeile.Count - 1) = "[TelName = """ & TelName & """]"
+                        C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "PhonerPhone", CStr(TelName = ComboBoxPhonerSIP.SelectedItem.ToString))
+                    Next
+
+                    'ThisAddIn.NutzePhonerOhneFritzBox = Me.CBPhonerKeineFB.Checked
+                    If Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString And Me.CBPhoner.Checked Then
+                        If C_hf.MsgBox("Es wurde kein Passwort f¸r Phoner eingegeben! Da W‰hlen ¸ber Phoner wird nicht funktionieren!", MsgBoxStyle.OkCancel, "Speichern") = MsgBoxResult.Cancel Then
+                            Speichern = False
+                        End If
+                    End If
+
+
+                    If Not Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString Then
+                        If Not Me.TBPhonerPasswort.Text = "1234" Then
+                            .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, DataProvider.P_Def_PassWordDecryptionKey)
+                            C_DP.SaveSettingsVBA("ZugangPasswortPhoner", DataProvider.P_Def_PassWordDecryptionKey)
+                            C_hf.KeyChange()
+                        End If
                     End If
                 End If
 
-
-                If Not Me.TBPhonerPasswort.Text = DataProvider.P_Def_LeerString Then
-                    If Not Me.TBPhonerPasswort.Text = "1234" Then
-                        .P_TBPhonerPasswort = C_Crypt.EncryptString128Bit(Me.TBPhonerPasswort.Text, DataProvider.P_Def_PassWordDecryptionKey)
-                        C_DP.SaveSettingsVBA("ZugangPasswortPhoner", DataProvider.P_Def_PassWordDecryptionKey)
-                        C_hf.KeyChange()
-                    End If
+                If Me.TVOutlookContact.SelectedNode IsNot Nothing Then
+                    .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
+                    .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)
+                Else
+                    C_KF.GetOutlookFolder(.P_TVKontaktOrdnerEntryID, .P_TVKontaktOrdnerStoreID)
                 End If
-            End If
 
-            If Me.TVOutlookContact.SelectedNode IsNot Nothing Then
-                .P_TVKontaktOrdnerEntryID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(0)
-                .P_TVKontaktOrdnerStoreID = Split(CStr(Me.TVOutlookContact.SelectedNode.Tag), ";", , CompareMethod.Text)(1)
-            Else
-                C_KF.GetOutlookFolder(.P_TVKontaktOrdnerEntryID, .P_TVKontaktOrdnerStoreID)
-            End If
-
-            ' Anruflisten
-            If Not Me.TBNumEntryList.Text = DataProvider.P_Def_LeerString Then
-                If CInt(Me.TBNumEntryList.Text) < 1 Then
+                ' Anruflisten
+                If Not Me.TBNumEntryList.Text = DataProvider.P_Def_LeerString Then
+                    If CInt(Me.TBNumEntryList.Text) < 1 Then
+                        Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
+                    End If
+                Else
                     Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
                 End If
-            Else
-                Me.TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
-            End If
 
-            If CInt(Me.TBNumEntryList.Text) < .P_TBNumEntryList Then
-                ' Lˆsche  CallList
-                C_XML.Delete(C_DP.XMLDoc, DataProvider.P_Def_NameListCALL)
-                ' Lˆsche  RingList
-                C_XML.Delete(C_DP.XMLDoc, DataProvider.P_Def_NameListRING)
-            End If
-            .P_TBNumEntryList = CInt(Me.TBNumEntryList.Text)
+                If CInt(Me.TBNumEntryList.Text) < .P_TBNumEntryList Then
+                    ' Lˆsche  CallList
+                    C_XML.Delete(C_DP.XMLDoc, DataProvider.P_Def_NameListCALL)
+                    ' Lˆsche  RingList
+                    C_XML.Delete(C_DP.XMLDoc, DataProvider.P_Def_NameListRING)
+                End If
+                .P_TBNumEntryList = CInt(Me.TBNumEntryList.Text)
 
-            .SpeichereXMLDatei()
-            C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
-        End With
+                .SpeichereXMLDatei()
+                C_DP.P_ValidFBAdr = C_hf.ValidIP(C_DP.P_TBFBAdr)
+            End With
+
+        Catch ex As InvalidOperationException
+            C_hf.LogFile("Fehler beim Speichern: " & ex.Message)
+        Catch ex As Exception
+            C_hf.MsgBox("Fehler beim Speichern: " & ex.Message, MsgBoxStyle.Critical, "formCfg Sepeichern")
+        End Try
     End Function
 
 #Region "Button Link"

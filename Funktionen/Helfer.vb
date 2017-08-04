@@ -1000,7 +1000,7 @@ Public Class Helfer
                     Catch exANE As ArgumentNullException
                         LogFile("httpPOST_Stream: " & exANE.Message)
                     Catch exWE As WebException
-                        LogFile("httpPOST_Stream: " & exWE.Message & " - Link: " & Link)
+                        LogFile("httpPOST_Stream: " & exWE.Message & " - Link: " & Link & "?" & Daten)
                     End Try
                 End With
             End If
