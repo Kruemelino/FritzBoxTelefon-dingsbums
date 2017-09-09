@@ -1,7 +1,7 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.9.12"
+#define MyAppVersion "3.9.16"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Outlook-Addin, welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
@@ -203,7 +203,7 @@ const	dotnetfx40client_url = 'http://download.microsoft.com/download/7/B/6/7B629
 const dotnetfx35_url = 'http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe';
 const dotnetfx35sp1_url = 'http://download.microsoft.com/download/0/6/1/061f001c-8752-4600-a198-53214c69b51f/dotnetfx35setup.exe';
 const VSTO2005SE_Redistributable_url = 'http://download.microsoft.com/download/1/6/b/16ba60f5-d478-4d22-a695-203003494477/vstor.exe';
-const VSTO2010_Redistributable_url = 'http://download.microsoft.com/download/C/0/0/C001737F-822B-48C2-8F6A-CDE13B4B9E9C/vstor_redist.exe';
+const VSTO2010_Redistributable_url = 'http://go.microsoft.com/fwlink/?LinkId=158918';
 const o2003pia_url = 'http://download.microsoft.com/download/8/3/a/83a40b5a-5050-4940-bcc4-7943e1e59590/O2003PIA.EXE';
 
 procedure InitializeWizard();
