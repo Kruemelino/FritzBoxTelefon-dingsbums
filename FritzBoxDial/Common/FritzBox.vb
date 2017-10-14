@@ -3309,22 +3309,24 @@ Public Class FritzBox
         End With
 
         OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebookList")
+        If OutPutData.Contains("Error") Then
+            C_hf.MsgBox(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
+        Else
+            InPutData.Add("NewPhonebookID", Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text).First)
+            InPutData.Add("NewPhonebookEntryID", "")
+            InPutData.Add("NewPhonebookEntryData", NewPhonebookEntryDataBuilder.ToString())
 
-        InPutData.Add("NewPhonebookID", Split(OutPutData("NewPhonebookList").ToString, ",",, CompareMethod.Text).First)
-        InPutData.Add("NewPhonebookEntryID", "")
-        InPutData.Add("NewPhonebookEntryData", NewPhonebookEntryDataBuilder.ToString())
+            OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "SetPhonebookEntry", InPutData)
+            With C_hf
 
-        OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "SetPhonebookEntry", InPutData)
-        With C_hf
-
-            If OutPutData.Contains("Error") Then
-                .MsgBox(DataProvider.P_Fehler_Kontakt_Hochladen(EntryName) & DataProvider.P_Def_ZweiNeueZeilen & OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
-            Else
-                .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
-                .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBoxV3")
-            End If
-        End With
-
+                If OutPutData.Contains("Error") Then
+                    .MsgBox(DataProvider.P_Fehler_Kontakt_Hochladen(EntryName) & DataProvider.P_Def_ZweiNeueZeilen & OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
+                Else
+                    .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
+                    .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBoxV3")
+                End If
+            End With
+        End If
         NewPhonebookEntryDataBuilder = Nothing
         InPutData = Nothing
         OutPutData = Nothing
