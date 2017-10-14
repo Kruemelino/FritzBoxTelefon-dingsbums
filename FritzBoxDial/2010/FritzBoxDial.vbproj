@@ -135,7 +135,9 @@
     <Import Include="Outlook = Microsoft.Office.Interop.Outlook" />
     <Import Include="Word = Microsoft.Office.Interop.Word" />
     <AppDesigner Include="My Project\" />
-    <Compile Include="..\Common\AnrufMonitor.vb" />
+    <Compile Include="..\Common\AnrufMonitor.vb">
+      <Link>Ressourcen\AnrufMonitor.vb</Link>
+    </Compile>
     <Compile Include="..\Common\Contacts.vb" />
     <Compile Include="..\Common\Formulare\formCfg.designer.vb">
       <DependentUpon>formCfg.vb</DependentUpon>

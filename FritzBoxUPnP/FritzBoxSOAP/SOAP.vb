@@ -242,19 +242,19 @@ Friend Module BaseFuctions
         Dim fbPostBytes As Byte()
 
         Dim fbURI As New Uri(urlFull)
+        fbPostBytes = Encoding.UTF8.GetBytes(SOAPXML)
 
-        fbPostBytes = Encoding.ASCII.GetBytes(SOAPXML)
         If Not (P_FritzBox_UserName = "" Or P_FritzBox_Passwort = "") Then
             With CType(WebRequest.Create(fbURI), HttpWebRequest)
                 .Proxy = Nothing
                 .KeepAlive = False
                 .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-                .Credentials = New System.Net.NetworkCredential(P_FritzBox_UserName, P_FritzBox_Passwort)
+                .Credentials = New NetworkCredential(P_FritzBox_UserName, P_FritzBox_Passwort)
                 .Method = WebRequestMethods.Http.Post
                 .Headers.Add("SOAPACTION", """" + ServiceType + "#" + SOAPAction + """")
                 .ContentType = P_SOAPContentType
                 .UserAgent = P_SOAPUserAgent
-                .ContentLength = CLng(Len(SOAPXML).ToString)
+                .ContentLength = fbPostBytes.Length
 
                 With .GetRequestStream
                     .Write(fbPostBytes, 0, fbPostBytes.Length)

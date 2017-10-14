@@ -86,9 +86,7 @@ Public Class KontaktFunktionen
             ElseIf Not EMailAdresse = DataProvider.P_Def_LeerString Then
 
 #If OVer = 11 Then
-                sFilter = String.Concat("[Email1Address] = """, EMailAdresse,
-                        """ OR [Email2Address] = """, EMailAdresse,
-                        """ OR [Email3Address] = """, EMailAdresse, """")
+                sFilter = String.Concat("[Email1Address] = """, EMailAdresse, """ OR [Email2Address] = """, EMailAdresse, """ OR [Email3Address] = """, EMailAdresse, """")
 
                 If alleOrdner Then
                     KontaktSuche = FindeAbsenderKontakt(EMailAdresse, P_DefContactFolder, sFilter)

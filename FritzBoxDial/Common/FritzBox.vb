@@ -2845,14 +2845,14 @@ Public Class FritzBox
         End Select
 
         ' DialPort setzen, wenn erforderlich
-        OutPutData = C_FBoxUPnP.Start(FritzBoxInformations.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+        OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
 
         If OutPutData.Item("NewX_AVM-DE_PhoneName").ToString = UPnPDialport Then
             PortChangeSuccess = True
         Else
             C_hf.LogFile("SendDialRequestToBoxV3: Ändere Dialport auf " & UPnPDialport)
             InPutData.Add("NewX_AVM-DE_PhoneName", UPnPDialport)
-            OutPutData = C_FBoxUPnP.Start(FritzBoxInformations.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
+            OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
             If OutPutData.Contains("Error") Then
                 C_hf.LogFile(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                 PortChangeSuccess = False
@@ -2866,10 +2866,10 @@ Public Class FritzBox
             ' Senden des Wählkomandos
             InPutData.Clear()
             If bHangUp Then
-                OutPutData = C_FBoxUPnP.Start(FritzBoxInformations.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_Hangup")
+                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_Hangup")
             Else
                 InPutData.Add("NewX_AVM-DE_PhoneNumber", DialCodetoBox)
-                OutPutData = C_FBoxUPnP.Start(FritzBoxInformations.KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
+                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
             End If
             If OutPutData.Contains("Error") Then
                 C_hf.LogFile(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
@@ -3038,10 +3038,15 @@ Public Class FritzBox
 #Region "Fritz!Box Telefonbuch"
 
     Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
-        If ThisFBFirmware.ISLargerOREqual("6.30") Then
-            UploadKontaktToFritzBoxV2(Kontakt, istVIP)
+        If C_DP.P_RBFBComUPnP Then
+            UploadKontaktToFritzBoxV3(Kontakt, istVIP)
         Else
-            UploadKontaktToFritzBoxV1(Kontakt, istVIP)
+
+            If ThisFBFirmware.ISLargerOREqual("6.30") Then
+                UploadKontaktToFritzBoxV2(Kontakt, istVIP)
+            Else
+                UploadKontaktToFritzBoxV1(Kontakt, istVIP)
+            End If
         End If
     End Sub
 
@@ -3230,6 +3235,102 @@ Public Class FritzBox
         C_JSON = Nothing
     End Sub
 
+    Sub UploadKontaktToFritzBoxV3(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+        ' SetPhonebookEntry
+        ' Add new entries with “” as value for PhonebookEntryID.
+        ' Change existing entries with a value used for PhonebookEntryID with GetPhonebookEntry.
+        ' The variable PhonebookEntryData may contain a unique ID.
+
+        ' in NewPhonebookID as PhonebookID
+        ' in NewPhonebookEntryID as PhonebookEntryID
+        ' in NewPhonebookEntryData as PhonebookEntryData
+
+        Dim InPutData As New Hashtable
+        Dim OutPutData As New Hashtable
+        Dim NumberNew(3) As String
+        Dim NumberType(3) As String
+        'Dim TelNrListe As String()
+        Dim EntryName As String
+        Dim EmailNew1 As String
+        Dim NewPhonebookEntryDataBuilder As StringBuilder = New StringBuilder()
+
+        Dim i As Integer
+
+        ' Relevante Kontaktdaten ermitteln
+        NumberType(0) = "home"
+        NumberType(1) = "mobile"
+        NumberType(2) = "work"
+        NumberType(3) = "fax_work"
+
+        With Kontakt
+            EntryName = .FullName
+            'TelNrListe = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
+            'TelNrListe = C_hf.ClearStringArray(TelNrListe, True, True, False)
+            NumberNew(0) = C_hf.nurZiffern(.HomeTelephoneNumber)
+            NumberNew(1) = C_hf.nurZiffern(.MobileTelephoneNumber)
+            NumberNew(2) = C_hf.nurZiffern(.BusinessTelephoneNumber)
+            NumberNew(3) = C_hf.nurZiffern(.BusinessFaxNumber)
+            EmailNew1 = .Email1Address
+        End With
+
+        ' XML zusammensetzen
+        With NewPhonebookEntryDataBuilder
+            .Append("<?xml version=""1.0"" encoding=""utf-8""?><contact>")
+            ' VIP Status
+            If istVIP Then
+                .Append("<category>1</category>")
+            Else
+                .Append("<category/>")
+            End If
+            ' Name
+            .Append("<person>")
+            .Append("<realName>" & EntryName & "</realName>")
+            .Append("</person>")
+            ' Telefonnummern
+
+            .Append("<telephony nid=""" & C_hf.ClearStringArray(NumberNew, False, True, False).Count & """>")
+            For i = LBound(NumberNew) To UBound(NumberNew)
+                If Not NumberType(i) = DataProvider.P_Def_LeerString Then
+                    .Append("<number type=""" & NumberType(i) & """>" & NumberNew(i) & "</number>")
+                End If
+            Next
+            .Append("</telephony>")
+
+            ' E-Mail
+            If Not EmailNew1 = DataProvider.P_Def_LeerString Then
+                .Append("<services nid=""1"">")
+                .Append("<email id=""0"">" & EmailNew1 & "</email>")
+                .Append("</services>")
+            Else
+                .Append("<services/>")
+            End If
+
+            .Append("</contact>")
+        End With
+
+        OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebookList")
+
+        InPutData.Add("NewPhonebookID", Split(OutPutData("NewPhonebookList").ToString, ",",, CompareMethod.Text).First)
+        InPutData.Add("NewPhonebookEntryID", "")
+        InPutData.Add("NewPhonebookEntryData", NewPhonebookEntryDataBuilder.ToString())
+
+        OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "SetPhonebookEntry", InPutData)
+        With C_hf
+
+            If OutPutData.Contains("Error") Then
+                .MsgBox(DataProvider.P_Fehler_Kontakt_Hochladen(EntryName) & DataProvider.P_Def_ZweiNeueZeilen & OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
+            Else
+                .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
+                .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBoxV3")
+            End If
+        End With
+
+        NewPhonebookEntryDataBuilder = Nothing
+        InPutData = Nothing
+        OutPutData = Nothing
+    End Sub
+
+
     ''' <summary>
     ''' Lädt das gewünschte Telefonbuch von der Fritz!Box herunter.
     ''' </summary>
@@ -3258,7 +3359,7 @@ Public Class FritzBox
 
             With C_hf
                 ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, C_DP.P_EncodingFritzBox)
-                If ReturnValue.StartsWith("<?xml") Then
+                If ReturnValue.StartsWith("<?xml ") Then
                     XMLFBAddressbuch = New XmlDocument()
                     Try
                         XMLFBAddressbuch.LoadXml(ReturnValue)
