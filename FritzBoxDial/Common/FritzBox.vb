@@ -1113,9 +1113,9 @@ Public Class FritzBox
 
         If P_FritzBoxVorhanden(C_DP.P_ValidFBAdr) Then
             ' Übergebe an die UPnP-Klasse die Daten der Fritz!Box
-            If C_DP.P_RBFBComUPnP Then
-                C_FBoxUPnP.SetFritzBoxData(C_DP.P_ValidFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
-            End If
+            'If C_DP.P_RBFBComUPnP Then
+            '    C_FBoxUPnP.SetFritzBoxData(C_DP.P_ValidFBAdr, C_DP.P_TBBenutzer, C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String)))
+            'End If
             ' Setze Firmware der Fritz!Box
             FBFirmware()
 
@@ -3244,94 +3244,245 @@ Public Class FritzBox
         ' in NewPhonebookID as PhonebookID
         ' in NewPhonebookEntryID as PhonebookEntryID
         ' in NewPhonebookEntryData as PhonebookEntryData
+        Dim xPathTeile As New ArrayList
 
         Dim InPutData As New Hashtable
         Dim OutPutData As New Hashtable
-        Dim NumberNew(3) As String
-        Dim NumberType(3) As String
-        'Dim TelNrListe As String()
-        Dim EntryName As String
-        Dim EmailNew1 As String
-        Dim NewPhonebookEntryDataBuilder As StringBuilder = New StringBuilder()
-
-        Dim i As Integer
-
-        ' Relevante Kontaktdaten ermitteln
-        NumberType(0) = "home"
-        NumberType(1) = "mobile"
-        NumberType(2) = "work"
-        NumberType(3) = "fax_work"
-
-        With Kontakt
-            EntryName = .FullName
-            'TelNrListe = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
-            'TelNrListe = C_hf.ClearStringArray(TelNrListe, True, True, False)
-            NumberNew(0) = C_hf.nurZiffern(.HomeTelephoneNumber)
-            NumberNew(1) = C_hf.nurZiffern(.MobileTelephoneNumber)
-            NumberNew(2) = C_hf.nurZiffern(.BusinessTelephoneNumber)
-            NumberNew(3) = C_hf.nurZiffern(.BusinessFaxNumber)
-            EmailNew1 = .Email1Address
-        End With
-
-        ' XML zusammensetzen
-        With NewPhonebookEntryDataBuilder
-            .Append("<?xml version=""1.0"" encoding=""utf-8""?><contact>")
-            ' VIP Status
-            If istVIP Then
-                .Append("<category>1</category>")
-            Else
-                .Append("<category/>")
-            End If
-            ' Name
-            .Append("<person>")
-            .Append("<realName>" & EntryName & "</realName>")
-            .Append("</person>")
-            ' Telefonnummern
-
-            .Append("<telephony nid=""" & C_hf.ClearStringArray(NumberNew, False, True, False).Count & """>")
-            For i = LBound(NumberNew) To UBound(NumberNew)
-                If Not NumberType(i) = DataProvider.P_Def_LeerString Then
-                    .Append("<number type=""" & NumberType(i) & """>" & NumberNew(i) & "</number>")
-                End If
-            Next
-            .Append("</telephony>")
-
-            ' E-Mail
-            If Not EmailNew1 = DataProvider.P_Def_LeerString Then
-                .Append("<services nid=""1"">")
-                .Append("<email id=""0"">" & EmailNew1 & "</email>")
-                .Append("</services>")
-            Else
-                .Append("<services/>")
-            End If
-
-            .Append("</contact>")
-        End With
+        Dim tmpname As String
+        Dim Telefonbuch As XmlDocument
+        Dim tmpxmlNode As XmlNode
+        Dim PhoneBookID As String
+        Dim NewPhonebookEntryID As String = ""
+        'Dim Liste() As String
+        Dim NameVohanden As Boolean = False
 
         OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebookList")
         If OutPutData.Contains("Error") Then
             C_hf.MsgBox(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
         Else
-            InPutData.Add("NewPhonebookID", Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text).First)
-            InPutData.Add("NewPhonebookEntryID", "")
-            InPutData.Add("NewPhonebookEntryData", NewPhonebookEntryDataBuilder.ToString())
+            ' Ermitteln des Telefonbuches
+            PhoneBookID = Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text).First
 
-            OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "SetPhonebookEntry", InPutData)
-            With C_hf
+            ' Herunterladen des Telefonbuches
+            InPutData.Add("NewPhonebookID", 0)
+            OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebook")
 
-                If OutPutData.Contains("Error") Then
-                    .MsgBox(DataProvider.P_Fehler_Kontakt_Hochladen(EntryName) & DataProvider.P_Def_ZweiNeueZeilen & OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
-                Else
-                    .LogFile(DataProvider.P_Kontakt_Hochgeladen(EntryName))
-                    .MsgBox(DataProvider.P_Kontakt_Hochgeladen(EntryName), MsgBoxStyle.Information, "UploadKontaktToFritzBoxV3")
-                End If
-            End With
+            Telefonbuch = DownloadAddressbook(PhoneBookID)
+            If Telefonbuch IsNot Nothing Then
+                'With xPathTeile
+                '    .Add("phonebook")
+                '    .Add("contact")
+                '    .Add("person")
+                '    .Add("[contains(realName, """ & Kontakt.FullNameAndCompany.Replace("&", "&amp;").Replace(DataProvider.P_Def_EineNeueZeile, " / ") & """)]")
+                'End With
+                'C_XML.Read(Telefonbuch, xPathTeile, "")
+                tmpname = Kontakt.FullNameAndCompany.Replace("&", "&amp;").Replace(DataProvider.P_Def_EineNeueZeile, " / ")
+
+                For Each Knoten As XmlNode In Telefonbuch.GetElementsByTagName("contact")
+                    NameVohanden = False
+                    ' Prüfe ob Name bereits vorhanden
+                    With Kontakt
+                        'Liste = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
+                        'Liste = C_hf.ClearStringArray(Liste, True, True, False)
+                        'For i = LBound(Liste) To UBound(Liste)
+                        '    Liste(i) = C_hf.nurZiffern(Liste(i))
+                        'Next
+
+                        With xPathTeile
+                            .Add("phonebook")
+                            .Add("contact[contains(//realName,""" & tmpname & """)]")
+                            ' .Add("contact[contains(//realName,""" & tmpname & """) and (contains(//number, """ & String.Join(""") or contains(//number, """, Liste) & """))]")
+                            .Add("uniqueid")
+                        End With
+                        tmpxmlNode = Knoten.SelectSingleNode(C_XML.CreateXPath(Telefonbuch, xPathTeile))
+                        If tmpxmlNode IsNot Nothing Then
+                            Select Case C_hf.MsgBox("Der Kontakt """ & tmpname & """ ist bereits im Telefonbuch vorhanden." & DataProvider.P_Def_ZweiNeueZeilen & "Soll der Kontakt ersetzt werden?", MsgBoxStyle.YesNoCancel, "SOAP-KontaktUpload")
+                                Case vbYes
+                                    NewPhonebookEntryID = tmpxmlNode.InnerText
+                                Case vbNo
+                                    NewPhonebookEntryID = ""
+                                Case vbCancel
+                                    NewPhonebookEntryID = "ABBRUCH"
+                            End Select
+                            ' Unschön
+                            Exit For
+                        End If
+                    End With
+                Next
+            End If
+
+            If Not NewPhonebookEntryID = "ABBRUCH" Then
+                ' Hochladen des Kontaktes
+                InPutData.Clear()
+                InPutData.Add("NewPhonebookID", PhoneBookID)
+                InPutData.Add("NewPhonebookEntryID", NewPhonebookEntryID)
+                InPutData.Add("NewPhonebookEntryData", GetXMLContactEntry(Kontakt, istVIP, NewPhonebookEntryID))
+
+                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "SetPhonebookEntry", InPutData)
+                With C_hf
+
+                    If OutPutData.Contains("Error") Then
+                        .MsgBox(DataProvider.P_Fehler_Kontakt_Hochladen(Kontakt.FullNameAndCompany) & DataProvider.P_Def_ZweiNeueZeilen & OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
+                    Else
+                        .LogFile(DataProvider.P_Kontakt_Hochgeladen(Kontakt.FullNameAndCompany))
+                        .MsgBox(DataProvider.P_Kontakt_Hochgeladen(Kontakt.FullNameAndCompany), MsgBoxStyle.Information, "UploadKontaktToFritzBoxV3")
+                    End If
+                End With
+            End If
         End If
-        NewPhonebookEntryDataBuilder = Nothing
+        Telefonbuch = Nothing
+        tmpxmlNode = Nothing
         InPutData = Nothing
         OutPutData = Nothing
     End Sub
 
+    ''' <summary>
+    ''' Erstellt den XML Kontakt für das Fritz!Box Telefonbuch
+    ''' </summary>
+    ''' <param name="Kontakt"></param>
+    ''' <param name="istVIP"></param>
+    ''' <returns></returns>
+    Private Function GetXMLContactEntry(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean, ByVal NewPhonebookEntryID As String) As String
+
+        Dim Liste As String()
+        Dim NumberType As String = "home"
+        ' Dim TelNr As String
+
+        Dim NodeNames As New ArrayList
+        Dim NodeValues As New ArrayList
+        Dim AttributeNames As New ArrayList
+        Dim AttributeValues As New ArrayList
+
+        Dim Eintrag As New XmlDocument()
+        'Dim KnotenName As XmlNode
+        Dim XMLKnoten As XmlNode
+
+
+        Eintrag.AppendChild(Eintrag.CreateXmlDeclaration("1.0", "UTF-8", Nothing))
+
+        With Kontakt
+            ' Wurzelelement generieren mit erster Ebene generieren
+#Region "Wurzelelement mit erster Ebene"
+
+            NodeNames.Add("category")
+            NodeValues.Add(C_hf.IIf(istVIP, "1", ""))
+
+            NodeNames.Add("telephony")
+            NodeValues.Add("")
+
+            NodeNames.Add("services")
+            NodeValues.Add("")
+
+            'NodeNames.Add("setup")
+            'NodeValues.Add("")
+
+            NodeNames.Add("features")
+            NodeValues.Add("")
+
+            'NodeNames.Add("mod_time")
+            'NodeValues.Add("")
+
+            NodeNames.Add("uniqueid")
+            NodeValues.Add(NewPhonebookEntryID)
+
+            Eintrag.AppendChild(C_XML.CreateXMLNode(Eintrag, "contact", NodeNames, NodeValues, AttributeNames, AttributeValues))
+
+            NodeNames.Clear()
+            NodeValues.Clear()
+#End Region
+
+#Region "Name"
+            ' Name des Kontaktes
+            NodeNames.Add("realName")
+            NodeValues.Add(.FullNameAndCompany.Replace("&", "&amp;").Replace(DataProvider.P_Def_EineNeueZeile, " / "))
+
+            Eintrag.DocumentElement.InsertAfter(C_XML.CreateXMLNode(Eintrag, "person", NodeNames, NodeValues, AttributeNames, AttributeValues), Eintrag.DocumentElement.GetElementsByTagName("category")(0))
+
+            NodeNames.Clear()
+            NodeValues.Clear()
+#End Region
+
+#Region "Telefonnummern"
+            ' Telefonnummern des Kontaktes
+            XMLKnoten = Eintrag.DocumentElement.GetElementsByTagName("telephony")(0)
+            Liste = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
+
+            For Each TelNr As String In Liste
+                If Not TelNr = DataProvider.P_Def_LeerString Then
+                    Select Case TelNr
+                        Case .CarTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .TTYTDDTelephoneNumber, .OtherTelephoneNumber
+                            NumberType = "home"
+                        Case .MobileTelephoneNumber, .PagerNumber, .RadioTelephoneNumber
+                            NumberType = "mobile"
+                        Case .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CompanyMainTelephoneNumber, .PrimaryTelephoneNumber
+                            NumberType = "work"
+                        Case .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber
+                            NumberType = "fax_work"
+                    End Select
+
+                    AttributeNames.Add("type")
+                    AttributeValues.Add(NumberType)
+
+                    XMLKnoten.AppendChild(C_XML.CreateXMLNode(Eintrag, "number", NodeNames, NodeValues, AttributeNames, AttributeValues)).InnerText = C_hf.nurZiffern(TelNr)
+
+                    AttributeNames.Clear()
+                    AttributeValues.Clear()
+                End If
+            Next
+            XMLKnoten.Attributes.Append(Eintrag.CreateAttribute("nid"))
+            XMLKnoten.Attributes(0).Value = CStr(XMLKnoten.ChildNodes.Count - 1) ' Warum Minus 1 weiß ich nicht
+
+            NodeNames.Clear()
+            NodeValues.Clear()
+            XMLKnoten = Nothing
+#End Region
+
+#Region "E-Mail"
+            ' E-Mail des Kontaktes
+            XMLKnoten = Eintrag.DocumentElement.GetElementsByTagName("services")(0)
+            Liste = { .Email1Address, .Email2Address, .Email3Address}
+
+            For Each EmailAddress As String In Liste
+                If Not EmailAddress = DataProvider.P_Def_LeerString Then
+
+                    AttributeNames.Add("classifier")
+
+                    Select Case EmailAddress
+                        Case .Email1Address
+                            AttributeValues.Add("work")
+                        Case .Email2Address
+                            AttributeValues.Add("Private")
+                        Case .Email3Address
+                            AttributeValues.Add("other")
+                    End Select
+
+                    AttributeNames.Add("id")
+                    AttributeValues.Add(XMLKnoten.ChildNodes.Count - 1)
+
+                    XMLKnoten.AppendChild(C_XML.CreateXMLNode(Eintrag, "email", NodeNames, NodeValues, AttributeNames, AttributeValues)).InnerText = EmailAddress
+
+                    AttributeNames.Clear()
+                    AttributeValues.Clear()
+                End If
+            Next
+            XMLKnoten.Attributes.Append(Eintrag.CreateAttribute("nid"))
+            XMLKnoten.Attributes(0).Value = CStr(XMLKnoten.ChildNodes.Count - 1) ' Warum Minus 1 weiß ich nicht
+
+            NodeNames.Clear()
+            NodeValues.Clear()
+#End Region
+
+        End With
+
+        GetXMLContactEntry = Eintrag.InnerXml
+
+        XMLKnoten = Nothing
+        NodeNames = Nothing
+        NodeValues = Nothing
+        AttributeNames = Nothing
+        AttributeValues = Nothing
+        Eintrag = Nothing
+    End Function
 
     ''' <summary>
     ''' Lädt das gewünschte Telefonbuch von der Fritz!Box herunter.
@@ -3341,26 +3492,22 @@ Public Class FritzBox
     ''' 0 = Haupttelefonbuch
     ''' 255 = Intern
     ''' 256 = Clip Info</param>
-    ''' <param name="sPhonebookExportName">Der Name des Telefonbuches, welcher mindestens ein Zeichen enthalten muss, wenn die ID größer als ID 1 ist.</param>
-    ''' <returns>XMl Telefonbuch</returns>
-    Friend Function DownloadAddressbook(ByVal sPhonebookId As String, ByVal sPhonebookExportName As String) As XmlDocument
-        DownloadAddressbook = Nothing
-        Dim row As String
-        Dim cmd As String
+    ''' <returns>XML Telefonbuch</returns>
+    Private Function DownloadAddressbook(ByVal sPhonebookId As String) As XmlDocument
+
+        Dim InPutData As New Hashtable
+        Dim OutPutData As New Hashtable
+
         Dim ReturnValue As String
         Dim XMLFBAddressbuch As XmlDocument
+        DownloadAddressbook = Nothing
+        InPutData.Add("NewPhonebookID", sPhonebookId)
+        OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebook", InPutData)
 
-        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
-        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
-
-            row = "---" & 12345 + Rnd() * 16777216
-            cmd = row & vbCrLf & "Content-Disposition: form-data; name=""sid""" & vbCrLf & vbCrLf & P_SID & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookId""" & vbCrLf & vbCrLf & sPhonebookId & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExportName""" & vbCrLf & vbCrLf & sPhonebookExportName & vbCrLf _
-             & row & vbCrLf & "Content-Disposition: form-data; name=""PhonebookExport""" & vbCrLf & vbCrLf & vbCrLf & row & "--" & vbCrLf
-
+        If OutPutData.ContainsKey("NewPhonebookURL") Then
             With C_hf
-                ReturnValue = .httpPOST(P_Link_FB_ExportAddressbook, cmd, C_DP.P_EncodingFritzBox)
+                ReturnValue = .httpGET(OutPutData.Item("NewPhonebookURL").ToString, C_DP.P_EncodingFritzBox, FBFehler)
+
                 If ReturnValue.StartsWith("<?xml ") Then
                     XMLFBAddressbuch = New XmlDocument()
                     Try
@@ -3371,9 +3518,10 @@ Public Class FritzBox
                     DownloadAddressbook = XMLFBAddressbuch
                 End If
             End With
-        Else
-            C_hf.MsgBox(DataProvider.P_FritzBox_Dial_Error3(P_SID), MsgBoxStyle.Critical, "DownloadAddressbook")
         End If
+
+        InPutData = Nothing
+        OutPutData = Nothing
     End Function
 
     ''' <summary>

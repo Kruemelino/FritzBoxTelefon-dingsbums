@@ -592,16 +592,17 @@ Public Class XML
     ''' <summary>
     ''' Prüft ob die XML-Datei geöffnet werden kann.
     ''' </summary>
-    ''' <param name="XMLpath"></param>
+    ''' <param name="XMLpath">Pfad zur XML-Datei</param>
     ''' <returns><c>True</c>, wenn Datei geöffnet werden kann, ansonsten <c>False</c>.</returns>
-    Public Function XMLValidator(ByRef XMLDoc As XmlDocument, ByVal XMLpath As String) As Boolean
+    Public Function XMLValidator(ByRef XMLDoc As XmlDocument, ByVal XMLPath As String) As Boolean
         XMLValidator = True
         Try
-            XMLDoc.Load(XMLpath)
+            XMLDoc.Load(XMLPath)
         Catch
             XMLValidator = False
         End Try
     End Function
+
 #End Region
 
     ''' <summary>

@@ -1283,6 +1283,16 @@ Public Class DataProvider
     End Property
 
     ''' <summary>
+    ''' Der Standarduser bei Anmeldung mit Passwort ohne Benutzername: admin
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property P_Def_FritzBoxUser() As String
+        Get
+            Return ""
+        End Get
+    End Property
+
+    ''' <summary>
     ''' 192.168.178.1
     ''' </summary>
     Public Shared ReadOnly Property P_Def_FritzBoxIPAdress() As String
@@ -1324,6 +1334,25 @@ Public Class DataProvider
     Public Shared ReadOnly Property P_DefaultFBAnrMonPort() As Integer
         Get
             Return 1012
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' 49000
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property P_Port_FB_SOAP() As Integer
+        Get
+            Return 49000
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' 49443
+    ''' </summary>
+    Public Shared ReadOnly Property P_Port_FB_SOAP_SSL() As Integer
+        Get
+            Return 49443
         End Get
     End Property
 

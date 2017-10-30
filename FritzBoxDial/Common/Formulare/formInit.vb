@@ -46,7 +46,7 @@ Friend Class formInit
         C_HF.LogFile(DataProvider.P_Def_Addin_LangName & " V" & ThisAddIn.Version & " gestartet.")
 
         ' Klasse für den UPnP Zugriff
-        C_FBoxUPnP = New FritzBoxServices()
+        C_FBoxUPnP = New FritzBoxServices(C_DP, C_Crypt)
 
         ' Klasse für die Kontakte generieren
         C_KF = New KontaktFunktionen(C_DP, C_HF)

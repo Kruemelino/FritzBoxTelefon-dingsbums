@@ -1,61 +1,12 @@
-﻿Imports System.Collections.Generic
-Imports System.Xml
-Imports System.Net
+﻿Imports System.Net
 
 Public Module FritzBoxInformations
 #Region "Lokale Variablen"
-    Private SSLPort As Integer = 49443
-    Private FBoxIP As String = "fritz.box"
-    Private FBoxUser As String
-    Private FBoxPasswort As String
+    Private DP As DataProvider
+    Private Crypt As Rijndael
 #End Region
     Friend ErrorHashTable As Hashtable
 #Region "Properties"
-    ''' <summary>
-    ''' Enthält eine gültige Fritz!Box Adresse.
-    ''' </summary>
-    Friend Property P_FritzBox_IP() As String
-        Set(value As String)
-            FBoxIP = value
-        End Set
-        Get
-            Return FBoxIP
-        End Get
-    End Property
-
-    Friend Property P_FritzBox_UserName As String
-        Set(value As String)
-            FBoxUser = value
-        End Set
-        Get
-            Return FBoxUser
-        End Get
-    End Property
-
-    Friend Property P_FritzBox_Passwort As String
-        Set(value As String)
-            FBoxPasswort = value
-        End Set
-        Get
-            Return FBoxPasswort
-        End Get
-    End Property
-
-    Friend ReadOnly Property P_Port_FB_SOAP() As Integer
-        Get
-            Return 49000
-        End Get
-    End Property
-
-    Friend Property P_Port_FB_SOAP_SSL() As Integer
-        Get
-            Return SSLPort
-        End Get
-        Set(value As Integer)
-            SSLPort = value
-        End Set
-    End Property
-
     Friend ReadOnly Property P_SOAPContentType As String
         Get
             Return "text/xml; charset=""utf-8"""
@@ -67,6 +18,25 @@ Public Module FritzBoxInformations
             Return "AVM UPnP/1.0 Client 1.0"
         End Get
     End Property
+
+    Friend Property C_DP As DataProvider
+        Set(value As DataProvider)
+            DP = value
+        End Set
+        Get
+            Return DP
+        End Get
+    End Property
+
+    Friend Property C_Crypt As Rijndael
+        Set(value As Rijndael)
+            Crypt = value
+        End Set
+        Get
+            Return Crypt
+        End Get
+    End Property
+
 #End Region
 
 #Region "Fritz!Box UPnP/TR-064 Files"
@@ -204,6 +174,21 @@ Public Module FritzBoxInformations
         Shared x_webdavSCPD As String = "/x_webdavSCPD.xml"
 
         ''' <summary>
+        ''' X_appsetup
+        ''' </summary>
+        Shared X_appsetup As String = "/x_appsetupSCPD.xml"
+
+        ''' <summary>
+        ''' X_homeautoSCPD
+        ''' </summary>
+        Shared X_homeautoSCPD As String = "/x_homeautoSCPD.xml"
+
+        ''' <summary>
+        ''' X_homeplugSCPD
+        ''' </summary>
+        Shared X_homeplugSCPD As String = "/x_homeplugSCPD.xml"
+
+        ''' <summary>
         ''' igddesc
         ''' </summary>
         Shared igddesc As String = "/igddesc.xml"
@@ -239,20 +224,18 @@ Public Module FritzBoxInformations
 End Module
 
 Public Class FritzBoxServices
-
     Private ServiceList As List(Of ServiceBaseInformation)
 
-    Public Sub New()
+    Public Sub New(ByVal Datenhalter As DataProvider, ByVal CryptKlasse As Rijndael)
+
+        C_DP = Datenhalter
+        C_Crypt = CryptKlasse
+
         ErrorHashTable = New Hashtable
-        ServicePointManager.ServerCertificateValidationCallback = New System.Net.Security.RemoteCertificateValidationCallback(AddressOf AcceptCert)
-    End Sub
+        ServicePointManager.ServerCertificateValidationCallback = New Security.RemoteCertificateValidationCallback(AddressOf AcceptCert)
 
-    Public Sub SetFritzBoxData(ByVal FritzBoxIP As String, ByVal FritzBoxUserName As String, ByVal FritzBoxPasswort As String)
-        P_FritzBox_IP = FritzBoxIP
-        P_FritzBox_UserName = FritzBoxUserName
-        P_FritzBox_Passwort = FritzBoxPasswort
-
-        ServiceList = SetupServices(GetSOAPXMLFile("http://" & P_FritzBox_IP & ":" & P_Port_FB_SOAP & KnownSOAPFile.tr64desc))
+        ' Lade Services
+        ServiceList = SetupServices(GetSOAPXMLFile("http://" & C_DP.P_TBFBAdr & ":" & DataProvider.P_Port_FB_SOAP & KnownSOAPFile.tr64desc))
     End Sub
 
     Private Function AcceptCert(ByVal sender As Object, ByVal cert As System.Security.Cryptography.X509Certificates.X509Certificate, ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, ByVal errors As System.Net.Security.SslPolicyErrors) As Boolean

@@ -293,7 +293,8 @@ Public Class Helfer
 
     End Function
 
-    <DebuggerStepThrough()> Public Sub LogFile(ByVal Meldung As String)
+    <DebuggerStepThrough()>
+    Public Sub LogFile(ByVal Meldung As String)
         Dim LogDatei As String = C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName
         If C_DP.P_CBLogFile Then
             With My.Computer.FileSystem
@@ -376,6 +377,13 @@ Public Class Helfer
         C_DP.SpeichereXMLDatei()
 
     End Sub ' (Keyänderung) 
+
+    Friend Function GetPW(ByVal UserName As String) As String
+
+
+
+        Return C_Crypt.DecryptString128Bit(C_DP.P_TBPasswort, C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String))
+    End Function
 
     ''' <summary>
     ''' Wandelt eine Zeitspanne in Sekunden in ein Format in Stunden:Minuten:Sekunden um
@@ -889,7 +897,7 @@ Public Class Helfer
 
         httpGET = DataProvider.P_Def_LeerString
         Select Case UniformResourceIdentifier.Scheme
-            Case Uri.UriSchemeHttp
+            Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
                 If DataProvider.P_Debug_Use_WebClient Then
                     Dim webClient As New WebClient
                     With webClient

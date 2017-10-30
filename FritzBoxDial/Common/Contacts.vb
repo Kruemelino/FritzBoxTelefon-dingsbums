@@ -1,5 +1,4 @@
 ﻿Imports System.Collections.Generic
-Imports System.Collections.ObjectModel
 
 Public Class ApiWindow
     Private _hWnd As IntPtr
