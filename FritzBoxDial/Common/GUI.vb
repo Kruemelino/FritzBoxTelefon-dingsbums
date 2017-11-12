@@ -141,13 +141,7 @@ Imports Microsoft.Office.Core
     End Property
 #End Region
 
-    Friend Sub New(ByVal HelferKlasse As Helfer, _
-           ByVal DataProviderKlasse As DataProvider, _
-           ByVal Inverssuche As formRWSuche, _
-           ByVal KontaktKlasse As KontaktFunktionen, _
-           ByVal PopUpKlasse As Popup, _
-           ByVal XMLKlasse As XML)
-
+    Friend Sub New(ByVal HelferKlasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal Inverssuche As formRWSuche, ByVal KontaktKlasse As KontaktFunktionen, ByVal PopUpKlasse As Popup, ByVal XMLKlasse As XML)
         C_HF = HelferKlasse
         C_DP = DataProviderKlasse
         F_RWS = Inverssuche
@@ -384,6 +378,23 @@ Imports Microsoft.Office.Core
         xPathTeile = Nothing
     End Function
 
+    Public Function GetPhonebooks(ByVal control As Office.IRibbonControl) As String
+        Dim TelBuchList As String() = C_FBox.GetTelefonbuchListe()
+        Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf &
+                                                                      "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
+
+        With RibbonListStrBuilder
+            For Each TelBuch As String In TelBuchList
+                .Append("<button id=""" & Split(control.Id, "_",, CompareMethod.Text)(0) & "_" & Split(TelBuch, ";", , CompareMethod.Text)(0) & """ label=""" & Split(TelBuch, ";", , CompareMethod.Text)(1) & """ onAction=""BtnOnAction"" />" & vbCrLf)
+            Next
+            .Append("</menu>")
+            GetPhonebooks = RibbonListStrBuilder.ToString
+            .Clear()
+        End With
+
+        RibbonListStrBuilder = Nothing
+    End Function
+
     Private Sub GetButtonXMLString(ByRef StrBuilder As StringBuilder, ByVal ID As String, ByVal Label As String, ByVal Tag As String, ByVal SuperTip As String, ByVal ImageMSO As String)
         Dim Werte(4) As String
 
@@ -472,6 +483,20 @@ Imports Microsoft.Office.Core
         Return True
     End Function
 
+    ''' <summary>
+    ''' Die Uploadfunktion im Kontextmenü. Bei SOAP soll das Telefonbuch auswählbar sein.
+    ''' </summary>
+    ''' <param name="control"></param>
+    ''' <returns></returns>
+    Public Function GetVisibleUploadFKT(ByVal control As Office.IRibbonControl) As Boolean
+        GetVisibleUploadFKT = False
+        Select Case Split(control.Id, "_",, CompareMethod.Text)(0)
+            Case "cbtnUpload", "btnUpload"
+                GetVisibleUploadFKT = Not C_DP.P_RBFBComUPnP
+            Case "cdMUpload", "MUpload"
+                GetVisibleUploadFKT = C_DP.P_RBFBComUPnP
+        End Select
+    End Function
 #End If
 #End Region 'Ribbon Explorer
 
@@ -530,7 +555,7 @@ Imports Microsoft.Office.Core
                 Return DataProvider.P_CMB_Insp_Note
             Case "tbtnVIP"
                 Return DataProvider.P_CMB_Insp_VIP
-            Case "btnUpload"
+            Case "btnUpload", "cdMUpload"
                 Return DataProvider.P_CMB_Insp_Upload
             Case Else
                 C_HF.LogFile("GetItemLabel: Kann control.Id " & control.Id & " nicht auswerten.")
@@ -626,7 +651,7 @@ Imports Microsoft.Office.Core
                 Return "ClipArtInsert"
             Case "btnAnrMonJI"
                 Return "NewJournalEntry"
-            Case "btnUpload"
+            Case "btnUpload", "MUpload"
                 Return "DistributionListAddNewMember"
             Case "mnuRWS" ' Inspector
                 Return "CheckNames"
@@ -669,12 +694,18 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.OpenJournalimport)
             Case "Einstellungen"
                 OnAction(TaskToDo.OpenConfig)
-            Case "cbtnUpload"
+            Case "cbtnUpload"  ' Kontextmenü
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
-            Case "btnUpload"
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), "")
+            Case "btnUpload"   ' Inspector
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt))
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), "")
+            Case "cdMUpload"  ' Kontext + Telefonbuchauswahl
+                Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), Split(control.Id, "_", 2, CompareMethod.Text)(1))
+            Case "MUpload"  ' Inspector + Telefonbuchauswahl
+                Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
+                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), Split(control.Id, "_", 2, CompareMethod.Text)(1))
             Case "btnRWS01" ' RWS11880
                 F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, CType(control.Context, Outlook.Inspector))
             Case "btnRWS02" ' RWSDasOertliche
@@ -689,6 +720,9 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.CreateContact)
             Case "btnNote"
                 C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
+
+
+
         End Select
     End Sub
 

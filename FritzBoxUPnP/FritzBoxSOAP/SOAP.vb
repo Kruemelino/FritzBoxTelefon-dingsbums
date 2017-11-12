@@ -274,19 +274,19 @@ Friend Module BaseFuctions
                     RetVal.LoadXml(.ReadToEnd())
                 End With
             Catch ex As WebException When ex.Message.Contains("606")
-                ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """Action not authorized"""
+                ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """ Action not authorized"""
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("500")
                 ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction & vbNewLine & vbNewLine & "Method: " & .Method.ToString & vbNewLine & "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & "ContentType: " & .ContentType.ToString & vbNewLine & "UserAgent: " & .UserAgent.ToString & vbNewLine & "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & SOAPXML
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("713")
-                ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """Invalid array index"""
+                ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """ Invalid array index"""
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("820")
-                ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """Internal error """
+                ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """ Internal error """
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("401")
-                ErrorText = "SOAP Login-Fehler 401: " & SOAPAction
+                ErrorText = "SOAP Login-Fehler 401: " & SOAPAction & """ Unauthorized"""
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             End Try
         End With

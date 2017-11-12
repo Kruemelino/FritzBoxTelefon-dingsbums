@@ -3037,9 +3037,9 @@ Public Class FritzBox
 
 #Region "Fritz!Box Telefonbuch"
 
-    Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+    Sub UploadKontaktToFritzBox(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean, ByVal BookID As String)
         If C_DP.P_RBFBComUPnP Then
-            UploadKontaktToFritzBoxV3(Kontakt, istVIP)
+            UploadKontaktToFritzBoxV3(Kontakt, istVIP, BookID)
         Else
 
             If ThisFBFirmware.ISLargerOREqual("6.30") Then
@@ -3235,7 +3235,7 @@ Public Class FritzBox
         C_JSON = Nothing
     End Sub
 
-    Sub UploadKontaktToFritzBoxV3(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean)
+    Sub UploadKontaktToFritzBoxV3(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean, ByVal BookID As String)
         ' SetPhonebookEntry
         ' Add new entries with “” as value for PhonebookEntryID.
         ' Change existing entries with a value used for PhonebookEntryID with GetPhonebookEntry.
@@ -3261,54 +3261,43 @@ Public Class FritzBox
             C_hf.MsgBox(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
         Else
             ' Ermitteln des Telefonbuches
-            PhoneBookID = Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text).First
-
+            'PhoneBookID = Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text).First
+            PhoneBookID = BookID
             ' Herunterladen des Telefonbuches
             InPutData.Add("NewPhonebookID", 0)
             OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebook")
 
             Telefonbuch = DownloadAddressbook(PhoneBookID)
             If Telefonbuch IsNot Nothing Then
-                'With xPathTeile
-                '    .Add("phonebook")
-                '    .Add("contact")
-                '    .Add("person")
-                '    .Add("[contains(realName, """ & Kontakt.FullNameAndCompany.Replace("&", "&amp;").Replace(DataProvider.P_Def_EineNeueZeile, " / ") & """)]")
-                'End With
-                'C_XML.Read(Telefonbuch, xPathTeile, "")
+
                 tmpname = Kontakt.FullNameAndCompany.Replace("&", "&amp;").Replace(DataProvider.P_Def_EineNeueZeile, " / ")
 
-                For Each Knoten As XmlNode In Telefonbuch.GetElementsByTagName("contact")
-                    NameVohanden = False
-                    ' Prüfe ob Name bereits vorhanden
-                    With Kontakt
-                        'Liste = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
-                        'Liste = C_hf.ClearStringArray(Liste, True, True, False)
-                        'For i = LBound(Liste) To UBound(Liste)
-                        '    Liste(i) = C_hf.nurZiffern(Liste(i))
-                        'Next
+                With Kontakt
 
-                        With xPathTeile
-                            .Add("phonebook")
-                            .Add("contact[contains(//realName,""" & tmpname & """)]")
-                            ' .Add("contact[contains(//realName,""" & tmpname & """) and (contains(//number, """ & String.Join(""") or contains(//number, """, Liste) & """))]")
-                            .Add("uniqueid")
-                        End With
-                        tmpxmlNode = Knoten.SelectSingleNode(C_XML.CreateXPath(Telefonbuch, xPathTeile))
-                        If tmpxmlNode IsNot Nothing Then
-                            Select Case C_hf.MsgBox("Der Kontakt """ & tmpname & """ ist bereits im Telefonbuch vorhanden." & DataProvider.P_Def_ZweiNeueZeilen & "Soll der Kontakt ersetzt werden?", MsgBoxStyle.YesNoCancel, "SOAP-KontaktUpload")
-                                Case vbYes
-                                    NewPhonebookEntryID = tmpxmlNode.InnerText
-                                Case vbNo
-                                    NewPhonebookEntryID = ""
-                                Case vbCancel
-                                    NewPhonebookEntryID = "ABBRUCH"
-                            End Select
-                            ' Unschön
-                            Exit For
-                        End If
+                    ' Liste = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
+                    ' Liste = C_hf.ClearStringArray(Liste, True, True, False)
+                    ' For i = LBound(Liste) To UBound(Liste)
+                    '     Liste(i) = C_hf.nurZiffern(Liste(i))
+                    ' Next
+                    With xPathTeile
+                        .Add("phonebook")
+                        .Add("contact")
+                        .Add("[contains(//realName,""" & tmpname & """)]")
+                        ' .Add("contact[contains(//realName,""" & tmpname & """) and (contains(//number, """ & String.Join(""") or contains(//number, """, Liste) & """))]")
+                        .Add("uniqueid")
                     End With
-                Next
+                    tmpxmlNode = Telefonbuch.SelectSingleNode(C_XML.CreateXPath(Telefonbuch, xPathTeile))
+                    If tmpxmlNode IsNot Nothing Then
+                        Select Case C_hf.MsgBox("Der Kontakt """ & tmpname & """ ist bereits im Telefonbuch vorhanden." & DataProvider.P_Def_ZweiNeueZeilen & "Soll der Kontakt ersetzt werden?", MsgBoxStyle.YesNoCancel, "SOAP-KontaktUpload")
+                            Case vbYes
+                                NewPhonebookEntryID = tmpxmlNode.InnerText
+                            Case vbNo
+                                NewPhonebookEntryID = ""
+                            Case vbCancel
+                                NewPhonebookEntryID = "ABBRUCH"
+                        End Select
+                    End If
+                End With
             End If
 
             If Not NewPhonebookEntryID = "ABBRUCH" Then
@@ -3563,30 +3552,52 @@ Public Class FritzBox
     ''' <returns>List</returns>
     ''' <remarks>http://fritz.box/fon_num/fonbook_select.lua</remarks>
     Friend Function GetTelefonbuchListe() As String()
-        Dim ReturnTelefonbuchListe As String() = {"0'>Telefonbuch"}
 
-        Dim sPage As String
-        Dim tmp As String
-        Dim Liste As String = DataProvider.P_Def_LeerString
-        Dim pos As Integer = 1
 
-        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
-        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
-            sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(P_SID), C_DP.P_EncodingFritzBox, FBFehler), Chr(34), "'", , , CompareMethod.Text)
-            sPage = sPage.Replace(Chr(13), "")
-            If sPage.Contains("label for='uiBookid:") Then
-                Do
-                    tmp = C_hf.StringEntnehmen(sPage, "label for='uiBookid:", "</label>", pos)
-                    If tmp IsNot DataProvider.P_Def_ErrorMinusOne_String Then
-                        tmp = tmp.Replace("'>", ": ")
-                        Liste += tmp & ";"
-                    End If
-                Loop Until tmp Is DataProvider.P_Def_ErrorMinusOne_String
-                Liste = Liste.Remove(Liste.Length - 1, 1)
+        If C_DP.P_RBFBComUPnP Then
+            Dim InPutData As New Hashtable
+            Dim OutPutData As New Hashtable
+            OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebookList")
+            Dim PhonebookListe As String()
+            PhonebookListe = Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text)
+
+            For idx As Integer = LBound(PhonebookListe) To UBound(PhonebookListe)
+                InPutData.Clear()
+                InPutData.Add("NewPhonebookID", PhonebookListe(idx))
+                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebook", InPutData)
+
+                PhonebookListe(idx) += ";" & OutPutData("NewPhonebookName").ToString()
+            Next
+            GetTelefonbuchListe = PhonebookListe
+
+        Else
+            Dim ReturnTelefonbuchListe As String() = {"0'>Telefonbuch"}
+
+            Dim sPage As String
+            Dim tmp As String
+            Dim Liste As String = DataProvider.P_Def_LeerString
+            Dim pos As Integer = 1
+
+            If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+            If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+                sPage = Replace(C_hf.httpGET(P_Link_Telefonbuch_List(P_SID), C_DP.P_EncodingFritzBox, FBFehler), Chr(34), "'", , , CompareMethod.Text)
+                sPage = sPage.Replace(Chr(13), "")
+                If sPage.Contains("label for='uiBookid:") Then
+                    Do
+                        tmp = C_hf.StringEntnehmen(sPage, "label for='uiBookid:", "</label>", pos)
+                        If tmp IsNot DataProvider.P_Def_ErrorMinusOne_String Then
+                            tmp = tmp.Replace("'>", ": ")
+                            Liste += tmp & ";"
+                        End If
+                    Loop Until tmp Is DataProvider.P_Def_ErrorMinusOne_String
+                    Liste = Liste.Remove(Liste.Length - 1, 1)
+                End If
+                ReturnTelefonbuchListe = Split(Liste, ";", , CompareMethod.Text)
             End If
-            ReturnTelefonbuchListe = Split(Liste, ";", , CompareMethod.Text)
+            Return ReturnTelefonbuchListe
         End If
-        Return ReturnTelefonbuchListe
+
+
     End Function
 
 #End Region

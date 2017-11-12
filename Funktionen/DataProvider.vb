@@ -1288,7 +1288,7 @@ Public Class DataProvider
     ''' <returns></returns>
     Public ReadOnly Property P_Def_FritzBoxUser() As String
         Get
-            Return ""
+            Return "admin"
         End Get
     End Property
 
