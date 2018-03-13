@@ -3,6 +3,7 @@ Imports System.Text
 Imports System.Threading
 Imports System.IO
 Imports System.Collections.ObjectModel
+Imports System.Text.RegularExpressions
 
 Public Class Helfer
     Private Const Epsilon As Single = Single.Epsilon
@@ -817,55 +818,89 @@ Public Class Helfer
         Trefferliste = Nothing
     End Function
 
+    '''' <summary>
+    '''' Bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche.
+    '''' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen.
+    '''' </summary>
+    '''' <param name="TelNr">Telefonnummer mit Sonderzeichen</param>
+    '''' <returns>saubere Telefonnummer (nur aus Ziffern bestehend)</returns>
+    '''' <remarks>Achtung! "*", "#" bleiben Bestehen!!!</remarks>
+    'Public Function nurZiffern(ByVal TelNr As String) As String
+    '    Dim i As Integer   ' Zählvariable
+    '    Dim c As String ' einzelnes Zeichen
+
+    '    nurZiffern = DataProvider.P_Def_LeerString
+    '    TelNr = UCase(TelNr)
+
+    '    For i = 1 To Len(TelNr)
+    '        c = Mid(TelNr, i, 1)
+    '        Select Case c                ' Einzelnes Char auswerten
+    '            ' Zahlen und Steuerzeichen direkt übertragen.
+    '            Case "0" To "9", "*", "#"
+    '                nurZiffern = nurZiffern + c
+    '                ' Restliche Buchstaben umwandeln.
+    '            Case "A" To "C"
+    '                nurZiffern = nurZiffern + "2"
+    '            Case "D" To "F"
+    '                nurZiffern = nurZiffern + "3"
+    '            Case "G" To "I"
+    '                nurZiffern = nurZiffern + "4"
+    '            Case "J" To "L"
+    '                nurZiffern = nurZiffern + "5"
+    '            Case "M" To "O"
+    '                nurZiffern = nurZiffern + "6"
+    '            Case "P" To "S"
+    '                nurZiffern = nurZiffern + "7"
+    '            Case "T" To "V"
+    '                nurZiffern = nurZiffern + "8"
+    '            Case "W" To "Z"
+    '                nurZiffern = nurZiffern + "9"
+    '            Case "+"
+    '                nurZiffern = nurZiffern + DataProvider.P_Def_PreLandesVW
+    '        End Select
+    '    Next
+    '    ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
+    '    If nurZiffern.StartsWith(C_DP.P_TBLandesVW) Then
+    '        nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW & "0", "0", , 1)
+    '        nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW, "0", , 1)
+    '    End If
+
+    '    ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
+    '    If nurZiffern.StartsWith("000") Then nurZiffern = Right(nurZiffern, Len(nurZiffern) - 2)
+    'End Function '(nurZiffern)
+
     ''' <summary>
     ''' Bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche.
     ''' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen.
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer mit Sonderzeichen</param>
-    ''' <returns>saubere Telefonnummer (nur aus Ziffern bestehend)</returns>
-    ''' <remarks>Achtung! "*", "#" bleiben Bestehen!!!</remarks>
+    ''' <returns>Saubere Telefonnummer (nur aus Ziffern bestehend)</returns>
+    ''' <remarks>Achtung! "*", "#" bleiben bestehen!</remarks>
     Public Function nurZiffern(ByVal TelNr As String) As String
-        Dim i As Integer   ' Zählvariable
-        Dim c As String ' einzelnes Zeichen
+        nurZiffern = LCase(TelNr)
 
-        nurZiffern = DataProvider.P_Def_LeerString
-        TelNr = UCase(TelNr)
+        ' Testweise
+        nurZiffern = Regex.Replace(nurZiffern, "^[a-z]+:+", "")
 
-        For i = 1 To Len(TelNr)
-            c = Mid(TelNr, i, 1)
-            Select Case c                ' Einzelnes Char auswerten
-                ' Zahlen und Steuerzeichen direkt übertragen.
-                Case "0" To "9", "*", "#"
-                    nurZiffern = nurZiffern + c
-                    ' Restliche Buchstaben umwandeln.
-                Case "A" To "C"
-                    nurZiffern = nurZiffern + "2"
-                Case "D" To "F"
-                    nurZiffern = nurZiffern + "3"
-                Case "G" To "I"
-                    nurZiffern = nurZiffern + "4"
-                Case "J" To "C"
-                    nurZiffern = nurZiffern + "5"
-                Case "M" To "O"
-                    nurZiffern = nurZiffern + "6"
-                Case "P" To "S"
-                    nurZiffern = nurZiffern + "7"
-                Case "T" To "V"
-                    nurZiffern = nurZiffern + "8"
-                Case "W" To "Z"
-                    nurZiffern = nurZiffern + "9"
-                Case "+"
-                    nurZiffern = nurZiffern + DataProvider.P_Def_PreLandesVW
-            End Select
-        Next
+        ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
+        nurZiffern = Regex.Replace(nurZiffern, "[abc]", "2")
+        nurZiffern = Regex.Replace(nurZiffern, "[def]", "3")
+        nurZiffern = Regex.Replace(nurZiffern, "[ghi]", "4")
+        nurZiffern = Regex.Replace(nurZiffern, "[jkl]", "5")
+        nurZiffern = Regex.Replace(nurZiffern, "[mno]", "6")
+        nurZiffern = Regex.Replace(nurZiffern, "[pqrs]", "7")
+        nurZiffern = Regex.Replace(nurZiffern, "[tuv]", "8")
+        nurZiffern = Regex.Replace(nurZiffern, "[wxyz]", "9")
+        nurZiffern = Regex.Replace(nurZiffern, "^[+]", DataProvider.P_Def_PreLandesVW)
+        ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
+        nurZiffern = Regex.Replace(nurZiffern, "[^0-9\#\*]", "")
+
         ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-        If nurZiffern.StartsWith(C_DP.P_TBLandesVW) Then
-            nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW & "0", "0", , 1)
-            nurZiffern = Replace(nurZiffern, C_DP.P_TBLandesVW, "0", , 1)
-        End If
+        nurZiffern = Regex.Replace(nurZiffern, "^" & C_DP.P_TBLandesVW & "{1}[0]?", "0")
 
         ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
-        If nurZiffern.StartsWith("000") Then nurZiffern = Right(nurZiffern, Len(nurZiffern) - 2)
+        nurZiffern = Regex.Replace(nurZiffern, "^[0]{3}", "0")
+
     End Function '(nurZiffern)
 
     ''' <summary>

@@ -2866,7 +2866,7 @@ Public Class FritzBox
             ' Senden des Wählkomandos
             InPutData.Clear()
             If bHangUp Then
-                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_Hangup")
+                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialHangup")  ' Alt X_AVM-DE_Hangup
             Else
                 InPutData.Add("NewX_AVM-DE_PhoneNumber", DialCodetoBox)
                 OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
@@ -3235,7 +3235,7 @@ Public Class FritzBox
         C_JSON = Nothing
     End Sub
 
-    Sub UploadKontaktToFritzBoxV3(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean, ByVal BookID As String)
+    Sub UploadKontaktToFritzBoxV3(ByVal Kontakt As Outlook.ContactItem, ByVal istVIP As Boolean, ByVal PhoneBookID As String)
         ' SetPhonebookEntry
         ' Add new entries with “” as value for PhonebookEntryID.
         ' Change existing entries with a value used for PhonebookEntryID with GetPhonebookEntry.
@@ -3251,7 +3251,7 @@ Public Class FritzBox
         Dim tmpname As String
         Dim Telefonbuch As XmlDocument
         Dim tmpxmlNode As XmlNode
-        Dim PhoneBookID As String
+        ''Dim PhoneBookID As String
         Dim NewPhonebookEntryID As String = ""
         'Dim Liste() As String
         Dim NameVohanden As Boolean = False
@@ -3260,9 +3260,6 @@ Public Class FritzBox
         If OutPutData.Contains("Error") Then
             C_hf.MsgBox(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"), MsgBoxStyle.Exclamation, "UploadKontaktToFritzBox")
         Else
-            ' Ermitteln des Telefonbuches
-            'PhoneBookID = Split(OutPutData("NewPhonebookList").ToString, ",", , CompareMethod.Text).First
-            PhoneBookID = BookID
             ' Herunterladen des Telefonbuches
             InPutData.Add("NewPhonebookID", 0)
             OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebook")
