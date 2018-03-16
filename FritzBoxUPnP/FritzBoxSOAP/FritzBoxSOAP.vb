@@ -218,6 +218,25 @@ Public Module FritzBoxInformations
         ''' </summary>
         Shared tr64desc As String = "/tr64desc.xml"
 
+        ''' <summary>
+        ''' tr64desc
+        ''' </summary>
+        Shared x_speedtestSCPD As String = "/x_speedtestSCPD.xml"
+
+        ''' <summary>
+        ''' tr64desc
+        ''' </summary>
+        Shared x_dectSCPD As String = "/x_dectSCPD.xml"
+
+        ''' <summary>
+        ''' tr64desc
+        ''' </summary>
+        Shared x_filelinksSCPD As String = "/x_filelinksSCPD.xml"
+
+        ''' <summary>
+        ''' tr64desc
+        ''' </summary>
+        Shared x_authSCPD As String = "/x_authSCPD.xml"
     End Structure
 
 #End Region
