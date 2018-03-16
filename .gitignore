@@ -164,3 +164,4 @@ pip-log.txt
 .DS_Store
 /packages
 *.config
+/.vs/FritzBoxDial_2010/v15/Server/sqlite3
