@@ -2779,7 +2779,7 @@ Public Class FritzBox
             Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
             ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
             If Response.Contains("twofactor") Then
-                C_hf.MsgBox("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist." & DataProvider.P_Def_ZweiNeueZeilen &                             "In der Fritz!Box:" & DataProvider.P_Def_EineNeueZeile & "System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz" & DataProvider.P_Def_EineNeueZeile &"Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", MsgBoxStyle.Critical, "SendDialRequestToBoxV2")
+                C_hf.MsgBox("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist." & DataProvider.P_Def_ZweiNeueZeilen & "In der Fritz!Box:" & DataProvider.P_Def_EineNeueZeile & "System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz" & DataProvider.P_Def_EineNeueZeile & "Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", MsgBoxStyle.Critical, "SendDialRequestToBoxV2")
                 PortChangeSuccess = False
             Else
                 ' Prüfen, ob es erfolgreich war
@@ -3348,7 +3348,7 @@ Public Class FritzBox
 
         With Kontakt
             ' Wurzelelement generieren mit erster Ebene generieren
-#Region "Wurzelelement mit erster Ebene"
+            '#Region "Wurzelelement mit erster Ebene"
 
             NodeNames.Add("category")
             NodeValues.Add(C_hf.IIf(istVIP, "1", ""))
@@ -3375,9 +3375,9 @@ Public Class FritzBox
 
             NodeNames.Clear()
             NodeValues.Clear()
-#End Region
+            '#End Region
 
-#Region "Name"
+            '#Region "Name"
             ' Name des Kontaktes
             NodeNames.Add("realName")
             NodeValues.Add(.FullNameAndCompany.Replace("&", "&amp;").Replace(DataProvider.P_Def_EineNeueZeile, " / "))
@@ -3386,12 +3386,12 @@ Public Class FritzBox
 
             NodeNames.Clear()
             NodeValues.Clear()
-#End Region
+            '#End Region
 
-#Region "Telefonnummern"
+            '#Region "Telefonnummern"
             ' Telefonnummern des Kontaktes
             XMLKnoten = Eintrag.DocumentElement.GetElementsByTagName("telephony")(0)
-            Liste = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
+            Liste = {.AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
 
             For Each TelNr As String In Liste
                 If Not TelNr = DataProvider.P_Def_LeerString Then
@@ -3421,12 +3421,12 @@ Public Class FritzBox
             NodeNames.Clear()
             NodeValues.Clear()
             XMLKnoten = Nothing
-#End Region
+            '#End Region
 
-#Region "E-Mail"
+            '#Region "E-Mail"
             ' E-Mail des Kontaktes
             XMLKnoten = Eintrag.DocumentElement.GetElementsByTagName("services")(0)
-            Liste = { .Email1Address, .Email2Address, .Email3Address}
+            Liste = {.Email1Address, .Email2Address, .Email3Address}
 
             For Each EmailAddress As String In Liste
                 If Not EmailAddress = DataProvider.P_Def_LeerString Then
@@ -3456,7 +3456,7 @@ Public Class FritzBox
 
             NodeNames.Clear()
             NodeValues.Clear()
-#End Region
+            '#End Region
 
         End With
 

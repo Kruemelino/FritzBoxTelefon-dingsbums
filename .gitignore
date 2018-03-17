@@ -164,3 +164,7 @@ pip-log.txt
 .DS_Store
 /packages
 *.config
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
