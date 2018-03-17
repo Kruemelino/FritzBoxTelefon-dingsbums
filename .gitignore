@@ -168,3 +168,4 @@ pip-log.txt
 *.ide
 *.ide-shm
 *.ide-wal
+/.vs/FritzBoxDial_2010/v15/Server/sqlite3
