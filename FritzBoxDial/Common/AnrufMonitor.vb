@@ -706,7 +706,7 @@ Friend Class AnrufMonitor
                             .TelNr = C_hf.FormatTelNr(.TelNr)
                         End If
                     Catch ex As Exception
-                        Throw ex
+                        'Throw ex
                         C_hf.LogFile(ex.Message)
                     End Try
                 End If

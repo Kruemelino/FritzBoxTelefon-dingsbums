@@ -877,30 +877,32 @@ Public Class Helfer
     ''' <returns>Saubere Telefonnummer (nur aus Ziffern bestehend)</returns>
     ''' <remarks>Achtung! "*", "#" bleiben bestehen!</remarks>
     Public Function nurZiffern(ByVal TelNr As String) As String
-        nurZiffern = LCase(TelNr)
+        nurZiffern = TelNr
+        If Not TelNr = DataProvider.P_Def_LeerString Then
+            nurZiffern = LCase(TelNr)
 
-        ' Testweise
-        nurZiffern = Regex.Replace(nurZiffern, "^[a-z]+:+", "")
+            ' Testweise
+            nurZiffern = Regex.Replace(nurZiffern, "^[a-z]+:+", "")
 
-        ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
-        nurZiffern = Regex.Replace(nurZiffern, "[abc]", "2")
-        nurZiffern = Regex.Replace(nurZiffern, "[def]", "3")
-        nurZiffern = Regex.Replace(nurZiffern, "[ghi]", "4")
-        nurZiffern = Regex.Replace(nurZiffern, "[jkl]", "5")
-        nurZiffern = Regex.Replace(nurZiffern, "[mno]", "6")
-        nurZiffern = Regex.Replace(nurZiffern, "[pqrs]", "7")
-        nurZiffern = Regex.Replace(nurZiffern, "[tuv]", "8")
-        nurZiffern = Regex.Replace(nurZiffern, "[wxyz]", "9")
-        nurZiffern = Regex.Replace(nurZiffern, "^[+]", DataProvider.P_Def_PreLandesVW)
-        ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
-        nurZiffern = Regex.Replace(nurZiffern, "[^0-9\#\*]", "")
+            ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
+            nurZiffern = Regex.Replace(nurZiffern, "[abc]", "2")
+            nurZiffern = Regex.Replace(nurZiffern, "[def]", "3")
+            nurZiffern = Regex.Replace(nurZiffern, "[ghi]", "4")
+            nurZiffern = Regex.Replace(nurZiffern, "[jkl]", "5")
+            nurZiffern = Regex.Replace(nurZiffern, "[mno]", "6")
+            nurZiffern = Regex.Replace(nurZiffern, "[pqrs]", "7")
+            nurZiffern = Regex.Replace(nurZiffern, "[tuv]", "8")
+            nurZiffern = Regex.Replace(nurZiffern, "[wxyz]", "9")
+            nurZiffern = Regex.Replace(nurZiffern, "^[+]", DataProvider.P_Def_PreLandesVW)
+            ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
+            nurZiffern = Regex.Replace(nurZiffern, "[^0-9\#\*]", "")
 
-        ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-        nurZiffern = Regex.Replace(nurZiffern, "^" & C_DP.P_TBLandesVW & "{1}[0]?", "0")
+            ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
+            nurZiffern = Regex.Replace(nurZiffern, "^" & C_DP.P_TBLandesVW & "{1}[0]?", "0")
 
-        ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
-        nurZiffern = Regex.Replace(nurZiffern, "^[0]{3}", "0")
-
+            ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
+            nurZiffern = Regex.Replace(nurZiffern, "^[0]{3}", "0")
+        End If
     End Function '(nurZiffern)
 
     ''' <summary>

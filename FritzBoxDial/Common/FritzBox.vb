@@ -2572,8 +2572,7 @@ Public Class FritzBox
                         Else
                             For Each aktDECTNr As DECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
                                 If Not aktDECTNr.Number = DataProvider.P_Def_LeerString Then
-                                    Dim tmpDectNr As String = aktDECTNr.Number
-                                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = tmpDectNr))
+                                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = aktDECTNr.Number))
                                 End If
                             Next
                         End If
