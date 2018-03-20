@@ -877,12 +877,11 @@ Public Class Helfer
     ''' <returns>Saubere Telefonnummer (nur aus Ziffern bestehend)</returns>
     ''' <remarks>Achtung! "*", "#" bleiben bestehen!</remarks>
     Public Function nurZiffern(ByVal TelNr As String) As String
-        nurZiffern = TelNr
+        nurZiffern = LCase(TelNr)
         If Not TelNr = DataProvider.P_Def_LeerString Then
-            nurZiffern = LCase(TelNr)
 
-            ' Testweise
-            nurZiffern = Regex.Replace(nurZiffern, "^[a-z]+:+", "")
+            ' Entferne jeden String, der vor einem Doppelpunkt steht (einschlieﬂlich :)
+            nurZiffern = Regex.Replace(nurZiffern, "^[\w]+:+", "")
 
             ' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
             nurZiffern = Regex.Replace(nurZiffern, "[abc]", "2")

@@ -523,38 +523,38 @@ Friend Class AnrufMonitor
                 ' Daten in den Kontakten suchen und per Rückwärtssuche ermitteln
                 If Not .TelNr = DataProvider.P_Def_StringUnknown Then
                     ' Anrufer in den Outlook-Kontakten suchen
-                    Try
-                        .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                        If .olContact IsNot Nothing Then
-                            .Anrufer = .olContact.FullName
-                            .Firma = .olContact.CompanyName
-                            If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
-                        Else
-                            ' Anrufer per Rückwärtssuche ermitteln
-                            If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+                    'Try
+                    .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
+                    If .olContact IsNot Nothing Then
+                        .Anrufer = .olContact.FullName
+                        .Firma = .olContact.CompanyName
+                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
+                    Else
+                        ' Anrufer per Rückwärtssuche ermitteln
+                        If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
 
-                                If C_DP.P_CBKErstellen Then
-                                    ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
-                                    ' Dies geschieht nur, wenn es gewünscht ist.
-                                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                    .vCard = DataProvider.P_Def_LeerString
-                                    .Firma = .olContact.CompanyName
-                                    .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
-                                Else
-                                    .Anrufer = ReadFNfromVCard(.vCard)
-                                    .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                    If .Anrufer.StartsWith("Firma") Then .Anrufer = Mid(.Anrufer, Len("Firma"))
-                                    .Anrufer = Trim(.Anrufer)
-                                End If
-
+                            If C_DP.P_CBKErstellen Then
+                                ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                                ' Dies geschieht nur, wenn es gewünscht ist.
+                                .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
+                                .vCard = DataProvider.P_Def_LeerString
+                                .Firma = .olContact.CompanyName
+                                .Anrufer = .olContact.FullName 'Replace(.olContact.FullName & " (" & .Companies & ")", " ()", "")
+                            Else
+                                .Anrufer = ReadFNfromVCard(.vCard)
+                                .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
+                                If .Anrufer.StartsWith("Firma") Then .Anrufer = Mid(.Anrufer, Len("Firma"))
+                                .Anrufer = Trim(.Anrufer)
                             End If
-                            'Formatiere die Telefonnummer
-                            .TelNr = C_hf.FormatTelNr(.TelNr)
+
                         End If
-                    Catch ex As Exception
-                        Throw ex
-                        C_hf.LogFile(ex.Message)
-                    End Try
+                        'Formatiere die Telefonnummer
+                        .TelNr = C_hf.FormatTelNr(.TelNr)
+                    End If
+                    'Catch ex As Exception
+                    '    ' Throw ex
+                    '    C_hf.LogFile(ex.Message)
+                    'End Try
                     ' Hier Anrufmonitor aktualisieren! Nicht beim Journalimport!
                     If Telefonat.PopupAnrMon IsNot Nothing Then
                         C_Popup.UpdateAnrMon(Telefonat)
@@ -679,36 +679,36 @@ Friend Class AnrufMonitor
                 ' Daten zurücksetzen
 
                 If Not .TelNr = DataProvider.P_Def_StringUnknown Then
-                    Try
-                        .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
-                        If Telefonat.olContact IsNot Nothing Then
-                            .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
-                            If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
-                        Else
-                            ' .Anrufer per Rückwärtssuche ermitteln
-                            If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
+                    'Try
+                    .olContact = C_KF.KontaktSuche(.TelNr, DataProvider.P_Def_ErrorMinusOne_String, .KontaktID, .StoreID, C_DP.P_CBKHO)
+                    If Telefonat.olContact IsNot Nothing Then
+                        .Anrufer = Replace(.olContact.FullName & " (" & .olContact.CompanyName & ")", " ()", "")
+                        If C_DP.P_CBIgnoTelNrFormat Then .TelNr = C_hf.FormatTelNr(.TelNr)
+                    Else
+                        ' .Anrufer per Rückwärtssuche ermitteln
+                        If C_DP.P_CBRWS AndAlso F_RWS.AnrMonRWS(Telefonat) Then
 
-                                If C_DP.P_CBKErstellen Then
-                                    ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
-                                    ' Dies geschieht nur, wenn es gewünscht ist.
-                                    .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
-                                    .vCard = DataProvider.P_Def_LeerString
-                                    .Firma = .olContact.CompanyName
-                                    .Anrufer = Replace(.olContact.FullName & " (" & .Firma & ")", " ()", "")
-                                Else
-                                    .Anrufer = ReadFNfromVCard(.vCard)
-                                    .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
-                                    If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
-                                    .Anrufer = Trim(.Anrufer)
-                                End If
-
+                            If C_DP.P_CBKErstellen Then
+                                ' Im folgenden wird automatisch ein Kontakt erstellt, der durch die Rückwärtssuche ermittlt wurde. 
+                                ' Dies geschieht nur, wenn es gewünscht ist.
+                                .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, True)
+                                .vCard = DataProvider.P_Def_LeerString
+                                .Firma = .olContact.CompanyName
+                                .Anrufer = Replace(.olContact.FullName & " (" & .Firma & ")", " ()", "")
+                            Else
+                                .Anrufer = ReadFNfromVCard(.vCard)
+                                .Anrufer = Replace(.Anrufer, Chr(13), "", , , CompareMethod.Text)
+                                If InStr(1, .Anrufer, "Firma", CompareMethod.Text) = 1 Then .Anrufer = Right(.Anrufer, Len(.Anrufer) - 5)
+                                .Anrufer = Trim(.Anrufer)
                             End If
-                            .TelNr = C_hf.FormatTelNr(.TelNr)
+
                         End If
-                    Catch ex As Exception
-                        'Throw ex
-                        C_hf.LogFile(ex.Message)
-                    End Try
+                        .TelNr = C_hf.FormatTelNr(.TelNr)
+                    End If
+                    'Catch ex As Exception
+                    '    'Throw ex
+                    '    C_hf.LogFile(ex.Message)
+                    'End Try
                 End If
                 ' Daten im Menü für Wahlwiederholung speichern
                 ' Update der Liste bei der Listenauswertung nur wenn gewünscht
