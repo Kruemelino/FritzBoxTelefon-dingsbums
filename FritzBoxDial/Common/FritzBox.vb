@@ -2514,7 +2514,7 @@ Public Class FritzBox
             Next
 
             For idx = LBound(FritzBoxJSONTelefone1.DECT) To UBound(FritzBoxJSONTelefone1.DECT)
-                If Not FritzBoxJSONTelefone1.DECT(idx).Intern = DataProvider.P_Def_Leerzeichen Then
+                If Not FritzBoxJSONTelefone1.DECT(idx).Intern = DataProvider.P_Def_LeerString Then
                     TelQuery.Add(P_Query_FB_DECT_RingOnAllMSNs(idx))
                     TelQuery.Add(P_Query_FB_DECT_NrList(idx))
                 End If
@@ -2572,7 +2572,7 @@ Public Class FritzBox
                         Else
                             For Each aktDECTNr As DECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
                                 If Not aktDECTNr.Number = DataProvider.P_Def_LeerString Then
-                                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) Nummer.TelNr = aktDECTNr.Number))
+                                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummer) C_hf.TelNrVergleich(Nummer.TelNr, aktDECTNr.Number)))
                                 End If
                             Next
                         End If
@@ -2607,7 +2607,7 @@ Public Class FritzBox
                     tmpTelefon.TelTyp = TelTyp.S0
                     tmpTelefon.Dialport = DialPortBase.S0 + idx + 1
                     tmpTelefon.TelName = FritzBoxJSONTelefone1.S0NameList(idx)
-                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummern) Nummern.TelNr = C_hf.EigeneVorwahlenEntfernen(FritzBoxJSONTelefone2.S0NumberList(idx))))
+                    tmpTelefon.EingehendeNummern.Nummernliste.Add(TelefonNummern.Nummernliste.Find(Function(Nummern) C_hf.TelNrVergleich(Nummern.TelNr, FritzBoxJSONTelefone2.S0NumberList(idx))))
                     Telefone.Add(tmpTelefon)
                     PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
                 End If
@@ -3636,7 +3636,7 @@ Public Class FritzBox
     End Function
 
 #End Region
-
+    <DebuggerStepThrough>
     Friend Sub PushStatus(ByVal Status As String)
         tb.Text = Status
     End Sub

@@ -3,6 +3,7 @@
     'spezifischere Handler hier definieren
 End Interface
 
+<DebuggerStepThrough>
 Public Class EventMulticaster
     Implements IEventProvider
 

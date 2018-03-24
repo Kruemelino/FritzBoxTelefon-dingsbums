@@ -60,7 +60,7 @@ Imports Microsoft.Office.Core
 
 #Region "Eigene Klassen"
     Private C_XML As XML
-    Private C_HF As Helfer
+    Private C_hf As Helfer
     Private C_DP As DataProvider
     Private C_KF As KontaktFunktionen
 #End Region
@@ -142,7 +142,7 @@ Imports Microsoft.Office.Core
 #End Region
 
     Friend Sub New(ByVal HelferKlasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal Inverssuche As formRWSuche, ByVal KontaktKlasse As KontaktFunktionen, ByVal PopUpKlasse As Popup, ByVal XMLKlasse As XML)
-        C_HF = HelferKlasse
+        C_hf = HelferKlasse
         C_DP = DataProviderKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
@@ -166,7 +166,7 @@ Imports Microsoft.Office.Core
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim olLink As Outlook.Link = Nothing
 
-        With C_HF
+        With C_hf
             If TypeOf oInsp.CurrentItem Is Outlook.JournalItem Then
                 olJournal = CType(oInsp.CurrentItem, Outlook.JournalItem)
 
@@ -288,7 +288,7 @@ Imports Microsoft.Office.Core
         Dim LANodeValues As New ArrayList
         Dim xPathTeile As New ArrayList
 
-        Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf & _
+        Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf &
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
         Select Case Mid(control.Id, 1, Len(control.Id) - 2)
@@ -339,10 +339,10 @@ Imports Microsoft.Office.Core
 
                     GetButtonXMLString(RibbonListStrBuilder,
                             CStr(ID Mod C_DP.P_TBNumEntryList),
-                            C_HF.IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer),
+                            C_hf.IIf(Anrufer = DataProvider.P_Def_ErrorMinusOne_String, TelNr, Anrufer),
                             XMLListBaseNode,
                             DataProvider.P_CMB_ToolTipp(Zeit, TelNr),
-                            C_HF.IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString))
+                            C_hf.IIf(Verpasst, "HighImportance", DataProvider.P_Def_LeerString))
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
                     LANodeValues.Item(1) = DataProvider.P_Def_ErrorMinusOne_String
@@ -356,11 +356,11 @@ Imports Microsoft.Office.Core
                 Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
                 If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String Then
 
-                    GetButtonXMLString(RibbonListStrBuilder, _
-                            CStr(ID), _
-                            Anrufer, _
-                            XMLListBaseNode, _
-                            DataProvider.P_Def_LeerString, _
+                    GetButtonXMLString(RibbonListStrBuilder,
+                            CStr(ID),
+                            Anrufer,
+                            XMLListBaseNode,
+                            DataProvider.P_Def_LeerString,
                             DataProvider.P_Def_LeerString)
 
                     LANodeValues.Item(0) = DataProvider.P_Def_ErrorMinusOne_String
@@ -558,7 +558,7 @@ Imports Microsoft.Office.Core
             Case "btnUpload", "cdMUpload"
                 Return DataProvider.P_CMB_Insp_Upload
             Case Else
-                C_HF.LogFile("GetItemLabel: Kann control.Id " & control.Id & " nicht auswerten.")
+                C_hf.LogFile("GetItemLabel: Kann control.Id " & control.Id & " nicht auswerten.")
                 Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
@@ -606,11 +606,11 @@ Imports Microsoft.Office.Core
             Case "btnNote"
                 Return DataProvider.P_CMB_Insp_Note_ToolTipp
             Case "tbtnVIP"
-                Return C_HF.IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), DataProvider.P_CMB_VIP_Entfernen_ToolTipp, DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp)
+                Return C_hf.IIf(IsVIP(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)), DataProvider.P_CMB_VIP_Entfernen_ToolTipp, DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp)
             Case "btnUpload"
                 Return DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
-                C_HF.LogFile("GetItemScreenTipp: Kann control.Id " & control.Id & " nicht auswerten.")
+                C_hf.LogFile("GetItemScreenTipp: Kann control.Id " & control.Id & " nicht auswerten.")
                 Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
     End Function
@@ -662,7 +662,7 @@ Imports Microsoft.Office.Core
                 'Case "CallList", "RingList", "VIPList"
                 '    Return DataProvider.P_Def_LeerString
             Case Else
-                C_HF.LogFile("GetItemImageMso: Kann control.Id " & control.Id & " nicht auswerten.")
+                C_hf.LogFile("GetItemImageMso: Kann control.Id " & control.Id & " nicht auswerten.")
                 Return DataProvider.P_Def_ErrorMinusOne_String
         End Select
 
@@ -755,7 +755,7 @@ Imports Microsoft.Office.Core
             Else
                 AddVIP(oKontakt)
             End If
-            C_HF.NAR(oKontakt)
+            C_hf.NAR(oKontakt)
         End If
 
         oKontakt = Nothing
@@ -771,7 +771,7 @@ Imports Microsoft.Office.Core
 
         CtBtnPressedVIP = IsVIP(oKontact)
 
-        C_HF.NAR(oKontact)
+        C_hf.NAR(oKontact)
         oKontact = Nothing
     End Function
 
@@ -785,7 +785,7 @@ Imports Microsoft.Office.Core
 
             tBtnPressedVIP = IsVIP(olContact)
 
-            C_HF.NAR(olContact)
+            C_hf.NAR(olContact)
             olContact = Nothing
         End If
     End Function
@@ -1510,7 +1510,7 @@ Imports Microsoft.Office.Core
                 P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
                 If Not P_AnrList Is Nothing Then
-                    P_AnrList = New formImportAnrList(C_FBox, C_AnrMon, C_HF, C_DP, C_XML)
+                    P_AnrList = New formImportAnrList(C_FBox, C_AnrMon, C_hf, C_DP, C_XML)
                 End If
                 P_AnrList.StartAuswertung(True)
             Case TaskToDo.RestartAnrMon
@@ -1546,13 +1546,13 @@ Imports Microsoft.Office.Core
 #End Region
 
 #Region "RingCallList"
-    Friend Overloads Sub UpdateList(ByVal ListName As String, _
-                                    ByVal Anrufer As String, _
-                                    ByVal TelNr As String, _
-                                    ByVal Zeit As String, _
-                                    ByVal StoreID As String, _
-                                    ByVal KontaktID As String, _
-                                    ByVal vCard As String, _
+    Friend Overloads Sub UpdateList(ByVal ListName As String,
+                                    ByVal Anrufer As String,
+                                    ByVal TelNr As String,
+                                    ByVal Zeit As String,
+                                    ByVal StoreID As String,
+                                    ByVal KontaktID As String,
+                                    ByVal vCard As String,
                                     ByVal Verpasst As Boolean)
 
         Dim NodeNames As New ArrayList
@@ -1570,7 +1570,7 @@ Imports Microsoft.Office.Core
         xPathTeile.Add("Eintrag[@ID=""" & index - 1 & """]")
         xPathTeile.Add("TelNr")
 
-        If Not C_HF.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
+        If Not C_hf.TelNrVergleich(C_XML.Read(C_DP.XMLDoc, xPathTeile, "0"), TelNr) Then
 
             NodeNames.Add("Index")
             NodeValues.Add(CStr((index + 1) Mod C_DP.P_TBNumEntryList))
@@ -1706,11 +1706,11 @@ Imports Microsoft.Office.Core
             If oContact Is Nothing Then
                 Select Case Telefonat(0)
                     Case DataProvider.P_Def_NameListVIP
-                        If C_HF.MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionListen") = MsgBoxResult.Yes Then
+                        If C_hf.MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben. Soll der zugehörige VIP-Eintrag entfernt werden?", MsgBoxStyle.YesNo, "OnActionListen") = MsgBoxResult.Yes Then
                             RemoveVIP(KontaktID, StoreID)
                         End If
                     Case Else
-                        C_HF.MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionListen")
+                        C_hf.MsgBox("Der zuwählende Kontakt wurde nicht gefunden. Er wurde möglicherweise gelöscht oder verschoben.", MsgBoxStyle.Critical, "OnActionListen")
                 End Select
             End If
         Else
@@ -1752,9 +1752,9 @@ Imports Microsoft.Office.Core
         If Not NameListe = DataProvider.P_Def_StringNull Then
             If UBound(Eintrag) = 2 Then
                 xPathTeile.Add("Eintrag[@ID=""" & Eintrag(2) & """]")
-                C_HF.LogFile("Die Eintrag mit ID" & Eintrag(2) & " der Liste " & NameListe & " wurde gelöscht.")
+                C_hf.LogFile("Die Eintrag mit ID" & Eintrag(2) & " der Liste " & NameListe & " wurde gelöscht.")
             Else
-                C_HF.LogFile("Die Liste " & NameListe & " wurde gelöscht.")
+                C_hf.LogFile("Die Liste " & NameListe & " wurde gelöscht.")
             End If
 
             C_XML.Delete(C_DP.XMLDoc, xPathTeile)

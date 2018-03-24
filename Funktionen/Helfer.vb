@@ -923,7 +923,7 @@ Public Class Helfer
     ''' <param name="TelNr2">Zweite zu vergleichende Telefonnummer.</param>
     ''' <returns>True, wenn gleich, False wenn nicht gleich.</returns>
     Public Function TelNrVergleich(ByVal TelNr1 As String, ByVal TelNr2 As String) As Boolean
-        Return nurZiffern(TelNr1).Equals(nurZiffern(TelNr2))
+        Return nurZiffern(EigeneVorwahlenEntfernen(TelNr1)).Equals(nurZiffern(EigeneVorwahlenEntfernen(TelNr2)))
     End Function
 #End Region
 
