@@ -2853,9 +2853,12 @@ Public Class FritzBox
             C_hf.LogFile("SendDialRequestToBoxV3: Ändere Dialport auf " & UPnPDialport)
             InPutData.Add("NewX_AVM-DE_PhoneName", UPnPDialport)
             OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
+
             If OutPutData.Contains("Error") Then
                 C_hf.LogFile(OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                 PortChangeSuccess = False
+            Else
+                PortChangeSuccess = True
             End If
         End If
 
@@ -2866,7 +2869,7 @@ Public Class FritzBox
             ' Senden des Wählkomandos
             InPutData.Clear()
             If bHangUp Then
-                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialHangup")  ' Alt X_AVM-DE_Hangup
+                OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialHangup")
             Else
                 InPutData.Add("NewX_AVM-DE_PhoneNumber", DialCodetoBox)
                 OutPutData = C_FBoxUPnP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
