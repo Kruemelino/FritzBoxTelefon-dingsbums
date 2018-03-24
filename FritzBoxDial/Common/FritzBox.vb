@@ -1,5 +1,6 @@
 Imports System.Collections.Generic
 Imports System.ComponentModel
+Imports System.Text.RegularExpressions
 Imports System.Xml
 
 Public Class FritzBox
@@ -82,7 +83,7 @@ Public Class FritzBox
         Friend Sub Add(ByVal NeueTelNr As FritzBoxTelefonnummer)
             Dim tmpTelNr As FritzBoxTelefonnummer
             If NeueTelNr.TelNr.StartsWith("SIP") Then
-                tmpTelNr = Nummernliste.Find(Function(SIP) SIP.ID0 = CInt(NeueTelNr.TelNr.Replace("SIP", "")))
+                tmpTelNr = Nummernliste.Find(Function(SIP) SIP.ID0 = CInt(Regex.Match(NeueTelNr.TelNr, "\d+").Value)) 'CInt(NeueTelNr.TelNr.Replace("SIP", "")))
                 If Not tmpTelNr.TelNr = DataProvider.P_Def_LeerString Then
                     NeueTelNr.TelNr = tmpTelNr.TelNr
                 End If
@@ -2158,7 +2159,7 @@ Public Class FritzBox
                         tmpTelNr = .StringEntnehmen(Code, "['telcfg:settings/" & Port & "/Number" & j & "'] = '", "'")
                         If Not tmpTelNr = DataProvider.P_Def_ErrorMinusOne_String Then
                             If Not Len(tmpTelNr) = 0 Then
-                                If Strings.Left(tmpTelNr, 3) = "SIP" Then
+                                If tmpTelNr.StartsWith("SIP") Then
                                     tmpTelNr = SIP(CInt(Mid(tmpTelNr, 4, 1)))
                                 Else
                                     tmpTelNr = .EigeneVorwahlenEntfernen(tmpTelNr)
@@ -3390,7 +3391,7 @@ Public Class FritzBox
             '#Region "Telefonnummern"
             ' Telefonnummern des Kontaktes
             XMLKnoten = Eintrag.DocumentElement.GetElementsByTagName("telephony")(0)
-            Liste = {.AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
+            Liste = { .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CarTelephoneNumber, .CompanyMainTelephoneNumber, .HomeTelephoneNumber, .Home2TelephoneNumber, .ISDNNumber, .MobileTelephoneNumber, .OtherTelephoneNumber, .PagerNumber, .PrimaryTelephoneNumber, .RadioTelephoneNumber, .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber, .TTYTDDTelephoneNumber}
 
             For Each TelNr As String In Liste
                 If Not TelNr = DataProvider.P_Def_LeerString Then
@@ -3425,7 +3426,7 @@ Public Class FritzBox
             '#Region "E-Mail"
             ' E-Mail des Kontaktes
             XMLKnoten = Eintrag.DocumentElement.GetElementsByTagName("services")(0)
-            Liste = {.Email1Address, .Email2Address, .Email3Address}
+            Liste = { .Email1Address, .Email2Address, .Email3Address}
 
             For Each EmailAddress As String In Liste
                 If Not EmailAddress = DataProvider.P_Def_LeerString Then
