@@ -6,255 +6,31 @@
 
 #Region "Properties"
 
-    Private _ID As Integer
     Friend Property ID() As Integer
-        Get
-            Return _ID
-        End Get
-        Set(ByVal value As Integer)
-            _ID = value
-        End Set
-    End Property
-
-    Private _Typ As AnrufRichtung
     Friend Property Typ() As AnrufRichtung
-        Get
-            Return _Typ
-        End Get
-        Set(ByVal value As AnrufRichtung)
-            _Typ = value
-        End Set
-    End Property
-
-    Private _Zeit As Date
     Friend Property Zeit() As Date
-        Get
-            Return _Zeit
-        End Get
-        Set(ByVal value As Date)
-            _Zeit = value
-        End Set
-    End Property
-
-    Private _MSN As String
     Friend Property MSN() As String
-        Get
-            Return _MSN
-        End Get
-        Set(ByVal value As String)
-            _MSN = value
-        End Set
-    End Property
-
-    Private _RingTime As Double
     Friend Property RingTime() As Double
-        Get
-            Return _RingTime
-        End Get
-        Set(ByVal value As Double)
-            _RingTime = value
-        End Set
-    End Property
-
-    Private _TelNr As String
     Friend Property TelNr() As String
-        Get
-            Return _TelNr
-        End Get
-        Set(ByVal value As String)
-            _TelNr = value
-        End Set
-    End Property
-
-    Private _KontaktID As String
     Friend Property KontaktID() As String
-        Get
-            Return _KontaktID
-        End Get
-        Set(ByVal value As String)
-            _KontaktID = value
-        End Set
-    End Property
-
-    Private _StoreID As String
     Friend Property StoreID() As String
-        Get
-            Return _StoreID
-        End Get
-        Set(ByVal value As String)
-            _StoreID = value
-        End Set
-    End Property
-
-    Private _Dauer As Integer
     Friend Property Dauer() As Integer
-        Get
-            Return _Dauer
-        End Get
-        Set(ByVal value As Integer)
-            _Dauer = value
-        End Set
-    End Property
-
-    Private _NSN As Integer
     Friend Property NSN() As Integer
-        Get
-            Return _NSN
-        End Get
-        Set(ByVal value As Integer)
-            _NSN = value
-        End Set
-    End Property
-
-    Private _Subject As String
     Friend Property Subject() As String
-        Get
-            Return _Subject
-        End Get
-        Set(ByVal value As String)
-            _Subject = value
-        End Set
-    End Property
-
-    Private _Body As String
     Friend Property Body() As String
-        Get
-            Return _Body
-        End Get
-        Set(ByVal value As String)
-            _Body = value
-        End Set
-    End Property
-
-    Private _Categories As String
     Friend Property Categories() As String
-        Get
-            Return _Categories
-        End Get
-        Set(ByVal value As String)
-            _Categories = value
-        End Set
-    End Property
-
-    Private _Firma As String
     Friend Property Firma() As String
-        Get
-            Return _Firma
-        End Get
-        Set(ByVal value As String)
-            _Firma = value
-        End Set
-    End Property
-
-    Private _olContact As Outlook.ContactItem
-    Friend Property olContact() As Outlook.ContactItem
-        Get
-            Return _olContact
-        End Get
-        Set(ByVal value As Outlook.ContactItem)
-            _olContact = value
-        End Set
-    End Property
-
-    Private _vCard As String
+    Friend Property OlContact() As Outlook.ContactItem
     Friend Property vCard() As String
-        Get
-            Return _vCard
-        End Get
-        Set(ByVal value As String)
-            _vCard = value
-        End Set
-    End Property
-
-    Private _Anrufer As String
     Friend Property Anrufer() As String
-        Get
-            Return _Anrufer
-        End Get
-        Set(ByVal value As String)
-            _Anrufer = value
-        End Set
-    End Property
-
-    Private _TelName As String
     Friend Property TelName() As String
-        Get
-            Return _TelName
-        End Get
-        Set(ByVal value As String)
-            _TelName = value
-        End Set
-    End Property
-
-    Private _Angenommen As Boolean
     Friend Property Angenommen() As Boolean
-        Get
-            Return _Angenommen
-        End Get
-        Set(ByVal value As Boolean)
-            _Angenommen = value
-        End Set
-    End Property
-
-    Private _PopUpAnrMon As F_AnrMon
     Friend Property PopupAnrMon() As F_AnrMon
-        Get
-            Return _PopUpAnrMon
-        End Get
-        Set(ByVal value As F_AnrMon)
-            _PopUpAnrMon = value
-        End Set
-    End Property
-
-    Private _PopUpStoppuhr As F_StoppUhr
     Friend Property PopupStoppuhr() As F_StoppUhr
-        Get
-            Return _PopUpStoppuhr
-        End Get
-        Set(ByVal value As F_StoppUhr)
-            _PopUpStoppuhr = value
-        End Set
-    End Property
-
-    Private _Beendet As Boolean
     Friend Property Beendet() As Boolean
-        Get
-            Return _Beendet
-        End Get
-        Set(ByVal value As Boolean)
-            _Beendet = value
-        End Set
-    End Property
-
-    Private _Online As Boolean
     Friend Property Online() As Boolean
-        Get
-            Return _Online
-        End Get
-        Set(ByVal value As Boolean)
-            _Online = value
-        End Set
-    End Property
-
-    Private _Verpasst As Boolean
     Friend Property Verpasst() As Boolean
-        Get
-            Return _Verpasst
-        End Get
-        Set(ByVal value As Boolean)
-            _Verpasst = value
-        End Set
-    End Property
-
-    Private _AnrMonAusblenden As Boolean
     Friend Property AnrMonAusblenden() As Boolean
-        Get
-            Return _AnrMonAusblenden
-        End Get
-        Set(ByVal value As Boolean)
-            _AnrMonAusblenden = value
-        End Set
-    End Property
 #End Region
 
 End Class
@@ -305,14 +81,14 @@ Public Class OutlookInterface
                     .Companies = Telefonat.Firma
                     .Categories = Telefonat.Categories
 
-#If Not OVer = 15 Then
+#If OVer = 14 Then
                     If (Not (Telefonat.KontaktID = DataProvider.P_Def_LeerString Or Telefonat.StoreID = DataProvider.P_Def_LeerString)) And Not _
                         Left(Telefonat.KontaktID, 2) = DataProvider.P_Def_ErrorMinusOne_String Then
                         .Links.Add(Telefonat.olContact)
                     End If
 #End If
                     '.Save()
-                    .Close(Microsoft.Office.Interop.Outlook.OlInspectorClose.olSave)
+                    .Close(Outlook.OlInspectorClose.olSave)
                 End With
                 olJournal = Nothing
             End If
@@ -380,16 +156,9 @@ Public Class OutlookInterface
         UserInitials = "Initialien"
         Try
             '64 Bit prüfen!
-#If OVer = 11 Then
-            'Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\11.0\Common\UserInfo")
-            'UserName = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserName"), Byte()))
-            'UserInitials = System.Text.Encoding.Unicode.GetString(CType(Regkey.GetValue("UserInitials"), Byte()))
-            UserInitials = "Name"
-#Else
             Regkey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Office\Common\UserInfo")
             UserName = Regkey.GetValue("UserName", "Name").ToString
             UserInitials = Regkey.GetValue("UserInitials", "Initialien").ToString
-#End If
         Catch ex As Exception
             C_hf.LogFile("Fehler beim Zugriff auf die Registry (BenutzerInitialien): " & ex.Message)
         End Try

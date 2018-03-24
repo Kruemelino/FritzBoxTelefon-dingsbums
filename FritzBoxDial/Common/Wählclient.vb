@@ -82,7 +82,7 @@ Public Class Wählclient
                 C_hf.NAR(aktKontakt)
                 aktKontakt = Nothing
             ElseIf TypeOf olAuswahl.Item(1) Is Outlook.AppointmentItem Then
-#If Not OVer = 15 Then
+#If OVer = 14 Then
                 Dim oAppItem As Outlook.AppointmentItem = CType(olAuswahl.Item(1), Outlook.AppointmentItem)
                 Dim oAppLink As Outlook.Link
                 Dim oAppThing As Object
@@ -101,7 +101,7 @@ Public Class Wählclient
                 Dim aktJournal As Outlook.JournalItem = CType(olAuswahl.Item(1), Outlook.JournalItem)
                 If InStr(aktJournal.Body, DataProvider.P_Def_StringUnknown) = 0 _
                     And Not InStr(aktJournal.Categories, "FritzBox Anrufmonitor") = 0 Then
-#If Not OVer = 15 Then
+#If OVer = 14 Then
                     If Not aktJournal.Links.Count = 0 Then
                         Dim oAppLink As Outlook.Link
                         Dim oAppThing As Object
@@ -115,17 +115,17 @@ Public Class Wählclient
                         Next 'oAppLink
                     Else
 #End If
-                    pos1 = InStr(1, aktJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
-                    pos2 = InStr(1, aktJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
-                    If Not pos1 = 0 And Not pos2 = 0 Then
-                        pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
-                        vCard = Mid(aktJournal.Body, pos1, pos2 - pos1)
-                    Else
-                        vCard = DataProvider.P_Def_LeerString
-                    End If
+                        pos1 = InStr(1, aktJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
+                        pos2 = InStr(1, aktJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
+                        If Not pos1 = 0 And Not pos2 = 0 Then
+                            pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
+                            vCard = Mid(aktJournal.Body, pos1, pos2 - pos1)
+                        Else
+                            vCard = DataProvider.P_Def_LeerString
+                        End If
 
-                    Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), vCard, False)
-#If Not OVer = 15 Then
+                        Wählbox(Nothing, Mid(aktJournal.Body, 11, InStr(1, aktJournal.Body, vbNewLine) - 11), vCard, False)
+#If OVer = 14 Then
                     End If
 #End If
 
@@ -302,7 +302,7 @@ Public Class Wählclient
                 ' TelNr aus dem .Body entnehmen
                 TelNr = Mid(olJournal.Body, 11, InStr(1, olJournal.Body, vbNewLine) - 11)
                 If Not TelNr = DataProvider.P_Def_StringUnknown Then
-#If Not OVer = 15 Then
+#If OVer = 14 Then
                     If Not olJournal.Links.Count = 0 Then 'KontaktID des darangehangenen Kontaktes ermitteln
                         Dim olLink As Outlook.Link = Nothing
                         For Each olLink In olJournal.Links
@@ -326,7 +326,7 @@ Public Class Wählclient
                     End If
 
                     If Not TelNr Is DataProvider.P_Def_LeerString Then Wählbox(Nothing, TelNr, vCard, False)
-#If Not OVer = 15 Then
+#If OVer = 14 Then
                     End If
 #End If
                 End If

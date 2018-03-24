@@ -119,9 +119,7 @@ Friend Class AnrufMonitor
 
 #Region "Strukturen"
     Private Structure DefAnrMon
-#If OVer = 11 Then
-        Private Dummy As String
-#End If
+
         Friend Const FB_RING As String = "RING"
         Friend Const FB_CALL As String = "CALL"
         Friend Const FB_CONNECT As String = "CONNECT"
@@ -230,11 +228,9 @@ Friend Class AnrufMonitor
 
         AnrMonAktiv = CBool(e.Result)
         AnrMonError = Not AnrMonAktiv
-#If OVer < 14 Then
-        C_GUI.SetAnrMonButton()
-#Else
+
         C_GUI.RefreshRibbon()
-#End If
+
         If AnrMonAktiv Then
             'If TimerReStart IsNot Nothing Then
             '    TimerReStart = C_hf.KillTimer(TimerReStart)
@@ -286,11 +282,8 @@ Friend Class AnrufMonitor
         RemoteEP = Nothing
         IPHostInfo = Nothing
 
-#If OVer < 14 Then
-        C_GUI.SetAnrMonButton()
-#Else
         C_GUI.RefreshRibbon()
-#End If
+
     End Sub
 
     Private Sub TimerReStart_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles TimerReStart.Elapsed
@@ -353,11 +346,8 @@ Friend Class AnrufMonitor
                 AnrMonStream = Nothing
             End If
 
-#If OVer < 14 Then
-            C_GUI.SetAnrMonButton()
-#Else
             C_GUI.RefreshRibbon()
-#End If
+
         Else
             ' TCP/IP-Verbindung öffnen
             If C_DP.P_CBUseAnrMon Then
@@ -568,27 +558,22 @@ Friend Class AnrufMonitor
                         C_GUI.UpdateList(DataProvider.P_Def_NameListRING, Telefonat)
                     End If
 
-#If OVer < 14 Then
-                    If C_DP.P_CBSymbAnrListe Then C_GUI.FillPopupItems(DataProvider.P_Def_NameListRING)
-#End If
                 End If
                 ' Kontakt anzeigen
                 If C_DP.P_CBAnrMonZeigeKontakt And .Online Then
                     If .olContact Is Nothing Then .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
-#If Not OVer = 11 Then
                     If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
-#End If
+
                     ' Anscheinend wird nach dem Einblenden ein Save ausgeführt, welchses eine Indizierung zur Folge hat.
                     ' Grund für den Save-Forgang ist unbekannt.
                     .olContact.Display()
                 End If
 
                 'Notizeintag
-#If Not OVer = 11 Then
+
                 If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
                     C_KF.FillNote(AnrMonEvent.AnrMonRING, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                 End If
-#End If
             End With
         End If
     End Sub '(AnrMonRING)
@@ -715,18 +700,14 @@ Friend Class AnrufMonitor
                 If (.ID < DataProvider.P_Def_AnrListIDOffset) OrElse (.ID >= DataProvider.P_Def_AnrListIDOffset And C_DP.P_CBAnrListeUpdateCallLists) Then
                     C_GUI.UpdateList(DataProvider.P_Def_NameListCALL, Telefonat)
                 End If
-#If OVer < 14 Then
-                If C_DP.P_CBSymbWwdh Then C_GUI.FillPopupItems(DataProvider.P_Def_NameListCALL)
-#End If
                 ' Kontakt öffnen
                 If C_DP.P_CBAnrMonZeigeKontakt And .Online Then
 
                     If .olContact Is Nothing Then
-                            .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
-                        End If
-#If OVer > 11 Then
-                        If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
-#End If
+                        .olContact = C_KF.ErstelleKontakt(.KontaktID, .StoreID, .vCard, .TelNr, False)
+                    End If
+                    If C_DP.P_CBNote Then C_KF.AddNote(.olContact)
+
                     Try
                         .olContact.Display()
                     Catch Err As Exception
@@ -734,11 +715,9 @@ Friend Class AnrufMonitor
                     End Try
                 End If
                 'Notizeintag
-#If OVer > 11 Then
                 If C_DP.P_CBNote AndAlso .olContact IsNot Nothing Then
                     C_KF.FillNote(AnrMonEvent.AnrMonCALL, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                 End If
-#End If
             End With
             xPathTeile = Nothing
             C_Popup.TelefonatsListe.Add(Telefonat)
@@ -838,13 +817,11 @@ Friend Class AnrufMonitor
                 End If
 
                 'Notizeintag
-#If Not OVer = 11 Then
                 If C_DP.P_CBNote Then
                     If .olContact IsNot Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
-#End If
             End With
         End If
 
@@ -1009,13 +986,11 @@ Friend Class AnrufMonitor
                 End If
 
                 'Notizeintag
-#If OVer > 11 Then
                 If C_DP.P_CBNote Then
                     If .olContact IsNot Nothing Then
                         C_KF.FillNote(AnrMonEvent.AnrMonDISCONNECT, Telefonat, C_DP.P_CBAnrMonZeigeKontakt)
                     End If
                 End If
-#End If
                 If .PopupAnrMon Is Nothing And .PopupStoppuhr Is Nothing Then
                     C_Popup.TelefonatsListe.Remove(Telefonat)
                 Else

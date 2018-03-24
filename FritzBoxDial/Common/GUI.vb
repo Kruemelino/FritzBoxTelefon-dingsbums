@@ -1,9 +1,5 @@
-﻿#If OVer < 14 Then
-Imports Microsoft.Office.Core
-#End If
-<Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
+﻿<Runtime.InteropServices.ComVisible(True)> Public Class GraphicalUserInterface
 #Region "Ribbon Grundlagen für Outlook 2007 bis 2013"
-#If Not OVer = 11 Then
     Implements Office.IRibbonExtensibility
 
     Private RibbonObjekt As Office.IRibbonUI
@@ -12,10 +8,8 @@ Imports Microsoft.Office.Core
         Dim File As String
 
         Select Case ribbonID
-#If OVer >= 14 Then
             Case "Microsoft.Outlook.Explorer"
                 File = GetResourceText("FritzBoxDial.RibbonExplorer.xml")
-#End If
             Case "Microsoft.Outlook.Mail.Read"
                 File = GetResourceText("FritzBoxDial.RibbonInspectorMailRead.xml")
             Case "Microsoft.Outlook.Journal"
@@ -25,11 +19,6 @@ Imports Microsoft.Office.Core
             Case Else
                 File = DataProvider.P_Def_LeerString
         End Select
-#If OVer = 12 Then
-        If Not File = DataProvider.P_Def_LeerString Then
-            File = Replace(File, "http://schemas.microsoft.com/office/2009/07/customui", "http://schemas.microsoft.com/office/2006/01/customui", , 1, CompareMethod.Text)
-        End If
-#End If
         Return File
     End Function
 
@@ -47,15 +36,6 @@ Imports Microsoft.Office.Core
         Next
         Return Nothing
     End Function
-#End If
-#End Region
-
-#Region "Commandbar Grundlagen für Outlook 2003 & 2007"
-#If OVer < 14 Then
-    Private FritzBoxDialCommandBar As Office.CommandBar
-    Private WithEvents bAnrMonTimer As Timers.Timer
-    Private bool_banrmon As Boolean
-#End If
 #End Region
 
 #Region "Eigene Klassen"
@@ -67,78 +47,13 @@ Imports Microsoft.Office.Core
 
 #Region "Eigene Formulare"
     Private F_RWS As formRWSuche
-#End Region
-
-#Region "Properies"
-    Private C_WClient As Wählclient
     Friend Property P_CallClient() As Wählclient
-        Get
-            Return C_WClient
-        End Get
-        Set(ByVal value As Wählclient)
-            C_WClient = value
-        End Set
-    End Property
-
-    Private C_AnrMon As AnrufMonitor
     Friend Property P_AnrufMonitor() As AnrufMonitor
-        Get
-            Return C_AnrMon
-        End Get
-        Set(ByVal value As AnrufMonitor)
-            C_AnrMon = value
-        End Set
-    End Property
-
-    Private C_OLI As OutlookInterface
     Public Property P_OlInterface() As OutlookInterface
-        Get
-            Return C_OLI
-        End Get
-        Set(ByVal value As OutlookInterface)
-            C_OLI = value
-        End Set
-    End Property
-
-    Private C_FBox As FritzBox
     Public Property P_FritzBox() As FritzBox
-        Get
-            Return C_FBox
-        End Get
-        Set(ByVal value As FritzBox)
-            C_FBox = value
-        End Set
-    End Property
-
-    Private C_PopUp As Popup
     Public Property P_PopUp() As Popup
-        Get
-            Return C_PopUp
-        End Get
-        Set(ByVal value As Popup)
-            C_PopUp = value
-        End Set
-    End Property
-
-    Private F_Cfg As formCfg
     Public Property P_Config() As formCfg
-        Get
-            Return F_Cfg
-        End Get
-        Set(ByVal value As formCfg)
-            F_Cfg = value
-        End Set
-    End Property
-
-    Private F_AnrList As formImportAnrList
     Public Property P_AnrList() As formImportAnrList
-        Get
-            Return F_AnrList
-        End Get
-        Set(ByVal value As formImportAnrList)
-            F_AnrList = value
-        End Set
-    End Property
 #End Region
 
     Friend Sub New(ByVal HelferKlasse As Helfer, ByVal DataProviderKlasse As DataProvider, ByVal Inverssuche As formRWSuche, ByVal KontaktKlasse As KontaktFunktionen, ByVal PopUpKlasse As Popup, ByVal XMLKlasse As XML)
@@ -146,13 +61,13 @@ Imports Microsoft.Office.Core
         C_DP = DataProviderKlasse
         F_RWS = Inverssuche
         C_KF = KontaktKlasse
-        C_PopUp = PopUpKlasse
+        P_PopUp = PopUpKlasse
         C_XML = XMLKlasse
     End Sub
 
-#Region "Ribbon Behandlung für Outlook 2007 bis 2016"
-#If Not OVer = 11 Then
-#Region "Ribbon Inspector Office 2007 bis Office 2016" ' Ribbon Inspektorfenster
+#Region "Ribbon Behandlung für Outlook 2010 bis 2016"
+
+#Region "Ribbon Inspector Office 2010 bis Office 2016" ' Ribbon Inspektorfenster
 
     ''' <summary>
     ''' Gibt zurück, ob das JournalItem, von diesem Addin erstellt wurde. Dazu wird die Kategorie geprüft.
@@ -206,7 +121,7 @@ Imports Microsoft.Office.Core
     Private Function SetLabelJournal(ByVal control As Office.IRibbonControl) As String
         SetLabelJournal = DataProvider.P_CMB_Kontakt_Erstellen
 
-#If Not OVer = 15 Then
+#If OVer = 14 Then
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
         If olJournal IsNot Nothing Then
             For Each olLink As Outlook.Link In olJournal.Links
@@ -231,7 +146,7 @@ Imports Microsoft.Office.Core
     Private Function SetScreenTipJournal(ByVal control As Office.IRibbonControl) As String
         SetScreenTipJournal = DataProvider.P_CMB_Kontakt_Erstellen_ToolTipp
 
-#If Not OVer = 15 Then
+#If OVer = 14 Then
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
         If olJournal IsNot Nothing Then
             For Each olLink As Outlook.Link In olJournal.Links
@@ -269,7 +184,6 @@ Imports Microsoft.Office.Core
 #End Region 'Ribbon Inspector
 
 #Region "Ribbon Expector Office 2010 bis Office 2016" 'Ribbon Explorer
-#If OVer >= 14 Then
 
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon
@@ -379,7 +293,7 @@ Imports Microsoft.Office.Core
     End Function
 
     Public Function GetPhonebooks(ByVal control As Office.IRibbonControl) As String
-        Dim TelBuchList As String() = C_FBox.GetTelefonbuchListe()
+        Dim TelBuchList As String() = P_FritzBox.GetTelefonbuchListe()
         Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf &
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
 
@@ -446,7 +360,7 @@ Imports Microsoft.Office.Core
 
     Public Function GetPressed(ByVal control As Office.IRibbonControl) As Boolean
         GetPressed = False
-        If C_AnrMon IsNot Nothing Then GetPressed = C_AnrMon.AnrMonAktiv
+        If P_AnrufMonitor IsNot Nothing Then GetPressed = P_AnrufMonitor.AnrMonAktiv
     End Function
 
     Public Function UseAnrMon(ByVal control As Microsoft.Office.Core.IRibbonControl) As Boolean
@@ -497,7 +411,6 @@ Imports Microsoft.Office.Core
                 GetVisibleUploadFKT = C_DP.P_RBFBComUPnP
         End Select
     End Function
-#End If
 #End Region 'Ribbon Explorer
 
 #Region "Ribbon: Label, ScreenTipp, ImageMso, OnAction"
@@ -638,11 +551,11 @@ Imports Microsoft.Office.Core
                 Return "ToolDelete"
             Case "btnAnrMonIO"
                 GetItemImageMso = "PersonaStatusBusy"
-                If C_AnrMon IsNot Nothing Then
-                    If C_AnrMon.AnrMonAktiv Then
+                If P_AnrufMonitor IsNot Nothing Then
+                    If P_AnrufMonitor.AnrMonAktiv Then
                         GetItemImageMso = "PersonaStatusOnline"
                     Else
-                        If Not C_AnrMon.AnrMonError Then GetItemImageMso = "PersonaStatusOffline"
+                        If Not P_AnrufMonitor.AnrMonError Then GetItemImageMso = "PersonaStatusOffline"
                     End If
                 End If
             Case "btnAnrMonRestart"
@@ -685,7 +598,7 @@ Imports Microsoft.Office.Core
             Case "dynListDel"
                 ClearInListe(control.Id)
             Case "btnAnrMonIO"
-                C_AnrMon.AnrMonStartStopp()
+                P_AnrufMonitor.AnrMonStartStopp()
             Case "btnAnrMonRestart"
                 OnAction(TaskToDo.RestartAnrMon)
             Case "btnAnrMonShow"
@@ -696,16 +609,16 @@ Imports Microsoft.Office.Core
                 OnAction(TaskToDo.OpenConfig)
             Case "cbtnUpload"  ' Kontextmenü
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), "")
+                P_FritzBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), "")
             Case "btnUpload"   ' Inspector
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), "")
+                P_FritzBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), "")
             Case "cdMUpload"  ' Kontext + Telefonbuchauswahl
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), Split(control.Id, "_", 2, CompareMethod.Text)(1))
+                P_FritzBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), Split(control.Id, "_", 2, CompareMethod.Text)(1))
             Case "MUpload"  ' Inspector + Telefonbuchauswahl
                 Dim oKontakt As Outlook.ContactItem = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
-                C_FBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), Split(control.Id, "_", 2, CompareMethod.Text)(1))
+                P_FritzBox.UploadKontaktToFritzBox(oKontakt, IsVIP(oKontakt), Split(control.Id, "_", 2, CompareMethod.Text)(1))
             Case "btnRWS01" ' RWS11880
                 F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, CType(control.Context, Outlook.Inspector))
             Case "btnRWS02" ' RWSDasOertliche
@@ -760,9 +673,8 @@ Imports Microsoft.Office.Core
 
         oKontakt = Nothing
         ' Fehler unter Office 2007
-#If OVer >= 14 Then
         RibbonObjekt.Invalidate()
-#End If
+
     End Sub
 
     Public Function CtBtnPressedVIP(ByVal control As Office.IRibbonControl) As Boolean
@@ -792,7 +704,6 @@ Imports Microsoft.Office.Core
 
 #End Region
 
-#End If
 #End Region
 
 #Region "VIP-Generell"
@@ -857,11 +768,7 @@ Imports Microsoft.Office.Core
         xPathTeile = Nothing
         AttributeNames = Nothing
         AttributeValues = Nothing
-#If OVer < 14 Then
-        FillPopupItems(DataProvider.P_Def_NameListVIP)
-#Else
         RefreshRibbon()
-#End If
         Return True
     End Function
 
@@ -870,7 +777,7 @@ Imports Microsoft.Office.Core
         oKontact = Nothing
 
         Try
-            oKontact = CType(CType(C_OLI.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+            oKontact = CType(CType(P_OlInterface.OutlookApplication.GetNamespace("MAPI"), Outlook.NameSpace).GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Catch : End Try
 
         Return AddVIP(oKontact)
@@ -913,569 +820,12 @@ Imports Microsoft.Office.Core
 
         End With
 
-#If OVer < 14 Then
-        FillPopupItems(DataProvider.P_Def_NameListVIP)
-#Else
         RefreshRibbon()
-#End If
+
         xPathTeile = Nothing
         C_DP.SpeichereXMLDatei()
         Return True
     End Function
-#End Region
-
-#Region "Commandbar für Office 2003 & 2007"
-#If OVer < 14 Then
-    Friend Function AddCmdBar(ByVal MenuName As String, ByVal visible As Boolean) As Office.CommandBar
-
-        AddCmdBar = Nothing
-        Try
-            'Ab hier für Menüeintrag
-            Dim oExp As Outlook.Explorer
-            Dim olMBars As Office.CommandBars
-            Dim olMBar As Office.CommandBar = Nothing
-            oExp = C_OLI.OutlookApplication.ActiveExplorer
-            olMBars = oExp.CommandBars
-            For Each olMBar In olMBars
-                If olMBar.Name = MenuName Then
-                    With C_HF
-                        .NAR(olMBar)
-                        .NAR(olMBars)
-                        .NAR(oExp)
-                    End With
-
-                    olMBar = Nothing
-                    olMBars = Nothing
-                    oExp = Nothing
-                    Return olMBar   ' wenn die Fritz CommandBar schon vorhanden ist, 
-                End If
-            Next
-
-            olMBar = oExp.CommandBars.Add(, , , True)
-            With olMBar
-                .Name = DataProvider.P_Def_Addin_KurzName
-                .NameLocal = DataProvider.P_Def_Addin_KurzName
-                .Visible = visible
-                .Position = Office.MsoBarPosition.msoBarTop
-            End With
-            FritzBoxDialCommandBar = olMBar
-            AddCmdBar = olMBar
-
-            With C_HF
-                .NAR(olMBars) : .NAR(oExp)
-            End With
-
-            olMBar = Nothing
-            olMBars = Nothing
-            oExp = Nothing
-
-        Catch ex As Exception
-            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "AddCmdBar")
-        End Try
-
-    End Function
-
-    Friend Function AddButtonsToCmb(ByVal cmdBar As Office.CommandBar, _
-                                    ByVal btnCaption As String, _
-                                    ByVal PosIndex As Integer, _
-                                    ByVal btnFaceId As Integer, _
-                                    ByVal btnStyle As Office.MsoButtonStyle, _
-                                    ByVal btnTag As String, _
-                                    ByVal btnToolTip As String) As Office.CommandBarButton
-
-        Dim cbBtn As Office.CommandBarControl
-        Dim cBtn As Office.CommandBarButton
-        AddButtonsToCmb = Nothing ' Default Return-Wert
-
-        Try
-            cbBtn = cmdBar.FindControl(Office.MsoControlType.msoControlButton, , btnTag) 'Haben wir bereits einen solchen Knopf?
-            If cbBtn Is Nothing Then ' Wenn nein, erstelle einen neuen.
-                'korrekten Index ermitteln, falls vorherige Add's fehlgeschlagen sein sollten
-                If cmdBar.Controls.Count < PosIndex Then PosIndex = cmdBar.Controls.Count + 1
-                cBtn = CType(cmdBar.Controls.Add(Office.MsoControlType.msoControlButton, , , PosIndex, True), Office.CommandBarButton)
-                With cBtn
-                    .BeginGroup = True
-                    .FaceId = btnFaceId
-                    .Style = btnStyle
-                    .Caption = btnCaption
-                    .Tag = btnTag
-                    .Visible = True
-                End With
-                Return cBtn
-            End If
-            cBtn = CType(cbBtn, Office.CommandBarButton)
-            Return cBtn
-        Catch ex As Exception
-            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "AddButtonsToCmb")
-        End Try
-    End Function
-
-    Friend Sub AddPopupsToExplorer(ByRef cmdBar As Office.CommandBar, ByRef cbPopup As Office.CommandBarPopup, _
-    ByVal btnCaption As String, ByVal PosIndex As Integer, ByVal btnTag As String, _
-    ByVal btnTooltipText As String)
-
-        Try
-            cbPopup = CType(cmdBar.FindControl(Office.MsoControlType.msoControlPopup, , btnTag, , False), Office.CommandBarPopup)
-            If cbPopup Is Nothing Then
-                cbPopup = CType(cmdBar.Controls.Add(Office.MsoControlType.msoControlPopup, , , PosIndex, True), Office.CommandBarPopup)
-                With cbPopup
-                    .BeginGroup = True
-                    .Caption = btnCaption
-                    .Tag = btnTag
-                    .Visible = True
-                    .TooltipText = btnTooltipText
-                End With
-            End If
-        Catch ex As Exception
-            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "AddPopupsToExplorer")
-        End Try
-
-    End Sub
-
-    Friend Function AddPopupItems(ByRef btnPopup As Office.CommandBarPopup, _
-                                  ByVal Index As Int32) As Office.CommandBarButton
-        If btnPopup.Controls.Count > Index Then
-            Return Nothing
-        Else
-            Dim btn As Office.CommandBarButton = CType(btnPopup.Controls.Add(Office.MsoControlType.msoControlButton, , , , True), Office.CommandBarButton)
-            btn.Visible = False 'erst mal verstecken, da wir nicht wissen ob da ein Wert drin ist.
-            Return btn
-        End If
-    End Function
-
-    Friend Sub FillPopupItems(ByRef XMLListBaseNode As String)
-        ' XMLListBaseNode erlaubt: CallList, RingList, VIPListe
-
-        Dim cPopUp As Office.CommandBarPopup = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , XMLListBaseNode, , False), Office.CommandBarPopup)
-        Dim index As Integer
-        Dim Anrufer As String
-        Dim TelNr As String
-        Dim Zeit As String
-        Dim Verpasst As Boolean
-
-        Dim LANodeNames As New ArrayList
-        Dim LANodeValues As New ArrayList
-        Dim xPathTeile As New ArrayList
-        Dim i As Integer
-
-        index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
-
-        LANodeNames.Add("Anrufer")
-        LANodeNames.Add("TelNr")
-        LANodeNames.Add("Zeit")
-
-        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-
-        With xPathTeile
-            .Add(XMLListBaseNode)
-            .Add("Eintrag")
-        End With
-
-        ' Signalisierung verpasster Anrufe
-        If XMLListBaseNode = DataProvider.P_Def_NameListRING Then
-            LANodeNames.Add("Verpasst")
-            LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-        End If
-
-        i = 1
-        With CType(cPopUp.Controls.Item(1), Office.CommandBarButton)
-            .Caption = DataProvider.P_CMB_ClearList
-            .Style = MsoButtonStyle.msoButtonIconAndCaption
-            .FaceId = 1786
-            .Visible = True
-            .Tag = DataProvider.P_CMB_eDynListDel_Tag & "_" & XMLListBaseNode
-        End With
-
-        If Not XMLListBaseNode = DataProvider.P_Def_NameListVIP Then
-            For ID = index + 9 To index Step -1
-
-                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID Mod 10))
-
-                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-                TelNr = CStr(LANodeValues.Item(LANodeNames.IndexOf("TelNr")))
-                Zeit = CStr(LANodeValues.Item(LANodeNames.IndexOf("Zeit")))
-                If XMLListBaseNode = DataProvider.P_Def_NameListRING Then Verpasst = CBool(LANodeValues.Item(LANodeNames.IndexOf("Verpasst")))
-
-                If Not TelNr = DataProvider.P_Def_ErrorMinusOne_String Then
-
-                    With CType(cPopUp.Controls.Item(i + 1), Office.CommandBarButton)
-                        If Anrufer = DataProvider.P_Def_ErrorMinusOne_String Then .Caption = TelNr Else .Caption = Anrufer
-                        .Style = MsoButtonStyle.msoButtonIconAndCaption
-                        .TooltipText = DataProvider.P_CMB_ToolTipp(Zeit, TelNr)
-                        .Parameter = CStr(ID Mod 10)
-                        .Visible = True
-                        .Tag = XMLListBaseNode & ";" & CStr(ID Mod 10)
-                        .BeginGroup = C_hf.IIf(i = 1, True, False)
-                        .FaceId = C_hf.IIf(Verpasst, 964, 0)
-                        i += 1
-                    End With
-
-                    With LANodeValues
-                        .Item(0) = (DataProvider.P_Def_ErrorMinusOne_String)
-                        .Item(1) = (DataProvider.P_Def_ErrorMinusOne_String)
-                        .Item(2) = (DataProvider.P_Def_ErrorMinusOne_String)
-                    End With
-                End If
-            Next
-        Else
-            For ID = 0 To 9
-
-                C_XML.ReadXMLNode(C_DP.XMLDoc, xPathTeile, LANodeNames, LANodeValues, "ID", CStr(ID))
-                Anrufer = CStr(LANodeValues.Item(LANodeNames.IndexOf("Anrufer")))
-
-                If Not Anrufer = DataProvider.P_Def_ErrorMinusOne_String And Not Anrufer = DataProvider.P_Def_LeerString Then
-                    With CType(cPopUp.Controls.Item(i + 1), Office.CommandBarButton)
-                        .Caption = Anrufer
-                        .Parameter = CStr(ID Mod 10)
-                        .Visible = True
-                        .Tag = XMLListBaseNode & ";" & CStr(ID)
-                        .BeginGroup = C_hf.IIf(i = 1, True, False)
-                        i += 1
-                    End With
-                    With LANodeValues
-                        .Item(0) = (DataProvider.P_Def_ErrorMinusOne_String)
-                        .Item(1) = (DataProvider.P_Def_ErrorMinusOne_String)
-                        .Item(2) = (DataProvider.P_Def_ErrorMinusOne_String)
-                    End With
-                Else
-                    If cPopUp.Controls.Item(i + 1) IsNot Nothing Then
-                        cPopUp.Controls.Item(i + 1).Visible = False
-                        i += 1
-                    End If
-                End If
-            Next
-        End If
-        cPopUp.Enabled = CommandBarPopupEnabled(cPopUp)
-    End Sub
-
-    Friend Sub SetVisibleButtons()
-        ' Einstellungen für die Symbolleiste speichern
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnDirektwahl_Tag).Visible = C_DP.P_CBSymbDirekt
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnrMon_Tag).Visible = C_DP.P_CBSymbAnrMon
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnzeigen_Tag).Visible = C_DP.P_CBSymbAnrMon
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListRING).Visible = C_DP.P_CBSymbAnrListe
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListCALL).Visible = C_DP.P_CBSymbWwdh
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnJournalimport_Tag).Visible = C_DP.P_CBSymbJournalimport
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnrMonNeuStart_Tag).Visible = C_DP.P_CBSymbAnrMonNeuStart
-        Catch : End Try
-        Try
-            FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlPopup, , DataProvider.P_Def_NameListVIP).Visible = C_DP.P_CBSymbVIP
-        Catch : End Try
-    End Sub
-
-    Friend Sub SetAnrMonButton()
-        bool_banrmon = C_AnrMon.AnrMonAktiv
-        bAnrMonTimer = C_HF.SetTimer(200)
-    End Sub
-
-    Private Sub bAnrMonTimer_Elapsed(ByVal sender As Object, ByVal e As System.Timers.ElapsedEventArgs) Handles bAnrMonTimer.Elapsed
-        If FritzBoxDialCommandBar IsNot Nothing Then
-            Dim btnAnrMon As Office.CommandBarButton = Nothing
-            Try
-                btnAnrMon = CType(FritzBoxDialCommandBar.FindControl(Office.MsoControlType.msoControlButton, , DataProvider.P_CMB_eBtnAnrMon_Tag, , False), Office.CommandBarButton)
-            Catch ex As Exception
-                C_HF.LogFile("Fehler: " & DataProvider.P_CMB_eBtnAnrMon_Tag & " kann nicht gefunden werden (" & ex.Message & ").")
-            End Try
-            If btnAnrMon IsNot Nothing Then
-                Select Case bool_banrmon
-                    Case True
-                        btnAnrMon.State = Office.MsoButtonState.msoButtonDown
-                        btnAnrMon.TooltipText = "Beendet den Anrufmonitor"
-                    Case False
-                        btnAnrMon.State = Office.MsoButtonState.msoButtonUp
-                        btnAnrMon.TooltipText = "Startet den Anrufmonitor"
-                End Select
-            Else
-                C_HF.LogFile("Fehler: " & DataProvider.P_CMB_eBtnAnrMon_Tag & " kann nicht gefunden werden (btnAnrMon is Nothing).")
-            End If
-
-            C_HF.KillTimer(bAnrMonTimer)
-            btnAnrMon = Nothing
-        End If
-    End Sub
-
-    Sub SymbolleisteErzeugen(ByRef eBtnWaehlen As Office.CommandBarButton, _
-                             ByRef eBtnDirektwahl As Office.CommandBarButton, _
-                             ByRef eBtnAnrMon As Office.CommandBarButton, _
-                             ByRef eBtnAnzeigen As Office.CommandBarButton, _
-                             ByRef eBtnAnrMonNeuStart As Office.CommandBarButton, _
-                             ByRef eBtnJournalimport As Office.CommandBarButton, _
-                             ByRef eBtnEinstellungen As Office.CommandBarButton, _
-                             ByRef ePopWwdh As Office.CommandBarPopup, _
-                             ByRef ePopAnr As Office.CommandBarPopup, _
-                             ByRef ePopVIP As Office.CommandBarPopup, _
-                             ByRef ePopWwdhDel As Office.CommandBarButton, _
-                             ByRef ePopWwdh01 As Office.CommandBarButton, ByRef ePopWwdh02 As Office.CommandBarButton, ByRef ePopWwdh03 As Office.CommandBarButton, _
-                             ByRef ePopWwdh04 As Office.CommandBarButton, ByRef ePopWwdh05 As Office.CommandBarButton, ByRef ePopWwdh06 As Office.CommandBarButton, _
-                             ByRef ePopWwdh07 As Office.CommandBarButton, ByRef ePopWwdh08 As Office.CommandBarButton, ByRef ePopWwdh09 As Office.CommandBarButton, _
-                             ByRef ePopWwdh10 As Office.CommandBarButton, _
-                             ByRef ePopAnrDel As Office.CommandBarButton, _
-                             ByRef ePopAnr01 As Office.CommandBarButton, ByRef ePopAnr02 As Office.CommandBarButton, ByRef ePopAnr03 As Office.CommandBarButton, _
-                             ByRef ePopAnr04 As Office.CommandBarButton, ByRef ePopAnr05 As Office.CommandBarButton, ByRef ePopAnr06 As Office.CommandBarButton, _
-                             ByRef ePopAnr07 As Office.CommandBarButton, ByRef ePopAnr08 As Office.CommandBarButton, ByRef ePopAnr09 As Office.CommandBarButton, _
-                             ByRef ePopAnr10 As Office.CommandBarButton, _
-                             ByRef ePopVIPDel As Office.CommandBarButton, _
-                             ByRef ePopVIP01 As Office.CommandBarButton, ByRef ePopVIP02 As Office.CommandBarButton, ByRef ePopVIP03 As Office.CommandBarButton, _
-                             ByRef ePopVIP04 As Office.CommandBarButton, ByRef ePopVIP05 As Office.CommandBarButton, ByRef ePopVIP06 As Office.CommandBarButton, _
-                             ByRef ePopVIP07 As Office.CommandBarButton, ByRef ePopVIP08 As Office.CommandBarButton, ByRef ePopVIP09 As Office.CommandBarButton, _
-                             ByRef ePopVIP10 As Office.CommandBarButton)
-
-        Dim i As Integer = 2
-
-        FritzBoxDialCommandBar = AddCmdBar(DataProvider.P_Def_Addin_KurzName, True)
-
-        eBtnWaehlen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Dial, 1, 568, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnWaehlen_Tag, DataProvider.P_CMB_Dial_ToolTipp)
-
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopWwdh, DataProvider.P_CMB_WWDH, i, DataProvider.P_Def_NameListCALL, DataProvider.P_CMB_WWDH_ToolTipp)
-        i += 1
-
-        Try
-            ePopWwdhDel = AddPopupItems(ePopWwdh, 1)
-            ePopWwdh01 = AddPopupItems(ePopWwdh, 2) : ePopWwdh02 = AddPopupItems(ePopWwdh, 3) : ePopWwdh03 = AddPopupItems(ePopWwdh, 4)
-            ePopWwdh04 = AddPopupItems(ePopWwdh, 5) : ePopWwdh05 = AddPopupItems(ePopWwdh, 6) : ePopWwdh06 = AddPopupItems(ePopWwdh, 7)
-            ePopWwdh07 = AddPopupItems(ePopWwdh, 8) : ePopWwdh08 = AddPopupItems(ePopWwdh, 9) : ePopWwdh09 = AddPopupItems(ePopWwdh, 10)
-            ePopWwdh10 = AddPopupItems(ePopWwdh, 11)
-        Catch ex As Exception
-            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopWwdh)")
-        End Try
-
-        FillPopupItems(DataProvider.P_Def_NameListCALL)
-        ' Direktwahl
-        ePopWwdh.Visible = C_DP.P_CBSymbWwdh
-        ePopWwdh.Enabled = CommandBarPopupEnabled(ePopWwdh)
-        eBtnDirektwahl = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Direktwahl, i, 326, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnDirektwahl_Tag, DataProvider.P_CMB_Direktwahl_ToolTipp)
-        i += 1
-
-        eBtnDirektwahl.Visible = C_DP.P_CBSymbDirekt
-        ' Symbol Anrufmonitor & Anzeigen
-        eBtnAnrMon = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMon, i, 815, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnAnrMon_Tag, DataProvider.P_CMB_AnrMon_ToolTipp) '815
-
-        eBtnAnzeigen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonAnzeigen, i + 1, 682, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnAnzeigen_Tag, DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp)
-        i += 2
-
-        eBtnAnrMon.Visible = C_DP.P_CBSymbAnrMon
-        eBtnAnzeigen.Visible = eBtnAnrMon.Visible
-
-        eBtnAnrMonNeuStart = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_AnrMonNeuStart, i, 37, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnAnrMonNeuStart_Tag, DataProvider.P_CMB_AnrMonNeuStart_ToolTipp)
-
-        eBtnAnrMonNeuStart.Visible = C_DP.P_CBSymbAnrMonNeuStart
-
-        i += 1
-
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopAnr, DataProvider.P_CMB_CallBack, i, DataProvider.P_Def_NameListRING, DataProvider.P_CMB_CallBack_ToolTipp)
-
-        Try
-            ePopAnrDel = AddPopupItems(ePopAnr, 1)
-            ePopAnr01 = AddPopupItems(ePopAnr, 2) : ePopAnr02 = AddPopupItems(ePopAnr, 3) : ePopAnr03 = AddPopupItems(ePopAnr, 4)
-            ePopAnr04 = AddPopupItems(ePopAnr, 5) : ePopAnr05 = AddPopupItems(ePopAnr, 6) : ePopAnr06 = AddPopupItems(ePopAnr, 7)
-            ePopAnr07 = AddPopupItems(ePopAnr, 8) : ePopAnr08 = AddPopupItems(ePopAnr, 9) : ePopAnr09 = AddPopupItems(ePopAnr, 10)
-            ePopAnr10 = AddPopupItems(ePopAnr, 11)
-        Catch ex As Exception
-            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopAnr)")
-        End Try
-
-        FillPopupItems(DataProvider.P_Def_NameListRING)
-        ePopAnr.Visible = C_DP.P_CBSymbAnrListe
-        ePopAnr.Enabled = CommandBarPopupEnabled(ePopAnr)
-        i += 1
-
-        AddPopupsToExplorer(FritzBoxDialCommandBar, ePopVIP, DataProvider.P_CMB_VIP, i, DataProvider.P_Def_NameListVIP, DataProvider.P_CMB_VIP_ToolTipp)
-
-        Try
-            ePopVIPDel = AddPopupItems(ePopVIP, 1)
-            ePopVIP01 = AddPopupItems(ePopVIP, 2) : ePopVIP02 = AddPopupItems(ePopVIP, 3) : ePopVIP03 = AddPopupItems(ePopVIP, 4)
-            ePopVIP04 = AddPopupItems(ePopVIP, 5) : ePopVIP05 = AddPopupItems(ePopVIP, 6) : ePopVIP06 = AddPopupItems(ePopVIP, 7)
-            ePopVIP07 = AddPopupItems(ePopVIP, 8) : ePopVIP08 = AddPopupItems(ePopVIP, 9) : ePopVIP09 = AddPopupItems(ePopVIP, 10)
-            ePopVIP10 = AddPopupItems(ePopVIP, 11)
-        Catch ex As Exception
-            C_HF.MsgBox(ex.Message, MsgBoxStyle.Critical, "ThisAddIn_Startup (ePopVIP)")
-        End Try
-
-        FillPopupItems(DataProvider.P_Def_NameListVIP)
-        i += 1
-        ePopVIP.Visible = C_DP.P_CBSymbVIP
-        ePopVIP.Enabled = CommandBarPopupEnabled(ePopVIP)
-
-        eBtnJournalimport = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Journal, i, 591, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnJournalimport_Tag, DataProvider.P_CMB_Journal_ToolTipp)
-        eBtnJournalimport.Visible = C_DP.P_CBSymbJournalimport
-        i += 1
-        eBtnEinstellungen = AddButtonsToCmb(FritzBoxDialCommandBar, DataProvider.P_CMB_Setup, i, 548, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_CMB_eBtnEinstellungen_Tag, DataProvider.P_CMB_Setup_ToolTipp)
-        i += 1
-
-        eBtnWaehlen.TooltipText = DataProvider.P_CMB_Dial_ToolTipp
-        ePopWwdh.TooltipText = DataProvider.P_CMB_WWDH_ToolTipp
-        eBtnAnrMon.TooltipText = DataProvider.P_CMB_AnrMon_ToolTipp
-        eBtnDirektwahl.TooltipText = DataProvider.P_CMB_Direktwahl_ToolTipp
-        eBtnAnzeigen.TooltipText = DataProvider.P_CMB_AnrMonAnzeigen_ToolTipp
-        eBtnAnrMonNeuStart.TooltipText = DataProvider.P_CMB_AnrMonNeuStart_ToolTipp
-        ePopAnr.TooltipText = DataProvider.P_CMB_CallBack_ToolTipp
-        ePopVIP.TooltipText = DataProvider.P_CMB_VIP_ToolTipp
-        eBtnJournalimport.TooltipText = DataProvider.P_CMB_Journal_ToolTipp
-        eBtnEinstellungen.TooltipText = DataProvider.P_CMB_Setup_ToolTipp
-
-    End Sub
-
-    Private Function CommandBarPopupEnabled(ByVal control As Office.CommandBarPopup) As Boolean
-        Dim XMLListBaseNode As String = DataProvider.P_Def_ErrorMinusOne_String
-        Dim xPathTeile As New ArrayList
-
-        Select Case control.Tag
-            Case DataProvider.P_Def_NameListCALL
-                XMLListBaseNode = DataProvider.P_Def_NameListCALL
-            Case DataProvider.P_Def_NameListRING
-                XMLListBaseNode = DataProvider.P_Def_NameListRING
-            Case DataProvider.P_Def_NameListVIP ' "VIPListe"
-                XMLListBaseNode = DataProvider.P_Def_NameListVIP
-        End Select
-
-        If XMLListBaseNode = DataProvider.P_Def_ErrorMinusOne_String Then
-            CommandBarPopupEnabled = False
-        Else
-            ' Prüfen Abfrage sieht seltsam aus:
-            ' CommandBarPopupEnabled = Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
-            CommandBarPopupEnabled = C_hf.IIf(Not C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String, True, False)
-        End If
-    End Function
-
-#End If
-#If OVer = 11 Then
-    Sub InspectorSybolleisteErzeugen(ByVal Inspector As Outlook.Inspector, _
-                                     ByRef iPopRWS As Office.CommandBarPopup, _
-                                     ByRef iBtnDial As Office.CommandBarButton, _
-                                     ByRef iBtnRwsDasOertliche As Office.CommandBarButton, _
-                                     ByRef iBtnRws11880 As Office.CommandBarButton, _
-                                     ByRef iBtnRWSDasTelefonbuch As Office.CommandBarButton, _
-                                     ByRef iBtnRWStelSearch As Office.CommandBarButton, _
-                                     ByRef iBtnRWSAlle As Office.CommandBarButton, _
-                                     ByRef iBtnKontakterstellen As Office.CommandBarButton, _
-                                     ByRef iBtnVIP As Office.CommandBarButton, _
-                                     ByRef iBtnUpload As Office.CommandBarButton)
-
-        Dim cmbs As Office.CommandBars = Inspector.CommandBars
-        Dim cmb As Office.CommandBar = Nothing
-        Dim cmbErstellen As Boolean = True
-        Dim i As Integer = 1
-
-        If C_DP.P_CBSymbRWSuche Then
-            If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or _
-            TypeOf Inspector.CurrentItem Is Outlook.JournalItem Or _
-            TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
-
-                ' Wenn die Leiste nicht gefunden werden konnte, dann füge sie hinzu.
-                If TypeOf Inspector.CurrentItem Is Outlook.MailItem Then
-                    For Each cmb In cmbs
-                        If cmb.NameLocal = DataProvider.P_Def_Addin_KurzName Then
-                            cmbErstellen = False
-                            Exit For
-                        End If
-                    Next
-                End If
-                If cmbErstellen Then
-                    cmb = Inspector.CommandBars.Add(DataProvider.P_Def_Addin_KurzName, Microsoft.Office.Core.MsoBarPosition.msoBarTop, , True)
-                    With cmb
-                        .NameLocal = DataProvider.P_Def_Addin_KurzName
-                        .Visible = True
-                    End With
-                    iBtnDial = AddButtonsToCmb(cmb, DataProvider.P_CMB_Dial, i, 568, MsoButtonStyle.msoButtonIconAndCaption, DataProvider.P_Tag_Insp_Dial, DataProvider.P_CMB_Dial_ToolTipp)
-                    i += 1
-                End If
-            End If
-            ' Kontakteinträge
-            If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Or TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
-
-                AddPopupsToExplorer(cmb, iPopRWS, DataProvider.P_CMB_Insp_RWS, i, "RWS", DataProvider.P_CMB_Insp_RWS_ToolTipp)
-                i += 1
-                iBtnRwsDasOertliche = AddPopupItems(iPopRWS, 1)
-                iBtnRws11880 = AddPopupItems(iPopRWS, 2)
-                iBtnRWSDasTelefonbuch = AddPopupItems(iPopRWS, 3)
-                iBtnRWStelSearch = AddPopupItems(iPopRWS, 4)
-                iBtnRWSAlle = AddPopupItems(iPopRWS, 5)
-
-                Dim rwsNamen() As String = {DataProvider.P_RWSDasOertliche_Name, _
-                                            DataProvider.P_RWS11880_Name, _
-                                            DataProvider.P_RWSDasTelefonbuch_Name, _
-                                            DataProvider.P_RWSTelSearch_Name, _
-                                            DataProvider.P_RWSAlle_Name}
-                Dim rwsToolTipp() As String = {DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSDasOertliche_Link), _
-                                               DataProvider.P_RWS_ToolTipp(DataProvider.P_RWS11880_Link), _
-                                               DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSDasTelefonbuch_Link), _
-                                               DataProvider.P_RWS_ToolTipp(DataProvider.P_RWSTelSearch_Link), _
-                                               DataProvider.P_RWS_ToolTipp()}
-
-                For i = LBound(rwsNamen) To UBound(rwsNamen)
-                    With iPopRWS.Controls.Item(i + 1)
-                        .Tag = rwsNamen(i)
-                        .Caption = rwsNamen(i)
-                        .TooltipText = rwsToolTipp(i)
-                        .Visible = True
-                    End With
-                Next
-            End If
-            If TypeOf Inspector.CurrentItem Is Outlook.ContactItem Then
-                iBtnVIP = AddButtonsToCmb(cmb, DataProvider.P_CMB_Insp_VIP, i, 3710, MsoButtonStyle.msoButtonIconAndCaption, "VIP", DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp)
-                i += 1
-                Dim olKontakt As Outlook.ContactItem = CType(Inspector.CurrentItem, Outlook.ContactItem)
-                With iBtnVIP
-                    If IsVIP(olKontakt) Then
-                        .State = Office.MsoButtonState.msoButtonDown
-                        .TooltipText = DataProvider.P_CMB_VIP_Entfernen_ToolTipp
-                    Else
-                        If CLng(C_XML.Read(C_DP.XMLDoc, DataProvider.P_Def_NameListVIP, "Index", "0")) >= 10 Then
-                            .TooltipText = DataProvider.P_CMB_VIP_O11_Voll_ToolTipp
-                            .Enabled = False
-                        Else
-                            .TooltipText = DataProvider.P_CMB_VIP_Hinzufügen_ToolTipp
-                        End If
-                        .State = Office.MsoButtonState.msoButtonUp
-                    End If
-                    .Tag = DataProvider.P_CMB_Insp_VIP
-                    .Visible = C_DP.P_CBSymbVIP
-                End With
-                ' Upload
-                iBtnUpload = AddButtonsToCmb(cmb, DataProvider.P_CMB_Insp_Upload, i, 3732, MsoButtonStyle.msoButtonIconAndCaption, "Upload", DataProvider.P_CMB_Insp_UploadKontakt_ToolTipp)
-                i += 1
-            End If
-            ' Journaleinträge
-            If TypeOf Inspector.CurrentItem Is Outlook.JournalItem Then
-                iBtnKontakterstellen = AddButtonsToCmb(cmb, _
-                                                       DataProvider.P_CMB_Kontakt_Erstellen, _
-                                                       i, 1099, MsoButtonStyle.msoButtonIconAndCaption, _
-                                                       DataProvider.P_Tag_Insp_Kontakt, _
-                                                       DataProvider.P_CMB_Kontakt_Erstellen_ToolTipp)
-                i += 1
-                Dim olJournal As Outlook.JournalItem = CType(Inspector.CurrentItem, Outlook.JournalItem)
-                If Not InStr(1, olJournal.Categories, "FritzBox Anrufmonitor; Telefonanrufe", vbTextCompare) = 0 Then
-                    Dim olLink As Outlook.Link = Nothing
-                    For Each olLink In olJournal.Links
-                        If TypeOf olLink.Item Is Outlook.ContactItem Then iBtnKontakterstellen.Caption = DataProvider.P_CMB_Kontakt_Anzeigen
-                        Exit For
-                    Next
-                    C_HF.NAR(olLink) : olLink = Nothing
-                    iPopRWS.Enabled = True
-                    iBtnDial.Enabled = Not CBool(InStr(olJournal.Body, "Tel.-Nr.: " & DataProvider.P_Def_StringUnknown, CompareMethod.Text))
-                    iBtnKontakterstellen.Enabled = True
-                Else
-                    cmb.Delete()
-                End If
-            End If
-        End If
-    End Sub
-#End If
 #End Region
 
 #Region "Explorer Button Click"
@@ -1503,20 +853,20 @@ Imports Microsoft.Office.Core
             Case TaskToDo.DialDirect
                 P_CallClient.Wählbox(Nothing, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, True)
             Case TaskToDo.DialExplorer
-                If C_OLI.OutlookApplication IsNot Nothing Then
-                    P_CallClient.WählboxStart(C_OLI.OutlookApplication.ActiveExplorer.Selection)
+                If P_OlInterface.OutlookApplication IsNot Nothing Then
+                    P_CallClient.WählboxStart(P_OlInterface.OutlookApplication.ActiveExplorer.Selection)
                 End If
             Case TaskToDo.OpenConfig
                 P_Config.ShowDialog()
             Case TaskToDo.OpenJournalimport
                 If Not P_AnrList Is Nothing Then
-                    P_AnrList = New formImportAnrList(C_FBox, C_AnrMon, C_hf, C_DP, C_XML)
+                    P_AnrList = New formImportAnrList(P_FritzBox, P_AnrufMonitor, C_hf, C_DP, C_XML)
                 End If
                 P_AnrList.StartAuswertung(True)
             Case TaskToDo.RestartAnrMon
-                C_AnrMon.Restart(False)
+                P_AnrufMonitor.Restart(False)
             Case TaskToDo.ShowAnrMon
-                C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
+                P_PopUp.AnrMonEinblenden(P_AnrufMonitor.LetzterAnrufer)
             Case TaskToDo.DialInspector
                 P_CallClient.WählenAusInspector()
             Case TaskToDo.CreateContact
@@ -1524,25 +874,6 @@ Imports Microsoft.Office.Core
         End Select
     End Sub
 
-#End Region
-
-#Region "Inspector Button Click"
-#If OVer = 11 Then
-    Friend Sub OnActionRWS(ByVal oInsp As Outlook.Inspector, ByVal RWS As RückwärtsSuchmaschine)
-        Select Case RWS
-            Case RückwärtsSuchmaschine.RWS11880
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWS11880, oInsp)
-            Case RückwärtsSuchmaschine.RWSDasOertliche
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasOertliche, oInsp)
-            Case RückwärtsSuchmaschine.RWSDasTelefonbuch
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSDasTelefonbuch, oInsp)
-            Case RückwärtsSuchmaschine.RWStelSearch
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWStelSearch, oInsp)
-            Case RückwärtsSuchmaschine.RWSAlle
-                F_RWS.Rückwärtssuche(RückwärtsSuchmaschine.RWSAlle, oInsp)
-        End Select
-    End Sub
-#End If
 #End Region
 
 #Region "RingCallList"
@@ -1634,9 +965,7 @@ Imports Microsoft.Office.Core
         AttributeNames = Nothing
         AttributeValues = Nothing
 
-#If OVer > 12 Then
         RefreshRibbon()
-#End If
 
     End Sub
 
@@ -1724,7 +1053,7 @@ Imports Microsoft.Office.Core
         End With
         C_XML.Write(C_DP.XMLDoc, xPathTeile, "False")
 
-        C_WClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
+        P_CallClient.Wählbox(oContact, TelNr, vCard, False) '.TooltipText = TelNr. - .Caption = evtl. vorh. Name.
     End Sub
 
     ''' <summary>
@@ -1759,11 +1088,8 @@ Imports Microsoft.Office.Core
 
             C_XML.Delete(C_DP.XMLDoc, xPathTeile)
 
-#If OVer < 14 Then
-            FillPopupItems(Eintrag(1))
-#Else
             RefreshRibbon()
-#End If
+
         End If
     End Sub
 #End Region

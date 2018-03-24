@@ -45,9 +45,6 @@ Public Module FritzBoxInformations
     ''' Gibt die SCPDURL der bekannten Services zurück.
     ''' </summary>
     Public Structure KnownSOAPFile
-#If OVer = 11 Then
-        Private Dummy As String
-#End If
         ''' <summary>
         ''' deviceconfigSCPD
         ''' </summary>

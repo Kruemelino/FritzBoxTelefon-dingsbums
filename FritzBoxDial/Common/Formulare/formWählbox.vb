@@ -278,7 +278,7 @@ Friend Class formWählbox
             Me.Tag = DataProvider.P_Def_ErrorMinusOne_String & ";" & DataProvider.P_Def_ErrorMinusOne_String
         End If
         KontaktDaten = Split(CStr(Me.Tag), ";", 2, CompareMethod.Text)
-        If Not KontaktDaten.Contains(DataProvider.P_Def_StringErrorMinusOne) Then
+        If Not KontaktDaten.Contains(DataProvider.P_Def_ErrorMinusOne_String) Then
             olKontakt = C_KF.GetOutlookKontakt(KontaktDaten(0), KontaktDaten(1))
         Else
             olKontakt = C_KF.ErstelleKontakt(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, KontaktDaten(1), ListTel.Rows(0).Cells(2).Value.ToString, False)

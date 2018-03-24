@@ -17,10 +17,7 @@ Public Class FritzBox
     Private tb As New Windows.Forms.TextBox
     Private EventProvider As IEventProvider
 
-    Private bValSpeichereDaten As Boolean = True
     Private ThisFBFirmware As FritzBoxFirmware
-    Private sSID As String
-    Private sFirmware As String
     Private WithEvents BWSetDialPort As BackgroundWorker
 
 #Region "Objektorientiertes Einlesen der Telefone"
@@ -159,20 +156,11 @@ Public Class FritzBox
             Telefonliste = New List(Of FritzBoxTelefon)
             C_hf = HelferKlasse
         End Sub
-
-        Private lTelefonListe As List(Of FritzBoxTelefon)
         ''' <summary>
         ''' Liste von Telefonen
         ''' </summary>
         ''' <returns></returns>
         Friend Property Telefonliste() As List(Of FritzBoxTelefon)
-            Get
-                Return lTelefonListe
-            End Get
-            Set(ByVal value As List(Of FritzBoxTelefon))
-                lTelefonListe = value
-            End Set
-        End Property
 
         ''' <summary>
         ''' Fügt eine Telefonnummer <c>NeueTelNr</c> in die Liste ein.
@@ -386,36 +374,11 @@ Public Class FritzBox
         End Property
 #End Region
     End Class
-
-#End Region
-
-#Region "Properties"
     Friend Property P_SpeichereDaten() As Boolean
-        Get
-            Return bValSpeichereDaten
-        End Get
-        Set(ByVal value As Boolean)
-            bValSpeichereDaten = value
-        End Set
-    End Property
 
     Private Property P_SID() As String
-        Get
-            Return sSID
-        End Get
-        Set(ByVal value As String)
-            sSID = value
-        End Set
-    End Property
 
     Private Property P_Firmware() As String
-        Get
-            Return sFirmware
-        End Get
-        Set(ByVal value As String)
-            sFirmware = value
-        End Set
-    End Property
 
     Private ReadOnly Property P_FritzBoxVorhanden(ByVal FritzBoxAdresse As String) As Boolean
         Get
@@ -428,17 +391,10 @@ Public Class FritzBox
         End Get
     End Property
 
-    Friend ReadOnly Property P_FritzBoxTyp As String
-        Get
-            Return ThisFBFirmware.FritzBoxTyp
-        End Get
-    End Property
+    Friend ReadOnly Property P_FritzBoxTyp As String = ThisFBFirmware.FritzBoxTyp
 
-    Friend ReadOnly Property P_FritzBoxFirmware As String
-        Get
-            Return ThisFBFirmware.str1 & "." & ThisFBFirmware.str2 & "." & ThisFBFirmware.str3 & "-" & ThisFBFirmware.Revision
-        End Get
-    End Property
+    Friend ReadOnly Property P_FritzBoxFirmware As String = ThisFBFirmware.str1 & "." & ThisFBFirmware.str2 & "." & ThisFBFirmware.str3 & "-" & ThisFBFirmware.Revision
+
 #End Region
 
     Private Structure FritzBoxFirmware
@@ -851,21 +807,13 @@ Public Class FritzBox
     ''' "POTS=telcfg:settings/MSN/POTS"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_POTS() As String
-        Get
-            Return "POTS=telcfg:settings/MSN/POTS"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_POTS() As String = "POTS=telcfg:settings/MSN/POTS"
 
     ''' <summary>
     ''' "Mobile=telcfg:settings/Mobile/MSN"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_Mobile() As String
-        Get
-            Return "Mobile=telcfg:settings/Mobile/MSN"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_Mobile() As String = "Mobile=telcfg:settings/Mobile/MSN"
 
     ''' <summary>
     ''' "Port" &amp; <c>idx</c> &amp; "Name=telcfg:settings/MSN/Port" &amp; <c>idx</c> &amp; "/Name"
@@ -964,47 +912,29 @@ Public Class FritzBox
         End Get
     End Property
 
-
     ''' <summary>
     ''' "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_FON_List() As String
-        Get
-            Return "FON=telcfg:settings/MSN/Port/list(Name,Fax)"
-            'Return "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_FON_List() As String = "FON=telcfg:settings/MSN/Port/list(Name,Fax)"
 
     ''' <summary>
     ''' "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_DECT_List() As String
-        Get
-            Return "DECT=telcfg:settings/Foncontrol/User/list(Name,Intern)"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_DECT_List() As String = "DECT=telcfg:settings/Foncontrol/User/list(Name,Intern)"
 
     ''' <summary>
     ''' "VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_VOIP_List() As String
-        Get
-            Return "VOIP=telcfg:settings/VoipExtension/list(enabled,Name)"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_VOIP_List() As String = "VOIP=telcfg:settings/VoipExtension/list(enabled,Name)"
 
     ''' <summary>
     ''' "TAM=tam:settings/TAM/list(Active,Name,Display,MSNBitmap)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_TAM_List() As String
-        Get
-            Return "TAM=tam:settings/TAM/list(Active,Name)"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_TAM_List() As String = "TAM=tam:settings/TAM/list(Active,Name)"
 
     ''' <summary>
     ''' "S0" &amp; <c>Type</c> &amp; <c>idx</c> &amp; "=telcfg:settings/NTHotDialList/" &amp; <c>Type</c> &amp; <c>idx</c>
@@ -1082,21 +1012,13 @@ Public Class FritzBox
     ''' "FaxMailActive=telcfg:settings/FaxMailActive"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_FaxMailActive() As String
-        Get
-            Return "FaxMailActive=telcfg:settings/FaxMailActive"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_FaxMailActive() As String = "FaxMailActive=telcfg:settings/FaxMailActive"
 
     ''' <summary>
     ''' "MobileName=telcfg:settings/Mobile/Name"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Private ReadOnly Property P_Query_FB_MobileName() As String
-        Get
-            Return "MobileName=telcfg:settings/Mobile/Name"
-        End Get
-    End Property
+    Private ReadOnly Property P_Query_FB_MobileName() As String = "MobileName=telcfg:settings/Mobile/Name"
 
 #End Region
 
