@@ -468,7 +468,7 @@
                 Return DataProvider.P_CMB_Insp_Note
             Case "tbtnVIP"
                 Return DataProvider.P_CMB_Insp_VIP
-            Case "btnUpload", "cdMUpload"
+            Case "btnUpload", "cdMUpload", "MUpload"
                 Return DataProvider.P_CMB_Insp_Upload
             Case Else
                 C_hf.LogFile("GetItemLabel: Kann control.Id " & control.Id & " nicht auswerten.")

@@ -798,23 +798,24 @@ Public Class Helfer
         Dim Prefix As String = DataProvider.P_Def_LeerString
         Dim Trefferliste As IEnumerable(Of String) = Nothing
 
-        TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
-        If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
-        If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
+        If Not TelNr = DataProvider.P_Def_LeerString Then
+            TelNr = Replace(TelNr, "*", "", , , CompareMethod.Text)
+            If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then TelNr = TelNr.Remove(0, 2)
+            If TelNr.StartsWith("0") Then TelNr = TelNr.Remove(0, 1)
 
-        If Vorwahlliste Is C_DP.P_ListeOrtsVorwahlenA Then
-            If LandesVW.StartsWith(DataProvider.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
-            If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
-            Prefix = LandesVW & ":"
+            If Vorwahlliste Is C_DP.P_ListeOrtsVorwahlenA Then
+                If LandesVW.StartsWith(DataProvider.P_Def_PreLandesVW) Then LandesVW = LandesVW.Remove(0, 2)
+                If LandesVW.StartsWith("0") Then LandesVW = LandesVW.Remove(0, 1)
+                Prefix = LandesVW & ":"
+            End If
+
+            Do
+                i += 1
+                Trefferliste = From s In Vorwahlliste Where s.ToLower Like Prefix & Left(TelNr, i).ToLower & "*" Select s
+            Loop Until Trefferliste.Count = 1 Or i = 6
+
+            If Trefferliste.Count = 1 Then VorwahlausDatei = Trefferliste(0).Substring(Prefix.Length)
         End If
-
-        Do
-            i += 1
-            Trefferliste = From s In Vorwahlliste Where s.ToLower Like Prefix & Left(TelNr, i).ToLower & "*" Select s
-        Loop Until Trefferliste.Count = 1 Or i = 6
-
-        If Trefferliste.Count = 1 Then VorwahlausDatei = Trefferliste(0).Substring(Prefix.Length)
-
         Trefferliste = Nothing
     End Function
 
