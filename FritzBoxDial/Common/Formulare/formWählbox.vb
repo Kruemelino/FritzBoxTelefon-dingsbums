@@ -426,7 +426,9 @@ Friend Class formWählbox
 
 #Region "Wählen"
     Private Sub StarteDialVorgang()
+        Dim xPathTeile As New ArrayList
         If Not ListTel.SelectedRows.Count = 0 Then
+
             Dim ID As Argument
             P_Dialing = True
             CallNr = New System.Threading.Thread(AddressOf dialNumber)
@@ -434,7 +436,18 @@ Friend Class formWählbox
                 .TelNr = CStr(ListTel.SelectedRows.Item(0).Cells(2).Value.ToString)
                 .clir = Me.checkCLIR.Checked
                 .festnetz = Me.checkNetz.Checked
-                If Me.ComboBoxFon.Text = "Phoner" Then
+
+                With xPathTeile
+                    .Clear()
+                    .Add("Telefone")
+                    .Add("Telefone")
+                    .Add("*")
+                    .Add("Telefon")
+                    .Add("[@PhonerPhone = ""True""]") ' Nur das PhonerPhone
+                    .Add("TelName")
+                End With
+
+                If Me.ComboBoxFon.Text = "Phoner" Or Me.ComboBoxFon.Text = C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner") Then
                     .fonanschluss = "-2"
                 Else
                     .fonanschluss = GetDialport(Nebenstellen(Me.ComboBoxFon.SelectedIndex))
@@ -451,6 +464,8 @@ Friend Class formWählbox
             If C_DP.P_CBAutoClose Then TimerSchließen = C_hf.SetTimer(C_DP.P_TBEnblDauer * 1000)
             cancelCallButton.Enabled = True
         End If
+        xPathTeile.Clear()
+        xPathTeile = Nothing
     End Sub
 
     Private Function dialNumber(ByVal AnrufEigenschaften As Object) As String

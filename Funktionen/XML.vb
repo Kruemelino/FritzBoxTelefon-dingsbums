@@ -7,90 +7,51 @@ Public Class XML
         P_NameChar = GetNameChar()
     End Sub
 
-#Region "PrivateData"
-    Private _NameStartChar As String
-    Private _NameChar As String
-#End Region
-
 #Region "Konstanten"
     ''' <summary>
     ''' xPath Steuerzeichen: Seperator /
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>/</returns>
-    Private ReadOnly Property P_xPathSeperatorSlash() As String
-        Get
-            Return "/"
-        End Get
-    End Property
+    Private ReadOnly Property P_xPathSeperatorSlash() As String = "/"
 
     ''' <summary>
     ''' xPath Steuerzeichen: WildCard *
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>*</returns>
-    Private ReadOnly Property P_xPathWildCard() As String
-        Get
-            Return "*"
-        End Get
-    End Property
+    Private ReadOnly Property P_xPathWildCard() As String = "*"
 
     ''' <summary>
     ''' xPath Steuerzeichen: Öffnende eckige Klammer [
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>[</returns>
-    Private ReadOnly Property P_xPathBracketOpen() As String
-        Get
-            Return "["
-        End Get
-    End Property
+    Private ReadOnly Property P_xPathBracketOpen() As String = "["
 
     ''' <summary>
     ''' xPath Steuerzeichen: Schließende eckige Klammer ]
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>]</returns>
-    Private ReadOnly Property P_xPathBracketClose() As String
-        Get
-            Return "]"
-        End Get
-    End Property
+    Private ReadOnly Property P_xPathBracketClose() As String = "]"
 
     ''' <summary>
     ''' xPath Steuerzeichen: @
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>@</returns>
-    Private ReadOnly Property P_xPathAttribute() As String
-        Get
-            Return "@"
-        End Get
-    End Property
+    Private ReadOnly Property P_xPathAttribute() As String = "@"
 
     ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameStartChar enthält
     ''' </summary>
     Private Property P_NameStartChar As String
-        Set(value As String)
-            _NameStartChar = value
-        End Set
-        Get
-            Return _NameStartChar
-        End Get
-    End Property
 
     ''' <summary>
     ''' Ein String, der alle nach den 2.3 Common Syntactic Constructs für NameChar enthält
     ''' </summary>
     Private Property P_NameChar As String
-        Set(value As String)
-            _NameChar = value
-        End Set
-        Get
-            Return _NameChar
-        End Get
-    End Property
 
     ''' <summary>
     ''' Leerstring, String.Empty

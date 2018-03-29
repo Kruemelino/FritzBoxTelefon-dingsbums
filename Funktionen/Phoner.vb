@@ -9,8 +9,8 @@ Public Class PhonerInterface
     Private PhonerAddresse As String = "127.0.0.1"
     Private PhonerAnrMonPort As Integer = 2012
 
-    Public Sub New(ByVal HelferKlasse As Helfer, _
-                   ByVal DataProviderKlasse As DataProvider, _
+    Public Sub New(ByVal HelferKlasse As Helfer,
+                   ByVal DataProviderKlasse As DataProvider,
                    ByVal CryptKlasse As Rijndael)
 
         C_Crypt = CryptKlasse
@@ -18,6 +18,7 @@ Public Class PhonerInterface
         C_hf = HelferKlasse
     End Sub
 
+    <DebuggerStepThrough>
     Public Function PhonerReady() As Boolean
         Return Not Diagnostics.Process.GetProcessesByName("phoner").Length = 0
     End Function

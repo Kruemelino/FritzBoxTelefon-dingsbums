@@ -608,7 +608,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Welcome To Phoner
     ''' </summary>
-    Public Shared ReadOnly Property P_Def_Phoner_Ready As String = P_AnrMon_AnrMonPhonerWelcome
+    Public Shared ReadOnly Property P_Def_Phoner_Ready As String = "Welcome to Phoner"
     Public Shared ReadOnly Property P_DefaultPhonerAnrMonPort() As Integer = 2012
 #End Region
     ' Passwortverschlüsselung
