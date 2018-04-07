@@ -59,19 +59,11 @@ Public Class FritzBox
             C_hf = HelferKlasse
         End Sub
 
-        Private lNummernListe As List(Of FritzBoxTelefonnummer)
         ''' <summary>
         ''' Liste von Telefonnummern
         ''' </summary>
         ''' <returns></returns>
         Friend Property Nummernliste() As List(Of FritzBoxTelefonnummer)
-            Get
-                Return lNummernListe
-            End Get
-            Set(ByVal value As List(Of FritzBoxTelefonnummer))
-                lNummernListe = value
-            End Set
-        End Property
 
         ''' <summary>
         ''' Fügt eine Telefonnummer <c>NeueTelNr</c> in die Liste ein.
@@ -229,59 +221,27 @@ Public Class FritzBox
 
     Private Structure FritzBoxTelefonnummer
 #Region "Datenfelder"
-        Private sTelNr As String
         ''' <summary>
         ''' Die komplette unformatierte Telefonnummer 
         ''' </summary>
         Friend Property TelNr() As String
-            Get
-                Return sTelNr
-            End Get
-            Set(ByVal value As String)
-                sTelNr = value
-            End Set
-        End Property
 
-        Private sTelTyp As TelTyp
         ''' <summary>
         ''' Der Telefontyp der Telefonnummer: FON, DECT, VOIP, S0
         ''' </summary>
         Friend Property TelTyp() As TelTyp
-            Get
-                Return sTelTyp
-            End Get
-            Set(ByVal value As TelTyp)
-                sTelTyp = value
-            End Set
-        End Property
 
-        Private iID0 As Integer
         ''' <summary>
         ''' Eine eindeutige Identifikation der Telefonnummer
         ''' </summary>
         ''' <returns></returns>
         Public Property ID0() As Integer
-            Get
-                Return iID0
-            End Get
-            Set(ByVal value As Integer)
-                iID0 = value
-            End Set
-        End Property
 
-        Private iID1 As Integer
         ''' <summary>
         ''' Eine eindeutige Identifikation der Telefonnummer
         ''' </summary>
         ''' <returns></returns>
         Public Property ID1() As Integer
-            Get
-                Return iID1
-            End Get
-            Set(ByVal value As Integer)
-                iID1 = value
-            End Set
-        End Property
 #End Region
     End Structure
 
@@ -293,85 +253,37 @@ Public Class FritzBox
             EingehendeNummern = New FritzBoxTelefonnummernListe(C_hf)
         End Sub
 #Region "Datenfelder"
-        Private sTelName As String
         ''' <summary>
         ''' Der Telefonname des Telefons
         ''' </summary>
         Friend Property TelName() As String
-            Get
-                Return sTelName
-            End Get
-            Set(ByVal value As String)
-                sTelName = value
-            End Set
-        End Property
 
-        Private sTelTyp As TelTyp
         ''' <summary>
         ''' Der Telefontyp des Telefons: FON, DECT, VOIP, S0
         ''' </summary>
         Friend Property TelTyp() As TelTyp
-            Get
-                Return sTelTyp
-            End Get
-            Set(ByVal value As TelTyp)
-                sTelTyp = value
-            End Set
-        End Property
 
-        Private sAusgehendeNummer As FritzBoxTelefonnummer
         ''' <summary>
         ''' Ausgehende Nummer des Telefons
         ''' </summary>
         Friend Property AusgehendeNummer() As FritzBoxTelefonnummer
-            Get
-                Return sAusgehendeNummer
-            End Get
-            Set(ByVal value As FritzBoxTelefonnummer)
-                sAusgehendeNummer = value
-            End Set
-        End Property
 
-        Private sEingehendeNummern As FritzBoxTelefonnummernListe
         ''' <summary>
         ''' Liste der eingehenden Nummern, auf die das Telefon reagiert
         ''' </summary>
         ''' <returns></returns>
         Friend Property EingehendeNummern() As FritzBoxTelefonnummernListe
-            Get
-                Return sEingehendeNummern
-            End Get
-            Set(ByVal value As FritzBoxTelefonnummernListe)
-                sEingehendeNummern = value
-            End Set
-        End Property
 
-        Private bIsFax As Boolean
         ''' <summary>
         ''' Gibt an oder legt fest, ob es sich bei dem Telfon um ein Fax handelt
         ''' </summary>
         Public Property IsFax() As Boolean
-            Get
-                Return bIsFax
-            End Get
-            Set(ByVal value As Boolean)
-                bIsFax = value
-            End Set
-        End Property
 
-        Private iDialport As Integer
         ''' <summary>
         ''' Der Dialport des Telefons
         ''' </summary>
         ''' <returns></returns>
         Public Property Dialport() As Integer
-            Get
-                Return iDialport
-            End Get
-            Set(ByVal value As Integer)
-                iDialport = value
-            End Set
-        End Property
 #End Region
     End Class
     Friend Property P_SpeichereDaten() As Boolean
@@ -770,6 +682,16 @@ Public Class FritzBox
     Private ReadOnly Property P_Link_Query(ByVal sSID As String, ByVal sAbfrage As String) As String
         Get
             Return P_Link_FB_Basis & "/query.lua?sid=" & sSID & "&" & sAbfrage
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' http://<c>P_ValidFBAdr</c>/system/led_display.lua
+    ''' </summary>
+    ''' <returns></returns>
+    Private ReadOnly Property P_Link_LED_Display() As String
+        Get
+            Return P_Link_FB_Basis & "/system/led_display.lua"
         End Get
     End Property
 
@@ -3560,6 +3482,24 @@ Public Class FritzBox
             End With
         End If
     End Function
+
+#End Region
+
+
+#Region "LED"
+    Friend Sub SchalteLED(ByVal LEDStatus As Boolean)
+        Dim cmd As String
+
+        If P_SID = DataProvider.P_Def_SessionID Then FBLogin()
+        If Not P_SID = DataProvider.P_Def_SessionID And Len(P_SID) = Len(DataProvider.P_Def_SessionID) Then
+            'http://fritz.box/system/led_display.lua?sid=P_SID
+            cmd = "sid=" & P_SID
+            cmd += "&led_display=" & C_hf.IIf(LEDStatus, "0", "2")
+            cmd += "&apply="
+            C_hf.httpPOST(P_Link_LED_Display, cmd, C_DP.P_EncodingFritzBox)
+            C_hf.LogFile(DataProvider.P_Statsus_FritzBox_LED(C_hf.IIf(LEDStatus, "ein", "aus")))
+        End If
+    End Sub
 
 #End Region
     <DebuggerStepThrough>

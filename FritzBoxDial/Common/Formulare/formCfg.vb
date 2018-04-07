@@ -566,10 +566,10 @@ Public Class formCfg
     End Function
 
 #Region "Button Link"
-    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, BOK.Click, BAbbruch.Click, BApply.Click, BXML.Click, BAnrMonTest.Click, BIndizierungStart.Click, BIndizierungAbbrechen.Click, BZwischenablage.Click, BTelefonliste.Click, BStartDebug.Click, BResetStat.Click, BProbleme.Click, BStoppUhrAnzeigen.Click, BArbeitsverzeichnis.Click, BRWSTest.Click, BTestLogin.Click, BManLoad.Click
+    Private Sub Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BReset.Click, BOK.Click, BAbbruch.Click, BApply.Click, BXML.Click, BAnrMonTest.Click, BIndizierungStart.Click, BIndizierungAbbrechen.Click, BZwischenablage.Click, BTelefonliste.Click, BStartDebug.Click, BResetStat.Click, BProbleme.Click, BStoppUhrAnzeigen.Click, BArbeitsverzeichnis.Click, BRWSTest.Click, BTestLogin.Click, BManLoad.Click, BLEDonoff.Click
 
-        Select Case CType(sender, Windows.Forms.Button).Name
-            Case "BReset"
+        Select Case CType(sender, Button).Name
+            Case BReset.Name '"BReset"
                 ' Startwerte zurücksetzen
                 TBLandesVW.Text = DataProvider.P_Def_TBLandesVW
                 TBAmt.Text = DataProvider.P_Def_LeerString
@@ -628,7 +628,7 @@ Public Class formCfg
                 ' Fritz!Box Kommunikation
                 RBFBComUPnP.Checked = DataProvider.P_Def_RBFBComUPnP
                 C_hf.LogFile("Einstellungen zurückgesetzt")
-            Case "BTelefonliste"
+            Case BTelefonliste.Name
                 C_FBox.SetEventProvider(emc)
                 BTelefonliste.Enabled = False
                 BTelefonliste.Text = "Bitte warten..."
@@ -640,28 +640,28 @@ Public Class formCfg
                     .WorkerReportsProgress = False
                     .RunWorkerAsync(True)
                 End With
-            Case "BOK"
+            Case BOK.Name
                 Dim formschließen As Boolean = Speichern()
                 C_DP.P_CBUseAnrMon = CBUseAnrMon.Checked
                 C_GUI.RefreshRibbon()
 
                 If formschließen Then Hide()
-            Case "BAbbruch"
+            Case BAbbruch.Name
                 ' Schließt das Fenster
                 Hide()
-            Case "BApply"
+            Case BApply.Name
                 Speichern()
-            Case "BXML"
+            Case BXML.Name
                 Process.Start(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Config_FileName)
-            Case "BAnrMonTest"
+            Case BAnrMonTest.Name
                 Speichern()
                 C_PopUp.AnrMonEinblenden(C_AnrMon.LetzterAnrufer)
 
-            Case "BZwischenablage"
+            Case BZwischenablage.Name
                 If Not TBDiagnose.Text = DataProvider.P_Def_LeerString Then
                     My.Computer.Clipboard.SetText(TBDiagnose.Text)
                 End If
-            Case "BProbleme"
+            Case BProbleme.Name
                 Dim T As New Thread(AddressOf NeueMail)
 
                 If C_hf.MsgBox("Der Einstellungsdialog wird jetzt geschlossen. Danach werden alle erforderlichen Informationen gesammelt, was ein paar Sekunden dauern kann." & vbNewLine & "Danach wird eine neue E-Mail geöffnet, die Sie bitte vervollständigen und absenden.", MsgBoxStyle.OkCancel, "") = MsgBoxResult.Ok Then
@@ -670,7 +670,7 @@ Public Class formCfg
                 Else
                     T = Nothing
                 End If
-            Case "BStartDebug"
+            Case BStartDebug.Name
                 TBDiagnose.Text = DataProvider.P_Def_LeerString
                 AddLine("Start")
                 C_FBox.SetEventProvider(emc)
@@ -685,7 +685,7 @@ Public Class formCfg
                     AddLine("BackgroundWorker gestartet.")
                 End With
 
-            Case "BResetStat"
+            Case BResetStat.Name
 
                 C_DP.P_StatResetZeit = System.DateTime.Now
                 C_DP.P_StatVerpasst = 0
@@ -709,16 +709,16 @@ Public Class formCfg
                 C_DP.SpeichereXMLDatei()
                 Ausfüllen()
                 xPathTeile = Nothing
-            Case "BIndizierungStart"
+            Case BIndizierungStart.Name
                 StarteIndizierung()
-            Case "BIndizierungAbbrechen"
+            Case BIndizierungAbbrechen.Name
                 BWIndexer.CancelAsync()
                 BIndizierungAbbrechen.Enabled = False
                 BIndizierungStart.Enabled = True
-            Case "BStoppUhrAnzeigen"
+            Case BStoppUhrAnzeigen.Name
                 Speichern()
                 C_PopUp.StoppuhrEinblenden(C_AnrMon.LetzterAnrufer)
-            Case "BArbeitsverzeichnis"
+            Case BArbeitsverzeichnis.Name
                 Dim fDialg As New System.Windows.Forms.FolderBrowserDialog
                 With fDialg
                     .ShowNewFolderButton = True
@@ -733,7 +733,7 @@ Public Class formCfg
                         End If
                     End If
                 End With
-            Case "BRWSTest"
+            Case BRWSTest.Name
                 Dim TelNr As String = TBRWSTest.Text
                 If IsNumeric(TelNr) Then
                     Dim F_RWS As New formRWSuche(C_hf, C_KF, C_DP, C_XML)
@@ -757,7 +757,7 @@ Public Class formCfg
                 Else
                     C_hf.MsgBox("Die Telefonnummer """ & TelNr & """ ist ungültig (Test abgebrochen).", MsgBoxStyle.Exclamation, "Test der Rückwärtssuche")
                 End If
-            Case "BTestLogin"
+            Case BTestLogin.Name
                 Dim SID As String
                 If TBPasswort.Text = "1234" Then
                     SID = C_FBox.FBLogin()
@@ -770,7 +770,7 @@ Public Class formCfg
                 Else
                     BTestLogin.Text = "OK!"
                 End If
-            Case "BManLoad"
+            Case BManLoad.Name
                 Using FBD As New FolderBrowserDialog
                     With FBD
                         .Description = "Wähle den Ordner aus, in dem sich die Konfigurationsdateien befinden"
@@ -781,6 +781,8 @@ Public Class formCfg
                         End If
                     End With
                 End Using
+            Case BLEDonoff.Name
+                C_FBox.SchalteLED(RBLEDan.Checked)
         End Select
     End Sub
 
@@ -788,13 +790,13 @@ Public Class formCfg
         Select Case CType(sender, Windows.Forms.LinkLabel).Name
             Case "LinkEmail"
                 Close()
-                System.Diagnostics.Process.Start("mailto:kruemelino@gert-michael.de")
+                Process.Start("mailto:kruemelino@gert-michael.de")
             Case "LinkForum"
-                System.Diagnostics.Process.Start("http://www.ip-phone-forum.de/showthread.php?t=237086")
+                Process.Start("http://www.ip-phone-forum.de/showthread.php?t=237086")
             Case "LinkHomepage"
-                System.Diagnostics.Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
+                Process.Start("http://github.com/Kruemelino/FritzBoxTelefon-dingsbums")
             Case "LinkLogFile"
-                System.Diagnostics.Process.Start(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName)
+                Process.Start(C_DP.P_Arbeitsverzeichnis & DataProvider.P_Def_Log_FileName)
         End Select
     End Sub
 
@@ -806,7 +808,7 @@ Public Class formCfg
         Select Case sender.GetType().Name
             Case "CheckBox"
                 Select Case CType(sender, CheckBox).Name
-                    Case "CBRWS"
+                    Case CBRWS.Name
                         ' Combobox für Rückwärtssuchmaschinen je nach CheckBox für Rückwärtssuche ein- bzw. ausblenden
                         ComboBoxRWS.Enabled = CBRWS.Checked
                         CBKErstellen.Checked = CBRWS.Checked
@@ -816,18 +818,18 @@ Public Class formCfg
                         LRWSTest.Enabled = CBRWS.Checked
                         TBRWSTest.Enabled = CBRWS.Checked
                         'Me.BRWSTest.Enabled = Me.CBRWS.Checked
-                    Case "CBCbCunterbinden"
+                    Case CBCbCunterbinden.Name
                         CBCallByCall.Enabled = Not CBCbCunterbinden.Checked
                         If CBCbCunterbinden.Checked Then CBCallByCall.Checked = False
-                    Case "CBAutoClose"
+                    Case CBAutoClose.Name
                         TBEnblDauer.Enabled = CBAutoClose.Checked
                         LEnblDauer.Enabled = CBAutoClose.Checked
                         CBAnrMonCloseAtDISSCONNECT.Checked = False
                         CBAnrMonCloseAtDISSCONNECT.Enabled = Not CBAutoClose.Checked
-                    Case "CBJournal"
+                    Case CBJournal.Name
                         If Not CBJournal.Checked Then CBAnrListeUpdateJournal.Checked = False
                         CBAnrListeUpdateJournal.Enabled = CBJournal.Checked
-                    Case "CBAutoAnrList"
+                    Case CBAutoAnrList.Name
                         If Not CBAutoAnrList.Checked Then
                             CBAnrListeUpdateJournal.Checked = False
                             CBAnrListeUpdateCallLists.Checked = False
@@ -836,12 +838,12 @@ Public Class formCfg
                         CBAnrListeUpdateJournal.Enabled = CBAutoAnrList.Checked
                         CBAnrListeUpdateCallLists.Enabled = CBAutoAnrList.Checked
                         CBAnrListeShowAnrMon.Enabled = CBAutoAnrList.Checked
-                    Case "CBAnrListeShowAnrMon"
+                    Case CBAnrListeShowAnrMon.Name
                         TBAnrBeantworterTimeout.Enabled = CBAnrListeShowAnrMon.Checked
                         LAnrBeantworterTimeout.Enabled = CBAnrListeShowAnrMon.Checked
-                    Case "CBIndexAus"
+                    Case CBIndexAus.Name
                         BIndizierungStart.Enabled = Not CBIndexAus.Checked
-                    Case "CBUseAnrMon"
+                    Case CBUseAnrMon.Name
                         PanelAnrMon.Enabled = CBUseAnrMon.Checked
                         CBIndexAus.Enabled = Not CBUseAnrMon.Checked
                         GroupBoxStoppUhr.Enabled = CBUseAnrMon.Checked
@@ -850,23 +852,23 @@ Public Class formCfg
                             CBStoppUhrEinblenden.Checked = False
                             CBStoppUhrAusblenden.Checked = False
                         End If
-                    Case "CBStoppUhrEinblenden"
+                    Case CBStoppUhrEinblenden.Name
                         CBStoppUhrAusblenden.Enabled = CBStoppUhrEinblenden.Checked
                         If Not CBStoppUhrEinblenden.Checked Then CBStoppUhrAusblenden.Checked = False
                         TBStoppUhr.Enabled = CBStoppUhrAusblenden.Checked And CBStoppUhrEinblenden.Checked
                         LabelStoppUhr.Enabled = CBStoppUhrEinblenden.Checked
                         CBStoppUhrIgnIntFax.Enabled = CBStoppUhrEinblenden.Checked
-                    Case "CBStoppUhrAusblenden"
+                    Case CBStoppUhrAusblenden.Name
                         TBStoppUhr.Enabled = CBStoppUhrAusblenden.Checked And CBStoppUhrEinblenden.Checked
-                    Case "CBLogFile"
+                    Case CBLogFile.Name
                         GBLogging.Enabled = CBLogFile.Checked
-                    Case "CBAnrMonMove"
+                    Case CBAnrMonMove.Name
                         CBoxAnrMonMoveDirection.Enabled = CBAnrMonMove.Checked
                         LAnrMonMoveDirection.Enabled = CBAnrMonMove.Checked
                 End Select
             Case "TextBox"
                 Select Case CType(sender, TextBox).Name
-                    Case "TBLandesVW"
+                    Case TBLandesVW.Name
                         If TBLandesVW.Text = DataProvider.P_Def_TBLandesVW Then
                             CBRWS.Enabled = True
                             CBKErstellen.Enabled = True
@@ -879,15 +881,15 @@ Public Class formCfg
                             CBKErstellen.Checked = False
                             ComboBoxRWS.Enabled = False
                         End If
-                    Case "TBVorwahl"
+                    Case TBVorwahl.Name
                         TBVorwahl.Text = C_hf.AcceptOnlyNumeric(TBVorwahl.Text)
-                    Case "TBEnblDauer"
+                    Case TBEnblDauer.Name
                         TBEnblDauer.Text = C_hf.AcceptOnlyNumeric(TBEnblDauer.Text)
-                    Case "TBAnrMonX"
+                    Case TBAnrMonX.Name
                         TBAnrMonX.Text = C_hf.AcceptOnlyNumeric(TBAnrMonX.Text)
-                    Case "TBAnrMonY"
+                    Case TBAnrMonY.Name
                         TBAnrMonY.Text = C_hf.AcceptOnlyNumeric(TBAnrMonY.Text)
-                    Case "TBNumEntryList"
+                    Case TBNumEntryList.Name
                         TBNumEntryList.Text = C_hf.AcceptOnlyNumeric(TBNumEntryList.Text)
                         If TBNumEntryList.Text = DataProvider.P_Def_LeerString Or TBNumEntryList.Text < "1" Then TBNumEntryList.Text = CStr(DataProvider.P_Def_TBNumEntryList)
                         If CInt(TBNumEntryList.Text) < C_DP.P_TBNumEntryList Then
@@ -895,21 +897,21 @@ Public Class formCfg
                         Else
                             TBNumEntryList.ForeColor = SystemColors.WindowText
                         End If
-                    Case "TBLandesVW"
+                    Case TBLandesVW.Name
                         ToolTipFBDBConfig.SetToolTip(CBVoIPBuster, "Mit dieser Einstellung wird die Landesvorwahl " & TBLandesVW.Text & " immer mitgewählt.")
-                    Case "TBTelNrMaske"
+                    Case TBTelNrMaske.Name
                         PrüfeMaske()
-                    Case "TBRWSTest"
+                    Case TBRWSTest.Name
                         TBRWSTest.Text = C_hf.AcceptOnlyNumeric(TBRWSTest.Text)
                         BRWSTest.Enabled = Len(C_hf.nurZiffern(TBRWSTest.Text)) > 0
-                    Case "TBBenutzer", "TBPasswort"
+                    Case TBBenutzer.Name, TBPasswort.Name
                         BTestLogin.Text = "Test"
                     Case "TBAnrBeantworterTimeout"
                         TBAnrBeantworterTimeout.Text = C_hf.AcceptOnlyNumeric(TBAnrBeantworterTimeout.Text)
                 End Select
             Case "CheckedListBox"
                 Select Case CType(sender, CheckedListBox).Name
-                    Case "CLBTelNr"
+                    Case CLBTelNr.Name
                         Dim alle As Boolean = True
                         With CLBTelNr
                             Select Case .SelectedIndex
@@ -1475,6 +1477,7 @@ Public Class formCfg
         TBPhonerPasswort.Enabled = CBPhoner.Checked
         LPassworPhoner.Enabled = CBPhoner.Checked
     End Sub
+
 
 
 #End Region

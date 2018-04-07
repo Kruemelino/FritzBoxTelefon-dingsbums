@@ -1758,6 +1758,12 @@ Public Class DataProvider
         End Get
     End Property
 
+    Public Shared ReadOnly Property P_Statsus_FritzBox_LED(ByVal LEDStatus As String) As String
+        Get
+            Return "LED der Fritz!Box " & LEDStatus & "geschaltet"
+        End Get
+    End Property
+
     ''' <summary>
     ''' "Der Addressbuch der Fritz!Box kann nicht geöffnet werden."
     ''' </summary>

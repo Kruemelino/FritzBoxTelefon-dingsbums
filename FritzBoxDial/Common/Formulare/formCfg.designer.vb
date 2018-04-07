@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -165,6 +165,10 @@ Partial Class formCfg
         Me.CBUseAnrMon = New System.Windows.Forms.CheckBox()
         Me.FBDB_MP = New System.Windows.Forms.TabControl()
         Me.PDiverses = New System.Windows.Forms.TabPage()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.BLEDonoff = New System.Windows.Forms.Button()
+        Me.RBLEDaus = New System.Windows.Forms.RadioButton()
+        Me.RBLEDan = New System.Windows.Forms.RadioButton()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GBoxJournal = New System.Windows.Forms.GroupBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
@@ -225,6 +229,7 @@ Partial Class formCfg
         Me.PanelAnrMon.SuspendLayout()
         Me.FBDB_MP.SuspendLayout()
         Me.PDiverses.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GBoxJournal.SuspendLayout()
         Me.GboxAnrListeMain.SuspendLayout()
@@ -978,11 +983,11 @@ Partial Class formCfg
         '
         Me.GroupBox3.Controls.Add(Me.RBFBComUPnP)
         Me.GroupBox3.Controls.Add(Me.RBFBComWeb)
-        Me.GroupBox3.Location = New System.Drawing.Point(0, 380)
+        Me.GroupBox3.Location = New System.Drawing.Point(428, 160)
         Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox3.Size = New System.Drawing.Size(424, 68)
+        Me.GroupBox3.Size = New System.Drawing.Size(424, 102)
         Me.GroupBox3.TabIndex = 34
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Fritz!Box Kommunikation"
@@ -992,12 +997,12 @@ Partial Class formCfg
         'RBFBComUPnP
         '
         Me.RBFBComUPnP.AutoSize = True
-        Me.RBFBComUPnP.Location = New System.Drawing.Point(172, 29)
+        Me.RBFBComUPnP.Location = New System.Drawing.Point(8, 64)
         Me.RBFBComUPnP.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.RBFBComUPnP.Name = "RBFBComUPnP"
-        Me.RBFBComUPnP.Size = New System.Drawing.Size(234, 24)
+        Me.RBFBComUPnP.Size = New System.Drawing.Size(238, 24)
         Me.RBFBComUPnP.TabIndex = 0
-        Me.RBFBComUPnP.Text = "UPnP (SOAP, experimentell)"
+        Me.RBFBComUPnP.Text = "UPnP (SOAP, experimentell) "
         Me.ToolTipFBDBConfig.SetToolTip(Me.RBFBComUPnP, "Bei Änderung der Fritz!Box Kommunikation ist ein Neustart des Addins erforderlich" &
         ".")
         Me.RBFBComUPnP.UseVisualStyleBackColor = True
@@ -1006,13 +1011,13 @@ Partial Class formCfg
         '
         Me.RBFBComWeb.AutoSize = True
         Me.RBFBComWeb.Checked = True
-        Me.RBFBComWeb.Location = New System.Drawing.Point(9, 29)
+        Me.RBFBComWeb.Location = New System.Drawing.Point(8, 28)
         Me.RBFBComWeb.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.RBFBComWeb.Name = "RBFBComWeb"
-        Me.RBFBComWeb.Size = New System.Drawing.Size(142, 24)
+        Me.RBFBComWeb.Size = New System.Drawing.Size(146, 24)
         Me.RBFBComWeb.TabIndex = 0
         Me.RBFBComWeb.TabStop = True
-        Me.RBFBComWeb.Text = "Weboberfläche"
+        Me.RBFBComWeb.Text = "Weboberfläche "
         Me.ToolTipFBDBConfig.SetToolTip(Me.RBFBComWeb, "Bei Änderung der Fritz!Box Kommunikation ist ein Neustart des Addins erforderlich" &
         ".")
         Me.RBFBComWeb.UseVisualStyleBackColor = True
@@ -1042,7 +1047,7 @@ Partial Class formCfg
         Me.PInfo.Location = New System.Drawing.Point(4, 29)
         Me.PInfo.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PInfo.Name = "PInfo"
-        Me.PInfo.Size = New System.Drawing.Size(859, 459)
+        Me.PInfo.Size = New System.Drawing.Size(860, 458)
         Me.PInfo.TabIndex = 4
         Me.PInfo.Text = "Info..."
         Me.PInfo.UseVisualStyleBackColor = True
@@ -1148,7 +1153,7 @@ Partial Class formCfg
         Me.PTelefone.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PTelefone.Name = "PTelefone"
         Me.PTelefone.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PTelefone.Size = New System.Drawing.Size(859, 459)
+        Me.PTelefone.Size = New System.Drawing.Size(860, 458)
         Me.PTelefone.TabIndex = 5
         Me.PTelefone.Text = "Telefone"
         Me.PTelefone.UseVisualStyleBackColor = True
@@ -1310,9 +1315,9 @@ Partial Class formCfg
         'Eingehend
         '
         Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle1.Format = "T"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle22.Format = "T"
+        DataGridViewCellStyle22.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle22
         Me.Eingehend.HeaderText = "Eingehend"
         Me.Eingehend.MinimumWidth = 65
         Me.Eingehend.Name = "Eingehend"
@@ -1324,9 +1329,9 @@ Partial Class formCfg
         'Ausgehend
         '
         Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle2.Format = "T"
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle23.Format = "T"
+        DataGridViewCellStyle23.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle23
         Me.Ausgehend.HeaderText = "Ausgehend"
         Me.Ausgehend.MinimumWidth = 65
         Me.Ausgehend.Name = "Ausgehend"
@@ -1338,9 +1343,9 @@ Partial Class formCfg
         'Gesamt
         '
         Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Format = "T"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle24.Format = "T"
+        DataGridViewCellStyle24.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle24
         Me.Gesamt.HeaderText = "Gesamt"
         Me.Gesamt.MinimumWidth = 65
         Me.Gesamt.Name = "Gesamt"
@@ -1356,7 +1361,7 @@ Partial Class formCfg
         Me.Label15.Location = New System.Drawing.Point(4, 5)
         Me.Label15.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(851, 54)
+        Me.Label15.Size = New System.Drawing.Size(852, 54)
         Me.Label15.TabIndex = 26
         Me.Label15.Text = "Telefone und Statistik"
         Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1370,7 +1375,7 @@ Partial Class formCfg
         Me.PKontaktsuche.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PKontaktsuche.Name = "PKontaktsuche"
         Me.PKontaktsuche.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PKontaktsuche.Size = New System.Drawing.Size(859, 459)
+        Me.PKontaktsuche.Size = New System.Drawing.Size(860, 458)
         Me.PKontaktsuche.TabIndex = 6
         Me.PKontaktsuche.Text = "Kontaktsuche"
         Me.PKontaktsuche.UseVisualStyleBackColor = True
@@ -1382,7 +1387,7 @@ Partial Class formCfg
         Me.Label1.Location = New System.Drawing.Point(4, 5)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(851, 54)
+        Me.Label1.Size = New System.Drawing.Size(852, 54)
         Me.Label1.TabIndex = 33
         Me.Label1.Text = "Einstellungen für die Kontaktsuche"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1576,7 +1581,7 @@ Partial Class formCfg
         Me.PAnrufmonitor.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PAnrufmonitor.Name = "PAnrufmonitor"
         Me.PAnrufmonitor.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PAnrufmonitor.Size = New System.Drawing.Size(859, 459)
+        Me.PAnrufmonitor.Size = New System.Drawing.Size(860, 458)
         Me.PAnrufmonitor.TabIndex = 0
         Me.PAnrufmonitor.Text = "Anrufmonitor"
         Me.PAnrufmonitor.UseVisualStyleBackColor = True
@@ -1738,7 +1743,7 @@ Partial Class formCfg
         Me.Label22.Location = New System.Drawing.Point(4, 5)
         Me.Label22.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(851, 54)
+        Me.Label22.Size = New System.Drawing.Size(852, 54)
         Me.Label22.TabIndex = 29
         Me.Label22.Text = "Einstellungen für den Anrufmonitor"
         Me.Label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1899,6 +1904,7 @@ Partial Class formCfg
         '
         'PDiverses
         '
+        Me.PDiverses.Controls.Add(Me.GroupBox8)
         Me.PDiverses.Controls.Add(Me.GroupBox6)
         Me.PDiverses.Controls.Add(Me.GroupBox3)
         Me.PDiverses.Controls.Add(Me.GBoxJournal)
@@ -1913,15 +1919,58 @@ Partial Class formCfg
         Me.PDiverses.Text = "Weitere Funktionen"
         Me.PDiverses.UseVisualStyleBackColor = True
         '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.BLEDonoff)
+        Me.GroupBox8.Controls.Add(Me.RBLEDaus)
+        Me.GroupBox8.Controls.Add(Me.RBLEDan)
+        Me.GroupBox8.Location = New System.Drawing.Point(428, 270)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(421, 107)
+        Me.GroupBox8.TabIndex = 36
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Fritz!Box LED"
+        '
+        'BLEDonoff
+        '
+        Me.BLEDonoff.Location = New System.Drawing.Point(234, 35)
+        Me.BLEDonoff.Name = "BLEDonoff"
+        Me.BLEDonoff.Size = New System.Drawing.Size(168, 43)
+        Me.BLEDonoff.TabIndex = 2
+        Me.BLEDonoff.Text = "LED schalten"
+        Me.BLEDonoff.UseVisualStyleBackColor = True
+        '
+        'RBLEDaus
+        '
+        Me.RBLEDaus.AutoSize = True
+        Me.RBLEDaus.Location = New System.Drawing.Point(18, 65)
+        Me.RBLEDaus.Name = "RBLEDaus"
+        Me.RBLEDaus.Size = New System.Drawing.Size(66, 24)
+        Me.RBLEDaus.TabIndex = 1
+        Me.RBLEDaus.Text = "Aus "
+        Me.RBLEDaus.UseVisualStyleBackColor = True
+        '
+        'RBLEDan
+        '
+        Me.RBLEDan.AutoSize = True
+        Me.RBLEDan.Checked = True
+        Me.RBLEDan.Location = New System.Drawing.Point(18, 24)
+        Me.RBLEDan.Name = "RBLEDan"
+        Me.RBLEDan.Size = New System.Drawing.Size(61, 24)
+        Me.RBLEDan.TabIndex = 0
+        Me.RBLEDan.TabStop = True
+        Me.RBLEDan.Text = "Ein "
+        Me.RBLEDan.UseVisualStyleBackColor = True
+        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.TBNumEntryList)
         Me.GroupBox6.Controls.Add(Me.Label9)
-        Me.GroupBox6.Location = New System.Drawing.Point(432, 380)
+        Me.GroupBox6.Location = New System.Drawing.Point(431, 64)
         Me.GroupBox6.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox6.Size = New System.Drawing.Size(424, 68)
+        Me.GroupBox6.Size = New System.Drawing.Size(424, 85)
         Me.GroupBox6.TabIndex = 35
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Anruflisten"
@@ -2023,7 +2072,7 @@ Partial Class formCfg
         Me.PPhoner.Location = New System.Drawing.Point(4, 29)
         Me.PPhoner.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PPhoner.Name = "PPhoner"
-        Me.PPhoner.Size = New System.Drawing.Size(859, 459)
+        Me.PPhoner.Size = New System.Drawing.Size(860, 458)
         Me.PPhoner.TabIndex = 12
         Me.PPhoner.Text = "Phoner"
         Me.PPhoner.UseVisualStyleBackColor = True
@@ -2035,11 +2084,11 @@ Partial Class formCfg
         Me.GroupBox4.Controls.Add(Me.PanelPhoner)
         Me.GroupBox4.Controls.Add(Me.BPhoner)
         Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.GroupBox4.Location = New System.Drawing.Point(0, 224)
+        Me.GroupBox4.Location = New System.Drawing.Point(0, 223)
         Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox4.Size = New System.Drawing.Size(859, 235)
+        Me.GroupBox4.Size = New System.Drawing.Size(860, 235)
         Me.GroupBox4.TabIndex = 27
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Phoner Einstellungen"
@@ -2175,7 +2224,7 @@ Partial Class formCfg
         Me.Label30.Location = New System.Drawing.Point(0, 0)
         Me.Label30.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(859, 54)
+        Me.Label30.Size = New System.Drawing.Size(860, 54)
         Me.Label30.TabIndex = 25
         Me.Label30.Text = "Einstellungen für Phoner"
         Me.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -2220,7 +2269,7 @@ Partial Class formCfg
         Me.PLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PLogging.Name = "PLogging"
         Me.PLogging.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PLogging.Size = New System.Drawing.Size(859, 459)
+        Me.PLogging.Size = New System.Drawing.Size(860, 458)
         Me.PLogging.TabIndex = 11
         Me.PLogging.Text = "Logging"
         Me.PLogging.UseVisualStyleBackColor = True
@@ -2288,7 +2337,7 @@ Partial Class formCfg
         Me.Label23.Location = New System.Drawing.Point(4, 5)
         Me.Label23.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(851, 54)
+        Me.Label23.Size = New System.Drawing.Size(852, 54)
         Me.Label23.TabIndex = 24
         Me.Label23.Text = "Logging"
         Me.Label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -2301,7 +2350,7 @@ Partial Class formCfg
         Me.PDebug.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PDebug.Name = "PDebug"
         Me.PDebug.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PDebug.Size = New System.Drawing.Size(859, 459)
+        Me.PDebug.Size = New System.Drawing.Size(860, 458)
         Me.PDebug.TabIndex = 10
         Me.PDebug.Text = "Debug"
         Me.PDebug.UseVisualStyleBackColor = True
@@ -2341,7 +2390,7 @@ Partial Class formCfg
         Me.Label8.Location = New System.Drawing.Point(4, 5)
         Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(851, 54)
+        Me.Label8.Size = New System.Drawing.Size(852, 54)
         Me.Label8.TabIndex = 24
         Me.Label8.Text = "Einlesen der eingerichteten Telefone"
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -2441,6 +2490,8 @@ Partial Class formCfg
         Me.PanelAnrMon.PerformLayout()
         Me.FBDB_MP.ResumeLayout(False)
         Me.PDiverses.ResumeLayout(False)
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GBoxJournal.ResumeLayout(False)
@@ -2648,5 +2699,8 @@ Partial Class formCfg
     Friend WithEvents TBNumEntryList As Windows.Forms.TextBox
     Friend WithEvents Label9 As Windows.Forms.Label
     Friend WithEvents BManLoad As Windows.Forms.Button
-
+    Friend WithEvents GroupBox8 As Windows.Forms.GroupBox
+    Friend WithEvents RBLEDaus As Windows.Forms.RadioButton
+    Friend WithEvents RBLEDan As Windows.Forms.RadioButton
+    Friend WithEvents BLEDonoff As Windows.Forms.Button
 End Class
