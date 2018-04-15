@@ -21,9 +21,9 @@ Partial Class formCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(formCfg))
-        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -109,15 +109,6 @@ Partial Class formCfg
         Me.TBSchließZeit = New System.Windows.Forms.Label()
         Me.TBReset = New System.Windows.Forms.Label()
         Me.TelList = New System.Windows.Forms.DataGridView()
-        Me.ColumnStandardTelefon = New System.Windows.Forms.DataGridViewCheckBoxColumn()
-        Me.Nr = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dialCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Typ = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Telefonname = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.OutNr = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Eingehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Ausgehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Gesamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.PKontaktsuche = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -209,6 +200,15 @@ Partial Class formCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ColumnStandardTelefon = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.Nr = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.dialCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Typ = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Telefonname = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.OutNr = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Eingehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Ausgehend = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Gesamt = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBoxStoppUhr.SuspendLayout()
@@ -305,8 +305,9 @@ Partial Class formCfg
         Me.CBKErstellen.Enabled = False
         Me.CBKErstellen.Location = New System.Drawing.Point(9, 106)
         Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBKErstellen.MinimumSize = New System.Drawing.Size(350, 0)
         Me.CBKErstellen.Name = "CBKErstellen"
-        Me.CBKErstellen.Size = New System.Drawing.Size(321, 24)
+        Me.CBKErstellen.Size = New System.Drawing.Size(350, 24)
         Me.CBKErstellen.TabIndex = 2
         Me.CBKErstellen.Text = "Kontakt bei erfolgreicher Suche erstellen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
@@ -319,6 +320,7 @@ Partial Class formCfg
         Me.CBRWSIndex.Enabled = False
         Me.CBRWSIndex.Location = New System.Drawing.Point(9, 142)
         Me.CBRWSIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBRWSIndex.MinimumSize = New System.Drawing.Size(350, 0)
         Me.CBRWSIndex.Name = "CBRWSIndex"
         Me.CBRWSIndex.Size = New System.Drawing.Size(362, 24)
         Me.CBRWSIndex.TabIndex = 3
@@ -331,8 +333,9 @@ Partial Class formCfg
         Me.CBKHO.AutoSize = True
         Me.CBKHO.Location = New System.Drawing.Point(9, 29)
         Me.CBKHO.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBKHO.MinimumSize = New System.Drawing.Size(350, 0)
         Me.CBKHO.Name = "CBKHO"
-        Me.CBKHO.Size = New System.Drawing.Size(334, 24)
+        Me.CBKHO.Size = New System.Drawing.Size(350, 24)
         Me.CBKHO.TabIndex = 5
         Me.CBKHO.Text = "Nur den Hauptkontaktordner durchsuchen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBKHO, resources.GetString("CBKHO.ToolTip"))
@@ -344,8 +347,9 @@ Partial Class formCfg
         Me.CBIndexAus.Enabled = False
         Me.CBIndexAus.Location = New System.Drawing.Point(372, 29)
         Me.CBIndexAus.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBIndexAus.MinimumSize = New System.Drawing.Size(450, 0)
         Me.CBIndexAus.Name = "CBIndexAus"
-        Me.CBIndexAus.Size = New System.Drawing.Size(446, 24)
+        Me.CBIndexAus.Size = New System.Drawing.Size(450, 24)
         Me.CBIndexAus.TabIndex = 6
         Me.CBIndexAus.Text = "Indizierung auschalten (nur wenn Anrufmonitor deaktiviert)"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBIndexAus, "Wenn Sie den Anrufmonitor nicht verwenden, können Sie die Indizierung auch aussch" &
@@ -357,8 +361,9 @@ Partial Class formCfg
         Me.CBAnrMonTransp.AutoSize = True
         Me.CBAnrMonTransp.Location = New System.Drawing.Point(6, 29)
         Me.CBAnrMonTransp.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrMonTransp.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrMonTransp.Name = "CBAnrMonTransp"
-        Me.CBAnrMonTransp.Size = New System.Drawing.Size(200, 24)
+        Me.CBAnrMonTransp.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrMonTransp.TabIndex = 7
         Me.CBAnrMonTransp.Text = "Verwende Transparenz"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonTransp, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor ein und ausgeblendet." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) &
@@ -370,8 +375,9 @@ Partial Class formCfg
         Me.CBAnrMonMove.AutoSize = True
         Me.CBAnrMonMove.Location = New System.Drawing.Point(6, 65)
         Me.CBAnrMonMove.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrMonMove.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrMonMove.Name = "CBAnrMonMove"
-        Me.CBAnrMonMove.Size = New System.Drawing.Size(277, 24)
+        Me.CBAnrMonMove.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrMonMove.TabIndex = 8
         Me.CBAnrMonMove.Text = "Verwende Anrufmonitorbewegung"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBAnrMonMove, "Wenn diese Einstellung gesetzt ist, wird der Anrufmonitor von unten in den Deskto" &
@@ -383,8 +389,9 @@ Partial Class formCfg
         Me.CBShowMSN.AutoSize = True
         Me.CBShowMSN.Location = New System.Drawing.Point(6, 100)
         Me.CBShowMSN.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBShowMSN.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBShowMSN.Name = "CBShowMSN"
-        Me.CBShowMSN.Size = New System.Drawing.Size(252, 24)
+        Me.CBShowMSN.Size = New System.Drawing.Size(400, 24)
         Me.CBShowMSN.TabIndex = 9
         Me.CBShowMSN.Text = "Zeige MSN im Anrufmonitor an"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBShowMSN, "Wenn diese Einstellung gesetzt ist, wird die jeweilige MSN im Anrufmonitor angeze" &
@@ -429,8 +436,9 @@ Partial Class formCfg
         Me.CBIgnoTelNrFormat.AutoSize = True
         Me.CBIgnoTelNrFormat.Location = New System.Drawing.Point(9, 100)
         Me.CBIgnoTelNrFormat.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBIgnoTelNrFormat.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBIgnoTelNrFormat.Name = "CBIgnoTelNrFormat"
-        Me.CBIgnoTelNrFormat.Size = New System.Drawing.Size(292, 24)
+        Me.CBIgnoTelNrFormat.Size = New System.Drawing.Size(400, 24)
         Me.CBIgnoTelNrFormat.TabIndex = 15
         Me.CBIgnoTelNrFormat.Text = "Ignoriere Formatierung der Kontakte"
         Me.CBIgnoTelNrFormat.UseVisualStyleBackColor = True
@@ -440,8 +448,9 @@ Partial Class formCfg
         Me.Label24.AutoSize = True
         Me.Label24.Location = New System.Drawing.Point(135, 31)
         Me.Label24.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label24.MinimumSize = New System.Drawing.Size(65, 0)
         Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(60, 20)
+        Me.Label24.Size = New System.Drawing.Size(65, 20)
         Me.Label24.TabIndex = 3
         Me.Label24.Text = "Maske:"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label24, resources.GetString("Label24.ToolTip"))
@@ -460,8 +469,9 @@ Partial Class formCfg
         Me.CBintl.AutoSize = True
         Me.CBintl.Location = New System.Drawing.Point(9, 65)
         Me.CBintl.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBintl.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBintl.Name = "CBintl"
-        Me.CBintl.Size = New System.Drawing.Size(304, 24)
+        Me.CBintl.Size = New System.Drawing.Size(400, 24)
         Me.CBintl.TabIndex = 14
         Me.CBintl.Text = "Internationale Vorwahl immer anfügen"
         Me.CBintl.UseVisualStyleBackColor = True
@@ -471,8 +481,9 @@ Partial Class formCfg
         Me.CBTelNrGruppieren.AutoSize = True
         Me.CBTelNrGruppieren.Location = New System.Drawing.Point(9, 29)
         Me.CBTelNrGruppieren.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBTelNrGruppieren.MinimumSize = New System.Drawing.Size(120, 0)
         Me.CBTelNrGruppieren.Name = "CBTelNrGruppieren"
-        Me.CBTelNrGruppieren.Size = New System.Drawing.Size(115, 24)
+        Me.CBTelNrGruppieren.Size = New System.Drawing.Size(120, 24)
         Me.CBTelNrGruppieren.TabIndex = 12
         Me.CBTelNrGruppieren.Text = "Gruppieren"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Beispiel:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "oh" &
@@ -502,8 +513,9 @@ Partial Class formCfg
         Me.CBStoppUhrIgnIntFax.AutoSize = True
         Me.CBStoppUhrIgnIntFax.Location = New System.Drawing.Point(9, 100)
         Me.CBStoppUhrIgnIntFax.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBStoppUhrIgnIntFax.MinimumSize = New System.Drawing.Size(220, 0)
         Me.CBStoppUhrIgnIntFax.Name = "CBStoppUhrIgnIntFax"
-        Me.CBStoppUhrIgnIntFax.Size = New System.Drawing.Size(216, 24)
+        Me.CBStoppUhrIgnIntFax.Size = New System.Drawing.Size(220, 24)
         Me.CBStoppUhrIgnIntFax.TabIndex = 20
         Me.CBStoppUhrIgnIntFax.Text = "Ignoriere intern. Faxempf."
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrIgnIntFax, "Die Stoppuhr wird nicht angezeigt wenn ein interner Faxempfang erkannt wurde.")
@@ -522,16 +534,17 @@ Partial Class formCfg
         'LabelStoppUhr
         '
         Me.LabelStoppUhr.AutoSize = True
-        Me.LabelStoppUhr.Location = New System.Drawing.Point(252, 66)
+        Me.LabelStoppUhr.Location = New System.Drawing.Point(268, 66)
         Me.LabelStoppUhr.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LabelStoppUhr.MinimumSize = New System.Drawing.Size(120, 0)
         Me.LabelStoppUhr.Name = "LabelStoppUhr"
-        Me.LabelStoppUhr.Size = New System.Drawing.Size(112, 20)
+        Me.LabelStoppUhr.Size = New System.Drawing.Size(120, 20)
         Me.LabelStoppUhr.TabIndex = 3
         Me.LabelStoppUhr.Text = "Sekunden aus"
         '
         'TBStoppUhr
         '
-        Me.TBStoppUhr.Location = New System.Drawing.Point(201, 62)
+        Me.TBStoppUhr.Location = New System.Drawing.Point(217, 63)
         Me.TBStoppUhr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.TBStoppUhr.Name = "TBStoppUhr"
         Me.TBStoppUhr.Size = New System.Drawing.Size(43, 26)
@@ -542,8 +555,9 @@ Partial Class formCfg
         Me.CBStoppUhrAusblenden.AutoSize = True
         Me.CBStoppUhrAusblenden.Location = New System.Drawing.Point(9, 65)
         Me.CBStoppUhrAusblenden.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBStoppUhrAusblenden.MinimumSize = New System.Drawing.Size(200, 0)
         Me.CBStoppUhrAusblenden.Name = "CBStoppUhrAusblenden"
-        Me.CBStoppUhrAusblenden.Size = New System.Drawing.Size(194, 24)
+        Me.CBStoppUhrAusblenden.Size = New System.Drawing.Size(200, 24)
         Me.CBStoppUhrAusblenden.TabIndex = 17
         Me.CBStoppUhrAusblenden.Text = "Blende Stoppuhr nach"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrAusblenden, "Blendet die Stoppuhr nach Beendiging eines Telefonats aus." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
@@ -554,8 +568,9 @@ Partial Class formCfg
         Me.CBStoppUhrEinblenden.AutoSize = True
         Me.CBStoppUhrEinblenden.Location = New System.Drawing.Point(9, 29)
         Me.CBStoppUhrEinblenden.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBStoppUhrEinblenden.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBStoppUhrEinblenden.Name = "CBStoppUhrEinblenden"
-        Me.CBStoppUhrEinblenden.Size = New System.Drawing.Size(180, 24)
+        Me.CBStoppUhrEinblenden.Size = New System.Drawing.Size(400, 24)
         Me.CBStoppUhrEinblenden.TabIndex = 16
         Me.CBStoppUhrEinblenden.Text = "Blende Stoppuhr ein"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBStoppUhrEinblenden, "Blendet eine Stoppuhr beim Zustandekommen einer Verbindung ein." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
@@ -585,8 +600,9 @@ Partial Class formCfg
         Me.CBCallByCall.AutoSize = True
         Me.CBCallByCall.Location = New System.Drawing.Point(222, 152)
         Me.CBCallByCall.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBCallByCall.MinimumSize = New System.Drawing.Size(190, 0)
         Me.CBCallByCall.Name = "CBCallByCall"
-        Me.CBCallByCall.Size = New System.Drawing.Size(185, 24)
+        Me.CBCallByCall.Size = New System.Drawing.Size(190, 24)
         Me.CBCallByCall.TabIndex = 10
         Me.CBCallByCall.Text = "Jedesmal Call-by-Call"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCallByCall, "Call-by-Call ist eine Funktion, die es erlaubt günstig mit Vorvorwahlen zu telefo" &
@@ -599,8 +615,9 @@ Partial Class formCfg
         Me.CBDialPort.AutoSize = True
         Me.CBDialPort.Location = New System.Drawing.Point(9, 112)
         Me.CBDialPort.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBDialPort.MinimumSize = New System.Drawing.Size(200, 0)
         Me.CBDialPort.Name = "CBDialPort"
-        Me.CBDialPort.Size = New System.Drawing.Size(159, 24)
+        Me.CBDialPort.Size = New System.Drawing.Size(200, 24)
         Me.CBDialPort.TabIndex = 8
         Me.CBDialPort.Text = "Dialport anzeigen"
         Me.CBDialPort.UseVisualStyleBackColor = True
@@ -610,8 +627,9 @@ Partial Class formCfg
         Me.CBCheckMobil.AutoSize = True
         Me.CBCheckMobil.Location = New System.Drawing.Point(9, 192)
         Me.CBCheckMobil.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBCheckMobil.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBCheckMobil.Name = "CBCheckMobil"
-        Me.CBCheckMobil.Size = New System.Drawing.Size(342, 24)
+        Me.CBCheckMobil.Size = New System.Drawing.Size(400, 24)
         Me.CBCheckMobil.TabIndex = 11
         Me.CBCheckMobil.Text = "Nachfrage beim Wählen von Mobilnummern"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wähl" &
@@ -623,8 +641,9 @@ Partial Class formCfg
         Me.CBVoIPBuster.AutoSize = True
         Me.CBVoIPBuster.Location = New System.Drawing.Point(9, 34)
         Me.CBVoIPBuster.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBVoIPBuster.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBVoIPBuster.Name = "CBVoIPBuster"
-        Me.CBVoIPBuster.Size = New System.Drawing.Size(263, 24)
+        Me.CBVoIPBuster.Size = New System.Drawing.Size(400, 24)
         Me.CBVoIPBuster.TabIndex = 6
         Me.CBVoIPBuster.Text = "Landesvorwahl immer mitwählen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBVoIPBuster, "Mit dieser Einstellung wird die definierte Landesvorwahl immer mitgewählt.")
@@ -635,8 +654,9 @@ Partial Class formCfg
         Me.CBCbCunterbinden.AutoSize = True
         Me.CBCbCunterbinden.Location = New System.Drawing.Point(9, 152)
         Me.CBCbCunterbinden.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBCbCunterbinden.MinimumSize = New System.Drawing.Size(205, 0)
         Me.CBCbCunterbinden.Name = "CBCbCunterbinden"
-        Me.CBCbCunterbinden.Size = New System.Drawing.Size(202, 24)
+        Me.CBCbCunterbinden.Size = New System.Drawing.Size(205, 24)
         Me.CBCbCunterbinden.TabIndex = 9
         Me.CBCbCunterbinden.Text = "Call-by-Call unterbinden"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "k" &
@@ -648,8 +668,9 @@ Partial Class formCfg
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(63, 75)
         Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.MinimumSize = New System.Drawing.Size(100, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(94, 20)
+        Me.Label6.Size = New System.Drawing.Size(100, 20)
         Me.Label6.TabIndex = 31
         Me.Label6.Text = "Amtsholung"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label6, "Geben Sie hier eine 0 ein falls eine Amtsholung benötigt wird.")
@@ -710,8 +731,9 @@ Partial Class formCfg
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(170, 75)
         Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.MinimumSize = New System.Drawing.Size(230, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(180, 20)
+        Me.Label3.Size = New System.Drawing.Size(230, 20)
         Me.Label3.TabIndex = 16
         Me.Label3.Text = "Fritz!Box Benutzername"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label3, resources.GetString("Label3.ToolTip"))
@@ -745,8 +767,9 @@ Partial Class formCfg
         Me.CBForceFBAddr.AutoSize = True
         Me.CBForceFBAddr.Location = New System.Drawing.Point(174, 34)
         Me.CBForceFBAddr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBForceFBAddr.MinimumSize = New System.Drawing.Size(230, 0)
         Me.CBForceFBAddr.Name = "CBForceFBAddr"
-        Me.CBForceFBAddr.Size = New System.Drawing.Size(160, 24)
+        Me.CBForceFBAddr.Size = New System.Drawing.Size(230, 24)
         Me.CBForceFBAddr.TabIndex = 1
         Me.CBForceFBAddr.Text = "Fritz!Box Adresse"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAddr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" &
@@ -759,8 +782,9 @@ Partial Class formCfg
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(170, 194)
         Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.MinimumSize = New System.Drawing.Size(230, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(115, 20)
+        Me.Label5.Size = New System.Drawing.Size(230, 20)
         Me.Label5.TabIndex = 13
         Me.Label5.Text = "Landesvorwahl" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -769,8 +793,9 @@ Partial Class formCfg
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(170, 154)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.MinimumSize = New System.Drawing.Size(230, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(92, 20)
+        Me.Label4.Size = New System.Drawing.Size(230, 20)
         Me.Label4.TabIndex = 11
         Me.Label4.Text = "Ortsvorwahl" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -779,8 +804,9 @@ Partial Class formCfg
         Me.lblTBPasswort.AutoSize = True
         Me.lblTBPasswort.Location = New System.Drawing.Point(170, 115)
         Me.lblTBPasswort.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTBPasswort.MinimumSize = New System.Drawing.Size(160, 0)
         Me.lblTBPasswort.Name = "lblTBPasswort"
-        Me.lblTBPasswort.Size = New System.Drawing.Size(140, 20)
+        Me.lblTBPasswort.Size = New System.Drawing.Size(160, 20)
         Me.lblTBPasswort.TabIndex = 3
         Me.lblTBPasswort.Text = "Fritz!Box Passwort"
         '
@@ -831,8 +857,9 @@ Partial Class formCfg
         Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(381, 31)
         Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.MinimumSize = New System.Drawing.Size(260, 0)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(246, 20)
+        Me.Label7.Size = New System.Drawing.Size(260, 20)
         Me.Label7.TabIndex = 5
         Me.Label7.Text = "Speicherort für erstellte Kontakte:"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label7, resources.GetString("Label7.ToolTip"))
@@ -852,8 +879,9 @@ Partial Class formCfg
         Me.Label32.AutoSize = True
         Me.Label32.Location = New System.Drawing.Point(310, 200)
         Me.Label32.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label32.MinimumSize = New System.Drawing.Size(90, 0)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(72, 20)
+        Me.Label32.Size = New System.Drawing.Size(90, 20)
         Me.Label32.TabIndex = 27
         Me.Label32.Text = "schneller"
         Me.Label32.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -864,8 +892,9 @@ Partial Class formCfg
         Me.Label28.AutoSize = True
         Me.Label28.Location = New System.Drawing.Point(202, 200)
         Me.Label28.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label28.MinimumSize = New System.Drawing.Size(90, 0)
         Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(83, 20)
+        Me.Label28.Size = New System.Drawing.Size(90, 20)
         Me.Label28.TabIndex = 27
         Me.Label28.Text = "langsamer"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label28, "Derzeit abgeschaltet!")
@@ -875,8 +904,9 @@ Partial Class formCfg
         Me.CBAutoAnrList.AutoSize = True
         Me.CBAutoAnrList.Location = New System.Drawing.Point(4, 29)
         Me.CBAutoAnrList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAutoAnrList.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAutoAnrList.Name = "CBAutoAnrList"
-        Me.CBAutoAnrList.Size = New System.Drawing.Size(257, 24)
+        Me.CBAutoAnrList.Size = New System.Drawing.Size(400, 24)
         Me.CBAutoAnrList.TabIndex = 8
         Me.CBAutoAnrList.Text = "Anrufliste beim Start auswerten"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
@@ -912,8 +942,9 @@ Partial Class formCfg
         Me.LAnrBeantworterTimeout.Enabled = False
         Me.LAnrBeantworterTimeout.Location = New System.Drawing.Point(56, 178)
         Me.LAnrBeantworterTimeout.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LAnrBeantworterTimeout.MinimumSize = New System.Drawing.Size(300, 0)
         Me.LAnrBeantworterTimeout.Name = "LAnrBeantworterTimeout"
-        Me.LAnrBeantworterTimeout.Size = New System.Drawing.Size(206, 20)
+        Me.LAnrBeantworterTimeout.Size = New System.Drawing.Size(300, 20)
         Me.LAnrBeantworterTimeout.TabIndex = 38
         Me.LAnrBeantworterTimeout.Text = "Anrufbentworter-Timeout [s]"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LAnrBeantworterTimeout, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
@@ -971,8 +1002,9 @@ Partial Class formCfg
         Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(62, 32)
         Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label9.MinimumSize = New System.Drawing.Size(300, 0)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(252, 20)
+        Me.Label9.Size = New System.Drawing.Size(300, 20)
         Me.Label9.TabIndex = 40
         Me.Label9.Text = "Anzahl der Listenelemente je Liste"
         Me.ToolTipFBDBConfig.SetToolTip(Me.Label9, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
@@ -999,8 +1031,9 @@ Partial Class formCfg
         Me.RBFBComUPnP.AutoSize = True
         Me.RBFBComUPnP.Location = New System.Drawing.Point(8, 64)
         Me.RBFBComUPnP.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RBFBComUPnP.MinimumSize = New System.Drawing.Size(300, 0)
         Me.RBFBComUPnP.Name = "RBFBComUPnP"
-        Me.RBFBComUPnP.Size = New System.Drawing.Size(238, 24)
+        Me.RBFBComUPnP.Size = New System.Drawing.Size(300, 24)
         Me.RBFBComUPnP.TabIndex = 0
         Me.RBFBComUPnP.Text = "UPnP (SOAP, experimentell) "
         Me.ToolTipFBDBConfig.SetToolTip(Me.RBFBComUPnP, "Bei Änderung der Fritz!Box Kommunikation ist ein Neustart des Addins erforderlich" &
@@ -1013,8 +1046,9 @@ Partial Class formCfg
         Me.RBFBComWeb.Checked = True
         Me.RBFBComWeb.Location = New System.Drawing.Point(8, 28)
         Me.RBFBComWeb.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RBFBComWeb.MinimumSize = New System.Drawing.Size(300, 0)
         Me.RBFBComWeb.Name = "RBFBComWeb"
-        Me.RBFBComWeb.Size = New System.Drawing.Size(146, 24)
+        Me.RBFBComWeb.Size = New System.Drawing.Size(300, 24)
         Me.RBFBComWeb.TabIndex = 0
         Me.RBFBComWeb.TabStop = True
         Me.RBFBComWeb.Text = "Weboberfläche "
@@ -1249,110 +1283,11 @@ Partial Class formCfg
         Me.TelList.MultiSelect = False
         Me.TelList.Name = "TelList"
         Me.TelList.RowHeadersVisible = False
-        Me.TelList.RowTemplate.Height = 18
+        Me.TelList.RowTemplate.Height = 28
         Me.TelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.TelList.ShowEditingIcon = False
         Me.TelList.Size = New System.Drawing.Size(847, 231)
         Me.TelList.TabIndex = 33
-        '
-        'ColumnStandardTelefon
-        '
-        Me.ColumnStandardTelefon.HeaderText = "*"
-        Me.ColumnStandardTelefon.MinimumWidth = 25
-        Me.ColumnStandardTelefon.Name = "ColumnStandardTelefon"
-        Me.ColumnStandardTelefon.ToolTipText = "Standardtelefon"
-        Me.ColumnStandardTelefon.Width = 25
-        '
-        'Nr
-        '
-        Me.Nr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Nr.HeaderText = "Nr."
-        Me.Nr.MinimumWidth = 25
-        Me.Nr.Name = "Nr"
-        Me.Nr.ReadOnly = True
-        Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Nr.Width = 25
-        '
-        'dialCode
-        '
-        Me.dialCode.HeaderText = "ID"
-        Me.dialCode.MinimumWidth = 25
-        Me.dialCode.Name = "dialCode"
-        Me.dialCode.ReadOnly = True
-        Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
-        Me.dialCode.Width = 30
-        '
-        'Typ
-        '
-        Me.Typ.HeaderText = "Typ"
-        Me.Typ.MinimumWidth = 50
-        Me.Typ.Name = "Typ"
-        Me.Typ.ReadOnly = True
-        Me.Typ.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Typ.Width = 50
-        '
-        'Telefonname
-        '
-        Me.Telefonname.HeaderText = "Telefonname"
-        Me.Telefonname.MinimumWidth = 75
-        Me.Telefonname.Name = "Telefonname"
-        Me.Telefonname.ReadOnly = True
-        Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Telefonname.Width = 115
-        '
-        'OutNr
-        '
-        Me.OutNr.HeaderText = "Telefonnummer"
-        Me.OutNr.MinimumWidth = 100
-        Me.OutNr.Name = "OutNr"
-        Me.OutNr.ReadOnly = True
-        Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.OutNr.Width = 115
-        '
-        'Eingehend
-        '
-        Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle22.Format = "T"
-        DataGridViewCellStyle22.NullValue = Nothing
-        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle22
-        Me.Eingehend.HeaderText = "Eingehend"
-        Me.Eingehend.MinimumWidth = 65
-        Me.Eingehend.Name = "Eingehend"
-        Me.Eingehend.ReadOnly = True
-        Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Eingehend.Width = 65
-        '
-        'Ausgehend
-        '
-        Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle23.Format = "T"
-        DataGridViewCellStyle23.NullValue = Nothing
-        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle23
-        Me.Ausgehend.HeaderText = "Ausgehend"
-        Me.Ausgehend.MinimumWidth = 65
-        Me.Ausgehend.Name = "Ausgehend"
-        Me.Ausgehend.ReadOnly = True
-        Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Ausgehend.Width = 65
-        '
-        'Gesamt
-        '
-        Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle24.Format = "T"
-        DataGridViewCellStyle24.NullValue = Nothing
-        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle24
-        Me.Gesamt.HeaderText = "Gesamt"
-        Me.Gesamt.MinimumWidth = 65
-        Me.Gesamt.Name = "Gesamt"
-        Me.Gesamt.ReadOnly = True
-        Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Gesamt.Width = 65
         '
         'Label15
         '
@@ -1417,10 +1352,11 @@ Partial Class formCfg
         'CBTelFormKorr
         '
         Me.CBTelFormKorr.AutoSize = True
-        Me.CBTelFormKorr.Location = New System.Drawing.Point(516, 95)
+        Me.CBTelFormKorr.Location = New System.Drawing.Point(516, 96)
         Me.CBTelFormKorr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBTelFormKorr.MinimumSize = New System.Drawing.Size(330, 0)
         Me.CBTelFormKorr.Name = "CBTelFormKorr"
-        Me.CBTelFormKorr.Size = New System.Drawing.Size(323, 24)
+        Me.CBTelFormKorr.Size = New System.Drawing.Size(330, 24)
         Me.CBTelFormKorr.TabIndex = 19
         Me.CBTelFormKorr.Text = "Telefonnummernformatierung korrigieren"
         Me.CBTelFormKorr.UseVisualStyleBackColor = True
@@ -1430,18 +1366,20 @@ Partial Class formCfg
         Me.Label21.AutoSize = True
         Me.Label21.Location = New System.Drawing.Point(4, 97)
         Me.Label21.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label21.MinimumSize = New System.Drawing.Size(200, 0)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(189, 20)
+        Me.Label21.Size = New System.Drawing.Size(200, 20)
         Me.Label21.TabIndex = 18
         Me.Label21.Text = "Benutzerdefinierte Felder"
         '
         'RadioButtonEntfernen
         '
         Me.RadioButtonEntfernen.AutoSize = True
-        Me.RadioButtonEntfernen.Location = New System.Drawing.Point(372, 94)
+        Me.RadioButtonEntfernen.Location = New System.Drawing.Point(372, 95)
         Me.RadioButtonEntfernen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RadioButtonEntfernen.MinimumSize = New System.Drawing.Size(110, 0)
         Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
-        Me.RadioButtonEntfernen.Size = New System.Drawing.Size(103, 24)
+        Me.RadioButtonEntfernen.Size = New System.Drawing.Size(110, 24)
         Me.RadioButtonEntfernen.TabIndex = 8
         Me.RadioButtonEntfernen.TabStop = True
         Me.RadioButtonEntfernen.Text = "entfernen"
@@ -1451,10 +1389,11 @@ Partial Class formCfg
         '
         Me.RadioButtonErstelle.AutoSize = True
         Me.RadioButtonErstelle.Checked = True
-        Me.RadioButtonErstelle.Location = New System.Drawing.Point(224, 94)
+        Me.RadioButtonErstelle.Location = New System.Drawing.Point(228, 95)
         Me.RadioButtonErstelle.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RadioButtonErstelle.MinimumSize = New System.Drawing.Size(110, 0)
         Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
-        Me.RadioButtonErstelle.Size = New System.Drawing.Size(94, 24)
+        Me.RadioButtonErstelle.Size = New System.Drawing.Size(110, 24)
         Me.RadioButtonErstelle.TabIndex = 7
         Me.RadioButtonErstelle.TabStop = True
         Me.RadioButtonErstelle.Text = "erstellen"
@@ -1547,8 +1486,9 @@ Partial Class formCfg
         Me.LRWSTest.AutoSize = True
         Me.LRWSTest.Location = New System.Drawing.Point(4, 72)
         Me.LRWSTest.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LRWSTest.MinimumSize = New System.Drawing.Size(120, 0)
         Me.LRWSTest.Name = "LRWSTest"
-        Me.LRWSTest.Size = New System.Drawing.Size(113, 20)
+        Me.LRWSTest.Size = New System.Drawing.Size(120, 20)
         Me.LRWSTest.TabIndex = 7
         Me.LRWSTest.Text = "Test der RWS:"
         '
@@ -1566,8 +1506,9 @@ Partial Class formCfg
         Me.CBRWS.AutoSize = True
         Me.CBRWS.Location = New System.Drawing.Point(9, 29)
         Me.CBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBRWS.MinimumSize = New System.Drawing.Size(165, 0)
         Me.CBRWS.Name = "CBRWS"
-        Me.CBRWS.Size = New System.Drawing.Size(157, 24)
+        Me.CBRWS.Size = New System.Drawing.Size(165, 24)
         Me.CBRWS.TabIndex = 0
         Me.CBRWS.Text = "Rückwärtssuche:"
         Me.CBRWS.UseVisualStyleBackColor = True
@@ -1620,18 +1561,20 @@ Partial Class formCfg
         Me.LAnrMonMoveDirection.AutoSize = True
         Me.LAnrMonMoveDirection.Location = New System.Drawing.Point(200, 226)
         Me.LAnrMonMoveDirection.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LAnrMonMoveDirection.MinimumSize = New System.Drawing.Size(130, 0)
         Me.LAnrMonMoveDirection.Name = "LAnrMonMoveDirection"
-        Me.LAnrMonMoveDirection.Size = New System.Drawing.Size(122, 20)
+        Me.LAnrMonMoveDirection.Size = New System.Drawing.Size(130, 20)
         Me.LAnrMonMoveDirection.TabIndex = 913
         Me.LAnrMonMoveDirection.Text = "Einblenden von:"
         '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(4, 228)
+        Me.Label19.Location = New System.Drawing.Point(8, 226)
         Me.Label19.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label19.MinimumSize = New System.Drawing.Size(100, 0)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(69, 20)
+        Me.Label19.Size = New System.Drawing.Size(100, 20)
         Me.Label19.TabIndex = 912
         Me.Label19.Text = "Position:"
         '
@@ -1661,8 +1604,9 @@ Partial Class formCfg
         Me.CBAnrMonContactImage.AutoSize = True
         Me.CBAnrMonContactImage.Location = New System.Drawing.Point(6, 135)
         Me.CBAnrMonContactImage.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrMonContactImage.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrMonContactImage.Name = "CBAnrMonContactImage"
-        Me.CBAnrMonContactImage.Size = New System.Drawing.Size(158, 24)
+        Me.CBAnrMonContactImage.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrMonContactImage.TabIndex = 910
         Me.CBAnrMonContactImage.Text = "Zeige Kontaktbild"
         Me.CBAnrMonContactImage.UseVisualStyleBackColor = True
@@ -1672,8 +1616,9 @@ Partial Class formCfg
         Me.Label18.AutoSize = True
         Me.Label18.Location = New System.Drawing.Point(4, 175)
         Me.Label18.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label18.MinimumSize = New System.Drawing.Size(190, 0)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(187, 20)
+        Me.Label18.Size = New System.Drawing.Size(190, 20)
         Me.Label18.TabIndex = 26
         Me.Label18.Text = "Einblendgeschwindigkeit:"
         '
@@ -1691,8 +1636,9 @@ Partial Class formCfg
         Me.Label11.AutoSize = True
         Me.Label11.Location = New System.Drawing.Point(63, 358)
         Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label11.MinimumSize = New System.Drawing.Size(150, 0)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(122, 20)
+        Me.Label11.Size = New System.Drawing.Size(150, 20)
         Me.Label11.TabIndex = 13
         Me.Label11.Text = "Punkte (vertikal)"
         '
@@ -1720,8 +1666,9 @@ Partial Class formCfg
         Me.Label12.AutoSize = True
         Me.Label12.Location = New System.Drawing.Point(63, 322)
         Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label12.MinimumSize = New System.Drawing.Size(150, 0)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(142, 20)
+        Me.Label12.Size = New System.Drawing.Size(150, 20)
         Me.Label12.TabIndex = 11
         Me.Label12.Text = "Punkte (horizontal)"
         '
@@ -1732,7 +1679,7 @@ Partial Class formCfg
         Me.TBAnrMonMoveGeschwindigkeit.Location = New System.Drawing.Point(196, 152)
         Me.TBAnrMonMoveGeschwindigkeit.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.TBAnrMonMoveGeschwindigkeit.Name = "TBAnrMonMoveGeschwindigkeit"
-        Me.TBAnrMonMoveGeschwindigkeit.Size = New System.Drawing.Size(184, 69)
+        Me.TBAnrMonMoveGeschwindigkeit.Size = New System.Drawing.Size(204, 69)
         Me.TBAnrMonMoveGeschwindigkeit.TabIndex = 11
         Me.TBAnrMonMoveGeschwindigkeit.TickStyle = System.Windows.Forms.TickStyle.TopLeft
         '
@@ -1781,10 +1728,11 @@ Partial Class formCfg
         'CBNote
         '
         Me.CBNote.AutoSize = True
-        Me.CBNote.Location = New System.Drawing.Point(2, 263)
+        Me.CBNote.Location = New System.Drawing.Point(4, 301)
         Me.CBNote.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBNote.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBNote.Name = "CBNote"
-        Me.CBNote.Size = New System.Drawing.Size(184, 24)
+        Me.CBNote.Size = New System.Drawing.Size(400, 24)
         Me.CBNote.TabIndex = 34
         Me.CBNote.Text = "Notizeintrag erstellen"
         Me.CBNote.UseVisualStyleBackColor = True
@@ -1792,10 +1740,11 @@ Partial Class formCfg
         'CBAnrMonZeigeKontakt
         '
         Me.CBAnrMonZeigeKontakt.AutoSize = True
-        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(2, 231)
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(4, 269)
         Me.CBAnrMonZeigeKontakt.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrMonZeigeKontakt.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
-        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(208, 24)
+        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrMonZeigeKontakt.TabIndex = 34
         Me.CBAnrMonZeigeKontakt.Text = "Kontakt bei Anruf öffnen"
         Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = True
@@ -1805,8 +1754,9 @@ Partial Class formCfg
         Me.CBAnrMonAuto.AutoSize = True
         Me.CBAnrMonAuto.Location = New System.Drawing.Point(4, 9)
         Me.CBAnrMonAuto.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrMonAuto.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrMonAuto.Name = "CBAnrMonAuto"
-        Me.CBAnrMonAuto.Size = New System.Drawing.Size(265, 24)
+        Me.CBAnrMonAuto.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrMonAuto.TabIndex = 1
         Me.CBAnrMonAuto.Text = "Anrufmonitor mit Outlook starten"
         Me.CBAnrMonAuto.UseVisualStyleBackColor = True
@@ -1816,8 +1766,9 @@ Partial Class formCfg
         Me.CBAnrMonCloseAtDISSCONNECT.AutoSize = True
         Me.CBAnrMonCloseAtDISSCONNECT.Location = New System.Drawing.Point(4, 115)
         Me.CBAnrMonCloseAtDISSCONNECT.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrMonCloseAtDISSCONNECT.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrMonCloseAtDISSCONNECT.Name = "CBAnrMonCloseAtDISSCONNECT"
-        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(317, 24)
+        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrMonCloseAtDISSCONNECT.TabIndex = 2
         Me.CBAnrMonCloseAtDISSCONNECT.Text = "Anruffenster beim Auflegen ausblenden"
         Me.CBAnrMonCloseAtDISSCONNECT.UseVisualStyleBackColor = True
@@ -1827,8 +1778,9 @@ Partial Class formCfg
         Me.CBAutoClose.AutoSize = True
         Me.CBAutoClose.Location = New System.Drawing.Point(4, 45)
         Me.CBAutoClose.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAutoClose.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAutoClose.Name = "CBAutoClose"
-        Me.CBAutoClose.Size = New System.Drawing.Size(302, 24)
+        Me.CBAutoClose.Size = New System.Drawing.Size(400, 24)
         Me.CBAutoClose.TabIndex = 2
         Me.CBAutoClose.Text = "Anruffenster automatisch ausblenden"
         Me.CBAutoClose.UseVisualStyleBackColor = True
@@ -1859,7 +1811,7 @@ Partial Class formCfg
         Me.CLBTelNr.Location = New System.Drawing.Point(0, 151)
         Me.CLBTelNr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.CLBTelNr.Name = "CLBTelNr"
-        Me.CLBTelNr.Size = New System.Drawing.Size(221, 74)
+        Me.CLBTelNr.Size = New System.Drawing.Size(221, 108)
         Me.CLBTelNr.TabIndex = 4
         '
         'LEnblDauer
@@ -1867,8 +1819,9 @@ Partial Class formCfg
         Me.LEnblDauer.AutoSize = True
         Me.LEnblDauer.Location = New System.Drawing.Point(56, 82)
         Me.LEnblDauer.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LEnblDauer.MinimumSize = New System.Drawing.Size(350, 0)
         Me.LEnblDauer.Name = "LEnblDauer"
-        Me.LEnblDauer.Size = New System.Drawing.Size(288, 20)
+        Me.LEnblDauer.Size = New System.Drawing.Size(350, 20)
         Me.LEnblDauer.TabIndex = 31
         Me.LEnblDauer.Text = "Anzeigedauer bei Anruf (minimal: 4s) [s]"
         '
@@ -1877,8 +1830,9 @@ Partial Class formCfg
         Me.CBUseAnrMon.AutoSize = True
         Me.CBUseAnrMon.Location = New System.Drawing.Point(4, 29)
         Me.CBUseAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBUseAnrMon.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBUseAnrMon.Name = "CBUseAnrMon"
-        Me.CBUseAnrMon.Size = New System.Drawing.Size(208, 24)
+        Me.CBUseAnrMon.Size = New System.Drawing.Size(400, 24)
         Me.CBUseAnrMon.TabIndex = 0
         Me.CBUseAnrMon.Text = "Anrufmonitor verwenden"
         Me.CBUseAnrMon.UseVisualStyleBackColor = True
@@ -1944,8 +1898,9 @@ Partial Class formCfg
         '
         Me.RBLEDaus.AutoSize = True
         Me.RBLEDaus.Location = New System.Drawing.Point(18, 65)
+        Me.RBLEDaus.MinimumSize = New System.Drawing.Size(100, 0)
         Me.RBLEDaus.Name = "RBLEDaus"
-        Me.RBLEDaus.Size = New System.Drawing.Size(66, 24)
+        Me.RBLEDaus.Size = New System.Drawing.Size(100, 24)
         Me.RBLEDaus.TabIndex = 1
         Me.RBLEDaus.Text = "Aus "
         Me.RBLEDaus.UseVisualStyleBackColor = True
@@ -1955,8 +1910,9 @@ Partial Class formCfg
         Me.RBLEDan.AutoSize = True
         Me.RBLEDan.Checked = True
         Me.RBLEDan.Location = New System.Drawing.Point(18, 24)
+        Me.RBLEDan.MinimumSize = New System.Drawing.Size(100, 0)
         Me.RBLEDan.Name = "RBLEDan"
-        Me.RBLEDan.Size = New System.Drawing.Size(61, 24)
+        Me.RBLEDan.Size = New System.Drawing.Size(100, 24)
         Me.RBLEDan.TabIndex = 0
         Me.RBLEDan.TabStop = True
         Me.RBLEDan.Text = "Ein "
@@ -1992,8 +1948,9 @@ Partial Class formCfg
         Me.CBJournal.AutoSize = True
         Me.CBJournal.Location = New System.Drawing.Point(4, 35)
         Me.CBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBJournal.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBJournal.Name = "CBJournal"
-        Me.CBJournal.Size = New System.Drawing.Size(209, 24)
+        Me.CBJournal.Size = New System.Drawing.Size(400, 24)
         Me.CBJournal.TabIndex = 7
         Me.CBJournal.Text = "Journaleinträge erstellen"
         Me.CBJournal.UseVisualStyleBackColor = True
@@ -2020,8 +1977,9 @@ Partial Class formCfg
         Me.CBAnrListeShowAnrMon.AutoSize = True
         Me.CBAnrListeShowAnrMon.Location = New System.Drawing.Point(4, 135)
         Me.CBAnrListeShowAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrListeShowAnrMon.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrListeShowAnrMon.Name = "CBAnrListeShowAnrMon"
-        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(378, 24)
+        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrListeShowAnrMon.TabIndex = 9
         Me.CBAnrListeShowAnrMon.Text = "Verpasste Telefonate mit Anrufmonitor anzeigen"
         Me.CBAnrListeShowAnrMon.UseVisualStyleBackColor = True
@@ -2032,8 +1990,9 @@ Partial Class formCfg
         Me.CBAnrListeUpdateJournal.Enabled = False
         Me.CBAnrListeUpdateJournal.Location = New System.Drawing.Point(4, 65)
         Me.CBAnrListeUpdateJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrListeUpdateJournal.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrListeUpdateJournal.Name = "CBAnrListeUpdateJournal"
-        Me.CBAnrListeUpdateJournal.Size = New System.Drawing.Size(262, 24)
+        Me.CBAnrListeUpdateJournal.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrListeUpdateJournal.TabIndex = 8
         Me.CBAnrListeUpdateJournal.Text = "Journaleinträge vervollständigen"
         Me.CBAnrListeUpdateJournal.UseVisualStyleBackColor = True
@@ -2043,8 +2002,9 @@ Partial Class formCfg
         Me.CBAnrListeUpdateCallLists.AutoSize = True
         Me.CBAnrListeUpdateCallLists.Location = New System.Drawing.Point(4, 100)
         Me.CBAnrListeUpdateCallLists.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrListeUpdateCallLists.MinimumSize = New System.Drawing.Size(400, 0)
         Me.CBAnrListeUpdateCallLists.Name = "CBAnrListeUpdateCallLists"
-        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(390, 24)
+        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(400, 24)
         Me.CBAnrListeUpdateCallLists.TabIndex = 7
         Me.CBAnrListeUpdateCallLists.Text = "Rückruf- und Wahlwiederholungsliste aktualisieren"
         Me.CBAnrListeUpdateCallLists.UseVisualStyleBackColor = True
@@ -2444,6 +2404,112 @@ Partial Class formCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
         '
+        'ColumnStandardTelefon
+        '
+        Me.ColumnStandardTelefon.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.ColumnStandardTelefon.FillWeight = 4.5!
+        Me.ColumnStandardTelefon.HeaderText = "*"
+        Me.ColumnStandardTelefon.MinimumWidth = 25
+        Me.ColumnStandardTelefon.Name = "ColumnStandardTelefon"
+        Me.ColumnStandardTelefon.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.ColumnStandardTelefon.ToolTipText = "Standardtelefon"
+        '
+        'Nr
+        '
+        Me.Nr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Nr.FillWeight = 4.5!
+        Me.Nr.HeaderText = "Nr."
+        Me.Nr.MinimumWidth = 25
+        Me.Nr.Name = "Nr"
+        Me.Nr.ReadOnly = True
+        Me.Nr.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Nr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'dialCode
+        '
+        Me.dialCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.dialCode.FillWeight = 5.4!
+        Me.dialCode.HeaderText = "ID"
+        Me.dialCode.MinimumWidth = 25
+        Me.dialCode.Name = "dialCode"
+        Me.dialCode.ReadOnly = True
+        Me.dialCode.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dialCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.dialCode.ToolTipText = "Entspricht dem Dialport der Fritz!Box und nicht der internen Nummer."
+        '
+        'Typ
+        '
+        Me.Typ.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Typ.FillWeight = 9.0!
+        Me.Typ.HeaderText = "Typ"
+        Me.Typ.MinimumWidth = 50
+        Me.Typ.Name = "Typ"
+        Me.Typ.ReadOnly = True
+        Me.Typ.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Typ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Telefonname
+        '
+        Me.Telefonname.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Telefonname.FillWeight = 20.72!
+        Me.Telefonname.HeaderText = "Telefonname"
+        Me.Telefonname.MinimumWidth = 75
+        Me.Telefonname.Name = "Telefonname"
+        Me.Telefonname.ReadOnly = True
+        Me.Telefonname.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'OutNr
+        '
+        Me.OutNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.OutNr.FillWeight = 2.72!
+        Me.OutNr.HeaderText = "Telefonnummer"
+        Me.OutNr.MinimumWidth = 100
+        Me.OutNr.Name = "OutNr"
+        Me.OutNr.ReadOnly = True
+        Me.OutNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Eingehend
+        '
+        Me.Eingehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        DataGridViewCellStyle1.Format = "T"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Eingehend.DefaultCellStyle = DataGridViewCellStyle1
+        Me.Eingehend.FillWeight = 11.71!
+        Me.Eingehend.HeaderText = "Eingehend"
+        Me.Eingehend.MinimumWidth = 65
+        Me.Eingehend.Name = "Eingehend"
+        Me.Eingehend.ReadOnly = True
+        Me.Eingehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Eingehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Ausgehend
+        '
+        Me.Ausgehend.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        DataGridViewCellStyle2.Format = "T"
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Ausgehend.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Ausgehend.FillWeight = 11.71!
+        Me.Ausgehend.HeaderText = "Ausgehend"
+        Me.Ausgehend.MinimumWidth = 65
+        Me.Ausgehend.Name = "Ausgehend"
+        Me.Ausgehend.ReadOnly = True
+        Me.Ausgehend.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Ausgehend.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Gesamt
+        '
+        Me.Gesamt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        DataGridViewCellStyle3.Format = "T"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Gesamt.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Gesamt.FillWeight = 11.71!
+        Me.Gesamt.HeaderText = "Gesamt"
+        Me.Gesamt.MinimumWidth = 65
+        Me.Gesamt.Name = "Gesamt"
+        Me.Gesamt.ReadOnly = True
+        Me.Gesamt.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Gesamt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
         'formCfg
         '
         Me.AcceptButton = Me.BOK
@@ -2646,15 +2712,6 @@ Partial Class formCfg
     Friend WithEvents TBSchließZeit As System.Windows.Forms.Label
     Friend WithEvents TBReset As System.Windows.Forms.Label
     Friend WithEvents TelList As System.Windows.Forms.DataGridView
-    Friend WithEvents ColumnStandardTelefon As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents Nr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents dialCode As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Typ As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Telefonname As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents OutNr As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Eingehend As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Ausgehend As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Gesamt As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents PDebug As System.Windows.Forms.TabPage
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents BStoppUhrAnzeigen As System.Windows.Forms.Button
@@ -2703,4 +2760,13 @@ Partial Class formCfg
     Friend WithEvents RBLEDaus As Windows.Forms.RadioButton
     Friend WithEvents RBLEDan As Windows.Forms.RadioButton
     Friend WithEvents BLEDonoff As Windows.Forms.Button
+    Friend WithEvents ColumnStandardTelefon As Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents Nr As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents dialCode As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Typ As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Telefonname As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents OutNr As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Eingehend As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Ausgehend As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Gesamt As Windows.Forms.DataGridViewTextBoxColumn
 End Class
