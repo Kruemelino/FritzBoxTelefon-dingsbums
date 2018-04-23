@@ -111,9 +111,6 @@ Public Class DataProvider
     Public Property P_CBCallByCall As Boolean
     Public Property P_CBDialPort As Boolean
     Public Property P_CBLogFile As Boolean
-    Public Property P_CBSymbWwdh As Boolean
-    Public Property P_CBSymbAnrMon As Boolean
-    Public Property P_CBSymbAnrMonNeuStart As Boolean
     Public Property P_CBAutoAnrList As Boolean
     ''' <summary>
     ''' Gibt an ob nur der Hauptkontaktordner durchsucht werden muss oder alle möglichen eingebundenen Kontaktordner
@@ -1214,7 +1211,7 @@ Public Class DataProvider
     ''' <summary>
     ''' Sie haben sich erfolgreich von der FRITZ!Box abgemeldet.
     ''' </summary>
-    Public Shared ReadOnly Property P_FritzBox_LogoutTestString1 As String= "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet."
+    Public Shared ReadOnly Property P_FritzBox_LogoutTestString1 As String = "Sie haben sich erfolgreich von der FRITZ!Box abgemeldet."
 
     ''' <summary>
     ''' Sie haben sich erfolgreich von der Benutzeroberfläche Ihrer FRITZ!Box abgemeldet.
@@ -1844,9 +1841,6 @@ Public Class DataProvider
         P_CBKErstellen = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBKErstellen", CStr(P_Def_CBKErstellen)))
         P_CBLogFile = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBLogFile", CStr(P_Def_CBLogFile)))
         ' Einstellungen für die Symbolleiste laden
-        P_CBSymbWwdh = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbWwdh", CStr(P_Def_CBSymbWwdh)))
-        P_CBSymbAnrMon = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbAnrMon", CStr(P_Def_CBSymbAnrMon)))
-        P_CBSymbAnrMonNeuStart = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBSymbAnrMonNeuStart", CStr(P_Def_CBSymbAnrMonNeuStart)))
         P_TVKontaktOrdnerEntryID = C_XML.Read(XMLDoc, P_Def_Options, "TVKontaktOrdnerEntryID", CStr(P_Def_TVKontaktOrdnerEntryID))
         P_TVKontaktOrdnerStoreID = C_XML.Read(XMLDoc, P_Def_Options, "TVKontaktOrdnerStoreID", CStr(P_Def_TVKontaktOrdnerStoreID))
         P_CBAutoAnrList = CBool(C_XML.Read(XMLDoc, P_Def_Options, "CBJImport", CStr(P_Def_CBJImport)))
@@ -1897,11 +1891,10 @@ Public Class DataProvider
             .Clear()
             .Add("Telefone")
             .Add("Nummern")
-            '.Add("*")
+            .Add("*")
             .Add("[@Checked=""1""]")
         End With
 
-        If P_CLBTelNr IsNot Nothing Then P_CLBTelNr.Clear()
         P_CLBTelNr = New Collection(Of String)((From x In Split(C_XML.Read(XMLDoc, xPathTeile, P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray)
 
         BWCBox = New BackgroundWorker
@@ -1909,7 +1902,6 @@ Public Class DataProvider
             .WorkerReportsProgress = False
             .RunWorkerAsync(True)
         End With
-
     End Sub
 
     ''' <summary>
@@ -1946,10 +1938,6 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "CBDialPort", CStr(P_CBDialPort))
         C_XML.Write(XMLDoc, P_Def_Options, "CBKErstellen", CStr(P_CBKErstellen))
         C_XML.Write(XMLDoc, P_Def_Options, "CBLogFile", CStr(P_CBLogFile))
-        ' Einstellungen für die Symbolleiste laden
-        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbWwdh", CStr(P_CBSymbWwdh))
-        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbAnrMon", CStr(P_CBSymbAnrMon))
-        C_XML.Write(XMLDoc, P_Def_Options, "CBSymbAnrMonNeuStart", CStr(P_CBSymbAnrMonNeuStart))
         C_XML.Write(XMLDoc, P_Def_Options, "CBJImport", CStr(P_CBAutoAnrList))
         ' Einstellungen füer die Rückwärtssuche laden
         C_XML.Write(XMLDoc, P_Def_Options, "CBKHO", CStr(P_CBKHO))
