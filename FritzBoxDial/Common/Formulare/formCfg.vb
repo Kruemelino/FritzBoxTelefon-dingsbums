@@ -938,9 +938,9 @@ Public Class formCfg
         End Select
     End Sub
 
-    Private Sub TelList_CellMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs)
+    Private Sub TelList_CellMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles TelList.CellMouseUp
         ' Sichersellen, dass nur ein Haken gesetzt ist.
-        If TypeOf TelList.CurrentCell Is Windows.Forms.DataGridViewCheckBoxCell Then
+        If TypeOf TelList.CurrentCell Is DataGridViewCheckBoxCell Then
             TelList.EndEdit()
             If TelList.CurrentCell.Value IsNot Nothing Then
                 Dim cellVal As Boolean = DirectCast(TelList.CurrentCell.Value, Boolean)
