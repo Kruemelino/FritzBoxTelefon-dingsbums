@@ -663,7 +663,7 @@ Public Class Helfer
         'Dim tmpOrtsVorwahl As String
 
 
-        If Not TelNr = DataProvider.P_Def_LeerString Then
+        If Not TelNr = DataProvider.P_Def_LeerString And Not C_DP.P_TBVorwahl = DataProvider.P_Def_LeerString Then
             tmpTelNrTeile = TelNrTeile(TelNr)
 
             With tmpTelNrTeile

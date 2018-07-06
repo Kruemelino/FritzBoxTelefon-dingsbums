@@ -116,10 +116,10 @@ Friend Class formInit
     Function PrüfeAddin() As Boolean
         Dim Rückgabe As Boolean = False
 
-        If C_DP.P_TBPasswort = DataProvider.P_Def_LeerString Or _
-            C_DP.P_TBVorwahl = DataProvider.P_Def_LeerString Or _
+        If C_DP.P_TBPasswort = DataProvider.P_Def_LeerString Or
             C_DP.GetSettingsVBA("Zugang", DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String Then
 
+            'C_DP.P_TBVorwahl = DataProvider.P_Def_LeerString Or _
             Rückgabe = False
             Me.ShowDialog()
             Rückgabe = True

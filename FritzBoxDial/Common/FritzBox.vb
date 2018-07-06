@@ -2457,11 +2457,11 @@ Public Class FritzBox
                     PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
                 End If
             Next
-            If Not Telefone.Telefonliste.Find(Function(Telefon) Telefon.TelTyp = TelTyp.S0) Is Nothing Then
+            If Not Telefone.Telefonliste.Find(Function(Telefon) Telefon.TelTyp = TelTyp.S0 Or Telefon.TelTyp = TelTyp.DECT) Is Nothing Then
                 tmpTelefon = New FritzBoxTelefon(C_hf)
                 tmpTelefon.TelTyp = TelTyp.S0
                 tmpTelefon.Dialport = DialPortBase.S0
-                tmpTelefon.TelName = "ISDN-Basis"
+                tmpTelefon.TelName = "ISDN- und Schnurlostelefone"
                 Telefone.Add(tmpTelefon)
                 PushStatus(DataProvider.P_FritzBox_Tel_DeviceFound([Enum].GetName(GetType(TelTyp), tmpTelefon.TelTyp), CStr(tmpTelefon.Dialport), Join(tmpTelefon.EingehendeNummern.EinmaligeNummernString, ","), tmpTelefon.TelName))
             End If
