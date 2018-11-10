@@ -309,7 +309,7 @@ Friend Class formRWSuche
         ' Schleife wird maximall drei mal durchlaufen
         i = 0
 
-        baseurl = "http://www.dasoertliche.de?form_name="
+        baseurl = "https://www.dasoertliche.de?form_name="
 
         Do
             htmlRWS = C_hf.httpGET(baseurl & "search_nat&kw=" & tmpTelNr, Encoding.Default, HTMLFehler)

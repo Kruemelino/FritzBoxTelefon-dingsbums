@@ -932,6 +932,8 @@ Public Class Helfer
     Public Function httpGET(ByVal Link As String, ByVal Encoding As Encoding, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
 
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
         httpGET = DataProvider.P_Def_LeerString
         Select Case UniformResourceIdentifier.Scheme
             Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
@@ -993,6 +995,9 @@ Public Class Helfer
 
     Public Function httpPOST(ByVal Link As String, ByVal Daten As String, ByVal ZeichenCodierung As System.Text.Encoding) As String
         httpPOST = DataProvider.P_Def_LeerString
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
         Dim UniformResourceIdentifier As New Uri(Link)
         If UniformResourceIdentifier.Scheme = Uri.UriSchemeHttp Then
             If DataProvider.P_Debug_Use_WebClient Then
