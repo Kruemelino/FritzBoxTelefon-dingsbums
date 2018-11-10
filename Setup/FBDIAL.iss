@@ -1,7 +1,7 @@
 #include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "3.10.4"
+#define MyAppVersion "3.10.7"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2016), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
@@ -32,15 +32,15 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 [Registry]
 
 ;Office x64
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";       Flags: uninsdeletekey; ValueType: string; ValueName: "Description";   ValueData: "{#MyAppDescription}"
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";       Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";  ValueData: "{#MyAppName}"
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";       Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";  ValueData: "3"
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";       Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";      ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";       Flags: uninsdeletekey; ValueType: string; ValueName: "Description";   ValueData: "{#MyAppDescription}"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";       Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";  ValueData: "{#MyAppName}"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";       Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";  ValueData: "3"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";       Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";      ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
 ;Office x32
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";   Flags: uninsdeletekey; ValueType: string; ValueName: "Description";    ValueData: "{#MyAppDescription}"
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";   Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";   ValueData: "{#MyAppName}"
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";   Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";   ValueData: "3"
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016))";   Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";       ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";   Flags: uninsdeletekey; ValueType: string; ValueName: "Description";    ValueData: "{#MyAppDescription}"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";   Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";   ValueData: "{#MyAppName}"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";   Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";   ValueData: "3"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: "not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019))";   Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";       ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
 
 [Files]
 
@@ -63,26 +63,26 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
   Source: "2010\FritzBoxUPnP.pdb";                                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
-;Office 2013 & 2016
+;Office 2013 & 2016 & 2019
 #if FileExists("2013\Fritz!Box Telefon-Dingsbums.dll") & FileExists("2013\Fritz!Box Telefon-Dingsbums.dll.manifest") & FileExists("2013\Fritz!Box Telefon-Dingsbums.vsto") & FileExists("2013\Funktionen.dll") & FileExists("2013\PopupFenster.dll") & FileExists("2013\FritzBoxUPnP.dll") & FileExists("2013\Newtonsoft.Json.dll")
-  Source: "2013\Fritz!Box Telefon-Dingsbums.dll";                     Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\Fritz!Box Telefon-Dingsbums.vsto";                    Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\Funktionen.dll";                                      Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\PopupFenster.dll";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\FritzBoxUPnP.dll";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\Newtonsoft.Json.dll";                                 Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Fritz!Box Telefon-Dingsbums.dll";                     Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Fritz!Box Telefon-Dingsbums.vsto";                    Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Funktionen.dll";                                      Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\PopupFenster.dll";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\FritzBoxUPnP.dll";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Newtonsoft.Json.dll";                                 Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 ;Office 2013 - Debuginformationen
 #if FileExists("2013\\Fritz!Box Telefon-Dingsbums.pdb")
-  Source: "2013\Fritz!Box Telefon-Dingsbums.pdb";                     Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\Funktionen.pdb";                                      Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\PopupFenster.pdb";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
-  Source: "2013\FritzBoxUPnP.pdb";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Fritz!Box Telefon-Dingsbums.pdb";                     Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\Funktionen.pdb";                                      Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\PopupFenster.pdb";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
+  Source: "2013\FritzBoxUPnP.pdb";                                    Check: "OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019)"; DestDir: "{app}"; Flags: ignoreversion
 #endif
    
-;Office 2007 & 2010 & 2013 & 2016 COMMON
+;Office 2007 & 2010 & 2013 & 2016 & 2019 COMMON
 #if FileExists("2010\Fritz!Box Telefon-Dingsbums.dll") | FileExists("2013\Fritz!Box Telefon-Dingsbums.dll")
   
   #if FileExists("Common\Microsoft.Office.Tools.Common.v4.0.Utilities.dll") & FileExists("Common\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll")
@@ -98,12 +98,12 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 [Run]
 
-;Office 2010 & 2013 & 2016
+;Office 2010 & 2013 & 2016 & 2019
 Filename: {code:VSTOInstallerPath}; Parameters: "/i ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s "; WorkingDir: {app} ; Check: (not OutlookVersion(2003)); StatusMsg: "Installiere Fritz!Box Telefon-Dingsbums.vsto..."
 
 [UninstallRun]
  
-;Office 2010 & 2013 & 2016
+;Office 2010 & 2013 & 2016 & 2019
 Filename: {code:VSTOInstallerPath}; Parameters: "/u ""{app}\Fritz!Box Telefon-Dingsbums.vsto"" /s"; WorkingDir: {app};  Check: (not OutlookVersion(2003)); StatusMsg: "Deinstalliere Fritz!Box Telefon-Dingsbums.vsto..."
 
 [Icons]
@@ -223,6 +223,7 @@ function GetOutlookVersion(): String;
       14: Version := '2010';
       15: Version := '2013';
       16: Version := '2016';
+      17: Version := '2019'
     END; // CASE
 
     Result:= Version;
@@ -238,6 +239,7 @@ function Outlookx64: boolean;
       2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
       2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
       2016: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
+      2019: RegOutlook := 'SOFTWARE\Microsoft\Office\17.0\Outlook';
     END; // CASE
 
     if RegQueryStringValue(HKLM,RegOutlook,'Bitness', x86) then
@@ -379,7 +381,7 @@ function InitializeSetup(): Boolean;
     Result := true;
 
     CASE tmpInt OF
-      2007, 2010, 2013: 
+      2007, 2010, 2013, 2016, 2019: 
       begin 
 
         // Prüfe auf VSTO 2010
