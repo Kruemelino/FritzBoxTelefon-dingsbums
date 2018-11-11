@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
@@ -9,8 +9,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>FritzBoxDial</RootNamespace>
     <AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
     <StartupObject>
     </StartupObject>
@@ -52,18 +53,20 @@
     <DefineConstants>OVer=15</DefineConstants>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <DebugType>Full</DebugType>
+    <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <NoWarn>42353,42354,42355</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineConstants>OVer=14</DefineConstants>
@@ -75,10 +78,12 @@
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <NoWarn>42353,42354,42355</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
@@ -306,7 +311,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="Outlook" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Outlook" Language="vb" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{6E5EA054-14B1-4B94-B572-EC515AE24E91}" />
+        <ProjectProperties HostName="Outlook" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Outlook" Language="vb" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\Outlook\InstallRoot\Path#outlook.exe" AddItemTemplatesGuid="{5D898164-AEB5-470F-97BA-9253F022FD71}" />
         <Host Name="Outlook" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.vb" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.vb" />
         </Host>
