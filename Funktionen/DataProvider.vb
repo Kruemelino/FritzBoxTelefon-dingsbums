@@ -1801,7 +1801,7 @@ Public Class DataProvider
     ''' Initiales Laden der Daten aus der XML-Datei
     ''' </summary>
     Private Sub LoadOptionData()
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
 
         P_TBLandesVW = C_XML.Read(XMLDoc, P_Def_Options, "TBLandesVW", P_Def_TBLandesVW)
         P_TBAmt = C_XML.Read(XMLDoc, P_Def_Options, "TBAmt", P_Def_TBAmt)
@@ -1887,13 +1887,7 @@ Public Class DataProvider
         ' Fritz!Box Kommunikation
         P_RBFBComUPnP = CBool(C_XML.Read(XMLDoc, P_Def_Options, "RBFBComUPnP", CStr(P_Def_RBFBComUPnP)))
 
-        With xPathTeile
-            .Clear()
-            .Add("Telefone")
-            .Add("Nummern")
-            .Add("*")
-            .Add("[@Checked=""1""]")
-        End With
+        xPathTeile = C_XML.XPathConcat("Telefone", "Nummern", "*", "[@Checked=""1""]")
 
         P_CLBTelNr = New Collection(Of String)((From x In Split(C_XML.Read(XMLDoc, xPathTeile, P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text) Select x Distinct).ToArray)
 

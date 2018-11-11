@@ -144,7 +144,7 @@
         Dim vFBStatus As String()       ' generierter Status-String
         Dim j, a, b As Integer          ' Zählvariable
         Dim AnrListe As String()
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
         Dim Dauer() As String
 
         Dim CSVTelefonat As C_Telefonat
@@ -228,15 +228,7 @@
                                         Case "Data PC"
                                             .NSN = 37
                                         Case Else
-                                            With xPathTeile
-                                                .Clear()
-                                                .Add("Telefone")
-                                                .Add("Telefone")
-                                                .Add("*")
-                                                .Add("Telefon")
-                                                .Add("[TelName = """ & CSVTelefonat.TelName & """]")
-                                                .Add("@Dialport")
-                                            End With
+                                            xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "[TelName = """ & CSVTelefonat.TelName & """]", "@Dialport")
                                             .NSN = CInt(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String))
                                     End Select
                                 End If

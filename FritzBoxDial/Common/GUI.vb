@@ -183,7 +183,7 @@
 
 #End Region 'Ribbon Inspector
 
-#Region "Ribbon Expector Office 2010 bis Office 2016" 'Ribbon Explorer
+#Region "Ribbon Expector Office 2010 bis Office 2019" 'Ribbon Explorer
 
     Sub Ribbon_Load(ByVal Ribbon As Office.IRibbonUI)
         RibbonObjekt = Ribbon
@@ -198,9 +198,9 @@
         Dim Zeit As String
         Dim Verpasst As Boolean = False
 
-        Dim LANodeNames As New ArrayList
-        Dim LANodeValues As New ArrayList
-        Dim xPathTeile As New ArrayList
+        Dim LANodeNames As ArrayList
+        Dim LANodeValues As ArrayList
+        Dim xPathTeile As ArrayList
 
         Dim RibbonListStrBuilder As StringBuilder = New StringBuilder("<?xml version=""1.0"" encoding=""UTF-8""?>" & vbCrLf &
                                                                       "<menu xmlns=""http://schemas.microsoft.com/office/2009/07/customui"">" & vbCrLf)
@@ -216,12 +216,8 @@
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, XMLListBaseNode, "Index", "0"))
 
-        LANodeNames.Add("Anrufer")
-        LANodeNames.Add("TelNr")
-        LANodeNames.Add("Zeit")
-        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
-        LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
+        LANodeNames = C_XML.XPathConcat("Anrufer", "TelNr", "Zeit")
+        LANodeValues = C_XML.XPathConcat(DataProvider.P_Def_ErrorMinusOne_String, DataProvider.P_Def_ErrorMinusOne_String, DataProvider.P_Def_ErrorMinusOne_String)
 
         ' Signalisierung verpasster Anrufe
         If XMLListBaseNode = DataProvider.P_Def_NameListRING Then
@@ -229,10 +225,7 @@
             LANodeValues.Add(DataProvider.P_Def_ErrorMinusOne_String)
         End If
 
-        With xPathTeile
-            .Add(XMLListBaseNode)
-            .Add("Eintrag")
-        End With
+        xPathTeile = C_XML.XPathConcat(XMLListBaseNode, "Eintrag")
 
         With RibbonListStrBuilder
             .Append("<button id=""dynListDel_" & XMLListBaseNode & """ getLabel=""GetItemLabel"" onAction=""BtnOnAction"" getImage=""GetItemImageMso"" />" & vbCrLf)
@@ -344,7 +337,6 @@
 
     Public Function DynMenüEnabled(ByVal control As Office.IRibbonControl) As Boolean
         Dim XMLListBaseNode As String
-        Dim xPathTeile As New ArrayList
 
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
             Case DataProvider.P_Def_NameListCALL
@@ -712,11 +704,9 @@
 
         Dim KontaktID As String = aktKontakt.EntryID
         Dim StoreID As String = CType(aktKontakt.Parent, Outlook.MAPIFolder).StoreID
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
 
-        xPathTeile.Add(DataProvider.P_Def_NameListVIP)
-        xPathTeile.Add("Eintrag")
-        xPathTeile.Add("[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
+        xPathTeile = C_XML.XPathConcat(DataProvider.P_Def_NameListVIP, "Eintrag", "[(KontaktID = """ & KontaktID & """ and StoreID = """ & StoreID & """)]")
         IsVIP = Not C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String) = DataProvider.P_Def_ErrorMinusOne_String
         xPathTeile = Nothing
     End Function
@@ -892,8 +882,6 @@
         Dim AttributeValues As New ArrayList
         Dim xPathTeile As New ArrayList
         Dim index As Integer              ' Zählvariable
-
-
 
         index = CInt(C_XML.Read(C_DP.XMLDoc, ListName, "Index", "0"))
 

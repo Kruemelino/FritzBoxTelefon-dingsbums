@@ -440,7 +440,7 @@ Public Class XML
 #End Region
 
 #Region "Knoten"
-    Function CreateXMLNode(ByRef XMLDoc As XmlDocument, ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As ArrayList, ByVal AttributeValue As ArrayList) As XmlNode
+    Public Function CreateXMLNode(ByRef XMLDoc As XmlDocument, ByVal NodeName As String, ByVal SubNodeName As ArrayList, ByVal SubNodeValue As ArrayList, ByVal AttributeName As ArrayList, ByVal AttributeValue As ArrayList) As XmlNode
         CreateXMLNode = Nothing
         If SubNodeName.Count = SubNodeValue.Count Then
 
@@ -473,7 +473,7 @@ Public Class XML
         End If
     End Function
 
-    Sub ReadXMLNode(ByVal XMLDoc As XmlDocument, ByVal alxPathTeile As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String)
+    Public Sub ReadXMLNode(ByVal XMLDoc As XmlDocument, ByVal alxPathTeile As ArrayList, ByVal SubNodeName As ArrayList, ByRef SubNodeValue As ArrayList, ByVal AttributeName As String, ByVal AttributeValue As String)
 
         If SubNodeName.Count = SubNodeValue.Count Then
             Dim xPath As String
@@ -555,7 +555,7 @@ Public Class XML
     ''' </summary>
     ''' <param name="XMLpath">Pfad zur XML-Datei</param>
     ''' <returns><c>True</c>, wenn Datei geöffnet werden kann, ansonsten <c>False</c>.</returns>
-    Public Function XMLValidator(ByRef XMLDoc As XmlDocument, ByVal XMLPath As String) As Boolean
+    Friend Function XMLValidator(ByRef XMLDoc As XmlDocument, ByVal XMLPath As String) As Boolean
         XMLValidator = True
         Try
             XMLDoc.Load(XMLPath)
@@ -571,7 +571,7 @@ Public Class XML
     ''' </summary>
     ''' <param name="xPathElements">Lista an xPath-Elementen</param>
     ''' <returns>gültiger xPath</returns>
-    Function CreateXPath(ByVal XMLDoc As XmlDocument, ByVal xPathElements As ArrayList) As String
+    Public Function CreateXPath(ByVal XMLDoc As XmlDocument, ByVal xPathElements As ArrayList) As String
         ' fügt den Root-knoten an, falls nicht vorhanden
 
         Dim newxPath As New ArrayList
@@ -592,6 +592,16 @@ Public Class XML
         CreateXPath = Replace(P_xPathSeperatorSlash & Join(xPathElements.ToArray(), P_xPathSeperatorSlash), P_xPathSeperatorSlash & P_xPathBracketOpen, P_xPathBracketOpen, , , CompareMethod.Text)
         CreateXPath = Replace(CreateXPath, P_xPathBracketClose & P_xPathBracketOpen, " and ", , , CompareMethod.Text) ' ][ -> and
         newxPath = Nothing
+    End Function
+
+    ''' <summary>
+    ''' Überführt die übergebenen Werte in ein ArrayList, die dann in ein XPath umgewandelt werden.
+    ''' </summary>
+    ''' <param name="xPathElemente">übergebenen Werte als String</param>
+    ''' <returns>ArrayList</returns>
+    Public Function XPathConcat(ParamArray xPathElemente() As String) As ArrayList
+        XPathConcat = New ArrayList
+        XPathConcat.AddRange(xPathElemente)
     End Function
 #End Region
 

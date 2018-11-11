@@ -120,15 +120,15 @@ Public Class FritzBox
         ''' <param name="C_XML">Klasse für das Handling der XML-Datei</param>
         ''' <param name="XMLDatei">Die XML-Datei, in welche die Daten geschrieben werden.</param>
         Friend Sub SpeicherNummer(ByVal C_XML As XML, ByVal XMLDatei As XmlDocument)
-            Dim xPathTeile As New ArrayList
+            Dim xPathTeile As ArrayList
 
-            With xPathTeile
-                .Clear()
-                .Add("Telefone")
-                .Add("Nummern")
-                .Add(DataProvider.P_Def_ErrorMinusOne_String)
-            End With
-
+            'With xPathTeile
+            '    .Clear()
+            '    .Add("Telefone")
+            '    .Add("Nummern")
+            '    .Add(DataProvider.P_Def_ErrorMinusOne_String)
+            'End With
+            xPathTeile = C_XML.XPathConcat("Telefone", "Nummern", DataProvider.P_Def_ErrorMinusOne_String)
             For Each tmpTelNr As FritzBoxTelefonnummer In Nummernliste
                 With tmpTelNr
                     xPathTeile.Item(xPathTeile.Count - 1) = [Enum].GetName(GetType(TelTyp), .TelTyp)
@@ -163,39 +163,17 @@ Public Class FritzBox
         End Sub
 
         Friend Sub SpeicherTelefone(ByVal C_XML As XML, ByVal XMLDatei As XmlDocument)
-            Dim xPathTeile As New ArrayList
-            Dim NodeNames As New ArrayList
-            Dim NodeValues As New ArrayList
-            Dim AttributeNames As New ArrayList
-            Dim AttributeValues As New ArrayList
+            Dim xPathTeile As ArrayList
+            Dim NodeNames As ArrayList
+            Dim NodeValues As ArrayList
+            Dim AttributeNames As ArrayList
+            Dim AttributeValues As ArrayList
 
-            With xPathTeile
-                .Clear()
-                .Add(XMLDatei.DocumentElement.Name)
-                .Add("Telefone")
-                .Add("Telefone")
-                .Add(DataProvider.P_Def_ErrorMinusOne_String)
-            End With
-            With NodeNames
-                .Clear()
-                .Add("TelName")
-                .Add("TelNr")
-            End With
-            With AttributeNames
-                .Clear()
-                .Add("Fax")
-                .Add("Dialport")
-            End With
-            With NodeValues
-                .Clear()
-                .Add(DataProvider.P_Def_LeerString)
-                .Add(DataProvider.P_Def_LeerString)
-            End With
-            With AttributeValues
-                .Clear()
-                .Add(DataProvider.P_Def_LeerString)
-                .Add(DataProvider.P_Def_LeerString)
-            End With
+            xPathTeile = C_XML.XPathConcat(XMLDatei.DocumentElement.Name, "Telefone", "Telefone", DataProvider.P_Def_ErrorMinusOne_String)
+            NodeNames = C_XML.XPathConcat("TelName", "TelNr")
+            AttributeNames = C_XML.XPathConcat("Fax", "Dialport")
+            NodeValues = C_XML.XPathConcat(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString)
+            AttributeValues = C_XML.XPathConcat(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString)
 
             For Each tmpTelefon As FritzBoxTelefon In Telefonliste
                 With tmpTelefon
@@ -1230,41 +1208,21 @@ Public Class FritzBox
 
         Dim sLink As String
 
-        Dim xPathTeile As New ArrayList
-        Dim NodeNames As New ArrayList
-        Dim NodeValues As New ArrayList
-        Dim AttributeNames As New ArrayList
-        Dim AttributeValues As New ArrayList
+        Dim xPathTeile As ArrayList
+        Dim NodeNames As ArrayList
+        Dim NodeValues As ArrayList
+        Dim AttributeNames As ArrayList
+        Dim AttributeValues As ArrayList
 
         Dim PortName() As String = {"readFon123", "readNTHotDialList", "readDect1", "readFonControl", "readVoipExt", "readTam", "readFaxMail"}
 
         Dim EndPortName() As String = {"return list", "return list", "return list", "return list", "return Result", "return list", "return list"}
 
-        With xPathTeile
-            .Clear()
-            .Add("Telefone")
-            .Add("Nummern")
-        End With
-        With NodeNames
-            .Clear()
-            .Add("TelName")
-            .Add("TelNr")
-        End With
-        With AttributeNames
-            .Clear()
-            .Add("Fax")
-            .Add("Dialport")
-        End With
-        With NodeValues
-            .Clear()
-            .Add(DataProvider.P_Def_LeerString)
-            .Add(DataProvider.P_Def_LeerString)
-        End With
-        With AttributeValues
-            .Clear()
-            .Add(DataProvider.P_Def_LeerString)
-            .Add(DataProvider.P_Def_LeerString)
-        End With
+        xPathTeile = C_XML.XPathConcat("Telefone", "Nummern")
+        NodeNames = C_XML.XPathConcat("TelName", "TelNr")
+        AttributeNames = C_XML.XPathConcat("Fax", "Dialport")
+        NodeValues = C_XML.XPathConcat(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString)
+        AttributeValues = C_XML.XPathConcat(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString)
 
         sLink = P_Link_FB_TelAlt1(P_SID)
 
@@ -1736,39 +1694,19 @@ Public Class FritzBox
         Dim tmpTelNr As String
         Dim Port As String
 
-        Dim xPathTeile As New ArrayList
-        Dim NodeNames As New ArrayList
-        Dim NodeValues As New ArrayList
-        Dim AttributeNames As New ArrayList
-        Dim AttributeValues As New ArrayList
+        Dim xPathTeile As ArrayList
+        Dim NodeNames As ArrayList
+        Dim NodeValues As ArrayList
+        Dim AttributeNames As ArrayList
+        Dim AttributeValues As ArrayList
 
         If P_SpeichereDaten Then C_XML.Delete(C_DP.XMLDoc, "Telefone")
 
-        With xPathTeile
-            .Clear()
-            .Add("Telefone")
-            .Add("Nummern")
-        End With
-        With NodeNames
-            .Clear()
-            .Add("TelName")
-            .Add("TelNr")
-        End With
-        With AttributeNames
-            .Clear()
-            .Add("Fax")
-            .Add("Dialport")
-        End With
-        With NodeValues
-            .Clear()
-            .Add(DataProvider.P_Def_LeerString)
-            .Add(DataProvider.P_Def_LeerString)
-        End With
-        With AttributeValues
-            .Clear()
-            .Add(DataProvider.P_Def_LeerString)
-            .Add(DataProvider.P_Def_LeerString)
-        End With
+        xPathTeile = C_XML.XPathConcat("Telefone", "Nummern")
+        NodeNames = C_XML.XPathConcat("TelName", "TelNr")
+        AttributeNames = C_XML.XPathConcat("Fax", "Dialport")
+        NodeValues = C_XML.XPathConcat(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString)
+        AttributeValues = C_XML.XPathConcat(DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString)
 
         With C_hf
 
@@ -2662,18 +2600,12 @@ Public Class FritzBox
         Dim UPnPDialport As String
         Dim InPutData As New Hashtable
         Dim OutPutData As New Hashtable
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
 
         SendDialRequestToBoxV3 = DataProvider.P_FritzBox_Dial_Error1
 
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
-            .Add("[@Dialport = """ & sDialPort & """]")
-            .Add("TelName")
-        End With
+
+        xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "[@Dialport = """ & sDialPort & """]", "TelName")
 
         UPnPDialport = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
 
@@ -3091,7 +3023,7 @@ Public Class FritzBox
         ' in NewPhonebookID as PhonebookID
         ' in NewPhonebookEntryID as PhonebookEntryID
         ' in NewPhonebookEntryData as PhonebookEntryData
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
 
         Dim InPutData As New Hashtable
         Dim OutPutData As New Hashtable
@@ -3123,13 +3055,16 @@ Public Class FritzBox
                     ' For i = LBound(Liste) To UBound(Liste)
                     '     Liste(i) = C_hf.nurZiffern(Liste(i))
                     ' Next
-                    With xPathTeile
-                        .Add("phonebook")
-                        .Add("contact")
-                        .Add("[contains(//realName,""" & tmpname & """)]")
-                        ' .Add("contact[contains(//realName,""" & tmpname & """) and (contains(//number, """ & String.Join(""") or contains(//number, """, Liste) & """))]")
-                        .Add("uniqueid")
-                    End With
+                    'With xPathTeile
+                    '    .Add("phonebook")
+                    '    .Add("contact")
+                    '    .Add("[contains(//realName,""" & tmpname & """)]")
+                    '    ' .Add("contact[contains(//realName,""" & tmpname & """) and (contains(//number, """ & String.Join(""") or contains(//number, """, Liste) & """))]")
+                    '    .Add("uniqueid")
+                    'End With
+
+                    xPathTeile = C_XML.XPathConcat("phonebook", "contact", "[contains(//realName,""" & tmpname & """)]", "uniqueid")
+
                     tmpxmlNode = Telefonbuch.SelectSingleNode(C_XML.CreateXPath(Telefonbuch, xPathTeile))
                     If tmpxmlNode IsNot Nothing Then
                         Select Case C_hf.MsgBox("Der Kontakt """ & tmpname & """ ist bereits im Telefonbuch vorhanden." & DataProvider.P_Def_ZweiNeueZeilen & "Soll der Kontakt ersetzt werden?", MsgBoxStyle.YesNoCancel, "SOAP-KontaktUpload")
@@ -3189,7 +3124,6 @@ Public Class FritzBox
         Dim Eintrag As New XmlDocument()
         'Dim KnotenName As XmlNode
         Dim XMLKnoten As XmlNode
-
 
         Eintrag.AppendChild(Eintrag.CreateXmlDeclaration("1.0", "UTF-8", Nothing))
 
@@ -3397,7 +3331,6 @@ Public Class FritzBox
     ''' <remarks>http://fritz.box/fon_num/fonbook_select.lua</remarks>
     Friend Function GetTelefonbuchListe() As String()
 
-
         If C_DP.P_RBFBComUPnP Then
             Dim InPutData As New Hashtable
             Dim OutPutData As New Hashtable
@@ -3440,7 +3373,6 @@ Public Class FritzBox
             End If
             Return ReturnTelefonbuchListe
         End If
-
 
     End Function
 

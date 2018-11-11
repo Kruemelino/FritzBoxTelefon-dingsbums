@@ -188,17 +188,17 @@ Public Class formCfg
             End If
             LabelPhoner.Text = Replace(LabelPhoner.Text, " [nicht]", C_hf.IIf(PhonerVerfuegbar, "", " nicht"), , , CompareMethod.Text)
 
-            Dim xPathTeile As New ArrayList
-
+            Dim xPathTeile As ArrayList
+            xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "[@Dialport > 19 and @Dialport < 30]", "TelName")
             'Statistik zurückschreiben
-            With xPathTeile
-                .Add("Telefone")
-                .Add("Telefone")
-                .Add("*")
-                .Add("Telefon")
-                .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
-                .Add("TelName")
-            End With
+            'With xPathTeile
+            '    .Add("Telefone")
+            '    .Add("Telefone")
+            '    .Add("*")
+            '    .Add("Telefon")
+            '    .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
+            '    .Add("TelName")
+            'End With
 
             ComboBoxPhonerSIP.DataSource = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
 
@@ -242,15 +242,9 @@ Public Class formCfg
         Dim Nebenstellen() As String
         Dim j As Integer
         Dim tmpein(3) As Double
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
 
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
-            .Add("TelName")
-        End With
+        xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "TelName")
         Nebenstellen = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
 
         If Not Nebenstellen(0) = DataProvider.P_Def_ErrorMinusOne_String Then
@@ -259,15 +253,9 @@ Public Class formCfg
                 j = 0
                 For Each Nebenstelle As String In Nebenstellen
                     j += 1
-                    xPathTeile.Clear()
 
+                    xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "[TelName = """ & Nebenstelle & """]", "@Standard")
                     With xPathTeile
-                        .Add("Telefone")
-                        .Add("Telefone")
-                        .Add("*")
-                        .Add("Telefon")
-                        .Add("[TelName = """ & Nebenstelle & """]")
-                        .Add("@Standard")
 
                         Zeile.Add(CBool(C_XML.Read(C_DP.XMLDoc, xPathTeile, "False")))
                         Zeile.Add(CStr(j))
@@ -318,15 +306,13 @@ Public Class formCfg
     End Sub
 
     Private Sub CLBTelNrAusfüllen()
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
         Dim TelNrString() As String
+
+        xPathTeile = C_XML.XPathConcat("Telefone", "Nummern", "*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"") or starts-with(name(.), ""Mobil"")]")
         With xPathTeile
-            .Add("Telefone")
-            .Add("Nummern")
-            .Add("*[starts-with(name(.), ""POTS"") or starts-with(name(.), ""MSN"") or starts-with(name(.), ""SIP"") or starts-with(name(.), ""Mobil"")]")
 
             TelNrString = Split("Alle Telefonnummern;" & C_XML.Read(C_DP.XMLDoc, xPathTeile, ""), ";", , CompareMethod.Text)
-
             TelNrString = C_hf.ClearStringArray(TelNrString, True, True, True)
 
             CLBTelNr.Items.Clear()
@@ -349,7 +335,7 @@ Public Class formCfg
 
     Private Function Speichern() As Boolean
         Speichern = True
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
         Dim tmpTeile As String = DataProvider.P_Def_LeerString
         Dim CheckTelNr As CheckedListBox.CheckedItemCollection = CLBTelNr.CheckedItems
 
@@ -362,10 +348,8 @@ Public Class formCfg
                 CheckTelNr = CLBTelNr.CheckedItems
             End If
             If CLBTelNr.Items.Count > 1 Then
+                xPathTeile = C_XML.XPathConcat("Telefone", "Nummern", "*")
                 With xPathTeile
-                    .Add("Telefone")
-                    .Add("Nummern")
-                    .Add("*")
                     For i = 1 To CLBTelNr.Items.Count - 1
                         tmpTeile += ". = " & """" & CLBTelNr.Items(i).ToString & """" & " or "
                     Next
@@ -389,11 +373,7 @@ Public Class formCfg
                 .P_CBForceFBAddr = CBForceFBAddr.Checked
 
                 If TBBenutzer.Text = DataProvider.P_Def_LeerString Then
-                    With xPathTeile
-                        .Clear()
-                        .Add("Optionen")
-                        .Add("TBBenutzer")
-                    End With
+                    xPathTeile = C_XML.XPathConcat("Optionen", "TBBenutzer")
                     C_XML.Delete(C_DP.XMLDoc, xPathTeile)
                 Else
                     .P_TBBenutzer = TBBenutzer.Text
@@ -468,42 +448,21 @@ Public Class formCfg
                 ' Fritz!Box Kommunikation
                 .P_RBFBComUPnP = RBFBComUPnP.Checked
                 ' Telefone
-
+                xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", DataProvider.P_Def_LeerString)
                 With xPathTeile
-                    .Clear()
-                    .Add("Telefone")
-                    .Add("Telefone")
-                    .Add("*")
-                    .Add("Telefon")
-                    .Add(DataProvider.P_Def_LeerString)
                     For i = 0 To TelList.Rows.Count - 2
                         .Item(.Count - 1) = "[@Dialport = """ & TelList.Rows(i).Cells(2).Value.ToString & """]"
                         C_XML.WriteAttribute(C_DP.XMLDoc, xPathTeile, "Standard", CStr(CBool(TelList.Rows(i).Cells(0).Value)))
                     Next
                 End With
-
-                With xPathTeile
-                    .Clear()
-                    .Add("Telefone")
-                    .Add("Nummern")
-                    .Add("*")
-                    .Add("[@Checked=""1""]")
-                End With
+                xPathTeile = C_XML.XPathConcat("Telefone", "Nummern", "*", "[@Checked=""1""]")
 
                 '.P_CLBTelNr.Clear()
                 .P_CLBTelNr = New Collection(Of String)(C_hf.ClearStringArray(Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String), ";", , CompareMethod.Text), False, True, False))
 
                 ' Phoner
                 If CBPhoner.Checked Then
-                    With xPathTeile
-                        .Clear()
-                        .Add("Telefone")
-                        .Add("Telefone")
-                        .Add("*")
-                        .Add("Telefon")
-                        .Add("[@Dialport > 19 and @Dialport < 30]") ' Nur IP-Telefone
-                        .Add("TelName")
-                    End With
+                    xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "[@Dialport > 19 and @Dialport < 30]", "TelName")
 
                     Dim TelNames As String()
                     TelNames = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, "Phoner"), ";", , CompareMethod.Text)
@@ -519,7 +478,6 @@ Public Class formCfg
                             Speichern = False
                         End If
                     End If
-
 
                     If Not TBPhonerPasswort.Text = DataProvider.P_Def_LeerString Then
                         If Not TBPhonerPasswort.Text = "1234" Then
@@ -694,18 +652,12 @@ Public Class formCfg
                 C_DP.P_StatJournal = 0
                 C_DP.P_StatOLClosedZeit = System.DateTime.Now
 
-                Dim xPathTeile As New ArrayList
-                With xPathTeile
-                    .Clear()
-                    .Add("Telefone")
-                    .Add("Telefone")
-                    .Add("*")
-                    .Add("Telefon")
-                    .Add("Eingehend")
-                    C_XML.Delete(C_DP.XMLDoc, xPathTeile)
-                    .Item(.Count - 1) = "Ausgehend"
-                    C_XML.Delete(C_DP.XMLDoc, xPathTeile)
-                End With
+                Dim xPathTeile As ArrayList
+                xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "Eingehend")
+
+                C_XML.Delete(C_DP.XMLDoc, xPathTeile)
+                xPathTeile.Item(xPathTeile.Count - 1) = "Ausgehend"
+                C_XML.Delete(C_DP.XMLDoc, xPathTeile)
                 C_DP.SpeichereXMLDatei()
                 Ausfüllen()
                 xPathTeile = Nothing
@@ -1346,19 +1298,11 @@ Public Class formCfg
 
     Private Sub BWTelefone_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs) Handles BWTelefone.RunWorkerCompleted
         AddLine("BackgroundWorker zum Einlesen der Telefone ist fertig.")
-        Dim xPathTeile As New ArrayList
+        Dim xPathTeile As ArrayList
         Dim tmpTelefon As String
 
         'Statistik zurückschreiben
-
-        With xPathTeile
-            .Add("Telefone")
-            .Add("Telefone")
-            .Add("*")
-            .Add("Telefon")
-            .Add("[@Dialport = """ & """]")
-            .Add("TelName")
-        End With
+        xPathTeile = C_XML.XPathConcat("Telefone", "Telefone", "*", "Telefon", "[@Dialport = """ & """]", "TelName")
 
         For Row = 0 To TelList.Rows.Count - 2
             xPathTeile.Item(xPathTeile.Count - 2) = "[@Dialport = """ & TelList.Rows(Row).Cells(2).Value.ToString & """]"
