@@ -13,10 +13,10 @@ Fritz!Box Telefon-dingsbums
 
 Alle weiteren Komponenten (.NET Framework, VSTO), die das Addin benötigen, hängen von der jeweiligen Office Version ab. Die Installation lädt die Kompo-nenten automatisch runter und versucht sie zu installieren. Wenn es Probleme damit gibt, dann Installieren Sie die Komponenten per Hand vor der Installation des Addins.
 
-1.2	Systemvoraussetzungen für Outlook 365, Outlook 2016, Outlook 2013, Outlook 2010
+1.2	Systemvoraussetzungen für Outlook 365, Outlook 2019, Outlook 2016, Outlook 2013, Outlook 2010
 
-- Microsoft Outlook 2016, Outlook 365 oder Outlook 2013 oder Outlook 2010 
-- Microsoft .NET Framework 4.0 Client Profile: http://www.microsoft.com/de-de/download/details.aspx?id=24872 
+- Microsoft Outlook 365, Outlook 2019 oder Outlook 2016 oder Outlook 2013 oder Outlook 2010 
+- Microsoft .NET Framework 4.7.2:  
 - Microsoft Visual Studio 2010 Tools for Office Runtime Redistributable (VSTOR 2010): http://go.microsoft.com/fwlink/?LinkId=158918
 
 Das Programm wurde erfolgreich in den folgenden Konstellationen getestet:
