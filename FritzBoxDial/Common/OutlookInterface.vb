@@ -166,6 +166,25 @@ Public Class OutlookInterface
         BenutzerInitialien = UserInitials
     End Function
 
+    Friend Function GetSmtpAddress(ByVal card As Office.IMsoContactCard) As String
+        If card.AddressType = Office.MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
+            'Dim host As Outlook.Application = Globals.ThisAddIn.Application
+            Dim ae As Outlook.AddressEntry = OutlookApplication.Session.GetAddressEntryFromID(card.Address)
+
+            Select Case ae.AddressEntryUserType
+                Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                    Dim ex As Outlook.ExchangeUser = ae.GetExchangeUser()
+                    Return ex.PrimarySmtpAddress
+                Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
+                    Return ae.Address
+                Case Else
+                    Throw New Exception("Valid address entry not found.")
+            End Select
+        Else
+            Return card.Address
+        End If
+    End Function
+
 #Region "Fenster"
     ''' <summary>
     ''' Sinn der Routine ist es einen aktiven Inspector wieder aktiv zu schalten, da der Anrufmonitor diesen deaktiviert.

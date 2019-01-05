@@ -286,7 +286,7 @@ Public Class Wählclient
         Dim vCard As String
         Dim pos1 As Integer
         Dim pos2 As Integer
-        Dim Absender As String
+        'Dim Absender As String
         Dim olContact As Outlook.ContactItem
 
         olAuswahl = ThisAddIn.P_oApp.ActiveInspector
@@ -316,37 +316,50 @@ Public Class Wählclient
                         C_hf.NAR(olLink) : olLink = Nothing
                     Else ' Wenn in dem Journal kein Link hinterlegt ist, suche nach einer vCard im Body des Journaleintrags.
 #End If
-                    pos1 = InStr(1, olJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
-                    pos2 = InStr(1, olJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
-                    If Not pos1 = 0 And Not pos2 = 0 Then
-                        pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
-                        vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
-                    Else
-                        vCard = DataProvider.P_Def_LeerString
-                    End If
+                        pos1 = InStr(1, olJournal.Body, DataProvider.P_Def_Begin_vCard, CompareMethod.Text)
+                        pos2 = InStr(1, olJournal.Body, DataProvider.P_Def_End_vCard, CompareMethod.Text)
+                        If Not pos1 = 0 And Not pos2 = 0 Then
+                            pos2 = pos2 + Len(DataProvider.P_Def_End_vCard)
+                            vCard = Mid(olJournal.Body, pos1, pos2 - pos1)
+                        Else
+                            vCard = DataProvider.P_Def_LeerString
+                        End If
 
-                    If Not TelNr Is DataProvider.P_Def_LeerString Then Wählbox(Nothing, TelNr, vCard, False)
+                        If Not TelNr Is DataProvider.P_Def_LeerString Then Wählbox(Nothing, TelNr, vCard, False)
 #If OVer = 14 Then
                     End If
 #End If
                 End If
             End If
         ElseIf TypeOf olAuswahl.CurrentItem Is Outlook.MailItem Then ' ist aktuelles Fenster ein Mail?
-            Dim oContact As Outlook.ContactItem
-            Dim olMail As Outlook.MailItem = CType(olAuswahl.CurrentItem, Outlook.MailItem)
-            Absender = olMail.SenderEmailAddress
+            'Dim oContact As Outlook.ContactItem
+            'Dim olMail As Outlook.MailItem = CType(olAuswahl.CurrentItem, Outlook.MailItem)
+            'Absender = olMail.SenderEmailAddress
             ' Nun den zur Email-Adresse gehörigen Kontakt suchen
-            If Not Absender = DataProvider.P_Def_LeerString Then
-                oContact = C_KF.KontaktSuche(DataProvider.P_Def_LeerString, Absender, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, C_DP.P_CBKHO)
-                If oContact IsNot Nothing Then
-                    Wählbox(oContact, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, False)
-                Else
-                    C_hf.MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
-                End If
-            End If
+            'If Not Absender = DataProvider.P_Def_LeerString Then
+            '    oContact = C_KF.KontaktSuche(DataProvider.P_Def_LeerString, Absender, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, C_DP.P_CBKHO)
+            '    If oContact IsNot Nothing Then
+            '        Wählbox(oContact, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, False)
+            '    Else
+            '        C_hf.MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusKontakt")
+            '    End If
+            'End If
+            WählenAusEMail(CType(olAuswahl.CurrentItem, Outlook.MailItem).SenderEmailAddress)
         End If
 
     End Sub '(WählenAusKontakt)
+
+    Public Sub WählenAusEMail(ByVal Absender As String)
+        Dim oContact As Outlook.ContactItem
+        If Not Absender = DataProvider.P_Def_LeerString Then
+            oContact = C_KF.KontaktSuche(DataProvider.P_Def_LeerString, Absender, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, C_DP.P_CBKHO)
+            If oContact IsNot Nothing Then
+                Wählbox(oContact, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, False)
+            Else
+                C_hf.MsgBox("Es ist kein Kontakt mit der E-Mail-Adresse " & Absender & " vorhanden!", MsgBoxStyle.Exclamation, "WählenAusEMail")
+            End If
+        End If
+    End Sub
 #End Region
 
 #Region "IDisposable Support"

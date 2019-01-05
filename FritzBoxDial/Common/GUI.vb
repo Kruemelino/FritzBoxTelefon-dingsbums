@@ -16,6 +16,8 @@
                 File = GetResourceText("FritzBoxDial.RibbonInspectorJournal.xml")
             Case "Microsoft.Outlook.Contact"
                 File = GetResourceText("FritzBoxDial.RibbonInspectorKontakt.xml")
+            Case "Microsoft.Mso.IMLayerUI"
+                File = GetResourceText("FritzBoxDial.RibbonIMLayerUI.xml")
             Case Else
                 File = DataProvider.P_Def_LeerString
         End Select
@@ -436,7 +438,7 @@
                 Return DataProvider.P_CMB_Journal
             Case "Einstellungen"
                 Return DataProvider.P_CMB_Setup
-            Case "cbtnDial" ' ContextMenu Dial
+            Case "cbtnDial", "rbtnDial" ' ContextMenu Dial
                 Return DataProvider.P_CMB_ContextMenueItemCall
             Case "ctbtnVIP" ' ContextMenu Dial
                 Return DataProvider.P_CMB_ContextMenueItemVIP
@@ -474,7 +476,7 @@
     ''' <param name="control"></param>
     Public Function GetItemScreenTipp(ByVal control As Office.IRibbonControl) As String
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "btnDialExpl", "btnDialInsp"
+            Case "btnDialExpl", "btnDialInsp", "rbtnDial"
                 Return DataProvider.P_CMB_Dial_ToolTipp
             Case "btnDirektwahl"
                 Return DataProvider.P_CMB_Direktwahl_ToolTipp
@@ -529,7 +531,7 @@
     Public Function GetItemImageMso(ByVal control As Office.IRibbonControl) As String
 
         Select Case Split(control.Id, "_", 2, CompareMethod.Text)(0)
-            Case "btnDialExpl", "btnDialInsp"
+            Case "btnDialExpl", "btnDialInsp", "rbtnDial"
                 Return "AutoDial"
             Case "btnDirektwahl"
                 Return "SlidesPerPage9Slides"
@@ -583,6 +585,18 @@
                 OnAction(TaskToDo.DialExplorer)
             Case "btnDialInsp"
                 OnAction(TaskToDo.DialInspector)
+            Case "rbtnDial"
+                Try
+                    Dim card As Office.IMsoContactCard = TryCast(control.Context, Office.IMsoContactCard)
+
+                    If card IsNot Nothing Then
+                        P_CallClient.WählenAusEMail(P_OlInterface.GetSmtpAddress(card))
+                    Else
+                        C_hf.LogFile("Unable to access contact card")
+                    End If
+                Catch ex As Exception
+                    C_hf.LogFile(ex.Message)
+                End Try
             Case "btnDirektwahl"
                 OnAction(TaskToDo.DialDirect)
             Case DataProvider.P_Def_NameListCALL, DataProvider.P_Def_NameListRING, DataProvider.P_Def_NameListVIP
@@ -625,9 +639,6 @@
                 OnAction(TaskToDo.CreateContact)
             Case "btnNote"
                 C_KF.AddNote(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem))
-
-
-
         End Select
     End Sub
 
@@ -864,6 +875,24 @@
         End Select
     End Sub
 
+    'Private Function GetSmtpAddress(ByVal card As Office.IMsoContactCard) As String
+    '    If card.AddressType = Office.MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
+    '        Dim host As Outlook.Application = Globals.ThisAddIn.Application
+    '        Dim ae As Outlook.AddressEntry = host.Session.GetAddressEntryFromID(card.Address)
+
+    '        Select Case ae.AddressEntryUserType
+    '            Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+    '                Dim ex As Outlook.ExchangeUser = ae.GetExchangeUser()
+    '                Return ex.PrimarySmtpAddress
+    '            Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
+    '                Return ae.Address
+    '            Case Else
+    '                Throw New Exception("Valid address entry not found.")
+    '        End Select
+    '    Else
+    '        Return card.Address
+    '    End If
+    'End Function
 #End Region
 
 #Region "RingCallList"
