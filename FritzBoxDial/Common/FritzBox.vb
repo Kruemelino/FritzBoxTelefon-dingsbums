@@ -2245,6 +2245,9 @@ Public Class FritzBox
                     With tmpTelNrList
                         For jdx = .LBound To .UBound
                             If Not Debug Then
+                                'If .Item(jdx).Contains("POTS") Then
+                                '    .Item(jdx) = TelefonNummern.Nummernliste.Find(Function(Nummern) Nummern.TelTyp = TelTyp.POTS).TelNr
+                                'End If
                                 If Not .Item(jdx) = DataProvider.P_Def_LeerString Then
                                     tmpTelNr = New FritzBoxTelefonnummer
                                     tmpTelNr.TelNr = .Item(jdx)

@@ -1038,7 +1038,9 @@ Public Class KontaktFunktionen
             Next
         End With
         If oTable Is Nothing Then
-            oTable = oDoc.Tables.Add(oDoc.Range(0, 0), nRow, nCol)
+            ' Testweise Bestehender Inhalt bleibt bestehen
+            oDoc.Paragraphs.Add()
+            oTable = oDoc.Tables.Add(oDoc.Paragraphs.Add.Range, nRow, nCol)
             Sel4BM = oTable
             oDoc.Bookmarks.Add(DataProvider.P_Def_Note_Table, Sel4BM)
             With oTable
