@@ -1933,6 +1933,7 @@ Public Class DataProvider
         C_XML.Write(XMLDoc, P_Def_Options, "CBKErstellen", CStr(P_CBKErstellen))
         C_XML.Write(XMLDoc, P_Def_Options, "CBLogFile", CStr(P_CBLogFile))
         C_XML.Write(XMLDoc, P_Def_Options, "CBJImport", CStr(P_CBAutoAnrList))
+        C_XML.Write(XMLDoc, P_Def_Options, "TBNumEntryList", CStr(P_TBNumEntryList))
         ' Einstellungen füer die Rückwärtssuche laden
         C_XML.Write(XMLDoc, P_Def_Options, "CBKHO", CStr(P_CBKHO))
         C_XML.Write(XMLDoc, P_Def_Options, "CBRWS", CStr(P_CBRWS))

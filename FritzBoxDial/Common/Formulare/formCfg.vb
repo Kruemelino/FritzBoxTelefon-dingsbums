@@ -108,6 +108,7 @@ Public Class formCfg
 
             If Not Len(.P_TBPasswort) = 0 Then TBPasswort.Text = "1234"
             TBVorwahl.Text = .P_TBVorwahl
+            TBNumEntryList.ForeColor = SystemColors.WindowText
             TBNumEntryList.Text = CStr(.P_TBNumEntryList)
             TBEnblDauer.Text = CStr(.P_TBEnblDauer)
             CBAnrMonAuto.Checked = .P_CBAnrMonAuto
