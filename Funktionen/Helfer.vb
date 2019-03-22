@@ -729,7 +729,6 @@ Public Class Helfer
     ''' <param name="TelNr">Zu zerlegende Telefonnummer.</param>
     ''' <returns>Telefonnummer als eigener Datentyp</returns>
     Function TelNrTeile(ByVal TelNr As String) As Telefonnummer
-
         Dim retVal As New Telefonnummer
         Dim ErsteZiffer As String
 
@@ -740,9 +739,8 @@ Public Class Helfer
             .Ortsvorwahl = DataProvider.P_Def_LeerString
             .Durchwahl = DataProvider.P_Def_LeerString
 
+            TelNr = nurZiffern(TelNr)
             If Not TelNr = DataProvider.P_Def_LeerString Then
-                TelNr = nurZiffern(TelNr)
-
                 If TelNr.StartsWith(DataProvider.P_Def_PreLandesVW) Then
                     'Landesvorwahl vorhanden
                     If TelNr.StartsWith(C_DP.P_TBLandesVW) Then
