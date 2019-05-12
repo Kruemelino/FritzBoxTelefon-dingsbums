@@ -548,7 +548,7 @@ Public Class FritzBox
     ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
     Private ReadOnly Property P_Link_FB_DialV2(ByVal sSID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
-            Return P_Link_FB_Basis & "/fon_num/fonbook_list.lua" & "?sid=" & sSID & "" & C_hf.IIf(HangUp, "&hangup=", "&dial=" & DialCode)
+            Return P_Link_FB_Basis & "/fon_num/fonbook_list.lua" & "?sid=" & sSID & C_hf.IIf(HangUp, "&hangup=", "&dial=" & DialCode)
         End Get
     End Property
 
@@ -2613,8 +2613,8 @@ Public Class FritzBox
         UPnPDialport = C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String)
 
         Select Case CInt(sDialPort)
-            'Case 1 To 3
-            '    UPnpDialport = "FON: " & UPnpDialport
+            Case 1 To 3
+                UPnPDialport = "FON" & sDialPort & ": " & UPnPDialport
             Case 50
                 UPnPDialport = "ISDN und Schnurlostelefone"
             Case 51 To 58

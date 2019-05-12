@@ -784,7 +784,9 @@ Public Class Helfer
                 If .TelNr.Contains("-") Then
                     .Durchwahl = Trim(Mid(.TelNr, InStrRev(.TelNr, "-", , CompareMethod.Text) + 1))
                 End If
-                .Nummer = Left(TelNr, Len(TelNr) - Len(.Durchwahl))
+                If Not TelNr = DataProvider.P_Def_LeerString Then
+                    .Nummer = Left(TelNr, Len(TelNr) - Len(.Durchwahl))
+                End If
             End If
         End With
 

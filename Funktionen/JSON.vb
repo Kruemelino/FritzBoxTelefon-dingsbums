@@ -1498,9 +1498,9 @@ Public Class TelNrList
                 Case 7
                     Item = sTelNr7
                 Case 8
-                    Item = sTelNr5
+                    Item = sTelNr8
                 Case 9
-                    Item = sTelNr6
+                    Item = sTelNr9
                 Case Else
                     Item = DataProvider.P_Def_LeerString
             End Select
@@ -1511,23 +1511,23 @@ Public Class TelNrList
                 Case 0
                     sTelNr0 = value
                 Case 1
-                    sTelNr0 = value
+                    sTelNr1 = value
                 Case 2
-                    sTelNr0 = value
+                    sTelNr2 = value
                 Case 3
-                    sTelNr0 = value
+                    sTelNr3 = value
                 Case 4
-                    sTelNr0 = value
+                    sTelNr4 = value
                 Case 5
-                    sTelNr0 = value
+                    sTelNr5 = value
                 Case 6
-                    sTelNr0 = value
+                    sTelNr6 = value
                 Case 7
-                    sTelNr0 = value
+                    sTelNr7 = value
                 Case 8
-                    sTelNr0 = value
+                    sTelNr8 = value
                 Case 9
-                    sTelNr0 = value
+                    sTelNr9 = value
             End Select
         End Set
     End Property
