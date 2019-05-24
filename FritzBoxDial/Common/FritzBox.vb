@@ -529,6 +529,15 @@ Public Class FritzBox
         End Get
     End Property
 
+    ''' <summary>
+    ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/data.lua"
+    ''' </summary>
+    Private ReadOnly Property P_Link_FB_TelV3() As String
+        Get
+            Return P_Link_FB_Basis & "/data.lua"
+        End Get
+    End Property
+
     ''' <summary>Http POST Data:
     '''  sid=sSID&amp;clicktodial=on&amp;port=DialPort&amp;btn_apply=
     '''  </summary>
@@ -539,7 +548,11 @@ Public Class FritzBox
             Return "sid=" & sSID & "&clicktodial=on&port=" & DialPort & "&btn_apply="
         End Get
     End Property
-
+    Private ReadOnly Property P_Link_FB_DialV3SetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
+        Get
+            Return String.Format("&xhr=1&clicktodial=on&port={0}&sid={1}&back_to_page=%2Ffon_num%2Fdial_fonbook.lua&btn_apply=&lang=de&page=telDial", DialPort, sSID)
+        End Get
+    End Property
     ''' <summary>
     ''' "http://" &amp; C_DP.P_ValidFBAdr &amp; "/fon_num/fonbook_list.lua?sid=" &amp; sSID &amp; hangup=||dial=DialCode
     ''' </summary>
@@ -548,7 +561,8 @@ Public Class FritzBox
     ''' <param name="HangUp">Boolean, ob Abruch erfolgen soll.</param>
     Private ReadOnly Property P_Link_FB_DialV2(ByVal sSID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
-            Return P_Link_FB_Basis & "/fon_num/fonbook_list.lua" & "?sid=" & sSID & C_hf.IIf(HangUp, "&hangup=", "&dial=" & DialCode)
+            'Return P_Link_FB_Basis & "/fon_num/fonbook_list.lua" & "?sid=" & sSID & C_hf.IIf(HangUp, "&hangup=", "&dial=" & DialCode)
+            Return String.Format("{0}/fon_num/foncalls_list.lua?sid={1}{2}", P_Link_FB_Basis, sSID, If(HangUp, "&hangup=", "&dial=" & DialCode))
         End Get
     End Property
 
@@ -2561,7 +2575,7 @@ Public Class FritzBox
         Else
             C_hf.LogFile("SendDialRequestToBoxV2: Ändere Dialport auf " & sDialPort)
             ' per HTTP-POST Dialport ändern
-            Response = C_hf.httpPOST(P_Link_FB_TelV2, P_Link_FB_DialV2SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
+            Response = C_hf.httpPOST(P_Link_FB_TelV3, P_Link_FB_DialV3SetDialPort(P_SID, sDialPort), C_DP.P_EncodingFritzBox)
             ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
             If Response.Contains("twofactor") Then
                 C_hf.MsgBox("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist." & DataProvider.P_Def_ZweiNeueZeilen & "In der Fritz!Box:" & DataProvider.P_Def_EineNeueZeile & "System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz" & DataProvider.P_Def_EineNeueZeile & "Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", MsgBoxStyle.Critical, "SendDialRequestToBoxV2")
@@ -2587,8 +2601,12 @@ Public Class FritzBox
             ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789#"}
             ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
             ' Bei der Wahl Des Hangup ist es ein {"dialing": false} ohne die umschließenden Anführungszeichen" 
-            If Response.Contains("""dialing""") And Response.Contains(C_hf.IIf(bHangUp, "false", sDialCode)) Then
-                SendDialRequestToBoxV2 = C_hf.IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(sDialCode))
+            ' NEU {"dialing":true,"err":0}
+            ' NEU {"dialing":false,"err":0}
+
+
+            If Response = "{""dialing"":true,""err"":0}" Or (Response.Contains("""dialing""") And Response.Contains(C_hf.IIf(bHangUp, "false", DialCodetoBox))) Then
+                SendDialRequestToBoxV2 = C_hf.IIf(bHangUp, DataProvider.P_FritzBox_Dial_HangUp, DataProvider.P_FritzBox_Dial_Start(DialCodetoBox))
             Else
                 C_hf.LogFile("SendDialRequestToBoxV2: Response: " & Response.Replace(vbLf, ""))
             End If
