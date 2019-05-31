@@ -124,7 +124,7 @@ Friend Class formWählbox
             .Add("Telefone")
             .Add("*")
             .Add("Telefon")
-            .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1) and not(@Dialport = " & DataProvider.P_Def_MobilDialPort & ")" & C_hf.IIf(C_DP.P_RBFBComUPnP, " and not(@Dialport > 0 and @Dialport < 4)", "") & "]") ' Keine Anrufbeantworter, kein Fax, kein Mobil
+            .Add("[@Dialport < 600 and not(@Dialport > 19 and @Dialport < 49) and not(@Fax = 1) and not(@Dialport = " & DataProvider.P_Def_MobilDialPort & ")]") ' Keine Anrufbeantworter, kein Fax, kein Mobil
             .Add("TelName")
 
             Nebenstellen = Split(C_XML.Read(C_DP.XMLDoc, xPathTeile, DataProvider.P_Def_ErrorMinusOne_String & ";"), ";", , CompareMethod.Text)
