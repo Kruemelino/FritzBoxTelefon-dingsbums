@@ -1,3 +1,5 @@
+!Achtung! Dieses Programm wird in dieser Form nicht mehr weiterentwickelt. Es gibt bereits einen neuen Branch zu einer neuen Programmversion.
+
 Fritz!Box Telefon-dingsbums
 ===========================
 
