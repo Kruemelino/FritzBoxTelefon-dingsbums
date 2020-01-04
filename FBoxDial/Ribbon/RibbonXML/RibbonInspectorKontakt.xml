@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabContact">
+        <group id="Tab_Contact" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
+          <button id="btnDialInsp_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI"/>
+          <button id="btnRWS_C" tag="RWSDasOertliche" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleRWS" size="normal" onAction="BtnOnActionI"/>
+          <toggleButton id="tbtnVIP_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getPressed="TBtnPressedVIP" size="normal" getScreentip="GetItemScreenTipp" onAction="TBtnOnAction"/>
+          <button id="btnNote_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleUploadFKT" size="normal" onAction="BtnOnActionI"/>
+          <button id="btnUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleUploadFKT" size="normal" onAction="BtnOnActionI"/>
+          <dynamicMenu id="MUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getContent="GetPhonebooks" invalidateContentOnDrop="true" getVisible="GetVisibleUploadFKT" getScreentip="GetItemScreenTipp"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

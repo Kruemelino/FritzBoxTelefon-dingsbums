@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="ToolTipFBDBConfig.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="CBRWSIndex.ToolTip" xml:space="preserve">
+    <value>Die Ergebnisse der Rückwärtssuche können abgespeichert werden. Wenn eine Rückwärtssuche erfolgreich ist, 
+wird der ermittelte Kontakt abgespeichert. Bei der nächsten Suche wird zunächst geschaut, 
+ob die Telefonnummer bereits bekannt ist.</value>
+  </data>
+  <data name="CBKontaktSucheHauptOrdner.ToolTip" xml:space="preserve">
+    <value>Um die Kontaktsuche zu beschleunigen, ist es von Vorteil nur 
+den Kontakthauptordner zu durchsuchen. Allerdings ist das nur 
+sinnvoll wenn nur Sie nur eine Datendatei (pst) verwenden, oder 
+die anderen keine Kontakte enthalten.
+</value>
+  </data>
+  <data name="LMaske.ToolTip" xml:space="preserve">
+    <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
+%L für die Landesvorwahl,
+%O für die Ortsvorwahl und 
+%N für die Anschlussnummer.
+Optional kann %D für die Durchwahl angegeben werden.
+Beispiele:
+%L (%O) %N - %D
+%L %O %N
+%L [%O] %N/%D</value>
+  </data>
+  <data name="TBTelNrMaske.ToolTip" xml:space="preserve">
+    <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
+%L für die Landesvorwahl,
+%O für die Ortsvorwahl und 
+%N für die Anschlussnummer.
+Optional kann %D für die Durchwahl angegeben werden.
+Beispiele:
+%L (%O) %N - %D
+%L %O %N
+%L [%O] %N/%D</value>
+  </data>
+  <data name="LBenutzer.ToolTip" xml:space="preserve">
+    <value>Ab Fritz!OS 5.50:
+
+Anmeldung mit FRITZ!Box-Benutzernamen und Kennwort :
+Geben Sie den Benutzername ein, der für die Anmeldung an der Fritz!Box erforderlich ist.
+
+Anmeldung mit dem FRITZ!Box-Kennwort:
+Lassen Sie das Feld leer!</value>
+  </data>
+  <data name="Label7.ToolTip" xml:space="preserve">
+    <value>Hier werden alle Kontakte gespeichert, die von diesem Addin automatisch erstellt werden. Dies kann durch
+die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journal.eintrag erstellt wird.</value>
+  </data>
+  <data name="TVOutlookContact.ToolTip" xml:space="preserve">
+    <value>Hier werden alle Kontakte gespeichert, die von diesem Addin automatisch erstellt werden. Dies kann durch
+die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journaleintrag erstellt wird.
+</value>
+  </data>
+  <data name="RichTextBox1.Text" xml:space="preserve">
+    <value>Haftungshinweis:
+
+    * Ich übernehme keine Haftung für Schäden, die durch das Programm entstanden sind.
+    * Für fehlerhafte oder falsche Angaben, die Rückwärtssuche oder die Call-by-Call Funktion liefert,
+       wird keine Haftung übernommen.
+    * Es besteht kein Anspruch auf Schadenersatz für hohe Telefonrechnungen auf Grund von Call-by-Call-
+       Vorwahlen.
+
+Datenschutzhinweis:
+
+    * Es werden keine zugesendeten Informationen an Dritte weitergeben.
+    * Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
+    * Das Programm übermittelt keinerlei Daten an Dritte.
+      Ausnahmen:
+         1. Bei der Rückwärssuche wird die zu wählende Nummer an die ausgewählte Suchmaschine
+             übergeben. Bitte die Datenschutzhinweise der Suchmaschinen beachten!
+         2. Bei der Suche nach Call-By-Call Anbietern wird die zu wählende Nummer an Billiger-Telefonieren.de
+             übermittelt. Bitte die Hinweise von Billiger-Telefonieren.de beachten!</value>
+  </data>
+  <data name="CBAutoAnrList.ToolTip" xml:space="preserve">
+    <value>Beim Start von Outlook , können Telefonate aus der Fritz!Box Anrufliste ausgewertet 
+werden. Dazu werden alle Telefonate, die zwischen dem Beenden und Start von Outlook
+stattgefunden haben,berücksichtigt.</value>
+  </data>
+</root>

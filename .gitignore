@@ -4,3 +4,5 @@
 
 /packages
 /.vs
+/FBoxDial/bin/Debug
+/FBoxDial/obj/Debug
