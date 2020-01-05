@@ -75,18 +75,13 @@ const dotnetfx_url = 'https://go.microsoft.com/fwlink/?linkid=2088631';
 const VSTO2010_Redistributable_url = 'https://go.microsoft.com/fwlink/?LinkId=158918';
 
 function OutlookVersion (Get:Integer): boolean;
-  begin
-    if StrToInt(Version) = Get then
     begin
-      Result := true
-      exit
-    end
-    else Result:= false;
+        Result := StrToInt(Version) = Get
 end;
 
 function CurrectGUID(dummy: String): String;
 begin
-  Result := '{' + '{#myGUID}' +  '}'
+    Result := '{' + '{#myGUID}' +  '}'
 end;
 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
@@ -94,9 +89,9 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
     ResultCode : Integer;
    
     begin
-    if inst_dotnetfx then
-        Result := '';
-        
+        if inst_dotnetfx then
+            Result := '';
+            
         begin
             ShellExec('open', ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'), '/q /passive /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
         end;
@@ -191,46 +186,40 @@ begin
 end;
 
 function GetOutlookVersion(): String;
-  var Versionsnr,n :Integer;
-  begin
-  Versionsnr := 0;
-  if RegQueryStringValue(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.EXE','', Versionspfad) then
+    var Versionsnr,n :Integer;
     begin
-    GetVersionNumbersString(Versionspfad,Version);
-    n:= Pos('.',Version)-1;
-    Versionsnr := StrToInt(Copy(Version,0,n));
-    CASE Versionsnr OF
-      14: Version := '2010';
-      15: Version := '2013';
-      16: Version := '2016';
-      17: Version := '2019'
-    END; // CASE
+        Versionsnr := 0;
+        if RegQueryStringValue(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.EXE','', Versionspfad) then
+        begin
+            GetVersionNumbersString(Versionspfad, Version);
+            n := Pos('.', Version) -1;
+            Versionsnr := StrToInt(Copy(Version, 0, n));
+            CASE Versionsnr OF
+                14: Version := '2010';
+                15: Version := '2013';
+                16: Version := '2016';
+                17: Version := '2019'
+            END; // CASE
 
-    Result:= Version;
-    // Prüfen welche Version vorliegt
-  end;
+    Result := Version;    
+    end
 end;
 
 function Outlookx64: boolean;
-  var x86, RegOutlook: String;
-  begin
+    var x86, RegOutlook: String;
+    begin
 
     CASE StrToInt(GetOutlookVersion) OF
-      2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
-      2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
-      2016: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
-      2019: RegOutlook := 'SOFTWARE\Microsoft\Office\17.0\Outlook';
+        2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
+        2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
+        2016: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
+        2019: RegOutlook := 'SOFTWARE\Microsoft\Office\17.0\Outlook';
     END; // CASE
 
-    if RegQueryStringValue(HKLM,RegOutlook,'Bitness', x86) then
-    begin
-      if x86 = 'x64' then
-      begin    
-        Result := true
-        exit
-      end
-    end
-    else result := false;
+    if RegQueryStringValue(HKLM,RegOutlook,'Bitness', x86) then 
+        Result := x86 = 'x64'                      
+    else 
+        result := false;
 end;
 
 function IsRegularUser(): Boolean;
@@ -240,10 +229,8 @@ end;
 
 function DefDirRoot(Param: String): String;
     begin
-        if IsRegularUser then
-        Result := ExpandConstant('{localappdata}')
-    else
-        Result := ExpandConstant('{pf}')
+    if IsRegularUser then Result := ExpandConstant('{localappdata}')
+    else Result := ExpandConstant('{pf}')
 end;
 
 function InitializeSetup(): Boolean;
@@ -259,75 +246,55 @@ function InitializeSetup(): Boolean;
     strNET := 'v4.8';
     strNET2 := '.NET Framework 4.8';
 
-    if Outlookx64 then
-    begin
+    // Prüfe, ob VSTO installiert ist
+
+    if Outlookx64 then // Handelt es sich um eine 64 bit-Version
+    begin // Eine 64-bit Version wurde gefunden
         if RegQueryDWordValue(HKLM,'SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
-            begin 
-                if VSTORFeature = 0 then
-                    begin    
-                        Result := false
-                    end 
-            end
-        else
-            begin
-                Result := false
-            end  
+            Result := VSTORFeature = 0             
+        else            
+            Result := false              
         end
-        else
-            begin
-                if RegQueryDWordValue(HKLM,'SOFTWARE\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
-                    begin
-                        if VSTORFeature = 0 then
-                            begin    
-                                Result := false
-                            end 
-                    end
-                else
-                    begin
-                        Result := false
-                    end 
-            end;
+    else // Eine 32-bit Version wurde gefunden
+        begin
+            if RegQueryDWordValue(HKLM,'SOFTWARE\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
+                Result := not VSTORFeature = 0
+            else                
+                Result := false                 
+    end;
         
-        if not Result then 
-            begin
-                Result:=false
-                inst_VSTO2010_Redistributable := true            
+    if not Result then 
+        begin
+            Result := false
+            inst_VSTO2010_Redistributable := true            
         end; 
+    
+    // Prüfe, ob .NET 4.8 installiert ist    
+    if not IsDotNetDetected(strNet, 0) then
+        begin
+            Result := false
+            inst_dotnetfx := true
+    end;
         
-        if not IsDotNetDetected(strNet, 0) then
-            begin
-                inst_dotnetfx := true
-        end;
-        
-        if Not Result then
-            begin
-                strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
-                if inst_dotnetfx then
-                    begin
-                        strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10''
-                    end;    
+    if Not Result then
+        begin
+            strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
+            
+            // .NET 4.8
+            if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
+            // VSTO
+            if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
+ 
+            strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
 
-                if inst_VSTO2010_Redistributable then
-                    begin
-                        strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10''
-                    end;
+            if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
+                begin
+                    if inst_dotnetfx then
+                        ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);                        
 
-                strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
-
-                if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
-                    begin
-                        if inst_dotnetfx then
-                            begin
-                                ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);
-                            end;
-
-                        if inst_VSTO2010_Redistributable then
-                            begin
-                                ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
-                            end;
-                        
-                        Result := true
-                    end
-
+                    if inst_VSTO2010_Redistributable then
+                        ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
+                    Result := true
+                end
         end    
 end; 		 
