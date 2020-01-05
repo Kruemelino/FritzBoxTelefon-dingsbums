@@ -338,26 +338,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Anrufmonitor\Ressourcen\CallerOrCalleeView_16x.png" />
-    <None Include="Anrufmonitor\Ressourcen\CallFrom.png" />
-    <None Include="Anrufmonitor\Ressourcen\CallThread.png" />
-    <Content Include="Anrufmonitor\Ressourcen\CallTo.png" />
-    <None Include="Anrufmonitor\Ressourcen\Cancel.png" />
-    <None Include="Anrufmonitor\Ressourcen\call_received.png" />
-    <None Include="Anrufmonitor\Ressourcen\call_made.png" />
-    <None Include="Anrufmonitor\Ressourcen\call_missed.png" />
-    <Content Include="Anrufmonitor\Ressourcen\ContactCard.png" />
-    <Content Include="Anrufmonitor\Ressourcen\Copy.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\CallerOrCalleeView_16x.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\CallFrom.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\CallThread.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\CallTo.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\Cancel.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\call_received.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\call_made.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\call_missed.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\ContactCard.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\Copy.png" />
     <None Include="Resources\VSO_Cancel_16x.png" />
-    <None Include="Anrufmonitor\Ressourcen\missed.png" />
-    <None Include="Anrufmonitor\Ressourcen\ShowCallersGraph.png" />
-    <None Include="Anrufmonitor\Ressourcen\ShowCallGraph.png" />
-    <Content Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
-    <Content Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
-    <Content Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
-    <Content Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
-    <Content Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
-    <Content Include="Telefonie\Vorwahlen.xml" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\missed.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\ShowCallersGraph.png" />
+    <EmbeddedResource Include="Anrufmonitor\Ressourcen\ShowCallGraph.png" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
+    <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
+    <EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />

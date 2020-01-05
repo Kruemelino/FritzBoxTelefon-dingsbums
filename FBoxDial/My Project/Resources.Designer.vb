@@ -201,8 +201,8 @@ Namespace My.Resources
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabJournal&quot;&gt;
         '''        &lt;group id=&quot;Tab_Journal&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
-        '''          &lt;button id=&quot;btnDialInsp_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; getEnabled=&quot;EnableBtnJournal&quot; onAction=&quot;BtnOnAction&quot;/&gt;
-        '''          &lt;menu id=&quot;mnuRWS_J01&quot; getLabel=&quot;GetItemLabel&quot; getIma [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;button id=&quot;btnDialInsp_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; getEnabled=&quot;EnableBtnJournal&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
+        '''          &lt;button id=&quot;btnRWS_J&quot; tag=&quot;RWSDasOertliche&quot; getLabe [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property RibbonInspectorJournal() As String
             Get
@@ -217,8 +217,8 @@ Namespace My.Resources
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabContact&quot;&gt;
         '''        &lt;group id=&quot;Tab_Contact&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
-        '''          &lt;button id=&quot;btnDialInsp_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnAction&quot;/&gt;
-        '''          &lt;menu id=&quot;mnuRWS_C01&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreen [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''          &lt;button id=&quot;btnDialInsp_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
+        '''          &lt;button id=&quot;btnRWS_C&quot; tag=&quot;RWSDasOertliche&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;Get [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
         Friend ReadOnly Property RibbonInspectorKontakt() As String
             Get
@@ -233,7 +233,7 @@ Namespace My.Resources
         '''    &lt;tabs&gt;
         '''      &lt;tab idMso=&quot;TabReadMessage&quot;&gt;
         '''        &lt;group id=&quot;Tab_ReadMessage&quot; getLabel=&quot;GetItemLabel&quot; getVisible=&quot;ShowInspectorRibbon&quot;&gt;
-        '''          &lt;button id=&quot;btnDialInsp_M&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnAction&quot;/&gt;
+        '''          &lt;button id=&quot;btnDialInsp_M&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
         '''        &lt;/group&gt;
         '''      &lt;/tab&gt;
         '''    &lt;/tabs&gt;
