@@ -93,49 +93,9 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property CallerOrCalleeView() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CallerOrCalleeView", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property CallFrom() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CallFrom", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property CallThread() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CallThread", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property CallTo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CallTo", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Cancel() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Cancel", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -245,26 +205,6 @@ Namespace My.Resources
         Friend ReadOnly Property RibbonInspectorMailRead() As String
             Get
                 Return ResourceManager.GetString("RibbonInspectorMailRead", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property ShowCallersGraph() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ShowCallersGraph", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property ShowCallGraph() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ShowCallGraph", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
