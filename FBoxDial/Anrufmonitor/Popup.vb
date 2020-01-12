@@ -5,58 +5,57 @@ Imports System.Windows.Forms
 Public Class Popup
     Implements IDisposable
 
-#Region "BackgroundWorker"
     Private WithEvents BWAnrMonEinblenden As BackgroundWorker
-#End Region
-
-#Region "Properties"
-    Friend Property PfadKontaktBild As String
-    Friend Property UpdateForm As Boolean
     Private WithEvents PopUpAnrufMonitor As FormAnrMon
-#End Region
+
+    Friend Property PfadKontaktBild As String
 
 #Region "Anrufmonitor"
 
-    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As FormAnrMon, ByVal TelFt As Telefonat)
+    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As FormAnrMon, ByVal TelFnt As Telefonat)
+
         With ThisPopUpAnrMon
-            If TelFt IsNot Nothing Then
+            If TelFnt IsNot Nothing Then
+                ' Telefonat setzen
+                .DiesesTelefonat = TelFnt
+
                 ' Uhrzeit des Telefonates eintragen
-                .Uhrzeit = TelFt.ZeitBeginn
+                .Uhrzeit = TelFnt.ZeitBeginn
 
                 ' Telefonnamen eintragen
 
-                If TelFt.RINGGeräte Is Nothing Then
+                If TelFnt.RINGGeräte Is Nothing Then
                     ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
-                    TelFt.RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr.Contains(TelFt.OutEigeneTelNr))
+                    TelFnt.RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr.Contains(TelFnt.OutEigeneTelNr))
                 End If
 
-                For Each TelGerät As Telefoniegerät In TelFt.RINGGeräte
+                For Each TelGerät As Telefoniegerät In TelFnt.RINGGeräte
                     .TelName = String.Format("{0}, {1}", .TelName, TelGerät.Name)
                 Next
 
-                If TelFt.NrUnterdrückt Then
+                If TelFnt.NrUnterdrückt Then
                     ' Die Nummer wurde unterdrückt
                     .TelNr = PDfltStringEmpty
                     .Firma = PDfltStringEmpty
                     .AnrName = PDfltStringUnbekannt
                 Else
-                    If TelFt.Anrufer IsNot Nothing Then
+                    If TelFnt.Anrufer IsNot Nothing Then
                         ' Kontaktinformationen wurden gefunden
-                        .AnrName = TelFt.Anrufer
-                        .TelNr = TelFt.GegenstelleTelNr.Formatiert
-                        .Firma = TelFt.Firma
+                        .AnrName = TelFnt.Anrufer
+                        .TelNr = TelFnt.GegenstelleTelNr.Formatiert
+                        .Firma = TelFnt.Firma
                     Else
                         ' Kontaktinformationen wurden nicht gefunden
-                        .AnrName = TelFt.GegenstelleTelNr.Formatiert
+                        .AnrName = TelFnt.GegenstelleTelNr.Formatiert
                         .TelNr = PDfltStringEmpty
                         .Firma = PDfltStringEmpty
                     End If
                 End If
 
-                If XMLData.POptionen.PCBAnrMonContactImage AndAlso TelFt.OlContact IsNot Nothing Then
+                If XMLData.POptionen.PCBAnrMonContactImage AndAlso TelFnt.OlKontakt IsNot Nothing Then
                     ' Kontaktbild ermitteln
 
-                    Dim ImgPath As String = KontaktBild(TelFt.OlContact)
+                    Dim ImgPath As String = KontaktBild(TelFnt.OlKontakt)
 
                     If ImgPath.IsNotStringEmpty Then
                         Using fs As New IO.FileStream(ImgPath, IO.FileMode.Open)
@@ -73,15 +72,15 @@ Public Class Popup
                     With .Items("ToolStripMenuItemRückruf")
                         .Text = PAnrMonPopUpToolStripMenuItemRückruf
                         .Image = My.Resources.CallTo
-                        .Enabled = Not TelFt.NrUnterdrückt
+                        .Enabled = Not TelFnt.NrUnterdrückt
                     End With
                     With .Items("ToolStripMenuItemKopieren")
                         .Text = PAnrMonPopUpToolStripMenuItemKopieren
                         .Image = My.Resources.Copy
-                        .Enabled = Not TelFt.NrUnterdrückt
+                        .Enabled = Not TelFnt.NrUnterdrückt
                     End With
                     With .Items("ToolStripMenuItemKontaktöffnen")
-                        .Text = If(TelFt.NrUnterdrückt, PAnrMonPopUpToolStripMenuItemKontaktErstellen, PAnrMonPopUpToolStripMenuItemKontaktöffnen)
+                        .Text = If(TelFnt.NrUnterdrückt, PAnrMonPopUpToolStripMenuItemKontaktErstellen, PAnrMonPopUpToolStripMenuItemKontaktöffnen)
                         .Image = My.Resources.ContactCard
                     End With
                 End With
@@ -120,7 +119,6 @@ Public Class Popup
     Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
         Dim Telefonat As Telefonat = CType(e.Argument, Telefonat)
         Dim RemoveTelFromList As Boolean = False
-        'Dim ThisPopUpAnrMon As New FormAnrMon
         Dim TelinList As Boolean = False
 
         PopUpAnrufMonitor = New FormAnrMon
@@ -134,7 +132,7 @@ Public Class Popup
         AddHandler PopUpAnrufMonitor.Closed, AddressOf PopupAnrMon_Closed
 
         'AddHandler PopUpAnrufMonitor.LinkClick, AddressOf ToolStripMenuItemKontaktöffnen_Click
-        'AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
+        AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
 
         KeepoInspActivated(True)
 
@@ -168,6 +166,21 @@ Public Class Popup
         End If
     End Sub
 
+    Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
+
+        Dim TelFnt As Telefonat = CType(sender, FormAnrMon).DiesesTelefonat
+
+        If TelFnt IsNot Nothing Then
+            Select Case e.ClickedItem.Name
+                Case "ToolStripMenuItemKontaktöffnen"
+                    TelFnt.ZeigeKontakt()
+                Case "ToolStripMenuItemRückruf"
+
+                Case "ToolStripMenuItemKopieren"
+
+            End Select
+        End If
+    End Sub
 #End Region
 
 #Region "Dispose"

@@ -24,8 +24,11 @@
             If TCPr Is Nothing Then
                 ' Starte TCP-Verbindung zur Fritz!Box
                 TCPr = New TCPReader(XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
+            Else
+                Aktiv = TCPr.Verbunden
             End If
         End If
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     Private Sub TCPr_Connected() Handles TCPr.Connected

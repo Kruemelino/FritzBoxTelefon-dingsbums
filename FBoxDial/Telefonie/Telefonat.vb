@@ -33,7 +33,7 @@ Imports Microsoft.Office.Interop
     <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
     <XmlElement> Public Property Anrufer As String
     <XmlElement> Public Property Firma As String
-    <XmlIgnore> Public Property OlContact() As Outlook.ContactItem
+    <XmlIgnore> Public Property OlKontakt() As Outlook.ContactItem
     <XmlIgnore> Public Property AnrMonPopUp As Popup
 
     ''' <summary>
@@ -201,77 +201,7 @@ Imports Microsoft.Office.Interop
 
     End Sub
 
-    Friend Async Sub StarteKontaktsuche()
 
-        ' Kontaktsuche in den Outlook-Kontakten
-        Using KSucher As New KontaktSucher
-            OlContact = Await KSucher.KontaktSuche(GegenstelleTelNr, PDfltStringEmpty)
-        End Using
-
-        If OlContact IsNot Nothing Then
-            With OlContact
-                ' Anrufernamen ermitteln
-                Anrufer = .FullName
-                ' Firma aus Kontaktdaten ermitteln
-                Firma = .CompanyName
-                ' KontaktID und StoreID speichern
-                OutlookKontaktID = .EntryID
-                OutlookStoreID = .StoreID
-            End With
-        End If
-
-        ' Kontaktsuche in den Fritz!Box Telefonbüchern
-        If XMLData.POptionen.PCBKontaktSucheFritzBox Then
-            If OlContact Is Nothing Then
-                If ThisAddIn.PPhoneBookXML IsNot Nothing Then
-                    FBTelBookKontakt = ThisAddIn.PPhoneBookXML.GetKontaktByTelNr(GegenstelleTelNr)
-                End If
-            End If
-
-            If FBTelBookKontakt IsNot Nothing Then
-                If XMLData.POptionen.PCBKErstellen Then
-                    OlContact = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
-
-                    With OlContact
-                        Anrufer = .FullName
-                        Firma = .CompanyName
-                    End With
-                Else
-                    Anrufer = FBTelBookKontakt.Person.RealName
-                End If
-            End If
-        End If
-
-        ' Kontaktsuche über die Rückwärtssuche
-        If FBTelBookKontakt Is Nothing And OlContact Is Nothing Then
-
-            ' Eine Rückwärtssuche braucht nur dann gemacht werden, wennd die Länge der Telefonnummer aussreichend ist.
-            ' Ggf. muss der Wert angepasst werden.
-            If GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
-
-                If XMLData.POptionen.PCBRWS Then
-                    Using RWSSucher As New Rückwärtssuche
-                        VCard = Await RWSSucher.StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
-                    End Using
-
-                    If VCard.IsNotStringEmpty Then
-                        If XMLData.POptionen.PCBKErstellen Then
-                            OlContact = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
-                            With OlContact
-                                Anrufer = .FullName
-                                Firma = .CompanyName
-                            End With
-                        Else
-                            With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
-                                Anrufer = .FormattedName
-                                Firma = .Organization
-                            End With
-                        End If
-                    End If
-                End If
-            End If
-        End If
-    End Sub
     Private Sub AnrMonCONNECT()
         Angenommen = True
 
@@ -304,7 +234,108 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
-#Region "Journal"
+    Friend Async Sub StarteKontaktsuche()
+
+        ' Kontaktsuche in den Outlook-Kontakten
+        Using KSucher As New KontaktSucher
+            OlKontakt = Await KSucher.KontaktSuche(GegenstelleTelNr, PDfltStringEmpty)
+        End Using
+
+        If OlKontakt IsNot Nothing Then
+            With OlKontakt
+                ' Anrufernamen ermitteln
+                Anrufer = .FullName
+                ' Firma aus Kontaktdaten ermitteln
+                Firma = .CompanyName
+                ' KontaktID und StoreID speichern
+                OutlookKontaktID = .EntryID
+                OutlookStoreID = .StoreID
+            End With
+        End If
+
+        ' Kontaktsuche in den Fritz!Box Telefonbüchern
+        If XMLData.POptionen.PCBKontaktSucheFritzBox Then
+            If OlKontakt Is Nothing Then
+                If ThisAddIn.PPhoneBookXML IsNot Nothing Then
+                    FBTelBookKontakt = ThisAddIn.PPhoneBookXML.GetKontaktByTelNr(GegenstelleTelNr)
+                End If
+            End If
+
+            If FBTelBookKontakt IsNot Nothing Then
+                If XMLData.POptionen.PCBKErstellen Then
+                    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
+
+                    With OlKontakt
+                        Anrufer = .FullName
+                        Firma = .CompanyName
+                    End With
+                Else
+                    Anrufer = FBTelBookKontakt.Person.RealName
+                End If
+            End If
+        End If
+
+        ' Kontaktsuche über die Rückwärtssuche
+        If FBTelBookKontakt Is Nothing And OlKontakt Is Nothing Then
+
+            ' Eine Rückwärtssuche braucht nur dann gemacht werden, wennd die Länge der Telefonnummer aussreichend ist.
+            ' Ggf. muss der Wert angepasst werden.
+            If GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
+
+                If XMLData.POptionen.PCBRWS Then
+                    Using RWSSucher As New Rückwärtssuche
+                        VCard = Await RWSSucher.StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
+                    End Using
+
+                    If VCard.IsNotStringEmpty Then
+                        If XMLData.POptionen.PCBKErstellen Then
+                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
+                            With OlKontakt
+                                Anrufer = .FullName
+                                Firma = .CompanyName
+                            End With
+                        Else
+                            With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
+                                Anrufer = .FormattedName
+                                Firma = .Organization
+                            End With
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Funktion, welche das öffnen des hinterlegten Kontaktes anstößt
+    ''' </summary>
+    Friend Sub ZeigeKontakt()
+        ' Es gibt mehrere Varianten zu beachten.
+        ' 1. Ein Kontakte ist in der Eigenschaft hinterlegt.
+        ' 2. Es ist kein Kontakt hinterlegt, jedoch KontaktID und StoreID
+        ' 3. Es ist eine vCard hinterlegt
+        ' 4. Es ist nur eine Nummer hinterlegt
+        ' 5. Es ist nichts hinterlegt.
+
+        If OlKontakt Is Nothing AndAlso OutlookKontaktID.IsNotStringNothingOrEmpty And OutlookStoreID.IsNotStringNothingOrEmpty Then
+            ' Verknüpfe den Kontakt
+            OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
+        End If
+
+        If OlKontakt Is Nothing Then
+            If VCard.IsNotStringNothingOrEmpty Then
+                ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
+                OlKontakt = ErstelleKontakt(GegenstelleTelNr, False)
+            Else
+                'vCard gefunden
+                OlKontakt = ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, VCard, GegenstelleTelNr, False)
+            End If
+        End If
+
+        If OlKontakt IsNot Nothing Then OlKontakt.Display()
+
+    End Sub
+
     Friend Sub ErstelleJournalEintrag()
 
         Dim OutlookApp As Outlook.Application = ThisAddIn.POutookApplication
@@ -348,11 +379,11 @@ Imports Microsoft.Office.Interop
                         .Categories = String.Format("{0};{1}", If(TelGerät Is Nothing, "Verpasst", TelGerät.Name), String.Join("; ", PDfltJournalDefCategories.ToArray))
 
                         ' Testweise: Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
-                        If OlContact IsNot Nothing Then
+                        If OlKontakt IsNot Nothing Then
 
                             Dim colArgs(1) As Object
-                            colArgs(0) = OlContact.EntryID
-                            colArgs(1) = OlContact.StoreID
+                            colArgs(0) = OlKontakt.EntryID
+                            colArgs(1) = OlKontakt.StoreID
 
                             For i As Integer = 0 To 1
                                 .PropertyAccessor.SetProperty(DASLTagJournal(i).ToString, colArgs(i))
@@ -364,6 +395,7 @@ Imports Microsoft.Office.Interop
 
                         .Close(Outlook.OlInspectorClose.olSave)
                     End With
+
                     olJournal.ReleaseComObject
                     ' Merke die Zeit
                     If XMLData.POptionen.PLetzterJournalEintrag < Now Then XMLData.POptionen.PLetzterJournalEintrag = Now
@@ -375,7 +407,6 @@ Imports Microsoft.Office.Interop
             LogFile(PDfltJournalFehler)
         End If
     End Sub
-#End Region
 
 #Region "RibbonXML"
     Friend Overloads Function CreateDynMenuButton(ByVal xDoc As Xml.XmlDocument, ByVal ID As Integer, ByVal Tag As String) As Xml.XmlElement

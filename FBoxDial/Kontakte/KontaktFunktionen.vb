@@ -163,6 +163,7 @@ Friend Module KontaktFunktionen
             Return Nothing
         End If
     End Function
+
     ''' <summary>
     ''' Erstellt einen leeren Kontakt und ergänzt eine Telefonnummer.
     ''' </summary>
@@ -172,6 +173,7 @@ Friend Module KontaktFunktionen
     Friend Function ErstelleKontakt(ByVal TelNr As Telefonnummer, ByVal Speichern As Boolean) As Outlook.ContactItem
         Return ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, PDfltStringEmpty, TelNr, Speichern)
     End Function
+
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
     ''' </summary>

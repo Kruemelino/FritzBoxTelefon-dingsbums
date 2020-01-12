@@ -42,12 +42,15 @@ Public Class FormAnrMon
     Friend Property AutoAusblenden() As Boolean = True
     Friend Property AnzAnrMon() As Integer = 1
     Friend Property AbstandAnrMon() As Integer = 10
-    Public Property Image() As Image = Nothing
-    Public Property AnrName() As String
-    Public Property Uhrzeit() As Date
-    Public Property TelNr() As String
-    Public Property TelName() As String
-    Public Property Firma() As String
+    ' folgende Properties ggf. wieder auf Public setzen:
+    Friend Property Image() As Image = Nothing
+    Friend Property AnrName() As String
+    Friend Property Uhrzeit() As Date
+    Friend Property TelNr() As String
+    Friend Property TelName() As String
+    Friend Property Firma() As String
+
+    Friend Property DiesesTelefonat As Telefonat
 
 #End Region
 

@@ -269,14 +269,14 @@ Public Class FritzBoxWählClient
 
         With DialTelefonat
             ' Kontakt aus telefinat ermitteln
-            If .OlContact Is Nothing Then
+            If .OlKontakt Is Nothing Then
                 ' gibt es eine KontaktID und StoreID
                 If .OutlookStoreID.IsNotStringEmpty And .OutlookKontaktID.IsNotStringEmpty Then
-                    .OlContact = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
+                    .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
                 End If
             End If
 
-            Wählbox(.OlContact, .GegenstelleTelNr, False)
+            Wählbox(.OlKontakt, .GegenstelleTelNr, False)
 
         End With
     End Sub

@@ -55,8 +55,6 @@ Imports System.Xml
 #End Region
 
 #Region "Ribbon Explorer  Office 2010 bis Office 2019" 'Ribbon Explorer
-
-#Region "GetPressed"
     Public Function GetPressed(ByVal control As IRibbonControl) As Boolean
         Select Case control.Id.Split("_")(0)
             Case "btnAnrMonIO"
@@ -65,8 +63,7 @@ Imports System.Xml
                 Return False
         End Select
     End Function
-#End Region
-#Region "OnToggleButtonAction"
+
     ''' <summary>
     ''' Ruft die jeweilige Funktion auf, die dem ToogleButton hinterlegt ist.
     ''' </summary>
@@ -77,7 +74,6 @@ Imports System.Xml
     Public Sub BtnOnToggleButtonAction(ByVal control As IRibbonControl, ByVal pressed As Boolean)
         BtnOnAction(control)
     End Sub
-#End Region
 
 #End Region 'Ribbon Explorer
 
