@@ -168,15 +168,20 @@ Public Class Popup
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
 
-        Dim TelFnt As Telefonat = CType(sender, FormAnrMon).DiesesTelefonat
+        Dim tmpTelefonat As Telefonat = CType(sender, FormAnrMon).DiesesTelefonat
 
-        If TelFnt IsNot Nothing Then
+        If tmpTelefonat IsNot Nothing Then
             Select Case e.ClickedItem.Name
                 Case "ToolStripMenuItemKontaktöffnen"
-                    TelFnt.ZeigeKontakt()
+                    tmpTelefonat.ZeigeKontakt()
+
                 Case "ToolStripMenuItemRückruf"
+                    ' Funktioniert nicht, da dieses Popup verworfen wird. Danach reagiert das Wählfenster nicht mehr
+                    'Dim WählClient As New FritzBoxWählClient
+                    'WählClient.WählboxStart(tmpTelefonat)
 
                 Case "ToolStripMenuItemKopieren"
+
 
             End Select
         End If

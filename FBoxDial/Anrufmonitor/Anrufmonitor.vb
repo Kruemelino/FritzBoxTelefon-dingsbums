@@ -40,7 +40,6 @@
         If AnrMonSim.IsNotStringEmpty Then TCPr_DataAvailable(AnrMonSim)
     End Sub
 
-
 #Region "Anrufmonitor"
     Private Sub TCPr_DataAvailable(FBStatus As String) Handles TCPr.DataAvailable
 
@@ -84,6 +83,5 @@
                 AktiveTelefonate.Remove(tmpTelefonat)
         End Select
     End Sub
-
 #End Region
 End Class

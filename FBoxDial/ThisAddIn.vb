@@ -10,6 +10,7 @@ Public NotInheritable Class ThisAddIn
 
     Private WithEvents OutlookInspectors As Inspectors
     Friend Shared Property OffeneKontakInsepektoren As List(Of ContactSaved)
+
     Friend Shared ReadOnly Property Version() As String
         Get
             With Reflection.Assembly.GetExecutingAssembly.GetName.Version
@@ -22,6 +23,7 @@ Public NotInheritable Class ThisAddIn
         If POutlookRibbons Is Nothing Then POutlookRibbons = New OutlookRibbons
         Return POutlookRibbons
     End Function
+
     Private Sub ThisAddIn_Startup() Handles Me.Startup
         Dim UserData As NutzerDaten = New NutzerDaten
 

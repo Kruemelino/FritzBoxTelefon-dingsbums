@@ -416,9 +416,11 @@ Imports System.Xml
             Case TaskToDo.CreateContact
                 ZeigeKontaktAusInspector(OutlookInspector)
             Case TaskToDo.StartRWS
+                ' Journal
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem Then
                     StartJournalRWS(CType(OutlookInspector.CurrentItem, Outlook.JournalItem))
                 End If
+                ' Kontakt
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
 
                 End If
@@ -520,18 +522,20 @@ Imports System.Xml
 
 
     Public Function DynMenuEnabled(ByVal control As IRibbonControl) As Boolean
-
-        Select Case Left(control.Id, Len(control.Id) - 2)
-            Case PDfltNameListCALL
-                Return XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Einträge.Any
-            Case PDfltNameListRING
-                Return XMLData.PTelefonie.RINGListe IsNot Nothing AndAlso XMLData.PTelefonie.RINGListe.Einträge.Any
-            Case PDfltNameListVIP
-                Return XMLData.PTelefonie.VIPListe IsNot Nothing AndAlso XMLData.PTelefonie.VIPListe.Einträge.Any
-            Case Else
-                Return False
-        End Select
-
+        If XMLData IsNot Nothing Then
+            Select Case Left(control.Id, Len(control.Id) - 2)
+                Case PDfltNameListCALL
+                    Return XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Einträge.Any
+                Case PDfltNameListRING
+                    Return XMLData.PTelefonie.RINGListe IsNot Nothing AndAlso XMLData.PTelefonie.RINGListe.Einträge.Any
+                Case PDfltNameListVIP
+                    Return XMLData.PTelefonie.VIPListe IsNot Nothing AndAlso XMLData.PTelefonie.VIPListe.Einträge.Any
+                Case Else
+                    Return False
+            End Select
+        Else
+            Return False
+        End If
     End Function
 
     Private Overloads Function CreateDynMenuButton(ByVal xDoc As XmlDocument, ByVal ID As String) As XmlElement
