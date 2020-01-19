@@ -55,7 +55,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
      Source: "..\FBoxDial\bin\Debug2010\Newtonsoft.Json.dll";                                 Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
-#if FileExists("..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll")
+#if FileExists("..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll")
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll";                      Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.manifest";             Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.vsto";                     Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
