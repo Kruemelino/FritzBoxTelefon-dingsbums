@@ -15,12 +15,7 @@
           <dynamicMenu id="RingList_K" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <dynamicMenu id="VIPList_K"  getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <separator id="Seperator_K2"/>
-          <splitButton id="spb2_K">
-            <toggleButton id="btnAnrMonIO_K" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
-            <menu id="mnu_K2">
-              <button id="btnAnrMonRestart_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            </menu>
-          </splitButton>
+          <toggleButton id="btnAnrMonIO_K" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonShow_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
@@ -41,12 +36,7 @@
           <dynamicMenu id="RingList_C" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <dynamicMenu id="VIPList_C"  getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <separator id="Seperator_C2"/>
-          <splitButton id="spb2_C">
-            <toggleButton id="btnAnrMonIO_C" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
-            <menu id="mnu_C2">
-              <button id="btnAnrMonRestart_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            </menu>
-          </splitButton>
+          <toggleButton id="btnAnrMonIO_C" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonShow_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
@@ -66,13 +56,8 @@
           <dynamicMenu id="CallList_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <dynamicMenu id="RingList_J" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <dynamicMenu id="VIPList_J"  getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
-          <separator id="Seperator_J2"/>
-          <splitButton id="spb2_J">
-            <toggleButton id="btnAnrMonIO_J" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
-            <menu id="mnu_J2">
-              <button id="btnAnrMonRestart_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            </menu>
-          </splitButton>
+          <separator id="Seperator_J2"/>          
+          <toggleButton id="btnAnrMonIO_J" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonShow_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
@@ -93,12 +78,7 @@
           <dynamicMenu id="RingList_M" getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <dynamicMenu id="VIPList_M"  getLabel="GetItemLabel" getContent="FillDynamicMenu" invalidateContentOnDrop="true" getEnabled="DynMenuEnabled" getScreentip="GetItemScreenTipp" showImage="false"/>
           <separator id="Seperator_M2"/>
-          <splitButton id="spb2_M">
-            <toggleButton id="btnAnrMonIO_M" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
-            <menu id="mnu_M2">
-              <button id="btnAnrMonRestart_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
-            </menu>
-          </splitButton>
+          <toggleButton id="btnAnrMonIO_M" getLabel="GetItemLabel" onAction="BtnOnToggleButtonAction" getImage="GetItemImageMso" getPressed="GetPressed" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonShow_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <button id="btnAnrMonJI_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>

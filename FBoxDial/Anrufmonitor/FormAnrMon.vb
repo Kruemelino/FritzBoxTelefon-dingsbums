@@ -10,24 +10,16 @@ Public Class FormAnrMon
     Public Event Closed(ByVal sender As Object, ByVal e As EventArgs)
     Public Event ToolStripMenuItemClicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
 #End Region
-
+#Region "Properties"
     Private Property CmnPrps As New CommonFenster
     Private WithEvents FPopup As New Common_Form(Me, CmnPrps)
-    Private WithEvents TmWait As New Timer
 
-    Private Property BMouseIsOn As Boolean = False
-    Private Property BAppearing As Boolean = True
-
-    Private Property I As Integer = 0
     Private Property CompContainer As New System.ComponentModel.Container()
     Private WithEvents AnrMonContextMenuStrip As New ContextMenuStrip(CompContainer)
     Private Property ToolStripMenuItemKontaktöffnen As New ToolStripMenuItem()
     Private Property ToolStripMenuItemRückruf As New ToolStripMenuItem()
     Private Property ToolStripMenuItemKopieren As New ToolStripMenuItem()
 
-#Region "Properties"
-    Friend Property ShouldRemainVisible() As Boolean = False
-    Friend Property FromCloseed As Boolean = False
     Private WithEvents CtContextMenu As ContextMenuStrip = Nothing
     Friend Property OptionsMenu() As ContextMenuStrip
         Get
@@ -37,7 +29,7 @@ Public Class FormAnrMon
             CtContextMenu = value
         End Set
     End Property
-    Friend Property ShowDelay() As Integer = 3000
+
     Friend Property Size() As Size = New Size(400, 100)
     Friend Property AutoAusblenden() As Boolean = True
     Friend Property AnzAnrMon() As Integer = 1
@@ -50,7 +42,19 @@ Public Class FormAnrMon
     Friend Property TelName() As String
     Friend Property Firma() As String
 
-    Friend Property DiesesTelefonat As Telefonat
+#Region "Timer"
+    ''' <summary>
+    ''' Timer für das automatische Ausblenden des Anrufmonitors.
+    ''' So bald die gewählte Zeit erreicht ist, wird der Anrtufmonitor ausgeblendet.
+    ''' Wenn die Maus sich auf dem Fenster befindet, wird der Timer unterbrochen.
+    ''' Sobald sich die Maus vom dem Fenster entfernt, wird der Timer fortgesetzt.
+    ''' </summary>
+    Private WithEvents AnrMonTimer As Timer
+    Private Property StartTime As Date
+    Private Property PauseTime As Date
+    Private Property TotalTimePaused As TimeSpan
+    Friend Property Anzeigedauer() As Integer = 10000
+#End Region
 
 #End Region
 
@@ -68,13 +72,25 @@ Public Class FormAnrMon
         Dim Y As Integer
         Dim retVal As Boolean
 
-        TmWait.Interval = 200
+        ' Timer starten
+        If AutoAusblenden Then
+            If AnrMonTimer Is Nothing Then AnrMonTimer = New Timer
+            With AnrMonTimer
+                StartTime = Date.Now()
+                .Start()
+            End With
+        End If
+
+        ' Popup einblenden
         With FPopup
             .TopMost = True
             .Size = Size
             .ScaleFaktor = GetScaling()
-            X = Screen.PrimaryScreen.WorkingArea.Right - CInt(.ScaleFaktor.Width * (.Size.Width)) - AbstandAnrMon
-            Y = Screen.PrimaryScreen.WorkingArea.Bottom - CInt(.ScaleFaktor.Height * (.Size.Height)) - AbstandAnrMon
+            ' X-Koordinate
+            X = Screen.PrimaryScreen.WorkingArea.Right - AbstandAnrMon - CInt(.ScaleFaktor.Width * .Size.Width)
+
+            ' Y-Koordinate
+            Y = Screen.PrimaryScreen.WorkingArea.Bottom - AnzAnrMon * (AbstandAnrMon + (CInt(.ScaleFaktor.Height * .Size.Height)))
 
             .Location = New Point(X, Y)
 
@@ -91,44 +107,50 @@ Public Class FormAnrMon
         '
         'ContextMenuStrip
         '
-        With Me.AnrMonContextMenuStrip
-            .Items.AddRange(New ToolStripItem() {Me.ToolStripMenuItemKontaktöffnen, Me.ToolStripMenuItemRückruf, Me.ToolStripMenuItemKopieren})
+        With AnrMonContextMenuStrip
+            .Items.AddRange(New ToolStripItem() {ToolStripMenuItemKontaktöffnen, ToolStripMenuItemRückruf, ToolStripMenuItemKopieren})
             .Name = "AnrMonContextMenuStrip"
             .RenderMode = ToolStripRenderMode.System
             '.Size = New Size(222, 70)
         End With
 
-        With Me.ToolStripMenuItemKontaktöffnen
+        With ToolStripMenuItemKontaktöffnen
             .ImageScaling = ToolStripItemImageScaling.None
             .Name = "ToolStripMenuItemKontaktöffnen"
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
         End With
 
-        With Me.ToolStripMenuItemRückruf
+        With ToolStripMenuItemRückruf
             .ImageScaling = ToolStripItemImageScaling.None
             .Name = "ToolStripMenuItemRückruf"
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
         End With
 
-        With Me.ToolStripMenuItemKopieren
+        With ToolStripMenuItemKopieren
             .ImageScaling = ToolStripItemImageScaling.None
             .Name = "ToolStripMenuItemKopieren"
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
         End With
-        Me.OptionsMenu = Me.AnrMonContextMenuStrip
+
+        OptionsMenu = AnrMonContextMenuStrip
     End Sub
 
-    Public Sub Hide()
-        bMouseIsOn = False
-        AutoAusblenden = True
-        tmWait.Stop()
+    Friend Sub Hide()
+        'BMouseIsOn = False
+
+        If AnrMonTimer IsNot Nothing Then
+            AnrMonTimer.Stop()
+            AnrMonTimer.Dispose()
+        End If
+
+        FPopup.Close()
+        RaiseEvent Closed(Me, EventArgs.Empty)
     End Sub
 
 #Region "Eigene Events"
     Private Sub FPopup_CloseClick() Handles FPopup.CloseClick
         RaiseEvent Close(Me, EventArgs.Empty)
     End Sub
-
     Private Sub FPopup_LinkClick() Handles FPopup.LinkClick
         RaiseEvent LinkClick(Me, EventArgs.Empty)
     End Sub
@@ -137,45 +159,22 @@ Public Class FormAnrMon
     End Sub
 #End Region
 
-    Public Sub TmAnimation_Tick()
-        With FPopup
-            .Invalidate()
-            If bAppearing Then
-                bAppearing = False
-                If AutoAusblenden Then TmWait.Start()
-            Else
-                If Not TmWait.Enabled And AutoAusblenden Then
-                    If bMouseIsOn Then
-                        TmWait.Start()
-                    Else
-                        .TopMost = False
-                        .Close()
-                        FromCloseed = True
-                        bAppearing = True
-                        RaiseEvent Closed(Me, EventArgs.Empty)
-                    End If
-                End If
-            End If
-        End With
-    End Sub
-
-    Private Sub TmWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TmWait.Tick
-        i += TmWait.Interval
-        If i.IsLarger(ShowDelay) Then TmWait.Stop()
-        FPopup.Invalidate()
+    Private Sub AnrMonTimer_Tick(sender As Object, e As EventArgs) Handles AnrMonTimer.Tick
+        If Now.Subtract(StartTime).Subtract(TotalTimePaused).TotalMilliseconds.IsLargerOrEqual(Anzeigedauer) Then Hide()
     End Sub
 
     Private Sub FPopup_MouseEnter(ByVal sender As Object, ByVal e As EventArgs) Handles FPopup.MouseEnter
-        bMouseIsOn = True
+        PauseTime = Now
+        AnrMonTimer.Enabled = False
     End Sub
 
     Private Sub FPopup_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles FPopup.MouseLeave
-        If Not ShouldRemainVisible Then bMouseIsOn = False
+        TotalTimePaused = TotalTimePaused.Add(Now.Subtract(PauseTime))
+        AnrMonTimer.Enabled = True
     End Sub
 
     Private Sub CtContextMenu_Closed(ByVal sender As Object, ByVal e As ToolStripDropDownClosedEventArgs) Handles CtContextMenu.Closed
-        ShouldRemainVisible = False
-        bMouseIsOn = False
+
     End Sub
 
 #Region "IDisposable Support"
@@ -183,23 +182,21 @@ Public Class FormAnrMon
 
     ' IDisposable
     Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not Me.disposedValue Then
+        If Not disposedValue Then
             If disposing Then
-                fPopup.Close()
-                With tmWait
-                    .Stop()
-                    .Dispose()
-                End With
+                FPopup.Close()
+                AnrMonTimer.Stop()
+                AnrMonTimer.Dispose()
             End If
 
-            cmnPrps.Dispose()
+            CmnPrps.Dispose()
             CompContainer.Dispose()
             AnrMonContextMenuStrip.Dispose()
             ToolStripMenuItemKontaktöffnen.Dispose()
             ToolStripMenuItemRückruf.Dispose()
             ToolStripMenuItemKopieren.Dispose()
         End If
-        Me.disposedValue = True
+        disposedValue = True
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -211,6 +208,8 @@ Public Class FormAnrMon
         Dispose(True)
         GC.SuppressFinalize(Me)
     End Sub
+
+
 #End Region
 
 End Class

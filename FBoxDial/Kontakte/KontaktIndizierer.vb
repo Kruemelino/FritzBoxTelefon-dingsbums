@@ -31,6 +31,8 @@ Friend Class KontaktIndizierer
                             colArgs(i) = tempTelNr.Unformatiert
                         End Using
                     End If
+                Else
+                    colArgs(i) = PDfltStringEmpty
                 End If
             Next
 
@@ -38,7 +40,12 @@ Friend Class KontaktIndizierer
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
             ' Speichere die Nummern und nicht sichtbare Felder
-            .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
+            Try
+                .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
+            Catch ex As Exception
+                LogFile(String.Format("IndiziereKontakt: {0} - ({1})", olKontakt.FullNameAndCompany, ex.Message))
+            End Try
+
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 

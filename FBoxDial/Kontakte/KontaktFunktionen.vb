@@ -2,6 +2,7 @@
 Imports System.Runtime.CompilerServices
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 Friend Module KontaktFunktionen
     Private Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
@@ -600,6 +601,25 @@ Friend Module KontaktFunktionen
             End Using
         End With
     End Sub
+
+    Friend Function GetSmtpAddress(ByVal card As IMsoContactCard) As String
+        If card.AddressType = MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
+
+            Dim ae As Outlook.AddressEntry = OutlookApp.Session.GetAddressEntryFromID(card.Address)
+
+            Select Case ae.AddressEntryUserType
+                Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                    Dim ex As Outlook.ExchangeUser = ae.GetExchangeUser()
+                    Return ex.PrimarySmtpAddress
+                Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
+                    Return ae.Address
+                Case Else
+                    Throw New Exception("Valid address entry not found.")
+            End Select
+        Else
+            Return card.Address
+        End If
+    End Function
 
 End Module
 Friend Class ContactSaved

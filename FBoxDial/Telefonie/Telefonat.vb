@@ -180,7 +180,6 @@ Imports Microsoft.Office.Interop
         If AnrMonPopUp IsNot Nothing Then PopUpAnrMon()
 
     End Sub
-
     Private Sub AnrMonCALL()
         Angenommen = False
         Beendet = False
@@ -200,15 +199,12 @@ Imports Microsoft.Office.Interop
         XMLData.PTelefonie.CALLListe.Einträge.Insert(Me)
 
     End Sub
-
-
     Private Sub AnrMonCONNECT()
         Angenommen = True
 
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
     End Sub
-
     Private Sub AnrMonDISCONNECT()
         Beendet = True
 
@@ -334,6 +330,11 @@ Imports Microsoft.Office.Interop
 
         If OlKontakt IsNot Nothing Then OlKontakt.Display()
 
+    End Sub
+
+    Friend Sub Rückruf()
+        Dim WählClient As New FritzBoxWählClient
+        WählClient.WählboxStart(Me)
     End Sub
 
     Friend Sub ErstelleJournalEintrag()

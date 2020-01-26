@@ -1,23 +1,22 @@
-﻿Imports System.ComponentModel
-Imports System.Drawing
+﻿Imports System.Drawing
 Imports System.Windows.Forms
 
 Public Class Popup
     Implements IDisposable
 
-    Private WithEvents BWAnrMonEinblenden As BackgroundWorker
     Private WithEvents PopUpAnrufMonitor As FormAnrMon
 
+    Friend TelFnt As Telefonat
     Friend Property PfadKontaktBild As String
 
 #Region "Anrufmonitor"
 
-    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As FormAnrMon, ByVal TelFnt As Telefonat)
+    Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As FormAnrMon, ByVal tTelFnt As Telefonat)
 
         With ThisPopUpAnrMon
-            If TelFnt IsNot Nothing Then
+            If tTelFnt IsNot Nothing Then
                 ' Telefonat setzen
-                .DiesesTelefonat = TelFnt
+                TelFnt = tTelFnt
 
                 ' Uhrzeit des Telefonates eintragen
                 .Uhrzeit = TelFnt.ZeitBeginn
@@ -67,6 +66,8 @@ Public Class Popup
                 End If
 
                 .AutoAusblenden = XMLData.POptionen.PCBAutoClose
+                .Anzeigedauer = XMLData.POptionen.PTBEnblDauer * 1000
+                .AnzAnrMon = ThisAddIn.OffenePopUps.Count
 
                 With .OptionsMenu
                     With .Items("ToolStripMenuItemRückruf")
@@ -101,28 +102,14 @@ Public Class Popup
     ''' </summary>
     ''' <param name="tmpTelefonat">Telefonat, das angezeigt wird</param>
     Friend Sub AnrMonEinblenden(ByVal tmpTelefonat As Telefonat)
-        BWAnrMonEinblenden = New BackgroundWorker
-        With BWAnrMonEinblenden
-            .WorkerSupportsCancellation = False
-            .WorkerReportsProgress = False
-            .RunWorkerAsync(tmpTelefonat)
-        End With
-    End Sub
-
-    Friend Sub UpdateAnrMon(ByVal tmpTelefonat As Telefonat)
-        AnrMonausfüllen(PopUpAnrufMonitor, tmpTelefonat)
-    End Sub
-
-    ''' <summary>
-    ''' Abarbeitung des BackgroundWorkers für das Einblenden des Anrufmonitors
-    ''' </summary>
-    Private Sub BWAnrMonEinblenden_DoWork(ByVal sender As Object, ByVal e As DoWorkEventArgs) Handles BWAnrMonEinblenden.DoWork
-        Dim Telefonat As Telefonat = CType(e.Argument, Telefonat)
-        Dim RemoveTelFromList As Boolean = False
-        Dim TelinList As Boolean = False
 
         PopUpAnrufMonitor = New FormAnrMon
-        AnrMonausfüllen(PopUpAnrufMonitor, Telefonat)
+
+        If ThisAddIn.OffenePopUps Is Nothing Then ThisAddIn.OffenePopUps = New List(Of Popup)
+
+        ThisAddIn.OffenePopUps.Add(Me)
+
+        AnrMonausfüllen(PopUpAnrufMonitor, tmpTelefonat)
 
         KeepoInspActivated(False)
 
@@ -135,21 +122,10 @@ Public Class Popup
         AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
 
         KeepoInspActivated(True)
-
-        Do
-            PopUpAnrufMonitor.TmAnimation_Tick()
-            ' Steuerung der Wartezeit des Threads
-            Application.DoEvents()
-        Loop Until PopUpAnrufMonitor.FromCloseed
-
     End Sub
 
-    ''' <summary>
-    ''' Gibt BackgroundWorkers frei. (Dispose)
-    ''' </summary>
-    Private Sub BWAnrMonEinblenden_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWAnrMonEinblenden.RunWorkerCompleted
-        BWAnrMonEinblenden.Dispose()
-        BWAnrMonEinblenden = Nothing
+    Friend Sub UpdateAnrMon(ByVal tmpTelefonat As Telefonat)
+        AnrMonausfüllen(PopUpAnrufMonitor, tmpTelefonat)
     End Sub
 
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As EventArgs)
@@ -161,6 +137,8 @@ Public Class Popup
     ''' </summary>
     Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As EventArgs) Handles PopUpAnrufMonitor.Closed
 
+        ThisAddIn.OffenePopUps.Remove(Me)
+
         If PfadKontaktBild.IsNotStringEmpty AndAlso IO.File.Exists(PfadKontaktBild) Then
             DelKontaktBild(PfadKontaktBild)
         End If
@@ -168,20 +146,16 @@ Public Class Popup
 
     Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
 
-        Dim tmpTelefonat As Telefonat = CType(sender, FormAnrMon).DiesesTelefonat
-
-        If tmpTelefonat IsNot Nothing Then
+        If TelFnt IsNot Nothing Then
             Select Case e.ClickedItem.Name
                 Case "ToolStripMenuItemKontaktöffnen"
-                    tmpTelefonat.ZeigeKontakt()
+                    TelFnt.ZeigeKontakt()
 
                 Case "ToolStripMenuItemRückruf"
-                    ' Funktioniert nicht, da dieses Popup verworfen wird. Danach reagiert das Wählfenster nicht mehr
-                    'Dim WählClient As New FritzBoxWählClient
-                    'WählClient.WählboxStart(tmpTelefonat)
+                    TelFnt.Rückruf()
 
                 Case "ToolStripMenuItemKopieren"
-
+                    My.Computer.Clipboard.SetText(TelFnt.GegenstelleTelNr.Formatiert)
 
             End Select
         End If

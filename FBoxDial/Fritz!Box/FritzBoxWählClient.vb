@@ -215,6 +215,29 @@ Public Class FritzBoxWählClient
 
     End Sub
 
+    ''' <summary>
+    ''' Wählen aus einer IM Contactcard
+    ''' </summary>
+    Friend Overloads Async Sub WählboxStart(ByVal ContactCard As Microsoft.Office.Core.IMsoContactCard)
+        Dim aktKontakt As Outlook.ContactItem
+        Dim EMail As String = GetSmtpAddress(ContactCard)
+
+        If EMail.IsNotStringEmpty Then
+
+            Using KS As New KontaktSucher
+                aktKontakt = Await KS.KontaktSuche(Nothing, EMail)
+            End Using
+
+            If aktKontakt IsNot Nothing Then
+                Wählbox(aktKontakt, Nothing, False)
+            Else
+                MsgBox(PWählClientEMailunbekannt(EMail), MsgBoxStyle.Information, "WählboxStart")
+            End If
+        End If
+
+        ContactCard.ReleaseComObject
+    End Sub
+
     Friend Overloads Async Function WählboxStart(ByVal aktMail As Outlook.MailItem) As Task
         Dim aktKontakt As Outlook.ContactItem
         If aktMail.SenderEmailAddress.IsNotStringEmpty Then

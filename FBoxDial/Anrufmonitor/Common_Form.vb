@@ -72,7 +72,6 @@ Friend Class Common_Form
         If RectOptions.Contains(e.X, e.Y) Then
             If PAnrMon.OptionsMenu IsNot Nothing Then
                 PAnrMon.OptionsMenu.Show(Me, New Point((RectOptions.Right - PAnrMon.OptionsMenu.Width).ToInt, RectOptions.Bottom.ToInt))
-                PAnrMon.ShouldRemainVisible = True
             End If
         End If
 

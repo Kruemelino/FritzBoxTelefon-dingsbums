@@ -11,9 +11,10 @@ Imports System.Xml
             Return ThisAddIn.POutookApplication
         End Get
     End Property
-    Public Sub New()
-        'dim DefaultRibbon = New DefaultRibbon
-    End Sub
+
+    'Public Sub New()
+    '    'dim DefaultRibbon = New DefaultRibbon
+    'End Sub
 
 #Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
     Private Property RibbonObjekt As IRibbonUI
@@ -325,7 +326,7 @@ Imports System.Xml
             Case "btnDialExpl"
                 OnAction(TaskToDo.DialExplorer)
             Case "rbtnDial"
-
+                OnAction(TaskToDo.DialIMLayer, control)
             Case "btnDirektwahl"
                 OnAction(TaskToDo.DialDirekt)
             Case PDfltNameListRING, PDfltNameListCALL, PDfltNameListVIP
@@ -334,8 +335,6 @@ Imports System.Xml
                 ClearInListe(control)
             Case "btnAnrMonIO"
                 OnAction(TaskToDo.AnrMonAnAus)
-            Case "btnAnrMonRestart"
-                OnAction(TaskToDo.RestartAnrMon)
             Case "btnAnrMonShow"
                 OnAction(TaskToDo.ShowAnrMon)
             Case "btnAnrMonJI"
@@ -363,11 +362,11 @@ Imports System.Xml
         OpenConfig          ' Explorer: Einstellung Öffnen
         OpenJournalimport   ' Explorer: Journalimport öffnen
         ShowAnrMon          ' Explorer: Letzten Anrufer anzeigen
-        RestartAnrMon       ' Explorer: Anrufmonitor neu starten
         AnrMonAnAus         ' Explorer: Anrufmonitor Starten/Stoppen
         DialExplorer        ' Explorer: Klassischen Wähldialog über das ausgewählte Objekt öffnen
         DialDirekt          ' Explorer: Direktwahl öffnen
         DialInspector       ' Inspector: Wähldialog öffnen 
+        DialIMLayer         ' IMLayer: Wähldialog öffnen 
         CreateContact       ' Inspector: Journal, Kontakt erstellen
         StartRWS            ' Inspector: Rückwärtssuche starten
     End Enum
@@ -399,15 +398,17 @@ Imports System.Xml
             Case TaskToDo.OpenJournalimport
                 Dim AnrListImport As New FormAnrList
                 AnrListImport.Show()
-            Case TaskToDo.RestartAnrMon
-
             Case TaskToDo.AnrMonAnAus
                 If ThisAddIn.PAnrufmonitor Is Nothing Then ThisAddIn.PAnrufmonitor = New Anrufmonitor
                 ThisAddIn.PAnrufmonitor.StartStopAnrMon()
 
         End Select
     End Sub
-
+    ''' <summary>
+    ''' Steuert die aufzurufende Funktion aus Inspektorfenstern anhand der Übergebenen <c>Aufgabe</c>.
+    ''' </summary>
+    ''' <param name="Aufgabe"></param>
+    ''' <param name="OutlookInspector"></param>
     Private Sub OnAction(ByVal Aufgabe As TaskToDo, ByVal OutlookInspector As Outlook.Inspector)
         Select Case Aufgabe
             Case TaskToDo.DialInspector
@@ -429,17 +430,23 @@ Imports System.Xml
 
     Private Sub OnAction(ByVal Aufgabe As TaskToDo, ByVal OutlookSelection As Outlook.Selection)
         Select Case Aufgabe
-            Case TaskToDo.DialInspector
-
             Case TaskToDo.CreateContact
                 ZeigeKontaktAusSelection(OutlookSelection)
+        End Select
+    End Sub
+
+    Private Sub OnAction(ByVal Aufgabe As TaskToDo, ByVal control As IRibbonControl)
+        Select Case Aufgabe
+            Case TaskToDo.DialIMLayer
+                Dim card As IMsoContactCard = TryCast(control.Context, IMsoContactCard)
+                Dim WählClient As New FritzBoxWählClient
+                WählClient.WählboxStart(TryCast(control.Context, IMsoContactCard))
         End Select
     End Sub
     ''' <summary>
     ''' Behandelt das Ereignis, welches beim Klick auf die PopUp-Items ausgelöst wird.
     ''' Funktion würd für alle Office Versionen benötigt.
     ''' </summary>
-    ''' <param name="control"></param>
     Private Sub OnActionListen(ByVal control As IRibbonControl)
         Dim tmpTelefonat As Telefonat
         Dim tmpVIPEintrag As VIPEntry

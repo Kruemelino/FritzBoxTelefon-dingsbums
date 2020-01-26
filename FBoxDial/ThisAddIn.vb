@@ -4,13 +4,14 @@ Imports Microsoft.Office.Interop.Outlook
 Public NotInheritable Class ThisAddIn
     Friend Shared Property POutlookRibbons() As OutlookRibbons
     Friend Shared Property POutookApplication As Application
+
+    Private WithEvents OutlookInspectors As Inspectors
     Friend Shared Property PAnrufmonitor As Anrufmonitor
     Friend Shared Property PPhoneBookXML As FritzBoxXMLTelefonbücher
     Friend Shared Property PCallListXML As FritzBoxXMLCallList
 
-    Private WithEvents OutlookInspectors As Inspectors
     Friend Shared Property OffeneKontakInsepektoren As List(Of ContactSaved)
-
+    Friend Shared Property OffenePopUps As List(Of Popup)
     Friend Shared ReadOnly Property Version() As String
         Get
             With Reflection.Assembly.GetExecutingAssembly.GetName.Version

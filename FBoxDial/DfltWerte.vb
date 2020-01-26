@@ -149,8 +149,8 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' FritzOutlook
     ''' </summary>
     ''' <value>FritzOutlook</value>
-    ''' <returns>FritzOutlook</returns>
-    Public Shared ReadOnly Property PDfltAddin_KurzName() As String = "FritzOutlook"
+    ''' <returns>FritzOutlookV5</returns>
+    Public Shared ReadOnly Property PDfltAddin_KurzName() As String = "FritzOutlookV5"
 
     ''' <summary>
     ''' FritzOutlook.xml
