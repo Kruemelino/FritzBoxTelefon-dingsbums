@@ -21,7 +21,7 @@ Public Class FormCfg
     Private Delegate Sub DelgSetProgressbarMax(ByVal Anzahl As Integer)
 #End Region
 
-    Sub Ausfüllen(ByVal m_Control As Control)
+    Private Async Sub Ausfüllen(ByVal m_Control As Control)
         Dim tmpPropertyInfo As Reflection.PropertyInfo
 
         For Each ctrl As Control In m_Control.Controls
@@ -48,6 +48,21 @@ Public Class FormCfg
                             CType(ctrl, CheckBox).Checked = CBool(tmpPropertyInfo.GetValue(XMLData.POptionen).ToString)
                     End Select
                 End If
+
+                If ctrl.Name.AreEqual(TBLogging.Name) Then
+                    Dim LogDatei As String = IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName)
+                    LinkLogFile.Text = LogDatei
+                    If XMLData.POptionen.PCBLogFile Then
+                        With My.Computer.FileSystem
+                            If .FileExists(LogDatei) Then
+                                Using reader As New IO.StreamReader(LogDatei)
+                                    TBLogging.Text = Await reader.ReadToEndAsync
+                                End Using
+                            End If
+                        End With
+                    End If
+                End If
+
             ElseIf ctrl.GetType().Equals(GetType(DataGridView)) Then
                 ' Datagridview der Telefoniegeräte
                 SetTelDGV()
@@ -141,7 +156,6 @@ Public Class FormCfg
                                                                        BTestLogin.Click,
                                                                        BTelefonliste.Click,
                                                                        BReset.Click,
-                                                                       BLogging.Click,
                                                                        BIndizierungStart.Click,
                                                                        BIndizierungAbbrechen.Click,
                                                                        BArbeitsverzeichnis.Click,
@@ -169,7 +183,15 @@ Public Class FormCfg
                 BWIndexer.CancelAsync()
                 BIndizierungAbbrechen.Enabled = False
                 BIndizierungStart.Enabled = True
+            Case BXML.Name
+                ' XML-Datei mit Systemstandard öffnen
+                Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltConfig_FileName))
         End Select
+    End Sub
+
+
+    Private Sub LinkLogFile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLogFile.LinkClicked
+        Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName))
     End Sub
 
 #End Region
@@ -266,6 +288,7 @@ Public Class FormCfg
 
         Return tmpDataTable
     End Function
+
 
 #Region "AnrMonSim"
     Private Sub AnrMonSim_ValueChanged(sender As Object, e As EventArgs) Handles DTPAnrMonSimRING.ValueChanged, DTPAnrMonSimCALL.ValueChanged, DTPAnrMonSimCONNECT.ValueChanged, DTPAnrMonSimDISCONNECT.ValueChanged,

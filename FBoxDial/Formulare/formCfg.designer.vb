@@ -60,6 +60,9 @@ Partial Class FormCfg
         Me.Label7 = New System.Windows.Forms.Label()
         Me.TBRWSTest = New System.Windows.Forms.TextBox()
         Me.TVOutlookContact = New System.Windows.Forms.TreeView()
+        Me.TBNumEntryList = New System.Windows.Forms.TextBox()
+        Me.LNumEntryList = New System.Windows.Forms.Label()
+        Me.CBAutoAnrList = New System.Windows.Forms.CheckBox()
         Me.PInfo = New System.Windows.Forms.TabPage()
         Me.BArbeitsverzeichnis = New System.Windows.Forms.Button()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -92,6 +95,12 @@ Partial Class FormCfg
         Me.LRWSTest = New System.Windows.Forms.Label()
         Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.GBJournal = New System.Windows.Forms.GroupBox()
+        Me.CBJournal = New System.Windows.Forms.CheckBox()
+        Me.GBAnrListeMain = New System.Windows.Forms.GroupBox()
+        Me.CBAnrListeShowAnrMon = New System.Windows.Forms.CheckBox()
+        Me.CBAnrListeUpdateCallLists = New System.Windows.Forms.CheckBox()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.GBAnrMonMain = New System.Windows.Forms.GroupBox()
         Me.PanelAnrMon = New System.Windows.Forms.Panel()
@@ -157,7 +166,6 @@ Partial Class FormCfg
         Me.BAnrMonSimRING = New System.Windows.Forms.Button()
         Me.PLogging = New System.Windows.Forms.TabPage()
         Me.GBLogging = New System.Windows.Forms.GroupBox()
-        Me.BLogging = New System.Windows.Forms.Button()
         Me.LinkLogFile = New System.Windows.Forms.LinkLabel()
         Me.TBLogging = New System.Windows.Forms.TextBox()
         Me.CBLogFile = New System.Windows.Forms.CheckBox()
@@ -165,15 +173,6 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.TBNumEntryList = New System.Windows.Forms.TextBox()
-        Me.LNumEntryList = New System.Windows.Forms.Label()
-        Me.GBJournal = New System.Windows.Forms.GroupBox()
-        Me.CBJournal = New System.Windows.Forms.CheckBox()
-        Me.GBAnrListeMain = New System.Windows.Forms.GroupBox()
-        Me.CBAnrListeShowAnrMon = New System.Windows.Forms.CheckBox()
-        Me.CBAutoAnrList = New System.Windows.Forms.CheckBox()
-        Me.CBAnrListeUpdateCallLists = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -186,6 +185,9 @@ Partial Class FormCfg
         Me.GBIndizierung.SuspendLayout()
         Me.GBRWS.SuspendLayout()
         Me.PAnrufmonitor.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        Me.GBJournal.SuspendLayout()
+        Me.GBAnrListeMain.SuspendLayout()
         Me.GBAnrMonMain.SuspendLayout()
         Me.PanelAnrMon.SuspendLayout()
         Me.FBDB_MP.SuspendLayout()
@@ -198,9 +200,6 @@ Partial Class FormCfg
         Me.GBLogging.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.GroupBox6.SuspendLayout()
-        Me.GBJournal.SuspendLayout()
-        Me.GBAnrListeMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'BReset
@@ -676,6 +675,44 @@ Partial Class FormCfg
         Me.TVOutlookContact.TabIndex = 4
         Me.ToolTipFBDBConfig.SetToolTip(Me.TVOutlookContact, resources.GetString("TVOutlookContact.ToolTip"))
         '
+        'TBNumEntryList
+        '
+        Me.TBNumEntryList.Location = New System.Drawing.Point(9, 28)
+        Me.TBNumEntryList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBNumEntryList.Name = "TBNumEntryList"
+        Me.TBNumEntryList.Size = New System.Drawing.Size(42, 26)
+        Me.TBNumEntryList.TabIndex = 39
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBNumEntryList, "Gibt die Anzahl der Listenelemente an, die in der Wahlwiederholungs und Rückrufli" &
+        "ste aufgeführt werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Eine Reduktion des Wertes bedeutet automatisch, dass die" &
+        " Listen geleert werden.")
+        '
+        'LNumEntryList
+        '
+        Me.LNumEntryList.AutoSize = True
+        Me.LNumEntryList.Location = New System.Drawing.Point(62, 32)
+        Me.LNumEntryList.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LNumEntryList.MinimumSize = New System.Drawing.Size(300, 0)
+        Me.LNumEntryList.Name = "LNumEntryList"
+        Me.LNumEntryList.Size = New System.Drawing.Size(300, 20)
+        Me.LNumEntryList.TabIndex = 40
+        Me.LNumEntryList.Text = "Anzahl der Listenelemente je Liste"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.LNumEntryList, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
+        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" &
+        "ntworter.")
+        '
+        'CBAutoAnrList
+        '
+        Me.CBAutoAnrList.AutoSize = True
+        Me.CBAutoAnrList.Location = New System.Drawing.Point(4, 29)
+        Me.CBAutoAnrList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAutoAnrList.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAutoAnrList.Name = "CBAutoAnrList"
+        Me.CBAutoAnrList.Size = New System.Drawing.Size(400, 24)
+        Me.CBAutoAnrList.TabIndex = 8
+        Me.CBAutoAnrList.Text = "Anrufliste beim Start auswerten"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
+        Me.CBAutoAnrList.UseVisualStyleBackColor = True
+        '
         'PInfo
         '
         Me.PInfo.Controls.Add(Me.BArbeitsverzeichnis)
@@ -1072,6 +1109,82 @@ Partial Class FormCfg
         Me.PAnrufmonitor.TabIndex = 0
         Me.PAnrufmonitor.Text = "Anrufmonitor"
         Me.PAnrufmonitor.UseVisualStyleBackColor = True
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.TBNumEntryList)
+        Me.GroupBox6.Controls.Add(Me.LNumEntryList)
+        Me.GroupBox6.Location = New System.Drawing.Point(432, 297)
+        Me.GroupBox6.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GroupBox6.Size = New System.Drawing.Size(424, 85)
+        Me.GroupBox6.TabIndex = 38
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Anruflisten"
+        '
+        'GBJournal
+        '
+        Me.GBJournal.Controls.Add(Me.CBJournal)
+        Me.GBJournal.Location = New System.Drawing.Point(432, 58)
+        Me.GBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBJournal.Name = "GBJournal"
+        Me.GBJournal.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBJournal.Size = New System.Drawing.Size(423, 85)
+        Me.GBJournal.TabIndex = 37
+        Me.GBJournal.TabStop = False
+        Me.GBJournal.Text = "Outlook Journal"
+        '
+        'CBJournal
+        '
+        Me.CBJournal.AutoSize = True
+        Me.CBJournal.Location = New System.Drawing.Point(4, 35)
+        Me.CBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBJournal.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBJournal.Name = "CBJournal"
+        Me.CBJournal.Size = New System.Drawing.Size(400, 24)
+        Me.CBJournal.TabIndex = 7
+        Me.CBJournal.Text = "Journaleinträge erstellen"
+        Me.CBJournal.UseVisualStyleBackColor = True
+        '
+        'GBAnrListeMain
+        '
+        Me.GBAnrListeMain.Controls.Add(Me.CBAnrListeShowAnrMon)
+        Me.GBAnrListeMain.Controls.Add(Me.CBAutoAnrList)
+        Me.GBAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
+        Me.GBAnrListeMain.Location = New System.Drawing.Point(432, 153)
+        Me.GBAnrListeMain.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBAnrListeMain.Name = "GBAnrListeMain"
+        Me.GBAnrListeMain.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBAnrListeMain.Size = New System.Drawing.Size(423, 134)
+        Me.GBAnrListeMain.TabIndex = 36
+        Me.GBAnrListeMain.TabStop = False
+        Me.GBAnrListeMain.Text = "Auswertung der Anrufliste"
+        '
+        'CBAnrListeShowAnrMon
+        '
+        Me.CBAnrListeShowAnrMon.AutoSize = True
+        Me.CBAnrListeShowAnrMon.Enabled = False
+        Me.CBAnrListeShowAnrMon.Location = New System.Drawing.Point(4, 97)
+        Me.CBAnrListeShowAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrListeShowAnrMon.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAnrListeShowAnrMon.Name = "CBAnrListeShowAnrMon"
+        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(400, 24)
+        Me.CBAnrListeShowAnrMon.TabIndex = 9
+        Me.CBAnrListeShowAnrMon.Text = "Verpasste Telefonate mit Anrufmonitor anzeigen"
+        Me.CBAnrListeShowAnrMon.UseVisualStyleBackColor = True
+        '
+        'CBAnrListeUpdateCallLists
+        '
+        Me.CBAnrListeUpdateCallLists.AutoSize = True
+        Me.CBAnrListeUpdateCallLists.Location = New System.Drawing.Point(4, 63)
+        Me.CBAnrListeUpdateCallLists.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBAnrListeUpdateCallLists.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAnrListeUpdateCallLists.Name = "CBAnrListeUpdateCallLists"
+        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(400, 24)
+        Me.CBAnrListeUpdateCallLists.TabIndex = 7
+        Me.CBAnrListeUpdateCallLists.Text = "Rückruf- und Wahlwiederholungsliste aktualisieren"
+        Me.CBAnrListeUpdateCallLists.UseVisualStyleBackColor = True
         '
         'Label22
         '
@@ -1785,7 +1898,6 @@ Partial Class FormCfg
         '
         'GBLogging
         '
-        Me.GBLogging.Controls.Add(Me.BLogging)
         Me.GBLogging.Controls.Add(Me.LinkLogFile)
         Me.GBLogging.Controls.Add(Me.TBLogging)
         Me.GBLogging.Location = New System.Drawing.Point(0, 117)
@@ -1796,19 +1908,9 @@ Partial Class FormCfg
         Me.GBLogging.TabIndex = 26
         Me.GBLogging.TabStop = False
         '
-        'BLogging
-        '
-        Me.BLogging.Location = New System.Drawing.Point(516, 283)
-        Me.BLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.BLogging.Name = "BLogging"
-        Me.BLogging.Size = New System.Drawing.Size(334, 43)
-        Me.BLogging.TabIndex = 27
-        Me.BLogging.Text = "Log in die Zwischenablage kopieren"
-        Me.BLogging.UseVisualStyleBackColor = True
-        '
         'LinkLogFile
         '
-        Me.LinkLogFile.Location = New System.Drawing.Point(3, 258)
+        Me.LinkLogFile.Location = New System.Drawing.Point(3, 307)
         Me.LinkLogFile.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LinkLogFile.MaximumSize = New System.Drawing.Size(848, 23)
         Me.LinkLogFile.Name = "LinkLogFile"
@@ -1825,7 +1927,7 @@ Partial Class FormCfg
         Me.TBLogging.Multiline = True
         Me.TBLogging.Name = "TBLogging"
         Me.TBLogging.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBLogging.Size = New System.Drawing.Size(847, 224)
+        Me.TBLogging.Size = New System.Drawing.Size(847, 278)
         Me.TBLogging.TabIndex = 25
         '
         'CBLogFile
@@ -1900,120 +2002,6 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'GroupBox6
-        '
-        Me.GroupBox6.Controls.Add(Me.TBNumEntryList)
-        Me.GroupBox6.Controls.Add(Me.LNumEntryList)
-        Me.GroupBox6.Location = New System.Drawing.Point(432, 297)
-        Me.GroupBox6.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox6.Size = New System.Drawing.Size(424, 85)
-        Me.GroupBox6.TabIndex = 38
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Anruflisten"
-        '
-        'TBNumEntryList
-        '
-        Me.TBNumEntryList.Location = New System.Drawing.Point(9, 28)
-        Me.TBNumEntryList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.TBNumEntryList.Name = "TBNumEntryList"
-        Me.TBNumEntryList.Size = New System.Drawing.Size(42, 26)
-        Me.TBNumEntryList.TabIndex = 39
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TBNumEntryList, "Gibt die Anzahl der Listenelemente an, die in der Wahlwiederholungs und Rückrufli" &
-        "ste aufgeführt werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Eine Reduktion des Wertes bedeutet automatisch, dass die" &
-        " Listen geleert werden.")
-        '
-        'LNumEntryList
-        '
-        Me.LNumEntryList.AutoSize = True
-        Me.LNumEntryList.Location = New System.Drawing.Point(62, 32)
-        Me.LNumEntryList.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LNumEntryList.MinimumSize = New System.Drawing.Size(300, 0)
-        Me.LNumEntryList.Name = "LNumEntryList"
-        Me.LNumEntryList.Size = New System.Drawing.Size(300, 20)
-        Me.LNumEntryList.TabIndex = 40
-        Me.LNumEntryList.Text = "Anzahl der Listenelemente je Liste"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.LNumEntryList, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
-        "passt"" behandelt." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Nach der Zeitspanne erfolgt z. B. die Verbindung zum Anrufbea" &
-        "ntworter.")
-        '
-        'GBJournal
-        '
-        Me.GBJournal.Controls.Add(Me.CBJournal)
-        Me.GBJournal.Location = New System.Drawing.Point(432, 58)
-        Me.GBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBJournal.Name = "GBJournal"
-        Me.GBJournal.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBJournal.Size = New System.Drawing.Size(423, 85)
-        Me.GBJournal.TabIndex = 37
-        Me.GBJournal.TabStop = False
-        Me.GBJournal.Text = "Outlook Journal"
-        '
-        'CBJournal
-        '
-        Me.CBJournal.AutoSize = True
-        Me.CBJournal.Location = New System.Drawing.Point(4, 35)
-        Me.CBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBJournal.MinimumSize = New System.Drawing.Size(400, 0)
-        Me.CBJournal.Name = "CBJournal"
-        Me.CBJournal.Size = New System.Drawing.Size(400, 24)
-        Me.CBJournal.TabIndex = 7
-        Me.CBJournal.Text = "Journaleinträge erstellen"
-        Me.CBJournal.UseVisualStyleBackColor = True
-        '
-        'GBAnrListeMain
-        '
-        Me.GBAnrListeMain.Controls.Add(Me.CBAnrListeShowAnrMon)
-        Me.GBAnrListeMain.Controls.Add(Me.CBAutoAnrList)
-        Me.GBAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
-        Me.GBAnrListeMain.Location = New System.Drawing.Point(432, 153)
-        Me.GBAnrListeMain.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBAnrListeMain.Name = "GBAnrListeMain"
-        Me.GBAnrListeMain.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBAnrListeMain.Size = New System.Drawing.Size(423, 134)
-        Me.GBAnrListeMain.TabIndex = 36
-        Me.GBAnrListeMain.TabStop = False
-        Me.GBAnrListeMain.Text = "Auswertung der Anrufliste"
-        '
-        'CBAnrListeShowAnrMon
-        '
-        Me.CBAnrListeShowAnrMon.AutoSize = True
-        Me.CBAnrListeShowAnrMon.Enabled = False
-        Me.CBAnrListeShowAnrMon.Location = New System.Drawing.Point(4, 97)
-        Me.CBAnrListeShowAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrListeShowAnrMon.MinimumSize = New System.Drawing.Size(400, 0)
-        Me.CBAnrListeShowAnrMon.Name = "CBAnrListeShowAnrMon"
-        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(400, 24)
-        Me.CBAnrListeShowAnrMon.TabIndex = 9
-        Me.CBAnrListeShowAnrMon.Text = "Verpasste Telefonate mit Anrufmonitor anzeigen"
-        Me.CBAnrListeShowAnrMon.UseVisualStyleBackColor = True
-        '
-        'CBAutoAnrList
-        '
-        Me.CBAutoAnrList.AutoSize = True
-        Me.CBAutoAnrList.Location = New System.Drawing.Point(4, 29)
-        Me.CBAutoAnrList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAutoAnrList.MinimumSize = New System.Drawing.Size(400, 0)
-        Me.CBAutoAnrList.Name = "CBAutoAnrList"
-        Me.CBAutoAnrList.Size = New System.Drawing.Size(400, 24)
-        Me.CBAutoAnrList.TabIndex = 8
-        Me.CBAutoAnrList.Text = "Anrufliste beim Start auswerten"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
-        Me.CBAutoAnrList.UseVisualStyleBackColor = True
-        '
-        'CBAnrListeUpdateCallLists
-        '
-        Me.CBAnrListeUpdateCallLists.AutoSize = True
-        Me.CBAnrListeUpdateCallLists.Location = New System.Drawing.Point(4, 63)
-        Me.CBAnrListeUpdateCallLists.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrListeUpdateCallLists.MinimumSize = New System.Drawing.Size(400, 0)
-        Me.CBAnrListeUpdateCallLists.Name = "CBAnrListeUpdateCallLists"
-        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(400, 24)
-        Me.CBAnrListeUpdateCallLists.TabIndex = 7
-        Me.CBAnrListeUpdateCallLists.Text = "Rückruf- und Wahlwiederholungsliste aktualisieren"
-        Me.CBAnrListeUpdateCallLists.UseVisualStyleBackColor = True
-        '
         'FormCfg
         '
         Me.AcceptButton = Me.BOK
@@ -2046,6 +2034,12 @@ Partial Class FormCfg
         Me.GBRWS.ResumeLayout(False)
         Me.GBRWS.PerformLayout()
         Me.PAnrufmonitor.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        Me.GBJournal.ResumeLayout(False)
+        Me.GBJournal.PerformLayout()
+        Me.GBAnrListeMain.ResumeLayout(False)
+        Me.GBAnrListeMain.PerformLayout()
         Me.GBAnrMonMain.ResumeLayout(False)
         Me.GBAnrMonMain.PerformLayout()
         Me.PanelAnrMon.ResumeLayout(False)
@@ -2066,12 +2060,6 @@ Partial Class FormCfg
         Me.GBLogging.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
-        Me.GBJournal.ResumeLayout(False)
-        Me.GBJournal.PerformLayout()
-        Me.GBAnrListeMain.ResumeLayout(False)
-        Me.GBAnrListeMain.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2149,7 +2137,6 @@ Partial Class FormCfg
     Friend WithEvents TBLogging As System.Windows.Forms.TextBox
     Friend WithEvents GBLogging As System.Windows.Forms.GroupBox
     Friend WithEvents LinkLogFile As System.Windows.Forms.LinkLabel
-    Friend WithEvents BLogging As System.Windows.Forms.Button
     Friend WithEvents TBPasswort As System.Windows.Forms.MaskedTextBox
     Friend WithEvents BXML As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel

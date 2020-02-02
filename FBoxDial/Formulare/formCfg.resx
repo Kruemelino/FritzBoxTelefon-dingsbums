@@ -172,6 +172,11 @@ die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor ode
 die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journaleintrag erstellt wird.
 </value>
   </data>
+  <data name="CBAutoAnrList.ToolTip" xml:space="preserve">
+    <value>Beim Start von Outlook , können Telefonate aus der Fritz!Box Anrufliste ausgewertet 
+werden. Dazu werden alle Telefonate, die zwischen dem Beenden und Start von Outlook
+stattgefunden haben,berücksichtigt.</value>
+  </data>
   <data name="RichTextBox1.Text" xml:space="preserve">
     <value>Haftungshinweis:
 
@@ -191,10 +196,5 @@ Datenschutzhinweis:
              übergeben. Bitte die Datenschutzhinweise der Suchmaschinen beachten!
          2. Bei der Suche nach Call-By-Call Anbietern wird die zu wählende Nummer an Billiger-Telefonieren.de
              übermittelt. Bitte die Hinweise von Billiger-Telefonieren.de beachten!</value>
-  </data>
-  <data name="CBAutoAnrList.ToolTip" xml:space="preserve">
-    <value>Beim Start von Outlook , können Telefonate aus der Fritz!Box Anrufliste ausgewertet 
-werden. Dazu werden alle Telefonate, die zwischen dem Beenden und Start von Outlook
-stattgefunden haben,berücksichtigt.</value>
   </data>
 </root>
