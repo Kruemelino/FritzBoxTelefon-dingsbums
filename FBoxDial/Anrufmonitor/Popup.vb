@@ -94,6 +94,7 @@ Public Class Popup
                 .Firma = "Test: Firma"
                 .TelNr = "Test: +49 (123) 4567890"
             End If
+
         End With
     End Sub
 
@@ -126,6 +127,8 @@ Public Class Popup
 
     Friend Sub UpdateAnrMon(ByVal tmpTelefonat As Telefonat)
         AnrMonausfüllen(PopUpAnrufMonitor, tmpTelefonat)
+        ' Neu Zeichnen
+        PopUpAnrufMonitor.Invalidate()
     End Sub
 
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As EventArgs)

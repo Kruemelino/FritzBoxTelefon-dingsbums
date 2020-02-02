@@ -135,6 +135,10 @@ Public Class FormAnrMon
         OptionsMenu = AnrMonContextMenuStrip
     End Sub
 
+    Friend Sub Invalidate()
+        FPopup.Invalidate()
+    End Sub
+
     Friend Sub Hide()
         'BMouseIsOn = False
 
