@@ -119,8 +119,8 @@ Public Class Popup
         AddHandler PopUpAnrufMonitor.Close, AddressOf PopUpAnrMon_Close
         AddHandler PopUpAnrufMonitor.Closed, AddressOf PopupAnrMon_Closed
 
-        'AddHandler PopUpAnrufMonitor.LinkClick, AddressOf ToolStripMenuItemKontaktöffnen_Click
-        AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf ToolStripMenuItem_Clicked
+        AddHandler PopUpAnrufMonitor.LinkClick, AddressOf AnrMonLink_Click
+        AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf AnrMonToolStripMenuItem_Clicked
 
         KeepoInspActivated(True)
     End Sub
@@ -147,7 +147,13 @@ Public Class Popup
         End If
     End Sub
 
-    Private Sub ToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
+    Private Sub AnrMonLink_Click(ByVal sender As Object, ByVal e As EventArgs)
+        If TelFnt IsNot Nothing Then
+            TelFnt.ZeigeKontakt()
+        End If
+    End Sub
+
+    Private Sub AnrMonToolStripMenuItem_Clicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
 
         If TelFnt IsNot Nothing Then
             Select Case e.ClickedItem.Name
