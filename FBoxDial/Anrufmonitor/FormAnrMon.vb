@@ -12,7 +12,7 @@ Public Class FormAnrMon
 #End Region
 #Region "Properties"
     Private Property CmnPrps As New CommonFenster
-    Private WithEvents FPopup As New Common_Form(Me, CmnPrps)
+    Private WithEvents FPopup As New AnrMonCommon(Me, CmnPrps)
 
     Private Property CompContainer As New System.ComponentModel.Container()
     Private WithEvents AnrMonContextMenuStrip As New ContextMenuStrip(CompContainer)

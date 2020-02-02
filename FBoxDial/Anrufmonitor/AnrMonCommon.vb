@@ -1,18 +1,9 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 
-Friend Class Common_Form
-    Inherits Windows.Forms.Form
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    ' Copyright ©1996-2011 VBnet/Randy Birch, All Rights Reserved.
-    ' Some pages may also contain other copyrights by the author.
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    ' Distribution: You can freely use this code in your own
-    '               applications, but you may not reproduce 
-    '               or publish this code on any web site,
-    '               online service, or distribute as source 
-    '               on any media without express permission.
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Class AnrMonCommon
+    Inherits Form
+
 
     Friend Event LinkClick(ByVal sender As Object, ByVal e As EventArgs)
     Friend Event CloseClick(ByVal sender As Object, ByVal e As EventArgs)
@@ -21,9 +12,10 @@ Friend Class Common_Form
         PAnrMon = vAnrMon
         PCommon = vCommon
 
-        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-        Me.SetStyle(ControlStyles.ResizeRedraw, True)
-        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+        SetStyle(ControlStyles.ResizeRedraw, True)
+        SetStyle(ControlStyles.UserPaint, True)
+        SetStyle(ControlStyles.AllPaintingInWmPaint, True)
     End Sub
 
 
@@ -52,16 +44,16 @@ Friend Class Common_Form
 
 #Region "Events"
     Private Sub Me_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
-        Me.Finalize()
+        Finalize()
     End Sub
-    Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As Windows.Forms.MouseEventArgs) Handles Me.MouseMove
+    Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseMove
 
         BMouseOnClose = RectClose.Contains(e.X, e.Y)
         BMouseOnOptions = RectOptions.Contains(e.X, e.Y)
         BMouseOnLink = RectAnrName.Contains(e.X, e.Y)
         Invalidate()
     End Sub
-    Private Sub Me_MouseUp(ByVal sender As Object, ByVal e As Windows.Forms.MouseEventArgs) Handles Me.MouseUp
+    Private Sub Me_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseUp
         If RectClose.Contains(e.X, e.Y) Then
             RaiseEvent CloseClick(Me, EventArgs.Empty)
         End If
@@ -69,6 +61,7 @@ Friend Class Common_Form
         If RectAnrName.Contains(e.X, e.Y) Then
             RaiseEvent LinkClick(Me, EventArgs.Empty)
         End If
+
         If RectOptions.Contains(e.X, e.Y) Then
             If PAnrMon.OptionsMenu IsNot Nothing Then
                 PAnrMon.OptionsMenu.Show(Me, New Point((RectOptions.Right - PAnrMon.OptionsMenu.Width).ToInt, RectOptions.Bottom.ToInt))
@@ -76,17 +69,17 @@ Friend Class Common_Form
         End If
 
     End Sub
-    Private Sub Me_Paint(ByVal sender As Object, ByVal e As Windows.Forms.PaintEventArgs) Handles Me.Paint
+    Private Sub Me_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles Me.Paint
         If PAnrMon IsNot Nothing Then AnrMon_Paint(sender, e)
     End Sub
     Private Sub Me_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        Me.Scale(ScaleFaktor)
+        Scale(ScaleFaktor)
     End Sub
-    Private Sub AnrMon_Paint(ByVal sender As Object, ByVal e As Windows.Forms.PaintEventArgs)
+    Private Sub AnrMon_Paint(ByVal sender As Object, ByVal e As PaintEventArgs)
 
-        Dim rcBody As New RectangleF(0, 0, Me.Width, Me.Height)
-        Dim rcHeader As New RectangleF(0, 0, Me.Width, PCommon.HeaderHeight)
-        Dim rcForm As New RectangleF(0, 0, Me.Width - 1, Me.Height - 1)
+        Dim rcBody As New RectangleF(0, 0, Width, Height)
+        Dim rcHeader As New RectangleF(0, 0, Width, PCommon.HeaderHeight)
+        Dim rcForm As New RectangleF(0, 0, Width - 1, Height - 1)
         Dim brBody As New Drawing2D.LinearGradientBrush(rcBody, PCommon.BodyColor, PCommon.GetLighterColor(PCommon.BodyColor), Drawing2D.LinearGradientMode.Vertical)
         Dim drawFormatCenter As New StringFormat()
         Dim drawFormatRight As New StringFormat()
@@ -120,7 +113,7 @@ Friend Class Common_Form
             DrawRectangleF(e.Graphics, rcForm)
             ' Buttton: Schließen
 
-            RectClose = New RectangleF(Me.Width - 5 - 16 * ScaleFaktor.Width, 12, 16 * ScaleFaktor.Width, 16 * ScaleFaktor.Height)
+            RectClose = New RectangleF(Width - 5 - 16 * ScaleFaktor.Width, 12, 16 * ScaleFaktor.Width, 16 * ScaleFaktor.Height)
 
             If BMouseOnClose Then
                 .FillRectangle(New SolidBrush(PCommon.ButtonHoverColor), RectClose)
@@ -153,8 +146,8 @@ Friend Class Common_Form
 
                 RectImage = New RectangleF(ITitleOrigin,
                                            PCommon.TextPadding.Top + PCommon.HeaderHeight,
-                                           (Me.Height - PCommon.TextPadding.Top - PCommon.TextPadding.Bottom - PCommon.HeaderHeight) * PAnrMon.Image.Size.Width \ PAnrMon.Image.Size.Height,
-                                           Me.Height - PCommon.TextPadding.Top - PCommon.TextPadding.Bottom - PCommon.HeaderHeight)
+                                           (Height - PCommon.TextPadding.Top - PCommon.TextPadding.Bottom - PCommon.HeaderHeight) * PAnrMon.Image.Size.Width \ PAnrMon.Image.Size.Height,
+                                           Height - PCommon.TextPadding.Top - PCommon.TextPadding.Bottom - PCommon.HeaderHeight)
 
                 Dim showImage As Image = New Bitmap(RectImage.Width.ToInt, RectImage.Height.ToInt)
 
@@ -185,7 +178,7 @@ Friend Class Common_Form
                                        IHeightOfTelNr)
 
             RectFirma = New RectangleF(PCommon.TextPadding.Left + RectImage.Right,
-                                       Me.Height - IHeightOfTitle - PCommon.TextPadding.Bottom,
+                                       Height - IHeightOfTitle - PCommon.TextPadding.Bottom,
                                        RectClose.Right - RectImage.Right - PCommon.TextPadding.Right,
                                        IHeightOfTitle)
 
@@ -206,10 +199,10 @@ Friend Class Common_Form
             End If
 
             If BMouseOnLink Then
-                Me.Cursor = Cursors.Hand
+                Cursor = Cursors.Hand
                 .DrawString(PAnrMon.AnrName, PCommon.AnrNameFont, New SolidBrush(PCommon.LinkHoverColor), RectAnrName, drawFormatCenter)
             Else
-                Me.Cursor = Cursors.Default
+                Cursor = Cursors.Default
                 .DrawString(PAnrMon.AnrName, PCommon.AnrNameFont, New SolidBrush(PCommon.ContentColor), RectAnrName, drawFormatCenter)
             End If
 
@@ -233,7 +226,7 @@ Friend Class Common_Form
 #End Region
 
     Protected Overrides Sub Finalize()
-        Me.Hide()
+        Hide()
         MyBase.Finalize()
     End Sub
 
