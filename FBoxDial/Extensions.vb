@@ -5,6 +5,9 @@ Imports System.Text.RegularExpressions
 
 <DebuggerStepThrough()>
 Public Module Extensions
+
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
 #Region "Extensions für Verarbeitung von Zahlen: Double, Integer, Long"
     Private Const Epsilon As Single = Single.Epsilon
     ''' <summary>
@@ -385,7 +388,7 @@ Public Module Extensions
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
         Catch ex As Exception
-            LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich: " & ex.InnerException.Message)
+            NLogger.Error(ex, "Ping zu {0} nicht erfolgreich", IPAdresse)
             Ping = False
         End Try
 
@@ -400,7 +403,7 @@ Public Module Extensions
                                 IPAdresse = _IPAddress.ToString
                                 ' Prüfen ob es eine generel gültige lokale IPv6 Adresse gibt: fd00::2665:11ff:fed8:6086
                                 ' und wie die zu ermitteln ist
-                                LogFile("IPv6: " & .Address.ToString & ", IPv4: " & IPAdresse)
+                                NLogger.Info("IPv6: {0}, IPv4: {1}", .Address.ToString, IPAdresse)
                                 Exit For
                             End If
                         Next
@@ -409,7 +412,7 @@ Public Module Extensions
                     End If
                     Ping = True
                 Else
-                    LogFile("Ping zu """ & IPAdresse & """ nicht erfolgreich: " & .Status)
+                    NLogger.Warn("Ping zu '{0}' nicht erfolgreich: {1}" & .Status, IPAdresse, .Status)
                     Ping = False
                 End If
             End With
@@ -446,7 +449,7 @@ Public Module Extensions
                 Case Sockets.AddressFamily.InterNetwork
                     ValidIP = IPAddresse.ToString
                 Case Else
-                    LogFile("Die IP """ & InputIP & """ kann nicht zugeordnet werden.")
+                    NLogger.Warn("Die IP '{0}' kann nicht zugeordnet werden.", InputIP)
                     ValidIP = InputIP
             End Select
         Else
@@ -457,8 +460,8 @@ Public Module Extensions
                         ValidIP = IPAddresse.ToString
                     End If
                 Next
-            Catch ' ex As Exception
-                LogFile("Die Adresse """ & XMLData.POptionen.PTBFBAdr & """ kann nicht zugeordnet werden.")
+            Catch ex As Exception
+                NLogger.Warn(ex, "Die Adresse '{0}' kann nicht zugeordnet werden.", XMLData.POptionen.PTBFBAdr)
                 ValidIP = XMLData.POptionen.PTBFBAdr
             End Try
         End If
@@ -484,14 +487,14 @@ Public Module Extensions
                         Try
                             retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
                         Catch exANE As ArgumentNullException
-                            LogFile("httpGET_WebClient: " & exANE.Message)
+                            NLogger.Error(exANE)
                         Catch exWE As WebException
-                            LogFile("httpGET_WebClient: " & exWE.Message & " - Link: " & Link)
+                            NLogger.Error(exWE, "Link: {0}", Link)
                         End Try
                     End With
                 End Using
             Case Else
-                LogFile("Uri.Scheme: " & UniformResourceIdentifier.Scheme)
+                NLogger.Warn("Uri.Scheme: {0}", UniformResourceIdentifier.Scheme)
         End Select
         Return retVal
     End Function
@@ -519,9 +522,9 @@ Public Module Extensions
                     Try
                         retVal = Await .UploadStringTaskAsync(UniformResourceIdentifier, Daten)
                     Catch exANE As ArgumentNullException
-                        LogFile("httpPOST_WebClient: " & exANE.Message)
+                        NLogger.Error(exANE)
                     Catch exWE As WebException
-                        LogFile("httpPOST_WebClient: " & exWE.Message & " - Link: " & Link)
+                        NLogger.Error(exWE, "Link: {0}", Link)
                     End Try
                 End With
             End Using
@@ -541,32 +544,17 @@ Public Module Extensions
             Try
                 Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)
             Catch ex As ArgumentException
-                LogFile(String.Format("COM-Object ist kein gültiges COM-Objekt: {0}", COMObject.ToString))
+                NLogger.Error(ex, "COM-Object ist kein gültiges COM-Objekt: {0}", COMObject.ToString)
             Finally
                 'COMObject = Nothing
             End Try
         End If
     End Sub
 
-
-    Public Sub LogFile(ByVal Meldung As String)
-        Dim LogDatei As String = IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName)
-        If XMLData.POptionen.PCBLogFile Then
-            With My.Computer.FileSystem
-                If .FileExists(LogDatei) Then
-                    If .GetFileInfo(LogDatei).Length.IsLarger(1048576) Then .DeleteFile(LogDatei)
-                End If
-                Try
-                    .WriteAllText(LogDatei, Date.Now & " - " & Meldung & vbNewLine, True)
-                Catch : End Try
-            End With
-        End If
-    End Sub
-
     Public Function MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
             Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, PDflt2NeueZeile, Meldung)
-            LogFile(Meldung)
+            NLogger.Warn(Meldung)
         End If
         Return Microsoft.VisualBasic.MsgBox(Meldung, Style, PDfltAddin_LangName)
     End Function

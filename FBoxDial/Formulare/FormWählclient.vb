@@ -6,6 +6,7 @@ Imports Microsoft.Office.Interop
 Public Class FormWählclient
 
 #Region "Properties"
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property ScaleFaktor As Drawing.SizeF
     Private Property OKontakt As Outlook.ContactItem
 #End Region
@@ -242,7 +243,8 @@ Public Class FormWählclient
 
                 DialCode = String.Format("{2}{1}{0}{3}", DialCode, XMLData.POptionen.PTBAmt, If(Me.CBCLIR.Checked, "*31#", PDfltStringEmpty), "#")
 
-                WählClient_SetStatus(PWählClientStatusWählClient(DialCode)) : LogFile(PWählClientLogDial(DialCode, CStr(Me.ComboBoxFon.SelectedItem)))
+                WählClient_SetStatus(PWählClientStatusWählClient(DialCode))
+                NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, CStr(Me.ComboBoxFon.SelectedItem))
             End If
 
             'If WählClient.SOAPDial(DialCode, XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.AreEqual(CStr(Me.ComboBoxFon.SelectedItem))), AufbauAbbrechen) Then

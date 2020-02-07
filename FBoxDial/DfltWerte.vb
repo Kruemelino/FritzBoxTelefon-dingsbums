@@ -169,6 +169,12 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PDfltLog_FileName() As String = PDfltAddin_KurzName & ".log"
 
     ''' <summary>
+    ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level:uppercase=true}|${logger}|${message}
+    ''' </summary>
+    ''' <returns>${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level:uppercase=true}|${logger}|${message}</returns>
+    Public Shared ReadOnly Property PDfltNLog_LayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true}|${callsite-linenumber}|${message}"
+
+    ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
     ''' </summary>
     ''' <value>Integer</value>
@@ -425,18 +431,6 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PWählClientStatusWählClient(ByVal DialCode As String) As String
         Get
             Return String.Format("Dialcode: {0}", DialCode)
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Wählclient SOAPDial: <paramref name="DialCode"/> über <paramref name="TelGerät"/>
-    ''' </summary>
-    ''' <param name="DialCode"></param>
-    ''' <param name="TelGerät"></param>
-    ''' <returns></returns>
-    Public Shared ReadOnly Property PWählClientLogDial(ByVal DialCode As String, TelGerät As String) As String
-        Get
-            Return String.Format("Wählclient SOAPDial: {0} über {1}", DialCode, TelGerät)
         End Get
     End Property
 

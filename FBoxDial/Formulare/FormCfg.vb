@@ -4,6 +4,8 @@ Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
 
 Public Class FormCfg
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
     Private FritzBoxDaten As FritzBoxData
 
     Private WithEvents BWIndexer As BackgroundWorker
@@ -445,8 +447,7 @@ Public Class FormCfg
             SetProgressbarMax(ProgressBarIndex.Maximum)
         End If
         BWIndexer.Dispose()
-
-        LogFile(String.Format("{0}Indizierung abgeschlossen: {1} von {2} Kontakten.", If(RadioButtonEntfernen.Checked, "De-", ""), ProgressBarIndex.Value, ProgressBarIndex.Maximum))
+        NLogger.Info("{0}Indizierung abgeschlossen: {1} von {2} Kontakten.", If(RadioButtonEntfernen.Checked, "De-", ""), ProgressBarIndex.Value, ProgressBarIndex.Maximum)
     End Sub
 
     Private Sub SetProgressbar(ByVal Wert As Integer)

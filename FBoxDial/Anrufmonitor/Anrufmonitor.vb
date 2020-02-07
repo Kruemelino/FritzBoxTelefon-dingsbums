@@ -1,9 +1,7 @@
 ﻿Friend Class Anrufmonitor
-
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private WithEvents TCPr As TCPReader
-
     Friend Property Aktiv As Boolean
-
     Friend Shared ReadOnly Property AnrMon_RING As String = "RING"
     Friend Shared ReadOnly Property AnrMon_CALL As String = "CALL"
     Friend Shared ReadOnly Property AnrMon_CONNECT As String = "CONNECT"
@@ -31,7 +29,21 @@
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
+    Friend Sub StopAnrMon()
+        If Aktiv Then
+            If TCPr IsNot Nothing Then TCPr.Disconnect = True
+            Aktiv = False
+        End If
+    End Sub
+
     Private Sub TCPr_Connected() Handles TCPr.Connected
+        NLogger.Info("Anrufmonitor verbunden zu {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
+        Aktiv = TCPr.Verbunden
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
+    End Sub
+
+    Private Sub TCPr_Disconnected() Handles TCPr.Disconnected
+        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
         Aktiv = TCPr.Verbunden
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
@@ -48,8 +60,7 @@
         Dim FBStatusSplit As String() = FBStatus.Split(AnrMon_Delimiter)
 
         ' Hier die Daten des Fritz!Box Anrufmonitors weitergeben
-
-        LogFile("AnrMonAktion: " & FBStatus)
+        NLogger.Info("AnrMonAktion: {0}", FBStatus)
 
         'Schauen ob "RING", "CALL", "CONNECT" oder "DISCONNECT" übermittelt wurde
         Select Case FBStatusSplit(1)

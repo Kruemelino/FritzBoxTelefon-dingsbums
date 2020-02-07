@@ -53,6 +53,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
      Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion 
      Source: "..\FBoxDial\bin\Debug2010\MixERP.Net.VCards.dll";                               Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Newtonsoft.Json.dll";                                 Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\NLog.dll";                                            Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 #if FileExists("..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll")
@@ -63,6 +64,7 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
     Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion 
     Source: "..\FBoxDial\bin\Debug2013\MixERP.Net.VCards.dll";                                Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Newtonsoft.Json.dll";                                  Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2010\NLog.dll";                                             Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 [Icons]

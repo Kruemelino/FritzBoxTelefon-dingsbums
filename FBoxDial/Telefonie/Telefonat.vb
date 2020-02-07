@@ -2,6 +2,9 @@
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
     Implements IEquatable(Of Telefonat)
+
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
 #Region "Eigenschaften"
     <XmlAttribute> Public Property ID As Integer
     <XmlIgnore> Public Property EigeneTelNr As Telefonnummer
@@ -348,7 +351,7 @@ Imports Microsoft.Office.Interop
                 Try
                     olJournal = CType(OutlookApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
                 Catch ex As Exception
-                    LogFile("ErstelleJournalItem: " & ex.Message)
+                    NLogger.Error(ex)
                 End Try
 
                 If olJournal IsNot Nothing Then
@@ -405,7 +408,7 @@ Imports Microsoft.Office.Interop
                 End If
             End If
         Else
-            LogFile(PDfltJournalFehler)
+            NLogger.Info(PDfltJournalFehler)
         End If
     End Sub
 

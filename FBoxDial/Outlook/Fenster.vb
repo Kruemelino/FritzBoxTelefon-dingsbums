@@ -2,6 +2,7 @@
 
 Friend Module Fenster
 #Region "Properties"
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
     Private Property OInsp As Outlook.Inspector
 #End Region
@@ -30,7 +31,7 @@ Friend Module Fenster
                 screenBounds = Windows.Forms.Screen.FromHandle(hWnd).Bounds
                 If (AppBounds.Bottom - AppBounds.Top).AreEqual(screenBounds.Height) And (AppBounds.Right - AppBounds.Left).AreEqual(screenBounds.Width) Then
                     VollBildAnwendungAktiv = True
-                    LogFile("Eine aktive Vollbildanwendung wurde detektiert.")
+                    NLogger.Info("Eine aktive Vollbildanwendung wurde detektiert.")
                 End If
             End If
         End If

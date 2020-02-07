@@ -5,6 +5,7 @@ Imports System.Xml.Serialization
 Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 Friend Module KontaktFunktionen
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
     Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder = OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
 
@@ -86,10 +87,10 @@ Friend Module KontaktFunktionen
                     ' Handlung 2:
                     If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
                         olKontakt.Save()
-                        LogFile("Kontakt " & olKontakt.FullName & " wurde Hauptkontaktordner gespeichert.")
+                        NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
                     Else
                         olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                        LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
+                        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
                     End If
 
                     KontaktID = olKontakt.EntryID
@@ -146,10 +147,10 @@ Friend Module KontaktFunktionen
                     ' Handlung 2:
                     If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
                         olKontakt.Save()
-                        LogFile("Kontakt " & olKontakt.FullName & " wurde Hauptkontaktordner gespeichert.")
+                        NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
                     Else
                         olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                        LogFile("Kontakt " & olKontakt.FullName & " wurde erstellt und in den Ordner " & olFolder.Name & " verschoben.")
+                        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
                     End If
 
                     KontaktID = olKontakt.EntryID
@@ -279,18 +280,17 @@ Friend Module KontaktFunktionen
         Try
             GetOutlookKontakt = CType(OutlookApp.Session.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Catch ex As Exception
-            LogFile("GetOutlookKontakt: " & ex.Message)
+            NLogger.Error(ex)
         End Try
     End Function
     Friend Function GetOutlookKontakt(ByRef KontaktIDStoreID As Object()) As Outlook.ContactItem
         GetOutlookKontakt = Nothing
 
-
         If Not KontaktIDStoreID.Contains(DfltErrorvalue) Then
             Try
                 GetOutlookKontakt = CType(OutlookApp.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), Outlook.ContactItem)
             Catch ex As Exception
-                LogFile("GetOutlookKontakt: " & ex.Message)
+                NLogger.Error(ex)
             End Try
         End If
     End Function
@@ -308,7 +308,7 @@ Friend Module KontaktFunktionen
             Try
                 GetOutlookFolder = CType(ThisAddIn.POutookApplication.Session.GetFolderFromID(FolderID, StoreID), Outlook.MAPIFolder)
             Catch ex As Exception
-                LogFile("GetOutlookFolder: " & ex.Message)
+                NLogger.Error(ex)
             End Try
         End If
 
@@ -501,7 +501,7 @@ Friend Module KontaktFunktionen
                     ChildNode.Tag = ChildNode.Name
                     If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
                 Catch ex As Exception
-                    LogFile(String.Format("Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name))
+                    NLogger.Error(ex, "Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name)
                     ChildNode = BaseNode
                 End Try
             Else

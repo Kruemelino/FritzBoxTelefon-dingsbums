@@ -3,6 +3,7 @@
 Friend Class KontaktIndizierer
     Implements IDisposable
 
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 #Region "Kontaktindizierung"
 
     ''' <summary>
@@ -43,7 +44,7 @@ Friend Class KontaktIndizierer
             Try
                 .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
             Catch ex As Exception
-                LogFile(String.Format("IndiziereKontakt: {0} - ({1})", olKontakt.FullNameAndCompany, ex.Message))
+                NLogger.Error(ex, "Kontakt: {0}", olKontakt.FullNameAndCompany)
             End Try
 
 
@@ -51,7 +52,7 @@ Friend Class KontaktIndizierer
 
             If Not .Saved Then
                 .Save()
-                LogFile("Kontakt " & olKontakt.FullNameAndCompany & " wurde durch die Indizierung gespeichert.")
+                NLogger.Info("Kontakt {0} wurde durch die Indizierung gespeichert.", olKontakt.FullNameAndCompany)
             End If
         End With
     End Sub

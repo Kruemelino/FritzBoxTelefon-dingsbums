@@ -6,6 +6,7 @@ Public Class FritzBoxWählClient
     Implements IDisposable
 
 #Region "Properties"
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private ReadOnly Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
     Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.PFBLinkBasis & "/data.lua"
     Private ReadOnly Property PFBLinkDialSetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
@@ -62,13 +63,15 @@ Public Class FritzBoxWählClient
                 If OutPutData.Contains("Error") Then
                     DialPortEingestellt = False
                     StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
-                    LogFile(StatusMeldung) : RaiseEvent SetStatus(StatusMeldung)
+                    NLogger.Error(StatusMeldung)
+                    RaiseEvent SetStatus(StatusMeldung)
                 Else
                     ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
                     DialPortEingestellt = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig").Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
                     If Not DialPortEingestellt Then
                         StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientStatusSOAPDialPortFehler, Telefon.UPnPDialport)
-                        LogFile(StatusMeldung) : RaiseEvent SetStatus(StatusMeldung)
+                        NLogger.Error(StatusMeldung)
+                        RaiseEvent SetStatus(StatusMeldung)
                     End If
                 End If
             End If
@@ -89,7 +92,8 @@ Public Class FritzBoxWählClient
 
                 If Not SOAPDial Then
                     StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
-                    LogFile(StatusMeldung) : RaiseEvent SetStatus(StatusMeldung)
+                    NLogger.Error(StatusMeldung)
+                    RaiseEvent SetStatus(StatusMeldung)
                 End If
             End If
         End Using
@@ -150,7 +154,7 @@ Public Class FritzBoxWählClient
                 If fbAntwort = "{""dialing"":true,""err"":0}" Or (fbAntwort.Contains("""dialing""") And fbAntwort.Contains(If(Auflegen, "false", sDialCode))) Then
                     Return True
                 Else
-                    LogFile(String.Format("{0}: {1} {2}", "WebCientDial", "Fehler", fbAntwort.Replace(vbLf, "")))
+                    NLogger.Error("{0}: {1} {2}", "WebCientDial", "Fehler", fbAntwort.Replace(vbLf, ""))
                     Return False
                 End If
             Else

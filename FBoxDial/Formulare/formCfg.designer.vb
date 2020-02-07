@@ -1922,6 +1922,7 @@ Partial Class FormCfg
         'TBLogging
         '
         Me.TBLogging.Dock = System.Windows.Forms.DockStyle.Top
+        Me.TBLogging.Font = New System.Drawing.Font("Consolas", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TBLogging.Location = New System.Drawing.Point(4, 24)
         Me.TBLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.TBLogging.Multiline = True

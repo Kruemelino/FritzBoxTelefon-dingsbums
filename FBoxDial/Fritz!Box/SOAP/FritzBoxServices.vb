@@ -4,24 +4,20 @@ Imports System.Xml
 
 Public Class FritzBoxServices
     Implements IDisposable
-
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property ServiceList As List(Of ServiceBaseInformation)
-    Private Property SOAPBereit As Boolean
+
     Public Sub New()
 
         ErrorHashTable = New Hashtable
         ServicePointManager.ServerCertificateValidationCallback = New Security.RemoteCertificateValidationCallback(AddressOf AcceptCert)
 
-        SOAPBereit = Ping(XMLData.POptionen.PTBFBAdr)
 
-        If SOAPBereit Then
+        If Ping(XMLData.POptionen.PTBFBAdr) Then
             ServiceList = SetupServices(GetSOAPXMLFile("http://" & XMLData.POptionen.PTBFBAdr & ":" & FritzBoxDefault.PDfltFBSOAP & KnownSOAPFile.tr64desc))
         Else
-            LogFile("XMLData.POptionen.PTBFBAdr")
+            NLogger.Warn("SOAP zur Fritz!Box ist nicht bereit: {0}", XMLData.POptionen.PTBFBAdr)
         End If
-
-        ' Lade Services
-
     End Sub
 
     Private Function AcceptCert(ByVal sender As Object, ByVal cert As System.Security.Cryptography.X509Certificates.X509Certificate, ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, ByVal errors As System.Net.Security.SslPolicyErrors) As Boolean
@@ -65,7 +61,7 @@ Public Class FritzBoxServices
     End Function
 
     Friend Overloads Function Start(ByVal SCPDURL As String, ByVal FritzBoxActionName As String, ByVal FritzBoxInputHashTable As Hashtable) As Hashtable
-        If SOAPBereit Then
+        If Ping(XMLData.POptionen.PTBFBAdr) Then
             Dim tmpSOAPService As New FritzBoxSOAPService(GetServiceBaseInformationbySCPDURL(SCPDURL))
             Dim SOAPError As String
 

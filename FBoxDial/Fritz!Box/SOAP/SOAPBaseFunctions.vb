@@ -3,7 +3,7 @@ Imports System.IO
 Imports System.Xml
 
 Friend Module SOAPBaseFunctions
-
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 #Region "HTTP"
     Public Function FritzBoxGet(ByVal Link As String, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
@@ -24,15 +24,15 @@ Friend Module SOAPBaseFunctions
                             FBError = False
                         Catch exANE As ArgumentNullException
                             FBError = True
-                            LogFile("httpGET_WebClient: " & exANE.Message)
+                            NLogger.Error(exANE)
                         Catch exWE As WebException
                             FBError = True
-                            LogFile("httpGET_WebClient: " & exWE.Message & " - Link: " & Link)
+                            NLogger.Error(exWE, "Link: {0}", Link)
                         End Try
                     End With
                 End Using
             Case Else
-                LogFile("Uri.Scheme: " & UniformResourceIdentifier.Scheme)
+                NLogger.Warn("Uri.Scheme: {0}", UniformResourceIdentifier.Scheme)
         End Select
         Return retVal
     End Function

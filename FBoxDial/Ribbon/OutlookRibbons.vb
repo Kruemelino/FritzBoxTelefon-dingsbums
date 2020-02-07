@@ -5,7 +5,7 @@ Imports System.Xml
 
 <Runtime.InteropServices.ComVisible(True)> Public Class OutlookRibbons
     Implements IRibbonExtensibility
-
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private ReadOnly Property OutlookApp() As Outlook.Application
         Get
             Return ThisAddIn.POutookApplication
@@ -223,7 +223,7 @@ Imports System.Xml
             Case "btnUpload", "cdMUpload", "MUpload"
                 Return P_CMB_Insp_Upload
             Case Else
-                LogFile("GetItemLabel: Kann control.Id " & control.Id & " nicht auswerten.")
+                NLogger.Warn("Kann control.Id {0} nicht auswerten.", control.Id)
                 Return PDfltStrErrorMinusOne
         End Select
     End Function
@@ -265,7 +265,7 @@ Imports System.Xml
             Case "btnUpload"
                 Return P_CMB_Insp_UploadKontakt_ToolTipp()
             Case Else
-                LogFile("GetItemScreenTipp: Kann control.Id " & control.Id & " nicht auswerten.")
+                NLogger.Warn("Kann control.Id {0} nicht auswerten.", control.Id)
                 Return PDfltStrErrorMinusOne
         End Select
     End Function
@@ -311,7 +311,7 @@ Imports System.Xml
             Case "CallList", "RingList", "VIPList"
                 Return PDfltStringEmpty
             Case Else
-                LogFile("GetItemImageMso: Kann control.Id " & control.Id & " nicht auswerten.")
+                NLogger.Warn("Kann control.Id {0} nicht auswerten.", control.Id)
                 Return "TraceError"
         End Select
 

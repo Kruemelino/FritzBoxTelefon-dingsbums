@@ -4,7 +4,7 @@ Imports System.Net.Sockets
 Imports System.Threading
 Imports System.Threading.Tasks
 Friend Class TCPReader
-
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property Endpoint As String
     Private Property EndpointPort As Integer
 
@@ -12,6 +12,7 @@ Friend Class TCPReader
 
     Friend Event DataAvailable(ByVal Data As String)
     Friend Event Connected()
+    Friend Event Disconnected()
     Friend Property Disconnect As Boolean
     Friend Property Verbunden As Boolean
     Public Sub New(ByVal IPEndpoint As String, ByVal PortEndpoint As Integer)
@@ -66,6 +67,7 @@ Friend Class TCPReader
                 Return TCPSocket
             Catch SocketError As SocketException
                 Verbunden = False
+                NLogger.Error(SocketError)
                 'Select Case SocketError.SocketErrorCode
                 '    Case Sockets.SocketError.AccessDenied
                 '    Case Sockets.SocketError.ConnectionRefused
@@ -84,13 +86,14 @@ Friend Class TCPReader
 
         If TCPSocket IsNot Nothing AndAlso TCPSocket.Connected Then
             Using sR As New StreamReader(DataStream)
-                Do While TCPSocket.Connected Or Disconnect
+                Do While TCPSocket.Connected And Not Disconnect
                     If DataStream.DataAvailable Then
                         RaiseEvent DataAvailable(sR.ReadLine)
                     End If
                 Loop
                 If Disconnect Then
                     Verbunden = False
+                    RaiseEvent Disconnected()
                     TCPSocket.Disconnect(False)
                 End If
             End Using

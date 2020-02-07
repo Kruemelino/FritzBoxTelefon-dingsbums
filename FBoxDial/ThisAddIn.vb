@@ -9,9 +9,10 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property PAnrufmonitor As Anrufmonitor
     Friend Shared Property PPhoneBookXML As FritzBoxXMLTelefonbücher
     Friend Shared Property PCallListXML As FritzBoxXMLCallList
-
     Friend Shared Property OffeneKontakInsepektoren As List(Of ContactSaved)
     Friend Shared Property OffenePopUps As List(Of Popup)
+
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Friend Shared ReadOnly Property Version() As String
         Get
             With Reflection.Assembly.GetExecutingAssembly.GetName.Version
@@ -27,6 +28,8 @@ Public NotInheritable Class ThisAddIn
 
     Private Sub ThisAddIn_Startup() Handles Me.Startup
         Dim UserData As NutzerDaten = New NutzerDaten
+        ' Logging konfigurieren
+        NLog.LogManager.Configuration = DefaultNLogConfig()
 
         ' Outlook.Application initialisieren
         If POutookApplication Is Nothing Then POutookApplication = CType(Application, Application)
@@ -36,10 +39,10 @@ Public NotInheritable Class ThisAddIn
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
+            NLogger.Info("{0} V{1} gestartet.", PDfltAddin_LangName, Version)
         Else
-            LogFile("Addin nicht gestartet, da kein Explorer vorhanden")
+            NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
-
     End Sub
 
     Private Async Sub StarteAddinFunktionen()
@@ -63,9 +66,11 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
-        ' Eintrag ins Log
-        LogFile(String.Format("{0} V{1} beendet.", PDfltAddin_LangName, Version))
 
+        ' Anrufmonitor beenden
+        PAnrufmonitor.StopAnrMon()
+        ' Eintrag ins Log
+        NLogger.Info("{0} V{1} beendet.", PDfltAddin_LangName, Version)
         ' XML-Datei Speichern
         XMLData.Speichern()
     End Sub
@@ -75,7 +80,7 @@ Public NotInheritable Class ThisAddIn
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
-        LogFile("PowerMode: " & e.Mode.ToString & " (" & e.Mode & ")")
+        NLogger.Info("PowerMode: {0} ({1})", e.Mode.ToString, e.Mode)
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
                 ' Wiederherstelung nach dem Standby
