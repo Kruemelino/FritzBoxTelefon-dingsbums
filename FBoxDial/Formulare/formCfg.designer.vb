@@ -168,11 +168,12 @@ Partial Class FormCfg
         Me.GBLogging = New System.Windows.Forms.GroupBox()
         Me.LinkLogFile = New System.Windows.Forms.LinkLabel()
         Me.TBLogging = New System.Windows.Forms.TextBox()
-        Me.CBLogFile = New System.Windows.Forms.CheckBox()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.CBoxMinLogLevel = New System.Windows.Forms.ComboBox()
+        Me.LMinLogLevel = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -1884,8 +1885,9 @@ Partial Class FormCfg
         '
         'PLogging
         '
+        Me.PLogging.Controls.Add(Me.LMinLogLevel)
+        Me.PLogging.Controls.Add(Me.CBoxMinLogLevel)
         Me.PLogging.Controls.Add(Me.GBLogging)
-        Me.PLogging.Controls.Add(Me.CBLogFile)
         Me.PLogging.Controls.Add(Me.Label23)
         Me.PLogging.Location = New System.Drawing.Point(4, 29)
         Me.PLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
@@ -1930,17 +1932,6 @@ Partial Class FormCfg
         Me.TBLogging.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TBLogging.Size = New System.Drawing.Size(847, 278)
         Me.TBLogging.TabIndex = 25
-        '
-        'CBLogFile
-        '
-        Me.CBLogFile.AutoSize = True
-        Me.CBLogFile.Location = New System.Drawing.Point(9, 77)
-        Me.CBLogFile.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBLogFile.Name = "CBLogFile"
-        Me.CBLogFile.Size = New System.Drawing.Size(163, 24)
-        Me.CBLogFile.TabIndex = 12
-        Me.CBLogFile.Text = "Logging aktivieren"
-        Me.CBLogFile.UseVisualStyleBackColor = True
         '
         'Label23
         '
@@ -2002,6 +1993,24 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
+        '
+        'CBoxMinLogLevel
+        '
+        Me.CBoxMinLogLevel.FormattingEnabled = True
+        Me.CBoxMinLogLevel.Items.AddRange(New Object() {"Fatal", "Error", "Warn", "Info", "Debug", "Trace"})
+        Me.CBoxMinLogLevel.Location = New System.Drawing.Point(173, 81)
+        Me.CBoxMinLogLevel.Name = "CBoxMinLogLevel"
+        Me.CBoxMinLogLevel.Size = New System.Drawing.Size(121, 28)
+        Me.CBoxMinLogLevel.TabIndex = 27
+        '
+        'LMinLogLevel
+        '
+        Me.LMinLogLevel.AutoSize = True
+        Me.LMinLogLevel.Location = New System.Drawing.Point(7, 84)
+        Me.LMinLogLevel.Name = "LMinLogLevel"
+        Me.LMinLogLevel.Size = New System.Drawing.Size(141, 20)
+        Me.LMinLogLevel.TabIndex = 28
+        Me.LMinLogLevel.Text = "Minimales Loglevel"
         '
         'FormCfg
         '
@@ -2133,7 +2142,6 @@ Partial Class FormCfg
     Friend WithEvents TBBenutzer As System.Windows.Forms.TextBox
     Friend WithEvents LinkHomepage As System.Windows.Forms.LinkLabel
     Friend WithEvents PLogging As System.Windows.Forms.TabPage
-    Friend WithEvents CBLogFile As System.Windows.Forms.CheckBox
     Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents TBLogging As System.Windows.Forms.TextBox
     Friend WithEvents GBLogging As System.Windows.Forms.GroupBox
@@ -2216,4 +2224,6 @@ Partial Class FormCfg
     Friend WithEvents CBAnrListeShowAnrMon As Windows.Forms.CheckBox
     Friend WithEvents CBAutoAnrList As Windows.Forms.CheckBox
     Friend WithEvents CBAnrListeUpdateCallLists As Windows.Forms.CheckBox
+    Friend WithEvents LMinLogLevel As Windows.Forms.Label
+    Friend WithEvents CBoxMinLogLevel As Windows.Forms.ComboBox
 End Class

@@ -54,7 +54,6 @@ Friend Class KontaktSucher
         Do While (j <= NamensRaum.Folders.Count) And (KontaktGefunden Is Nothing)
             KontaktGefunden = Await FindeAnruferKontakt(NamensRaum.Folders.Item(j), sFilter)
             j += 1
-            Windows.Forms.Application.DoEvents()
         Loop
         Return KontaktGefunden
     End Function
@@ -92,7 +91,6 @@ Friend Class KontaktSucher
         Do While (iOrdner <= Ordner.Folders.Count) And (olKontakt Is Nothing)
             olKontakt = Await FindeAnruferKontakt(Ordner.Folders.Item(iOrdner), sFilter)
             iOrdner += 1
-            Windows.Forms.Application.DoEvents()
         Loop
         Return olKontakt
     End Function '(FindeKontakt)

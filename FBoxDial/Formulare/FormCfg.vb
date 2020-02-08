@@ -32,11 +32,11 @@ Public Class FormCfg
                 Ausfüllen(ctrl)
             End If
 
+            tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name))
+
             If ctrl.GetType().Equals(GetType(TextBox)) Or
                ctrl.GetType().Equals(GetType(MaskedTextBox)) Or
                ctrl.GetType().Equals(GetType(CheckBox)) Then
-
-                tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name))
 
                 If tmpPropertyInfo IsNot Nothing Then
                     Select Case ctrl.GetType
@@ -54,15 +54,14 @@ Public Class FormCfg
                 If ctrl.Name.AreEqual(TBLogging.Name) Then
                     Dim LogDatei As String = IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName)
                     LinkLogFile.Text = LogDatei
-                    If XMLData.POptionen.PCBLogFile Then
-                        With My.Computer.FileSystem
-                            If .FileExists(LogDatei) Then
-                                Using reader As New IO.StreamReader(LogDatei)
-                                    TBLogging.Text = Await reader.ReadToEndAsync
-                                End Using
-                            End If
-                        End With
-                    End If
+
+                    With My.Computer.FileSystem
+                        If .FileExists(LogDatei) Then
+                            Using reader As New IO.StreamReader(LogDatei)
+                                TBLogging.Text = Await reader.ReadToEndAsync
+                            End Using
+                        End If
+                    End With
                 End If
 
             ElseIf ctrl.GetType().Equals(GetType(DataGridView)) Then
@@ -75,8 +74,14 @@ Public Class FormCfg
                 ' Anrufmonitor Simulation
                 ctrl.Text = Date.Now.ToString
             ElseIf ctrl.GetType().Equals(GetType(ComboBox)) Then
-                ' Anrufmonitor Simulation
-                SetComboBox(CType(ctrl, ComboBox))
+
+                If tmpPropertyInfo IsNot Nothing Then
+                    SetComboBox(CType(ctrl, ComboBox), tmpPropertyInfo.GetValue(XMLData.POptionen).ToString)
+                Else
+                    ' Anrufmonitor Simulation
+                    SetComboBox(CType(ctrl, ComboBox))
+                End If
+
             ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
                 If ctrl.Name.AreEqual(TVOutlookContact.Name) Then
                     ' Treeview für Kontaktordner
@@ -213,6 +218,16 @@ Public Class FormCfg
 
     End Sub
 
+    Private Sub SetComboBox(ByVal CBox As ComboBox, ByVal SelektiertesElement As String)
+        With CBox
+            .DataBindings.Clear()
+            Select Case CBox.Name
+                Case Me.CBoxMinLogLevel.Name
+                    .SelectedItem = SelektiertesElement
+            End Select
+        End With
+    End Sub
+
     Private Sub SetComboBox(ByVal CBox As ComboBox)
         With CBox
             .DataBindings.Clear()
@@ -226,7 +241,6 @@ Public Class FormCfg
                     .DisplayMember = NameOf(Telefoniegerät.Name)
                     .ValueMember = NameOf(Telefoniegerät.AnrMonID)
             End Select
-
         End With
     End Sub
 

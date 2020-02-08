@@ -9,6 +9,8 @@ Public Class FormAnrList
     Private Property IList As ImageList
     Private Property Anrufliste As FritzBoxXMLCallList
     Private Property Source As BindingSource
+
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private WithEvents BWImport As BackgroundWorker
 
 #Region "Delegaten"
@@ -294,7 +296,7 @@ Public Class FormAnrList
     End Function
 
     Private Sub DGVAnrListe_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DGVAnrListe.DataError
-        Debug.Print(String.Format("{0}: {1}", Now.ToShortTimeString, e.Exception.Message))
+        NLogger.Error(e.Exception)
     End Sub
 
     Private Sub ButtonStart_Click(sender As Object, e As EventArgs) Handles ButtonStart.Click

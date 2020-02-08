@@ -3,6 +3,7 @@
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
 Friend Class Rijndael
     Implements IDisposable
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 
     ''' <summary>
     ''' Verschlüsselungsroutine
@@ -78,7 +79,10 @@ Friend Class Rijndael
                         End Using
                     End With
                 End Using
-            Catch : End Try ' Die Ausnahme tritt ein, wenn die Entschlüsselung nicht möglich ist.
+            Catch ex As Exception
+                ' Die Ausnahme tritt ein, wenn die Entschlüsselung nicht möglich ist.
+                NLogger.Error(ex)
+            End Try
         End If
     End Function
 

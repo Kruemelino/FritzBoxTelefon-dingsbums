@@ -22,7 +22,7 @@
     Public Shared ReadOnly Property PDfltCBCallByCall() As Boolean = False
     Public Shared ReadOnly Property PDfltCBDialPort() As Boolean = False
     Public Shared ReadOnly Property PDfltCBKErstellen() As Boolean = False
-    Public Shared ReadOnly Property PDfltCBLogFile() As Boolean = True
+    Public Shared ReadOnly Property PDfltCBoxMinLogLevel() As String = "Info"
     Public Shared ReadOnly Property PDfltCBJImport() As Boolean = False
     Public Shared ReadOnly Property PDfltCBAnrListeUpdateCallLists() As Boolean = False
     Public Shared ReadOnly Property PDfltCBAnrListeShowAnrMon() As Boolean = False

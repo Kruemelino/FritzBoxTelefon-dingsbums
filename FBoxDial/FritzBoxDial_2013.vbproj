@@ -312,9 +312,6 @@
     </Compile>
     <Compile Include="UnSaveNativeMethods.vb" />
     <None Include="app.config" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">

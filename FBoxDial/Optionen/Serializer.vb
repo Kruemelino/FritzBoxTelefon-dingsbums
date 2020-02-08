@@ -5,6 +5,8 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 Friend Module Serializer
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
     <Extension> Friend Function Laden(ByRef XMLData As OutlookXML) As Boolean
         Dim mySerializer As New XmlSerializer(GetType(OutlookXML))
         Dim DateiInfo As FileInfo
@@ -21,7 +23,7 @@ Friend Module Serializer
                     Try
                         XMLData = CType(mySerializer.Deserialize(XmlLeser), OutlookXML)
                     Catch ex As InvalidOperationException
-                        Stop
+                        NLogger.Fatal(ex)
                     End Try
                 End If
             End Using
@@ -50,7 +52,7 @@ Friend Module Serializer
                                     Try
                                         Return CType(mySerializer.Deserialize(XmlLeser), T)
                                     Catch ex As InvalidOperationException
-                                        Stop
+                                        NLogger.Fatal(ex)
                                     End Try
                                 End If
                             End Using

@@ -5,7 +5,6 @@ Imports System.Text.RegularExpressions
 
 <DebuggerStepThrough()>
 Public Module Extensions
-
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 
 #Region "Extensions für Verarbeitung von Zahlen: Double, Integer, Long"
@@ -633,6 +632,7 @@ Public Module Extensions
             regAppliedDPI = CInt(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics", "AppliedDPI", Nothing))
         Catch ex As Exception
             regAppliedDPI = 96
+            NLogger.Warn(ex)
         End Try
         Return New Drawing.SizeF((regAppliedDPI / 96).ToSng, (regAppliedDPI / 96).ToSng)
     End Function

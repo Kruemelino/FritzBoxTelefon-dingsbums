@@ -124,6 +124,6 @@
 #End Region
 
 #Region "Logging"
-    <XmlElement("CBLogFile")> Public Property PCBLogFile As Boolean
+    <XmlElement("CBoxMinLogLevel")> Public Property PCBoxMinLogLevel As String
 #End Region
 End Class

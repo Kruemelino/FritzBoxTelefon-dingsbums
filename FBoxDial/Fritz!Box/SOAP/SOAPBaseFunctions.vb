@@ -78,18 +78,23 @@ Friend Module SOAPBaseFunctions
                 End With
             Catch ex As WebException When ex.Message.Contains("606")
                 ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """ Action not authorized"""
+                NLogger.Error(ex)
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("500")
                 ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction & vbNewLine & vbNewLine & "Method: " & .Method.ToString & vbNewLine & "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & "ContentType: " & .ContentType.ToString & vbNewLine & "UserAgent: " & .UserAgent.ToString & vbNewLine & "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & SOAPXML
+                NLogger.Error(ex)
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("713")
                 ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """ Invalid array index"""
+                NLogger.Error(ex)
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("820")
                 ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """ Internal error """
+                NLogger.Error(ex)
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             Catch ex As WebException When ex.Message.Contains("401")
                 ErrorText = "SOAP Login-Fehler 401: " & SOAPAction & """ Unauthorized"""
+                NLogger.Error(ex)
                 'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
             End Try
         End With
@@ -131,21 +136,27 @@ Friend Module SOAPBaseFunctions
                     RetVal = .UploadString(fbURI, SOAPXML)
                 Catch ex As WebException When ex.Message.Contains("606")
                     ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """ Action not authorized"""
+                    NLogger.Error(ex)
                     'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
                 Catch ex As WebException When ex.Message.Contains("500")
                     ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction ' & vbNewLine & vbNewLine & "Method: " & .Method.ToString & vbNewLine & "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & "ContentType: " & .ContentType.ToString & vbNewLine & "UserAgent: " & .UserAgent.ToString & vbNewLine & "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & SOAPXML
+                    NLogger.Error(ex)
                     'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
                 Catch ex As WebException When ex.Message.Contains("713")
                     ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """ Invalid array index"""
+                    NLogger.Error(ex)
                     'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
                 Catch ex As WebException When ex.Message.Contains("820")
                     ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """ Internal error """
+                    NLogger.Error(ex)
                     'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
                 Catch ex As WebException When ex.Message.Contains("401")
                     ErrorText = "SOAP Login-Fehler 401: " & SOAPAction & """ Unauthorized"""
+                    NLogger.Error(ex)
                     'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
                 Catch ex As Exception
                     ErrorText = ex.Message
+                    NLogger.Error(ex)
                     MsgBox(ErrorText, MsgBoxStyle.Exclamation, "SOAP POST Client")
                 End Try
             End With
