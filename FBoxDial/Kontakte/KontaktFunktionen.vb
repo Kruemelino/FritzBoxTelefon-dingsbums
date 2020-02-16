@@ -6,8 +6,7 @@ Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 Friend Module KontaktFunktionen
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-    Private Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
-    Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder = OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+    Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
 
     ''' <summary>
     ''' Erstellt einen Kontakt aus einer vCard.
@@ -24,7 +23,7 @@ Friend Module KontaktFunktionen
 
         If Not TelNr.Unbekannt Then
 
-            olKontakt = CType(OutlookApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            olKontakt = CType(ThisAddIn.POutookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
 
             With olKontakt
 
@@ -112,7 +111,7 @@ Friend Module KontaktFunktionen
 
         If Not TelNr.Unbekannt Then
 
-            olKontakt = CType(OutlookApp.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            olKontakt = CType(ThisAddIn.POutookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
 
             With olKontakt
 
@@ -278,7 +277,7 @@ Friend Module KontaktFunktionen
     Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As Outlook.ContactItem
         GetOutlookKontakt = Nothing
         Try
-            GetOutlookKontakt = CType(OutlookApp.Session.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
+            GetOutlookKontakt = CType(ThisAddIn.POutookApplication.Session.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
         Catch ex As Exception
             NLogger.Error(ex)
         End Try
@@ -288,7 +287,7 @@ Friend Module KontaktFunktionen
 
         If Not KontaktIDStoreID.Contains(DfltErrorvalue) Then
             Try
-                GetOutlookKontakt = CType(OutlookApp.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), Outlook.ContactItem)
+                GetOutlookKontakt = CType(ThisAddIn.POutookApplication.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), Outlook.ContactItem)
             Catch ex As Exception
                 NLogger.Error(ex)
             End Try
@@ -355,7 +354,7 @@ Friend Module KontaktFunktionen
         Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
         Dim olfolder As Outlook.MAPIFolder
         Dim retval As Integer
-        olNamespace = OutlookApp.GetNamespace("MAPI")
+        olNamespace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
 
         If XMLData.POptionen.PCBKontaktSucheHauptOrdner Then
             olfolder = P_DefContactFolder
@@ -457,7 +456,7 @@ Friend Module KontaktFunktionen
 
 #Region "TreeView"
     Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
-        Dim olNamespace As Outlook.NameSpace = OutlookApp.GetNamespace("MAPI")
+        Dim olNamespace As Outlook.NameSpace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
         Dim iOrdner As Integer = 1
 
         With TreeView
@@ -605,7 +604,7 @@ Friend Module KontaktFunktionen
     Friend Function GetSmtpAddress(ByVal card As IMsoContactCard) As String
         If card.AddressType = MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
 
-            Dim ae As Outlook.AddressEntry = OutlookApp.Session.GetAddressEntryFromID(card.Address)
+            Dim ae As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(card.Address)
 
             Select Case ae.AddressEntryUserType
                 Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry

@@ -3,7 +3,6 @@
 Friend Module Fenster
 #Region "Properties"
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-    Private Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
     Private Property OInsp As Outlook.Inspector
 #End Region
     ''' <summary>
@@ -48,7 +47,7 @@ Friend Module Fenster
     ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
     Friend Sub KeepoInspActivated(ByVal Activate As Boolean)
 
-        If OutlookApp IsNot Nothing Then
+        If ThisAddIn.POutookApplication IsNot Nothing Then
             If Activate Then
                 If OInsp IsNot Nothing Then
                     If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
@@ -58,7 +57,7 @@ Friend Module Fenster
                 End If
             Else
                 If OInsp Is Nothing Then
-                    With OutlookApp
+                    With ThisAddIn.POutookApplication
                         If .ActiveWindow Is .ActiveInspector Then
                             If UnSaveMethods.GetWindowText(UnSaveMethods.GetForegroundWindow) = .ActiveInspector.Caption Then
                                 OInsp = .ActiveInspector()

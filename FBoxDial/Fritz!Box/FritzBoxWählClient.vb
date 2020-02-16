@@ -347,6 +347,7 @@ Public Class FritzBoxWählClient
             End With
         End If
     End Sub
+#End Region
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.
@@ -379,5 +380,5 @@ Public Class FritzBoxWählClient
         ' GC.SuppressFinalize(Me)
     End Sub
 #End Region
-#End Region
+
 End Class

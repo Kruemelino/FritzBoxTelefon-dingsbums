@@ -2,7 +2,6 @@
 
 Friend Class KontaktIndizierer
     Implements IDisposable
-
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 #Region "Kontaktindizierung"
 

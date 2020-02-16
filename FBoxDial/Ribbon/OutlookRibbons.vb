@@ -7,11 +7,6 @@ Imports System.Xml
     Implements IRibbonExtensibility
 
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-    Private ReadOnly Property OutlookApp() As Outlook.Application
-        Get
-            Return ThisAddIn.POutookApplication
-        End Get
-    End Property
 
 #Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
     Private Property RibbonObjekt As IRibbonUI
@@ -393,7 +388,7 @@ Imports System.Xml
                 WählClient.WählboxStart(Nothing, True)
             Case TaskToDo.DialExplorer
                 Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(OutlookApp.ActiveExplorer.Selection, False)
+                WählClient.WählboxStart(ThisAddIn.POutookApplication.ActiveExplorer.Selection, False)
             Case TaskToDo.OpenJournalimport
                 Dim AnrListImport As New FormAnrList
                 AnrListImport.Show()

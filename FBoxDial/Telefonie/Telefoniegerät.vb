@@ -25,8 +25,6 @@ Public Class Telefoniegerät
     '<XmlIgnore> Friend Property AusTelNr As Telefonnummer
 #End Region
 
-
-
 #Region "Equals"
     Public Overrides Function Equals(obj As Object) As Boolean
         Return Equals(TryCast(obj, Telefoniegerät))

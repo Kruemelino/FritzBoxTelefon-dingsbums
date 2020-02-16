@@ -3,8 +3,7 @@
 Friend Class KontaktSucher
     Implements IDisposable
 
-    Private ReadOnly Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
-    Friend ReadOnly Property PDfltContactFolder() As Outlook.MAPIFolder = OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
+    Friend ReadOnly Property PDfltContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
 
     ''' <summary>
     ''' Startet die Kontaktsuche mit einer E-Mail oder einer Telefonnummer.
@@ -17,7 +16,7 @@ Friend Class KontaktSucher
 
         Dim retOlKontakt As Outlook.ContactItem = Nothing
 
-        If OutlookApp IsNot Nothing Then
+        If ThisAddIn.POutookApplication IsNot Nothing Then
 
             If TelNr IsNot Nothing Then
                 ' Filter zusammenstellen
@@ -31,7 +30,7 @@ Friend Class KontaktSucher
                 If XMLData.POptionen.PCBKontaktSucheHauptOrdner Then
                     retOlKontakt = Await FindeAnruferKontakt(PDfltContactFolder, String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
                 Else
-                    retOlKontakt = Await FindeAnruferKontakt(OutlookApp.Session, String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
+                    retOlKontakt = Await FindeAnruferKontakt(ThisAddIn.POutookApplication.Session, String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
                 End If
 
             ElseIf EMailAdresse.IsNotStringEmpty Then
@@ -104,7 +103,7 @@ Friend Class KontaktSucher
 
         Dim olKontakt As Outlook.ContactItem = Nothing
 
-        With OutlookApp.Session.CreateRecipient(EMailAdresse)
+        With ThisAddIn.POutookApplication.Session.CreateRecipient(EMailAdresse)
             .Resolve()
             If .AddressEntry.GetContact() IsNot Nothing Then
                 olKontakt = .AddressEntry.GetContact()
