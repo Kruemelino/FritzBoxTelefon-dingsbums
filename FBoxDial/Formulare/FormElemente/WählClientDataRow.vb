@@ -17,7 +17,7 @@ Public Class WählClientDataTable
         Return New WählClientDataRow(builder)
     End Function
 
-    Default Public ReadOnly Property Rows_myObj(ByVal index As Integer) As WählClientDataRow
+    Default Public ReadOnly Property RowsmyObj(ByVal index As Integer) As WählClientDataRow
         Get
             Return CType(Me.Rows(index), WählClientDataRow)
         End Get

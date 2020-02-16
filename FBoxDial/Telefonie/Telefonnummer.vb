@@ -122,7 +122,7 @@ Public Class Telefonnummer
                 ' Die maximale Länge an LKZ ist 3
                 i = 3
                 Do
-                    tmpLKZ = CVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = TelNr.Substring(2, i))
+                    tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = TelNr.Substring(2, i))
                     i -= 1
                 Loop Until tmpLKZ IsNot Nothing Or i.IsZero
                 ' Eine Landeskennzahl wurde gefunden
@@ -135,7 +135,7 @@ Public Class Telefonnummer
             Else
                 Landeskennzahl = XMLData.POptionen.PTBLandesKZ
                 ' Wähle die LKZ für das Default-Land aus
-                tmpLKZ = CVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
+                tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
             End If
 
             ' Einwahl: Landesvorwahl am Anfang entfernen

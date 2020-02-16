@@ -1,14 +1,17 @@
-﻿Imports System.Data
+﻿Imports System.ComponentModel
+Imports System.Data
 Imports System.Drawing
 Imports System.Timers
 Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
 Public Class FormWählclient
+    Implements IDisposable
 
 #Region "Properties"
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-    Private Property ScaleFaktor As Drawing.SizeF
+    Private Property ScaleFaktor As SizeF
     Private Property OKontakt As Outlook.ContactItem
+    Private Property PKontaktbild As Bitmap
 #End Region
 
 #Region "Delegaten"
@@ -105,17 +108,18 @@ Public Class FormWählclient
                 orgImage = Image.FromStream(fs)
             End Using
             DelKontaktBild(ImgPath)
-            With Me.PicBoxKontaktBild
-                Dim Bildgröße As New Size(.Width, CInt((.Width * orgImage.Size.Height) / orgImage.Size.Width))
-                Dim showImage As Image = New Bitmap(Bildgröße.Width, Bildgröße.Height)
-                Using g As Graphics = Graphics.FromImage(showImage)
+
+            With New Size(PicBoxKontaktBild.Width, CInt((PicBoxKontaktBild.Width * orgImage.Size.Height) / orgImage.Size.Width))
+                PKontaktbild = New Bitmap(.Width, .Height)
+
+                Using g As Graphics = Graphics.FromImage(PKontaktbild)
                     g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    g.DrawImage(orgImage, 0, 0, Bildgröße.Width, Bildgröße.Height)
+                    g.DrawImage(orgImage, 0, 0, .Width, .Height)
                 End Using
-                .Image = showImage
             End With
+            PicBoxKontaktBild.Image = PKontaktbild
         Else
-            Me.PicBoxKontaktBild.Visible = False
+            PicBoxKontaktBild.Visible = False
         End If
 
     End Sub
@@ -287,7 +291,7 @@ Public Class FormWählclient
             Me.Invoke(New DlgFormWählClient(AddressOf AutoClose))
         Else
             Me.Close()
-            Me.Dispose()
+            Me.Dispose(True)
         End If
     End Sub
 
@@ -323,9 +327,12 @@ Public Class FormWählclient
             Case Me.ButtonZeigeKontakt.Name
                 OKontakt.Display()
             Case Me.BSchließen.Name
-
+                Me.Close()
         End Select
     End Sub
 
-
+    Private Sub FormWählclient_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If PKontaktbild IsNot Nothing Then PKontaktbild.Dispose()
+        Me.Dispose(True)
+    End Sub
 End Class

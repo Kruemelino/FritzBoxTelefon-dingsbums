@@ -4,13 +4,13 @@
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2019), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
-#define MyGUID "2ac9f540-2e4d-46fc-b544-28bcc1d6ce4b" 
+#define MyGUID "051D5E77-4942-477E-8071-12F262FDE4F3" 
 #define MyAppNameKurz "FritzBoxDial"
 #define MyAppTime GetDateTimeString('yymmdd', '', '') 
 #define MyAppType ""
 
 [Setup]
-AppId = {{2ac9f540-2e4d-46fc-b544-28bcc1d6ce4b}}
+AppId = {{051D5E77-4942-477E-8071-12F262FDE4F3}}
 AppName = {#MyAppName} {#MyAppType}
 AppVersion = {#MyAppVersion}
 AppPublisher = {#MyAppPublisher}
@@ -33,38 +33,38 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Registry]
 ; Office 64bit
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));       Flags: uninsdeletekey; ValueType: string; ValueName: "Description";   ValueData: "{#MyAppDescription}"
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));       Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";  ValueData: "{#MyAppName}"
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));       Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";  ValueData: "3"
-Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));       Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";      ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64;       Flags: uninsdeletekey; ValueType: string; ValueName: "Description";   ValueData: "{#MyAppDescription}"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64;       Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";  ValueData: "{#MyAppName}"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64;       Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";  ValueData: "3"
+Root: HKCU64; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: Outlookx64;       Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";      ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
 
 ; Office 32bit
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));   Flags: uninsdeletekey; ValueType: string; ValueName: "Description";    ValueData: "{#MyAppDescription}"
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));   Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";   ValueData: "{#MyAppName}"
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));   Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";   ValueData: "3"
-Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64 and (OutlookVersion(2010) or OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019));   Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";       ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64;   Flags: uninsdeletekey; ValueType: string; ValueName: "Description";    ValueData: "{#MyAppDescription}"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64;   Flags: uninsdeletekey; ValueType: string; ValueName: "FriendlyName";   ValueData: "{#MyAppName}"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64;   Flags: uninsdeletekey; ValueType: dword;  ValueName: "LoadBehavior";   ValueData: "3"
+Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefon-Dingsbums"; Check: not Outlookx64;   Flags: uninsdeletekey; ValueType: string; ValueName: "Manifest";       ValueData: "file:///{app}/Fritz!Box Telefon-Dingsbums.vsto|vstolocal"
 
 [Files]
 #if FileExists("..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll")
-     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion 
-     Source: "..\FBoxDial\bin\Debug2010\MixERP.Net.VCards.dll";                               Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Newtonsoft.Json.dll";                                 Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\NLog.dll";                                            Check: OutlookVersion(2010); DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion 
+     Source: "..\FBoxDial\bin\Debug2010\MixERP.Net.VCards.dll";                               Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Newtonsoft.Json.dll";                                 Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\NLog.dll";                                            Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 #if FileExists("..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll")
-    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll";                      Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.manifest";             Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.vsto";                     Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion 
-    Source: "..\FBoxDial\bin\Debug2013\MixERP.Net.VCards.dll";                                Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Newtonsoft.Json.dll";                                  Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2010\NLog.dll";                                             Check: OutlookVersion(2013) or OutlookVersion(2016) or OutlookVersion(2019); DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll";                      Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.manifest";             Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.vsto";                     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion 
+    Source: "..\FBoxDial\bin\Debug2013\MixERP.Net.VCards.dll";                                Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Newtonsoft.Json.dll";                                  Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\NLog.dll";                                             Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 [Icons]
@@ -81,9 +81,19 @@ var inst_VSTO2010_Redistributable:boolean;
 const dotnetfx_url = 'https://go.microsoft.com/fwlink/?linkid=2088631';
 const VSTO2010_Redistributable_url = 'https://go.microsoft.com/fwlink/?LinkId=158918';
 
-function OutlookVersion (Get:Integer): boolean;
+// function OutlookVersion (Get:Integer): boolean;
+//     begin
+//         Result := StrToInt(Version) = Get
+// end;
+
+function OutlookVersion2010: boolean;
     begin
-        Result := StrToInt(Version) = Get
+        Result := StrToInt(Version) = 2010
+end;
+
+function OutlookVersion2013Plus: boolean;
+    begin
+        Result := StrToInt(Version) >= 2013
 end;
 
 function CurrectGUID(dummy: String): String;
@@ -243,65 +253,71 @@ end;
 function InitializeSetup(): Boolean;
     var
         strNET, strNET2, strERR:String;
-        tmpInt: Integer;
         VSTORFeature: Cardinal;
     begin
         Version:= GetOutlookVersion;
-        tmpInt:= StrToInt(Version);
         Result := true;
 
+    // Minimale erforderliche .NET Version
     strNET := 'v4.8';
     strNET2 := '.NET Framework 4.8';
 
-    // Prüfe, ob VSTO installiert ist
-
-    if Outlookx64 then // Handelt es sich um eine 64 bit-Version
-    begin // Eine 64-bit Version wurde gefunden
-        if RegQueryDWordValue(HKLM,'SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
-            Result := VSTORFeature = 0             
-        else            
-            Result := false              
-        end
-    else // Eine 32-bit Version wurde gefunden
-        begin
-            if RegQueryDWordValue(HKLM,'SOFTWARE\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
-                Result := not VSTORFeature = 0
-            else                
-                Result := false                 
-    end;
+    // Prüfe, ob mindestens Office 2010 installiert ist
+    if StrToInt(Version) >= 2010 then
+    begin
+        // Prüfe, ob VSTO installiert ist
+        if Outlookx64 then // Handelt es sich um eine 64 bit-Version
+        begin // Eine 64-bit Version wurde gefunden
+            if RegQueryDWordValue(HKLM,'SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
+                Result := VSTORFeature = 0             
+            else            
+                Result := false              
+            end
+        else // Eine 32-bit Version wurde gefunden
+            begin
+                if RegQueryDWordValue(HKLM,'SOFTWARE\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
+                    Result := not VSTORFeature = 0
+                else                
+                    Result := false                 
+        end;
         
-    if not Result then 
-        begin
-            Result := false
-            inst_VSTO2010_Redistributable := true            
-        end; 
+        if not Result then 
+            begin
+                Result := false
+                inst_VSTO2010_Redistributable := true            
+            end; 
     
-    // Prüfe, ob .NET 4.8 installiert ist    
-    if not IsDotNetDetected(strNet, 0) then
-        begin
-            Result := false
-            inst_dotnetfx := true
-    end;
+        // Prüfe, ob .NET 4.8 installiert ist    
+        if not IsDotNetDetected(strNet, 0) then
+            begin
+                Result := false
+                inst_dotnetfx := true
+        end;
         
-    if Not Result then
-        begin
-            strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
+        if Not Result then
+            begin
+                strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
             
-            // .NET 4.8
-            if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
-            // VSTO
-            if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
+                // .NET 4.8
+                if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
+                // VSTO
+                if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
  
-            strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
+                strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
 
-            if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
-                begin
-                    if inst_dotnetfx then
-                        ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);                        
+                if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
+                    begin
+                        if inst_dotnetfx then
+                            ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);                        
 
-                    if inst_VSTO2010_Redistributable then
-                        ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
-                    Result := true
-                end
-        end    
+                        if inst_VSTO2010_Redistributable then
+                            ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
+                        Result := true
+                    end
+            end 
+    else
+        // Outlook ist nicht installiert
+        strERR := 'Microsoft Outlook wurde auf Ihrem Rechner nicht gefunden. {#MyAppName} kann nicht installiert werden.';
+        Result := false
+    end;
 end; 		 

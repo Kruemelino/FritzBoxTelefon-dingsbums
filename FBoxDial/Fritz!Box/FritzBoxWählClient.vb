@@ -7,7 +7,6 @@ Public Class FritzBoxWählClient
 
 #Region "Properties"
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-    Private ReadOnly Property OutlookApp() As Outlook.Application = ThisAddIn.POutookApplication
     Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.PFBLinkBasis & "/data.lua"
     Private ReadOnly Property PFBLinkDialSetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
         Get
@@ -30,7 +29,6 @@ Public Class FritzBoxWählClient
 #End Region
 
     Private ListFormWählbox As List(Of FormWählclient)
-
 
 #Region "Wählen per SOAP"
     ''' <summary>
@@ -175,7 +173,7 @@ Public Class FritzBoxWählClient
         If DirektWahl Then
             Wählbox(Nothing, Nothing, True)
         Else
-            olNamespace = OutlookApp.GetNamespace("MAPI")
+            olNamespace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
             ' Ist überhaupt etwas ausgewählt?
             If olAuswahl.Count.AreEqual(1) Then
 

@@ -1,4 +1,5 @@
 ﻿Friend Class Anrufmonitor
+
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private WithEvents TCPr As TCPReader
     Friend Property Aktiv As Boolean
@@ -95,4 +96,5 @@
         End Select
     End Sub
 #End Region
+
 End Class

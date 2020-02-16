@@ -2,14 +2,20 @@
 Imports System.Xml
 
 Friend Class FritzBoxSOAPService
+
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     'Private Property ServiceDefinition As ServiceBaseInformation
     Private Property ActionList As List(Of Action)
     'Private Property StateVariableList As List(Of StateVariable)
 
     Public Sub New(ByVal XMLServiceDefinition As ServiceBaseInformation)
         'ServiceDefinition = XMLServiceDefinition
+        If XMLServiceDefinition IsNot Nothing Then
+            ActionList = SetupActions(XMLServiceDefinition)
+        Else
+            NLogger.Error("XMLServiceDefinition nicht verfügbar")
+        End If
 
-        ActionList = SetupActions(XMLServiceDefinition)
         'StateVariableList = SetupStateVariables()
     End Sub
 

@@ -4,6 +4,7 @@ Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
 
 Public Class FormCfg
+    Implements IDisposable
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 
     Private FritzBoxDaten As FritzBoxData
@@ -112,7 +113,8 @@ Public Class FormCfg
 
             If ctrl.GetType().Equals(GetType(TextBox)) Or
                ctrl.GetType().Equals(GetType(MaskedTextBox)) Or
-               ctrl.GetType().Equals(GetType(CheckBox)) Then
+               ctrl.GetType().Equals(GetType(CheckBox)) Or
+               ctrl.GetType().Equals(GetType(ComboBox)) Then
 
                 tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name))
 
@@ -136,12 +138,17 @@ Public Class FormCfg
                         Case GetType(CheckBox)
                             tmpPropertyInfo.SetValue(XMLData.POptionen, CType(ctrl, CheckBox).Checked)
 
+                        Case GetType(ComboBox)
+                            tmpPropertyInfo.SetValue(XMLData.POptionen, CType(ctrl, ComboBox).SelectedItem.ToString)
+
                     End Select
                 End If
+
             ElseIf ctrl.GetType().Equals(GetType(CheckedListBox)) Then
                 For Each tmpTelNr As Telefonnummer In XMLData.PTelefonie.Telefonnummern
                     tmpTelNr.Überwacht = CLBTelNr.CheckedItems.Contains(tmpTelNr)
                 Next
+
             ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
                 If ctrl.Name.AreEqual(TVOutlookContact.Name) Then
 

@@ -21,7 +21,7 @@
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{009E1182-2568-44D7-8A4E-391162DA861D}</ProjectGuid>
+    <ProjectGuid>{985D1FE4-4B82-4553-B487-E6C998671AAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>FBoxDial</RootNamespace>
     <AssemblyName>Fritz!Box Telefon-Dingsbums</AssemblyName>
@@ -141,7 +141,6 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
-    <Reference Include="Accessibility" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -151,18 +150,21 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -216,7 +218,7 @@
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
     <Compile Include="Anrufmonitor\CommonFenster.vb" />
-    <Compile Include="Anrufmonitor\Common_Form.vb">
+    <Compile Include="Anrufmonitor\AnrMonCommon.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Anrufmonitor\FormAnrMon.vb" />
@@ -273,6 +275,7 @@
     <Compile Include="Kontakte\KontaktSucher.vb" />
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
     <Compile Include="Kontakte\VCard.vb" />
+    <Compile Include="Logging\Logging.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -303,6 +306,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnSaveNativeMethods.vb" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Zertifikat\FritzBoxDial.pfx" />
     <None Include="ThisAddIn.Designer.xml">

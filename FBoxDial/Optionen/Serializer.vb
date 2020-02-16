@@ -17,7 +17,8 @@ Friend Module Serializer
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
 
-        If File.Exists(Pfad.ToString) Then
+
+        If File.Exists(Pfad) Then
             Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
                 If mySerializer.CanDeserialize(XmlLeser) Then
                     Try

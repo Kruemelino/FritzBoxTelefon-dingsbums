@@ -30,14 +30,14 @@ Partial Class FormAnrList
         Me.EndDatum = New System.Windows.Forms.DateTimePicker()
         Me.EndZeit = New System.Windows.Forms.DateTimePicker()
         Me.ButtonCancel = New System.Windows.Forms.Button()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.BereichAuswertung = New System.Windows.Forms.GroupBox()
-        Me.ProgressBarAnrListe = New System.Windows.Forms.ProgressBar()
         Me.DGVAnrListe = New System.Windows.Forms.DataGridView()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.ProgressBarAnrListe = New System.Windows.Forms.ToolStripProgressBar()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.GBoxStartZeit.SuspendLayout()
         Me.GBoxEndZeit.SuspendLayout()
-        Me.BereichAuswertung.SuspendLayout()
         CType(Me.DGVAnrListe, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'StartZeit
@@ -131,40 +131,6 @@ Partial Class FormAnrList
         Me.ButtonCancel.Text = "Abbruch"
         Me.ButtonCancel.UseVisualStyleBackColor = True
         '
-        'Label2
-        '
-        Me.Label2.Location = New System.Drawing.Point(12, 25)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(692, 48)
-        Me.Label2.TabIndex = 8
-        Me.Label2.Text = "Die Anrufliste wurde bereits von der Fritz!Box heruntergeladen und wird nun ausge" &
-    "wertet.  Bitte Warten Sie bis der Vorgang abgeschlossen ist."
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'BereichAuswertung
-        '
-        Me.BereichAuswertung.Controls.Add(Me.Label2)
-        Me.BereichAuswertung.Controls.Add(Me.ProgressBarAnrListe)
-        Me.BereichAuswertung.Enabled = False
-        Me.BereichAuswertung.Location = New System.Drawing.Point(280, 14)
-        Me.BereichAuswertung.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.BereichAuswertung.Name = "BereichAuswertung"
-        Me.BereichAuswertung.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.BereichAuswertung.Size = New System.Drawing.Size(712, 164)
-        Me.BereichAuswertung.TabIndex = 5
-        Me.BereichAuswertung.TabStop = False
-        Me.BereichAuswertung.Text = "Auswertung der Anrufliste"
-        '
-        'ProgressBarAnrListe
-        '
-        Me.ProgressBarAnrListe.Location = New System.Drawing.Point(9, 97)
-        Me.ProgressBarAnrListe.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.ProgressBarAnrListe.Name = "ProgressBarAnrListe"
-        Me.ProgressBarAnrListe.Size = New System.Drawing.Size(695, 29)
-        Me.ProgressBarAnrListe.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.ProgressBarAnrListe.TabIndex = 6
-        '
         'DGVAnrListe
         '
         Me.DGVAnrListe.AllowUserToAddRows = False
@@ -177,7 +143,7 @@ Partial Class FormAnrList
         Me.DGVAnrListe.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.DGVAnrListe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DGVAnrListe.Enabled = False
-        Me.DGVAnrListe.Location = New System.Drawing.Point(8, 186)
+        Me.DGVAnrListe.Location = New System.Drawing.Point(5, 186)
         Me.DGVAnrListe.Name = "DGVAnrListe"
         Me.DGVAnrListe.RowHeadersVisible = False
         Me.DGVAnrListe.RowHeadersWidth = 62
@@ -185,8 +151,29 @@ Partial Class FormAnrList
         Me.DGVAnrListe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.DGVAnrListe.ShowCellToolTips = False
         Me.DGVAnrListe.ShowEditingIcon = False
-        Me.DGVAnrListe.Size = New System.Drawing.Size(1173, 547)
+        Me.DGVAnrListe.Size = New System.Drawing.Size(1173, 523)
         Me.DGVAnrListe.TabIndex = 11
+        '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ProgressBarAnrListe})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 712)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(1190, 32)
+        Me.StatusStrip1.TabIndex = 12
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'ProgressBarAnrListe
+        '
+        Me.ProgressBarAnrListe.Name = "ProgressBarAnrListe"
+        Me.ProgressBarAnrListe.Size = New System.Drawing.Size(400, 24)
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(64, 25)
+        Me.ToolStripStatusLabel1.Text = "Status:"
         '
         'FormAnrList
         '
@@ -195,8 +182,8 @@ Partial Class FormAnrList
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.ButtonCancel
         Me.ClientSize = New System.Drawing.Size(1190, 744)
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.DGVAnrListe)
-        Me.Controls.Add(Me.BereichAuswertung)
         Me.Controls.Add(Me.GBoxEndZeit)
         Me.Controls.Add(Me.GBoxStartZeit)
         Me.Controls.Add(Me.ButtonCancel)
@@ -211,9 +198,11 @@ Partial Class FormAnrList
         Me.Text = "Import der Anrufliste"
         Me.GBoxStartZeit.ResumeLayout(False)
         Me.GBoxEndZeit.ResumeLayout(False)
-        Me.BereichAuswertung.ResumeLayout(False)
         CType(Me.DGVAnrListe, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents StartZeit As System.Windows.Forms.DateTimePicker
@@ -224,8 +213,8 @@ Partial Class FormAnrList
     Friend WithEvents EndDatum As System.Windows.Forms.DateTimePicker
     Friend WithEvents EndZeit As System.Windows.Forms.DateTimePicker
     Friend WithEvents ButtonCancel As System.Windows.Forms.Button
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents BereichAuswertung As System.Windows.Forms.GroupBox
-    Friend WithEvents ProgressBarAnrListe As System.Windows.Forms.ProgressBar
     Friend WithEvents DGVAnrListe As Windows.Forms.DataGridView
+    Friend WithEvents StatusStrip1 As Windows.Forms.StatusStrip
+    Friend WithEvents ProgressBarAnrListe As Windows.Forms.ToolStripProgressBar
+    Friend WithEvents ToolStripStatusLabel1 As Windows.Forms.ToolStripStatusLabel
 End Class

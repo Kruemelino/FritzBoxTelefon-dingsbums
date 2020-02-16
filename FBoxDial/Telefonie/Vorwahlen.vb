@@ -16,9 +16,8 @@ End Class
     <XmlAttribute("n")> Public Property Ortskennzahl As String
 End Class
 
-Friend NotInheritable Class CVorwahlen
-
-    Public Shared Property Kennzahlen As CKennzahlen
+Friend Class CVorwahlen
+    Public Property Kennzahlen As CKennzahlen
 
     Public Sub New()
 
@@ -32,6 +31,5 @@ Friend NotInheritable Class CVorwahlen
         Else
             Kennzahlen = Nothing
         End If
-
     End Sub
 End Class

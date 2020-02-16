@@ -5,16 +5,13 @@ Imports System.Xml
 
 <Runtime.InteropServices.ComVisible(True)> Public Class OutlookRibbons
     Implements IRibbonExtensibility
+
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private ReadOnly Property OutlookApp() As Outlook.Application
         Get
             Return ThisAddIn.POutookApplication
         End Get
     End Property
-
-    'Public Sub New()
-    '    'dim DefaultRibbon = New DefaultRibbon
-    'End Sub
 
 #Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
     Private Property RibbonObjekt As IRibbonUI
@@ -378,8 +375,10 @@ Imports System.Xml
     Private Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.OpenConfig ' Einstellungsdialog
-                Dim FormConfig As New FormCfg
-                FormConfig.ShowDialog()
+                Using FormConfig As New FormCfg
+                    FormConfig.ShowDialog()
+                End Using
+
             Case TaskToDo.ShowAnrMon
                 Dim PopUpAnrMon As New Popup
 
@@ -673,70 +672,6 @@ Imports System.Xml
 
 #End Region
 
-#Region "Explorer Button Click"
-    '    ''' <summary>
-    '    ''' Mögliche Anwendungen, die durch den klick auf ein Button/Ribbon ausgelöst werden können.
-    '    ''' Warum, die Englisch sind? Keine Ahnung.
-    '    ''' </summary>
-    '    Friend Enum TaskToDo
-    '        OpenConfig          ' Explorer: Einstellung Öffnen
-    '        OpenJournalimport   ' Explorer: Journalimport öffnen
-    '        ShowAnrMon          ' Explorer: Letzten Anrufer anzeigen
-    '        RestartAnrMon       ' Explorer: Anrufmonitor neu starten
-    '        DialExplorer        ' Explorer: Klassischen Wähldialog über das ausgewählte Objekt öffnen
-    '        DialDirect          ' Explorer: Direktwahl öffnen
-    '        DialInspector       ' Inspector: Wähldialog öffnen 
-    '        CreateContact       ' Inspector: Journal, Kontakt erstellen
-    '    End Enum
-
-    '    ''' <summary>
-    '    ''' Steuert die aufzurufende Funktion anhand der Übergebenen <c>Aufgabe</c>
-    '    ''' </summary>
-    '    ''' <param name="Aufgabe">Übergabe Wert, der bestimmt, was getan werden soll.</param>
-    '    Friend Sub OnAction(ByVal Aufgabe As TaskToDo)
-    '        Select Case Aufgabe
-    '            Case TaskToDo.DialDirect
-    '                P_CallClient.Wählbox(Nothing, DataProvider.P_Def_LeerString, DataProvider.P_Def_LeerString, True)
-    '            Case TaskToDo.DialExplorer
-    '                If P_OlInterface.OutlookApplication IsNot Nothing Then
-    '                    P_CallClient.WählboxStart(P_OlInterface.OutlookApplication.ActiveExplorer.Selection)
-    '                End If
-    '            Case TaskToDo.OpenConfig
-    '                P_Config.ShowDialog()
-    '            Case TaskToDo.OpenJournalimport
-    '                If Not P_AnrList Is Nothing Then
-    '                    P_AnrList = New formImportAnrList(P_FritzBox, P_AnrufMonitor, C_hf, C_DP, C_XML)
-    '                End If
-    '                P_AnrList.StartAuswertung(True)
-    '            Case TaskToDo.RestartAnrMon
-    '                P_AnrufMonitor.Restart(False)
-    '            Case TaskToDo.ShowAnrMon
-    '                P_PopUp.AnrMonEinblenden(P_AnrufMonitor.LetzterAnrufer)
-    '            Case TaskToDo.DialInspector
-    '                P_CallClient.WählenAusInspector()
-    '            Case TaskToDo.CreateContact
-    '                C_KF.ZeigeKontaktAusJournal()
-    '        End Select
-    '    End Sub
-
-    '    'Private Function GetSmtpAddress(ByVal card As Office.IMsoContactCard) As String
-    '    '    If card.AddressType = Office.MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
-    '    '        Dim host As Outlook.Application = Globals.ThisAddIn.Application
-    '    '        Dim ae As Outlook.AddressEntry = host.Session.GetAddressEntryFromID(card.Address)
-
-    '    '        Select Case ae.AddressEntryUserType
-    '    '            Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
-    '    '                Dim ex As Outlook.ExchangeUser = ae.GetExchangeUser()
-    '    '                Return ex.PrimarySmtpAddress
-    '    '            Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
-    '    '                Return ae.Address
-    '    '            Case Else
-    '    '                Throw New Exception("Valid address entry not found.")
-    '    '        End Select
-    '    '    Else
-    '    '        Return card.Address
-    '    '    End If
-    '    'End Function
 #End Region
-#End Region
+
 End Class

@@ -4,6 +4,7 @@ Imports System.Net.Sockets
 Imports System.Threading
 Imports System.Threading.Tasks
 Friend Class TCPReader
+
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property Endpoint As String
     Private Property EndpointPort As Integer

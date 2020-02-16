@@ -6,6 +6,8 @@ Imports System.Threading.Tasks
 Imports System.Windows.Forms
 
 Public Class FormAnrList
+    Implements IDisposable
+
     Private Property IList As ImageList
     Private Property Anrufliste As FritzBoxXMLCallList
     Private Property Source As BindingSource
@@ -24,17 +26,17 @@ Public Class FormAnrList
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' Setze den Startzeitpunkt mit der Schließzeit des Addins
-        If XMLData.POptionen.PLetzterJournalEintrag > Me.StartDatum.MinDate AndAlso XMLData.POptionen.PLetzterJournalEintrag < Me.StartDatum.MaxDate Then
-            Me.StartDatum.Value = XMLData.POptionen.PLetzterJournalEintrag
-            Me.StartZeit.Value = XMLData.POptionen.PLetzterJournalEintrag
+        If XMLData.POptionen.PLetzterJournalEintrag > StartDatum.MinDate AndAlso XMLData.POptionen.PLetzterJournalEintrag < StartDatum.MaxDate Then
+            StartDatum.Value = XMLData.POptionen.PLetzterJournalEintrag
+            StartZeit.Value = XMLData.POptionen.PLetzterJournalEintrag
         Else
-            Me.StartDatum.Value = Now
-            Me.StartZeit.Value = Now
+            StartDatum.Value = Now
+            StartZeit.Value = Now
         End If
 
         ' Setze den Endzeitpunkt mit jetzigen Zeit
-        Me.EndDatum.Value = Now
-        Me.EndZeit.Value = Now
+        EndDatum.Value = Now
+        EndZeit.Value = Now
 
         ' Initialisiere die Image List
         If IList Is Nothing Then IList = New ImageList
@@ -61,7 +63,7 @@ Public Class FormAnrList
     Private Sub SetTelDGV(ByVal Anrufliste As FritzBoxXMLCallList)
         Dim i As Integer
         If Anrufliste IsNot Nothing Then
-            With Me.DGVAnrListe
+            With DGVAnrListe
                 With .Columns
                     i = 0
 
@@ -189,7 +191,6 @@ Public Class FormAnrList
         If dgv IsNot Nothing Then
 
             Freischalten(True)
-
 
             With dgv
                 .ClearSelection()
@@ -334,13 +335,12 @@ Public Class FormAnrList
 
     Private Sub Freischalten(ByVal Freigabe As Boolean)
         ' Form-Elemente Deaktivieren
-        Me.DGVAnrListe.Enabled = Freigabe
-        Me.GBoxStartZeit.Enabled = Freigabe
-        Me.GBoxEndZeit.Enabled = Freigabe
-        Me.BereichAuswertung.Enabled = Freigabe
-        Me.ButtonStart.Enabled = Freigabe
+        DGVAnrListe.Enabled = Freigabe
+        GBoxStartZeit.Enabled = Freigabe
+        GBoxEndZeit.Enabled = Freigabe
+        ButtonStart.Enabled = Freigabe
 
-        Me.ButtonCancel.Enabled = Not Freigabe
+        ButtonCancel.Enabled = Not Freigabe
     End Sub
 
 #Region "Backgroundworkter - Import"
@@ -384,7 +384,6 @@ Public Class FormAnrList
             Freischalten(True)
         End If
     End Sub
-
-
 #End Region
+
 End Class

@@ -1,9 +1,10 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
+Imports System.ComponentModel
 
 Friend Class AnrMonCommon
     Inherits Form
-
+    Implements IDisposable
 
     Friend Event LinkClick(ByVal sender As Object, ByVal e As EventArgs)
     Friend Event CloseClick(ByVal sender As Object, ByVal e As EventArgs)
@@ -24,6 +25,7 @@ Friend Class AnrMonCommon
     Private Property BMouseOnLink As Boolean = False
     Private Property BMouseOnOptions As Boolean = False
     Protected Overrides ReadOnly Property ShowWithoutActivation() As Boolean = True
+    Private Property PKontaktbild As Bitmap
     Friend Property ShowBorders As Boolean = False
     Shadows Property PAnrMon() As FormAnrMon
     Shadows Property PCommon() As CommonFenster
@@ -43,9 +45,6 @@ Friend Class AnrMonCommon
 #End Region
 
 #Region "Events"
-    Private Sub Me_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
-        Finalize()
-    End Sub
     Private Sub Me_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseMove
 
         BMouseOnClose = RectClose.Contains(e.X, e.Y)
@@ -149,13 +148,13 @@ Friend Class AnrMonCommon
                                            (Height - PCommon.TextPadding.Top - PCommon.TextPadding.Bottom - PCommon.HeaderHeight) * PAnrMon.Image.Size.Width \ PAnrMon.Image.Size.Height,
                                            Height - PCommon.TextPadding.Top - PCommon.TextPadding.Bottom - PCommon.HeaderHeight)
 
-                Dim showImage As Image = New Bitmap(RectImage.Width.ToInt, RectImage.Height.ToInt)
+                PKontaktbild = New Bitmap(RectImage.Width.ToInt, RectImage.Height.ToInt)
 
-                Using g As Graphics = Graphics.FromImage(showImage)
+                Using g As Graphics = Graphics.FromImage(PKontaktbild)
                     g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                     g.DrawImage(PAnrMon.Image, 0, 0, RectImage.Width, RectImage.Height)
                 End Using
-                .DrawImage(showImage, RectImage.Location)
+                .DrawImage(PKontaktbild, RectImage.Location)
                 DrawRectangleF(e.Graphics, RectImage)
             End If
 
@@ -223,12 +222,12 @@ Friend Class AnrMonCommon
             g.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height)
         End Using
     End Sub
-#End Region
 
-    Protected Overrides Sub Finalize()
-        Hide()
-        MyBase.Finalize()
+    Private Sub AnrMonCommon_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If PKontaktbild IsNot Nothing Then PKontaktbild.Dispose()
+        Me.Dispose(True)
     End Sub
+#End Region
 
 
 End Class

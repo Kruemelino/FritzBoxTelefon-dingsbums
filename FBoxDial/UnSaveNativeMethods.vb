@@ -111,7 +111,7 @@ Public Enum HWndInsertAfterFlags As Integer
     HWND_TOPMOST = -1
 End Enum
 
-<SuppressUnmanagedCodeSecurityAttribute()> Friend NotInheritable Class UnsafeNativeMethods
+<SuppressUnmanagedCodeSecurity()> Friend NotInheritable Class UnsafeNativeMethods
     ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
     ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
     <DllImport("user32.dll", EntryPoint:="GetForegroundWindow", SetLastError:=True, CharSet:=CharSet.Unicode)>

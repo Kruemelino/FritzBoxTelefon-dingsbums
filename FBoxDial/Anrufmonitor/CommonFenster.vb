@@ -69,13 +69,10 @@ Friend Class CommonFenster
     End Function
 
 #Region "IDisposable Support"
-    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
+    Private disposedValue As Boolean
 
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not Me.disposedValue Then
-            If disposing Then
-                ' Managed Code?
-            End If
             TitleFont.Dispose()
             TelNrFont.Dispose()
             AnrNameFont.Dispose()

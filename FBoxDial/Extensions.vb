@@ -387,7 +387,7 @@ Public Module Extensions
         Try
             PingReply = PingSender.Send(IPAdresse, timeout, buffer, Options)
         Catch ex As Exception
-            NLogger.Error(ex, "Ping zu {0} nicht erfolgreich", IPAdresse)
+            NLogger.Warn(ex, "Ping zu {0} nicht erfolgreich", IPAdresse)
             Ping = False
         End Try
 

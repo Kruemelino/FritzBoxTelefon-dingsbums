@@ -9,6 +9,8 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property PAnrufmonitor As Anrufmonitor
     Friend Shared Property PPhoneBookXML As FritzBoxXMLTelefonbücher
     Friend Shared Property PCallListXML As FritzBoxXMLCallList
+
+    Friend Shared Property PCVorwahlen As CVorwahlen
     Friend Shared Property OffeneKontakInsepektoren As List(Of ContactSaved)
     Friend Shared Property OffenePopUps As List(Of Popup)
 
@@ -16,7 +18,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared ReadOnly Property Version() As String
         Get
             With Reflection.Assembly.GetExecutingAssembly.GetName.Version
-                Return .Major & "." & .Minor & "." & .Build
+                Return String.Format("V{0}.{1}.{2}", .Major, .Minor, .Build)
             End With
         End Get
     End Property
@@ -39,7 +41,6 @@ Public NotInheritable Class ThisAddIn
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
-            NLogger.Info("{0} V{1} gestartet.", PDfltAddin_LangName, Version)
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If
@@ -52,6 +53,9 @@ Public NotInheritable Class ThisAddIn
             PAnrufmonitor.StartStopAnrMon()
         End If
 
+        ' Initialisiere die Landes- und Ortskennzahlen
+        PCVorwahlen = New CVorwahlen
+
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
         If XMLData.POptionen.PCBKontaktSucheFritzBox Then
             Await LadeFritzBoxTelefonbücher()
@@ -63,14 +67,18 @@ Public NotInheritable Class ThisAddIn
         ' Anrufliste auswerten
         If XMLData.POptionen.PCBAutoAnrList Then AutoAnrListe()
 
+        NLogger.Info("{0} {1} gestartet.", PDfltAddin_LangName, Version)
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
-
+        ' Listen leeren
+        If Not PCVorwahlen Is Nothing Then
+            PCVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
+        End If
         ' Anrufmonitor beenden
-        PAnrufmonitor.StopAnrMon()
+        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StopAnrMon()
         ' Eintrag ins Log
-        NLogger.Info("{0} V{1} beendet.", PDfltAddin_LangName, Version)
+        NLogger.Info("{0} {1} beendet.", PDfltAddin_LangName, Version)
         ' XML-Datei Speichern
         XMLData.Speichern()
     End Sub

@@ -81,8 +81,8 @@ Friend Structure AnrMonDISCONNECT
     ''' </summary>
     Friend Property ID As Integer
 
-        ''' <summary>
-        ''' Dauer des Telefonates
-        ''' </summary>
-        Friend Property Dauer As Integer
-    End Structure
+    ''' <summary>
+    ''' Dauer des Telefonates
+    ''' </summary>
+    Friend Property Dauer As Integer
+End Structure
