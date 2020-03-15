@@ -171,14 +171,8 @@ Public Class FormAnrList
         Return Datentabelle
     End Function
 
-    Public Sub EnableDoubleBuffered(ByVal dgv As DataGridView)
-
-        Dim dgvType As Type = dgv.[GetType]()
-
-        Dim pi As PropertyInfo = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
-
-        pi.SetValue(dgv, True, Nothing)
-
+    Private Sub EnableDoubleBuffered(ByVal dgv As DataGridView)
+        dgv.[GetType].GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic).SetValue(dgv, True, Nothing)
     End Sub
 
     Private Sub DGVAnrListe_ColumnAdded(sender As Object, e As DataGridViewColumnEventArgs) Handles DGVAnrListe.ColumnAdded

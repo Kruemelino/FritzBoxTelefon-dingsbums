@@ -397,7 +397,7 @@ Imports Microsoft.Office.Interop
                             ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
                             '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
                         End If
-
+                        NLogger.Info("Journaleintrag erstellt: {0}, {1}, {2}", .Start, .Subject, .Duration)
                         .Close(Outlook.OlInspectorClose.olSave)
                     End With
 
@@ -479,7 +479,7 @@ Imports Microsoft.Office.Interop
             ' TODO: nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() weiter unten überschreiben.
             OlKontakt = Nothing
             ' TODO: große Felder auf Null setzen.
-            RINGGeräte.Clear()
+            If RINGGeräte IsNot Nothing Then RINGGeräte.Clear()
         End If
         disposedValue = True
     End Sub

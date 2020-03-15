@@ -320,7 +320,7 @@ Public Class Telefonnummer
 
             ' TODO: nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() weiter unten überschreiben.
             ' TODO: große Felder auf Null setzen.
-            Typ.Clear()
+            If Typ IsNot Nothing Then Typ.Clear()
         End If
         disposedValue = True
     End Sub

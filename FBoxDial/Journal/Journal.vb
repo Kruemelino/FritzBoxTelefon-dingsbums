@@ -1,16 +1,15 @@
 ﻿Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
-
 Module Journal
     Private Property Anrufliste As FritzBoxXMLCallList
+    'Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
     Friend Async Sub AutoAnrListe()
         ' XMLData.POptionen.PLetzterJournalEintragID
-
         Anrufliste = Await LadeFritzBoxAnrufliste()
         If Anrufliste IsNot Nothing Then
             Await ImportCalls(XMLData.POptionen.PLetzterJournalEintrag, Now)
         End If
-
     End Sub
 
     Private Function ImportCalls(ByVal DatumZeitAnfang As Date, ByVal DatumZeitEnde As Date) As Task
@@ -18,7 +17,11 @@ Module Journal
                             Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
 
                             Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where (DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum) Select Anruf
-                            Abfrage.ForAll(Sub(r) r.ErstelleTelefonat.ErstelleJournalEintrag())
+                            Abfrage.ForAll(Sub(r)
+                                               Using t As Telefonat = r.ErstelleTelefonat
+                                                   t.ErstelleJournalEintrag()
+                                               End Using
+                                           End Sub)
 
                         End Sub)
     End Function
