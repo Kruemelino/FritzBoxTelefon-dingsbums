@@ -47,10 +47,11 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 [Files]
 #if FileExists("..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll")
      Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
+     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll.config";              Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion 
+     Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll";   Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion 
      Source: "..\FBoxDial\bin\Debug2010\MixERP.Net.VCards.dll";                               Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Newtonsoft.Json.dll";                                 Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\NLog.dll";                                            Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
@@ -58,10 +59,11 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 #if FileExists("..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll")
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll";                      Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
+    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.config";               Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.manifest";             Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.vsto";                     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion 
+    Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll";    Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion 
     Source: "..\FBoxDial\bin\Debug2013\MixERP.Net.VCards.dll";                                Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Newtonsoft.Json.dll";                                  Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\NLog.dll";                                             Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
@@ -117,6 +119,16 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
             begin
             ShellExec('open', ExpandConstant('{tmp}\vstor_redist.exe'), '/q /norestart', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
         end;
+end;
+
+function GetHKLM: Integer;
+// Check IsWin64 before using a 64-bit-only feature to
+// avoid an exception when running on 32-bit Windows.
+begin
+  if IsWin64 then
+    Result := HKLM64
+  else
+    Result := HKLM32;
 end;
 
 // http://kynosarges.org/DotNetVersion.html
@@ -206,7 +218,7 @@ function GetOutlookVersion(): String;
     var Versionsnr,n :Integer;
     begin
         Versionsnr := 0;
-        if RegQueryStringValue(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.EXE','', Versionspfad) then
+        if RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.EXE', '', Versionspfad) then
         begin
             GetVersionNumbersString(Versionspfad, Version);
             n := Pos('.', Version) -1;
@@ -226,17 +238,33 @@ function Outlookx64: boolean;
     var x86, RegOutlook: String;
     begin
 
-    CASE StrToInt(GetOutlookVersion) OF
-        2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
-        2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
-        2016: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
-        2019: RegOutlook := 'SOFTWARE\Microsoft\Office\17.0\Outlook';
-    END; // CASE
-
-    if RegQueryStringValue(HKLM,RegOutlook,'Bitness', x86) then 
-        Result := x86 = 'x64'                      
-    else 
-        result := false;
+    // Bei Office 365 ist es der Registrypfad: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\ClickToRun\Configuration
+    RegOutlook := 'SOFTWARE\Microsoft\Office\ClickToRun\Configuration';
+    // Alternative: Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\ClickToRun\REGISTRY\MACHINE\Software\Microsoft\Office\16.0\Outlook
+    // RegOutlook := 'SOFTWARE\Microsoft\Office\ClickToRun\REGISTRY\MACHINE\Software\Microsoft\Office\16.0\Outlook';
+    // Prüfe, ob es eine ClickToRun-Version (365) ist.
+    
+    
+    if RegQueryStringValue(GetHKLM, 'SOFTWARE\Microsoft\Office\ClickToRun\Configuration', 'Platform', x86) then
+    //if RegQueryStringValue(HKLM, RegOutlook, 'ClientCulture', x86) then
+        begin
+          Result := x86 = 'x64';
+        end
+    else         
+        begin
+           CASE StrToInt(GetOutlookVersion) OF
+               2010: RegOutlook := 'SOFTWARE\Microsoft\Office\14.0\Outlook';
+               2013: RegOutlook := 'SOFTWARE\Microsoft\Office\15.0\Outlook';
+               2016: RegOutlook := 'SOFTWARE\Microsoft\Office\16.0\Outlook';
+               2019: RegOutlook := 'SOFTWARE\Microsoft\Office\17.0\Outlook';
+           END; // CASE
+     
+           if RegQueryStringValue(GetHKLM, RegOutlook, 'Bitness', x86) then 
+               Result := x86 = 'x64'                      
+           else 
+               result := false;
+           
+        end;
 end;
 
 function IsRegularUser(): Boolean;
@@ -264,58 +292,64 @@ function InitializeSetup(): Boolean;
 
     // Prüfe, ob mindestens Office 2010 installiert ist
     if StrToInt(Version) >= 2010 then
-    begin
-        // Prüfe, ob VSTO installiert ist
-        if Outlookx64 then // Handelt es sich um eine 64 bit-Version
-        begin // Eine 64-bit Version wurde gefunden
-            if RegQueryDWordValue(HKLM,'SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
-                Result := VSTORFeature = 0             
-            else            
-                Result := false              
-            end
-        else // Eine 32-bit Version wurde gefunden
-            begin
-                if RegQueryDWordValue(HKLM,'SOFTWARE\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
-                    Result := not VSTORFeature = 0
-                else                
-                    Result := false                 
-        end;
-        
-        if not Result then 
-            begin
-                Result := false
-                inst_VSTO2010_Redistributable := true            
-            end; 
-    
-        // Prüfe, ob .NET 4.8 installiert ist    
-        if not IsDotNetDetected(strNet, 0) then
-            begin
-                Result := false
-                inst_dotnetfx := true
-        end;
-        
-        if Not Result then
-            begin
-                strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
-            
-                // .NET 4.8
-                if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
-                // VSTO
-                if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
- 
-                strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
+        begin
+          // Prüfe, ob VSTO installiert ist
+          if IsWin64 then // Handelt es sich um eine 64 bit-Version
+          // if Outlookx64 then // Handelt es sich um eine 64 bit-Version von Outlook (alt scheint nicht mehr relevant zusein.)
+              begin // Eine 64-bit Version wurde gefunden
+                  if RegQueryDWordValue(GetHKLM,'SOFTWARE\Wow6432Node\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
+                      Result := VSTORFeature = 1             
+                  else            
+                      Result := false              
+                  end
+              else // Eine 32-bit Version wurde gefunden
+                  begin
+                      if RegQueryDWordValue(GetHKLM,'SOFTWARE\Microsoft\VSTO Runtime Setup\v4R','VSTORFeature_CLR40', VSTORFeature) then
+                          Result := not VSTORFeature = 1
+                      else                
+                          Result := false                 
+              end;
+          
+          if not Result then 
+              begin
+                  Result := false
+                  inst_VSTO2010_Redistributable := true            
+              end; 
+      
+          // Prüfe, ob .NET 4.8 installiert ist    
+          if not IsDotNetDetected(strNet, 0) then
+              begin
+                  Result := false
+                  inst_dotnetfx := true
+          end;
+          
+          if Not Result then
+              begin
+                  strERR := 'Folgende Komponenten werden von {#MyAppName} benötigt, wurden aber auf Ihrem Rechner nicht gefunden:'#13#10' '#13#10'';
+              
+                  // .NET 4.8
+                  if inst_dotnetfx then strERR := strERR+ 'Microsoft ' + strNET2 + ''#13#10'';                 
+                  // VSTO
+                  if inst_VSTO2010_Redistributable then strERR := strERR + 'Microsoft Visual Studio 2010-Tools für Office (VSTO 2010)'#13#10'';
+   
+                  strERR := strERR + #13#10 + 'Sollen die fehlenden Komponenten heruntergeladen und installiert werden?'
 
-                if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
-                    begin
-                        if inst_dotnetfx then
-                            ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);                        
+                  if MsgBox(strERR, mbConfirmation, MB_YESNO) = IDYES then
+                      begin
+                          if inst_dotnetfx then
+                              ITD_AddFileSize(dotnetfx_url, ExpandConstant('{tmp}\ndp48-x86-x64-allos-enu.exe'),43000680);                        
 
-                        if inst_VSTO2010_Redistributable then
-                            ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
-                        Result := true
-                    end
-            end 
+                          if inst_VSTO2010_Redistributable then
+                              ITD_AddFileSize(VSTO2010_Redistributable_url, ExpandConstant('{tmp}\vstor_redist.exe'),40029664);
+                          Result := true
+                      end
+              end
+
+
+
+        end 
     else
+        begin
         // Outlook ist nicht installiert
         strERR := 'Microsoft Outlook wurde auf Ihrem Rechner nicht gefunden. {#MyAppName} kann nicht installiert werden.';
         Result := false
