@@ -159,12 +159,23 @@ Public Class FormCfg
                     End If
 
                 End If
+            ElseIf ctrl.GetType().Equals(GetType(DataGridView)) Then
+                If ctrl.Name.AreEqual(DGVTelList.Name) Then
+                    ' Standard-Telefon ermitteln.
+                    With CType(ctrl, DataGridView)
+                        Dim DatenZeilen As List(Of TelGeräteListDataRow) = CType(CType(.DataSource, BindingSource).DataSource, TelGeräteListDataTable).Rows.Cast(Of TelGeräteListDataRow)().ToList()
+
+                        For Each Datenreihe As TelGeräteListDataRow In DatenZeilen
+                            Datenreihe.Gerät.StdTelefon = Datenreihe.Field(Of Boolean)("Std")
+                        Next
+                    End With
+                End If
             End If
         Next
     End Sub
 
 #Region "Button Click"
-    Private Sub Button_Click(sender As Object, e As EventArgs) Handles BOK.Click,
+    Private Async Sub Button_Click(sender As Object, e As EventArgs) Handles BOK.Click,
                                                                        BApply.Click,
                                                                        BXML.Click,
                                                                        BTestLogin.Click,
@@ -173,7 +184,8 @@ Public Class FormCfg
                                                                        BIndizierungStart.Click,
                                                                        BIndizierungAbbrechen.Click,
                                                                        BArbeitsverzeichnis.Click,
-                                                                       BAbbruch.Click
+                                                                       BAbbruch.Click,
+                                                                       BRWSTest.Click
         Select Case CType(sender, Button).Name
             Case BOK.Name, BApply.Name
                 ' Formulardaten in zurück in Properties
@@ -200,6 +212,17 @@ Public Class FormCfg
             Case BXML.Name
                 ' XML-Datei mit Systemstandard öffnen
                 Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltConfig_FileName))
+            Case BRWSTest.Name
+                If IsNumeric(TBRWSTest.Text) Then
+
+                    Using RWS As New Rückwärtssuche
+                        Dim vCard As String = Await RWS.StartRWS(New Telefonnummer() With {.SetNummer = TBRWSTest.Text}, False)
+
+                        If Not vCard.StartsWith(PDfltBegin_vCard) Then vCard = PRWSTestKeinEintrag
+
+                        MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
+                    End Using
+                End If
         End Select
     End Sub
 
@@ -262,13 +285,12 @@ Public Class FormCfg
         End If
     End Sub
 
-
-
     Private Sub SetTelDGV()
 
         With DGVTelList
             .EnableDoubleBuffered(True)
             With .Columns
+                .Add(NewCheckBoxColumn("Std", "Std", "Std", True))
                 .Add(NewTextColumn("Nr", "Nr.", "Nr", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
                 .Add(NewTextColumn("ID", "Dialport", "ID", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
                 .Add(NewTextColumn("AnrMonID", "Anrufmonitor ID", "AnrMonID", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
@@ -284,28 +306,32 @@ Public Class FormCfg
 
     End Sub
 
-    Private Function ConvertToDataTable() As DataTable
-        Dim Datentabelle As New DataTable
+    Private Function ConvertToDataTable() As TelGeräteListDataTable
+        Dim Datentabelle As New TelGeräteListDataTable
+        Dim DatenZeile As TelGeräteListDataRow
 
         With Datentabelle.Columns
+            .Add("Std", GetType(Boolean))
             .Add("Nr", GetType(Integer))
             .Add("ID", GetType(Integer))
             .Add("AnrMonID", GetType(Integer))
             .Add("Name", GetType(String))
             .Add("ENummern", GetType(String))
         End With
-
         ' Primary Key setzen (Zum Suchen in der Datatable)
         Datentabelle.PrimaryKey = {Datentabelle.Columns.Item("ID")}
 
-        'With Datentabelle
-        ' Zeilen hinzufügen
-        If XMLData.PTelefonie IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte IsNot Nothing Then
-            For Each TelGerät As Telefoniegerät In XMLData.PTelefonie.Telefoniegeräte
-                Datentabelle.Rows.Add(XMLData.PTelefonie.Telefoniegeräte.IndexOf(TelGerät) + 1, TelGerät.Dialport, TelGerät.AnrMonID, TelGerät.Name, If(TelGerät.StrEinTelNr IsNot Nothing, String.Join(PDflt1NeueZeile, TelGerät.StrEinTelNr), PDfltStringEmpty))
-            Next
-        End If
+        With Datentabelle
+            ' Zeilen hinzufügen
+            If XMLData.PTelefonie IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte IsNot Nothing Then
+                For Each TelGerät As Telefoniegerät In XMLData.PTelefonie.Telefoniegeräte
 
+                    DatenZeile = CType(.Rows.Add(TelGerät.StdTelefon, XMLData.PTelefonie.Telefoniegeräte.IndexOf(TelGerät) + 1, TelGerät.Dialport, TelGerät.AnrMonID, TelGerät.Name, If(TelGerät.StrEinTelNr IsNot Nothing, String.Join(PDflt1NeueZeile, TelGerät.StrEinTelNr), PDfltStringEmpty)), TelGeräteListDataRow)
+                    DatenZeile.Gerät = TelGerät
+
+                Next
+            End If
+        End With
         Return Datentabelle
     End Function
 

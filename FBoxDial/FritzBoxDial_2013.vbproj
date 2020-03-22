@@ -231,6 +231,7 @@
     <Compile Include="Formulare\FormElemente\AnrListDataRow.vb" />
     <Compile Include="Formulare\FormElemente\DGV.vb" />
     <Compile Include="Formulare\FormElemente\WählClientDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\TelGeräteListDataRow.vb" />
     <Compile Include="Formulare\FormWählclient.Designer.vb">
       <DependentUpon>FormWählclient.vb</DependentUpon>
     </Compile>

@@ -530,6 +530,7 @@ Partial Class FormCfg
         Me.BTestLogin.Text = "Test"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BTestLogin, "Teste den eingegebenen Benutzername und Passwort.")
         Me.BTestLogin.UseVisualStyleBackColor = True
+        Me.BTestLogin.Visible = False
         '
         'TBPasswort
         '
@@ -1081,7 +1082,6 @@ Partial Class FormCfg
         '
         'BRWSTest
         '
-        Me.BRWSTest.Enabled = False
         Me.BRWSTest.Location = New System.Drawing.Point(290, 68)
         Me.BRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.BRWSTest.Name = "BRWSTest"

@@ -39,6 +39,8 @@ Public Class FormWählclient
     End Sub
 
     Private Sub SetTelefonDaten()
+        Dim StdTel As Telefoniegerät
+
         ' Status schreiben
         WählClient_SetStatus(PWählClientStatusLadeGeräte)
         ' Leere das Control
@@ -47,12 +49,19 @@ Public Class FormWählclient
             Me.ComboBoxFon.Items.Add(TelGerät.Name)
         Next
 
-        If XMLData.POptionen.PTelAnschluss Is Nothing OrElse XMLData.POptionen.PTelAnschluss.IsStringEmpty Then
-            Me.ComboBoxFon.SelectedIndex = 0
+        ' Ausgewähltes Stamdardgerät
+        StdTel = XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) TG.StdTelefon).FirstOrDefault
+        If StdTel Is Nothing Then
+            If XMLData.POptionen.PTelAnschluss Is Nothing OrElse XMLData.POptionen.PTelAnschluss.IsStringEmpty OrElse Me.ComboBoxFon.Items.Contains(XMLData.POptionen.PTelAnschluss) Then
+                Me.ComboBoxFon.SelectedIndex = 0
+            Else
+                Me.ComboBoxFon.SelectedIndex = Me.ComboBoxFon.Items.IndexOf(XMLData.POptionen.PTelAnschluss)
+                WählClient_SetStatus(PWählClientStatusLetztesGerät)
+            End If
         Else
-            Me.ComboBoxFon.SelectedIndex = Me.ComboBoxFon.Items.IndexOf(XMLData.POptionen.PTelAnschluss)
+            WählClient_SetStatus(PWählClientStatusStandardGerät)
+            Me.ComboBoxFon.SelectedIndex = Me.ComboBoxFon.Items.IndexOf(StdTel.Name)
         End If
-
         Me.CBCLIR.Checked = XMLData.POptionen.PCBCLIR
     End Sub
 
@@ -239,7 +248,7 @@ Public Class FormWählclient
         WählClient_SetStatus(PWählClientStatusTelNrAuswahl(TelNr.Formatiert))
         If Not TelNr.IstMobilnummer OrElse (XMLData.POptionen.PCBCheckMobil AndAlso MsgBox(PWählClientFrageMobil, MsgBoxStyle.YesNo, "Fritz!Box Wählclient") = vbYes) Then
             If AufbauAbbrechen Then
-                'DialCode = PDfltStringEmpty
+                DialCode = PDfltStringEmpty
                 WählClient_SetStatus(PWählClientStatusAbbruch)
             Else
                 Me.LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
@@ -253,15 +262,15 @@ Public Class FormWählclient
                 NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, CStr(Me.ComboBoxFon.SelectedItem))
             End If
 
-            'If WählClient.SOAPDial(DialCode, XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.AreEqual(CStr(Me.ComboBoxFon.SelectedItem))), AufbauAbbrechen) Then
-            '    If AufbauAbbrechen Then
-            '        Me.LStatus.Text = PWählClientDialHangUp
-            '    Else
-            '        Me.LStatus.Text = PWählClientJetztAbheben
-            '    End If
-            'Else
-            '    Me.LStatus.Text = PWählClientDialFehler
-            'End If
+            If WählClient.SOAPDial(DialCode, XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.AreEqual(CStr(Me.ComboBoxFon.SelectedItem))), AufbauAbbrechen) Then
+                If AufbauAbbrechen Then
+                    Me.LStatus.Text = PWählClientDialHangUp
+                Else
+                    Me.LStatus.Text = PWählClientJetztAbheben
+                End If
+            Else
+                Me.LStatus.Text = PWählClientDialFehler
+            End If
 
             ' Einstellungen (Welcher Anschluss, CLIR...) speichern
             XMLData.POptionen.PCBCLIR = Me.CBCLIR.Checked
@@ -304,6 +313,7 @@ Public Class FormWählclient
                 .Invoke(New DlgStatus(AddressOf WählClient_SetStatus), Status)
             Else
                 .AppendText(String.Format("{0}{1}", If(.Text.IsStringEmpty, PDfltStringEmpty, PDflt1NeueZeile), Status))
+                NLogger.Debug(Status)
             End If
         End With
     End Sub

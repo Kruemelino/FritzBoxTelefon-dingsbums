@@ -1,7 +1,9 @@
-﻿Public Class Rückwärtssuche
+﻿Imports System.Threading.Tasks
+
+Public Class Rückwärtssuche
     Implements IDisposable
 
-    Friend Async Function StartRWS(ByVal TelNr As Telefonnummer, ByVal RWSIndex As Boolean) As Threading.Tasks.Task(Of String)
+    Friend Async Function StartRWS(ByVal TelNr As Telefonnummer, ByVal RWSIndex As Boolean) As Task(Of String)
         Dim vCard As String = PDfltStringEmpty
         Dim RWSIndexEintrag As RWSIndexEntry
 
@@ -43,7 +45,7 @@
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
     ''' <returns>'true' wenn was gefunden wurde</returns>
-    Private Async Function RWSDasOertiche(ByVal TelNr As Telefonnummer) As Threading.Tasks.Task(Of String)
+    Private Async Function RWSDasOertiche(ByVal TelNr As Telefonnummer) As Task(Of String)
 
         Dim EintragsID As String    ' Hilfsstring
         Dim tmpTelNr As String      ' Hilfsstring für TelNr
@@ -87,7 +89,6 @@
         Loop Until Gefunden Or i = 3
         Return VCard
     End Function
-
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.

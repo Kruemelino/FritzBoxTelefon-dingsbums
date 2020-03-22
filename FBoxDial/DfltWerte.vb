@@ -438,7 +438,8 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Lade Telefoniegeräte...
     ''' </summary>
     Public Shared ReadOnly Property PWählClientStatusLadeGeräte As String = "Lade Telefoniegeräte..."
-
+    Public Shared ReadOnly Property PWählClientStatusLetztesGerät As String = "Setze letztes Gerät..."
+    Public Shared ReadOnly Property PWählClientStatusStandardGerät As String = "Setze Standardgerät..."
     ''' <summary>
     ''' Lade Telefonnummern des Kontaktes...
     ''' </summary>
@@ -490,6 +491,20 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Der SOAP-Dialport konnte nicht geändert werden:
     ''' </summary>
     Public Shared ReadOnly Property PWählClientStatusSOAPDialPortFehler As String = "Der SOAP-Dialport konnte nicht geändert werden:"
+#End Region
+
+#Region "Literale Rückwärtssuche"
+    Public Shared ReadOnly Property PRWSTest(ByVal TelNr As String, ByVal Ergebnis As String) As String
+        Get
+            Return String.Format("Die Rückwärtssuche mit der Nummer {0} brachte folgendes Ergebnis:{1}{2}", TelNr, PDflt2NeueZeile, Ergebnis)
+        End Get
+    End Property
+    Public Shared ReadOnly Property PRWSTestKeinEintrag() As String
+        Get
+            Return "Kein Eintrag gefunden."
+        End Get
+    End Property
+
 #End Region
 
 #Region "Warnungen"
