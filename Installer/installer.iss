@@ -47,7 +47,6 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 [Files]
 #if FileExists("..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll")
      Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll";                     Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
-     Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll.config";              Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.dll.manifest";            Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Fritz!Box Telefon-Dingsbums.vsto";                    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
      Source: "..\FBoxDial\bin\Debug2010\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";    Check: OutlookVersion2010;     DestDir: "{app}"; Flags: ignoreversion
@@ -59,7 +58,6 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
 
 #if FileExists("..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll")
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll";                      Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
-    Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.config";               Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.dll.manifest";             Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Fritz!Box Telefon-Dingsbums.vsto";                     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\Microsoft.Office.Tools.Common.v4.0.Utilities.dll";     Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion

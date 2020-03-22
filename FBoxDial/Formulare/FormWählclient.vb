@@ -76,6 +76,7 @@ Public Class FormWählclient
         End With
         ' DGV-Füllem
         With Me.dgvKontaktNr
+            .EnableDoubleBuffered(True)
             .AllowUserToAddRows = False
             .DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
             .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
@@ -140,6 +141,7 @@ Public Class FormWählclient
         End With
         ' DGV-Füllem
         With Me.dgvKontaktNr
+            .EnableDoubleBuffered(True)
             .AllowUserToAddRows = False
             .DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
             .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells

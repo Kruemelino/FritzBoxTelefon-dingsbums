@@ -55,18 +55,15 @@ Public Class FormAnrList
 
 #Region "DataGridView"
     Private Async Sub InitDGV()
-        EnableDoubleBuffered(DGVAnrListe)
+        DGVAnrListe.EnableDoubleBuffered(True)
         Anrufliste = Await LadeFritzBoxAnrufliste()
         SetTelDGV(Anrufliste)
     End Sub
 
     Private Sub SetTelDGV(ByVal Anrufliste As FritzBoxXMLCallList)
-        Dim i As Integer
         If Anrufliste IsNot Nothing Then
             With DGVAnrListe
                 With .Columns
-                    i = 0
-
                     .Add(NewCheckBoxColumn("Check", "*", "Check", True))
                     .Add(NewImageColumn("Image", "D", True))
                     .Add(NewTextColumn("ID", "ID", "ID", False, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
@@ -87,40 +84,6 @@ Public Class FormAnrList
             End With
         End If
     End Sub
-
-    Private Function NewTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal DataPropertyName As String, ByVal Visible As Boolean, ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal AutoSizeMode As DataGridViewAutoSizeColumnMode) As DataGridViewTextBoxColumn
-        NewTextColumn = New DataGridViewTextBoxColumn With {.Name = Name,
-                                                            .HeaderText = HeaderText,
-                                                            .DataPropertyName = DataPropertyName,
-                                                            .Visible = Visible,
-                                                            .ValueType = ValueType,
-                                                            .AutoSizeMode = AutoSizeMode
-                                                           }
-        With NewTextColumn
-            .DefaultCellStyle.Alignment = CellAlignment
-
-            .HeaderCell.Style.Alignment = CellAlignment
-        End With
-    End Function
-
-    Private Function NewCheckBoxColumn(ByVal Name As String, ByVal HeaderText As String, ByVal DataPropertyName As String, ByVal Visible As Boolean) As DataGridViewCheckBoxColumn
-        NewCheckBoxColumn = New DataGridViewCheckBoxColumn With {.Name = Name,
-                                                                 .HeaderText = HeaderText,
-                                                                 .Visible = Visible,
-                                                                 .DataPropertyName = DataPropertyName,
-                                                                 .TrueValue = True,
-                                                                 .FalseValue = False,
-                                                                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                                                                }
-    End Function
-
-    Private Function NewImageColumn(ByVal Name As String, ByVal HeaderText As String, ByVal Visible As Boolean) As DataGridViewImageColumn
-        NewImageColumn = New DataGridViewImageColumn With {.Name = Name,
-                                                           .HeaderText = HeaderText,
-                                                           .Visible = Visible,
-                                                           .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                                                          }
-    End Function
 
     Private Function ConvertToDataTable(ByVal Anrufliste As List(Of FritzBoxXMLCall)) As DataTable
         Dim Datentabelle As New AnrListDataTable()
@@ -170,10 +133,6 @@ Public Class FormAnrList
         End If
         Return Datentabelle
     End Function
-
-    Private Sub EnableDoubleBuffered(ByVal dgv As DataGridView)
-        dgv.[GetType].GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic).SetValue(dgv, True, Nothing)
-    End Sub
 
     Private Sub DGVAnrListe_ColumnAdded(sender As Object, e As DataGridViewColumnEventArgs) Handles DGVAnrListe.ColumnAdded
         e.Column.SortMode = DataGridViewColumnSortMode.NotSortable
@@ -248,7 +207,6 @@ Public Class FormAnrList
     End Sub
 
 #End Region
-
     Sub Datum_ValueChanged(sender As Object, e As EventArgs) Handles StartDatum.ValueChanged, EndDatum.ValueChanged, StartZeit.ValueChanged, EndZeit.ValueChanged
         Dim unused = Datum_ValueChangedAsync()
     End Sub

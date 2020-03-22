@@ -1,8 +1,10 @@
 ﻿Friend Class FritzBoxLogin
     Implements IDisposable
 
+    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
     ''' <summary>
-    ''' Gibt eine gültige SessionID zurüvk
+    ''' Gibt eine gültige SessionID zurück
     ''' </summary>
     ''' <returns></returns>    
     Friend ReadOnly Property GetSessionID As String
@@ -12,6 +14,7 @@
             Using fboxSOAP As New FritzBoxServices
                 OutPutData = fboxSOAP.Start(KnownSOAPFile.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID")
                 If OutPutData.ContainsKey("NewX_AVM-DE_UrlSID") Then
+                    NLogger.Debug(OutPutData.Item("NewX_AVM-DE_UrlSID").ToString)
                     Return OutPutData.Item("NewX_AVM-DE_UrlSID").ToString
                 Else
                     Return OutPutData.Item("Error").ToString

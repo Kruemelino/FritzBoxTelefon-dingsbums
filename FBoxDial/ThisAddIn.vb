@@ -41,6 +41,7 @@ Public NotInheritable Class ThisAddIn
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
+
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If

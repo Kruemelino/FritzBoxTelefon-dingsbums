@@ -485,6 +485,7 @@ Public Module Extensions
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
                         Try
                             retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
+                            NLogger.Debug("HTTPGet: {0} - {1}", Link, retVal)
                         Catch exANE As ArgumentNullException
                             NLogger.Error(exANE)
                         Catch exWE As WebException
@@ -520,6 +521,7 @@ Public Module Extensions
 
                     Try
                         retVal = Await .UploadStringTaskAsync(UniformResourceIdentifier, Daten)
+                        NLogger.Debug("HTTPPost: {0} - {1} - {2}", Link, Daten, retVal)
                     Catch exANE As ArgumentNullException
                         NLogger.Error(exANE)
                     Catch exWE As WebException

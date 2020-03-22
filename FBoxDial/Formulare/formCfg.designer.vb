@@ -21,6 +21,8 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -76,7 +78,7 @@ Partial Class FormCfg
         Me.PTelefone = New System.Windows.Forms.TabPage()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.BTelefonliste = New System.Windows.Forms.Button()
-        Me.dgvTelList = New System.Windows.Forms.DataGridView()
+        Me.DGVTelList = New System.Windows.Forms.DataGridView()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.PKontaktsuche = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -165,6 +167,8 @@ Partial Class FormCfg
         Me.DTPAnrMonSimRING = New System.Windows.Forms.DateTimePicker()
         Me.BAnrMonSimRING = New System.Windows.Forms.Button()
         Me.PLogging = New System.Windows.Forms.TabPage()
+        Me.LMinLogLevel = New System.Windows.Forms.Label()
+        Me.CBoxMinLogLevel = New System.Windows.Forms.ComboBox()
         Me.GBLogging = New System.Windows.Forms.GroupBox()
         Me.LinkLogFile = New System.Windows.Forms.LinkLabel()
         Me.TBLogging = New System.Windows.Forms.TextBox()
@@ -172,8 +176,6 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.CBoxMinLogLevel = New System.Windows.Forms.ComboBox()
-        Me.LMinLogLevel = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -181,7 +183,7 @@ Partial Class FormCfg
         Me.PInfo.SuspendLayout()
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        CType(Me.dgvTelList, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PKontaktsuche.SuspendLayout()
         Me.GBIndizierung.SuspendLayout()
         Me.GBRWS.SuspendLayout()
@@ -842,7 +844,7 @@ Partial Class FormCfg
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.BTelefonliste)
-        Me.GroupBox1.Controls.Add(Me.dgvTelList)
+        Me.GroupBox1.Controls.Add(Me.DGVTelList)
         Me.GroupBox1.Location = New System.Drawing.Point(0, 63)
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox1.Name = "GroupBox1"
@@ -861,26 +863,42 @@ Partial Class FormCfg
         Me.BTelefonliste.Text = "Telefone erneut einlesen"
         Me.BTelefonliste.UseVisualStyleBackColor = True
         '
-        'dgvTelList
+        'DGVTelList
         '
-        Me.dgvTelList.AllowUserToAddRows = False
-        Me.dgvTelList.AllowUserToDeleteRows = False
-        Me.dgvTelList.AllowUserToResizeRows = False
-        Me.dgvTelList.BackgroundColor = System.Drawing.SystemColors.Window
-        Me.dgvTelList.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.dgvTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvTelList.Dock = System.Windows.Forms.DockStyle.Top
-        Me.dgvTelList.Location = New System.Drawing.Point(4, 24)
-        Me.dgvTelList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.dgvTelList.MultiSelect = False
-        Me.dgvTelList.Name = "dgvTelList"
-        Me.dgvTelList.RowHeadersVisible = False
-        Me.dgvTelList.RowHeadersWidth = 62
-        Me.dgvTelList.RowTemplate.Height = 28
-        Me.dgvTelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvTelList.ShowEditingIcon = False
-        Me.dgvTelList.Size = New System.Drawing.Size(847, 231)
-        Me.dgvTelList.TabIndex = 33
+        Me.DGVTelList.AllowUserToAddRows = False
+        Me.DGVTelList.AllowUserToDeleteRows = False
+        Me.DGVTelList.AllowUserToResizeRows = False
+        Me.DGVTelList.BackgroundColor = System.Drawing.SystemColors.Window
+        Me.DGVTelList.BorderStyle = System.Windows.Forms.BorderStyle.None
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
+        Me.DGVTelList.Location = New System.Drawing.Point(4, 24)
+        Me.DGVTelList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.DGVTelList.MultiSelect = False
+        Me.DGVTelList.Name = "DGVTelList"
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
+        Me.DGVTelList.RowHeadersVisible = False
+        Me.DGVTelList.RowHeadersWidth = 62
+        Me.DGVTelList.RowTemplate.Height = 28
+        Me.DGVTelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.DGVTelList.ShowEditingIcon = False
+        Me.DGVTelList.Size = New System.Drawing.Size(847, 231)
+        Me.DGVTelList.TabIndex = 33
         '
         'Label15
         '
@@ -1898,6 +1916,24 @@ Partial Class FormCfg
         Me.PLogging.Text = "Logging"
         Me.PLogging.UseVisualStyleBackColor = True
         '
+        'LMinLogLevel
+        '
+        Me.LMinLogLevel.AutoSize = True
+        Me.LMinLogLevel.Location = New System.Drawing.Point(7, 84)
+        Me.LMinLogLevel.Name = "LMinLogLevel"
+        Me.LMinLogLevel.Size = New System.Drawing.Size(141, 20)
+        Me.LMinLogLevel.TabIndex = 28
+        Me.LMinLogLevel.Text = "Minimales Loglevel"
+        '
+        'CBoxMinLogLevel
+        '
+        Me.CBoxMinLogLevel.FormattingEnabled = True
+        Me.CBoxMinLogLevel.Items.AddRange(New Object() {"Fatal", "Error", "Warn", "Info", "Debug", "Trace"})
+        Me.CBoxMinLogLevel.Location = New System.Drawing.Point(173, 81)
+        Me.CBoxMinLogLevel.Name = "CBoxMinLogLevel"
+        Me.CBoxMinLogLevel.Size = New System.Drawing.Size(121, 28)
+        Me.CBoxMinLogLevel.TabIndex = 27
+        '
         'GBLogging
         '
         Me.GBLogging.Controls.Add(Me.LinkLogFile)
@@ -1994,24 +2030,6 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'CBoxMinLogLevel
-        '
-        Me.CBoxMinLogLevel.FormattingEnabled = True
-        Me.CBoxMinLogLevel.Items.AddRange(New Object() {"Fatal", "Error", "Warn", "Info", "Debug", "Trace"})
-        Me.CBoxMinLogLevel.Location = New System.Drawing.Point(173, 81)
-        Me.CBoxMinLogLevel.Name = "CBoxMinLogLevel"
-        Me.CBoxMinLogLevel.Size = New System.Drawing.Size(121, 28)
-        Me.CBoxMinLogLevel.TabIndex = 27
-        '
-        'LMinLogLevel
-        '
-        Me.LMinLogLevel.AutoSize = True
-        Me.LMinLogLevel.Location = New System.Drawing.Point(7, 84)
-        Me.LMinLogLevel.Name = "LMinLogLevel"
-        Me.LMinLogLevel.Size = New System.Drawing.Size(141, 20)
-        Me.LMinLogLevel.TabIndex = 28
-        Me.LMinLogLevel.Text = "Minimales Loglevel"
-        '
         'FormCfg
         '
         Me.AcceptButton = Me.BOK
@@ -2037,7 +2055,7 @@ Partial Class FormCfg
         Me.PInfo.PerformLayout()
         Me.PTelefone.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
-        CType(Me.dgvTelList, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PKontaktsuche.ResumeLayout(False)
         Me.GBIndizierung.ResumeLayout(False)
         Me.GBIndizierung.PerformLayout()
@@ -2153,7 +2171,7 @@ Partial Class FormCfg
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents BTelefonliste As System.Windows.Forms.Button
-    Friend WithEvents dgvTelList As System.Windows.Forms.DataGridView
+    Friend WithEvents DGVTelList As System.Windows.Forms.DataGridView
     Friend WithEvents CBAnrMonZeigeKontakt As System.Windows.Forms.CheckBox
     Friend WithEvents TVOutlookContact As System.Windows.Forms.TreeView
     Friend WithEvents Label7 As System.Windows.Forms.Label

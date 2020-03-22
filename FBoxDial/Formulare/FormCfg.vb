@@ -262,54 +262,51 @@ Public Class FormCfg
         End If
     End Sub
 
+
+
     Private Sub SetTelDGV()
-        With Me.dgvTelList
-            .DataSource = FillDatatable()
-            .DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
-            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
 
-            With .Columns.Item("Nr")
-                .HeaderText = "Nr."
-            End With
-            With .Columns.Item("ID")
-                .HeaderText = "Dialport"
-            End With
-            With .Columns.Item("AnrMonID")
-                .HeaderText = "Anrufmonitor ID"
-            End With
-            With .Columns.Item("Name")
-                .HeaderText = "Telefonname"
-            End With
-            With .Columns.Item("ENummern")
-                .HeaderText = "Eingehende Nummern"
-                .DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        With DGVTelList
+            .EnableDoubleBuffered(True)
+            With .Columns
+                .Add(NewTextColumn("Nr", "Nr.", "Nr", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
+                .Add(NewTextColumn("ID", "Dialport", "ID", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
+                .Add(NewTextColumn("AnrMonID", "Anrufmonitor ID", "AnrMonID", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
+                .Add(NewTextColumn("Name", "Telefonname", "Name", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
+                .Add(NewTextColumn("ENummern", "Eingehende Nummern", "ENummern", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
+
             End With
 
+            ' Datentabelle füllen
+            .DataSource = New BindingSource With {.DataSource = ConvertToDataTable()}
+            .Enabled = True
         End With
+
     End Sub
-    Private Function FillDatatable() As DataTable
-        Dim tmpDataTable As DataTable
-        Dim tmpDataColumn As DataColumn
-        Dim tmpDataRow As DataRow
 
-        tmpDataTable = New DataTable
-        With tmpDataTable
-            ' Spalten hinzufügen
-            tmpDataColumn = .Columns.Add("Nr", GetType(Integer))
-            tmpDataColumn = .Columns.Add("ID", GetType(Integer))
-            tmpDataColumn = .Columns.Add("AnrMonID", GetType(Integer))
-            tmpDataColumn = .Columns.Add("Name", GetType(String))
-            tmpDataColumn = .Columns.Add("ENummern", GetType(String))
-            ' Zeilen hinzufügen
-            If XMLData.PTelefonie IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte IsNot Nothing Then
-                For Each TelGerät As Telefoniegerät In XMLData.PTelefonie.Telefoniegeräte
-                    tmpDataRow = .Rows.Add(XMLData.PTelefonie.Telefoniegeräte.IndexOf(TelGerät) + 1, TelGerät.Dialport, TelGerät.AnrMonID, TelGerät.Name, If(TelGerät.StrEinTelNr IsNot Nothing, String.Join(PDflt1NeueZeile, TelGerät.StrEinTelNr), PDfltStringEmpty))
-                Next
-            End If
+    Private Function ConvertToDataTable() As DataTable
+        Dim Datentabelle As New DataTable
+
+        With Datentabelle.Columns
+            .Add("Nr", GetType(Integer))
+            .Add("ID", GetType(Integer))
+            .Add("AnrMonID", GetType(Integer))
+            .Add("Name", GetType(String))
+            .Add("ENummern", GetType(String))
         End With
 
-        Return tmpDataTable
+        ' Primary Key setzen (Zum Suchen in der Datatable)
+        Datentabelle.PrimaryKey = {Datentabelle.Columns.Item("ID")}
+
+        'With Datentabelle
+        ' Zeilen hinzufügen
+        If XMLData.PTelefonie IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte IsNot Nothing Then
+            For Each TelGerät As Telefoniegerät In XMLData.PTelefonie.Telefoniegeräte
+                Datentabelle.Rows.Add(XMLData.PTelefonie.Telefoniegeräte.IndexOf(TelGerät) + 1, TelGerät.Dialport, TelGerät.AnrMonID, TelGerät.Name, If(TelGerät.StrEinTelNr IsNot Nothing, String.Join(PDflt1NeueZeile, TelGerät.StrEinTelNr), PDfltStringEmpty))
+            Next
+        End If
+
+        Return Datentabelle
     End Function
 
 
