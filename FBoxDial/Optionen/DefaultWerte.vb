@@ -49,6 +49,10 @@
     Public Shared ReadOnly Property PDfltTBFBAdr() As String = FritzBoxDefault.PDfltFritzBoxIPAdress
     Public Shared ReadOnly Property PDfltLetzterJournalEintragID As Integer = 0
     Public Shared ReadOnly Property PDfltLetzterJournalEintrag As Date = Now
+
+    Public Shared ReadOnly Property PDfltCBCloseWClient As Boolean = True
+    Public Shared ReadOnly Property PDfltTBWClientEnblDauer() As Integer = 10
+
 #End Region
 
 End Class

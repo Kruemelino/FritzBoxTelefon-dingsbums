@@ -33,7 +33,7 @@
     '''' <summary>
     '''' Gibt an, ob eine Verbindung zur Fritz!Box trotz fehlgeschlagenen Pings aufgebaut werden soll.
     '''' </summary>
-    <XmlElement("CBForceFBAdr")> Public Property PCBForceFBAdr As Boolean
+    '<XmlElement("CBForceFBAdr")> Public Property PCBForceFBAdr As Boolean
 
     ''' <summary>
     ''' Gibt den einegegebenen Benutzernamen für das Login der Fritz!Box an. Dies ist eine Angabe, die der Nutzer in den Einstellungen wählen kann.
@@ -60,7 +60,7 @@
     <XmlElement("TBTelNrMaske")> Public Property PTBTelNrMaske As String
     <XmlElement("CBTelNrGruppieren")> Public Property PCBTelNrGruppieren As Boolean
     <XmlElement("CBintl")> Public Property PCBintl As Boolean
-    <XmlElement("CBIgnoTelNrFormat")> Public Property PCBIgnoTelNrFormat() As Boolean
+    '<XmlElement("CBIgnoTelNrFormat")> Public Property PCBIgnoTelNrFormat() As Boolean
 #End Region
 
 #Region "Grundeinstellungen - Einstellung für die Wählhilfe"
@@ -69,24 +69,26 @@
     ''' Gibt an, ob eine Amtsholung stets mitgewählt werden soll. Die Amtsholung wird in den Einstellungen festgelegt.
     ''' </summary>
     <XmlElement("TBAmt")> Public Property PTBAmt As String
-    <XmlElement("CBDialPort")> Public Property PCBDialPort As Boolean
-    <XmlElement("CBCbCunterbinden")> Public Property PCBCbCunterbinden As Boolean
+    '<XmlElement("CBDialPort")> Public Property PCBDialPort As Boolean
+    '<XmlElement("CBCbCunterbinden")> Public Property PCBCbCunterbinden As Boolean
     <XmlElement("CBCheckMobil")> Public Property PCBCheckMobil As Boolean
     <XmlElement("TelAnschluss")> Public Property PTelAnschluss As String
     <XmlElement("PCBCLIR")> Public Property PCBCLIR As Boolean
+    <XmlElement("PCBCloseWClient")> Public Property PCBCloseWClient As Boolean
+    <XmlElement("TBWClientEnblDauer")> Public Property PTBWClientEnblDauer As Integer
 #End Region
 #End Region
 
 #Region "Anrufmonitor"
 #Region "Anrufmonitor - Einstellungen für den Anrufmonitor"
-    <XmlElement("CBUseAnrMon")> Public Property PCBUseAnrMon As Boolean
+    '<XmlElement("CBUseAnrMon")> Public Property PCBUseAnrMon As Boolean
     <XmlElement("CBAnrMonAuto")> Public Property PCBAnrMonAuto As Boolean
     <XmlElement("CBAutoClose")> Public Property PCBAutoClose As Boolean
     <XmlElement("TBEnblDauer")> Public Property PTBEnblDauer As Integer
-    <XmlElement("CBAnrMonCloseAtDISSCONNECT")> Public Property PCBAnrMonCloseAtDISSCONNECT As Boolean
+    '<XmlElement("CBAnrMonCloseAtDISSCONNECT")> Public Property PCBAnrMonCloseAtDISSCONNECT As Boolean
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property PCBAnrMonZeigeKontakt As Boolean
     <XmlElement("CBAnrMonContactImage")> Public Property PCBAnrMonContactImage As Boolean
-    <XmlElement("CBShowMSN")> Public Property PCBShowMSN As Boolean
+    '<XmlElement("CBShowMSN")> Public Property PCBShowMSN As Boolean
 #End Region
 #End Region
 
@@ -115,8 +117,8 @@
     <XmlElement("LetzterJournalEintragID")> Public Property PLetzterJournalEintragID As Integer
     <XmlElement("CBAutoAnrList")> Public Property PCBAutoAnrList As Boolean
     <XmlElement("CBAnrListeUpdateCallLists")> Public Property PCBAnrListeUpdateCallLists As Boolean
-    <XmlElement("CBAnrListeShowAnrMon")> Public Property PCBAnrListeShowAnrMon As Boolean
-    <XmlElement("TBAnrBeantworterTimeout")> Public Property PTBAnrBeantworterTimeout As Integer
+    '<XmlElement("CBAnrListeShowAnrMon")> Public Property PCBAnrListeShowAnrMon As Boolean
+    '<XmlElement("TBAnrBeantworterTimeout")> Public Property PTBAnrBeantworterTimeout As Integer
 #End Region
 #Region "Auswertung der Fritz!box Anrufliste - Anruflisten"
     <XmlElement("TBNumEntryList")> Public Property PTBNumEntryList As Integer

@@ -132,7 +132,7 @@ sinnvoll wenn nur Sie nur eine Datendatei (pst) verwenden, oder
 die anderen keine Kontakte enthalten.
 </value>
   </data>
-  <data name="LMaske.ToolTip" xml:space="preserve">
+  <data name="LTelNrMaske.ToolTip" xml:space="preserve">
     <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
 %L für die Landesvorwahl,
 %O für die Ortsvorwahl und 

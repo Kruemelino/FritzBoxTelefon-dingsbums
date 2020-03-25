@@ -226,7 +226,6 @@ Public Class FormCfg
         End Select
     End Sub
 
-
     Private Sub LinkLogFile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLogFile.LinkClicked
         Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName))
     End Sub
@@ -334,7 +333,6 @@ Public Class FormCfg
         End With
         Return Datentabelle
     End Function
-
 
 #Region "AnrMonSim"
     Private Sub AnrMonSim_ValueChanged(sender As Object, e As EventArgs) Handles DTPAnrMonSimRING.ValueChanged, DTPAnrMonSimCALL.ValueChanged, DTPAnrMonSimCONNECT.ValueChanged, DTPAnrMonSimDISCONNECT.ValueChanged,
@@ -549,6 +547,24 @@ Public Class FormCfg
             UnCheckAllNodes(sNode)
         Next
     End Sub
+
+    Private Sub CheckedChanged(sender As Object, e As EventArgs) Handles CBTelNrGruppieren.CheckedChanged, CBCloseWClient.CheckedChanged, CBUseAnrMon.CheckedChanged
+        Select Case CType(sender, CheckBox).Name
+            Case CBTelNrGruppieren.Name
+                TBTelNrMaske.Enabled = CBTelNrGruppieren.Checked
+                LTelNrMaske.Enabled = CBTelNrGruppieren.Checked
+            Case CBCloseWClient.Name
+                TBWClientEnblDauer.Enabled = CBCloseWClient.Checked
+                LWClientEnblDauer.Enabled = CBCloseWClient.Checked
+            Case CBUseAnrMon.Name
+                PanelAnrMon.Enabled = CBUseAnrMon.Checked
+        End Select
+
+
+
+
+    End Sub
+
 
 #End Region
 End Class

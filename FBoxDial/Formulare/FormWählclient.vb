@@ -276,7 +276,7 @@ Public Class FormWählclient
             XMLData.POptionen.PCBCLIR = Me.CBCLIR.Checked
             XMLData.POptionen.PTelAnschluss = ComboBoxFon.SelectedText
             ' Timer zum automatischen Schließen des Fensters starten
-            If XMLData.POptionen.PCBAutoClose Then TimerSchließen = SetTimer(XMLData.POptionen.PTBEnblDauer * 1000)
+            If XMLData.POptionen.PCBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.PTBWClientEnblDauer * 1000)
             Me.BCancelCall.Enabled = True
         End If
     End Sub
