@@ -569,5 +569,8 @@ Public NotInheritable Class DfltWerteAllgemein
     End Property
 #End Region
 
+#Region "DatagridView"
+    Public Shared ReadOnly Property PDfltCheckBackColor As Drawing.Color = Drawing.Color.LightGreen
+#End Region
 End Class
 

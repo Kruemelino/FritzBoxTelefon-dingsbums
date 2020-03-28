@@ -229,9 +229,20 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formulare\FormElemente\AnrListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\DGV.vb" />
+    <Compile Include="Formulare\FormElemente\AnrListDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\FBoxDataGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Formulare\FormElemente\TelGeräteListDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\TelGeräteListDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Formulare\FormElemente\WählClientDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\WählClientDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Formulare\FormWählclient.Designer.vb">
       <DependentUpon>FormWählclient.vb</DependentUpon>
     </Compile>

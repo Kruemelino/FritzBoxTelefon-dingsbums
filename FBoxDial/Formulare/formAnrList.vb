@@ -55,7 +55,6 @@ Public Class FormAnrList
 
 #Region "DataGridView"
     Private Async Sub InitDGV()
-        DGVAnrListe.EnableDoubleBuffered(True)
         Anrufliste = Await LadeFritzBoxAnrufliste()
         SetTelDGV(Anrufliste)
     End Sub
@@ -63,19 +62,17 @@ Public Class FormAnrList
     Private Sub SetTelDGV(ByVal Anrufliste As FritzBoxXMLCallList)
         If Anrufliste IsNot Nothing Then
             With DGVAnrListe
-                With .Columns
-                    .Add(NewCheckBoxColumn("Check", "*", "Check", True))
-                    .Add(NewImageColumn("Image", "D", True))
-                    .Add(NewTextColumn("ID", "ID", "ID", False, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
-                    .Add(NewTextColumn("Type", "Type", "Type", False, DataGridViewContentAlignment.NotSet, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
-                    .Add(NewTextColumn("Datum", "Datum", "Datum", True, DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
-                    .Add(NewTextColumn("Name", "Name", "Name", True, DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
-                    .Add(NewTextColumn("EigeneNummer", "Eigene Nr.", "EigeneNummer", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
-                    .Add(NewTextColumn("Gegenstelle", "Gegenstelle", "Gegenstelle", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
-                    .Add(NewTextColumn("Duration", "Dauer", "Duration", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
-                    .Add(NewTextColumn("Device", "Gerät", "Device", True, DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
-                    .Add(NewTextColumn("Port", "Port", "Port", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
-                End With
+                .AddCheckBoxColumn("Check", "*")
+                .AddImageColumn("Image", "D")
+                .AddHiddenTextColumn("ID", "ID", GetType(Integer))
+                .AddHiddenTextColumn("Type", "Type", GetType(String))
+                .AddTextColumn("Datum", "Datum", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+                .AddTextColumn("Name", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                .AddTextColumn("EigeneNummer", "Eigene Nr.", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                .AddTextColumn("Gegenstelle", "Gegenstelle", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                .AddTextColumn("Duration", "Dauer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+                .AddTextColumn("Device", "Gerät", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+                .AddTextColumn("Port", "Port", DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells)
 
                 ' Datentabelle füllen
                 Source = New BindingSource With {.DataSource = ConvertToDataTable(Anrufliste.Calls)}
@@ -134,42 +131,13 @@ Public Class FormAnrList
         Return Datentabelle
     End Function
 
-    Private Sub DGVAnrListe_ColumnAdded(sender As Object, e As DataGridViewColumnEventArgs) Handles DGVAnrListe.ColumnAdded
-        e.Column.SortMode = DataGridViewColumnSortMode.NotSortable
-    End Sub
-
     Private Sub DGVAnrListe_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles DGVAnrListe.DataBindingComplete
         Dim dgv As DataGridView = TryCast(sender, DataGridView)
 
         If dgv IsNot Nothing Then
 
             Freischalten(True)
-
-            With dgv
-                .ClearSelection()
-
-                '' Resize the master DataGridView columns to fit the newly loaded data.
-                '.AutoResizeColumns()
-
-                '' Configure the details DataGridView so that its columns automatically
-                '' adjust their widths when the data changes.
-                '.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
-            End With
-        End If
-    End Sub
-
-    Private Sub DGVAnrListe_CellPainting(sender As Object, e As DataGridViewCellPaintingEventArgs) Handles DGVAnrListe.CellPainting
-        Dim dgv As DataGridView = TryCast(sender, DataGridView)
-        Dim dgvRow As DataGridViewRow
-        If dgv IsNot Nothing AndAlso e.RowIndex.IsLargerOrEqual(0) Then
-            dgvRow = dgv.Rows(e.RowIndex)
-
-            If CType(dgvRow.Cells.Item("Check").Value, Boolean) Then
-                'If CDate(dgvRow.Cells.Item("Datum").Value) > Me.StartDatum.Value Then
-                dgvRow.DefaultCellStyle.BackColor = Color.LightGreen
-            Else
-                dgvRow.DefaultCellStyle.BackColor = DefaultBackColor
-            End If
+            dgv.ClearSelection()
         End If
     End Sub
 
@@ -247,10 +215,6 @@ Public Class FormAnrList
 
                         End Sub)
     End Function
-
-    Private Sub DGVAnrListe_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DGVAnrListe.DataError
-        NLogger.Error(e.Exception)
-    End Sub
 
     Private Sub ButtonStart_Click(sender As Object, e As EventArgs) Handles ButtonStart.Click
         BWImport = New BackgroundWorker

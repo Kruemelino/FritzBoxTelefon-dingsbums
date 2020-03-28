@@ -30,7 +30,7 @@ Partial Class FormAnrList
         Me.EndDatum = New System.Windows.Forms.DateTimePicker()
         Me.EndZeit = New System.Windows.Forms.DateTimePicker()
         Me.ButtonCancel = New System.Windows.Forms.Button()
-        Me.DGVAnrListe = New System.Windows.Forms.DataGridView()
+        Me.DGVAnrListe = New FBoxDataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ProgressBarAnrListe = New System.Windows.Forms.ToolStripProgressBar()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
@@ -213,7 +213,7 @@ Partial Class FormAnrList
     Friend WithEvents EndDatum As System.Windows.Forms.DateTimePicker
     Friend WithEvents EndZeit As System.Windows.Forms.DateTimePicker
     Friend WithEvents ButtonCancel As System.Windows.Forms.Button
-    Friend WithEvents DGVAnrListe As Windows.Forms.DataGridView
+    Friend WithEvents DGVAnrListe As FBoxDataGridView
     Friend WithEvents StatusStrip1 As Windows.Forms.StatusStrip
     Friend WithEvents ProgressBarAnrListe As Windows.Forms.ToolStripProgressBar
     Friend WithEvents ToolStripStatusLabel1 As Windows.Forms.ToolStripStatusLabel

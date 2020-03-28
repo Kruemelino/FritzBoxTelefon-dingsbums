@@ -65,7 +65,7 @@ Public Class FormCfg
                     End With
                 End If
 
-            ElseIf ctrl.GetType().Equals(GetType(DataGridView)) Then
+            ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then
                 ' Datagridview der Telefoniegeräte
                 SetTelDGV()
             ElseIf ctrl.GetType().Equals(GetType(CheckedListBox)) Then
@@ -287,16 +287,13 @@ Public Class FormCfg
     Private Sub SetTelDGV()
 
         With DGVTelList
-            .EnableDoubleBuffered(True)
-            With .Columns
-                .Add(NewCheckBoxColumn("Std", "Std", "Std", True))
-                .Add(NewTextColumn("Nr", "Nr.", "Nr", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
-                .Add(NewTextColumn("ID", "Dialport", "ID", True, DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells))
-                .Add(NewTextColumn("AnrMonID", "Anrufmonitor ID", "AnrMonID", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells))
-                .Add(NewTextColumn("Name", "Telefonname", "Name", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
-                .Add(NewTextColumn("ENummern", "Eingehende Nummern", "ENummern", True, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill))
-
-            End With
+            ' Spalten hinzufügen
+            .AddCheckBoxColumn("Check", "*")
+            .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells)
+            .AddTextColumn("ID", "Dialport", DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells)
+            .AddTextColumn("AnrMonID", "Anrufmonitor ID", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+            .AddTextColumn("Name", "Telefonname", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+            .AddTextColumn("ENummern", "Eingehende Nummern", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
 
             ' Datentabelle füllen
             .DataSource = New BindingSource With {.DataSource = ConvertToDataTable()}
@@ -310,7 +307,7 @@ Public Class FormCfg
         Dim DatenZeile As TelGeräteListDataRow
 
         With Datentabelle.Columns
-            .Add("Std", GetType(Boolean))
+            .Add("Check", GetType(Boolean))
             .Add("Nr", GetType(Integer))
             .Add("ID", GetType(Integer))
             .Add("AnrMonID", GetType(Integer))
@@ -559,11 +556,8 @@ Public Class FormCfg
             Case CBUseAnrMon.Name
                 PanelAnrMon.Enabled = CBUseAnrMon.Checked
         End Select
-
-
-
-
     End Sub
+
 
 
 #End Region

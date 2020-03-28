@@ -35,7 +35,7 @@ Partial Class FormWählclient
         Me.BWählenDirektwahl = New System.Windows.Forms.Button()
         Me.TBDirektwahl = New System.Windows.Forms.TextBox()
         Me.PanelKontaktwahl = New System.Windows.Forms.Panel()
-        Me.dgvKontaktNr = New System.Windows.Forms.DataGridView()
+        Me.dgvKontaktNr = New FBoxDial.FBoxDataGridView()
         Me.GBoxStatus = New System.Windows.Forms.GroupBox()
         Me.LStatus = New System.Windows.Forms.Label()
         Me.TBStatus = New System.Windows.Forms.TextBox()
@@ -207,11 +207,13 @@ Partial Class FormWählclient
         Me.dgvKontaktNr.AllowUserToDeleteRows = False
         Me.dgvKontaktNr.AllowUserToResizeColumns = False
         Me.dgvKontaktNr.AllowUserToResizeRows = False
+        Me.dgvKontaktNr.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.dgvKontaktNr.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvKontaktNr.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvKontaktNr.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvKontaktNr.Location = New System.Drawing.Point(0, 0)
         Me.dgvKontaktNr.Name = "dgvKontaktNr"
+        Me.dgvKontaktNr.RowHeadersVisible = False
         Me.dgvKontaktNr.RowHeadersWidth = 62
         Me.dgvKontaktNr.RowTemplate.Height = 28
         Me.dgvKontaktNr.Size = New System.Drawing.Size(596, 137)
@@ -317,7 +319,7 @@ Partial Class FormWählclient
     Friend WithEvents ComboBoxFon As Windows.Forms.ComboBox
     Friend WithEvents GBoxStatus As Windows.Forms.GroupBox
     Friend WithEvents BCancelCall As Windows.Forms.Button
-    Friend WithEvents dgvKontaktNr As Windows.Forms.DataGridView
+    Friend WithEvents dgvKontaktNr As FBoxDataGridView
     Friend WithEvents CBCLIR As Windows.Forms.CheckBox
     Friend WithEvents PanelKontaktwahl As Windows.Forms.Panel
     Friend WithEvents PanelDirektwahl As Windows.Forms.Panel

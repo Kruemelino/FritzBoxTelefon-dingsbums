@@ -9,7 +9,6 @@ Public Class FormWählclient
 
 #Region "Properties"
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-    Private Property ScaleFaktor As SizeF
     Private Property OKontakt As Outlook.ContactItem
     Private Property PKontaktbild As Bitmap
 #End Region
@@ -31,7 +30,6 @@ Public Class FormWählclient
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         WählClient = WClient
-        ScaleFaktor = GetScaling()
 
         Me.LStatus.Text = PDfltStringEmpty
 
@@ -85,27 +83,12 @@ Public Class FormWählclient
         End With
         ' DGV-Füllem
         With Me.dgvKontaktNr
-            .EnableDoubleBuffered(True)
-            .AllowUserToAddRows = False
-            .DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
-            .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
-            .RowHeadersVisible = False
-            .DataSource = FillDatatable(oContact)
 
-            With .Columns.Item("Nr")
-                .HeaderText = "Nr."
-                .AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet
-                .Width = CInt(25 * ScaleFaktor.Width)
-            End With
-            With .Columns.Item("Typ")
-                .HeaderText = "Typ"
-                .AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet
-                .Width = CInt(200 * ScaleFaktor.Width)
-            End With
-            With .Columns.Item("TelNr")
-                .HeaderText = "Telefonnummern"
-                .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            End With
+            .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 25)
+            .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 200)
+            .AddTextColumn("TelNr", "Telefonnummern", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), DataGridViewAutoSizeColumnMode.Fill)
+
+            .DataSource = FillDatatable(oContact)
         End With
 
         ' Kontaktbild anzeigen
@@ -150,22 +133,11 @@ Public Class FormWählclient
         End With
         ' DGV-Füllem
         With Me.dgvKontaktNr
-            .EnableDoubleBuffered(True)
-            .AllowUserToAddRows = False
-            .DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
-            .AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
-            .RowHeadersVisible = False
-            .DataSource = FillDatatable(TelNr)
+            .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 25)
+            '.AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 200)
+            .AddTextColumn("TelNr", "Telefonnummern", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), DataGridViewAutoSizeColumnMode.Fill)
 
-            With .Columns.Item("Nr")
-                .HeaderText = "Nr."
-                .AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet
-                .Width = CInt(25 * ScaleFaktor.Width)
-            End With
-            With .Columns.Item("TelNr")
-                .HeaderText = "Telefonnummer"
-                .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            End With
+            .DataSource = FillDatatable(TelNr)
         End With
     End Sub
 
