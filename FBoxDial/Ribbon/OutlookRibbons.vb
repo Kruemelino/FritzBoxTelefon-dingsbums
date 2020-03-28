@@ -252,7 +252,7 @@ Imports System.Xml
                 Return SetScreenTipJournal(control)
             Case "btnNote"
                 Return P_CMB_Insp_Note_ToolTipp
-            Case "TbtnVIP"
+            Case "tbtnVIP"
                 Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP, P_CMB_VIP_Entfernen_ToolTipp, P_CMB_VIP_Hinzufügen_ToolTipp)
             Case "btnUpload"
                 Return P_CMB_Insp_UploadKontakt_ToolTipp()
