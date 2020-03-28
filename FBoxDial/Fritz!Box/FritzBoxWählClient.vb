@@ -106,9 +106,7 @@ Public Class FritzBoxWählClient
 
         Dim SessionID As String
 
-        Using fbLogin As New FritzBoxLogin
-            SessionID = fbLogin.GetSessionID
-        End Using
+        SessionID = GetSessionID
 
         ' WebCientDial = PWählClientDialError1
         Using fbQuery As New FritzBoxQuery

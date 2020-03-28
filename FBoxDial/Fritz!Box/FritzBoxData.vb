@@ -33,9 +33,7 @@ Public Class FritzBoxData
 
         TelQuery = New List(Of String)
 
-        Using fbLogin As New FritzBoxLogin
-            SessionID = fbLogin.GetSessionID
-        End Using
+        SessionID = GetSessionID
 
         Using fbQuery As New FritzBoxQuery
 
