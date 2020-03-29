@@ -17,17 +17,13 @@
 
     Friend Sub StartStopAnrMon()
         If Aktiv Then
+            ' Halte den Anrufmonitor an
             If TCPr IsNot Nothing Then TCPr.Disconnect = True
             Aktiv = False
         Else
-            If TCPr Is Nothing Then
-                ' Starte TCP-Verbindung zur Fritz!Box
-                TCPr = New TCPReader(XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
-            Else
-                Aktiv = TCPr.Verbunden
-            End If
+            ' Starte den Anrufmonitor
+            TCPr = New TCPReader(XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
         End If
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     Friend Sub StopAnrMon()
@@ -46,6 +42,7 @@
     Private Sub TCPr_Disconnected() Handles TCPr.Disconnected
         NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
         Aktiv = TCPr.Verbunden
+        TCPr = Nothing
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 

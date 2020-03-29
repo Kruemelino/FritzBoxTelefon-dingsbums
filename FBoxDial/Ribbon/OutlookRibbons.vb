@@ -1,12 +1,12 @@
 ﻿Imports Microsoft.Office.Core
-Imports FBoxDial.DefaultRibbon
 Imports Microsoft.Office.Interop
 Imports System.Xml
 
 <Runtime.InteropServices.ComVisible(True)> Public Class OutlookRibbons
     Implements IRibbonExtensibility
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property DfltWerte As DefaultRibbonWerte
 
 #Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
     Private Property RibbonObjekt As IRibbonUI
@@ -43,7 +43,6 @@ Imports System.Xml
             Loop
         End If
         If RibbonObjekt IsNot Nothing Then RibbonObjekt.Invalidate()
-
     End Sub
 #End Region
 
@@ -118,15 +117,17 @@ Imports System.Xml
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>"Kontakt Anzeigen", wenn Link im JournalItem zu einem ContactItem führt. Ansonsten "Kontakt Erstellen"</returns>
     ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
-    Private Function SetLabelJournal(ByVal control As IRibbonControl) As String
-
+    Public Function GetLabelJournal(ByVal control As IRibbonControl) As String
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
+
         If olJournal IsNot Nothing Then
             With olJournal
-                Return If(GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object())) Is Nothing, P_CMB_Kontakt_Erstellen, P_CMB_Kontakt_Anzeigen)
+                GetLabelJournal = If(GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object())) Is Nothing, GetRibbonWert(control.Id, "Label"), GetRibbonWert("Anzeigen" & control.Id, "Label"))
             End With
+        Else
+            GetLabelJournal = GetRibbonWert(control.Id, "Label")
         End If
-        Return P_CMB_Kontakt_Erstellen
+        olJournal.ReleaseComObject
     End Function
 
     ''' <summary>
@@ -135,16 +136,17 @@ Imports System.Xml
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>Den entsprechenden ScreenTip, wenn Link im JournalItem zu einem ContactItem führt. Ansonsten den anderen. Falls Link ins Leere führt, dann wird Fehlermeldung ausgegeben.</returns>
     ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
-    Private Function SetScreenTipJournal(ByVal control As IRibbonControl) As String
-
+    Public Function GetScreenTipJournal(ByVal control As IRibbonControl) As String
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
+
         If olJournal IsNot Nothing Then
             With olJournal
-                Return If(GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object())) Is Nothing, P_CMB_Kontakt_Erstellen_ToolTipp, P_CMB_Kontakt_Anzeigen_ToolTipp)
+                GetScreenTipJournal = If(GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object())) Is Nothing, GetRibbonWert(control.Id, "ScreenTipp"), GetRibbonWert("Anzeigen" & control.Id, "ScreenTipp"))
             End With
+        Else
+            GetScreenTipJournal = GetRibbonWert(control.Id, "ScreenTipp")
         End If
-
-        Return P_CMB_Kontakt_Erstellen_ToolTipp
+        olJournal.ReleaseComObject
     End Function
 
     ''' <summary>
@@ -163,61 +165,44 @@ Imports System.Xml
         End If
     End Function
 
+    Public Function GetScreenTipVIP(ByVal control As IRibbonControl) As String
+        Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP, GetRibbonWert(control.Id & "Remove", "ScreenTipp"), GetRibbonWert(control.Id & "Add", "ScreenTipp"))
+    End Function
+    Public Function GetItemImageMsoAnrMon(ByVal control As IRibbonControl) As String
+        Return If(ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv, "PersonaStatusOnline", "PersonaStatusOffline")
+    End Function
+
+
 #End Region 'Ribbon Inspector
 
 #Region "Ribbon Behandlung für Outlook 2010 bis 2019"
 
 #Region "Ribbon: Label, ScreenTipp, ImageMso, OnAction"
+
+    Private Function GetRibbonWert(ByVal Key As String, ByVal Typ As String) As String
+        Dim tmpPropertyInfo As Reflection.PropertyInfo
+
+        tmpPropertyInfo = Array.Find(DfltWerte.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual(String.Format("P{0}{1}", Typ, Key.Split("_")(0))))
+
+        If tmpPropertyInfo IsNot Nothing Then
+            Return tmpPropertyInfo.GetValue(DfltWerte).ToString()
+        Else
+            NLogger.Warn("Kann control.Id {0} für {1} nicht auswerten.", Key, Typ)
+            If Typ.AreEqual("ImageMso") Then
+                Return "TraceError"
+            Else
+                Return PDfltStrErrorMinusOne
+            End If
+        End If
+    End Function
+
+
     ''' <summary>
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
     Public Function GetItemLabel(ByVal control As IRibbonControl) As String
-        Select Case control.Id.Split("_")(0)
-            Case "Tab"
-                Return PDfltAddin_LangName
-            Case "btnDialExpl", "btnDialInsp"
-                Return P_CMB_Dial
-            Case "btnDirektwahl"
-                Return P_CMB_Direktwahl
-            Case "CallList"
-                Return P_CMB_WWDH
-            Case "RingList"
-                Return P_CMB_CallBack
-            Case "VIPList"
-                Return P_CMB_VIP
-            Case "btnAnrMonIO"
-                Return P_CMB_AnrMon
-            Case "dynListDel"
-                Return P_CMB_ClearList
-            Case "btnAnrMonRestart"
-                Return P_CMB_AnrMonNeuStart
-            Case "btnAnrMonShow"
-                Return P_CMB_AnrMonAnzeigen
-            Case "btnAnrMonJI"
-                Return P_CMB_Journal
-            Case "Einstellungen"
-                Return P_CMB_Setup
-            Case "cbtnDial", "rbtnDial" ' ContextMenu Dial
-                Return P_CMB_ContextMenueItemCall
-            Case "ctbtnVIP" ' ContextMenu VIP
-                Return P_CMB_ContextMenueItemVIP
-            Case "cbtnUpload" ' ContextMenu Upload
-                Return P_CMB_ContextMenueItemUpload
-            Case "btnRWS"
-                Return P_RWS_Name
-            Case "btnAddContact", "cbtnAddContact"
-                Return SetLabelJournal(control)
-            Case "btnNote"
-                Return P_CMB_Insp_Note
-            Case "tbtnVIP"
-                Return P_CMB_Insp_VIP
-            Case "btnUpload", "cdMUpload", "MUpload"
-                Return P_CMB_Insp_Upload
-            Case Else
-                NLogger.Warn("Kann control.Id {0} nicht auswerten.", control.Id)
-                Return PDfltStrErrorMinusOne
-        End Select
+        Return GetRibbonWert(control.Id, "Label")
     End Function
 
     ''' <summary>
@@ -225,41 +210,7 @@ Imports System.Xml
     ''' </summary>
     ''' <param name="control"></param>
     Public Function GetItemScreenTipp(ByVal control As IRibbonControl) As String
-        Select Case control.Id.Split("_").First
-            Case "btnDialExpl", "btnDialInsp", "rbtnDial"
-                Return P_CMB_Dial_ToolTipp
-            Case "btnDirektwahl"
-                Return P_CMB_Direktwahl_ToolTipp
-            Case "CallList"
-                Return P_CMB_WWDH_ToolTipp
-            Case "RingList"
-                Return P_CMB_CallBack_ToolTipp
-            Case "VIPList"
-                Return P_CMB_VIP_ToolTipp
-            Case "btnAnrMonIO"
-                Return P_CMB_AnrMon_ToolTipp
-            Case "btnAnrMonRestart"
-                Return P_CMB_AnrMonNeuStart_ToolTipp
-            Case "btnAnrMonShow"
-                Return P_CMB_AnrMonAnzeigen_ToolTipp()
-            Case "btnAnrMonJI"
-                Return P_CMB_Journal_ToolTipp
-            Case "Einstellungen"
-                Return P_CMB_Setup_ToolTipp
-            Case "btnRWS"
-                Return P_CMB_Insp_RWS_ToolTipp
-            Case "btnAddContact"
-                Return SetScreenTipJournal(control)
-            Case "btnNote"
-                Return P_CMB_Insp_Note_ToolTipp
-            Case "tbtnVIP"
-                Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP, P_CMB_VIP_Entfernen_ToolTipp, P_CMB_VIP_Hinzufügen_ToolTipp)
-            Case "btnUpload"
-                Return P_CMB_Insp_UploadKontakt_ToolTipp()
-            Case Else
-                NLogger.Warn("Kann control.Id {0} nicht auswerten.", control.Id)
-                Return PDfltStrErrorMinusOne
-        End Select
+        Return GetRibbonWert(control.Id, "ScreenTipp")
     End Function
 
     ''' <summary>
@@ -267,46 +218,8 @@ Imports System.Xml
     ''' </summary>
     ''' <param name="control">Die id des Ribbon Controls</param>
     ''' <returns>Bezeichnung des ImageMso</returns>
-    ''' <remarks>http://soltechs.net/customui/</remarks>
     Public Function GetItemImageMso(ByVal control As IRibbonControl) As String
-
-        Select Case control.Id.Split("_").First
-            Case "btnDialExpl", "btnDialInsp", "rbtnDial"
-                Return "AutoDial"
-            Case "btnDirektwahl"
-                Return "SlidesPerPage9Slides"
-            Case "dynMWwdListe"
-                Return "RecurrenceEdit"
-            Case "dynMAnrListe"
-                Return "DirectRepliesTo"
-            Case "dynMVIPListe", "tbtnVIP"
-                Return "Pushpin"
-            Case "dynListDel"
-                Return "ToolDelete"
-            Case "btnAnrMonIO"
-                'Return "PersonaStatusBusy"
-                Return If(ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv, "PersonaStatusOnline", "PersonaStatusOffline")
-            Case "btnAnrMonRestart"
-                Return "RecurrenceEdit"
-            Case "btnAnrMonShow"
-                Return "ClipArtInsert"
-            Case "btnAnrMonJI"
-                Return "NewJournalEntry"
-            Case "btnUpload", "MUpload"
-                Return "DistributionListAddNewMember"
-            Case "btnRWS" ' Inspector
-                Return "CheckNames"
-            Case "btnAddContact", "cbtnAddContact" ' Inspector, ContextMenü
-                Return "RecordsSaveAsOutlookContact"
-            Case "btnNote" ' Inspector
-                Return "ShowNotesPage"
-            Case "CallList", "RingList", "VIPList"
-                Return PDfltStringEmpty
-            Case Else
-                NLogger.Warn("Kann control.Id {0} nicht auswerten.", control.Id)
-                Return "TraceError"
-        End Select
-
+        Return GetRibbonWert(control.Id, "ImageMso")
     End Function
 
     ''' <summary>

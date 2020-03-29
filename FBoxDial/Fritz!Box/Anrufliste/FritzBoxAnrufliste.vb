@@ -11,7 +11,7 @@ Module FritzBoxAnrufliste
             OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "GetCallList")
 
             If OutPutData.ContainsKey("Error") Then
-                NLogger.Error(OutPutData.Item("NewCallListURL"))
+                NLogger.Error("XML-Anrufliste konnte nicht heruntergeladen werden.")
                 Return Nothing
             Else
                 If OutPutData.ContainsKey("NewCallListURL") Then
