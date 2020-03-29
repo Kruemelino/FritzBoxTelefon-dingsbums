@@ -168,6 +168,8 @@ Imports System.Xml
     Public Function GetScreenTipVIP(ByVal control As IRibbonControl) As String
         Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP, GetRibbonWert(control.Id & "Remove", "ScreenTipp"), GetRibbonWert(control.Id & "Add", "ScreenTipp"))
     End Function
+
+    <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Parameter wird benötigt, da ansonsten Ribbon nicht korrekt verarbeitet wird.")>
     Public Function GetItemImageMsoAnrMon(ByVal control As IRibbonControl) As String
         Return If(ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv, "PersonaStatusOnline", "PersonaStatusOffline")
     End Function
