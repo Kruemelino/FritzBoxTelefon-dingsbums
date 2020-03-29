@@ -116,8 +116,8 @@ Public Class Popup
 
         PopUpAnrufMonitor.Popup()
 
-        AddHandler PopUpAnrufMonitor.Close, AddressOf PopUpAnrMon_Close
-        AddHandler PopUpAnrufMonitor.Closed, AddressOf PopupAnrMon_Closed
+        AddHandler PopUpAnrufMonitor.Schließen, AddressOf PopUpAnrMon_Close
+        AddHandler PopUpAnrufMonitor.Geschlossen, AddressOf PopupAnrMon_Closed
 
         AddHandler PopUpAnrufMonitor.LinkClick, AddressOf AnrMonLink_Click
         AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf AnrMonToolStripMenuItem_Clicked
@@ -132,19 +132,20 @@ Public Class Popup
     End Sub
 
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As EventArgs)
-        CType(sender, FormAnrMon).Hide()
+        CType(sender, FormAnrMon).Close()
     End Sub
 
     ''' <summary>
     ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
     ''' </summary>
-    Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As EventArgs) Handles PopUpAnrufMonitor.Closed
+    Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As EventArgs) Handles PopUpAnrufMonitor.Geschlossen
 
         ThisAddIn.OffenePopUps.Remove(Me)
 
         If PfadKontaktBild.IsNotStringEmpty AndAlso IO.File.Exists(PfadKontaktBild) Then
             DelKontaktBild(PfadKontaktBild)
         End If
+        Me.Dispose()
     End Sub
 
     Private Sub AnrMonLink_Click(ByVal sender As Object, ByVal e As EventArgs)

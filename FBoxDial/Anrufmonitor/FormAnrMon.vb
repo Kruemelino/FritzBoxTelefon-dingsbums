@@ -6,8 +6,8 @@ Public Class FormAnrMon
 
 #Region "Event"
     Public Event LinkClick(ByVal sender As Object, ByVal e As EventArgs)
-    Public Event Close(ByVal sender As Object, ByVal e As EventArgs)
-    Public Event Closed(ByVal sender As Object, ByVal e As EventArgs)
+    Public Event Schließen(ByVal sender As Object, ByVal e As EventArgs)
+    Public Event Geschlossen(ByVal sender As Object, ByVal e As EventArgs)
     Public Event ToolStripMenuItemClicked(ByVal sender As Object, ByVal e As ToolStripItemClickedEventArgs)
 #End Region
 #Region "Properties"
@@ -140,7 +140,7 @@ Public Class FormAnrMon
         FPopup.Invalidate()
     End Sub
 
-    Friend Sub Hide()
+    Friend Sub Close()
 
         If AnrMonTimer IsNot Nothing Then
             AnrMonTimer.Stop()
@@ -148,12 +148,12 @@ Public Class FormAnrMon
         End If
 
         FPopup.Close()
-        RaiseEvent Closed(Me, EventArgs.Empty)
+        RaiseEvent Geschlossen(Me, EventArgs.Empty)
     End Sub
 
 #Region "Eigene Events"
     Private Sub FPopup_CloseClick() Handles FPopup.CloseClick
-        RaiseEvent Close(Me, EventArgs.Empty)
+        RaiseEvent Schließen(Me, EventArgs.Empty)
     End Sub
     Private Sub FPopup_LinkClick() Handles FPopup.LinkClick
         RaiseEvent LinkClick(Me, EventArgs.Empty)
@@ -164,7 +164,7 @@ Public Class FormAnrMon
 #End Region
 
     Private Sub AnrMonTimer_Tick(sender As Object, e As EventArgs) Handles AnrMonTimer.Tick
-        If Now.Subtract(StartTime).Subtract(TotalTimePaused).TotalMilliseconds.IsLargerOrEqual(Anzeigedauer) Then Hide()
+        If Now.Subtract(StartTime).Subtract(TotalTimePaused).TotalMilliseconds.IsLargerOrEqual(Anzeigedauer) Then Close()
     End Sub
 
     Private Sub FPopup_MouseEnter(ByVal sender As Object, ByVal e As EventArgs) Handles FPopup.MouseEnter

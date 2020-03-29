@@ -159,14 +159,14 @@ Public Class FormCfg
                     End If
 
                 End If
-            ElseIf ctrl.GetType().Equals(GetType(DataGridView)) Then
+            ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then
                 If ctrl.Name.AreEqual(DGVTelList.Name) Then
                     ' Standard-Telefon ermitteln.
-                    With CType(ctrl, DataGridView)
+                    With CType(ctrl, FBoxDataGridView)
                         Dim DatenZeilen As List(Of TelGeräteListDataRow) = CType(CType(.DataSource, BindingSource).DataSource, TelGeräteListDataTable).Rows.Cast(Of TelGeräteListDataRow)().ToList()
 
                         For Each Datenreihe As TelGeräteListDataRow In DatenZeilen
-                            Datenreihe.Gerät.StdTelefon = Datenreihe.Field(Of Boolean)("Std")
+                            Datenreihe.Gerät.StdTelefon = Datenreihe.Field(Of Boolean)("Check")
                         Next
                     End With
                 End If
