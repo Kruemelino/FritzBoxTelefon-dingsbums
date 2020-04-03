@@ -79,6 +79,7 @@ Partial Class FormCfg
         Me.LinkForum = New System.Windows.Forms.LinkLabel()
         Me.PTelefone = New System.Windows.Forms.TabPage()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.DGVTelList = New FBoxDial.FBoxDataGridView()
         Me.BTelefonliste = New System.Windows.Forms.Button()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.PKontaktsuche = New System.Windows.Forms.TabPage()
@@ -177,7 +178,6 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.DGVTelList = New FBoxDial.FBoxDataGridView()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -185,6 +185,7 @@ Partial Class FormCfg
         Me.PInfo.SuspendLayout()
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PKontaktsuche.SuspendLayout()
         Me.GBIndizierung.SuspendLayout()
         Me.GBRWS.SuspendLayout()
@@ -204,7 +205,6 @@ Partial Class FormCfg
         Me.GBLogging.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BReset
@@ -482,6 +482,7 @@ Partial Class FormCfg
         '
         Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TVOutlookContact.CheckBoxes = True
+        Me.TVOutlookContact.Enabled = False
         Me.TVOutlookContact.FullRowSelect = True
         Me.TVOutlookContact.Location = New System.Drawing.Point(386, 60)
         Me.TVOutlookContact.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
@@ -891,6 +892,33 @@ Partial Class FormCfg
         Me.GroupBox1.Size = New System.Drawing.Size(855, 389)
         Me.GroupBox1.TabIndex = 27
         Me.GroupBox1.TabStop = False
+        '
+        'DGVTelList
+        '
+        Me.DGVTelList.AllowUserToAddRows = False
+        Me.DGVTelList.AllowUserToDeleteRows = False
+        Me.DGVTelList.AllowUserToResizeColumns = False
+        Me.DGVTelList.AllowUserToResizeRows = False
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.DGVTelList.ColumnHeadersHeight = 34
+        Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
+        Me.DGVTelList.Location = New System.Drawing.Point(4, 24)
+        Me.DGVTelList.MultiSelect = False
+        Me.DGVTelList.Name = "DGVTelList"
+        Me.DGVTelList.RowHeadersVisible = False
+        Me.DGVTelList.RowHeadersWidth = 62
+        Me.DGVTelList.RowTemplate.Height = 28
+        Me.DGVTelList.ShowEditingIcon = False
+        Me.DGVTelList.Size = New System.Drawing.Size(847, 293)
+        Me.DGVTelList.TabIndex = 36
         '
         'BTelefonliste
         '
@@ -2034,33 +2062,6 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
         '
-        'DGVTelList
-        '
-        Me.DGVTelList.AllowUserToAddRows = False
-        Me.DGVTelList.AllowUserToDeleteRows = False
-        Me.DGVTelList.AllowUserToResizeColumns = False
-        Me.DGVTelList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
-        Me.DGVTelList.ColumnHeadersHeight = 34
-        Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
-        Me.DGVTelList.Location = New System.Drawing.Point(4, 24)
-        Me.DGVTelList.MultiSelect = False
-        Me.DGVTelList.Name = "DGVTelList"
-        Me.DGVTelList.RowHeadersVisible = False
-        Me.DGVTelList.RowHeadersWidth = 62
-        Me.DGVTelList.RowTemplate.Height = 28
-        Me.DGVTelList.ShowEditingIcon = False
-        Me.DGVTelList.Size = New System.Drawing.Size(847, 293)
-        Me.DGVTelList.TabIndex = 36
-        '
         'FormCfg
         '
         Me.AcceptButton = Me.BOK
@@ -2086,6 +2087,7 @@ Partial Class FormCfg
         Me.PInfo.PerformLayout()
         Me.PTelefone.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
+        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PKontaktsuche.ResumeLayout(False)
         Me.GBIndizierung.ResumeLayout(False)
         Me.GBIndizierung.PerformLayout()
@@ -2118,7 +2120,6 @@ Partial Class FormCfg
         Me.GBLogging.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

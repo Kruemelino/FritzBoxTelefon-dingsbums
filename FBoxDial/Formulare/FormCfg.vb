@@ -85,18 +85,21 @@ Public Class FormCfg
 
             ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
                 If ctrl.Name.AreEqual(TVOutlookContact.Name) Then
-                    ' Treeview für Kontaktordner
-                    ' Treeview zurücksetzen
-                    With TVOutlookContact
-                        .Enabled = False
-                        If .Nodes.Count > 0 Then .Nodes.Clear()
-                    End With
-                    ' Backgroundworker starten
-                    BWTreeView = New BackgroundWorker
-                    With BWTreeView
-                        .WorkerReportsProgress = False
-                        .RunWorkerAsync(True)
-                    End With
+                    ' 03.04.2020 vorläufig deaktiviert
+
+
+                    '' Treeview für Kontaktordner
+                    '' Treeview zurücksetzen
+                    'With TVOutlookContact
+                    '    .Enabled = False
+                    '    If .Nodes.Count > 0 Then .Nodes.Clear()
+                    'End With
+                    '' Backgroundworker starten
+                    'BWTreeView = New BackgroundWorker
+                    'With BWTreeView
+                    '    .WorkerReportsProgress = False
+                    '    .RunWorkerAsync(True)
+                    'End With
                 End If
             End If
         Next
@@ -151,12 +154,13 @@ Public Class FormCfg
 
             ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
                 If ctrl.Name.AreEqual(TVOutlookContact.Name) Then
+                    ' 03.04.2020 vorläufig deaktiviert
 
-                    If TVOutlookContact.SelectedNode IsNot Nothing Then
-                        Dim tmpStr() As String = TVOutlookContact.SelectedNode.Tag.ToString.Split(";")
-                        XMLData.POptionen.PTVKontaktOrdnerEntryID = tmpStr(0)
-                        XMLData.POptionen.PTVKontaktOrdnerStoreID = tmpStr(1)
-                    End If
+                    'If TVOutlookContact.SelectedNode IsNot Nothing Then
+                    '    Dim tmpStr() As String = TVOutlookContact.SelectedNode.Tag.ToString.Split(";")
+                    '    XMLData.POptionen.PTVKontaktOrdnerEntryID = tmpStr(0)
+                    '    XMLData.POptionen.PTVKontaktOrdnerStoreID = tmpStr(1)
+                    'End If
 
                 End If
             ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then
@@ -501,65 +505,63 @@ Public Class FormCfg
 #End Region
 
 #Region "TreeView Outlook Kontaktordner"
-    Private Sub DelSetTreeView()
-        If InvokeRequired Then
-            Dim D As New DelgSetValue(AddressOf DelSetTreeView)
-            Invoke(D)
-        Else
-            GetKontaktOrdnerInTreeView(TVOutlookContact)
-        End If
-    End Sub
+    ' 03.04.2020 vorläufig deaktiviert
+    'Private Sub DelSetTreeView()
+    '    If InvokeRequired Then
+    '        Dim D As New DelgSetValue(AddressOf DelSetTreeView)
+    '        Invoke(D)
+    '    Else
+    '        GetKontaktOrdnerInTreeView(TVOutlookContact)
+    '    End If
+    'End Sub
 
-    Private Sub BWTreeView_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWTreeView.DoWork
-        DelSetTreeView()
-    End Sub
+    'Private Sub BWTreeView_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWTreeView.DoWork
+    '    DelSetTreeView()
+    'End Sub
 
-    Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted
-        With TVOutlookContact
-            Dim tmpNode As TreeNode()
-            tmpNode = .Nodes.Find(XMLData.POptionen.PTVKontaktOrdnerEntryID & ";" & XMLData.POptionen.PTVKontaktOrdnerStoreID, True)
-            If Not tmpNode.Length = 0 Then
-                .SelectedNode = tmpNode(0)
-                .SelectedNode.Checked = True
-            End If
-            .ExpandAll()
-            .Enabled = True
-        End With
-    End Sub
+    'Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted
+    '    With TVOutlookContact
+    '        Dim tmpNode As TreeNode()
+    '        tmpNode = .Nodes.Find(XMLData.POptionen.PTVKontaktOrdnerEntryID & ";" & XMLData.POptionen.PTVKontaktOrdnerStoreID, True)
+    '        If Not tmpNode.Length = 0 Then
+    '            .SelectedNode = tmpNode(0)
+    '            .SelectedNode.Checked = True
+    '        End If
+    '        .ExpandAll()
+    '        .Enabled = True
+    '    End With
+    'End Sub
 
-    Private Sub TVOutlookContact_NodeMouseClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TVOutlookContact.NodeMouseClick
-        If e.Node.Checked Then
-            With TVOutlookContact
-                UnCheckAllNodes(TVOutlookContact.Nodes(0))
-                If e.Node IsNot TVOutlookContact.Nodes(0) Then
-                    e.Node.Checked = True
-                End If
-            End With
-        End If
-    End Sub
+    'Private Sub TVOutlookContact_NodeMouseClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TVOutlookContact.NodeMouseClick
+    '    If e.Node.Checked Then
+    '        With TVOutlookContact
+    '            UnCheckAllNodes(TVOutlookContact.Nodes(0))
+    '            If e.Node IsNot TVOutlookContact.Nodes(0) Then
+    '                e.Node.Checked = True
+    '            End If
+    '        End With
+    '    End If
+    'End Sub
 
-    Private Sub UnCheckAllNodes(ByVal TN As TreeNode)
-        TN.Checked = False
-        For Each sNode As TreeNode In TN.Nodes
-            UnCheckAllNodes(sNode)
-        Next
-    End Sub
+    'Private Sub UnCheckAllNodes(ByVal TN As TreeNode)
+    '    TN.Checked = False
+    '    For Each sNode As TreeNode In TN.Nodes
+    '        UnCheckAllNodes(sNode)
+    '    Next
+    'End Sub
 
-    Private Sub CheckedChanged(sender As Object, e As EventArgs) Handles CBTelNrGruppieren.CheckedChanged, CBCloseWClient.CheckedChanged, CBUseAnrMon.CheckedChanged
-        Select Case CType(sender, CheckBox).Name
-            Case CBTelNrGruppieren.Name
-                TBTelNrMaske.Enabled = CBTelNrGruppieren.Checked
-                LTelNrMaske.Enabled = CBTelNrGruppieren.Checked
-            Case CBCloseWClient.Name
-                TBWClientEnblDauer.Enabled = CBCloseWClient.Checked
-                LWClientEnblDauer.Enabled = CBCloseWClient.Checked
-            Case CBUseAnrMon.Name
-                PanelAnrMon.Enabled = CBUseAnrMon.Checked
-        End Select
-    End Sub
-
-
-
+    'Private Sub CheckedChanged(sender As Object, e As EventArgs) Handles CBTelNrGruppieren.CheckedChanged, CBCloseWClient.CheckedChanged, CBUseAnrMon.CheckedChanged
+    '    Select Case CType(sender, CheckBox).Name
+    '        Case CBTelNrGruppieren.Name
+    '            TBTelNrMaske.Enabled = CBTelNrGruppieren.Checked
+    '            LTelNrMaske.Enabled = CBTelNrGruppieren.Checked
+    '        Case CBCloseWClient.Name
+    '            TBWClientEnblDauer.Enabled = CBCloseWClient.Checked
+    '            LWClientEnblDauer.Enabled = CBCloseWClient.Checked
+    '        Case CBUseAnrMon.Name
+    '            PanelAnrMon.Enabled = CBUseAnrMon.Checked
+    '    End Select
+    'End Sub
 #End Region
 End Class
 

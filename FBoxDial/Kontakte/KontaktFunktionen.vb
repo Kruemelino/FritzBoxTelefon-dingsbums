@@ -455,19 +455,20 @@ Friend Module KontaktFunktionen
 #End Region
 
 #Region "TreeView"
-    Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
-        Dim olNamespace As Outlook.NameSpace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
-        Dim iOrdner As Integer = 1
+    ' 03.04.2020 vorläufig deaktiviert
+    'Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
+    '    Dim olNamespace As Outlook.NameSpace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
+    '    Dim iOrdner As Integer = 1
 
-        With TreeView
-            .Nodes.Add("Kontaktordner")
-        End With
+    '    With TreeView
+    '        .Nodes.Add("Kontaktordner")
+    '    End With
 
-        Do While iOrdner.IsLessOrEqual(olNamespace.Folders.Count)
-            KontaktOrdnerInTreeView(olNamespace.Folders.Item(iOrdner), TreeView, TreeView.Nodes(0))
-            iOrdner += 1
-        Loop
-    End Sub
+    '    Do While iOrdner.IsLessOrEqual(olNamespace.Folders.Count)
+    '        KontaktOrdnerInTreeView(olNamespace.Folders.Item(iOrdner), TreeView, TreeView.Nodes(0))
+    '        iOrdner += 1
+    '    Loop
+    'End Sub
 
     Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
         Dim ChildNode As Windows.Forms.TreeNode
