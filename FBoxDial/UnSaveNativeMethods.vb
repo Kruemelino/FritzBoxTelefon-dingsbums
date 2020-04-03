@@ -122,21 +122,21 @@ End Enum
     Friend Shared Function GetWindowText(ByVal hwnd As IntPtr, ByVal lpString As String, ByVal cch As Int32) As Int32
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As UnSaveMethods.EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As UnSaveMethods.EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
+    'End Function
 
     <DllImport("user32.dll", EntryPoint:="GetWindowRect", SetLastError:=True, CharSet:=CharSet.Unicode)>
     Friend Shared Function GetWindowRect(ByVal hWnd As IntPtr, ByRef lpRect As RECT) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="FindWindowEx", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function FindWindowEx(ByVal parentHandle As IntPtr, ByVal childAfter As IntPtr, ByVal lclassName As String, ByVal windowTitle As String) As IntPtr
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="FindWindowEx", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function FindWindowEx(ByVal parentHandle As IntPtr, ByVal childAfter As IntPtr, ByVal lclassName As String, ByVal windowTitle As String) As IntPtr
+    'End Function
 
-    <DllImport("UxTheme.dll", EntryPoint:="IsThemeActive", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function IsThemeActive() As <MarshalAs(UnmanagedType.Bool)> Boolean
-    End Function
+    '<DllImport("UxTheme.dll", EntryPoint:="IsThemeActive", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function IsThemeActive() As <MarshalAs(UnmanagedType.Bool)> Boolean
+    'End Function
 
     <DllImport("user32.dll", EntryPoint:="GetShellWindow", SetLastError:=True, CharSet:=CharSet.Unicode)>
     Friend Shared Function GetShellWindow() As IntPtr
@@ -146,30 +146,30 @@ End Enum
     Friend Shared Function GetDesktopWindow() As IntPtr
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="SetFocus", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function SetFocus(ByVal hwnd As IntPtr) As Long
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="SetFocus", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function SetFocus(ByVal hwnd As IntPtr) As Long
+    'End Function
 
-    <DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
+    'End Function
 
-    <DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    'End Function
 
     <DllImport("user32.dll", EntryPoint:="SetWindowPos", SetLastError:=True, CharSet:=CharSet.Unicode)>
     Friend Shared Function SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As HWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
-    <DllImport("user32.dll", EntryPoint:="ReleaseCapture", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function ReleaseCapture() As <MarshalAs(UnmanagedType.Bool)> Boolean
-    End Function
+    '<DllImport("user32.dll", EntryPoint:="ReleaseCapture", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    'Friend Shared Function ReleaseCapture() As <MarshalAs(UnmanagedType.Bool)> Boolean
+    'End Function
 
 End Class
 
 Public NotInheritable Class UnSaveMethods
-    Public Delegate Sub EnumCallBackDelegate(ByVal hwnd As IntPtr, ByVal lParam As Integer)
+    'Public Delegate Sub EnumCallBackDelegate(ByVal hwnd As IntPtr, ByVal lParam As Integer)
 
     ''' <summary>
     ''' Retrieves a handle to the foreground window (the window with which the user is currently working). 
@@ -194,26 +194,26 @@ Public NotInheritable Class UnSaveMethods
         End Get
     End Property
 
-    ''' <summary>
-    ''' Retrieves a handle to a window whose class name and window name match the specified strings. 
-    ''' The function searches child windows, beginning with the one following the specified child window. This function does not perform a case-sensitive search.
-    ''' </summary>
-    ''' <param name="hWndParent">A handle to the parent window whose child windows are to be searched.
-    ''' If hwndParent is NULL, the function uses the desktop window as the parent window. The function searches among windows that are child windows of the desktop.
-    ''' If hwndParent is HWND_MESSAGE, the function searches all message-only windows.</param>
-    ''' <param name="hWndChildAfter">A handle to a child window. The search begins with the next child window in the Z order. The child window must be a direct child window of hwndParent, not just a descendant window.
-    ''' If hwndChildAfter is NULL, the search begins with the first child window of hwndParent.
-    ''' Note that if both hwndParent and hwndChildAfter are NULL, the function searches all top-level and message-only windows.</param>
-    ''' <param name="lpszClass">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be placed in the low-order word of lpszClass; the high-order word must be zero.
-    ''' If lpszClass is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names, or it can be MAKEINTATOM(0x8000). In this latter case, 0x8000 is the atom for a menu class. For more information, see the Remarks section of this topic.</param>
-    ''' <param name="lpszWindow">The window name (the window's title). If this parameter is NULL, all window names match.</param>
-    ''' <value>IntPtr</value>
-    ''' <returns>If the function succeeds, the return value is a handle to the window that has the specified class and window names.</returns>
-    Public Shared ReadOnly Property FindWindowEX(ByVal hWndParent As IntPtr, ByVal hWndChildAfter As IntPtr, ByVal lpszClass As String, ByVal lpszWindow As String) As IntPtr
-        Get
-            Return UnsafeNativeMethods.FindWindowEx(hWndParent, hWndChildAfter, lpszClass, lpszWindow)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Retrieves a handle to a window whose class name and window name match the specified strings. 
+    '''' The function searches child windows, beginning with the one following the specified child window. This function does not perform a case-sensitive search.
+    '''' </summary>
+    '''' <param name="hWndParent">A handle to the parent window whose child windows are to be searched.
+    '''' If hwndParent is NULL, the function uses the desktop window as the parent window. The function searches among windows that are child windows of the desktop.
+    '''' If hwndParent is HWND_MESSAGE, the function searches all message-only windows.</param>
+    '''' <param name="hWndChildAfter">A handle to a child window. The search begins with the next child window in the Z order. The child window must be a direct child window of hwndParent, not just a descendant window.
+    '''' If hwndChildAfter is NULL, the search begins with the first child window of hwndParent.
+    '''' Note that if both hwndParent and hwndChildAfter are NULL, the function searches all top-level and message-only windows.</param>
+    '''' <param name="lpszClass">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be placed in the low-order word of lpszClass; the high-order word must be zero.
+    '''' If lpszClass is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names, or it can be MAKEINTATOM(0x8000). In this latter case, 0x8000 is the atom for a menu class. For more information, see the Remarks section of this topic.</param>
+    '''' <param name="lpszWindow">The window name (the window's title). If this parameter is NULL, all window names match.</param>
+    '''' <value>IntPtr</value>
+    '''' <returns>If the function succeeds, the return value is a handle to the window that has the specified class and window names.</returns>
+    'Public Shared ReadOnly Property FindWindowEX(ByVal hWndParent As IntPtr, ByVal hWndChildAfter As IntPtr, ByVal lpszClass As String, ByVal lpszWindow As String) As IntPtr
+    '    Get
+    '        Return UnsafeNativeMethods.FindWindowEx(hWndParent, hWndChildAfter, lpszClass, lpszWindow)
+    '    End Get
+    'End Property
 
     ''' <summary>
     ''' Retrieves a handle to the Shell's desktop window.
@@ -246,111 +246,111 @@ Public NotInheritable Class UnSaveMethods
         End Get
     End Property
 
-    ''' <summary>
-    ''' Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.
-    ''' </summary>
-    ''' <param name="hwnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
-    ''' <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. </returns>
-    ''' <remarks>
-    ''' The SetFocus function sends a WM_KILLFOCUS message to the window that loses the keyboard focus and a WM_SETFOCUS message to the window that receives the keyboard focus. It also activates either the window that receives the focus or the parent of the window that receives the focus.
-    ''' If a window is active but does not have the focus, any key pressed will produce the WM_SYSCHAR, WM_SYSKEYDOWN, or WM_SYSKEYUP message. If the VK_MENU key is also pressed, the lParam parameter of the message will have bit 30 set. Otherwise, the messages produced do not have this bit set.
-    ''' By using the AttachThreadInput function, a thread can attach its input processing to another thread. This allows a thread to call SetFocus to set the keyboard focus to a window attached to another thread's message queue.
-    ''' </remarks>
-    Public Shared ReadOnly Property SetFocus(ByVal hwnd As IntPtr) As Long
-        Get
-            Return UnsafeNativeMethods.SetFocus(hwnd)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.
+    '''' </summary>
+    '''' <param name="hwnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
+    '''' <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. </returns>
+    '''' <remarks>
+    '''' The SetFocus function sends a WM_KILLFOCUS message to the window that loses the keyboard focus and a WM_SETFOCUS message to the window that receives the keyboard focus. It also activates either the window that receives the focus or the parent of the window that receives the focus.
+    '''' If a window is active but does not have the focus, any key pressed will produce the WM_SYSCHAR, WM_SYSKEYDOWN, or WM_SYSKEYUP message. If the VK_MENU key is also pressed, the lParam parameter of the message will have bit 30 set. Otherwise, the messages produced do not have this bit set.
+    '''' By using the AttachThreadInput function, a thread can attach its input processing to another thread. This allows a thread to call SetFocus to set the keyboard focus to a window attached to another thread's message queue.
+    '''' </remarks>
+    'Public Shared ReadOnly Property SetFocus(ByVal hwnd As IntPtr) As Long
+    '    Get
+    '        Return UnsafeNativeMethods.SetFocus(hwnd)
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Tests if a visual style for the current application is active. 
-    ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>
-    ''' True, if a visual style is enabled, and windows with visual styles applied should call OpenThemeData to start using theme drawing services.
-    ''' False, if a visual style is not enabled, and the window message handler does not need to make another call to IsThemeActive until it receives a WM_THEMECHANGED message.</returns>
-    ''' <remarks>Do not call this function during DllMain or global objects contructors. This may cause invalid return values in Windows Vista and may cause Windows XP to become unstable.</remarks>
-    Public Shared ReadOnly Property IsThemeActive() As Boolean = UnsafeNativeMethods.IsThemeActive()
+    '''' <summary>
+    '''' Tests if a visual style for the current application is active. 
+    '''' </summary>
+    '''' <value>Boolean</value>
+    '''' <returns>
+    '''' True, if a visual style is enabled, and windows with visual styles applied should call OpenThemeData to start using theme drawing services.
+    '''' False, if a visual style is not enabled, and the window message handler does not need to make another call to IsThemeActive until it receives a WM_THEMECHANGED message.</returns>
+    '''' <remarks>Do not call this function during DllMain or global objects contructors. This may cause invalid return values in Windows Vista and may cause Windows XP to become unstable.</remarks>
+    'Public Shared ReadOnly Property IsThemeActive() As Boolean = UnsafeNativeMethods.IsThemeActive()
 
-    ''' <summary>
-    ''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-    ''' </summary>
-    ''' <param name="hWnd">
-    ''' A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
-    ''' Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
-    ''' <param name="Msg">The message to be sent.</param>
-    ''' <param name="wParam">Additional message-specific information.</param>
-    ''' <param name="lParam">Additional message-specific information.</param>
-    ''' <value>IntPtr</value>
-    ''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
-        Get
-            Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+    '''' </summary>
+    '''' <param name="hWnd">
+    '''' A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
+    '''' Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
+    '''' <param name="Msg">The message to be sent.</param>
+    '''' <param name="wParam">Additional message-specific information.</param>
+    '''' <param name="lParam">Additional message-specific information.</param>
+    '''' <value>IntPtr</value>
+    '''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
+    'Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
+    '    Get
+    '        Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-    ''' </summary>
-    ''' <param name="hWnd">
-    ''' A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
-    ''' Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
-    ''' <param name="Msg">The message to be sent.</param>
-    ''' <param name="wParam">Additional message-specific information.</param>
-    ''' <param name="lParam">Additional message-specific information.</param>
-    ''' <value>IntPtr</value>
-    ''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
-    Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
-        Get
-            Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+    '''' </summary>
+    '''' <param name="hWnd">
+    '''' A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
+    '''' Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
+    '''' <param name="Msg">The message to be sent.</param>
+    '''' <param name="wParam">Additional message-specific information.</param>
+    '''' <param name="lParam">Additional message-specific information.</param>
+    '''' <value>IntPtr</value>
+    '''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
+    'Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
+    '    Get
+    '        Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to an application-defined callback function. EnumChildWindows continues until the last child window is enumerated or the callback function returns FALSE.
-    ''' </summary>
-    ''' <param name="hWndParent">A handle to the parent window whose child windows are to be enumerated. If this parameter is NULL, this function is equivalent to EnumWindows.</param>
-    ''' <param name="lpEnumFunc">A pointer to an application-defined callback function.</param>
-    ''' <param name="lParam">An application-defined value to be passed to the callback function.</param>
-    ''' <value>IntPtr</value>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633494(v=vs.85).aspx</remarks>
-    Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
-        Get
-            Return UnsafeNativeMethods.EnumChildWindows(hWndParent, lpEnumFunc, lParam)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to an application-defined callback function. EnumChildWindows continues until the last child window is enumerated or the callback function returns FALSE.
+    '''' </summary>
+    '''' <param name="hWndParent">A handle to the parent window whose child windows are to be enumerated. If this parameter is NULL, this function is equivalent to EnumWindows.</param>
+    '''' <param name="lpEnumFunc">A pointer to an application-defined callback function.</param>
+    '''' <param name="lParam">An application-defined value to be passed to the callback function.</param>
+    '''' <value>IntPtr</value>
+    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633494(v=vs.85).aspx</remarks>
+    'Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
+    '    Get
+    '        Return UnsafeNativeMethods.EnumChildWindows(hWndParent, lpEnumFunc, lParam)
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Changes the size, position, and Z order of a child, pop-up, or top-level window. These windows are ordered according to their appearance on the screen. The topmost window receives the highest rank and is the first window in the Z order.
-    ''' </summary>
-    ''' <param name="hWnd">A handle to the window.</param>
-    ''' <param name="hWndInsertAfter">A handle to the window to precede the positioned window in the Z order. This parameter must be a window handle or one of the hWndInsertAfterFlags.</param>
-    ''' <param name="X">The new position of the left side of the window, in client coordinates.</param>
-    ''' <param name="Y">The new position of the top of the window, in client coordinates.</param>
-    ''' <param name="cx">The new width of the window, in pixels.</param>
-    ''' <param name="cy">The new height of the window, in pixels.</param>
-    ''' <param name="uFlags">The window sizing and positioning flags.</param>
-    ''' <value>Boolean</value>
-    ''' <returns>If the function succeeds, the return value is nonzero.</returns>
-    ''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545(v=vs.85).aspx</remarks>
-    Public Shared ReadOnly Property SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As HWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As Boolean
-        Get
-            Return UnsafeNativeMethods.SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, uFlags)
-        End Get
-    End Property
+    '''' <summary>
+    '''' Changes the size, position, and Z order of a child, pop-up, or top-level window. These windows are ordered according to their appearance on the screen. The topmost window receives the highest rank and is the first window in the Z order.
+    '''' </summary>
+    '''' <param name="hWnd">A handle to the window.</param>
+    '''' <param name="hWndInsertAfter">A handle to the window to precede the positioned window in the Z order. This parameter must be a window handle or one of the hWndInsertAfterFlags.</param>
+    '''' <param name="X">The new position of the left side of the window, in client coordinates.</param>
+    '''' <param name="Y">The new position of the top of the window, in client coordinates.</param>
+    '''' <param name="cx">The new width of the window, in pixels.</param>
+    '''' <param name="cy">The new height of the window, in pixels.</param>
+    '''' <param name="uFlags">The window sizing and positioning flags.</param>
+    '''' <value>Boolean</value>
+    '''' <returns>If the function succeeds, the return value is nonzero.</returns>
+    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545(v=vs.85).aspx</remarks>
+    'Public Shared ReadOnly Property SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As HWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As Boolean
+    '    Get
+    '        Return UnsafeNativeMethods.SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, uFlags)
+    '    End Get
+    'End Property
 
-    ''' <summary>
-    ''' Releases the mouse capture from a window in the current thread and restores normal mouse input processing. 
-    ''' A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, 
-    ''' except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
-    ''' </summary>
-    ''' <value>Boolean</value>
-    ''' <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-    Public Shared ReadOnly Property ReleaseCapture() As Boolean
-        Get
-            Return UnsafeNativeMethods.ReleaseCapture()
-        End Get
-    End Property
+    '''' <summary>
+    '''' Releases the mouse capture from a window in the current thread and restores normal mouse input processing. 
+    '''' A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, 
+    '''' except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
+    '''' </summary>
+    '''' <value>Boolean</value>
+    '''' <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+    'Public Shared ReadOnly Property ReleaseCapture() As Boolean
+    '    Get
+    '        Return UnsafeNativeMethods.ReleaseCapture()
+    '    End Get
+    'End Property
 End Class
