@@ -237,9 +237,7 @@ Imports Microsoft.Office.Interop
     Friend Async Sub StarteKontaktsuche()
 
         ' Kontaktsuche in den Outlook-Kontakten
-        Using KSucher As New KontaktSucher
-            OlKontakt = Await KSucher.KontaktSuche(GegenstelleTelNr, PDfltStringEmpty)
-        End Using
+        OlKontakt = Await KontaktSuche(GegenstelleTelNr)
 
         If OlKontakt IsNot Nothing Then
             With OlKontakt
@@ -283,9 +281,7 @@ Imports Microsoft.Office.Interop
             If GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
 
                 If XMLData.POptionen.PCBRWS Then
-                    Using RWSSucher As New Rückwärtssuche
-                        VCard = Await RWSSucher.StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
-                    End Using
+                    VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
 
                     If VCard.IsNotStringEmpty Then
                         If XMLData.POptionen.PCBKErstellen Then

@@ -19,7 +19,7 @@ Friend Module KontaktFunktionen
     ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
     Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As Telefonnummer, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem
-        Dim olFolder As Outlook.MAPIFolder
+
 
         If Not TelNr.Unbekannt Then
 
@@ -72,9 +72,7 @@ Friend Module KontaktFunktionen
 
             If AutoSave Then
                 If olKontakt.GetInspector Is Nothing Then
-                    Using KontakIndexer As New KontaktIndizierer
-                        KontakIndexer.IndiziereKontakt(olKontakt)
-                    End Using
+                    IndiziereKontakt(olKontakt)
                 End If
                 ' Todo 1: Prüfe, ob ein Ordner ausgewählt wurde (Properties sind nicht -1)
                 ' Todo 2: Prüfe, ob Ordner aus 1 nicht der default Ordner ist.
@@ -82,11 +80,13 @@ Friend Module KontaktFunktionen
                 'Handlung 1:
 
                 If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
+                    Dim olFolder As Outlook.MAPIFolder
+
                     olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
                     ' Handlung 2:
                     If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
-                        olKontakt.Save()
-                        NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
+                        ' olKontakt.Save() 
+                        If olKontakt.Speichern Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
                     Else
                         olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
                         NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
@@ -107,7 +107,7 @@ Friend Module KontaktFunktionen
     End Function
     Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal XMLKontakt As FritzBoxXMLKontakt, ByVal TelNr As Telefonnummer, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem
-        Dim olFolder As Outlook.MAPIFolder
+
 
         If Not TelNr.Unbekannt Then
 
@@ -132,9 +132,7 @@ Friend Module KontaktFunktionen
 
             If AutoSave Then
                 If olKontakt.GetInspector Is Nothing Then
-                    Using KontakIndexer As New KontaktIndizierer
-                        KontakIndexer.IndiziereKontakt(olKontakt)
-                    End Using
+                    IndiziereKontakt(olKontakt)
                 End If
                 ' Todo 1: Prüfe, ob ein Ordner ausgewählt wurde (Properties sind nicht -1)
                 ' Todo 2: Prüfe, ob Ordner aus 1 nicht der default Ordner ist.
@@ -142,11 +140,13 @@ Friend Module KontaktFunktionen
                 'Handlung 1:
 
                 If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
+                    Dim olFolder As Outlook.MAPIFolder
+
                     olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
                     ' Handlung 2:
                     If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
-                        olKontakt.Save()
-                        NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
+                        'olKontakt.Save()
+                        If olKontakt.Speichern() Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
                     Else
                         olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
                         NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
@@ -282,6 +282,7 @@ Friend Module KontaktFunktionen
             NLogger.Error(ex)
         End Try
     End Function
+
     Friend Function GetOutlookKontakt(ByRef KontaktIDStoreID As Object()) As Outlook.ContactItem
         GetOutlookKontakt = Nothing
 
@@ -351,36 +352,35 @@ Friend Module KontaktFunktionen
         Next
     End Function
     Friend Async Function ZähleOutlookKontakte() As Threading.Tasks.Task(Of Integer)
-        Dim olNamespace As Outlook.NameSpace ' MAPI-Namespace
-        Dim olfolder As Outlook.MAPIFolder
-        Dim retval As Integer
-        olNamespace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
+        Dim retval As Integer = 0
 
         If XMLData.POptionen.PCBKontaktSucheHauptOrdner Then
-            olfolder = P_DefContactFolder
-            retval = Await ZähleOutlookKontakte(olfolder, Nothing)
+            retval = Await ZähleOutlookKontakte(P_DefContactFolder)
         Else
-            retval = Await ZähleOutlookKontakte(Nothing, olNamespace)
+            For Each olStore As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
+                ' Exchange nicht zählen
+                If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+                    retval += Await ZähleOutlookKontakte(olStore.GetRootFolder)
+                End If
+            Next
         End If
         Return retval
     End Function
-    Private Async Function ZähleOutlookKontakte(ByVal Ordner As Outlook.MAPIFolder, ByVal NamensRaum As Outlook.NameSpace) As Threading.Tasks.Task(Of Integer)
-        Dim tmpAnzahl As Integer = 0
-        ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        If NamensRaum IsNot Nothing Then
-            For Each olFolder As Outlook.MAPIFolder In NamensRaum.Folders
-                tmpAnzahl += Await ZähleOutlookKontakte(olFolder, Nothing)
-            Next
-        Else
-            If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
-                tmpAnzahl += Ordner.Items.Count
-            End If
 
-            ' Unterordner werden rekursiv durchsucht
-            For Each olFolder As Outlook.MAPIFolder In Ordner.Folders
-                tmpAnzahl += Await ZähleOutlookKontakte(olFolder, Nothing)
-            Next
+    Private Async Function ZähleOutlookKontakte(ByVal Ordner As Outlook.MAPIFolder) As Threading.Tasks.Task(Of Integer)
+        Dim tmpAnzahl As Integer = 0
+
+        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+            tmpAnzahl += Ordner.Items.Count
         End If
+
+        ' Unterordner werden rekursiv durchsucht
+        For Each olFolder As Outlook.MAPIFolder In Ordner.Folders
+            ' Exchange nicht zählen
+            If olFolder.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+                tmpAnzahl += Await ZähleOutlookKontakte(olFolder)
+            End If
+        Next
 
         Return tmpAnzahl
     End Function
@@ -417,6 +417,15 @@ Friend Module KontaktFunktionen
 
     End Function
 
+    <Extension> Friend Function Speichern(ByRef olKontakt As Outlook.ContactItem) As Boolean
+        Try
+            olKontakt.Save()
+            Return True
+        Catch ex As Exception
+            NLogger.Error(ex, "Kontakt {0} kann nicht gespeichert werden.", olKontakt.FullNameAndCompany)
+            Return False
+        End Try
+    End Function
 #Region "VIP"
     <Extension> Friend Function IsVIP(ByVal olKontakt As Outlook.ContactItem) As Boolean
 
@@ -470,48 +479,48 @@ Friend Module KontaktFunktionen
     '    Loop
     'End Sub
 
-    Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
-        Dim ChildNode As Windows.Forms.TreeNode
-        'Dim iOrdner As Integer = 1
-        'Dim SubFolder As Outlook.MAPIFolder
+    'Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
+    '    Dim ChildNode As Windows.Forms.TreeNode
+    '    'Dim iOrdner As Integer = 1
+    '    'Dim SubFolder As Outlook.MAPIFolder
 
-        'Do While iOrdner.IsLessOrEqual(Ordner.Folders.Count)
-        '    SubFolder = Ordner.Folders.Item(iOrdner)
-        '    ChildNode = BaseNode
-        '    If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
-        '        Try
-        '            ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
-        '            ChildNode.Tag = ChildNode.Name
-        '            If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
-        '        Catch ex As Exception
-        '            LogFile(String.Format("Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name))
-        '            ChildNode = BaseNode
-        '        End Try
-        '    End If
-        '    KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-        '    iOrdner += 1
-        'Loop
+    '    'Do While iOrdner.IsLessOrEqual(Ordner.Folders.Count)
+    '    '    SubFolder = Ordner.Folders.Item(iOrdner)
+    '    '    ChildNode = BaseNode
+    '    '    If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+    '    '        Try
+    '    '            ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
+    '    '            ChildNode.Tag = ChildNode.Name
+    '    '            If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
+    '    '        Catch ex As Exception
+    '    '            LogFile(String.Format("Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name))
+    '    '            ChildNode = BaseNode
+    '    '        End Try
+    '    '    End If
+    '    '    KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
+    '    '    iOrdner += 1
+    '    'Loop
 
-        For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
+    '    For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
 
-            If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+    '        If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
-                Try
-                    ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
-                    ChildNode.Tag = ChildNode.Name
-                    If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
-                Catch ex As Exception
-                    NLogger.Error(ex, "Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name)
-                    ChildNode = BaseNode
-                End Try
-            Else
-                ChildNode = BaseNode
-            End If
-            Windows.Forms.Application.DoEvents()
-            KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-        Next
+    '            Try
+    '                ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
+    '                ChildNode.Tag = ChildNode.Name
+    '                If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
+    '            Catch ex As Exception
+    '                NLogger.Error(ex, "Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name)
+    '                ChildNode = BaseNode
+    '            End Try
+    '        Else
+    '            ChildNode = BaseNode
+    '        End If
+    '        Windows.Forms.Application.DoEvents()
+    '        KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
+    '    Next
 
-    End Sub
+    'End Sub
 #End Region
 
     Private Sub XMLKontaktOutlook(ByVal XMLKontakt As FritzBoxXMLKontakt, ByRef Kontakt As Outlook.ContactItem)
@@ -616,6 +625,7 @@ Friend Module KontaktFunktionen
                 Case Else
                     Throw New Exception("Valid address entry not found.")
             End Select
+            ae.ReleaseComObject
         Else
             Return card.Address
         End If
@@ -633,9 +643,7 @@ Friend Class ContactSaved
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles Kontakt.Write
-        Using KontaktIndexer As New KontaktIndizierer
-            KontaktIndexer.IndiziereKontakt(Kontakt)
-        End Using
+        IndiziereKontakt(Kontakt)
     End Sub
 
 #Region "IDisposable Support"

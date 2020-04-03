@@ -36,9 +36,7 @@ Module Journal
 
                 ' Telefonnummer aus dem Body ermitteln
                 TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(PDfltJournalBodyStart, PDflt1NeueZeile)}
-                Using RWS As New Rückwärtssuche
-                    vCard = Await RWS.StartRWS(TelNr, False)
-                End Using
+                vCard = Await StartRWS(TelNr, False)
 
                 If vCard.IsStringNothingOrEmpty Then
                     .Body += String.Format("{0}{1}", PDflt1NeueZeile, PDfltJournalRWSFehler)

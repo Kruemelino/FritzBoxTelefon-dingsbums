@@ -218,14 +218,9 @@ Public Class FormCfg
                 Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltConfig_FileName))
             Case BRWSTest.Name
                 If IsNumeric(TBRWSTest.Text) Then
-
-                    Using RWS As New Rückwärtssuche
-                        Dim vCard As String = Await RWS.StartRWS(New Telefonnummer() With {.SetNummer = TBRWSTest.Text}, False)
-
-                        If Not vCard.StartsWith(PDfltBegin_vCard) Then vCard = PRWSTestKeinEintrag
-
-                        MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
-                    End Using
+                    Dim vCard As String = Await StartRWS(New Telefonnummer() With {.SetNummer = TBRWSTest.Text}, False)
+                    If Not vCard.StartsWith(PDfltBegin_vCard) Then vCard = PRWSTestKeinEintrag
+                    MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
                 End If
         End Select
     End Sub
@@ -418,61 +413,76 @@ Public Class FormCfg
             SetProgressbar(Value)
         End If
 
-        Using ki As New KontaktIndizierer
-            KontaktIndexer(Nothing, ThisAddIn.POutookApplication.GetNamespace("MAPI"), ki, RadioButtonErstelle.Checked)
-        End Using
-    End Sub
-
-    Private Sub KontaktIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal NamensRaum As Outlook.NameSpace, ByVal KI As KontaktIndizierer, ByVal Erstellen As Boolean)
-
-        Dim iOrdner As Integer    ' Zählvariable für den aktuellen Ordner
-        Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
-
-        ' Wenn statt einem Ordner der NameSpace übergeben wurde braucht man zuerst mal die oberste Ordnerliste.
-        If NamensRaum IsNot Nothing Then
-            Dim j As Integer = 1
-            Do While (j <= NamensRaum.Folders.Count)
-                KontaktIndexer(CType(NamensRaum.Folders.Item(j), Outlook.MAPIFolder), Nothing, KI, Erstellen)
-                j += 1
-            Loop
+        If Me.CBKontaktSucheHauptOrdner.Checked Then
+            ' Indiziere rekursiv von dem Kontakthauptordner aus die Kontakte
+            KontaktIndexer(ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), RadioButtonErstelle.Checked)
         Else
-            If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And Not BWIndexer.CancellationPending Then
-                For Each item In Ordner.Items
-                    ' nur Kontakte werden durchsucht
-                    If TypeOf item Is Outlook.ContactItem Then
-                        aktKontakt = CType(item, Outlook.ContactItem)
-                        If Erstellen Then
-                            KI.IndiziereKontakt(aktKontakt)
-                            BWIndexer.ReportProgress(1)
-                        Else
-                            KI.DeIndiziereKontakt(aktKontakt)
-                            BWIndexer.ReportProgress(-1)
-                        End If
-
-                        aktKontakt.Save()
-
-                        If BWIndexer.CancellationPending Then Exit For
-                    Else
-                        BWIndexer.ReportProgress(1)
-                    End If
-                Next
-
-                If Not Erstellen Then
-                    ' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
-                    KI.DeIndizierungOrdner(Ordner)
-                End If
-            End If
-
-            ' Unterordner werden rekursiv durchsucht
-            iOrdner = 1
-            Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not BWIndexer.CancellationPending
-                KontaktIndexer(CType(Ordner.Folders.Item(iOrdner), Outlook.MAPIFolder), Nothing, KI, Erstellen)
-                iOrdner += 1
-            Loop
+            KontaktIndexer(RadioButtonErstelle.Checked)
         End If
 
     End Sub
 
+    Private Sub KontaktIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal Erstellen As Boolean)
+
+        Dim iOrdner As Integer    ' Zählvariable für den aktuellen Ordner
+        Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
+
+        ' Kein Indizieren von Exchange
+        If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
+           Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And
+           Not BWIndexer.CancellationPending Then
+            For Each item In Ordner.Items
+                ' nur Kontakte werden durchsucht
+                If TypeOf item Is Outlook.ContactItem Then
+                    aktKontakt = CType(item, Outlook.ContactItem)
+                    If Erstellen Then
+                        IndiziereKontakt(aktKontakt)
+                        BWIndexer.ReportProgress(1)
+                    Else
+                        DeIndiziereKontakt(aktKontakt)
+                        BWIndexer.ReportProgress(-1)
+                    End If
+
+                    'aktKontakt.Save()
+                    aktKontakt.Speichern
+
+                    aktKontakt.ReleaseComObject
+
+                    If BWIndexer.CancellationPending Then Exit For
+                Else
+                    BWIndexer.ReportProgress(1)
+                End If
+            Next
+
+            If Not Erstellen Then
+                ' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
+                DeIndizierungOrdner(Ordner)
+            End If
+        End If
+
+        ' Unterordner werden rekursiv durchsucht
+        iOrdner = 1
+        Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not BWIndexer.CancellationPending
+            KontaktIndexer(Ordner.Folders.Item(iOrdner), Erstellen)
+            iOrdner += 1
+        Loop
+
+    End Sub
+    Private Sub KontaktIndexer(ByVal Erstellen As Boolean)
+        Dim iStore As Integer
+        Dim olStore As Outlook.Store = Nothing
+        ' Indiziere jeden Kontaktordner durch alle Stores rekursiv 
+        iStore = 1
+        Do While (iStore.IsLessOrEqual(ThisAddIn.POutookApplication.Session.Stores.Count)) And Not BWIndexer.CancellationPending
+            olStore = ThisAddIn.POutookApplication.Session.Stores.Item(iStore)
+            ' Kein Indizieren von Exchange
+            If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+                KontaktIndexer(olStore.GetRootFolder, Erstellen)
+            End If
+            iStore += 1
+        Loop
+        olStore.ReleaseComObject
+    End Sub
     Private Sub BWIndexer_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles BWIndexer.ProgressChanged
         If InvokeRequired Then
             Dim D As New DelgSetProgressbarMax(AddressOf SetProgressbar)
@@ -501,6 +511,9 @@ Public Class FormCfg
     Private Sub SetProgressbarMax(ByVal Anzahl As Integer)
         ProgressBarIndex.Maximum = Anzahl
         LabelAnzahl.Text = String.Format("Status: {0}/{1}", 0, Anzahl)
+
+        BIndizierungAbbrechen.Enabled = False
+        BIndizierungStart.Enabled = True
     End Sub
 #End Region
 

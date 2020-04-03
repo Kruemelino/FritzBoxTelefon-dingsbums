@@ -165,13 +165,11 @@ Public Class FritzBoxWählClient
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt
     ''' </summary>
     ''' <param name="olAuswahl">Die aktuelle Auswahl eines Outlook-Elementes</param>
-    Friend Overloads Async Sub WählboxStart(ByVal olAuswahl As Outlook.Selection, ByVal DirektWahl As Boolean)
-        Dim olNamespace As Outlook.NameSpace
+    Friend Overloads Sub WählboxStart(ByVal olAuswahl As Outlook.Selection, ByVal DirektWahl As Boolean)
 
         If DirektWahl Then
             Wählbox(Nothing, Nothing, True)
         Else
-            olNamespace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
             ' Ist überhaupt etwas ausgewählt?
             If olAuswahl.Count.AreEqual(1) Then
 
@@ -184,7 +182,7 @@ Public Class FritzBoxWählClient
                     Case TypeOf olAuswahl.Item(1) Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
                         ' Es wurde eine Mail ausgewählt
                         ' Den zur Email-Adresse gehörigen Kontakt suchen
-                        Await WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
+                        WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
                     Case Else
                         ' Nix tun
                         MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
@@ -192,12 +190,10 @@ Public Class FritzBoxWählClient
             Else
                 MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
             End If
-
-            olNamespace.ReleaseComObject
         End If
     End Sub
 
-    Friend Overloads Async Sub WählboxStart(ByVal olInsp As Outlook.Inspector)
+    Friend Overloads Sub WählboxStart(ByVal olInsp As Outlook.Inspector)
 
         Select Case True
             Case TypeOf olInsp.CurrentItem Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
@@ -208,7 +204,7 @@ Public Class FritzBoxWählClient
             Case TypeOf olInsp.CurrentItem Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
                 ' Es wurde eine Mail ausgewählt
                 ' Den zur Email-Adresse gehörigen Kontakt suchen
-                Await WählboxStart(CType(olInsp.CurrentItem, Outlook.MailItem))
+                WählboxStart(CType(olInsp.CurrentItem, Outlook.MailItem))
             Case Else
                 ' Nix tun
         End Select
@@ -218,15 +214,13 @@ Public Class FritzBoxWählClient
     ''' <summary>
     ''' Wählen aus einer IM Contactcard
     ''' </summary>
-    Friend Overloads Async Sub WählboxStart(ByVal ContactCard As Microsoft.Office.Core.IMsoContactCard)
+    Friend Overloads Sub WählboxStart(ByVal ContactCard As Microsoft.Office.Core.IMsoContactCard)
         Dim aktKontakt As Outlook.ContactItem
         Dim EMail As String = GetSmtpAddress(ContactCard)
 
         If EMail.IsNotStringEmpty Then
 
-            Using KS As New KontaktSucher
-                aktKontakt = Await KS.KontaktSuche(Nothing, EMail)
-            End Using
+            aktKontakt = KontaktSuche(EMail)
 
             If aktKontakt IsNot Nothing Then
                 Wählbox(aktKontakt, Nothing, False)
@@ -238,13 +232,11 @@ Public Class FritzBoxWählClient
         ContactCard.ReleaseComObject
     End Sub
 
-    Friend Overloads Async Function WählboxStart(ByVal aktMail As Outlook.MailItem) As Task
+    Friend Overloads Sub WählboxStart(ByVal aktMail As Outlook.MailItem)
         Dim aktKontakt As Outlook.ContactItem
         If aktMail.SenderEmailAddress.IsNotStringEmpty Then
 
-            Using KS As New KontaktSucher
-                aktKontakt = Await KS.KontaktSuche(Nothing, aktMail.SenderEmailAddress)
-            End Using
+            aktKontakt = KontaktSuche(aktMail.SenderEmailAddress)
 
             If aktKontakt IsNot Nothing Then
                 Wählbox(aktKontakt, Nothing, False)
@@ -255,7 +247,7 @@ Public Class FritzBoxWählClient
         End If
 
         aktMail.ReleaseComObject
-    End Function
+    End Sub
 
     Friend Overloads Sub WählboxStart(ByVal olJournal As Outlook.JournalItem)
 

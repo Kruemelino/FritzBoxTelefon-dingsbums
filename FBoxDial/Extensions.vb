@@ -546,8 +546,6 @@ Public Module Extensions
                 Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)
             Catch ex As ArgumentException
                 NLogger.Error(ex, "COM-Object ist kein gültiges COM-Objekt: {0}", COMObject.ToString)
-            Finally
-                'COMObject = Nothing
             End Try
         End If
     End Sub
