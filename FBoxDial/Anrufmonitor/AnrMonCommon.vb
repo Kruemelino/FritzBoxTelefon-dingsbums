@@ -4,7 +4,6 @@ Imports System.ComponentModel
 
 Friend Class AnrMonCommon
     Inherits Form
-    Implements IDisposable
 
     Friend Event LinkClick(ByVal sender As Object, ByVal e As EventArgs)
     Friend Event CloseClick(ByVal sender As Object, ByVal e As EventArgs)
@@ -26,7 +25,7 @@ Friend Class AnrMonCommon
     Private Property BMouseOnOptions As Boolean = False
     Protected Overrides ReadOnly Property ShowWithoutActivation() As Boolean = True
     Private Property PKontaktbild As Bitmap
-    Friend Property ShowBorders As Boolean = False
+    Private Property ShowBorders As Boolean = False
     Shadows Property PAnrMon() As FormAnrMon
     Shadows Property PCommon() As CommonFenster
 #End Region
@@ -225,9 +224,8 @@ Friend Class AnrMonCommon
 
     Private Sub AnrMonCommon_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If PKontaktbild IsNot Nothing Then PKontaktbild.Dispose()
-        Me.Dispose(True)
+        Dispose(True)
     End Sub
 #End Region
-
 
 End Class

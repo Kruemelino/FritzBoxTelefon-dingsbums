@@ -13,7 +13,7 @@ Public Class FritzBoxData
     End Sub
 
 #Region "Telefonnummern, Telefonnamen"
-    Friend Async Function FritzBoxDatenJSON() As Task
+    Friend Async Sub FritzBoxDatenJSON()
 
         Dim SessionID As String
 
@@ -421,6 +421,6 @@ Public Class FritzBoxData
         ' Aufräumen
         TelQuery.Clear()
 
-    End Function
+    End Sub
 #End Region
 End Class

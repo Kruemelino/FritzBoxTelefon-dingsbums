@@ -9,7 +9,7 @@ Friend Module KontaktSucher
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer, die als Suchkriterium verwendet werden soll.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    Friend Async Function KontaktSuche(ByVal TelNr As Telefonnummer) As Threading.Tasks.Task(Of Outlook.ContactItem)
+    Friend Function KontaktSuche(ByVal TelNr As Telefonnummer) As Outlook.ContactItem
         Dim JoinFilter As List(Of String)
 
         Dim retOlKontakt As Outlook.ContactItem = Nothing
@@ -26,9 +26,9 @@ Friend Module KontaktSucher
                 Next
 
                 If XMLData.POptionen.PCBKontaktSucheHauptOrdner Then
-                    retOlKontakt = Await FindeAnruferKontakt(PDfltContactFolder, String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
+                    retOlKontakt = FindeAnruferKontakt(PDfltContactFolder, String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
                 Else
-                    retOlKontakt = Await FindeAnruferKontakt(String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
+                    retOlKontakt = FindeAnruferKontakt(String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
                 End If
             End If
         End If
@@ -52,7 +52,7 @@ Friend Module KontaktSucher
     ''' Überladene Funktion die die Suche mit einer Telefonnummer durchführt. Start ist hier der <c>Outlook.NameSpace.</c>
     ''' </summary>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    Private Async Function FindeAnruferKontakt(ByVal sFilter As String) As Threading.Tasks.Task(Of Outlook.ContactItem)
+    Private Function FindeAnruferKontakt(ByVal sFilter As String) As Outlook.ContactItem
         Dim iStore As Integer
         Dim olStore As Outlook.Store = Nothing
 
@@ -63,9 +63,9 @@ Friend Module KontaktSucher
         Do While (iStore.IsLessOrEqual(ThisAddIn.POutookApplication.Session.Stores.Count)) And KontaktGefunden Is Nothing
             olStore = ThisAddIn.POutookApplication.Session.Stores.Item(iStore)
             ' Kein Suchen in Exchange
-            If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-                KontaktGefunden = Await FindeAnruferKontakt(olStore.GetRootFolder, sFilter)
-            End If
+            'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+            KontaktGefunden = FindeAnruferKontakt(olStore.GetRootFolder, sFilter)
+            'End If
             iStore += 1
         Loop
         olStore.ReleaseComObject
@@ -79,14 +79,14 @@ Friend Module KontaktSucher
     ''' <param name="Ordner">Outlookordner in dem die Suche durchgeführt wird.</param>
     ''' <param name="sFilter">Der Filter, mit dem die Suche nach dem Kontakt durchgeführt werden soll.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem.</c></returns>
-    Private Async Function FindeAnruferKontakt(ByVal Ordner As Outlook.MAPIFolder, ByVal sFilter As String) As Threading.Tasks.Task(Of Outlook.ContactItem)
+    Private Function FindeAnruferKontakt(ByVal Ordner As Outlook.MAPIFolder, ByVal sFilter As String) As Outlook.ContactItem
 
         Dim olKontakt As Outlook.ContactItem = Nothing
         Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
 
 
-        If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
-           Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        'If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
+        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
             Dim oTable As Outlook.Table
 
@@ -109,7 +109,7 @@ Friend Module KontaktSucher
         ' Unterordner werden rekursiv durchsucht
         iOrdner = 1
         Do While (iOrdner <= Ordner.Folders.Count) And (olKontakt Is Nothing)
-            olKontakt = Await FindeAnruferKontakt(Ordner.Folders.Item(iOrdner), sFilter)
+            olKontakt = FindeAnruferKontakt(Ordner.Folders.Item(iOrdner), sFilter)
             iOrdner += 1
         Loop
         Return olKontakt

@@ -1,4 +1,6 @@
-﻿Imports System.Xml.Serialization
+﻿Imports System.ComponentModel
+Imports System.Threading.Tasks
+Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
     Implements IEquatable(Of Telefonat)
@@ -29,16 +31,16 @@ Imports Microsoft.Office.Interop
     <XmlAttribute> Public Property Angenommen As Boolean
     '<XmlAttribute> Public Property Verpasst As Boolean
     <XmlIgnore> Public Property AnrMonAusblenden As Boolean
+    <XmlIgnore> Public Property AnrMonSimuliert As Boolean
 
     <XmlElement> Public Property OutlookKontaktID As String
     <XmlElement> Public Property OutlookStoreID As String
     <XmlElement> Public Property VCard As String
-
     <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
     <XmlElement> Public Property Anrufer As String
     <XmlElement> Public Property Firma As String
     <XmlIgnore> Public Property OlKontakt() As Outlook.ContactItem
-    <XmlIgnore> Public Property AnrMonPopUp As Popup
+    <XmlIgnore> Friend Property AnrMonPopUp As Popup
 
     ''' <summary>
     '''         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
@@ -156,6 +158,9 @@ Imports Microsoft.Office.Interop
         Const Ausgehend As Integer = 1
     End Structure
 #End Region
+
+    Private WithEvents BWKontaktsuche As BackgroundWorker
+
     Sub New()
         'Stop
     End Sub
@@ -163,14 +168,16 @@ Imports Microsoft.Office.Interop
         Angenommen = False
         Beendet = False
 
+        ' Starte die Kontaktsuche mit Hilfe eines Backgroundworkers, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
+        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
+        BWKontaktsuche = New BackgroundWorker
+        BWKontaktsuche.RunWorkerAsync()
+
         ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
-        RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
+        RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
 
         ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
         If EigeneTelNr.Überwacht Then PopUpAnrMon()
-
-        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        StarteKontaktsuche()
 
         ' RING-Liste initialisieren, falls erforderlich
         If XMLData.PTelefonie.RINGListe Is Nothing Then
@@ -179,9 +186,6 @@ Imports Microsoft.Office.Interop
 
         ' Telefonat in erste Positon der RING-Liste speichern
         XMLData.PTelefonie.RINGListe.Einträge.Insert(Me)
-
-        ' Anrufmonitor aktualisieren
-        If AnrMonPopUp IsNot Nothing Then PopUpAnrMon()
 
     End Sub
     Private Sub AnrMonCALL()
@@ -217,6 +221,15 @@ Imports Microsoft.Office.Interop
         End If
     End Sub
 
+    Private Sub BWKontaktsuche_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWKontaktsuche.DoWork
+        StarteKontaktsuche()
+    End Sub
+
+    Private Sub BWKontaktsuche_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWKontaktsuche.RunWorkerCompleted
+        ' Anrufmonitor aktualisieren
+        If AnrMonPopUp IsNot Nothing Then PopUpAnrMon()
+    End Sub
+
     ''' <summary>
     ''' Routine zum Initialisieren der Einblendung des Anrfomitors
     ''' </summary>
@@ -237,9 +250,10 @@ Imports Microsoft.Office.Interop
     Friend Async Sub StarteKontaktsuche()
 
         ' Kontaktsuche in den Outlook-Kontakten
-        OlKontakt = Await KontaktSuche(GegenstelleTelNr)
+        OlKontakt = KontaktSuche(GegenstelleTelNr)
 
         If OlKontakt IsNot Nothing Then
+            ' Ein Kontakt wurde gefunden
             With OlKontakt
                 ' Anrufernamen ermitteln
                 Anrufer = .FullName
@@ -260,16 +274,16 @@ Imports Microsoft.Office.Interop
             End If
 
             If FBTelBookKontakt IsNot Nothing Then
-                If XMLData.POptionen.PCBKErstellen Then
-                    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
+                'If XMLData.POptionen.PCBKErstellen Then
+                '    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
 
-                    With OlKontakt
-                        Anrufer = .FullName
-                        Firma = .CompanyName
-                    End With
-                Else
-                    Anrufer = FBTelBookKontakt.Person.RealName
-                End If
+                '    With OlKontakt
+                '        Anrufer = .FullName
+                '        Firma = .CompanyName
+                '    End With
+                'Else
+                Anrufer = FBTelBookKontakt.Person.RealName
+                'End If
             End If
         End If
 
@@ -284,22 +298,23 @@ Imports Microsoft.Office.Interop
                     VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
 
                     If VCard.IsNotStringEmpty Then
-                        If XMLData.POptionen.PCBKErstellen Then
-                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
-                            With OlKontakt
-                                Anrufer = .FullName
-                                Firma = .CompanyName
-                            End With
-                        Else
-                            With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
-                                Anrufer = .FormattedName
-                                Firma = .Organization
-                            End With
-                        End If
+                        'If XMLData.POptionen.PCBKErstellen Then
+                        '    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
+                        '    With OlKontakt
+                        '        Anrufer = .FullName
+                        '        Firma = .CompanyName
+                        '    End With
+                        'Else
+                        With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
+                            Anrufer = .FormattedName
+                            Firma = .Organization
+                        End With
+                        'End If
                     End If
                 End If
             End If
         End If
+
     End Sub
 
     ''' <summary>
@@ -468,33 +483,32 @@ Imports Microsoft.Office.Interop
         If Not disposedValue Then
             If disposing Then
                 ' TODO: verwalteten Zustand (verwaltete Objekte) entsorgen.
-                EigeneTelNr.Dispose()
-                GegenstelleTelNr.Dispose()
             End If
 
             ' TODO: nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() weiter unten überschreiben.
-            OlKontakt = Nothing
             ' TODO: große Felder auf Null setzen.
-            If RINGGeräte IsNot Nothing Then RINGGeräte.Clear()
         End If
         disposedValue = True
     End Sub
 
     ' TODO: Finalize() nur überschreiben, wenn Dispose(disposing As Boolean) weiter oben Code zur Bereinigung nicht verwalteter Ressourcen enthält.
-    Protected Overrides Sub Finalize()
-        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
-        Dispose(False)
-        MyBase.Finalize()
-    End Sub
+    'Protected Overrides Sub Finalize()
+    '    ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
 
     ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
     Public Sub Dispose() Implements IDisposable.Dispose
         ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
         Dispose(True)
         ' TODO: Auskommentierung der folgenden Zeile aufheben, wenn Finalize() oben überschrieben wird.
-        GC.SuppressFinalize(Me)
+        ' GC.SuppressFinalize(Me)
     End Sub
 #End Region
+
+
+
 End Class
 
 

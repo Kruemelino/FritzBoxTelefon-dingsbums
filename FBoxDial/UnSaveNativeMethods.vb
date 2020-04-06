@@ -111,6 +111,13 @@ Public Enum HWndInsertAfterFlags As Integer
     HWND_TOPMOST = -1
 End Enum
 
+'Public Enum HWNDFlags As Integer
+'    WM_SYSCOMMAND = &H112
+'    SC_MAXIMIZE = &HF030 ' Maximize window
+'    SC_MINIMIZE = &HF020 ' Minimize window
+'    sC_CLOSE = &HF060 ' Close window
+'End Enum
+
 <SuppressUnmanagedCodeSecurity()> Friend NotInheritable Class UnsafeNativeMethods
     ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
     ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
@@ -151,7 +158,7 @@ End Enum
     'End Function
 
     '<DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
+    'Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
     'End Function
 
     '<DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>

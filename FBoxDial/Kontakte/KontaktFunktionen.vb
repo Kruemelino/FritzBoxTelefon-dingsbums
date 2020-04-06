@@ -359,9 +359,9 @@ Friend Module KontaktFunktionen
         Else
             For Each olStore As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
                 ' Exchange nicht zählen
-                If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-                    retval += Await ZähleOutlookKontakte(olStore.GetRootFolder)
-                End If
+                'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+                retval += Await ZähleOutlookKontakte(olStore.GetRootFolder)
+                'End If
             Next
         End If
         Return retval
@@ -371,15 +371,16 @@ Friend Module KontaktFunktionen
         Dim tmpAnzahl As Integer = 0
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
-            tmpAnzahl += Ordner.Items.Count
+            tmpAnzahl = Ordner.Items.Count
+            NLogger.Debug("Zählen {0} - Kontakte {1} - {2}", Ordner.Name, Ordner.Items.Count, Ordner.Store.ExchangeStoreType)
         End If
 
         ' Unterordner werden rekursiv durchsucht
         For Each olFolder As Outlook.MAPIFolder In Ordner.Folders
             ' Exchange nicht zählen
-            If olFolder.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-                tmpAnzahl += Await ZähleOutlookKontakte(olFolder)
-            End If
+            'If olFolder.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+            tmpAnzahl += Await ZähleOutlookKontakte(olFolder)
+            'End If
         Next
 
         Return tmpAnzahl

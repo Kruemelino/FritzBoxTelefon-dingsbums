@@ -12,13 +12,13 @@ Friend Module KontaktIndizierer
 
         With olKontakt
             ' Kein Exchange
-            If CType(.Parent, Outlook.MAPIFolder).Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+            'If CType(.Parent, Outlook.MAPIFolder).Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
 
-                Dim colArgs As Object()
+            Dim colArgs As Object()
                 ' Lade alle Telefonnummern des Kontaktes
                 ' Das Laden der Telefonnummern mittels PropertyAccessor ist nicht sinnvoll.
                 ' Die Daten liegen darin erst nach dem Speichern des Kontaktes vor.
-                '   colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNr), Object())
+                ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNr), Object())
                 ' Die Telefonnummern werden stattdessen aus den Eigenschaften des Kontaktes direkt ausgelesen.
                 colArgs = .GetTelNrArray
 
@@ -48,9 +48,11 @@ Friend Module KontaktIndizierer
 
                 ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-                If .Speichern Then NLogger.Info("Kontakt {0} wurde durch die Indizierung gespeichert.", olKontakt.FullNameAndCompany)
-
+                If .Speichern Then
+                NLogger.Info("Kontakt {0} gespeichert", olKontakt.FullNameAndCompany)
             End If
+
+            'End If
         End With
     End Sub
 

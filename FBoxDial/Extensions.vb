@@ -131,24 +131,44 @@ Public Module Extensions
         Return Val2 - Val1 <= Epsilon
     End Function
 
-
     ''' <summary>
-    ''' Prüft, ob die übergebene Größe <c>Val1</c> sich innerhalb eines Bereiches befindet: <c>LVal</c> &lt; <c>Val1</c> &lt; <c>UVal</c>.
+    ''' Gibt den größeren von zwei Vergleichswerten zurück
     ''' </summary>
-    ''' <param name="Val1">Zu prüfende Größe</param>
-    ''' <param name="LVal">Untere Schwelle</param>
-    ''' <param name="UVal">Obere schwelle</param>
+    ''' <param name="Val1">Erste zu prüfende Größe</param>
+    ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
-        Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
-    End Function
-    <Extension()> Public Function IsInRange(ByVal Val1 As Integer, ByVal LVal As Integer, ByVal UVal As Integer) As Boolean
-        Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
-    End Function
-
     <Extension()> Public Function GetLarger(ByVal Val1 As Integer, ByVal Val2 As Integer) As Integer
         Return If(Val1.IsLargerOrEqual(Val2), Val1, Val2)
     End Function
+
+    '''' <summary>
+    '''' Prüft, ob die übergebene Größe <c>Val1</c> sich innerhalb eines Bereiches befindet: <c>LVal</c> &lt; <c>Val1</c> &lt; <c>UVal</c>.
+    '''' </summary>
+    '''' <param name="Val1">Zu prüfende Größe</param>
+    '''' <param name="LVal">Untere Schwelle</param>
+    '''' <param name="UVal">Obere schwelle</param>
+    '''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    '<Extension()> Public Function IsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
+    '    Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
+    'End Function
+    '<Extension()> Public Function IsInRange(ByVal Val1 As Integer, ByVal LVal As Integer, ByVal UVal As Integer) As Boolean
+    '    Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
+    'End Function
+
+
+    ''' <summary>
+    ''' Prüft, ob der übergebende Wert negativ ist
+    ''' </summary>
+    ''' <param name="Val1">Der zu überprüfende Wert.</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <Extension()> Public Function IsNegativ(ByVal Val1 As Integer) As Boolean
+        Return Val1 < -Epsilon
+    End Function
+
+    '<Extension()> Public Function IsPositiv(ByVal Val1 As Integer) As Boolean
+    '    Return Val1.IsLarger(Epsilon)
+    'End Function
+
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: String"

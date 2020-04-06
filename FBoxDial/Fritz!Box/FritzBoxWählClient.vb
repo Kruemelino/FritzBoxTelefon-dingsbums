@@ -98,67 +98,67 @@ Public Class FritzBoxWählClient
     End Function
 #End Region
 
-#Region "Wählen per WebCLient"
-    Friend Async Function WebCientDial(ByVal sDialCode As String, ByVal Telefon As Telefoniegerät, ByVal Auflegen As Boolean) As Threading.Tasks.Task(Of Boolean)
+    '#Region "Wählen per WebCLient"
+    '    Friend Function WebCientDial(ByVal sDialCode As String, ByVal Telefon As Telefoniegerät, ByVal Auflegen As Boolean) As Boolean
 
-        Dim fbAntwort As String
-        Dim DialPortEingestellt As Boolean
+    '        Dim fbAntwort As String
+    '        Dim DialPortEingestellt As Boolean
 
-        Dim SessionID As String
+    '        Dim SessionID As String
 
-        SessionID = GetSessionID
+    '        SessionID = GetSessionID
 
-        ' WebCientDial = PWählClientDialError1
-        Using fbQuery As New FritzBoxQuery
-            ' DialPort setzen, wenn erforderlich
-            fbAntwort = Await fbQuery.FritzBoxQuery(SessionID, "DialPort=telcfg:settings/DialPort")
+    '        ' WebCientDial = PWählClientDialError1
+    '        Using fbQuery As New FritzBoxQuery
+    '            ' DialPort setzen, wenn erforderlich
+    '            fbAntwort = fbQuery.FritzBoxQuery(SessionID, "DialPort=telcfg:settings/DialPort")
 
-            DialPortEingestellt = fbAntwort.Contains(CStr(Telefon.Dialport))
-            If Not DialPortEingestellt Then
-                ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-                RaiseEvent SetStatus(PWählClientDialStatus("WebCientDial", PWählClientStatusDialPort, CStr(Telefon.Dialport)))
+    '            DialPortEingestellt = fbAntwort.Contains(CStr(Telefon.Dialport))
+    '            If Not DialPortEingestellt Then
+    '                ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
+    '                RaiseEvent SetStatus(PWählClientDialStatus("WebCientDial", PWählClientStatusDialPort, CStr(Telefon.Dialport)))
 
-                ' per HTTP-POST Dialport ändern
-                fbAntwort = Await HTTPPost(PFBLinkTelData, PFBLinkDialSetDialPort(SessionID, CStr(Telefon.Dialport)), XMLData.POptionen.PEncodingFritzBox)
-                ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
-                If fbAntwort.Contains("twofactor") Then
-                    DialPortEingestellt = False
-                    MsgBox(PWarnung2FA, MsgBoxStyle.Critical, "WebCientDial")
-                Else
-                    ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
-                    fbAntwort = Await fbQuery.FritzBoxQuery(SessionID, "DialPort=telcfg:settings/DialPort")
-                    DialPortEingestellt = fbAntwort.Contains(CStr(Telefon.Dialport))
-                End If
-            End If
+    '                ' per HTTP-POST Dialport ändern
+    '                fbAntwort = HTTPPost(PFBLinkTelData, PFBLinkDialSetDialPort(SessionID, CStr(Telefon.Dialport)), XMLData.POptionen.PEncodingFritzBox)
+    '                ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
+    '                If fbAntwort.Contains("twofactor") Then
+    '                    DialPortEingestellt = False
+    '                    MsgBox(PWarnung2FA, MsgBoxStyle.Critical, "WebCientDial")
+    '                Else
+    '                    ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
+    '                    fbAntwort = fbQuery.FritzBoxQuery(SessionID, "DialPort=telcfg:settings/DialPort")
+    '                    DialPortEingestellt = fbAntwort.Contains(CStr(Telefon.Dialport))
+    '                End If
+    '            End If
 
-            ' Wählen, wenn der Dialport passt
-            If DialPortEingestellt Then
-                ' Senden des Wählkomandos
-                ' Tipp von Pikachu: Umwandlung von # und *, da ansonsten die Telefoncodes verschluckt werden. 
-                ' Alternativ ein URLEncode (Uri.EscapeDataString(Link).Replace("%20", "+")), 
-                ' was aber in der Funktion httpGET zu einem Fehler bei dem Erstellen der neuen URI führt.
+    '            ' Wählen, wenn der Dialport passt
+    '            If DialPortEingestellt Then
+    '                ' Senden des Wählkomandos
+    '                ' Tipp von Pikachu: Umwandlung von # und *, da ansonsten die Telefoncodes verschluckt werden. 
+    '                ' Alternativ ein URLEncode (Uri.EscapeDataString(Link).Replace("%20", "+")), 
+    '                ' was aber in der Funktion httpGET zu einem Fehler bei dem Erstellen der neuen URI führt.
 
-                ' Senden des Wählkomandos
-                fbAntwort = Await HTTPGet(PFBLinkDial(SessionID, sDialCode.Replace("#", "%23").Replace("*", "%2A"), Auflegen), XMLData.POptionen.PEncodingFritzBox)
+    '                ' Senden des Wählkomandos
+    '                fbAntwort = HTTPGet(PFBLinkDial(SessionID, sDialCode.Replace("#", "%23").Replace("*", "%2A"), Auflegen), XMLData.POptionen.PEncodingFritzBox)
 
-                ' Die Rückgabe ist der JSON - Wert "dialing"
-                ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789#"}
-                ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
-                ' Bei der Wahl Des Hangup ist es ein {"dialing": false} ohne die umschließenden Anführungszeichen" 
-                ' NEU {"dialing":true,"err":0}
-                ' NEU {"dialing":false,"err":0}
-                If fbAntwort = "{""dialing"":true,""err"":0}" Or (fbAntwort.Contains("""dialing""") And fbAntwort.Contains(If(Auflegen, "false", sDialCode))) Then
-                    Return True
-                Else
-                    NLogger.Error("{0}: {1} {2}", "WebCientDial", "Fehler", fbAntwort.Replace(vbLf, ""))
-                    Return False
-                End If
-            Else
-                Return False
-            End If
-        End Using
-    End Function
-#End Region
+    '                ' Die Rückgabe ist der JSON - Wert "dialing"
+    '                ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789#"}
+    '                ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
+    '                ' Bei der Wahl Des Hangup ist es ein {"dialing": false} ohne die umschließenden Anführungszeichen" 
+    '                ' NEU {"dialing":true,"err":0}
+    '                ' NEU {"dialing":false,"err":0}
+    '                If fbAntwort = "{""dialing"":true,""err"":0}" Or (fbAntwort.Contains("""dialing""") And fbAntwort.Contains(If(Auflegen, "false", sDialCode))) Then
+    '                    Return True
+    '                Else
+    '                    NLogger.Error("{0}: {1} {2}", "WebCientDial", "Fehler", fbAntwort.Replace(vbLf, ""))
+    '                    Return False
+    '                End If
+    '            Else
+    '                Return False
+    '            End If
+    '        End Using
+    '    End Function
+    '#End Region
 
 #Region "Dialog Wähldialog"
     ''' <summary>

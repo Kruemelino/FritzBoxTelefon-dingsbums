@@ -29,6 +29,7 @@ Public Class FBoxDataGridView
         With NewTextColumn
             .DefaultCellStyle.Alignment = CellAlignment
             .HeaderCell.Style.Alignment = CellAlignment
+            .DefaultCellStyle.WrapMode = DataGridViewTriState.True
         End With
 
         Me.Columns.Add(NewTextColumn)

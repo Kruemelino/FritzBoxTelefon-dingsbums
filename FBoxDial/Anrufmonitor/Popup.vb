@@ -2,16 +2,16 @@
 Imports System.Windows.Forms
 
 Public Class Popup
-    Implements IDisposable
-
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private WithEvents PopUpAnrufMonitor As FormAnrMon
-
+    Friend Eingeblendet As Boolean = False
     Friend TelFnt As Telefonat
     Friend Property PfadKontaktBild As String
 
 #Region "Anrufmonitor"
-
     Private Sub AnrMonausfüllen(ByVal ThisPopUpAnrMon As FormAnrMon, ByVal tTelFnt As Telefonat)
+
+        ' If ThisPopUpAnrMon IsNot Nothing Then
 
         With ThisPopUpAnrMon
             If tTelFnt IsNot Nothing Then
@@ -96,10 +96,12 @@ Public Class Popup
             End If
 
         End With
+
+        ' End If
     End Sub
 
     ''' <summary>
-    ''' Startet den BackgroundWorker für das Einblenden des Anrufmonitors
+    ''' Startet das Einblenden des Anrufmonitors
     ''' </summary>
     ''' <param name="tmpTelefonat">Telefonat, das angezeigt wird</param>
     Friend Sub AnrMonEinblenden(ByVal tmpTelefonat As Telefonat)
@@ -115,6 +117,7 @@ Public Class Popup
         KeepoInspActivated(False)
 
         PopUpAnrufMonitor.Popup()
+        Eingeblendet = True
 
         AddHandler PopUpAnrufMonitor.Schließen, AddressOf PopUpAnrMon_Close
         AddHandler PopUpAnrufMonitor.Geschlossen, AddressOf PopupAnrMon_Closed
@@ -126,9 +129,15 @@ Public Class Popup
     End Sub
 
     Friend Sub UpdateAnrMon(ByVal tmpTelefonat As Telefonat)
-        AnrMonausfüllen(PopUpAnrufMonitor, tmpTelefonat)
-        ' Neu Zeichnen
-        PopUpAnrufMonitor.Invalidate()
+        If PopUpAnrufMonitor IsNot Nothing Then
+            AnrMonausfüllen(PopUpAnrufMonitor, tmpTelefonat)
+            ' Neu Zeichnen
+            PopUpAnrufMonitor.Invalidate()
+        End If
+    End Sub
+
+    Friend Sub AnrMonAusblenden()
+        If PopUpAnrufMonitor IsNot Nothing Then PopUpAnrufMonitor.Close()
     End Sub
 
     Private Sub PopUpAnrMon_Close(ByVal sender As Object, ByVal e As EventArgs)
@@ -139,13 +148,12 @@ Public Class Popup
     ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
     ''' </summary>
     Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As EventArgs) Handles PopUpAnrufMonitor.Geschlossen
-
+        NLogger.Debug("Anruffenster geschlossen")
+        Eingeblendet = False
+        ' Entferne den Anrufmonitor von der Liste der offenen Popups
         ThisAddIn.OffenePopUps.Remove(Me)
-
-        If PfadKontaktBild.IsNotStringEmpty AndAlso IO.File.Exists(PfadKontaktBild) Then
-            DelKontaktBild(PfadKontaktBild)
-        End If
-        Me.Dispose()
+        ' Lösche das Kontaktbild
+        If PfadKontaktBild.IsNotStringEmpty AndAlso IO.File.Exists(PfadKontaktBild) Then DelKontaktBild(PfadKontaktBild)
     End Sub
 
     Private Sub AnrMonLink_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -170,59 +178,10 @@ Public Class Popup
             End Select
         End If
     End Sub
+
+
 #End Region
 
-#Region "Dispose"
-    ' Track whether Dispose has been called.
-    Private disposed As Boolean = False
-    ' Implement IDisposable.
-    ' Do not make this method virtual.
-    ' A derived class should not be able to override this method.
-    Public Overloads Sub Dispose() Implements IDisposable.Dispose
-        Dispose(True)
-        ' This object will be cleaned up by the Dispose method.
-        ' Therefore, you should call GC.SupressFinalize to
-        ' take this object off the finalization queue 
-        ' and prevent finalization code for this object
-        ' from executing a second time.
-        GC.SuppressFinalize(Me)
-    End Sub
 
-    ' Dispose(bool disposing) executes in two distinct scenarios.
-    ' If disposing equals true, the method has been called directly
-    ' or indirectly by a user's code. Managed and unmanaged resources
-    ' can be disposed.
-    ' If disposing equals false, the method has been called by the 
-    ' runtime from inside the finalizer and you should not reference 
-    ' other objects. Only unmanaged resources can be disposed.
-    Protected Overridable Overloads Sub Dispose(ByVal disposing As Boolean)
-        ' Check to see if Dispose has already been called.
-        If Not Me.disposed Then
-            ' If disposing equals true, dispose all managed 
-            ' and unmanaged resources.
-            If disposing Then
-                ' Dispose managed resources.
-                'ToolStripMenuItemKontaktöffnen.Dispose()
-                'ToolStripMenuItemRückruf.Dispose()
-                'ToolStripMenuItemKopieren.Dispose()
-                'AnrMonContextMenuStrip.Dispose()
-                'CompContainer.Dispose()
-                'PopUpAnrMon.Dispose()
-                'PopUpStoppUhr.Dispose()
-            End If
-
-            ' Call the appropriate methods to clean up 
-            ' unmanaged resources here.
-            ' If disposing is false, 
-            ' only the following code is executed.
-            'CloseHandle(handle)
-            'handle = IntPtr.Zero
-
-            ' Note disposing has been done.
-            disposed = True
-
-        End If
-    End Sub
-#End Region
 
 End Class

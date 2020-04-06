@@ -206,11 +206,19 @@ Public Class FormCfg
 
                 ' Zum Testen der verschiedener Funktionen
             Case BTelefonliste.Name
+                ' Formulardaten in Properties speichern
+                Speichern(Me)
+                ' Indizierung starten
                 StarteEinlesen()
             Case BIndizierungStart.Name
+                ' Formulardaten in Properties speichern
+                Speichern(Me)
+                ' Indizierung starten
                 StarteIndizierung()
             Case BIndizierungAbbrechen.Name
+                ' Indizierung abbrechen
                 BWIndexer.CancelAsync()
+                ' Buttons wieder umschalten
                 BIndizierungAbbrechen.Enabled = False
                 BIndizierungStart.Enabled = True
             Case BXML.Name
@@ -230,6 +238,15 @@ Public Class FormCfg
     End Sub
 
 #End Region
+
+    Private Sub FormCfg_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        For Each T As Telefonat In ThisAddIn.PAnrufmonitor.AktiveTelefonate.FindAll(Function(TEL) TEL.AnrMonSimuliert)
+            If T.AnrMonPopUp IsNot Nothing Then
+                T.AnrMonPopUp.AnrMonAusblenden()
+            End If
+        Next
+        ThisAddIn.PAnrufmonitor.AktiveTelefonate.RemoveAll(Function(TEL) TEL.AnrMonSimuliert)
+    End Sub
 
     Private Sub SetCheckedListBox(ByVal CLB As CheckedListBox)
 
@@ -272,10 +289,10 @@ Public Class FormCfg
         End With
     End Sub
 
-    Friend Async Sub StarteEinlesen()
+    Friend Sub StarteEinlesen()
         If Ping(XMLData.POptionen.PValidFBAdr) Then
             If FritzBoxDaten Is Nothing Then FritzBoxDaten = New FritzBoxData
-            Await FritzBoxDaten.FritzBoxDatenJSON
+            FritzBoxDaten.FritzBoxDatenJSON()
             ' Fülle das Datagridview
 
             SetTelDGV()
@@ -286,6 +303,8 @@ Public Class FormCfg
     Private Sub SetTelDGV()
 
         With DGVTelList
+            .DataBindings.Clear()
+            .Columns.Clear()
             ' Spalten hinzufügen
             .AddCheckBoxColumn("Check", "*")
             .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleRight, GetType(Integer), DataGridViewAutoSizeColumnMode.AllCells)
@@ -427,14 +446,19 @@ Public Class FormCfg
         Dim iOrdner As Integer    ' Zählvariable für den aktuellen Ordner
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
 
+        NLogger.Debug("{0} - {1} - ", Ordner.Name, Ordner.DefaultItemType.ToString, Ordner.Store.DisplayName)
+
         ' Kein Indizieren von Exchange
-        If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
-           Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And
-           Not BWIndexer.CancellationPending Then
+        'If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
+        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And Not BWIndexer.CancellationPending Then
+
             For Each item In Ordner.Items
                 ' nur Kontakte werden durchsucht
                 If TypeOf item Is Outlook.ContactItem Then
                     aktKontakt = CType(item, Outlook.ContactItem)
+
+                    'NLogger.Debug("{0} ({1}): {2}", Ordner.Name, Ordner.Items.Count, aktKontakt.FullNameAndCompany)
+
                     If Erstellen Then
                         IndiziereKontakt(aktKontakt)
                         BWIndexer.ReportProgress(1)
@@ -453,7 +477,6 @@ Public Class FormCfg
                     BWIndexer.ReportProgress(1)
                 End If
             Next
-
             If Not Erstellen Then
                 ' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
                 DeIndizierungOrdner(Ordner)
@@ -476,9 +499,9 @@ Public Class FormCfg
         Do While (iStore.IsLessOrEqual(ThisAddIn.POutookApplication.Session.Stores.Count)) And Not BWIndexer.CancellationPending
             olStore = ThisAddIn.POutookApplication.Session.Stores.Item(iStore)
             ' Kein Indizieren von Exchange
-            If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-                KontaktIndexer(olStore.GetRootFolder, Erstellen)
-            End If
+            'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+            KontaktIndexer(olStore.GetRootFolder, Erstellen)
+            'End If
             iStore += 1
         Loop
         olStore.ReleaseComObject
@@ -510,11 +533,13 @@ Public Class FormCfg
 
     Private Sub SetProgressbarMax(ByVal Anzahl As Integer)
         ProgressBarIndex.Maximum = Anzahl
-        LabelAnzahl.Text = String.Format("Status: {0}/{1}", 0, Anzahl)
+        LabelAnzahl.Text = String.Format("Status: {0}/{1}", Anzahl, Anzahl)
 
         BIndizierungAbbrechen.Enabled = False
         BIndizierungStart.Enabled = True
     End Sub
+
+
 #End Region
 
 #Region "TreeView Outlook Kontaktordner"

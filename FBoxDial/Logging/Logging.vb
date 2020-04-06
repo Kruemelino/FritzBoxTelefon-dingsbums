@@ -1,10 +1,10 @@
 ﻿Friend Module NLogging
 
     Friend Function DefaultNLogConfig() As NLog.Config.LoggingConfiguration
+
         Dim config = New NLog.Config.LoggingConfiguration
 
         Dim DfltLogLayout As New NLog.Layouts.SimpleLayout With {.Text = PDfltNLog_LayoutText}
-
 
         Dim Ziel As New NLog.Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
@@ -24,7 +24,6 @@
         Dim maxLogLevel As NLog.LogLevel = NLog.LogLevel.Fatal
 
         config.AddRule(minLogLevel, maxLogLevel, Ziel)
-
         Return config
     End Function
 End Module

@@ -59,7 +59,7 @@ Public NotInheritable Class ThisAddIn
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
         If XMLData.POptionen.PCBKontaktSucheFritzBox Then
-            Await LadeFritzBoxTelefonbücher()
+            PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
         End If
 
         ' Inspektoren erfassen

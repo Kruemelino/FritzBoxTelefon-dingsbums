@@ -49,11 +49,6 @@ Friend Class CommonFenster
 
     Private Function DedValueMin0(ByVal Input As Integer, ByVal Ded As Integer) As Integer
         Return GetLarger(Input - Ded, 0)
-        'If Input - Ded > 0 Then
-        '    Return Input - Ded
-        'Else
-        '    Return 0
-        'End If
     End Function
 
     Friend Function GetDarkerColor(ByVal Color As Color) As Color

@@ -10,7 +10,7 @@ Friend Class TCPReader
 
     Private ReadOnly pts As New ParameterizedThreadStart(AddressOf SteamMonitor)
 
-    Friend Event DataAvailable(ByVal Data As String)
+    Friend Event DataAvailable(ByVal Data As String, ByVal Simuliert As Boolean)
     Friend Event Connected()
     Friend Event Disconnected()
     Friend Property Disconnect As Boolean
@@ -88,7 +88,7 @@ Friend Class TCPReader
             Using sR As New StreamReader(DataStream)
                 Do While TCPSocket.Connected And Not Disconnect
                     If DataStream.DataAvailable Then
-                        RaiseEvent DataAvailable(sR.ReadLine)
+                        RaiseEvent DataAvailable(sR.ReadLine, False)
                     End If
                 Loop
                 If Disconnect Then

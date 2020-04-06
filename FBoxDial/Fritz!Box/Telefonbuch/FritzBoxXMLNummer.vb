@@ -1,5 +1,4 @@
 ﻿Imports System.Xml.Serialization
-Imports FBoxDial
 
 <Serializable()> Public Class FritzBoxXMLNummer
 

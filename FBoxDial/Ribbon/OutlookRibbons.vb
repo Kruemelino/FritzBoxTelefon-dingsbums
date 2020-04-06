@@ -254,6 +254,8 @@ Imports System.Xml
 
             Case "cbtnAddContact"
                 OnAction(TaskToDo.CreateContact)
+            Case "btnFBTelBch"
+                OnAction(TaskToDo.FBoxTelBücher)
         End Select
     End Sub
 
@@ -272,6 +274,7 @@ Imports System.Xml
         AnrMonAnAus         ' Explorer: Anrufmonitor Starten/Stoppen
         DialExplorer        ' Explorer: Klassischen Wähldialog über das ausgewählte Objekt öffnen
         DialDirekt          ' Explorer: Direktwahl öffnen
+        FBoxTelBücher       ' Explorer: Fritz!Box Telefonbücher
         DialInspector       ' Inspector: Wähldialog öffnen 
         DialIMLayer         ' IMLayer: Wähldialog öffnen 
         CreateContact       ' Inspector: Journal, Kontakt erstellen
@@ -310,7 +313,9 @@ Imports System.Xml
             Case TaskToDo.AnrMonAnAus
                 If ThisAddIn.PAnrufmonitor Is Nothing Then ThisAddIn.PAnrufmonitor = New Anrufmonitor
                 ThisAddIn.PAnrufmonitor.StartStopAnrMon()
-
+            Case TaskToDo.FBoxTelBücher
+                Dim FBoxTeleBuch As New FormTelefonbücher
+                FBoxTeleBuch.Show()
         End Select
     End Sub
     ''' <summary>

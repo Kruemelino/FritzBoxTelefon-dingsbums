@@ -169,10 +169,10 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PDfltLog_FileName() As String = PDfltAddin_KurzName & ".log"
 
     ''' <summary>
-    ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level:uppercase=true}|${logger}|${message}
+    ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}
     ''' </summary>
-    ''' <returns>${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level:uppercase=true}|${logger}|${message}</returns>
-    Public Shared ReadOnly Property PDfltNLog_LayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true}|${callsite-linenumber}|${message}"
+    ''' <returns>${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}</returns>
+    Public Shared ReadOnly Property PDfltNLog_LayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}"
 
     ''' <summary>
     ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
