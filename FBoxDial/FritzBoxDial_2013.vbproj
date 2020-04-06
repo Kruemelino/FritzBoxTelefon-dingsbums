@@ -313,6 +313,7 @@
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLTelefonie.vb" />
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
+    <Compile Include="Kontakte\Contacts.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
     <Compile Include="Kontakte\KontaktIndizierer.vb" />
     <Compile Include="Kontakte\KontaktNotiz.vb" />

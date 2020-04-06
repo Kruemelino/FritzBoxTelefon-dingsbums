@@ -104,6 +104,32 @@ Public Class Telefonnummer
         End If
     End Function
 
+    'Private Function NurZiffern(ByVal Nr As String) As String
+    '    NurZiffern = Nr
+
+    '    If NurZiffern IsNot Nothing And NurZiffern.IsNotStringEmpty Then
+    '        NurZiffern = LCase(NurZiffern)
+
+    '        ' Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
+    '        NurZiffern = Regex.Replace(NurZiffern, "^.+:+", "")
+
+    '        '' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
+    '        NurZiffern = NurZiffern.RegExReplace("[abc]", "2").RegExReplace("[abc]", "2").
+    '            RegExReplace("[def]", "3").RegExReplace("[ghi]", "4").RegExReplace("[jkl]", "5").
+    '            RegExReplace("[mno]", "6").RegExReplace("[pqrs]", "7").RegExReplace("[tuv]", "8").
+    '            RegExReplace("[wxyz]", "9").RegExReplace("^[+]", PDfltPreLandesKZ)
+
+    '        ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
+    '        NurZiffern = NurZiffern.RegExReplace("[^0-9\#\*]", PDfltStringEmpty)
+
+    '        ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
+    '        NurZiffern = NurZiffern.RegExReplace($"^0*{XMLData.POptionen.PTBLandesKZ}{{1}}[0]?", "0")
+
+    '        ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
+    '        NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")
+    '    End If
+    'End Function
+
     ''' <summary>
     ''' Zerlegt die Telefonnummer in ihre Bestandteile.
     ''' </summary>

@@ -1,6 +1,6 @@
 ﻿Friend Class Anrufmonitor
 
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private WithEvents TCPr As TCPReader
     Friend Property Aktiv As Boolean
     Friend Shared ReadOnly Property AnrMon_RING As String = "RING"
@@ -23,6 +23,7 @@
         Else
             ' Starte den Anrufmonitor
             TCPr = New TCPReader(XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
+            TCPr.Connect()
         End If
     End Sub
 
@@ -34,16 +35,16 @@
     End Sub
 
     Private Sub TCPr_Connected() Handles TCPr.Connected
-        NLogger.Info("Anrufmonitor verbunden zu {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
         Aktiv = TCPr.Verbunden
         ThisAddIn.POutlookRibbons.RefreshRibbon()
+        NLogger.Info("Anrufmonitor verbunden zu {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
     End Sub
 
     Private Sub TCPr_Disconnected() Handles TCPr.Disconnected
-        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
         Aktiv = TCPr.Verbunden
         TCPr = Nothing
         ThisAddIn.POutlookRibbons.RefreshRibbon()
+        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
     End Sub
 
     Friend Sub AnrMonSimulation(ByVal AnrMonSim As String)

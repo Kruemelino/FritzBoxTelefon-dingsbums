@@ -69,6 +69,7 @@ Public NotInheritable Class ThisAddIn
         If XMLData.POptionen.PCBAutoAnrList Then AutoAnrListe()
 
         NLogger.Info("{0} {1} gestartet.", PDfltAddin_LangName, Version)
+
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown

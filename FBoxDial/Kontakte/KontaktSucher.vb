@@ -10,7 +10,7 @@ Friend Module KontaktSucher
     ''' <param name="TelNr">Telefonnummer, die als Suchkriterium verwendet werden soll.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
     Friend Function KontaktSuche(ByVal TelNr As Telefonnummer) As Outlook.ContactItem
-        Dim JoinFilter As List(Of String)
+        Dim Filter As List(Of String)
 
         Dim retOlKontakt As Outlook.ContactItem = Nothing
 
@@ -18,19 +18,20 @@ Friend Module KontaktSucher
 
             If TelNr IsNot Nothing Then
                 ' Filter zusammenstellen
-
-                JoinFilter = New List(Of String)
+                Filter = New List(Of String)
 
                 For Each DASLTag As String In DASLTagTelNrIndex.ToList
-                    JoinFilter.Add(String.Format("{0}/0x0000001f = '{1}'", DASLTag, TelNr.Unformatiert))
+                    Filter.Add(String.Format("{0}/0x0000001f = '{1}'", DASLTag, TelNr.Unformatiert))
                 Next
 
                 If XMLData.POptionen.PCBKontaktSucheHauptOrdner Then
-                    retOlKontakt = FindeAnruferKontakt(PDfltContactFolder, String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
+                    retOlKontakt = FindeAnruferKontakt(PDfltContactFolder, String.Format("@SQL={0}", String.Join(" OR ", Filter)))
                 Else
-                    retOlKontakt = FindeAnruferKontakt(String.Format("@SQL={0}", String.Join(" OR ", JoinFilter)))
+                    retOlKontakt = FindeAnruferKontakt(String.Format("@SQL={0}", String.Join(" OR ", Filter)))
                 End If
+
             End If
+
         End If
         Return retOlKontakt
     End Function
@@ -72,6 +73,52 @@ Friend Module KontaktSucher
 
         Return KontaktGefunden
     End Function
+
+    'Private Function FindeAnruferKontaktsEARCH(ByVal Ordner As Outlook.MAPIFolder, ByVal sFilter As String) As Outlook.ContactItem
+
+    '    Dim olKontakt As Outlook.ContactItem = Nothing
+    '    Dim iOrdner As Long    ' Zählvariable für den aktuellen Ordner
+
+
+    '    'If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
+    '    If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+
+    '        Dim oTable As Outlook.Table
+
+    '        ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
+    '        ' Erstellung der Datentabelle
+    '        sFilter = "@SQL=" & String.Concat("""http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/", "FBDB-HomeTelephoneNumber", "/0x0000001f"" = '", "08961501", "'")
+
+    '        oTable = Ordner.GetTable(sFilter)
+    '        Dim ok As Outlook.ContactItem
+    '        ok = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
+
+    '        If ok IsNot Nothing Then
+    '            'Stop
+    '            olKontakt = ok
+    '        End If
+    '        '' Festlegung der Spalten. Zunächst werden alle Spalten entfernt
+    '        'With oTable.Columns
+    '        '        .RemoveAll()
+    '        '        .Add("EntryID")
+    '        '    End With
+
+    '        '    If Not oTable.EndOfTable Then
+    '        '        olKontakt = GetOutlookKontakt(oTable.GetNextRow("EntryID").ToString, Ordner.StoreID)
+    '        '    End If
+
+    '        '    oTable.ReleaseComObject
+    '    End If
+
+    '    ' Unterordner werden rekursiv durchsucht
+    '    iOrdner = 1
+    '    Do While (iOrdner <= Ordner.Folders.Count) And (olKontakt Is Nothing)
+    '        olKontakt = FindeAnruferKontaktsEARCH(Ordner.Folders.Item(iOrdner), sFilter)
+    '        iOrdner += 1
+    '    Loop
+    '    Return olKontakt
+    'End Function '(FindeKontakt)
+
 
     ''' <summary>
     ''' Überladene Funktion die die Suche mit einer Telefonnummer in einem Outlookordner durchführt. 

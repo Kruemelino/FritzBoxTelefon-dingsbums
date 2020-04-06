@@ -3,7 +3,7 @@ Imports System.Net
 Imports System.Net.Sockets
 Imports System.Threading
 Imports System.Threading.Tasks
-Friend Class TCPReader
+Public Class TCPReader
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property Endpoint As String
     Private Property EndpointPort As Integer
@@ -21,10 +21,10 @@ Friend Class TCPReader
 
         Endpoint = IPEndpoint
         EndpointPort = PortEndpoint
-        Connect()
+        'Connect()
     End Sub
 
-    Private Async Sub Connect()
+    Friend Async Sub Connect()
         ' Baue den TCPSocket auf
         Dim TCPSocket As Socket
         Dim DataStream As NetworkStream

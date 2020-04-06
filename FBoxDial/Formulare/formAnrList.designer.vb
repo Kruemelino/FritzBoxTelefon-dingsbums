@@ -30,14 +30,14 @@ Partial Class FormAnrList
         Me.EndDatum = New System.Windows.Forms.DateTimePicker()
         Me.EndZeit = New System.Windows.Forms.DateTimePicker()
         Me.ButtonCancel = New System.Windows.Forms.Button()
-        Me.DGVAnrListe = New FBoxDataGridView()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.ProgressBarAnrListe = New System.Windows.Forms.ToolStripProgressBar()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ProgressBarAnrListe = New System.Windows.Forms.ToolStripProgressBar()
+        Me.DGVAnrListe = New FBoxDial.FBoxDataGridView()
         Me.GBoxStartZeit.SuspendLayout()
         Me.GBoxEndZeit.SuspendLayout()
-        CType(Me.DGVAnrListe, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatusStrip1.SuspendLayout()
+        CType(Me.DGVAnrListe, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'StartZeit
@@ -131,6 +131,27 @@ Partial Class FormAnrList
         Me.ButtonCancel.Text = "Abbruch"
         Me.ButtonCancel.UseVisualStyleBackColor = True
         '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ProgressBarAnrListe})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 712)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(1190, 32)
+        Me.StatusStrip1.TabIndex = 12
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(64, 25)
+        Me.ToolStripStatusLabel1.Text = "Status:"
+        '
+        'ProgressBarAnrListe
+        '
+        Me.ProgressBarAnrListe.Name = "ProgressBarAnrListe"
+        Me.ProgressBarAnrListe.Size = New System.Drawing.Size(400, 24)
+        '
         'DGVAnrListe
         '
         Me.DGVAnrListe.AllowUserToAddRows = False
@@ -154,27 +175,6 @@ Partial Class FormAnrList
         Me.DGVAnrListe.Size = New System.Drawing.Size(1173, 523)
         Me.DGVAnrListe.TabIndex = 11
         '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ProgressBarAnrListe})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 712)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1190, 32)
-        Me.StatusStrip1.TabIndex = 12
-        Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'ProgressBarAnrListe
-        '
-        Me.ProgressBarAnrListe.Name = "ProgressBarAnrListe"
-        Me.ProgressBarAnrListe.Size = New System.Drawing.Size(400, 24)
-        '
-        'ToolStripStatusLabel1
-        '
-        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(64, 25)
-        Me.ToolStripStatusLabel1.Text = "Status:"
-        '
         'FormAnrList
         '
         Me.AcceptButton = Me.ButtonStart
@@ -189,18 +189,16 @@ Partial Class FormAnrList
         Me.Controls.Add(Me.ButtonCancel)
         Me.Controls.Add(Me.ButtonStart)
         Me.DoubleBuffered = True
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "FormAnrList"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Import der Anrufliste"
         Me.GBoxStartZeit.ResumeLayout(False)
         Me.GBoxEndZeit.ResumeLayout(False)
-        CType(Me.DGVAnrListe, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
+        CType(Me.DGVAnrListe, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

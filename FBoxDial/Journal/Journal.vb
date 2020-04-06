@@ -16,7 +16,7 @@ Module Journal
         Return Task.Run(Sub()
                             Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
 
-                            Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where (DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum) Select Anruf
+                            Abfrage = From Anruf In Anrufliste.Calls.AsParallel() Where (Anruf.Type.IsLessOrEqual(3) And DatumZeitAnfang <= Anruf.Datum And DatumZeitEnde >= Anruf.Datum) Select Anruf
                             Abfrage.ForAll(Sub(r)
                                                Using t As Telefonat = r.ErstelleTelefonat
                                                    t.ErstelleJournalEintrag()

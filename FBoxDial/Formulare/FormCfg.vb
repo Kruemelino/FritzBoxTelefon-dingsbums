@@ -240,12 +240,14 @@ Public Class FormCfg
 #End Region
 
     Private Sub FormCfg_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        For Each T As Telefonat In ThisAddIn.PAnrufmonitor.AktiveTelefonate.FindAll(Function(TEL) TEL.AnrMonSimuliert)
-            If T.AnrMonPopUp IsNot Nothing Then
-                T.AnrMonPopUp.AnrMonAusblenden()
-            End If
-        Next
-        ThisAddIn.PAnrufmonitor.AktiveTelefonate.RemoveAll(Function(TEL) TEL.AnrMonSimuliert)
+        If ThisAddIn.PAnrufmonitor IsNot Nothing Then
+            For Each T As Telefonat In ThisAddIn.PAnrufmonitor.AktiveTelefonate.FindAll(Function(TEL) TEL.AnrMonSimuliert)
+                If T.AnrMonPopUp IsNot Nothing Then
+                    T.AnrMonPopUp.AnrMonAusblenden()
+                End If
+            Next
+            ThisAddIn.PAnrufmonitor.AktiveTelefonate.RemoveAll(Function(TEL) TEL.AnrMonSimuliert)
+        End If
     End Sub
 
     Private Sub SetCheckedListBox(ByVal CLB As CheckedListBox)
