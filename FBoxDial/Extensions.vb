@@ -92,12 +92,13 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsLessOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
-        Return Val1 - Val2 <= Epsilon
-    End Function
+
     <Extension()> Public Function IsLessOrEqual(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
         Return Val1 - Val2 <= Epsilon
     End Function
+    '<Extension()> Public Function IsLessOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    '    Return Val1 - Val2 <= Epsilon
+    'End Function
 
     ''' <summary>
     ''' Prüft, ob die erste übergebene Größe <c>Val1</c> größer als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &gt; <c>Val2</c>
@@ -159,16 +160,22 @@ Public Module Extensions
     ''' <summary>
     ''' Prüft, ob der übergebende Wert negativ ist
     ''' </summary>
-    ''' <param name="Val1">Der zu überprüfende Wert.</param>
+    ''' <param name="Value">Der zu überprüfende Wert.</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsNegativ(ByVal Val1 As Integer) As Boolean
-        Return Val1 < -Epsilon
+    <Extension()> Friend Function IsNegative(ByVal Value As Double) As Boolean
+    Return IsLess(Value, 0)
     End Function
 
-    '<Extension()> Public Function IsPositiv(ByVal Val1 As Integer) As Boolean
-    '    Return Val1.IsLarger(Epsilon)
-    'End Function
+    <Extension()> Friend Function IsNegative(ByVal Value As Integer) As Boolean
+        Return IsLess(Value, 0)
+    End Function
+    <Extension()> Friend Function IsPositive(ByVal Value As Double) As Boolean
+        Return IsLarger(Value, 0)
+    End Function
 
+    <Extension()> Friend Function IsPositive(ByVal Value As Integer) As Boolean
+        Return IsLarger(Value, 0)
+    End Function
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: String"
@@ -657,5 +664,49 @@ Public Module Extensions
         Return New Drawing.SizeF((regAppliedDPI / 96).ToSng, (regAppliedDPI / 96).ToSng)
     End Function
 
+    <Extension> Public Sub Sort(NodesCollection As Windows.Forms.TreeNodeCollection, Ascending As Boolean, SortChildNodes As Boolean)
+
+        Dim node1 As Windows.Forms.TreeNode, node2 As Windows.Forms.TreeNode
+        Dim iTn1 As Integer = Nothing
+        Dim iTn2 As Integer = Nothing
+        Dim k As Integer
+        Dim iCompareResult As Integer
+        Dim Comparer As New StringLogicalComparer()
+
+        ' SortChildNodes: Ggf. Rekursion einleiten
+        If SortChildNodes Then
+            For i As Integer = 0 To NodesCollection.Count - 1
+                Sort(NodesCollection(i).Nodes, Ascending, SortChildNodes)
+            Next i
+        End If
+
+        ' Alle Knoten durchwandern
+        For i As Integer = 0 To NodesCollection.Count - 1
+
+            k = NodesCollection.Count
+
+            Do While k.IsLarger(i)
+
+                k -= 1
+                ' Je zwei Nodes ermitteln und Texte vergleichen
+                node1 = NodesCollection(i)
+                node2 = NodesCollection(k)
+                iCompareResult = Comparer.Compare(node1.Text, node2.Text)
+
+                ' Falls die Sortierung nicht dem übergebenen Sortierkriterium entspricht:
+                If (Ascending = True And iCompareResult.IsPositive) OrElse (Ascending = False And iCompareResult.IsNegative) Then
+
+                    ' Nodes austauschen
+                    With NodesCollection
+                        .Remove(node1)
+                        .Remove(node2)
+                        .Insert(i, node2)
+                        .Insert(k, node1)
+                    End With
+                End If
+            Loop
+        Next
+
+    End Sub
 #End Region
 End Module

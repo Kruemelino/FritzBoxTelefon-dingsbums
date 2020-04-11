@@ -21,15 +21,12 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
         Me.BOK = New System.Windows.Forms.Button()
         Me.ToolTipFBDBConfig = New System.Windows.Forms.ToolTip(Me.components)
-        Me.CBKErstellen = New System.Windows.Forms.CheckBox()
-        Me.CBRWSIndex = New System.Windows.Forms.CheckBox()
-        Me.CBKontaktSucheHauptOrdner = New System.Windows.Forms.CheckBox()
         Me.CBShowMSN = New System.Windows.Forms.CheckBox()
         Me.LTelNrMaske = New System.Windows.Forms.Label()
         Me.TBTelNrMaske = New System.Windows.Forms.TextBox()
@@ -42,12 +39,12 @@ Partial Class FormCfg
         Me.BTestLogin = New System.Windows.Forms.Button()
         Me.LBenutzer = New System.Windows.Forms.Label()
         Me.CBForceFBAdr = New System.Windows.Forms.CheckBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.TBRWSTest = New System.Windows.Forms.TextBox()
-        Me.TVOutlookContact = New System.Windows.Forms.TreeView()
         Me.TBNumEntryList = New System.Windows.Forms.TextBox()
         Me.LNumEntryList = New System.Windows.Forms.Label()
         Me.CBAutoAnrList = New System.Windows.Forms.CheckBox()
+        Me.TBRWSTest = New System.Windows.Forms.TextBox()
+        Me.CBRWSIndex = New System.Windows.Forms.CheckBox()
+        Me.CBKErstellen = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen = New System.Windows.Forms.TabPage()
         Me.GBFormatierungTelefonnummern = New System.Windows.Forms.GroupBox()
         Me.CBIgnoTelNrFormat = New System.Windows.Forms.CheckBox()
@@ -82,22 +79,6 @@ Partial Class FormCfg
         Me.DGVTelList = New FBoxDial.FBoxDataGridView()
         Me.BTelefonliste = New System.Windows.Forms.Button()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.PKontaktsuche = New System.Windows.Forms.TabPage()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.GBIndizierung = New System.Windows.Forms.GroupBox()
-        Me.Label21 = New System.Windows.Forms.Label()
-        Me.RadioButtonEntfernen = New System.Windows.Forms.RadioButton()
-        Me.RadioButtonErstelle = New System.Windows.Forms.RadioButton()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.LabelAnzahl = New System.Windows.Forms.Label()
-        Me.BIndizierungAbbrechen = New System.Windows.Forms.Button()
-        Me.BIndizierungStart = New System.Windows.Forms.Button()
-        Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
-        Me.CBKontaktSucheFritzBox = New System.Windows.Forms.CheckBox()
-        Me.GBRWS = New System.Windows.Forms.GroupBox()
-        Me.BRWSTest = New System.Windows.Forms.Button()
-        Me.LRWSTest = New System.Windows.Forms.Label()
-        Me.CBRWS = New System.Windows.Forms.CheckBox()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GBJournal = New System.Windows.Forms.GroupBox()
@@ -168,6 +149,21 @@ Partial Class FormCfg
         Me.LAnrMonSimLabelRING = New System.Windows.Forms.Label()
         Me.DTPAnrMonSimRING = New System.Windows.Forms.DateTimePicker()
         Me.BAnrMonSimRING = New System.Windows.Forms.Button()
+        Me.PKontaktsuche2 = New System.Windows.Forms.TabPage()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.GBRWS = New System.Windows.Forms.GroupBox()
+        Me.BRWSTest = New System.Windows.Forms.Button()
+        Me.CBRWS = New System.Windows.Forms.CheckBox()
+        Me.GBIndizierung = New System.Windows.Forms.GroupBox()
+        Me.LabelAnzahl = New System.Windows.Forms.Label()
+        Me.RadioButtonEntfernen = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonErstelle = New System.Windows.Forms.RadioButton()
+        Me.BIndizierungAbbrechen = New System.Windows.Forms.Button()
+        Me.BIndizierungStart = New System.Windows.Forms.Button()
+        Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
+        Me.CBKontaktSucheFritzBox = New System.Windows.Forms.CheckBox()
+        Me.BKontOrdLaden = New System.Windows.Forms.Button()
+        Me.TreeViewKontakte = New System.Windows.Forms.TreeView()
         Me.PLogging = New System.Windows.Forms.TabPage()
         Me.LMinLogLevel = New System.Windows.Forms.Label()
         Me.CBoxMinLogLevel = New System.Windows.Forms.ComboBox()
@@ -186,9 +182,6 @@ Partial Class FormCfg
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.PKontaktsuche.SuspendLayout()
-        Me.GBIndizierung.SuspendLayout()
-        Me.GBRWS.SuspendLayout()
         Me.PAnrufmonitor.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GBJournal.SuspendLayout()
@@ -201,6 +194,9 @@ Partial Class FormCfg
         Me.GBoxAnrMonCONNECT.SuspendLayout()
         Me.GBoxAnrMonCALL.SuspendLayout()
         Me.GBoxAnrMonRING.SuspendLayout()
+        Me.PKontaktsuche2.SuspendLayout()
+        Me.GBRWS.SuspendLayout()
+        Me.GBIndizierung.SuspendLayout()
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -260,48 +256,6 @@ Partial Class FormCfg
         Me.ToolTipFBDBConfig.ReshowDelay = 100
         Me.ToolTipFBDBConfig.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         Me.ToolTipFBDBConfig.ToolTipTitle = "Erläuterung:"
-        '
-        'CBKErstellen
-        '
-        Me.CBKErstellen.AutoSize = True
-        Me.CBKErstellen.Enabled = False
-        Me.CBKErstellen.Location = New System.Drawing.Point(9, 106)
-        Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBKErstellen.MinimumSize = New System.Drawing.Size(350, 0)
-        Me.CBKErstellen.Name = "CBKErstellen"
-        Me.CBKErstellen.Size = New System.Drawing.Size(350, 24)
-        Me.CBKErstellen.TabIndex = 2
-        Me.CBKErstellen.Text = "Kontakt bei erfolgreicher Suche erstellen"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
-        "erstellt.")
-        Me.CBKErstellen.UseVisualStyleBackColor = True
-        '
-        'CBRWSIndex
-        '
-        Me.CBRWSIndex.AutoSize = True
-        Me.CBRWSIndex.Enabled = False
-        Me.CBRWSIndex.Location = New System.Drawing.Point(9, 142)
-        Me.CBRWSIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBRWSIndex.MinimumSize = New System.Drawing.Size(350, 0)
-        Me.CBRWSIndex.Name = "CBRWSIndex"
-        Me.CBRWSIndex.Size = New System.Drawing.Size(362, 24)
-        Me.CBRWSIndex.TabIndex = 3
-        Me.CBRWSIndex.Text = "Speichere Ergebnisse der Rückwärtssuche ab"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBRWSIndex, resources.GetString("CBRWSIndex.ToolTip"))
-        Me.CBRWSIndex.UseVisualStyleBackColor = True
-        '
-        'CBKontaktSucheHauptOrdner
-        '
-        Me.CBKontaktSucheHauptOrdner.AutoSize = True
-        Me.CBKontaktSucheHauptOrdner.Location = New System.Drawing.Point(9, 29)
-        Me.CBKontaktSucheHauptOrdner.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBKontaktSucheHauptOrdner.MinimumSize = New System.Drawing.Size(350, 0)
-        Me.CBKontaktSucheHauptOrdner.Name = "CBKontaktSucheHauptOrdner"
-        Me.CBKontaktSucheHauptOrdner.Size = New System.Drawing.Size(350, 24)
-        Me.CBKontaktSucheHauptOrdner.TabIndex = 5
-        Me.CBKontaktSucheHauptOrdner.Text = "Nur den Hauptkontaktordner durchsuchen"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKontaktSucheHauptOrdner, resources.GetString("CBKontaktSucheHauptOrdner.ToolTip"))
-        Me.CBKontaktSucheHauptOrdner.UseVisualStyleBackColor = True
         '
         'CBShowMSN
         '
@@ -456,41 +410,6 @@ Partial Class FormCfg
         "rn nötig, da diese Pings blockieren.")
         Me.CBForceFBAdr.UseVisualStyleBackColor = True
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(382, 30)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label7.MinimumSize = New System.Drawing.Size(260, 0)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(260, 20)
-        Me.Label7.TabIndex = 5
-        Me.Label7.Text = "Speicherort für erstellte Kontakte:"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.Label7, resources.GetString("Label7.ToolTip"))
-        '
-        'TBRWSTest
-        '
-        Me.TBRWSTest.Location = New System.Drawing.Point(130, 68)
-        Me.TBRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.TBRWSTest.Name = "TBRWSTest"
-        Me.TBRWSTest.Size = New System.Drawing.Size(148, 26)
-        Me.TBRWSTest.TabIndex = 6
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch" &
-        "geführt werden soll.")
-        '
-        'TVOutlookContact
-        '
-        Me.TVOutlookContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TVOutlookContact.CheckBoxes = True
-        Me.TVOutlookContact.Enabled = False
-        Me.TVOutlookContact.FullRowSelect = True
-        Me.TVOutlookContact.Location = New System.Drawing.Point(386, 60)
-        Me.TVOutlookContact.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.TVOutlookContact.Name = "TVOutlookContact"
-        Me.TVOutlookContact.Size = New System.Drawing.Size(460, 107)
-        Me.TVOutlookContact.TabIndex = 4
-        Me.ToolTipFBDBConfig.SetToolTip(Me.TVOutlookContact, resources.GetString("TVOutlookContact.ToolTip"))
-        '
         'TBNumEntryList
         '
         Me.TBNumEntryList.Location = New System.Drawing.Point(9, 28)
@@ -528,6 +447,43 @@ Partial Class FormCfg
         Me.CBAutoAnrList.Text = "Anrufliste beim Start auswerten"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
         Me.CBAutoAnrList.UseVisualStyleBackColor = True
+        '
+        'TBRWSTest
+        '
+        Me.TBRWSTest.Location = New System.Drawing.Point(285, 27)
+        Me.TBRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBRWSTest.Name = "TBRWSTest"
+        Me.TBRWSTest.Size = New System.Drawing.Size(168, 26)
+        Me.TBRWSTest.TabIndex = 6
+        Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch" &
+        "geführt werden soll.")
+        '
+        'CBRWSIndex
+        '
+        Me.CBRWSIndex.AutoSize = True
+        Me.CBRWSIndex.Enabled = False
+        Me.CBRWSIndex.Location = New System.Drawing.Point(7, 97)
+        Me.CBRWSIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBRWSIndex.Name = "CBRWSIndex"
+        Me.CBRWSIndex.Size = New System.Drawing.Size(155, 24)
+        Me.CBRWSIndex.TabIndex = 3
+        Me.CBRWSIndex.Text = "Ergebnis merken"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBRWSIndex, resources.GetString("CBRWSIndex.ToolTip"))
+        Me.CBRWSIndex.UseVisualStyleBackColor = True
+        '
+        'CBKErstellen
+        '
+        Me.CBKErstellen.AutoSize = True
+        Me.CBKErstellen.Enabled = False
+        Me.CBKErstellen.Location = New System.Drawing.Point(7, 63)
+        Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBKErstellen.Name = "CBKErstellen"
+        Me.CBKErstellen.Size = New System.Drawing.Size(154, 24)
+        Me.CBKErstellen.TabIndex = 2
+        Me.CBKErstellen.Text = "Kontakt erstellen"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
+        "erstellt.")
+        Me.CBKErstellen.UseVisualStyleBackColor = True
         '
         'PGrundeinstellungen
         '
@@ -899,14 +855,14 @@ Partial Class FormCfg
         Me.DGVTelList.AllowUserToDeleteRows = False
         Me.DGVTelList.AllowUserToResizeColumns = False
         Me.DGVTelList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.DGVTelList.ColumnHeadersHeight = 34
         Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
@@ -941,206 +897,6 @@ Partial Class FormCfg
         Me.Label15.TabIndex = 26
         Me.Label15.Text = "Nummern"
         Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'PKontaktsuche
-        '
-        Me.PKontaktsuche.Controls.Add(Me.Label1)
-        Me.PKontaktsuche.Controls.Add(Me.GBIndizierung)
-        Me.PKontaktsuche.Controls.Add(Me.GBRWS)
-        Me.PKontaktsuche.Location = New System.Drawing.Point(4, 29)
-        Me.PKontaktsuche.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PKontaktsuche.Name = "PKontaktsuche"
-        Me.PKontaktsuche.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PKontaktsuche.Size = New System.Drawing.Size(860, 458)
-        Me.PKontaktsuche.TabIndex = 6
-        Me.PKontaktsuche.Text = "Kontaktsuche"
-        Me.PKontaktsuche.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
-        Me.Label1.Location = New System.Drawing.Point(4, 5)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(852, 54)
-        Me.Label1.TabIndex = 33
-        Me.Label1.Text = "Einstellungen für die Kontaktsuche"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'GBIndizierung
-        '
-        Me.GBIndizierung.Controls.Add(Me.Label21)
-        Me.GBIndizierung.Controls.Add(Me.RadioButtonEntfernen)
-        Me.GBIndizierung.Controls.Add(Me.RadioButtonErstelle)
-        Me.GBIndizierung.Controls.Add(Me.Label20)
-        Me.GBIndizierung.Controls.Add(Me.LabelAnzahl)
-        Me.GBIndizierung.Controls.Add(Me.BIndizierungAbbrechen)
-        Me.GBIndizierung.Controls.Add(Me.BIndizierungStart)
-        Me.GBIndizierung.Controls.Add(Me.ProgressBarIndex)
-        Me.GBIndizierung.Controls.Add(Me.CBKontaktSucheHauptOrdner)
-        Me.GBIndizierung.Controls.Add(Me.CBKontaktSucheFritzBox)
-        Me.GBIndizierung.Location = New System.Drawing.Point(0, 63)
-        Me.GBIndizierung.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBIndizierung.Name = "GBIndizierung"
-        Me.GBIndizierung.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBIndizierung.Size = New System.Drawing.Size(855, 203)
-        Me.GBIndizierung.TabIndex = 10
-        Me.GBIndizierung.TabStop = False
-        Me.GBIndizierung.Text = "Kontaktsuche in Outlook (Indizierung) und Fritz!Box Telefonbücher"
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(4, 97)
-        Me.Label21.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label21.MinimumSize = New System.Drawing.Size(200, 0)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(200, 20)
-        Me.Label21.TabIndex = 18
-        Me.Label21.Text = "Benutzerdefinierte Felder"
-        '
-        'RadioButtonEntfernen
-        '
-        Me.RadioButtonEntfernen.AutoSize = True
-        Me.RadioButtonEntfernen.Location = New System.Drawing.Point(372, 95)
-        Me.RadioButtonEntfernen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.RadioButtonEntfernen.MinimumSize = New System.Drawing.Size(110, 0)
-        Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
-        Me.RadioButtonEntfernen.Size = New System.Drawing.Size(110, 24)
-        Me.RadioButtonEntfernen.TabIndex = 8
-        Me.RadioButtonEntfernen.TabStop = True
-        Me.RadioButtonEntfernen.Text = "entfernen"
-        Me.RadioButtonEntfernen.UseVisualStyleBackColor = True
-        '
-        'RadioButtonErstelle
-        '
-        Me.RadioButtonErstelle.AutoSize = True
-        Me.RadioButtonErstelle.Checked = True
-        Me.RadioButtonErstelle.Location = New System.Drawing.Point(228, 95)
-        Me.RadioButtonErstelle.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.RadioButtonErstelle.MinimumSize = New System.Drawing.Size(110, 0)
-        Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
-        Me.RadioButtonErstelle.Size = New System.Drawing.Size(110, 24)
-        Me.RadioButtonErstelle.TabIndex = 7
-        Me.RadioButtonErstelle.TabStop = True
-        Me.RadioButtonErstelle.Text = "erstellen"
-        Me.RadioButtonErstelle.UseVisualStyleBackColor = True
-        '
-        'Label20
-        '
-        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(9, 52)
-        Me.Label20.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(850, 37)
-        Me.Label20.TabIndex = 14
-        Me.Label20.Text = "Falls keine Indizierung durgeführt wird, werden keine Kontakte im Anrufmonitor an" &
-    "gezeigt."
-        Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'LabelAnzahl
-        '
-        Me.LabelAnzahl.BackColor = System.Drawing.Color.Transparent
-        Me.LabelAnzahl.Location = New System.Drawing.Point(4, 125)
-        Me.LabelAnzahl.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LabelAnzahl.Name = "LabelAnzahl"
-        Me.LabelAnzahl.Size = New System.Drawing.Size(846, 20)
-        Me.LabelAnzahl.TabIndex = 13
-        Me.LabelAnzahl.Text = "Status: "
-        '
-        'BIndizierungAbbrechen
-        '
-        Me.BIndizierungAbbrechen.Enabled = False
-        Me.BIndizierungAbbrechen.Location = New System.Drawing.Point(682, 149)
-        Me.BIndizierungAbbrechen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.BIndizierungAbbrechen.Name = "BIndizierungAbbrechen"
-        Me.BIndizierungAbbrechen.Size = New System.Drawing.Size(168, 43)
-        Me.BIndizierungAbbrechen.TabIndex = 10
-        Me.BIndizierungAbbrechen.Text = "Abbrechen"
-        Me.BIndizierungAbbrechen.UseVisualStyleBackColor = True
-        '
-        'BIndizierungStart
-        '
-        Me.BIndizierungStart.Location = New System.Drawing.Point(506, 149)
-        Me.BIndizierungStart.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.BIndizierungStart.Name = "BIndizierungStart"
-        Me.BIndizierungStart.Size = New System.Drawing.Size(168, 43)
-        Me.BIndizierungStart.TabIndex = 9
-        Me.BIndizierungStart.Text = "Start"
-        Me.BIndizierungStart.UseVisualStyleBackColor = True
-        '
-        'ProgressBarIndex
-        '
-        Me.ProgressBarIndex.Location = New System.Drawing.Point(9, 149)
-        Me.ProgressBarIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.ProgressBarIndex.Name = "ProgressBarIndex"
-        Me.ProgressBarIndex.Size = New System.Drawing.Size(488, 43)
-        Me.ProgressBarIndex.TabIndex = 10
-        '
-        'CBKontaktSucheFritzBox
-        '
-        Me.CBKontaktSucheFritzBox.AutoSize = True
-        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(372, 29)
-        Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(350, 0)
-        Me.CBKontaktSucheFritzBox.Name = "CBKontaktSucheFritzBox"
-        Me.CBKontaktSucheFritzBox.Size = New System.Drawing.Size(350, 24)
-        Me.CBKontaktSucheFritzBox.TabIndex = 19
-        Me.CBKontaktSucheFritzBox.Text = "Die Fritz!Box Telefonbüchern durchsuchen"
-        Me.CBKontaktSucheFritzBox.UseVisualStyleBackColor = True
-        '
-        'GBRWS
-        '
-        Me.GBRWS.Controls.Add(Me.BRWSTest)
-        Me.GBRWS.Controls.Add(Me.LRWSTest)
-        Me.GBRWS.Controls.Add(Me.TBRWSTest)
-        Me.GBRWS.Controls.Add(Me.Label7)
-        Me.GBRWS.Controls.Add(Me.TVOutlookContact)
-        Me.GBRWS.Controls.Add(Me.CBRWSIndex)
-        Me.GBRWS.Controls.Add(Me.CBKErstellen)
-        Me.GBRWS.Controls.Add(Me.CBRWS)
-        Me.GBRWS.Location = New System.Drawing.Point(0, 275)
-        Me.GBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBRWS.Name = "GBRWS"
-        Me.GBRWS.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBRWS.Size = New System.Drawing.Size(856, 177)
-        Me.GBRWS.TabIndex = 9
-        Me.GBRWS.TabStop = False
-        Me.GBRWS.Text = "Rückwärtssuche (RWS)"
-        '
-        'BRWSTest
-        '
-        Me.BRWSTest.Location = New System.Drawing.Point(290, 68)
-        Me.BRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.BRWSTest.Name = "BRWSTest"
-        Me.BRWSTest.Size = New System.Drawing.Size(87, 31)
-        Me.BRWSTest.TabIndex = 8
-        Me.BRWSTest.Text = "Teste..."
-        Me.BRWSTest.UseVisualStyleBackColor = True
-        '
-        'LRWSTest
-        '
-        Me.LRWSTest.AutoSize = True
-        Me.LRWSTest.Location = New System.Drawing.Point(4, 72)
-        Me.LRWSTest.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LRWSTest.MinimumSize = New System.Drawing.Size(120, 0)
-        Me.LRWSTest.Name = "LRWSTest"
-        Me.LRWSTest.Size = New System.Drawing.Size(120, 20)
-        Me.LRWSTest.TabIndex = 7
-        Me.LRWSTest.Text = "Test der RWS:"
-        '
-        'CBRWS
-        '
-        Me.CBRWS.AutoSize = True
-        Me.CBRWS.Location = New System.Drawing.Point(9, 29)
-        Me.CBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBRWS.MinimumSize = New System.Drawing.Size(165, 0)
-        Me.CBRWS.Name = "CBRWS"
-        Me.CBRWS.Size = New System.Drawing.Size(263, 24)
-        Me.CBRWS.TabIndex = 0
-        Me.CBRWS.Text = "Rückwärtssuche via DasÖrtliche"
-        Me.CBRWS.UseVisualStyleBackColor = True
         '
         'PAnrufmonitor
         '
@@ -1397,7 +1153,7 @@ Partial Class FormCfg
         Me.FBDB_MP.Controls.Add(Me.PGrundeinstellungen)
         Me.FBDB_MP.Controls.Add(Me.PAnrufmonitor)
         Me.FBDB_MP.Controls.Add(Me.PAnrMonSim)
-        Me.FBDB_MP.Controls.Add(Me.PKontaktsuche)
+        Me.FBDB_MP.Controls.Add(Me.PKontaktsuche2)
         Me.FBDB_MP.Controls.Add(Me.PTelefone)
         Me.FBDB_MP.Controls.Add(Me.PLogging)
         Me.FBDB_MP.Controls.Add(Me.PInfo)
@@ -1933,6 +1689,182 @@ Partial Class FormCfg
         Me.BAnrMonSimRING.Text = "RING"
         Me.BAnrMonSimRING.UseVisualStyleBackColor = True
         '
+        'PKontaktsuche2
+        '
+        Me.PKontaktsuche2.Controls.Add(Me.Label1)
+        Me.PKontaktsuche2.Controls.Add(Me.GBRWS)
+        Me.PKontaktsuche2.Controls.Add(Me.GBIndizierung)
+        Me.PKontaktsuche2.Controls.Add(Me.CBKontaktSucheFritzBox)
+        Me.PKontaktsuche2.Controls.Add(Me.BKontOrdLaden)
+        Me.PKontaktsuche2.Controls.Add(Me.TreeViewKontakte)
+        Me.PKontaktsuche2.Location = New System.Drawing.Point(4, 29)
+        Me.PKontaktsuche2.Name = "PKontaktsuche2"
+        Me.PKontaktsuche2.Padding = New System.Windows.Forms.Padding(3)
+        Me.PKontaktsuche2.Size = New System.Drawing.Size(860, 458)
+        Me.PKontaktsuche2.TabIndex = 15
+        Me.PKontaktsuche2.Text = "Kontaktsuche"
+        Me.PKontaktsuche2.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
+        Me.Label1.Location = New System.Drawing.Point(3, 3)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(854, 54)
+        Me.Label1.TabIndex = 38
+        Me.Label1.Text = "Einstellungen für die Kontaktsuche"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'GBRWS
+        '
+        Me.GBRWS.Controls.Add(Me.BRWSTest)
+        Me.GBRWS.Controls.Add(Me.TBRWSTest)
+        Me.GBRWS.Controls.Add(Me.CBRWSIndex)
+        Me.GBRWS.Controls.Add(Me.CBKErstellen)
+        Me.GBRWS.Controls.Add(Me.CBRWS)
+        Me.GBRWS.Location = New System.Drawing.Point(0, 330)
+        Me.GBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBRWS.Name = "GBRWS"
+        Me.GBRWS.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBRWS.Size = New System.Drawing.Size(461, 128)
+        Me.GBRWS.TabIndex = 37
+        Me.GBRWS.TabStop = False
+        Me.GBRWS.Text = "Rückwärtssuche (RWS)"
+        '
+        'BRWSTest
+        '
+        Me.BRWSTest.Location = New System.Drawing.Point(285, 61)
+        Me.BRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BRWSTest.Name = "BRWSTest"
+        Me.BRWSTest.Size = New System.Drawing.Size(168, 43)
+        Me.BRWSTest.TabIndex = 8
+        Me.BRWSTest.Text = "Starte Test"
+        Me.BRWSTest.UseVisualStyleBackColor = True
+        '
+        'CBRWS
+        '
+        Me.CBRWS.AutoSize = True
+        Me.CBRWS.Location = New System.Drawing.Point(7, 29)
+        Me.CBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBRWS.MinimumSize = New System.Drawing.Size(165, 0)
+        Me.CBRWS.Name = "CBRWS"
+        Me.CBRWS.Size = New System.Drawing.Size(165, 24)
+        Me.CBRWS.TabIndex = 0
+        Me.CBRWS.Text = "DasÖrtliche"
+        Me.CBRWS.UseVisualStyleBackColor = True
+        '
+        'GBIndizierung
+        '
+        Me.GBIndizierung.Controls.Add(Me.LabelAnzahl)
+        Me.GBIndizierung.Controls.Add(Me.RadioButtonEntfernen)
+        Me.GBIndizierung.Controls.Add(Me.RadioButtonErstelle)
+        Me.GBIndizierung.Controls.Add(Me.BIndizierungAbbrechen)
+        Me.GBIndizierung.Controls.Add(Me.BIndizierungStart)
+        Me.GBIndizierung.Controls.Add(Me.ProgressBarIndex)
+        Me.GBIndizierung.Location = New System.Drawing.Point(0, 156)
+        Me.GBIndizierung.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBIndizierung.Name = "GBIndizierung"
+        Me.GBIndizierung.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBIndizierung.Size = New System.Drawing.Size(461, 164)
+        Me.GBIndizierung.TabIndex = 36
+        Me.GBIndizierung.TabStop = False
+        Me.GBIndizierung.Text = "Kontaktindizierung"
+        '
+        'LabelAnzahl
+        '
+        Me.LabelAnzahl.AutoSize = True
+        Me.LabelAnzahl.Location = New System.Drawing.Point(6, 130)
+        Me.LabelAnzahl.Name = "LabelAnzahl"
+        Me.LabelAnzahl.Size = New System.Drawing.Size(165, 20)
+        Me.LabelAnzahl.TabIndex = 11
+        Me.LabelAnzahl.Text = "Status der Indizierung"
+        '
+        'RadioButtonEntfernen
+        '
+        Me.RadioButtonEntfernen.AutoSize = True
+        Me.RadioButtonEntfernen.Location = New System.Drawing.Point(132, 38)
+        Me.RadioButtonEntfernen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RadioButtonEntfernen.MinimumSize = New System.Drawing.Size(110, 0)
+        Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
+        Me.RadioButtonEntfernen.Size = New System.Drawing.Size(110, 24)
+        Me.RadioButtonEntfernen.TabIndex = 8
+        Me.RadioButtonEntfernen.TabStop = True
+        Me.RadioButtonEntfernen.Text = "entfernen"
+        Me.RadioButtonEntfernen.UseVisualStyleBackColor = True
+        '
+        'RadioButtonErstelle
+        '
+        Me.RadioButtonErstelle.AutoSize = True
+        Me.RadioButtonErstelle.Checked = True
+        Me.RadioButtonErstelle.Location = New System.Drawing.Point(14, 38)
+        Me.RadioButtonErstelle.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RadioButtonErstelle.MinimumSize = New System.Drawing.Size(110, 0)
+        Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
+        Me.RadioButtonErstelle.Size = New System.Drawing.Size(110, 24)
+        Me.RadioButtonErstelle.TabIndex = 7
+        Me.RadioButtonErstelle.TabStop = True
+        Me.RadioButtonErstelle.Text = "erstellen"
+        Me.RadioButtonErstelle.UseVisualStyleBackColor = True
+        '
+        'BIndizierungAbbrechen
+        '
+        Me.BIndizierungAbbrechen.Enabled = False
+        Me.BIndizierungAbbrechen.Location = New System.Drawing.Point(285, 29)
+        Me.BIndizierungAbbrechen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BIndizierungAbbrechen.Name = "BIndizierungAbbrechen"
+        Me.BIndizierungAbbrechen.Size = New System.Drawing.Size(168, 43)
+        Me.BIndizierungAbbrechen.TabIndex = 10
+        Me.BIndizierungAbbrechen.Text = "Abbrechen"
+        Me.BIndizierungAbbrechen.UseVisualStyleBackColor = True
+        '
+        'BIndizierungStart
+        '
+        Me.BIndizierungStart.Location = New System.Drawing.Point(285, 82)
+        Me.BIndizierungStart.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BIndizierungStart.Name = "BIndizierungStart"
+        Me.BIndizierungStart.Size = New System.Drawing.Size(168, 43)
+        Me.BIndizierungStart.TabIndex = 9
+        Me.BIndizierungStart.Text = "Start"
+        Me.BIndizierungStart.UseVisualStyleBackColor = True
+        '
+        'ProgressBarIndex
+        '
+        Me.ProgressBarIndex.Location = New System.Drawing.Point(8, 82)
+        Me.ProgressBarIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.ProgressBarIndex.Name = "ProgressBarIndex"
+        Me.ProgressBarIndex.Size = New System.Drawing.Size(260, 43)
+        Me.ProgressBarIndex.TabIndex = 10
+        '
+        'CBKontaktSucheFritzBox
+        '
+        Me.CBKontaktSucheFritzBox.AutoSize = True
+        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(7, 104)
+        Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(350, 0)
+        Me.CBKontaktSucheFritzBox.Name = "CBKontaktSucheFritzBox"
+        Me.CBKontaktSucheFritzBox.Size = New System.Drawing.Size(350, 24)
+        Me.CBKontaktSucheFritzBox.TabIndex = 35
+        Me.CBKontaktSucheFritzBox.Text = "Die Fritz!Box Telefonbüchern durchsuchen"
+        Me.CBKontaktSucheFritzBox.UseVisualStyleBackColor = True
+        '
+        'BKontOrdLaden
+        '
+        Me.BKontOrdLaden.Location = New System.Drawing.Point(468, 60)
+        Me.BKontOrdLaden.Name = "BKontOrdLaden"
+        Me.BKontOrdLaden.Size = New System.Drawing.Size(392, 43)
+        Me.BKontOrdLaden.TabIndex = 1
+        Me.BKontOrdLaden.Text = "Outlook-Kontaktordner laden..."
+        Me.BKontOrdLaden.UseVisualStyleBackColor = True
+        '
+        'TreeViewKontakte
+        '
+        Me.TreeViewKontakte.Location = New System.Drawing.Point(468, 111)
+        Me.TreeViewKontakte.Name = "TreeViewKontakte"
+        Me.TreeViewKontakte.Size = New System.Drawing.Size(392, 347)
+        Me.TreeViewKontakte.TabIndex = 0
+        '
         'PLogging
         '
         Me.PLogging.Controls.Add(Me.LMinLogLevel)
@@ -2088,11 +2020,6 @@ Partial Class FormCfg
         Me.PTelefone.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.PKontaktsuche.ResumeLayout(False)
-        Me.GBIndizierung.ResumeLayout(False)
-        Me.GBIndizierung.PerformLayout()
-        Me.GBRWS.ResumeLayout(False)
-        Me.GBRWS.PerformLayout()
         Me.PAnrufmonitor.ResumeLayout(False)
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
@@ -2114,6 +2041,12 @@ Partial Class FormCfg
         Me.GBoxAnrMonCALL.PerformLayout()
         Me.GBoxAnrMonRING.ResumeLayout(False)
         Me.GBoxAnrMonRING.PerformLayout()
+        Me.PKontaktsuche2.ResumeLayout(False)
+        Me.PKontaktsuche2.PerformLayout()
+        Me.GBRWS.ResumeLayout(False)
+        Me.GBRWS.PerformLayout()
+        Me.GBIndizierung.ResumeLayout(False)
+        Me.GBIndizierung.PerformLayout()
         Me.PLogging.ResumeLayout(False)
         Me.PLogging.PerformLayout()
         Me.GBLogging.ResumeLayout(False)
@@ -2135,14 +2068,6 @@ Partial Class FormCfg
     Friend WithEvents LVersion As System.Windows.Forms.Label
     Friend WithEvents RichTextBox1 As System.Windows.Forms.RichTextBox
     Friend WithEvents PTelefone As System.Windows.Forms.TabPage
-    Friend WithEvents PKontaktsuche As System.Windows.Forms.TabPage
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents GBIndizierung As System.Windows.Forms.GroupBox
-    Friend WithEvents CBKontaktSucheHauptOrdner As System.Windows.Forms.CheckBox
-    Friend WithEvents GBRWS As System.Windows.Forms.GroupBox
-    Friend WithEvents CBRWSIndex As System.Windows.Forms.CheckBox
-    Friend WithEvents CBKErstellen As System.Windows.Forms.CheckBox
-    Friend WithEvents CBRWS As System.Windows.Forms.CheckBox
     Friend WithEvents PAnrufmonitor As System.Windows.Forms.TabPage
     Friend WithEvents CBAnrMonContactImage As System.Windows.Forms.CheckBox
     Friend WithEvents CBShowMSN As System.Windows.Forms.CheckBox
@@ -2178,14 +2103,6 @@ Partial Class FormCfg
     Friend WithEvents FBDB_MP As System.Windows.Forms.TabControl
     Friend WithEvents LinkForum As System.Windows.Forms.LinkLabel
     Friend WithEvents CBDialPort As System.Windows.Forms.CheckBox
-    Friend WithEvents LabelAnzahl As System.Windows.Forms.Label
-    Friend WithEvents BIndizierungAbbrechen As System.Windows.Forms.Button
-    Friend WithEvents BIndizierungStart As System.Windows.Forms.Button
-    Friend WithEvents ProgressBarIndex As System.Windows.Forms.ProgressBar
-    Friend WithEvents Label20 As System.Windows.Forms.Label
-    Friend WithEvents RadioButtonEntfernen As System.Windows.Forms.RadioButton
-    Friend WithEvents RadioButtonErstelle As System.Windows.Forms.RadioButton
-    Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents CBForceFBAdr As System.Windows.Forms.CheckBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents LBenutzer As System.Windows.Forms.Label
@@ -2204,14 +2121,9 @@ Partial Class FormCfg
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents BTelefonliste As System.Windows.Forms.Button
     Friend WithEvents CBAnrMonZeigeKontakt As System.Windows.Forms.CheckBox
-    Friend WithEvents TVOutlookContact As System.Windows.Forms.TreeView
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents BArbeitsverzeichnis As System.Windows.Forms.Button
     Friend WithEvents TBOrtsKZ As System.Windows.Forms.TextBox
     Friend WithEvents TBLandesKZ As System.Windows.Forms.TextBox
-    Friend WithEvents BRWSTest As System.Windows.Forms.Button
-    Friend WithEvents LRWSTest As System.Windows.Forms.Label
-    Friend WithEvents TBRWSTest As System.Windows.Forms.TextBox
     Friend WithEvents BTestLogin As System.Windows.Forms.Button
     Friend WithEvents CBAnrMonCloseAtDISSCONNECT As System.Windows.Forms.CheckBox
     Friend WithEvents PAnrMonSim As Windows.Forms.TabPage
@@ -2263,7 +2175,6 @@ Partial Class FormCfg
     Friend WithEvents LAnrMonSimLabelDISCONNECT As Windows.Forms.Label
     Friend WithEvents DTPAnrMonSimDISCONNECT As Windows.Forms.DateTimePicker
     Friend WithEvents TBAnrMonSimDISCONNECTDauer As Windows.Forms.TextBox
-    Friend WithEvents CBKontaktSucheFritzBox As Windows.Forms.CheckBox
     Friend WithEvents GroupBox6 As Windows.Forms.GroupBox
     Friend WithEvents TBNumEntryList As Windows.Forms.TextBox
     Friend WithEvents LNumEntryList As Windows.Forms.Label
@@ -2279,4 +2190,22 @@ Partial Class FormCfg
     Friend WithEvents TBWClientEnblDauer As Windows.Forms.TextBox
     Friend WithEvents LWClientEnblDauer As Windows.Forms.Label
     Friend WithEvents DGVTelList As FBoxDataGridView
+    Friend WithEvents PKontaktsuche2 As Windows.Forms.TabPage
+    Friend WithEvents TreeViewKontakte As Windows.Forms.TreeView
+    Friend WithEvents BKontOrdLaden As Windows.Forms.Button
+    Friend WithEvents CBKontaktSucheFritzBox As Windows.Forms.CheckBox
+    Friend WithEvents GBIndizierung As Windows.Forms.GroupBox
+    Friend WithEvents RadioButtonEntfernen As Windows.Forms.RadioButton
+    Friend WithEvents RadioButtonErstelle As Windows.Forms.RadioButton
+    Friend WithEvents BIndizierungAbbrechen As Windows.Forms.Button
+    Friend WithEvents BIndizierungStart As Windows.Forms.Button
+    Friend WithEvents ProgressBarIndex As Windows.Forms.ProgressBar
+    Friend WithEvents Label1 As Windows.Forms.Label
+    Friend WithEvents GBRWS As Windows.Forms.GroupBox
+    Friend WithEvents BRWSTest As Windows.Forms.Button
+    Friend WithEvents TBRWSTest As Windows.Forms.TextBox
+    Friend WithEvents CBRWSIndex As Windows.Forms.CheckBox
+    Friend WithEvents CBKErstellen As Windows.Forms.CheckBox
+    Friend WithEvents CBRWS As Windows.Forms.CheckBox
+    Friend WithEvents LabelAnzahl As Windows.Forms.Label
 End Class

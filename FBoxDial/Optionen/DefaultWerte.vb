@@ -29,7 +29,6 @@
     Public Shared ReadOnly Property PDfltCBRWS() As Boolean = False
     Public Shared ReadOnly Property PDfltTVKontaktOrdnerEntryID() As String = PDfltStrErrorMinusOne
     Public Shared ReadOnly Property PDfltTVKontaktOrdnerStoreID() As String = PDfltStrErrorMinusOne
-    Public Shared ReadOnly Property PDfltCBKHO() As Boolean = True
     Public Shared ReadOnly Property PDfltCBRWSIndex() As Boolean = True
     Public Shared ReadOnly Property PDfltComboBoxRWS() As Integer = 0
     Public Shared ReadOnly Property PDfltCBIndex() As Boolean = True
@@ -49,9 +48,10 @@
     Public Shared ReadOnly Property PDfltTBFBAdr() As String = FritzBoxDefault.PDfltFritzBoxIPAdress
     Public Shared ReadOnly Property PDfltLetzterJournalEintragID As Integer = 0
     Public Shared ReadOnly Property PDfltLetzterJournalEintrag As Date = Now
-
     Public Shared ReadOnly Property PDfltCBCloseWClient As Boolean = True
     Public Shared ReadOnly Property PDfltTBWClientEnblDauer() As Integer = 10
+    Public Shared Property PDfltCBUseLegacySearch As Boolean = False
+    Public Shared Property PDfltCBUseLegacyUserProp As Boolean = False
 
 #End Region
 

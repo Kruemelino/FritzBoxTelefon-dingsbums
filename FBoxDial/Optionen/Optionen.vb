@@ -94,13 +94,17 @@
 
 #Region "Einstellungen für die Kontaktsuche"
 #Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
-    <XmlElement("CBKontaktSucheHauptOrdner")> Public Property PCBKontaktSucheHauptOrdner As Boolean
+    <XmlElement("IndizerteOrdner")> Public Property IndizerteOrdner As IndizieOrdnerListe
     <XmlElement("CBKontaktSucheFritzBox")> Public Property PCBKontaktSucheFritzBox As Boolean
 #End Region
 #Region "Einstellungen für die Kontaktsuche - Rückwärtssuche (RWS)"
     <XmlElement("CBRWS")> Public Property PCBRWS As Boolean
     <XmlElement("CBKErstellen")> Public Property PCBKErstellen As Boolean
     <XmlElement("CBRWSIndex")> Public Property PCBRWSIndex As Boolean
+
+    <XmlElement("CBUseLegacySearch")> Public Property PCBUseLegacySearch As Boolean
+    <XmlElement("CBUseLegacyUserProp")> Public Property PCBUseLegacyUserProp As Boolean
+
     <XmlElement("TVKontaktOrdnerEntryID")> Public Property PTVKontaktOrdnerEntryID As String
     <XmlElement("TVKontaktOrdnerStoreID")> Public Property PTVKontaktOrdnerStoreID As String
 #End Region

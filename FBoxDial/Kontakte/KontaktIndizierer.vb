@@ -15,42 +15,40 @@ Friend Module KontaktIndizierer
             'If CType(.Parent, Outlook.MAPIFolder).Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
 
             Dim colArgs As Object()
-                ' Lade alle Telefonnummern des Kontaktes
-                ' Das Laden der Telefonnummern mittels PropertyAccessor ist nicht sinnvoll.
-                ' Die Daten liegen darin erst nach dem Speichern des Kontaktes vor.
-                ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNr), Object())
-                ' Die Telefonnummern werden stattdessen aus den Eigenschaften des Kontaktes direkt ausgelesen.
-                colArgs = .GetTelNrArray
+            ' Lade alle Telefonnummern des Kontaktes
+            ' Das Laden der Telefonnummern mittels PropertyAccessor ist nicht sinnvoll.
+            ' Die Daten liegen darin erst nach dem Speichern des Kontaktes vor.
+            ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNr), Object())
+            ' Die Telefonnummern werden stattdessen aus den Eigenschaften des Kontaktes direkt ausgelesen.
+            colArgs = .GetTelNrArray
 
-                ' Entferne alle Formatierungen der Telefonnummgern
-                For i = LBound(colArgs) To UBound(colArgs)
-                    If colArgs(i) IsNot Nothing Then
-                        'If TypeOf colArgs(i) IsNot Integer Then
-                        If colArgs(i).ToString.IsNotStringNothingOrEmpty Then
-                            Using tempTelNr = New Telefonnummer() With {.SetNummer = colArgs(i).ToString}
-                                colArgs(i) = tempTelNr.Unformatiert
-                            End Using
-                        End If
-                    Else
-                        colArgs(i) = PDfltStringEmpty
+            ' Entferne alle Formatierungen der Telefonnummgern
+            For i = LBound(colArgs) To UBound(colArgs)
+                If colArgs(i) IsNot Nothing Then
+                    'If TypeOf colArgs(i) IsNot Integer Then
+                    If colArgs(i).ToString.IsNotStringNothingOrEmpty Then
+                        Using tempTelNr = New Telefonnummer() With {.SetNummer = colArgs(i).ToString}
+                            colArgs(i) = tempTelNr.Unformatiert
+                        End Using
                     End If
-                Next
+                Else
+                    colArgs(i) = PDfltStringEmpty
+                End If
+            Next
 
-                ' Lösche alle Indizierungsfelder
-                .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
+            ' Lösche alle Indizierungsfelder
+            .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
-                ' Speichere die Nummern und nicht sichtbare Felder
-                Try
-                    .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
-                Catch ex As Exception
-                    NLogger.Error(ex, "Kontakt: {0}", olKontakt.FullNameAndCompany)
-                End Try
+            ' Speichere die Nummern und nicht sichtbare Felder
+            Try
+                .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
+            Catch ex As Exception
+                NLogger.Error(ex, "Kontakt: {0}", olKontakt.FullNameAndCompany)
+            End Try
 
-                ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
+            ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-                If .Speichern Then
-                NLogger.Info("Kontakt {0} gespeichert", olKontakt.FullNameAndCompany)
-            End If
+            If .Speichern Then NLogger.Info("Kontakt {0} gespeichert", olKontakt.FullNameAndCompany)
 
             'End If
         End With
@@ -65,26 +63,28 @@ Friend Module KontaktIndizierer
     Friend Sub DeIndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
         ' Ab hier Code zum bereinigen, der alten Indizierungsspuren
         Dim UserEigenschaft As Outlook.UserProperty
+        With olKontakt
+            With .UserProperties
+                For Each UserProperty As String In PDfltUserProperties
 
-        With olKontakt.UserProperties
-            For Each UserProperty As String In PDfltUserProperties
+                    Try
+                        UserEigenschaft = .Find(UserProperty)
+                    Catch
+                        UserEigenschaft = Nothing
+                    Finally
 
-                Try
-                    UserEigenschaft = .Find(UserProperty)
-                Catch
+                    End Try
+                    If UserEigenschaft IsNot Nothing Then UserEigenschaft.Delete()
                     UserEigenschaft = Nothing
-                Finally
+                Next
+            End With
+            ' Ab hier neu
+            ' Lösche alle Indizierungsfelder
 
-                End Try
-                If UserEigenschaft IsNot Nothing Then UserEigenschaft.Delete()
-                UserEigenschaft = Nothing
-            Next
+            .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
+
+            If .Speichern Then NLogger.Info("Kontakt {0} gespeichert", .FullNameAndCompany)
         End With
-        ' Ab hier neu
-        ' Lösche alle Indizierungsfelder
-        olKontakt.PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
-
-        olKontakt.Speichern()
     End Sub
 
     ''' <summary>

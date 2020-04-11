@@ -120,18 +120,6 @@
   <metadata name="ToolTipFBDBConfig.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="CBRWSIndex.ToolTip" xml:space="preserve">
-    <value>Die Ergebnisse der Rückwärtssuche können abgespeichert werden. Wenn eine Rückwärtssuche erfolgreich ist, 
-wird der ermittelte Kontakt abgespeichert. Bei der nächsten Suche wird zunächst geschaut, 
-ob die Telefonnummer bereits bekannt ist.</value>
-  </data>
-  <data name="CBKontaktSucheHauptOrdner.ToolTip" xml:space="preserve">
-    <value>Um die Kontaktsuche zu beschleunigen, ist es von Vorteil nur 
-den Kontakthauptordner zu durchsuchen. Allerdings ist das nur 
-sinnvoll wenn nur Sie nur eine Datendatei (pst) verwenden, oder 
-die anderen keine Kontakte enthalten.
-</value>
-  </data>
   <data name="LTelNrMaske.ToolTip" xml:space="preserve">
     <value>Dieses Feld dient zur Anpassung der Telefonnummernformatierung. Folgende Elemente müssen enthalten sein:
 %L für die Landesvorwahl,
@@ -163,19 +151,15 @@ Geben Sie den Benutzername ein, der für die Anmeldung an der Fritz!Box erforder
 Anmeldung mit dem FRITZ!Box-Kennwort:
 Lassen Sie das Feld leer!</value>
   </data>
-  <data name="Label7.ToolTip" xml:space="preserve">
-    <value>Hier werden alle Kontakte gespeichert, die von diesem Addin automatisch erstellt werden. Dies kann durch
-die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journal.eintrag erstellt wird.</value>
-  </data>
-  <data name="TVOutlookContact.ToolTip" xml:space="preserve">
-    <value>Hier werden alle Kontakte gespeichert, die von diesem Addin automatisch erstellt werden. Dies kann durch
-die Rückwärtssuche geschehen, oder wenn ein Kontakt über den Anrufmonitor oder ein Journaleintrag erstellt wird.
-</value>
-  </data>
   <data name="CBAutoAnrList.ToolTip" xml:space="preserve">
     <value>Beim Start von Outlook , können Telefonate aus der Fritz!Box Anrufliste ausgewertet 
 werden. Dazu werden alle Telefonate, die zwischen dem Beenden und Start von Outlook
 stattgefunden haben,berücksichtigt.</value>
+  </data>
+  <data name="CBRWSIndex.ToolTip" xml:space="preserve">
+    <value>Die Ergebnisse der Rückwärtssuche können abgespeichert werden. Wenn eine Rückwärtssuche erfolgreich ist, 
+wird der ermittelte Kontakt abgespeichert. Bei der nächsten Suche wird zunächst geschaut, 
+ob die Telefonnummer bereits bekannt ist.</value>
   </data>
   <data name="RichTextBox1.Text" xml:space="preserve">
     <value>Haftungshinweis:

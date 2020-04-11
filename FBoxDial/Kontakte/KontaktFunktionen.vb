@@ -306,19 +306,19 @@ Friend Module KontaktFunktionen
 
         If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then
             Try
-                GetOutlookFolder = CType(ThisAddIn.POutookApplication.Session.GetFolderFromID(FolderID, StoreID), Outlook.MAPIFolder)
+                GetOutlookFolder = ThisAddIn.POutookApplication.Session.GetFolderFromID(FolderID, StoreID)
             Catch ex As Exception
                 NLogger.Error(ex)
             End Try
         End If
 
-        If GetOutlookFolder Is Nothing Then
-            GetOutlookFolder = P_DefContactFolder
-            FolderID = GetOutlookFolder.EntryID
-            StoreID = CType(GetOutlookFolder.Parent, Outlook.MAPIFolder).StoreID
-            XMLData.POptionen.PTVKontaktOrdnerEntryID = FolderID
-            XMLData.POptionen.PTVKontaktOrdnerStoreID = StoreID
-        End If
+        'If GetOutlookFolder Is Nothing Then
+        '    GetOutlookFolder = P_DefContactFolder
+        '    FolderID = GetOutlookFolder.EntryID
+        '    StoreID = CType(GetOutlookFolder.Parent, Outlook.MAPIFolder).StoreID
+        '    XMLData.POptionen.PTVKontaktOrdnerEntryID = FolderID
+        '    XMLData.POptionen.PTVKontaktOrdnerStoreID = StoreID
+        'End If
     End Function
     Friend Function GetKontaktTelNrList(ByRef olContact As Outlook.ContactItem) As List(Of Telefonnummer)
 
@@ -351,40 +351,51 @@ Friend Module KontaktFunktionen
             End If
         Next
     End Function
-    Friend Async Function ZähleOutlookKontakte() As Threading.Tasks.Task(Of Integer)
+    Friend Function ZähleOutlookKontakte() As Integer
+        'Friend Async Function ZähleOutlookKontakte() As Threading.Tasks.Task(Of Integer)
         Dim retval As Integer = 0
 
-        If XMLData.POptionen.PCBKontaktSucheHauptOrdner Then
-            retval = Await ZähleOutlookKontakte(P_DefContactFolder)
-        Else
-            For Each olStore As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
-                ' Exchange nicht zählen
-                'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-                retval += Await ZähleOutlookKontakte(olStore.GetRootFolder)
-                'End If
-            Next
-        End If
+        With XMLData.POptionen.IndizerteOrdner
+            If .OrdnerListe.Any Then
+                For Each Ordner As IndizerterOrdner In .OrdnerListe
+                    Dim olFolder As Outlook.MAPIFolder
+
+                    olFolder = GetOutlookFolder(Ordner.FolderID, Ordner.StoreID)
+                    retval += GetOutlookFolder(Ordner.FolderID, Ordner.StoreID).Items.Count
+
+                    olFolder.ReleaseComObject
+                Next
+            End If
+        End With
+
+        ' Rekursiv duch alle
+        'For Each olStore As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
+        '    ' Exchange nicht zählen
+        '    'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+        '    retval += Await ZähleOutlookKontakte(olStore.GetRootFolder)
+        '    'End If
+        'Next
         Return retval
     End Function
 
-    Private Async Function ZähleOutlookKontakte(ByVal Ordner As Outlook.MAPIFolder) As Threading.Tasks.Task(Of Integer)
-        Dim tmpAnzahl As Integer = 0
+    'Private Async Function ZähleOutlookKontakte(ByVal Ordner As Outlook.MAPIFolder) As Threading.Tasks.Task(Of Integer)
+    '    Dim tmpAnzahl As Integer = 0
 
-        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
-            tmpAnzahl = Ordner.Items.Count
-            NLogger.Debug("Zählen {0} - Kontakte {1} - {2}", Ordner.Name, Ordner.Items.Count, Ordner.Store.ExchangeStoreType)
-        End If
+    '    If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
+    '        tmpAnzahl = Ordner.Items.Count
+    '        NLogger.Debug("Zählen {0} - Kontakte {1} - {2}", Ordner.Name, Ordner.Items.Count, Ordner.Store.ExchangeStoreType)
+    '    End If
 
-        ' Unterordner werden rekursiv durchsucht
-        For Each olFolder As Outlook.MAPIFolder In Ordner.Folders
-            ' Exchange nicht zählen
-            'If olFolder.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-            tmpAnzahl += Await ZähleOutlookKontakte(olFolder)
-            'End If
-        Next
+    '    ' Unterordner werden rekursiv durchsucht
+    '    For Each olFolder As Outlook.MAPIFolder In Ordner.Folders
+    '        ' Exchange nicht zählen
+    '        'If olFolder.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+    '        tmpAnzahl += Await ZähleOutlookKontakte(olFolder)
+    '        'End If
+    '    Next
 
-        Return tmpAnzahl
-    End Function
+    '    Return tmpAnzahl
+    'End Function
 
     <Extension> Friend Function StoreID(ByVal olKontakt As Outlook.ContactItem) As String
         Return CType(olKontakt.Parent, Outlook.MAPIFolder).StoreID
@@ -644,6 +655,8 @@ Friend Class ContactSaved
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles Kontakt.Write
+        ' Prüfe ob der Kontakt in einem Indizierten Ordner liegt
+
         IndiziereKontakt(Kontakt)
     End Sub
 

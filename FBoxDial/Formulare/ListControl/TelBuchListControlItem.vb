@@ -66,11 +66,11 @@ Friend Class TelBuchListControlItem
         Refresh()
     End Sub
 
-    Private Sub TmrMouseLeave_Tick(sender As System.Object, e As EventArgs) Handles TmrMouseLeave.Tick
+    Private Sub TmrMouseLeave_Tick(sender As Object, e As EventArgs) Handles TmrMouseLeave.Tick
         Dim scrPT = Control.MousePosition
         Dim ctlPT As Point = Me.PointToClient(scrPT)
         '
-        If ctlPT.X.IsNegativ Or ctlPT.Y.IsNegativ Or ctlPT.X.IsLarger(Me.Width) Or ctlPT.Y.IsLarger(Me.Height) Then
+        If ctlPT.X.IsNegative Or ctlPT.Y.IsNegative Or ctlPT.X.IsLarger(Me.Width) Or ctlPT.Y.IsLarger(Me.Height) Then
             ' Stop timer
             TmrMouseLeave.Stop()
             BMouse = MouseCapture.Outside

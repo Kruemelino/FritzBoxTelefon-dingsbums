@@ -242,6 +242,11 @@
     <Compile Include="Formulare\FormElemente\FBoxDataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.Designer.vb">
+      <DependentUpon>OlOrdnerTreeNode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.vb" />
+    <Compile Include="Formulare\FormElemente\StringLogicalComparer.vb" />
     <Compile Include="Formulare\ListControl\TelBuchListControlItem.Designer.vb">
       <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
     </Compile>
@@ -313,7 +318,6 @@
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLTelefonie.vb" />
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
-    <Compile Include="Kontakte\Contacts.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
     <Compile Include="Kontakte\KontaktIndizierer.vb" />
     <Compile Include="Kontakte\KontaktNotiz.vb" />
@@ -328,6 +332,8 @@
     </Compile>
     <Compile Include="Nutzerdaten.vb" />
     <Compile Include="Optionen\DefaultWerte.vb" />
+    <Compile Include="Optionen\IndizerterOrdner.vb" />
+    <Compile Include="Optionen\IndizieOrdnerListe.vb" />
     <Compile Include="Optionen\Serializer.vb" />
     <Compile Include="Optionen\Optionen.vb" />
     <Compile Include="Optionen\OutlookXML.vb" />
@@ -417,7 +423,12 @@
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\CheckboxDisable_16x.png" />
+    <Content Include="Resources\CheckboxMix_16x.png" />
+    <Content Include="Resources\CheckboxUncheck_16x.png" />
+    <Content Include="Resources\CheckBox_16x.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

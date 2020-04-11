@@ -10,7 +10,9 @@ Public Class FormCfg
     Private FritzBoxDaten As FritzBoxData
 
     Private WithEvents BWIndexer As BackgroundWorker
-    Private WithEvents BWTreeView As BackgroundWorker
+
+    Private IndizierteOrdner As List(Of IndizerterOrdner)
+
     Public Sub New()
 
         ' Dieser Aufruf ist für den Designer erforderlich.
@@ -84,23 +86,15 @@ Public Class FormCfg
                 End If
 
             ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
-                If ctrl.Name.AreEqual(TVOutlookContact.Name) Then
-                    ' 03.04.2020 vorläufig deaktiviert
-
-
-                    '' Treeview für Kontaktordner
-                    '' Treeview zurücksetzen
-                    'With TVOutlookContact
-                    '    .Enabled = False
-                    '    If .Nodes.Count > 0 Then .Nodes.Clear()
-                    'End With
-                    '' Backgroundworker starten
-                    'BWTreeView = New BackgroundWorker
-                    'With BWTreeView
-                    '    .WorkerReportsProgress = False
-                    '    .RunWorkerAsync(True)
-                    'End With
-                End If
+                Select Case ctrl.Name
+                    Case TreeViewKontakte.Name
+                        ' lade die Liste der zu indizierenden Ordner
+                        If XMLData.POptionen.IndizerteOrdner Is Nothing Then XMLData.POptionen.IndizerteOrdner = New IndizieOrdnerListe
+                        If XMLData.POptionen.IndizerteOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.IndizerteOrdner.OrdnerListe = New List(Of IndizerterOrdner)
+                        ' Als Kopie
+                        IndizierteOrdner = New List(Of IndizerterOrdner)
+                        IndizierteOrdner.AddRange(XMLData.POptionen.IndizerteOrdner.OrdnerListe)
+                End Select
             End If
         Next
     End Sub
@@ -153,16 +147,25 @@ Public Class FormCfg
                 Next
 
             ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
-                If ctrl.Name.AreEqual(TVOutlookContact.Name) Then
-                    ' 03.04.2020 vorläufig deaktiviert
+                Select Case ctrl.Name
+                    Case TreeViewKontakte.Name
+                        ' Deindiziere die entfernen Ordner
+                        For Each Ordner As IndizerterOrdner In XMLData.POptionen.IndizerteOrdner.OrdnerListe.Except(IndizierteOrdner)
+                            ' Deindiziere den Ordner
+                            KontaktIndexer(GetOutlookFolder(Ordner.FolderID, Ordner.StoreID), False)
+                        Next
 
-                    'If TVOutlookContact.SelectedNode IsNot Nothing Then
-                    '    Dim tmpStr() As String = TVOutlookContact.SelectedNode.Tag.ToString.Split(";")
-                    '    XMLData.POptionen.PTVKontaktOrdnerEntryID = tmpStr(0)
-                    '    XMLData.POptionen.PTVKontaktOrdnerStoreID = tmpStr(1)
-                    'End If
+                        ' Deindiziere alle neu hinzugefügten Ordner
+                        For Each Ordner As IndizerterOrdner In IndizierteOrdner.Except(XMLData.POptionen.IndizerteOrdner.OrdnerListe)
+                            ' Indiziere den Ordner
+                            KontaktIndexer(GetOutlookFolder(Ordner.FolderID, Ordner.StoreID), True)
+                        Next
+                        ' Speicher die Liste der zu indizierenden Ordner. leere die alten Daten
+                        XMLData.POptionen.IndizerteOrdner.OrdnerListe.Clear()
+                        ' kopiere alle Einträge 
+                        XMLData.POptionen.IndizerteOrdner.OrdnerListe.AddRange(IndizierteOrdner)
+                End Select
 
-                End If
             ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then
                 If ctrl.Name.AreEqual(DGVTelList.Name) Then
                     ' Standard-Telefon ermitteln.
@@ -185,11 +188,13 @@ Public Class FormCfg
                                                                        BTestLogin.Click,
                                                                        BTelefonliste.Click,
                                                                        BReset.Click,
-                                                                       BIndizierungStart.Click,
-                                                                       BIndizierungAbbrechen.Click,
                                                                        BArbeitsverzeichnis.Click,
                                                                        BAbbruch.Click,
+                                                                       BKontOrdLaden.Click,
+                                                                       BIndizierungStart.Click,
+                                                                       BIndizierungAbbrechen.Click,
                                                                        BRWSTest.Click
+
         Select Case CType(sender, Button).Name
             Case BOK.Name, BApply.Name
                 ' Formulardaten in zurück in Properties
@@ -214,7 +219,7 @@ Public Class FormCfg
                 ' Formulardaten in Properties speichern
                 Speichern(Me)
                 ' Indizierung starten
-                StarteIndizierung()
+                StarteIndizierung(RadioButtonErstelle.Checked)
             Case BIndizierungAbbrechen.Name
                 ' Indizierung abbrechen
                 BWIndexer.CancelAsync()
@@ -230,6 +235,8 @@ Public Class FormCfg
                     If Not vCard.StartsWith(PDfltBegin_vCard) Then vCard = PRWSTestKeinEintrag
                     MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
                 End If
+            Case BKontOrdLaden.Name
+                KontaktOrdnerLaden()
         End Select
     End Sub
 
@@ -400,7 +407,8 @@ Public Class FormCfg
 #End Region
 
 #Region "Indizierung"
-    Private Sub StarteIndizierung()
+
+    Private Sub StarteIndizierung(ByVal erstellen As Boolean)
         BWIndexer = New BackgroundWorker
 
         ProgressBarIndex.Value = 0
@@ -411,14 +419,14 @@ Public Class FormCfg
         With BWIndexer
             .WorkerSupportsCancellation = True
             .WorkerReportsProgress = True
-            .RunWorkerAsync()
+            .RunWorkerAsync(erstellen)
         End With
     End Sub
 
-    Private Async Sub BWIndexer_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWIndexer.DoWork
-        Dim MaxValue As Integer = Await ZähleOutlookKontakte()
+    Private Sub BWIndexer_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWIndexer.DoWork
+        Dim MaxValue As Integer = ZähleOutlookKontakte()
 
-        Dim Value As Integer = If(RadioButtonErstelle.Checked, 0, MaxValue)
+        Dim Value As Integer = If(CBool(e.Argument), 0, MaxValue)
 
         If InvokeRequired Then
             ' Set Maximum Value
@@ -434,25 +442,32 @@ Public Class FormCfg
             SetProgressbar(Value)
         End If
 
-        If Me.CBKontaktSucheHauptOrdner.Checked Then
-            ' Indiziere rekursiv von dem Kontakthauptordner aus die Kontakte
-            KontaktIndexer(ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts), RadioButtonErstelle.Checked)
-        Else
-            KontaktIndexer(RadioButtonErstelle.Checked)
-        End If
-
+        KontaktIndexer(CBool(e.Argument))
     End Sub
+    Private Sub KontaktIndexer(ByVal Erstellen As Boolean)
 
+        With XMLData.POptionen.IndizerteOrdner
+            If .OrdnerListe.Any Then
+                For Each Ordner As IndizerterOrdner In .OrdnerListe
+                    Dim olFolder As Outlook.MAPIFolder
+
+                    olFolder = GetOutlookFolder(Ordner.FolderID, Ordner.StoreID)
+                    KontaktIndexer(olFolder, Erstellen)
+
+                    olFolder.ReleaseComObject
+                Next
+            End If
+        End With
+    End Sub
     Private Sub KontaktIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal Erstellen As Boolean)
 
-        Dim iOrdner As Integer    ' Zählvariable für den aktuellen Ordner
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
 
         NLogger.Debug("{0} - {1} - ", Ordner.Name, Ordner.DefaultItemType.ToString, Ordner.Store.DisplayName)
 
         ' Kein Indizieren von Exchange
         'If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
-        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And Not BWIndexer.CancellationPending Then
+        If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
             For Each item In Ordner.Items
                 ' nur Kontakte werden durchsucht
@@ -463,51 +478,94 @@ Public Class FormCfg
 
                     If Erstellen Then
                         IndiziereKontakt(aktKontakt)
-                        BWIndexer.ReportProgress(1)
+                        BWIndexer?.ReportProgress(1)
                     Else
                         DeIndiziereKontakt(aktKontakt)
-                        BWIndexer.ReportProgress(-1)
+                        BWIndexer?.ReportProgress(-1)
                     End If
 
-                    'aktKontakt.Save()
                     aktKontakt.Speichern
 
                     aktKontakt.ReleaseComObject
-
-                    If BWIndexer.CancellationPending Then Exit For
+                    If BWIndexer IsNot Nothing AndAlso BWIndexer.CancellationPending Then Exit For
                 Else
-                    BWIndexer.ReportProgress(1)
+                    BWIndexer?.ReportProgress(1)
                 End If
             Next
+
             If Not Erstellen Then
-                ' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
+                ' Entfernt alle Indizierungseinträge aus den Ordnern des Kontaktelementes.
                 DeIndizierungOrdner(Ordner)
             End If
         End If
 
-        ' Unterordner werden rekursiv durchsucht
-        iOrdner = 1
-        Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not BWIndexer.CancellationPending
-            KontaktIndexer(Ordner.Folders.Item(iOrdner), Erstellen)
-            iOrdner += 1
-        Loop
+    End Sub
 
-    End Sub
-    Private Sub KontaktIndexer(ByVal Erstellen As Boolean)
-        Dim iStore As Integer
-        Dim olStore As Outlook.Store = Nothing
-        ' Indiziere jeden Kontaktordner durch alle Stores rekursiv 
-        iStore = 1
-        Do While (iStore.IsLessOrEqual(ThisAddIn.POutookApplication.Session.Stores.Count)) And Not BWIndexer.CancellationPending
-            olStore = ThisAddIn.POutookApplication.Session.Stores.Item(iStore)
-            ' Kein Indizieren von Exchange
-            'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
-            KontaktIndexer(olStore.GetRootFolder, Erstellen)
-            'End If
-            iStore += 1
-        Loop
-        olStore.ReleaseComObject
-    End Sub
+    'Private Sub KontaktIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal Erstellen As Boolean)
+
+    '    Dim iOrdner As Integer    ' Zählvariable für den aktuellen Ordner
+    '    Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
+
+    '    NLogger.Debug("{0} - {1} - ", Ordner.Name, Ordner.DefaultItemType.ToString, Ordner.Store.DisplayName)
+
+    '    ' Kein Indizieren von Exchange
+    '    'If Ordner.Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange AndAlso
+    '    If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem And Not BWIndexer.CancellationPending Then
+
+    '        For Each item In Ordner.Items
+    '            ' nur Kontakte werden durchsucht
+    '            If TypeOf item Is Outlook.ContactItem Then
+    '                aktKontakt = CType(item, Outlook.ContactItem)
+
+    '                'NLogger.Debug("{0} ({1}): {2}", Ordner.Name, Ordner.Items.Count, aktKontakt.FullNameAndCompany)
+
+    '                If Erstellen Then
+    '                    IndiziereKontakt(aktKontakt)
+    '                    BWIndexer.ReportProgress(1)
+    '                Else
+    '                    DeIndiziereKontakt(aktKontakt)
+    '                    BWIndexer.ReportProgress(-1)
+    '                End If
+
+    '                'aktKontakt.Save()
+    '                aktKontakt.Speichern
+
+    '                aktKontakt.ReleaseComObject
+
+    '                If BWIndexer.CancellationPending Then Exit For
+    '            Else
+    '                BWIndexer.ReportProgress(1)
+    '            End If
+    '        Next
+    '        If Not Erstellen Then
+    '            ' Entfernt alle Indizierungseinträge aus den Ordnern aus einem Kontaktelement.
+    '            DeIndizierungOrdner(Ordner)
+    '        End If
+    '    End If
+
+    '    ' Unterordner werden rekursiv durchsucht
+    '    iOrdner = 1
+    '    Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) And Not BWIndexer.CancellationPending
+    '        KontaktIndexer(Ordner.Folders.Item(iOrdner), Erstellen)
+    '        iOrdner += 1
+    '    Loop
+
+    'End Sub
+    'Private Sub KontaktIndexer(ByVal Erstellen As Boolean)
+    '    Dim iStore As Integer
+    '    Dim olStore As Outlook.Store = Nothing
+    '    ' Indiziere jeden Kontaktordner durch alle Stores rekursiv 
+    '    iStore = 1
+    '    Do While (iStore.IsLessOrEqual(ThisAddIn.POutookApplication.Session.Stores.Count)) And Not BWIndexer.CancellationPending
+    '        olStore = ThisAddIn.POutookApplication.Session.Stores.Item(iStore)
+    '        ' Kein Indizieren von Exchange
+    '        'If olStore.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
+    '        KontaktIndexer(olStore.GetRootFolder, Erstellen)
+    '        'End If
+    '        iStore += 1
+    '    Loop
+    '    olStore.ReleaseComObject
+    'End Sub
     Private Sub BWIndexer_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles BWIndexer.ProgressChanged
         If InvokeRequired Then
             Dim D As New DelgSetProgressbarMax(AddressOf SetProgressbar)
@@ -530,12 +588,12 @@ Public Class FormCfg
 
     Private Sub SetProgressbar(ByVal Wert As Integer)
         ProgressBarIndex.Value += Wert
-        LabelAnzahl.Text = String.Format("Status: {0}/{1}", ProgressBarIndex.Value, ProgressBarIndex.Maximum)
+        LabelAnzahl.Text = $"Status: {ProgressBarIndex.Value}/{ProgressBarIndex.Maximum}"
     End Sub
 
     Private Sub SetProgressbarMax(ByVal Anzahl As Integer)
         ProgressBarIndex.Maximum = Anzahl
-        LabelAnzahl.Text = String.Format("Status: {0}/{1}", Anzahl, Anzahl)
+        LabelAnzahl.Text = $"Status: {Anzahl}/{Anzahl}"
 
         BIndizierungAbbrechen.Enabled = False
         BIndizierungStart.Enabled = True
@@ -545,63 +603,53 @@ Public Class FormCfg
 #End Region
 
 #Region "TreeView Outlook Kontaktordner"
-    ' 03.04.2020 vorläufig deaktiviert
-    'Private Sub DelSetTreeView()
-    '    If InvokeRequired Then
-    '        Dim D As New DelgSetValue(AddressOf DelSetTreeView)
-    '        Invoke(D)
-    '    Else
-    '        GetKontaktOrdnerInTreeView(TVOutlookContact)
-    '    End If
-    'End Sub
+    Private Sub KontaktOrdnerLaden()
+        If TreeViewKontakte.Nodes.Count.IsZero Then
+            ' Lade ImageList
+            TreeViewKontakte.ImageList = New ImageList
+            With TreeViewKontakte.ImageList.Images
+                .Add("Disabled", My.Resources.CheckboxDisable)
+                '.Add("Mix", My.Resources.CheckboxMix)
+                .Add("Checked", My.Resources.CheckBox)
+                .Add("Uncheck", My.Resources.CheckboxUncheck)
+            End With
 
-    'Private Sub BWTreeView_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWTreeView.DoWork
-    '    DelSetTreeView()
-    'End Sub
+            TreeViewKontakte.Nodes.Clear()
+            ' Lade Outlook Store
+            For Each Store As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
+                Dim olTreeNode As New OlOrdnerTreeNode With {.Text = $"{Store.GetRootFolder.Name} ({Store.ExchangeStoreType})", .OutlookStore = Store, .OutlookFolder = Store.GetRootFolder, .ImageKey = "Disabled"}
+                TreeViewKontakte.Nodes.Add(olTreeNode)
+            Next
+            ' Sortieren
+            TreeViewKontakte.Nodes.Sort(True, False)
+        End If
+    End Sub
 
-    'Private Sub BWTreeView_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWTreeView.RunWorkerCompleted
-    '    With TVOutlookContact
-    '        Dim tmpNode As TreeNode()
-    '        tmpNode = .Nodes.Find(XMLData.POptionen.PTVKontaktOrdnerEntryID & ";" & XMLData.POptionen.PTVKontaktOrdnerStoreID, True)
-    '        If Not tmpNode.Length = 0 Then
-    '            .SelectedNode = tmpNode(0)
-    '            .SelectedNode.Checked = True
-    '        End If
-    '        .ExpandAll()
-    '        .Enabled = True
-    '    End With
-    'End Sub
+    Private Sub TreeViewKontakte_NodeMouseClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TreeViewKontakte.NodeMouseClick
 
-    'Private Sub TVOutlookContact_NodeMouseClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TVOutlookContact.NodeMouseClick
-    '    If e.Node.Checked Then
-    '        With TVOutlookContact
-    '            UnCheckAllNodes(TVOutlookContact.Nodes(0))
-    '            If e.Node IsNot TVOutlookContact.Nodes(0) Then
-    '                e.Node.Checked = True
-    '            End If
-    '        End With
-    '    End If
-    'End Sub
+        Dim olBaseTreeNode As OlOrdnerTreeNode = CType(e.Node, OlOrdnerTreeNode)
+        With olBaseTreeNode
 
-    'Private Sub UnCheckAllNodes(ByVal TN As TreeNode)
-    '    TN.Checked = False
-    '    For Each sNode As TreeNode In TN.Nodes
-    '        UnCheckAllNodes(sNode)
-    '    Next
-    'End Sub
+            If .TreeView.HitTest(e.Location).Location = TreeViewHitTestLocations.Image Then
 
-    'Private Sub CheckedChanged(sender As Object, e As EventArgs) Handles CBTelNrGruppieren.CheckedChanged, CBCloseWClient.CheckedChanged, CBUseAnrMon.CheckedChanged
-    '    Select Case CType(sender, CheckBox).Name
-    '        Case CBTelNrGruppieren.Name
-    '            TBTelNrMaske.Enabled = CBTelNrGruppieren.Checked
-    '            LTelNrMaske.Enabled = CBTelNrGruppieren.Checked
-    '        Case CBCloseWClient.Name
-    '            TBWClientEnblDauer.Enabled = CBCloseWClient.Checked
-    '            LWClientEnblDauer.Enabled = CBCloseWClient.Checked
-    '        Case CBUseAnrMon.Name
-    '            PanelAnrMon.Enabled = CBUseAnrMon.Checked
-    '    End Select
-    'End Sub
+                If .OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+                    If .XMLEintrag Is Nothing Then
+                        .XMLEintrag = New IndizerterOrdner With {.Name = olBaseTreeNode.OutlookFolder.Name, .FolderID = olBaseTreeNode.OutlookFolder.EntryID, .StoreID = olBaseTreeNode.OutlookFolder.StoreID}
+                        IndizierteOrdner.Add(.XMLEintrag)
+                    Else
+                        .XMLEintrag = Nothing
+                        IndizierteOrdner.Remove(IndizierteOrdner.Find(Function(Ordner) Ordner.FolderID.AreEqual(.OutlookFolder.EntryID) And Ordner.StoreID.AreEqual(.OutlookStore.StoreID)))
+                    End If
+                End If
+
+                ' ImageKey setzen
+                .SetImageKey()
+            End If
+            ' Lade alle direkten Unterordner
+            .Erweitern()
+        End With
+    End Sub
+
 #End Region
 End Class
 

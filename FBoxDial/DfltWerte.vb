@@ -200,15 +200,17 @@ Public NotInheritable Class DfltWerteAllgemein
 
     Friend Shared ReadOnly Property DfltErrorvalue As Integer = -2147221233
 
-    Private Shared ReadOnly Property PDfltSchema As String = "http://schemas.microsoft.com/mapi/string/{FFF40745-D92F-4C11-9E14-92701F001EB3}/"
+    Private Shared ReadOnly Property PDfltDASLSchema As String = "http://schemas.microsoft.com/mapi/string/{FFF40745-D92F-4C11-9E14-92701F001EB3}/"
 
-    Private Shared ReadOnly Property PDfltSchemaUserProperties As String = "http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/"
+    Private Shared ReadOnly Property PDfltDASLSchemaUserProperties As String = "http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/"
+
+
 
     Friend Shared ReadOnly Property DASLTagJournal As Object()
         Get
             Dim tmpDASLTag(1) As Object
-            tmpDASLTag(0) = PDfltSchema & "FBDB-ContactEntryID"
-            tmpDASLTag(1) = PDfltSchema & "FBDB-ContactStoreID"
+            tmpDASLTag(0) = PDfltDASLSchema & "FBDB-ContactEntryID"
+            tmpDASLTag(1) = PDfltDASLSchema & "FBDB-ContactStoreID"
             Return tmpDASLTag
         End Get
     End Property
@@ -221,25 +223,25 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PDfltUserProperties() As ReadOnlyCollection(Of String)
         Get
             Dim tmp As New List(Of String) From {
-                PDfltSchemaUserProperties & "FBDB-AssistantTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-BusinessTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-Business2TelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-CallbackTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-CarTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-CompanyMainTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-HomeTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-Home2TelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-ISDNNumber",
-                PDfltSchemaUserProperties & "FBDB-MobileTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-OtherTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-PagerNumber",
-                PDfltSchemaUserProperties & "FBDB-PrimaryTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-RadioTelephoneNumber",
-                PDfltSchemaUserProperties & "FBDB-BusinessFaxNumber",
-                PDfltSchemaUserProperties & "FBDB-HomeFaxNumber",
-                PDfltSchemaUserProperties & "FBDB-OtherFaxNumber",
-                PDfltSchemaUserProperties & "FBDB-Telex",
-                PDfltSchemaUserProperties & "FBDB-TTYTDDTelephoneNumber"
+                PDfltDASLSchemaUserProperties & "FBDB-AssistantTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-BusinessTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-Business2TelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-CallbackTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-CarTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-CompanyMainTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-HomeTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-Home2TelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-ISDNNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-MobileTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-OtherTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-PagerNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-PrimaryTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-RadioTelephoneNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-BusinessFaxNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-HomeFaxNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-OtherFaxNumber",
+                PDfltDASLSchemaUserProperties & "FBDB-Telex",
+                PDfltDASLSchemaUserProperties & "FBDB-TTYTDDTelephoneNumber"
             }
 
             Return New ReadOnlyCollection(Of String)(tmp)
@@ -277,25 +279,25 @@ Public NotInheritable Class DfltWerteAllgemein
     Friend Shared ReadOnly Property DASLTagTelNrIndex As Object()
         Get
             Dim tmpDASLTag(18) As Object
-            tmpDASLTag(0) = PDfltSchema & "FBDB-AssistantTelephoneNumber"
-            tmpDASLTag(1) = PDfltSchema & "FBDB-BusinessTelephoneNumber"
-            tmpDASLTag(2) = PDfltSchema & "FBDB-Business2TelephoneNumber"
-            tmpDASLTag(3) = PDfltSchema & "FBDB-CallbackTelephoneNumber"
-            tmpDASLTag(4) = PDfltSchema & "FBDB-CarTelephoneNumber"
-            tmpDASLTag(5) = PDfltSchema & "FBDB-CompanyMainTelephoneNumber"
-            tmpDASLTag(6) = PDfltSchema & "FBDB-HomeTelephoneNumber"
-            tmpDASLTag(7) = PDfltSchema & "FBDB-Home2TelephoneNumber"
-            tmpDASLTag(8) = PDfltSchema & "FBDB-ISDNNumber"
-            tmpDASLTag(9) = PDfltSchema & "FBDB-MobileTelephoneNumber"
-            tmpDASLTag(10) = PDfltSchema & "FBDB-OtherTelephoneNumber"
-            tmpDASLTag(11) = PDfltSchema & "FBDB-PagerNumber"
-            tmpDASLTag(12) = PDfltSchema & "FBDB-PrimaryTelephoneNumber"
-            tmpDASLTag(13) = PDfltSchema & "FBDB-RadioTelephoneNumber"
-            tmpDASLTag(14) = PDfltSchema & "FBDB-BusinessFaxNumber"
-            tmpDASLTag(15) = PDfltSchema & "FBDB-HomeFaxNumber"
-            tmpDASLTag(16) = PDfltSchema & "FBDB-OtherFaxNumber"
-            tmpDASLTag(17) = PDfltSchema & "FBDB-Telex"
-            tmpDASLTag(18) = PDfltSchema & "FBDB-TTYTDDTelephoneNumber"
+            tmpDASLTag(0) = PDfltDASLSchema & "FBDB-AssistantTelephoneNumber"
+            tmpDASLTag(1) = PDfltDASLSchema & "FBDB-BusinessTelephoneNumber"
+            tmpDASLTag(2) = PDfltDASLSchema & "FBDB-Business2TelephoneNumber"
+            tmpDASLTag(3) = PDfltDASLSchema & "FBDB-CallbackTelephoneNumber"
+            tmpDASLTag(4) = PDfltDASLSchema & "FBDB-CarTelephoneNumber"
+            tmpDASLTag(5) = PDfltDASLSchema & "FBDB-CompanyMainTelephoneNumber"
+            tmpDASLTag(6) = PDfltDASLSchema & "FBDB-HomeTelephoneNumber"
+            tmpDASLTag(7) = PDfltDASLSchema & "FBDB-Home2TelephoneNumber"
+            tmpDASLTag(8) = PDfltDASLSchema & "FBDB-ISDNNumber"
+            tmpDASLTag(9) = PDfltDASLSchema & "FBDB-MobileTelephoneNumber"
+            tmpDASLTag(10) = PDfltDASLSchema & "FBDB-OtherTelephoneNumber"
+            tmpDASLTag(11) = PDfltDASLSchema & "FBDB-PagerNumber"
+            tmpDASLTag(12) = PDfltDASLSchema & "FBDB-PrimaryTelephoneNumber"
+            tmpDASLTag(13) = PDfltDASLSchema & "FBDB-RadioTelephoneNumber"
+            tmpDASLTag(14) = PDfltDASLSchema & "FBDB-BusinessFaxNumber"
+            tmpDASLTag(15) = PDfltDASLSchema & "FBDB-HomeFaxNumber"
+            tmpDASLTag(16) = PDfltDASLSchema & "FBDB-OtherFaxNumber"
+            tmpDASLTag(17) = PDfltDASLSchema & "FBDB-Telex"
+            tmpDASLTag(18) = PDfltDASLSchema & "FBDB-TTYTDDTelephoneNumber"
             Return tmpDASLTag
         End Get
     End Property
