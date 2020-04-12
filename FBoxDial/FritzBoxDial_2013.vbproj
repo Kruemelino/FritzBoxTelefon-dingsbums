@@ -228,6 +228,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Anrufmonitor\FormAnrMon.vb" />
+    <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Formulare\formAnrList.designer.vb">
       <DependentUpon>formAnrList.vb</DependentUpon>
     </Compile>

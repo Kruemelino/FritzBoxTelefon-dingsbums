@@ -214,39 +214,61 @@ Friend Module KontaktSucher
 #End Region
 
 #Region "Absendersuche E-Mail"
+
     ''' <summary>
-    ''' Startet die Kontaktsuche mit einer E-Mail.
+    ''' Funktion die die Suche mit einer E-Mail durchführt.
     ''' </summary>
-    ''' <param name="EMailAdresse">E-Mail, die als Suchkriterium verwendet werden soll.</param>
-    ''' <returns></returns>
-    Friend Function KontaktSuche(ByVal EMailAdresse As String) As Outlook.ContactItem
-        If EMailAdresse.IsNotStringEmpty Then
-            Return FindeAbsenderKontakt(EMailAdresse)
+    ''' <param name="EMail">Mail-Element, die als Suchkriterium verwendet wird.</param>
+    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
+    Friend Function KontaktSuche(ByVal EMail As Outlook.MailItem) As Outlook.ContactItem
+
+        Dim SMTPAdresse As String = GetSenderSMTPAddress(EMail)
+
+        If SMTPAdresse.IsNotStringEmpty Then
+            ' Empfänger generieren
+            With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
+                .Resolve()
+                With .AddressEntry
+                    If .GetContact() IsNot Nothing Then
+                        Return .GetContact()
+                    ElseIf .GetExchangeUser IsNot Nothing Then
+                        Return .GetExchangeUser.GetContact()
+                    Else
+                        Return Nothing
+                    End If
+                End With
+            End With
         Else
             Return Nothing
         End If
-
     End Function
 
-
     ''' <summary>
-    ''' Funktion die die Suche mit einer E-Mail-Adresse durchführt.
+    ''' Funktion die die Suche mit einer Kontaktkarte durchführt.
     ''' </summary>
-    ''' <param name="EMailAdresse">E-Mail-Adresse, die als Suchkriterium verwendet wird.</param>
+    ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
     ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    Private Function FindeAbsenderKontakt(ByVal EMailAdresse As String) As Outlook.ContactItem
+    Friend Function KontaktSuche(ByVal Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ContactItem
 
-        Dim olKontakt As Outlook.ContactItem = Nothing
+        Dim SMTPAdresse As String = GetSenderSMTPAddress(Kontaktkarte)
 
-        With ThisAddIn.POutookApplication.Session.CreateRecipient(EMailAdresse)
-            .Resolve()
-            If .AddressEntry.GetContact() IsNot Nothing Then
-                olKontakt = .AddressEntry.GetContact()
-            ElseIf .AddressEntry.GetExchangeUser IsNot Nothing Then
-                olKontakt = .AddressEntry.GetExchangeUser.GetContact()
-            End If
-        End With
-        Return olKontakt
+        If SMTPAdresse.IsNotStringEmpty Then
+            ' Empfänger generieren
+            With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
+                .Resolve()
+                With .AddressEntry
+                    If .GetContact() IsNot Nothing Then
+                        Return .GetContact()
+                    ElseIf .GetExchangeUser IsNot Nothing Then
+                        Return .GetExchangeUser.GetContact()
+                    Else
+                        Return Nothing
+                    End If
+                End With
+            End With
+        Else
+            Return Nothing
+        End If
     End Function
 #End Region
 

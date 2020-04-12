@@ -204,7 +204,7 @@ Public Module Extensions
         Return Not Str1.IsStringNothingOrEmpty
     End Function
     <Extension> Public Function IsErrorString(ByVal Str1 As String) As Boolean
-        Return Str1.AreEqual(PDfltStrErrorMinusOne) Or Str1.AreEqual(PDfltStrErrorMinusTwo)
+        Return Str1.AreEqual(PDfltStrErrorMinusOne)
     End Function
     <Extension> Public Function IsNotErrorString(ByVal Str1 As String) As Boolean
         Return Not Str1.IsErrorString
@@ -214,9 +214,6 @@ Public Module Extensions
     End Function
     <Extension> Public Function IsRegExMatch(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As Boolean
         Return Regex.Match(str1, pattern, RegOpt).Success
-    End Function
-    <Extension> Public Function Verkette(ByVal str1 As String, ByVal str2 As String) As String
-        Return String.Concat(str1, str2)
     End Function
     <Extension> Public Function Left(ByVal str1 As String, ByVal iLength As Integer) As String
         Return Strings.Left(str1, iLength)

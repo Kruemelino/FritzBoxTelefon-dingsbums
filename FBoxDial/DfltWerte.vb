@@ -23,11 +23,6 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PDfltIntErrorMinusOne() As Integer = -1
 
     ''' <summary>
-    ''' -2 als String
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltStrErrorMinusTwo() As String = "-2"
-
-    ''' <summary>
     ''' vbCrLf
     ''' </summary>
     Public Shared ReadOnly Property PDflt1NeueZeile() As String = vbCrLf
@@ -42,55 +37,50 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     Public Shared ReadOnly Property PDfltStringUnbekannt() As String = "unbekannt"
 
-    ''' <summary>
-    ''' Der Zahlenwert NULL <code>"0"</code> als String.
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltStringNull() As String = "0"
-
-    ''' <summary>
-    ''' 0000000000000000
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltSessionID() As String = "0000000000000000"
+    '''' <summary>
+    '''' 0000000000000000
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltSessionID() As String = "0000000000000000"
 
     ''' <summary>
     ''' Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)
     ''' </summary>
     Public Shared ReadOnly Property PDfltHeader_UserAgent() As String = "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
 
-    ''' <summary>
-    ''' application/x-www-form-urlencoded
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltHeader_ContentType() As String = "application/x-www-form-urlencoded"
+    '''' <summary>
+    '''' application/x-www-form-urlencoded
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltHeader_ContentType() As String = "application/x-www-form-urlencoded"
 
     ''' <summary>
     ''' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
     ''' </summary>
     Public Shared ReadOnly Property PDfltHeader_Accept() As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
-    ''' <summary>
-    ''' 3000
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltReStartIntervall() As Integer = 2000
+    '''' <summary>
+    '''' 3000
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltReStartIntervall() As Integer = 2000
 
-    ''' <summary>
-    ''' 15
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltTryMaxRestart() As Integer = 15
+    '''' <summary>
+    '''' 15
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltTryMaxRestart() As Integer = 15
 
-    ''' <summary>
-    ''' [-&gt;]
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltAnrMonDirection_Call() As String = "[->]"
+    '''' <summary>
+    '''' [-&gt;]
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltAnrMonDirection_Call() As String = "[->]"
 
-    ''' <summary>
-    ''' [&lt;-]
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltAnrMonDirection_Ring() As String = "[<-]"
+    '''' <summary>
+    '''' [&lt;-]
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltAnrMonDirection_Ring() As String = "[<-]"
 
-    ''' <summary>
-    ''' [&lt;&gt;]
-    ''' </summary>
-    Public Shared ReadOnly Property PDfltAnrMonDirection_Default() As String = "[<>]"
+    '''' <summary>
+    '''' [&lt;&gt;]
+    '''' </summary>
+    'Public Shared ReadOnly Property PDfltAnrMonDirection_Default() As String = "[<>]"
 
     ''' <summary>
     ''' FBDB-AnrMonDirection
@@ -158,7 +148,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <value>FritzOutlook.xml</value>
     ''' <returns>FritzOutlook.xml</returns>
     ''' <remarks>Wird mit "PDfltAddin_KurzName" erstellt.</remarks>
-    Public Shared ReadOnly Property PDfltConfig_FileName() As String = PDfltAddin_KurzName & ".xml"
+    Public Shared ReadOnly Property PDfltConfig_FileName() As String = $"{PDfltAddin_KurzName}.xml"
 
     ''' <summary>
     ''' FritzOutlook.log
@@ -166,7 +156,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <value>FritzOutlook.log</value>
     ''' <returns>FritzOutlook.log</returns>
     ''' <remarks>Wird mit "PDfltAddin_KurzName" erstellt.</remarks>
-    Public Shared ReadOnly Property PDfltLog_FileName() As String = PDfltAddin_KurzName & ".log"
+    Public Shared ReadOnly Property PDfltLog_FileName() As String = $"{PDfltAddin_KurzName}.log"
 
     ''' <summary>
     ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}
@@ -175,24 +165,11 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PDfltNLog_LayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}"
 
     ''' <summary>
-    ''' Gibt den Zeitraum in MINUTEN an, nachdem geprüft werden soll, ob der Anrufmonitor noch aktiv ist. 
-    ''' </summary>
-    ''' <value>Integer</value>
-    ''' <returns>Intervall in MINUTEN</returns>
-    Public Shared ReadOnly Property PDfltCheckAnrMonIntervall() As Integer = 1
-
-    ''' <summary>
     ''' Gibt den default Dialport für Mobilgeräte an. 
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>99</returns>
     Public Shared ReadOnly Property PDfltMobilDialPort() As Integer = 99
-
-    ''' <summary>
-    ''' Der Offset der bei der Auswertung der Anrufliste der AnrufID gegeben wird
-    ''' </summary>
-    ''' <value>100</value>
-    Public Shared ReadOnly Property PDfltAnrListIDOffset() As Integer = 100
 
     Public Shared ReadOnly Property PDfltDirectorySeparatorChar() As String = IO.Path.DirectorySeparatorChar
 
@@ -204,7 +181,7 @@ Public NotInheritable Class DfltWerteAllgemein
 
     Private Shared ReadOnly Property PDfltDASLSchemaUserProperties As String = "http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/"
 
-
+    Friend Shared ReadOnly Property PDfltDASLSMTPAdress As String = "http://schemas.microsoft.com/mapi/proptag/0x39FE001E"
 
     Friend Shared ReadOnly Property DASLTagJournal As Object()
         Get
@@ -330,18 +307,11 @@ Public NotInheritable Class DfltWerteAllgemein
         End Get
     End Property
 
-    ''' <summary>
-    ''' Keine Ahnung wozu? FBDB-Save
-    ''' </summary>
-    ''' <returns></returns>
-    Public Shared ReadOnly Property PDfltUserPropertyIndex As String = "FBDB-Save"
-
-#Region "Journal"
-    Public Shared ReadOnly Property PDfltJournal_Text_Eingehend As String = "Eingehender Anruf von "
-    Public Shared ReadOnly Property PDfltJournal_Text_Ausgehend As String = "Ausgehender Anruf zu "
-    Public Shared ReadOnly Property PDfltJournal_Text_Verpasst As String = "Verpasster Anruf von "
-    Public Shared ReadOnly Property PDfltJournal_Text_NichtErfolgreich As String = "Nicht erfolgreicher Anruf zu "
-#End Region
+    '''' <summary>
+    '''' Keine Ahnung wozu? FBDB-Save
+    '''' </summary>
+    '''' <returns></returns>
+    'Public Shared ReadOnly Property PDfltUserPropertyIndex As String = "FBDB-Save"
 
 #End Region
 
@@ -379,10 +349,10 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Anruf: <paramref name="Kontakt"/>
     ''' </summary>
-    ''' <param name="Kontakt">Die Kontaktdaten des anzurzfenden Kontaktes</param>
+    ''' <param name="Kontakt">Die Kontaktdaten des anzurufenden Kontaktes</param>
     Public Shared ReadOnly Property PWählClientFormText(ByVal Kontakt As String) As String
         Get
-            Return String.Format("Anruf: {0}", Kontakt)
+            Return $"Anruf: {Kontakt}"
         End Get
     End Property
 
@@ -392,7 +362,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="EMailAdresse">Die Adresse der ausgewählten E-Mail</param>
     Public Shared ReadOnly Property PWählClientEMailunbekannt(ByVal EMailAdresse As String) As String
         Get
-            Return String.Format("Es ist kein Kontakt mit der E-Mail-Adresse {0} vorhanden!", EMailAdresse)
+            Return $"Es ist kein Kontakt mit der E-Mail-Adresse {EMailAdresse} vorhanden!"
         End Get
     End Property
 
@@ -424,7 +394,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Abgebrochen
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientDialHangUp As String = String.Format("Abgebrochen", PDflt1NeueZeile)
+    Public Shared ReadOnly Property PWählClientDialHangUp As String = $"Abgebrochen{PDflt1NeueZeile}"
 
     ''' <summary>
     ''' Dialcode: <paramref name="DialCode"/>>
@@ -432,7 +402,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="DialCode"></param>
     Public Shared ReadOnly Property PWählClientStatusWählClient(ByVal DialCode As String) As String
         Get
-            Return String.Format("Dialcode: {0}", DialCode)
+            Return $"Dialcode: {DialCode}"
         End Get
     End Property
 
@@ -458,19 +428,19 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="StrTelNr"></param>
     Public Shared ReadOnly Property PWählClientStatusTelNrAuswahl(ByVal StrTelNr As String) As String
         Get
-            Return String.Format("Ausgewählt: {0}", StrTelNr)
+            Return $"Ausgewählt: {StrTelNr}"
         End Get
     End Property
 
     ''' <summary>
     ''' "Anruf wird vorbereitet...
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusVorbereitung As String = String.Format("Anruf wird vorbereitet...", PDflt1NeueZeile)
+    Public Shared ReadOnly Property PWählClientStatusVorbereitung As String = $"Anruf wird vorbereitet...{PDflt1NeueZeile}"
 
     ''' <summary>
     ''' 
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusAbbruch As String = String.Format("Abbruch wird vorbereitet...", PDflt1NeueZeile)
+    Public Shared ReadOnly Property PWählClientStatusAbbruch As String = $"Abbruch wird vorbereitet...{PDflt1NeueZeile}"
 
     ''' <summary>
     ''' <paramref name="Sender"/>: <paramref name="Meldung"/> <paramref name="Wert"/>
@@ -480,7 +450,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="Wert">Ein gesetzer Wert</param>
     Public Shared ReadOnly Property PWählClientDialStatus(ByVal Sender As String, ByVal Meldung As String, ByVal Wert As String) As String
         Get
-            Return String.Format("{0}: {1} {2}", Sender, Meldung, Wert)
+            Return $"{Sender}: {Meldung} {Wert}"
         End Get
     End Property
 
@@ -498,7 +468,7 @@ Public NotInheritable Class DfltWerteAllgemein
 #Region "Literale Rückwärtssuche"
     Public Shared ReadOnly Property PRWSTest(ByVal TelNr As String, ByVal Ergebnis As String) As String
         Get
-            Return String.Format("Die Rückwärtssuche mit der Nummer {0} brachte folgendes Ergebnis:{1}{2}", TelNr, PDflt2NeueZeile, Ergebnis)
+            Return $"Die Rückwärtssuche mit der Nummer {TelNr} brachte folgendes Ergebnis:{PDflt2NeueZeile}{Ergebnis}"
         End Get
     End Property
     Public Shared ReadOnly Property PRWSTestKeinEintrag() As String
@@ -509,18 +479,18 @@ Public NotInheritable Class DfltWerteAllgemein
 
 #End Region
 
-#Region "Warnungen"
+#Region "Literale Warnungen"
     ''' <summary>
     ''' Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.
     ''' In der Fritz!Box:
     ''' System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz
     ''' Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.
     ''' </summary>
-    Public Shared ReadOnly Property PWarnung2FA As String = String.Format("Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.{0}In der Fritz!Box:{1}System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz{1}Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'", PDflt2NeueZeile, PDflt1NeueZeile)
+    Public Shared ReadOnly Property PWarnung2FA As String = $"Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.{PDflt2NeueZeile}In der Fritz!Box:{PDflt1NeueZeile}System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz{PDflt1NeueZeile}Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'"
 
 #End Region
 
-#Region "Journal"
+#Region "Literale Journal"
     ''' <summary>
     ''' FritzBox Anrufmonitor
     ''' </summary>
@@ -566,7 +536,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
     Public Shared ReadOnly Property PDfltJournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean, ByVal vCard As String) As String
         Get
-            Return String.Format("{5} {2}{0}Status: {3}angenommen{1}{4}", PDflt1NeueZeile, PDflt2NeueZeile, TelNr, If(Angenommen, PDfltStringEmpty, "nicht "), vCard, PDfltJournalBodyStart)
+            Return $"{PDfltJournalBodyStart} {TelNr}{PDflt1NeueZeile}Status: {If(Angenommen, PDfltStringEmpty, "nicht ")}angenommen{PDflt2NeueZeile}{vCard}"
         End Get
     End Property
 #End Region

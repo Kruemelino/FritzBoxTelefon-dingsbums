@@ -11,7 +11,6 @@ Public Class IndizieOrdnerListe
     End Sub
 
     Friend Function Contains(ByVal StoreID As String, ByVal FolderID As String) As Boolean
-
         Return GetFolder(StoreID, FolderID) IsNot Nothing
     End Function
 

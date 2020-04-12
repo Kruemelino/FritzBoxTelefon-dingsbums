@@ -155,7 +155,12 @@ Public Class Telefonnummer
                 If tmpLKZ IsNot Nothing Then
                     Landeskennzahl = tmpLKZ.Landeskennzahl
                 Else
-                    Landeskennzahl = PDfltStringEmpty
+                    ' Hier Fehler 12.04.2020
+                    ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt. 
+                    Landeskennzahl = XMLData.POptionen.PTBLandesKZ
+                    'Landeskennzahl = PDfltStringEmpty
+                    ' Wähle die LKZ für das Default-Land aus, damit die Routine die Ortskennzahl ermitteln kann
+                    tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
                 End If
 
             Else
@@ -165,14 +170,14 @@ Public Class Telefonnummer
             End If
 
             ' Einwahl: Landesvorwahl am Anfang entfernen
-            Einwahl = TelNr.RegExReplace(String.Concat("^", PDfltPreLandesKZ & Landeskennzahl, "?"), PDfltStringEmpty)
+            Einwahl = TelNr.RegExReplace($"^{PDfltPreLandesKZ}{Landeskennzahl}?", PDfltStringEmpty)
 
             ' Extrahiere die Ortsvorwahl, wenn die Telefonnummer mit einer Landesvorwahl beginnt, oder einer führenden Null (Amt)
             If TelNr.StartsWith(PDfltPreLandesKZ) Or TelNr.StartsWith(PDfltAmt) Then
 
                 i = 0
                 If TelNr.StartsWith("0") Then i = 1
-                If TelNr.StartsWith(PDfltPreLandesKZ & Landeskennzahl) Then i = (PDfltPreLandesKZ & Landeskennzahl).Length
+                If TelNr.StartsWith($"{PDfltPreLandesKZ}{Landeskennzahl}") Then i = (PDfltPreLandesKZ & Landeskennzahl).Length
 
                 j = TelNr.Length - i
                 Do
@@ -190,12 +195,12 @@ Public Class Telefonnummer
                 ' es handelt sich vermutlich um eine Nummer im eigenen Ortsnetz
                 Ortskennzahl = XMLData.POptionen.PTBOrtsKZ
             End If
-            Einwahl = Einwahl.RegExReplace(String.Concat("0?", Ortskennzahl), PDfltStringEmpty)
+            Einwahl = Einwahl.RegExReplace($"0?{Ortskennzahl}", PDfltStringEmpty)
             ' Suche eine Durchwahl
             If Nummer.Contains("-") Then
                 Durchwahl = Nummer.RegExReplace("^.+\-+ *", PDfltStringEmpty).Trim()
                 ' Einwahl: Druchwahl am Ende entfernen
-                Einwahl = Einwahl.RegExReplace(String.Concat(Durchwahl, "$"), PDfltStringEmpty)
+                Einwahl = Einwahl.RegExReplace($"{Durchwahl}$", PDfltStringEmpty)
             Else
                 Durchwahl = PDfltStringEmpty
             End If
@@ -266,7 +271,7 @@ Public Class Telefonnummer
                     ' Keine Landesvorwahl ausgeben
                     tmpLandesvorwahl = PDfltStringEmpty
                     ' Ortsvorwahl mit führender Null ausgeben
-                    tmpOrtsvorwahl = "0".Verkette(tmpOrtsvorwahl)
+                    tmpOrtsvorwahl = $"0{tmpOrtsvorwahl}"
                 End If
             Else
                 ' Wenn die Landeskennzahl nicht der hinterlegten Kennzahl entspricht: Ausland
@@ -295,7 +300,7 @@ Public Class Telefonnummer
                         End If
 
                     Case "39" ' Italen: Ortsvorwahl ist immer mitzuwählen
-                        tmpOrtsvorwahl = If(Ortskennzahl.StartsWith("0"), Ortskennzahl, "0".Verkette(Ortskennzahl))
+                        tmpOrtsvorwahl = If(Ortskennzahl.StartsWith("0"), Ortskennzahl, $"0{Ortskennzahl}")
                     Case Else
                 End Select
             End If
@@ -309,7 +314,7 @@ Public Class Telefonnummer
             End If
 
             ' Füge das + bei Landvoran
-            If tmpLandesvorwahl.IsNotStringEmpty Then tmpLandesvorwahl = "+".Verkette(tmpLandesvorwahl)
+            If tmpLandesvorwahl.IsNotStringEmpty Then tmpLandesvorwahl = $"+{tmpLandesvorwahl}"
 
             'Finales Zusammenstellen
             Return FormatTelNr.Replace("%L", tmpLandesvorwahl).Replace("%O", Gruppiere(tmpOrtsvorwahl, tmpGruppieren)).Replace("%N", Gruppiere(Einwahl, tmpGruppieren)).Replace("%D", Gruppiere(Durchwahl, tmpGruppieren)).Trim

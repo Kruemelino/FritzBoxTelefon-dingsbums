@@ -216,17 +216,13 @@ Public Class FritzBoxWählClient
     ''' </summary>
     Friend Overloads Sub WählboxStart(ByVal ContactCard As Microsoft.Office.Core.IMsoContactCard)
         Dim aktKontakt As Outlook.ContactItem
-        Dim EMail As String = GetSmtpAddress(ContactCard)
 
-        If EMail.IsNotStringEmpty Then
+        aktKontakt = KontaktSuche(ContactCard)
 
-            aktKontakt = KontaktSuche(EMail)
-
-            If aktKontakt IsNot Nothing Then
-                Wählbox(aktKontakt, Nothing, False)
-            Else
-                MsgBox(PWählClientEMailunbekannt(EMail), MsgBoxStyle.Information, "WählboxStart")
-            End If
+        If aktKontakt IsNot Nothing Then
+            Wählbox(aktKontakt, Nothing, False)
+        Else
+            MsgBox(PWählClientEMailunbekannt(ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
         End If
 
         ContactCard.ReleaseComObject
@@ -234,9 +230,10 @@ Public Class FritzBoxWählClient
 
     Friend Overloads Sub WählboxStart(ByVal aktMail As Outlook.MailItem)
         Dim aktKontakt As Outlook.ContactItem
+
         If aktMail.SenderEmailAddress.IsNotStringEmpty Then
 
-            aktKontakt = KontaktSuche(aktMail.SenderEmailAddress)
+            aktKontakt = KontaktSuche(aktMail)
 
             If aktKontakt IsNot Nothing Then
                 Wählbox(aktKontakt, Nothing, False)

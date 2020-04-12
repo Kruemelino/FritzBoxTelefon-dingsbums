@@ -97,7 +97,7 @@ Friend Module KontaktFunktionen
                     olFolder.ReleaseComObject
                 End If
             Else
-                olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
+                'olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
             End If
             ErstelleKontakt = olKontakt
         Else
@@ -157,7 +157,7 @@ Friend Module KontaktFunktionen
                     ReleaseComObject(olFolder)
                 End If
             Else
-                olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
+                'olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
             End If
             ErstelleKontakt = olKontakt
         Else
@@ -622,63 +622,78 @@ Friend Module KontaktFunktionen
             End Using
         End With
     End Sub
+#Region "E-Mail Empfänger"
+    Friend Function GetSenderSMTPAddress(ByVal Kontaktkarte As IMsoContactCard) As String
 
-    Friend Function GetSmtpAddress(ByVal card As IMsoContactCard) As String
-        If card.AddressType = MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
+        If Kontaktkarte IsNot Nothing Then
+            If Kontaktkarte.AddressType = MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
 
-            Dim ae As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(card.Address)
+                Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
 
-            Select Case ae.AddressEntryUserType
-                Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
-                    Dim ex As Outlook.ExchangeUser = ae.GetExchangeUser()
-                    Return ex.PrimarySmtpAddress
-                Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
-                    Return ae.Address
-                Case Else
-                    Throw New Exception("Valid address entry not found.")
-            End Select
-            ae.ReleaseComObject
+                Select Case Adresseintrag?.AddressEntryUserType
+                    Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                        Dim ExchangeUser As Outlook.ExchangeUser = Adresseintrag.GetExchangeUser()
+
+                        If ExchangeUser IsNot Nothing Then
+                            Return ExchangeUser.PrimarySmtpAddress
+                        Else
+                            Return PDfltStringEmpty
+                        End If
+
+                        ExchangeUser.ReleaseComObject
+                    Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
+                        Return Adresseintrag.Address
+                    Case Else
+                        NLogger.Error("Valid address entry not found.")
+                        Return PDfltStringEmpty
+                End Select
+
+                Adresseintrag.ReleaseComObject
+            Else
+                Return Kontaktkarte.Address
+            End If
         Else
-            Return card.Address
+            Return PDfltStringEmpty
+        End If
+        Kontaktkarte.ReleaseComObject
+    End Function
+#End Region
+
+    ''' <summary>
+    ''' Gibt die Absender-SMTP-Adresse der E-Mail zurück
+    ''' </summary>
+    ''' <param name="EMail"></param>
+    ''' <remarks>https://docs.microsoft.com/de-de/office/client-developer/outlook/pia/how-to-get-the-smtp-address-of-the-sender-of-a-mail-item</remarks>
+    ''' <returns></returns>
+    Friend Function GetSenderSMTPAddress(ByVal EMail As Outlook.MailItem) As String
+
+        If EMail IsNot Nothing Then
+            If EMail.SenderEmailType = "EX" Then
+                Dim Adresseintrag As Outlook.AddressEntry = EMail.Sender
+
+                Select Case Adresseintrag?.AddressEntryUserType
+                    Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                        Dim ExchangeUser As Outlook.ExchangeUser = Adresseintrag.GetExchangeUser()
+
+                        If ExchangeUser IsNot Nothing Then
+                            Return ExchangeUser.PrimarySmtpAddress
+                        Else
+                            Return PDfltStringEmpty
+                        End If
+                        ExchangeUser.ReleaseComObject
+
+                    Case Else
+                        Return TryCast(Adresseintrag.PropertyAccessor.GetProperty(PDfltDASLSMTPAdress), String)
+
+                End Select
+
+                Adresseintrag.ReleaseComObject
+            Else
+                Return EMail.SenderEmailAddress
+            End If
+        Else
+            Return PDfltStringEmpty
         End If
     End Function
 
 End Module
-Friend Class ContactSaved
-    Implements IDisposable
-
-    Friend WithEvents Kontakt As Outlook.ContactItem
-
-    Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles Kontakt.Close
-        ThisAddIn.OffeneKontakInsepektoren.Remove(Me)
-        Me.Dispose()
-    End Sub
-
-    Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles Kontakt.Write
-        ' Prüfe ob der Kontakt in einem Indizierten Ordner liegt
-
-        IndiziereKontakt(Kontakt)
-    End Sub
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposedValue Then
-            If disposing Then
-                'C_KF = Nothing
-            End If
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Ändern Sie diesen Code nicht. Fügen Sie oben in Dispose(disposing As Boolean) Bereinigungscode ein.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
-
-End Class

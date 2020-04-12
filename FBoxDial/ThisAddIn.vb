@@ -11,7 +11,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property PCallListXML As FritzBoxXMLCallList
 
     Friend Shared Property PCVorwahlen As CVorwahlen
-    Friend Shared Property OffeneKontakInsepektoren As List(Of ContactSaved)
+    Friend Shared Property OffeneKontakInsepektoren As List(Of KontaktGespeichert)
     Friend Shared Property OffenePopUps As List(Of Popup)
 
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
@@ -105,8 +105,8 @@ Public NotInheritable Class ThisAddIn
 #Region "Inspector"
     Private Sub OutlookInspectors_NewInspector(Inspector As Inspector) Handles OutlookInspectors.NewInspector
         If TypeOf Inspector.CurrentItem Is ContactItem Then
-            If OffeneKontakInsepektoren Is Nothing Then OffeneKontakInsepektoren = New List(Of ContactSaved)
-            OffeneKontakInsepektoren.Add(New ContactSaved() With {.Kontakt = CType(Inspector.CurrentItem, ContactItem)})
+            If OffeneKontakInsepektoren Is Nothing Then OffeneKontakInsepektoren = New List(Of KontaktGespeichert)
+            OffeneKontakInsepektoren.Add(New KontaktGespeichert() With {.Kontakt = CType(Inspector.CurrentItem, ContactItem)})
         End If
     End Sub
 #End Region
