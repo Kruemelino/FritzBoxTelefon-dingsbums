@@ -50,8 +50,9 @@
     Public Shared ReadOnly Property PDfltLetzterJournalEintrag As Date = Now
     Public Shared ReadOnly Property PDfltCBCloseWClient As Boolean = True
     Public Shared ReadOnly Property PDfltTBWClientEnblDauer() As Integer = 10
-    Public Shared Property PDfltCBUseLegacySearch As Boolean = False
-    Public Shared Property PDfltCBUseLegacyUserProp As Boolean = False
+    Public Shared ReadOnly Property PDfltCBUseLegacySearch As Boolean = False
+    Public Shared ReadOnly Property PDfltCBUseLegacyUserProp As Boolean = False
+    Public Shared ReadOnly Property PDfltCBSucheUnterordner As Boolean = False
 
 #End Region
 

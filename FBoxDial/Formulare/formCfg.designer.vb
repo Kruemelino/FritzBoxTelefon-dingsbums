@@ -21,7 +21,7 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -174,6 +174,7 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.CBSucheUnterordner = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -855,14 +856,14 @@ Partial Class FormCfg
         Me.DGVTelList.AllowUserToDeleteRows = False
         Me.DGVTelList.AllowUserToResizeColumns = False
         Me.DGVTelList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.DGVTelList.ColumnHeadersHeight = 34
         Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
@@ -1691,6 +1692,7 @@ Partial Class FormCfg
         '
         'PKontaktsuche2
         '
+        Me.PKontaktsuche2.Controls.Add(Me.CBSucheUnterordner)
         Me.PKontaktsuche2.Controls.Add(Me.Label1)
         Me.PKontaktsuche2.Controls.Add(Me.GBRWS)
         Me.PKontaktsuche2.Controls.Add(Me.GBIndizierung)
@@ -1840,7 +1842,7 @@ Partial Class FormCfg
         'CBKontaktSucheFritzBox
         '
         Me.CBKontaktSucheFritzBox.AutoSize = True
-        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(7, 104)
+        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(7, 122)
         Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(350, 0)
         Me.CBKontaktSucheFritzBox.Name = "CBKontaktSucheFritzBox"
@@ -1993,6 +1995,17 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
+        '
+        'CBSucheUnterordner
+        '
+        Me.CBSucheUnterordner.AutoSize = True
+        Me.CBSucheUnterordner.Location = New System.Drawing.Point(7, 88)
+        Me.CBSucheUnterordner.Name = "CBSucheUnterordner"
+        Me.CBSucheUnterordner.Size = New System.Drawing.Size(211, 24)
+        Me.CBSucheUnterordner.TabIndex = 39
+        Me.CBSucheUnterordner.Text = "Unterordner einbeziehen"
+        Me.CBSucheUnterordner.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.CBSucheUnterordner.UseVisualStyleBackColor = True
         '
         'FormCfg
         '
@@ -2208,4 +2221,5 @@ Partial Class FormCfg
     Friend WithEvents CBKErstellen As Windows.Forms.CheckBox
     Friend WithEvents CBRWS As Windows.Forms.CheckBox
     Friend WithEvents LabelAnzahl As Windows.Forms.Label
+    Friend WithEvents CBSucheUnterordner As Windows.Forms.CheckBox
 End Class

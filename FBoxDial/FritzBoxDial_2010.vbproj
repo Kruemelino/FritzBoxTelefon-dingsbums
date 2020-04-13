@@ -141,6 +141,7 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -151,16 +152,21 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -232,9 +238,17 @@
     <Compile Include="Formulare\FormElemente\AnrListDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Formulare\FormElemente\ColorSchemes.vb" />
     <Compile Include="Formulare\FormElemente\FBoxDataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Formulare\FormElemente\FormTelefonbücher.designer.vb">
+      <DependentUpon>FormTelefonbücher.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\FormTelefonbücher.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\StringLogicalComparer.vb" />
     <Compile Include="Formulare\FormElemente\TelGeräteListDataRow.vb" />
     <Compile Include="Formulare\FormElemente\TelGeräteListDataTable.vb">
       <SubType>Component</SubType>
@@ -249,6 +263,28 @@
     <Compile Include="Formulare\FormWählclient.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formulare\ListControl\KontaktControlItem.Designer.vb">
+      <DependentUpon>KontaktControlItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\ListControl\KontaktControlItem.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Formulare\ListControl\TelBuchListControlItem.Designer.vb">
+      <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\ListControl\TelBuchListControlItem.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Formulare\ListControl\TelListControl.Designer.vb">
+      <DependentUpon>TelListControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\ListControl\TelListControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.Designer.vb">
+      <DependentUpon>OlOrdnerTreeNode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.vb" />
     <Compile Include="Fritz!Box\Anrufliste\AnrListDataRow.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxAnrufliste.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCall.vb" />
@@ -283,6 +319,7 @@
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
+    <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Kontakte\KontaktIndizierer.vb" />
     <Compile Include="Kontakte\KontaktNotiz.vb" />
     <Compile Include="Kontakte\KontaktSucher.vb" />
@@ -296,6 +333,8 @@
     </Compile>
     <Compile Include="Nutzerdaten.vb" />
     <Compile Include="Optionen\DefaultWerte.vb" />
+    <Compile Include="Optionen\IndizerterOrdner.vb" />
+    <Compile Include="Optionen\IndizieOrdnerListe.vb" />
     <Compile Include="Optionen\Serializer.vb" />
     <Compile Include="Optionen\Optionen.vb" />
     <Compile Include="Optionen\OutlookXML.vb" />
@@ -334,8 +373,20 @@
     <EmbeddedResource Include="Formulare\FormCfg.resx">
       <DependentUpon>FormCfg.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\FormElemente\FormTelefonbücher.resx">
+      <DependentUpon>FormTelefonbücher.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FormWählclient.resx">
       <DependentUpon>FormWählclient.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\ListControl\KontaktControlItem.resx">
+      <DependentUpon>KontaktControlItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\ListControl\TelBuchListControlItem.resx">
+      <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\ListControl\TelListControl.resx">
+      <DependentUpon>TelListControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -369,6 +420,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\CheckboxDisable_16x.png" />
+    <Content Include="Resources\CheckboxMix_16x.png" />
+    <Content Include="Resources\CheckboxUncheck_16x.png" />
+    <Content Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

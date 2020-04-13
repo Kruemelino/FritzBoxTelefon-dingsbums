@@ -6,18 +6,48 @@ Friend Class OlOrdnerTreeNode
 
     Friend Property OutlookStore As Outlook.Store
     Friend Property OutlookFolder As Outlook.MAPIFolder
+    Friend Property Durchsuchen As Boolean
+    Friend Property XMLEintrag As IndizerterOrdner
 
-    Friend XMLEintrag As IndizerterOrdner
     Friend Sub SetImageKey()
         If OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
             If XMLEintrag IsNot Nothing Then
                 ImageKey = "Checked"
                 ForeColor = Drawing.Color.Blue
+                Durchsuchen = True
+
             Else
-                ImageKey = "Uncheck"
+
+                ' Kontaktsuche einbeziehung der Unterordner
+                If XMLData.POptionen.PCBSucheUnterordner AndAlso Parent IsNot Nothing Then
+                    With CType(Parent, OlOrdnerTreeNode)
+                        If .XMLEintrag IsNot Nothing Or .Durchsuchen Then
+                            ImageKey = "Mix"
+                            Durchsuchen = True
+                        Else
+                            ImageKey = "Uncheck"
+                            Durchsuchen = False
+                        End If
+                    End With
+
+                Else
+                    ImageKey = "Uncheck"
+                    Durchsuchen = False
+                End If
+
+                'ImageKey = "Uncheck"
                 ForeColor = Drawing.Color.Empty
             End If
+
+            ' Wenn unterordner durchsucht werden sollen, müssen alle nachfolgenden Ordner markiert werden.
+            If XMLData.POptionen.PCBSucheUnterordner Then
+                ' Unterknoten rekursiv überarbeiten
+                For Each tmpnode As OlOrdnerTreeNode In Nodes
+                    tmpnode.SetImageKey()
+                Next
+            End If
+
         Else
             ImageKey = "Disabled"
             ForeColor = Drawing.Color.DarkGray

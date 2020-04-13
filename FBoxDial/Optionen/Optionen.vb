@@ -95,6 +95,7 @@
 #Region "Einstellungen für die Kontaktsuche"
 #Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
     <XmlElement("IndizerteOrdner")> Public Property IndizerteOrdner As IndizieOrdnerListe
+    <XmlElement("CBSucheUnterordner")> Public Property PCBSucheUnterordner As Boolean
     <XmlElement("CBKontaktSucheFritzBox")> Public Property PCBKontaktSucheFritzBox As Boolean
 #End Region
 #Region "Einstellungen für die Kontaktsuche - Rückwärtssuche (RWS)"
