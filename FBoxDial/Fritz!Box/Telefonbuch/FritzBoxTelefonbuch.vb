@@ -1,7 +1,6 @@
 ﻿Imports System.Threading.Tasks
 
 Friend Module FritzBoxTelefonbuch
-
     Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
         Dim OutPutData As Collections.Hashtable
         Dim InPutData As Collections.Hashtable

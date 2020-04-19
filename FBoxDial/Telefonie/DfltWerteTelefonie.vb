@@ -2,24 +2,25 @@
 
 Public NotInheritable Class DfltWerteTelefonie
     ''' <summary>
-    ''' 00 als String
+    ''' Verkehrsausscheidungsziffer "00"
     ''' </summary>
-    Friend Shared ReadOnly Property PDfltPreLandesKZ As String = "00"
+    Friend Shared ReadOnly Property PDfltVAZ As String = "00"
     Friend Shared ReadOnly Property PDfltAmt As String = "0"
     Friend Shared ReadOnly Property PDfltLandesKZ As String = "49"
     Friend Shared ReadOnly Property PDfltMaskeNANP As String = "%L (%O) %N-%D"
 
+    ''' <summary>
+    ''' Italienische Mobilvorwahlen
+    ''' </summary>
     Friend Shared ReadOnly Property PDfltMobilIt() As ReadOnlyCollection(Of String)
         Get
-            Dim tmp As New List(Of String) From {
+            Return New ReadOnlyCollection(Of String)(New List(Of String) From {
                 "330", "331", "332", "333", "334", "335", "336", "337", "338", "339",
                 "360", "361", "362", "363", "364", "365", "366", "367", "368", "390",
                 "391", "392", "393", "340", "341", "342", "343", "344", "345", "346",
                 "347", "348", "349", "380", "381", "382", "383", "384", "385", "386",
                 "387", "388", "389", "320", "321", "322", "323", "324", "325", "326",
-                "327", "328", "329"}
-
-            Return New ReadOnlyCollection(Of String)(tmp)
+                "327", "328", "329"})
         End Get
     End Property
 #Region "Enumeration"

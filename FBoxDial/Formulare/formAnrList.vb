@@ -110,22 +110,21 @@ Public Class FormAnrList
             Datentabelle.PrimaryKey = {Datentabelle.Columns.Item("ID")}
             Datenfelder = Anrufliste.First.GetType.GetProperties.ToList
             ' Zeilen hinzufügen
-            For Each item In Anrufliste
+            For Each Eintrage As FritzBoxXMLCall In Anrufliste
                 Datenzeile = CType(Datentabelle.NewRow(), AnrListDataRow)
 
-                Datenzeile.AnrListCall = item
+                Datenzeile.AnrListCall = Eintrage
                 For Each Datenfeld As PropertyInfo In Datenfelder
-                    PropInfo = item.GetType.GetProperty(Datenfeld.Name)
+                    PropInfo = Eintrage.GetType.GetProperty(Datenfeld.Name)
                     Select Case Datenfeld.Name
                         Case "Check", "Datum", "Duration", "Type", "ID", "Name", "Device", "EigeneNummer", "Gegenstelle", "Port"
-                            Datenzeile(Datenfeld.Name) = PropInfo.GetValue(item)
+                            Datenzeile(Datenfeld.Name) = PropInfo.GetValue(Eintrage)
                         Case Else
                             ' keine Daten hinzufügen
                     End Select
 
                 Next
                 Datentabelle.Rows.Add(Datenzeile)
-
             Next
         End If
         Return Datentabelle

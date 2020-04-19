@@ -29,7 +29,7 @@ Partial Class TelBuchListControlItem
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Name = "TelBuchListControlItem"
-        Me.Size = New System.Drawing.Size(150, 60)
+        Me.Size = New System.Drawing.Size(150, 40)
         Me.ResumeLayout(False)
 
     End Sub

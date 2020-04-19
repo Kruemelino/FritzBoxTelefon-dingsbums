@@ -1,6 +1,9 @@
 ﻿Imports System.Xml.Serialization
+Imports System.ComponentModel
 <Serializable()>
 <XmlRoot("phonebooks")> Public Class FritzBoxXMLTelefonbücher
+    Implements INotifyPropertyChanged
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
     <XmlElement("phonebook")> Public Property Telefonbuch As List(Of FritzBoxXMLTelefonbuch)
 
     Private ReadOnly Property AlleKontakte As List(Of FritzBoxXMLKontakt)

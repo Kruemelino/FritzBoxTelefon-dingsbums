@@ -1,4 +1,6 @@
-﻿Public NotInheritable Class FritzBoxDefault
+﻿Imports System.Collections.ObjectModel
+
+Public NotInheritable Class FritzBoxDefault
 
     Public Shared ReadOnly Property PDfltFritzBoxAdress() As String = "fritz.box"
     Public Shared ReadOnly Property PDfltFritzBoxUser As String = "admin"
@@ -305,4 +307,24 @@
 
 #End Region
 
+#Region "Fritz!Box Telefonbuch"
+
+
+    Public Shared ReadOnly Property PDfltTelBuchTelTyp() As List(Of KeyValuePair(Of String, String))
+        Get
+            Dim values As New List(Of KeyValuePair(Of String, String)) From {
+                New KeyValuePair(Of String, String)("home", "Privat"),
+                New KeyValuePair(Of String, String)("work", "Arbeit"),
+                New KeyValuePair(Of String, String)("intern", "Intern"),
+                New KeyValuePair(Of String, String)("fax", "Fax Privat"),
+                New KeyValuePair(Of String, String)("fax_work", "Fax Arbeit"),
+                New KeyValuePair(Of String, String)("mobile", "Mobil"),
+                New KeyValuePair(Of String, String)("memo", "Memo")
+            }
+            Return values
+        End Get
+    End Property
+
+
+#End Region
 End Class

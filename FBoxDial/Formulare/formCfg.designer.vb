@@ -150,6 +150,7 @@ Partial Class FormCfg
         Me.DTPAnrMonSimRING = New System.Windows.Forms.DateTimePicker()
         Me.BAnrMonSimRING = New System.Windows.Forms.Button()
         Me.PKontaktsuche2 = New System.Windows.Forms.TabPage()
+        Me.CBSucheUnterordner = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GBRWS = New System.Windows.Forms.GroupBox()
         Me.BRWSTest = New System.Windows.Forms.Button()
@@ -174,7 +175,6 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.CBSucheUnterordner = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -856,6 +856,7 @@ Partial Class FormCfg
         Me.DGVTelList.AllowUserToDeleteRows = False
         Me.DGVTelList.AllowUserToResizeColumns = False
         Me.DGVTelList.AllowUserToResizeRows = False
+        Me.DGVTelList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1707,6 +1708,17 @@ Partial Class FormCfg
         Me.PKontaktsuche2.Text = "Kontaktsuche"
         Me.PKontaktsuche2.UseVisualStyleBackColor = True
         '
+        'CBSucheUnterordner
+        '
+        Me.CBSucheUnterordner.AutoSize = True
+        Me.CBSucheUnterordner.Location = New System.Drawing.Point(7, 88)
+        Me.CBSucheUnterordner.Name = "CBSucheUnterordner"
+        Me.CBSucheUnterordner.Size = New System.Drawing.Size(211, 24)
+        Me.CBSucheUnterordner.TabIndex = 39
+        Me.CBSucheUnterordner.Text = "Unterordner einbeziehen"
+        Me.CBSucheUnterordner.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.CBSucheUnterordner.UseVisualStyleBackColor = True
+        '
         'Label1
         '
         Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
@@ -1995,17 +2007,6 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
         Me.TableLayoutPanel2.TabIndex = 29
-        '
-        'CBSucheUnterordner
-        '
-        Me.CBSucheUnterordner.AutoSize = True
-        Me.CBSucheUnterordner.Location = New System.Drawing.Point(7, 88)
-        Me.CBSucheUnterordner.Name = "CBSucheUnterordner"
-        Me.CBSucheUnterordner.Size = New System.Drawing.Size(211, 24)
-        Me.CBSucheUnterordner.TabIndex = 39
-        Me.CBSucheUnterordner.Text = "Unterordner einbeziehen"
-        Me.CBSucheUnterordner.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.CBSucheUnterordner.UseVisualStyleBackColor = True
         '
         'FormCfg
         '

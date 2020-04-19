@@ -228,6 +228,21 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Anrufmonitor\FormAnrMon.vb" />
+    <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
+    <Compile Include="Formulare\FormElemente\SortableBindingList.vb" />
+    <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.Designer.vb">
+      <DependentUpon>TelBuchDataRow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.Designer.vb">
+      <DependentUpon>TelBuchDataTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Zeilendaten\DGVDatenZeileEMailEintrag.vb" />
+    <Compile Include="Formulare\FormElemente\Zeilendaten\DGVDatenZeileNummernEintrag.vb" />
+    <Compile Include="Formulare\FormElemente\Zeilendaten\DGVDatenZeileTelbucheintrag.vb" />
     <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Formulare\formAnrList.designer.vb">
       <DependentUpon>formAnrList.vb</DependentUpon>
@@ -235,8 +250,8 @@
     <Compile Include="Formulare\formAnrList.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\AnrListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\AnrListDataTable.vb">
+    <Compile Include="Formulare\FormElemente\Datenzeile\AnrListDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datentabellen\AnrListDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Formulare\FormElemente\ColorSchemes.vb" />
@@ -254,12 +269,12 @@
     <Compile Include="Formulare\ListControl\TelBuchListControlItem.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\TelGeräteListDataTable.vb">
+    <Compile Include="Formulare\FormElemente\Datentabellen\TelGeräteListDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\WählClientDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\TelGeräteListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\WählClientDataTable.vb">
+    <Compile Include="Formulare\FormElemente\Datenzeile\WählClientDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datenzeile\TelGeräteListDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datentabellen\WählClientDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Formulare\FormTelefonbücher.Designer.vb">
@@ -274,19 +289,12 @@
     <Compile Include="Formulare\FormWählclient.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formulare\ListControl\KontaktControlItem.Designer.vb">
-      <DependentUpon>KontaktControlItem.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\ListControl\KontaktControlItem.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Formulare\ListControl\TelListControl.designer.vb">
       <DependentUpon>TelListControl.vb</DependentUpon>
     </Compile>
     <Compile Include="Formulare\ListControl\TelListControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Fritz!Box\Anrufliste\AnrListDataRow.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxAnrufliste.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCall.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCallList.vb" />
@@ -375,9 +383,6 @@
       <DependentUpon>FormCfg.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\ListControl\KontaktControlItem.resx">
-      <DependentUpon>KontaktControlItem.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelBuchListControlItem.resx">
       <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
     </EmbeddedResource>
@@ -430,6 +435,7 @@
     <Content Include="Resources\CheckboxUncheck_16x.png" />
     <Content Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

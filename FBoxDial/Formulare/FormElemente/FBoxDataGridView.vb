@@ -4,16 +4,15 @@ Imports System.Windows.Forms
 
 Public Class FBoxDataGridView
     Inherits DataGridView
-
     Private Property ScaleFaktor As Drawing.SizeF
-
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 
     Public Sub New()
         ' Double Buffered einschalten
-        Me.[GetType].GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic).SetValue(Me, True, Nothing)
+        [GetType].GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic).SetValue(Me, True, Nothing)
         ' Scaling ermitteln
         ScaleFaktor = GetScaling()
+
     End Sub
 
 #Region "Spalten"
@@ -32,10 +31,25 @@ Public Class FBoxDataGridView
             .DefaultCellStyle.WrapMode = DataGridViewTriState.True
         End With
 
-        Me.Columns.Add(NewTextColumn)
+        Columns.Add(NewTextColumn)
     End Sub
+    Friend Overloads Sub AddEditTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal AutoSizeMode As DataGridViewAutoSizeColumnMode)
+        Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
+                                                                 .HeaderText = HeaderText,
+                                                                 .DataPropertyName = Name,
+                                                                 .ValueType = ValueType,
+                                                                 .AutoSizeMode = AutoSizeMode,
+                                                                 .ReadOnly = False
+                                                                }
 
+        With NewTextColumn
+            .DefaultCellStyle.Alignment = CellAlignment
+            .HeaderCell.Style.Alignment = CellAlignment
+            .DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        End With
 
+        Columns.Add(NewTextColumn)
+    End Sub
 
     Friend Overloads Sub AddTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal Width As Integer)
         Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
@@ -51,8 +65,9 @@ Public Class FBoxDataGridView
             .HeaderCell.Style.Alignment = CellAlignment
         End With
 
-        Me.Columns.Add(NewTextColumn)
+        Columns.Add(NewTextColumn)
     End Sub
+
 
     Friend Sub AddHiddenTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal ValueType As Type)
         Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
@@ -63,7 +78,7 @@ Public Class FBoxDataGridView
                                                                  .ReadOnly = True
                                                                 }
 
-        Me.Columns.Add(NewTextColumn)
+        Columns.Add(NewTextColumn)
     End Sub
 
     Friend Sub AddCheckBoxColumn(ByVal Name As String, ByVal HeaderText As String)
@@ -75,7 +90,30 @@ Public Class FBoxDataGridView
                                                                       .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                                                                      }
 
-        Me.Columns.Add(NewCheckBoxColumn)
+        Columns.Add(NewCheckBoxColumn)
+    End Sub
+
+    Friend Overloads Sub AddComboBoxColumn(ByVal Name As String, ByVal HeaderText As String, ByVal Einträge As List(Of KeyValuePair(Of String, String)), ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal AutoSizeMode As DataGridViewAutoSizeColumnMode)
+        Dim NewComboBoxColumn As New DataGridViewComboBoxColumn With {.Name = Name,
+                                                                 .HeaderText = HeaderText,
+                                                                 .DataPropertyName = Name,
+                                                                 .ValueType = ValueType,
+                                                                 .AutoSizeMode = AutoSizeMode,
+                                                                 .ReadOnly = False
+                                                                }
+
+        With NewComboBoxColumn
+            .DefaultCellStyle.Alignment = CellAlignment
+            .HeaderCell.Style.Alignment = CellAlignment
+            .DefaultCellStyle.WrapMode = DataGridViewTriState.True
+            .DataSource = Einträge
+            .ValueMember = "Key"
+            .DisplayMember = "Value"
+
+            '.Items.AddRange(Einträge)
+        End With
+
+        Columns.Add(NewComboBoxColumn)
     End Sub
 
     Friend Sub AddImageColumn(ByVal Name As String, ByVal HeaderText As String)
@@ -83,7 +121,7 @@ Public Class FBoxDataGridView
                                                                 .HeaderText = HeaderText,
                                                                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                                                                }
-        Me.Columns.Add(NewImageColumn)
+        Columns.Add(NewImageColumn)
     End Sub
 #End Region
 
@@ -102,6 +140,7 @@ Public Class FBoxDataGridView
                 End If
             End If
         End If
+
     End Sub
 
     Private Sub DGVAnrListe_ColumnAdded(sender As Object, e As DataGridViewColumnEventArgs) Handles Me.ColumnAdded
@@ -145,4 +184,41 @@ Public Class FBoxDataGridView
             End If
         End If
     End Sub
+
+    'Private Sub FBoxDataGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles Me.CellFormatting
+
+    '    If Columns(e.ColumnIndex).Name.Equals("Typ") Then
+    '        ' Ensure that the value is a string.
+    '        Dim stringValue As String = TryCast(e.Value, String)
+    '        If stringValue IsNot Nothing Then
+
+    '            ' Set the cell ToolTip to the text value.
+    '            Dim cell As DataGridViewCell = Me(e.ColumnIndex, e.RowIndex)
+    '            cell.ToolTipText = stringValue
+
+    '            ' Replace the string value with the image value.
+    '            Select Case stringValue
+    '                Case FritzBoxDefault.PDfltTelBuchTelTypHome
+    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypHomeVisibleText
+
+    '                Case FritzBoxDefault.PDfltTelBuchTelTypWork
+    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypWorkVisibleText
+
+    '                Case FritzBoxDefault.PDfltTelBuchTelTypIntern
+    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypInternVisibleText
+
+    '                Case FritzBoxDefault.PDfltTelBuchTelTypFax
+    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypFaxVisibleText
+
+    '                Case FritzBoxDefault.PDfltTelBuchTelTypFaxWork
+    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypFaxWorkVisibleText
+
+    '                Case FritzBoxDefault.PDfltTelBuchTelTypMobile
+    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypMobileVisibleText
+    '                Case Else
+    '                    e.Value = e.Value
+    '            End Select
+    '        End If
+    '    End If
+    'End Sub
 End Class

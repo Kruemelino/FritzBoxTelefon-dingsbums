@@ -533,7 +533,7 @@ Friend Module KontaktFunktionen
                     ' Type = "mobile":  .MobileTelephoneNumber, .PagerNumber, .RadioTelephoneNumber
                     ' Type = "work":    .AssistantTelephoneNumber, .BusinessTelephoneNumber, .Business2TelephoneNumber, .CallbackTelephoneNumber, .CompanyMainTelephoneNumber, .PrimaryTelephoneNumber
                     ' Type = "fax_work: .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber
-                    Select Case TelNr.Type
+                    Select Case TelNr.Typ
                         Case "home"
                             If .HomeTelephoneNumber.IsStringEmpty Then
                                 .HomeTelephoneNumber = tmpTelNr.Formatiert

@@ -50,19 +50,19 @@ Friend Class TelBuchListControlItem
         End If
     End Sub
 
-    Private Sub MetroRadioGroup_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
-        bState = ButtonState.ButtonDown
+    Private Sub ListControlItem_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
+        BState = ButtonState.ButtonDown
         Refresh()
     End Sub
 
-    Private Sub MetroRadioGroup_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
-        bMouse = MouseCapture.Inside
+    Private Sub ListControlItem_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
+        BMouse = MouseCapture.Inside
         TmrMouseLeave.Start()
         Refresh()
     End Sub
 
-    Private Sub MetroRadioGroup_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp ', rdButton.MouseUp
-        bState = ButtonState.ButtonUp
+    Private Sub ListControlItem_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp ', rdButton.MouseUp
+        BState = ButtonState.ButtonUp
         Refresh()
     End Sub
 
@@ -183,11 +183,11 @@ Friend Class TelBuchListControlItem
 
         Dim fnt As Font
         Dim SF As New StringFormat With {.Trimming = StringTrimming.EllipsisCharacter, .LineAlignment = StringAlignment.Center}
-        Dim workingRect As New RectangleF(40, 0, Me.Width - 40 - 6, Me.Height - 1)
+        Dim workingRect As New RectangleF(30, 0, Me.Width - 40 - 6, Me.Height - 1)
 
         ' Telefonbuchname
         fnt = New Font(DefFontName, 10, DefFontStyleBold, DefGraphicsUnit, DefgdiCharSet)
-        RectName = New RectangleF(40, 0, gfx.MeasureString(TelBuchName.ToString, fnt).Width, workingRect.Height)
+        RectName = New RectangleF(30, 0, gfx.MeasureString(TelBuchName.ToString, fnt).Width, workingRect.Height)
         gfx.DrawString(TelBuchName, fnt, Brushes.Black, RectName, SF)
 
         ' Anzahl an Elementen

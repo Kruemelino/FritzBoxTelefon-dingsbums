@@ -226,7 +226,7 @@ Public Class FormWählclient
                 Me.LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
 
                 DialCode = TelNr.Unformatiert
-                If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltPreLandesKZ & TelNr.Landeskennzahl)
+                If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
 
                 DialCode = String.Format("{2}{1}{0}{3}", DialCode, XMLData.POptionen.PTBAmt, If(Me.CBCLIR.Checked, "*31#", PDfltStringEmpty), "#")
 
