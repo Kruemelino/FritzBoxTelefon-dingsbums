@@ -2,6 +2,7 @@
 
 Friend Class AnrListDataTable
     Inherits DataTable
+
     Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow
         Return New AnrListDataRow(builder)
     End Function

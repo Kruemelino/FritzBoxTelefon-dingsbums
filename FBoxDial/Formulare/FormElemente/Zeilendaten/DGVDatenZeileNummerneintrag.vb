@@ -7,7 +7,13 @@
     'Public Property Schnellwahl As String
     Public Property Nummer As String
 
-    Friend Property Telefonbucheintrag As FritzBoxXMLNummer
+    Friend Property FBoxXMLNummer As FritzBoxXMLNummer
+    Friend Property FBoxXMLKontakt As FritzBoxXMLKontakt
+
+    Public Sub New()
+        Nummer = PDfltStringEmpty
+        FBoxXMLNummer = New FritzBoxXMLNummer
+    End Sub
 
     Public Function CompareTo(other As DGVDatenZeileNummernEintrag) As Integer Implements IComparable(Of DGVDatenZeileNummernEintrag).CompareTo
         Return Nummer.CompareTo(other.Nummer)

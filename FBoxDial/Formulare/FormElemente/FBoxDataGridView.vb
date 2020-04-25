@@ -185,40 +185,4 @@ Public Class FBoxDataGridView
         End If
     End Sub
 
-    'Private Sub FBoxDataGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles Me.CellFormatting
-
-    '    If Columns(e.ColumnIndex).Name.Equals("Typ") Then
-    '        ' Ensure that the value is a string.
-    '        Dim stringValue As String = TryCast(e.Value, String)
-    '        If stringValue IsNot Nothing Then
-
-    '            ' Set the cell ToolTip to the text value.
-    '            Dim cell As DataGridViewCell = Me(e.ColumnIndex, e.RowIndex)
-    '            cell.ToolTipText = stringValue
-
-    '            ' Replace the string value with the image value.
-    '            Select Case stringValue
-    '                Case FritzBoxDefault.PDfltTelBuchTelTypHome
-    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypHomeVisibleText
-
-    '                Case FritzBoxDefault.PDfltTelBuchTelTypWork
-    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypWorkVisibleText
-
-    '                Case FritzBoxDefault.PDfltTelBuchTelTypIntern
-    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypInternVisibleText
-
-    '                Case FritzBoxDefault.PDfltTelBuchTelTypFax
-    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypFaxVisibleText
-
-    '                Case FritzBoxDefault.PDfltTelBuchTelTypFaxWork
-    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypFaxWorkVisibleText
-
-    '                Case FritzBoxDefault.PDfltTelBuchTelTypMobile
-    '                    e.Value = FritzBoxDefault.PDfltTelBuchTelTypMobileVisibleText
-    '                Case Else
-    '                    e.Value = e.Value
-    '            End Select
-    '        End If
-    '    End If
-    'End Sub
 End Class

@@ -22,7 +22,7 @@ Partial Class FormTelefonbücher
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MainSplitContainerV = New System.Windows.Forms.SplitContainer()
@@ -56,6 +56,7 @@ Partial Class FormTelefonbücher
         '
         'MenuStrip1
         '
+        Me.MenuStrip1.GripMargin = New System.Windows.Forms.Padding(2, 2, 0, 2)
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
@@ -114,8 +115,8 @@ Partial Class FormTelefonbücher
         '
         Me.DGVTelBuchEinträge.AllowUserToAddRows = False
         Me.DGVTelBuchEinträge.AllowUserToDeleteRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro
-        Me.DGVTelBuchEinträge.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
+        Me.DGVTelBuchEinträge.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.DGVTelBuchEinträge.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -135,8 +136,6 @@ Partial Class FormTelefonbücher
         '
         'DGVEMail
         '
-        Me.DGVEMail.AllowUserToAddRows = False
-        Me.DGVEMail.AllowUserToDeleteRows = False
         Me.DGVEMail.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -162,8 +161,8 @@ Partial Class FormTelefonbücher
         Me.DGVTelefonnummern.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DGVTelefonnummern.Location = New System.Drawing.Point(0, 44)
         Me.DGVTelefonnummern.Name = "DGVTelefonnummern"
-        Me.DGVTelefonnummern.RowHeadersVisible = False
         Me.DGVTelefonnummern.RowHeadersWidth = 62
+        Me.DGVTelefonnummern.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.DGVTelefonnummern.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
         Me.DGVTelefonnummern.RowTemplate.Height = 28
         Me.DGVTelefonnummern.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[True]

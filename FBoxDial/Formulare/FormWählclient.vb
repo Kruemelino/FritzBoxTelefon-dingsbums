@@ -157,7 +157,7 @@ Public Class FormWählclient
 
 #Region "DataTable"
     Private Overloads Function FillDatatable(ByVal oContact As Outlook.ContactItem) As WählClientDataTable
-        Dim tmpDataColumn As DataColumn
+        'Dim tmpDataColumn As DataColumn
         Dim tmpDataRow As WählClientDataRow
 
         FillDatatable = New WählClientDataTable
@@ -166,9 +166,9 @@ Public Class FormWählclient
 
         With FillDatatable
             ' Spalten hinzufügen
-            tmpDataColumn = .Columns.Add("Nr", GetType(Integer))
-            tmpDataColumn = .Columns.Add("Typ", GetType(String))
-            tmpDataColumn = .Columns.Add("TelNr", GetType(String))
+            .Columns.Add("Nr", GetType(Integer))
+            .Columns.Add("Typ", GetType(String))
+            .Columns.Add("TelNr", GetType(String))
             ' Zeilen hinzufügen
             tmpListofTelNr = GetKontaktTelNrList(oContact)
             For Each TelNr As Telefonnummer In tmpListofTelNr

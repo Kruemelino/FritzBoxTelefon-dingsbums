@@ -17,41 +17,18 @@ Public Class SortableBindingList(Of T)
 		comparers = New Dictionary(Of Type, PropertyComparer(Of T))()
 	End Sub
 
-	Protected Overrides ReadOnly Property SupportsSortingCore() As Boolean
-		Get
-			Return True
-		End Get
-	End Property
-
-	Protected Overrides ReadOnly Property IsSortedCore() As Boolean
-		Get
-			Return isSorted
-		End Get
-	End Property
-
-	Protected Overrides ReadOnly Property SortPropertyCore() As PropertyDescriptor
-		Get
-			Return propertyDescriptor
-		End Get
-	End Property
-
-	Protected Overrides ReadOnly Property SortDirectionCore() As ListSortDirection
-		Get
-			Return listSortDirection
-		End Get
-	End Property
-
-	Protected Overrides ReadOnly Property SupportsSearchingCore() As Boolean
-		Get
-			Return True
-		End Get
-	End Property
+	Protected Overrides ReadOnly Property SupportsSortingCore() As Boolean = True
+	Protected Overrides ReadOnly Property IsSortedCore() As Boolean = isSorted
+	Protected Overrides ReadOnly Property SortPropertyCore() As PropertyDescriptor = propertyDescriptor
+	Protected Overrides ReadOnly Property SortDirectionCore() As ListSortDirection = listSortDirection
+	Protected Overrides ReadOnly Property SupportsSearchingCore() As Boolean = True
 
 	Protected Overrides Sub ApplySortCore([property] As PropertyDescriptor, direction As ListSortDirection)
 		Dim itemsList As List(Of T) = DirectCast(Items, List(Of T))
 
 		Dim propertyType As Type = [property].PropertyType
 		Dim comparer As PropertyComparer(Of T) = Nothing
+
 		If Not comparers.TryGetValue(propertyType, comparer) Then
 			comparer = New PropertyComparer(Of T)([property], direction)
 			comparers.Add(propertyType, comparer)
