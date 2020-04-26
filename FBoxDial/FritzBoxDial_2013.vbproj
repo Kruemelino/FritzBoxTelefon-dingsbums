@@ -229,7 +229,6 @@
     </Compile>
     <Compile Include="Anrufmonitor\FormAnrMon.vb" />
     <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
-    <Compile Include="Formulare\FormElemente\SortableBindingList.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.Designer.vb">
       <DependentUpon>TelBuchDataRow.vb</DependentUpon>
     </Compile>
@@ -240,9 +239,6 @@
     <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\Zeilendaten\DGVDatenZeileEMailEintrag.vb" />
-    <Compile Include="Formulare\FormElemente\Zeilendaten\DGVDatenZeileNummernEintrag.vb" />
-    <Compile Include="Formulare\FormElemente\Zeilendaten\DGVDatenZeileTelbucheintrag.vb" />
     <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Formulare\formAnrList.designer.vb">
       <DependentUpon>formAnrList.vb</DependentUpon>
@@ -430,10 +426,11 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\CheckboxDisable_16x.png" />
-    <Content Include="Resources\CheckboxMix_16x.png" />
-    <Content Include="Resources\CheckboxUncheck_16x.png" />
-    <Content Include="Resources\CheckBox_16x.png" />
+    <EmbeddedResource Include="Resources\Cancel.png" />
+    <EmbeddedResource Include="Resources\CheckboxDisable_16x.png" />
+    <EmbeddedResource Include="Resources\CheckboxMix_16x.png" />
+    <EmbeddedResource Include="Resources\CheckboxUncheck_16x.png" />
+    <EmbeddedResource Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

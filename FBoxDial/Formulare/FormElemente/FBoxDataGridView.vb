@@ -1,4 +1,5 @@
-﻿Imports System.Data
+﻿Imports System.ComponentModel
+Imports System.Data
 Imports System.Reflection
 Imports System.Windows.Forms
 
@@ -6,13 +7,14 @@ Public Class FBoxDataGridView
     Inherits DataGridView
     Private Property ScaleFaktor As Drawing.SizeF
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
-
+    Private Property Sortierung As SortOrder
     Public Sub New()
         ' Double Buffered einschalten
         [GetType].GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic).SetValue(Me, True, Nothing)
         ' Scaling ermitteln
         ScaleFaktor = GetScaling()
-
+        ' Sortierung initial festlegen
+        Sortierung = SortOrder.None
     End Sub
 
 #Region "Spalten"
@@ -69,16 +71,15 @@ Public Class FBoxDataGridView
     End Sub
 
 
-    Friend Sub AddHiddenTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal ValueType As Type)
-        Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
-                                                                 .HeaderText = HeaderText,
-                                                                 .DataPropertyName = Name,
-                                                                 .Visible = False,
-                                                                 .ValueType = ValueType,
-                                                                 .ReadOnly = True
-                                                                }
+    Friend Sub AddHiddenTextColumn(ByVal Name As String, ByVal ValueType As Type)
+        Dim NewHiddenTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
+                                                                       .DataPropertyName = Name,
+                                                                       .Visible = False,
+                                                                       .ValueType = ValueType,
+                                                                       .ReadOnly = True
+                                                                      }
 
-        Columns.Add(NewTextColumn)
+        Columns.Add(NewHiddenTextColumn)
     End Sub
 
     Friend Sub AddCheckBoxColumn(ByVal Name As String, ByVal HeaderText As String)
@@ -109,8 +110,6 @@ Public Class FBoxDataGridView
             .DataSource = Einträge
             .ValueMember = "Key"
             .DisplayMember = "Value"
-
-            '.Items.AddRange(Einträge)
         End With
 
         Columns.Add(NewComboBoxColumn)
@@ -121,7 +120,38 @@ Public Class FBoxDataGridView
                                                                 .HeaderText = HeaderText,
                                                                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                                                                }
+
+        With NewImageColumn
+            .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+            .DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        End With
         Columns.Add(NewImageColumn)
+    End Sub
+
+#End Region
+#Region "Sortierung"
+    Protected Overrides Sub OnColumnHeaderMouseClick(ByVal e As DataGridViewCellMouseEventArgs)
+        Dim dGVSortOrder As ListSortDirection
+
+        If SortedColumn Is Nothing Then
+            ' DGV wurde noch nicht sortiert
+            ' Sortierreihenfolge auf Ascending festlegen 
+            dGVSortOrder = ListSortDirection.Ascending
+        Else
+            ' DGV ist sortiert
+            If Columns(e.ColumnIndex) Is SortedColumn Then
+                ' Sortierreihenfolge drehen
+                dGVSortOrder = If(SortOrder = SortOrder.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
+            Else
+                ' Sortierreihenfolge auf Ascending festlegen 
+                dGVSortOrder = ListSortDirection.Ascending
+                ' Alte Spalte zurücksetzen
+                SortedColumn.HeaderCell.SortGlyphDirection = SortOrder.None
+            End If
+            End If
+        Columns(e.ColumnIndex).HeaderCell.SortGlyphDirection = CType(dGVSortOrder, SortOrder)
+        Sort(Columns(e.ColumnIndex), dGVSortOrder)
+
     End Sub
 #End Region
 

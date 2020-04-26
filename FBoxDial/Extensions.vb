@@ -660,7 +660,19 @@ Public Module Extensions
         End Try
         Return New Drawing.SizeF((regAppliedDPI / 96).ToSng, (regAppliedDPI / 96).ToSng)
     End Function
+    Public Function BlankImage() As Drawing.Image
+        Static oBM As New Drawing.Bitmap(1, 1)
+        Try
 
+            If oBM Is Nothing Then
+                oBM.SetPixel(0, 0, Drawing.Color.Transparent)
+            End If
+            Return oBM
+        Catch ex As Exception
+            Return Nothing
+        End Try
+
+    End Function
     <Extension> Public Sub Sort(NodesCollection As Windows.Forms.TreeNodeCollection, Ascending As Boolean, SortChildNodes As Boolean)
 
         Dim node1 As Windows.Forms.TreeNode, node2 As Windows.Forms.TreeNode

@@ -63,9 +63,9 @@ Public Class FormAnrList
         If Anrufliste IsNot Nothing Then
             With DGVAnrListe
                 .AddCheckBoxColumn("Check", "*")
-                .AddImageColumn("Image", "D")
-                .AddHiddenTextColumn("ID", "ID", GetType(Integer))
-                .AddHiddenTextColumn("Type", "Type", GetType(String))
+                .AddImageColumn("Image", PDfltStringEmpty)
+                .AddHiddenTextColumn("ID", GetType(Integer))
+                .AddHiddenTextColumn("Type", GetType(String))
                 .AddTextColumn("Datum", "Datum", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
                 .AddTextColumn("Name", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                 .AddTextColumn("EigeneNummer", "Eigene Nr.", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
@@ -131,46 +131,47 @@ Public Class FormAnrList
     End Function
 
     Private Sub DGVAnrListe_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles DGVAnrListe.DataBindingComplete
-        Dim dgv As DataGridView = TryCast(sender, DataGridView)
+        Dim dgv As DataGridView = TryCast(sender, FBoxDataGridView)
 
         If dgv IsNot Nothing Then
-
             Freischalten(True)
             dgv.ClearSelection()
         End If
     End Sub
 
     Private Sub DGVAnrListe_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles DGVAnrListe.CellFormatting
-        Dim dgv As DataGridView = TryCast(sender, DataGridView)
 
-        If dgv IsNot Nothing AndAlso e.RowIndex.IsLargerOrEqual(0) Then
+        With CType(sender, FBoxDataGridView)
 
-            If dgv.Columns.Contains("Image") Then
-                If e.ColumnIndex.AreEqual(dgv.Columns.Item("Image").Index) Then
-                    e.Value = IList.Images(dgv.Rows.Item(e.RowIndex).Cells.Item("Type").Value.ToString)
+            If e.RowIndex.IsLargerOrEqual(0) Then
+
+                If .Columns.Contains("Image") Then
+                    If e.ColumnIndex.AreEqual(.Columns.Item("Image").Index) Then
+                        e.Value = IList.Images(.Rows.Item(e.RowIndex).Cells.Item("Type").Value.ToString)
+                    End If
                 End If
-            End If
 
-            If dgv.Columns.Contains("Datum") Then
-                If e.ColumnIndex.AreEqual(dgv.Columns.Item("Datum").Index) Then
-                    e.Value = CDate(e.Value).ToString("dd.MM.yy HH:mm")
+                If .Columns.Contains("Datum") Then
+                    If e.ColumnIndex.AreEqual(.Columns.Item("Datum").Index) Then
+                        e.Value = CDate(e.Value).ToString("dd.MM.yy HH:mm")
+                    End If
                 End If
-            End If
 
-            If dgv.Columns.Contains("Duration") Then
-                If e.ColumnIndex.AreEqual(dgv.Columns.Item("Duration").Index) Then
-                    e.Value = CType(e.Value, TimeSpan).ToString("hh\:mm")
+                If .Columns.Contains("Duration") Then
+                    If e.ColumnIndex.AreEqual(.Columns.Item("Duration").Index) Then
+                        e.Value = CType(e.Value, TimeSpan).ToString("hh\:mm")
+                    End If
                 End If
-            End If
 
-            If dgv.Columns.Contains("Check") Then
-                If e.ColumnIndex.AreEqual(dgv.Columns.Item("Check").Index) Then
-                    e.Value = CBool(e.Value)
+                If .Columns.Contains("Check") Then
+                    If e.ColumnIndex.AreEqual(.Columns.Item("Check").Index) Then
+                        e.Value = CBool(e.Value)
+                    End If
                 End If
-            End If
 
-            e.FormattingApplied = True
-        End If
+                e.FormattingApplied = True
+            End If
+        End With
     End Sub
 
 #End Region

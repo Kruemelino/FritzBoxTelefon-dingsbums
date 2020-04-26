@@ -4,7 +4,7 @@ Imports System.ComponentModel
 
 Public Class FormTelefonbücher
     Private Enum SubDGVTyp
-        Kontak = 0
+        Kontakt = 0
         Telefonnummern = 1
         EMail = 2
     End Enum
@@ -48,32 +48,44 @@ Public Class FormTelefonbücher
 
                 If .Columns.Count.IsZero Then
                     ' Spalten hinzufügen
-                    .AddHiddenTextColumn("uniqueid", "uniqueid", GetType(String))
+                    .AddHiddenTextColumn("uniqueid", GetType(String))
                     .AddTextColumn("RealName", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                     .AddTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                     .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+                    .AddImageColumn("Löschen", PDfltStringEmpty)
                 End If
 
                 ' Datenquelle generieren setzen
-                .DataSource = New BindingSource With {.DataSource = New SortableBindingList(Of DGVDatenZeileTelbucheintrag)(ConvertToDataList(Telefonbuch.Kontakte))}
+                .DataSource = New BindingSource With {.DataSource = ConvertToDataTable(Telefonbuch.Kontakte, SubDGVTyp.Kontakt)}
                 .Enabled = True
             End With
         End If
     End Sub
 
-    Private Function ConvertToDataList(ByVal Telefonbucheinträge As List(Of FritzBoxXMLKontakt)) As List(Of DGVDatenZeileTelbucheintrag)
-        Dim DGVList As New List(Of DGVDatenZeileTelbucheintrag)()
+    Private Function ConvertToDataTable(ByVal Telefonbucheinträge As List(Of FritzBoxXMLKontakt), ByVal Typ As SubDGVTyp) As TelBuchDataTable
+        Dim DGVTabelle As New TelBuchDataTable
+        Dim DatenZeile As TelBuchDataRow
+
         If Telefonbucheinträge.Any Then
-            For Each Eintrag As FritzBoxXMLKontakt In Telefonbucheinträge
-                DGVList.Add(New DGVDatenZeileTelbucheintrag With {.Uniqueid = Eintrag.Uniqueid,
-                                                                  .RealName = Eintrag.Person.RealName,
-                                                                  .Nummer = Eintrag.Telefonie.GetFirstNumber?.Nummer,
-                                                                  .Typ = Eintrag.Telefonie.GetFirstNumber?.Typ,
-                                                                  .Telefonbucheintrag = Eintrag
-                                                                 })
-            Next
+            With DGVTabelle
+                Select Case Typ
+                    Case SubDGVTyp.Kontakt
+
+                        ' Spalten zur Datentabelle hinzufügen 
+                        .Columns.Add("uniqueid", GetType(String))
+                        .Columns.Add("RealName", GetType(String))
+                        .Columns.Add("Nummer", GetType(String))
+                        .Columns.Add("Typ", GetType(String))
+                        ' Zeilen hinzufügen
+                        For Each Eintrag As FritzBoxXMLKontakt In Telefonbucheinträge
+                            DatenZeile = CType(.Rows.Add(Eintrag.Uniqueid, Eintrag.Person.RealName, Eintrag.Telefonie.GetFirstNumber?.Nummer, Eintrag.Telefonie.GetFirstNumber?.Typ), TelBuchDataRow)
+                            DatenZeile.FritzBoxKontakt = Eintrag
+                        Next
+                End Select
+
+            End With
         End If
-        Return DGVList
+        Return DGVTabelle
     End Function
 
     Private Function ConvertToDataTable(ByVal Telefonbucheintrag As FritzBoxXMLKontakt, ByVal Typ As SubDGVTyp) As TelBuchDataTable
@@ -84,6 +96,7 @@ Public Class FormTelefonbücher
             With DGVTabelle
                 .Kontakt = Telefonbucheintrag
                 Select Case Typ
+
                     Case SubDGVTyp.Telefonnummern
                         ' Spalten zur Datentabelle hinzufügen 
                         .Columns.Add("Prio", GetType(Boolean))
@@ -95,6 +108,7 @@ Public Class FormTelefonbücher
                             DatenZeile.FritzBoxNummer = Eintrag
                             'DatenZeile.Eintrag = Telefonbucheintrag
                         Next
+
                     Case SubDGVTyp.EMail
                         ' Spalten zur Datentabelle hinzufügen 
                         .Columns.Add("EMail", GetType(String))
@@ -103,52 +117,13 @@ Public Class FormTelefonbücher
                             DatenZeile = CType(.Rows.Add(Eintrag.EMail), TelBuchDataRow)
                             DatenZeile.FritzBoxEmail = Eintrag
                         Next
+
                 End Select
 
             End With
         End If
         Return DGVTabelle
     End Function
-
-    Private Function ConvertToDataList(ByVal TelefonEMaileinträge As List(Of FritzBoxXMLEmail)) As List(Of DGVDatenZeileEMailEintrag)
-        Dim DGVList As New List(Of DGVDatenZeileEMailEintrag)()
-        If TelefonEMaileinträge.Any Then
-            For Each Eintrag As FritzBoxXMLEmail In TelefonEMaileinträge
-                DGVList.Add(New DGVDatenZeileEMailEintrag With {.EMail = Eintrag.EMail, .EMailEintrag = Eintrag})
-            Next
-        End If
-        Return DGVList
-    End Function
-
-
-#Region "DGV Sortierung"
-    Private Sub DGVColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles DGVTelBuchEinträge.ColumnHeaderMouseClick
-
-        Dim dGVSortOrder As ListSortDirection
-
-        With CType(sender, FBoxDataGridView)
-
-            If .SortedColumn Is Nothing Then
-                ' DGV wurde noch nicht sortiert
-                ' Sortierreihenfolge auf Ascending festlegen 
-                dGVSortOrder = ListSortDirection.Ascending
-            Else
-                ' DGV ist sortiert
-                If .Columns(e.ColumnIndex) Is .SortedColumn Then
-                    ' Sortierreihenfolge drehen
-                    dGVSortOrder = If(.SortOrder = SortOrder.Ascending, ListSortDirection.Descending, ListSortDirection.Ascending)
-                Else
-                    ' Sortierreihenfolge auf Ascending festlegen 
-                    dGVSortOrder = ListSortDirection.Ascending
-                    ' Alte Spalte zurücksetzen
-                    .SortedColumn.HeaderCell.SortGlyphDirection = SortOrder.None
-                End If
-            End If
-            .Columns(e.ColumnIndex).HeaderCell.SortGlyphDirection = CType(dGVSortOrder, SortOrder)
-            .Sort(.Columns(e.ColumnIndex), dGVSortOrder)
-        End With
-    End Sub
-#End Region
 
     Private Sub DGVTelBuchEinträge_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles DGVTelBuchEinträge.DataBindingComplete
         For Each Spalte As DataGridViewColumn In CType(sender, FBoxDataGridView).Columns
@@ -161,21 +136,27 @@ Public Class FormTelefonbücher
 
         If SelektierteZeilen.Count.IsPositive Then
             ' Für den ersten selektierten Eintrag die Details anzeigen
-            Dim Telefonbucheintrag As DGVDatenZeileTelbucheintrag = CType(SelektierteZeilen.Item(0).DataBoundItem, DGVDatenZeileTelbucheintrag)
-            If Telefonbucheintrag IsNot Nothing Then
-                With Telefonbucheintrag
+            Dim DatenZeilenAnsicht As DataRowView = CType(SelektierteZeilen.Item(0).DataBoundItem, DataRowView)
+            If DatenZeilenAnsicht IsNot Nothing Then
+                ' Erhalte die Datentabelle
+                Dim Datentabelle As TelBuchDataTable = CType(DatenZeilenAnsicht.DataView.Table, TelBuchDataTable)
+                ' Erhalte die Datenzeile in der Datentabelle
+                Dim Datenzeile As TelBuchDataRow = CType(DatenZeilenAnsicht.Row, TelBuchDataRow)
+
+                If Datenzeile.FritzBoxKontakt IsNot Nothing Then
+
                     ' Name des Kontaktes anzeigen
-                    TBName.Text = .RealName
+                    TBName.Text = Datenzeile.FritzBoxKontakt.Person.RealName
                     ' Telefonnummern darstellen
-                    SetWerteDGV(.Telefonbucheintrag, SubDGVTyp.Telefonnummern)
+                    SetWerteDGV(Datenzeile.FritzBoxKontakt, SubDGVTyp.Telefonnummern)
                     ' E-Mails auflisten
-                    SetWerteDGV(.Telefonbucheintrag, SubDGVTyp.EMail)
-                End With
+                    SetWerteDGV(Datenzeile.FritzBoxKontakt, SubDGVTyp.EMail)
+
+                End If
             End If
         End If
     End Sub
 
-    ' Private Sub SetNummernDGV(ByVal TelefonbuchEintragTelefonie As FritzBoxXMLTelefonie)
     Private Sub SetWerteDGV(ByVal TelefonbuchEintrag As FritzBoxXMLKontakt, ByVal Typ As SubDGVTyp)
         If TelefonbuchEintrag IsNot Nothing Then
 
@@ -189,6 +170,7 @@ Public Class FormTelefonbücher
                             .AddComboBoxColumn("Typ", "Typ", FritzBoxDefault.PDfltTelBuchTelTyp, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                             '.AddTextColumn("Vanity", "Vanity", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
                             '.AddTextColumn("Schnellwahl", "Schnellwahl", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+                            .AddImageColumn("Löschen", PDfltStringEmpty)
                         End If
 
                         ' Datenquelle generieren setzen
@@ -203,6 +185,7 @@ Public Class FormTelefonbücher
                         If .Columns.Count.IsZero Then
                             ' Spalten hinzufügen
                             .AddEditTextColumn("EMail", "E-Mail Adresse", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                            .AddImageColumn("Löschen", PDfltStringEmpty)
                         End If
 
                         ' Datenquelle generieren setzen
@@ -217,10 +200,10 @@ Public Class FormTelefonbücher
 
     Private Sub DGV_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles DGVTelefonnummern.CellEndEdit, DGVEMail.CellEndEdit
 
-
         Dim dgv As FBoxDataGridView = CType(sender, FBoxDataGridView)
         Dim dgvR As DataGridViewRow = dgv.Rows(e.RowIndex)
-        Dim DatenZeilenAnsicht As DataRowView = CType(dgvR.DataBoundItem, DataRowView)        ' kann leer sein
+
+        Dim DatenZeilenAnsicht As DataRowView = CType(dgvR.DataBoundItem, DataRowView)
 
         If DatenZeilenAnsicht IsNot Nothing Then
             ' Erhalte die Datentabelle
@@ -272,7 +255,6 @@ Public Class FormTelefonbücher
                         Stop
                     End Try
             End Select
-
         End If
         dgv.EndEdit()
     End Sub
@@ -285,6 +267,59 @@ Public Class FormTelefonbücher
         End With
     End Sub
 
+    Private Sub DGV_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles DGVTelefonnummern.CellFormatting, DGVEMail.CellFormatting, DGVTelBuchEinträge.CellFormatting
+        With CType(sender, FBoxDataGridView)
+
+            If e.RowIndex.IsLargerOrEqual(0) Then
+                If Not .Rows(e.RowIndex).IsNewRow Then
+                    If .Columns.Contains("Löschen") Then
+                        If e.ColumnIndex.AreEqual(.Columns.Item("Löschen").Index) Then
+                            e.Value = My.Resources.Cancel
+                        End If
+                    End If
+                Else
+                    e.Value = BlankImage()
+                End If
+                e.FormattingApplied = True
+            End If
+        End With
+    End Sub
+
+    Private Sub DGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DGVTelefonnummern.CellClick, DGVEMail.CellClick
+        With CType(sender, FBoxDataGridView)
+
+            If e.RowIndex.IsLargerOrEqual(0) And e.ColumnIndex.IsLargerOrEqual(0) And Not .Rows(e.RowIndex).IsNewRow Then
+
+                Select Case .Columns(e.ColumnIndex).Name
+                    Case "Löschen"
+                        Dim dgvR As DataGridViewRow = .Rows(e.RowIndex)
+                        Dim DatenZeilenAnsicht As DataRowView = CType(dgvR.DataBoundItem, DataRowView)
+
+                        If DatenZeilenAnsicht IsNot Nothing Then
+                            ' Erhalte die Datentabelle
+                            Dim Datentabelle As TelBuchDataTable = CType(DatenZeilenAnsicht.DataView.Table, TelBuchDataTable)
+                            ' Erhalte die Datenzeile in der Datentabelle
+                            Dim Datenzeile As TelBuchDataRow = CType(DatenZeilenAnsicht.Row, TelBuchDataRow)
+
+                            Select Case .Name
+                                Case DGVTelefonnummern.Name
+                                    ' Telefonnummer löschen
+                                    Datentabelle.Kontakt.Telefonie.Nummern.Remove(Datenzeile.FritzBoxNummer)
+                                Case DGVEMail.Name
+                                    ' E-Mail löschen
+                                    Datentabelle.Kontakt.Telefonie.Dienste.Emails.Remove(Datenzeile.FritzBoxEmail)
+
+                            End Select
+                            ' Zeile aus dem DatagridView entferen 
+                            .Rows.Remove(dgvR)
+
+                        End If
+
+                        .EndEdit()
+                End Select
+            End If
+        End With
+    End Sub
 
 #End Region
 
