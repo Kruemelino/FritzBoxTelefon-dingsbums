@@ -86,12 +86,13 @@ Public Class FritzBoxWählClient
                 End If
 
                 ' Rückmeldung, ob das Wählen erfolgreich war
-                SOAPDial = OutPutData.Contains("Error")
 
-                If SOAPDial Then
+                If OutPutData.Contains("Error") Then
                     StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
                     RaiseEvent SetStatus(StatusMeldung)
+                Else
+                    Return True
                 End If
             End If
         End Using

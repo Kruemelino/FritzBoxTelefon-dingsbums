@@ -8,10 +8,11 @@ Friend Class TelBuchListControlItem
     Friend WithEvents TmrMouseLeave As New Timer With {.Interval = 10}
 #Region "Properties"
     Private Property Roundness As Integer = 5
-    Public Property TelBuchName As String
-    Public Property Anzahl As Integer
-    Public Property Besitzer As String
+    'Public Property TelBuchName As String
+    'Public Property Anzahl As Integer
+    'Public Property Besitzer As String
     Public Property Selected As Boolean
+    Public Property Telefonbuch As FritzBoxXMLTelefonbuch
     Private Property ShowBorders As Boolean = False
 #End Region
 
@@ -187,13 +188,13 @@ Friend Class TelBuchListControlItem
 
         ' Telefonbuchname
         fnt = New Font(DefFontName, 10, DefFontStyleBold, DefGraphicsUnit, DefgdiCharSet)
-        RectName = New RectangleF(30, 0, gfx.MeasureString(TelBuchName.ToString, fnt).Width, workingRect.Height)
-        gfx.DrawString(TelBuchName, fnt, Brushes.Black, RectName, SF)
+        RectName = New RectangleF(30, 0, gfx.MeasureString(Telefonbuch.Name, fnt).Width, workingRect.Height)
+        gfx.DrawString(Telefonbuch.Name, fnt, Brushes.Black, RectName, SF)
 
         ' Anzahl an Elementen
         fnt = New Font(DefFontName, 10, DefFontStyle, DefGraphicsUnit, DefgdiCharSet)
-        RectAnzahl = New RectangleF(workingRect.Right - gfx.MeasureString(Anzahl.ToString, fnt).Width, 0, gfx.MeasureString(Anzahl.ToString, fnt).Width, workingRect.Height)
-        gfx.DrawString(Anzahl.ToString, fnt, Brushes.Black, RectAnzahl, SF)
+        RectAnzahl = New RectangleF(workingRect.Right - gfx.MeasureString(Telefonbuch.Kontakte.Count.ToString, fnt).Width, 0, gfx.MeasureString(Telefonbuch.Kontakte.Count.ToString, fnt).Width, workingRect.Height)
+        gfx.DrawString(Telefonbuch.Kontakte.Count.ToString, fnt, Brushes.Black, RectAnzahl, SF)
 
         If ShowBorders Then
             DrawRectangleF(gfx, workingRect, Color.Red)

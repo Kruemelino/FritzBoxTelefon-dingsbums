@@ -1,8 +1,10 @@
 ﻿Imports System.Windows.Forms
 Imports System.Data
-Imports System.ComponentModel
 
 Public Class FormTelefonbücher
+
+    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+
     Private Enum SubDGVTyp
         Kontakt = 0
         Telefonnummern = 1
@@ -16,7 +18,6 @@ Public Class FormTelefonbücher
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         LadeTelefonbücher()
 
-
     End Sub
 
     Private Async Sub LadeTelefonbücher()
@@ -26,6 +27,10 @@ Public Class FormTelefonbücher
             For Each TelBuch In ThisAddIn.PPhoneBookXML.Telefonbuch
                 LCTelefonbücher.AddTelefonbuch(TelBuch)
             Next
+            ' Lade das erste Telefonbuch
+            If LCTelefonbücher.flpListBox.Controls.Count.IsNotZero Then
+                SetTelBuchDGV(CType(LCTelefonbücher.flpListBox.Controls(0), TelBuchListControlItem).Telefonbuch)
+            End If
         End If
     End Sub
 
@@ -37,23 +42,29 @@ Public Class FormTelefonbücher
         End With
 
         ' Einträge des Telefonbuches in das DatagridView übertragen
-        SetTelBuchDGV(CType(sender, TelBuchListControl).Telefonbuch)
+        With CType(sender, TelBuchListControl)
 
+            With CType(.flpListBox.Controls(Index), TelBuchListControlItem)
+                SetTelBuchDGV(.Telefonbuch)
+            End With
+        End With
     End Sub
 
 #Region "DataGridView"
     Private Sub SetTelBuchDGV(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
         If Telefonbuch IsNot Nothing Then
             With DGVTelBuchEinträge
+                ' DataGridView aufräumen
+                .DataBindings.Clear()
+                .Rows.Clear()
+                .Columns.Clear()
 
-                If .Columns.Count.IsZero Then
-                    ' Spalten hinzufügen
-                    .AddHiddenTextColumn("uniqueid", GetType(String))
-                    .AddTextColumn("RealName", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
-                    .AddTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
-                    .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
-                    .AddImageColumn("Löschen", PDfltStringEmpty)
-                End If
+                ' Spalten hinzufügen
+                .AddHiddenTextColumn("uniqueid", GetType(String))
+                .AddTextColumn("RealName", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                .AddTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+                .AddImageColumn("Löschen", PDfltStringEmpty)
 
                 ' Datenquelle generieren setzen
                 .DataSource = New BindingSource With {.DataSource = ConvertToDataTable(Telefonbuch.Kontakte, SubDGVTyp.Kontakt)}

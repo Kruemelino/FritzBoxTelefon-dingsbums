@@ -31,8 +31,9 @@ Public Class FormWählclient
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         WählClient = WClient
 
-        Me.LStatus.Text = PDfltStringEmpty
+        LStatus.Text = PDfltStringEmpty
 
+        ' Lade die Telefone
         SetTelefonDaten()
     End Sub
 
@@ -42,47 +43,48 @@ Public Class FormWählclient
         ' Status schreiben
         WählClient_SetStatus(PWählClientStatusLadeGeräte)
         ' Leere das Control
-        Me.ComboBoxFon.Items.Clear()
+        ComboBoxFon.Items.Clear()
         For Each TelGerät As Telefoniegerät In XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) Not TG.IsFax)
-            Me.ComboBoxFon.Items.Add(TelGerät.Name)
+            ComboBoxFon.Items.Add(TelGerät.Name)
         Next
 
         ' Ausgewähltes Stamdardgerät
         StdTel = XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) TG.StdTelefon).FirstOrDefault
         If StdTel Is Nothing Then
-            If XMLData.POptionen.PTelAnschluss Is Nothing OrElse XMLData.POptionen.PTelAnschluss.IsStringEmpty OrElse Me.ComboBoxFon.Items.Contains(XMLData.POptionen.PTelAnschluss) Then
-                Me.ComboBoxFon.SelectedIndex = 0
+            If XMLData.POptionen.PTelAnschluss Is Nothing OrElse XMLData.POptionen.PTelAnschluss.IsStringEmpty OrElse ComboBoxFon.Items.Contains(XMLData.POptionen.PTelAnschluss) Then
+                ComboBoxFon.SelectedIndex = 0
             Else
-                Me.ComboBoxFon.SelectedIndex = Me.ComboBoxFon.Items.IndexOf(XMLData.POptionen.PTelAnschluss)
+                ComboBoxFon.SelectedIndex = ComboBoxFon.Items.IndexOf(XMLData.POptionen.PTelAnschluss)
                 WählClient_SetStatus(PWählClientStatusLetztesGerät)
             End If
         Else
             WählClient_SetStatus(PWählClientStatusStandardGerät)
-            Me.ComboBoxFon.SelectedIndex = Me.ComboBoxFon.Items.IndexOf(StdTel.Name)
+            ComboBoxFon.SelectedIndex = ComboBoxFon.Items.IndexOf(StdTel.Name)
         End If
-        Me.CBCLIR.Checked = XMLData.POptionen.PCBCLIR
+        CBCLIR.Checked = XMLData.POptionen.PCBCLIR
     End Sub
 
     Friend Sub SetOutlookKontakt(ByVal oContact As Outlook.ContactItem)
         Dim ImgPath As String
         ' Outlook Kontakt sichern
         OKontakt = oContact
-        Me.ButtonZeigeKontakt.Enabled = True
+        ButtonZeigeKontakt.Enabled = True
         ' Status schreiben
         WählClient_SetStatus(PWählClientStatusLadeKontaktTelNr)
         ' Kopf Schreiben
-        Me.Text = PWählClientFormText(String.Format("{0}{1}", oContact.FullName, If(oContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", oContact.CompanyName), PDfltStringEmpty)))
+        Text = PWählClientFormText(String.Format("{0}{1}", oContact.FullName, If(oContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", oContact.CompanyName), PDfltStringEmpty)))
         ' Direktwahl deaktivieren
-        With Me.PanelDirektwahl
+        With PanelDirektwahl
             .Enabled = False
             .Visible = False
         End With
         ' DataGridView auf Sollgröße maximieren 
-        With Me.PanelKontaktwahl
-            .Height = Me.PanelDirektwahl.Top + Me.PanelDirektwahl.Height
+        With PanelKontaktwahl
+            .Height = PanelDirektwahl.Top + PanelDirektwahl.Height
         End With
+
         ' DGV-Füllem
-        With Me.dgvKontaktNr
+        With dgvKontaktNr
 
             .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 25)
             .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 200)
@@ -121,18 +123,18 @@ Public Class FormWählclient
         ' Status schreiben
         WählClient_SetStatus(PWählClientStatusLadeTelNr)
         ' Kopf Schreiben
-        Me.Text = PWählClientFormText(TelNr.Formatiert)
+        Text = PWählClientFormText(TelNr.Formatiert)
         ' Direktwahl deaktivieren
-        With Me.PanelDirektwahl
+        With PanelDirektwahl
             .Enabled = False
             .Visible = False
         End With
         ' DataGridView auf Sollgröße maximieren 
-        With Me.PanelKontaktwahl
-            .Height = Me.PanelDirektwahl.Top + Me.PanelDirektwahl.Height
+        With PanelKontaktwahl
+            .Height = PanelDirektwahl.Top + PanelDirektwahl.Height
         End With
         ' DGV-Füllem
-        With Me.dgvKontaktNr
+        With dgvKontaktNr
             .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 25)
             '.AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 200)
             .AddTextColumn("TelNr", "Telefonnummern", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), DataGridViewAutoSizeColumnMode.Fill)
@@ -143,17 +145,32 @@ Public Class FormWählclient
 
     Friend Sub SetDirektwahl()
         ' Kopf Schreiben
-        Me.Text = PWählClientFormText("Direktwahl")
+        Text = PWählClientFormText("Direktwahl")
         ' DatagridView deaktivieren
-        With Me.dgvKontaktNr
+        With dgvKontaktNr
             .Enabled = False
             .Visible = False
         End With
         ' Panel auf Sollgröße maximieren
-        With Me.PanelDirektwahl
-            .Top = Me.dgvKontaktNr.Top
+        PanelDirektwahl.Top = dgvKontaktNr.Top
+
+        ' Wahlwiederhohlung in Combobox schreiben
+        With CBoxDirektwahl
+            .DataBindings.Clear()
+            .DisplayMember = NameOf(Telefonnummer.Unformatiert)
+            .ValueMember = NameOf(Telefonnummer.Unformatiert)
+            .DataSource = GetTelNrList(XMLData.PTelefonie.CALLListe?.Einträge)
+            .SelectedItem = Nothing
         End With
     End Sub
+
+    Private Function GetTelNrList(ByVal Telefonate As List(Of Telefonat)) As List(Of Telefonnummer)
+        GetTelNrList = New List(Of Telefonnummer)
+        For Each Tel As Telefonat In Telefonate
+            GetTelNrList.Add(Tel.GegenstelleTelNr)
+        Next
+    End Function
+
 
 #Region "DataTable"
     Private Overloads Function FillDatatable(ByVal oContact As Outlook.ContactItem) As WählClientDataTable
@@ -196,16 +213,11 @@ Public Class FormWählclient
     End Function
 #End Region
     Private Sub DgvKontaktNr_SelectionChanged(sender As Object, e As EventArgs)
-        Me.BCancelCall.Visible = True
-        Me.BCancelCall.Focus()
-        Me.ComboBoxFon.Enabled = False
-        Me.dgvKontaktNr.Enabled = False
-
         Dim tmpDataRow As WählClientDataRow
 
         ' Prüfung ob es sich bei der gewählten nummer um eine Mobilnummer handelt.
-        If Me.dgvKontaktNr.SelectedRows.Count.IsNotZero Then
-            tmpDataRow = CType(CType(Me.dgvKontaktNr.SelectedRows(0).DataBoundItem, DataRowView).Row, WählClientDataRow)
+        If dgvKontaktNr.SelectedRows.Count.IsNotZero Then
+            tmpDataRow = CType(CType(dgvKontaktNr.SelectedRows(0).DataBoundItem, DataRowView).Row, WählClientDataRow)
 
             If tmpDataRow.TelNr IsNot Nothing Then
                 DialTelNr(tmpDataRow.TelNr, False)
@@ -217,39 +229,44 @@ Public Class FormWählclient
 
         Dim DialCode As String
 
+        BCancelCall.Visible = True
+        BCancelCall.Focus()
+        ComboBoxFon.Enabled = False
+        dgvKontaktNr.Enabled = False
+
         WählClient_SetStatus(PWählClientStatusTelNrAuswahl(TelNr.Formatiert))
         If Not TelNr.IstMobilnummer OrElse (XMLData.POptionen.PCBCheckMobil AndAlso MsgBox(PWählClientFrageMobil, MsgBoxStyle.YesNo, "Fritz!Box Wählclient") = vbYes) Then
             If AufbauAbbrechen Then
                 DialCode = PDfltStringEmpty
                 WählClient_SetStatus(PWählClientStatusAbbruch)
             Else
-                Me.LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
+                LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
 
-                DialCode = TelNr.Unformatiert
+                DialCode = TelNr.Unformatiert.RegExReplace("#{1}$", PDfltStringEmpty)
                 If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
 
-                DialCode = String.Format("{2}{1}{0}{3}", DialCode, XMLData.POptionen.PTBAmt, If(Me.CBCLIR.Checked, "*31#", PDfltStringEmpty), "#")
+                DialCode = $"{If(CBCLIR.Checked, "*31#", PDfltStringEmpty)}{XMLData.POptionen.PTBAmt}{DialCode}#"
 
                 WählClient_SetStatus(PWählClientStatusWählClient(DialCode))
-                NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, CStr(Me.ComboBoxFon.SelectedItem))
+                NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, CStr(ComboBoxFon.SelectedItem))
             End If
 
-            If WählClient.SOAPDial(DialCode, XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.AreEqual(CStr(Me.ComboBoxFon.SelectedItem))), AufbauAbbrechen) Then
+            If WählClient.SOAPDial(DialCode, XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.AreEqual(CStr(ComboBoxFon.SelectedItem))), AufbauAbbrechen) Then
                 If AufbauAbbrechen Then
-                    Me.LStatus.Text = PWählClientDialHangUp
+                    LStatus.Text = PWählClientDialHangUp
                 Else
-                    Me.LStatus.Text = PWählClientJetztAbheben
+                    LStatus.Text = PWählClientJetztAbheben
                 End If
             Else
-                Me.LStatus.Text = PWählClientDialFehler
+                LStatus.Text = PWählClientDialFehler
             End If
 
             ' Einstellungen (Welcher Anschluss, CLIR...) speichern
-            XMLData.POptionen.PCBCLIR = Me.CBCLIR.Checked
+            XMLData.POptionen.PCBCLIR = CBCLIR.Checked
             XMLData.POptionen.PTelAnschluss = ComboBoxFon.SelectedText
             ' Timer zum automatischen Schließen des Fensters starten
             If XMLData.POptionen.PCBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.PTBWClientEnblDauer * 1000)
-            Me.BCancelCall.Enabled = True
+            BCancelCall.Enabled = True
         End If
     End Sub
 
@@ -270,17 +287,17 @@ Public Class FormWählclient
         AutoClose()
     End Sub
     Private Sub AutoClose()
-        If Me.InvokeRequired Then
-            Me.Invoke(New DlgFormWählClient(AddressOf AutoClose))
+        If InvokeRequired Then
+            Invoke(New DlgFormWählClient(AddressOf AutoClose))
         Else
-            Me.Close()
-            Me.Dispose(True)
+            Close()
+            Dispose(True)
         End If
     End Sub
 
 #Region "Status"
     Private Sub WählClient_SetStatus(Status As String) Handles WählClient.SetStatus
-        With Me.TBStatus
+        With TBStatus
             If .InvokeRequired Then
                 .Invoke(New DlgStatus(AddressOf WählClient_SetStatus), Status)
             Else
@@ -297,26 +314,30 @@ Public Class FormWählclient
                                                                        ButtonZeigeKontakt.Click,
                                                                        BSchließen.Click
         Select Case CType(sender, Button).Name
-            Case Me.BWählenDirektwahl.Name
-                Using tmpTelNr As New Telefonnummer With {.SetNummer = Me.TBDirektwahl.Text}
+            Case BWählenDirektwahl.Name
+                Using tmpTelNr As New Telefonnummer With {.SetNummer = CBoxDirektwahl.Text}
                     DialTelNr(tmpTelNr, False)
                 End Using
-            Case Me.BCancelCall.Name
+
+            Case BCancelCall.Name
                 Using tmpTelNr As New Telefonnummer
                     DialTelNr(tmpTelNr, True)
                 End Using
+
                 If Not TimerSchließen Is Nothing Then TimerSchließen.Stop()
                 dgvKontaktNr.ClearSelection() ' Ein erneutes Wählen ermöglichen
-            Case Me.BVIP.Name
-            Case Me.ButtonZeigeKontakt.Name
+            Case BVIP.Name
+            Case ButtonZeigeKontakt.Name
                 OKontakt.Display()
-            Case Me.BSchließen.Name
-                Me.Close()
+
+            Case BSchließen.Name
+                Close()
+
         End Select
     End Sub
 
     Private Sub FormWählclient_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If PKontaktbild IsNot Nothing Then PKontaktbild.Dispose()
-        Me.Dispose(True)
+        Dispose(True)
     End Sub
 End Class

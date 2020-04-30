@@ -98,7 +98,7 @@ Public Class Telefonnummer
             NurZiffern = NurZiffern.RegExReplace("[^0-9\#\*]", PDfltStringEmpty)
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-            NurZiffern = NurZiffern.RegExReplace(String.Concat("^0*", XMLData.POptionen.PTBLandesKZ, "{1}[0]?"), "0")
+            NurZiffern = NurZiffern.RegExReplace($"^0{XMLData.POptionen.PTBLandesKZ}{{1}}[0]?", "0")
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
             NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")

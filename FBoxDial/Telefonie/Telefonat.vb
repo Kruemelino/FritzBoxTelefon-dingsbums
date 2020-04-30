@@ -54,19 +54,32 @@ Imports Microsoft.Office.Interop
                 Select Case i
                     Case 0 ' Uhrzeit des Telefonates - Startzeit
                         ZeitBeginn = CDate(FBStatus(i))
+
                     Case 2 ' Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
                         ID = CInt(FBStatus(i))
+
                     Case 3 ' Eingehende (anrufende) Telefonnummer
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
 
                         NrUnterdrückt = GegenstelleTelNr.Unbekannt
+
                     Case 4 ' Eigene (angerufene) Telefonnummer, MSN
                         Dim j As Integer = i ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
-                        EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(New Telefonnummer With {.SetNummer = FBStatus(j)}))
+
+                        'Test 'EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(New Telefonnummer With {.SetNummer = FBStatus(j)}))
+                        EigeneTelNr = XMLData.PTelefonie.GetNummer(FBStatus(j))
+
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
+                        If EigeneTelNr Is Nothing Then
+                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(j)} konnte nicht ermittelt werden.")
+                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(j)}
+                        End If
+
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
+
                     Case 5 ' Anschluss, SIP...
                         AnschlussID = FBStatus(i)
+
                 End Select
             Next
             AnrMonRING()
@@ -85,21 +98,31 @@ Imports Microsoft.Office.Interop
                 Select Case i
                     Case 0 ' Uhrzeit des Telefonates - Startzeit
                         ZeitBeginn = CDate(FBStatus(i))
+
                     Case 2 ' Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
                         ID = CInt(FBStatus(i))
+
                     Case 3 ' Nebenstellennummer, eindeutige Zuordnung des Telefons
                         NebenstellenNummer = CInt(FBStatus(i))
+
                     Case 4 ' Eingehende (anrufende) Telefonnummer
                         Dim j As Integer = i ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
-                        EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(FBStatus(j)))
+                        EigeneTelNr = XMLData.PTelefonie.GetNummer(FBStatus(j))
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
-                        If EigeneTelNr IsNot Nothing Then
-                            OutEigeneTelNr = EigeneTelNr.Unformatiert
+                        If EigeneTelNr Is Nothing Then
+                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(j)} konnte nicht ermittelt werden.")
+                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(j)}
+                            OutEigeneTelNr = FBStatus(j)
                         End If
+
+                        OutEigeneTelNr = EigeneTelNr.Unformatiert
+
                     Case 5 ' Gewählte (ausgehende) Telefonnummer
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
+
                     Case 6
                         AnschlussID = FBStatus(i)
+
                 End Select
             Next
 
@@ -385,14 +408,14 @@ Imports Microsoft.Office.Interop
 
                     With olJournal
 
-                        .Subject = String.Format("{0} {1}{2}", tmpSubject, Anrufer, If(NrUnterdrückt, PDfltStringEmpty, If(Anrufer.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert))))
+                        .Subject = $"{tmpSubject} {Anrufer}{If(NrUnterdrückt, PDfltStringEmpty, If(Anrufer.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert)))}"
                         .Duration = Dauer.GetLarger(31) \ 60
                         .Body = PDfltJournalBody(If(NrUnterdrückt, PDfltStringUnbekannt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
                         .Start = ZeitBeginn
                         .Companies = Firma
 
                         ' Bei verpassten Anrufen ist TelGerät ggf. leer
-                        .Categories = String.Format("{0};{1}", If(TelGerät Is Nothing, "Verpasst", TelGerät.Name), String.Join("; ", PDfltJournalDefCategories.ToArray))
+                        .Categories = $"{If(TelGerät Is Nothing, "Verpasst", TelGerät.Name)};{String.Join("; ", PDfltJournalDefCategories.ToArray)}"
 
                         ' Testweise: Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
                         If OlKontakt IsNot Nothing Then

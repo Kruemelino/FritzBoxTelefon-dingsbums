@@ -421,26 +421,28 @@ Public Class FormCfg
             ' Schleife durch jeden Ordner der indiziert werden soll
             For Each Ordner As IndizerterOrdner In OrdnerListe
 
-                Dim BWIndexer As New BackgroundWorker
-
-                With BWIndexer
-                    AddHandler .DoWork, AddressOf BWIndexer_DoWork
-                    AddHandler .ProgressChanged, AddressOf BWIndexer_ProgressChanged
-                    AddHandler .RunWorkerCompleted, AddressOf BWIndexer_RunWorkerCompleted
-                End With
-
-                BWIndexerList.Add(BWIndexer)
-
                 ' Buttons einschalten
                 BIndizierungAbbrechen.Enabled = True
                 BIndizierungStart.Enabled = False
 
-                NLogger.Debug("Starte {0}. Backgroundworker für Kontaktindizierung im Ordner {1}.", BWIndexerList.Count, Ordner.Name)
+                Dim BWIndexer As New BackgroundWorker
+
                 With BWIndexer
-                    .WorkerSupportsCancellation = False
+                    ' Fürge Ereignishandler hinzu
+                    AddHandler .DoWork, AddressOf BWIndexer_DoWork
+                    AddHandler .ProgressChanged, AddressOf BWIndexer_ProgressChanged
+                    AddHandler .RunWorkerCompleted, AddressOf BWIndexer_RunWorkerCompleted
+
+                    ' Setze Flags
+                    .WorkerSupportsCancellation = True
                     .WorkerReportsProgress = True
+                    ' Und los...
+                    NLogger.Debug("Starte {0}. Backgroundworker für Kontaktindizierung im Ordner {1}.", BWIndexerList.Count, Ordner.Name)
                     .RunWorkerAsync(New Indizierungsdaten With {.Erstellen = Erstellen, .olFolder = Ordner.MAPIFolder})
                 End With
+
+                ' Füge dern Backgroundworker der Liste hinzu
+                BWIndexerList.Add(BWIndexer)
             Next
         End If
     End Sub

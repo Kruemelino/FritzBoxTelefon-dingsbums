@@ -24,4 +24,8 @@
         End If
     End Function
 
+    Friend Function GetNummer(ByVal TelNrStr As String) As Telefonnummer
+        Return Telefonnummern.Find(Function(Tel) Tel.Equals(TelNrStr))
+    End Function
+
 End Class

@@ -418,7 +418,7 @@ Public Class JSON
     Public Function GetUploadResult(ByVal strJSON As String) As FritzBoxJSONUploadResult
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONUploadResult)(strJSON)
     End Function
-    Public Function GetLokalValues(ByVal strJSON As String) As FritzBoxLokaleDaten
+    Public Function GetLocalValues(ByVal strJSON As String) As FritzBoxLokaleDaten
         Return JsonConvert.DeserializeObject(Of FritzBoxLokaleDaten)(strJSON)
     End Function
 #Region "IDisposable Support"

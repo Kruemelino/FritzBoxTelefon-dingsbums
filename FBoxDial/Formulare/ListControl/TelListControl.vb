@@ -4,20 +4,18 @@
 ''' </summary>
 Friend Class TelBuchListControl
     Friend Event ItemClick(sender As Object, Index As Integer)
-    Friend Property Telefonbuch As FritzBoxXMLTelefonbuch
     Private Property LastSelected As TelBuchListControlItem = Nothing
 
     Friend Sub AddTelefonbuch(TelBuch As FritzBoxXMLTelefonbuch)
-        Telefonbuch = TelBuch
         Dim TelListControl As New TelBuchListControlItem With {
             .Name = String.Format("TelBuch", flpListBox.Controls.Count + 1),
             .Margin = New Padding(0),
-            .TelBuchName = Telefonbuch.Name,
-            .Anzahl = Telefonbuch.Kontakte.Count,
-            .Besitzer = Telefonbuch.Owner,
-            .ScaleFaktor = GetScaling()
+            .ScaleFaktor = GetScaling(),
+            .Telefonbuch = TelBuch
         }
-
+        '.TelBuchName = TelBuch.Name,
+        '    .Anzahl = TelBuch.Kontakte.Count,
+        '    .Besitzer = TelBuch.Owner,
         AddHandler TelListControl.SelectionChanged, AddressOf SelectionChanged
         AddHandler TelListControl.Click, AddressOf ItemClicked
 
