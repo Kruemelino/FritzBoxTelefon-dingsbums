@@ -432,7 +432,12 @@
     <EmbeddedResource Include="Resources\CheckboxUncheck_16x.png" />
     <EmbeddedResource Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\Add.png" />
+    <Content Include="Resources\Download.png" />
+    <Content Include="Resources\Remove.png" />
+    <Content Include="Resources\Upload.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

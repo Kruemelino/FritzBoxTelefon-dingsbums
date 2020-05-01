@@ -4,11 +4,14 @@
 ''' </summary>
 Friend Class TelBuchListControl
     Friend Event ItemClick(sender As Object, Index As Integer)
+
     Private Property LastSelected As TelBuchListControlItem = Nothing
+
+    Public Event ContextMenuClick(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch)
 
     Friend Sub AddTelefonbuch(TelBuch As FritzBoxXMLTelefonbuch)
         Dim TelListControl As New TelBuchListControlItem With {
-            .Name = String.Format("TelBuch", flpListBox.Controls.Count + 1),
+            .Name = $"TelBuch_{flpListBox.Controls.Count + 1}",
             .Margin = New Padding(0),
             .ScaleFaktor = GetScaling(),
             .Telefonbuch = TelBuch
@@ -18,20 +21,30 @@ Friend Class TelBuchListControl
         '    .Besitzer = TelBuch.Owner,
         AddHandler TelListControl.SelectionChanged, AddressOf SelectionChanged
         AddHandler TelListControl.Click, AddressOf ItemClicked
+        AddHandler TelListControl.ContextMenuClicked, AddressOf ContextMenuClicked
 
         flpListBox.Controls.Add(TelListControl)
         SetupAnchors()
     End Sub
 
-    Friend Sub Remove(name As String)
+    Friend Sub Remove(TelBuch As FritzBoxXMLTelefonbuch)
+
         ' grab which control is being removed
-        Dim TelListControl As TelBuchListControlItem = CType(flpListBox.Controls(name), TelBuchListControlItem)
-        flpListBox.Controls.Remove(TelListControl)
+        For Each ctrl As TelBuchListControlItem In flpListBox.Controls
+            If ctrl.Telefonbuch.Equals(TelBuch) Then
+                flpListBox.Controls.Remove(ctrl)
+
+                RemoveHandler ctrl.SelectionChanged, AddressOf SelectionChanged
+                RemoveHandler ctrl.Click, AddressOf ItemClicked
+                RemoveHandler ctrl.ContextMenuClicked, AddressOf ContextMenuClicked
+
+                ' now dispose off properly
+                ctrl.Dispose()
+
+                Exit For
+            End If
+        Next
         ' remove the event hook
-        RemoveHandler TelListControl.SelectionChanged, AddressOf SelectionChanged
-        RemoveHandler TelListControl.Click, AddressOf ItemClicked
-        ' now dispose off properly
-        TelListControl.Dispose()
         SetupAnchors()
     End Sub
 
@@ -85,4 +98,8 @@ Friend Class TelBuchListControl
     Private Sub ItemClicked(sender As Object, e As EventArgs)
         RaiseEvent ItemClick(Me, flpListBox.Controls.IndexOfKey(CType(sender, TelBuchListControlItem).Name))
     End Sub
+    Private Sub ContextMenuClicked(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch)
+        RaiseEvent ContextMenuClick(sender, e, TB)
+    End Sub
+
 End Class

@@ -88,12 +88,7 @@ Friend Class FritzBoxSOAPService
     End Function
 
     Private Function SetupArgument(ByVal ArgumentName As String, ArgumentDirection As String, ArgumentRelatedStateVariable As String) As Argument
-        SetupArgument = New Argument
-        With SetupArgument
-            .Name = ArgumentName
-            .Direction = ArgumentDirection
-            .RelatedStateVariable = ArgumentRelatedStateVariable
-        End With
+        SetupArgument = New Argument With {.Direction = ArgumentDirection, .Name = ArgumentName, .RelatedStateVariable = ArgumentRelatedStateVariable}
     End Function
 
     'Private Function SetupStateVariables() As List(Of StateVariable)

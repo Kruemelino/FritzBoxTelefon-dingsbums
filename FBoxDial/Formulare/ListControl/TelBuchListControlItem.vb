@@ -3,9 +3,14 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
 Friend Class TelBuchListControlItem
-
+#Region "Events"
     Public Event SelectionChanged(sender As Object)
     Friend WithEvents TmrMouseLeave As New Timer With {.Interval = 10}
+
+    Public Event ContextMenuClicked(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch)
+
+#End Region
+
 #Region "Properties"
     Private Property Roundness As Integer = 5
     'Public Property TelBuchName As String
@@ -48,6 +53,10 @@ Friend Class TelBuchListControlItem
         If Selected = False Then
             Selected = True
             RaiseEvent SelectionChanged(Me)
+        End If
+
+        If e.Button = MouseButtons.Right Then
+            CMSTelefonbücher.Show(MousePosition)
         End If
     End Sub
 
@@ -219,6 +228,12 @@ Friend Class TelBuchListControlItem
     Private Sub TelBuchListControlItem_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
         Refresh()
     End Sub
+
 #End Region
+
+    Private Sub CMSTelefonbücher_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles CMSTelefonbücher.ItemClicked
+        RaiseEvent ContextMenuClicked(sender, e, Telefonbuch)
+    End Sub
+
 
 End Class

@@ -22,16 +22,16 @@ Partial Class FormTelefonbücher
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MainSplitContainerV = New System.Windows.Forms.SplitContainer()
-        Me.SubSplitContainer = New System.Windows.Forms.SplitContainer()
-        Me.TBName = New System.Windows.Forms.TextBox()
         Me.LCTelefonbücher = New FBoxDial.TelBuchListControl()
+        Me.SubSplitContainer = New System.Windows.Forms.SplitContainer()
         Me.DGVTelBuchEinträge = New FBoxDial.FBoxDataGridView()
         Me.DGVEMail = New FBoxDial.FBoxDataGridView()
         Me.DGVTelefonnummern = New FBoxDial.FBoxDataGridView()
+        Me.TBName = New System.Windows.Forms.TextBox()
         CType(Me.MainSplitContainerV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MainSplitContainerV.Panel1.SuspendLayout()
         Me.MainSplitContainerV.Panel2.SuspendLayout()
@@ -56,18 +56,17 @@ Partial Class FormTelefonbücher
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.GripMargin = New System.Windows.Forms.Padding(2, 2, 0, 2)
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(954, 36)
+        Me.MenuStrip1.Size = New System.Drawing.Size(954, 24)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'MainSplitContainerV
         '
         Me.MainSplitContainerV.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MainSplitContainerV.Location = New System.Drawing.Point(0, 36)
+        Me.MainSplitContainerV.Location = New System.Drawing.Point(0, 24)
         Me.MainSplitContainerV.Name = "MainSplitContainerV"
         '
         'MainSplitContainerV.Panel1
@@ -77,9 +76,18 @@ Partial Class FormTelefonbücher
         'MainSplitContainerV.Panel2
         '
         Me.MainSplitContainerV.Panel2.Controls.Add(Me.SubSplitContainer)
-        Me.MainSplitContainerV.Size = New System.Drawing.Size(954, 538)
+        Me.MainSplitContainerV.Size = New System.Drawing.Size(954, 550)
         Me.MainSplitContainerV.SplitterDistance = 275
         Me.MainSplitContainerV.TabIndex = 2
+        '
+        'LCTelefonbücher
+        '
+        Me.LCTelefonbücher.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.LCTelefonbücher.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LCTelefonbücher.Location = New System.Drawing.Point(0, 0)
+        Me.LCTelefonbücher.Name = "LCTelefonbücher"
+        Me.LCTelefonbücher.Size = New System.Drawing.Size(275, 550)
+        Me.LCTelefonbücher.TabIndex = 0
         '
         'SubSplitContainer
         '
@@ -98,35 +106,16 @@ Partial Class FormTelefonbücher
         Me.SubSplitContainer.Panel2.Controls.Add(Me.DGVEMail)
         Me.SubSplitContainer.Panel2.Controls.Add(Me.DGVTelefonnummern)
         Me.SubSplitContainer.Panel2.Controls.Add(Me.TBName)
-        Me.SubSplitContainer.Size = New System.Drawing.Size(675, 538)
-        Me.SubSplitContainer.SplitterDistance = 210
+        Me.SubSplitContainer.Size = New System.Drawing.Size(675, 550)
+        Me.SubSplitContainer.SplitterDistance = 213
         Me.SubSplitContainer.TabIndex = 0
-        '
-        'TBName
-        '
-        Me.TBName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TBName.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TBName.Location = New System.Drawing.Point(0, 3)
-        Me.TBName.Name = "TBName"
-        Me.TBName.Size = New System.Drawing.Size(663, 35)
-        Me.TBName.TabIndex = 1
-        '
-        'LCTelefonbücher
-        '
-        Me.LCTelefonbücher.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LCTelefonbücher.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LCTelefonbücher.Location = New System.Drawing.Point(0, 0)
-        Me.LCTelefonbücher.Name = "LCTelefonbücher"
-        Me.LCTelefonbücher.Size = New System.Drawing.Size(275, 538)
-        Me.LCTelefonbücher.TabIndex = 0
         '
         'DGVTelBuchEinträge
         '
         Me.DGVTelBuchEinträge.AllowUserToAddRows = False
         Me.DGVTelBuchEinträge.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.DGVTelBuchEinträge.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.DGVTelBuchEinträge.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.DGVTelBuchEinträge.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -141,7 +130,7 @@ Partial Class FormTelefonbücher
         Me.DGVTelBuchEinträge.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DGVTelBuchEinträge.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.DGVTelBuchEinträge.ShowEditingIcon = False
-        Me.DGVTelBuchEinträge.Size = New System.Drawing.Size(663, 214)
+        Me.DGVTelBuchEinträge.Size = New System.Drawing.Size(663, 217)
         Me.DGVTelBuchEinträge.TabIndex = 0
         '
         'DGVEMail
@@ -160,7 +149,7 @@ Partial Class FormTelefonbücher
         Me.DGVEMail.RowTemplate.Height = 28
         Me.DGVEMail.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DGVEMail.ShowEditingIcon = False
-        Me.DGVEMail.Size = New System.Drawing.Size(663, 124)
+        Me.DGVEMail.Size = New System.Drawing.Size(663, 133)
         Me.DGVEMail.TabIndex = 2
         '
         'DGVTelefonnummern
@@ -180,8 +169,18 @@ Partial Class FormTelefonbücher
         Me.DGVTelefonnummern.RowTemplate.Height = 28
         Me.DGVTelefonnummern.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DGVTelefonnummern.ShowEditingIcon = False
-        Me.DGVTelefonnummern.Size = New System.Drawing.Size(663, 124)
+        Me.DGVTelefonnummern.Size = New System.Drawing.Size(663, 133)
         Me.DGVTelefonnummern.TabIndex = 0
+        '
+        'TBName
+        '
+        Me.TBName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TBName.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TBName.Location = New System.Drawing.Point(0, 3)
+        Me.TBName.Name = "TBName"
+        Me.TBName.Size = New System.Drawing.Size(663, 35)
+        Me.TBName.TabIndex = 1
         '
         'FormTelefonbücher
         '

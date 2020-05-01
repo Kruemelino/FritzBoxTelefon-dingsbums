@@ -1,5 +1,4 @@
 ﻿Imports System.Collections
-Imports System.Threading.Tasks
 Imports Microsoft.Office.Interop
 
 Public Class FritzBoxWählClient

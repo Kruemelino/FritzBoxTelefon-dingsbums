@@ -1,8 +1,11 @@
 ﻿Imports System.Windows.Forms
 Imports System.Data
+Imports System.ComponentModel
 
 Public Class FormTelefonbücher
-
+#Region "Delegaten"
+    Private Delegate Sub DelgSetListControl(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
+#End Region
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
 
     Private Enum SubDGVTyp
@@ -52,8 +55,8 @@ Public Class FormTelefonbücher
 
 #Region "DataGridView"
     Private Sub SetTelBuchDGV(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
-        If Telefonbuch IsNot Nothing Then
-            With DGVTelBuchEinträge
+        'If Telefonbuch IsNot Nothing Then
+        With DGVTelBuchEinträge
                 ' DataGridView aufräumen
                 .DataBindings.Clear()
                 .Rows.Clear()
@@ -68,9 +71,10 @@ Public Class FormTelefonbücher
 
                 ' Datenquelle generieren setzen
                 .DataSource = New BindingSource With {.DataSource = ConvertToDataTable(Telefonbuch.Kontakte, SubDGVTyp.Kontakt)}
+
                 .Enabled = True
             End With
-        End If
+        'End If
     End Sub
 
     Private Function ConvertToDataTable(ByVal Telefonbucheinträge As List(Of FritzBoxXMLKontakt), ByVal Typ As SubDGVTyp) As TelBuchDataTable
@@ -295,6 +299,7 @@ Public Class FormTelefonbücher
             End If
         End With
     End Sub
+#End Region
 
     Private Sub DGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DGVTelefonnummern.CellClick, DGVEMail.CellClick
         With CType(sender, FBoxDataGridView)
@@ -332,7 +337,61 @@ Public Class FormTelefonbücher
         End With
     End Sub
 
-#End Region
 
+    Private Sub LCTelefonbücher_ContextMenuClick(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch) Handles LCTelefonbücher.ContextMenuClick
+        Select Case e.ClickedItem.Name
+            Case "TSMAddTelBook"
+                AddTelefonbuch(InputBox("Name für das neue Telefonbuch"))
+            Case "TSMRemoveTelBook"
+                If MsgBox($"Soll das Telefonbuch {TB.Name} ({TB.ID}) von der Fritz!Box gelöscht werden?", MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
+                    DeleteAddTelefonbuch(TB)
+                End If
+        End Select
+    End Sub
+
+    Private Async Sub AddTelefonbuch(ByVal NeuesTelefonbuchName As String)
+        If NeuesTelefonbuchName.IsNotStringEmpty Then
+
+            Dim TelBücher As FritzBoxXMLTelefonbücher = Await ErstelleTelefonbuch(NeuesTelefonbuchName)
+
+            ' Füge das neue Telefonbuch in die globale Liste hinzu
+            If ThisAddIn.PPhoneBookXML IsNot Nothing Then
+                ThisAddIn.PPhoneBookXML.Telefonbuch.AddRange(TelBücher.Telefonbuch)
+            End If
+
+            ' Füge das neue Telefonbuch in die Listcontrol hinzu 
+            For Each TelBuch In TelBücher.Telefonbuch
+                If InvokeRequired Then
+                    Invoke(New DelgSetListControl(AddressOf LCTelefonbücher.AddTelefonbuch), TelBuch)
+                Else
+                    LCTelefonbücher.AddTelefonbuch(TelBuch)
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub DeleteAddTelefonbuch(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
+        If Telefonbuch.ID.ToInt.IsZero Then
+            If MsgBox($"Soll das Telefonbuch {Telefonbuch.Name} mit der ID {Telefonbuch.ID} kann nicht gelöscht werden. Stattdessen werden alle Einträge entfernt. Fortfahren?", MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
+                Exit Sub
+            End If
+        End If
+
+        LöscheTelefonbuch(Telefonbuch.ID.ToInt)
+
+        ' Entferne das Telefonbuch aus dem Addin
+        If ThisAddIn.PPhoneBookXML IsNot Nothing Then
+            ThisAddIn.PPhoneBookXML.Telefonbuch.Remove(Telefonbuch)
+        End If
+
+        ' Entferne das neue Telefonbuch in die Listcontrol hinzu 
+
+        If InvokeRequired Then
+            Invoke(New DelgSetListControl(AddressOf LCTelefonbücher.Remove), Telefonbuch.Name)
+        Else
+            LCTelefonbücher.Remove(Telefonbuch)
+        End If
+
+    End Sub
 
 End Class

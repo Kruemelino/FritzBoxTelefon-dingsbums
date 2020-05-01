@@ -1,6 +1,6 @@
 ﻿Imports FBoxDial.DfltWerteTelefonie
 Imports FBoxDial.FritzBoxDefault
-Imports System.Threading.Tasks
+
 Public Class FritzBoxData
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Public Sub New()
