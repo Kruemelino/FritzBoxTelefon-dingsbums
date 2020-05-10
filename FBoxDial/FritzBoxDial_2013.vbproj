@@ -167,6 +167,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -343,6 +344,7 @@
     <Compile Include="Optionen\Optionen.vb" />
     <Compile Include="Optionen\OutlookXML.vb" />
     <Compile Include="Outlook\Fenster.vb" />
+    <Compile Include="Phoner\Phoner.vb" />
     <Compile Include="Ribbon\DefaultRibbon.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
@@ -436,6 +438,7 @@
     <Content Include="Resources\Add.png" />
     <Content Include="Resources\Download.png" />
     <Content Include="Resources\Remove.png" />
+    <Content Include="Resources\Save.png" />
     <Content Include="Resources\Upload.png" />
   </ItemGroup>
   <PropertyGroup>

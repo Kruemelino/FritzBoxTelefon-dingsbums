@@ -5,7 +5,7 @@
 Friend Class TelBuchListControl
     Friend Event ItemClick(sender As Object, Index As Integer)
 
-    Private Property LastSelected As TelBuchListControlItem = Nothing
+    Friend Property Selected As TelBuchListControlItem = Nothing
 
     Public Event ContextMenuClick(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch)
 
@@ -90,8 +90,8 @@ Friend Class TelBuchListControl
     End Sub
 
     Private Sub SelectionChanged(sender As Object)
-        If LastSelected IsNot Nothing Then LastSelected.Selected = False
-        LastSelected = CType(sender, TelBuchListControlItem)
+        If Selected IsNot Nothing Then Selected.Selected = False
+        Selected = CType(sender, TelBuchListControlItem)
         Refresh()
     End Sub
 

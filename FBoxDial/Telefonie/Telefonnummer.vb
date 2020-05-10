@@ -307,7 +307,6 @@ Public Class Telefonnummer
         Using tmpTelNr As New Telefonnummer With {.SetNummer = other}
             Return other IsNot Nothing AndAlso Unformatiert.AreEqual(tmpTelNr.Unformatiert)
         End Using
-        'Return other IsNot Nothing AndAlso (Unformatiert.AreEqual(other) Or Einwahl.AreEqual(other))
     End Function
 #End Region
 

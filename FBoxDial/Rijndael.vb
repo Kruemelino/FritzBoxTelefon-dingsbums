@@ -10,7 +10,7 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrTextToBeEncrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
-    Public Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String) As String
+    Friend Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String) As String
         ' Standardwert
         EncryptString128Bit = PDfltStrErrorMinusOne
 
@@ -51,7 +51,7 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrStringToBeDecrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die entschlüsselte Zeichenfolge</returns>
-    Public Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String) As String
+    Friend Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String) As String
         ' Lese den Key aus der Registry aus
         Dim DecryptionSaltKey As String = GetSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, DefaultWerte.PDfltDeCryptKey, PDfltStrErrorMinusOne)
         ' Standardwert
@@ -101,6 +101,18 @@ Friend Class Rijndael
             rng.GetNonZeroBytes(Salt)
         End Using
         Return Salt
+    End Function
+
+    Friend Function getMd5Hash(ByVal input As String, ByVal Enkodierung As Encoding) As String
+
+        Using md5 As MD5 = New MD5CryptoServiceProvider
+            Dim sBuilder As New StringBuilder()
+            For Each b As Byte In md5.ComputeHash(Enkodierung.GetBytes(input.ToCharArray))
+                sBuilder.Append(b.ToString("x2"))
+            Next
+            Return sBuilder.ToString()
+        End Using
+
     End Function
 
 #Region "IDisposable Support"

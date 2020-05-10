@@ -304,7 +304,7 @@ Public Class FormTelefonbücher
     Private Sub DGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DGVTelefonnummern.CellClick, DGVEMail.CellClick
         With CType(sender, FBoxDataGridView)
 
-            If e.RowIndex.IsLargerOrEqual(0) And e.ColumnIndex.IsLargerOrEqual(0) And Not .Rows(e.RowIndex).IsNewRow Then
+            If e.RowIndex.IsLargerOrEqual(0) And e.ColumnIndex.IsLargerOrEqual(0) AndAlso Not .Rows(e.RowIndex).IsNewRow Then
 
                 Select Case .Columns(e.ColumnIndex).Name
                     Case "Löschen"
@@ -337,13 +337,12 @@ Public Class FormTelefonbücher
         End With
     End Sub
 
-
     Private Sub LCTelefonbücher_ContextMenuClick(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch) Handles LCTelefonbücher.ContextMenuClick
         Select Case e.ClickedItem.Name
             Case "TSMAddTelBook"
-                AddTelefonbuch(InputBox("Name für das neue Telefonbuch"))
+                AddTelefonbuch(InputBox(PDfltTelBNameNeuBuch))
             Case "TSMRemoveTelBook"
-                If MsgBox($"Soll das Telefonbuch {TB.Name} ({TB.ID}) von der Fritz!Box gelöscht werden?", MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
+                If MsgBox(PDfltTelBFrageLöschen(TB.Name, TB.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
                     DeleteAddTelefonbuch(TB)
                 End If
         End Select
@@ -372,7 +371,7 @@ Public Class FormTelefonbücher
 
     Private Sub DeleteAddTelefonbuch(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
         If Telefonbuch.ID.ToInt.IsZero Then
-            If MsgBox($"Soll das Telefonbuch {Telefonbuch.Name} mit der ID {Telefonbuch.ID} kann nicht gelöscht werden. Stattdessen werden alle Einträge entfernt. Fortfahren?", MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
+            If MsgBox(PDfltTelBFrageLöschenID0(Telefonbuch.Name, Telefonbuch.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
                 Exit Sub
             End If
         End If
@@ -392,6 +391,24 @@ Public Class FormTelefonbücher
             LCTelefonbücher.Remove(Telefonbuch)
         End If
 
+    End Sub
+
+    Private Sub B_Click(sender As Object, e As EventArgs) Handles BAdd.Click, BRemove.Click, BSpeichern.Click
+
+        ' Ermittle das selektierte Control
+
+
+        Select Case CType(sender, Button).Name
+            Case BAdd.Name
+                AddTelefonbuch(InputBox(PDfltTelBNameNeuBuch))
+            Case BRemove.Name
+                Dim TB As FritzBoxXMLTelefonbuch = LCTelefonbücher.Selected?.Telefonbuch
+                If MsgBox(PDfltTelBFrageLöschen(TB.Name, TB.ID), MsgBoxStyle.YesNo, "B_Click") = vbYes Then
+                    DeleteAddTelefonbuch(TB)
+                End If
+            Case BSpeichern.Name
+
+        End Select
     End Sub
 
 End Class

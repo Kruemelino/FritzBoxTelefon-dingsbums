@@ -133,4 +133,9 @@
 #Region "Logging"
     <XmlElement("CBoxMinLogLevel")> Public Property PCBoxMinLogLevel As String
 #End Region
+
+#Region "Phoner"
+    <XmlElement("TBPhonerPasswort")> Public Property PTBPhonerPasswort As String
+    <XmlElement("CBPhoner")> Public Property PCBPhoner As Boolean
+#End Region
 End Class

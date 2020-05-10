@@ -541,8 +541,57 @@ Public NotInheritable Class DfltWerteAllgemein
     End Property
 #End Region
 
+#Region "Literale Telefonbücher"
+    Public Shared ReadOnly Property PDfltTelBNameNeuBuch As String = "Name für das neue Telefonbuch:"
+
+    Public Shared ReadOnly Property PDfltTelBFrageLöschen(ByVal TB_Name As String, ByVal TB_ID As String) As String
+        Get
+            Return $"Soll das Telefonbuch {TB_Name} ({TB_ID}) von der Fritz!Box gelöscht werden?"
+        End Get
+    End Property
+    Public Shared ReadOnly Property PDfltTelBFrageLöschenID0(ByVal TB_Name As String, ByVal TB_ID As String) As String
+        Get
+            Return $"Soll das Telefonbuch {TB_Name} mit der ID {TB_ID} kann nicht gelöscht werden. Stattdessen werden alle Einträge entfernt. Fortfahren?"
+        End Get
+    End Property
+#End Region
+
 #Region "DatagridView"
     Public Shared ReadOnly Property PDfltCheckBackColor As Drawing.Color = Drawing.Color.LightGreen
 #End Region
+
+#Region "Literale Phoner"
+    ''' <summary>
+    ''' Das Phoner-Passwort ist falsch!
+    ''' </summary>
+    Public Shared ReadOnly Property PPhonerPasswowrtFalsch As String = "Das Phoner-Passwort ist falsch!"
+    ''' <summary>
+    ''' Die Phoner-Verson ist zu alt!"
+    ''' </summary>
+    Public Shared ReadOnly Property PPhonerZuAlt As String = "Die Phoner-Verson ist zu alt!"
+    ''' <summary>   
+    ''' Zu dem Datenstrom können keine Daten gesendet werden!
+    ''' </summary>
+    Public Shared ReadOnly Property PPhonerReadonly As String = "Zu dem Datenstrom können keine Daten gesendet werden!"
+    ''' <summary>   
+    ''' Phoner oder PhonerLite ist nicht bereit!
+    ''' </summary>
+    Public Shared ReadOnly Property PPhonerNichtBereit As String = "Phoner oder PhonerLite ist nicht bereit!"
+    ''' <summary>
+    ''' Telefonnummer <c>Dialcode</c> erfolgreich an Phoner übermittelt
+    ''' </summary>
+    ''' <param name="Dialcode">Der übermittelte Dialcode</param>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property PPhonerErfolgreich(ByVal Dialcode As String) As String
+        Get
+            Return $"Telefonnummer {Dialcode} erfolgreich an Phoner übermittelt."
+        End Get
+    End Property
+    ''' <summary>
+    ''' Abbruch des Rufaufbaues erfolgreich übermittelt.
+    ''' </summary>
+    Public Shared ReadOnly Property PPhonerAbbruch As String = "Abbruch des Rufaufbaues erfolgreich übermittelt."
+#End Region
+
 End Class
 

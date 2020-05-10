@@ -46,7 +46,7 @@ Public Class FormCfg
                         Case GetType(TextBox)
                             CType(ctrl, TextBox).Text = tmpPropertyInfo.GetValue(XMLData.POptionen).ToString
                         Case GetType(MaskedTextBox)
-                            If tmpPropertyInfo.GetValue(XMLData.POptionen).ToString.Length.IsNotZero Then
+                            If tmpPropertyInfo.GetValue(XMLData.POptionen)?.ToString.Length.IsNotZero Then
                                 CType(ctrl, MaskedTextBox).Text = "1234"
                             End If
                         Case GetType(CheckBox)
@@ -104,6 +104,8 @@ Public Class FormCfg
 
         For Each ctrl As Control In m_Control.Controls
 
+
+
             If ctrl.Controls.Count > 0 Then
                 Speichern(ctrl)
             End If
@@ -136,10 +138,24 @@ Public Class FormCfg
                             tmpPropertyInfo.SetValue(XMLData.POptionen, CType(ctrl, CheckBox).Checked)
 
                         Case GetType(ComboBox)
-                            tmpPropertyInfo.SetValue(XMLData.POptionen, CType(ctrl, ComboBox).SelectedItem.ToString)
+                            Select Case ctrl.Name
+                                Case CBoxPhonerSIP.Name
+
+                                Case Else
+                                    tmpPropertyInfo.SetValue(XMLData.POptionen, CType(ctrl, ComboBox).SelectedItem.ToString)
+                            End Select
 
                     End Select
                 End If
+
+                If ctrl Is CBoxPhonerSIP Then
+                    ' Telefoniegerät finden
+                    With CType(CType(ctrl, ComboBox).SelectedItem, Telefoniegerät)
+                        .IsPhoner = True
+                    End With
+
+                End If
+
 
             ElseIf ctrl.GetType().Equals(GetType(CheckedListBox)) Then
                 For Each tmpTelNr As Telefonnummer In XMLData.PTelefonie.Telefonnummern
@@ -162,7 +178,7 @@ Public Class FormCfg
                 End Select
 
             ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then
-                If ctrl.Name.AreEqual(DGVTelList.Name) Then
+                If ctrl Is DGVTelList Then
                     ' Standard-Telefon ermitteln.
                     With CType(ctrl, FBoxDataGridView)
                         Dim DatenZeilen As List(Of TelGeräteListDataRow) = CType(CType(.DataSource, BindingSource).DataSource, TelGeräteListDataTable).Rows.Cast(Of TelGeräteListDataRow)().ToList()
@@ -237,10 +253,29 @@ Public Class FormCfg
         End Select
     End Sub
 
-    Private Sub LinkLogFile_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLogFile.LinkClicked
-        Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName))
+    Private Sub LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLogFile.LinkClicked, LinkPhoner.LinkClicked
+        Select Case CType(sender, LinkLabel).Name
+            Case LinkLogFile.Name
+                Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName))
+
+            Case LinkPhoner.Name
+                Process.Start("http://www.phoner.de/")
+        End Select
     End Sub
 
+#End Region
+
+#Region "CheckedChanged"
+    Private Sub CheckedChanged(sender As Object, e As EventArgs) Handles CBPhoner.CheckedChanged
+        Select Case CType(sender, CheckBox).Name
+            Case CBPhoner.Name
+                TBPhonerPasswort.Enabled = CBPhoner.Checked
+                LPassworPhoner.Enabled = CBPhoner.Checked
+                CBoxPhonerSIP.Enabled = CBPhoner.Checked
+                LPhonerSIPTelefon.Enabled = CBPhoner.Checked
+        End Select
+
+    End Sub
 #End Region
 
     Private Sub FormCfg_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
@@ -273,7 +308,7 @@ Public Class FormCfg
         With CBox
             .DataBindings.Clear()
             Select Case CBox.Name
-                Case Me.CBoxMinLogLevel.Name
+                Case CBoxMinLogLevel.Name
                     .SelectedItem = SelektiertesElement
             End Select
         End With
@@ -283,12 +318,16 @@ Public Class FormCfg
         With CBox
             .DataBindings.Clear()
             Select Case CBox.Name
-                Case Me.CBoxAnrMonSimRINGEigTelNr.Name, Me.CBoxAnrMonSimCALLEigTelNr.Name
+                Case CBoxAnrMonSimRINGEigTelNr.Name, CBoxAnrMonSimCALLEigTelNr.Name
                     .DataSource = XMLData.PTelefonie.Telefonnummern
                     .DisplayMember = NameOf(Telefonnummer.Einwahl)
                     .ValueMember = NameOf(Telefonnummer.Einwahl)
-                Case Me.CBoxAnrMonSimCALLNSTID.Name, CBoxAnrMonSimCONNECTNSTID.Name
+                Case CBoxAnrMonSimCALLNSTID.Name, CBoxAnrMonSimCONNECTNSTID.Name
                     .DataSource = XMLData.PTelefonie.Telefoniegeräte
+                    .DisplayMember = NameOf(Telefoniegerät.Name)
+                    .ValueMember = NameOf(Telefoniegerät.AnrMonID)
+                Case CBoxPhonerSIP.Name
+                    .DataSource = XMLData.PTelefonie.Telefoniegeräte.Where(Function(t) t.TelTyp = DfltWerteTelefonie.TelTypen.IP).ToList
                     .DisplayMember = NameOf(Telefoniegerät.Name)
                     .ValueMember = NameOf(Telefoniegerät.AnrMonID)
             End Select
@@ -302,7 +341,7 @@ Public Class FormCfg
             ' Fülle das Datagridview
 
             SetTelDGV()
-            SetCheckedListBox(Me.CLBTelNr)
+            SetCheckedListBox(CLBTelNr)
         End If
     End Sub
 
@@ -612,7 +651,17 @@ Public Class FormCfg
         End With
     End Sub
 
+
+
+
+
 #End Region
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Using p As New Phoner
+            p.DialPhoner("0123", False)
+        End Using
+    End Sub
+
 End Class
 
 

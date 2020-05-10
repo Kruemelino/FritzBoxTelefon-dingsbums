@@ -15,6 +15,7 @@ Public Class TCPReader
     Friend Event Disconnected()
     Friend Property Disconnect As Boolean
     Friend Property Verbunden As Boolean
+
     Friend Sub New(ByVal IPEndpoint As String, ByVal PortEndpoint As Integer)
         Verbunden = False
         Disconnect = False

@@ -21,7 +21,7 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -45,6 +45,7 @@ Partial Class FormCfg
         Me.TBRWSTest = New System.Windows.Forms.TextBox()
         Me.CBRWSIndex = New System.Windows.Forms.CheckBox()
         Me.CBKErstellen = New System.Windows.Forms.CheckBox()
+        Me.LPhonerSIPTelefon = New System.Windows.Forms.Label()
         Me.PGrundeinstellungen = New System.Windows.Forms.TabPage()
         Me.GBFormatierungTelefonnummern = New System.Windows.Forms.GroupBox()
         Me.CBIgnoTelNrFormat = New System.Windows.Forms.CheckBox()
@@ -165,6 +166,18 @@ Partial Class FormCfg
         Me.CBKontaktSucheFritzBox = New System.Windows.Forms.CheckBox()
         Me.BKontOrdLaden = New System.Windows.Forms.Button()
         Me.TreeViewKontakte = New System.Windows.Forms.TreeView()
+        Me.PPhoner = New System.Windows.Forms.TabPage()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.CBPhoner = New System.Windows.Forms.CheckBox()
+        Me.CBoxPhonerSIP = New System.Windows.Forms.ComboBox()
+        Me.TBPhonerPasswort = New System.Windows.Forms.MaskedTextBox()
+        Me.LPassworPhoner = New System.Windows.Forms.Label()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.LinkPhoner = New System.Windows.Forms.LinkLabel()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
         Me.PLogging = New System.Windows.Forms.TabPage()
         Me.LMinLogLevel = New System.Windows.Forms.Label()
         Me.CBoxMinLogLevel = New System.Windows.Forms.ComboBox()
@@ -198,6 +211,8 @@ Partial Class FormCfg
         Me.PKontaktsuche2.SuspendLayout()
         Me.GBRWS.SuspendLayout()
         Me.GBIndizierung.SuspendLayout()
+        Me.PPhoner.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -207,10 +222,10 @@ Partial Class FormCfg
         'BReset
         '
         Me.BReset.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BReset.Location = New System.Drawing.Point(523, 5)
-        Me.BReset.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BReset.Location = New System.Drawing.Point(466, 4)
+        Me.BReset.Margin = New System.Windows.Forms.Padding(4)
         Me.BReset.Name = "BReset"
-        Me.BReset.Size = New System.Drawing.Size(165, 43)
+        Me.BReset.Size = New System.Drawing.Size(146, 34)
         Me.BReset.TabIndex = 4
         Me.BReset.Text = "Zurücksetzen"
         Me.BReset.UseVisualStyleBackColor = True
@@ -219,10 +234,10 @@ Partial Class FormCfg
         '
         Me.BAbbruch.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.BAbbruch.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BAbbruch.Location = New System.Drawing.Point(350, 5)
-        Me.BAbbruch.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BAbbruch.Location = New System.Drawing.Point(312, 4)
+        Me.BAbbruch.Margin = New System.Windows.Forms.Padding(4)
         Me.BAbbruch.Name = "BAbbruch"
-        Me.BAbbruch.Size = New System.Drawing.Size(165, 43)
+        Me.BAbbruch.Size = New System.Drawing.Size(146, 34)
         Me.BAbbruch.TabIndex = 3
         Me.BAbbruch.Text = "Abbruch"
         Me.BAbbruch.UseVisualStyleBackColor = True
@@ -230,10 +245,10 @@ Partial Class FormCfg
         'BApply
         '
         Me.BApply.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BApply.Location = New System.Drawing.Point(177, 5)
-        Me.BApply.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BApply.Location = New System.Drawing.Point(158, 4)
+        Me.BApply.Margin = New System.Windows.Forms.Padding(4)
         Me.BApply.Name = "BApply"
-        Me.BApply.Size = New System.Drawing.Size(165, 43)
+        Me.BApply.Size = New System.Drawing.Size(146, 34)
         Me.BApply.TabIndex = 2
         Me.BApply.Text = "Übernehmen"
         Me.BApply.UseVisualStyleBackColor = True
@@ -242,10 +257,10 @@ Partial Class FormCfg
         '
         Me.BOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.BOK.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BOK.Location = New System.Drawing.Point(4, 5)
-        Me.BOK.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BOK.Location = New System.Drawing.Point(4, 4)
+        Me.BOK.Margin = New System.Windows.Forms.Padding(4)
         Me.BOK.Name = "BOK"
-        Me.BOK.Size = New System.Drawing.Size(165, 43)
+        Me.BOK.Size = New System.Drawing.Size(146, 34)
         Me.BOK.TabIndex = 1
         Me.BOK.Text = "OK"
         Me.BOK.UseVisualStyleBackColor = True
@@ -262,11 +277,11 @@ Partial Class FormCfg
         '
         Me.CBShowMSN.AutoSize = True
         Me.CBShowMSN.Enabled = False
-        Me.CBShowMSN.Location = New System.Drawing.Point(4, 303)
-        Me.CBShowMSN.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBShowMSN.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBShowMSN.Location = New System.Drawing.Point(4, 242)
+        Me.CBShowMSN.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBShowMSN.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBShowMSN.Name = "CBShowMSN"
-        Me.CBShowMSN.Size = New System.Drawing.Size(400, 24)
+        Me.CBShowMSN.Size = New System.Drawing.Size(356, 21)
         Me.CBShowMSN.TabIndex = 9
         Me.CBShowMSN.Text = "Zeige MSN im Anrufmonitor an"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBShowMSN, "Wenn diese Einstellung gesetzt ist, wird die jeweilige MSN im Anrufmonitor angeze" &
@@ -276,32 +291,32 @@ Partial Class FormCfg
         'LTelNrMaske
         '
         Me.LTelNrMaske.AutoSize = True
-        Me.LTelNrMaske.Location = New System.Drawing.Point(135, 31)
+        Me.LTelNrMaske.Location = New System.Drawing.Point(120, 25)
         Me.LTelNrMaske.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LTelNrMaske.MinimumSize = New System.Drawing.Size(65, 0)
+        Me.LTelNrMaske.MinimumSize = New System.Drawing.Size(58, 0)
         Me.LTelNrMaske.Name = "LTelNrMaske"
-        Me.LTelNrMaske.Size = New System.Drawing.Size(65, 20)
+        Me.LTelNrMaske.Size = New System.Drawing.Size(58, 17)
         Me.LTelNrMaske.TabIndex = 3
         Me.LTelNrMaske.Text = "Maske:"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LTelNrMaske, resources.GetString("LTelNrMaske.ToolTip"))
         '
         'TBTelNrMaske
         '
-        Me.TBTelNrMaske.Location = New System.Drawing.Point(207, 26)
-        Me.TBTelNrMaske.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBTelNrMaske.Location = New System.Drawing.Point(184, 21)
+        Me.TBTelNrMaske.Margin = New System.Windows.Forms.Padding(4)
         Me.TBTelNrMaske.Name = "TBTelNrMaske"
-        Me.TBTelNrMaske.Size = New System.Drawing.Size(146, 26)
+        Me.TBTelNrMaske.Size = New System.Drawing.Size(130, 22)
         Me.TBTelNrMaske.TabIndex = 13
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBTelNrMaske, resources.GetString("TBTelNrMaske.ToolTip"))
         '
         'CBTelNrGruppieren
         '
         Me.CBTelNrGruppieren.AutoSize = True
-        Me.CBTelNrGruppieren.Location = New System.Drawing.Point(9, 29)
-        Me.CBTelNrGruppieren.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBTelNrGruppieren.MinimumSize = New System.Drawing.Size(120, 0)
+        Me.CBTelNrGruppieren.Location = New System.Drawing.Point(8, 23)
+        Me.CBTelNrGruppieren.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBTelNrGruppieren.MinimumSize = New System.Drawing.Size(107, 0)
         Me.CBTelNrGruppieren.Name = "CBTelNrGruppieren"
-        Me.CBTelNrGruppieren.Size = New System.Drawing.Size(120, 24)
+        Me.CBTelNrGruppieren.Size = New System.Drawing.Size(107, 21)
         Me.CBTelNrGruppieren.TabIndex = 12
         Me.CBTelNrGruppieren.Text = "Gruppieren"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBTelNrGruppieren, "Gruppiert Rufnummernteile in Zweierblöcke für bessere Lessbarkeit." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Beispiel:" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "oh" &
@@ -311,11 +326,11 @@ Partial Class FormCfg
         'CBCheckMobil
         '
         Me.CBCheckMobil.AutoSize = True
-        Me.CBCheckMobil.Location = New System.Drawing.Point(9, 187)
-        Me.CBCheckMobil.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBCheckMobil.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBCheckMobil.Location = New System.Drawing.Point(8, 150)
+        Me.CBCheckMobil.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBCheckMobil.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBCheckMobil.Name = "CBCheckMobil"
-        Me.CBCheckMobil.Size = New System.Drawing.Size(400, 24)
+        Me.CBCheckMobil.Size = New System.Drawing.Size(356, 21)
         Me.CBCheckMobil.TabIndex = 11
         Me.CBCheckMobil.Text = "Nachfrage beim Wählen von Mobilnummern"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCheckMobil, "Um unnötige Verbindungskosten zu Mobilfunkgeräten zu vermeiden, wird vor dem Wähl" &
@@ -325,11 +340,11 @@ Partial Class FormCfg
         'CBForceDialLKZ
         '
         Me.CBForceDialLKZ.AutoSize = True
-        Me.CBForceDialLKZ.Location = New System.Drawing.Point(9, 34)
-        Me.CBForceDialLKZ.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBForceDialLKZ.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBForceDialLKZ.Location = New System.Drawing.Point(8, 27)
+        Me.CBForceDialLKZ.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBForceDialLKZ.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBForceDialLKZ.Name = "CBForceDialLKZ"
-        Me.CBForceDialLKZ.Size = New System.Drawing.Size(400, 24)
+        Me.CBForceDialLKZ.Size = New System.Drawing.Size(356, 21)
         Me.CBForceDialLKZ.TabIndex = 6
         Me.CBForceDialLKZ.Text = "Landeskennzahl immer mitwählen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceDialLKZ, "Mit dieser Einstellung wird die definierte Landesvorwahl immer mitgewählt.")
@@ -339,11 +354,11 @@ Partial Class FormCfg
         '
         Me.CBCbCunterbinden.AutoSize = True
         Me.CBCbCunterbinden.Enabled = False
-        Me.CBCbCunterbinden.Location = New System.Drawing.Point(9, 151)
-        Me.CBCbCunterbinden.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBCbCunterbinden.MinimumSize = New System.Drawing.Size(205, 0)
+        Me.CBCbCunterbinden.Location = New System.Drawing.Point(8, 121)
+        Me.CBCbCunterbinden.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBCbCunterbinden.MinimumSize = New System.Drawing.Size(182, 0)
         Me.CBCbCunterbinden.Name = "CBCbCunterbinden"
-        Me.CBCbCunterbinden.Size = New System.Drawing.Size(205, 24)
+        Me.CBCbCunterbinden.Size = New System.Drawing.Size(182, 21)
         Me.CBCbCunterbinden.TabIndex = 9
         Me.CBCbCunterbinden.Text = "Call-by-Call unterbinden"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBCbCunterbinden, "Mitunter ist es sinnvoll Call-by-Call Vorwahlen zu unterbinden, z.B. wenn Sie " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "k" &
@@ -353,30 +368,30 @@ Partial Class FormCfg
         'LAmtsholung
         '
         Me.LAmtsholung.AutoSize = True
-        Me.LAmtsholung.Location = New System.Drawing.Point(61, 75)
+        Me.LAmtsholung.Location = New System.Drawing.Point(54, 60)
         Me.LAmtsholung.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LAmtsholung.MinimumSize = New System.Drawing.Size(100, 0)
+        Me.LAmtsholung.MinimumSize = New System.Drawing.Size(89, 0)
         Me.LAmtsholung.Name = "LAmtsholung"
-        Me.LAmtsholung.Size = New System.Drawing.Size(100, 20)
+        Me.LAmtsholung.Size = New System.Drawing.Size(89, 17)
         Me.LAmtsholung.TabIndex = 31
         Me.LAmtsholung.Text = "Amtsholung"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LAmtsholung, "Geben Sie hier eine 0 ein falls eine Amtsholung benötigt wird.")
         '
         'TBAmt
         '
-        Me.TBAmt.Location = New System.Drawing.Point(9, 72)
-        Me.TBAmt.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBAmt.Location = New System.Drawing.Point(8, 58)
+        Me.TBAmt.Margin = New System.Windows.Forms.Padding(4)
         Me.TBAmt.Name = "TBAmt"
-        Me.TBAmt.Size = New System.Drawing.Size(43, 26)
+        Me.TBAmt.Size = New System.Drawing.Size(39, 22)
         Me.TBAmt.TabIndex = 7
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBAmt, "Geben Sie hier eine 0 ein falls eine Amtsholung benötigt wird.")
         '
         'BTestLogin
         '
-        Me.BTestLogin.Location = New System.Drawing.Point(344, 109)
-        Me.BTestLogin.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BTestLogin.Location = New System.Drawing.Point(306, 87)
+        Me.BTestLogin.Margin = New System.Windows.Forms.Padding(4)
         Me.BTestLogin.Name = "BTestLogin"
-        Me.BTestLogin.Size = New System.Drawing.Size(70, 35)
+        Me.BTestLogin.Size = New System.Drawing.Size(62, 28)
         Me.BTestLogin.TabIndex = 32
         Me.BTestLogin.Text = "Test"
         Me.ToolTipFBDBConfig.SetToolTip(Me.BTestLogin, "Teste den eingegebenen Benutzername und Passwort.")
@@ -386,11 +401,11 @@ Partial Class FormCfg
         'LBenutzer
         '
         Me.LBenutzer.AutoSize = True
-        Me.LBenutzer.Location = New System.Drawing.Point(170, 75)
+        Me.LBenutzer.Location = New System.Drawing.Point(151, 60)
         Me.LBenutzer.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LBenutzer.MinimumSize = New System.Drawing.Size(230, 0)
+        Me.LBenutzer.MinimumSize = New System.Drawing.Size(204, 0)
         Me.LBenutzer.Name = "LBenutzer"
-        Me.LBenutzer.Size = New System.Drawing.Size(230, 20)
+        Me.LBenutzer.Size = New System.Drawing.Size(204, 17)
         Me.LBenutzer.TabIndex = 16
         Me.LBenutzer.Text = "Fritz!Box Benutzername"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LBenutzer, resources.GetString("LBenutzer.ToolTip"))
@@ -399,11 +414,11 @@ Partial Class FormCfg
         '
         Me.CBForceFBAdr.AutoSize = True
         Me.CBForceFBAdr.Enabled = False
-        Me.CBForceFBAdr.Location = New System.Drawing.Point(174, 34)
-        Me.CBForceFBAdr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBForceFBAdr.MinimumSize = New System.Drawing.Size(230, 0)
+        Me.CBForceFBAdr.Location = New System.Drawing.Point(155, 27)
+        Me.CBForceFBAdr.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBForceFBAdr.MinimumSize = New System.Drawing.Size(204, 0)
         Me.CBForceFBAdr.Name = "CBForceFBAdr"
-        Me.CBForceFBAdr.Size = New System.Drawing.Size(230, 24)
+        Me.CBForceFBAdr.Size = New System.Drawing.Size(204, 21)
         Me.CBForceFBAdr.TabIndex = 1
         Me.CBForceFBAdr.Text = "Fritz!Box Adresse"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBForceFBAdr, "Wenn der Haken gesetzt wird, wird trotz fehlgeschlagener Ping-Check eine Verbindu" &
@@ -413,10 +428,10 @@ Partial Class FormCfg
         '
         'TBNumEntryList
         '
-        Me.TBNumEntryList.Location = New System.Drawing.Point(9, 28)
-        Me.TBNumEntryList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBNumEntryList.Location = New System.Drawing.Point(8, 22)
+        Me.TBNumEntryList.Margin = New System.Windows.Forms.Padding(4)
         Me.TBNumEntryList.Name = "TBNumEntryList"
-        Me.TBNumEntryList.Size = New System.Drawing.Size(42, 26)
+        Me.TBNumEntryList.Size = New System.Drawing.Size(38, 22)
         Me.TBNumEntryList.TabIndex = 39
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBNumEntryList, "Gibt die Anzahl der Listenelemente an, die in der Wahlwiederholungs und Rückrufli" &
         "ste aufgeführt werden." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Eine Reduktion des Wertes bedeutet automatisch, dass die" &
@@ -425,11 +440,11 @@ Partial Class FormCfg
         'LNumEntryList
         '
         Me.LNumEntryList.AutoSize = True
-        Me.LNumEntryList.Location = New System.Drawing.Point(62, 32)
+        Me.LNumEntryList.Location = New System.Drawing.Point(55, 26)
         Me.LNumEntryList.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LNumEntryList.MinimumSize = New System.Drawing.Size(300, 0)
+        Me.LNumEntryList.MinimumSize = New System.Drawing.Size(267, 0)
         Me.LNumEntryList.Name = "LNumEntryList"
-        Me.LNumEntryList.Size = New System.Drawing.Size(300, 20)
+        Me.LNumEntryList.Size = New System.Drawing.Size(267, 17)
         Me.LNumEntryList.TabIndex = 40
         Me.LNumEntryList.Text = "Anzahl der Listenelemente je Liste"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LNumEntryList, "Telefonate, die nach der definierten Zeitspanne verbunden werden, wenden als ""Ver" &
@@ -439,11 +454,11 @@ Partial Class FormCfg
         'CBAutoAnrList
         '
         Me.CBAutoAnrList.AutoSize = True
-        Me.CBAutoAnrList.Location = New System.Drawing.Point(4, 29)
-        Me.CBAutoAnrList.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAutoAnrList.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAutoAnrList.Location = New System.Drawing.Point(4, 23)
+        Me.CBAutoAnrList.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAutoAnrList.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBAutoAnrList.Name = "CBAutoAnrList"
-        Me.CBAutoAnrList.Size = New System.Drawing.Size(400, 24)
+        Me.CBAutoAnrList.Size = New System.Drawing.Size(356, 21)
         Me.CBAutoAnrList.TabIndex = 8
         Me.CBAutoAnrList.Text = "Anrufliste beim Start auswerten"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBAutoAnrList, resources.GetString("CBAutoAnrList.ToolTip"))
@@ -451,10 +466,10 @@ Partial Class FormCfg
         '
         'TBRWSTest
         '
-        Me.TBRWSTest.Location = New System.Drawing.Point(285, 27)
-        Me.TBRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBRWSTest.Location = New System.Drawing.Point(253, 22)
+        Me.TBRWSTest.Margin = New System.Windows.Forms.Padding(4)
         Me.TBRWSTest.Name = "TBRWSTest"
-        Me.TBRWSTest.Size = New System.Drawing.Size(168, 26)
+        Me.TBRWSTest.Size = New System.Drawing.Size(150, 22)
         Me.TBRWSTest.TabIndex = 6
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch" &
         "geführt werden soll.")
@@ -463,10 +478,10 @@ Partial Class FormCfg
         '
         Me.CBRWSIndex.AutoSize = True
         Me.CBRWSIndex.Enabled = False
-        Me.CBRWSIndex.Location = New System.Drawing.Point(7, 97)
-        Me.CBRWSIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBRWSIndex.Location = New System.Drawing.Point(6, 78)
+        Me.CBRWSIndex.Margin = New System.Windows.Forms.Padding(4)
         Me.CBRWSIndex.Name = "CBRWSIndex"
-        Me.CBRWSIndex.Size = New System.Drawing.Size(155, 24)
+        Me.CBRWSIndex.Size = New System.Drawing.Size(137, 21)
         Me.CBRWSIndex.TabIndex = 3
         Me.CBRWSIndex.Text = "Ergebnis merken"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBRWSIndex, resources.GetString("CBRWSIndex.ToolTip"))
@@ -476,15 +491,26 @@ Partial Class FormCfg
         '
         Me.CBKErstellen.AutoSize = True
         Me.CBKErstellen.Enabled = False
-        Me.CBKErstellen.Location = New System.Drawing.Point(7, 63)
-        Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CBKErstellen.Location = New System.Drawing.Point(6, 50)
+        Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4)
         Me.CBKErstellen.Name = "CBKErstellen"
-        Me.CBKErstellen.Size = New System.Drawing.Size(154, 24)
+        Me.CBKErstellen.Size = New System.Drawing.Size(136, 21)
         Me.CBKErstellen.TabIndex = 2
         Me.CBKErstellen.Text = "Kontakt erstellen"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
         "erstellt.")
         Me.CBKErstellen.UseVisualStyleBackColor = True
+        '
+        'LPhonerSIPTelefon
+        '
+        Me.LPhonerSIPTelefon.AutoSize = True
+        Me.LPhonerSIPTelefon.Location = New System.Drawing.Point(148, 86)
+        Me.LPhonerSIPTelefon.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LPhonerSIPTelefon.Name = "LPhonerSIPTelefon"
+        Me.LPhonerSIPTelefon.Size = New System.Drawing.Size(82, 17)
+        Me.LPhonerSIPTelefon.TabIndex = 13
+        Me.LPhonerSIPTelefon.Text = "SIP-Telefon"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.LPhonerSIPTelefon, "Geben Sie hier das SIP-Telefon, an welches mit Phoner verknüpft ist.")
         '
         'PGrundeinstellungen
         '
@@ -492,10 +518,10 @@ Partial Class FormCfg
         Me.PGrundeinstellungen.Controls.Add(Me.GBEinstellungWählhilfe)
         Me.PGrundeinstellungen.Controls.Add(Me.GBErforderlicheAngaben)
         Me.PGrundeinstellungen.Controls.Add(Me.Label13)
-        Me.PGrundeinstellungen.Location = New System.Drawing.Point(4, 29)
-        Me.PGrundeinstellungen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PGrundeinstellungen.Location = New System.Drawing.Point(4, 25)
+        Me.PGrundeinstellungen.Margin = New System.Windows.Forms.Padding(4)
         Me.PGrundeinstellungen.Name = "PGrundeinstellungen"
-        Me.PGrundeinstellungen.Size = New System.Drawing.Size(860, 458)
+        Me.PGrundeinstellungen.Size = New System.Drawing.Size(763, 363)
         Me.PGrundeinstellungen.TabIndex = 7
         Me.PGrundeinstellungen.Text = "Grundeinstellungen"
         Me.PGrundeinstellungen.UseVisualStyleBackColor = True
@@ -508,11 +534,11 @@ Partial Class FormCfg
         Me.GBFormatierungTelefonnummern.Controls.Add(Me.TBTelNrMaske)
         Me.GBFormatierungTelefonnummern.Controls.Add(Me.CBintl)
         Me.GBFormatierungTelefonnummern.Controls.Add(Me.CBTelNrGruppieren)
-        Me.GBFormatierungTelefonnummern.Location = New System.Drawing.Point(0, 299)
-        Me.GBFormatierungTelefonnummern.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBFormatierungTelefonnummern.Location = New System.Drawing.Point(0, 238)
+        Me.GBFormatierungTelefonnummern.Margin = New System.Windows.Forms.Padding(4)
         Me.GBFormatierungTelefonnummern.Name = "GBFormatierungTelefonnummern"
-        Me.GBFormatierungTelefonnummern.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBFormatierungTelefonnummern.Size = New System.Drawing.Size(423, 152)
+        Me.GBFormatierungTelefonnummern.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBFormatierungTelefonnummern.Size = New System.Drawing.Size(376, 122)
         Me.GBFormatierungTelefonnummern.TabIndex = 17
         Me.GBFormatierungTelefonnummern.TabStop = False
         Me.GBFormatierungTelefonnummern.Text = "Formatierung von Telefonnummern"
@@ -521,11 +547,11 @@ Partial Class FormCfg
         '
         Me.CBIgnoTelNrFormat.AutoSize = True
         Me.CBIgnoTelNrFormat.Enabled = False
-        Me.CBIgnoTelNrFormat.Location = New System.Drawing.Point(9, 100)
-        Me.CBIgnoTelNrFormat.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBIgnoTelNrFormat.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBIgnoTelNrFormat.Location = New System.Drawing.Point(8, 80)
+        Me.CBIgnoTelNrFormat.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBIgnoTelNrFormat.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBIgnoTelNrFormat.Name = "CBIgnoTelNrFormat"
-        Me.CBIgnoTelNrFormat.Size = New System.Drawing.Size(400, 24)
+        Me.CBIgnoTelNrFormat.Size = New System.Drawing.Size(356, 21)
         Me.CBIgnoTelNrFormat.TabIndex = 15
         Me.CBIgnoTelNrFormat.Text = "Ignoriere Formatierung der Kontakte"
         Me.CBIgnoTelNrFormat.UseVisualStyleBackColor = True
@@ -533,11 +559,11 @@ Partial Class FormCfg
         'CBintl
         '
         Me.CBintl.AutoSize = True
-        Me.CBintl.Location = New System.Drawing.Point(9, 65)
-        Me.CBintl.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBintl.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBintl.Location = New System.Drawing.Point(8, 52)
+        Me.CBintl.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBintl.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBintl.Name = "CBintl"
-        Me.CBintl.Size = New System.Drawing.Size(400, 24)
+        Me.CBintl.Size = New System.Drawing.Size(356, 21)
         Me.CBintl.TabIndex = 14
         Me.CBintl.Text = "Internationale Vorwahl immer anfügen"
         Me.CBintl.UseVisualStyleBackColor = True
@@ -554,40 +580,41 @@ Partial Class FormCfg
         Me.GBEinstellungWählhilfe.Controls.Add(Me.CBCbCunterbinden)
         Me.GBEinstellungWählhilfe.Controls.Add(Me.LAmtsholung)
         Me.GBEinstellungWählhilfe.Controls.Add(Me.TBAmt)
-        Me.GBEinstellungWählhilfe.Location = New System.Drawing.Point(433, 58)
-        Me.GBEinstellungWählhilfe.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBEinstellungWählhilfe.Location = New System.Drawing.Point(384, 46)
+        Me.GBEinstellungWählhilfe.Margin = New System.Windows.Forms.Padding(4)
         Me.GBEinstellungWählhilfe.Name = "GBEinstellungWählhilfe"
-        Me.GBEinstellungWählhilfe.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBEinstellungWählhilfe.Size = New System.Drawing.Size(423, 316)
+        Me.GBEinstellungWählhilfe.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBEinstellungWählhilfe.Size = New System.Drawing.Size(376, 253)
         Me.GBEinstellungWählhilfe.TabIndex = 18
         Me.GBEinstellungWählhilfe.TabStop = False
         Me.GBEinstellungWählhilfe.Text = "Einstellungen für die Wählhilfe"
         '
         'TBWClientEnblDauer
         '
-        Me.TBWClientEnblDauer.Location = New System.Drawing.Point(8, 262)
-        Me.TBWClientEnblDauer.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBWClientEnblDauer.Location = New System.Drawing.Point(7, 210)
+        Me.TBWClientEnblDauer.Margin = New System.Windows.Forms.Padding(4)
         Me.TBWClientEnblDauer.Name = "TBWClientEnblDauer"
-        Me.TBWClientEnblDauer.Size = New System.Drawing.Size(42, 26)
+        Me.TBWClientEnblDauer.Size = New System.Drawing.Size(38, 22)
         Me.TBWClientEnblDauer.TabIndex = 33
         '
         'LWClientEnblDauer
         '
         Me.LWClientEnblDauer.AutoSize = True
-        Me.LWClientEnblDauer.Location = New System.Drawing.Point(61, 265)
+        Me.LWClientEnblDauer.Location = New System.Drawing.Point(54, 212)
         Me.LWClientEnblDauer.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LWClientEnblDauer.MinimumSize = New System.Drawing.Size(350, 0)
+        Me.LWClientEnblDauer.MinimumSize = New System.Drawing.Size(311, 0)
         Me.LWClientEnblDauer.Name = "LWClientEnblDauer"
-        Me.LWClientEnblDauer.Size = New System.Drawing.Size(350, 20)
+        Me.LWClientEnblDauer.Size = New System.Drawing.Size(311, 17)
         Me.LWClientEnblDauer.TabIndex = 34
         Me.LWClientEnblDauer.Text = "Anzeigedauer nach dem Wählen [s]"
         '
         'CBCloseWClient
         '
         Me.CBCloseWClient.AutoSize = True
-        Me.CBCloseWClient.Location = New System.Drawing.Point(9, 223)
+        Me.CBCloseWClient.Location = New System.Drawing.Point(8, 178)
+        Me.CBCloseWClient.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.CBCloseWClient.Name = "CBCloseWClient"
-        Me.CBCloseWClient.Size = New System.Drawing.Size(291, 24)
+        Me.CBCloseWClient.Size = New System.Drawing.Size(258, 21)
         Me.CBCloseWClient.TabIndex = 32
         Me.CBCloseWClient.Text = "Wähldialog automatisch ausblenden"
         Me.CBCloseWClient.UseVisualStyleBackColor = True
@@ -596,11 +623,11 @@ Partial Class FormCfg
         '
         Me.CBDialPort.AutoSize = True
         Me.CBDialPort.Enabled = False
-        Me.CBDialPort.Location = New System.Drawing.Point(9, 115)
-        Me.CBDialPort.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBDialPort.MinimumSize = New System.Drawing.Size(200, 0)
+        Me.CBDialPort.Location = New System.Drawing.Point(8, 92)
+        Me.CBDialPort.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBDialPort.MinimumSize = New System.Drawing.Size(178, 0)
         Me.CBDialPort.Name = "CBDialPort"
-        Me.CBDialPort.Size = New System.Drawing.Size(200, 24)
+        Me.CBDialPort.Size = New System.Drawing.Size(178, 21)
         Me.CBDialPort.TabIndex = 8
         Me.CBDialPort.Text = "Dialport anzeigen"
         Me.CBDialPort.UseVisualStyleBackColor = True
@@ -618,87 +645,87 @@ Partial Class FormCfg
         Me.GBErforderlicheAngaben.Controls.Add(Me.LOrtskennzahl)
         Me.GBErforderlicheAngaben.Controls.Add(Me.LPasswort)
         Me.GBErforderlicheAngaben.Controls.Add(Me.TBFBAdr)
-        Me.GBErforderlicheAngaben.Location = New System.Drawing.Point(0, 58)
-        Me.GBErforderlicheAngaben.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBErforderlicheAngaben.Location = New System.Drawing.Point(0, 46)
+        Me.GBErforderlicheAngaben.Margin = New System.Windows.Forms.Padding(4)
         Me.GBErforderlicheAngaben.Name = "GBErforderlicheAngaben"
-        Me.GBErforderlicheAngaben.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBErforderlicheAngaben.Size = New System.Drawing.Size(423, 232)
+        Me.GBErforderlicheAngaben.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBErforderlicheAngaben.Size = New System.Drawing.Size(376, 186)
         Me.GBErforderlicheAngaben.TabIndex = 16
         Me.GBErforderlicheAngaben.TabStop = False
         Me.GBErforderlicheAngaben.Text = "Erforderliche Angaben"
         '
         'TBPasswort
         '
-        Me.TBPasswort.Location = New System.Drawing.Point(9, 109)
-        Me.TBPasswort.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBPasswort.Location = New System.Drawing.Point(8, 87)
+        Me.TBPasswort.Margin = New System.Windows.Forms.Padding(4)
         Me.TBPasswort.Name = "TBPasswort"
-        Me.TBPasswort.Size = New System.Drawing.Size(148, 26)
+        Me.TBPasswort.Size = New System.Drawing.Size(132, 22)
         Me.TBPasswort.TabIndex = 17
         Me.TBPasswort.UseSystemPasswordChar = True
         '
         'TBLandesKZ
         '
-        Me.TBLandesKZ.Location = New System.Drawing.Point(9, 189)
-        Me.TBLandesKZ.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBLandesKZ.Location = New System.Drawing.Point(8, 151)
+        Me.TBLandesKZ.Margin = New System.Windows.Forms.Padding(4)
         Me.TBLandesKZ.Name = "TBLandesKZ"
-        Me.TBLandesKZ.Size = New System.Drawing.Size(148, 26)
+        Me.TBLandesKZ.Size = New System.Drawing.Size(132, 22)
         Me.TBLandesKZ.TabIndex = 2
         '
         'TBOrtsKZ
         '
-        Me.TBOrtsKZ.Location = New System.Drawing.Point(9, 149)
-        Me.TBOrtsKZ.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBOrtsKZ.Location = New System.Drawing.Point(8, 119)
+        Me.TBOrtsKZ.Margin = New System.Windows.Forms.Padding(4)
         Me.TBOrtsKZ.Name = "TBOrtsKZ"
-        Me.TBOrtsKZ.Size = New System.Drawing.Size(148, 26)
+        Me.TBOrtsKZ.Size = New System.Drawing.Size(132, 22)
         Me.TBOrtsKZ.TabIndex = 2
         '
         'TBBenutzer
         '
-        Me.TBBenutzer.Location = New System.Drawing.Point(9, 71)
-        Me.TBBenutzer.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBBenutzer.Location = New System.Drawing.Point(8, 57)
+        Me.TBBenutzer.Margin = New System.Windows.Forms.Padding(4)
         Me.TBBenutzer.Name = "TBBenutzer"
-        Me.TBBenutzer.Size = New System.Drawing.Size(148, 26)
+        Me.TBBenutzer.Size = New System.Drawing.Size(132, 22)
         Me.TBBenutzer.TabIndex = 2
         '
         'LLandeskennzahl
         '
         Me.LLandeskennzahl.AutoSize = True
-        Me.LLandeskennzahl.Location = New System.Drawing.Point(170, 192)
+        Me.LLandeskennzahl.Location = New System.Drawing.Point(151, 154)
         Me.LLandeskennzahl.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LLandeskennzahl.MinimumSize = New System.Drawing.Size(230, 0)
+        Me.LLandeskennzahl.MinimumSize = New System.Drawing.Size(204, 0)
         Me.LLandeskennzahl.Name = "LLandeskennzahl"
-        Me.LLandeskennzahl.Size = New System.Drawing.Size(230, 20)
+        Me.LLandeskennzahl.Size = New System.Drawing.Size(204, 17)
         Me.LLandeskennzahl.TabIndex = 13
         Me.LLandeskennzahl.Text = "Landeskennzahl"
         '
         'LOrtskennzahl
         '
         Me.LOrtskennzahl.AutoSize = True
-        Me.LOrtskennzahl.Location = New System.Drawing.Point(170, 154)
+        Me.LOrtskennzahl.Location = New System.Drawing.Point(151, 123)
         Me.LOrtskennzahl.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LOrtskennzahl.MinimumSize = New System.Drawing.Size(230, 0)
+        Me.LOrtskennzahl.MinimumSize = New System.Drawing.Size(204, 0)
         Me.LOrtskennzahl.Name = "LOrtskennzahl"
-        Me.LOrtskennzahl.Size = New System.Drawing.Size(230, 20)
+        Me.LOrtskennzahl.Size = New System.Drawing.Size(204, 17)
         Me.LOrtskennzahl.TabIndex = 11
         Me.LOrtskennzahl.Text = "Ortskennzahl"
         '
         'LPasswort
         '
         Me.LPasswort.AutoSize = True
-        Me.LPasswort.Location = New System.Drawing.Point(170, 115)
+        Me.LPasswort.Location = New System.Drawing.Point(151, 92)
         Me.LPasswort.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LPasswort.MinimumSize = New System.Drawing.Size(160, 0)
+        Me.LPasswort.MinimumSize = New System.Drawing.Size(142, 0)
         Me.LPasswort.Name = "LPasswort"
-        Me.LPasswort.Size = New System.Drawing.Size(160, 20)
+        Me.LPasswort.Size = New System.Drawing.Size(142, 17)
         Me.LPasswort.TabIndex = 3
         Me.LPasswort.Text = "Fritz!Box Passwort"
         '
         'TBFBAdr
         '
-        Me.TBFBAdr.Location = New System.Drawing.Point(9, 31)
-        Me.TBFBAdr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBFBAdr.Location = New System.Drawing.Point(8, 25)
+        Me.TBFBAdr.Margin = New System.Windows.Forms.Padding(4)
         Me.TBFBAdr.Name = "TBFBAdr"
-        Me.TBFBAdr.Size = New System.Drawing.Size(148, 26)
+        Me.TBFBAdr.Size = New System.Drawing.Size(132, 22)
         Me.TBFBAdr.TabIndex = 0
         '
         'Label13
@@ -708,7 +735,7 @@ Partial Class FormCfg
         Me.Label13.Location = New System.Drawing.Point(0, 0)
         Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(860, 54)
+        Me.Label13.Size = New System.Drawing.Size(763, 43)
         Me.Label13.TabIndex = 23
         Me.Label13.Text = "Grundeinstellungen"
         Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -724,20 +751,20 @@ Partial Class FormCfg
         Me.PInfo.Controls.Add(Me.LinkHomepage)
         Me.PInfo.Controls.Add(Me.LinkEmail)
         Me.PInfo.Controls.Add(Me.LinkForum)
-        Me.PInfo.Location = New System.Drawing.Point(4, 29)
-        Me.PInfo.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PInfo.Location = New System.Drawing.Point(4, 25)
+        Me.PInfo.Margin = New System.Windows.Forms.Padding(4)
         Me.PInfo.Name = "PInfo"
-        Me.PInfo.Size = New System.Drawing.Size(860, 458)
+        Me.PInfo.Size = New System.Drawing.Size(763, 363)
         Me.PInfo.TabIndex = 4
         Me.PInfo.Text = "Info..."
         Me.PInfo.UseVisualStyleBackColor = True
         '
         'BArbeitsverzeichnis
         '
-        Me.BArbeitsverzeichnis.Location = New System.Drawing.Point(615, 89)
-        Me.BArbeitsverzeichnis.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BArbeitsverzeichnis.Location = New System.Drawing.Point(547, 71)
+        Me.BArbeitsverzeichnis.Margin = New System.Windows.Forms.Padding(4)
         Me.BArbeitsverzeichnis.Name = "BArbeitsverzeichnis"
-        Me.BArbeitsverzeichnis.Size = New System.Drawing.Size(232, 43)
+        Me.BArbeitsverzeichnis.Size = New System.Drawing.Size(206, 34)
         Me.BArbeitsverzeichnis.TabIndex = 6
         Me.BArbeitsverzeichnis.Text = "Arbeitsverzeichnis ändern"
         Me.BArbeitsverzeichnis.UseVisualStyleBackColor = True
@@ -745,59 +772,59 @@ Partial Class FormCfg
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(4, 102)
+        Me.Label17.Location = New System.Drawing.Point(4, 82)
         Me.Label17.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(482, 20)
+        Me.Label17.Size = New System.Drawing.Size(426, 17)
         Me.Label17.TabIndex = 0
         Me.Label17.Text = "Der SourceCode zu diesem AddIn steht auf GitHub zur Verfügung:"
         '
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(4, 77)
+        Me.Label16.Location = New System.Drawing.Point(4, 62)
         Me.Label16.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(225, 20)
+        Me.Label16.Size = New System.Drawing.Size(201, 17)
         Me.Label16.TabIndex = 2
         Me.Label16.Text = "Forum und aktuelle Versionen:"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(4, 52)
+        Me.Label10.Location = New System.Drawing.Point(4, 42)
         Me.Label10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(68, 20)
+        Me.Label10.Size = New System.Drawing.Size(60, 17)
         Me.Label10.TabIndex = 2
         Me.Label10.Text = "Kontakt:"
         '
         'LVersion
         '
         Me.LVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LVersion.Location = New System.Drawing.Point(8, 14)
+        Me.LVersion.Location = New System.Drawing.Point(7, 11)
         Me.LVersion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LVersion.Name = "LVersion"
-        Me.LVersion.Size = New System.Drawing.Size(441, 25)
+        Me.LVersion.Size = New System.Drawing.Size(392, 20)
         Me.LVersion.TabIndex = 1
         Me.LVersion.Text = "Fritz!Box Telefon-Dingsbums "
         '
         'RichTextBox1
         '
         Me.RichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.RichTextBox1.Location = New System.Drawing.Point(4, 146)
-        Me.RichTextBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.RichTextBox1.Location = New System.Drawing.Point(4, 117)
+        Me.RichTextBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(841, 289)
+        Me.RichTextBox1.Size = New System.Drawing.Size(748, 232)
         Me.RichTextBox1.TabIndex = 0
         Me.RichTextBox1.Text = resources.GetString("RichTextBox1.Text")
         '
         'LinkHomepage
         '
-        Me.LinkHomepage.Location = New System.Drawing.Point(360, 102)
+        Me.LinkHomepage.Location = New System.Drawing.Point(320, 82)
         Me.LinkHomepage.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LinkHomepage.Name = "LinkHomepage"
-        Me.LinkHomepage.Size = New System.Drawing.Size(225, 20)
+        Me.LinkHomepage.Size = New System.Drawing.Size(200, 16)
         Me.LinkHomepage.TabIndex = 5
         Me.LinkHomepage.TabStop = True
         Me.LinkHomepage.Text = "GitHub"
@@ -805,10 +832,10 @@ Partial Class FormCfg
         '
         'LinkEmail
         '
-        Me.LinkEmail.Location = New System.Drawing.Point(360, 52)
+        Me.LinkEmail.Location = New System.Drawing.Point(320, 42)
         Me.LinkEmail.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LinkEmail.Name = "LinkEmail"
-        Me.LinkEmail.Size = New System.Drawing.Size(225, 20)
+        Me.LinkEmail.Size = New System.Drawing.Size(200, 16)
         Me.LinkEmail.TabIndex = 1
         Me.LinkEmail.TabStop = True
         Me.LinkEmail.Text = "kruemelino@gert-michael.de"
@@ -816,10 +843,10 @@ Partial Class FormCfg
         '
         'LinkForum
         '
-        Me.LinkForum.Location = New System.Drawing.Point(360, 77)
+        Me.LinkForum.Location = New System.Drawing.Point(320, 62)
         Me.LinkForum.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LinkForum.Name = "LinkForum"
-        Me.LinkForum.Size = New System.Drawing.Size(225, 20)
+        Me.LinkForum.Size = New System.Drawing.Size(200, 16)
         Me.LinkForum.TabIndex = 2
         Me.LinkForum.TabStop = True
         Me.LinkForum.Text = "www.ip-phone-forum.de"
@@ -829,11 +856,11 @@ Partial Class FormCfg
         '
         Me.PTelefone.Controls.Add(Me.GroupBox1)
         Me.PTelefone.Controls.Add(Me.Label15)
-        Me.PTelefone.Location = New System.Drawing.Point(4, 29)
-        Me.PTelefone.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PTelefone.Location = New System.Drawing.Point(4, 25)
+        Me.PTelefone.Margin = New System.Windows.Forms.Padding(4)
         Me.PTelefone.Name = "PTelefone"
-        Me.PTelefone.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PTelefone.Size = New System.Drawing.Size(860, 458)
+        Me.PTelefone.Padding = New System.Windows.Forms.Padding(4)
+        Me.PTelefone.Size = New System.Drawing.Size(763, 363)
         Me.PTelefone.TabIndex = 5
         Me.PTelefone.Text = "Telefone"
         Me.PTelefone.UseVisualStyleBackColor = True
@@ -842,11 +869,11 @@ Partial Class FormCfg
         '
         Me.GroupBox1.Controls.Add(Me.DGVTelList)
         Me.GroupBox1.Controls.Add(Me.BTelefonliste)
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 63)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 50)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox1.Size = New System.Drawing.Size(855, 389)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(760, 311)
         Me.GroupBox1.TabIndex = 27
         Me.GroupBox1.TabStop = False
         '
@@ -857,33 +884,34 @@ Partial Class FormCfg
         Me.DGVTelList.AllowUserToResizeColumns = False
         Me.DGVTelList.AllowUserToResizeRows = False
         Me.DGVTelList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.DGVTelList.ColumnHeadersHeight = 34
         Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
-        Me.DGVTelList.Location = New System.Drawing.Point(4, 24)
+        Me.DGVTelList.Location = New System.Drawing.Point(4, 19)
+        Me.DGVTelList.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.DGVTelList.MultiSelect = False
         Me.DGVTelList.Name = "DGVTelList"
         Me.DGVTelList.RowHeadersVisible = False
         Me.DGVTelList.RowHeadersWidth = 62
         Me.DGVTelList.RowTemplate.Height = 28
         Me.DGVTelList.ShowEditingIcon = False
-        Me.DGVTelList.Size = New System.Drawing.Size(847, 293)
+        Me.DGVTelList.Size = New System.Drawing.Size(752, 234)
         Me.DGVTelList.TabIndex = 36
         '
         'BTelefonliste
         '
-        Me.BTelefonliste.Location = New System.Drawing.Point(591, 337)
-        Me.BTelefonliste.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BTelefonliste.Location = New System.Drawing.Point(525, 270)
+        Me.BTelefonliste.Margin = New System.Windows.Forms.Padding(4)
         Me.BTelefonliste.Name = "BTelefonliste"
-        Me.BTelefonliste.Size = New System.Drawing.Size(255, 43)
+        Me.BTelefonliste.Size = New System.Drawing.Size(227, 34)
         Me.BTelefonliste.TabIndex = 35
         Me.BTelefonliste.Text = "Telefone erneut einlesen"
         Me.BTelefonliste.UseVisualStyleBackColor = True
@@ -892,10 +920,10 @@ Partial Class FormCfg
         '
         Me.Label15.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(4, 5)
+        Me.Label15.Location = New System.Drawing.Point(4, 4)
         Me.Label15.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(852, 54)
+        Me.Label15.Size = New System.Drawing.Size(755, 43)
         Me.Label15.TabIndex = 26
         Me.Label15.Text = "Nummern"
         Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -907,11 +935,11 @@ Partial Class FormCfg
         Me.PAnrufmonitor.Controls.Add(Me.GBAnrListeMain)
         Me.PAnrufmonitor.Controls.Add(Me.Label22)
         Me.PAnrufmonitor.Controls.Add(Me.GBAnrMonMain)
-        Me.PAnrufmonitor.Location = New System.Drawing.Point(4, 29)
-        Me.PAnrufmonitor.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PAnrufmonitor.Location = New System.Drawing.Point(4, 25)
+        Me.PAnrufmonitor.Margin = New System.Windows.Forms.Padding(4)
         Me.PAnrufmonitor.Name = "PAnrufmonitor"
-        Me.PAnrufmonitor.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PAnrufmonitor.Size = New System.Drawing.Size(860, 458)
+        Me.PAnrufmonitor.Padding = New System.Windows.Forms.Padding(4)
+        Me.PAnrufmonitor.Size = New System.Drawing.Size(763, 363)
         Me.PAnrufmonitor.TabIndex = 0
         Me.PAnrufmonitor.Text = "Anrufmonitor"
         Me.PAnrufmonitor.UseVisualStyleBackColor = True
@@ -920,11 +948,11 @@ Partial Class FormCfg
         '
         Me.GroupBox6.Controls.Add(Me.TBNumEntryList)
         Me.GroupBox6.Controls.Add(Me.LNumEntryList)
-        Me.GroupBox6.Location = New System.Drawing.Point(432, 297)
-        Me.GroupBox6.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GroupBox6.Location = New System.Drawing.Point(384, 238)
+        Me.GroupBox6.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox6.Size = New System.Drawing.Size(424, 85)
+        Me.GroupBox6.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox6.Size = New System.Drawing.Size(377, 68)
         Me.GroupBox6.TabIndex = 38
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Anruflisten"
@@ -932,11 +960,11 @@ Partial Class FormCfg
         'GBJournal
         '
         Me.GBJournal.Controls.Add(Me.CBJournal)
-        Me.GBJournal.Location = New System.Drawing.Point(432, 58)
-        Me.GBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBJournal.Location = New System.Drawing.Point(384, 46)
+        Me.GBJournal.Margin = New System.Windows.Forms.Padding(4)
         Me.GBJournal.Name = "GBJournal"
-        Me.GBJournal.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBJournal.Size = New System.Drawing.Size(423, 85)
+        Me.GBJournal.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBJournal.Size = New System.Drawing.Size(376, 68)
         Me.GBJournal.TabIndex = 37
         Me.GBJournal.TabStop = False
         Me.GBJournal.Text = "Outlook Journal"
@@ -944,11 +972,11 @@ Partial Class FormCfg
         'CBJournal
         '
         Me.CBJournal.AutoSize = True
-        Me.CBJournal.Location = New System.Drawing.Point(4, 35)
-        Me.CBJournal.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBJournal.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBJournal.Location = New System.Drawing.Point(4, 28)
+        Me.CBJournal.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBJournal.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBJournal.Name = "CBJournal"
-        Me.CBJournal.Size = New System.Drawing.Size(400, 24)
+        Me.CBJournal.Size = New System.Drawing.Size(356, 21)
         Me.CBJournal.TabIndex = 7
         Me.CBJournal.Text = "Journaleinträge erstellen"
         Me.CBJournal.UseVisualStyleBackColor = True
@@ -958,11 +986,11 @@ Partial Class FormCfg
         Me.GBAnrListeMain.Controls.Add(Me.CBAnrListeShowAnrMon)
         Me.GBAnrListeMain.Controls.Add(Me.CBAutoAnrList)
         Me.GBAnrListeMain.Controls.Add(Me.CBAnrListeUpdateCallLists)
-        Me.GBAnrListeMain.Location = New System.Drawing.Point(432, 153)
-        Me.GBAnrListeMain.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBAnrListeMain.Location = New System.Drawing.Point(384, 122)
+        Me.GBAnrListeMain.Margin = New System.Windows.Forms.Padding(4)
         Me.GBAnrListeMain.Name = "GBAnrListeMain"
-        Me.GBAnrListeMain.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBAnrListeMain.Size = New System.Drawing.Size(423, 134)
+        Me.GBAnrListeMain.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBAnrListeMain.Size = New System.Drawing.Size(376, 107)
         Me.GBAnrListeMain.TabIndex = 36
         Me.GBAnrListeMain.TabStop = False
         Me.GBAnrListeMain.Text = "Auswertung der Anrufliste"
@@ -971,11 +999,11 @@ Partial Class FormCfg
         '
         Me.CBAnrListeShowAnrMon.AutoSize = True
         Me.CBAnrListeShowAnrMon.Enabled = False
-        Me.CBAnrListeShowAnrMon.Location = New System.Drawing.Point(4, 97)
-        Me.CBAnrListeShowAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrListeShowAnrMon.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAnrListeShowAnrMon.Location = New System.Drawing.Point(4, 78)
+        Me.CBAnrListeShowAnrMon.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAnrListeShowAnrMon.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBAnrListeShowAnrMon.Name = "CBAnrListeShowAnrMon"
-        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(400, 24)
+        Me.CBAnrListeShowAnrMon.Size = New System.Drawing.Size(356, 21)
         Me.CBAnrListeShowAnrMon.TabIndex = 9
         Me.CBAnrListeShowAnrMon.Text = "Verpasste Telefonate mit Anrufmonitor anzeigen"
         Me.CBAnrListeShowAnrMon.UseVisualStyleBackColor = True
@@ -983,11 +1011,11 @@ Partial Class FormCfg
         'CBAnrListeUpdateCallLists
         '
         Me.CBAnrListeUpdateCallLists.AutoSize = True
-        Me.CBAnrListeUpdateCallLists.Location = New System.Drawing.Point(4, 63)
-        Me.CBAnrListeUpdateCallLists.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrListeUpdateCallLists.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAnrListeUpdateCallLists.Location = New System.Drawing.Point(4, 50)
+        Me.CBAnrListeUpdateCallLists.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAnrListeUpdateCallLists.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBAnrListeUpdateCallLists.Name = "CBAnrListeUpdateCallLists"
-        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(400, 24)
+        Me.CBAnrListeUpdateCallLists.Size = New System.Drawing.Size(356, 21)
         Me.CBAnrListeUpdateCallLists.TabIndex = 7
         Me.CBAnrListeUpdateCallLists.Text = "Rückruf- und Wahlwiederholungsliste aktualisieren"
         Me.CBAnrListeUpdateCallLists.UseVisualStyleBackColor = True
@@ -996,10 +1024,10 @@ Partial Class FormCfg
         '
         Me.Label22.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(4, 5)
+        Me.Label22.Location = New System.Drawing.Point(4, 4)
         Me.Label22.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(852, 54)
+        Me.Label22.Size = New System.Drawing.Size(755, 43)
         Me.Label22.TabIndex = 29
         Me.Label22.Text = "Einstellungen für den Anrufmonitor"
         Me.Label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1008,11 +1036,11 @@ Partial Class FormCfg
         '
         Me.GBAnrMonMain.Controls.Add(Me.PanelAnrMon)
         Me.GBAnrMonMain.Controls.Add(Me.CBUseAnrMon)
-        Me.GBAnrMonMain.Location = New System.Drawing.Point(0, 58)
-        Me.GBAnrMonMain.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBAnrMonMain.Location = New System.Drawing.Point(0, 46)
+        Me.GBAnrMonMain.Margin = New System.Windows.Forms.Padding(4)
         Me.GBAnrMonMain.Name = "GBAnrMonMain"
-        Me.GBAnrMonMain.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBAnrMonMain.Size = New System.Drawing.Size(423, 394)
+        Me.GBAnrMonMain.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBAnrMonMain.Size = New System.Drawing.Size(376, 315)
         Me.GBAnrMonMain.TabIndex = 14
         Me.GBAnrMonMain.TabStop = False
         Me.GBAnrMonMain.Text = "Einstellungen für den Anrufmonitor"
@@ -1029,20 +1057,20 @@ Partial Class FormCfg
         Me.PanelAnrMon.Controls.Add(Me.TBEnblDauer)
         Me.PanelAnrMon.Controls.Add(Me.CLBTelNr)
         Me.PanelAnrMon.Controls.Add(Me.LEnblDauer)
-        Me.PanelAnrMon.Location = New System.Drawing.Point(0, 55)
-        Me.PanelAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PanelAnrMon.Location = New System.Drawing.Point(0, 44)
+        Me.PanelAnrMon.Margin = New System.Windows.Forms.Padding(4)
         Me.PanelAnrMon.Name = "PanelAnrMon"
-        Me.PanelAnrMon.Size = New System.Drawing.Size(423, 338)
+        Me.PanelAnrMon.Size = New System.Drawing.Size(376, 270)
         Me.PanelAnrMon.TabIndex = 35
         '
         'CBAnrMonContactImage
         '
         Me.CBAnrMonContactImage.AutoSize = True
-        Me.CBAnrMonContactImage.Location = New System.Drawing.Point(235, 269)
-        Me.CBAnrMonContactImage.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrMonContactImage.MinimumSize = New System.Drawing.Size(150, 0)
+        Me.CBAnrMonContactImage.Location = New System.Drawing.Point(209, 215)
+        Me.CBAnrMonContactImage.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAnrMonContactImage.MinimumSize = New System.Drawing.Size(133, 0)
         Me.CBAnrMonContactImage.Name = "CBAnrMonContactImage"
-        Me.CBAnrMonContactImage.Size = New System.Drawing.Size(158, 24)
+        Me.CBAnrMonContactImage.Size = New System.Drawing.Size(140, 21)
         Me.CBAnrMonContactImage.TabIndex = 910
         Me.CBAnrMonContactImage.Text = "Zeige Kontaktbild"
         Me.CBAnrMonContactImage.UseVisualStyleBackColor = True
@@ -1051,11 +1079,11 @@ Partial Class FormCfg
         '
         Me.CBAnrMonZeigeKontakt.AutoSize = True
         Me.CBAnrMonZeigeKontakt.Enabled = False
-        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(4, 269)
-        Me.CBAnrMonZeigeKontakt.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrMonZeigeKontakt.MinimumSize = New System.Drawing.Size(200, 0)
+        Me.CBAnrMonZeigeKontakt.Location = New System.Drawing.Point(4, 215)
+        Me.CBAnrMonZeigeKontakt.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAnrMonZeigeKontakt.MinimumSize = New System.Drawing.Size(178, 0)
         Me.CBAnrMonZeigeKontakt.Name = "CBAnrMonZeigeKontakt"
-        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(208, 24)
+        Me.CBAnrMonZeigeKontakt.Size = New System.Drawing.Size(183, 21)
         Me.CBAnrMonZeigeKontakt.TabIndex = 34
         Me.CBAnrMonZeigeKontakt.Text = "Kontakt bei Anruf öffnen"
         Me.CBAnrMonZeigeKontakt.UseVisualStyleBackColor = True
@@ -1063,11 +1091,11 @@ Partial Class FormCfg
         'CBAnrMonAuto
         '
         Me.CBAnrMonAuto.AutoSize = True
-        Me.CBAnrMonAuto.Location = New System.Drawing.Point(4, 9)
-        Me.CBAnrMonAuto.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrMonAuto.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAnrMonAuto.Location = New System.Drawing.Point(4, 7)
+        Me.CBAnrMonAuto.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAnrMonAuto.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBAnrMonAuto.Name = "CBAnrMonAuto"
-        Me.CBAnrMonAuto.Size = New System.Drawing.Size(400, 24)
+        Me.CBAnrMonAuto.Size = New System.Drawing.Size(356, 21)
         Me.CBAnrMonAuto.TabIndex = 1
         Me.CBAnrMonAuto.Text = "Anrufmonitor mit Outlook starten"
         Me.CBAnrMonAuto.UseVisualStyleBackColor = True
@@ -1076,11 +1104,11 @@ Partial Class FormCfg
         '
         Me.CBAnrMonCloseAtDISSCONNECT.AutoSize = True
         Me.CBAnrMonCloseAtDISSCONNECT.Enabled = False
-        Me.CBAnrMonCloseAtDISSCONNECT.Location = New System.Drawing.Point(4, 115)
-        Me.CBAnrMonCloseAtDISSCONNECT.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAnrMonCloseAtDISSCONNECT.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAnrMonCloseAtDISSCONNECT.Location = New System.Drawing.Point(4, 92)
+        Me.CBAnrMonCloseAtDISSCONNECT.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAnrMonCloseAtDISSCONNECT.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBAnrMonCloseAtDISSCONNECT.Name = "CBAnrMonCloseAtDISSCONNECT"
-        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(400, 24)
+        Me.CBAnrMonCloseAtDISSCONNECT.Size = New System.Drawing.Size(356, 21)
         Me.CBAnrMonCloseAtDISSCONNECT.TabIndex = 2
         Me.CBAnrMonCloseAtDISSCONNECT.Text = "Anruffenster beim Auflegen ausblenden"
         Me.CBAnrMonCloseAtDISSCONNECT.UseVisualStyleBackColor = True
@@ -1088,30 +1116,30 @@ Partial Class FormCfg
         'CBAutoClose
         '
         Me.CBAutoClose.AutoSize = True
-        Me.CBAutoClose.Location = New System.Drawing.Point(4, 45)
-        Me.CBAutoClose.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBAutoClose.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBAutoClose.Location = New System.Drawing.Point(4, 36)
+        Me.CBAutoClose.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBAutoClose.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBAutoClose.Name = "CBAutoClose"
-        Me.CBAutoClose.Size = New System.Drawing.Size(400, 24)
+        Me.CBAutoClose.Size = New System.Drawing.Size(356, 21)
         Me.CBAutoClose.TabIndex = 2
         Me.CBAutoClose.Text = "Anruffenster automatisch ausblenden"
         Me.CBAutoClose.UseVisualStyleBackColor = True
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(231, 152)
+        Me.Label2.Location = New System.Drawing.Point(205, 122)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(171, 74)
+        Me.Label2.Size = New System.Drawing.Size(152, 59)
         Me.Label2.TabIndex = 33
         Me.Label2.Text = "Stellen Sie die zu überwachenden Telefonnummern ein."
         '
         'TBEnblDauer
         '
-        Me.TBEnblDauer.Location = New System.Drawing.Point(3, 77)
-        Me.TBEnblDauer.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBEnblDauer.Location = New System.Drawing.Point(3, 62)
+        Me.TBEnblDauer.Margin = New System.Windows.Forms.Padding(4)
         Me.TBEnblDauer.Name = "TBEnblDauer"
-        Me.TBEnblDauer.Size = New System.Drawing.Size(42, 26)
+        Me.TBEnblDauer.Size = New System.Drawing.Size(38, 22)
         Me.TBEnblDauer.TabIndex = 3
         '
         'CLBTelNr
@@ -1120,20 +1148,20 @@ Partial Class FormCfg
         Me.CLBTelNr.CheckOnClick = True
         Me.CLBTelNr.HorizontalScrollbar = True
         Me.CLBTelNr.IntegralHeight = False
-        Me.CLBTelNr.Location = New System.Drawing.Point(0, 151)
-        Me.CLBTelNr.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.CLBTelNr.Location = New System.Drawing.Point(0, 121)
+        Me.CLBTelNr.Margin = New System.Windows.Forms.Padding(4)
         Me.CLBTelNr.Name = "CLBTelNr"
-        Me.CLBTelNr.Size = New System.Drawing.Size(221, 108)
+        Me.CLBTelNr.Size = New System.Drawing.Size(197, 87)
         Me.CLBTelNr.TabIndex = 4
         '
         'LEnblDauer
         '
         Me.LEnblDauer.AutoSize = True
-        Me.LEnblDauer.Location = New System.Drawing.Point(56, 82)
+        Me.LEnblDauer.Location = New System.Drawing.Point(50, 66)
         Me.LEnblDauer.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LEnblDauer.MinimumSize = New System.Drawing.Size(350, 0)
+        Me.LEnblDauer.MinimumSize = New System.Drawing.Size(311, 0)
         Me.LEnblDauer.Name = "LEnblDauer"
-        Me.LEnblDauer.Size = New System.Drawing.Size(350, 20)
+        Me.LEnblDauer.Size = New System.Drawing.Size(311, 17)
         Me.LEnblDauer.TabIndex = 31
         Me.LEnblDauer.Text = "Anzeigedauer bei Anruf (minimal: 4s) [s]"
         '
@@ -1141,11 +1169,11 @@ Partial Class FormCfg
         '
         Me.CBUseAnrMon.AutoSize = True
         Me.CBUseAnrMon.Enabled = False
-        Me.CBUseAnrMon.Location = New System.Drawing.Point(4, 29)
-        Me.CBUseAnrMon.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBUseAnrMon.MinimumSize = New System.Drawing.Size(400, 0)
+        Me.CBUseAnrMon.Location = New System.Drawing.Point(4, 23)
+        Me.CBUseAnrMon.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBUseAnrMon.MinimumSize = New System.Drawing.Size(356, 0)
         Me.CBUseAnrMon.Name = "CBUseAnrMon"
-        Me.CBUseAnrMon.Size = New System.Drawing.Size(400, 24)
+        Me.CBUseAnrMon.Size = New System.Drawing.Size(356, 21)
         Me.CBUseAnrMon.TabIndex = 0
         Me.CBUseAnrMon.Text = "Anrufmonitor verwenden"
         Me.CBUseAnrMon.UseVisualStyleBackColor = True
@@ -1157,14 +1185,15 @@ Partial Class FormCfg
         Me.FBDB_MP.Controls.Add(Me.PAnrMonSim)
         Me.FBDB_MP.Controls.Add(Me.PKontaktsuche2)
         Me.FBDB_MP.Controls.Add(Me.PTelefone)
+        Me.FBDB_MP.Controls.Add(Me.PPhoner)
         Me.FBDB_MP.Controls.Add(Me.PLogging)
         Me.FBDB_MP.Controls.Add(Me.PInfo)
         Me.FBDB_MP.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FBDB_MP.Location = New System.Drawing.Point(4, 5)
-        Me.FBDB_MP.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.FBDB_MP.Location = New System.Drawing.Point(4, 4)
+        Me.FBDB_MP.Margin = New System.Windows.Forms.Padding(4)
         Me.FBDB_MP.Name = "FBDB_MP"
         Me.FBDB_MP.SelectedIndex = 0
-        Me.FBDB_MP.Size = New System.Drawing.Size(868, 491)
+        Me.FBDB_MP.Size = New System.Drawing.Size(771, 392)
         Me.FBDB_MP.TabIndex = 1
         '
         'PAnrMonSim
@@ -1173,10 +1202,11 @@ Partial Class FormCfg
         Me.PAnrMonSim.Controls.Add(Me.GBoxAnrMonCONNECT)
         Me.PAnrMonSim.Controls.Add(Me.GBoxAnrMonCALL)
         Me.PAnrMonSim.Controls.Add(Me.GBoxAnrMonRING)
-        Me.PAnrMonSim.Location = New System.Drawing.Point(4, 29)
+        Me.PAnrMonSim.Location = New System.Drawing.Point(4, 25)
+        Me.PAnrMonSim.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.PAnrMonSim.Name = "PAnrMonSim"
-        Me.PAnrMonSim.Padding = New System.Windows.Forms.Padding(3)
-        Me.PAnrMonSim.Size = New System.Drawing.Size(860, 458)
+        Me.PAnrMonSim.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.PAnrMonSim.Size = New System.Drawing.Size(763, 363)
         Me.PAnrMonSim.TabIndex = 14
         Me.PAnrMonSim.Text = "Simulation"
         Me.PAnrMonSim.UseVisualStyleBackColor = True
@@ -1191,19 +1221,21 @@ Partial Class FormCfg
         Me.GBoxAnrMonDISCONNECT.Controls.Add(Me.LAnrMonSimLabelDISCONNECT)
         Me.GBoxAnrMonDISCONNECT.Controls.Add(Me.DTPAnrMonSimDISCONNECT)
         Me.GBoxAnrMonDISCONNECT.Controls.Add(Me.BAnrMonSimDISCONNECT)
-        Me.GBoxAnrMonDISCONNECT.Location = New System.Drawing.Point(6, 324)
+        Me.GBoxAnrMonDISCONNECT.Location = New System.Drawing.Point(5, 259)
+        Me.GBoxAnrMonDISCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonDISCONNECT.Name = "GBoxAnrMonDISCONNECT"
-        Me.GBoxAnrMonDISCONNECT.Size = New System.Drawing.Size(848, 100)
+        Me.GBoxAnrMonDISCONNECT.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.GBoxAnrMonDISCONNECT.Size = New System.Drawing.Size(754, 80)
         Me.GBoxAnrMonDISCONNECT.TabIndex = 3
         Me.GBoxAnrMonDISCONNECT.TabStop = False
         Me.GBoxAnrMonDISCONNECT.Text = "Anrufmonitor DISCONNECT"
         '
         'TBAnrMonSimDISCONNECTDauer
         '
-        Me.TBAnrMonSimDISCONNECTDauer.Location = New System.Drawing.Point(363, 27)
-        Me.TBAnrMonSimDISCONNECTDauer.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimDISCONNECTDauer.Location = New System.Drawing.Point(323, 22)
+        Me.TBAnrMonSimDISCONNECTDauer.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimDISCONNECTDauer.Name = "TBAnrMonSimDISCONNECTDauer"
-        Me.TBAnrMonSimDISCONNECTDauer.Size = New System.Drawing.Size(32, 26)
+        Me.TBAnrMonSimDISCONNECTDauer.Size = New System.Drawing.Size(29, 22)
         Me.TBAnrMonSimDISCONNECTDauer.TabIndex = 44
         Me.TBAnrMonSimDISCONNECTDauer.Text = "0"
         Me.TBAnrMonSimDISCONNECTDauer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1211,39 +1243,39 @@ Partial Class FormCfg
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(398, 27)
+        Me.Label26.Location = New System.Drawing.Point(354, 22)
         Me.Label26.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(13, 20)
+        Me.Label26.Size = New System.Drawing.Size(12, 17)
         Me.Label26.TabIndex = 43
         Me.Label26.Text = ";"
         '
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(348, 30)
+        Me.Label27.Location = New System.Drawing.Point(309, 24)
         Me.Label27.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(13, 20)
+        Me.Label27.Size = New System.Drawing.Size(12, 17)
         Me.Label27.TabIndex = 41
         Me.Label27.Text = ";"
         '
         'LAnrMonSimDISCONNECT
         '
         Me.LAnrMonSimDISCONNECT.AutoSize = True
-        Me.LAnrMonSimDISCONNECT.Location = New System.Drawing.Point(191, 30)
+        Me.LAnrMonSimDISCONNECT.Location = New System.Drawing.Point(170, 24)
         Me.LAnrMonSimDISCONNECT.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.LAnrMonSimDISCONNECT.Name = "LAnrMonSimDISCONNECT"
-        Me.LAnrMonSimDISCONNECT.Size = New System.Drawing.Size(121, 20)
+        Me.LAnrMonSimDISCONNECT.Size = New System.Drawing.Size(105, 17)
         Me.LAnrMonSimDISCONNECT.TabIndex = 40
         Me.LAnrMonSimDISCONNECT.Text = ";DISCONNECT;"
         '
         'TBAnrMonSimDISCONNECTID
         '
-        Me.TBAnrMonSimDISCONNECTID.Location = New System.Drawing.Point(314, 27)
-        Me.TBAnrMonSimDISCONNECTID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimDISCONNECTID.Location = New System.Drawing.Point(279, 22)
+        Me.TBAnrMonSimDISCONNECTID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimDISCONNECTID.Name = "TBAnrMonSimDISCONNECTID"
-        Me.TBAnrMonSimDISCONNECTID.Size = New System.Drawing.Size(32, 26)
+        Me.TBAnrMonSimDISCONNECTID.Size = New System.Drawing.Size(29, 22)
         Me.TBAnrMonSimDISCONNECTID.TabIndex = 39
         Me.TBAnrMonSimDISCONNECTID.Text = "0"
         Me.TBAnrMonSimDISCONNECTID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1251,9 +1283,9 @@ Partial Class FormCfg
         'LAnrMonSimLabelDISCONNECT
         '
         Me.LAnrMonSimLabelDISCONNECT.AutoSize = True
-        Me.LAnrMonSimLabelDISCONNECT.Location = New System.Drawing.Point(6, 66)
+        Me.LAnrMonSimLabelDISCONNECT.Location = New System.Drawing.Point(5, 53)
         Me.LAnrMonSimLabelDISCONNECT.Name = "LAnrMonSimLabelDISCONNECT"
-        Me.LAnrMonSimLabelDISCONNECT.Size = New System.Drawing.Size(275, 20)
+        Me.LAnrMonSimLabelDISCONNECT.Size = New System.Drawing.Size(245, 17)
         Me.LAnrMonSimLabelDISCONNECT.TabIndex = 38
         Me.LAnrMonSimLabelDISCONNECT.Text = "23.06.18 13:20:52;DISCONNECT;1;9;"
         '
@@ -1261,18 +1293,19 @@ Partial Class FormCfg
         '
         Me.DTPAnrMonSimDISCONNECT.CustomFormat = "dd.MM.yy HH:mm:ss"
         Me.DTPAnrMonSimDISCONNECT.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DTPAnrMonSimDISCONNECT.Location = New System.Drawing.Point(6, 25)
-        Me.DTPAnrMonSimDISCONNECT.Margin = New System.Windows.Forms.Padding(3, 3, 1, 3)
+        Me.DTPAnrMonSimDISCONNECT.Location = New System.Drawing.Point(5, 20)
+        Me.DTPAnrMonSimDISCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 1, 2)
         Me.DTPAnrMonSimDISCONNECT.Name = "DTPAnrMonSimDISCONNECT"
-        Me.DTPAnrMonSimDISCONNECT.Size = New System.Drawing.Size(183, 26)
+        Me.DTPAnrMonSimDISCONNECT.Size = New System.Drawing.Size(163, 22)
         Me.DTPAnrMonSimDISCONNECT.TabIndex = 37
         Me.DTPAnrMonSimDISCONNECT.Value = New Date(2019, 6, 29, 15, 7, 37, 0)
         '
         'BAnrMonSimDISCONNECT
         '
-        Me.BAnrMonSimDISCONNECT.Location = New System.Drawing.Point(720, 25)
+        Me.BAnrMonSimDISCONNECT.Location = New System.Drawing.Point(640, 20)
+        Me.BAnrMonSimDISCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.BAnrMonSimDISCONNECT.Name = "BAnrMonSimDISCONNECT"
-        Me.BAnrMonSimDISCONNECT.Size = New System.Drawing.Size(122, 61)
+        Me.BAnrMonSimDISCONNECT.Size = New System.Drawing.Size(108, 49)
         Me.BAnrMonSimDISCONNECT.TabIndex = 3
         Me.BAnrMonSimDISCONNECT.Text = "DISCONNECT"
         Me.BAnrMonSimDISCONNECT.UseVisualStyleBackColor = True
@@ -1289,9 +1322,11 @@ Partial Class FormCfg
         Me.GBoxAnrMonCONNECT.Controls.Add(Me.LAnrMonSimLabelCONNECT)
         Me.GBoxAnrMonCONNECT.Controls.Add(Me.DTPAnrMonSimCONNECT)
         Me.GBoxAnrMonCONNECT.Controls.Add(Me.BAnrMonSimCONNECT)
-        Me.GBoxAnrMonCONNECT.Location = New System.Drawing.Point(6, 218)
+        Me.GBoxAnrMonCONNECT.Location = New System.Drawing.Point(5, 174)
+        Me.GBoxAnrMonCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonCONNECT.Name = "GBoxAnrMonCONNECT"
-        Me.GBoxAnrMonCONNECT.Size = New System.Drawing.Size(848, 100)
+        Me.GBoxAnrMonCONNECT.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.GBoxAnrMonCONNECT.Size = New System.Drawing.Size(754, 80)
         Me.GBoxAnrMonCONNECT.TabIndex = 2
         Me.GBoxAnrMonCONNECT.TabStop = False
         Me.GBoxAnrMonCONNECT.Text = "Anrufmonitor CONNECT"
@@ -1299,38 +1334,38 @@ Partial Class FormCfg
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(545, 30)
+        Me.Label19.Location = New System.Drawing.Point(484, 24)
         Me.Label19.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(13, 20)
+        Me.Label19.Size = New System.Drawing.Size(12, 17)
         Me.Label19.TabIndex = 37
         Me.Label19.Text = ";"
         '
         'CBoxAnrMonSimCONNECTNSTID
         '
         Me.CBoxAnrMonSimCONNECTNSTID.FormattingEnabled = True
-        Me.CBoxAnrMonSimCONNECTNSTID.Location = New System.Drawing.Point(335, 27)
-        Me.CBoxAnrMonSimCONNECTNSTID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.CBoxAnrMonSimCONNECTNSTID.Location = New System.Drawing.Point(298, 22)
+        Me.CBoxAnrMonSimCONNECTNSTID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.CBoxAnrMonSimCONNECTNSTID.Name = "CBoxAnrMonSimCONNECTNSTID"
-        Me.CBoxAnrMonSimCONNECTNSTID.Size = New System.Drawing.Size(71, 28)
+        Me.CBoxAnrMonSimCONNECTNSTID.Size = New System.Drawing.Size(64, 24)
         Me.CBoxAnrMonSimCONNECTNSTID.TabIndex = 36
         '
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(408, 30)
+        Me.Label18.Location = New System.Drawing.Point(363, 24)
         Me.Label18.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(13, 20)
+        Me.Label18.Size = New System.Drawing.Size(12, 17)
         Me.Label18.TabIndex = 35
         Me.Label18.Text = ";"
         '
         'TBAnrMonSimCONNECTAugTelNr
         '
-        Me.TBAnrMonSimCONNECTAugTelNr.Location = New System.Drawing.Point(423, 27)
-        Me.TBAnrMonSimCONNECTAugTelNr.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimCONNECTAugTelNr.Location = New System.Drawing.Point(376, 22)
+        Me.TBAnrMonSimCONNECTAugTelNr.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimCONNECTAugTelNr.Name = "TBAnrMonSimCONNECTAugTelNr"
-        Me.TBAnrMonSimCONNECTAugTelNr.Size = New System.Drawing.Size(122, 26)
+        Me.TBAnrMonSimCONNECTAugTelNr.Size = New System.Drawing.Size(109, 22)
         Me.TBAnrMonSimCONNECTAugTelNr.TabIndex = 32
         Me.TBAnrMonSimCONNECTAugTelNr.Text = "0123456789"
         Me.TBAnrMonSimCONNECTAugTelNr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1338,29 +1373,29 @@ Partial Class FormCfg
         'Label24
         '
         Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(320, 30)
+        Me.Label24.Location = New System.Drawing.Point(284, 24)
         Me.Label24.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(13, 20)
+        Me.Label24.Size = New System.Drawing.Size(12, 17)
         Me.Label24.TabIndex = 31
         Me.Label24.Text = ";"
         '
         'LAnrMonSimCONNECT
         '
         Me.LAnrMonSimCONNECT.AutoSize = True
-        Me.LAnrMonSimCONNECT.Location = New System.Drawing.Point(191, 30)
+        Me.LAnrMonSimCONNECT.Location = New System.Drawing.Point(170, 24)
         Me.LAnrMonSimCONNECT.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.LAnrMonSimCONNECT.Name = "LAnrMonSimCONNECT"
-        Me.LAnrMonSimCONNECT.Size = New System.Drawing.Size(93, 20)
+        Me.LAnrMonSimCONNECT.Size = New System.Drawing.Size(83, 17)
         Me.LAnrMonSimCONNECT.TabIndex = 30
         Me.LAnrMonSimCONNECT.Text = ";CONNECT;"
         '
         'TBAnrMonSimCONNECTID
         '
-        Me.TBAnrMonSimCONNECTID.Location = New System.Drawing.Point(286, 27)
-        Me.TBAnrMonSimCONNECTID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimCONNECTID.Location = New System.Drawing.Point(254, 22)
+        Me.TBAnrMonSimCONNECTID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimCONNECTID.Name = "TBAnrMonSimCONNECTID"
-        Me.TBAnrMonSimCONNECTID.Size = New System.Drawing.Size(32, 26)
+        Me.TBAnrMonSimCONNECTID.Size = New System.Drawing.Size(29, 22)
         Me.TBAnrMonSimCONNECTID.TabIndex = 29
         Me.TBAnrMonSimCONNECTID.Text = "0"
         Me.TBAnrMonSimCONNECTID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1368,9 +1403,9 @@ Partial Class FormCfg
         'LAnrMonSimLabelCONNECT
         '
         Me.LAnrMonSimLabelCONNECT.AutoSize = True
-        Me.LAnrMonSimLabelCONNECT.Location = New System.Drawing.Point(6, 66)
+        Me.LAnrMonSimLabelCONNECT.Location = New System.Drawing.Point(5, 53)
         Me.LAnrMonSimLabelCONNECT.Name = "LAnrMonSimLabelCONNECT"
-        Me.LAnrMonSimLabelCONNECT.Size = New System.Drawing.Size(350, 20)
+        Me.LAnrMonSimLabelCONNECT.Size = New System.Drawing.Size(315, 17)
         Me.LAnrMonSimLabelCONNECT.TabIndex = 28
         Me.LAnrMonSimLabelCONNECT.Text = "23.06.18 13:20:44;CONNECT;1;40;0123456789;"
         '
@@ -1378,18 +1413,19 @@ Partial Class FormCfg
         '
         Me.DTPAnrMonSimCONNECT.CustomFormat = "dd.MM.yy HH:mm:ss"
         Me.DTPAnrMonSimCONNECT.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DTPAnrMonSimCONNECT.Location = New System.Drawing.Point(6, 25)
-        Me.DTPAnrMonSimCONNECT.Margin = New System.Windows.Forms.Padding(3, 3, 1, 3)
+        Me.DTPAnrMonSimCONNECT.Location = New System.Drawing.Point(5, 20)
+        Me.DTPAnrMonSimCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 1, 2)
         Me.DTPAnrMonSimCONNECT.Name = "DTPAnrMonSimCONNECT"
-        Me.DTPAnrMonSimCONNECT.Size = New System.Drawing.Size(183, 26)
+        Me.DTPAnrMonSimCONNECT.Size = New System.Drawing.Size(163, 22)
         Me.DTPAnrMonSimCONNECT.TabIndex = 27
         Me.DTPAnrMonSimCONNECT.Value = New Date(2019, 6, 29, 15, 7, 37, 0)
         '
         'BAnrMonSimCONNECT
         '
-        Me.BAnrMonSimCONNECT.Location = New System.Drawing.Point(720, 25)
+        Me.BAnrMonSimCONNECT.Location = New System.Drawing.Point(640, 20)
+        Me.BAnrMonSimCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.BAnrMonSimCONNECT.Name = "BAnrMonSimCONNECT"
-        Me.BAnrMonSimCONNECT.Size = New System.Drawing.Size(122, 61)
+        Me.BAnrMonSimCONNECT.Size = New System.Drawing.Size(108, 49)
         Me.BAnrMonSimCONNECT.TabIndex = 2
         Me.BAnrMonSimCONNECT.Text = "CONNECT"
         Me.BAnrMonSimCONNECT.UseVisualStyleBackColor = True
@@ -1410,9 +1446,11 @@ Partial Class FormCfg
         Me.GBoxAnrMonCALL.Controls.Add(Me.LAnrMonSimLabelCALL)
         Me.GBoxAnrMonCALL.Controls.Add(Me.DTPAnrMonSimCALL)
         Me.GBoxAnrMonCALL.Controls.Add(Me.BAnrMonSimCALL)
-        Me.GBoxAnrMonCALL.Location = New System.Drawing.Point(6, 112)
+        Me.GBoxAnrMonCALL.Location = New System.Drawing.Point(5, 90)
+        Me.GBoxAnrMonCALL.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonCALL.Name = "GBoxAnrMonCALL"
-        Me.GBoxAnrMonCALL.Size = New System.Drawing.Size(848, 100)
+        Me.GBoxAnrMonCALL.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.GBoxAnrMonCALL.Size = New System.Drawing.Size(754, 80)
         Me.GBoxAnrMonCALL.TabIndex = 1
         Me.GBoxAnrMonCALL.TabStop = False
         Me.GBoxAnrMonCALL.Text = "Anrufmonitor CALL"
@@ -1420,76 +1458,76 @@ Partial Class FormCfg
         'CBoxAnrMonSimCALLNSTID
         '
         Me.CBoxAnrMonSimCALLNSTID.FormattingEnabled = True
-        Me.CBoxAnrMonSimCALLNSTID.Location = New System.Drawing.Point(299, 27)
-        Me.CBoxAnrMonSimCALLNSTID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.CBoxAnrMonSimCALLNSTID.Location = New System.Drawing.Point(266, 22)
+        Me.CBoxAnrMonSimCALLNSTID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.CBoxAnrMonSimCALLNSTID.Name = "CBoxAnrMonSimCALLNSTID"
-        Me.CBoxAnrMonSimCALLNSTID.Size = New System.Drawing.Size(71, 28)
+        Me.CBoxAnrMonSimCALLNSTID.Size = New System.Drawing.Size(64, 24)
         Me.CBoxAnrMonSimCALLNSTID.TabIndex = 26
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(480, 30)
+        Me.Label14.Location = New System.Drawing.Point(427, 24)
         Me.Label14.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(13, 20)
+        Me.Label14.Size = New System.Drawing.Size(12, 17)
         Me.Label14.TabIndex = 25
         Me.Label14.Text = ";"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(694, 30)
+        Me.Label3.Location = New System.Drawing.Point(617, 24)
         Me.Label3.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(13, 20)
+        Me.Label3.Size = New System.Drawing.Size(12, 17)
         Me.Label3.TabIndex = 23
         Me.Label3.Text = ";"
         '
         'CBoxAnrMonSimCALLSIPID
         '
         Me.CBoxAnrMonSimCALLSIPID.FormattingEnabled = True
-        Me.CBoxAnrMonSimCALLSIPID.Location = New System.Drawing.Point(634, 27)
-        Me.CBoxAnrMonSimCALLSIPID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.CBoxAnrMonSimCALLSIPID.Location = New System.Drawing.Point(564, 22)
+        Me.CBoxAnrMonSimCALLSIPID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.CBoxAnrMonSimCALLSIPID.Name = "CBoxAnrMonSimCALLSIPID"
-        Me.CBoxAnrMonSimCALLSIPID.Size = New System.Drawing.Size(58, 28)
+        Me.CBoxAnrMonSimCALLSIPID.Size = New System.Drawing.Size(52, 24)
         Me.CBoxAnrMonSimCALLSIPID.TabIndex = 22
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(619, 30)
+        Me.Label9.Location = New System.Drawing.Point(550, 24)
         Me.Label9.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(13, 20)
+        Me.Label9.Size = New System.Drawing.Size(12, 17)
         Me.Label9.TabIndex = 21
         Me.Label9.Text = ";"
         '
         'CBoxAnrMonSimCALLEigTelNr
         '
         Me.CBoxAnrMonSimCALLEigTelNr.FormattingEnabled = True
-        Me.CBoxAnrMonSimCALLEigTelNr.Location = New System.Drawing.Point(387, 27)
-        Me.CBoxAnrMonSimCALLEigTelNr.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.CBoxAnrMonSimCALLEigTelNr.Location = New System.Drawing.Point(344, 22)
+        Me.CBoxAnrMonSimCALLEigTelNr.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.CBoxAnrMonSimCALLEigTelNr.Name = "CBoxAnrMonSimCALLEigTelNr"
-        Me.CBoxAnrMonSimCALLEigTelNr.Size = New System.Drawing.Size(91, 28)
+        Me.CBoxAnrMonSimCALLEigTelNr.Size = New System.Drawing.Size(81, 24)
         Me.CBoxAnrMonSimCALLEigTelNr.TabIndex = 20
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(372, 30)
+        Me.Label11.Location = New System.Drawing.Point(331, 24)
         Me.Label11.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(13, 20)
+        Me.Label11.Size = New System.Drawing.Size(12, 17)
         Me.Label11.TabIndex = 19
         Me.Label11.Text = ";"
         '
         'TBAnrMonSimCALLAugTelNr
         '
-        Me.TBAnrMonSimCALLAugTelNr.Location = New System.Drawing.Point(495, 27)
-        Me.TBAnrMonSimCALLAugTelNr.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimCALLAugTelNr.Location = New System.Drawing.Point(440, 22)
+        Me.TBAnrMonSimCALLAugTelNr.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimCALLAugTelNr.Name = "TBAnrMonSimCALLAugTelNr"
-        Me.TBAnrMonSimCALLAugTelNr.Size = New System.Drawing.Size(122, 26)
+        Me.TBAnrMonSimCALLAugTelNr.Size = New System.Drawing.Size(109, 22)
         Me.TBAnrMonSimCALLAugTelNr.TabIndex = 18
         Me.TBAnrMonSimCALLAugTelNr.Text = "0123456789"
         Me.TBAnrMonSimCALLAugTelNr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1497,29 +1535,29 @@ Partial Class FormCfg
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(284, 30)
+        Me.Label12.Location = New System.Drawing.Point(252, 24)
         Me.Label12.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(13, 20)
+        Me.Label12.Size = New System.Drawing.Size(12, 17)
         Me.Label12.TabIndex = 17
         Me.Label12.Text = ";"
         '
         'LAnrMonSimCALL
         '
         Me.LAnrMonSimCALL.AutoSize = True
-        Me.LAnrMonSimCALL.Location = New System.Drawing.Point(191, 30)
+        Me.LAnrMonSimCALL.Location = New System.Drawing.Point(170, 24)
         Me.LAnrMonSimCALL.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.LAnrMonSimCALL.Name = "LAnrMonSimCALL"
-        Me.LAnrMonSimCALL.Size = New System.Drawing.Size(57, 20)
+        Me.LAnrMonSimCALL.Size = New System.Drawing.Size(50, 17)
         Me.LAnrMonSimCALL.TabIndex = 16
         Me.LAnrMonSimCALL.Text = ";CALL;"
         '
         'TBAnrMonSimCALLID
         '
-        Me.TBAnrMonSimCALLID.Location = New System.Drawing.Point(250, 27)
-        Me.TBAnrMonSimCALLID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimCALLID.Location = New System.Drawing.Point(222, 22)
+        Me.TBAnrMonSimCALLID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimCALLID.Name = "TBAnrMonSimCALLID"
-        Me.TBAnrMonSimCALLID.Size = New System.Drawing.Size(32, 26)
+        Me.TBAnrMonSimCALLID.Size = New System.Drawing.Size(29, 22)
         Me.TBAnrMonSimCALLID.TabIndex = 15
         Me.TBAnrMonSimCALLID.Text = "0"
         Me.TBAnrMonSimCALLID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1527,9 +1565,9 @@ Partial Class FormCfg
         'LAnrMonSimLabelCALL
         '
         Me.LAnrMonSimLabelCALL.AutoSize = True
-        Me.LAnrMonSimLabelCALL.Location = New System.Drawing.Point(6, 66)
+        Me.LAnrMonSimLabelCALL.Location = New System.Drawing.Point(5, 53)
         Me.LAnrMonSimLabelCALL.Name = "LAnrMonSimLabelCALL"
-        Me.LAnrMonSimLabelCALL.Size = New System.Drawing.Size(402, 20)
+        Me.LAnrMonSimLabelCALL.Size = New System.Drawing.Size(359, 17)
         Me.LAnrMonSimLabelCALL.TabIndex = 14
         Me.LAnrMonSimLabelCALL.Text = "23.06.18 13:20:24;CALL;3;4;987654;0123456789;SIP0;"
         '
@@ -1537,18 +1575,19 @@ Partial Class FormCfg
         '
         Me.DTPAnrMonSimCALL.CustomFormat = "dd.MM.yy HH:mm:ss"
         Me.DTPAnrMonSimCALL.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DTPAnrMonSimCALL.Location = New System.Drawing.Point(6, 25)
-        Me.DTPAnrMonSimCALL.Margin = New System.Windows.Forms.Padding(3, 3, 1, 3)
+        Me.DTPAnrMonSimCALL.Location = New System.Drawing.Point(5, 20)
+        Me.DTPAnrMonSimCALL.Margin = New System.Windows.Forms.Padding(3, 2, 1, 2)
         Me.DTPAnrMonSimCALL.Name = "DTPAnrMonSimCALL"
-        Me.DTPAnrMonSimCALL.Size = New System.Drawing.Size(183, 26)
+        Me.DTPAnrMonSimCALL.Size = New System.Drawing.Size(163, 22)
         Me.DTPAnrMonSimCALL.TabIndex = 13
         Me.DTPAnrMonSimCALL.Value = New Date(2019, 6, 29, 15, 7, 37, 0)
         '
         'BAnrMonSimCALL
         '
-        Me.BAnrMonSimCALL.Location = New System.Drawing.Point(720, 25)
+        Me.BAnrMonSimCALL.Location = New System.Drawing.Point(640, 20)
+        Me.BAnrMonSimCALL.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.BAnrMonSimCALL.Name = "BAnrMonSimCALL"
-        Me.BAnrMonSimCALL.Size = New System.Drawing.Size(122, 61)
+        Me.BAnrMonSimCALL.Size = New System.Drawing.Size(108, 49)
         Me.BAnrMonSimCALL.TabIndex = 1
         Me.BAnrMonSimCALL.Text = "CALL"
         Me.BAnrMonSimCALL.UseVisualStyleBackColor = True
@@ -1567,9 +1606,11 @@ Partial Class FormCfg
         Me.GBoxAnrMonRING.Controls.Add(Me.LAnrMonSimLabelRING)
         Me.GBoxAnrMonRING.Controls.Add(Me.DTPAnrMonSimRING)
         Me.GBoxAnrMonRING.Controls.Add(Me.BAnrMonSimRING)
-        Me.GBoxAnrMonRING.Location = New System.Drawing.Point(6, 6)
+        Me.GBoxAnrMonRING.Location = New System.Drawing.Point(5, 5)
+        Me.GBoxAnrMonRING.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonRING.Name = "GBoxAnrMonRING"
-        Me.GBoxAnrMonRING.Size = New System.Drawing.Size(848, 100)
+        Me.GBoxAnrMonRING.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.GBoxAnrMonRING.Size = New System.Drawing.Size(754, 80)
         Me.GBoxAnrMonRING.TabIndex = 0
         Me.GBoxAnrMonRING.TabStop = False
         Me.GBoxAnrMonRING.Text = "Anrufmonitor RING"
@@ -1577,57 +1618,57 @@ Partial Class FormCfg
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(609, 30)
+        Me.Label8.Location = New System.Drawing.Point(541, 24)
         Me.Label8.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(13, 20)
+        Me.Label8.Size = New System.Drawing.Size(12, 17)
         Me.Label8.TabIndex = 12
         Me.Label8.Text = ";"
         '
         'CBoxAnrMonSimRINGSIPID
         '
         Me.CBoxAnrMonSimRINGSIPID.FormattingEnabled = True
-        Me.CBoxAnrMonSimRINGSIPID.Location = New System.Drawing.Point(549, 27)
-        Me.CBoxAnrMonSimRINGSIPID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.CBoxAnrMonSimRINGSIPID.Location = New System.Drawing.Point(488, 22)
+        Me.CBoxAnrMonSimRINGSIPID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.CBoxAnrMonSimRINGSIPID.Name = "CBoxAnrMonSimRINGSIPID"
-        Me.CBoxAnrMonSimRINGSIPID.Size = New System.Drawing.Size(58, 28)
+        Me.CBoxAnrMonSimRINGSIPID.Size = New System.Drawing.Size(52, 24)
         Me.CBoxAnrMonSimRINGSIPID.TabIndex = 11
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(534, 30)
+        Me.Label6.Location = New System.Drawing.Point(475, 24)
         Me.Label6.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(13, 20)
+        Me.Label6.Size = New System.Drawing.Size(12, 17)
         Me.Label6.TabIndex = 10
         Me.Label6.Text = ";"
         '
         'CBoxAnrMonSimRINGEigTelNr
         '
         Me.CBoxAnrMonSimRINGEigTelNr.FormattingEnabled = True
-        Me.CBoxAnrMonSimRINGEigTelNr.Location = New System.Drawing.Point(441, 27)
-        Me.CBoxAnrMonSimRINGEigTelNr.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.CBoxAnrMonSimRINGEigTelNr.Location = New System.Drawing.Point(392, 22)
+        Me.CBoxAnrMonSimRINGEigTelNr.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.CBoxAnrMonSimRINGEigTelNr.Name = "CBoxAnrMonSimRINGEigTelNr"
-        Me.CBoxAnrMonSimRINGEigTelNr.Size = New System.Drawing.Size(91, 28)
+        Me.CBoxAnrMonSimRINGEigTelNr.Size = New System.Drawing.Size(81, 24)
         Me.CBoxAnrMonSimRINGEigTelNr.TabIndex = 8
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(426, 30)
+        Me.Label5.Location = New System.Drawing.Point(379, 24)
         Me.Label5.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(13, 20)
+        Me.Label5.Size = New System.Drawing.Size(12, 17)
         Me.Label5.TabIndex = 7
         Me.Label5.Text = ";"
         '
         'TBAnrMonSimRINGAugTelNr
         '
-        Me.TBAnrMonSimRINGAugTelNr.Location = New System.Drawing.Point(299, 27)
-        Me.TBAnrMonSimRINGAugTelNr.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimRINGAugTelNr.Location = New System.Drawing.Point(266, 22)
+        Me.TBAnrMonSimRINGAugTelNr.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimRINGAugTelNr.Name = "TBAnrMonSimRINGAugTelNr"
-        Me.TBAnrMonSimRINGAugTelNr.Size = New System.Drawing.Size(122, 26)
+        Me.TBAnrMonSimRINGAugTelNr.Size = New System.Drawing.Size(109, 22)
         Me.TBAnrMonSimRINGAugTelNr.TabIndex = 6
         Me.TBAnrMonSimRINGAugTelNr.Text = "0123456789"
         Me.TBAnrMonSimRINGAugTelNr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1635,29 +1676,29 @@ Partial Class FormCfg
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(284, 30)
+        Me.Label4.Location = New System.Drawing.Point(252, 24)
         Me.Label4.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(13, 20)
+        Me.Label4.Size = New System.Drawing.Size(12, 17)
         Me.Label4.TabIndex = 5
         Me.Label4.Text = ";"
         '
         'LAnrMonSimRING
         '
         Me.LAnrMonSimRING.AutoSize = True
-        Me.LAnrMonSimRING.Location = New System.Drawing.Point(190, 30)
+        Me.LAnrMonSimRING.Location = New System.Drawing.Point(169, 24)
         Me.LAnrMonSimRING.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
         Me.LAnrMonSimRING.Name = "LAnrMonSimRING"
-        Me.LAnrMonSimRING.Size = New System.Drawing.Size(58, 20)
+        Me.LAnrMonSimRING.Size = New System.Drawing.Size(50, 17)
         Me.LAnrMonSimRING.TabIndex = 4
         Me.LAnrMonSimRING.Text = ";RING;"
         '
         'TBAnrMonSimRINGID
         '
-        Me.TBAnrMonSimRINGID.Location = New System.Drawing.Point(250, 27)
-        Me.TBAnrMonSimRINGID.Margin = New System.Windows.Forms.Padding(1, 3, 1, 3)
+        Me.TBAnrMonSimRINGID.Location = New System.Drawing.Point(222, 22)
+        Me.TBAnrMonSimRINGID.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TBAnrMonSimRINGID.Name = "TBAnrMonSimRINGID"
-        Me.TBAnrMonSimRINGID.Size = New System.Drawing.Size(32, 26)
+        Me.TBAnrMonSimRINGID.Size = New System.Drawing.Size(29, 22)
         Me.TBAnrMonSimRINGID.TabIndex = 3
         Me.TBAnrMonSimRINGID.Text = "0"
         Me.TBAnrMonSimRINGID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -1665,9 +1706,9 @@ Partial Class FormCfg
         'LAnrMonSimLabelRING
         '
         Me.LAnrMonSimLabelRING.AutoSize = True
-        Me.LAnrMonSimLabelRING.Location = New System.Drawing.Point(6, 66)
+        Me.LAnrMonSimLabelRING.Location = New System.Drawing.Point(5, 53)
         Me.LAnrMonSimLabelRING.Name = "LAnrMonSimLabelRING"
-        Me.LAnrMonSimLabelRING.Size = New System.Drawing.Size(390, 20)
+        Me.LAnrMonSimLabelRING.Size = New System.Drawing.Size(347, 17)
         Me.LAnrMonSimLabelRING.TabIndex = 2
         Me.LAnrMonSimLabelRING.Text = "23.06.18 13:20:24;RING;1;0123456789;987654;SIP4;"
         '
@@ -1675,18 +1716,19 @@ Partial Class FormCfg
         '
         Me.DTPAnrMonSimRING.CustomFormat = "dd.MM.yy HH:mm:ss"
         Me.DTPAnrMonSimRING.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DTPAnrMonSimRING.Location = New System.Drawing.Point(6, 25)
-        Me.DTPAnrMonSimRING.Margin = New System.Windows.Forms.Padding(3, 3, 1, 3)
+        Me.DTPAnrMonSimRING.Location = New System.Drawing.Point(5, 20)
+        Me.DTPAnrMonSimRING.Margin = New System.Windows.Forms.Padding(3, 2, 1, 2)
         Me.DTPAnrMonSimRING.Name = "DTPAnrMonSimRING"
-        Me.DTPAnrMonSimRING.Size = New System.Drawing.Size(183, 26)
+        Me.DTPAnrMonSimRING.Size = New System.Drawing.Size(163, 22)
         Me.DTPAnrMonSimRING.TabIndex = 1
         Me.DTPAnrMonSimRING.Value = New Date(2019, 6, 29, 15, 7, 37, 0)
         '
         'BAnrMonSimRING
         '
-        Me.BAnrMonSimRING.Location = New System.Drawing.Point(720, 25)
+        Me.BAnrMonSimRING.Location = New System.Drawing.Point(640, 20)
+        Me.BAnrMonSimRING.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.BAnrMonSimRING.Name = "BAnrMonSimRING"
-        Me.BAnrMonSimRING.Size = New System.Drawing.Size(122, 61)
+        Me.BAnrMonSimRING.Size = New System.Drawing.Size(108, 49)
         Me.BAnrMonSimRING.TabIndex = 0
         Me.BAnrMonSimRING.Text = "RING"
         Me.BAnrMonSimRING.UseVisualStyleBackColor = True
@@ -1700,10 +1742,11 @@ Partial Class FormCfg
         Me.PKontaktsuche2.Controls.Add(Me.CBKontaktSucheFritzBox)
         Me.PKontaktsuche2.Controls.Add(Me.BKontOrdLaden)
         Me.PKontaktsuche2.Controls.Add(Me.TreeViewKontakte)
-        Me.PKontaktsuche2.Location = New System.Drawing.Point(4, 29)
+        Me.PKontaktsuche2.Location = New System.Drawing.Point(4, 25)
+        Me.PKontaktsuche2.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.PKontaktsuche2.Name = "PKontaktsuche2"
-        Me.PKontaktsuche2.Padding = New System.Windows.Forms.Padding(3)
-        Me.PKontaktsuche2.Size = New System.Drawing.Size(860, 458)
+        Me.PKontaktsuche2.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.PKontaktsuche2.Size = New System.Drawing.Size(763, 363)
         Me.PKontaktsuche2.TabIndex = 15
         Me.PKontaktsuche2.Text = "Kontaktsuche"
         Me.PKontaktsuche2.UseVisualStyleBackColor = True
@@ -1711,9 +1754,10 @@ Partial Class FormCfg
         'CBSucheUnterordner
         '
         Me.CBSucheUnterordner.AutoSize = True
-        Me.CBSucheUnterordner.Location = New System.Drawing.Point(7, 88)
+        Me.CBSucheUnterordner.Location = New System.Drawing.Point(6, 70)
+        Me.CBSucheUnterordner.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.CBSucheUnterordner.Name = "CBSucheUnterordner"
-        Me.CBSucheUnterordner.Size = New System.Drawing.Size(211, 24)
+        Me.CBSucheUnterordner.Size = New System.Drawing.Size(188, 21)
         Me.CBSucheUnterordner.TabIndex = 39
         Me.CBSucheUnterordner.Text = "Unterordner einbeziehen"
         Me.CBSucheUnterordner.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -1723,10 +1767,10 @@ Partial Class FormCfg
         '
         Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
-        Me.Label1.Location = New System.Drawing.Point(3, 3)
+        Me.Label1.Location = New System.Drawing.Point(3, 2)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(854, 54)
+        Me.Label1.Size = New System.Drawing.Size(757, 43)
         Me.Label1.TabIndex = 38
         Me.Label1.Text = "Einstellungen für die Kontaktsuche"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1738,21 +1782,21 @@ Partial Class FormCfg
         Me.GBRWS.Controls.Add(Me.CBRWSIndex)
         Me.GBRWS.Controls.Add(Me.CBKErstellen)
         Me.GBRWS.Controls.Add(Me.CBRWS)
-        Me.GBRWS.Location = New System.Drawing.Point(0, 330)
-        Me.GBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBRWS.Location = New System.Drawing.Point(0, 264)
+        Me.GBRWS.Margin = New System.Windows.Forms.Padding(4)
         Me.GBRWS.Name = "GBRWS"
-        Me.GBRWS.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBRWS.Size = New System.Drawing.Size(461, 128)
+        Me.GBRWS.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBRWS.Size = New System.Drawing.Size(410, 102)
         Me.GBRWS.TabIndex = 37
         Me.GBRWS.TabStop = False
         Me.GBRWS.Text = "Rückwärtssuche (RWS)"
         '
         'BRWSTest
         '
-        Me.BRWSTest.Location = New System.Drawing.Point(285, 61)
-        Me.BRWSTest.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BRWSTest.Location = New System.Drawing.Point(253, 49)
+        Me.BRWSTest.Margin = New System.Windows.Forms.Padding(4)
         Me.BRWSTest.Name = "BRWSTest"
-        Me.BRWSTest.Size = New System.Drawing.Size(168, 43)
+        Me.BRWSTest.Size = New System.Drawing.Size(149, 34)
         Me.BRWSTest.TabIndex = 8
         Me.BRWSTest.Text = "Starte Test"
         Me.BRWSTest.UseVisualStyleBackColor = True
@@ -1760,11 +1804,11 @@ Partial Class FormCfg
         'CBRWS
         '
         Me.CBRWS.AutoSize = True
-        Me.CBRWS.Location = New System.Drawing.Point(7, 29)
-        Me.CBRWS.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBRWS.MinimumSize = New System.Drawing.Size(165, 0)
+        Me.CBRWS.Location = New System.Drawing.Point(6, 23)
+        Me.CBRWS.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBRWS.MinimumSize = New System.Drawing.Size(147, 0)
         Me.CBRWS.Name = "CBRWS"
-        Me.CBRWS.Size = New System.Drawing.Size(165, 24)
+        Me.CBRWS.Size = New System.Drawing.Size(147, 21)
         Me.CBRWS.TabIndex = 0
         Me.CBRWS.Text = "DasÖrtliche"
         Me.CBRWS.UseVisualStyleBackColor = True
@@ -1777,11 +1821,11 @@ Partial Class FormCfg
         Me.GBIndizierung.Controls.Add(Me.BIndizierungAbbrechen)
         Me.GBIndizierung.Controls.Add(Me.BIndizierungStart)
         Me.GBIndizierung.Controls.Add(Me.ProgressBarIndex)
-        Me.GBIndizierung.Location = New System.Drawing.Point(0, 156)
-        Me.GBIndizierung.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBIndizierung.Location = New System.Drawing.Point(0, 125)
+        Me.GBIndizierung.Margin = New System.Windows.Forms.Padding(4)
         Me.GBIndizierung.Name = "GBIndizierung"
-        Me.GBIndizierung.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBIndizierung.Size = New System.Drawing.Size(461, 164)
+        Me.GBIndizierung.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBIndizierung.Size = New System.Drawing.Size(410, 131)
         Me.GBIndizierung.TabIndex = 36
         Me.GBIndizierung.TabStop = False
         Me.GBIndizierung.Text = "Kontaktindizierung"
@@ -1789,20 +1833,20 @@ Partial Class FormCfg
         'LabelAnzahl
         '
         Me.LabelAnzahl.AutoSize = True
-        Me.LabelAnzahl.Location = New System.Drawing.Point(6, 130)
+        Me.LabelAnzahl.Location = New System.Drawing.Point(5, 104)
         Me.LabelAnzahl.Name = "LabelAnzahl"
-        Me.LabelAnzahl.Size = New System.Drawing.Size(165, 20)
+        Me.LabelAnzahl.Size = New System.Drawing.Size(146, 17)
         Me.LabelAnzahl.TabIndex = 11
         Me.LabelAnzahl.Text = "Status der Indizierung"
         '
         'RadioButtonEntfernen
         '
         Me.RadioButtonEntfernen.AutoSize = True
-        Me.RadioButtonEntfernen.Location = New System.Drawing.Point(132, 38)
-        Me.RadioButtonEntfernen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.RadioButtonEntfernen.MinimumSize = New System.Drawing.Size(110, 0)
+        Me.RadioButtonEntfernen.Location = New System.Drawing.Point(117, 30)
+        Me.RadioButtonEntfernen.Margin = New System.Windows.Forms.Padding(4)
+        Me.RadioButtonEntfernen.MinimumSize = New System.Drawing.Size(98, 0)
         Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
-        Me.RadioButtonEntfernen.Size = New System.Drawing.Size(110, 24)
+        Me.RadioButtonEntfernen.Size = New System.Drawing.Size(98, 21)
         Me.RadioButtonEntfernen.TabIndex = 8
         Me.RadioButtonEntfernen.TabStop = True
         Me.RadioButtonEntfernen.Text = "entfernen"
@@ -1812,11 +1856,11 @@ Partial Class FormCfg
         '
         Me.RadioButtonErstelle.AutoSize = True
         Me.RadioButtonErstelle.Checked = True
-        Me.RadioButtonErstelle.Location = New System.Drawing.Point(14, 38)
-        Me.RadioButtonErstelle.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.RadioButtonErstelle.MinimumSize = New System.Drawing.Size(110, 0)
+        Me.RadioButtonErstelle.Location = New System.Drawing.Point(12, 30)
+        Me.RadioButtonErstelle.Margin = New System.Windows.Forms.Padding(4)
+        Me.RadioButtonErstelle.MinimumSize = New System.Drawing.Size(98, 0)
         Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
-        Me.RadioButtonErstelle.Size = New System.Drawing.Size(110, 24)
+        Me.RadioButtonErstelle.Size = New System.Drawing.Size(98, 21)
         Me.RadioButtonErstelle.TabIndex = 7
         Me.RadioButtonErstelle.TabStop = True
         Me.RadioButtonErstelle.Text = "erstellen"
@@ -1825,59 +1869,193 @@ Partial Class FormCfg
         'BIndizierungAbbrechen
         '
         Me.BIndizierungAbbrechen.Enabled = False
-        Me.BIndizierungAbbrechen.Location = New System.Drawing.Point(285, 29)
-        Me.BIndizierungAbbrechen.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BIndizierungAbbrechen.Location = New System.Drawing.Point(253, 23)
+        Me.BIndizierungAbbrechen.Margin = New System.Windows.Forms.Padding(4)
         Me.BIndizierungAbbrechen.Name = "BIndizierungAbbrechen"
-        Me.BIndizierungAbbrechen.Size = New System.Drawing.Size(168, 43)
+        Me.BIndizierungAbbrechen.Size = New System.Drawing.Size(149, 34)
         Me.BIndizierungAbbrechen.TabIndex = 10
         Me.BIndizierungAbbrechen.Text = "Abbrechen"
         Me.BIndizierungAbbrechen.UseVisualStyleBackColor = True
         '
         'BIndizierungStart
         '
-        Me.BIndizierungStart.Location = New System.Drawing.Point(285, 82)
-        Me.BIndizierungStart.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BIndizierungStart.Location = New System.Drawing.Point(253, 66)
+        Me.BIndizierungStart.Margin = New System.Windows.Forms.Padding(4)
         Me.BIndizierungStart.Name = "BIndizierungStart"
-        Me.BIndizierungStart.Size = New System.Drawing.Size(168, 43)
+        Me.BIndizierungStart.Size = New System.Drawing.Size(149, 34)
         Me.BIndizierungStart.TabIndex = 9
         Me.BIndizierungStart.Text = "Start"
         Me.BIndizierungStart.UseVisualStyleBackColor = True
         '
         'ProgressBarIndex
         '
-        Me.ProgressBarIndex.Location = New System.Drawing.Point(8, 82)
-        Me.ProgressBarIndex.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.ProgressBarIndex.Location = New System.Drawing.Point(7, 66)
+        Me.ProgressBarIndex.Margin = New System.Windows.Forms.Padding(4)
         Me.ProgressBarIndex.Name = "ProgressBarIndex"
-        Me.ProgressBarIndex.Size = New System.Drawing.Size(260, 43)
+        Me.ProgressBarIndex.Size = New System.Drawing.Size(231, 34)
         Me.ProgressBarIndex.TabIndex = 10
         '
         'CBKontaktSucheFritzBox
         '
         Me.CBKontaktSucheFritzBox.AutoSize = True
-        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(7, 122)
-        Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(350, 0)
+        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(6, 98)
+        Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(311, 0)
         Me.CBKontaktSucheFritzBox.Name = "CBKontaktSucheFritzBox"
-        Me.CBKontaktSucheFritzBox.Size = New System.Drawing.Size(350, 24)
+        Me.CBKontaktSucheFritzBox.Size = New System.Drawing.Size(311, 21)
         Me.CBKontaktSucheFritzBox.TabIndex = 35
         Me.CBKontaktSucheFritzBox.Text = "Die Fritz!Box Telefonbüchern durchsuchen"
         Me.CBKontaktSucheFritzBox.UseVisualStyleBackColor = True
         '
         'BKontOrdLaden
         '
-        Me.BKontOrdLaden.Location = New System.Drawing.Point(468, 60)
+        Me.BKontOrdLaden.Location = New System.Drawing.Point(416, 48)
+        Me.BKontOrdLaden.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.BKontOrdLaden.Name = "BKontOrdLaden"
-        Me.BKontOrdLaden.Size = New System.Drawing.Size(392, 43)
+        Me.BKontOrdLaden.Size = New System.Drawing.Size(348, 34)
         Me.BKontOrdLaden.TabIndex = 1
         Me.BKontOrdLaden.Text = "Outlook-Kontaktordner laden..."
         Me.BKontOrdLaden.UseVisualStyleBackColor = True
         '
         'TreeViewKontakte
         '
-        Me.TreeViewKontakte.Location = New System.Drawing.Point(468, 111)
+        Me.TreeViewKontakte.Location = New System.Drawing.Point(416, 89)
+        Me.TreeViewKontakte.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.TreeViewKontakte.Name = "TreeViewKontakte"
-        Me.TreeViewKontakte.Size = New System.Drawing.Size(392, 347)
+        Me.TreeViewKontakte.Size = New System.Drawing.Size(349, 278)
         Me.TreeViewKontakte.TabIndex = 0
+        '
+        'PPhoner
+        '
+        Me.PPhoner.Controls.Add(Me.GroupBox4)
+        Me.PPhoner.Controls.Add(Me.Label31)
+        Me.PPhoner.Controls.Add(Me.LinkPhoner)
+        Me.PPhoner.Controls.Add(Me.Label7)
+        Me.PPhoner.Controls.Add(Me.Label20)
+        Me.PPhoner.Controls.Add(Me.Label30)
+        Me.PPhoner.Location = New System.Drawing.Point(4, 25)
+        Me.PPhoner.Name = "PPhoner"
+        Me.PPhoner.Size = New System.Drawing.Size(763, 363)
+        Me.PPhoner.TabIndex = 16
+        Me.PPhoner.Text = "Phoner"
+        Me.PPhoner.UseVisualStyleBackColor = True
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.Button1)
+        Me.GroupBox4.Controls.Add(Me.CBPhoner)
+        Me.GroupBox4.Controls.Add(Me.LPhonerSIPTelefon)
+        Me.GroupBox4.Controls.Add(Me.CBoxPhonerSIP)
+        Me.GroupBox4.Controls.Add(Me.TBPhonerPasswort)
+        Me.GroupBox4.Controls.Add(Me.LPassworPhoner)
+        Me.GroupBox4.Location = New System.Drawing.Point(8, 182)
+        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox4.Size = New System.Drawing.Size(310, 147)
+        Me.GroupBox4.TabIndex = 31
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Phoner Einstellungen"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(194, 117)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 32
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'CBPhoner
+        '
+        Me.CBPhoner.AutoSize = True
+        Me.CBPhoner.Location = New System.Drawing.Point(8, 24)
+        Me.CBPhoner.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBPhoner.Name = "CBPhoner"
+        Me.CBPhoner.Size = New System.Drawing.Size(218, 21)
+        Me.CBPhoner.TabIndex = 14
+        Me.CBPhoner.Text = "Softphone Phoner verwenden"
+        Me.CBPhoner.UseVisualStyleBackColor = True
+        '
+        'CBoxPhonerSIP
+        '
+        Me.CBoxPhonerSIP.FormattingEnabled = True
+        Me.CBoxPhonerSIP.Location = New System.Drawing.Point(8, 83)
+        Me.CBoxPhonerSIP.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBoxPhonerSIP.Name = "CBoxPhonerSIP"
+        Me.CBoxPhonerSIP.Size = New System.Drawing.Size(132, 24)
+        Me.CBoxPhonerSIP.TabIndex = 2
+        '
+        'TBPhonerPasswort
+        '
+        Me.TBPhonerPasswort.Location = New System.Drawing.Point(8, 53)
+        Me.TBPhonerPasswort.Margin = New System.Windows.Forms.Padding(4)
+        Me.TBPhonerPasswort.Name = "TBPhonerPasswort"
+        Me.TBPhonerPasswort.Size = New System.Drawing.Size(132, 22)
+        Me.TBPhonerPasswort.TabIndex = 7
+        Me.TBPhonerPasswort.UseSystemPasswordChar = True
+        '
+        'LPassworPhoner
+        '
+        Me.LPassworPhoner.AutoSize = True
+        Me.LPassworPhoner.Location = New System.Drawing.Point(148, 56)
+        Me.LPassworPhoner.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LPassworPhoner.Name = "LPassworPhoner"
+        Me.LPassworPhoner.Size = New System.Drawing.Size(115, 17)
+        Me.LPassworPhoner.TabIndex = 6
+        Me.LPassworPhoner.Text = "Phoner Passwort"
+        '
+        'Label31
+        '
+        Me.Label31.Location = New System.Drawing.Point(5, 62)
+        Me.Label31.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(748, 68)
+        Me.Label31.TabIndex = 30
+        Me.Label31.Text = resources.GetString("Label31.Text")
+        '
+        'LinkPhoner
+        '
+        Me.LinkPhoner.AutoSize = True
+        Me.LinkPhoner.Location = New System.Drawing.Point(391, 130)
+        Me.LinkPhoner.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LinkPhoner.Name = "LinkPhoner"
+        Me.LinkPhoner.Size = New System.Drawing.Size(108, 17)
+        Me.LinkPhoner.TabIndex = 27
+        Me.LinkPhoner.TabStop = True
+        Me.LinkPhoner.Text = "www.phoner.de/"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(5, 147)
+        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(440, 17)
+        Me.Label7.TabIndex = 29
+        Me.Label7.Text = "Phoner Copyright 2020 Heiko Sommerfeldt. Alle Rechte vorbehalten."
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(5, 130)
+        Me.Label20.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(332, 17)
+        Me.Label20.TabIndex = 28
+        Me.Label20.Text = "Phoner kann über folgenden Link bezogen werden:"
+        '
+        'Label30
+        '
+        Me.Label30.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label30.Location = New System.Drawing.Point(0, 0)
+        Me.Label30.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(763, 43)
+        Me.Label30.TabIndex = 26
+        Me.Label30.Text = "Einstellungen für Phoner"
+        Me.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'PLogging
         '
@@ -1885,11 +2063,11 @@ Partial Class FormCfg
         Me.PLogging.Controls.Add(Me.CBoxMinLogLevel)
         Me.PLogging.Controls.Add(Me.GBLogging)
         Me.PLogging.Controls.Add(Me.Label23)
-        Me.PLogging.Location = New System.Drawing.Point(4, 29)
-        Me.PLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PLogging.Location = New System.Drawing.Point(4, 25)
+        Me.PLogging.Margin = New System.Windows.Forms.Padding(4)
         Me.PLogging.Name = "PLogging"
-        Me.PLogging.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PLogging.Size = New System.Drawing.Size(860, 458)
+        Me.PLogging.Padding = New System.Windows.Forms.Padding(4)
+        Me.PLogging.Size = New System.Drawing.Size(763, 363)
         Me.PLogging.TabIndex = 11
         Me.PLogging.Text = "Logging"
         Me.PLogging.UseVisualStyleBackColor = True
@@ -1897,9 +2075,9 @@ Partial Class FormCfg
         'LMinLogLevel
         '
         Me.LMinLogLevel.AutoSize = True
-        Me.LMinLogLevel.Location = New System.Drawing.Point(7, 84)
+        Me.LMinLogLevel.Location = New System.Drawing.Point(6, 67)
         Me.LMinLogLevel.Name = "LMinLogLevel"
-        Me.LMinLogLevel.Size = New System.Drawing.Size(141, 20)
+        Me.LMinLogLevel.Size = New System.Drawing.Size(127, 17)
         Me.LMinLogLevel.TabIndex = 28
         Me.LMinLogLevel.Text = "Minimales Loglevel"
         '
@@ -1907,30 +2085,31 @@ Partial Class FormCfg
         '
         Me.CBoxMinLogLevel.FormattingEnabled = True
         Me.CBoxMinLogLevel.Items.AddRange(New Object() {"Fatal", "Error", "Warn", "Info", "Debug", "Trace"})
-        Me.CBoxMinLogLevel.Location = New System.Drawing.Point(173, 81)
+        Me.CBoxMinLogLevel.Location = New System.Drawing.Point(154, 65)
+        Me.CBoxMinLogLevel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.CBoxMinLogLevel.Name = "CBoxMinLogLevel"
-        Me.CBoxMinLogLevel.Size = New System.Drawing.Size(121, 28)
+        Me.CBoxMinLogLevel.Size = New System.Drawing.Size(108, 24)
         Me.CBoxMinLogLevel.TabIndex = 27
         '
         'GBLogging
         '
         Me.GBLogging.Controls.Add(Me.LinkLogFile)
         Me.GBLogging.Controls.Add(Me.TBLogging)
-        Me.GBLogging.Location = New System.Drawing.Point(0, 117)
-        Me.GBLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GBLogging.Location = New System.Drawing.Point(0, 94)
+        Me.GBLogging.Margin = New System.Windows.Forms.Padding(4)
         Me.GBLogging.Name = "GBLogging"
-        Me.GBLogging.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GBLogging.Size = New System.Drawing.Size(855, 335)
+        Me.GBLogging.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBLogging.Size = New System.Drawing.Size(760, 268)
         Me.GBLogging.TabIndex = 26
         Me.GBLogging.TabStop = False
         '
         'LinkLogFile
         '
-        Me.LinkLogFile.Location = New System.Drawing.Point(3, 307)
+        Me.LinkLogFile.Location = New System.Drawing.Point(3, 246)
         Me.LinkLogFile.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LinkLogFile.MaximumSize = New System.Drawing.Size(848, 23)
+        Me.LinkLogFile.MaximumSize = New System.Drawing.Size(754, 18)
         Me.LinkLogFile.Name = "LinkLogFile"
-        Me.LinkLogFile.Size = New System.Drawing.Size(848, 23)
+        Me.LinkLogFile.Size = New System.Drawing.Size(754, 18)
         Me.LinkLogFile.TabIndex = 26
         Me.LinkLogFile.TabStop = True
         Me.LinkLogFile.Text = "Link zur Logfile"
@@ -1939,22 +2118,22 @@ Partial Class FormCfg
         '
         Me.TBLogging.Dock = System.Windows.Forms.DockStyle.Top
         Me.TBLogging.Font = New System.Drawing.Font("Consolas", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TBLogging.Location = New System.Drawing.Point(4, 24)
-        Me.TBLogging.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TBLogging.Location = New System.Drawing.Point(4, 19)
+        Me.TBLogging.Margin = New System.Windows.Forms.Padding(4)
         Me.TBLogging.Multiline = True
         Me.TBLogging.Name = "TBLogging"
         Me.TBLogging.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBLogging.Size = New System.Drawing.Size(847, 278)
+        Me.TBLogging.Size = New System.Drawing.Size(752, 223)
         Me.TBLogging.TabIndex = 25
         '
         'Label23
         '
         Me.Label23.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(4, 5)
+        Me.Label23.Location = New System.Drawing.Point(4, 4)
         Me.Label23.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(852, 54)
+        Me.Label23.Size = New System.Drawing.Size(755, 43)
         Me.Label23.TabIndex = 24
         Me.Label23.Text = "Logging"
         Me.Label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -1962,10 +2141,10 @@ Partial Class FormCfg
         'BXML
         '
         Me.BXML.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BXML.Location = New System.Drawing.Point(696, 5)
-        Me.BXML.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.BXML.Location = New System.Drawing.Point(620, 4)
+        Me.BXML.Margin = New System.Windows.Forms.Padding(4)
         Me.BXML.Name = "BXML"
-        Me.BXML.Size = New System.Drawing.Size(168, 43)
+        Me.BXML.Size = New System.Drawing.Size(147, 34)
         Me.BXML.TabIndex = 27
         Me.BXML.Text = "Einstellungsdatei"
         Me.BXML.UseVisualStyleBackColor = True
@@ -1984,12 +2163,12 @@ Partial Class FormCfg
         Me.TableLayoutPanel1.Controls.Add(Me.BAbbruch, 2, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.BReset, 3, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(4, 506)
-        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(4, 404)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(4)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(868, 52)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(771, 42)
         Me.TableLayoutPanel1.TabIndex = 28
         '
         'TableLayoutPanel2
@@ -2000,24 +2179,24 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.Controls.Add(Me.FBDB_MP, 0, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
-        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(4)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 2
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(876, 563)
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(779, 450)
         Me.TableLayoutPanel2.TabIndex = 29
         '
         'FormCfg
         '
         Me.AcceptButton = Me.BOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.BAbbruch
-        Me.ClientSize = New System.Drawing.Size(876, 563)
+        Me.ClientSize = New System.Drawing.Size(779, 450)
         Me.Controls.Add(Me.TableLayoutPanel2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FormCfg"
@@ -2061,6 +2240,10 @@ Partial Class FormCfg
         Me.GBRWS.PerformLayout()
         Me.GBIndizierung.ResumeLayout(False)
         Me.GBIndizierung.PerformLayout()
+        Me.PPhoner.ResumeLayout(False)
+        Me.PPhoner.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
         Me.PLogging.ResumeLayout(False)
         Me.PLogging.PerformLayout()
         Me.GBLogging.ResumeLayout(False)
@@ -2223,4 +2406,17 @@ Partial Class FormCfg
     Friend WithEvents CBRWS As Windows.Forms.CheckBox
     Friend WithEvents LabelAnzahl As Windows.Forms.Label
     Friend WithEvents CBSucheUnterordner As Windows.Forms.CheckBox
+    Friend WithEvents PPhoner As Windows.Forms.TabPage
+    Friend WithEvents Label31 As Windows.Forms.Label
+    Friend WithEvents LinkPhoner As Windows.Forms.LinkLabel
+    Friend WithEvents Label7 As Windows.Forms.Label
+    Friend WithEvents Label20 As Windows.Forms.Label
+    Friend WithEvents Label30 As Windows.Forms.Label
+    Friend WithEvents GroupBox4 As Windows.Forms.GroupBox
+    Friend WithEvents LPhonerSIPTelefon As Windows.Forms.Label
+    Friend WithEvents CBoxPhonerSIP As Windows.Forms.ComboBox
+    Friend WithEvents TBPhonerPasswort As Windows.Forms.MaskedTextBox
+    Friend WithEvents LPassworPhoner As Windows.Forms.Label
+    Friend WithEvents Button1 As Windows.Forms.Button
+    Friend WithEvents CBPhoner As Windows.Forms.CheckBox
 End Class
