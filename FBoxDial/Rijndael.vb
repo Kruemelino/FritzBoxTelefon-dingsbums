@@ -10,7 +10,7 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrTextToBeEncrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
-    Friend Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String) As String
+    Friend Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrDeCryptKey As String) As String
         ' Standardwert
         EncryptString128Bit = PDfltStrErrorMinusOne
 
@@ -23,7 +23,7 @@ Friend Class Rijndael
             Dim EncryptionKey() As Byte = GetRndKey(32)
 
             ' Speichere den Salt und Key in dre Registry ab
-            SaveSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, DefaultWerte.PDfltDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
+            SaveSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
 
             ' Create the encryptor and write value to it after it is converted into a byte array
             Using rijAlg As New RijndaelManaged()
@@ -51,9 +51,9 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrStringToBeDecrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die entschlüsselte Zeichenfolge</returns>
-    Friend Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String) As String
+    Friend Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDeCryptKey As String) As String
         ' Lese den Key aus der Registry aus
-        Dim DecryptionSaltKey As String = GetSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, DefaultWerte.PDfltDeCryptKey, PDfltStrErrorMinusOne)
+        Dim DecryptionSaltKey As String = GetSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, vstrDeCryptKey, PDfltStrErrorMinusOne)
         ' Standardwert
         DecryptString128Bit = PDfltStrErrorMinusOne
         ' Test ob gültige Eingangsdaten vorhanden

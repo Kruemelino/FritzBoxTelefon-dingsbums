@@ -55,7 +55,7 @@ Friend Module SOAPBaseFunctions
 
         With CType(WebRequest.Create(fbURI), HttpWebRequest)
             Using Crypter As New Rijndael
-                .Credentials = New NetworkCredential(tmpUsername, Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort))
+                .Credentials = New NetworkCredential(tmpUsername, Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort, DefaultWerte.PDfltDeCryptKey))
             End Using
 
             .Proxy = Nothing
@@ -129,7 +129,7 @@ Friend Module SOAPBaseFunctions
                 End With
                 ' Zugangsdaten felstelgen
                 Using Crypter As New Rijndael
-                    .Credentials = New NetworkCredential(tmpUsername, Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort))
+                    .Credentials = New NetworkCredential(tmpUsername, Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort, DefaultWerte.PDfltDeCryptKey))
                 End Using
 
                 Try

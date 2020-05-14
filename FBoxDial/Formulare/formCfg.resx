@@ -181,6 +181,13 @@ Datenschutzhinweis:
          2. Bei der Suche nach Call-By-Call Anbietern wird die zu wählende Nummer an Billiger-Telefonieren.de
              übermittelt. Bitte die Hinweise von Billiger-Telefonieren.de beachten!</value>
   </data>
+  <data name="TBPhonerHinweise.Text" xml:space="preserve">
+    <value>Hinweise zur korrekten Konfiguration.
+
+Stelle sicher, dass Phoner sich erfolgreich als ein IP-Telefon an der Fritz!Box registriert hat und lies danach erneut die Telefoniegeräte ein.
+Lege ein Passwort für die Authentifizierung bei Phoner fest. Das gleiche Passwort muss bei Phoner unter "Optionen / Web" im Feld Passwort eingegeben werden.
+Prüfe, ob die Authentifizierung erfolgreich ist. Wähle Telefoniegerät aus, was mit Phoner registriert ist.</value>
+  </data>
   <data name="Label31.Text" xml:space="preserve">
     <value>Die Software ermöglicht Gesprächsverbindungen in das Festnetz, zu Mobiltelefonen und zu VoIP -Gegenstellen. Phoner kann als Softphone an analogen Teilnehmeranschlüssen, an digitalen ISDN Teilnehmeranschlussleitungen und als IP-Softphone auf stationären und mobilen Computersystemen benutzt werden. </value>
   </data>

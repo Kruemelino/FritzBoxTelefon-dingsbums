@@ -104,8 +104,6 @@ Public Class FormCfg
 
         For Each ctrl As Control In m_Control.Controls
 
-
-
             If ctrl.Controls.Count > 0 Then
                 Speichern(ctrl)
             End If
@@ -130,7 +128,7 @@ Public Class FormCfg
                         Case GetType(MaskedTextBox)
                             If CType(ctrl, MaskedTextBox).Text.AreNotEqual("1234") Then
                                 Using Crypt As Rijndael = New Rijndael
-                                    tmpPropertyInfo.SetValue(XMLData.POptionen, Crypt.EncryptString128Bit(CType(ctrl, MaskedTextBox).Text))
+                                    tmpPropertyInfo.SetValue(XMLData.POptionen, Crypt.EncryptString128Bit(CType(ctrl, MaskedTextBox).Text, If(ctrl.Name.AreEqual(TBPasswort.Name), DefaultWerte.PDfltDeCryptKey, DefaultWerte.PDfltDeCryptKeyPhoner)))
                                 End Using
                             End If
 
@@ -149,9 +147,15 @@ Public Class FormCfg
                 End If
 
                 If ctrl Is CBoxPhonerSIP Then
+
+                    ' allen SIP-Telefonen den Phoner Flag auf False setzen
+                    XMLData.PTelefonie.Telefoniegeräte.Where(Function(t) t.TelTyp = DfltWerteTelefonie.TelTypen.IP).ToList.ForEach(Sub(tr) tr.IsPhoner = False)
+
                     ' Telefoniegerät finden
-                    With CType(CType(ctrl, ComboBox).SelectedItem, Telefoniegerät)
-                        .IsPhoner = True
+                    With CType(ctrl, ComboBox)
+                        If .SelectedItem IsNot Nothing Then
+                            CType(.SelectedItem, Telefoniegerät).IsPhoner = True
+                        End If
                     End With
 
                 End If
@@ -204,7 +208,8 @@ Public Class FormCfg
                                                                        BKontOrdLaden.Click,
                                                                        BIndizierungStart.Click,
                                                                        BIndizierungAbbrechen.Click,
-                                                                       BRWSTest.Click
+                                                                       BRWSTest.Click,
+                                                                       BPhonerTest.Click
 
         Select Case CType(sender, Button).Name
             Case BOK.Name, BApply.Name
@@ -226,11 +231,13 @@ Public Class FormCfg
                 Speichern(Me)
                 ' Indizierung starten
                 StarteEinlesen()
+
             Case BIndizierungStart.Name
                 ' Formulardaten in Properties speichern
                 ' Speichern(Me)
                 ' Indizierung starten
                 StarteIndizierung(IndizierteOrdner, RadioButtonErstelle.Checked)
+
             Case BIndizierungAbbrechen.Name
                 ' Indizierung abbrechen
                 If BWIndexerList IsNot Nothing AndAlso BWIndexerList.Any Then
@@ -239,17 +246,29 @@ Public Class FormCfg
                 ' Buttons wieder umschalten
                 BIndizierungAbbrechen.Enabled = False
                 BIndizierungStart.Enabled = True
+
             Case BXML.Name
                 ' XML-Datei mit Systemstandard öffnen
                 Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltConfig_FileName))
+
             Case BRWSTest.Name
                 If IsNumeric(TBRWSTest.Text) Then
                     Dim vCard As String = Await StartRWS(New Telefonnummer() With {.SetNummer = TBRWSTest.Text}, False)
                     If Not vCard.StartsWith(PDfltBegin_vCard) Then vCard = PRWSTestKeinEintrag
                     MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
                 End If
+
             Case BKontOrdLaden.Name
                 KontaktOrdnerLaden()
+
+            Case BPhonerTest.Name
+                ' Formulardaten in Properties speichern
+                Speichern(Me)
+
+                Using p As New Phoner
+
+                    MsgBox($"Die Authentifizierung mit Phoner war {If(p.CheckPhonerAuth, PDfltStringEmpty, "nicht ")}erfolgreich.", MsgBoxStyle.Information, "Phoner Authentifizierungstest")
+                End Using
         End Select
     End Sub
 
@@ -273,6 +292,7 @@ Public Class FormCfg
                 LPassworPhoner.Enabled = CBPhoner.Checked
                 CBoxPhonerSIP.Enabled = CBPhoner.Checked
                 LPhonerSIPTelefon.Enabled = CBPhoner.Checked
+                BPhonerTest.Enabled = CBPhoner.Checked
         End Select
 
     End Sub
@@ -330,6 +350,7 @@ Public Class FormCfg
                     .DataSource = XMLData.PTelefonie.Telefoniegeräte.Where(Function(t) t.TelTyp = DfltWerteTelefonie.TelTypen.IP).ToList
                     .DisplayMember = NameOf(Telefoniegerät.Name)
                     .ValueMember = NameOf(Telefoniegerät.AnrMonID)
+                    .SelectedItem = XMLData.PTelefonie.Telefoniegeräte.Find(Function(t) t.TelTyp = DfltWerteTelefonie.TelTypen.IP And t.IsPhoner)
             End Select
         End With
     End Sub
@@ -656,11 +677,7 @@ Public Class FormCfg
 
 
 #End Region
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Using p As New Phoner
-            p.DialPhoner("0123", False)
-        End Using
-    End Sub
+
 
 End Class
 

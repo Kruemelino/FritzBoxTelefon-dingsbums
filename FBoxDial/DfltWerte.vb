@@ -411,7 +411,9 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     Public Shared ReadOnly Property PWählClientStatusLadeGeräte As String = "Lade Telefoniegeräte..."
     Public Shared ReadOnly Property PWählClientStatusLetztesGerät As String = "Setze letztes Gerät..."
-    Public Shared ReadOnly Property PWählClientStatusStandardGerät As String = "Setze Standardgerät..."
+    Public Shared ReadOnly Property PWählClientStatus1Gerät As String = "Setze 1. Gerät in Liste..."
+    Public Shared ReadOnly Property PWählClientStatusFehlerGerät As String = "Es konnte kein Gerät geladen werden..."
+    Public Shared ReadOnly Property PWählClientPhonerInaktiv As String = "Phoner ist nicht bereit..."
     ''' <summary>
     ''' Lade Telefonnummern des Kontaktes...
     ''' </summary>
@@ -440,7 +442,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' 
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusAbbruch As String = $"Abbruch wird vorbereitet...{PDflt1NeueZeile}"
+    Public Shared ReadOnly Property PWählClientStatusAbbruch As String = $"Anruf wird abgebrochen...{PDflt1NeueZeile}"
 
     ''' <summary>
     ''' <paramref name="Sender"/>: <paramref name="Meldung"/> <paramref name="Wert"/>

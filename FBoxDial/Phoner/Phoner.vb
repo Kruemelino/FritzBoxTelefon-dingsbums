@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Net
 Imports System.Net.Sockets
+Imports System.Threading
 
 Public Class Phoner
     Implements IDisposable
@@ -10,7 +11,6 @@ Public Class Phoner
     Private ReadOnly Property PhonerEndpointPort As Integer = 2012
 
     Friend ReadOnly Property PhonerReady As Boolean = Not Process.GetProcessesByName("phoner").Length = 0
-    Friend ReadOnly Property PhonerLiteReady As Boolean = Not Process.GetProcessesByName("phonerlite").Length = 0
 #Region "Phoner Strings"
     ''' <summary>
     ''' Login
@@ -50,12 +50,25 @@ Public Class Phoner
     ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
     Friend Event SetStatus(ByVal Status As String)
 #End Region
+    Friend Function CheckPhonerAuth() As Boolean
+        Return DialPhoner(PDfltStringEmpty, False, True)
+    End Function
 
     Friend Function DialPhoner(ByVal DialCode As String, ByVal Hangup As Boolean) As Boolean
+        Return DialPhoner(DialCode, Hangup, False)
+    End Function
+    ''' <summary>
+    ''' Initiiert ein Telefonat über Phoner
+    ''' </summary>
+    ''' <param name="DialCode">Die zu wählende Nummer</param>
+    ''' <param name="Hangup">Angabe, ob der Rufaufbau beendet werden soll.</param>
+    ''' <param name="Check">Angabe, ob nur die Authentifizierung mit Phoner überprüft werden soll.</param>
+    ''' <returns></returns>
+    Private Function DialPhoner(ByVal DialCode As String, ByVal Hangup As Boolean, ByVal Check As Boolean) As Boolean
 
         DialPhoner = False
 
-        If PhonerLiteReady Then
+        If PhonerReady Then
             Using PhonerTcpClient As New TcpClient
                 PhonerTcpClient.Connect(PhonerEndpoint, PhonerEndpointPort)
 
@@ -80,21 +93,25 @@ Public Class Phoner
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
-                                        Response = Crypter.getMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.PTBPhonerPasswort), Encoding.ASCII).ToUpper
+                                        Response = Crypter.getMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.PTBPhonerPasswort, DefaultWerte.PDfltDeCryptKeyPhoner), Encoding.ASCII).ToUpper
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")
 
                                     SW.WriteLine(PhonerResponse & Response)
+                                    Thread.Sleep(50)
                                     If .DataAvailable Then
-                                        ' Wähllkomando senden
-                                        If Hangup Then
-                                            ' Abbruch des Rufaufbaues mittels DISCONNECT
-                                            SW.WriteLine(PhonerDISCONNECT)
-                                            NLogger.Debug(PPhonerAbbruch)
-                                        Else
-                                            ' Aufbau des Telefonates mittels CONNECT
-                                            SW.WriteLine($"{PhonerCONNECT} {DialCode}")
-                                            NLogger.Debug(PPhonerErfolgreich(DialCode))
+                                        NLogger.Debug("Authentifizierung erfolgreich")
+                                        If Not Check Then
+                                            ' Wähllkomando senden
+                                            If Hangup Then
+                                                ' Abbruch des Rufaufbaues mittels DISCONNECT
+                                                SW.WriteLine(PhonerDISCONNECT)
+                                                NLogger.Debug(PPhonerAbbruch)
+                                            Else
+                                                ' Aufbau des Telefonates mittels CONNECT
+                                                SW.WriteLine($"{PhonerCONNECT} {DialCode}")
+                                                NLogger.Debug(PPhonerErfolgreich(DialCode))
+                                            End If
                                         End If
                                         DialPhoner = True
 
@@ -129,7 +146,6 @@ Public Class Phoner
             NLogger.Warn(PPhonerNichtBereit)
         End If
     End Function
-
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.

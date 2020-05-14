@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Data
 Imports System.Drawing
+Imports System.Net.NetworkInformation
 Imports System.Timers
 Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
@@ -11,6 +12,8 @@ Public Class FormWählclient
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property OKontakt As Outlook.ContactItem
     Private Property PKontaktbild As Bitmap
+
+    Private Property PhonerApp As Phoner
 #End Region
 
 #Region "Delegaten"
@@ -33,36 +36,58 @@ Public Class FormWählclient
 
         LStatus.Text = PDfltStringEmpty
 
+        ' Initiere Phoner, wenn erforderlich
+        If XMLData.POptionen.PCBPhoner Then
+            PhonerApp = New Phoner
+            If Not PhonerApp.PhonerReady Then
+                WählClient_SetStatus(PWählClientPhonerInaktiv)
+                PhonerApp.Dispose()
+                PhonerApp = Nothing
+            End If
+        End If
+
         ' Lade die Telefone
         SetTelefonDaten()
     End Sub
 
     Private Sub SetTelefonDaten()
-        Dim StdTel As Telefoniegerät
+        'Dim StdTel As Telefoniegerät
 
         ' Status schreiben
         WählClient_SetStatus(PWählClientStatusLadeGeräte)
         ' Leere das Control
         ComboBoxFon.Items.Clear()
-        For Each TelGerät As Telefoniegerät In XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) Not TG.IsFax)
-            ComboBoxFon.Items.Add(TelGerät.Name)
-        Next
 
-        ' Ausgewähltes Stamdardgerät
-        StdTel = XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) TG.StdTelefon).FirstOrDefault
-        If StdTel Is Nothing Then
-            If XMLData.POptionen.PTelAnschluss Is Nothing OrElse XMLData.POptionen.PTelAnschluss.IsStringEmpty OrElse ComboBoxFon.Items.Contains(XMLData.POptionen.PTelAnschluss) Then
-                ComboBoxFon.SelectedIndex = 0
+        ' schreibe alle geeigneten Telefone rein (kein Fax, keine IP-Telefonie, keine AB)
+        With ComboBoxFon
+            .DataBindings.Clear()
+            If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
+                .DisplayMember = NameOf(Telefoniegerät.Name)
+                .ValueMember = NameOf(Telefoniegerät.UPnPDialport)
+                ' Nur FON, DECT, S0 und Phoner, wenn Phoner aktiv
+                .DataSource = XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) Not TG.IsFax And (TG.TelTyp = DfltWerteTelefonie.TelTypen.FON Or TG.TelTyp = DfltWerteTelefonie.TelTypen.DECT Or TG.TelTyp = DfltWerteTelefonie.TelTypen.S0 Or (TG.IsPhoner And PhonerApp IsNot Nothing))).ToList
+
+                ' Ausgewähltes Standardgerät
+                .SelectedItem = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.StdTelefon)
+                ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das zuletzt genutzte Telefon
+                If .SelectedItem Is Nothing Then
+                    WählClient_SetStatus(PWählClientStatusLetztesGerät)
+                    .SelectedItem = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.ZuletztGenutzt)
+                End If
+                ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das erste in der liste
+                If .SelectedItem Is Nothing Then
+                    WählClient_SetStatus(PWählClientStatus1Gerät)
+                    .SelectedIndex = 0
+
+                End If
             Else
-                ComboBoxFon.SelectedIndex = ComboBoxFon.Items.IndexOf(XMLData.POptionen.PTelAnschluss)
-                WählClient_SetStatus(PWählClientStatusLetztesGerät)
+                WählClient_SetStatus(PWählClientStatusFehlerGerät)
             End If
-        Else
-            WählClient_SetStatus(PWählClientStatusStandardGerät)
-            ComboBoxFon.SelectedIndex = ComboBoxFon.Items.IndexOf(StdTel.Name)
-        End If
+        End With
+
         CBCLIR.Checked = XMLData.POptionen.PCBCLIR
     End Sub
+
 
     Friend Sub SetOutlookKontakt(ByVal oContact As Outlook.ContactItem)
         Dim ImgPath As String
@@ -157,13 +182,20 @@ Public Class FormWählclient
         ' Wahlwiederhohlung in Combobox schreiben
         With CBoxDirektwahl
             .DataBindings.Clear()
-            .DisplayMember = NameOf(Telefonnummer.Unformatiert)
-            .ValueMember = NameOf(Telefonnummer.Unformatiert)
-            .DataSource = GetTelNrList(XMLData.PTelefonie.CALLListe?.Einträge)
+            If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Einträge?.Any Then
+                .DisplayMember = NameOf(Telefonnummer.Unformatiert)
+                .ValueMember = NameOf(Telefonnummer.Unformatiert)
+                .DataSource = GetTelNrList(XMLData.PTelefonie.CALLListe.Einträge)
+            End If
             .SelectedItem = Nothing
         End With
     End Sub
 
+    ''' <summary>
+    ''' Gibt die zuletzt gewählten Telefonnummern der Wahlwiederholungsliste zurück
+    ''' </summary>
+    ''' <param name="Telefonate">Wahlwiederhohlungsliste</param>
+    ''' <returns>Liste der Telefonnummern</returns>
     Private Function GetTelNrList(ByVal Telefonate As List(Of Telefonat)) As List(Of Telefonnummer)
         GetTelNrList = New List(Of Telefonnummer)
         For Each Tel As Telefonat In Telefonate
@@ -228,45 +260,77 @@ Public Class FormWählclient
     Private Sub DialTelNr(TelNr As Telefonnummer, ByVal AufbauAbbrechen As Boolean)
 
         Dim DialCode As String
+        Dim TelGerät As Telefoniegerät
+        Dim Erfolreich As Boolean
 
         BCancelCall.Visible = True
         BCancelCall.Focus()
         ComboBoxFon.Enabled = False
         dgvKontaktNr.Enabled = False
 
-        WählClient_SetStatus(PWählClientStatusTelNrAuswahl(TelNr.Formatiert))
-        If Not TelNr.IstMobilnummer OrElse (XMLData.POptionen.PCBCheckMobil AndAlso MsgBox(PWählClientFrageMobil, MsgBoxStyle.YesNo, "Fritz!Box Wählclient") = vbYes) Then
-            If AufbauAbbrechen Then
-                DialCode = PDfltStringEmpty
-                WählClient_SetStatus(PWählClientStatusAbbruch)
-            Else
-                LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
+        TelGerät = CType(ComboBoxFon.SelectedItem, Telefoniegerät)
 
-                DialCode = TelNr.Unformatiert.RegExReplace("#{1}$", PDfltStringEmpty)
-                If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
+        If TelGerät IsNot Nothing Then
 
-                DialCode = $"{If(CBCLIR.Checked, "*31#", PDfltStringEmpty)}{XMLData.POptionen.PTBAmt}{DialCode}#"
-
-                WählClient_SetStatus(PWählClientStatusWählClient(DialCode))
-                NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, CStr(ComboBoxFon.SelectedItem))
-            End If
-
-            If WählClient.SOAPDial(DialCode, XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.Name.AreEqual(CStr(ComboBoxFon.SelectedItem))), AufbauAbbrechen) Then
+            WählClient_SetStatus(PWählClientStatusTelNrAuswahl(TelNr.Formatiert))
+            If Not TelNr.IstMobilnummer OrElse (XMLData.POptionen.PCBCheckMobil AndAlso MsgBox(PWählClientFrageMobil, MsgBoxStyle.YesNo, "Fritz!Box Wählclient") = vbYes) Then
                 If AufbauAbbrechen Then
-                    LStatus.Text = PWählClientDialHangUp
+                    DialCode = PDfltStringEmpty
+                    WählClient_SetStatus(PWählClientStatusAbbruch)
                 Else
-                    LStatus.Text = PWählClientJetztAbheben
-                End If
-            Else
-                LStatus.Text = PWählClientDialFehler
-            End If
+                    LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
+                    ' Entferne 1x # am Ende
+                    DialCode = TelNr.Unformatiert.RegExReplace("#{1}$", PDfltStringEmpty)
 
-            ' Einstellungen (Welcher Anschluss, CLIR...) speichern
-            XMLData.POptionen.PCBCLIR = CBCLIR.Checked
-            XMLData.POptionen.PTelAnschluss = ComboBoxFon.SelectedText
-            ' Timer zum automatischen Schließen des Fensters starten
-            If XMLData.POptionen.PCBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.PTBWClientEnblDauer * 1000)
-            BCancelCall.Enabled = True
+                    ' Füge VAZ und LKZ hinzu, wenn gewünscht
+                    If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
+
+                    ' Rufnummerunterdrückung
+                    DialCode = $"{If(CBCLIR.Checked, "*31#", PDfltStringEmpty)}{XMLData.POptionen.PTBAmt}{DialCode}#"
+
+                    WählClient_SetStatus(PWählClientStatusWählClient(DialCode))
+                    NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, TelGerät.Name)
+                End If
+
+                If TelGerät.IsPhoner Then
+                    ' Telefonat an Phoner übergeben
+                    NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, TelGerät.Name)
+                    Erfolreich = PhonerApp.DialPhoner(DialCode, AufbauAbbrechen)
+                Else
+                    ' Telefonat üper SOAP an Fritz!Box weiterreichen
+                    Erfolreich = WählClient.SOAPDial(DialCode, TelGerät, AufbauAbbrechen)
+                End If
+
+                ' Ergebnis auswerten 
+                If Erfolreich Then
+                    If AufbauAbbrechen Then
+                        LStatus.Text = PWählClientDialHangUp
+                    Else
+                        LStatus.Text = PWählClientJetztAbheben
+                    End If
+
+                    ' Abbruch-Button aktivieren, wenn Anruf abgebrochen
+                    BCancelCall.Enabled = Not AufbauAbbrechen
+                    ' Einstellungen (Welcher Anschluss, CLIR...) speichern
+                    XMLData.POptionen.PCBCLIR = CBCLIR.Checked
+                    ' Standard-Gerät speichern
+
+                    If Not TelGerät.ZuletztGenutzt Then
+                        ' Entferne das Flag bei allen anderen Geräten
+                        ' (eigentlich reicht es, das Flag bei dem einen Gerät zu entfernen. Sicher ist sicher.
+                        XMLData.PTelefonie.Telefoniegeräte.ForEach(Sub(TE) TE.ZuletztGenutzt = False)
+                        ' Flag setzen
+                        TelGerät.ZuletztGenutzt = True
+                    End If
+                    ' Timer zum automatischen Schließen des Fensters starten
+                    If XMLData.POptionen.PCBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.PTBWClientEnblDauer * 1000)
+                Else
+                    LStatus.Text = PWählClientDialFehler
+                End If
+
+            End If
+        Else
+            LStatus.Text = PWählClientDialFehler
         End If
     End Sub
 

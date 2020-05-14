@@ -44,7 +44,7 @@ Public Class FritzBoxData
 
                 ' Überprüfung, ob Verbindung zur Fritz!Box besteht.
 
-                Fortfahren = QueryAntwort.AreNotEqual("Gegenstelle nicht erreichbar!")
+                Fortfahren = QueryAntwort.AreNotEqual("Gegenstelle nicht erreichbar!") And QueryAntwort.IsNotStringEmpty
                 If Fortfahren Then
                     With FBoxJSON.GetLocalValues(QueryAntwort)
                         XMLData.POptionen.PTBOrtsKZ = .OKZ
@@ -275,7 +275,7 @@ Public Class FritzBoxData
                                                               .AnrMonID = idx}
                         tmpTelefon.IsFax = CBool(.Fax)
                         tmpTelefon.Name = .Name
-                        tmpTelefon.UPnPDialport = String.Format("FON{0}: {1}", tmpTelefon.Dialport, tmpTelefon.Name)
+                        tmpTelefon.UPnPDialport = $"FON{tmpTelefon.Dialport}: {tmpTelefon.Name}"
 
                         Dim j As Integer = idx ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
                         tmpTelefon.StrEinTelNr = New List(Of String)
@@ -300,7 +300,7 @@ Public Class FritzBoxData
                         tmpTelefon.AnrMonID = AnrMonTelIDBase.DECT + CInt(Right(.Intern, 1))
                         tmpTelefon.Dialport = DialPortBase.DECT + CInt(Right(.Intern, 1))
                         tmpTelefon.Name = .Name
-                        tmpTelefon.UPnPDialport = String.Format("DECT: {0}", tmpTelefon.Name)
+                        tmpTelefon.UPnPDialport = $"DECT: {tmpTelefon.Name}"
 
                         If FritzBoxJSONTelefone2.DECTRingOnAllMSNs(idx).AreEqual("1") Then
                             tmpTelefon.StrEinTelNr = New List(Of String)

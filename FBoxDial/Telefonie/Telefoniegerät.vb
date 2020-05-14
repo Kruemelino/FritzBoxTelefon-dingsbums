@@ -19,6 +19,7 @@ Public Class Telefoniegerät
     <XmlAttribute> Public Property StdTelefon As Boolean
     <XmlAttribute> Public Property IsFax As Boolean
     <XmlAttribute> Public Property IsPhoner As Boolean
+    <XmlAttribute> Public Property ZuletztGenutzt As Boolean
     <XmlAttribute> Public Property TelTyp As TelTypen
     '<XmlAttribute> Friend Property ZeitEingehend As Integer
     '<XmlAttribute> Friend Property ZeitAusgehend As Integer

@@ -72,7 +72,6 @@
     '<XmlElement("CBDialPort")> Public Property PCBDialPort As Boolean
     '<XmlElement("CBCbCunterbinden")> Public Property PCBCbCunterbinden As Boolean
     <XmlElement("CBCheckMobil")> Public Property PCBCheckMobil As Boolean
-    <XmlElement("TelAnschluss")> Public Property PTelAnschluss As String
     <XmlElement("PCBCLIR")> Public Property PCBCLIR As Boolean
     <XmlElement("PCBCloseWClient")> Public Property PCBCloseWClient As Boolean
     <XmlElement("TBWClientEnblDauer")> Public Property PTBWClientEnblDauer As Integer

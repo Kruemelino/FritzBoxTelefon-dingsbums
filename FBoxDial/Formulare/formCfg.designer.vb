@@ -21,7 +21,7 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -167,8 +167,9 @@ Partial Class FormCfg
         Me.BKontOrdLaden = New System.Windows.Forms.Button()
         Me.TreeViewKontakte = New System.Windows.Forms.TreeView()
         Me.PPhoner = New System.Windows.Forms.TabPage()
+        Me.TBPhonerHinweise = New System.Windows.Forms.TextBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.BPhonerTest = New System.Windows.Forms.Button()
         Me.CBPhoner = New System.Windows.Forms.CheckBox()
         Me.CBoxPhonerSIP = New System.Windows.Forms.ComboBox()
         Me.TBPhonerPasswort = New System.Windows.Forms.MaskedTextBox()
@@ -504,6 +505,7 @@ Partial Class FormCfg
         'LPhonerSIPTelefon
         '
         Me.LPhonerSIPTelefon.AutoSize = True
+        Me.LPhonerSIPTelefon.Enabled = False
         Me.LPhonerSIPTelefon.Location = New System.Drawing.Point(148, 86)
         Me.LPhonerSIPTelefon.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LPhonerSIPTelefon.Name = "LPhonerSIPTelefon"
@@ -884,14 +886,14 @@ Partial Class FormCfg
         Me.DGVTelList.AllowUserToResizeColumns = False
         Me.DGVTelList.AllowUserToResizeRows = False
         Me.DGVTelList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.DGVTelList.ColumnHeadersHeight = 34
         Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
@@ -1927,6 +1929,7 @@ Partial Class FormCfg
         '
         'PPhoner
         '
+        Me.PPhoner.Controls.Add(Me.TBPhonerHinweise)
         Me.PPhoner.Controls.Add(Me.GroupBox4)
         Me.PPhoner.Controls.Add(Me.Label31)
         Me.PPhoner.Controls.Add(Me.LinkPhoner)
@@ -1940,9 +1943,19 @@ Partial Class FormCfg
         Me.PPhoner.Text = "Phoner"
         Me.PPhoner.UseVisualStyleBackColor = True
         '
+        'TBPhonerHinweise
+        '
+        Me.TBPhonerHinweise.Location = New System.Drawing.Point(293, 182)
+        Me.TBPhonerHinweise.Multiline = True
+        Me.TBPhonerHinweise.Name = "TBPhonerHinweise"
+        Me.TBPhonerHinweise.ReadOnly = True
+        Me.TBPhonerHinweise.Size = New System.Drawing.Size(460, 164)
+        Me.TBPhonerHinweise.TabIndex = 32
+        Me.TBPhonerHinweise.Text = resources.GetString("TBPhonerHinweise.Text")
+        '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.Button1)
+        Me.GroupBox4.Controls.Add(Me.BPhonerTest)
         Me.GroupBox4.Controls.Add(Me.CBPhoner)
         Me.GroupBox4.Controls.Add(Me.LPhonerSIPTelefon)
         Me.GroupBox4.Controls.Add(Me.CBoxPhonerSIP)
@@ -1952,19 +1965,20 @@ Partial Class FormCfg
         Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox4.Size = New System.Drawing.Size(310, 147)
+        Me.GroupBox4.Size = New System.Drawing.Size(278, 164)
         Me.GroupBox4.TabIndex = 31
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Phoner Einstellungen"
         '
-        'Button1
+        'BPhonerTest
         '
-        Me.Button1.Location = New System.Drawing.Point(194, 117)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 32
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.BPhonerTest.Enabled = False
+        Me.BPhonerTest.Location = New System.Drawing.Point(8, 117)
+        Me.BPhonerTest.Name = "BPhonerTest"
+        Me.BPhonerTest.Size = New System.Drawing.Size(255, 40)
+        Me.BPhonerTest.TabIndex = 32
+        Me.BPhonerTest.Text = "Teste Authentifizierung"
+        Me.BPhonerTest.UseVisualStyleBackColor = True
         '
         'CBPhoner
         '
@@ -1979,6 +1993,7 @@ Partial Class FormCfg
         '
         'CBoxPhonerSIP
         '
+        Me.CBoxPhonerSIP.Enabled = False
         Me.CBoxPhonerSIP.FormattingEnabled = True
         Me.CBoxPhonerSIP.Location = New System.Drawing.Point(8, 83)
         Me.CBoxPhonerSIP.Margin = New System.Windows.Forms.Padding(4)
@@ -1988,6 +2003,7 @@ Partial Class FormCfg
         '
         'TBPhonerPasswort
         '
+        Me.TBPhonerPasswort.Enabled = False
         Me.TBPhonerPasswort.Location = New System.Drawing.Point(8, 53)
         Me.TBPhonerPasswort.Margin = New System.Windows.Forms.Padding(4)
         Me.TBPhonerPasswort.Name = "TBPhonerPasswort"
@@ -1998,6 +2014,7 @@ Partial Class FormCfg
         'LPassworPhoner
         '
         Me.LPassworPhoner.AutoSize = True
+        Me.LPassworPhoner.Enabled = False
         Me.LPassworPhoner.Location = New System.Drawing.Point(148, 56)
         Me.LPassworPhoner.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LPassworPhoner.Name = "LPassworPhoner"
@@ -2417,6 +2434,7 @@ Partial Class FormCfg
     Friend WithEvents CBoxPhonerSIP As Windows.Forms.ComboBox
     Friend WithEvents TBPhonerPasswort As Windows.Forms.MaskedTextBox
     Friend WithEvents LPassworPhoner As Windows.Forms.Label
-    Friend WithEvents Button1 As Windows.Forms.Button
+    Friend WithEvents BPhonerTest As Windows.Forms.Button
     Friend WithEvents CBPhoner As Windows.Forms.CheckBox
+    Friend WithEvents TBPhonerHinweise As Windows.Forms.TextBox
 End Class
