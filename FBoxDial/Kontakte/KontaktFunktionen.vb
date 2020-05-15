@@ -670,4 +670,39 @@ Friend Module KontaktFunktionen
         End If
     End Function
 
+    Friend Function GetContactFromExchangeUser(ByVal EXUser As Outlook.ExchangeUser) As Outlook.ContactItem
+
+        GetContactFromExchangeUser = Nothing
+
+        If EXUser IsNot Nothing Then
+            GetContactFromExchangeUser = CType(ThisAddIn.POutookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            With EXUser
+                GetContactFromExchangeUser.BusinessAddress = .Address
+                GetContactFromExchangeUser.NetMeetingAlias = .Alias
+                GetContactFromExchangeUser.AssistantName = .AssistantName
+                GetContactFromExchangeUser.BusinessTelephoneNumber = .BusinessTelephoneNumber
+                GetContactFromExchangeUser.BusinessAddressCity = .City
+                GetContactFromExchangeUser.Body = .Comments
+                GetContactFromExchangeUser.CompanyName = .CompanyName
+                GetContactFromExchangeUser.Department = .Department
+                GetContactFromExchangeUser.FirstName = .FirstName
+                GetContactFromExchangeUser.JobTitle = .JobTitle
+                GetContactFromExchangeUser.LastName = .LastName
+                ' GetContactFromExchangeUser.ManagerName = .Manager?.Name
+                GetContactFromExchangeUser.MobileTelephoneNumber = .MobileTelephoneNumber
+                GetContactFromExchangeUser.FullName = .Name
+                GetContactFromExchangeUser.OfficeLocation = .OfficeLocation
+                GetContactFromExchangeUser.BusinessAddressPostalCode = .PostalCode
+                GetContactFromExchangeUser.Email1Address = .PrimarySmtpAddress
+                GetContactFromExchangeUser.BusinessAddressState = .StateOrProvince
+                GetContactFromExchangeUser.BusinessAddressStreet = .StreetAddress
+                GetContactFromExchangeUser.YomiCompanyName = .YomiCompanyName
+                ' .YomiDepartment
+                ' .YomiDisplayName
+                GetContactFromExchangeUser.YomiFirstName = .YomiFirstName
+                GetContactFromExchangeUser.YomiLastName = .YomiLastName
+            End With
+        End If
+    End Function
+
 End Module

@@ -1,4 +1,5 @@
 ﻿Imports Microsoft.Office.Interop
+Imports MixERP.Net.VCards.Types
 
 Friend Module KontaktSucher
 
@@ -105,16 +106,22 @@ Friend Module KontaktSucher
     Friend Function KontaktSuche(ByVal EMail As Outlook.MailItem) As Outlook.ContactItem
 
         Dim SMTPAdresse As String = GetSenderSMTPAddress(EMail)
+        SMTPAdresse = "roy.black@professionalsoftware.de"
 
         If SMTPAdresse.IsNotStringEmpty Then
             ' Empfänger generieren
             With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
                 .Resolve()
-                With .AddressEntry
+                Dim Adresseintrag As Outlook.AddressEntry = .AddressEntry
+                With Adresseintrag
                     If .GetContact() IsNot Nothing Then
                         Return .GetContact()
                     ElseIf .GetExchangeUser IsNot Nothing Then
-                        Return .GetExchangeUser.GetContact()
+                        '.GetExchangeUser.Details()
+                        'MsgBox(.GetExchangeUser.BusinessTelephoneNumber, MsgBoxStyle.Information, "")
+                        Return GetContactFromExchangeUser(.GetExchangeUser)
+
+                        Return Nothing
                     Else
                         Return Nothing
                     End If
@@ -124,6 +131,7 @@ Friend Module KontaktSucher
             Return Nothing
         End If
     End Function
+
 
     ''' <summary>
     ''' Funktion die die Suche mit einer Kontaktkarte durchführt.
