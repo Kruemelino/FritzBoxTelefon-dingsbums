@@ -106,7 +106,7 @@ Friend Module KontaktSucher
     Friend Function KontaktSuche(ByVal EMail As Outlook.MailItem) As Outlook.ContactItem
 
         Dim SMTPAdresse As String = GetSenderSMTPAddress(EMail)
-        SMTPAdresse = "roy.black@professionalsoftware.de"
+        ' SMTPAdresse = "roy.black@professionalsoftware.de"
 
         If SMTPAdresse.IsNotStringEmpty Then
             ' Empfänger generieren
