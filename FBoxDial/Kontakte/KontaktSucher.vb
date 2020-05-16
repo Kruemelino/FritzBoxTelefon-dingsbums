@@ -101,65 +101,103 @@ Friend Module KontaktSucher
     ''' <summary>
     ''' Funktion die die Suche mit einer E-Mail durchführt.
     ''' </summary>
-    ''' <param name="EMail">Mail-Element, die als Suchkriterium verwendet wird.</param>
-    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
-    Friend Function KontaktSuche(ByVal EMail As Outlook.MailItem) As Outlook.ContactItem
-
-        Dim SMTPAdresse As String = GetSenderSMTPAddress(EMail)
-        ' SMTPAdresse = "roy.black@professionalsoftware.de"
+    ''' <param name="SMTPAdresse">Mail-Addresse, die als Suchkriterium verwendet wird.</param>
+    ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
+    Friend Function KontaktSuche(ByVal SMTPAdresse As String) As Outlook.ContactItem
 
         If SMTPAdresse.IsNotStringEmpty Then
             ' Empfänger generieren
             With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
                 .Resolve()
-                Dim Adresseintrag As Outlook.AddressEntry = .AddressEntry
-                With Adresseintrag
-                    If .GetContact() IsNot Nothing Then
-                        Return .GetContact()
-                    ElseIf .GetExchangeUser IsNot Nothing Then
-                        '.GetExchangeUser.Details()
-                        'MsgBox(.GetExchangeUser.BusinessTelephoneNumber, MsgBoxStyle.Information, "")
-                        Return GetContactFromExchangeUser(.GetExchangeUser)
-
-                        Return Nothing
-                    Else
-                        Return Nothing
-                    End If
-                End With
+                Return .AddressEntry.GetContact
             End With
         Else
             Return Nothing
         End If
     End Function
 
+    Friend Function KontaktSucheExchangeUser(ByVal SMTPAdresse As String) As Outlook.ExchangeUser
+
+        If SMTPAdresse.IsNotStringEmpty Then
+            ' Empfänger generieren
+            With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
+                .Resolve()
+                Return .AddressEntry.GetExchangeUser
+            End With
+        Else
+            Return Nothing
+        End If
+    End Function
 
     ''' <summary>
     ''' Funktion die die Suche mit einer Kontaktkarte durchführt.
     ''' </summary>
     ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
-    ''' <returns>Den gefundenen Kontakt als <c>Outlook.ContactItem</c>.</returns>
+    ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
     Friend Function KontaktSuche(ByVal Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ContactItem
 
-        Dim SMTPAdresse As String = GetSenderSMTPAddress(Kontaktkarte)
+        If Kontaktkarte IsNot Nothing Then
 
-        If SMTPAdresse.IsNotStringEmpty Then
-            ' Empfänger generieren
-            With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
-                .Resolve()
-                With .AddressEntry
-                    If .GetContact() IsNot Nothing Then
-                        Return .GetContact()
-                    ElseIf .GetExchangeUser IsNot Nothing Then
-                        Return .GetExchangeUser.GetContact()
+            Select Case Kontaktkarte.AddressType
+                Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeSMTP
+                    ' über Kontaktkarte.Address wird die SMTP-Adresse zurückgegeben
+                    Return KontaktSuche(Kontaktkarte.Address)
+
+                Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
+                    Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
+
+                    If Adresseintrag?.AddressEntryUserType = Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry Then
+                        Return Adresseintrag.GetContact
                     Else
                         Return Nothing
                     End If
-                End With
-            End With
+
+                    Adresseintrag.ReleaseComObject
+
+                Case Else
+                    Return Nothing
+            End Select
         Else
             Return Nothing
         End If
+        Kontaktkarte.ReleaseComObject
+
     End Function
+
+    ''' <summary>
+    ''' Funktion die die Suche mit einer Kontaktkarte durchführt.
+    ''' </summary>
+    ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
+    ''' <returns>Den gefundenen Kontakt als Outlook.ExchangeUser.</returns>
+    Friend Function KontaktSucheExchangeUser(ByVal Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ExchangeUser
+
+        If Kontaktkarte IsNot Nothing Then
+
+            Select Case Kontaktkarte.AddressType
+                Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeSMTP
+                    ' über Kontaktkarte.Address wird die SMTP-Adresse zurückgegeben
+                    Return KontaktSucheExchangeUser(Kontaktkarte.Address)
+
+                Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
+                    Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
+
+                    Select Case Adresseintrag?.AddressEntryUserType
+                        Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                            Return Adresseintrag.GetExchangeUser()
+                        Case Else
+                            Return Nothing
+                    End Select
+
+                    Adresseintrag.ReleaseComObject
+                Case Else
+                    Return Nothing
+            End Select
+        Else
+            Return Nothing
+        End If
+        Kontaktkarte.ReleaseComObject
+    End Function
+
 #End Region
 
     '#Region "Kontaktsuche Table DASL"

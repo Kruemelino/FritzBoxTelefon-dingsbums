@@ -149,27 +149,37 @@ Public Class Telefonnummer
             ' Extrahiere die Ortsvorwahl, wenn die Telefonnummer mit einer Landesvorwahl beginnt, oder einer führenden Null (Amt)
             If TelNr.StartsWith(PDfltVAZ) Or TelNr.StartsWith(PDfltAmt) Then
 
-                i = 0
-                If TelNr.StartsWith("0") Then i = 1
-                If TelNr.StartsWith($"{PDfltVAZ}{Landeskennzahl}") Then i = (PDfltVAZ & Landeskennzahl).Length
-
-                j = TelNr.Length - i
-                Do
-                    tmpONKZ = tmpLKZ.Ortsnetzkennzahlen.FindAll(Function(OrNKZ) OrNKZ.Ortskennzahl = TelNr.Substring(i, j))
-                    j -= 1
-                Loop Until tmpONKZ.Count.AreEqual(1) Or j.IsZero
-
-                If tmpONKZ.Count.AreEqual(1) Then
-                    Ortskennzahl = tmpONKZ.First.Ortskennzahl
-                    ' Einwahl: Ortsvorwahl am Anfang entfernen
-                Else
+                ' Es muss eine Landeskennzahl ermittelt sein.
+                ' Hier ist irgendwo ein Bug, dass die ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen leer ist. Vielleicht war das Addin zu schnell beim Automatischen Journalimport.
+                If tmpLKZ Is Nothing Then
+                    NLogger.Error("Es konnte keine Landeskennzahl für {0} ermittet werden. Das Laden der Vorwahlen ist{1} abgeschlossen.", TelNr, If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, PDfltStringEmpty, " nicht"))
                     Ortskennzahl = PDfltStringEmpty
+                Else
+                    i = 0
+                    If TelNr.StartsWith("0") Then i = 1
+                    If TelNr.StartsWith($"{PDfltVAZ}{Landeskennzahl}") Then i = (PDfltVAZ & Landeskennzahl).Length
+
+                    j = TelNr.Length - i
+                    Do
+                        tmpONKZ = tmpLKZ.Ortsnetzkennzahlen.FindAll(Function(OrNKZ) OrNKZ.Ortskennzahl = TelNr.Substring(i, j))
+                        j -= 1
+                    Loop Until tmpONKZ.Count.AreEqual(1) Or j.IsZero
+
+                    If tmpONKZ.Count.AreEqual(1) Then
+                        Ortskennzahl = tmpONKZ.First.Ortskennzahl
+                        ' Einwahl: Ortsvorwahl am Anfang entfernen
+                    Else
+                        Ortskennzahl = PDfltStringEmpty
+                    End If
+                    tmpONKZ.Clear()
                 End If
             Else
                 ' es handelt sich vermutlich um eine Nummer im eigenen Ortsnetz
                 Ortskennzahl = XMLData.POptionen.PTBOrtsKZ
             End If
+
             Einwahl = Einwahl.RegExReplace($"0?{Ortskennzahl}", PDfltStringEmpty)
+
             ' Suche eine Durchwahl
             If Nummer.Contains("-") Then
                 Durchwahl = Nummer.RegExReplace("^.+\-+ *", PDfltStringEmpty).Trim()
@@ -179,7 +189,8 @@ Public Class Telefonnummer
                 Durchwahl = PDfltStringEmpty
             End If
 
-            'tmpONKZ.Clear()
+            tmpLKZ = Nothing
+            tmpONKZ = Nothing
         End If
     End Sub
 

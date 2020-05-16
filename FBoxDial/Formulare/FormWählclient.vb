@@ -11,6 +11,7 @@ Public Class FormWählclient
 #Region "Properties"
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Private Property OKontakt As Outlook.ContactItem
+    Private Property OExchangeNutzer As Outlook.ExchangeUser
     Private Property PKontaktbild As Bitmap
 
     Private Property PhonerApp As Phoner
@@ -97,7 +98,7 @@ Public Class FormWählclient
         ' Status schreiben
         WählClient_SetStatus(PWählClientStatusLadeKontaktTelNr)
         ' Kopf Schreiben
-        Text = PWählClientFormText(String.Format("{0}{1}", oContact.FullName, If(oContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", oContact.CompanyName), PDfltStringEmpty)))
+        Text = PWählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", PDfltStringEmpty)}")
         ' Direktwahl deaktivieren
         With PanelDirektwahl
             .Enabled = False
@@ -141,6 +142,61 @@ Public Class FormWählclient
         Else
             PicBoxKontaktBild.Visible = False
         End If
+
+    End Sub
+
+    Friend Sub SetOutlookKontakt(ByVal oExchangeUser As Outlook.ExchangeUser)
+        'Dim ImgPath As String
+        ' Outlook Kontakt sichern
+        OExchangeNutzer = oExchangeUser
+        ButtonZeigeKontakt.Enabled = True
+        ' Status schreiben
+        WählClient_SetStatus(PWählClientStatusLadeKontaktTelNr)
+        ' Kopf Schreiben
+        Text = PWählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", PDfltStringEmpty)}")
+        ' Direktwahl deaktivieren
+        With PanelDirektwahl
+            .Enabled = False
+            .Visible = False
+        End With
+        ' DataGridView auf Sollgröße maximieren 
+        With PanelKontaktwahl
+            .Height = PanelDirektwahl.Top + PanelDirektwahl.Height
+        End With
+
+        ' DGV-Füllem
+        With dgvKontaktNr
+
+            .AddTextColumn("Nr", "Nr.", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 25)
+            .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), 200)
+            .AddTextColumn("TelNr", "Telefonnummern", DataGridViewContentAlignment.MiddleLeft, GetType(Integer), DataGridViewAutoSizeColumnMode.Fill)
+
+            .DataSource = FillDatatable(oExchangeUser)
+        End With
+
+        ' Kontaktbild anzeigen
+
+        'ImgPath = KontaktBild(oContact)
+
+        'If ImgPath.IsNotStringEmpty Then
+        '    Dim orgImage As Image
+        '    Using fs As New IO.FileStream(ImgPath, IO.FileMode.Open)
+        '        orgImage = Image.FromStream(fs)
+        '    End Using
+        '    DelKontaktBild(ImgPath)
+
+        '    With New Size(PicBoxKontaktBild.Width, CInt((PicBoxKontaktBild.Width * orgImage.Size.Height) / orgImage.Size.Width))
+        '        PKontaktbild = New Bitmap(.Width, .Height)
+
+        '        Using g As Graphics = Graphics.FromImage(PKontaktbild)
+        '            g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        '            g.DrawImage(orgImage, 0, 0, .Width, .Height)
+        '        End Using
+        '    End With
+        '    PicBoxKontaktBild.Image = PKontaktbild
+        'Else
+        '    PicBoxKontaktBild.Visible = False
+        'End If
 
     End Sub
 
@@ -206,12 +262,10 @@ Public Class FormWählclient
 
 #Region "DataTable"
     Private Overloads Function FillDatatable(ByVal oContact As Outlook.ContactItem) As WählClientDataTable
-        'Dim tmpDataColumn As DataColumn
         Dim tmpDataRow As WählClientDataRow
+        Dim tmpListofTelNr As List(Of Telefonnummer)
 
         FillDatatable = New WählClientDataTable
-
-        Dim tmpListofTelNr As List(Of Telefonnummer)
 
         With FillDatatable
             ' Spalten hinzufügen
@@ -220,6 +274,25 @@ Public Class FormWählclient
             .Columns.Add("TelNr", GetType(String))
             ' Zeilen hinzufügen
             tmpListofTelNr = GetKontaktTelNrList(oContact)
+            For Each TelNr As Telefonnummer In tmpListofTelNr
+                tmpDataRow = CType(.Rows.Add(tmpListofTelNr.IndexOf(TelNr) + 1, TelNr.OutlookTyp, TelNr.Formatiert), WählClientDataRow)
+                tmpDataRow.TelNr = TelNr
+            Next
+        End With
+    End Function
+    Private Overloads Function FillDatatable(ByVal oExchangeNutzer As Outlook.ExchangeUser) As WählClientDataTable
+        Dim tmpDataRow As WählClientDataRow
+        Dim tmpListofTelNr As List(Of Telefonnummer)
+
+        FillDatatable = New WählClientDataTable
+
+        With FillDatatable
+            ' Spalten hinzufügen
+            .Columns.Add("Nr", GetType(Integer))
+            .Columns.Add("Typ", GetType(String))
+            .Columns.Add("TelNr", GetType(String))
+            ' Zeilen hinzufügen
+            tmpListofTelNr = GetKontaktTelNrList(oExchangeNutzer)
             For Each TelNr As Telefonnummer In tmpListofTelNr
                 tmpDataRow = CType(.Rows.Add(tmpListofTelNr.IndexOf(TelNr) + 1, TelNr.OutlookTyp, TelNr.Formatiert), WählClientDataRow)
                 tmpDataRow.TelNr = TelNr
@@ -392,7 +465,8 @@ Public Class FormWählclient
                 dgvKontaktNr.ClearSelection() ' Ein erneutes Wählen ermöglichen
             Case BVIP.Name
             Case ButtonZeigeKontakt.Name
-                OKontakt.Display()
+                OKontakt?.Display()
+                OExchangeNutzer?.Details()
 
             Case BSchließen.Name
                 Close()

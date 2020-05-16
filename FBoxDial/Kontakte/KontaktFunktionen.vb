@@ -2,7 +2,6 @@
 Imports System.Runtime.CompilerServices
 Imports System.Xml
 Imports System.Xml.Serialization
-Imports Microsoft.Office.Core
 Imports Microsoft.Office.Interop
 Friend Module KontaktFunktionen
     Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
@@ -15,8 +14,8 @@ Friend Module KontaktFunktionen
     ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der neu erstellte Kontaktes befindet.</param>
     ''' <param name="vCard">Kontaktdaten im vCard-Format.</param>
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
-    ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
-    ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
+    ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
+    ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
     Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As Telefonnummer, ByVal AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem
 
@@ -169,8 +168,8 @@ Friend Module KontaktFunktionen
     ''' Erstellt einen leeren Kontakt und ergänzt eine Telefonnummer.
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
-    ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll <c>True</c>, oder nur angezeigt werden soll <c>False</c>.</param>
-    ''' <returns>Den erstellte Kontakt als <c>Outlook.ContactItem.</c></returns>
+    ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
+    ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
     Friend Function ErstelleKontakt(ByVal TelNr As Telefonnummer, ByVal Speichern As Boolean) As Outlook.ContactItem
         Return ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, PDfltStringEmpty, TelNr, Speichern)
     End Function
@@ -341,6 +340,26 @@ Friend Module KontaktFunktionen
             alleTelNr(12) = .PagerNumber : alleNrTypen(12) = "Pager"
             alleTelNr(13) = .PrimaryTelephoneNumber : alleNrTypen(13) = "Haupttelefon"
             alleTelNr(14) = .RadioTelephoneNumber : alleNrTypen(14) = "Funkruf"
+        End With
+
+        GetKontaktTelNrList = New List(Of Telefonnummer)
+        For i = LBound(alleTelNr) To UBound(alleTelNr)
+            If alleTelNr(i).IsNotStringNothingOrEmpty Then
+                tmpTelNr = New Telefonnummer With {.SetNummer = alleTelNr(i), .OutlookTyp = alleNrTypen(i)}
+                GetKontaktTelNrList.Add(tmpTelNr)
+            End If
+        Next
+    End Function
+
+    Friend Function GetKontaktTelNrList(ByRef olExchangeNutzer As Outlook.ExchangeUser) As List(Of Telefonnummer)
+
+        Dim alleTelNr(2) As String ' alle im Exchangenutzer enthaltenen Telefonnummern
+        Dim alleNrTypen(2) As String ' die Bezeichnungen der Telefonnummern
+        Dim tmpTelNr As Telefonnummer
+
+        With olExchangeNutzer
+            alleTelNr(1) = .BusinessTelephoneNumber : alleNrTypen(1) = "Geschäftlich"
+            alleTelNr(2) = .MobileTelephoneNumber : alleNrTypen(2) = "Mobiltelefon"
         End With
 
         GetKontaktTelNrList = New List(Of Telefonnummer)
@@ -596,42 +615,6 @@ Friend Module KontaktFunktionen
             End Using
         End With
     End Sub
-#Region "E-Mail Empfänger"
-    Friend Function GetSenderSMTPAddress(ByVal Kontaktkarte As IMsoContactCard) As String
-
-        If Kontaktkarte IsNot Nothing Then
-            If Kontaktkarte.AddressType = MsoContactCardAddressType.msoContactCardAddressTypeOutlook Then
-
-                Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
-
-                Select Case Adresseintrag?.AddressEntryUserType
-                    Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
-                        Dim ExchangeUser As Outlook.ExchangeUser = Adresseintrag.GetExchangeUser()
-
-                        If ExchangeUser IsNot Nothing Then
-                            Return ExchangeUser.PrimarySmtpAddress
-                        Else
-                            Return PDfltStringEmpty
-                        End If
-
-                        ExchangeUser.ReleaseComObject
-                    Case Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry
-                        Return Adresseintrag.Address
-                    Case Else
-                        NLogger.Error("Valid address entry not found.")
-                        Return PDfltStringEmpty
-                End Select
-
-                Adresseintrag.ReleaseComObject
-            Else
-                Return Kontaktkarte.Address
-            End If
-        Else
-            Return PDfltStringEmpty
-        End If
-        Kontaktkarte.ReleaseComObject
-    End Function
-#End Region
 
     ''' <summary>
     ''' Gibt die Absender-SMTP-Adresse der E-Mail zurück
@@ -667,41 +650,6 @@ Friend Module KontaktFunktionen
             End If
         Else
             Return PDfltStringEmpty
-        End If
-    End Function
-
-    Friend Function GetContactFromExchangeUser(ByVal EXUser As Outlook.ExchangeUser) As Outlook.ContactItem
-
-        GetContactFromExchangeUser = Nothing
-
-        If EXUser IsNot Nothing Then
-            GetContactFromExchangeUser = CType(ThisAddIn.POutookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
-            With EXUser
-                GetContactFromExchangeUser.BusinessAddress = .Address
-                GetContactFromExchangeUser.NetMeetingAlias = .Alias
-                GetContactFromExchangeUser.AssistantName = .AssistantName
-                GetContactFromExchangeUser.BusinessTelephoneNumber = .BusinessTelephoneNumber
-                GetContactFromExchangeUser.BusinessAddressCity = .City
-                GetContactFromExchangeUser.Body = .Comments
-                GetContactFromExchangeUser.CompanyName = .CompanyName
-                GetContactFromExchangeUser.Department = .Department
-                GetContactFromExchangeUser.FirstName = .FirstName
-                GetContactFromExchangeUser.JobTitle = .JobTitle
-                GetContactFromExchangeUser.LastName = .LastName
-                ' GetContactFromExchangeUser.ManagerName = .Manager?.Name
-                GetContactFromExchangeUser.MobileTelephoneNumber = .MobileTelephoneNumber
-                GetContactFromExchangeUser.FullName = .Name
-                GetContactFromExchangeUser.OfficeLocation = .OfficeLocation
-                GetContactFromExchangeUser.BusinessAddressPostalCode = .PostalCode
-                GetContactFromExchangeUser.Email1Address = .PrimarySmtpAddress
-                GetContactFromExchangeUser.BusinessAddressState = .StateOrProvince
-                GetContactFromExchangeUser.BusinessAddressStreet = .StreetAddress
-                GetContactFromExchangeUser.YomiCompanyName = .YomiCompanyName
-                ' .YomiDepartment
-                ' .YomiDisplayName
-                GetContactFromExchangeUser.YomiFirstName = .YomiFirstName
-                GetContactFromExchangeUser.YomiLastName = .YomiLastName
-            End With
         End If
     End Function
 

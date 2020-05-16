@@ -580,7 +580,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     Public Shared ReadOnly Property PPhonerNichtBereit As String = "Phoner oder PhonerLite ist nicht bereit!"
     ''' <summary>
-    ''' Telefonnummer <c>Dialcode</c> erfolgreich an Phoner übermittelt
+    ''' Telefonnummer <paramref name="Dialcode"/> erfolgreich an Phoner übermittelt
     ''' </summary>
     ''' <param name="Dialcode">Der übermittelte Dialcode</param>
     ''' <returns></returns>

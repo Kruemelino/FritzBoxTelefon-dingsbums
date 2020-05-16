@@ -45,7 +45,7 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Prüft, ob die beiden übergebenen Größen gleich sind: <c>Val1</c> = <c>Val2</c>
+    ''' Prüft, ob die beiden übergebenen Größen gleich sind: <paramref name="Val1"/> == <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
@@ -61,7 +61,7 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Prüft, ob die beiden übergebenen Größen gleich sind: <c>Val1</c> = <c>Val2</c>
+    ''' Prüft, ob die beiden übergebenen Größen gleich sind: <paramref name="Val1"/> == <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
@@ -74,7 +74,7 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> kleiner als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &lt; <c>Val2</c>
+    ''' Prüft, ob die erste übergebene Größe <paramref name="Val1"/> kleiner als die zweite übergebene Größe <paramref name="Val2"/> ist: <paramref name="Val1"/> &lt; <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
@@ -87,7 +87,7 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> kleiner oder gleich als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &lt;= <c>Val2</c>
+    ''' Prüft, ob die erste übergebene Größe <paramref name="Val1"/> kleiner oder gleich als die zweite übergebene Größe <paramref name="Val2"/> ist: <paramref name="Val1"/> &lt;= <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
@@ -101,7 +101,7 @@ Public Module Extensions
     'End Function
 
     ''' <summary>
-    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> größer als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &gt; <c>Val2</c>
+    ''' Prüft, ob die erste übergebene Größe <paramref name="Val1"/> größer als die zweite übergebene Größe <paramref name="Val2"/> ist: <paramref name="Val1"/> &gt; <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
@@ -117,7 +117,7 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Prüft, ob die erste übergebene Größe <c>Val1</c> größer oder gleich als die zweite übergebene Größe <c>Val2</c> ist: <c>Val1</c> &gt;= <c>Val2</c>
+    ''' Prüft, ob die erste übergebene Größe <paramref name="Val1"/> größer oder gleich als die zweite übergebene Größe <paramref name="Val2"/> ist: <paramref name="Val1"/> &gt;= <paramref name="Val2"/>
     ''' </summary>
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
@@ -142,19 +142,19 @@ Public Module Extensions
         Return If(Val1.IsLargerOrEqual(Val2), Val1, Val2)
     End Function
 
-    '''' <summary>
-    '''' Prüft, ob die übergebene Größe <c>Val1</c> sich innerhalb eines Bereiches befindet: <c>LVal</c> &lt; <c>Val1</c> &lt; <c>UVal</c>.
-    '''' </summary>
-    '''' <param name="Val1">Zu prüfende Größe</param>
-    '''' <param name="LVal">Untere Schwelle</param>
-    '''' <param name="UVal">Obere schwelle</param>
-    '''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    '<Extension()> Public Function IsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
-    '    Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
-    'End Function
-    '<Extension()> Public Function IsInRange(ByVal Val1 As Integer, ByVal LVal As Integer, ByVal UVal As Integer) As Boolean
-    '    Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
-    'End Function
+    ''' <summary>
+    ''' Prüft, ob die übergebene Größe <paramref name="Val1"/> sich innerhalb eines Bereiches befindet: <paramref name="LVal"/> &lt; <paramref name="Val1"/> &lt; <paramref name="UVal"/>.
+    ''' </summary>
+    ''' <param name="Val1">Zu prüfende Größe</param>
+    ''' <param name="LVal">Untere Schwelle</param>
+    ''' <param name="UVal">Obere schwelle</param>
+    ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
+    <Extension()> Public Function IsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
+        Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
+    End Function
+    <Extension()> Public Function IsInRange(ByVal Val1 As Integer, ByVal LVal As Integer, ByVal UVal As Integer) As Boolean
+        Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
+    End Function
 
 
     ''' <summary>
@@ -227,14 +227,14 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
-    ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
+    ''' Entnimmt aus dem String <paramref name="Text"/> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <paramref name="StringDavor"/> 
+    ''' und deiner Zeichenfolge danach <paramref name="StringDanach"/>.
     ''' </summary>
     ''' <param name="Text">String aus dem der Sub-String entnommen werden soll.</param>
     ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
-    ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <c>Textes</c> aus begonnen werden soll.</param>
-    ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
+    ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <paramref name="Text"/> aus begonnen werden soll.</param>
+    ''' <returns>Wenn <paramref name="StringDavor"/> und <paramref name="StringDanach"/> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
     <Extension> Public Function GetSubString(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByVal Reverse As Boolean) As String
         Dim pos(1) As Integer
 
@@ -254,27 +254,27 @@ Public Module Extensions
     End Function
 
     ''' <summary>
-    ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
-    ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
+    ''' Entnimmt aus dem String <paramref name="Text"/> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <paramref name="StringDavor"/>
+    ''' und deiner Zeichenfolge danach <paramref name="StringDanach"/>.
     ''' </summary>
     ''' <param name="Text">String aus dem der Sub-String entnommen werden soll.</param>
     ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
-    ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
+    ''' <returns>Wenn <paramref name="StringDavor"/> und <paramref name="StringDanach"/> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
     <Extension> Public Function GetSubString(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String) As String
         Return GetSubString(Text, StringDavor, StringDanach, False)
     End Function
 
     ''' <summary>
-    ''' Entnimmt aus dem String <c>Text</c> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <c>StringDavor</c> 
-    ''' und deiner Zeichenfolge danach <c>StringDanach</c>.
-    ''' Beginnt Suche nach TeilString an einem Startpunkt <c>StartPosition</c>.
+    ''' Entnimmt aus dem String <paramref name="Text"/> einen enthaltenen Sub-String ausgehend von einer Zeichenfolge davor <paramref name="StringDavor"/> 
+    ''' und deiner Zeichenfolge danach <paramref name="StringDanach"/>.
+    ''' Beginnt Suche nach TeilString an einem Startpunkt <paramref name="StartPosition"/>.
     ''' </summary>
     ''' <param name="Text">String aus dem der Sub-String entnommen werden soll.</param>
     ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="StartPosition">Startposition, bei der mit der Suche nach den Zeichenfolgen vor und nach dem Sub-String begonnen werden soll.</param>
-    ''' <returns>Wenn <c>StringDavor</c> und <c>StringDanach</c> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
+    ''' <returns>Wenn <paramref name="StringDavor"/> und <paramref name="StringDanach"/> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
     <Extension> Public Function GetSubString(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef StartPosition As Integer) As String
         Dim pos(1) As Integer
 

@@ -34,7 +34,7 @@ Public NotInheritable Class ThisAddIn
         NLog.LogManager.Configuration = DefaultNLogConfig()
 
         ' Outlook.Application initialisieren
-        If POutookApplication Is Nothing Then POutookApplication = CType(Application, Application)
+        If POutookApplication Is Nothing Then POutookApplication = Application
 
         If POutookApplication.ActiveExplorer IsNot Nothing Then
             'StandBy Handler
@@ -48,14 +48,16 @@ Public NotInheritable Class ThisAddIn
     End Sub
 
     Private Async Sub StarteAddinFunktionen()
+
+        ' Initialisiere die Landes- und Ortskennzahlen
+        PCVorwahlen = New CVorwahlen
+
         ' Anrufmonitor starten
         If XMLData.POptionen.PCBAnrMonAuto Then
             PAnrufmonitor = New Anrufmonitor
             PAnrufmonitor.StartStopAnrMon()
         End If
 
-        ' Initialisiere die Landes- und Ortskennzahlen
-        PCVorwahlen = New CVorwahlen
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
         If XMLData.POptionen.PCBKontaktSucheFritzBox Then

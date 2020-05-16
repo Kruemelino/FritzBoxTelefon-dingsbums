@@ -303,10 +303,10 @@ Imports System.Xml
 
             Case TaskToDo.DialDirekt
                 Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(Nothing, True)
+                WählClient.WählboxStart()
             Case TaskToDo.DialExplorer
                 Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(ThisAddIn.POutookApplication.ActiveExplorer.Selection, False)
+                WählClient.WählboxStart(ThisAddIn.POutookApplication.ActiveExplorer.Selection)
             Case TaskToDo.OpenJournalimport
                 Dim AnrListImport As New FormAnrList
                 AnrListImport.Show()

@@ -165,39 +165,47 @@ Public Class FritzBoxWählClient
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt
     ''' </summary>
     ''' <param name="olAuswahl">Die aktuelle Auswahl eines Outlook-Elementes</param>
-    Friend Overloads Sub WählboxStart(ByVal olAuswahl As Outlook.Selection, ByVal DirektWahl As Boolean)
+    Friend Overloads Sub WählboxStart(ByVal olAuswahl As Outlook.Selection)
 
-        If DirektWahl Then
-            Wählbox(Nothing, Nothing, True)
+        ' Ist überhaupt etwas ausgewählt?
+        If olAuswahl.Count.AreEqual(1) Then
+
+            Select Case True
+                Case TypeOf olAuswahl.Item(1) Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
+                    Wählbox(CType(olAuswahl.Item(1), Outlook.ContactItem))
+                Case TypeOf olAuswahl.Item(1) Is Outlook.JournalItem   ' ist aktuelles Fenster ein Journal?
+                    ' Es wurde ein Journaleintrag gewählt!
+                    WählboxStart(CType(olAuswahl.Item(1), Outlook.JournalItem))
+                Case TypeOf olAuswahl.Item(1) Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
+                    ' Es wurde eine Mail ausgewählt
+                    ' Den zur Email-Adresse gehörigen Kontakt suchen
+                    WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
+                Case Else
+                    ' Nix tun
+                    MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
+            End Select
         Else
-            ' Ist überhaupt etwas ausgewählt?
-            If olAuswahl.Count.AreEqual(1) Then
-
-                Select Case True
-                    Case TypeOf olAuswahl.Item(1) Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
-                        Wählbox(CType(olAuswahl.Item(1), Outlook.ContactItem), Nothing, False)
-                    Case TypeOf olAuswahl.Item(1) Is Outlook.JournalItem   ' ist aktuelles Fenster ein Journal?
-                        ' Es wurde ein Journaleintrag gewählt!
-                        WählboxStart(CType(olAuswahl.Item(1), Outlook.JournalItem))
-                    Case TypeOf olAuswahl.Item(1) Is Outlook.MailItem      ' ist aktuelles Fenster ein Mail?
-                        ' Es wurde eine Mail ausgewählt
-                        ' Den zur Email-Adresse gehörigen Kontakt suchen
-                        WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
-                    Case Else
-                        ' Nix tun
-                        MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
-                End Select
-            Else
-                MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
-            End If
+            MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
         End If
+
     End Sub
 
+    ''' <summary>
+    ''' Startet die Direktwahl.
+    ''' </summary>
+    Friend Overloads Sub WählboxStart()
+        Wählbox()
+    End Sub
+
+    ''' <summary>
+    ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste in Inspektoren ausgeführt
+    ''' </summary>
+    ''' <param name="olInsp">Der aktuelle Inspektor</param>
     Friend Overloads Sub WählboxStart(ByVal olInsp As Outlook.Inspector)
 
         Select Case True
             Case TypeOf olInsp.CurrentItem Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
-                Wählbox(CType(olInsp.CurrentItem, Outlook.ContactItem), Nothing, False)
+                Wählbox(CType(olInsp.CurrentItem, Outlook.ContactItem))
             Case TypeOf olInsp.CurrentItem Is Outlook.JournalItem   ' ist aktuelles Fenster ein Journal?
                 ' Es wurde ein Journaleintrag gewählt!
                 WählboxStart(CType(olInsp.CurrentItem, Outlook.JournalItem))
@@ -215,32 +223,67 @@ Public Class FritzBoxWählClient
     ''' Wählen aus einer IM Contactcard
     ''' </summary>
     Friend Overloads Sub WählboxStart(ByVal ContactCard As Microsoft.Office.Core.IMsoContactCard)
-        Dim aktKontakt As Outlook.ContactItem
 
-        aktKontakt = KontaktSuche(ContactCard)
+        ' Es gibt zwei Möglichkeiten:
+        ' A: Ein klassischer Kontakt ist hinterlegt
+        ' B: Ein Exchange-User existiert.
+
+        ' A: Führe zunächst die Suche nach Outlook-Kontakten durch
+        Dim aktKontakt As Outlook.ContactItem = KontaktSuche(ContactCard)
 
         If aktKontakt IsNot Nothing Then
-            Wählbox(aktKontakt, Nothing, False)
+            ' Wenn ein Kontakt gefunden wurde so wähle diesen an.
+            Wählbox(aktKontakt)
         Else
-            MsgBox(PWählClientEMailunbekannt(ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
+            ' Es wurde kein Kontakt gefunden. 
+            aktKontakt.ReleaseComObject
+
+            ' B: Suche den ExchangeNutzer
+            Dim aktExchangeNutzer As Outlook.ExchangeUser = KontaktSucheExchangeUser(ContactCard)
+            If aktExchangeNutzer IsNot Nothing Then
+                ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
+                Wählbox(aktExchangeNutzer)
+            Else
+                MsgBox(PWählClientEMailunbekannt(ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
+            End If
         End If
 
         ContactCard.ReleaseComObject
     End Sub
 
+    ''' <summary>
+    ''' Wählen aus einer E-Mail
+    ''' </summary>
+    ''' <param name="aktMail">Die E-Mail, deren Absender angerufen werden soll</param>
     Friend Overloads Sub WählboxStart(ByVal aktMail As Outlook.MailItem)
-        Dim aktKontakt As Outlook.ContactItem
 
-        If aktMail.SenderEmailAddress.IsNotStringEmpty Then
+        Dim SMTPAdresse As String = GetSenderSMTPAddress(aktMail)
 
-            aktKontakt = KontaktSuche(aktMail)
+        ' Es gibt zwei Möglichkeiten:
+        ' A: Ein klassischer Kontakt ist hinterlegt
+        ' B: Ein Exchange-User existiert. 
+
+        If SMTPAdresse.IsNotStringEmpty Then
+            ' A: Führe zunächst die Absendersuche nach Outlook-Kontakten durch
+            Dim aktKontakt As Outlook.ContactItem = KontaktSuche(SMTPAdresse)
 
             If aktKontakt IsNot Nothing Then
-                Wählbox(aktKontakt, Nothing, False)
+                ' Wenn ein Kontakt gefunden wurde so wähle diesen an.
+                Wählbox(aktKontakt)
             Else
-                MsgBox(PWählClientEMailunbekannt(aktMail.SenderEmailAddress), MsgBoxStyle.Information, "WählboxStart")
-            End If
+                ' Es wurde kein Kontakt gefunden. 
+                aktKontakt.ReleaseComObject
 
+                ' B: Suche den ExchangeNutzer
+                Dim aktExchangeNutzer As Outlook.ExchangeUser = KontaktSucheExchangeUser(SMTPAdresse)
+                If aktExchangeNutzer IsNot Nothing Then
+                    ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
+                    Wählbox(aktExchangeNutzer)
+                Else
+                    MsgBox(PWählClientEMailunbekannt(SMTPAdresse), MsgBoxStyle.Information, "WählboxStart")
+                End If
+
+            End If
         End If
 
         aktMail.ReleaseComObject
@@ -271,7 +314,11 @@ Public Class FritzBoxWählClient
                     End If
                 End If
 
-                Wählbox(aktKontakt, TelNr, False)
+                If aktKontakt Is Nothing Then
+                    Wählbox(aktKontakt)
+                Else
+                    Wählbox(TelNr)
+                End If
 
             End If
         End With
@@ -280,15 +327,19 @@ Public Class FritzBoxWählClient
     Friend Overloads Sub WählboxStart(ByVal DialTelefonat As Telefonat)
 
         With DialTelefonat
-            ' Kontakt aus telefinat ermitteln
+            ' Kontakt aus Telefonat ermitteln
             If .OlKontakt Is Nothing Then
                 ' gibt es eine KontaktID und StoreID
-                If .OutlookStoreID.IsNotStringEmpty And .OutlookKontaktID.IsNotStringEmpty Then
+                If .OutlookKontaktID.IsNotStringEmpty And .OutlookStoreID.IsNotStringEmpty Then
                     .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
                 End If
             End If
 
-            Wählbox(.OlKontakt, .GegenstelleTelNr, False)
+            If .OlKontakt Is Nothing Then
+                Wählbox(.OlKontakt)
+            Else
+                Wählbox(.GegenstelleTelNr)
+            End If
 
         End With
     End Sub
@@ -304,12 +355,94 @@ Public Class FritzBoxWählClient
                 End If
             End If
 
-            Wählbox(.OlContact, Nothing, False)
+            Wählbox(.OlContact)
         End With
     End Sub
 
-    Private Sub Wählbox(ByVal oContact As Outlook.ContactItem, ByVal TelNr As Telefonnummer, ByVal DirektWahl As Boolean)
+    ''' <summary>
+    ''' Startet das Wählen auf Basis eines Outlook Kontaktes
+    ''' </summary>
+    ''' <param name="oContact">Der Outlook-Kontakt, welcher angerufen werden soll</param>
+    Private Sub Wählbox(ByVal oContact As Outlook.ContactItem)
 
+        If oContact IsNot Nothing Then
+            ' Es soll nur ein Formular anzeigbar sein.
+            If ListFormWählbox Is Nothing Then ListFormWählbox = New List(Of FormWählclient)
+
+            Dim fWählClient As FormWählclient
+
+            If ListFormWählbox.Count.IsZero Then
+                fWählClient = New FormWählclient(Me)
+
+                ListFormWählbox.Add(fWählClient)
+                With fWählClient
+                    .SetOutlookKontakt(oContact)
+                    .Show()
+                    .BringToFront()
+                End With
+
+            End If
+        Else
+            NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
+        End If
+    End Sub
+
+    Private Sub Wählbox(ByVal oExchangeNutzer As Outlook.ExchangeUser)
+
+        If oExchangeNutzer IsNot Nothing Then
+            ' Es soll nur ein Formular anzeigbar sein.
+            If ListFormWählbox Is Nothing Then ListFormWählbox = New List(Of FormWählclient)
+
+            Dim fWählClient As FormWählclient
+
+            If ListFormWählbox.Count.IsZero Then
+                fWählClient = New FormWählclient(Me)
+
+                ListFormWählbox.Add(fWählClient)
+                With fWählClient
+                    .SetOutlookKontakt(oExchangeNutzer)
+                    .Show()
+                    .BringToFront()
+                End With
+
+            End If
+        Else
+            NLogger.Error("Der Outlook-oExchangeUser ist nicht vorhanden.")
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Startet das Wählen auf Basis einer Telefonnummer 
+    ''' </summary>
+    ''' <param name="TelNr">Die Telefonnummer, welche angerufen werden soll</param>
+    Private Sub Wählbox(ByVal TelNr As Telefonnummer)
+
+        If TelNr IsNot Nothing Then
+
+            ' Es soll nur ein Formular anzeigbar sein.
+            If ListFormWählbox Is Nothing Then ListFormWählbox = New List(Of FormWählclient)
+
+            Dim fWählClient As FormWählclient
+
+            If ListFormWählbox.Count.IsZero Then
+                fWählClient = New FormWählclient(Me)
+
+                ListFormWählbox.Add(fWählClient)
+                With fWählClient
+                    .SetTelefonnummer(TelNr)
+                    .Show()
+                    .BringToFront()
+                End With
+            End If
+        Else
+            NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Startet das Wählen als Direktwahl 
+    ''' </summary>
+    Private Sub Wählbox()
         ' Es soll nur ein Formular anzeigbar sein.
         If ListFormWählbox Is Nothing Then ListFormWählbox = New List(Of FormWählclient)
 
@@ -317,18 +450,10 @@ Public Class FritzBoxWählClient
 
         If ListFormWählbox.Count.IsZero Then
             fWählClient = New FormWählclient(Me)
-            ListFormWählbox.Add(fWählClient)
 
+            ListFormWählbox.Add(fWählClient)
             With fWählClient
-                If DirektWahl Then
-                    .SetDirektwahl()
-                Else
-                    If oContact IsNot Nothing Then
-                        .SetOutlookKontakt(oContact)
-                    Else
-                        .SetTelefonnummer(TelNr)
-                    End If
-                End If
+                .SetDirektwahl()
                 .Show()
                 .BringToFront()
             End With
