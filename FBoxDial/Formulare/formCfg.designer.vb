@@ -1223,6 +1223,7 @@ Partial Class FormCfg
         Me.GBoxAnrMonDISCONNECT.Controls.Add(Me.LAnrMonSimLabelDISCONNECT)
         Me.GBoxAnrMonDISCONNECT.Controls.Add(Me.DTPAnrMonSimDISCONNECT)
         Me.GBoxAnrMonDISCONNECT.Controls.Add(Me.BAnrMonSimDISCONNECT)
+        Me.GBoxAnrMonDISCONNECT.Enabled = False
         Me.GBoxAnrMonDISCONNECT.Location = New System.Drawing.Point(5, 259)
         Me.GBoxAnrMonDISCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonDISCONNECT.Name = "GBoxAnrMonDISCONNECT"
@@ -1324,6 +1325,7 @@ Partial Class FormCfg
         Me.GBoxAnrMonCONNECT.Controls.Add(Me.LAnrMonSimLabelCONNECT)
         Me.GBoxAnrMonCONNECT.Controls.Add(Me.DTPAnrMonSimCONNECT)
         Me.GBoxAnrMonCONNECT.Controls.Add(Me.BAnrMonSimCONNECT)
+        Me.GBoxAnrMonCONNECT.Enabled = False
         Me.GBoxAnrMonCONNECT.Location = New System.Drawing.Point(5, 174)
         Me.GBoxAnrMonCONNECT.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonCONNECT.Name = "GBoxAnrMonCONNECT"
@@ -1448,6 +1450,7 @@ Partial Class FormCfg
         Me.GBoxAnrMonCALL.Controls.Add(Me.LAnrMonSimLabelCALL)
         Me.GBoxAnrMonCALL.Controls.Add(Me.DTPAnrMonSimCALL)
         Me.GBoxAnrMonCALL.Controls.Add(Me.BAnrMonSimCALL)
+        Me.GBoxAnrMonCALL.Enabled = False
         Me.GBoxAnrMonCALL.Location = New System.Drawing.Point(5, 90)
         Me.GBoxAnrMonCALL.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonCALL.Name = "GBoxAnrMonCALL"
@@ -1608,6 +1611,7 @@ Partial Class FormCfg
         Me.GBoxAnrMonRING.Controls.Add(Me.LAnrMonSimLabelRING)
         Me.GBoxAnrMonRING.Controls.Add(Me.DTPAnrMonSimRING)
         Me.GBoxAnrMonRING.Controls.Add(Me.BAnrMonSimRING)
+        Me.GBoxAnrMonRING.Enabled = False
         Me.GBoxAnrMonRING.Location = New System.Drawing.Point(5, 5)
         Me.GBoxAnrMonRING.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GBoxAnrMonRING.Name = "GBoxAnrMonRING"

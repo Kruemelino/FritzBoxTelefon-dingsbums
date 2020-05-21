@@ -301,7 +301,7 @@
     <Compile Include="Anrufmonitor\Popup.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
-    <Compile Include="Fritz!Box\TCPReader.vb" />
+    <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxServices.vb" />

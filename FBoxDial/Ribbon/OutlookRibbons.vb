@@ -42,7 +42,14 @@ Imports System.Xml
                 Windows.Forms.Application.DoEvents()
             Loop
         End If
-        If RibbonObjekt IsNot Nothing Then RibbonObjekt.Invalidate()
+        If RibbonObjekt IsNot Nothing Then
+            Try
+                RibbonObjekt.Invalidate()
+            Catch ex As Exception
+                NLogger.Error(ex)
+            End Try
+
+        End If
     End Sub
 #End Region
 
