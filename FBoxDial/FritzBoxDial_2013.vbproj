@@ -301,6 +301,7 @@
     <Compile Include="Anrufmonitor\Popup.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
+    <Compile Include="Events\NotifyEventArgs.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
@@ -441,6 +442,7 @@
     <Content Include="Resources\Save.png" />
     <Content Include="Resources\Upload.png" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

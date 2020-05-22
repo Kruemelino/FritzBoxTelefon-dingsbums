@@ -1,16 +1,4 @@
 Imports System.Net.Sockets
-Public Class NotifyEventArgs(Of T) : Inherits EventArgs
-    Public ReadOnly Value As T
-    Public Sub New(Value As T)
-        MyBase.New()
-        Me.Value = Value
-    End Sub
-End Class 'NotifyEventArgs(Of T)
-
-''' <summary>
-''' Eventhandler, der den Sender ordentlich typisiert übermittelt
-''' </summary>
-Public Delegate Sub EventHandlerEx(Of T0)(Sender As T0)
 
 ''' <summary>
 ''' Abwandlung VersuchsChat mit leistungsfähigem Server von ErfinderDesRades
@@ -50,7 +38,6 @@ Public Class AnrMonClient
 
         Dispose()
     End Sub
-
 
     Private Sub EndRead(ByVal ar As IAsyncResult)
         If Verbunden And Not IsDisposed Then

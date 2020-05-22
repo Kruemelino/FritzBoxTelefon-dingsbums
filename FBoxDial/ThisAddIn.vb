@@ -14,6 +14,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property OffeneKontakInsepektoren As List(Of KontaktGespeichert)
     Friend Shared Property OffenePopUps As List(Of Popup)
 
+
     Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
     Friend Shared ReadOnly Property Version() As String
         Get

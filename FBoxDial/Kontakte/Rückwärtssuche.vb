@@ -86,6 +86,8 @@ Public Module Rückwärtssuche
             tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0
 
         Loop Until Gefunden Or i = 3
+
+        Threading.Thread.Sleep(2000)
         Return VCard
     End Function
 

@@ -42,6 +42,8 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Public Property OlKontakt() As Outlook.ContactItem
     <XmlIgnore> Friend Property AnrMonPopUp As Popup
 
+    Friend Event Popup As EventHandlerEx(Of Telefonat)
+
     ''' <summary>
     '''         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
     ''' 23.06.18 13:20:24;RING;1;0123456789;987654;SIP4;
@@ -200,7 +202,7 @@ Imports Microsoft.Office.Interop
         RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
 
         ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
-        If EigeneTelNr.Überwacht Then PopUpAnrMon()
+        If EigeneTelNr.Überwacht Then RaiseEvent Popup(Me)
 
         ' RING-Liste initialisieren, falls erforderlich
         If XMLData.PTelefonie.RINGListe Is Nothing Then
@@ -250,24 +252,7 @@ Imports Microsoft.Office.Interop
 
     Private Sub BWKontaktsuche_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWKontaktsuche.RunWorkerCompleted
         ' Anrufmonitor aktualisieren
-        If AnrMonPopUp IsNot Nothing Then PopUpAnrMon()
-    End Sub
-
-    ''' <summary>
-    ''' Routine zum Initialisieren der Einblendung des Anrfomitors
-    ''' </summary>
-    Friend Sub PopUpAnrMon()
-
-        If Not VollBildAnwendungAktiv() Then
-            If AnrMonPopUp Is Nothing Then
-                ' Blende einen neuen Anrufmonitor ein
-                AnrMonPopUp = New Popup
-                AnrMonPopUp.AnrMonEinblenden(Me)
-            Else
-                ' Aktualisiere den Anrufmonitor
-                AnrMonPopUp.UpdateAnrMon(Me)
-            End If
-        End If
+        If AnrMonPopUp IsNot Nothing Then RaiseEvent Popup(Me)
     End Sub
 
     Friend Async Sub StarteKontaktsuche()

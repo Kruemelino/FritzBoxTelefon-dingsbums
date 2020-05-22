@@ -148,7 +148,7 @@ Public Class Popup
     ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
     ''' </summary>
     Private Sub PopupAnrMon_Closed(ByVal sender As Object, ByVal e As EventArgs) Handles PopUpAnrufMonitor.Geschlossen
-        NLogger.Debug("Anruffenster geschlossen")
+        NLogger.Debug("Anruffenster geschlossen: {0}", TelFnt.Anrufer)
         Eingeblendet = False
         ' Entferne den Anrufmonitor von der Liste der offenen Popups
         ThisAddIn.OffenePopUps.Remove(Me)

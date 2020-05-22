@@ -19,6 +19,8 @@ Public Class FormCfg
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+        FBDB_MP.TabPages.Remove(PAnrMonSim)
+
         Ausfüllen(Me)
     End Sub
 #Region "Delegaten"
@@ -449,16 +451,16 @@ Public Class FormCfg
 
     Private Sub BAnrMonSim_Click(sender As Object, e As EventArgs) Handles BAnrMonSimRING.Click, BAnrMonSimCALL.Click, BAnrMonSimCONNECT.Click, BAnrMonSimDISCONNECT.Click
 
-        Select Case CType(sender, Control).Name
-            Case BAnrMonSimRING.Name
-                ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelRING.Text)
-            Case BAnrMonSimCALL.Name
-                ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCALL.Text)
-            Case BAnrMonSimCONNECT.Name
-                ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCONNECT.Text)
-            Case BAnrMonSimDISCONNECT.Name
-                ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelDISCONNECT.Text)
-        End Select
+        'Select Case CType(sender, Control).Name
+        '    Case BAnrMonSimRING.Name
+        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelRING.Text)
+        '    Case BAnrMonSimCALL.Name
+        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCALL.Text)
+        '    Case BAnrMonSimCONNECT.Name
+        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCONNECT.Text)
+        '    Case BAnrMonSimDISCONNECT.Name
+        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelDISCONNECT.Text)
+        'End Select
 
     End Sub
 #End Region
@@ -488,7 +490,7 @@ Public Class FormCfg
                 Dim BWIndexer As New BackgroundWorker
 
                 With BWIndexer
-                    ' Fürge Ereignishandler hinzu
+                    ' Füge Ereignishandler hinzu
                     AddHandler .DoWork, AddressOf BWIndexer_DoWork
                     AddHandler .ProgressChanged, AddressOf BWIndexer_ProgressChanged
                     AddHandler .RunWorkerCompleted, AddressOf BWIndexer_RunWorkerCompleted
