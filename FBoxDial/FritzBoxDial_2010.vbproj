@@ -167,6 +167,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -228,34 +229,56 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Anrufmonitor\FormAnrMon.vb" />
+    <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
+    <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.Designer.vb">
+      <DependentUpon>TelBuchDataRow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.Designer.vb">
+      <DependentUpon>TelBuchDataTable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Formulare\formAnrList.designer.vb">
       <DependentUpon>formAnrList.vb</DependentUpon>
     </Compile>
     <Compile Include="Formulare\formAnrList.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\AnrListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\AnrListDataTable.vb">
+    <Compile Include="Formulare\FormElemente\Datenzeile\AnrListDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datentabellen\AnrListDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Formulare\FormElemente\ColorSchemes.vb" />
     <Compile Include="Formulare\FormElemente\FBoxDataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\FormTelefonbücher.designer.vb">
+    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.Designer.vb">
+      <DependentUpon>OlOrdnerTreeNode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.vb" />
+    <Compile Include="Formulare\FormElemente\StringLogicalComparer.vb" />
+    <Compile Include="Formulare\ListControl\TelBuchListControlItem.Designer.vb">
+      <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\ListControl\TelBuchListControlItem.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Datentabellen\TelGeräteListDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormElemente\Datenzeile\WählClientDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datenzeile\TelGeräteListDataRow.vb" />
+    <Compile Include="Formulare\FormElemente\Datentabellen\WählClientDataTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormTelefonbücher.Designer.vb">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\FormElemente\FormTelefonbücher.vb">
+    <Compile Include="Formulare\FormTelefonbücher.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulare\FormElemente\StringLogicalComparer.vb" />
-    <Compile Include="Formulare\FormElemente\TelGeräteListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\TelGeräteListDataTable.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Formulare\FormElemente\WählClientDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\WählClientDataTable.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Formulare\FormWählclient.Designer.vb">
       <DependentUpon>FormWählclient.vb</DependentUpon>
@@ -263,29 +286,12 @@
     <Compile Include="Formulare\FormWählclient.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formulare\ListControl\KontaktControlItem.Designer.vb">
-      <DependentUpon>KontaktControlItem.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\ListControl\KontaktControlItem.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Formulare\ListControl\TelBuchListControlItem.Designer.vb">
-      <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\ListControl\TelBuchListControlItem.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Formulare\ListControl\TelListControl.Designer.vb">
+    <Compile Include="Formulare\ListControl\TelListControl.designer.vb">
       <DependentUpon>TelListControl.vb</DependentUpon>
     </Compile>
     <Compile Include="Formulare\ListControl\TelListControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.Designer.vb">
-      <DependentUpon>OlOrdnerTreeNode.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.vb" />
-    <Compile Include="Fritz!Box\Anrufliste\AnrListDataRow.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxAnrufliste.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCall.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCallList.vb" />
@@ -295,7 +301,8 @@
     <Compile Include="Anrufmonitor\Popup.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
-    <Compile Include="Fritz!Box\TCPReader.vb" />
+    <Compile Include="Events\NotifyEventArgs.vb" />
+    <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxServices.vb" />
@@ -319,7 +326,6 @@
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
-    <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Kontakte\KontaktIndizierer.vb" />
     <Compile Include="Kontakte\KontaktNotiz.vb" />
     <Compile Include="Kontakte\KontaktSucher.vb" />
@@ -339,6 +345,7 @@
     <Compile Include="Optionen\Optionen.vb" />
     <Compile Include="Optionen\OutlookXML.vb" />
     <Compile Include="Outlook\Fenster.vb" />
+    <Compile Include="Phoner\Phoner.vb" />
     <Compile Include="Ribbon\DefaultRibbon.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
@@ -369,21 +376,21 @@
     <Compile Include="My Project\AssemblyInfo.vb" />
     <EmbeddedResource Include="Formulare\formAnrList.resx">
       <DependentUpon>formAnrList.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FormCfg.resx">
       <DependentUpon>FormCfg.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\FormElemente\FormTelefonbücher.resx">
+    <EmbeddedResource Include="Formulare\ListControl\TelBuchListControlItem.resx">
+      <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\FormTelefonbücher.resx">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FormWählclient.resx">
       <DependentUpon>FormWählclient.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\ListControl\KontaktControlItem.resx">
-      <DependentUpon>KontaktControlItem.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\ListControl\TelBuchListControlItem.resx">
-      <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelListControl.resx">
       <DependentUpon>TelListControl.vb</DependentUpon>
@@ -422,11 +429,20 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\CheckboxDisable_16x.png" />
-    <Content Include="Resources\CheckboxMix_16x.png" />
-    <Content Include="Resources\CheckboxUncheck_16x.png" />
-    <Content Include="Resources\CheckBox_16x.png" />
+    <EmbeddedResource Include="Resources\Cancel.png" />
+    <EmbeddedResource Include="Resources\CheckboxDisable_16x.png" />
+    <EmbeddedResource Include="Resources\CheckboxMix_16x.png" />
+    <EmbeddedResource Include="Resources\CheckboxUncheck_16x.png" />
+    <EmbeddedResource Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Add.png" />
+    <Content Include="Resources\Download.png" />
+    <Content Include="Resources\Remove.png" />
+    <Content Include="Resources\Save.png" />
+    <Content Include="Resources\Upload.png" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
