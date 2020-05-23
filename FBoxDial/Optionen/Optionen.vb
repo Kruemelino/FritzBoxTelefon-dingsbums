@@ -1,5 +1,6 @@
 ﻿Imports System.Xml.Serialization
 <Serializable()> Public Class Optionen
+
     <XmlIgnore> Public Property PArbeitsverzeichnis As String
 
 #Region "Fritz!Box"
@@ -92,8 +93,9 @@
 #End Region
 
 #Region "Einstellungen für die Kontaktsuche"
-#Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
+
     <XmlElement("OutlookOrdner")> Public Property OutlookOrdner As OutlookOrdnerListe
+#Region "Einstellungen für die Kontaktsuche - Kontaktsuche in Outlook (Indizierung)"
     <XmlElement("CBSucheUnterordner")> Public Property PCBSucheUnterordner As Boolean
     <XmlElement("CBKontaktSucheFritzBox")> Public Property PCBKontaktSucheFritzBox As Boolean
 #End Region
@@ -134,4 +136,8 @@
     <XmlElement("TBPhonerPasswort")> Public Property PTBPhonerPasswort As String
     <XmlElement("CBPhoner")> Public Property PCBPhoner As Boolean
 #End Region
+
+    Public Sub New()
+        OutlookOrdner = New OutlookOrdnerListe
+    End Sub
 End Class

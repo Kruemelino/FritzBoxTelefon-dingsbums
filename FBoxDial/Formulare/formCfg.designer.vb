@@ -167,17 +167,17 @@ Partial Class FormCfg
         Me.BIndizierungStart = New System.Windows.Forms.Button()
         Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.TreeViewKontakteSuche = New FBoxDial.TreeViewEx()
+        Me.TreeViewKontakteSuche = New FBoxDial.OlOrdnerTreeView()
         Me.TabJournal = New System.Windows.Forms.TabPage()
         Me.TBHinweisJournal = New System.Windows.Forms.TextBox()
         Me.BJournalOrdnerErstellen = New System.Windows.Forms.Button()
         Me.LHeaderTabJournal = New System.Windows.Forms.Label()
         Me.GBJournal = New System.Windows.Forms.GroupBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
-        Me.TreeViewJournal = New FBoxDial.TreeViewEx()
+        Me.TreeViewJournal = New FBoxDial.OlOrdnerTreeView()
         Me.PKontakterstellung = New System.Windows.Forms.TabPage()
         Me.BKontaktOrdnerErstellen = New System.Windows.Forms.Button()
-        Me.TreeViewKontakteErstellen = New FBoxDial.TreeViewEx()
+        Me.TreeViewKontakteErstellen = New FBoxDial.OlOrdnerTreeView()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.TBHinweisKontakterstellung = New System.Windows.Forms.TextBox()
         Me.PPhoner = New System.Windows.Forms.TabPage()
@@ -2647,8 +2647,8 @@ Partial Class FormCfg
     Friend WithEvents GBJournal As Windows.Forms.GroupBox
     Friend WithEvents CBJournal As Windows.Forms.CheckBox
     Friend WithEvents LHeaderTabJournal As Windows.Forms.Label
-    Friend WithEvents TreeViewKontakteSuche As TreeViewEx
-    Friend WithEvents TreeViewJournal As TreeViewEx
+    Friend WithEvents TreeViewKontakteSuche As OlOrdnerTreeView
+    Friend WithEvents TreeViewJournal As OlOrdnerTreeView
     Friend WithEvents GBKontaktsuche As Windows.Forms.GroupBox
     Friend WithEvents PKontakterstellung As Windows.Forms.TabPage
     Friend WithEvents CBKErstellen As Windows.Forms.CheckBox
@@ -2657,6 +2657,6 @@ Partial Class FormCfg
     Friend WithEvents TBHinweisKontakterstellung As Windows.Forms.TextBox
     Friend WithEvents Label21 As Windows.Forms.Label
     Friend WithEvents BKontaktOrdnerErstellen As Windows.Forms.Button
-    Friend WithEvents TreeViewKontakteErstellen As TreeViewEx
+    Friend WithEvents TreeViewKontakteErstellen As OlOrdnerTreeView
     Friend WithEvents GBKontakterstellung As Windows.Forms.GroupBox
 End Class

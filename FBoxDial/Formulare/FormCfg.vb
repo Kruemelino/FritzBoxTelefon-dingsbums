@@ -31,10 +31,6 @@ Public Class FormCfg
     Private Async Sub Ausfüllen(ByVal m_Control As Control)
         Dim tmpPropertyInfo As Reflection.PropertyInfo
 
-        '' Lade die Liste der zu indizierenden Ordner
-        'If XMLData.POptionen.OutlookOrdner Is Nothing Then XMLData.POptionen.OutlookOrdner = New OutlookOrdnerListe
-        'If XMLData.POptionen.OutlookOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.OutlookOrdner.OrdnerListe = New List(Of OutlookOrdner)
-
         For Each ctrl As Control In m_Control.Controls
 
             If ctrl.Controls.Count > 0 Then
@@ -91,9 +87,15 @@ Public Class FormCfg
                     SetComboBox(CType(ctrl, ComboBox))
                 End If
 
-            ElseIf ctrl.GetType().Equals(GetType(TreeViewEx)) Then
+            ElseIf ctrl.GetType().Equals(GetType(OlOrdnerTreeView)) Then
+
+                ' Eigentlich unnätig, aber aus irgendeinem Grund können die Felder Nothing sein
+
+                If XMLData.POptionen.OutlookOrdner Is Nothing Then XMLData.POptionen.OutlookOrdner = New OutlookOrdnerListe
+                If XMLData.POptionen.OutlookOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.OutlookOrdner.OrdnerListe = New List(Of OutlookOrdner)
+
                 Dim VTyp As OutlookOrdnerVerwendung
-                Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
+                Dim olfldrTV As OlOrdnerTreeView = CType(ctrl, OlOrdnerTreeView)
 
                 Select Case True
                     Case olfldrTV Is TreeViewKontakteSuche
@@ -177,9 +179,9 @@ Public Class FormCfg
                     tmpTelNr.Überwacht = CLBTelNr.CheckedItems.Contains(tmpTelNr)
                 Next
 
-            ElseIf ctrl.GetType().Equals(GetType(TreeViewEx)) Then
+            ElseIf ctrl.GetType().Equals(GetType(OlOrdnerTreeView)) Then
                 Dim VTyp As OutlookOrdnerVerwendung
-                Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
+                Dim olfldrTV As OlOrdnerTreeView = CType(ctrl, OlOrdnerTreeView)
                 Select Case True
                     Case olfldrTV Is TreeViewKontakteSuche
                         VTyp = OutlookOrdnerVerwendung.KontaktSuche

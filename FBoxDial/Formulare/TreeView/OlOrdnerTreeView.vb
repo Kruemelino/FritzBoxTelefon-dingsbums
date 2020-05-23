@@ -2,7 +2,7 @@
 Imports Microsoft.Office.Interop
 Imports System.Reflection
 
-Public Class TreeViewEx
+Public Class OlOrdnerTreeView
     Inherits TreeView
 
 
