@@ -92,10 +92,10 @@ Public Class FormCfg
                 Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
 
                 Select Case olfldrTV.Name
-                    'Case TreeViewKontakte.Name
-                    '    VTyp = OutlookOrdnerVerwendung.KontaktSuche
-                    'Case TreeViewJournal.Name
-                    '    VTyp = OutlookOrdnerVerwendung.JournalSpeichern
+                    Case TreeViewKontakte.Name
+                        VTyp = OutlookOrdnerVerwendung.KontaktSuche
+                    Case TreeViewJournal.Name
+                        VTyp = OutlookOrdnerVerwendung.JournalSpeichern
                 End Select
 
                 ' Lade die Liste der zu indizierenden Ordner
@@ -178,19 +178,19 @@ Public Class FormCfg
 
             ElseIf ctrl.GetType().Equals(GetType(TreeViewEx)) Then
                 Dim VTyp As OutlookOrdnerVerwendung
-                Dim olfldrTV As TreeViewEx
+                Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
                 Select Case olfldrTV.Name
-                    'Case TreeViewKontakte.Name
-                    '    VTyp = OutlookOrdnerVerwendung.KontaktSuche
+                    Case TreeViewKontakte.Name
+                        VTyp = OutlookOrdnerVerwendung.KontaktSuche
 
-                    '    ' Deindiziere die entfernten Ordner
-                    '    StarteIndizierung(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp).Except(olfldrTV.CheckedOlFolders), False)
+                        ' Deindiziere die entfernten Ordner
+                        StarteIndizierung(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp).Except(olfldrTV.CheckedOlFolders), False)
 
-                    '    ' Indiziere alle neu hinzugefügten Ordner
-                    '    StarteIndizierung(olfldrTV.CheckedOlFolders.Except(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)), True)
+                        ' Indiziere alle neu hinzugefügten Ordner
+                        StarteIndizierung(olfldrTV.CheckedOlFolders.Except(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)), True)
 
-                    'Case TreeViewJournal.Name
-                    '    VTyp = OutlookOrdnerVerwendung.JournalSpeichern
+                    Case TreeViewJournal.Name
+                        VTyp = OutlookOrdnerVerwendung.JournalSpeichern
 
                 End Select
 
@@ -260,7 +260,7 @@ Public Class FormCfg
                 ' Formulardaten in Properties speichern
                 ' Speichern(Me)
                 ' Indizierung starten
-               ' StarteIndizierung(TreeViewKontakte.CheckedOlFolders, RadioButtonErstelle.Checked)
+                StarteIndizierung(TreeViewKontakte.CheckedOlFolders, RadioButtonErstelle.Checked)
 
             Case sender Is BIndizierungAbbrechen
                 ' Indizierung abbrechen
@@ -650,14 +650,6 @@ Public Class FormCfg
 
     Private Sub SetProgressbarMax(ByVal NeuesMaximum As Integer)
         ProgressBarIndex.Maximum += NeuesMaximum
-    End Sub
-
-    Private Sub TreeViewKontakte_AfterSelect(sender As Object, e As TreeViewEventArgs)
-
-    End Sub
-
-    Private Sub CBKErstellen_CheckedChanged(sender As Object, e As EventArgs)
-
     End Sub
 
 #End Region

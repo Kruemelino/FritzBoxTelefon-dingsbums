@@ -364,6 +364,7 @@ Imports Microsoft.Office.Interop
 
         Dim OutlookApp As Outlook.Application = ThisAddIn.POutookApplication
         Dim olJournal As Outlook.JournalItem = Nothing
+        Dim olJournalFolder As OutlookOrdner
 
         If OutlookApp IsNot Nothing Then
             ' Journalimport nur dann, wenn Nummer überwacht wird
@@ -416,8 +417,18 @@ Imports Microsoft.Office.Interop
                             ' Funktioniert aus irgendeinem dummen Grund nicht. Die EntryID wird nicht übertragen.
                             '.PropertyAccessor.SetProperties(DASLTagJournal, colArgs)
                         End If
+
+                        ' Speicherort wählen
+                        olJournalFolder = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(fldr) fldr.Typ = OutlookOrdnerVerwendung.JournalSpeichern)
+                        If olJournalFolder IsNot Nothing Then
+                            .Move(olJournalFolder.MAPIFolder)
+                        Else
+                            .Move(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal))
+                        End If
+
                         NLogger.Info("Journaleintrag erstellt: {0}, {1}, {2}", .Start, .Subject, .Duration)
-                        .Close(Outlook.OlInspectorClose.olSave)
+                        .Close(Outlook.OlInspectorClose.olDiscard)
+                        '.Close(Outlook.OlInspectorClose.olSave)
                     End With
 
                     olJournal.ReleaseComObject

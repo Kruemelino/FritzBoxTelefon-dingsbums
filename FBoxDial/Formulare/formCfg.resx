@@ -184,12 +184,14 @@ Datenschutzhinweis:
   <metadata name="StatusStripTelefone.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>205, 17</value>
   </metadata>
-  <data name="TBHinweisKontaktsuche.Text" xml:space="preserve">
-    <value>Hinweise zur Kontaktsuche:
-Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
-Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde. 
-Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
-Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>
+  <metadata name="StatusStripTelefone.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>205, 17</value>
+  </metadata>
+  <data name="TBHinweisKontakterstellung.Text" xml:space="preserve">
+    <value>Hinweise zur Kontakterstellung:
+Sofern Kontakte automatisch erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Kontakte gespeichert werden sollen.
+Wird kein Ordner gewählt, wird der Outlook-Standardverwendet.
+</value>
   </data>
   <data name="TBPhonerHinweise.Text" xml:space="preserve">
     <value>Hinweise zur korrekten Konfiguration.
@@ -200,5 +202,18 @@ Prüfe, ob die Authentifizierung erfolgreich ist. Wähle Telefoniegerät aus, wa
   </data>
   <data name="Label31.Text" xml:space="preserve">
     <value>Die Software ermöglicht Gesprächsverbindungen in das Festnetz, zu Mobiltelefonen und zu VoIP -Gegenstellen. Phoner kann als Softphone an analogen Teilnehmeranschlüssen, an digitalen ISDN Teilnehmeranschlussleitungen und als IP-Softphone auf stationären und mobilen Computersystemen benutzt werden. </value>
+  </data>
+  <data name="TBHinweisKontaktsuche.Text" xml:space="preserve">
+    <value>Hinweise zur Kontaktsuche:
+Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
+Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde. 
+Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
+Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>
+  </data>
+  <data name="TBHinweisJournal.Text" xml:space="preserve">
+    <value>Hinweise zur Outlook Journaleinträgen:
+Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.
+Wird kein Ordner gewählt, wird der Outlook-Standardverwendet.
+</value>
   </data>
 </root>
