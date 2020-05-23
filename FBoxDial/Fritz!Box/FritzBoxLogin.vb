@@ -1,6 +1,6 @@
 ﻿Friend Module FritzBoxLogin
 
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     ''' <summary>
     ''' Gibt eine gültige SessionID zurück

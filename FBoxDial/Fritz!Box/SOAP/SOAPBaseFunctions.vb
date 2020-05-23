@@ -3,7 +3,7 @@ Imports System.IO
 Imports System.Xml
 
 Friend Module SOAPBaseFunctions
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 #Region "HTTP"
     Public Function FritzBoxGet(ByVal Link As String, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)

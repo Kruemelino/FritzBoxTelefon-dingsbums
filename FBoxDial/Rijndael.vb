@@ -3,7 +3,7 @@
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
 Friend Class Rijndael
     Implements IDisposable
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     ''' <summary>
     ''' Verschlüsselungsroutine
@@ -38,7 +38,7 @@ Friend Class Rijndael
 
                     ' Create a decrytor to perform the stream transform. 
                     Using encryptor As ICryptoTransform = rijAlg.CreateEncryptor(.Key, .IV)
-                        Dim buffer() As Byte = UTF8Encoding.Unicode.GetBytes(vstrTextToBeEncrypted)
+                        Dim buffer() As Byte = Encoding.Unicode.GetBytes(vstrTextToBeEncrypted)
                         Return encryptor.TransformFinalBlock(buffer, 0, buffer.Length).ToBase64String
                     End Using
                 End With
@@ -75,7 +75,7 @@ Friend Class Rijndael
                         ' Create a decrytor to perform the stream transform. 
                         Using decryptor = rijAlg.CreateDecryptor(.Key, .IV)
                             Dim buffer() As Byte = vstrStringToBeDecrypted.FromBase64String
-                            Return UTF8Encoding.Unicode.GetString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
+                            Return Encoding.Unicode.GetString(decryptor.TransformFinalBlock(buffer, 0, buffer.Length))
                         End Using
                     End With
                 End Using

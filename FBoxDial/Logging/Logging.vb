@@ -20,8 +20,8 @@
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        Dim minLogLevel As NLog.LogLevel = NLog.LogLevel.FromString(XMLData.POptionen.PCBoxMinLogLevel)
-        Dim maxLogLevel As NLog.LogLevel = NLog.LogLevel.Fatal
+        Dim minLogLevel As NLog.LogLevel = LogLevel.FromString(XMLData.POptionen.PCBoxMinLogLevel)
+        Dim maxLogLevel As NLog.LogLevel = LogLevel.Fatal
 
         config.AddRule(minLogLevel, maxLogLevel, Ziel)
         Return config

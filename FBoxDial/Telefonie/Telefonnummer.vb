@@ -6,7 +6,7 @@ Imports FBoxDial.DfltWerteTelefonie
 Public Class Telefonnummer
     Implements IEquatable(Of Telefonnummer)
     Implements IDisposable
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
 

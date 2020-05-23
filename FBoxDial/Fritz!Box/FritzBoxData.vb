@@ -2,7 +2,9 @@
 Imports FBoxDial.FritzBoxDefault
 
 Public Class FritzBoxData
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
+    Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
     Public Sub New()
         If XMLData IsNot Nothing Then
 
@@ -11,6 +13,21 @@ Public Class FritzBoxData
 
         End If
     End Sub
+
+    ''' <summary>
+    ''' Gibt eine Statusmeldung (<paramref name="StatusMessage"/>) als Event aus. Gleichzeitig wird in das Log mit vorgegebenem <paramref name="Level"/> geschrieben.
+    ''' </summary>
+    ''' <param name="Level">NLog LogLevel</param>
+    ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
+    Private Sub PushStatus(ByVal Level As LogLevel, ByVal StatusMessage As String)
+        NLogger.Log(Level, StatusMessage)
+        CrossThread.RunGui(AddressOf PushMessage, StatusMessage)
+    End Sub
+
+    Private Sub PushMessage(ByVal StatusMessage As String)
+        RaiseEvent Status(Me, New NotifyEventArgs(Of String)(StatusMessage))
+    End Sub
+
 
 #Region "Telefonnummern, Telefonnamen"
     Friend Async Sub FritzBoxDatenJSON()
@@ -49,10 +66,10 @@ Public Class FritzBoxData
                     With FBoxJSON.GetLocalValues(QueryAntwort)
                         XMLData.POptionen.PTBOrtsKZ = .OKZ
                         XMLData.POptionen.PTBLandesKZ = .LKZ
-                        NLogger.Debug("Kennzahlen: {0}; {1}", .OKZ, .LKZ)
+                        PushStatus(LogLevel.Debug, $"Kennzahlen: { .OKZ}; { .LKZ}")
                     End With
                 Else
-                    NLogger.Error("Einlesen der Telefondaten: Gegenstelle nicht erreichbar!")
+                    PushStatus(LogLevel.Error, "Einlesen der Telefondaten: Gegenstelle nicht erreichbar!")
                 End If
                 .Clear()
             End With
@@ -126,7 +143,7 @@ Public Class FritzBoxData
                                             .Typ.Add(TelTypen.FAX)
                                     End Select
                                 End With
-                                NLogger.Debug("Telefonnummer: {0}; {1}; {2}; {3}", tmpTelNr.Typ, tmpTelNr.ID0, tmpTelNr.ID1, tmpTelNr.Unformatiert)
+                                PushStatus(LogLevel.Debug, $"Telefonnummer: {tmpTelNr.Typ}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                             End If
                         Next
                     Next
@@ -139,7 +156,7 @@ Public Class FritzBoxData
                             .ID0 = SIPi.ID.ToInt
                             .EigeneNummer = True
                             .Typ.Add(TelTypen.SIP)
-                            NLogger.Debug("Telefonnummer: {0}; {1}; {2}; {3}", tmpTelNr.Typ, tmpTelNr.ID0, tmpTelNr.ID1, tmpTelNr.Unformatiert)
+                            PushStatus(LogLevel.Debug, $"Telefonnummer: {tmpTelNr.Typ}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                         End With
                     Next
 
@@ -149,7 +166,7 @@ Public Class FritzBoxData
                         With tmpTelNr
                             .EigeneNummer = True
                             .Typ.Add(TelTypen.POTS)
-                            NLogger.Debug("Telefonnummer: {0}; {1}; {2}; {3}", tmpTelNr.Typ, tmpTelNr.ID0, tmpTelNr.ID1, tmpTelNr.Unformatiert)
+                            PushStatus(LogLevel.Debug, $"Telefonnummer: {tmpTelNr.Typ}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                         End With
                     End If
 
@@ -159,7 +176,7 @@ Public Class FritzBoxData
                         With tmpTelNr
                             .EigeneNummer = True
                             .Typ.Add(TelTypen.Mobil)
-                            NLogger.Debug("Telefonnummer: {0}; {1}; {2}; {3}", tmpTelNr.Typ, tmpTelNr.ID0, tmpTelNr.ID1, tmpTelNr.Unformatiert)
+                            PushStatus(LogLevel.Debug, $"Telefonnummer: {tmpTelNr.Typ}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                         End With
                     End If
                 End With
@@ -282,7 +299,7 @@ Public Class FritzBoxData
                         For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID0.AreEqual(j) And Nummern.Typ.Contains(TelTypen.MSN))
                             tmpTelefon.StrEinTelNr.Add(TelNr.Unformatiert)
                         Next
-                        NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
+                        PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
                 End With
@@ -317,8 +334,7 @@ Public Class FritzBoxData
                                 End If
                             Next
                         End If
-                        NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
-
+                        PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
                 End With
@@ -335,7 +351,7 @@ Public Class FritzBoxData
                         For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID1.AreEqual(.Node.RegExReplace("\D", PDfltStringEmpty).ToInt) And Nummern.Typ.Contains(TelTypen.IP))
                             tmpTelefon.StrEinTelNr.Add(TelNr.Unformatiert)
                         Next
-                        NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
+                        PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
                 End With
@@ -367,7 +383,7 @@ Public Class FritzBoxData
                                                   .Name = "ISDN- und Schnurlostelefone",
                                                   .UPnPDialport = "ISDN und Schnurlostelefone"}           '
 
-                NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
+                PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)
             End If
 
@@ -390,7 +406,7 @@ Public Class FritzBoxData
                                 tmpTelefon.StrEinTelNr.Add(TelNr.Unformatiert)
                             Next
                         End If
-                        NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
+                        PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
                 End With
@@ -408,7 +424,7 @@ Public Class FritzBoxData
                 For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.FAX))
                     tmpTelefon.StrEinTelNr.Add(TelNr.Unformatiert)
                 Next
-                NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
+                PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)
             End If
 
@@ -424,7 +440,7 @@ Public Class FritzBoxData
                 For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.Mobil))
                     tmpTelefon.StrEinTelNr.Add(TelNr.Unformatiert)
                 Next
-                NLogger.Debug("Telefon: {0}; {1}; {2}; {3}", tmpTelefon.AnrMonID, tmpTelefon.Dialport, tmpTelefon.UPnPDialport, tmpTelefon.Name)
+                PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)
             End If
 
@@ -432,7 +448,7 @@ Public Class FritzBoxData
         End If
         ' Aufräumen
         TelQuery.Clear()
-
+        PushStatus(LogLevel.Debug, $"Einlesen der Telefiniedaten abgeschlossen...")
     End Sub
 #End Region
 End Class

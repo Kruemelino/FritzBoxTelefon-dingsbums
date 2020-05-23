@@ -23,6 +23,7 @@ Public NotInheritable Class DfltWerteTelefonie
                 "327", "328", "329"})
         End Get
     End Property
+
 #Region "Enumeration"
     Friend Enum DialPortBase As Integer
         FON = 1

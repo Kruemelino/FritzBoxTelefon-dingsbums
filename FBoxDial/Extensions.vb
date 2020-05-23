@@ -5,7 +5,7 @@ Imports System.Text.RegularExpressions
 
 <DebuggerStepThrough()>
 Public Module Extensions
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
 #Region "Extensions für Verarbeitung von Zahlen: Double, Integer, Long"
     Private Const Epsilon As Single = Single.Epsilon

@@ -77,7 +77,7 @@ Friend Class TelBuchListControlItem
     End Sub
 
     Private Sub TmrMouseLeave_Tick(sender As Object, e As EventArgs) Handles TmrMouseLeave.Tick
-        Dim scrPT = Control.MousePosition
+        Dim scrPT = MousePosition
         Dim ctlPT As Point = Me.PointToClient(scrPT)
         '
         If ctlPT.X.IsNegative Or ctlPT.Y.IsNegative Or ctlPT.X.IsLarger(Me.Width) Or ctlPT.Y.IsLarger(Me.Height) Then

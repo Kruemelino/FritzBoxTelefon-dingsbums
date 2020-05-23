@@ -5,7 +5,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 Friend Module Serializer
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     <Extension> Friend Function Laden(ByRef XMLData As OutlookXML) As Boolean
         Dim mySerializer As New XmlSerializer(GetType(OutlookXML))

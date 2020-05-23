@@ -15,7 +15,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property OffenePopUps As List(Of Popup)
 
 
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     Friend Shared ReadOnly Property Version() As String
         Get
             With Reflection.Assembly.GetExecutingAssembly.GetName.Version
@@ -32,7 +32,7 @@ Public NotInheritable Class ThisAddIn
     Private Sub ThisAddIn_Startup() Handles Me.Startup
         Dim UserData As NutzerDaten = New NutzerDaten
         ' Logging konfigurieren
-        NLog.LogManager.Configuration = DefaultNLogConfig()
+        LogManager.Configuration = DefaultNLogConfig()
 
         ' Outlook.Application initialisieren
         If POutookApplication Is Nothing Then POutookApplication = Application

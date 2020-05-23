@@ -5,7 +5,7 @@ Public Class FritzBoxWählClient
     Implements IDisposable
 
 #Region "Properties"
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.PFBLinkBasis & "/data.lua"
     Private ReadOnly Property PFBLinkDialSetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
         Get

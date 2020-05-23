@@ -4,7 +4,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 Friend Module KontaktFunktionen
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
 
     ''' <summary>
@@ -78,23 +78,23 @@ Friend Module KontaktFunktionen
 
                 'Handlung 1:
 
-                If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
-                    Dim olFolder As Outlook.MAPIFolder
+                'If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
+                '    Dim olFolder As Outlook.MAPIFolder
 
-                    olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
-                    ' Handlung 2:
-                    If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
-                        ' olKontakt.Save() 
-                        If olKontakt.Speichern Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
-                    Else
-                        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
-                    End If
+                '    olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
+                '    ' Handlung 2:
+                '    If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
+                '        ' olKontakt.Save() 
+                '        If olKontakt.Speichern Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
+                '    Else
+                '        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
+                '        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
+                '    End If
 
-                    KontaktID = olKontakt.EntryID
-                    StoreID = olFolder.StoreID
-                    olFolder.ReleaseComObject
-                End If
+                '    KontaktID = olKontakt.EntryID
+                '    StoreID = olFolder.StoreID
+                '    olFolder.ReleaseComObject
+                'End If
             Else
                 'olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
             End If
@@ -138,23 +138,23 @@ Friend Module KontaktFunktionen
 
                 'Handlung 1:
 
-                If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
-                    Dim olFolder As Outlook.MAPIFolder
+                'If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
+                '    Dim olFolder As Outlook.MAPIFolder
 
-                    olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
-                    ' Handlung 2:
-                    If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
-                        'olKontakt.Save()
-                        If olKontakt.Speichern() Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
-                    Else
-                        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
-                    End If
+                '    olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
+                '    ' Handlung 2:
+                '    If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
+                '        'olKontakt.Save()
+                '        If olKontakt.Speichern() Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
+                '    Else
+                '        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
+                '        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
+                '    End If
 
-                    KontaktID = olKontakt.EntryID
-                    StoreID = olFolder.StoreID
-                    ReleaseComObject(olFolder)
-                End If
+                '    KontaktID = olKontakt.EntryID
+                '    StoreID = olFolder.StoreID
+                '    ReleaseComObject(olFolder)
+                'End If
             Else
                 'olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
             End If
@@ -246,7 +246,7 @@ Friend Module KontaktFunktionen
             With olContact
                 With .Attachments
                     If .Item("ContactPicture.jpg") IsNot Nothing Then
-                        KontaktBild = IO.Path.GetTempPath() & IO.Path.GetRandomFileName()
+                        KontaktBild = Path.GetTempPath() & Path.GetRandomFileName()
                         KontaktBild = Left(KontaktBild, Len(KontaktBild) - 3) & "jpg"
                         .Item("ContactPicture.jpg").SaveAsFile(KontaktBild)
                     End If

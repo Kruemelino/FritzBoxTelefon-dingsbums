@@ -5,7 +5,7 @@ Imports System.Xml
 Public Class FritzBoxServices
     Implements IDisposable
 
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     Private Property ServiceList As List(Of ServiceBaseInformation)
 
     Public Sub New()

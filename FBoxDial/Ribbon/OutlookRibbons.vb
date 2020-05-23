@@ -4,7 +4,7 @@ Imports System.Xml
 
 <Runtime.InteropServices.ComVisible(True)> Public Class OutlookRibbons
     Implements IRibbonExtensibility
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     Private Property DfltWerte As DefaultRibbonWerte
 

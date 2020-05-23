@@ -53,13 +53,13 @@ Friend Class CommonFenster
 
     Friend Function GetDarkerColor(ByVal Color As Color) As Color
         Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(255, DedValueMin0(Color.R.ToInt, GradientPower), DedValueMin0(Color.G.ToInt, GradientPower), DedValueMin0(Color.B.ToInt, GradientPower))
+        clNew = Color.FromArgb(255, DedValueMin0(Color.R.ToInt, GradientPower), DedValueMin0(Color.G.ToInt, GradientPower), DedValueMin0(Color.B.ToInt, GradientPower))
         Return clNew
     End Function
 
     Friend Function GetLighterColor(ByVal Color As Color) As Color
         Dim clNew As Color
-        clNew = Drawing.Color.FromArgb(255, AddValueMax255(CInt(Color.R), GradientPower), AddValueMax255(CInt(Color.G), GradientPower), AddValueMax255(CInt(Color.B), GradientPower))
+        clNew = Color.FromArgb(255, AddValueMax255(CInt(Color.R), GradientPower), AddValueMax255(CInt(Color.G), GradientPower), AddValueMax255(CInt(Color.B), GradientPower))
         Return clNew
     End Function
 

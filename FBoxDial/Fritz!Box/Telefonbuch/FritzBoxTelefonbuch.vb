@@ -4,7 +4,7 @@ Imports System.Runtime.CompilerServices
 
 Friend Module FritzBoxTelefonbuch
 
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
         Dim OutPutData As Hashtable

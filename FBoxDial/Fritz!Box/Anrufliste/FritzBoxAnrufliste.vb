@@ -1,7 +1,7 @@
 ﻿Imports System.Threading.Tasks
 
 Module FritzBoxAnrufliste
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
     Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FritzBoxXMLCallList)
         Dim OutPutData As Collections.Hashtable

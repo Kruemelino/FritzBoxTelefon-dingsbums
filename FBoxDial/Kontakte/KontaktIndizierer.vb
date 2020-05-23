@@ -1,7 +1,7 @@
 ﻿Imports Microsoft.Office.Interop
 
 Friend Module KontaktIndizierer
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 #Region "Kontaktindizierung"
 
     ''' <summary>

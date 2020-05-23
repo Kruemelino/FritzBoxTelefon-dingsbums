@@ -4,7 +4,7 @@ Imports MixERP.Net.VCards.Types
 Friend Module KontaktSucher
 
     Friend ReadOnly Property PDfltContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     Friend Function KontaktSuche(ByVal TelNr As Telefonnummer) As Outlook.ContactItem
         NLogger.Debug("Kontaktsuche gestartet")
@@ -35,24 +35,25 @@ Friend Module KontaktSucher
                 Next
                 sFilter = $"@SQL={String.Join(" OR ", Filter)}"
 
-                With XMLData.POptionen.IndizerteOrdner
+                With XMLData.POptionen.OutlookOrdner
                     ' Kontaktsuche in allen vom Nutzer ausgewählten Ordnern
                     If .OrdnerListe.Any Then
-                        Dim Ordner As IndizerterOrdner
+                        Dim Ordner As OutlookOrdner
                         iOrdner = 0
                         Do While (iOrdner.IsLess(.OrdnerListe.Count)) And (olKontakt Is Nothing)
                             Ordner = .OrdnerListe.Item(iOrdner)
-                            ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
-                            olKontakt = FindeAnruferKontaktAuswahl(Ordner.MAPIFolder, sFilter)
+                            If Ordner.Typ = OutlookOrdnerVerwendung.KontaktSuche Then
+                                ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
+                                olKontakt = FindeAnruferKontaktAuswahl(Ordner.MAPIFolder, sFilter)
 
-                            ' Rekursive Suche der Unterordner
-                            If olKontakt Is Nothing And XMLData.POptionen.PCBSucheUnterordner Then
-                                For Each Unterordner As Outlook.MAPIFolder In Ordner.MAPIFolder.Folders
-                                    olKontakt = FindeAnruferKontaktAuswahl(Unterordner, sFilter)
-                                    Unterordner.ReleaseComObject
-                                Next
+                                ' Rekursive Suche der Unterordner
+                                If olKontakt Is Nothing And XMLData.POptionen.PCBSucheUnterordner Then
+                                    For Each Unterordner As Outlook.MAPIFolder In Ordner.MAPIFolder.Folders
+                                        olKontakt = FindeAnruferKontaktAuswahl(Unterordner, sFilter)
+                                        Unterordner.ReleaseComObject
+                                    Next
+                                End If
                             End If
-
                             iOrdner += 1
                         Loop
                     End If

@@ -6,11 +6,15 @@ Friend Class OlOrdnerTreeNode
 
     Friend Property OutlookStore As Outlook.Store
     Friend Property OutlookFolder As Outlook.MAPIFolder
+    Friend Property OutlookItemType As Outlook.OlItemType
     Friend Property Durchsuchen As Boolean
-    Friend Property XMLEintrag As IndizerterOrdner
+    Friend Property XMLEintrag As OutlookOrdner
+    Friend Property AutoCheckSubNodes As Boolean
+    Friend Property StoreNode As Boolean
 
     Friend Sub SetImageKey()
-        If OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        ' If OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        If OutlookFolder.DefaultItemType = OutlookItemType Then
 
             If XMLEintrag IsNot Nothing Then
                 ImageKey = "Checked"
@@ -18,9 +22,8 @@ Friend Class OlOrdnerTreeNode
                 Durchsuchen = True
 
             Else
-
-                ' Kontaktsuche einbeziehung der Unterordner
-                If XMLData.POptionen.PCBSucheUnterordner AndAlso Parent IsNot Nothing Then
+                ' Kontaktsuche Einbeziehung der Unterordner
+                If AutoCheckSubNodes AndAlso Parent IsNot Nothing Then
                     With CType(Parent, OlOrdnerTreeNode)
                         If .XMLEintrag IsNot Nothing Or .Durchsuchen Then
                             ImageKey = "Mix"
@@ -39,8 +42,7 @@ Friend Class OlOrdnerTreeNode
                 'ImageKey = "Uncheck"
                 ForeColor = Drawing.Color.Empty
             End If
-
-            ' Wenn unterordner durchsucht werden sollen, müssen alle nachfolgenden Ordner markiert werden.
+            ' Wenn Unterordner durchsucht werden sollen, müssen alle nachfolgenden Ordner markiert werden.
             If XMLData.POptionen.PCBSucheUnterordner Then
                 ' Unterknoten rekursiv überarbeiten
                 For Each tmpnode As OlOrdnerTreeNode In Nodes
@@ -50,35 +52,46 @@ Friend Class OlOrdnerTreeNode
 
         Else
             ImageKey = "Disabled"
-            ForeColor = Drawing.Color.DarkGray
+            ForeColor = If(StoreNode, Drawing.Color.Empty, Drawing.Color.DarkGray)
         End If
         SelectedImageKey = ImageKey
     End Sub
 
+    ''' <summary>
+    ''' Erweitert einen Outlook-Treenode um die jeweiligen Unterordner des Outlook-Ordners
+    ''' </summary>
     Friend Sub Erweitern()
         If Nodes.Count.IsZero And OutlookFolder.Folders.Count.IsNotZero Then
-            For Each Ordner As Outlook.MAPIFolder In OutlookFolder.Folders
 
-                Dim olTreeNode As New OlOrdnerTreeNode With {.Text = Ordner.Name, .OutlookStore = OutlookStore, .OutlookFolder = Ordner}
-                ' Prüfe ob der ordner aus den Einstellungen heraus indiziert werden soll
+            'Schleife durch jeden Ornder dieses Outlook-Ordners
+            For Each Ordner As Outlook.MAPIFolder In OutlookFolder.Folders
+                ' Dimensioniere ein neues TreeNode für Outlook-Ordner
+                Dim olTreeNode As New OlOrdnerTreeNode With {.Text = Ordner.Name,
+                                                             .OutlookStore = OutlookStore,
+                                                             .OutlookFolder = Ordner,
+                                                             .OutlookItemType = OutlookItemType,
+                                                             .Name = $"{OutlookStore.StoreID}{Ordner.EntryID}",
+                                                             .AutoCheckSubNodes = AutoCheckSubNodes,
+                                                             .StoreNode = False}
+
+                ' Prüfe ob der Ordner aus den Einstellungen heraus verarbeitet werden soll
                 With olTreeNode
-                    If .OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem AndAlso .XMLEintrag Is Nothing Then
-                        .XMLEintrag = XMLData.POptionen.IndizerteOrdner.OrdnerListe.Find(Function(eintrag) eintrag.FolderID.AreEqual(.OutlookFolder.EntryID) And eintrag.StoreID.AreEqual(.OutlookStore.StoreID))
+                    If .OutlookFolder.DefaultItemType = OutlookItemType AndAlso .XMLEintrag Is Nothing Then
+                        .XMLEintrag = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(Eintrag) Eintrag.FolderID.AreEqual(.OutlookFolder.EntryID) And Eintrag.StoreID.AreEqual(.OutlookStore.StoreID))
                     End If
+                    ' Setze das Icon
                     .SetImageKey()
                 End With
+
                 Nodes.Add(olTreeNode)
             Next
             'Sortieren
             Nodes.Sort(True, False)
-            ' Setze das Immage
+            ' Setze das Image
             SetImageKey()
             ' Erweitern
             Expand()
-
         End If
     End Sub
-
-
 
 End Class

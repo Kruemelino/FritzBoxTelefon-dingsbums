@@ -5,13 +5,13 @@ Imports Microsoft.Office.Interop
 
 Public Class FormCfg
     Implements IDisposable
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Private FritzBoxDaten As FritzBoxData
+    Private WithEvents FritzBoxDaten As FritzBoxData
 
     Private BWIndexerList As List(Of BackgroundWorker)
 
-    Private IndizierteOrdner As List(Of IndizerterOrdner)
+    'Private OutlookOrdnerListe As List(Of OutlookOrdner)
 
     Public Sub New()
 
@@ -87,16 +87,24 @@ Public Class FormCfg
                     SetComboBox(CType(ctrl, ComboBox))
                 End If
 
-            ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
-                Select Case ctrl.Name
-                    Case TreeViewKontakte.Name
-                        ' lade die Liste der zu indizierenden Ordner
-                        If XMLData.POptionen.IndizerteOrdner Is Nothing Then XMLData.POptionen.IndizerteOrdner = New IndizieOrdnerListe
-                        If XMLData.POptionen.IndizerteOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.IndizerteOrdner.OrdnerListe = New List(Of IndizerterOrdner)
-                        ' Als Kopie
-                        IndizierteOrdner = New List(Of IndizerterOrdner)
-                        IndizierteOrdner.AddRange(XMLData.POptionen.IndizerteOrdner.OrdnerListe)
+            ElseIf ctrl.GetType().Equals(GetType(TreeViewEx)) Then
+                Dim VTyp As OutlookOrdnerVerwendung
+                Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
+
+                Select Case olfldrTV.Name
+                    'Case TreeViewKontakte.Name
+                    '    VTyp = OutlookOrdnerVerwendung.KontaktSuche
+                    'Case TreeViewJournal.Name
+                    '    VTyp = OutlookOrdnerVerwendung.JournalSpeichern
                 End Select
+
+                ' Lade die Liste der zu indizierenden Ordner
+                If XMLData.POptionen.OutlookOrdner Is Nothing Then XMLData.POptionen.OutlookOrdner = New OutlookOrdnerListe
+                If XMLData.POptionen.OutlookOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.OutlookOrdner.OrdnerListe = New List(Of OutlookOrdner)
+
+                'If olfldrTV.CheckedOlFolders Is Nothing Then olfldrTV.CheckedOlFolders = New List(Of OutlookOrdner)
+                olfldrTV.CheckedOlFolders = XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)
+
             End If
         Next
     End Sub
@@ -168,20 +176,33 @@ Public Class FormCfg
                     tmpTelNr.Überwacht = CLBTelNr.CheckedItems.Contains(tmpTelNr)
                 Next
 
-            ElseIf ctrl.GetType().Equals(GetType(TreeView)) Then
-                Select Case ctrl.Name
-                    Case TreeViewKontakte.Name
-                        ' Deindiziere die entfernen Ordner
-                        StarteIndizierung(XMLData.POptionen.IndizerteOrdner.OrdnerListe.Except(IndizierteOrdner), False)
+            ElseIf ctrl.GetType().Equals(GetType(TreeViewEx)) Then
+                Dim VTyp As OutlookOrdnerVerwendung
+                Dim olfldrTV As TreeViewEx
+                Select Case olfldrTV.Name
+                    'Case TreeViewKontakte.Name
+                    '    VTyp = OutlookOrdnerVerwendung.KontaktSuche
 
-                        '' Indiziere alle neu hinzugefügten Ordner
-                        StarteIndizierung(IndizierteOrdner.Except(XMLData.POptionen.IndizerteOrdner.OrdnerListe), True)
+                    '    ' Deindiziere die entfernten Ordner
+                    '    StarteIndizierung(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp).Except(olfldrTV.CheckedOlFolders), False)
 
-                        ' Speicher die Liste der zu indizierenden Ordner. leere die alten Daten
-                        XMLData.POptionen.IndizerteOrdner.OrdnerListe.Clear()
-                        ' kopiere alle Einträge 
-                        XMLData.POptionen.IndizerteOrdner.OrdnerListe.AddRange(IndizierteOrdner)
+                    '    ' Indiziere alle neu hinzugefügten Ordner
+                    '    StarteIndizierung(olfldrTV.CheckedOlFolders.Except(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)), True)
+
+                    'Case TreeViewJournal.Name
+                    '    VTyp = OutlookOrdnerVerwendung.JournalSpeichern
+
                 End Select
+
+                ' Speichere den Verwendungstypen
+                olfldrTV.CheckedOlFolders.ForEach(Sub(T) T.Typ = VTyp)
+
+                ' Entferne aus den Einstellungen alle Ordner mit dem Typen
+                XMLData.POptionen.OutlookOrdner.OrdnerListe.RemoveAll(Function(OlFldr) OlFldr.Typ = VTyp)
+
+                ' Kopiere alle neuen Ordner in die Liste
+                XMLData.POptionen.OutlookOrdner.OrdnerListe.AddRange(olfldrTV.CheckedOlFolders)
+
 
             ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then
                 If ctrl Is DGVTelList Then
@@ -211,36 +232,37 @@ Public Class FormCfg
                                                                        BIndizierungStart.Click,
                                                                        BIndizierungAbbrechen.Click,
                                                                        BRWSTest.Click,
-                                                                       BPhonerTest.Click
+                                                                       BPhonerTest.Click,
+                                                                       BJournalOrdLaden.Click
 
-        Select Case CType(sender, Button).Name
-            Case BOK.Name, BApply.Name
+        Select Case True'CType(sender, Button).Name
+            Case sender Is BOK, sender Is BApply
                 ' Formulardaten in zurück in Properties
                 Speichern(Me)
                 ' Valid-IP neu ermitteln
                 XMLData.POptionen.PValidFBAdr = ValidIP(XMLData.POptionen.PTBFBAdr)
                 ' Properties in Datei umwandeln
                 XMLData.Speichern
-            Case BTestLogin.Name
+            Case sender Is BTestLogin
                 '' Überführe das eingegebene Passwort in die Property
                 'Using Crypt As Rijndael = New Rijndael
                 '    XMLData.POptionen.PTBPasswort = Crypt.EncryptString128Bit(TBPasswort.Text)
                 'End Using
 
                 ' Zum Testen der verschiedener Funktionen
-            Case BTelefonliste.Name
+            Case sender Is BTelefonliste
                 ' Formulardaten in Properties speichern
                 Speichern(Me)
                 ' Indizierung starten
                 StarteEinlesen()
 
-            Case BIndizierungStart.Name
+            Case sender Is BIndizierungStart
                 ' Formulardaten in Properties speichern
                 ' Speichern(Me)
                 ' Indizierung starten
-                StarteIndizierung(IndizierteOrdner, RadioButtonErstelle.Checked)
+               ' StarteIndizierung(TreeViewKontakte.CheckedOlFolders, RadioButtonErstelle.Checked)
 
-            Case BIndizierungAbbrechen.Name
+            Case sender Is BIndizierungAbbrechen
                 ' Indizierung abbrechen
                 If BWIndexerList IsNot Nothing AndAlso BWIndexerList.Any Then
                     BWIndexerList.ForEach(Sub(r) r.CancelAsync())
@@ -249,21 +271,24 @@ Public Class FormCfg
                 BIndizierungAbbrechen.Enabled = False
                 BIndizierungStart.Enabled = True
 
-            Case BXML.Name
+            Case sender Is BXML
                 ' XML-Datei mit Systemstandard öffnen
                 Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltConfig_FileName))
 
-            Case BRWSTest.Name
+            Case sender Is BRWSTest
                 If IsNumeric(TBRWSTest.Text) Then
                     Dim vCard As String = Await StartRWS(New Telefonnummer() With {.SetNummer = TBRWSTest.Text}, False)
                     If Not vCard.StartsWith(PDfltBegin_vCard) Then vCard = PRWSTestKeinEintrag
                     MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
                 End If
 
-            Case BKontOrdLaden.Name
-                KontaktOrdnerLaden()
+            Case sender Is BKontOrdLaden
+                TreeViewKontakte.AddOutlookBaseNodes(Outlook.OlItemType.olContactItem, True, True)
 
-            Case BPhonerTest.Name
+            Case sender Is BJournalOrdLaden
+                TreeViewJournal.AddOutlookBaseNodes(Outlook.OlItemType.olJournalItem, False, False)
+
+            Case sender Is BPhonerTest
                 ' Formulardaten in Properties speichern
                 Speichern(Me)
 
@@ -417,52 +442,57 @@ Public Class FormCfg
         Return Datentabelle
     End Function
 
+
+    Private Sub FritzBoxDaten_Status(sender As Object, e As NotifyEventArgs(Of String)) Handles FritzBoxDaten.Status
+        TSSL_Telefone.Text = e.Value
+    End Sub
+
 #Region "AnrMonSim"
-    Private Sub AnrMonSim_ValueChanged(sender As Object, e As EventArgs) Handles DTPAnrMonSimRING.ValueChanged, DTPAnrMonSimCALL.ValueChanged, DTPAnrMonSimCONNECT.ValueChanged, DTPAnrMonSimDISCONNECT.ValueChanged,
-                                                                                 TBAnrMonSimRINGID.TextChanged, TBAnrMonSimCALLID.TextChanged, TBAnrMonSimCONNECTID.TextChanged, TBAnrMonSimDISCONNECTID.TextChanged,
-                                                                                 TBAnrMonSimRINGAugTelNr.TextChanged, TBAnrMonSimCALLAugTelNr.TextChanged, TBAnrMonSimCONNECTAugTelNr.TextChanged,
-                                                                                 CBoxAnrMonSimRINGEigTelNr.SelectedIndexChanged, CBoxAnrMonSimCALLEigTelNr.SelectedIndexChanged,
-                                                                                 CBoxAnrMonSimRINGSIPID.SelectedIndexChanged, CBoxAnrMonSimCALLSIPID.SelectedIndexChanged,
-                                                                                 CBoxAnrMonSimCALLNSTID.SelectedIndexChanged, CBoxAnrMonSimCONNECTNSTID.SelectedIndexChanged,
-                                                                                 TBAnrMonSimDISCONNECTDauer.TextChanged
-        Select Case CType(sender, Control).Name
-            Case DTPAnrMonSimRING.Name, TBAnrMonSimRINGID.Name, TBAnrMonSimRINGAugTelNr.Name, CBoxAnrMonSimRINGEigTelNr.Name, CBoxAnrMonSimRINGSIPID.Name
-                '         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
-                ' 23.06.18 13:20:24;RING;1;0123456789;987654;SIP4;
-                LAnrMonSimLabelRING.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimRING.Value, Anrufmonitor.AnrMon_RING, TBAnrMonSimRINGID.Text, TBAnrMonSimRINGAugTelNr.Text, CBoxAnrMonSimRINGEigTelNr.SelectedValue, CBoxAnrMonSimRINGSIPID.SelectedText) & Anrufmonitor.AnrMon_Delimiter
+    'Private Sub AnrMonSim_ValueChanged(sender As Object, e As EventArgs) Handles DTPAnrMonSimRING.ValueChanged, DTPAnrMonSimCALL.ValueChanged, DTPAnrMonSimCONNECT.ValueChanged, DTPAnrMonSimDISCONNECT.ValueChanged,
+    '                                                                             TBAnrMonSimRINGID.TextChanged, TBAnrMonSimCALLID.TextChanged, TBAnrMonSimCONNECTID.TextChanged, TBAnrMonSimDISCONNECTID.TextChanged,
+    '                                                                             TBAnrMonSimRINGAugTelNr.TextChanged, TBAnrMonSimCALLAugTelNr.TextChanged, TBAnrMonSimCONNECTAugTelNr.TextChanged,
+    '                                                                             CBoxAnrMonSimRINGEigTelNr.SelectedIndexChanged, CBoxAnrMonSimCALLEigTelNr.SelectedIndexChanged,
+    '                                                                             CBoxAnrMonSimRINGSIPID.SelectedIndexChanged, CBoxAnrMonSimCALLSIPID.SelectedIndexChanged,
+    '                                                                             CBoxAnrMonSimCALLNSTID.SelectedIndexChanged, CBoxAnrMonSimCONNECTNSTID.SelectedIndexChanged,
+    '                                                                             TBAnrMonSimDISCONNECTDauer.TextChanged
+    '    Select Case CType(sender, Control).Name
+    '        Case DTPAnrMonSimRING.Name, TBAnrMonSimRINGID.Name, TBAnrMonSimRINGAugTelNr.Name, CBoxAnrMonSimRINGEigTelNr.Name, CBoxAnrMonSimRINGSIPID.Name
+    '            '         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
+    '            ' 23.06.18 13:20:24;RING;1;0123456789;987654;SIP4;
+    '            LAnrMonSimLabelRING.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimRING.Value, Anrufmonitor.AnrMon_RING, TBAnrMonSimRINGID.Text, TBAnrMonSimRINGAugTelNr.Text, CBoxAnrMonSimRINGEigTelNr.SelectedValue, CBoxAnrMonSimRINGSIPID.SelectedText) & Anrufmonitor.AnrMon_Delimiter
 
-            Case DTPAnrMonSimCALL.Name, TBAnrMonSimCALLID.Name, CBoxAnrMonSimCALLNSTID.Name, CBoxAnrMonSimCALLEigTelNr.Name, TBAnrMonSimCALLAugTelNr.Name, CBoxAnrMonSimCALLSIPID.Name
-                '         0        ; 1  ;2;3;  4   ;    5     ; 6  ; 7
-                ' 23.06.18 13:20:24;CALL;3;4;987654;0123456789;SIP0;
-                LAnrMonSimLabelCALL.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimCALL.Value, Anrufmonitor.AnrMon_CALL, TBAnrMonSimCALLID.Text, CBoxAnrMonSimCALLNSTID.SelectedValue, CBoxAnrMonSimCALLEigTelNr.Text, TBAnrMonSimCALLAugTelNr.Text, CBoxAnrMonSimCALLSIPID.SelectedText) & Anrufmonitor.AnrMon_Delimiter
+    '        Case DTPAnrMonSimCALL.Name, TBAnrMonSimCALLID.Name, CBoxAnrMonSimCALLNSTID.Name, CBoxAnrMonSimCALLEigTelNr.Name, TBAnrMonSimCALLAugTelNr.Name, CBoxAnrMonSimCALLSIPID.Name
+    '            '         0        ; 1  ;2;3;  4   ;    5     ; 6  ; 7
+    '            ' 23.06.18 13:20:24;CALL;3;4;987654;0123456789;SIP0;
+    '            LAnrMonSimLabelCALL.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimCALL.Value, Anrufmonitor.AnrMon_CALL, TBAnrMonSimCALLID.Text, CBoxAnrMonSimCALLNSTID.SelectedValue, CBoxAnrMonSimCALLEigTelNr.Text, TBAnrMonSimCALLAugTelNr.Text, CBoxAnrMonSimCALLSIPID.SelectedText) & Anrufmonitor.AnrMon_Delimiter
 
-            Case DTPAnrMonSimCONNECT.Name, TBAnrMonSimCONNECTID.Name, CBoxAnrMonSimCONNECTNSTID.Name, TBAnrMonSimCONNECTAugTelNr.Text
-                '         0        ;   1   ;2;3 ;    4     ; 5 
-                ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
-                LAnrMonSimLabelCONNECT.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimCONNECT.Value, Anrufmonitor.AnrMon_CONNECT, TBAnrMonSimCONNECTID.Text, CBoxAnrMonSimCONNECTNSTID.SelectedValue, TBAnrMonSimCONNECTAugTelNr.Text) & Anrufmonitor.AnrMon_Delimiter
+    '        Case DTPAnrMonSimCONNECT.Name, TBAnrMonSimCONNECTID.Name, CBoxAnrMonSimCONNECTNSTID.Name, TBAnrMonSimCONNECTAugTelNr.Text
+    '            '         0        ;   1   ;2;3 ;    4     ; 5 
+    '            ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
+    '            LAnrMonSimLabelCONNECT.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimCONNECT.Value, Anrufmonitor.AnrMon_CONNECT, TBAnrMonSimCONNECTID.Text, CBoxAnrMonSimCONNECTNSTID.SelectedValue, TBAnrMonSimCONNECTAugTelNr.Text) & Anrufmonitor.AnrMon_Delimiter
 
-            Case DTPAnrMonSimDISCONNECT.Name, TBAnrMonSimDISCONNECTID.Name, TBAnrMonSimDISCONNECTDauer.Name
-                '         0        ;   1      ;2;3; 4
-                ' 23.06.18 13:20:52;DISCONNECT;1;9;
-                LAnrMonSimLabelDISCONNECT.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimDISCONNECT.Value, Anrufmonitor.AnrMon_DISCONNECT, TBAnrMonSimDISCONNECTID.Text, TBAnrMonSimDISCONNECTDauer.Text) & Anrufmonitor.AnrMon_Delimiter
+    '        Case DTPAnrMonSimDISCONNECT.Name, TBAnrMonSimDISCONNECTID.Name, TBAnrMonSimDISCONNECTDauer.Name
+    '            '         0        ;   1      ;2;3; 4
+    '            ' 23.06.18 13:20:52;DISCONNECT;1;9;
+    '            LAnrMonSimLabelDISCONNECT.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimDISCONNECT.Value, Anrufmonitor.AnrMon_DISCONNECT, TBAnrMonSimDISCONNECTID.Text, TBAnrMonSimDISCONNECTDauer.Text) & Anrufmonitor.AnrMon_Delimiter
 
-        End Select
-    End Sub
+    '    End Select
+    'End Sub
 
-    Private Sub BAnrMonSim_Click(sender As Object, e As EventArgs) Handles BAnrMonSimRING.Click, BAnrMonSimCALL.Click, BAnrMonSimCONNECT.Click, BAnrMonSimDISCONNECT.Click
+    'Private Sub BAnrMonSim_Click(sender As Object, e As EventArgs) Handles BAnrMonSimRING.Click, BAnrMonSimCALL.Click, BAnrMonSimCONNECT.Click, BAnrMonSimDISCONNECT.Click
 
-        'Select Case CType(sender, Control).Name
-        '    Case BAnrMonSimRING.Name
-        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelRING.Text)
-        '    Case BAnrMonSimCALL.Name
-        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCALL.Text)
-        '    Case BAnrMonSimCONNECT.Name
-        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCONNECT.Text)
-        '    Case BAnrMonSimDISCONNECT.Name
-        '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelDISCONNECT.Text)
-        'End Select
+    '    'Select Case CType(sender, Control).Name
+    '    '    Case BAnrMonSimRING.Name
+    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelRING.Text)
+    '    '    Case BAnrMonSimCALL.Name
+    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCALL.Text)
+    '    '    Case BAnrMonSimCONNECT.Name
+    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCONNECT.Text)
+    '    '    Case BAnrMonSimDISCONNECT.Name
+    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelDISCONNECT.Text)
+    '    'End Select
 
-    End Sub
+    'End Sub
 #End Region
 
 #Region "Indizierung"
@@ -472,7 +502,7 @@ Public Class FormCfg
         Dim olFolder As Outlook.MAPIFolder
     End Structure
 
-    Private Sub StarteIndizierung(ByVal OrdnerListe As IEnumerable(Of IndizerterOrdner), ByVal Erstellen As Boolean)
+    Private Sub StarteIndizierung(ByVal OrdnerListe As IEnumerable(Of OutlookOrdner), ByVal Erstellen As Boolean)
         ' Initialisiere die Progressbar
         InitProgressbar(0)
 
@@ -481,7 +511,7 @@ Public Class FormCfg
             If BWIndexerList Is Nothing Then BWIndexerList = New List(Of BackgroundWorker)
 
             ' Schleife durch jeden Ordner der indiziert werden soll
-            For Each Ordner As IndizerterOrdner In OrdnerListe
+            For Each Ordner As OutlookOrdner In OrdnerListe
 
                 ' Buttons einschalten
                 BIndizierungAbbrechen.Enabled = True
@@ -622,64 +652,15 @@ Public Class FormCfg
         ProgressBarIndex.Maximum += NeuesMaximum
     End Sub
 
-#End Region
+    Private Sub TreeViewKontakte_AfterSelect(sender As Object, e As TreeViewEventArgs)
 
-#Region "TreeView Outlook Kontaktordner"
-    Private Sub KontaktOrdnerLaden()
-        If TreeViewKontakte.Nodes.Count.IsZero Then
-            ' Lade ImageList
-            TreeViewKontakte.ImageList = New ImageList
-            With TreeViewKontakte.ImageList.Images
-                .Add("Disabled", My.Resources.CheckboxDisable)
-                .Add("Mix", My.Resources.CheckboxMix)
-                .Add("Checked", My.Resources.CheckBox)
-                .Add("Uncheck", My.Resources.CheckboxUncheck)
-            End With
-
-            TreeViewKontakte.Nodes.Clear()
-            ' Lade Outlook Store
-            For Each Store As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
-                Dim olTreeNode As New OlOrdnerTreeNode With {.Text = $"{Store.GetRootFolder.Name} ({Store.ExchangeStoreType})", .OutlookStore = Store, .OutlookFolder = Store.GetRootFolder, .ImageKey = "Disabled"}
-                TreeViewKontakte.Nodes.Add(olTreeNode)
-            Next
-            ' Sortieren
-            TreeViewKontakte.Nodes.Sort(True, False)
-        End If
     End Sub
 
-    Private Sub TreeViewKontakte_NodeMouseClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TreeViewKontakte.NodeMouseClick
+    Private Sub CBKErstellen_CheckedChanged(sender As Object, e As EventArgs)
 
-        Dim olBaseTreeNode As OlOrdnerTreeNode = CType(e.Node, OlOrdnerTreeNode)
-        With olBaseTreeNode
-
-            If .TreeView.HitTest(e.Location).Location = TreeViewHitTestLocations.Image Then
-
-                If .OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
-                    If .XMLEintrag Is Nothing Then
-                        .XMLEintrag = New IndizerterOrdner With {.Name = olBaseTreeNode.OutlookFolder.Name, .FolderID = olBaseTreeNode.OutlookFolder.EntryID, .StoreID = olBaseTreeNode.OutlookFolder.StoreID}
-                        IndizierteOrdner.Add(.XMLEintrag)
-
-                    Else
-                        .XMLEintrag = Nothing
-                        IndizierteOrdner.Remove(IndizierteOrdner.Find(Function(Ordner) Ordner.FolderID.AreEqual(.OutlookFolder.EntryID) And Ordner.StoreID.AreEqual(.OutlookStore.StoreID)))
-
-                    End If
-                End If
-
-                ' ImageKey setzen
-                .SetImageKey()
-            End If
-            ' Lade alle direkten Unterordner
-            .Erweitern()
-        End With
     End Sub
 
-
-
-
-
 #End Region
-
 
 End Class
 

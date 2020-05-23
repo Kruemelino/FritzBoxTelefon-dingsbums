@@ -6,7 +6,7 @@ Imports Microsoft.Office.Interop
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
 
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
     <XmlAttribute> Public Property ID As Integer
@@ -378,13 +378,13 @@ Imports Microsoft.Office.Interop
                     Dim tmpSubject As String
 
                     If Angenommen Then
-                        If AnrufRichtung = Telefonat.AnrufRichtungen.Ausgehend Then
+                        If AnrufRichtung = AnrufRichtungen.Ausgehend Then
                             tmpSubject = PDfltJournalTextAusgehend
                         Else
                             tmpSubject = PDfltJournalTextEingehend
                         End If
                     Else 'Verpasst
-                        If AnrufRichtung = Telefonat.AnrufRichtungen.Ausgehend Then
+                        If AnrufRichtung = AnrufRichtungen.Ausgehend Then
                             tmpSubject = PDfltJournalTextNichtErfolgreich
                         Else
                             tmpSubject = PDfltJournalTextVerpasst

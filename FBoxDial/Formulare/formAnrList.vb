@@ -12,7 +12,7 @@ Public Class FormAnrList
     Private Property Anrufliste As FritzBoxXMLCallList
     Private Property Source As BindingSource
 
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     Private WithEvents BWImport As BackgroundWorker
 
 #Region "Delegaten"

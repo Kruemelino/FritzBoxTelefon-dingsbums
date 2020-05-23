@@ -9,7 +9,7 @@ Public Class FormWählclient
     Implements IDisposable
 
 #Region "Properties"
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     Private Property OKontakt As Outlook.ContactItem
     Private Property OExchangeNutzer As Outlook.ExchangeUser
     Private Property PKontaktbild As Bitmap

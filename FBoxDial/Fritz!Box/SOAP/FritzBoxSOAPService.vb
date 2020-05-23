@@ -3,7 +3,7 @@ Imports System.Xml
 
 Friend Class FritzBoxSOAPService
 
-    Private Shared Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
     'Private Property ServiceDefinition As ServiceBaseInformation
     Private Property ActionList As List(Of Action)
     'Private Property StateVariableList As List(Of StateVariable)

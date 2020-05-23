@@ -4,7 +4,7 @@ Imports System.Net.Sockets
 
 Friend Class Anrufmonitor
 
-    Private Property NLogger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger
+    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
 
     Private WithEvents AnrMonTCPClient As AnrMonClient
 
