@@ -282,16 +282,16 @@ Imports Microsoft.Office.Interop
             End If
 
             If FBTelBookKontakt IsNot Nothing Then
-                'If XMLData.POptionen.PCBKErstellen Then
-                '    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
+                If XMLData.POptionen.PCBKErstellen Then
+                    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
 
-                '    With OlKontakt
-                '        Anrufer = .FullName
-                '        Firma = .CompanyName
-                '    End With
-                'Else
-                Anrufer = FBTelBookKontakt.Person.RealName
-                'End If
+                    With OlKontakt
+                        Anrufer = .FullName
+                        Firma = .CompanyName
+                    End With
+                Else
+                    Anrufer = FBTelBookKontakt.Person.RealName
+                End If
             End If
         End If
 
@@ -306,18 +306,18 @@ Imports Microsoft.Office.Interop
                     VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
 
                     If VCard.IsNotStringEmpty Then
-                        'If XMLData.POptionen.PCBKErstellen Then
-                        '    OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
-                        '    With OlKontakt
-                        '        Anrufer = .FullName
-                        '        Firma = .CompanyName
-                        '    End With
-                        'Else
-                        With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
-                            Anrufer = .FormattedName
-                            Firma = .Organization
-                        End With
-                        'End If
+                        If XMLData.POptionen.PCBKErstellen Then
+                            OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
+                            With OlKontakt
+                                Anrufer = .FullName
+                                Firma = .CompanyName
+                            End With
+                        Else
+                            With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
+                                Anrufer = .FormattedName
+                                Firma = .Organization
+                            End With
+                        End If
                     End If
                 End If
             End If
@@ -420,15 +420,16 @@ Imports Microsoft.Office.Interop
 
                         ' Speicherort wählen
                         olJournalFolder = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(fldr) fldr.Typ = OutlookOrdnerVerwendung.JournalSpeichern)
-                        If olJournalFolder IsNot Nothing Then
+                        If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing Then
                             .Move(olJournalFolder.MAPIFolder)
+                            .Close(Outlook.OlInspectorClose.olDiscard)
                         Else
-                            .Move(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal))
+                            .Close(Outlook.OlInspectorClose.olSave)
+                            '.Move(OutlookApp.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderJournal))
                         End If
 
                         NLogger.Info("Journaleintrag erstellt: {0}, {1}, {2}", .Start, .Subject, .Duration)
-                        .Close(Outlook.OlInspectorClose.olDiscard)
-                        '.Close(Outlook.OlInspectorClose.olSave)
+
                     End With
 
                     olJournal.ReleaseComObject

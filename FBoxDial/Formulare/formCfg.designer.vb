@@ -21,7 +21,7 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -45,6 +45,7 @@ Partial Class FormCfg
         Me.TBRWSTest = New System.Windows.Forms.TextBox()
         Me.CBRWSIndex = New System.Windows.Forms.CheckBox()
         Me.LPhonerSIPTelefon = New System.Windows.Forms.Label()
+        Me.CBKErstellen = New System.Windows.Forms.CheckBox()
         Me.PGrundeinstellungen = New System.Windows.Forms.TabPage()
         Me.GBFormatierungTelefonnummern = New System.Windows.Forms.GroupBox()
         Me.CBIgnoTelNrFormat = New System.Windows.Forms.CheckBox()
@@ -78,6 +79,7 @@ Partial Class FormCfg
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.StatusStripTelefone = New System.Windows.Forms.StatusStrip()
         Me.TSSL_Telefone = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.DGVTelList = New FBoxDial.FBoxDataGridView()
         Me.BTelefonliste = New System.Windows.Forms.Button()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.PAnrufmonitor = New System.Windows.Forms.TabPage()
@@ -149,12 +151,14 @@ Partial Class FormCfg
         Me.DTPAnrMonSimRING = New System.Windows.Forms.DateTimePicker()
         Me.BAnrMonSimRING = New System.Windows.Forms.Button()
         Me.PKontaktsuche = New System.Windows.Forms.TabPage()
-        Me.BKontOrdLaden = New System.Windows.Forms.Button()
+        Me.TBHinweisKontaktsuche = New System.Windows.Forms.TextBox()
+        Me.GBKontaktsuche = New System.Windows.Forms.GroupBox()
         Me.CBSucheUnterordner = New System.Windows.Forms.CheckBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CBKontaktSucheFritzBox = New System.Windows.Forms.CheckBox()
         Me.GBRWS = New System.Windows.Forms.GroupBox()
         Me.BRWSTest = New System.Windows.Forms.Button()
         Me.CBRWS = New System.Windows.Forms.CheckBox()
+        Me.BKontaktOrdnerSuche = New System.Windows.Forms.Button()
         Me.GBIndizierung = New System.Windows.Forms.GroupBox()
         Me.LabelAnzahl = New System.Windows.Forms.Label()
         Me.RadioButtonEntfernen = New System.Windows.Forms.RadioButton()
@@ -162,12 +166,20 @@ Partial Class FormCfg
         Me.BIndizierungAbbrechen = New System.Windows.Forms.Button()
         Me.BIndizierungStart = New System.Windows.Forms.Button()
         Me.ProgressBarIndex = New System.Windows.Forms.ProgressBar()
-        Me.CBKontaktSucheFritzBox = New System.Windows.Forms.CheckBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TreeViewKontakteSuche = New FBoxDial.TreeViewEx()
         Me.TabJournal = New System.Windows.Forms.TabPage()
+        Me.TBHinweisJournal = New System.Windows.Forms.TextBox()
+        Me.BJournalOrdnerErstellen = New System.Windows.Forms.Button()
+        Me.LHeaderTabJournal = New System.Windows.Forms.Label()
         Me.GBJournal = New System.Windows.Forms.GroupBox()
         Me.CBJournal = New System.Windows.Forms.CheckBox()
-        Me.BJournalOrdLaden = New System.Windows.Forms.Button()
-        Me.LHeaderTabJournal = New System.Windows.Forms.Label()
+        Me.TreeViewJournal = New FBoxDial.TreeViewEx()
+        Me.PKontakterstellung = New System.Windows.Forms.TabPage()
+        Me.BKontaktOrdnerErstellen = New System.Windows.Forms.Button()
+        Me.TreeViewKontakteErstellen = New FBoxDial.TreeViewEx()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.TBHinweisKontakterstellung = New System.Windows.Forms.TextBox()
         Me.PPhoner = New System.Windows.Forms.TabPage()
         Me.TBPhonerHinweise = New System.Windows.Forms.TextBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
@@ -191,16 +203,7 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.GBKontaktsuche = New System.Windows.Forms.GroupBox()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.CBKErstellen = New System.Windows.Forms.CheckBox()
-        Me.TBHinweisKontaktsuche = New System.Windows.Forms.TextBox()
-        Me.TBHinweisJournal = New System.Windows.Forms.TextBox()
-        Me.TreeViewKontakte = New FBoxDial.TreeViewEx()
-        Me.TreeViewJournal = New FBoxDial.TreeViewEx()
-        Me.DGVTelList = New FBoxDial.FBoxDataGridView()
-        Me.TBHinweisKontakterstellung = New System.Windows.Forms.TextBox()
-        Me.Label21 = New System.Windows.Forms.Label()
+        Me.GBKontakterstellung = New System.Windows.Forms.GroupBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -209,6 +212,7 @@ Partial Class FormCfg
         Me.PTelefone.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.StatusStripTelefone.SuspendLayout()
+        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PAnrufmonitor.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GBAnrListeMain.SuspendLayout()
@@ -221,19 +225,19 @@ Partial Class FormCfg
         Me.GBoxAnrMonCALL.SuspendLayout()
         Me.GBoxAnrMonRING.SuspendLayout()
         Me.PKontaktsuche.SuspendLayout()
+        Me.GBKontaktsuche.SuspendLayout()
         Me.GBRWS.SuspendLayout()
         Me.GBIndizierung.SuspendLayout()
         Me.TabJournal.SuspendLayout()
         Me.GBJournal.SuspendLayout()
+        Me.PKontakterstellung.SuspendLayout()
         Me.PPhoner.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.GBKontaktsuche.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GBKontakterstellung.SuspendLayout()
         Me.SuspendLayout()
         '
         'BReset
@@ -243,7 +247,7 @@ Partial Class FormCfg
         Me.BReset.Margin = New System.Windows.Forms.Padding(4)
         Me.BReset.Name = "BReset"
         Me.BReset.Size = New System.Drawing.Size(146, 34)
-        Me.BReset.TabIndex = 4
+        Me.BReset.TabIndex = 3
         Me.BReset.Text = "Zurücksetzen"
         Me.BReset.UseVisualStyleBackColor = True
         '
@@ -255,7 +259,7 @@ Partial Class FormCfg
         Me.BAbbruch.Margin = New System.Windows.Forms.Padding(4)
         Me.BAbbruch.Name = "BAbbruch"
         Me.BAbbruch.Size = New System.Drawing.Size(146, 34)
-        Me.BAbbruch.TabIndex = 3
+        Me.BAbbruch.TabIndex = 2
         Me.BAbbruch.Text = "Abbruch"
         Me.BAbbruch.UseVisualStyleBackColor = True
         '
@@ -266,7 +270,7 @@ Partial Class FormCfg
         Me.BApply.Margin = New System.Windows.Forms.Padding(4)
         Me.BApply.Name = "BApply"
         Me.BApply.Size = New System.Drawing.Size(146, 34)
-        Me.BApply.TabIndex = 2
+        Me.BApply.TabIndex = 1
         Me.BApply.Text = "Übernehmen"
         Me.BApply.UseVisualStyleBackColor = True
         '
@@ -278,7 +282,7 @@ Partial Class FormCfg
         Me.BOK.Margin = New System.Windows.Forms.Padding(4)
         Me.BOK.Name = "BOK"
         Me.BOK.Size = New System.Drawing.Size(146, 34)
-        Me.BOK.TabIndex = 1
+        Me.BOK.TabIndex = 0
         Me.BOK.Text = "OK"
         Me.BOK.UseVisualStyleBackColor = True
         '
@@ -487,7 +491,7 @@ Partial Class FormCfg
         Me.TBRWSTest.Margin = New System.Windows.Forms.Padding(4)
         Me.TBRWSTest.Name = "TBRWSTest"
         Me.TBRWSTest.Size = New System.Drawing.Size(149, 22)
-        Me.TBRWSTest.TabIndex = 6
+        Me.TBRWSTest.TabIndex = 1
         Me.ToolTipFBDBConfig.SetToolTip(Me.TBRWSTest, "Geben Sie hier eine gültige Telefonnummer ein, nach der eine Rückwärtssuche durch" &
         "geführt werden soll.")
         '
@@ -499,7 +503,7 @@ Partial Class FormCfg
         Me.CBRWSIndex.Margin = New System.Windows.Forms.Padding(4)
         Me.CBRWSIndex.Name = "CBRWSIndex"
         Me.CBRWSIndex.Size = New System.Drawing.Size(137, 21)
-        Me.CBRWSIndex.TabIndex = 3
+        Me.CBRWSIndex.TabIndex = 2
         Me.CBRWSIndex.Text = "Ergebnis merken"
         Me.ToolTipFBDBConfig.SetToolTip(Me.CBRWSIndex, resources.GetString("CBRWSIndex.ToolTip"))
         Me.CBRWSIndex.UseVisualStyleBackColor = True
@@ -515,6 +519,19 @@ Partial Class FormCfg
         Me.LPhonerSIPTelefon.TabIndex = 13
         Me.LPhonerSIPTelefon.Text = "SIP-Telefon"
         Me.ToolTipFBDBConfig.SetToolTip(Me.LPhonerSIPTelefon, "Geben Sie hier das SIP-Telefon, an welches mit Phoner verknüpft ist.")
+        '
+        'CBKErstellen
+        '
+        Me.CBKErstellen.AutoSize = True
+        Me.CBKErstellen.Location = New System.Drawing.Point(8, 23)
+        Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBKErstellen.Name = "CBKErstellen"
+        Me.CBKErstellen.Size = New System.Drawing.Size(136, 21)
+        Me.CBKErstellen.TabIndex = 1
+        Me.CBKErstellen.Text = "Kontakt erstellen"
+        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
+        "erstellt.")
+        Me.CBKErstellen.UseVisualStyleBackColor = True
         '
         'PGrundeinstellungen
         '
@@ -901,6 +918,35 @@ Partial Class FormCfg
         Me.TSSL_Telefone.Size = New System.Drawing.Size(53, 22)
         Me.TSSL_Telefone.Text = "Bereit..."
         '
+        'DGVTelList
+        '
+        Me.DGVTelList.AllowUserToAddRows = False
+        Me.DGVTelList.AllowUserToDeleteRows = False
+        Me.DGVTelList.AllowUserToResizeColumns = False
+        Me.DGVTelList.AllowUserToResizeRows = False
+        Me.DGVTelList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.DGVTelList.ColumnHeadersHeight = 34
+        Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
+        Me.DGVTelList.Location = New System.Drawing.Point(4, 19)
+        Me.DGVTelList.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.DGVTelList.MultiSelect = False
+        Me.DGVTelList.Name = "DGVTelList"
+        Me.DGVTelList.RowHeadersVisible = False
+        Me.DGVTelList.RowHeadersWidth = 62
+        Me.DGVTelList.RowTemplate.Height = 28
+        Me.DGVTelList.ShowEditingIcon = False
+        Me.DGVTelList.Size = New System.Drawing.Size(752, 218)
+        Me.DGVTelList.TabIndex = 36
+        '
         'BTelefonliste
         '
         Me.BTelefonliste.Location = New System.Drawing.Point(525, 243)
@@ -1155,11 +1201,11 @@ Partial Class FormCfg
         Me.FBDB_MP.Controls.Add(Me.PAnrMonSim)
         Me.FBDB_MP.Controls.Add(Me.PKontaktsuche)
         Me.FBDB_MP.Controls.Add(Me.TabJournal)
+        Me.FBDB_MP.Controls.Add(Me.PKontakterstellung)
         Me.FBDB_MP.Controls.Add(Me.PTelefone)
         Me.FBDB_MP.Controls.Add(Me.PPhoner)
         Me.FBDB_MP.Controls.Add(Me.PLogging)
         Me.FBDB_MP.Controls.Add(Me.PInfo)
-        Me.FBDB_MP.Controls.Add(Me.TabPage1)
         Me.FBDB_MP.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FBDB_MP.Location = New System.Drawing.Point(4, 4)
         Me.FBDB_MP.Margin = New System.Windows.Forms.Padding(4)
@@ -1714,10 +1760,10 @@ Partial Class FormCfg
         Me.PKontaktsuche.Controls.Add(Me.TBHinweisKontaktsuche)
         Me.PKontaktsuche.Controls.Add(Me.GBKontaktsuche)
         Me.PKontaktsuche.Controls.Add(Me.GBRWS)
-        Me.PKontaktsuche.Controls.Add(Me.BKontOrdLaden)
+        Me.PKontaktsuche.Controls.Add(Me.BKontaktOrdnerSuche)
         Me.PKontaktsuche.Controls.Add(Me.GBIndizierung)
         Me.PKontaktsuche.Controls.Add(Me.Label1)
-        Me.PKontaktsuche.Controls.Add(Me.TreeViewKontakte)
+        Me.PKontaktsuche.Controls.Add(Me.TreeViewKontakteSuche)
         Me.PKontaktsuche.Location = New System.Drawing.Point(4, 25)
         Me.PKontaktsuche.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.PKontaktsuche.Name = "PKontaktsuche"
@@ -1727,15 +1773,28 @@ Partial Class FormCfg
         Me.PKontaktsuche.Text = "Kontaktsuche"
         Me.PKontaktsuche.UseVisualStyleBackColor = True
         '
-        'BKontOrdLaden
+        'TBHinweisKontaktsuche
         '
-        Me.BKontOrdLaden.Location = New System.Drawing.Point(383, 139)
-        Me.BKontOrdLaden.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.BKontOrdLaden.Name = "BKontOrdLaden"
-        Me.BKontOrdLaden.Size = New System.Drawing.Size(377, 34)
-        Me.BKontOrdLaden.TabIndex = 1
-        Me.BKontOrdLaden.Text = "Outlook-Kontaktordner laden..."
-        Me.BKontOrdLaden.UseVisualStyleBackColor = True
+        Me.TBHinweisKontaktsuche.Location = New System.Drawing.Point(382, 53)
+        Me.TBHinweisKontaktsuche.Multiline = True
+        Me.TBHinweisKontaktsuche.Name = "TBHinweisKontaktsuche"
+        Me.TBHinweisKontaktsuche.ReadOnly = True
+        Me.TBHinweisKontaktsuche.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TBHinweisKontaktsuche.Size = New System.Drawing.Size(377, 72)
+        Me.TBHinweisKontaktsuche.TabIndex = 4
+        Me.TBHinweisKontaktsuche.TabStop = False
+        Me.TBHinweisKontaktsuche.Text = resources.GetString("TBHinweisKontaktsuche.Text")
+        '
+        'GBKontaktsuche
+        '
+        Me.GBKontaktsuche.Controls.Add(Me.CBSucheUnterordner)
+        Me.GBKontaktsuche.Controls.Add(Me.CBKontaktSucheFritzBox)
+        Me.GBKontaktsuche.Location = New System.Drawing.Point(0, 46)
+        Me.GBKontaktsuche.Name = "GBKontaktsuche"
+        Me.GBKontaktsuche.Size = New System.Drawing.Size(376, 79)
+        Me.GBKontaktsuche.TabIndex = 1
+        Me.GBKontaktsuche.TabStop = False
+        Me.GBKontaktsuche.Text = "Suche von Kontakten"
         '
         'CBSucheUnterordner
         '
@@ -1744,22 +1803,22 @@ Partial Class FormCfg
         Me.CBSucheUnterordner.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.CBSucheUnterordner.Name = "CBSucheUnterordner"
         Me.CBSucheUnterordner.Size = New System.Drawing.Size(188, 21)
-        Me.CBSucheUnterordner.TabIndex = 39
+        Me.CBSucheUnterordner.TabIndex = 0
         Me.CBSucheUnterordner.Text = "Unterordner einbeziehen"
         Me.CBSucheUnterordner.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.CBSucheUnterordner.UseVisualStyleBackColor = True
         '
-        'Label1
+        'CBKontaktSucheFritzBox
         '
-        Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
-        Me.Label1.Location = New System.Drawing.Point(3, 2)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(757, 43)
-        Me.Label1.TabIndex = 38
-        Me.Label1.Text = "Einstellungen für die Kontaktsuche"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.CBKontaktSucheFritzBox.AutoSize = True
+        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(8, 50)
+        Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(311, 0)
+        Me.CBKontaktSucheFritzBox.Name = "CBKontaktSucheFritzBox"
+        Me.CBKontaktSucheFritzBox.Size = New System.Drawing.Size(311, 21)
+        Me.CBKontaktSucheFritzBox.TabIndex = 1
+        Me.CBKontaktSucheFritzBox.Text = "Die Fritz!Box Telefonbüchern durchsuchen"
+        Me.CBKontaktSucheFritzBox.UseVisualStyleBackColor = True
         '
         'GBRWS
         '
@@ -1772,7 +1831,7 @@ Partial Class FormCfg
         Me.GBRWS.Name = "GBRWS"
         Me.GBRWS.Padding = New System.Windows.Forms.Padding(4)
         Me.GBRWS.Size = New System.Drawing.Size(376, 93)
-        Me.GBRWS.TabIndex = 37
+        Me.GBRWS.TabIndex = 3
         Me.GBRWS.TabStop = False
         Me.GBRWS.Text = "Rückwärtssuche (RWS)"
         '
@@ -1782,7 +1841,7 @@ Partial Class FormCfg
         Me.BRWSTest.Margin = New System.Windows.Forms.Padding(4)
         Me.BRWSTest.Name = "BRWSTest"
         Me.BRWSTest.Size = New System.Drawing.Size(149, 34)
-        Me.BRWSTest.TabIndex = 8
+        Me.BRWSTest.TabIndex = 3
         Me.BRWSTest.Text = "Starte Test"
         Me.BRWSTest.UseVisualStyleBackColor = True
         '
@@ -1798,6 +1857,16 @@ Partial Class FormCfg
         Me.CBRWS.Text = "DasÖrtliche"
         Me.CBRWS.UseVisualStyleBackColor = True
         '
+        'BKontaktOrdnerSuche
+        '
+        Me.BKontaktOrdnerSuche.Location = New System.Drawing.Point(382, 139)
+        Me.BKontaktOrdnerSuche.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.BKontaktOrdnerSuche.Name = "BKontaktOrdnerSuche"
+        Me.BKontaktOrdnerSuche.Size = New System.Drawing.Size(379, 34)
+        Me.BKontaktOrdnerSuche.TabIndex = 1
+        Me.BKontaktOrdnerSuche.Text = "Outlook-Kontaktordner laden..."
+        Me.BKontaktOrdnerSuche.UseVisualStyleBackColor = True
+        '
         'GBIndizierung
         '
         Me.GBIndizierung.Controls.Add(Me.LabelAnzahl)
@@ -1811,7 +1880,7 @@ Partial Class FormCfg
         Me.GBIndizierung.Name = "GBIndizierung"
         Me.GBIndizierung.Padding = New System.Windows.Forms.Padding(4)
         Me.GBIndizierung.Size = New System.Drawing.Size(376, 131)
-        Me.GBIndizierung.TabIndex = 36
+        Me.GBIndizierung.TabIndex = 2
         Me.GBIndizierung.TabStop = False
         Me.GBIndizierung.Text = "Kontaktindizierung"
         '
@@ -1821,7 +1890,7 @@ Partial Class FormCfg
         Me.LabelAnzahl.Location = New System.Drawing.Point(5, 104)
         Me.LabelAnzahl.Name = "LabelAnzahl"
         Me.LabelAnzahl.Size = New System.Drawing.Size(146, 17)
-        Me.LabelAnzahl.TabIndex = 11
+        Me.LabelAnzahl.TabIndex = 5
         Me.LabelAnzahl.Text = "Status der Indizierung"
         '
         'RadioButtonEntfernen
@@ -1832,7 +1901,7 @@ Partial Class FormCfg
         Me.RadioButtonEntfernen.MinimumSize = New System.Drawing.Size(98, 0)
         Me.RadioButtonEntfernen.Name = "RadioButtonEntfernen"
         Me.RadioButtonEntfernen.Size = New System.Drawing.Size(98, 21)
-        Me.RadioButtonEntfernen.TabIndex = 8
+        Me.RadioButtonEntfernen.TabIndex = 1
         Me.RadioButtonEntfernen.TabStop = True
         Me.RadioButtonEntfernen.Text = "entfernen"
         Me.RadioButtonEntfernen.UseVisualStyleBackColor = True
@@ -1846,7 +1915,7 @@ Partial Class FormCfg
         Me.RadioButtonErstelle.MinimumSize = New System.Drawing.Size(98, 0)
         Me.RadioButtonErstelle.Name = "RadioButtonErstelle"
         Me.RadioButtonErstelle.Size = New System.Drawing.Size(98, 21)
-        Me.RadioButtonErstelle.TabIndex = 7
+        Me.RadioButtonErstelle.TabIndex = 0
         Me.RadioButtonErstelle.TabStop = True
         Me.RadioButtonErstelle.Text = "erstellen"
         Me.RadioButtonErstelle.UseVisualStyleBackColor = True
@@ -1858,7 +1927,7 @@ Partial Class FormCfg
         Me.BIndizierungAbbrechen.Margin = New System.Windows.Forms.Padding(4)
         Me.BIndizierungAbbrechen.Name = "BIndizierungAbbrechen"
         Me.BIndizierungAbbrechen.Size = New System.Drawing.Size(149, 34)
-        Me.BIndizierungAbbrechen.TabIndex = 10
+        Me.BIndizierungAbbrechen.TabIndex = 2
         Me.BIndizierungAbbrechen.Text = "Abbrechen"
         Me.BIndizierungAbbrechen.UseVisualStyleBackColor = True
         '
@@ -1868,7 +1937,7 @@ Partial Class FormCfg
         Me.BIndizierungStart.Margin = New System.Windows.Forms.Padding(4)
         Me.BIndizierungStart.Name = "BIndizierungStart"
         Me.BIndizierungStart.Size = New System.Drawing.Size(149, 34)
-        Me.BIndizierungStart.TabIndex = 9
+        Me.BIndizierungStart.TabIndex = 4
         Me.BIndizierungStart.Text = "Start"
         Me.BIndizierungStart.UseVisualStyleBackColor = True
         '
@@ -1878,27 +1947,37 @@ Partial Class FormCfg
         Me.ProgressBarIndex.Margin = New System.Windows.Forms.Padding(4)
         Me.ProgressBarIndex.Name = "ProgressBarIndex"
         Me.ProgressBarIndex.Size = New System.Drawing.Size(208, 34)
-        Me.ProgressBarIndex.TabIndex = 10
+        Me.ProgressBarIndex.TabIndex = 3
         '
-        'CBKontaktSucheFritzBox
+        'Label1
         '
-        Me.CBKontaktSucheFritzBox.AutoSize = True
-        Me.CBKontaktSucheFritzBox.Location = New System.Drawing.Point(8, 50)
-        Me.CBKontaktSucheFritzBox.Margin = New System.Windows.Forms.Padding(4)
-        Me.CBKontaktSucheFritzBox.MinimumSize = New System.Drawing.Size(311, 0)
-        Me.CBKontaktSucheFritzBox.Name = "CBKontaktSucheFritzBox"
-        Me.CBKontaktSucheFritzBox.Size = New System.Drawing.Size(311, 21)
-        Me.CBKontaktSucheFritzBox.TabIndex = 35
-        Me.CBKontaktSucheFritzBox.Text = "Die Fritz!Box Telefonbüchern durchsuchen"
-        Me.CBKontaktSucheFritzBox.UseVisualStyleBackColor = True
+        Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
+        Me.Label1.Location = New System.Drawing.Point(3, 2)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(757, 43)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Einstellungen für die Kontaktsuche"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'TreeViewKontakteSuche
+        '
+        Me.TreeViewKontakteSuche.ImageIndex = 0
+        Me.TreeViewKontakteSuche.Location = New System.Drawing.Point(383, 178)
+        Me.TreeViewKontakteSuche.Name = "TreeViewKontakteSuche"
+        Me.TreeViewKontakteSuche.SelectedImageIndex = 0
+        Me.TreeViewKontakteSuche.ShowRootLines = False
+        Me.TreeViewKontakteSuche.Size = New System.Drawing.Size(377, 185)
+        Me.TreeViewKontakteSuche.TabIndex = 6
         '
         'TabJournal
         '
         Me.TabJournal.Controls.Add(Me.TBHinweisJournal)
-        Me.TabJournal.Controls.Add(Me.TreeViewJournal)
-        Me.TabJournal.Controls.Add(Me.BJournalOrdLaden)
+        Me.TabJournal.Controls.Add(Me.BJournalOrdnerErstellen)
         Me.TabJournal.Controls.Add(Me.LHeaderTabJournal)
         Me.TabJournal.Controls.Add(Me.GBJournal)
+        Me.TabJournal.Controls.Add(Me.TreeViewJournal)
         Me.TabJournal.Location = New System.Drawing.Point(4, 25)
         Me.TabJournal.Name = "TabJournal"
         Me.TabJournal.Padding = New System.Windows.Forms.Padding(3)
@@ -1907,39 +1986,27 @@ Partial Class FormCfg
         Me.TabJournal.Text = "Journal"
         Me.TabJournal.UseVisualStyleBackColor = True
         '
-        'GBJournal
+        'TBHinweisJournal
         '
-        Me.GBJournal.Controls.Add(Me.CBJournal)
-        Me.GBJournal.Location = New System.Drawing.Point(0, 46)
-        Me.GBJournal.Margin = New System.Windows.Forms.Padding(4)
-        Me.GBJournal.Name = "GBJournal"
-        Me.GBJournal.Padding = New System.Windows.Forms.Padding(4)
-        Me.GBJournal.Size = New System.Drawing.Size(376, 79)
-        Me.GBJournal.TabIndex = 40
-        Me.GBJournal.TabStop = False
-        Me.GBJournal.Text = "Outlook Journal"
+        Me.TBHinweisJournal.Location = New System.Drawing.Point(382, 53)
+        Me.TBHinweisJournal.Multiline = True
+        Me.TBHinweisJournal.Name = "TBHinweisJournal"
+        Me.TBHinweisJournal.ReadOnly = True
+        Me.TBHinweisJournal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TBHinweisJournal.Size = New System.Drawing.Size(377, 72)
+        Me.TBHinweisJournal.TabIndex = 2
+        Me.TBHinweisJournal.TabStop = False
+        Me.TBHinweisJournal.Text = resources.GetString("TBHinweisJournal.Text")
         '
-        'CBJournal
+        'BJournalOrdnerErstellen
         '
-        Me.CBJournal.AutoSize = True
-        Me.CBJournal.Location = New System.Drawing.Point(29, 23)
-        Me.CBJournal.Margin = New System.Windows.Forms.Padding(4)
-        Me.CBJournal.MinimumSize = New System.Drawing.Size(356, 0)
-        Me.CBJournal.Name = "CBJournal"
-        Me.CBJournal.Size = New System.Drawing.Size(356, 21)
-        Me.CBJournal.TabIndex = 7
-        Me.CBJournal.Text = "Journaleinträge erstellen"
-        Me.CBJournal.UseVisualStyleBackColor = True
-        '
-        'BJournalOrdLaden
-        '
-        Me.BJournalOrdLaden.Location = New System.Drawing.Point(383, 139)
-        Me.BJournalOrdLaden.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.BJournalOrdLaden.Name = "BJournalOrdLaden"
-        Me.BJournalOrdLaden.Size = New System.Drawing.Size(373, 34)
-        Me.BJournalOrdLaden.TabIndex = 42
-        Me.BJournalOrdLaden.Text = "Outlook-Journalordner laden..."
-        Me.BJournalOrdLaden.UseVisualStyleBackColor = True
+        Me.BJournalOrdnerErstellen.Location = New System.Drawing.Point(382, 139)
+        Me.BJournalOrdnerErstellen.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.BJournalOrdnerErstellen.Name = "BJournalOrdnerErstellen"
+        Me.BJournalOrdnerErstellen.Size = New System.Drawing.Size(379, 34)
+        Me.BJournalOrdnerErstellen.TabIndex = 3
+        Me.BJournalOrdnerErstellen.Text = "Outlook-Journalordner laden..."
+        Me.BJournalOrdnerErstellen.UseVisualStyleBackColor = True
         '
         'LHeaderTabJournal
         '
@@ -1949,9 +2016,102 @@ Partial Class FormCfg
         Me.LHeaderTabJournal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LHeaderTabJournal.Name = "LHeaderTabJournal"
         Me.LHeaderTabJournal.Size = New System.Drawing.Size(757, 43)
-        Me.LHeaderTabJournal.TabIndex = 39
+        Me.LHeaderTabJournal.TabIndex = 0
         Me.LHeaderTabJournal.Text = "Einstellungen für das Journal"
         Me.LHeaderTabJournal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'GBJournal
+        '
+        Me.GBJournal.Controls.Add(Me.CBJournal)
+        Me.GBJournal.Location = New System.Drawing.Point(0, 46)
+        Me.GBJournal.Margin = New System.Windows.Forms.Padding(4)
+        Me.GBJournal.Name = "GBJournal"
+        Me.GBJournal.Padding = New System.Windows.Forms.Padding(4)
+        Me.GBJournal.Size = New System.Drawing.Size(376, 60)
+        Me.GBJournal.TabIndex = 1
+        Me.GBJournal.TabStop = False
+        Me.GBJournal.Text = "Outlook Journal"
+        '
+        'CBJournal
+        '
+        Me.CBJournal.AutoSize = True
+        Me.CBJournal.Location = New System.Drawing.Point(8, 23)
+        Me.CBJournal.Margin = New System.Windows.Forms.Padding(4)
+        Me.CBJournal.MinimumSize = New System.Drawing.Size(356, 0)
+        Me.CBJournal.Name = "CBJournal"
+        Me.CBJournal.Size = New System.Drawing.Size(356, 21)
+        Me.CBJournal.TabIndex = 0
+        Me.CBJournal.Text = "Journaleinträge erstellen"
+        Me.CBJournal.UseVisualStyleBackColor = True
+        '
+        'TreeViewJournal
+        '
+        Me.TreeViewJournal.ImageIndex = 0
+        Me.TreeViewJournal.Location = New System.Drawing.Point(383, 178)
+        Me.TreeViewJournal.Name = "TreeViewJournal"
+        Me.TreeViewJournal.SelectedImageIndex = 1
+        Me.TreeViewJournal.ShowRootLines = False
+        Me.TreeViewJournal.Size = New System.Drawing.Size(377, 185)
+        Me.TreeViewJournal.TabIndex = 4
+        '
+        'PKontakterstellung
+        '
+        Me.PKontakterstellung.Controls.Add(Me.GBKontakterstellung)
+        Me.PKontakterstellung.Controls.Add(Me.BKontaktOrdnerErstellen)
+        Me.PKontakterstellung.Controls.Add(Me.TreeViewKontakteErstellen)
+        Me.PKontakterstellung.Controls.Add(Me.Label21)
+        Me.PKontakterstellung.Controls.Add(Me.TBHinweisKontakterstellung)
+        Me.PKontakterstellung.Location = New System.Drawing.Point(4, 25)
+        Me.PKontakterstellung.Name = "PKontakterstellung"
+        Me.PKontakterstellung.Padding = New System.Windows.Forms.Padding(3)
+        Me.PKontakterstellung.Size = New System.Drawing.Size(763, 363)
+        Me.PKontakterstellung.TabIndex = 18
+        Me.PKontakterstellung.Text = "Kontakterstellung"
+        Me.PKontakterstellung.UseVisualStyleBackColor = True
+        '
+        'BKontaktOrdnerErstellen
+        '
+        Me.BKontaktOrdnerErstellen.Location = New System.Drawing.Point(382, 139)
+        Me.BKontaktOrdnerErstellen.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.BKontaktOrdnerErstellen.Name = "BKontaktOrdnerErstellen"
+        Me.BKontaktOrdnerErstellen.Size = New System.Drawing.Size(379, 34)
+        Me.BKontaktOrdnerErstellen.TabIndex = 3
+        Me.BKontaktOrdnerErstellen.Text = "Outlook-Journalordner laden..."
+        Me.BKontaktOrdnerErstellen.UseVisualStyleBackColor = True
+        '
+        'TreeViewKontakteErstellen
+        '
+        Me.TreeViewKontakteErstellen.ImageIndex = 0
+        Me.TreeViewKontakteErstellen.Location = New System.Drawing.Point(383, 178)
+        Me.TreeViewKontakteErstellen.Name = "TreeViewKontakteErstellen"
+        Me.TreeViewKontakteErstellen.SelectedImageIndex = 0
+        Me.TreeViewKontakteErstellen.ShowRootLines = False
+        Me.TreeViewKontakteErstellen.Size = New System.Drawing.Size(377, 185)
+        Me.TreeViewKontakteErstellen.TabIndex = 4
+        '
+        'Label21
+        '
+        Me.Label21.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
+        Me.Label21.Location = New System.Drawing.Point(3, 3)
+        Me.Label21.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(757, 43)
+        Me.Label21.TabIndex = 0
+        Me.Label21.Text = "Einstellungen für die Kontakterstellung"
+        Me.Label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'TBHinweisKontakterstellung
+        '
+        Me.TBHinweisKontakterstellung.Location = New System.Drawing.Point(382, 53)
+        Me.TBHinweisKontakterstellung.Multiline = True
+        Me.TBHinweisKontakterstellung.Name = "TBHinweisKontakterstellung"
+        Me.TBHinweisKontakterstellung.ReadOnly = True
+        Me.TBHinweisKontakterstellung.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TBHinweisKontakterstellung.Size = New System.Drawing.Size(377, 72)
+        Me.TBHinweisKontakterstellung.TabIndex = 2
+        Me.TBHinweisKontakterstellung.TabStop = False
+        Me.TBHinweisKontakterstellung.Text = resources.GetString("TBHinweisKontakterstellung.Text")
         '
         'PPhoner
         '
@@ -2188,7 +2348,7 @@ Partial Class FormCfg
         Me.BXML.Margin = New System.Windows.Forms.Padding(4)
         Me.BXML.Name = "BXML"
         Me.BXML.Size = New System.Drawing.Size(147, 34)
-        Me.BXML.TabIndex = 27
+        Me.BXML.TabIndex = 4
         Me.BXML.Text = "Einstellungsdatei"
         Me.BXML.UseVisualStyleBackColor = True
         '
@@ -2212,7 +2372,7 @@ Partial Class FormCfg
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(771, 42)
-        Me.TableLayoutPanel1.TabIndex = 28
+        Me.TableLayoutPanel1.TabIndex = 0
         '
         'TableLayoutPanel2
         '
@@ -2228,139 +2388,17 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(779, 450)
-        Me.TableLayoutPanel2.TabIndex = 29
+        Me.TableLayoutPanel2.TabIndex = 0
         '
-        'GBKontaktsuche
+        'GBKontakterstellung
         '
-        Me.GBKontaktsuche.Controls.Add(Me.CBSucheUnterordner)
-        Me.GBKontaktsuche.Controls.Add(Me.CBKontaktSucheFritzBox)
-        Me.GBKontaktsuche.Location = New System.Drawing.Point(0, 46)
-        Me.GBKontaktsuche.Name = "GBKontaktsuche"
-        Me.GBKontaktsuche.Size = New System.Drawing.Size(376, 79)
-        Me.GBKontaktsuche.TabIndex = 41
-        Me.GBKontaktsuche.TabStop = False
-        Me.GBKontaktsuche.Text = "Kontaktsuche"
-        '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.Label21)
-        Me.TabPage1.Controls.Add(Me.TBHinweisKontakterstellung)
-        Me.TabPage1.Controls.Add(Me.CBKErstellen)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 25)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(763, 363)
-        Me.TabPage1.TabIndex = 18
-        Me.TabPage1.Text = "TabPage1"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'CBKErstellen
-        '
-        Me.CBKErstellen.AutoSize = True
-        Me.CBKErstellen.Enabled = False
-        Me.CBKErstellen.Location = New System.Drawing.Point(49, 92)
-        Me.CBKErstellen.Margin = New System.Windows.Forms.Padding(4)
-        Me.CBKErstellen.Name = "CBKErstellen"
-        Me.CBKErstellen.Size = New System.Drawing.Size(136, 21)
-        Me.CBKErstellen.TabIndex = 3
-        Me.CBKErstellen.Text = "Kontakt erstellen"
-        Me.ToolTipFBDBConfig.SetToolTip(Me.CBKErstellen, "Nach erfolgreicher Rückwärtssuche, wird bei dieser Einstellung ein neuer Kontakt " &
-        "erstellt.")
-        Me.CBKErstellen.UseVisualStyleBackColor = True
-        '
-        'TBHinweisKontaktsuche
-        '
-        Me.TBHinweisKontaktsuche.Location = New System.Drawing.Point(382, 53)
-        Me.TBHinweisKontaktsuche.Multiline = True
-        Me.TBHinweisKontaktsuche.Name = "TBHinweisKontaktsuche"
-        Me.TBHinweisKontaktsuche.ReadOnly = True
-        Me.TBHinweisKontaktsuche.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBHinweisKontaktsuche.Size = New System.Drawing.Size(377, 72)
-        Me.TBHinweisKontaktsuche.TabIndex = 42
-        Me.TBHinweisKontaktsuche.Text = resources.GetString("TBHinweisKontaktsuche.Text")
-        '
-        'TBHinweisJournal
-        '
-        Me.TBHinweisJournal.Location = New System.Drawing.Point(382, 53)
-        Me.TBHinweisJournal.Multiline = True
-        Me.TBHinweisJournal.Name = "TBHinweisJournal"
-        Me.TBHinweisJournal.ReadOnly = True
-        Me.TBHinweisJournal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBHinweisJournal.Size = New System.Drawing.Size(377, 72)
-        Me.TBHinweisJournal.TabIndex = 44
-        Me.TBHinweisJournal.Text = resources.GetString("TBHinweisJournal.Text")
-        '
-        'TreeViewKontakte
-        '
-        Me.TreeViewKontakte.ImageIndex = 0
-        Me.TreeViewKontakte.Location = New System.Drawing.Point(383, 178)
-        Me.TreeViewKontakte.Name = "TreeViewKontakte"
-        Me.TreeViewKontakte.SelectedImageIndex = 0
-        Me.TreeViewKontakte.ShowRootLines = False
-        Me.TreeViewKontakte.Size = New System.Drawing.Size(377, 185)
-        Me.TreeViewKontakte.TabIndex = 40
-        '
-        'TreeViewJournal
-        '
-        Me.TreeViewJournal.ImageIndex = 0
-        Me.TreeViewJournal.Location = New System.Drawing.Point(383, 178)
-        Me.TreeViewJournal.Name = "TreeViewJournal"
-        Me.TreeViewJournal.SelectedImageIndex = 1
-        Me.TreeViewJournal.ShowRootLines = False
-        Me.TreeViewJournal.Size = New System.Drawing.Size(377, 185)
-        Me.TreeViewJournal.TabIndex = 43
-        '
-        'DGVTelList
-        '
-        Me.DGVTelList.AllowUserToAddRows = False
-        Me.DGVTelList.AllowUserToDeleteRows = False
-        Me.DGVTelList.AllowUserToResizeColumns = False
-        Me.DGVTelList.AllowUserToResizeRows = False
-        Me.DGVTelList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
-        Me.DGVTelList.ColumnHeadersHeight = 34
-        Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
-        Me.DGVTelList.Location = New System.Drawing.Point(4, 19)
-        Me.DGVTelList.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.DGVTelList.MultiSelect = False
-        Me.DGVTelList.Name = "DGVTelList"
-        Me.DGVTelList.RowHeadersVisible = False
-        Me.DGVTelList.RowHeadersWidth = 62
-        Me.DGVTelList.RowTemplate.Height = 28
-        Me.DGVTelList.ShowEditingIcon = False
-        Me.DGVTelList.Size = New System.Drawing.Size(752, 218)
-        Me.DGVTelList.TabIndex = 36
-        '
-        'TBHinweisKontakterstellung
-        '
-        Me.TBHinweisKontakterstellung.Location = New System.Drawing.Point(382, 53)
-        Me.TBHinweisKontakterstellung.Multiline = True
-        Me.TBHinweisKontakterstellung.Name = "TBHinweisKontakterstellung"
-        Me.TBHinweisKontakterstellung.ReadOnly = True
-        Me.TBHinweisKontakterstellung.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TBHinweisKontakterstellung.Size = New System.Drawing.Size(377, 72)
-        Me.TBHinweisKontakterstellung.TabIndex = 45
-        Me.TBHinweisKontakterstellung.Text = resources.GetString("TBHinweisKontakterstellung.Text")
-        '
-        'Label21
-        '
-        Me.Label21.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
-        Me.Label21.Location = New System.Drawing.Point(3, 3)
-        Me.Label21.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(757, 43)
-        Me.Label21.TabIndex = 46
-        Me.Label21.Text = "Einstellungen für die Kontakterstellung"
-        Me.Label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.GBKontakterstellung.Controls.Add(Me.CBKErstellen)
+        Me.GBKontakterstellung.Location = New System.Drawing.Point(0, 46)
+        Me.GBKontakterstellung.Name = "GBKontakterstellung"
+        Me.GBKontakterstellung.Size = New System.Drawing.Size(376, 60)
+        Me.GBKontakterstellung.TabIndex = 5
+        Me.GBKontakterstellung.TabStop = False
+        Me.GBKontakterstellung.Text = "Erstellung von Kontakten"
         '
         'FormCfg
         '
@@ -2390,6 +2428,7 @@ Partial Class FormCfg
         Me.GroupBox1.PerformLayout()
         Me.StatusStripTelefone.ResumeLayout(False)
         Me.StatusStripTelefone.PerformLayout()
+        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PAnrufmonitor.ResumeLayout(False)
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
@@ -2411,6 +2450,8 @@ Partial Class FormCfg
         Me.GBoxAnrMonRING.PerformLayout()
         Me.PKontaktsuche.ResumeLayout(False)
         Me.PKontaktsuche.PerformLayout()
+        Me.GBKontaktsuche.ResumeLayout(False)
+        Me.GBKontaktsuche.PerformLayout()
         Me.GBRWS.ResumeLayout(False)
         Me.GBRWS.PerformLayout()
         Me.GBIndizierung.ResumeLayout(False)
@@ -2419,6 +2460,8 @@ Partial Class FormCfg
         Me.TabJournal.PerformLayout()
         Me.GBJournal.ResumeLayout(False)
         Me.GBJournal.PerformLayout()
+        Me.PKontakterstellung.ResumeLayout(False)
+        Me.PKontakterstellung.PerformLayout()
         Me.PPhoner.ResumeLayout(False)
         Me.PPhoner.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -2429,15 +2472,12 @@ Partial Class FormCfg
         Me.GBLogging.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.GBKontaktsuche.ResumeLayout(False)
-        Me.GBKontaktsuche.PerformLayout()
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
-        CType(Me.DGVTelList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GBKontakterstellung.ResumeLayout(False)
+        Me.GBKontakterstellung.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents BJournalOrdLaden As Windows.Forms.Button
+    Friend WithEvents BJournalOrdnerErstellen As Windows.Forms.Button
     Friend WithEvents BReset As System.Windows.Forms.Button
     Friend WithEvents BAbbruch As System.Windows.Forms.Button
     Friend WithEvents BApply As System.Windows.Forms.Button
@@ -2571,7 +2611,7 @@ Partial Class FormCfg
     Friend WithEvents LWClientEnblDauer As Windows.Forms.Label
     Friend WithEvents DGVTelList As FBoxDataGridView
     Friend WithEvents PKontaktsuche As Windows.Forms.TabPage
-    Friend WithEvents BKontOrdLaden As Windows.Forms.Button
+    Friend WithEvents BKontaktOrdnerSuche As Windows.Forms.Button
     Friend WithEvents CBKontaktSucheFritzBox As Windows.Forms.CheckBox
     Friend WithEvents GBIndizierung As Windows.Forms.GroupBox
     Friend WithEvents RadioButtonEntfernen As Windows.Forms.RadioButton
@@ -2607,13 +2647,16 @@ Partial Class FormCfg
     Friend WithEvents GBJournal As Windows.Forms.GroupBox
     Friend WithEvents CBJournal As Windows.Forms.CheckBox
     Friend WithEvents LHeaderTabJournal As Windows.Forms.Label
-    Friend WithEvents TreeViewKontakte As TreeViewEx
+    Friend WithEvents TreeViewKontakteSuche As TreeViewEx
     Friend WithEvents TreeViewJournal As TreeViewEx
     Friend WithEvents GBKontaktsuche As Windows.Forms.GroupBox
-    Friend WithEvents TabPage1 As Windows.Forms.TabPage
+    Friend WithEvents PKontakterstellung As Windows.Forms.TabPage
     Friend WithEvents CBKErstellen As Windows.Forms.CheckBox
     Friend WithEvents TBHinweisKontaktsuche As Windows.Forms.TextBox
     Friend WithEvents TBHinweisJournal As Windows.Forms.TextBox
     Friend WithEvents TBHinweisKontakterstellung As Windows.Forms.TextBox
     Friend WithEvents Label21 As Windows.Forms.Label
+    Friend WithEvents BKontaktOrdnerErstellen As Windows.Forms.Button
+    Friend WithEvents TreeViewKontakteErstellen As TreeViewEx
+    Friend WithEvents GBKontakterstellung As Windows.Forms.GroupBox
 End Class

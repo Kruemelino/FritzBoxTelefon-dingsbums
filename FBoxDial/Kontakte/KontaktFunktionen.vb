@@ -4,7 +4,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 Friend Module KontaktFunktionen
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
 
     ''' <summary>
@@ -69,35 +69,8 @@ Friend Module KontaktFunktionen
 
             End With
 
-            If AutoSave Then
-                If olKontakt.GetInspector Is Nothing Then
-                    IndiziereKontakt(olKontakt)
-                End If
-                ' Todo 1: Prüfe, ob ein Ordner ausgewählt wurde (Properties sind nicht -1)
-                ' Todo 2: Prüfe, ob Ordner aus 1 nicht der default Ordner ist.
+            If AutoSave Then SpeichereKontakt(olKontakt)
 
-                'Handlung 1:
-
-                'If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
-                '    Dim olFolder As Outlook.MAPIFolder
-
-                '    olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
-                '    ' Handlung 2:
-                '    If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
-                '        ' olKontakt.Save() 
-                '        If olKontakt.Speichern Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
-                '    Else
-                '        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                '        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
-                '    End If
-
-                '    KontaktID = olKontakt.EntryID
-                '    StoreID = olFolder.StoreID
-                '    olFolder.ReleaseComObject
-                'End If
-            Else
-                'olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
-            End If
             ErstelleKontakt = olKontakt
         Else
             Return Nothing
@@ -129,40 +102,38 @@ Friend Module KontaktFunktionen
 
             End With
 
-            If AutoSave Then
-                If olKontakt.GetInspector Is Nothing Then
-                    IndiziereKontakt(olKontakt)
-                End If
-                ' Todo 1: Prüfe, ob ein Ordner ausgewählt wurde (Properties sind nicht -1)
-                ' Todo 2: Prüfe, ob Ordner aus 1 nicht der default Ordner ist.
+            If AutoSave Then SpeichereKontakt(olKontakt)
 
-                'Handlung 1:
-
-                'If XMLData.POptionen.PTVKontaktOrdnerEntryID.IsNotStringEmpty And XMLData.POptionen.PTVKontaktOrdnerStoreID.IsNotStringEmpty Then
-                '    Dim olFolder As Outlook.MAPIFolder
-
-                '    olFolder = GetOutlookFolder(XMLData.POptionen.PTVKontaktOrdnerEntryID, XMLData.POptionen.PTVKontaktOrdnerStoreID)
-                '    ' Handlung 2:
-                '    If olFolder.EntryID = P_DefContactFolder.EntryID And olFolder.StoreID = P_DefContactFolder.StoreID Then
-                '        'olKontakt.Save()
-                '        If olKontakt.Speichern() Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
-                '    Else
-                '        olKontakt = CType(olKontakt.Move(olFolder), Outlook.ContactItem)
-                '        NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, olFolder.Name)
-                '    End If
-
-                '    KontaktID = olKontakt.EntryID
-                '    StoreID = olFolder.StoreID
-                '    ReleaseComObject(olFolder)
-                'End If
-            Else
-                'olKontakt.UserProperties.Add(PDfltUserPropertyIndex, Outlook.OlUserPropertyType.olText, False).Value = "False"
-            End If
-            ErstelleKontakt = olKontakt
+            Return olKontakt
         Else
             Return Nothing
         End If
     End Function
+
+    Private Sub SpeichereKontakt(ByRef olKontakt As Outlook.ContactItem)
+
+        ' Ermittle den Ordner in den der Kontakt gespeichet werden soll
+        Dim KontaktOrdner As OutlookOrdner = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(fldr) fldr.Typ = OutlookOrdnerVerwendung.KontaktSpeichern)
+
+        ' Speichere den Kontakt... (Wenn es sich nicht um den Hauptkontaktordner handelt, der Kontakt ist da breits (ungespeichert) enthalten. Ein Move würde den Kontakt dublizieren.)
+        If KontaktOrdner IsNot Nothing AndAlso KontaktOrdner.MAPIFolder IsNot Nothing And ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts) IsNot KontaktOrdner.MAPIFolder Then
+            ' ... im festgelegten Ordner
+            olKontakt = CType(olKontakt.Move(KontaktOrdner.MAPIFolder), Outlook.ContactItem)
+            NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, KontaktOrdner.MAPIFolder.Name)
+        Else
+            ' ... im Kontakthauptordner
+            If olKontakt.Speichern Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
+        End If
+
+        ' Indiziere den Kontakt, falls dieser nicht eingeblendet ist
+        'If olKontakt.GetInspector Is Nothing Then
+        ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, tatsächlich zur Kontaktsuche verwendet werden soll
+        If XMLData.POptionen.OutlookOrdner.OrdnerListe.Exists(Function(fldr) fldr.MAPIFolder.AreEqual(KontaktOrdner.MAPIFolder) And fldr.Typ = OutlookOrdnerVerwendung.KontaktSuche) Then
+            IndiziereKontakt(olKontakt)
+        End If
+        'End If
+
+    End Sub
 
     ''' <summary>
     ''' Erstellt einen leeren Kontakt und ergänzt eine Telefonnummer.
@@ -431,6 +402,19 @@ Friend Module KontaktFunktionen
             Return False
         End Try
     End Function
+
+    <Extension> Friend Function ParentFolder(ByRef olKontakt As Outlook.ContactItem) As Outlook.MAPIFolder
+        If olKontakt.Parent IsNot Nothing Then
+            Return CType(olKontakt.Parent, Outlook.MAPIFolder)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    <Extension> Friend Function AreEqual(ByVal Ordner1 As Outlook.MAPIFolder, ByVal Ordner2 As Outlook.MAPIFolder) As Boolean
+        Return Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID)
+    End Function
+
 #Region "VIP"
     <Extension> Friend Function IsVIP(ByVal olKontakt As Outlook.ContactItem) As Boolean
 
@@ -467,67 +451,6 @@ Friend Module KontaktFunktionen
     End Sub
 
 #End Region
-
-#Region "TreeView"
-    ' 03.04.2020 vorläufig deaktiviert
-    'Friend Sub GetKontaktOrdnerInTreeView(ByVal TreeView As Windows.Forms.TreeView)
-    '    Dim olNamespace As Outlook.NameSpace = ThisAddIn.POutookApplication.GetNamespace("MAPI")
-    '    Dim iOrdner As Integer = 1
-
-    '    With TreeView
-    '        .Nodes.Add("Kontaktordner")
-    '    End With
-
-    '    Do While iOrdner.IsLessOrEqual(olNamespace.Folders.Count)
-    '        KontaktOrdnerInTreeView(olNamespace.Folders.Item(iOrdner), TreeView, TreeView.Nodes(0))
-    '        iOrdner += 1
-    '    Loop
-    'End Sub
-
-    'Private Sub KontaktOrdnerInTreeView(ByVal Ordner As Outlook.MAPIFolder, ByVal TreeView As Windows.Forms.TreeView, ByVal BaseNode As Windows.Forms.TreeNode)
-    '    Dim ChildNode As Windows.Forms.TreeNode
-    '    'Dim iOrdner As Integer = 1
-    '    'Dim SubFolder As Outlook.MAPIFolder
-
-    '    'Do While iOrdner.IsLessOrEqual(Ordner.Folders.Count)
-    '    '    SubFolder = Ordner.Folders.Item(iOrdner)
-    '    '    ChildNode = BaseNode
-    '    '    If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
-    '    '        Try
-    '    '            ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
-    '    '            ChildNode.Tag = ChildNode.Name
-    '    '            If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
-    '    '        Catch ex As Exception
-    '    '            LogFile(String.Format("Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name))
-    '    '            ChildNode = BaseNode
-    '    '        End Try
-    '    '    End If
-    '    '    KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-    '    '    iOrdner += 1
-    '    'Loop
-
-    '    For Each SubFolder As Outlook.MAPIFolder In Ordner.Folders
-
-    '        If SubFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
-
-    '            Try
-    '                ChildNode = BaseNode.Nodes.Add(SubFolder.EntryID & ";" & SubFolder.StoreID, SubFolder.Name, "Kontakt")
-    '                ChildNode.Tag = ChildNode.Name
-    '                If ChildNode.Level.AreEqual(1) Then ChildNode.Text += String.Format(" ({0})", Ordner.Name)
-    '            Catch ex As Exception
-    '                NLogger.Error(ex, "Auf den Ordner {0} kann nicht zugegriffen werden.", SubFolder.Name)
-    '                ChildNode = BaseNode
-    '            End Try
-    '        Else
-    '            ChildNode = BaseNode
-    '        End If
-    '        Windows.Forms.Application.DoEvents()
-    '        KontaktOrdnerInTreeView(SubFolder, TreeView, ChildNode)
-    '    Next
-
-    'End Sub
-#End Region
-
     Private Sub XMLKontaktOutlook(ByVal XMLKontakt As FritzBoxXMLKontakt, ByRef Kontakt As Outlook.ContactItem)
         ' Werte übeführen
         With Kontakt
@@ -554,49 +477,49 @@ Friend Module KontaktFunktionen
                     ' Type = "fax_work: .BusinessFaxNumber, .HomeFaxNumber, .OtherFaxNumber, .TelexNumber
                     Select Case TelNr.Typ
                         Case "home"
-                            If .HomeTelephoneNumber.IsStringEmpty Then
+                            If .HomeTelephoneNumber.IsStringNothingOrEmpty Then
                                 .HomeTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .Home2TelephoneNumber.IsStringEmpty Then
+                            ElseIf .Home2TelephoneNumber.IsStringNothingOrEmpty Then
                                 .Home2TelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .CarTelephoneNumber.IsStringEmpty Then
+                            ElseIf .CarTelephoneNumber.IsStringNothingOrEmpty Then
                                 .CarTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .OtherTelephoneNumber.IsStringEmpty Then
+                            ElseIf .OtherTelephoneNumber.IsStringNothingOrEmpty Then
                                 .OtherTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .ISDNNumber.IsStringEmpty Then
+                            ElseIf .ISDNNumber.IsStringNothingOrEmpty Then
                                 .ISDNNumber = tmpTelNr.Formatiert
-                            ElseIf .TTYTDDTelephoneNumber.IsStringEmpty Then
+                            ElseIf .TTYTDDTelephoneNumber.IsStringNothingOrEmpty Then
                                 .TTYTDDTelephoneNumber = tmpTelNr.Formatiert
                             End If
                         Case "mobile"
-                            If .MobileTelephoneNumber.IsStringEmpty Then
+                            If .MobileTelephoneNumber.IsStringNothingOrEmpty Then
                                 .MobileTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .PagerNumber.IsStringEmpty Then
+                            ElseIf .PagerNumber.IsStringNothingOrEmpty Then
                                 .PagerNumber = tmpTelNr.Formatiert
-                            ElseIf .RadioTelephoneNumber.IsStringEmpty Then
+                            ElseIf .RadioTelephoneNumber.IsStringNothingOrEmpty Then
                                 .RadioTelephoneNumber = tmpTelNr.Formatiert
                             End If
                         Case "work"
-                            If .BusinessTelephoneNumber.IsStringEmpty Then
+                            If .BusinessTelephoneNumber.IsStringNothingOrEmpty Then
                                 .BusinessTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .Business2TelephoneNumber.IsStringEmpty Then
+                            ElseIf .Business2TelephoneNumber.IsStringNothingOrEmpty Then
                                 .Business2TelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .AssistantTelephoneNumber.IsStringEmpty Then
+                            ElseIf .AssistantTelephoneNumber.IsStringNothingOrEmpty Then
                                 .AssistantTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .CallbackTelephoneNumber.IsStringEmpty Then
+                            ElseIf .CallbackTelephoneNumber.IsStringNothingOrEmpty Then
                                 .CallbackTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .CompanyMainTelephoneNumber.IsStringEmpty Then
+                            ElseIf .CompanyMainTelephoneNumber.IsStringNothingOrEmpty Then
                                 .CompanyMainTelephoneNumber = tmpTelNr.Formatiert
-                            ElseIf .PrimaryTelephoneNumber.IsStringEmpty Then
+                            ElseIf .PrimaryTelephoneNumber.IsStringNothingOrEmpty Then
                                 .PrimaryTelephoneNumber = tmpTelNr.Formatiert
                             End If
                         Case "fax_work"
-                            If .BusinessFaxNumber.IsStringEmpty Then
+                            If .BusinessFaxNumber.IsStringNothingOrEmpty Then
                                 .BusinessFaxNumber = tmpTelNr.Formatiert
-                            ElseIf .HomeFaxNumber.IsStringEmpty Then
+                            ElseIf .HomeFaxNumber.IsStringNothingOrEmpty Then
                                 .HomeFaxNumber = tmpTelNr.Formatiert
-                            ElseIf .OtherFaxNumber.IsStringEmpty Then
+                            ElseIf .OtherFaxNumber.IsStringNothingOrEmpty Then
                                 .OtherFaxNumber = tmpTelNr.Formatiert
-                            ElseIf .TelexNumber.IsStringEmpty Then
+                            ElseIf .TelexNumber.IsStringNothingOrEmpty Then
                                 .TelexNumber = tmpTelNr.Formatiert
                             End If
                     End Select
@@ -610,7 +533,7 @@ Friend Module KontaktFunktionen
             XmlSerializerNamespace.Add(PDfltStringEmpty, PDfltStringEmpty)
 
             Using TextSchreiber As New StringWriter
-                mySerializer.Serialize(TextSchreiber, XMLData, XmlSerializerNamespace)
+                mySerializer.Serialize(TextSchreiber, XMLKontakt, XmlSerializerNamespace)
                 .Body = TextSchreiber.ToString()
             End Using
         End With

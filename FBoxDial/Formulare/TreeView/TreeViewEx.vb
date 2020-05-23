@@ -27,7 +27,7 @@ Public Class TreeViewEx
     Private Property IsMultiSelect As Boolean
     Friend Property CheckedOlFolders As List(Of OutlookOrdner)
 
-    Friend Sub AddOutlookBaseNodes(OutlookItemType As Outlook.OlItemType, MultiSelect As Boolean, CheckSubNodes As Boolean)
+    Friend Sub AddOutlookBaseNodes(OutlookItemType As Outlook.OlItemType, Verwendung As OutlookOrdnerVerwendung, MultiSelect As Boolean, CheckSubNodes As Boolean)
         ' setze eigene Eigenschaften
         IsMultiSelect = MultiSelect
         OutlookOrdnerType = OutlookItemType
@@ -43,7 +43,8 @@ Public Class TreeViewEx
                                                              .ImageKey = "Disabled",
                                                              .OutlookItemType = OutlookOrdnerType,
                                                              .AutoCheckSubNodes = CheckSubNodes,
-                                                             .StoreNode = True}
+                                                             .StoreNode = True,
+                                                             .Verwendung = Verwendung}
                 Nodes.Add(olTreeNode)
             Next
             ' Sortieren

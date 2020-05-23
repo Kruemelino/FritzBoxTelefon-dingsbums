@@ -11,8 +11,6 @@ Friend Module KontaktIndizierer
     Friend Sub IndiziereKontakt(ByRef olKontakt As Outlook.ContactItem)
 
         With olKontakt
-            ' Kein Exchange
-            'If CType(.Parent, Outlook.MAPIFolder).Store.ExchangeStoreType = Outlook.OlExchangeStoreType.olNotExchange Then
 
             Dim colArgs As Object()
             ' Lade alle Telefonnummern des Kontaktes
@@ -50,7 +48,6 @@ Friend Module KontaktIndizierer
 
             If .Speichern Then NLogger.Info("Kontakt {0} gespeichert", olKontakt.FullNameAndCompany)
 
-            'End If
         End With
     End Sub
 

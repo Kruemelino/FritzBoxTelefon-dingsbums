@@ -11,9 +11,10 @@ Friend Class KontaktGespeichert
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles Kontakt.Write
-        ' Prüfe ob der Kontakt in einem Indizierten Ordner liegt
-
-        IndiziereKontakt(Kontakt)
+        ' Prüfe ob der Ordner für die Kontaktsuche verwendet wird
+        If XMLData.POptionen.OutlookOrdner.OrdnerListe.Exists(Function(fldr) fldr.MAPIFolder.AreEqual(Kontakt.ParentFolder) And fldr.Typ = OutlookOrdnerVerwendung.KontaktSuche) Then
+            IndiziereKontakt(Kontakt)
+        End If
     End Sub
 
 #Region "IDisposable Support"

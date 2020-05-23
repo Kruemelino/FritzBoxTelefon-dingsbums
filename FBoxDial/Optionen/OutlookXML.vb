@@ -7,6 +7,7 @@
 
     Friend Sub New()
         POptionen = New Optionen
+
         PTelefonie = New Telefonie
         With PTelefonie
             .Telefonnummern = New List(Of Telefonnummer)

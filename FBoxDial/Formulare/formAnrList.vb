@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports System.Data
-Imports System.Drawing
 Imports System.Reflection
 Imports System.Threading.Tasks
 Imports System.Windows.Forms
@@ -12,7 +11,7 @@ Public Class FormAnrList
     Private Property Anrufliste As FritzBoxXMLCallList
     Private Property Source As BindingSource
 
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private WithEvents BWImport As BackgroundWorker
 
 #Region "Delegaten"
@@ -300,6 +299,7 @@ Public Class FormAnrList
             Freischalten(True)
         End If
     End Sub
+
 #End Region
 
 End Class

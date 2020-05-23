@@ -11,6 +11,7 @@ Friend Class OlOrdnerTreeNode
     Friend Property XMLEintrag As OutlookOrdner
     Friend Property AutoCheckSubNodes As Boolean
     Friend Property StoreNode As Boolean
+    Friend Property Verwendung As OutlookOrdnerVerwendung
 
     Friend Sub SetImageKey()
         ' If OutlookFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
@@ -72,12 +73,13 @@ Friend Class OlOrdnerTreeNode
                                                              .OutlookItemType = OutlookItemType,
                                                              .Name = $"{OutlookStore.StoreID}{Ordner.EntryID}",
                                                              .AutoCheckSubNodes = AutoCheckSubNodes,
-                                                             .StoreNode = False}
+                                                             .StoreNode = False,
+                                                             .Verwendung = Verwendung}
 
                 ' Prüfe ob der Ordner aus den Einstellungen heraus verarbeitet werden soll
                 With olTreeNode
-                    If .OutlookFolder.DefaultItemType = OutlookItemType AndAlso .XMLEintrag Is Nothing Then
-                        .XMLEintrag = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(Eintrag) Eintrag.FolderID.AreEqual(.OutlookFolder.EntryID) And Eintrag.StoreID.AreEqual(.OutlookStore.StoreID))
+                    If .OutlookFolder.DefaultItemType = OutlookItemType Then ' AndAlso .XMLEintrag Is Nothing Then
+                        .XMLEintrag = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(Eintrag) Eintrag.FolderID.AreEqual(.OutlookFolder.EntryID) And Eintrag.StoreID.AreEqual(.OutlookStore.StoreID) And Eintrag.Typ = Verwendung)
                     End If
                     ' Setze das Icon
                     .SetImageKey()

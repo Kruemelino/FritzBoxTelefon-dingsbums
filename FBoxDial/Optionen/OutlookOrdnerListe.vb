@@ -1,5 +1,4 @@
 ﻿Imports System.Xml.Serialization
-Imports Microsoft.Office.Interop
 
 <Serializable()>
 Public Class OutlookOrdnerListe

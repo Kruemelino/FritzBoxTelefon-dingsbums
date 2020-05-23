@@ -31,6 +31,10 @@ Public Class FormCfg
     Private Async Sub Ausfüllen(ByVal m_Control As Control)
         Dim tmpPropertyInfo As Reflection.PropertyInfo
 
+        '' Lade die Liste der zu indizierenden Ordner
+        'If XMLData.POptionen.OutlookOrdner Is Nothing Then XMLData.POptionen.OutlookOrdner = New OutlookOrdnerListe
+        'If XMLData.POptionen.OutlookOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.OutlookOrdner.OrdnerListe = New List(Of OutlookOrdner)
+
         For Each ctrl As Control In m_Control.Controls
 
             If ctrl.Controls.Count > 0 Then
@@ -91,18 +95,15 @@ Public Class FormCfg
                 Dim VTyp As OutlookOrdnerVerwendung
                 Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
 
-                Select Case olfldrTV.Name
-                    Case TreeViewKontakte.Name
+                Select Case True
+                    Case olfldrTV Is TreeViewKontakteSuche
                         VTyp = OutlookOrdnerVerwendung.KontaktSuche
-                    Case TreeViewJournal.Name
+                    Case olfldrTV Is TreeViewJournal
                         VTyp = OutlookOrdnerVerwendung.JournalSpeichern
+                    Case olfldrTV Is TreeViewKontakteErstellen
+                        VTyp = OutlookOrdnerVerwendung.KontaktSpeichern
                 End Select
 
-                ' Lade die Liste der zu indizierenden Ordner
-                If XMLData.POptionen.OutlookOrdner Is Nothing Then XMLData.POptionen.OutlookOrdner = New OutlookOrdnerListe
-                If XMLData.POptionen.OutlookOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.OutlookOrdner.OrdnerListe = New List(Of OutlookOrdner)
-
-                'If olfldrTV.CheckedOlFolders Is Nothing Then olfldrTV.CheckedOlFolders = New List(Of OutlookOrdner)
                 olfldrTV.CheckedOlFolders = XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)
 
             End If
@@ -179,8 +180,8 @@ Public Class FormCfg
             ElseIf ctrl.GetType().Equals(GetType(TreeViewEx)) Then
                 Dim VTyp As OutlookOrdnerVerwendung
                 Dim olfldrTV As TreeViewEx = CType(ctrl, TreeViewEx)
-                Select Case olfldrTV.Name
-                    Case TreeViewKontakte.Name
+                Select Case True
+                    Case olfldrTV Is TreeViewKontakteSuche
                         VTyp = OutlookOrdnerVerwendung.KontaktSuche
 
                         ' Deindiziere die entfernten Ordner
@@ -189,9 +190,11 @@ Public Class FormCfg
                         ' Indiziere alle neu hinzugefügten Ordner
                         StarteIndizierung(olfldrTV.CheckedOlFolders.Except(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)), True)
 
-                    Case TreeViewJournal.Name
+                    Case olfldrTV Is TreeViewJournal
                         VTyp = OutlookOrdnerVerwendung.JournalSpeichern
 
+                    Case olfldrTV Is TreeViewKontakteErstellen
+                        VTyp = OutlookOrdnerVerwendung.KontaktSpeichern
                 End Select
 
                 ' Speichere den Verwendungstypen
@@ -228,12 +231,13 @@ Public Class FormCfg
                                                                        BReset.Click,
                                                                        BArbeitsverzeichnis.Click,
                                                                        BAbbruch.Click,
-                                                                       BKontOrdLaden.Click,
                                                                        BIndizierungStart.Click,
                                                                        BIndizierungAbbrechen.Click,
                                                                        BRWSTest.Click,
                                                                        BPhonerTest.Click,
-                                                                       BJournalOrdLaden.Click
+                                                                       BKontaktOrdnerSuche.Click,
+                                                                       BKontaktOrdnerErstellen.Click,
+                                                                       BJournalOrdnerErstellen.Click
 
         Select Case True'CType(sender, Button).Name
             Case sender Is BOK, sender Is BApply
@@ -260,7 +264,7 @@ Public Class FormCfg
                 ' Formulardaten in Properties speichern
                 ' Speichern(Me)
                 ' Indizierung starten
-                StarteIndizierung(TreeViewKontakte.CheckedOlFolders, RadioButtonErstelle.Checked)
+                StarteIndizierung(TreeViewKontakteSuche.CheckedOlFolders, RadioButtonErstelle.Checked)
 
             Case sender Is BIndizierungAbbrechen
                 ' Indizierung abbrechen
@@ -282,11 +286,14 @@ Public Class FormCfg
                     MsgBox(PRWSTest(TBRWSTest.Text, vCard), MsgBoxStyle.Information, "Test der Rückwärtssuche")
                 End If
 
-            Case sender Is BKontOrdLaden
-                TreeViewKontakte.AddOutlookBaseNodes(Outlook.OlItemType.olContactItem, True, True)
+            Case sender Is BKontaktOrdnerSuche
+                TreeViewKontakteSuche.AddOutlookBaseNodes(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche, CBSucheUnterordner.Checked, True)
 
-            Case sender Is BJournalOrdLaden
-                TreeViewJournal.AddOutlookBaseNodes(Outlook.OlItemType.olJournalItem, False, False)
+            Case sender Is BJournalOrdnerErstellen
+                TreeViewJournal.AddOutlookBaseNodes(Outlook.OlItemType.olJournalItem, OutlookOrdnerVerwendung.JournalSpeichern, False, False)
+
+            Case sender Is BKontaktOrdnerErstellen
+                TreeViewKontakteErstellen.AddOutlookBaseNodes(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSpeichern, False, False)
 
             Case sender Is BPhonerTest
                 ' Formulardaten in Properties speichern
