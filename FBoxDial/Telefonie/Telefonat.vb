@@ -419,7 +419,7 @@ Imports Microsoft.Office.Interop
                         End If
 
                         ' Speicherort wählen
-                        olJournalFolder = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(fldr) fldr.Typ = OutlookOrdnerVerwendung.JournalSpeichern)
+                        olJournalFolder = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.JournalSpeichern)
                         If olJournalFolder IsNot Nothing AndAlso olJournalFolder.MAPIFolder IsNot Nothing Then
                             .Move(olJournalFolder.MAPIFolder)
                             .Close(Outlook.OlInspectorClose.olDiscard)

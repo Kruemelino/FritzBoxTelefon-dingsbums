@@ -79,7 +79,7 @@ Friend Class OlOrdnerTreeNode
                 ' Prüfe ob der Ordner aus den Einstellungen heraus verarbeitet werden soll
                 With olTreeNode
                     If .OutlookFolder.DefaultItemType = OutlookItemType Then ' AndAlso .XMLEintrag Is Nothing Then
-                        .XMLEintrag = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(Eintrag) Eintrag.FolderID.AreEqual(.OutlookFolder.EntryID) And Eintrag.StoreID.AreEqual(.OutlookStore.StoreID) And Eintrag.Typ = Verwendung)
+                        .XMLEintrag = XMLData.POptionen.OutlookOrdner.Find(.OutlookStore.StoreID, .OutlookFolder.EntryID, Verwendung)
                     End If
                     ' Setze das Icon
                     .SetImageKey()

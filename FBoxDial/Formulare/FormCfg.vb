@@ -90,7 +90,6 @@ Public Class FormCfg
             ElseIf ctrl.GetType().Equals(GetType(OlOrdnerTreeView)) Then
 
                 ' Eigentlich unnätig, aber aus irgendeinem Grund können die Felder Nothing sein
-
                 If XMLData.POptionen.OutlookOrdner Is Nothing Then XMLData.POptionen.OutlookOrdner = New OutlookOrdnerListe
                 If XMLData.POptionen.OutlookOrdner.OrdnerListe Is Nothing Then XMLData.POptionen.OutlookOrdner.OrdnerListe = New List(Of OutlookOrdner)
 
@@ -106,7 +105,7 @@ Public Class FormCfg
                         VTyp = OutlookOrdnerVerwendung.KontaktSpeichern
                 End Select
 
-                olfldrTV.CheckedOlFolders = XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)
+                olfldrTV.CheckedOlFolders = XMLData.POptionen.OutlookOrdner.FindAll(VTyp)
 
             End If
         Next
@@ -187,10 +186,10 @@ Public Class FormCfg
                         VTyp = OutlookOrdnerVerwendung.KontaktSuche
 
                         ' Deindiziere die entfernten Ordner
-                        StarteIndizierung(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp).Except(olfldrTV.CheckedOlFolders), False)
+                        StarteIndizierung(XMLData.POptionen.OutlookOrdner.FindAll(VTyp).Except(olfldrTV.CheckedOlFolders), False)
 
                         ' Indiziere alle neu hinzugefügten Ordner
-                        StarteIndizierung(olfldrTV.CheckedOlFolders.Except(XMLData.POptionen.OutlookOrdner.OrdnerListe.FindAll(Function(OlFldr) OlFldr.Typ = VTyp)), True)
+                        StarteIndizierung(olfldrTV.CheckedOlFolders.Except(XMLData.POptionen.OutlookOrdner.FindAll(VTyp)), True)
 
                     Case olfldrTV Is TreeViewJournal
                         VTyp = OutlookOrdnerVerwendung.JournalSpeichern
@@ -203,10 +202,10 @@ Public Class FormCfg
                 olfldrTV.CheckedOlFolders.ForEach(Sub(T) T.Typ = VTyp)
 
                 ' Entferne aus den Einstellungen alle Ordner mit dem Typen
-                XMLData.POptionen.OutlookOrdner.OrdnerListe.RemoveAll(Function(OlFldr) OlFldr.Typ = VTyp)
+                XMLData.POptionen.OutlookOrdner.RemoveAll(VTyp)
 
                 ' Kopiere alle neuen Ordner in die Liste
-                XMLData.POptionen.OutlookOrdner.OrdnerListe.AddRange(olfldrTV.CheckedOlFolders)
+                XMLData.POptionen.OutlookOrdner.AddRange(olfldrTV.CheckedOlFolders)
 
 
             ElseIf ctrl.GetType().Equals(GetType(FBoxDataGridView)) Then

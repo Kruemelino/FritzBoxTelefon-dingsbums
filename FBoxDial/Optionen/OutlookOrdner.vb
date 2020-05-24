@@ -33,7 +33,7 @@ Public Class OutlookOrdner
 
     Public Overloads Function Equals(ByVal other As OutlookOrdner) As Boolean Implements IEquatable(Of OutlookOrdner).Equals
         If other Is Nothing Then Return False
-        Return FolderID = other.FolderID AndAlso StoreID = other.StoreID
+        Return FolderID.AreEqual(other.FolderID) And StoreID.AreEqual(other.StoreID)
     End Function
 
     Public Overrides Function Equals(ByVal obj As Object) As Boolean

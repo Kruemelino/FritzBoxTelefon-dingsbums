@@ -113,10 +113,10 @@ Friend Module KontaktFunktionen
     Private Sub SpeichereKontakt(ByRef olKontakt As Outlook.ContactItem)
 
         ' Ermittle den Ordner in den der Kontakt gespeichet werden soll
-        Dim KontaktOrdner As OutlookOrdner = XMLData.POptionen.OutlookOrdner.OrdnerListe.Find(Function(fldr) fldr.Typ = OutlookOrdnerVerwendung.KontaktSpeichern)
+        Dim KontaktOrdner As OutlookOrdner = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.KontaktSpeichern)
 
         ' Speichere den Kontakt... (Wenn es sich nicht um den Hauptkontaktordner handelt, der Kontakt ist da breits (ungespeichert) enthalten. Ein Move würde den Kontakt dublizieren.)
-        If KontaktOrdner IsNot Nothing AndAlso KontaktOrdner.MAPIFolder IsNot Nothing And ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts) IsNot KontaktOrdner.MAPIFolder Then
+        If KontaktOrdner IsNot Nothing AndAlso KontaktOrdner.MAPIFolder IsNot Nothing And ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).AreNotEqual(KontaktOrdner.MAPIFolder) Then
             ' ... im festgelegten Ordner
             olKontakt = CType(olKontakt.Move(KontaktOrdner.MAPIFolder), Outlook.ContactItem)
             NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, KontaktOrdner.MAPIFolder.Name)
@@ -127,10 +127,9 @@ Friend Module KontaktFunktionen
 
         ' Indiziere den Kontakt, falls dieser nicht eingeblendet ist
         'If olKontakt.GetInspector Is Nothing Then
-        ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, tatsächlich zur Kontaktsuche verwendet werden soll
-        If XMLData.POptionen.OutlookOrdner.OrdnerListe.Exists(Function(fldr) fldr.MAPIFolder.AreEqual(KontaktOrdner.MAPIFolder) And fldr.Typ = OutlookOrdnerVerwendung.KontaktSuche) Then
-            IndiziereKontakt(olKontakt)
-        End If
+        ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
+        If XMLData.POptionen.OutlookOrdner.Exists(KontaktOrdner.MAPIFolder, OutlookOrdnerVerwendung.KontaktSuche) Then IndiziereKontakt(olKontakt)
+
         'End If
 
     End Sub
@@ -410,11 +409,18 @@ Friend Module KontaktFunktionen
             Return Nothing
         End If
     End Function
-
+    ''' <summary>
+    ''' Verleicht zwei MAPIFolder anhand der StoreID und der EntryID
+    ''' </summary>
+    ''' <param name="Ordner1">Erster MAPIFolder</param>
+    ''' <param name="Ordner2">Zweiter MAPIFolder</param>
+    ''' <returns></returns>
     <Extension> Friend Function AreEqual(ByVal Ordner1 As Outlook.MAPIFolder, ByVal Ordner2 As Outlook.MAPIFolder) As Boolean
         Return Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID)
     End Function
-
+    <Extension> Friend Function AreNotEqual(ByVal Ordner1 As Outlook.MAPIFolder, ByVal Ordner2 As Outlook.MAPIFolder) As Boolean
+        Return Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID)
+    End Function
 #Region "VIP"
     <Extension> Friend Function IsVIP(ByVal olKontakt As Outlook.ContactItem) As Boolean
 
@@ -422,7 +428,7 @@ Friend Module KontaktFunktionen
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
         If XMLData.PTelefonie.VIPListe IsNot Nothing Then
             With XMLData.PTelefonie.VIPListe
-                If .Einträge IsNot Nothing AndAlso .Einträge.Any Then
+                If .Einträge?.Any Then
                     IsVIP = .Einträge.Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
                 End If
             End With
@@ -431,6 +437,7 @@ Friend Module KontaktFunktionen
 
     <Extension> Friend Sub AddVIP(ByVal olKontakt As Outlook.ContactItem)
         If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New XVIP
+
         With XMLData.PTelefonie.VIPListe
             If .Einträge Is Nothing Then .Einträge = New List(Of VIPEntry)
 
