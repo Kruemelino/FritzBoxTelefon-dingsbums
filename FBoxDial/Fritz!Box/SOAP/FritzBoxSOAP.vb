@@ -13,7 +13,7 @@ Public Class FritzBoxSOAP
         HttpFehler = False
         ErrorHashTable = New Hashtable
 
-        'ByPass SSL Certificate Validation Checking
+        ' ByPass SSL Certificate Validation Checking
         ServicePointManager.ServerCertificateValidationCallback = Function(se As Object, cert As System.Security.Cryptography.X509Certificates.X509Certificate, chain As System.Security.Cryptography.X509Certificates.X509Chain, sslerror As Security.SslPolicyErrors) True
 
         ' Funktioniert nicht: ByPass SSL Certificate Validation Checking wird ignoriert. Es kommt zu unerklärlichen System.Net.WebException in FritzBoxPOST

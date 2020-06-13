@@ -362,7 +362,6 @@
     <Compile Include="Fritz!Box\SOAP\SOAP.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPBaseFunctions.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
-    <Compile Include="Telefonie\Listen\RINGListe.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
     <Compile Include="Telefonie\Telefonie.vb" />

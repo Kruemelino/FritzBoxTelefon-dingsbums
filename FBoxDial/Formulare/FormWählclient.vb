@@ -238,10 +238,10 @@ Public Class FormWählclient
         ' Wahlwiederhohlung in Combobox schreiben
         With CBoxDirektwahl
             .DataBindings.Clear()
-            If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Einträge?.Any Then
+            If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any Then
                 .DisplayMember = NameOf(Telefonnummer.Unformatiert)
                 .ValueMember = NameOf(Telefonnummer.Unformatiert)
-                .DataSource = GetTelNrList(XMLData.PTelefonie.CALLListe.Einträge)
+                .DataSource = GetTelNrList(XMLData.PTelefonie.CALLListe)
             End If
             .SelectedItem = Nothing
         End With

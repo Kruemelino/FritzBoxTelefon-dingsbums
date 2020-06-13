@@ -202,10 +202,10 @@ Imports Microsoft.Office.Interop
         If EigeneTelNr.Überwacht Then RaiseEvent Popup(Me)
 
         ' RING-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New XRingListe With {.Einträge = New List(Of Telefonat)}
+        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
 
         ' Telefonat in erste Positon der RING-Liste speichern
-        XMLData.PTelefonie.RINGListe.Einträge.Insert(Me)
+        XMLData.PTelefonie.RINGListe.Insert(Me)
 
     End Sub
     Private Sub AnrMonCALL()
@@ -219,11 +219,11 @@ Imports Microsoft.Office.Interop
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
         ' CALL-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New XCallListe With {.Einträge = New List(Of Telefonat)}
+        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
 
 
         ' Telefonat in erste Positon der CALL-Liste speichern
-        XMLData.PTelefonie.CALLListe.Einträge.Insert(Me)
+        XMLData.PTelefonie.CALLListe.Insert(Me)
 
     End Sub
     Private Sub AnrMonCONNECT()

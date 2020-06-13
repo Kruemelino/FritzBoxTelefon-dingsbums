@@ -142,11 +142,9 @@
                     ' Ring-List
                     If XMLData.POptionen.PCBAnrListeUpdateCallLists Then
                         ' RING-Liste initialisieren, falls erforderlich
-                        If XMLData.PTelefonie.RINGListe Is Nothing Then
-                            XMLData.PTelefonie.RINGListe = New XRingListe With {.Einträge = New List(Of Telefonat)}
-                        End If
+                        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
                         ' Eintrag anfügen
-                        XMLData.PTelefonie.RINGListe.Einträge.Insert(tmpTelefonat)
+                        XMLData.PTelefonie.RINGListe.Insert(tmpTelefonat)
                     End If
                 End If
 
@@ -162,11 +160,10 @@
                     ' Call-List
                     If XMLData.POptionen.PCBAnrListeUpdateCallLists Then
                         ' CALL-Liste initialisieren, falls erforderlich
-                        If XMLData.PTelefonie.CALLListe Is Nothing Then
-                            XMLData.PTelefonie.CALLListe = New XCallListe With {.Einträge = New List(Of Telefonat)}
-                        End If
+                        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
+
                         ' Eintrag anfügen
-                        XMLData.PTelefonie.CALLListe.Einträge.Insert(tmpTelefonat)
+                        XMLData.PTelefonie.CALLListe.Insert(tmpTelefonat)
                     End If
                 End If
 

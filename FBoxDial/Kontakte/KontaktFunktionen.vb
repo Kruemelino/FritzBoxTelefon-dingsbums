@@ -428,32 +428,28 @@ Friend Module KontaktFunktionen
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
         If XMLData.PTelefonie.VIPListe IsNot Nothing Then
             With XMLData.PTelefonie.VIPListe
-                If .Einträge?.Any Then
-                    IsVIP = .Einträge.Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
-                End If
+                IsVIP = .Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
             End With
         End If
     End Function
 
     <Extension> Friend Sub AddVIP(ByVal olKontakt As Outlook.ContactItem)
-        If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New XVIP
+        If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New List(Of VIPEntry)
 
         With XMLData.PTelefonie.VIPListe
-            If .Einträge Is Nothing Then .Einträge = New List(Of VIPEntry)
-
-            .Einträge.Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
+            .Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
         End With
     End Sub
 
     <Extension> Friend Sub RemoveVIP(ByVal olKontakt As Outlook.ContactItem)
         Dim tmpVIPEntry As VIPEntry
 
-        If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New XVIP
-        With XMLData.PTelefonie.VIPListe
-            If .Einträge Is Nothing Then .Einträge = New List(Of VIPEntry)
-            tmpVIPEntry = .Einträge.Find(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
+        If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New List(Of VIPEntry)
 
-            If tmpVIPEntry IsNot Nothing Then .Einträge.Remove(tmpVIPEntry)
+        With XMLData.PTelefonie.VIPListe
+            tmpVIPEntry = .Find(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
+
+            If tmpVIPEntry IsNot Nothing Then .Remove(tmpVIPEntry)
         End With
     End Sub
 

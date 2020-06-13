@@ -302,8 +302,8 @@ Imports System.Xml
             Case TaskToDo.ShowAnrMon
                 Dim PopUpAnrMon As New Popup
 
-                If XMLData.PTelefonie.RINGListe.Einträge.Count.IsNotZero Then
-                    PopUpAnrMon.AnrMonEinblenden(XMLData.PTelefonie.RINGListe.Einträge.Item(0))
+                If XMLData.PTelefonie.RINGListe.Count.IsNotZero Then
+                    PopUpAnrMon.AnrMonEinblenden(XMLData.PTelefonie.RINGListe.Item(0))
                 Else
                     PopUpAnrMon.AnrMonEinblenden(Nothing)
                 End If
@@ -372,13 +372,13 @@ Imports System.Xml
         Dim tmpTelefonat As Telefonat
         Dim tmpVIPEintrag As VIPEntry
         If control.Tag.AreEqual(PDfltNameListVIP) Then
-            tmpVIPEintrag = XMLData.PTelefonie.VIPListe.Einträge.Item(control.Id.Split("_")(1).ToInt)
+            tmpVIPEintrag = XMLData.PTelefonie.VIPListe(control.Id.Split("_")(1).ToInt)
             If tmpVIPEintrag IsNot Nothing Then
                 Dim WählClient As New FritzBoxWählClient
                 WählClient.WählboxStart(tmpVIPEintrag)
             End If
         Else
-            tmpTelefonat = If(control.Tag.AreEqual(PDfltNameListCALL), XMLData.PTelefonie.CALLListe.Einträge, XMLData.PTelefonie.RINGListe.Einträge).Item(control.Id.Split("_")(1).ToInt)
+            tmpTelefonat = If(control.Tag.AreEqual(PDfltNameListCALL), XMLData.PTelefonie.CALLListe, XMLData.PTelefonie.RINGListe).Item(control.Id.Split("_")(1).ToInt)
             ' Ermittle das Telefonat aus der Liste
             If tmpTelefonat IsNot Nothing Then
                 Dim WählClient As New FritzBoxWählClient
@@ -390,11 +390,11 @@ Imports System.Xml
 
         Select Case control.Tag
             Case PDfltNameListCALL
-                XMLData.PTelefonie.CALLListe.Einträge.Clear()
+                XMLData.PTelefonie.CALLListe.Clear()
             Case PDfltNameListRING
-                XMLData.PTelefonie.RINGListe.Einträge.Clear()
+                XMLData.PTelefonie.RINGListe.Clear()
             Case PDfltNameListVIP
-                XMLData.PTelefonie.VIPListe.Einträge.Clear()
+                XMLData.PTelefonie.VIPListe.Clear()
         End Select
 
         RefreshRibbon()
@@ -453,11 +453,11 @@ Imports System.Xml
         If XMLData IsNot Nothing Then
             Select Case Left(control.Id, Len(control.Id) - 2)
                 Case PDfltNameListCALL
-                    Return XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Einträge.Any
+                    Return XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any
                 Case PDfltNameListRING
-                    Return XMLData.PTelefonie.RINGListe IsNot Nothing AndAlso XMLData.PTelefonie.RINGListe.Einträge.Any
+                    Return XMLData.PTelefonie.RINGListe IsNot Nothing AndAlso XMLData.PTelefonie.RINGListe.Any
                 Case PDfltNameListVIP
-                    Return XMLData.PTelefonie.VIPListe IsNot Nothing AndAlso XMLData.PTelefonie.VIPListe.Einträge.Any
+                    Return XMLData.PTelefonie.VIPListe IsNot Nothing AndAlso XMLData.PTelefonie.VIPListe.Any
                 Case Else
                     Return False
             End Select
@@ -528,17 +528,17 @@ Imports System.Xml
 
             If ListName.AreEqual(PDfltNameListCALL) Or ListName.AreEqual(PDfltNameListRING) Then
                 If ListName.AreEqual(PDfltNameListCALL) Then
-                    ListofTelefonate = XMLData.PTelefonie.CALLListe.Einträge
+                    ListofTelefonate = XMLData.PTelefonie.CALLListe
                 Else
-                    ListofTelefonate = XMLData.PTelefonie.RINGListe.Einträge
+                    ListofTelefonate = XMLData.PTelefonie.RINGListe
                 End If
 
                 For Each TelFt As Telefonat In ListofTelefonate
                     .DocumentElement.AppendChild(TelFt.CreateDynMenuButton(XDynaMenu, ListofTelefonate.IndexOf(TelFt), ListName))
                 Next
             ElseIf ListName.AreEqual(PDfltNameListVIP) Then
-                For Each VIP As VIPEntry In XMLData.PTelefonie.VIPListe.Einträge
-                    .DocumentElement.AppendChild(VIP.CreateDynMenuButton(XDynaMenu, XMLData.PTelefonie.VIPListe.Einträge.IndexOf(VIP), ListName))
+                For Each VIP As VIPEntry In XMLData.PTelefonie.VIPListe
+                    .DocumentElement.AppendChild(VIP.CreateDynMenuButton(XDynaMenu, XMLData.PTelefonie.VIPListe.IndexOf(VIP), ListName))
                 Next
             End If
         End With

@@ -8,7 +8,7 @@ Public NotInheritable Class ThisAddIn
     Private WithEvents OutlookInspectors As Inspectors
     Friend Shared Property PAnrufmonitor As Anrufmonitor
     Friend Shared Property PPhoneBookXML As FritzBoxXMLTelefonbücher
-    Friend Shared Property PCallListXML As FritzBoxXMLCallList
+    'Friend Shared Property PCallListXML As FritzBoxXMLCallList
 
     Friend Shared Property PCVorwahlen As CVorwahlen
     Friend Shared Property OffeneKontakInsepektoren As List(Of KontaktGespeichert)

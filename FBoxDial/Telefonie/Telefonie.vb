@@ -5,10 +5,12 @@
     <XmlElement("Telefonnummer")> Public Property Telefonnummern As List(Of Telefonnummer)
     <XmlElement("Telefoniegerät")> Public Property Telefoniegeräte As List(Of Telefoniegerät)
     '<XmlElement("LetzterAnrufer")> Public Property LetzterAnrufer As Telefonat
-    <XmlElement> Public Property RINGListe As XRingListe
-    <XmlElement> Public Property CALLListe As XCallListe
-    <XmlElement> Public Property RWSIndex As XRWSIndex
-    <XmlElement> Public Property VIPListe As XVIP
+
+    <XmlArray("RINGListe"), XmlArrayItem("Eintrag")> Public Property RINGListe As List(Of Telefonat)
+    <XmlArray("CALLListe"), XmlArrayItem("Eintrag")> Public Property CALLListe As List(Of Telefonat)
+    <XmlArray("RWSIndex"), XmlArrayItem("Eintrag")> Public Property RWSIndex As List(Of RWSIndexEntry)
+    <XmlArray("VIPListe"), XmlArrayItem("Eintrag")> Public Property VIPListe As List(Of VIPEntry)
+
     Public Sub New()
         Telefonnummern = New List(Of Telefonnummer)
         Telefoniegeräte = New List(Of Telefoniegerät)
