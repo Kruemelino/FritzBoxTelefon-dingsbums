@@ -32,7 +32,7 @@ Public Class FritzBoxData
 #Region "Telefonnummern, Telefonnamen"
     Friend Async Sub FritzBoxDatenJSON()
 
-        Dim SessionID As String = GetSessionID
+        Dim SessionID As String = GetSessionID()
 
         Dim FBoxJSON As New JSON
         Dim TelQuery As New List(Of String)
@@ -348,7 +348,7 @@ Public Class FritzBoxData
                                                               .Dialport = DialPortBase.IP + idx}
                         tmpTelefon.Name = .Name
                         tmpTelefon.StrEinTelNr = New List(Of String)
-                        For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID1.AreEqual(.Node.RegExReplace("\D", PDfltStringEmpty).ToInt) And Nummern.Typ.Contains(TelTypen.IP))
+                        For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID1.AreEqual(.Node.RegExRemove("\D").ToInt) And Nummern.Typ.Contains(TelTypen.IP))
                             tmpTelefon.StrEinTelNr.Add(TelNr.Unformatiert)
                         Next
                         PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")

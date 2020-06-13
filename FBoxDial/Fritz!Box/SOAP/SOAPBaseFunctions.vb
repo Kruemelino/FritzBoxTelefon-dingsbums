@@ -3,9 +3,9 @@ Imports System.IO
 Imports System.Xml
 
 Friend Module SOAPBaseFunctions
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "HTTP"
-    Public Function FritzBoxGet(ByVal Link As String, ByRef FBError As Boolean) As String
+    Friend Function FritzBoxGet(ByVal Link As String, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
         Dim retVal As String = PDfltStringEmpty
 
@@ -37,87 +37,12 @@ Friend Module SOAPBaseFunctions
         Return retVal
     End Function
 
-    Friend Function FritzBoxPOST(ByVal SOAPAction As String, ByVal urlFull As String, ByVal ServiceType As String, ByVal SOAPXML As String) As XmlDocument
+    Friend Function FritzBoxPOST(ByVal SOAPAction As String, ByVal urlFull As String, ByVal ServiceType As String, ByVal SOAPXML As XmlDocument) As String
 
-        Dim RetVal As New XmlDocument
-
+        FritzBoxPOST = PDfltStringEmpty
         Dim ErrorText As String = PDfltStringEmpty
-        Dim fbPostBytes As Byte()
-
         Dim fbURI As New Uri(urlFull)
 
-        Dim tmpUsername As String
-
-        fbPostBytes = Encoding.UTF8.GetBytes(SOAPXML)
-
-        ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-        tmpUsername = If(XMLData.POptionen.PTBBenutzer.IsStringEmpty, FritzBoxDefault.PDfltFritzBoxUser, XMLData.POptionen.PTBBenutzer)
-
-        With CType(WebRequest.Create(fbURI), HttpWebRequest)
-            Using Crypter As New Rijndael
-                .Credentials = New NetworkCredential(tmpUsername, Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort, DefaultWerte.PDfltDeCryptKey))
-            End Using
-
-            .Proxy = Nothing
-            .KeepAlive = False
-            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
-            .Method = WebRequestMethods.Http.Post
-            .Headers.Add("SOAPACTION", """" + ServiceType + "#" + SOAPAction + """")
-            .ContentType = P_SOAPContentType
-            .UserAgent = P_SOAPUserAgent
-            .ContentLength = fbPostBytes.Length
-
-            With .GetRequestStream
-                .Write(fbPostBytes, 0, fbPostBytes.Length)
-                .Close()
-            End With
-
-            Try
-                With New StreamReader(.GetResponse.GetResponseStream())
-                    RetVal.LoadXml(.ReadToEnd())
-                End With
-            Catch ex As WebException When ex.Message.Contains("606")
-                ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """ Action not authorized"""
-                NLogger.Error(ex)
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("500")
-                ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction & vbNewLine & vbNewLine & "Method: " & .Method.ToString & vbNewLine & "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & "ContentType: " & .ContentType.ToString & vbNewLine & "UserAgent: " & .UserAgent.ToString & vbNewLine & "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & SOAPXML
-                NLogger.Error(ex)
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("713")
-                ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """ Invalid array index"""
-                NLogger.Error(ex)
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("820")
-                ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """ Internal error """
-                NLogger.Error(ex)
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            Catch ex As WebException When ex.Message.Contains("401")
-                ErrorText = "SOAP Login-Fehler 401: " & SOAPAction & """ Unauthorized"""
-                NLogger.Error(ex)
-                'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
-            End Try
-        End With
-
-        If Not ErrorText = "" Then RetVal.LoadXml("<FEHLER>" & ErrorText.Replace("<", "CHR(60)").Replace(">", "CHR(62)") & "</FEHLER>")
-        Return RetVal
-    End Function
-
-    Friend Function FritzBoxPOSTClient(ByVal SOAPAction As String, ByVal urlFull As String, ByVal ServiceType As String, ByVal SOAPXML As String) As String
-
-        Dim RetVal As String = ""
-
-        Dim ErrorText As String = PDfltStringEmpty
-        Dim fbPostBytes As Byte()
-
-        Dim fbURI As New Uri(urlFull)
-
-        Dim tmpUsername As String
-
-        fbPostBytes = Encoding.UTF8.GetBytes(SOAPXML)
-
-        ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-        tmpUsername = If(XMLData.POptionen.PTBBenutzer.IsStringEmpty, FritzBoxDefault.PDfltFritzBoxUser, XMLData.POptionen.PTBBenutzer)
         Using webClient As New WebClient
             With webClient
                 ' Header festlegen
@@ -125,45 +50,51 @@ Friend Module SOAPBaseFunctions
                     .Add(HttpRequestHeader.ContentType, P_SOAPContentType)
                     .Add(HttpRequestHeader.UserAgent, P_SOAPUserAgent)
                     .Add(HttpRequestHeader.KeepAlive, False.ToString)
-                    .Add("SOAPACTION", """" + ServiceType + "#" + SOAPAction + """")
+                    .Add("SOAPACTION", $"""{ServiceType}#{SOAPAction}""")
                 End With
-                ' Zugangsdaten felstelgen
+
+                ' Zugangsdaten felstlegen
                 Using Crypter As New Rijndael
-                    .Credentials = New NetworkCredential(tmpUsername, Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort, DefaultWerte.PDfltDeCryptKey))
+                    ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
+                    .Credentials = New NetworkCredential(If(XMLData.POptionen.PTBBenutzer.IsStringEmpty, FritzBoxDefault.PDfltFritzBoxUser, XMLData.POptionen.PTBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.PTBPasswort, DefaultWerte.PDfltDeCryptKey))
                 End Using
 
                 Try
-                    RetVal = .UploadString(fbURI, SOAPXML)
+                    FritzBoxPOST = .UploadString(fbURI, SOAPXML.InnerXml)
                 Catch ex As WebException When ex.Message.Contains("606")
-                    ErrorText = "SOAP Interner-Fehler 606: " & SOAPAction & """ Action not authorized"""
+                    ErrorText = $"SOAP Interner-Fehler 606: {SOAPAction} ""Action not authorized"""
                     NLogger.Error(ex)
-                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+
                 Catch ex As WebException When ex.Message.Contains("500")
-                    ErrorText = "SOAP Interner-Fehler 500: " & SOAPAction ' & vbNewLine & vbNewLine & "Method: " & .Method.ToString & vbNewLine & "SOAPACTION: " & """" + ServiceType + "#" + SOAPAction + """" & vbNewLine & "ContentType: " & .ContentType.ToString & vbNewLine & "UserAgent: " & .UserAgent.ToString & vbNewLine & "ContentLength: " & .ContentLength.ToString & vbNewLine & vbNewLine & SOAPXML
+                    ErrorText = $"SOAP Interner-Fehler 500: {SOAPAction}"
                     NLogger.Error(ex)
-                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+
                 Catch ex As WebException When ex.Message.Contains("713")
-                    ErrorText = "SOAP Interner-Fehler 713: " & SOAPAction & """ Invalid array index"""
+                    ErrorText = $"SOAP Interner-Fehler 713: {SOAPAction} ""Invalid array index"""
                     NLogger.Error(ex)
-                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+
                 Catch ex As WebException When ex.Message.Contains("820")
-                    ErrorText = "SOAP Interner-Fehler 820: " & SOAPAction & """ Internal error """
+                    ErrorText = $"SOAP Interner-Fehler 820: {SOAPAction} ""Internal Error """
                     NLogger.Error(ex)
-                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+
                 Catch ex As WebException When ex.Message.Contains("401")
-                    ErrorText = "SOAP Login-Fehler 401: " & SOAPAction & """ Unauthorized"""
+                    ErrorText = $"SOAP Login-Fehler 401: {SOAPAction} ""Unauthorized"""
                     NLogger.Error(ex)
-                    'MsgBox(ErrorText, MsgBoxStyle.Exclamation)
+
+                Catch exWE As WebException
+                    NLogger.Error(exWE, "Link: {0}", {SOAPAction})
+                    ErrorText = $"WebException: {exWE.Message}"
+
                 Catch ex As Exception
                     ErrorText = ex.Message
                     NLogger.Error(ex)
-                    MsgBox(ErrorText, MsgBoxStyle.Exclamation, "SOAP POST Client")
+
                 End Try
             End With
         End Using
 
-        If Not ErrorText = "" Then RetVal = "<FEHLER>" & ErrorText.Replace("<", "CHR(60)").Replace(">", "CHR(62)") & "</FEHLER>"
-        Return RetVal
+        If ErrorText.IsNotStringEmpty Then FritzBoxPOST = "<FEHLER>" & ErrorText.Replace("<", "CHR(60)").Replace(">", "CHR(62)") & "</FEHLER>"
+
     End Function
 #End Region
 

@@ -1,12 +1,12 @@
 ﻿Friend Module NLogging
 
-    Friend Function DefaultNLogConfig() As NLog.Config.LoggingConfiguration
+    Friend Function DefaultNLogConfig() As Config.LoggingConfiguration
 
-        Dim config = New NLog.Config.LoggingConfiguration
+        Dim config = New Config.LoggingConfiguration
 
-        Dim DfltLogLayout As New NLog.Layouts.SimpleLayout With {.Text = PDfltNLog_LayoutText}
+        Dim DfltLogLayout As New Layouts.SimpleLayout With {.Text = PDfltNLog_LayoutText}
 
-        Dim Ziel As New NLog.Targets.FileTarget With {.Name = "f",
+        Dim Ziel As New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = False,
                                                       .FileName = IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName),
@@ -20,8 +20,8 @@
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        Dim minLogLevel As NLog.LogLevel = LogLevel.FromString(XMLData.POptionen.PCBoxMinLogLevel)
-        Dim maxLogLevel As NLog.LogLevel = LogLevel.Fatal
+        Dim minLogLevel As LogLevel = LogLevel.FromString(XMLData.POptionen.PCBoxMinLogLevel)
+        Dim maxLogLevel As LogLevel = LogLevel.Fatal
 
         config.AddRule(minLogLevel, maxLogLevel, Ziel)
         Return config

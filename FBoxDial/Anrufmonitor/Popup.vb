@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 
 Public Class Popup
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private WithEvents PopUpAnrufMonitor As FormAnrMon
     Friend Eingeblendet As Boolean = False
     Friend TelFnt As Telefonat

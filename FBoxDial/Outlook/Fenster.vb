@@ -2,7 +2,7 @@
 
 Friend Module Fenster
 #Region "Properties"
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property OInsp As Outlook.Inspector
 #End Region
     ''' <summary>

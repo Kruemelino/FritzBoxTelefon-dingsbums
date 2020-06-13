@@ -4,7 +4,7 @@ Imports MixERP.Net.VCards.Types
 Friend Module KontaktSucher
 
     Friend ReadOnly Property PDfltContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Function KontaktSuche(ByVal TelNr As Telefonnummer) As Outlook.ContactItem
         NLogger.Debug("Kontaktsuche gestartet")

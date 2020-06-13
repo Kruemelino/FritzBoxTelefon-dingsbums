@@ -6,7 +6,7 @@ Imports System.Threading
 Public Class Phoner
     Implements IDisposable
 
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
     Private ReadOnly Property PhonerEndpointPort As Integer = 2012
 
@@ -93,7 +93,7 @@ Public Class Phoner
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
-                                        Response = Crypter.getMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.PTBPhonerPasswort, DefaultWerte.PDfltDeCryptKeyPhoner), Encoding.ASCII).ToUpper
+                                        Response = Crypter.GetMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.PTBPhonerPasswort, DefaultWerte.PDfltDeCryptKeyPhoner), Encoding.ASCII).ToUpper
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")
 

@@ -15,7 +15,7 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property OffenePopUps As List(Of Popup)
 
 
-    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Shared ReadOnly Property Version() As String
         Get
             With Reflection.Assembly.GetExecutingAssembly.GetName.Version
@@ -59,7 +59,6 @@ Public NotInheritable Class ThisAddIn
             PAnrufmonitor.StartStopAnrMon()
         End If
 
-
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
         If XMLData.POptionen.PCBKontaktSucheFritzBox Then
             PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
@@ -85,7 +84,7 @@ Public NotInheritable Class ThisAddIn
         ' Eintrag ins Log
         NLogger.Info("{0} {1} beendet.", PDfltAddin_LangName, Version)
         ' XML-Datei Speichern
-        XMLData.Speichern()
+        XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
     End Sub
 
 #Region "Standby Wakeup"
@@ -100,7 +99,7 @@ Public NotInheritable Class ThisAddIn
                 StarteAddinFunktionen()
             Case Microsoft.Win32.PowerModes.Suspend
                 ' XML-Datei speichern
-                XMLData.Speichern()
+                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
         End Select
     End Sub
 #End Region

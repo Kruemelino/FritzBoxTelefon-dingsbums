@@ -6,7 +6,7 @@ Public Class FormTelefonbücher
 #Region "Delegaten"
     Private Delegate Sub DelgSetListControl(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
 #End Region
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Private Enum SubDGVTyp
         Kontakt = 0

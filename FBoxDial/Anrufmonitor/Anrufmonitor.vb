@@ -4,7 +4,7 @@ Imports System.Net.Sockets
 
 Friend Class Anrufmonitor
 
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Private WithEvents AnrMonTCPClient As AnrMonClient
 
@@ -81,7 +81,7 @@ Friend Class Anrufmonitor
     Private Sub AnrMonTCPClient_Message(sender As Object, e As NotifyEventArgs(Of String)) Handles AnrMonTCPClient.Message
 
         Dim AktivesTelefonat As Telefonat
-        Dim FBStatus As String = e.Value.RegExReplace("\r\n?|\n", PDfltStringEmpty) ' Entferne den Zeilenumbruch
+        Dim FBStatus As String = e.Value.RegExRemove("\r\n?|\n") ' Entferne den Zeilenumbruch
         Dim FBStatusSplit As String() = FBStatus.Split(AnrMon_Delimiter)
 
         ' Hier die Daten des Fritz!Box Anrufmonitors weitergeben

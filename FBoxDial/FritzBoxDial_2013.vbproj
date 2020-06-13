@@ -157,6 +157,8 @@
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -169,9 +171,11 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -239,6 +243,16 @@
     <Compile Include="Formulare\TreeView\OlOrdnerTreeView.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\Device.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\Icon.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\SCPD.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\Service.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\SpecVersion.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\StateVariable.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\SystemVersion.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPXML\TR64Desc.vb" />
     <Compile Include="Kontakte\KontaktGespeichert.vb" />
     <Compile Include="Formulare\formAnrList.designer.vb">
       <DependentUpon>formAnrList.vb</DependentUpon>
@@ -301,7 +315,7 @@
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
-    <Compile Include="Fritz!Box\SOAP\FritzBoxServices.vb" />
+    <Compile Include="Fritz!Box\SOAP\FritzBoxSOAP.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxInformations.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxSOAPService.vb" />
     <Compile Include="Formulare\FormCfg.designer.vb">
@@ -438,7 +452,6 @@
     <Content Include="Resources\Save.png" />
     <Content Include="Resources\Upload.png" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

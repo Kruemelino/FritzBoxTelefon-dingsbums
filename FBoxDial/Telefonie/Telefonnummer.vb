@@ -6,7 +6,7 @@ Imports FBoxDial.DfltWerteTelefonie
 Public Class Telefonnummer
     Implements IEquatable(Of Telefonnummer)
     Implements IDisposable
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
 
@@ -86,16 +86,21 @@ Public Class Telefonnummer
             NurZiffern = NurZiffern.ToLower
 
             ' Entferne jeden String, der vor einem Doppelpunkt steht (einschließlich :)
-            NurZiffern = Regex.Replace(NurZiffern, "^.+:+", PDfltStringEmpty)
+            NurZiffern = NurZiffern.ToLower.RegExRemove("^.+:+")
 
             '' Buchstaben in Ziffen analog zu Telefontasten umwandeln.
-            NurZiffern = NurZiffern.RegExReplace("[abc]", "2").RegExReplace("[abc]", "2").
-                RegExReplace("[def]", "3").RegExReplace("[ghi]", "4").RegExReplace("[jkl]", "5").
-                RegExReplace("[mno]", "6").RegExReplace("[pqrs]", "7").RegExReplace("[tuv]", "8").
-                RegExReplace("[wxyz]", "9").RegExReplace("^[+]", PDfltVAZ)
+            NurZiffern = NurZiffern.RegExReplace("[abc]", "2").
+                                    RegExReplace("[def]", "3").
+                                    RegExReplace("[ghi]", "4").
+                                    RegExReplace("[jkl]", "5").
+                                    RegExReplace("[mno]", "6").
+                                    RegExReplace("[pqrs]", "7").
+                                    RegExReplace("[tuv]", "8").
+                                    RegExReplace("[wxyz]", "9").
+                                    RegExReplace("^[+]", PDfltVAZ)
 
             ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
-            NurZiffern = NurZiffern.RegExReplace("[^0-9\#\*]", PDfltStringEmpty)
+            NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
             NurZiffern = NurZiffern.RegExReplace($"^0{XMLData.POptionen.PTBLandesKZ}{{1}}[0]?", "0")
@@ -144,7 +149,7 @@ Public Class Telefonnummer
             End If
 
             ' Einwahl: Landesvorwahl am Anfang entfernen
-            Einwahl = TelNr.RegExReplace($"^{PDfltVAZ}{Landeskennzahl}?", PDfltStringEmpty)
+            Einwahl = TelNr.RegExRemove($"^{PDfltVAZ}{Landeskennzahl}?")
 
             ' Extrahiere die Ortsvorwahl, wenn die Telefonnummer mit einer Landesvorwahl beginnt, oder einer führenden Null (Amt)
             If TelNr.StartsWith(PDfltVAZ) Or TelNr.StartsWith(PDfltAmt) Then
@@ -178,13 +183,13 @@ Public Class Telefonnummer
                 Ortskennzahl = XMLData.POptionen.PTBOrtsKZ
             End If
 
-            Einwahl = Einwahl.RegExReplace($"0?{Ortskennzahl}", PDfltStringEmpty)
+            Einwahl = Einwahl.RegExRemove($"0?{Ortskennzahl}")
 
             ' Suche eine Durchwahl
             If Nummer.Contains("-") Then
-                Durchwahl = Nummer.RegExReplace("^.+\-+ *", PDfltStringEmpty).Trim()
+                Durchwahl = Nummer.RegExRemove("^.+\-+ *").Trim()
                 ' Einwahl: Druchwahl am Ende entfernen
-                Einwahl = Einwahl.RegExReplace($"{Durchwahl}$", PDfltStringEmpty)
+                Einwahl = Einwahl.RegExRemove($"{Durchwahl}$")
             Else
                 Durchwahl = PDfltStringEmpty
             End If
@@ -249,7 +254,7 @@ Public Class Telefonnummer
                     ' Eine Ortsvorwahl muss vorhanden sein
                     If Ortskennzahl.IsStringEmpty Then tmpOrtsvorwahl = XMLData.POptionen.PTBOrtsKZ
                     ' Entferne die führende Null
-                    tmpOrtsvorwahl = tmpOrtsvorwahl.RegExReplace("^(0)+", PDfltStringEmpty)
+                    tmpOrtsvorwahl = tmpOrtsvorwahl.RegExRemove("^(0)+")
                     ' Die Landesvorwahl muss gesetzt sein
                     tmpLandesvorwahl = Landeskennzahl
                 Else

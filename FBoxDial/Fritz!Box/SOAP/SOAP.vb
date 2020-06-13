@@ -1,7 +1,7 @@
 ﻿Imports System.Collections
 Imports System.Xml
 
-Friend Structure ArgumentDirection
+Friend Structure ArgumentDirection_ALT
     Friend Shared directionIN As String = "in"
     Friend Shared directionOUT As String = "out"
 End Structure
@@ -11,20 +11,20 @@ Friend Structure DataType
     Friend Shared dataTypeuuid As String = "uuid"
 End Structure
 
-Friend Structure StateVariableSendEvent
+Friend Structure StateVariableSendEvent_ALT
     Friend Shared SendEventYES As String = "yes"
     Friend Shared SendEventNO As String = "no"
 End Structure
 
-Friend Class Action
+Friend Class Action_ALT
     Implements IDisposable
-    Friend BaseService As ServiceBaseInformation
+    Friend BaseService As ServiceBaseInformation_ALT
     Friend ActionName As String
-    Friend ArgumentList As New List(Of Argument)
+    Friend ArgumentList As New List(Of Argument_ALT)
 
     Friend Function GetInputArguments() As Hashtable
         Dim InputHashTable As New Hashtable
-        For Each INArguments As Argument In ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.directionIN)
+        For Each INArguments As Argument_ALT In ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.IN)
             InputHashTable.Add(INArguments.Name, "")
         Next
         Return InputHashTable
@@ -34,7 +34,7 @@ Friend Class Action
         Dim ReturnXMLDox As New XmlDocument
         Dim OutputHashTable As New Hashtable
 
-        ReturnXMLDox.LoadXml(FritzBoxPOSTClient(ActionName, "https://" & XMLData.POptionen.PTBFBAdr & ":" & FritzBoxDefault.PDfltFBSOAPSSL & BaseService.controlURL, BaseService.serviceType, GetSOAPRequest(InputArguments)))
+        ReturnXMLDox.LoadXml(FritzBoxPOST(ActionName, $"https://{XMLData.POptionen.PTBFBAdr }:{FritzBoxDefault.PDfltSOAPPortSSL}{BaseService.controlURL}", BaseService.serviceType, GetSOAPRequest(InputArguments)))
 
         If ReturnXMLDox.DocumentElement.Name.AreEqual("FEHLER") Then
             With ErrorHashTable
@@ -44,7 +44,7 @@ Friend Class Action
             OutputHashTable = ErrorHashTable
         Else
             If ReturnXMLDox.InnerXml.IsNotStringEmpty Then
-                For Each OUTArguments As Argument In ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.directionOUT)
+                For Each OUTArguments As Argument_ALT In ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.OUT)
                     OutputHashTable.Add(OUTArguments.Name, ReturnXMLDox.GetElementsByTagName(OUTArguments.Name).Item(0).InnerText)
                 Next
             End If
@@ -56,7 +56,7 @@ Friend Class Action
     ''' <summary>
     ''' Stellt den SOAP Request bereit
     ''' </summary>
-    Private Function GetSOAPRequest(ByVal submitValues As Hashtable) As String
+    Private Function GetSOAPRequest(ByVal submitValues As Hashtable) As XmlDocument
 
         Dim BaseNSs As String = "http://schemas.xmlsoap.org/soap/envelope/"
         Dim BaseEnc As String = "http://schemas.xmlsoap.org/soap/encoding/"
@@ -65,8 +65,9 @@ Friend Class Action
         Dim XMLSOAPSchema As New Schema.XmlSchema
 
         Dim rootXMLElement As XmlElement
+        Dim XMLNodeAction As XmlNode
+
         Dim tmpXMLElement As XmlElement
-        Dim tmpXMLNode As XmlNode
 
         With XMLSOAPSchema.Namespaces
             .Add("s", BaseNSs)
@@ -83,20 +84,20 @@ Friend Class Action
             tmpXMLElement = .CreateElement("s", "Body", BaseNSs)
             rootXMLElement.AppendChild(tmpXMLElement)
 
-            tmpXMLNode = tmpXMLElement.AppendChild(.CreateElement("u", ActionName, BaseService.serviceType))
+            XMLNodeAction = tmpXMLElement.AppendChild(.CreateElement("u", ActionName, BaseService.serviceType))
 
             If Not submitValues Is Nothing Then
                 For Each submitItem As DictionaryEntry In submitValues
                     tmpXMLElement = .CreateElement("u", CStr(submitItem.Key), BaseService.serviceType)
                     tmpXMLElement.InnerText = submitItem.Value.ToString
-                    tmpXMLNode.AppendChild(tmpXMLElement)
+                    XMLNodeAction.AppendChild(tmpXMLElement)
                 Next
             End If
 
             .AppendChild(rootXMLElement)
         End With
 
-        Return XMLSOAPRequest.InnerXml
+        Return XMLSOAPRequest
     End Function
 
 #Region "IDisposable Support"
@@ -122,13 +123,13 @@ Friend Class Action
 #End Region
 End Class
 
-Friend Class Argument
+Friend Class Argument_ALT
     Friend Name As String
     Friend Direction As String
     Friend RelatedStateVariable As String
 End Class
 
-Friend Class ServiceBaseInformation
+Friend Class ServiceBaseInformation_ALT
     Implements IDisposable
 
     Friend serviceType As String
@@ -163,7 +164,7 @@ Friend Class ServiceBaseInformation
 
 End Class
 
-Friend Class StateVariable
+Friend Class StateVariable_ALT
     Implements IDisposable
 
     Friend Name As String

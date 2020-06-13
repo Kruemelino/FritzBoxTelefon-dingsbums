@@ -1,20 +1,17 @@
-﻿Imports System.Collections.ObjectModel
+﻿Imports System.Xml.Schema
 
-Public NotInheritable Class FritzBoxDefault
+Friend NotInheritable Class FritzBoxDefault
 
-    Public Shared ReadOnly Property PDfltFritzBoxAdress() As String = "fritz.box"
-    Public Shared ReadOnly Property PDfltFritzBoxUser As String = "admin"
-    Public Shared ReadOnly Property PDfltFritzBoxIPAdress As String = "192.168.178.1"
-    Public Shared ReadOnly Property PDfltFritzBoxName As String = "Fritz!Box"
-    Public Shared ReadOnly Property PDfltAnrListFileName As String = "FRITZ!Box_Anrufliste.csv"
-    Public Shared ReadOnly Property PDfltTelCodeActivateFritzBoxCallMonitor() As String = "#96*5*"
-    Public Shared ReadOnly Property PDfltFBAnrMonPort() As Integer = 1012
-    Public Shared ReadOnly Property PDfltFBSOAP() As Integer = 49000
-    Public Shared ReadOnly Property PDfltFBSOAPSSL() As Integer = 49443
-    Public Shared ReadOnly Property PDfltCodePageFritzBox() As Integer = 65001
+    Friend Shared ReadOnly Property PDfltFritzBoxAdress() As String = "fritz.box"
+    Friend Shared ReadOnly Property PDfltFritzBoxUser As String = "admin"
+    Friend Shared ReadOnly Property PDfltFritzBoxIPAdress As String = "192.168.178.1"
+    Friend Shared ReadOnly Property PDfltFritzBoxName As String = "Fritz!Box"
+    Friend Shared ReadOnly Property PDfltTelCodeActivateFritzBoxCallMonitor() As String = "#96*5*"
+    Friend Shared ReadOnly Property PDfltFBAnrMonPort() As Integer = 1012
+    Friend Shared ReadOnly Property PDfltCodePageFritzBox() As Integer = 65001
 
 #Region "Properties Fritz!Box Links"
-    Public Shared ReadOnly Property PFBLinkBasis() As String
+    Friend Shared ReadOnly Property PFBLinkBasis() As String
         Get
             If XMLData.POptionen.PValidFBAdr.IsNotStringEmpty Then
                 XMLData.POptionen.PValidFBAdr = ValidIP(XMLData.POptionen.PTBFBAdr)
@@ -98,16 +95,16 @@ Public NotInheritable Class FritzBoxDefault
     ''' "POTS=telcfg:settings/MSN/POTS"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_POTS() As String = "POTS=telcfg:settings/MSN/POTS"
+    Friend Shared ReadOnly Property P_Query_FB_POTS() As String = "POTS=telcfg:settings/MSN/POTS"
 
     ''' <summary>
     ''' "Mobile=telcfg:settings/Mobile/MSN"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_Mobile() As String = "Mobile=telcfg:settings/Mobile/MSN"
+    Friend Shared ReadOnly Property P_Query_FB_Mobile() As String = "Mobile=telcfg:settings/Mobile/MSN"
 
     ''' <summary>
-    ''' "Port" &amp; <c>idx</c> &amp; "Name=telcfg:settings/MSN/Port" &amp; <c>idx</c> &amp; "/Name"
+    ''' Port<paramref name="idx"/>Name=telcfg:settings/MSN/Port<paramref name="idx"/>/Name
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
@@ -115,95 +112,83 @@ Public NotInheritable Class FritzBoxDefault
     ''' "S0" &amp; i &amp; "Name=telcfg:settings/NTHotDialList/Name" &amp; i
     ''' "S0" &amp; i &amp; "Number=telcfg:settings/NTHotDialList/Number" &amp; i
     ''' </remarks>
-    Public Shared ReadOnly Property P_Query_FB_FON(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_FON(ByVal idx As Integer) As String
         Get
-            Return "Port" & idx & "Name=telcfg:settings/MSN/Port" & idx & "/Name"
+            Return $"Port{idx}Name=telcfg:settings/MSN/Port{idx}/Name"
         End Get
     End Property
 
     ''' <summary>
-    ''' "TAM" &amp; <c>idx</c> &amp; "=tam:settings/MSN" &amp; <c>idx</c>
+    ''' TAM<paramref name="idx"/>=tam:settings/MSN<paramref name="idx"/>
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_TAM(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_TAM(ByVal idx As Integer) As String
         Get
-            Return "TAM" & idx & "=tam:settings/MSN" & idx
+            Return $"TAM{idx}=tam:settings/MSN{idx}"
         End Get
     End Property
 
     ''' <summary>
-    ''' "FAX" &amp; <c>idx</c> &amp; "=telcfg:settings/FaxMSN" &amp; <c>idx</c>
+    ''' FAX<paramref name="idx"/>=telcfg:settings/FaxMSN<paramref name="idx"/>
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_FAX(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_FAX(ByVal idx As Integer) As String
         Get
-            Return "FAX" & idx & "=telcfg:settings/FaxMSN" & idx
+            Return $"FAX{idx}=telcfg:settings/FaxMSN{idx}"
         End Get
     End Property
 
     ''' <summary>
-    ''' "MSN" &amp; <c>idx</c> &amp; "=telcfg:settings/MSN/MSN" &amp; <c>idx</c>
+    ''' MSN<paramref name="idx"/>=telcfg:settings/MSN/MSN<paramref name="idx"/>
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_MSN(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_MSN(ByVal idx As Integer) As String
         Get
-            Return "MSN" & idx & "=telcfg:settings/MSN/MSN" & idx
+            Return $"MSN{idx}=telcfg:settings/MSN/MSN{idx}"
         End Get
     End Property
 
     ''' <summary>
-    ''' "VOIP" &amp; <c>idx</c> &amp; "Enabled=" &amp; "telcfg:settings/VoipExtension" &amp; <c>idx</c> &amp; "/enabled"
+    ''' VOIP<paramref name="idx"/>Enabled=telcfg:settings/VoipExtension<paramref name="idx"/>/enabled
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_VOIP(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_VOIP(ByVal idx As Integer) As String
         Get
-            Return "VOIP" & idx & "Enabled=" & "telcfg:settings/VoipExtension" & idx & "/enabled"
+            Return $"VOIP{idx}Enabled=telcfg:settings/VoipExtension{idx}/enabled"
         End Get
     End Property
-    Public Shared ReadOnly Property P_Query_FB_VOIPa(ByVal VoipExtensionidx As String) As String
-        Get
-            Return "VOIPEnabled=" & "telcfg:settings/" & VoipExtensionidx & "/enabled"
-        End Get
-    End Property
+
     ''' <summary>
-    ''' "SIP" &amp; "=" &amp; "sip:settings/sip/list(activated,displayname,ID)"
+    ''' SIP=sip:settings/sip/list(activated,displayname,ID)
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_SIP() As String
-        Get
-            Return "SIP" & "=" & "sip:settings/sip/list(activated,displayname,ID)"
-        End Get
-    End Property
-
-    Public Shared ReadOnly Property P_Query_FB_TelList_Header(ByVal jdx As Integer) As String
-        Get
-            Return "TelNr" & jdx
-        End Get
-    End Property
+    Friend Shared ReadOnly Property P_Query_FB_SIP() As String = "SIP=sip:settings/sip/list(activated,displayname,ID)"
 
     ''' <summary>
-    ''' "MSN" &amp; idx &amp; "Nr" &amp; jdx &amp; "=telcfg:settings/MSN/Port" &amp; idx &amp; "/MSN" &amp; jdx
+    ''' TelNr<paramref name="jdx"/>=telcfg:settings/MSN/Port<paramref name="idx"/>/MSN<paramref name="jdx"/>
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <param name="jdx">Der Index des Eintrage</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_MSN_TelNrList(ByVal idx As Integer, ByVal jdx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_MSN_TelNrList(ByVal idx As Integer, ByVal jdx As Integer) As String
         Get
-            Return P_Query_FB_TelList_Header(jdx) & "=telcfg:settings/MSN/Port" & idx & "/MSN" & jdx
+            Return $"TelNr{jdx}=telcfg:settings/MSN/Port{idx}/MSN{jdx}"
         End Get
     End Property
 
     ''' <summary>
-    ''' "VOIP" &amp; idx &amp; "Nr" &amp; jdx &amp; "=telcfg:settings/VoipExtension" &amp; idx &amp; "/Number" &amp; jdx
+    ''' TelNr<paramref name="jdx"/>=telcfg:settings/VoipExtension<paramref name="idx"/>/Number<paramref name="jdx"/>
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
+    ''' <param name="jdx">Der Index des Eintrage</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_VOIP_TelNrList(ByVal idx As Integer, ByVal jdx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_VOIP_TelNrList(ByVal idx As Integer, ByVal jdx As Integer) As String
         Get
-            Return P_Query_FB_TelList_Header(jdx) & "=telcfg:settings/VoipExtension" & idx & "/Number" & jdx
+            Return $"TelNr{jdx}=telcfg:settings/VoipExtension{idx}/Number{jdx}"
         End Get
     End Property
 
@@ -211,28 +196,28 @@ Public NotInheritable Class FritzBoxDefault
     ''' "FON=telcfg:settings/MSN/Port/list(Name,Fax,GroupCall,AllIncomingCalls,OutDialing)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_FON_List() As String = "FON=telcfg:settings/MSN/Port/list(Name,Fax)"
+    Friend Shared ReadOnly Property P_Query_FB_FON_List() As String = "FON=telcfg:settings/MSN/Port/list(Name,Fax)"
 
     ''' <summary>
     ''' "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_DECT_List() As String = "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
+    Friend Shared ReadOnly Property P_Query_FB_DECT_List() As String = "DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)"
 
     ''' <summary>
     ''' "VOIP=telcfg:settings/VoipExtension/list(enabled,Name,RingOnAllMSNs)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_VOIP_List() As String = "VOIP=telcfg:settings/VoipExtension/list(enabled,Name)"
+    Friend Shared ReadOnly Property P_Query_FB_VOIP_List() As String = "VOIP=telcfg:settings/VoipExtension/list(enabled,Name)"
 
     ''' <summary>
     ''' "TAM=tam:settings/TAM/list(Name,Display,Active,MSNBitmap,NumNewMessages,NumOldMessages)"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_TAM_List() As String = "TAM=tam:settings/TAM/list(Active,Name)"
+    Friend Shared ReadOnly Property P_Query_FB_TAM_List() As String = "TAM=tam:settings/TAM/list(Active,Name)"
 
     ''' <summary>
-    ''' "S0" &amp; <c>Type</c> &amp; <c>idx</c> &amp; "=telcfg:settings/NTHotDialList/" &amp; <c>Type</c> &amp; <c>idx</c>
+    ''' S0<paramref name="Type"/><paramref name="idx"/>=telcfg:settings/NTHotDialList/<paramref name="Type"/><paramref name="idx"/>
     ''' </summary>
     ''' <param name="Type">Der Typ des Eintrages: Name oder Number</param>
     ''' <param name="idx">Der Index des Eintrages</param>
@@ -241,31 +226,31 @@ Public NotInheritable Class FritzBoxDefault
     ''' "S0" &amp; i &amp; "Name=telcfg:settings/NTHotDialList/Name" &amp; i
     ''' "S0" &amp; i &amp; "Number=telcfg:settings/NTHotDialList/Number" &amp; i
     ''' </remarks>
-    Public Shared ReadOnly Property P_Query_FB_S0(ByVal Type As String, ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_S0(ByVal Type As String, ByVal idx As Integer) As String
         Get
-            Return "S0" & Type & idx & "=telcfg:settings/NTHotDialList/" & Type & idx
+            Return $"S0{Type}{idx}=telcfg:settings/NTHotDialList/{Type}{idx}"
         End Get
     End Property
 
     ''' <summary>
-    ''' "DECT" &amp; idx &amp; "RingOnAllMSNs=telcfg:settings/Foncontrol/User" &amp; idx &amp; "/RingOnAllMSNs"
-    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' DECT<paramref name="idx"/>RingOnAllMSNs=telcfg:settings/Foncontrol/User<paramref name="idx"/>/RingOnAllMSNs
     ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_DECT_RingOnAllMSNs(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_DECT_RingOnAllMSNs(ByVal idx As Integer) As String
         Get
-            Return "DECT" & idx & "RingOnAllMSNs=telcfg:settings/Foncontrol/User" & idx & "/RingOnAllMSNs"
+            Return $"DECT{idx}RingOnAllMSNs=telcfg:settings/Foncontrol/User{idx}/RingOnAllMSNs"
         End Get
     End Property
 
     ''' <summary>
-    ''' "DECT" &amp; idx &amp; "Nr=telcfg:settings/Foncontrol/User" &amp; idx &amp; "/MSN/list(Number)"
-    ''' <param name="idx">Der Index des Eintrages</param>
+    ''' DECT<paramref name="idx"/>Nr=telcfg:settings/Foncontrol/User<paramref name="idx"/>/MSN/list(Number)"
     ''' </summary>
+    ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_DECT_NrList(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property P_Query_FB_DECT_NrList(ByVal idx As Integer) As String
         Get
-            Return "DECT" & idx & "Nr=telcfg:settings/Foncontrol/User" & idx & "/MSN/list(Number)"
+            Return $"DECT{idx}Nr=telcfg:settings/Foncontrol/User{idx}/MSN/list(Number)"
         End Get
     End Property
 
@@ -273,44 +258,68 @@ Public NotInheritable Class FritzBoxDefault
     ''' "FaxMailActive=telcfg:settings/FaxMailActive"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_FaxMailActive() As String = "FaxMailActive=telcfg:settings/FaxMailActive"
+    Friend Shared ReadOnly Property P_Query_FB_FaxMailActive() As String = "FaxMailActive=telcfg:settings/FaxMailActive"
 
     ''' <summary>
     ''' "MobileName=telcfg:settings/Mobile/Name"
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_MobileName() As String = "MobileName=telcfg:settings/Mobile/Name"
+    Friend Shared ReadOnly Property P_Query_FB_MobileName() As String = "MobileName=telcfg:settings/Mobile/Name"
 
     ''' <summary>
     ''' LKZPrefix=telcfg:settings/Location/LKZPrefix
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
 
-    Public Shared ReadOnly Property P_Query_FB_LKZPrefix() As String = "LKZPrefix=telcfg:settings/Location/LKZPrefix"
+    Friend Shared ReadOnly Property P_Query_FB_LKZPrefix() As String = "LKZPrefix=telcfg:settings/Location/LKZPrefix"
     ''' <summary>
     ''' LKZ=telcfg:settings/Location/LKZ
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
 
-    Public Shared ReadOnly Property P_Query_FB_LKZ() As String = "LKZ=telcfg:settings/Location/LKZ"
+    Friend Shared ReadOnly Property P_Query_FB_LKZ() As String = "LKZ=telcfg:settings/Location/LKZ"
     ''' <summary>
     ''' OKZPrefix=telcfg:settings/Location/OKZPrefix
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_OKZPrefix() As String = "OKZPrefix=telcfg:settings/Location/OKZPrefix"
+    Friend Shared ReadOnly Property P_Query_FB_OKZPrefix() As String = "OKZPrefix=telcfg:settings/Location/OKZPrefix"
 
     ''' <summary>
     ''' OKZ=telcfg:settings/Location/OKZ
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
-    Public Shared ReadOnly Property P_Query_FB_OKZ() As String = "OKZ=telcfg:settings/Location/OKZ"
+    Friend Shared ReadOnly Property P_Query_FB_OKZ() As String = "OKZ=telcfg:settings/Location/OKZ"
 
+#End Region
+
+#Region "Fritz!Box SOAP/TR64"
+    Friend Shared ReadOnly Property PDfltSOAPPort() As Integer = 49000
+    Friend Shared ReadOnly Property PDfltSOAPPortSSL() As Integer = 49443
+    ''' <summary>
+    ''' nameSpace URL: http://schemas.xmlsoap.org/soap/envelope/
+    ''' </summary>
+    Friend Shared ReadOnly Property PDfltSOAPRequestNameSpaceEnvelope() As String = "http://schemas.xmlsoap.org/soap/envelope/"
+    ''' <summary>
+    ''' nameSpace URL: http://schemas.xmlsoap.org/soap/encoding/
+    ''' </summary>
+    Friend Shared ReadOnly Property PDfltSOAPRequestNameSpaceEncoding() As String = "http://schemas.xmlsoap.org/soap/encoding/"
+    Friend Shared ReadOnly Property PDfltSOAPRequestSchema() As XmlSchema
+        Get
+            Dim XMLSOAPSchema As New XmlSchema
+
+            With XMLSOAPSchema.Namespaces
+                .Add("s", PDfltSOAPRequestNameSpaceEnvelope)
+                .Add("u", PDfltSOAPRequestNameSpaceEncoding)
+            End With
+
+            Return XMLSOAPSchema
+        End Get
+    End Property
 #End Region
 
 #Region "Fritz!Box Telefonbuch"
 
-
-    Public Shared ReadOnly Property PDfltTelBuchTelTyp() As List(Of KeyValuePair(Of String, String))
+    Friend Shared ReadOnly Property PDfltTelBuchTelTyp() As List(Of KeyValuePair(Of String, String))
         Get
             Dim values As New List(Of KeyValuePair(Of String, String)) From {
                 New KeyValuePair(Of String, String)("home", "Privat"),

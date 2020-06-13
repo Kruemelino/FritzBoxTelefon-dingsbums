@@ -9,7 +9,7 @@ Public Class FormWählclient
     Implements IDisposable
 
 #Region "Properties"
-    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property OKontakt As Outlook.ContactItem
     Private Property OExchangeNutzer As Outlook.ExchangeUser
     Private Property PKontaktbild As Bitmap
@@ -353,7 +353,7 @@ Public Class FormWählclient
                 Else
                     LStatus.Text = PWählClientBitteWarten : WählClient_SetStatus(PWählClientStatusVorbereitung)
                     ' Entferne 1x # am Ende
-                    DialCode = TelNr.Unformatiert.RegExReplace("#{1}$", PDfltStringEmpty)
+                    DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
 
                     ' Füge VAZ und LKZ hinzu, wenn gewünscht
                     If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)

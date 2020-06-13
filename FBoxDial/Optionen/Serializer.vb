@@ -5,7 +5,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 
 Friend Module Serializer
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     <Extension> Friend Function Laden(ByRef XMLData As OutlookXML) As Boolean
         Dim mySerializer As New XmlSerializer(GetType(OutlookXML))
@@ -17,17 +17,8 @@ Friend Module Serializer
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
 
-
         If File.Exists(Pfad) Then
-            Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
-                If mySerializer.CanDeserialize(XmlLeser) Then
-                    Try
-                        XMLData = CType(mySerializer.Deserialize(XmlLeser), OutlookXML)
-                    Catch ex As InvalidOperationException
-                        NLogger.Fatal(ex)
-                    End Try
-                End If
-            End Using
+            XMLData = DeserializeObject(Of OutlookXML)(Pfad)
         Else
             XMLData = ErstelleXMLDatei(Pfad)
         End If
@@ -45,34 +36,64 @@ Friend Module Serializer
         Return XMLData IsNot Nothing
     End Function
 
-    Friend Function DeserializeObject(Of T)(ByVal Pfad As String) As Task(Of T)
-        Return Task.Run(Function()
-                            Dim mySerializer As New XmlSerializer(GetType(T))
-                            Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
-                                If mySerializer.CanDeserialize(XmlLeser) Then
-                                    Try
-                                        Return CType(mySerializer.Deserialize(XmlLeser), T)
-                                    Catch ex As InvalidOperationException
-                                        NLogger.Fatal(ex)
-                                    End Try
-                                End If
-                            End Using
-                        End Function)
-    End Function
-
-    <Extension> Friend Sub Speichern(ByVal XMLData As OutlookXML)
+    <Extension> Friend Sub Speichern(Of T)(ByVal XMLData As T, ByVal Pfad As String)
         If XMLData IsNot Nothing Then
-            Dim mySerializer As New XmlSerializer(GetType(OutlookXML))
-            Dim settings As New XmlWriterSettings With {.Indent = True, .OmitXmlDeclaration = False}
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
-
             XmlSerializerNamespace.Add(PDfltStringEmpty, PDfltStringEmpty)
 
-            Using XmlSchreiber As XmlWriter = XmlWriter.Create(Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltAddin_KurzName & ".xml"), settings)
-                mySerializer.Serialize(XmlSchreiber, XMLData, XmlSerializerNamespace)
+            Using XmlSchreiber As XmlWriter = XmlWriter.Create(Pfad, New XmlWriterSettings With {.Indent = True, .OmitXmlDeclaration = False})
+                With New XmlSerializer(GetType(T))
+                    .Serialize(XmlSchreiber, XMLData, XmlSerializerNamespace)
+                End With
             End Using
         End If
     End Sub
+
+    Friend Function DeserializeObjectAsyc(Of T)(ByVal Pfad As String) As Task(Of T)
+        Return Task.Run(Function()
+                            Return DeserializeObject(Of T)(Pfad)
+                        End Function)
+    End Function
+    Friend Function DeserializeObject(Of T)(ByVal Pfad As String) As T
+
+        Dim mySerializer As New XmlSerializer(GetType(T))
+        Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
+            If mySerializer.CanDeserialize(XmlLeser) Then
+                Try
+                    Return CType(mySerializer.Deserialize(XmlLeser), T)
+                Catch ex As InvalidOperationException
+                    NLogger.Fatal(ex)
+                End Try
+            End If
+        End Using
+
+    End Function
+
+    'Friend Function XmlSerializeToString(ByVal objectInstance As Object) As String
+    '    Dim serializer = New XmlSerializer(objectInstance.[GetType]())
+    '    Dim sb = New StringBuilder()
+
+    '    Using writer As TextWriter = New StringWriter(sb)
+    '        serializer.Serialize(writer, objectInstance)
+    '    End Using
+
+    '    Return sb.ToString()
+    'End Function
+
+    Friend Function XmlDeserializeFromString(Of T)(ByVal objectData As String) As T
+        Return CType(XmlDeserializeFromString(objectData, GetType(T)), T)
+    End Function
+
+    Private Function XmlDeserializeFromString(ByVal objectData As String, ByVal type As Type) As Object
+        Dim serializer = New XmlSerializer(type)
+        Dim result As Object
+
+        Using reader As TextReader = New StringReader(objectData)
+            result = serializer.Deserialize(reader)
+        End Using
+
+        Return result
+    End Function
 
     Private Function ErstelleXMLDatei(ByVal sPfad As String) As OutlookXML
         Dim XMLDefault As DefaultWerte = New DefaultWerte
@@ -98,7 +119,7 @@ Friend Module Serializer
             End With
         End With
 
-        XMLData.Speichern
+        XMLData.Speichern(Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
         Return XMLData
     End Function
 End Module

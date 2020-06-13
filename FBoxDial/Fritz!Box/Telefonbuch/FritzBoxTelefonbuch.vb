@@ -4,7 +4,7 @@ Imports System.Runtime.CompilerServices
 
 Friend Module FritzBoxTelefonbuch
 
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
         Dim OutPutData As Hashtable
@@ -12,7 +12,7 @@ Friend Module FritzBoxTelefonbuch
         Dim PhoneBookXML As FritzBoxXMLTelefonbücher
 
 
-        Using fboxSOAP As New FritzBoxServices
+        Using fboxSOAP As New FritzBoxSOAP
             ' Ermittle alle verfügbaren Telefonbücher
             OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebookList")
 
@@ -27,7 +27,7 @@ Friend Module FritzBoxTelefonbuch
                     If OutPutData.ContainsKey("NewPhonebookURL") Then
                         NLogger.Debug($"Telefonbuch {TelefonbuchID} heruntergeladen: {OutPutData.Item("NewPhonebookURL")}")
                         ' Deserialisiere das Telefonbuch
-                        PhoneBookXML = Await DeserializeObject(Of FritzBoxXMLTelefonbücher)(OutPutData.Item("NewPhonebookURL").ToString())
+                        PhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(OutPutData.Item("NewPhonebookURL").ToString())
                         ' Setze die ID
                         PhoneBookXML.Telefonbuch.ForEach(Sub(r) r.ID = TelefonbuchID)
                         ' Füge die Telefonbücher zusammen
@@ -48,18 +48,18 @@ Friend Module FritzBoxTelefonbuch
     ''' <param name="TelefonbuchName">Übergabe des neuen Namens des Telefonbuches.</param>
     ''' <returns>XML-Telefonbuch</returns>
     Friend Async Function ErstelleTelefonbuch(ByVal TelefonbuchName As String) As Task(Of FritzBoxXMLTelefonbücher)
-        Using fboxSOAP As New FritzBoxServices
+        Using fboxSOAP As New FritzBoxSOAP
             With fboxSOAP
                 ' Hole die aktuelle Liste an Telefonbüchern
-                Dim TelListeA As List(Of String) = .TelefonbuchListe.ToList
+                Dim TelListeA As String() = .TelefonbuchListe
                 ' Erstelle ein neues Telefonbuch
                 .ErstelleNeuesTelefonbuch(TelefonbuchName)
                 ' Ermittle die neue ID des Telefonbuches
-                Dim TelListeB As List(Of String) = .TelefonbuchListe.ToList
+                Dim TelListeb As String() = .TelefonbuchListe
 
-                If TelListeA.Count.AreDifferent(TelListeB.Count) Then
+                If TelListeA.Count.AreDifferent(TelListeb.Count) Then
                     Dim TelListeC As List(Of String)
-                    TelListeC = TelListeB.Except(TelListeA).ToList
+                    TelListeC = TelListeb.Except(TelListeA).ToList
                     TelefonbuchName = TelListeC.First
                 End If
 
@@ -70,14 +70,14 @@ Friend Module FritzBoxTelefonbuch
     End Function
 
     Friend Sub LöscheTelefonbuch(ByVal TelefonbuchID As Integer)
-        Using fboxSOAP As New FritzBoxServices
+        Using fboxSOAP As New FritzBoxSOAP
             With fboxSOAP
                 .LöscheTelefonbuch(TelefonbuchID)
             End With
         End Using
     End Sub
 
-    <Extension> Private Function TelefonbuchListe(ByVal fboxSOAP As FritzBoxServices) As String()
+    <Extension> Private Function TelefonbuchListe(ByVal fboxSOAP As FritzBoxSOAP) As String()
         Dim OutPutData As Hashtable
 
         ' Ermittle alle verfügbaren Telefonbücher
@@ -92,7 +92,7 @@ Friend Module FritzBoxTelefonbuch
 
     End Function
 
-    <Extension> Private Async Function Telefonbuch(ByVal fboxSOAP As FritzBoxServices, ByVal TelefonbuchID As String) As Task(Of FritzBoxXMLTelefonbücher)
+    <Extension> Private Async Function Telefonbuch(ByVal fboxSOAP As FritzBoxSOAP, ByVal TelefonbuchID As String) As Task(Of FritzBoxXMLTelefonbücher)
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
         Dim PhoneBookXML As FritzBoxXMLTelefonbücher
@@ -101,7 +101,7 @@ Friend Module FritzBoxTelefonbuch
         OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "GetPhonebook", InPutData)
         If OutPutData.ContainsKey("NewPhonebookURL") Then
             ' Deserialisiere das Telefonbuch
-            PhoneBookXML = Await DeserializeObject(Of FritzBoxXMLTelefonbücher)(OutPutData.Item("NewPhonebookURL").ToString())
+            PhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(OutPutData.Item("NewPhonebookURL").ToString())
             ' Setze die ID
             PhoneBookXML.Telefonbuch.ForEach(Sub(r) r.ID = TelefonbuchID)
             Return PhoneBookXML
@@ -115,11 +115,9 @@ Friend Module FritzBoxTelefonbuch
     ''' Erstellt ein neues Telfonbuch
     ''' </summary>
     ''' <param name="TelefonbuchName">Der Name des Telefonbuches</param>
-    <Extension> Private Function ErstelleNeuesTelefonbuch(ByVal fboxSOAP As FritzBoxServices, ByVal TelefonbuchName As String) As Boolean
+    <Extension> Private Function ErstelleNeuesTelefonbuch(ByVal fboxSOAP As FritzBoxSOAP, ByVal TelefonbuchName As String) As Boolean
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
-
-        ErstelleNeuesTelefonbuch = False
 
         If TelefonbuchName.IsNotStringEmpty Then
 
@@ -131,10 +129,12 @@ Friend Module FritzBoxTelefonbuch
             ' 820           Internal Error
             If OutPutData.ContainsKey("Error") Then
                 NLogger.Error(OutPutData.Item("Error"))
+                Return False
             Else
-                ErstelleNeuesTelefonbuch = True
+                Return True
             End If
-
+        Else
+            Return False
         End If
     End Function
 
@@ -145,12 +145,9 @@ Friend Module FritzBoxTelefonbuch
     ''' <remarks>The default phonebook (PhonebookID = 0) is not deletable, but therefore, each entry will
     ''' be deleted And the phonebook will be empty afterwards.</remarks>
     ''' <returns></returns>
-    <Extension> Private Function LöscheTelefonbuch(ByVal fboxSOAP As FritzBoxServices, ByVal TelefonbuchID As Integer) As Boolean
+    <Extension> Private Function LöscheTelefonbuch(ByVal fboxSOAP As FritzBoxSOAP, ByVal TelefonbuchID As Integer) As Boolean
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
-
-        LöscheTelefonbuch = False
-
 
         InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}, {"NewPhonebookExtraID", PDfltStringEmpty}}
         OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "DeletePhonebook", InPutData)
@@ -161,8 +158,9 @@ Friend Module FritzBoxTelefonbuch
         ' 820           Internal Error
         If OutPutData.ContainsKey("Error") Then
             NLogger.Error(OutPutData.Item("Error"))
+            Return False
         Else
-            LöscheTelefonbuch = True
+            Return True
         End If
 
     End Function
@@ -179,10 +177,8 @@ Friend Module FritzBoxTelefonbuch
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 
-        UpdateTelefonbucheintrag = PDfltIntErrorMinusOne
-
         If XMLDaten.IsNotStringEmpty Then
-            Using fboxSOAP As New FritzBoxServices
+            Using fboxSOAP As New FritzBoxSOAP
 
                 ' SetPhonebookEntryUID
                 ' Add a new or change an existing entry in a telephone book using the unique ID of the entry.
@@ -205,11 +201,15 @@ Friend Module FritzBoxTelefonbuch
                 ' 820           Internal Error
 
                 If OutPutData.ContainsKey("NewPhonebookEntryUniqueID") Then
-                    UpdateTelefonbucheintrag = CInt(OutPutData.Item("NewPhonebookEntryUniqueID"))
+
+                    Return CInt(OutPutData.Item("NewPhonebookEntryUniqueID"))
                 Else
                     NLogger.Error("UpdateTelefonbucheintrag: {0}", OutPutData.Item("Error").ToString)
+                    Return PDfltIntErrorMinusOne
                 End If
             End Using
+        Else
+            Return PDfltIntErrorMinusOne
         End If
     End Function
     ''' <summary>
@@ -221,9 +221,7 @@ Friend Module FritzBoxTelefonbuch
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 
-        LöscheTelefonbucheintrag = False
-
-        Using fboxSOAP As New FritzBoxServices
+        Using fboxSOAP As New FritzBoxSOAP
 
             InPutData = New Hashtable From {
                                                 {"NewPhonebookID", TelefonbuchID},
@@ -239,8 +237,9 @@ Friend Module FritzBoxTelefonbuch
 
             If OutPutData.ContainsKey("Error") Then
                 NLogger.Error(OutPutData.Item("Error"))
+                Return False
             Else
-                LöscheTelefonbucheintrag = True
+                Return True
             End If
         End Using
 

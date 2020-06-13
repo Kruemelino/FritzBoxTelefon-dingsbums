@@ -7,4 +7,3 @@ E:\FritzBoxDial\FritzBoxTelefon-dingsbums\Installer\obj\Debug\Installer.vbproj.C
 E:\FritzBoxDial\FritzBoxTelefon-dingsbums\Installer\obj\Debug\Installer.dll
 E:\FritzBoxDial\FritzBoxTelefon-dingsbums\Installer\obj\Debug\Installer.xml
 E:\FritzBoxDial\FritzBoxTelefon-dingsbums\Installer\obj\Debug\Installer.pdb
-E:\FritzBoxDial\FritzBoxTelefon-dingsbums\Installer\obj\Debug\Installer.vbprojAssemblyReference.cache

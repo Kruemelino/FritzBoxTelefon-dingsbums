@@ -3,12 +3,12 @@ Imports System.Xml
 
 Friend Class FritzBoxSOAPService
 
-    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     'Private Property ServiceDefinition As ServiceBaseInformation
-    Private Property ActionList As List(Of Action)
+    Private Property ActionList As List(Of Action_ALT)
     'Private Property StateVariableList As List(Of StateVariable)
 
-    Public Sub New(ByVal XMLServiceDefinition As ServiceBaseInformation)
+    Public Sub New(ByVal XMLServiceDefinition As ServiceBaseInformation_ALT)
         'ServiceDefinition = XMLServiceDefinition
         If XMLServiceDefinition IsNot Nothing Then
             ActionList = SetupActions(XMLServiceDefinition)
@@ -19,7 +19,7 @@ Friend Class FritzBoxSOAPService
         'StateVariableList = SetupStateVariables()
     End Sub
 
-    Friend Function GetActionByName(ByVal ActionName As String) As Action
+    Friend Function GetActionByName(ByVal ActionName As String) As Action_ALT
         Return ActionList.Find(Function(GetbyActionName) GetbyActionName.ActionName = ActionName)
     End Function
 
@@ -52,7 +52,7 @@ Friend Class FritzBoxSOAPService
         'ActionInputData = Nothing
     End Function
 
-    Private Function SetupActions(ByVal XMLServiceDefinition As ServiceBaseInformation) As List(Of Action)
+    Private Function SetupActions(ByVal XMLServiceDefinition As ServiceBaseInformation_ALT) As List(Of Action_ALT)
         Const BaseTagName As String = "action"
         Const ActionNameTag As String = "name"
         Const ActionArgumentListTag As String = "argumentList"
@@ -61,18 +61,18 @@ Friend Class FritzBoxSOAPService
         Const ArgumentDirectionTag As String = "direction"
         Const ArgumentRelatedStateVariableTag As String = "relatedStateVariable"
 
-        Dim XMLDefinitionFile As XmlDocument = GetSOAPXMLFile("http://" & XMLData.POptionen.PTBFBAdr & ":" & FritzBoxDefault.PDfltFBSOAP & XMLServiceDefinition.SCPDURL)
+        Dim XMLDefinitionFile As XmlDocument = GetSOAPXMLFile("http://" & XMLData.POptionen.PTBFBAdr & ":" & FritzBoxDefault.PDfltSOAPPort & XMLServiceDefinition.SCPDURL)
 
-        Dim ActionList As New List(Of Action)
-        Dim tmpAction As Action
+        Dim ActionList As New List(Of Action_ALT)
+        Dim tmpAction As Action_ALT
 
         For Each ActionXMLNode As XmlNode In XMLDefinitionFile.GetElementsByTagName(BaseTagName)
-            tmpAction = New Action
+            tmpAction = New Action_ALT
             With tmpAction
                 .BaseService = XMLServiceDefinition
                 .ActionName = ActionXMLNode.Item(ActionNameTag).InnerText
                 'Argumente finden
-                .ArgumentList = New List(Of Argument)
+                .ArgumentList = New List(Of Argument_ALT)
                 If ActionXMLNode.Item(ActionArgumentListTag) IsNot Nothing Then
                     For Each ArgumentXMLNode As XmlNode In ActionXMLNode.Item(ActionArgumentListTag).ChildNodes
                         With ArgumentXMLNode
@@ -87,8 +87,8 @@ Friend Class FritzBoxSOAPService
         tmpAction = Nothing
     End Function
 
-    Private Function SetupArgument(ByVal ArgumentName As String, ArgumentDirection As String, ArgumentRelatedStateVariable As String) As Argument
-        SetupArgument = New Argument With {.Direction = ArgumentDirection, .Name = ArgumentName, .RelatedStateVariable = ArgumentRelatedStateVariable}
+    Private Function SetupArgument(ByVal ArgumentName As String, ArgumentDirection As String, ArgumentRelatedStateVariable As String) As Argument_ALT
+        SetupArgument = New Argument_ALT With {.Direction = ArgumentDirection, .Name = ArgumentName, .RelatedStateVariable = ArgumentRelatedStateVariable}
     End Function
 
     'Private Function SetupStateVariables() As List(Of StateVariable)

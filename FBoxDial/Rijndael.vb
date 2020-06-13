@@ -3,7 +3,7 @@
 ''' <remarks>http://www.freevbcode.com/ShowCode.asp?ID=4520</remarks>
 Friend Class Rijndael
     Implements IDisposable
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     ''' <summary>
     ''' Verschlüsselungsroutine
@@ -103,7 +103,7 @@ Friend Class Rijndael
         Return Salt
     End Function
 
-    Friend Function getMd5Hash(ByVal input As String, ByVal Enkodierung As Encoding) As String
+    Friend Function GetMd5Hash(ByVal input As String, ByVal Enkodierung As Encoding) As String
 
         Using md5 As MD5 = New MD5CryptoServiceProvider
             Dim sBuilder As New StringBuilder()

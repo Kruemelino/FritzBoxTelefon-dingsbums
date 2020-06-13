@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 Public Class FBoxDataGridView
     Inherits DataGridView
     Private Property ScaleFaktor As Drawing.SizeF
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property Sortierung As SortOrder
     Public Sub New()
         ' Double Buffered einschalten

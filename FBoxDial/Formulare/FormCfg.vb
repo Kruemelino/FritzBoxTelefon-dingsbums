@@ -247,7 +247,7 @@ Public Class FormCfg
                 ' Valid-IP neu ermitteln
                 XMLData.POptionen.PValidFBAdr = ValidIP(XMLData.POptionen.PTBFBAdr)
                 ' Properties in Datei umwandeln
-                XMLData.Speichern
+                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
             Case sender Is BTestLogin
                 '' Überführe das eingegebene Passwort in die Property
                 'Using Crypt As Rijndael = New Rijndael

@@ -6,7 +6,7 @@ Imports Microsoft.Office.Interop
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
 
-    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
     <XmlAttribute> Public Property ID As Integer
@@ -58,7 +58,7 @@ Imports Microsoft.Office.Interop
                         ZeitBeginn = CDate(FBStatus(i))
 
                     Case 2 ' Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-                        ID = CInt(FBStatus(i))
+                        ID = FBStatus(i).ToInt
 
                     Case 3 ' Eingehende (anrufende) Telefonnummer
                         GegenstelleTelNr = New Telefonnummer With {.SetNummer = FBStatus(i)}
@@ -68,9 +68,7 @@ Imports Microsoft.Office.Interop
                     Case 4 ' Eigene (angerufene) Telefonnummer, MSN
                         Dim j As Integer = i ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
 
-                        'Test 'EigeneTelNr = XMLData.PTelefonie.Telefonnummern.Find(Function(Tel) Tel.Equals(New Telefonnummer With {.SetNummer = FBStatus(j)}))
                         EigeneTelNr = XMLData.PTelefonie.GetNummer(FBStatus(j))
-
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
                         If EigeneTelNr Is Nothing Then
                             NLogger.Warn($"Eigene Telefonnummer für {FBStatus(j)} konnte nicht ermittelt werden.")
@@ -102,7 +100,7 @@ Imports Microsoft.Office.Interop
                         ZeitBeginn = CDate(FBStatus(i))
 
                     Case 2 ' Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-                        ID = CInt(FBStatus(i))
+                        ID = FBStatus(i).ToInt
 
                     Case 3 ' Nebenstellennummer, eindeutige Zuordnung des Telefons
                         NebenstellenNummer = CInt(FBStatus(i))
@@ -114,7 +112,6 @@ Imports Microsoft.Office.Interop
                         If EigeneTelNr Is Nothing Then
                             NLogger.Warn($"Eigene Telefonnummer für {FBStatus(j)} konnte nicht ermittelt werden.")
                             EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(j)}
-                            OutEigeneTelNr = FBStatus(j)
                         End If
 
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
@@ -143,7 +140,7 @@ Imports Microsoft.Office.Interop
                     Case 0 ' Uhrzeit des Telefonates - Startzeit
                         ZeitVerbunden = CDate(FBStatus(i))
                     Case 2 ' Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-                        ID = CInt(FBStatus(i))
+                        ID = FBStatus(i).ToInt
                     Case 3 ' Nebenstellennummer, eindeutige Zuordnung des Telefons
                         NebenstellenNummer = CInt(FBStatus(i))
                     Case 4 ' Gewählte Telefonnummer (CALL) bzw. eingehende Telefonnummer (RING)
@@ -166,7 +163,7 @@ Imports Microsoft.Office.Interop
                     Case 0 ' Uhrzeit des Telefonates - Startzeit
                         ZeitEnde = CDate(FBStatus(i))
                     Case 2 ' Die Nummer der aktuell aufgebauten Verbindungen (0 ... n), dient zur Zuordnung der Telefonate, ID
-                        ID = CInt(FBStatus(i))
+                        ID = FBStatus(i).ToInt
                     Case 3 ' Dauer des Telefonates
                         Dauer = CInt(FBStatus(i))
                 End Select
@@ -205,9 +202,7 @@ Imports Microsoft.Office.Interop
         If EigeneTelNr.Überwacht Then RaiseEvent Popup(Me)
 
         ' RING-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.RINGListe Is Nothing Then
-            XMLData.PTelefonie.RINGListe = New XRingListe With {.Einträge = New List(Of Telefonat)}
-        End If
+        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New XRingListe With {.Einträge = New List(Of Telefonat)}
 
         ' Telefonat in erste Positon der RING-Liste speichern
         XMLData.PTelefonie.RINGListe.Einträge.Insert(Me)
@@ -224,9 +219,8 @@ Imports Microsoft.Office.Interop
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
         ' CALL-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.CALLListe Is Nothing Then
-            XMLData.PTelefonie.CALLListe = New XCallListe With {.Einträge = New List(Of Telefonat)}
-        End If
+        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New XCallListe With {.Einträge = New List(Of Telefonat)}
+
 
         ' Telefonat in erste Positon der CALL-Liste speichern
         XMLData.PTelefonie.CALLListe.Einträge.Insert(Me)
@@ -241,9 +235,7 @@ Imports Microsoft.Office.Interop
     Private Sub AnrMonDISCONNECT()
         Beendet = True
 
-        If XMLData.POptionen.PCBJournal Then
-            ErstelleJournalEintrag()
-        End If
+        If XMLData.POptionen.PCBJournal Then ErstelleJournalEintrag()
     End Sub
 
     Private Sub BWKontaktsuche_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWKontaktsuche.DoWork

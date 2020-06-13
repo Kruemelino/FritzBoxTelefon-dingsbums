@@ -5,7 +5,7 @@ Public Class FritzBoxWählClient
     Implements IDisposable
 
 #Region "Properties"
-    Private Shared Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.PFBLinkBasis & "/data.lua"
     Private ReadOnly Property PFBLinkDialSetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
         Get
@@ -44,11 +44,11 @@ Public Class FritzBoxWählClient
 
         Dim StatusMeldung As String
 
-        SOAPDial = False
-
-        Using fbSOAP As New FritzBoxServices
+        Using fbSOAP As New FritzBoxSOAP
             ' DialPort setzen, wenn erforderlich
-            DialPortEingestellt = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig").Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
+
+            OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+            DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
             If Not DialPortEingestellt Then
                 ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
                 StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientStatusDialPort, Telefon.UPnPDialport)
@@ -64,7 +64,8 @@ Public Class FritzBoxWählClient
                     RaiseEvent SetStatus(StatusMeldung)
                 Else
                     ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
-                    DialPortEingestellt = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig").Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
+                    OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+                    DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
                     If Not DialPortEingestellt Then
                         StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientStatusSOAPDialPortFehler, Telefon.UPnPDialport)
                         NLogger.Error(StatusMeldung)
@@ -90,9 +91,12 @@ Public Class FritzBoxWählClient
                     StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
                     RaiseEvent SetStatus(StatusMeldung)
+                    Return False
                 Else
                     Return True
                 End If
+            Else
+                Return False
             End If
         End Using
     End Function

@@ -5,7 +5,7 @@ Imports System.Text.RegularExpressions
 
 <DebuggerStepThrough()>
 Public Module Extensions
-    Private Property NLogger As NLog.Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Extensions für Verarbeitung von Zahlen: Double, Integer, Long"
     Private Const Epsilon As Single = Single.Epsilon
@@ -212,6 +212,9 @@ Public Module Extensions
     <Extension> Public Function RegExReplace(ByVal str1 As String, ByVal pattern As String, ByVal replacement As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As String
         Return Regex.Replace(str1, pattern, replacement, RegOpt)
     End Function
+    <Extension> Public Function RegExRemove(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As String
+        Return str1.RegExReplace(pattern, PDfltStringEmpty, RegOpt)
+    End Function
     <Extension> Public Function IsRegExMatch(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As Boolean
         Return Regex.Match(str1, pattern, RegOpt).Success
     End Function
@@ -223,7 +226,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="sTxt">String der umgewandelt werden soll</param>
     <Extension> Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
-        Return Regex.Replace(sTxt, "\D", PDfltStringEmpty)
+        Return sTxt.RegExRemove("\D")
     End Function
 
     ''' <summary>
@@ -342,8 +345,12 @@ Public Module Extensions
     End Sub
 #End Region
 
-
 #Region "Zahlenkonvertierungen"
+    ''' <summary>
+    ''' Konvertiert einen String zu Integer.
+    ''' </summary>
+    ''' <param name="Text"></param>
+    ''' <returns>Den konvertierten String. falls das nicht möglich ist, wird -1 zurückgegeben.</returns>
     <Extension> Public Function ToInt(ByVal Text As String) As Integer
         Dim retVal As Integer = PDfltIntErrorMinusOne
         If Integer.TryParse(Text, retVal) Then
@@ -358,8 +365,8 @@ Public Module Extensions
     <Extension> Public Function ToInt(ByVal dWert As Double) As Integer
         Return CInt(dWert)
     End Function
-    <Extension> Public Function ToInt(ByVal dWert As Byte) As Integer
-        Return dWert
+    <Extension> Public Function ToInt(ByVal bWert As Byte) As Integer
+        Return bWert
     End Function
 
     <Extension> Public Function ToSng(ByVal dWert As Double) As Single

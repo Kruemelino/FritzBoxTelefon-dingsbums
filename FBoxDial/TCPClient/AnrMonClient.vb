@@ -4,7 +4,7 @@ Imports System.Net.Sockets
 ''' Abwandlung VersuchsChat mit leistungsfähigem Server von ErfinderDesRades
 ''' https://www.vb-paradise.de/index.php/Thread/61948-VersuchsChat-mit-leistungsf%C3%A4higem-Server
 ''' </summary>
-Public Class AnrMonClient
+Friend Class AnrMonClient
     Implements IDisposable
 
     Private Property AnrMonTcpClient As TcpClient
@@ -42,19 +42,19 @@ Public Class AnrMonClient
     Private Sub EndRead(ByVal ar As IAsyncResult)
         If Verbunden And Not IsDisposed Then
             Dim read As Integer = AnrMonStream.EndRead(ar)
-            If read = 0 Then 'leere Datenübermittlung signalisiert Verbindungsabbruch
+            If read.IsZero Then 'leere Datenübermittlung signalisiert Verbindungsabbruch
                 Dispose()
-                Return
+            Else
+                With New StringBuilder(Encoding.UTF8.GetString(Buf, 0, read))
+                    Do While AnrMonStream.DataAvailable
+                        read = AnrMonStream.Read(Buf, 0, Buf.Length)
+                        .Append(Encoding.UTF8.GetString(Buf, 0, read))
+                    Loop
+                    RaiseEvent Message(Me, New NotifyEventArgs(Of String)(String.Concat(.ToString)))
+                End With
+                AnrMonStream.BeginRead(Buf, 0, Buf.Length, AddressOf EndRead, Nothing)
             End If
 
-            Dim SB As New StringBuilder(Encoding.UTF8.GetString(Buf, 0, read))
-            Do While AnrMonStream.DataAvailable
-                read = AnrMonStream.Read(Buf, 0, Buf.Length)
-                SB.Append(Encoding.UTF8.GetString(Buf, 0, read))
-            Loop
-            RaiseEvent Message(Me, New NotifyEventArgs(Of String)(String.Concat(SB.ToString)))
-
-            AnrMonStream.BeginRead(Buf, 0, Buf.Length, AddressOf EndRead, Nothing)
         End If
     End Sub
 
