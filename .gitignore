@@ -5,12 +5,8 @@
 
 /.vs
 #/FBoxDial
-Installer/*
+Installer
 /FBoxDial/.vs/FritzBoxDial_2010/v16/Server/sqlite3
-Installer/bin/Debug/Installer.dll
-Installer/bin/Debug/Installer.pdb
-Installer/obj/Debug/Installer.dll
-Installer/obj/Debug/Installer.pdb
 
 #################
 ## Visual Studio
