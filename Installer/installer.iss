@@ -6,7 +6,7 @@
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2019), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
 #define MyGUID "051D5E77-4942-477E-8071-12F262FDE4F3" 
 #define MyAppNameKurz "FritzBoxDial"
-#define MyAppTime GetDateTimeString('yymmdd', '', '') 
+#define MyAppTime GetDateTimeString('yymmdd-hhnn', '', '') 
 #define MyAppType ""
 
 [Setup]

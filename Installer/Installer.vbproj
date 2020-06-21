@@ -59,6 +59,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -86,8 +87,24 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Output\FBDBSetup_5.0.0_200315.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200321.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200322.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200325.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200328.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200329.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200403.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200412.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200426.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200522.zip" />
+    <None Include="Output\FBDBSetup_5.0.0_200523.zip" />
+    <None Include="Output\Office 2010 Manuell.zip" />
+    <None Include="Output\Office 2013+ Manuell.zip" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\Installer.dll" />
+    <Content Include="bin\Debug\Installer.pdb" />
+    <Content Include="bin\Debug\Installer.xml" />
     <Content Include="Inno\Compil32.exe" />
     <Content Include="Inno\isbunzip.dll" />
     <Content Include="Inno\isbzip.dll" />
@@ -109,6 +126,26 @@
     <Content Include="Inno\WizModernSmallImage-IS.bmp" />
     <Content Include="Inno\WizModernSmallImage.bmp" />
     <Content Include="installer.iss" />
+    <Content Include="Output\FBDBSetup_5.0.0_200315.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200321.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200322.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200325.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200328.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200329.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200403.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200410.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200412.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200426.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200522.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200523.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200602.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200621-1531.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200621-1536.exe" />
+    <Content Include="Output\FBDBSetup_5.0.0_200621-1544.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="obj\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
