@@ -6,7 +6,7 @@ Imports System.Net.Sockets
 ''' </summary>
 Friend Class AnrMonClient
     Implements IDisposable
-
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property AnrMonTcpClient As TcpClient
     Private Property AnrMonStream As NetworkStream
     Private Property IsDisposed As Boolean = False
@@ -26,6 +26,8 @@ Friend Class AnrMonClient
         AnrMonStream.BeginRead(Buf, 0, Buf.Length, AddressOf EndRead, Nothing)
 
         Verbunden = True
+
+        NLogger.Debug("AnrMonClient verbunden")
     End Sub
 
     Friend Sub Disconnect()
@@ -36,24 +38,31 @@ Friend Class AnrMonClient
         ' TCP Client schließen
         AnrMonTcpClient.Close()
 
+        NLogger.Debug("AnrMonClient getrennt")
+
         Dispose()
     End Sub
 
     Private Sub EndRead(ByVal ar As IAsyncResult)
         If Verbunden And Not IsDisposed Then
-            Dim read As Integer = AnrMonStream.EndRead(ar)
-            If read.IsZero Then 'leere Datenübermittlung signalisiert Verbindungsabbruch
-                Dispose()
-            Else
-                With New StringBuilder(Encoding.UTF8.GetString(Buf, 0, read))
-                    Do While AnrMonStream.DataAvailable
-                        read = AnrMonStream.Read(Buf, 0, Buf.Length)
-                        .Append(Encoding.UTF8.GetString(Buf, 0, read))
-                    Loop
-                    RaiseEvent Message(Me, New NotifyEventArgs(Of String)(String.Concat(.ToString)))
-                End With
-                AnrMonStream.BeginRead(Buf, 0, Buf.Length, AddressOf EndRead, Nothing)
-            End If
+            Try ' Nach einem Standby kann es zu einem Fehler kommen.
+                Dim read As Integer = AnrMonStream.EndRead(ar)
+                If read.IsZero Then 'leere Datenübermittlung signalisiert Verbindungsabbruch
+                    Dispose()
+                Else
+                    With New StringBuilder(Encoding.UTF8.GetString(Buf, 0, read))
+                        Do While AnrMonStream.DataAvailable
+                            read = AnrMonStream.Read(Buf, 0, Buf.Length)
+                            .Append(Encoding.UTF8.GetString(Buf, 0, read))
+                        Loop
+                        RaiseEvent Message(Me, New NotifyEventArgs(Of String)(String.Concat(.ToString)))
+                    End With
+                    AnrMonStream.BeginRead(Buf, 0, Buf.Length, AddressOf EndRead, Nothing)
+                End If
+            Catch ex As Exception
+                NLogger.Error(ex)
+                Disconnect()
+            End Try
 
         End If
     End Sub

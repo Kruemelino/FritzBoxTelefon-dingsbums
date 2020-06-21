@@ -60,9 +60,7 @@ Public NotInheritable Class ThisAddIn
         End If
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
-        If XMLData.POptionen.PCBKontaktSucheFritzBox Then
-            PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
-        End If
+        If XMLData.POptionen.PCBKontaktSucheFritzBox Then PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
 
         ' Inspektoren erfassen
         OutlookInspectors = Application.Inspectors
@@ -80,7 +78,7 @@ Public NotInheritable Class ThisAddIn
             PCVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
         End If
         ' Anrufmonitor beenden
-        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StopAnrMon()
+        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
         ' Eintrag ins Log
         NLogger.Info("{0} {1} beendet.", PDfltAddin_LangName, Version)
         ' XML-Datei Speichern
@@ -96,8 +94,16 @@ Public NotInheritable Class ThisAddIn
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
                 ' Wiederherstelung nach dem Standby
-                StarteAddinFunktionen()
+                ' StarteAddinFunktionen()
+
+                ' Anrufmonitor starten
+                If XMLData.POptionen.PCBAnrMonAuto Then
+                    PAnrufmonitor = New Anrufmonitor
+                    PAnrufmonitor.StartStopAnrMon()
+                End If
             Case Microsoft.Win32.PowerModes.Suspend
+                ' Anrufmonitor beenden
+                If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
                 ' XML-Datei speichern
                 XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
         End Select

@@ -63,13 +63,13 @@ Friend Class Anrufmonitor
 
     End Sub
 
-    Friend Sub StopAnrMon()
+    Friend Sub Stopp()
         If AnrMonTCPClient?.Verbunden Then
             AnrMonTCPClient.Disconnect()
             Aktiv = False
+            NLogger.Debug("Anrufmonitor abgehalten")
         End If
     End Sub
-
 
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         Aktiv = False
