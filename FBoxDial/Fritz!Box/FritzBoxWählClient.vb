@@ -332,14 +332,12 @@ Public Class FritzBoxWählClient
 
         With DialTelefonat
             ' Kontakt aus Telefonat ermitteln
-            If .OlKontakt Is Nothing Then
-                ' gibt es eine KontaktID und StoreID
-                If .OutlookKontaktID.IsNotStringEmpty And .OutlookStoreID.IsNotStringEmpty Then
-                    .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
-                End If
+            If .OlKontakt Is Nothing AndAlso (.OutlookKontaktID.IsNotStringEmpty And .OutlookStoreID.IsNotStringEmpty) Then
+                ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
+                .OlKontakt = GetOutlookKontakt(.OutlookKontaktID, .OutlookStoreID)
             End If
 
-            If .OlKontakt Is Nothing Then
+            If .OlKontakt IsNot Nothing Then
                 Wählbox(.OlKontakt)
             Else
                 Wählbox(.GegenstelleTelNr)
@@ -352,11 +350,9 @@ Public Class FritzBoxWählClient
 
         With DialVIP
             ' Kontakt aus telefinat ermitteln
-            If .OlContact Is Nothing Then
-                ' gibt es eine KontaktID und StoreID
-                If .StoreID.IsNotStringEmpty And .EntryID.IsNotStringEmpty Then
-                    .OlContact = GetOutlookKontakt(.EntryID, .StoreID)
-                End If
+            If .OlContact Is Nothing AndAlso (.StoreID.IsNotStringEmpty And .EntryID.IsNotStringEmpty) Then
+                ' Es gibt eine KontaktID und StoreID: Ermittle den Kontakt
+                .OlContact = GetOutlookKontakt(.EntryID, .StoreID)
             End If
 
             Wählbox(.OlContact)
