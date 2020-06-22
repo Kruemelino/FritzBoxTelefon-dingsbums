@@ -57,15 +57,15 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     Public Shared ReadOnly Property PDfltHeader_Accept() As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
-    '''' <summary>
-    '''' 3000
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltReStartIntervall() As Integer = 2000
+    ''' <summary>
+    ''' 2000
+    ''' </summary>
+    Public Shared ReadOnly Property PDfltReStartIntervall() As Integer = 2000
 
-    '''' <summary>
-    '''' 15
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltTryMaxRestart() As Integer = 15
+    ''' <summary>
+    ''' 15
+    ''' </summary>
+    Public Shared ReadOnly Property PDfltTryMaxRestart() As Integer = 15
 
     '''' <summary>
     '''' [-&gt;]

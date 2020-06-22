@@ -1,23 +1,31 @@
 ﻿Imports System.ComponentModel
 Imports System.Net
 Imports System.Net.Sockets
+Imports System.Timers
 
 Friend Class Anrufmonitor
-
+#Region "Eigenschaften"
+    Friend Property Aktiv As Boolean
+    Friend Property AktiveTelefonate As List(Of Telefonat)
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+#End Region
+
+#Region "Konstanten"
+    Private Const AnrMon_RING As String = "RING"
+    Private Const AnrMon_CALL As String = "CALL"
+    Private Const AnrMon_CONNECT As String = "CONNECT"
+    Private Const AnrMon_DISCONNECT As String = "DISCONNECT"
+    Private Const AnrMon_Delimiter As String = ";"
+#End Region
+
+#Region "Timer"
+    Private WithEvents TimerPowerModeResume As Timer
+    Private Property RestartTimerIterations As Integer
+#End Region
 
     Private WithEvents AnrMonTCPClient As AnrMonClient
 
-    Friend Property Aktiv As Boolean
-    Friend Shared ReadOnly Property AnrMon_RING As String = "RING"
-    Friend Shared ReadOnly Property AnrMon_CALL As String = "CALL"
-    Friend Shared ReadOnly Property AnrMon_CONNECT As String = "CONNECT"
-    Friend Shared ReadOnly Property AnrMon_DISCONNECT As String = "DISCONNECT"
-    Friend Shared ReadOnly Property AnrMon_Delimiter As String = ";"
-
-
     Private BWAnrMonPopUpList As List(Of BackgroundWorker)
-    Friend Property AktiveTelefonate As List(Of Telefonat)
 
     Public Sub New()
         AktiveTelefonate = New List(Of Telefonat)
@@ -33,49 +41,111 @@ Friend Class Anrufmonitor
             Dim IP As IPAddress = IPAddress.Loopback
 
             If IPAddress.TryParse(XMLData.POptionen.PValidFBAdr, IP) Then
-                Dim EP As IPEndPoint = New IPEndPoint(IP, FritzBoxDefault.PDfltFBAnrMonPort)
                 Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
 
                 Try
-                    TC.Connect(EP)
+                    TC.Connect(New IPEndPoint(IP, FritzBoxDefault.PDfltFBAnrMonPort))
                 Catch ex As SocketException
                     TC.Close()
                     NLogger.Error("Anrufmonitor", ex)
                 End Try
 
                 If TC.Connected Then
+                    ' Info Message für das Log
                     NLogger.Info("Anrufmonitor verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.PDfltFBAnrMonPort)
                     AnrMonTCPClient = New AnrMonClient(TC)
 
                     ' Verbinden
                     AnrMonTCPClient.Connect()
 
-                    ' Ribbon umschalten
-                    ThisAddIn.POutlookRibbons.RefreshRibbon()
-
+                    ' Statuseigenschaft setzen
                     Aktiv = True
                 Else
+                    ' Statuseigenschaft setzen
+                    Aktiv = False
+
+                    ' Info Message für das Log
                     NLogger.Info("Anrufmonitor nicht verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.PDfltFBAnrMonPort)
                 End If
-
+            Else
+                ' Statuseigenschaft setzen
+                Aktiv = False
             End If
         End If
-
+        ' Ribbon aktualisieren
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     Friend Sub Stopp()
         If AnrMonTCPClient?.Verbunden Then
+            ' TCP-Client trennen
             AnrMonTCPClient.Disconnect()
-            Aktiv = False
+
+            ' Info Message für das Log
             NLogger.Debug("Anrufmonitor abgehalten")
         End If
+
+        ' Statuseigenschaft setzen
+        Aktiv = False
     End Sub
+
+    Friend Sub RestartOnResume()
+        ' Falls der Anrufmonitor aktiv sein sollte, dann halte ihn sicherheitshalber an.
+        If Aktiv Then Stopp()
+
+
+        ' Initiiere einen neuen Timer
+        If TimerPowerModeResume Is Nothing Then
+            ' Setze die Zählvariable auf 0
+            RestartTimerIterations = 0
+
+            ' Initiiere den Timer mit Intervall von 3 Sekunden
+            TimerPowerModeResume = SetTimer(PDfltReStartIntervall)
+
+            ' Starte den Timer
+            TimerPowerModeResume.Start()
+        End If
+    End Sub
+
 
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         Aktiv = False
         ThisAddIn.POutlookRibbons.RefreshRibbon()
         NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
     End Sub
+
+#Region "Timer PowerMode Resume"
+    Private Sub TimerPowerModeResume_Elapsed(sender As Object, e As ElapsedEventArgs) Handles TimerPowerModeResume.Elapsed
+        ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
+        If RestartTimerIterations.IsLess(PDfltTryMaxRestart) Then
+            ' Wenn der Anrufmonitor aktiv ist, dann hat das wiederverbinden geklappt.
+            If Aktiv Then
+                ' Halte den TImer an und löse ihn auf
+                With TimerPowerModeResume
+                    .Stop()
+                    .Dispose()
+                End With
+                ' Statusmeldung
+                NLogger.Info("Anrufmonitor nach PowerMode Resume gestartet.")
+            Else
+                ' Erhöhe den Wert der durchgeführten Iterationen
+                RestartTimerIterations += 1
+                ' Starte den nächsten Versuch den Anrufmonitor zu verbinden
+                StartStopAnrMon()
+            End If
+        Else
+            ' Es konnte keine Verbindung zur Fritz!Box aufgebaut werden.
+            NLogger.Error("Anrufmonitor nach PowerMode Resume nicht gestartet.")
+            ' Halte den TImer an und löse ihn auf
+            With TimerPowerModeResume
+                .Stop()
+                .Dispose()
+            End With
+        End If
+        ' Ribbon aktualisieren
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
+    End Sub
+#End Region
 
 #Region "Anrufmonitor"
     Private Sub AnrMonTCPClient_Message(sender As Object, e As NotifyEventArgs(Of String)) Handles AnrMonTCPClient.Message
@@ -186,6 +256,7 @@ Friend Class Anrufmonitor
             NLogger.Debug("Die Liste der Backgroundworker für Anrufmonitor wurde aufgelöst.")
         End If
     End Sub
+
 #End Region
 
 End Class

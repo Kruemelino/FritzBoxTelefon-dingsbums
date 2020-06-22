@@ -90,7 +90,9 @@ Public NotInheritable Class ThisAddIn
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
     Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
+
         NLogger.Info("PowerMode: {0} ({1})", e.Mode.ToString, e.Mode)
+
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
                 ' Wiederherstelung nach dem Standby
@@ -98,8 +100,8 @@ Public NotInheritable Class ThisAddIn
 
                 ' Anrufmonitor starten
                 If XMLData.POptionen.PCBAnrMonAuto Then
-                    PAnrufmonitor = New Anrufmonitor
-                    PAnrufmonitor.StartStopAnrMon()
+                    'PAnrufmonitor = New Anrufmonitor
+                    PAnrufmonitor.RestartOnResume()
                 End If
             Case Microsoft.Win32.PowerModes.Suspend
                 ' Anrufmonitor beenden

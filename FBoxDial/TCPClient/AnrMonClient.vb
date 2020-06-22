@@ -22,24 +22,26 @@ Friend Class AnrMonClient
     End Sub
 
     Friend Sub Connect()
+        ' Erhalte den Networkstream
         AnrMonStream = AnrMonTcpClient.GetStream
+        ' Beginnt einen asynchronen Lesevorgang aus dem Networkstream.
         AnrMonStream.BeginRead(Buf, 0, Buf.Length, AddressOf EndRead, Nothing)
-
+        ' Status setzen
         Verbunden = True
-
+        ' Debug Log Message
         NLogger.Debug("AnrMonClient verbunden")
     End Sub
 
     Friend Sub Disconnect()
-
+        ' Status setzen
         Verbunden = False
         ' NetworkStream schlie0en
         AnrMonStream.Close()
         ' TCP Client schließen
         AnrMonTcpClient.Close()
-
+        ' Debug Log Message
         NLogger.Debug("AnrMonClient getrennt")
-
+        ' Auflösen
         Dispose()
     End Sub
 
