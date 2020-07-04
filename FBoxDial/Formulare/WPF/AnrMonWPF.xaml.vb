@@ -114,7 +114,9 @@ Public Class AnrMonWPF
     End Sub
 
     Friend Sub Update(ByVal Tlfnt As Telefonat)
-        DataContext = Tlfnt
+        Dispatcher.Invoke(Sub()
+                              DataContext = Tlfnt
+                          End Sub)
     End Sub
 
     Friend Sub AnrMonClose()
