@@ -114,6 +114,7 @@ Public Class AnrMonWPF
     End Sub
 
     Friend Sub Update(ByVal Tlfnt As Telefonat)
+        ' Ob das funktioniert. weiß ich nicht
         Dispatcher.Invoke(Sub()
                               DataContext = Tlfnt
                           End Sub)
