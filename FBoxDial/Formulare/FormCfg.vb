@@ -288,7 +288,7 @@ Public Class FormCfg
                 End If
 
             Case sender Is BKontaktOrdnerSuche
-                TreeViewKontakteSuche.AddOutlookBaseNodes(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche, CBSucheUnterordner.Checked, True)
+                TreeViewKontakteSuche.AddOutlookBaseNodes(Outlook.OlItemType.olContactItem, OutlookOrdnerVerwendung.KontaktSuche, True, CBSucheUnterordner.Checked)
 
             Case sender Is BJournalOrdnerErstellen
                 TreeViewJournal.AddOutlookBaseNodes(Outlook.OlItemType.olJournalItem, OutlookOrdnerVerwendung.JournalSpeichern, False, False)
