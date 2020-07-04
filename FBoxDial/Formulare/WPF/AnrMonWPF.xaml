@@ -1,0 +1,91 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:FBoxDial" x:Class="AnrMonWPF"
+        Height="100" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None"
+        Name="AnrMon" MinWidth="400" MinHeight="100" ResizeMode="NoResize" >
+
+    <Window.DataContext>
+        <local:Telefonat/>
+    </Window.DataContext>
+
+    <Border BorderBrush="DimGray" BorderThickness="2">
+        <Grid x:Name="MainGrid" SizeChanged="MainGrid_SizeChanged">
+            <Grid.LayoutTransform>
+                <ScaleTransform x:Name="ApplicationScaleTransform"
+                        CenterX="0"
+                        CenterY="0"
+                        ScaleX="{Binding ElementName=AnrMon, Path=ScaleValue}"
+                        ScaleY="{Binding ElementName=AnrMon, Path=ScaleValue}" />
+            </Grid.LayoutTransform>
+
+            <Grid x:Name="DataGrid" Margin="0,1,24,1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" x:Name="ColBild"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="RowZeit" Height="15" MaxHeight="15" MinHeight="15"/>
+                    <RowDefinition x:Name="RowTelNr" Height="20" MaxHeight="20" MinHeight="20"/>
+                    <RowDefinition x:Name="RowAnrufer"/>
+                    <RowDefinition x:Name="RowFirma" Height="20" MaxHeight="20" MinHeight="20"/>
+                </Grid.RowDefinitions>
+
+                <Image x:Name="AnrBild" HorizontalAlignment="Right" Margin="4,4,4,4" Grid.Column="0" Grid.RowSpan="4"/>
+
+                <TextBlock x:Name="AnrZeit" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" Text="{Binding ZeitBeginn, Mode=OneWay, StringFormat=\{0:F\}}" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBlock x:Name="AnrGerät" Grid.Row="0" Grid.Column="2" TextWrapping="NoWrap" Text="{Binding AnrMonTelName, Mode=OneWay}" FontSize="10" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center" />
+
+                <TextBlock x:Name="AnrTelNr" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="NoWrap" Text="{Binding AnrMonTelNr, Mode=OneWay}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock x:Name="Anrufer" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{Binding AnrMonAnrufer, Mode=OneWay}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock x:Name="AnrFirma" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="NoWrap" Text="{Binding Firma, Mode=OneWay}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+
+            <Button x:Name="bClose" Margin="0,4,4,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True">
+                <Path Stroke="DimGray" StrokeThickness="1.0" Data="M0,0 L9,9 M0,9 L9,0"/>
+            </Button>
+
+            <Button x:Name="bOptionen" Margin="0,23,4,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="False">
+                <Path Stroke="DimGray" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
+                <!--<Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="Click">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
+                                                <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                            </BooleanAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </Style.Triggers>
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>-->
+                
+            </Button>
+        </Grid>
+        
+    </Border>
+
+
+</Window>

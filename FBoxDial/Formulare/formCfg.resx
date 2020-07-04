@@ -165,28 +165,27 @@ ob die Telefonnummer bereits bekannt ist.</value>
     <value>Haftungshinweis:
 
     * Ich übernehme keine Haftung für Schäden, die durch das Programm entstanden sind.
-    * Für fehlerhafte oder falsche Angaben, die Rückwärtssuche oder die Call-by-Call Funktion liefert,
-       wird keine Haftung übernommen.
-    * Es besteht kein Anspruch auf Schadenersatz für hohe Telefonrechnungen auf Grund von Call-by-Call-
-       Vorwahlen.
+    * Für fehlerhafte oder falsche Angaben, die Rückwärtssuche liefert wird keine Haftung übernommen.
 
 Datenschutzhinweis:
 
-    * Es werden keine zugesendeten Informationen an Dritte weitergeben.
+    * Es werden keine zugesendeten Informationen an mich oder Dritte weitergeben.
     * Angaben über das persönliche Telefonieverhalten werden weder ausgewertet noch an Dritte weitergegeben.
     * Das Programm übermittelt keinerlei Daten an Dritte.
       Ausnahmen:
-         1. Bei der Rückwärssuche wird die zu wählende Nummer an die ausgewählte Suchmaschine
-             übergeben. Bitte die Datenschutzhinweise der Suchmaschinen beachten!
-         2. Bei der Suche nach Call-By-Call Anbietern wird die zu wählende Nummer an Billiger-Telefonieren.de
-             übermittelt. Bitte die Hinweise von Billiger-Telefonieren.de beachten!</value>
+         1. Bei der Rückwärssuche wird die zu Telefonnummer an die ausgewählte Suchmaschine
+             übergeben. Bitte die Datenschutzhinweise der Suchmaschinen beachten!</value>
   </data>
   <metadata name="StatusStripTelefone.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>205, 17</value>
   </metadata>
-  <metadata name="StatusStripTelefone.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>205, 17</value>
-  </metadata>
+  <data name="TBHinweisKontaktsuche.Text" xml:space="preserve">
+    <value>Hinweise zur Kontaktsuche:
+Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
+Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde. 
+Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
+Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>
+  </data>
   <data name="TBHinweisJournal.Text" xml:space="preserve">
     <value>Hinweise zur Outlook Journaleinträgen:
 Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.
@@ -198,13 +197,6 @@ Wird kein Ordner gewählt, wird der Outlook-Standardverwendet.
 Sofern Kontakte automatisch erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Kontakte gespeichert werden sollen.
 Wird kein Ordner gewählt, wird der Outlook-Standardverwendet.
 </value>
-  </data>
-  <data name="TBHinweisKontaktsuche.Text" xml:space="preserve">
-    <value>Hinweise zur Kontaktsuche:
-Kontakte von eingehenden Anrufen wird nur in den hier gewählten Ordnern durchgeführt.
-Dies verringert die Zeit, bis ein passender Kontakt gefunden wurde. 
-Die Kontaktindizierung wird nur in den ausgewählten Ordnern automatisch beim Speichern durchgeführt. Sie kann aber auch manuell angestoßen werden.
-Wenn ein Ordner nicht mehr für die Kontaktsuche verwendet werden soll, so werden die Indizierungseinträge beim Speichern automatisch entfernt.</value>
   </data>
   <data name="TBPhonerHinweise.Text" xml:space="preserve">
     <value>Hinweise zur korrekten Konfiguration.

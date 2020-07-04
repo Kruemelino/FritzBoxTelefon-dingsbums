@@ -78,7 +78,7 @@ Public Class FormWählclient
                 ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das erste in der liste
                 If .SelectedItem Is Nothing Then
                     WählClient_SetStatus(PWählClientStatus1Gerät)
-                    .SelectedIndex = 0
+                    .SelectedIndex = 1
 
                 End If
             Else

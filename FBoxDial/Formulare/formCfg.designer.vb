@@ -21,7 +21,7 @@ Partial Class FormCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormCfg))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BReset = New System.Windows.Forms.Button()
         Me.BAbbruch = New System.Windows.Forms.Button()
         Me.BApply = New System.Windows.Forms.Button()
@@ -176,6 +176,7 @@ Partial Class FormCfg
         Me.CBJournal = New System.Windows.Forms.CheckBox()
         Me.TreeViewJournal = New FBoxDial.OlOrdnerTreeView()
         Me.PKontakterstellung = New System.Windows.Forms.TabPage()
+        Me.GBKontakterstellung = New System.Windows.Forms.GroupBox()
         Me.BKontaktOrdnerErstellen = New System.Windows.Forms.Button()
         Me.TreeViewKontakteErstellen = New FBoxDial.OlOrdnerTreeView()
         Me.Label21 = New System.Windows.Forms.Label()
@@ -203,7 +204,6 @@ Partial Class FormCfg
         Me.BXML = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.GBKontakterstellung = New System.Windows.Forms.GroupBox()
         Me.PGrundeinstellungen.SuspendLayout()
         Me.GBFormatierungTelefonnummern.SuspendLayout()
         Me.GBEinstellungWählhilfe.SuspendLayout()
@@ -231,13 +231,13 @@ Partial Class FormCfg
         Me.TabJournal.SuspendLayout()
         Me.GBJournal.SuspendLayout()
         Me.PKontakterstellung.SuspendLayout()
+        Me.GBKontakterstellung.SuspendLayout()
         Me.PPhoner.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.PLogging.SuspendLayout()
         Me.GBLogging.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.GBKontakterstellung.SuspendLayout()
         Me.SuspendLayout()
         '
         'BReset
@@ -925,14 +925,14 @@ Partial Class FormCfg
         Me.DGVTelList.AllowUserToResizeColumns = False
         Me.DGVTelList.AllowUserToResizeRows = False
         Me.DGVTelList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DGVTelList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.DGVTelList.ColumnHeadersHeight = 34
         Me.DGVTelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DGVTelList.Dock = System.Windows.Forms.DockStyle.Top
@@ -2069,6 +2069,16 @@ Partial Class FormCfg
         Me.PKontakterstellung.Text = "Kontakterstellung"
         Me.PKontakterstellung.UseVisualStyleBackColor = True
         '
+        'GBKontakterstellung
+        '
+        Me.GBKontakterstellung.Controls.Add(Me.CBKErstellen)
+        Me.GBKontakterstellung.Location = New System.Drawing.Point(0, 46)
+        Me.GBKontakterstellung.Name = "GBKontakterstellung"
+        Me.GBKontakterstellung.Size = New System.Drawing.Size(376, 60)
+        Me.GBKontakterstellung.TabIndex = 5
+        Me.GBKontakterstellung.TabStop = False
+        Me.GBKontakterstellung.Text = "Erstellung von Kontakten"
+        '
         'BKontaktOrdnerErstellen
         '
         Me.BKontaktOrdnerErstellen.Location = New System.Drawing.Point(382, 139)
@@ -2390,16 +2400,6 @@ Partial Class FormCfg
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(779, 450)
         Me.TableLayoutPanel2.TabIndex = 0
         '
-        'GBKontakterstellung
-        '
-        Me.GBKontakterstellung.Controls.Add(Me.CBKErstellen)
-        Me.GBKontakterstellung.Location = New System.Drawing.Point(0, 46)
-        Me.GBKontakterstellung.Name = "GBKontakterstellung"
-        Me.GBKontakterstellung.Size = New System.Drawing.Size(376, 60)
-        Me.GBKontakterstellung.TabIndex = 5
-        Me.GBKontakterstellung.TabStop = False
-        Me.GBKontakterstellung.Text = "Erstellung von Kontakten"
-        '
         'FormCfg
         '
         Me.AcceptButton = Me.BOK
@@ -2462,6 +2462,8 @@ Partial Class FormCfg
         Me.GBJournal.PerformLayout()
         Me.PKontakterstellung.ResumeLayout(False)
         Me.PKontakterstellung.PerformLayout()
+        Me.GBKontakterstellung.ResumeLayout(False)
+        Me.GBKontakterstellung.PerformLayout()
         Me.PPhoner.ResumeLayout(False)
         Me.PPhoner.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -2472,8 +2474,6 @@ Partial Class FormCfg
         Me.GBLogging.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.GBKontakterstellung.ResumeLayout(False)
-        Me.GBKontakterstellung.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

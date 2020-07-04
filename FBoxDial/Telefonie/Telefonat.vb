@@ -22,7 +22,7 @@ Imports Microsoft.Office.Interop
     <XmlElement> Public Property ZeitVerbunden As Date
     <XmlElement> Public Property ZeitEnde As Date
     <XmlElement> Public Property Dauer As Integer
-    <XmlElement> Public Property RingTime As Double
+    '<XmlElement> Public Property RingTime As Double
     <XmlElement> Public Property AnrufRichtung As Integer
 
     <XmlIgnore> Public Property Aktiv As Boolean
@@ -30,7 +30,7 @@ Imports Microsoft.Office.Interop
     <XmlAttribute> Public Property NrUnterdrückt As Boolean
     <XmlAttribute> Public Property Angenommen As Boolean
     '<XmlAttribute> Public Property Verpasst As Boolean
-    <XmlIgnore> Public Property AnrMonAusblenden As Boolean
+    ' <XmlIgnore> Public Property AnrMonAusblenden As Boolean
     <XmlIgnore> Public Property AnrMonSimuliert As Boolean
 
     <XmlElement> Public Property OutlookKontaktID As String
@@ -174,6 +174,84 @@ Imports Microsoft.Office.Interop
     End Property
 #End Region
 
+#Region "Anrufmonitor Felder"
+    <XmlIgnore> Public ReadOnly Property AnrMonAnrufer As String
+        Get
+            If NrUnterdrückt Then
+                ' Die Nummer wurde unterdrückt
+                Return PDfltStringUnbekannt
+            Else
+                If Anrufer IsNot Nothing Then
+                    ' Kontaktinformationen wurden gefunden
+                    Return Anrufer
+                Else
+                    ' Kontaktinformationen wurden nicht gefunden
+                    Return GegenstelleTelNr?.Formatiert
+                End If
+            End If
+        End Get
+    End Property
+    <XmlIgnore> Public ReadOnly Property AnrMonTelName As String
+        Get
+            ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
+            If RINGGeräte Is Nothing Then RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr.Contains(OutEigeneTelNr))
+
+            Return String.Join(", ", RINGGeräte.Select(Function(Gerät) Gerät.Name).ToList())
+        End Get
+    End Property
+
+    <XmlIgnore> Public ReadOnly Property AnrMonTelNr As String
+        Get
+
+            If Anrufer Is Nothing OrElse NrUnterdrückt Then
+                ' Kontaktinformationen wurden nicht gefunden oder die Nummer wurde unterdrückt
+                Return PDfltStringEmpty
+            Else
+                ' Kontaktinformationen wurden gefunden
+                Return GegenstelleTelNr?.Formatiert
+            End If
+        End Get
+    End Property
+
+    <XmlIgnore> Public ReadOnly Property AnrMonImagePfad As String
+        Get
+            If OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringEmpty And OutlookStoreID.IsNotStringEmpty) Then OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
+
+            ' Speichere das Kontaktbild in einem temporären Ordner
+            Return KontaktBild(OlKontakt)
+            'Dim ImgPath As String = KontaktBild(OlKontakt)
+
+            'If ImgPath.IsNotStringEmpty Then
+            '    ' Lade das Kontaktbild
+            '    Using fs As New IO.FileStream(ImgPath, IO.FileMode.Open)
+            '        Return Drawing.Image.FromStream(fs)
+            '    End Using
+            '    ' Lösche die Datei des Kontaktbildes im temporären Ordner
+            '    DelKontaktBild(ImgPath)
+            'Else
+            '    Return Nothing
+            'End If
+        End Get
+    End Property
+
+    '<XmlIgnore> Public ReadOnly Property AnrMonFirma As String
+    '    Get
+    '        If NrUnterdrückt Then
+    '            ' Die Nummer wurde unterdrückt
+    '            Return PDfltStringEmpty
+    '        Else
+    '            If Anrufer IsNot Nothing Then
+    '                ' Kontaktinformationen wurden gefunden
+    '                Return Firma
+    '            Else
+    '                ' Kontaktinformationen wurden nicht gefunden
+    '                Return PDfltStringEmpty
+    '            End If
+    '        End If
+    '    End Get
+    'End Property
+
+#End Region
 #Region "Structures"
     Friend Structure AnrufRichtungen
         Const Eingehend As Integer = 0
@@ -220,7 +298,6 @@ Imports Microsoft.Office.Interop
 
         ' CALL-Liste initialisieren, falls erforderlich
         If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
-
 
         ' Telefonat in erste Positon der CALL-Liste speichern
         XMLData.PTelefonie.CALLListe.Insert(Me)

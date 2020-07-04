@@ -229,11 +229,6 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
-    <Compile Include="Anrufmonitor\CommonFenster.vb" />
-    <Compile Include="Anrufmonitor\AnrMonCommon.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Anrufmonitor\FormAnrMon.vb" />
     <Compile Include="Formulare\FormElemente\CrossThread.vb" />
     <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.vb" />
@@ -242,6 +237,9 @@
     </Compile>
     <Compile Include="Formulare\TreeView\OlOrdnerTreeView.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
+      <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
@@ -254,10 +252,10 @@
     <Compile Include="Fritz!Box\SOAP\SOAPXML\SystemVersion.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\TR64Desc.vb" />
     <Compile Include="Kontakte\KontaktGespeichert.vb" />
-    <Compile Include="Formulare\formAnrList.designer.vb">
-      <DependentUpon>formAnrList.vb</DependentUpon>
+    <Compile Include="Formulare\FormAnrList.designer.vb">
+      <DependentUpon>FormAnrList.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\formAnrList.vb">
+    <Compile Include="Formulare\FormAnrList.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formulare\FormElemente\Datenzeile\AnrListDataRow.vb" />
@@ -383,8 +381,8 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <EmbeddedResource Include="Formulare\formAnrList.resx">
-      <DependentUpon>formAnrList.vb</DependentUpon>
+    <EmbeddedResource Include="Formulare\FormAnrList.resx">
+      <DependentUpon>FormAnrList.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FormCfg.resx">
@@ -450,6 +448,12 @@
     <Content Include="Resources\Remove.png" />
     <Content Include="Resources\Save.png" />
     <Content Include="Resources\Upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Formulare\WPF\AnrMonWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

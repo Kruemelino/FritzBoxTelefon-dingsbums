@@ -83,10 +83,23 @@
 #Region "Anrufmonitor - Einstellungen für den Anrufmonitor"
     '<XmlElement("CBUseAnrMon")> Public Property PCBUseAnrMon As Boolean
     <XmlElement("CBAnrMonAuto")> Public Property PCBAnrMonAuto As Boolean
+
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor automatisch geschlossen werden soll.
+    ''' </summary>
     <XmlElement("CBAutoClose")> Public Property PCBAutoClose As Boolean
+    ''' <summary>
+    ''' Einblenddauer des Anrufmonitors in Sekunden.
+    ''' </summary>
     <XmlElement("TBEnblDauer")> Public Property PTBEnblDauer As Integer
     '<XmlElement("CBAnrMonCloseAtDISSCONNECT")> Public Property PCBAnrMonCloseAtDISSCONNECT As Boolean
+    ''' <summary>
+    ''' Angabe, ob der Kontakt Angezeigt werden soll
+    ''' </summary>
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property PCBAnrMonZeigeKontakt As Boolean
+    ''' <summary>
+    ''' Angabe, ob ein Kontaktbild angezeigt werden soll.
+    ''' </summary>
     <XmlElement("CBAnrMonContactImage")> Public Property PCBAnrMonContactImage As Boolean
     '<XmlElement("CBShowMSN")> Public Property PCBShowMSN As Boolean
 #End Region
