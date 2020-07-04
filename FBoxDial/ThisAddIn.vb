@@ -102,14 +102,18 @@ Public NotInheritable Class ThisAddIn
                 ' Wiederherstelung nach dem Standby
                 ' StarteAddinFunktionen()
 
-                ' Anrufmonitor starten
+                '' Anrufmonitor starten
                 If XMLData.POptionen.PCBAnrMonAuto Then
-                    'PAnrufmonitor = New Anrufmonitor
+                    ' Eintrag ins Log
+                    NLogger.Info("{0} {1} Anrufmonitor nach Standby gestartet.", PDfltAddin_LangName, Version)
+                    ' Anrufmonitor erneut starten
                     PAnrufmonitor.RestartOnResume()
                 End If
             Case Microsoft.Win32.PowerModes.Suspend
                 ' Anrufmonitor beenden
                 If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
+                ' Eintrag ins Log
+                NLogger.Info("{0} {1} für Standby angehalten.", PDfltAddin_LangName, Version)
                 ' XML-Datei speichern
                 XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
         End Select
