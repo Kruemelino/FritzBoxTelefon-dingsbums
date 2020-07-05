@@ -1,12 +1,12 @@
 ﻿Imports System.ComponentModel
-Imports System.Threading.Tasks
+Imports System.Threading
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
 
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
     <XmlAttribute> Public Property ID As Integer
@@ -17,32 +17,31 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Public Property RINGGeräte As List(Of Telefoniegerät)
     <XmlElement> Public Property NebenstellenNummer As Integer
     <XmlElement> Public Property AnschlussID As String
-
     <XmlElement> Public Property ZeitBeginn As Date
     <XmlElement> Public Property ZeitVerbunden As Date
     <XmlElement> Public Property ZeitEnde As Date
     <XmlElement> Public Property Dauer As Integer
-    '<XmlElement> Public Property RingTime As Double
     <XmlElement> Public Property AnrufRichtung As Integer
-
     <XmlIgnore> Public Property Aktiv As Boolean
     <XmlIgnore> Public Property Beendet As Boolean
     <XmlAttribute> Public Property NrUnterdrückt As Boolean
     <XmlAttribute> Public Property Angenommen As Boolean
-    '<XmlAttribute> Public Property Verpasst As Boolean
-    ' <XmlIgnore> Public Property AnrMonAusblenden As Boolean
     <XmlIgnore> Public Property AnrMonSimuliert As Boolean
-
     <XmlElement> Public Property OutlookKontaktID As String
     <XmlElement> Public Property OutlookStoreID As String
     <XmlElement> Public Property VCard As String
     <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
     <XmlElement> Public Property Anrufer As String
     <XmlElement> Public Property Firma As String
-    <XmlIgnore> Public Property OlKontakt() As Outlook.ContactItem
-    <XmlIgnore> Friend Property AnrMonPopUp As Popup
+    <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
+    '<XmlIgnore> Friend Property AnrMonPopUp As Popup
+    <XmlIgnore> Friend Property Eingeblendet As Boolean = False
 
-    Friend Event Popup As EventHandlerEx(Of Telefonat)
+    Friend WithEvents PopupWPF As AnrMonWPF
+
+    Private WithEvents BWKontaktsuche As BackgroundWorker
+
+    'Friend Event Popup As EventHandlerEx(Of Telefonat)
 
     ''' <summary>
     '''         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
@@ -213,45 +212,21 @@ Imports Microsoft.Office.Interop
         End Get
     End Property
 
+    ''' <summary>
+    ''' Extrahiert aus dem Outlook Kontakt dieses Telefonates das hinterlegte Kontaktbild und gibt den Speicherort (Dateipfad) auf der Festplatte zurück.
+    ''' </summary>
     <XmlIgnore> Public ReadOnly Property AnrMonImagePfad As String
         Get
             If OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringEmpty And OutlookStoreID.IsNotStringEmpty) Then OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
 
             ' Speichere das Kontaktbild in einem temporären Ordner
             Return KontaktBild(OlKontakt)
-            'Dim ImgPath As String = KontaktBild(OlKontakt)
 
-            'If ImgPath.IsNotStringEmpty Then
-            '    ' Lade das Kontaktbild
-            '    Using fs As New IO.FileStream(ImgPath, IO.FileMode.Open)
-            '        Return Drawing.Image.FromStream(fs)
-            '    End Using
-            '    ' Lösche die Datei des Kontaktbildes im temporären Ordner
-            '    DelKontaktBild(ImgPath)
-            'Else
-            '    Return Nothing
-            'End If
         End Get
     End Property
 
-    '<XmlIgnore> Public ReadOnly Property AnrMonFirma As String
-    '    Get
-    '        If NrUnterdrückt Then
-    '            ' Die Nummer wurde unterdrückt
-    '            Return PDfltStringEmpty
-    '        Else
-    '            If Anrufer IsNot Nothing Then
-    '                ' Kontaktinformationen wurden gefunden
-    '                Return Firma
-    '            Else
-    '                ' Kontaktinformationen wurden nicht gefunden
-    '                Return PDfltStringEmpty
-    '            End If
-    '        End If
-    '    End Get
-    'End Property
-
 #End Region
+
 #Region "Structures"
     Friend Structure AnrufRichtungen
         Const Eingehend As Integer = 0
@@ -259,69 +234,18 @@ Imports Microsoft.Office.Interop
     End Structure
 #End Region
 
-    Private WithEvents BWKontaktsuche As BackgroundWorker
-
     Sub New()
         'Stop
     End Sub
-    Private Sub AnrMonRING()
-        Angenommen = False
-        Beendet = False
 
-        ' Starte die Kontaktsuche mit Hilfe eines Backgroundworkers, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
-        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        BWKontaktsuche = New BackgroundWorker
-        BWKontaktsuche.RunWorkerAsync()
-
-        ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
-        RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
-
-        ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
-        If EigeneTelNr.Überwacht Then RaiseEvent Popup(Me)
-
-        ' RING-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
-
-        ' Telefonat in erste Positon der RING-Liste speichern
-        XMLData.PTelefonie.RINGListe.Insert(Me)
-
-    End Sub
-    Private Sub AnrMonCALL()
-        Angenommen = False
-        Beendet = False
-
-        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
-        StarteKontaktsuche()
-
-        ' Telefoniegerät ermitteln
-        TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
-
-        ' CALL-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
-
-        ' Telefonat in erste Positon der CALL-Liste speichern
-        XMLData.PTelefonie.CALLListe.Insert(Me)
-
-    End Sub
-    Private Sub AnrMonCONNECT()
-        Angenommen = True
-
-        ' Telefoniegerät ermitteln
-        TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
-    End Sub
-    Private Sub AnrMonDISCONNECT()
-        Beendet = True
-
-        If XMLData.POptionen.PCBJournal Then ErstelleJournalEintrag()
-    End Sub
-
+#Region "Kontaktsuche"
     Private Sub BWKontaktsuche_DoWork(sender As Object, e As DoWorkEventArgs) Handles BWKontaktsuche.DoWork
         StarteKontaktsuche()
     End Sub
 
     Private Sub BWKontaktsuche_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWKontaktsuche.RunWorkerCompleted
         ' Anrufmonitor aktualisieren
-        If AnrMonPopUp IsNot Nothing Then RaiseEvent Popup(Me)
+        If PopupWPF IsNot Nothing Then UpdateAnrMon()
     End Sub
 
     Friend Async Sub StarteKontaktsuche()
@@ -393,6 +317,7 @@ Imports Microsoft.Office.Interop
         End If
 
     End Sub
+#End Region
 
     ''' <summary>
     ''' Funktion, welche das öffnen des hinterlegten Kontaktes anstößt
@@ -512,6 +437,134 @@ Imports Microsoft.Office.Interop
             NLogger.Info(PDfltJournalFehler)
         End If
     End Sub
+
+#Region "Anrufmonitor"
+    Private Sub AnrMonRING()
+        Angenommen = False
+        Beendet = False
+
+        ' Starte die Kontaktsuche mit Hilfe eines Backgroundworkers, da ansonsten der Anrufmonitor erst eingeblendet wird, wenn der Kontakt ermittelt wurde
+        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
+        BWKontaktsuche = New BackgroundWorker
+        BWKontaktsuche.RunWorkerAsync()
+
+        ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
+        RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
+
+        ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
+        If EigeneTelNr.Überwacht Then Popup()
+
+        ' RING-Liste initialisieren, falls erforderlich
+        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
+
+        ' Telefonat in erste Positon der RING-Liste speichern
+        XMLData.PTelefonie.RINGListe.Insert(Me)
+
+    End Sub
+    Private Sub AnrMonCALL()
+        Angenommen = False
+        Beendet = False
+
+        ' Anrufername aus Kontakten und Rückwärtssuche ermitteln
+        StarteKontaktsuche()
+
+        ' Telefoniegerät ermitteln
+        TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+
+        ' CALL-Liste initialisieren, falls erforderlich
+        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
+
+        ' Telefonat in erste Positon der CALL-Liste speichern
+        XMLData.PTelefonie.CALLListe.Insert(Me)
+
+    End Sub
+    Private Sub AnrMonCONNECT()
+        Angenommen = True
+
+        ' Telefoniegerät ermitteln
+        TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+    End Sub
+    Private Sub AnrMonDISCONNECT()
+        Beendet = True
+
+        If XMLData.POptionen.PCBJournal Then ErstelleJournalEintrag()
+    End Sub
+
+    ''' <summary>
+    ''' Das Cloded-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
+    ''' </summary>
+    <XmlIgnore> Private Property IAnrMonClosed As Integer
+    Friend Sub AnrMonEinblenden()
+
+        PopupWPF = New AnrMonWPF
+
+        If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
+
+        KeepoInspActivated(False)
+
+        PopupWPF.ShowAnrMon(Me)
+
+        iAnrMonClosed = 0
+
+        Eingeblendet = True
+        ThisAddIn.OffeneAnrMonWPF.Add(PopupWPF)
+
+        'AddHandler PopUpAnrufMonitor.Schließen, AddressOf PopUpAnrMon_Close
+        AddHandler PopupWPF.Geschlossen, AddressOf PopupGeschlossen
+
+        'AddHandler PopUpAnrufMonitor.LinkClick, AddressOf AnrMonLink_Click
+        'AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf AnrMonToolStripMenuItem_Clicked
+
+        KeepoInspActivated(True)
+    End Sub
+
+    ''' <summary>
+    ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
+    ''' </summary>
+    Private Sub PopupGeschlossen(ByVal sender As Object, ByVal e As EventArgs) Handles PopupWPF.Geschlossen
+        ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
+        If iAnrMonClosed.IsZero Then
+            NLogger.Debug("Anruffenster geschlossen: {0}", Anrufer)
+            iAnrMonClosed += 1
+            Eingeblendet = False
+            ' Entferne den Anrufmonitor von der Liste der offenen Popups
+            ThisAddIn.OffeneAnrMonWPF.Remove(PopupWPF)
+
+            PopupWPF = Nothing
+        End If
+    End Sub
+
+    Friend Sub UpdateAnrMon()
+        PopupWPF?.Update(Me)
+    End Sub
+
+    Private Sub Popup()
+        Dim t = New Thread(Sub()
+                               If Not VollBildAnwendungAktiv() Then
+                                   If PopupWPF Is Nothing Then
+                                       NLogger.Debug("Blende einen neuen Anrufmonitor ein")
+                                       ' Blende einen neuen Anrufmonitor ein
+                                       AnrMonEinblenden()
+
+                                       While Eingeblendet
+                                           Windows.Forms.Application.DoEvents()
+                                           Thread.Sleep(100)
+                                       End While
+
+                                   Else
+                                       NLogger.Debug("Aktualisiere den Anrufmonitor")
+                                       ' Aktualisiere den Anrufmonitor
+                                       UpdateAnrMon()
+                                   End If
+                               End If
+                           End Sub)
+
+        t.SetApartmentState(ApartmentState.STA)
+        t.Start()
+    End Sub
+
+#End Region
+
 
 #Region "RibbonXML"
     Friend Overloads Function CreateDynMenuButton(ByVal xDoc As Xml.XmlDocument, ByVal ID As Integer, ByVal Tag As String) As Xml.XmlElement

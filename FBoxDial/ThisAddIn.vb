@@ -11,9 +11,9 @@ Public NotInheritable Class ThisAddIn
 
     Friend Shared Property PCVorwahlen As CVorwahlen
     Friend Shared Property OffeneKontakInsepektoren As List(Of KontaktGespeichert)
-    Friend Shared Property OffenePopUps As List(Of Popup)
+    ' Friend Shared Property OffenePopUps As List(Of Popup)
+    Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
 
-    Private WithEvents PopUpWPF As AnrMonWPF
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Friend Shared ReadOnly Property Version() As String
         Get
@@ -68,11 +68,6 @@ Public NotInheritable Class ThisAddIn
         If XMLData.POptionen.PCBAutoAnrList Then AutoAnrListe()
 
         NLogger.Info("{0} {1} gestartet.", PDfltAddin_LangName, Version)
-        'If XMLData.PTelefonie.RINGListe.Any Then
-        '    If OffenePopUps Is Nothing Then OffenePopUps = New List(Of Popup)
-        '    PopUpWPF = New AnrMonWPF
-        '    PopUpWPF.Popup(XMLData.PTelefonie.RINGListe.Item(0))
-        'End If
 
     End Sub
 

@@ -306,7 +306,6 @@
     <Compile Include="Fritz!Box\FritzBoxLogin.vb" />
     <Compile Include="Fritz!Box\FritzBoxQuery.vb" />
     <Compile Include="Fritz!Box\JSON.vb" />
-    <Compile Include="Anrufmonitor\Popup.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Events\NotifyEventArgs.vb" />

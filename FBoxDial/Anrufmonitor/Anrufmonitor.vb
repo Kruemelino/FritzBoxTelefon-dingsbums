@@ -159,17 +159,14 @@ Friend Class Anrufmonitor
         Select Case FBStatusSplit(1)
             Case AnrMon_RING
                 ' Neues Telefonat erzeugen und Daten des Anrufmonitors übergeben
-                AktivesTelefonat = New Telefonat
-                ' Füge Ereignishandler hinzu
-                AddHandler AktivesTelefonat.Popup, AddressOf AnrMon_Popup
-                ' Setze die übergebenen Daten
-                AktivesTelefonat.SetAnrMonRING = FBStatusSplit
+                AktivesTelefonat = New Telefonat With {.SetAnrMonRING = FBStatusSplit}
                 ' Füge das Telefonat der Liste hinzu
                 AktiveTelefonate.Add(AktivesTelefonat)
 
             Case AnrMon_CALL
                 ' Neues Telefonat erzeugen und Daten des Anrufmonitors übergeben
                 AktivesTelefonat = New Telefonat With {.SetAnrMonCALL = FBStatusSplit}
+                ' Füge das Telefonat der Liste hinzu
                 AktiveTelefonate.Add(AktivesTelefonat)
 
             Case AnrMon_CONNECT
@@ -187,33 +184,33 @@ Friend Class Anrufmonitor
         End Select
     End Sub
 
-    ''' <summary>
-    ''' Routine zum Initialisieren der Einblendung des Anrfomitors
-    ''' </summary>
-    Private Sub AnrMon_Popup(AktivesTelefonat As Telefonat)
-        Dim t = New Thread(Sub()
-                               If Not VollBildAnwendungAktiv() Then
-                                   If AktivesTelefonat.AnrMonPopUp Is Nothing Then
-                                       NLogger.Debug("Blende einen neuen Anrufmonitor ein")
-                                       ' Blende einen neuen Anrufmonitor ein
-                                       AktivesTelefonat.AnrMonPopUp = New Popup
-                                       AktivesTelefonat.AnrMonPopUp.AnrMonEinblenden(AktivesTelefonat)
+    '''' <summary>
+    '''' Routine zum Initialisieren der Einblendung des Anrfomitors
+    '''' </summary>
+    'Private Sub AnrMon_Popup(AktivesTelefonat As Telefonat)
+    '    Dim t = New Thread(Sub()
+    '                           If Not VollBildAnwendungAktiv() Then
+    '                               If AktivesTelefonat.PopupWPF Is Nothing Then
+    '                                   NLogger.Debug("Blende einen neuen Anrufmonitor ein")
+    '                                   ' Blende einen neuen Anrufmonitor ein
+    '                                   AktivesTelefonat.AnrMonEinblenden(AktivesTelefonat)
 
-                                       While AktivesTelefonat.AnrMonPopUp.Eingeblendet
-                                           Windows.Forms.Application.DoEvents()
-                                           Thread.Sleep(100)
-                                       End While
+    '                                   While AktivesTelefonat.Eingeblendet
+    '                                       Windows.Forms.Application.DoEvents()
+    '                                       Thread.Sleep(100)
+    '                                   End While
 
-                                   Else
-                                       NLogger.Debug("Aktualisiere den Anrufmonitor")
-                                       ' Aktualisiere den Anrufmonitor
-                                       AktivesTelefonat.AnrMonPopUp.UpdateAnrMon(AktivesTelefonat)
-                                   End If
-                               End If
-                           End Sub)
-        t.SetApartmentState(ApartmentState.STA)
-        t.Start()
-    End Sub
+    '                               Else
+    '                                   NLogger.Debug("Aktualisiere den Anrufmonitor")
+    '                                   ' Aktualisiere den Anrufmonitor
+    '                                   AktivesTelefonat.UpdateAnrMon(AktivesTelefonat)
+    '                               End If
+    '                           End If
+    '                       End Sub)
+
+    '    t.SetApartmentState(ApartmentState.STA)
+    '    t.Start()
+    'End Sub
 
 
 

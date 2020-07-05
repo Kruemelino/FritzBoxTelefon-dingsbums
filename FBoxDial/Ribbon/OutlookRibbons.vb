@@ -300,12 +300,12 @@ Imports System.Xml
                 End Using
 
             Case TaskToDo.ShowAnrMon
-                Dim PopUpAnrMon As New Popup
+                'Dim PopUpAnrMon As New Popup
 
                 If XMLData.PTelefonie.RINGListe.Count.IsNotZero Then
-                    PopUpAnrMon.AnrMonEinblenden(XMLData.PTelefonie.RINGListe.Item(0))
+                    XMLData.PTelefonie.RINGListe.Item(0).AnrMonEinblenden()
                 Else
-                    PopUpAnrMon.AnrMonEinblenden(Nothing)
+                    'PopUpAnrMon.AnrMonEinblenden(Nothing)
                 End If
 
             Case TaskToDo.DialDirekt
