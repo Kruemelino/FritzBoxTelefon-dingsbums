@@ -1,5 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.Drawing
+﻿Imports System.Drawing
 Imports System.Threading
 Imports System.Timers
 Imports System.Windows
@@ -210,4 +209,26 @@ Public Class AnrMonWPF
         'If AnrMonTimer IsNot Nothing Then AnrMonTimer.Dispose()
     End Sub
 
+    Private Sub CmKontakt_Click(sender As Object, e As RoutedEventArgs)
+        Dim tlnft As Telefonat = CType(DataContext, Telefonat)
+    End Sub
+
+    Private Sub CmRückruf_Click(sender As Object, e As RoutedEventArgs)
+        Dim tlnft As Telefonat = CType(DataContext, Telefonat)
+
+        tlnft.Anrufen
+    End Sub
+
+    Private Sub Cm_Kopieren_Click(sender As Object, e As RoutedEventArgs)
+        Dim tlnft As Telefonat = CType(DataContext, Telefonat)
+
+    End Sub
+
+    Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
+        PresetPopup.StaysOpen = True
+    End Sub
+
+    Private Sub BOptionen_MouseLeave(sender As Object, e As MouseEventArgs)
+        PresetPopup.StaysOpen = False
+    End Sub
 End Class

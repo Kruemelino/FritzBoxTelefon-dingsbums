@@ -418,12 +418,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\CallTo.png" />
+    <Resource Include="Resources\CallTo.png" />
     <EmbeddedResource Include="Resources\call_received.png" />
     <EmbeddedResource Include="Resources\call_made.png" />
     <EmbeddedResource Include="Resources\call_missed.png" />
-    <EmbeddedResource Include="Resources\ContactCard.png" />
-    <EmbeddedResource Include="Resources\Copy.png" />
+    <Resource Include="Resources\ContactCard.png" />
+    <Resource Include="Resources\Copy.png" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />

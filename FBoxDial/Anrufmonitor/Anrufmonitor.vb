@@ -87,32 +87,39 @@ Friend Class Anrufmonitor
         Aktiv = False
     End Sub
 
-    Friend Sub RestartOnResume()
-        ' Falls der Anrufmonitor aktiv sein sollte, dann halte ihn sicherheitshalber an.
-        If Aktiv Then Stopp()
-
-
-        ' Initiiere einen neuen Timer
-        If TimerPowerModeResume Is Nothing Then
-            ' Setze die Zählvariable auf 0
-            RestartTimerIterations = 0
-
-            ' Initiiere den Timer mit Intervall von 3 Sekunden
-            TimerPowerModeResume = SetTimer(PDfltReStartIntervall)
-
-            ' Starte den Timer
-            TimerPowerModeResume.Start()
-        End If
-    End Sub
-
-
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         Aktiv = False
         ThisAddIn.POutlookRibbons.RefreshRibbon()
         NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
     End Sub
 
-#Region "Timer PowerMode Resume"
+#Region "Anrufmonitor Standby PowerMode"
+    Friend Sub RestartOnResume()
+        ' Falls der Anrufmonitor aktiv sein sollte, dann halte ihn sicherheitshalber an.
+        If Aktiv Then Stopp()
+
+        If TimerPowerModeResume IsNot Nothing Then
+            NLogger.Debug("Timer für Reaktivierung nach Standby ist nicht Nothing und wird neu gestartet.")
+
+            ' Timer stoppen und auf Nothing setzen
+            TimerPowerModeResume = KillTimer(TimerPowerModeResume)
+        End If
+
+        ' Initiiere einen neuen Timer
+
+        NLogger.Debug("Timer für Reaktivierung nach Standby wird gestartet.")
+
+        ' Setze die Zählvariable auf 0
+        RestartTimerIterations = 0
+
+        ' Initiiere den Timer mit Intervall von 3 Sekunden
+        TimerPowerModeResume = SetTimer(PDfltReStartIntervall)
+
+        ' Starte den Timer
+        TimerPowerModeResume.Start()
+
+    End Sub
+
     Private Sub TimerPowerModeResume_Elapsed(sender As Object, e As ElapsedEventArgs) Handles TimerPowerModeResume.Elapsed
         ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
         If RestartTimerIterations.IsLess(PDfltTryMaxRestart) Then
@@ -134,11 +141,9 @@ Friend Class Anrufmonitor
         Else
             ' Es konnte keine Verbindung zur Fritz!Box aufgebaut werden.
             NLogger.Error("Anrufmonitor nach PowerMode Resume nicht gestartet.")
+
             ' Halte den TImer an und löse ihn auf
-            With TimerPowerModeResume
-                .Stop()
-                .Dispose()
-            End With
+            TimerPowerModeResume = KillTimer(TimerPowerModeResume)
         End If
         ' Ribbon aktualisieren
         ThisAddIn.POutlookRibbons.RefreshRibbon()
@@ -183,36 +188,6 @@ Friend Class Anrufmonitor
 
         End Select
     End Sub
-
-    '''' <summary>
-    '''' Routine zum Initialisieren der Einblendung des Anrfomitors
-    '''' </summary>
-    'Private Sub AnrMon_Popup(AktivesTelefonat As Telefonat)
-    '    Dim t = New Thread(Sub()
-    '                           If Not VollBildAnwendungAktiv() Then
-    '                               If AktivesTelefonat.PopupWPF Is Nothing Then
-    '                                   NLogger.Debug("Blende einen neuen Anrufmonitor ein")
-    '                                   ' Blende einen neuen Anrufmonitor ein
-    '                                   AktivesTelefonat.AnrMonEinblenden(AktivesTelefonat)
-
-    '                                   While AktivesTelefonat.Eingeblendet
-    '                                       Windows.Forms.Application.DoEvents()
-    '                                       Thread.Sleep(100)
-    '                                   End While
-
-    '                               Else
-    '                                   NLogger.Debug("Aktualisiere den Anrufmonitor")
-    '                                   ' Aktualisiere den Anrufmonitor
-    '                                   AktivesTelefonat.UpdateAnrMon(AktivesTelefonat)
-    '                               End If
-    '                           End If
-    '                       End Sub)
-
-    '    t.SetApartmentState(ApartmentState.STA)
-    '    t.Start()
-    'End Sub
-
-
 
 #End Region
 

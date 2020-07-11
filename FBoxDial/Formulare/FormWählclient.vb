@@ -75,11 +75,10 @@ Public Class FormWählclient
                     WählClient_SetStatus(PWählClientStatusLetztesGerät)
                     .SelectedItem = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.ZuletztGenutzt)
                 End If
-                ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das erste in der liste
-                If .SelectedItem Is Nothing Then
+                ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das erste in der Liste
+                If .SelectedItem Is Nothing And .Items.Count.IsNotZero Then
                     WählClient_SetStatus(PWählClientStatus1Gerät)
-                    .SelectedIndex = 1
-
+                    .SelectedIndex = 0
                 End If
             Else
                 WählClient_SetStatus(PWählClientStatusFehlerGerät)

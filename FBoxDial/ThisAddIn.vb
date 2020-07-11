@@ -11,7 +11,6 @@ Public NotInheritable Class ThisAddIn
 
     Friend Shared Property PCVorwahlen As CVorwahlen
     Friend Shared Property OffeneKontakInsepektoren As List(Of KontaktGespeichert)
-    ' Friend Shared Property OffenePopUps As List(Of Popup)
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
 
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -22,6 +21,8 @@ Public NotInheritable Class ThisAddIn
             End With
         End Get
     End Property
+
+    Private Property AnrMonWarAktiv As Boolean
 
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
         If POutlookRibbons Is Nothing Then POutlookRibbons = New OutlookRibbons
@@ -95,22 +96,29 @@ Public NotInheritable Class ThisAddIn
         Select Case e.Mode
             Case Microsoft.Win32.PowerModes.Resume
                 ' Wiederherstelung nach dem Standby
-                ' StarteAddinFunktionen()
 
-                '' Anrufmonitor starten
-                If XMLData.POptionen.PCBAnrMonAuto Then
+                ' Starte den Anrufmonitor wenn er zuvor aktiv war, und er automatisch gestartet werden soll.
+                If AnrMonWarAktiv And XMLData.POptionen.PCBAnrMonAuto Then
                     ' Eintrag ins Log
-                    NLogger.Info("{0} {1} Anrufmonitor nach Standby gestartet.", PDfltAddin_LangName, Version)
+                    NLogger.Info("Anrufmonitor nach Standby gestartet.")
                     ' Anrufmonitor erneut starten
                     PAnrufmonitor.RestartOnResume()
                 End If
+
             Case Microsoft.Win32.PowerModes.Suspend
-                ' Anrufmonitor beenden
-                If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
-                ' Eintrag ins Log
-                NLogger.Info("{0} {1} für Standby angehalten.", PDfltAddin_LangName, Version)
+                ' Anrufmonitor beenden, falls dieser aktiv ist
+                If PAnrufmonitor IsNot Nothing Then
+                    ' Eintrag ins Log
+                    NLogger.Info("Anrufmonitor für Standby angehalten.")
+                    ' Merken, dass er aktiv war
+                    AnrMonWarAktiv = PAnrufmonitor.Aktiv
+                    ' Anrufmonitor anhalten
+                    PAnrufmonitor.Stopp()
+                End If
+
                 ' XML-Datei speichern
                 XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
+
         End Select
     End Sub
 #End Region
