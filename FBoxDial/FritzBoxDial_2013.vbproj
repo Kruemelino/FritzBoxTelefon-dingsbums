@@ -309,6 +309,11 @@
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Events\NotifyEventArgs.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
@@ -339,11 +344,6 @@
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
     <Compile Include="Kontakte\VCard.vb" />
     <Compile Include="Logging\Logging.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Nutzerdaten.vb" />
     <Compile Include="Optionen\DefaultWerte.vb" />
     <Compile Include="Optionen\OutlookOrdner.vb" />
@@ -422,8 +422,6 @@
     <EmbeddedResource Include="Resources\call_received.png" />
     <EmbeddedResource Include="Resources\call_made.png" />
     <EmbeddedResource Include="Resources\call_missed.png" />
-    <Resource Include="Resources\ContactCard.png" />
-    <Resource Include="Resources\Copy.png" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />

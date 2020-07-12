@@ -163,26 +163,6 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property ContactCard() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ContactCard", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Copy() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Copy", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property Download() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Download", resourceCulture)

@@ -190,6 +190,24 @@ Imports Microsoft.Office.Interop
             End If
         End Get
     End Property
+
+    <XmlIgnore> Public ReadOnly Property AnrMonClipboard As String
+        Get
+            If NrUnterdrückt Then
+                ' Die Nummer wurde unterdrückt
+                Return PDfltStringUnbekannt
+            Else
+                If Anrufer IsNot Nothing Then
+                    ' Kontaktinformationen wurden gefunden
+                    Return String.Format("{0} ({1})", Anrufer, GegenstelleTelNr?.Formatiert)
+                Else
+                    ' Kontaktinformationen wurden nicht gefunden
+                    Return GegenstelleTelNr?.Formatiert
+                End If
+            End If
+        End Get
+    End Property
+
     <XmlIgnore> Public ReadOnly Property AnrMonTelName As String
         Get
             ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
@@ -349,6 +367,9 @@ Imports Microsoft.Office.Interop
 
     End Sub
 
+    ''' <summary>
+    ''' Ruft die Gegenstellentelefonnummer an
+    ''' </summary>
     Friend Sub Rückruf()
         Dim WählClient As New FritzBoxWählClient
         WählClient.WählboxStart(Me)

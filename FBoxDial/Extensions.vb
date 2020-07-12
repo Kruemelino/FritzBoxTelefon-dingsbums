@@ -726,7 +726,7 @@ Public Module Extensions
     End Sub
 #End Region
 
-    <Extension> Public Sub Anrufen(ByVal Tlfnt As Telefonat)
+    <Extension> Public Sub Rückruf(ByVal Tlfnt As Telefonat)
         Using WählClnt As New FritzBoxWählClient
             WählClnt.WählboxStart(Tlfnt)
         End Using

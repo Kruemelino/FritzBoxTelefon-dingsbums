@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:FBoxDial" x:Class="AnrMonWPF"
     
-        Height="100" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None"
-        Name="AnrMon" MinWidth="400" MinHeight="100" ResizeMode="NoResize" >
+        Height="100" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None" Name="AnrMon" MinWidth="400" MinHeight="100" ResizeMode="NoResize" >
 
     <Window.DataContext>
         <local:Telefonat/>
@@ -26,7 +25,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Grid.RowDefinitions>
                     <RowDefinition x:Name="RowZeit" Height="15" MaxHeight="15" MinHeight="15"/>
                     <RowDefinition x:Name="RowTelNr" Height="20" MaxHeight="20" MinHeight="20"/>
@@ -40,7 +39,7 @@
                 <TextBlock x:Name="AnrGerät" Grid.Row="0" Grid.Column="2" TextWrapping="NoWrap" Text="{Binding AnrMonTelName, Mode=OneWay}" FontSize="10" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center" />
 
                 <TextBlock x:Name="AnrTelNr" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="NoWrap" Text="{Binding AnrMonTelNr, Mode=OneWay}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <TextBlock x:Name="Anrufer" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{Binding AnrMonAnrufer, Mode=OneWay}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock x:Name="Anrufer" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{Binding AnrMonAnrufer, Mode=OneWay}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" PreviewMouseLeftButtonDown="Anrufer_PreviewMouseLeftButtonDown " >
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
@@ -55,36 +54,80 @@
             </Grid>
 
             <Button x:Name="bClose" Margin="0,4,4,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True">
-                <Path Stroke="DimGray" StrokeThickness="1.0" Data="M0,0 L9,9 M0,9 L9,0"/>
+                <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,9 M0,9 L9,0"/>
             </Button>
 
             <ToggleButton x:Name="bOptionen" Margin="0,23,4,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
-                <Path Stroke="DimGray" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
-                <!--<Button.ContextMenu>
-                    <ContextMenu Name="cm" StaysOpen="true">
-                        <MenuItem x:Name="CmKontakt" Header="Kopieren" Click="CmKontakt_Click">
-                            <MenuItem.Icon>
-                                <Image Source="/Fritz!Box Telefon-Dingsbums;component/Resources/ContactCard.png"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="CmRückruf" Header="Rückruf" Click="CmRückruf_Click">
-                            <MenuItem.Icon>
-                                <Image Source="/Fritz!Box Telefon-Dingsbums;component/Resources/CallTo.png"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="Cm_Kopieren" Header="Kopieren" Click="Cm_Kopieren_Click">
-                            <MenuItem.Icon>
-                                <Image Source="/Fritz!Box Telefon-Dingsbums;component/Resources/Copy.png"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </Button.ContextMenu>-->              
+                <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
             </ToggleButton>
-            <Popup Name="PresetPopup" IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" PlacementTarget="{Binding ElementName=bOptionen}" AllowsTransparency="True" PopupAnimation="Slide" StaysOpen="False">
-                <Border Background="LightYellow">
-                    <TextBlock>Sending to print ...</TextBlock>
-                </Border>
+
+            <Popup Name="OptionPopup" IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" PlacementTarget="{Binding ElementName=bOptionen}" AllowsTransparency="True" PopupAnimation="Slide" StaysOpen="False">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <!-- Visual Studio Image Library 2019 -->
+                        <Viewbox x:Key="ContactCard_12x" Width="12" Height="12" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Shared="False" Stretch="Uniform">
+                            <Rectangle Width="12" Height="12">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <DrawingGroup.Children>
+                                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,15L16,15 16,1 0,1z" />
+                                                    <GeometryDrawing Brush="#FFEFEFF0" Geometry="F1M13,5L10,5 10,6 13,6z M13,7L10,7 10,8 13,8z M13,9L10,9 10,10 13,10z M8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.034 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.035,8.034 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11z M14,13L2,13 2,3 14,3z M7.265,6.765C7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765" />
+                                                    <GeometryDrawing Brush="#FF424242" Geometry="F1M13,10L10,10 10,9 13,9z M13,8L10,8 10,7 13,7z M13,6L10,6 10,5 13,5z M14,13L2,13 2,3 14,3z M1,14L15,14 15,2 1,2z M4.735,6.765C4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765 7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 M3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11L8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.035 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.036,8.035 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11" />
+                                                </DrawingGroup.Children>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Viewbox>
+                        <!-- Visual Studio Image Library 2019 -->
+                        <Viewbox x:Key="Copy_12x" Width="12" Height="12" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                            <Rectangle Width="12" Height="12">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <DrawingGroup.Children>
+                                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0.9999,-0.000199999999999534L0.9999,13.0008 5.0009,13.0008 5.0009,15.9998 15.9999,15.9998 15.9999,7.3788 11.6209,3.0008 10.6049,3.0008 7.6179,-0.000199999999999534z" />
+                                                    <GeometryDrawing Brush="#FF424242" Geometry="F1M14,14L7,14 7,5 10,5 10,9 14,9z M6,11L3,11 3,2 6.798,2 8.81,4 6,4z M11,5.207L13.793,8 11,8z M11.207,4L10.19,4 7.202,1 2,1 2,12 6,12 6,15 15,15 15,7.793z" />
+                                                    <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M14,14L7,14 7,5 10,5 10,9 14,9z M6,11L3,11 3,2 6.798,2 8.81,4 6,4z M11,5.207L13.793,8 11,8z" />
+                                                </DrawingGroup.Children>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Viewbox>
+                        <!-- Visual Studio Image Library 2019 -->
+                        <Viewbox x:Key="CallTo_12x" Width="12" Height="12" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                            <Rectangle Width="12" Height="12">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <DrawingGroup.Children>
+                                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M3.7266,9.0059L1.0156,9.0059 1.0156,6.0059 3.7086,6.0059 2.3996,4.6919 4.5196,2.5719 7.9996,6.0519 7.9996,3.4999C7.9996,1.5699 9.5706,-9.99999999997669E-05 11.4996,-9.99999999997669E-05 12.2576,-9.99999999997669E-05 12.9856,0.2469 13.6026,0.712900000000001L13.9646,0.985900000000001 13.9646,15.0149 13.6026,15.2869C12.9856,15.7539 12.2576,15.9999 11.4996,15.9999 9.5706,15.9999 7.9996,14.4299 7.9996,12.4999L7.9996,9.4749 7.9996,8.9859 4.5266,12.4469 2.4086,10.3279z" />
+                                                    <GeometryDrawing Brush="#FF424242" Geometry="F1M3.813,4.6929L6.118,7.0059 2.016,7.0059 2.016,8.0059 6.135,8.0059 3.821,10.3269 4.528,11.0339 8.055,7.5209 4.52,3.9859z M11,10.0509L11,10.9999 13,10.9999 13,14.4889C12.581,14.8059 12.065,14.9999 11.5,14.9999 10.119,14.9999 9,13.8809 9,12.4999L9,3.4999C9,2.1189 10.119,0.9999 11.5,0.9999 12.065,0.9999 12.581,1.1939 13,1.5109L13,4.9999 11,4.9999 11,5.9489z" />
+                                                </DrawingGroup.Children>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Viewbox>
+                    </StackPanel.Resources>
+
+                    <Button x:Name="BReCall" Margin="0,4,0,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True" Content="{DynamicResource CallTo_12x}" Click="BReCall_Click"/>
+                    <Button x:Name="BContact" Margin="0,4,0,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True" Content="{DynamicResource ContactCard_12x}" Click="BContact_Click"/>
+                    <Button x:Name="BCopy" Margin="0,4,0,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True" Content="{DynamicResource Copy_12x}" Click="BCopy_Click"/>
+
+                </StackPanel>
             </Popup>
-        </Grid>        
+        </Grid>
     </Border>
 </Window>

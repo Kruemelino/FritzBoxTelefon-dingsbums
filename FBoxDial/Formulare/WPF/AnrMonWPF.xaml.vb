@@ -209,26 +209,27 @@ Public Class AnrMonWPF
         'If AnrMonTimer IsNot Nothing Then AnrMonTimer.Dispose()
     End Sub
 
-    Private Sub CmKontakt_Click(sender As Object, e As RoutedEventArgs)
-        Dim tlnft As Telefonat = CType(DataContext, Telefonat)
-    End Sub
-
-    Private Sub CmRückruf_Click(sender As Object, e As RoutedEventArgs)
-        Dim tlnft As Telefonat = CType(DataContext, Telefonat)
-
-        tlnft.Anrufen
-    End Sub
-
-    Private Sub Cm_Kopieren_Click(sender As Object, e As RoutedEventArgs)
-        Dim tlnft As Telefonat = CType(DataContext, Telefonat)
-
-    End Sub
-
     Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
-        PresetPopup.StaysOpen = True
+        OptionPopup.StaysOpen = True
     End Sub
 
     Private Sub BOptionen_MouseLeave(sender As Object, e As MouseEventArgs)
-        PresetPopup.StaysOpen = False
+        OptionPopup.StaysOpen = False
+    End Sub
+
+    Private Sub BReCall_Click(sender As Object, e As RoutedEventArgs)
+        CType(DataContext, Telefonat).Rückruf()
+    End Sub
+
+    Private Sub BContact_Click(sender As Object, e As RoutedEventArgs)
+        CType(DataContext, Telefonat).ZeigeKontakt()
+    End Sub
+
+    Private Sub BCopy_Click(sender As Object, e As RoutedEventArgs)
+        Clipboard.SetText(CType(DataContext, Telefonat).AnrMonClipboard)
+    End Sub
+
+    Private Sub Anrufer_PreviewMouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
+        Clipboard.SetText(CType(DataContext, Telefonat).AnrMonClipboard)
     End Sub
 End Class

@@ -305,7 +305,9 @@ Imports System.Xml
                 If XMLData.PTelefonie.RINGListe.Count.IsNotZero Then
                     XMLData.PTelefonie.RINGListe.Item(0).AnrMonEinblenden()
                 Else
-                    'PopUpAnrMon.AnrMonEinblenden(Nothing)
+                    Using tmptelfnt As New Telefonat With {.Anrufer = PDfltAddin_LangName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
+                        tmptelfnt.AnrMonEinblenden()
+                    End Using
                 End If
 
             Case TaskToDo.DialDirekt
