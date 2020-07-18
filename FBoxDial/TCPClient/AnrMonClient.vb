@@ -40,7 +40,7 @@ Friend Class AnrMonClient
         ' TCP Client schließen
         AnrMonTcpClient.Close()
         ' Debug Log Message
-        NLogger.Debug("AnrMonClient getrennt")
+        NLogger.Debug("AnrMonClient gewollt getrennt")
         ' Auflösen
         Dispose()
     End Sub

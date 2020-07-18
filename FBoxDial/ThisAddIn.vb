@@ -78,7 +78,7 @@ Public NotInheritable Class ThisAddIn
             PCVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
         End If
         ' Anrufmonitor beenden
-        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.Stopp()
+        If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()
         ' Eintrag ins Log
         NLogger.Info("{0} {1} beendet.", PDfltAddin_LangName, Version)
         ' XML-Datei Speichern
@@ -113,7 +113,7 @@ Public NotInheritable Class ThisAddIn
                     ' Merken, dass er aktiv war
                     AnrMonWarAktiv = PAnrufmonitor.Aktiv
                     ' Anrufmonitor anhalten
-                    PAnrufmonitor.Stopp()
+                    PAnrufmonitor.StoppAnrMon()
                 End If
 
                 ' XML-Datei speichern
