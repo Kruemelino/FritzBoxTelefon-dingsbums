@@ -320,8 +320,17 @@ Imports System.Xml
                 Dim AnrListImport As New FormAnrList
                 AnrListImport.Show()
             Case TaskToDo.AnrMonAnAus
+                ' Wenn der Anrufmonor Nothing ist, dann initiiere ihn
                 If ThisAddIn.PAnrufmonitor Is Nothing Then ThisAddIn.PAnrufmonitor = New Anrufmonitor
-                ThisAddIn.PAnrufmonitor.StartStopAnrMon()
+                ' Wenn der Anrufmonitor aktiv ist, dann trenne ihn, ansonsten starte ihn
+                With ThisAddIn.PAnrufmonitor
+                    If .Aktiv Then
+                        .StoppAnrMon()
+                    Else
+                        .StartAnrMon()
+                    End If
+                End With
+
             Case TaskToDo.FBoxTelBücher
                 Dim FBoxTeleBuch As New FormTelefonbücher
                 FBoxTeleBuch.Show()

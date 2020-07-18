@@ -38,18 +38,7 @@ Friend Class Anrufmonitor
         AktiveTelefonate = New List(Of Telefonat)
     End Sub
 
-    Friend Sub StartStopAnrMon()
-        If Aktiv Then
-            ' Halte den Anrufmonitor an
-            StoppAnrMon()
-        Else
-            StartAnrMon()
-        End If
-        ' Ribbon aktualisieren
-        ThisAddIn.POutlookRibbons.RefreshRibbon()
-    End Sub
-
-    Private Sub StartAnrMon()
+    Friend Sub StartAnrMon()
         ' Starte den Anrufmonitor
         Dim IP As IPAddress = IPAddress.Loopback
 
@@ -76,6 +65,8 @@ Friend Class Anrufmonitor
                 NLogger.Info("Anrufmonitor nicht verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.PDfltFBAnrMonPort)
             End If
         End If
+        ' Ribbon aktualisieren
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     Friend Sub StoppAnrMon()
@@ -86,7 +77,8 @@ Friend Class Anrufmonitor
             ' Info Message für das Log
             NLogger.Debug("Anrufmonitor gewollt angehalten")
         End If
-
+        ' Ribbon aktualisieren
+        ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed

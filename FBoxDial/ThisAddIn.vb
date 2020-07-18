@@ -56,7 +56,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufmonitor starten
         If XMLData.POptionen.PCBAnrMonAuto Then
             PAnrufmonitor = New Anrufmonitor
-            PAnrufmonitor.StartStopAnrMon()
+            PAnrufmonitor.StartAnrMon()
         End If
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
