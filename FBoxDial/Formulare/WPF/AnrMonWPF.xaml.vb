@@ -19,12 +19,12 @@ Public Class AnrMonWPF
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
         ' Skalinierung
-        Height *= ScaleFaktor.Height
-        Width *= ScaleFaktor.Width
+        'Height *= ScaleFaktor.Height
+        'Width *= ScaleFaktor.Width
 
     End Sub
 
-#Region "EigenSchaften"
+#Region "Eigenschaften"
     Private Property ScaleFaktor As SizeF = GetScaling()
     Private ReadOnly Property AbstandAnrMon As Integer = 10
     Private Property IsClosing As Boolean = False
@@ -103,7 +103,7 @@ Public Class AnrMonWPF
         ' Y-Koordinate
         Top = SystemParameters.WorkArea.Bottom - Height - AbstandAnrMon - ThisAddIn.OffeneAnrMonWPF.Count * (AbstandAnrMon + Height)
 
-
+        ' Notwendigkeit unklar. Funktioniert aber gut.
         UnsafeNativeMethods.SetWindowPos(New WindowInteropHelper(Me).Handle, HWndInsertAfterFlags.HWND_TOPMOST, 0, 0, 0, 0, CType(SetWindowPosFlags.DoNotActivate + SetWindowPosFlags.IgnoreMove + SetWindowPosFlags.IgnoreResize + SetWindowPosFlags.DoNotChangeOwnerZOrder, SetWindowPosFlags))
 
         IsClosing = False

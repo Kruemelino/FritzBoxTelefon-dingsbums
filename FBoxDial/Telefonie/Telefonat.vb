@@ -3,6 +3,8 @@ Imports System.Threading
 Imports System.Xml.Serialization
 Imports Microsoft.Office.Interop
 <Serializable()> Public Class Telefonat
+    'Inherits BindableBase
+
     Implements IEquatable(Of Telefonat)
     Implements IDisposable
 
@@ -26,7 +28,6 @@ Imports Microsoft.Office.Interop
     <XmlIgnore> Public Property Beendet As Boolean
     <XmlAttribute> Public Property NrUnterdrückt As Boolean
     <XmlAttribute> Public Property Angenommen As Boolean
-    <XmlIgnore> Public Property AnrMonSimuliert As Boolean
     <XmlElement> Public Property OutlookKontaktID As String
     <XmlElement> Public Property OutlookStoreID As String
     <XmlElement> Public Property VCard As String
@@ -586,7 +587,6 @@ Imports Microsoft.Office.Interop
 
 #End Region
 
-
 #Region "RibbonXML"
     Friend Overloads Function CreateDynMenuButton(ByVal xDoc As Xml.XmlDocument, ByVal ID As Integer, ByVal Tag As String) As Xml.XmlElement
         Dim XButton As Xml.XmlElement
@@ -669,8 +669,6 @@ Imports Microsoft.Office.Interop
         ' GC.SuppressFinalize(Me)
     End Sub
 #End Region
-
-
 
 End Class
 

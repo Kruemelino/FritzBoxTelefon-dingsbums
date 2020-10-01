@@ -88,7 +88,6 @@ Public Class FormWählclient
         CBCLIR.Checked = XMLData.POptionen.PCBCLIR
     End Sub
 
-
     Friend Sub SetOutlookKontakt(ByVal oContact As Outlook.ContactItem)
         Dim ImgPath As String
         ' Outlook Kontakt sichern

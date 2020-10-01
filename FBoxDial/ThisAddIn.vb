@@ -43,6 +43,9 @@ Public NotInheritable Class ThisAddIn
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
 
+            Dim wxn As New WählclientWPF()
+            wxn.Show()
+
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If

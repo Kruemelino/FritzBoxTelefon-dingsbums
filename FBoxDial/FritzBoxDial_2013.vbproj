@@ -229,6 +229,8 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
+    <Compile Include="Formulare\Common\BindableBase.vb" />
+    <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\FormElemente\CrossThread.vb" />
     <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.vb" />
@@ -240,6 +242,11 @@
     </Compile>
     <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\DialNumberListViewModel.vb" />
+    <Compile Include="Formulare\WPF\TelefonnummernListe.vb" />
+    <Compile Include="Formulare\WPF\WählclientWPF.xaml.vb">
+      <DependentUpon>WählclientWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
@@ -448,6 +455,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Formulare\WPF\AnrMonWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\WPF\WählclientWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

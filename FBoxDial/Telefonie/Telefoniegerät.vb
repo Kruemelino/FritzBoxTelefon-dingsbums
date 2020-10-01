@@ -3,6 +3,8 @@ Imports FBoxDial.DfltWerteTelefonie
 
 <Serializable()>
 Public Class Telefoniegerät
+    Inherits BindableBase
+
     Implements IEquatable(Of Telefoniegerät)
 
     Public Sub New()

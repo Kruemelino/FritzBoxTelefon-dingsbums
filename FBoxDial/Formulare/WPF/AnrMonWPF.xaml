@@ -10,14 +10,15 @@
     </Window.DataContext>
 
     <Border BorderBrush="DimGray" BorderThickness="2">
-        <Grid x:Name="MainGrid" SizeChanged="MainGrid_SizeChanged">
-            <Grid.LayoutTransform>
+        <Grid x:Name="MainGrid">
+            <!--SizeChanged="MainGrid_SizeChanged"-->
+            <!--<Grid.LayoutTransform>
                 <ScaleTransform x:Name="ApplicationScaleTransform"
                         CenterX="0"
                         CenterY="0"
                         ScaleX="{Binding ElementName=AnrMon, Path=ScaleValue}"
                         ScaleY="{Binding ElementName=AnrMon, Path=ScaleValue}" />
-            </Grid.LayoutTransform>
+            </Grid.LayoutTransform>-->
 
             <Grid x:Name="DataGrid" Margin="0,1,24,1">
                 <Grid.ColumnDefinitions>
@@ -53,11 +54,11 @@
                 <TextBlock x:Name="AnrFirma" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="NoWrap" Text="{Binding Firma, Mode=OneWay}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
 
-            <Button x:Name="bClose" Margin="0,4,4,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True">
+            <Button x:Name="bClose" Margin="0,4,4,0" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" IsCancel="True" Click="BClose_Click">
                 <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,9 M0,9 L9,0"/>
             </Button>
 
-            <ToggleButton x:Name="bOptionen" Margin="0,23,4,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
+            <ToggleButton x:Name="bOptionen" Margin="0,23,4,0" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
                 <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
             </ToggleButton>
 
@@ -65,18 +66,16 @@
                 <StackPanel>
                     <StackPanel.Resources>
                         <!-- Visual Studio Image Library 2019 -->
-                        <Viewbox x:Key="ContactCard_12x" Width="12" Height="12" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Shared="False" Stretch="Uniform">
-                            <Rectangle Width="12" Height="12">
+                        <Viewbox x:Key="ContactCard_9x" Width="9" Height="9">
+                            <Rectangle Width="9" Height="9">
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <DrawingGroup>
-                                                <DrawingGroup.Children>
-                                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,15L16,15 16,1 0,1z" />
-                                                    <GeometryDrawing Brush="#FFEFEFF0" Geometry="F1M13,5L10,5 10,6 13,6z M13,7L10,7 10,8 13,8z M13,9L10,9 10,10 13,10z M8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.034 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.035,8.034 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11z M14,13L2,13 2,3 14,3z M7.265,6.765C7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765" />
-                                                    <GeometryDrawing Brush="#FF424242" Geometry="F1M13,10L10,10 10,9 13,9z M13,8L10,8 10,7 13,7z M13,6L10,6 10,5 13,5z M14,13L2,13 2,3 14,3z M1,14L15,14 15,2 1,2z M4.735,6.765C4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765 7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 M3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11L8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.035 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.036,8.035 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11" />
-                                                </DrawingGroup.Children>
+                                                <GeometryDrawing Brush="Transparent" Geometry="F1M16,16L0,16 0,0 16,0z"/>
+                                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,15L16,15 16,1 0,1z"/>
+                                                <GeometryDrawing Brush="#FFEFEFF0" Geometry="F1M13,5L10,5 10,6 13,6z M13,7L10,7 10,8 13,8z M13,9L10,9 10,10 13,10z M8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.034 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.035,8.034 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11z M14,13L2,13 2,3 14,3z M7.265,6.765C7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765"/>
+                                                <GeometryDrawing Brush="#FF424242" Geometry="F1M13,10L10,10 10,9 13,9z M13,8L10,8 10,7 13,7z M13,6L10,6 10,5 13,5z M14,13L2,13 2,3 14,3z M1,14L15,14 15,2 1,2z M4.735,6.765C4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765 7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 M3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11L8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.035 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.036,8.035 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11"/>
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -84,8 +83,8 @@
                             </Rectangle>
                         </Viewbox>
                         <!-- Visual Studio Image Library 2019 -->
-                        <Viewbox x:Key="Copy_12x" Width="12" Height="12" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-                            <Rectangle Width="12" Height="12">
+                        <Viewbox x:Key="Copy_9x" Width="9" Height="9">
+                            <Rectangle Width="9" Height="9">
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
@@ -103,8 +102,8 @@
                             </Rectangle>
                         </Viewbox>
                         <!-- Visual Studio Image Library 2019 -->
-                        <Viewbox x:Key="CallTo_12x" Width="12" Height="12" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-                            <Rectangle Width="12" Height="12">
+                        <Viewbox x:Key="CallTo_9x" Width="9" Height="9">
+                            <Rectangle Width="9" Height="9">
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
@@ -122,9 +121,9 @@
                         </Viewbox>
                     </StackPanel.Resources>
 
-                    <Button x:Name="BReCall" Margin="0,4,0,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True" Content="{DynamicResource CallTo_12x}" Click="BReCall_Click"/>
-                    <Button x:Name="BContact" Margin="0,4,0,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True" Content="{DynamicResource ContactCard_12x}" Click="BContact_Click"/>
-                    <Button x:Name="BCopy" Margin="0,4,0,0" VerticalAlignment="Top" Height="15" HorizontalAlignment="Right" Width="15" IsCancel="True" Content="{DynamicResource Copy_12x}" Click="BCopy_Click"/>
+                    <Button x:Name="BReCall" Margin="0,4,0,0" Width="15" Height="15" Content="{DynamicResource CallTo_9x}" Click="BReCall_Click"/>
+                    <Button x:Name="BContact" Margin="0,4,0,0" Width="15" Height="15" Content="{DynamicResource ContactCard_9x}" Click="BContact_Click"/>
+                    <Button x:Name="BCopy" Margin="0,4,0,0" Width="15" Height="15" Content="{DynamicResource Copy_9x}" Click="BCopy_Click"/>
 
                 </StackPanel>
             </Popup>
