@@ -46,12 +46,6 @@ Public Class WählclientWPF
         OptionPopup.StaysOpen = False
     End Sub
 
-    Private Sub BClose_Click(sender As Object, e As RoutedEventArgs) Handles bClose.Click
-        NLogger.Debug("Wählclient manuell geschlossen")
-        ' Schließt das Fenster
-        Close()
-    End Sub
-
     Private Sub BContact_Click(sender As Object, e As RoutedEventArgs)
         CType(DataContext, Telefonat).ZeigeKontakt()
     End Sub

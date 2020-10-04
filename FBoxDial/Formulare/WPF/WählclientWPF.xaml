@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:FBoxDial"
         mc:Ignorable="d"
-        Height="250" Width="400" Focusable="False" IsTabStop="False" Name="Wählclient" ResizeMode="NoResize" WindowStyle="None"
+        Height="300" Width="500" Focusable="False" IsTabStop="False" Name="Wählclient" ResizeMode="NoResize" 
         d:DataContext="{d:DesignInstance Type=viewModels:DialNumberListViewModel, IsDesignTimeCreatable=True}">
 
     <Window.DataContext>
@@ -20,21 +20,19 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="100" x:Name="ColBild"/>
+                    <ColumnDefinition Width="120" x:Name="ColBild"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition x:Name="RowZeit" Height="24" MaxHeight="24" MinHeight="24,"/>
                     <RowDefinition x:Name="RowTelNr"/>
                     <RowDefinition x:Name="RowTelGerät" Height="48" MaxHeight="48" MinHeight="48"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock HorizontalAlignment="Left" Margin="4,4,0,0" TextWrapping="Wrap" Text="{Binding Path=Name, Mode=OneWay}" VerticalAlignment="Top" Grid.ColumnSpan="3" />
                 
-                <DataGrid x:Name="DGNummern" Grid.Row="1" Grid.ColumnSpan="2"
+                <DataGrid x:Name="DGNummern" Grid.Row="0" Grid.ColumnSpan="2"
                           ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                           AutoGenerateColumns="False"
-                          CanUserAddRows="False" SelectionMode="Single">
+                          CanUserAddRows="False" SelectionMode="Single" Margin="4,4,0,0">
                     
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="Nr" Header="Nr." Width="25" />
@@ -43,22 +41,17 @@
                     </DataGrid.Columns>                        
                 </DataGrid>
                 
-                <GroupBox Header="Verbinden über .." Margin="0" Grid.Row="2">
+                <GroupBox Header="Verbinden über .." Margin="4,0,0,0" Grid.Row="1">
                     <ComboBox Name="CBoxFon">
          
                     </ComboBox>
                 </GroupBox>
                 
-                <Image x:Name="AnrBild" HorizontalAlignment="Left" Grid.Column="3" Grid.Row="1"/>
+                <!--<Image x:Name="AnrBild" HorizontalAlignment="Left" Grid.Column="3" Grid.Row="1"/>-->
                 
-
             </Grid>
-
-            <Button x:Name="bClose" Margin="0,4,4,0" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" IsCancel="True" Click="BClose_Click">                  
-                <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,9 M0,9 L9,0"/>
-            </Button>
-
-            <ToggleButton x:Name="bOptionen" Margin="0,23,4,0" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
+                     
+            <ToggleButton x:Name="bOptionen" Margin="0,4,4,0" Width="15" Height="15" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
                 <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
             </ToggleButton>
 
@@ -85,7 +78,7 @@
                     </StackPanel.Resources>
                     <Button x:Name="BContact" Margin="0,4,0,0" Width="15" Height="15" Content="{DynamicResource ContactCard_9x}" Click="BContact_Click"/>
                 </StackPanel>
-            </Popup>
+            </Popup>          
 
         </Grid>
     </Border>

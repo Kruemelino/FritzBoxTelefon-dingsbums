@@ -9,6 +9,7 @@
 
         Name = "Testname Testname Testname Testname Testname Testname Testname Testname"
 
-        Einträge.Add(New Telefonnummer With {.SetNummer = "03520880303"})
+        Einträge.Add(New Telefonnummer With {.SetNummer = "0123456789"})
+        Einträge.Add(New Telefonnummer With {.SetNummer = "0987654321"})
     End Sub
 End Class
