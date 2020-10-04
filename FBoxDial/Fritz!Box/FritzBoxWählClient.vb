@@ -28,7 +28,7 @@ Public Class FritzBoxWählClient
 #End Region
 
     Private ListFormWählbox As List(Of FormWählclient)
-
+    Private ListWählboxWPF As List(Of WählclientWPF)
 #Region "Wählen per SOAP"
     ''' <summary>
     ''' Initialisiert den Wählvorgang der Fritz!Box Wählhilfe.
@@ -367,6 +367,28 @@ Public Class FritzBoxWählClient
 
         If oContact IsNot Nothing Then
             ' Es soll nur ein Formular anzeigbar sein.
+            If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
+
+            Dim fWählClient As WählclientWPF
+
+            If ListWählboxWPF.Count.IsZero Then
+                fWählClient = New WählclientWPF
+
+                ListWählboxWPF.Add(fWählClient)
+                With fWählClient
+                    .SetOutlookKontakt(oContact)
+                    .Show()
+                End With
+
+            End If
+        Else
+            NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
+        End If
+    End Sub
+    <Obsolete> Private Sub WählboxOLD(ByVal oContact As Outlook.ContactItem)
+
+        If oContact IsNot Nothing Then
+            ' Es soll nur ein Formular anzeigbar sein.
             If ListFormWählbox Is Nothing Then ListFormWählbox = New List(Of FormWählclient)
 
             Dim fWählClient As FormWählclient
@@ -386,8 +408,29 @@ Public Class FritzBoxWählClient
             NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
         End If
     End Sub
-
     Private Sub Wählbox(ByVal oExchangeNutzer As Outlook.ExchangeUser)
+
+        If oExchangeNutzer IsNot Nothing Then
+            ' Es soll nur ein Formular anzeigbar sein.
+            If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
+
+            Dim fWählClient As WählclientWPF
+
+            If ListFormWählbox.Count.IsZero Then
+                fWählClient = New WählclientWPF
+
+                ListWählboxWPF.Add(fWählClient)
+                With fWählClient
+                    .SetOutlookKontakt(oExchangeNutzer)
+                    .Show()
+                End With
+
+            End If
+        Else
+            NLogger.Error("Der Outlook-oExchangeUser ist nicht vorhanden.")
+        End If
+    End Sub
+    <Obsolete> Private Sub WählboxOLD(ByVal oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then
             ' Es soll nur ein Formular anzeigbar sein.
@@ -420,6 +463,28 @@ Public Class FritzBoxWählClient
         If TelNr IsNot Nothing Then
 
             ' Es soll nur ein Formular anzeigbar sein.
+            If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
+
+            Dim fWählClient As WählclientWPF
+
+            If ListFormWählbox.Count.IsZero Then
+                fWählClient = New WählclientWPF
+
+                ListWählboxWPF.Add(fWählClient)
+                With fWählClient
+                    .SetTelefonnummer(TelNr)
+                    .Show()
+                End With
+            End If
+        Else
+            NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
+        End If
+    End Sub
+    <Obsolete> Private Sub WählboxOLD(ByVal TelNr As Telefonnummer)
+
+        If TelNr IsNot Nothing Then
+
+            ' Es soll nur ein Formular anzeigbar sein.
             If ListFormWählbox Is Nothing Then ListFormWählbox = New List(Of FormWählclient)
 
             Dim fWählClient As FormWählclient
@@ -438,7 +503,6 @@ Public Class FritzBoxWählClient
             NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
         End If
     End Sub
-
     ''' <summary>
     ''' Startet das Wählen als Direktwahl 
     ''' </summary>

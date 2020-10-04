@@ -243,8 +243,7 @@
     <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\WPF\DialNumberListViewModel.vb" />
-    <Compile Include="Formulare\WPF\TelefonnummernListe.vb" />
+    <Compile Include="Formulare\WPF\WählClientViewModel.vb" />
     <Compile Include="Formulare\WPF\WählclientWPF.xaml.vb">
       <DependentUpon>WählclientWPF.xaml</DependentUpon>
     </Compile>

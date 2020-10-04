@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Data
 Imports System.Drawing
-Imports System.Net.NetworkInformation
 Imports System.Timers
 Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
@@ -13,7 +12,6 @@ Public Class FormWählclient
     Private Property OKontakt As Outlook.ContactItem
     Private Property OExchangeNutzer As Outlook.ExchangeUser
     Private Property PKontaktbild As Bitmap
-
     Private Property PhonerApp As Phoner
 #End Region
 
@@ -318,7 +316,6 @@ Public Class FormWählclient
     Private Sub DgvKontaktNr_SelectionChanged(sender As Object, e As EventArgs)
         Dim tmpDataRow As WählClientDataRow
 
-        ' Prüfung ob es sich bei der gewählten nummer um eine Mobilnummer handelt.
         If dgvKontaktNr.SelectedRows.Count.IsNotZero Then
             tmpDataRow = CType(CType(dgvKontaktNr.SelectedRows(0).DataBoundItem, DataRowView).Row, WählClientDataRow)
 
