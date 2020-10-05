@@ -1,144 +1,35 @@
-﻿Imports System.Xml.Serialization
+﻿Imports System.Text.RegularExpressions
+Imports System.Xml.Serialization
 Imports FBoxDial.DfltWerteTelefonie
 
 <Serializable()>
 Public Class Telefonnummer
-    Inherits BindableBase
-
     Implements IEquatable(Of Telefonnummer)
     Implements IDisposable
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
 #Region "Eigenschaften"
 
-    <XmlIgnore> Private _Nummer As String
     <XmlAttribute> Public Property Nummer As String
-        Get
-            Return _Nummer
-        End Get
-        Set(value As String)
-            SetProperty(_Nummer, value)
-        End Set
-
-    End Property
-    <XmlIgnore> Private _EigeneNummer As Boolean
     <XmlAttribute> Public Property EigeneNummer As Boolean
-        Get
-            Return _EigeneNummer
-        End Get
-        Set(value As Boolean)
-            SetProperty(_EigeneNummer, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Überwacht As Boolean
     <XmlAttribute> Public Property Überwacht As Boolean
-        Get
-            Return _Überwacht
-        End Get
-        Set(value As Boolean)
-            SetProperty(_Überwacht, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _SIPNode As String
     <XmlAttribute> Public Property SIPNode As String
-        Get
-            Return _SIPNode
-        End Get
-        Set(value As String)
-            SetProperty(_SIPNode, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _ID0 As Integer
     <XmlIgnore> Public Property ID0 As Integer
-        Get
-            Return _ID0
-        End Get
-        Set(value As Integer)
-            SetProperty(_ID0, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _ID1 As Integer
     <XmlIgnore> Public Property ID1 As Integer
-        Get
-            Return _ID1
-        End Get
-        Set(value As Integer)
-            SetProperty(_ID1, value)
-        End Set
-    End Property
     <XmlElement> Public Property Typ As List(Of TelTypen)
-    <XmlIgnore> Private _Landeskennzahl As String
     <XmlElement> Public Property Landeskennzahl As String
-        Get
-            Return _Landeskennzahl
-        End Get
-        Set(value As String)
-            SetProperty(_Landeskennzahl, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Ortskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
-        Get
-            Return _Ortskennzahl
-        End Get
-        Set(value As String)
-            SetProperty(_Ortskennzahl, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Einwahl As String
     <XmlElement> Public Property Einwahl As String
-        Get
-            Return _Einwahl
-        End Get
-        Set(value As String)
-            SetProperty(_Einwahl, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Durchwahl As String
     <XmlElement> Public Property Durchwahl As String
-        Get
-            Return _Durchwahl
-        End Get
-        Set(value As String)
-            SetProperty(_Durchwahl, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Formatiert As String
     <XmlElement> Public Property Formatiert As String
-        Get
-            Return _Formatiert
-        End Get
-        Set(value As String)
-            SetProperty(_Formatiert, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Unformatiert As String
     <XmlElement> Public Property Unformatiert As String
-        Get
-            Return _Unformatiert
-        End Get
-        Set(value As String)
-            SetProperty(_Unformatiert, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _Unbekannt As Boolean
     <XmlElement> Public Property Unbekannt As Boolean
-        Get
-            Return _Unbekannt
-        End Get
-        Set(value As Boolean)
-            SetProperty(_Unbekannt, value)
-        End Set
-    End Property
-    <XmlIgnore> Private _OutlookTyp As String
     <XmlIgnore> Public Property OutlookTyp As String
-        Get
-            Return _OutlookTyp
-        End Get
-        Set(value As String)
-            SetProperty(_OutlookTyp, value)
-        End Set
-    End Property
+    <XmlIgnore> Public Property Gültig As String
+
+    Public Sub New()
+
+    End Sub
 
     <XmlIgnore> Public WriteOnly Property SetNummer As String
         Set(value As String)
@@ -164,7 +55,7 @@ Public Class Telefonnummer
             End If
         End Set
     End Property
-
+#End Region
     <XmlIgnore> ReadOnly Property IstMobilnummer As Boolean
         Get
             If Not Ortskennzahl = PDfltStringEmpty Then
@@ -181,11 +72,7 @@ Public Class Telefonnummer
             End If
         End Get
     End Property
-#End Region
 
-    Public Sub New()
-
-    End Sub
 #Region "Funktionen"
     ''' <summary>
     ''' Bereinigt die Telefunnummer von Sonderzeichen wie Klammern und Striche.

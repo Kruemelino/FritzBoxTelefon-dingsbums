@@ -229,7 +229,7 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
-    <Compile Include="Formulare\Common\BindableBase.vb" />
+    <Compile Include="Formulare\Common\NotifyBase.vb" />
     <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\FormElemente\CrossThread.vb" />
     <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />

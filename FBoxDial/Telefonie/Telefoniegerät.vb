@@ -3,7 +3,7 @@ Imports FBoxDial.DfltWerteTelefonie
 
 <Serializable()>
 Public Class Telefoniegerät
-    Inherits BindableBase
+    Inherits NotifyBase
 
     Implements IEquatable(Of Telefoniegerät)
 

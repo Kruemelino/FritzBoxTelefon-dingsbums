@@ -15,7 +15,7 @@
 
     <Grid x:Name="MainGrid" >
 
-        <Grid x:Name="DataGrid" Margin="0,1,28,1">
+        <Grid x:Name="DataGrid" Margin="0,0,28,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -24,30 +24,37 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="RowTelNr"/>
-                <RowDefinition x:Name="RowTelGerät" Height="48" MaxHeight="48" MinHeight="48"/>
+                <RowDefinition x:Name="RowTelGerät" Height="72"/>
             </Grid.RowDefinitions>
 
             <DataGrid x:Name="DGNummern" Grid.Row="0" Grid.ColumnSpan="2"
                       ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                       AutoGenerateColumns="False"
                       CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"
-                      IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" Margin="4,4,0,0">
+                      IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" Margin="4,4,2,0">
 
                 <DataGrid.Columns>
-                    <!--<DataGridTextColumn x:Name="Nr" Header="Nr." Width="25" />-->
                     <DataGridTextColumn x:Name="Typ" Header="Typ" Width="100" Binding="{Binding Path=OutlookTyp}"/>
                     <DataGridTextColumn x:Name="TelNr" Header="Nummer" Binding="{Binding Path=Formatiert}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <GroupBox Header="Verbinden über .." Margin="4,0,0,0" Grid.Row="1">
-                <ComboBox Name="CBoxFon" ItemsSource="{Binding Path=DialDeviceList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" DisplayMemberPath="Name" SelectedValuePath="UPnPDialport" SelectedItem="{Binding Path=StdGerät}"/>
+            <GroupBox Header="Verbinden über .." Margin="4,21,0,4" Grid.Row="1">
+                <ComboBox Name="CBoxFon" ItemsSource="{Binding Path=DialDeviceList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" DisplayMemberPath="Name" SelectedValuePath="UPnPDialport" SelectedItem="{Binding Path=StdGerät}" Margin="0,0,0,0"/>
             </GroupBox>
-            
-            <Border BorderBrush="DimGray" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="112" Margin="10,4,10,0" VerticalAlignment="Top" Width="100">
-                <Image  x:Name="AnrBild" Grid.Column="2" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <CheckBox x:Name="CBCLIR" Content="Rufnummer unterdrücken" HorizontalAlignment="Left" Margin="4,4,0,0" Grid.Row="1" VerticalAlignment="Top" Width="163" IsChecked="{Binding Path=CLIR, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <Border BorderBrush="DimGray" BorderThickness="1" Grid.Column="2" Height="139" Margin="2,4,2,0" VerticalAlignment="Top">
+                <Image  x:Name="AnrBild" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </Border>
 
+            <GroupBox Grid.Column="1" Header="Status" Margin="2,0,0,4" Grid.Row="1">
+                <StackPanel>
+                    <TextBlock Grid.Column="1" Margin="0,0,5,5" Grid.Row="1" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top"  TextAlignment="Center" Foreground="Red"/>
+                    <Button Content="Abbruch" Margin="0,0,2,0" Height="23" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </GroupBox>
         </Grid>
 
         <ToggleButton x:Name="bOptionen" Margin="0,4,4,0" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
@@ -96,7 +103,7 @@
                 </StackPanel.Resources>
 
                 <Button x:Name="BContact" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource ContactCard_16x}" Click="BContact_Click"/>
-                <Button x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource pushpin_16x}" Click="BContact_Click"/>
+                <ToggleButton x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource pushpin_16x}" Click="BContact_Click"/>
             </StackPanel>
         </Popup>
 

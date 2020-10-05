@@ -2,7 +2,7 @@
 Imports Microsoft.Office.Interop
 
 Public Class WählClientViewModel
-    Inherits BindableBase
+    Inherits NotifyBase
 
     Private _Name As String
     Public Property Name As String
