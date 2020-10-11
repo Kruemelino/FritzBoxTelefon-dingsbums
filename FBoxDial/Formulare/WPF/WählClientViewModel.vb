@@ -1,8 +1,19 @@
-﻿Imports System.Windows.Media.Imaging
+﻿Imports System.Windows
+Imports System.Windows.Media.Imaging
 Imports Microsoft.Office.Interop
 
 Public Class WählClientViewModel
     Inherits NotifyBase
+
+    Private _Status As String
+    Public Property Status As String
+        Get
+            Return _Status
+        End Get
+        Set(value As String)
+            SetProperty(_Status, value)
+        End Set
+    End Property
 
     Private _Name As String
     Public Property Name As String
@@ -44,16 +55,6 @@ Public Class WählClientViewModel
         End Set
     End Property
 
-    Private _TelNr As Telefonnummer
-    Public Property TelNr As Telefonnummer
-        Get
-            Return _TelNr
-        End Get
-        Set(value As Telefonnummer)
-            SetProperty(_TelNr, value)
-        End Set
-    End Property
-
     ''' <summary>
     ''' Returns Or sets a list as Telefonnummern             
     ''' </summary>
@@ -77,13 +78,13 @@ Public Class WählClientViewModel
         End Set
     End Property
 
-    Private _StdGerät As Telefoniegerät
-    Public Property StdGerät As Telefoniegerät
+    Private _TelGerät As Telefoniegerät
+    Public Property TelGerät As Telefoniegerät
         Get
-            Return _StdGerät
+            Return _TelGerät
         End Get
         Set(value As Telefoniegerät)
-            SetProperty(_StdGerät, value)
+            SetProperty(_TelGerät, value)
         End Set
     End Property
 

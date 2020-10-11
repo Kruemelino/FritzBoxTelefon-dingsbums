@@ -42,10 +42,6 @@ Public NotInheritable Class ThisAddIn
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
-
-            Dim wxn As New WählclientWPF()
-            wxn.Show()
-
         Else
             NLogger.Warn("Addin nicht gestartet, da kein Explorer vorhanden")
         End If

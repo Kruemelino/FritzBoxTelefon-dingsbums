@@ -394,7 +394,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Abgebrochen
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientDialHangUp As String = $"Abgebrochen{PDflt1NeueZeile}"
+    Public Shared ReadOnly Property PWählClientDialHangUp As String = $"Abgebrochen"
 
     ''' <summary>
     ''' Dialcode: <paramref name="DialCode"/>>
