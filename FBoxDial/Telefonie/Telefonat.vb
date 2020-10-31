@@ -174,78 +174,6 @@ Imports Microsoft.Office.Interop
     End Property
 #End Region
 
-#Region "Anrufmonitor Felder"
-    <XmlIgnore> Public ReadOnly Property AnrMonAnrufer As String
-        Get
-            If NrUnterdrückt Then
-                ' Die Nummer wurde unterdrückt
-                Return PDfltStringUnbekannt
-            Else
-                If Anrufer IsNot Nothing Then
-                    ' Kontaktinformationen wurden gefunden
-                    Return Anrufer
-                Else
-                    ' Kontaktinformationen wurden nicht gefunden
-                    Return GegenstelleTelNr?.Formatiert
-                End If
-            End If
-        End Get
-    End Property
-
-    <XmlIgnore> Public ReadOnly Property AnrMonClipboard As String
-        Get
-            If NrUnterdrückt Then
-                ' Die Nummer wurde unterdrückt
-                Return PDfltStringUnbekannt
-            Else
-                If Anrufer IsNot Nothing Then
-                    ' Kontaktinformationen wurden gefunden
-                    Return String.Format("{0} ({1})", Anrufer, GegenstelleTelNr?.Formatiert)
-                Else
-                    ' Kontaktinformationen wurden nicht gefunden
-                    Return GegenstelleTelNr?.Formatiert
-                End If
-            End If
-        End Get
-    End Property
-
-    <XmlIgnore> Public ReadOnly Property AnrMonTelName As String
-        Get
-            ' Ermitteln der Gerätenammen der Telefone, die auf diese eigene Nummer reagieren
-            If RINGGeräte Is Nothing Then RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr.Contains(OutEigeneTelNr))
-
-            Return String.Join(", ", RINGGeräte.Select(Function(Gerät) Gerät.Name).ToList())
-        End Get
-    End Property
-
-    <XmlIgnore> Public ReadOnly Property AnrMonTelNr As String
-        Get
-
-            If Anrufer Is Nothing OrElse NrUnterdrückt Then
-                ' Kontaktinformationen wurden nicht gefunden oder die Nummer wurde unterdrückt
-                Return PDfltStringEmpty
-            Else
-                ' Kontaktinformationen wurden gefunden
-                Return GegenstelleTelNr?.Formatiert
-            End If
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Extrahiert aus dem Outlook Kontakt dieses Telefonates das hinterlegte Kontaktbild und gibt den Speicherort (Dateipfad) auf der Festplatte zurück.
-    ''' </summary>
-    <XmlIgnore> Public ReadOnly Property AnrMonImagePfad As String
-        Get
-            If OlKontakt Is Nothing AndAlso (OutlookKontaktID.IsNotStringEmpty And OutlookStoreID.IsNotStringEmpty) Then OlKontakt = GetOutlookKontakt(OutlookKontaktID, OutlookStoreID)
-
-            ' Speichere das Kontaktbild in einem temporären Ordner
-            Return KontaktBild(OlKontakt)
-
-        End Get
-    End Property
-
-#End Region
-
 #Region "Structures"
     Friend Structure AnrufRichtungen
         Const Eingehend As Integer = 0
@@ -513,7 +441,7 @@ Imports Microsoft.Office.Interop
     End Sub
 
     ''' <summary>
-    ''' Das Cloded-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
+    ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
     ''' </summary>
     <XmlIgnore> Private Property IAnrMonClosed As Integer
     Friend Sub AnrMonEinblenden()

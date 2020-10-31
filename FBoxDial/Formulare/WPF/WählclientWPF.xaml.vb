@@ -52,8 +52,13 @@ Public Class WählclientWPF
 
             ' Telefonnummern des Kontaktes setzen 
             .DialNumberList.AddRange(GetKontaktTelNrList(oContact))
+
             ' Kopfdaten setzen
             .Name = PWählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", PDfltStringEmpty)}")
+
+            ' Direktwahl deaktivieren
+            .Direktwahl = Visibility.Collapsed
+            .Kontaktwahl = Visibility.Visible
 
             ' Kontaktbild anzeigen
             Dim BildPfad As String
@@ -85,11 +90,16 @@ Public Class WählclientWPF
         With CType(DataContext, WählClientViewModel)
             ' Outlook ExchangeNutzer im ViewModel setzen
             .OExchangeNutzer = oExchangeUser
+
             ' Telefonnummern des Kontaktes setzen 
             .DialNumberList.AddRange(GetKontaktTelNrList(oExchangeUser))
+
             ' Kopfdaten setzen
             .Name = PWählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", PDfltStringEmpty)}")
-            ' Kontaktbild?
+
+            ' Direktwahl deaktivieren
+            .Direktwahl = Visibility.Collapsed
+            .Kontaktwahl = Visibility.Visible
         End With
     End Sub
 
@@ -98,8 +108,29 @@ Public Class WählclientWPF
         With CType(DataContext, WählClientViewModel)
             ' Telefonnummer setzen 
             .DialNumberList.Add(TelNr)
+
             ' Kopfdaten setzen
             .Name = PWählClientFormText(TelNr.Formatiert)
+
+            ' Direktwahl deaktivieren
+            .Direktwahl = Visibility.Collapsed
+            .Kontaktwahl = Visibility.Visible
+        End With
+    End Sub
+
+    Friend Sub SetDirektwahl()
+        With CType(DataContext, WählClientViewModel)
+            ' Kopfdaten setzen
+            .Name = PWählClientFormText("Direktwahl")
+
+            ' Direktwahl aktivieren
+            .Direktwahl = Visibility.Visible
+            .Kontaktwahl = Visibility.Collapsed
+
+            ' Wahlwiederhohlung in Combobox schreiben
+            If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any Then
+                .DialDirektWahlList.AddRange(XMLData.PTelefonie.GetTelNrList(XMLData.PTelefonie.CALLListe))
+            End If
         End With
     End Sub
 
@@ -142,6 +173,7 @@ Public Class WählclientWPF
         End With
     End Sub
 
+
 #Region "Form Events"
     Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
         OptionPopup.StaysOpen = True
@@ -173,6 +205,12 @@ Public Class WählclientWPF
             DialTelNr(CType(e.AddedItems(0), Telefonnummer), False)
         End If
     End Sub
+
+    Private Sub BDirektwahl_Click(sender As Object, e As RoutedEventArgs) Handles BDirektwahl.Click
+        Using tmpTelNr As New Telefonnummer With {.SetNummer = CBoxDirektwahl.Text}
+            DialTelNr(tmpTelNr, False)
+        End Using
+    End Sub
 #End Region
 
     ''' <summary>
@@ -187,6 +225,9 @@ Public Class WählclientWPF
             BAbbruch.Visibility = Visibility.Visible
             ' Optionen deaktivieren
             GBoxOptionen.IsEnabled = False
+            ' Panel deaktivieren
+            SPDirektwahl.IsEnabled = False
+            SPKontaktwahl.IsEnabled = False
 
             Dim DialCode As String = PDfltStringEmpty
             Dim Erfolreich As Boolean = False
@@ -259,5 +300,6 @@ Public Class WählclientWPF
         TimerSchließen = KillTimer(TimerSchließen)
         Close()
     End Sub
+
 #End Region
 End Class

@@ -232,7 +232,6 @@
     <Compile Include="Formulare\Common\NotifyBase.vb" />
     <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\FormElemente\CrossThread.vb" />
-    <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.vb" />
     <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
       <SubType>Component</SubType>
@@ -240,6 +239,7 @@
     <Compile Include="Formulare\TreeView\OlOrdnerTreeView.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Formulare\WPF\AnrMonViewModel.vb" />
     <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
     </Compile>
@@ -283,21 +283,11 @@
     <Compile Include="Formulare\FormElemente\Datentabellen\TelGeräteListDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\Datenzeile\WählClientDataRow.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelGeräteListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\Datentabellen\WählClientDataTable.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Formulare\FormTelefonbücher.Designer.vb">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
     </Compile>
     <Compile Include="Formulare\FormTelefonbücher.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulare\FormWählclient.Designer.vb">
-      <DependentUpon>FormWählclient.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\FormWählclient.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formulare\ListControl\TelListControl.designer.vb">
@@ -400,10 +390,6 @@
     <EmbeddedResource Include="Formulare\FormTelefonbücher.resx">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\FormWählclient.resx">
-      <DependentUpon>FormWählclient.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelListControl.resx">
       <DependentUpon>TelListControl.vb</DependentUpon>
     </EmbeddedResource>
@@ -499,4 +485,8 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

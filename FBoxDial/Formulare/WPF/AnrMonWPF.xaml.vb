@@ -25,7 +25,7 @@ Public Class AnrMonWPF
     End Sub
 
 #Region "Eigenschaften"
-    Private Property ScaleFaktor As SizeF = GetScaling()
+    'Private Property ScaleFaktor As SizeF = GetScaling()
     Private ReadOnly Property AbstandAnrMon As Integer = 10
     Private Property IsClosing As Boolean = False
 #End Region
@@ -81,10 +81,8 @@ Public Class AnrMonWPF
     ''' <param name="Tlfnt"></param>
     Friend Sub ShowAnrMon(ByVal Tlfnt As Telefonat)
 
-        DataContext = Tlfnt
-
-        ' Lade das Kontaktbild
-        LadeKontaktbild(Tlfnt)
+        ' Fülle das Viewmodel
+        SetFormViewModel(Tlfnt)
 
         ' Timer starten
         If XMLData.POptionen.PCBAutoClose Then
@@ -111,86 +109,139 @@ Public Class AnrMonWPF
         Me.Show()
     End Sub
 
-    Private Sub LadeKontaktbild(ByVal Tlfnt As Telefonat)
-        Dim AnruferBildPfad As String = Tlfnt.AnrMonImagePfad
+    Private Sub SetFormViewModel(ByVal Tlfnt As Telefonat)
+        With CType(DataContext, AnrMonViewModel)
+            ' Anruferzeit festlegen: Beginn des Telefonates
+            .Zeit = Tlfnt.ZeitBeginn
 
-        If Not XMLData.POptionen.PCBAnrMonContactImage Or AnruferBildPfad.IsStringNothingOrEmpty Then
-            ' Bild ausblenden
-            AnrBild.Visibility = Visibility.Collapsed
-            ' Margin der Textfelder anpassen
-            ColBild.Width = New GridLength(4)
-        Else
-            ' Bild einblenden
-            AnrBild.Visibility = Visibility.Visible
-            ' Kontaktbild laden
-            Dim bI As New BitmapImage
-            With bI
-                .BeginInit()
-                .CacheOption = BitmapCacheOption.OnLoad
-                .UriSource = New Uri(AnruferBildPfad)
-                .EndInit()
-            End With
-            AnrBild.Source = bI
-            'Lösche das Kontaktbild 
-            DelKontaktBild(AnruferBildPfad)
-            ' Breite der Spalte für das Bild anpassen
-            ColBild.Width = New GridLength(80)
-        End If
+            'Anrufende Telefonnummer setzen
+            If Anrufer Is Nothing OrElse Tlfnt.NrUnterdrückt Then
+                ' Kontaktinformationen wurden nicht gefunden oder die Nummer wurde unterdrückt
+                .AnrMonTelNr = PDfltStringEmpty
+            Else
+                ' Kontaktinformationen wurden gefunden
+                .AnrMonTelNr = Tlfnt.GegenstelleTelNr?.Formatiert
+            End If
 
+            ' Anrufer Name setzen
+            If Tlfnt.NrUnterdrückt Then
+                ' Die Nummer wurde unterdrückt
+                .AnrMonAnrufer = PDfltStringUnbekannt
+            Else
+                If Anrufer IsNot Nothing Then
+                    ' Kontaktinformationen wurden gefunden
+                    .AnrMonAnrufer = Tlfnt.Anrufer
+                Else
+                    ' Kontaktinformationen wurden nicht gefunden
+                    .AnrMonAnrufer = Tlfnt.GegenstelleTelNr?.Formatiert
+                End If
+            End If
+
+            ' Firmeninformationen setzen
+            .AnrMonFirma = Tlfnt.Firma
+
+            ' Geräteinformationen setzen
+            If Tlfnt.RINGGeräte Is Nothing Then Tlfnt.RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr.Contains(Tlfnt.OutEigeneTelNr))
+
+            .AnrMonTelName = String.Join(", ", Tlfnt.RINGGeräte.Select(Function(Gerät) Gerät.Name).ToList())
+
+            ' Outlook Kontaktelement setzen
+            .OKontakt = Tlfnt.OlKontakt
+
+            ' Text für Zwischenablage setzen
+            If Tlfnt.NrUnterdrückt Then
+                ' Die Nummer wurde unterdrückt
+                .AnrMonClipboard = PDfltStringUnbekannt
+            Else
+                If Tlfnt.Anrufer IsNot Nothing Then
+                    ' Kontaktinformationen wurden gefunden
+                    .AnrMonClipboard = String.Format("{0} ({1})", Tlfnt.Anrufer, Tlfnt.GegenstelleTelNr?.Formatiert)
+                Else
+                    ' Kontaktinformationen wurden nicht gefunden
+                    .AnrMonClipboard = Tlfnt.GegenstelleTelNr?.Formatiert
+                End If
+            End If
+
+            ' Kontaktbild setzen
+            If Tlfnt.OlKontakt Is Nothing AndAlso (Tlfnt.OutlookKontaktID.IsNotStringEmpty And Tlfnt.OutlookStoreID.IsNotStringEmpty) Then Tlfnt.OlKontakt = GetOutlookKontakt(Tlfnt.OutlookKontaktID, Tlfnt.OutlookStoreID)
+
+            ' Speichere das Kontaktbild in einem temporären Ordner
+            Dim BildPfad As String = KontaktBild(Tlfnt.OlKontakt)
+
+            If Not XMLData.POptionen.PCBAnrMonContactImage Or BildPfad.IsStringNothingOrEmpty Then
+                ' Bild ausblenden
+                AnrBild.Visibility = Visibility.Collapsed
+                ' Margin der Textfelder anpassen
+                ColBild.Width = New GridLength(4)
+            Else
+                ' Bild einblenden
+                AnrBild.Visibility = Visibility.Visible
+                ' Kontaktbild laden
+                .Kontaktbild = New BitmapImage
+                With .Kontaktbild
+                    .BeginInit()
+                    .CacheOption = BitmapCacheOption.OnLoad
+                    .UriSource = New Uri(BildPfad)
+                    .EndInit()
+                End With
+                'Lösche das Kontaktbild 
+                DelKontaktBild(BildPfad)
+                ' Breite der Spalte für das Bild anpassen
+                ColBild.Width = New GridLength(80)
+            End If
+
+        End With
     End Sub
 
     Friend Sub Update(ByVal Tlfnt As Telefonat)
-        ' Ob das funktioniert. weiß ich nicht
         Dispatcher.Invoke(Sub()
-                              DataContext = Nothing
-                              DataContext = Tlfnt
-                              LadeKontaktbild(Tlfnt)
+                              SetFormViewModel(Tlfnt)
                           End Sub)
     End Sub
 
-#Region "Skalierung"
-    ' https://inchoatethoughts.com/scaling-your-user-interface-in-a-wpf-application
+    '#Region "Skalierung"
+    '    ' https://inchoatethoughts.com/scaling-your-user-interface-in-a-wpf-application
 
-    Public Shared ReadOnly ScaleValueProperty As DependencyProperty = DependencyProperty.Register("ScaleValue", GetType(Double), GetType(AnrMonWPF), New UIPropertyMetadata(1.0, New PropertyChangedCallback(AddressOf OnScaleValueChanged), New CoerceValueCallback(AddressOf OnCoerceScaleValue)))
+    '    Public Shared ReadOnly ScaleValueProperty As DependencyProperty = DependencyProperty.Register("ScaleValue", GetType(Double), GetType(AnrMonWPF), New UIPropertyMetadata(1.0, New PropertyChangedCallback(AddressOf OnScaleValueChanged), New CoerceValueCallback(AddressOf OnCoerceScaleValue)))
 
-    Private Shared Function OnCoerceScaleValue(ByVal o As DependencyObject, ByVal value As Object) As Object
-        Dim mainWindow As AnrMonWPF = TryCast(o, AnrMonWPF)
+    '    Private Shared Function OnCoerceScaleValue(ByVal o As DependencyObject, ByVal value As Object) As Object
+    '        Dim mainWindow As AnrMonWPF = TryCast(o, AnrMonWPF)
 
-        If mainWindow IsNot Nothing Then
-            Return mainWindow.OnCoerceScaleValue(CDbl(value))
-        Else
-            Return value
-        End If
-    End Function
+    '        If mainWindow IsNot Nothing Then
+    '            Return mainWindow.OnCoerceScaleValue(CDbl(value))
+    '        Else
+    '            Return value
+    '        End If
+    '    End Function
 
-    Private Shared Sub OnScaleValueChanged(ByVal o As DependencyObject, ByVal e As DependencyPropertyChangedEventArgs)
-        Dim mainWindow As AnrMonWPF = TryCast(o, AnrMonWPF)
-        If mainWindow IsNot Nothing Then mainWindow.OnScaleValueChanged(CDbl(e.OldValue), CDbl(e.NewValue))
-    End Sub
+    '    Private Shared Sub OnScaleValueChanged(ByVal o As DependencyObject, ByVal e As DependencyPropertyChangedEventArgs)
+    '        Dim mainWindow As AnrMonWPF = TryCast(o, AnrMonWPF)
+    '        If mainWindow IsNot Nothing Then mainWindow.OnScaleValueChanged(CDbl(e.OldValue), CDbl(e.NewValue))
+    '    End Sub
 
-    Protected Overridable Function OnCoerceScaleValue(ByVal value As Double) As Double
-        If Double.IsNaN(value) Then Return 1.0F
-        value = Math.Max(0.1, value)
-        Return value
-    End Function
+    '    Protected Overridable Function OnCoerceScaleValue(ByVal value As Double) As Double
+    '        If Double.IsNaN(value) Then Return 1.0F
+    '        value = Math.Max(0.1, value)
+    '        Return value
+    '    End Function
 
-    Protected Overridable Sub OnScaleValueChanged(ByVal oldValue As Double, ByVal newValue As Double)
-    End Sub
+    '    Protected Overridable Sub OnScaleValueChanged(ByVal oldValue As Double, ByVal newValue As Double)
+    '    End Sub
 
-    Public Property ScaleValue As Double
-        Get
-            Return CDbl(GetValue(ScaleValueProperty))
-        End Get
-        Set(ByVal value As Double)
-            SetValue(ScaleValueProperty, value)
-        End Set
-    End Property
+    '    Public Property ScaleValue As Double
+    '        Get
+    '            Return CDbl(GetValue(ScaleValueProperty))
+    '        End Get
+    '        Set(ByVal value As Double)
+    '            SetValue(ScaleValueProperty, value)
+    '        End Set
+    '    End Property
 
-    Private Sub MainGrid_SizeChanged(ByVal sender As Object, ByVal e As EventArgs)
-        ScaleValue = CDbl(OnCoerceScaleValue(AnrMon, Math.Min(ScaleFaktor.Width, ScaleFaktor.Height)))
-    End Sub
+    '    Private Sub MainGrid_SizeChanged(ByVal sender As Object, ByVal e As EventArgs)
+    '        ScaleValue = CDbl(OnCoerceScaleValue(AnrMon, Math.Min(ScaleFaktor.Width, ScaleFaktor.Height)))
+    '    End Sub
 
-#End Region
+    '#End Region
 
     Private Sub BClose_Click(sender As Object, e As RoutedEventArgs) Handles bClose.Click
         NLogger.Debug("Anrufmonitor manuell geschlossen")
@@ -226,10 +277,14 @@ Public Class AnrMonWPF
     End Sub
 
     Private Sub BCopy_Click(sender As Object, e As RoutedEventArgs)
-        Clipboard.SetText(CType(DataContext, Telefonat).AnrMonClipboard)
+        With CType(DataContext, AnrMonViewModel)
+            Clipboard.SetText(.AnrMonClipboard)
+        End With
     End Sub
 
     Private Sub Anrufer_PreviewMouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
-        Clipboard.SetText(CType(DataContext, Telefonat).AnrMonClipboard)
+        With CType(DataContext, AnrMonViewModel)
+            Clipboard.SetText(.AnrMonClipboard)
+        End With
     End Sub
 End Class

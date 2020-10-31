@@ -30,6 +30,7 @@ Public NotInheritable Class ThisAddIn
     End Function
 
     Private Sub ThisAddIn_Startup() Handles Me.Startup
+
         Dim UserData As NutzerDaten = New NutzerDaten
         ' Logging konfigurieren
         LogManager.Configuration = DefaultNLogConfig()

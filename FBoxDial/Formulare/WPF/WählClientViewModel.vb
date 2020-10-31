@@ -35,6 +35,26 @@ Public Class WählClientViewModel
         End Set
     End Property
 
+    Private _Direktwahl As Visibility
+    Public Property Direktwahl As Visibility
+        Get
+            Return _Direktwahl
+        End Get
+        Set(value As Visibility)
+            SetProperty(_Direktwahl, value)
+        End Set
+    End Property
+
+    Private _Kontaktwahl As Visibility
+    Public Property Kontaktwahl As Visibility
+        Get
+            Return _Kontaktwahl
+        End Get
+        Set(value As Visibility)
+            SetProperty(_Kontaktwahl, value)
+        End Set
+    End Property
+
     Private _OKontakt As Outlook.ContactItem
     Public Property OKontakt As Outlook.ContactItem
         Get
@@ -65,6 +85,16 @@ Public Class WählClientViewModel
         End Get
         Set(value As ObservableCollectionEx(Of Telefonnummer))
             SetProperty(_DialNumberList, value)
+        End Set
+    End Property
+
+    Private _DialDirektWahlList As New ObservableCollectionEx(Of Telefonnummer)
+    Public Property DialDirektWahlList As ObservableCollectionEx(Of Telefonnummer)
+        Get
+            Return _DialDirektWahlList
+        End Get
+        Set(value As ObservableCollectionEx(Of Telefonnummer))
+            SetProperty(_DialDirektWahlList, value)
         End Set
     End Property
 

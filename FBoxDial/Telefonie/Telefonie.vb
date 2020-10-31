@@ -30,4 +30,15 @@
         Return Telefonnummern.Find(Function(Tel) Tel.Equals(TelNrStr))
     End Function
 
+    ''' <summary>
+    ''' Gibt die zuletzt gewählten Telefonnummern der Wahlwiederholungsliste zurück
+    ''' </summary>
+    ''' <param name="Telefonate">Wahlwiederhohlungsliste</param>
+    ''' <returns>Liste der Telefonnummern</returns>
+    Friend Function GetTelNrList(ByVal Telefonate As List(Of Telefonat)) As List(Of Telefonnummer)
+        GetTelNrList = New List(Of Telefonnummer)
+        For Each Tel As Telefonat In Telefonate
+            GetTelNrList.Add(Tel.GegenstelleTelNr)
+        Next
+    End Function
 End Class
