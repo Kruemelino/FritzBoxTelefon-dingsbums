@@ -42,7 +42,7 @@ Friend Class Anrufmonitor
         ' Starte den Anrufmonitor
         Dim IP As IPAddress = IPAddress.Loopback
 
-        If IPAddress.TryParse(XMLData.POptionen.PValidFBAdr, IP) Then
+        If IPAddress.TryParse(XMLData.POptionen.ValidFBAdr, IP) Then
             Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
 
             Try
@@ -84,7 +84,7 @@ Friend Class Anrufmonitor
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         'Aktiv = False
         ThisAddIn.POutlookRibbons.RefreshRibbon()
-        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.PValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
+        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.ValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
     End Sub
 
 #Region "Anrufmonitor Standby PowerMode"

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="OptionsHinweis"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="OptionsHinweis">
+
+    <Grid DataContext="{Binding ElementName=OptionsHinweis}" Margin="0,0,0,4">
+        <Border BorderThickness="0.5">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
+            </Border.BorderBrush>
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="60">
+                <ScrollViewer.Resources>
+                    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockStyle">
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InfoColorKey}}"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="FontSize" Value="10"/>
+                        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+                    </Style>
+                </ScrollViewer.Resources>
+
+                <TextBlock Text="{Binding Path=Label}" Style="{StaticResource TextBlockStyle}"/>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+
+</UserControl>

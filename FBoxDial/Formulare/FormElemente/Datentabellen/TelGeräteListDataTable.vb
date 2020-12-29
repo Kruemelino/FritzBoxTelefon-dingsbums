@@ -1,6 +1,6 @@
 ﻿Imports System.Data
 
-Public Class TelGeräteListDataTable
+<Obsolete> Public Class TelGeräteListDataTable
     Inherits DataTable
 
     Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow

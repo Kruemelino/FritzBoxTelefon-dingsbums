@@ -8,7 +8,7 @@ Module Journal
         ' XMLData.POptionen.PLetzterJournalEintragID
         Anrufliste = Await LadeFritzBoxAnrufliste()
         If Anrufliste IsNot Nothing Then
-            Await ImportCalls(XMLData.POptionen.PLetzterJournalEintrag, Now)
+            Await ImportCalls(XMLData.POptionen.LetzterJournalEintrag, Now)
         End If
     End Sub
 

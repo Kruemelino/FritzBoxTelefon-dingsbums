@@ -63,8 +63,8 @@ Friend Module KontaktFunktionen
                         .HomeTelephoneNumber = TelNr.Formatiert
                     End If
 
-                    .Categories = PDfltAddin_LangName '"Fritz!Box Telefon-dingsbums" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & PDfltAddin_LangName & " am " & Now & PDflt2NeueZeile & "vCard:" & PDflt2NeueZeile & vCard
+                    .Categories = Localize.resCommon.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
+                    .Body = .Body & vbCrLf & "Erstellt durch das " & Localize.resCommon.strDefLongName & " am " & Now & PDflt2NeueZeile & "vCard:" & PDflt2NeueZeile & vCard
                 End If
 
             End With
@@ -96,8 +96,8 @@ Friend Module KontaktFunktionen
                 If XMLKontakt IsNot Nothing Then
                     XMLKontaktOutlook(XMLKontakt, olKontakt)
 
-                    .Categories = PDfltAddin_LangName '"Fritz!Box Telefon-dingsbums" 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & PDfltAddin_LangName & " am " & Now
+                    .Categories = Localize.resCommon.strDefLongName ' 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
+                    .Body = .Body & vbCrLf & "Erstellt durch das " & Localize.resCommon.strDefLongName & " am " & Now
                 End If
 
             End With
@@ -349,7 +349,7 @@ Friend Module KontaktFunktionen
             retval = olFolder.Items.Count
 
             ' Unterordner werden rekursiv mitgezählt
-            If XMLData.POptionen.PCBSucheUnterordner Then
+            If XMLData.POptionen.CBSucheUnterordner Then
                 For Each Unterordner As Outlook.MAPIFolder In olFolder.Folders
                     retval += ZähleOutlookKontakte(Unterordner)
                     Unterordner.ReleaseComObject

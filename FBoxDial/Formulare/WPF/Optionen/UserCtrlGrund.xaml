@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="UserCtrlGrund"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:fbd="clr-namespace:FBoxDial"
+            mc:Ignorable="d" 
+            d:DesignHeight="350" d:DesignWidth="400"
+            d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
+
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <fbd:OptionsÜberschrift Label="Grundaten Fritz!Box"/>
+        <fbd:OptionsTextBox Label="Fritz!Box Adresse" Value="{Binding Path=TBFBAdr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <fbd:OptionsTextBox Label="Fritz!Box Benutzername" Value="{Binding Path=TBBenutzer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <fbd:OptionsPasswordBox Label="Fritz!Box Passwort" Value="{Binding Path=TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <fbd:OptionsÜberschrift Label="Grundaten Telefonie"/>
+        <fbd:OptionsTextBox Label="Ortskennzahl" Value="{Binding Path=TBOrtsKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <fbd:OptionsTextBox Label="Landeskennzahl" Value="{Binding Path=TBLandesKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <fbd:OptionsÜberschrift Label="Formatierung von Telefonnummern"/>
+        <fbd:OptionsCheckBox Label="Gruppieren" Value="{Binding Path=CBTelNrGruppieren, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <fbd:OptionsCheckBox Label="Internationale Vorwahl ergänzen" Value="{Binding Path=CBintl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <fbd:OptionsTextBox Label="Maske" Value="{Binding TBTelNrMaske, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <fbd:OptionsÜberschrift Label="Anruflisten"/>
+        <fbd:OptionsTextBox Label="Anzahl der Listenelemente je Liste" Value="{Binding TBNumEntryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <fbd:OptionsÜberschrift Label="Protokollierung"/>
+        <fbd:OptionsComboBox Label="Level" Value="{Binding CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Items="{Binding CBoxLogLevel}"/>
+
+    </StackPanel>
+
+
+</UserControl>

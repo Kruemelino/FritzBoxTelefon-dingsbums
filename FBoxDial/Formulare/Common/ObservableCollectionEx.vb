@@ -12,11 +12,11 @@ Public Class ObservableCollectionEx(Of T)
         MyBase.New()
     End Sub
 
-    Public Sub New(ByVal l As List(Of T))
+    Public Sub New(l As List(Of T))
         MyBase.New(l)
     End Sub
 
-    Public Sub New(ByVal l As IEnumerable(Of T))
+    Public Sub New(l As IEnumerable(Of T))
         MyBase.New(l)
     End Sub
 
@@ -66,15 +66,15 @@ Public Class ObservableCollectionEx(Of T)
     End Sub
 #End Region
 
-    Public Sub AddRange(ByVal List As IEnumerable(Of T))
-        For Each Item As T In List
+    Public Sub AddRange(ByVal ListAdd As IEnumerable(Of T))
+        For Each Item As T In ListAdd
             Add(Item)
         Next
     End Sub
 
-    Public Sub RemoveRange(ByVal List As IEnumerable(Of T))
-        For Each Item As T In List
-            Remove(Item)
+    Public Sub RemoveRange(ByVal ListRemove As IEnumerable(Of T))
+        For Each Item As T In ListRemove
+            If Contains(Item) Then Remove(Item)
         Next
     End Sub
 

@@ -140,7 +140,7 @@
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Caller}
                     .NrUnterdrückt = .GegenstelleTelNr.Unbekannt
                     ' Ring-List
-                    If XMLData.POptionen.PCBAnrListeUpdateCallLists Then
+                    If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' RING-Liste initialisieren, falls erforderlich
                         If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
                         ' Eintrag anfügen
@@ -158,7 +158,7 @@
                     ' Number or name of called party  
                     .GegenstelleTelNr = New Telefonnummer With {.SetNummer = Called}
                     ' Call-List
-                    If XMLData.POptionen.PCBAnrListeUpdateCallLists Then
+                    If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' CALL-Liste initialisieren, falls erforderlich
                         If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
 

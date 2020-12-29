@@ -21,7 +21,7 @@ Public Class WählclientWPF
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
         ' Initiere Phoner, wenn erforderlich
-        If XMLData.POptionen.PCBPhoner Then
+        If XMLData.POptionen.CBPhoner Then
             PhonerApp = New Phoner
             If Not PhonerApp.PhonerReady Then
                 NLogger.Debug(PWählClientPhonerInaktiv)
@@ -146,7 +146,7 @@ Public Class WählclientWPF
             ' Annrufbild ausblenden
             BoAnrBild.Visibility = Visibility.Hidden
             ' Rufnummernunterdrückung gemäß Optionen setzen
-            .CLIR = XMLData.POptionen.PCBCLIR
+            .CLIR = XMLData.POptionen.CBCLIR
 
             NLogger.Debug(PWählClientStatusLadeGeräte)
             ' Schreibe alle geeigneten Telefone rein (kein Fax, keine IP-Telefonie, keine AB)
@@ -238,7 +238,7 @@ Public Class WählclientWPF
                 DialCode = PDfltStringEmpty
 
                 ' Timmer abbrechen, falls er läuft
-                If Not TimerSchließen Is Nothing Then TimerSchließen.Stop()
+                If TimerSchließen IsNot Nothing Then TimerSchließen.Stop()
                 ' Ein erneutes Wählen ermöglichen
                 DGNummern.UnselectAll()
             Else
@@ -248,10 +248,10 @@ Public Class WählclientWPF
                 ' Entferne 1x # am Ende
                 DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
                 ' Füge VAZ und LKZ hinzu, wenn gewünscht
-                If XMLData.POptionen.PCBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
+                If XMLData.POptionen.CBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
 
                 ' Rufnummerunterdrückung
-                DialCode = $"{If(.CLIR, "*31#", PDfltStringEmpty)}{XMLData.POptionen.PTBAmt}{DialCode}#"
+                DialCode = $"{If(.CLIR, "*31#", PDfltStringEmpty)}{XMLData.POptionen.TBAmt}{DialCode}#"
 
                 NLogger.Debug(PWählClientStatusWählClient(DialCode))
             End If
@@ -277,7 +277,7 @@ Public Class WählclientWPF
                 End If
 
                 ' Einstellungen (Welcher Anschluss, CLIR...) speichern
-                XMLData.POptionen.PCBCLIR = .CLIR
+                XMLData.POptionen.CBCLIR = .CLIR
                 ' Standard-Gerät speichern
 
                 If Not .TelGerät.ZuletztGenutzt Then
@@ -288,7 +288,7 @@ Public Class WählclientWPF
                     .TelGerät.ZuletztGenutzt = True
                 End If
                 ' Timer zum automatischen Schließen des Fensters starten
-                If XMLData.POptionen.PCBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.PTBWClientEnblDauer * 1000)
+                If XMLData.POptionen.CBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.TBWClientEnblDauer * 1000)
             Else
                 .Status = PWählClientDialFehler
             End If

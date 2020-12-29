@@ -129,34 +129,19 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property PDfltNameListVIP() As String = "VIPList"
 
     ''' <summary>
-    ''' Fritz!Box Telefon-dingsbums
+    ''' FritzOutlookV5.xml
     ''' </summary>
-    ''' <value>Fritz!Box Telefon-dingsbums</value>
-    ''' <returns>Fritz!Box Telefon-dingsbums</returns>
-    Public Shared ReadOnly Property PDfltAddin_LangName() As String = "Fritz!Box Telefon-dingsbums"
+    ''' <returns>FritzOutlookV5.xml</returns>
+    ''' <remarks>Wird mit der Ressource "strDefShortName" erstellt.</remarks>
+    Public Shared ReadOnly Property PDfltConfig_FileName() As String = $"{Localize.resCommon.strDefShortName}.xml"
 
     ''' <summary>
-    ''' FritzOutlook
+    ''' FritzOutlookV5.log
     ''' </summary>
-    ''' <value>FritzOutlook</value>
-    ''' <returns>FritzOutlookV5</returns>
-    Public Shared ReadOnly Property PDfltAddin_KurzName() As String = "FritzOutlookV5"
-
-    ''' <summary>
-    ''' FritzOutlook.xml
-    ''' </summary>
-    ''' <value>FritzOutlook.xml</value>
-    ''' <returns>FritzOutlook.xml</returns>
-    ''' <remarks>Wird mit "PDfltAddin_KurzName" erstellt.</remarks>
-    Public Shared ReadOnly Property PDfltConfig_FileName() As String = $"{PDfltAddin_KurzName}.xml"
-
-    ''' <summary>
-    ''' FritzOutlook.log
-    ''' </summary>
-    ''' <value>FritzOutlook.log</value>
-    ''' <returns>FritzOutlook.log</returns>
-    ''' <remarks>Wird mit "PDfltAddin_KurzName" erstellt.</remarks>
-    Public Shared ReadOnly Property PDfltLog_FileName() As String = $"{PDfltAddin_KurzName}.log"
+    ''' <value>FritzOutlookV5.log</value>
+    ''' <returns>FritzOutlookV5.log</returns>
+    ''' <remarks>Wird mit Ressource "PDfltAddin_KurzName" erstellt.</remarks>
+    Public Shared ReadOnly Property PDfltLog_FileName() As String = $"{Localize.resCommon.strDefShortName}.log"
 
     ''' <summary>
     ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}
@@ -173,7 +158,7 @@ Public NotInheritable Class DfltWerteAllgemein
 
     Public Shared ReadOnly Property PDfltDirectorySeparatorChar() As String = IO.Path.DirectorySeparatorChar
 
-    Public Shared ReadOnly Property PDfltAddInPath() As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & PDfltDirectorySeparatorChar & PDfltAddin_LangName & PDfltDirectorySeparatorChar
+    Public Shared ReadOnly Property PDfltAddInPath() As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & PDfltDirectorySeparatorChar & Localize.resCommon.strDefLongName & PDfltDirectorySeparatorChar
 
     Friend Shared ReadOnly Property DfltErrorvalue As Integer = -2147221233
 

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="UserCtrlWählhilfe"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:fbd="clr-namespace:FBoxDial"
+            mc:Ignorable="d" 
+            d:DesignHeight="350" d:DesignWidth="400"
+            d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
+
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <fbd:OptionsÜberschrift Label="Einstellungen für den Wählhilfe"/>
+        <fbd:OptionsCheckBox Label="Landeskennzahl immer mitwählen" Value="{Binding CBForceDialLKZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsTextBox Label="Amtsholung" Value="{Binding TBAmt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsCheckBox Label="Nachfrage beim Wählen von Mobilnummern" Value="{Binding CBCheckMobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsCheckBox Label="Wähldialog automatisch ausblenden" Value="{Binding CBCloseWClient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsTextBox Label="Anzeigedauer nach dem Wählen" Value="{Binding TBWClientEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+    </StackPanel>
+
+
+</UserControl>

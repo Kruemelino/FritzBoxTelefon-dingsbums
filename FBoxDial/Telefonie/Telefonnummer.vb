@@ -103,7 +103,7 @@ Public Class Telefonnummer
             NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-            NurZiffern = NurZiffern.RegExReplace($"^0{XMLData.POptionen.PTBLandesKZ}{{1}}[0]?", "0")
+            NurZiffern = NurZiffern.RegExReplace($"^0{XMLData.POptionen.TBLandesKZ}{{1}}[0]?", "0")
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
             NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")
@@ -137,13 +137,13 @@ Public Class Telefonnummer
                 Else
                     ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
                     NLogger.Warn("Landeskennzahl der Telefonnummer {0} kann nicht ermittelt werden.", Unformatiert)
-                    Landeskennzahl = XMLData.POptionen.PTBLandesKZ
+                    Landeskennzahl = XMLData.POptionen.TBLandesKZ
                     ' Wähle die LKZ für das Default-Land aus, damit die Routine die Ortskennzahl ermitteln kann
                     tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
                 End If
 
             Else
-                Landeskennzahl = XMLData.POptionen.PTBLandesKZ
+                Landeskennzahl = XMLData.POptionen.TBLandesKZ
                 ' Wähle die LKZ für das Default-Land aus
                 tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
             End If
@@ -180,7 +180,7 @@ Public Class Telefonnummer
                 End If
             Else
                 ' es handelt sich vermutlich um eine Nummer im eigenen Ortsnetz
-                Ortskennzahl = XMLData.POptionen.PTBOrtsKZ
+                Ortskennzahl = XMLData.POptionen.TBOrtsKZ
             End If
 
             Einwahl = Einwahl.RegExRemove($"0?{Ortskennzahl}")
@@ -226,12 +226,12 @@ Public Class Telefonnummer
 
         Dim tmpOrtsvorwahl As String
         Dim tmpLandesvorwahl As String
-        Dim tmpGruppieren As Boolean = XMLData.POptionen.PCBTelNrGruppieren
+        Dim tmpGruppieren As Boolean = XMLData.POptionen.CBTelNrGruppieren
 
         If Unbekannt Then
             Return PDfltStringEmpty
         Else
-            FormatTelNr = XMLData.POptionen.PTBTelNrMaske
+            FormatTelNr = XMLData.POptionen.TBTelNrMaske
 
             ' Wenn die Maske keine Durchwahl vorgesehen hat, dann darf die  Druchwahl nicht vergessen werden. Sie muss an die Einwahl angehangen werden.
             If Not FormatTelNr.Contains("%D") Then FormatTelNr = Replace(FormatTelNr, "%N", "%N%D")
@@ -243,16 +243,16 @@ Public Class Telefonnummer
             '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
             '                        die Ortsvorwahl nicht vorhanden ist
 
-            If (Landeskennzahl.AreEqual(XMLData.POptionen.PTBLandesKZ) Or Landeskennzahl.AreEqual(PDfltStringEmpty)) And XMLData.POptionen.PCBintl And Ortskennzahl.IsStringEmpty Then
-                Ortskennzahl = XMLData.POptionen.PTBOrtsKZ
+            If (Landeskennzahl.AreEqual(XMLData.POptionen.TBLandesKZ) Or Landeskennzahl.AreEqual(PDfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringEmpty Then
+                Ortskennzahl = XMLData.POptionen.TBOrtsKZ
             End If
 
-            If Landeskennzahl.AreEqual(XMLData.POptionen.PTBLandesKZ) Then
+            If Landeskennzahl.AreEqual(XMLData.POptionen.TBLandesKZ) Then
                 tmpOrtsvorwahl = Ortskennzahl
                 ' Wenn die Landeskennzahl gleich der hinterlegten Kennzahl entspricht: Inland
-                If XMLData.POptionen.PCBintl Then
+                If XMLData.POptionen.CBintl Then
                     ' Eine Ortsvorwahl muss vorhanden sein
-                    If Ortskennzahl.IsStringEmpty Then tmpOrtsvorwahl = XMLData.POptionen.PTBOrtsKZ
+                    If Ortskennzahl.IsStringEmpty Then tmpOrtsvorwahl = XMLData.POptionen.TBOrtsKZ
                     ' Entferne die führende Null
                     tmpOrtsvorwahl = tmpOrtsvorwahl.RegExRemove("^(0)+")
                     ' Die Landesvorwahl muss gesetzt sein

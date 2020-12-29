@@ -2,7 +2,7 @@
 #Region "Default Value Properties"
     Public Shared ReadOnly Property PDfltOptions As String = "Optionen"
     Public Shared ReadOnly Property PDfltDeCryptKey As String = "ZugangV5"
-    Public Shared ReadOnly Property PDfltDeCryptKeyPhoner As String = "ZugangPhoner"
+    'Public Shared ReadOnly Property PDfltDeCryptKeyPhoner As String = "ZugangPhoner"
     Public Shared ReadOnly Property PDfltCBoxLandesVorwahl() As Integer = PDfltIntErrorMinusOne
     Public Shared ReadOnly Property PDfltTBAmt() As String = PDfltStringEmpty
     Public Shared ReadOnly Property PDfltTBOrtsKZ() As String = PDfltStringEmpty

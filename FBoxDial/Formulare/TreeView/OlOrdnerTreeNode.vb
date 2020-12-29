@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
 
-Friend Class OlOrdnerTreeNode
+<Obsolete> Friend Class OlOrdnerTreeNode
     Inherits TreeNode
 
     Friend Property OutlookStore As Outlook.Store
@@ -44,7 +44,7 @@ Friend Class OlOrdnerTreeNode
                 ForeColor = Drawing.Color.Empty
             End If
             ' Wenn Unterordner durchsucht werden sollen, müssen alle nachfolgenden Ordner markiert werden.
-            If XMLData.POptionen.PCBSucheUnterordner Then
+            If XMLData.POptionen.CBSucheUnterordner Then
                 ' Unterknoten rekursiv überarbeiten
                 For Each tmpnode As OlOrdnerTreeNode In Nodes
                     tmpnode.SetImageKey()

@@ -13,10 +13,10 @@ Friend NotInheritable Class FritzBoxDefault
 #Region "Properties Fritz!Box Links"
     Friend Shared ReadOnly Property PFBLinkBasis() As String
         Get
-            If XMLData.POptionen.PValidFBAdr.IsNotStringEmpty Then
-                XMLData.POptionen.PValidFBAdr = ValidIP(XMLData.POptionen.PTBFBAdr)
+            If XMLData.POptionen.ValidFBAdr.IsNotStringEmpty Then
+                XMLData.POptionen.ValidFBAdr = ValidIP(XMLData.POptionen.TBFBAdr)
             End If
-            Return "http://" & XMLData.POptionen.PValidFBAdr
+            Return "http://" & XMLData.POptionen.ValidFBAdr
         End Get
     End Property
     'Private ReadOnly Property PFBLinkLoginLua_Basis() As String = PFBLinkBasis & "/login_sid.lua?"

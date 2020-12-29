@@ -9,7 +9,7 @@
         Dim Ziel As New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = False,
-                                                      .FileName = IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName),
+                                                      .FileName = IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltLog_FileName),
                                                       .Layout = DfltLogLayout}
 
         ' Level  Typical Use
@@ -20,7 +20,7 @@
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        Dim minLogLevel As LogLevel = LogLevel.FromString(XMLData.POptionen.PCBoxMinLogLevel)
+        Dim minLogLevel As LogLevel = LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel)
         Dim maxLogLevel As LogLevel = LogLevel.Fatal
 
         config.AddRule(minLogLevel, maxLogLevel, Ziel)

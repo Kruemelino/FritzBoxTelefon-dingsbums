@@ -61,7 +61,7 @@ Friend Class FritzBoxSOAPService
         Const ArgumentDirectionTag As String = "direction"
         Const ArgumentRelatedStateVariableTag As String = "relatedStateVariable"
 
-        Dim XMLDefinitionFile As XmlDocument = GetSOAPXMLFile("http://" & XMLData.POptionen.PTBFBAdr & ":" & FritzBoxDefault.PDfltSOAPPort & XMLServiceDefinition.SCPDURL)
+        Dim XMLDefinitionFile As XmlDocument = GetSOAPXMLFile("http://" & XMLData.POptionen.TBFBAdr & ":" & FritzBoxDefault.PDfltSOAPPort & XMLServiceDefinition.SCPDURL)
 
         Dim ActionList As New List(Of Action_ALT)
         Dim tmpAction As Action_ALT

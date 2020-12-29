@@ -54,35 +54,35 @@ Public NotInheritable Class ThisAddIn
         PCVorwahlen = New CVorwahlen
 
         ' Anrufmonitor starten
-        If XMLData.POptionen.PCBAnrMonAuto Then
+        If XMLData.POptionen.CBAnrMonAuto Then
             PAnrufmonitor = New Anrufmonitor
             PAnrufmonitor.StartAnrMon()
         End If
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
-        If XMLData.POptionen.PCBKontaktSucheFritzBox Then PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
+        If XMLData.POptionen.CBKontaktSucheFritzBox Then PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
 
         ' Inspektoren erfassen
         OutlookInspectors = Application.Inspectors
 
         ' Anrufliste auswerten
-        If XMLData.POptionen.PCBAutoAnrList Then AutoAnrListe()
+        If XMLData.POptionen.CBAutoAnrList Then AutoAnrListe()
 
-        NLogger.Info("{0} {1} gestartet.", PDfltAddin_LangName, Version)
+        NLogger.Info("{0} {1} gestartet.", Localize.resCommon.strDefLongName, Version)
 
     End Sub
 
     Private Sub Application_Quit() Handles Application.Quit, Me.Shutdown
         ' Listen leeren
-        If Not PCVorwahlen Is Nothing Then
+        If PCVorwahlen IsNot Nothing Then
             PCVorwahlen.Kennzahlen.Landeskennzahlen.Clear()
         End If
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()
         ' Eintrag ins Log
-        NLogger.Info("{0} {1} beendet.", PDfltAddin_LangName, Version)
+        NLogger.Info("{0} {1} beendet.", Localize.resCommon.strDefLongName, Version)
         ' XML-Datei Speichern
-        XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
+        XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
     End Sub
 
 #Region "Standby Wakeup"
@@ -98,7 +98,7 @@ Public NotInheritable Class ThisAddIn
                 ' Wiederherstelung nach dem Standby
 
                 ' Starte den Anrufmonitor wenn er zuvor aktiv war, und er automatisch gestartet werden soll.
-                If AnrMonWarAktiv And XMLData.POptionen.PCBAnrMonAuto Then
+                If AnrMonWarAktiv And XMLData.POptionen.CBAnrMonAuto Then
                     ' Eintrag ins Log
                     NLogger.Info("Anrufmonitor nach Standby gestartet.")
                     ' Anrufmonitor erneut starten
@@ -117,7 +117,7 @@ Public NotInheritable Class ThisAddIn
                 End If
 
                 ' XML-Datei speichern
-                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
+                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
 
         End Select
     End Sub

@@ -214,7 +214,7 @@ Imports Microsoft.Office.Interop
         End If
 
         ' Kontaktsuche in den Fritz!Box Telefonbüchern
-        If XMLData.POptionen.PCBKontaktSucheFritzBox Then
+        If XMLData.POptionen.CBKontaktSucheFritzBox Then
             If OlKontakt Is Nothing Then
                 If ThisAddIn.PPhoneBookXML IsNot Nothing Then
                     FBTelBookKontakt = ThisAddIn.PPhoneBookXML.GetKontaktByTelNr(GegenstelleTelNr)
@@ -222,7 +222,7 @@ Imports Microsoft.Office.Interop
             End If
 
             If FBTelBookKontakt IsNot Nothing Then
-                If XMLData.POptionen.PCBKErstellen Then
+                If XMLData.POptionen.CBKErstellen Then
                     OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
 
                     With OlKontakt
@@ -242,11 +242,11 @@ Imports Microsoft.Office.Interop
             ' Ggf. muss der Wert angepasst werden.
             If GegenstelleTelNr.Unformatiert.Length.IsLargerOrEqual(4) Then
 
-                If XMLData.POptionen.PCBRWS Then
-                    VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.PCBRWSIndex)
+                If XMLData.POptionen.CBRWS Then
+                    VCard = Await StartRWS(GegenstelleTelNr, XMLData.POptionen.CBRWSIndex)
 
                     If VCard.IsNotStringEmpty Then
-                        If XMLData.POptionen.PCBKErstellen Then
+                        If XMLData.POptionen.CBKErstellen Then
                             OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
                             With OlKontakt
                                 Anrufer = .FullName
@@ -312,7 +312,7 @@ Imports Microsoft.Office.Interop
 
         If OutlookApp IsNot Nothing Then
             ' Journalimport nur dann, wenn Nummer überwacht wird
-            If XMLData.POptionen.PCBJournal And EigeneTelNr.Überwacht Then
+            If XMLData.POptionen.CBJournal And EigeneTelNr.Überwacht Then
                 Try
                     olJournal = CType(OutlookApp.CreateItem(Outlook.OlItemType.olJournalItem), Outlook.JournalItem)
                 Catch ex As Exception
@@ -378,9 +378,9 @@ Imports Microsoft.Office.Interop
 
                     olJournal.ReleaseComObject
                     ' Merke die Zeit
-                    If XMLData.POptionen.PLetzterJournalEintrag < Now Then XMLData.POptionen.PLetzterJournalEintrag = Now
+                    If XMLData.POptionen.LetzterJournalEintrag < Now Then XMLData.POptionen.LetzterJournalEintrag = Now
                     ' Merke die ID
-                    XMLData.POptionen.PLetzterJournalEintragID = Math.Max(XMLData.POptionen.PLetzterJournalEintragID, ID)
+                    XMLData.POptionen.LetzterJournalEintragID = Math.Max(XMLData.POptionen.LetzterJournalEintragID, ID)
                 End If
             End If
         Else
@@ -437,7 +437,7 @@ Imports Microsoft.Office.Interop
     Private Sub AnrMonDISCONNECT()
         Beendet = True
 
-        If XMLData.POptionen.PCBJournal Then ErstelleJournalEintrag()
+        If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
     End Sub
 
     ''' <summary>

@@ -12,7 +12,7 @@ Friend Module Serializer
         Dim DateiInfo As FileInfo
         Dim Pfad As String
 
-        Pfad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, PDfltAddin_KurzName & ".xml")
+        Pfad = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, PDfltConfig_FileName)
 
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
@@ -27,8 +27,8 @@ Friend Module Serializer
         If XMLData IsNot Nothing Then
             With XMLData
                 With .POptionen
-                    .PArbeitsverzeichnis = DateiInfo.Directory.ToString
-                    .PValidFBAdr = ValidIP(.PTBFBAdr)
+                    .Arbeitsverzeichnis = DateiInfo.Directory.ToString
+                    .ValidFBAdr = ValidIP(.TBFBAdr)
                 End With
             End With
         End If
@@ -114,12 +114,12 @@ Friend Module Serializer
         ' Setze einige Felder
         With XMLData
             With .POptionen
-                .PArbeitsverzeichnis = Path.GetDirectoryName(sPfad)
-                .PValidFBAdr = ValidIP(.PTBFBAdr)
+                .Arbeitsverzeichnis = Path.GetDirectoryName(sPfad)
+                .ValidFBAdr = ValidIP(.TBFBAdr)
             End With
         End With
 
-        XMLData.Speichern(Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
+        XMLData.Speichern(Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
         Return XMLData
     End Function
 End Module

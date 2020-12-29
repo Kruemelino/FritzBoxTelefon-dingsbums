@@ -14,7 +14,7 @@ Friend Class FritzBoxQuery
         'Return Await HTTPGet(PFBLinkQuery(SessionID, String.Join("&", Abfrage.ToArray)), XMLData.POptionen.PEncodingFritzBox)
     End Function
     Friend Overloads Async Function FritzBoxQuery(ByVal SessionID As String, ByVal Abfrage As String) As Task(Of String)
-        Return Await HTTPGet(PFBLinkQuery(SessionID, Abfrage), XMLData.POptionen.PEncodingFritzBox)
+        Return Await HTTPGet(PFBLinkQuery(SessionID, Abfrage), XMLData.POptionen.EncodingFritzBox)
     End Function
 
 #Region "IDisposable Support"

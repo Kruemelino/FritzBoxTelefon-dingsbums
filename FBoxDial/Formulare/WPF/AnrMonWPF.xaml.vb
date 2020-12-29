@@ -43,8 +43,8 @@ Public Class AnrMonWPF
     Private Property TotalTimePaused As TimeSpan
 
     Private Sub AnrMonTimer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles AnrMonTimer.Elapsed
-        If Now.Subtract(StartTime).Subtract(TotalTimePaused).TotalMilliseconds.IsLargerOrEqual(XMLData.POptionen.PTBEnblDauer * 1000) Then
-            NLogger.Debug("Anrufmonitor automatisch nach {0} + {1} Sekunden geschlossen", XMLData.POptionen.PTBEnblDauer, TotalTimePaused.TotalSeconds)
+        If Now.Subtract(StartTime).Subtract(TotalTimePaused).TotalMilliseconds.IsLargerOrEqual(XMLData.POptionen.TBEnblDauer * 1000) Then
+            NLogger.Debug("Anrufmonitor automatisch nach {0} + {1} Sekunden geschlossen", XMLData.POptionen.TBEnblDauer, TotalTimePaused.TotalSeconds)
             ' Timer anhalten
             AnrMonTimer.Stop()
             AnrMonTimer.Dispose()
@@ -85,7 +85,7 @@ Public Class AnrMonWPF
         SetFormViewModel(Tlfnt)
 
         ' Timer starten
-        If XMLData.POptionen.PCBAutoClose Then
+        If XMLData.POptionen.CBAutoClose Then
             If AnrMonTimer Is Nothing Then AnrMonTimer = New Timers.Timer
             With AnrMonTimer
                 StartTime = Date.Now()
@@ -168,7 +168,7 @@ Public Class AnrMonWPF
             ' Speichere das Kontaktbild in einem temporären Ordner
             Dim BildPfad As String = KontaktBild(Tlfnt.OlKontakt)
 
-            If Not XMLData.POptionen.PCBAnrMonContactImage Or BildPfad.IsStringNothingOrEmpty Then
+            If Not XMLData.POptionen.CBAnrMonContactImage Or BildPfad.IsStringNothingOrEmpty Then
                 ' Bild ausblenden
                 AnrBild.Visibility = Visibility.Collapsed
                 ' Margin der Textfelder anpassen

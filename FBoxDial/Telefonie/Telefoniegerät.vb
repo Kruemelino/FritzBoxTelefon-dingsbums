@@ -23,11 +23,19 @@ Public Class Telefoniegerät
     <XmlAttribute> Public Property IsPhoner As Boolean
     <XmlAttribute> Public Property ZuletztGenutzt As Boolean
     <XmlAttribute> Public Property TelTyp As TelTypen
-    '<XmlAttribute> Friend Property ZeitEingehend As Integer
-    '<XmlAttribute> Friend Property ZeitAusgehend As Integer
-    '<XmlIgnore> Friend Property EinTelNr As List(Of Telefonnummer)
-    '<XmlIgnore> Friend Property AusTelNr As Telefonnummer
 #End Region
+
+    <XmlIgnore> Public ReadOnly Property IsIPPhone As Boolean
+        Get
+            Return TelTyp = TelTypen.IP
+        End Get
+    End Property
+
+    <XmlIgnore> Public ReadOnly Property IsDialable As Boolean
+        Get
+            Return TelTyp = TelTypen.DECT Or TelTyp = TelTypen.FON Or TelTyp = TelTypen.S0
+        End Get
+    End Property
 
 #Region "Equals"
     Public Overrides Function Equals(obj As Object) As Boolean

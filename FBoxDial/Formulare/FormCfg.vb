@@ -3,7 +3,7 @@ Imports System.Data
 Imports System.Windows.Forms
 Imports Microsoft.Office.Interop
 
-Public Class FormCfg
+<Obsolete> Public Class FormCfg
     Implements IDisposable
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
@@ -19,8 +19,6 @@ Public Class FormCfg
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
-        FBDB_MP.TabPages.Remove(PAnrMonSim)
-
         Ausfüllen(Me)
     End Sub
 #Region "Delegaten"
@@ -37,7 +35,7 @@ Public Class FormCfg
                 Ausfüllen(ctrl)
             End If
 
-            tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name))
+            tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name) Or PropertyInfo.Name.AreEqual(ctrl.Name))
 
             If ctrl.GetType().Equals(GetType(TextBox)) Or
                ctrl.GetType().Equals(GetType(MaskedTextBox)) Or
@@ -57,7 +55,7 @@ Public Class FormCfg
                 End If
 
                 If ctrl.Name.AreEqual(TBLogging.Name) Then
-                    Dim LogDatei As String = IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName)
+                    Dim LogDatei As String = IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltLog_FileName)
                     LinkLogFile.Text = LogDatei
 
                     With My.Computer.FileSystem
@@ -125,7 +123,7 @@ Public Class FormCfg
                ctrl.GetType().Equals(GetType(CheckBox)) Or
                ctrl.GetType().Equals(GetType(ComboBox)) Then
 
-                tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name))
+                tmpPropertyInfo = Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual("P" & ctrl.Name) Or PropertyInfo.Name.AreEqual(ctrl.Name))
 
                 If tmpPropertyInfo IsNot Nothing Then
                     Select Case ctrl.GetType
@@ -140,7 +138,7 @@ Public Class FormCfg
                         Case GetType(MaskedTextBox)
                             If CType(ctrl, MaskedTextBox).Text.AreNotEqual("1234") Then
                                 Using Crypt As Rijndael = New Rijndael
-                                    tmpPropertyInfo.SetValue(XMLData.POptionen, Crypt.EncryptString128Bit(CType(ctrl, MaskedTextBox).Text, If(ctrl.Name.AreEqual(TBPasswort.Name), DefaultWerte.PDfltDeCryptKey, DefaultWerte.PDfltDeCryptKeyPhoner)))
+                                    tmpPropertyInfo.SetValue(XMLData.POptionen, Crypt.EncryptString128Bit(CType(ctrl, MaskedTextBox).Text, DefaultWerte.PDfltDeCryptKey))
                                 End Using
                             End If
 
@@ -245,9 +243,9 @@ Public Class FormCfg
                 ' Formulardaten in zurück in Properties
                 Speichern(Me)
                 ' Valid-IP neu ermitteln
-                XMLData.POptionen.PValidFBAdr = ValidIP(XMLData.POptionen.PTBFBAdr)
+                XMLData.POptionen.ValidFBAdr = ValidIP(XMLData.POptionen.TBFBAdr)
                 ' Properties in Datei umwandeln
-                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, $"{PDfltAddin_KurzName}.xml"))
+                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, $"{Localize.resCommon.strDefShortName}.xml"))
             Case sender Is BTestLogin
                 '' Überführe das eingegebene Passwort in die Property
                 'Using Crypt As Rijndael = New Rijndael
@@ -278,7 +276,7 @@ Public Class FormCfg
 
             Case sender Is BXML
                 ' XML-Datei mit Systemstandard öffnen
-                Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltConfig_FileName))
+                Process.Start(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
 
             Case sender Is BRWSTest
                 If IsNumeric(TBRWSTest.Text) Then
@@ -310,7 +308,7 @@ Public Class FormCfg
     Private Sub LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLogFile.LinkClicked, LinkPhoner.LinkClicked
         Select Case CType(sender, LinkLabel).Name
             Case LinkLogFile.Name
-                Process.Start(IO.Path.Combine(XMLData.POptionen.PArbeitsverzeichnis, PDfltLog_FileName))
+                Process.Start(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltLog_FileName))
 
             Case LinkPhoner.Name
                 Process.Start("http://www.phoner.de/")
@@ -349,7 +347,7 @@ Public Class FormCfg
         With CLB
             .DataBindings.Clear()
             .DataSource = XMLData.PTelefonie.Telefonnummern
-            .DisplayMember = NameOf(Telefonnummer.Unformatiert)
+            .DisplayMember = NameOf(Telefonnummer.Formatiert)
             .ValueMember = NameOf(Telefonnummer.Überwacht)
 
             For i As Integer = 0 To .Items.Count - 1
@@ -373,14 +371,6 @@ Public Class FormCfg
         With CBox
             .DataBindings.Clear()
             Select Case CBox.Name
-                Case CBoxAnrMonSimRINGEigTelNr.Name, CBoxAnrMonSimCALLEigTelNr.Name
-                    .DataSource = XMLData.PTelefonie.Telefonnummern
-                    .DisplayMember = NameOf(Telefonnummer.Einwahl)
-                    .ValueMember = NameOf(Telefonnummer.Einwahl)
-                Case CBoxAnrMonSimCALLNSTID.Name, CBoxAnrMonSimCONNECTNSTID.Name
-                    .DataSource = XMLData.PTelefonie.Telefoniegeräte
-                    .DisplayMember = NameOf(Telefoniegerät.Name)
-                    .ValueMember = NameOf(Telefoniegerät.AnrMonID)
                 Case CBoxPhonerSIP.Name
                     .DataSource = XMLData.PTelefonie.Telefoniegeräte.Where(Function(t) t.TelTyp = DfltWerteTelefonie.TelTypen.IP).ToList
                     .DisplayMember = NameOf(Telefoniegerät.Name)
@@ -391,7 +381,7 @@ Public Class FormCfg
     End Sub
 
     Friend Sub StarteEinlesen()
-        If Ping(XMLData.POptionen.PValidFBAdr) Then
+        If Ping(XMLData.POptionen.ValidFBAdr) Then
             If FritzBoxDaten Is Nothing Then FritzBoxDaten = New FritzBoxData
             FritzBoxDaten.FritzBoxDatenJSON()
             ' Fülle das Datagridview
@@ -454,54 +444,6 @@ Public Class FormCfg
     Private Sub FritzBoxDaten_Status(sender As Object, e As NotifyEventArgs(Of String)) Handles FritzBoxDaten.Status
         TSSL_Telefone.Text = e.Value
     End Sub
-
-#Region "AnrMonSim"
-    'Private Sub AnrMonSim_ValueChanged(sender As Object, e As EventArgs) Handles DTPAnrMonSimRING.ValueChanged, DTPAnrMonSimCALL.ValueChanged, DTPAnrMonSimCONNECT.ValueChanged, DTPAnrMonSimDISCONNECT.ValueChanged,
-    '                                                                             TBAnrMonSimRINGID.TextChanged, TBAnrMonSimCALLID.TextChanged, TBAnrMonSimCONNECTID.TextChanged, TBAnrMonSimDISCONNECTID.TextChanged,
-    '                                                                             TBAnrMonSimRINGAugTelNr.TextChanged, TBAnrMonSimCALLAugTelNr.TextChanged, TBAnrMonSimCONNECTAugTelNr.TextChanged,
-    '                                                                             CBoxAnrMonSimRINGEigTelNr.SelectedIndexChanged, CBoxAnrMonSimCALLEigTelNr.SelectedIndexChanged,
-    '                                                                             CBoxAnrMonSimRINGSIPID.SelectedIndexChanged, CBoxAnrMonSimCALLSIPID.SelectedIndexChanged,
-    '                                                                             CBoxAnrMonSimCALLNSTID.SelectedIndexChanged, CBoxAnrMonSimCONNECTNSTID.SelectedIndexChanged,
-    '                                                                             TBAnrMonSimDISCONNECTDauer.TextChanged
-    '    Select Case CType(sender, Control).Name
-    '        Case DTPAnrMonSimRING.Name, TBAnrMonSimRINGID.Name, TBAnrMonSimRINGAugTelNr.Name, CBoxAnrMonSimRINGEigTelNr.Name, CBoxAnrMonSimRINGSIPID.Name
-    '            '         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
-    '            ' 23.06.18 13:20:24;RING;1;0123456789;987654;SIP4;
-    '            LAnrMonSimLabelRING.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimRING.Value, Anrufmonitor.AnrMon_RING, TBAnrMonSimRINGID.Text, TBAnrMonSimRINGAugTelNr.Text, CBoxAnrMonSimRINGEigTelNr.SelectedValue, CBoxAnrMonSimRINGSIPID.SelectedText) & Anrufmonitor.AnrMon_Delimiter
-
-    '        Case DTPAnrMonSimCALL.Name, TBAnrMonSimCALLID.Name, CBoxAnrMonSimCALLNSTID.Name, CBoxAnrMonSimCALLEigTelNr.Name, TBAnrMonSimCALLAugTelNr.Name, CBoxAnrMonSimCALLSIPID.Name
-    '            '         0        ; 1  ;2;3;  4   ;    5     ; 6  ; 7
-    '            ' 23.06.18 13:20:24;CALL;3;4;987654;0123456789;SIP0;
-    '            LAnrMonSimLabelCALL.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimCALL.Value, Anrufmonitor.AnrMon_CALL, TBAnrMonSimCALLID.Text, CBoxAnrMonSimCALLNSTID.SelectedValue, CBoxAnrMonSimCALLEigTelNr.Text, TBAnrMonSimCALLAugTelNr.Text, CBoxAnrMonSimCALLSIPID.SelectedText) & Anrufmonitor.AnrMon_Delimiter
-
-    '        Case DTPAnrMonSimCONNECT.Name, TBAnrMonSimCONNECTID.Name, CBoxAnrMonSimCONNECTNSTID.Name, TBAnrMonSimCONNECTAugTelNr.Text
-    '            '         0        ;   1   ;2;3 ;    4     ; 5 
-    '            ' 23.06.18 13:20:44;CONNECT;1;40;0123456789;
-    '            LAnrMonSimLabelCONNECT.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimCONNECT.Value, Anrufmonitor.AnrMon_CONNECT, TBAnrMonSimCONNECTID.Text, CBoxAnrMonSimCONNECTNSTID.SelectedValue, TBAnrMonSimCONNECTAugTelNr.Text) & Anrufmonitor.AnrMon_Delimiter
-
-    '        Case DTPAnrMonSimDISCONNECT.Name, TBAnrMonSimDISCONNECTID.Name, TBAnrMonSimDISCONNECTDauer.Name
-    '            '         0        ;   1      ;2;3; 4
-    '            ' 23.06.18 13:20:52;DISCONNECT;1;9;
-    '            LAnrMonSimLabelDISCONNECT.Text = String.Join(Anrufmonitor.AnrMon_Delimiter, DTPAnrMonSimDISCONNECT.Value, Anrufmonitor.AnrMon_DISCONNECT, TBAnrMonSimDISCONNECTID.Text, TBAnrMonSimDISCONNECTDauer.Text) & Anrufmonitor.AnrMon_Delimiter
-
-    '    End Select
-    'End Sub
-
-    'Private Sub BAnrMonSim_Click(sender As Object, e As EventArgs) Handles BAnrMonSimRING.Click, BAnrMonSimCALL.Click, BAnrMonSimCONNECT.Click, BAnrMonSimDISCONNECT.Click
-
-    '    'Select Case CType(sender, Control).Name
-    '    '    Case BAnrMonSimRING.Name
-    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelRING.Text)
-    '    '    Case BAnrMonSimCALL.Name
-    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCALL.Text)
-    '    '    Case BAnrMonSimCONNECT.Name
-    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelCONNECT.Text)
-    '    '    Case BAnrMonSimDISCONNECT.Name
-    '    '        ThisAddIn.PAnrufmonitor.AnrMonSimulation(LAnrMonSimLabelDISCONNECT.Text)
-    '    'End Select
-
-    'End Sub
-#End Region
 
 #Region "Indizierung"
 
@@ -596,7 +538,7 @@ Public Class FormCfg
             End If
 
             ' Unterordner werden rekursiv durchsucht und indiziert
-            If XMLData.POptionen.PCBSucheUnterordner Then
+            If XMLData.POptionen.CBSucheUnterordner Then
                 Dim iOrdner As Integer = 1
                 Do While (iOrdner.IsLessOrEqual(Ordner.Folders.Count)) Or (BWIndexer IsNot Nothing AndAlso BWIndexer.CancellationPending)
                     KontaktIndexer(Ordner.Folders.Item(iOrdner), Erstellen, BWIndexer)

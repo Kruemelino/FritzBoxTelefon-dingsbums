@@ -25,9 +25,9 @@ Public Class FormAnrList
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' Setze den Startzeitpunkt mit der Schließzeit des Addins
-        If XMLData.POptionen.PLetzterJournalEintrag > StartDatum.MinDate AndAlso XMLData.POptionen.PLetzterJournalEintrag < StartDatum.MaxDate Then
-            StartDatum.Value = XMLData.POptionen.PLetzterJournalEintrag
-            StartZeit.Value = XMLData.POptionen.PLetzterJournalEintrag
+        If XMLData.POptionen.LetzterJournalEintrag > StartDatum.MinDate AndAlso XMLData.POptionen.LetzterJournalEintrag < StartDatum.MaxDate Then
+            StartDatum.Value = XMLData.POptionen.LetzterJournalEintrag
+            StartZeit.Value = XMLData.POptionen.LetzterJournalEintrag
         Else
             StartDatum.Value = Now
             StartZeit.Value = Now

@@ -1,5 +1,4 @@
-﻿Imports System.Windows
-Imports System.Windows.Media.Imaging
+﻿Imports System.Windows.Media.Imaging
 Imports Microsoft.Office.Interop
 Public Class AnrMonViewModel
     Inherits NotifyBase

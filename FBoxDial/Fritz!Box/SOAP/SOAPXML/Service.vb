@@ -18,7 +18,7 @@ Public Class Service
 
     Friend Function ActionExists(ByVal ActionName As String) As Boolean
         If SCPD Is Nothing Then
-            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)($"http://{XMLData.POptionen.PTBFBAdr}:{FritzBoxDefault.PDfltSOAPPort}{SCPDURL}")
+            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.PDfltSOAPPort}{SCPDURL}")
         End If
 
         Return SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
@@ -53,7 +53,7 @@ Public Class Service
         Dim ReturnXMLDox As New XmlDocument
         Dim OutputHashTable As New Hashtable
 
-        ReturnXMLDox.LoadXml(FritzBoxPOST(Action.Name, $"https://{XMLData.POptionen.PTBFBAdr }:{FritzBoxDefault.PDfltSOAPPortSSL}{ControlURL}", ServiceType, GetRequest(Action, InputArguments)))
+        ReturnXMLDox.LoadXml(FritzBoxPOST(Action.Name, $"https://{XMLData.POptionen.TBFBAdr }:{FritzBoxDefault.PDfltSOAPPortSSL}{ControlURL}", ServiceType, GetRequest(Action, InputArguments)))
 
         If ReturnXMLDox.DocumentElement.Name.AreEqual("FEHLER") Then
             With ErrorHashTable

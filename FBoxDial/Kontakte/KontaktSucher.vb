@@ -46,7 +46,7 @@ Friend Module KontaktSucher
                             olKontakt = FindeAnruferKontaktAuswahl(Ordner.MAPIFolder, sFilter)
 
                             ' Rekursive Suche der Unterordner
-                            If olKontakt Is Nothing And XMLData.POptionen.PCBSucheUnterordner Then
+                            If olKontakt Is Nothing And XMLData.POptionen.CBSucheUnterordner Then
                                 For Each Unterordner As Outlook.MAPIFolder In Ordner.MAPIFolder.Folders
                                     olKontakt = FindeAnruferKontaktAuswahl(Unterordner, sFilter)
                                     Unterordner.ReleaseComObject

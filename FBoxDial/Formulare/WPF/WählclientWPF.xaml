@@ -9,6 +9,14 @@
         d:DataContext="{d:DesignInstance Type=viewModels:WählClientViewModel, IsDesignTimeCreatable=True}" 
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="XAMLRessources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Window.DataContext>
         <viewModels:WählClientViewModel/>
     </Window.DataContext>
@@ -20,47 +28,8 @@
             </ToggleButton>            
             <Popup Name="OptionPopup" IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" PlacementTarget="{Binding ElementName=bOptionen}" AllowsTransparency="True" PopupAnimation="Slide" StaysOpen="False">
                 <StackPanel>
-                    <StackPanel.Resources>
-                        <!-- Visual Studio Image Library 2019 -->
-                        <Viewbox x:Key="ContactCard_16x" Width="16" Height="16">
-                            <Rectangle Width="16" Height="16">
-                                <Rectangle.Fill>
-                                    <DrawingBrush>
-                                        <DrawingBrush.Drawing>
-                                            <DrawingGroup>
-                                                <GeometryDrawing Brush="Transparent" Geometry="F1M16,16L0,16 0,0 16,0z"/>
-                                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,15L16,15 16,1 0,1z"/>
-                                                <GeometryDrawing Brush="#FFEFEFF0" Geometry="F1M13,5L10,5 10,6 13,6z M13,7L10,7 10,8 13,8z M13,9L10,9 10,10 13,10z M8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.034 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.035,8.034 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11z M14,13L2,13 2,3 14,3z M7.265,6.765C7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765"/>
-                                                <GeometryDrawing Brush="#FF424242" Geometry="F1M13,10L10,10 10,9 13,9z M13,8L10,8 10,7 13,7z M13,6L10,6 10,5 13,5z M14,13L2,13 2,3 14,3z M1,14L15,14 15,2 1,2z M4.735,6.765C4.735,6.067 5.303,5.5 6,5.5 6.697,5.5 7.265,6.067 7.265,6.765 7.265,7.462 6.697,8.029 6,8.029 5.303,8.029 4.735,7.462 4.735,6.765 M3.029,11L4.029,11C4.029,9.913 4.914,9.029 6,9.029 7.086,9.029 7.971,9.913 7.971,11L8.971,11C8.971,9.911 8.375,8.967 7.498,8.45 7.965,8.035 8.265,7.437 8.265,6.765 8.265,5.516 7.249,4.5 6,4.5 4.751,4.5 3.735,5.516 3.735,6.765 3.735,7.437 4.036,8.035 4.502,8.45 3.625,8.967 3.029,9.911 3.029,11"/>
-                                            </DrawingGroup>
-                                        </DrawingBrush.Drawing>
-                                    </DrawingBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Viewbox>
-
-                        <Viewbox x:Key="pushpin_16x" Width="16" Height="16" >
-                            <Rectangle Width="16" Height="16">
-                                <Rectangle.Fill>
-                                    <DrawingBrush>
-                                        <DrawingBrush.Drawing>
-                                            <DrawingGroup>
-                                                <DrawingGroup.Children>
-                                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                                    <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M14.1963,7.981L11.0003,8.62 11.0003,12 10.0003,12C8.6983,12,7.5503,11.207,6.8203,10L4.2903,10C3.6753,10.613,2.8793,11,2.0003,11L1.0003,11 1.0003,3 2.0003,3C2.8793,3,3.6753,3.385,4.2903,4L6.8203,4C7.5503,2.793,8.6983,2,10.0003,2L11.0003,2 11.0003,5.38 14.1963,6.02z" />
-                                                    <GeometryDrawing Brush="#FF1AA1E2" Geometry="F1M10,3L10,11C8.893,11,7.936,10.189,7.416,9L3.852,9C3.394,9.609,2.738,10,2,10L2,4C2.738,4,3.394,4.391,3.852,5L7.416,5C7.936,3.81,8.893,3,10,3" />
-                                                    <GeometryDrawing Brush="#FF414141" Geometry="F1M10,7.7993L14,7.0003 10,6.2003z" />
-                                                </DrawingGroup.Children>
-                                            </DrawingGroup>
-                                        </DrawingBrush.Drawing>
-                                    </DrawingBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Viewbox>
-                    </StackPanel.Resources>
-
                     <Button x:Name="BContact" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource ContactCard_16x}" Click="BContact_Click"/>
-                    <ToggleButton x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource pushpin_16x}" Click="BContact_Click"/>
+                    <ToggleButton x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource Pushpin_16x}" Click="BContact_Click"/>
                 </StackPanel>
             </Popup>            
         </StackPanel>

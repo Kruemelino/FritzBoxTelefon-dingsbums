@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="UserCtrlJournalerstellung"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:fbd="clr-namespace:FBoxDial"
+            mc:Ignorable="d" 
+            d:DesignHeight="450" d:DesignWidth="400"
+            d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
+
+    <StackPanel x:Name="MainStackPanel" Margin="8">
+
+        <fbd:OptionsÜberschrift Label="Einstellungen für die Jpurnalerstellung"/>
+        <fbd:OptionsHinweis Label="Hinweise zur Outlook Journaleinträgen:&#10;Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.&#10;Wird kein Ordner gewählt, wird der Outlook-Standardverwendet."/>
+        <fbd:OptionsCheckBox Label="Journaleinträge erstellen" Value="{Binding CBJournal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsOLFolderTV x:Name="OLFolderJournalErstellung" OutlookOlItemType="olJournalItem" ÜberwachteOrdnerListe="{Binding OutlookOrdner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Verwendung="JournalSpeichern"/>
+
+
+    </StackPanel>
+
+
+</UserControl>

@@ -326,8 +326,8 @@ Public Module Extensions
             ' .Count = 11
             ' Start = PTBNumEntryList (Nullbasiert), Anzahl an zu löschenden Elementen = .Count - PTBNumEntryList
             ' Start = 10, Anzahl = 11 - 10 = 1
-            If .Count.IsLarger(XMLData.POptionen.PTBNumEntryList) Then
-                .RemoveRange(XMLData.POptionen.PTBNumEntryList, .Count - XMLData.POptionen.PTBNumEntryList)
+            If .Count.IsLarger(XMLData.POptionen.TBNumEntryList) Then
+                .RemoveRange(XMLData.POptionen.TBNumEntryList, .Count - XMLData.POptionen.TBNumEntryList)
             End If
 
         End With
@@ -484,15 +484,15 @@ Public Module Extensions
             End Select
         Else
             Try
-                IPHostInfo = Dns.GetHostEntry(XMLData.POptionen.PTBFBAdr)
+                IPHostInfo = Dns.GetHostEntry(XMLData.POptionen.TBFBAdr)
                 For Each IPAddresse In IPHostInfo.AddressList
                     If IPAddresse.AddressFamily = Sockets.AddressFamily.InterNetwork Then
                         ValidIP = IPAddresse.ToString
                     End If
                 Next
             Catch ex As Exception
-                NLogger.Warn(ex, "Die Adresse '{0}' kann nicht zugeordnet werden.", XMLData.POptionen.PTBFBAdr)
-                ValidIP = XMLData.POptionen.PTBFBAdr
+                NLogger.Warn(ex, "Die Adresse '{0}' kann nicht zugeordnet werden.", XMLData.POptionen.TBFBAdr)
+                ValidIP = XMLData.POptionen.TBFBAdr
             End Try
         End If
 
@@ -586,7 +586,7 @@ Public Module Extensions
             Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, PDflt2NeueZeile, Meldung)
             NLogger.Warn(Meldung)
         End If
-        Return Microsoft.VisualBasic.MsgBox(Meldung, Style, PDfltAddin_LangName)
+        Return Microsoft.VisualBasic.MsgBox(Meldung, Style, Localize.resCommon.strDefLongName)
     End Function
 
     '''' <summary>

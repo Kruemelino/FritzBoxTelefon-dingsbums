@@ -22,8 +22,8 @@ Friend Class Rijndael
             ' Erstelle einen Zufälligen Schlüssel
             Dim EncryptionKey() As Byte = GetRndKey(32)
 
-            ' Speichere den Salt und Key in dre Registry ab
-            SaveSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
+            ' Speichere den Salt und Key in der Registry ab
+            SaveSetting(Localize.resCommon.strDefShortName, DefaultWerte.PDfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
 
             ' Create the encryptor and write value to it after it is converted into a byte array
             Using rijAlg As New RijndaelManaged()
@@ -36,7 +36,7 @@ Friend Class Rijndael
                         .Key = rfc.GetBytes(CInt(.KeySize \ 8))
                     End Using
 
-                    ' Create a decrytor to perform the stream transform. 
+                    ' Create a encrytor to perform the stream transform. 
                     Using encryptor As ICryptoTransform = rijAlg.CreateEncryptor(.Key, .IV)
                         Dim buffer() As Byte = Encoding.Unicode.GetBytes(vstrTextToBeEncrypted)
                         Return encryptor.TransformFinalBlock(buffer, 0, buffer.Length).ToBase64String
@@ -53,7 +53,7 @@ Friend Class Rijndael
     ''' <returns>Die entschlüsselte Zeichenfolge</returns>
     Friend Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDeCryptKey As String) As String
         ' Lese den Key aus der Registry aus
-        Dim DecryptionSaltKey As String = GetSetting(PDfltAddin_KurzName, DefaultWerte.PDfltOptions, vstrDeCryptKey, PDfltStrErrorMinusOne)
+        Dim DecryptionSaltKey As String = GetSetting(Localize.resCommon.strDefShortName, DefaultWerte.PDfltOptions, vstrDeCryptKey, PDfltStrErrorMinusOne)
         ' Standardwert
         DecryptString128Bit = PDfltStrErrorMinusOne
         ' Test ob gültige Eingangsdaten vorhanden

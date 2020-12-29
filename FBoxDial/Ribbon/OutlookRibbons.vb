@@ -69,7 +69,7 @@ Imports System.Xml
     ''' <param name="control">ToogleButton</param>
     ''' <param name="pressed">Zustand des ToogleButtons</param>
     ''' <remarks>Eine reine Weiterleitung auf die Standard-OnAction Funktion</remarks>
-    <CodeAnalysis.SuppressMessage("Stil", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Der Parameter wird für die korrekte Verarbeitung der Ribbons benötigt")>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Parameter wird benötigt, da ansonsten Ribbon nicht korrekt verarbeitet wird.")>
     Public Sub BtnOnToggleButtonAction(ByVal control As IRibbonControl, ByVal pressed As Boolean)
         BtnOnAction(control)
     End Sub
@@ -295,17 +295,15 @@ Imports System.Xml
     Private Sub OnAction(ByVal Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.OpenConfig ' Einstellungsdialog
-                Using FormConfig As New FormCfg
-                    FormConfig.ShowDialog()
-                End Using
-
+                Dim no As New OptionenWPF
+                no.Show()
             Case TaskToDo.ShowAnrMon
                 'Dim PopUpAnrMon As New Popup
 
                 If XMLData.PTelefonie.RINGListe.Count.IsNotZero Then
                     XMLData.PTelefonie.RINGListe.Item(0).AnrMonEinblenden()
                 Else
-                    Using tmptelfnt As New Telefonat With {.Anrufer = PDfltAddin_LangName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
+                    Using tmptelfnt As New Telefonat With {.Anrufer = Localize.resCommon.strDefLongName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
                         tmptelfnt.AnrMonEinblenden()
                     End Using
                 End If
@@ -571,7 +569,7 @@ Imports System.Xml
                 oKontakt = CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem)
         End Select
 
-        If Not oKontakt Is Nothing Then
+        If oKontakt IsNot Nothing Then
 
             If oKontakt.IsVIP Then
                 oKontakt.RemoveVIP

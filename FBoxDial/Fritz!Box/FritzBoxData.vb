@@ -5,11 +5,12 @@ Public Class FritzBoxData
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Event Status As EventHandler(Of NotifyEventArgs(Of String))
+    Friend Event Beendet()
     Public Sub New()
         If XMLData IsNot Nothing Then
 
             ' Gültige IP-Adresse für die Fritz!Box ablegen
-            XMLData.POptionen.PValidFBAdr = ValidIP(XMLData.POptionen.PTBFBAdr)
+            XMLData.POptionen.ValidFBAdr = ValidIP(XMLData.POptionen.TBFBAdr)
 
         End If
     End Sub
@@ -21,13 +22,8 @@ Public Class FritzBoxData
     ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
     Private Sub PushStatus(ByVal Level As LogLevel, ByVal StatusMessage As String)
         NLogger.Log(Level, StatusMessage)
-        CrossThread.RunGui(AddressOf PushMessage, StatusMessage)
-    End Sub
-
-    Private Sub PushMessage(ByVal StatusMessage As String)
         RaiseEvent Status(Me, New NotifyEventArgs(Of String)(StatusMessage))
     End Sub
-
 
 #Region "Telefonnummern, Telefonnamen"
     Friend Async Sub FritzBoxDatenJSON()
@@ -64,8 +60,8 @@ Public Class FritzBoxData
                 Fortfahren = QueryAntwort.AreNotEqual("Gegenstelle nicht erreichbar!") And QueryAntwort.IsNotStringEmpty
                 If Fortfahren Then
                     With FBoxJSON.GetLocalValues(QueryAntwort)
-                        XMLData.POptionen.PTBOrtsKZ = .OKZ
-                        XMLData.POptionen.PTBLandesKZ = .LKZ
+                        XMLData.POptionen.TBOrtsKZ = .OKZ
+                        XMLData.POptionen.TBLandesKZ = .LKZ
                         PushStatus(LogLevel.Debug, $"Kennzahlen: { .OKZ}; { .LKZ}")
                     End With
                 Else
@@ -449,6 +445,7 @@ Public Class FritzBoxData
         ' Aufräumen
         TelQuery.Clear()
         PushStatus(LogLevel.Debug, $"Einlesen der Telefiniedaten abgeschlossen...")
+        RaiseEvent Beendet()
     End Sub
 #End Region
 End Class

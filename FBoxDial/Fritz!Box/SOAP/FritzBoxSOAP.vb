@@ -21,7 +21,7 @@ Public Class FritzBoxSOAP
 
         ' Workaround: XML-Datei als String herunterladen und separat Deserialisieren
         ' Herunterladen
-        HttpResponse = FritzBoxGet($"http://{XMLData.POptionen.PTBFBAdr}:{FritzBoxDefault.PDfltSOAPPort}{KnownSOAPFile.tr64desc}", HttpFehler)
+        HttpResponse = FritzBoxGet($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.PDfltSOAPPort}{KnownSOAPFile.tr64desc}", HttpFehler)
         ' Deserialisieren
         If Not HttpFehler Then FBTR64Desc = XmlDeserializeFromString(Of TR64Desc)(HttpResponse)
     End Sub
@@ -31,14 +31,14 @@ Public Class FritzBoxSOAP
         If FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device.ServiceList.Any Then
             Return FBTR64Desc.Device.ServiceList.Find(Function(Service) Service.SCPDURL.AreEqual(SCPDURL))
         Else
-            NLogger.Error("SOAP zur Fritz!Box ist nicht bereit: {0}", XMLData.POptionen.PTBFBAdr)
+            NLogger.Error("SOAP zur Fritz!Box ist nicht bereit: {0}", XMLData.POptionen.TBFBAdr)
             Return Nothing
         End If
 
     End Function
 
     Friend Overloads Function Start(ByVal SCPDURL As String, ByVal ActionName As String, ByVal InputHashTable As Hashtable) As Hashtable
-        If Ping(XMLData.POptionen.PTBFBAdr) Then
+        If Ping(XMLData.POptionen.TBFBAdr) Then
 
             Dim SOAPError As String
 
