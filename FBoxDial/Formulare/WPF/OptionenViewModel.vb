@@ -37,6 +37,8 @@ Public Class OptionenViewModel
             SetProperty(_TBPasswort, Value)
         End Set
     End Property
+
+    Public ReadOnly Property AddinVersion As String = $"Info V{Assembly.GetExecutingAssembly.GetName.Version}"
 #End Region
 
 #Region "Grunddaten Telefonie"

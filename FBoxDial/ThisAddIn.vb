@@ -14,13 +14,6 @@ Public NotInheritable Class ThisAddIn
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
 
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend Shared ReadOnly Property Version() As String
-        Get
-            With Reflection.Assembly.GetExecutingAssembly.GetName.Version
-                Return String.Format("V{0}.{1}.{2}", .Major, .Minor, .Build)
-            End With
-        End Get
-    End Property
 
     Private Property AnrMonWarAktiv As Boolean
 
@@ -68,7 +61,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufliste auswerten
         If XMLData.POptionen.CBAutoAnrList Then AutoAnrListe()
 
-        NLogger.Info("{0} {1} gestartet.", Localize.resCommon.strDefLongName, Version)
+        NLogger.Info("{0} {1} gestartet.", Localize.resCommon.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
 
     End Sub
 
@@ -80,7 +73,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()
         ' Eintrag ins Log
-        NLogger.Info("{0} {1} beendet.", Localize.resCommon.strDefLongName, Version)
+        NLogger.Info("{0} {1} beendet.", Localize.resCommon.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
         ' XML-Datei Speichern
         XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
     End Sub

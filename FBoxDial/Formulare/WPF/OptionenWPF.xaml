@@ -1,10 +1,13 @@
 ﻿<Window x:Class="OptionenWPF"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:viewModels="clr-namespace:FBoxDial"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:localize="clr-namespace:FBoxDial.Localize"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fbd="clr-namespace:FBoxDial"
+        mc:Ignorable="d" 
         Height="355" Width="600" MinHeight="300" MinWidth="500" Focusable="False" IsTabStop="False" Name="Optionen"      
-        >
+        d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -19,12 +22,8 @@
             <Binding Source="{x:Static localize:resCommon.strDefLongName}"/>
             <Binding Source="{x:Static localize:resCommon.strConfig}"/>
         </MultiBinding>
-    </Window.Title>
-    
-    <Window.DataContext>
-        <viewModels:Optionen/>
-    </Window.DataContext>
-    
+    </Window.Title>    
+   
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
             <Button x:Name="BSave" Margin="0,4,0,0" Width="20" Height="20" ToolTip="Änderungen speichern und Optionen schließen" Content="{DynamicResource Save_16x}" Click="BSave_Click"/>

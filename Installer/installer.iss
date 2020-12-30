@@ -1,17 +1,17 @@
 ﻿#include ReadReg(HKEY_LOCAL_MACHINE,'Software\Sherlock Software\InnoTools\Downloader','ScriptPath','')
 #define MyAppName "Fritz!Box Telefon-dingsbums"
-#define MyAppVersion "5.0.0"
+#define MyAppVersion "5.0.0.1"
 #define MyAppPublisher "Kruemelino"
 #define MyAppURL "https://github.com/Kruemelino/FritzBoxTelefon-dingsbums"
 #define MyAppDescription "Das Fritz!Box Telefon-dingsbums ist ein Addin für Outlook (2010-2019), welches ein direktes Wählen der Kontakte aus dem Computer ermöglicht. Zusätzlich bietet es nützliche Funktionen, wie einen Anrufmonitor oder eine Rückwärtssuche."
 #define MyGUID "051D5E77-4942-477E-8071-12F262FDE4F3" 
-#define MyAppNameKurz "FritzBoxDial"
+#define MyAppNameKurz "FritzOutlookV5"
 #define MyAppTime GetDateTimeString('yymmdd-hhnn', '', '') 
 #define MyAppType ""
 
 [Setup]
 AppId = {{051D5E77-4942-477E-8071-12F262FDE4F3}}
-AppName = {#MyAppName} {#MyAppType}
+AppName = {#MyAppName}
 AppVersion = {#MyAppVersion}
 AppPublisher = {#MyAppPublisher}
 AppPublisherURL = {#MyAppURL}
@@ -66,6 +66,10 @@ Root: HKCU32; Subkey: "Software\Microsoft\Office\Outlook\Addins\Fritz!Box Telefo
     Source: "..\FBoxDial\bin\Debug2013\Newtonsoft.Json.dll";                                  Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
     Source: "..\FBoxDial\bin\Debug2013\NLog.dll";                                             Check: OutlookVersion2013Plus; DestDir: "{app}"; Flags: ignoreversion
 #endif
+
+[Messages]
+SetupAppTitle = {#MyAppName}
+SetupWindowTitle = {#MyAppName} {#MyAppVersion}
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"

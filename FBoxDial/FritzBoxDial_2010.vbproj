@@ -152,7 +152,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -229,19 +229,81 @@
     <AppDesigner Include="My Project\" />
     <Compile Include="Anrufmonitor\AnrMonClasses.vb" />
     <Compile Include="Anrufmonitor\Anrufmonitor.vb" />
-    <Compile Include="Anrufmonitor\CommonFenster.vb" />
-    <Compile Include="Anrufmonitor\AnrMonCommon.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Anrufmonitor\FormAnrMon.vb" />
-    <Compile Include="Formulare\FormElemente\CrossThread.vb" />
-    <Compile Include="Formulare\FormElemente\PropertyComparer.vb" />
+    <Compile Include="Formulare\Common\NotifyBase.vb" />
+    <Compile Include="Formulare\Common\ObservableCollectionEx.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelBuchDataRow.vb" />
     <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Formulare\TreeView\OlOrdnerTreeView.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formulare\WPF\AnrMonViewModel.vb" />
+    <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
+      <DependentUpon>AnrMonWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\OptionenViewModel.vb" />
+    <Compile Include="Formulare\WPF\OptionenWPF.xaml.vb">
+      <DependentUpon>OptionenWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OlTreeViewItem.vb" />
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsCheckBox.xaml.vb">
+      <DependentUpon>OptionsCheckBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsComboBox.xaml.vb">
+      <DependentUpon>OptionsComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsPasswordBox.xaml.vb">
+      <DependentUpon>OptionsPasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsLink.xaml.vb">
+      <DependentUpon>OptionsLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsTextBlock.xaml.vb">
+      <DependentUpon>OptionsTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsTextBox.xaml.vb">
+      <DependentUpon>OptionsTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsHinweis.xaml.vb">
+      <DependentUpon>OptionsHinweis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsOLFolderTV.xaml.vb">
+      <DependentUpon>OptionsOLFolderTV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlPhoner.xaml.vb">
+      <DependentUpon>UserCtrlPhoner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlTelefone.xaml.vb">
+      <DependentUpon>UserCtrlTelefone.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlInfo.xaml.vb">
+      <DependentUpon>UserCtrlInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlJournalerstellung.xaml.vb">
+      <DependentUpon>UserCtrlJournalerstellung.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlKontaktsuche.xaml.vb">
+      <DependentUpon>UserCtrlKontaktsuche.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlWählhilfe.xaml.vb">
+      <DependentUpon>UserCtrlWählhilfe.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlAnrMon.xaml.vb">
+      <DependentUpon>UserCtrlAnrMon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlGrund.vb">
+      <DependentUpon>UserCtrlGrund.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsÜberschrift.xaml.vb">
+      <DependentUpon>OptionsÜberschrift.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlKontakterstellung.xaml.vb">
+      <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\WählClientViewModel.vb" />
+    <Compile Include="Formulare\WPF\WählclientWPF.xaml.vb">
+      <DependentUpon>WählclientWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
@@ -254,10 +316,10 @@
     <Compile Include="Fritz!Box\SOAP\SOAPXML\SystemVersion.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\TR64Desc.vb" />
     <Compile Include="Kontakte\KontaktGespeichert.vb" />
-    <Compile Include="Formulare\formAnrList.designer.vb">
-      <DependentUpon>formAnrList.vb</DependentUpon>
+    <Compile Include="Formulare\FormAnrList.designer.vb">
+      <DependentUpon>FormAnrList.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formulare\formAnrList.vb">
+    <Compile Include="Formulare\FormAnrList.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formulare\FormElemente\Datenzeile\AnrListDataRow.vb" />
@@ -279,21 +341,11 @@
     <Compile Include="Formulare\FormElemente\Datentabellen\TelGeräteListDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\FormElemente\Datenzeile\WählClientDataRow.vb" />
     <Compile Include="Formulare\FormElemente\Datenzeile\TelGeräteListDataRow.vb" />
-    <Compile Include="Formulare\FormElemente\Datentabellen\WählClientDataTable.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Formulare\FormTelefonbücher.Designer.vb">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
     </Compile>
     <Compile Include="Formulare\FormTelefonbücher.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formulare\FormWählclient.Designer.vb">
-      <DependentUpon>FormWählclient.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\FormWählclient.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formulare\ListControl\TelListControl.designer.vb">
@@ -308,22 +360,25 @@
     <Compile Include="Fritz!Box\FritzBoxLogin.vb" />
     <Compile Include="Fritz!Box\FritzBoxQuery.vb" />
     <Compile Include="Fritz!Box\JSON.vb" />
-    <Compile Include="Anrufmonitor\Popup.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Events\NotifyEventArgs.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localize\resCommon.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>resCommon.resx</DependentUpon>
+    </Compile>
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxSOAP.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxInformations.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxSOAPService.vb" />
-    <Compile Include="Formulare\FormCfg.designer.vb">
-      <DependentUpon>FormCfg.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formulare\FormCfg.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLEmail.vb" />
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLKontakt.vb" />
@@ -342,11 +397,6 @@
     <Compile Include="Kontakte\Rückwärtssuche.vb" />
     <Compile Include="Kontakte\VCard.vb" />
     <Compile Include="Logging\Logging.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Nutzerdaten.vb" />
     <Compile Include="Optionen\DefaultWerte.vb" />
     <Compile Include="Optionen\OutlookOrdner.vb" />
@@ -383,12 +433,8 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <EmbeddedResource Include="Formulare\formAnrList.resx">
-      <DependentUpon>formAnrList.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\FormCfg.resx">
-      <DependentUpon>FormCfg.vb</DependentUpon>
+    <EmbeddedResource Include="Formulare\FormAnrList.resx">
+      <DependentUpon>FormAnrList.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelBuchListControlItem.resx">
@@ -396,10 +442,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FormTelefonbücher.resx">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formulare\FormWählclient.resx">
-      <DependentUpon>FormWählclient.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelListControl.resx">
       <DependentUpon>TelListControl.vb</DependentUpon>
@@ -422,11 +464,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CallTo.png" />
+    <EmbeddedResource Include="Localize\resCommon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\call_received.png" />
     <EmbeddedResource Include="Resources\call_made.png" />
     <EmbeddedResource Include="Resources\call_missed.png" />
-    <EmbeddedResource Include="Resources\ContactCard.png" />
-    <EmbeddedResource Include="Resources\Copy.png" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
@@ -445,11 +490,104 @@
     <EmbeddedResource Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Add.png" />
-    <Content Include="Resources\Download.png" />
-    <Content Include="Resources\Remove.png" />
-    <Content Include="Resources\Save.png" />
-    <Content Include="Resources\Upload.png" />
+    <EmbeddedResource Include="Resources\Add.png" />
+    <EmbeddedResource Include="Resources\Download.png" />
+    <EmbeddedResource Include="Resources\Remove.png" />
+    <EmbeddedResource Include="Resources\Save.png" />
+    <EmbeddedResource Include="Resources\Upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Formulare\WPF\AnrMonWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\WPF\OptionenWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsCheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsPasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsLink.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsHinweis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsOLFolderTV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlPhoner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlTelefone.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlJournalerstellung.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlKontaktsuche.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlWählhilfe.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlAnrMon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlGrund.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\Elemente\OptionsÜberschrift.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlKontakterstellung.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\WählclientWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Formulare\WPF\XAMLRessources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Formulare\WPF\Optionen\Buttons\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

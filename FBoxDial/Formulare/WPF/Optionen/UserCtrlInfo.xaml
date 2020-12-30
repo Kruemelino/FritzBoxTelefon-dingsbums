@@ -10,7 +10,7 @@
 
     <StackPanel x:Name="MainStackPanel" Margin="8">
 
-        <fbd:OptionsÜberschrift Label="Info"/>
+        <fbd:OptionsÜberschrift Label="{Binding AddinVersion}"/>
         <fbd:OptionsLink Label="E-Mail" URL="mailto:kruemelino@gert-michael.de" LinkLabel="kruemelino@gert-michael.de"/>
         <fbd:OptionsLink Label="Forum" URL="https://www.ip-phone-forum.de/threads/fritz-box-telefon-dingsbums-ein-ms-outlook-addin.237086/" LinkLabel="www.ip-phone-forum.de"/>
         <fbd:OptionsLink Label="Github" URL="https://github.com/Kruemelino/FritzBoxTelefon-dingsbums" LinkLabel="Kruemelino/FritzBoxTelefon-dingsbums"/>

@@ -463,7 +463,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\CallTo.png" />
+    <EmbeddedResource Include="Resources\CallTo.png" />
     <EmbeddedResource Include="Localize\resCommon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
@@ -490,11 +490,11 @@
     <EmbeddedResource Include="Resources\CheckBox_16x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Add.png" />
-    <Content Include="Resources\Download.png" />
-    <Content Include="Resources\Remove.png" />
-    <Content Include="Resources\Save.png" />
-    <Content Include="Resources\Upload.png" />
+    <EmbeddedResource Include="Resources\Add.png" />
+    <EmbeddedResource Include="Resources\Download.png" />
+    <EmbeddedResource Include="Resources\Remove.png" />
+    <EmbeddedResource Include="Resources\Save.png" />
+    <EmbeddedResource Include="Resources\Upload.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Formulare\WPF\AnrMonWPF.xaml">
@@ -626,8 +626,4 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
