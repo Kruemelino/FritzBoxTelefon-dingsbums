@@ -34,7 +34,7 @@ Friend Class Action_ALT
         Dim ReturnXMLDox As New XmlDocument
         Dim OutputHashTable As New Hashtable
 
-        ReturnXMLDox.LoadXml(FritzBoxPOST(ActionName, $"https://{XMLData.POptionen.TBFBAdr }:{FritzBoxDefault.PDfltSOAPPortSSL}{BaseService.controlURL}", BaseService.serviceType, GetSOAPRequest(InputArguments)))
+        ReturnXMLDox.LoadXml(FritzBoxPOST(ActionName, $"https://{XMLData.POptionen.TBFBAdr }:{FritzBoxDefault.DfltSOAPPortSSL}{BaseService.controlURL}", BaseService.serviceType, GetSOAPRequest(InputArguments)))
 
         If ReturnXMLDox.DocumentElement.Name.AreEqual("FEHLER") Then
             With ErrorHashTable

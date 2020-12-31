@@ -75,7 +75,7 @@ Public NotInheritable Class ThisAddIn
         ' Eintrag ins Log
         NLogger.Info("{0} {1} beendet.", Localize.resCommon.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
         ' XML-Datei Speichern
-        XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
+        Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltConfigFileName))
     End Sub
 
 #Region "Standby Wakeup"
@@ -110,7 +110,7 @@ Public NotInheritable Class ThisAddIn
                 End If
 
                 ' XML-Datei speichern
-                XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltConfig_FileName))
+                Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltConfigFileName))
 
         End Select
     End Sub

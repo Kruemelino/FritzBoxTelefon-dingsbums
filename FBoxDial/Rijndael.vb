@@ -12,7 +12,7 @@ Friend Class Rijndael
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
     Friend Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrDeCryptKey As String) As String
         ' Standardwert
-        EncryptString128Bit = PDfltStrErrorMinusOne
+        EncryptString128Bit = DfltStrErrorMinusOne
 
         ' Test ob gültige Eingangsdaten vorhanden
         If vstrTextToBeEncrypted.IsNotErrorString And vstrTextToBeEncrypted.IsNotStringEmpty Then
@@ -23,7 +23,7 @@ Friend Class Rijndael
             Dim EncryptionKey() As Byte = GetRndKey(32)
 
             ' Speichere den Salt und Key in der Registry ab
-            SaveSetting(Localize.resCommon.strDefShortName, DefaultWerte.PDfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
+            SaveSetting(Localize.resCommon.strDefShortName, DefaultWerte.DfltOptions, vstrDeCryptKey, Salt.Append(EncryptionKey).ToBase64String)
 
             ' Create the encryptor and write value to it after it is converted into a byte array
             Using rijAlg As New RijndaelManaged()
@@ -53,9 +53,9 @@ Friend Class Rijndael
     ''' <returns>Die entschlüsselte Zeichenfolge</returns>
     Friend Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDeCryptKey As String) As String
         ' Lese den Key aus der Registry aus
-        Dim DecryptionSaltKey As String = GetSetting(Localize.resCommon.strDefShortName, DefaultWerte.PDfltOptions, vstrDeCryptKey, PDfltStrErrorMinusOne)
+        Dim DecryptionSaltKey As String = GetSetting(Localize.resCommon.strDefShortName, DefaultWerte.DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
         ' Standardwert
-        DecryptString128Bit = PDfltStrErrorMinusOne
+        DecryptString128Bit = DfltStrErrorMinusOne
         ' Test ob gültige Eingangsdaten vorhanden
         If vstrStringToBeDecrypted.IsNotErrorString And vstrStringToBeDecrypted.IsNotStringEmpty And DecryptionSaltKey.IsNotErrorString Then
             ' Extrahiere aus dem DecryptionSaltKey den Salt und den Key

@@ -50,9 +50,9 @@ Public Class FritzBoxData
         Using fbQuery As New FritzBoxQuery
             With TelQuery
                 '.Add(  P_Query_FB_LKZPrefix)
-                .Add(P_Query_FB_LKZ)
+                .Add(FBoxQueryLKZ)
                 '.Add(P_Query_FB_OKZPrefix)
-                .Add(P_Query_FB_OKZ)
+                .Add(FBoxQueryOKZ)
                 QueryAntwort = Await fbQuery.FritzBoxQuery(SessionID, TelQuery)
 
                 ' Überprüfung, ob Verbindung zur Fritz!Box besteht.
@@ -74,28 +74,28 @@ Public Class FritzBoxData
 
                 With TelQuery
                     ' POTS Nummer
-                    .Add(P_Query_FB_POTS)
+                    .Add(FBoxQueryPOTS)
                     ' Mobilnummer
-                    .Add(P_Query_FB_Mobile)
+                    .Add(FBoxQueryMobile)
 
                     ' FON-Name
                     For i = 0 To 2
-                        .Add(P_Query_FB_FON(i))
+                        .Add(FBoxQueryFON(i))
                     Next
 
                     For i = 0 To 9
                         ' Anrufbeantworter-Nummern
-                        .Add(P_Query_FB_TAM(i))
+                        .Add(FBoxQueryTAM(i))
                         ' Fax-Nummern
-                        .Add(P_Query_FB_FAX(i))
+                        .Add(FBoxQueryFAX(i))
                         ' Klassische analoge MSN
-                        .Add(P_Query_FB_MSN(i))
+                        .Add(FBoxQueryMSN(i))
                         ' VoIP-Nummern
-                        .Add(P_Query_FB_VOIP(i))
+                        .Add(FBoxQueryVOIP(i))
                     Next
 
                     ' SIP-Nummern
-                    .Add(P_Query_FB_SIP)
+                    .Add(FBoxQuerySIP)
 
                     ' Führt das Fritz!Box Query aus und gibt die ersten Daten der Telefonnummern zurück
                     QueryAntwort = Await fbQuery.FritzBoxQuery(SessionID, TelQuery)
@@ -196,9 +196,9 @@ Public Class FritzBoxData
                             For jdx = 0 To 9
                                 Select Case kdx
                                     Case 0
-                                        TelQuery.Add(P_Query_FB_MSN_TelNrList(idx, jdx))
+                                        TelQuery.Add(FBoxQueryMSNTelNrList(idx, jdx))
                                     Case 1
-                                        TelQuery.Add(P_Query_FB_VOIP_TelNrList(idx, jdx))
+                                        TelQuery.Add(FBoxQueryVOIPTelNrList(idx, jdx))
                                 End Select
                             Next
 
@@ -238,13 +238,13 @@ Public Class FritzBoxData
 
                 With TelQuery
                     .Clear()
-                    .Add(P_Query_FB_FON_List)       ' FON
-                    .Add(P_Query_FB_DECT_List)      ' DECT (Teil1)
-                    .Add(P_Query_FB_VOIP_List)      ' IP-Telefoen
-                    .Add(P_Query_FB_TAM_List)       ' TAM
+                    .Add(FBoxQueryFONList)       ' FON
+                    .Add(FBoxQueryDECTList)      ' DECT (Teil1)
+                    .Add(FBoxQueryVOIP)      ' IP-Telefoen
+                    .Add(FBoxQueryTAMList)       ' TAM
 
                     For idx = 1 To 8
-                        .Add(P_Query_FB_S0("Name", idx))
+                        .Add(FBoxQueryS0("Name", idx))
                     Next
                 End With 'TelQuery
 
@@ -255,20 +255,20 @@ Public Class FritzBoxData
                     TelQuery.Clear()
                     For idx = LBound(.S0NameList) To UBound(.S0NameList)
                         If .S0NameList(idx).IsNotStringEmpty Then
-                            TelQuery.Add(P_Query_FB_S0("Number", idx + 1))
-                            TelQuery.Add(P_Query_FB_S0("Type", idx + 1))
+                            TelQuery.Add(FBoxQueryS0("Number", idx + 1))
+                            TelQuery.Add(FBoxQueryS0("Type", idx + 1))
                         End If
                     Next
 
                     For idx = LBound(FritzBoxJSONTelefone1.DECT) To UBound(FritzBoxJSONTelefone1.DECT)
                         If FritzBoxJSONTelefone1.DECT(idx).Intern.IsNotStringEmpty Then
-                            TelQuery.Add(P_Query_FB_DECT_RingOnAllMSNs(idx))
-                            TelQuery.Add(P_Query_FB_DECT_NrList(idx))
+                            TelQuery.Add(FBoxQueryDECTRingOnAllMSNs(idx))
+                            TelQuery.Add(FBoxQueryDECTNrList(idx))
                         End If
                     Next
 
-                    TelQuery.Add(P_Query_FB_FaxMailActive)
-                    TelQuery.Add(P_Query_FB_MobileName)
+                    TelQuery.Add(FBoxQueryFaxMailActive)
+                    TelQuery.Add(FBoxQueryMobileName)
 
                 End With
 
@@ -427,7 +427,7 @@ Public Class FritzBoxData
             ' Verarbeitung der Telefone: Mobil
             If tmpTelData.Telefonnummern.Find(Function(Nummer) Nummer.Typ.Contains(TelTypen.Mobil)) IsNot Nothing Then
                 tmpTelefon = New Telefoniegerät With {.TelTyp = TelTypen.Mobil,
-                                                      .Dialport = PDfltMobilDialPort,
+                                                      .Dialport = DfltMobilDialPort,
                                                       .AnrMonID = .Dialport,
                                                       .Name = FritzBoxJSONTelefone2.MobileName,
                                                       .IsFax = False}

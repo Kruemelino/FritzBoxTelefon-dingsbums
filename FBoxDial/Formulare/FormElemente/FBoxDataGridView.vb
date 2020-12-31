@@ -164,7 +164,7 @@ Public Class FBoxDataGridView
                 Dim dgvRow As DataGridViewRow = Rows(e.RowIndex)
                 ' Zeilen, die eine Checkbox haben (Name "Check") sollen farbig hinterlegt werden.
                 If CType(dgvRow.Cells.Item("Check").Value, Boolean) Then
-                    dgvRow.DefaultCellStyle.BackColor = PDfltCheckBackColor
+                    dgvRow.DefaultCellStyle.BackColor = PfltCheckBackColor
                 Else
                     dgvRow.DefaultCellStyle.BackColor = DefaultBackColor
                 End If

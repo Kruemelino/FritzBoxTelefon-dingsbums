@@ -7,7 +7,7 @@ Friend Module SOAPBaseFunctions
 #Region "HTTP"
     Friend Function FritzBoxGet(ByVal Link As String, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
-        Dim retVal As String = PDfltStringEmpty
+        Dim retVal As String = DfltStringEmpty
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
@@ -39,8 +39,8 @@ Friend Module SOAPBaseFunctions
 
     Friend Function FritzBoxPOST(ByVal SOAPAction As String, ByVal urlFull As String, ByVal ServiceType As String, ByVal SOAPXML As XmlDocument) As String
 
-        FritzBoxPOST = PDfltStringEmpty
-        Dim ErrorText As String = PDfltStringEmpty
+        FritzBoxPOST = DfltStringEmpty
+        Dim ErrorText As String = DfltStringEmpty
         Dim fbURI As New Uri(urlFull)
 
         Using webClient As New WebClient
@@ -56,7 +56,7 @@ Friend Module SOAPBaseFunctions
                 ' Zugangsdaten felstlegen
                 Using Crypter As New Rijndael
                     ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-                    .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsStringEmpty, FritzBoxDefault.PDfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DefaultWerte.PDfltDeCryptKey))
+                    .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsStringEmpty, FritzBoxDefault.DfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DefaultWerte.DfltDeCryptKey))
                 End Using
 
                 Try

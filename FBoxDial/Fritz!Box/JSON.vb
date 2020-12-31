@@ -292,7 +292,7 @@ Public Class TelNrList
         ' Doppelte entfernen
         ToDistinctArray = (From x In ToArray() Select x Distinct).ToArray
         ' Leere entfernen
-        ToDistinctArray = (From x In ToDistinctArray Where Not x Like PDfltStringEmpty Select x).ToArray
+        ToDistinctArray = (From x In ToDistinctArray Where Not x Like DfltStringEmpty Select x).ToArray
     End Function
 
     ''' <summary>
@@ -341,7 +341,7 @@ Public Class TelNrList
                 Case 9
                     Item = TelNr9
                 Case Else
-                    Item = PDfltStringEmpty
+                    Item = DfltStringEmpty
             End Select
             Return Item
         End Get

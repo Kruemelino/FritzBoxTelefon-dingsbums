@@ -23,7 +23,7 @@ Imports Microsoft.Office.Interop
 
         OlContact = GetOutlookKontakt(EntryID, StoreID)
         If OlContact IsNot Nothing Then
-            XAttribute.Value = String.Format("{0}{1}", OlContact.FullName, If(OlContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", OlContact.CompanyName), PDfltStringEmpty)).XMLMaskiereZeichen
+            XAttribute.Value = String.Format("{0}{1}", OlContact.FullName, If(OlContact.CompanyName.IsNotStringNothingOrEmpty, String.Format(" ({0})", OlContact.CompanyName), DfltStringEmpty)).XMLMaskiereZeichen
         End If
 
         XButton.Attributes.Append(XAttribute)

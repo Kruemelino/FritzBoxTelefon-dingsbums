@@ -24,7 +24,7 @@ Public Class WählclientWPF
         If XMLData.POptionen.CBPhoner Then
             PhonerApp = New Phoner
             If Not PhonerApp.PhonerReady Then
-                NLogger.Debug(PWählClientPhonerInaktiv)
+                NLogger.Debug(WählClientPhonerInaktiv)
                 PhonerApp.Dispose()
                 PhonerApp = Nothing
             End If
@@ -54,7 +54,7 @@ Public Class WählclientWPF
             .DialNumberList.AddRange(GetKontaktTelNrList(oContact))
 
             ' Kopfdaten setzen
-            .Name = PWählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", PDfltStringEmpty)}")
+            .Name = WählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", DfltStringEmpty)}")
 
             ' Direktwahl deaktivieren
             .Direktwahl = Visibility.Collapsed
@@ -95,7 +95,7 @@ Public Class WählclientWPF
             .DialNumberList.AddRange(GetKontaktTelNrList(oExchangeUser))
 
             ' Kopfdaten setzen
-            .Name = PWählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", PDfltStringEmpty)}")
+            .Name = WählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", DfltStringEmpty)}")
 
             ' Direktwahl deaktivieren
             .Direktwahl = Visibility.Collapsed
@@ -110,7 +110,7 @@ Public Class WählclientWPF
             .DialNumberList.Add(TelNr)
 
             ' Kopfdaten setzen
-            .Name = PWählClientFormText(TelNr.Formatiert)
+            .Name = WählClientFormText(TelNr.Formatiert)
 
             ' Direktwahl deaktivieren
             .Direktwahl = Visibility.Collapsed
@@ -121,7 +121,7 @@ Public Class WählclientWPF
     Friend Sub SetDirektwahl()
         With CType(DataContext, WählClientViewModel)
             ' Kopfdaten setzen
-            .Name = PWählClientFormText("Direktwahl")
+            .Name = WählClientFormText("Direktwahl")
 
             ' Direktwahl aktivieren
             .Direktwahl = Visibility.Visible
@@ -138,7 +138,7 @@ Public Class WählclientWPF
         With CType(DataContext, WählClientViewModel)
 
             ' Standard Status Wert festlegen
-            .Status = PDfltStringEmpty
+            .Status = DfltStringEmpty
             ' Abbruch Button deaktivieren/ausblenden
             BAbbruch.Visibility = Visibility.Hidden
             ' Optionen aktivieren
@@ -148,7 +148,7 @@ Public Class WählclientWPF
             ' Rufnummernunterdrückung gemäß Optionen setzen
             .CLIR = XMLData.POptionen.CBCLIR
 
-            NLogger.Debug(PWählClientStatusLadeGeräte)
+            NLogger.Debug(WählClientStatusLadeGeräte)
             ' Schreibe alle geeigneten Telefone rein (kein Fax, keine IP-Telefonie, keine AB)
             If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
                 ' Nur FON, DECT, S0 und Phoner, wenn Phoner aktiv
@@ -159,16 +159,16 @@ Public Class WählclientWPF
                 .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.StdTelefon)
                 ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das zuletzt genutzte Telefon
                 If .TelGerät Is Nothing Then
-                    NLogger.Debug(PWählClientStatusLetztesGerät)
+                    NLogger.Debug(WählClientStatusLetztesGerät)
                     .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.ZuletztGenutzt)
                 End If
                 ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das erste in der Liste
                 If .TelGerät Is Nothing And .DialDeviceList.Count.IsNotZero Then
-                    NLogger.Debug(PWählClientStatus1Gerät)
+                    NLogger.Debug(WählClientStatus1Gerät)
                     .TelGerät = .DialDeviceList.First
                 End If
             Else
-                NLogger.Debug(PWählClientStatusFehlerGerät)
+                NLogger.Debug(WählClientStatusFehlerGerät)
             End If
         End With
     End Sub
@@ -229,13 +229,13 @@ Public Class WählclientWPF
             SPDirektwahl.IsEnabled = False
             SPKontaktwahl.IsEnabled = False
 
-            Dim DialCode As String = PDfltStringEmpty
+            Dim DialCode As String = DfltStringEmpty
             Dim Erfolreich As Boolean = False
 
             If AufbauAbbrechen Then
-                NLogger.Debug(PWählClientStatusAbbruch)
+                NLogger.Debug(WählClientStatusAbbruch)
 
-                DialCode = PDfltStringEmpty
+                DialCode = DfltStringEmpty
 
                 ' Timmer abbrechen, falls er läuft
                 If TimerSchließen IsNot Nothing Then TimerSchließen.Stop()
@@ -243,17 +243,17 @@ Public Class WählclientWPF
                 DGNummern.UnselectAll()
             Else
                 ' Status setzen
-                .Status = PWählClientBitteWarten
-                NLogger.Debug(PWählClientStatusVorbereitung)
+                .Status = WählClientBitteWarten
+                NLogger.Debug(WählClientStatusVorbereitung)
                 ' Entferne 1x # am Ende
                 DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
                 ' Füge VAZ und LKZ hinzu, wenn gewünscht
                 If XMLData.POptionen.CBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
 
                 ' Rufnummerunterdrückung
-                DialCode = $"{If(.CLIR, "*31#", PDfltStringEmpty)}{XMLData.POptionen.TBAmt}{DialCode}#"
+                DialCode = $"{If(.CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBAmt}{DialCode}#"
 
-                NLogger.Debug(PWählClientStatusWählClient(DialCode))
+                NLogger.Debug(WählClientStatusWählClient(DialCode))
             End If
 
             If .TelGerät.IsPhoner Then
@@ -269,9 +269,9 @@ Public Class WählclientWPF
             ' Ergebnis auswerten 
             If Erfolreich Then
                 If AufbauAbbrechen Then
-                    .Status = PWählClientDialHangUp
+                    .Status = WählClientDialHangUp
                 Else
-                    .Status = PWählClientJetztAbheben
+                    .Status = WählClientJetztAbheben
                     ' Abbruch-Button aktivieren, wenn Anruf abgebrochen
                     BAbbruch.IsEnabled = True
                 End If
@@ -290,7 +290,7 @@ Public Class WählclientWPF
                 ' Timer zum automatischen Schließen des Fensters starten
                 If XMLData.POptionen.CBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.TBWClientEnblDauer * 1000)
             Else
-                .Status = PWählClientDialFehler
+                .Status = WählClientDialFehler
             End If
 
         End With

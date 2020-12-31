@@ -117,7 +117,7 @@ Public Class AnrMonWPF
             'Anrufende Telefonnummer setzen
             If Anrufer Is Nothing OrElse Tlfnt.NrUnterdrückt Then
                 ' Kontaktinformationen wurden nicht gefunden oder die Nummer wurde unterdrückt
-                .AnrMonTelNr = PDfltStringEmpty
+                .AnrMonTelNr = DfltStringEmpty
             Else
                 ' Kontaktinformationen wurden gefunden
                 .AnrMonTelNr = Tlfnt.GegenstelleTelNr?.Formatiert
@@ -126,7 +126,7 @@ Public Class AnrMonWPF
             ' Anrufer Name setzen
             If Tlfnt.NrUnterdrückt Then
                 ' Die Nummer wurde unterdrückt
-                .AnrMonAnrufer = PDfltStringUnbekannt
+                .AnrMonAnrufer = DfltStringUnbekannt
             Else
                 If Anrufer IsNot Nothing Then
                     ' Kontaktinformationen wurden gefunden
@@ -151,7 +151,7 @@ Public Class AnrMonWPF
             ' Text für Zwischenablage setzen
             If Tlfnt.NrUnterdrückt Then
                 ' Die Nummer wurde unterdrückt
-                .AnrMonClipboard = PDfltStringUnbekannt
+                .AnrMonClipboard = DfltStringUnbekannt
             Else
                 If Tlfnt.Anrufer IsNot Nothing Then
                     ' Kontaktinformationen wurden gefunden

@@ -204,7 +204,7 @@ Public Module Extensions
         Return Not Str1.IsStringNothingOrEmpty
     End Function
     <Extension> Public Function IsErrorString(ByVal Str1 As String) As Boolean
-        Return Str1.AreEqual(PDfltStrErrorMinusOne)
+        Return Str1.AreEqual(DfltStrErrorMinusOne)
     End Function
     <Extension> Public Function IsNotErrorString(ByVal Str1 As String) As Boolean
         Return Not Str1.IsErrorString
@@ -213,7 +213,7 @@ Public Module Extensions
         Return Regex.Replace(str1, pattern, replacement, RegOpt)
     End Function
     <Extension> Public Function RegExRemove(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As String
-        Return str1.RegExReplace(pattern, PDfltStringEmpty, RegOpt)
+        Return str1.RegExReplace(pattern, DfltStringEmpty, RegOpt)
     End Function
     <Extension> Public Function IsRegExMatch(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As Boolean
         Return Regex.Match(str1, pattern, RegOpt).Success
@@ -252,7 +252,7 @@ Public Module Extensions
         If Not pos(0).AreEqual(Len(StringDavor)) Then
             GetSubString = Mid(Text, pos(0), pos(1) - pos(0))
         Else
-            GetSubString = PDfltStrErrorMinusOne
+            GetSubString = DfltStrErrorMinusOne
         End If
     End Function
 
@@ -288,7 +288,7 @@ Public Module Extensions
             GetSubString = Mid(Text, pos(0), pos(1) - pos(0))
             StartPosition = pos(1)
         Else
-            GetSubString = PDfltStrErrorMinusOne
+            GetSubString = DfltStrErrorMinusOne
         End If
 
     End Function
@@ -352,11 +352,11 @@ Public Module Extensions
     ''' <param name="Text"></param>
     ''' <returns>Den konvertierten String. falls das nicht möglich ist, wird -1 zurückgegeben.</returns>
     <Extension> Public Function ToInt(ByVal Text As String) As Integer
-        Dim retVal As Integer = PDfltIntErrorMinusOne
+        Dim retVal As Integer = DfltIntErrorMinusOne
         If Integer.TryParse(Text, retVal) Then
             Return retVal
         Else
-            Return PDfltIntErrorMinusOne
+            Return DfltIntErrorMinusOne
         End If
     End Function
     <Extension> Public Function ToInt(ByVal sWert As Single) As Integer
@@ -408,7 +408,7 @@ Public Module Extensions
         Dim PingSender As New NetworkInformation.Ping()
         Dim Options As New NetworkInformation.PingOptions()
         Dim PingReply As NetworkInformation.PingReply = Nothing
-        Dim data As String = PDfltStringEmpty
+        Dim data As String = DfltStringEmpty
 
         Dim buffer As Byte() = Encoding.ASCII.GetBytes(data)
         Dim timeout As Integer = 120
@@ -470,7 +470,7 @@ Public Module Extensions
         Dim IPAddresse As IPAddress = Nothing
         Dim IPHostInfo As IPHostEntry
 
-        ValidIP = FritzBoxDefault.PDfltFritzBoxAdress
+        ValidIP = FritzBoxDefault.DfltFritzBoxAdress
 
         If IPAddress.TryParse(InputIP, IPAddresse) Then
             Select Case IPAddresse.AddressFamily
@@ -500,7 +500,7 @@ Public Module Extensions
 
     Public Async Function HTTPGet(ByVal Link As String, ByVal FBEncoding As Encoding) As Threading.Tasks.Task(Of String)
 
-        Dim retVal As String = PDfltStringEmpty
+        Dim retVal As String = DfltStringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -532,7 +532,7 @@ Public Module Extensions
 
     Public Async Function HTTPPost(ByVal Link As String, ByVal Daten As String, ByVal ZeichenCodierung As Encoding) As Threading.Tasks.Task(Of String)
 
-        Dim retVal As String = PDfltStringEmpty
+        Dim retVal As String = DfltStringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -545,9 +545,9 @@ Public Module Extensions
                     .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
                     With .Headers
                         .Add(HttpRequestHeader.ContentLength, Daten.Length.ToString)
-                        .Add(HttpRequestHeader.UserAgent, PDfltHeader_UserAgent)
+                        .Add(HttpRequestHeader.UserAgent, DfltHeader_UserAgent)
                         .Add(HttpRequestHeader.KeepAlive, "True")
-                        .Add(HttpRequestHeader.Accept, PDfltHeader_Accept)
+                        .Add(HttpRequestHeader.Accept, DfltHeader_Accept)
                     End With
 
                     Try
@@ -583,7 +583,7 @@ Public Module Extensions
 
     Public Function MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
-            Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, PDflt2NeueZeile, Meldung)
+            Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, Dflt2NeueZeile, Meldung)
             NLogger.Warn(Meldung)
         End If
         Return Microsoft.VisualBasic.MsgBox(Meldung, Style, Localize.resCommon.strDefLongName)

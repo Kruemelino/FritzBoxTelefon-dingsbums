@@ -3,7 +3,7 @@
 Public Module Rückwärtssuche
 
     Friend Async Function StartRWS(ByVal TelNr As Telefonnummer, ByVal RWSIndex As Boolean) As Task(Of String)
-        Dim vCard As String = PDfltStringEmpty
+        Dim vCard As String = DfltStringEmpty
         Dim RWSIndexEintrag As RWSIndexEntry
 
         If RWSIndex Then
@@ -51,7 +51,7 @@ Public Module Rückwärtssuche
         Dim htmlRWS As String       ' Inhalt der Webseite
         Dim i As Integer            ' Zählvariable
         Dim baseurl As String
-        Dim VCard As String = PDfltStringEmpty
+        Dim VCard As String = DfltStringEmpty
         Dim Gefunden As Boolean = False
 
         ' Webseite für Rückwärtssuche aufrufen und herunterladen
@@ -77,10 +77,10 @@ Public Module Rückwärtssuche
                 End If
             End If
 
-            If VCard.StartsWith(PDfltBegin_vCard) Then
+            If VCard.StartsWith(DfltBegin_vCard) Then
                 Gefunden = True
             Else
-                VCard = PDfltStringEmpty
+                VCard = DfltStringEmpty
             End If
             i += 1
             tmpTelNr = Strings.Left(tmpTelNr, Len(tmpTelNr) - 2) & 0

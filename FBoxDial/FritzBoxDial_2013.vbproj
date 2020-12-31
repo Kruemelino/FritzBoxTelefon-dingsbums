@@ -235,9 +235,6 @@
     <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\TreeView\OlOrdnerTreeView.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Formulare\WPF\AnrMonViewModel.vb" />
     <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
@@ -330,7 +327,6 @@
     <Compile Include="Formulare\FormElemente\FBoxDataGridView.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Formulare\TreeView\OlOrdnerTreeNode.vb" />
     <Compile Include="Formulare\FormElemente\StringLogicalComparer.vb" />
     <Compile Include="Formulare\ListControl\TelBuchListControlItem.Designer.vb">
       <DependentUpon>TelBuchListControlItem.vb</DependentUpon>

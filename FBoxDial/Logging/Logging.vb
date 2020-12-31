@@ -4,12 +4,12 @@
 
         Dim config = New Config.LoggingConfiguration
 
-        Dim DfltLogLayout As New Layouts.SimpleLayout With {.Text = PDfltNLog_LayoutText}
+        Dim DfltLogLayout As New Layouts.SimpleLayout With {.Text = DfltNLogLayoutText}
 
         Dim Ziel As New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = False,
-                                                      .FileName = IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, PDfltLog_FileName),
+                                                      .FileName = IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltLogFileName),
                                                       .Layout = DfltLogLayout}
 
         ' Level  Typical Use

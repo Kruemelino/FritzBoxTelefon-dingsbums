@@ -64,7 +64,7 @@ Friend Module KontaktFunktionen
                     End If
 
                     .Categories = Localize.resCommon.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & Localize.resCommon.strDefLongName & " am " & Now & PDflt2NeueZeile & "vCard:" & PDflt2NeueZeile & vCard
+                    .Body = .Body & vbCrLf & "Erstellt durch das " & Localize.resCommon.strDefLongName & " am " & Now & Dflt2NeueZeile & "vCard:" & Dflt2NeueZeile & vCard
                 End If
 
             End With
@@ -141,7 +141,7 @@ Friend Module KontaktFunktionen
     ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
     Friend Function ErstelleKontakt(ByVal TelNr As Telefonnummer, ByVal Speichern As Boolean) As Outlook.ContactItem
-        Return ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, PDfltStringEmpty, TelNr, Speichern)
+        Return ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, DfltStringEmpty, TelNr, Speichern)
     End Function
 
     ''' <summary>
@@ -153,7 +153,7 @@ Friend Module KontaktFunktionen
         Dim TelNr As Telefonnummer
 
         With olJournal
-            If .Categories.Contains(PDfltJournalKategorie) Then
+            If .Categories.Contains(DfltJournalKategorie) Then
 
                 olKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))
 
@@ -161,7 +161,7 @@ Friend Module KontaktFunktionen
 
                     TelNr = New Telefonnummer
                     'Telefonnummer aus dem .Body herausfiltern
-                    TelNr.SetNummer = .Body.GetSubString(PDfltJournalBodyStart, "Status: ")
+                    TelNr.SetNummer = .Body.GetSubString(PfltJournalBodyStart, "Status: ")
 
                     ' Prüfe ob TelNr unterdrückt
                     If TelNr.Unbekannt Then
@@ -169,15 +169,15 @@ Friend Module KontaktFunktionen
                     Else
                         ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                         ' vCard aus dem .Body herausfiltern
-                        vCard = PDfltBegin_vCard & .Body.GetSubString(PDfltBegin_vCard, PDfltEnd_vCard) & PDfltEnd_vCard
+                        vCard = DfltBegin_vCard & .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard) & DfltEnd_vCard
 
                         'Wenn keine vCard im Body gefunden
-                        If vCard.AreEqual(PDfltBegin_vCard & PDfltStrErrorMinusOne & PDfltEnd_vCard) Then
+                        If vCard.AreEqual(DfltBegin_vCard & DfltStrErrorMinusOne & DfltEnd_vCard) Then
                             ' wenn nicht, dann neuen Kontakt mit TelNr öffnen
                             olKontakt = ErstelleKontakt(TelNr, False)
                         Else
                             'vCard gefunden
-                            olKontakt = ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, vCard, TelNr, False)
+                            olKontakt = ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, vCard, TelNr, False)
                         End If
                     End If
                 End If
@@ -211,7 +211,7 @@ Friend Module KontaktFunktionen
     ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
     ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
     Friend Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
-        KontaktBild = PDfltStringEmpty
+        KontaktBild = DfltStringEmpty
         If olContact IsNot Nothing Then
             With olContact
                 With .Attachments
@@ -533,7 +533,7 @@ Friend Module KontaktFunktionen
             Dim settings As New XmlWriterSettings With {.Indent = True, .OmitXmlDeclaration = False}
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
 
-            XmlSerializerNamespace.Add(PDfltStringEmpty, PDfltStringEmpty)
+            XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
 
             Using TextSchreiber As New StringWriter
                 mySerializer.Serialize(TextSchreiber, XMLKontakt, XmlSerializerNamespace)
@@ -561,12 +561,12 @@ Friend Module KontaktFunktionen
                         If ExchangeUser IsNot Nothing Then
                             Return ExchangeUser.PrimarySmtpAddress
                         Else
-                            Return PDfltStringEmpty
+                            Return DfltStringEmpty
                         End If
                         ExchangeUser.ReleaseComObject
 
                     Case Else
-                        Return TryCast(Adresseintrag.PropertyAccessor.GetProperty(PDfltDASLSMTPAdress), String)
+                        Return TryCast(Adresseintrag.PropertyAccessor.GetProperty(DfltDASLSMTPAdress), String)
 
                 End Select
 
@@ -575,7 +575,7 @@ Friend Module KontaktFunktionen
                 Return EMail.SenderEmailAddress
             End If
         Else
-            Return PDfltStringEmpty
+            Return DfltStringEmpty
         End If
     End Function
 

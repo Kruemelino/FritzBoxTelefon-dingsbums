@@ -5,7 +5,7 @@ Friend Class FritzBoxQuery
 
     Public Shared ReadOnly Property PFBLinkQuery(ByVal sSID As String, ByVal sAbfrage As String) As String
         Get
-            Return PFBLinkBasis & "/query.lua?" & sSID & "&" & sAbfrage
+            Return FBLinkBasis & "/query.lua?" & sSID & "&" & sAbfrage
         End Get
     End Property
 

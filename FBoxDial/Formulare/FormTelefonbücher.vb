@@ -67,7 +67,7 @@ Public Class FormTelefonbücher
                 .AddTextColumn("RealName", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                 .AddTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                 .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
-                .AddImageColumn("Löschen", PDfltStringEmpty)
+                .AddImageColumn("Löschen", DfltStringEmpty)
 
                 ' Datenquelle generieren setzen
                 .DataSource = New BindingSource With {.DataSource = ConvertToDataTable(Telefonbuch.Kontakte, SubDGVTyp.Kontakt)}
@@ -182,10 +182,10 @@ Public Class FormTelefonbücher
                             ' Spalten hinzufügen
                             .AddCheckBoxColumn("Prio", "Prio")
                             .AddEditTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
-                            .AddComboBoxColumn("Typ", "Typ", FritzBoxDefault.PDfltTelBuchTelTyp, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+                            .AddComboBoxColumn("Typ", "Typ", FritzBoxDefault.DfltTelBuchTelTyp, DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
                             '.AddTextColumn("Vanity", "Vanity", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
                             '.AddTextColumn("Schnellwahl", "Schnellwahl", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
-                            .AddImageColumn("Löschen", PDfltStringEmpty)
+                            .AddImageColumn("Löschen", DfltStringEmpty)
                         End If
 
                         ' Datenquelle generieren setzen
@@ -200,7 +200,7 @@ Public Class FormTelefonbücher
                         If .Columns.Count.IsZero Then
                             ' Spalten hinzufügen
                             .AddEditTextColumn("EMail", "E-Mail Adresse", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
-                            .AddImageColumn("Löschen", PDfltStringEmpty)
+                            .AddImageColumn("Löschen", DfltStringEmpty)
                         End If
 
                         ' Datenquelle generieren setzen
@@ -277,7 +277,7 @@ Public Class FormTelefonbücher
     Private Sub DGVTelefonnummern_DefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles DGVTelefonnummern.DefaultValuesNeeded
         With CType(sender, FBoxDataGridView)
             If .Columns.Contains("Typ") Then
-                e.Row.Cells("Typ").Value = FritzBoxDefault.PDfltTelBuchTelTyp.First.Key
+                e.Row.Cells("Typ").Value = FritzBoxDefault.DfltTelBuchTelTyp.First.Key
             End If
         End With
     End Sub
@@ -340,9 +340,9 @@ Public Class FormTelefonbücher
     Private Sub LCTelefonbücher_ContextMenuClick(sender As Object, e As ToolStripItemClickedEventArgs, TB As FritzBoxXMLTelefonbuch) Handles LCTelefonbücher.ContextMenuClick
         Select Case e.ClickedItem.Name
             Case "TSMAddTelBook"
-                AddTelefonbuch(InputBox(PDfltTelBNameNeuBuch))
+                AddTelefonbuch(InputBox(DfltTelBNameNeuBuch))
             Case "TSMRemoveTelBook"
-                If MsgBox(PDfltTelBFrageLöschen(TB.Name, TB.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
+                If MsgBox(DfltTelBFrageLöschen(TB.Name, TB.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
                     DeleteAddTelefonbuch(TB)
                 End If
         End Select
@@ -371,7 +371,7 @@ Public Class FormTelefonbücher
 
     Private Sub DeleteAddTelefonbuch(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
         If Telefonbuch.ID.ToInt.IsZero Then
-            If MsgBox(PDfltTelBFrageLöschenID0(Telefonbuch.Name, Telefonbuch.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
+            If MsgBox(DfltTelBFrageLöschenID0(Telefonbuch.Name, Telefonbuch.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
                 Exit Sub
             End If
         End If
@@ -400,10 +400,10 @@ Public Class FormTelefonbücher
 
         Select Case CType(sender, Button).Name
             Case BAdd.Name
-                AddTelefonbuch(InputBox(PDfltTelBNameNeuBuch))
+                AddTelefonbuch(InputBox(DfltTelBNameNeuBuch))
             Case BRemove.Name
                 Dim TB As FritzBoxXMLTelefonbuch = LCTelefonbücher.Selected?.Telefonbuch
-                If MsgBox(PDfltTelBFrageLöschen(TB.Name, TB.ID), MsgBoxStyle.YesNo, "B_Click") = vbYes Then
+                If MsgBox(DfltTelBFrageLöschen(TB.Name, TB.ID), MsgBoxStyle.YesNo, "B_Click") = vbYes Then
                     DeleteAddTelefonbuch(TB)
                 End If
             Case BSpeichern.Name

@@ -121,7 +121,7 @@ Friend Module FritzBoxTelefonbuch
 
         If TelefonbuchName.IsNotStringEmpty Then
 
-            InPutData = New Hashtable From {{"NewPhonebookName", TelefonbuchName}, {"NewPhonebookExtraID", PDfltStringEmpty}}
+            InPutData = New Hashtable From {{"NewPhonebookName", TelefonbuchName}, {"NewPhonebookExtraID", DfltStringEmpty}}
             OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "AddPhonebook", InPutData)
 
             ' Return code   Description         Related argument
@@ -149,7 +149,7 @@ Friend Module FritzBoxTelefonbuch
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 
-        InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}, {"NewPhonebookExtraID", PDfltStringEmpty}}
+        InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}, {"NewPhonebookExtraID", DfltStringEmpty}}
         OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "DeletePhonebook", InPutData)
 
         ' Return code   Description         Related argument
@@ -205,11 +205,11 @@ Friend Module FritzBoxTelefonbuch
                     Return CInt(OutPutData.Item("NewPhonebookEntryUniqueID"))
                 Else
                     NLogger.Error("UpdateTelefonbucheintrag: {0}", OutPutData.Item("Error").ToString)
-                    Return PDfltIntErrorMinusOne
+                    Return DfltIntErrorMinusOne
                 End If
             End Using
         Else
-            Return PDfltIntErrorMinusOne
+            Return DfltIntErrorMinusOne
         End If
     End Function
     ''' <summary>

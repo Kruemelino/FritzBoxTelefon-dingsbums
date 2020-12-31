@@ -18,7 +18,7 @@ Public Class Service
 
     Friend Function ActionExists(ByVal ActionName As String) As Boolean
         If SCPD Is Nothing Then
-            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.PDfltSOAPPort}{SCPDURL}")
+            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.DfltSOAPPort}{SCPDURL}")
         End If
 
         Return SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
@@ -53,7 +53,7 @@ Public Class Service
         Dim ReturnXMLDox As New XmlDocument
         Dim OutputHashTable As New Hashtable
 
-        ReturnXMLDox.LoadXml(FritzBoxPOST(Action.Name, $"https://{XMLData.POptionen.TBFBAdr }:{FritzBoxDefault.PDfltSOAPPortSSL}{ControlURL}", ServiceType, GetRequest(Action, InputArguments)))
+        ReturnXMLDox.LoadXml(FritzBoxPOST(Action.Name, $"https://{XMLData.POptionen.TBFBAdr }:{FritzBoxDefault.DfltSOAPPortSSL}{ControlURL}", ServiceType, GetRequest(Action, InputArguments)))
 
         If ReturnXMLDox.DocumentElement.Name.AreEqual("FEHLER") Then
             With ErrorHashTable
@@ -92,21 +92,21 @@ Public Class Service
 
         With GetRequest
             ' XML-Schemata hinzufügen
-            .Schemas.Add(FritzBoxDefault.PDfltSOAPRequestSchema)
+            .Schemas.Add(FritzBoxDefault.DfltSOAPRequestSchema)
 
             ' XML Deklaration hinzufügen
             .AppendChild(.CreateXmlDeclaration("1.0", "utf-8", ""))
 
             ' XML-RootElement "Envelope" generieren
-            With .AppendChild(.CreateElement("s", "Envelope", FritzBoxDefault.PDfltSOAPRequestNameSpaceEnvelope))
+            With .AppendChild(.CreateElement("s", "Envelope", FritzBoxDefault.DfltSOAPRequestNameSpaceEnvelope))
                 ' Das Attribut "encodingStyle" dem XML-Root-Element hinzufügen
-                With .Attributes.Append(GetRequest.CreateAttribute("s", "encodingStyle", FritzBoxDefault.PDfltSOAPRequestNameSpaceEnvelope))
+                With .Attributes.Append(GetRequest.CreateAttribute("s", "encodingStyle", FritzBoxDefault.DfltSOAPRequestNameSpaceEnvelope))
                     ' Den Wert des Attributes "encodingStyle" setzen
-                    .Value = FritzBoxDefault.PDfltSOAPRequestNameSpaceEncoding
+                    .Value = FritzBoxDefault.DfltSOAPRequestNameSpaceEncoding
                 End With
 
                 ' XML-BodyElement "Body" generieren und dem XML-RootElement anhängen
-                With .AppendChild(GetRequest.CreateElement("s", "Body", FritzBoxDefault.PDfltSOAPRequestNameSpaceEnvelope))
+                With .AppendChild(GetRequest.CreateElement("s", "Body", FritzBoxDefault.DfltSOAPRequestNameSpaceEnvelope))
 
                     ' XML-Element mit dem namen der Action generieren und dem XML-BodyElement anhängen
                     With .AppendChild(GetRequest.CreateElement("u", Action.Name, ServiceType))

@@ -62,7 +62,7 @@ Public Class FormAnrList
         If Anrufliste IsNot Nothing Then
             With DGVAnrListe
                 .AddCheckBoxColumn("Check", "*")
-                .AddImageColumn("Image", PDfltStringEmpty)
+                .AddImageColumn("Image", DfltStringEmpty)
                 .AddHiddenTextColumn("ID", GetType(Integer))
                 .AddHiddenTextColumn("Type", GetType(String))
                 .AddTextColumn("Datum", "Datum", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)

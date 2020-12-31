@@ -288,7 +288,7 @@ Imports Microsoft.Office.Interop
                 OlKontakt = ErstelleKontakt(GegenstelleTelNr, False)
             Else
                 'vCard gefunden
-                OlKontakt = ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, VCard, GegenstelleTelNr, False)
+                OlKontakt = ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, VCard, GegenstelleTelNr, False)
             End If
         End If
 
@@ -324,28 +324,28 @@ Imports Microsoft.Office.Interop
 
                     If Angenommen Then
                         If AnrufRichtung = AnrufRichtungen.Ausgehend Then
-                            tmpSubject = PDfltJournalTextAusgehend
+                            tmpSubject = DfltJournalTextAusgehend
                         Else
-                            tmpSubject = PDfltJournalTextEingehend
+                            tmpSubject = DfltJournalTextEingehend
                         End If
                     Else 'Verpasst
                         If AnrufRichtung = AnrufRichtungen.Ausgehend Then
-                            tmpSubject = PDfltJournalTextNichtErfolgreich
+                            tmpSubject = DfltJournalTextNichtErfolgreich
                         Else
-                            tmpSubject = PDfltJournalTextVerpasst
+                            tmpSubject = DfltJournalTextVerpasst
                         End If
                     End If
 
                     With olJournal
 
-                        .Subject = $"{tmpSubject} {Anrufer}{If(NrUnterdrückt, PDfltStringEmpty, If(Anrufer.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert)))}"
+                        .Subject = $"{tmpSubject} {Anrufer}{If(NrUnterdrückt, DfltStringEmpty, If(Anrufer.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert)))}"
                         .Duration = Dauer.GetLarger(31) \ 60
-                        .Body = PDfltJournalBody(If(NrUnterdrückt, PDfltStringUnbekannt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
+                        .Body = DfltJournalBody(If(NrUnterdrückt, DfltStringUnbekannt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
                         .Start = ZeitBeginn
                         .Companies = Firma
 
                         ' Bei verpassten Anrufen ist TelGerät ggf. leer
-                        .Categories = $"{If(TelGerät Is Nothing, "Verpasst", TelGerät.Name)};{String.Join("; ", PDfltJournalDefCategories.ToArray)}"
+                        .Categories = $"{If(TelGerät Is Nothing, "Verpasst", TelGerät.Name)};{String.Join("; ", DfltJournalDefCategories.ToArray)}"
 
                         ' Testweise: Speichern der EntryID und StoreID in Benutzerdefinierten Feldern
                         If OlKontakt IsNot Nothing Then
@@ -384,7 +384,7 @@ Imports Microsoft.Office.Interop
                 End If
             End If
         Else
-            NLogger.Info(PDfltJournalFehler)
+            NLogger.Info(DfltJournalFehler)
         End If
     End Sub
 
@@ -539,7 +539,7 @@ Imports Microsoft.Office.Interop
         XButton.Attributes.Append(XAttribute)
 
         XAttribute = xDoc.CreateAttribute("supertip")
-        XAttribute.Value = String.Format("Zeit: {1}{0}Telefonnummer: {2}", PDflt1NeueZeile, ZeitBeginn.ToString, GegenstelleTelNr.Formatiert)
+        XAttribute.Value = String.Format("Zeit: {1}{0}Telefonnummer: {2}", Dflt1NeueZeile, ZeitBeginn.ToString, GegenstelleTelNr.Formatiert)
         XButton.Attributes.Append(XAttribute)
 
         If Not Angenommen Then

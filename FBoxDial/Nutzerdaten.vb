@@ -3,7 +3,7 @@
 
     Public Sub New()
         ' Initialisiere die Nutzerdaten
-        XMLData.Laden
+        Laden(XMLData)
     End Sub
 
 End Class

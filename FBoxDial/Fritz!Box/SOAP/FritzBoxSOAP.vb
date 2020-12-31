@@ -21,7 +21,7 @@ Public Class FritzBoxSOAP
 
         ' Workaround: XML-Datei als String herunterladen und separat Deserialisieren
         ' Herunterladen
-        HttpResponse = FritzBoxGet($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.PDfltSOAPPort}{KnownSOAPFile.tr64desc}", HttpFehler)
+        HttpResponse = FritzBoxGet($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.DfltSOAPPort}{KnownSOAPFile.tr64desc}", HttpFehler)
         ' Deserialisieren
         If Not HttpFehler Then FBTR64Desc = XmlDeserializeFromString(Of TR64Desc)(HttpResponse)
     End Sub

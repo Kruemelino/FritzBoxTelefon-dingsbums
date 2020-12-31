@@ -30,7 +30,7 @@ Friend Module KontaktIndizierer
                         End Using
                     End If
                 Else
-                    colArgs(i) = PDfltStringEmpty
+                    colArgs(i) = DfltStringEmpty
                 End If
             Next
 
@@ -62,7 +62,7 @@ Friend Module KontaktIndizierer
         Dim UserEigenschaft As Outlook.UserProperty
         With olKontakt
             With .UserProperties
-                For Each UserProperty As String In PDfltUserProperties
+                For Each UserProperty As String In DfltUserProperties
 
                     Try
                         UserEigenschaft = .Find(UserProperty)
@@ -94,7 +94,7 @@ Friend Module KontaktIndizierer
         Try
             With Ordner.UserDefinedProperties
                 For i = 1 To .Count
-                    If PDfltUserProperties.Contains(.Item(1).Name) Then .Remove(1)
+                    If DfltUserProperties.Contains(.Item(1).Name) Then .Remove(1)
                 Next
             End With
         Catch : End Try

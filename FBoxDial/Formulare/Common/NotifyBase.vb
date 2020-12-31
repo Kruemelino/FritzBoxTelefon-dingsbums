@@ -34,6 +34,16 @@ Public MustInherit Class NotifyBase
 
     End Function
 
+    Protected Function GetProperty(Of T)(ByVal storage As T, DefaultValue As T) As T
+
+        If storage IsNot Nothing Then
+            Return storage
+        Else
+            Return DefaultValue
+        End If
+
+    End Function
+
     ''' <summary>
     '''    Notifies listeners that a property value has changed.
     ''' </summary>

@@ -4,38 +4,38 @@ Public NotInheritable Class DfltWerteAllgemein
 
 #Region "Global Default Value Properties"
     ''' <summary>
-    ''' Eon leerer String
+    ''' Ein leerer String
     ''' </summary>
-    Public Shared ReadOnly Property PDfltStringEmpty As String = String.Empty
+    Public Shared ReadOnly Property DfltStringEmpty As String = String.Empty
     ''' <summary>
     ''' Leerzeichen Chr(32), " "
     ''' </summary>
-    Public Shared ReadOnly Property PDfltStringLeerzeichen As String = Chr(32)
+    Public Shared ReadOnly Property DfltStringLeerzeichen As String = Chr(32)
     ''' <summary>
     ''' -1 als String
     ''' Default Fehler
     ''' </summary>
-    Public Shared ReadOnly Property PDfltStrErrorMinusOne() As String = "-1"
+    Public Shared ReadOnly Property DfltStrErrorMinusOne() As String = "-1"
 
     ''' <summary>
     ''' -1 als Integer
     ''' </summary>
-    Public Shared ReadOnly Property PDfltIntErrorMinusOne() As Integer = -1
+    Public Shared ReadOnly Property DfltIntErrorMinusOne() As Integer = -1
 
     ''' <summary>
     ''' vbCrLf
     ''' </summary>
-    Public Shared ReadOnly Property PDflt1NeueZeile() As String = vbCrLf
+    Public Shared ReadOnly Property Dflt1NeueZeile() As String = vbCrLf
 
     ''' <summary>
     ''' vbCrLf &amp; vbCrLf
     ''' </summary>
-    Public Shared ReadOnly Property PDflt2NeueZeile() As String = PDflt1NeueZeile & PDflt1NeueZeile
+    Public Shared ReadOnly Property Dflt2NeueZeile() As String = Dflt1NeueZeile & Dflt1NeueZeile
 
     ''' <summary>
     ''' String: unbekannt
     ''' </summary>
-    Public Shared ReadOnly Property PDfltStringUnbekannt() As String = "unbekannt"
+    Public Shared ReadOnly Property DfltStringUnbekannt() As String = "unbekannt"
 
     '''' <summary>
     '''' 0000000000000000
@@ -45,27 +45,22 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)
     ''' </summary>
-    Public Shared ReadOnly Property PDfltHeader_UserAgent() As String = "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
-
-    '''' <summary>
-    '''' application/x-www-form-urlencoded
-    '''' </summary>
-    'Public Shared ReadOnly Property PDfltHeader_ContentType() As String = "application/x-www-form-urlencoded"
+    Public Shared ReadOnly Property DfltHeader_UserAgent() As String = "Mozilla/5.0 (compatible; MSIE 7.0; Windows NT 6.0; WOW64; SLCC1; .NET CLR 2.0.50727; .NET CLR 3.0.04506; Media Center PC 5.0; .NET CLR 3.5.21022; .NET CLR 1.1.4322)"
 
     ''' <summary>
     ''' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
     ''' </summary>
-    Public Shared ReadOnly Property PDfltHeader_Accept() As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    Public Shared ReadOnly Property DfltHeader_Accept() As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
     ''' <summary>
     ''' 2000
     ''' </summary>
-    Public Shared ReadOnly Property PDfltReStartIntervall() As Integer = 2000
+    Public Shared ReadOnly Property DfltReStartIntervall() As Integer = 2000
 
     ''' <summary>
     ''' 15
     ''' </summary>
-    Public Shared ReadOnly Property PDfltTryMaxRestart() As Integer = 15
+    Public Shared ReadOnly Property DfltTryMaxRestart() As Integer = 15
 
     '''' <summary>
     '''' [-&gt;]
@@ -85,55 +80,55 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' FBDB-AnrMonDirection
     ''' </summary>
-    Public Shared ReadOnly Property PDfltAnrMonDirection_UserProperty_Name() As String = "FBDB-AnrMonDirection"
+    Public Shared ReadOnly Property DfltAnrMonDirection_UserProperty_Name() As String = "FBDB-AnrMonDirection"
 
     ''' <summary>
     ''' FBDB-AnrMonZeit
     ''' </summary>
-    Public Shared ReadOnly Property PDfltAnrMonDirection_UserProperty_Zeit() As String = "FBDB-AnrMonZeit"
+    Public Shared ReadOnly Property DfltAnrMonDirection_UserProperty_Zeit() As String = "FBDB-AnrMonZeit"
 
     ''' <summary>
     ''' FBDB_Note_Table
     ''' </summary>
-    Public Shared ReadOnly Property PDfltNote_Table() As String = "FBDB_Note_Table"
+    Public Shared ReadOnly Property DfltNote_Table() As String = "FBDB_Note_Table"
 
     ''' <summary>
     ''' BEGIN:VCARD
     ''' </summary>
-    Public Shared ReadOnly Property PDfltBegin_vCard() As String = "BEGIN:VCARD"
+    Public Shared ReadOnly Property DfltBegin_vCard() As String = "BEGIN:VCARD"
 
     ''' <summary>
     ''' END:VCARD
     ''' </summary>
-    Public Shared ReadOnly Property PDfltEnd_vCard() As String = "END:VCARD"
+    Public Shared ReadOnly Property DfltEnd_vCard() As String = "END:VCARD"
 
     ''' <summary>
     ''' CallList
     ''' </summary>
     ''' <value>CallList</value>
     ''' <returns>CallList</returns>
-    Public Shared ReadOnly Property PDfltNameListCALL() As String = "CallList"
+    Public Shared ReadOnly Property DfltNameListCALL() As String = "CallList"
 
     ''' <summary>
     ''' RingList
     ''' </summary>
     ''' <value>RingList</value>
     ''' <returns>RingList</returns>
-    Public Shared ReadOnly Property PDfltNameListRING() As String = "RingList"
+    Public Shared ReadOnly Property DfltNameListRING() As String = "RingList"
 
     ''' <summary>
     ''' VIPList
     ''' </summary>
     ''' <value>VIPList</value>
     ''' <returns>VIPList</returns>
-    Public Shared ReadOnly Property PDfltNameListVIP() As String = "VIPList"
+    Public Shared ReadOnly Property DfltNameListVIP() As String = "VIPList"
 
     ''' <summary>
     ''' FritzOutlookV5.xml
     ''' </summary>
     ''' <returns>FritzOutlookV5.xml</returns>
     ''' <remarks>Wird mit der Ressource "strDefShortName" erstellt.</remarks>
-    Public Shared ReadOnly Property PDfltConfig_FileName() As String = $"{Localize.resCommon.strDefShortName}.xml"
+    Public Shared ReadOnly Property DfltConfigFileName() As String = $"{Localize.resCommon.strDefShortName}.xml"
 
     ''' <summary>
     ''' FritzOutlookV5.log
@@ -141,38 +136,36 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <value>FritzOutlookV5.log</value>
     ''' <returns>FritzOutlookV5.log</returns>
     ''' <remarks>Wird mit Ressource "PDfltAddin_KurzName" erstellt.</remarks>
-    Public Shared ReadOnly Property PDfltLog_FileName() As String = $"{Localize.resCommon.strDefShortName}.log"
+    Public Shared ReadOnly Property DfltLogFileName() As String = $"{Localize.resCommon.strDefShortName}.log"
 
     ''' <summary>
     ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}
     ''' </summary>
     ''' <returns>${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}</returns>
-    Public Shared ReadOnly Property PDfltNLog_LayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}"
+    Public Shared ReadOnly Property DfltNLogLayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}"
 
     ''' <summary>
     ''' Gibt den default Dialport für Mobilgeräte an. 
     ''' </summary>
     ''' <value>String</value>
     ''' <returns>99</returns>
-    Public Shared ReadOnly Property PDfltMobilDialPort() As Integer = 99
+    Public Shared ReadOnly Property DfltMobilDialPort() As Integer = 99
 
-    Public Shared ReadOnly Property PDfltDirectorySeparatorChar() As String = IO.Path.DirectorySeparatorChar
-
-    Public Shared ReadOnly Property PDfltAddInPath() As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & PDfltDirectorySeparatorChar & Localize.resCommon.strDefLongName & PDfltDirectorySeparatorChar
+    Public Shared ReadOnly Property DfltDirectorySeparatorChar() As String = IO.Path.DirectorySeparatorChar
 
     Friend Shared ReadOnly Property DfltErrorvalue As Integer = -2147221233
 
-    Private Shared ReadOnly Property PDfltDASLSchema As String = "http://schemas.microsoft.com/mapi/string/{FFF40745-D92F-4C11-9E14-92701F001EB3}/"
+    Private Shared ReadOnly Property DfltDASLSchema As String = "http://schemas.microsoft.com/mapi/string/{FFF40745-D92F-4C11-9E14-92701F001EB3}/"
 
-    Private Shared ReadOnly Property PDfltDASLSchemaUserProperties As String = "http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/"
+    Private Shared ReadOnly Property DfltDASLSchemaUserProperties As String = "http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-C000-000000000046}/"
 
-    Friend Shared ReadOnly Property PDfltDASLSMTPAdress As String = "http://schemas.microsoft.com/mapi/proptag/0x39FE001E"
+    Friend Shared ReadOnly Property DfltDASLSMTPAdress As String = "http://schemas.microsoft.com/mapi/proptag/0x39FE001E"
 
     Friend Shared ReadOnly Property DASLTagJournal As Object()
         Get
             Dim tmpDASLTag(1) As Object
-            tmpDASLTag(0) = PDfltDASLSchema & "FBDB-ContactEntryID"
-            tmpDASLTag(1) = PDfltDASLSchema & "FBDB-ContactStoreID"
+            tmpDASLTag(0) = DfltDASLSchema & "FBDB-ContactEntryID"
+            tmpDASLTag(1) = DfltDASLSchema & "FBDB-ContactStoreID"
             Return tmpDASLTag
         End Get
     End Property
@@ -182,28 +175,28 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     ''' <value>String-Array</value>
     ''' <returns>String-Array</returns>
-    Public Shared ReadOnly Property PDfltUserProperties() As ReadOnlyCollection(Of String)
+    Public Shared ReadOnly Property DfltUserProperties() As ReadOnlyCollection(Of String)
         Get
             Dim tmp As New List(Of String) From {
-                PDfltDASLSchemaUserProperties & "FBDB-AssistantTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-BusinessTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-Business2TelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-CallbackTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-CarTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-CompanyMainTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-HomeTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-Home2TelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-ISDNNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-MobileTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-OtherTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-PagerNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-PrimaryTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-RadioTelephoneNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-BusinessFaxNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-HomeFaxNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-OtherFaxNumber",
-                PDfltDASLSchemaUserProperties & "FBDB-Telex",
-                PDfltDASLSchemaUserProperties & "FBDB-TTYTDDTelephoneNumber"
+                DfltDASLSchemaUserProperties & "FBDB-AssistantTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-BusinessTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-Business2TelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-CallbackTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-CarTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-CompanyMainTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-HomeTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-Home2TelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-ISDNNumber",
+                DfltDASLSchemaUserProperties & "FBDB-MobileTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-OtherTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-PagerNumber",
+                DfltDASLSchemaUserProperties & "FBDB-PrimaryTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-RadioTelephoneNumber",
+                DfltDASLSchemaUserProperties & "FBDB-BusinessFaxNumber",
+                DfltDASLSchemaUserProperties & "FBDB-HomeFaxNumber",
+                DfltDASLSchemaUserProperties & "FBDB-OtherFaxNumber",
+                DfltDASLSchemaUserProperties & "FBDB-Telex",
+                DfltDASLSchemaUserProperties & "FBDB-TTYTDDTelephoneNumber"
             }
 
             Return New ReadOnlyCollection(Of String)(tmp)
@@ -241,30 +234,30 @@ Public NotInheritable Class DfltWerteAllgemein
     Friend Shared ReadOnly Property DASLTagTelNrIndex As Object()
         Get
             Dim tmpDASLTag(18) As Object
-            tmpDASLTag(0) = PDfltDASLSchema & "FBDB-AssistantTelephoneNumber"
-            tmpDASLTag(1) = PDfltDASLSchema & "FBDB-BusinessTelephoneNumber"
-            tmpDASLTag(2) = PDfltDASLSchema & "FBDB-Business2TelephoneNumber"
-            tmpDASLTag(3) = PDfltDASLSchema & "FBDB-CallbackTelephoneNumber"
-            tmpDASLTag(4) = PDfltDASLSchema & "FBDB-CarTelephoneNumber"
-            tmpDASLTag(5) = PDfltDASLSchema & "FBDB-CompanyMainTelephoneNumber"
-            tmpDASLTag(6) = PDfltDASLSchema & "FBDB-HomeTelephoneNumber"
-            tmpDASLTag(7) = PDfltDASLSchema & "FBDB-Home2TelephoneNumber"
-            tmpDASLTag(8) = PDfltDASLSchema & "FBDB-ISDNNumber"
-            tmpDASLTag(9) = PDfltDASLSchema & "FBDB-MobileTelephoneNumber"
-            tmpDASLTag(10) = PDfltDASLSchema & "FBDB-OtherTelephoneNumber"
-            tmpDASLTag(11) = PDfltDASLSchema & "FBDB-PagerNumber"
-            tmpDASLTag(12) = PDfltDASLSchema & "FBDB-PrimaryTelephoneNumber"
-            tmpDASLTag(13) = PDfltDASLSchema & "FBDB-RadioTelephoneNumber"
-            tmpDASLTag(14) = PDfltDASLSchema & "FBDB-BusinessFaxNumber"
-            tmpDASLTag(15) = PDfltDASLSchema & "FBDB-HomeFaxNumber"
-            tmpDASLTag(16) = PDfltDASLSchema & "FBDB-OtherFaxNumber"
-            tmpDASLTag(17) = PDfltDASLSchema & "FBDB-Telex"
-            tmpDASLTag(18) = PDfltDASLSchema & "FBDB-TTYTDDTelephoneNumber"
+            tmpDASLTag(0) = DfltDASLSchema & "FBDB-AssistantTelephoneNumber"
+            tmpDASLTag(1) = DfltDASLSchema & "FBDB-BusinessTelephoneNumber"
+            tmpDASLTag(2) = DfltDASLSchema & "FBDB-Business2TelephoneNumber"
+            tmpDASLTag(3) = DfltDASLSchema & "FBDB-CallbackTelephoneNumber"
+            tmpDASLTag(4) = DfltDASLSchema & "FBDB-CarTelephoneNumber"
+            tmpDASLTag(5) = DfltDASLSchema & "FBDB-CompanyMainTelephoneNumber"
+            tmpDASLTag(6) = DfltDASLSchema & "FBDB-HomeTelephoneNumber"
+            tmpDASLTag(7) = DfltDASLSchema & "FBDB-Home2TelephoneNumber"
+            tmpDASLTag(8) = DfltDASLSchema & "FBDB-ISDNNumber"
+            tmpDASLTag(9) = DfltDASLSchema & "FBDB-MobileTelephoneNumber"
+            tmpDASLTag(10) = DfltDASLSchema & "FBDB-OtherTelephoneNumber"
+            tmpDASLTag(11) = DfltDASLSchema & "FBDB-PagerNumber"
+            tmpDASLTag(12) = DfltDASLSchema & "FBDB-PrimaryTelephoneNumber"
+            tmpDASLTag(13) = DfltDASLSchema & "FBDB-RadioTelephoneNumber"
+            tmpDASLTag(14) = DfltDASLSchema & "FBDB-BusinessFaxNumber"
+            tmpDASLTag(15) = DfltDASLSchema & "FBDB-HomeFaxNumber"
+            tmpDASLTag(16) = DfltDASLSchema & "FBDB-OtherFaxNumber"
+            tmpDASLTag(17) = DfltDASLSchema & "FBDB-Telex"
+            tmpDASLTag(18) = DfltDASLSchema & "FBDB-TTYTDDTelephoneNumber"
             Return tmpDASLTag
         End Get
     End Property
 
-    Public Shared ReadOnly Property PDfltolTelNrTypen() As ReadOnlyCollection(Of String)
+    Public Shared ReadOnly Property DfltolTelNrTypen() As ReadOnlyCollection(Of String)
         Get
             Dim tmp As New List(Of String) From {
                 "Assistent",
@@ -292,12 +285,6 @@ Public NotInheritable Class DfltWerteAllgemein
         End Get
     End Property
 
-    '''' <summary>
-    '''' Keine Ahnung wozu? FBDB-Save
-    '''' </summary>
-    '''' <returns></returns>
-    'Public Shared ReadOnly Property PDfltUserPropertyIndex As String = "FBDB-Save"
-
 #End Region
 
 #Region "Literale Anrufmonitor PopUp"
@@ -306,28 +293,28 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     ''' <value>Kontakt öffnen</value>
     ''' <returns>Kontakt öffnen</returns>
-    Public Shared ReadOnly Property PAnrMonPopUpToolStripMenuItemKontaktöffnen As String = "Kontakt öffnen"
+    Public Shared ReadOnly Property AnrMonPopUpToolStripMenuItemKontaktöffnen As String = "Kontakt öffnen"
 
     ''' <summary>
     ''' Kontakt erstellen
     ''' </summary>
     ''' <value>Kontakt erstellen</value>
     ''' <returns>Kontakt erstellen</returns>
-    Public Shared ReadOnly Property PAnrMonPopUpToolStripMenuItemKontaktErstellen As String = "Kontakt erstellen"
+    Public Shared ReadOnly Property AnrMonPopUpToolStripMenuItemKontaktErstellen As String = "Kontakt erstellen"
 
     ''' <summary>
     ''' Rückruf
     ''' </summary>
     ''' <value>Rückruf</value>
     ''' <returns>Rückruf</returns>
-    Public Shared ReadOnly Property PAnrMonPopUpToolStripMenuItemRückruf As String = "Rückruf"
+    Public Shared ReadOnly Property AnrMonPopUpToolStripMenuItemRückruf As String = "Rückruf"
 
     ''' <summary>
     ''' In Zwischenablage kopieren
     ''' </summary>
     ''' <value>In Zwischenablage kopieren</value>
     ''' <returns>In Zwischenablage kopieren</returns>
-    Public Shared ReadOnly Property PAnrMonPopUpToolStripMenuItemKopieren As String = "In Zwischenablage kopieren"
+    Public Shared ReadOnly Property AnrMonPopUpToolStripMenuItemKopieren As String = "In Zwischenablage kopieren"
 #End Region
 
 #Region "Literale WählClient"
@@ -335,7 +322,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Anruf: <paramref name="Kontakt"/>
     ''' </summary>
     ''' <param name="Kontakt">Die Kontaktdaten des anzurufenden Kontaktes</param>
-    Public Shared ReadOnly Property PWählClientFormText(ByVal Kontakt As String) As String
+    Public Shared ReadOnly Property WählClientFormText(ByVal Kontakt As String) As String
         Get
             Return $"Anruf: {Kontakt}"
         End Get
@@ -345,7 +332,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Es ist kein Kontakt mit der E-Mail-Adresse <paramref name="EMailAdresse"/> vorhanden!
     ''' </summary>
     ''' <param name="EMailAdresse">Die Adresse der ausgewählten E-Mail</param>
-    Public Shared ReadOnly Property PWählClientEMailunbekannt(ByVal EMailAdresse As String) As String
+    Public Shared ReadOnly Property WählClientEMailunbekannt(ByVal EMailAdresse As String) As String
         Get
             Return $"Es ist kein Kontakt mit der E-Mail-Adresse {EMailAdresse} vorhanden!"
         End Get
@@ -354,38 +341,38 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientAuswahlFalsch As String = "Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!"
+    Public Shared ReadOnly Property WählClientAuswahlFalsch As String = "Es muss entweder ein Kontakt, eine eingegangene E-Mail-Adresse oder ein Journaleintrag ausgewählt sein!"
 
     ''' <summary>
     ''' Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientFrageMobil As String = "Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?"
+    Public Shared ReadOnly Property WählClientFrageMobil As String = "Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?"
 
     ''' <summary>
     ''' Fehler
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientDialFehler As String = "Fehler"
+    Public Shared ReadOnly Property WählClientDialFehler As String = "Fehler"
 
     ''' <summary>
     ''' Bitte warten
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientBitteWarten As String = "Bitte warten"
+    Public Shared ReadOnly Property WählClientBitteWarten As String = "Bitte warten"
 
     ''' <summary>
     ''' Jetzt abheben
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientJetztAbheben As String = "Jetzt abheben"
+    Public Shared ReadOnly Property WählClientJetztAbheben As String = "Jetzt abheben"
 
     ''' <summary>
     ''' Abgebrochen
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientDialHangUp As String = $"Abgebrochen"
+    Public Shared ReadOnly Property WählClientDialHangUp As String = $"Abgebrochen"
 
     ''' <summary>
     ''' Dialcode: <paramref name="DialCode"/>>
     ''' </summary>
     ''' <param name="DialCode"></param>
-    Public Shared ReadOnly Property PWählClientStatusWählClient(ByVal DialCode As String) As String
+    Public Shared ReadOnly Property WählClientStatusWählClient(ByVal DialCode As String) As String
         Get
             Return $"Dialcode: {DialCode}"
         End Get
@@ -394,26 +381,26 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Lade Telefoniegeräte...
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusLadeGeräte As String = "Lade Telefoniegeräte..."
-    Public Shared ReadOnly Property PWählClientStatusLetztesGerät As String = "Setze letztes Gerät..."
-    Public Shared ReadOnly Property PWählClientStatus1Gerät As String = "Setze 1. Gerät in Liste..."
-    Public Shared ReadOnly Property PWählClientStatusFehlerGerät As String = "Es konnte kein Gerät geladen werden..."
-    Public Shared ReadOnly Property PWählClientPhonerInaktiv As String = "Phoner ist nicht bereit..."
+    Public Shared ReadOnly Property WählClientStatusLadeGeräte As String = "Lade Telefoniegeräte..."
+    Public Shared ReadOnly Property WählClientStatusLetztesGerät As String = "Setze letztes Gerät..."
+    Public Shared ReadOnly Property WählClientStatus1Gerät As String = "Setze 1. Gerät in Liste..."
+    Public Shared ReadOnly Property WählClientStatusFehlerGerät As String = "Es konnte kein Gerät geladen werden..."
+    Public Shared ReadOnly Property WählClientPhonerInaktiv As String = "Phoner ist nicht bereit..."
     ''' <summary>
     ''' Lade Telefonnummern des Kontaktes...
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusLadeKontaktTelNr As String = "Lade Telefonnummern des Kontaktes..."
+    Public Shared ReadOnly Property WählClientStatusLadeKontaktTelNr As String = "Lade Telefonnummern des Kontaktes..."
 
     ''' <summary>
     ''' Lade Telefonnummer...
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusLadeTelNr As String = "Lade Telefonnummer..."
+    Public Shared ReadOnly Property WählClientStatusLadeTelNr As String = "Lade Telefonnummer..."
 
     ''' <summary>
     ''' Ausgewählt: <paramref name="StrTelNr"/>
     ''' </summary>
     ''' <param name="StrTelNr"></param>
-    Public Shared ReadOnly Property PWählClientStatusTelNrAuswahl(ByVal StrTelNr As String) As String
+    Public Shared ReadOnly Property WählClientStatusTelNrAuswahl(ByVal StrTelNr As String) As String
         Get
             Return $"Ausgewählt: {StrTelNr}"
         End Get
@@ -422,12 +409,12 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' "Anruf wird vorbereitet...
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusVorbereitung As String = $"Anruf wird vorbereitet...{PDflt1NeueZeile}"
+    Public Shared ReadOnly Property WählClientStatusVorbereitung As String = $"Anruf wird vorbereitet...{Dflt1NeueZeile}"
 
     ''' <summary>
     ''' 
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusAbbruch As String = $"Anruf wird abgebrochen...{PDflt1NeueZeile}"
+    Public Shared ReadOnly Property WählClientStatusAbbruch As String = $"Anruf wird abgebrochen...{Dflt1NeueZeile}"
 
     ''' <summary>
     ''' <paramref name="Sender"/>: <paramref name="Meldung"/> <paramref name="Wert"/>
@@ -435,7 +422,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="Sender">Die Funktion die den den Status setzt</param>
     ''' <param name="Meldung">Der Meldungstext</param>
     ''' <param name="Wert">Ein gesetzer Wert</param>
-    Public Shared ReadOnly Property PWählClientDialStatus(ByVal Sender As String, ByVal Meldung As String, ByVal Wert As String) As String
+    Public Shared ReadOnly Property WählClientDialStatus(ByVal Sender As String, ByVal Meldung As String, ByVal Wert As String) As String
         Get
             Return $"{Sender}: {Meldung} {Wert}"
         End Get
@@ -444,21 +431,21 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' "Ändere Dialport auf
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusDialPort() As String = "Ändere Dialport auf"
+    Public Shared ReadOnly Property WählClientStatusDialPort() As String = "Ändere Dialport auf"
 
     ''' <summary>
     ''' Der SOAP-Dialport konnte nicht geändert werden:
     ''' </summary>
-    Public Shared ReadOnly Property PWählClientStatusSOAPDialPortFehler As String = "Der SOAP-Dialport konnte nicht geändert werden:"
+    Public Shared ReadOnly Property WählClientStatusSOAPDialPortFehler As String = "Der SOAP-Dialport konnte nicht geändert werden:"
 #End Region
 
 #Region "Literale Rückwärtssuche"
-    Public Shared ReadOnly Property PRWSTest(ByVal TelNr As String, ByVal Ergebnis As String) As String
+    Public Shared ReadOnly Property RWSTest(ByVal TelNr As String, ByVal Ergebnis As String) As String
         Get
-            Return $"Die Rückwärtssuche mit der Nummer {TelNr} brachte folgendes Ergebnis:{PDflt2NeueZeile}{Ergebnis}"
+            Return $"Die Rückwärtssuche mit der Nummer {TelNr} brachte folgendes Ergebnis:{Dflt2NeueZeile}{Ergebnis}"
         End Get
     End Property
-    Public Shared ReadOnly Property PRWSTestKeinEintrag() As String
+    Public Shared ReadOnly Property RWSTestKeinEintrag() As String
         Get
             Return "Kein Eintrag gefunden."
         End Get
@@ -473,33 +460,33 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz
     ''' Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.
     ''' </summary>
-    Public Shared ReadOnly Property PWarnung2FA As String = $"Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.{PDflt2NeueZeile}In der Fritz!Box:{PDflt1NeueZeile}System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz{PDflt1NeueZeile}Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'"
+    Public Shared ReadOnly Property Warnung2FA As String = $"Die Zweifaktor-Authentifizierung der Fritz!Box ist aktiv. Diese Sicherheitsfunktion muss deaktiviert werden, damit das Wählen mit dem ausgewählten Telefon möglich ist.{Dflt2NeueZeile}In der Fritz!Box:{Dflt1NeueZeile}System / FRITZ!Box - Benutzer / Anmeldung im Heimnetz{Dflt1NeueZeile}Entfernen Sie den Haken 'Ausführung bestimmter Einstellungen und Funktionen zusätzlich bestätigen.'"
 
 #End Region
 
 #Region "Literale Journal"
     ''' <summary>
-    ''' FritzBox Anrufmonitor
+    ''' Fritz!Box Anrufmonitor
     ''' </summary>
-    Public Shared ReadOnly Property PDfltJournalKategorie As String = "Fritz!Box Anrufmonitor"
+    Public Shared ReadOnly Property DfltJournalKategorie As String = "Fritz!Box Anrufmonitor"
 
-    Public Shared ReadOnly Property PDfltJournalDefCategories() As ReadOnlyCollection(Of String)
+    Public Shared ReadOnly Property DfltJournalDefCategories() As ReadOnlyCollection(Of String)
         Get
-            Return New ReadOnlyCollection(Of String)({PDfltJournalKategorie, "Telefonanrufe"})
+            Return New ReadOnlyCollection(Of String)({DfltJournalKategorie, "Telefonanrufe"})
         End Get
     End Property
 
     ''' <summary>
     ''' Journaleintrag konnte nicht erstellt werden.
     ''' </summary>
-    Public Shared ReadOnly Property PDfltJournalFehler As String = "Journaleintrag konnte nicht erstellt werden."
+    Public Shared ReadOnly Property DfltJournalFehler As String = "Journaleintrag konnte nicht erstellt werden."
 
-    Public Shared ReadOnly Property PDfltJournalTextEingehend() As String = "Eingehender Anruf von"
-    Public Shared ReadOnly Property PDfltJournalTextAusgehend() As String = "Ausgehender Anruf zu"
-    Public Shared ReadOnly Property PDfltJournalTextVerpasst() As String = "Verpasster Anruf von"
-    Public Shared ReadOnly Property PDfltJournalTextNichtErfolgreich() As String = "Nicht erfolgreicher Anruf zu"
+    Public Shared ReadOnly Property DfltJournalTextEingehend() As String = "Eingehender Anruf von"
+    Public Shared ReadOnly Property DfltJournalTextAusgehend() As String = "Ausgehender Anruf zu"
+    Public Shared ReadOnly Property DfltJournalTextVerpasst() As String = "Verpasster Anruf von"
+    Public Shared ReadOnly Property DfltJournalTextNichtErfolgreich() As String = "Nicht erfolgreicher Anruf zu"
 
-    Public Shared ReadOnly Property PDfltJournalRWSFehler As String = "Rückwärtssuche nicht erfolgreich: Es wurden keine Einträge gefunden."
+    Public Shared ReadOnly Property DfltJournalRWSFehler As String = "Rückwärtssuche nicht erfolgreich: Es wurden keine Einträge gefunden."
 
     '''' <summary>
     '''' Kontaktdaten:
@@ -509,34 +496,34 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Kontaktdaten (vCard):
     ''' </summary>
-    Public Shared ReadOnly Property PDfltJournalTextKontaktvCard As String = "Kontaktdaten (vCard):"
+    Public Shared ReadOnly Property DfltJournalTextKontaktvCard As String = "Kontaktdaten (vCard):"
 
     ''' <summary>
     ''' Tel.-Nr.:
     ''' </summary>
-    Public Shared ReadOnly Property PDfltJournalBodyStart As String = "Tel.-Nr.:"
+    Public Shared ReadOnly Property PfltJournalBodyStart As String = "Tel.-Nr.:"
 
     ''' <summary>
     ''' Tel.-Nr.: TelNr Status: (nicht) angenommen    
     ''' </summary>
     ''' <param name="TelNr">Tekefonnummer</param>
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
-    Public Shared ReadOnly Property PDfltJournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean, ByVal vCard As String) As String
+    Public Shared ReadOnly Property DfltJournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean, ByVal vCard As String) As String
         Get
-            Return $"{PDfltJournalBodyStart} {TelNr}{PDflt1NeueZeile}Status: {If(Angenommen, PDfltStringEmpty, "nicht ")}angenommen{PDflt2NeueZeile}{vCard}"
+            Return $"{PfltJournalBodyStart} {TelNr}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{vCard}"
         End Get
     End Property
 #End Region
 
 #Region "Literale Telefonbücher"
-    Public Shared ReadOnly Property PDfltTelBNameNeuBuch As String = "Name für das neue Telefonbuch:"
+    Public Shared ReadOnly Property DfltTelBNameNeuBuch As String = "Name für das neue Telefonbuch:"
 
-    Public Shared ReadOnly Property PDfltTelBFrageLöschen(ByVal TB_Name As String, ByVal TB_ID As String) As String
+    Public Shared ReadOnly Property DfltTelBFrageLöschen(ByVal TB_Name As String, ByVal TB_ID As String) As String
         Get
             Return $"Soll das Telefonbuch {TB_Name} ({TB_ID}) von der Fritz!Box gelöscht werden?"
         End Get
     End Property
-    Public Shared ReadOnly Property PDfltTelBFrageLöschenID0(ByVal TB_Name As String, ByVal TB_ID As String) As String
+    Public Shared ReadOnly Property DfltTelBFrageLöschenID0(ByVal TB_Name As String, ByVal TB_ID As String) As String
         Get
             Return $"Soll das Telefonbuch {TB_Name} mit der ID {TB_ID} kann nicht gelöscht werden. Stattdessen werden alle Einträge entfernt. Fortfahren?"
         End Get
@@ -544,32 +531,32 @@ Public NotInheritable Class DfltWerteAllgemein
 #End Region
 
 #Region "DatagridView"
-    Public Shared ReadOnly Property PDfltCheckBackColor As Drawing.Color = Drawing.Color.LightGreen
+    Public Shared ReadOnly Property PfltCheckBackColor As Drawing.Color = Drawing.Color.LightGreen
 #End Region
 
 #Region "Literale Phoner"
     ''' <summary>
     ''' Das Phoner-Passwort ist falsch!
     ''' </summary>
-    Public Shared ReadOnly Property PPhonerPasswowrtFalsch As String = "Das Phoner-Passwort ist falsch!"
+    Public Shared ReadOnly Property PhonerPasswortFalsch As String = "Das Phoner-Passwort ist falsch!"
     ''' <summary>
     ''' Die Phoner-Verson ist zu alt!"
     ''' </summary>
-    Public Shared ReadOnly Property PPhonerZuAlt As String = "Die Phoner-Verson ist zu alt!"
+    Public Shared ReadOnly Property PhonerZuAlt As String = "Die Phoner-Verson ist zu alt!"
     ''' <summary>   
     ''' Zu dem Datenstrom können keine Daten gesendet werden!
     ''' </summary>
-    Public Shared ReadOnly Property PPhonerReadonly As String = "Zu dem Datenstrom können keine Daten gesendet werden!"
+    Public Shared ReadOnly Property PhonerReadonly As String = "Zu dem Datenstrom können keine Daten gesendet werden!"
     ''' <summary>   
     ''' Phoner oder PhonerLite ist nicht bereit!
     ''' </summary>
-    Public Shared ReadOnly Property PPhonerNichtBereit As String = "Phoner oder PhonerLite ist nicht bereit!"
+    Public Shared ReadOnly Property PhonerNichtBereit As String = "Phoner oder PhonerLite ist nicht bereit!"
     ''' <summary>
     ''' Telefonnummer <paramref name="Dialcode"/> erfolgreich an Phoner übermittelt
     ''' </summary>
     ''' <param name="Dialcode">Der übermittelte Dialcode</param>
     ''' <returns></returns>
-    Public Shared ReadOnly Property PPhonerErfolgreich(ByVal Dialcode As String) As String
+    Public Shared ReadOnly Property PhonerErfolgreich(ByVal Dialcode As String) As String
         Get
             Return $"Telefonnummer {Dialcode} erfolgreich an Phoner übermittelt."
         End Get
@@ -577,7 +564,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Abbruch des Rufaufbaues erfolgreich übermittelt.
     ''' </summary>
-    Public Shared ReadOnly Property PPhonerAbbruch As String = "Abbruch des Rufaufbaues erfolgreich übermittelt."
+    Public Shared ReadOnly Property PhonerAbbruch As String = "Abbruch des Rufaufbaues erfolgreich übermittelt."
 #End Region
 
 End Class

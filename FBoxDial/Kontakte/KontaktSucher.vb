@@ -68,7 +68,7 @@ Friend Module KontaktSucher
 
         If Ordner.DefaultItemType = Outlook.OlItemType.olContactItem Then
 
-            If XMLData.POptionen.PCBUseLegacySearch Then
+            If XMLData.POptionen.CBUseLegacySearch Then
                 olKontakt = CType(Ordner.Items.Find(sFilter), Outlook.ContactItem)
                 If olKontakt IsNot Nothing Then
                     NLogger.Debug("DASL Search erfolgreich: {0} in {1}", olKontakt.FullNameAndCompany, Ordner.Name)

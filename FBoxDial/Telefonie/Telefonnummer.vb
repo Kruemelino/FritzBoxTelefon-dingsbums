@@ -34,7 +34,7 @@ Public Class Telefonnummer
     <XmlIgnore> Public WriteOnly Property SetNummer As String
         Set(value As String)
 
-            Unbekannt = value.AreEqual(PDfltStringEmpty)
+            Unbekannt = value.AreEqual(DfltStringEmpty)
 
             If Not Unbekannt Then
                 If Typ Is Nothing Then Typ = New List(Of TelTypen)
@@ -58,7 +58,7 @@ Public Class Telefonnummer
 #End Region
     <XmlIgnore> ReadOnly Property IstMobilnummer As Boolean
         Get
-            If Not Ortskennzahl = PDfltStringEmpty Then
+            If Not Ortskennzahl = DfltStringEmpty Then
                 Select Case Landeskennzahl
                     Case "49"
                         Return Ortskennzahl.IsRegExMatch("^(15|16|17)")
@@ -121,7 +121,7 @@ Public Class Telefonnummer
 
         If Unformatiert.IsNotStringEmpty AndAlso Unformatiert.Length.IsLarger(2) Then
             ' Entferne den Stern
-            TelNr = Replace(Unformatiert, "*", PDfltStringEmpty, , , CompareMethod.Text)
+            TelNr = Replace(Unformatiert, "*", DfltStringEmpty, , , CompareMethod.Text)
 
             ' Prüfen: Beginnt die Vorwahl mit der 00, dann ist eine Landesvorwahl enthalten. Wenn nicht, dann nimm die Standard-Landesvorwahl
             If TelNr.StartsWith(PDfltVAZ) Then
@@ -157,8 +157,8 @@ Public Class Telefonnummer
                 ' Es muss eine Landeskennzahl ermittelt sein.
                 ' Hier ist irgendwo ein Bug, dass die ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen leer ist. Vielleicht war das Addin zu schnell beim Automatischen Journalimport.
                 If tmpLKZ Is Nothing Then
-                    NLogger.Error("Es konnte keine Landeskennzahl für {0} ermittet werden. Das Laden der Vorwahlen ist{1} abgeschlossen.", TelNr, If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, PDfltStringEmpty, " nicht"))
-                    Ortskennzahl = PDfltStringEmpty
+                    NLogger.Error("Es konnte keine Landeskennzahl für {0} ermittet werden. Das Laden der Vorwahlen ist{1} abgeschlossen.", TelNr, If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, DfltStringEmpty, " nicht"))
+                    Ortskennzahl = DfltStringEmpty
                 Else
                     i = 0
                     If TelNr.StartsWith("0") Then i = 1
@@ -174,7 +174,7 @@ Public Class Telefonnummer
                         Ortskennzahl = tmpONKZ.First.Ortskennzahl
                         ' Einwahl: Ortsvorwahl am Anfang entfernen
                     Else
-                        Ortskennzahl = PDfltStringEmpty
+                        Ortskennzahl = DfltStringEmpty
                     End If
                     tmpONKZ.Clear()
                 End If
@@ -191,7 +191,7 @@ Public Class Telefonnummer
                 ' Einwahl: Druchwahl am Ende entfernen
                 Einwahl = Einwahl.RegExRemove($"{Durchwahl}$")
             Else
-                Durchwahl = PDfltStringEmpty
+                Durchwahl = DfltStringEmpty
             End If
 
             tmpLKZ = Nothing
@@ -210,9 +210,9 @@ Public Class Telefonnummer
         If Gruppieren Then
             Dim imax As Integer
             imax = Math.Round(Len(TelNrTeil) / 2 + 0.1).ToInt
-            Gruppiere = PDfltStringEmpty
+            Gruppiere = DfltStringEmpty
             For i = 1 To imax
-                Gruppiere = String.Concat(Right(TelNrTeil, 2), PDfltStringLeerzeichen, Gruppiere)
+                Gruppiere = String.Concat(Right(TelNrTeil, 2), DfltStringLeerzeichen, Gruppiere)
                 If Not Len(TelNrTeil) = 1 Then TelNrTeil = Left(TelNrTeil, Len(TelNrTeil) - 2)
             Next
         End If
@@ -229,7 +229,7 @@ Public Class Telefonnummer
         Dim tmpGruppieren As Boolean = XMLData.POptionen.CBTelNrGruppieren
 
         If Unbekannt Then
-            Return PDfltStringEmpty
+            Return DfltStringEmpty
         Else
             FormatTelNr = XMLData.POptionen.TBTelNrMaske
 
@@ -243,7 +243,7 @@ Public Class Telefonnummer
             '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
             '                        die Ortsvorwahl nicht vorhanden ist
 
-            If (Landeskennzahl.AreEqual(XMLData.POptionen.TBLandesKZ) Or Landeskennzahl.AreEqual(PDfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringEmpty Then
+            If (Landeskennzahl.AreEqual(XMLData.POptionen.TBLandesKZ) Or Landeskennzahl.AreEqual(DfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringEmpty Then
                 Ortskennzahl = XMLData.POptionen.TBOrtsKZ
             End If
 
@@ -259,7 +259,7 @@ Public Class Telefonnummer
                     tmpLandesvorwahl = Landeskennzahl
                 Else
                     ' Keine Landesvorwahl ausgeben
-                    tmpLandesvorwahl = PDfltStringEmpty
+                    tmpLandesvorwahl = DfltStringEmpty
                     ' Ortsvorwahl mit führender Null ausgeben
                     tmpOrtsvorwahl = $"0{tmpOrtsvorwahl}"
                 End If
@@ -300,7 +300,7 @@ Public Class Telefonnummer
                 ' Wenn keine Ortskennzahl vorhanden ist, dann muss diese bei der Formatierung nicht berücksichtigt werden.
                 ' Die Ortskennzahl ist dann in der Einwahl enthalten.
                 ' Keine Ortskennzahl: Alles zwischen %L und %N entfernen
-                FormatTelNr = FormatTelNr.RegExReplace("[^%L]*%O[^%N]*", If(FormatTelNr.Contains("%L "), PDfltStringLeerzeichen, PDfltStringEmpty))
+                FormatTelNr = FormatTelNr.RegExReplace("[^%L]*%O[^%N]*", If(FormatTelNr.Contains("%L "), DfltStringLeerzeichen, DfltStringEmpty))
             End If
 
             ' Füge das + bei Landvoran

@@ -457,6 +457,9 @@ Public Class OptionenViewModel
             End If
         Next
 
+        ' Gültige IP-Adresse für die Fritz!Box ablegen
+        XMLData.POptionen.ValidFBAdr = ValidIP(XMLData.POptionen.TBFBAdr)
+
         ' Anrufmonitor Liste zu überwachender Telefonnummern
         With XMLData.PTelefonie.Telefonnummern
             ' Die Telefonnummern in den Optionen löschen
@@ -482,6 +485,6 @@ Public Class OptionenViewModel
         End With
 
         ' Speichern in Datei anstoßen
-        XMLData.Speichern(IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, $"{Localize.resCommon.strDefShortName}.xml"))
+        Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, $"{Localize.resCommon.strDefShortName}.xml"))
     End Sub
 End Class

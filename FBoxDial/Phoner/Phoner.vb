@@ -51,7 +51,7 @@ Public Class Phoner
     Friend Event SetStatus(ByVal Status As String)
 #End Region
     Friend Function CheckPhonerAuth() As Boolean
-        Return DialPhoner(PDfltStringEmpty, False, True)
+        Return DialPhoner(DfltStringEmpty, False, True)
     End Function
 
     Friend Function DialPhoner(ByVal DialCode As String, ByVal Hangup As Boolean) As Boolean
@@ -88,12 +88,12 @@ Public Class Phoner
                                 NLogger.Debug($"Phoner-Welcome:  {Daten}")
                                 If Daten.AreEqual(PhonerWelcomeMessage) Then
                                     ' Ermittle die Phoner Challenge
-                                    Dim Challange As String = SR.ReadLine.RegExReplace($"^{PhonerChallenge}", PDfltStringEmpty)
+                                    Dim Challange As String = SR.ReadLine.RegExReplace($"^{PhonerChallenge}", DfltStringEmpty)
 
                                     ' Bei Phoner Authentifizieren md5(ChallengePasswort)
                                     Dim Response As String
                                     Using Crypter As New Rijndael
-                                        Response = Crypter.GetMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.TBPhonerPasswort, DefaultWerte.PDfltDeCryptKey), Encoding.ASCII).ToUpper
+                                        Response = Crypter.GetMd5Hash(Challange & Crypter.DecryptString128Bit(XMLData.POptionen.TBPhonerPasswort, DefaultWerte.DfltDeCryptKey), Encoding.ASCII).ToUpper
                                     End Using
                                     NLogger.Debug($"Phoner-Challange: {Challange}, Phoner-Response: {Response}")
 
@@ -106,29 +106,29 @@ Public Class Phoner
                                             If Hangup Then
                                                 ' Abbruch des Rufaufbaues mittels DISCONNECT
                                                 SW.WriteLine(PhonerDISCONNECT)
-                                                NLogger.Debug(PPhonerAbbruch)
+                                                NLogger.Debug(PhonerAbbruch)
                                             Else
                                                 ' Aufbau des Telefonates mittels CONNECT
                                                 SW.WriteLine($"{PhonerCONNECT} {DialCode}")
-                                                NLogger.Debug(PPhonerErfolgreich(DialCode))
+                                                NLogger.Debug(PhonerErfolgreich(DialCode))
                                             End If
                                         End If
                                         DialPhoner = True
 
                                     Else
-                                        NLogger.Warn(PPhonerPasswowrtFalsch)
-                                        RaiseEvent SetStatus(PPhonerPasswowrtFalsch)
+                                        NLogger.Warn(PhonerPasswortFalsch)
+                                        RaiseEvent SetStatus(PhonerPasswortFalsch)
                                     End If
                                 Else
-                                    NLogger.Warn(PPhonerZuAlt)
-                                    RaiseEvent SetStatus(PPhonerZuAlt)
+                                    NLogger.Warn(PhonerZuAlt)
+                                    RaiseEvent SetStatus(PhonerZuAlt)
                                 End If
 
                             End Using
                         End Using
                     Else
-                        NLogger.Error(PPhonerReadonly)
-                        RaiseEvent SetStatus(PPhonerReadonly)
+                        NLogger.Error(PhonerReadonly)
+                        RaiseEvent SetStatus(PhonerReadonly)
                     End If
                     ' Datenstrom schließen und aufräumen
                     .Close()
@@ -142,8 +142,8 @@ Public Class Phoner
             End Using
         Else
             ' Phoner nicht verfügbar
-            RaiseEvent SetStatus(PPhonerNichtBereit)
-            NLogger.Warn(PPhonerNichtBereit)
+            RaiseEvent SetStatus(PhonerNichtBereit)
+            NLogger.Warn(PhonerNichtBereit)
         End If
     End Function
 

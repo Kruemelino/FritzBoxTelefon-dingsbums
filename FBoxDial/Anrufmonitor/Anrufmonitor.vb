@@ -46,7 +46,7 @@ Friend Class Anrufmonitor
             Dim TC As New TcpClient With {.ExclusiveAddressUse = False}
 
             Try
-                TC.Connect(New IPEndPoint(IP, FritzBoxDefault.PDfltFBAnrMonPort))
+                TC.Connect(New IPEndPoint(IP, FritzBoxDefault.DfltFBAnrMonPort))
             Catch ex As SocketException
                 TC.Close()
                 NLogger.Error("Anrufmonitor", ex)
@@ -54,7 +54,7 @@ Friend Class Anrufmonitor
 
             If TC.Connected Then
                 ' Info Message für das Log
-                NLogger.Info("Anrufmonitor verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.PDfltFBAnrMonPort)
+                NLogger.Info("Anrufmonitor verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.DfltFBAnrMonPort)
                 AnrMonTCPClient = New AnrMonClient(TC)
 
                 ' Verbinden
@@ -62,7 +62,7 @@ Friend Class Anrufmonitor
             Else
 
                 ' Info Message für das Log
-                NLogger.Info("Anrufmonitor nicht verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.PDfltFBAnrMonPort)
+                NLogger.Info("Anrufmonitor nicht verbunden zu {0}:{1}", IP.ToString, FritzBoxDefault.DfltFBAnrMonPort)
             End If
         End If
         ' Ribbon aktualisieren
@@ -84,7 +84,7 @@ Friend Class Anrufmonitor
     Private Sub AnrMonTCPClient_Disposed(Sender As AnrMonClient) Handles AnrMonTCPClient.Disposed
         'Aktiv = False
         ThisAddIn.POutlookRibbons.RefreshRibbon()
-        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.ValidFBAdr, FritzBoxDefault.PDfltFBAnrMonPort)
+        NLogger.Info("Anrufmonitor getrennt von {0}:{1}", XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltFBAnrMonPort)
     End Sub
 
 #Region "Anrufmonitor Standby PowerMode"
@@ -106,7 +106,7 @@ Friend Class Anrufmonitor
         RestartTimerIterations = 0
 
         ' Initiiere den Timer mit Intervall von 2 Sekunden
-        TimerAnrMonReStart = SetTimer(PDfltReStartIntervall)
+        TimerAnrMonReStart = SetTimer(DfltReStartIntervall)
 
         ' Starte den Timer
         TimerAnrMonReStart.Start()
@@ -115,7 +115,7 @@ Friend Class Anrufmonitor
 
     Private Sub TimerAnrMonReStart_Elapsed(sender As Object, e As ElapsedEventArgs) Handles TimerAnrMonReStart.Elapsed
         ' Prüfe, ob die maximale Anzahl an Durchläufen (15) noch nicht erreicht wurde
-        If RestartTimerIterations.IsLess(PDfltTryMaxRestart) Then
+        If RestartTimerIterations.IsLess(DfltTryMaxRestart) Then
             ' Wenn der Anrufmonitor aktiv ist, dann hat das wiederverbinden geklappt.
             If Aktiv Then
                 ' Halte den TImer an und löse ihn auf

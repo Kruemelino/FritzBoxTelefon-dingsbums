@@ -6,7 +6,7 @@ Public Class FritzBoxWählClient
 
 #Region "Properties"
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.PFBLinkBasis & "/data.lua"
+    Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.FBLinkBasis & "/data.lua"
     Private ReadOnly Property PFBLinkDialSetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
         Get
             Return String.Format("&xhr=1&clicktodial=on&port={0}{1}&back_to_page=%2Ffon_num%2Fdial_fonbook.lua&btn_apply=&lang=de&page=telDial", DialPort, sSID)
@@ -14,7 +14,7 @@ Public Class FritzBoxWählClient
     End Property
     Private ReadOnly Property PFBLinkDial(ByVal sSID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
         Get
-            Return String.Format("{0}/fon_num/foncalls_list.lua?{1}{2}", FritzBoxDefault.PFBLinkBasis, sSID, If(HangUp, "&hangup=", "&dial=" & DialCode))
+            Return String.Format("{0}/fon_num/foncalls_list.lua?{1}{2}", FritzBoxDefault.FBLinkBasis, sSID, If(HangUp, "&hangup=", "&dial=" & DialCode))
         End Get
     End Property
 #End Region
@@ -50,7 +50,7 @@ Public Class FritzBoxWählClient
             DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
             If Not DialPortEingestellt Then
                 ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-                StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientStatusDialPort, Telefon.UPnPDialport)
+                StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusDialPort, Telefon.UPnPDialport)
                 RaiseEvent SetStatus(StatusMeldung)
 
                 InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.UPnPDialport)
@@ -58,7 +58,7 @@ Public Class FritzBoxWählClient
 
                 If OutPutData.Contains("Error") Then
                     DialPortEingestellt = False
-                    StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
+                    StatusMeldung = WählClientDialStatus("SOAPDial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
                     RaiseEvent SetStatus(StatusMeldung)
                 Else
@@ -66,7 +66,7 @@ Public Class FritzBoxWählClient
                     OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
                     DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
                     If Not DialPortEingestellt Then
-                        StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientStatusSOAPDialPortFehler, Telefon.UPnPDialport)
+                        StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusSOAPDialPortFehler, Telefon.UPnPDialport)
                         NLogger.Error(StatusMeldung)
                         RaiseEvent SetStatus(StatusMeldung)
                     End If
@@ -87,7 +87,7 @@ Public Class FritzBoxWählClient
                 ' Rückmeldung, ob das Wählen erfolgreich war
 
                 If OutPutData.Contains("Error") Then
-                    StatusMeldung = PWählClientDialStatus("SOAPDial", PWählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
+                    StatusMeldung = WählClientDialStatus("SOAPDial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
                     RaiseEvent SetStatus(StatusMeldung)
                     Return False
@@ -185,10 +185,10 @@ Public Class FritzBoxWählClient
                     WählboxStart(CType(olAuswahl.Item(1), Outlook.MailItem))
                 Case Else
                     ' Nix tun
-                    MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
+                    MsgBox(WählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
             End Select
         Else
-            MsgBox(PWählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
+            MsgBox(WählClientAuswahlFalsch, MsgBoxStyle.Exclamation, "WählboxStart")
         End If
 
     End Sub
@@ -247,7 +247,7 @@ Public Class FritzBoxWählClient
                 ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
                 Wählbox(aktExchangeNutzer)
             Else
-                MsgBox(PWählClientEMailunbekannt(ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
+                MsgBox(WählClientEMailunbekannt(ContactCard.Address), MsgBoxStyle.Information, "WählboxStart")
             End If
         End If
 
@@ -283,7 +283,7 @@ Public Class FritzBoxWählClient
                     ' Wenn ein ExchangeUser gefunden wurde so wähle diesen an.
                     Wählbox(aktExchangeNutzer)
                 Else
-                    MsgBox(PWählClientEMailunbekannt(SMTPAdresse), MsgBoxStyle.Information, "WählboxStart")
+                    MsgBox(WählClientEMailunbekannt(SMTPAdresse), MsgBoxStyle.Information, "WählboxStart")
                 End If
 
             End If
@@ -295,25 +295,25 @@ Public Class FritzBoxWählClient
     Friend Overloads Sub WählboxStart(ByVal olJournal As Outlook.JournalItem)
 
         With olJournal
-            If Not .Body.Contains(PDfltStringUnbekannt) And .Categories.Contains(PDfltJournalKategorie) Then
+            If Not .Body.Contains(DfltStringUnbekannt) And .Categories.Contains(DfltJournalKategorie) Then
                 Dim aktKontakt As Outlook.ContactItem
                 Dim vCard As String
                 Dim TelNr As Telefonnummer
 
                 ' Telefonnummer aus dem Body ermitteln
-                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(PDfltJournalBodyStart, PDflt1NeueZeile)}
+                TelNr = New Telefonnummer With {.SetNummer = olJournal.Body.GetSubString(PfltJournalBodyStart, Dflt1NeueZeile)}
 
                 ' Entweder erst eingebetteten Kontakt suchen, oder nach vCard suchen.
                 aktKontakt = GetOutlookKontakt(CType(.PropertyAccessor.GetProperties(DASLTagJournal), Object()))
 
                 If aktKontakt Is Nothing Then
                     ' vCard aus dem .Body herausfiltern
-                    vCard = PDfltBegin_vCard & .Body.GetSubString(PDfltBegin_vCard, PDfltEnd_vCard) & PDfltEnd_vCard
+                    vCard = DfltBegin_vCard & .Body.GetSubString(DfltBegin_vCard, DfltEnd_vCard) & DfltEnd_vCard
 
                     'Wenn keine vCard im Body gefunden
-                    If vCard.AreNotEqual(PDfltBegin_vCard & PDfltStrErrorMinusOne & PDfltEnd_vCard) Then
+                    If vCard.AreNotEqual(DfltBegin_vCard & DfltStrErrorMinusOne & DfltEnd_vCard) Then
                         'vCard gefunden
-                        aktKontakt = ErstelleKontakt(PDfltStringEmpty, PDfltStringEmpty, vCard, TelNr, False)
+                        aktKontakt = ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, vCard, TelNr, False)
                     End If
                 End If
 

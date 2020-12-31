@@ -8,7 +8,7 @@ Public Class Action
     Friend Function GetInputArguments() As Hashtable
         Dim InputHashTable As New Hashtable
 
-        ArgumentList?.FindAll(Function(Argument) Argument.Direction = ArgumentDirection.IN).ForEach(Sub(Argument) InputHashTable.Add(Argument.Name, PDfltStringEmpty))
+        ArgumentList?.FindAll(Function(Argument) Argument.Direction = ArgumentDirection.IN).ForEach(Sub(Argument) InputHashTable.Add(Argument.Name, DfltStringEmpty))
 
         Return InputHashTable
     End Function

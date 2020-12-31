@@ -52,7 +52,7 @@
     ''' <returns></returns>
     Public Shared ReadOnly Property PLabelbtnFBTelBch() As String
         Get
-            Return String.Format("{0} Telefonbücher", FritzBoxDefault.PDfltFritzBoxName)
+            Return String.Format("{0} Telefonbücher", FritzBoxDefault.DfltFritzBoxName)
         End Get
     End Property
 
@@ -229,7 +229,7 @@
     ''' </summary>
     Public Shared ReadOnly Property PScreenTippbtnAnrMonJI() As String
         Get
-            Return "Importiert die Anrufliste der " & FritzBoxDefault.PDfltFritzBoxName & " als Journaleinträge"
+            Return "Importiert die Anrufliste der " & FritzBoxDefault.DfltFritzBoxName & " als Journaleinträge"
         End Get
     End Property
 
@@ -269,13 +269,13 @@
     ''' </summary>
     Public Shared ReadOnly Property PScreenTippbtnUpload() As String
         Get
-            Return String.Format("Lädt diesen Kontakt auf die {0} hoch.", FritzBoxDefault.PDfltFritzBoxName)
+            Return String.Format("Lädt diesen Kontakt auf die {0} hoch.", FritzBoxDefault.DfltFritzBoxName)
         End Get
     End Property
 
     Public Shared ReadOnly Property PScreenTippbtnFBTelBch() As String
         Get
-            Return String.Format("Öffne die Verwaltung der {0} Telefonbücher", FritzBoxDefault.PDfltFritzBoxName)
+            Return String.Format("Öffne die Verwaltung der {0} Telefonbücher", FritzBoxDefault.DfltFritzBoxName)
         End Get
     End Property
 #End Region
@@ -299,9 +299,9 @@
     Public Shared ReadOnly Property PImageMsobtnAddContact() As String = "RecordsSaveAsOutlookContact"
     Public Shared ReadOnly Property PImageMsocbtnAddContact() As String = PImageMsobtnAddContact
     Public Shared ReadOnly Property PImageMsobtnNote() As String = "ShowNotesPage"
-    Public Shared ReadOnly Property PImageMsoCallList() As String = PDfltStringEmpty
-    Public Shared ReadOnly Property PImageMsoRingList() As String = PDfltStringEmpty
-    Public Shared ReadOnly Property PImageMsoVIPList() As String = PDfltStringEmpty
+    Public Shared ReadOnly Property PImageMsoCallList() As String = DfltStringEmpty
+    Public Shared ReadOnly Property PImageMsoRingList() As String = DfltStringEmpty
+    Public Shared ReadOnly Property PImageMsoVIPList() As String = DfltStringEmpty
     Public Shared ReadOnly Property PImageMsobtnFBTelBch As String = "AddressBook"
 #End Region
 

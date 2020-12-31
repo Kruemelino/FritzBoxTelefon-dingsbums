@@ -29,7 +29,7 @@ Imports System.Xml
             Case "Microsoft.Mso.IMLayerUI"
                 File = My.Resources.RibbonIMLayerUI
             Case Else
-                File = PDfltStringEmpty
+                File = DfltStringEmpty
         End Select
         Return File
     End Function
@@ -98,7 +98,7 @@ Imports System.Xml
 
         ' Bei Journal nur wenn Kategorien korrekt
         ' Wenn Journal keine Kategorie enthält, dann ist es kein vom Addin erzeugtes JournalItem
-        If olJournal.Categories IsNot Nothing AndAlso olJournal.Categories.Contains(String.Join("; ", PDfltJournalDefCategories.ToArray)) Then
+        If olJournal.Categories IsNot Nothing AndAlso olJournal.Categories.Contains(String.Join("; ", DfltJournalDefCategories.ToArray)) Then
             CheckJournalInspector = olJournal
         End If
 
@@ -114,7 +114,7 @@ Imports System.Xml
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
 
         If olJournal IsNot Nothing Then
-            EnableBtnJournal = Not olJournal.Body.StartsWith(String.Format("{0} {1}", PDfltJournalBodyStart, PDfltStringUnbekannt))
+            EnableBtnJournal = Not olJournal.Body.StartsWith(String.Format("{0} {1}", PfltJournalBodyStart, DfltStringUnbekannt))
         End If
     End Function
 
@@ -200,7 +200,7 @@ Imports System.Xml
             If Typ.AreEqual("ImageMso") Then
                 Return "TraceError"
             Else
-                Return PDfltStrErrorMinusOne
+                Return DfltStrErrorMinusOne
             End If
         End If
     End Function
@@ -243,7 +243,7 @@ Imports System.Xml
                 OnAction(TaskToDo.DialIMLayer, control)
             Case "btnDirektwahl"
                 OnAction(TaskToDo.DialDirekt)
-            Case PDfltNameListRING, PDfltNameListCALL, PDfltNameListVIP
+            Case DfltNameListRING, DfltNameListCALL, DfltNameListVIP
                 OnActionListen(control)
             Case "dynListDel"
                 ClearInListe(control)
@@ -380,14 +380,14 @@ Imports System.Xml
     Private Sub OnActionListen(ByVal control As IRibbonControl)
         Dim tmpTelefonat As Telefonat
         Dim tmpVIPEintrag As VIPEntry
-        If control.Tag.AreEqual(PDfltNameListVIP) Then
+        If control.Tag.AreEqual(DfltNameListVIP) Then
             tmpVIPEintrag = XMLData.PTelefonie.VIPListe(control.Id.Split("_")(1).ToInt)
             If tmpVIPEintrag IsNot Nothing Then
                 Dim WählClient As New FritzBoxWählClient
                 WählClient.WählboxStart(tmpVIPEintrag)
             End If
         Else
-            tmpTelefonat = If(control.Tag.AreEqual(PDfltNameListCALL), XMLData.PTelefonie.CALLListe, XMLData.PTelefonie.RINGListe).Item(control.Id.Split("_")(1).ToInt)
+            tmpTelefonat = If(control.Tag.AreEqual(DfltNameListCALL), XMLData.PTelefonie.CALLListe, XMLData.PTelefonie.RINGListe).Item(control.Id.Split("_")(1).ToInt)
             ' Ermittle das Telefonat aus der Liste
             If tmpTelefonat IsNot Nothing Then
                 Dim WählClient As New FritzBoxWählClient
@@ -398,11 +398,11 @@ Imports System.Xml
     Private Sub ClearInListe(ByVal control As IRibbonControl)
 
         Select Case control.Tag
-            Case PDfltNameListCALL
+            Case DfltNameListCALL
                 XMLData.PTelefonie.CALLListe.Clear()
-            Case PDfltNameListRING
+            Case DfltNameListRING
                 XMLData.PTelefonie.RINGListe.Clear()
-            Case PDfltNameListVIP
+            Case DfltNameListVIP
                 XMLData.PTelefonie.VIPListe.Clear()
         End Select
 
@@ -461,11 +461,11 @@ Imports System.Xml
     Public Function DynMenuEnabled(ByVal control As IRibbonControl) As Boolean
         If XMLData IsNot Nothing Then
             Select Case Left(control.Id, Len(control.Id) - 2)
-                Case PDfltNameListCALL
+                Case DfltNameListCALL
                     Return XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any
-                Case PDfltNameListRING
+                Case DfltNameListRING
                     Return XMLData.PTelefonie.RINGListe IsNot Nothing AndAlso XMLData.PTelefonie.RINGListe.Any
-                Case PDfltNameListVIP
+                Case DfltNameListVIP
                     Return XMLData.PTelefonie.VIPListe IsNot Nothing AndAlso XMLData.PTelefonie.VIPListe.Any
                 Case Else
                     Return False
@@ -535,8 +535,8 @@ Imports System.Xml
             .DocumentElement.AppendChild(CreateDynMenuButton(XDynaMenu, String.Format("dynListDel_{0}", ListName)))
             .DocumentElement.AppendChild(CreateDynMenuSeperator(XDynaMenu))
 
-            If ListName.AreEqual(PDfltNameListCALL) Or ListName.AreEqual(PDfltNameListRING) Then
-                If ListName.AreEqual(PDfltNameListCALL) Then
+            If ListName.AreEqual(DfltNameListCALL) Or ListName.AreEqual(DfltNameListRING) Then
+                If ListName.AreEqual(DfltNameListCALL) Then
                     ListofTelefonate = XMLData.PTelefonie.CALLListe
                 Else
                     ListofTelefonate = XMLData.PTelefonie.RINGListe
@@ -545,7 +545,7 @@ Imports System.Xml
                 For Each TelFt As Telefonat In ListofTelefonate
                     .DocumentElement.AppendChild(TelFt.CreateDynMenuButton(XDynaMenu, ListofTelefonate.IndexOf(TelFt), ListName))
                 Next
-            ElseIf ListName.AreEqual(PDfltNameListVIP) Then
+            ElseIf ListName.AreEqual(DfltNameListVIP) Then
                 For Each VIP As VIPEntry In XMLData.PTelefonie.VIPListe
                     .DocumentElement.AppendChild(VIP.CreateDynMenuButton(XDynaMenu, XMLData.PTelefonie.VIPListe.IndexOf(VIP), ListName))
                 Next
