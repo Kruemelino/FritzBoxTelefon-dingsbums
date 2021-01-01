@@ -392,12 +392,8 @@ Public Class OptionenViewModel
         End Set
     End Property
 
-    Public ReadOnly Property CBoxLogLevel As String() = {"Fatal",
-                                                         "Error",
-                                                         "Warn",
-                                                         "Info",
-                                                         "Debug",
-                                                         "Trace"}
+    Public ReadOnly Property CBoxLogLevel As IEnumerable(Of LogLevel) = LogLevel.AllLoggingLevels
+    Public ReadOnly Property PfadArbeitsverzeichnis As String = XMLData.POptionen.Arbeitsverzeichnis
 #End Region
 
 #End Region
@@ -415,14 +411,12 @@ Public Class OptionenViewModel
         For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
             ' Suche das passende Property in den Optionen
             With Array.Find(XMLData.POptionen.GetType.GetProperties, Function(PropertyInfo As PropertyInfo) PropertyInfo.Name.AreEqual(ViewModelPropertyInfo.Name))
-                'Try
+
                 If ViewModelPropertyInfo.CanWrite Then
                     ViewModelPropertyInfo.SetValue(Me,?.GetValue(XMLData.POptionen))
                     NLogger.Debug("Feld {0} mit Wert {1} geladen", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me))
                 End If
-                'Catch ex As Exception
-                '    NLogger.Error(ex.Message)
-                'End Try
+
             End With
         Next
 

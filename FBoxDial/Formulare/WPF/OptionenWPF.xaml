@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
         mc:Ignorable="d" 
-        Height="355" Width="600" MinHeight="300" MinWidth="500" Focusable="False" IsTabStop="False" Name="Optionen"      
+        MinHeight="400" MinWidth="600" Height="400" Width="600" Focusable="False" IsTabStop="False" Name="Optionen"      
         d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
 
     <Window.Resources>

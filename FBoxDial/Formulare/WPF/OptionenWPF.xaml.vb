@@ -9,6 +9,7 @@ Public Class OptionenWPF
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
+        WindowStartupLocation = WindowStartupLocation.CenterScreen
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
         OptVM = New OptionenViewModel

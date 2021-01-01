@@ -404,10 +404,9 @@
 
 #Region "Logging"
     Private _CBoxMinLogLevel As String
-
     <XmlElement("CBoxMinLogLevel")> Public Property CBoxMinLogLevel As String
         Get
-            Return GetProperty(_CBoxMinLogLevel, DefaultWerte.DfltMinLogLevel)
+            Return GetProperty(_CBoxMinLogLevel, DefaultWerte.DfltMinLogLevel.Name)
         End Get
         Set
             _CBoxMinLogLevel = Value

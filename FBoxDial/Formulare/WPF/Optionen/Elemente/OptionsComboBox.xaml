@@ -30,8 +30,10 @@
 
         <DockPanel Style="{StaticResource DockPanelStyle}" >
             <ComboBox Style="{StaticResource ComboBoxStyle}" 
-                      ItemsSource="{Binding Path=Items}" DockPanel.Dock="Right"
-                      SelectedItem="{Binding Path=Value}"/>
+                      ItemsSource="{Binding Path=ItemsSource}" DockPanel.Dock="Right"
+                      SelectedValuePath="{Binding Path=DisplayMemberPath}"
+                      SelectedValue ="{Binding Path=SelectedValue}"
+                      DisplayMemberPath="{Binding Path=DisplayMemberPath}"/>
             <TextBlock Text="{Binding Path=Label}" Style="{StaticResource TextBlockStyle}" DockPanel.Dock="Left" />            
         </DockPanel>
         

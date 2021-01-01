@@ -1,7 +1,7 @@
 ﻿Friend NotInheritable Class DefaultWerte
 #Region "Default Value Properties"
     Public Shared ReadOnly Property DfltOptions As String = "Optionen"
-    Public Shared ReadOnly Property DfltMinLogLevel As String = "Info"
+    Public Shared ReadOnly Property DfltMinLogLevel As LogLevel = LogLevel.Debug
     Public Shared ReadOnly Property DfltDeCryptKey As String = "ZugangV5"
     Public Shared ReadOnly Property DfltTBAmt() As String = DfltStringEmpty
     Public Shared ReadOnly Property DfltTBOrtsKZ() As String = DfltStringEmpty

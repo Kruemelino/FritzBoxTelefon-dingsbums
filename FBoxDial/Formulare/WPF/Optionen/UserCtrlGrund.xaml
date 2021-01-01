@@ -28,7 +28,12 @@
         <fbd:OptionsTextBox Label="Anzahl der Listenelemente je Liste" Value="{Binding TBNumEntryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <fbd:OptionsÜberschrift Label="Protokollierung"/>
-        <fbd:OptionsComboBox Label="Level" Value="{Binding CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Items="{Binding CBoxLogLevel}"/>
+        <fbd:OptionsComboBox Label="Level"                             
+                             ItemsSource="{Binding Path=CBoxLogLevel}"
+                             SelectedValue="{Binding CBoxMinLogLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             DisplayMemberPath="Name"
+                             SelectedValuePath="Name"/>
+        <fbd:OptionsLink Label="Arbeitsverzeichnis" URL="{Binding Path=PfadArbeitsverzeichnis}" LinkLabel="Öffnen"/>
 
     </StackPanel>
 
