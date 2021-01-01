@@ -216,7 +216,7 @@ Public Class Telefonnummer
                 If Not Len(TelNrTeil) = 1 Then TelNrTeil = Left(TelNrTeil, Len(TelNrTeil) - 2)
             Next
         End If
-        Return Gruppiere.Trim
+        Return Gruppiere?.Trim
     End Function
 
     ''' <summary>
