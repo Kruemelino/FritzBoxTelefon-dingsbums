@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="UserCtrlDirektwahl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:fbd="clr-namespace:FBoxDial"
+            mc:Ignorable="d" 
+            d:DesignHeight="100" d:DesignWidth="400"
+            d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=True}">
+
+    <StackPanel x:Name="SPDirektwahl" Orientation="Vertical">
+        <TextBlock DockPanel.Dock="Top" Text="Direktwahl - Geben Sie die zu wählende Telefonnummer direkt ein" Margin="4" TextAlignment="Center"/>
+        
+        <ComboBox x:Name="CBoxDirektwahl" Margin="4" IsEditable="True" FontSize="14" 
+                          ItemsSource="{Binding Path=DialDirektWahlList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" DisplayMemberPath="Unformatiert" SelectedValuePath="Unformatiert"/>
+        
+        <Button x:Name="BDirektwahl" DockPanel.Dock="Right" Content="Wählen" Margin="4" MinWidth="100"/>
+    </StackPanel>
+
+
+</UserControl>

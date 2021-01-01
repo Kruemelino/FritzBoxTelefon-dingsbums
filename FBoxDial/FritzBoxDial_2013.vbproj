@@ -302,6 +302,12 @@
     <Compile Include="Formulare\WPF\WählclientWPF.xaml.vb">
       <DependentUpon>WählclientWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\WPF\Wählclient\UserCtrlKontaktwahl.xaml.vb">
+      <DependentUpon>UserCtrlKontaktwahl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Wählclient\UserCtrlDirektwahl.xaml.vb">
+      <DependentUpon>UserCtrlDirektwahl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Device.vb" />
@@ -577,14 +583,20 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Formulare\WPF\Wählclient\UserCtrlKontaktwahl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\Wählclient\UserCtrlDirektwahl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\WPF\XAMLRessources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Formulare\WPF\Optionen\Buttons\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

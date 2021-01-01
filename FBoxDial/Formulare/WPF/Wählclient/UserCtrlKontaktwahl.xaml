@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="UserCtrlKontaktwahl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:fbd="clr-namespace:FBoxDial"
+            mc:Ignorable="d" 
+            d:DesignHeight="200" d:DesignWidth="400"
+            d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=True}">
+
+    <DockPanel x:Name="SPKontaktwahl" VerticalAlignment="Stretch">
+        <Border x:Name="BoAnrBild" 
+                DockPanel.Dock="Right" 
+                BorderBrush="DimGray" 
+                BorderThickness="1" 
+                VerticalAlignment="top" 
+                Width="100"
+                Margin="4"
+                Visibility="{Binding Path=KontaktbildVisibility, Mode=OneWay}">
+            
+            <Image x:Name="AnrBild" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+        </Border>
+
+        <DataGrid x:Name="DGNummern" DockPanel.Dock="Left"
+                  ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  HeadersVisibility="None"
+                  AutoGenerateColumns="False" 
+                  HorizontalGridLinesBrush="LightGray" 
+                  VerticalGridLinesBrush="LightGray"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True" 
+                  SelectionMode="Single" 
+                  SelectionUnit="FullRow" 
+                  Margin="4,4,4,0">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="Typ" Width="100" Binding="{Binding Path=OutlookTyp}"/>
+                <DataGridTextColumn x:Name="TelNr" Binding="{Binding Path=Formatiert}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+
+</UserControl>

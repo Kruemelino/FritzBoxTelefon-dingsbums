@@ -1,6 +1,7 @@
 ﻿Imports System.Threading
 Imports System.Timers
 Imports System.Windows
+Imports System.Windows.Controls
 Imports System.Windows.Input
 Imports System.Windows.Markup
 Imports System.Windows.Media.Imaging
@@ -9,16 +10,21 @@ Imports Microsoft.Office.Interop
 Public Class WählclientWPF
     Inherits Window
 
+    Private WithEvents CtrlKontaktWahl As UserCtrlKontaktwahl
+    Private WithEvents CtrlDirektWahl As UserCtrlDirektwahl
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property PhonerApp As Phoner
 
-    Public Sub New()
+    Public Sub New(Direktwahl As Boolean)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
+
+        ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
+        DataContext = New WählClientViewModel
 
         ' Initiere Phoner, wenn erforderlich
         If XMLData.POptionen.CBPhoner Then
@@ -33,6 +39,13 @@ Public Class WählclientWPF
         ' Lade initale Daten
         SetTelefonDaten()
 
+        If Direktwahl Then
+            CtrlDirektWahl = New UserCtrlDirektwahl With {.DataContext = DataContext}
+            NavigationCtrl.Content = CtrlDirektWahl
+        Else
+            CtrlKontaktWahl = New UserCtrlKontaktwahl With {.DataContext = DataContext}
+            NavigationCtrl.Content = CtrlKontaktWahl
+        End If
     End Sub
 
 #Region "WithEvents"
@@ -56,18 +69,12 @@ Public Class WählclientWPF
             ' Kopfdaten setzen
             .Name = WählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", DfltStringEmpty)}")
 
-            ' Direktwahl deaktivieren
-            .Direktwahl = Visibility.Collapsed
-            .Kontaktwahl = Visibility.Visible
-
             ' Kontaktbild anzeigen
             Dim BildPfad As String
 
             BildPfad = KontaktBild(oContact)
 
             If BildPfad.IsNotStringEmpty Then
-                ' Bild einblenden
-                BoAnrBild.Visibility = Visibility.Visible
                 ' Kontaktbild laden
                 .Kontaktbild = New BitmapImage
                 With .Kontaktbild
@@ -97,9 +104,6 @@ Public Class WählclientWPF
             ' Kopfdaten setzen
             .Name = WählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", DfltStringEmpty)}")
 
-            ' Direktwahl deaktivieren
-            .Direktwahl = Visibility.Collapsed
-            .Kontaktwahl = Visibility.Visible
         End With
     End Sub
 
@@ -112,9 +116,6 @@ Public Class WählclientWPF
             ' Kopfdaten setzen
             .Name = WählClientFormText(TelNr.Formatiert)
 
-            ' Direktwahl deaktivieren
-            .Direktwahl = Visibility.Collapsed
-            .Kontaktwahl = Visibility.Visible
         End With
     End Sub
 
@@ -122,10 +123,6 @@ Public Class WählclientWPF
         With CType(DataContext, WählClientViewModel)
             ' Kopfdaten setzen
             .Name = WählClientFormText("Direktwahl")
-
-            ' Direktwahl aktivieren
-            .Direktwahl = Visibility.Visible
-            .Kontaktwahl = Visibility.Collapsed
 
             ' Wahlwiederhohlung in Combobox schreiben
             If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any Then
@@ -139,40 +136,44 @@ Public Class WählclientWPF
 
             ' Standard Status Wert festlegen
             .Status = DfltStringEmpty
+
             ' Abbruch Button deaktivieren/ausblenden
             BAbbruch.Visibility = Visibility.Hidden
+
             ' Optionen aktivieren
             GBoxOptionen.IsEnabled = True
-            ' Annrufbild ausblenden
-            BoAnrBild.Visibility = Visibility.Hidden
+
             ' Rufnummernunterdrückung gemäß Optionen setzen
             .CLIR = XMLData.POptionen.CBCLIR
 
             NLogger.Debug(WählClientStatusLadeGeräte)
+
             ' Schreibe alle geeigneten Telefone rein (kein Fax, keine IP-Telefonie, keine AB)
             If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
+
                 ' Nur FON, DECT, S0 und Phoner, wenn Phoner aktiv
                 .DialDeviceList.AddRange(XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) Not TG.IsFax And (TG.TelTyp = DfltWerteTelefonie.TelTypen.FON Or TG.TelTyp = DfltWerteTelefonie.TelTypen.DECT Or TG.TelTyp = DfltWerteTelefonie.TelTypen.S0)).ToList)
-                ' XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) Not TG.IsFax And (TG.TelTyp = DfltWerteTelefonie.TelTypen.FON Or TG.TelTyp = DfltWerteTelefonie.TelTypen.DECT Or TG.TelTyp = DfltWerteTelefonie.TelTypen.S0 Or (TG.IsPhoner And PhonerApp IsNot Nothing))).ToList
 
                 ' Ausgewähltes Standardgerät
                 .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.StdTelefon)
+
                 ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das zuletzt genutzte Telefon
                 If .TelGerät Is Nothing Then
                     NLogger.Debug(WählClientStatusLetztesGerät)
                     .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.ZuletztGenutzt)
                 End If
+
                 ' Wenn kein Standard-Gerät in den Einstellungen festgelegt wurde, dann nimm das erste in der Liste
                 If .TelGerät Is Nothing And .DialDeviceList.Count.IsNotZero Then
                     NLogger.Debug(WählClientStatus1Gerät)
                     .TelGerät = .DialDeviceList.First
                 End If
+
             Else
                 NLogger.Debug(WählClientStatusFehlerGerät)
             End If
         End With
     End Sub
-
 
 #Region "Form Events"
     Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
@@ -195,22 +196,9 @@ Public Class WählclientWPF
         End Using
     End Sub
 
-    Private Sub DGNummern_LoadingRow(sender As Object, e As Controls.DataGridRowEventArgs) Handles DGNummern.LoadingRow
-        e.Row.Header = e.Row.GetIndex
-    End Sub
 
-    Private Sub DGNummern_SelectionChanged(sender As Object, e As Controls.SelectionChangedEventArgs) Handles DGNummern.SelectionChanged
-        ' Prüfe, ob es sich bei dem ausgewählten Objekt um eine Telefonnummer handelt.
-        If e.AddedItems.Count.AreEqual(1) AndAlso TypeOf (e.AddedItems)(0) Is Telefonnummer Then
-            DialTelNr(CType(e.AddedItems(0), Telefonnummer), False)
-        End If
-    End Sub
 
-    Private Sub BDirektwahl_Click(sender As Object, e As RoutedEventArgs) Handles BDirektwahl.Click
-        Using tmpTelNr As New Telefonnummer With {.SetNummer = CBoxDirektwahl.Text}
-            DialTelNr(tmpTelNr, False)
-        End Using
-    End Sub
+
 #End Region
 
     ''' <summary>
@@ -218,16 +206,13 @@ Public Class WählclientWPF
     ''' </summary>
     ''' <param name="TelNr"></param>
     ''' <param name="AufbauAbbrechen"></param>
-    Private Sub DialTelNr(ByVal TelNr As Telefonnummer, ByVal AufbauAbbrechen As Boolean)
+    Private Sub DialTelNr(TelNr As Telefonnummer, AufbauAbbrechen As Boolean)
 
         With CType(DataContext, WählClientViewModel)
             ' Abbruch Button aktivieren/einblenden
             BAbbruch.Visibility = Visibility.Visible
             ' Optionen deaktivieren
             GBoxOptionen.IsEnabled = False
-            ' Panel deaktivieren
-            SPDirektwahl.IsEnabled = False
-            SPKontaktwahl.IsEnabled = False
 
             Dim DialCode As String = DfltStringEmpty
             Dim Erfolreich As Boolean = False
@@ -240,7 +225,7 @@ Public Class WählclientWPF
                 ' Timmer abbrechen, falls er läuft
                 If TimerSchließen IsNot Nothing Then TimerSchließen.Stop()
                 ' Ein erneutes Wählen ermöglichen
-                DGNummern.UnselectAll()
+                'DGNummern.UnselectAll()
             Else
                 ' Status setzen
                 .Status = WählClientBitteWarten
@@ -301,5 +286,8 @@ Public Class WählclientWPF
         Close()
     End Sub
 
+    Private Sub KontaktWahl_Selected(sender As Object, e As RoutedEventArgs) Handles CtrlKontaktWahl.Dial, CtrlDirektWahl.Dial
+        DialTelNr(CType(DataContext, WählClientViewModel).TelNr, False)
+    End Sub
 #End Region
 End Class

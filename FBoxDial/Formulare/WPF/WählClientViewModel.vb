@@ -35,26 +35,6 @@ Public Class WählClientViewModel
         End Set
     End Property
 
-    Private _Direktwahl As Visibility
-    Public Property Direktwahl As Visibility
-        Get
-            Return _Direktwahl
-        End Get
-        Set(value As Visibility)
-            SetProperty(_Direktwahl, value)
-        End Set
-    End Property
-
-    Private _Kontaktwahl As Visibility
-    Public Property Kontaktwahl As Visibility
-        Get
-            Return _Kontaktwahl
-        End Get
-        Set(value As Visibility)
-            SetProperty(_Kontaktwahl, value)
-        End Set
-    End Property
-
     Private _OKontakt As Outlook.ContactItem
     Public Property OKontakt As Outlook.ContactItem
         Get
@@ -127,6 +107,28 @@ Public Class WählClientViewModel
             SetProperty(_Kontaktbild, value)
         End Set
     End Property
+
+    Public ReadOnly Property KontaktbildVisibility As Visibility
+        Get
+            If Kontaktbild Is Nothing Then
+                Return Visibility.Collapsed
+            Else
+                Return Visibility.Visible
+            End If
+
+        End Get
+    End Property
+
+    Private _TelNr As Telefonnummer
+    Public Property TelNr As Telefonnummer
+        Get
+            Return _TelNr
+        End Get
+        Set
+            SetProperty(_TelNr, Value)
+        End Set
+    End Property
+
 End Class
 
 

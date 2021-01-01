@@ -371,7 +371,7 @@ Public Class FritzBoxWählClient
             Dim fWählClient As WählclientWPF
 
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF
+                fWählClient = New WählclientWPF(False)
 
                 ListWählboxWPF.Add(fWählClient)
                 With fWählClient
@@ -394,7 +394,7 @@ Public Class FritzBoxWählClient
             Dim fWählClient As WählclientWPF
 
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF
+                fWählClient = New WählclientWPF(False)
 
                 ListWählboxWPF.Add(fWählClient)
                 With fWählClient
@@ -422,7 +422,7 @@ Public Class FritzBoxWählClient
             Dim fWählClient As WählclientWPF
 
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF
+                fWählClient = New WählclientWPF(False)
 
                 ListWählboxWPF.Add(fWählClient)
                 With fWählClient
@@ -445,7 +445,7 @@ Public Class FritzBoxWählClient
         Dim fWählClient As WählclientWPF
 
         If ListWählboxWPF.Count.IsZero Then
-            fWählClient = New WählclientWPF
+            fWählClient = New WählclientWPF(True)
 
             ListWählboxWPF.Add(fWählClient)
             With fWählClient

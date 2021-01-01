@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:FBoxDial"
+        xmlns:fbd="clr-namespace:FBoxDial"
         mc:Ignorable="d"
-        Height="300" Width="500" Focusable="False" IsTabStop="False" Name="Wählclient" ResizeMode="NoResize" 
-        d:DataContext="{d:DesignInstance Type=viewModels:WählClientViewModel, IsDesignTimeCreatable=True}" 
+        Focusable="False" IsTabStop="False" Name="Wählclient" ResizeMode="NoResize" 
+        d:DesignHeight="200" d:DesignWidth="400"
+        d:DataContext="{d:DesignInstance Type=fbd:WählClientViewModel, IsDesignTimeCreatable=True}" 
+        MinHeight="250" MinWidth="400" Height="250" Width="450"
         Title="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
 
     <Window.Resources>
@@ -16,10 +18,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <Window.DataContext>
-        <viewModels:WählClientViewModel/>
-    </Window.DataContext>
 
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
@@ -34,49 +32,28 @@
             </Popup>            
         </StackPanel>
 
-        <StackPanel x:Name="SPTelefonat" Orientation="Horizontal" DockPanel.Dock="Bottom" Height="68">
-            <GroupBox x:Name="GBoxOptionen" Header="Verbinden über .." Width="200">
+        <Grid x:Name="GrdTelefonat" DockPanel.Dock="Bottom" Margin="4,0,0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>                
+            </Grid.ColumnDefinitions>
+
+            <GroupBox x:Name="GBoxOptionen" Header="Verbinden über .." Grid.Column="0">
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                     <CheckBox x:Name="CBCLIR" DockPanel.Dock="Top" Margin="0,0,2,5" Content="Rufnummer unterdrücken" HorizontalAlignment="Left" IsChecked="{Binding Path=CLIR, UpdateSourceTrigger=PropertyChanged}" />
                     <ComboBox x:Name="CBoxFon" DockPanel.Dock="Bottom" Margin="0,0,2,0" ItemsSource="{Binding DialDeviceList, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectedValuePath="UPnPDialport" SelectedItem="{Binding TelGerät}"/>
                 </DockPanel>
             </GroupBox>
-
-            <GroupBox x:Name="GBoxStatus" Header="Status" Width="200">
+            
+            <GroupBox x:Name="GBoxStatus" Header="Status" Grid.Column="1">
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                     <TextBlock x:Name="TBStatus" DockPanel.Dock="Top" Margin="0,0,2,5" TextWrapping="Wrap" Text="{Binding Path=Status, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" VerticalAlignment="Top" TextAlignment="Center" Foreground="Red"/>
                     <Button x:Name="BAbbruch" DockPanel.Dock="Bottom" Margin="0,0,2,0" Content="Abbruch" />
                 </DockPanel>
-            </GroupBox>           
+            </GroupBox>
+        </Grid>
 
-        </StackPanel>
-        <StackPanel DockPanel.Dock="Left" >
-            <DockPanel x:Name="SPKontaktwahl" VerticalAlignment="Stretch" Visibility="{Binding Path=Kontaktwahl, UpdateSourceTrigger=Default, Mode=OneWay}">
-                <Border x:Name="BoAnrBild" DockPanel.Dock="Right" BorderBrush="DimGray" BorderThickness="1" VerticalAlignment="top" Width="100" Margin="4,4,4,4">
-                    <Image  x:Name="AnrBild" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Source="{Binding Path=Kontaktbild, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                </Border>                
-                
-                <DataGrid x:Name="DGNummern" DockPanel.Dock="Left"
-                      ItemsSource="{Binding Path=DialNumberList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                      AutoGenerateColumns="False" HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LightGray"
-                      CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False"
-                      IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" Margin="4,4,4,0">
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="Typ" Header="Typ" Width="100" Binding="{Binding Path=OutlookTyp}"/>
-                        <DataGridTextColumn x:Name="TelNr" Header="Nummer" Binding="{Binding Path=Formatiert}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
-
-            <StackPanel x:Name="SPDirektwahl" Orientation="Vertical" Visibility="{Binding Path=Direktwahl, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                <TextBlock DockPanel.Dock="Top" Text="Direktwahl - Geben Sie die zu wählende Telefonnummer direkt ein" Margin="4,4,0,0" TextAlignment="Center"/>
-                <ComboBox x:Name="CBoxDirektwahl" Margin="4,4,4,4" IsEditable="True" FontSize="14" 
-                          ItemsSource="{Binding Path=DialDirektWahlList, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" DisplayMemberPath="Unformatiert" SelectedValuePath="Unformatiert"/>
-                <Button x:Name="BDirektwahl" DockPanel.Dock="Right"  Content="Wählen" Margin="4,4,4,4" MinWidth="100"/>
-            </StackPanel>
-
-        </StackPanel>       
+        <ContentControl x:Name="NavigationCtrl" Margin="4,4,0,4"/>
     </DockPanel>
 
 </Window>
