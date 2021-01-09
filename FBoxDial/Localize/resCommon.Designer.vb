@@ -74,6 +74,33 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Abbrechen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCancel() As String
+            Get
+                Return ResourceManager.GetString("strCancel", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Abbrechen geklickt ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCancelClicked() As String
+            Get
+                Return ResourceManager.GetString("strCancelClicked", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Alle auswählen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strCheckAll() As String
+            Get
+                Return ResourceManager.GetString("strCheckAll", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Einstellungen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strConfig() As String
@@ -83,20 +110,20 @@ Namespace Localize
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefon-dingsbums ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Datum ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strDefLongName() As String
+        Public Shared ReadOnly Property strDate() As String
             Get
-                Return ResourceManager.GetString("strDefLongName", resourceCulture)
+                Return ResourceManager.GetString("strDate", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die FritzOutlookV5 ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die Gerät ähnelt.
         '''</summary>
-        Public Shared ReadOnly Property strDefShortName() As String
+        Public Shared ReadOnly Property strDevice() As String
             Get
-                Return ResourceManager.GetString("strDefShortName", resourceCulture)
+                Return ResourceManager.GetString("strDevice", resourceCulture)
             End Get
         End Property
         
@@ -106,6 +133,60 @@ Namespace Localize
         Public Shared ReadOnly Property strDialer() As String
             Get
                 Return ResourceManager.GetString("strDialer", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Dauer ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strDuration() As String
+            Get
+                Return ResourceManager.GetString("strDuration", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Endzeit ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strEndTime() As String
+            Get
+                Return ResourceManager.GetString("strEndTime", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Import der Anrufliste ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strImportCallerList() As String
+            Get
+                Return ResourceManager.GetString("strImportCallerList", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Eingene Nr. ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strMyNumber() As String
+            Get
+                Return ResourceManager.GetString("strMyNumber", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strName() As String
+            Get
+                Return ResourceManager.GetString("strName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Keine Einträge markiert ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strNoEntriesSelected() As String
+            Get
+                Return ResourceManager.GetString("strNoEntriesSelected", resourceCulture)
             End Get
         End Property
         
@@ -146,6 +227,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die MicroSIP ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strOptMicroSIP() As String
+            Get
+                Return ResourceManager.GetString("strOptMicroSIP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Telefone ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strOptPhone() As String
@@ -169,6 +259,60 @@ Namespace Localize
         Public Shared ReadOnly Property strOptSearchContact() As String
             Get
                 Return ResourceManager.GetString("strOptSearchContact", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Port ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strPort() As String
+            Get
+                Return ResourceManager.GetString("strPort", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Gegenstelle ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strRemoteCaller() As String
+            Get
+                Return ResourceManager.GetString("strRemoteCaller", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Starte Jounalimport ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strStartJounalImport() As String
+            Get
+                Return ResourceManager.GetString("strStartJounalImport", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Startzeit ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strStartTime() As String
+            Get
+                Return ResourceManager.GetString("strStartTime", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Status ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strStatus() As String
+            Get
+                Return ResourceManager.GetString("strStatus", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Keine auswählen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strUncheckAll() As String
+            Get
+                Return ResourceManager.GetString("strUncheckAll", resourceCulture)
             End Get
         End Property
     End Class

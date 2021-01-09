@@ -357,6 +357,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 #End Region
+#Region "SoftPhones"
 
 #Region "Phoner"
     Private _TBPhonerPasswort As String
@@ -380,9 +381,33 @@ Public Class OptionenViewModel
         End Set
     End Property
 #End Region
+#Region "MicroSIP"
+    Private _TBMicroSIPPath As String
+    Private _CBMicroSIP As Boolean
+
+    Public Property TBMicroSIPPath As String
+        Get
+            Return _TBMicroSIPPath
+        End Get
+        Set
+            _TBMicroSIPPath = Value
+        End Set
+    End Property
+    Public Property CBMicroSIP As Boolean
+        Get
+            Return _CBMicroSIP
+        End Get
+        Set
+            _CBMicroSIP = Value
+        End Set
+    End Property
+#End Region
+
+#End Region
 
 #Region "Logging"
     Private _CBoxMinLogLevel As String
+
     Public Property CBoxMinLogLevel As String
         Get
             Return _CBoxMinLogLevel
@@ -407,6 +432,8 @@ Public Class OptionenViewModel
     ''' Lädt die daten aus den <see cref="Optionen"/> in dieses Viewmodel.
     ''' </summary>
     Friend Sub LadeDaten()
+        NLogger.Debug("Lade die Daten aus der XML-Datei in das ViewModel Optionen")
+
         ' Schleife durch alle Properties dieser Klasse
         For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
             ' Suche das passende Property in den Optionen
@@ -437,6 +464,7 @@ Public Class OptionenViewModel
     ''' Speichert die Daten aus diesem ViewModel zurück in die <see cref="Optionen"/>.
     ''' </summary>
     Friend Sub Speichern()
+        NLogger.Debug("Speichere die Daten aus dem ViewModel Optionen in die XML-Datei")
         ' Schleife durch alle Properties dieser Klasse
         For Each ViewModelPropertyInfo As PropertyInfo In [GetType].GetProperties
             ' Suche das passende Property in den Optionen
@@ -479,6 +507,6 @@ Public Class OptionenViewModel
         End With
 
         ' Speichern in Datei anstoßen
-        Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, $"{Localize.resCommon.strDefShortName}.xml"))
+        Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, $"{My.Resources.strDefShortName}.xml"))
     End Sub
 End Class

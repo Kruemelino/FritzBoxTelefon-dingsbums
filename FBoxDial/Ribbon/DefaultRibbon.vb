@@ -4,7 +4,7 @@
     ''' <summary>
     ''' "Fritz!Box Telefon-dingsbums"
     ''' </summary>
-    Public Shared ReadOnly Property PLabelTab() As String = Localize.resCommon.strDefLongName
+    Public Shared ReadOnly Property PLabelTab() As String = My.Resources.strDefLongName
 
     ''' <summary>
     ''' Wählen
@@ -79,7 +79,7 @@
     ''' <summary>
     ''' Anrufen (Fritz!Box Telefon-Dingsbums)
     ''' </summary>
-    Public Shared ReadOnly Property PLabelcbtnDial() As String = $"Anrufen ({Localize.resCommon.strDefLongName})"
+    Public Shared ReadOnly Property PLabelcbtnDial() As String = $"Anrufen ({My.Resources.strDefLongName})"
 
     ''' <summary>
     ''' Anrufen (Fritz!Box Telefon-Dingsbums)
@@ -91,7 +91,7 @@
     ''' </summary>
     Public Shared ReadOnly Property PLabelctbtnVIP() As String
         Get
-            Return String.Format("{0} ({1})", PLabeltbtnVIP, Localize.resCommon.strDefLongName)
+            Return String.Format("{0} ({1})", PLabeltbtnVIP, My.Resources.strDefLongName)
         End Get
     End Property
 
@@ -100,7 +100,7 @@
     ''' </summary>
     Public Shared ReadOnly Property PLabelcbtnUpload() As String
         Get
-            Return String.Format("{0} ({1})", PLabelbtnUpload, Localize.resCommon.strDefLongName)
+            Return String.Format("{0} ({1})", PLabelbtnUpload, My.Resources.strDefLongName)
         End Get
     End Property
 
@@ -236,7 +236,7 @@
     ''' <summary>
     ''' Öffnet die Fritz!Box Telefon-dingsbums Einstellungen
     ''' </summary>
-    Public Shared ReadOnly Property PScreenTippEinstellungen() As String = $"Öffnet den {Localize.resCommon.strDefLongName} Einstellungsdialog"
+    Public Shared ReadOnly Property PScreenTippEinstellungen() As String = $"Öffnet den {My.Resources.strDefLongName} Einstellungsdialog"
 
     ''' <summary>
     ''' Suchen Sie zusätzliche Informationen zu diesem Anrufer mit der Rückwärtssuche.

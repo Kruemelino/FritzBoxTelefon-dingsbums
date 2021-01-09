@@ -63,8 +63,8 @@ Friend Module KontaktFunktionen
                         .HomeTelephoneNumber = TelNr.Formatiert
                     End If
 
-                    .Categories = Localize.resCommon.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & Localize.resCommon.strDefLongName & " am " & Now & Dflt2NeueZeile & "vCard:" & Dflt2NeueZeile & vCard
+                    .Categories = My.Resources.strDefLongName 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
+                    .Body = .Body & vbCrLf & "Erstellt durch das " & My.Resources.strDefLongName & " am " & Now & Dflt2NeueZeile & "vCard:" & Dflt2NeueZeile & vCard
                 End If
 
             End With
@@ -96,8 +96,8 @@ Friend Module KontaktFunktionen
                 If XMLKontakt IsNot Nothing Then
                     XMLKontaktOutlook(XMLKontakt, olKontakt)
 
-                    .Categories = Localize.resCommon.strDefLongName ' 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
-                    .Body = .Body & vbCrLf & "Erstellt durch das " & Localize.resCommon.strDefLongName & " am " & Now
+                    .Categories = My.Resources.strDefLongName ' 'Alle Kontakte, die erstellt werden, haben diese Kategorie. Damit sind sie einfach zu erkennen
+                    .Body = .Body & vbCrLf & "Erstellt durch das " & My.Resources.strDefLongName & " am " & Now
                 End If
 
             End With

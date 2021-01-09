@@ -3,14 +3,12 @@ Imports System.Net
 Imports System.Net.Sockets
 Imports System.Threading
 
-Public Class Phoner
-    Implements IDisposable
+Friend Class Phoner
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PhonerEndpoint As IPAddress = IPAddress.Loopback
     Private ReadOnly Property PhonerEndpointPort As Integer = 2012
-
-    Friend ReadOnly Property PhonerReady As Boolean = Not Process.GetProcessesByName("phoner").Length = 0
+    Friend ReadOnly Property PhonerReady As Boolean = Process.GetProcessesByName("phoner").Length.IsNotZero
 #Region "Phoner Strings"
     ''' <summary>
     ''' Login
@@ -54,7 +52,7 @@ Public Class Phoner
         Return DialPhoner(DfltStringEmpty, False, True)
     End Function
 
-    Friend Function DialPhoner(ByVal DialCode As String, ByVal Hangup As Boolean) As Boolean
+    Friend Function Dial(ByVal DialCode As String, ByVal Hangup As Boolean) As Boolean
         Return DialPhoner(DialCode, Hangup, False)
     End Function
     ''' <summary>
@@ -102,15 +100,15 @@ Public Class Phoner
                                     If .DataAvailable Then
                                         NLogger.Debug("Authentifizierung erfolgreich")
                                         If Not Check Then
-                                            ' Wähllkomando senden
+                                            ' Wählkommando senden
                                             If Hangup Then
                                                 ' Abbruch des Rufaufbaues mittels DISCONNECT
                                                 SW.WriteLine(PhonerDISCONNECT)
-                                                NLogger.Debug(PhonerAbbruch)
+                                                NLogger.Debug(SoftPhoneAbbruch)
                                             Else
                                                 ' Aufbau des Telefonates mittels CONNECT
                                                 SW.WriteLine($"{PhonerCONNECT} {DialCode}")
-                                                NLogger.Debug(PhonerErfolgreich(DialCode))
+                                                NLogger.Debug(SoftPhoneErfolgreich(DialCode, "Phoner"))
                                             End If
                                         End If
                                         DialPhoner = True
@@ -146,37 +144,5 @@ Public Class Phoner
             NLogger.Warn(PhonerNichtBereit)
         End If
     End Function
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not disposedValue Then
-            If disposing Then
-                ' TODO: verwalteten Zustand (verwaltete Objekte) entsorgen.
-            End If
-
-            ' TODO: nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() weiter unten überschreiben.
-            ' TODO: große Felder auf Null setzen.
-        End If
-        disposedValue = True
-    End Sub
-
-    ' TODO: Finalize() nur überschreiben, wenn Dispose(disposing As Boolean) weiter oben Code zur Bereinigung nicht verwalteter Ressourcen enthält.
-    'Protected Overrides Sub Finalize()
-    '    ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
-    '    Dispose(False)
-    '    MyBase.Finalize()
-    'End Sub
-
-    ' Dieser Code wird von Visual Basic hinzugefügt, um das Dispose-Muster richtig zu implementieren.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in Dispose(disposing As Boolean) weiter oben ein.
-        Dispose(True)
-        ' TODO: Auskommentierung der folgenden Zeile aufheben, wenn Finalize() oben überschrieben wird.
-        ' GC.SuppressFinalize(Me)
-    End Sub
-#End Region
 
 End Class

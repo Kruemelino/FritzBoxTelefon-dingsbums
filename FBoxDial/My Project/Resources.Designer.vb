@@ -26,7 +26,7 @@ Namespace My.Resources
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
-    Friend Module Resources
+    Public Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
         
@@ -36,7 +36,7 @@ Namespace My.Resources
         '''  Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("FBoxDial.Resources", GetType(Resources).Assembly)
@@ -51,7 +51,7 @@ Namespace My.Resources
         '''  Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Property Culture() As Global.System.Globalization.CultureInfo
+        Public Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
@@ -63,7 +63,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Add() As System.Drawing.Bitmap
+        Public ReadOnly Property Add() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Add", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -73,7 +73,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property call_made() As System.Drawing.Bitmap
+        Public ReadOnly Property call_made() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("call_made", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -83,7 +83,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property call_missed() As System.Drawing.Bitmap
+        Public ReadOnly Property call_missed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("call_missed", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -93,7 +93,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property call_received() As System.Drawing.Bitmap
+        Public ReadOnly Property call_received() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("call_received", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -103,7 +103,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property CallTo() As System.Drawing.Bitmap
+        Public ReadOnly Property CallTo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CallTo", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -113,7 +113,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Cancel() As System.Drawing.Bitmap
+        Public ReadOnly Property Cancel() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Cancel", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -123,47 +123,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property CheckBox() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CheckBox", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property CheckboxDisable() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CheckboxDisable", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property CheckboxMix() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CheckboxMix", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property CheckboxUncheck() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CheckboxUncheck", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property Download() As System.Drawing.Bitmap
+        Public ReadOnly Property Download() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Download", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -173,7 +133,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Remove() As System.Drawing.Bitmap
+        Public ReadOnly Property Remove() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Remove", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -190,7 +150,7 @@ Namespace My.Resources
         '''          &lt;splitButton id=&quot;spb1_K&quot; size=&quot;large&quot;&gt;
         '''            &lt;button id=&quot;btnDialExpl_K&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; onAction=&quot;BtnOnAction&quot;  getScreentip=&quot;GetItemScreenTipp&quot;/&gt;        ''' [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
-        Friend ReadOnly Property RibbonExplorer() As String
+        Public ReadOnly Property RibbonExplorer() As String
             Get
                 Return ResourceManager.GetString("RibbonExplorer", resourceCulture)
             End Get
@@ -208,7 +168,7 @@ Namespace My.Resources
         '''
         ''' ähnelt.
         '''</summary>
-        Friend ReadOnly Property RibbonIMLayerUI() As String
+        Public ReadOnly Property RibbonIMLayerUI() As String
             Get
                 Return ResourceManager.GetString("RibbonIMLayerUI", resourceCulture)
             End Get
@@ -224,7 +184,7 @@ Namespace My.Resources
         '''          &lt;button id=&quot;btnDialInsp_J&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; getEnabled=&quot;EnableBtnJournal&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
         '''          &lt;button id=&quot;btnRWS_J&quot; tag=&quot;RWSDasOertliche&quot; getLabe [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
-        Friend ReadOnly Property RibbonInspectorJournal() As String
+        Public ReadOnly Property RibbonInspectorJournal() As String
             Get
                 Return ResourceManager.GetString("RibbonInspectorJournal", resourceCulture)
             End Get
@@ -240,7 +200,7 @@ Namespace My.Resources
         '''          &lt;button id=&quot;btnDialInsp_C&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;GetItemImageMso&quot; getScreentip=&quot;GetItemScreenTipp&quot; size=&quot;large&quot; onAction=&quot;BtnOnActionI&quot;/&gt;
         '''          &lt;button id=&quot;btnRWS_C&quot; tag=&quot;RWSDasOertliche&quot; getLabel=&quot;GetItemLabel&quot; getImage=&quot;Get [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
-        Friend ReadOnly Property RibbonInspectorKontakt() As String
+        Public ReadOnly Property RibbonInspectorKontakt() As String
             Get
                 Return ResourceManager.GetString("RibbonInspectorKontakt", resourceCulture)
             End Get
@@ -262,7 +222,7 @@ Namespace My.Resources
         '''
         ''' ähnelt.
         '''</summary>
-        Friend ReadOnly Property RibbonInspectorMailRead() As String
+        Public ReadOnly Property RibbonInspectorMailRead() As String
             Get
                 Return ResourceManager.GetString("RibbonInspectorMailRead", resourceCulture)
             End Get
@@ -271,7 +231,7 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Save() As System.Drawing.Bitmap
+        Public ReadOnly Property Save() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Save", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -279,9 +239,27 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Fritz!Box Telefon-dingsbums ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDefLongName() As String
+            Get
+                Return ResourceManager.GetString("strDefLongName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die FritzOutlookV5 ähnelt.
+        '''</summary>
+        Public ReadOnly Property strDefShortName() As String
+            Get
+                Return ResourceManager.GetString("strDefShortName", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Upload() As System.Drawing.Bitmap
+        Public ReadOnly Property Upload() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Upload", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -316,7 +294,7 @@ Namespace My.Resources
         '''    &lt;ONKZ n=&quot;250&quot;/&gt;
         '''    &lt;ON [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         '''</summary>
-        Friend ReadOnly Property Vorwahlen() As String
+        Public ReadOnly Property Vorwahlen() As String
             Get
                 Return ResourceManager.GetString("Vorwahlen", resourceCulture)
             End Get

@@ -7,12 +7,12 @@ Public Class FritzBoxWählClient
 #Region "Properties"
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.FBLinkBasis & "/data.lua"
-    Private ReadOnly Property PFBLinkDialSetDialPort(ByVal sSID As String, ByVal DialPort As String) As String
+    Private ReadOnly Property PFBLinkDialSetDialPort(sSID As String, DialPort As String) As String
         Get
             Return String.Format("&xhr=1&clicktodial=on&port={0}{1}&back_to_page=%2Ffon_num%2Fdial_fonbook.lua&btn_apply=&lang=de&page=telDial", DialPort, sSID)
         End Get
     End Property
-    Private ReadOnly Property PFBLinkDial(ByVal sSID As String, ByVal DialCode As String, ByVal HangUp As Boolean) As String
+    Private ReadOnly Property PFBLinkDial(sSID As String, DialCode As String, HangUp As Boolean) As String
         Get
             Return String.Format("{0}/fon_num/foncalls_list.lua?{1}{2}", FritzBoxDefault.FBLinkBasis, sSID, If(HangUp, "&hangup=", "&dial=" & DialCode))
         End Get
@@ -24,7 +24,7 @@ Public Class FritzBoxWählClient
     ''' Event zum setzen des Status
     ''' </summary>
     ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
-    Friend Event SetStatus(ByVal Status As String)
+    Friend Event SetStatus(Status As String)
 #End Region
 
     Private ListWählboxWPF As List(Of WählclientWPF)
@@ -36,7 +36,7 @@ Public Class FritzBoxWählClient
     ''' <param name="Telefon">Das ausgehende Telefon</param>
     ''' <param name="Auflegen">Angabe, ob der Verbindungsaufbau abgebrochen werden soll.</param>
     ''' <returns></returns>
-    Friend Function SOAPDial(ByVal sDialCode As String, ByVal Telefon As Telefoniegerät, ByVal Auflegen As Boolean) As Boolean
+    Friend Function SOAPDial(sDialCode As String, Telefon As Telefoniegerät, Auflegen As Boolean) As Boolean
         Dim DialPortEingestellt As Boolean
         Dim InPutData As New Hashtable
         Dim OutPutData As Hashtable
@@ -101,74 +101,12 @@ Public Class FritzBoxWählClient
     End Function
 #End Region
 
-    '#Region "Wählen per WebCLient"
-    '    Friend Function WebCientDial(ByVal sDialCode As String, ByVal Telefon As Telefoniegerät, ByVal Auflegen As Boolean) As Boolean
-
-    '        Dim fbAntwort As String
-    '        Dim DialPortEingestellt As Boolean
-
-    '        Dim SessionID As String
-
-    '        SessionID = GetSessionID
-
-    '        ' WebCientDial = PWählClientDialError1
-    '        Using fbQuery As New FritzBoxQuery
-    '            ' DialPort setzen, wenn erforderlich
-    '            fbAntwort = fbQuery.FritzBoxQuery(SessionID, "DialPort=telcfg:settings/DialPort")
-
-    '            DialPortEingestellt = fbAntwort.Contains(CStr(Telefon.Dialport))
-    '            If Not DialPortEingestellt Then
-    '                ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-    '                RaiseEvent SetStatus(PWählClientDialStatus("WebCientDial", PWählClientStatusDialPort, CStr(Telefon.Dialport)))
-
-    '                ' per HTTP-POST Dialport ändern
-    '                fbAntwort = HTTPPost(PFBLinkTelData, PFBLinkDialSetDialPort(SessionID, CStr(Telefon.Dialport)), XMLData.POptionen.PEncodingFritzBox)
-    '                ' {"data":{"btn_apply":"twofactor","twofactor":"button,dtmf;3170"}}
-    '                If fbAntwort.Contains("twofactor") Then
-    '                    DialPortEingestellt = False
-    '                    MsgBox(PWarnung2FA, MsgBoxStyle.Critical, "WebCientDial")
-    '                Else
-    '                    ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
-    '                    fbAntwort = fbQuery.FritzBoxQuery(SessionID, "DialPort=telcfg:settings/DialPort")
-    '                    DialPortEingestellt = fbAntwort.Contains(CStr(Telefon.Dialport))
-    '                End If
-    '            End If
-
-    '            ' Wählen, wenn der Dialport passt
-    '            If DialPortEingestellt Then
-    '                ' Senden des Wählkomandos
-    '                ' Tipp von Pikachu: Umwandlung von # und *, da ansonsten die Telefoncodes verschluckt werden. 
-    '                ' Alternativ ein URLEncode (Uri.EscapeDataString(Link).Replace("%20", "+")), 
-    '                ' was aber in der Funktion httpGET zu einem Fehler bei dem Erstellen der neuen URI führt.
-
-    '                ' Senden des Wählkomandos
-    '                fbAntwort = HTTPGet(PFBLinkDial(SessionID, sDialCode.Replace("#", "%23").Replace("*", "%2A"), Auflegen), XMLData.POptionen.PEncodingFritzBox)
-
-    '                ' Die Rückgabe ist der JSON - Wert "dialing"
-    '                ' Bei der Wahl von Telefonnummern ist es ein {"dialing": "0123456789#"}
-    '                ' Bei der Wahl von Telefoncodes ist es ein {"dialing": "#96*0*"}
-    '                ' Bei der Wahl Des Hangup ist es ein {"dialing": false} ohne die umschließenden Anführungszeichen" 
-    '                ' NEU {"dialing":true,"err":0}
-    '                ' NEU {"dialing":false,"err":0}
-    '                If fbAntwort = "{""dialing"":true,""err"":0}" Or (fbAntwort.Contains("""dialing""") And fbAntwort.Contains(If(Auflegen, "false", sDialCode))) Then
-    '                    Return True
-    '                Else
-    '                    NLogger.Error("{0}: {1} {2}", "WebCientDial", "Fehler", fbAntwort.Replace(vbLf, ""))
-    '                    Return False
-    '                End If
-    '            Else
-    '                Return False
-    '            End If
-    '        End Using
-    '    End Function
-    '#End Region
-
 #Region "Dialog Wähldialog"
     ''' <summary>
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt
     ''' </summary>
     ''' <param name="olAuswahl">Die aktuelle Auswahl eines Outlook-Elementes</param>
-    Friend Overloads Sub WählboxStart(ByVal olAuswahl As Outlook.Selection)
+    Friend Overloads Sub WählboxStart(olAuswahl As Outlook.Selection)
 
         ' Ist überhaupt etwas ausgewählt?
         If olAuswahl.Count.AreEqual(1) Then
@@ -204,7 +142,7 @@ Public Class FritzBoxWählClient
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste in Inspektoren ausgeführt
     ''' </summary>
     ''' <param name="olInsp">Der aktuelle Inspektor</param>
-    Friend Overloads Sub WählboxStart(ByVal olInsp As Outlook.Inspector)
+    Friend Overloads Sub WählboxStart(olInsp As Outlook.Inspector)
 
         Select Case True
             Case TypeOf olInsp.CurrentItem Is Outlook.ContactItem   ' ist aktuelles Fenster ein Kontakt?
@@ -225,7 +163,7 @@ Public Class FritzBoxWählClient
     ''' <summary>
     ''' Wählen aus einer IM Contactcard
     ''' </summary>
-    Friend Overloads Sub WählboxStart(ByVal ContactCard As Microsoft.Office.Core.IMsoContactCard)
+    Friend Overloads Sub WählboxStart(ContactCard As Microsoft.Office.Core.IMsoContactCard)
 
         ' Es gibt zwei Möglichkeiten:
         ' A: Ein klassischer Kontakt ist hinterlegt
@@ -258,7 +196,7 @@ Public Class FritzBoxWählClient
     ''' Wählen aus einer E-Mail
     ''' </summary>
     ''' <param name="aktMail">Die E-Mail, deren Absender angerufen werden soll</param>
-    Friend Overloads Sub WählboxStart(ByVal aktMail As Outlook.MailItem)
+    Friend Overloads Sub WählboxStart(aktMail As Outlook.MailItem)
 
         Dim SMTPAdresse As String = GetSenderSMTPAddress(aktMail)
 
@@ -292,7 +230,7 @@ Public Class FritzBoxWählClient
         aktMail.ReleaseComObject
     End Sub
 
-    Friend Overloads Sub WählboxStart(ByVal olJournal As Outlook.JournalItem)
+    Friend Overloads Sub WählboxStart(olJournal As Outlook.JournalItem)
 
         With olJournal
             If Not .Body.Contains(DfltStringUnbekannt) And .Categories.Contains(DfltJournalKategorie) Then
@@ -327,7 +265,7 @@ Public Class FritzBoxWählClient
         End With
     End Sub
 
-    Friend Overloads Sub WählboxStart(ByVal DialTelefonat As Telefonat)
+    Friend Overloads Sub WählboxStart(DialTelefonat As Telefonat)
 
         With DialTelefonat
             ' Kontakt aus Telefonat ermitteln
@@ -345,7 +283,7 @@ Public Class FritzBoxWählClient
         End With
     End Sub
 
-    Friend Overloads Sub WählboxStart(ByVal DialVIP As VIPEntry)
+    Friend Overloads Sub WählboxStart(DialVIP As VIPEntry)
 
         With DialVIP
             ' Kontakt aus telefinat ermitteln
@@ -362,7 +300,7 @@ Public Class FritzBoxWählClient
     ''' Startet das Wählen auf Basis eines Outlook Kontaktes
     ''' </summary>
     ''' <param name="oContact">Der Outlook-Kontakt, welcher angerufen werden soll</param>
-    Private Sub Wählbox(ByVal oContact As Outlook.ContactItem)
+    Private Sub Wählbox(oContact As Outlook.ContactItem)
 
         If oContact IsNot Nothing Then
             ' Es soll nur ein Formular anzeigbar sein.
@@ -371,7 +309,7 @@ Public Class FritzBoxWählClient
             Dim fWählClient As WählclientWPF
 
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF(False)
+                fWählClient = New WählclientWPF(False, Me)
 
                 ListWählboxWPF.Add(fWählClient)
                 With fWählClient
@@ -385,7 +323,7 @@ Public Class FritzBoxWählClient
         End If
     End Sub
 
-    Private Sub Wählbox(ByVal oExchangeNutzer As Outlook.ExchangeUser)
+    Private Sub Wählbox(oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then
             ' Es soll nur ein Formular anzeigbar sein.
@@ -394,7 +332,7 @@ Public Class FritzBoxWählClient
             Dim fWählClient As WählclientWPF
 
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF(False)
+                fWählClient = New WählclientWPF(False, Me)
 
                 ListWählboxWPF.Add(fWählClient)
                 With fWählClient
@@ -412,7 +350,7 @@ Public Class FritzBoxWählClient
     ''' Startet das Wählen auf Basis einer Telefonnummer 
     ''' </summary>
     ''' <param name="TelNr">Die Telefonnummer, welche angerufen werden soll</param>
-    Private Sub Wählbox(ByVal TelNr As Telefonnummer)
+    Private Sub Wählbox(TelNr As Telefonnummer)
 
         If TelNr IsNot Nothing Then
 
@@ -422,7 +360,7 @@ Public Class FritzBoxWählClient
             Dim fWählClient As WählclientWPF
 
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF(False)
+                fWählClient = New WählclientWPF(False, Me)
 
                 ListWählboxWPF.Add(fWählClient)
                 With fWählClient
@@ -445,7 +383,7 @@ Public Class FritzBoxWählClient
         Dim fWählClient As WählclientWPF
 
         If ListWählboxWPF.Count.IsZero Then
-            fWählClient = New WählclientWPF(True)
+            fWählClient = New WählclientWPF(True, Me)
 
             ListWählboxWPF.Add(fWählClient)
             With fWählClient

@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../XAMLRessources.xaml" />
+                <ResourceDictionary Source="../XAMLResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -80,7 +80,7 @@
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>                                
-                                <CheckBox Content="{Binding Path=Formatiert}" IsChecked="{Binding Path=Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox Content="{Binding Path=Einwahl}" IsChecked="{Binding Path=Überwacht, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>                        
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

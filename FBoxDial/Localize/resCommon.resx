@@ -120,17 +120,44 @@
   <data name="strAnrMon" xml:space="preserve">
     <value>Anrufmonitor</value>
   </data>
+  <data name="strCancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="strCancelClicked" xml:space="preserve">
+    <value>Abbrechen geklickt</value>
+  </data>
+  <data name="strCheckAll" xml:space="preserve">
+    <value>Alle auswählen</value>
+  </data>
   <data name="strConfig" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
-  <data name="strDefLongName" xml:space="preserve">
-    <value>Fritz!Box Telefon-dingsbums</value>
+  <data name="strDate" xml:space="preserve">
+    <value>Datum</value>
   </data>
-  <data name="strDefShortName" xml:space="preserve">
-    <value>FritzOutlookV5</value>
+  <data name="strDevice" xml:space="preserve">
+    <value>Gerät</value>
   </data>
   <data name="strDialer" xml:space="preserve">
     <value>Wählhilfe</value>
+  </data>
+  <data name="strDuration" xml:space="preserve">
+    <value>Dauer</value>
+  </data>
+  <data name="strEndTime" xml:space="preserve">
+    <value>Endzeit</value>
+  </data>
+  <data name="strImportCallerList" xml:space="preserve">
+    <value>Import der Anrufliste</value>
+  </data>
+  <data name="strMyNumber" xml:space="preserve">
+    <value>Eingene Nr.</value>
+  </data>
+  <data name="strName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="strNoEntriesSelected" xml:space="preserve">
+    <value>Keine Einträge markiert</value>
   </data>
   <data name="strOptBaseConfig" xml:space="preserve">
     <value>Grundeinstellung</value>
@@ -144,6 +171,9 @@
   <data name="strOptJournal" xml:space="preserve">
     <value>Journal</value>
   </data>
+  <data name="strOptMicroSIP" xml:space="preserve">
+    <value>MicroSIP</value>
+  </data>
   <data name="strOptPhone" xml:space="preserve">
     <value>Telefone</value>
   </data>
@@ -152,5 +182,23 @@
   </data>
   <data name="strOptSearchContact" xml:space="preserve">
     <value>Kontaktsuche</value>
+  </data>
+  <data name="strPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="strRemoteCaller" xml:space="preserve">
+    <value>Gegenstelle</value>
+  </data>
+  <data name="strStartJounalImport" xml:space="preserve">
+    <value>Starte Jounalimport</value>
+  </data>
+  <data name="strStartTime" xml:space="preserve">
+    <value>Startzeit</value>
+  </data>
+  <data name="strStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="strUncheckAll" xml:space="preserve">
+    <value>Keine auswählen</value>
   </data>
 </root>

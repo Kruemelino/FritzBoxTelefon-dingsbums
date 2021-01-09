@@ -1,7 +1,6 @@
 ﻿Imports System.Threading
 Imports System.Timers
 Imports System.Windows
-Imports System.Windows.Controls
 Imports System.Windows.Input
 Imports System.Windows.Markup
 Imports System.Windows.Media.Imaging
@@ -14,8 +13,14 @@ Public Class WählclientWPF
     Private WithEvents CtrlDirektWahl As UserCtrlDirektwahl
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property PhonerApp As Phoner
+    Private Property MicroSIPApp As MicroSIP
 
-    Public Sub New(Direktwahl As Boolean)
+#Region "WithEvents"
+    Private WithEvents FBWählClient As FritzBoxWählClient
+    Private WithEvents TimerSchließen As Timers.Timer
+#End Region
+
+    Public Sub New(Direktwahl As Boolean, FBoxWählClient As FritzBoxWählClient)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -26,32 +31,21 @@ Public Class WählclientWPF
         ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
         DataContext = New WählClientViewModel
 
-        ' Initiere Phoner, wenn erforderlich
-        If XMLData.POptionen.CBPhoner Then
-            PhonerApp = New Phoner
-            If Not PhonerApp.PhonerReady Then
-                NLogger.Debug(WählClientPhonerInaktiv)
-                PhonerApp.Dispose()
-                PhonerApp = Nothing
-            End If
-        End If
+        FBWählClient = FBoxWählClient
 
         ' Lade initale Daten
         SetTelefonDaten()
 
         If Direktwahl Then
+            NLogger.Debug("Direktwahl geladen")
             CtrlDirektWahl = New UserCtrlDirektwahl With {.DataContext = DataContext}
             NavigationCtrl.Content = CtrlDirektWahl
         Else
+            NLogger.Debug("Kontaktwahl geladen")
             CtrlKontaktWahl = New UserCtrlKontaktwahl With {.DataContext = DataContext}
             NavigationCtrl.Content = CtrlKontaktWahl
         End If
     End Sub
-
-#Region "WithEvents"
-    Private WithEvents FBWählClient As FritzBoxWählClient
-    Private WithEvents TimerSchließen As Timers.Timer
-#End Region
 
     ''' <summary>
     ''' Sammelt alle Kontaktdaten des Outlook-Kontaktes als <see cref="Outlook.ContactItem"/> zusammen.
@@ -151,8 +145,8 @@ Public Class WählclientWPF
             ' Schreibe alle geeigneten Telefone rein (kein Fax, keine IP-Telefonie, keine AB)
             If XMLData.PTelefonie.Telefoniegeräte IsNot Nothing AndAlso XMLData.PTelefonie.Telefoniegeräte.Any Then
 
-                ' Nur FON, DECT, S0 und Phoner, wenn Phoner aktiv
-                .DialDeviceList.AddRange(XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) Not TG.IsFax And (TG.TelTyp = DfltWerteTelefonie.TelTypen.FON Or TG.TelTyp = DfltWerteTelefonie.TelTypen.DECT Or TG.TelTyp = DfltWerteTelefonie.TelTypen.S0)).ToList)
+                ' Nur FON, DECT, S0 und Phoner, MicroSIP
+                .DialDeviceList.AddRange(XMLData.PTelefonie.Telefoniegeräte.Where(Function(TG) TG.IsDialable).ToList)
 
                 ' Ausgewähltes Standardgerät
                 .TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.StdTelefon)
@@ -175,7 +169,7 @@ Public Class WählclientWPF
         End With
     End Sub
 
-#Region "Form Events"
+#Region "WPF Events"
     Private Sub BOptionen_MouseEnter(sender As Object, e As MouseEventArgs)
         OptionPopup.StaysOpen = True
     End Sub
@@ -196,10 +190,13 @@ Public Class WählclientWPF
         End Using
     End Sub
 
-
-
-
 #End Region
+    Private Sub FBWählClient_SetStatus(Status As String) Handles FBWählClient.SetStatus
+        'With CType(DataContext, WählClientViewModel)
+        '    .Status = Status
+        'End With
+        NLogger.Debug(Status)
+    End Sub
 
     ''' <summary>
     ''' Startet den Wählvorgang
@@ -241,14 +238,46 @@ Public Class WählclientWPF
                 NLogger.Debug(WählClientStatusWählClient(DialCode))
             End If
 
-            If .TelGerät.IsPhoner Then
-                ' Telefonat an Phoner übergeben
-                NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
-                Erfolreich = PhonerApp.DialPhoner(DialCode, AufbauAbbrechen)
+            If .TelGerät.IsSoftPhone Then
+
+                If .TelGerät.IsPhoner Then
+                    ' Initiere Phoner, wenn erforderlich
+                    If XMLData.POptionen.CBPhoner Then
+                        PhonerApp = New Phoner
+                        If PhonerApp.PhonerReady Then
+                            ' Telefonat an Phoner übergeben
+                            NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
+                            Erfolreich = CBool((PhonerApp?.Dial(DialCode, AufbauAbbrechen)))
+
+                        Else
+                            NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
+                            PhonerApp = Nothing
+
+                        End If
+                    End If
+                End If
+
+                If .TelGerät.IsMicroSIP Then
+                    ' Initiere MicroSIP, wenn erforderlich
+                    If XMLData.POptionen.CBMicroSIP Then
+                        MicroSIPApp = New MicroSIP
+                        If MicroSIPApp.MicroSIPReady Then
+                            ' Telefonat an Phoner übergeben
+                            NLogger.Info("Wählclient an MicroSIP: {0} über {1}", DialCode, .TelGerät.Name)
+                            Erfolreich = CBool((MicroSIPApp?.Dial(DialCode, AufbauAbbrechen)))
+
+                        Else
+                            NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
+                            MicroSIPApp = Nothing
+
+                        End If
+                    End If
+                End If
+
             Else
                 ' Telefonat üper SOAP an Fritz!Box weiterreichen
                 NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, .TelGerät.Name)
-                Erfolreich = FBWählClient.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)
+                Erfolreich = CBool((FBWählClient?.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)))
             End If
 
             ' Ergebnis auswerten 
@@ -280,6 +309,7 @@ Public Class WählclientWPF
 
         End With
     End Sub
+
 #Region "Timer"
     Private Sub TimerSchließen_Elapsed(sender As Object, e As ElapsedEventArgs) Handles TimerSchließen.Elapsed
         TimerSchließen = KillTimer(TimerSchließen)
@@ -289,5 +319,6 @@ Public Class WählclientWPF
     Private Sub KontaktWahl_Selected(sender As Object, e As RoutedEventArgs) Handles CtrlKontaktWahl.Dial, CtrlDirektWahl.Dial
         DialTelNr(CType(DataContext, WählClientViewModel).TelNr, False)
     End Sub
+
 #End Region
 End Class

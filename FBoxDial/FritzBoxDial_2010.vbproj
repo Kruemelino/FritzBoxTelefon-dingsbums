@@ -98,7 +98,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug2010\</OutputPath>
+    <OutputPath>bin\Debug2013\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -129,7 +129,7 @@
     <DefineTrace>true</DefineTrace>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release2010\</OutputPath>
+    <OutputPath>bin\Release2013\</OutputPath>
     <DocumentationFile>Fritz!Box Telefon-Dingsbums.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -235,6 +235,7 @@
     <Compile Include="Formulare\FormElemente\Datentabellen\TelBuchDataTable.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Formulare\WPF\AnrListViewModel.vb" />
     <Compile Include="Formulare\WPF\AnrMonViewModel.vb" />
     <Compile Include="Formulare\WPF\AnrMonWPF.xaml.vb">
       <DependentUpon>AnrMonWPF.xaml</DependentUpon>
@@ -267,6 +268,9 @@
     </Compile>
     <Compile Include="Formulare\WPF\Optionen\Elemente\OptionsOLFolderTV.xaml.vb">
       <DependentUpon>OptionsOLFolderTV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Optionen\UserCtrlMicroSIP.xaml.vb">
+      <DependentUpon>UserCtrlMicroSIP.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formulare\WPF\Optionen\UserCtrlPhoner.xaml.vb">
       <DependentUpon>UserCtrlPhoner.xaml</DependentUpon>
@@ -301,6 +305,15 @@
     <Compile Include="Formulare\WPF\WählClientViewModel.vb" />
     <Compile Include="Formulare\WPF\WählclientWPF.xaml.vb">
       <DependentUpon>WählclientWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Wählclient\UserCtrlKontaktwahl.xaml.vb">
+      <DependentUpon>UserCtrlKontaktwahl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\Wählclient\UserCtrlDirektwahl.xaml.vb">
+      <DependentUpon>UserCtrlDirektwahl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Formulare\WPF\AnrListWPF.xaml.vb">
+      <DependentUpon>AnrListWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
@@ -354,21 +367,21 @@
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCall.vb" />
     <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCallList.vb" />
     <Compile Include="Fritz!Box\FritzBoxLogin.vb" />
-    <Compile Include="Fritz!Box\FritzBoxQuery.vb" />
     <Compile Include="Fritz!Box\JSON.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Events\NotifyEventArgs.vb" />
+    <Compile Include="Localize\resCommon.Designer.vb">
+      <DependentUpon>resCommon.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Localize\resCommon.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>resCommon.resx</DependentUpon>
-    </Compile>
+    <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
@@ -401,7 +414,7 @@
     <Compile Include="Optionen\Optionen.vb" />
     <Compile Include="Optionen\OutlookXML.vb" />
     <Compile Include="Outlook\Fenster.vb" />
-    <Compile Include="Phoner\Phoner.vb" />
+    <Compile Include="SoftPhone\Phoner.vb" />
     <Compile Include="Ribbon\DefaultRibbon.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
@@ -442,8 +455,13 @@
     <EmbeddedResource Include="Formulare\ListControl\TelListControl.resx">
       <DependentUpon>TelListControl.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localize\resCommon.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>Localize</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -459,34 +477,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\CallTo.png" />
-    <EmbeddedResource Include="Localize\resCommon.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>resCommon.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>Localize</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\call_received.png" />
-    <EmbeddedResource Include="Resources\call_made.png" />
-    <EmbeddedResource Include="Resources\call_missed.png" />
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonExplorer.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonIMLayerUI.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorJournal.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorKontakt.xml" />
     <EmbeddedResource Include="Ribbon\RibbonXML\RibbonInspectorMailRead.xml" />
     <EmbeddedResource Include="Telefonie\Listen\Vorwahlen.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Resources\call_received.png" />
+    <Resource Include="Resources\call_made.png" />
+    <Resource Include="Resources\call_missed.png" />
+    <EmbeddedResource Include="Resources\CallTo.png" />
     <EmbeddedResource Include="Resources\Cancel.png" />
-    <EmbeddedResource Include="Resources\CheckboxDisable_16x.png" />
-    <EmbeddedResource Include="Resources\CheckboxMix_16x.png" />
-    <EmbeddedResource Include="Resources\CheckboxUncheck_16x.png" />
-    <EmbeddedResource Include="Resources\CheckBox_16x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Add.png" />
+    <Resource Include="Resources\Add.png" />
     <EmbeddedResource Include="Resources\Download.png" />
     <EmbeddedResource Include="Resources\Remove.png" />
     <EmbeddedResource Include="Resources\Save.png" />
@@ -533,6 +538,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\WPF\Optionen\UserCtrlMicroSIP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\WPF\Optionen\UserCtrlPhoner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -573,17 +582,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\WPF\AnrListWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\WPF\WählclientWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Formulare\WPF\XAMLRessources.xaml">
+    <Page Include="Formulare\WPF\Wählclient\UserCtrlKontaktwahl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Formulare\WPF\Optionen\Buttons\" />
+    <Page Include="Formulare\WPF\Wählclient\UserCtrlDirektwahl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Formulare\WPF\XAMLResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

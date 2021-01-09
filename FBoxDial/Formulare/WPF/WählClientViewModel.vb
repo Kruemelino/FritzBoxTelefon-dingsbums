@@ -120,6 +120,9 @@ Public Class WählClientViewModel
     End Property
 
     Private _TelNr As Telefonnummer
+    ''' <summary>
+    ''' Telefonnummer, die gewählt werden soll.
+    ''' </summary>
     Public Property TelNr As Telefonnummer
         Get
             Return _TelNr

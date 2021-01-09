@@ -10,11 +10,11 @@ Imports System.Xml
 
 #Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
     Private Property RibbonObjekt As IRibbonUI
-    Sub Ribbon_Load(ByVal Ribbon As IRibbonUI)
+    Sub Ribbon_Load(Ribbon As IRibbonUI)
         RibbonObjekt = Ribbon
     End Sub
 
-    Public Function GetCustomUI(ByVal ribbonID As String) As String Implements IRibbonExtensibility.GetCustomUI
+    Public Function GetCustomUI(ribbonID As String) As String Implements IRibbonExtensibility.GetCustomUI
         Dim File As String
 
         Select Case ribbonID
@@ -54,7 +54,7 @@ Imports System.Xml
 #End Region
 
 #Region "Ribbon Explorer  Office 2010 bis Office 2019" 'Ribbon Explorer
-    Public Function GetPressed(ByVal control As IRibbonControl) As Boolean
+    Public Function GetPressed(control As IRibbonControl) As Boolean
         Select Case control.Id.Split("_")(0)
             Case "btnAnrMonIO"
                 Return ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv
@@ -70,7 +70,7 @@ Imports System.Xml
     ''' <param name="pressed">Zustand des ToogleButtons</param>
     ''' <remarks>Eine reine Weiterleitung auf die Standard-OnAction Funktion</remarks>
     <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Parameter wird benötigt, da ansonsten Ribbon nicht korrekt verarbeitet wird.")>
-    Public Sub BtnOnToggleButtonAction(ByVal control As IRibbonControl, ByVal pressed As Boolean)
+    Public Sub BtnOnToggleButtonAction(control As IRibbonControl, pressed As Boolean)
         BtnOnAction(control)
     End Sub
 
@@ -83,7 +83,7 @@ Imports System.Xml
     ''' </summary>
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>True, wenn JournalItem, von diesem Addin erstellt wurde. Ansonsten False</returns>
-    Private Function CheckJournalInspector(ByVal control As IRibbonControl) As Outlook.JournalItem
+    Private Function CheckJournalInspector(control As IRibbonControl) As Outlook.JournalItem
         CheckJournalInspector = Nothing
 
         Dim olJournal As Outlook.JournalItem = Nothing
@@ -108,7 +108,7 @@ Imports System.Xml
     ''' Gibt zurück, ob das Journal eine gültige Telefonnummer enthält
     ''' </summary>
     ''' <param name="control"></param>
-    Public Function EnableBtnJournal(ByVal control As IRibbonControl) As Boolean
+    Public Function EnableBtnJournal(control As IRibbonControl) As Boolean
         EnableBtnJournal = False
 
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
@@ -124,7 +124,7 @@ Imports System.Xml
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>"Kontakt Anzeigen", wenn Link im JournalItem zu einem ContactItem führt. Ansonsten "Kontakt Erstellen"</returns>
     ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
-    Public Function GetLabelJournal(ByVal control As IRibbonControl) As String
+    Public Function GetLabelJournal(control As IRibbonControl) As String
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
 
         If olJournal IsNot Nothing Then
@@ -143,7 +143,7 @@ Imports System.Xml
     ''' <param name="control">Das Ribbon Control</param>
     ''' <returns>Den entsprechenden ScreenTip, wenn Link im JournalItem zu einem ContactItem führt. Ansonsten den anderen. Falls Link ins Leere führt, dann wird Fehlermeldung ausgegeben.</returns>
     ''' <remarks>Funktioniert nur unter Office 2010, da Microsoft die Links aus Journalitems in nachfolgenden Office Versionen entfernt hat.</remarks>
-    Public Function GetScreenTipJournal(ByVal control As IRibbonControl) As String
+    Public Function GetScreenTipJournal(control As IRibbonControl) As String
         Dim olJournal As Outlook.JournalItem = CheckJournalInspector(control)
 
         If olJournal IsNot Nothing Then
@@ -160,7 +160,7 @@ Imports System.Xml
     ''' Die Ribbons der Inspectoren sollen nur eingeblendet werden, wenn ein Explorer vorhanden ist.
     ''' </summary>
     ''' <param name="control"></param>
-    Public Function ShowInspectorRibbon(ByVal control As IRibbonControl) As Boolean
+    Public Function ShowInspectorRibbon(control As IRibbonControl) As Boolean
         ShowInspectorRibbon = False
 
         ' Einblendenm wenn Explorer vorhanden ist
@@ -172,12 +172,12 @@ Imports System.Xml
         End If
     End Function
 
-    Public Function GetScreenTipVIP(ByVal control As IRibbonControl) As String
+    Public Function GetScreenTipVIP(control As IRibbonControl) As String
         Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP, GetRibbonWert(control.Id & "Remove", "ScreenTipp"), GetRibbonWert(control.Id & "Add", "ScreenTipp"))
     End Function
 
     <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Parameter wird benötigt, da ansonsten Ribbon nicht korrekt verarbeitet wird.")>
-    Public Function GetItemImageMsoAnrMon(ByVal control As IRibbonControl) As String
+    Public Function GetItemImageMsoAnrMon(control As IRibbonControl) As String
         Return If(ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv, "PersonaStatusOnline", "PersonaStatusOffline")
     End Function
 
@@ -188,7 +188,7 @@ Imports System.Xml
 
 #Region "Ribbon: Label, ScreenTipp, ImageMso, OnAction"
 
-    Private Function GetRibbonWert(ByVal Key As String, ByVal Typ As String) As String
+    Private Function GetRibbonWert(Key As String, Typ As String) As String
         Dim tmpPropertyInfo As Reflection.PropertyInfo
 
         tmpPropertyInfo = Array.Find(DfltWerte.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual(String.Format("P{0}{1}", Typ, Key.Split("_")(0))))
@@ -210,7 +210,7 @@ Imports System.Xml
     ''' Ermittelt das Label des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
-    Public Function GetItemLabel(ByVal control As IRibbonControl) As String
+    Public Function GetItemLabel(control As IRibbonControl) As String
         Return GetRibbonWert(control.Id, "Label")
     End Function
 
@@ -218,7 +218,7 @@ Imports System.Xml
     ''' Ermittelt das ScreenTipp des Ribbon-Objektes ausgehend von der Ribbon-id für Explorer
     ''' </summary>
     ''' <param name="control"></param>
-    Public Function GetItemScreenTipp(ByVal control As IRibbonControl) As String
+    Public Function GetItemScreenTipp(control As IRibbonControl) As String
         Return GetRibbonWert(control.Id, "ScreenTipp")
     End Function
 
@@ -227,7 +227,7 @@ Imports System.Xml
     ''' </summary>
     ''' <param name="control">Die id des Ribbon Controls</param>
     ''' <returns>Bezeichnung des ImageMso</returns>
-    Public Function GetItemImageMso(ByVal control As IRibbonControl) As String
+    Public Function GetItemImageMso(control As IRibbonControl) As String
         Return GetRibbonWert(control.Id, "ImageMso")
     End Function
 
@@ -235,7 +235,7 @@ Imports System.Xml
     ''' Ruft die jeweilige Funktion auf, die dem Button hinterlegt ist.
     ''' </summary>
     ''' <param name="control">Die id des Ribbon Controls</param>
-    Public Sub BtnOnAction(ByVal control As IRibbonControl)
+    Public Sub BtnOnAction(control As IRibbonControl)
         Select Case control.Id.Split("_").First
             Case "btnDialExpl"
                 OnAction(TaskToDo.DialExplorer)
@@ -292,7 +292,7 @@ Imports System.Xml
     ''' Steuert die aufzurufende Funktion anhand der Übergebenen <c>Aufgabe</c>
     ''' </summary>
     ''' <param name="Aufgabe">Übergabe Wert, der bestimmt, was getan werden soll.</param>
-    Private Sub OnAction(ByVal Aufgabe As TaskToDo)
+    Private Sub OnAction(Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.OpenConfig ' Einstellungsdialog
                 Dim no As New OptionenWPF
@@ -303,7 +303,7 @@ Imports System.Xml
                 If XMLData.PTelefonie.RINGListe.Count.IsNotZero Then
                     XMLData.PTelefonie.RINGListe.Item(0).AnrMonEinblenden()
                 Else
-                    Using tmptelfnt As New Telefonat With {.Anrufer = Localize.resCommon.strDefLongName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
+                    Using tmptelfnt As New Telefonat With {.Anrufer = My.Resources.strDefLongName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
                         tmptelfnt.AnrMonEinblenden()
                     End Using
                 End If
@@ -315,8 +315,11 @@ Imports System.Xml
                 Dim WählClient As New FritzBoxWählClient
                 WählClient.WählboxStart(ThisAddIn.POutookApplication.ActiveExplorer.Selection)
             Case TaskToDo.OpenJournalimport
+                'Dim AnrListImportWPF As New AnrListWPF
+                'AnrListImportWPF.Show()
+
                 Dim AnrListImport As New FormAnrList
-                AnrListImport.Show()
+                AnrListImport.ShowDialog()
             Case TaskToDo.AnrMonAnAus
                 ' Wenn der Anrufmonor Nothing ist, dann initiiere ihn
                 If ThisAddIn.PAnrufmonitor Is Nothing Then ThisAddIn.PAnrufmonitor = New Anrufmonitor
@@ -334,18 +337,21 @@ Imports System.Xml
                 FBoxTeleBuch.Show()
         End Select
     End Sub
+
     ''' <summary>
     ''' Steuert die aufzurufende Funktion aus Inspektorfenstern anhand der Übergebenen <c>Aufgabe</c>.
     ''' </summary>
     ''' <param name="Aufgabe"></param>
     ''' <param name="OutlookInspector"></param>
-    Private Sub OnAction(ByVal Aufgabe As TaskToDo, ByVal OutlookInspector As Outlook.Inspector)
+    Private Sub OnAction(Aufgabe As TaskToDo, OutlookInspector As Outlook.Inspector)
         Select Case Aufgabe
             Case TaskToDo.DialInspector
                 Dim WählClient As New FritzBoxWählClient
                 WählClient.WählboxStart(OutlookInspector)
+
             Case TaskToDo.CreateContact
                 ZeigeKontaktAusInspector(OutlookInspector)
+
             Case TaskToDo.StartRWS
                 ' Journal
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.JournalItem Then
@@ -355,17 +361,18 @@ Imports System.Xml
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
 
                 End If
+
         End Select
     End Sub
 
-    Private Sub OnAction(ByVal Aufgabe As TaskToDo, ByVal OutlookSelection As Outlook.Selection)
+    Private Sub OnAction(Aufgabe As TaskToDo, OutlookSelection As Outlook.Selection)
         Select Case Aufgabe
             Case TaskToDo.CreateContact
                 ZeigeKontaktAusSelection(OutlookSelection)
         End Select
     End Sub
 
-    Private Sub OnAction(ByVal Aufgabe As TaskToDo, ByVal control As IRibbonControl)
+    Private Sub OnAction(Aufgabe As TaskToDo, control As IRibbonControl)
         Select Case Aufgabe
             Case TaskToDo.DialIMLayer
                 Dim card As IMsoContactCard = TryCast(control.Context, IMsoContactCard)
@@ -377,7 +384,7 @@ Imports System.Xml
     ''' Behandelt das Ereignis, welches beim Klick auf die PopUp-Items ausgelöst wird.
     ''' Funktion würd für alle Office Versionen benötigt.
     ''' </summary>
-    Private Sub OnActionListen(ByVal control As IRibbonControl)
+    Private Sub OnActionListen(control As IRibbonControl)
         Dim tmpTelefonat As Telefonat
         Dim tmpVIPEintrag As VIPEntry
         If control.Tag.AreEqual(DfltNameListVIP) Then
@@ -395,7 +402,7 @@ Imports System.Xml
             End If
         End If
     End Sub
-    Private Sub ClearInListe(ByVal control As IRibbonControl)
+    Private Sub ClearInListe(control As IRibbonControl)
 
         Select Case control.Tag
             Case DfltNameListCALL
@@ -412,7 +419,7 @@ Imports System.Xml
 #End Region
 
 #Region "Inspector Button Click"
-    Public Sub BtnOnActionI(ByVal control As IRibbonControl)
+    Public Sub BtnOnActionI(control As IRibbonControl)
         Dim oInsp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
         If oInsp IsNot Nothing Then
             Select Case control.Id.Split("_").First
@@ -434,7 +441,7 @@ Imports System.Xml
 #End Region
 
 #Region "ContextMenü Button Click"
-    Public Sub BtnOnActionCM(ByVal control As IRibbonControl)
+    Public Sub BtnOnActionCM(control As IRibbonControl)
         Dim oSel As Outlook.Selection = CType(control.Context, Outlook.Selection)
         If oSel IsNot Nothing Then
             Select Case control.Id.Split("_").First
@@ -458,7 +465,7 @@ Imports System.Xml
 #Region "DynamicMenu"
 
 
-    Public Function DynMenuEnabled(ByVal control As IRibbonControl) As Boolean
+    Public Function DynMenuEnabled(control As IRibbonControl) As Boolean
         If XMLData IsNot Nothing Then
             Select Case Left(control.Id, Len(control.Id) - 2)
                 Case DfltNameListCALL
@@ -475,7 +482,7 @@ Imports System.Xml
         End If
     End Function
 
-    Private Overloads Function CreateDynMenuButton(ByVal xDoc As XmlDocument, ByVal ID As String) As XmlElement
+    Private Overloads Function CreateDynMenuButton(xDoc As XmlDocument, ID As String) As XmlElement
         Dim XButton As XmlElement
         Dim XAttribute As XmlAttribute
         XButton = xDoc.CreateElement("button", "http://schemas.microsoft.com/office/2009/07/customui")
@@ -503,7 +510,7 @@ Imports System.Xml
         Return XButton
     End Function
 
-    Private Function CreateDynMenuSeperator(ByVal xDoc As XmlDocument) As XmlElement
+    Private Function CreateDynMenuSeperator(xDoc As XmlDocument) As XmlElement
         Dim XSeperator As XmlElement
         Dim XAttribute As XmlAttribute
 
@@ -521,7 +528,7 @@ Imports System.Xml
     ''' </summary>
     ''' <param name="control">Das Ribbon-Control, für das das das DynamicMenu verwendet werden soll.</param>
     ''' <returns></returns>
-    Public Function FillDynamicMenu(ByVal control As IRibbonControl) As String
+    Public Function FillDynamicMenu(control As IRibbonControl) As String
 
         Dim ListName As String = Left(control.Id, Len(control.Id) - 2)
         Dim ListofTelefonate As List(Of Telefonat)
@@ -558,7 +565,7 @@ Imports System.Xml
 
 #Region "VIP-Ribbon"
     <CodeAnalysis.SuppressMessage("Stil", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Der Parameter isPressed wird für die korrekte Verarbeitung der Ribbons benötigt")>
-    Public Sub TBtnOnAction(ByVal control As IRibbonControl, ByRef isPressed As Boolean)
+    Public Sub TBtnOnAction(control As IRibbonControl, ByRef isPressed As Boolean)
 
         Dim oKontakt As Outlook.ContactItem = Nothing
 
@@ -583,11 +590,11 @@ Imports System.Xml
         RibbonObjekt.Invalidate()
     End Sub
 
-    Public Function CtBtnPressedVIP(ByVal control As IRibbonControl) As Boolean
+    Public Function CtBtnPressedVIP(control As IRibbonControl) As Boolean
         Return CType(CType(control.Context, Outlook.Selection).Item(1), Outlook.ContactItem).IsVIP
     End Function
 
-    Public Function TBtnPressedVIP(ByVal control As IRibbonControl) As Boolean
+    Public Function TBtnPressedVIP(control As IRibbonControl) As Boolean
         TBtnPressedVIP = False
 
         Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)

@@ -128,7 +128,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     ''' <returns>FritzOutlookV5.xml</returns>
     ''' <remarks>Wird mit der Ressource "strDefShortName" erstellt.</remarks>
-    Public Shared ReadOnly Property DfltConfigFileName() As String = $"{Localize.resCommon.strDefShortName}.xml"
+    Public Shared ReadOnly Property DfltConfigFileName() As String = $"{My.Resources.strDefShortName}.xml"
 
     ''' <summary>
     ''' FritzOutlookV5.log
@@ -136,7 +136,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <value>FritzOutlookV5.log</value>
     ''' <returns>FritzOutlookV5.log</returns>
     ''' <remarks>Wird mit Ressource "PDfltAddin_KurzName" erstellt.</remarks>
-    Public Shared ReadOnly Property DfltLogFileName() As String = $"{Localize.resCommon.strDefShortName}.log"
+    Public Shared ReadOnly Property DfltLogFileName() As String = $"{My.Resources.strDefShortName}.log"
 
     ''' <summary>
     ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}
@@ -372,7 +372,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Dialcode: <paramref name="DialCode"/>>
     ''' </summary>
     ''' <param name="DialCode"></param>
-    Public Shared ReadOnly Property WählClientStatusWählClient(ByVal DialCode As String) As String
+    Public Shared ReadOnly Property WählClientStatusWählClient(DialCode As String) As String
         Get
             Return $"Dialcode: {DialCode}"
         End Get
@@ -385,7 +385,11 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property WählClientStatusLetztesGerät As String = "Setze letztes Gerät..."
     Public Shared ReadOnly Property WählClientStatus1Gerät As String = "Setze 1. Gerät in Liste..."
     Public Shared ReadOnly Property WählClientStatusFehlerGerät As String = "Es konnte kein Gerät geladen werden..."
-    Public Shared ReadOnly Property WählClientPhonerInaktiv As String = "Phoner ist nicht bereit..."
+    Public Shared ReadOnly Property WählClientSoftPhoneInaktiv(Softphone As String) As String
+        Get
+            Return $"{Softphone} ist nicht bereit..."
+        End Get
+    End Property
     ''' <summary>
     ''' Lade Telefonnummern des Kontaktes...
     ''' </summary>
@@ -538,34 +542,50 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Das Phoner-Passwort ist falsch!
     ''' </summary>
-    Public Shared ReadOnly Property PhonerPasswortFalsch As String = "Das Phoner-Passwort ist falsch!"
+    Public Shared ReadOnly Property PhonerPasswortFalsch As String = "Das Phoner-Passwort ist falsch."
     ''' <summary>
     ''' Die Phoner-Verson ist zu alt!"
     ''' </summary>
-    Public Shared ReadOnly Property PhonerZuAlt As String = "Die Phoner-Verson ist zu alt!"
+    Public Shared ReadOnly Property PhonerZuAlt As String = "Die Phoner-Verson ist zu alt."
     ''' <summary>   
     ''' Zu dem Datenstrom können keine Daten gesendet werden!
     ''' </summary>
-    Public Shared ReadOnly Property PhonerReadonly As String = "Zu dem Datenstrom können keine Daten gesendet werden!"
+    Public Shared ReadOnly Property PhonerReadonly As String = "Zu dem Datenstrom können keine Daten gesendet werden."
     ''' <summary>   
     ''' Phoner oder PhonerLite ist nicht bereit!
     ''' </summary>
-    Public Shared ReadOnly Property PhonerNichtBereit As String = "Phoner oder PhonerLite ist nicht bereit!"
+    Public Shared ReadOnly Property PhonerNichtBereit As String = "Phoner ist nicht bereit."
     ''' <summary>
     ''' Telefonnummer <paramref name="Dialcode"/> erfolgreich an Phoner übermittelt
     ''' </summary>
     ''' <param name="Dialcode">Der übermittelte Dialcode</param>
     ''' <returns></returns>
-    Public Shared ReadOnly Property PhonerErfolgreich(ByVal Dialcode As String) As String
+    Public Shared ReadOnly Property SoftPhoneErfolgreich(ByVal Dialcode As String, ByVal Softphone As String) As String
         Get
-            Return $"Telefonnummer {Dialcode} erfolgreich an Phoner übermittelt."
+            Return $"Telefonnummer {Dialcode} erfolgreich an {Softphone} übermittelt."
         End Get
     End Property
     ''' <summary>
     ''' Abbruch des Rufaufbaues erfolgreich übermittelt.
     ''' </summary>
-    Public Shared ReadOnly Property PhonerAbbruch As String = "Abbruch des Rufaufbaues erfolgreich übermittelt."
+    Public Shared ReadOnly Property SoftPhoneAbbruch As String = "Abbruch des Rufaufbaues erfolgreich übermittelt."
 #End Region
 
+#Region "Literale MicroSIP"
+    Public Shared ReadOnly Property MicroSIPBereit As String = "MicroSIP ist bereit."
+    Public Shared ReadOnly Property MicroSIPNichtBereit As String = "MicroSIP ist nicht bereit."
+    Public Shared ReadOnly Property MicroSIPgestartet(ByVal Pfad As String) As String
+        Get
+            Return $"Pfad zu MicroSIP ermittelt: {Pfad}"
+        End Get
+    End Property
+    Public Shared ReadOnly Property MicroSIPgestartet As String
+        Get
+            Return "MicroSIP gestartet"
+        End Get
+    End Property
+
+
+#End Region
 End Class
 

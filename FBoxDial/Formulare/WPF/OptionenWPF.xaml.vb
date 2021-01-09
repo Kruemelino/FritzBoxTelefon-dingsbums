@@ -3,6 +3,9 @@ Imports System.Windows.Controls
 
 Public Class OptionenWPF
     Inherits Window
+
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
     Private ReadOnly OptVM As OptionenViewModel
     Public Sub New()
 
@@ -12,7 +15,9 @@ Public Class OptionenWPF
         WindowStartupLocation = WindowStartupLocation.CenterScreen
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
+        NLogger.Debug("Initialisiere das ViewModel Optionen")
         OptVM = New OptionenViewModel
+
         ' zeige die Grunddaten an
         NavigationCtrl.Content = New UserCtrlGrund With {.DataContext = OptVM}
     End Sub
@@ -43,6 +48,9 @@ Public Class OptionenWPF
             Case RBPhoner.Name
                 NavigationCtrl.Content = New UserCtrlPhoner With {.DataContext = OptVM}
 
+            Case RBMicroSIP.Name
+                NavigationCtrl.Content = New UserCtrlMicroSIP With {.DataContext = OptVM}
+
             Case RBInfo.Name
                 NavigationCtrl.Content = New UserCtrlInfo With {.DataContext = OptVM}
 
@@ -52,18 +60,23 @@ Public Class OptionenWPF
     End Sub
 
     Private Sub BSave_Click(sender As Object, e As RoutedEventArgs)
+        NLogger.Debug("User: Optionen Speichern")
+
         ' Daten speichern
         OptVM.Speichern()
+
         ' Formular schließen
         Me.Close()
     End Sub
 
     Private Sub BCancel_Click(sender As Object, e As RoutedEventArgs)
+        NLogger.Debug("User: Optionen Cancel")
         ' Formular schließen
         Me.Close()
     End Sub
 
     Private Sub BReset_Click(sender As Object, e As RoutedEventArgs) Handles BReset.Click
+        NLogger.Debug("User: Optionen Reset")
         ' Daten erneut
         OptVM.LadeDaten()
     End Sub

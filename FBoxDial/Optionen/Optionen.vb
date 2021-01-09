@@ -4,23 +4,6 @@
 
     <XmlIgnore> Public Property Arbeitsverzeichnis As String
 
-#Region "Fritz!Box"
-    Private _CodePageFritzBox As Integer
-
-    ''' <summary>
-    ''' Gibt die ermittelte Zeichencodierung der Fritzbox wieder. Der Wert wird automatisch ermittelt. 
-    ''' </summary>
-    <XmlIgnore> Public ReadOnly Property EncodingFritzBox As Encoding = Encoding.GetEncoding(CodePageFritzBox)
-    <XmlElement("CodePageFritzBox")> Public Property CodePageFritzBox As Integer
-        Get
-            Return GetProperty(_CodePageFritzBox, FritzBoxDefault.DfltCodePageFritzBox)
-        End Get
-        Set
-            _CodePageFritzBox = Value
-        End Set
-    End Property
-#End Region
-
 #Region "Grundeinstellungen"
 #Region "Grundeinstellungen - Erforderliche Angaben"
     Private _TBFBAdr As String
@@ -414,9 +397,10 @@
     End Property
 #End Region
 
+#Region "SoftPhones"
 #Region "Phoner"
-    Private _CBPhoner As Boolean
     Private _TBPhonerPasswort As String
+    Private _CBPhoner As Boolean
 
     <XmlElement("TBPhonerPasswort")> Public Property TBPhonerPasswort As String
         Get
@@ -435,6 +419,29 @@
             _CBPhoner = Value
         End Set
     End Property
+#End Region
+
+#Region "MicroSIP"
+    Private _TBMicroSIPPath As String
+    Private _CBMicroSIP As Boolean
+    <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String
+        Get
+            Return _TBMicroSIPPath
+        End Get
+        Set
+            _TBMicroSIPPath = Value
+        End Set
+    End Property
+
+    <XmlElement("CBMicroSIP")> Public Property CBMicroSIP As Boolean
+        Get
+            Return GetProperty(_CBMicroSIP, DefaultWerte.DfltCBMicroSIP)
+        End Get
+        Set
+            _CBMicroSIP = Value
+        End Set
+    End Property
+#End Region
 #End Region
 
     Public Sub New()

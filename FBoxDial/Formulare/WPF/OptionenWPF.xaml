@@ -7,23 +7,17 @@
         xmlns:fbd="clr-namespace:FBoxDial"
         mc:Ignorable="d" 
         MinHeight="400" MinWidth="600" Height="400" Width="600" Focusable="False" IsTabStop="False" Name="Optionen"      
-        d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type=fbd:Optionen, IsDesignTimeCreatable=True}"
+        Title="{x:Static localize:resCommon.strConfig}">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="XAMLRessources.xaml" />
+                <ResourceDictionary Source="XAMLResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     
-    <Window.Title>
-        <MultiBinding StringFormat="{}{0} - {1}">
-            <Binding Source="{x:Static localize:resCommon.strDefLongName}"/>
-            <Binding Source="{x:Static localize:resCommon.strConfig}"/>
-        </MultiBinding>
-    </Window.Title>    
-   
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
             <Button x:Name="BSave" Margin="0,4,0,0" Width="20" Height="20" ToolTip="Änderungen speichern und Optionen schließen" Content="{DynamicResource Save_16x}" Click="BSave_Click"/>
@@ -82,6 +76,7 @@
                 <RadioButton x:Name="RBKontakterstellung" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptCreateContact}" Checked="RadioButton_Checked"/>
                 <RadioButton x:Name="RBTelefone" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhone}" Checked="RadioButton_Checked"/>
                 <RadioButton x:Name="RBPhoner" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhoner}" Checked="RadioButton_Checked"/>
+                <RadioButton x:Name="RBMicroSIP" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptMicroSIP}" Checked="RadioButton_Checked"/>
                 <RadioButton x:Name="RBInfo" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptInfo}" Checked="RadioButton_Checked"/>
             </StackPanel>    
         </ScrollViewer>

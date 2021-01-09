@@ -61,7 +61,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufliste auswerten
         If XMLData.POptionen.CBAutoAnrList Then AutoAnrListe()
 
-        NLogger.Info("{0} {1} gestartet.", Localize.resCommon.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
+        NLogger.Info("{0} {1} gestartet.", My.Resources.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
 
     End Sub
 
@@ -73,7 +73,7 @@ Public NotInheritable Class ThisAddIn
         ' Anrufmonitor beenden
         If PAnrufmonitor IsNot Nothing Then PAnrufmonitor.StoppAnrMon()
         ' Eintrag ins Log
-        NLogger.Info("{0} {1} beendet.", Localize.resCommon.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
+        NLogger.Info("{0} {1} beendet.", My.Resources.strDefLongName, Reflection.Assembly.GetExecutingAssembly.GetName.Version)
         ' XML-Datei Speichern
         Serializer.Speichern(XMLData, IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltConfigFileName))
     End Sub

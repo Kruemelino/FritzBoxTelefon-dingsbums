@@ -21,9 +21,15 @@ Public Class Telefoniegerät
     <XmlAttribute> Public Property StdTelefon As Boolean
     <XmlAttribute> Public Property IsFax As Boolean
     <XmlAttribute> Public Property IsPhoner As Boolean
+    <XmlAttribute> Public Property IsMicroSIP As Boolean
     <XmlAttribute> Public Property ZuletztGenutzt As Boolean
     <XmlAttribute> Public Property TelTyp As TelTypen
 #End Region
+    <XmlIgnore> Public ReadOnly Property IsSoftPhone As Boolean
+        Get
+            Return IsMicroSIP Or IsPhoner
+        End Get
+    End Property
 
     <XmlIgnore> Public ReadOnly Property IsIPPhone As Boolean
         Get
@@ -33,7 +39,20 @@ Public Class Telefoniegerät
 
     <XmlIgnore> Public ReadOnly Property IsDialable As Boolean
         Get
-            Return TelTyp = TelTypen.DECT Or TelTyp = TelTypen.FON Or TelTyp = TelTypen.S0
+            ' Kein Fax
+            If IsFax Then Return False
+
+            Select Case TelTyp
+
+                Case TelTypen.DECT, TelTypen.FON, TelTypen.S0
+                    Return True
+
+                Case TelTypen.IP
+                    Return IsPhoner Or IsMicroSIP
+
+                Case Else
+                    Return False
+            End Select
         End Get
     End Property
 

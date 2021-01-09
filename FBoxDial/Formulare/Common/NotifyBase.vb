@@ -22,7 +22,7 @@ Public MustInherit Class NotifyBase
     ''' <returns>
     '''     True if the value was changed, false if the existing value matched the sesired value.
     ''' </returns>
-    Protected Function SetProperty(Of T)(ByRef storage As T, ByVal value As T, <CallerMemberName> ByVal Optional propertyName As String = Nothing) As Boolean
+    Protected Function SetProperty(Of T)(ByRef storage As T, value As T, <CallerMemberName> Optional propertyName As String = Nothing) As Boolean
 
         If Equals(storage, value) Then
             Return False
@@ -34,11 +34,12 @@ Public MustInherit Class NotifyBase
 
     End Function
 
-    Protected Function GetProperty(Of T)(ByVal storage As T, DefaultValue As T) As T
+    Protected Function GetProperty(Of T)(storage As T, DefaultValue As T, <CallerMemberName> Optional propertyName As String = Nothing) As T
 
         If storage IsNot Nothing Then
             Return storage
         Else
+            OnPropertyChanged(propertyName)
             Return DefaultValue
         End If
 
@@ -51,7 +52,7 @@ Public MustInherit Class NotifyBase
     '''     Name of the property used to notify listeners.
     '''     This value Is optional And can be provided automatically when invoked from compilers that support <see cref="CallerMemberNameAttribute" />.    '''     
     ''' </param>
-    Protected Sub OnPropertyChanged(<CallerMemberName> ByVal Optional propertyName As String = Nothing)
+    Protected Sub OnPropertyChanged(<CallerMemberName> Optional propertyName As String = Nothing)
         Try
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
         Catch

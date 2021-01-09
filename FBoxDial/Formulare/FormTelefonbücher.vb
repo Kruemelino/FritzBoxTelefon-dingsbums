@@ -2,7 +2,7 @@
 Imports System.Data
 Imports System.ComponentModel
 
-Public Class FormTelefonbücher
+<Obsolete> Public Class FormTelefonbücher
 #Region "Delegaten"
     Private Delegate Sub DelgSetListControl(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
 #End Region

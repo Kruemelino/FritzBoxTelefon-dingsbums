@@ -12,13 +12,13 @@ Public Module Extensions
     ''' <summary>
     ''' Gibt den Absolutwert der Zahlengröße zurück
     ''' </summary>
-    <Extension()> Public Function Absolute(ByVal Val1 As Double) As Double
+    <Extension()> Public Function Absolute(Val1 As Double) As Double
         Return Math.Abs(Val1)
     End Function
-    <Extension()> Public Function Absolute(ByVal Val1 As Integer) As Integer
+    <Extension()> Public Function Absolute(Val1 As Integer) As Integer
         Absolute = Math.Abs(Val1)
     End Function
-    <Extension()> Public Function Absolute(ByVal Val1 As Long) As Long
+    <Extension()> Public Function Absolute(Val1 As Long) As Long
         Absolute = Math.Abs(Val1)
     End Function
 
@@ -26,10 +26,10 @@ Public Module Extensions
     ''' Prüft, ob die übergebende Größe Null ist.
     ''' </summary>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsZero(ByVal Val1 As Double) As Boolean
+    <Extension()> Public Function IsZero(Val1 As Double) As Boolean
         Return Val1.Absolute < Epsilon
     End Function
-    <Extension()> Public Function IsZero(ByVal Val1 As Integer) As Boolean
+    <Extension()> Public Function IsZero(Val1 As Integer) As Boolean
         Return Val1.Absolute < Epsilon
     End Function
 
@@ -37,10 +37,10 @@ Public Module Extensions
     ''' Prüft, ob die übergebende Größe ungleich Null ist.
     ''' </summary>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsNotZero(ByVal Val1 As Double) As Boolean
+    <Extension()> Public Function IsNotZero(Val1 As Double) As Boolean
         Return Not Val1.IsZero
     End Function
-    <Extension()> Public Function IsNotZero(ByVal Val1 As Integer) As Boolean
+    <Extension()> Public Function IsNotZero(Val1 As Integer) As Boolean
         Return Not Val1.IsZero
     End Function
 
@@ -50,13 +50,13 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function AreEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <Extension()> Public Function AreEqual(Val1 As Double, Val2 As Double) As Boolean
         Return (Val1 - Val2).Absolute < Epsilon
     End Function
-    <Extension()> Public Function AreEqual(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
+    <Extension()> Public Function AreEqual(Val1 As Integer, Val2 As Integer) As Boolean
         Return (Val1 - Val2).Absolute < Epsilon
     End Function
-    <Extension()> Public Function AreEqual(ByVal Val1 As Long, ByVal Val2 As Long) As Boolean
+    <Extension()> Public Function AreEqual(Val1 As Long, Val2 As Long) As Boolean
         Return (Val1 - Val2).Absolute < Epsilon
     End Function
 
@@ -66,10 +66,10 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function AreDifferent(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <Extension()> Public Function AreDifferent(Val1 As Double, Val2 As Double) As Boolean
         Return Not Val1.AreEqual(Val2)
     End Function
-    <Extension()> Public Function AreDifferent(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
+    <Extension()> Public Function AreDifferent(Val1 As Integer, Val2 As Integer) As Boolean
         Return Not Val1.AreEqual(Val2)
     End Function
 
@@ -79,10 +79,10 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsLess(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <Extension()> Public Function IsLess(Val1 As Double, Val2 As Double) As Boolean
         Return Val2 - Val1 > Epsilon
     End Function
-    <Extension()> Public Function IsLess(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
+    <Extension()> Public Function IsLess(Val1 As Integer, Val2 As Integer) As Boolean
         Return Val2 - Val1 > Epsilon
     End Function
 
@@ -93,10 +93,10 @@ Public Module Extensions
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
 
-    <Extension()> Public Function IsLessOrEqual(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
+    <Extension()> Public Function IsLessOrEqual(Val1 As Integer, Val2 As Integer) As Boolean
         Return Val1 - Val2 <= Epsilon
     End Function
-    '<Extension()> Public Function IsLessOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    '<Extension()> Public Function IsLessOrEqual( Val1 As Double,  Val2 As Double) As Boolean
     '    Return Val1 - Val2 <= Epsilon
     'End Function
 
@@ -106,13 +106,13 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsLarger(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <Extension()> Public Function IsLarger(Val1 As Double, Val2 As Double) As Boolean
         Return Val1 - Val2 > Epsilon
     End Function
-    <Extension()> Public Function IsLarger(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
+    <Extension()> Public Function IsLarger(Val1 As Integer, Val2 As Integer) As Boolean
         Return Val1 - Val2 > Epsilon
     End Function
-    <Extension()> Public Function IsLarger(ByVal Val1 As Long, ByVal Val2 As Long) As Boolean
+    <Extension()> Public Function IsLarger(Val1 As Long, Val2 As Long) As Boolean
         Return Val1 - Val2 > Epsilon
     End Function
 
@@ -122,13 +122,13 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsLargerOrEqual(ByVal Val1 As Double, ByVal Val2 As Double) As Boolean
+    <Extension()> Public Function IsLargerOrEqual(Val1 As Double, Val2 As Double) As Boolean
         Return Val2 - Val1 <= Epsilon
     End Function
-    <Extension()> Public Function IsLargerOrEqual(ByVal Val1 As Integer, ByVal Val2 As Integer) As Boolean
+    <Extension()> Public Function IsLargerOrEqual(Val1 As Integer, Val2 As Integer) As Boolean
         Return Val2 - Val1 <= Epsilon
     End Function
-    <Extension()> Public Function IsLargerOrEqual(ByVal Val1 As Single, ByVal Val2 As Single) As Boolean
+    <Extension()> Public Function IsLargerOrEqual(Val1 As Single, Val2 As Single) As Boolean
         Return Val2 - Val1 <= Epsilon
     End Function
 
@@ -138,7 +138,7 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function GetLarger(ByVal Val1 As Integer, ByVal Val2 As Integer) As Integer
+    <Extension()> Public Function GetLarger(Val1 As Integer, Val2 As Integer) As Integer
         Return If(Val1.IsLargerOrEqual(Val2), Val1, Val2)
     End Function
 
@@ -149,10 +149,10 @@ Public Module Extensions
     ''' <param name="LVal">Untere Schwelle</param>
     ''' <param name="UVal">Obere schwelle</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function IsInRange(ByVal Val1 As Double, ByVal LVal As Double, ByVal UVal As Double) As Boolean
+    <Extension()> Public Function IsInRange(Val1 As Double, LVal As Double, UVal As Double) As Boolean
         Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
     End Function
-    <Extension()> Public Function IsInRange(ByVal Val1 As Integer, ByVal LVal As Integer, ByVal UVal As Integer) As Boolean
+    <Extension()> Public Function IsInRange(Val1 As Integer, LVal As Integer, UVal As Integer) As Boolean
         Return Val1.IsLarger(LVal) And Val1.IsLess(UVal)
     End Function
 
@@ -162,70 +162,70 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="Value">Der zu überprüfende Wert.</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Friend Function IsNegative(ByVal Value As Double) As Boolean
-    Return IsLess(Value, 0)
-    End Function
-
-    <Extension()> Friend Function IsNegative(ByVal Value As Integer) As Boolean
+    <Extension()> Friend Function IsNegative(Value As Double) As Boolean
         Return IsLess(Value, 0)
     End Function
-    <Extension()> Friend Function IsPositive(ByVal Value As Double) As Boolean
+
+    <Extension()> Friend Function IsNegative(Value As Integer) As Boolean
+        Return IsLess(Value, 0)
+    End Function
+    <Extension()> Friend Function IsPositive(Value As Double) As Boolean
         Return IsLarger(Value, 0)
     End Function
 
-    <Extension()> Friend Function IsPositive(ByVal Value As Integer) As Boolean
+    <Extension()> Friend Function IsPositive(Value As Integer) As Boolean
         Return IsLarger(Value, 0)
     End Function
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: String"
-    <Extension> Public Function AreEqual(ByVal Str1 As String, ByVal Str2 As String) As Boolean
+    <Extension> Public Function AreEqual(Str1 As String, Str2 As String) As Boolean
         Return String.Compare(Str1, Str2).IsZero
     End Function
-    <Extension> Public Function AreNotEqual(ByVal Str1 As String, ByVal Str2 As String) As Boolean
+    <Extension> Public Function AreNotEqual(Str1 As String, Str2 As String) As Boolean
         Return String.Compare(Str1, Str2).IsNotZero
     End Function
-    <Extension> Public Function IsStringEmpty(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsStringEmpty(Str1 As String) As Boolean
         Return Str1.AreEqual(String.Empty)
     End Function
-    <Extension> Public Function IsNotStringEmpty(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsNotStringEmpty(Str1 As String) As Boolean
         Return Str1 IsNot Nothing AndAlso Not Str1.IsStringEmpty
     End Function
-    <Extension> Public Function IsStringNothing(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsStringNothing(Str1 As String) As Boolean
         Return Str1 Is Nothing
     End Function
-    <Extension> Public Function IsNotStringNothing(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsNotStringNothing(Str1 As String) As Boolean
         Return Not Str1.IsStringNothing
     End Function
-    <Extension> Public Function IsStringNothingOrEmpty(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsStringNothingOrEmpty(Str1 As String) As Boolean
         Return Str1.IsStringNothing OrElse Str1.IsStringEmpty
     End Function
-    <Extension> Public Function IsNotStringNothingOrEmpty(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsNotStringNothingOrEmpty(Str1 As String) As Boolean
         Return Not Str1.IsStringNothingOrEmpty
     End Function
-    <Extension> Public Function IsErrorString(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsErrorString(Str1 As String) As Boolean
         Return Str1.AreEqual(DfltStrErrorMinusOne)
     End Function
-    <Extension> Public Function IsNotErrorString(ByVal Str1 As String) As Boolean
+    <Extension> Public Function IsNotErrorString(Str1 As String) As Boolean
         Return Not Str1.IsErrorString
     End Function
-    <Extension> Public Function RegExReplace(ByVal str1 As String, ByVal pattern As String, ByVal replacement As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As String
+    <Extension> Public Function RegExReplace(str1 As String, pattern As String, replacement As String, Optional RegOpt As RegexOptions = RegexOptions.None) As String
         Return Regex.Replace(str1, pattern, replacement, RegOpt)
     End Function
-    <Extension> Public Function RegExRemove(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As String
+    <Extension> Public Function RegExRemove(str1 As String, pattern As String, Optional RegOpt As RegexOptions = RegexOptions.None) As String
         Return str1.RegExReplace(pattern, DfltStringEmpty, RegOpt)
     End Function
-    <Extension> Public Function IsRegExMatch(ByVal str1 As String, ByVal pattern As String, Optional ByVal RegOpt As RegexOptions = RegexOptions.None) As Boolean
+    <Extension> Public Function IsRegExMatch(str1 As String, pattern As String, Optional RegOpt As RegexOptions = RegexOptions.None) As Boolean
         Return Regex.Match(str1, pattern, RegOpt).Success
     End Function
-    <Extension> Public Function Left(ByVal str1 As String, ByVal iLength As Integer) As String
+    <Extension> Public Function Left(str1 As String, iLength As Integer) As String
         Return Strings.Left(str1, iLength)
     End Function
     ''' <summary>
     ''' Gibt nur die Numerischen Ziffen eines String zurück
     ''' </summary>
     ''' <param name="sTxt">String der umgewandelt werden soll</param>
-    <Extension> Public Function AcceptOnlyNumeric(ByVal sTxt As String) As String
+    <Extension> Public Function AcceptOnlyNumeric(sTxt As String) As String
         Return sTxt.RegExRemove("\D")
     End Function
 
@@ -238,7 +238,7 @@ Public Module Extensions
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="Reverse">Flag, Ob die Suche nach den Zeichenfolgen vor und nach dem Sub-String vom Ende des <paramref name="Text"/> aus begonnen werden soll.</param>
     ''' <returns>Wenn <paramref name="StringDavor"/> und <paramref name="StringDanach"/> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-    <Extension> Public Function GetSubString(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByVal Reverse As Boolean) As String
+    <Extension> Public Function GetSubString(Text As String, StringDavor As String, StringDanach As String, Reverse As Boolean) As String
         Dim pos(1) As Integer
 
         If Not Reverse Then
@@ -264,7 +264,7 @@ Public Module Extensions
     ''' <param name="StringDavor">Zeichenfolge vor dem zu entnehmenden Sub-String.</param>
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <returns>Wenn <paramref name="StringDavor"/> und <paramref name="StringDanach"/> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-    <Extension> Public Function GetSubString(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String) As String
+    <Extension> Public Function GetSubString(Text As String, StringDavor As String, StringDanach As String) As String
         Return GetSubString(Text, StringDavor, StringDanach, False)
     End Function
 
@@ -278,7 +278,7 @@ Public Module Extensions
     ''' <param name="StringDanach">Zeichenfolge nach dem zu entnehmenden Sub-String.</param>
     ''' <param name="StartPosition">Startposition, bei der mit der Suche nach den Zeichenfolgen vor und nach dem Sub-String begonnen werden soll.</param>
     ''' <returns>Wenn <paramref name="StringDavor"/> und <paramref name="StringDanach"/> enthalten sind, dann wird der Teilstring zurückgegeben. Ansonsten "-1".</returns>
-    <Extension> Public Function GetSubString(ByVal Text As String, ByVal StringDavor As String, ByVal StringDanach As String, ByRef StartPosition As Integer) As String
+    <Extension> Public Function GetSubString(Text As String, StringDavor As String, StringDanach As String, ByRef StartPosition As Integer) As String
         Dim pos(1) As Integer
 
         pos(0) = InStr(StartPosition, Text, StringDavor, CompareMethod.Text) + Len(StringDavor)
@@ -293,11 +293,11 @@ Public Module Extensions
 
     End Function
 
-    <Extension> Public Function Split(ByVal Text As String, ByVal Delimiter As String) As String()
+    <Extension> Public Function Split(Text As String, Delimiter As String) As String()
         Return Strings.Split(Text, Delimiter,, CompareMethod.Text)
     End Function
 
-    <Extension> Public Function XMLMaskiereZeichen(ByVal Text As String) As String
+    <Extension> Public Function XMLMaskiereZeichen(Text As String) As String
         ' Nicht zugelassene Zeichen der XML-Notifikation ersetzen.
         ' Zeichen	Notation in XML
         ' <	        &lt;    &#60;
@@ -310,7 +310,7 @@ Public Module Extensions
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat), List(Of VIPEntry)"
-    <Extension> Public Sub Insert(ByRef Liste As List(Of Telefonat), ByVal item As Telefonat)
+    <Extension> Public Sub Insert(ByRef Liste As List(Of Telefonat), item As Telefonat)
 
         ' Liste initialisieren, falls erforderlich
         If Liste Is Nothing Then Liste = New List(Of Telefonat)
@@ -334,7 +334,7 @@ Public Module Extensions
         ThisAddIn.POutlookRibbons.RefreshRibbon()
     End Sub
 
-    <Extension> Public Sub Insert(ByRef Liste As List(Of VIPEntry), ByVal item As VIPEntry)
+    <Extension> Public Sub Insert(ByRef Liste As List(Of VIPEntry), item As VIPEntry)
 
         ' Liste initialisieren, falls erforderlich
         If Liste Is Nothing Then Liste = New List(Of VIPEntry)
@@ -351,7 +351,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="Text"></param>
     ''' <returns>Den konvertierten String. falls das nicht möglich ist, wird -1 zurückgegeben.</returns>
-    <Extension> Public Function ToInt(ByVal Text As String) As Integer
+    <Extension> Public Function ToInt(Text As String) As Integer
         Dim retVal As Integer = DfltIntErrorMinusOne
         If Integer.TryParse(Text, retVal) Then
             Return retVal
@@ -359,38 +359,38 @@ Public Module Extensions
             Return DfltIntErrorMinusOne
         End If
     End Function
-    <Extension> Public Function ToInt(ByVal sWert As Single) As Integer
+    <Extension> Public Function ToInt(sWert As Single) As Integer
         Return CInt(sWert)
     End Function
-    <Extension> Public Function ToInt(ByVal dWert As Double) As Integer
+    <Extension> Public Function ToInt(dWert As Double) As Integer
         Return CInt(dWert)
     End Function
-    <Extension> Public Function ToInt(ByVal bWert As Byte) As Integer
+    <Extension> Public Function ToInt(bWert As Byte) As Integer
         Return bWert
     End Function
 
-    <Extension> Public Function ToSng(ByVal dWert As Double) As Single
+    <Extension> Public Function ToSng(dWert As Double) As Single
         Return CSng(dWert)
     End Function
 #End Region
 
 #Region "Bytes"
-    <Extension> Public Function Append(Of T)(ByVal arr1() As T, ByVal arr2 As ICollection(Of T)) As T()
+    <Extension> Public Function Append(Of T)(arr1() As T, arr2 As ICollection(Of T)) As T()
         Dim retVal(arr1.Length + arr2.Count - 1) As T
         Array.Copy(arr1, retVal, arr1.Length)
         arr2.CopyTo(retVal, arr1.Length)
         Return retVal
     End Function
-    <Extension> Public Function SplitByte(Of T)(ByVal arr As T(), ByVal index As Integer) As T()()
+    <Extension> Public Function SplitByte(Of T)(arr As T(), index As Integer) As T()()
         Dim retVal = {New T(index - 1) {}, New T(arr.Length - (index + 1)) {}}
         Array.Copy(arr, 0, retVal(0), 0, retVal(0).Length)
         Array.Copy(arr, index, retVal(1), 0, retVal(1).Length)
         Return retVal
     End Function
-    <Extension> Public Function ToBase64String(ByVal arr1() As Byte) As String
+    <Extension> Public Function ToBase64String(arr1() As Byte) As String
         Return Convert.ToBase64String(arr1)
     End Function
-    <Extension> Public Function FromBase64String(ByVal str1 As String) As Byte()
+    <Extension> Public Function FromBase64String(str1 As String) As Byte()
         Return Convert.FromBase64String(str1)
     End Function
 #End Region
@@ -466,7 +466,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="InputIP">IP-Adresse</param>
     ''' <returns>Korrekte IP-Adresse</returns>
-    Public Function ValidIP(ByVal InputIP As String) As String
+    Public Function ValidIP(InputIP As String) As String
         Dim IPAddresse As IPAddress = Nothing
         Dim IPHostInfo As IPHostEntry
 
@@ -498,7 +498,7 @@ Public Module Extensions
 
     End Function
 
-    Public Async Function HTTPGet(ByVal Link As String, ByVal FBEncoding As Encoding) As Threading.Tasks.Task(Of String)
+    Public Async Function HTTPGet(Link As String, FBEncoding As Encoding) As Threading.Tasks.Task(Of String)
 
         Dim retVal As String = DfltStringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
@@ -530,7 +530,7 @@ Public Module Extensions
         Return retVal
     End Function
 
-    Public Async Function HTTPPost(ByVal Link As String, ByVal Daten As String, ByVal ZeichenCodierung As Encoding) As Threading.Tasks.Task(Of String)
+    Public Async Function HTTPPost(Link As String, Daten As String, ZeichenCodierung As Encoding) As Threading.Tasks.Task(Of String)
 
         Dim retVal As String = DfltStringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
@@ -571,7 +571,7 @@ Public Module Extensions
     ''' Dekrementiert den Verweiszähler des dem angegebenen COM-Objekt zugeordneten angegebenen Runtime Callable Wrapper (RCW)
     ''' </summary>
     ''' <param name="COMObject">Das freizugebende COM-Objekt.</param>
-    <Extension> Public Sub ReleaseComObject(Of T)(ByVal COMObject As T)
+    <Extension> Public Sub ReleaseComObject(Of T)(COMObject As T)
         If COMObject IsNot Nothing Then
             Try
                 Runtime.InteropServices.Marshal.ReleaseComObject(COMObject)
@@ -581,19 +581,19 @@ Public Module Extensions
         End If
     End Sub
 
-    Public Function MsgBox(ByVal Meldung As String, ByVal Style As MsgBoxStyle, ByVal Aufruf As String) As MsgBoxResult
+    Public Function MsgBox(Meldung As String, Style As MsgBoxStyle, Aufruf As String) As MsgBoxResult
         If Style = MsgBoxStyle.Critical Or Style = MsgBoxStyle.Exclamation Then
             Meldung = String.Format("Die Funktion {0} meldet folgenden Fehler: {1}{2}", Aufruf, Dflt2NeueZeile, Meldung)
             NLogger.Warn(Meldung)
         End If
-        Return Microsoft.VisualBasic.MsgBox(Meldung, Style, Localize.resCommon.strDefLongName)
+        Return Microsoft.VisualBasic.MsgBox(Meldung, Style, My.Resources.strDefLongName)
     End Function
 
     '''' <summary>
     '''' Wandelt eine Zeitspanne in Sekunden in ein Format in Stunden:Minuten:Sekunden um
     '''' </summary>
     '''' <param name="nSeks">Sekunden der Zeitspanne</param>
-    'Public Function GetTimeInterval(ByVal nSeks As Double) As String
+    'Public Function GetTimeInterval( nSeks As Double) As String
     '    'http://www.vbarchiv.net/faq/date_sectotime.php
     '    Dim h As Double, m As Double
     '    h = nSeks / 3600
@@ -612,7 +612,7 @@ Public Module Extensions
     '''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
     '''' <returns>Das bereinigte String-Array</returns>
     '''' <remarks></remarks>
-    '<Extension> Public Function ClearStringArray(ByVal ArraytoClear As String(), ByVal ClearDouble As Boolean, ByVal ClearEmpty As Boolean, ByVal ClearMinusOne As Boolean) As String()
+    '<Extension> Public Function ClearStringArray( ArraytoClear As String(),  ClearDouble As Boolean,  ClearEmpty As Boolean,  ClearMinusOne As Boolean) As String()
     '    ' Doppelte entfernen
     '    If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
     '    ' Leere entfernen
@@ -628,7 +628,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="Interval">Das Intervall des Timers.</param>
     ''' <returns>Den gerade erstellten Timer.</returns>
-    Public Function SetTimer(ByVal Interval As Double) As Timers.Timer
+    Public Function SetTimer(Interval As Double) As Timers.Timer
         Dim aTimer As New Timers.Timer
 
         With aTimer
@@ -645,7 +645,7 @@ Public Module Extensions
     ''' </summary>
     ''' <param name="Timer">Der zu löschende Timer.</param>
     ''' <returns>Einen Timer, welcher <c>Nothing</c> ist.</returns>
-    Public Function KillTimer(ByVal Timer As Timers.Timer) As Timers.Timer
+    Public Function KillTimer(Timer As Timers.Timer) As Timers.Timer
         If Timer IsNot Nothing Then
             With Timer
                 .Stop()
@@ -726,7 +726,7 @@ Public Module Extensions
     End Sub
 #End Region
 
-    <Extension> Public Sub Rückruf(ByVal Tlfnt As Telefonat)
+    <Extension> Public Sub Rückruf(Tlfnt As Telefonat)
         Using WählClnt As New FritzBoxWählClient
             WählClnt.WählboxStart(Tlfnt)
         End Using

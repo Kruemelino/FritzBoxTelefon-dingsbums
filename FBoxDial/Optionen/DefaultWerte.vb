@@ -33,6 +33,8 @@
     Public Shared ReadOnly Property DfltCBKontaktSucheFritzBox As Boolean = False
     Public Shared ReadOnly Property DfltTBPhonerPasswort() As String = DfltStringEmpty
     Public Shared ReadOnly Property DfltCBPhoner As Boolean = False
+    Public Shared ReadOnly Property DfltTBPfadMicroSIP() As String = DfltStringEmpty
+    Public Shared ReadOnly Property DfltCBMicroSIP As Boolean = False
 #End Region
 
 End Class

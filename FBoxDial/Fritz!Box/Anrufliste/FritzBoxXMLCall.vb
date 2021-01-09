@@ -25,7 +25,7 @@
     <XmlElement("Caller")> Public Property Caller As String
 
     ''' <summary>
-    ''' Gibt die Gegenstellennummer (fernte Nummer, NICHT die eigene Nummer) zurück.
+    ''' Gibt die Gegenstellennummer (ferne Nummer, NICHT die eigene Nummer) zurück.
     ''' Es wird je nach Telefonatstyp <c>Type</c> unterschschieden werden.    ''' 
     ''' </summary>
     <XmlIgnore> Public ReadOnly Property Gegenstelle As String
