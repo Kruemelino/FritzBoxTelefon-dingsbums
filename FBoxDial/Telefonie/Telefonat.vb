@@ -523,7 +523,7 @@ Imports Microsoft.Office.Interop
         XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
 
         XAttribute = xDoc.CreateAttribute("id")
-        XAttribute.Value = String.Format("{0}_{1}", Tag, ID)
+        XAttribute.Value = $"{Tag}_{ID}"
         XButton.Attributes.Append(XAttribute)
 
         XAttribute = xDoc.CreateAttribute("label")
@@ -539,7 +539,7 @@ Imports Microsoft.Office.Interop
         XButton.Attributes.Append(XAttribute)
 
         XAttribute = xDoc.CreateAttribute("supertip")
-        XAttribute.Value = String.Format("Zeit: {1}{0}Telefonnummer: {2}", Dflt1NeueZeile, ZeitBeginn.ToString, GegenstelleTelNr.Formatiert)
+        XAttribute.Value = $"Zeit: {ZeitBeginn}{Dflt1NeueZeile}Telefonnummer: {GegenstelleTelNr.Formatiert}"
         XButton.Attributes.Append(XAttribute)
 
         If Not Angenommen Then

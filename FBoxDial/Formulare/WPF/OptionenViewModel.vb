@@ -183,8 +183,8 @@ Public Class OptionenViewModel
         Get
             Return _TelNrListe
         End Get
-        Set(value As ObservableCollectionEx(Of Telefonnummer))
-            SetProperty(_TelNrListe, value)
+        Set
+            SetProperty(_TelNrListe, Value)
         End Set
     End Property
 
@@ -332,17 +332,32 @@ Public Class OptionenViewModel
             Return _CBJournal
         End Get
         Set
-            _CBJournal = Value
+            SetProperty(_CBJournal, Value)
         End Set
     End Property
 #End Region
 
-    '#Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
-    '    Public Property LetzterJournalEintrag As Date
-    '    Public Property LetzterJournalEintragID As Integer
-    '    Public Property CBAutoAnrList As Boolean
-    '    Public Property CBAnrListeUpdateCallLists As Boolean
-    '#End Region
+#Region "Auswertung der Fritz!box Anrufliste - Auswertung der Anrufliste"
+    Private _CBAutoAnrList As Boolean
+    Private _CBAnrListeUpdateCallLists As Boolean
+    Public Property CBAutoAnrList As Boolean
+        Get
+            Return _CBAutoAnrList
+        End Get
+        Set
+            SetProperty(_CBAutoAnrList, Value)
+        End Set
+    End Property
+
+    Public Property CBAnrListeUpdateCallLists As Boolean
+        Get
+            Return _CBAnrListeUpdateCallLists
+        End Get
+        Set
+            SetProperty(_CBAnrListeUpdateCallLists, Value)
+        End Set
+    End Property
+#End Region
 #End Region
 
 #Region "Telefoniegeräte"
@@ -352,8 +367,8 @@ Public Class OptionenViewModel
         Get
             Return _TelGerListe
         End Get
-        Set(value As ObservableCollectionEx(Of Telefoniegerät))
-            SetProperty(_TelGerListe, value)
+        Set
+            SetProperty(_TelGerListe, Value)
         End Set
     End Property
 #End Region
@@ -368,7 +383,7 @@ Public Class OptionenViewModel
             Return _TBPhonerPasswort
         End Get
         Set
-            _TBPhonerPasswort = Value
+            SetProperty(_TBPhonerPasswort, Value)
         End Set
     End Property
 
@@ -377,7 +392,7 @@ Public Class OptionenViewModel
             Return _CBPhoner
         End Get
         Set
-            _CBPhoner = Value
+            SetProperty(_CBPhoner, Value)
         End Set
     End Property
 #End Region
@@ -390,7 +405,7 @@ Public Class OptionenViewModel
             Return _TBMicroSIPPath
         End Get
         Set
-            _TBMicroSIPPath = Value
+            SetProperty(_TBMicroSIPPath, Value)
         End Set
     End Property
     Public Property CBMicroSIP As Boolean
@@ -398,7 +413,7 @@ Public Class OptionenViewModel
             Return _CBMicroSIP
         End Get
         Set
-            _CBMicroSIP = Value
+            SetProperty(_CBMicroSIP, Value)
         End Set
     End Property
 #End Region
@@ -413,7 +428,7 @@ Public Class OptionenViewModel
             Return _CBoxMinLogLevel
         End Get
         Set
-            _CBoxMinLogLevel = Value
+            SetProperty(_CBoxMinLogLevel, Value)
         End Set
     End Property
 

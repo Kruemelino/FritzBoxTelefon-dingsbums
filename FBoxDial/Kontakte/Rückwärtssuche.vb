@@ -2,7 +2,7 @@
 
 Public Module Rückwärtssuche
 
-    Friend Async Function StartRWS(ByVal TelNr As Telefonnummer, ByVal RWSIndex As Boolean) As Task(Of String)
+    Friend Async Function StartRWS(TelNr As Telefonnummer, RWSIndex As Boolean) As Task(Of String)
         Dim vCard As String = DfltStringEmpty
         Dim RWSIndexEintrag As RWSIndexEntry
 
@@ -44,7 +44,7 @@ Public Module Rückwärtssuche
     ''' </summary>
     ''' <param name="TelNr">Telefonnummer des zu Suchenden</param>
     ''' <returns>'true' wenn was gefunden wurde</returns>
-    Private Async Function RWSDasOertiche(ByVal TelNr As Telefonnummer) As Task(Of String)
+    Private Async Function RWSDasOertiche(TelNr As Telefonnummer) As Task(Of String)
 
         Dim EintragsID As String    ' Hilfsstring
         Dim tmpTelNr As String      ' Hilfsstring für TelNr
@@ -64,14 +64,12 @@ Public Module Rückwärtssuche
 
         tmpTelNr = TelNr.Unformatiert
         Do
-            htmlRWS = Await HTTPGet(String.Format("{0}search_nat&kw={1}", baseurl, tmpTelNr), Encoding.Default)
+            htmlRWS = Await HTTPGet($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.Default)
 
             If htmlRWS.IsNotStringEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
-
                 ' Link zum Herunterladen der vCard suchen
-
-                EintragsID = htmlRWS.GetSubString("dasoertliche.de/?id=", "&")
+                EintragsID = htmlRWS.GetSubString("form_name=detail&amp;action=58&amp;page=78&amp;context=11&amp;id=", "&")
                 If EintragsID.IsNotErrorString Then
                     VCard = Await HTTPGet(baseurl & "vcard&id=" & EintragsID, Encoding.Default)
                 End If

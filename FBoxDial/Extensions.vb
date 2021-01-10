@@ -680,50 +680,6 @@ Public Module Extensions
         End Try
 
     End Function
-    <Extension> Public Sub Sort(NodesCollection As Windows.Forms.TreeNodeCollection, Ascending As Boolean, SortChildNodes As Boolean)
-
-        Dim node1 As Windows.Forms.TreeNode, node2 As Windows.Forms.TreeNode
-        Dim iTn1 As Integer = Nothing
-        Dim iTn2 As Integer = Nothing
-        Dim k As Integer
-        Dim iCompareResult As Integer
-        Dim Comparer As New StringLogicalComparer()
-
-        ' SortChildNodes: Ggf. Rekursion einleiten
-        If SortChildNodes Then
-            For i As Integer = 0 To NodesCollection.Count - 1
-                Sort(NodesCollection(i).Nodes, Ascending, SortChildNodes)
-            Next i
-        End If
-
-        ' Alle Knoten durchwandern
-        For i As Integer = 0 To NodesCollection.Count - 1
-
-            k = NodesCollection.Count
-
-            Do While k.IsLarger(i)
-
-                k -= 1
-                ' Je zwei Nodes ermitteln und Texte vergleichen
-                node1 = NodesCollection(i)
-                node2 = NodesCollection(k)
-                iCompareResult = Comparer.Compare(node1.Text, node2.Text)
-
-                ' Falls die Sortierung nicht dem übergebenen Sortierkriterium entspricht:
-                If (Ascending = True And iCompareResult.IsPositive) OrElse (Ascending = False And iCompareResult.IsNegative) Then
-
-                    ' Nodes austauschen
-                    With NodesCollection
-                        .Remove(node1)
-                        .Remove(node2)
-                        .Insert(i, node2)
-                        .Insert(k, node1)
-                    End With
-                End If
-            Loop
-        Next
-
-    End Sub
 #End Region
 
     <Extension> Public Sub Rückruf(Tlfnt As Telefonat)

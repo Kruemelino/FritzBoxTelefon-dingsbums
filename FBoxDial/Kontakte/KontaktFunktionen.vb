@@ -16,7 +16,7 @@ Friend Module KontaktFunktionen
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal vCard As String, ByVal TelNr As Telefonnummer, ByVal AutoSave As Boolean) As Outlook.ContactItem
+    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, vCard As String, TelNr As Telefonnummer, AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem
 
 
@@ -34,9 +34,7 @@ Friend Module KontaktFunktionen
 
                 If vCard.IsNotStringEmpty And vCard.IsNotErrorString Then
 
-                    Using vCrd As New VCard
-                        vCrd.DeserializevCard(vCard, olKontakt)
-                    End Using
+                    DeserializevCard(vCard, olKontakt)
 
                     ' Formatiere Telefonnummer
                     If .BusinessTelephoneNumber.IsNotStringEmpty Then
@@ -77,9 +75,8 @@ Friend Module KontaktFunktionen
         End If
 
     End Function
-    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, ByVal XMLKontakt As FritzBoxXMLKontakt, ByVal TelNr As Telefonnummer, ByVal AutoSave As Boolean) As Outlook.ContactItem
+    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As Outlook.ContactItem
         Dim olKontakt As Outlook.ContactItem
-
 
         If Not TelNr.Unbekannt Then
 
@@ -140,14 +137,14 @@ Friend Module KontaktFunktionen
     ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
     ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(ByVal TelNr As Telefonnummer, ByVal Speichern As Boolean) As Outlook.ContactItem
+    Friend Function ErstelleKontakt(TelNr As Telefonnummer, Speichern As Boolean) As Outlook.ContactItem
         Return ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, DfltStringEmpty, TelNr, Speichern)
     End Function
 
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
     ''' </summary>
-    Friend Sub ZeigeKontaktAusJournal(ByVal olJournal As Outlook.JournalItem)
+    Friend Sub ZeigeKontaktAusJournal(olJournal As Outlook.JournalItem)
         Dim vCard As String
         Dim olKontakt As Outlook.ContactItem = Nothing ' Objekt des Kontakteintrags
         Dim TelNr As Telefonnummer
@@ -188,7 +185,7 @@ Friend Module KontaktFunktionen
 
     End Sub ' (ZeigeKontaktAusJournal)
 
-    Friend Sub ZeigeKontaktAusInspector(ByVal olInsp As Outlook.Inspector)
+    Friend Sub ZeigeKontaktAusInspector(olInsp As Outlook.Inspector)
         If olInsp IsNot Nothing Then
             If TypeOf olInsp.CurrentItem Is Outlook.JournalItem Then
                 ZeigeKontaktAusJournal(CType(olInsp.CurrentItem, Outlook.JournalItem))
@@ -196,7 +193,7 @@ Friend Module KontaktFunktionen
         End If
     End Sub ' (ZeigeKontaktAusInspector)
 
-    Friend Sub ZeigeKontaktAusSelection(ByVal olSelection As Outlook.Selection)
+    Friend Sub ZeigeKontaktAusSelection(olSelection As Outlook.Selection)
         If olSelection IsNot Nothing Then
 
             If TypeOf olSelection.Item(1) Is Outlook.JournalItem Then
@@ -228,7 +225,7 @@ Friend Module KontaktFunktionen
     ''' Löscht das Kontaktbild in den Arbeitsorder. 
     ''' </summary>
     ''' <param name="PfadKontaktBild">Pfad zum extrahierten Kontaktbild</param>
-    Friend Sub DelKontaktBild(ByVal PfadKontaktBild As String)
+    Friend Sub DelKontaktBild(PfadKontaktBild As String)
         If PfadKontaktBild.IsNotStringEmpty Then
             With My.Computer.FileSystem
                 If .FileExists(PfadKontaktBild) Then
@@ -341,7 +338,7 @@ Friend Module KontaktFunktionen
         Next
     End Function
 
-    Friend Function ZähleOutlookKontakte(ByVal olFolder As Outlook.MAPIFolder) As Integer
+    Friend Function ZähleOutlookKontakte(olFolder As Outlook.MAPIFolder) As Integer
         Dim retval As Integer = 0
 
         ' Die Anzahl der Elemente dieses Ordners zählen
@@ -360,11 +357,11 @@ Friend Module KontaktFunktionen
         Return retval
     End Function
 
-    <Extension> Friend Function StoreID(ByVal olKontakt As Outlook.ContactItem) As String
+    <Extension> Friend Function StoreID(olKontakt As Outlook.ContactItem) As String
         Return CType(olKontakt.Parent, Outlook.MAPIFolder).StoreID
     End Function
 
-    <Extension> Friend Function GetTelNrArray(ByVal olContact As Outlook.ContactItem) As Object()
+    <Extension> Friend Function GetTelNrArray(olContact As Outlook.ContactItem) As Object()
 
         Dim tmpTelNr(18) As Object
         With olContact
@@ -415,14 +412,14 @@ Friend Module KontaktFunktionen
     ''' <param name="Ordner1">Erster MAPIFolder</param>
     ''' <param name="Ordner2">Zweiter MAPIFolder</param>
     ''' <returns></returns>
-    <Extension> Friend Function AreEqual(ByVal Ordner1 As Outlook.MAPIFolder, ByVal Ordner2 As Outlook.MAPIFolder) As Boolean
+    <Extension> Friend Function AreEqual(Ordner1 As Outlook.MAPIFolder, Ordner2 As Outlook.MAPIFolder) As Boolean
         Return Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID)
     End Function
-    <Extension> Friend Function AreNotEqual(ByVal Ordner1 As Outlook.MAPIFolder, ByVal Ordner2 As Outlook.MAPIFolder) As Boolean
+    <Extension> Friend Function AreNotEqual(Ordner1 As Outlook.MAPIFolder, Ordner2 As Outlook.MAPIFolder) As Boolean
         Return Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID)
     End Function
 #Region "VIP"
-    <Extension> Friend Function IsVIP(ByVal olKontakt As Outlook.ContactItem) As Boolean
+    <Extension> Friend Function IsVIP(olKontakt As Outlook.ContactItem) As Boolean
 
         IsVIP = False
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
@@ -433,7 +430,7 @@ Friend Module KontaktFunktionen
         End If
     End Function
 
-    <Extension> Friend Sub AddVIP(ByVal olKontakt As Outlook.ContactItem)
+    <Extension> Friend Sub AddVIP(olKontakt As Outlook.ContactItem)
         If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New List(Of VIPEntry)
 
         With XMLData.PTelefonie.VIPListe
@@ -441,7 +438,7 @@ Friend Module KontaktFunktionen
         End With
     End Sub
 
-    <Extension> Friend Sub RemoveVIP(ByVal olKontakt As Outlook.ContactItem)
+    <Extension> Friend Sub RemoveVIP(olKontakt As Outlook.ContactItem)
         Dim tmpVIPEntry As VIPEntry
 
         If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New List(Of VIPEntry)
@@ -454,7 +451,7 @@ Friend Module KontaktFunktionen
     End Sub
 
 #End Region
-    Private Sub XMLKontaktOutlook(ByVal XMLKontakt As FritzBoxXMLKontakt, ByRef Kontakt As Outlook.ContactItem)
+    Private Sub XMLKontaktOutlook(XMLKontakt As FritzBoxXMLKontakt, ByRef Kontakt As Outlook.ContactItem)
         ' Werte übeführen
         With Kontakt
             ' Name
@@ -548,7 +545,7 @@ Friend Module KontaktFunktionen
     ''' <param name="EMail"></param>
     ''' <remarks>https://docs.microsoft.com/de-de/office/client-developer/outlook/pia/how-to-get-the-smtp-address-of-the-sender-of-a-mail-item</remarks>
     ''' <returns></returns>
-    Friend Function GetSenderSMTPAddress(ByVal EMail As Outlook.MailItem) As String
+    Friend Function GetSenderSMTPAddress(EMail As Outlook.MailItem) As String
 
         If EMail IsNot Nothing Then
             If EMail.SenderEmailType = "EX" Then
@@ -578,5 +575,23 @@ Friend Module KontaktFunktionen
             Return DfltStringEmpty
         End If
     End Function
+
+    Friend Async Sub StartKontaktRWS(olContact As Outlook.ContactItem, TelNr As Telefonnummer)
+
+        With olContact
+            Dim vCard As String
+
+            vCard = Await StartRWS(TelNr, False)
+
+            If vCard.IsStringNothingOrEmpty Then
+                .Body += $"{Dflt1NeueZeile}{DfltJournalRWSFehler} {TelNr.Formatiert}"
+            Else
+                .Body += String.Format("{0}{2}{1}{3}", Dflt1NeueZeile, Dflt2NeueZeile, DfltJournalTextKontaktvCard, vCard)
+
+                DeserializevCard(vCard, olContact)
+            End If
+
+        End With
+    End Sub
 
 End Module

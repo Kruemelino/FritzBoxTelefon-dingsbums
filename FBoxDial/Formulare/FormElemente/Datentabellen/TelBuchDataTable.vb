@@ -1,5 +1,5 @@
 ﻿Imports System.Data
-Public Class TelBuchDataTable
+<Obsolete> Public Class TelBuchDataTable
     Inherits DataTable
 
     Friend Property Kontakt As FritzBoxXMLKontakt

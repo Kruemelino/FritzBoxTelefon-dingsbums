@@ -13,6 +13,8 @@
         <fbd:OptionsÜberschrift Label="Einstellungen für die Journalerstellung"/>
         <fbd:OptionsHinweis Label="Hinweise zur Outlook Journaleinträgen:&#10;Sofern Journaleinträge erstellt werden sollen, muss hier festgelegt werden, in welchem Ordner die Einträge erstellt werden sollen.&#10;Wird kein Ordner gewählt, wird der Outlook-Standardverwendet."/>
         <fbd:OptionsCheckBox Label="Journaleinträge erstellen" Value="{Binding CBJournal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsCheckBox Label="Journaleinträge bei Outlookstart importieren" Value="{Binding CBAutoAnrList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsCheckBox Label="Anruflisten aktualisieren" Value="{Binding CBAnrListeUpdateCallLists, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <fbd:OptionsOLFolderTV x:Name="OLFolderJournalErstellung" OutlookOlItemType="olJournalItem" ÜberwachteOrdnerListe="{Binding OutlookOrdner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Verwendung="JournalSpeichern"/>
 
 

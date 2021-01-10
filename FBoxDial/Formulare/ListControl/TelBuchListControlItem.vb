@@ -2,7 +2,7 @@
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-Friend Class TelBuchListControlItem
+<Obsolete> Friend Class TelBuchListControlItem
 #Region "Events"
     Public Event SelectionChanged(sender As Object)
     Friend WithEvents TmrMouseLeave As New Timer With {.Interval = 10}

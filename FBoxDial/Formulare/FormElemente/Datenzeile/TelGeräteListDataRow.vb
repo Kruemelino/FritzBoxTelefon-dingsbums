@@ -1,6 +1,6 @@
 ﻿Imports System.Data
 
-Public Class TelGeräteListDataRow
+<Obsolete> Public Class TelGeräteListDataRow
     Inherits DataRow
 
     Friend Property Gerät As Telefoniegerät

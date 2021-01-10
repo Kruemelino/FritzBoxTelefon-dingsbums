@@ -311,6 +311,31 @@ Public Class Telefonnummer
 
         End If
     End Function
+
+    Friend Function CreateDynMenuButton(ByVal xDoc As Xml.XmlDocument, ByVal ID As Integer, ByVal Tag As String) As Xml.XmlElement
+        Dim XButton As Xml.XmlElement
+        Dim XAttribute As Xml.XmlAttribute
+
+        XButton = xDoc.CreateElement("button", xDoc.DocumentElement.NamespaceURI)
+
+        XAttribute = xDoc.CreateAttribute("id")
+        XAttribute.Value = $"{Tag}_{ID}"
+        XButton.Attributes.Append(XAttribute)
+
+        XAttribute = xDoc.CreateAttribute("label")
+        XAttribute.Value = Formatiert.XMLMaskiereZeichen
+        XButton.Attributes.Append(XAttribute)
+
+        XAttribute = xDoc.CreateAttribute("onAction")
+        XAttribute.Value = "BtnOnActionI"
+        XButton.Attributes.Append(XAttribute)
+
+        XAttribute = xDoc.CreateAttribute("tag")
+        XAttribute.Value = Unformatiert.XMLMaskiereZeichen
+        XButton.Attributes.Append(XAttribute)
+
+        Return XButton
+    End Function
 #End Region
 
 #Region "IEquatable"

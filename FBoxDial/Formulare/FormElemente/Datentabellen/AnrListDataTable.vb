@@ -1,6 +1,6 @@
 ﻿Imports System.Data
 
-Friend Class AnrListDataTable
+<Obsolete> Friend Class AnrListDataTable
     Inherits DataTable
 
     Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow

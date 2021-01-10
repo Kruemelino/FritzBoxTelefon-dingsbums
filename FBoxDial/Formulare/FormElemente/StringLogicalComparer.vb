@@ -1,7 +1,7 @@
 ﻿''' <summary>
 ''' https://github.com/dotnetprojects/DotNetSiemensPLCToolBoxLibrary/blob/master/LibNoDaveConnectionLibrary/General/StringLogicalComparer.cs
 ''' </summary>
-Friend Class StringLogicalComparer
+<Obsolete> Friend Class StringLogicalComparer
     Implements IComparer(Of String)
 
     Public Function Compare(ByVal s1 As String, ByVal s2 As String) As Integer Implements IComparer(Of String).Compare

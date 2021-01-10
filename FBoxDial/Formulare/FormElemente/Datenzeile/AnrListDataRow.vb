@@ -1,6 +1,6 @@
 ﻿Imports System.Data
 
-Friend Class AnrListDataRow
+<Obsolete> Friend Class AnrListDataRow
     Inherits DataRow
 
     Friend Property AnrListCall As FritzBoxXMLCall

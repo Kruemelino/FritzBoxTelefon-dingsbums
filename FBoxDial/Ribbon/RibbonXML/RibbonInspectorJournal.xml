@@ -5,6 +5,7 @@
       <tab idMso="TabJournal">
         <group id="Tab_Journal" getLabel="GetItemLabel" getVisible="ShowInspectorRibbon">
           <button id="btnDialInsp_J" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" getEnabled="EnableBtnJournal" onAction="BtnOnActionI"/>
+          <separator id="Seperator_J1"/>
           <button id="btnRWS_J" tag="RWSDasOertliche" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" onAction="BtnOnActionI"/>
           <button id="btnAddContact_J" getLabel="GetLabelJournal" getImage="GetItemImageMso" getScreentip="GetScreenTipJournal" size="normal" onAction="BtnOnActionI"/>
         </group>

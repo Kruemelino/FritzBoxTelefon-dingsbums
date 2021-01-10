@@ -1,6 +1,6 @@
 ﻿Imports System.Data
 
-Public Class TelBuchDataRow
+<Obsolete> Public Class TelBuchDataRow
     Inherits DataRow
 
     Friend Property FritzBoxNummer As FritzBoxXMLNummer

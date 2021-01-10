@@ -2,7 +2,7 @@
 ''' <summary>
 ''' https://www.codeproject.com/Articles/333864/Flexible-List-Control
 ''' </summary>
-Friend Class TelBuchListControl
+<Obsolete> Friend Class TelBuchListControl
     Friend Event ItemClick(sender As Object, Index As Integer)
 
     Friend Property Selected As TelBuchListControlItem = Nothing

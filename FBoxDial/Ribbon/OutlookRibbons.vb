@@ -343,7 +343,7 @@ Imports System.Xml
     ''' </summary>
     ''' <param name="Aufgabe"></param>
     ''' <param name="OutlookInspector"></param>
-    Private Sub OnAction(Aufgabe As TaskToDo, OutlookInspector As Outlook.Inspector)
+    Private Sub OnAction(Aufgabe As TaskToDo, OutlookInspector As Outlook.Inspector, Tag As String)
         Select Case Aufgabe
             Case TaskToDo.DialInspector
                 Dim WählClient As New FritzBoxWählClient
@@ -359,7 +359,7 @@ Imports System.Xml
                 End If
                 ' Kontakt
                 If TypeOf OutlookInspector.CurrentItem Is Outlook.ContactItem Then
-
+                    StartKontaktRWS(CType(OutlookInspector.CurrentItem, Outlook.ContactItem), New Telefonnummer With {.SetNummer = Tag})
                 End If
 
         End Select
@@ -424,17 +424,17 @@ Imports System.Xml
         If oInsp IsNot Nothing Then
             Select Case control.Id.Split("_").First
                 Case "btnDialInsp"
-                    OnAction(TaskToDo.DialInspector, oInsp)
+                    OnAction(TaskToDo.DialInspector, oInsp, control.Tag)
                 Case "btnUpload"   ' Inspector
 
                 Case "MUpload"  ' Inspector + Telefonbuchauswahl
 
                 Case "btnRWS" ' Rückwärtssuche
-                    OnAction(TaskToDo.StartRWS, oInsp)
+                    OnAction(TaskToDo.StartRWS, oInsp, control.Tag)
                 Case "btnNote"
 
                 Case "btnAddContact"
-                    OnAction(TaskToDo.CreateContact, oInsp)
+                    OnAction(TaskToDo.CreateContact, oInsp, control.Tag)
             End Select
         End If
     End Sub
@@ -458,13 +458,7 @@ Imports System.Xml
         Return False
     End Function
 
-    Public Function GetVisibleRWS() As Boolean
-        Return False
-    End Function
-
 #Region "DynamicMenu"
-
-
     Public Function DynMenuEnabled(control As IRibbonControl) As Boolean
         If XMLData IsNot Nothing Then
             Select Case Left(control.Id, Len(control.Id) - 2)
@@ -552,13 +546,35 @@ Imports System.Xml
                 For Each TelFt As Telefonat In ListofTelefonate
                     .DocumentElement.AppendChild(TelFt.CreateDynMenuButton(XDynaMenu, ListofTelefonate.IndexOf(TelFt), ListName))
                 Next
+
             ElseIf ListName.AreEqual(DfltNameListVIP) Then
+
                 For Each VIP As VIPEntry In XMLData.PTelefonie.VIPListe
                     .DocumentElement.AppendChild(VIP.CreateDynMenuButton(XDynaMenu, XMLData.PTelefonie.VIPListe.IndexOf(VIP), ListName))
                 Next
+
             End If
         End With
 
+        Return XDynaMenu.InnerXml
+    End Function
+    Public Function FillDynamicRWSMenu(control As IRibbonControl) As String
+
+        Dim ListName As String = Left(control.Id, Len(control.Id) - 2)
+        Dim Insp As Outlook.Inspector = CType(control.Context, Outlook.Inspector)
+        Dim XDynaMenu As New XmlDocument
+        Dim ListofTelefonnummer As List(Of Telefonnummer)
+
+        If TypeOf Insp.CurrentItem Is Outlook.ContactItem Then
+            With XDynaMenu
+                ' Füge die XMLDeclaration und das Wurzelelement einschl. Namespace hinzu
+                .InsertBefore(.CreateXmlDeclaration("1.0", "UTF-8", Nothing), .AppendChild(.CreateElement("menu", "http://schemas.microsoft.com/office/2009/07/customui")))
+                ListofTelefonnummer = GetKontaktTelNrList(CType(Insp.CurrentItem, Outlook.ContactItem))
+                For Each TelNr In ListofTelefonnummer
+                    .DocumentElement.AppendChild(TelNr.CreateDynMenuButton(XDynaMenu, ListofTelefonnummer.IndexOf(TelNr), ListName))
+                Next
+            End With
+        End If
         Return XDynaMenu.InnerXml
     End Function
 #End Region
@@ -609,6 +625,8 @@ Imports System.Xml
     End Function
 
 #End Region
+
+
 
 #End Region
 
