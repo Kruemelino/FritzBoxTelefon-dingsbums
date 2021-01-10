@@ -12,15 +12,12 @@ Public Class WählclientWPF
     Private WithEvents CtrlKontaktWahl As UserCtrlKontaktwahl
     Private WithEvents CtrlDirektWahl As UserCtrlDirektwahl
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private Property PhonerApp As Phoner
-    Private Property MicroSIPApp As MicroSIP
 
 #Region "WithEvents"
-    Private WithEvents FBWählClient As FritzBoxWählClient
     Private WithEvents TimerSchließen As Timers.Timer
 #End Region
 
-    Public Sub New(Direktwahl As Boolean, FBoxWählClient As FritzBoxWählClient)
+    Public Sub New(Direktwahl As Boolean, ViewModel As WählClientViewModel)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
@@ -29,9 +26,7 @@ Public Class WählclientWPF
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
         ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
-        DataContext = New WählClientViewModel
-
-        FBWählClient = FBoxWählClient
+        DataContext = ViewModel
 
         ' Lade initale Daten
         SetTelefonDaten()
@@ -45,84 +40,8 @@ Public Class WählclientWPF
             CtrlKontaktWahl = New UserCtrlKontaktwahl With {.DataContext = DataContext}
             NavigationCtrl.Content = CtrlKontaktWahl
         End If
-    End Sub
 
-    ''' <summary>
-    ''' Sammelt alle Kontaktdaten des Outlook-Kontaktes als <see cref="Outlook.ContactItem"/> zusammen.
-    ''' </summary>
-    ''' <param name="oContact">Outlook Kontakt, der eingeblendet werden soll.</param>
-    Friend Sub SetOutlookKontakt(ByVal oContact As Outlook.ContactItem)
-
-        With CType(DataContext, WählClientViewModel)
-            ' Outlook Kontakt im ViewModel setzen
-            .OKontakt = oContact
-
-            ' Telefonnummern des Kontaktes setzen 
-            .DialNumberList.AddRange(GetKontaktTelNrList(oContact))
-
-            ' Kopfdaten setzen
-            .Name = WählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", DfltStringEmpty)}")
-
-            ' Kontaktbild anzeigen
-            Dim BildPfad As String
-
-            BildPfad = KontaktBild(oContact)
-
-            If BildPfad.IsNotStringEmpty Then
-                ' Kontaktbild laden
-                .Kontaktbild = New BitmapImage
-                With .Kontaktbild
-                    .BeginInit()
-                    .CacheOption = BitmapCacheOption.OnLoad
-                    .UriSource = New Uri(BildPfad)
-                    .EndInit()
-                End With
-                'Lösche das Kontaktbild 
-                DelKontaktBild(BildPfad)
-            End If
-        End With
-    End Sub
-
-    ''' <summary>
-    ''' Sammelt alle Kontaktdaten des Outlook-ExchangeNutzers als <see cref="Outlook.ExchangeUser"/> zusammen.
-    ''' </summary>
-    ''' <param name="oExchangeUser">Outlook-ExchangeNutzers, der eingeblendet werden soll.</param>
-    Friend Sub SetOutlookKontakt(ByVal oExchangeUser As Outlook.ExchangeUser)
-        With CType(DataContext, WählClientViewModel)
-            ' Outlook ExchangeNutzer im ViewModel setzen
-            .OExchangeNutzer = oExchangeUser
-
-            ' Telefonnummern des Kontaktes setzen 
-            .DialNumberList.AddRange(GetKontaktTelNrList(oExchangeUser))
-
-            ' Kopfdaten setzen
-            .Name = WählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", DfltStringEmpty)}")
-
-        End With
-    End Sub
-
-    Friend Sub SetTelefonnummer(ByVal TelNr As Telefonnummer)
-
-        With CType(DataContext, WählClientViewModel)
-            ' Telefonnummer setzen 
-            .DialNumberList.Add(TelNr)
-
-            ' Kopfdaten setzen
-            .Name = WählClientFormText(TelNr.Formatiert)
-
-        End With
-    End Sub
-
-    Friend Sub SetDirektwahl()
-        With CType(DataContext, WählClientViewModel)
-            ' Kopfdaten setzen
-            .Name = WählClientFormText("Direktwahl")
-
-            ' Wahlwiederhohlung in Combobox schreiben
-            If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any Then
-                .DialDirektWahlList.AddRange(XMLData.PTelefonie.GetTelNrList(XMLData.PTelefonie.CALLListe))
-            End If
-        End With
+        Show()
     End Sub
 
     Private Sub SetTelefonDaten()
@@ -191,12 +110,6 @@ Public Class WählclientWPF
     End Sub
 
 #End Region
-    Private Sub FBWählClient_SetStatus(Status As String) Handles FBWählClient.SetStatus
-        'With CType(DataContext, WählClientViewModel)
-        '    .Status = Status
-        'End With
-        NLogger.Debug(Status)
-    End Sub
 
     ''' <summary>
     ''' Startet den Wählvorgang
@@ -243,41 +156,52 @@ Public Class WählclientWPF
                 If .TelGerät.IsPhoner Then
                     ' Initiere Phoner, wenn erforderlich
                     If XMLData.POptionen.CBPhoner Then
-                        PhonerApp = New Phoner
-                        If PhonerApp.PhonerReady Then
-                            ' Telefonat an Phoner übergeben
-                            NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
-                            Erfolreich = CBool((PhonerApp?.Dial(DialCode, AufbauAbbrechen)))
 
-                        Else
-                            NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
-                            PhonerApp = Nothing
+                        Using PhonerApp = New Phoner
 
-                        End If
+                            If PhonerApp.PhonerReady Then
+                                ' Telefonat an Phoner übergeben
+                                NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
+                                Erfolreich = PhonerApp.Dial(DialCode, AufbauAbbrechen)
+                            Else
+                                NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
+                                Erfolreich = False
+                            End If
+
+                        End Using
                     End If
                 End If
 
                 If .TelGerät.IsMicroSIP Then
                     ' Initiere MicroSIP, wenn erforderlich
                     If XMLData.POptionen.CBMicroSIP Then
-                        MicroSIPApp = New MicroSIP
-                        If MicroSIPApp.MicroSIPReady Then
-                            ' Telefonat an Phoner übergeben
-                            NLogger.Info("Wählclient an MicroSIP: {0} über {1}", DialCode, .TelGerät.Name)
-                            Erfolreich = CBool((MicroSIPApp?.Dial(DialCode, AufbauAbbrechen)))
 
-                        Else
-                            NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
-                            MicroSIPApp = Nothing
+                        Using MicroSIPApp = New MicroSIP
 
-                        End If
+                            If MicroSIPApp.MicroSIPReady Then
+                                ' Telefonat an Phoner übergeben
+                                NLogger.Info("Wählclient an MicroSIP: {0} über {1}", DialCode, .TelGerät.Name)
+                                Erfolreich = CBool((MicroSIPApp?.Dial(DialCode, AufbauAbbrechen)))
+                            Else
+                                NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
+                                Erfolreich = False
+                            End If
+
+                        End Using
                     End If
                 End If
 
             Else
                 ' Telefonat üper SOAP an Fritz!Box weiterreichen
-                NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, .TelGerät.Name)
-                Erfolreich = CBool((FBWählClient?.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)))
+                If .Wählclient IsNot Nothing Then
+                    NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, .TelGerät.Name)
+                    Erfolreich = .Wählclient.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)
+                Else
+                    NLogger.Error("Wählclient ist Nothing")
+                    Erfolreich = False
+                    .Status = WählClientDialFehler
+                End If
+
             End If
 
             ' Ergebnis auswerten 

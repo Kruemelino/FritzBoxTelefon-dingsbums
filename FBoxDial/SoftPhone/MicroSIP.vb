@@ -1,4 +1,6 @@
 ﻿Friend Class MicroSIP
+    Implements IDisposable
+
     Private Const MicroSIPProgressName As String = "MicroSIP"
 
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
@@ -10,6 +12,7 @@
     ''' Hang up all calls: microsip.exe /hangupall
     ''' </summary>
     Private Const CommandHangUpAll As String = "/hangupall"
+    Private disposedValue As Boolean
 
     '    ''' <summary>
     '    ''' Answer a Call: microsip.exe /answer
@@ -86,4 +89,28 @@
         End If
     End Function
 
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not disposedValue Then
+            If disposing Then
+                ' TODO: Verwalteten Zustand (verwaltete Objekte) bereinigen
+            End If
+
+            ' TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
+            ' TODO: Große Felder auf NULL setzen
+            disposedValue = True
+        End If
+    End Sub
+
+    ' ' TODO: Finalizer nur überschreiben, wenn "Dispose(disposing As Boolean)" Code für die Freigabe nicht verwalteter Ressourcen enthält
+    ' Protected Overrides Sub Finalize()
+    '     ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
+    '     Dispose(disposing:=False)
+    '     MyBase.Finalize()
+    ' End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(disposing As Boolean)" ein.
+        Dispose(disposing:=True)
+        GC.SuppressFinalize(Me)
+    End Sub
 End Class

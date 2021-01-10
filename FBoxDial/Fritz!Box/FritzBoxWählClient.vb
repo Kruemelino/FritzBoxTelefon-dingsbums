@@ -19,14 +19,6 @@ Public Class FritzBoxWählClient
     End Property
 #End Region
 
-#Region "Event"
-    ''' <summary>
-    ''' Event zum setzen des Status
-    ''' </summary>
-    ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
-    Friend Event SetStatus(Status As String)
-#End Region
-
     Private ListWählboxWPF As List(Of WählclientWPF)
 #Region "Wählen per SOAP"
     ''' <summary>
@@ -51,7 +43,6 @@ Public Class FritzBoxWählClient
             If Not DialPortEingestellt Then
                 ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
                 StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusDialPort, Telefon.UPnPDialport)
-                RaiseEvent SetStatus(StatusMeldung)
 
                 InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.UPnPDialport)
                 OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
@@ -60,7 +51,6 @@ Public Class FritzBoxWählClient
                     DialPortEingestellt = False
                     StatusMeldung = WählClientDialStatus("SOAPDial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
-                    RaiseEvent SetStatus(StatusMeldung)
                 Else
                     ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
                     OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
@@ -68,7 +58,6 @@ Public Class FritzBoxWählClient
                     If Not DialPortEingestellt Then
                         StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusSOAPDialPortFehler, Telefon.UPnPDialport)
                         NLogger.Error(StatusMeldung)
-                        RaiseEvent SetStatus(StatusMeldung)
                     End If
                 End If
             End If
@@ -89,7 +78,6 @@ Public Class FritzBoxWählClient
                 If OutPutData.Contains("Error") Then
                     StatusMeldung = WählClientDialStatus("SOAPDial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
-                    RaiseEvent SetStatus(StatusMeldung)
                     Return False
                 Else
                     Return True
@@ -306,16 +294,15 @@ Public Class FritzBoxWählClient
             ' Es soll nur ein Formular anzeigbar sein.
             If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
 
-            Dim fWählClient As WählclientWPF
-
+            ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF(False, Me)
+                Dim DCViewModel As New WählClientViewModel(Me)
+                ' Lade die Outlook Kontaktdaten in das Viewmodel
+                DCViewModel.SetOutlookKontakt(oContact)
+
+                Dim fWählClient As WählclientWPF = New WählclientWPF(False, DCViewModel)
 
                 ListWählboxWPF.Add(fWählClient)
-                With fWählClient
-                    .SetOutlookKontakt(oContact)
-                    .Show()
-                End With
 
             End If
         Else
@@ -329,16 +316,15 @@ Public Class FritzBoxWählClient
             ' Es soll nur ein Formular anzeigbar sein.
             If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
 
-            Dim fWählClient As WählclientWPF
-
+            ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF(False, Me)
+                Dim DCViewModel As New WählClientViewModel(Me)
+                ' Lade die Outlook Kontaktdaten in das Viewmodel
+                DCViewModel.SetOutlookKontakt(oExchangeNutzer)
+
+                Dim fWählClient As WählclientWPF = New WählclientWPF(False, DCViewModel)
 
                 ListWählboxWPF.Add(fWählClient)
-                With fWählClient
-                    .SetOutlookKontakt(oExchangeNutzer)
-                    .Show()
-                End With
 
             End If
         Else
@@ -357,16 +343,16 @@ Public Class FritzBoxWählClient
             ' Es soll nur ein Formular anzeigbar sein.
             If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
 
-            Dim fWählClient As WählclientWPF
-
+            ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
             If ListWählboxWPF.Count.IsZero Then
-                fWählClient = New WählclientWPF(False, Me)
+                Dim DCViewModel As New WählClientViewModel(Me)
+                ' Lade die Outlook Kontaktdaten in das Viewmodel
+                DCViewModel.SetTelefonnummer(TelNr)
+
+                Dim fWählClient As WählclientWPF = New WählclientWPF(False, DCViewModel)
 
                 ListWählboxWPF.Add(fWählClient)
-                With fWählClient
-                    .SetTelefonnummer(TelNr)
-                    .Show()
-                End With
+
             End If
         Else
             NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
@@ -380,16 +366,15 @@ Public Class FritzBoxWählClient
         ' Es soll nur ein Formular anzeigbar sein.
         If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
 
-        Dim fWählClient As WählclientWPF
-
+        ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
         If ListWählboxWPF.Count.IsZero Then
-            fWählClient = New WählclientWPF(True, Me)
+            Dim DCViewModel As New WählClientViewModel(Me)
+            ' Lade die Outlook Kontaktdaten in das Viewmodel
+            DCViewModel.SetDirektwahl()
+
+            Dim fWählClient As WählclientWPF = New WählclientWPF(True, DCViewModel)
 
             ListWählboxWPF.Add(fWählClient)
-            With fWählClient
-                .SetDirektwahl()
-                .Show()
-            End With
         End If
     End Sub
 #End Region

@@ -5,6 +5,7 @@ Imports Microsoft.Office.Interop
 Public Class WählClientViewModel
     Inherits NotifyBase
 
+#Region "Felder"
     Private _Status As String
     Public Property Status As String
         Get
@@ -120,6 +121,7 @@ Public Class WählClientViewModel
     End Property
 
     Private _TelNr As Telefonnummer
+
     ''' <summary>
     ''' Telefonnummer, die gewählt werden soll.
     ''' </summary>
@@ -131,7 +133,91 @@ Public Class WählClientViewModel
             SetProperty(_TelNr, Value)
         End Set
     End Property
+#End Region
 
+    Friend Property Wählclient As FritzBoxWählClient
+    Public Sub New()
+
+    End Sub
+
+    Public Sub New(FBWählclient As FritzBoxWählClient)
+        Wählclient = FBWählclient
+    End Sub
+
+    ''' <summary>
+    ''' Sammelt alle Kontaktdaten des Outlook-Kontaktes als <see cref="Outlook.ContactItem"/> zusammen.
+    ''' </summary>
+    ''' <param name="oContact">Outlook Kontakt, der eingeblendet werden soll.</param>
+    Friend Sub SetOutlookKontakt(oContact As Outlook.ContactItem)
+
+
+        ' Outlook Kontakt im ViewModel setzen
+        OKontakt = oContact
+
+        ' Telefonnummern des Kontaktes setzen 
+        DialNumberList.AddRange(GetKontaktTelNrList(oContact))
+
+        ' Kopfdaten setzen
+        Name = WählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", DfltStringEmpty)}")
+
+        ' Kontaktbild anzeigen
+        Dim BildPfad As String
+
+        BildPfad = KontaktFunktionen.KontaktBild(oContact)
+
+        If BildPfad.IsNotStringEmpty Then
+            ' Kontaktbild laden
+            Kontaktbild = New BitmapImage
+            With Kontaktbild
+                .BeginInit()
+                .CacheOption = BitmapCacheOption.OnLoad
+                .UriSource = New Uri(BildPfad)
+                .EndInit()
+            End With
+            'Lösche das Kontaktbild 
+            DelKontaktBild(BildPfad)
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Sammelt alle Kontaktdaten des Outlook-ExchangeNutzers als <see cref="Outlook.ExchangeUser"/> zusammen.
+    ''' </summary>
+    ''' <param name="oExchangeUser">Outlook-ExchangeNutzers, der eingeblendet werden soll.</param>
+    Friend Sub SetOutlookKontakt(oExchangeUser As Outlook.ExchangeUser)
+
+        ' Outlook ExchangeNutzer im ViewModel setzen
+        OExchangeNutzer = oExchangeUser
+
+        ' Telefonnummern des Kontaktes setzen 
+        DialNumberList.AddRange(GetKontaktTelNrList(oExchangeUser))
+
+        ' Kopfdaten setzen
+        Name = WählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", DfltStringEmpty)}")
+
+    End Sub
+
+    Friend Sub SetTelefonnummer(TelNr As Telefonnummer)
+
+        ' Telefonnummer setzen 
+        DialNumberList.Add(TelNr)
+
+        ' Kopfdaten setzen
+        Name = WählClientFormText(TelNr.Formatiert)
+
+    End Sub
+
+    Friend Sub SetDirektwahl()
+
+        ' Kopfdaten setzen
+        Name = WählClientFormText("Direktwahl")
+
+        ' Wahlwiederhohlung in Combobox schreiben
+        If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any Then
+            DialDirektWahlList.AddRange(XMLData.PTelefonie.GetTelNrList(XMLData.PTelefonie.CALLListe))
+        End If
+
+    End Sub
 End Class
 
 
