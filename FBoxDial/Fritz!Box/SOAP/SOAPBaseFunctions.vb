@@ -16,9 +16,18 @@ Friend Module SOAPBaseFunctions
 
                 Using webClient As New WebClient
                     With webClient
+                        ' kein Proxy
                         .Proxy = Nothing
+
+                        ' kein Cache
                         .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+
+                        ' Header festlegen
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+
+                        ' Zeichencodierung auf das Fritz!Box default setzen
+                        .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
+
                         Try
                             retVal = .DownloadString(UniformResourceIdentifier)
                             FBError = False
@@ -52,6 +61,9 @@ Friend Module SOAPBaseFunctions
                     .Add(HttpRequestHeader.KeepAlive, False.ToString)
                     .Add("SOAPACTION", $"""{ServiceType}#{SOAPAction}""")
                 End With
+
+                ' Zeichencodierung auf das Fritz!Box default setzen
+                .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
 
                 ' Zugangsdaten felstlegen
                 Using Crypter As New Rijndael

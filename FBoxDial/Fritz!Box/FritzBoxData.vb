@@ -375,8 +375,8 @@ Public Class FritzBoxData
                 tmpTelefon = New Telefoniegerät With {.TelTyp = TelTypen.S0,
                                                   .Dialport = DialPortBase.S0,
                                                   .AnrMonID = .Dialport,
-                                                  .Name = "ISDN- und Schnurlostelefone",
-                                                  .UPnPDialport = "ISDN und Schnurlostelefone"}           '
+                                                  .Name = "ISDN: ISDN/DECT Rundruf",
+                                                  .UPnPDialport = "ISDN: ISDN/DECT Rundruf"}           '
 
                 PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)

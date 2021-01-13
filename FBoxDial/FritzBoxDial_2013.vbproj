@@ -387,7 +387,6 @@
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxSOAP.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxInformations.vb" />
-    <Compile Include="Fritz!Box\SOAP\FritzBoxSOAPService.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLEmail.vb" />
     <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLKontakt.vb" />
@@ -418,7 +417,6 @@
     <Compile Include="Ribbon\DefaultRibbon.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAP.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPBaseFunctions.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
