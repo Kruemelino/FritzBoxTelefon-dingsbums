@@ -1,25 +1,26 @@
 ﻿Imports Microsoft.Office.Interop
 
-Friend Class KontaktGespeichert
+Friend Class KontaktInspector
     Implements IDisposable
 
     Friend WithEvents Kontakt As Outlook.ContactItem
 
     Private Sub ContactSaved_Close(ByRef Cancel As Boolean) Handles Kontakt.Close
-        ThisAddIn.OffeneKontakInsepektoren.Remove(Me)
+        ThisAddIn.KontakInsepektorenListe.Remove(Me)
         Me.Dispose()
     End Sub
 
     Private Sub ContactSaved_Write(ByRef Cancel As Boolean) Handles Kontakt.Write
         ' Prüfe ob der Ordner für die Kontaktsuche verwendet wird
-        If XMLData.POptionen.OutlookOrdner.Exists(Kontakt.ParentFolder, OutlookOrdnerVerwendung.KontaktSuche) Then IndiziereKontakt(Kontakt)
+        IndiziereKontakt(Kontakt, Kontakt.ParentFolder)
+
     End Sub
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' So ermitteln Sie überflüssige Aufrufe
 
     ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+    Protected Overridable Sub Dispose(disposing As Boolean)
         If Not Me.disposedValue Then
             If disposing Then
                 'C_KF = Nothing

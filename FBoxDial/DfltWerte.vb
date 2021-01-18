@@ -322,7 +322,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Anruf: <paramref name="Kontakt"/>
     ''' </summary>
     ''' <param name="Kontakt">Die Kontaktdaten des anzurufenden Kontaktes</param>
-    Public Shared ReadOnly Property WählClientFormText(ByVal Kontakt As String) As String
+    Public Shared ReadOnly Property WählClientFormText(Kontakt As String) As String
         Get
             Return $"Anruf: {Kontakt}"
         End Get
@@ -332,7 +332,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Es ist kein Kontakt mit der E-Mail-Adresse <paramref name="EMailAdresse"/> vorhanden!
     ''' </summary>
     ''' <param name="EMailAdresse">Die Adresse der ausgewählten E-Mail</param>
-    Public Shared ReadOnly Property WählClientEMailunbekannt(ByVal EMailAdresse As String) As String
+    Public Shared ReadOnly Property WählClientEMailunbekannt(EMailAdresse As String) As String
         Get
             Return $"Es ist kein Kontakt mit der E-Mail-Adresse {EMailAdresse} vorhanden!"
         End Get
@@ -346,7 +346,12 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <summary>
     ''' Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?
     ''' </summary>
-    Public Shared ReadOnly Property WählClientFrageMobil As String = "Sie sind dabei eine Mobilnummer anzurufen. Fortsetzen?"
+    ''' <param name="MobilNr">Die Mobilnummer als formatierte Zeichenfolge</param>
+    Public Shared ReadOnly Property WählClientFrageMobil(MobilNr As String) As String
+        Get
+            Return $"Sie sind dabei eine Mobilnummer ({MobilNr}) anzurufen. Fortsetzen?"
+        End Get
+    End Property
 
     ''' <summary>
     ''' Fehler
@@ -404,7 +409,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' Ausgewählt: <paramref name="StrTelNr"/>
     ''' </summary>
     ''' <param name="StrTelNr"></param>
-    Public Shared ReadOnly Property WählClientStatusTelNrAuswahl(ByVal StrTelNr As String) As String
+    Public Shared ReadOnly Property WählClientStatusTelNrAuswahl(StrTelNr As String) As String
         Get
             Return $"Ausgewählt: {StrTelNr}"
         End Get
@@ -426,7 +431,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' <param name="Sender">Die Funktion die den den Status setzt</param>
     ''' <param name="Meldung">Der Meldungstext</param>
     ''' <param name="Wert">Ein gesetzer Wert</param>
-    Public Shared ReadOnly Property WählClientDialStatus(ByVal Sender As String, ByVal Meldung As String, ByVal Wert As String) As String
+    Public Shared ReadOnly Property WählClientDialStatus(Sender As String, Meldung As String, Wert As String) As String
         Get
             Return $"{Sender}: {Meldung} {Wert}"
         End Get
@@ -444,7 +449,7 @@ Public NotInheritable Class DfltWerteAllgemein
 #End Region
 
 #Region "Literale Rückwärtssuche"
-    Public Shared ReadOnly Property RWSTest(ByVal TelNr As String, ByVal Ergebnis As String) As String
+    Public Shared ReadOnly Property RWSTest(TelNr As String, Ergebnis As String) As String
         Get
             Return $"Die Rückwärtssuche mit der Nummer {TelNr} brachte folgendes Ergebnis:{Dflt2NeueZeile}{Ergebnis}"
         End Get
@@ -512,7 +517,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     ''' <param name="TelNr">Tekefonnummer</param>
     ''' <param name="Angenommen">Boolean, ob das Telefon angenommen wurde oder nicht</param>
-    Public Shared ReadOnly Property DfltJournalBody(ByVal TelNr As String, ByVal Angenommen As Boolean, ByVal vCard As String) As String
+    Public Shared ReadOnly Property DfltJournalBody(TelNr As String, Angenommen As Boolean, vCard As String) As String
         Get
             Return $"{PfltJournalBodyStart} {TelNr}{Dflt1NeueZeile}Status: {If(Angenommen, DfltStringEmpty, "nicht ")}angenommen{Dflt2NeueZeile}{vCard}"
         End Get
@@ -522,12 +527,12 @@ Public NotInheritable Class DfltWerteAllgemein
 #Region "Literale Telefonbücher"
     Public Shared ReadOnly Property DfltTelBNameNeuBuch As String = "Name für das neue Telefonbuch:"
 
-    Public Shared ReadOnly Property DfltTelBFrageLöschen(ByVal TB_Name As String, ByVal TB_ID As String) As String
+    Public Shared ReadOnly Property DfltTelBFrageLöschen(TB_Name As String, TB_ID As String) As String
         Get
             Return $"Soll das Telefonbuch {TB_Name} ({TB_ID}) von der Fritz!Box gelöscht werden?"
         End Get
     End Property
-    Public Shared ReadOnly Property DfltTelBFrageLöschenID0(ByVal TB_Name As String, ByVal TB_ID As String) As String
+    Public Shared ReadOnly Property DfltTelBFrageLöschenID0(TB_Name As String, TB_ID As String) As String
         Get
             Return $"Soll das Telefonbuch {TB_Name} mit der ID {TB_ID} kann nicht gelöscht werden. Stattdessen werden alle Einträge entfernt. Fortfahren?"
         End Get
@@ -560,7 +565,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     ''' <param name="Dialcode">Der übermittelte Dialcode</param>
     ''' <returns></returns>
-    Public Shared ReadOnly Property SoftPhoneErfolgreich(ByVal Dialcode As String, ByVal Softphone As String) As String
+    Public Shared ReadOnly Property SoftPhoneErfolgreich(Dialcode As String, Softphone As String) As String
         Get
             Return $"Telefonnummer {Dialcode} erfolgreich an {Softphone} übermittelt."
         End Get
@@ -574,7 +579,7 @@ Public NotInheritable Class DfltWerteAllgemein
 #Region "Literale MicroSIP"
     Public Shared ReadOnly Property MicroSIPBereit As String = "MicroSIP ist bereit."
     Public Shared ReadOnly Property MicroSIPNichtBereit As String = "MicroSIP ist nicht bereit."
-    Public Shared ReadOnly Property MicroSIPgestartet(ByVal Pfad As String) As String
+    Public Shared ReadOnly Property MicroSIPgestartet(Pfad As String) As String
         Get
             Return $"Pfad zu MicroSIP ermittelt: {Pfad}"
         End Get

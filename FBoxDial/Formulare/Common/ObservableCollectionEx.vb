@@ -27,7 +27,7 @@ Public Class ObservableCollectionEx(Of T)
     ''' </summary>
     ''' <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     ''' <param name="keySelector">A function to extract a key from an item.</param>
-    Public Sub Sort(Of TKey)(ByVal keySelector As Func(Of T, TKey))
+    Public Sub Sort(Of TKey)(keySelector As Func(Of T, TKey))
         InternalSort(Items.OrderBy(keySelector))
     End Sub
 
@@ -36,7 +36,7 @@ Public Class ObservableCollectionEx(Of T)
     ''' </summary>
     ''' <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     ''' <param name="keySelector">A function to extract a key from an item.</param>
-    Public Sub SortDescending(Of TKey)(ByVal keySelector As Func(Of T, TKey))
+    Public Sub SortDescending(Of TKey)(keySelector As Func(Of T, TKey))
         InternalSort(Items.OrderByDescending(keySelector))
     End Sub
 
@@ -46,7 +46,7 @@ Public Class ObservableCollectionEx(Of T)
     ''' <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
     ''' <param name="keySelector">A function to extract a key from an item.</param>
     ''' <param name="comparer">An <see cref="IComparer(Of T)"/> to compare keys.</param>
-    Public Sub Sort(Of TKey)(ByVal keySelector As Func(Of T, TKey), ByVal comparer As IComparer(Of TKey))
+    Public Sub Sort(Of TKey)(keySelector As Func(Of T, TKey), comparer As IComparer(Of TKey))
         InternalSort(Items.OrderBy(keySelector, comparer))
     End Sub
 
@@ -54,7 +54,7 @@ Public Class ObservableCollectionEx(Of T)
     ''' Moves the items of the collection so that their orders are the same as those of the items provided.
     ''' </summary>
     ''' <param name="sortedItems">An <see cref="IEnumerable(Of T)"/> to provide item orders.</param>
-    Private Sub InternalSort(ByVal sortedItems As IEnumerable(Of T))
+    Private Sub InternalSort(sortedItems As IEnumerable(Of T))
         Try
             Dim sortedItemsList = sortedItems.ToList()
 
@@ -66,13 +66,13 @@ Public Class ObservableCollectionEx(Of T)
     End Sub
 #End Region
 
-    Public Sub AddRange(ByVal ListAdd As IEnumerable(Of T))
+    Public Sub AddRange(ListAdd As IEnumerable(Of T))
         For Each Item As T In ListAdd
             Add(Item)
         Next
     End Sub
 
-    Public Sub RemoveRange(ByVal ListRemove As IEnumerable(Of T))
+    Public Sub RemoveRange(ListRemove As IEnumerable(Of T))
         For Each Item As T In ListRemove
             If Contains(Item) Then Remove(Item)
         Next

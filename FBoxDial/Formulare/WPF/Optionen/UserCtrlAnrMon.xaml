@@ -16,5 +16,9 @@
         <fbd:OptionsTextBox Label="Anzeigedauer bei Anruf in Sekunden" Value="{Binding TBEnblDauer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <fbd:OptionsCheckBox Label="Kontakt bei Anruf öffnen" Value="{Binding CBAnrMonZeigeKontakt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <fbd:OptionsCheckBox Label="Zeige Kontaktbild" Value="{Binding CBAnrMonContactImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsÜberschrift Label="Einstellungen für die Stoppuhr"/>
+        <fbd:OptionsCheckBox Label="Stoppuhr bei Verbindungsaufbau einblenden" Value="{Binding CBStoppUhrEinblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsCheckBox Label="Stoppuhr bei Beenden ausblenden" Value="{Binding CBStoppUhrAusblenden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <fbd:OptionsTextBox Label="Ausblendverzögerung in Sekunden" Value="{Binding TBStoppUhrAusblendverzögerung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </StackPanel>
 </UserControl>

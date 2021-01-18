@@ -1,3 +1,0 @@
-﻿Module VIP
-
-End Module

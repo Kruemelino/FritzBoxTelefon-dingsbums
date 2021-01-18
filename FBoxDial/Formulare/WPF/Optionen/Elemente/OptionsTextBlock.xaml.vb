@@ -12,15 +12,15 @@ Partial Public Class OptionsTextBlock
         Get
             Return CStr(GetValue(LabelProperty))
         End Get
-        Set(ByVal value As String)
-            SetValue(LabelProperty, value)
+        Set
+            SetValue(LabelProperty, Value)
         End Set
     End Property
 
     ''' <summary>
     ''' Identified the Label dependency property
     ''' </summary>
-    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register("Label", GetType(String), GetType(OptionsTextBlock), New PropertyMetadata(""))
+    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register(NameOf(Label), GetType(String), GetType(OptionsTextBlock), New PropertyMetadata(""))
 
 #End Region
 

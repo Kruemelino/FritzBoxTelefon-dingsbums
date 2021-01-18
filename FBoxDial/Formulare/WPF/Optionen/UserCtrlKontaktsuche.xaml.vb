@@ -15,13 +15,19 @@ Public Class UserCtrlKontaktsuche
         Dim olFolder As Outlook.MAPIFolder
     End Structure
 
-    Private Sub StarteIndizierung(OrdnerListe As IEnumerable(Of OutlookOrdner), Erstellen As Boolean)
+    Private Sub StarteIndizierung(OrdnerListe As List(Of OutlookOrdner), Erstellen As Boolean)
         ' Initialisiere die Progressbar
         InitProgressbar(0)
 
-        If OrdnerListe.Any Then
+        If Not OrdnerListe?.Any Then
+            With XMLData.POptionen.OutlookOrdner
+                OrdnerListe.Add(New OutlookOrdner(.GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts), OutlookOrdnerVerwendung.KontaktSuche))
+            End With
 
-            If BWIndexerList Is Nothing Then BWIndexerList = New List(Of BackgroundWorker)
+            NLogger.Debug($"Es wurde kein Outlookordner für die Kontaktsuche gewählt. Füge Standarkkontaktornder hinzu.")
+        End If
+
+        If BWIndexerList Is Nothing Then BWIndexerList = New List(Of BackgroundWorker)
 
             ' Schleife durch jeden Ordner der indiziert werden soll
             For Each Ordner As OutlookOrdner In OrdnerListe
@@ -41,15 +47,15 @@ Public Class UserCtrlKontaktsuche
                     ' Setze Flags
                     .WorkerSupportsCancellation = True
                     .WorkerReportsProgress = True
-                    ' Und los...
-                    NLogger.Debug("Starte {0}. Backgroundworker für Kontaktindizierung im Ordner {1}.", BWIndexerList.Count, Ordner.Name)
-                    .RunWorkerAsync(New Indizierungsdaten With {.Erstellen = Erstellen, .olFolder = Ordner.MAPIFolder})
+                ' Und los...
+                NLogger.Debug($"Starte {BWIndexerList.Count}. Backgroundworker für Kontaktindizierung im Ordner {Ordner.Name}.")
+                .RunWorkerAsync(New Indizierungsdaten With {.Erstellen = Erstellen, .olFolder = Ordner.MAPIFolder})
                 End With
 
                 ' Füge dern Backgroundworker der Liste hinzu
                 BWIndexerList.Add(BWIndexer)
             Next
-        End If
+
     End Sub
 
     Private Sub BWIndexer_DoWork(sender As Object, e As DoWorkEventArgs)
@@ -65,7 +71,7 @@ Public Class UserCtrlKontaktsuche
         KontaktIndexer(Daten.olFolder, Daten.Erstellen, BWIndexer)
     End Sub
 
-    Private Sub KontaktIndexer(ByVal Ordner As Outlook.MAPIFolder, ByVal Erstellen As Boolean, ByVal BWIndexer As BackgroundWorker)
+    Private Sub KontaktIndexer(Ordner As Outlook.MAPIFolder, Erstellen As Boolean, BWIndexer As BackgroundWorker)
 
         Dim aktKontakt As Outlook.ContactItem  ' aktueller Kontakt
 
@@ -119,7 +125,7 @@ Public Class UserCtrlKontaktsuche
 
     End Sub
 
-    Private Sub BWIndexer_RunWorkerCompleted(ByVal sender As Object, ByVal e As RunWorkerCompletedEventArgs)
+    Private Sub BWIndexer_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs)
         Dim BWIndexer As BackgroundWorker = CType(sender, BackgroundWorker)
 
         ' Backgroundworker aus der Liste entfernen
@@ -146,23 +152,23 @@ Public Class UserCtrlKontaktsuche
 
     End Sub
 
-    Private Sub InitProgressbar(ByVal Initialwert As Integer)
+    Private Sub InitProgressbar(Initialwert As Integer)
         ProgressBarIndex.Value = Initialwert
         ProgressBarIndex.Maximum = Initialwert
         LabelAnzahl.Text = $"Status: {Initialwert}/{ProgressBarIndex.Maximum}"
     End Sub
 
-    Private Sub SetProgressbar(ByVal Anzahl As Integer)
+    Private Sub SetProgressbar(Anzahl As Integer)
         ProgressBarIndex.Value += Anzahl
         LabelAnzahl.Text = $"Status: {ProgressBarIndex.Value}/{ProgressBarIndex.Maximum}"
     End Sub
 
-    Private Sub SetProgressbarMax(ByVal NeuesMaximum As Integer)
+    Private Sub SetProgressbarMax(NeuesMaximum As Integer)
         ProgressBarIndex.Maximum += NeuesMaximum
     End Sub
 
     Private Sub BIndizierungStart_Click(sender As Object, e As Windows.RoutedEventArgs) Handles BIndizierungStart.Click
-        StarteIndizierung(OLFolderKontaktsSuche.ÜberwachteOrdnerListe, CBool(RBErstellen.IsChecked))
+        StarteIndizierung(OLFolderKontaktsSuche.ÜberwachteOrdnerListe.ToList, CBool(RBErstellen.IsChecked))
     End Sub
 
     Private Sub BIndizierungAbbrechen_Click(sender As Object, e As Windows.RoutedEventArgs) Handles BIndizierungAbbrechen.Click
@@ -176,7 +182,5 @@ Public Class UserCtrlKontaktsuche
     End Sub
 
 #End Region
-
-
 
 End Class

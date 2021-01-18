@@ -4,11 +4,11 @@
 
     Friend Property Kontakt As FritzBoxXMLKontakt
 
-    Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow
+    Protected Overrides Function NewRowFromBuilder(builder As DataRowBuilder) As DataRow
         Return New TelBuchDataRow(builder)
     End Function
 
-    Default Public ReadOnly Property Rows_myObj(ByVal index As Integer) As TelBuchDataRow
+    Default Public ReadOnly Property Rows_myObj(index As Integer) As TelBuchDataRow
         Get
             Return CType(Rows(index), TelBuchDataRow)
         End Get

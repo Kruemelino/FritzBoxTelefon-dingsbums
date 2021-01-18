@@ -1,5 +1,4 @@
-﻿Imports System.Text.RegularExpressions
-Imports System.Xml.Serialization
+﻿Imports System.Xml.Serialization
 Imports FBoxDial.DfltWerteTelefonie
 
 <Serializable()>
@@ -32,14 +31,13 @@ Public Class Telefonnummer
     End Sub
 
     <XmlIgnore> Public WriteOnly Property SetNummer As String
-        Set(value As String)
-
-            Unbekannt = value.AreEqual(DfltStringEmpty)
+        Set
+            Unbekannt = Value.AreEqual(DfltStringEmpty)
 
             If Not Unbekannt Then
                 If Typ Is Nothing Then Typ = New List(Of TelTypen)
 
-                Nummer = value
+                Nummer = Value
 
                 ' Ermittle die unformatierte Telefonnummer
                 Unformatiert = NurZiffern(Nummer)
@@ -55,6 +53,7 @@ Public Class Telefonnummer
             End If
         End Set
     End Property
+
 #End Region
     <XmlIgnore> ReadOnly Property IstMobilnummer As Boolean
         Get
@@ -79,7 +78,7 @@ Public Class Telefonnummer
     ''' Buchstaben werden wie auf der Telefontastatur in Zahlen übertragen.
     ''' </summary>
     ''' <remarks>Achtung! "*", "#" bleiben bestehen!</remarks>
-    Private Function NurZiffern(ByVal Nr As String) As String
+    Private Function NurZiffern(Nr As String) As String
         NurZiffern = Nr
 
         If NurZiffern IsNot Nothing And NurZiffern.IsNotStringEmpty Then
@@ -103,7 +102,7 @@ Public Class Telefonnummer
             NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
 
             ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-            NurZiffern = NurZiffern.RegExReplace($"^0{XMLData.POptionen.TBLandesKZ}{{1}}[0]?", "0")
+            NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{XMLData.PTelefonie.LKZ}{{1}}[0]?", "0")
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
             NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")
@@ -137,13 +136,13 @@ Public Class Telefonnummer
                 Else
                     ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
                     NLogger.Warn("Landeskennzahl der Telefonnummer {0} kann nicht ermittelt werden.", Unformatiert)
-                    Landeskennzahl = XMLData.POptionen.TBLandesKZ
+                    If Not EigeneNummer Then Landeskennzahl = XMLData.PTelefonie.LKZ
                     ' Wähle die LKZ für das Default-Land aus, damit die Routine die Ortskennzahl ermitteln kann
                     tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
                 End If
 
             Else
-                Landeskennzahl = XMLData.POptionen.TBLandesKZ
+                If Not EigeneNummer Then Landeskennzahl = XMLData.PTelefonie.LKZ
                 ' Wähle die LKZ für das Default-Land aus
                 tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
             End If
@@ -155,7 +154,7 @@ Public Class Telefonnummer
             If TelNr.StartsWith(PDfltVAZ) Or TelNr.StartsWith(PDfltAmt) Then
 
                 ' Es muss eine Landeskennzahl ermittelt sein.
-                ' Hier ist irgendwo ein Bug, dass die ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen leer ist. Vielleicht war das Addin zu schnell beim Automatischen Journalimport.
+                ' Hier ist irgendwo ein Bug, dass die ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen leer ist. Vielleicht war das Addin zu schnell beim automatischen Journalimport.
                 If tmpLKZ Is Nothing Then
                     NLogger.Error("Es konnte keine Landeskennzahl für {0} ermittet werden. Das Laden der Vorwahlen ist{1} abgeschlossen.", TelNr, If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, DfltStringEmpty, " nicht"))
                     Ortskennzahl = DfltStringEmpty
@@ -180,10 +179,10 @@ Public Class Telefonnummer
                 End If
             Else
                 ' es handelt sich vermutlich um eine Nummer im eigenen Ortsnetz
-                Ortskennzahl = XMLData.POptionen.TBOrtsKZ
+                If Not EigeneNummer Then Ortskennzahl = XMLData.PTelefonie.OKZ
             End If
 
-            Einwahl = Einwahl.RegExRemove($"0?{Ortskennzahl}")
+            Einwahl = Einwahl.RegExRemove($"^0?{Ortskennzahl}")
 
             ' Suche eine Durchwahl
             If Nummer.Contains("-") Then
@@ -205,7 +204,7 @@ Public Class Telefonnummer
     ''' <param name="TelNrTeil">Nummernteil, der gruppiert werden soll</param>
     ''' <param name="Gruppieren">Boolean-Wert, der angibt, ob das Gruppieren durchgeführt werden soll.</param>
     ''' <returns></returns>
-    Private Function Gruppiere(ByVal TelNrTeil As String, ByVal Gruppieren As Boolean) As String
+    Private Function Gruppiere(TelNrTeil As String, Gruppieren As Boolean) As String
         Gruppiere = TelNrTeil
         If Gruppieren Then
             Dim imax As Integer
@@ -243,17 +242,17 @@ Public Class Telefonnummer
             '                        wenn die Landesvorwahl der Nummer leer ist ODER gleich der eigestellten Landesvorwahl ist UND
             '                        die Ortsvorwahl nicht vorhanden ist
 
-            If (Landeskennzahl.AreEqual(XMLData.POptionen.TBLandesKZ) Or Landeskennzahl.AreEqual(DfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringEmpty Then
-                Ortskennzahl = XMLData.POptionen.TBOrtsKZ
+            If (Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Or Landeskennzahl.AreEqual(DfltStringEmpty)) And XMLData.POptionen.CBintl And Ortskennzahl.IsStringEmpty Then
+                Ortskennzahl = XMLData.PTelefonie.OKZ
             End If
 
-            If Landeskennzahl.AreEqual(XMLData.POptionen.TBLandesKZ) Then
+            If Landeskennzahl.AreEqual(XMLData.PTelefonie.LKZ) Then
                 tmpOrtsvorwahl = Ortskennzahl
                 ' Wenn die Landeskennzahl gleich der hinterlegten Kennzahl entspricht: Inland
                 If XMLData.POptionen.CBintl Then
                     ' Eine Ortsvorwahl muss vorhanden sein
-                    If Ortskennzahl.IsStringEmpty Then tmpOrtsvorwahl = XMLData.POptionen.TBOrtsKZ
-                    ' Entferne die führende Null
+                    If Ortskennzahl.IsStringEmpty Then tmpOrtsvorwahl = XMLData.PTelefonie.OKZ
+                    ' Entferne die führende Null OKZ Prefix
                     tmpOrtsvorwahl = tmpOrtsvorwahl.RegExRemove("^(0)+")
                     ' Die Landesvorwahl muss gesetzt sein
                     tmpLandesvorwahl = Landeskennzahl
@@ -312,7 +311,7 @@ Public Class Telefonnummer
         End If
     End Function
 
-    Friend Function CreateDynMenuButton(ByVal xDoc As Xml.XmlDocument, ByVal ID As Integer, ByVal Tag As String) As Xml.XmlElement
+    Friend Function CreateDynMenuButton(xDoc As Xml.XmlDocument, ID As Integer, Tag As String) As Xml.XmlElement
         Dim XButton As Xml.XmlElement
         Dim XAttribute As Xml.XmlAttribute
 
@@ -339,15 +338,20 @@ Public Class Telefonnummer
 #End Region
 
 #Region "IEquatable"
-    Public Overloads Function Equals(ByVal other As Telefonnummer) As Boolean Implements IEquatable(Of Telefonnummer).Equals
+    Public Overloads Function Equals(other As Telefonnummer) As Boolean Implements IEquatable(Of Telefonnummer).Equals
         Return other IsNot Nothing AndAlso Unformatiert.AreEqual(other.Unformatiert)
     End Function
-    Public Overloads Function Equals(ByVal other As String) As Boolean
+    Public Overloads Function Equals(other As String) As Boolean
         ' Erstelle aus other eine Telefonnummer
+        ' Bei Vergleich eigenener Nummern, dann übergib die OKZ und LKZ
+        If EigeneNummer Then
+            Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
+        Else
+            Return Equals(New Telefonnummer With {.SetNummer = other})
 
-        Using tmpTelNr As New Telefonnummer With {.SetNummer = other}
-            Return other IsNot Nothing AndAlso Unformatiert.AreEqual(tmpTelNr.Unformatiert)
-        End Using
+        End If
+
+
     End Function
 #End Region
 

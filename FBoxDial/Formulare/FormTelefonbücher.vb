@@ -4,7 +4,7 @@ Imports System.ComponentModel
 
 <Obsolete> Public Class FormTelefonbücher
 #Region "Delegaten"
-    Private Delegate Sub DelgSetListControl(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
+    Private Delegate Sub DelgSetListControl(Telefonbuch As FritzBoxXMLTelefonbuch)
 #End Region
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
@@ -24,10 +24,10 @@ Imports System.ComponentModel
     End Sub
 
     Private Async Sub LadeTelefonbücher()
-        If ThisAddIn.PPhoneBookXML Is Nothing Then ThisAddIn.PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
+        If ThisAddIn.PhoneBookXML Is Nothing Then ThisAddIn.PhoneBookXML = Await LadeFritzBoxTelefonbücher()
 
-        If ThisAddIn.PPhoneBookXML IsNot Nothing AndAlso ThisAddIn.PPhoneBookXML.Telefonbuch IsNot Nothing AndAlso ThisAddIn.PPhoneBookXML.Telefonbuch.Any Then
-            For Each TelBuch In ThisAddIn.PPhoneBookXML.Telefonbuch
+        If ThisAddIn.PhoneBookXML IsNot Nothing AndAlso ThisAddIn.PhoneBookXML.Telefonbuch IsNot Nothing AndAlso ThisAddIn.PhoneBookXML.Telefonbuch.Any Then
+            For Each TelBuch In ThisAddIn.PhoneBookXML.Telefonbuch
                 LCTelefonbücher.AddTelefonbuch(TelBuch)
             Next
             ' Lade das erste Telefonbuch
@@ -54,30 +54,30 @@ Imports System.ComponentModel
     End Sub
 
 #Region "DataGridView"
-    Private Sub SetTelBuchDGV(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
+    Private Sub SetTelBuchDGV(Telefonbuch As FritzBoxXMLTelefonbuch)
         'If Telefonbuch IsNot Nothing Then
         With DGVTelBuchEinträge
-                ' DataGridView aufräumen
-                .DataBindings.Clear()
-                .Rows.Clear()
-                .Columns.Clear()
+            ' DataGridView aufräumen
+            .DataBindings.Clear()
+            .Rows.Clear()
+            .Columns.Clear()
 
-                ' Spalten hinzufügen
-                .AddHiddenTextColumn("uniqueid", GetType(String))
-                .AddTextColumn("RealName", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
-                .AddTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
-                .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
-                .AddImageColumn("Löschen", DfltStringEmpty)
+            ' Spalten hinzufügen
+            .AddHiddenTextColumn("uniqueid", GetType(String))
+            .AddTextColumn("RealName", "Name", DataGridViewContentAlignment.MiddleLeft, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+            .AddTextColumn("Nummer", "Telefonnummer", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.Fill)
+            .AddTextColumn("Typ", "Typ", DataGridViewContentAlignment.MiddleRight, GetType(String), DataGridViewAutoSizeColumnMode.AllCells)
+            .AddImageColumn("Löschen", DfltStringEmpty)
 
-                ' Datenquelle generieren setzen
-                .DataSource = New BindingSource With {.DataSource = ConvertToDataTable(Telefonbuch.Kontakte, SubDGVTyp.Kontakt)}
+            ' Datenquelle generieren setzen
+            .DataSource = New BindingSource With {.DataSource = ConvertToDataTable(Telefonbuch.Kontakte, SubDGVTyp.Kontakt)}
 
-                .Enabled = True
-            End With
+            .Enabled = True
+        End With
         'End If
     End Sub
 
-    Private Function ConvertToDataTable(ByVal Telefonbucheinträge As List(Of FritzBoxXMLKontakt), ByVal Typ As SubDGVTyp) As TelBuchDataTable
+    Private Function ConvertToDataTable(Telefonbucheinträge As List(Of FritzBoxXMLKontakt), Typ As SubDGVTyp) As TelBuchDataTable
         Dim DGVTabelle As New TelBuchDataTable
         Dim DatenZeile As TelBuchDataRow
 
@@ -103,7 +103,7 @@ Imports System.ComponentModel
         Return DGVTabelle
     End Function
 
-    Private Function ConvertToDataTable(ByVal Telefonbucheintrag As FritzBoxXMLKontakt, ByVal Typ As SubDGVTyp) As TelBuchDataTable
+    Private Function ConvertToDataTable(Telefonbucheintrag As FritzBoxXMLKontakt, Typ As SubDGVTyp) As TelBuchDataTable
         Dim DGVTabelle As New TelBuchDataTable
         Dim DatenZeile As TelBuchDataRow
 
@@ -172,7 +172,7 @@ Imports System.ComponentModel
         End If
     End Sub
 
-    Private Sub SetWerteDGV(ByVal TelefonbuchEintrag As FritzBoxXMLKontakt, ByVal Typ As SubDGVTyp)
+    Private Sub SetWerteDGV(TelefonbuchEintrag As FritzBoxXMLKontakt, Typ As SubDGVTyp)
         If TelefonbuchEintrag IsNot Nothing Then
 
             Select Case Typ
@@ -348,14 +348,14 @@ Imports System.ComponentModel
         End Select
     End Sub
 
-    Private Async Sub AddTelefonbuch(ByVal NeuesTelefonbuchName As String)
+    Private Async Sub AddTelefonbuch(NeuesTelefonbuchName As String)
         If NeuesTelefonbuchName.IsNotStringEmpty Then
 
             Dim TelBücher As FritzBoxXMLTelefonbücher = Await ErstelleTelefonbuch(NeuesTelefonbuchName)
 
             ' Füge das neue Telefonbuch in die globale Liste hinzu
-            If ThisAddIn.PPhoneBookXML IsNot Nothing Then
-                ThisAddIn.PPhoneBookXML.Telefonbuch.AddRange(TelBücher.Telefonbuch)
+            If ThisAddIn.PhoneBookXML IsNot Nothing Then
+                ThisAddIn.PhoneBookXML.Telefonbuch.AddRange(TelBücher.Telefonbuch)
             End If
 
             ' Füge das neue Telefonbuch in die Listcontrol hinzu 
@@ -369,7 +369,7 @@ Imports System.ComponentModel
         End If
     End Sub
 
-    Private Sub DeleteAddTelefonbuch(ByVal Telefonbuch As FritzBoxXMLTelefonbuch)
+    Private Sub DeleteAddTelefonbuch(Telefonbuch As FritzBoxXMLTelefonbuch)
         If Telefonbuch.ID.ToInt.IsZero Then
             If MsgBox(DfltTelBFrageLöschenID0(Telefonbuch.Name, Telefonbuch.ID), MsgBoxStyle.YesNo, "TSMTelBook_Click") = vbYes Then
                 Exit Sub
@@ -379,8 +379,8 @@ Imports System.ComponentModel
         LöscheTelefonbuch(Telefonbuch.ID.ToInt)
 
         ' Entferne das Telefonbuch aus dem Addin
-        If ThisAddIn.PPhoneBookXML IsNot Nothing Then
-            ThisAddIn.PPhoneBookXML.Telefonbuch.Remove(Telefonbuch)
+        If ThisAddIn.PhoneBookXML IsNot Nothing Then
+            ThisAddIn.PhoneBookXML.Telefonbuch.Remove(Telefonbuch)
         End If
 
         ' Entferne das neue Telefonbuch in die Listcontrol hinzu 

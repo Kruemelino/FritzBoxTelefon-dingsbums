@@ -11,7 +11,7 @@
 '    ''' Fügt einen Notizzeile in den Body eines Kontaktes
 '    ''' </summary>
 '    ''' <param name="olKontakt">Kontakt, in den die Notizzeile geschrieben werden soll.</param>
-'    Friend Sub AddNote(ByVal olKontakt As Outlook.ContactItem)
+'    Friend Sub AddNote(olKontakt As Outlook.ContactItem)
 '        Dim oInsp As Outlook.Inspector
 '        Dim Handle As IntPtr
 '        Dim ReturnValue As Long
@@ -58,7 +58,7 @@
 '    ''' </summary>
 '    ''' <param name="oInsp">Inspector eines Kontaktes.</param>
 '    ''' <returns>Pointer auf das Body-Element.</returns>
-'    Private Function GetBodyHandle(ByVal oInsp As Outlook.Inspector) As IntPtr
+'    Private Function GetBodyHandle(oInsp As Outlook.Inspector) As IntPtr
 '        Dim HandleNames() As String = {"AfxWndW",
 '                                       "AfxWndW",
 '                                       DataProvider.P_Def_ErrorMinusOne_String,
@@ -88,7 +88,7 @@
 '    ''' <param name="CallRow">Die Kopfzeile des einzelnen Anrufes.</param>
 '    ''' <param name="NoteRow">BEreich in den die Notizen eingetragen werden.</param>
 '    ''' <param name="NeueZeile">Flag, die angibt ob eine neue Zeile hinzugefügt werden soll.</param>
-'    Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row, ByVal NeueZeile As Boolean)
+'    Friend Sub CreateTable(ByRef oDoc As Word.Document, ByRef oTable As Word.Table, ByRef HeaderRow As Word.Row, ByRef CallRow As Word.Row, ByRef NoteRow As Word.Row,  NeueZeile As Boolean)
 
 '        Dim nRow As Integer = 1
 '        Dim nCol As Integer = 6
@@ -196,7 +196,7 @@
 '    ''' <param name="AnrMonTyp">Gibt, an ob es sich um einen RING, CALL, CONNECT oder DISCONNECT handelt.</param>
 '    ''' <param name="Telfonat">Alle Informationen zu dem Telefonat.</param>
 '    ''' <param name="ContactShown">Gibt an ob der Kontakt angezeigt wird.</param>
-'    Friend Sub FillNote(ByVal AnrMonTyp As Anrufmonitor.AnrMonEvent, ByVal Telfonat As C_Telefonat, ByVal ContactShown As Boolean)
+'    Friend Sub FillNote(AnrMonTyp As Anrufmonitor.AnrMonEvent,  Telfonat As C_Telefonat,  ContactShown As Boolean)
 
 '        'FillNote = vbNull
 '        With Telfonat
@@ -246,7 +246,7 @@
 '    ''' </summary>
 '    ''' <param name="hwnd">Ausgangshandle</param>
 '    ''' <returns>Liste der Handles.</returns>
-'    Private Function GetChildWindows(ByVal hwnd As IntPtr) As List(Of ApiWindow)
+'    Private Function GetChildWindows(hwnd As IntPtr) As List(Of ApiWindow)
 '        ' Clear the window list
 '        Dim ReturnValue As Int32
 '        ListChildren = New List(Of ApiWindow)
@@ -261,7 +261,7 @@
 '    ''' </summary>
 '    ''' <param name="hwnd"></param>
 '    ''' <param name="lParam"></param>
-'    Private Sub EnumChildWindowProc(ByVal hwnd As IntPtr, ByVal lParam As Int32)
+'    Private Sub EnumChildWindowProc(hwnd As IntPtr,  lParam As Int32)
 '        ListChildren.Add(GetWindowIdentification(hwnd))
 '    End Sub
 
@@ -270,7 +270,7 @@
 '    ''' Gibt hier das Handle zurück.
 '    ''' </summary>
 '    ''' <param name="hwnd"></param>
-'    Private Function GetWindowIdentification(ByVal hwnd As IntPtr) As ApiWindow
+'    Private Function GetWindowIdentification(hwnd As IntPtr) As ApiWindow
 '        Dim window As New ApiWindow()
 '        window.HWnd = CType(hwnd, IntPtr)
 '        Return window

@@ -4,7 +4,7 @@
 <Obsolete> Friend Class StringLogicalComparer
     Implements IComparer(Of String)
 
-    Public Function Compare(ByVal s1 As String, ByVal s2 As String) As Integer Implements IComparer(Of String).Compare
+    Public Function Compare(s1 As String, s2 As String) As Integer Implements IComparer(Of String).Compare
         If (s1 Is Nothing) AndAlso (s2 Is Nothing) Then
             Return 0
         ElseIf s1 Is Nothing Then
@@ -68,7 +68,7 @@
         Return 0
     End Function
 
-    Private Shared Function CompareNum(ByVal s1 As String, ByRef i1 As Integer, ByVal s2 As String, ByRef i2 As Integer) As Integer
+    Private Shared Function CompareNum(s1 As String, ByRef i1 As Integer, s2 As String, ByRef i2 As Integer) As Integer
         Dim nzStart1 As Integer = i1, nzStart2 As Integer = i2
         Dim end1 As Integer = i1, end2 As Integer = i2
         Dim j1, j2 As Integer
@@ -100,7 +100,7 @@
         Return 1
     End Function
 
-    Private Shared Sub ScanNumEnd(ByVal s As String, ByVal start As Integer, ByRef [end] As Integer, ByRef nzStart As Integer)
+    Private Shared Sub ScanNumEnd(s As String, start As Integer, ByRef [end] As Integer, ByRef nzStart As Integer)
         nzStart = start
         [end] = start
         Dim countZeros As Boolean = True

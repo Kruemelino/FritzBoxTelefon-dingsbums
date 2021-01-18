@@ -89,7 +89,7 @@ End Enum
 ''' The SetWindowPos hWndInsertAfter positioning flags.
 ''' </summary>
 ''' <remarks></remarks>
-Public Enum HWndInsertAfterFlags As Integer
+<Flags> Public Enum HWndInsertAfterFlags As Integer
     ''' <summary>
     ''' Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its topmost status and is placed at the bottom of all other windows.
     ''' </summary>
@@ -111,72 +111,284 @@ Public Enum HWndInsertAfterFlags As Integer
     HWND_TOPMOST = -1
 End Enum
 
-'Public Enum HWNDFlags As Integer
-'    WM_SYSCOMMAND = &H112
-'    SC_MAXIMIZE = &HF030 ' Maximize window
-'    SC_MINIMIZE = &HF020 ' Minimize window
-'    sC_CLOSE = &HF060 ' Close window
-'End Enum
 
 <SuppressUnmanagedCodeSecurity()> Friend NotInheritable Class UnsafeNativeMethods
-    ''' <summary>The GetForegroundWindow function returns a handle to the foreground window.</summary>
-    ''' <returns>The return value is a handle to the foreground window. The foreground window can be NULL in certain circumstances, such as when a window is losing activation. </returns>
+    ''' <summary>
+    '''     Retrieves a handle to the foreground window (the window with which the user Is currently working). The system
+    '''     assigns a slightly higher priority to the thread that creates the foreground window than it does to other threads.
+    '''     <para>See https://msdn.microsoft.com/en-us/library/windows/desktop/ms633505%28v=vs.85%29.aspx for more information.</para>
+    ''' </summary>
+    ''' <returns>
+    '''     C++ ( Type: Type: HWND )<br /> The return value Is a handle to the foreground window. The foreground window
+    '''     can be NULL in certain circumstances, such as when a window Is losing activation.
+    ''' </returns>
     <DllImport("user32.dll", EntryPoint:="GetForegroundWindow", SetLastError:=True, CharSet:=CharSet.Unicode)>
     Friend Shared Function GetForegroundWindow() As IntPtr
     End Function
 
+    ''' <summary>
+    '''     Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a
+    '''     control, the text of the control Is copied. However, GetWindowText cannot retrieve the text of a control in another
+    '''     application.
+    '''     <para>
+    '''     Go to https://msdn.microsoft.com/en-us/library/windows/desktop/ms633520%28v=vs.85%29.aspx  for more
+    '''     information
+    '''     </para>
+    ''' </summary>
+    ''' <param name="hWnd">
+    '''     C++ ( hWnd [in]. Type: HWND )<br />A <see cref="IntPtr" /> handle to the window Or control containing the text.
+    ''' </param>
+    ''' <param name="lpString">
+    '''     C++ (lpString [out]. Type: LPTSTR )<br />The <see cref="StringBuilder" /> buffer that will receive the text. If
+    '''     the string Is as long Or longer than the buffer, the string Is truncated And terminated with a null character.
+    ''' </param>
+    ''' <param name="cch">
+    '''     C++ ( cch [in]. Type: int )<br /> Should be equivalent to
+    '''     <see cref="StringBuilder.Length" /> after call returns. The <see cref="int" /> maximum number of characters to copy
+    '''     to the buffer, including the null character. If the text exceeds this limit, it Is truncated.
+    ''' </param>
+    ''' <returns>
+    '''     If the function succeeds, the return value Is the length, in characters, of the copied string, Not including
+    '''     the terminating null character. If the window has no title bar Or text, if the title bar Is empty, Or if the window
+    '''     Or control handle Is invalid, the return value Is zero. To get extended error information, call GetLastError.<br />
+    '''     This function cannot retrieve the text of an edit control in another application.
+    ''' </returns>
+    ''' <remarks>
+    '''     If the target window Is owned by the current process, GetWindowText causes a WM_GETTEXT message to be sent to the
+    '''     specified window Or control. If the target window Is owned by another process And has a caption, GetWindowText
+    '''     retrieves the window caption text. If the window does Not have a caption, the return value Is a null string. This
+    '''     behavior Is by design. It allows applications to call GetWindowText without becoming unresponsive if the process
+    '''     that owns the target window Is Not responding. However, if the target window Is Not responding And it belongs to
+    '''     the calling application, GetWindowText will cause the calling application to become unresponsive. To retrieve the
+    '''     text of a control in another process, send a WM_GETTEXT message directly instead of calling GetWindowText.<br />For
+    '''     an example go to
+    '''     <see cref="!:https://msdn.microsoft.com/en-us/library/windows/desktop/ms644928%28v=vs.85%29.aspx#sending">
+    '''     Sending a
+    '''     Message.
+    '''     </see>
+    ''' </remarks>
     <DllImport("user32.dll", EntryPoint:="GetWindowText", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function GetWindowText(ByVal hwnd As IntPtr, ByVal lpString As String, ByVal cch As Int32) As Int32
+    Friend Shared Function GetWindowText(hwnd As IntPtr, lpString As String, cch As Int32) As Int32
     End Function
-
-    '<DllImport("user32.dll", EntryPoint:="EnumChildWindows", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As UnSaveMethods.EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
-    'End Function
 
     <DllImport("user32.dll", EntryPoint:="GetWindowRect", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function GetWindowRect(ByVal hWnd As IntPtr, ByRef lpRect As RECT) As <MarshalAs(UnmanagedType.Bool)> Boolean
+    Friend Shared Function GetWindowRect(hWnd As IntPtr, ByRef lpRect As RECT) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
 
-    '<DllImport("user32.dll", EntryPoint:="FindWindowEx", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function FindWindowEx(ByVal parentHandle As IntPtr, ByVal childAfter As IntPtr, ByVal lclassName As String, ByVal windowTitle As String) As IntPtr
-    'End Function
-
-    '<DllImport("UxTheme.dll", EntryPoint:="IsThemeActive", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function IsThemeActive() As <MarshalAs(UnmanagedType.Bool)> Boolean
-    'End Function
-
+    ''' <summary>
+    '''     Retrieves a handle to the Shell's desktop window.
+    '''     <para>
+    '''     Go to https://msdn.microsoft.com/en-us/library/windows/desktop/ms633512%28v=vs.85%29.aspx for more
+    '''     information
+    '''     </para>
+    ''' </summary>
+    ''' <returns>
+    '''     C++ (Type: HWND )<br />The return value Is the handle of the Shell's desktop window. If no Shell process is
+    '''     present, the return value Is NULL.
+    ''' </returns>
     <DllImport("user32.dll", EntryPoint:="GetShellWindow", SetLastError:=True, CharSet:=CharSet.Unicode)>
     Friend Shared Function GetShellWindow() As IntPtr
     End Function
 
+    ''' <summary>
+    ''' The GetDesktopWindow function returns a handle to the desktop window. The desktop window covers the entire screen. The desktop window is the area on top of which other windows are painted.
+    ''' </summary>
     <DllImport("user32.dll", EntryPoint:="GetDesktopWindow", SetLastError:=True, CharSet:=CharSet.Unicode)>
     Friend Shared Function GetDesktopWindow() As IntPtr
     End Function
 
-    '<DllImport("user32.dll", EntryPoint:="SetFocus", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function SetFocus(ByVal hwnd As IntPtr) As Long
-    'End Function
-
-    '<DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
-    'End Function
-
-    '<DllImport("user32.dll", EntryPoint:="SendMessage", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
-    'End Function
-
+    ''' <summary>
+    '''     Changes the size, position, And Z order of a child, pop-up, Or top-level window. These windows are ordered
+    '''     according to their appearance on the screen. The topmost window receives the highest rank And Is the first window
+    '''     in the Z order.
+    '''     <para>See https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545%28v=vs.85%29.aspx for more information.</para>
+    ''' </summary>
+    ''' <param name="hWnd">C++ (hWnd [in]. Type: HWND )<br />A handle to the window.</param>
+    ''' <param name="hWndInsertAfter">
+    '''     C++ ( hWndInsertAfter [in, optional]. Type: HWND )<br />A handle to the window to precede the positioned window in
+    '''     the Z order. This parameter must be a window handle Or one of the following values.
+    '''     <list type="table">
+    '''     <itemheader>
+    '''         <term>HWND placement</term><description>Window to precede placement</description>
+    '''     </itemheader>
+    '''     <item>
+    '''         <term>HWND_BOTTOM ((HWND)1)</term>
+    '''         <description>
+    '''         Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost
+    '''         window, the window loses its topmost status And Is placed at the bottom of all other windows.
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>HWND_NOTOPMOST ((HWND)-2)</term>
+    '''         <description>
+    '''         Places the window above all non-topmost windows (that Is, behind all topmost windows). This
+    '''         flag has no effect if the window Is already a non-topmost window.
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>HWND_TOP ((HWND)0)</term><description>Places the window at the top of the Z order.</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>HWND_TOPMOST ((HWND)-1)</term>
+    '''         <description>
+    '''         Places the window above all non-topmost windows. The window maintains its topmost position
+    '''         even when it Is deactivated.
+    '''         </description>
+    '''     </item>
+    '''     </list>
+    '''     <para>For more information about how this parameter Is used, see the following Remarks section.</para>
+    ''' </param>
+    ''' <param name="X">C++ ( X [in]. Type: int )<br />The New position of the left side of the window, in client coordinates.</param>
+    ''' <param name="Y">C++ ( Y [in]. Type: int )<br />The New position of the top of the window, in client coordinates.</param>
+    ''' <param name="cx">C++ ( cx [in]. Type: int )<br />The New width of the window, in pixels.</param>
+    ''' <param name="cy">C++ ( cy [in]. Type: int )<br />The New height of the window, in pixels.</param>
+    ''' <param name="uFlags">
+    '''     C++ ( uFlags [in]. Type: UINT )<br />The window sizing And positioning flags. This parameter can be a combination
+    '''     of the following values.
+    '''     <list type="table">
+    '''     <itemheader>
+    '''         <term>HWND sizing And positioning flags</term>
+    '''         <description>Where to place And size window. Can be a combination of any</description>
+    '''     </itemheader>
+    '''     <item>
+    '''         <term>SWP_ASYNCWINDOWPOS (0x4000)</term>
+    '''         <description>
+    '''         If the calling thread And the thread that owns the window are attached to different input
+    '''         queues, the system posts the request to the thread that owns the window. This prevents the calling
+    '''         thread from blocking its execution while other threads process the request.
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_DEFERERASE (0x2000)</term>
+    '''         <description>Prevents generation of the WM_SYNCPAINT message. </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_DRAWFRAME (0x0020)</term>
+    '''         <description>Draws a frame (defined in the window's class description) around the window.</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_FRAMECHANGED (0x0020)</term>
+    '''         <description>
+    '''         Applies New frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message
+    '''         to the window, even if the window's size is not being changed. If this flag is not specified,
+    '''         WM_NCCALCSIZE Is sent only when the window's size is being changed
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_HIDEWINDOW (0x0080)</term><description>Hides the window.</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOACTIVATE (0x0010)</term>
+    '''         <description>
+    '''         Does Not activate the window. If this flag Is Not set, the window Is activated And moved to
+    '''         the top of either the topmost Or non-topmost group (depending on the setting of the hWndInsertAfter
+    '''         parameter).
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOCOPYBITS (0x0100)</term>
+    '''         <description>
+    '''         Discards the entire contents of the client area. If this flag Is Not specified, the valid
+    '''         contents of the client area are saved And copied back into the client area after the window Is sized Or
+    '''         repositioned.
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOMOVE (0x0002)</term>
+    '''         <description>Retains the current position (ignores X And Y parameters).</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOOWNERZORDER (0x0200)</term>
+    '''         <description>Does Not change the owner window's position in the Z order.</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOREDRAW (0x0008)</term>
+    '''         <description>
+    '''         Does Not redraw changes. If this flag Is set, no repainting of any kind occurs. This applies
+    '''         to the client area, the nonclient area (including the title bar And scroll bars), And any part of the
+    '''         parent window uncovered as a result of the window being moved. When this flag Is set, the application
+    '''         must explicitly invalidate Or redraw any parts of the window And parent window that need redrawing.
+    '''         </description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOREPOSITION (0x0200)</term><description>Same as the SWP_NOOWNERZORDER flag.</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOSENDCHANGING (0x0400)</term>
+    '''         <description>Prevents the window from receiving the WM_WINDOWPOSCHANGING message.</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOSIZE (0x0001)</term>
+    '''         <description>Retains the current size (ignores the cx And cy parameters).</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_NOZORDER (0x0004)</term>
+    '''         <description>Retains the current Z order (ignores the hWndInsertAfter parameter).</description>
+    '''     </item>
+    '''     <item>
+    '''         <term>SWP_SHOWWINDOW (0x0040)</term><description>Displays the window.</description>
+    '''     </item>
+    '''     </list>
+    ''' </param>
+    ''' <returns><c>true</c> Or nonzero if the function succeeds, <c>false</c> Or zero otherwise Or if function fails.</returns>
+    ''' <remarks>
+    '''     <para>
+    '''     As part of the Vista re-architecture, all services were moved off the interactive desktop into Session 0.
+    '''     hwnd And window manager operations are only effective inside a session And cross-session attempts to manipulate
+    '''     the hwnd will fail. For more information, see The Windows Vista Developer Story: Application Compatibility
+    '''     Cookbook.
+    '''     </para>
+    '''     <para>
+    '''     If you have changed certain window data using SetWindowLong, you must call SetWindowPos for the changes to
+    '''     take effect. Use the following combination for uFlags: SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER |
+    '''     SWP_FRAMECHANGED.
+    '''     </para>
+    '''     <para>
+    '''     A window can be made a topmost window either by setting the hWndInsertAfter parameter to HWND_TOPMOST And
+    '''     ensuring that the SWP_NOZORDER flag Is Not set, Or by setting a window's position in the Z order so that it is
+    '''     above any existing topmost windows. When a non-topmost window Is made topmost, its owned windows are also made
+    '''     topmost. Its owners, however, are Not changed.
+    '''     </para>
+    '''     <para>
+    '''     If neither the SWP_NOACTIVATE nor SWP_NOZORDER flag Is specified (that Is, when the application requests that
+    '''     a window be simultaneously activated And its position in the Z order changed), the value specified in
+    '''     hWndInsertAfter Is used only in the following circumstances.
+    '''     </para>
+    '''     <list type="bullet">
+    '''     <item>Neither the HWND_TOPMOST nor HWND_NOTOPMOST flag Is specified in hWndInsertAfter. </item>
+    '''     <item>The window identified by hWnd Is Not the active window. </item>
+    '''     </list>
+    '''     <para>
+    '''     An application cannot activate an inactive window without also bringing it to the top of the Z order.
+    '''     Applications can change an activated window's position in the Z order without restrictions, or it can activate
+    '''     a window And then move it to the top of the topmost Or non-topmost windows.
+    '''     </para>
+    '''     <para>
+    '''     If a topmost window Is repositioned to the bottom (HWND_BOTTOM) of the Z order Or after any non-topmost
+    '''     window, it Is no longer topmost. When a topmost window Is made non-topmost, its owners And its owned windows
+    '''     are also made non-topmost windows.
+    '''     </para>
+    '''     <para>
+    '''     A non-topmost window can own a topmost window, but the reverse cannot occur. Any window (for example, a
+    '''     dialog box) owned by a topmost window Is itself made a topmost window, to ensure that all owned windows stay
+    '''     above their owner.
+    '''     </para>
+    '''     <para>
+    '''     If an application Is Not in the foreground, And should be in the foreground, it must call the
+    '''     SetForegroundWindow function.
+    '''     </para>
+    '''     <para>
+    '''     To use SetWindowPos to bring a window to the top, the process that owns the window must have
+    '''     SetForegroundWindow permission.
+    '''     </para>
+    ''' </remarks>
     <DllImport("user32.dll", EntryPoint:="SetWindowPos", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    Friend Shared Function SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As HWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As <MarshalAs(UnmanagedType.Bool)> Boolean
+    Friend Shared Function SetWindowPos(hWnd As IntPtr, hWndInsertAfter As HWndInsertAfterFlags, X As Integer, Y As Integer, cx As Integer, cy As Integer, uFlags As SetWindowPosFlags) As <MarshalAs(UnmanagedType.Bool)> Boolean
     End Function
-
-    '<DllImport("user32.dll", EntryPoint:="ReleaseCapture", SetLastError:=True, CharSet:=CharSet.Unicode)>
-    'Friend Shared Function ReleaseCapture() As <MarshalAs(UnmanagedType.Bool)> Boolean
-    'End Function
 
 End Class
 
 Public NotInheritable Class UnSaveMethods
-    'Public Delegate Sub EnumCallBackDelegate(ByVal hwnd As IntPtr, ByVal lParam As Integer)
 
     ''' <summary>
     ''' Retrieves a handle to the foreground window (the window with which the user is currently working). 
@@ -194,33 +406,12 @@ Public NotInheritable Class UnSaveMethods
     ''' <returns>If the function succeeds, the return value is the length, in characters, of the copied string, not including the terminating null character.
     ''' If the window has no title bar or text, if the title bar is empty, or if the window or control handle is invalid, the return value is zero. To get extended error information, call GetLastError.
     ''' This function cannot retrieve the text of an edit control in another application.</returns>
-    Public Shared ReadOnly Property GetWindowText(ByVal hwnd As IntPtr) As String
+    Public Shared ReadOnly Property GetWindowText(hwnd As IntPtr) As String
         Get
             Dim lpString As String = Space(255)
             Return Left(lpString, UnsafeNativeMethods.GetWindowText(hwnd, lpString, Len(lpString)))
         End Get
     End Property
-
-    '''' <summary>
-    '''' Retrieves a handle to a window whose class name and window name match the specified strings. 
-    '''' The function searches child windows, beginning with the one following the specified child window. This function does not perform a case-sensitive search.
-    '''' </summary>
-    '''' <param name="hWndParent">A handle to the parent window whose child windows are to be searched.
-    '''' If hwndParent is NULL, the function uses the desktop window as the parent window. The function searches among windows that are child windows of the desktop.
-    '''' If hwndParent is HWND_MESSAGE, the function searches all message-only windows.</param>
-    '''' <param name="hWndChildAfter">A handle to a child window. The search begins with the next child window in the Z order. The child window must be a direct child window of hwndParent, not just a descendant window.
-    '''' If hwndChildAfter is NULL, the search begins with the first child window of hwndParent.
-    '''' Note that if both hwndParent and hwndChildAfter are NULL, the function searches all top-level and message-only windows.</param>
-    '''' <param name="lpszClass">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be placed in the low-order word of lpszClass; the high-order word must be zero.
-    '''' If lpszClass is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names, or it can be MAKEINTATOM(0x8000). In this latter case, 0x8000 is the atom for a menu class. For more information, see the Remarks section of this topic.</param>
-    '''' <param name="lpszWindow">The window name (the window's title). If this parameter is NULL, all window names match.</param>
-    '''' <value>IntPtr</value>
-    '''' <returns>If the function succeeds, the return value is a handle to the window that has the specified class and window names.</returns>
-    'Public Shared ReadOnly Property FindWindowEX(ByVal hWndParent As IntPtr, ByVal hWndChildAfter As IntPtr, ByVal lpszClass As String, ByVal lpszWindow As String) As IntPtr
-    '    Get
-    '        Return UnsafeNativeMethods.FindWindowEx(hWndParent, hWndChildAfter, lpszClass, lpszWindow)
-    '    End Get
-    'End Property
 
     ''' <summary>
     ''' Retrieves a handle to the Shell's desktop window.
@@ -245,7 +436,7 @@ Public NotInheritable Class UnSaveMethods
     ''' <remarks>Retrieves the dimensions of the bounding rectangle of the specified window. 
     ''' The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
     ''' The Win32 RECT is not binary compatible with System.Drawing.Rectangle.</remarks>
-    Public Shared ReadOnly Property GetWindowRect(ByVal hwnd As IntPtr) As RECT
+    Public Shared ReadOnly Property GetWindowRect(hwnd As IntPtr) As RECT
         Get
             Dim lpRect As RECT
             UnsafeNativeMethods.GetWindowRect(hwnd, lpRect)
@@ -253,111 +444,4 @@ Public NotInheritable Class UnSaveMethods
         End Get
     End Property
 
-    '''' <summary>
-    '''' Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.
-    '''' </summary>
-    '''' <param name="hwnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
-    '''' <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. </returns>
-    '''' <remarks>
-    '''' The SetFocus function sends a WM_KILLFOCUS message to the window that loses the keyboard focus and a WM_SETFOCUS message to the window that receives the keyboard focus. It also activates either the window that receives the focus or the parent of the window that receives the focus.
-    '''' If a window is active but does not have the focus, any key pressed will produce the WM_SYSCHAR, WM_SYSKEYDOWN, or WM_SYSKEYUP message. If the VK_MENU key is also pressed, the lParam parameter of the message will have bit 30 set. Otherwise, the messages produced do not have this bit set.
-    '''' By using the AttachThreadInput function, a thread can attach its input processing to another thread. This allows a thread to call SetFocus to set the keyboard focus to a window attached to another thread's message queue.
-    '''' </remarks>
-    'Public Shared ReadOnly Property SetFocus(ByVal hwnd As IntPtr) As Long
-    '    Get
-    '        Return UnsafeNativeMethods.SetFocus(hwnd)
-    '    End Get
-    'End Property
-
-    '''' <summary>
-    '''' Tests if a visual style for the current application is active. 
-    '''' </summary>
-    '''' <value>Boolean</value>
-    '''' <returns>
-    '''' True, if a visual style is enabled, and windows with visual styles applied should call OpenThemeData to start using theme drawing services.
-    '''' False, if a visual style is not enabled, and the window message handler does not need to make another call to IsThemeActive until it receives a WM_THEMECHANGED message.</returns>
-    '''' <remarks>Do not call this function during DllMain or global objects contructors. This may cause invalid return values in Windows Vista and may cause Windows XP to become unstable.</remarks>
-    'Public Shared ReadOnly Property IsThemeActive() As Boolean = UnsafeNativeMethods.IsThemeActive()
-
-    '''' <summary>
-    '''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-    '''' </summary>
-    '''' <param name="hWnd">
-    '''' A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
-    '''' Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
-    '''' <param name="Msg">The message to be sent.</param>
-    '''' <param name="wParam">Additional message-specific information.</param>
-    '''' <param name="lParam">Additional message-specific information.</param>
-    '''' <value>IntPtr</value>
-    '''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
-    'Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Int32, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As IntPtr
-    '    Get
-    '        Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
-    '    End Get
-    'End Property
-
-    '''' <summary>
-    '''' Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-    '''' </summary>
-    '''' <param name="hWnd">
-    '''' A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.
-    '''' Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
-    '''' <param name="Msg">The message to be sent.</param>
-    '''' <param name="wParam">Additional message-specific information.</param>
-    '''' <param name="lParam">Additional message-specific information.</param>
-    '''' <value>IntPtr</value>
-    '''' <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx</remarks>
-    'Public Overloads Shared ReadOnly Property SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As IntPtr, ByVal lParam As String) As IntPtr
-    '    Get
-    '        Return UnsafeNativeMethods.SendMessage(hWnd, Msg, wParam, lParam)
-    '    End Get
-    'End Property
-
-    '''' <summary>
-    '''' Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to an application-defined callback function. EnumChildWindows continues until the last child window is enumerated or the callback function returns FALSE.
-    '''' </summary>
-    '''' <param name="hWndParent">A handle to the parent window whose child windows are to be enumerated. If this parameter is NULL, this function is equivalent to EnumWindows.</param>
-    '''' <param name="lpEnumFunc">A pointer to an application-defined callback function.</param>
-    '''' <param name="lParam">An application-defined value to be passed to the callback function.</param>
-    '''' <value>IntPtr</value>
-    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633494(v=vs.85).aspx</remarks>
-    'Public Shared ReadOnly Property EnumChildWindows(ByVal hWndParent As IntPtr, ByVal lpEnumFunc As EnumCallBackDelegate, ByVal lParam As IntPtr) As Int32
-    '    Get
-    '        Return UnsafeNativeMethods.EnumChildWindows(hWndParent, lpEnumFunc, lParam)
-    '    End Get
-    'End Property
-
-    '''' <summary>
-    '''' Changes the size, position, and Z order of a child, pop-up, or top-level window. These windows are ordered according to their appearance on the screen. The topmost window receives the highest rank and is the first window in the Z order.
-    '''' </summary>
-    '''' <param name="hWnd">A handle to the window.</param>
-    '''' <param name="hWndInsertAfter">A handle to the window to precede the positioned window in the Z order. This parameter must be a window handle or one of the hWndInsertAfterFlags.</param>
-    '''' <param name="X">The new position of the left side of the window, in client coordinates.</param>
-    '''' <param name="Y">The new position of the top of the window, in client coordinates.</param>
-    '''' <param name="cx">The new width of the window, in pixels.</param>
-    '''' <param name="cy">The new height of the window, in pixels.</param>
-    '''' <param name="uFlags">The window sizing and positioning flags.</param>
-    '''' <value>Boolean</value>
-    '''' <returns>If the function succeeds, the return value is nonzero.</returns>
-    '''' <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/ms633545(v=vs.85).aspx</remarks>
-    'Public Shared ReadOnly Property SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As HWndInsertAfterFlags, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal uFlags As SetWindowPosFlags) As Boolean
-    '    Get
-    '        Return UnsafeNativeMethods.SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, uFlags)
-    '    End Get
-    'End Property
-
-    '''' <summary>
-    '''' Releases the mouse capture from a window in the current thread and restores normal mouse input processing. 
-    '''' A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, 
-    '''' except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
-    '''' </summary>
-    '''' <value>Boolean</value>
-    '''' <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-    'Public Shared ReadOnly Property ReleaseCapture() As Boolean
-    '    Get
-    '        Return UnsafeNativeMethods.ReleaseCapture()
-    '    End Get
-    'End Property
 End Class

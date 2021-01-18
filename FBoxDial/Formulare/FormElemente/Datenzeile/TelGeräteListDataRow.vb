@@ -5,7 +5,7 @@
 
     Friend Property Gerät As Telefoniegerät
 
-    Public Sub New(ByVal rb As DataRowBuilder)
+    Public Sub New(rb As DataRowBuilder)
         MyBase.New(rb)
     End Sub
 End Class

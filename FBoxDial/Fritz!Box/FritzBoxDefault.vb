@@ -5,10 +5,12 @@ Friend NotInheritable Class FritzBoxDefault
     Friend Shared ReadOnly Property DfltFritzBoxAdress() As String = "fritz.box"
     Friend Shared ReadOnly Property DfltFritzBoxUser As String = "admin"
     Friend Shared ReadOnly Property DfltFritzBoxIPAdress As String = "192.168.178.1"
-    Friend Shared ReadOnly Property DfltFritzBoxName As String = "Fritz!Box"
+    Friend Shared ReadOnly Property DfltFritzBoxSessionID As String = "0000000000000000"
     Friend Shared ReadOnly Property DfltTelCodeActivateFritzBoxCallMonitor() As String = "#96*5*"
     Friend Shared ReadOnly Property DfltFBAnrMonPort() As Integer = 1012
     Friend Shared ReadOnly Property DfltCodePageFritzBox() As Integer = 65001
+    Friend Shared ReadOnly Property DfltFritzBoxName As String = "Fritz!Box"
+
 
 #Region "Properties Fritz!Box Links"
     Friend Shared ReadOnly Property FBLinkBasis() As String
@@ -168,7 +170,7 @@ Friend NotInheritable Class FritzBoxDefault
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Friend Shared ReadOnly Property FBoxQueryDECTRingOnAllMSNs(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property FBoxQueryDECTRingOnAllMSNs(idx As Integer) As String
         Get
             Return $"DECT{idx}RingOnAllMSNs=telcfg:settings/Foncontrol/User{idx}/RingOnAllMSNs"
         End Get
@@ -179,7 +181,7 @@ Friend NotInheritable Class FritzBoxDefault
     ''' </summary>
     ''' <param name="idx">Der Index des Eintrages</param>
     ''' <returns>Der zusammengefügte String</returns>
-    Friend Shared ReadOnly Property FBoxQueryDECTNrList(ByVal idx As Integer) As String
+    Friend Shared ReadOnly Property FBoxQueryDECTNrList(idx As Integer) As String
         Get
             Return $"DECT{idx}Nr=telcfg:settings/Foncontrol/User{idx}/MSN/list(Number)"
         End Get
@@ -196,30 +198,6 @@ Friend NotInheritable Class FritzBoxDefault
     ''' </summary>
     ''' <returns>Der zusammengefügte String</returns>
     Friend Shared ReadOnly Property FBoxQueryMobileName() As String = "MobileName=telcfg:settings/Mobile/Name"
-
-    ''' <summary>
-    ''' LKZPrefix=telcfg:settings/Location/LKZPrefix
-    ''' </summary>
-    ''' <returns>Der zusammengefügte String</returns>
-    Friend Shared ReadOnly Property FBoxQueryLKZPrefix() As String = "LKZPrefix=telcfg:settings/Location/LKZPrefix"
-
-    ''' <summary>
-    ''' LKZ=telcfg:settings/Location/LKZ
-    ''' </summary>
-    ''' <returns>Der zusammengefügte String</returns>
-    Friend Shared ReadOnly Property FBoxQueryLKZ() As String = "LKZ=telcfg:settings/Location/LKZ"
-
-    ''' <summary>
-    ''' OKZPrefix=telcfg:settings/Location/OKZPrefix
-    ''' </summary>
-    ''' <returns>Der zusammengefügte String</returns>
-    Friend Shared ReadOnly Property FBoxQueryKZPrefix() As String = "OKZPrefix=telcfg:settings/Location/OKZPrefix"
-
-    ''' <summary>
-    ''' OKZ=telcfg:settings/Location/OKZ
-    ''' </summary>
-    ''' <returns>Der zusammengefügte String</returns>
-    Friend Shared ReadOnly Property FBoxQueryOKZ() As String = "OKZ=telcfg:settings/Location/OKZ"
 
 #End Region
 

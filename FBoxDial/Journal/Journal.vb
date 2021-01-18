@@ -12,7 +12,7 @@ Module Journal
         End If
     End Sub
 
-    Private Function ImportCalls(ByVal DatumZeitAnfang As Date, ByVal DatumZeitEnde As Date) As Task
+    Private Function ImportCalls(DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
         Return Task.Run(Sub()
                             Dim Abfrage As ParallelQuery(Of FritzBoxXMLCall)
 
@@ -26,7 +26,7 @@ Module Journal
                         End Sub)
     End Function
 
-    Friend Async Sub StartJournalRWS(ByVal olJournal As Outlook.JournalItem)
+    Friend Async Sub StartJournalRWS(olJournal As Outlook.JournalItem)
         With olJournal
 
             If Not .Body.Contains(DfltStringUnbekannt) And .Categories.Contains(DfltJournalKategorie) Then

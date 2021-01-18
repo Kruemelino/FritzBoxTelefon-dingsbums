@@ -12,6 +12,7 @@ Public Class OlTreeViewItem
             Return OutlookItemType = TreeViewSelectionOutlookItemType
         End Get
     End Property
+    Private _Überwacht As Boolean
     Public Property Überwacht As Boolean
         Get
             Return _Überwacht
@@ -22,18 +23,15 @@ Public Class OlTreeViewItem
     End Property
 
     Friend Property TreeViewSelectionOutlookItemType As Outlook.OlItemType
-
     Public Property Title As String
 
     Private _Unterordner As New ObservableCollectionEx(Of OlTreeViewItem)
-    Private _Überwacht As Boolean
-
     Public Property Unterordner As ObservableCollectionEx(Of OlTreeViewItem)
         Get
             Return _Unterordner
         End Get
-        Set(value As ObservableCollectionEx(Of OlTreeViewItem))
-            SetProperty(_Unterordner, value)
+        Set
+            SetProperty(_Unterordner, Value)
         End Set
     End Property
 End Class

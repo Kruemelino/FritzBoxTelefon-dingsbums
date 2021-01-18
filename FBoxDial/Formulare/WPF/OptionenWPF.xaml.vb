@@ -11,15 +11,20 @@ Public Class OptionenWPF
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
-
-        WindowStartupLocation = WindowStartupLocation.CenterScreen
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
+
+        ' Startup Position festlegen
+        WindowStartupLocation = WindowStartupLocation.CenterScreen
+
         ' Initialisiere das ViewModel. Die Daten werden aus den Optionen geladen.
         NLogger.Debug("Initialisiere das ViewModel Optionen")
         OptVM = New OptionenViewModel
 
         ' zeige die Grunddaten an
         NavigationCtrl.Content = New UserCtrlGrund With {.DataContext = OptVM}
+
+        ' Anzeigen
+        Show()
     End Sub
 
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
@@ -80,4 +85,6 @@ Public Class OptionenWPF
         ' Daten erneut
         OptVM.LadeDaten()
     End Sub
+
+
 End Class

@@ -27,6 +27,7 @@ Public Class AnrMonWPF
     'Private Property ScaleFaktor As SizeF = GetScaling()
     Private ReadOnly Property AbstandAnrMon As Integer = 10
     Private Property IsClosing As Boolean = False
+    Private Property Tlfnt As Telefonat
 #End Region
 
 #Region "Timer"
@@ -71,17 +72,18 @@ Public Class AnrMonWPF
 #End Region
 
 #Region "Event"
-    Public Event Geschlossen(ByVal sender As Object, ByVal e As EventArgs)
+    Public Event Geschlossen(sender As Object, e As EventArgs)
 #End Region
 
     ''' <summary>
-    ''' Blendet den Anrfmonitor für das übergebene Telefonat (<paramref name="Tlfnt"/>) ein.
+    ''' Blendet den Anrfmonitor für das übergebene Telefonat (<paramref name="Telefnt"/>) ein.
     ''' </summary>
-    ''' <param name="Tlfnt"></param>
-    Friend Sub ShowAnrMon(ByVal Tlfnt As Telefonat)
+    Friend Sub ShowAnrMon(Telefnt As Telefonat)
+
+        Tlfnt = Telefnt
 
         ' Fülle das Viewmodel
-        SetFormViewModel(Tlfnt)
+        SetViewModel(Tlfnt)
 
         ' Timer starten
         If XMLData.POptionen.CBAutoClose Then
@@ -108,13 +110,13 @@ Public Class AnrMonWPF
         Me.Show()
     End Sub
 
-    Private Sub SetFormViewModel(ByVal Tlfnt As Telefonat)
+    Private Sub SetViewModel(Tlfnt As Telefonat)
         With CType(DataContext, AnrMonViewModel)
             ' Anruferzeit festlegen: Beginn des Telefonates
             .Zeit = Tlfnt.ZeitBeginn
 
             'Anrufende Telefonnummer setzen
-            If Anrufer Is Nothing OrElse Tlfnt.NrUnterdrückt Then
+            If Tlfnt.AnruferName.IsStringNothingOrEmpty OrElse Tlfnt.NrUnterdrückt Then
                 ' Kontaktinformationen wurden nicht gefunden oder die Nummer wurde unterdrückt
                 .AnrMonTelNr = DfltStringEmpty
             Else
@@ -127,13 +129,7 @@ Public Class AnrMonWPF
                 ' Die Nummer wurde unterdrückt
                 .AnrMonAnrufer = DfltStringUnbekannt
             Else
-                If Anrufer IsNot Nothing Then
-                    ' Kontaktinformationen wurden gefunden
-                    .AnrMonAnrufer = Tlfnt.Anrufer
-                Else
-                    ' Kontaktinformationen wurden nicht gefunden
-                    .AnrMonAnrufer = Tlfnt.GegenstelleTelNr?.Formatiert
-                End If
+                .AnrMonAnrufer = If(Tlfnt.AnruferName.IsNotStringNothingOrEmpty, Tlfnt.AnruferName, Tlfnt.GegenstelleTelNr?.Formatiert)
             End If
 
             ' Firmeninformationen setzen
@@ -152,9 +148,9 @@ Public Class AnrMonWPF
                 ' Die Nummer wurde unterdrückt
                 .AnrMonClipboard = DfltStringUnbekannt
             Else
-                If Tlfnt.Anrufer IsNot Nothing Then
+                If Tlfnt.AnruferName IsNot Nothing Then
                     ' Kontaktinformationen wurden gefunden
-                    .AnrMonClipboard = String.Format("{0} ({1})", Tlfnt.Anrufer, Tlfnt.GegenstelleTelNr?.Formatiert)
+                    .AnrMonClipboard = String.Format("{0} ({1})", Tlfnt.AnruferName, Tlfnt.GegenstelleTelNr?.Formatiert)
                 Else
                     ' Kontaktinformationen wurden nicht gefunden
                     .AnrMonClipboard = Tlfnt.GegenstelleTelNr?.Formatiert
@@ -192,55 +188,11 @@ Public Class AnrMonWPF
         End With
     End Sub
 
-    Friend Sub Update(ByVal Tlfnt As Telefonat)
+    Friend Sub Update(Tlfnt As Telefonat)
         Dispatcher.Invoke(Sub()
-                              SetFormViewModel(Tlfnt)
+                              SetViewModel(Tlfnt)
                           End Sub)
     End Sub
-
-    '#Region "Skalierung"
-    '    ' https://inchoatethoughts.com/scaling-your-user-interface-in-a-wpf-application
-
-    '    Public Shared ReadOnly ScaleValueProperty As DependencyProperty = DependencyProperty.Register("ScaleValue", GetType(Double), GetType(AnrMonWPF), New UIPropertyMetadata(1.0, New PropertyChangedCallback(AddressOf OnScaleValueChanged), New CoerceValueCallback(AddressOf OnCoerceScaleValue)))
-
-    '    Private Shared Function OnCoerceScaleValue(ByVal o As DependencyObject, ByVal value As Object) As Object
-    '        Dim mainWindow As AnrMonWPF = TryCast(o, AnrMonWPF)
-
-    '        If mainWindow IsNot Nothing Then
-    '            Return mainWindow.OnCoerceScaleValue(CDbl(value))
-    '        Else
-    '            Return value
-    '        End If
-    '    End Function
-
-    '    Private Shared Sub OnScaleValueChanged(ByVal o As DependencyObject, ByVal e As DependencyPropertyChangedEventArgs)
-    '        Dim mainWindow As AnrMonWPF = TryCast(o, AnrMonWPF)
-    '        If mainWindow IsNot Nothing Then mainWindow.OnScaleValueChanged(CDbl(e.OldValue), CDbl(e.NewValue))
-    '    End Sub
-
-    '    Protected Overridable Function OnCoerceScaleValue(ByVal value As Double) As Double
-    '        If Double.IsNaN(value) Then Return 1.0F
-    '        value = Math.Max(0.1, value)
-    '        Return value
-    '    End Function
-
-    '    Protected Overridable Sub OnScaleValueChanged(ByVal oldValue As Double, ByVal newValue As Double)
-    '    End Sub
-
-    '    Public Property ScaleValue As Double
-    '        Get
-    '            Return CDbl(GetValue(ScaleValueProperty))
-    '        End Get
-    '        Set(ByVal value As Double)
-    '            SetValue(ScaleValueProperty, value)
-    '        End Set
-    '    End Property
-
-    '    Private Sub MainGrid_SizeChanged(ByVal sender As Object, ByVal e As EventArgs)
-    '        ScaleValue = CDbl(OnCoerceScaleValue(AnrMon, Math.Min(ScaleFaktor.Width, ScaleFaktor.Height)))
-    '    End Sub
-
-    '#End Region
 
     Private Sub BClose_Click(sender As Object, e As RoutedEventArgs) Handles bClose.Click
         NLogger.Debug("Anrufmonitor manuell geschlossen")
@@ -268,11 +220,11 @@ Public Class AnrMonWPF
     End Sub
 
     Private Sub BReCall_Click(sender As Object, e As RoutedEventArgs)
-        CType(DataContext, Telefonat).Rückruf()
+        Tlfnt?.Rückruf()
     End Sub
 
     Private Sub BContact_Click(sender As Object, e As RoutedEventArgs)
-        CType(DataContext, Telefonat).ZeigeKontakt()
+        Tlfnt?.ZeigeKontakt()
     End Sub
 
     Private Sub BCopy_Click(sender As Object, e As RoutedEventArgs)

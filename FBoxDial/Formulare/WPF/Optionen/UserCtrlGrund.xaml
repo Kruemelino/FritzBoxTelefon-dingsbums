@@ -16,8 +16,9 @@
         <fbd:OptionsPasswordBox Label="Fritz!Box Passwort" Value="{Binding Path=TBPasswort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <fbd:OptionsÜberschrift Label="Grundaten Telefonie"/>
-        <fbd:OptionsTextBox Label="Ortskennzahl" Value="{Binding Path=TBOrtsKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <fbd:OptionsTextBox Label="Landeskennzahl" Value="{Binding Path=TBLandesKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <fbd:OptionsHinweis Label="Landes- und Ortskennzahl (jeweils ohne führende Null) werden beim Einlesen der Telefone und bei Outlookstart automatisch aus der Fritz!Box ausgelesen."/>
+        <fbd:OptionsTextBox Label="Ortskennzahl" Value="{Binding Path=TBOrtsKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False"/>
+        <fbd:OptionsTextBox Label="Landeskennzahl" Value="{Binding Path=TBLandesKZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False"/>
 
         <fbd:OptionsÜberschrift Label="Formatierung von Telefonnummern"/>
         <fbd:OptionsCheckBox Label="Gruppieren" Value="{Binding Path=CBTelNrGruppieren, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>

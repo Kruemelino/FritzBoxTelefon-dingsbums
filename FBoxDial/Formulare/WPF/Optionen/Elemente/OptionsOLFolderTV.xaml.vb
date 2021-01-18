@@ -11,12 +11,12 @@ Partial Public Class OptionsOLFolderTV
         Get
             Return CType(GetValue(OutlookOlItemTypeProperty), Outlook.OlItemType)
         End Get
-        Set(ByVal value As Outlook.OlItemType)
-            SetValue(OutlookOlItemTypeProperty, value)
+        Set
+            SetValue(OutlookOlItemTypeProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly OutlookOlItemTypeProperty As DependencyProperty = DependencyProperty.Register("OutlookOlItemType", GetType(Outlook.OlItemType), GetType(OptionsOLFolderTV), New PropertyMetadata(Outlook.OlItemType.olMailItem))
+    Public Shared ReadOnly OutlookOlItemTypeProperty As DependencyProperty = DependencyProperty.Register(NameOf(OutlookOlItemType), GetType(Outlook.OlItemType), GetType(OptionsOLFolderTV), New PropertyMetadata(Outlook.OlItemType.olMailItem))
 
 #End Region
 
@@ -25,12 +25,12 @@ Partial Public Class OptionsOLFolderTV
         Get
             Return CType(GetValue(ÜberwachteOrdnerListeProperty), ObservableCollectionEx(Of OutlookOrdner))
         End Get
-        Set(ByVal value As ObservableCollectionEx(Of OutlookOrdner))
-            SetValue(ÜberwachteOrdnerListeProperty, value)
+        Set
+            SetValue(ÜberwachteOrdnerListeProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly ÜberwachteOrdnerListeProperty As DependencyProperty = DependencyProperty.Register("ÜberwachteOrdnerListe", GetType(ObservableCollectionEx(Of OutlookOrdner)), GetType(OptionsOLFolderTV), New PropertyMetadata(New ObservableCollectionEx(Of OutlookOrdner)))
+    Public Shared ReadOnly ÜberwachteOrdnerListeProperty As DependencyProperty = DependencyProperty.Register(NameOf(ÜberwachteOrdnerListe), GetType(ObservableCollectionEx(Of OutlookOrdner)), GetType(OptionsOLFolderTV), New PropertyMetadata(New ObservableCollectionEx(Of OutlookOrdner)))
 #End Region
 
 #Region "Verwendung"
@@ -39,12 +39,12 @@ Partial Public Class OptionsOLFolderTV
         Get
             Return CType(GetValue(VerwendungProperty), OutlookOrdnerVerwendung)
         End Get
-        Set(ByVal value As OutlookOrdnerVerwendung)
-            SetValue(VerwendungProperty, value)
+        Set
+            SetValue(VerwendungProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly VerwendungProperty As DependencyProperty = DependencyProperty.Register("Verwendung", GetType(OutlookOrdnerVerwendung), GetType(OptionsOLFolderTV), New PropertyMetadata(OutlookOrdnerVerwendung.KontaktSuche))
+    Public Shared ReadOnly VerwendungProperty As DependencyProperty = DependencyProperty.Register(NameOf(Verwendung), GetType(OutlookOrdnerVerwendung), GetType(OptionsOLFolderTV), New PropertyMetadata(OutlookOrdnerVerwendung.KontaktSuche))
 
 #End Region
 
@@ -61,7 +61,7 @@ Partial Public Class OptionsOLFolderTV
             ' Füge für jeden Outlook Store ein Treenode hinzu
             If .Items.Count.IsZero Then
                 ' Lade Outlook Store
-                For Each OutlookStore As Outlook.Store In ThisAddIn.POutookApplication.Session.Stores
+                For Each OutlookStore As Outlook.Store In ThisAddIn.OutookApplication.Session.Stores
                     .Items.Add(StoreTreeItem(OutlookStore))
                 Next
             End If
@@ -87,7 +87,7 @@ Partial Public Class OptionsOLFolderTV
         End With
     End Sub
 
-    Private Function StoreTreeItem(ByVal OutlookStore As Outlook.Store) As OlTreeViewItem
+    Private Function StoreTreeItem(OutlookStore As Outlook.Store) As OlTreeViewItem
         ' Dim olTreeViewItem As New OlTreeViewItem(OutlookStore.GetRootFolder) With {.Title = $"{OutlookStore.GetRootFolder.Name} ({OutlookStore.ExchangeStoreType})"}
         Dim olTreeViewItem As New OlTreeViewItem() With {.Title = $"{OutlookStore.GetRootFolder.Name} ({OutlookStore.ExchangeStoreType})",
                                                          .OutlookFolder = OutlookStore.GetRootFolder,
@@ -101,7 +101,7 @@ Partial Public Class OptionsOLFolderTV
         Return olTreeViewItem
     End Function
 
-    Private Function FolderTreeItem(ByVal OutlookFolder As Outlook.MAPIFolder) As OlTreeViewItem
+    Private Function FolderTreeItem(OutlookFolder As Outlook.MAPIFolder) As OlTreeViewItem
         Dim olTreeViewItem As New OlTreeViewItem With {.Title = $"{OutlookFolder.Name}",
                                                        .OutlookFolder = OutlookFolder,
                                                        .OutlookItemType = OutlookFolder.DefaultItemType,
@@ -113,7 +113,7 @@ Partial Public Class OptionsOLFolderTV
         Return olTreeViewItem
     End Function
 
-    Private Function OrdnerÜberwacht(ByVal OutlookFolder As Outlook.MAPIFolder) As Boolean
+    Private Function OrdnerÜberwacht(OutlookFolder As Outlook.MAPIFolder) As Boolean
         If OutlookFolder.DefaultItemType = OutlookOlItemType Then
             Return ÜberwachteOrdnerListe.Where(Function(O) O.Typ = Verwendung AndAlso O.StoreID.AreEqual(OutlookFolder.StoreID) AndAlso O.FolderID.AreEqual(OutlookFolder.EntryID)).Any
         Else

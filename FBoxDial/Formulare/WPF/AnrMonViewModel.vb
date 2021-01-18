@@ -8,8 +8,8 @@ Public Class AnrMonViewModel
         Get
             Return _Zeit
         End Get
-        Set(value As Date)
-            SetProperty(_Zeit, value)
+        Set
+            SetProperty(_Zeit, Value)
         End Set
     End Property
 
@@ -18,8 +18,8 @@ Public Class AnrMonViewModel
         Get
             Return _AnrMonTelName
         End Get
-        Set(value As String)
-            SetProperty(_AnrMonTelName, value)
+        Set
+            SetProperty(_AnrMonTelName, Value)
         End Set
     End Property
 
@@ -28,8 +28,8 @@ Public Class AnrMonViewModel
         Get
             Return _AnrMonTelNr
         End Get
-        Set(value As String)
-            SetProperty(_AnrMonTelNr, value)
+        Set
+            SetProperty(_AnrMonTelNr, Value)
         End Set
     End Property
 
@@ -38,8 +38,8 @@ Public Class AnrMonViewModel
         Get
             Return _AnrMonAnrufer
         End Get
-        Set(value As String)
-            SetProperty(_AnrMonAnrufer, value)
+        Set
+            SetProperty(_AnrMonAnrufer, Value)
         End Set
     End Property
 
@@ -48,8 +48,8 @@ Public Class AnrMonViewModel
         Get
             Return _AnrMonFirma
         End Get
-        Set(value As String)
-            SetProperty(_AnrMonFirma, value)
+        Set
+            SetProperty(_AnrMonFirma, Value)
         End Set
     End Property
 
@@ -58,8 +58,8 @@ Public Class AnrMonViewModel
         Get
             Return _AnrMonClipboard
         End Get
-        Set(value As String)
-            SetProperty(_AnrMonClipboard, value)
+        Set
+            SetProperty(_AnrMonClipboard, Value)
         End Set
     End Property
 
@@ -68,8 +68,8 @@ Public Class AnrMonViewModel
         Get
             Return _OKontakt
         End Get
-        Set(value As Outlook.ContactItem)
-            SetProperty(_OKontakt, value)
+        Set
+            SetProperty(_OKontakt, Value)
         End Set
     End Property
 
@@ -78,7 +78,7 @@ Public Class AnrMonViewModel
     '    Get
     '        Return _OExchangeNutzer
     '    End Get
-    '    Set(value As Outlook.ExchangeUser)
+    '    Set
     '        SetProperty(_OExchangeNutzer, value)
     '    End Set
     'End Property
@@ -88,8 +88,8 @@ Public Class AnrMonViewModel
         Get
             Return _Kontaktbild
         End Get
-        Set(value As BitmapImage)
-            SetProperty(_Kontaktbild, value)
+        Set
+            SetProperty(_Kontaktbild, Value)
         End Set
     End Property
 End Class

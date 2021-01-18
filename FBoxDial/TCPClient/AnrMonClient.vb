@@ -45,7 +45,7 @@ Friend Class AnrMonClient
         Dispose()
     End Sub
 
-    Private Sub EndRead(ByVal ar As IAsyncResult)
+    Private Sub EndRead(ar As IAsyncResult)
         If Verbunden And Not IsDisposed Then
             Try ' Nach einem Standby kann es zu einem Fehler kommen.
                 Dim read As Integer = AnrMonStream.EndRead(ar)

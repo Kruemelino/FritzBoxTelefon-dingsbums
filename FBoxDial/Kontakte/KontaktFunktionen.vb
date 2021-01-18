@@ -2,10 +2,9 @@
 Imports System.Runtime.CompilerServices
 Imports System.Xml
 Imports System.Xml.Serialization
-Imports Microsoft.Office.Interop
+Imports Microsoft.Office.Interop.Outlook
 Friend Module KontaktFunktionen
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Friend ReadOnly Property P_DefContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
 
     ''' <summary>
     ''' Erstellt einen Kontakt aus einer vCard.
@@ -15,14 +14,14 @@ Friend Module KontaktFunktionen
     ''' <param name="vCard">Kontaktdaten im vCard-Format.</param>
     ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
     ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
-    ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, vCard As String, TelNr As Telefonnummer, AutoSave As Boolean) As Outlook.ContactItem
-        Dim olKontakt As Outlook.ContactItem
+    ''' <returns>Den erstellten Kontakt als Outlook.ContactItem.</returns>
+    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, vCard As String, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
+        Dim olKontakt As ContactItem
 
 
         If Not TelNr.Unbekannt Then
 
-            olKontakt = CType(ThisAddIn.POutookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            olKontakt = CType(ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
 
             With olKontakt
 
@@ -75,12 +74,21 @@ Friend Module KontaktFunktionen
         End If
 
     End Function
-    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As Outlook.ContactItem
-        Dim olKontakt As Outlook.ContactItem
+    ''' <summary>
+    ''' Erstellt einen Kontakt aus einer Fritz!Box Telefonbucheintrag.
+    ''' </summary>
+    ''' <param name="KontaktID">Rückgabewert: KontaktID des neu erstellten Kontaktes</param>
+    ''' <param name="StoreID">Rückgabewert: StoreID des Ordners, in dem sich der neu erstellte Kontaktes befindet.</param>
+    ''' <param name="XMLKontakt">Kontaktdaten als Fritz!Box Telefonbucheintrag</param>
+    ''' <param name="TelNr">Telefonnummer, die zusätzlich eingetragen werden soll.</param>
+    ''' <param name="AutoSave">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
+    ''' <returns>Den erstellten Kontakt als Outlook.ContactItem.</returns>
+    Friend Function ErstelleKontakt(ByRef KontaktID As String, ByRef StoreID As String, XMLKontakt As FritzBoxXMLKontakt, TelNr As Telefonnummer, AutoSave As Boolean) As ContactItem
+        Dim olKontakt As ContactItem
 
         If Not TelNr.Unbekannt Then
 
-            olKontakt = CType(ThisAddIn.POutookApplication.CreateItem(Outlook.OlItemType.olContactItem), Outlook.ContactItem)
+            olKontakt = CType(ThisAddIn.OutookApplication.CreateItem(OlItemType.olContactItem), ContactItem)
 
             With olKontakt
 
@@ -107,27 +115,32 @@ Friend Module KontaktFunktionen
         End If
     End Function
 
-    Private Sub SpeichereKontakt(ByRef olKontakt As Outlook.ContactItem)
+    ''' <summary>
+    ''' Speichert einen automatisch erstellten Kontakt im dafür vorgesehenen Ordner ab
+    ''' </summary>
+    ''' <param name="olKontakt">Der zu speichernde Kontakt</param>
+    Private Sub SpeichereKontakt(ByRef olKontakt As ContactItem)
+        With XMLData.POptionen.OutlookOrdner
 
-        ' Ermittle den Ordner in den der Kontakt gespeichet werden soll
-        Dim KontaktOrdner As OutlookOrdner = XMLData.POptionen.OutlookOrdner.Find(OutlookOrdnerVerwendung.KontaktSpeichern)
+            ' Ermittle den Ordner in den der Kontakt gespeichet werden soll
+            Dim KontaktOrdner As MAPIFolder = .GetMAPIFolder(OutlookOrdnerVerwendung.KontaktSpeichern)
+            ' Speichere den Kontakt... 
+            ' Wenn es sich nicht um den Hauptkontaktordner handelt, ist darin der Kontakt bereits (ungespeichert) enthalten. Ein Move würde den Kontakt nur dublizieren.
+            If KontaktOrdner.AreNotEqual(.GetDefaultMAPIFolder(OlDefaultFolders.olFolderContacts)) Then
+                ' Verschiebe den Kontakt in den gewünschten Ornder
+                olKontakt = CType(olKontakt.Move(KontaktOrdner), ContactItem)
+                NLogger.Info($"Kontakt {olKontakt.FullName} wurde erstellt und in den Ordner {KontaktOrdner.Name} verschoben.")
 
-        ' Speichere den Kontakt... (Wenn es sich nicht um den Hauptkontaktordner handelt, der Kontakt ist da breits (ungespeichert) enthalten. Ein Move würde den Kontakt dublizieren.)
-        If KontaktOrdner IsNot Nothing AndAlso KontaktOrdner.MAPIFolder IsNot Nothing And ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts).AreNotEqual(KontaktOrdner.MAPIFolder) Then
-            ' ... im festgelegten Ordner
-            olKontakt = CType(olKontakt.Move(KontaktOrdner.MAPIFolder), Outlook.ContactItem)
-            NLogger.Info("Kontakt {0} wurde erstellt und in den Ordner {1} verschoben.", olKontakt.FullName, KontaktOrdner.MAPIFolder.Name)
-        Else
-            ' ... im Kontakthauptordner
-            If olKontakt.Speichern Then NLogger.Info("Kontakt {0} wurde Hauptkontaktordner gespeichert.", olKontakt.FullName)
-        End If
+            Else
+                ' Speichere den Kontakt im Kontakthauptordner
+                If olKontakt.Speichern Then NLogger.Info($"Kontakt {olKontakt.FullName} wurde Hauptkontaktordner gespeichert.")
 
-        ' Indiziere den Kontakt, falls dieser nicht eingeblendet ist
-        'If olKontakt.GetInspector Is Nothing Then
-        ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
-        If XMLData.POptionen.OutlookOrdner.Exists(KontaktOrdner.MAPIFolder, OutlookOrdnerVerwendung.KontaktSuche) Then IndiziereKontakt(olKontakt)
+            End If
 
-        'End If
+            ' Indizere den Kontakt, wenn der Ordner, in den er gespeichert werden soll, auch zur Kontaktsuche verwendet werden soll
+            IndiziereKontakt(olKontakt, KontaktOrdner)
+
+        End With
 
     End Sub
 
@@ -137,16 +150,16 @@ Friend Module KontaktFunktionen
     ''' <param name="TelNr">Telefonnummer, die eingefügt werden soll.</param>
     ''' <param name="Speichern">Gibt an ob der Kontakt gespeichert werden soll True, oder nur angezeigt werden soll False.</param>
     ''' <returns>Den erstellte Kontakt als Outlook.ContactItem.</returns>
-    Friend Function ErstelleKontakt(TelNr As Telefonnummer, Speichern As Boolean) As Outlook.ContactItem
+    Friend Function ErstelleKontakt(TelNr As Telefonnummer, Speichern As Boolean) As ContactItem
         Return ErstelleKontakt(DfltStringEmpty, DfltStringEmpty, DfltStringEmpty, TelNr, Speichern)
     End Function
 
     ''' <summary>
     ''' Erstellt einen Kontakt aus einem Inspectorfenster (Journal)
     ''' </summary>
-    Friend Sub ZeigeKontaktAusJournal(olJournal As Outlook.JournalItem)
+    Friend Sub ZeigeKontaktAusJournal(olJournal As JournalItem)
         Dim vCard As String
-        Dim olKontakt As Outlook.ContactItem = Nothing ' Objekt des Kontakteintrags
+        Dim olKontakt As ContactItem = Nothing ' Objekt des Kontakteintrags
         Dim TelNr As Telefonnummer
 
         With olJournal
@@ -185,19 +198,19 @@ Friend Module KontaktFunktionen
 
     End Sub ' (ZeigeKontaktAusJournal)
 
-    Friend Sub ZeigeKontaktAusInspector(olInsp As Outlook.Inspector)
+    Friend Sub ZeigeKontaktAusInspector(olInsp As Inspector)
         If olInsp IsNot Nothing Then
-            If TypeOf olInsp.CurrentItem Is Outlook.JournalItem Then
-                ZeigeKontaktAusJournal(CType(olInsp.CurrentItem, Outlook.JournalItem))
+            If TypeOf olInsp.CurrentItem Is JournalItem Then
+                ZeigeKontaktAusJournal(CType(olInsp.CurrentItem, JournalItem))
             End If
         End If
     End Sub ' (ZeigeKontaktAusInspector)
 
-    Friend Sub ZeigeKontaktAusSelection(olSelection As Outlook.Selection)
+    Friend Sub ZeigeKontaktAusSelection(olSelection As Selection)
         If olSelection IsNot Nothing Then
 
-            If TypeOf olSelection.Item(1) Is Outlook.JournalItem Then
-                ZeigeKontaktAusJournal(CType(olSelection.Item(1), Outlook.JournalItem))
+            If TypeOf olSelection.Item(1) Is JournalItem Then
+                ZeigeKontaktAusJournal(CType(olSelection.Item(1), JournalItem))
             End If
         End If
     End Sub ' (ZeigeKontaktAusSelection)
@@ -207,7 +220,7 @@ Friend Module KontaktFunktionen
     ''' </summary>
     ''' <param name="olContact">Kontakt, aus dem das Kontaktbild extrahiert werden soll.</param>
     ''' <returns>Pfad zum extrahierten Kontaktbild.</returns>
-    Friend Function KontaktBild(ByRef olContact As Outlook.ContactItem) As String
+    Friend Function KontaktBild(ByRef olContact As ContactItem) As String
         KontaktBild = DfltStringEmpty
         If olContact IsNot Nothing Then
             With olContact
@@ -240,22 +253,22 @@ Friend Module KontaktFunktionen
     ''' <param name="KontaktID">EntryID des Kontaktes</param>
     ''' <param name="StoreID">StoreID des beinhaltenden Ordners</param>
     ''' <returns>Erfolg: Kontakt, Misserfolg: Nothing</returns>
-    Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As Outlook.ContactItem
+    Friend Function GetOutlookKontakt(ByRef KontaktID As String, ByRef StoreID As String) As ContactItem
         GetOutlookKontakt = Nothing
         Try
-            GetOutlookKontakt = CType(ThisAddIn.POutookApplication.Session.GetItemFromID(KontaktID, StoreID), Outlook.ContactItem)
-        Catch ex As Exception
+            GetOutlookKontakt = CType(ThisAddIn.OutookApplication.Session.GetItemFromID(KontaktID, StoreID), ContactItem)
+        Catch ex As System.Exception
             NLogger.Error(ex)
         End Try
     End Function
 
-    Friend Function GetOutlookKontakt(ByRef KontaktIDStoreID As Object()) As Outlook.ContactItem
+    Friend Function GetOutlookKontakt(ByRef KontaktIDStoreID As Object()) As ContactItem
         GetOutlookKontakt = Nothing
 
         If Not KontaktIDStoreID.Contains(DfltErrorvalue) Then
             Try
-                GetOutlookKontakt = CType(ThisAddIn.POutookApplication.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), Outlook.ContactItem)
-            Catch ex As Exception
+                GetOutlookKontakt = CType(ThisAddIn.OutookApplication.Session.GetItemFromID(KontaktIDStoreID.First.ToString, KontaktIDStoreID.Last.ToString), ContactItem)
+            Catch ex As System.Exception
                 NLogger.Error(ex)
             End Try
         End If
@@ -267,13 +280,13 @@ Friend Module KontaktFunktionen
     ''' <param name="StoreID">StoreID des Ordners</param>
     ''' <returns>Erfolg: Ordner, Misserfolg: Standard-Kontaktordner</returns>
     ''' <remarks>In Office 2003 ist Outlook.Folder unbekannt, daher Outlook.MAPIFolder</remarks>
-    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As Outlook.MAPIFolder
+    Friend Function GetOutlookFolder(ByRef FolderID As String, ByRef StoreID As String) As MAPIFolder
         GetOutlookFolder = Nothing
 
         If FolderID.IsNotErrorString And StoreID.IsNotErrorString Then
             Try
-                GetOutlookFolder = ThisAddIn.POutookApplication.Session.GetFolderFromID(FolderID, StoreID)
-            Catch ex As Exception
+                GetOutlookFolder = ThisAddIn.OutookApplication.Session.GetFolderFromID(FolderID, StoreID)
+            Catch ex As System.Exception
                 NLogger.Error(ex)
             End Try
         End If
@@ -286,7 +299,7 @@ Friend Module KontaktFunktionen
         '    XMLData.POptionen.PTVKontaktOrdnerStoreID = StoreID
         'End If
     End Function
-    Friend Function GetKontaktTelNrList(ByRef olContact As Outlook.ContactItem) As List(Of Telefonnummer)
+    Friend Function GetKontaktTelNrList(ByRef olContact As ContactItem) As List(Of Telefonnummer)
 
         Dim alleTelNr(14) As String ' alle im Kontakt enthaltenen Telefonnummern
         Dim alleNrTypen(14) As String ' die Bezeichnungen der Telefonnummern
@@ -318,7 +331,7 @@ Friend Module KontaktFunktionen
         Next
     End Function
 
-    Friend Function GetKontaktTelNrList(ByRef olExchangeNutzer As Outlook.ExchangeUser) As List(Of Telefonnummer)
+    Friend Function GetKontaktTelNrList(ByRef olExchangeNutzer As ExchangeUser) As List(Of Telefonnummer)
 
         Dim alleTelNr(2) As String ' alle im Exchangenutzer enthaltenen Telefonnummern
         Dim alleNrTypen(2) As String ' die Bezeichnungen der Telefonnummern
@@ -338,16 +351,16 @@ Friend Module KontaktFunktionen
         Next
     End Function
 
-    Friend Function ZähleOutlookKontakte(olFolder As Outlook.MAPIFolder) As Integer
+    Friend Function ZähleOutlookKontakte(olFolder As MAPIFolder) As Integer
         Dim retval As Integer = 0
 
         ' Die Anzahl der Elemente dieses Ordners zählen
-        If olFolder.DefaultItemType = Outlook.OlItemType.olContactItem Then
+        If olFolder.DefaultItemType = OlItemType.olContactItem Then
             retval = olFolder.Items.Count
 
             ' Unterordner werden rekursiv mitgezählt
             If XMLData.POptionen.CBSucheUnterordner Then
-                For Each Unterordner As Outlook.MAPIFolder In olFolder.Folders
+                For Each Unterordner As MAPIFolder In olFolder.Folders
                     retval += ZähleOutlookKontakte(Unterordner)
                     Unterordner.ReleaseComObject
                 Next
@@ -357,93 +370,94 @@ Friend Module KontaktFunktionen
         Return retval
     End Function
 
-    <Extension> Friend Function StoreID(olKontakt As Outlook.ContactItem) As String
-        Return CType(olKontakt.Parent, Outlook.MAPIFolder).StoreID
+    <Extension> Friend Function StoreID(olKontakt As ContactItem) As String
+        Return CType(olKontakt.Parent, MAPIFolder).StoreID
     End Function
 
-    <Extension> Friend Function GetTelNrArray(olContact As Outlook.ContactItem) As Object()
+    <Extension> Friend Function GetTelNrArray(olContact As ContactItem) As Object()
 
         Dim tmpTelNr(18) As Object
         With olContact
-            tmpTelNr(0) = .AssistantTelephoneNumber     ' "urn:schemas:contacts:secretaryphone" 
-            tmpTelNr(1) = .BusinessTelephoneNumber      ' "urn:schemas:contacts:officetelephonenumber" 
-            tmpTelNr(2) = .Business2TelephoneNumber     ' "urn:schemas:contacts:office2telephonenumber" 
-            tmpTelNr(3) = .CallbackTelephoneNumber      ' "urn:schemas:contacts:callbackphone" 
-            tmpTelNr(4) = .CarTelephoneNumber           ' "urn:schemas:contacts:othermobile" 
-            tmpTelNr(5) = .CompanyMainTelephoneNumber   ' "urn:schemas:contacts:organizationmainphone" 
-            tmpTelNr(6) = .HomeTelephoneNumber          ' "urn:schemas:contacts:homePhone" 
-            tmpTelNr(7) = .Home2TelephoneNumber         ' "urn:schemas:contacts:homePhone2" 
-            tmpTelNr(8) = .ISDNNumber                   ' "urn:schemas:contacts:internationalisdnnumber" 
-            tmpTelNr(9) = .MobileTelephoneNumber        ' "http://schemas.microsoft.com/mapi/proptag/0x3a1c001f" 
-            tmpTelNr(10) = .OtherTelephoneNumber        ' "urn:schemas:contacts:otherTelephone" ' 
-            tmpTelNr(11) = .PagerNumber                 ' "urn:schemas:contacts:pager" ' 
-            tmpTelNr(12) = .PrimaryTelephoneNumber      ' "http://schemas.microsoft.com/mapi/proptag/0x3a1a001f" 
-            tmpTelNr(13) = .RadioTelephoneNumber        ' "http://schemas.microsoft.com/mapi/proptag/0x3a1d001f" 
-            tmpTelNr(14) = .BusinessFaxNumber           ' "urn:schemas:contacts:facsimiletelephonenumber" 
-            tmpTelNr(15) = .HomeFaxNumber               ' "urn:schemas:contacts:homefax" ' 
-            tmpTelNr(16) = .OtherFaxNumber              ' "urn:schemas:contacts:otherfax" ' 
-            tmpTelNr(17) = .TelexNumber                 ' "urn:schemas:contacts:telexnumber" ' 
-            tmpTelNr(18) = .TTYTDDTelephoneNumber       ' "urn:schemas:contacts:ttytddphone" ' 
+            tmpTelNr(0) = .AssistantTelephoneNumber
+            tmpTelNr(1) = .BusinessTelephoneNumber
+            tmpTelNr(2) = .Business2TelephoneNumber
+            tmpTelNr(3) = .CallbackTelephoneNumber
+            tmpTelNr(4) = .CarTelephoneNumber
+            tmpTelNr(5) = .CompanyMainTelephoneNumber
+            tmpTelNr(6) = .HomeTelephoneNumber
+            tmpTelNr(7) = .Home2TelephoneNumber
+            tmpTelNr(8) = .ISDNNumber
+            tmpTelNr(9) = .MobileTelephoneNumber
+            tmpTelNr(10) = .OtherTelephoneNumber
+            tmpTelNr(11) = .PagerNumber
+            tmpTelNr(12) = .PrimaryTelephoneNumber
+            tmpTelNr(13) = .RadioTelephoneNumber
+            tmpTelNr(14) = .BusinessFaxNumber
+            tmpTelNr(15) = .HomeFaxNumber
+            tmpTelNr(16) = .OtherFaxNumber
+            tmpTelNr(17) = .TelexNumber
+            tmpTelNr(18) = .TTYTDDTelephoneNumber
         End With
         Return tmpTelNr
 
     End Function
 
-    <Extension> Friend Function Speichern(ByRef olKontakt As Outlook.ContactItem) As Boolean
+    <Extension> Friend Function Speichern(ByRef olKontakt As ContactItem) As Boolean
         Try
             olKontakt.Save()
             Return True
-        Catch ex As Exception
+        Catch ex As System.Exception
             NLogger.Error(ex, "Kontakt {0} kann nicht gespeichert werden.", olKontakt.FullNameAndCompany)
             Return False
         End Try
     End Function
 
-    <Extension> Friend Function ParentFolder(ByRef olKontakt As Outlook.ContactItem) As Outlook.MAPIFolder
+    <Extension> Friend Function ParentFolder(ByRef olKontakt As ContactItem) As MAPIFolder
         If olKontakt.Parent IsNot Nothing Then
-            Return CType(olKontakt.Parent, Outlook.MAPIFolder)
+            Return CType(olKontakt.Parent, MAPIFolder)
         Else
             Return Nothing
         End If
     End Function
+
     ''' <summary>
     ''' Verleicht zwei MAPIFolder anhand der StoreID und der EntryID
     ''' </summary>
     ''' <param name="Ordner1">Erster MAPIFolder</param>
     ''' <param name="Ordner2">Zweiter MAPIFolder</param>
     ''' <returns></returns>
-    <Extension> Friend Function AreEqual(Ordner1 As Outlook.MAPIFolder, Ordner2 As Outlook.MAPIFolder) As Boolean
+    <Extension> Friend Function AreEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
         Return Ordner1.StoreID.AreEqual(Ordner2.StoreID) And Ordner1.EntryID.AreEqual(Ordner2.EntryID)
     End Function
-    <Extension> Friend Function AreNotEqual(Ordner1 As Outlook.MAPIFolder, Ordner2 As Outlook.MAPIFolder) As Boolean
+    <Extension> Friend Function AreNotEqual(Ordner1 As MAPIFolder, Ordner2 As MAPIFolder) As Boolean
         Return Ordner1.StoreID.AreNotEqual(Ordner2.StoreID) Or Ordner1.EntryID.AreNotEqual(Ordner2.EntryID)
     End Function
 #Region "VIP"
-    <Extension> Friend Function IsVIP(olKontakt As Outlook.ContactItem) As Boolean
+    <Extension> Friend Function IsVIP(olKontakt As ContactItem) As Boolean
 
         IsVIP = False
         ' Prüfe, ob sich der Kontakt in der Liste befindet.
-        If XMLData.PTelefonie.VIPListe IsNot Nothing Then
-            With XMLData.PTelefonie.VIPListe
+        If XMLData.PTelListen.VIPListe IsNot Nothing Then
+            With XMLData.PTelListen.VIPListe
                 IsVIP = .Exists(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
             End With
         End If
     End Function
 
-    <Extension> Friend Sub AddVIP(olKontakt As Outlook.ContactItem)
-        If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New List(Of VIPEntry)
+    <Extension> Friend Sub AddVIP(olKontakt As ContactItem)
+        If XMLData.PTelListen.VIPListe Is Nothing Then XMLData.PTelListen.VIPListe = New List(Of VIPEntry)
 
-        With XMLData.PTelefonie.VIPListe
+        With XMLData.PTelListen.VIPListe
             .Add(New VIPEntry With {.Name = olKontakt.FullNameAndCompany, .EntryID = olKontakt.EntryID, .StoreID = olKontakt.StoreID})
         End With
     End Sub
 
-    <Extension> Friend Sub RemoveVIP(olKontakt As Outlook.ContactItem)
+    <Extension> Friend Sub RemoveVIP(olKontakt As ContactItem)
         Dim tmpVIPEntry As VIPEntry
 
-        If XMLData.PTelefonie.VIPListe Is Nothing Then XMLData.PTelefonie.VIPListe = New List(Of VIPEntry)
+        If XMLData.PTelListen.VIPListe Is Nothing Then XMLData.PTelListen.VIPListe = New List(Of VIPEntry)
 
-        With XMLData.PTelefonie.VIPListe
+        With XMLData.PTelListen.VIPListe
             tmpVIPEntry = .Find(Function(VIPEintrag) VIPEintrag.EntryID.AreEqual(olKontakt.EntryID) And VIPEintrag.StoreID.AreEqual(olKontakt.StoreID))
 
             If tmpVIPEntry IsNot Nothing Then .Remove(tmpVIPEntry)
@@ -451,7 +465,7 @@ Friend Module KontaktFunktionen
     End Sub
 
 #End Region
-    Private Sub XMLKontaktOutlook(XMLKontakt As FritzBoxXMLKontakt, ByRef Kontakt As Outlook.ContactItem)
+    Private Sub XMLKontaktOutlook(XMLKontakt As FritzBoxXMLKontakt, ByRef Kontakt As ContactItem)
         ' Werte übeführen
         With Kontakt
             ' Name
@@ -545,15 +559,15 @@ Friend Module KontaktFunktionen
     ''' <param name="EMail"></param>
     ''' <remarks>https://docs.microsoft.com/de-de/office/client-developer/outlook/pia/how-to-get-the-smtp-address-of-the-sender-of-a-mail-item</remarks>
     ''' <returns></returns>
-    Friend Function GetSenderSMTPAddress(EMail As Outlook.MailItem) As String
+    Friend Function GetSenderSMTPAddress(EMail As MailItem) As String
 
         If EMail IsNot Nothing Then
             If EMail.SenderEmailType = "EX" Then
-                Dim Adresseintrag As Outlook.AddressEntry = EMail.Sender
+                Dim Adresseintrag As AddressEntry = EMail.Sender
 
                 Select Case Adresseintrag?.AddressEntryUserType
-                    Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
-                        Dim ExchangeUser As Outlook.ExchangeUser = Adresseintrag.GetExchangeUser()
+                    Case OlAddressEntryUserType.olExchangeUserAddressEntry, OlAddressEntryUserType.olExchangeRemoteUserAddressEntry
+                        Dim ExchangeUser As ExchangeUser = Adresseintrag.GetExchangeUser()
 
                         If ExchangeUser IsNot Nothing Then
                             Return ExchangeUser.PrimarySmtpAddress
@@ -576,7 +590,7 @@ Friend Module KontaktFunktionen
         End If
     End Function
 
-    Friend Async Sub StartKontaktRWS(olContact As Outlook.ContactItem, TelNr As Telefonnummer)
+    Friend Async Sub StartKontaktRWS(olContact As ContactItem, TelNr As Telefonnummer)
 
         With olContact
             Dim vCard As String

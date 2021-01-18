@@ -45,9 +45,9 @@ Friend Module Fenster
     ''' Um den ganzen vorgang abschließen zu können, wird der Inspector zwischengespeichert und nachdem der Anrufmonitor eingeblendet wurde wieder aktiviert.
     ''' </summary>
     ''' <param name="Activate">Gibt an, ob der Inspector aktiviert werden soll (true) oder ob er gespeichert werden soll (false)</param>
-    Friend Sub KeepoInspActivated(ByVal Activate As Boolean)
+    Friend Sub KeepoInspActivated(Activate As Boolean)
 
-        If ThisAddIn.POutookApplication IsNot Nothing Then
+        If ThisAddIn.OutookApplication IsNot Nothing Then
             If Activate Then
                 If OInsp IsNot Nothing Then
                     If Not OInsp.WindowState = Outlook.OlWindowState.olMinimized Then
@@ -57,7 +57,7 @@ Friend Module Fenster
                 End If
             Else
                 If OInsp Is Nothing Then
-                    With ThisAddIn.POutookApplication
+                    With ThisAddIn.OutookApplication
                         If .ActiveWindow Is .ActiveInspector Then
                             If UnSaveMethods.GetWindowText(UnSaveMethods.GetForegroundWindow) = .ActiveInspector.Caption Then
                                 OInsp = .ActiveInspector()

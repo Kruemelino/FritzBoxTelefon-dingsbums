@@ -190,6 +190,38 @@ Public Class OptionenViewModel
 
 #End Region
 
+#Region "Stoppuhr"
+    Private _CBStoppUhrEinblenden As Boolean
+    Private _CBStoppUhrAusblenden As Boolean
+    Private _TBStoppUhrAusblendverzögerung As Integer
+    Public Property CBStoppUhrEinblenden As Boolean
+        Get
+            Return _CBStoppUhrEinblenden
+        End Get
+        Set
+            SetProperty(_CBStoppUhrEinblenden, Value)
+        End Set
+    End Property
+
+    Public Property CBStoppUhrAusblenden As Boolean
+        Get
+            Return _CBStoppUhrAusblenden
+        End Get
+        Set
+            SetProperty(_CBStoppUhrAusblenden, Value)
+        End Set
+    End Property
+
+    Public Property TBStoppUhrAusblendverzögerung As Integer
+        Get
+            Return _TBStoppUhrAusblendverzögerung
+        End Get
+        Set
+            SetProperty(_TBStoppUhrAusblendverzögerung, Value)
+        End Set
+    End Property
+#End Region
+
 #Region "Einstellung für die Wählhilfe"
     Private _CBForceDialLKZ As Boolean
     Private _TBAmt As String
@@ -440,7 +472,6 @@ Public Class OptionenViewModel
 
     Public Sub New()
         LadeDaten()
-
     End Sub
 
     ''' <summary>
@@ -461,6 +492,10 @@ Public Class OptionenViewModel
 
             End With
         Next
+
+        ' Landes- und Ortskennzahl aus der Telefonie holen
+        TBLandesKZ = XMLData.PTelefonie.LKZ
+        TBOrtsKZ = XMLData.PTelefonie.OKZ
 
         ' Anrufmonitor Liste zu überwachender Telefonnummern
         TelNrListe = New ObservableCollectionEx(Of Telefonnummer)
@@ -493,6 +528,10 @@ Public Class OptionenViewModel
                 End With
             End If
         Next
+
+        ' Landes- und Ortskennzahl in die Telefonie schreiben
+        XMLData.PTelefonie.LKZ = TBLandesKZ
+        XMLData.PTelefonie.OKZ = TBOrtsKZ
 
         ' Gültige IP-Adresse für die Fritz!Box ablegen
         XMLData.POptionen.ValidFBAdr = ValidIP(XMLData.POptionen.TBFBAdr)

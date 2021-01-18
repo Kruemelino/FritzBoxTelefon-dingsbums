@@ -12,11 +12,11 @@ Public Class Service
 
     <XmlIgnore> Friend Property SCPD As ServiceControlProtocolDefinition
 
-    Friend Function GetActionByName(ByVal ActionName As String) As Action
+    Friend Function GetActionByName(ActionName As String) As Action
         Return SCPD?.ActionList.Find(Function(Action) Action.Name = ActionName)
     End Function
 
-    Friend Function ActionExists(ByVal ActionName As String) As Boolean
+    Friend Function ActionExists(ActionName As String) As Boolean
         If SCPD Is Nothing Then
             SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.DfltSOAPPort}{SCPDURL}")
         End If
@@ -25,7 +25,7 @@ Public Class Service
 
     End Function
 
-    Friend Function CheckInput(ByVal ActionName As String, ByVal InputData As Hashtable) As Boolean
+    Friend Function CheckInput(ActionName As String, InputData As Hashtable) As Boolean
         CheckInput = False
         Dim ActionInputData As Hashtable = GetActionByName(ActionName).GetInputArguments
 
@@ -49,7 +49,7 @@ Public Class Service
         ActionInputData.Clear()
     End Function
 
-    Friend Function Start(ByVal [Action] As Action, ByVal InputArguments As Hashtable) As Hashtable
+    Friend Function Start([Action] As Action, InputArguments As Hashtable) As Hashtable
         Dim ReturnXMLDox As New XmlDocument
         Dim OutputHashTable As New Hashtable
 
@@ -77,7 +77,7 @@ Public Class Service
     ''' </summary>
     ''' <param name="Action">Die <paramref name="Action"/>, die ausgeführt werden soll.</param>
     ''' <param name="InputValues">Die Daten, welche müt übergeben werden sollen.</param>
-    Private Function GetRequest(ByVal Action As Action, ByVal InputValues As Hashtable) As XmlDocument
+    Private Function GetRequest(Action As Action, InputValues As Hashtable) As XmlDocument
 
         '	<?xml version="1.0" encoding="utf-8"?>
         '	<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">

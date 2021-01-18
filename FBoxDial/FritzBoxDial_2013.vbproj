@@ -302,7 +302,11 @@
     <Compile Include="Formulare\WPF\Optionen\UserCtrlKontakterstellung.xaml.vb">
       <DependentUpon>UserCtrlKontakterstellung.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\WPF\StoppUhrViewModel.vb" />
     <Compile Include="Formulare\WPF\WählClientViewModel.vb" />
+    <Compile Include="Formulare\WPF\StoppUhrWPF.xaml.vb">
+      <DependentUpon>StoppUhrWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Formulare\WPF\WählclientWPF.xaml.vb">
       <DependentUpon>WählclientWPF.xaml</DependentUpon>
     </Compile>
@@ -315,6 +319,7 @@
     <Compile Include="Formulare\WPF\AnrListWPF.xaml.vb">
       <DependentUpon>AnrListWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelNrList.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\Device.vb" />
@@ -325,7 +330,7 @@
     <Compile Include="Fritz!Box\SOAP\SOAPXML\StateVariable.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\SystemVersion.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPXML\TR64Desc.vb" />
-    <Compile Include="Kontakte\KontaktGespeichert.vb" />
+    <Compile Include="Kontakte\KontaktInspector.vb" />
     <Compile Include="Formulare\FormAnrList.designer.vb">
       <DependentUpon>FormAnrList.vb</DependentUpon>
     </Compile>
@@ -363,10 +368,9 @@
     <Compile Include="Formulare\ListControl\TelListControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Fritz!Box\Anrufliste\FritzBoxAnrufliste.vb" />
-    <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCall.vb" />
-    <Compile Include="Fritz!Box\Anrufliste\FritzBoxXMLCallList.vb" />
-    <Compile Include="Fritz!Box\FritzBoxLogin.vb" />
+    <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLCall.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLCallList.vb" />
     <Compile Include="Fritz!Box\JSON.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
@@ -381,6 +385,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
@@ -388,15 +393,15 @@
     <Compile Include="Fritz!Box\SOAP\FritzBoxSOAP.vb" />
     <Compile Include="Fritz!Box\SOAP\FritzBoxInformations.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLEmail.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLKontakt.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLNummer.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLPerson.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLServices.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLTelefonbuch.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLTelefonbücher.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxXMLTelefonie.vb" />
-    <Compile Include="Fritz!Box\Telefonbuch\FritzBoxTelefonbuch.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLEmail.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLKontakt.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLNummer.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLPerson.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLServices.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelefonbuch.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelefonbücher.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelefonie.vb" />
+    <Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
     <Compile Include="Kontakte\KontaktIndizierer.vb" />
@@ -418,13 +423,14 @@
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\SOAP\SOAPBaseFunctions.vb" />
+    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelNr.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
     <Compile Include="Telefonie\Telefonie.vb" />
     <Compile Include="Telefonie\Telefoniegerät.vb" />
     <Compile Include="Telefonie\Telefonnummer.vb" />
-    <Compile Include="Telefonie\VIP.vb" />
+    <Compile Include="Telefonie\TelListen.vb" />
     <Compile Include="Telefonie\VIPEntry.vb" />
     <Compile Include="Telefonie\Vorwahlen.vb" />
     <Compile Include="ThisAddIn.vb">
@@ -584,6 +590,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Formulare\WPF\StoppUhrWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Formulare\WPF\WählclientWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -600,6 +610,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Formulare\WPF\AnrList\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

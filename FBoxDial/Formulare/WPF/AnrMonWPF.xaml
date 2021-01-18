@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:FBoxDial"
+        xmlns:fbd="clr-namespace:FBoxDial"
         mc:Ignorable="d"
         Height="100" Width="400" Focusable="False" IsTabStop="False" WindowStyle="None" Name="AnrMon" MinWidth="400" MinHeight="100" ResizeMode="NoResize"
-        d:DataContext="{d:DesignInstance Type=viewModels:AnrMonViewModel, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type=fbd:AnrMonViewModel, IsDesignTimeCreatable=True}">
     
     <Window.Resources>
         <ResourceDictionary>
@@ -17,7 +17,7 @@
     </Window.Resources>
     
     <Window.DataContext>
-        <viewModels:AnrMonViewModel/>
+        <fbd:AnrMonViewModel/>
     </Window.DataContext>
 
     <Border BorderBrush="DimGray" BorderThickness="2">

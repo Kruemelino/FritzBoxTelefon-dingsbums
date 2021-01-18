@@ -54,6 +54,7 @@
                     <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name"/>
                     <DataGridTextColumn Binding="{Binding Path=TelTyp}" Header="Typ"/>
                     <DataGridTextColumn Binding="{Binding Path=StrAusTelNr}" Header="Ausgehend"/>
+                    <DataGridTextColumn Binding="{Binding Path=UPnPDialport}" Header="Dialport"/>
                     
                     <DataGridTemplateColumn Header="Eingehend">
                         <DataGridTemplateColumn.CellTemplate>

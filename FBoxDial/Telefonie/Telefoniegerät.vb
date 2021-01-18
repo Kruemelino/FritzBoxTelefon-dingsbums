@@ -4,8 +4,8 @@ Imports FBoxDial.DfltWerteTelefonie
 <Serializable()>
 Public Class Telefoniegerät
     Inherits NotifyBase
-
     Implements IEquatable(Of Telefoniegerät)
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Public Sub New()
 
@@ -55,6 +55,20 @@ Public Class Telefoniegerät
             End Select
         End Get
     End Property
+
+    Friend Sub SetUPnPDialportFallback()
+        Select Case TelTyp
+            Case TelTypen.FON
+                UPnPDialport = $"FON{Dialport}: {Name}"
+            Case TelTypen.DECT
+                UPnPDialport = $"DECT: {Name}"
+            Case TelTypen.S0
+                UPnPDialport = $"ISDN: {Name}"
+            Case Else
+                UPnPDialport = DfltStringEmpty
+        End Select
+        NLogger.Warn($"UPnPDialport konnte für Telefon {Name} ({TelTyp}) nicht ermittelt werden. Setze Fallbackwert: {UPnPDialport}")
+    End Sub
 
 #Region "Equals"
     Public Overrides Function Equals(obj As Object) As Boolean

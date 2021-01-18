@@ -9,12 +9,12 @@ Partial Public Class OptionsTextBox
         Get
             Return CStr(GetValue(LabelProperty))
         End Get
-        Set(ByVal value As String)
-            SetValue(LabelProperty, value)
+        Set
+            SetValue(LabelProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register("Label", GetType(String), GetType(OptionsTextBox), New PropertyMetadata(""))
+    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register(NameOf(Label), GetType(String), GetType(OptionsTextBox), New PropertyMetadata(""))
 
 #End Region
 
@@ -23,12 +23,12 @@ Partial Public Class OptionsTextBox
         Get
             Return CStr(GetValue(ValueProperty))
         End Get
-        Set(ByVal value As String)
-            SetValue(ValueProperty, value)
+        Set
+            SetValue(ValueProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly ValueProperty As DependencyProperty = DependencyProperty.Register("Value", GetType(String), GetType(OptionsTextBox), New PropertyMetadata(""))
+    Public Shared ReadOnly ValueProperty As DependencyProperty = DependencyProperty.Register(NameOf(Value), GetType(String), GetType(OptionsTextBox), New PropertyMetadata(""))
 
 #End Region
 

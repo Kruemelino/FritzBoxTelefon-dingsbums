@@ -12,15 +12,15 @@ Partial Public Class OptionsPasswordBox
         Get
             Return CStr(GetValue(LabelProperty))
         End Get
-        Set(ByVal value As String)
-            SetValue(LabelProperty, value)
+        Set
+            SetValue(LabelProperty, Value)
         End Set
     End Property
 
     ''' <summary>
     ''' Identified the Label dependency property
     ''' </summary>
-    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register("Label", GetType(String), GetType(OptionsPasswordBox), New PropertyMetadata(""))
+    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register(NameOf(Label), GetType(String), GetType(OptionsPasswordBox), New PropertyMetadata(""))
 
 #End Region
 
@@ -33,15 +33,15 @@ Partial Public Class OptionsPasswordBox
         Get
             Return CStr(GetValue(ValueProperty))
         End Get
-        Set(ByVal value As String)
-            SetValue(ValueProperty, value)
+        Set
+            SetValue(ValueProperty, Value)
         End Set
     End Property
 
     ''' <summary>
     ''' Identified the Label dependency property
     ''' </summary>
-    Public Shared ReadOnly ValueProperty As DependencyProperty = DependencyProperty.Register("Value", GetType(String), GetType(OptionsPasswordBox), New PropertyMetadata(""))
+    Public Shared ReadOnly ValueProperty As DependencyProperty = DependencyProperty.Register(NameOf(Value), GetType(String), GetType(OptionsPasswordBox), New PropertyMetadata(""))
 
 #End Region
 

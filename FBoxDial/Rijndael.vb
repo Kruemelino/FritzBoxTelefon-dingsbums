@@ -10,7 +10,7 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrTextToBeEncrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die verschlüsselte Zeichenfolge</returns>
-    Friend Function EncryptString128Bit(ByVal vstrTextToBeEncrypted As String, ByVal vstrDeCryptKey As String) As String
+    Friend Function EncryptString128Bit(vstrTextToBeEncrypted As String, vstrDeCryptKey As String) As String
         ' Standardwert
         EncryptString128Bit = DfltStrErrorMinusOne
 
@@ -51,7 +51,7 @@ Friend Class Rijndael
     ''' </summary>
     ''' <param name="vstrStringToBeDecrypted">Verschlüsselte Zeichenfolge</param>
     ''' <returns>Die entschlüsselte Zeichenfolge</returns>
-    Friend Function DecryptString128Bit(ByVal vstrStringToBeDecrypted As String, ByVal vstrDeCryptKey As String) As String
+    Friend Function DecryptString128Bit(vstrStringToBeDecrypted As String, vstrDeCryptKey As String) As String
         ' Lese den Key aus der Registry aus
         Dim DecryptionSaltKey As String = GetSetting(My.Resources.strDefShortName, DefaultWerte.DfltOptions, vstrDeCryptKey, DfltStrErrorMinusOne)
         ' Standardwert
@@ -87,7 +87,7 @@ Friend Class Rijndael
     End Function
 
     <DebuggerStepThrough>
-    Private Function GetRndKey(ByVal maximumSaltLength As Integer) As Byte()
+    Private Function GetRndKey(maximumSaltLength As Integer) As Byte()
         Dim RndKey(maximumSaltLength - 1) As Byte
         Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
             rng.GetNonZeroBytes(RndKey)
@@ -95,7 +95,7 @@ Friend Class Rijndael
         Return RndKey
     End Function
     <DebuggerStepThrough>
-    Private Function GetSalt(ByVal maximumSaltLength As Integer) As Byte()
+    Private Function GetSalt(maximumSaltLength As Integer) As Byte()
         Dim Salt(maximumSaltLength - 1) As Byte
         Using rng As RandomNumberGenerator = New RNGCryptoServiceProvider
             rng.GetNonZeroBytes(Salt)
@@ -103,7 +103,7 @@ Friend Class Rijndael
         Return Salt
     End Function
 
-    Friend Function GetMd5Hash(ByVal input As String, ByVal Enkodierung As Encoding) As String
+    Friend Function GetMd5Hash(input As String, Enkodierung As Encoding) As String
 
         Using md5 As MD5 = New MD5CryptoServiceProvider
             Dim sBuilder As New StringBuilder()

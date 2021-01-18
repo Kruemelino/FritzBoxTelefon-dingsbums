@@ -5,7 +5,7 @@ Imports System.Xml
 Friend Module SOAPBaseFunctions
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "HTTP"
-    Friend Function FritzBoxGet(ByVal Link As String, ByRef FBError As Boolean) As String
+    Friend Function FritzBoxGet(Link As String, ByRef FBError As Boolean) As String
         Dim UniformResourceIdentifier As New Uri(Link)
         Dim retVal As String = DfltStringEmpty
 
@@ -46,7 +46,7 @@ Friend Module SOAPBaseFunctions
         Return retVal
     End Function
 
-    Friend Function FritzBoxPOST(ByVal SOAPAction As String, ByVal urlFull As String, ByVal ServiceType As String, ByVal SOAPXML As XmlDocument) As String
+    Friend Function FritzBoxPOST(SOAPAction As String, urlFull As String, ServiceType As String, SOAPXML As XmlDocument) As String
 
         FritzBoxPOST = DfltStringEmpty
         Dim ErrorText As String = DfltStringEmpty
@@ -110,7 +110,7 @@ Friend Module SOAPBaseFunctions
     End Function
 #End Region
 
-    Friend Function GetSOAPXMLFile(ByVal Pfad As String) As XmlDocument
+    Friend Function GetSOAPXMLFile(Pfad As String) As XmlDocument
         Dim Fehler As Boolean = True
         Dim retVal As String
         Dim XMLFile As New XmlDocument

@@ -10,12 +10,12 @@ Partial Public Class OptionsComboBox
         Get
             Return CStr(GetValue(LabelProperty))
         End Get
-        Set(value As String)
-            SetValue(LabelProperty, value)
+        Set
+            SetValue(LabelProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register("Label", GetType(String), GetType(OptionsComboBox), New PropertyMetadata(""))
+    Public Shared ReadOnly LabelProperty As DependencyProperty = DependencyProperty.Register(NameOf(Label), GetType(String), GetType(OptionsComboBox), New PropertyMetadata(""))
 
 #End Region
 
@@ -25,12 +25,12 @@ Partial Public Class OptionsComboBox
         Get
             Return CStr(GetValue(DisplayMemberPathProperty))
         End Get
-        Set(value As String)
-            SetValue(DisplayMemberPathProperty, value)
+        Set
+            SetValue(DisplayMemberPathProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly DisplayMemberPathProperty As DependencyProperty = DependencyProperty.Register("DisplayMemberPath", GetType(String), GetType(OptionsComboBox), New PropertyMetadata(""))
+    Public Shared ReadOnly DisplayMemberPathProperty As DependencyProperty = DependencyProperty.Register(NameOf(DisplayMemberPath), GetType(String), GetType(OptionsComboBox), New PropertyMetadata(""))
 
 #End Region
 
@@ -40,12 +40,12 @@ Partial Public Class OptionsComboBox
         Get
             Return CStr(GetValue(SelectedValuePathProperty))
         End Get
-        Set(value As String)
-            SetValue(SelectedValuePathProperty, value)
+        Set
+            SetValue(SelectedValuePathProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly SelectedValuePathProperty As DependencyProperty = DependencyProperty.Register("SelectedValuePath", GetType(String), GetType(OptionsComboBox), New PropertyMetadata(""))
+    Public Shared ReadOnly SelectedValuePathProperty As DependencyProperty = DependencyProperty.Register(NameOf(SelectedValuePath), GetType(String), GetType(OptionsComboBox), New PropertyMetadata(""))
 
 #End Region
 
@@ -55,12 +55,12 @@ Partial Public Class OptionsComboBox
         Get
             Return GetValue(SelectedValueProperty)
         End Get
-        Set(value As Object)
-            SetValue(SelectedValueProperty, value)
+        Set
+            SetValue(SelectedValueProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly SelectedValueProperty As DependencyProperty = DependencyProperty.Register("SelectedValue", GetType(Object), GetType(OptionsComboBox), New PropertyMetadata(Nothing))
+    Public Shared ReadOnly SelectedValueProperty As DependencyProperty = DependencyProperty.Register(NameOf(SelectedValue), GetType(Object), GetType(OptionsComboBox), New PropertyMetadata(Nothing))
 
 #End Region
 
@@ -70,12 +70,12 @@ Partial Public Class OptionsComboBox
         Get
             Return GetValue(ItemsSourceProperty)
         End Get
-        Set(value As Object)
-            SetValue(ItemsSourceProperty, value)
+        Set
+            SetValue(ItemsSourceProperty, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly ItemsSourceProperty As DependencyProperty = DependencyProperty.Register("ItemsSource", GetType(Object), GetType(OptionsComboBox), New PropertyMetadata(Nothing))
+    Public Shared ReadOnly ItemsSourceProperty As DependencyProperty = DependencyProperty.Register(NameOf(ItemsSource), GetType(Object), GetType(OptionsComboBox), New PropertyMetadata(Nothing))
 
 #End Region
 

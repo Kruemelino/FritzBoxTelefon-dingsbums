@@ -219,7 +219,7 @@ Imports System.Drawing.Drawing2D
         Paint_Telefonbuch(gfx)
     End Sub
 
-    Private Sub DrawRectangleF(ByVal g As Graphics, ByVal rect As RectangleF, ByVal color As Color)
+    Private Sub DrawRectangleF(g As Graphics, rect As RectangleF, color As Color)
         Using pen As Pen = New Pen(color, 1)
             g.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height)
         End Using

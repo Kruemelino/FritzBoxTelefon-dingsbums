@@ -25,9 +25,9 @@ Partial Public NotInheritable Class ThisAddIn
     Friend WithEvents Application As Microsoft.Office.Interop.Outlook.Application
 
     '''
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
-    Public Sub New(ByVal factory As Global.Microsoft.Office.Tools.Outlook.Factory, ByVal serviceProvider As Global.System.IServiceProvider)
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)>
+    Public Sub New(factory As Global.Microsoft.Office.Tools.Outlook.Factory, serviceProvider As Global.System.IServiceProvider)
         MyBase.New(factory, serviceProvider, "AddIn", "ThisAddIn")
         Globals.Factory = factory
     End Sub
@@ -93,23 +93,23 @@ Partial Public NotInheritable Class ThisAddIn
     End Sub
 
     '''
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
-    Private Sub StartCaching(ByVal MemberName As String)
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+    Private Sub StartCaching(MemberName As String)
         Me.DataHost.StartCaching(Me, MemberName)
     End Sub
 
     '''
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
-    Private Sub StopCaching(ByVal MemberName As String)
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+    Private Sub StopCaching(MemberName As String)
         Me.DataHost.StopCaching(Me, MemberName)
     End Sub
 
     '''
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
-    Private Function IsCached(ByVal MemberName As String) As Boolean
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+    Private Function IsCached(MemberName As String) As Boolean
         Return Me.DataHost.IsCached(Me, MemberName)
     End Function
 
@@ -147,9 +147,9 @@ Partial Public NotInheritable Class ThisAddIn
     End Sub
 
     '''
-    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
-    Private Function NeedsFill(ByVal MemberName As String) As Boolean
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+    Private Function NeedsFill(MemberName As String) As Boolean
         Return Me.DataHost.NeedsFill(Me, MemberName)
     End Function
 
@@ -185,9 +185,9 @@ Partial Friend NotInheritable Class Globals
         Get
             Return _ThisAddIn
         End Get
-        Set(ByVal value As ThisAddIn)
+        Set
             If (_ThisAddIn Is Nothing) Then
-                _ThisAddIn = value
+                _ThisAddIn = Value
             Else
                 Throw New System.NotSupportedException()
             End If
@@ -198,9 +198,9 @@ Partial Friend NotInheritable Class Globals
         Get
             Return _factory
         End Get
-        Set(ByVal value As Global.Microsoft.Office.Tools.Outlook.Factory)
+        Set
             If (_factory Is Nothing) Then
-                _factory = value
+                _factory = Value
             Else
                 Throw New System.NotSupportedException()
             End If
@@ -233,17 +233,17 @@ Partial Friend NotInheritable Class ThisRibbonCollection
     Inherits Microsoft.Office.Tools.Ribbon.RibbonCollectionBase
 
     '''
-    Friend Sub New(ByVal factory As Global.Microsoft.Office.Tools.Ribbon.RibbonFactory)
+    Friend Sub New(factory As Global.Microsoft.Office.Tools.Ribbon.RibbonFactory)
         MyBase.New(factory)
     End Sub
 
-    Default Friend Overloads ReadOnly Property Item(ByVal inspector As Microsoft.Office.Interop.Outlook.Inspector) As ThisRibbonCollection
+    Default Friend Overloads ReadOnly Property Item(inspector As Microsoft.Office.Interop.Outlook.Inspector) As ThisRibbonCollection
         Get
             Return Me.GetRibbonContextCollection(Of ThisRibbonCollection)(inspector)
         End Get
     End Property
 
-    Default Friend Overloads ReadOnly Property Item(ByVal explorer As Microsoft.Office.Interop.Outlook.Explorer) As ThisRibbonCollection
+    Default Friend Overloads ReadOnly Property Item(explorer As Microsoft.Office.Interop.Outlook.Explorer) As ThisRibbonCollection
         Get
             Return Me.GetRibbonContextCollection(Of ThisRibbonCollection)(explorer)
         End Get
@@ -256,17 +256,17 @@ Partial Friend NotInheritable Class ThisFormRegionCollection
     Inherits Microsoft.Office.Tools.Outlook.FormRegionCollectionBase
 
     '''
-    Public Sub New(ByVal list As System.Collections.Generic.IList(Of Microsoft.Office.Tools.Outlook.IFormRegion))
+    Public Sub New(list As System.Collections.Generic.IList(Of Microsoft.Office.Tools.Outlook.IFormRegion))
         MyBase.New(list)
     End Sub
 
-    Default Friend Overloads ReadOnly Property Item(ByVal explorer As Microsoft.Office.Interop.Outlook.Explorer) As WindowFormRegionCollection
+    Default Friend Overloads ReadOnly Property Item(explorer As Microsoft.Office.Interop.Outlook.Explorer) As WindowFormRegionCollection
         Get
             Return CType(Globals.ThisAddIn.GetFormRegions(explorer, GetType(WindowFormRegionCollection)), WindowFormRegionCollection)
         End Get
     End Property
 
-    Default Friend Overloads ReadOnly Property Item(ByVal inspector As Microsoft.Office.Interop.Outlook.Inspector) As WindowFormRegionCollection
+    Default Friend Overloads ReadOnly Property Item(inspector As Microsoft.Office.Interop.Outlook.Inspector) As WindowFormRegionCollection
 
         Get
             Return CType(Globals.ThisAddIn.GetFormRegions(inspector, GetType(WindowFormRegionCollection)), WindowFormRegionCollection)
@@ -280,7 +280,7 @@ Partial Friend NotInheritable Class WindowFormRegionCollection
     Inherits Microsoft.Office.Tools.Outlook.FormRegionCollectionBase
 
     '''
-    Public Sub New(ByVal list As System.Collections.Generic.IList(Of Microsoft.Office.Tools.Outlook.IFormRegion))
+    Public Sub New(list As System.Collections.Generic.IList(Of Microsoft.Office.Tools.Outlook.IFormRegion))
         MyBase.New(list)
     End Sub
 End Class

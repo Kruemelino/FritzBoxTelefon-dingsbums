@@ -11,8 +11,8 @@ Public Class WählClientViewModel
         Get
             Return _Status
         End Get
-        Set(value As String)
-            SetProperty(_Status, value)
+        Set
+            SetProperty(_Status, Value)
         End Set
     End Property
 
@@ -21,8 +21,8 @@ Public Class WählClientViewModel
         Get
             Return _Name
         End Get
-        Set(value As String)
-            SetProperty(_Name, value)
+        Set
+            SetProperty(_Name, Value)
         End Set
     End Property
 
@@ -31,8 +31,38 @@ Public Class WählClientViewModel
         Get
             Return _CLIR
         End Get
-        Set(value As Boolean)
-            SetProperty(_CLIR, value)
+        Set
+            SetProperty(_CLIR, Value)
+        End Set
+    End Property
+
+    Private _CheckMobil As Boolean
+    Public Property CheckMobil As Boolean
+        Get
+            Return _CheckMobil
+        End Get
+        Set
+            SetProperty(_CheckMobil, Value)
+        End Set
+    End Property
+
+    Private _IsCancelEnabled As Boolean
+    Public Property IsCancelEnabled As Boolean
+        Get
+            Return _IsCancelEnabled
+        End Get
+        Set
+            SetProperty(_IsCancelEnabled, Value)
+        End Set
+    End Property
+
+    Private _IsDirektWahl As Boolean
+    Public Property IsDirektWahl As Boolean
+        Get
+            Return _IsDirektWahl
+        End Get
+        Set
+            SetProperty(_IsDirektWahl, Value)
         End Set
     End Property
 
@@ -41,8 +71,8 @@ Public Class WählClientViewModel
         Get
             Return _OKontakt
         End Get
-        Set(value As Outlook.ContactItem)
-            SetProperty(_OKontakt, value)
+        Set
+            SetProperty(_OKontakt, Value)
         End Set
     End Property
 
@@ -51,8 +81,8 @@ Public Class WählClientViewModel
         Get
             Return _OExchangeNutzer
         End Get
-        Set(value As Outlook.ExchangeUser)
-            SetProperty(_OExchangeNutzer, value)
+        Set
+            SetProperty(_OExchangeNutzer, Value)
         End Set
     End Property
 
@@ -64,8 +94,8 @@ Public Class WählClientViewModel
         Get
             Return _DialNumberList
         End Get
-        Set(value As ObservableCollectionEx(Of Telefonnummer))
-            SetProperty(_DialNumberList, value)
+        Set
+            SetProperty(_DialNumberList, Value)
         End Set
     End Property
 
@@ -74,8 +104,8 @@ Public Class WählClientViewModel
         Get
             Return _DialDirektWahlList
         End Get
-        Set(value As ObservableCollectionEx(Of Telefonnummer))
-            SetProperty(_DialDirektWahlList, value)
+        Set
+            SetProperty(_DialDirektWahlList, Value)
         End Set
     End Property
 
@@ -84,8 +114,8 @@ Public Class WählClientViewModel
         Get
             Return _DialDeviceList
         End Get
-        Set(value As ObservableCollectionEx(Of Telefoniegerät))
-            SetProperty(_DialDeviceList, value)
+        Set
+            SetProperty(_DialDeviceList, Value)
         End Set
     End Property
 
@@ -94,8 +124,8 @@ Public Class WählClientViewModel
         Get
             Return _TelGerät
         End Get
-        Set(value As Telefoniegerät)
-            SetProperty(_TelGerät, value)
+        Set
+            SetProperty(_TelGerät, Value)
         End Set
     End Property
 
@@ -104,8 +134,8 @@ Public Class WählClientViewModel
         Get
             Return _Kontaktbild
         End Get
-        Set(value As BitmapImage)
-            SetProperty(_Kontaktbild, value)
+        Set
+            SetProperty(_Kontaktbild, Value)
         End Set
     End Property
 
@@ -121,7 +151,6 @@ Public Class WählClientViewModel
     End Property
 
     Private _TelNr As Telefonnummer
-
     ''' <summary>
     ''' Telefonnummer, die gewählt werden soll.
     ''' </summary>
@@ -136,88 +165,90 @@ Public Class WählClientViewModel
 #End Region
 
     Friend Property Wählclient As FritzBoxWählClient
-    Public Sub New()
-
-    End Sub
-
-    Public Sub New(FBWählclient As FritzBoxWählClient)
-        Wählclient = FBWählclient
-    End Sub
 
     ''' <summary>
     ''' Sammelt alle Kontaktdaten des Outlook-Kontaktes als <see cref="Outlook.ContactItem"/> zusammen.
     ''' </summary>
-    ''' <param name="oContact">Outlook Kontakt, der eingeblendet werden soll.</param>
-    Friend Sub SetOutlookKontakt(oContact As Outlook.ContactItem)
+    Friend WriteOnly Property OutlookKontakt As Outlook.ContactItem
+        Set
+            ' Direktwahl Flag setzen
+            IsDirektWahl = False
 
+            ' Outlook Kontakt im ViewModel setzen
+            OKontakt = Value
 
-        ' Outlook Kontakt im ViewModel setzen
-        OKontakt = oContact
+            ' Telefonnummern des Kontaktes setzen 
+            DialNumberList.AddRange(GetKontaktTelNrList(Value))
 
-        ' Telefonnummern des Kontaktes setzen 
-        DialNumberList.AddRange(GetKontaktTelNrList(oContact))
+            ' Kopfdaten setzen
+            Name = WählClientFormText($"{Value.FullName}{If(Value.CompanyName.IsNotStringEmpty, $" ({Value.CompanyName})", DfltStringEmpty)}")
 
-        ' Kopfdaten setzen
-        Name = WählClientFormText($"{oContact.FullName}{If(oContact.CompanyName.IsNotStringEmpty, $" ({oContact.CompanyName})", DfltStringEmpty)}")
+            ' Kontaktbild anzeigen
+            Dim BildPfad As String
 
-        ' Kontaktbild anzeigen
-        Dim BildPfad As String
+            BildPfad = KontaktFunktionen.KontaktBild(Value)
 
-        BildPfad = KontaktFunktionen.KontaktBild(oContact)
-
-        If BildPfad.IsNotStringEmpty Then
-            ' Kontaktbild laden
-            Kontaktbild = New BitmapImage
-            With Kontaktbild
-                .BeginInit()
-                .CacheOption = BitmapCacheOption.OnLoad
-                .UriSource = New Uri(BildPfad)
-                .EndInit()
-            End With
-            'Lösche das Kontaktbild 
-            DelKontaktBild(BildPfad)
-        End If
-
-    End Sub
+            If BildPfad.IsNotStringEmpty Then
+                ' Kontaktbild laden
+                Kontaktbild = New BitmapImage
+                With Kontaktbild
+                    .BeginInit()
+                    .CacheOption = BitmapCacheOption.OnLoad
+                    .UriSource = New Uri(BildPfad)
+                    .EndInit()
+                End With
+                'Lösche das Kontaktbild 
+                DelKontaktBild(BildPfad)
+            End If
+        End Set
+    End Property
 
     ''' <summary>
     ''' Sammelt alle Kontaktdaten des Outlook-ExchangeNutzers als <see cref="Outlook.ExchangeUser"/> zusammen.
     ''' </summary>
-    ''' <param name="oExchangeUser">Outlook-ExchangeNutzers, der eingeblendet werden soll.</param>
-    Friend Sub SetOutlookKontakt(oExchangeUser As Outlook.ExchangeUser)
+    Friend WriteOnly Property ExchangeKontakt As Outlook.ExchangeUser
+        Set
+            ' Direktwahl Flag setzen
+            IsDirektWahl = False
 
-        ' Outlook ExchangeNutzer im ViewModel setzen
-        OExchangeNutzer = oExchangeUser
+            ' Outlook ExchangeNutzer im ViewModel setzen
+            OExchangeNutzer = Value
 
-        ' Telefonnummern des Kontaktes setzen 
-        DialNumberList.AddRange(GetKontaktTelNrList(oExchangeUser))
+            ' Telefonnummern des Kontaktes setzen 
+            DialNumberList.AddRange(GetKontaktTelNrList(Value))
 
-        ' Kopfdaten setzen
-        Name = WählClientFormText($"{oExchangeUser.Name}{If(oExchangeUser.CompanyName.IsNotStringEmpty, $" ({oExchangeUser.CompanyName})", DfltStringEmpty)}")
+            ' Kopfdaten setzen
+            Name = WählClientFormText($"{Value.Name}{If(Value.CompanyName.IsNotStringEmpty, $" ({Value.CompanyName})", DfltStringEmpty)}")
+        End Set
+    End Property
 
-    End Sub
+    Friend WriteOnly Property Telefonnummer As Telefonnummer
+        Set
+            ' Direktwahl Flag setzen
+            IsDirektWahl = False
 
-    Friend Sub SetTelefonnummer(TelNr As Telefonnummer)
+            ' Telefonnummer setzen 
+            DialNumberList.Add(Value)
 
-        ' Telefonnummer setzen 
-        DialNumberList.Add(TelNr)
+            ' Kopfdaten setzen
+            Name = WählClientFormText(Value.Formatiert)
+        End Set
+    End Property
 
-        ' Kopfdaten setzen
-        Name = WählClientFormText(TelNr.Formatiert)
+    Friend WriteOnly Property SetDirektwahl As Boolean
+        Set
+            ' Direktwahl Flag setzen
+            IsDirektWahl = Value
+            ' Kopfdaten setzen
+            Name = WählClientFormText("Direktwahl")
 
-    End Sub
+            ' Wahlwiederhohlung in Combobox schreiben
+            If XMLData.PTelListen.CALLListe IsNot Nothing AndAlso XMLData.PTelListen.CALLListe.Any Then
+                DialDirektWahlList.AddRange(XMLData.PTelListen.GetTelNrList(XMLData.PTelListen.CALLListe))
+            End If
+        End Set
 
-    Friend Sub SetDirektwahl()
-
-        ' Kopfdaten setzen
-        Name = WählClientFormText("Direktwahl")
-
-        ' Wahlwiederhohlung in Combobox schreiben
-        If XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any Then
-            DialDirektWahlList.AddRange(XMLData.PTelefonie.GetTelNrList(XMLData.PTelefonie.CALLListe))
-        End If
-
-    End Sub
+    End Property
 End Class
 
 

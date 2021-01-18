@@ -34,18 +34,18 @@ Public Class OutlookOrdner
         Get
             Return GetOutlookFolder(FolderID, StoreID)
         End Get
-        Set(value As Outlook.MAPIFolder)
-            FolderID = value.EntryID
-            StoreID = value.StoreID
+        Set
+            FolderID = Value.EntryID
+            StoreID = Value.StoreID
         End Set
     End Property
 
-    Public Overloads Function Equals(ByVal other As OutlookOrdner) As Boolean Implements IEquatable(Of OutlookOrdner).Equals
+    Public Overloads Function Equals(other As OutlookOrdner) As Boolean Implements IEquatable(Of OutlookOrdner).Equals
         If other Is Nothing Then Return False
         Return FolderID.AreEqual(other.FolderID) And StoreID.AreEqual(other.StoreID) And Typ.Equals(other.Typ)
     End Function
 
-    Public Overloads Function Equals(ByVal other As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
+    Public Overloads Function Equals(other As Outlook.MAPIFolder, Verwendung As OutlookOrdnerVerwendung) As Boolean
         If other Is Nothing Then Return False
         Return FolderID.AreEqual(other.EntryID) And StoreID.AreEqual(other.StoreID) And Typ.Equals(Verwendung)
     End Function

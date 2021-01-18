@@ -48,13 +48,13 @@ Friend Class Phoner
     ''' Event zum setzen des Status
     ''' </summary>
     ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
-    Friend Event SetStatus(ByVal Status As String)
+    Friend Event SetStatus(Status As String)
 #End Region
     Friend Function CheckPhonerAuth() As Boolean
         Return DialPhoner(DfltStringEmpty, False, True)
     End Function
 
-    Friend Function Dial(ByVal DialCode As String, ByVal Hangup As Boolean) As Boolean
+    Friend Function Dial(DialCode As String, Hangup As Boolean) As Boolean
         Return DialPhoner(DialCode, Hangup, False)
     End Function
     ''' <summary>
@@ -64,7 +64,7 @@ Friend Class Phoner
     ''' <param name="Hangup">Angabe, ob der Rufaufbau beendet werden soll.</param>
     ''' <param name="Check">Angabe, ob nur die Authentifizierung mit Phoner überprüft werden soll.</param>
     ''' <returns></returns>
-    Private Function DialPhoner(ByVal DialCode As String, ByVal Hangup As Boolean, ByVal Check As Boolean) As Boolean
+    Private Function DialPhoner(DialCode As String, Hangup As Boolean, Check As Boolean) As Boolean
 
         DialPhoner = False
 

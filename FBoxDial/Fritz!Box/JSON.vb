@@ -317,7 +317,7 @@ Public Class TelNrList
         End Get
     End Property
 
-    Public Property Item(ByVal idx As Integer) As String
+    Public Property Item(idx As Integer) As String
         Get
             Select Case idx
                 Case 0
@@ -345,28 +345,28 @@ Public Class TelNrList
             End Select
             Return Item
         End Get
-        Set(ByVal value As String)
+        Set
             Select Case idx
                 Case 0
-                    TelNr0 = value
+                    TelNr0 = Value
                 Case 1
-                    TelNr1 = value
+                    TelNr1 = Value
                 Case 2
-                    TelNr2 = value
+                    TelNr2 = Value
                 Case 3
-                    TelNr3 = value
+                    TelNr3 = Value
                 Case 4
-                    TelNr4 = value
+                    TelNr4 = Value
                 Case 5
-                    TelNr5 = value
+                    TelNr5 = Value
                 Case 6
-                    TelNr6 = value
+                    TelNr6 = Value
                 Case 7
-                    TelNr7 = value
+                    TelNr7 = Value
                 Case 8
-                    TelNr8 = value
+                    TelNr8 = Value
                 Case 9
-                    TelNr9 = value
+                    TelNr9 = Value
             End Select
         End Set
     End Property
@@ -390,37 +390,26 @@ Public Class FritzBoxJSONUploadResult
     Public Property Ok() As Boolean
 End Class
 #End Region
-Public Class FritzBoxLokaleDaten
-    Public Property LKZPrefix() As String
-    Public Property LKZ() As String
-    Public Property OKZPrefix() As String
-    Public Property OKZ() As String
-End Class
+
 Public Class JSON
     Implements IDisposable
 
-    Public Function GetFirstValues(ByVal strJSON As String) As FritzBoxJSONTelNrT1
+    Public Function GetFirstValues(strJSON As String) As FritzBoxJSONTelNrT1
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelNrT1)(strJSON)
     End Function
 
-    Public Function GetSecondValues(ByVal strJSON As String) As FritzBoxJSONTelefone1
+    Public Function GetSecondValues(strJSON As String) As FritzBoxJSONTelefone1
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelefone1)(strJSON)
     End Function
 
-    Public Function GetThirdValues(ByVal strJSON As String) As FritzBoxJSONTelefone2
+    Public Function GetThirdValues(strJSON As String) As FritzBoxJSONTelefone2
         Return JsonConvert.DeserializeObject(Of FritzBoxJSONTelefone2)(strJSON)
     End Function
 
-    Public Function GetTelNrListJSON(ByVal strJSON As String) As TelNrList
+    Public Function GetTelNrListJSON(strJSON As String) As TelNrList
         Return JsonConvert.DeserializeObject(Of TelNrList)(strJSON)
     End Function
 
-    Public Function GetUploadResult(ByVal strJSON As String) As FritzBoxJSONUploadResult
-        Return JsonConvert.DeserializeObject(Of FritzBoxJSONUploadResult)(strJSON)
-    End Function
-    Public Function GetLocalValues(ByVal strJSON As String) As FritzBoxLokaleDaten
-        Return JsonConvert.DeserializeObject(Of FritzBoxLokaleDaten)(strJSON)
-    End Function
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.
 

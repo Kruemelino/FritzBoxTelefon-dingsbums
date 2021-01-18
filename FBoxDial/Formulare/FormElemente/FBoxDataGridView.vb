@@ -18,7 +18,7 @@ Imports System.Windows.Forms
     End Sub
 
 #Region "Spalten"
-    Friend Overloads Sub AddTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal AutoSizeMode As DataGridViewAutoSizeColumnMode)
+    Friend Overloads Sub AddTextColumn(Name As String, HeaderText As String, CellAlignment As DataGridViewContentAlignment, ValueType As Type, AutoSizeMode As DataGridViewAutoSizeColumnMode)
         Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
                                                                  .HeaderText = HeaderText,
                                                                  .DataPropertyName = Name,
@@ -35,7 +35,7 @@ Imports System.Windows.Forms
 
         Columns.Add(NewTextColumn)
     End Sub
-    Friend Overloads Sub AddEditTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal AutoSizeMode As DataGridViewAutoSizeColumnMode)
+    Friend Overloads Sub AddEditTextColumn(Name As String, HeaderText As String, CellAlignment As DataGridViewContentAlignment, ValueType As Type, AutoSizeMode As DataGridViewAutoSizeColumnMode)
         Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
                                                                  .HeaderText = HeaderText,
                                                                  .DataPropertyName = Name,
@@ -53,7 +53,7 @@ Imports System.Windows.Forms
         Columns.Add(NewTextColumn)
     End Sub
 
-    Friend Overloads Sub AddTextColumn(ByVal Name As String, ByVal HeaderText As String, ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal Width As Integer)
+    Friend Overloads Sub AddTextColumn(Name As String, HeaderText As String, CellAlignment As DataGridViewContentAlignment, ValueType As Type, Width As Integer)
         Dim NewTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
                                                                  .HeaderText = HeaderText,
                                                                  .DataPropertyName = Name,
@@ -71,7 +71,7 @@ Imports System.Windows.Forms
     End Sub
 
 
-    Friend Sub AddHiddenTextColumn(ByVal Name As String, ByVal ValueType As Type)
+    Friend Sub AddHiddenTextColumn(Name As String, ValueType As Type)
         Dim NewHiddenTextColumn As New DataGridViewTextBoxColumn With {.Name = Name,
                                                                        .DataPropertyName = Name,
                                                                        .Visible = False,
@@ -82,7 +82,7 @@ Imports System.Windows.Forms
         Columns.Add(NewHiddenTextColumn)
     End Sub
 
-    Friend Sub AddCheckBoxColumn(ByVal Name As String, ByVal HeaderText As String)
+    Friend Sub AddCheckBoxColumn(Name As String, HeaderText As String)
         Dim NewCheckBoxColumn As New DataGridViewCheckBoxColumn With {.Name = Name,
                                                                       .HeaderText = HeaderText,
                                                                       .DataPropertyName = Name,
@@ -94,7 +94,7 @@ Imports System.Windows.Forms
         Columns.Add(NewCheckBoxColumn)
     End Sub
 
-    Friend Overloads Sub AddComboBoxColumn(ByVal Name As String, ByVal HeaderText As String, ByVal Einträge As List(Of KeyValuePair(Of String, String)), ByVal CellAlignment As DataGridViewContentAlignment, ByVal ValueType As Type, ByVal AutoSizeMode As DataGridViewAutoSizeColumnMode)
+    Friend Overloads Sub AddComboBoxColumn(Name As String, HeaderText As String, Einträge As List(Of KeyValuePair(Of String, String)), CellAlignment As DataGridViewContentAlignment, ValueType As Type, AutoSizeMode As DataGridViewAutoSizeColumnMode)
         Dim NewComboBoxColumn As New DataGridViewComboBoxColumn With {.Name = Name,
                                                                  .HeaderText = HeaderText,
                                                                  .DataPropertyName = Name,
@@ -115,7 +115,7 @@ Imports System.Windows.Forms
         Columns.Add(NewComboBoxColumn)
     End Sub
 
-    Friend Sub AddImageColumn(ByVal Name As String, ByVal HeaderText As String)
+    Friend Sub AddImageColumn(Name As String, HeaderText As String)
         Dim NewImageColumn As New DataGridViewImageColumn With {.Name = Name,
                                                                 .HeaderText = HeaderText,
                                                                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
@@ -130,7 +130,7 @@ Imports System.Windows.Forms
 
 #End Region
 #Region "Sortierung"
-    Protected Overrides Sub OnColumnHeaderMouseClick(ByVal e As DataGridViewCellMouseEventArgs)
+    Protected Overrides Sub OnColumnHeaderMouseClick(e As DataGridViewCellMouseEventArgs)
         Dim dGVSortOrder As ListSortDirection
 
         If SortedColumn Is Nothing Then
@@ -148,7 +148,7 @@ Imports System.Windows.Forms
                 ' Alte Spalte zurücksetzen
                 SortedColumn.HeaderCell.SortGlyphDirection = SortOrder.None
             End If
-            End If
+        End If
         Columns(e.ColumnIndex).HeaderCell.SortGlyphDirection = CType(dGVSortOrder, SortOrder)
         Sort(Columns(e.ColumnIndex), dGVSortOrder)
 

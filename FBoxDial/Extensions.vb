@@ -96,7 +96,7 @@ Public Module Extensions
     <Extension()> Public Function IsLessOrEqual(Val1 As Integer, Val2 As Integer) As Boolean
         Return Val1 - Val2 <= Epsilon
     End Function
-    '<Extension()> Public Function IsLessOrEqual( Val1 As Double,  Val2 As Double) As Boolean
+    '<Extension()> Public Function IsLessOrEqual(Val1 As Double,  Val2 As Double) As Boolean
     '    Return Val1 - Val2 <= Epsilon
     'End Function
 
@@ -588,40 +588,6 @@ Public Module Extensions
         End If
         Return Microsoft.VisualBasic.MsgBox(Meldung, Style, My.Resources.strDefLongName)
     End Function
-
-    '''' <summary>
-    '''' Wandelt eine Zeitspanne in Sekunden in ein Format in Stunden:Minuten:Sekunden um
-    '''' </summary>
-    '''' <param name="nSeks">Sekunden der Zeitspanne</param>
-    'Public Function GetTimeInterval( nSeks As Double) As String
-    '    'http://www.vbarchiv.net/faq/date_sectotime.php
-    '    Dim h As Double, m As Double
-    '    h = nSeks / 3600
-    '    nSeks = nSeks Mod 3600
-    '    m = nSeks / 60
-    '    nSeks = nSeks Mod 60
-    '    Return Format(h, "00") & ":" & Format(m, "00") & ":" & Format(nSeks, "00")
-    'End Function
-
-    '''' <summary>
-    '''' Entfernt doppelte und leere Einträge aus einem String-Array.
-    '''' </summary>
-    '''' <param name="ArraytoClear">Das zu bereinigende Array</param>
-    '''' <param name="ClearDouble">Angabe, ob doppelte Einträge entfernt werden sollen.</param>
-    '''' <param name="ClearEmpty">Angabe, ob leere Einträge entfernt werden sollen.</param>
-    '''' <param name="ClearMinusOne">Angabe, ob Einträge mit dem Wert -1 entfernt werden sollen.</param>
-    '''' <returns>Das bereinigte String-Array</returns>
-    '''' <remarks></remarks>
-    '<Extension> Public Function ClearStringArray( ArraytoClear As String(),  ClearDouble As Boolean,  ClearEmpty As Boolean,  ClearMinusOne As Boolean) As String()
-    '    ' Doppelte entfernen
-    '    If ClearDouble Then ArraytoClear = (From x In ArraytoClear Select x Distinct).ToArray
-    '    ' Leere entfernen
-    '    If ClearEmpty Then ArraytoClear = (From x In ArraytoClear Where Not x Like PDfltStringEmpty Select x).ToArray
-    '    ' -1 entfernen
-    '    If ClearMinusOne Then ArraytoClear = (From x In ArraytoClear Where Not x Like PDfltStrErrorMinusOne Select x).ToArray
-
-    '    Return ArraytoClear
-    'End Function
 
     ''' <summary>
     ''' Erstellt einen Timer mit dem übergeben Intervall.

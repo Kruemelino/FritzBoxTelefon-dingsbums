@@ -3,7 +3,8 @@
 Public Class AnrListViewModel
     Inherits NotifyBase
 
-    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+#Region "Felder"
+
     ''' <summary>
     ''' Returns Or sets a list as FritzBoxXMLCall             
     ''' </summary>
@@ -12,8 +13,8 @@ Public Class AnrListViewModel
         Get
             Return _CallList
         End Get
-        Set(value As ObservableCollectionEx(Of FritzBoxXMLCall))
-            SetProperty(_CallList, value)
+        Set
+            SetProperty(_CallList, Value)
         End Set
     End Property
 
@@ -22,8 +23,8 @@ Public Class AnrListViewModel
         Get
             Return _StartZeit
         End Get
-        Set(value As Date)
-            SetProperty(_StartZeit, value)
+        Set
+            SetProperty(_StartZeit, Value)
         End Set
     End Property
 
@@ -32,8 +33,8 @@ Public Class AnrListViewModel
         Get
             Return _EndZeit
         End Get
-        Set(value As Date)
-            SetProperty(_EndZeit, value)
+        Set
+            SetProperty(_EndZeit, Value)
         End Set
     End Property
 
@@ -43,6 +44,6 @@ Public Class AnrListViewModel
 
     End Sub
 
-
+#End Region
 
 End Class

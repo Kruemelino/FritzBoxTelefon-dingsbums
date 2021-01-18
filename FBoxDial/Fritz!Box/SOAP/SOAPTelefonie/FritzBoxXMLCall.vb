@@ -107,7 +107,7 @@
     ''' </summary>
     <XmlElement("Path")> Public Property Path As String
 
-    <XmlIgnore> Public Property Check As Boolean
+    <XmlIgnore> Public Property Export As Boolean
 
     Friend Function ErstelleTelefonat() As Telefonat
 
@@ -142,9 +142,9 @@
                     ' Ring-List
                     If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' RING-Liste initialisieren, falls erforderlich
-                        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
+                        If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
                         ' Eintrag anfügen
-                        XMLData.PTelefonie.RINGListe.Insert(tmpTelefonat)
+                        XMLData.PTelListen.RINGListe.Insert(tmpTelefonat)
                     End If
                 End If
 
@@ -160,17 +160,17 @@
                     ' Call-List
                     If XMLData.POptionen.CBAnrListeUpdateCallLists Then
                         ' CALL-Liste initialisieren, falls erforderlich
-                        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
+                        If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
 
                         ' Eintrag anfügen
-                        XMLData.PTelefonie.CALLListe.Insert(tmpTelefonat)
+                        XMLData.PTelListen.CALLListe.Insert(tmpTelefonat)
                     End If
                 End If
 
                 If Type.AreEqual(1) Or Type.AreEqual(2) Or Type.AreEqual(3) Then
                     .Aktiv = False
                     ' Anrufer ermitteln
-                    If Name.IsNotStringNothingOrEmpty Then .Anrufer = Name
+                    If Name.IsNotStringNothingOrEmpty Then .AnruferName = Name
 
                     If .GegenstelleTelNr IsNot Nothing AndAlso Not .GegenstelleTelNr.Unbekannt Then .StarteKontaktsuche()
                 End If

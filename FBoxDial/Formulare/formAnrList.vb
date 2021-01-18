@@ -4,7 +4,7 @@ Imports System.Reflection
 Imports System.Threading.Tasks
 Imports System.Windows.Forms
 
-Public Class FormAnrList
+<Obsolete> Public Class FormAnrList
     Implements IDisposable
 
     Private Property IList As ImageList
@@ -15,8 +15,8 @@ Public Class FormAnrList
     Private WithEvents BWImport As BackgroundWorker
 
 #Region "Delegaten"
-    Private Delegate Sub DelgSetProgressbar(ByVal Anzahl As Integer)
-    Private Delegate Sub DelgSetFrei(ByVal Freigabe As Boolean)
+    Private Delegate Sub DelgSetProgressbar(Anzahl As Integer)
+    Private Delegate Sub DelgSetFrei(Freigabe As Boolean)
 #End Region
     Public Sub New()
 
@@ -58,7 +58,7 @@ Public Class FormAnrList
         SetTelDGV(Anrufliste)
     End Sub
 
-    Private Sub SetTelDGV(ByVal Anrufliste As FritzBoxXMLCallList)
+    Private Sub SetTelDGV(Anrufliste As FritzBoxXMLCallList)
         If Anrufliste IsNot Nothing Then
             With DGVAnrListe
                 .AddCheckBoxColumn("Check", "*")
@@ -81,7 +81,7 @@ Public Class FormAnrList
         End If
     End Sub
 
-    Private Function ConvertToDataTable(ByVal Anrufliste As List(Of FritzBoxXMLCall)) As DataTable
+    Private Function ConvertToDataTable(Anrufliste As List(Of FritzBoxXMLCall)) As DataTable
         Dim Datentabelle As New AnrListDataTable()
         Dim Datenfelder As List(Of PropertyInfo)
 
@@ -197,7 +197,7 @@ Public Class FormAnrList
 
     End Function
 
-    Private Function CheckRows(ByVal DatumZeitAnfang As Date, ByVal DatumZeitEnde As Date) As Task
+    Private Function CheckRows(DatumZeitAnfang As Date, DatumZeitEnde As Date) As Task
         Return Task.Run(Sub()
                             Dim DatenZeilen As List(Of AnrListDataRow)
                             Dim Abfrage As ParallelQuery(Of AnrListDataRow)
@@ -248,7 +248,7 @@ Public Class FormAnrList
         If BWImport IsNot Nothing AndAlso BWImport.IsBusy Then BWImport.CancelAsync()
     End Sub
 
-    Private Sub Freischalten(ByVal Freigabe As Boolean)
+    Private Sub Freischalten(Freigabe As Boolean)
         ' Form-Elemente Deaktivieren
         DGVAnrListe.Enabled = Freigabe
         GBoxStartZeit.Enabled = Freigabe
@@ -282,7 +282,7 @@ Public Class FormAnrList
         End If
     End Sub
 
-    Private Sub SetProgressbar(ByVal Wert As Integer)
+    Private Sub SetProgressbar(Wert As Integer)
         If ProgressBarAnrListe.Value.IsLess(ProgressBarAnrListe.Maximum) Then
             ProgressBarAnrListe.Value += Wert
         End If

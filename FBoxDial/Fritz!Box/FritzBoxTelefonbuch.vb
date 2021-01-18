@@ -3,7 +3,6 @@ Imports System.Collections
 Imports System.Runtime.CompilerServices
 
 Friend Module FritzBoxTelefonbuch
-
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
     Friend Async Function LadeFritzBoxTelefonbücher() As Task(Of FritzBoxXMLTelefonbücher)
@@ -47,7 +46,7 @@ Friend Module FritzBoxTelefonbuch
     ''' </summary>
     ''' <param name="TelefonbuchName">Übergabe des neuen Namens des Telefonbuches.</param>
     ''' <returns>XML-Telefonbuch</returns>
-    Friend Async Function ErstelleTelefonbuch(ByVal TelefonbuchName As String) As Task(Of FritzBoxXMLTelefonbücher)
+    Friend Async Function ErstelleTelefonbuch(TelefonbuchName As String) As Task(Of FritzBoxXMLTelefonbücher)
         Using fboxSOAP As New FritzBoxSOAP
             With fboxSOAP
                 ' Hole die aktuelle Liste an Telefonbüchern
@@ -69,7 +68,7 @@ Friend Module FritzBoxTelefonbuch
         End Using
     End Function
 
-    Friend Sub LöscheTelefonbuch(ByVal TelefonbuchID As Integer)
+    Friend Sub LöscheTelefonbuch(TelefonbuchID As Integer)
         Using fboxSOAP As New FritzBoxSOAP
             With fboxSOAP
                 .LöscheTelefonbuch(TelefonbuchID)
@@ -77,7 +76,7 @@ Friend Module FritzBoxTelefonbuch
         End Using
     End Sub
 
-    <Extension> Private Function TelefonbuchListe(ByVal fboxSOAP As FritzBoxSOAP) As String()
+    <Extension> Private Function TelefonbuchListe(fboxSOAP As FritzBoxSOAP) As String()
         Dim OutPutData As Hashtable
 
         ' Ermittle alle verfügbaren Telefonbücher
@@ -92,7 +91,7 @@ Friend Module FritzBoxTelefonbuch
 
     End Function
 
-    <Extension> Private Async Function Telefonbuch(ByVal fboxSOAP As FritzBoxSOAP, ByVal TelefonbuchID As String) As Task(Of FritzBoxXMLTelefonbücher)
+    <Extension> Private Async Function Telefonbuch(fboxSOAP As FritzBoxSOAP, TelefonbuchID As String) As Task(Of FritzBoxXMLTelefonbücher)
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
         Dim PhoneBookXML As FritzBoxXMLTelefonbücher
@@ -115,7 +114,7 @@ Friend Module FritzBoxTelefonbuch
     ''' Erstellt ein neues Telfonbuch
     ''' </summary>
     ''' <param name="TelefonbuchName">Der Name des Telefonbuches</param>
-    <Extension> Private Function ErstelleNeuesTelefonbuch(ByVal fboxSOAP As FritzBoxSOAP, ByVal TelefonbuchName As String) As Boolean
+    <Extension> Private Function ErstelleNeuesTelefonbuch(fboxSOAP As FritzBoxSOAP, TelefonbuchName As String) As Boolean
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 
@@ -145,7 +144,7 @@ Friend Module FritzBoxTelefonbuch
     ''' <remarks>The default phonebook (PhonebookID = 0) is not deletable, but therefore, each entry will
     ''' be deleted And the phonebook will be empty afterwards.</remarks>
     ''' <returns></returns>
-    <Extension> Private Function LöscheTelefonbuch(ByVal fboxSOAP As FritzBoxSOAP, ByVal TelefonbuchID As Integer) As Boolean
+    <Extension> Private Function LöscheTelefonbuch(fboxSOAP As FritzBoxSOAP, TelefonbuchID As Integer) As Boolean
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 
@@ -173,7 +172,7 @@ Friend Module FritzBoxTelefonbuch
     ''' <param name="TelefonbuchID">Number for a single phonebook.</param>
     ''' <param name="XMLDaten">XML document with a single entry. </param>
     ''' <returns>The action returns the unique ID of the new or changed entry.</returns>
-    Friend Function UpdateTelefonbucheintrag(ByVal TelefonbuchID As UInteger, ByVal XMLDaten As String) As Integer
+    Friend Function UpdateTelefonbucheintrag(TelefonbuchID As UInteger, XMLDaten As String) As Integer
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 
@@ -217,7 +216,7 @@ Friend Module FritzBoxTelefonbuch
     ''' </summary>
     ''' <param name="TelefonbuchID">>Number for a single phonebook.</param>
     ''' <param name="UniqueID">Eindeutige ID des Kontaktes</param>
-    Friend Function LöscheTelefonbucheintrag(ByVal TelefonbuchID As UInteger, ByVal UniqueID As Integer) As Boolean
+    Friend Function LöscheTelefonbucheintrag(TelefonbuchID As UInteger, UniqueID As Integer) As Boolean
         Dim OutPutData As Hashtable
         Dim InPutData As Hashtable
 

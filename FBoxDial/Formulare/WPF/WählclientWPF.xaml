@@ -20,6 +20,7 @@
     </Window.Resources>
 
     <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+
         <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
             <ToggleButton x:Name="bOptionen" Margin="0,4,4,0" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="BOptionen_MouseEnter" MouseLeave="BOptionen_MouseLeave">
                 <Path Stroke="#FF424242" StrokeThickness="1.0" Data="M0,0 L9,0 M0,3 L9,3 M0,6 L9,6"/>
@@ -48,12 +49,13 @@
             <GroupBox x:Name="GBoxStatus" Header="Status" Grid.Column="1">
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                     <TextBlock x:Name="TBStatus" DockPanel.Dock="Top" Margin="0,0,2,5" TextWrapping="Wrap" Text="{Binding Path=Status, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" VerticalAlignment="Top" TextAlignment="Center" Foreground="Red"/>
-                    <Button x:Name="BAbbruch" DockPanel.Dock="Bottom" Margin="0,0,2,0" Content="Abbruch" />
+                    <Button x:Name="BAbbruch" DockPanel.Dock="Bottom" Margin="0,0,2,0" Content="Abbruch" IsEnabled="{Binding Path=IsCancelEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                 </DockPanel>
             </GroupBox>
         </Grid>
 
         <ContentControl x:Name="NavigationCtrl" Margin="4,4,0,4"/>
+
     </DockPanel>
 
 </Window>

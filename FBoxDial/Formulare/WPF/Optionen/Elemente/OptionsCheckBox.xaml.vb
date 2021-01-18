@@ -12,8 +12,8 @@ Partial Public Class OptionsCheckBox
         Get
             Return CStr(GetValue(LabelProperty))
         End Get
-        Set(ByVal value As String)
-            SetValue(LabelProperty, value)
+        Set
+            SetValue(LabelProperty, Value)
         End Set
     End Property
 
@@ -33,8 +33,8 @@ Partial Public Class OptionsCheckBox
         Get
             Return CBool(GetValue(ValueProperty))
         End Get
-        Set(ByVal value As Boolean)
-            SetValue(ValueProperty, value)
+        Set
+            SetValue(ValueProperty, Value)
         End Set
     End Property
 

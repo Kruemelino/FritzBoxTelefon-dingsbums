@@ -35,7 +35,7 @@
     ''' Event zum setzen des Status
     ''' </summary>
     ''' <param name="Status">Text, welcher Angezeigt werden soll</param>
-    Friend Event SetStatus(ByVal Status As String)
+    Friend Event SetStatus(Status As String)
 #End Region
 
     Public Sub New()

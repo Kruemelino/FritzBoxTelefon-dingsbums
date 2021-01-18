@@ -5,7 +5,7 @@
 
     Friend Property AnrListCall As FritzBoxXMLCall
 
-    Public Sub New(ByVal rb As DataRowBuilder)
+    Public Sub New(rb As DataRowBuilder)
         MyBase.New(rb)
     End Sub
 End Class

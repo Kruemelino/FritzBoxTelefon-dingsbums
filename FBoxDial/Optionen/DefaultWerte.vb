@@ -26,7 +26,7 @@
     Public Shared ReadOnly Property DfltLetzterJournalEintrag As Date = Now
     Public Shared ReadOnly Property DfltCBAutoAnrList As Boolean = False
     Public Shared ReadOnly Property DfltCBCloseWClient As Boolean = True
-    Public Shared ReadOnly Property DfltTBWClientEnblDauer() As Integer = 10
+    Public Shared ReadOnly Property DfltTBWClientEnblDauer As Integer = 10
     Public Shared ReadOnly Property DfltCBUseLegacySearch As Boolean = False
     Public Shared ReadOnly Property DfltCBUseLegacyUserProp As Boolean = False
     Public Shared ReadOnly Property DfltCBSucheUnterordner As Boolean = False
@@ -35,6 +35,9 @@
     Public Shared ReadOnly Property DfltCBPhoner As Boolean = False
     Public Shared ReadOnly Property DfltTBPfadMicroSIP() As String = DfltStringEmpty
     Public Shared ReadOnly Property DfltCBMicroSIP As Boolean = False
+    Public Shared ReadOnly Property DfltCBStoppUhrEinblenden As Boolean = False
+    Public Shared ReadOnly Property DfltCBStoppUhrAusblenden As Boolean = False
+    Public Shared ReadOnly Property DfltTBStoppUhrAusblendverzögerung As Integer = 10
 #End Region
 
 End Class

@@ -32,17 +32,17 @@ Imports Microsoft.Office.Interop
     <XmlElement> Public Property OutlookStoreID As String
     <XmlElement> Public Property VCard As String
     <XmlElement> Public Property FBTelBookKontakt As FritzBoxXMLKontakt
-    <XmlElement> Public Property Anrufer As String
+    <XmlElement> Public Property AnruferName As String
     <XmlElement> Public Property Firma As String
     <XmlIgnore> Friend Property OlKontakt() As Outlook.ContactItem
     '<XmlIgnore> Friend Property AnrMonPopUp As Popup
-    <XmlIgnore> Friend Property Eingeblendet As Boolean = False
+    <XmlIgnore> Friend Property AnrMonEingeblendet As Boolean = False
+    <XmlIgnore> Friend Property StoppUhrEingeblendet As Boolean = False
 
-    Friend WithEvents PopupWPF As AnrMonWPF
-
+    Friend WithEvents PopUpAnrMonWPF As AnrMonWPF
+    Friend WithEvents PopupStoppUhrWPF As StoppUhrWPF
     Private WithEvents BWKontaktsuche As BackgroundWorker
 
-    'Friend Event Popup As EventHandlerEx(Of Telefonat)
 
     ''' <summary>
     '''         0        ; 1  ;2;    3     ;  4   ; 5  ; 6
@@ -192,7 +192,7 @@ Imports Microsoft.Office.Interop
 
     Private Sub BWKontaktsuche_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BWKontaktsuche.RunWorkerCompleted
         ' Anrufmonitor aktualisieren
-        If PopupWPF IsNot Nothing Then UpdateAnrMon()
+        If PopUpAnrMonWPF IsNot Nothing Then UpdateAnrMon()
     End Sub
 
     Friend Async Sub StarteKontaktsuche()
@@ -204,7 +204,7 @@ Imports Microsoft.Office.Interop
             ' Ein Kontakt wurde gefunden
             With OlKontakt
                 ' Anrufernamen ermitteln
-                Anrufer = .FullName
+                AnruferName = .FullName
                 ' Firma aus Kontaktdaten ermitteln
                 Firma = .CompanyName
                 ' KontaktID und StoreID speichern
@@ -216,8 +216,8 @@ Imports Microsoft.Office.Interop
         ' Kontaktsuche in den Fritz!Box Telefonbüchern
         If XMLData.POptionen.CBKontaktSucheFritzBox Then
             If OlKontakt Is Nothing Then
-                If ThisAddIn.PPhoneBookXML IsNot Nothing Then
-                    FBTelBookKontakt = ThisAddIn.PPhoneBookXML.GetKontaktByTelNr(GegenstelleTelNr)
+                If ThisAddIn.PhoneBookXML IsNot Nothing Then
+                    FBTelBookKontakt = ThisAddIn.PhoneBookXML.GetKontaktByTelNr(GegenstelleTelNr)
                 End If
             End If
 
@@ -226,11 +226,11 @@ Imports Microsoft.Office.Interop
                     OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, FBTelBookKontakt, GegenstelleTelNr, True)
 
                     With OlKontakt
-                        Anrufer = .FullName
+                        AnruferName = .FullName
                         Firma = .CompanyName
                     End With
                 Else
-                    Anrufer = FBTelBookKontakt.Person.RealName
+                    AnruferName = FBTelBookKontakt.Person.RealName
                 End If
             End If
         End If
@@ -249,12 +249,12 @@ Imports Microsoft.Office.Interop
                         If XMLData.POptionen.CBKErstellen Then
                             OlKontakt = ErstelleKontakt(OutlookKontaktID, OutlookStoreID, VCard, GegenstelleTelNr, True)
                             With OlKontakt
-                                Anrufer = .FullName
+                                AnruferName = .FullName
                                 Firma = .CompanyName
                             End With
                         Else
                             With MixERP.Net.VCards.Deserializer.GetVCard(VCard)
-                                Anrufer = .FormattedName
+                                AnruferName = .FormattedName
                                 Firma = .Organization
                             End With
                         End If
@@ -306,7 +306,7 @@ Imports Microsoft.Office.Interop
 
     Friend Sub ErstelleJournalEintrag()
 
-        Dim OutlookApp As Outlook.Application = ThisAddIn.POutookApplication
+        Dim OutlookApp As Outlook.Application = ThisAddIn.OutookApplication
         Dim olJournal As Outlook.JournalItem = Nothing
         Dim olJournalFolder As OutlookOrdner
 
@@ -338,7 +338,7 @@ Imports Microsoft.Office.Interop
 
                     With olJournal
 
-                        .Subject = $"{tmpSubject} {Anrufer}{If(NrUnterdrückt, DfltStringEmpty, If(Anrufer.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert)))}"
+                        .Subject = $"{tmpSubject} {AnruferName}{If(NrUnterdrückt, DfltStringEmpty, If(AnruferName.IsStringNothingOrEmpty, GegenstelleTelNr.Formatiert, String.Format(" ({0})", GegenstelleTelNr.Formatiert)))}"
                         .Duration = Dauer.GetLarger(31) \ 60
                         .Body = DfltJournalBody(If(NrUnterdrückt, DfltStringUnbekannt, GegenstelleTelNr.Formatiert), Angenommen, VCard)
                         .Start = ZeitBeginn
@@ -402,13 +402,13 @@ Imports Microsoft.Office.Interop
         RINGGeräte = XMLData.PTelefonie.Telefoniegeräte.FindAll(Function(Tel) Tel.StrEinTelNr IsNot Nothing AndAlso Tel.StrEinTelNr.Contains(EigeneTelNr.Unformatiert))
 
         ' Anrufmonitor einblenden, wenn Bedingungen erfüllt 
-        If EigeneTelNr.Überwacht Then Popup()
+        If EigeneTelNr.Überwacht Then ShowAnrMon()
 
         ' RING-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.RINGListe Is Nothing Then XMLData.PTelefonie.RINGListe = New List(Of Telefonat)
+        If XMLData.PTelListen.RINGListe Is Nothing Then XMLData.PTelListen.RINGListe = New List(Of Telefonat)
 
         ' Telefonat in erste Positon der RING-Liste speichern
-        XMLData.PTelefonie.RINGListe.Insert(Me)
+        XMLData.PTelListen.RINGListe.Insert(Me)
 
     End Sub
     Private Sub AnrMonCALL()
@@ -422,10 +422,10 @@ Imports Microsoft.Office.Interop
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
 
         ' CALL-Liste initialisieren, falls erforderlich
-        If XMLData.PTelefonie.CALLListe Is Nothing Then XMLData.PTelefonie.CALLListe = New List(Of Telefonat)
+        If XMLData.PTelListen.CALLListe Is Nothing Then XMLData.PTelListen.CALLListe = New List(Of Telefonat)
 
         ' Telefonat in erste Positon der CALL-Liste speichern
-        XMLData.PTelefonie.CALLListe.Insert(Me)
+        XMLData.PTelListen.CALLListe.Insert(Me)
 
     End Sub
     Private Sub AnrMonCONNECT()
@@ -433,9 +433,16 @@ Imports Microsoft.Office.Interop
 
         ' Telefoniegerät ermitteln
         TelGerät = XMLData.PTelefonie.Telefoniegeräte.Find(Function(TG) TG.AnrMonID.AreEqual(NebenstellenNummer))
+
+        ' Stoppuhr einblenden, wenn Bedingungen erfüllt 
+        If XMLData.POptionen.CBStoppUhrEinblenden Then ShowStoppUhr()
+
     End Sub
     Private Sub AnrMonDISCONNECT()
         Beendet = True
+
+        ' Stoppuhr anhalten, wenn diese läuft
+        If StoppUhrEingeblendet Then PopupStoppUhrWPF.Stopp()
 
         If XMLData.POptionen.CBJournal Then ErstelleJournalEintrag()
     End Sub
@@ -444,23 +451,24 @@ Imports Microsoft.Office.Interop
     ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
     ''' </summary>
     <XmlIgnore> Private Property IAnrMonClosed As Integer
+    <XmlIgnore> Private Property StoppUhrClosed As Integer
     Friend Sub AnrMonEinblenden()
 
-        PopupWPF = New AnrMonWPF
+        PopUpAnrMonWPF = New AnrMonWPF
 
         If ThisAddIn.OffeneAnrMonWPF Is Nothing Then ThisAddIn.OffeneAnrMonWPF = New List(Of AnrMonWPF)
 
         KeepoInspActivated(False)
 
-        PopupWPF.ShowAnrMon(Me)
+        PopUpAnrMonWPF.ShowAnrMon(Me)
 
-        iAnrMonClosed = 0
+        IAnrMonClosed = 0
 
-        Eingeblendet = True
-        ThisAddIn.OffeneAnrMonWPF.Add(PopupWPF)
+        AnrMonEingeblendet = True
+        ThisAddIn.OffeneAnrMonWPF.Add(PopUpAnrMonWPF)
 
         'AddHandler PopUpAnrufMonitor.Schließen, AddressOf PopUpAnrMon_Close
-        AddHandler PopupWPF.Geschlossen, AddressOf PopupGeschlossen
+        AddHandler PopUpAnrMonWPF.Geschlossen, AddressOf PopupAnrMonGeschlossen
 
         'AddHandler PopUpAnrufMonitor.LinkClick, AddressOf AnrMonLink_Click
         'AddHandler PopUpAnrufMonitor.ToolStripMenuItemClicked, AddressOf AnrMonToolStripMenuItem_Clicked
@@ -468,35 +476,73 @@ Imports Microsoft.Office.Interop
         KeepoInspActivated(True)
     End Sub
 
+    Friend Sub StoppUhrEinblenden()
+
+        PopupStoppUhrWPF = New StoppUhrWPF
+
+        If ThisAddIn.OffeneStoppUhrWPF Is Nothing Then ThisAddIn.OffeneStoppUhrWPF = New List(Of StoppUhrWPF)
+
+        KeepoInspActivated(False)
+
+        PopupStoppUhrWPF.ShowStoppUhr(Me)
+
+        StoppUhrClosed = 0
+
+        StoppUhrEingeblendet = True
+        ThisAddIn.OffeneStoppUhrWPF.Add(PopupStoppUhrWPF)
+
+        AddHandler PopupStoppUhrWPF.Geschlossen, AddressOf PopupStoppUhrGeschlossen
+
+        KeepoInspActivated(True)
+    End Sub
+
     ''' <summary>
     ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
+    ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
     ''' </summary>
-    Private Sub PopupGeschlossen(ByVal sender As Object, ByVal e As EventArgs) Handles PopupWPF.Geschlossen
+    Private Sub PopupAnrMonGeschlossen(sender As Object, e As EventArgs) Handles PopUpAnrMonWPF.Geschlossen
         ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
-        If iAnrMonClosed.IsZero Then
-            NLogger.Debug("Anruffenster geschlossen: {0}", Anrufer)
-            iAnrMonClosed += 1
-            Eingeblendet = False
+        If IAnrMonClosed.IsZero Then
+            NLogger.Debug("Anruffenster geschlossen: {0}", AnruferName)
+            IAnrMonClosed += 1
+            AnrMonEingeblendet = False
             ' Entferne den Anrufmonitor von der Liste der offenen Popups
-            ThisAddIn.OffeneAnrMonWPF.Remove(PopupWPF)
+            ThisAddIn.OffeneAnrMonWPF.Remove(PopUpAnrMonWPF)
 
-            PopupWPF = Nothing
+            PopUpAnrMonWPF = Nothing
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Wird durch das Auslösen des Closed Ereignis des PopupAnrMon aufgerufen. Es werden ein paar Bereinigungsarbeiten durchgeführt. 
+    ''' Das Closed-Event wird zweimal aufgerufen (Dispatcher.Invoke). Zählvariable zum Triggern der Aufrufe.
+    ''' </summary>
+    Private Sub PopupStoppUhrGeschlossen(sender As Object, e As EventArgs) Handles PopupStoppUhrWPF.Geschlossen
+        ' Führe die Arbeiten nur beim ersten Aufruf des Closed-Event des Popups durch.
+        If StoppUhrClosed.IsZero Then
+            NLogger.Debug("Stoppuhr geschlossen: {0}", AnruferName)
+            StoppUhrClosed += 1
+            StoppUhrEingeblendet = False
+            ' Entferne den Anrufmonitor von der Liste der offenen Popups
+            ThisAddIn.OffeneStoppUhrWPF.Remove(PopupStoppUhrWPF)
+
+            PopUpAnrMonWPF = Nothing
         End If
     End Sub
 
     Friend Sub UpdateAnrMon()
-        PopupWPF?.Update(Me)
+        PopUpAnrMonWPF?.Update(Me)
     End Sub
 
-    Private Sub Popup()
+    Private Sub ShowAnrMon()
         Dim t = New Thread(Sub()
                                If Not VollBildAnwendungAktiv() Then
-                                   If PopupWPF Is Nothing Then
+                                   If PopUpAnrMonWPF Is Nothing Then
                                        NLogger.Debug("Blende einen neuen Anrufmonitor ein")
                                        ' Blende einen neuen Anrufmonitor ein
                                        AnrMonEinblenden()
 
-                                       While Eingeblendet
+                                       While AnrMonEingeblendet
                                            Windows.Forms.Application.DoEvents()
                                            Thread.Sleep(100)
                                        End While
@@ -512,11 +558,29 @@ Imports Microsoft.Office.Interop
         t.SetApartmentState(ApartmentState.STA)
         t.Start()
     End Sub
+    Private Sub ShowStoppUhr()
+        Dim t = New Thread(Sub()
+                               If Not VollBildAnwendungAktiv() Then
+                                   If PopupStoppUhrWPF Is Nothing Then
+                                       NLogger.Debug("Blende einen neue StoppUhr ein")
+                                       ' Blende einen neuen Anrufmonitor ein
+                                       StoppUhrEinblenden()
 
+                                       While StoppUhrEingeblendet
+                                           Windows.Forms.Application.DoEvents()
+                                           Thread.Sleep(100)
+                                       End While
+                                   End If
+                               End If
+                           End Sub)
+
+        t.SetApartmentState(ApartmentState.STA)
+        t.Start()
+    End Sub
 #End Region
 
 #Region "RibbonXML"
-    Friend Overloads Function CreateDynMenuButton(ByVal xDoc As Xml.XmlDocument, ByVal ID As Integer, ByVal Tag As String) As Xml.XmlElement
+    Friend Overloads Function CreateDynMenuButton(xDoc As Xml.XmlDocument, ID As Integer, Tag As String) As Xml.XmlElement
         Dim XButton As Xml.XmlElement
         Dim XAttribute As Xml.XmlAttribute
 
@@ -527,7 +591,7 @@ Imports Microsoft.Office.Interop
         XButton.Attributes.Append(XAttribute)
 
         XAttribute = xDoc.CreateAttribute("label")
-        XAttribute.Value = If(Anrufer.IsNotStringNothingOrEmpty, Anrufer, GegenstelleTelNr.Formatiert).XMLMaskiereZeichen
+        XAttribute.Value = If(AnruferName.IsNotStringNothingOrEmpty, AnruferName, GegenstelleTelNr?.Formatiert).XMLMaskiereZeichen
         XButton.Attributes.Append(XAttribute)
 
         XAttribute = xDoc.CreateAttribute("onAction")

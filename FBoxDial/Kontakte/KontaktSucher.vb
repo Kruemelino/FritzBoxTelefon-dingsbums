@@ -1,12 +1,10 @@
 ﻿Imports Microsoft.Office.Interop
-Imports MixERP.Net.VCards.Types
 
 Friend Module KontaktSucher
 
-    Friend ReadOnly Property PDfltContactFolder() As Outlook.MAPIFolder = ThisAddIn.POutookApplication.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderContacts)
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
-    Friend Function KontaktSuche(ByVal TelNr As Telefonnummer) As Outlook.ContactItem
+    Friend Function KontaktSuche(TelNr As Telefonnummer) As Outlook.ContactItem
         NLogger.Debug("Kontaktsuche gestartet")
 
         'If XMLData.POptionen.PCBUseLegacyUserProp Then
@@ -18,13 +16,13 @@ Friend Module KontaktSucher
     End Function
 
 #Region "Kontaktsuche DASL in Ordnerauswahl"
-    Friend Function KontaktSucheAuswahlDASL(ByVal TelNr As Telefonnummer) As Outlook.ContactItem
+    Friend Function KontaktSucheAuswahlDASL(TelNr As Telefonnummer) As Outlook.ContactItem
         Dim Filter As List(Of String)
         Dim sFilter As String
         Dim olKontakt As Outlook.ContactItem = Nothing
         Dim iOrdner As Integer
 
-        If ThisAddIn.POutookApplication IsNot Nothing Then
+        If ThisAddIn.OutookApplication IsNot Nothing Then
 
             If TelNr IsNot Nothing Then
                 ' Filter zusammenstellen
@@ -35,26 +33,32 @@ Friend Module KontaktSucher
                 Next
                 sFilter = $"@SQL={String.Join(" OR ", Filter)}"
 
+
                 With XMLData.POptionen.OutlookOrdner.FindAll(OutlookOrdnerVerwendung.KontaktSuche)
-                    If?.Any Then
-                        Dim Ordner As OutlookOrdner
-                        iOrdner = 0
-                        Do While (iOrdner.IsLess(.Count)) And (olKontakt Is Nothing)
-                            Ordner = .Item(iOrdner)
-
-                            ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
-                            olKontakt = FindeAnruferKontaktAuswahl(Ordner.MAPIFolder, sFilter)
-
-                            ' Rekursive Suche der Unterordner
-                            If olKontakt Is Nothing And XMLData.POptionen.CBSucheUnterordner Then
-                                For Each Unterordner As Outlook.MAPIFolder In Ordner.MAPIFolder.Folders
-                                    olKontakt = FindeAnruferKontaktAuswahl(Unterordner, sFilter)
-                                    Unterordner.ReleaseComObject
-                                Next
-                            End If
-                            iOrdner += 1
-                        Loop
+                    ' Füge den Standardkontaktordner hinzu, falls keine anderen Ordner definiert wurden.
+                    If Not .Any Then
+                        .Add(New OutlookOrdner(XMLData.POptionen.OutlookOrdner.GetDefaultMAPIFolder(Outlook.OlDefaultFolders.olFolderContacts),
+                                               OutlookOrdnerVerwendung.KontaktSuche))
                     End If
+
+                    Dim Ordner As OutlookOrdner
+                    iOrdner = 0
+                    Do While (iOrdner.IsLess(.Count)) And (olKontakt Is Nothing)
+                        Ordner = .Item(iOrdner)
+
+                        ' Die Suche erfolgt mittels einer gefilterten Outlook-Datentabelle, welche nur passende Kontakte enthalten.
+                        olKontakt = FindeAnruferKontaktAuswahl(Ordner.MAPIFolder, sFilter)
+
+                        ' Rekursive Suche der Unterordner
+                        If olKontakt Is Nothing And XMLData.POptionen.CBSucheUnterordner Then
+                            For Each Unterordner As Outlook.MAPIFolder In Ordner.MAPIFolder.Folders
+                                olKontakt = FindeAnruferKontaktAuswahl(Unterordner, sFilter)
+                                Unterordner.ReleaseComObject
+                            Next
+                        End If
+                        iOrdner += 1
+                    Loop
+
                 End With
 
             End If
@@ -62,7 +66,7 @@ Friend Module KontaktSucher
         Return olKontakt
     End Function
 
-    Private Function FindeAnruferKontaktAuswahl(ByVal Ordner As Outlook.MAPIFolder, ByVal sFilter As String) As Outlook.ContactItem
+    Private Function FindeAnruferKontaktAuswahl(Ordner As Outlook.MAPIFolder, sFilter As String) As Outlook.ContactItem
 
         Dim olKontakt As Outlook.ContactItem = Nothing
 
@@ -103,11 +107,11 @@ Friend Module KontaktSucher
     ''' </summary>
     ''' <param name="SMTPAdresse">Mail-Addresse, die als Suchkriterium verwendet wird.</param>
     ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
-    Friend Function KontaktSuche(ByVal SMTPAdresse As String) As Outlook.ContactItem
+    Friend Function KontaktSuche(SMTPAdresse As String) As Outlook.ContactItem
 
         If SMTPAdresse.IsNotStringEmpty Then
             ' Empfänger generieren
-            With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
+            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse)
                 .Resolve()
                 Return .AddressEntry.GetContact
             End With
@@ -116,11 +120,11 @@ Friend Module KontaktSucher
         End If
     End Function
 
-    Friend Function KontaktSucheExchangeUser(ByVal SMTPAdresse As String) As Outlook.ExchangeUser
+    Friend Function KontaktSucheExchangeUser(SMTPAdresse As String) As Outlook.ExchangeUser
 
         If SMTPAdresse.IsNotStringEmpty Then
             ' Empfänger generieren
-            With ThisAddIn.POutookApplication.Session.CreateRecipient(SMTPAdresse)
+            With ThisAddIn.OutookApplication.Session.CreateRecipient(SMTPAdresse)
                 .Resolve()
                 Return .AddressEntry.GetExchangeUser
             End With
@@ -134,7 +138,7 @@ Friend Module KontaktSucher
     ''' </summary>
     ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
     ''' <returns>Den gefundenen Kontakt als Outlook.ContactItem.</returns>
-    Friend Function KontaktSuche(ByVal Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ContactItem
+    Friend Function KontaktSuche(Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ContactItem
 
         If Kontaktkarte IsNot Nothing Then
 
@@ -144,7 +148,7 @@ Friend Module KontaktSucher
                     Return KontaktSuche(Kontaktkarte.Address)
 
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
-                    Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
+                    Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.OutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
 
                     If Adresseintrag?.AddressEntryUserType = Outlook.OlAddressEntryUserType.olOutlookContactAddressEntry Then
                         Return Adresseintrag.GetContact
@@ -169,7 +173,7 @@ Friend Module KontaktSucher
     ''' </summary>
     ''' <param name="Kontaktkarte">Kontaktkarte (ContactCard), die als Suchkriterium verwendet wird.</param>
     ''' <returns>Den gefundenen Kontakt als Outlook.ExchangeUser.</returns>
-    Friend Function KontaktSucheExchangeUser(ByVal Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ExchangeUser
+    Friend Function KontaktSucheExchangeUser(Kontaktkarte As Microsoft.Office.Core.IMsoContactCard) As Outlook.ExchangeUser
 
         If Kontaktkarte IsNot Nothing Then
 
@@ -179,7 +183,7 @@ Friend Module KontaktSucher
                     Return KontaktSucheExchangeUser(Kontaktkarte.Address)
 
                 Case Microsoft.Office.Core.MsoContactCardAddressType.msoContactCardAddressTypeOutlook
-                    Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.POutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
+                    Dim Adresseintrag As Outlook.AddressEntry = ThisAddIn.OutookApplication.Session.GetAddressEntryFromID(Kontaktkarte.Address)
 
                     Select Case Adresseintrag?.AddressEntryUserType
                         Case Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry, Outlook.OlAddressEntryUserType.olExchangeRemoteUserAddressEntry

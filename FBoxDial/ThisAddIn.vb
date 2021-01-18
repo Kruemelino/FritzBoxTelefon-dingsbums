@@ -3,18 +3,13 @@ Imports Microsoft.Office.Interop.Outlook
 
 Public NotInheritable Class ThisAddIn
     Friend Shared Property POutlookRibbons() As OutlookRibbons
-    Friend Shared Property POutookApplication As Application
-
-    Private WithEvents OutlookInspectors As Inspectors
+    Friend Shared Property OutookApplication As Application
     Friend Shared Property PAnrufmonitor As Anrufmonitor
-    Friend Shared Property PPhoneBookXML As FritzBoxXMLTelefonbücher
-
+    Friend Shared Property PhoneBookXML As FritzBoxXMLTelefonbücher
     Friend Shared Property PCVorwahlen As CVorwahlen
-    Friend Shared Property OffeneKontakInsepektoren As List(Of KontaktGespeichert)
     Friend Shared Property OffeneAnrMonWPF As List(Of AnrMonWPF)
-
+    Friend Shared Property OffeneStoppUhrWPF As List(Of StoppUhrWPF)
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
-
     Private Property AnrMonWarAktiv As Boolean
 
     Protected Overrides Function CreateRibbonExtensibilityObject() As IRibbonExtensibility
@@ -29,10 +24,10 @@ Public NotInheritable Class ThisAddIn
         LogManager.Configuration = DefaultNLogConfig()
 
         ' Outlook.Application initialisieren
-        If POutookApplication Is Nothing Then POutookApplication = Application
+        If OutookApplication Is Nothing Then OutookApplication = Application
 
-        If POutookApplication.ActiveExplorer IsNot Nothing Then
-            'StandBy Handler
+        If OutookApplication.ActiveExplorer IsNot Nothing Then
+            ' Ereignishandler für StandBy / Resume
             AddHandler Microsoft.Win32.SystemEvents.PowerModeChanged, AddressOf AnrMonRestartNachStandBy
             ' Starte die Funktionen des Addins
             StarteAddinFunktionen()
@@ -46,6 +41,9 @@ Public NotInheritable Class ThisAddIn
         ' Initialisiere die Landes- und Ortskennzahlen
         PCVorwahlen = New CVorwahlen
 
+        ' Landes- und Ortskennzahlen aus der Fritz!Box laden
+        XMLData.PTelefonie.GetKennzahlen()
+
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
             PAnrufmonitor = New Anrufmonitor
@@ -53,9 +51,12 @@ Public NotInheritable Class ThisAddIn
         End If
 
         ' Lade alle Telefonbücher aus der Fritz!Box herunter
-        If XMLData.POptionen.CBKontaktSucheFritzBox Then PPhoneBookXML = Await LadeFritzBoxTelefonbücher()
+        If XMLData.POptionen.CBKontaktSucheFritzBox Then PhoneBookXML = Await LadeFritzBoxTelefonbücher()
 
-        ' Inspektoren erfassen
+        ' Explorer Ereignishandler festlegen
+        SetExplorer()
+
+        ' Outlook Inspektoren erfassen
         OutlookInspectors = Application.Inspectors
 
         ' Anrufliste auswerten
@@ -82,7 +83,7 @@ Public NotInheritable Class ThisAddIn
     ''' <summary>
     ''' Startet den Anrufmonitor nach dem Aufwachen nach dem Standby neu, bzw. Beendet ihn, falls ein Standyby erkannt wird.
     ''' </summary>
-    Sub AnrMonRestartNachStandBy(ByVal sender As Object, ByVal e As Microsoft.Win32.PowerModeChangedEventArgs)
+    Sub AnrMonRestartNachStandBy(sender As Object, e As Microsoft.Win32.PowerModeChangedEventArgs)
 
         NLogger.Info("PowerMode: {0} ({1})", e.Mode.ToString, e.Mode)
 
@@ -116,12 +117,70 @@ Public NotInheritable Class ThisAddIn
     End Sub
 #End Region
 
-#Region "Inspector"
-    Private Sub OutlookInspectors_NewInspector(Inspector As Inspector) Handles OutlookInspectors.NewInspector
-        If TypeOf Inspector.CurrentItem Is ContactItem Then
-            If OffeneKontakInsepektoren Is Nothing Then OffeneKontakInsepektoren = New List(Of KontaktGespeichert)
-            OffeneKontakInsepektoren.Add(New KontaktGespeichert() With {.Kontakt = CType(Inspector.CurrentItem, ContactItem)})
+#Region "Outlook Explorer"
+    Private WithEvents OutlookExplorers As Explorers
+    Private WithEvents OutlookMainExplorer As Explorer
+
+    Private Sub SetExplorer()
+
+        ' Outlook Haupt Explorer festlegen
+        OutlookMainExplorer = Application.ActiveExplorer
+
+        ' Outlook Explorer erfassen
+        OutlookExplorers = Application.Explorers
+
+    End Sub
+
+    ''' <summary>
+    ''' Tritt ein, wenn ein neues Explorer-Fenster geöffnet wird, entweder als Ergebnis einer Benutzeraktion oder durch Programmcode.
+    ''' </summary>
+    Private Sub OutlookExplorers_NewExplorer(Explorer As Explorer) Handles OutlookExplorers.NewExplorer
+        NLogger.Debug("Ein neues Explorer-Fenster wird geöffnet")
+        AddHandler Explorer.BeforeItemPaste, AddressOf OutlookExplorer_BeforeItemPaste
+    End Sub
+
+    ''' <summary>
+    ''' Tritt ein, wenn ein Outlook-Element eingefügt wird.
+    ''' </summary>
+    Private Sub OutlookExplorer_BeforeItemPaste(ByRef ClipboardContent As Object, Target As MAPIFolder, ByRef Cancel As Boolean) Handles OutlookMainExplorer.BeforeItemPaste
+
+        ' Ist der Inhalt eine Selection? (Im Besten Fall eine Anzahl an Kontakten)
+        If TypeOf ClipboardContent Is Selection Then
+            ' Schleife durch alle Elemente der selektierten Objekte
+            For Each ClipboardObject As Object In CType(ClipboardContent, Selection)
+
+                ' Wenn es sich um Kontakte handelt, dann (de-)indiziere den Kontakt
+                If TypeOf ClipboardObject Is ContactItem Then
+
+                    IndiziereKontakt(CType(ClipboardObject, ContactItem), Target)
+
+                End If
+            Next
         End If
     End Sub
+
+#End Region
+
+#Region "Outlook Inspector"
+    Private WithEvents OutlookInspectors As Inspectors
+    Friend Shared Property KontakInsepektorenListe As List(Of KontaktInspector)
+
+    ''' <summary>
+    ''' Tritt ein, wenn als Ergebnis einer Benutzeraktion oder durch Programmcode ein neues Inspektor-Fenster geöffnet wird.
+    ''' </summary>
+    Private Sub OutlookInspectors_NewInspector(Inspector As Inspector) Handles OutlookInspectors.NewInspector
+
+        ' Handelt es sich um einen Kontakt-ispektor?
+        If TypeOf Inspector.CurrentItem Is ContactItem Then
+
+            ' Initiiere die Liste der Offenen Kontaktinspektoren, falls noch nicht geschehen
+            If KontakInsepektorenListe Is Nothing Then KontakInsepektorenListe = New List(Of KontaktInspector)
+
+            ' Füge diesen Kontaktinspektor hinzu
+            KontakInsepektorenListe.Add(New KontaktInspector() With {.Kontakt = CType(Inspector.CurrentItem, ContactItem)})
+        End If
+    End Sub
+
+
 #End Region
 End Class

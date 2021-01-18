@@ -8,7 +8,7 @@ Friend Module VCard
     ''' <param name="vCard">Quelle: Die vCard, die eingelesen werden soll.</param>
     ''' <param name="Kontakt">Ziel: (Rückgabe) Der Kontakt in den die Informationen der vCard geschrieben werden als<c>Outlook.ContactItem</c></param>
     ''' ''' <remarks>https://www.ietf.org/rfc/rfc2426.txt</remarks>
-    Friend Sub DeserializevCard(ByVal vCard As String, ByRef Kontakt As Outlook.ContactItem)
+    Friend Sub DeserializevCard(vCard As String, ByRef Kontakt As Outlook.ContactItem)
 
         With Deserializer.GetVCard(vCard)
             ' insert Name

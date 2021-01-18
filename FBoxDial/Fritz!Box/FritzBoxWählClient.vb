@@ -6,20 +6,9 @@ Public Class FritzBoxWählClient
 
 #Region "Properties"
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
-    Private ReadOnly Property PFBLinkTelData As String = FritzBoxDefault.FBLinkBasis & "/data.lua"
-    Private ReadOnly Property PFBLinkDialSetDialPort(sSID As String, DialPort As String) As String
-        Get
-            Return String.Format("&xhr=1&clicktodial=on&port={0}{1}&back_to_page=%2Ffon_num%2Fdial_fonbook.lua&btn_apply=&lang=de&page=telDial", DialPort, sSID)
-        End Get
-    End Property
-    Private ReadOnly Property PFBLinkDial(sSID As String, DialCode As String, HangUp As Boolean) As String
-        Get
-            Return String.Format("{0}/fon_num/foncalls_list.lua?{1}{2}", FritzBoxDefault.FBLinkBasis, sSID, If(HangUp, "&hangup=", "&dial=" & DialCode))
-        End Get
-    End Property
+    Friend Property WPFWindow As WählclientWPF
 #End Region
 
-    Private ListWählboxWPF As List(Of WählclientWPF)
 #Region "Wählen per SOAP"
     ''' <summary>
     ''' Initialisiert den Wählvorgang der Fritz!Box Wählhilfe.
@@ -40,10 +29,11 @@ Public Class FritzBoxWählClient
 
             OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
             DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
+
             If Not DialPortEingestellt Then
                 ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
                 StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusDialPort, Telefon.UPnPDialport)
-
+                InPutData.Clear()
                 InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.UPnPDialport)
                 OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
 
@@ -89,7 +79,7 @@ Public Class FritzBoxWählClient
     End Function
 #End Region
 
-#Region "Dialog Wähldialog"
+#Region "Wähldialog"
     ''' <summary>
     ''' wird durch das Symbol 'Wählen' in der 'FritzBox'-Symbolleiste ausgeführt
     ''' </summary>
@@ -291,20 +281,7 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(oContact As Outlook.ContactItem)
 
         If oContact IsNot Nothing Then
-            ' Es soll nur ein Formular anzeigbar sein.
-            If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
-
-            ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
-            If ListWählboxWPF.Count.IsZero Then
-                Dim DCViewModel As New WählClientViewModel(Me)
-                ' Lade die Outlook Kontaktdaten in das Viewmodel
-                DCViewModel.SetOutlookKontakt(oContact)
-
-                Dim fWählClient As WählclientWPF = New WählclientWPF(False, DCViewModel)
-
-                ListWählboxWPF.Add(fWählClient)
-
-            End If
+            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .OutlookKontakt = oContact})
         Else
             NLogger.Error("Der Outlook-Kontakt ist nicht vorhanden.")
         End If
@@ -313,20 +290,7 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(oExchangeNutzer As Outlook.ExchangeUser)
 
         If oExchangeNutzer IsNot Nothing Then
-            ' Es soll nur ein Formular anzeigbar sein.
-            If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
-
-            ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
-            If ListWählboxWPF.Count.IsZero Then
-                Dim DCViewModel As New WählClientViewModel(Me)
-                ' Lade die Outlook Kontaktdaten in das Viewmodel
-                DCViewModel.SetOutlookKontakt(oExchangeNutzer)
-
-                Dim fWählClient As WählclientWPF = New WählclientWPF(False, DCViewModel)
-
-                ListWählboxWPF.Add(fWählClient)
-
-            End If
+            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .ExchangeKontakt = oExchangeNutzer})
         Else
             NLogger.Error("Der Outlook-oExchangeUser ist nicht vorhanden.")
         End If
@@ -339,21 +303,7 @@ Public Class FritzBoxWählClient
     Private Sub Wählbox(TelNr As Telefonnummer)
 
         If TelNr IsNot Nothing Then
-
-            ' Es soll nur ein Formular anzeigbar sein.
-            If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
-
-            ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
-            If ListWählboxWPF.Count.IsZero Then
-                Dim DCViewModel As New WählClientViewModel(Me)
-                ' Lade die Outlook Kontaktdaten in das Viewmodel
-                DCViewModel.SetTelefonnummer(TelNr)
-
-                Dim fWählClient As WählclientWPF = New WählclientWPF(False, DCViewModel)
-
-                ListWählboxWPF.Add(fWählClient)
-
-            End If
+            WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .Telefonnummer = TelNr})
         Else
             NLogger.Error("Die Telefonnummer ist nicht vorhanden.")
         End If
@@ -363,19 +313,9 @@ Public Class FritzBoxWählClient
     ''' Startet das Wählen als Direktwahl 
     ''' </summary>
     Private Sub Wählbox()
-        ' Es soll nur ein Formular anzeigbar sein.
-        If ListWählboxWPF Is Nothing Then ListWählboxWPF = New List(Of WählclientWPF)
 
-        ' Erlaube nur einen Wähldialog. Als Liste, später vielleicht mehrere
-        If ListWählboxWPF.Count.IsZero Then
-            Dim DCViewModel As New WählClientViewModel(Me)
-            ' Lade die Outlook Kontaktdaten in das Viewmodel
-            DCViewModel.SetDirektwahl()
+        WPFWindow = New WählclientWPF(New WählClientViewModel With {.Wählclient = Me, .SetDirektwahl = True})
 
-            Dim fWählClient As WählclientWPF = New WählclientWPF(True, DCViewModel)
-
-            ListWählboxWPF.Add(fWählClient)
-        End If
     End Sub
 #End Region
 

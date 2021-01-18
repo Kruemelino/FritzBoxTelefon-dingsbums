@@ -1,4 +1,5 @@
-﻿Imports FBoxDial.DfltWerteTelefonie
+﻿Imports System.Collections
+Imports FBoxDial.DfltWerteTelefonie
 Imports FBoxDial.FritzBoxDefault
 
 Public Class FritzBoxData
@@ -20,18 +21,19 @@ Public Class FritzBoxData
     ''' </summary>
     ''' <param name="Level">NLog LogLevel</param>
     ''' <param name="StatusMessage">Die auszugebende Statusmeldung.</param>
-    Private Sub PushStatus(ByVal Level As LogLevel, ByVal StatusMessage As String)
+    Private Sub PushStatus(Level As LogLevel, StatusMessage As String)
         NLogger.Log(Level, StatusMessage)
         RaiseEvent Status(Me, New NotifyEventArgs(Of String)(StatusMessage))
     End Sub
 
 #Region "Telefonnummern, Telefonnamen"
-    Friend Async Sub FritzBoxDatenJSON()
+    Friend Async Sub GetFritzBoxDaten()
 
-        Dim SessionID As String = GetSessionID()
+        Dim SessionID As String
 
         Dim FBoxJSON As New JSON
         Dim TelQuery As New List(Of String)
+        Dim PhonePorts = New List(Of String)
         Dim FritzBoxJSONTelNr1 As FritzBoxJSONTelNrT1 = Nothing
         Dim FritzBoxJSONTelefone1 As FritzBoxJSONTelefone1 = Nothing
         Dim FritzBoxJSONTelefone2 As FritzBoxJSONTelefone2 = Nothing
@@ -41,35 +43,104 @@ Public Class FritzBoxData
         Dim tmpTelNrList As TelNrList
 
         Dim tmpStrArr As String()
-        Dim QueryAntwort As String
+        Dim QueryAntwort As String = DfltStringEmpty
         Dim tmpTelData As New Telefonie
 
-        ' Boolean, der das Abbrechen des Einlesens signalisiert
-        Dim Fortfahren As Boolean = True
+#Region "uPnP Phone Port, LKZ, OKZ"
 
-        With TelQuery
-            '.Add(  P_Query_FB_LKZPrefix)
-            .Add(FBoxQueryLKZ)
-            '.Add(P_Query_FB_OKZPrefix)
-            .Add(FBoxQueryOKZ)
-            QueryAntwort = Await FritzBoxQuery(SessionID, TelQuery)
+        Dim InPutData As New Hashtable
+        Dim OutPutData As Hashtable
 
-            ' Überprüfung, ob Verbindung zur Fritz!Box besteht.
-
-            Fortfahren = QueryAntwort.AreNotEqual("Gegenstelle nicht erreichbar!") And QueryAntwort.IsNotStringEmpty
-            If Fortfahren Then
-                With FBoxJSON.GetLocalValues(QueryAntwort)
-                    XMLData.POptionen.TBOrtsKZ = .OKZ
-                    XMLData.POptionen.TBLandesKZ = .LKZ
-                    PushStatus(LogLevel.Debug, $"Kennzahlen: { .OKZ}; { .LKZ}")
-                End With
+        Using fbSOAP As New FritzBoxSOAP
+            ' Hole die SessionID für Fritz!Box Query
+            OutPutData = fbSOAP.Start(KnownSOAPFile.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID")
+            If OutPutData.ContainsKey("NewX_AVM-DE_UrlSID") Then
+                NLogger.Debug(OutPutData.Item("NewX_AVM-DE_UrlSID").ToString)
+                SessionID = OutPutData.Item("NewX_AVM-DE_UrlSID").ToString
             Else
+                SessionID = DfltFritzBoxSessionID
                 PushStatus(LogLevel.Error, "Einlesen der Telefondaten: Gegenstelle nicht erreichbar!")
             End If
-            .Clear()
-        End With
 
-        If Fortfahren Then
+            If SessionID.AreNotEqual(DfltFritzBoxSessionID) Then
+
+                Dim i As Integer = 1
+                ' Ermittle alle Phoneports via X_AVM-DE_GetPhonePort
+                ' X_AVM-DE_PhoneName Empty string to disable feature to dial a number.
+                ' Examples:
+                ' FON1: Telefon
+                ' FON2: Telefon
+                ' ISDN: ISDN/ DECT Rundruf
+                ' DECT: Mobilteil 1 
+                InPutData.Add("NewIndex", i)
+
+                Do
+                    InPutData.Item("NewIndex") = i
+                    OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetPhonePort", InPutData)
+                    If Not OutPutData.Contains("Error") Then
+                        i += 1
+                        PhonePorts.Add(OutPutData.Item("NewX_AVM-DE_PhoneName").ToString())
+                        PushStatus(LogLevel.Debug, $"Phoneport: {PhonePorts.Last}")
+                    End If
+                Loop Until OutPutData.Contains("Error")
+
+                ' Landeskennzahl ermitteln: X_AVM-DE_GetVoIPCommonCountryCode
+                InPutData.Clear()
+                OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode")
+                tmpTelData.LKZ = OutPutData.Item("NewX_AVM-DE_LKZ").ToString()
+
+                ' Ortskennzahl ermitteln: X_AVM-DE_GetVoIPCommonAreaCode
+                InPutData.Clear()
+                OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode")
+                tmpTelData.OKZ = OutPutData.Item("NewX_AVM-DE_OKZ").ToString()
+
+                PushStatus(LogLevel.Debug, $"Kennzahlen: {tmpTelData.LKZ}; {tmpTelData.OKZ}")
+
+                '' Ermittle alle Telefonnummern: X_AVM-DE_GetNumbers
+                'InPutData.Clear()
+                'OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetNumbers")
+
+                'If OutPutData.ContainsKey("Error") Then
+                '    NLogger.Error("XML-Telefonnummern konnte nicht heruntergeladen werden.")
+
+                'Else
+                '    If OutPutData.ContainsKey("NewNumberList") Then
+                '        ' Deserialisiere die Anrufliste
+
+                '        Dim xTel As FritzBoxXMLTelNrList = XmlDeserializeFromString(Of FritzBoxXMLTelNrList)(OutPutData.Item("NewNumberList").ToString())
+
+                '        For Each TelNr In xTel.TelNr
+                '            NLogger.Debug($"SOAP TelNr: [{TelNr.Index}] {TelNr.Number} - {TelNr.Type} - {TelNr.Name}")
+
+                '        Next
+
+                '    Else
+                '        NLogger.Warn("XML-Telefonnummern konnte nicht heruntergeladen werden.")
+
+                '    End If
+                'End If
+
+                ''Numbers to be returned:
+                ''• ISDN
+                ''• VoIP
+                ''• GSM
+                ''• POTS
+                ''• no number
+                ''The used values for Type are: 
+                ''• eAllCalls
+                ''• eGSM
+                ''• eISDN
+                ''• eNone
+                ''• ePOTS
+                ''• eVoIP
+            End If
+        End Using
+
+#End Region
+
+#Region "JSON Query Telefonnummern"
+
+        If SessionID.AreNotEqual(DfltFritzBoxSessionID) Then
 
             With TelQuery
                 ' POTS Nummer
@@ -124,11 +195,11 @@ Public Class FritzBoxData
                     For idx = LBound(tmpStrArr) To UBound(tmpStrArr)
                         If tmpStrArr(idx).IsNotStringEmpty Then
 
-                            tmpTelNr = tmpTelData.AddNewTelNrStr(tmpStrArr(idx))
+                            tmpTelNr = tmpTelData.AddEigeneTelNr(tmpStrArr(idx))
 
                             With tmpTelNr
                                 .ID0 = idx
-                                .EigeneNummer = True
+                                .Überwacht = True
                                 Select Case jdx
                                     Case 1
                                         .Typ.Add(TelTypen.MSN)
@@ -145,11 +216,11 @@ Public Class FritzBoxData
 
                 ' Verarbeite Telefonnummern: SIP
                 For Each SIPi As SIPEntry In FritzBoxJSONTelNr1.SIP.Where(Function(SIPNr) CBool(SIPNr.Activated))
-                    tmpTelNr = tmpTelData.AddNewTelNrStr(SIPi.Displayname)
+                    tmpTelNr = tmpTelData.AddEigeneTelNr(SIPi.Displayname)
                     With tmpTelNr
                         .SIPNode = SIPi.Node.ToUpper
                         .ID0 = SIPi.ID.ToInt
-                        .EigeneNummer = True
+                        .Überwacht = True
                         .Typ.Add(TelTypen.SIP)
                         PushStatus(LogLevel.Debug, $"Telefonnummer: {String.Join(", ", tmpTelNr.Typ.ToArray)}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                     End With
@@ -157,9 +228,9 @@ Public Class FritzBoxData
 
                 ' Verarbeite Telefonnummern: POTS
                 If .POTS.IsNotStringEmpty Then
-                    tmpTelNr = tmpTelData.AddNewTelNrStr(FritzBoxJSONTelNr1.POTS)
+                    tmpTelNr = tmpTelData.AddEigeneTelNr(FritzBoxJSONTelNr1.POTS)
                     With tmpTelNr
-                        .EigeneNummer = True
+                        .Überwacht = True
                         .Typ.Add(TelTypen.POTS)
                         PushStatus(LogLevel.Debug, $"Telefonnummer: {String.Join(", ", tmpTelNr.Typ.ToArray)}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                     End With
@@ -167,9 +238,9 @@ Public Class FritzBoxData
 
                 ' Verarbeite Telefonnummern: Mobil
                 If .Mobile.IsNotStringEmpty Then
-                    tmpTelNr = tmpTelData.AddNewTelNrStr(FritzBoxJSONTelNr1.Mobile)
+                    tmpTelNr = tmpTelData.AddEigeneTelNr(FritzBoxJSONTelNr1.Mobile)
                     With tmpTelNr
-                        .EigeneNummer = True
+                        .Überwacht = True
                         .Typ.Add(TelTypen.Mobil)
                         PushStatus(LogLevel.Debug, $"Telefonnummer: {String.Join(", ", tmpTelNr.Typ.ToArray)}; {tmpTelNr.ID0}; {tmpTelNr.ID1}; {tmpTelNr.Unformatiert}")
                     End With
@@ -214,9 +285,8 @@ Public Class FritzBoxData
                                         Dim j As Integer = jdx ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
                                         tmpTelNr = tmpTelData.Telefonnummern.Find(Function(Nummern) Nummern.SIPNode.AreEqual(.Item(j)) And Nummern.Typ.Contains(TelTypen.SIP))
                                     Else
-                                        tmpTelNr = tmpTelData.AddNewTelNrStr(tmpTelNrList.Item(jdx))
+                                        tmpTelNr = tmpTelData.AddEigeneTelNr(tmpTelNrList.Item(jdx))
                                         With tmpTelNr
-                                            .EigeneNummer = True
                                             .ID0 = jdx
                                             .ID1 = idx
                                         End With
@@ -272,10 +342,10 @@ Public Class FritzBoxData
             End With
 
             QueryAntwort = Await FritzBoxQuery(SessionID, TelQuery)
-        End If
 
+#End Region
+#Region "JSON Query Telefoniegeräte"
 
-        If Fortfahren Then
             FritzBoxJSONTelefone2 = FBoxJSON.GetThirdValues(QueryAntwort)
 
             ' Verarbeitung der Telefone: FON
@@ -287,13 +357,18 @@ Public Class FritzBoxData
                                                               .AnrMonID = idx}
                         tmpTelefon.IsFax = CBool(.Fax)
                         tmpTelefon.Name = .Name
-                        tmpTelefon.UPnPDialport = $"FON{tmpTelefon.Dialport}: {tmpTelefon.Name}"
+                        tmpTelefon.UPnPDialport = PhonePorts.Find(Function(PhonePort) PhonePort.StartsWith("FON") AndAlso PhonePort.EndsWith(tmpTelefon.Name))
+                        ' Fallback
+                        If tmpTelefon.UPnPDialport.IsNotStringNothingOrEmpty Then tmpTelefon.SetUPnPDialportFallback()
 
                         Dim j As Integer = idx ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
+
                         tmpTelefon.StrEinTelNr = New List(Of String)
-                        For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID0.AreEqual(j) And Nummern.Typ.Contains(TelTypen.MSN))
+
+                        For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID0.AreEqual(j) And Nummern.Typ.Contains(TelTypen.MSN))
                             tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                         Next
+
                         PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
@@ -312,23 +387,27 @@ Public Class FritzBoxData
                         tmpTelefon.AnrMonID = AnrMonTelIDBase.DECT + CInt(Right(.Intern, 1))
                         tmpTelefon.Dialport = DialPortBase.DECT + CInt(Right(.Intern, 1))
                         tmpTelefon.Name = .Name
-                        tmpTelefon.UPnPDialport = $"DECT: {tmpTelefon.Name}"
+                        tmpTelefon.UPnPDialport = PhonePorts.Find(Function(PhonePort) PhonePort.StartsWith("DECT") AndAlso PhonePort.EndsWith(tmpTelefon.Name))
+                        ' Fallback
+                        If tmpTelefon.UPnPDialport.IsNotStringNothingOrEmpty Then tmpTelefon.SetUPnPDialportFallback()
 
                         If FritzBoxJSONTelefone2.DECTRingOnAllMSNs(idx).AreEqual("1") Then
                             tmpTelefon.StrEinTelNr = New List(Of String)
-                            For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.Distinct
+                            For Each TelNr In tmpTelData.Telefonnummern.Distinct
                                 tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                             Next
                         Else
-                            For Each aktDECTNr As DECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
+                            For Each aktDECTNr In FritzBoxJSONTelefone2.DECTTelNr(idx)
                                 If aktDECTNr.Number.IsNotStringEmpty Then
                                     tmpTelefon.StrEinTelNr = New List(Of String)
-                                    For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Equals(aktDECTNr.Number))
+
+                                    For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Equals(aktDECTNr.Number))
                                         tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                                     Next
                                 End If
                             Next
                         End If
+
                         PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
@@ -343,9 +422,11 @@ Public Class FritzBoxData
                                                               .Dialport = DialPortBase.IP + idx}
                         tmpTelefon.Name = .Name
                         tmpTelefon.StrEinTelNr = New List(Of String)
-                        For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID1.AreEqual(.Node.RegExRemove("\D").ToInt) And Nummern.Typ.Contains(TelTypen.IP))
+
+                        For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.ID1.AreEqual(.Node.RegExRemove("\D").ToInt) And Nummern.Typ.Contains(TelTypen.IP))
                             tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                         Next
+
                         PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
@@ -360,23 +441,29 @@ Public Class FritzBoxData
                                                           .AnrMonID = .Dialport}
 
                     tmpTelefon.Name = FritzBoxJSONTelefone1.S0NameList(idx)
-                    tmpTelefon.UPnPDialport = String.Format("ISDN: {0}", tmpTelefon.Name)
+                    tmpTelefon.UPnPDialport = PhonePorts.Find(Function(PhonePort) PhonePort.StartsWith("ISDN") AndAlso PhonePort.EndsWith(tmpTelefon.Name))
+                    ' Fallback
+                    If tmpTelefon.UPnPDialport.IsNotStringNothingOrEmpty Then tmpTelefon.SetUPnPDialportFallback()
 
                     Dim j = idx ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
 
                     tmpTelefon.StrEinTelNr = New List(Of String)
-                    For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.Equals(FritzBoxJSONTelefone2.S0NumberList(j)))
+                    For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.Equals(FritzBoxJSONTelefone2.S0NumberList(j)))
                         tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                     Next
                     tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                 End If
             Next
+
             If tmpTelData.Telefoniegeräte.Find(Function(Telefon) Telefon.TelTyp = TelTypen.S0 Or Telefon.TelTyp = TelTypen.DECT) IsNot Nothing Then
                 tmpTelefon = New Telefoniegerät With {.TelTyp = TelTypen.S0,
                                                   .Dialport = DialPortBase.S0,
                                                   .AnrMonID = .Dialport,
-                                                  .Name = "ISDN: ISDN/DECT Rundruf",
-                                                  .UPnPDialport = "ISDN: ISDN/DECT Rundruf"}           '
+                                                  .Name = "ISDN/DECT Rundruf"}
+
+                tmpTelefon.UPnPDialport = PhonePorts.Find(Function(PhonePort) PhonePort.StartsWith("ISDN") AndAlso PhonePort.EndsWith(tmpTelefon.Name)) '
+                ' Fallback
+                If tmpTelefon.UPnPDialport.IsNotStringNothingOrEmpty Then tmpTelefon.SetUPnPDialportFallback()
 
                 PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)
@@ -393,14 +480,15 @@ Public Class FritzBoxData
 
                         tmpTelefon.StrEinTelNr = New List(Of String)
                         If tmpTelData.Telefonnummern.FindAll(Function(Nummern) Nummern.Typ.Contains(TelTypen.TAM)).Count.IsZero Then
-                            For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.Distinct
+                            For Each TelNr In tmpTelData.Telefonnummern.Distinct
                                 tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                             Next
                         Else
-                            For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.TAM) And Nummer.ID0.AreEqual(j))
+                            For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.TAM) And Nummer.ID0.AreEqual(j))
                                 tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                             Next
                         End If
+
                         PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                         tmpTelData.Telefoniegeräte.Add(tmpTelefon)
                     End If
@@ -416,9 +504,11 @@ Public Class FritzBoxData
                                                       .IsFax = True}
 
                 tmpTelefon.StrEinTelNr = New List(Of String)
-                For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.FAX))
+
+                For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.FAX))
                     tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                 Next
+
                 PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)
             End If
@@ -432,15 +522,18 @@ Public Class FritzBoxData
                                                       .IsFax = False}
 
                 tmpTelefon.StrEinTelNr = New List(Of String)
-                For Each TelNr As Telefonnummer In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.Mobil))
+                For Each TelNr In tmpTelData.Telefonnummern.FindAll(Function(Nummer) Nummer.Typ.Contains(TelTypen.Mobil))
                     tmpTelefon.StrEinTelNr.Add(TelNr.Einwahl)
                 Next
+
                 PushStatus(LogLevel.Debug, $"Telefon: {tmpTelefon.AnrMonID}; {tmpTelefon.Dialport}; {tmpTelefon.UPnPDialport}; {tmpTelefon.Name}")
                 tmpTelData.Telefoniegeräte.Add(tmpTelefon)
             End If
 
             XMLData.PTelefonie = tmpTelData
         End If
+#End Region
+
         ' Aufräumen
         TelQuery.Clear()
         PushStatus(LogLevel.Debug, $"Einlesen der Telefoniedaten abgeschlossen...")

@@ -4,8 +4,9 @@ Imports System.Xml
 
 <Runtime.InteropServices.ComVisible(True)> Public Class OutlookRibbons
     Implements IRibbonExtensibility
-    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 
+    Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
+    Private Property AddinWindows As New List(Of Windows.Window)
     Private Property DfltWerte As DefaultRibbonWerte
 
 #Region "Ribbon Grundlagen für Outlook 2010 bis 2019"
@@ -295,25 +296,65 @@ Imports System.Xml
     Private Sub OnAction(Aufgabe As TaskToDo)
         Select Case Aufgabe
             Case TaskToDo.OpenConfig ' Einstellungsdialog
-                Dim no As New OptionenWPF
-                no.Show()
-            Case TaskToDo.ShowAnrMon
-                'Dim PopUpAnrMon As New Popup
+                Dim AddinFenster As OptionenWPF = CType(AddinWindows.Find(Function(Window) TypeOf Window Is OptionenWPF), OptionenWPF)
 
-                If XMLData.PTelefonie.RINGListe.Count.IsNotZero Then
-                    XMLData.PTelefonie.RINGListe.Item(0).AnrMonEinblenden()
+                If AddinFenster Is Nothing Then
+                    ' Neues Window generieren
+                    AddinFenster = New OptionenWPF
+                    ' Ereignishandler hinzufügen
+                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
+                    ' Window in die Liste aufnehmen
+                    AddinWindows.Add(AddinFenster)
                 Else
-                    Using tmptelfnt As New Telefonat With {.Anrufer = My.Resources.strDefLongName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
+                    AddinFenster.Activate()
+                End If
+
+            Case TaskToDo.ShowAnrMon
+
+                If XMLData.PTelListen.RINGListe.Count.IsNotZero Then
+                    XMLData.PTelListen.RINGListe.Item(0).AnrMonEinblenden()
+                Else
+                    Using tmptelfnt As New Telefonat With {.AnruferName = My.Resources.strDefLongName, .GegenstelleTelNr = New Telefonnummer With {.SetNummer = "0123456789"}, .ZeitBeginn = Now}
                         tmptelfnt.AnrMonEinblenden()
                     End Using
                 End If
 
             Case TaskToDo.DialDirekt
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart()
+
+                Dim AddinFenster As WählclientWPF = CType(AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+
+                If AddinFenster Is Nothing Then
+                    ' Neuen Wählclient generieren
+                    Dim WählClient As New FritzBoxWählClient
+                    WählClient.WählboxStart()
+                    ' Fenster zuweisen
+                    AddinFenster = WählClient.WPFWindow
+                    ' Ereignishandler hinzufügen
+                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
+                    ' Window in die Liste aufnehmen
+                    AddinWindows.Add(AddinFenster)
+                Else
+                    AddinFenster.Activate()
+                End If
+
             Case TaskToDo.DialExplorer
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(ThisAddIn.POutookApplication.ActiveExplorer.Selection)
+
+                Dim AddinFenster As WählclientWPF = CType(AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+
+                If AddinFenster Is Nothing Then
+                    ' Neuen Wählclient generieren
+                    Dim WählClient As New FritzBoxWählClient
+                    WählClient.WählboxStart(ThisAddIn.OutookApplication.ActiveExplorer.Selection)
+                    ' Fenster zuweisen
+                    AddinFenster = WählClient.WPFWindow
+                    ' Ereignishandler hinzufügen
+                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
+                    ' Window in die Liste aufnehmen
+                    AddinWindows.Add(AddinFenster)
+                Else
+                    AddinFenster.Activate()
+                End If
+
             Case TaskToDo.OpenJournalimport
                 'Dim AnrListImportWPF As New AnrListWPF
                 'AnrListImportWPF.Show()
@@ -346,8 +387,22 @@ Imports System.Xml
     Private Sub OnAction(Aufgabe As TaskToDo, OutlookInspector As Outlook.Inspector, Tag As String)
         Select Case Aufgabe
             Case TaskToDo.DialInspector
-                Dim WählClient As New FritzBoxWählClient
-                WählClient.WählboxStart(OutlookInspector)
+
+                Dim AddinFenster As WählclientWPF = CType(AddinWindows.Find(Function(Window) TypeOf Window Is WählclientWPF), WählclientWPF)
+
+                If AddinFenster Is Nothing Then
+                    ' Neuen Wählclient generieren
+                    Dim WählClient As New FritzBoxWählClient
+                    WählClient.WählboxStart(OutlookInspector)
+                    ' Fenster zuweisen
+                    AddinFenster = WählClient.WPFWindow
+                    ' Ereignishandler hinzufügen
+                    AddHandler AddinFenster.Closed, AddressOf Window_Closed
+                    ' Window in die Liste aufnehmen
+                    AddinWindows.Add(AddinFenster)
+                Else
+                    AddinFenster.Activate()
+                End If
 
             Case TaskToDo.CreateContact
                 ZeigeKontaktAusInspector(OutlookInspector)
@@ -388,13 +443,13 @@ Imports System.Xml
         Dim tmpTelefonat As Telefonat
         Dim tmpVIPEintrag As VIPEntry
         If control.Tag.AreEqual(DfltNameListVIP) Then
-            tmpVIPEintrag = XMLData.PTelefonie.VIPListe(control.Id.Split("_")(1).ToInt)
+            tmpVIPEintrag = XMLData.PTelListen.VIPListe(control.Id.Split("_")(1).ToInt)
             If tmpVIPEintrag IsNot Nothing Then
                 Dim WählClient As New FritzBoxWählClient
                 WählClient.WählboxStart(tmpVIPEintrag)
             End If
         Else
-            tmpTelefonat = If(control.Tag.AreEqual(DfltNameListCALL), XMLData.PTelefonie.CALLListe, XMLData.PTelefonie.RINGListe).Item(control.Id.Split("_")(1).ToInt)
+            tmpTelefonat = If(control.Tag.AreEqual(DfltNameListCALL), XMLData.PTelListen.CALLListe, XMLData.PTelListen.RINGListe).Item(control.Id.Split("_")(1).ToInt)
             ' Ermittle das Telefonat aus der Liste
             If tmpTelefonat IsNot Nothing Then
                 Dim WählClient As New FritzBoxWählClient
@@ -406,11 +461,11 @@ Imports System.Xml
 
         Select Case control.Tag
             Case DfltNameListCALL
-                XMLData.PTelefonie.CALLListe.Clear()
+                XMLData.PTelListen.CALLListe.Clear()
             Case DfltNameListRING
-                XMLData.PTelefonie.RINGListe.Clear()
+                XMLData.PTelListen.RINGListe.Clear()
             Case DfltNameListVIP
-                XMLData.PTelefonie.VIPListe.Clear()
+                XMLData.PTelListen.VIPListe.Clear()
         End Select
 
         RefreshRibbon()
@@ -463,11 +518,11 @@ Imports System.Xml
         If XMLData IsNot Nothing Then
             Select Case Left(control.Id, Len(control.Id) - 2)
                 Case DfltNameListCALL
-                    Return XMLData.PTelefonie.CALLListe IsNot Nothing AndAlso XMLData.PTelefonie.CALLListe.Any
+                    Return XMLData.PTelListen.CALLListe IsNot Nothing AndAlso XMLData.PTelListen.CALLListe.Any
                 Case DfltNameListRING
-                    Return XMLData.PTelefonie.RINGListe IsNot Nothing AndAlso XMLData.PTelefonie.RINGListe.Any
+                    Return XMLData.PTelListen.RINGListe IsNot Nothing AndAlso XMLData.PTelListen.RINGListe.Any
                 Case DfltNameListVIP
-                    Return XMLData.PTelefonie.VIPListe IsNot Nothing AndAlso XMLData.PTelefonie.VIPListe.Any
+                    Return XMLData.PTelListen.VIPListe IsNot Nothing AndAlso XMLData.PTelListen.VIPListe.Any
                 Case Else
                     Return False
             End Select
@@ -538,9 +593,9 @@ Imports System.Xml
 
             If ListName.AreEqual(DfltNameListCALL) Or ListName.AreEqual(DfltNameListRING) Then
                 If ListName.AreEqual(DfltNameListCALL) Then
-                    ListofTelefonate = XMLData.PTelefonie.CALLListe
+                    ListofTelefonate = XMLData.PTelListen.CALLListe
                 Else
-                    ListofTelefonate = XMLData.PTelefonie.RINGListe
+                    ListofTelefonate = XMLData.PTelListen.RINGListe
                 End If
 
                 For Each TelFt As Telefonat In ListofTelefonate
@@ -549,8 +604,8 @@ Imports System.Xml
 
             ElseIf ListName.AreEqual(DfltNameListVIP) Then
 
-                For Each VIP As VIPEntry In XMLData.PTelefonie.VIPListe
-                    .DocumentElement.AppendChild(VIP.CreateDynMenuButton(XDynaMenu, XMLData.PTelefonie.VIPListe.IndexOf(VIP), ListName))
+                For Each VIP As VIPEntry In XMLData.PTelListen.VIPListe
+                    .DocumentElement.AppendChild(VIP.CreateDynMenuButton(XDynaMenu, XMLData.PTelListen.VIPListe.IndexOf(VIP), ListName))
                 Next
 
             End If
@@ -626,6 +681,16 @@ Imports System.Xml
 
 #End Region
 
+    Private Sub Window_Closed(sender As Object, e As EventArgs)
+
+        ' Window der Variable zuweisen
+        Dim Window As Windows.Window = CType(sender, Windows.Window)
+        ' Ereignishandler entfernen
+        RemoveHandler Window.Closed, AddressOf Window_Closed
+        ' Window aus der Liste entfernen
+        AddinWindows.Remove(Window)
+
+    End Sub
 
 
 #End Region

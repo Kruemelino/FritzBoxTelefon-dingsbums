@@ -3,8 +3,6 @@ Imports System.Timers
 Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Markup
-Imports System.Windows.Media.Imaging
-Imports Microsoft.Office.Interop
 
 Public Class WählclientWPF
     Inherits Window
@@ -17,10 +15,13 @@ Public Class WählclientWPF
     Private WithEvents TimerSchließen As Timers.Timer
 #End Region
 
-    Public Sub New(Direktwahl As Boolean, ViewModel As WählClientViewModel)
+    Public Sub New(ViewModel As WählClientViewModel)
 
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
+
+        ' Startup Position festlegen
+        WindowStartupLocation = WindowStartupLocation.CenterScreen
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
@@ -31,7 +32,7 @@ Public Class WählclientWPF
         ' Lade initale Daten
         SetTelefonDaten()
 
-        If Direktwahl Then
+        If ViewModel.IsDirektWahl Then
             NLogger.Debug("Direktwahl geladen")
             CtrlDirektWahl = New UserCtrlDirektwahl With {.DataContext = DataContext}
             NavigationCtrl.Content = CtrlDirektWahl
@@ -51,10 +52,13 @@ Public Class WählclientWPF
             .Status = DfltStringEmpty
 
             ' Abbruch Button deaktivieren/ausblenden
-            BAbbruch.Visibility = Visibility.Hidden
+            .IsCancelEnabled = False
 
             ' Optionen aktivieren
             GBoxOptionen.IsEnabled = True
+
+            ' Abfrageflag für Mobilnummern setzen
+            .CheckMobil = XMLData.POptionen.CBCheckMobil
 
             ' Rufnummernunterdrückung gemäß Optionen setzen
             .CLIR = XMLData.POptionen.CBCLIR
@@ -103,10 +107,13 @@ Public Class WählclientWPF
             .OExchangeNutzer?.Details()
         End With
     End Sub
+
     Private Sub BAbbruch_Click(sender As Object, e As RoutedEventArgs) Handles BAbbruch.Click
-        Using tmpTelNr As New Telefonnummer
-            DialTelNr(tmpTelNr, True)
-        End Using
+        DialTelNr(True)
+    End Sub
+
+    Private Sub KontaktWahl_Selected(sender As Object, e As RoutedEventArgs) Handles CtrlKontaktWahl.Dial, CtrlDirektWahl.Dial
+        DialTelNr(False)
     End Sub
 
 #End Region
@@ -114,13 +121,12 @@ Public Class WählclientWPF
     ''' <summary>
     ''' Startet den Wählvorgang
     ''' </summary>
-    ''' <param name="TelNr"></param>
     ''' <param name="AufbauAbbrechen"></param>
-    Private Sub DialTelNr(TelNr As Telefonnummer, AufbauAbbrechen As Boolean)
+    Private Sub DialTelNr(AufbauAbbrechen As Boolean)
+
+        Dim Fortsetzen As Boolean = True
 
         With CType(DataContext, WählClientViewModel)
-            ' Abbruch Button aktivieren/einblenden
-            BAbbruch.Visibility = Visibility.Visible
             ' Optionen deaktivieren
             GBoxOptionen.IsEnabled = False
 
@@ -134,103 +140,114 @@ Public Class WählclientWPF
 
                 ' Timmer abbrechen, falls er läuft
                 If TimerSchließen IsNot Nothing Then TimerSchließen.Stop()
-                ' Ein erneutes Wählen ermöglichen
-                'DGNummern.UnselectAll()
+
             Else
-                ' Status setzen
-                .Status = WählClientBitteWarten
-                NLogger.Debug(WählClientStatusVorbereitung)
-                ' Entferne 1x # am Ende
-                DialCode = TelNr.Unformatiert.RegExRemove("#{1}$")
-                ' Füge VAZ und LKZ hinzu, wenn gewünscht
-                If XMLData.POptionen.CBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & TelNr.Landeskennzahl)
+                ' Wenn es sich um eine Mobilnummer handelt, kann der Nutzer auswählen, ob er zunächst gefragt wird.
+                If .CheckMobil AndAlso .TelNr.IstMobilnummer Then
+                    Fortsetzen = MessageBox.Show(WählClientFrageMobil(.TelNr.Formatiert), Title, MessageBoxButton.YesNo) = MessageBoxResult.Yes
+                End If
 
-                ' Rufnummerunterdrückung
-                DialCode = $"{If(.CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBAmt}{DialCode}#"
+                If Fortsetzen Then
 
-                NLogger.Debug(WählClientStatusWählClient(DialCode))
+                    ' Status setzen
+                    .Status = WählClientBitteWarten
+                    NLogger.Debug(WählClientStatusVorbereitung)
+                    ' Entferne 1x # am Ende
+                    DialCode = .TelNr.Unformatiert.RegExRemove("#{1}$")
+                    ' Füge VAZ und LKZ hinzu, wenn gewünscht
+                    If XMLData.POptionen.CBForceDialLKZ Then DialCode = DialCode.RegExReplace("^0(?=[1-9])", DfltWerteTelefonie.PDfltVAZ & .TelNr.Landeskennzahl)
+
+                    ' Rufnummerunterdrückung
+                    DialCode = $"{If(.CLIR, "*31#", DfltStringEmpty)}{XMLData.POptionen.TBAmt}{DialCode}#"
+
+                    NLogger.Debug(WählClientStatusWählClient(DialCode))
+                End If
             End If
 
-            If .TelGerät.IsSoftPhone Then
+            If Fortsetzen Then
 
-                If .TelGerät.IsPhoner Then
-                    ' Initiere Phoner, wenn erforderlich
-                    If XMLData.POptionen.CBPhoner Then
+                If .TelGerät.IsSoftPhone Then
 
-                        Using PhonerApp = New Phoner
+                    If .TelGerät.IsPhoner Then
+                        ' Initiere Phoner, wenn erforderlich
+                        If XMLData.POptionen.CBPhoner Then
 
-                            If PhonerApp.PhonerReady Then
-                                ' Telefonat an Phoner übergeben
-                                NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
-                                Erfolreich = PhonerApp.Dial(DialCode, AufbauAbbrechen)
-                            Else
-                                NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
-                                Erfolreich = False
-                            End If
+                            Using PhonerApp = New Phoner
 
-                        End Using
+                                If PhonerApp.PhonerReady Then
+                                    ' Telefonat an Phoner übergeben
+                                    NLogger.Info("Wählclient an Phoner: {0} über {1}", DialCode, .TelGerät.Name)
+                                    Erfolreich = PhonerApp.Dial(DialCode, AufbauAbbrechen)
+                                Else
+                                    NLogger.Debug(WählClientSoftPhoneInaktiv("Phoner"))
+                                    Erfolreich = False
+                                End If
+
+                            End Using
+                        End If
                     End If
-                End If
 
-                If .TelGerät.IsMicroSIP Then
-                    ' Initiere MicroSIP, wenn erforderlich
-                    If XMLData.POptionen.CBMicroSIP Then
+                    If .TelGerät.IsMicroSIP Then
+                        ' Initiere MicroSIP, wenn erforderlich
+                        If XMLData.POptionen.CBMicroSIP Then
 
-                        Using MicroSIPApp = New MicroSIP
+                            Using MicroSIPApp = New MicroSIP
 
-                            If MicroSIPApp.MicroSIPReady Then
-                                ' Telefonat an Phoner übergeben
-                                NLogger.Info("Wählclient an MicroSIP: {0} über {1}", DialCode, .TelGerät.Name)
-                                Erfolreich = CBool((MicroSIPApp?.Dial(DialCode, AufbauAbbrechen)))
-                            Else
-                                NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
-                                Erfolreich = False
-                            End If
+                                If MicroSIPApp.MicroSIPReady Then
+                                    ' Telefonat an Phoner übergeben
+                                    NLogger.Info("Wählclient an MicroSIP: {0} über {1}", DialCode, .TelGerät.Name)
+                                    Erfolreich = CBool((MicroSIPApp?.Dial(DialCode, AufbauAbbrechen)))
+                                Else
+                                    NLogger.Debug(WählClientSoftPhoneInaktiv("MicroSIP"))
+                                    Erfolreich = False
+                                End If
 
-                        End Using
+                            End Using
+                        End If
                     End If
-                End If
 
-            Else
-                ' Telefonat üper SOAP an Fritz!Box weiterreichen
-                If .Wählclient IsNot Nothing Then
-                    NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, .TelGerät.Name)
-                    Erfolreich = .Wählclient.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)
                 Else
-                    NLogger.Error("Wählclient ist Nothing")
-                    Erfolreich = False
+                    ' Telefonat üper SOAP an Fritz!Box weiterreichen
+                    If .Wählclient IsNot Nothing Then
+                        NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, .TelGerät.Name)
+                        Erfolreich = .Wählclient.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)
+                    Else
+                        NLogger.Error("Wählclient ist Nothing")
+                        Erfolreich = False
+                        .Status = WählClientDialFehler
+                    End If
+
+                End If
+
+                ' Ergebnis auswerten 
+                If Erfolreich Then
+                    If AufbauAbbrechen Then
+                        .Status = WählClientDialHangUp
+                        .IsCancelEnabled = False
+                    Else
+                        .Status = WählClientJetztAbheben
+                        ' Abbruch-Button aktivieren, wenn Anruf abgebrochen
+                        .IsCancelEnabled = True
+                    End If
+
+                    ' Einstellungen (Welcher Anschluss, CLIR...) speichern
+                    XMLData.POptionen.CBCLIR = .CLIR
+                    ' Standard-Gerät speichern
+
+                    If Not .TelGerät.ZuletztGenutzt Then
+                        ' Entferne das Flag bei allen anderen Geräten
+                        ' (eigentlich reicht es, das Flag bei dem einen Gerät zu entfernen. Sicher ist sicher.
+                        XMLData.PTelefonie.Telefoniegeräte.ForEach(Sub(TE) TE.ZuletztGenutzt = False)
+                        ' Flag setzen
+                        .TelGerät.ZuletztGenutzt = True
+                    End If
+                    ' Timer zum automatischen Schließen des Fensters starten
+                    If XMLData.POptionen.CBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.TBWClientEnblDauer * 1000)
+                Else
                     .Status = WählClientDialFehler
                 End If
 
             End If
-
-            ' Ergebnis auswerten 
-            If Erfolreich Then
-                If AufbauAbbrechen Then
-                    .Status = WählClientDialHangUp
-                Else
-                    .Status = WählClientJetztAbheben
-                    ' Abbruch-Button aktivieren, wenn Anruf abgebrochen
-                    BAbbruch.IsEnabled = True
-                End If
-
-                ' Einstellungen (Welcher Anschluss, CLIR...) speichern
-                XMLData.POptionen.CBCLIR = .CLIR
-                ' Standard-Gerät speichern
-
-                If Not .TelGerät.ZuletztGenutzt Then
-                    ' Entferne das Flag bei allen anderen Geräten
-                    ' (eigentlich reicht es, das Flag bei dem einen Gerät zu entfernen. Sicher ist sicher.
-                    XMLData.PTelefonie.Telefoniegeräte.ForEach(Sub(TE) TE.ZuletztGenutzt = False)
-                    ' Flag setzen
-                    .TelGerät.ZuletztGenutzt = True
-                End If
-                ' Timer zum automatischen Schließen des Fensters starten
-                If XMLData.POptionen.CBCloseWClient Then TimerSchließen = SetTimer(XMLData.POptionen.TBWClientEnblDauer * 1000)
-            Else
-                .Status = WählClientDialFehler
-            End If
-
         End With
     End Sub
 
@@ -239,10 +256,5 @@ Public Class WählclientWPF
         TimerSchließen = KillTimer(TimerSchließen)
         Close()
     End Sub
-
-    Private Sub KontaktWahl_Selected(sender As Object, e As RoutedEventArgs) Handles CtrlKontaktWahl.Dial, CtrlDirektWahl.Dial
-        DialTelNr(CType(DataContext, WählClientViewModel).TelNr, False)
-    End Sub
-
 #End Region
 End Class

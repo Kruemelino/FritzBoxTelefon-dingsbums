@@ -7,8 +7,6 @@
 #Region "Grundeinstellungen"
 #Region "Grundeinstellungen - Erforderliche Angaben"
     Private _TBFBAdr As String
-    Private _TBOrtsKZ As String
-    Private _TBLandesKZ As String
     ''' <summary>
     ''' Gibt die eingegebene Fritz!Box IP-Adresse an. Dies ist eine Angabe, die der Nutzer in den Einstellungen ändern kann.
     ''' </summary>
@@ -36,29 +34,6 @@
     ''' </summary>
     <XmlElement("TBPasswort")> Public Property TBPasswort As String
 
-    ''' <summary>
-    ''' Eigenschaft für die hinterlege Ortsvorwahl
-    ''' </summary>
-    <XmlElement("TBOrtsKZ")> Public Property TBOrtsKZ() As String
-        Get
-            Return GetProperty(_TBOrtsKZ, DefaultWerte.DfltTBOrtsKZ)
-        End Get
-        Set
-            _TBOrtsKZ = Value
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' Gibt die im Einstellungsdialog eingegebene Landesvorwahl zurück
-    ''' </summary>
-    <XmlElement("TBLandesKZ")> Public Property TBLandesKZ() As String
-        Get
-            Return GetProperty(_TBLandesKZ, DfltWerteTelefonie.PDfltLandesKZ)
-        End Get
-        Set
-            _TBLandesKZ = Value
-        End Set
-    End Property
 #End Region
 
 #Region "Grundeinstellungen - Formatierung von Telefonnummern"
@@ -231,6 +206,38 @@
         End Get
         Set
             _CBAnrMonContactImage = Value
+        End Set
+    End Property
+#End Region
+
+#Region "Stoppuhr"
+    Private _CBStoppUhrEinblenden As Boolean
+    Private _CBStoppUhrAusblenden As Boolean
+    Private _TBStoppUhrAusblendverzögerung As Integer
+    Public Property CBStoppUhrEinblenden As Boolean
+        Get
+            Return GetProperty(_CBStoppUhrEinblenden, DefaultWerte.DfltCBStoppUhrEinblenden)
+        End Get
+        Set
+            _CBStoppUhrEinblenden = Value
+        End Set
+    End Property
+
+    Public Property CBStoppUhrAusblenden As Boolean
+        Get
+            Return GetProperty(_CBStoppUhrAusblenden, DefaultWerte.DfltCBStoppUhrAusblenden)
+        End Get
+        Set
+            _CBStoppUhrAusblenden = Value
+        End Set
+    End Property
+
+    Public Property TBStoppUhrAusblendverzögerung As Integer
+        Get
+            Return GetProperty(_TBStoppUhrAusblendverzögerung, DefaultWerte.DfltTBStoppUhrAusblendverzögerung)
+        End Get
+        Set
+            _TBStoppUhrAusblendverzögerung = Value
         End Set
     End Property
 #End Region
@@ -424,6 +431,7 @@
 #Region "MicroSIP"
     Private _TBMicroSIPPath As String
     Private _CBMicroSIP As Boolean
+
     <XmlElement("TBMicroSIPPath")> Public Property TBMicroSIPPath As String
         Get
             Return _TBMicroSIPPath

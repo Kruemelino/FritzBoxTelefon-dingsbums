@@ -5,6 +5,7 @@
         xmlns:localize="clr-namespace:FBoxDial.Localize"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fbd="clr-namespace:FBoxDial"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
         Title="{x:Static localize:resCommon.strImportCallerList}" Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type=fbd:AnrListViewModel, IsDesignTimeCreatable=True}">
@@ -30,11 +31,12 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,10,0,10">
             <GroupBox Header="{x:Static localize:resCommon.strStartTime}">
-                <DatePicker SelectedDateFormat="Short" FirstDayOfWeek="Monday"/>
+                <DatePicker x:Name="StartZeit" SelectedDateFormat="Short" FirstDayOfWeek="Monday" SelectedDate="{Binding Path=StartZeit, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
             </GroupBox>
             <GroupBox Header="{x:Static localize:resCommon.strEndTime}">
-                <DatePicker SelectedDateFormat="Short" FirstDayOfWeek="Monday"/>
+                <DatePicker x:Name="EndZeit" SelectedDateFormat="Short" FirstDayOfWeek="Monday" SelectedDate="{Binding Path=EndZeit, Mode=TwoWay, TargetNullValue={x:Static sys:DateTime.Now}}"/>
             </GroupBox>
+
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10">
             <Button x:Name="btnStartJournalImport" Content="{x:Static localize:resCommon.strStartJounalImport}" Height="23" Padding="10,0,10,0" Margin="0,0,10,0" Click="btnStartJournalImport_Click" />

@@ -6,15 +6,15 @@ Public Class UserCtrlKontaktwahl
     Public Shared ReadOnly DialEvent As RoutedEvent = EventManager.RegisterRoutedEvent("Dial", RoutingStrategy.Bubble, GetType(RoutedEventHandler), GetType(UserCtrlKontaktwahl))
 
     Public Custom Event Dial As RoutedEventHandler
-        AddHandler(ByVal value As RoutedEventHandler)
+        AddHandler(value As RoutedEventHandler)
             Me.AddHandler(DialEvent, value)
         End AddHandler
 
-        RemoveHandler(ByVal value As RoutedEventHandler)
+        RemoveHandler(value As RoutedEventHandler)
             Me.RemoveHandler(DialEvent, value)
         End RemoveHandler
 
-        RaiseEvent(ByVal sender As Object, ByVal e As RoutedEventArgs)
+        RaiseEvent(sender As Object, e As RoutedEventArgs)
             Me.RaiseEvent(e)
         End RaiseEvent
     End Event

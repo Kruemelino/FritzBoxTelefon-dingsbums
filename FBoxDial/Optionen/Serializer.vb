@@ -24,17 +24,15 @@ Friend Module Serializer
 
         ' Setze einige Felder
         If XMLData IsNot Nothing Then
-            With XMLData
-                With .POptionen
-                    .Arbeitsverzeichnis = DateiInfo.Directory.ToString
-                    .ValidFBAdr = ValidIP(.TBFBAdr)
-                End With
+            With XMLData.POptionen
+                .Arbeitsverzeichnis = DateiInfo.Directory.ToString
+                .ValidFBAdr = ValidIP(.TBFBAdr)
             End With
         End If
 
     End Sub
 
-    Friend Sub Speichern(Of T)(ByVal XMLData As T, ByVal Pfad As String)
+    Friend Sub Speichern(Of T)(XMLData As T, Pfad As String)
         If XMLData IsNot Nothing Then
             Dim XmlSerializerNamespace As New XmlSerializerNamespaces()
             XmlSerializerNamespace.Add(DfltStringEmpty, DfltStringEmpty)
@@ -47,13 +45,13 @@ Friend Module Serializer
         End If
     End Sub
 
-    Friend Function DeserializeObjectAsyc(Of T)(ByVal Pfad As String) As Task(Of T)
+    Friend Function DeserializeObjectAsyc(Of T)(Pfad As String) As Task(Of T)
         Return Task.Run(Function()
                             Return DeserializeObject(Of T)(Pfad)
                         End Function)
     End Function
 
-    Friend Function DeserializeObject(Of T)(ByVal Pfad As String) As T
+    Friend Function DeserializeObject(Of T)(Pfad As String) As T
 
         Dim mySerializer As New XmlSerializer(GetType(T))
         Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
@@ -68,11 +66,11 @@ Friend Module Serializer
 
     End Function
 
-    Friend Function XmlDeserializeFromString(Of T)(ByVal objectData As String) As T
+    Friend Function XmlDeserializeFromString(Of T)(objectData As String) As T
         Return CType(XmlDeserializeFromString(objectData, GetType(T)), T)
     End Function
 
-    Private Function XmlDeserializeFromString(ByVal objectData As String, ByVal type As Type) As Object
+    Private Function XmlDeserializeFromString(objectData As String, type As Type) As Object
         Dim serializer = New XmlSerializer(type)
         Dim result As Object
 

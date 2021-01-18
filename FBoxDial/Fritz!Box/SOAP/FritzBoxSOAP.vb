@@ -26,7 +26,7 @@ Public Class FritzBoxSOAP
         If Not HttpFehler Then FBTR64Desc = XmlDeserializeFromString(Of TR64Desc)(HttpResponse)
     End Sub
 
-    Private Function GetService(ByVal SCPDURL As String) As Service
+    Private Function GetService(SCPDURL As String) As Service
 
         If FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device.ServiceList.Any Then
             Return FBTR64Desc.Device.ServiceList.Find(Function(Service) Service.SCPDURL.AreEqual(SCPDURL))
@@ -37,7 +37,7 @@ Public Class FritzBoxSOAP
 
     End Function
 
-    Friend Overloads Function Start(ByVal SCPDURL As String, ByVal ActionName As String, ByVal InputHashTable As Hashtable) As Hashtable
+    Friend Overloads Function Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
         If Ping(XMLData.POptionen.TBFBAdr) Then
 
             Dim SOAPError As String
@@ -68,10 +68,6 @@ Public Class FritzBoxSOAP
             End With
         End If
         Return ErrorHashTable
-    End Function
-
-    Friend Overloads Function Start(ByVal SCPDURL As String, ByVal FritzBoxActionName As String) As Hashtable
-        Return Start(SCPDURL, FritzBoxActionName, Nothing)
     End Function
 
 #Region "IDisposable Support"

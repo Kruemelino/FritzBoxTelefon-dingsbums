@@ -12,7 +12,7 @@ Public Class UserCtrlTelefone
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             If FritzBoxDaten Is Nothing Then FritzBoxDaten = New FritzBoxData
             ' Einlesen starten
-            FritzBoxDaten.FritzBoxDatenJSON()
+            FritzBoxDaten.GetFritzBoxDaten()
         End If
 
     End Sub
