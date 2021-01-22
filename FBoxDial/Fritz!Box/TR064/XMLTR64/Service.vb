@@ -18,7 +18,7 @@ Public Class Service
 
     Friend Function ActionExists(ActionName As String) As Boolean
         If SCPD Is Nothing Then
-            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.DfltSOAPPort}{SCPDURL}")
+            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)(New UriBuilder(Uri.UriSchemeHttp, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064Port, SCPDURL).Uri)
         End If
 
         Return SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
@@ -52,22 +52,31 @@ Public Class Service
     Friend Function Start([Action] As Action, InputArguments As Hashtable) As Hashtable
         Dim ReturnXMLDox As New XmlDocument
         Dim OutputHashTable As New Hashtable
+        Dim Response As String = DfltStringEmpty
 
-        ReturnXMLDox.LoadXml(FritzBoxPOST(Action.Name, $"https://{XMLData.POptionen.TBFBAdr }:{FritzBoxDefault.DfltSOAPPortSSL}{ControlURL}", ServiceType, GetRequest(Action, InputArguments)))
+        With OutputHashTable
 
-        If ReturnXMLDox.DocumentElement.Name.AreEqual("FEHLER") Then
-            With ErrorHashTable
-                .Clear()
-                .Add("Error", ReturnXMLDox.DocumentElement.InnerText)
-            End With
-            OutputHashTable = ErrorHashTable
-        Else
-            If ReturnXMLDox.InnerXml.IsNotStringEmpty Then
-                For Each OUTArguments As Argument In Action.ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.OUT)
-                    OutputHashTable.Add(OUTArguments.Name, ReturnXMLDox.GetElementsByTagName(OUTArguments.Name).Item(0).InnerText)
-                Next
+            If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064PortSSL, ControlURL).Uri,
+                        Action.Name,
+                        ServiceType,
+                        GetRequest(Action, InputArguments),
+                        Response) Then
+
+                ' XML Laden
+                ReturnXMLDox.LoadXml(Response)
+
+                If ReturnXMLDox.InnerXml.IsNotStringEmpty Then
+                    For Each OUTArguments As Argument In Action.ArgumentList.FindAll(Function(GetbyDirection) GetbyDirection.Direction = ArgumentDirection.OUT)
+                        .Add(OUTArguments.Name, ReturnXMLDox.GetElementsByTagName(OUTArguments.Name).Item(0).InnerText)
+                    Next
+                End If
+
+            Else
+                ' Fehlerfall
+                .Add("Error", Response)
+
             End If
-        End If
+        End With
 
         Return OutputHashTable
     End Function
@@ -98,15 +107,15 @@ Public Class Service
             .AppendChild(.CreateXmlDeclaration("1.0", "utf-8", ""))
 
             ' XML-RootElement "Envelope" generieren
-            With .AppendChild(.CreateElement("s", "Envelope", FritzBoxDefault.DfltSOAPRequestNameSpaceEnvelope))
+            With .AppendChild(.CreateElement("s", "Envelope", FritzBoxDefault.DfltTR064RequestNameSpaceEnvelope))
                 ' Das Attribut "encodingStyle" dem XML-Root-Element hinzufügen
-                With .Attributes.Append(GetRequest.CreateAttribute("s", "encodingStyle", FritzBoxDefault.DfltSOAPRequestNameSpaceEnvelope))
+                With .Attributes.Append(GetRequest.CreateAttribute("s", "encodingStyle", FritzBoxDefault.DfltTR064RequestNameSpaceEnvelope))
                     ' Den Wert des Attributes "encodingStyle" setzen
-                    .Value = FritzBoxDefault.DfltSOAPRequestNameSpaceEncoding
+                    .Value = FritzBoxDefault.DfltTR064RequestNameSpaceEncoding
                 End With
 
                 ' XML-BodyElement "Body" generieren und dem XML-RootElement anhängen
-                With .AppendChild(GetRequest.CreateElement("s", "Body", FritzBoxDefault.DfltSOAPRequestNameSpaceEnvelope))
+                With .AppendChild(GetRequest.CreateElement("s", "Body", FritzBoxDefault.DfltTR064RequestNameSpaceEnvelope))
 
                     ' XML-Element mit dem namen der Action generieren und dem XML-BodyElement anhängen
                     With .AppendChild(GetRequest.CreateElement("u", Action.Name, ServiceType))

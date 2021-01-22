@@ -207,10 +207,10 @@ Public Class WählclientWPF
                     End If
 
                 Else
-                    ' Telefonat üper SOAP an Fritz!Box weiterreichen
+                    ' Telefonat über TR064Dial an Fritz!Box weiterreichen
                     If .Wählclient IsNot Nothing Then
-                        NLogger.Info("Wählclient SOAPDial: {0} über {1}", DialCode, .TelGerät.Name)
-                        Erfolreich = .Wählclient.SOAPDial(DialCode, .TelGerät, AufbauAbbrechen)
+                        NLogger.Info("Wählclient TR064Dial: {0} über {1}", DialCode, .TelGerät.Name)
+                        Erfolreich = .Wählclient.TR064Dial(DialCode, .TelGerät, AufbauAbbrechen)
                     Else
                         NLogger.Error("Wählclient ist Nothing")
                         Erfolreich = False

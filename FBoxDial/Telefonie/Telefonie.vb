@@ -48,14 +48,14 @@
 
     Friend Sub GetKennzahlen()
         Dim OutPutData As Collections.Hashtable
-        Using fbSOAP As New FritzBoxSOAP
+        Using fbSOAP As New FritzBoxTR64
 
             ' Landeskennzahl ermitteln: X_AVM-DE_GetVoIPCommonCountryCode
-            OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode")
+            OutPutData = fbSOAP.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode")
             If Not OutPutData.Contains("Error") Then LKZ = OutPutData.Item("NewX_AVM-DE_LKZ").ToString()
 
             ' Ortskennzahl ermitteln: X_AVM-DE_GetVoIPCommonAreaCode
-            OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode")
+            OutPutData = fbSOAP.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode")
             If Not OutPutData.Contains("Error") Then OKZ = OutPutData.Item("NewX_AVM-DE_OKZ").ToString()
 
         End Using

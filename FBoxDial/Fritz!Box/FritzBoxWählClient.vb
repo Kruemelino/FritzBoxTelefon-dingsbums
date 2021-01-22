@@ -9,7 +9,7 @@ Public Class FritzBoxWählClient
     Friend Property WPFWindow As WählclientWPF
 #End Region
 
-#Region "Wählen per SOAP"
+#Region "Wählen per TR-064"
     ''' <summary>
     ''' Initialisiert den Wählvorgang der Fritz!Box Wählhilfe.
     ''' </summary>
@@ -17,36 +17,36 @@ Public Class FritzBoxWählClient
     ''' <param name="Telefon">Das ausgehende Telefon</param>
     ''' <param name="Auflegen">Angabe, ob der Verbindungsaufbau abgebrochen werden soll.</param>
     ''' <returns></returns>
-    Friend Function SOAPDial(sDialCode As String, Telefon As Telefoniegerät, Auflegen As Boolean) As Boolean
+    Friend Function TR064Dial(sDialCode As String, Telefon As Telefoniegerät, Auflegen As Boolean) As Boolean
         Dim DialPortEingestellt As Boolean
         Dim InPutData As New Hashtable
         Dim OutPutData As Hashtable
 
         Dim StatusMeldung As String
 
-        Using fbSOAP As New FritzBoxSOAP
+        Using TR064 As New FritzBoxTR64
             ' DialPort setzen, wenn erforderlich
 
-            OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+            OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
             DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
 
             If Not DialPortEingestellt Then
                 ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-                StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusDialPort, Telefon.UPnPDialport)
+                StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusDialPort, Telefon.UPnPDialport)
                 InPutData.Clear()
                 InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.UPnPDialport)
-                OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
+                OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
 
                 If OutPutData.Contains("Error") Then
                     DialPortEingestellt = False
-                    StatusMeldung = WählClientDialStatus("SOAPDial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
+                    StatusMeldung = WählClientDialStatus("TR064Dial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
                 Else
                     ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
-                    OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+                    OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
                     DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
                     If Not DialPortEingestellt Then
-                        StatusMeldung = WählClientDialStatus("SOAPDial", WählClientStatusSOAPDialPortFehler, Telefon.UPnPDialport)
+                        StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusTR064DialPortFehler, Telefon.UPnPDialport)
                         NLogger.Error(StatusMeldung)
                     End If
                 End If
@@ -57,16 +57,16 @@ Public Class FritzBoxWählClient
                 ' Senden des Wählkomandos
                 InPutData.Clear()
                 If Auflegen Then
-                    OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialHangup")
+                    OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup")
                 Else
                     InPutData.Add("NewX_AVM-DE_PhoneNumber", sDialCode)
-                    OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
+                    OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
                 End If
 
                 ' Rückmeldung, ob das Wählen erfolgreich war
 
                 If OutPutData.Contains("Error") Then
-                    StatusMeldung = WählClientDialStatus("SOAPDial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
+                    StatusMeldung = WählClientDialStatus("TR064Dial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
                     NLogger.Error(StatusMeldung)
                     Return False
                 Else

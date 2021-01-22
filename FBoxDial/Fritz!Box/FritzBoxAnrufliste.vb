@@ -6,9 +6,9 @@ Module FritzBoxAnrufliste
     Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FritzBoxXMLCallList)
         Dim OutPutData As Collections.Hashtable
 
-        Using fboxSOAP As New FritzBoxSOAP
+        Using fboxSOAP As New FritzBoxTR64
             ' Lade die Anrufliste herunter
-            OutPutData = fboxSOAP.Start(KnownSOAPFile.x_contactSCPD, "GetCallList")
+            OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "GetCallList")
 
             If OutPutData.ContainsKey("Error") Then
                 NLogger.Error("XML-Anrufliste konnte nicht heruntergeladen werden.")

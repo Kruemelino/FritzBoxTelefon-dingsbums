@@ -1,14 +1,15 @@
 ﻿Imports System.Collections
 Imports System.Net
 
-Public Class FritzBoxSOAP
+Public Class FritzBoxTR64
     Implements IDisposable
 
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property FBTR64Desc As TR64Desc
     Private Property HttpFehler As Boolean
+
     Public Sub New()
-        Dim HttpResponse As String
+        Dim Response As String = DfltStringEmpty
 
         HttpFehler = False
         ErrorHashTable = New Hashtable
@@ -17,13 +18,17 @@ Public Class FritzBoxSOAP
         ServicePointManager.ServerCertificateValidationCallback = Function(se As Object, cert As System.Security.Cryptography.X509Certificates.X509Certificate, chain As System.Security.Cryptography.X509Certificates.X509Chain, sslerror As Security.SslPolicyErrors) True
 
         ' Funktioniert nicht: ByPass SSL Certificate Validation Checking wird ignoriert. Es kommt zu unerklärlichen System.Net.WebException in FritzBoxPOST
-        ' FBTR64Desc = DeserializeObject(Of TR64Desc)($"http://{XMLData.POptionen.PTBFBAdr}:{FritzBoxDefault.PDfltFBSOAP}{KnownSOAPFile.tr64desc}")
+        ' FBTR64Desc = DeserializeObject(Of TR64Desc)($"http://{XMLData.POptionen.PTBFBAdr}:{FritzBoxDefault.PDfltFBSOAP}{Tr064Files.tr64desc}")
 
         ' Workaround: XML-Datei als String herunterladen und separat Deserialisieren
+
         ' Herunterladen
-        HttpResponse = FritzBoxGet($"http://{XMLData.POptionen.TBFBAdr}:{FritzBoxDefault.DfltSOAPPort}{KnownSOAPFile.tr64desc}", HttpFehler)
-        ' Deserialisieren
-        If Not HttpFehler Then FBTR64Desc = XmlDeserializeFromString(Of TR64Desc)(HttpResponse)
+        If FritzBoxGet(New UriBuilder(Uri.UriSchemeHttps, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
+            ' Deserialisieren
+            FBTR64Desc = XmlDeserializeFromString(Of TR64Desc)(Response)
+
+        End If
+
     End Sub
 
     Private Function GetService(SCPDURL As String) As Service

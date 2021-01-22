@@ -319,17 +319,17 @@
     <Compile Include="Formulare\WPF\AnrListWPF.xaml.vb">
       <DependentUpon>AnrListWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelNrList.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\Action.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\Argument.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\Device.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\Icon.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\SCPD.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\Service.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\SpecVersion.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\StateVariable.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\SystemVersion.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPXML\TR64Desc.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelNrList.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Action.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Argument.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Device.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Icon.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\SCPD.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\Service.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\SpecVersion.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\StateVariable.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\SystemVersion.vb" />
+    <Compile Include="Fritz!Box\TR064\XMLTR64\TR64Desc.vb" />
     <Compile Include="Kontakte\KontaktInspector.vb" />
     <Compile Include="Formulare\FormAnrList.designer.vb">
       <DependentUpon>FormAnrList.vb</DependentUpon>
@@ -369,8 +369,8 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLCall.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLCallList.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCall.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
     <Compile Include="Fritz!Box\JSON.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
@@ -390,17 +390,17 @@
     <Compile Include="TCPClient\AnrMonClient.vb" />
     <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
-    <Compile Include="Fritz!Box\SOAP\FritzBoxSOAP.vb" />
-    <Compile Include="Fritz!Box\SOAP\FritzBoxInformations.vb" />
+    <Compile Include="Fritz!Box\TR064\FritzBoxTR64.vb" />
+    <Compile Include="Fritz!Box\TR064\FritzBoxInformations.vb" />
     <Compile Include="Fritz!Box\FritzBoxWählClient.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLEmail.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLKontakt.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLNummer.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLPerson.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLServices.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelefonbuch.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelefonbücher.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelefonie.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLEmail.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLKontakt.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLNummer.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLPerson.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLServices.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbuch.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonbücher.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelefonie.vb" />
     <Compile Include="Fritz!Box\FritzBoxTelefonbuch.vb" />
     <Compile Include="Journal\Journal.vb" />
     <Compile Include="Kontakte\KontaktFunktionen.vb" />
@@ -422,8 +422,8 @@
     <Compile Include="Ribbon\DefaultRibbon.vb" />
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPBaseFunctions.vb" />
-    <Compile Include="Fritz!Box\SOAP\SOAPTelefonie\FritzBoxXMLTelNr.vb" />
+    <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
+    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelNr.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />
@@ -452,12 +452,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelBuchListControlItem.resx">
       <DependentUpon>TelBuchListControlItem.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\FormTelefonbücher.resx">
       <DependentUpon>FormTelefonbücher.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formulare\ListControl\TelListControl.resx">
       <DependentUpon>TelListControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Localize\resCommon.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

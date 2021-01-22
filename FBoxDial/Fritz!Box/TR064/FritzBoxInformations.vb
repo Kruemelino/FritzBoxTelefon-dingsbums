@@ -7,8 +7,8 @@ Public Module FritzBoxInformations
 #End Region
 
 #Region "Properties"
-    Friend ReadOnly Property P_SOAPContentType As String = "text/xml; charset=""utf-8"""
-    Friend ReadOnly Property P_SOAPUserAgent As String = "AVM UPnP/1.0 Client 1.0"
+    Friend ReadOnly Property TR064ContentType As String = "text/xml; charset=""utf-8"""
+    Friend ReadOnly Property TR064UserAgent As String = "AVM UPnP/1.0 Client 1.0"
 
 #End Region
 
@@ -17,7 +17,7 @@ Public Module FritzBoxInformations
     ''' <summary>
     ''' Gibt die SCPDURL der bekannten Services zurück.
     ''' </summary>
-    Public Structure KnownSOAPFile
+    Public Structure Tr064Files
         ''' <summary>
         ''' deviceconfigSCPD
         ''' </summary>

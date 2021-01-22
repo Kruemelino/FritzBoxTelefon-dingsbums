@@ -51,7 +51,13 @@ Friend Module Serializer
                         End Function)
     End Function
 
-    Friend Function DeserializeObject(Of T)(Pfad As String) As T
+    Friend Function DeserializeObjectAsyc(Of T)(UniformResourceIdentifier As Uri) As Task(Of T)
+        Return Task.Run(Function()
+                            Return DeserializeObject(Of T)(UniformResourceIdentifier.AbsoluteUri)
+                        End Function)
+    End Function
+
+    Private Function DeserializeObject(Of T)(Pfad As String) As T
 
         Dim mySerializer As New XmlSerializer(GetType(T))
         Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
@@ -64,6 +70,10 @@ Friend Module Serializer
             End If
         End Using
 
+    End Function
+
+    Friend Function DeserializeObject(Of T)(UniformResourceIdentifier As Uri) As T
+        Return DeserializeObject(Of T)(UniformResourceIdentifier.AbsoluteUri)
     End Function
 
     Friend Function XmlDeserializeFromString(Of T)(objectData As String) As T

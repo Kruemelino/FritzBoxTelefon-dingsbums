@@ -443,9 +443,9 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property WählClientStatusDialPort() As String = "Ändere Dialport auf"
 
     ''' <summary>
-    ''' Der SOAP-Dialport konnte nicht geändert werden:
+    ''' Der TR-064-Dialport konnte nicht geändert werden:
     ''' </summary>
-    Public Shared ReadOnly Property WählClientStatusSOAPDialPortFehler As String = "Der SOAP-Dialport konnte nicht geändert werden:"
+    Public Shared ReadOnly Property WählClientStatusTR064DialPortFehler As String = "Der TR-064-Dialport konnte nicht geändert werden:"
 #End Region
 
 #Region "Literale Rückwärtssuche"

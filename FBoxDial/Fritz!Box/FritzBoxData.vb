@@ -51,9 +51,9 @@ Public Class FritzBoxData
         Dim InPutData As New Hashtable
         Dim OutPutData As Hashtable
 
-        Using fbSOAP As New FritzBoxSOAP
+        Using fbSOAP As New FritzBoxTR64
             ' Hole die SessionID für Fritz!Box Query
-            OutPutData = fbSOAP.Start(KnownSOAPFile.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID")
+            OutPutData = fbSOAP.Start(Tr064Files.deviceconfigSCPD, "X_AVM-DE_CreateUrlSID")
             If OutPutData.ContainsKey("NewX_AVM-DE_UrlSID") Then
                 NLogger.Debug(OutPutData.Item("NewX_AVM-DE_UrlSID").ToString)
                 SessionID = OutPutData.Item("NewX_AVM-DE_UrlSID").ToString
@@ -76,7 +76,7 @@ Public Class FritzBoxData
 
                 Do
                     InPutData.Item("NewIndex") = i
-                    OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetPhonePort", InPutData)
+                    OutPutData = fbSOAP.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetPhonePort", InPutData)
                     If Not OutPutData.Contains("Error") Then
                         i += 1
                         PhonePorts.Add(OutPutData.Item("NewX_AVM-DE_PhoneName").ToString())
@@ -86,19 +86,19 @@ Public Class FritzBoxData
 
                 ' Landeskennzahl ermitteln: X_AVM-DE_GetVoIPCommonCountryCode
                 InPutData.Clear()
-                OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode")
+                OutPutData = fbSOAP.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonCountryCode")
                 tmpTelData.LKZ = OutPutData.Item("NewX_AVM-DE_LKZ").ToString()
 
                 ' Ortskennzahl ermitteln: X_AVM-DE_GetVoIPCommonAreaCode
                 InPutData.Clear()
-                OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode")
+                OutPutData = fbSOAP.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetVoIPCommonAreaCode")
                 tmpTelData.OKZ = OutPutData.Item("NewX_AVM-DE_OKZ").ToString()
 
                 PushStatus(LogLevel.Debug, $"Kennzahlen: {tmpTelData.LKZ}; {tmpTelData.OKZ}")
 
                 '' Ermittle alle Telefonnummern: X_AVM-DE_GetNumbers
                 'InPutData.Clear()
-                'OutPutData = fbSOAP.Start(KnownSOAPFile.x_voipSCPD, "X_AVM-DE_GetNumbers")
+                'OutPutData = fbSOAP.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetNumbers")
 
                 'If OutPutData.ContainsKey("Error") Then
                 '    NLogger.Error("XML-Telefonnummern konnte nicht heruntergeladen werden.")

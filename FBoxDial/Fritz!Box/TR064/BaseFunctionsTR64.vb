@@ -1,13 +1,10 @@
 ﻿Imports System.Net
-Imports System.IO
 Imports System.Xml
 
-Friend Module SOAPBaseFunctions
+Friend Module BaseFunctionsTR64
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "HTTP"
-    Friend Function FritzBoxGet(Link As String, ByRef FBError As Boolean) As String
-        Dim UniformResourceIdentifier As New Uri(Link)
-        Dim retVal As String = DfltStringEmpty
+    Friend Function FritzBoxGet(UniformResourceIdentifier As Uri, ByRef Response As String) As Boolean
 
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
@@ -29,35 +26,38 @@ Friend Module SOAPBaseFunctions
                         .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
 
                         Try
-                            retVal = .DownloadString(UniformResourceIdentifier)
-                            FBError = False
+                            Response = .DownloadString(UniformResourceIdentifier)
+                            FritzBoxGet = True
+
                         Catch exANE As ArgumentNullException
-                            FBError = True
                             NLogger.Error(exANE)
+                            FritzBoxGet = False
+
                         Catch exWE As WebException
-                            FBError = True
-                            NLogger.Error(exWE, "Link: {0}", Link)
+                            FritzBoxGet = False
+                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+
                         End Try
                     End With
                 End Using
             Case Else
-                NLogger.Warn("Uri.Scheme: {0}", UniformResourceIdentifier.Scheme)
+                FritzBoxGet = False
+                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
+
         End Select
-        Return retVal
+
     End Function
 
-    Friend Function FritzBoxPOST(SOAPAction As String, urlFull As String, ServiceType As String, SOAPXML As XmlDocument) As String
+    Friend Function FritzBoxPOST(UniformResourceIdentifier As Uri, SOAPAction As String, ServiceType As String, SOAPXML As XmlDocument, ByRef Response As String) As Boolean
 
-        FritzBoxPOST = DfltStringEmpty
-        Dim ErrorText As String = DfltStringEmpty
-        Dim fbURI As New Uri(urlFull)
+        Response = DfltStringEmpty
 
         Using webClient As New WebClient
             With webClient
                 ' Header festlegen
                 With .Headers
-                    .Add(HttpRequestHeader.ContentType, P_SOAPContentType)
-                    .Add(HttpRequestHeader.UserAgent, P_SOAPUserAgent)
+                    .Add(HttpRequestHeader.ContentType, TR064ContentType)
+                    .Add(HttpRequestHeader.UserAgent, TR064UserAgent)
                     .Add(HttpRequestHeader.KeepAlive, False.ToString)
                     .Add("SOAPACTION", $"""{ServiceType}#{SOAPAction}""")
                 End With
@@ -68,62 +68,53 @@ Friend Module SOAPBaseFunctions
                 ' Zugangsdaten felstlegen
                 Using Crypter As New Rijndael
                     ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-                    .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsStringEmpty, FritzBoxDefault.DfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DefaultWerte.DfltDeCryptKey))
+                    .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsNotStringNothingOrEmpty, FritzBoxDefault.DfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DefaultWerte.DfltDeCryptKey))
                 End Using
 
                 Try
-                    FritzBoxPOST = .UploadString(fbURI, SOAPXML.InnerXml)
+                    Response = .UploadString(UniformResourceIdentifier, SOAPXML.InnerXml)
+                    FritzBoxPOST = True
+
                 Catch ex As WebException When ex.Message.Contains("606")
-                    ErrorText = $"SOAP Interner-Fehler 606: {SOAPAction} ""Action not authorized"""
+                    Response = $"TR-064 Interner-Fehler 606: {SOAPAction} ""Action not authorized"""
                     NLogger.Error(ex)
+                    FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("500")
-                    ErrorText = $"SOAP Interner-Fehler 500: {SOAPAction}"
+                    Response = $"TR-064 Interner-Fehler 500: {SOAPAction}"
                     NLogger.Error(ex)
+                    FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("713")
-                    ErrorText = $"SOAP Interner-Fehler 713: {SOAPAction} ""Invalid array index"""
+                    Response = $"TR-064 Interner-Fehler 713: {SOAPAction} ""Invalid array index"""
                     NLogger.Error(ex)
+                    FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("820")
-                    ErrorText = $"SOAP Interner-Fehler 820: {SOAPAction} ""Internal Error """
+                    Response = $"TR-064 Interner-Fehler 820: {SOAPAction} ""Internal Error """
                     NLogger.Error(ex)
+                    FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("401")
-                    ErrorText = $"SOAP Login-Fehler 401: {SOAPAction} ""Unauthorized"""
+                    Response = $"TR-064 Login-Fehler 401: {SOAPAction} ""Unauthorized"""
                     NLogger.Error(ex)
+                    FritzBoxPOST = False
 
                 Catch exWE As WebException
-                    NLogger.Error(exWE, "Link: {0}", {SOAPAction})
-                    ErrorText = $"WebException: {exWE.Message}"
+                    Response = $"WebException: {exWE.Message}"
+                    NLogger.Error(exWE, $"Link: {SOAPAction}")
+                    FritzBoxPOST = False
 
                 Catch ex As Exception
-                    ErrorText = ex.Message
+                    Response = ex.Message
                     NLogger.Error(ex)
-
+                    FritzBoxPOST = False
                 End Try
             End With
         End Using
 
-        If ErrorText.IsNotStringEmpty Then FritzBoxPOST = "<FEHLER>" & ErrorText.Replace("<", "CHR(60)").Replace(">", "CHR(62)") & "</FEHLER>"
 
     End Function
 #End Region
-
-    Friend Function GetSOAPXMLFile(Pfad As String) As XmlDocument
-        Dim Fehler As Boolean = True
-        Dim retVal As String
-        Dim XMLFile As New XmlDocument
-
-        retVal = FritzBoxGet(Pfad, Fehler)
-
-        If Not Fehler Then
-            XMLFile.LoadXml(retVal)
-            GetSOAPXMLFile = XMLFile
-        Else
-            XMLFile.LoadXml("<FEHLER/>")
-            GetSOAPXMLFile = XMLFile
-        End If
-    End Function
 
 End Module

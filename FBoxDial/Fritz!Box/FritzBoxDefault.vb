@@ -202,23 +202,23 @@ Friend NotInheritable Class FritzBoxDefault
 #End Region
 
 #Region "Fritz!Box SOAP/TR64"
-    Friend Shared ReadOnly Property DfltSOAPPort() As Integer = 49000
-    Friend Shared ReadOnly Property DfltSOAPPortSSL() As Integer = 49443
+    Friend Shared ReadOnly Property DfltTR064Port() As Integer = 49000
+    Friend Shared ReadOnly Property DfltTR064PortSSL() As Integer = 49443
     ''' <summary>
     ''' nameSpace URL: http://schemas.xmlsoap.org/soap/envelope/
     ''' </summary>
-    Friend Shared ReadOnly Property DfltSOAPRequestNameSpaceEnvelope() As String = "http://schemas.xmlsoap.org/soap/envelope/"
+    Friend Shared ReadOnly Property DfltTR064RequestNameSpaceEnvelope() As String = "http://schemas.xmlsoap.org/soap/envelope/"
     ''' <summary>
     ''' nameSpace URL: http://schemas.xmlsoap.org/soap/encoding/
     ''' </summary>
-    Friend Shared ReadOnly Property DfltSOAPRequestNameSpaceEncoding() As String = "http://schemas.xmlsoap.org/soap/encoding/"
+    Friend Shared ReadOnly Property DfltTR064RequestNameSpaceEncoding() As String = "http://schemas.xmlsoap.org/soap/encoding/"
     Friend Shared ReadOnly Property DfltSOAPRequestSchema() As XmlSchema
         Get
             Dim XMLSOAPSchema As New XmlSchema
 
             With XMLSOAPSchema.Namespaces
-                .Add("s", DfltSOAPRequestNameSpaceEnvelope)
-                .Add("u", DfltSOAPRequestNameSpaceEncoding)
+                .Add("s", DfltTR064RequestNameSpaceEnvelope)
+                .Add("u", DfltTR064RequestNameSpaceEncoding)
             End With
 
             Return XMLSOAPSchema
