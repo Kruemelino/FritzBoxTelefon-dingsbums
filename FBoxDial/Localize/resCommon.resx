@@ -189,6 +189,9 @@
   <data name="strRemoteCaller" xml:space="preserve">
     <value>Gegenstelle</value>
   </data>
+  <data name="strSave" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
   <data name="strStartJounalImport" xml:space="preserve">
     <value>Starte Jounalimport</value>
   </data>
@@ -200,5 +203,8 @@
   </data>
   <data name="strUncheckAll" xml:space="preserve">
     <value>Keine auswählen</value>
+  </data>
+  <data name="strUndo" xml:space="preserve">
+    <value>Zurücksetzen</value>
   </data>
 </root>

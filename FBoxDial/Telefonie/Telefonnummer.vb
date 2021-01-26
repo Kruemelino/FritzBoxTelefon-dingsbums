@@ -9,13 +9,10 @@ Public Class Telefonnummer
 
 #Region "Eigenschaften"
 
-    <XmlAttribute> Public Property Nummer As String
+    <XmlElement> Public Property Nummer As String
     <XmlAttribute> Public Property EigeneNummer As Boolean
     <XmlAttribute> Public Property Überwacht As Boolean
-    <XmlAttribute> Public Property SIPNode As String
     <XmlIgnore> Public Property ID0 As Integer
-    <XmlIgnore> Public Property ID1 As Integer
-    <XmlElement> Public Property Typ As List(Of TelTypen)
     <XmlElement> Public Property Landeskennzahl As String
     <XmlElement> Public Property Ortskennzahl As String
     <XmlElement> Public Property Einwahl As String
@@ -24,7 +21,7 @@ Public Class Telefonnummer
     <XmlElement> Public Property Unformatiert As String
     <XmlElement> Public Property Unbekannt As Boolean
     <XmlIgnore> Public Property OutlookTyp As String
-    <XmlIgnore> Public Property Gültig As String
+    <XmlElement> Public Property SIP As Integer
 
     Public Sub New()
 
@@ -35,7 +32,6 @@ Public Class Telefonnummer
             Unbekannt = Value.AreEqual(DfltStringEmpty)
 
             If Not Unbekannt Then
-                If Typ Is Nothing Then Typ = New List(Of TelTypen)
 
                 Nummer = Value
 
@@ -369,7 +365,6 @@ Public Class Telefonnummer
 
             ' TODO: nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalize() weiter unten überschreiben.
             ' TODO: große Felder auf Null setzen.
-            If Typ IsNot Nothing Then Typ.Clear()
         End If
         disposedValue = True
     End Sub

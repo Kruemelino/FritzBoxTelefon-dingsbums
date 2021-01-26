@@ -152,6 +152,8 @@
     Private _TBEnblDauer As Integer
     Private _CBAnrMonZeigeKontakt As Boolean
     Private _CBAnrMonContactImage As Boolean
+    Private _CBAnrMonVollbildAnzeigen As Boolean
+
     <XmlElement("CBAnrMonAuto")> Public Property CBAnrMonAuto As Boolean
         Get
             Return GetProperty(_CBAnrMonAuto, DefaultWerte.DfltCBAnrMonAuto)
@@ -186,7 +188,7 @@
     End Property
 
     ''' <summary>
-    ''' Angabe, ob der Kontakt Angezeigt werden soll
+    ''' Angabe, ob der Kontakt angezeigt werden soll
     ''' </summary>
     <XmlElement("CBAnrMonZeigeKontakt")> Public Property CBAnrMonZeigeKontakt As Boolean
         Get
@@ -206,6 +208,18 @@
         End Get
         Set
             _CBAnrMonContactImage = Value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei Vollbildanwendungen eingeblendet werden soll.
+    ''' </summary>
+    <XmlElement("CBAnrMonVollbildAnzeigen")> Public Property CBAnrMonVollbildAnzeigen As Boolean
+        Get
+            Return GetProperty(_CBAnrMonVollbildAnzeigen, DefaultWerte.DfltCBAnrMonVollBildAnzeigen)
+        End Get
+        Set
+            _CBAnrMonVollbildAnzeigen = Value
         End Set
     End Property
 #End Region

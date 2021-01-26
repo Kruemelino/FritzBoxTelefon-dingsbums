@@ -27,15 +27,15 @@ Public Class FritzBoxWählClient
         Using TR064 As New FritzBoxTR64
             ' DialPort setzen, wenn erforderlich
 
-            OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
-            DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
+            OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+            DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.TR064Dialport)
 
             If Not DialPortEingestellt Then
                 ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-                StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusDialPort, Telefon.UPnPDialport)
+                StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusDialPort, Telefon.TR064Dialport)
                 InPutData.Clear()
-                InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.UPnPDialport)
-                OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
+                InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.TR064Dialport)
+                OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
 
                 If OutPutData.Contains("Error") Then
                     DialPortEingestellt = False
@@ -43,10 +43,10 @@ Public Class FritzBoxWählClient
                     NLogger.Error(StatusMeldung)
                 Else
                     ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
-                    OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
-                    DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.UPnPDialport)
+                    OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+                    DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.TR064Dialport)
                     If Not DialPortEingestellt Then
-                        StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusTR064DialPortFehler, Telefon.UPnPDialport)
+                        StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusTR064DialPortFehler, Telefon.TR064Dialport)
                         NLogger.Error(StatusMeldung)
                     End If
                 End If
@@ -57,10 +57,10 @@ Public Class FritzBoxWählClient
                 ' Senden des Wählkomandos
                 InPutData.Clear()
                 If Auflegen Then
-                    OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup")
+                    OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup")
                 Else
                     InPutData.Add("NewX_AVM-DE_PhoneNumber", sDialCode)
-                    OutPutData = TR064.Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
+                    OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
                 End If
 
                 ' Rückmeldung, ob das Wählen erfolgreich war

@@ -3,14 +3,14 @@
 Public Class UserCtrlTelefone
     Inherits UserControl
 
-    Private WithEvents FritzBoxDaten As FritzBoxData
+    Private WithEvents FritzBoxDaten As Telefonie
 
     Private Sub BTelefonie_Click(sender As Object, e As Windows.RoutedEventArgs) Handles BTelefonie.Click
         ' Speichern der Daten
         CType(DataContext, OptionenViewModel).Speichern()
 
         If Ping(XMLData.POptionen.ValidFBAdr) Then
-            If FritzBoxDaten Is Nothing Then FritzBoxDaten = New FritzBoxData
+            FritzBoxDaten = New Telefonie
             ' Einlesen starten
             FritzBoxDaten.GetFritzBoxDaten()
         End If

@@ -66,10 +66,10 @@ Public Module Extensions
     ''' <param name="Val1">Erste zu prüfende Größe</param>
     ''' <param name="Val2">Zweite zu prüfende Größe</param>
     ''' <returns>Es erfolgt ein Vergleich gegen die festgelegte Epsilonschwelle.</returns>
-    <Extension()> Public Function AreDifferent(Val1 As Double, Val2 As Double) As Boolean
+    <Extension()> Public Function AreDifferentTo(Val1 As Double, Val2 As Double) As Boolean
         Return Not Val1.AreEqual(Val2)
     End Function
-    <Extension()> Public Function AreDifferent(Val1 As Integer, Val2 As Integer) As Boolean
+    <Extension()> Public Function AreDifferentTo(Val1 As Integer, Val2 As Integer) As Boolean
         Return Not Val1.AreEqual(Val2)
     End Function
 
@@ -307,6 +307,10 @@ Public Module Extensions
         ' '	        &apos;  &#38;
         Return Text.Replace("&", "&amp;&amp;").Replace("&amp;&amp;#", "&#").Replace("<", "&lt;").Replace(">", "&gt;").Replace(Chr(34), "&quot;").Replace("'", "&apos;")
     End Function
+
+    <Extension> Public Function ToBoolean(Text As String) As Boolean
+        If Not Boolean.TryParse(Text, ToBoolean) Then Return False
+    End Function
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat), List(Of VIPEntry)"
@@ -498,7 +502,7 @@ Public Module Extensions
 
     End Function
 
-    Public Async Function HTTPGet(Link As String, FBEncoding As Encoding) As Threading.Tasks.Task(Of String)
+    Public Async Function HTTPAsyncGet(Link As String, FBEncoding As Encoding) As Threading.Tasks.Task(Of String)
 
         Dim retVal As String = DfltStringEmpty
         Dim UniformResourceIdentifier As New Uri(Link)
@@ -516,6 +520,38 @@ Public Module Extensions
                         .Headers.Add(HttpRequestHeader.KeepAlive, "False")
                         Try
                             retVal = Await .DownloadStringTaskAsync(UniformResourceIdentifier)
+                            NLogger.Debug("HTTPGet: {0} - {1}", Link, retVal)
+                        Catch exANE As ArgumentNullException
+                            NLogger.Error(exANE)
+                        Catch exWE As WebException
+                            NLogger.Error(exWE, "Link: {0}", Link)
+                        End Try
+                    End With
+                End Using
+            Case Else
+                NLogger.Warn("Uri.Scheme: {0}", UniformResourceIdentifier.Scheme)
+        End Select
+        Return retVal
+    End Function
+
+    Public Function HTTPGet(Link As String, FBEncoding As Encoding) As String
+
+        Dim retVal As String = DfltStringEmpty
+        Dim UniformResourceIdentifier As New Uri(Link)
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
+        Select Case UniformResourceIdentifier.Scheme
+            Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
+
+                Using webClient As New WebClient
+                    With webClient
+                        .Encoding = FBEncoding
+                        .Proxy = Nothing
+                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                        .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+                        Try
+                            retVal = .DownloadString(UniformResourceIdentifier)
                             NLogger.Debug("HTTPGet: {0} - {1}", Link, retVal)
                         Catch exANE As ArgumentNullException
                             NLogger.Error(exANE)

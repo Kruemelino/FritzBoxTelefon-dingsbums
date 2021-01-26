@@ -14,10 +14,9 @@ Public Class Telefoniegerät
 #Region "Eigenschaften"
     <XmlElement> Public Property Name As String
     <XmlElement> Public Property StrEinTelNr As List(Of String)
-    <XmlElement> Public Property StrAusTelNr As String
-    <XmlAttribute> Public Property Dialport As Integer
+    <XmlAttribute> Public Property Intern As Integer
     <XmlAttribute> Public Property AnrMonID As Integer
-    <XmlAttribute> Public Property UPnPDialport As String
+    <XmlAttribute> Public Property TR064Dialport As String
     <XmlAttribute> Public Property StdTelefon As Boolean
     <XmlAttribute> Public Property IsFax As Boolean
     <XmlAttribute> Public Property IsPhoner As Boolean
@@ -44,7 +43,7 @@ Public Class Telefoniegerät
 
             Select Case TelTyp
 
-                Case TelTypen.DECT, TelTypen.FON, TelTypen.S0
+                Case TelTypen.DECT, TelTypen.FON, TelTypen.ISDN
                     Return True
 
                 Case TelTypen.IP
@@ -56,19 +55,24 @@ Public Class Telefoniegerät
         End Get
     End Property
 
-    Friend Sub SetUPnPDialportFallback()
-        Select Case TelTyp
-            Case TelTypen.FON
-                UPnPDialport = $"FON{Dialport}: {Name}"
-            Case TelTypen.DECT
-                UPnPDialport = $"DECT: {Name}"
-            Case TelTypen.S0
-                UPnPDialport = $"ISDN: {Name}"
-            Case Else
-                UPnPDialport = DfltStringEmpty
-        End Select
-        NLogger.Warn($"UPnPDialport konnte für Telefon {Name} ({TelTyp}) nicht ermittelt werden. Setze Fallbackwert: {UPnPDialport}")
-    End Sub
+    Friend ReadOnly Property GetDialPortFallback As String
+        Get
+            Select Case TelTyp
+                Case TelTypen.FON
+                    Return $"{TelTypen.FON}{AnrMonID + 1}: {Name}"
+                Case TelTypen.DECT
+                    Return $"{TelTypen.DECT}: {Name}"
+                Case TelTypen.ISDN
+                    Return $"{TelTypen.ISDN}: {Name}"
+                Case Else
+                    Return DfltStringEmpty
+            End Select
+        End Get
+    End Property
+
+
+
+
 
 #Region "Equals"
     Public Overrides Function Equals(obj As Object) As Boolean
@@ -78,7 +82,6 @@ Public Class Telefoniegerät
     Public Overloads Function Equals(other As Telefoniegerät) As Boolean Implements IEquatable(Of Telefoniegerät).Equals
         Return other IsNot Nothing AndAlso
                Name = other.Name AndAlso
-               Dialport = other.Dialport AndAlso
                StdTelefon = other.StdTelefon AndAlso
                TelTyp.CompareTo(other.TelTyp).IsZero
     End Function

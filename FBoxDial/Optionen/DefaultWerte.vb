@@ -10,6 +10,7 @@
     Public Shared ReadOnly Property DfltCBAnrMonAuto() As Boolean = False
     Public Shared ReadOnly Property DfltCBAnrMonZeigeKontakt() As Boolean = False
     Public Shared ReadOnly Property DfltCBAnrMonContactImage() As Boolean = True
+    Public Shared ReadOnly Property DfltCBAnrMonVollBildAnzeigen() As Boolean = False
     Public Shared ReadOnly Property DfltCBAutoClose() As Boolean = True
     Public Shared ReadOnly Property DfltCBForceDialLKZ() As Boolean = False
     Public Shared ReadOnly Property DfltCBKErstellen() As Boolean = False

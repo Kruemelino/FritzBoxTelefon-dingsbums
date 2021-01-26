@@ -281,6 +281,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Speichern ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strSave() As String
+            Get
+                Return ResourceManager.GetString("strSave", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Starte Jounalimport ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strStartJounalImport() As String
@@ -313,6 +322,15 @@ Namespace Localize
         Public Shared ReadOnly Property strUncheckAll() As String
             Get
                 Return ResourceManager.GetString("strUncheckAll", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zurücksetzen ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strUndo() As String
+            Get
+                Return ResourceManager.GetString("strUndo", resourceCulture)
             End Get
         End Property
     End Class

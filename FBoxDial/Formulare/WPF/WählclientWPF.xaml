@@ -28,7 +28,7 @@
             <Popup Name="OptionPopup" IsOpen="{Binding ElementName=bOptionen, Path=IsChecked}" PlacementTarget="{Binding ElementName=bOptionen}" AllowsTransparency="True" PopupAnimation="Slide" StaysOpen="False">
                 <StackPanel>
                     <Button x:Name="BContact" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource ContactCard_16x}" Click="BContact_Click"/>
-                    <ToggleButton x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource Pushpin_16x}" Click="BContact_Click"/>
+                    <ToggleButton x:Name="BVIP" Margin="0,4,0,0" Width="20" Height="20" Content="{DynamicResource Favorite_16x}" Click="BContact_Click"/>
                 </StackPanel>
             </Popup>            
         </StackPanel>

@@ -13,7 +13,7 @@ Friend Module FritzBoxTelefonbuch
 
         Using fboxSOAP As New FritzBoxTR64
             ' Ermittle alle verfügbaren Telefonbücher
-            OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
+            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
 
             If OutPutData.ContainsKey("NewPhonebookList") Then
                 ' Initialiesiere die Gesamtliste 
@@ -22,7 +22,7 @@ Friend Module FritzBoxTelefonbuch
                 ' Ermittle alle Telefonbuchdaten und starte die Verarbeitung in einer Schleife
                 For Each TelefonbuchID As String In OutPutData.Item("NewPhonebookList").ToString.Split(",")
                     InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}}
-                    OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "GetPhonebook", InPutData)
+                    OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", InPutData)
                     If OutPutData.ContainsKey("NewPhonebookURL") Then
                         NLogger.Debug($"Telefonbuch {TelefonbuchID} heruntergeladen: {OutPutData.Item("NewPhonebookURL")}")
                         ' Deserialisiere das Telefonbuch
@@ -56,7 +56,7 @@ Friend Module FritzBoxTelefonbuch
                 ' Ermittle die neue ID des Telefonbuches
                 Dim TelListeb As String() = .TelefonbuchListe
 
-                If TelListeA.Count.AreDifferent(TelListeb.Count) Then
+                If TelListeA.Count.AreDifferentTo(TelListeb.Count) Then
                     Dim TelListeC As List(Of String)
                     TelListeC = TelListeb.Except(TelListeA).ToList
                     TelefonbuchName = TelListeC.First
@@ -80,7 +80,7 @@ Friend Module FritzBoxTelefonbuch
         Dim OutPutData As Hashtable
 
         ' Ermittle alle verfügbaren Telefonbücher
-        OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
+        OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
 
         If OutPutData.ContainsKey("NewPhonebookList") Then
 
@@ -97,7 +97,7 @@ Friend Module FritzBoxTelefonbuch
         Dim PhoneBookXML As FritzBoxXMLTelefonbücher
 
         InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}}
-        OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "GetPhonebook", InPutData)
+        OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", InPutData)
         If OutPutData.ContainsKey("NewPhonebookURL") Then
             ' Deserialisiere das Telefonbuch
             PhoneBookXML = Await DeserializeObjectAsyc(Of FritzBoxXMLTelefonbücher)(OutPutData.Item("NewPhonebookURL").ToString())
@@ -121,7 +121,7 @@ Friend Module FritzBoxTelefonbuch
         If TelefonbuchName.IsNotStringEmpty Then
 
             InPutData = New Hashtable From {{"NewPhonebookName", TelefonbuchName}, {"NewPhonebookExtraID", DfltStringEmpty}}
-            OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "AddPhonebook", InPutData)
+            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "AddPhonebook", InPutData)
 
             ' Return code   Description         Related argument
             ' 402           Invalid arguments   Any
@@ -149,7 +149,7 @@ Friend Module FritzBoxTelefonbuch
         Dim InPutData As Hashtable
 
         InPutData = New Hashtable From {{"NewPhonebookID", TelefonbuchID}, {"NewPhonebookExtraID", DfltStringEmpty}}
-        OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "DeletePhonebook", InPutData)
+        OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebook", InPutData)
 
         ' Return code   Description         Related argument
         ' 402           Invalid arguments   Any
@@ -191,7 +191,7 @@ Friend Module FritzBoxTelefonbuch
                                                     {"NewPhonebookID", TelefonbuchID},
                                                     {"NewPhonebookEntryData", XMLDaten}
                                                }
-                OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", InPutData)
+                OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", InPutData)
 
                 ' Return code   Description         Related argument
                 ' 402           Invalid arguments   Any
@@ -226,7 +226,7 @@ Friend Module FritzBoxTelefonbuch
                                                 {"NewPhonebookID", TelefonbuchID},
                                                 {"NewPhonebookEntryUniqueID", UniqueID}
                                            }
-            OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntryUID", InPutData)
+            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntryUID", InPutData)
 
             ' Return code   Description         Related argument
             ' 402           Invalid arguments   Any

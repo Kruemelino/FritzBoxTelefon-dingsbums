@@ -62,14 +62,14 @@ Public Module Rückwärtssuche
 
         tmpTelNr = TelNr.Unformatiert
         Do
-            htmlRWS = Await HTTPGet($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.Default)
+            htmlRWS = Await HTTPAsyncGet($"{baseurl}search_inv&ph={tmpTelNr}", Encoding.Default)
 
             If htmlRWS.IsNotStringEmpty Then
                 htmlRWS = Replace(htmlRWS, Chr(34), "'", , , CompareMethod.Text) '" enfernen
                 ' Link zum Herunterladen der vCard suchen
                 EintragsID = htmlRWS.GetSubString("form_name=detail&amp;action=58&amp;page=78&amp;context=11&amp;id=", "&")
                 If EintragsID.IsNotErrorString Then
-                    VCard = Await HTTPGet(baseurl & "vcard&id=" & EintragsID, Encoding.Default)
+                    VCard = Await HTTPAsyncGet(baseurl & "vcard&id=" & EintragsID, Encoding.Default)
                 End If
             End If
 

@@ -68,7 +68,7 @@ Friend Module BaseFunctionsTR64
                 ' Zugangsdaten felstlegen
                 Using Crypter As New Rijndael
                     ' Wenn der UserName leer ist muss der Default-Wert ermittelt werden.
-                    .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsNotStringNothingOrEmpty, FritzBoxDefault.DfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DefaultWerte.DfltDeCryptKey))
+                    .Credentials = New NetworkCredential(If(XMLData.POptionen.TBBenutzer.IsStringNothingOrEmpty, FritzBoxDefault.DfltFritzBoxUser, XMLData.POptionen.TBBenutzer), Crypter.DecryptString128Bit(XMLData.POptionen.TBPasswort, DefaultWerte.DfltDeCryptKey))
                 End Using
 
                 Try

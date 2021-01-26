@@ -199,7 +199,7 @@ Imports System.Windows.Forms
 
                     DatenZeilen = CType(CType(DataSource, BindingSource).DataSource, DataTable).Rows.Cast(Of DataRow)().ToList()
 
-                    Abfrage = From Datenreihe In DatenZeilen.AsParallel() Where Datenreihe.Field(Of Boolean)("Check") And Datenreihe.Field(Of Integer)("ID").AreDifferent(SelID) Select Datenreihe
+                    Abfrage = From Datenreihe In DatenZeilen.AsParallel() Where Datenreihe.Field(Of Boolean)("Check") And Datenreihe.Field(Of Integer)("ID").AreDifferentTo(SelID) Select Datenreihe
                     Abfrage.ForAll(Sub(r) r.SetField("Check", False))
                 End If
             End If

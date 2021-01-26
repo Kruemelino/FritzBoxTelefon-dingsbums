@@ -536,7 +536,7 @@ Imports Microsoft.Office.Interop
 
     Private Sub ShowAnrMon()
         Dim t = New Thread(Sub()
-                               If Not VollBildAnwendungAktiv() Then
+                               If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
                                    If PopUpAnrMonWPF Is Nothing Then
                                        NLogger.Debug("Blende einen neuen Anrufmonitor ein")
                                        ' Blende einen neuen Anrufmonitor ein
@@ -560,7 +560,7 @@ Imports Microsoft.Office.Interop
     End Sub
     Private Sub ShowStoppUhr()
         Dim t = New Thread(Sub()
-                               If Not VollBildAnwendungAktiv() Then
+                               If Not VollBildAnwendungAktiv() Or XMLData.POptionen.CBAnrMonVollbildAnzeigen Then
                                    If PopupStoppUhrWPF Is Nothing Then
                                        NLogger.Debug("Blende einen neue StoppUhr ein")
                                        ' Blende einen neuen Anrufmonitor ein

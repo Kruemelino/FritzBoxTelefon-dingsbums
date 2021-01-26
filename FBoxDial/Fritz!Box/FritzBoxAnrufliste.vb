@@ -8,7 +8,7 @@ Module FritzBoxAnrufliste
 
         Using fboxSOAP As New FritzBoxTR64
             ' Lade die Anrufliste herunter
-            OutPutData = fboxSOAP.Start(Tr064Files.x_contactSCPD, "GetCallList")
+            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetCallList")
 
             If OutPutData.ContainsKey("Error") Then
                 NLogger.Error("XML-Anrufliste konnte nicht heruntergeladen werden.")

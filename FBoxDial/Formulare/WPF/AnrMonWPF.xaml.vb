@@ -17,10 +17,6 @@ Public Class AnrMonWPF
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name)
 
-        ' Skalinierung
-        'Height *= ScaleFaktor.Height
-        'Width *= ScaleFaktor.Width
-
     End Sub
 
 #Region "Eigenschaften"
@@ -54,7 +50,7 @@ Public Class AnrMonWPF
                               End Sub)
         End If
     End Sub
-    Private Sub AnrMonTest_MouseEnter(sender As Object, e As MouseEventArgs) Handles Me.MouseEnter
+    Private Sub AnrMon_MouseEnter(sender As Object, e As MouseEventArgs) Handles Me.MouseEnter
         If AnrMonTimer IsNot Nothing Then
             PauseTime = Now
             AnrMonTimer.Enabled = False
@@ -62,7 +58,7 @@ Public Class AnrMonWPF
         End If
     End Sub
 
-    Private Sub AnrMonTest_MouseLeave(sender As Object, e As MouseEventArgs) Handles Me.MouseLeave
+    Private Sub AnrMon_MouseLeave(sender As Object, e As MouseEventArgs) Handles Me.MouseLeave
         If AnrMonTimer IsNot Nothing Then
             TotalTimePaused = TotalTimePaused.Add(Now.Subtract(PauseTime))
             AnrMonTimer.Enabled = Not IsClosing ' Wenn das Fenster geschlossen wird, darf der Timer nicht wieder gestartet werden.

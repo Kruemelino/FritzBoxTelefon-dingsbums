@@ -17,14 +17,19 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <DockPanel x:Name="MainDockPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <StackPanel x:Name="SPOptionen" VerticalAlignment="Stretch" Width="28" DockPanel.Dock="Right" Orientation="Vertical">
-            <Button x:Name="BSave" Margin="0,4,0,0" Width="20" Height="20" ToolTip="Änderungen speichern und Optionen schließen" Content="{DynamicResource Save_16x}" Click="BSave_Click"/>
-            <Button x:Name="BCancel" Margin="0,4,0,0" Width="20" Height="20" ToolTip="Änderungen verwerfen und Optionen schließen" Content="{DynamicResource Cancel_16x}" Click="BCancel_Click"/>
-            <Button x:Name="BReset" Margin="0,4,0,0" Width="20" Height="20" ToolTip="Zurücksetzen" Content="{DynamicResource Undo_16x}"/>
-        </StackPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="51*"/>
+            <ColumnDefinition Width="107*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="0" Grid.RowSpan="2">
             <StackPanel x:Name="SPMenuButtons" DockPanel.Dock="Left" Width="120" Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonStyle">
@@ -78,12 +83,55 @@
                 <RadioButton x:Name="RBPhoner" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptPhoner}" Checked="RadioButton_Checked"/>
                 <RadioButton x:Name="RBMicroSIP" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptMicroSIP}" Checked="RadioButton_Checked"/>
                 <RadioButton x:Name="RBInfo" Style="{StaticResource ToggleButtonStyle}" Content="{x:Static localize:resCommon.strOptInfo}" Checked="RadioButton_Checked"/>
-            </StackPanel>    
+            </StackPanel>
         </ScrollViewer>
 
-        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ContentControl x:Name="NavigationCtrl" />
-        </ScrollViewer>
-        
-    </DockPanel>
+        <Border Grid.Column="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1" Grid.ColumnSpan="2">
+            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ContentControl x:Name="NavigationCtrl" />
+            </ScrollViewer>
+        </Border>
+
+        <Grid x:Name="ButtonGrid" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" >
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Style="{StaticResource ButtonStyle}" IsDefault="true" Grid.Column="0" Click="BSave_Click">
+                <Button.Content>
+                    <Grid>
+                        <ContentControl Content="{DynamicResource Save_16x}" Grid.Column="0" HorizontalAlignment="Left" Margin="8,0" />
+                        <TextBlock Grid.Column="0" Text="{x:Static localize:resCommon.strSave}" HorizontalAlignment="Center" />
+                    </Grid>
+                </Button.Content>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle}" IsCancel="false" Grid.Column="1" Click="BReset_Click">
+                <Button.Content>
+                    <Grid>
+                        <ContentControl Content="{DynamicResource Undo_16x}" Grid.Column="0" HorizontalAlignment="Left" Margin="8,0" />
+                        <TextBlock Grid.Column="0" Text="{x:Static localize:resCommon.strUndo}" HorizontalAlignment="Center" />
+                    </Grid>
+                </Button.Content>
+            </Button>
+
+            <Button Style="{StaticResource ButtonStyle}" IsCancel="true" Grid.Column="2" Click="BCancel_Click">
+                <Button.Content>
+                    <Grid>
+                        <ContentControl Content="{DynamicResource Cancel_16x}" Grid.Column="0" HorizontalAlignment="Left" Margin="8,0" />
+                        <TextBlock Grid.Column="0" Text="{x:Static localize:resCommon.strCancel}" HorizontalAlignment="Center" />
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </Grid>
+
 </Window>

@@ -80,7 +80,7 @@ Public Class OptionenWPF
         Me.Close()
     End Sub
 
-    Private Sub BReset_Click(sender As Object, e As RoutedEventArgs) Handles BReset.Click
+    Private Sub BReset_Click(sender As Object, e As RoutedEventArgs)
         NLogger.Debug("User: Optionen Reset")
         ' Daten erneut
         OptVM.LadeDaten()

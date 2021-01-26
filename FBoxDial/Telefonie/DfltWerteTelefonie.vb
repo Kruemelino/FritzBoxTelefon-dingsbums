@@ -25,22 +25,28 @@ Public NotInheritable Class DfltWerteTelefonie
     End Property
 
 #Region "Enumeration"
-    Friend Enum DialPortBase As Integer
+    Friend Enum AnrMonTelIDBase As Integer
         FON = 1
         Fax = 5
+        DECT = 10
         IP = 20
         S0 = 50
-        DECT = 60
+        Mobil = 99
+    End Enum
+    Friend Enum InternBase As Integer
+        FON = 0
+        DECT = 610
+        IP = 620
+        S0 = 50
         TAM = 600
     End Enum
-    Friend Enum AnrMonTelIDBase As Integer
-        DECT = 10
-    End Enum
+
     Public Enum TelTypen As Integer
         FON = 1
         DECT = 2
         IP = 4
-        S0 = 8
+        ISDN = 8
+        <Obsolete> S0 = 8
         FAX = 16
         Mobil = 32
         POTS = 64

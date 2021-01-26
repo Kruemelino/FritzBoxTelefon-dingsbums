@@ -319,7 +319,12 @@
     <Compile Include="Formulare\WPF\AnrListWPF.xaml.vb">
       <DependentUpon>AnrListWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelNrList.vb" />
+    <Compile Include="Fritz!Box\FritzBoxJSONStruct.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNrList.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClientList.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPClient.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMList.vb" />
+    <Compile Include="Fritz!Box\TR064\TAM-TR64\TAMItem.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\Action.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\Argument.vb" />
     <Compile Include="Fritz!Box\TR064\XMLTR64\Device.vb" />
@@ -371,7 +376,6 @@
     <Compile Include="Fritz!Box\FritzBoxAnrufliste.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCall.vb" />
     <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLCallList.vb" />
-    <Compile Include="Fritz!Box\JSON.vb" />
     <Compile Include="DfltWerte.vb" />
     <Compile Include="Extensions.vb" />
     <Compile Include="Events\NotifyEventArgs.vb" />
@@ -388,7 +392,6 @@
     <Compile Include="Outlook\OutlookFolder.vb" />
     <Compile Include="SoftPhone\MicroSIP.vb" />
     <Compile Include="TCPClient\AnrMonClient.vb" />
-    <Compile Include="Fritz!Box\FritzBoxData.vb" />
     <Compile Include="Fritz!Box\FritzBoxDefault.vb" />
     <Compile Include="Fritz!Box\TR064\FritzBoxTR64.vb" />
     <Compile Include="Fritz!Box\TR064\FritzBoxInformations.vb" />
@@ -423,7 +426,7 @@
     <Compile Include="Ribbon\OutlookRibbons.vb" />
     <Compile Include="Rijndael.vb" />
     <Compile Include="Fritz!Box\TR064\BaseFunctionsTR64.vb" />
-    <Compile Include="Fritz!Box\TR064\TelefonieTR64\FritzBoxXMLTelNr.vb" />
+    <Compile Include="Fritz!Box\TR064\SIP-TR64\SIPTelNr.vb" />
     <Compile Include="Telefonie\DfltWerteTelefonie.vb" />
     <Compile Include="Telefonie\RWSIndex.vb" />
     <Compile Include="Telefonie\Telefonat.vb" />

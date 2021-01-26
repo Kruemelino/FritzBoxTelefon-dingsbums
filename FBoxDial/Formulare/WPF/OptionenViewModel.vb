@@ -117,6 +117,7 @@ Public Class OptionenViewModel
     Private _TBEnblDauer As Integer
     Private _CBAnrMonZeigeKontakt As Boolean
     Private _CBAnrMonContactImage As Boolean
+    Private _CBAnrMonVollbildAnzeigen As Boolean
 
     Public Property CBAnrMonAuto As Boolean
         Get
@@ -171,6 +172,18 @@ Public Class OptionenViewModel
         End Get
         Set
             SetProperty(_CBAnrMonContactImage, Value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Angabe, ob der Anrufmonitor bei Vollbildanwendungen eingeblendet werden soll.
+    ''' </summary>
+    Public Property CBAnrMonVollbildAnzeigen As Boolean
+        Get
+            Return _CBAnrMonVollbildAnzeigen
+        End Get
+        Set
+            SetProperty(_CBAnrMonVollbildAnzeigen, Value)
         End Set
     End Property
 
@@ -404,6 +417,7 @@ Public Class OptionenViewModel
         End Set
     End Property
 #End Region
+
 #Region "SoftPhones"
 
 #Region "Phoner"
