@@ -47,6 +47,7 @@ Public Class Telefonnummer
                 ' Ermittle die unformatierte Telefonnummer
                 Unformatiert = NurZiffern(Formatiert)
             End If
+            NLogger.Trace($"Nummer angelegt: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
     End Property
 
@@ -339,13 +340,33 @@ Public Class Telefonnummer
     End Function
     Public Overloads Function Equals(other As String) As Boolean
         ' Erstelle aus other eine Telefonnummer
-        ' Bei Vergleich eigenener Nummern, dann übergib die OKZ und LKZ
-        If EigeneNummer Then
-            Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
-        Else
-            Return Equals(New Telefonnummer With {.SetNummer = other})
+        ' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
+        'If EigeneNummer Then
+        '    Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
+        'Else
+        '    Return Equals(New Telefonnummer With {.SetNummer = other})
+        'End If
 
-        End If
+        Select Case True
+            Case Unformatiert.AreEqual(NurZiffern(other))
+                NLogger.Trace($"Telefonnummernvergleich true: '{other}'; {Unformatiert}")
+                Return True
+
+            Case Einwahl.AreEqual(NurZiffern(other))
+                NLogger.Trace($"Telefonnummernvergleich true : '{other}'; {Einwahl}")
+                Return True
+
+            Case Else
+                'Fallbach
+                NLogger.Debug($"Telefonnummernvergleich Fallback: '{other}'")
+                ' Erstelle aus other eine Telefonnummer
+                ' Bei Vergleich eigenener Nummern, übergib die OKZ und LKZ
+                If EigeneNummer Then
+                    Return Equals(New Telefonnummer With {.EigeneNummer = EigeneNummer, .Landeskennzahl = Landeskennzahl, .Ortskennzahl = Ortskennzahl, .SetNummer = other})
+                Else
+                    Return Equals(New Telefonnummer With {.SetNummer = other})
+                End If
+        End Select
 
 
     End Function

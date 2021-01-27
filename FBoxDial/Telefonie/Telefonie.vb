@@ -33,14 +33,6 @@ Imports FBoxDial.FritzBoxDefault
 
     End Sub
 
-    ''' <summary>
-    ''' Gibt die Telefonnummer zurück, die der übergebenen Zeichenfolge entspricht
-    ''' </summary>
-    ''' <param name="TelNr">Telefonnummer als Zeichenfolge</param>
-    ''' <returns>Telefonnummer</returns>
-    Friend Function GetNummer(TelNr As String) As Telefonnummer
-        Return Telefonnummern.Find(Function(Tel) Tel.Equals(TelNr))
-    End Function
 
     Friend Function GetKennzahlen() As Boolean
         Using fbSOAP As New FritzBoxTR64
@@ -71,7 +63,7 @@ Imports FBoxDial.FritzBoxDefault
                         ' Lade Telefonnummern via TR-064 
                         Dim NummernListe As SIPTelNrList = Nothing
                         ' Füge die Nummer zu den eigenen Nummern hinzu
-                        If .GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S))
+                        If .GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S.Number, S.Index))
 
                         ' Lade SIP Clients via TR-064 
                         Dim SIPList As SIPClientList = Nothing
@@ -81,14 +73,19 @@ Imports FBoxDial.FritzBoxDefault
                             For Each SIPClient In SIPList.SIPClients
 
                                 Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
-                                                .TelTyp = DfltWerteTelefonie.TelTypen.IP,
-                                                .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
-                                                .StrEinTelNr = New List(Of String),
-                                                .Intern = SIPClient.InternalNumber}
+                                                                        .TelTyp = TelTypen.IP,
+                                                                        .AnrMonID = AnrMonTelIDBase.IP + SIPClient.ClientIndex,
+                                                                        .StrEinTelNr = New List(Of String),
+                                                                        .Intern = SIPClient.InternalNumber}
                                 With Telefon
 
-                                    ' Füge die eigehenden Telefonnummern hinzu
-                                    SIPClient.InComingNumbers.ForEach(Sub(TeLNr) .StrEinTelNr.Add(AddEigeneTelNr(TeLNr.Number).Einwahl))
+                                    If SIPClient.InComingNumbers.First.Type = eType.eAllCalls Then
+                                        ' füge alle bekannten Nummern hinzu
+                                        Telefonnummern.ForEach(Sub(TelNr) .StrEinTelNr.Add(TelNr.Einwahl))
+                                    Else
+                                        ' Füge die angegebenen eigehenden Telefonnummern hinzu
+                                        SIPClient.InComingNumbers.ForEach(Sub(T) .StrEinTelNr.Add(AddEigeneTelNr(T.Number, T.Index).Einwahl))
+                                    End If
 
                                     PushStatus(LogLevel.Debug, $"Telefon { .TelTyp}: { .AnrMonID}; { .Name}; { .Intern}")
                                 End With
@@ -120,8 +117,8 @@ Imports FBoxDial.FritzBoxDefault
 
                                     Else
                                         ' Comma (,) separated list represents specific phone numbers.
-                                        For Each TelNr In TelNrArray
-                                            Telefon.StrEinTelNr.Add(AddEigeneTelNr(TelNr).Einwahl)
+                                        For Each T In TelNrArray
+                                            Telefon.StrEinTelNr.Add(GetEigeneTelNr(T).Einwahl)
                                         Next
 
                                     End If
@@ -230,7 +227,7 @@ Imports FBoxDial.FritzBoxDefault
                 ' Dimensioniere ein neues Telefon und setze Daten
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.FON,
                                                         .Name = FONTelefon.Name,
-                                                        .Intern = FONTelefon.Node.RegExRemove("^\D*").ToInt,
+                                                        .Intern = FONTelefon.Node.RegExRemove("^\D*").ToInt + 1,
                                                         .AnrMonID = AnrMonTelIDBase.FON + .Intern,
                                                         .StrEinTelNr = New List(Of String)}
 
@@ -246,17 +243,15 @@ Imports FBoxDial.FritzBoxDefault
 
                 With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxFONNr)(QueryAntwort)
 
-                    ' Veraarbeite alle Nummer des FON-Telefones
+                    ' Verarbeite alle Nummer des FON-Telefones
                     If CBool(FONTelefon.AllIncomingCalls) Then
                         ' Weise dem Telefon alle bekannten Nummern zu
-                        For Each TelNr In Telefonnummern.Distinct
-                            Telefon.StrEinTelNr.Add(TelNr.Einwahl)
-                        Next
+                        Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
+
                     Else
                         ' Verarbeite die angegebenen Nummern
                         For Each FONTelNr In .MSNList.Where(Function(M) M.IsNotStringNothingOrEmpty)
-
-                            Telefon.StrEinTelNr.Add(GetTelNr(FONTelNr)?.Einwahl)
+                            Telefon.StrEinTelNr.Add(GetEigeneTelNr(FONTelNr)?.Einwahl)
                         Next
                     End If
 
@@ -319,7 +314,7 @@ Imports FBoxDial.FritzBoxDefault
                         ' Verarbeite die angegebenen Nummern
                         For Each DECTelNr In .DECTNr.Where(Function(T) T.Number.IsNotStringNothingOrEmpty)
 
-                            Telefon.StrEinTelNr.Add(GetTelNr(DECTelNr.Number)?.Einwahl)
+                            Telefon.StrEinTelNr.Add(GetEigeneTelNr(DECTelNr.Number)?.Einwahl)
                         Next
                     End If
 
@@ -374,7 +369,7 @@ Imports FBoxDial.FritzBoxDefault
 
                     Telefon.Name = .S0Name
                     If Telefon.Intern.AreDifferentTo(.S0Number.ToInt) Then
-                        Telefon.StrEinTelNr.Add(GetTelNr(.S0Number)?.Einwahl)
+                        Telefon.StrEinTelNr.Add(GetEigeneTelNr(.S0Number)?.Einwahl)
                     End If
 
                     PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
@@ -417,7 +412,7 @@ Imports FBoxDial.FritzBoxDefault
                                                         .AnrMonID = AnrMonTelIDBase.Mobil,
                                                         .StrEinTelNr = New List(Of String)}
 
-                Telefon.StrEinTelNr.Add(GetTelNr(.Mobile)?.Einwahl)
+                Telefon.StrEinTelNr.Add(GetEigeneTelNr(.Mobile)?.Einwahl)
                 PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
                 TelList.Add(Telefon)
 
@@ -448,7 +443,7 @@ Imports FBoxDial.FritzBoxDefault
                 With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxFaxNr)(QueryAntwort)
                     For Each FaxTelNr In .FAXList.Where(Function(M) M.IsNotStringNothingOrEmpty)
 
-                        Telefon.StrEinTelNr.Add(GetTelNr(FaxTelNr)?.Einwahl)
+                        Telefon.StrEinTelNr.Add(GetEigeneTelNr(FaxTelNr)?.Einwahl)
                     Next
                 End With
 
@@ -485,58 +480,39 @@ Imports FBoxDial.FritzBoxDefault
 #End Region
 
 #Region "Helferfunktionen"
-    ''' <summary>
-    ''' Fügt eine neue eigene Telefonnummer hinzu, falls sie noch nicht exisiert, und gieb sie zurück.
-    ''' Falls die Nummer schon in der Liste enthalten ist, gib diese zurück.
-    ''' </summary>
-    ''' <param name="TelNr">Telefonnummer als Zeichenfolge</param>
-    ''' <returns>Telefonnummer</returns>
-    Private Function AddEigeneTelNr(TelNr As String) As Telefonnummer
-
-        AddEigeneTelNr = Telefonnummern.Find(Function(Nummer) Nummer.Equals(TelNr))
-
-        If AddEigeneTelNr Is Nothing Then
-            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SetNummer = TelNr}
-            Telefonnummern.Add(AddEigeneTelNr)
-        End If
-    End Function
-
-    Private Function AddEigeneTelNr(TelNr As SIPTelNr) As Telefonnummer
-
-        AddEigeneTelNr = Telefonnummern.Find(Function(Nummer) Nummer.Equals(TelNr.Number))
-
-        If AddEigeneTelNr Is Nothing Then
-            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True,
-                                                     .Überwacht = True,
-                                                     .Ortskennzahl = OKZ,
-                                                     .Landeskennzahl = LKZ,
-                                                     .SIP = TelNr.Index,
-                                                     .SetNummer = TelNr.Number}
-            Telefonnummern.Add(AddEigeneTelNr)
-        Else
-            AddEigeneTelNr.SIP = TelNr.Index
-        End If
-
-        With TelNr
-            PushStatus(LogLevel.Debug, $"X_AVM-DE_GetNumbers({ .Index}): { .Number}, { .Type}")
-        End With
-    End Function
 
     ''' <summary>
     ''' Ermittelt eine eigene bekannte Telefonnummer anhand einer Zeichenfolge. SIP0 etc. wird erfasst.
     ''' </summary>
-    ''' <param name="TelNr">Die zu ermittelnde Telefonnummer</param>
-    ''' <returns></returns>
-    Private Function GetTelNr(TelNr As String) As Telefonnummer
-
+    ''' <param name="TelNr">Telefonnummer als Zeichenfolge</param>
+    ''' <returns>Telefonnummer</returns>
+    Friend Function GetEigeneTelNr(TelNr As String) As Telefonnummer
         If TelNr.IsRegExMatch("^SIP\d") Then
             Return Telefonnummern.Find(Function(T) T.SIP.AreEqual(TelNr.RegExRemove("^SIP").ToInt))
         Else
-            Return Telefonnummern.Find(Function(T) T.Equals(TelNr))
+            'Dim TelO As New Telefonnummer With {.EigeneNummer = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SetNummer = TelNr}
+            Return Telefonnummern.Find(Function(Tel) Tel.Equals(TelNr))
         End If
-
     End Function
 
+
+    ''' <summary>
+    ''' Fügt eine neue eigene Telefonnummer hinzu, falls sie noch nicht exisiert, und gib sie zurück.
+    ''' Falls die Nummer schon in der Liste enthalten ist, gib diese zurück.
+    ''' </summary>
+    ''' <param name="TelNr">Telefonnummer als Zeichenfolge</param>
+    ''' <returns>Telefonnummer</returns>
+    Private Function AddEigeneTelNr(TelNr As String, ID As String) As Telefonnummer
+
+        AddEigeneTelNr = GetEigeneTelNr(TelNr)
+
+        If AddEigeneTelNr Is Nothing Then
+            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True, .Überwacht = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SetNummer = TelNr, .SIP = ID.ToInt}
+            Telefonnummern.Add(AddEigeneTelNr)
+
+            NLogger.Trace($"Eigene Nummer eingetragen: '{TelNr}'; F: '{AddEigeneTelNr.Formatiert}'; U: '{AddEigeneTelNr.Unformatiert}'")
+        End If
+    End Function
 
     ''' <summary>
     ''' Führt die Abfrage zur Fritz!Box aus.

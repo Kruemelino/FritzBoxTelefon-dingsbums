@@ -66,13 +66,12 @@ Imports Microsoft.Office.Interop
                         NrUnterdrückt = GegenstelleTelNr.Unbekannt
 
                     Case 4 ' Eigene (angerufene) Telefonnummer, MSN
-                        Dim j As Integer = i ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
 
-                        EigeneTelNr = XMLData.PTelefonie.GetNummer(FBStatus(j))
+                        EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr(FBStatus(i))
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
                         If EigeneTelNr Is Nothing Then
-                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(j)} konnte nicht ermittelt werden.")
-                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(j)}
+                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(i)} konnte nicht ermittelt werden.")
+                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i), .EigeneNummer = True}
                         End If
 
                         OutEigeneTelNr = EigeneTelNr.Unformatiert
@@ -106,12 +105,11 @@ Imports Microsoft.Office.Interop
                         NebenstellenNummer = CInt(FBStatus(i))
 
                     Case 4 ' Eingehende (anrufende) Telefonnummer
-                        Dim j As Integer = i ' Vermeide Fehler: BC42324 Using the iteration variable in a lambda expression may have unexpected results
-                        EigeneTelNr = XMLData.PTelefonie.GetNummer(FBStatus(j))
+                        EigeneTelNr = XMLData.PTelefonie.GetEigeneTelNr(FBStatus(i))
                         ' Wert für Serialisierung in separater Eigenschaft ablegen
                         If EigeneTelNr Is Nothing Then
-                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(j)} konnte nicht ermittelt werden.")
-                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(j)}
+                            NLogger.Warn($"Eigene Telefonnummer für {FBStatus(i)} konnte nicht ermittelt werden.")
+                            EigeneTelNr = New Telefonnummer With {.SetNummer = FBStatus(i), .EigeneNummer = True}
                         End If
 
                         OutEigeneTelNr = EigeneTelNr.Unformatiert

@@ -210,8 +210,8 @@ Friend Class FritzBoxTR64
 
                 GetSIPClients = True
 
-                Else
-                    NLogger.Warn($"X_AVM-DE_GetClients konnte für nicht aufgelößt werden.")
+            Else
+                NLogger.Warn($"X_AVM-DE_GetClients konnte für nicht aufgelößt werden.")
                 ClientList = Nothing
 
                 GetSIPClients = False

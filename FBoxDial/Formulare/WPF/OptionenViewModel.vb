@@ -407,13 +407,22 @@ Public Class OptionenViewModel
 
 #Region "Telefoniegeräte"
     Private _TelGerListe As ObservableCollectionEx(Of Telefoniegerät)
-
+    Private _EinlesenInaktiv As Boolean
     Public Property TelGeräteListe As ObservableCollectionEx(Of Telefoniegerät)
         Get
             Return _TelGerListe
         End Get
         Set
             SetProperty(_TelGerListe, Value)
+        End Set
+    End Property
+
+    Public Property EinlesenInaktiv As Boolean
+        Get
+            Return _EinlesenInaktiv
+        End Get
+        Set
+            SetProperty(_EinlesenInaktiv, Value)
         End Set
     End Property
 #End Region
@@ -501,7 +510,7 @@ Public Class OptionenViewModel
 
                 If ViewModelPropertyInfo.CanWrite Then
                     ViewModelPropertyInfo.SetValue(Me,?.GetValue(XMLData.POptionen))
-                    NLogger.Trace("Feld {0} mit Wert {1} geladen", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me))
+                    'NLogger.Trace("Feld {0} mit Wert {1} geladen", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me))
                 End If
 
             End With
@@ -522,6 +531,9 @@ Public Class OptionenViewModel
         ' Ornderliste überwachter Ordner
         OutlookOrdnerVM = New ObservableCollectionEx(Of OutlookOrdner)
         OutlookOrdnerVM.AddRange(XMLData.POptionen.OutlookOrdner.OrdnerListe)
+
+        ' Diverse Einstellungen zur Optik
+        EinlesenInaktiv = True
     End Sub
 
     ''' <summary>
@@ -537,7 +549,7 @@ Public Class OptionenViewModel
             If OptionPropertyInfo IsNot Nothing Then
                 With OptionPropertyInfo
                     ?.SetValue(XMLData.POptionen, ViewModelPropertyInfo.GetValue(Me))
-                    NLogger.Trace("Feld {0} mit Wert {1} übergeben: {2}", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me),?.GetValue(XMLData.POptionen))
+                    ' NLogger.Trace("Feld {0} mit Wert {1} übergeben: {2}", ViewModelPropertyInfo.Name, ViewModelPropertyInfo.GetValue(Me),?.GetValue(XMLData.POptionen))
 
                 End With
             End If

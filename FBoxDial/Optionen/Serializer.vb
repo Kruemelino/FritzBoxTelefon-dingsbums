@@ -65,7 +65,7 @@ Friend Module Serializer
                 Try
                     Return CType(mySerializer.Deserialize(XmlLeser), T)
                 Catch ex As InvalidOperationException
-                    NLogger.Fatal(ex)
+                    NLogger.Fatal($"Fehler beim Deserialisieren: {Pfad}", ex)
                 End Try
             End If
         End Using
@@ -77,17 +77,32 @@ Friend Module Serializer
     End Function
 
     Friend Function XmlDeserializeFromString(Of T)(objectData As String) As T
-        Return CType(XmlDeserializeFromString(objectData, GetType(T)), T)
+        Dim O As Object = Nothing
+        If XmlDeserializeFromString(objectData, GetType(T), O) Then
+            Return CType(O, T)
+        Else
+            Return Nothing
+        End If
     End Function
 
-    Private Function XmlDeserializeFromString(objectData As String, type As Type) As Object
-        Dim serializer = New XmlSerializer(type)
-        Dim result As Object
+    Private Function XmlDeserializeFromString(objectData As String, T As Type, ByRef result As Object) As Boolean
+        Dim serializer = New XmlSerializer(T)
+        'Dim result As Object
 
         Using reader As TextReader = New StringReader(objectData)
-            result = serializer.Deserialize(reader)
+            Try
+                result = serializer.Deserialize(reader)
+
+                Return True
+            Catch ex As InvalidOperationException
+                NLogger.Fatal($"Fehler beim Deserialisieren von {T.FullName}: {objectData}", ex)
+
+                ' Gib Nothing zurück
+                result = Nothing
+                Return False
+            End Try
+
         End Using
 
-        Return result
     End Function
 End Module

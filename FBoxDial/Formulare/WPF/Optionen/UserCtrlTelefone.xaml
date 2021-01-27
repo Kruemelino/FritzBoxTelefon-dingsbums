@@ -35,29 +35,21 @@
             
         </StackPanel.Resources>
         <fbd:OptionsÜberschrift Label="Einlesen der Telefoniedaten von der Fritz!Box"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Border BorderThickness="0.5" Margin="0,0,0,4">
+            <StackPanel>
+                <Button x:Name="BTelefonie" Content="Start" Margin="4" IsEnabled="{Binding Path=EinlesenInaktiv, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <TextBox x:Name="Status" IsReadOnly="True" Margin="4" MaxHeight="75" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>       
 
-            <Grid.RowDefinitions>
-                <RowDefinition/>
+        </Border>
 
-            </Grid.RowDefinitions>
-
-            <Button x:Name="BTelefonie" Content="Start" Grid.Column="0" Margin="4"/>
-            <TextBlock x:Name="LabelStatus" Grid.Column="1" Margin="4"/>
-
-        </Grid>
-        
         <fbd:OptionsÜberschrift Label="Telefoniegeräte"/>
         <Border BorderThickness="0.5" Margin="0,0,0,4">
             <Border.BorderBrush>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </Border.BorderBrush>
 
-            <DataGrid ItemsSource="{Binding TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DataGridStyle}" HeadersVisibility="Column">
+            <DataGrid ItemsSource="{Binding TelGeräteListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DataGridStyle}" HeadersVisibility="Column" MaxHeight="150">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
@@ -92,8 +84,7 @@
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
             </Border.BorderBrush>
 
-            <DataGrid ItemsSource="{Binding TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DataGridStyle}" HeadersVisibility="None">
-
+            <DataGrid ItemsSource="{Binding TelNrListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DataGridStyle}" HeadersVisibility="None" MaxHeight="150">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
@@ -105,9 +96,5 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-
-
-
-
     </StackPanel>
 </UserControl>

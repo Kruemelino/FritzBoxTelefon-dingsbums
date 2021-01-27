@@ -7,7 +7,11 @@ Public Class UserCtrlTelefone
 
     Private Sub BTelefonie_Click(sender As Object, e As Windows.RoutedEventArgs) Handles BTelefonie.Click
         ' Speichern der Daten
-        CType(DataContext, OptionenViewModel).Speichern()
+        With CType(DataContext, OptionenViewModel)
+            .Speichern()
+            .EinlesenInaktiv = False
+        End With
+
 
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             FritzBoxDaten = New Telefonie
@@ -18,10 +22,13 @@ Public Class UserCtrlTelefone
     End Sub
 
     Private Sub FritzBoxDaten_Status(sender As Object, e As NotifyEventArgs(Of String)) Handles FritzBoxDaten.Status
-        LabelStatus.Text = e.Value
+        Status.AppendText(e.Value & Environment.NewLine)
     End Sub
 
     Private Sub FritzBoxDaten_Beendet() Handles FritzBoxDaten.Beendet
-        CType(DataContext, OptionenViewModel).LadeDaten()
+        With CType(DataContext, OptionenViewModel)
+            .LadeDaten()
+        End With
+
     End Sub
 End Class

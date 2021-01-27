@@ -9,5 +9,7 @@
     <XmlElement("X_AVM-DE_ExternalRegistration")> Public Property ExternalRegistration As Boolean
     <XmlElement("X_AVM-DE_InternalNumber")> Public Property InternalNumber As Integer
     <XmlElement("X_AVM-DE_DelayedCallNotification")> Public Property DelayedCallNotification As String
+    <XmlElement("X_AVM-DE_ClientRegistrar")> Public Property ClientRegistrar As String
+    <XmlElement("X_AVM-DE_ClientRegistrarPort")> Public Property ClientRegistrarPort As String
 
 End Class

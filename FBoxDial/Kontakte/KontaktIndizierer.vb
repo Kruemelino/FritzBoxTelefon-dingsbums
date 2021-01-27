@@ -41,12 +41,12 @@ Friend Module KontaktIndizierer
             Try
                 .PropertyAccessor.SetProperties(DASLTagTelNrIndex, colArgs)
             Catch ex As System.Exception
-                NLogger.Error(ex, "Kontakt: {0}", olKontakt.FullNameAndCompany)
+                NLogger.Error(ex, $"Kontakt: {olKontakt.FullNameAndCompany}")
             End Try
 
             ' colArgs = CType(.PropertyAccessor.GetProperties(DASLTagTelNrIndex), Object())
 
-            If .Speichern Then NLogger.Info("Kontakt {0} gespeichert", olKontakt.FullNameAndCompany)
+            If .Speichern Then NLogger.Trace($"Kontakt { olKontakt.FullNameAndCompany} gespeichert")
 
         End With
     End Sub
@@ -99,7 +99,7 @@ Friend Module KontaktIndizierer
 
             .PropertyAccessor.DeleteProperties(DASLTagTelNrIndex)
 
-            If .Speichern Then NLogger.Info("Kontakt {0} gespeichert", .FullNameAndCompany)
+            If .Speichern Then NLogger.Trace("Kontakt {0} gespeichert", .FullNameAndCompany)
         End With
     End Sub
 
