@@ -308,9 +308,10 @@ Public Module Extensions
         Return Text.Replace("&", "&amp;&amp;").Replace("&amp;&amp;#", "&#").Replace("<", "&lt;").Replace(">", "&gt;").Replace(Chr(34), "&quot;").Replace("'", "&apos;")
     End Function
 
-    <Extension> Public Function ToBoolean(Text As String) As Boolean
-        If Not Boolean.TryParse(Text, ToBoolean) Then Return False
+    <Extension> Public Function Join(Text As String(), Separator As String) As String
+        Return String.Join(Separator, Text)
     End Function
+
 #End Region
 
 #Region "Extensions für Verarbeitung von Zeichenfolgen: List(Of Telefonat), List(Of VIPEntry)"
@@ -684,9 +685,4 @@ Public Module Extensions
     End Function
 #End Region
 
-    <Extension> Public Sub Rückruf(Tlfnt As Telefonat)
-        Using WählClnt As New FritzBoxWählClient
-            WählClnt.WählboxStart(Tlfnt)
-        End Using
-    End Sub
 End Module
