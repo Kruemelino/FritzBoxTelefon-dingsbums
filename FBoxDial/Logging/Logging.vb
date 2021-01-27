@@ -1,16 +1,22 @@
 ﻿Friend Module NLogging
-
     Friend Function DefaultNLogConfig() As Config.LoggingConfiguration
 
         Dim config = New Config.LoggingConfiguration
 
-        Dim DfltLogLayout As New Layouts.SimpleLayout With {.Text = DfltNLogLayoutText}
+        Dim LayoutText As String() = {"${date:format=dd.MM.yyyy HH\:mm\:ss.fff}",
+                                      "${level}",
+                                      "${logger}",
+                                      "${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}",
+                                      "${callsite-linenumber}",
+                                      "${message}",
+                                      "${onexception:${newline}Exception\: ${exception:format=type,message,method,properties,stackTrace :maxInnerExceptionLevel=50 :innerFormat=shortType,message,method,stackTrace :separator=\r\n}}"}
+
 
         Dim Ziel As New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = False,
                                                       .FileName = IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltLogFileName),
-                                                      .Layout = DfltLogLayout}
+                                                      .Layout = LayoutText.Join("|")}
 
         ' Level  Typical Use
         ' Fatal  Something bad happened; application Is going down

@@ -139,12 +139,6 @@ Public NotInheritable Class DfltWerteAllgemein
     Public Shared ReadOnly Property DfltLogFileName() As String = $"{My.Resources.strDefShortName}.log"
 
     ''' <summary>
-    ''' ${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}
-    ''' </summary>
-    ''' <returns>${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}</returns>
-    Public Shared ReadOnly Property DfltNLogLayoutText() As String = "${date:format=dd.MM.yyyy HH\:mm\:ss.fff}|${level}|${logger}|${callsite:includeNamespace=false:className=false:methodName=true:cleanNamesOfAnonymousDelegates=true:cleanNamesOfAsyncContinuations=true}|${callsite-linenumber}|${message}"
-
-    ''' <summary>
     ''' Gibt den default Dialport für Mobilgeräte an. 
     ''' </summary>
     ''' <value>String</value>
