@@ -200,13 +200,18 @@ Friend Class FritzBoxTR64
         With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetClients")
 
             If .ContainsKey("NewX_AVM-DE_ClientList") Then
-                'ClientList = .Item("NewX_AVM-DE_ClientList").ToString
+
+                NLogger.Trace(.Item("NewX_AVM-DE_ClientList"))
+
                 ClientList = XmlDeserializeFromString(Of SIPClientList)(.Item("NewX_AVM-DE_ClientList").ToString())
+
+                ' Wenn keine SIP-Clients angeschlossen wurden, gib eine leere Klasse zurück
+                If ClientList Is Nothing Then ClientList = New SIPClientList
 
                 GetSIPClients = True
 
-            Else
-                NLogger.Warn($"X_AVM-DE_GetClients konnte für nicht aufgelößt werden.")
+                Else
+                    NLogger.Warn($"X_AVM-DE_GetClients konnte für nicht aufgelößt werden.")
                 ClientList = Nothing
 
                 GetSIPClients = False
@@ -226,7 +231,13 @@ Friend Class FritzBoxTR64
         With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetNumbers")
 
             If .ContainsKey("NewNumberList") Then
+
+                NLogger.Trace(.Item("NewNumberList"))
+
                 NumberList = XmlDeserializeFromString(Of SIPTelNrList)(.Item("NewNumberList").ToString())
+
+                ' Wenn keine Nummern angeschlossen wurden, gib eine leere Klasse zurück
+                If NumberList Is Nothing Then NumberList = New SIPTelNrList
 
                 GetNumbers = True
 
@@ -251,6 +262,9 @@ Friend Class FritzBoxTR64
         With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewIndex", i}})
 
             If .ContainsKey("NewPhoneNumbers") Then
+
+                NLogger.Trace(.Item("NewPhoneNumbers"))
+
                 PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
 
                 GetTAMInfo = True
@@ -275,7 +289,13 @@ Friend Class FritzBoxTR64
         With TR064Start(Tr064Files.x_tamSCPD, "GetList")
 
             If .ContainsKey("NewTAMList") Then
+
+                NLogger.Trace(.Item("NewTAMList"))
+
                 TAMListe = XmlDeserializeFromString(Of TAMList)(.Item("NewTAMList").ToString())
+
+                ' Wenn keine TAM angeschlossen wurden, gib eine leere Klasse zurück
+                If TAMListe Is Nothing Then TAMListe = New TAMList
 
                 GetTAMList = True
 
@@ -288,9 +308,6 @@ Friend Class FritzBoxTR64
         End With
 
     End Function
-
-
-
 
 #End Region
 

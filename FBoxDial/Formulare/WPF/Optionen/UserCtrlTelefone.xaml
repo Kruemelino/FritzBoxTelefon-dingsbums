@@ -34,6 +34,22 @@
             </Style>
             
         </StackPanel.Resources>
+        <fbd:OptionsÜberschrift Label="Einlesen der Telefoniedaten von der Fritz!Box"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+
+            <Button x:Name="BTelefonie" Content="Start" Grid.Column="0" Margin="4"/>
+            <TextBlock x:Name="LabelStatus" Grid.Column="1" Margin="4"/>
+
+        </Grid>
         
         <fbd:OptionsÜberschrift Label="Telefoniegeräte"/>
         <Border BorderThickness="0.5" Margin="0,0,0,4">
@@ -90,22 +106,7 @@
             </DataGrid>
         </Border>
 
-        <fbd:OptionsÜberschrift Label="Einlesen der Telefoniedaten von der Fritz!Box"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-
-            </Grid.RowDefinitions>
-
-            <Button x:Name="BTelefonie" Content="Start" Grid.Column="0" Margin="4"/>
-            <TextBlock x:Name="LabelStatus" Grid.Column="1" Margin="4"/>
-
-        </Grid>
 
 
     </StackPanel>

@@ -74,10 +74,11 @@ Imports FBoxDial.FritzBoxDefault
                         If .GetNumbers(NummernListe) Then NummernListe.TelNrList.ForEach(Sub(S) AddEigeneTelNr(S))
 
                         ' Lade SIP Clients via TR-064 
-                        Dim SIPClientList As SIPClientList = Nothing
-                        If .GetSIPClients(SIPClientList) Then
+                        Dim SIPList As SIPClientList = Nothing
+                        If .GetSIPClients(SIPList) Then
+
                             ' Werte alle SIP Clients aus
-                            For Each SIPClient In SIPClientList.SIPClientList
+                            For Each SIPClient In SIPList.SIPClients
 
                                 Dim Telefon As New Telefoniegerät With {.Name = SIPClient.PhoneName,
                                                 .TelTyp = DfltWerteTelefonie.TelTypen.IP,
@@ -113,7 +114,7 @@ Imports FBoxDial.FritzBoxDefault
                                 ' Ermittle die Nummer, auf den der AB reagiert.
                                 Dim TelNrArray As String() = {}
                                 If .GetTAMInfo(TelNrArray, AB.Index) Then
-                                    If TelNrArray.Length.IsZero Then
+                                    If TelNrArray.Length.AreEqual(1) AndAlso TelNrArray.First.IsStringNothingOrEmpty Then
                                         ' Empty string represents all numbers.
                                         Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
 
@@ -216,7 +217,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim QueryAntwort As String = DfltStringEmpty
         Dim FONList As New List(Of Telefoniegerät)
 
-        NLogger.Debug("GetFON - Start")
+        NLogger.Trace("GetFON - Start")
 
         ' Frage alle angeschlossenen und aktiven DECT Telefone ab.
         TelQuery.Add("FON=telcfg:settings/MSN/Port/list(Name,Fax,AllIncomingCalls)")
@@ -266,7 +267,7 @@ Imports FBoxDial.FritzBoxDefault
                 End With
             Next
         End With
-        NLogger.Debug($"GetFON - Ende ({FONList.Count})")
+        NLogger.Trace($"GetFON - Ende ({FONList.Count})")
         Return FONList
     End Function
 
@@ -280,7 +281,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim QueryAntwort As String = DfltStringEmpty
         Dim DECTList As New List(Of Telefoniegerät)
 
-        NLogger.Debug("GetDECT - Start")
+        NLogger.Trace("GetDECT - Start")
 
         ' Frage alle angeschlossenen und aktiven DECT Telefone ab.
         TelQuery.Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)")
@@ -330,7 +331,7 @@ Imports FBoxDial.FritzBoxDefault
             Next
         End With
 
-        NLogger.Debug($"GetDECT - Ende ({DECTList.Count})")
+        NLogger.Trace($"GetDECT - Ende ({DECTList.Count})")
         Return DECTList
     End Function
 
@@ -344,7 +345,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim QueryAntwort As String = DfltStringEmpty
         Dim S0List As New List(Of Telefoniegerät)
 
-        NLogger.Debug("GetS0 - Start")
+        NLogger.Trace("GetS0 - Start")
 
         For idx = 1 To 8
             With TelQuery
@@ -384,7 +385,7 @@ Imports FBoxDial.FritzBoxDefault
             End With
         Next
 
-        NLogger.Debug($"GetS0 - Ende ({S0List.Count})")
+        NLogger.Trace($"GetS0 - Ende ({S0List.Count})")
 
         Return S0List
     End Function
@@ -399,7 +400,7 @@ Imports FBoxDial.FritzBoxDefault
         Dim QueryAntwort As String = DfltStringEmpty
         Dim TelList As New List(Of Telefoniegerät)
 
-        NLogger.Debug("GetFaxMailMobil - Start")
+        NLogger.Trace("GetFaxMailMobil - Start")
 
         With TelQuery
             .Add($"FaxMailActive=telcfg:settings/FaxMailActive")
@@ -458,7 +459,7 @@ Imports FBoxDial.FritzBoxDefault
             End If
         End With
 
-        NLogger.Debug($"GetFaxMailMobil - Ende ({TelList.Count})")
+        NLogger.Trace($"GetFaxMailMobil - Ende ({TelList.Count})")
 
         Return TelList
     End Function

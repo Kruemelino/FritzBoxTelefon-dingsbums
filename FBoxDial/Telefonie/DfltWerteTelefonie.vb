@@ -46,7 +46,6 @@ Public NotInheritable Class DfltWerteTelefonie
         DECT = 2
         IP = 4
         ISDN = 8
-        <Obsolete> S0 = 8
         FAX = 16
         Mobil = 32
         POTS = 64
