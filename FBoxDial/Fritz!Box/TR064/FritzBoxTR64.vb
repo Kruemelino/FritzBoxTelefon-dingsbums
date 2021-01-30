@@ -6,12 +6,10 @@ Friend Class FritzBoxTR64
 
     Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
     Private Property FBTR64Desc As TR64Desc
-    Private Property HttpFehler As Boolean
 
     Public Sub New()
         Dim Response As String = DfltStringEmpty
 
-        HttpFehler = False
         ErrorHashTable = New Hashtable
 
         ' ByPass SSL Certificate Validation Checking
@@ -77,6 +75,7 @@ Friend Class FritzBoxTR64
 
 #Region "Abfragen"
 
+#Region "deviceconfigSCPD"
     ''' <summary>
     ''' Generate a temporary URL session ID. The session ID is need for accessing URLs like phone book, call list, FAX message, answering machine messages Or phone book images.
     ''' </summary>
@@ -103,6 +102,121 @@ Friend Class FritzBoxTR64
         End With
 
     End Function
+#End Region
+
+#Region "x_contactSCPD"
+
+    ''' <summary>
+    ''' The URL can be extended to limit the number of entries in the XML call list file.
+    ''' E.g. max=42 would limit to 42 calls in the list.
+    ''' If the parameter Is Not Set Or the value Is 0 all calls will be inserted into the Call list file.
+    ''' The URL can be extended To fetch a limited number Of entries Using the parameter days.
+    ''' E.g. days=7 would fetch the calls from now until 7 days in the past.
+    ''' If the parameter Is Not Set Or the value Is 0 all calls will be inserted into the Call list file.
+    ''' The parameter NewCallListURL Is empty, If the feature (CallList) Is disabled. If the feature
+    ''' Is Not supported an internal error (820) Is returned. In the other case the URL Is returned.
+    ''' </summary>
+    ''' <param name="CallListURL">Represents the URL to the CallList.</param>
+    ''' <returns>True when success</returns>
+    ''' <remarks>
+    ''' 
+    ''' <list type="bullet">
+    ''' <listheader>The following URL parameters are supported.</listheader>
+    ''' <item>Parameter name (number): number of days to look back for calls e.g. 1: calls from today and yesterday, 7: calls from the complete last week, Default 999</item>
+    ''' <item>Parameter id (number): calls since this unique ID</item>
+    ''' <item>Parameter max (number): maximum number of entries in call list, default 999</item>
+    ''' <item>Parameter sid (hex-string): Session ID for authentication </item>
+    ''' <item>Parameter timestamp (number): value from timestamp tag, to get only entries that are newer (timestamp Is resetted by a factory reset) </item>
+    ''' <item>Parameter tr064sid  (string): Session ID for authentication (obsolete)</item>
+    ''' <item>Parameter type  (string): optional parameter for type of output file: xml (default) or csv </item>
+    ''' </list>
+    ''' The parameters timestamp and id have to be used in combination. If only one of both is used, the feature Is Not supported. 
+    ''' </remarks>
+    Friend Function GetCallList(ByRef CallListURL As String) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetCallList")
+
+            If .ContainsKey("NewCallListURL") Then
+
+                CallListURL = .Item("NewCallListURL").ToString
+
+                NLogger.Debug($"Pfad zur Anrufliste der Fritz!Box: '{CallListURL}'")
+
+                GetCallList = True
+            Else
+                CallListURL = DfltStringEmpty
+
+                NLogger.Warn($"Pfad zur Anrufliste der Fritz!Box nicht ermittelt.")
+
+                GetCallList = False
+            End If
+        End With
+
+    End Function
+#End Region
+
+#Region "x_tamSCPD"
+    ''' <summary>
+    ''' Return a informations of tam index <paramref name="i"/>. 
+    ''' </summary>
+    ''' <param name="PhoneNumbers">Empty string represents all numbers. Comma (,) separated list represents specific phone numbers.</param>
+    ''' <param name="i">Represents the index of all tam.</param>
+    ''' <returns>True when success</returns>
+    ''' <remarks>Weitere felder verfügbar: NewEnable, NewName, NewTAMRunning, NewStick, NewStatus, NewCapacity, NewMode, NewRingSeconds </remarks>
+    Friend Function GetTAMInfo(ByRef PhoneNumbers As String(), i As Integer) As Boolean
+
+        With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewIndex", i}})
+
+            If .ContainsKey("NewPhoneNumbers") Then
+
+                NLogger.Trace(.Item("NewPhoneNumbers"))
+
+                PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
+
+                GetTAMInfo = True
+
+            Else
+                NLogger.Warn($"GetInfo konnte für nicht aufgelößt werden.")
+                PhoneNumbers = {}
+
+                GetTAMInfo = False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Returns the global information and the specific answering machine information as xml list.
+    ''' </summary>
+    ''' <param name="TAMListe">Represents the list of all tam.</param>
+    ''' <returns>True when success</returns>
+    Friend Function GetTAMList(ByRef TAMListe As TAMList) As Boolean
+
+        With TR064Start(Tr064Files.x_tamSCPD, "GetList")
+
+            If .ContainsKey("NewTAMList") Then
+
+                NLogger.Trace(.Item("NewTAMList"))
+
+                TAMListe = XmlDeserializeFromString(Of TAMList)(.Item("NewTAMList").ToString())
+
+                ' Wenn keine TAM angeschlossen wurden, gib eine leere Klasse zurück
+                If TAMListe Is Nothing Then TAMListe = New TAMList
+
+                GetTAMList = True
+
+            Else
+                NLogger.Warn($"GetList konnte für nicht aufgelößt werden.")
+                TAMListe = Nothing
+
+                GetTAMList = False
+            End If
+        End With
+
+    End Function
+#End Region
+
+#Region "x_voipSCPD"
     ''' <summary>
     ''' Get the configured common country code where the <paramref name="LKZ"/> represents the actual country code and the <paramref name="LKZPrefix"/> is the international call prefix.
     ''' </summary>
@@ -152,6 +266,89 @@ Friend Class FritzBoxTR64
                 OKZPrefix = If(OKZPrefix.IsStringNothing, DfltStringEmpty, OKZPrefix)
 
                 GetVoIPCommonAreaCode = False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt das aktuell ausgewählte Telefon der Fritz!Box Wählhilfe
+    ''' </summary>
+    ''' <param name="PhoneName">Phoneport des ausgewählten Telefones.</param>
+    ''' <returns>True when success</returns>
+    Friend Function DialGetConfig(ByRef PhoneName As String) As Boolean
+        With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
+
+            If .ContainsKey("NewX_AVM-DE_PhoneName") Then
+                PhoneName = .Item("NewX_AVM-DE_PhoneName").ToString
+
+                DialGetConfig = True
+
+            Else
+                NLogger.Warn($"X_AVM-DE_DialGetConfig konnte nicht aufgelößt werden.")
+                PhoneName = DfltStringEmpty
+
+                DialGetConfig = False
+            End If
+        End With
+    End Function
+
+    ''' <summary>
+    ''' Disconnect the dialling process. 
+    ''' </summary>
+    ''' <returns>True</returns>
+    Friend Function DialHangup() As Boolean
+        With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup")
+            Return Not .ContainsKey("Error")
+        End With
+    End Function
+
+    ''' <summary>
+    ''' Startet den Wählvorgang mit der übergebenen Telefonnummer.
+    ''' </summary>
+    ''' <param name="PhoneNumber">Die zu wählende Telefonnummer.</param>
+    Friend Function DialNumber(PhoneNumber As String) As Boolean
+        With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", New Hashtable From {{"NewX_AVM-DE_PhoneNumber", PhoneNumber}})
+            Return Not .ContainsKey("Error")
+        End With
+    End Function
+
+    ''' <summary>
+    ''' Stellt die Wählhilfe der Fritz!Box auf das gewünschte Telefon um.
+    ''' </summary>
+    ''' <param name="PhoneName">Phoneport des Telefones.</param>
+    Friend Function DialSetConfig(PhoneName As String) As Boolean
+        With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", New Hashtable From {{"NewX_AVM-DE_PhoneName", PhoneName}})
+            Return Not .ContainsKey("Error")
+        End With
+    End Function
+
+    ''' <summary>
+    ''' Return a list of all telephone numbers. 
+    ''' </summary>
+    ''' <param name="NumberList">Represents the list of all telephone numbers.</param>
+    ''' <returns>True when success</returns>
+    ''' <remarks>The list contains all configured numbers for all number types. The index can be used to see how many numbers are configured For one type. </remarks>
+    Friend Function GetNumbers(ByRef NumberList As SIPTelNrList) As Boolean
+
+        With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetNumbers")
+
+            If .ContainsKey("NewNumberList") Then
+
+                NLogger.Trace(.Item("NewNumberList"))
+
+                NumberList = XmlDeserializeFromString(Of SIPTelNrList)(.Item("NewNumberList").ToString())
+
+                ' Wenn keine Nummern angeschlossen wurden, gib eine leere Klasse zurück
+                If NumberList Is Nothing Then NumberList = New SIPTelNrList
+
+                GetNumbers = True
+
+            Else
+                NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht aufgelößt werden.")
+                NumberList = Nothing
+
+                GetNumbers = False
             End If
         End With
 
@@ -220,97 +417,11 @@ Friend Class FritzBoxTR64
 
     End Function
 
-    ''' <summary>
-    ''' Return a list of all telephone numbers. 
-    ''' </summary>
-    ''' <param name="NumberList">Represents the list of all telephone numbers.</param>
-    ''' <returns>True when success</returns>
-    ''' <remarks>The list contains all configured numbers for all number types. The index can be used to see how many numbers are configured For one type. </remarks>
-    Friend Function GetNumbers(ByRef NumberList As SIPTelNrList) As Boolean
 
-        With TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_GetNumbers")
-
-            If .ContainsKey("NewNumberList") Then
-
-                NLogger.Trace(.Item("NewNumberList"))
-
-                NumberList = XmlDeserializeFromString(Of SIPTelNrList)(.Item("NewNumberList").ToString())
-
-                ' Wenn keine Nummern angeschlossen wurden, gib eine leere Klasse zurück
-                If NumberList Is Nothing Then NumberList = New SIPTelNrList
-
-                GetNumbers = True
-
-            Else
-                NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht aufgelößt werden.")
-                NumberList = Nothing
-
-                GetNumbers = False
-            End If
-        End With
-
-    End Function
-    ''' <summary>
-    ''' Return a informations of tam index <paramref name="i"/>. 
-    ''' </summary>
-    ''' <param name="PhoneNumbers">Empty string represents all numbers. Comma (,) separated list represents specific phone numbers.</param>
-    ''' <param name="i">Represents the index of all tam.</param>
-    ''' <returns>True when success</returns>
-    ''' <remarks>Weitere felder verfügbar: NewEnable, NewName, NewTAMRunning, NewStick, NewStatus, NewCapacity, NewMode, NewRingSeconds </remarks>
-    Friend Function GetTAMInfo(ByRef PhoneNumbers As String(), i As Integer) As Boolean
-
-        With TR064Start(Tr064Files.x_tamSCPD, "GetInfo", New Hashtable From {{"NewIndex", i}})
-
-            If .ContainsKey("NewPhoneNumbers") Then
-
-                NLogger.Trace(.Item("NewPhoneNumbers"))
-
-                PhoneNumbers = .Item("NewPhoneNumbers").ToString.Split(",")
-
-                GetTAMInfo = True
-
-            Else
-                NLogger.Warn($"GetInfo konnte für nicht aufgelößt werden.")
-                PhoneNumbers = {}
-
-                GetTAMInfo = False
-            End If
-        End With
-
-    End Function
-
-    ''' <summary>
-    ''' Returns the global information and the specific answering machine information as xml list.
-    ''' </summary>
-    ''' <param name="TAMListe">Represents the list of all tam.</param>
-    ''' <returns>True when success</returns>
-    Friend Function GetTAMList(ByRef TAMListe As TAMList) As Boolean
-
-        With TR064Start(Tr064Files.x_tamSCPD, "GetList")
-
-            If .ContainsKey("NewTAMList") Then
-
-                NLogger.Trace(.Item("NewTAMList"))
-
-                TAMListe = XmlDeserializeFromString(Of TAMList)(.Item("NewTAMList").ToString())
-
-                ' Wenn keine TAM angeschlossen wurden, gib eine leere Klasse zurück
-                If TAMListe Is Nothing Then TAMListe = New TAMList
-
-                GetTAMList = True
-
-            Else
-                NLogger.Warn($"GetList konnte für nicht aufgelößt werden.")
-                TAMListe = Nothing
-
-                GetTAMList = False
-            End If
-        End With
-
-    End Function
 
 #End Region
 
+#End Region
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' Dient zur Erkennung redundanter Aufrufe.
 

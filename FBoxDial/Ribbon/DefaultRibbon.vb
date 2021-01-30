@@ -275,7 +275,7 @@
 
     Public Shared ReadOnly Property PScreenTippbtnFBTelBch() As String
         Get
-            Return String.Format("Öffne die Verwaltung der {0} Telefonbücher", FritzBoxDefault.DfltFritzBoxName)
+            Return String.Format($"Zeitweise deaktiviert! Öffne die Verwaltung der {FritzBoxDefault.DfltFritzBoxName} Telefonbücher")
         End Get
     End Property
 #End Region
@@ -287,8 +287,11 @@
     Public Shared ReadOnly Property PImageMsobtnDirektwahl() As String = "SlidesPerPage9Slides"
     Public Shared ReadOnly Property PImageMsodynMWwdListe() As String = "RecurrenceEdit"
     Public Shared ReadOnly Property PImageMsodynMAnrListe() As String = "DirectRepliesTo"
-    Public Shared ReadOnly Property PImageMsodynMVIPListe() As String = "Pushpin"
-    Public Shared ReadOnly Property PImageMsotbtnVIP() As String = PImageMsodynMVIPListe
+    Public Shared ReadOnly Property PImageMsodynMVIPListe() As String = "StarRatedFull"
+    Public Shared ReadOnly Property PImageMsoAddtbtnVIP() As String = "ShapeStar"
+    Public Shared ReadOnly Property PImageMsoRemovetbtnVIP() As String = "StarRatedFull"
+    Public Shared ReadOnly Property PImageMsoAddctbtnVIP() As String = PImageMsoAddtbtnVIP
+    Public Shared ReadOnly Property PImageMsoRemovectbtnVIP() As String = PImageMsoRemovetbtnVIP
     Public Shared ReadOnly Property PImageMsodynListDel() As String = "ToolDelete"
     Public Shared ReadOnly Property PImageMsobtnAnrMonRestart() As String = "RecurrenceEdit"
     Public Shared ReadOnly Property PImageMsobtnAnrMonShow() As String = "ClipArtInsert"

@@ -29,10 +29,12 @@ Public Class Telefonnummer
 
     <XmlIgnore> Public WriteOnly Property SetNummer As String
         Set
-            Unbekannt = Value.AreEqual(DfltStringEmpty)
+            NLogger.Trace($"SetNummer Start: '{Value}'; '{EigeneNummer}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+            ' Prüfe, ob eine leere Zeichenfolge übergeben wurde
+            If Value.IsStringNothingOrEmpty Then
+                Unbekannt = True
 
-            If Not Unbekannt Then
-
+            Else
                 Nummer = Value
 
                 ' Ermittle die unformatierte Telefonnummer
@@ -47,7 +49,7 @@ Public Class Telefonnummer
                 ' Ermittle die unformatierte Telefonnummer
                 Unformatiert = NurZiffern(Formatiert)
             End If
-            NLogger.Trace($"Nummer angelegt: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
+            NLogger.Trace($"Nummer erfasst: '{Value}'; '{EigeneNummer}'; '{Unformatiert}'; '{Formatiert}'; '{Ortskennzahl}'; '{Landeskennzahl}'")
         End Set
     End Property
 
@@ -98,12 +100,13 @@ Public Class Telefonnummer
             ' Alles was jetzt keine Zahlen oder Steuerzeichen direkt entfernen
             NurZiffern = NurZiffern.RegExRemove("[^0-9\#\*]")
 
-            ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich nachfolgender 0)
-            NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{XMLData.PTelefonie.LKZ}{{1}}[0]?", "0")
+            ' Landesvorwahl entfernen bei Inlandsgesprächen (einschließlich ggf. vorhandener nachfolgender 0)
+
+            NurZiffern = NurZiffern.RegExReplace($"^{PDfltVAZ}{If(Landeskennzahl.IsStringNothingOrEmpty, XMLData.PTelefonie.LKZ, Landeskennzahl)}{{1}}[0]?", "0")
 
             ' Bei diversen VoIP-Anbietern werden 2 führende Nullen zusätzlich gewählt: Entfernen "000" -> "0"
             NurZiffern = NurZiffern.RegExReplace("^[0]{3}", "0")
-        End If
+            End If
     End Function
 
     ''' <summary>
@@ -111,37 +114,40 @@ Public Class Telefonnummer
     ''' </summary>
     Private Sub SetTelNrTeile()
         Dim i, j As Integer
-        Dim tmpLKZ As CLandeskennzahl
-        Dim tmpONKZ As List(Of COrtsnetzkennzahl)
+        Dim LKZObj As CLandeskennzahl
+        Dim ListeOKZObj As List(Of COrtsnetzkennzahl)
         Dim TelNr As String
 
         If Unformatiert.IsNotStringEmpty AndAlso Unformatiert.Length.IsLarger(2) Then
             ' Entferne den Stern
             TelNr = Replace(Unformatiert, "*", DfltStringEmpty, , , CompareMethod.Text)
 
-            ' Prüfen: Beginnt die Vorwahl mit der 00, dann ist eine Landesvorwahl enthalten. Wenn nicht, dann nimm die Standard-Landesvorwahl
+            ' Prüfen: Beginnt die Vorwahl mit der 00, dann ist eine Landesvorwahl enthalten. Wenn nicht, dann nimm die Standard-Landeskennzahl
             If TelNr.StartsWith(PDfltVAZ) Then
                 ' Die maximale Länge an LKZ ist 3
                 i = 3
                 Do
-                    tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = TelNr.Substring(2, i))
+                    LKZObj = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = TelNr.Substring(2, i))
                     i -= 1
-                Loop Until tmpLKZ IsNot Nothing Or i.IsZero
+                Loop Until LKZObj IsNot Nothing Or i.IsZero
                 ' Eine Landeskennzahl wurde gefunden
-                If tmpLKZ IsNot Nothing Then
-                    Landeskennzahl = tmpLKZ.Landeskennzahl
+                If LKZObj IsNot Nothing Then
+                    Landeskennzahl = LKZObj.Landeskennzahl
                 Else
                     ' Es wurde keine gültige Landeskennzahl gefunden. Die Nummer ist ggf. falsch zusammengesetzt, oder die LKZ ist nicht in der Liste 
                     NLogger.Warn("Landeskennzahl der Telefonnummer {0} kann nicht ermittelt werden.", Unformatiert)
                     If Not EigeneNummer Then Landeskennzahl = XMLData.PTelefonie.LKZ
                     ' Wähle die LKZ für das Default-Land aus, damit die Routine die Ortskennzahl ermitteln kann
-                    tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
+                    LKZObj = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
                 End If
 
             Else
-                If Not EigeneNummer Then Landeskennzahl = XMLData.PTelefonie.LKZ
+                ' Eine Landeskennzahl und eine Ortskennzahl müssen vorhanden sein.
+                ' Setze, die Landeskennzahl, falls diese noch nicht gesetzt ist, mit der in den Einstellungen hinterlegten LKZ
+                If Landeskennzahl.IsStringNothingOrEmpty Then Landeskennzahl = XMLData.PTelefonie.LKZ
+
                 ' Wähle die LKZ für das Default-Land aus
-                tmpLKZ = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(laKZ) laKZ.Landeskennzahl = Landeskennzahl)
+                LKZObj = ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Find(Function(LObj) LObj.Landeskennzahl = Landeskennzahl)
             End If
 
             ' Einwahl: Landesvorwahl am Anfang entfernen
@@ -152,7 +158,7 @@ Public Class Telefonnummer
 
                 ' Es muss eine Landeskennzahl ermittelt sein.
                 ' Hier ist irgendwo ein Bug, dass die ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen leer ist. Vielleicht war das Addin zu schnell beim automatischen Journalimport.
-                If tmpLKZ Is Nothing Then
+                If LKZObj Is Nothing Then
                     NLogger.Error("Es konnte keine Landeskennzahl für {0} ermittet werden. Das Laden der Vorwahlen ist{1} abgeschlossen.", TelNr, If(ThisAddIn.PCVorwahlen.Kennzahlen.Landeskennzahlen.Any, DfltStringEmpty, " nicht"))
                     Ortskennzahl = DfltStringEmpty
                 Else
@@ -162,21 +168,22 @@ Public Class Telefonnummer
 
                     j = TelNr.Length - i
                     Do
-                        tmpONKZ = tmpLKZ.Ortsnetzkennzahlen.FindAll(Function(OrNKZ) OrNKZ.Ortskennzahl = TelNr.Substring(i, j))
+                        ListeOKZObj = LKZObj.Ortsnetzkennzahlen.FindAll(Function(OrNKZ) OrNKZ.Ortskennzahl = TelNr.Substring(i, j))
                         j -= 1
-                    Loop Until tmpONKZ.Count.AreEqual(1) Or j.IsZero
+                    Loop Until ListeOKZObj.Count.AreEqual(1) Or j.IsZero
 
-                    If tmpONKZ.Count.AreEqual(1) Then
-                        Ortskennzahl = tmpONKZ.First.Ortskennzahl
+                    If ListeOKZObj.Count.AreEqual(1) Then
+                        Ortskennzahl = ListeOKZObj.First.Ortskennzahl
                         ' Einwahl: Ortsvorwahl am Anfang entfernen
                     Else
                         Ortskennzahl = DfltStringEmpty
                     End If
-                    tmpONKZ.Clear()
+                    ListeOKZObj.Clear()
                 End If
             Else
-                ' es handelt sich vermutlich um eine Nummer im eigenen Ortsnetz
-                If Not EigeneNummer Then Ortskennzahl = XMLData.PTelefonie.OKZ
+                ' Es handelt sich vermutlich um eine Nummer im eigenen Ortsnetz
+                ' Setze, die Ortskennzahl, falls diese noch nicht gesetzt ist, mit der in den Einstellungen hinterlegten OKZ
+                If Ortskennzahl.IsStringNothingOrEmpty Then Ortskennzahl = XMLData.PTelefonie.OKZ
             End If
 
             Einwahl = Einwahl.RegExRemove($"^0?{Ortskennzahl}")
@@ -190,8 +197,8 @@ Public Class Telefonnummer
                 Durchwahl = DfltStringEmpty
             End If
 
-            tmpLKZ = Nothing
-            tmpONKZ = Nothing
+            LKZObj = Nothing
+            ListeOKZObj = Nothing
         End If
     End Sub
 
@@ -349,11 +356,11 @@ Public Class Telefonnummer
 
         Select Case True
             Case Unformatiert.AreEqual(NurZiffern(other))
-                NLogger.Trace($"Telefonnummernvergleich true: '{other}'; {Unformatiert}")
+                NLogger.Trace($"Telefonnummernvergleich Unformatiert true: '{other}'; {Unformatiert}")
                 Return True
 
             Case Einwahl.AreEqual(NurZiffern(other))
-                NLogger.Trace($"Telefonnummernvergleich true : '{other}'; {Einwahl}")
+                NLogger.Trace($"Telefonnummernvergleich Einwahl true : '{other}'; {Einwahl}")
                 Return True
 
             Case Else

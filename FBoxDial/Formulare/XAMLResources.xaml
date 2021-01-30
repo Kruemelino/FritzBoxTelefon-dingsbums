@@ -170,4 +170,151 @@
         </Setter>
     </Style>
 
+    <ControlTemplate 
+        x:Key="TimePickerButtonTemplate"
+        TargetType="ButtonBase">
+        <Border
+            x:Name="ContentContainer" 
+            Background="{TemplateBinding Background}" 
+            BorderBrush="{TemplateBinding BorderBrush}" 
+            BorderThickness="1"             
+            SnapsToDevicePixels="True">
+            <ContentPresenter 
+                x:Name="Content"
+                RecognizesAccessKey="True" 
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                ContentStringFormat="{TemplateBinding ContentStringFormat}" 
+                Margin="{TemplateBinding Padding}" 
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter 
+                    TargetName="ContentContainer"
+                    Property="Background"
+                    Value="LightBlue">
+                </Setter>
+            </Trigger>
+            <Trigger Property="Button.IsDefaulted" Value="True">
+                <Setter 
+                    TargetName="ContentContainer"
+                    Property="Background"
+                    Value="LightBlue">
+                </Setter>
+            </Trigger>
+            <Trigger Property="ButtonBase.IsPressed" Value="True">
+                <Setter 
+                    TargetName="Content" 
+                    Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform Y="0.5"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter 
+                    TargetName="Content" 
+                    Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform Y="0.5"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter Property="TextElement.Foreground">
+                    <Setter.Value>
+                        <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type fbd:TimePicker}" TargetType="{x:Type fbd:TimePicker}">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="23"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type fbd:TimePicker}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel                                
+                                Orientation="Horizontal"
+                                DataContext="{TemplateBinding fbd:TimePicker.SelectedTime}">
+                                
+                                <TextBox
+                                    x:Name="PART_HourTextBox"
+                                    Text="{Binding Hours, Mode=OneWay, StringFormat=00}"
+                                    BorderBrush="{x:Null}"
+                                    Width="20" VerticalAlignment="Center"/>   
+                                <TextBlock
+                                    Text=":"
+                                    VerticalAlignment="Center"/>
+                                <TextBox
+                                    x:Name="PART_MinuteTextBox"
+                                    Text="{Binding Minutes, Mode=OneWay, StringFormat=00}"
+                                    BorderBrush="{x:Null}"
+                                    Width="20" VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Text=":"
+                                    VerticalAlignment="Center"/>
+                                <TextBox
+                                    x:Name="PART_SecondTextBox"
+                                    Text="{Binding Seconds, Mode=OneWay, StringFormat=00}"
+                                    BorderBrush="{x:Null}"
+                                    Width="20" VerticalAlignment="Center"/>
+
+                                </StackPanel>
+                            <Grid
+                                Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Button        
+                                    x:Name="PART_IncrementButton"
+                                    Margin="1,1,6,0"
+                                    Width="20"
+                                    Template="{StaticResource TimePickerButtonTemplate}">
+                                    <TextBlock                                                    
+                                        Text="p"                                                    
+                                        FontFamily="Wingdings 3"
+                                        FontSize="6"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Button>
+                                <Button
+                                    x:Name="PART_DecrementButton"
+                                    Grid.Row="1"
+                                    Margin="1,1,6,1"
+                                    Width="20"
+                                    Template="{StaticResource TimePickerButtonTemplate}">
+                                    <TextBlock                                                    
+                                        Text="q"                                                    
+                                        FontFamily="Wingdings 3"
+                                        FontSize="6"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

@@ -419,27 +419,7 @@ Public NotInheritable Class DfltWerteAllgemein
     ''' </summary>
     Public Shared ReadOnly Property WählClientStatusAbbruch As String = $"Anruf wird abgebrochen...{Dflt1NeueZeile}"
 
-    ''' <summary>
-    ''' <paramref name="Sender"/>: <paramref name="Meldung"/> <paramref name="Wert"/>
-    ''' </summary>
-    ''' <param name="Sender">Die Funktion die den den Status setzt</param>
-    ''' <param name="Meldung">Der Meldungstext</param>
-    ''' <param name="Wert">Ein gesetzer Wert</param>
-    Public Shared ReadOnly Property WählClientDialStatus(Sender As String, Meldung As String, Wert As String) As String
-        Get
-            Return $"{Sender}: {Meldung} {Wert}"
-        End Get
-    End Property
 
-    ''' <summary>
-    ''' "Ändere Dialport auf
-    ''' </summary>
-    Public Shared ReadOnly Property WählClientStatusDialPort() As String = "Ändere Dialport auf"
-
-    ''' <summary>
-    ''' Der TR-064-Dialport konnte nicht geändert werden:
-    ''' </summary>
-    Public Shared ReadOnly Property WählClientStatusTR064DialPortFehler As String = "Der TR-064-Dialport konnte nicht geändert werden:"
 #End Region
 
 #Region "Literale Rückwärtssuche"

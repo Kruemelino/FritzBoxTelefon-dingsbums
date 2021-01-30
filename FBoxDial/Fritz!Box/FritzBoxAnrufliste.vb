@@ -4,25 +4,16 @@ Module FritzBoxAnrufliste
     Private Property NLogger As Logger = LogManager.GetCurrentClassLogger
 #Region "Anrufliste Laden"
     Friend Async Function LadeFritzBoxAnrufliste() As Task(Of FritzBoxXMLCallList)
-        Dim OutPutData As Collections.Hashtable
-
         Using fboxSOAP As New FritzBoxTR64
-            ' Lade die Anrufliste herunter
-            OutPutData = fboxSOAP.TR064Start(Tr064Files.x_contactSCPD, "GetCallList")
+            Dim Pfad As String = DfltStringEmpty
 
-            If OutPutData.ContainsKey("Error") Then
-                NLogger.Error("XML-Anrufliste konnte nicht heruntergeladen werden.")
-                Return Nothing
+            ' Ermittle Pfad zur Anrufliste
+            If fboxSOAP.GetCallList(Pfad) Then
+                Return Await DeserializeObjectAsyc(Of FritzBoxXMLCallList)(Pfad)
             Else
-                If OutPutData.ContainsKey("NewCallListURL") Then
-                    ' Deserialisiere die Anrufliste
-                    Return Await DeserializeObjectAsyc(Of FritzBoxXMLCallList)(OutPutData.Item("NewCallListURL").ToString())
-                Else
-                    NLogger.Warn("XML-Anrufliste konnte nicht heruntergeladen werden.")
-                    Return Nothing
-                End If
+                NLogger.Warn("Pfad zur XML-Anrufliste konnte nicht ermittelt werden.")
+                Return Nothing
             End If
-
         End Using
     End Function
 #End Region

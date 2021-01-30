@@ -1,6 +1,4 @@
-﻿Imports System.Windows.Threading
-
-Public Class AnrListViewModel
+﻿Public Class AnrListViewModel
     Inherits NotifyBase
 
 #Region "Felder"
@@ -8,7 +6,7 @@ Public Class AnrListViewModel
     ''' <summary>
     ''' Returns Or sets a list as FritzBoxXMLCall             
     ''' </summary>
-    Private _CallList As New ObservableCollectionEx(Of FritzBoxXMLCall)
+    Private _CallList As ObservableCollectionEx(Of FritzBoxXMLCall)
     Public Property CallList As ObservableCollectionEx(Of FritzBoxXMLCall)
         Get
             Return _CallList
@@ -18,8 +16,18 @@ Public Class AnrListViewModel
         End Set
     End Property
 
-    Private _StartZeit As Date
-    Public Property StartZeit As Date
+    Private _StartDatum As Date
+    Public Property StartDatum As Date
+        Get
+            Return _StartDatum
+        End Get
+        Set
+            SetProperty(_StartDatum, Value)
+        End Set
+    End Property
+
+    Private _StartZeit As TimeSpan
+    Public Property StartZeit As TimeSpan
         Get
             Return _StartZeit
         End Get
@@ -28,8 +36,18 @@ Public Class AnrListViewModel
         End Set
     End Property
 
-    Private _EndZeit As Date
-    Public Property EndZeit As Date
+    Private _EndDatum As Date
+    Public Property EndDatum As Date
+        Get
+            Return _EndDatum
+        End Get
+        Set
+            SetProperty(_EndDatum, Value)
+        End Set
+    End Property
+
+    Private _EndZeit As TimeSpan
+    Public Property EndZeit As TimeSpan
         Get
             Return _EndZeit
         End Get

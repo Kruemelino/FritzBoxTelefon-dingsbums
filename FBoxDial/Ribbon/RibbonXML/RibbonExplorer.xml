@@ -20,7 +20,7 @@
               <button id="btnAnrMonShow_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="btnFBTelBch_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
           <button id="btnAnrMonJI_K" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_K" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
@@ -46,7 +46,7 @@
               <button id="btnAnrMonShow_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="btnFBTelBch_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
           <button id="btnAnrMonJI_C" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_C" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
@@ -72,7 +72,7 @@
               <button id="btnAnrMonShow_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="btnFBTelBch_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
           <button id="btnAnrMonJI_J" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_J" onAction="BtnOnAction" getScreentip="GetItemScreenTipp"/>
@@ -98,7 +98,7 @@
               <button id="btnAnrMonShow_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
             </menu>
           </splitButton>
-          <button id="btnFBTelBch_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
+          <button id="btnFBTelBch_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" enabled="false"/>
           <button id="btnAnrMonJI_M" getLabel="GetItemLabel" onAction="BtnOnAction" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp"/>
           <dialogBoxLauncher>
             <button id="Einstellungen_M"  getScreentip="GetItemScreenTipp" onAction="BtnOnAction"/>
@@ -111,7 +111,7 @@
     <contextMenu idMso="ContextMenuContactItem">
       <menuSeparator id="Seperator_CM1"/>
       <button id="cbtnDial_CMC" getLabel="GetItemLabel" imageMso="AutoDial" onAction="BtnOnActionCM"/>
-      <toggleButton id="ctbtnVIP" getLabel="GetItemLabel" onAction="TBtnOnAction" getPressed="CtBtnPressedVIP" imageMso="Pushpin"/>
+      <toggleButton id="ctbtnVIP" getLabel="GetItemLabel" onAction="TBtnOnAction" getPressed="CtBtnPressedVIP" getImage="GetItemImageMsoVIPCM"/>
       <button id="cbtnUpload_CMC" getLabel="GetItemLabel" getVisible="GetVisibleUploadFKT" imageMso="ParentPermissions" onAction="BtnOnActionCM"/>
       <dynamicMenu id="cdMUpload_CMC"  getLabel="GetItemLabel" getContent="GetPhonebooks" invalidateContentOnDrop="true" getVisible="GetVisibleUploadFKT" getScreentip="GetItemScreenTipp" imageMso="ParentPermissions"/>
     </contextMenu>

@@ -41,9 +41,6 @@ Public NotInheritable Class ThisAddIn
         ' Initialisiere die Landes- und Ortskennzahlen
         PCVorwahlen = New CVorwahlen
 
-        ' Landes- und Ortskennzahlen aus der Fritz!Box laden
-        XMLData.PTelefonie.GetKennzahlen()
-
         ' Anrufmonitor starten
         If XMLData.POptionen.CBAnrMonAuto Then
             PAnrufmonitor = New Anrufmonitor

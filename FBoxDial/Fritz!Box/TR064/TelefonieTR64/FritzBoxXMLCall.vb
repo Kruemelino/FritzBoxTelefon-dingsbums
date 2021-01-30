@@ -1,9 +1,23 @@
 ﻿Imports System.Xml.Serialization
 <Serializable()> Public Class FritzBoxXMLCall
+    Inherits NotifyBase
+
+#Region "Fritz!Box Eigenschaften"
+
+    Private _ID As Integer
     ''' <summary>
     ''' Unique ID per call. 
     ''' </summary>
     <XmlElement("Id", GetType(Integer))> Public Property ID As Integer
+        Get
+            Return _ID
+        End Get
+        Set
+            SetProperty(_ID, Value)
+        End Set
+    End Property
+
+    Private _Type As Integer
     ''' <summary>
     ''' 1 incoming,
     ''' 2 missed,
@@ -13,16 +27,184 @@
     ''' 11 active outgoing 
     ''' </summary>
     <XmlElement("Type", GetType(Integer))> Public Property Type As Integer
+        Get
+            Return _Type
+        End Get
+        Set
+            SetProperty(_Type, Value)
+        End Set
+    End Property
 
+    Private _Called As String
     ''' <summary>
     ''' Number or name of called party 
     ''' </summary>
     <XmlElement("Called")> Public Property Called As String
+        Get
+            Return _Called
+        End Get
+        Set
+            SetProperty(_Called, Value)
+        End Set
+    End Property
 
+    Private _Caller As String
     ''' <summary>
     ''' Number of calling party 
     ''' </summary>
     <XmlElement("Caller")> Public Property Caller As String
+        Get
+            Return _Caller
+        End Get
+        Set
+            SetProperty(_Caller, Value)
+        End Set
+    End Property
+
+    Private _CalledNumber As String
+    ''' <summary>
+    ''' Own Number of called party (incoming call)
+    ''' </summary>
+    <XmlElement("CalledNumber")> Public Property CalledNumber As String
+        Get
+            Return _CalledNumber
+        End Get
+        Set
+            SetProperty(_CalledNumber, Value)
+        End Set
+    End Property
+
+    Private _CallerNumber As String
+    ''' <summary>
+    ''' Own Number of called party (outgoing call) 
+    ''' </summary>
+    <XmlElement("CallerNumber")> Public Property CallerNumber As String
+        Get
+            Return _CallerNumber
+        End Get
+        Set
+            SetProperty(_CallerNumber, Value)
+        End Set
+    End Property
+
+    Private _Name As String
+    ''' <summary>
+    ''' Name of called/ called party (outgoing/ incoming call) 
+    ''' </summary>
+    <XmlElement("Name")> Public Property Name As String
+        Get
+            Return _Name
+        End Get
+        Set
+            SetProperty(_Name, Value)
+        End Set
+    End Property
+
+    Private _Numbertype As String
+    ''' <summary>
+    ''' pots, isdn, sip, umts, '' 
+    ''' </summary>
+    <XmlElement("Numbertype")> Public Property Numbertype As String
+        Get
+            Return _Numbertype
+        End Get
+        Set
+            SetProperty(_Numbertype, Value)
+        End Set
+    End Property
+
+    Private _Device As String
+    ''' <summary>
+    ''' Name of used telephone port. 
+    ''' </summary>
+    <XmlElement("Device")> Public Property Device As String
+        Get
+            Return _Device
+        End Get
+        Set
+            SetProperty(_Device, Value)
+        End Set
+    End Property
+
+    Private _Port As Integer
+    ''' <summary>
+    ''' Number of telephone port. 
+    ''' </summary>
+    ''' <remarks>    
+    ''' To differ between voice calls, fax calls and TAM calls use the Port value.
+    ''' E.g. if port equals 5 it Is a fax call. If port equals 6 Or port in in the rage of 40 to 49 it Is a TAM call.
+    ''' </remarks>
+    <XmlElement("Port")> Public Property Port As Integer
+        Get
+            Return _Port
+        End Get
+        Set
+            SetProperty(_Port, Value)
+        End Set
+    End Property
+
+    Private _XMLDate As String
+    ''' <summary>
+    ''' 31.07.12 12:03
+    ''' </summary>
+    <XmlElement("Date")> Public Property XMLDate As String
+        Get
+            Return _XMLDate
+        End Get
+        Set
+            SetProperty(_XMLDate, Value)
+        End Set
+    End Property
+
+    Private _XMLDuration As String
+    ''' <summary>
+    ''' hh:mm (minutes rounded up) 
+    ''' </summary>
+    <XmlElement("Duration")> Public Property XMLDuration As String
+        Get
+            Return _XMLDuration
+        End Get
+        Set
+            _XMLDuration = Value
+        End Set
+    End Property
+
+    Private _Count As String
+    <XmlElement("Count")> Public Property Count As String
+        Get
+            Return _Count
+        End Get
+        Set
+            SetProperty(_Count, Value)
+        End Set
+    End Property
+
+    Private _Path As String
+    ''' <summary>
+    '''  URL path to TAM or FAX file. 
+    ''' </summary>
+    <XmlElement("Path")> Public Property Path As String
+        Get
+            Return _Path
+        End Get
+        Set
+            SetProperty(_Path, Value)
+        End Set
+    End Property
+
+
+#End Region
+#Region "Eigene Eigenschaften"
+
+    Private _Export As Boolean
+    <XmlIgnore> Public Property Export As Boolean
+        Get
+            Return _Export
+        End Get
+        Set
+            SetProperty(_Export, Value)
+        End Set
+    End Property
 
     ''' <summary>
     ''' Gibt die Gegenstellennummer (ferne Nummer, NICHT die eigene Nummer) zurück.
@@ -39,60 +221,17 @@
         End Get
     End Property
 
-    ''' <summary>
-    ''' Own Number of called party (incoming call)
-    ''' </summary>
-    <XmlElement("CalledNumber")> Public Property CalledNumber As String
-
-    ''' <summary>
-    ''' Own Number of called party (outgoing call) 
-    ''' </summary>
-    <XmlElement("CallerNumber")> Public Property CallerNumber As String
-
     <XmlIgnore> Public ReadOnly Property EigeneNummer As String
         Get
             Return String.Format("{0}{1}", CalledNumber, CallerNumber)
         End Get
     End Property
 
-    ''' <summary>
-    ''' Name of called/ called party (outgoing/ incoming call) 
-    ''' </summary>
-    <XmlElement("Name")> Public Property Name As String
-
-    ''' <summary>
-    ''' pots, isdn, sip, umts, '' 
-    ''' </summary>
-    <XmlElement("Numbertype")> Public Property Numbertype As String
-
-    ''' <summary>
-    ''' Name of used telephone port. 
-    ''' </summary>
-    <XmlElement("Device")> Public Property Device As String
-
-    ''' <summary>
-    ''' Number of telephone port. 
-    ''' </summary>
-    ''' <remarks>    
-    ''' To differ between voice calls, fax calls and TAM calls use the Port value.
-    ''' E.g. if port equals 5 it Is a fax call. If port equals 6 Or port in in the rage of 40 to 49 it Is a TAM call.
-    ''' </remarks>
-    <XmlElement("Port")> Public Property Port As Integer
-
-    ''' <summary>
-    ''' 31.07.12 12:03
-    ''' </summary>
-    <XmlElement("Date")> Public Property XMLDate As String
     <XmlIgnore> Public ReadOnly Property Datum As Date
         Get
             Return CDate(XMLDate.ToString)
         End Get
     End Property
-
-    ''' <summary>
-    ''' hh:mm (minutes rounded up) 
-    ''' </summary>
-    <XmlElement("Duration")> Public Property XMLDuration As String
     <XmlIgnore> Public ReadOnly Property Duration As TimeSpan
         Get
             With CDate(XMLDuration)
@@ -100,14 +239,8 @@
             End With
         End Get
     End Property
-    <XmlElement("Count")> Public Property Count As String
+#End Region
 
-    ''' <summary>
-    '''  URL path to TAM or FAX file. 
-    ''' </summary>
-    <XmlElement("Path")> Public Property Path As String
-
-    <XmlIgnore> Public Property Export As Boolean
 
     Friend Function ErstelleTelefonat() As Telefonat
 

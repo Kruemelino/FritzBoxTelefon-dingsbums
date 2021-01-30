@@ -201,6 +201,9 @@
   <data name="strStatus" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="strTime" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
   <data name="strUncheckAll" xml:space="preserve">
     <value>Keine auswählen</value>
   </data>

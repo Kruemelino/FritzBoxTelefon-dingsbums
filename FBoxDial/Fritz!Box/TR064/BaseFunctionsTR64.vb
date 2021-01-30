@@ -6,46 +6,52 @@ Friend Module BaseFunctionsTR64
 #Region "HTTP"
     Friend Function FritzBoxGet(UniformResourceIdentifier As Uri, ByRef Response As String) As Boolean
 
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+        ' Ping zur Fritz!Box
+        If Ping(UniformResourceIdentifier.Host) Then
 
-        Select Case UniformResourceIdentifier.Scheme
-            Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
-                Using webClient As New WebClient
-                    With webClient
-                        ' kein Proxy
-                        .Proxy = Nothing
+            Select Case UniformResourceIdentifier.Scheme
+                Case Uri.UriSchemeHttp, Uri.UriSchemeHttps
 
-                        ' kein Cache
-                        .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
+                    Using webClient As New WebClient
+                        With webClient
+                            ' kein Proxy
+                            .Proxy = Nothing
 
-                        ' Header festlegen
-                        .Headers.Add(HttpRequestHeader.KeepAlive, "False")
+                            ' kein Cache
+                            .CachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.BypassCache)
 
-                        ' Zeichencodierung auf das Fritz!Box default setzen
-                        .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
+                            ' Header festlegen
+                            .Headers.Add(HttpRequestHeader.KeepAlive, "False")
 
-                        Try
-                            Response = .DownloadString(UniformResourceIdentifier)
-                            FritzBoxGet = True
+                            ' Zeichencodierung auf das Fritz!Box default setzen
+                            .Encoding = Encoding.GetEncoding(FritzBoxDefault.DfltCodePageFritzBox)
 
-                        Catch exANE As ArgumentNullException
-                            NLogger.Error(exANE)
-                            FritzBoxGet = False
+                            Try
+                                Response = .DownloadString(UniformResourceIdentifier)
+                                FritzBoxGet = True
 
-                        Catch exWE As WebException
-                            FritzBoxGet = False
-                            NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
+                            Catch exANE As ArgumentNullException
+                                NLogger.Error(exANE)
+                                FritzBoxGet = False
 
-                        End Try
-                    End With
-                End Using
-            Case Else
-                FritzBoxGet = False
-                NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
+                            Catch exWE As WebException
+                                FritzBoxGet = False
+                                NLogger.Error(exWE, $"Link: {UniformResourceIdentifier.AbsoluteUri}")
 
-        End Select
+                            End Try
+                        End With
+                    End Using
+                Case Else
+                    FritzBoxGet = False
+                    NLogger.Warn($"Uri.Scheme: {UniformResourceIdentifier.Scheme}")
 
+            End Select
+        Else
+            FritzBoxGet = False
+            NLogger.Warn($"Ping zur Fritz!Box '{UniformResourceIdentifier.Host}'  nicht erfolgreich")
+        End If
     End Function
 
     Friend Function FritzBoxPOST(UniformResourceIdentifier As Uri, SOAPAction As String, ServiceType As String, SOAPXML As XmlDocument, ByRef Response As String) As Boolean
@@ -77,17 +83,17 @@ Friend Module BaseFunctionsTR64
 
                 Catch ex As WebException When ex.Message.Contains("606")
                     Response = $"TR-064 Interner-Fehler 606: {SOAPAction} ""Action not authorized"""
-                    NLogger.Error(ex)
+                    NLogger.Error(ex, Response)
                     FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("500")
                     Response = $"TR-064 Interner-Fehler 500: {SOAPAction}"
-                    NLogger.Error(ex)
+                    NLogger.Error(ex, Response)
                     FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("713")
                     Response = $"TR-064 Interner-Fehler 713: {SOAPAction} ""Invalid array index"""
-                    NLogger.Error(ex)
+                    NLogger.Error(ex, Response)
                     FritzBoxPOST = False
 
                 Catch ex As WebException When ex.Message.Contains("820")
@@ -97,7 +103,7 @@ Friend Module BaseFunctionsTR64
 
                 Catch ex As WebException When ex.Message.Contains("401")
                     Response = $"TR-064 Login-Fehler 401: {SOAPAction} ""Unauthorized"""
-                    NLogger.Error(ex)
+                    NLogger.Error(ex, Response)
                     FritzBoxPOST = False
 
                 Catch exWE As WebException
@@ -115,6 +121,8 @@ Friend Module BaseFunctionsTR64
 
 
     End Function
+
+
 #End Region
 
 End Module

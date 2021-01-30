@@ -7,7 +7,7 @@
           <button id="btnDialInsp_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="large" onAction="BtnOnActionI"/>
           <separator id="Seperator_C1"/>
           <dynamicMenu id="btnRWS_C" tag="RWSDasOertliche" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" size="normal" getContent="FillDynamicRWSMenu"/>
-          <toggleButton id="tbtnVIP_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getPressed="TBtnPressedVIP" size="normal" getScreentip="GetScreenTipVIP" onAction="TBtnOnAction"/>
+          <toggleButton id="tbtnVIP_C" getLabel="GetItemLabel" getImage="GetItemImageMsoVIP" getPressed="TBtnPressedVIP" size="normal" getScreentip="GetScreenTipVIP" onAction="TBtnOnAction"/>
           <button id="btnNote_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleUploadFKT" size="normal" onAction="BtnOnActionI"/>
           <button id="btnUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getScreentip="GetItemScreenTipp" getVisible="GetVisibleUploadFKT" size="normal" onAction="BtnOnActionI"/>
           <dynamicMenu id="MUpload_C" getLabel="GetItemLabel" getImage="GetItemImageMso" getContent="GetPhonebooks" invalidateContentOnDrop="true" getVisible="GetVisibleUploadFKT" getScreentip="GetItemScreenTipp"/>

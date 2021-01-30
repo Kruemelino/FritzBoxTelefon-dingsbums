@@ -13,70 +13,65 @@ Public Class FritzBoxWählClient
     ''' <summary>
     ''' Initialisiert den Wählvorgang der Fritz!Box Wählhilfe.
     ''' </summary>
-    ''' <param name="sDialCode">Die zu Wählende Nummer</param>
+    ''' <param name="DialCode">Die zu Wählende Nummer</param>
     ''' <param name="Telefon">Das ausgehende Telefon</param>
     ''' <param name="Auflegen">Angabe, ob der Verbindungsaufbau abgebrochen werden soll.</param>
     ''' <returns></returns>
-    Friend Function TR064Dial(sDialCode As String, Telefon As Telefoniegerät, Auflegen As Boolean) As Boolean
-        Dim DialPortEingestellt As Boolean
-        Dim InPutData As New Hashtable
-        Dim OutPutData As Hashtable
+    Friend Function TR064Dial(DialCode As String, Telefon As Telefoniegerät, Auflegen As Boolean) As Boolean
 
-        Dim StatusMeldung As String
+        Dim PhoneName As String = DfltStringEmpty
 
         Using TR064 As New FritzBoxTR64
-            ' DialPort setzen, wenn erforderlich
 
-            OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
-            DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.TR064Dialport)
+            ' Ermittle das aktuell eingestellte Telefon.
+            If TR064.DialGetConfig(PhoneName) Then
 
-            If Not DialPortEingestellt Then
-                ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
-                StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusDialPort, Telefon.TR064Dialport)
-                InPutData.Clear()
-                InPutData.Add("NewX_AVM-DE_PhoneName", Telefon.TR064Dialport)
-                OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialSetConfig", InPutData)
+                ' Prüfe, ob das korrekte Telefon ausgewählt wurde.
+                If PhoneName.AreNotEqual(Telefon.TR064Dialport) Then
 
-                If OutPutData.Contains("Error") Then
-                    DialPortEingestellt = False
-                    StatusMeldung = WählClientDialStatus("TR064Dial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
-                    NLogger.Error(StatusMeldung)
-                Else
-                    ' Überprüfe, ob der Dialport tatsächlich geändert wurde:
-                    OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialGetConfig")
-                    DialPortEingestellt = OutPutData.Item("NewX_AVM-DE_PhoneName").ToString.AreEqual(Telefon.TR064Dialport)
-                    If Not DialPortEingestellt Then
-                        StatusMeldung = WählClientDialStatus("TR064Dial", WählClientStatusTR064DialPortFehler, Telefon.TR064Dialport)
-                        NLogger.Error(StatusMeldung)
+                    ' Das Telefon der Fritz!Box Wählhilfe muss geändert werden
+                    NLogger.Debug($"Der Phoneport wird von '{PhoneName}' auf '{Telefon.TR064Dialport}' geändert.")
+
+                    ' Stelle das Telefon um.
+                    If TR064.DialSetConfig(Telefon.TR064Dialport) Then
+
+                        ' Prüfe, ob das Telefon tatsächlich umgestellt wurde
+                        If TR064.DialGetConfig(PhoneName) Then
+                            If PhoneName.AreEqual(Telefon.TR064Dialport) Then
+                                ' Der Phoneport wurde erfolgreich umgestellt
+                                NLogger.Debug($"Der Phoneport wurde erfolgreich auf '{PhoneName}' geändert.")
+                            Else
+                                ' Der Phoneport wurde nicht umgestellt
+                                NLogger.Error($"Der Phoneport konnte nicht von '{PhoneName}' auf '{Telefon.TR064Dialport}' geändert werden.")
+                                Return False
+                            End If
+                        Else
+                            ' Genereller Fehler
+                            NLogger.Error($"Der aktuelle Phoneport konnte nach der Umstellung auf {Telefon.TR064Dialport} nicht ausgelesen werden.")
+                            Return False
+                        End If
+
+                    Else
+                        ' Genereller Fehler
+                        NLogger.Error($"Der Phoneport konnte nicht von '{PhoneName}' auf '{Telefon.TR064Dialport}' umgestellt werden.")
+                        Return False
                     End If
                 End If
-            End If
-
-            ' Wählen, wenn der Dialport passt
-            If DialPortEingestellt Then
-                ' Senden des Wählkomandos
-                InPutData.Clear()
-                If Auflegen Then
-                    OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialHangup")
-                Else
-                    InPutData.Add("NewX_AVM-DE_PhoneNumber", sDialCode)
-                    OutPutData = TR064.TR064Start(Tr064Files.x_voipSCPD, "X_AVM-DE_DialNumber", InPutData)
-                End If
-
-                ' Rückmeldung, ob das Wählen erfolgreich war
-
-                If OutPutData.Contains("Error") Then
-                    StatusMeldung = WählClientDialStatus("TR064Dial", WählClientDialFehler, OutPutData("Error").ToString.Replace("CHR(60)", "<").Replace("CHR(62)", ">"))
-                    NLogger.Error(StatusMeldung)
-                    Return False
-                Else
-                    Return True
-                End If
+                ' Hier kommt man nur hin, wenn es zu keinem Fehler gekommen ist.
+                NLogger.Debug($"Übermittle das Wählkomando an die Fritz!box: Auflegen: '{Auflegen}', '{DialCode}', '{PhoneName}'")
+                ' Das Telefon der Fritz!Box Wählhilfe muss nicht geändert werden
+                ' Senden des Wählkomandos und Rückmeldung, ob das Wählen erfolgreich war
+                Return If(Auflegen, TR064.DialHangup, TR064.DialNumber(DialCode))
             Else
+                ' Genereller Fehler
+                NLogger.Error($"Der aktuelle Phoneport konnte nicht ausgelesen werden.")
                 Return False
             End If
+
         End Using
+
     End Function
+
 #End Region
 
 #Region "Wähldialog"

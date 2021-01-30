@@ -67,15 +67,19 @@ Public Class ObservableCollectionEx(Of T)
 #End Region
 
     Public Sub AddRange(ListAdd As IEnumerable(Of T))
-        For Each Item As T In ListAdd
-            Add(Item)
-        Next
+        If ListAdd IsNot Nothing Then
+            For Each Item As T In ListAdd
+                Add(Item)
+            Next
+        End If
     End Sub
 
     Public Sub RemoveRange(ListRemove As IEnumerable(Of T))
-        For Each Item As T In ListRemove
-            If Contains(Item) Then Remove(Item)
-        Next
+        If ListRemove IsNot Nothing Then
+            For Each Item As T In ListRemove
+                Remove(Item)
+            Next
+        End If
     End Sub
 
 End Class

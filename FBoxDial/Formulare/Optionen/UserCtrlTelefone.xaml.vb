@@ -27,7 +27,20 @@ Public Class UserCtrlTelefone
 
     Private Sub FritzBoxDaten_Beendet() Handles FritzBoxDaten.Beendet
         With CType(DataContext, OptionenViewModel)
-            .LadeDaten()
+            ' Führe die neu eingelesenen Telefoniegeräte in das aktuelle Viewmodel
+            .TelGeräteListe.Clear()
+            .TelGeräteListe.AddRange(FritzBoxDaten.Telefoniegeräte)
+
+            ' Führe die neu eingelesenen Telefonnummern in das aktuelle Viewmodel
+            .TelNrListe.Clear()
+            .TelNrListe.AddRange(FritzBoxDaten.Telefonnummern)
+
+            ' Landeskennzahl (LKZ) übernehmen
+            .TBLandesKZ = FritzBoxDaten.LKZ
+
+            'Ortskennzahl(OKZ) übernehmen
+            .TBOrtsKZ = FritzBoxDaten.OKZ
+
         End With
 
     End Sub

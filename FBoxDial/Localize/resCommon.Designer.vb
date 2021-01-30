@@ -317,6 +317,15 @@ Namespace Localize
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die Zeit ähnelt.
+        '''</summary>
+        Public Shared ReadOnly Property strTime() As String
+            Get
+                Return ResourceManager.GetString("strTime", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die Keine auswählen ähnelt.
         '''</summary>
         Public Shared ReadOnly Property strUncheckAll() As String

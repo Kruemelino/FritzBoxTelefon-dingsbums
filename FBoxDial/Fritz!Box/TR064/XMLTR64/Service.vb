@@ -4,6 +4,8 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 Public Class Service
+    Private Shared Property NLogger As Logger = LogManager.GetCurrentClassLogger
+
     <XmlElement("serviceType")> Public Property ServiceType As String
     <XmlElement("serviceId")> Public Property ServiceId As String
     <XmlElement("controlURL")> Public Property ControlURL As String
@@ -57,10 +59,10 @@ Public Class Service
         With OutputHashTable
 
             If FritzBoxPOST(New UriBuilder(Uri.UriSchemeHttps, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064PortSSL, ControlURL).Uri,
-                        Action.Name,
-                        ServiceType,
-                        GetRequest(Action, InputArguments),
-                        Response) Then
+                            Action.Name,
+                            ServiceType,
+                            GetRequest(Action, InputArguments),
+                            Response) Then
 
                 ' XML Laden
                 ReturnXMLDox.LoadXml(Response)
@@ -74,7 +76,7 @@ Public Class Service
             Else
                 ' Fehlerfall
                 .Add("Error", Response)
-
+                NLogger.Error(Response)
             End If
         End With
 

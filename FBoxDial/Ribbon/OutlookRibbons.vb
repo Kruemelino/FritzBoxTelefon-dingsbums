@@ -174,7 +174,9 @@ Imports System.Xml
     End Function
 
     Public Function GetScreenTipVIP(control As IRibbonControl) As String
-        Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP, GetRibbonWert(control.Id & "Remove", "ScreenTipp"), GetRibbonWert(control.Id & "Add", "ScreenTipp"))
+        Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP,
+                        GetRibbonWert($"Remove{control.Id}", "ScreenTipp"),
+                        GetRibbonWert($"Add{control.Id}", "ScreenTipp"))
     End Function
 
     <CodeAnalysis.SuppressMessage("Style", "IDE0060:Nicht verwendete Parameter entfernen", Justification:="Parameter wird benötigt, da ansonsten Ribbon nicht korrekt verarbeitet wird.")>
@@ -182,6 +184,11 @@ Imports System.Xml
         Return If(ThisAddIn.PAnrufmonitor IsNot Nothing AndAlso ThisAddIn.PAnrufmonitor.Aktiv, "PersonaStatusOnline", "PersonaStatusOffline")
     End Function
 
+    Public Function GetItemImageMsoVIP(control As IRibbonControl) As String
+        Return If(CType(CType(control.Context, Outlook.Inspector).CurrentItem, Outlook.ContactItem).IsVIP,
+                        GetRibbonWert($"Remove{control.Id}", "ImageMso"),
+                        GetRibbonWert($"Add{control.Id}", "ImageMso"))
+    End Function
 
 #End Region 'Ribbon Inspector
 
@@ -192,7 +199,7 @@ Imports System.Xml
     Private Function GetRibbonWert(Key As String, Typ As String) As String
         Dim tmpPropertyInfo As Reflection.PropertyInfo
 
-        tmpPropertyInfo = Array.Find(DfltWerte.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual(String.Format("P{0}{1}", Typ, Key.Split("_")(0))))
+        tmpPropertyInfo = Array.Find(DfltWerte.GetType.GetProperties, Function(PropertyInfo As Reflection.PropertyInfo) PropertyInfo.Name.AreEqual($"P{Typ}{Key.Split("_")(0)}"))
 
         If tmpPropertyInfo IsNot Nothing Then
             Return tmpPropertyInfo.GetValue(DfltWerte).ToString()
@@ -356,11 +363,11 @@ Imports System.Xml
                 End If
 
             Case TaskToDo.OpenJournalimport
-                'Dim AnrListImportWPF As New AnrListWPF
-                'AnrListImportWPF.Show()
+                Dim AnrListImportWPF As New AnrListWPF
+                AnrListImportWPF.Show()
 
-                Dim AnrListImport As New FormAnrList
-                AnrListImport.ShowDialog()
+                'Dim AnrListImport As New FormAnrList
+                'AnrListImport.ShowDialog()
             Case TaskToDo.AnrMonAnAus
                 ' Wenn der Anrufmonor Nothing ist, dann initiiere ihn
                 If ThisAddIn.PAnrufmonitor Is Nothing Then ThisAddIn.PAnrufmonitor = New Anrufmonitor
@@ -374,8 +381,7 @@ Imports System.Xml
                 End With
 
             Case TaskToDo.FBoxTelBücher
-                Dim FBoxTeleBuch As New FormTelefonbücher
-                FBoxTeleBuch.Show()
+
         End Select
     End Sub
 
@@ -507,6 +513,17 @@ Imports System.Xml
             End Select
         End If
     End Sub
+
+    Public Function GetItemImageMsoVIPCM(control As IRibbonControl) As String
+        Dim oSel As Outlook.Selection = CType(control.Context, Outlook.Selection)
+
+        If TypeOf oSel.Item(1) Is Outlook.ContactItem Then
+            Return If(CType(oSel.Item(1), Outlook.ContactItem).IsVIP,
+                        GetRibbonWert($"Remove{control.Id}", "ImageMso"),
+                        GetRibbonWert($"Add{control.Id}", "ImageMso"))
+        End If
+        Return "TraceError"
+    End Function
 #End Region
 
     Public Function GetVisibleUploadFKT() As Boolean

@@ -1,6 +1,5 @@
 ﻿Imports System.Xml.Serialization
 Imports System.Threading.Tasks
-
 Imports FBoxDial.DfltWerteTelefonie
 Imports FBoxDial.FritzBoxDefault
 
@@ -32,15 +31,6 @@ Imports FBoxDial.FritzBoxDefault
         Telefoniegeräte = New List(Of Telefoniegerät)
 
     End Sub
-
-
-    Friend Function GetKennzahlen() As Boolean
-        Using fbSOAP As New FritzBoxTR64
-            With fbSOAP
-                Return .GetVoIPCommonCountryCode(LKZ) AndAlso .GetVoIPCommonAreaCode(OKZ)
-            End With
-        End Using
-    End Function
 
 #Region "Import Telefoniedaten der Fritz!Box"
 
@@ -156,7 +146,7 @@ Imports FBoxDial.FritzBoxDefault
                         Telefoniegeräte.AddRange(Await TaskMobilFax)
 
                         ' ISDN/DECT Rundruf, falls S0 oder DECT Geräte verfügbar 
-                        Telefoniegeräte.Add(GetRundruf)
+                        Telefoniegeräte.AddRange(GetRundruf)
 
                         ' Ermittle TR-064 Phoneports
                         ' Für die Fritz!Box Wählhilfe nutzbare Telefone ermitteln
@@ -185,9 +175,6 @@ Imports FBoxDial.FritzBoxDefault
                                 End If
                             Next
                         End If
-
-                        ' Setze neue Telefoniedaten in die XML Daten
-                        XMLData.PTelefonie = Me
 
                         ' Aufräumen
                         PushStatus(LogLevel.Info, $"Einlesen der Telefoniedaten abgeschlossen...")
@@ -463,18 +450,20 @@ Imports FBoxDial.FritzBoxDefault
     ''' Erstellt den ISDN/DECT Rundruf, sofern DECT oder S0 Geräte vorhanden sind.
     ''' </summary>
     ''' <returns></returns>
-    Private Function GetRundruf() As Telefoniegerät
-        Dim Telefon As Telefoniegerät = Nothing
+    Private Function GetRundruf() As List(Of Telefoniegerät)
+        Dim TelList As New List(Of Telefoniegerät)
         ' Verarbeitung des Telefons: ISDN/DECT Rundruf
         If Telefoniegeräte.Find(Function(T) T.TelTyp = TelTypen.ISDN Or T.TelTyp = TelTypen.DECT) IsNot Nothing Then
-            Telefon = New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
-                                                       .AnrMonID = AnrMonTelIDBase.S0,
-                                                       .Name = "ISDN/DECT Rundruf",
-                                                       .Intern = InternBase.S0}
 
-            PushStatus(LogLevel.Debug, $"Telefon {Telefon.TelTyp}: {Telefon.AnrMonID}; {Telefon.Name}; {Telefon.Intern}")
+            TelList.Add(New Telefoniegerät With {.TelTyp = TelTypen.ISDN,
+                                                 .AnrMonID = AnrMonTelIDBase.S0,
+                                                 .Name = "ISDN/DECT Rundruf",
+                                                 .Intern = InternBase.S0})
+
+            PushStatus(LogLevel.Debug, $"Telefon {TelList.First.TelTyp}: {TelList.First.AnrMonID}; {TelList.First.Name}; {TelList.First.Intern}")
+
         End If
-        Return Telefon
+        Return TelList
     End Function
 
 #End Region
@@ -507,10 +496,12 @@ Imports FBoxDial.FritzBoxDefault
         AddEigeneTelNr = GetEigeneTelNr(TelNr)
 
         If AddEigeneTelNr Is Nothing Then
-            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True, .Überwacht = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SetNummer = TelNr, .SIP = ID.ToInt}
-            Telefonnummern.Add(AddEigeneTelNr)
+            ' Es ist wichtig, dass die LKZ und die OKZ in jedem Fall übergeben werden. Führe daher das SetNummer separat aus.
+            AddEigeneTelNr = New Telefonnummer With {.EigeneNummer = True, .Überwacht = True, .Ortskennzahl = OKZ, .Landeskennzahl = LKZ, .SIP = ID.ToInt}
+            AddEigeneTelNr.SetNummer = TelNr
 
-            NLogger.Trace($"Eigene Nummer eingetragen: '{TelNr}'; F: '{AddEigeneTelNr.Formatiert}'; U: '{AddEigeneTelNr.Unformatiert}'")
+            Telefonnummern.Add(AddEigeneTelNr)
+            PushStatus(LogLevel.Debug, $"Telefonnummern: '{TelNr}' ({ID}); F: '{AddEigeneTelNr.Formatiert}'; U: '{AddEigeneTelNr.Unformatiert}'")
         End If
     End Function
 
