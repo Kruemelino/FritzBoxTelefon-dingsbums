@@ -119,3 +119,4 @@ Public Class CustomBooleanJsonConverter
         serializer.Serialize(writer, value)
     End Sub
 End Class
+
