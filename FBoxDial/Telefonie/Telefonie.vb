@@ -208,7 +208,7 @@ Imports FBoxDial.FritzBoxDefault
         ' Führe Abfrage aus
         QueryAntwort = Await FritzBoxAsyncQuery(SessionID, TelQuery)
 
-        With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxFON)(QueryAntwort)
+        With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxFON)(QueryAntwort, New CustomBooleanJsonConverter)
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
             For Each FONTelefon In .FON.Where(Function(F) F.Name.IsNotStringNothingOrEmpty)
                 ' Dimensioniere ein neues Telefon und setze Daten
@@ -228,10 +228,10 @@ Imports FBoxDial.FritzBoxDefault
                 ' Führe Abfrage aus
                 QueryAntwort = Await FritzBoxAsyncQuery(SessionID, TelQuery)
 
-                With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxFONNr)(QueryAntwort)
+                With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxFONNr)(QueryAntwort, New CustomBooleanJsonConverter)
 
                     ' Verarbeite alle Nummer des FON-Telefones
-                    If CBool(FONTelefon.AllIncomingCalls) Then
+                    If FONTelefon.AllIncomingCalls Then
                         ' Weise dem Telefon alle bekannten Nummern zu
                         Telefonnummern.ForEach(Sub(TelNr) Telefon.StrEinTelNr.Add(TelNr.Einwahl))
 
@@ -269,7 +269,6 @@ Imports FBoxDial.FritzBoxDefault
         TelQuery.Add("DECT=telcfg:settings/Foncontrol/User/list(Name,Type,Intern,Id)")
         ' Führe Abfrage aus
         QueryAntwort = Await FritzBoxAsyncQuery(SessionID, TelQuery)
-
         With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxDECT)(QueryAntwort)
             ' Wenn es eine interne Nummer gibt, sind die DECT-Geräte aktiv
             For Each DECTTelefon In .DECT.Where(Function(D) D.Intern.IsNotStringNothingOrEmpty)
@@ -288,11 +287,10 @@ Imports FBoxDial.FritzBoxDefault
                 TelQuery.Add($"DECTNr=telcfg:settings/Foncontrol/User{DECTTelefon.Id}/MSN/list(Number)")
                 ' Führe Abfrage aus
                 QueryAntwort = Await FritzBoxAsyncQuery(SessionID, TelQuery)
-
-                With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxDECTNr)(QueryAntwort)
+                With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxDECTNr)(QueryAntwort, New CustomBooleanJsonConverter())
 
                     ' Veraarbeite alle Nummer des DECT-Telefones
-                    If CBool(.DECTRingOnAllMSNs) Then
+                    If .DECTRingOnAllMSNs Then
                         ' Weise dem Telefon alle bekannten Nummern zu
                         For Each TelNr In Telefonnummern.Distinct
                             Telefon.StrEinTelNr.Add(TelNr.Einwahl)
@@ -344,7 +342,7 @@ Imports FBoxDial.FritzBoxDefault
             ' Führe Abfrage aus
             QueryAntwort = Await FritzBoxAsyncQuery(SessionID, TelQuery)
 
-            With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxS0)(QueryAntwort)
+            With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FBoxS0)(QueryAntwort, New CustomBooleanJsonConverter())
                 ' Wenn es einen Namen gibt, sind die S0-Geräte aktiv
                 If .S0Name.IsNotStringNothingOrEmpty Then
 
@@ -392,7 +390,7 @@ Imports FBoxDial.FritzBoxDefault
 
         ' Führe Abfrage aus
         QueryAntwort = Await FritzBoxAsyncQuery(SessionID, TelQuery)
-        With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FaxMailMobil)(QueryAntwort)
+        With Newtonsoft.Json.JsonConvert.DeserializeObject(Of FaxMailMobil)(QueryAntwort, New CustomBooleanJsonConverter())
             ' Verarbeite Mobilgerät, wenn es eine Mobilnummer gibt.
             If .Mobile.IsNotStringNothingOrEmpty Then
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.Mobil,
@@ -407,7 +405,7 @@ Imports FBoxDial.FritzBoxDefault
             End If
 
             ' Verarbeite internen Faxempfang (FaxMail)
-            If .FaxMailActive.IsNotStringNothingOrEmpty Then
+            If .FaxMailActive Then
                 Dim Telefon As New Telefoniegerät With {.TelTyp = TelTypen.FAX,
                                                         .AnrMonID = AnrMonTelIDBase.Fax,
                                                         .Name = "Faxempfang",
