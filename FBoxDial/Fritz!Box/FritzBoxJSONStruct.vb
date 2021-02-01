@@ -3,7 +3,7 @@
 #Region "FON"
 Friend Structure MSNEntry
     <JsonProperty("_Node")> Public Property Node As String
-    Public Property AllIncomingCalls As String
+    Public Property AllIncomingCalls As Boolean
     Public Property Name As String
     Public Property Fax As String
 End Structure
@@ -50,7 +50,8 @@ End Structure
 
 Friend Structure FBoxDECTNr
     Public Property DECTNr As List(Of DECTNr)
-    Public Property DECTRingOnAllMSNs As String
+    Public Property DECTRingOnAllMSNs As Boolean
+
 End Structure
 #End Region
 
@@ -64,7 +65,7 @@ End Structure
 
 #Region "FaxMail, Mobil"
 Friend Structure FaxMailMobil
-    Public Property FaxMailActive As String
+    Public Property FaxMailActive As Boolean
     Public Property MobileName As String
     Public Property Mobile As String
 End Structure
@@ -89,3 +90,32 @@ Friend Structure FBoxFaxNr
 
 End Structure
 #End Region
+
+Public Class CustomBooleanJsonConverter
+    Inherits JsonConverter(Of Boolean)
+
+    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Boolean, hasExistingValue As Boolean, serializer As JsonSerializer) As Boolean
+        If reader.ValueType Is GetType(String) Then
+            Dim StrVal As String = reader.Value.ToString
+
+            If StrVal.IsNotStringNothingOrEmpty Then
+                Dim StrBool As Boolean
+                If Boolean.TryParse(StrVal, StrBool) Then
+                    Return True
+                Else
+                    Return Convert.ToBoolean(Convert.ToInt32(StrVal))
+                End If
+
+            Else
+                Return False
+
+            End If
+        Else
+            Return Convert.ToBoolean(reader.Value)
+        End If
+    End Function
+
+    Public Overrides Sub WriteJson(writer As JsonWriter, value As Boolean, serializer As JsonSerializer)
+        serializer.Serialize(writer, value)
+    End Sub
+End Class
