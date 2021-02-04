@@ -16,16 +16,14 @@ Friend Module Serializer
         DateiInfo = New FileInfo(Pfad)
         DateiInfo.Directory.Create() ' If the directory already exists, this method does nothing.
 
-        If File.Exists(Pfad) Then
-            XMLData = DeserializeObject(Of OutlookXML)(Pfad)
-        Else
+        If Not (File.Exists(Pfad) AndAlso DeserializeObject(Pfad, XMLData)) Then
             XMLData = New OutlookXML
         End If
 
         ' Setze einige Felder
         If XMLData IsNot Nothing Then
             With XMLData.POptionen
-                .Arbeitsverzeichnis = DateiInfo.Directory.ToString
+                ' .Arbeitsverzeichnis = DateiInfo.Directory.ToString
                 .ValidFBAdr = ValidIP(.TBFBAdr)
             End With
         End If
@@ -47,55 +45,61 @@ Friend Module Serializer
 
     Friend Function DeserializeObjectAsyc(Of T)(Pfad As String) As Task(Of T)
         Return Task.Run(Function()
-                            Return DeserializeObject(Of T)(Pfad)
+                            Dim ReturnObj As T
+                            If DeserializeObject(Pfad, ReturnObj) Then
+                                Return ReturnObj
+                            Else
+                                Return Nothing
+                            End If
                         End Function)
     End Function
 
-    Friend Function DeserializeObjectAsyc(Of T)(UniformResourceIdentifier As Uri) As Task(Of T)
-        Return Task.Run(Function()
-                            Return DeserializeObject(Of T)(UniformResourceIdentifier.AbsoluteUri)
-                        End Function)
-    End Function
+    ''' <summary>
+    ''' Deserialisiert die XML-Datei, die unter <paramref name="Pfad"/> gesperichert ist.
+    ''' </summary>
+    ''' <typeparam name="T">Zieltdatentyp</typeparam>
+    ''' <param name="Pfad">Dateispeicherort</param>
+    ''' <param name="ReturnObj">Deserialisiertes Datenobjekt vom Type <typeparamref name="T"/>.</param>
+    ''' <returns>True oder False, je nach Ergebnis</returns>
+    Private Function DeserializeObject(Of T)(Pfad As String, ByRef ReturnObj As T) As Boolean
 
-    Private Function DeserializeObject(Of T)(Pfad As String) As T
+        Dim Serializer As New XmlSerializer(GetType(T))
+        Using Reader As XmlReader = XmlReader.Create(Pfad)
+            If Serializer.CanDeserialize(Reader) Then
 
-        Dim mySerializer As New XmlSerializer(GetType(T))
-        Using XmlLeser As XmlReader = XmlReader.Create(Pfad)
-            If mySerializer.CanDeserialize(XmlLeser) Then
                 Try
-                    Return CType(mySerializer.Deserialize(XmlLeser), T)
+                    ReturnObj = CType(Serializer.Deserialize(Reader), T)
+
+                    Return True
+
                 Catch ex As InvalidOperationException
+
                     NLogger.Fatal($"Fehler beim Deserialisieren: {Pfad}", ex)
+
+                    Return False
                 End Try
+            Else
+                NLogger.Fatal($"Fehler beim Deserialisieren: {Pfad} kann nicht deserialisert werden.")
+                Return False
             End If
         End Using
 
     End Function
 
-    Friend Function DeserializeObject(Of T)(UniformResourceIdentifier As Uri) As T
-        Return DeserializeObject(Of T)(UniformResourceIdentifier.AbsoluteUri)
+    Friend Function DeserializeObject(Of T)(UniformResourceIdentifier As Uri, ByRef ReturnObj As T) As Boolean
+        Return DeserializeObject(UniformResourceIdentifier.AbsoluteUri, ReturnObj)
     End Function
 
-    Friend Function XmlDeserializeFromString(Of T)(objectData As String) As T
-        Dim O As Object = Nothing
-        If XmlDeserializeFromString(objectData, GetType(T), O) Then
-            Return CType(O, T)
-        Else
-            Return Nothing
-        End If
-    End Function
+    Friend Function XmlDeserializeFromString(Of T)(objectData As String, ByRef result As T) As Boolean
 
-    Private Function XmlDeserializeFromString(objectData As String, T As Type, ByRef result As Object) As Boolean
-        Dim serializer = New XmlSerializer(T)
-        'Dim result As Object
-
-        Using reader As TextReader = New StringReader(objectData)
+        Dim Serializer = New XmlSerializer(GetType(T))
+        Using Reader As TextReader = New StringReader(objectData)
             Try
-                result = serializer.Deserialize(reader)
+                result = CType(Serializer.Deserialize(Reader), T)
 
                 Return True
             Catch ex As InvalidOperationException
-                NLogger.Fatal($"Fehler beim Deserialisieren von {T.FullName}: {objectData}", ex)
+                NLogger.Fatal($"Fehler beim Deserialisieren von {GetType(T).FullName}: {objectData}", ex)
 
                 ' Gib Nothing zurück
                 result = Nothing
@@ -105,4 +109,5 @@ Friend Module Serializer
         End Using
 
     End Function
+
 End Module

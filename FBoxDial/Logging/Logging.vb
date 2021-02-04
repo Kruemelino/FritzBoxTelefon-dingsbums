@@ -1,4 +1,6 @@
-﻿Friend Module NLogging
+﻿Imports System.IO
+
+Friend Module NLogging
     Friend Function DefaultNLogConfig() As Config.LoggingConfiguration
 
         Dim config = New Config.LoggingConfiguration
@@ -15,7 +17,7 @@
         Dim Ziel As New Targets.FileTarget With {.Name = "f",
                                                       .Encoding = Encoding.UTF8,
                                                       .KeepFileOpen = False,
-                                                      .FileName = IO.Path.Combine(XMLData.POptionen.Arbeitsverzeichnis, DfltLogFileName),
+                                                      .FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), My.Application.Info.AssemblyName, DfltLogFileName),
                                                       .Layout = LayoutText.Join("|")}
 
         ' Level  Typical Use
@@ -26,7 +28,7 @@
         ' Debug  For debugging; executed query, user authenticated, session expired
         ' Trace  For trace debugging; begin method X, end method X
 
-        Dim minLogLevel As LogLevel = LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel)
+        Dim minLogLevel As LogLevel = If(XMLData IsNot Nothing, LogLevel.FromString(XMLData.POptionen.CBoxMinLogLevel), LogLevel.Debug)
         Dim maxLogLevel As LogLevel = LogLevel.Fatal
 
         config.AddRule(minLogLevel, maxLogLevel, Ziel)

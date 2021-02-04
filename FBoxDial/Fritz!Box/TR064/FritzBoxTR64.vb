@@ -23,30 +23,32 @@ Friend Class FritzBoxTR64
         ' Herunterladen
         If FritzBoxGet(New UriBuilder(Uri.UriSchemeHttps, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064PortSSL, Tr064Files.tr64desc).Uri, Response) Then
             ' Deserialisieren
-            FBTR64Desc = XmlDeserializeFromString(Of TR64Desc)(Response)
-
+            If Not XmlDeserializeFromString(Response, FBTR64Desc) Then
+                NLogger.Error($"FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Deserialisieren der FBTR64Desc.")
+            End If
+        Else
+            NLogger.Error($"FritzBoxTR64 kann nicht initialisiert werden: Fehler beim Herunterladen der FBTR64Desc.")
         End If
 
     End Sub
-    <DebuggerStepThrough>
     Private Function GetService(SCPDURL As String) As Service
 
         If FBTR64Desc IsNot Nothing AndAlso FBTR64Desc.Device.ServiceList.Any Then
             Return FBTR64Desc.Device.ServiceList.Find(Function(Service) Service.SCPDURL.AreEqual(SCPDURL))
         Else
-            NLogger.Error("SOAP zur Fritz!Box ist nicht bereit: {0}", XMLData.POptionen.TBFBAdr)
+            NLogger.Error($"SOAP zur Fritz!Box ist nicht bereit: {XMLData.POptionen.ValidFBAdr}")
             Return Nothing
         End If
 
     End Function
 
-    Friend Overloads Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
+    Private Overloads Function TR064Start(SCPDURL As String, ActionName As String, Optional InputHashTable As Hashtable = Nothing) As Hashtable
 
         If Ping(XMLData.POptionen.ValidFBAdr) Then
             Dim TR064Error As String
 
             With GetService(SCPDURL)
-                If .ActionExists(ActionName) Then
+                If?.ActionExists(ActionName) Then
                     If .CheckInput(ActionName, InputHashTable) Then
                         Return .Start(.GetActionByName(ActionName), InputHashTable)
                     Else
@@ -107,6 +109,9 @@ Friend Class FritzBoxTR64
 #Region "x_contactSCPD"
 
     ''' <summary>
+    ''' Ermittelt die URL zum Herunterladen des Anrufliste.
+    ''' </summary>
+    ''' <param name="CallListURL">Represents the URL to the CallList.
     ''' The URL can be extended to limit the number of entries in the XML call list file.
     ''' E.g. max=42 would limit to 42 calls in the list.
     ''' If the parameter Is Not Set Or the value Is 0 all calls will be inserted into the Call list file.
@@ -114,23 +119,22 @@ Friend Class FritzBoxTR64
     ''' E.g. days=7 would fetch the calls from now until 7 days in the past.
     ''' If the parameter Is Not Set Or the value Is 0 all calls will be inserted into the Call list file.
     ''' The parameter NewCallListURL Is empty, If the feature (CallList) Is disabled. If the feature
-    ''' Is Not supported an internal error (820) Is returned. In the other case the URL Is returned.
-    ''' </summary>
-    ''' <param name="CallListURL">Represents the URL to the CallList.</param>
+    ''' Is Not supported an internal error (820) Is returned. In the other case the URL Is returned.    
+    '''     <list type="bullet">
+    '''         <listheader>The following URL parameters are supported.</listheader>
+    '''         <item><term>name</term> (number): number of days to look back for calls e.g. 1: calls from today and yesterday, 7: calls from the complete last week, Default 999</item>
+    '''         <item><term>id</term> (number): calls since this unique ID</item>
+    '''         <item><term>maxv</term> (number): maximum number of entries in call list, default 999</item>
+    '''         <item><term>sid</term> (hex-string): Session ID for authentication </item>
+    '''         <item><term>timestamp</term> (number): value from timestamp tag, to get only entries that are newer (timestamp Is resetted by a factory reset) </item>
+    '''         <item><term>tr064sid</term>  (string): Session ID for authentication (obsolete)</item>
+    '''         <item><term>type</term>  (string): optional parameter for type of output file: xml (default) or csv </item>
+    '''     </list>
+    '''     The parameters timestamp and id have to be used in combination. If only one of both is used, the feature Is Not supported. 
+    ''' </param>
     ''' <returns>True when success</returns>
     ''' <remarks>
     ''' 
-    ''' <list type="bullet">
-    ''' <listheader>The following URL parameters are supported.</listheader>
-    ''' <item>Parameter name (number): number of days to look back for calls e.g. 1: calls from today and yesterday, 7: calls from the complete last week, Default 999</item>
-    ''' <item>Parameter id (number): calls since this unique ID</item>
-    ''' <item>Parameter max (number): maximum number of entries in call list, default 999</item>
-    ''' <item>Parameter sid (hex-string): Session ID for authentication </item>
-    ''' <item>Parameter timestamp (number): value from timestamp tag, to get only entries that are newer (timestamp Is resetted by a factory reset) </item>
-    ''' <item>Parameter tr064sid  (string): Session ID for authentication (obsolete)</item>
-    ''' <item>Parameter type  (string): optional parameter for type of output file: xml (default) or csv </item>
-    ''' </list>
-    ''' The parameters timestamp and id have to be used in combination. If only one of both is used, the feature Is Not supported. 
     ''' </remarks>
     Friend Function GetCallList(ByRef CallListURL As String) As Boolean
 
@@ -146,10 +150,225 @@ Friend Class FritzBoxTR64
             Else
                 CallListURL = DfltStringEmpty
 
-                NLogger.Warn($"Pfad zur Anrufliste der Fritz!Box nicht ermittelt.")
+                NLogger.Warn($"Pfad zur Anrufliste der Fritz!Box konnte nicht ermittelt.")
 
                 GetCallList = False
             End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die Liste der Telefonbocher. 
+    ''' </summary>
+    ''' <param name="PhonebookList">Liste der Telefonbuch IDs</param>
+    ''' <returns>True when success</returns>
+    Friend Function GetPhonebookList(ByRef PhonebookList As Integer()) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebookList")
+
+            If .ContainsKey("NewPhonebookList") Then
+                ' Comma separated list of PhonebookID 
+                PhonebookList = Array.ConvertAll(.Item("NewPhonebookList").ToString.Split(","),
+                                                 New Converter(Of String, Integer)(AddressOf Integer.Parse))
+
+                NLogger.Debug($"Telefonbuchliste der Fritz!Box: '{String.Join(", ", PhonebookList)}'")
+
+                GetPhonebookList = True
+            Else
+                PhonebookList = {}
+
+                NLogger.Warn($"Telefonbuchliste der Fritz!Box konnte nicht ermittelt.")
+
+                GetPhonebookList = False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Ermittelt die URL zum Herunterladen des Telefonbuches mit der <paramref name="PhonebookID"/>.
+    ''' </summary>
+    ''' <param name="PhonebookURL"> Represents the URL to the phone book with <paramref name="PhonebookID"/>.
+    '''     The following URL parameters are supported.
+    '''     <list type="bullet">
+    '''     <listheader>The following URL parameters are supported.</listheader>
+    '''     <item><term>pbid</term> (number): number of days to look back for calls e.g. 1: calls from today and yesterday, 7: calls from the complete last week, Default 999</item>
+    '''     <item><term>max</term> (number): maximum number of entries in call list, default 999</item>
+    '''     <item><term>sid</term> (hex-string): Session ID for authentication </item>
+    '''     <item><term>timestamp</term> (number): value from timestamp tag, to get the phonebook content only if last modification was made after this timestamp</item>
+    '''     <item><term>tr064sid</term> (string): Session ID for authentication (obsolete)</item>
+    ''' </list></param>
+    ''' <param name="PhonebookID">ID of the phonebook.</param>
+    ''' <param name="PhonebookName">Name of the phonebook.</param>
+    ''' <param name="PhonebookExtraID">The value of <paramref name="PhonebookExtraID"/> may be an empty string. </param>
+    ''' <returns>True when success</returns>
+    Friend Function GetPhonebook(PhonebookID As Integer, ByRef PhonebookURL As String,
+                                 Optional PhonebookName As String = "",
+                                 Optional PhonebookExtraID As String = "") As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "GetPhonebook", New Hashtable From {{"NewPhonebookID", PhonebookID}})
+
+            If .ContainsKey("NewPhonebookURL") Then
+                ' Phonebook URL auslesen
+                PhonebookURL = .Item("NewPhonebookURL").ToString
+                ' Phonebook Name auslesen
+                If .ContainsKey("NewPhonebookName") Then PhonebookName = .Item("NewPhonebookName").ToString
+                ' Phonebook ExtraID auslesen
+                If .ContainsKey("NewPhonebookExtraID") Then PhonebookName = .Item("NewPhonebookExtraID").ToString
+
+                NLogger.Debug($"Pfad zum Telefonbuch '{PhonebookName}' der Fritz!Box: '{PhonebookURL}'")
+
+                GetPhonebook = True
+
+            Else
+                NLogger.Warn($"GetPhonebook konnte für nicht aufgelößt werden.")
+                PhonebookURL = DfltStringEmpty
+
+                GetPhonebook = False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Fügt ein neues Telefonbuch hinzu.
+    ''' </summary>
+    ''' <param name="PhonebookName">Name des neuen Telefonbuches.</param>
+    ''' <param name="PhonebookExtraID">ExtraID des neuen Telefonbuches. (Optional)</param>
+    ''' <returns>True when success</returns>
+    Friend Function AddPhonebook(PhonebookName As String, Optional PhonebookExtraID As String = "") As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "AddPhonebook", New Hashtable From {{"NewPhonebookName", PhonebookName},
+                                                                                      {"NewPhonebookExtraID", PhonebookExtraID}})
+
+            Return Not .ContainsKey("Error")
+
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Löscht das Telefonbuch mit der <paramref name="NewPhonebookID"/>.
+    ''' </summary>
+    ''' <remarks>The default phonebook (PhonebookID = 0) is not deletable, but therefore, each entry will be deleted And the phonebook will be empty afterwards.</remarks>
+    ''' <param name="NewPhonebookID">ID of the phonebook.</param>
+    ''' <param name="PhonebookExtraID">Optional parameter to make a phonebook unique.</param>
+    ''' <returns>True when success</returns>
+    Friend Function DeletePhonebook(NewPhonebookID As Integer, Optional PhonebookExtraID As String = "") As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebook", New Hashtable From {{"NewPhonebookID", NewPhonebookID},
+                                                                                         {"NewPhonebookExtraID", PhonebookExtraID}})
+
+            Return Not .ContainsKey("Error")
+
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Add a new or change an existing entry in a telephone book.
+    ''' Changes to online phonebooks are not allowed.
+    ''' <list type="bullet">
+    '''     <listheader>
+    '''         <term>Add new entry:</term>    
+    '''     </listheader>
+    '''     <item>set phonebook ID and an empty value for PhonebookEntryID and XML entry data Structure (Of without the unique ID tag)</item>
+    ''' </list>
+    ''' <list type="bullet">
+    '''     <listheader>
+    '''         <term>Change existing entry:</term>    
+    '''     </listheader>
+    '''     <item>set phonebook ID an entry ID and XML entry data (without the unique ID tag)</item>
+    '''     <item>set phonebook ID and an empty value for PhonebookEntryID and XML entry data Structure with the unique ID tag (Of e.g. <uniqueid>28</uniqueid>)</item>
+    ''' </list>
+    ''' </summary>
+    ''' <param name="PhonebookID">ID of the phonebook.</param>
+    ''' <param name="PhonebookEntryID">Number for a single entry in a phonebook.</param>
+    ''' <param name="PhonebookEntryData">XML document with a single entry</param>
+    ''' <returns>True when success</returns>
+    Friend Function SetPhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer, PhonebookEntryData As String) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
+                                                                                           {"NewPhonebookEntryID", PhonebookEntryID},
+                                                                                           {"NewPhonebookEntryData", PhonebookEntryData}})
+
+            Return Not .ContainsKey("Error")
+
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Add a new or change an existing entry in a telephone book using the unique ID of the entry
+    ''' <list type="bullet">
+    '''     <listheader>
+    '''         <term>Add new entry:</term>    
+    '''     </listheader>
+    '''     <item>set phonebook ID and XML entry data structure (without the unique ID tag)</item>
+    ''' </list>
+    ''' <list type="bullet">
+    '''     <listheader>
+    '''         <term>Change existing entry:</term>    
+    '''     </listheader>
+    '''     <item>set phonebook ID and XML entry data structure with the unique ID tag (e.g. <uniqueid>28</uniqueid>)</item>
+    ''' </list>
+    ''' The action returns the unique ID of the new or changed entry
+    ''' </summary>
+    ''' <param name="PhonebookID">ID of the phonebook.</param>
+    ''' <param name="PhonebookEntryData">XML document with a single entry</param>
+    ''' <param name="PhonebookEntryUniqueID">The action returns the unique ID of the new or changed entry.</param>
+    ''' <returns>True when success</returns>
+    Friend Function SetPhonebookEntryUID(PhonebookID As Integer, PhonebookEntryData As String, ByRef PhonebookEntryUniqueID As Integer) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "SetPhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
+                                                                                              {"NewPhonebookEntryData", PhonebookEntryData}})
+
+            If .ContainsKey("NewPhonebookEntryUniqueID") Then
+                ' Phonebook URL auslesen
+                PhonebookEntryUniqueID = CInt(.Item("NewPhonebookEntryUniqueID"))
+
+                SetPhonebookEntryUID = True
+
+            Else
+                NLogger.Warn($"SetPhonebookEntryUID konnte für nicht aufgelößt werden.")
+                PhonebookEntryUniqueID = DfltIntErrorMinusOne
+
+                SetPhonebookEntryUID = False
+            End If
+        End With
+
+    End Function
+
+    ''' <summary>
+    ''' Delete an existing telephone book entry.
+    ''' Changes to online phonebooks are not allowed.
+    ''' </summary>
+    ''' <param name="PhonebookID">ID of the phonebook.</param>
+    ''' <param name="PhonebookEntryID">Number for a single entry in a phonebook.</param>
+    ''' <returns>True when success</returns>
+    Friend Function DeletePhonebookEntry(PhonebookID As Integer, PhonebookEntryID As Integer) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntry", New Hashtable From {{"NewPhonebookID", PhonebookID},
+                                                                                      {"NewPhonebookEntryID", PhonebookEntryID}})
+            Return Not .ContainsKey("Error")
+
+        End With
+    End Function
+
+    ''' <summary>
+    ''' Delete an existing telephone book entry using the unique ID from the entry.
+    ''' Changes to online phonebooks are not allowed.
+    ''' </summary>
+    ''' <param name="PhonebookID">ID of the phonebook.</param>
+    ''' <param name="NewPhonebookEntryUniqueID">Unique identifier (number) for a single entry in a phonebook.</param>
+    ''' <returns>True when success</returns>
+    Friend Function DeletePhonebookEntryUID(PhonebookID As Integer, NewPhonebookEntryUniqueID As Integer) As Boolean
+
+        With TR064Start(Tr064Files.x_contactSCPD, "DeletePhonebookEntryUID", New Hashtable From {{"NewPhonebookID", PhonebookID},
+                                                                                                 {"NewPhonebookEntryUniqueID", NewPhonebookEntryUniqueID}})
+            Return Not .ContainsKey("Error")
+
         End With
 
     End Function
@@ -198,7 +417,9 @@ Friend Class FritzBoxTR64
 
                 NLogger.Trace(.Item("NewTAMList"))
 
-                TAMListe = XmlDeserializeFromString(Of TAMList)(.Item("NewTAMList").ToString())
+                If Not XmlDeserializeFromString(.Item("NewTAMList").ToString(), TAMListe) Then
+                    NLogger.Warn($"GetList (TAM) konnte für nicht deserialisiert werden.")
+                End If
 
                 ' Wenn keine TAM angeschlossen wurden, gib eine leere Klasse zurück
                 If TAMListe Is Nothing Then TAMListe = New TAMList
@@ -206,7 +427,7 @@ Friend Class FritzBoxTR64
                 GetTAMList = True
 
             Else
-                NLogger.Warn($"GetList konnte für nicht aufgelößt werden.")
+                NLogger.Warn($"GetList (TAM) konnte für nicht aufgelößt werden.")
                 TAMListe = Nothing
 
                 GetTAMList = False
@@ -337,7 +558,9 @@ Friend Class FritzBoxTR64
 
                 NLogger.Trace(.Item("NewNumberList"))
 
-                NumberList = XmlDeserializeFromString(Of SIPTelNrList)(.Item("NewNumberList").ToString())
+                If Not XmlDeserializeFromString(.Item("NewNumberList").ToString(), NumberList) Then
+                    NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden.")
+                End If
 
                 ' Wenn keine Nummern angeschlossen wurden, gib eine leere Klasse zurück
                 If NumberList Is Nothing Then NumberList = New SIPTelNrList
@@ -400,7 +623,9 @@ Friend Class FritzBoxTR64
 
                 NLogger.Trace(.Item("NewX_AVM-DE_ClientList"))
 
-                ClientList = XmlDeserializeFromString(Of SIPClientList)(.Item("NewX_AVM-DE_ClientList").ToString())
+                If Not XmlDeserializeFromString(.Item("NewX_AVM-DE_ClientList").ToString(), ClientList) Then
+                    NLogger.Warn($"X_AVM-DE_GetNumbers konnte für nicht deserialisiert werden.")
+                End If
 
                 ' Wenn keine SIP-Clients angeschlossen wurden, gib eine leere Klasse zurück
                 If ClientList Is Nothing Then ClientList = New SIPClientList

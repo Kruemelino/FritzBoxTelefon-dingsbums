@@ -18,12 +18,16 @@ Public Class Service
         Return SCPD?.ActionList.Find(Function(Action) Action.Name = ActionName)
     End Function
 
+    ''' <summary>
+    ''' Proft, ob die geforderte Action mit dem <paramref name="ActionName"/> existiert.
+    ''' </summary>
+    ''' <param name="ActionName">Name der auszuführenden Action.</param>
+    ''' <returns>Boolean</returns>
     Friend Function ActionExists(ActionName As String) As Boolean
-        If SCPD Is Nothing Then
-            SCPD = DeserializeObject(Of ServiceControlProtocolDefinition)(New UriBuilder(Uri.UriSchemeHttp, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064Port, SCPDURL).Uri)
-        End If
 
-        Return SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
+        If SCPD Is Nothing Then DeserializeObject(New UriBuilder(Uri.UriSchemeHttp, XMLData.POptionen.ValidFBAdr, FritzBoxDefault.DfltTR064Port, SCPDURL).Uri, SCPD)
+
+        Return SCPD IsNot Nothing AndAlso SCPD.ActionList.Exists(Function(Action) Action.Name = ActionName)
 
     End Function
 
